@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — SYSTEM Module Deep Dive
 
-**Version 8.0.0 | Scientific Publication**
+**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
 
 ---
 
@@ -198,5 +198,44 @@ SYSTEM is aware of and coordinates all 14 modules:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+## 9. Infrastructure Systems (v8.5.0)
+
+### 9.1 Boot Health Gates
+
+Location: `substrate/boot-gates/`
+Tier: **Builder**
+
+Startup dependency validation ensuring all required services are healthy before module activation. Functions: `checkGate()`, `registerGate()`, `getBootReport()`.
+
+### 9.2 Dependency Health
+
+Location: `substrate/dependency-health/`
+Tier: **Builder**
+
+Cross-module health tracking with cascading failure detection. Functions: `checkDependencies()`, `getHealthMap()`, `onDegradation()`.
+
+### 9.3 Health Dashboard API
+
+Location: `substrate/health-api/`
+Tier: **Builder**
+
+Unified health endpoints for external monitoring integration. Functions: `getHealthSummary()`, `getModuleHealth()`, `getAlerts()`.
+
+### 9.4 Regression Testing
+
+Location: `substrate/regression-testing/`
+Tier: **Builder**
+
+Post-evolution smoke tests to verify system integrity. Functions: `runSmoke()`, `runFull()`, `getTestReport()`.
+
+### 9.5 Auto Regression Trigger
+
+Location: `substrate/regression-trigger/`
+Tier: **Builder**
+
+Automatic test triggering after evolution changes. Functions: `onEvolutionComplete()`, `scheduleTest()`.
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

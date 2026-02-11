@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — BRAIN Module Deep Dive
 
-**Version 8.0.0 (ENGINE+ Epoch) | Production Ready**
+**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -231,5 +231,18 @@ Memory value is calculated using:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **Federated Memory Sync** (`substrate/federated-memory/`): Cross-instance memory sharing with privacy controls and conflict resolution (latest-wins, highest-confidence, merge). **Tier: Pro**
+- **Warm Cache** (`substrate/warm-cache/`): Pre-warmed memory cache with configurable TTL for frequently accessed memories. `warmUp()`, `invalidate()`, `getHitRate()`. **Tier: Builder**
+- **Memory GC** (`substrate/memory-gc/`): Automated garbage collection for stale, low-value, and orphaned memories. **Tier: Builder**
+- **Memory Deduplication** (`substrate/memory-dedup/`): Content-hash deduplication to prevent redundant memory storage. **Tier: Builder**
+- **GC Scheduler** (`substrate/gc-scheduler/`): Autonomous 6-hour GC cycles with configurable windows. **Tier: Builder**
+- **Pattern Effectiveness Scoring** (`substrate/pattern-scoring/`): ROI-based scoring to prune unhelpful knowledge. **Tier: Builder**
+- **Pattern Versioning** (`substrate/pattern-versioning/`): Versioned pattern storage with rollback. **Tier: Builder**
+- **Brain Transfer Pipeline** (`substrate/brain-transfer/`): Cross-substrate memory transfer with schema mapping. **Tier: Builder**
+- **Total Capabilities**: 10 + 8 infrastructure = 18
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

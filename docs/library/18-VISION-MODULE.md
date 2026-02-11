@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — VISION Module Deep Dive
 
-**Version 8.0.0 | Scientific Publication**
+**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
 
 ---
 
@@ -187,5 +187,44 @@ VISION can operate in "watchdog" mode:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+## 9. Infrastructure Systems (v8.5.0)
+
+### 9.1 Predictive Failure Detection
+
+Location: `substrate/predictive-failure/`
+Tier: **Pro**
+
+Linear regression on metric windows to predict failures before they occur. Monitors `error_rate`, `latency_ms`, `memory_mb`, `cpu_percent`. Functions: `predictFailure()`, `getMetricTrend()`, `setThreshold()`.
+
+### 9.2 Anomaly Correlation
+
+Location: `substrate/anomaly-correlation/`
+Tier: **Pro**
+
+Correlates disparate metric anomalies across modules to identify systemic failure patterns. Functions: `correlateAnomalies()`, `getCorrelationMap()`, `triggerAlert()`.
+
+### 9.3 Self-Benchmark
+
+Location: `substrate/self-benchmark/`
+Tier: **Builder**
+
+Composite health scoring (0-100) across all modules. Functions: `runBenchmark()`, `getScore()`, `compareBaseline()`.
+
+### 9.4 Telemetry Engine
+
+Location: `substrate/telemetry-engine.ts`
+Tier: **Builder**
+
+Distributed tracing with span management. Functions: `startSpan()`, `endSpan()`, `emitMetric()`.
+
+### 9.5 Cost Attribution
+
+Location: `substrate/cost-attribution/`
+Tier: **Builder**
+
+Token and budget tracking per module with 80% usage alerts. Functions: `trackCost()`, `getAttribution()`, `setBudgetAlert()`.
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

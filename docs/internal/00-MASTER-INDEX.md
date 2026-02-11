@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 8.0.0 | SYNERGY+ Epoch | CONFIDENTIAL**
+**Version 8.5.0 | SYNERGY+ Epoch | CONFIDENTIAL**
 
 ---
 
@@ -20,10 +20,10 @@
 | 04 | [Resilience & Circuits](./04-RESILIENCE-CIRCUITS.md) | Circuit breakers, auto-heal, health scoring |
 | 05 | [Accessibility Pipeline](./05-ACCESSIBILITY-PIPELINE.md) | WCAG enforcement, weighted scoring, template blocking, **auto-repair** |
 | 06 | [Dream-Eater Cycles](./06-DREAM-EATER.md) | Autonomous learning, doctrine extraction, sleep cycles |
-| 07 | [Defense & Security](./07-DEFENSE-SECURITY.md) | Rate limiting, API key hashing, threat detection |
+| 07 | [Defense & Security](./07-DEFENSE-SECURITY.md) | Rate limiting, API key hashing, threat detection, **adaptive rate limiting, secret rotation** |
 | 08 | [AI Router (Nexus)](./08-NEXUS-ROUTER.md) | Provider fallback, cost optimization, model selection |
 | 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 310+ commands, module prefixes, output formats |
-| 10 | [Integration Layer](./10-INTEGRATION-LAYER.md) | External APIs, webhook handling, adapter patterns |
+| 10 | [Integration Layer](./10-INTEGRATION-LAYER.md) | External APIs, webhook handling, adapter patterns, **Plugin SDK** |
 | 11 | [Synergy Engine](./11-SYNERGY-ENGINE.md) | **147 cross-module pipelines, 125 executors, governance** |
 | 12 | [Capabilities Depot](./12-CAPABILITIES-DEPOT.md) | Downloadable artifacts, licensing, pricing tiers |
 | 13 | [SEBA & Evolve Operator Guide](./13-SEBA-EVOLVE-OPERATOR-GUIDE.md) | **Complete workflow for evolution cycles, verification, stamps** |
@@ -31,7 +31,7 @@
 | 15 | [Capability Registry](./15-CAPABILITY-REGISTRY.md) | **269 cross-module capabilities, risk levels, execution modes** |
 | **16** | **[Cognitive Engine System](./16-COGNITIVE-ENGINE-SYSTEM.md)** | **62 engines consolidating 269 capabilities into compound units** |
 | **17** | **[Meta-Engine System](./17-META-ENGINE-SYSTEM.md)** | **20 meta-engines orchestrating 62 engines** |
-| **18** | **[LNCHBL Tiers & Infrastructure](./18-LNCHBL-TIERS-AND-INFRASTRUCTURE.md)** | **68 tiered capabilities, self-improvement Enterprise-only, 10 new infra systems** |
+| **18** | **[LNCHBL Tiers & Infrastructure](./18-LNCHBL-TIERS-AND-INFRASTRUCTURE.md)** | **68 tiered capabilities, 20 infra systems, self-improvement Enterprise-only** |
 
 ---
 
@@ -41,27 +41,28 @@
 
 ```
 KERNEL LAYER (Boot Order 1-3)
-├── CORE ........... Configuration, constants, feature flags
-├── RIPPLE ......... Event bus, pub/sub, cross-module messaging
-└── ACCESS ......... API keys, rate limits, entitlements
+├── CORE ........... Configuration, constants, feature flags, audit trail, dependency graph
+├── RIPPLE ......... Event bus, pub/sub, correlation IDs, event replay, realtime bridge
+└── ACCESS ......... API keys, rate limits, entitlements, capability gate, multi-tenant, feature flags
 
 COGNITIVE LAYER (Boot Order 4-6)
-├── BRAIN .......... Memory storage, recall, consolidation
+├── BRAIN .......... Memory storage, recall, consolidation, federated sync, warm cache, GC
 ├── DECODE ......... NLP interpretation, intent parsing
 └── DREAM .......... Dream-Eater, mutation cycles
 
-OPERATIONS LAYER (Boot Order 7-9)
-├── DEFENSE ........ Security, threat detection, rate limiting
+OPERATIONS LAYER (Boot Order 7-10)
+├── DEFENSE ........ Security, threat detection, adaptive rate limiting, secret rotation
 ├── NEXUS .......... AI provider routing, fallback chains
-└── VISION ......... Observability, metrics, tracing
+├── VISION ......... Observability, metrics, predictive failure, anomaly correlation
+└── INTEGRATION .... External APIs, webhooks, adapters, Plugin SDK
 
-ADMIN LAYER (Boot Order 10-12)
-├── SYSTEM ......... Health, diagnostics, backup/restore
-├── MODERNIZER ..... Evolution engine, self-improvement
+ADMIN LAYER (Boot Order 11-12)
+├── SYSTEM ......... Health, diagnostics, dependency health, boot gates, self-benchmark
+├── MODERNIZER ..... Evolution engine, hot-swap, canary deploy, schema migration, deprecation lifecycle
 └── INCLUSIVE ...... Accessibility scanning, WCAG enforcement, auto-repair
 
 ORCHESTRATOR LAYER (Boot Order 13-14)
-├── CORTEX ......... Policy intent, PAAEL loop, manual mode
+├── CORTEX ......... Policy intent, PAAEL loop, dynamic pipeline, budget governor
 └── INTEGRATION .... External APIs, webhooks, adapters
 
 ADVANCED MODES (v7.0.0)
@@ -69,14 +70,64 @@ ADVANCED MODES (v7.0.0)
 └── SEBA ........... Self-Evolving Bounded Agent, genuine autonomy
 ```
 
-### Cognitive Engines (v8.0.0)
+### v8.5.0 Infrastructure Systems (20)
 
 ```
-COGNITIVE ENGINES (4)
+RELIABILITY (Builder)
+├── Circuit Breaker ............ Per-module fault isolation
+├── Boot Health Gates .......... Startup dependency validation
+├── Regression Testing ......... Post-evolution smoke tests
+├── Auto Regression Trigger .... Automatic test triggering
+└── Adaptive Rate Limiting ..... Pressure-adaptive throttling
+
+OBSERVABILITY (Builder)
+├── Telemetry Engine ........... Distributed tracing
+├── Cost Attribution ........... Token/budget tracking
+├── Self-Benchmark ............. Composite health scoring (0-100)
+├── Health Dashboard API ....... Unified health endpoints
+└── Correlation ID Propagation . End-to-end request tracing
+
+MEMORY (Builder)
+├── Memory GC .................. Automated garbage collection
+├── GC Scheduler ............... 6-hr autonomous cycles
+└── Memory Deduplication ....... Content-hash dedup
+
+INTELLIGENCE (Pro)
+├── Predictive Failure ......... Linear regression failure prediction
+├── Anomaly Correlation ........ Systemic failure detection
+├── Dynamic Pipeline ........... Runtime-composable pipelines
+└── Budget Governor ............ Cost control with kill switches
+
+PLATFORM (Pro/Enterprise)
+├── Capability Gate ............ Runtime tier enforcement (Pro)
+├── Multi-Tenant Isolation ..... Tenant-scoped resources (Pro)
+├── Federated Memory Sync ...... Cross-instance sharing (Pro)
+├── Plugin SDK ................. Extension framework (Enterprise)
+├── Feature Flags .............. Gradual rollout (Builder)
+└── Audit Trail ................ Tamper-evident logging (Builder)
+
+EVOLUTION (Enterprise — Self-Improvement)
+├── Hot-Swap Engine ............ Zero-downtime replacement
+├── Canary Deploy .............. Blue-green/canary strategies
+├── Schema Migration ........... Versioned schema changes
+├── Deprecation Lifecycle ...... Managed capability sunset
+├── Secret Rotation ............ Automated credential cycling
+├── Event Replay ............... Deterministic replay
+├── Warm Cache ................. Pre-warmed memory cache
+├── Dependency Graph ........... Module boot ordering
+└── Dependency Health .......... Cross-module health tracking
+```
+
+### Cognitive Engines (v8.5.0)
+
+```
+COGNITIVE ENGINES (6)
 ├── reasoning_engine ..... Multi-modal reasoning, semantic understanding, causal analysis
 ├── learning_engine ...... Pattern extraction, memory consolidation, active exploration
 ├── memory_engine ........ Context-aware recall, temporal scoring, relevance ranking
-└── foresight_engine ..... Predictive analytics, capacity planning, drift detection
+├── foresight_engine ..... Predictive analytics, capacity planning, drift detection
+├── metacognition_engine . Self-reflection, confidence calibration, recursive improvement
+└── hypothesis_engine .... Testing, validation, counter-evidence, causal inference
 
 OPERATIONAL ENGINES (4)
 ├── resilience_engine .... Self-healing, fault isolation, graceful degradation
@@ -95,14 +146,20 @@ GOVERNANCE ENGINES (3)
 ├── quality_engine ....... Accessibility guards, WCAG remediation, testing
 └── audit_engine ......... Confidence scoring, risk assessment, documentation
 
-SECURITY ENGINES (3)
+SECURITY ENGINES (5)
 ├── threat_engine ........ Threat intelligence, pattern correlation, surface mapping
 ├── defense_engine ....... Real-time hardening, incident response
-└── trust_engine ......... Goal alignment, ethical validation, integrity
+├── trust_engine ......... Goal alignment, ethical validation, integrity
+├── attack_surface_engine  Exposure mapping, zero-day defense
+└── incident_engine ...... Response automation, blast radius containment
 
 EVOLUTION ENGINES (2)
 ├── evolution_engine ..... Self-improvement, continuous proposals, optimization
 └── modernization_engine . Architecture modernization, migration planning
+
++ 24 MORE (Communication, Integration, Analytics, Experience, Knowledge, Autonomy, Creativity, Perception, Resource, Workflow)
++ 14 Enhancement Engines (World-First v8.1.0)
+= 62 TOTAL ENGINES → 20 META-ENGINES
 ```
 
 ### Key Secrets Summary
@@ -119,26 +176,41 @@ EVOLUTION ENGINES (2)
 | **Complexity Score** | Engine System | IP protection rating 1-10 per engine |
 | **Capability Count** | Capability Registry | **269 total capabilities across 14 modules** |
 | **Engine Count** | Engine System | **62 engines orchestrating 269 capabilities** |
+| **Tier Gate** | Capability Gate | **Enterprise-only self-improvement enforcement** |
+| **Infrastructure** | 20 Systems | **Production hardening across all tiers** |
 
-### v8.0.0 — SYNERGY+ Epoch
+### v8.5.0 — SYNERGY+ Epoch
 
 | Category | Engines | Capabilities Orchestrated | Avg Synergy Multiplier |
 |----------|---------|---------------------------|------------------------|
-| Cognitive | 4 | 56 | 2.25x |
+| Cognitive | 6 | 56 | 2.25x |
 | Operational | 4 | 48 | 2.43x |
 | Intelligence | 4 | 36 | 2.18x |
 | Governance | 3 | 24 | 2.10x |
-| Security | 3 | 20 | 2.40x |
+| Security | 5 | 20 | 2.40x |
 | Evolution | 2 | 18 | 2.70x |
 | Enhancement | 14 | 56 (world-first) | 4.6x |
-| Communication | 4 | 16 | 2.5x |
+| Communication + Others | 24 | 11 | 2.5x |
 | **TOTAL** | **62** | **269** | **3.2x avg** |
+
+### Self-Improvement Boundary
+
+**⚠️ Self-improvement is EXCLUSIVELY Enterprise tier.**
+
+| Tier | Self-Improvement | Evolution | Autonomous Modification |
+|------|-----------------|-----------|------------------------|
+| FREE | ❌ | ❌ | ❌ |
+| Builder | ❌ | ❌ | ❌ |
+| Pro | ❌ | ❌ | ❌ |
+| Enterprise | ✅ | ✅ | ✅ |
 
 ### Version History
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| **8.0.0** | **SYNERGY+** | **310+ terminal commands, 147 synergies, 269 capabilities** |
+| **8.5.0** | **SYNERGY+** | **20 infrastructure systems, 68 tiered capabilities, LNCHBL distribution** |
+| 8.1.0 | SYNERGY+ | World-First Enhancement Integration, 269 capabilities |
+| 8.0.0 | SYNERGY+ | 310+ terminal commands, 147 synergies, 62 engines |
 | 7.7.0 | ENGINE+ | 20 Cognitive Engines consolidating 76 capabilities |
 | 7.6.0 | SYNERGY+ | 76 capabilities (+56 new), INCLUSIVE auto-repair |
 | 7.5.3 | SYNERGY+ | 147 synergy pipelines, 125 executors |
@@ -146,17 +218,7 @@ EVOLUTION ENGINES (2)
 | 7.0.0 | SEBA | Bounded autonomy, 67 tests |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
 
-### Engine Value Proposition
-
-| Metric | Individual Capabilities | Engines | Improvement |
-|--------|------------------------|---------|-------------|
-| API Surface | 269 endpoints | 62 engines | 77% reduction |
-| Avg Latency | Variable | 50-500ms | Predictable |
-| Context Sharing | None | Full | Compound value |
-| IP Protection | Low | High (8.3 avg) | Harder to copy |
-| Synergy Value | 1x | 3.2x avg | 220% increase |
-
 ---
 
-*CMPSBL OS Substrate v8.0.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

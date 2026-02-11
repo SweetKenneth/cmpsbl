@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — NEXUS Module Deep Dive
 
-**Version 8.0.0 | Scientific Publication**
+**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
 
 ---
 

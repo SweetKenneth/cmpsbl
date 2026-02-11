@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — ACCESS Module Deep Dive
 
-**Version 8.0.0 | Scientific Publication**
+**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
 
 ---
 
@@ -146,5 +146,36 @@ The ACCESS module manages a product catalog:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+## 7. Infrastructure Systems (v8.5.0)
+
+### 7.1 Capability Gate Middleware
+
+Location: `substrate/capability-gate/`
+Tier: **Pro**
+
+Runtime tier enforcement — blocks capability execution if user tier is insufficient. Modes: strict (block), warn (log + allow), off (bypass).
+
+```typescript
+import { checkGate } from '@/lib/substrate/capability-gate';
+const result = checkGate('seba_engine', userTier);
+// result.allowed, result.reason, result.requiredTier
+```
+
+### 7.2 Multi-Tenant Isolation
+
+Location: `substrate/multi-tenant/`
+Tier: **Pro**
+
+Tenant-scoped resource isolation with per-tenant quotas. Scope prefixing, quota enforcement, suspend/reactivate. Functions: `createTenant()`, `enforceTenantQuota()`, `getTenantUsage()`.
+
+### 7.3 Feature Flags
+
+Location: `substrate/feature-flags/`
+Tier: **Builder**
+
+Gradual rollout controls with percentage-based targeting. Functions: `isEnabled()`, `evaluate()`, `setFlag()`, `getFlags()`.
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

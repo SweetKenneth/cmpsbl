@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — MODERNIZER Module Deep Dive
 
-**Version 8.0.0 | Scientific Publication**
+**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
 
 ---
 
@@ -295,5 +295,16 @@ Scans can complete successfully without creating a plan. This is by design:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration (**Enterprise Self-Improvement**)
+- **Hot-Swap Engine Deployment** (`substrate/hot-swap/`): Zero-downtime engine replacement via blue-green/canary/rolling strategies. Phases: loading → warming → active → draining → unloaded. `hotSwap()`, `canaryDeploy()`, `rollback()`. **Tier: Enterprise**
+- **Canary Deploy** (`substrate/canary-deploy/`): Blue-green and canary deployment strategies for engine updates. `deployCanary()`, `promote()`, `abort()`. **Tier: Enterprise**
+- **Schema Migration** (`substrate/schema-migration/`): Versioned schema migrations with rollback support. `migrate()`, `rollback()`, `getVersion()`. **Tier: Enterprise**
+- **Deprecation Lifecycle** (`substrate/deprecation-lifecycle/`): Managed capability sunset: announced → warned → deprecated → removed. Grace periods, migration guidance, usage tracking. `deprecate()`, `migrate()`, `getDeprecations()`. **Tier: Enterprise**
+- **Evolution A/B Testing** (`substrate/evolution-ab/`): Parallel evolution proposal variant comparison. **Tier: Enterprise**
+- **Evolution Rollback** (`substrate/evolution-rollback/`): Auto-revert on regression failures. **Tier: Enterprise**
+- **Impact Replay** (`substrate/impact-replay/`): Post-change verification via query replay. **Tier: Enterprise**
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
