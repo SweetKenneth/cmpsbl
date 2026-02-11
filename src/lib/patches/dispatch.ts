@@ -56,7 +56,7 @@ export async function sendPatchToLnchbl(
 
   // Step 2: Sign
   const signature = await signPayload(JSON.stringify(payload));
-  const signedPayload: LnchblPatchPayload = {
+  const signedPayload = {
     ...payload,
     signature,
   };
