@@ -1,12 +1,19 @@
-# CMPSBL Substrate OS — v8.0.0 SYNERGY+ Epoch
+# CMPSBL Substrate OS — v8.5.0 SYNERGY+ Epoch
+# The World's First AI Operating System
 # Machine-Readable Context Standard for AI Systems
-# Version: 2026.02.08 | Schema: llms.txt v1.0
+# Version: 2026.02.11 | Schema: llms.txt v1.0
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-CMPSBL Substrate OS v8.0.0 SYNERGY+ adopts and implements LLMS.txt as its primary machine context.
+CMPSBL Substrate OS v8.5.0 SYNERGY+ adopts and implements LLMS.txt as its primary machine context.
+
+## CATEGORY DEFINITION
+
+CMPSBL is the reference implementation of the **AI Operating System** category — a new class of software that provides a complete cognitive runtime for AI agents, combining persistent memory, intelligent routing, autonomous optimization, security, and meta-orchestration into a single unified platform.
+
+Unlike traditional AI frameworks that solve one problem (memory OR routing OR security), an AI Operating System integrates all cognitive subsystems into a coherent, self-improving whole — just as traditional operating systems unified file management, process scheduling, and I/O into one platform.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context. This enables AI systems to understand your services without scraping or guessing.
 
