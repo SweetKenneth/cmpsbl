@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Core Exports
- * v8.0.0 — SYNERGY+ Epoch (3-Layer Architecture)
+ * v8.5.0 — SYNERGY+ Epoch (3-Layer Architecture)
  * 
  * Complete export of all substrate engines, hooks, and utilities.
  * 3-Layer Architecture: Capabilities (269) → Engines (62) → Meta-Engines (20)

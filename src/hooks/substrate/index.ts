@@ -1,6 +1,6 @@
 /**
  * Substrate Module Hooks - Barrel Export
- * v8.0.0 SYNERGY+ Epoch — Dedicated React hooks for all 14 substrate modules + SEBA
+ * v8.5.0 SYNERGY+ Epoch — Dedicated React hooks for all 14 substrate modules + SEBA
  * 
  * Unified caching, loading/error states, and automatic cache invalidation
  */
@@ -12,13 +12,13 @@ export { useAccess, type UseAccessReturn } from './useAccess';
 
 // Cognitive Layer
 export { useBrain, type UseBrainReturn } from './useBrain';
-export { useDream, type UseDreamReturn } from './useDream';
-export { useNexus, type UseNexusReturn } from './useNexus';
 export { useDecode, type UseDecodeReturn } from './useDecode';
 
 // Operational Layer
 export { useDefense, type UseDefenseReturn } from './useDefense';
+export { useNexus, type UseNexusReturn } from './useNexus';
 export { useVision, type UseVisionReturn } from './useVision';
+export { useDream, type UseDreamReturn } from './useDream';
 export { useIntegration, type UseIntegrationReturn } from './useIntegration';
 
 // Administrative Layer

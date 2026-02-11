@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Client
- * v7.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v8.5.0 — SYNERGY+ Epoch — Cognitive Orchestration Substrate (14-Module Architecture)
  * 
  * Phase 4A: Engine Bus Integration
  * - Engine Bus: Canonical routing layer for all engine execution
