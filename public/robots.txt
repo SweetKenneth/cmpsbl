@@ -192,6 +192,9 @@ Allow: /namespace
 Allow: /library
 Allow: /engines
 Allow: /substrate
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 
 User-agent: Claude-Web
 Crawl-delay: 5
