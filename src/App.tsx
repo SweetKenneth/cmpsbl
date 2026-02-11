@@ -95,6 +95,7 @@ const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
 const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
+const AIOperatingSystem = lazy(() => import("./pages/AIOperatingSystem"));
 
 // Cluster pages (module deep-dives)
 const ClusterStudio = lazy(() => import("./pages/cluster/Studio"));
