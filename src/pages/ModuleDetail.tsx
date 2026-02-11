@@ -119,6 +119,33 @@ export default function ModuleDetail() {
           </div>
         </section>
 
+        {/* ═══ Why This Module (SEO-Rich Highlights) ═══ */}
+        <section className="py-12 sm:py-16 bg-muted/30 border-t border-border/50">
+          <div className="container mx-auto max-w-4xl px-4">
+            <h2 className="text-2xl font-bold mb-3 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" /> Why {mod.name}?
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-2xl">
+              What makes {mod.name} different from every other {mod.layer.toLowerCase()}-layer solution on the market.
+            </p>
+            <div className="space-y-6">
+              {mod.highlights.map((highlight, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="p-6 rounded-xl border border-border bg-card hover:border-primary/20 transition-colors"
+                >
+                  <h3 className="text-lg font-bold text-foreground mb-2">{highlight.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{highlight.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ═══ Code Example (Technical) ═══ */}
         <section className="py-12 sm:py-16 bg-muted/30 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
