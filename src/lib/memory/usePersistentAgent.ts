@@ -72,6 +72,11 @@ export function usePersistentAgent(
     
     try {
       const client = clientRef.current;
+      
+      // Auto-store user input first (extracts facts automatically)
+      await client.store(input, { type: 'user_input' });
+      
+      // Then recall relevant memories
       const result = await client.recall(input);
       
       const context: MemoryContext = {
@@ -79,9 +84,6 @@ export function usePersistentAgent(
         confidence: result.confidence,
         contextString: client.buildContextString(result.memories)
       };
-      
-      // Store the query for future recall
-      await client.store(`User asked: ${input.slice(0, 200)}`, { type: 'query' });
       
       return context;
     } catch (err) {

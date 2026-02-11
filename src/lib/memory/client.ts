@@ -38,22 +38,79 @@ export class MemoryClient {
   }
   
   /**
+   * Extract discrete facts from text using pattern matching
+   * Returns clean fact strings suitable for storage
+   */
+  private extractFacts(text: string): string[] {
+    const patterns = [
+      /\bmy\s+(\w[\w\s]{0,30}?)\s+(?:is|are|was|were)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+      /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+      /\bi\s+(?:like|love|hate|prefer|enjoy|want|need)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+      /\b(?:my\s+name\s+is|call\s+me|i'm\s+called)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+      /\bi\s+(?:live\s+in|am\s+from|come\s+from)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+      /\b(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
+    ];
+    
+    const facts: string[] = [];
+    for (const pattern of patterns) {
+      let match;
+      pattern.lastIndex = 0;
+      while ((match = pattern.exec(text)) !== null) {
+        let fact = match[0].trim()
+          .replace(/^(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)/i, '')
+          .trim();
+        if (fact.length > 3 && fact.length < 200) {
+          facts.push(fact);
+        }
+      }
+    }
+    return [...new Set(facts)];
+  }
+
+  /**
    * Store a memory (internal - hidden from users)
-   * Handles: vectorization, salience scoring, bounded storage
+   * Handles: fact extraction, salience scoring, bounded storage
    */
   async store(content: string, metadata?: Record<string, unknown>): Promise<void> {
     try {
+      // Auto-extract facts for high-fidelity recall
+      const facts = this.extractFacts(content);
+      
+      // Store each fact individually with high confidence
+      if (facts.length > 0) {
+        for (const fact of facts) {
+          await supabase.functions.invoke('pf-substrate', {
+            body: {
+              module: 'brain',
+              action: 'remember',
+              content: fact,
+              memory_type: 'user_fact',
+              confidence: 0.95,
+              metadata: {
+                agentId: this.agentId,
+                scope: this.scope,
+                sessionId: this.scope === 'session' ? this.sessionId : undefined,
+                source: 'memory_sdk_auto_extract',
+                ...metadata
+              }
+            }
+          });
+        }
+      }
+      
+      // Also store the full content as context
       const response = await supabase.functions.invoke('pf-substrate', {
         body: {
           module: 'brain',
           action: 'remember',
           content,
-          memory_type: 'persistent_memory',
+          memory_type: facts.length > 0 ? 'conversation_with_facts' : 'persistent_memory',
           metadata: {
             agentId: this.agentId,
             scope: this.scope,
             sessionId: this.scope === 'session' ? this.sessionId : undefined,
             source: 'memory_sdk',
+            facts_extracted: facts.length,
             ...metadata
           }
         }

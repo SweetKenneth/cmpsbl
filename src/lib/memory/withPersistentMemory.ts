@@ -75,14 +75,17 @@ export function withPersistentMemory(config: MemoryConfig): PersistentMemoryAgen
   };
   
   const respond = async (input: string): Promise<string> => {
-    // 1. Recall relevant memories
+    // 1. Auto-store the user's input (extracts facts automatically via client)
+    await client.store(input, { type: 'user_input' });
+    
+    // 2. Recall relevant memories
     const context = await getContext(input);
     
-    // 2. If custom handler provided, use it
+    // 3. If custom handler provided, use it
     if (handler) {
       const response = await handler(input, context);
       
-      // 3. Store the interaction outcome
+      // 4. Store the interaction outcome
       await storeInteraction(input, response);
       
       return response;
