@@ -35,7 +35,6 @@ serve(async (req) => {
   }
 
   try {
-    // Verify caller is authenticated admin
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
     if (!supabaseUrl || !supabaseKey) {
@@ -45,27 +44,40 @@ serve(async (req) => {
     }
 
     const authHeader = req.headers.get('Authorization') ?? '';
-    const supabase = createClient(supabaseUrl, supabaseKey);
     const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+    const patchSecret = Deno.env.get('CMPSBL_PATCH_SECRET');
+
+    // Dual auth: accept either the patch secret OR a valid admin JWT
+    let authorized = false;
+
+    // Mode 1: Patch secret (machine-to-machine / governor bypass)
+    if (patchSecret && token === patchSecret) {
+      authorized = true;
     }
 
-    // Check admin role
-    const { data: roles } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .eq('role', 'admin');
+    // Mode 2: User JWT with admin role
+    if (!authorized) {
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+      
+      if (authError || !user) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
 
-    if (!roles || roles.length === 0) {
-      return new Response(JSON.stringify({ error: 'Admin access required' }), {
-        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      const { data: roles } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin');
+
+      if (!roles || roles.length === 0) {
+        return new Response(JSON.stringify({ error: 'Admin access required' }), {
+          status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      authorized = true;
     }
 
     // Parse and validate payload
