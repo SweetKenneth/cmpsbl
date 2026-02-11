@@ -215,6 +215,9 @@ Allow: /foundations
 Allow: /namespace
 Allow: /library
 Allow: /engines
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 
 # Perplexity AI
 User-agent: PerplexityBot
