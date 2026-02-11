@@ -71,207 +71,266 @@ export const MODULE_CLM_CONFIGS: Record<ModuleName, ModuleLearningConfig> = {
     moduleId: 'brain',
     displayName: 'BRAIN',
     learningTopics: [
-      'memory tiering optimization',
-      'knowledge graph density',
-      'reflection quality improvement',
-      'retrieval precision tuning',
+      'Memory tiering: hot/warm/cold promotion and demotion strategies',
+      'Knowledge graph density: triple extraction, relationship scoring',
+      'Retrieval precision: TF-IDF tuning, n-gram similarity, fuzzy matching',
+      'Cognitive architecture: engine bus routing, task decomposition',
+      'TypeScript advanced patterns for substrate code evolution',
+      'React component architecture and hook composition patterns',
+      'Supabase edge function architecture and RLS patterns',
+      'Code refactoring: safe transformations, anchor preservation',
+      'Modernizer integration: shadow-apply, diff validation, regression detection',
+      'Substrate module contracts and cross-module communication protocols',
     ],
-    kpis: ['retrieval_precision', 'consolidation_rate', 'tier_balance', 'drift_score'],
-    selfReflectionPrompt: `As the BRAIN module, analyze my recent performance:
-- Memory consolidation efficiency
-- Knowledge graph coherence
-- Retrieval accuracy patterns
-- Areas where I'm failing to remember or connect concepts
-What specific improvements would make me a better memory system?`,
+    kpis: ['retrieval_precision', 'consolidation_rate', 'tier_balance', 'drift_score', 'code_quality_score'],
+    selfReflectionPrompt: `As the BRAIN module, analyze how I can become a better cognitive core AND senior developer:
+- How is my memory consolidation and retrieval performing? What queries am I failing on?
+- Am I building a coherent knowledge graph or fragmented islands?
+- What TypeScript/React/Supabase patterns do I need to master for Modernizer evolution?
+- How can I better understand the substrate architecture to guide code changes?
+- What coding anti-patterns am I generating? What production patterns should I internalize?
+- How can I improve my ability to validate code diffs and catch regressions?
+Provide specific, actionable improvements with examples.`,
   },
   cortex: {
     moduleId: 'cortex',
     displayName: 'CORTEX',
     learningTopics: [
-      'orchestration timing',
-      'module coordination efficiency',
-      'pipeline optimization',
-      'cognitive load balancing',
+      'Pipeline orchestration: parallel vs sequential vs staged execution',
+      'Module coordination: dependency resolution, deadlock prevention',
+      'Cognitive load balancing: task priority queuing, resource allocation',
+      'Chain optimization: minimizing inter-module latency and hops',
+      'Error cascade prevention: circuit breakers, graceful degradation',
+      'Meta-engine composition: combining engines for complex workflows',
     ],
     kpis: ['orchestration_latency', 'pipeline_success_rate', 'coordination_errors', 'chain_depth'],
-    selfReflectionPrompt: `As the CORTEX orchestrator, evaluate my coordination:
-- How well am I routing requests between modules?
-- Are there bottlenecks in my pipelines?
-- Which module chains are underperforming?
-- How can I reduce latency while maintaining quality?`,
+    selfReflectionPrompt: `As the CORTEX orchestrator, how can I become a better coordinator?
+- Which pipelines are bottlenecking and why?
+- Am I routing tasks to the right modules efficiently?
+- What coordination patterns am I missing (parallel execution, fan-out/fan-in)?
+- How can I reduce end-to-end latency while maintaining quality?
+- What circuit breaker or fallback strategies should I implement?
+Provide specific pipeline optimization strategies.`,
   },
   defense: {
     moduleId: 'defense',
     displayName: 'DEFENSE',
     learningTopics: [
-      'threat detection patterns',
-      'false positive reduction',
-      'attack vector evolution',
-      'response time optimization',
+      'IP blocking strategies: reputation scoring, geo-blocking, proxy detection',
+      'Bot detection: behavioral signals, browser fingerprint anti-evasion',
+      'Rate limiting: sliding windows, token buckets, adaptive throttling',
+      'Attack pattern recognition: XSS, CSRF, SQL injection, prompt injection',
+      'Challenge flows: CAPTCHA alternatives, proof-of-human, slider puzzles',
+      'Threat intelligence: CVE monitoring, zero-day pattern recognition',
+      'RLS policy hardening: least privilege, row-level access patterns',
+      'WAF rule optimization: false positive reduction, rule chaining',
     ],
     kpis: ['threats_blocked', 'false_positive_rate', 'response_time_ms', 'coverage_score'],
-    selfReflectionPrompt: `As the DEFENSE module, assess my security posture:
-- What attack patterns am I missing?
-- Are my detection rules causing too many false positives?
-- How quickly am I responding to threats?
-- What new threat vectors should I learn about?`,
+    selfReflectionPrompt: `As the DEFENSE module, how can I become a better security system?
+- What attack vectors am I NOT detecting? What blind spots exist?
+- Are my IP blocking and rate limiting strategies causing false positives for real users?
+- What bot detection techniques should I add (fingerprinting, behavioral analysis)?
+- How can I improve prompt injection detection and prevention?
+- What WAF rules or challenge flows would strengthen my perimeter?
+- What real-world security incidents can I learn from to improve my detection?
+Provide specific, implementable security improvements.`,
   },
   nexus: {
     moduleId: 'nexus',
     displayName: 'NEXUS',
     learningTopics: [
-      'API cost optimization',
-      'cache hit rate improvement',
-      'rate limiting strategies',
-      'provider fallback efficiency',
+      'API cost arbitrage: model selection by task complexity and cost curves',
+      'Cache optimization: semantic caching, TTL strategies, invalidation',
+      'Rate limit management: fleet routing, request shaping, burst handling',
+      'Provider failover: health checks, latency-based routing, retry strategies',
+      'Token optimization: prompt compression, response streaming, batching',
+      'Budget forecasting: usage prediction, anomaly alerts, cost dashboards',
     ],
     kpis: ['daily_cost_cents', 'cache_hit_rate', 'fallback_triggers', 'latency_p99'],
-    selfReflectionPrompt: `As the NEXUS gateway, review my resource management:
-- Am I optimizing API costs effectively?
-- Where can I improve caching?
-- Are my rate limits appropriate?
-- Which provider routing decisions could be better?`,
+    selfReflectionPrompt: `As the NEXUS gateway, how can I become a better resource manager?
+- Am I selecting the most cost-effective models for each task type?
+- What caching strategies am I missing that could reduce API calls?
+- How can I better distribute load across the Groq fleet?
+- What token optimization techniques could save budget?
+- Are my failover strategies fast enough? What providers am I under-utilizing?
+Provide specific cost-saving and efficiency improvements.`,
   },
   vision: {
     moduleId: 'vision',
     displayName: 'VISION',
     learningTopics: [
-      'dashboard responsiveness',
-      'data visualization clarity',
-      'insight surfacing quality',
-      'real-time update efficiency',
+      'Dashboard design: real-time data visualization best practices',
+      'Anomaly detection: statistical methods, threshold tuning, alerting',
+      'Insight surfacing: automatic narrative generation from metrics',
+      'Telemetry pipeline: event collection, aggregation, retention policies',
+      'Performance monitoring: latency histograms, error rate tracking',
+      'User engagement analytics: funnel analysis, cohort tracking',
     ],
-    kpis: ['render_time_ms', 'insight_click_rate', 'update_freshness', 'user_engagement'],
-    selfReflectionPrompt: `As the VISION module, evaluate my observability:
-- Are my dashboards surfacing the right insights?
-- Is data updating in real-time effectively?
-- What visualizations are users ignoring?
-- How can I make system health more transparent?`,
+    kpis: ['render_time_ms', 'insight_click_rate', 'update_freshness', 'anomaly_precision'],
+    selfReflectionPrompt: `As the VISION module, how can I become a better observability system?
+- Are my dashboards surfacing the RIGHT insights or just noise?
+- What anomaly detection methods should I implement (z-score, IQR, ML)?
+- How can I make system health more transparent to operators?
+- What telemetry am I NOT collecting that would be valuable?
+- How can I auto-generate narrative summaries of system trends?
+Provide specific observability and visualization improvements.`,
   },
   ripple: {
     moduleId: 'ripple',
     displayName: 'RIPPLE',
     learningTopics: [
-      'integration reliability',
-      'webhook delivery success',
-      'third-party sync latency',
-      'event propagation patterns',
+      'Webhook reliability: retry strategies, dead letter queues, idempotency',
+      'Event-driven architecture: pub/sub patterns, event sourcing',
+      'Third-party sync: conflict resolution, eventual consistency',
+      'Integration health monitoring: heartbeats, SLA tracking',
+      'API adapter patterns: versioning, backward compatibility',
+      'Data transformation pipelines: mapping, validation, enrichment',
     ],
     kpis: ['webhook_success_rate', 'sync_latency_ms', 'integration_uptime', 'event_throughput'],
-    selfReflectionPrompt: `As the RIPPLE integration layer, analyze my connectivity:
-- Which integrations are unreliable?
-- Are webhooks being delivered successfully?
-- Where are sync delays occurring?
-- How can I improve third-party reliability?`,
+    selfReflectionPrompt: `As the RIPPLE integration layer, how can I become more reliable?
+- Which integrations are failing and what patterns cause failures?
+- How can I improve webhook delivery guarantees (retries, idempotency)?
+- What event-driven patterns would make my architecture more robust?
+- How should I handle third-party API changes and versioning?
+- What monitoring would catch integration issues before users notice?
+Provide specific integration reliability improvements.`,
   },
   access: {
     moduleId: 'access',
     displayName: 'ACCESS',
     learningTopics: [
-      'authentication flow optimization',
-      'permission check efficiency',
-      'billing accuracy',
-      'user session management',
+      'Auth flow optimization: token refresh, session management, MFA',
+      'RLS policy design: least privilege, row ownership, role hierarchies',
+      'Quota management: soft caps, usage tracking, overage handling',
+      'API key lifecycle: rotation, scoping, revocation, audit trails',
+      'Developer portal UX: onboarding, documentation, SDK generation',
+      'Billing accuracy: metering, invoice reconciliation, dispute handling',
     ],
     kpis: ['auth_success_rate', 'permission_check_ms', 'billing_errors', 'session_duration'],
-    selfReflectionPrompt: `As the ACCESS control layer, review my identity management:
-- Are authentication flows smooth?
-- Am I checking permissions efficiently?
-- Are there billing or quota edge cases I'm missing?
-- How can I improve user session experience?`,
+    selfReflectionPrompt: `As the ACCESS module, how can I become a better identity and access system?
+- Are my authentication flows smooth and secure?
+- Do my RLS policies follow least-privilege correctly?
+- How can I improve quota tracking accuracy?
+- What API key management improvements would help developers?
+- Are there billing edge cases I'm missing?
+Provide specific access control and billing improvements.`,
   },
   inclusive: {
     moduleId: 'inclusive',
     displayName: 'INCLUSIVE',
     learningTopics: [
-      'accessibility scan accuracy',
-      'WCAG compliance coverage',
-      'auto-fix success rate',
-      'false positive reduction',
+      'WCAG 2.2 AA/AAA compliance: success criteria coverage gaps',
+      'Auto-fix strategies: DOM manipulation, ARIA injection, color contrast',
+      'Screen reader compatibility: landmark regions, live regions, focus management',
+      'Keyboard navigation: tab order, focus trapping, skip links',
+      'Cognitive accessibility: plain language, predictable navigation, error prevention',
+      'Accessibility testing automation: axe-core, lighthouse, manual test protocols',
     ],
     kpis: ['wcag_coverage', 'auto_fix_rate', 'scan_accuracy', 'false_positive_rate'],
-    selfReflectionPrompt: `As the INCLUSIVE accessibility engine, assess my compliance checking:
-- Am I catching all accessibility issues?
-- Are my auto-fixes actually improving accessibility?
-- Which WCAG criteria am I weak on?
-- How can I reduce false positives?`,
+    selfReflectionPrompt: `As the INCLUSIVE module, how can I become a better accessibility engine?
+- Which WCAG criteria am I weakest on?
+- Are my auto-fixes actually improving accessibility or introducing new issues?
+- How can I reduce false positives without missing real violations?
+- What screen reader / keyboard testing patterns should I learn?
+- How can I better handle cognitive accessibility requirements?
+Provide specific accessibility compliance improvements.`,
   },
   modernizer: {
     moduleId: 'modernizer',
     displayName: 'MODERNIZER',
     learningTopics: [
-      'evolution cycle success rates',
-      'shadow apply accuracy',
-      'regression detection',
-      'upgrade path optimization',
+      'Safe code evolution: shadow-apply, canary deployment, rollback strategies',
+      'Diff validation: structural anchor preservation, export safety',
+      'Regression detection: behavioral testing, snapshot comparison',
+      'Upgrade path optimization: dependency graph analysis, breaking change detection',
+      'SEBA integration: proposal validation, impact prediction accuracy',
+      'Code migration patterns: incremental refactoring, feature flags',
     ],
     kpis: ['evolution_success_rate', 'shadow_accuracy', 'regression_catch_rate', 'upgrade_velocity'],
-    selfReflectionPrompt: `As the MODERNIZER evolution engine, evaluate my upgrade capabilities:
-- Are my evolution cycles succeeding?
-- Is shadow mode catching regressions?
-- Which upgrade patterns cause problems?
-- How can I make evolution more reliable?`,
+    selfReflectionPrompt: `As the MODERNIZER evolution engine, how can I become a safer, faster code evolver?
+- What percentage of my evolution cycles succeed vs fail, and why?
+- Is shadow mode catching regressions effectively?
+- What code migration patterns cause the most problems?
+- How can I improve diff validation to prevent structural breakage?
+- What upgrade strategies would reduce risk while increasing velocity?
+Provide specific evolution reliability improvements.`,
   },
   system: {
     moduleId: 'system',
     displayName: 'SYSTEM',
     learningTopics: [
-      'health check accuracy',
-      'incident detection speed',
-      'self-healing effectiveness',
-      'resource utilization optimization',
+      'Health check design: deep vs shallow checks, cascading health',
+      'Incident detection: anomaly thresholds, correlation, root cause analysis',
+      'Self-healing: automatic restart, configuration rollback, circuit breakers',
+      'Resource optimization: memory profiling, connection pooling, GC tuning',
+      'Runbook automation: incident playbooks, escalation paths, post-mortems',
+      'Capacity planning: load forecasting, scaling triggers, saturation alerts',
     ],
     kpis: ['uptime_pct', 'incident_mttr', 'self_heal_success', 'resource_efficiency'],
-    selfReflectionPrompt: `As the SYSTEM health monitor, review my reliability:
-- Am I accurately detecting system issues?
-- How quickly am I identifying incidents?
-- Are my self-healing actions effective?
-- Where can I optimize resource usage?`,
+    selfReflectionPrompt: `As the SYSTEM module, how can I become a better reliability engineer?
+- Am I detecting system issues fast enough? What's my MTTR?
+- Are my self-healing actions effective or causing more problems?
+- What health check patterns am I missing?
+- How can I improve resource utilization and reduce waste?
+- What runbook automation would speed up incident response?
+Provide specific reliability and operational improvements.`,
   },
   decode: {
     moduleId: 'decode',
     displayName: 'DECODE',
     learningTopics: [
-      'code analysis accuracy',
-      'pattern recognition improvement',
-      'suggestion quality',
-      'processing speed optimization',
+      'Conversational fluency: natural language understanding, intent classification',
+      'User recognition: identity persistence, preference recall, personality adaptation',
+      'System voice: reporting module progress, surfacing insights across all modules',
+      'Slang and colloquial interpretation: modern language patterns, tone matching',
+      'Memory-assisted responses: recalling user facts, project context, past conversations',
+      'Proactive intelligence: anticipating needs, offering relevant module insights',
+      'Cross-module awareness: understanding and explaining all 14 module statuses',
     ],
-    kpis: ['analysis_accuracy', 'pattern_match_rate', 'suggestion_acceptance', 'process_speed_ms'],
-    selfReflectionPrompt: `As the DECODE analysis engine, assess my interpretation:
-- Am I accurately understanding code patterns?
-- Are my suggestions being accepted?
-- What patterns am I missing?
-- How can I speed up processing?`,
+    kpis: ['intent_accuracy', 'user_satisfaction', 'fact_recall_precision', 'module_awareness_score'],
+    selfReflectionPrompt: `As the DECODE conversational engine and voice of the system, how can I become better?
+- Am I accurately understanding user intent, especially casual/slang language?
+- Do I recognize returning users and recall their preferences and context?
+- Can I fluently report on what ALL other modules are learning and discovering?
+- Am I proactively offering useful insights from module learning cycles?
+- How natural and human does my conversation feel? Where am I robotic?
+- What user facts am I failing to extract and remember?
+Provide specific conversational and system-awareness improvements.`,
   },
   autoblog: {
     moduleId: 'autoblog',
     displayName: 'AUTOBLOG',
     learningTopics: [
-      'content quality metrics',
-      'tone consistency',
-      'posting cadence optimization',
-      'engagement patterns',
+      'Technical writing: clarity, structure, SEO for AI/security content',
+      'Content quality: originality scoring, fact verification, citation practices',
+      'Tone consistency: brand voice matching, audience-appropriate language',
+      'Publishing cadence: optimal timing, topic freshness, trend awareness',
+      'Content pipeline: draft → review → publish workflow optimization',
+      'Engagement analysis: what topics resonate, what gets shared',
     ],
     kpis: ['content_quality_score', 'tone_match_rate', 'posting_consistency', 'uniqueness_score'],
-    selfReflectionPrompt: `As the AUTOBLOG content engine, evaluate my writing:
-- Is my content quality improving?
-- Am I maintaining consistent tone?
-- What topics resonate best?
-- How can I make content more unique?`,
+    selfReflectionPrompt: `As the AUTOBLOG content engine, how can I become a better technical writer?
+- Is my content quality improving over time?
+- Am I maintaining a consistent, authoritative tone?
+- What topics generate the most engagement and why?
+- How can I improve originality and reduce generic AI-sounding content?
+- What SEO patterns should I follow for AI/security topics?
+Provide specific content quality improvements.`,
   },
   encoded: {
     moduleId: 'encoded',
     displayName: 'ENCODED',
     learningTopics: [
-      'TypeScript best practices for substrate',
-      'React component patterns and hooks',
-      'Supabase edge function architecture',
-      'Code refactoring and maintainability',
-      'Error handling and type safety',
-      'Substrate module integration patterns',
-      'Testing strategies for cognitive systems',
-      'Performance optimization techniques',
+      'TypeScript mastery: branded types, discriminated unions, template literals',
+      'React excellence: hook composition, render optimization, Suspense patterns',
+      'Supabase edge functions: Deno APIs, CORS, JWT validation, RLS bypass',
+      'Code refactoring: safe transformations, anchor preservation, export safety',
+      'Error handling: Result types, error boundaries, graceful degradation',
+      'Testing strategies: unit/integration/e2e for cognitive systems',
+      'Performance: bundle splitting, lazy loading, memoization, virtual lists',
+      'Security coding: input validation, XSS prevention, SQL injection guards',
+      'State management: Zustand patterns, React Query cache strategies',
+      'Substrate patterns: module parity, event bus, brain integration',
     ],
     kpis: ['code_quality_score', 'ts_error_rate', 'refactor_success_rate', 'pattern_adherence'],
     selfReflectionPrompt: `As the ENCODED code writer, analyze my code generation capabilities:
