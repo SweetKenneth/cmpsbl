@@ -310,6 +310,10 @@ const App = () => {
                         <Route path="/support" element={<Support />} />
                         <Route path="/explore" element={<Explore />} />
                         
+                        {/* Module pages (de-shrouded SEO) */}
+                        <Route path="/modules" element={<ModulesHub />} />
+                        <Route path="/modules/:slug" element={<ModuleDetail />} />
+                        
                         {/* Cluster pages - module deep-dives */}
                         <Route path="/cluster/studio-autonomous-site-generator" element={<ClusterStudio />} />
                         <Route path="/cluster/verify-worlds-first-ai-plugin-certification" element={<ClusterVerify />} />

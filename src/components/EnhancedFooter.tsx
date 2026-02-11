@@ -33,6 +33,7 @@ export function EnhancedFooter() {
     {
       title: "Substrate",
       links: [
+        { name: "All Modules", href: "/modules", highlight: true },
         { name: "System Feed", href: "/system-feed" },
         { name: "Decode Engine", href: "/decode" },
         { name: "Dream Feeder", href: "/feed-dream-eater" },
