@@ -5731,13 +5731,15 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
       
       // Intent classification patterns
       const intentPatterns = [
-        { intent: 'query', keywords: ['what', 'how', 'why', 'when', 'where', 'who', 'explain', 'tell me', 'describe'], confidence: 0.8 },
-        { intent: 'action', keywords: ['create', 'make', 'build', 'generate', 'do', 'run', 'execute', 'start', 'stop'], confidence: 0.85 },
-        { intent: 'search', keywords: ['find', 'search', 'look for', 'locate', 'discover'], confidence: 0.8 },
-        { intent: 'configure', keywords: ['set', 'configure', 'change', 'update', 'modify', 'adjust'], confidence: 0.75 },
-        { intent: 'analyze', keywords: ['analyze', 'check', 'review', 'inspect', 'examine', 'evaluate'], confidence: 0.8 },
-        { intent: 'help', keywords: ['help', 'assist', 'support', 'guide', 'show me how'], confidence: 0.9 },
-        { intent: 'status', keywords: ['status', 'health', 'state', 'condition'], confidence: 0.85 },
+        { intent: 'query', keywords: ['what', 'how', 'why', 'when', 'where', 'who', 'explain', 'tell me', 'describe', 'wdym', 'wym', 'eli5', 'whats', 'hows', 'whos', 'tf', 'wtf', 'wth'], confidence: 0.8 },
+        { intent: 'action', keywords: ['create', 'make', 'build', 'generate', 'do', 'run', 'execute', 'start', 'stop', 'gimme', 'lemme', 'hook me up', 'hit me with', 'send', 'drop', 'ship'], confidence: 0.85 },
+        { intent: 'search', keywords: ['find', 'search', 'look for', 'locate', 'discover', 'where is', 'pull up', 'show me'], confidence: 0.8 },
+        { intent: 'configure', keywords: ['set', 'configure', 'change', 'update', 'modify', 'adjust', 'switch', 'toggle', 'tweak'], confidence: 0.75 },
+        { intent: 'analyze', keywords: ['analyze', 'check', 'review', 'inspect', 'examine', 'evaluate', 'vibe check', 'diagnose', 'audit'], confidence: 0.8 },
+        { intent: 'help', keywords: ['help', 'assist', 'support', 'guide', 'show me how', 'teach me', 'walk me through', 'stuck', 'confused', 'lost', 'idk'], confidence: 0.9 },
+        { intent: 'status', keywords: ['status', 'health', 'state', 'condition', 'how are you', 'sup', 'whats good', 'hows it going'], confidence: 0.85 },
+        { intent: 'greeting', keywords: ['hey', 'hi', 'hello', 'yo', 'sup', 'whats up', 'hiya', 'howdy', 'good morning', 'good evening', 'gm', 'gn'], confidence: 0.9 },
+        { intent: 'feedback', keywords: ['love', 'hate', 'like', 'fire', 'goated', 'mid', 'trash', 'bussin', 'slaps', 'based', 'cringe', 'w', 'l', 'ngl', 'tbh', 'imo', 'fr'], confidence: 0.75 },
         { intent: 'dream', keywords: ['dream', 'imagine', 'envision', 'synthesize', 'reflect'], confidence: 0.7 },
       ];
       
