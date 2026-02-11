@@ -112,8 +112,7 @@ serve(async (req) => {
       });
     }
 
-    // Get the shared secret
-    const patchSecret = Deno.env.get('CMPSBL_PATCH_SECRET');
+    // Verify patch secret is available for outbound dispatch
     if (!patchSecret) {
       return new Response(JSON.stringify({ error: 'Patch secret not configured' }), {
         status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
