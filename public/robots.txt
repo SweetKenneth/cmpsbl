@@ -28,6 +28,9 @@ Allow: /os
 Allow: /substrate
 Allow: /intelligence
 Allow: /engines
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 Allow: /demo
 Allow: /marketplace
 Allow: /marketplace/*

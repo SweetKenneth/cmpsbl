@@ -314,6 +314,7 @@ const App = () => {
                         {/* Module pages (de-shrouded SEO) */}
                         <Route path="/modules" element={<ModulesHub />} />
                         <Route path="/modules/:slug" element={<ModuleDetail />} />
+                        <Route path="/ai-operating-system" element={<AIOperatingSystem />} />
                         
                         {/* Cluster pages - module deep-dives */}
                         <Route path="/cluster/studio-autonomous-site-generator" element={<ClusterStudio />} />
