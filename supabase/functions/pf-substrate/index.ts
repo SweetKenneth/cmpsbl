@@ -5779,9 +5779,9 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
       
       const primaryIntent = matchedIntents[0] || { intent: 'general', confidence: 0.5, matched_keywords: [] };
       
-      // Detect mood/sentiment indicators
-      const positiveWords = ['good', 'great', 'excellent', 'amazing', 'love', 'thanks', 'please'];
-      const negativeWords = ['bad', 'wrong', 'error', 'broken', 'fail', 'problem', 'issue'];
+      // Detect mood/sentiment indicators (expanded with modern slang)
+      const positiveWords = ['good', 'great', 'excellent', 'amazing', 'love', 'thanks', 'please', 'fire', 'goated', 'based', 'dope', 'lit', 'bussin', 'slaps', 'valid', 'peak', 'elite', 'clutch', 'solid', 'banger', 'w', 'slay', 'ate', 'clean', 'crispy', 'mint'];
+      const negativeWords = ['bad', 'wrong', 'error', 'broken', 'fail', 'problem', 'issue', 'trash', 'mid', 'sus', 'cap', 'cringe', 'cooked', 'wack', 'janky', 'scuffed', 'l', 'rip', 'yikes', 'oof', 'dead'];
       const posCount = positiveWords.filter(w => messageText.includes(w)).length;
       const negCount = negativeWords.filter(w => messageText.includes(w)).length;
       const sentiment = posCount > negCount ? 'positive' : negCount > posCount ? 'negative' : 'neutral';
