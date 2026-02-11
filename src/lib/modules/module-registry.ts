@@ -135,7 +135,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     features: ["Multi-provider routing (OpenAI, Google, Anthropic)", "Cost-performance optimization", "Automatic fallback chains", "Latency-aware routing", "Task complexity scoring"],
     codeSnippet: `import { useNexus } from '@cmpsbl/substrate';\n\nconst { route, providers } = useNexus();\nconst response = await route({\n  task: 'Analyze this contract',\n  priority: 'accuracy',\n  budget: 0.05 // max $0.05\n});`,
     integrations: ["OpenAI", "Google Gemini", "Anthropic Claude", "Local models"],
-    useCases: ["Reducing AI costs by 40-60% with smart routing", "Multi-model architectures", "High-availability AI with automatic failover"],
+    useCases: ["Reducing AI costs with intelligent model routing", "Multi-model architectures", "High-availability AI with automatic failover"],
   },
   {
     slug: "vision",
@@ -162,7 +162,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     color: "violet-500",
     useCaseH1: "Autonomous AI Optimization: Systems That Improve While You Sleep",
     heroDescription: "DREAM runs when your users don't — analyzing patterns, consolidating memories, and optimizing performance. Your AI literally gets smarter overnight, at zero compute cost.",
-    features: ["Off-peak pattern analysis", "Memory consolidation (SimNap)", "Performance auto-optimization", "Dream pool for shared insights", "Zero-cost improvement cycles"],
+    features: ["Off-peak pattern analysis", "Memory consolidation (SimNap)", "Performance auto-optimization", "Dream pool for shared insights", "Low-cost off-peak improvement cycles"],
     codeSnippet: `import { useDream } from '@cmpsbl/substrate';\n\nconst { schedule, insights, lastCycle } = useDream();\n// insights: DreamInsight[]\n// lastCycle.improvements: number`,
     integrations: ["BRAIN (memory consolidation)", "VISION (performance data)", "RIPPLE (insight propagation)"],
     useCases: ["AI systems that continuously self-improve", "Cost-conscious deployments maximizing off-peak hours", "Research platforms needing autonomous analysis"],
@@ -179,7 +179,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     heroDescription: "INTEGRATION bridges the substrate to your existing stack. Pre-built adapters for popular services, plus a universal connector for anything custom.",
     features: ["Pre-built adapters (Salesforce, HubSpot, Slack)", "Universal REST/GraphQL connector", "Webhook management", "Data transformation pipelines", "Retry & circuit breaker patterns"],
     codeSnippet: `import { useIntegration } from '@cmpsbl/substrate';\n\nconst { connect, adapters } = useIntegration();\nawait connect('salesforce', {\n  credentials: vault.get('sf_token'),\n  sync: 'bidirectional'\n});`,
-    integrations: ["500+ pre-built adapters", "Custom REST/GraphQL", "Webhook endpoints"],
+    integrations: ["35+ pre-built adapters", "Custom REST/GraphQL", "Webhook endpoints"],
     useCases: ["Enterprise AI needing CRM integration", "Data pipeline orchestration", "Legacy system modernization with AI"],
   },
 
