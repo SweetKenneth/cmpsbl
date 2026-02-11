@@ -20,6 +20,7 @@ import {
   isDownstreamDistribution,
   type DownstreamDistribution 
 } from '@/lib/distribution';
+import { validatePatchForLnchbl, isCmpsblOnlyFunction } from '@/lib/distribution/lnchbl-manifest';
 
 // ─── Patch Types ─────────────────────────────────────────────────────────────
 
