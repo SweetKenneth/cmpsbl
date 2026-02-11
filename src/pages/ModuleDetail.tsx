@@ -6,7 +6,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, Code, Layers, Plug } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Code, Layers, Plug, Sparkles } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { getModuleBySlug, MODULE_REGISTRY } from "@/lib/modules/module-registry";
