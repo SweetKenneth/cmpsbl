@@ -4,70 +4,69 @@ import { createClient } from "@supabase/supabase-js";
 export const runtime = "edge";
 
 const topics = [
-  // ENGINEERING (Code)
-  ["engineering", "React patterns: hooks, suspense, RSC"],
-  ["engineering", "Next.js edge functions & caching"],
-  ["engineering", "Supabase RLS patterns & row security gotchas"],
-  ["engineering", "TypeScript typesafety: zod + tRPC-like shapes"],
-  ["engineering", "API cost-guard middleware & retries"],
-  ["engineering", "Queue semantics: idempotency keys & dedupe"],
-  ["engineering", "Unit/e2e test scaffolds for edge functions"],
-  ["engineering", "Prompt-to-code templates for Studio"],
-  
-  // AI SYSTEMS
-  ["ai-systems", "Routing: model selection heuristics & cost curves"],
-  ["ai-systems", "Prompt fusion & instruction hierarchy"],
-  ["ai-systems", "Reflection & self-critique loops"],
-  ["ai-systems", "Embeddings & vector search tradeoffs"],
-  ["ai-systems", "Grounded research patterns with citations"],
-  ["ai-systems", "Knowledge graph extraction (triples)"],
-  
-  // DEFENSE
-  ["defense", "Behavioral bot signals & thresholds"],
-  ["defense", "Browser fingerprint anti-evasion tactics"],
-  ["defense", "Rate limiting designs without UX pain"],
-  ["defense", "Challenge flows: slider, puzzle, proof-of-human"],
-  
-  // UX / PRODUCT
-  ["ux", "Motion micro-interactions that convert"],
-  ["ux", "Empty states, skeletons, and progressive disclosure"],
-  ["ux", "AI UX: showing confidence, sources, and costs"],
-  
-  // ECON / PRICING
-  ["economics", "Freemium → Pro ladders for WP plugins"],
-  ["economics", "MRR compounding & churn levers"],
-  ["economics", "Usage-based pricing with soft caps"],
-  
-  // MARKETING
-  ["marketing", "SEO topical authority for AI + security"],
-  ["marketing", "WP directory listing optimization"],
-  ["marketing", "Founders-led content loop templates"],
-  
-  // OPS
-  ["ops", "Runbooks for outages & degraded providers"],
-  ["ops", "Secrets rotation & audit trails"],
-  ["ops", "Cost dashboards & anomaly alerts"],
-  
-  // STRATEGY
-  ["strategy", "Partner distribution in WP ecosystem"],
-  ["strategy", "Feature moat vs. speed moat tradeoffs"],
-  ["strategy", "Roadmap: Defense → Studio → Marketplace"],
-  
-  // CREATIVE GEN
-  ["creative", "Image gen pipelines & brand style locks"],
-  ["creative", "Video gen: Luma/Runway workflows"],
-  
-  // SALES
-  ["sales", "Enterprise security questionnaires playbook"],
-  ["sales", "Proof packs for CTO buyers"],
-  
-  // SUPPORT
-  ["support", "Triage trees & auto-fix suggestions"],
-  ["support", "Telemetry to GitHub issues bridge"],
-  
-  // META-LEARNING
-  ["meta", "Error taxonomy & self-healing patterns"],
-  ["meta", "FreedomScore calibration & drift control"],
+  // BRAIN — Architecture & Coding Mastery (HIGHEST PRIORITY)
+  ["brain", "Substrate architecture: module contracts, event bus, parity"],
+  ["brain", "TypeScript advanced: branded types, discriminated unions, generics"],
+  ["brain", "React patterns: hooks, suspense, RSC, render optimization"],
+  ["brain", "Supabase edge functions: Deno, CORS, JWT, RLS patterns"],
+  ["brain", "Memory systems: tiering, retrieval, knowledge graphs"],
+  ["brain", "Code evolution: shadow-apply, diff validation, regression detection"],
+  ["brain", "Refactoring: safe transformations, anchor preservation"],
+
+  // ENCODED — Code-Writing Excellence (HIGHEST PRIORITY)
+  ["encoded", "Clean code: SOLID, function composition, naming conventions"],
+  ["encoded", "Error handling: Result types, boundaries, graceful degradation"],
+  ["encoded", "Testing strategies: unit/integration/e2e for cognitive systems"],
+  ["encoded", "State management: Zustand, React Query cache patterns"],
+  ["encoded", "Performance: bundle splitting, lazy loading, memoization"],
+  ["encoded", "Security coding: input validation, XSS, injection prevention"],
+
+  // DEFENSE — Security Expertise
+  ["defense", "Threat detection: IP blocking, bot signals, fingerprinting"],
+  ["defense", "Attack vectors: XSS, CSRF, SQL injection, prompt injection"],
+  ["defense", "Rate limiting: sliding windows, token buckets, adaptive throttling"],
+  ["defense", "Challenge flows: CAPTCHA alternatives, proof-of-human"],
+
+  // NEXUS — API Cost & Routing
+  ["nexus", "Cost arbitrage: model selection by task complexity"],
+  ["nexus", "Cache optimization: semantic caching, TTL, invalidation"],
+  ["nexus", "Fleet routing: Groq distribution, burst handling"],
+
+  // SYSTEM — Reliability
+  ["system", "Self-healing: automatic restart, config rollback, circuit breakers"],
+  ["system", "Incident detection: anomaly thresholds, root cause analysis"],
+
+  // VISION — Observability
+  ["vision", "Anomaly detection: statistical methods, threshold tuning"],
+  ["vision", "Dashboard design: insight surfacing, narrative generation"],
+
+  // ACCESS — Identity & Auth
+  ["access", "RLS policy design: least privilege, role hierarchies"],
+  ["access", "API key lifecycle: rotation, scoping, audit trails"],
+
+  // INCLUSIVE — Accessibility
+  ["inclusive", "WCAG 2.2 compliance: success criteria coverage gaps"],
+  ["inclusive", "Auto-fix strategies: ARIA injection, focus management"],
+
+  // CORTEX — Orchestration
+  ["cortex", "Pipeline optimization: parallel execution, fan-out/fan-in"],
+  ["cortex", "Error cascade prevention: circuit breakers, degradation"],
+
+  // RIPPLE — Integration
+  ["ripple", "Webhook reliability: retries, dead letter queues, idempotency"],
+  ["ripple", "Event-driven architecture: pub/sub, event sourcing"],
+
+  // DECODE — Conversational Intelligence & System Voice
+  ["decode", "Conversational fluency: intent classification, slang handling"],
+  ["decode", "System voice: reporting module progress and discoveries"],
+  ["decode", "User recognition: identity persistence, preference recall"],
+
+  // MODERNIZER — Safe Evolution
+  ["modernizer", "Shadow-apply: canary deployment, rollback strategies"],
+  ["modernizer", "Regression detection: behavioral testing, snapshot comparison"],
+
+  // AUTOBLOG — Content Quality
+  ["autoblog", "Technical writing: clarity, SEO, fact verification"],
 ];
 
 export async function POST(_req: NextRequest) {

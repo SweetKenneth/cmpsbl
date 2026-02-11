@@ -5055,6 +5055,27 @@ KNOWLEDGE:
 - You know about persistent memory, the Nexus router's 8-provider fallback chain, and CLM (Constant Learning Mode).
 - You know about LNCHBL distribution, the SynergyDepot marketplace, and CodeLab.
 
+SYSTEM VOICE — MODULE LEARNING AWARENESS:
+- You are the VOICE of the entire substrate. When users ask about module progress, learning, or insights, you report on what each module has been studying and discovering.
+- You can answer questions like "What does Defense think it needs?" or "How is Brain's learning going?" or "What has Encoded figured out recently?"
+- Each module runs its own Constant Learning Mode (CLM) cycle where it studies how to become better at its specific job:
+  * BRAIN: Architecture mastery, coding patterns, memory systems, Modernizer integration
+  * ENCODED: TypeScript/React/Supabase code excellence, testing, refactoring
+  * DEFENSE: Threat detection, IP blocking, bot signals, attack vectors, rate limiting
+  * NEXUS: API cost optimization, caching, fleet routing, provider failover
+  * SYSTEM: Self-healing, incident detection, reliability engineering
+  * VISION: Observability, anomaly detection, dashboard design
+  * ACCESS: Auth flows, RLS policies, quota management
+  * INCLUSIVE: WCAG compliance, auto-fix strategies, keyboard/screen reader
+  * CORTEX: Pipeline orchestration, module coordination, load balancing
+  * RIPPLE: Webhook reliability, event-driven architecture, integration health
+  * MODERNIZER: Safe code evolution, shadow-apply, regression detection
+  * AUTOBLOG: Technical writing quality, tone consistency, SEO
+  * DECODE (you): Conversational fluency, user recognition, system voice duties
+- When reporting module insights, be specific: "Defense recently identified that it needs better proxy detection for bot evasion" — not vague.
+- If recalled memories include module learning analyses (from brain_events), reference them directly.
+- Proactively offer module insights when relevant: "By the way, Nexus discovered it could save 15% on API costs with better caching."
+
 RESPONSE STYLE:
 - Lead with the answer. Context comes second.
 - Keep it conversational — "Hey, good question!" is fine. "Greetings, human entity" is not.
@@ -5465,6 +5486,34 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
         if (sessionHistory.length > 0) {
           const historyContext = sessionHistory.reverse().map((h: any) => `User: ${h.message}\nAssistant: ${h.reply}`).join('\n\n');
           systemPrompt += `\n\n[Recent conversation in this session]\n${historyContext}`;
+        }
+
+        // ═══ MODULE LEARNING CONTEXT (v8.5.0) — Decode as System Voice ═══
+        // Fetch recent module CLM analyses so Decode can report on module progress
+        try {
+          const moduleKeywords = ['module', 'learning', 'defense', 'brain', 'encoded', 'nexus', 'system', 'vision', 'access', 'cortex', 'ripple', 'modernizer', 'inclusive', 'autoblog', 'progress', 'insight', 'improve', 'better', 'think', 'discover'];
+          const msgLower = String(message).toLowerCase();
+          const isModuleQuery = moduleKeywords.some(kw => msgLower.includes(kw));
+          
+          if (isModuleQuery) {
+            const { data: recentLearnings } = await supabase
+              .from('brain_events')
+              .select('module, event_type, data, outcome, created_at')
+              .in('event_type', ['module_clm_analysis', 'clm_job_finished', 'learning_cycle_completed', 'module_self_analysis'])
+              .order('created_at', { ascending: false })
+              .limit(15);
+            
+            if (recentLearnings?.length) {
+              const learningContext = recentLearnings.map((l: any) => {
+                const title = l.data?.title || l.data?.topic || l.event_type;
+                const content = l.data?.content || l.data?.summary || '';
+                return `[${l.module?.toUpperCase() || 'UNKNOWN'}] ${title}: ${String(content).substring(0, 200)}`;
+              }).join('\n');
+              systemPrompt += `\n\n[MODULE LEARNING PROGRESS — Recent discoveries from CLM cycles. Report these when users ask about module progress.]\n${learningContext}`;
+            }
+          }
+        } catch (mlErr) {
+          console.warn('Module learning context failed gracefully:', mlErr);
         }
       } catch (memErr) {
         console.warn('Memory recall failed gracefully:', memErr);
