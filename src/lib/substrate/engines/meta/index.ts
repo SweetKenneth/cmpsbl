@@ -62,6 +62,9 @@ export {
   executeWorldFirstOperational,
   executeWorldFirstIntelligence,
   executeWorldFirstGovernance,
+  // v8.5.0 additions — High-Value Expansion Meta-Engines
+  executeResilienceShield,
+  executeDeepCognitionNexus,
 } from './executors';
 
 // Hook

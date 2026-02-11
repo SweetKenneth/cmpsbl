@@ -47,14 +47,15 @@ export const STIER_PIPELINES_COUNT = 32;
 
 /**
  * Base engines in ENGINE_REGISTRY
- * Verified count from registry: ~32 engines across categories
+ * v8.5.0: 62 original + 8 high-value = 70
  */
-export const ENGINES_COUNT = 62;
+export const ENGINES_COUNT = 70;
 
 /**
  * Meta-engines that orchestrate multiple base engines
+ * v8.5.0: 20 original + 2 high-value = 22
  */
-export const META_ENGINES_COUNT = 20;
+export const META_ENGINES_COUNT = 22;
 
 /**
  * Total engine ecosystem
@@ -66,10 +67,10 @@ export const TOTAL_ENGINE_ECOSYSTEM = ENGINES_COUNT + META_ENGINES_COUNT;
 // =============================================================================
 
 /**
- * Registered capabilities (edge-adapted + native + archived)
- * This is an upper-bound estimate; actual runtime count may vary
+ * Registered capabilities (edge-adapted + native + archived + high-value v8.5.0)
+ * 269 original + 56 high-value = 325
  */
-export const CAPABILITIES_COUNT = 269;
+export const CAPABILITIES_COUNT = 325;
 
 /**
  * Archived/legacy capabilities available for adaptation
