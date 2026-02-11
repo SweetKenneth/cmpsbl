@@ -13,11 +13,7 @@ import {
   validatePatchForLnchbl, 
   type LnchblPatchPayload 
 } from '@/lib/distribution/lnchbl-manifest';
-
-// ─── Constants ──────────────────────────────────────────────────────────────
-
-const LNCHBL_PATCH_ENDPOINT = 
-  'https://tasrehugmgipjfusfzof.supabase.co/functions/v1/lnchbl-patch-receive';
+import { supabase } from '@/integrations/supabase/client';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
