@@ -684,6 +684,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...ENGINE_COMMANDS,
   ...META_COMMANDS,
   ...INFRA_COMMANDS,
+  ...PATCH_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {

@@ -423,6 +423,23 @@ function PatchListItem({ patch }: { patch: PatchRow }) {
 
   const updateStatus = useMutation({
     mutationFn: async (newStatus: string) => {
+      // If publishing, dispatch to LNCHBL first
+      if (newStatus === 'published') {
+        const { sendPatchToLnchbl } = await import('@/lib/patches/dispatch');
+        const result = await sendPatchToLnchbl({
+          target_distribution: 'LNCHBL',
+          patch_version: patch.version,
+          capabilities: patch.capabilities_unlocked || [],
+          engines: patch.engines_unlocked || [],
+          changelog: patch.changelog || '',
+          config_overrides: {},
+        });
+        if (!result.success) {
+          throw new Error(result.error || 'LNCHBL dispatch failed');
+        }
+        toast.success(`Dispatched to LNCHBL — patch_id: ${result.patch_id?.slice(0, 8)}…`);
+      }
+
       const updates: any = { status: newStatus };
       if (newStatus === 'published') updates.published_at = new Date().toISOString();
       if (newStatus === 'draft') updates.published_at = null;
@@ -436,6 +453,7 @@ function PatchListItem({ patch }: { patch: PatchRow }) {
       toast.success(`Patch v${patch.version} → ${newStatus}`);
       queryClient.invalidateQueries({ queryKey: ['cmpsbl-patches'] });
     },
+    onError: (err: any) => toast.error(err.message || 'Failed to update patch'),
   });
 
   return (
