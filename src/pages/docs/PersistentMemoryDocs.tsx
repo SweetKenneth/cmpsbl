@@ -150,11 +150,15 @@ const agent = withPersistentMemory({
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
-                      Intercepts inputs and recalls relevant memories
+                      Auto-extracts facts from user messages (names, preferences, etc.)
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
-                      Appends context to your agent automatically
+                      Recalls exact stored facts without hallucination
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      Remembers previous workloads and task outcomes
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
