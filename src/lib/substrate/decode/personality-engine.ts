@@ -315,11 +315,11 @@ class PersonalityEngineClient {
    */
   private static readonly LANGUAGE_MARKERS: Record<PersonalityProfile, string[]> = {
     neutral: [],
-    technical: ['api', 'function', 'error', 'debug', 'implement', 'code', 'syntax', 'parameter', 'config', 'module'],
-    concise: ['quick', 'short', 'brief', 'tldr', 'summary'],
-    friendly: ['thanks', 'please', 'appreciate', 'wonderful', 'great'],
-    admin: ['admin', 'system', 'debug', 'diagnostics', 'internal', 'status', 'health'],
-    exploratory: ['how', 'what', 'why', 'explain', 'curious', 'wonder', 'learn', 'understand', 'explore', 'possible'],
+    technical: ['api', 'function', 'error', 'debug', 'implement', 'code', 'syntax', 'parameter', 'config', 'module', 'deploy', 'endpoint', 'schema', 'query', 'stack', 'runtime', 'async', 'webhook'],
+    concise: ['quick', 'short', 'brief', 'tldr', 'summary', 'eli5', 'tl;dr', 'just tell me', 'bottom line', 'in a nutshell'],
+    friendly: ['thanks', 'please', 'appreciate', 'wonderful', 'great', 'awesome', 'hey', 'hi', 'hello', 'sup', 'yo', 'hiya', 'howdy', 'cheers', 'thx', 'ty', 'tysm', 'cool', 'nice', 'sweet', 'dope', 'lit', 'fire', 'goated', 'based', 'w', 'bet', 'fs', 'ngl', 'imo', 'tbh', 'lowkey', 'highkey', 'fr', 'no cap', 'bruh', 'fam', 'bro', 'sis'],
+    admin: ['admin', 'system', 'debug', 'diagnostics', 'internal', 'status', 'health', 'metrics', 'logs', 'circuit', 'provider', 'quota', 'uptime'],
+    exploratory: ['how', 'what', 'why', 'explain', 'curious', 'wonder', 'learn', 'understand', 'explore', 'possible', 'imagine', 'could it', 'what about', 'tell me about', 'walk me through', 'show me', 'teach me'],
   };
 
   /**
