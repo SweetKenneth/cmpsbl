@@ -284,6 +284,16 @@ export const executeCognitiveAccessibilityEngine: EngineExecutor = (ctx) => exec
 // MODERNIZER Module Enhancements
 export const executeEvolutionGovernanceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
+// v8.5.0 High-Value Capability Engines (8)
+export const executeSandboxEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeSagaEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executePolicyAccessEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeDeepCognitionEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeDialogueEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executePromptSafetyEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeObservabilityEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeTechnicalDebtEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -396,6 +406,16 @@ export const ENGINE_EXECUTORS: Record<EngineId, EngineExecutor> = {
   adapter_transform_engine: executeAdapterTransformEngine,
   cognitive_accessibility_engine: executeCognitiveAccessibilityEngine,
   evolution_governance_engine: executeEvolutionGovernanceEngine,
+  
+  // v8.5.0 High-Value Capability Engines (8)
+  sandbox_engine: executeSandboxEngine,
+  saga_engine: executeSagaEngine,
+  policy_access_engine: executePolicyAccessEngine,
+  deep_cognition_engine: executeDeepCognitionEngine,
+  dialogue_engine: executeDialogueEngine,
+  prompt_safety_engine: executePromptSafetyEngine,
+  observability_engine: executeObservabilityEngine,
+  technical_debt_engine: executeTechnicalDebtEngine,
 };
 
 // ============================================================================

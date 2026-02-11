@@ -1,6 +1,6 @@
 /**
  * Engine Registry
- * v8.0.0 SYNERGY+ Epoch — 62 Cognitive Engines orchestrating 269 Capabilities
+ * v8.5.0 SYNERGY+ Epoch — 70 Cognitive Engines orchestrating 325 Capabilities
  * 
  * Each engine orchestrates multiple related capabilities into
  * a compound execution unit with enhanced value and IP protection.
@@ -1453,6 +1453,146 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     worldFirstEnhancements: ['EvolutionPredictor', 'RollbackAuthority', 'ImpactAnalyzer', 'ProposalRanker'],
     capabilityCount: 4,
   },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HIGH-VALUE CAPABILITY ENGINES (8) — v8.5.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  sandbox_engine: {
+    id: 'sandbox_engine',
+    name: 'Sandbox Engine',
+    description: 'CORE runtime infrastructure: config validation, dependency resolution, hot-reload orchestration, and isolated environment sandboxing.',
+    category: 'operational',
+    capabilities: ['runtime_config_validator', 'dependency_resolver', 'hot_reload_orchestrator', 'environment_sandbox'],
+    primaryModules: ['CORE'],
+    layer: 'Kernel',
+    synergyMultiplier: 2.7,
+    complexityScore: 8,
+    autonomyLevel: 'autonomous',
+    executionMode: 'adaptive',
+    averageLatencyMs: 50,
+    cacheable: false,
+    capabilityCount: 4,
+  },
+  
+  saga_engine: {
+    id: 'saga_engine',
+    name: 'Saga Engine',
+    description: 'RIPPLE event infrastructure: event sourcing with temporal queries, distributed saga orchestration, adaptive backpressure, and schema validation.',
+    category: 'communication',
+    capabilities: ['event_sourcing_engine', 'saga_orchestrator', 'backpressure_controller', 'event_schema_validator'],
+    primaryModules: ['RIPPLE'],
+    layer: 'Operational',
+    synergyMultiplier: 2.8,
+    complexityScore: 9,
+    autonomyLevel: 'autonomous',
+    executionMode: 'adaptive',
+    averageLatencyMs: 60,
+    cacheable: false,
+    capabilityCount: 4,
+  },
+  
+  policy_access_engine: {
+    id: 'policy_access_engine',
+    name: 'Policy & Access Engine',
+    description: 'ACCESS identity and policy: attribute-based access control, behavioral session fingerprinting, secure credential vault, and privacy consent management.',
+    category: 'security',
+    capabilities: ['policy_engine', 'session_fingerprint', 'credential_vault', 'consent_manager'],
+    primaryModules: ['ACCESS'],
+    layer: 'Admin',
+    synergyMultiplier: 2.9,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'sequential',
+    averageLatencyMs: 80,
+    cacheable: false,
+    capabilityCount: 4,
+  },
+  
+  deep_cognition_engine: {
+    id: 'deep_cognition_engine',
+    name: 'Deep Cognition Engine',
+    description: 'BRAIN deep cognition: associative recall via spreading activation, cognitive compression, knowledge distillation, and temporal causal reasoning.',
+    category: 'cognitive',
+    capabilities: ['associative_recall', 'cognitive_compression', 'knowledge_distillation', 'temporal_reasoning'],
+    primaryModules: ['BRAIN'],
+    layer: 'Cognitive',
+    synergyMultiplier: 3.0,
+    complexityScore: 9,
+    autonomyLevel: 'autonomous',
+    executionMode: 'parallel',
+    averageLatencyMs: 120,
+    cacheable: true,
+    capabilityCount: 4,
+  },
+  
+  dialogue_engine: {
+    id: 'dialogue_engine',
+    name: 'Dialogue Engine',
+    description: 'DECODE language understanding: tone calibration, semantic disambiguation, multi-turn dialogue planning, and multilingual language detection.',
+    category: 'perception',
+    capabilities: ['tone_calibrator', 'semantic_disambiguator', 'dialogue_planner', 'language_detector'],
+    primaryModules: ['DECODE'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.6,
+    complexityScore: 7,
+    autonomyLevel: 'assisted',
+    executionMode: 'sequential',
+    averageLatencyMs: 60,
+    cacheable: true,
+    capabilityCount: 4,
+  },
+  
+  prompt_safety_engine: {
+    id: 'prompt_safety_engine',
+    name: 'Prompt Safety Engine',
+    description: 'DEFENSE AI safety: prompt injection guard, data poisoning detection, output sanitization, and automated adversarial probing.',
+    category: 'security',
+    capabilities: ['prompt_injection_guard', 'data_poisoning_detector', 'output_sanitizer', 'adversarial_probe'],
+    primaryModules: ['DEFENSE'],
+    layer: 'Operational',
+    synergyMultiplier: 3.1,
+    complexityScore: 10,
+    autonomyLevel: 'autonomous',
+    executionMode: 'streaming',
+    averageLatencyMs: 30,
+    cacheable: false,
+    capabilityCount: 4,
+  },
+  
+  observability_engine: {
+    id: 'observability_engine',
+    name: 'Observability Engine',
+    description: 'VISION deep observability: real-time dashboards, cross-module metric correlation, intelligent alert deduplication, and performance baseline tracking.',
+    category: 'analytics',
+    capabilities: ['real_time_dashboard', 'metric_correlation_engine', 'alert_fatigue_reducer', 'performance_baseline'],
+    primaryModules: ['VISION'],
+    layer: 'Operational',
+    synergyMultiplier: 2.5,
+    complexityScore: 7,
+    autonomyLevel: 'autonomous',
+    executionMode: 'streaming',
+    averageLatencyMs: 40,
+    cacheable: false,
+    capabilityCount: 4,
+  },
+  
+  technical_debt_engine: {
+    id: 'technical_debt_engine',
+    name: 'Technical Debt Engine',
+    description: 'MODERNIZER architecture evolution: code smell detection, safe refactoring planning, technical debt quantification, and migration path optimization.',
+    category: 'evolution',
+    capabilities: ['code_smell_detector', 'refactor_planner', 'technical_debt_scorer', 'migration_path_optimizer'],
+    primaryModules: ['MODERNIZER'],
+    layer: 'Admin',
+    synergyMultiplier: 2.8,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'sequential',
+    averageLatencyMs: 250,
+    cacheable: true,
+    capabilityCount: 4,
+  },
 };
 
 // ============================================================================
@@ -1527,6 +1667,7 @@ export function getEngineSummary() {
     averageSynergyMultiplier: totalMultiplier / engines.length,
     averageComplexityScore: totalComplexity / engines.length,
     totalWorldFirstEnhancements: 56,
+    totalHighValueCapabilities: 56,
     totalSynergyPipelines: 147,
   };
 }
@@ -1538,20 +1679,20 @@ export function getEngineSummary() {
 export const ENGINE_IDS: EngineId[] = Object.keys(ENGINE_REGISTRY) as EngineId[];
 
 export const ENGINES_BY_CATEGORY: Record<EngineCategory, EngineId[]> = {
-  cognitive: ['reasoning_engine', 'learning_engine', 'memory_engine', 'foresight_engine'],
-  operational: ['resilience_engine', 'optimization_engine', 'orchestration_engine', 'scheduling_engine'],
+  cognitive: ['reasoning_engine', 'learning_engine', 'memory_engine', 'foresight_engine', 'metacognition_engine', 'hypothesis_engine', 'deep_cognition_engine'],
+  operational: ['resilience_engine', 'optimization_engine', 'orchestration_engine', 'scheduling_engine', 'sandbox_engine'],
   intelligence: ['synthesis_engine', 'adaptation_engine', 'insight_engine', 'prediction_engine'],
   governance: ['compliance_engine', 'quality_engine', 'audit_engine'],
-  security: ['threat_engine', 'defense_engine', 'trust_engine'],
-  evolution: ['evolution_engine', 'modernization_engine'],
-  communication: ['broadcast_engine', 'event_engine'],
+  security: ['threat_engine', 'defense_engine', 'trust_engine', 'attack_surface_engine', 'incident_engine', 'prompt_safety_engine', 'policy_access_engine'],
+  evolution: ['evolution_engine', 'modernization_engine', 'technical_debt_engine'],
+  communication: ['broadcast_engine', 'event_engine', 'saga_engine'],
   integration: ['routing_engine', 'transformation_engine'],
-  analytics: ['monitoring_engine', 'capacity_engine'],
+  analytics: ['monitoring_engine', 'capacity_engine', 'observability_engine'],
   experience: ['accessibility_engine', 'personalization_engine'],
   knowledge: ['graph_engine', 'context_engine'],
   autonomy: ['self_healing_engine', 'self_documentation_engine'],
   creativity: ['imagination_engine', 'innovation_engine', 'dream_engine'],
-  perception: ['intent_engine', 'emotion_engine', 'multimodal_engine'],
+  perception: ['intent_engine', 'emotion_engine', 'multimodal_engine', 'dialogue_engine'],
   resource: ['budget_engine', 'quota_engine', 'entitlement_engine'],
   workflow: ['pipeline_engine', 'coordination_engine', 'delegation_engine'],
   enhancement: [
