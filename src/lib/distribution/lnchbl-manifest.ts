@@ -39,19 +39,23 @@ export type LnchblPatchTable = typeof LNCHBL_PATCH_TABLES[number];
 
 // ─── Patch Payload Schema ───────────────────────────────────────────────────
 
+export interface LnchblEdgeFunctionCode {
+  function_name: string;
+  code: string;
+  config?: Record<string, unknown>;
+}
+
 export interface LnchblPatchPayload {
   target_distribution: 'LNCHBL';
   patch_version: string;
+  patch_id?: string;
   capabilities: string[];
   engines: string[];
-  meta_engines: string[];
+  changelog: string;
+  signature?: string;
   config_overrides: Record<string, unknown>;
-  /** Optional: new edge function code to deploy in LNCHBL */
-  edge_function_code?: {
-    function_name: string;
-    code: string;
-    config?: Record<string, unknown>;
-  } | null;
+  /** Optional: array of edge function code to deploy in LNCHBL */
+  edge_function_code?: LnchblEdgeFunctionCode[] | null;
 }
 
 // ─── Validation Helpers ─────────────────────────────────────────────────────
@@ -82,14 +86,23 @@ export function validatePatchForLnchbl(payload: LnchblPatchPayload): string[] {
     errors.push(`Invalid target_distribution: ${payload.target_distribution}`);
   }
 
-  // Check if edge_function_code uses a pf-* name (which would conflict)
+  // Check if any edge_function_code entries use pf-* names
   if (payload.edge_function_code) {
-    const fnName = payload.edge_function_code.function_name;
-    if (isCmpsblOnlyFunction(fnName)) {
-      errors.push(
-        `edge_function_code.function_name "${fnName}" uses pf-* prefix which is reserved for CMPSBL. ` +
-        `Use lnchbl-* prefix for LNCHBL functions.`
-      );
+    for (const fn of payload.edge_function_code) {
+      if (isCmpsblOnlyFunction(fn.function_name)) {
+        errors.push(
+          `edge_function_code.function_name "${fn.function_name}" uses pf-* prefix which is reserved for CMPSBL. ` +
+          `Use lnchbl-* prefix for LNCHBL functions.`
+        );
+      }
+    }
+  }
+
+  // Check protected fields in config_overrides
+  const PROTECTED = ['distribution_id', 'identity', 'canon_authority', 'federation_enabled', 'self_evolution', 'self_improvement'];
+  for (const field of PROTECTED) {
+    if (field in (payload.config_overrides || {})) {
+      errors.push(`Protected field "${field}" cannot be overridden in config_overrides`);
     }
   }
 
