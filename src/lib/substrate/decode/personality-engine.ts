@@ -315,11 +315,11 @@ class PersonalityEngineClient {
    */
   private static readonly LANGUAGE_MARKERS: Record<PersonalityProfile, string[]> = {
     neutral: [],
-    technical: ['api', 'function', 'error', 'debug', 'implement', 'code', 'syntax', 'parameter', 'config', 'module'],
-    concise: ['quick', 'short', 'brief', 'tldr', 'summary'],
-    friendly: ['thanks', 'please', 'appreciate', 'wonderful', 'great'],
-    admin: ['admin', 'system', 'debug', 'diagnostics', 'internal', 'status', 'health'],
-    exploratory: ['how', 'what', 'why', 'explain', 'curious', 'wonder', 'learn', 'understand', 'explore', 'possible'],
+    technical: ['api', 'function', 'error', 'debug', 'implement', 'code', 'syntax', 'parameter', 'config', 'module', 'deploy', 'endpoint', 'schema', 'query', 'stack', 'runtime', 'async', 'webhook'],
+    concise: ['quick', 'short', 'brief', 'tldr', 'summary', 'eli5', 'tl;dr', 'just tell me', 'bottom line', 'in a nutshell'],
+    friendly: ['thanks', 'please', 'appreciate', 'wonderful', 'great', 'awesome', 'hey', 'hi', 'hello', 'sup', 'yo', 'hiya', 'howdy', 'cheers', 'thx', 'ty', 'tysm', 'cool', 'nice', 'sweet', 'dope', 'lit', 'fire', 'goated', 'based', 'w', 'bet', 'fs', 'ngl', 'imo', 'tbh', 'lowkey', 'highkey', 'fr', 'no cap', 'bruh', 'fam', 'bro', 'sis'],
+    admin: ['admin', 'system', 'debug', 'diagnostics', 'internal', 'status', 'health', 'metrics', 'logs', 'circuit', 'provider', 'quota', 'uptime'],
+    exploratory: ['how', 'what', 'why', 'explain', 'curious', 'wonder', 'learn', 'understand', 'explore', 'possible', 'imagine', 'could it', 'what about', 'tell me about', 'walk me through', 'show me', 'teach me'],
   };
 
   /**
@@ -409,8 +409,8 @@ class PersonalityEngineClient {
    * Simple sentiment analysis (-1 to 1)
    */
   private analyzeSentiment(text: string): number {
-    const positiveWords = ['good', 'great', 'awesome', 'thanks', 'helpful', 'love', 'amazing', 'excellent', 'perfect', 'wonderful'];
-    const negativeWords = ['bad', 'terrible', 'awful', 'hate', 'broken', 'stupid', 'useless', 'annoying', 'frustrating', 'wrong'];
+    const positiveWords = ['good', 'great', 'awesome', 'thanks', 'helpful', 'love', 'amazing', 'excellent', 'perfect', 'wonderful', 'fire', 'goated', 'based', 'dope', 'lit', 'sick', 'clean', 'crispy', 'chef kiss', 'slaps', 'bussin', 'w', 'valid', 'peak', 'elite', 'mint', 'clutch', 'solid', 'nailed it', 'chef\'s kiss', 'banger', 'no cap'];
+    const negativeWords = ['bad', 'terrible', 'awful', 'hate', 'broken', 'stupid', 'useless', 'annoying', 'frustrating', 'wrong', 'trash', 'mid', 'ass', 'sus', 'cap', 'cringe', 'dead', 'cooked', 'wack', 'janky', 'scuffed', 'l', 'rip', 'fail', 'yikes', 'oof'];
     
     let score = 0;
     const words = text.split(/\s+/);
@@ -538,22 +538,28 @@ class PersonalityEngineClient {
       query: [
         /^(what|how|why|when|where|who|which|is|are|can|does|do)\b/i,
         /\?$/,
-        /^(explain|describe|tell me|show me)/i,
+        /^(explain|describe|tell me|show me|walk me through|teach me|eli5|wdym|wym)/i,
+        /\b(what's|whats|who's|whos|how's|hows)\b/i,
+        /\b(wtf|tf|wth)\b/i,
       ],
       command: [
         /^(do|make|create|build|run|execute|start|stop|enable|disable|set|configure)/i,
-        /^(please|can you|could you|would you).*(do|make|create|run|fix)/i,
+        /^(please|can you|could you|would you|pls|plz).*(do|make|create|run|fix)/i,
         /!$/,
+        /^(yo|hey|aye|bruh|bro|fam)\s+(do|make|create|run|fix|help)/i,
+        /^(gimme|lemme|hook me up|hit me with|send|drop|ship)/i,
       ],
       feedback: [
-        /^(i think|i feel|i believe|seems|appears)/i,
-        /(not working|broken|bug|issue|problem|error)/i,
-        /(love|hate|like|dislike|prefer)/i,
+        /^(i think|i feel|i believe|seems|appears|imo|tbh|ngl|lowkey|highkey)/i,
+        /(not working|broken|bug|issue|problem|error|scuffed|janky|cooked|messed up)/i,
+        /(love|hate|like|dislike|prefer|fw|don't fw|vibes|vibe|mid|goated|trash|fire|slaps)/i,
+        /\b(w|l|rip|oof|yikes|sheesh|damn|bruh|bro)\b/i,
       ],
       exploration: [
         /^(how does|what if|imagine|suppose|consider)/i,
         /(possible|potential|explore|discover|learn|understand)/i,
         /\.\.\./,
+        /\b(any way to|is there a|can it|what about|tell me more|deep dive|unpack)\b/i,
       ],
     };
 

@@ -30,6 +30,7 @@ import {
 import { AgencyCommandPalette } from '../AgencyCommandPalette';
 import { AgencyHelpPanel } from '../AgencyHelpPanel';
 import type { Specialization } from '@/lib/agency/agencyTypes';
+import { formatChatMessage } from '@/lib/ui/formatChatMessage';
 
 interface Message {
   id: string;
@@ -229,8 +230,10 @@ export function PortalChatPanel({ agency, className }: PortalChatPanelProps) {
                   : "bg-card/80 border border-border/50"
               )}>
                 <div 
-                  className="text-sm whitespace-pre-wrap prose prose-sm max-w-none dark:prose-invert"
-                  dangerouslySetInnerHTML={{ __html: formatMessageContent(msg.content) }}
+                  className="text-sm whitespace-pre-wrap prose prose-sm max-w-none dark:prose-invert
+                    [&_strong]:text-foreground [&_strong]:font-semibold
+                    [&_em]:text-muted-foreground [&_a]:text-primary"
+                  dangerouslySetInnerHTML={{ __html: formatChatMessage(msg.content) }}
                 />
                 
                 <div className="flex items-center gap-2 mt-2">
@@ -361,30 +364,4 @@ function generateTeamStatus(agency: Agency): string {
   return lines.join('\n');
 }
 
-// Escape HTML to prevent XSS attacks
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;');
-}
-
-// Format message content with rich HTML (XSS-safe)
-function formatMessageContent(content: string): string {
-  // SECURITY: Escape HTML first to prevent XSS
-  let formatted = escapeHtml(content);
-  
-  // Apply markdown formatting after escaping
-  formatted = formatted
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>')
-    .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-muted text-xs">$1</code>')
-    .replace(/^## (.+)$/gm, '<strong class="text-base block mt-2 mb-1">$1</strong>')
-    .replace(/^### (.+)$/gm, '<strong class="text-sm block mt-2 mb-1">$1</strong>')
-    .replace(/^- /gm, '• ')
-    .replace(/\n/g, '<br />');
-  
-  return formatted;
-}
+// formatMessageContent removed — now using shared formatChatMessage from @/lib/ui/formatChatMessage

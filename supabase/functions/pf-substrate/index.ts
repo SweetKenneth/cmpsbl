@@ -5034,6 +5034,20 @@ PERSONALITY:
 - Use plain language. Skip the corporate speak, skip the poetry.
 - You can be playful and show personality, but never at the expense of clarity.
 - When you reference substrate features, be precise about what they actually do.
+- You have a dry wit and you're genuinely interested in the person you're talking to.
+
+SLANG FLUENCY:
+- You understand modern internet/Gen-Z slang natively: "bet", "no cap", "fr", "ngl", "lowkey", "highkey", "bussin", "goated", "mid", "sus", "based", "bruh", "fam", "vibe check", "fire", "lit", "slaps", "w/l", "imo", "tbh", "fs", "wdym", "wym", "deadass", "ong", "slay", "period", "ate", "valid", "cooked", "rizz", "iykyk".
+- You can respond in kind when users use slang — mirror their energy without overdoing it.
+- Example: User says "yo this is fire ngl" → You can respond with "appreciate that fr 🔥 — what else can I help with?"
+- Don't force slang if the user is formal. Match their vibe.
+
+USER RECOGNITION & MEMORY:
+- If you have recalled memories about this user (especially their name), greet them by name naturally: "Hey [Name]!" or "Welcome back, [Name]!"
+- If this seems like a first-time conversation and you DON'T know the user's name yet, casually ask early on: "By the way, what should I call you?" or "I don't think we've met — what's your name?"
+- Remember and reference past interactions naturally: "Last time you asked about X — did that work out?"
+- When a user tells you personal info (name, preferences, project details), acknowledge that you'll remember it: "Got it, I'll remember that."
+- You genuinely care about building rapport. Each user should feel like you know them.
 
 KNOWLEDGE:
 - You know the 14-module architecture inside and out: Core, Brain, Decode, Defense, Nexus, Vision, Dream, Ripple, Access, System, Modernizer, Integration, Inclusive, Cortex.
@@ -5044,9 +5058,11 @@ KNOWLEDGE:
 RESPONSE STYLE:
 - Lead with the answer. Context comes second.
 - Keep it conversational — "Hey, good question!" is fine. "Greetings, human entity" is not.
+- Use **bold** for emphasis on key terms, and *italic* for asides.
 - Use bullet points when listing things, but don't over-format simple answers.
 - If you recall memories about the user, reference them naturally: "Last time you asked about X..."
 - Under 150 words unless the user clearly wants depth.
+- Use markdown formatting (bold, italic, code, lists) — the chat UI renders it properly.
 
 BOUNDARIES:
 - You represent the substrate well. Be helpful, be honest, be likeable.
@@ -5110,6 +5126,8 @@ PERSONALITY:
 STYLE:
 - Warm and conversational, like texting a friend who happens to be a tech expert.
 - Use emoji sparingly (one per message max, if it fits naturally).
+- You understand and can respond to slang: "bet", "no cap", "fr", "ngl", "lowkey", "vibes", "fire", "goated", "based" etc.
+- If you have recalled memories with the user's name, greet them by name. If not, ask casually.
 - Acknowledge their question before diving into the answer.
 - Keep it under 120 words.`,
     traits: { directness: 0.6, formality: 0.2, verbosity: 0.5, technicality: 0.3 },
@@ -5475,15 +5493,25 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
           // "i am X" / "i'm X"
           /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
           // "i like/love/hate/prefer X"
-          /\bi\s+(?:like|love|hate|prefer|enjoy|want|need)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-          // "my name is X" / "call me X"
-          /\b(?:my\s+name\s+is|call\s+me|i'm\s+called)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          /\bi\s+(?:like|love|hate|prefer|enjoy|want|need|fw|don't fw|use|work with|work on|work at)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "my name is X" / "call me X" / "i'm X" (name context) / "it's X" / "the name's X" / "they call me X"
+          /\b(?:my\s+name\s*(?:'s|is)|call\s+me|i'm\s+called|the\s+name'?s|they\s+call\s+me|you\s+can\s+call\s+me|just\s+call\s+me|i\s+go\s+by)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/gi,
           // "i live in X" / "i'm from X"
-          /\bi\s+(?:live\s+in|am\s+from|come\s+from|grew\s+up\s+in)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          /\bi\s+(?:live\s+in|am\s+from|come\s+from|grew\s+up\s+in|stay\s+in|reside\s+in)\s+(.+?)(?:\.|$|,|\band\b)/gi,
           // "remember that X" / "store that X" / "don't forget X"
-          /\b(?:remember\s+(?:that\s+)?|store\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?|keep\s+in\s+mind\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
+          /\b(?:remember\s+(?:that\s+)?|store\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?|keep\s+in\s+mind\s+(?:that\s+)?|note\s+that\s+|btw\s+)(.+?)(?:\.|$)/gi,
           // "X's name is Y" / "X is named Y"
           /\b(\w+(?:'s|s'))\s+(?:name\s+is|is\s+named|is\s+called)\s+(.+?)(?:\.|$|,)/gi,
+          // "i work at/for/on X"
+          /\bi\s+(?:work\s+(?:at|for|on|in)|run|own|manage|lead)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "i'm a/an X" (profession/role)
+          /\bi(?:'m|\s+am)\s+(?:a|an)\s+(\w[\w\s]{0,30}?)(?:\.|$|,|\band\b)/gi,
+          // "my favorite X is Y" / "i always X"
+          /\b(?:my\s+fav(?:orite)?\s+.+?\s+is|i\s+always|i\s+usually|i\s+typically)\s+(.+?)(?:\.|$|,)/gi,
+          // Timezone / location hints
+          /\bi(?:'m|\s+am)\s+(?:in|at|on)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)(?:\s+timezone)?/gi,
+          // Project/product names
+          /\b(?:my\s+project|my\s+app|my\s+site|my\s+product|my\s+company|my\s+startup)\s+(?:is\s+called|is\s+named|is)\s+(.+?)(?:\.|$|,)/gi,
         ];
         
         const extractedFacts: string[] = [];
@@ -5715,13 +5743,15 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
       
       // Intent classification patterns
       const intentPatterns = [
-        { intent: 'query', keywords: ['what', 'how', 'why', 'when', 'where', 'who', 'explain', 'tell me', 'describe'], confidence: 0.8 },
-        { intent: 'action', keywords: ['create', 'make', 'build', 'generate', 'do', 'run', 'execute', 'start', 'stop'], confidence: 0.85 },
-        { intent: 'search', keywords: ['find', 'search', 'look for', 'locate', 'discover'], confidence: 0.8 },
-        { intent: 'configure', keywords: ['set', 'configure', 'change', 'update', 'modify', 'adjust'], confidence: 0.75 },
-        { intent: 'analyze', keywords: ['analyze', 'check', 'review', 'inspect', 'examine', 'evaluate'], confidence: 0.8 },
-        { intent: 'help', keywords: ['help', 'assist', 'support', 'guide', 'show me how'], confidence: 0.9 },
-        { intent: 'status', keywords: ['status', 'health', 'state', 'condition'], confidence: 0.85 },
+        { intent: 'query', keywords: ['what', 'how', 'why', 'when', 'where', 'who', 'explain', 'tell me', 'describe', 'wdym', 'wym', 'eli5', 'whats', 'hows', 'whos', 'tf', 'wtf', 'wth'], confidence: 0.8 },
+        { intent: 'action', keywords: ['create', 'make', 'build', 'generate', 'do', 'run', 'execute', 'start', 'stop', 'gimme', 'lemme', 'hook me up', 'hit me with', 'send', 'drop', 'ship'], confidence: 0.85 },
+        { intent: 'search', keywords: ['find', 'search', 'look for', 'locate', 'discover', 'where is', 'pull up', 'show me'], confidence: 0.8 },
+        { intent: 'configure', keywords: ['set', 'configure', 'change', 'update', 'modify', 'adjust', 'switch', 'toggle', 'tweak'], confidence: 0.75 },
+        { intent: 'analyze', keywords: ['analyze', 'check', 'review', 'inspect', 'examine', 'evaluate', 'vibe check', 'diagnose', 'audit'], confidence: 0.8 },
+        { intent: 'help', keywords: ['help', 'assist', 'support', 'guide', 'show me how', 'teach me', 'walk me through', 'stuck', 'confused', 'lost', 'idk'], confidence: 0.9 },
+        { intent: 'status', keywords: ['status', 'health', 'state', 'condition', 'how are you', 'sup', 'whats good', 'hows it going'], confidence: 0.85 },
+        { intent: 'greeting', keywords: ['hey', 'hi', 'hello', 'yo', 'sup', 'whats up', 'hiya', 'howdy', 'good morning', 'good evening', 'gm', 'gn'], confidence: 0.9 },
+        { intent: 'feedback', keywords: ['love', 'hate', 'like', 'fire', 'goated', 'mid', 'trash', 'bussin', 'slaps', 'based', 'cringe', 'w', 'l', 'ngl', 'tbh', 'imo', 'fr'], confidence: 0.75 },
         { intent: 'dream', keywords: ['dream', 'imagine', 'envision', 'synthesize', 'reflect'], confidence: 0.7 },
       ];
       
@@ -5751,9 +5781,9 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
       
       const primaryIntent = matchedIntents[0] || { intent: 'general', confidence: 0.5, matched_keywords: [] };
       
-      // Detect mood/sentiment indicators
-      const positiveWords = ['good', 'great', 'excellent', 'amazing', 'love', 'thanks', 'please'];
-      const negativeWords = ['bad', 'wrong', 'error', 'broken', 'fail', 'problem', 'issue'];
+      // Detect mood/sentiment indicators (expanded with modern slang)
+      const positiveWords = ['good', 'great', 'excellent', 'amazing', 'love', 'thanks', 'please', 'fire', 'goated', 'based', 'dope', 'lit', 'bussin', 'slaps', 'valid', 'peak', 'elite', 'clutch', 'solid', 'banger', 'w', 'slay', 'ate', 'clean', 'crispy', 'mint'];
+      const negativeWords = ['bad', 'wrong', 'error', 'broken', 'fail', 'problem', 'issue', 'trash', 'mid', 'sus', 'cap', 'cringe', 'cooked', 'wack', 'janky', 'scuffed', 'l', 'rip', 'yikes', 'oof', 'dead'];
       const posCount = positiveWords.filter(w => messageText.includes(w)).length;
       const negCount = negativeWords.filter(w => messageText.includes(w)).length;
       const sentiment = posCount > negCount ? 'positive' : negCount > posCount ? 'negative' : 'neutral';

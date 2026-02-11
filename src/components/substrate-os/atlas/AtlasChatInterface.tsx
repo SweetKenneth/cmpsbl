@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { formatChatMessage } from '@/lib/ui/formatChatMessage';
 import { atlasInterpreter, type CommandResult } from '@/lib/atlas/command-interpreter';
 
 interface ChatMessage {
@@ -255,13 +256,12 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
                       ? "bg-amber-500/10 border border-amber-400/30 text-foreground/90"
                       : "bg-muted/50 border border-border/50 text-foreground/90"
                   )}>
-                    <div className="whitespace-pre-wrap leading-relaxed">
-                      {msg.content.split('**').map((part, i) => 
-                        i % 2 === 1 
-                          ? <strong key={i} className="text-cyan-300">{part}</strong> 
-                          : part
-                      )}
-                    </div>
+                    <div 
+                      className="whitespace-pre-wrap leading-relaxed 
+                        [&_strong]:text-cyan-300 [&_strong]:font-semibold
+                        [&_em]:text-muted-foreground [&_a]:text-primary"
+                      dangerouslySetInnerHTML={{ __html: formatChatMessage(msg.content) }}
+                    />
                   </div>
 
                   {/* Suggestions */}
