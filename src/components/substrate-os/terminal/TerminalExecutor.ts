@@ -4227,6 +4227,93 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     }
 
+    // PATCH — Distribution Patch Dispatch
+    else if (base.startsWith('patch.')) {
+      const { sendPatchToLnchbl, patchCapabilities } = await import('@/lib/patches/dispatch');
+
+      if (base === 'patch.help') {
+        return {
+          success: true,
+          output: `◉ PATCH DISPATCH COMMANDS\n\n  patch.send <version> <changelog> [cap1,cap2] [eng1,eng2]\n    → Dispatch a patch directly to LNCHBL\n\n  patch.status\n    → List recent patches from cmpsbl_patches\n\n  patch.publish <patch_id>\n    → Publish a draft and dispatch to LNCHBL\n\n  patch.help\n    → This help text`,
+        };
+      }
+
+      if (base === 'patch.status') {
+        const { data, error } = await (supabase as any)
+          .from('cmpsbl_patches')
+          .select('id, version, status, changelog, created_at')
+          .order('created_at', { ascending: false })
+          .limit(10);
+        if (error) return { success: false, output: `▓ Error: ${error.message}` };
+        const lines = (data || []).map((p: any) =>
+          `  ${p.status === 'published' ? '✅' : p.status === 'draft' ? '📝' : '❌'} v${p.version} [${p.status}] — ${p.changelog?.slice(0, 60) || 'No description'}\n    ID: ${p.id.slice(0, 8)}… | ${new Date(p.created_at).toLocaleDateString()}`
+        ).join('\n\n');
+        return { success: true, output: `◉ RECENT PATCHES (${data?.length || 0})\n\n${lines || '  No patches found.'}` };
+      }
+
+      if (base === 'patch.send') {
+        const version = args[0];
+        const changelog = args[1];
+        if (!version || !changelog) {
+          return { success: false, output: '▓ Usage: patch.send <version> <changelog> [capabilities] [engines]\n  Example: patch.send 2.1.0 "Enable dream synthesis" dream_synthesis,memory_consolidation reasoning_engine' };
+        }
+        const capabilities = args[2] ? args[2].split(',') : [];
+        const engines = args[3] ? args[3].split(',') : [];
+        const result = await sendPatchToLnchbl({
+          target_distribution: 'LNCHBL',
+          patch_version: version,
+          capabilities,
+          engines,
+          changelog,
+          config_overrides: {},
+        });
+        if (result.success) {
+          return { success: true, output: `◉ PATCH DISPATCHED ✅\n\n  Version: ${version}\n  Patch ID: ${result.patch_id}\n  Capabilities: ${capabilities.length || 'none'}\n  Engines: ${engines.length || 'none'}\n  Changelog: ${changelog}` };
+        } else {
+          return { success: false, output: `▓ DISPATCH FAILED\n  ${result.error}\n  ${result.validation_errors?.join('\n  ') || ''}` };
+        }
+      }
+
+      if (base === 'patch.publish') {
+        const patchRef = args[0];
+        if (!patchRef) {
+          return { success: false, output: '▓ Usage: patch.publish <patch_id>\n  Use patch.status to find draft IDs' };
+        }
+        // Find the patch (prefix match)
+        const { data: patches, error: fetchErr } = await (supabase as any)
+          .from('cmpsbl_patches')
+          .select('*')
+          .eq('status', 'draft')
+          .order('created_at', { ascending: false });
+        if (fetchErr) return { success: false, output: `▓ Error: ${fetchErr.message}` };
+        const patch = (patches || []).find((p: any) => p.id.startsWith(patchRef) || p.version === patchRef);
+        if (!patch) return { success: false, output: `▓ Draft patch not found: ${patchRef}` };
+
+        // Dispatch to LNCHBL
+        const result = await sendPatchToLnchbl({
+          target_distribution: 'LNCHBL',
+          patch_version: patch.version,
+          capabilities: patch.capabilities_unlocked || [],
+          engines: patch.engines_unlocked || [],
+          changelog: patch.changelog || '',
+          config_overrides: {},
+        });
+
+        if (result.success) {
+          // Update local status
+          await (supabase as any)
+            .from('cmpsbl_patches')
+            .update({ status: 'published', published_at: new Date().toISOString() })
+            .eq('id', patch.id);
+          return { success: true, output: `◉ PATCH v${patch.version} PUBLISHED & DISPATCHED ✅\n\n  Local ID: ${patch.id.slice(0, 8)}…\n  LNCHBL Patch ID: ${result.patch_id}\n  Engines: ${(patch.engines_unlocked || []).length}\n  Capabilities: ${(patch.capabilities_unlocked || []).length}` };
+        } else {
+          return { success: false, output: `▓ DISPATCH FAILED (patch NOT published)\n  ${result.error}\n  ${result.validation_errors?.join('\n  ') || ''}` };
+        }
+      }
+
+      return { success: false, output: `▓ Unknown patch command: ${base}\n  Type 'patch.help' for available commands` };
+    }
+
     // Unknown command
     else {
       return {
