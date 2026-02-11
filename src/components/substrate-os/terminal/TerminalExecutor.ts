@@ -335,10 +335,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│         SUBSTRATE OS v8.0.0 — COMMAND REFERENCE             │
+│         SUBSTRATE OS v8.5.0 — COMMAND REFERENCE             │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 15 + Synergies          │
-│  Architecture: 14-module + CLM + 147 Synergy Pipelines      │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 16 + Synergies          │
+│  Architecture: 14-module + CLM + Infra + 147 Synergies      │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │
@@ -373,6 +373,9 @@ function generateFullHelp(): string {
 │                                                             │
 │  ◉ CONSTANT LEARNING MODE (CLM)                             │
 │    clm          (10 cmds)  Autonomous learning, curriculum     │
+│                                                             │
+│  ⚙ INFRASTRUCTURE (v8.5.0)                                   │
+│    infra        (${COMMAND_CATEGORIES.infra.commands.length.toString().padStart(2)} cmds)  Cron, snapshots, analytics, NL     │
 │                                                             │
 │  ⚙ META COMMANDS                                            │
 │    meta         (${COMMAND_CATEGORIES.meta.commands.length.toString().padStart(2)} cmds)  Terminal controls, help, aliases    │
@@ -459,6 +462,46 @@ function generateFullHelp(): string {
 │  cortex.synergy.recommend Get recommended synergies         │
 │  cortex.synergy.categories  List categories                 │
 │  cortex.synergy.modules     Synergies by module             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ INFRASTRUCTURE v8.5.0 ──────────────────────────────────────┐
+│                                                             │
+│  ┌─ CRON SCHEDULER ─────────────────────────────────────┐   │
+│  │  cron.list              View all scheduled jobs       │   │
+│  │  cron.start / cron.stop Start/stop the scheduler      │   │
+│  │  cron.trigger <job-id>  Manually trigger a job        │   │
+│  │  cron.history           View run history              │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─ RATE LIMITING ──────────────────────────────────────┐   │
+│  │  ratelimit.status       Persistent limiter status     │   │
+│  │  ratelimit.buckets      List all buckets              │   │
+│  │  ratelimit.cleanup      Cleanup expired buckets       │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─ ROLLBACK SNAPSHOTS (Enterprise) ────────────────────┐   │
+│  │  snapshot.list          List state snapshots          │   │
+│  │  snapshot.capture       Capture current state         │   │
+│  │  snapshot.restore <id>  Restore from snapshot         │   │
+│  │  snapshot.diff <id>     Diff vs current state         │   │
+│  │  snapshot.prune         Prune old snapshots           │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─ CAPABILITY ANALYTICS ───────────────────────────────┐   │
+│  │  analytics.summary      Usage summary (24h)           │   │
+│  │  analytics.top          Top capabilities              │   │
+│  │  analytics.dead         Dead/unused capabilities      │   │
+│  │  analytics.rising       Rising trends                 │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─ STREAMING + FILES + NL ─────────────────────────────┐   │
+│  │  stream.status          SSE pipeline status           │   │
+│  │  file.status            File processing pipeline      │   │
+│  │  file.formats           Supported formats             │   │
+│  │  nl.parse <query>       Natural language → command     │   │
+│  │  nl.intents             Known NL intents              │   │
+│  └───────────────────────────────────────────────────────┘   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
@@ -4150,6 +4193,37 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
       } catch (err) {
         return { success: false, output: `▓ Meta run error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
+    // ═══ INFRASTRUCTURE COMMANDS (v8.5.0) ═══
+    else if (base.startsWith('cron.') || base.startsWith('ratelimit.') || base.startsWith('snapshot.') || base.startsWith('analytics.') || base.startsWith('stream.') || base.startsWith('file.') || base.startsWith('nl.')) {
+      try {
+        // Lazy-register infra handlers on first use
+        const { registerInfraHandlers } = await import('@/lib/terminal/infra-handlers');
+        registerInfraHandlers();
+        
+        const { getHandler } = await import('@/lib/terminal/validate-registry');
+        const handler = getHandler(base);
+        
+        if (handler) {
+          const handlerResult = await handler();
+          const data = handlerResult as Record<string, unknown>;
+          
+          if (data?.success === false) {
+            return { success: false, output: `▓ ${data.error || 'Command failed'}` };
+          }
+          
+          return {
+            success: true,
+            output: `◉ ${base}\n\n${JSON.stringify(data?.data || data, null, 2)}`,
+            data: data?.data || data,
+          };
+        } else {
+          return { success: false, output: `▓ Infrastructure command not found: ${base}` };
+        }
+      } catch (err) {
+        return { success: false, output: `▓ Infra error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
 

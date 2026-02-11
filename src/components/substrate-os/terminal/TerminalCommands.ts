@@ -10,7 +10,7 @@ import type { LucideIcon } from 'lucide-react';
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -612,6 +612,48 @@ export const ENGINE_COMMANDS: CommandDefinition[] = [
   { command: 'engine.history', description: 'View recent engine executions', category: 'engine', icon: Clock, requiresOperator: false, args: '[limit]', example: 'engine.history 10' },
 ];
 
+// ═══ Infrastructure Commands (v8.5.0) ═══
+export const INFRA_COMMANDS: CommandDefinition[] = [
+  // Cron Runner
+  { command: 'cron.list', description: 'List all scheduled jobs', category: 'infra', icon: Clock, requiresOperator: false },
+  { command: 'cron.stats', description: 'Cron runner statistics', category: 'infra', icon: Gauge, requiresOperator: false },
+  { command: 'cron.start', description: 'Start the cron runner', category: 'infra', icon: PlayCircle, requiresOperator: true },
+  { command: 'cron.stop', description: 'Stop all cron jobs', category: 'infra', icon: XCircle, requiresOperator: true },
+  { command: 'cron.trigger', description: 'Manually trigger a job', category: 'infra', icon: Zap, requiresOperator: true, args: '<job-id>', example: 'cron.trigger health-check' },
+  { command: 'cron.history', description: 'View cron run history', category: 'infra', icon: Clock, requiresOperator: false },
+  { command: 'cron.enable', description: 'Enable a specific job', category: 'infra', icon: CheckCircle, requiresOperator: true, args: '<job-id>' },
+  { command: 'cron.disable', description: 'Disable a specific job', category: 'infra', icon: XCircle, requiresOperator: true, args: '<job-id>' },
+  // Rate Limiter
+  { command: 'ratelimit.status', description: 'Persistent rate limiter status', category: 'infra', icon: Gauge, requiresOperator: false },
+  { command: 'ratelimit.buckets', description: 'List all rate limit buckets', category: 'infra', icon: Database, requiresOperator: false },
+  { command: 'ratelimit.cleanup', description: 'Cleanup expired buckets', category: 'infra', icon: Settings, requiresOperator: true },
+  // Rollback Snapshots
+  { command: 'snapshot.list', description: 'List all state snapshots', category: 'infra', icon: Database, requiresOperator: false },
+  { command: 'snapshot.capture', description: 'Capture current state snapshot', category: 'infra', icon: Database, requiresOperator: true },
+  { command: 'snapshot.stats', description: 'Snapshot storage statistics', category: 'infra', icon: Gauge, requiresOperator: false },
+  { command: 'snapshot.diff', description: 'Diff a snapshot vs current', category: 'infra', icon: GitBranch, requiresOperator: false, args: '<snapshot-id>' },
+  { command: 'snapshot.restore', description: 'Restore from snapshot', category: 'infra', icon: Database, requiresOperator: true, args: '<snapshot-id>' },
+  { command: 'snapshot.delete', description: 'Delete a snapshot', category: 'infra', icon: XCircle, requiresOperator: true, args: '<snapshot-id>' },
+  { command: 'snapshot.prune', description: 'Prune old snapshots', category: 'infra', icon: Settings, requiresOperator: true },
+  // Capability Analytics
+  { command: 'analytics.summary', description: 'Capability usage summary (24h)', category: 'infra', icon: Activity, requiresOperator: false },
+  { command: 'analytics.top', description: 'Top used capabilities', category: 'infra', icon: Sparkles, requiresOperator: false },
+  { command: 'analytics.dead', description: 'Dead/unused capabilities', category: 'infra', icon: XCircle, requiresOperator: false },
+  { command: 'analytics.rising', description: 'Rising capability trends', category: 'infra', icon: Activity, requiresOperator: false },
+  { command: 'analytics.flush', description: 'Flush analytics to storage', category: 'infra', icon: Database, requiresOperator: true },
+  // Streaming Pipeline
+  { command: 'stream.status', description: 'Streaming pipeline status', category: 'infra', icon: Radio, requiresOperator: false },
+  { command: 'stream.active', description: 'Active stream sessions', category: 'infra', icon: Activity, requiresOperator: false },
+  // File Processing
+  { command: 'file.status', description: 'File processing pipeline status', category: 'infra', icon: FileText, requiresOperator: false },
+  { command: 'file.history', description: 'File processing history', category: 'infra', icon: Clock, requiresOperator: false },
+  { command: 'file.formats', description: 'Supported file formats', category: 'infra', icon: FileCheck, requiresOperator: false },
+  // Natural Language Terminal
+  { command: 'nl.parse', description: 'Parse natural language to command', category: 'infra', icon: MessageSquare, requiresOperator: false, args: '<query>', example: 'nl.parse "show me system health"' },
+  { command: 'nl.intents', description: 'List known NL intents', category: 'infra', icon: Search, requiresOperator: false },
+  { command: 'nl.history', description: 'NL parse history', category: 'infra', icon: Clock, requiresOperator: false },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
@@ -633,6 +675,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...ENCODED_COMMANDS,
   ...ENGINE_COMMANDS,
   ...META_COMMANDS,
+  ...INFRA_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
@@ -655,6 +698,7 @@ export const COMMAND_CATEGORIES = {
   autoblog: { label: 'AUTOBLOG', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: AUTOBLOG_COMMANDS },
   engine: { label: 'ENGINE', color: 'text-cyan-400', borderColor: 'border-cyan-500/30', commands: ENGINE_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
+  infra: { label: 'INFRA', color: 'text-lime-400', borderColor: 'border-lime-500/30', commands: INFRA_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {

@@ -460,6 +460,58 @@ export {
   useEngines,
 } from './engines';
 
+// ═══ Infrastructure Systems (v8.5.0) ═══
+
+// Cron Runner — Scheduled task automation
+export {
+  cronRunner,
+  registerDefaultCronJobs,
+  type CronJob,
+  type CronRunResult,
+  type CronStats,
+} from './cron-runner';
+
+// Persistent Rate Limiter — Cross-tab synchronized rate limiting
+export {
+  persistentRateLimiter,
+  type PersistentBucket,
+  type PersistentRateLimitConfig,
+} from './persistent-rate-limit';
+
+// Rollback Snapshots — Enterprise-only state snapshots
+export {
+  rollbackSnapshots,
+  type Snapshot,
+  type SnapshotStats,
+} from './rollback-snapshots';
+
+// Capability Analytics — Usage tracking & dead-weight detection
+export {
+  capabilityAnalytics,
+  type CapabilityUsageRecord,
+  type AnalyticsSummary,
+} from './capability-analytics';
+
+// Streaming Pipeline — SSE-based partial response streaming
+export {
+  streamingPipeline,
+  type StreamSession,
+  type StreamStats,
+} from './streaming-pipeline';
+
+// File Processing Pipeline — Document ingestion (CSV, JSON, MD, HTML)
+export {
+  fileProcessingPipeline,
+  type FileProcessingResult,
+  type ProcessingStats,
+} from './file-processing';
+
+// Natural Language Terminal — NL → command parser
+export {
+  nlTerminal,
+  type NLParseResult,
+} from './nl-terminal';
+
 // Re-export substrate client from lib
 export { 
   substrate, 

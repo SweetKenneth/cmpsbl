@@ -45,3 +45,8 @@ export {
   registerSEBAHandlers,
   executeSEBACommand,
 } from './seba-handlers';
+
+// Infrastructure handlers (v8.5.0)
+export {
+  registerInfraHandlers,
+} from './infra-handlers';
