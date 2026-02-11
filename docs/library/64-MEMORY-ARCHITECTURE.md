@@ -1,6 +1,6 @@
 # Memory Architecture
 
-**CMPSBL Substrate OS v6.1.0 — Cognitive Memory Core**
+**CMPSBL Substrate OS v8.5.0 — Cognitive Memory Core (SYNERGY+ Epoch)**
 
 ---
 
