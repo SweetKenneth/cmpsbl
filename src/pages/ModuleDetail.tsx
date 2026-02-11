@@ -149,9 +149,16 @@ export default function ModuleDetail() {
             </h2>
             <div className="flex flex-wrap gap-3">
               {mod.integrations.map((integration, i) => (
-                <span key={i} className="px-4 py-2 rounded-full border border-border bg-card text-sm font-medium">
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="px-4 py-2 rounded-full border border-border bg-card text-sm font-medium hover:border-primary/30 hover:bg-primary/5 transition-colors cursor-default"
+                >
                   {integration}
-                </span>
+                </motion.span>
               ))}
             </div>
           </div>
