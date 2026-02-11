@@ -1,6 +1,6 @@
 /**
  * Cognitive Engine Types
- * v8.0.0 SYNERGY+ Epoch — 62 Engines + 20 Meta-Engines
+ * v8.5.0 SYNERGY+ Epoch — 70 Engines + 22 Meta-Engines
  * 
  * Engines consolidate related capabilities into compound execution units.
  * This architecture provides:
@@ -9,7 +9,7 @@
  * - Simplified API surface for consumers
  * - IP protection through orchestration complexity
  * 
- * v8.0.0 covers 269 capabilities across 62 engines + 20 meta-engines
+ * v8.5.0 covers 325 capabilities across 70 engines + 22 meta-engines
  */
 
 import type { CapabilityId, ModuleLayer } from '../capabilities';
@@ -39,7 +39,7 @@ export type EngineCategory =
   | 'orchestration';  // High-level meta-engine coordination (NEW v8.1.0)
 
 // ============================================================================
-// ENGINE DEFINITIONS — 48 Total (v8.0.0)
+// ENGINE DEFINITIONS — 56 Total (v8.0.0) + 8 v8.5.0
 // ============================================================================
 
 export type EngineId =
@@ -131,6 +131,19 @@ export type EngineId =
   | 'attack_surface_engine'   // Mapping, exposure analysis
   | 'incident_engine'         // Response automation, blast radius
   
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW v8.5.0 ENGINES — 8 High-Value Capability Engines
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  | 'sandbox_engine'           // CORE: runtime validation, dependency resolution, hot-reload, sandboxing
+  | 'saga_engine'              // RIPPLE: event sourcing, saga orchestration, backpressure, schema validation
+  | 'policy_access_engine'     // ACCESS: policy engine, session fingerprint, credential vault, consent
+  | 'deep_cognition_engine'    // BRAIN: associative recall, compression, distillation, temporal reasoning
+  | 'dialogue_engine'          // DECODE: tone calibration, disambiguation, dialogue planning, language detection
+  | 'prompt_safety_engine'     // DEFENSE: prompt injection, data poisoning, output sanitization, adversarial probing
+  | 'observability_engine'     // VISION: real-time dashboard, metric correlation, alert fatigue, baselines
+  | 'technical_debt_engine'    // MODERNIZER: code smells, refactoring, debt scoring, migration paths
+
   // ═══════════════════════════════════════════════════════════════════════════
   // NEW v8.1.0 ENGINES — 14 World-First Enhancement Engines
   // ═══════════════════════════════════════════════════════════════════════════
@@ -272,16 +285,18 @@ export interface CapabilitySource {
 }
 
 export const CAPABILITY_INVENTORY = {
-  version: '8.1.0',
+  version: '8.5.0',
   synergies: 147,
   worldFirst: 56,
+  highValue: 56,
   archived: 10,
   native: 76,
-  total: 269,
+  total: 325,
   engineCoverage: {
     originalEngines: 48,
     worldFirstEngines: 14,
-    totalEngines: 62,
-    metaEngines: 20,
+    highValueEngines: 8,
+    totalEngines: 70,
+    metaEngines: 22,
   },
 };
