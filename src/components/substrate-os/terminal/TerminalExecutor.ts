@@ -370,12 +370,18 @@ function generateFullHelp(): string {
 │  ★ ORCHESTRATOR LAYER                                       │
 │    cortex       (${COMMAND_CATEGORIES.cortex.commands.length.toString().padStart(2)} cmds)  Policy intent, PAAEL loop          │
 │    integration  (${COMMAND_CATEGORIES.integration.commands.length.toString().padStart(2)} cmds)  Enterprise adapters, discovery     │
+│    encoded      (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  AI code generation agent           │
 │                                                             │
-│  ◉ CONSTANT LEARNING MODE (CLM)                             │
-│    clm          (10 cmds)  Autonomous learning, curriculum     │
+│  ◉ AUTONOMY LAYER                                           │
+│    clm          (${COMMAND_CATEGORIES.clm.commands.length.toString().padStart(2)} cmds)  Autonomous learning, curriculum     │
+│    seba         (${COMMAND_CATEGORIES.seba.commands.length.toString().padStart(2)} cmds)  Self-evolving bounded agent         │
+│                                                             │
+│  ⚡ ENGINE LAYER                                             │
+│    engine       (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  62 engines + 20 meta-engines       │
 │                                                             │
 │  ⚙ INFRASTRUCTURE (v8.5.0)                                   │
 │    infra        (${COMMAND_CATEGORIES.infra.commands.length.toString().padStart(2)} cmds)  Cron, snapshots, analytics, NL     │
+│    patch        ( 4 cmds)  Distribution patch dispatch        │
 │                                                             │
 │  ⚙ META COMMANDS                                            │
 │    meta         (${COMMAND_CATEGORIES.meta.commands.length.toString().padStart(2)} cmds)  Terminal controls, help, aliases    │
@@ -503,6 +509,40 @@ function generateFullHelp(): string {
 │  │  nl.intents             Known NL intents              │   │
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
+│  ┌─ PATCH DISPATCH ──────────────────────────────────────┐   │
+│  │  patch.send             Dispatch patch to LNCHBL      │   │
+│  │  patch.status           List recent patches           │   │
+│  │  patch.publish <id>     Publish & dispatch draft      │   │
+│  │  patch.help             Patch command reference       │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ ENCODED AGENT v8.1.0 ──────────────────────────────────────┐
+│                                                             │
+│  encoded.status          Agent status and configuration     │
+│  encoded.generate        Generate code (with task spec)     │
+│  encoded.verify <code>   Verify against guardrails          │
+│  encoded.analyze <code>  Analyze quality metrics            │
+│  encoded.skills          Skill proficiency levels           │
+│  encoded.dry_run         Enable dry-run mode                │
+│  encoded.enable          Enable human approval mode         │
+│  encoded.semi_auto       Semi-autonomous mode               │
+│  encoded.help            All encoded commands               │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ ENGINE SYSTEM v8.1.0 (62 Engines + 20 Meta) ───────────────┐
+│                                                             │
+│  engine.list [cat]       List engines by category           │
+│  engine.get <id>         Engine details                     │
+│  engine.run <id>         Execute an engine                  │
+│  engine.batch            Execute multiple engines           │
+│  engine.worldfirst       14 world-first engines             │
+│  meta.list               List meta-engines                  │
+│  meta.run <id>           Execute meta-engine                │
+│  engine.history          Recent executions                  │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─ TERMINAL FEATURES v5.0.0 ──────────────────────────────────┐
@@ -540,6 +580,34 @@ export async function executeCommand(
     const module = args[0]?.toLowerCase();
     if (module && module in COMMAND_CATEGORIES) {
       return { success: true, output: generateModuleHelp(module as keyof typeof COMMAND_CATEGORIES) };
+    }
+    // Special aliases for sub-modules not in COMMAND_CATEGORIES directly
+    if (module === 'patch') {
+      // Show patch commands from PATCH_COMMANDS
+      const { PATCH_COMMANDS } = await import('./TerminalCommands');
+      const maxLen = Math.max(...PATCH_COMMANDS.map(c => c.command.length));
+      let output = `\n┌─ PATCH DISPATCH ─────────────────────────────────────────────\n│\n`;
+      for (const cmd of PATCH_COMMANDS) {
+        const padded = cmd.command.padEnd(maxLen + 2);
+        const opMarker = cmd.requiresOperator ? '⚡' : '○';
+        const argsHint = cmd.args ? ` ${cmd.args}` : '';
+        output += `│ ${opMarker} ${padded} ∷ ${cmd.description}${argsHint}\n`;
+      }
+      output += `│\n│ ⚡ = Operator required  ○ = Observer accessible\n└──────────────────────────────────────────────────────────`;
+      return { success: true, output };
+    }
+    if (module === 'encoded') {
+      const { ENCODED_COMMANDS } = await import('./TerminalCommands');
+      const maxLen = Math.max(...ENCODED_COMMANDS.map(c => c.command.length));
+      let output = `\n┌─ ENCODED AGENT ──────────────────────────────────────────────\n│\n`;
+      for (const cmd of ENCODED_COMMANDS) {
+        const padded = cmd.command.padEnd(maxLen + 2);
+        const opMarker = cmd.requiresOperator ? '⚡' : '○';
+        const argsHint = cmd.args ? ` ${cmd.args}` : '';
+        output += `│ ${opMarker} ${padded} ∷ ${cmd.description}${argsHint}\n`;
+      }
+      output += `│\n│ ⚡ = Operator required  ○ = Observer accessible\n└──────────────────────────────────────────────────────────`;
+      return { success: true, output };
     }
     return { success: true, output: generateFullHelp() };
   }
