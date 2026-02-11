@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { formatChatMessage } from '@/lib/ui/formatChatMessage';
 import { atlasInterpreter, type CommandResult } from '@/lib/atlas/command-interpreter';
 
 interface ChatMessage {
