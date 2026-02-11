@@ -34,6 +34,7 @@ import {
   detectActionIntent,
 } from '@/lib/agency/leaderTaskDelegation';
 import { AgencyCommandPalette } from './AgencyCommandPalette';
+import { formatChatMessage } from '@/lib/ui/formatChatMessage';
 
 interface AgencyChatInterfaceProps {
   agency: Agency;
