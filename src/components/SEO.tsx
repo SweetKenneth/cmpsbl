@@ -78,7 +78,7 @@ interface SEOProps {
 
 export function SEO({
   title = 'CMPSBL® — Cognitive Infrastructure for AI',
-  description = 'CMPSBL is the cognitive infrastructure layer for AI applications. Persistent memory, self-learning, multi-provider routing, and self-evolution. 14 integrated modules, 269+ capabilities.',
+  description = 'CMPSBL is the cognitive infrastructure layer for AI applications. Persistent memory, self-learning, multi-provider routing, and self-evolution. 14 integrated modules, 325+ capabilities.',
   canonical = 'https://cmpsbl.com',
   image = 'https://cmpsbl.com/og-default.jpg',
   type = 'website',
@@ -255,7 +255,7 @@ export function SEO({
       'Self-learning Dream Cycles',
       'Multi-provider AI routing',
       '14 integrated modules',
-      '269+ capabilities',
+      '325+ capabilities',
       'Enterprise-ready'
     ],
     author: { '@id': 'https://cmpsbl.com/#organization' },

@@ -31,9 +31,9 @@ export default function Solutions() {
       icon: Zap,
       name: "Engine Marketplace",
       tagline: "Production-Ready Orchestrations",
-      description: "62 engines and 20 meta-engines. Governed, versioned, enterprise-grade cognitive orchestrations with subscription access.",
-      features: ["62 production engines", "20 meta-engines", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees"],
-      metrics: ["82 Total Engines", "OEM Licensed", "Production Ready"],
+      description: "70 engines and 22 meta-engines. Governed, versioned, enterprise-grade cognitive orchestrations with subscription access.",
+      features: ["70 production engines", "22 meta-engines", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees"],
+      metrics: ["92 Total Engines", "OEM Licensed", "Production Ready"],
       link: "/engines"
     },
     {

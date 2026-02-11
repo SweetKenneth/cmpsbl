@@ -47,10 +47,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
-        title="CMPSBL® Substrate OS v8.0.0 — 14-Module Cognitive Infrastructure"
-        description="The cognitive infrastructure standard: 14 modules, 5 layers, 147 synergy pipelines, 269 capabilities, 310+ terminal commands. Free exploration tier with premium Engine subscriptions."
+        title="CMPSBL® Substrate OS v8.5.0 — 14-Module Cognitive Infrastructure"
+        description="The cognitive infrastructure standard: 14 modules, 5 layers, 147 synergy pipelines, 325 capabilities, 340+ terminal commands. Free exploration tier with premium Engine subscriptions."
         canonical="https://cmpsbl.com"
-        keywords={['CMPSBL', 'Substrate OS', 'v8.0.0', 'SYNERGY+', '14-module architecture', 'cognitive OS', 'AI governance', 'persistent memory', 'dream cycles', 'synergy pipelines', 'engine marketplace']}
+        keywords={['CMPSBL', 'Substrate OS', 'v8.5.0', 'SYNERGY+', '14-module architecture', 'cognitive OS', 'AI governance', 'persistent memory', 'dream cycles', 'synergy pipelines', 'engine marketplace']}
       />
 
       <PublicNav />

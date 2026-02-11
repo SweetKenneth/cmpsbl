@@ -134,7 +134,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
     }
     
     if (trimmed === 'version') {
-      addResult('version', 'success', 'promptfluid® Substrate OS v8.0.0\nSYNERGY+ Epoch — 269 Capabilities, 147 Pipelines\n14-module architecture | 310+ commands');
+      addResult('version', 'success', 'promptfluid® Substrate OS v8.5.0\nSYNERGY+ Epoch — 325 Capabilities, 147 Pipelines\n14-module architecture | 70 Engines | 22 Meta-Engines | 340+ commands');
       return;
     }
     
