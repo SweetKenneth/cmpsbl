@@ -14,9 +14,9 @@
 | **Status** | Production (Live System) |
 | **Publication Date** | February 2026 |
 | **Author** | Kenneth E. Sweet Jr. ([ORCID](https://orcid.org/0009-0001-4237-1243)) |
-| **Capabilities** | 269 Cross-Module Capabilities |
-| **Cognitive Engines** | 62 Compound Execution Units |
-| **Meta-Engines** | 20 High-Order Orchestrators |
+| **Capabilities** | 325 Cross-Module Capabilities |
+| **Cognitive Engines** | 70 Compound Execution Units |
+| **Meta-Engines** | 22 High-Order Orchestrators |
 | **Synergy Pipelines** | 147 Executable Pipelines |
 | **Infrastructure Systems** | 27 Production-Hardening Modules |
 | **Tiered Capabilities** | 68 (FREE/Builder/Pro/Enterprise) |
