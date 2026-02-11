@@ -509,6 +509,40 @@ function generateFullHelp(): string {
 │  │  nl.intents             Known NL intents              │   │
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
+│  ┌─ PATCH DISPATCH ──────────────────────────────────────┐   │
+│  │  patch.send             Dispatch patch to LNCHBL      │   │
+│  │  patch.status           List recent patches           │   │
+│  │  patch.publish <id>     Publish & dispatch draft      │   │
+│  │  patch.help             Patch command reference       │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ ENCODED AGENT v8.1.0 ──────────────────────────────────────┐
+│                                                             │
+│  encoded.status          Agent status and configuration     │
+│  encoded.generate        Generate code (with task spec)     │
+│  encoded.verify <code>   Verify against guardrails          │
+│  encoded.analyze <code>  Analyze quality metrics            │
+│  encoded.skills          Skill proficiency levels           │
+│  encoded.dry_run         Enable dry-run mode                │
+│  encoded.enable          Enable human approval mode         │
+│  encoded.semi_auto       Semi-autonomous mode               │
+│  encoded.help            All encoded commands               │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ ENGINE SYSTEM v8.1.0 (62 Engines + 20 Meta) ───────────────┐
+│                                                             │
+│  engine.list [cat]       List engines by category           │
+│  engine.get <id>         Engine details                     │
+│  engine.run <id>         Execute an engine                  │
+│  engine.batch            Execute multiple engines           │
+│  engine.worldfirst       14 world-first engines             │
+│  meta.list               List meta-engines                  │
+│  meta.run <id>           Execute meta-engine                │
+│  engine.history          Recent executions                  │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─ TERMINAL FEATURES v5.0.0 ──────────────────────────────────┐
