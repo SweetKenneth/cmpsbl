@@ -95,6 +95,7 @@ const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
 const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
+const AIOperatingSystem = lazy(() => import("./pages/AIOperatingSystem"));
 
 // Cluster pages (module deep-dives)
 const ClusterStudio = lazy(() => import("./pages/cluster/Studio"));
@@ -313,6 +314,7 @@ const App = () => {
                         {/* Module pages (de-shrouded SEO) */}
                         <Route path="/modules" element={<ModulesHub />} />
                         <Route path="/modules/:slug" element={<ModuleDetail />} />
+                        <Route path="/ai-operating-system" element={<AIOperatingSystem />} />
                         
                         {/* Cluster pages - module deep-dives */}
                         <Route path="/cluster/studio-autonomous-site-generator" element={<ClusterStudio />} />

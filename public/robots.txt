@@ -28,6 +28,9 @@ Allow: /os
 Allow: /substrate
 Allow: /intelligence
 Allow: /engines
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 Allow: /demo
 Allow: /marketplace
 Allow: /marketplace/*
@@ -161,6 +164,9 @@ Allow: /engines
 Allow: /intelligence
 Allow: /substrate
 Allow: /llms.txt
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /api/
@@ -186,6 +192,9 @@ Allow: /namespace
 Allow: /library
 Allow: /engines
 Allow: /substrate
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 
 User-agent: Claude-Web
 Crawl-delay: 5
@@ -206,6 +215,9 @@ Allow: /foundations
 Allow: /namespace
 Allow: /library
 Allow: /engines
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 
 # Perplexity AI
 User-agent: PerplexityBot
@@ -218,6 +230,9 @@ Allow: /namespace
 Allow: /library
 Allow: /engines
 Allow: /intelligence
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 
 # Meta AI
 User-agent: FacebookBot
