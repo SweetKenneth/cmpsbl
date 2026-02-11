@@ -40,7 +40,7 @@ export async function sendPatchToLnchbl(
   payload: LnchblPatchPayload,
   apiKey?: string
 ): Promise<PatchDispatchResult> {
-  // Step 1: Validate
+  // Step 1: Validate locally before sending
   const validationErrors = validatePatchForLnchbl(payload);
   if (validationErrors.length > 0) {
     return {
@@ -57,35 +57,22 @@ export async function sendPatchToLnchbl(
     signature,
   };
 
-  // Step 3: Dispatch
+  // Step 3: Dispatch via server-side edge function (secret stays server-side)
   try {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'X-Distribution-ID': 'CMPSBL',
-    };
-
-    if (apiKey) {
-      headers['Authorization'] = `Bearer ${apiKey}`;
-    }
-
-    const response = await fetch(LNCHBL_PATCH_ENDPOINT, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(signedPayload),
+    const { data, error } = await supabase.functions.invoke('cmpsbl-patch-dispatch', {
+      body: signedPayload,
     });
 
-    if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({}));
+    if (error) {
       return {
         success: false,
-        error: errorBody.error || `HTTP ${response.status}: ${response.statusText}`,
+        error: error.message || 'Dispatch failed',
       };
     }
 
-    const result = await response.json();
     return {
       success: true,
-      patch_id: result.patch_id,
+      patch_id: data?.patch_id,
       patch_version: payload.patch_version,
     };
   } catch (err) {
