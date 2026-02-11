@@ -120,8 +120,28 @@ export default function AutoBlogPost() {
     <div className="min-h-screen bg-background">
       {post && (
         <Helmet>
-          <title>{post.title} | Substrate AutoBlog</title>
+          <title>{post.title} | CMPSBL Substrate Blog</title>
           <meta name="description" content={post.excerpt} />
+          <script type="application/ld+json">{JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: post.title,
+            description: post.excerpt,
+            datePublished: post.published_at,
+            ...(post.reviewed_at && { dateModified: post.reviewed_at }),
+            author: {
+              '@type': 'Person',
+              name: post.author_name || 'CMPSBL Research Team',
+              jobTitle: post.author_role || 'AI Systems Architecture',
+              url: 'https://cmpsbl.com/about',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'CMPSBL',
+              url: 'https://cmpsbl.com',
+            },
+            mainEntityOfPage: `https://cmpsbl.com/blog/auto/${post.slug}`,
+          })}</script>
         </Helmet>
       )}
 
