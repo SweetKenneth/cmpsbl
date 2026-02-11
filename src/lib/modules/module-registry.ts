@@ -10,6 +10,11 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+export interface ModuleHighlight {
+  title: string;
+  description: string;
+}
+
 export interface ModuleInfo {
   slug: string;
   name: string;
@@ -17,10 +22,11 @@ export interface ModuleInfo {
   description: string;
   layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Administrative' | 'Orchestrator';
   icon: LucideIcon;
-  color: string; // tailwind color class suffix e.g. "blue-500"
-  useCaseH1: string; // SEO: intent-driven H1
+  color: string;
+  useCaseH1: string;
   heroDescription: string;
   features: string[];
+  highlights: ModuleHighlight[];
   codeSnippet: string;
   integrations: string[];
   useCases: string[];
