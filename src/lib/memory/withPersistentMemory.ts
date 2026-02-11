@@ -44,6 +44,8 @@ export interface PersistentMemoryAgent {
   remember: (note: string) => Promise<void>;
   /** Get the current memory context for an input */
   getContext: (input: string) => Promise<MemoryContext>;
+  /** Store a workload outcome — what the agent accomplished */
+  logWorkload: (summary: string) => Promise<void>;
 }
 
 /**
