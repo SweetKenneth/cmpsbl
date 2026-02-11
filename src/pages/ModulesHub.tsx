@@ -40,7 +40,7 @@ export default function ModulesHub() {
 
       <main className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative py-20 sm:py-28 overflow-hidden">
+        <section className="relative py-14 sm:py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="container mx-auto max-w-5xl px-4 relative">
             <motion.div
@@ -49,16 +49,16 @@ export default function ModulesHub() {
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary mb-4">
+              <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary mb-3">
                 Substrate Architecture
               </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
                 14 Modules. 5 Layers.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>
               </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Each module is a specialized AI subsystem. Together, they form a cognitive operating system 
                 that learns, adapts, and evolves — autonomously.
               </p>
@@ -70,7 +70,7 @@ export default function ModulesHub() {
         {LAYERS.map((layer, layerIdx) => {
           const modules = getModulesByLayer(layer);
           return (
-            <section key={layer} className="py-12 sm:py-16">
+            <section key={layer} className="py-8 sm:py-12">
               <div className="container mx-auto max-w-6xl px-4">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -99,7 +99,7 @@ export default function ModulesHub() {
                       <Link
                         key={mod.slug}
                         to={`/modules/${mod.slug}`}
-                        className="group relative p-6 rounded-xl border border-border bg-card hover:bg-muted/50 transition-all duration-200 hover:shadow-lg hover:border-primary/30"
+                        className="group relative p-5 rounded-xl border border-border bg-card hover:bg-muted/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-0.5"
                       >
                         <div className="flex items-start gap-4">
                           <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">

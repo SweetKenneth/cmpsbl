@@ -49,7 +49,7 @@ export default function ModuleDetail() {
 
       <main className="min-h-screen bg-background">
         {/* ═══ Hero Section (Marketing) ═══ */}
-        <section className="relative py-20 sm:py-28 overflow-hidden">
+        <section className="relative py-14 sm:py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="container mx-auto max-w-4xl px-4 relative">
             <motion.div
@@ -94,7 +94,7 @@ export default function ModuleDetail() {
         </section>
 
         {/* ═══ Features ═══ */}
-        <section className="py-16 border-t border-border/50">
+        <section className="py-12 sm:py-16 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
               <Check className="w-5 h-5 text-primary" /> Key Capabilities
@@ -120,13 +120,13 @@ export default function ModuleDetail() {
         </section>
 
         {/* ═══ Code Example (Technical) ═══ */}
-        <section className="py-16 bg-muted/30 border-t border-border/50">
+        <section className="py-12 sm:py-16 bg-muted/30 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <Code className="w-5 h-5 text-primary" /> Quick Start
             </h2>
-            <div className="rounded-xl border border-border bg-card overflow-hidden">
-              <div className="px-4 py-2 border-b border-border bg-muted/50 flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="rounded-xl border border-primary/20 bg-card overflow-hidden shadow-lg shadow-primary/5">
+              <div className="px-4 py-2.5 border-b border-border bg-muted/50 flex items-center gap-2 text-xs text-muted-foreground">
                 <div className="flex gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-destructive/50" />
                   <div className="w-3 h-3 rounded-full bg-accent/50" />
@@ -134,7 +134,7 @@ export default function ModuleDetail() {
                 </div>
                 <span className="font-mono">example.ts</span>
               </div>
-              <pre className="p-6 overflow-x-auto text-sm font-mono text-foreground leading-relaxed">
+              <pre className="p-5 sm:p-6 overflow-x-auto text-[13px] sm:text-sm font-mono text-primary/90 leading-relaxed">
                 <code>{mod.codeSnippet}</code>
               </pre>
             </div>
@@ -142,23 +142,30 @@ export default function ModuleDetail() {
         </section>
 
         {/* ═══ Integrations ═══ */}
-        <section className="py-16 border-t border-border/50">
+        <section className="py-12 sm:py-16 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
               <Plug className="w-5 h-5 text-primary" /> Integrations
             </h2>
             <div className="flex flex-wrap gap-3">
               {mod.integrations.map((integration, i) => (
-                <span key={i} className="px-4 py-2 rounded-full border border-border bg-card text-sm font-medium">
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="px-4 py-2 rounded-full border border-border bg-card text-sm font-medium hover:border-primary/30 hover:bg-primary/5 transition-colors cursor-default"
+                >
                   {integration}
-                </span>
+                </motion.span>
               ))}
             </div>
           </div>
         </section>
 
         {/* ═══ Use Cases ═══ */}
-        <section className="py-16 bg-muted/30 border-t border-border/50">
+        <section className="py-12 sm:py-16 bg-muted/30 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
               <Layers className="w-5 h-5 text-primary" /> Use Cases
@@ -203,7 +210,7 @@ export default function ModuleDetail() {
         </section>
 
         {/* ═══ CTA ═══ */}
-        <section className="py-20 bg-gradient-to-b from-primary/5 to-transparent border-t border-border/50">
+        <section className="py-14 sm:py-20 bg-gradient-to-b from-primary/5 to-transparent border-t border-border/50">
           <div className="container mx-auto max-w-3xl px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to build with {mod.name}?</h2>
             <p className="text-muted-foreground mb-8">Start for free. No credit card required.</p>
