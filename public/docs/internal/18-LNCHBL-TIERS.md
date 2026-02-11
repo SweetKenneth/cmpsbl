@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — LNCHBL Tiers & Infrastructure
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Internal Reference**
+**Version 8.5.0 (SYNERGY+ Epoch) | Tier Map v4.1.0 | Internal Reference**
 
 ---
 
@@ -12,36 +12,45 @@
 
 ## Self-Improvement Boundary
 
-**Self-improvement is EXCLUSIVELY Enterprise tier.**
+**Recursive self-improvement (Crown Jewels) is CMPSBL-ONLY.**
+Non-recursive self-improvement is Enterprise-only.
 
-| Tier | Self-Improvement | Evolution | Self-Modification |
-|------|-----------------|-----------|-------------------|
-| FREE | ❌ | ❌ | ❌ |
-| Builder | ❌ | ❌ | ❌ |
-| Pro | ❌ | ❌ | ❌ |
-| Enterprise | ✅ | ✅ | ✅ |
+| Tier | Non-Recursive SI | Crown Jewels (Recursive SI) |
+|------|------------------|-----------------------------|
+| FREE | ❌ | ❌ |
+| Builder | ❌ | ❌ |
+| Pro | ❌ | ❌ |
+| Enterprise | ✅ | ❌ |
+| **CMPSBL** | ✅ | **✅** |
 
 ---
 
-## Tier Counts (v4.0.0 — 124 total)
+## Tier Counts (v4.1.0 — 114 distributed + 10 Crown Jewels)
 
 | Tier | Count | Key Categories |
 |------|-------|---------------|
 | FREE | 16 | cognitive, integration, infrastructure, intelligence |
 | Builder | 26 | reliability, observability, memory, communication |
 | Pro | 24 | intelligence, operations, governance, platform |
-| Enterprise | 58 | self-improvement, platform, world-first, enterprise, security |
+| Enterprise | 48 | self-improvement (non-recursive), platform, world-first, security |
+| CMPSBL-Only | 10 | Crown Jewels (recursive self-improvement) |
 
 ---
 
-## v8.5.0 High-Value Expansion (56 new capabilities)
+## Crown Jewels — CMPSBL-Only (10)
 
-| Tier | New | Examples |
-|------|-----|---------|
-| FREE | +4 | Hot Reload Orchestrator, Conversation Analytics, Emotion Baseline, Nexus Health |
-| Builder | +8 | Structured Error Recovery, Latency Heatmap, Memory Compaction, Audit Trail Lite |
-| Pro | +10 | Associative Recall, Context Compression, SLA Monitor, Canary Deployment Gate |
-| Enterprise | +34 | Autonomous Workflow Composer, Sandbox Engine, Prompt Safety, Deep Cognition Engine |
+| Capability | Classification |
+|-----------|---------------|
+| SEBA Engine | Autonomous self-evolving bounded agent |
+| Modernizer | Shadow-to-production code modification |
+| Cortex Agency | Recursive PROPOSE→APPLY→LEARN loop |
+| Evolution A/B | Parallel self-modification testing |
+| Evolution Rollback | Auto-revert of self-applied changes |
+| Evolution Sandbox | Isolated recursive evolution environment |
+| Dream Pool Federation | Cross-agency autonomous dream sharing |
+| Self-Repair Engine | Autonomous self-repair |
+| Autonomous Workflow Composer | Self-assembling autonomous workflows |
+| Dream Lucidity Control | Directed autonomous dream exploration |
 
 ---
 
@@ -69,50 +78,21 @@
 
 ---
 
-## v8.5.0 Infrastructure Systems (10)
+## Non-Recursive Self-Improvement (Enterprise — 9 capabilities)
 
-| System | File | Tier |
-|--------|------|------|
-| Capability Gate Middleware | `substrate/capability-gate/` | Pro |
-| Hot-Swap Engine Deployment | `substrate/hot-swap/` | Enterprise |
-| Federated Memory Sync | `substrate/federated-memory/` | Pro |
-| Predictive Failure Detection | `substrate/predictive-failure/` | Pro |
-| Dynamic Pipeline Composition | `substrate/dynamic-pipeline/` | Pro |
-| Multi-Tenant Isolation | `substrate/multi-tenant/` | Pro |
-| Deprecation Lifecycle | `substrate/deprecation-lifecycle/` | Enterprise |
-| Correlation ID Propagation | `substrate/correlation-id/` | Builder |
-| Adaptive Rate Limiting | `substrate/adaptive-rate-limit/` | Builder |
-| Plugin SDK | `substrate/plugin-sdk/` | Enterprise |
-
----
-
-## Self-Improvement Classification
-
-Capabilities classified as `self-improvement` (Enterprise-only):
-
-| Capability | Modifies |
-|-----------|----------|
-| SEBA Engine | Architectural proposals |
-| Modernizer | Code-level diffs |
-| Cortex Agency | Autonomous PROPOSE→APPLY→LEARN |
-| Evolution A/B | Variant testing |
-| Evolution Rollback | Auto-revert |
+| Capability | What It Does |
+|-----------|-------------|
 | Impact Replay | Post-change verification |
-| Dream→Proposal | Insight→change proposals |
-| Dream Chains | Dependent self-modifications |
+| Dream → Proposal | Insight-to-proposal conversion |
+| Dream Chains | Dependent proposal sequences |
 | Knowledge Auto-Fill | Self-directed learning |
-| Hot-Swap | Runtime engine replacement |
-| Deprecation Lifecycle | Self-managed sunset |
-| Autonomous Workflow Composer | Self-assembling workflows |
+| Hot-Swap | Operator-initiated engine replacement |
+| Deprecation Lifecycle | Managed capability sunset |
 | Evolution Impact Forecast | Outcome modeling |
-| Dream Lucidity Control | Directed dream cycles |
-| Self-Repair Engine | Autonomous degradation repair |
 | Evolution Lineage Tracker | Proposal ancestry |
-| Cognitive Debt Analyzer | Cognitive debt prioritization |
-| Evolution Sandbox | Isolated evolution testing |
-| Dream Pool Federation | Cross-agency dream sharing |
+| Cognitive Debt Analyzer | Debt prioritization |
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — Internal*
+*CMPSBL OS Substrate v8.5.0 — Tier Map v4.1.0*
 *© 2025-2026 PromptFluid®. All rights reserved.*

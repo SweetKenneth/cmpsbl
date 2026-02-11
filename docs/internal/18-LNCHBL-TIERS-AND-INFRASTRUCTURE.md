@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — LNCHBL Distribution Tiers & New Infrastructure
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Internal Reference**
+**Version 8.5.0 (SYNERGY+ Epoch) | Tier Map v4.1.0 | Internal Reference**
 
 ---
 
@@ -14,18 +14,20 @@
 
 ### 1.1 Self-Improvement Boundary
 
-**Self-improvement is EXCLUSIVELY Enterprise tier.** No evolution, autonomous modification, or self-repair capabilities exist below Enterprise. This is a hard architectural boundary.
+**Recursive self-improvement (Crown Jewels) is CMPSBL-ONLY — never distributed.**
+Non-recursive self-improvement (observational/planning) is Enterprise-only.
 
-| Tier | Self-Improvement | Evolution | Autonomous Modification |
-|------|-----------------|-----------|------------------------|
-| FREE | ❌ | ❌ | ❌ |
-| Builder | ❌ | ❌ | ❌ |
-| Pro | ❌ | ❌ | ❌ |
-| Enterprise | ✅ | ✅ | ✅ |
+| Tier | Non-Recursive SI | Recursive SI (Crown Jewels) |
+|------|------------------|-----------------------------|
+| FREE | ❌ | ❌ |
+| Builder | ❌ | ❌ |
+| Pro | ❌ | ❌ |
+| Enterprise | ✅ | ❌ |
+| **CMPSBL** | ✅ | **✅** |
 
 ---
 
-## 2. Tier Breakdown (v4.0.0 — 124 total capabilities)
+## 2. Tier Breakdown (v4.1.0 — 114 distributed + 10 Crown Jewels = 124 total)
 
 ### 2.1 FREE — Core Cognitive Loop (16 capabilities)
 
@@ -58,11 +60,11 @@
 | Platform | Multi-Tenant Isolation, Capability Gate Middleware, **Canary Deployment Gate** |
 | Memory | Federated Memory Sync |
 
-### 2.4 Enterprise — Self-Improvement & Full Platform (58 capabilities)
+### 2.4 Enterprise — Non-Recursive Self-Improvement & Full Platform (48 capabilities)
 
 | Category | Capabilities |
 |----------|-------------|
-| **Self-Improvement** (19) | SEBA Engine, Modernizer, Cortex Agency, Evolution A/B, Evolution Rollback, Impact Replay, Dream→Proposal, Dream Chains, Knowledge Auto-Fill, Hot-Swap, Deprecation Lifecycle, **Autonomous Workflow Composer**, **Evolution Impact Forecast**, **Dream Lucidity Control**, **Self-Repair Engine**, **Evolution Lineage Tracker**, **Cognitive Debt Analyzer**, **Evolution Sandbox**, **Dream Pool Federation** |
+| **Self-Improvement (Non-Recursive)** (9) | Impact Replay, Dream→Proposal, Dream Chains, Knowledge Auto-Fill, Hot-Swap, Deprecation Lifecycle, **Evolution Impact Forecast**, **Evolution Lineage Tracker**, **Cognitive Debt Analyzer** |
 | Platform (11) | Capability Discovery, Orchestrator Engine, Support Bot, Code Validation, Plugin SDK, **Sandbox Engine**, **Saga Engine**, **Fleet Orchestration**, **Capability Marketplace**, **Multi-Agent Negotiation**, **Runtime Schema Migration** |
 | Intelligence (5) | **Deep Cognition Engine**, **Dialogue Engine**, **Knowledge Graph Federation**, **Cognitive Replay Debugger**, **Deep Cognition Nexus Meta-Engine** |
 | Security (3) | **Policy Access Engine**, **Prompt Safety Engine**, **Zero Trust Mesh** |
@@ -70,11 +72,25 @@
 | Governance (3) | **Compliance Report Generator**, **Semantic Versioning Engine**, **Governance Workflow Engine** |
 | Observability (3) | **Observability Engine**, **Capability Health Score**, **Substrate Telemetry Export** |
 | Operations (2) | **Cost Anomaly Detector**, **Cross-Tenant Analytics** |
-| Evolution (1) | **Technical Debt Engine** |
 | Performance (1) | **Intelligent Cache Engine** |
 | Cognitive (1) | **Adaptive Personality Tuning** |
 | Enterprise (4) | Parity Enforcement, Full CLM, Archived Adapters, Custom Engine Registration |
 | Meta-Engine (1) | **Resilience Shield Meta-Engine** |
+
+### 2.5 CMPSBL-Only Crown Jewels (10 capabilities — NEVER distributed)
+
+| Capability | Why It's a Crown Jewel |
+|-----------|----------------------|
+| SEBA Engine | Autonomous self-evolving bounded agent |
+| Modernizer | Shadow-to-production code modification |
+| Cortex Agency | Recursive PROPOSE→APPLY→LEARN loop |
+| Evolution A/B | Parallel self-modification testing |
+| Evolution Rollback | Auto-revert of self-applied changes |
+| Evolution Sandbox | Isolated recursive evolution environment |
+| Dream Pool Federation | Cross-agency autonomous dream sharing |
+| Self-Repair Engine | Autonomous self-repair of degraded systems |
+| Autonomous Workflow Composer | Self-assembling autonomous workflows |
+| Dream Lucidity Control | Directed autonomous dream exploration |
 
 ---
 
@@ -83,12 +99,14 @@
 | Metric | Before | After |
 |--------|--------|-------|
 | Total Capabilities | 68 | **124** |
+| Distributed (LNCHBL) | 68 | **114** |
+| Crown Jewels (CMPSBL-only) | 0 | **10** |
 | Engines | 62 | **70** |
 | Meta-Engines | 20 | **22** |
 | FREE Tier | 12 | **16** |
 | Builder Tier | 18 | **26** |
 | Pro Tier | 14 | **24** |
-| Enterprise Tier | 24 | **58** |
+| Enterprise Tier | 24 | **48** |
 
 ---
 
@@ -107,33 +125,41 @@ if (!result.allowed) {
 
 ---
 
-## 5. Self-Improvement Classification (19 capabilities)
+## 5. Self-Improvement Classification
 
-Any capability that allows the system to **modify its own behavior, code, architecture, or operational parameters** is classified as `self-improvement` and gated to Enterprise:
+### 5.1 Crown Jewels — CMPSBL-Only (10 capabilities)
+Any capability involving **recursive self-improvement** (software that builds/modifies its own code autonomously) is classified as a Crown Jewel and is NEVER distributed:
 
-| Self-Improvement Capability | What It Modifies |
-|---------------------------|-----------------|
-| SEBA Engine | Architectural proposals from cognitive analysis |
-| Modernizer | Code-level diffs via shadow-to-production pipeline |
-| Cortex Agency | Autonomous PROPOSE → APPLY → LEARN loop |
-| Evolution A/B | Parallel evolution variant testing |
-| Evolution Rollback | Auto-revert of failed evolution changes |
+| Crown Jewel | What It Does |
+|------------|-------------|
+| SEBA Engine | Autonomous self-evolving bounded agent |
+| Modernizer | Shadow-to-production code diffs |
+| Cortex Agency | Recursive PROPOSE→APPLY→LEARN |
+| Evolution A/B | Parallel self-modification variant testing |
+| Evolution Rollback | Auto-revert of self-applied changes |
+| Evolution Sandbox | Isolated recursive evolution testing |
+| Dream Pool Federation | Cross-agency autonomous dream sharing |
+| Self-Repair Engine | Autonomous degraded subsystem repair |
+| Autonomous Workflow Composer | Self-assembling autonomous workflows |
+| Dream Lucidity Control | Directed autonomous dream exploration |
+
+### 5.2 Non-Recursive Self-Improvement — Enterprise-Only (9 capabilities)
+Observational and planning tools that inform but don't autonomously execute modifications:
+
+| Capability | What It Does |
+|-----------|-------------|
 | Impact Replay | Post-change verification via query replay |
-| Dream → Proposal | Converts cognitive insights to change proposals |
-| Dream Chains | Dependent sequences of self-modification |
-| Knowledge Auto-Fill | Self-directed learning to close expertise gaps |
-| Hot-Swap Engine | Runtime self-replacement of engines |
-| Deprecation Lifecycle | Self-managed capability sunset |
-| **Autonomous Workflow Composer** | **Self-assembling multi-step workflows** |
-| **Evolution Impact Forecast** | **Predicted outcome modeling before commits** |
-| **Dream Lucidity Control** | **Directed exploration within dream cycles** |
-| **Self-Repair Engine** | **Autonomous degraded subsystem repair** |
-| **Evolution Lineage Tracker** | **Full ancestry tracking for proposals** |
-| **Cognitive Debt Analyzer** | **Cognitive technical debt identification** |
-| **Evolution Sandbox** | **Isolated environment for evolution testing** |
-| **Dream Pool Federation** | **Cross-agency dream insight sharing** |
+| Dream → Proposal | Converts insights to change proposals (human-approved) |
+| Dream Chains | Dependent sequences of proposals |
+| Knowledge Auto-Fill | Self-directed learning to close gaps |
+| Hot-Swap Engine | Runtime engine replacement (operator-initiated) |
+| Deprecation Lifecycle | Managed capability sunset |
+| Evolution Impact Forecast | Predicted outcome modeling |
+| Evolution Lineage Tracker | Proposal ancestry tracking |
+| Cognitive Debt Analyzer | Cognitive debt identification |
 
 ---
 
 *CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*Tier Map v4.1.0 — Crown Jewels Protected*
 *© 2025-2026 PromptFluid®. All rights reserved.*
