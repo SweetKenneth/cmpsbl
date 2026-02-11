@@ -224,6 +224,9 @@ Allow: /namespace
 Allow: /library
 Allow: /engines
 Allow: /intelligence
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 
 # Meta AI
 User-agent: FacebookBot
