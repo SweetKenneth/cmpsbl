@@ -230,8 +230,10 @@ export function PortalChatPanel({ agency, className }: PortalChatPanelProps) {
                   : "bg-card/80 border border-border/50"
               )}>
                 <div 
-                  className="text-sm whitespace-pre-wrap prose prose-sm max-w-none dark:prose-invert"
-                  dangerouslySetInnerHTML={{ __html: formatMessageContent(msg.content) }}
+                  className="text-sm whitespace-pre-wrap prose prose-sm max-w-none dark:prose-invert
+                    [&_strong]:text-foreground [&_strong]:font-semibold
+                    [&_em]:text-muted-foreground [&_a]:text-primary"
+                  dangerouslySetInnerHTML={{ __html: formatChatMessage(msg.content) }}
                 />
                 
                 <div className="flex items-center gap-2 mt-2">
