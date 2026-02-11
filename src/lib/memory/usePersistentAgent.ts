@@ -121,9 +121,21 @@ export function usePersistentAgent(
     setError(null);
   }, []);
   
+  const logWorkload = useCallback(async (summary: string): Promise<void> => {
+    if (!clientRef.current) {
+      clientRef.current = new MemoryClient(agentId, scope);
+    }
+    try {
+      await clientRef.current.storeWorkload(summary);
+    } catch (err) {
+      console.warn('[Memory] Workload log failed gracefully');
+    }
+  }, [agentId, scope]);
+  
   return {
     respond,
     remember,
+    logWorkload,
     isLoading,
     error,
     clearError

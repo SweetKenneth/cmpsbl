@@ -107,9 +107,14 @@ export function withPersistentMemory(config: MemoryConfig): PersistentMemoryAgen
     await client.store(summary, { type: 'interaction' });
   };
   
+  const logWorkload = async (summary: string): Promise<void> => {
+    await client.storeWorkload(summary, { agentId });
+  };
+  
   return {
     respond,
     remember,
-    getContext
+    getContext,
+    logWorkload
   };
 }
