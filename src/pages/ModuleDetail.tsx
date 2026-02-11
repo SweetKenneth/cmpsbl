@@ -142,7 +142,7 @@ export default function ModuleDetail() {
         </section>
 
         {/* ═══ Integrations ═══ */}
-        <section className="py-16 border-t border-border/50">
+        <section className="py-12 sm:py-16 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
               <Plug className="w-5 h-5 text-primary" /> Integrations
