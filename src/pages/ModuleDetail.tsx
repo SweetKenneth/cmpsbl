@@ -6,7 +6,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, Code, Layers, Plug } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Code, Layers, Plug, Sparkles } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { getModuleBySlug, MODULE_REGISTRY } from "@/lib/modules/module-registry";
@@ -113,6 +113,33 @@ export default function ModuleDetail() {
                     <Check className="w-3.5 h-3.5 text-primary" />
                   </div>
                   <span className="text-sm text-foreground">{feature}</span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ Why This Module (SEO-Rich Highlights) ═══ */}
+        <section className="py-12 sm:py-16 bg-muted/30 border-t border-border/50">
+          <div className="container mx-auto max-w-4xl px-4">
+            <h2 className="text-2xl font-bold mb-3 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" /> Why {mod.name}?
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-2xl">
+              What makes {mod.name} different from every other {mod.layer.toLowerCase()}-layer solution on the market.
+            </p>
+            <div className="space-y-6">
+              {mod.highlights.map((highlight, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="p-6 rounded-xl border border-border bg-card hover:border-primary/20 transition-colors"
+                >
+                  <h3 className="text-lg font-bold text-foreground mb-2">{highlight.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{highlight.description}</p>
                 </motion.div>
               ))}
             </div>
