@@ -87,20 +87,20 @@ export interface LearningJobResult {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const DEFAULT_CLM_CONFIG: CLMConfig = {
-  enabled: false, // Must be explicitly enabled
-  dailyBudgetPct: 0.70,
-  minSpacingMinutes: 15,
-  maxConcurrent: 1,
-  errorBackoffMultiplier: 2.0,
-  maxBackoffMinutes: 120,
-  quietHours: '02:00-05:00',
-  jitterMinutes: 5,
+  enabled: true, // Always-on by operator directive
+  dailyBudgetPct: 0.80, // 80% of daily Nexus budget for learning
+  minSpacingMinutes: 10, // Tighter spacing for maximum velocity
+  maxConcurrent: 4, // 4 concurrent module cycles
+  errorBackoffMultiplier: 1.5,
+  maxBackoffMinutes: 60,
+  quietHours: null, // No quiet hours — learn 24/7
+  jitterMinutes: 3,
   killSwitch: false,
-  maxConsecutiveFailures: 5,
-  spacedRepetitionBudgetPct: 0.30,
-  microLearningThreshold: 0.05,
-  jobFingerprintTTLHours: 6,
-  topicCacheTTLHours: 24,
+  maxConsecutiveFailures: 8,
+  spacedRepetitionBudgetPct: 0.20,
+  microLearningThreshold: 0.03,
+  jobFingerprintTTLHours: 4,
+  topicCacheTTLHours: 12,
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
