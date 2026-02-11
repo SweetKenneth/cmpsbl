@@ -1,8 +1,8 @@
 # 09. Terminal Command Reference
 
 **CMPSBL OS Substrate — Internal Engineering Library**
-**Version 7.5.3 SYNERGY+ Epoch | Updated 2026-02-06**
-**295+ Commands | 14 Modules | Full Observability**
+**Version 8.5.0 SYNERGY+ Epoch | Updated 2026-02-11**
+**340+ Commands | 14 Modules | 7 Infrastructure Systems | Full Observability**
 
 ---
 
@@ -484,6 +484,75 @@ data: {"done": true, "total_tokens": 150}
 
 ---
 
+## Infrastructure Commands (v8.5.0)
+
+### cron.* (Scheduled Task Runner)
+
+| Command | Description |
+|---------|-------------|
+| `cron.list` | List all registered cron jobs |
+| `cron.status` | Cron runner status with next-run times |
+| `cron.run` | Manually trigger a cron job |
+| `cron.pause` | Pause a cron job |
+| `cron.resume` | Resume a paused cron job |
+| `cron.history` | View execution history |
+
+### ratelimit.* (Persistent Rate Limiter)
+
+| Command | Description |
+|---------|-------------|
+| `ratelimit.status` | Rate limiter status with window counts |
+| `ratelimit.config` | View/update rate limit config |
+| `ratelimit.reset` | Reset rate limit counters |
+| `ratelimit.whitelist` | Manage whitelisted keys |
+
+### snapshot.* (Rollback Snapshots — Enterprise)
+
+| Command | Description |
+|---------|-------------|
+| `snapshot.capture` | Capture system state snapshot |
+| `snapshot.list` | List available snapshots |
+| `snapshot.restore` | Restore from snapshot |
+| `snapshot.diff` | Diff two snapshots |
+| `snapshot.prune` | Remove old snapshots |
+
+### analytics.* (Capability Usage Analytics)
+
+| Command | Description |
+|---------|-------------|
+| `analytics.summary` | Usage summary with top/dead capabilities |
+| `analytics.capability` | Detailed stats for a capability |
+| `analytics.trends` | Usage trends over time |
+| `analytics.dead` | List unused/dead capabilities |
+| `analytics.rising` | List capabilities with rising usage |
+
+### streaming.* (Streaming Response Pipeline)
+
+| Command | Description |
+|---------|-------------|
+| `streaming.status` | Pipeline status with active streams |
+| `streaming.config` | View/update streaming config |
+| `streaming.test` | Test streaming with sample payload |
+
+### files.* (File Processing Pipeline)
+
+| Command | Description |
+|---------|-------------|
+| `files.ingest` | Ingest a file for processing |
+| `files.status` | Pipeline status |
+| `files.supported` | List supported file types |
+| `files.history` | View processing history |
+
+### nl.* (Natural Language Terminal)
+
+| Command | Description |
+|---------|-------------|
+| `nl.parse` | Parse natural language to command |
+| `nl.suggest` | Get command suggestions from intent |
+| `nl.history` | View NL parse history |
+
+---
+
 ## Hidden Commands (Admin Only)
 
 | Command | Description | Danger Level |
@@ -498,5 +567,5 @@ data: {"done": true, "total_tokens": 150}
 
 ---
 
-*CMPSBL OS Substrate v6.3.1 — Internal Engineering Library*
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
 *© 2025-2026 PromptFluid®. All rights reserved.*

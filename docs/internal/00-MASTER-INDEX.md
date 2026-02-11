@@ -22,7 +22,7 @@
 | 06 | [Dream-Eater Cycles](./06-DREAM-EATER.md) | Autonomous learning, doctrine extraction, sleep cycles |
 | 07 | [Defense & Security](./07-DEFENSE-SECURITY.md) | Rate limiting, API key hashing, threat detection, **adaptive rate limiting, secret rotation** |
 | 08 | [AI Router (Nexus)](./08-NEXUS-ROUTER.md) | Provider fallback, cost optimization, model selection |
-| 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 310+ commands, module prefixes, output formats |
+| 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 340+ commands, module prefixes, infra commands, output formats |
 | 10 | [Integration Layer](./10-INTEGRATION-LAYER.md) | External APIs, webhook handling, adapter patterns, **Plugin SDK** |
 | 11 | [Synergy Engine](./11-SYNERGY-ENGINE.md) | **147 cross-module pipelines, 125 executors, governance** |
 | 12 | [Capabilities Depot](./12-CAPABILITIES-DEPOT.md) | Downloadable artifacts, licensing, pricing tiers |
@@ -70,7 +70,7 @@ ADVANCED MODES (v7.0.0)
 └── SEBA ........... Self-Evolving Bounded Agent, genuine autonomy
 ```
 
-### v8.5.0 Infrastructure Systems (20)
+### v8.5.0 Infrastructure Systems (27)
 
 ```
 RELIABILITY (Builder)
@@ -78,25 +78,32 @@ RELIABILITY (Builder)
 ├── Boot Health Gates .......... Startup dependency validation
 ├── Regression Testing ......... Post-evolution smoke tests
 ├── Auto Regression Trigger .... Automatic test triggering
-└── Adaptive Rate Limiting ..... Pressure-adaptive throttling
+├── Adaptive Rate Limiting ..... Pressure-adaptive throttling
+└── Persistent Rate Limiter .... Cross-tab/instance rate limiting (v8.5.0)
 
 OBSERVABILITY (Builder)
 ├── Telemetry Engine ........... Distributed tracing
 ├── Cost Attribution ........... Token/budget tracking
 ├── Self-Benchmark ............. Composite health scoring (0-100)
 ├── Health Dashboard API ....... Unified health endpoints
-└── Correlation ID Propagation . End-to-end request tracing
+├── Correlation ID Propagation . End-to-end request tracing
+└── Capability Usage Analytics . Dead-weight detection, rising trends (v8.5.0)
 
 MEMORY (Builder)
 ├── Memory GC .................. Automated garbage collection
 ├── GC Scheduler ............... 6-hr autonomous cycles
 └── Memory Deduplication ....... Content-hash dedup
 
+AUTOMATION (Builder)
+├── Cron Runner ................ Client-side scheduled tasks (v8.5.0)
+└── NL Terminal ................ Natural language command parsing (v8.5.0)
+
 INTELLIGENCE (Pro)
 ├── Predictive Failure ......... Linear regression failure prediction
 ├── Anomaly Correlation ........ Systemic failure detection
 ├── Dynamic Pipeline ........... Runtime-composable pipelines
-└── Budget Governor ............ Cost control with kill switches
+├── Budget Governor ............ Cost control with kill switches
+└── Streaming Pipeline ......... SSE partial response streaming (v8.5.0)
 
 PLATFORM (Pro/Enterprise)
 ├── Capability Gate ............ Runtime tier enforcement (Pro)
@@ -104,7 +111,8 @@ PLATFORM (Pro/Enterprise)
 ├── Federated Memory Sync ...... Cross-instance sharing (Pro)
 ├── Plugin SDK ................. Extension framework (Enterprise)
 ├── Feature Flags .............. Gradual rollout (Builder)
-└── Audit Trail ................ Tamper-evident logging (Builder)
+├── Audit Trail ................ Tamper-evident logging (Builder)
+└── File Processing Pipeline ... CSV/JSON/MD/HTML ingestion (v8.5.0)
 
 EVOLUTION (Enterprise — Self-Improvement)
 ├── Hot-Swap Engine ............ Zero-downtime replacement
@@ -115,7 +123,8 @@ EVOLUTION (Enterprise — Self-Improvement)
 ├── Event Replay ............... Deterministic replay
 ├── Warm Cache ................. Pre-warmed memory cache
 ├── Dependency Graph ........... Module boot ordering
-└── Dependency Health .......... Cross-module health tracking
+├── Dependency Health .......... Cross-module health tracking
+└── Rollback Snapshots ......... Full state capture before evolutions (v8.5.0)
 ```
 
 ### Cognitive Engines (v8.5.0)
@@ -208,7 +217,7 @@ EVOLUTION ENGINES (2)
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| **8.5.0** | **SYNERGY+** | **20 infrastructure systems, 68 tiered capabilities, LNCHBL distribution** |
+| **8.5.0** | **SYNERGY+** | **27 infrastructure systems, 340+ commands, 7 automation systems, LNCHBL distribution** |
 | 8.1.0 | SYNERGY+ | World-First Enhancement Integration, 269 capabilities |
 | 8.0.0 | SYNERGY+ | 310+ terminal commands, 147 synergies, 62 engines |
 | 7.7.0 | ENGINE+ | 20 Cognitive Engines consolidating 76 capabilities |
