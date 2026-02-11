@@ -23,9 +23,9 @@ Unlike traditional AI frameworks that solve one problem (memory OR routing OR se
 
 name: CMPSBL (pronounced "composable")
 brand: PromptFluid®
-product_name: Substrate OS
-version: 8.0.0 (SYNERGY+ Epoch)
-type: Cognitive Operating System, AI Infrastructure
+product_name: Substrate OS — AI Operating System
+version: 8.5.0 (SYNERGY+ Epoch)
+type: AI Operating System, Cognitive Runtime, AI Infrastructure
 founded: 2009
 location: Dallas, Texas, USA
 website: https://cmpsbl.com
