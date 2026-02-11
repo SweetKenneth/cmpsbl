@@ -181,6 +181,7 @@ const memory = withPersistentMemory({ agentId: 'support-bot' });
 
 async function handleUserMessage(userMessage: string) {
   // 1. Get memory context automatically
+  //    Facts like "my name is Alex" are auto-extracted & stored
   const context = await memory.getContext(userMessage);
   
   // 2. Build memory-enriched prompt
@@ -197,7 +198,10 @@ async function handleUserMessage(userMessage: string) {
   
   // 4. Memory stores interactions automatically
   return response.choices[0].message.content;
-}`} />
+}
+
+// After completing a task, log the workload so the agent remembers
+await memory.logWorkload('Resolved billing issue for user #42 — applied $10 credit');`} />
               </CardContent>
             </Card>
           </section>
