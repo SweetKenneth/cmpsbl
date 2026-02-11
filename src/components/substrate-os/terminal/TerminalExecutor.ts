@@ -581,6 +581,34 @@ export async function executeCommand(
     if (module && module in COMMAND_CATEGORIES) {
       return { success: true, output: generateModuleHelp(module as keyof typeof COMMAND_CATEGORIES) };
     }
+    // Special aliases for sub-modules not in COMMAND_CATEGORIES directly
+    if (module === 'patch') {
+      // Show patch commands from PATCH_COMMANDS
+      const { PATCH_COMMANDS } = await import('./TerminalCommands');
+      const maxLen = Math.max(...PATCH_COMMANDS.map(c => c.command.length));
+      let output = `\n┌─ PATCH DISPATCH ─────────────────────────────────────────────\n│\n`;
+      for (const cmd of PATCH_COMMANDS) {
+        const padded = cmd.command.padEnd(maxLen + 2);
+        const opMarker = cmd.requiresOperator ? '⚡' : '○';
+        const argsHint = cmd.args ? ` ${cmd.args}` : '';
+        output += `│ ${opMarker} ${padded} ∷ ${cmd.description}${argsHint}\n`;
+      }
+      output += `│\n│ ⚡ = Operator required  ○ = Observer accessible\n└──────────────────────────────────────────────────────────`;
+      return { success: true, output };
+    }
+    if (module === 'encoded') {
+      const { ENCODED_COMMANDS } = await import('./TerminalCommands');
+      const maxLen = Math.max(...ENCODED_COMMANDS.map(c => c.command.length));
+      let output = `\n┌─ ENCODED AGENT ──────────────────────────────────────────────\n│\n`;
+      for (const cmd of ENCODED_COMMANDS) {
+        const padded = cmd.command.padEnd(maxLen + 2);
+        const opMarker = cmd.requiresOperator ? '⚡' : '○';
+        const argsHint = cmd.args ? ` ${cmd.args}` : '';
+        output += `│ ${opMarker} ${padded} ∷ ${cmd.description}${argsHint}\n`;
+      }
+      output += `│\n│ ⚡ = Operator required  ○ = Observer accessible\n└──────────────────────────────────────────────────────────`;
+      return { success: true, output };
+    }
     return { success: true, output: generateFullHelp() };
   }
 
