@@ -210,7 +210,7 @@ export default function ModuleDetail() {
         </section>
 
         {/* ═══ CTA ═══ */}
-        <section className="py-20 bg-gradient-to-b from-primary/5 to-transparent border-t border-border/50">
+        <section className="py-14 sm:py-20 bg-gradient-to-b from-primary/5 to-transparent border-t border-border/50">
           <div className="container mx-auto max-w-3xl px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to build with {mod.name}?</h2>
             <p className="text-muted-foreground mb-8">Start for free. No credit card required.</p>

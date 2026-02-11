@@ -99,7 +99,7 @@ export default function ModulesHub() {
                       <Link
                         key={mod.slug}
                         to={`/modules/${mod.slug}`}
-                        className="group relative p-6 rounded-xl border border-border bg-card hover:bg-muted/50 transition-all duration-200 hover:shadow-lg hover:border-primary/30"
+                        className="group relative p-5 rounded-xl border border-border bg-card hover:bg-muted/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-0.5"
                       >
                         <div className="flex items-start gap-4">
                           <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
