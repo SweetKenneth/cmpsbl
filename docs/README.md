@@ -1,6 +1,6 @@
 # promptfluid® Documentation
 
-**v8.0.0 SYNERGY+ Epoch — Updated 2026-02-08**
+**v8.5.0 SYNERGY+ Epoch — Updated 2026-02-11**
 
 ---
 
@@ -50,4 +50,4 @@ Historical documentation is in [`docs/_archived/`](./_archived/).
 
 ---
 
-*promptfluid® — Cognitive Orchestration Substrate v8.0.0 SYNERGY+*
+*promptfluid® — Cognitive Orchestration Substrate v8.5.0 SYNERGY+*

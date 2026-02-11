@@ -1,5 +1,5 @@
 # Evolution Systems Demo Guide
-**Internal Documentation v1.0.0**
+**Internal Documentation v8.5.0**
 
 This guide provides step-by-step instructions for demonstrating the SEBA (Self-Evolving Bounded Agent) and Modernizer evolution systems, including expected outputs at each stage.
 

@@ -166,4 +166,25 @@ Resource Limits:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+## v8.5.0 Infrastructure Integration
+
+### Cron Runner
+- **Location:** `src/lib/substrate/cron-runner/`
+- **Purpose:** Client-side scheduler for automated dream cycles, GC, and health checks
+- **Functions:** `registerJob()`, `listJobs()`, `cancelJob()`, `getHistory()`
+- **Tier:** Builder
+
+### Rollback Snapshots (Dream Integration)
+- Full system state captured before Dream-to-Proposal chains execute
+- Enables safe autonomous improvement cycles
+- **Tier:** Enterprise
+
+### Dream-to-Proposal Pipeline
+- Converts high-confidence dream insights directly into SEBA/Modernizer proposals
+- Governed by confidence thresholds and tier enforcement
+- **Tier:** Enterprise (self-improvement)
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*© 2025-2026 PromptFluid®. All rights reserved.*

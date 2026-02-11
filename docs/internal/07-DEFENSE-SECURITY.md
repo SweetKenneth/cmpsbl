@@ -200,4 +200,25 @@ OFFLINE: All requests rejected (manual recovery only)
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+## v8.5.0 Infrastructure Integration
+
+### Adaptive Rate Limiting
+- **Location:** `src/lib/substrate/adaptive-rate-limit/`
+- **Purpose:** Dynamic rate limits that adapt to system pressure and tenant reputation
+- **Features:** Token bucket with adaptive multiplier, pressure-based throttling
+- **Tier:** Builder
+
+### Persistent Rate Limiter
+- **Location:** `src/lib/substrate/persistent-rate-limit/`
+- **Purpose:** Cross-tab/instance rate limiting via localStorage + BroadcastChannel
+- **Tier:** Builder
+
+### Secret Rotation
+- **Location:** `src/lib/substrate/secret-rotation/`
+- **Purpose:** Automated credential cycling for external API keys
+- **Tier:** Enterprise
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*© 2025-2026 PromptFluid®. All rights reserved.*

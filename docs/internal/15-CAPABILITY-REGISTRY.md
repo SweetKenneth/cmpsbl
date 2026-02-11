@@ -6,7 +6,7 @@
 
 ## Classification
 
-> **INTERNAL USE ONLY** — This documentation contains proprietary implementation details for the 76-capability registry architecture.
+> **INTERNAL USE ONLY** — This documentation contains proprietary implementation details for the 269-capability registry architecture.
 
 ---
 
@@ -288,5 +288,15 @@ const summary = capabilityEngine.getSummary();
 
 ---
 
-*CMPSBL OS Substrate v7.6.0 — Capability Registry*
+---
+
+### v8.5.0 (SYNERGY+ Epoch)
+- **Total Capabilities:** 269 (76 base + 56 world-first + 137 enhancement/synergy)
+- **Orchestrated by:** 62 Engines → 20 Meta-Engines
+- **Tier Enforcement:** All capabilities gated via capability-gate middleware (FREE/Builder/Pro/Enterprise)
+- **Infrastructure Capabilities:** 7 new infrastructure systems integrated as autonomous operational capabilities
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Capability Registry*
 *© 2025-2026 PromptFluid®. All rights reserved.*

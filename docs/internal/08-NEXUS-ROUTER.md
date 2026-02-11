@@ -192,4 +192,25 @@ When approaching any provider's limit:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+## v8.5.0 Infrastructure Integration
+
+### Streaming Pipeline
+- **Location:** `src/lib/substrate/streaming-pipeline/`
+- **Purpose:** SSE-based partial response streaming for DECODE/NEXUS
+- **Functions:** `createStream()`, `pipeStream()`, `closeStream()`
+- **Tier:** Builder
+
+### Persistent Rate Limiting (Provider-Level)
+- Cross-tab synchronization for per-provider rate limits
+- Prevents multi-tab users from exhausting provider quotas
+- **Tier:** Builder
+
+### NL Terminal Interface
+- Natural language → structured NEXUS routing commands
+- "Route this to the fastest provider" → `nexus.route --strategy=speed`
+- **Tier:** Builder
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*© 2025-2026 PromptFluid®. All rights reserved.*

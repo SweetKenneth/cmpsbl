@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Synergy Engine Secrets
 
-**Version 7.5.2 | CONFIDENTIAL**
+**Version 8.5.0 (SYNERGY+ Epoch) | CONFIDENTIAL**
 
 ---
 
@@ -34,7 +34,7 @@ src/lib/capabilities/synergies/
 | **Accessibility** | 17 | adaptive-ui, accessible-ai-generation, accessibility-event-stream, cognitive-accessibility-profiler |
 | **Orchestration** | 13 | autonomous-evolution, workflow-synthesis, distributed-config-sync, multi-agent-coordination |
 | **Automation** | 16 | evolution-confidence, entitlement-evolution, predictive-evolution-engine |
-| **Total** | **135** | Production-ready pipelines (+15 v7.5.2 discoveries)
+| **Total** | **147** | Production-ready pipelines (v8.5.0)
 
 ### 1.3 Execution Flow (SECRET)
 
@@ -467,5 +467,14 @@ capabilityGate.registerPostHook('synergy.*', async (context, result) => {
 
 ---
 
-*CMPSBL OS Substrate v7.5.2 — CONFIDENTIAL*  
+### v8.5.0 (SYNERGY+ Infrastructure)
+
+- ✅ Total synergy pipelines: **147** (finalized count)
+- ✅ Total custom executors: **125**
+- ✅ Infrastructure synergies integrated: Cron scheduling, persistent rate limiting, streaming pipeline
+- ✅ All synergies tier-gated via capability-gate middleware
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — CONFIDENTIAL*  
 *© 2025-2026 PromptFluid®. All rights reserved.*
