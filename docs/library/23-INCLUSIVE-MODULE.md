@@ -1,6 +1,6 @@
 # INCLUSIVE Module — Human Compatibility Pipeline
 
-**Version 8.0.0 | 14th Substrate Module**
+**Version 8.5.0 (SYNERGY+ Epoch) | 14th Substrate Module**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Module ID** | INCLUSIVE |
 | **Layer** | Human Compatibility |
 | **Boot Order** | 14 (after System, before Defense) |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 | **Origin** | @origin(cmptbl) + @origin(clarity) |
 
 ---
@@ -188,5 +188,11 @@ inclusive.coverage
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **File Processing Pipeline** (`substrate/file-processing/`): CSV, JSON, Markdown, HTML ingestion with optional Brain routing. `ingestFile()`, `getStatus()`, `getSupportedTypes()`. **Tier: Builder**
+- **Capability Usage Analytics** (`substrate/capability-analytics/`): Usage tracking to identify high-value and dead-weight capabilities. `trackUsage()`, `getSummary()`, `getTrends()`. **Tier: Builder**
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

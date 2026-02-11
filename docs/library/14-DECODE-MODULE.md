@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DECODE Module Deep Dive
 
-**Version 8.0.0 (ENGINE+ Epoch) | Production Ready**
+**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-014 |
 | **Module** | DECODE |
 | **Layer** | Cognitive |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 | **Capabilities** | 7 |
 
 ---
@@ -149,7 +149,11 @@ await capabilityEngine.execute('personality_adaptation_engine', {
 - **4 NEW Capabilities**: multi_intent_resolver, context_window_optimizer, personality_adaptation_engine, ambiguity_resolution_chain
 - **Total Capabilities**: 7
 
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **Streaming Response Pipeline** (`substrate/streaming-pipeline/`): SSE-based partial response streaming for real-time DECODE output. `createStream()`, `pushChunk()`, `endStream()`. **Tier: Builder**
+- **NL Terminal Interface** (`substrate/nl-terminal/`): Natural language → structured command translation layer. `parseNL()`, `suggestCommands()`, `getParseHistory()`. **Tier: Builder**
+
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

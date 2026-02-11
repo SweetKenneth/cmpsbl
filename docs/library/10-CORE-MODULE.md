@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-010 |
 | **Module** | CORE |
 | **Layer** | Kernel |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 | **Capabilities** | 6 |
 
 ---

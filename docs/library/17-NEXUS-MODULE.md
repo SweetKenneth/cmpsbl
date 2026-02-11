@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-017 |
 | **Module** | NEXUS |
 | **Layer** | Operational |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 
 ---
 
@@ -200,5 +200,11 @@ Metrics are aggregated:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **Streaming Response Pipeline** (`substrate/streaming-pipeline/`): SSE-based partial response streaming for real-time NEXUS AI output. `createStream()`, `pushChunk()`, `endStream()`. **Tier: Builder**
+- **Persistent Rate Limiter** (`substrate/persistent-rate-limit/`): Cross-tab/instance rate limiting via localStorage + BroadcastChannel. `checkLimit()`, `getStatus()`, `resetCounters()`. **Tier: Builder**
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

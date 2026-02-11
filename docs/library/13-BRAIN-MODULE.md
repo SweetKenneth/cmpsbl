@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-013 |
 | **Module** | BRAIN |
 | **Layer** | Cognitive |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 | **Capabilities** | 10 |
 
 ---
