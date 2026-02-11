@@ -164,6 +164,9 @@ Allow: /engines
 Allow: /intelligence
 Allow: /substrate
 Allow: /llms.txt
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /api/
