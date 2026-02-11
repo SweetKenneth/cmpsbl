@@ -262,7 +262,6 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
                         [&_em]:text-muted-foreground [&_a]:text-primary"
                       dangerouslySetInnerHTML={{ __html: formatChatMessage(msg.content) }}
                     />
-                    </div>
                   </div>
 
                   {/* Suggestions */}
