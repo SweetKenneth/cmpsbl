@@ -654,6 +654,14 @@ export const INFRA_COMMANDS: CommandDefinition[] = [
   { command: 'nl.history', description: 'NL parse history', category: 'infra', icon: Clock, requiresOperator: false },
 ];
 
+// PATCH — Distribution Patch Dispatch v8.5.0
+export const PATCH_COMMANDS: CommandDefinition[] = [
+  { command: 'patch.send', description: 'Dispatch a patch to LNCHBL', category: 'infra', icon: Send, requiresOperator: true, args: '<version> <changelog> [capabilities] [engines]', example: 'patch.send 2.1.0 "Enable dream synthesis" dream_synthesis reasoning_engine' },
+  { command: 'patch.status', description: 'List recent patches from cmpsbl_patches', category: 'infra', icon: Activity, requiresOperator: false },
+  { command: 'patch.publish', description: 'Publish a draft patch by ID and dispatch to LNCHBL', category: 'infra', icon: Send, requiresOperator: true, args: '<patch_id>', example: 'patch.publish abc123' },
+  { command: 'patch.help', description: 'Show patch dispatch commands', category: 'infra', icon: Terminal, requiresOperator: false },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
