@@ -538,22 +538,28 @@ class PersonalityEngineClient {
       query: [
         /^(what|how|why|when|where|who|which|is|are|can|does|do)\b/i,
         /\?$/,
-        /^(explain|describe|tell me|show me)/i,
+        /^(explain|describe|tell me|show me|walk me through|teach me|eli5|wdym|wym)/i,
+        /\b(what's|whats|who's|whos|how's|hows)\b/i,
+        /\b(wtf|tf|wth)\b/i,
       ],
       command: [
         /^(do|make|create|build|run|execute|start|stop|enable|disable|set|configure)/i,
-        /^(please|can you|could you|would you).*(do|make|create|run|fix)/i,
+        /^(please|can you|could you|would you|pls|plz).*(do|make|create|run|fix)/i,
         /!$/,
+        /^(yo|hey|aye|bruh|bro|fam)\s+(do|make|create|run|fix|help)/i,
+        /^(gimme|lemme|hook me up|hit me with|send|drop|ship)/i,
       ],
       feedback: [
-        /^(i think|i feel|i believe|seems|appears)/i,
-        /(not working|broken|bug|issue|problem|error)/i,
-        /(love|hate|like|dislike|prefer)/i,
+        /^(i think|i feel|i believe|seems|appears|imo|tbh|ngl|lowkey|highkey)/i,
+        /(not working|broken|bug|issue|problem|error|scuffed|janky|cooked|messed up)/i,
+        /(love|hate|like|dislike|prefer|fw|don't fw|vibes|vibe|mid|goated|trash|fire|slaps)/i,
+        /\b(w|l|rip|oof|yikes|sheesh|damn|bruh|bro)\b/i,
       ],
       exploration: [
         /^(how does|what if|imagine|suppose|consider)/i,
         /(possible|potential|explore|discover|learn|understand)/i,
         /\.\.\./,
+        /\b(any way to|is there a|can it|what about|tell me more|deep dive|unpack)\b/i,
       ],
     };
 
