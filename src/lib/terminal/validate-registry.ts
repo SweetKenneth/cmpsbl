@@ -1,6 +1,6 @@
 /**
  * Terminal Registry Validator
- * v8.0.0 — SYNERGY+ Epoch Ensures all 310+ commands are properly wired
+ * v8.5.0 — SYNERGY+ Epoch Ensures all 340+ commands are properly wired
  */
 
 import { log } from '@/lib/system/log';

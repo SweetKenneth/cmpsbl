@@ -1,6 +1,6 @@
 /**
  * Terminal Execution Wrapper
- * v8.0.0 SYNERGY+ — Governed command execution with tracing and redaction
+ * v8.5.0 SYNERGY+ — Governed command execution with tracing and redaction
  */
 
 import { generateTraceId } from '@/lib/system/trace';

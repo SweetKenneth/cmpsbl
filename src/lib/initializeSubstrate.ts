@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v8.5.0 — SYNERGY+ Epoch — Complete AI Operating System with 14 modules + SEBA
+ * v8.5.0 — SYNERGY+ Epoch — Complete AI Operating System with 14 modules + 7 infra systems + SEBA
  * 
  * Performance: Triple-deferred initialization for zero main-thread blocking
  * - Waits for document idle state

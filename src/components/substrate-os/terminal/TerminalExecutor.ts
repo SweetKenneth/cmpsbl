@@ -1,9 +1,9 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * v8.0.0 — SYNERGY+ Epoch Full-system audit completed 2026-02-08
+ * v8.5.0 — SYNERGY+ Epoch Full-system audit completed 2026-02-11
  * 
- * 14 modules | 310+ commands | 147 synergy pipelines | All handlers verified
+ * 14 modules | 340+ commands | 147 synergy pipelines | 7 infra systems | All handlers verified
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
@@ -612,7 +612,7 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v6.0.0
+│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v8.5.0
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
@@ -649,8 +649,8 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal v6.0.0: aliases, macros, NLP, watch mode, audit
-│  14 modules | 260+ commands | health: 100%
+│  Terminal v8.5.0: aliases, macros, NLP, watch mode, audit
+│  14 modules | 340+ commands | 7 infra systems | health: 100%
 │  promptfluid® — where dreams come to adapt
 │  
 └──────────────────────────────────────────────────────────────`;

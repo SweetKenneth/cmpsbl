@@ -1,12 +1,14 @@
 /**
- * Terminal Boot Screen v8.0.0
+ * Terminal Boot Screen v8.5.0
  * Unique neural-organic visualization of the 14-module architecture
  * Mobile-friendly with no mid-word line breaks
  * 
- * v8.0.0 SYNERGY+ Epoch Changes:
+ * v8.5.0 SYNERGY+ Epoch Changes:
  * - 147 synergy pipelines, 125 executors, 32 S-tier discoveries
- * - Updated version branding to v8.0.0 SYNERGY+
+ * - Updated version branding to v8.5.0 SYNERGY+
  * - 269 capabilities, 62 engines, 20 meta-engines
+ * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
+ * - 340+ commands across 14 modules + infrastructure
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
  */
@@ -57,7 +59,7 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║              PROMPTFLUID® SUBSTRATE OS v8.0.0             ║
+  ║              PROMPTFLUID® SUBSTRATE OS v8.5.0             ║
   ║               SYNERGY+ Epoch Cognitive OS                  ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
@@ -91,8 +93,8 @@ export function generateMobileBootScreen(): string[] {
   return [
     '',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-    '  ▓  PROMPTFLUID® SUBSTRATE OS     ▓',
-    '  ▓  Version 8.0.0 — SYNERGY+      ▓',
+  '  ▓  PROMPTFLUID® SUBSTRATE OS     ▓',
+  '  ▓  Version 8.5.0 — SYNERGY+      ▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
     '  ┌─ BOOTSTRAP ────────────────────┐',
@@ -116,9 +118,10 @@ export function generateMobileBootScreen(): string[] {
     '  └────────────────────────────────┘',
     '',
   '  ◉ 14 modules operational',
-  '  ◉ 310+ commands available',
+  '  ◉ 340+ commands available',
   '  ◉ 147 synergies | 125 executors',
   '  ◉ 269 capabilities | 62 engines',
+  '  ◉ 7 infrastructure systems',
   '  ◉ Health: 100%',
     '',
     '  Type \'help\' for commands',
@@ -148,7 +151,7 @@ export function generateDesktopBootScreen(): string[] {
     '  ░   ██║     ███████╗╚██████╔╝██║██████╔╝                ░',
     '  ░   ╚═╝     ╚══════╝ ╚═════╝ ╚═╝╚═════╝                 ░',
     '  ░                                                       ░',
-    '  ░   SUBSTRATE OS v8.0.0 SYNERGY+                        ░',
+    '  ░   SUBSTRATE OS v8.5.0 SYNERGY+                        ░',
     '  ░   Cognitive Operating System                          ░',
     '  ░   "Where Dreams Come To Adapt"                        ░',
     '  ░                                                       ░',
@@ -204,7 +207,7 @@ export function generateDesktopBootScreen(): string[] {
     '  └───────────────────────────────────────────────────────┘',
     '',
   '  ╔═══════════════════════════════════════════════════════╗',
-  '  ║  14 MODULES │ 310+ CMDS │ 147 SYNERGIES │ 269 CAPS   ║',
+  '  ║  14 MODULES │ 340+ CMDS │ 147 SYNERGIES │ 269 CAPS   ║',
   '  ║  Type \'help\' for commands • \'cortex.status\' for mode  ║',
   '  ╚═══════════════════════════════════════════════════════╝',
     '',
