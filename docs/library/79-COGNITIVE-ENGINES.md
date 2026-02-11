@@ -8,15 +8,35 @@
 The Cognitive Engine System implements a **3-layer orchestration architecture**:
 
 ```
-Capabilities (269) → Engines (62) → Meta-Engines (20)
+Capabilities (325) → Engines (70) → Meta-Engines (22)
 ```
 
 **Value Summary:**
-- **62 Engines** across 18 categories with 2.6x average synergy
-- **20 Meta-Engines** with 6.3x average compound synergy
-- **269 Capabilities** fully orchestrated (147 synergies + 56 world-first + 10 archived + 56 enhancements)
-- **20 Infrastructure Systems** providing production hardening across all tiers
+- **70 Engines** across 18 categories with 2.8x average synergy
+- **22 Meta-Engines** with 6.5x average compound synergy
+- **325 Capabilities** fully orchestrated (147 synergies + 56 world-first + 10 archived + 56 enhancements + 56 v8.5.0 expansion)
+- **27 Infrastructure Systems** providing production hardening across all tiers
 - **9.7/10 average complexity** for IP protection
+
+### v8.5.0 Expansion: 8 New Engines + 2 New Meta-Engines
+
+| Engine | Category | Description | Synergy |
+|--------|----------|-------------|---------|
+| `sandbox_engine` | Platform | Isolated execution environment for untrusted workloads | 2.8x |
+| `saga_engine` | Platform | Long-running distributed transaction orchestration | 3.0x |
+| `policy_access_engine` | Security | Fine-grained policy-based access control | 2.6x |
+| `deep_cognition_engine` | Intelligence | Extended multi-step deep reasoning chains | 3.2x |
+| `dialogue_engine` | Intelligence | Conversational state management and turn orchestration | 2.7x |
+| `prompt_safety_engine` | Security | Prompt injection detection and sanitization | 2.9x |
+| `observability_engine` | Analytics | Unified telemetry export and substrate health scoring | 2.5x |
+| `technical_debt_engine` | Governance | Cognitive debt identification and remediation planning | 2.4x |
+
+**New Meta-Engines (v8.5.0):**
+
+| Meta-Engine | Orchestrates | Compound Synergy | Description |
+|-------------|-------------|------------------|-------------|
+| `resilience_shield` | sandbox, prompt_safety, saga, policy_access | **7.6x** | Comprehensive defense-in-depth orchestration |
+| `deep_cognition_nexus` | deep_cognition, dialogue, observability, technical_debt | **7.4x** | Advanced reasoning and system health fusion |
 
 ---
 
