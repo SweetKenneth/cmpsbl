@@ -179,7 +179,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     heroDescription: "INTEGRATION bridges the substrate to your existing stack. Pre-built adapters for popular services, plus a universal connector for anything custom.",
     features: ["Pre-built adapters (Salesforce, HubSpot, Slack)", "Universal REST/GraphQL connector", "Webhook management", "Data transformation pipelines", "Retry & circuit breaker patterns"],
     codeSnippet: `import { useIntegration } from '@cmpsbl/substrate';\n\nconst { connect, adapters } = useIntegration();\nawait connect('salesforce', {\n  credentials: vault.get('sf_token'),\n  sync: 'bidirectional'\n});`,
-    integrations: ["500+ pre-built adapters", "Custom REST/GraphQL", "Webhook endpoints"],
+    integrations: ["35+ pre-built adapters", "Custom REST/GraphQL", "Webhook endpoints"],
     useCases: ["Enterprise AI needing CRM integration", "Data pipeline orchestration", "Legacy system modernization with AI"],
   },
 
