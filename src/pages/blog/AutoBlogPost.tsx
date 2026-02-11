@@ -6,7 +6,9 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, Calendar, Tag, Bot, Clock, Sparkles } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, Bot, Clock, Sparkles, Shield } from 'lucide-react';
+import { AuthorCard } from '@/components/blog/AuthorCard';
+import { ExperienceMarkers } from '@/components/blog/ExperienceMarkers';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PublicNav } from '@/components/PublicNav';
