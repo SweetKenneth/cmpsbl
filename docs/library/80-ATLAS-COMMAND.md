@@ -1,8 +1,8 @@
 # Atlas Command Interface
 
-**Version:** 7.5.3  
+**Version:** 8.5.0  
 **Module:** Atlas Control Plane  
-**Status:** Production
+**Status:** Production (SYNERGY+ Epoch)
 
 ---
 
