@@ -20,6 +20,7 @@ import {
   isDownstreamDistribution,
   type DownstreamDistribution 
 } from '@/lib/distribution';
+import { validatePatchForLnchbl, isCmpsblOnlyFunction } from '@/lib/distribution/lnchbl-manifest';
 
 // ─── Patch Types ─────────────────────────────────────────────────────────────
 
@@ -116,6 +117,10 @@ export function validatePatch(patch: Partial<Patch>): PatchValidationResult {
     for (const file of patch.files) {
       if (file.path.includes('distribution.ts') || file.path.includes('canon')) {
         errors.push(`Prohibited file path: "${file.path}" — patches may not modify canon identity files`);
+      }
+      // Block any reference to pf-* functions in LNCHBL patches
+      if (isCmpsblOnlyFunction(file.path.split('/').pop() ?? '')) {
+        errors.push(`Prohibited file path: "${file.path}" — pf-* functions do not exist in LNCHBL`);
       }
     }
   }

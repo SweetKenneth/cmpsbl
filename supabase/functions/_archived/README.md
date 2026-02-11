@@ -49,7 +49,60 @@ The following edge functions had FULL overlap with substrate modules and have be
 | `pf-defense-security-report` | DEFENSE.security_report | 2026-02-01 |
 | `pf-ripple-image` | Disabled (402 stub) | 2026-01-28 |
 
-## Remaining Standalone Functions
+## Edge Functions Deleted (v8.5.0 — 2026-02-11)
+
+The 10 adapted capabilities + `pf-modernizer-brain-learn` have been **permanently deleted** from CMPSBL — all logic is now governed via the Capability Auto-Adapt system:
+
+| Edge Function | Governed Capability | Deletion Date |
+|---------------|---------------------|---------------|
+| `pf-brain-hypothesis-test` | hypothesis-test | 2026-02-11 |
+| `pf-resilience-monitor` | resilience-monitor | 2026-02-11 |
+| `pf-brain-ethical-boundary` | ethical-boundary | 2026-02-11 |
+| `pf-defense-anomaly-detection` | anomaly-detection | 2026-02-11 |
+| `pf-brain-systems-reasoning` | systems-reasoning | 2026-02-11 |
+| `pf-brain-self-critique` | self-critique | 2026-02-11 |
+| `pf-brain-pattern-fusion` | pattern-fusion | 2026-02-11 |
+| `pf-brain-temporal-score` | temporal-score | 2026-02-11 |
+| `pf-brain-curiosity-reflect` | curiosity-reflect | 2026-02-11 |
+| `pf-modernizer-brain-learn` | BRAIN.remember (substrate) | 2026-02-11 |
+
+## ⚠️ LNCHBL Distribution — Edge Function Policy (v8.5.0)
+
+**CRITICAL: LNCHBL has ZERO `pf-*` edge functions.**
+
+All `pf-*` functions have been permanently removed from the LNCHBL distribution. The only edge functions that exist in LNCHBL are:
+
+| Function | Purpose |
+|----------|---------|
+| `lnchbl-checkout` | Stripe checkout flow |
+| `lnchbl-customer-portal` | Customer billing portal |
+| `lnchbl-download` | SDK ZIP distribution |
+| `lnchbl-phone-home` | Heartbeat & license check |
+| `lnchbl-verify` | License verification |
+
+### Patch Protocol Rules
+
+1. Patches MUST target only `distribution_patches` and `distribution_state` tables
+2. Patches MUST NEVER reference or depend on any `pf-*` edge function
+3. If new edge function code is needed in LNCHBL, embed it in the `edge_function_code` field of the patch payload
+4. The `lnchbl-patch-receive` endpoint writes `edge_function_code` to `distribution_edge_functions` table
+5. The `lnchbl-download` function reads `distribution_state` to include unlocked capabilities in ZIPs
+
+### Patch Payload Schema
+
+```json
+{
+  "target_distribution": "LNCHBL",
+  "patch_version": "x.y.z",
+  "capabilities": [],
+  "engines": [],
+  "meta_engines": [],
+  "config_overrides": {},
+  "edge_function_code": null
+}
+```
+
+## Remaining Standalone Functions (CMPSBL only)
 
 These functions use the free-tier router and have NOT been fully merged:
 
@@ -58,12 +111,18 @@ These functions use the free-tier router and have NOT been fully merged:
 | `pf-marketing-strategy` | Standalone | Uses free-tier router, user-facing tool |
 | `pf-modernizer-export` | Active | Has active usage in ModernizerJobStatus.tsx |
 
-## Partial Overlap — DO NOT DELETE
+## Partial Overlap — DO NOT DELETE (CMPSBL only)
 
 These functions have logic split across substrate modules and require TODO markers:
 
 - `pf-brain-reflect` → Logic split across BRAIN engines
 - `pf-cascade-improvement-engine` → Shared with CORTEX
+
+## Unrepurposed Archived Functions (CMPSBL only)
+
+Functions in `_archived/` that have NOT yet been integrated into the substrate remain available
+for future repurposing. They exist ONLY in CMPSBL and are never distributed to LNCHBL.
+When repurposed, delete the edge function and add the governed capability via Auto-Adapt.
 
 ## Capability Auto-Adapt System v7.0.0
 
@@ -85,23 +144,6 @@ Drop-in edge functions can now be auto-adapted into governed capabilities:
 5. Toggle on/off in `/os` → **Evolve** → **Capabilities** dashboard
 
 See `/src/lib/capabilities/` for the full system.
-
-### Adapted Capabilities (v7.0.0)
-
-The following 10 high-value archived functions are now governed capabilities:
-
-| Capability | Function | Value Score |
-|------------|----------|-------------|
-| `hypothesis-test` | pf-brain-hypothesis-test | 95 |
-| `resilience-monitor` | pf-resilience-monitor | 96 |
-| `ethical-boundary` | pf-brain-ethical-boundary | 97 |
-| `anomaly-detection` | pf-defense-anomaly-detection | 93 |
-| `systems-reasoning` | pf-brain-systems-reasoning | 92 |
-| `improvement-engine` | pf-cascade-improvement-engine | 91 |
-| `self-critique` | pf-brain-self-critique | 90 |
-| `pattern-fusion` | pf-brain-pattern-fusion | 88 |
-| `temporal-score` | pf-brain-temporal-score | 85 |
-| `curiosity-reflect` | pf-brain-curiosity-reflect | 84 |
 
 ## Migration Guide
 
