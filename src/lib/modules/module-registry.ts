@@ -135,7 +135,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     features: ["Multi-provider routing (OpenAI, Google, Anthropic)", "Cost-performance optimization", "Automatic fallback chains", "Latency-aware routing", "Task complexity scoring"],
     codeSnippet: `import { useNexus } from '@cmpsbl/substrate';\n\nconst { route, providers } = useNexus();\nconst response = await route({\n  task: 'Analyze this contract',\n  priority: 'accuracy',\n  budget: 0.05 // max $0.05\n});`,
     integrations: ["OpenAI", "Google Gemini", "Anthropic Claude", "Local models"],
-    useCases: ["Reducing AI costs by 40-60% with smart routing", "Multi-model architectures", "High-availability AI with automatic failover"],
+    useCases: ["Reducing AI costs with intelligent model routing", "Multi-model architectures", "High-availability AI with automatic failover"],
   },
   {
     slug: "vision",
