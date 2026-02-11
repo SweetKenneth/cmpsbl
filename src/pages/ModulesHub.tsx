@@ -70,7 +70,7 @@ export default function ModulesHub() {
         {LAYERS.map((layer, layerIdx) => {
           const modules = getModulesByLayer(layer);
           return (
-            <section key={layer} className="py-12 sm:py-16">
+            <section key={layer} className="py-8 sm:py-12">
               <div className="container mx-auto max-w-6xl px-4">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
