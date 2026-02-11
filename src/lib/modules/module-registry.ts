@@ -162,7 +162,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     color: "violet-500",
     useCaseH1: "Autonomous AI Optimization: Systems That Improve While You Sleep",
     heroDescription: "DREAM runs when your users don't — analyzing patterns, consolidating memories, and optimizing performance. Your AI literally gets smarter overnight, at zero compute cost.",
-    features: ["Off-peak pattern analysis", "Memory consolidation (SimNap)", "Performance auto-optimization", "Dream pool for shared insights", "Zero-cost improvement cycles"],
+    features: ["Off-peak pattern analysis", "Memory consolidation (SimNap)", "Performance auto-optimization", "Dream pool for shared insights", "Low-cost off-peak improvement cycles"],
     codeSnippet: `import { useDream } from '@cmpsbl/substrate';\n\nconst { schedule, insights, lastCycle } = useDream();\n// insights: DreamInsight[]\n// lastCycle.improvements: number`,
     integrations: ["BRAIN (memory consolidation)", "VISION (performance data)", "RIPPLE (insight propagation)"],
     useCases: ["AI systems that continuously self-improve", "Cost-conscious deployments maximizing off-peak hours", "Research platforms needing autonomous analysis"],
