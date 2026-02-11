@@ -120,13 +120,13 @@ export default function ModuleDetail() {
         </section>
 
         {/* ═══ Code Example (Technical) ═══ */}
-        <section className="py-16 bg-muted/30 border-t border-border/50">
+        <section className="py-12 sm:py-16 bg-muted/30 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <Code className="w-5 h-5 text-primary" /> Quick Start
             </h2>
-            <div className="rounded-xl border border-border bg-card overflow-hidden">
-              <div className="px-4 py-2 border-b border-border bg-muted/50 flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="rounded-xl border border-primary/20 bg-card overflow-hidden shadow-lg shadow-primary/5">
+              <div className="px-4 py-2.5 border-b border-border bg-muted/50 flex items-center gap-2 text-xs text-muted-foreground">
                 <div className="flex gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-destructive/50" />
                   <div className="w-3 h-3 rounded-full bg-accent/50" />
@@ -134,7 +134,7 @@ export default function ModuleDetail() {
                 </div>
                 <span className="font-mono">example.ts</span>
               </div>
-              <pre className="p-6 overflow-x-auto text-sm font-mono text-foreground leading-relaxed">
+              <pre className="p-5 sm:p-6 overflow-x-auto text-[13px] sm:text-sm font-mono text-primary/90 leading-relaxed">
                 <code>{mod.codeSnippet}</code>
               </pre>
             </div>
