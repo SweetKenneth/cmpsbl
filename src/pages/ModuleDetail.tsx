@@ -30,10 +30,33 @@ export default function ModuleDetail() {
     "name": `CMPSBL ${mod.name} Module`,
     "description": mod.description,
     "url": `https://cmpsbl.com/modules/${mod.slug}`,
-    "applicationCategory": "AI Infrastructure",
+    "applicationCategory": "AI Operating System",
     "operatingSystem": "Cloud",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
+  };
+
+  // Generate FAQ schema from highlights for AI crawler citation
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `What does the ${mod.name} module do in CMPSBL's AI Operating System?`,
+        "acceptedAnswer": { "@type": "Answer", "text": mod.heroDescription },
+      },
+      ...mod.highlights.map(h => ({
+        "@type": "Question",
+        "name": `What is ${h.title} in CMPSBL ${mod.name}?`,
+        "acceptedAnswer": { "@type": "Answer", "text": h.description },
+      })),
+      {
+        "@type": "Question",
+        "name": `What are the key features of CMPSBL ${mod.name}?`,
+        "acceptedAnswer": { "@type": "Answer", "text": mod.features.join(". ") + "." },
+      },
+    ],
   };
 
   return (
@@ -43,6 +66,7 @@ export default function ModuleDetail() {
         <meta name="description" content={`${mod.heroDescription.slice(0, 155)}…`} />
         <link rel="canonical" href={`https://cmpsbl.com/modules/${mod.slug}`} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
       </Helmet>
 
       <PublicNav />
