@@ -1,6 +1,6 @@
 # promptfluid® Substrate — Migration Guide
 
-**v8.0.0 SYNERGY+ | Migrating from Legacy Functions to Unified Substrate**
+**v8.5.0 SYNERGY+ | Migrating from Legacy Functions to Unified Substrate**
 
 ---
 

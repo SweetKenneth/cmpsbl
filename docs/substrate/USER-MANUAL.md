@@ -1,8 +1,8 @@
 # CMPSBL Substrate — User Manual
 
-**v7.5.0 — SEBA Era (Self-Evolving Bounded Agent)**
+**v8.5.0 — SYNERGY+ Epoch (Self-Evolving Bounded Agent)**
 
-*Last Updated: 2026-02-05*
+*Last Updated: 2026-02-11*
 
 ---
 

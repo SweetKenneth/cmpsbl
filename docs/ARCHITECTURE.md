@@ -1,6 +1,6 @@
 # promptfluid® Substrate — Architecture
 
-**v8.0.0 SYNERGY+ | Complete 14-Module Cognitive Operating System**
+**v8.5.0 SYNERGY+ | Complete 14-Module Cognitive Operating System**
 
 ---
 

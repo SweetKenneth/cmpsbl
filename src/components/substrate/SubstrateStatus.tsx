@@ -41,7 +41,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         CMPSBL substrate: {activeCount}/{totalModules} modules
       </span>
       <Badge variant="outline" className="text-xs">
-        v8.0.0
+        v8.5.0
       </Badge>
     </div>
   );
