@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — System Architecture
 
-**Version 8.0.0 | Scientific Publication**
+**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
 
 ---
 
@@ -9,8 +9,8 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-002 |
-| **Version** | v8.0.0 |
-| **Last Updated** | January 2026 |
+| **Version** | v8.5.0 |
+| **Last Updated** | February 2026 |
 | **Classification** | Public Research Document |
 
 ---

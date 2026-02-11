@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DREAM Module Deep Dive
 
-**Version 8.0.0 | Scientific Publication**
+**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-015 |
 | **Module** | DREAM |
 | **Layer** | Cognitive |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 
 ---
 
@@ -36,8 +36,8 @@ DREAM is the autonomous evolution engine, responsible for pattern synthesis, mut
 | Property | Value |
 |----------|-------|
 | **Name** | DREAM |
-| **Layer** | Cognitive |
-| **Boot Order** | 6 |
+| **Layer** | Operational |
+| **Boot Order** | 11 |
 | **Dependencies** | CORE, BRAIN |
 
 ---
@@ -178,5 +178,11 @@ The Experimentation Lab (`/lab`) showcases five live DREAM-powered demos:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **Rollback Snapshots** (`substrate/rollback-snapshots/`): Full system state capture before DREAM-driven evolutions for trustworthy autonomous growth. `captureSnapshot()`, `restoreSnapshot()`, `listSnapshots()`, `diffSnapshots()`. **Tier: Enterprise**
+- **Cron Runner** (`substrate/cron-runner/`): Client-side scheduler for automated DREAM cycles, health checks, and memory GC. `register()`, `start()`, `pause()`. **Tier: Builder**
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

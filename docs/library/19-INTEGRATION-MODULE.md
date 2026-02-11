@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-019 |
 | **Module** | INTEGRATION |
 | **Layer** | Operational |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 
 ---
 

@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-021 |
 | **Module** | MODERNIZER |
 | **Layer** | Administrative |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 
 ---
 

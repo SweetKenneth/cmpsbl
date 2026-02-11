@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-012 |
 | **Module** | ACCESS |
 | **Layer** | Kernel |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 
 ---
 

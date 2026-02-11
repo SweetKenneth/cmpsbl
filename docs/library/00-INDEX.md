@@ -18,7 +18,7 @@
 | **Cognitive Engines** | 62 Compound Execution Units |
 | **Meta-Engines** | 20 High-Order Orchestrators |
 | **Synergy Pipelines** | 147 Executable Pipelines |
-| **Infrastructure Systems** | 20 Production-Hardening Modules |
+| **Infrastructure Systems** | 27 Production-Hardening Modules |
 | **Tiered Capabilities** | 68 (FREE/Builder/Pro/Enterprise) |
 | **Avg Synergy Multiplier** | 3.2x |
 
@@ -48,7 +48,7 @@ This library is part of the **FNDTN v8** standards package, which presents:
 | v7.6.0 (SYNERGY+) | 2026-02-06 | 76 Capabilities, INCLUSIVE Auto-Repair |
 | v8.0.0 (ENGINE+) | 2026-02-08 | 62 Cognitive Engines, Compound Execution |
 | v8.1.0 (SYNERGY+) | 2026-02-09 | World-First Enhancement Integration, 269 Capabilities |
-| **v8.5.0 (SYNERGY+)** | 2026-02-11 | **20 Infrastructure Systems, 68 Tiered Capabilities, LNCHBL Distribution** |
+| **v8.5.0 (SYNERGY+)** | 2026-02-11 | **27 Infrastructure Systems, 340+ Commands, 7 Automation Systems, LNCHBL Distribution** |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
@@ -177,7 +177,7 @@ This library is part of the **FNDTN v8** standards package, which presents:
 
 ## Infrastructure Systems Summary (v8.5.0)
 
-20 production-hardening systems organized by responsibility:
+27 production-hardening systems organized by responsibility:
 
 | System | Module | Tier | Purpose |
 |--------|--------|------|---------|
@@ -204,6 +204,13 @@ This library is part of the **FNDTN v8** standards package, which presents:
 | Audit Trail | CORE | Builder | Tamper-evident logging |
 | Dependency Graph | CORE | Builder | Module boot ordering |
 | Dependency Health | SYSTEM | Builder | Cross-module health tracking |
+| **Cron Runner** | **DREAM/SYSTEM** | **Builder** | **Automated scheduled tasks** |
+| **Persistent Rate Limiter** | **NEXUS/DEFENSE** | **Builder** | **Cross-tab/instance rate limiting** |
+| **Rollback Snapshots** | **MODERNIZER** | **Enterprise** | **Full state capture before evolutions** |
+| **Capability Usage Analytics** | **VISION** | **Builder** | **Dead-weight detection, rising trends** |
+| **Streaming Pipeline** | **DECODE/NEXUS** | **Builder** | **SSE partial response streaming** |
+| **File Processing Pipeline** | **INCLUSIVE** | **Builder** | **CSV/JSON/MD/HTML ingestion** |
+| **NL Terminal Interface** | **DECODE** | **Builder** | **Natural language command parsing** |
 
 ---
 
@@ -237,7 +244,7 @@ Read all documents in order.
   version      = {v8.5.0},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
-  note         = {Production system with 150,000+ lines of code, 62 cognitive engines, 20 infrastructure systems}
+  note         = {Production system with 175,000+ lines of code, 62 cognitive engines, 27 infrastructure systems}
 }
 ```
 

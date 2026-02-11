@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-020 |
 | **Module** | SYSTEM |
 | **Layer** | Administrative / Orchestrator |
-| **Version** | v8.0.0 |
+| **Version** | v8.5.0 |
 
 ---
 
