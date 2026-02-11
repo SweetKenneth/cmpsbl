@@ -118,4 +118,24 @@ When any module drops below 40, **auto-heal triggers automatically**.
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+---
+
+## Infrastructure Systems (v8.5.0)
+
+The substrate includes 7 autonomous infrastructure systems that provide **automation gravity** — tasks that previously required manual intervention now run automatically:
+
+| System | Category | Description |
+|--------|----------|-------------|
+| **Cron Runner** | Automation | Client-side scheduler for GC, health checks, DREAM cycles |
+| **Persistent Rate Limiter** | Reliability | Cross-tab/instance rate limiting via localStorage + BroadcastChannel |
+| **Rollback Snapshots** | Safety (Enterprise) | Full system state capture before evolutions |
+| **Capability Analytics** | Intelligence | Usage tracking, dead-weight detection, rising capability identification |
+| **Streaming Pipeline** | Performance | SSE-based partial response streaming for DECODE/NEXUS |
+| **File Processing** | Extensibility | CSV, JSON, Markdown, HTML ingestion with optional Brain routing |
+| **NL Terminal** | UX | Natural language → structured command translation |
+
+These systems are managed through **33 dedicated terminal commands** under the `cron.*`, `ratelimit.*`, `snapshot.*`, `analytics.*`, `streaming.*`, `files.*`, and `nl.*` prefixes.
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*

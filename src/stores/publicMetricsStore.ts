@@ -1,6 +1,6 @@
 /**
  * Public Metrics Store
- * v8.0.0 SYNERGY+ Epoch — Single Source of Truth for all public-facing metrics
+ * v8.5.0 SYNERGY+ Epoch — Single Source of Truth for all public-facing metrics
  * 
  * This Zustand store serves as the canonical source for all marketing numbers,
  * version info, and capability counts across the entire substrate.
@@ -80,7 +80,7 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '8.0.0',
+  version: '8.5.0',
   codename: 'SYNERGY+',
   epoch: 'SYNERGY+',
   buildDate: new Date().toISOString().split('T')[0],
@@ -106,14 +106,14 @@ export const DEFAULT_METRICS: PublicMetrics = {
   archivedCapabilitiesCount: 136,
   
   // Terminal & Commands
-  terminalCommandsCount: 310,
+  terminalCommandsCount: 340,
   
   // Integration
   integrationAdaptersCount: 35,
   
   // Codebase
-  linesOfCode: 160000,
-  linesOfCodeDisplay: '160k+',
+  linesOfCode: 175000,
+  linesOfCodeDisplay: '175k+',
   
   // Performance Claims
   routingLatencyClaim: '<100ms',
@@ -175,7 +175,7 @@ export function useMetric<K extends keyof PublicMetrics>(key: K): PublicMetrics[
   return usePublicMetricsStore((state) => state.metrics[key]);
 }
 
-/** Get the full version string (e.g., "8.0.0 SYNERGY+") */
+/** Get the full version string (e.g., "8.5.0 SYNERGY+") */
 export function useVersionString(): string {
   return usePublicMetricsStore((state) => 
     `${state.metrics.version} ${state.metrics.codename}`
