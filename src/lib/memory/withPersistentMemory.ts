@@ -44,6 +44,8 @@ export interface PersistentMemoryAgent {
   remember: (note: string) => Promise<void>;
   /** Get the current memory context for an input */
   getContext: (input: string) => Promise<MemoryContext>;
+  /** Store a workload outcome — what the agent accomplished */
+  logWorkload: (summary: string) => Promise<void>;
 }
 
 /**
@@ -105,9 +107,14 @@ export function withPersistentMemory(config: MemoryConfig): PersistentMemoryAgen
     await client.store(summary, { type: 'interaction' });
   };
   
+  const logWorkload = async (summary: string): Promise<void> => {
+    await client.storeWorkload(summary, { agentId });
+  };
+  
   return {
     respond,
     remember,
-    getContext
+    getContext,
+    logWorkload
   };
 }

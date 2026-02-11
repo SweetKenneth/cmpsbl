@@ -150,11 +150,15 @@ const agent = withPersistentMemory({
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
-                      Intercepts inputs and recalls relevant memories
+                      Auto-extracts facts from user messages (names, preferences, etc.)
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
-                      Appends context to your agent automatically
+                      Recalls exact stored facts without hallucination
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      Remembers previous workloads and task outcomes
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
@@ -181,6 +185,7 @@ const memory = withPersistentMemory({ agentId: 'support-bot' });
 
 async function handleUserMessage(userMessage: string) {
   // 1. Get memory context automatically
+  //    Facts like "my name is Alex" are auto-extracted & stored
   const context = await memory.getContext(userMessage);
   
   // 2. Build memory-enriched prompt
@@ -197,7 +202,10 @@ async function handleUserMessage(userMessage: string) {
   
   // 4. Memory stores interactions automatically
   return response.choices[0].message.content;
-}`} />
+}
+
+// After completing a task, log the workload so the agent remembers
+await memory.logWorkload('Resolved billing issue for user #42 — applied $10 credit');`} />
               </CardContent>
             </Card>
           </section>
@@ -396,6 +404,7 @@ interface PersistentMemoryAgent {
   respond: (input: string) => Promise<string>;
   remember: (note: string) => Promise<void>;
   getContext: (input: string) => Promise<MemoryContext>;
+  logWorkload: (summary: string) => Promise<void>;  // Track task outcomes
 }`} />
                 </CardContent>
               </Card>
@@ -409,6 +418,7 @@ interface PersistentMemoryAgent {
 interface PersistentAgentResult {
   respond: (input: string) => Promise<MemoryContext>;
   remember: (note: string) => Promise<void>;
+  logWorkload: (summary: string) => Promise<void>;  // Track task outcomes
   isLoading: boolean;
   error: Error | null;
   clearError: () => void;

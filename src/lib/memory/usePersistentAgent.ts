@@ -30,6 +30,8 @@ export interface PersistentAgentResult {
   respond: (input: string) => Promise<MemoryContext>;
   /** Manually remember something important */
   remember: (note: string) => Promise<void>;
+  /** Store a workload outcome — what the agent accomplished */
+  logWorkload: (summary: string) => Promise<void>;
   /** Current loading state */
   isLoading: boolean;
   /** Last error if any */
@@ -119,9 +121,21 @@ export function usePersistentAgent(
     setError(null);
   }, []);
   
+  const logWorkload = useCallback(async (summary: string): Promise<void> => {
+    if (!clientRef.current) {
+      clientRef.current = new MemoryClient(agentId, scope);
+    }
+    try {
+      await clientRef.current.storeWorkload(summary);
+    } catch (err) {
+      console.warn('[Memory] Workload log failed gracefully');
+    }
+  }, [agentId, scope]);
+  
   return {
     respond,
     remember,
+    logWorkload,
     isLoading,
     error,
     clearError

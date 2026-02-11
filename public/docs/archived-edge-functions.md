@@ -49,6 +49,23 @@ The following edge functions had FULL overlap with substrate modules and have be
 | `pf-defense-security-report` | DEFENSE.security_report | 2026-02-01 |
 | `pf-ripple-image` | Disabled (402 stub) | 2026-01-28 |
 
+## Edge Functions Deleted (v8.5.0 — 2026-02-11)
+
+The 10 adapted capabilities + `pf-modernizer-brain-learn` have been **permanently deleted** — all logic is now governed via the Capability Auto-Adapt system:
+
+| Edge Function | Governed Capability | Deletion Date |
+|---------------|---------------------|---------------|
+| `pf-brain-hypothesis-test` | hypothesis-test | 2026-02-11 |
+| `pf-resilience-monitor` | resilience-monitor | 2026-02-11 |
+| `pf-brain-ethical-boundary` | ethical-boundary | 2026-02-11 |
+| `pf-defense-anomaly-detection` | anomaly-detection | 2026-02-11 |
+| `pf-brain-systems-reasoning` | systems-reasoning | 2026-02-11 |
+| `pf-brain-self-critique` | self-critique | 2026-02-11 |
+| `pf-brain-pattern-fusion` | pattern-fusion | 2026-02-11 |
+| `pf-brain-temporal-score` | temporal-score | 2026-02-11 |
+| `pf-brain-curiosity-reflect` | curiosity-reflect | 2026-02-11 |
+| `pf-modernizer-brain-learn` | BRAIN.remember (substrate) | 2026-02-11 |
+
 ## Remaining Standalone Functions
 
 These functions use the free-tier router and have NOT been fully merged:
