@@ -183,8 +183,8 @@ EVOLUTION ENGINES (2)
 | CLM Budget Governor | CLM | Daily token budget with kill switch for runaway learning |
 | **Synergy Multiplier** | Engine System | 2-8x value amplification through orchestration |
 | **Complexity Score** | Engine System | IP protection rating 1-10 per engine |
-| **Capability Count** | Capability Registry | **269 total capabilities across 14 modules** |
-| **Engine Count** | Engine System | **62 engines orchestrating 269 capabilities** |
+| **Capability Count** | Capability Registry | **325 total capabilities across 14 modules** |
+| **Engine Count** | Engine System | **70 engines orchestrating 325 capabilities** |
 | **Tier Gate** | Capability Gate | **Enterprise-only self-improvement enforcement** |
 | **Infrastructure** | 20 Systems | **Production hardening across all tiers** |
 

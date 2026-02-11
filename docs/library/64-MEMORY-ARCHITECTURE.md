@@ -272,8 +272,9 @@ function MemoryDashboard() {
 - [13-BRAIN-MODULE.md](./13-BRAIN-MODULE.md) — BRAIN module overview
 - [63-CLM.md](./63-CLM.md) — Constant Learning Mode
 - [65-SPACED-REPETITION.md](./65-SPACED-REPETITION.md) — SM-2 scheduling
+- [85-LNCHBL-DISTRIBUTION.md](./85-LNCHBL-DISTRIBUTION.md) — LNCHBL tier map
 
 ---
 
-*CMPSBL OS Substrate v6.1.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

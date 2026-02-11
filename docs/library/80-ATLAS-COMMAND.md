@@ -210,12 +210,78 @@ If a command fails, Atlas provides:
 
 ---
 
+## New Command Namespaces (v8.5.0)
+
+### 🔧 PATCH Commands
+
+Dispatch capability patches to the LNCHBL distribution:
+
+| Command | Description |
+|---------|-------------|
+| `patch.send <id>` | Dispatch a draft patch to LNCHBL |
+| `patch.publish <id>` | Publish a draft and dispatch |
+| `patch.status` | View recent patch dispatch history |
+| `patch.help` | Show patch command reference |
+
+### 🤖 SEBA Commands
+
+Control the Self-Evolving Bounded Agent:
+
+| Command | Description |
+|---------|-------------|
+| `seba.status` | SEBA agent state + pending proposals |
+| `seba.cycle` | Trigger one analysis cycle |
+| `seba.proposals` | List pending proposals |
+| `seba.approve <id>` | Approve a proposal |
+| `seba.reject <id>` | Reject a proposal |
+
+### ⚙️ ENGINE Commands
+
+Execute and query cognitive engines:
+
+| Command | Description |
+|---------|-------------|
+| `engine.list` | List all 70 engines with synergy scores |
+| `engine.run <id>` | Execute a specific engine |
+| `engine.batch <ids>` | Execute multiple engines |
+| `engine.summary` | Engine system overview |
+| `engine.meta` | List 22 meta-engines |
+
+### 💻 ENCODED Commands
+
+AI code generation agent:
+
+| Command | Description |
+|---------|-------------|
+| `encoded.status` | Encoded agent state |
+| `encoded.generate` | Generate code from spec |
+| `encoded.validate` | Validate generated code |
+| `encoded.apply` | Apply generated code |
+
+---
+
+## Help System (v8.5.0)
+
+Module-specific help is available via `help <module>`:
+
+```
+help patch      → Patch dispatch commands
+help seba       → SEBA evolution commands
+help engine     → Cognitive engine commands
+help encoded    → Code generation commands
+help infra      → Infrastructure commands (cron, ratelimit, snapshot, etc.)
+```
+
+---
+
 ## Related Documentation
 
 - [SEBA Module](/docs/library/66-SEBA-MODULE.md) — Evolution engine details
 - [Evolution Observability](/docs/library/79-EVOLUTION-OBSERVABILITY.md) — Monitoring evolution
 - [System Architecture](/docs/library/02-SYSTEM-ARCHITECTURE.md) — Overall system design
+- [Cognitive Engines](/docs/library/79-COGNITIVE-ENGINES.md) — 70 engines, 22 meta-engines
+- [LNCHBL Distribution](/docs/library/85-LNCHBL-DISTRIBUTION.md) — Patch protocol
 
 ---
 
-*Atlas Command v7.5.3 — SYNERGY+ Epoch*
+*Atlas Command v8.5.0 — SYNERGY+ Epoch*

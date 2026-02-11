@@ -553,6 +553,68 @@ data: {"done": true, "total_tokens": 150}
 
 ---
 
+## Patch Commands (v8.5.0 — Distribution Dispatch)
+
+| Command | Description |
+|---------|-------------|
+| `patch.send <id>` | Dispatch a draft patch to LNCHBL via `cmpsbl-patch-dispatch` |
+| `patch.publish <id>` | Publish a draft and dispatch in one step |
+| `patch.status` | View recent patch dispatch results |
+| `patch.help` | Show patch command reference |
+
+**Authentication**: Uses logged-in admin JWT or `CMPSBL_PATCH_SECRET` bearer token.
+
+---
+
+## SEBA Commands (v8.5.0)
+
+| Command | Description |
+|---------|-------------|
+| `seba.status` | SEBA agent state + pending proposals |
+| `seba.cycle` | Trigger one analysis cycle |
+| `seba.proposals` | List pending proposals |
+| `seba.approve <id>` | Approve a proposal |
+| `seba.reject <id>` | Reject a proposal |
+
+---
+
+## ENGINE Commands (v8.5.0)
+
+| Command | Description |
+|---------|-------------|
+| `engine.list` | List all 70 engines with synergy scores |
+| `engine.run <id>` | Execute a specific engine |
+| `engine.batch <ids>` | Execute multiple engines in parallel |
+| `engine.summary` | Engine system overview (70 engines, 22 meta-engines) |
+| `engine.meta` | List 22 meta-engines |
+
+---
+
+## ENCODED Commands (v8.5.0)
+
+| Command | Description |
+|---------|-------------|
+| `encoded.status` | Encoded agent state |
+| `encoded.generate` | Generate code from spec |
+| `encoded.validate` | Validate generated code |
+| `encoded.apply` | Apply generated code |
+
+---
+
+## Help Routing (v8.5.0)
+
+| Help Command | Returns |
+|-------------|---------|
+| `help` | Full command reference (all modules) |
+| `help <module>` | Module-specific commands (e.g., `help brain`) |
+| `help patch` | Patch dispatch commands |
+| `help seba` | SEBA evolution commands |
+| `help engine` | Cognitive engine commands |
+| `help encoded` | Code generation commands |
+| `help infra` | Infrastructure commands (cron, ratelimit, snapshot, analytics, streaming, files, nl) |
+
+---
+
 ## Hidden Commands (Admin Only)
 
 | Command | Description | Danger Level |
@@ -568,4 +630,5 @@ data: {"done": true, "total_tokens": 150}
 ---
 
 *CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*340+ Commands | 15 Module Prefixes | 7 Infrastructure Namespaces | 4 New Command Groups*
 *© 2025-2026 PromptFluid®. All rights reserved.*

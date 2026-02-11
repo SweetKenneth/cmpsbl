@@ -325,6 +325,14 @@ function MyComponent() {
 
 ---
 
+---
+
+## Patch Dispatch Integration (v8.5.0)
+
+The engine system supports cross-distribution dispatch via the `cmpsbl-patch-dispatch` edge function. Patches can deliver new engine definitions, capability mappings, and tier assignments to the LNCHBL distribution. See [85-LNCHBL-DISTRIBUTION.md](./85-LNCHBL-DISTRIBUTION.md) for the patch protocol specification.
+
+---
+
 *CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
-*20 Meta-Engines × 62 Engines × 269 Capabilities × 20 Infrastructure Systems*
+*22 Meta-Engines × 70 Engines × 325 Capabilities × 27 Infrastructure Systems*
 *© 2025-2026 PromptFluid®. All rights reserved.*
