@@ -409,8 +409,8 @@ class PersonalityEngineClient {
    * Simple sentiment analysis (-1 to 1)
    */
   private analyzeSentiment(text: string): number {
-    const positiveWords = ['good', 'great', 'awesome', 'thanks', 'helpful', 'love', 'amazing', 'excellent', 'perfect', 'wonderful'];
-    const negativeWords = ['bad', 'terrible', 'awful', 'hate', 'broken', 'stupid', 'useless', 'annoying', 'frustrating', 'wrong'];
+    const positiveWords = ['good', 'great', 'awesome', 'thanks', 'helpful', 'love', 'amazing', 'excellent', 'perfect', 'wonderful', 'fire', 'goated', 'based', 'dope', 'lit', 'sick', 'clean', 'crispy', 'chef kiss', 'slaps', 'bussin', 'w', 'valid', 'peak', 'elite', 'mint', 'clutch', 'solid', 'nailed it', 'chef\'s kiss', 'banger', 'no cap'];
+    const negativeWords = ['bad', 'terrible', 'awful', 'hate', 'broken', 'stupid', 'useless', 'annoying', 'frustrating', 'wrong', 'trash', 'mid', 'ass', 'sus', 'cap', 'cringe', 'dead', 'cooked', 'wack', 'janky', 'scuffed', 'l', 'rip', 'fail', 'yikes', 'oof'];
     
     let score = 0;
     const words = text.split(/\s+/);
