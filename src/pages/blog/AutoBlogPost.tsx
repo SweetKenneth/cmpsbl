@@ -48,6 +48,12 @@ interface AutoPost {
   category: string;
   published_at: string;
   topic_seed: string | null;
+  reviewed_by: string | null;
+  review_status: string | null;
+  reviewed_at: string | null;
+  author_name: string | null;
+  author_role: string | null;
+  experience_tags: string[] | null;
 }
 
 export default function AutoBlogPost() {
