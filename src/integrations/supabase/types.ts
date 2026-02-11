@@ -1672,12 +1672,18 @@ export type Database = {
       }
       auto_blog_posts: {
         Row: {
+          author_name: string | null
+          author_role: string | null
           category: string
           content: string
           created_at: string
           excerpt: string | null
+          experience_tags: string[] | null
           id: string
           published_at: string | null
+          review_status: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           slug: string
           status: string
           title: string
@@ -1685,12 +1691,18 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          author_name?: string | null
+          author_role?: string | null
           category: string
           content: string
           created_at?: string
           excerpt?: string | null
+          experience_tags?: string[] | null
           id?: string
           published_at?: string | null
+          review_status?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           slug: string
           status?: string
           title: string
@@ -1698,12 +1710,18 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          author_name?: string | null
+          author_role?: string | null
           category?: string
           content?: string
           created_at?: string
           excerpt?: string | null
+          experience_tags?: string[] | null
           id?: string
           published_at?: string | null
+          review_status?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           slug?: string
           status?: string
           title?: string
