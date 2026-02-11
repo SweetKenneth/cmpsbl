@@ -220,6 +220,10 @@ export const executeWorldFirstOperational: MetaEngineExecutor = (ctx) => execute
 export const executeWorldFirstIntelligence: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executeWorldFirstGovernance: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
+// v8.5.0 additions — High-Value Expansion Meta-Engines
+export const executeResilienceShield: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeDeepCognitionNexus: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -248,6 +252,9 @@ export const META_ENGINE_EXECUTORS: Record<MetaEngineId, MetaEngineExecutor> = {
   world_first_operational: executeWorldFirstOperational,
   world_first_intelligence: executeWorldFirstIntelligence,
   world_first_governance: executeWorldFirstGovernance,
+  // v8.5.0 additions — High-Value Expansion Meta-Engines
+  resilience_shield: executeResilienceShield,
+  deep_cognition_nexus: executeDeepCognitionNexus,
 };
 
 // ============================================================================

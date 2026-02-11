@@ -25,110 +25,70 @@
 
 ---
 
-## 2. Tier Breakdown (v3.0.0)
+## 2. Tier Breakdown (v4.0.0 — 124 total capabilities)
 
-### 2.1 FREE — Core Cognitive Loop (12 capabilities)
+### 2.1 FREE — Core Cognitive Loop (16 capabilities)
 
 | Category | Capabilities |
 |----------|-------------|
-| Cognitive | Memory Engine, Learning Engine, Context Engine, Personality Engine, Conversation Auto-Store, CLM (Basic) |
-| Integration | Nexus Engine |
+| Cognitive | Memory Engine, Learning Engine, Context Engine, Personality Engine, Conversation Auto-Store, CLM (Basic), **Conversation Analytics**, **Emotion Baseline** |
+| Integration | Nexus Engine, **Nexus Health Monitor** |
 | Experience | Audio Experience Engine |
-| Infrastructure | Engine Bus, State Engine, Event System |
+| Infrastructure | Engine Bus, State Engine, Event System, **Hot Reload Orchestrator** |
 | Intelligence | Semantic Search |
 
-### 2.2 Builder — Hardening & Observability (18 capabilities)
+### 2.2 Builder — Hardening & Observability (26 capabilities)
 
 | Category | Capabilities |
 |----------|-------------|
-| Reliability | Circuit Breaker, Boot Health Gates, Regression Testing, Auto Regression Trigger, Adaptive Rate Limiting |
-| Observability | Telemetry Engine, Cost Attribution, Self-Benchmark, Health Dashboard API, Correlation ID Propagation |
-| Memory | Memory GC, GC Scheduler, Memory Deduplication |
-| Communication | Module Communication Bus, Realtime Bridge |
+| Reliability | Circuit Breaker, Boot Health Gates, Regression Testing, Auto Regression Trigger, Adaptive Rate Limiting, **Structured Error Recovery**, **Event Replay Buffer** |
+| Observability | Telemetry Engine, Cost Attribution, Self-Benchmark, Health Dashboard API, Correlation ID Propagation, **Latency Heatmap**, **Dependency Graph Visualizer**, **Audit Trail (Lite)** |
+| Memory | Memory GC, GC Scheduler, Memory Deduplication, **Memory Compaction** |
+| Communication | Module Communication Bus, Realtime Bridge, **Signal Priority Queue** |
 | Intelligence | Brain Transfer Pipeline, Pattern Effectiveness Scoring, Pattern Versioning |
+| Infrastructure | **Config Snapshot & Restore** |
 
-### 2.3 Pro — Intelligence & Operations (14 capabilities)
+### 2.3 Pro — Intelligence & Operations (24 capabilities)
 
 | Category | Capabilities |
 |----------|-------------|
-| Intelligence | Reasoning Engine, Imagination Engine, Knowledge Map, Anomaly Correlation, Incident Timeline, Predictive Failure Detection |
-| Operations | Adaptive Budget Allocation, Cost Forecasting, Load Shedding, Dynamic Pipeline Composition |
+| Intelligence | Reasoning Engine, Imagination Engine, Knowledge Map, Anomaly Correlation, Incident Timeline, Predictive Failure Detection, **Associative Recall**, **Hypothesis Generator**, **Intent Disambiguation**, **Context Compression**, **Cross-Module Insight Fusion** |
+| Operations | Adaptive Budget Allocation, Cost Forecasting, Load Shedding, Dynamic Pipeline Composition, **Cognitive Load Balancer**, **SLA Monitor**, **Resource Quota Engine**, **Adaptive Timeout Manager** |
 | Governance | Governance Guard |
-| Platform | Multi-Tenant Isolation, Capability Gate Middleware |
+| Platform | Multi-Tenant Isolation, Capability Gate Middleware, **Canary Deployment Gate** |
 | Memory | Federated Memory Sync |
 
-### 2.4 Enterprise — Self-Improvement & Full Platform (24 capabilities)
+### 2.4 Enterprise — Self-Improvement & Full Platform (58 capabilities)
 
 | Category | Capabilities |
 |----------|-------------|
-| **Self-Improvement** | **SEBA Engine, Modernizer, Cortex Agency, Evolution A/B, Evolution Rollback, Impact Replay, Dream→Proposal, Dream Chains, Knowledge Auto-Fill, Hot-Swap Engine, Deprecation Lifecycle** |
-| Platform | Capability Discovery, Orchestrator Engine, Support Bot, Code Validation, Plugin SDK |
-| World-First | Cognitive, Operational, Intelligence, Governance (14 each) |
-| Enterprise | Parity Enforcement, Full CLM, Archived Adapters, Custom Engine Registration |
+| **Self-Improvement** (19) | SEBA Engine, Modernizer, Cortex Agency, Evolution A/B, Evolution Rollback, Impact Replay, Dream→Proposal, Dream Chains, Knowledge Auto-Fill, Hot-Swap, Deprecation Lifecycle, **Autonomous Workflow Composer**, **Evolution Impact Forecast**, **Dream Lucidity Control**, **Self-Repair Engine**, **Evolution Lineage Tracker**, **Cognitive Debt Analyzer**, **Evolution Sandbox**, **Dream Pool Federation** |
+| Platform (11) | Capability Discovery, Orchestrator Engine, Support Bot, Code Validation, Plugin SDK, **Sandbox Engine**, **Saga Engine**, **Fleet Orchestration**, **Capability Marketplace**, **Multi-Agent Negotiation**, **Runtime Schema Migration** |
+| Intelligence (5) | **Deep Cognition Engine**, **Dialogue Engine**, **Knowledge Graph Federation**, **Cognitive Replay Debugger**, **Deep Cognition Nexus Meta-Engine** |
+| Security (3) | **Policy Access Engine**, **Prompt Safety Engine**, **Zero Trust Mesh** |
+| World-First (4) | Cognitive, Operational, Intelligence, Governance (14 each) |
+| Governance (3) | **Compliance Report Generator**, **Semantic Versioning Engine**, **Governance Workflow Engine** |
+| Observability (3) | **Observability Engine**, **Capability Health Score**, **Substrate Telemetry Export** |
+| Operations (2) | **Cost Anomaly Detector**, **Cross-Tenant Analytics** |
+| Evolution (1) | **Technical Debt Engine** |
+| Performance (1) | **Intelligent Cache Engine** |
+| Cognitive (1) | **Adaptive Personality Tuning** |
+| Enterprise (4) | Parity Enforcement, Full CLM, Archived Adapters, Custom Engine Registration |
+| Meta-Engine (1) | **Resilience Shield Meta-Engine** |
 
 ---
 
-## 3. New Infrastructure Systems (v8.5.0)
+## 3. v8.5.0 High-Value Expansion Summary
 
-### 3.1 Capability Gate Middleware
-- **Location:** `src/lib/substrate/capability-gate/`
-- **Purpose:** Runtime tier enforcement — blocks capability execution if user tier is insufficient
-- **Modes:** strict (block), warn (log + allow), off (bypass)
-- **Tier:** Pro
-
-### 3.2 Hot-Swap Engine Deployment
-- **Location:** `src/lib/substrate/hot-swap/`
-- **Purpose:** Zero-downtime engine replacement via blue-green/canary/rolling strategies
-- **Phases:** loading → warming → active → draining → unloaded
-- **Tier:** Enterprise (self-improvement)
-
-### 3.3 Federated Memory Sync
-- **Location:** `src/lib/substrate/federated-memory/`
-- **Purpose:** Cross-instance memory sharing with privacy controls and conflict resolution
-- **Strategies:** latest-wins, highest-confidence, merge
-- **Tier:** Pro
-
-### 3.4 Predictive Failure Detection
-- **Location:** `src/lib/substrate/predictive-failure/`
-- **Purpose:** Linear regression on metric windows to predict failures before they occur
-- **Metrics:** error_rate, latency_ms, memory_mb, cpu_percent
-- **Tier:** Pro
-
-### 3.5 Dynamic Pipeline Composition
-- **Location:** `src/lib/substrate/dynamic-pipeline/`
-- **Purpose:** Runtime-composable execution pipelines from registered stages
-- **Modes:** sequential, parallel, adaptive
-- **Tier:** Pro
-
-### 3.6 Multi-Tenant Isolation
-- **Location:** `src/lib/substrate/multi-tenant/`
-- **Purpose:** Tenant-scoped resource isolation with per-tenant quotas
-- **Features:** Scope prefixing, quota enforcement, suspend/reactivate
-- **Tier:** Pro
-
-### 3.7 Deprecation Lifecycle
-- **Location:** `src/lib/substrate/deprecation-lifecycle/`
-- **Purpose:** Managed capability sunset: announced → warned → deprecated → removed
-- **Features:** Grace periods, migration guidance, usage tracking
-- **Tier:** Enterprise (self-improvement)
-
-### 3.8 Correlation ID Propagation
-- **Location:** `src/lib/substrate/correlation-id/`
-- **Purpose:** End-to-end request tracing across modules and edge functions
-- **Features:** Context forking, span tracking, header extraction
-- **Tier:** Builder
-
-### 3.9 Adaptive Rate Limiting
-- **Location:** `src/lib/substrate/adaptive-rate-limit/`
-- **Purpose:** Dynamic rate limits that adapt to system pressure and tenant reputation
-- **Features:** Token bucket with adaptive multiplier, pressure-based throttling
-- **Tier:** Builder
-
-### 3.10 Plugin SDK
-- **Location:** `src/lib/substrate/plugin-sdk/`
-- **Purpose:** Extension framework for third-party plugins with lifecycle management
-- **Features:** Manifest registration, permission model, hook system, sandboxed execution
-- **Tier:** Enterprise
+| Metric | Before | After |
+|--------|--------|-------|
+| Total Capabilities | 68 | **124** |
+| Engines | 62 | **70** |
+| Meta-Engines | 20 | **22** |
+| FREE Tier | 12 | **16** |
+| Builder Tier | 18 | **26** |
+| Pro Tier | 14 | **24** |
+| Enterprise Tier | 24 | **58** |
 
 ---
 
@@ -147,7 +107,7 @@ if (!result.allowed) {
 
 ---
 
-## 5. Self-Improvement Classification
+## 5. Self-Improvement Classification (19 capabilities)
 
 Any capability that allows the system to **modify its own behavior, code, architecture, or operational parameters** is classified as `self-improvement` and gated to Enterprise:
 
@@ -164,6 +124,14 @@ Any capability that allows the system to **modify its own behavior, code, archit
 | Knowledge Auto-Fill | Self-directed learning to close expertise gaps |
 | Hot-Swap Engine | Runtime self-replacement of engines |
 | Deprecation Lifecycle | Self-managed capability sunset |
+| **Autonomous Workflow Composer** | **Self-assembling multi-step workflows** |
+| **Evolution Impact Forecast** | **Predicted outcome modeling before commits** |
+| **Dream Lucidity Control** | **Directed exploration within dream cycles** |
+| **Self-Repair Engine** | **Autonomous degraded subsystem repair** |
+| **Evolution Lineage Tracker** | **Full ancestry tracking for proposals** |
+| **Cognitive Debt Analyzer** | **Cognitive technical debt identification** |
+| **Evolution Sandbox** | **Isolated environment for evolution testing** |
+| **Dream Pool Federation** | **Cross-agency dream insight sharing** |
 
 ---
 

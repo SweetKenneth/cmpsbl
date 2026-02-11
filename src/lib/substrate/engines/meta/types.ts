@@ -57,7 +57,10 @@ export type MetaEngineId =
   | 'world_first_cognitive'     // BRAIN + DECODE + DREAM world-first enhancements
   | 'world_first_operational'   // NEXUS + SYSTEM + CORE + INTEGRATION world-first enhancements
   | 'world_first_intelligence'  // VISION + CORTEX + MODERNIZER world-first enhancements
-  | 'world_first_governance';   // DEFENSE + ACCESS + RIPPLE + INCLUSIVE world-first enhancements
+  | 'world_first_governance'    // DEFENSE + ACCESS + RIPPLE + INCLUSIVE world-first enhancements
+  // v8.5.0 additions (2) — High-Value Expansion Meta-Engines
+  | 'resilience_shield'         // Sandbox + Prompt Safety + Saga + Policy Access
+  | 'deep_cognition_nexus';     // Deep Cognition + Dialogue + Observability + Tech Debt
 
 export interface MetaEngineDefinition {
   id: MetaEngineId;

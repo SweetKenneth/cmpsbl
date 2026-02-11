@@ -496,6 +496,53 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
       'WCAG auto-remediation',
     ],
   },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RESILIENCE SHIELD — v8.5.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  resilience_shield: {
+    id: 'resilience_shield',
+    name: 'Resilience Shield',
+    description: 'Comprehensive system protection combining sandbox isolation, prompt safety, saga-based rollback, and policy-driven access control into an impenetrable operational shield.',
+    category: 'protection',
+    engines: ['sandbox_engine', 'prompt_safety_engine', 'saga_engine', 'policy_access_engine'],
+    totalCapabilities: 18,
+    compoundSynergyMultiplier: 7.6,
+    complexityScore: 10,
+    orchestrationMode: 'parallel',
+    estimatedLatencyMs: 90,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Sandboxed capability execution',
+      'Prompt injection defense',
+      'Saga-based transactional rollback',
+      'Policy-driven zero-trust access',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DEEP COGNITION NEXUS — v8.5.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  deep_cognition_nexus: {
+    id: 'deep_cognition_nexus',
+    name: 'Deep Cognition Nexus',
+    description: 'Advanced cognitive intelligence combining deep reasoning, dialogue understanding, system observability, and technical debt analysis for strategic substrate evolution.',
+    category: 'intelligence',
+    engines: ['deep_cognition_engine', 'dialogue_engine', 'observability_engine', 'technical_debt_engine'],
+    totalCapabilities: 20,
+    compoundSynergyMultiplier: 7.4,
+    complexityScore: 10,
+    orchestrationMode: 'staged',
+    estimatedLatencyMs: 450,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Deep associative reasoning',
+      'Multi-turn dialogue comprehension',
+      'System-wide observability synthesis',
+      'Technical debt prioritization',
+    ],
+  },
 };
 
 // ============================================================================
@@ -520,7 +567,7 @@ export function getMetaEnginesByEngine(engineId: string): MetaEngineDefinition[]
 
 export function getTotalCapabilitiesReached(): number {
   // Count based on v8.1.0 expanded coverage (62 engines × ~4 capabilities each)
-  return 269; // All capabilities reachable through meta-engines
+  return 325; // All capabilities reachable through meta-engines (269 + 56 high-value v8.5.0)
 }
 
 export function getMetaEngineSummary() {
@@ -584,3 +631,7 @@ export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]
   resource: ['resource_governor'],
   workflow: ['workflow_orchestrator'],
 };
+
+// Update protection and intelligence categories with v8.5.0 additions
+META_ENGINES_BY_CATEGORY.protection.push('resilience_shield');
+META_ENGINES_BY_CATEGORY.intelligence.push('deep_cognition_nexus');

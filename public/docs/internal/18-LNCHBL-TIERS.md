@@ -23,18 +23,53 @@
 
 ---
 
-## Tier Counts (v3.0.0 — 68 total)
+## Tier Counts (v4.0.0 — 124 total)
 
 | Tier | Count | Key Categories |
 |------|-------|---------------|
-| FREE | 12 | cognitive, integration, infrastructure, intelligence |
-| Builder | 18 | reliability, observability, memory, communication |
-| Pro | 14 | intelligence, operations, governance, platform |
-| Enterprise | 24 | self-improvement, platform, world-first, enterprise |
+| FREE | 16 | cognitive, integration, infrastructure, intelligence |
+| Builder | 26 | reliability, observability, memory, communication |
+| Pro | 24 | intelligence, operations, governance, platform |
+| Enterprise | 58 | self-improvement, platform, world-first, enterprise, security |
 
 ---
 
-## v8.5.0 Infrastructure Additions (10 systems)
+## v8.5.0 High-Value Expansion (56 new capabilities)
+
+| Tier | New | Examples |
+|------|-----|---------|
+| FREE | +4 | Hot Reload Orchestrator, Conversation Analytics, Emotion Baseline, Nexus Health |
+| Builder | +8 | Structured Error Recovery, Latency Heatmap, Memory Compaction, Audit Trail Lite |
+| Pro | +10 | Associative Recall, Context Compression, SLA Monitor, Canary Deployment Gate |
+| Enterprise | +34 | Autonomous Workflow Composer, Sandbox Engine, Prompt Safety, Deep Cognition Engine |
+
+---
+
+## v8.5.0 New Engines (8) & Meta-Engines (2)
+
+### Engines (62 → 70)
+
+| Engine | Module | Tier |
+|--------|--------|------|
+| Sandbox Engine | CORE | Enterprise |
+| Saga Engine | RIPPLE | Enterprise |
+| Policy Access Engine | ACCESS | Enterprise |
+| Deep Cognition Engine | BRAIN | Enterprise |
+| Dialogue Engine | DECODE | Enterprise |
+| Prompt Safety Engine | DEFENSE | Enterprise |
+| Observability Engine | VISION | Enterprise |
+| Technical Debt Engine | MODERNIZER | Enterprise |
+
+### Meta-Engines (20 → 22)
+
+| Meta-Engine | Engines | Tier |
+|-------------|---------|------|
+| Resilience Shield | Sandbox + Prompt Safety + Saga + Policy Access | Enterprise |
+| Deep Cognition Nexus | Deep Cognition + Dialogue + Observability + Tech Debt | Enterprise |
+
+---
+
+## v8.5.0 Infrastructure Systems (10)
 
 | System | File | Tier |
 |--------|------|------|
@@ -68,6 +103,14 @@ Capabilities classified as `self-improvement` (Enterprise-only):
 | Knowledge Auto-Fill | Self-directed learning |
 | Hot-Swap | Runtime engine replacement |
 | Deprecation Lifecycle | Self-managed sunset |
+| Autonomous Workflow Composer | Self-assembling workflows |
+| Evolution Impact Forecast | Outcome modeling |
+| Dream Lucidity Control | Directed dream cycles |
+| Self-Repair Engine | Autonomous degradation repair |
+| Evolution Lineage Tracker | Proposal ancestry |
+| Cognitive Debt Analyzer | Cognitive debt prioritization |
+| Evolution Sandbox | Isolated evolution testing |
+| Dream Pool Federation | Cross-agency dream sharing |
 
 ---
 
