@@ -5491,15 +5491,25 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
           // "i am X" / "i'm X"
           /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
           // "i like/love/hate/prefer X"
-          /\bi\s+(?:like|love|hate|prefer|enjoy|want|need)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-          // "my name is X" / "call me X"
-          /\b(?:my\s+name\s+is|call\s+me|i'm\s+called)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          /\bi\s+(?:like|love|hate|prefer|enjoy|want|need|fw|don't fw|use|work with|work on|work at)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "my name is X" / "call me X" / "i'm X" (name context) / "it's X" / "the name's X" / "they call me X"
+          /\b(?:my\s+name\s*(?:'s|is)|call\s+me|i'm\s+called|the\s+name'?s|they\s+call\s+me|you\s+can\s+call\s+me|just\s+call\s+me|i\s+go\s+by)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/gi,
           // "i live in X" / "i'm from X"
-          /\bi\s+(?:live\s+in|am\s+from|come\s+from|grew\s+up\s+in)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          /\bi\s+(?:live\s+in|am\s+from|come\s+from|grew\s+up\s+in|stay\s+in|reside\s+in)\s+(.+?)(?:\.|$|,|\band\b)/gi,
           // "remember that X" / "store that X" / "don't forget X"
-          /\b(?:remember\s+(?:that\s+)?|store\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?|keep\s+in\s+mind\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
+          /\b(?:remember\s+(?:that\s+)?|store\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?|keep\s+in\s+mind\s+(?:that\s+)?|note\s+that\s+|btw\s+)(.+?)(?:\.|$)/gi,
           // "X's name is Y" / "X is named Y"
           /\b(\w+(?:'s|s'))\s+(?:name\s+is|is\s+named|is\s+called)\s+(.+?)(?:\.|$|,)/gi,
+          // "i work at/for/on X"
+          /\bi\s+(?:work\s+(?:at|for|on|in)|run|own|manage|lead)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "i'm a/an X" (profession/role)
+          /\bi(?:'m|\s+am)\s+(?:a|an)\s+(\w[\w\s]{0,30}?)(?:\.|$|,|\band\b)/gi,
+          // "my favorite X is Y" / "i always X"
+          /\b(?:my\s+fav(?:orite)?\s+.+?\s+is|i\s+always|i\s+usually|i\s+typically)\s+(.+?)(?:\.|$|,)/gi,
+          // Timezone / location hints
+          /\bi(?:'m|\s+am)\s+(?:in|at|on)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)(?:\s+timezone)?/gi,
+          // Project/product names
+          /\b(?:my\s+project|my\s+app|my\s+site|my\s+product|my\s+company|my\s+startup)\s+(?:is\s+called|is\s+named|is)\s+(.+?)(?:\.|$|,)/gi,
         ];
         
         const extractedFacts: string[] = [];
