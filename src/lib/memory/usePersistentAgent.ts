@@ -30,6 +30,8 @@ export interface PersistentAgentResult {
   respond: (input: string) => Promise<MemoryContext>;
   /** Manually remember something important */
   remember: (note: string) => Promise<void>;
+  /** Store a workload outcome — what the agent accomplished */
+  logWorkload: (summary: string) => Promise<void>;
   /** Current loading state */
   isLoading: boolean;
   /** Last error if any */
