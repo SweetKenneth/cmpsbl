@@ -404,6 +404,7 @@ interface PersistentMemoryAgent {
   respond: (input: string) => Promise<string>;
   remember: (note: string) => Promise<void>;
   getContext: (input: string) => Promise<MemoryContext>;
+  logWorkload: (summary: string) => Promise<void>;  // Track task outcomes
 }`} />
                 </CardContent>
               </Card>
@@ -417,6 +418,7 @@ interface PersistentMemoryAgent {
 interface PersistentAgentResult {
   respond: (input: string) => Promise<MemoryContext>;
   remember: (note: string) => Promise<void>;
+  logWorkload: (summary: string) => Promise<void>;  // Track task outcomes
   isLoading: boolean;
   error: Error | null;
   clearError: () => void;
