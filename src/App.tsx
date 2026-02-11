@@ -92,6 +92,10 @@ const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDoc
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 
+// Module pages (de-shrouded)
+const ModulesHub = lazy(() => import("./pages/ModulesHub"));
+const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
+
 // Cluster pages (module deep-dives)
 const ClusterStudio = lazy(() => import("./pages/cluster/Studio"));
 const ClusterVerify = lazy(() => import("./pages/cluster/Verify"));
@@ -305,6 +309,10 @@ const App = () => {
                         <Route path="/library" element={<Library />} />
                         <Route path="/support" element={<Support />} />
                         <Route path="/explore" element={<Explore />} />
+                        
+                        {/* Module pages (de-shrouded SEO) */}
+                        <Route path="/modules" element={<ModulesHub />} />
+                        <Route path="/modules/:slug" element={<ModuleDetail />} />
                         
                         {/* Cluster pages - module deep-dives */}
                         <Route path="/cluster/studio-autonomous-site-generator" element={<ClusterStudio />} />
