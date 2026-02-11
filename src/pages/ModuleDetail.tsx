@@ -49,7 +49,7 @@ export default function ModuleDetail() {
 
       <main className="min-h-screen bg-background">
         {/* ═══ Hero Section (Marketing) ═══ */}
-        <section className="relative py-20 sm:py-28 overflow-hidden">
+        <section className="relative py-14 sm:py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="container mx-auto max-w-4xl px-4 relative">
             <motion.div
