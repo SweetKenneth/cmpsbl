@@ -1,7 +1,7 @@
 # SEBA & Modernizer.Evolve Operator Guide
 
-**Version:** 7.1.0  
-**Last Updated:** 2026-02-02  
+**Version:** 8.5.0  
+**Last Updated:** 2026-02-11  
 **Audience:** Internal Engineers, Operators, Auditors
 
 ---
@@ -341,4 +341,14 @@ This chain is cryptographically verifiable without exposing source code.
 
 ---
 
+---
+
+### v8.5.0 Updates
+- Rollback Snapshots now automatically captured before every production apply
+- Evolution A/B Testing allows parallel variant comparison
+- Cron Runner can schedule recurring SEBA cycles (`cron.register seba.cycle --interval=4h`)
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *This document is for internal engineering use. For investor-facing observability, see `/docs/library/79-EVOLUTION-OBSERVABILITY.md`.*

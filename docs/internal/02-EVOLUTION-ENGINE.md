@@ -296,4 +296,22 @@ seba.stamps --file <path>      # Stamps for specific file
 
 ---
 
-*CMPSBL OS Substrate v7.0.0 — Internal Engineering Library*
+## v8.5.0 Infrastructure Integration
+
+### Rollback Snapshots
+- **Location:** `src/lib/substrate/rollback-snapshots/`
+- **Purpose:** Full system state capture before evolutions — makes growth "trustworthy rather than scary"
+- **Functions:** `captureSnapshot()`, `restoreSnapshot()`, `listSnapshots()`
+- **Tier:** Enterprise (self-improvement)
+- **Integration:** Automatically invoked before Phase 4 (APPLY) to enable instant rollback
+
+### Evolution A/B Testing
+- **Location:** `src/lib/substrate/evolution-ab/`
+- **Purpose:** Parallel evolution variant testing with statistical comparison
+- **Functions:** `createVariant()`, `compareVariants()`, `promoteWinner()`
+- **Tier:** Enterprise (self-improvement)
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*© 2025-2026 PromptFluid®. All rights reserved.*

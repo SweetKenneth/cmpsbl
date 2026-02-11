@@ -1,5 +1,5 @@
 # Production Hardening Guide
-## v7.0.0 — The "Don't Die in Prod" Layer
+## v8.5.0 — Production Reliability Infrastructure
 
 This document describes the production hardening infrastructure implemented across the substrate.
 

@@ -219,4 +219,21 @@ integration.getSecret('STRIPE_SECRET_KEY')
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+## v8.5.0 Infrastructure Integration
+
+### Plugin SDK
+- **Location:** `src/lib/substrate/plugin-sdk/`
+- **Purpose:** Extension framework for third-party plugins with lifecycle management
+- **Features:** Manifest registration, permission model, hook system, sandboxed execution
+- **Tier:** Enterprise
+
+### File Processing Pipeline
+- **Location:** `src/lib/substrate/file-processing/`
+- **Purpose:** CSV, JSON, Markdown, HTML ingestion with optional Brain routing
+- **Functions:** `ingestFile()`, `getStatus()`, `getSupportedTypes()`
+- **Tier:** Builder
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*© 2025-2026 PromptFluid®. All rights reserved.*

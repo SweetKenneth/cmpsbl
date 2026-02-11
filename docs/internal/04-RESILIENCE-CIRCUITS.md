@@ -194,4 +194,30 @@ defense.audit
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+## v8.5.0 Infrastructure Integration
+
+### Boot Health Gates
+- **Location:** `src/lib/substrate/boot-health-gates/`
+- **Purpose:** Startup dependency validation — blocks boot if critical dependencies unavailable
+- **Tier:** Builder
+
+### Load Shedding
+- **Location:** `src/lib/substrate/load-shedding/`
+- **Purpose:** Graceful request dropping under extreme load to protect core operations
+- **Tier:** Pro
+
+### Predictive Failure Detection
+- **Location:** `src/lib/substrate/predictive-failure/`
+- **Purpose:** Linear regression on metric windows to predict failures before they occur
+- **Metrics:** error_rate, latency_ms, memory_mb, cpu_percent
+- **Tier:** Pro
+
+### Persistent Rate Limiter
+- **Location:** `src/lib/substrate/persistent-rate-limit/`
+- **Purpose:** Cross-tab/instance rate limiting via localStorage + BroadcastChannel
+- **Tier:** Builder
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*© 2025-2026 PromptFluid®. All rights reserved.*

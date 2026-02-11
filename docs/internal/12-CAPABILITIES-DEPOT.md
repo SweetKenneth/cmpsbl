@@ -263,5 +263,14 @@ CREATE TABLE capability_licenses (
 
 ---
 
-*CMPSBL Capabilities Depot v1.0.0 — Internal Documentation*
+---
+
+### v8.5.0 (SYNERGY+ Epoch)
+- Depot now serves **269 capabilities** across all tiers
+- Pricing tiers aligned with LNCHBL distribution model (FREE/Builder/Pro/Enterprise)
+- License validation integrates with capability-gate middleware
+
+---
+
+*CMPSBL Capabilities Depot v8.5.0 — Internal Documentation*
 *© 2025-2026 PromptFluid®. All rights reserved.*

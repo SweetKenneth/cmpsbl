@@ -1,8 +1,8 @@
 # Atlas Control Plane — Internal Engineering Guide
 
-**Version:** 7.2.0  
-**Codename:** Prometheus  
-**Last Updated:** 2026-02-03  
+**Version:** 8.5.0  
+**Codename:** SYNERGY+  
+**Last Updated:** 2026-02-11  
 **Audience:** Internal Engineers, Operators, Auditors  
 **Classification:** INTERNAL — Eyes Only
 
@@ -444,4 +444,15 @@ help                              Show command reference
 
 ---
 
+---
+
+### v8.5.0 Updates
+- Atlas now manages 340+ terminal commands (up from 310+)
+- Infrastructure commands (`cron.*`, `ratelimit.*`, `snapshot.*`, `analytics.*`, `streaming.*`, `files.*`, `nl.*`) integrated into command interpreter
+- Capability gate enforces 4-tier (FREE/Builder/Pro/Enterprise) access model
+- NL Terminal interface allows natural language control of all infrastructure systems
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *This document is classified INTERNAL. Do not expose command patterns, capability IDs, or audit schemas externally.*

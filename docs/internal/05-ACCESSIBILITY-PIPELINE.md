@@ -210,4 +210,21 @@ accessibility_scans table:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+## v8.5.0 Infrastructure Integration
+
+### File Processing Pipeline
+- **Location:** `src/lib/substrate/file-processing/`
+- **Purpose:** CSV, JSON, Markdown, HTML ingestion with optional Brain routing
+- **Functions:** `ingestFile()`, `getStatus()`, `getSupportedTypes()`
+- **Tier:** Builder
+
+### Capability Usage Analytics
+- **Location:** `src/lib/substrate/capability-analytics/`
+- **Purpose:** Usage tracking to identify high-value and dead-weight capabilities
+- **Functions:** `trackUsage()`, `getSummary()`, `getTrends()`
+- **Tier:** Builder
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*© 2025-2026 PromptFluid®. All rights reserved.*

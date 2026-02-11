@@ -233,4 +233,30 @@ Max interval: 180 days
 
 ---
 
-*CMPSBL OS Substrate v6.3.1 — Internal Engineering Library*
+## v8.5.0 Infrastructure Integration
+
+### Federated Memory Sync
+- **Location:** `src/lib/substrate/federated-memory/`
+- **Purpose:** Cross-instance memory sharing with privacy controls and conflict resolution
+- **Strategies:** latest-wins, highest-confidence, merge
+- **Tier:** Pro
+
+### Memory Deduplication
+- **Location:** `src/lib/substrate/memory-dedup/`
+- **Purpose:** Content-hash based deduplication to prevent memory bloat
+- **Tier:** Builder
+
+### Memory GC & Scheduler
+- **Location:** `src/lib/substrate/memory-gc/`
+- **Purpose:** Automated garbage collection on 6-hour autonomous cycles
+- **Tier:** Builder
+
+### Semantic Search (TF-IDF/n-gram)
+- **Location:** `src/lib/substrate/semantic-search/`
+- **Purpose:** Client-side semantic search for memory recall without external API calls
+- **Tier:** FREE
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*© 2025-2026 PromptFluid®. All rights reserved.*

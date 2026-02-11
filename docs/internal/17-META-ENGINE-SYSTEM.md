@@ -1,5 +1,5 @@
 # Meta-Engine System
-## v8.1.0 — 20 Meta-Engines Orchestrating 62 Engines
+## v8.5.0 — 20 Meta-Engines Orchestrating 62 Engines
 
 ---
 
@@ -498,5 +498,5 @@ Each of the 14 enhancement engines orchestrates 4 world-first capabilities from 
 
 ---
 
-*CMPSBL OS Substrate v8.1.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *20 Meta-Engines × 62 Engines × 269 Capabilities = Full Orchestration*
