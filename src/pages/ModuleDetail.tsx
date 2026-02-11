@@ -129,8 +129,8 @@ export default function ModuleDetail() {
               <div className="px-4 py-2 border-b border-border bg-muted/50 flex items-center gap-2 text-xs text-muted-foreground">
                 <div className="flex gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-destructive/50" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-accent/50" />
+                  <div className="w-3 h-3 rounded-full bg-primary/50" />
                 </div>
                 <span className="font-mono">example.ts</span>
               </div>
