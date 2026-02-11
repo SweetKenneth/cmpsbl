@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DEFENSE Module Deep Dive
 
-**Version 8.0.0 (ENGINE+ Epoch) | Production Ready**
+**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -164,5 +164,12 @@ await capabilityEngine.execute('incident_response_automator', {
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **Adaptive Rate Limiting** (`substrate/adaptive-rate-limit/`): Dynamic rate limits that adapt to system pressure and tenant reputation. Token bucket with adaptive multiplier, pressure-based throttling. `checkLimit()`, `adaptThreshold()`. **Tier: Builder**
+- **Secret Rotation** (`substrate/secret-rotation/`): Automated credential rotation with zero-downtime deployment. `rotateSecret()`, `scheduleRotation()`. **Tier: Enterprise**
+- **Total Capabilities**: 6 + 2 infrastructure = 8
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

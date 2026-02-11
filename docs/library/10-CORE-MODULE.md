@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORE Module Deep Dive
 
-**Version 8.0.0 (ENGINE+ Epoch) | Production Ready**
+**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -215,5 +215,12 @@ CORE integrates with all modules:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **Audit Trail** (`substrate/audit-trail/`): Tamper-evident logging with cryptographic chaining. `log()`, `query()`, `verifyIntegrity()`, `exportAudit()`. **Tier: Builder**
+- **Dependency Graph** (`substrate/dependency-graph/`): Module boot ordering via directed acyclic graph. `getBootOrder()`, `resolveDependencies()`, `detectCycles()`. **Tier: Builder**
+- **Total Capabilities**: 6 + 2 infrastructure = 8
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

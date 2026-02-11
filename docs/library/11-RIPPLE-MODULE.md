@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — RIPPLE Module Deep Dive
 
-**Version 8.0.0 (ENGINE+ Epoch) | Production Ready**
+**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -173,5 +173,14 @@ Events are organized by topic:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **Correlation ID Propagation** (`substrate/correlation-id/`): End-to-end request tracing across modules and edge functions. Context forking, span tracking, header extraction. `createCorrelation()`, `propagate()`, `forkContext()`. **Tier: Builder**
+- **Event Replay** (`substrate/event-replay/`): Deterministic event replay for debugging and testing. `replay()`, `replayRange()`, `getReplayStatus()`. **Tier: Builder**
+- **Realtime Bridge** (`substrate/realtime-bridge/`): Syncs the module communication bus with Supabase realtime channels. `bridgeChannel()`, `syncState()`, `disconnect()`. **Tier: Builder**
+- **Module Communication Bus** (`substrate/module-bus/`): Pub/sub communication layer for real-time inter-module signaling. `publish()`, `subscribe()`, `broadcast()`. **Tier: Builder**
+- **Total Capabilities**: 5 + 4 infrastructure = 9
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

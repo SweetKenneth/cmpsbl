@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — INTEGRATION Module Deep Dive
 
-**Version 8.0.0 | Scientific Publication**
+**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
 
 ---
 
@@ -185,5 +185,33 @@ All integration operations are logged:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+## 9. Infrastructure Systems (v8.5.0)
+
+### 9.1 Plugin SDK
+
+Location: `substrate/plugin-sdk/`
+Tier: **Enterprise**
+
+Extension framework for third-party plugins with lifecycle management. Manifest registration, permission model, hook system, sandboxed execution.
+
+Functions: `registerPlugin()`, `loadPlugin()`, `unloadPlugin()`, `listPlugins()`, `getPluginManifest()`.
+
+```typescript
+import { registerPlugin, loadPlugin } from '@/lib/substrate/plugin-sdk';
+
+// Register a third-party plugin
+const manifest = {
+  id: 'custom-analytics',
+  version: '1.0.0',
+  permissions: ['read:metrics', 'write:logs'],
+  hooks: ['onMetricCollected', 'onAlertTriggered'],
+};
+
+registerPlugin(manifest);
+await loadPlugin('custom-analytics');
+```
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORTEX Module Deep Dive
 
-**Version 8.0.0 (ENGINE+ Epoch) | Production Ready**
+**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -169,5 +169,12 @@ CORTEX implements the PEARL autonomous loop:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+### v8.5.0 (2026-02-11) — Infrastructure Integration
+- **Dynamic Pipeline Composition** (`substrate/dynamic-pipeline/`): Runtime-composable execution pipelines from registered stages. Modes: sequential, parallel, adaptive. `composePipeline()`, `executePipeline()`, `registerStage()`. **Tier: Pro**
+- **Budget Governor** (`substrate/budget-governor/`): Cost control with kill switches and budget allocation. `checkBudget()`, `allocate()`, `setLimit()`, `killSwitch()`. **Tier: Pro**
+- **Total Capabilities**: 7 + 2 infrastructure = 9
+
+---
+
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
