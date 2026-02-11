@@ -208,9 +208,9 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     color: "violet-500",
     useCaseH1: "Autonomous AI Optimization: Systems That Improve While You Sleep",
     heroDescription: "DREAM runs when your users don't — analyzing patterns, consolidating memories, and optimizing performance. Your AI literally gets smarter overnight, at zero compute cost.",
-    features: ["Off-peak pattern analysis", "Memory consolidation (SimNap)", "Performance auto-optimization", "Dream pool for shared insights", "Low-cost off-peak improvement cycles"],
+    features: ["Off-peak pattern analysis", "Autonomous memory consolidation", "Performance auto-optimization", "Dream pool for shared insights", "Low-cost off-peak improvement cycles"],
     highlights: [
-      { title: "SimNap Memory Consolidation", description: "Like human sleep consolidation, DREAM reviews the day's interactions during off-peak hours — strengthening important memories, pruning noise, and discovering patterns humans missed." },
+      { title: "Autonomous Memory Consolidation", description: "During off-peak hours, DREAM reviews the day's interactions — strengthening important memories, pruning noise, and discovering patterns humans missed. Your AI wakes up smarter every morning." },
       { title: "Dream Pool Collective Intelligence", description: "Opt-in shared insight pooling lets multiple substrate instances learn from each other's experiences. A breakthrough in one deployment benefits the entire ecosystem — privacy-preserving federated learning." },
       { title: "Autonomous Performance Tuning", description: "DREAM analyzes routing patterns, cache hit rates, and response quality overnight — then automatically adjusts NEXUS routing weights, BRAIN retention policies, and DEFENSE thresholds for next-day improvement." },
     ],
