@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v7.0.0 — Complete AI Operating System with 14 modules + SEBA
+ * v8.5.0 — SYNERGY+ Epoch — Complete AI Operating System with 14 modules + SEBA
  * 
  * Performance: Triple-deferred initialization for zero main-thread blocking
  * - Waits for document idle state
@@ -37,7 +37,7 @@ export async function initializeSubstrate(): Promise<void> {
     // Yield before heavy work
     await yieldToMain();
     
-    console.log('⚡ Booting promptfluid® Substrate v7.0.0 (SEBA Era)...');
+    console.log('⚡ Booting promptfluid® Substrate v8.5.0 (SYNERGY+ Epoch)...');
     console.log('─────────────────────────────────────────');
     
     // Boot sequence - CORE first, then other modules (14-module architecture: 13 core + cortex)
