@@ -9,9 +9,9 @@
 | Field | Value |
 |-------|-------|
 | **Module** | BRAIN (Memory Subsystem) |
-| **Version** | v6.1.0 |
+| **Version** | v8.5.0 |
 | **Status** | Production |
-| **Last Updated** | January 2026 |
+| **Last Updated** | February 2026 |
 
 ---
 
