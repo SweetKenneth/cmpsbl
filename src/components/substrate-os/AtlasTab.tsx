@@ -1,7 +1,7 @@
 /**
  * Atlas Control Plane Tab
- * v8.0.0 SYNERGY+ Epoch — Single-source-of-truth substrate interface with CLM + SEBA integration
- * Orchestrates 269 capabilities across 62 engines and 20 meta-engines
+ * v8.5.0 SYNERGY+ Epoch — Single-source-of-truth substrate interface with CLM + SEBA integration
+ * Orchestrates 325 capabilities across 70 engines and 22 meta-engines
  */
 
 import { useState, useEffect } from 'react';
