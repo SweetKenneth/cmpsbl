@@ -370,12 +370,18 @@ function generateFullHelp(): string {
 │  ★ ORCHESTRATOR LAYER                                       │
 │    cortex       (${COMMAND_CATEGORIES.cortex.commands.length.toString().padStart(2)} cmds)  Policy intent, PAAEL loop          │
 │    integration  (${COMMAND_CATEGORIES.integration.commands.length.toString().padStart(2)} cmds)  Enterprise adapters, discovery     │
+│    encoded      (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  AI code generation agent           │
 │                                                             │
-│  ◉ CONSTANT LEARNING MODE (CLM)                             │
-│    clm          (10 cmds)  Autonomous learning, curriculum     │
+│  ◉ AUTONOMY LAYER                                           │
+│    clm          (${COMMAND_CATEGORIES.clm.commands.length.toString().padStart(2)} cmds)  Autonomous learning, curriculum     │
+│    seba         (${COMMAND_CATEGORIES.seba.commands.length.toString().padStart(2)} cmds)  Self-evolving bounded agent         │
+│                                                             │
+│  ⚡ ENGINE LAYER                                             │
+│    engine       (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  62 engines + 20 meta-engines       │
 │                                                             │
 │  ⚙ INFRASTRUCTURE (v8.5.0)                                   │
 │    infra        (${COMMAND_CATEGORIES.infra.commands.length.toString().padStart(2)} cmds)  Cron, snapshots, analytics, NL     │
+│    patch        ( 4 cmds)  Distribution patch dispatch        │
 │                                                             │
 │  ⚙ META COMMANDS                                            │
 │    meta         (${COMMAND_CATEGORIES.meta.commands.length.toString().padStart(2)} cmds)  Terminal controls, help, aliases    │

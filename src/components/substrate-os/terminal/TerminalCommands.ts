@@ -443,7 +443,12 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help integration', description: 'Enterprise integration commands', category: 'meta', icon: Plug, requiresOperator: false },
   { command: 'help inclusive', description: 'Accessibility pipeline commands', category: 'meta', icon: Accessibility, requiresOperator: false },
   { command: 'help clm', description: 'Constant Learning Mode commands', category: 'meta', icon: Brain, requiresOperator: false },
+  { command: 'help seba', description: 'Self-Evolving Bounded Agent commands', category: 'meta', icon: Brain, requiresOperator: false },
   { command: 'help autoblog', description: 'AutoBlog primitive commands', category: 'meta', icon: PenTool, requiresOperator: false },
+  { command: 'help engine', description: 'Cognitive Engine System commands', category: 'meta', icon: Cpu, requiresOperator: false },
+  { command: 'help encoded', description: 'Encoded agent commands', category: 'meta', icon: PenTool, requiresOperator: false },
+  { command: 'help infra', description: 'Infrastructure commands (cron, snapshots, etc)', category: 'meta', icon: Server, requiresOperator: false },
+  { command: 'help patch', description: 'Patch dispatch commands', category: 'meta', icon: Send, requiresOperator: false },
   // Terminal Controls
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
