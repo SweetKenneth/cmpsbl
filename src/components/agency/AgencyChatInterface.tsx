@@ -343,7 +343,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
                     [&_strong]:text-foreground [&_strong]:font-semibold
                     [&_em]:text-muted-foreground"
                   dangerouslySetInnerHTML={{ 
-                    __html: formatMessageContent(msg.content)
+                    __html: formatChatMessage(msg.content)
                   }}
                 />
                 {msg.metadata?.tasksCreated && msg.metadata.tasksCreated.length > 0 && (
