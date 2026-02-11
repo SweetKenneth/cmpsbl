@@ -69,7 +69,7 @@ export const BOOT_MESSAGES = [
   '  └───────────────────────────────────────┘',
   '',
   '  ◉ 14 modules operational',
-  '  ◉ 310+ commands available',
+  '  ◉ 340+ commands available',
   '  ◉ 147 synergy pipelines | 125 executors',
   '  ◉ Health: 100%',
   '',

@@ -16,7 +16,8 @@
 - ✅ All 14 module directories present in `src/hooks/substrate/`
 - ✅ All 14 module implementations present in `src/lib/substrate/`
 - ✅ 20 infrastructure modules verified in `src/lib/substrate/`
-- ✅ Terminal handlers: `execute.ts`, `synergy-handlers.ts`, `encoded-handlers.ts`, `seba-handlers.ts`
+- ✅ 7 new infrastructure systems: `cron-runner`, `persistent-rate-limit`, `rollback-snapshots`, `capability-analytics`, `streaming-pipeline`, `file-processing`, `nl-terminal`
+- ✅ Terminal handlers: `execute.ts`, `synergy-handlers.ts`, `encoded-handlers.ts`, `seba-handlers.ts`, `infra-handlers.ts`
 - ✅ No orphaned directories detected
 - ✅ Edge function directories: 250+ functions present in `supabase/functions/`
 

@@ -116,7 +116,7 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'integration.connections': ['integration.disconnect', 'integration.test', 'integration.adapters', 'integration.audit_log'],
   
   // Meta/Terminal workflows
-  'help': ['whoami', 'system.status', 'vision.pulse', 'modernizer.status'],
+  'help': ['whoami', 'system.status', 'vision.pulse', 'cron.stats'],
   'whoami': ['help', 'system.status', 'audit stats', 'vision.pulse'],
   'history': ['clear', 'export', 'audit', 'audit stats'],
   'audit': ['audit stats', 'audit export', 'history', 'export'],
@@ -124,10 +124,28 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'alias': ['alias add', 'macro', 'help', 'whoami'],
   'macro': ['macro list', 'macro run', 'alias', 'schedule'],
   'macro list': ['macro run', 'macro show', 'macro create', 'alias'],
-  'schedule': ['schedule list', 'watch', 'core.schedule', 'core.jobs'],
-  'schedule list': ['schedule cancel', 'schedule clear', 'watch list', 'core.jobs'],
+  'schedule': ['schedule list', 'watch', 'core.schedule', 'cron.list'],
+  'schedule list': ['schedule cancel', 'schedule clear', 'watch list', 'cron.list'],
   'watch': ['watch list', 'schedule', 'vision.pulse', 'system.status'],
   'watch list': ['watch stop', 'schedule list', 'vision.pulse', 'system.status'],
+  
+  // Infrastructure workflows
+  'cron.list': ['cron.stats', 'cron.start', 'cron.history', 'cron.trigger health-check'],
+  'cron.stats': ['cron.list', 'cron.history', 'cron.start', 'analytics.summary'],
+  'cron.start': ['cron.list', 'cron.stats', 'cron.stop', 'system.status'],
+  'cron.history': ['cron.list', 'cron.stats', 'analytics.summary', 'vision.logs'],
+  'ratelimit.status': ['ratelimit.buckets', 'ratelimit.cleanup', 'defense.limits', 'defense.status'],
+  'ratelimit.buckets': ['ratelimit.cleanup', 'ratelimit.status', 'defense.limits', 'defense.posture'],
+  'snapshot.list': ['snapshot.capture', 'snapshot.stats', 'snapshot.prune', 'modernizer.status'],
+  'snapshot.capture': ['snapshot.list', 'snapshot.stats', 'snapshot.diff', 'system.status'],
+  'analytics.summary': ['analytics.top', 'analytics.dead', 'analytics.rising', 'vision.metrics'],
+  'analytics.top': ['analytics.dead', 'analytics.rising', 'analytics.summary', 'vision.analytics'],
+  'analytics.dead': ['analytics.rising', 'analytics.top', 'analytics.summary', 'modernizer.scan'],
+  'stream.status': ['stream.active', 'nexus.status', 'nexus.text', 'vision.pulse'],
+  'file.status': ['file.history', 'file.formats', 'brain.remember', 'decode.learn'],
+  'file.formats': ['file.status', 'file.history', 'decode.learn', 'brain.query'],
+  'nl.parse': ['nl.intents', 'nl.history', 'help', 'system.status'],
+  'nl.intents': ['nl.parse', 'nl.history', 'help', 'decode.intent'],
 };
 
 // Module-level defaults when specific command not found
@@ -145,6 +163,14 @@ const MODULE_DEFAULTS: Record<string, string[]> = {
   decode: ['decode.status', 'decode.chat', 'decode.intent', 'decode.learn'],
   integration: ['integration.status', 'integration.adapters', 'integration.connections', 'integration.policies'],
   meta: ['help', 'whoami', 'history', 'audit'],
+  infra: ['cron.list', 'analytics.summary', 'snapshot.list', 'ratelimit.status'],
+  cron: ['cron.list', 'cron.stats', 'cron.start', 'cron.history'],
+  ratelimit: ['ratelimit.status', 'ratelimit.buckets', 'ratelimit.cleanup', 'defense.limits'],
+  snapshot: ['snapshot.list', 'snapshot.capture', 'snapshot.stats', 'snapshot.prune'],
+  analytics: ['analytics.summary', 'analytics.top', 'analytics.dead', 'analytics.rising'],
+  stream: ['stream.status', 'stream.active', 'nexus.status', 'nexus.text'],
+  file: ['file.status', 'file.history', 'file.formats', 'decode.learn'],
+  nl: ['nl.parse', 'nl.intents', 'nl.history', 'help'],
 };
 
 // Generate reasons for suggestions
