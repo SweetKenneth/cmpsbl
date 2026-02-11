@@ -29,8 +29,8 @@
 | 13 | [SEBA & Evolve Operator Guide](./13-SEBA-EVOLVE-OPERATOR-GUIDE.md) | **Complete workflow for evolution cycles, verification, stamps** |
 | 14 | [Atlas Control Plane](./14-ATLAS-CONTROL-PLANE.md) | Centralized governance, command interface, real-time audit |
 | 15 | [Capability Registry](./15-CAPABILITY-REGISTRY.md) | **269 cross-module capabilities, risk levels, execution modes** |
-| **16** | **[Cognitive Engine System](./16-COGNITIVE-ENGINE-SYSTEM.md)** | **62 engines consolidating 269 capabilities into compound units** |
-| **17** | **[Meta-Engine System](./17-META-ENGINE-SYSTEM.md)** | **20 meta-engines orchestrating 62 engines** |
+| **16** | **[Cognitive Engine System](./16-COGNITIVE-ENGINE-SYSTEM.md)** | **70 engines consolidating 325 capabilities into compound units** |
+| **17** | **[Meta-Engine System](./17-META-ENGINE-SYSTEM.md)** | **22 meta-engines orchestrating 70 engines** |
 | **18** | **[LNCHBL Tiers & Infrastructure](./18-LNCHBL-TIERS-AND-INFRASTRUCTURE.md)** | **68 tiered capabilities, 20 infra systems, self-improvement Enterprise-only** |
 
 ---
