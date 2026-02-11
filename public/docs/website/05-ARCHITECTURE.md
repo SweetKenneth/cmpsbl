@@ -35,7 +35,7 @@ CMPSBL® is built on three core principles:
 ├─────────────────────────────────────────────────────────────┤
 │                   COGNITIVE LAYER                            │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  BRAIN (Memory)  │  DECODE (NLP)  │  NEXUS (AI Routing) ││
+│  │  BRAIN (Memory)  │  DECODE (NLP)                        ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                    KERNEL LAYER                              │
@@ -76,15 +76,6 @@ Runtime services for learning, security, AI, and visibility.
 | **NEXUS** | Multi-provider AI routing |
 | **VISION** | Observability, metrics, tracing |
 | **INTEGRATION** | External APIs, webhooks, adapters |
-
-### Operations Layer (Boot Order 7-9)
-Runtime services for security, AI, and visibility.
-
-| Module | Purpose |
-|--------|---------|
-| **DEFENSE** | Security, threat detection, rate limiting |
-| **NEXUS** | Multi-provider AI routing |
-| **VISION** | Observability, metrics, tracing |
 
 ### Admin Layer (Boot Order 11-13)
 System management and self-improvement.

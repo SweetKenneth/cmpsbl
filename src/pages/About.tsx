@@ -148,7 +148,7 @@ export default function About() {
 
           <div className="mt-12 bg-card border border-border rounded-lg p-6 md:p-8">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">v8.0.0 SYNERGY+ Epoch</span> — 160,000+ lines of production code. 269 capabilities, 125 custom executors, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
+              <span className="font-semibold">v8.5.0 SYNERGY+ Epoch</span> — 175,000+ lines of production code. 269 capabilities, 125 custom executors, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
             </p>
           </div>
         </div>

@@ -158,7 +158,7 @@ export default function Explore() {
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
                 Persistent memory, self-evolving architecture, and an 8-provider AI fallback chain — 
-                running on 160k+ lines of production code. Start free today.
+                running on 175k+ lines of production code. Start free today.
               </p>
               
               {/* Mini stats row */}

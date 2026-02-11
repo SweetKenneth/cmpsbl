@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v7.5.3**
+**What CMPSBL® Does — Technical Overview v8.5.0**
 
 ---
 
@@ -52,7 +52,7 @@ const context = await agent.getContext(userMessage);
 
 ---
 
-## Cross-Module Synergy Engine (v7.5.3)
+## Cross-Module Synergy Engine (v8.5.0)
 
 ### The Problem
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
@@ -360,4 +360,4 @@ system.health
 
 ---
 
-*CMPSBL® v7.5.3 — Cognitive Infrastructure for Production AI*
+*CMPSBL® v8.5.0 — Cognitive Infrastructure for Production AI*

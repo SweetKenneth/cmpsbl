@@ -10,7 +10,7 @@
 
 ---
 
-## Current State: v7.5.3
+## Current State: v8.5.0
 
 **Status: Production Ready — SYNERGY+ Epoch**
 
@@ -148,7 +148,9 @@ Enterprise and Research tier customers participate in quarterly roadmap reviews 
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v7.5.3 | Feb 2026 | SYNERGY+ Epoch, 147 pipelines, 136+ depot capabilities |
+| v8.5.0 | Feb 2026 | SYNERGY+ Epoch, 147 pipelines, 269+ depot capabilities, 27 infrastructure systems |
+| v8.0.0 | Feb 2026 | Major architecture consolidation, 340+ commands |
+| v7.5.3 | Feb 2026 | Synergy expansion, 136+ capabilities |
 | v7.5.0 | Jan 2026 | Production-grade additions, 42 new functions |
 | v7.0.0 | Jan 2026 | Production release, 14 modules |
 | v6.3.1 | Jan 2026 | FNDTN documentation suite |

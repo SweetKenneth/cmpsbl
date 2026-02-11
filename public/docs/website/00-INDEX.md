@@ -1,6 +1,6 @@
 # CMPSBL® Documentation
 
-**v8.0.0 — SYNERGY+ Epoch | Cognitive Orchestration Substrate for AI Systems**
+**v8.5.0 — SYNERGY+ Epoch | Cognitive Orchestration Substrate for AI Systems**
 
 ---
 
@@ -128,4 +128,4 @@ See [Pricing & Licensing](./07-LICENSING.md) for details.
 
 ---
 
-*CMPSBL® v8.0.0 SYNERGY+ Epoch — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v8.5.0 SYNERGY+ Epoch — Cognitive Infrastructure for the AI Era*

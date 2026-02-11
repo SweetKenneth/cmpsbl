@@ -1,6 +1,6 @@
 # promptfluid® Substrate — Overview
 
-**v8.0.0 — Cognitive Orchestration Substrate for AI Systems**
+**v8.5.0 — Cognitive Orchestration Substrate for AI Systems**
 
 ---
 
@@ -10,7 +10,7 @@ The promptfluid® substrate is a **cognitive orchestration layer** for AI system
 
 ---
 
-## The 14-Module Architecture (v8.0.0)
+## The 14-Module Architecture (v8.5.0)
 
 | Layer | Module | Purpose |
 |-------|--------|---------|
@@ -59,4 +59,4 @@ const health = await substrate.vision.health();
 
 ---
 
-**promptfluid® — The Cognitive Substrate OS v8.0.0**
+**promptfluid® — The Cognitive Substrate OS v8.5.0**

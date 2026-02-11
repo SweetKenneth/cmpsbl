@@ -111,7 +111,7 @@ export default function InvestorsPublic() {
     {
       icon: Rocket,
       title: "Production Infrastructure",
-      description: "14 integrated modules, 160,000+ lines of code, self-evolving architecture that improves overnight."
+      description: "14 integrated modules, 175,000+ lines of code, self-evolving architecture that improves overnight."
     },
     {
       icon: DollarSign,
