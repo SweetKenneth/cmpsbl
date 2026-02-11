@@ -92,6 +92,10 @@ const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDoc
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 
+// Module pages (de-shrouded)
+const ModulesHub = lazy(() => import("./pages/ModulesHub"));
+const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
+
 // Cluster pages (module deep-dives)
 const ClusterStudio = lazy(() => import("./pages/cluster/Studio"));
 const ClusterVerify = lazy(() => import("./pages/cluster/Verify"));
