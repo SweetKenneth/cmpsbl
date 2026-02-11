@@ -136,9 +136,12 @@ CMPSBL provides complete cognitive infrastructure:
 | Metric | Value |
 |--------|-------|
 | **Modules in Production** | 14 |
-| **Edge Functions Deployed** | 45+ |
+| **Synergy Pipelines** | 147 |
+| **Depot Capabilities** | 269+ |
+| **Infrastructure Systems** | 27 |
+| **Production Codebase** | 175k+ LOC |
 | **System Uptime** | 99%+ |
-| **Self-Evolution Active** | Yes |
+| **Self-Evolution Active** | Yes (SEBA v2.0) |
 
 ### Technical Milestones
 

@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * v8.0.0 SYNERGY+ Epoch
+ * v8.5.0 SYNERGY+ Epoch
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
@@ -84,7 +84,7 @@ export const ARCHIVED_CAPABILITIES_COUNT = 136;
  * Total terminal commands across all modules
  * Derived from TerminalCommands.ts ALL_COMMANDS array
  */
-export const TERMINAL_COMMANDS_COUNT = 310;
+export const TERMINAL_COMMANDS_COUNT = 340;
 
 // =============================================================================
 // INTEGRATION ADAPTERS
@@ -103,18 +103,18 @@ export const INTEGRATION_ADAPTERS_COUNT = 35;
  * Approximate lines of code in the substrate
  * Last verified: 2026-02
  */
-export const LINES_OF_CODE = 160_000;
+export const LINES_OF_CODE = 175_000;
 
 /**
- * Display-friendly version (140k+ for marketing)
+ * Display-friendly version (175k+ for marketing)
  */
-export const LINES_OF_CODE_DISPLAY = '160k+';
+export const LINES_OF_CODE_DISPLAY = '175k+';
 
 // =============================================================================
 // VERSION INFO
 // =============================================================================
 
-export const SUBSTRATE_VERSION = '8.0.0';
+export const SUBSTRATE_VERSION = '8.5.0';
 export const SUBSTRATE_CODENAME = 'SYNERGY+';
 export const SUBSTRATE_EPOCH = 'SYNERGY+';
 

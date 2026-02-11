@@ -14,8 +14,8 @@ export default function Solutions() {
       name: "CMPSBL Substrate",
       tagline: "Cognitive Infrastructure OS",
       description: "The 14-module cognitive operating system. Persistent memory, self-learning, multi-provider routing, and self-evolution — all in one platform.",
-      features: ["14 integrated modules", "Persistent memory system", "Self-learning Dream Cycles", "Multi-provider AI routing", "Self-evolution capabilities", "160,000+ lines production code"],
-      metrics: ["v8.0.0 SYNERGY+", "Live", "Enterprise Ready"],
+      features: ["14 integrated modules", "Persistent memory system", "Self-learning Dream Cycles", "Multi-provider AI routing", "Self-evolution capabilities", "175,000+ lines production code"],
+      metrics: ["v8.5.0 SYNERGY+", "Live", "Enterprise Ready"],
       link: "/substrate"
     },
     {
