@@ -30,6 +30,7 @@ import {
 import { AgencyCommandPalette } from '../AgencyCommandPalette';
 import { AgencyHelpPanel } from '../AgencyHelpPanel';
 import type { Specialization } from '@/lib/agency/agencyTypes';
+import { formatChatMessage } from '@/lib/ui/formatChatMessage';
 
 interface Message {
   id: string;
