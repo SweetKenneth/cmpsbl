@@ -5323,17 +5323,44 @@ async function handleDecode(
       const personality = await getActivePersonality(supabase);
       let systemPrompt = personality.systemPrompt;
       
-      // ═══ PERSISTENT MEMORY RECALL (v7.1.0) ═══
-      // Recall relevant memories to inject context into the conversation
+      // ═══ ANTI-HALLUCINATION MEMORY POLICY (v8.5.0) ═══
+      // This is injected BEFORE memories so the LLM knows to treat them as ground truth
+      const MEMORY_FIDELITY_INSTRUCTIONS = `
+
+CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
+1. When recalled memories contain specific facts (names, colors, numbers, dates, preferences), you MUST repeat them EXACTLY as stored. Never paraphrase, embellish, or approximate. "blue" means "blue", not "azure blue". "Aydan" means "Aydan", not "Alex" or "Aidan".
+2. If you are unsure about a fact, say "I don't have that stored" rather than guessing.
+3. Never invent details that are not explicitly in the recalled memories.
+4. When asked about something you have a memory for, cite it directly. When you don't, say so honestly.
+5. Memories marked as "user_fact" are the user's own words — treat them as absolute truth.`;
+      
+      // ═══ PERSISTENT MEMORY RECALL (v8.5.0 — Enhanced Precision) ═══
       let memoryContext: any[] = [];
+      let factMemories: any[] = [];
       try {
         const searchTerm = String(message || '').trim();
-        const searchWords = searchTerm.split(/\s+/).filter(w => w.length > 2).slice(0, 5);
+        const searchWords = searchTerm.split(/\s+/).filter(w => w.length > 2).slice(0, 8);
         
-        // Build flexible search: try FTS first, then ILIKE with key words
         const searchPromises: Promise<any>[] = [];
         
-        // Strategy 1: Full-text search on brain_memories
+        // Strategy 1: Search user_fact memories with HIGH priority (exact fact recall)
+        if (searchWords.length > 0) {
+          for (const word of searchWords.slice(0, 3)) {
+            searchPromises.push(
+              supabase
+                .from("brain_memories")
+                .select("content, memory_type, confidence")
+                .eq("memory_type", "user_fact")
+                .ilike("content", `%${word}%`)
+                .order("confidence", { ascending: false })
+                .limit(5)
+                .then((r: any) => ({ source: 'fact_search', data: r.data }))
+                .catch(() => ({ source: 'fact_search', data: [] }))
+            );
+          }
+        }
+        
+        // Strategy 2: Full-text search on all brain_memories
         searchPromises.push(
           supabase
             .from("brain_memories")
@@ -5345,7 +5372,7 @@ async function handleDecode(
             .catch(() => ({ source: 'fts', data: [] }))
         );
         
-        // Strategy 2: ILIKE fallback with first meaningful word
+        // Strategy 3: ILIKE fallback
         if (searchWords.length > 0) {
           searchPromises.push(
             supabase
@@ -5359,7 +5386,7 @@ async function handleDecode(
           );
         }
         
-        // Strategy 3: Hot memories (recent/high-priority)
+        // Strategy 4: Hot memories
         searchPromises.push(
           supabase
             .from("brain_memory_hot")
@@ -5370,7 +5397,7 @@ async function handleDecode(
             .catch(() => ({ source: 'hot', data: [] }))
         );
         
-        // Strategy 4: Session history for continuity
+        // Strategy 5: Session history
         searchPromises.push(
           supabase
             .from("cascade_conversations")
@@ -5384,29 +5411,42 @@ async function handleDecode(
         
         const results = await Promise.all(searchPromises);
         
-        // Collect memory content from all sources
         let sessionHistory: any[] = [];
         for (const result of results) {
           if (!result.data?.length) continue;
           if (result.source === 'session') {
             sessionHistory = result.data;
+          } else if (result.source === 'fact_search') {
+            // Fact memories get special treatment — highest priority
+            factMemories.push(...result.data.map((m: any) => m.content).filter(Boolean));
           } else {
             memoryContext.push(...result.data.map((m: any) => m.content).filter(Boolean));
           }
         }
         
-        // Deduplicate and limit
-        memoryContext = [...new Set(memoryContext)].slice(0, 10);
+        // Deduplicate
+        factMemories = [...new Set(factMemories)].slice(0, 10);
+        memoryContext = [...new Set(memoryContext)].filter(m => !factMemories.includes(m)).slice(0, 10);
         
-        // Inject memory context into system prompt
-        if (memoryContext.length > 0) {
-          systemPrompt += `\n\n[Recalled Memories — use these to personalize your response and reference past interactions]\n${memoryContext.map((m: string, i: number) => `${i + 1}. ${String(m).substring(0, 300)}`).join('\n')}`;
+        // Inject memory fidelity instructions FIRST
+        if (factMemories.length > 0 || memoryContext.length > 0) {
+          systemPrompt += MEMORY_FIDELITY_INSTRUCTIONS;
         }
         
-        // Inject session history for conversation continuity
+        // Inject FACT memories with highest priority label
+        if (factMemories.length > 0) {
+          systemPrompt += `\n\n[VERIFIED USER FACTS — These are the user's exact words. Quote them verbatim when relevant.]\n${factMemories.map((m: string, i: number) => `FACT ${i + 1}: ${String(m).substring(0, 300)}`).join('\n')}`;
+        }
+        
+        // Inject general memory context
+        if (memoryContext.length > 0) {
+          systemPrompt += `\n\n[Recalled Memories — reference these but do NOT embellish or modify factual details]\n${memoryContext.map((m: string, i: number) => `${i + 1}. ${String(m).substring(0, 300)}`).join('\n')}`;
+        }
+        
+        // Inject session history
         if (sessionHistory.length > 0) {
           const historyContext = sessionHistory.reverse().map((h: any) => `User: ${h.message}\nAssistant: ${h.reply}`).join('\n\n');
-          systemPrompt += `\n\n[Recent conversation in this session — maintain continuity]\n${historyContext}`;
+          systemPrompt += `\n\n[Recent conversation in this session]\n${historyContext}`;
         }
       } catch (memErr) {
         console.warn('Memory recall failed gracefully:', memErr);
@@ -5420,17 +5460,91 @@ async function handleDecode(
         message: message as string,
         reply: result.content,
         session_id: effectiveSessionId,
-        metadata: { provider: result.provider, model: result.model, personality: personality.id, memory_context_count: memoryContext.length },
+        metadata: { provider: result.provider, model: result.model, personality: personality.id, memory_context_count: memoryContext.length, fact_count: factMemories.length },
       });
       
-      // Auto-store conversation as memory for future recall
+      // ═══ AUTO FACT EXTRACTION (v8.5.0) ═══
+      // Use AI to extract discrete facts from the user's message and store them individually
       try {
+        const userMsg = String(message).trim();
+        
+        // Fast heuristic: detect fact-bearing patterns without AI call
+        const factPatterns = [
+          // "my X is Y" patterns
+          /\bmy\s+(\w[\w\s]{0,30}?)\s+(?:is|are|was|were)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "i am X" / "i'm X"
+          /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "i like/love/hate/prefer X"
+          /\bi\s+(?:like|love|hate|prefer|enjoy|want|need)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "my name is X" / "call me X"
+          /\b(?:my\s+name\s+is|call\s+me|i'm\s+called)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "i live in X" / "i'm from X"
+          /\bi\s+(?:live\s+in|am\s+from|come\s+from|grew\s+up\s+in)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+          // "remember that X" / "store that X" / "don't forget X"
+          /\b(?:remember\s+(?:that\s+)?|store\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?|keep\s+in\s+mind\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
+          // "X's name is Y" / "X is named Y"
+          /\b(\w+(?:'s|s'))\s+(?:name\s+is|is\s+named|is\s+called)\s+(.+?)(?:\.|$|,)/gi,
+        ];
+        
+        const extractedFacts: string[] = [];
+        
+        for (const pattern of factPatterns) {
+          let match;
+          pattern.lastIndex = 0; // Reset regex state
+          while ((match = pattern.exec(userMsg)) !== null) {
+            // Build a clean fact string from the match
+            const fullMatch = match[0].trim();
+            if (fullMatch.length > 5 && fullMatch.length < 200) {
+              // Normalize to a clean fact statement
+              let fact = fullMatch;
+              // Remove "remember that" / "store that" prefixes
+              fact = fact.replace(/^(?:remember\s+(?:that\s+)?|store\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?|keep\s+in\s+mind\s+(?:that\s+)?)/i, '').trim();
+              if (fact.length > 3) {
+                extractedFacts.push(fact);
+              }
+            }
+          }
+        }
+        
+        // Store each extracted fact as a high-confidence individual memory
+        if (extractedFacts.length > 0) {
+          const uniqueFacts = [...new Set(extractedFacts)];
+          console.log(`🧠 Auto-extracted ${uniqueFacts.length} facts from user message`);
+          
+          const factInserts = uniqueFacts.map(fact => ({
+            content: fact,
+            memory_type: 'user_fact',
+            source: 'auto_extract',
+            confidence: 0.95,
+            metadata: { 
+              session_id: effectiveSessionId, 
+              extracted_from: userMsg.substring(0, 100),
+              extraction_method: 'pattern_match',
+            },
+          }));
+          
+          // Insert facts into brain_memories
+          await supabase.from("brain_memories").insert(factInserts);
+          
+          // Also insert into hot memory for immediate availability
+          const hotInserts = uniqueFacts.map(fact => ({
+            content: fact,
+            context: 'user_fact',
+            priority: 10, // Maximum priority
+            tags: { type: 'user_fact', source: 'auto_extract' },
+            metadata: { session_id: effectiveSessionId },
+          }));
+          
+          await supabase.from("brain_memory_hot").insert(hotInserts);
+        }
+        
+        // Also store a condensed conversation summary (lower confidence than facts)
         await supabase.from("brain_memories").insert({
-          content: `User asked: ${String(message).substring(0, 200)}\nResponse: ${result.content.substring(0, 300)}`,
-          memory_type: 'conversation',
+          content: `Conversation: User said "${userMsg.substring(0, 150)}" — Response: "${result.content.substring(0, 150)}"`,
+          memory_type: 'conversation_summary',
           source: 'decode_chat',
-          confidence: 0.7,
-          metadata: { session_id: effectiveSessionId, personality: personality.id },
+          confidence: 0.5,
+          metadata: { session_id: effectiveSessionId, personality: personality.id, facts_extracted: extractedFacts.length },
         });
       } catch { /* memory storage is enhancement, not requirement */ }
 
@@ -5441,7 +5555,9 @@ async function handleDecode(
         model: result.model,
         personality: personality.id,
         memory_context: memoryContext,
-        memory_used: memoryContext.length > 0,
+        fact_memories: factMemories,
+        memory_used: memoryContext.length > 0 || factMemories.length > 0,
+        facts_extracted: true,
       }, headers);
     }
 
