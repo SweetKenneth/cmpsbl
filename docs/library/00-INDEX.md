@@ -14,9 +14,9 @@
 | **Status** | Production (Live System) |
 | **Publication Date** | February 2026 |
 | **Author** | Kenneth E. Sweet Jr. ([ORCID](https://orcid.org/0009-0001-4237-1243)) |
-| **Capabilities** | 269 Cross-Module Capabilities |
-| **Cognitive Engines** | 62 Compound Execution Units |
-| **Meta-Engines** | 20 High-Order Orchestrators |
+| **Capabilities** | 325 Cross-Module Capabilities |
+| **Cognitive Engines** | 70 Compound Execution Units |
+| **Meta-Engines** | 22 High-Order Orchestrators |
 | **Synergy Pipelines** | 147 Executable Pipelines |
 | **Infrastructure Systems** | 27 Production-Hardening Modules |
 | **Tiered Capabilities** | 68 (FREE/Builder/Pro/Enterprise) |
@@ -145,8 +145,8 @@ This library is part of the **FNDTN v8** standards package, which presents:
 | [75-EVOLUTION-LIFECYCLE.md](./75-EVOLUTION-LIFECYCLE.md) | Evolution Lifecycle | Modernizer 5-phase cycle |
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
 | [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 147 cross-module executable pipelines |
-| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Capabilities** | **269 cross-module capabilities, 20 infrastructure systems** |
-| [79-COGNITIVE-ENGINES.md](./79-COGNITIVE-ENGINES.md) | **Cognitive Engines** | **62 engines, 20 meta-engines, 269 capabilities (v8.5.0)** |
+| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Capabilities** | **325 cross-module capabilities, 27 infrastructure systems** |
+| [79-COGNITIVE-ENGINES.md](./79-COGNITIVE-ENGINES.md) | **Cognitive Engines** | **70 engines, 22 meta-engines, 325 capabilities (v8.5.0)** |
 | [80-ATLAS-COMMAND.md](./80-ATLAS-COMMAND.md) | Atlas Command | Atlas control plane terminal reference |
 | [80-EVOLUTION-OBSERVABILITY.md](./80-EVOLUTION-OBSERVABILITY.md) | Evolution Observability | Investor-facing evolution visibility & stamps |
 | [85-LNCHBL-DISTRIBUTION.md](./85-LNCHBL-DISTRIBUTION.md) | **LNCHBL Distribution** | **68 tiered capabilities, self-improvement Enterprise-only** |

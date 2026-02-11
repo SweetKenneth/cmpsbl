@@ -29,8 +29,8 @@
 | 13 | [SEBA & Evolve Operator Guide](./13-SEBA-EVOLVE-OPERATOR-GUIDE.md) | **Complete workflow for evolution cycles, verification, stamps** |
 | 14 | [Atlas Control Plane](./14-ATLAS-CONTROL-PLANE.md) | Centralized governance, command interface, real-time audit |
 | 15 | [Capability Registry](./15-CAPABILITY-REGISTRY.md) | **269 cross-module capabilities, risk levels, execution modes** |
-| **16** | **[Cognitive Engine System](./16-COGNITIVE-ENGINE-SYSTEM.md)** | **62 engines consolidating 269 capabilities into compound units** |
-| **17** | **[Meta-Engine System](./17-META-ENGINE-SYSTEM.md)** | **20 meta-engines orchestrating 62 engines** |
+| **16** | **[Cognitive Engine System](./16-COGNITIVE-ENGINE-SYSTEM.md)** | **70 engines consolidating 325 capabilities into compound units** |
+| **17** | **[Meta-Engine System](./17-META-ENGINE-SYSTEM.md)** | **22 meta-engines orchestrating 70 engines** |
 | **18** | **[LNCHBL Tiers & Infrastructure](./18-LNCHBL-TIERS-AND-INFRASTRUCTURE.md)** | **68 tiered capabilities, 20 infra systems, self-improvement Enterprise-only** |
 
 ---
@@ -183,8 +183,8 @@ EVOLUTION ENGINES (2)
 | CLM Budget Governor | CLM | Daily token budget with kill switch for runaway learning |
 | **Synergy Multiplier** | Engine System | 2-8x value amplification through orchestration |
 | **Complexity Score** | Engine System | IP protection rating 1-10 per engine |
-| **Capability Count** | Capability Registry | **269 total capabilities across 14 modules** |
-| **Engine Count** | Engine System | **62 engines orchestrating 269 capabilities** |
+| **Capability Count** | Capability Registry | **325 total capabilities across 14 modules** |
+| **Engine Count** | Engine System | **70 engines orchestrating 325 capabilities** |
 | **Tier Gate** | Capability Gate | **Enterprise-only self-improvement enforcement** |
 | **Infrastructure** | 20 Systems | **Production hardening across all tiers** |
 

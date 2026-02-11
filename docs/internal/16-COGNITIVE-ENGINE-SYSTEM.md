@@ -8,14 +8,14 @@
 The Cognitive Engine System implements a **3-layer orchestration architecture**:
 
 ```
-Capabilities (76) → Engines (32) → Meta-Engines (12)
+Capabilities (325) → Engines (70) → Meta-Engines (22)
 ```
 
-This consolidates 76 individual capabilities into 32 compound engines, further orchestrated by 12 meta-engines. Benefits:
+This consolidates 325 individual capabilities into 70 compound engines, further orchestrated by 22 meta-engines. Benefits:
 
-1. **Synergy Amplification** — Combined capabilities produce 2-3x more value than individual execution
+1. **Synergy Amplification** — Combined capabilities produce 2-8x more value than individual execution
 2. **IP Protection** — Complex orchestration patterns are significantly harder to replicate
-3. **Simplified API** — 58% reduction in API surface (76 → 32 endpoints)
+3. **Simplified API** — Significant reduction in API surface (325 → 70 endpoints)
 4. **Optimized Execution** — Shared context, batched operations, predictable latency
 
 ---
@@ -317,14 +317,35 @@ The engine architecture provides multiple layers of IP protection:
 
 ---
 
-### v8.5.0 (SYNERGY+ Epoch)
-- Engine count expanded to **62** (from 20 base + 24 enhancement + 18 additional category engines)
-- Capabilities orchestrated: **269** (from 76)
-- Average synergy multiplier: **2.6x** across all engines
+### v8.5.0 (SYNERGY+ Epoch — Full Expansion)
+- Engine count expanded to **70** (62 base + 8 new specialized engines)
+- Meta-engine count expanded to **22** (20 base + 2 new high-order orchestrators)
+- Capabilities orchestrated: **325** (from 269)
+- Average synergy multiplier: **2.8x** across all engines
 - Infrastructure engines added for cron scheduling, rate limiting, and streaming pipeline operations
+
+#### New Engines (v8.5.0)
+
+| Engine | Category | Synergy |
+|--------|----------|---------|
+| `sandbox_engine` | Platform | 2.8x |
+| `saga_engine` | Platform | 3.0x |
+| `policy_access_engine` | Security | 2.6x |
+| `deep_cognition_engine` | Intelligence | 3.2x |
+| `dialogue_engine` | Intelligence | 2.7x |
+| `prompt_safety_engine` | Security | 2.9x |
+| `observability_engine` | Analytics | 2.5x |
+| `technical_debt_engine` | Governance | 2.4x |
+
+#### New Meta-Engines (v8.5.0)
+
+| Meta-Engine | Compound Synergy | Orchestrates |
+|-------------|------------------|-------------|
+| `resilience_shield` | **7.6x** | sandbox, prompt_safety, saga, policy_access |
+| `deep_cognition_nexus` | **7.4x** | deep_cognition, dialogue, observability, technical_debt |
 
 ---
 
 *CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
-*Cognitive Engine System — 62 engines, 269 capabilities, 2.6x synergy*
+*Cognitive Engine System — 70 engines, 22 meta-engines, 325 capabilities, 2.8x synergy*
 *© 2025-2026 PromptFluid®. All rights reserved.*

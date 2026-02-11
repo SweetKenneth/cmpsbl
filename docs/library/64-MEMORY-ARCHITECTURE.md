@@ -1,6 +1,6 @@
 # Memory Architecture
 
-**CMPSBL Substrate OS v6.1.0 — Cognitive Memory Core**
+**CMPSBL Substrate OS v8.5.0 — Cognitive Memory Core (SYNERGY+ Epoch)**
 
 ---
 
@@ -9,15 +9,61 @@
 | Field | Value |
 |-------|-------|
 | **Module** | BRAIN (Memory Subsystem) |
-| **Version** | v6.1.0 |
+| **Version** | v8.5.0 |
 | **Status** | Production |
-| **Last Updated** | January 2026 |
+| **Last Updated** | February 2026 |
 
 ---
 
 ## Overview
 
-The **Memory Architecture** defines how the substrate stores, organizes, retrieves, and consolidates information across its cognitive systems. Built on the unified **Memory Core** (v6.1.0), it implements a formal 5-stage pipeline that eliminates redundant pathways and ensures deterministic cognition.
+The **Memory Architecture** defines how the substrate stores, organizes, retrieves, and consolidates information across its cognitive systems. Built on the unified **Memory Core** (v8.5.0), it implements a formal 5-stage pipeline that eliminates redundant pathways and ensures deterministic cognition.
+
+### SDK Integration (v8.5.0)
+
+The memory system is exposed through two public SDK interfaces for third-party integration:
+
+#### `withPersistentMemory` — Agent Wrapper
+
+```typescript
+import { withPersistentMemory } from '@cmpsbl/memory';
+
+const agent = withPersistentMemory({
+  agentId: 'my-support-agent',
+  scope: 'project' // or 'session'
+});
+
+const response = await agent.respond('How do I reset my password?');
+await agent.remember('User prefers dark mode');
+await agent.logWorkload('Resolved 3 tickets in this session');
+```
+
+**Capabilities:**
+- Automatic fact extraction on `store()`
+- Context-aware `recall()` with confidence scoring
+- Workload logging for agent outcome tracking
+- Manual `remember()` for explicit knowledge capture
+
+#### `usePersistentAgent` — React Hook
+
+```tsx
+import { usePersistentAgent } from '@cmpsbl/memory';
+
+function ChatComponent() {
+  const { respond, remember, logWorkload, isLoading } = usePersistentAgent('my-agent');
+  
+  const handleSend = async (message: string) => {
+    const context = await respond(message);
+    // context.memories, context.confidence, context.contextString
+  };
+}
+```
+
+**Hook Features:**
+- Automatic `MemoryClient` lifecycle management
+- Graceful error handling (memory is enhancement, not requirement)
+- Loading state tracking
+- No provider setup required
 
 ---
 
@@ -226,8 +272,9 @@ function MemoryDashboard() {
 - [13-BRAIN-MODULE.md](./13-BRAIN-MODULE.md) — BRAIN module overview
 - [63-CLM.md](./63-CLM.md) — Constant Learning Mode
 - [65-SPACED-REPETITION.md](./65-SPACED-REPETITION.md) — SM-2 scheduling
+- [85-LNCHBL-DISTRIBUTION.md](./85-LNCHBL-DISTRIBUTION.md) — LNCHBL tier map
 
 ---
 
-*CMPSBL OS Substrate v6.1.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

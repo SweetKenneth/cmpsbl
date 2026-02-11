@@ -170,7 +170,51 @@ For teams building sophisticated cognitive systems with operational intelligence
 
 ---
 
-## 7. Changelog
+## 7. Patch Dispatch Protocol (v8.5.0)
+
+CMPSBL dispatches patches to LNCHBL via the `cmpsbl-patch-dispatch` edge function. The protocol:
+
+### Authentication
+- **Bearer token**: `CMPSBL_PATCH_SECRET` (machine-to-machine) or valid admin JWT (terminal/dashboard)
+- **Header**: `X-Distribution-ID: CMPSBL`
+
+### Payload Schema
+```typescript
+{
+  target_distribution: 'LNCHBL',
+  patch_version: string,
+  patch_id?: string,
+  capabilities: string[],
+  engines: string[],
+  changelog: string,
+  signature?: string,
+  config_overrides: Record<string, unknown>,
+  edge_function_code?: Array<{
+    function_name: string,
+    code: string,
+    config: Record<string, unknown>
+  }>
+}
+```
+
+### Protected Fields (cannot be overridden)
+`distribution_id`, `identity`, `canon_authority`, `federation_enabled`, `self_evolution`, `self_improvement`
+
+### Dispatch Methods
+1. **Terminal**: `patch.send <patch_id>` or `patch.publish <patch_id>`
+2. **Dashboard**: Patch Authoring tab → Publish button
+3. **Chat**: Ad-hoc test harnesses via Lovable
+
+---
+
+## 8. Changelog
+
+### v3.1.0 (v8.5.0 Substrate — Patch Dispatch)
+
+- 🔒 **Patch dispatch protocol** — Authenticated cross-distribution capability delivery
+- 🖥️ **Terminal commands** — `patch.send`, `patch.publish`, `patch.status`, `patch.help`
+- 📊 **Dashboard integration** — Publish button dispatches to LNCHBL automatically
+- 🔐 **Dual auth** — Shared secret for automation, admin JWT for interactive use
 
 ### v3.0.0 (v8.5.0 Substrate)
 
