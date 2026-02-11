@@ -41,17 +41,22 @@ expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
 ---
 
-## THE SUBSTRATE CLASS
+## THE AI OPERATING SYSTEM CLASS
 
-CMPSBL v8.0.0 SYNERGY+ is the reference implementation of the "substrate class" of AI systems:
+CMPSBL v8.5.0 SYNERGY+ is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
 
-- **Persistent**: State survives restarts and sessions (3-tier memory)
+- **Complete Cognitive Runtime**: 14 integrated modules covering memory, reasoning, security, routing, observability, and orchestration
+- **Persistent**: State survives restarts and sessions (3-tier memory architecture)
 - **Self-improving**: SEBA (Self-Evolving Bounded Agent) with governance constraints
-- **Modular**: 14 discrete, replaceable modules
-- **Governed**: Doctrine and policy layers at kernel level
-- **Observable**: Real-time telemetry and audit logs
+- **Modular**: 14 discrete, hot-swappable modules organized across 5 architectural layers
+- **Governed**: Doctrine and policy enforcement at kernel level
+- **Observable**: Real-time telemetry, cost attribution, and audit logging
 - **Synergistic**: 147 cross-module pipelines with 120 custom executors
-- **Production-Ready**: 310+ terminal commands, 269+ capabilities
+- **Production-Ready**: 340+ terminal commands, 269+ capabilities
+
+### Why "AI Operating System"?
+
+Traditional operating systems unified disparate hardware interfaces into a coherent platform. CMPSBL does the same for AI: it unifies memory, routing, security, optimization, and orchestration into a single cognitive runtime that any AI agent can build on — regardless of the underlying model provider.
 
 ## 14-MODULE ARCHITECTURE (v8.0.0 SYNERGY+)
 
