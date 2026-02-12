@@ -335,10 +335,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│         SUBSTRATE OS v8.5.0 — COMMAND REFERENCE             │
+│         SUBSTRATE OS v9.0.0 — COMMAND REFERENCE             │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 16 + Synergies          │
-│  Architecture: 14-module + CLM + Infra + 147 Synergies      │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 22 + Synergies          │
+│  Architecture: 20-module + CLM + Infra + 147 Synergies      │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │
