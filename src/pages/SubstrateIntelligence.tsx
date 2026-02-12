@@ -39,7 +39,7 @@ const jsonLd = {
     "description": "Developer License - Annual"
   },
   "featureList": [
-    "14-module kernel architecture",
+    "20-module kernel architecture",
     "Persistent memory (3-tier system)",
     "Self-improvement engine",
     "Autonomous dream cycles",
