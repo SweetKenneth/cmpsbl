@@ -87,7 +87,7 @@ export function isVersionCompatible(required: string, actual: string): boolean {
 }
 
 // Get layer modules
-export function getModulesByLayer(layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Administrative' | 'Orchestrator'): string[] {
+export function getModulesByLayer(layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Administrative' | 'Orchestrator' | 'Infrastructure'): string[] {
   return Object.entries(MODULE_VERSIONS)
     .filter(([_, info]) => info.layer === layer)
     .map(([name]) => name);
