@@ -30,7 +30,18 @@ export * from './synergies';
 
 // High-value capability registries
 export * from './high-value-v8-5';
-export * from './high-value-v9';
+export { 
+  ALL_INFRASTRUCTURE_CAPABILITIES,
+  INFRA_CAPABILITY_COUNT,
+  MEMORY_HV_CAPABILITIES,
+  RELAY_HV_CAPABILITIES,
+  AUDIT_HV_CAPABILITIES,
+  IDENTITY_HV_CAPABILITIES,
+  ECONOMY_HV_CAPABILITIES,
+  SANDBOX_HV_CAPABILITIES,
+  getInfraCapabilitiesByModule,
+  INFRASTRUCTURE_MODULES,
+} from './high-value-v9';
 
 // Re-export key functions for convenience
 export { invokeCapability, canInvoke, invokeBatch } from './adapter';
