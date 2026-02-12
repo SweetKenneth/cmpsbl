@@ -33,8 +33,8 @@ const faqItems = [
     answer: "Yes. CMPSBL is model-agnostic and provider-agnostic. The NEXUS module intelligently routes to OpenAI, Google Gemini, Anthropic Claude, or local models based on task requirements. Bring your own keys (BYOK) and your existing AI stack — CMPSBL orchestrates everything underneath."
   },
   {
-    question: "What are the 14 modules in CMPSBL's AI Operating System?",
-    answer: "The 14 modules span 5 layers: Kernel (CORE runtime, RIPPLE event bus, ACCESS identity), Cognitive (BRAIN memory, DECODE personality), Operational (DEFENSE security, NEXUS routing, VISION observability, DREAM optimization, INTEGRATION adapters), Administrative (SYSTEM ops, INCLUSIVE accessibility, MODERNIZER evolution), and Orchestrator (CORTEX meta-orchestration)."
+    question: "What are the 20 modules in CMPSBL's AI Operating System?",
+    answer: "The 20 modules span 6 layers: Kernel (CORE runtime, RIPPLE event bus, ACCESS identity), Cognitive (BRAIN memory, DECODE personality), Operational (DEFENSE security, NEXUS routing, VISION observability, DREAM optimization, INTEGRATION adapters), Administrative (SYSTEM ops, INCLUSIVE accessibility, MODERNIZER evolution), Orchestrator (CORTEX meta-orchestration), and Infrastructure (MEMORY vector/RAG, RELAY webhooks, AUDIT compliance, IDENTITY attribution, ECONOMY cost tracking, SANDBOX isolation)."
   },
 ];
 
