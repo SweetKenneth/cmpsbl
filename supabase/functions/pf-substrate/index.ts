@@ -5499,9 +5499,9 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
             const { data: recentLearnings } = await supabase
               .from('brain_events')
               .select('module, event_type, data, outcome, created_at')
-              .in('event_type', ['module_clm_analysis', 'clm_job_finished', 'learning_cycle_completed', 'module_self_analysis'])
+              .in('event_type', ['module_learning_insight', 'technical_learning_cycle', 'module_clm_analysis', 'clm_job_finished', 'module_self_analysis'])
               .order('created_at', { ascending: false })
-              .limit(15);
+              .limit(20);
             
             if (recentLearnings?.length) {
               const learningContext = recentLearnings.map((l: any) => {
