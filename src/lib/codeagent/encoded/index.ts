@@ -1,3 +1,5 @@
+export * from './production-pipeline';
+
 /**
  * Encoded Guardrails — Module Exports
  * v2.2.0 — Polished implementation agent with enhanced skills and communication
