@@ -1,6 +1,6 @@
 /**
  * Public Metrics Store
- * v8.5.0 SYNERGY+ Epoch — Single Source of Truth for all public-facing metrics
+ * v9.0.0 ARCHITECT Epoch — Single Source of Truth for all public-facing metrics
  * 
  * This Zustand store serves as the canonical source for all marketing numbers,
  * version info, and capability counts across the entire substrate.
