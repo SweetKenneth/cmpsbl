@@ -8,6 +8,7 @@
 
 import type { SynergyDefinition, SynergyExecutor, SynergyRegistry } from './types';
 import { STIER_SYNERGY_DEFINITIONS } from './stier/definitions';
+import { INFRASTRUCTURE_SYNERGY_DEFINITIONS } from './infrastructure-pipelines';
 
 const registry: SynergyRegistry = {
   synergies: new Map(),
