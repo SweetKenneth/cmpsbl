@@ -1,9 +1,9 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * v8.5.0 — SYNERGY+ Epoch Full-system audit completed 2026-02-11
+ * v9.0.0 — ARCHITECT Epoch
  * 
- * 14 modules | 340+ commands | 147 synergy pipelines | 7 infra systems | All handlers verified
+ * 20 modules | 340+ commands | 147 synergy pipelines | 7 infra systems | All handlers verified
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
