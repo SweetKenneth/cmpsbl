@@ -132,7 +132,7 @@ export type CapabilityId =
   | 'goal_alignment_validator'
   | 'execution_priority_balancer';
 
-export type ModuleLayer = 'Kernel' | 'Cognitive' | 'Operational' | 'Admin' | 'Orchestrator';
+export type ModuleLayer = 'Kernel' | 'Cognitive' | 'Operational' | 'Admin' | 'Orchestrator' | 'infrastructure';
 
 export interface CapabilityDefinition {
   id: CapabilityId;

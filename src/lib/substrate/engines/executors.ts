@@ -294,6 +294,14 @@ export const executePromptSafetyEngine: EngineExecutor = (ctx) => executeEngine(
 export const executeObservabilityEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeTechnicalDebtEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
+// v9.0.0 Infrastructure Layer Engines (6)
+export const executeKnowledgeRetrievalEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeDeliveryOrchestrator: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeComplianceAuditEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeZeroTrustEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeFinopsEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeResilienceLab: EngineExecutor = (ctx) => executeEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================

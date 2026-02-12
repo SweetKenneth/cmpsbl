@@ -190,7 +190,7 @@ export interface EngineDefinition {
   autonomyLevel: 'assisted' | 'supervised' | 'autonomous';
   
   // Execution characteristics
-  executionMode: 'sequential' | 'parallel' | 'adaptive' | 'streaming';
+  executionMode: 'sequential' | 'parallel' | 'adaptive' | 'streaming' | 'staged';
   averageLatencyMs: number;
   cacheable: boolean;
   
