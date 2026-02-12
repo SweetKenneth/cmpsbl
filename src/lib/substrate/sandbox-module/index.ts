@@ -79,7 +79,7 @@ export function execute(sandboxId: string, code: string): SandboxExecution {
   const blocked = unsafePatterns.some(p => code.includes(p));
   if (blocked) {
     state.blockedExecutions++;
-    emit('sandbox', 'blocked', { sandboxId, reason: 'unsafe_pattern' });
+    emit({ module: 'sandbox', event_type: 'blocked', outcome: 'failed', data: { sandboxId, reason: 'unsafe_pattern' } });
     const exec: SandboxExecution = {
       id: `exec-${Date.now()}`, sandboxId, code, result: null,
       success: false, error: 'Blocked: unsafe execution pattern detected',
