@@ -94,5 +94,37 @@ export function signAction(actorId: string, action: string): { actorId: string; 
   return { actorId, action, signature, timestamp: Date.now() };
 }
 
+export function addPasskeyToActor(actorId: string, credentialId: string): boolean {
+  const actor = actors.get(actorId);
+  if (!actor) return false;
+  if (!actor.passkeys.includes(credentialId)) {
+    actor.passkeys.push(credentialId);
+    state.passkeyCount++;
+    emit({ module: 'identity', event_type: 'passkey_bound', outcome: 'succeeded', data: { actorId, credentialId } });
+  }
+  return true;
+}
+
+export function removePasskeyFromActor(actorId: string, credentialId: string): boolean {
+  const actor = actors.get(actorId);
+  if (!actor) return false;
+  const idx = actor.passkeys.indexOf(credentialId);
+  if (idx === -1) return false;
+  actor.passkeys.splice(idx, 1);
+  state.passkeyCount = Math.max(0, state.passkeyCount - 1);
+  return true;
+}
+
+export function getActorPasskeys(actorId: string): string[] {
+  return actors.get(actorId)?.passkeys || [];
+}
+
 export function getIdentityState(): IdentityModuleState { return { ...state }; }
 export function getIdentityHealth(): number { return state.initialized ? 100 : 0; }
+
+// Re-exports for WebAuthn and auth config
+export { registerPasskey, authenticateWithPasskey, isWebAuthnSupported, isPlatformAuthenticatorAvailable, getUserPasskeys, revokePasskey } from './webauthn';
+export type { PasskeyCredential, PasskeyRegistrationResult, PasskeyAuthenticationResult } from './webauthn';
+export { AUTH_CONFIG, isPasswordAuthAllowed, isPasskeyPrimary, setAuthMode } from './auth-config';
+export type { AuthConfig, AuthMode } from './auth-config';
+export { AUTH_AUDIT_EVENTS, auditPasskeyRegistered, auditPasskeyAuthenticated, auditDeviceRejected, auditPasskeyRevoked } from './audit-events';
