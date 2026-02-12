@@ -59,7 +59,7 @@ export function registerActor(id: string, type: ActorType, displayName: string, 
   actors.set(id, actor);
   state.registeredActors = actors.size;
   state.signaturesIssued++;
-  emit('identity', 'actor_registered', { actorId: id, type });
+  emit({ module: 'identity', event_type: 'actor_registered', outcome: 'succeeded', data: { actorId: id, type } });
   return actor;
 }
 

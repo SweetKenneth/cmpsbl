@@ -64,7 +64,7 @@ export function recordCost(module: string, action: string, tokenCount: number, c
     const ratio = moduleSpend / budget.dailyLimitMillicents;
     for (const threshold of budget.alertThresholds) {
       if (ratio >= threshold) {
-        emit('economy', 'budget_alert', { module, ratio, threshold });
+        emit({ module: 'economy', event_type: 'budget_alert', outcome: 'succeeded', data: { module, ratio, threshold } });
         state.alertsFired++;
       }
     }

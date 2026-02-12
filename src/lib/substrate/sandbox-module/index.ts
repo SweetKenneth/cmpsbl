@@ -107,7 +107,7 @@ export function teardown(sandboxId: string): void {
   if (sandbox) {
     sandbox.status = 'torn_down';
     state.activeSandboxes--;
-    emit('sandbox', 'torn_down', { id: sandboxId });
+    emit({ module: 'sandbox', event_type: 'torn_down', outcome: 'succeeded', data: { id: sandboxId } });
   }
 }
 
