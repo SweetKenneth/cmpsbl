@@ -53,7 +53,7 @@ export default function ModulesHub() {
                 Substrate Architecture
               </span>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                14 Modules. 5 Layers.{" "}
+                20 Modules. 6 Layers.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>
