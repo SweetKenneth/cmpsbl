@@ -1068,10 +1068,6 @@ const accessibilityPatterns: ExpertPattern[] = [
       <DialogTitle>Settings</DialogTitle>
       <DialogDescription>Manage your account settings and preferences.</DialogDescription>
     </DialogHeader>
-    {/* Content auto-focuses first focusable element */}
-    {/* Escape key closes */}
-    {/* Focus trapped inside */}
-    {/* Focus returns to trigger on close */}
     <DialogFooter>
       <Button onClick={() => setOpen(false)}>Save</Button>
     </DialogFooter>
@@ -1081,6 +1077,228 @@ const accessibilityPatterns: ExpertPattern[] = [
     qualitySignals: ['Uses Radix primitives', 'Focus management automatic', 'Screen reader compatible'],
     whenToUse: 'Every modal, dialog, or overlay in the application',
     complexity: 3,
+  },
+  {
+    id: 'a11y_form_labels',
+    name: 'Accessible Form Labels & Errors',
+    category: 'accessibility',
+    tier: 'foundational',
+    description: 'Every form input must have a visible label and announced errors',
+    template: `<FormField name="email" control={form.control} render={({ field }) => (
+  <FormItem>
+    <FormLabel htmlFor="email">Email address</FormLabel>
+    <Input id="email" type="email" aria-describedby="email-error" {...field} />
+    <FormMessage id="email-error" role="alert" />
+  </FormItem>
+)} />`,
+    antiPatterns: ['Placeholder as only label', 'No aria-describedby for errors', 'Missing htmlFor/id pairing'],
+    qualitySignals: ['Label associated with input via htmlFor', 'Error announced via role=alert', 'aria-describedby links input to error'],
+    whenToUse: 'Every form input without exception',
+    complexity: 2,
+  },
+  {
+    id: 'a11y_skip_link',
+    name: 'Skip Navigation Link',
+    category: 'accessibility',
+    tier: 'foundational',
+    description: 'Allow keyboard users to skip repetitive navigation',
+    template: `<a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-background focus:text-foreground">
+  Skip to main content
+</a>
+<nav>...</nav>
+<main id="main-content" tabIndex={-1}>...</main>`,
+    antiPatterns: ['No skip link on pages with nav', 'Skip link visible by default', 'Missing tabIndex on target'],
+    qualitySignals: ['Only visible on focus', 'Links to main content', 'Proper focus management'],
+    whenToUse: 'Every page with navigation elements',
+    complexity: 1,
+  },
+  {
+    id: 'a11y_live_region',
+    name: 'ARIA Live Regions for Dynamic Updates',
+    category: 'accessibility',
+    tier: 'intermediate',
+    description: 'Announce dynamic content changes to screen readers',
+    template: `function StatusMessage({ message, type }: { message: string; type: 'info' | 'error' }) {
+  return (
+    <div 
+      role={type === 'error' ? 'alert' : 'status'} 
+      aria-live={type === 'error' ? 'assertive' : 'polite'}
+      aria-atomic="true"
+    >
+      {message}
+    </div>
+  );
+}`,
+    antiPatterns: ['Dynamic updates with no announcement', 'Using alert for non-urgent info', 'Missing aria-atomic'],
+    qualitySignals: ['Polite for info, assertive for errors', 'aria-atomic ensures full re-read', 'Semantic role usage'],
+    whenToUse: 'Toast notifications, loading states, form submission results, live data',
+    complexity: 3,
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// CONCURRENCY & ASYNC PATTERNS (NEW)
+// ═══════════════════════════════════════════════════════════════
+
+const concurrencyPatterns: ExpertPattern[] = [
+  {
+    id: 'async_promise_all_settled',
+    name: 'Promise.allSettled for Partial Failures',
+    category: 'error_handling',
+    tier: 'intermediate',
+    description: 'Handle multiple async operations where some may fail without aborting all',
+    template: `async function processItems(items: Item[]): ProcessResult {
+  const results = await Promise.allSettled(
+    items.map(item => processItem(item))
+  );
+
+  const succeeded = results.filter((r): r is PromiseFulfilledResult<Item> => r.status === 'fulfilled');
+  const failed = results.filter((r): r is PromiseRejectedResult => r.status === 'rejected');
+
+  return {
+    processed: succeeded.map(r => r.value),
+    errors: failed.map(r => ({ reason: r.reason?.message || 'Unknown error' })),
+    successRate: succeeded.length / results.length,
+  };
+}`,
+    antiPatterns: ['Promise.all that fails on first error', 'Sequential processing when parallel is safe', 'Swallowing all errors'],
+    qualitySignals: ['Partial success supported', 'Errors collected not thrown', 'Success rate tracked'],
+    whenToUse: 'Batch operations, multi-API calls, any parallel work where partial failure is acceptable',
+    complexity: 4,
+  },
+  {
+    id: 'async_abort_controller',
+    name: 'AbortController for Cleanup',
+    category: 'react_architecture',
+    tier: 'intermediate',
+    description: 'Cancel async operations when component unmounts or dependencies change',
+    template: `useEffect(() => {
+  const controller = new AbortController();
+  
+  async function load() {
+    try {
+      const res = await fetch(url, { signal: controller.signal });
+      if (!controller.signal.aborted) {
+        setData(await res.json());
+      }
+    } catch (e) {
+      if (e instanceof DOMException && e.name === 'AbortError') return;
+      setError(e);
+    }
+  }
+  
+  load();
+  return () => controller.abort();
+}, [url]);`,
+    antiPatterns: ['No cleanup on unmount', 'Setting state after unmount', 'Ignoring abort errors by catching all'],
+    qualitySignals: ['Proper cleanup function', 'AbortError specifically handled', 'No state updates after abort'],
+    whenToUse: 'Every useEffect with async operations or subscriptions',
+    complexity: 3,
+  },
+  {
+    id: 'async_queue_limiter',
+    name: 'Concurrent Request Queue',
+    category: 'performance',
+    tier: 'advanced',
+    description: 'Limit concurrent async operations to prevent resource exhaustion',
+    template: `async function processWithLimit<T, R>(
+  items: T[],
+  fn: (item: T) => Promise<R>,
+  concurrency = 5
+): Promise<R[]> {
+  const results: R[] = [];
+  const executing = new Set<Promise<void>>();
+
+  for (const item of items) {
+    const p = fn(item).then(r => { results.push(r); });
+    executing.add(p);
+    p.finally(() => executing.delete(p));
+
+    if (executing.size >= concurrency) {
+      await Promise.race(executing);
+    }
+  }
+
+  await Promise.all(executing);
+  return results;
+}`,
+    antiPatterns: ['Unbounded Promise.all on 1000+ items', 'Sequential processing for independent tasks', 'No backpressure'],
+    qualitySignals: ['Configurable concurrency', 'Backpressure via Promise.race', 'Results collected in order'],
+    whenToUse: 'Batch API calls, file uploads, data migrations, any fan-out workload',
+    complexity: 6,
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// CODE HYGIENE PATTERNS (NEW)
+// ═══════════════════════════════════════════════════════════════
+
+const hygienePatterns: ExpertPattern[] = [
+  {
+    id: 'hygiene_barrel_export',
+    name: 'Barrel Export Pattern',
+    category: 'refactoring',
+    tier: 'foundational',
+    description: 'Clean module boundaries with index.ts re-exports',
+    template: `// src/lib/auth/index.ts — the barrel
+export { useAuth } from './useAuth';
+export { AuthProvider } from './AuthProvider';
+export { requireAuth } from './guards';
+export type { AuthState, AuthUser } from './types';
+
+// Consumers import from the module, not individual files:
+// import { useAuth, AuthProvider } from '@/lib/auth';`,
+    antiPatterns: ['Importing from deep paths like @/lib/auth/hooks/useAuth', 'Circular imports in barrels', 'Re-exporting everything blindly'],
+    qualitySignals: ['Single import point per module', 'Internal files are implementation details', 'Types separately exported'],
+    whenToUse: 'Every module/feature directory with 3+ files',
+    complexity: 1,
+  },
+  {
+    id: 'hygiene_null_coalescing',
+    name: 'Null Coalescing & Optional Chaining',
+    category: 'typescript_advanced',
+    tier: 'foundational',
+    description: 'Modern nullish handling instead of verbose checks',
+    template: `// BEFORE
+const name = user && user.profile && user.profile.name ? user.profile.name : 'Anonymous';
+const limit = config.limit !== null && config.limit !== undefined ? config.limit : 100;
+
+// AFTER
+const name = user?.profile?.name ?? 'Anonymous';
+const limit = config.limit ?? 100;
+
+// Nullish assignment
+user.settings ??= { theme: 'dark' };`,
+    antiPatterns: ['Using || instead of ?? (falsy vs nullish)', 'Nested ternaries for null checks', 'Manual undefined checks'],
+    qualitySignals: ['?. for access, ?? for defaults', 'No false positive on 0 or empty string', 'Clean and readable'],
+    whenToUse: 'Any property access that might be null/undefined',
+    complexity: 1,
+  },
+  {
+    id: 'hygiene_single_responsibility',
+    name: 'Single Responsibility File Size',
+    category: 'refactoring',
+    tier: 'intermediate',
+    description: 'Keep files under 200 lines by extracting focused modules',
+    template: `// RED FLAG: File over 300 lines
+// Split into focused modules:
+
+// types.ts — Pure type definitions (no logic)
+// utils.ts — Pure helper functions (no state)
+// hooks.ts — React hooks (stateful logic)
+// components.ts — UI components
+// constants.ts — Configuration and magic values
+// index.ts — Barrel exports only
+
+// Rule of thumb:
+// - Types file: unlimited (types are cheap)
+// - Logic file: max 150 lines
+// - Component file: max 200 lines
+// - Hook file: max 100 lines per hook`,
+    antiPatterns: ['500+ line files', 'Mixed concerns in one file', 'Utility "junk drawer" files'],
+    qualitySignals: ['Each file has one clear purpose', 'Files under 200 lines', 'Easy to find things'],
+    whenToUse: 'During any refactoring or when a file exceeds 200 lines',
+    complexity: 2,
   },
 ];
 
