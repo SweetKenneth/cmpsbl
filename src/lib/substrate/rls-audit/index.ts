@@ -50,20 +50,24 @@ export async function runRLSAudit(): Promise<RLSAuditReport> {
   const timestamp = new Date().toISOString();
 
   // 1. Get all public tables and their RLS status
-  const { data: tables, error: tablesErr } = await supabase.rpc('get_tables_rls_status');
-  
-  let tableList: TableInfo[] = [];
-  
-  if (tablesErr || !tables) {
-    // Fallback: use known tables from types
-    tableList = getKnownTablesFromSchema();
-  } else {
-    tableList = tables as TableInfo[];
-  }
+  // Use direct SQL query via edge function or fallback to known schema
+  let tableList: TableInfo[] = getKnownTablesFromSchema();
+  let policyList: PolicyInfo[] = [];
 
-  // 2. Get all policies
-  const { data: policies } = await supabase.rpc('get_rls_policies');
-  const policyList: PolicyInfo[] = (policies as PolicyInfo[]) || [];
+  try {
+    // Attempt to fetch live RLS info via substrate edge function
+    const { data: healthData } = await supabase.functions.invoke('pf-substrate', {
+      body: { action: 'rls_audit' },
+    });
+    if (healthData?.tables) {
+      tableList = healthData.tables as TableInfo[];
+    }
+    if (healthData?.policies) {
+      policyList = healthData.policies as PolicyInfo[];
+    }
+  } catch {
+    // Fallback: use known schema — still useful for structure-level audit
+  }
 
   // 3. Check each table
   for (const table of tableList) {

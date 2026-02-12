@@ -163,7 +163,7 @@ class ProductionPipeline {
     this.persist();
 
     // Log to brain_events
-    await supabase.from('brain_events').insert({
+    await supabase.from('brain_events').insert([{
       module: 'encoded',
       event_type: 'production_proposal_created',
       data: {
@@ -172,8 +172,8 @@ class ProductionPipeline {
         task_type: proposal.task_type,
         score: proposal.score,
         predicted_impact: proposal.predicted_impact,
-      },
-    }).then(() => {});
+      } as any,
+    }]).then(() => {});
 
     console.log(`[Production Pipeline] 📋 Proposal ${proposal.id} created for ${proposal.file_path}`);
     return proposal;
