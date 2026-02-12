@@ -686,7 +686,7 @@ export async function executeCommand(
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  14-Module Architecture — Full AI Operating System
+│  20-Module Architecture — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  Mode: ${roleDisplay}
@@ -715,10 +715,18 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  ├─ ORCHESTRATOR LAYER ──────────────────────────────────────
 │  │  cortex://     policy intent, manual mode
 │  │
+│  ├─ INFRASTRUCTURE LAYER ────────────────────────────────────
+│  │  memory://     vector store, RAG, embeddings
+│  │  relay://      webhooks, notifications, delivery
+│  │  audit://      immutable logs, hash chains
+│  │  identity://   actor attribution, signatures
+│  │  economy://    cost tracking, budget enforcement
+│  │  sandbox://    isolated execution, testing
+│  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal v8.5.0: aliases, macros, NLP, watch mode, audit
-│  14 modules | 340+ commands | 7 infra systems | health: 100%
+│  Terminal v9.0.0: aliases, macros, NLP, watch mode, audit
+│  20 modules | 340+ commands | 7 infra systems | health: 100%
 │  promptfluid® — where dreams come to adapt
 │  
 └──────────────────────────────────────────────────────────────`;
