@@ -1,6 +1,6 @@
 /**
  * Engine Registry
- * v8.5.0 SYNERGY+ Epoch — 70 Cognitive Engines orchestrating 325 Capabilities
+ * v9.0.0 ARCHITECT Epoch — 76 Cognitive Engines orchestrating 379 Capabilities
  * 
  * Each engine orchestrates multiple related capabilities into
  * a compound execution unit with enhanced value and IP protection.
