@@ -1,13 +1,14 @@
 /**
  * Synergy Registry
- * v8.0.0 SYNERGY+ — Cross-Module Pipeline Registration (147 Pipelines)
+ * v9.0.0 ARCHITECT — Cross-Module Pipeline Registration (200 Pipelines)
  * 
  * Defines all available synergies that combine 2+ modules
- * Includes 32 S-tier premium pipelines + 27 discovery synergies (147 total)
+ * Includes 32 S-tier premium pipelines + 27 discovery + 53 infrastructure-era = 200 total
  */
 
 import type { SynergyDefinition, SynergyExecutor, SynergyRegistry } from './types';
 import { STIER_SYNERGY_DEFINITIONS } from './stier/definitions';
+import { INFRASTRUCTURE_SYNERGY_DEFINITIONS } from './infrastructure-pipelines';
 
 const registry: SynergyRegistry = {
   synergies: new Map(),
@@ -15,7 +16,7 @@ const registry: SynergyRegistry = {
 };
 
 /**
- * All 147 cross-module synergies (98 core + 22 S-tier + 27 discovery synergies)
+ * All 200 cross-module synergies (88 core + 22 S-tier + 27 discovery + 32 S-tier + 53 infrastructure = 200)
  * Each combines 2-5 modules for enhanced capability within the 20-module architecture
  */
 export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
@@ -2086,6 +2087,8 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   
   // Add S-tier synergies
   ...STIER_SYNERGY_DEFINITIONS,
+  // Add Infrastructure-era pipelines (v9.0.0)
+  ...INFRASTRUCTURE_SYNERGY_DEFINITIONS,
 ];
 
 /**
