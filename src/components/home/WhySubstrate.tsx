@@ -28,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Hexagon } from "lucide-react";
 
-// All capabilities mapped to the 14 modules in 5-layer architecture
+// All capabilities mapped to the 20 modules in 6-layer architecture
 const differentiators = [
   // KERNEL LAYER - Core infrastructure
   {
