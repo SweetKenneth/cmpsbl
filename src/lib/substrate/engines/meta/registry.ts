@@ -614,8 +614,7 @@ export function getMetaEnginesByEngine(engineId: string): MetaEngineDefinition[]
 }
 
 export function getTotalCapabilitiesReached(): number {
-  // Count based on v8.1.0 expanded coverage (62 engines × ~4 capabilities each)
-  return 325; // All capabilities reachable through meta-engines (269 + 56 high-value v8.5.0)
+  return 379; // All capabilities reachable through meta-engines (v9.0.0)
 }
 
 export function getMetaEngineSummary() {
