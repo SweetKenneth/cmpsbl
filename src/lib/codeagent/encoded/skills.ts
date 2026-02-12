@@ -51,7 +51,16 @@ export const ENCODED_SKILLS: Skill[] = [
     examples: ['Factory functions', 'Event emitters', 'State machines'],
     constraints: ['Single responsibility', 'Keep under 50 lines per function'],
   },
-  
+  {
+    id: 'ts_advanced_types',
+    name: 'Advanced Type System',
+    category: 'typescript',
+    description: 'Branded types, mapped types, conditional types, template literals',
+    proficiency: 82,
+    examples: ['Branded IDs', 'Mapped conditional types', 'Template literal types'],
+    constraints: ['Derive types from source of truth', 'No manual type duplication'],
+  },
+
   // React
   {
     id: 'react_hooks',
@@ -71,7 +80,25 @@ export const ENCODED_SKILLS: Skill[] = [
     examples: ['Form components', 'Modal dialogs', 'Data tables'],
     constraints: ['Prop validation', 'Event handler naming conventions'],
   },
-  
+  {
+    id: 'react_performance',
+    name: 'React Performance',
+    category: 'react',
+    description: 'Optimizes renders, memoization, virtualization, and code splitting',
+    proficiency: 78,
+    examples: ['useMemo/useCallback', 'React.memo', 'Suspense boundaries'],
+    constraints: ['Measure before optimizing', 'No premature memoization'],
+  },
+  {
+    id: 'react_state',
+    name: 'State Architecture',
+    category: 'react',
+    description: 'Separates server state (TanStack Query) from client state (Zustand)',
+    proficiency: 85,
+    examples: ['Query cache', 'Zustand slices', 'Optimistic updates'],
+    constraints: ['Never copy server data into useState', 'Proper staleTime'],
+  },
+
   // Edge Functions
   {
     id: 'edge_deno',
@@ -91,7 +118,16 @@ export const ENCODED_SKILLS: Skill[] = [
     examples: ['JWT validation', 'API key checks', 'Role guards'],
     constraints: ['Never expose secrets', 'Validate all inputs'],
   },
-  
+  {
+    id: 'edge_security',
+    name: 'Edge Security Hardening',
+    category: 'edge_function',
+    description: 'Rate limiting, input validation, safe error responses',
+    proficiency: 80,
+    examples: ['Zod validation', 'Rate limiting', 'Error sanitization'],
+    constraints: ['Never leak stack traces', 'No raw SQL', 'Parameterized queries only'],
+  },
+
   // Database
   {
     id: 'db_queries',
@@ -102,7 +138,16 @@ export const ENCODED_SKILLS: Skill[] = [
     examples: ['Complex joins', 'Aggregations', 'RLS policies'],
     constraints: ['Parameterized queries', 'No SQL injection'],
   },
-  
+  {
+    id: 'db_migrations',
+    name: 'Database Migrations',
+    category: 'database',
+    description: 'Schema changes with RLS, triggers, and safe rollbacks',
+    proficiency: 83,
+    examples: ['Table creation', 'RLS policies', 'Trigger functions'],
+    constraints: ['Always enable RLS', 'Use validation triggers not CHECK'],
+  },
+
   // Testing
   {
     id: 'test_unit',
@@ -113,7 +158,16 @@ export const ENCODED_SKILLS: Skill[] = [
     examples: ['Function tests', 'Mock implementations', 'Assertions'],
     constraints: ['Describe-it pattern', 'Clear test names'],
   },
-  
+  {
+    id: 'test_integration',
+    name: 'Integration Testing',
+    category: 'testing',
+    description: 'Tests component integration and async flows',
+    proficiency: 72,
+    examples: ['Hook testing', 'Async assertions', 'Mock Supabase'],
+    constraints: ['Test behavior not implementation', 'Isolate side effects'],
+  },
+
   // Refactoring
   {
     id: 'refactor_extract',
@@ -124,7 +178,16 @@ export const ENCODED_SKILLS: Skill[] = [
     examples: ['Extract helper', 'Reduce nesting', 'Inline variables'],
     constraints: ['Preserve behavior', 'Keep tests passing'],
   },
-  
+  {
+    id: 'refactor_decompose',
+    name: 'File Decomposition',
+    category: 'refactoring',
+    description: 'Splits large files into focused modules with barrel exports',
+    proficiency: 84,
+    examples: ['Type extraction', 'Hook separation', 'Barrel exports'],
+    constraints: ['Max 200 lines per file', 'No circular imports'],
+  },
+
   // Documentation
   {
     id: 'doc_jsdoc',
