@@ -122,3 +122,12 @@ export {
   type MasteryScore,
   type GraduatedThresholds,
 } from './feedback-loop';
+
+// Shadow Practice Engine (v3.2.0)
+export {
+  shadowPractice,
+  type PracticeTask,
+  type PracticeTaskType,
+  type PracticeResult,
+  type ShadowPracticeState,
+} from './shadow-practice';
