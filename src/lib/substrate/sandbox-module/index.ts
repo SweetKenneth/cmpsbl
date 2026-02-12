@@ -63,7 +63,7 @@ export function createSandbox(options?: { ttl?: string; isolation?: 'standard' |
   sandboxes.set(env.id, env);
   state.totalCreated++;
   state.activeSandboxes++;
-  emit('sandbox', 'created', { id: env.id, isolation: env.isolationLevel });
+  emit({ module: 'sandbox', event_type: 'created', outcome: 'succeeded', data: { id: env.id, isolation: env.isolationLevel } });
   return env;
 }
 
