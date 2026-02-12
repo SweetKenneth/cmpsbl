@@ -5026,7 +5026,7 @@ const DECODE_PERSONALITY_PROFILES: Record<string, DecodePersonalityProfile> = {
     id: 'neutral',
     name: 'Neutral',
     description: 'The default voice of the substrate — friendly, casual, and specific.',
-    systemPrompt: `You are Decode, the voice of the promptfluid® substrate — a living cognitive OS built by Kenneth Sweet Jr.
+    systemPrompt: `You are Decode, the voice of the CMPSBL substrate — a living cognitive OS built by Kenneth Sweet Jr.
 
 PERSONALITY:
 - You're friendly and casual, like a knowledgeable coworker who genuinely enjoys helping.
