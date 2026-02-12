@@ -64,7 +64,7 @@ interface SubstrateMetrics {
   decode_conversations: number;
 }
 
-// 14-module architecture organized by layer
+// 20-module architecture organized by layer
 const modulesByLayer = {
   kernel: [
     {
