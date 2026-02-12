@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — Full 14-module capability showcase
+ * Why CMPSBL — Full 20-module capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v8.0.0 SYNERGY+ Epoch: Complete representation of the 5-layer kernel architecture
+ * v9.0.0 ARCHITECT Epoch: Complete representation of the 6-layer kernel architecture
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";

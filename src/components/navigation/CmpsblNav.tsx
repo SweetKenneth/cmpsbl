@@ -109,7 +109,7 @@ export function CmpsblNav() {
       icon: Cpu,
       items: [
         { name: "AI Operating System", href: "/ai-operating-system", description: "The definitive AI OS — what it is and why it matters", icon: Globe, badge: "AIDO" },
-        { name: "All Modules", href: "/modules", description: "14 core substrate modules across 5 layers", icon: Layers, badge: "NEW" },
+        { name: "All Modules", href: "/modules", description: "20 core substrate modules across 6 layers", icon: Layers, badge: "NEW" },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
         { name: "Capability Depot", href: "/capabilities", description: "Atomic, stateless building blocks", icon: Sparkles, badge: "FREE" },
         { name: "Template Alley", href: "/marketplace", description: "Starting points for learning & remixing", icon: Layers, badge: "FREE" },
