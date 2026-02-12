@@ -66,6 +66,7 @@ export function registerActor(id: string, type: ActorType, displayName: string, 
   const actor: ActorIdentity = {
     id, type, displayName, signature: sig,
     createdAt: Date.now(), lastActiveAt: Date.now(), metadata,
+    passkeys: [], passwordless: true,
   };
   actors.set(id, actor);
   state.registeredActors = actors.size;
