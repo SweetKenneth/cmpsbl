@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { EvolutionModal } from "@/components/EvolutionModal";
-import { ArrowUpRight, Sparkles, Heart, Github, Twitter, Linkedin } from "lucide-react";
+import { XctblModal } from "@/components/XctblModal";
+import { ArrowUpRight, Sparkles, Gamepad2, Heart, Github, Twitter, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FooterLink {
@@ -25,6 +26,7 @@ interface FooterSection {
 export function EnhancedFooter() {
   const currentYear = new Date().getFullYear();
   const [evolutionOpen, setEvolutionOpen] = useState(false);
+  const [xctblOpen, setXctblOpen] = useState(false);
 
   // Footer links — distinct from nav menu (no duplicates)
   // Nav has: Platform (dev tools), Substrate, Enterprise, Resources, Company
@@ -139,6 +141,18 @@ export function EnhancedFooter() {
                       </button>
                     </li>
                   )}
+                  {/* Add XCTBL button to Learn section */}
+                  {section.title === "Learn" && (
+                    <li>
+                      <button
+                        onClick={() => setXctblOpen(true)}
+                        className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <Gamepad2 className="w-3.5 h-3.5 group-hover:animate-pulse" />
+                        Breaktime? Try XCTBL
+                      </button>
+                    </li>
+                  )}
                   {section.links.map((link) => (
                     <li key={link.href}>
                       {link.external ? (
@@ -201,6 +215,9 @@ export function EnhancedFooter() {
 
       {/* Evolution Modal */}
       <EvolutionModal isOpen={evolutionOpen} onClose={() => setEvolutionOpen(false)} />
+
+      {/* XCTBL Modal */}
+      <XctblModal isOpen={xctblOpen} onClose={() => setXctblOpen(false)} />
     </>
   );
 }
