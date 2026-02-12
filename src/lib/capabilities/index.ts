@@ -28,6 +28,10 @@ export * from './state';
 // Synergy system exports
 export * from './synergies';
 
+// High-value capability registries
+export * from './high-value-v8-5';
+export * from './high-value-v9';
+
 // Re-export key functions for convenience
 export { invokeCapability, canInvoke, invokeBatch } from './adapter';
 export { registerCapability, getCapability, listCapabilities, getManifest } from './registry';
