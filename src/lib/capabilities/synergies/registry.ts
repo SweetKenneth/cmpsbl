@@ -2087,6 +2087,8 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   
   // Add S-tier synergies
   ...STIER_SYNERGY_DEFINITIONS,
+  // Add Infrastructure-era pipelines (v9.0.0)
+  ...INFRASTRUCTURE_SYNERGY_DEFINITIONS,
 ];
 
 /**

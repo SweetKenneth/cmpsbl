@@ -26,9 +26,9 @@ export const LAYERS_COUNT = 6;
 
 /** 
  * Synergy pipelines defined in capabilities/synergies/registry.ts
- * 98 core + 22 S-tier + 27 discovery + 3 apex synergies = 150
+ * 88 core + 27 discovery + 32 S-tier + 53 infrastructure-era = 200
  */
-export const SYNERGY_PIPELINES_COUNT = 150;
+export const SYNERGY_PIPELINES_COUNT = 200;
 
 /**
  * Synergy executors defined in capabilities/synergies/executors
