@@ -1,6 +1,6 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * v8.0.0 SYNERGY+ Epoch — Rebuilt with centered layout and better visualization
+ * v9.1.0 ARCHITECT Epoch — 21-module, 6-layer visualization
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -9,7 +9,8 @@ import {
   Brain, Shield, Eye, Zap, Moon, 
   Play, Pause, RotateCcw, Activity,
   ChevronRight, Sparkles, Code, Layers, ArrowRight,
-  Cpu, Network, Lock, Server, Workflow
+  Cpu, Network, Lock, Server, Workflow,
+  Database, Send, FileCheck, Fingerprint, Coins, FlaskConical, Code2, Accessibility, MessageSquare
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -24,7 +25,7 @@ interface ModuleState {
   id: string;
   name: string;
   icon: React.ElementType;
-  layer: 'kernel' | 'cognitive' | 'operational' | 'admin' | 'orchestrator';
+  layer: 'kernel' | 'cognitive' | 'operational' | 'admin' | 'orchestrator' | 'infrastructure';
   status: 'idle' | 'active' | 'processing' | 'complete';
   color: string;
   description: string;
@@ -42,6 +43,7 @@ const LAYER_COLORS = {
   cognitive: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
   operational: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
   admin: { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
+  infrastructure: { bg: 'bg-sky-500/20', border: 'border-sky-500/50', text: 'text-sky-400' },
   orchestrator: { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
 };
 
@@ -50,10 +52,11 @@ const INITIAL_MODULES: ModuleState[] = [
   { id: 'core', name: 'Core', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Kernel Scheduling' },
   { id: 'ripple', name: 'Ripple', icon: Network, layer: 'kernel', status: 'idle', color: 'teal', description: 'Message Bus' },
   { id: 'access', name: 'Access', icon: Lock, layer: 'kernel', status: 'idle', color: 'yellow', description: 'Identity & Auth' },
-  // COGNITIVE LAYER (3)
+  // COGNITIVE LAYER (4)
   { id: 'brain', name: 'Brain', icon: Brain, layer: 'cognitive', status: 'idle', color: 'violet', description: 'Memory & Learning' },
-  { id: 'decode', name: 'Decode', icon: Zap, layer: 'cognitive', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
+  { id: 'decode', name: 'Decode', icon: MessageSquare, layer: 'cognitive', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
   { id: 'nexus', name: 'Nexus', icon: Layers, layer: 'cognitive', status: 'idle', color: 'amber', description: 'AI Routing' },
+  { id: 'encode', name: 'Encode', icon: Code2, layer: 'cognitive', status: 'idle', color: 'lime', description: 'Code Intelligence' },
   // OPERATIONAL LAYER (3)
   { id: 'defense', name: 'Defense', icon: Shield, layer: 'operational', status: 'idle', color: 'emerald', description: 'Threat Detection' },
   { id: 'vision', name: 'Vision', icon: Eye, layer: 'operational', status: 'idle', color: 'rose', description: 'Observability' },
@@ -62,7 +65,14 @@ const INITIAL_MODULES: ModuleState[] = [
   { id: 'system', name: 'System', icon: Server, layer: 'admin', status: 'idle', color: 'slate', description: 'Administration' },
   { id: 'modernizer', name: 'Modernizer', icon: Sparkles, layer: 'admin', status: 'idle', color: 'pink', description: 'Self-Upgrade' },
   { id: 'integration', name: 'Integration', icon: Code, layer: 'admin', status: 'idle', color: 'indigo', description: 'Enterprise' },
-  { id: 'inclusive', name: 'Inclusive', icon: Activity, layer: 'admin', status: 'idle', color: 'rose', description: 'Human Compatibility' },
+  { id: 'inclusive', name: 'Inclusive', icon: Accessibility, layer: 'admin', status: 'idle', color: 'rose', description: 'Human Compatibility' },
+  // INFRASTRUCTURE LAYER (6)
+  { id: 'memory', name: 'Memory', icon: Database, layer: 'infrastructure', status: 'idle', color: 'sky', description: 'Vector Storage' },
+  { id: 'relay', name: 'Relay', icon: Send, layer: 'infrastructure', status: 'idle', color: 'lime', description: 'Webhooks' },
+  { id: 'audit', name: 'Audit', icon: FileCheck, layer: 'infrastructure', status: 'idle', color: 'stone', description: 'Compliance' },
+  { id: 'identity', name: 'Identity', icon: Fingerprint, layer: 'infrastructure', status: 'idle', color: 'rose', description: 'Attribution' },
+  { id: 'economy', name: 'Economy', icon: Coins, layer: 'infrastructure', status: 'idle', color: 'amber', description: 'Cost Control' },
+  { id: 'sandbox', name: 'Sandbox', icon: FlaskConical, layer: 'infrastructure', status: 'idle', color: 'cyan', description: 'Isolation' },
   // ORCHESTRATOR LAYER (1)
   { id: 'cortex', name: 'Cortex', icon: Workflow, layer: 'orchestrator', status: 'idle', color: 'fuchsia', description: 'Orchestrator' },
 ];
@@ -88,7 +98,7 @@ const DEMO_SCENARIOS = [
   },
   {
     name: 'Full Orchestration',
-    sequence: ['cortex', 'access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'inclusive', 'system', 'integration', 'ripple'],
+    sequence: ['cortex', 'access', 'core', 'decode', 'encode', 'defense', 'nexus', 'brain', 'memory', 'dream', 'vision', 'modernizer', 'inclusive', 'system', 'integration', 'relay', 'audit', 'identity', 'economy', 'sandbox', 'ripple'],
     description: 'Complete 21-module orchestration across all 6 architectural layers',
     icon: Sparkles,
   },
@@ -154,6 +164,7 @@ export default function SubstrateDemo() {
     admin: modules.filter(m => m.layer === 'admin'),
     operational: modules.filter(m => m.layer === 'operational'),
     cognitive: modules.filter(m => m.layer === 'cognitive'),
+    infrastructure: modules.filter(m => m.layer === 'infrastructure'),
     kernel: modules.filter(m => m.layer === 'kernel'),
   };
 
@@ -297,6 +308,16 @@ export default function SubstrateDemo() {
                         label="Kernel" 
                         modules={groupedModules.kernel} 
                         layerKey="kernel"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+
+                      {/* Layer: Infrastructure */}
+                      <LayerRow 
+                        label="Infra" 
+                        modules={groupedModules.infrastructure} 
+                        layerKey="infrastructure"
                         isRunning={isRunning}
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}

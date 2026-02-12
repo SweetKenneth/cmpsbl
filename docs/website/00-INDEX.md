@@ -1,6 +1,6 @@
 # CMPSBL® Documentation
 
-**v8.0.0 — SYNERGY+ Epoch | Cognitive Orchestration Substrate for AI Systems**
+**v9.1.0 — ARCHITECT Epoch | Cognitive Orchestration Substrate for AI Systems**
 
 ---
 
@@ -8,7 +8,7 @@
 
 This documentation provides everything you need to understand, evaluate, and build with CMPSBL® (Composable) — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.
 
-**What's Inside:** 14 integrated modules, 147 synergy pipelines, 125 custom executors, 269+ depot capabilities, and the SEBA (Self-Evolving Bounded Agent) architecture.
+**What's Inside:** 21 integrated modules, 200 synergy pipelines, 200 templates, 400+ depot capabilities, 100 engines, and the SEBA (Self-Evolving Bounded Agent) architecture.
 
 ---
 
@@ -69,7 +69,7 @@ const context = await agent.getContext(userMessage);
 |----------|-------------|
 | [Architecture Overview](./05-ARCHITECTURE.md) | Technical deep dive |
 | [Key Capabilities](./03-KEY-CAPABILITIES.md) | Feature reference |
-| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 147-pipeline matrix |
+| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 200-pipeline matrix |
 | [Platform Features](./10-MARKETPLACE-FEATURES.md) | CodeLab, Templates, Depot |
 
 ### For Business Leaders
@@ -128,4 +128,4 @@ See [Pricing & Licensing](./07-LICENSING.md) for details.
 
 ---
 
-*CMPSBL® v8.0.0 SYNERGY+ Epoch — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v9.1.0 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era*

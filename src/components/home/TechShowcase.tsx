@@ -301,7 +301,7 @@ await cmpsbl.integration.execute({
   payload: { vendor: "V001", amount: 5000 }
 });`,
   },
-  // HUMAN COMPATIBILITY LAYER (14th module)
+  // HUMAN COMPATIBILITY
   {
     id: "inclusive",
     icon: Code,
@@ -327,7 +327,7 @@ const repairs = await cmpsbl.inclusive.repair({
 // Self-scan the substrate's own interfaces
 const selfCheck = await cmpsbl.inclusive.selfScan();`,
   },
-  // ORCHESTRATOR LAYER (14th module)
+  // ORCHESTRATOR LAYER
   {
     id: "cortex",
     icon: Layers,
@@ -355,6 +355,170 @@ const proposal = await cmpsbl.cortex.dispatch({
   auto_apply: false // Require approval
 });`,
   },
+  // INFRASTRUCTURE LAYER (6 modules)
+  {
+    id: "memory",
+    icon: Layers,
+    layer: "Infrastructure",
+    title: "MEMORY Vectors",
+    description: "Vector embeddings & RAG orchestration",
+    color: "text-sky-500",
+    gradient: "from-sky-500 to-blue-600",
+    code: `// Store vector embeddings
+await cmpsbl.memory.embed({
+  collection: "product_docs",
+  documents: [
+    { id: "doc_1", content: "Getting started guide..." },
+    { id: "doc_2", content: "API reference..." }
+  ],
+  model: "text-embedding-3-large"
+});
+
+// Semantic search with RAG
+const results = await cmpsbl.memory.search({
+  collection: "product_docs",
+  query: "how to authenticate",
+  top_k: 5
+});`,
+  },
+  {
+    id: "relay",
+    icon: Layers,
+    layer: "Infrastructure",
+    title: "RELAY Webhooks",
+    description: "Outbound notifications & event delivery",
+    color: "text-lime-500",
+    gradient: "from-lime-500 to-green-600",
+    code: `// Register a webhook endpoint
+await cmpsbl.relay.register({
+  url: "https://api.company.com/webhook",
+  events: ["task.completed", "dream.cycle_done"],
+  secret: "whsec_...",
+  retry_policy: { max_retries: 3, backoff: "exponential" }
+});
+
+// Send a notification
+await cmpsbl.relay.notify({
+  channel: "email",
+  to: "admin@company.com",
+  template: "weekly_report",
+  data: { period: "2026-W06" }
+});`,
+  },
+  {
+    id: "audit",
+    icon: Layers,
+    layer: "Infrastructure",
+    title: "AUDIT Ledger",
+    description: "Immutable compliance & audit trail",
+    color: "text-stone-500",
+    gradient: "from-stone-500 to-gray-600",
+    code: `// Query the audit ledger
+const trail = await cmpsbl.audit.query({
+  entity_type: "user",
+  entity_id: "u_123",
+  actions: ["data_access", "config_change"],
+  range: "30d"
+});
+
+// Export compliance report
+const report = await cmpsbl.audit.export({
+  format: "pdf",
+  standard: "SOC2",
+  period: "2026-Q1"
+});`,
+  },
+  {
+    id: "identity",
+    icon: Layers,
+    layer: "Infrastructure",
+    title: "IDENTITY Attribution",
+    description: "Actor signatures & provenance tracking",
+    color: "text-rose-500",
+    gradient: "from-rose-500 to-red-600",
+    code: `// Verify actor identity
+const verified = await cmpsbl.identity.verify({
+  actor_id: "agent_cortex",
+  action: "deploy_patch",
+  signature: sig
+});
+
+// Get provenance chain
+const chain = await cmpsbl.identity.provenance({
+  artifact_id: "model_v3.2",
+  depth: "full"
+});
+console.log(chain.origin, chain.transformations);`,
+  },
+  {
+    id: "economy",
+    icon: Layers,
+    layer: "Infrastructure",
+    title: "ECONOMY Budgets",
+    description: "Cost attribution & budget enforcement",
+    color: "text-amber-600",
+    gradient: "from-amber-500 to-orange-600",
+    code: `// Set budget constraints
+await cmpsbl.economy.budget({
+  scope: "project_alpha",
+  monthly_limit_cents: 50000,
+  alert_threshold: 0.8
+});
+
+// Get cost breakdown
+const costs = await cmpsbl.economy.breakdown({
+  period: "2026-02",
+  group_by: "module"
+});
+console.log(costs.total, costs.by_module);`,
+  },
+  {
+    id: "sandbox",
+    icon: Layers,
+    layer: "Infrastructure",
+    title: "SANDBOX Isolation",
+    description: "Isolated execution environments",
+    color: "text-cyan-600",
+    gradient: "from-cyan-500 to-teal-600",
+    code: `// Create an isolated sandbox
+const env = await cmpsbl.sandbox.create({
+  runtime: "node20",
+  memory_mb: 512,
+  timeout_ms: 30000,
+  network: "restricted"
+});
+
+// Execute untrusted code safely
+const result = await env.execute({
+  code: userProvidedCode,
+  args: { data: inputData }
+});
+console.log(result.output, result.metrics);`,
+  },
+  // ENCODE (Module #21)
+  {
+    id: "encode",
+    icon: Layers,
+    layer: "Cognitive",
+    title: "ENCODE Execution",
+    description: "Code generation & execution intelligence",
+    color: "text-yellow-500",
+    gradient: "from-yellow-500 to-lime-600",
+    code: `// Generate code from intent (via DECODE pipeline)
+const result = await cmpsbl.encode.generate({
+  intent: "Create a REST API endpoint for user profiles",
+  language: "typescript",
+  framework: "express",
+  preview: true // Score before applying
+});
+
+console.log(result.code);        // Generated code
+console.log(result.score);       // Quality score 0-100
+console.log(result.explanation); // Why this approach
+
+// Apply after review
+await cmpsbl.encode.apply(result.id);`,
+  },
 ];
 
 // Syntax highlighting helper - extended for all modules including Cortex
@@ -370,8 +534,8 @@ function highlightCode(code: string): string {
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
     .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
     .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
-    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration|\.inclusive|\.cortex)/g, '<span class="text-blue-400">$1</span>')
-    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory|\.repair|\.selfScan)/g, '<span class="text-green-400">$1</span>')
+    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration|\.inclusive|\.cortex|\.memory|\.relay|\.audit|\.identity|\.economy|\.sandbox|\.encode)/g, '<span class="text-blue-400">$1</span>')
+    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory|\.repair|\.selfScan|\.embed|\.search|\.register|\.notify|\.export|\.verify|\.provenance|\.budget|\.breakdown|\.create|\.generate)/g, '<span class="text-green-400">$1</span>')
     .replace(/(&quot;.*?&quot;|".*?")/g, '<span class="text-amber-300">$1</span>')
     .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
     .replace(/(true|false|null)/g, '<span class="text-rose-400">$1</span>');
@@ -383,6 +547,7 @@ const LAYER_CONFIG = {
   Cognitive: { color: 'text-purple-400', bgGlow: 'from-purple-500/20' },
   Operational: { color: 'text-blue-400', bgGlow: 'from-blue-500/20' },
   Admin: { color: 'text-emerald-400', bgGlow: 'from-emerald-500/20' },
+  Infrastructure: { color: 'text-sky-400', bgGlow: 'from-sky-500/20' },
   Orchestrator: { color: 'text-violet-400', bgGlow: 'from-violet-500/20' },
 } as const;
 
@@ -472,7 +637,7 @@ export function TechShowcase() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">{14} Modules • {5} Layers • 1 SDK</span>
+            <span className="text-xs">21 Modules • 6 Layers • 1 SDK</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Complete{" "}
