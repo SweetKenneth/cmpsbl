@@ -1319,6 +1319,8 @@ export const EXPERT_PATTERNS: ExpertPattern[] = [
   ...testingPatterns,
   ...refactoringPatterns,
   ...accessibilityPatterns,
+  ...concurrencyPatterns,
+  ...hygienePatterns,
 ];
 
 // ═══════════════════════════════════════════════════════════════

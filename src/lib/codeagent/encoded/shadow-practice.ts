@@ -611,8 +611,8 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
     if (guard.anchorsPreserved) score += 20;
 
     // Low risk = 10 points
-    if (guard.risk === 'green') score += 10;
-    else if (guard.risk === 'amber') score += 5;
+    if (guard.risk === 'minimal' || guard.risk === 'low') score += 10;
+    else if (guard.risk === 'medium') score += 5;
 
     // Change classification bonus
     if (guard.changeClass === 'additive') score += 10;
