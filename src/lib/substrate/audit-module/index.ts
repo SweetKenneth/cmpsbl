@@ -54,7 +54,7 @@ export function initAudit(): void {
   state.initialized = true;
   // AUDIT listens to ALL modules
   state.modulesMonitored = [
-    'core', 'ripple', 'access', 'brain', 'decode', 'defense', 'nexus',
+    'core', 'ripple', 'access', 'brain', 'decode', 'encode', 'defense', 'nexus',
     'vision', 'dream', 'integration', 'system', 'modernizer', 'inclusive',
     'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];

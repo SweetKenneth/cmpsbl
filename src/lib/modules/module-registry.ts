@@ -1,5 +1,5 @@
 /**
- * Module Registry — Single source of truth for all 20 substrate modules
+ * Module Registry — Single source of truth for all 21 substrate modules
  * Used by: hub page, detail pages, mega-menu, footer, SEO
  */
 
@@ -8,6 +8,7 @@ import {
   Shield, Network, Eye, Moon, Plug,
   Server, Accessibility, Wrench, Workflow,
   Database, Send, FileCheck, Fingerprint, Coins, FlaskConical,
+  Code2,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -444,6 +445,28 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     codeSnippet: `import { useSandbox } from '@cmpsbl/substrate';\n\nconst { create, execute, teardown } = useSandbox();\nconst env = await create({ ttl: '30m' });\nconst result = await execute(env.id, untrustedCode);\nawait teardown(env.id);`,
     integrations: ["MODERNIZER (evolution testing)", "DREAM (speculative runs)", "DEFENSE (threat containment)"],
     useCases: ["Safe AI evolution testing", "User experimentation platforms", "Untrusted code execution"],
+  },
+
+  // ── Orchestrator Layer (continued) ──
+  {
+    slug: "encode",
+    name: "ENCODE",
+    tagline: "Code Execution & Generation Intelligence",
+    description: "The substrate's code execution engine — receives structured task packets from DECODE, generates governed code artifacts with BRAIN recall/writeback, and learns through CLM.",
+    layer: "Orchestrator",
+    icon: Code2,
+    color: "yellow-500",
+    useCaseH1: "AI Code Generation Engine with System-Aware Execution",
+    heroDescription: "ENCODE is the substrate's code execution intelligence — receiving structured intent packets from DECODE, recalling context from BRAIN, and producing governed code artifacts with full safety gates.",
+    features: ["Structured task packets from DECODE", "BRAIN recall & writeback pipeline", "CLM learning cycles", "Governed proposal output", "Multi-surface code generation (code, UI, docs, DB, edge, tests)"],
+    highlights: [
+      { title: "DECODE Intent Routing", description: "ENCODE never receives raw user input — DECODE normalizes human intent into structured task packets with context refs, acceptance criteria, and safety constraints. Clean separation of concerns." },
+      { title: "BRAIN Bidirectional Pipeline", description: "Before execution, ENCODE recalls prior decisions, code context, and artifacts from BRAIN. After execution, it writes back learnings, summaries, and completion receipts — building institutional memory." },
+      { title: "CLM Self-Improvement", description: "ENCODE runs its own Constant Learning Mode cycles — analyzing success rates, failure patterns, and code quality metrics to continuously improve its execution capabilities." },
+    ],
+    codeSnippet: `import { useEncode } from '@cmpsbl/substrate';\n\nconst { queue, receipts, status } = useEncode();\n// Tasks arrive from DECODE as structured packets\n// ENCODE recalls from BRAIN, executes, writes back`,
+    integrations: ["DECODE (intent routing)", "BRAIN (recall/writeback)", "CLM (self-improvement)", "SANDBOX (safe execution)"],
+    useCases: ["Autonomous code generation with safety gates", "System-aware code modifications", "Governed AI-powered development"],
   },
 ];
 

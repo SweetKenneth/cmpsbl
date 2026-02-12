@@ -34,7 +34,7 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 20 substrate modules in boot order
+// All 21 substrate modules in boot order
 const SUBSTRATE_MODULES = [
   'core',
   'ripple',
@@ -44,6 +44,7 @@ const SUBSTRATE_MODULES = [
   'cortex',
   'modernizer',
   'decode',
+  'encode',
   'defense',
   'nexus',
   'dream',
@@ -82,6 +83,7 @@ const MODULE_HOOK_PATHS: Record<string, string> = {
   identity: 'src/hooks/substrate/useIdentity.ts',
   economy: 'src/hooks/substrate/useEconomy.ts',
   sandbox: 'src/hooks/substrate/useSandbox.ts',
+  encode: 'src/hooks/substrate/useEncode.ts',
 };
 
 // Module configuration registry - tracks what exists for each module
@@ -112,7 +114,8 @@ const MODULE_CONFIG: Record<string, {
   audit: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.audit, hookName: 'useAuditModule' },
   identity: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.identity, hookName: 'useIdentity' },
   economy: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.economy, hookName: 'useEconomy' },
-  sandbox: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sandbox, hookName: 'useSandbox' },
+  sandbox: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sandbox, hookName: 'useSandbox' },
+  encode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.encode, hookName: 'useEncode' },
 };
 
 // Get module hook info

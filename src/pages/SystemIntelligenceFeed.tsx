@@ -61,7 +61,13 @@ const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
   system: Settings,
   decode: FileText,
   autoblog: TrendingUp,
-  encoded: FileText,
+  encode: FileText,
+  memory: FileText,
+  relay: FileText,
+  audit: FileText,
+  identity: FileText,
+  economy: FileText,
+  sandbox: FileText,
 };
 
 const MODULE_COLORS: Record<ModuleName, string> = {
@@ -77,7 +83,13 @@ const MODULE_COLORS: Record<ModuleName, string> = {
   system: 'from-gray-500/20 to-gray-600/5 border-gray-500/30',
   decode: 'from-indigo-500/20 to-indigo-600/5 border-indigo-500/30',
   autoblog: 'from-violet-500/20 to-violet-600/5 border-violet-500/30',
-  encoded: 'from-fuchsia-500/20 to-fuchsia-600/5 border-fuchsia-500/30',
+  encode: 'from-yellow-500/20 to-yellow-600/5 border-yellow-500/30',
+  memory: 'from-sky-500/20 to-sky-600/5 border-sky-500/30',
+  relay: 'from-lime-500/20 to-lime-600/5 border-lime-500/30',
+  audit: 'from-stone-500/20 to-stone-600/5 border-stone-500/30',
+  identity: 'from-rose-500/20 to-rose-600/5 border-rose-500/30',
+  economy: 'from-amber-600/20 to-amber-700/5 border-amber-600/30',
+  sandbox: 'from-teal-500/20 to-teal-600/5 border-teal-500/30',
 };
 
 const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
@@ -93,7 +105,13 @@ const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
   system: 'text-gray-400',
   decode: 'text-indigo-400',
   autoblog: 'text-violet-400',
-  encoded: 'text-fuchsia-400',
+  encode: 'text-yellow-400',
+  memory: 'text-sky-400',
+  relay: 'text-lime-400',
+  audit: 'text-stone-400',
+  identity: 'text-rose-400',
+  economy: 'text-amber-500',
+  sandbox: 'text-teal-400',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════

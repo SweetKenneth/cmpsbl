@@ -30,7 +30,13 @@ export type ModuleName =
   | 'system'
   | 'decode'
   | 'autoblog'
-  | 'encoded';
+  | 'encode'
+  | 'memory'
+  | 'relay'
+  | 'audit'
+  | 'identity'
+  | 'economy'
+  | 'sandbox';
 
 export interface ModuleLearningConfig {
   moduleId: ModuleName;
@@ -317,9 +323,9 @@ Provide specific conversational and system-awareness improvements.`,
 - What SEO patterns should I follow for AI/security topics?
 Provide specific content quality improvements.`,
   },
-  encoded: {
-    moduleId: 'encoded',
-    displayName: 'ENCODED',
+  encode: {
+    moduleId: 'encode',
+    displayName: 'ENCODE',
     learningTopics: [
       'TypeScript mastery: branded types, discriminated unions, template literals',
       'React excellence: hook composition, render optimization, Suspense patterns',
@@ -342,6 +348,42 @@ Provide specific content quality improvements.`,
 - How can I better understand the substrate architecture to make precise edits?
 - What testing and validation patterns would make my code more reliable?
 Provide specific examples of patterns I should learn and anti-patterns to avoid.`,
+  },
+  memory: {
+    moduleId: 'memory', displayName: 'MEMORY',
+    learningTopics: ['Vector embedding lifecycle', 'RAG pipeline optimization', 'Semantic search tuning'],
+    kpis: ['index_health', 'retrieval_precision', 'ingestion_throughput'],
+    selfReflectionPrompt: 'As the MEMORY module, how can I improve vector retrieval and RAG quality?',
+  },
+  relay: {
+    moduleId: 'relay', displayName: 'RELAY',
+    learningTopics: ['Webhook reliability', 'Retry strategies', 'Delivery guarantees'],
+    kpis: ['delivery_rate', 'retry_success', 'queue_depth'],
+    selfReflectionPrompt: 'As the RELAY module, how can I improve delivery reliability?',
+  },
+  audit: {
+    moduleId: 'audit', displayName: 'AUDIT',
+    learningTopics: ['Hash chain integrity', 'Compliance reporting', 'Cross-module capture'],
+    kpis: ['chain_validity', 'entry_throughput', 'coverage_score'],
+    selfReflectionPrompt: 'As the AUDIT module, how can I improve compliance coverage?',
+  },
+  identity: {
+    moduleId: 'identity', displayName: 'IDENTITY',
+    learningTopics: ['Actor attribution', 'Passkey management', 'Cross-agency portability'],
+    kpis: ['signature_accuracy', 'passkey_adoption', 'attribution_coverage'],
+    selfReflectionPrompt: 'As the IDENTITY module, how can I improve actor tracking?',
+  },
+  economy: {
+    moduleId: 'economy', displayName: 'ECONOMY',
+    learningTopics: ['Cost attribution accuracy', 'Budget enforcement', 'Predictive forecasting'],
+    kpis: ['attribution_accuracy', 'budget_compliance', 'forecast_precision'],
+    selfReflectionPrompt: 'As the ECONOMY module, how can I improve cost tracking?',
+  },
+  sandbox: {
+    moduleId: 'sandbox', displayName: 'SANDBOX',
+    learningTopics: ['Isolation guarantees', 'Execution safety', 'Resource containment'],
+    kpis: ['isolation_score', 'block_rate', 'execution_success'],
+    selfReflectionPrompt: 'As the SANDBOX module, how can I improve execution safety?',
   },
 };
 
