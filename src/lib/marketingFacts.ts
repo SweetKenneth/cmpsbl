@@ -47,15 +47,15 @@ export const STIER_PIPELINES_COUNT = 32;
 
 /**
  * Base engines in ENGINE_REGISTRY
- * v8.5.0: 62 original + 8 high-value = 70
+ * v9.0.0: 70 (v8.5.0) + 6 infrastructure = 76
  */
-export const ENGINES_COUNT = 70;
+export const ENGINES_COUNT = 76;
 
 /**
  * Meta-engines that orchestrate multiple base engines
- * v8.5.0: 20 original + 2 high-value = 22
+ * v9.0.0: 22 (v8.5.0) + 2 infrastructure cross-module = 24
  */
-export const META_ENGINES_COUNT = 22;
+export const META_ENGINES_COUNT = 24;
 
 /**
  * Total engine ecosystem
