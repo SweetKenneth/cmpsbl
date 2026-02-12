@@ -89,6 +89,48 @@ export const SANDBOX_HV_CAPABILITIES: HighValueCapability[] = [
 ];
 
 // ============================================================================
+// v9.0.1 — 21 CROSS-MODULE APEX CAPABILITIES (400 total)
+// ============================================================================
+
+/** 21 highest-value additions — 1 per module + 1 bonus CORTEX */
+export const APEX_CAPABILITIES: HighValueCapability[] = [
+  // KERNEL LAYER
+  { id: 'zero_downtime_migrator', name: 'Zero-Downtime Migrator', module: 'CORE', description: 'Live-migrate module state and schema across versions with zero service interruption', risk: 'high', reversible: true, category: 'infrastructure' },
+  { id: 'event_replay_engine', name: 'Event Replay Engine', module: 'RIPPLE', description: 'Deterministic replay of historical event streams for debugging and audit reconstruction', risk: 'low', reversible: true, category: 'communication' },
+  { id: 'adaptive_mfa_orchestrator', name: 'Adaptive MFA Orchestrator', module: 'ACCESS', description: 'Risk-scored multi-factor authentication that escalates challenge strength dynamically', risk: 'high', reversible: true, category: 'security' },
+
+  // COGNITIVE LAYER
+  { id: 'chain_of_thought_tracer', name: 'Chain-of-Thought Tracer', module: 'BRAIN', description: 'Trace and visualize full reasoning chains for explainability and debugging', risk: 'low', reversible: true, category: 'cognitive' },
+  { id: 'intent_confidence_calibrator', name: 'Intent Confidence Calibrator', module: 'DECODE', description: 'Bayesian confidence calibration for intent classification with uncertainty quantification', risk: 'low', reversible: true, category: 'intelligence' },
+
+  // OPERATIONAL LAYER
+  { id: 'model_canary_deployer', name: 'Model Canary Deployer', module: 'NEXUS', description: 'Canary-deploy new models with automatic rollback on quality regression', risk: 'medium', reversible: true, category: 'reliability' },
+  { id: 'creative_divergence_amplifier', name: 'Creative Divergence Amplifier', module: 'DREAM', description: 'Amplify creative output variance to explore wider solution spaces in dream cycles', risk: 'medium', reversible: true, category: 'self-improvement' },
+  { id: 'threat_intelligence_fuser', name: 'Threat Intelligence Fuser', module: 'DEFENSE', description: 'Fuse multi-source threat intelligence feeds into unified risk assessments', risk: 'medium', reversible: true, category: 'security' },
+  { id: 'distributed_tracing_correlator', name: 'Distributed Tracing Correlator', module: 'VISION', description: 'Correlate distributed traces across modules into unified request waterfall views', risk: 'low', reversible: true, category: 'observability' },
+  { id: 'integration_contract_tester', name: 'Integration Contract Tester', module: 'INTEGRATION', description: 'Automated consumer-driven contract testing for all external integrations', risk: 'low', reversible: true, category: 'reliability' },
+
+  // ADMINISTRATIVE LAYER
+  { id: 'predictive_capacity_planner', name: 'Predictive Capacity Planner', module: 'SYSTEM', description: 'ML-driven capacity forecasting with proactive scale-up recommendations', risk: 'low', reversible: true, category: 'operations' },
+  { id: 'architecture_fitness_scorer', name: 'Architecture Fitness Scorer', module: 'MODERNIZER', description: 'Score architecture against fitness functions for coupling, cohesion, and extensibility', risk: 'low', reversible: true, category: 'self-improvement' },
+  { id: 'voice_navigation_engine', name: 'Voice Navigation Engine', module: 'INCLUSIVE', description: 'Voice-command navigation and interaction for motor-impaired users', risk: 'low', reversible: true, category: 'accessibility' },
+
+  // ORCHESTRATOR LAYER
+  { id: 'multi_objective_optimizer', name: 'Multi-Objective Optimizer', module: 'CORTEX', description: 'Pareto-optimal multi-objective optimization for competing goals across workflows', risk: 'medium', reversible: true, category: 'orchestration' },
+  { id: 'self_healing_workflow', name: 'Self-Healing Workflow', module: 'CORTEX', description: 'Detect and auto-recover failed workflow steps with intelligent retry strategies', risk: 'medium', reversible: true, category: 'reliability' },
+
+  // INFRASTRUCTURE LAYER
+  { id: 'memory_compaction_engine', name: 'Memory Compaction Engine', module: 'MEMORY', description: 'Compact fragmented memory stores with lossless summarization and reference preservation', risk: 'medium', reversible: true, category: 'memory' },
+  { id: 'relay_replay_debugger', name: 'Relay Replay Debugger', module: 'RELAY', description: 'Replay failed relay deliveries with modified payloads for debugging and recovery', risk: 'low', reversible: true, category: 'reliability' },
+  { id: 'cross_tenant_audit_aggregator', name: 'Cross-Tenant Audit Aggregator', module: 'AUDIT', description: 'Aggregate audit trails across tenants for platform-wide compliance reporting', risk: 'medium', reversible: true, category: 'governance' },
+  { id: 'passwordless_auth_flow', name: 'Passwordless Auth Flow', module: 'IDENTITY', description: 'WebAuthn/FIDO2 passwordless authentication with passkey management', risk: 'high', reversible: false, category: 'security' },
+  { id: 'margin_analysis_engine', name: 'Margin Analysis Engine', module: 'ECONOMY', description: 'Real-time margin analysis per capability execution with cost-of-goods breakdown', risk: 'low', reversible: true, category: 'intelligence' },
+  { id: 'mutation_testing_engine', name: 'Mutation Testing Engine', module: 'SANDBOX', description: 'Automated mutation testing to verify test suite effectiveness and coverage gaps', risk: 'medium', reversible: true, category: 'reliability' },
+];
+
+export const APEX_CAPABILITY_COUNT = APEX_CAPABILITIES.length; // 21
+
+// ============================================================================
 // AGGREGATION
 // ============================================================================
 
@@ -104,12 +146,17 @@ export const ALL_INFRASTRUCTURE_CAPABILITIES: HighValueCapability[] = [
 /** Total: 54 new infrastructure capabilities */
 export const INFRA_CAPABILITY_COUNT = ALL_INFRASTRUCTURE_CAPABILITIES.length; // 54
 
-/** Grand total: 325 (v8.5.0) + 54 (v9.0.0 infra) = 379 */
-export const TOTAL_CAPABILITIES_V900 = 325 + INFRA_CAPABILITY_COUNT; // 379
+/** Grand total: 325 (v8.5.0) + 54 (v9.0.0 infra) + 21 (apex) = 400 */
+export const TOTAL_CAPABILITIES_V900 = 325 + INFRA_CAPABILITY_COUNT + APEX_CAPABILITY_COUNT; // 400
 
 /** Get infrastructure capabilities by module */
 export function getInfraCapabilitiesByModule(module: string): HighValueCapability[] {
   return ALL_INFRASTRUCTURE_CAPABILITIES.filter(c => c.module === module);
+}
+
+/** Get apex capabilities by module */
+export function getApexCapabilitiesByModule(module: string): HighValueCapability[] {
+  return APEX_CAPABILITIES.filter(c => c.module === module);
 }
 
 /** Get all infrastructure module names */
