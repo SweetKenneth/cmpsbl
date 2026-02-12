@@ -30,7 +30,7 @@ const OBSERVER_FEATURES = [
   {
     icon: FileText,
     title: "Documentation Access",
-    description: "Full access to the 26-document FNDTN v6 library covering all 14 modules."
+    description: "Full access to the 26-document FNDTN v6 library covering all 20 modules."
   },
   {
     icon: BookOpen,
