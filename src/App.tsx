@@ -84,6 +84,7 @@ const ExperimentationLab = lazy(() => import("./pages/ExperimentationLab"));
 const SubstrateCapabilitiesDocs = lazy(() => import("./pages/SubstrateCapabilitiesDocs"));
 const CapabilitiesDepot = lazy(() => import("./pages/CapabilitiesDepot"));
 const SynergyPipelines = lazy(() => import("./pages/SynergyPipelines"));
+const SubstrateStore = lazy(() => import("./pages/SubstrateStore"));
 const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed"));
 const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
@@ -279,7 +280,7 @@ const App = () => {
                         <Route path="/gaming" element={<GamingSubstrate />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />
                         <Route path="/use-cases" element={<UseCases />} />
-                        <Route path="/marketplace" element={<Marketplace />} />
+                        <Route path="/marketplace" element={<SubstrateStore />} />
                         <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
                         <Route path="/intelligence" element={<SubstrateIntelligence />} />
                         <Route path="/substrate/licensing" element={<SubstrateLicensing />} />
@@ -288,8 +289,9 @@ const App = () => {
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
-                        <Route path="/capabilities" element={<CapabilitiesDepot />} />
-                        <Route path="/synergies" element={<SynergyPipelines />} />
+                        <Route path="/capabilities" element={<SubstrateStore />} />
+                        <Route path="/synergies" element={<SubstrateStore />} />
+                        <Route path="/store" element={<SubstrateStore />} />
                         <Route path="/engines" element={<EngineMarketplace />} />
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                         <Route path="/clear-cache" element={<ClearCache />} />
