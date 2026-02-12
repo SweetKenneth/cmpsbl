@@ -150,6 +150,9 @@ export const CORTEX_HV_CAPABILITIES: HighValueCapability[] = [
 // AGGREGATION
 // ============================================================================
 
+// Import v9.0.0 infrastructure capabilities
+import { ALL_INFRASTRUCTURE_CAPABILITIES } from './high-value-v9';
+
 export const ALL_HIGH_VALUE_CAPABILITIES: HighValueCapability[] = [
   ...CORE_HV_CAPABILITIES,
   ...RIPPLE_HV_CAPABILITIES,
@@ -165,11 +168,13 @@ export const ALL_HIGH_VALUE_CAPABILITIES: HighValueCapability[] = [
   ...MODERNIZER_HV_CAPABILITIES,
   ...INCLUSIVE_HV_CAPABILITIES,
   ...CORTEX_HV_CAPABILITIES,
+  ...ALL_INFRASTRUCTURE_CAPABILITIES,
 ];
 
-/** Total: 56 new + 269 existing = 325 */
-export const HV_CAPABILITY_COUNT = ALL_HIGH_VALUE_CAPABILITIES.length; // 56
-export const TOTAL_CAPABILITIES_V850 = 269 + HV_CAPABILITY_COUNT; // 325
+/** Total: 56 (v8.5.0) + 54 (v9.0.0 infra) = 110 new + 269 existing = 379 */
+export const HV_CAPABILITY_COUNT = ALL_HIGH_VALUE_CAPABILITIES.length; // 110
+export const TOTAL_CAPABILITIES_V850 = 269 + 56; // 325 (legacy reference)
+export const TOTAL_CAPABILITIES_V900 = 269 + HV_CAPABILITY_COUNT; // 379
 
 /** Get capabilities by module */
 export function getHVCapabilitiesByModule(module: string): HighValueCapability[] {
