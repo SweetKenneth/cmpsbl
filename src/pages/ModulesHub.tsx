@@ -89,6 +89,7 @@ export default function ModulesHub() {
                         {layer === 'Operational' && 'Security, routing, monitoring, optimization, and connectivity'}
                         {layer === 'Administrative' && 'Deployment, accessibility, and architecture evolution'}
                         {layer === 'Orchestrator' && 'Cross-module coordination and emergent intelligence'}
+                        {layer === 'Infrastructure' && 'Knowledge, effects, compliance, identity, economics, and containment'}
                       </p>
                     </div>
                   </div>

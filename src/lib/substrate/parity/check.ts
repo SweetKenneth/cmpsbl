@@ -107,6 +107,12 @@ const MODULE_CONFIG: Record<string, {
   integration: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.integration, hookName: 'useIntegration' },
   inclusive: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.inclusive, hookName: 'useInclusive' },
   system: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.system, hookName: 'useSystem' },
+  memory: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.memory, hookName: 'useMemoryModule' },
+  relay: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.relay, hookName: 'useRelay' },
+  audit: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.audit, hookName: 'useAuditModule' },
+  identity: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.identity, hookName: 'useIdentity' },
+  economy: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.economy, hookName: 'useEconomy' },
+  sandbox: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sandbox, hookName: 'useSandbox' },
 };
 
 // Get module hook info

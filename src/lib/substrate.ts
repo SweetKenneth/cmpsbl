@@ -34,7 +34,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
