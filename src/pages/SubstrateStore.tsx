@@ -22,8 +22,9 @@ import {
   TrendingUp, Package, Code, Copy, Check, ArrowRight,
   ChevronRight, ChevronLeft, Cpu, Clock, Terminal,
   Sparkles, Workflow, Network, Accessibility, Filter,
-  Unlock, Play, Moon, MessageSquare, X,
+  Unlock, Play, Moon, MessageSquare, X, Lock, Crown,
 } from 'lucide-react';
+import { isCrownJewelItem } from '@/lib/capabilities/crown-jewel-gate';
 
 import {
   filterCapabilities,
@@ -115,12 +116,16 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
     : item.type === 'template' ? item.data.description
     : item.data.description;
 
+  const itemId = item.type === 'capability' ? item.data.id : item.type === 'template' ? item.data.id : item.data.id;
+  const isGated = isCrownJewelItem(itemId, name);
+
   return (
     <motion.div
       layout
       className={cn(
         "snap-start shrink-0 w-[280px] min-h-[180px]",
         "rounded-xl border bg-gradient-to-br",
+        isGated ? 'border-amber-500/20 from-amber-500/[0.04] to-transparent' :
         item.type === 'capability' ? 'border-emerald-500/20 from-emerald-500/[0.04] to-transparent' :
         item.type === 'template' ? 'border-cyan-500/20 from-cyan-500/[0.04] to-transparent' :
         'border-violet-500/20 from-violet-500/[0.04] to-transparent',
@@ -133,18 +138,25 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
       {/* Top accent bar */}
       <div className={cn(
         "h-1 w-full",
+        isGated ? 'bg-amber-500' :
         item.type === 'capability' ? 'bg-emerald-500' : item.type === 'template' ? 'bg-cyan-500' : 'bg-violet-500'
       )} />
       
       <div className="p-4 flex-1 flex flex-col">
-        {/* Type + FREE badges */}
+        {/* Type + badges */}
         <div className="flex items-center justify-between mb-3">
           <Badge variant="outline" className={cn("text-[10px]", typeColor)}>
             {typeLabel}
           </Badge>
-          <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-0.5">
-            <Unlock className="w-2.5 h-2.5" /> FREE
-          </span>
+          {isGated ? (
+            <span className="text-[10px] font-bold text-amber-400 flex items-center gap-0.5">
+              <Lock className="w-2.5 h-2.5" /> ENTERPRISE
+            </span>
+          ) : (
+            <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-0.5">
+              <Unlock className="w-2.5 h-2.5" /> FREE
+            </span>
+          )}
         </div>
         
         {/* Name */}
@@ -197,6 +209,8 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
 
   const name = item.type === 'capability' ? item.data.name : item.type === 'template' ? item.data.name : item.data.name;
   const desc = item.type === 'capability' ? item.data.description : item.type === 'template' ? item.data.description : item.data.description;
+  const itemId = item.type === 'capability' ? item.data.id : item.type === 'template' ? item.data.id : item.data.id;
+  const isGated = isCrownJewelItem(itemId, name);
   
   return (
     <motion.div
@@ -290,56 +304,74 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
             )}
           </div>
           
-          {/* Code snippet */}
-          {item.type === 'template' && (
-            <div className="relative">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold flex items-center gap-1.5">
-                  <Code className="w-4 h-4 text-cyan-400" /> Code
-                </span>
-                <Button variant="secondary" size="sm" className="h-7 text-xs gap-1" onClick={() => copyCode((item.data as Template).code)}>
-                  {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                  {copied ? 'Copied' : 'Copy'}
-                </Button>
-              </div>
-              <pre className="bg-muted/80 p-4 rounded-lg font-mono text-xs overflow-x-auto max-h-[200px] overflow-y-auto border border-border/50">
-                <code>{(item.data as Template).code}</code>
-              </pre>
+          {/* Code snippet — gated for Crown Jewels */}
+          {isGated ? (
+            <div className="p-6 rounded-xl border border-amber-500/20 bg-amber-500/5 text-center space-y-3">
+              <Lock className="w-8 h-8 text-amber-400 mx-auto" />
+              <h4 className="text-base font-bold text-foreground">Enterprise Only</h4>
+              <p className="text-xs text-muted-foreground">
+                This Crown Jewel artifact requires an Enterprise subscription to view code and usage details.
+              </p>
+              <Button asChild size="sm" className="bg-amber-600 hover:bg-amber-500">
+                <Link to="/engines">
+                  <Crown className="w-3.5 h-3.5 mr-1.5" />
+                  View Enterprise Plans
+                </Link>
+              </Button>
             </div>
-          )}
-          
-          {item.type === 'pipeline' && (
-            <div className="relative">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold flex items-center gap-1.5">
-                  <Terminal className="w-4 h-4 text-violet-400" /> Run
-                </span>
-                <Button variant="secondary" size="sm" className="h-7 text-xs gap-1" onClick={() => copyCode(`synergy.run ${(item.data as typeof SYNERGY_DEFINITIONS[0]).id} --input '{"query": "your input"}'`)}>
-                  {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                  {copied ? 'Copied' : 'Copy'}
-                </Button>
-              </div>
-              <pre className="bg-muted/80 p-3 rounded-lg font-mono text-xs overflow-x-auto border border-border/50">
-                <code>synergy.run {(item.data as typeof SYNERGY_DEFINITIONS[0]).id} --input '{`{"query": "your input"}`}'</code>
-              </pre>
-            </div>
-          )}
-          
-          {item.type === 'capability' && (
-            <div className="relative">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold flex items-center gap-1.5">
-                  <Terminal className="w-4 h-4 text-emerald-400" /> Usage
-                </span>
-                <Button variant="secondary" size="sm" className="h-7 text-xs gap-1" onClick={() => copyCode(`substrate.run ${(item.data as CapabilityArtifact).id} --input "your input"`)}>
-                  {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                  {copied ? 'Copied' : 'Copy'}
-                </Button>
-              </div>
-              <pre className="bg-muted/80 p-3 rounded-lg font-mono text-xs overflow-x-auto border border-border/50">
-                <code>{`substrate.run ${(item.data as CapabilityArtifact).id} --input "your input"`}</code>
-              </pre>
-            </div>
+          ) : (
+            <>
+              {item.type === 'template' && (
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold flex items-center gap-1.5">
+                      <Code className="w-4 h-4 text-cyan-400" /> Code
+                    </span>
+                    <Button variant="secondary" size="sm" className="h-7 text-xs gap-1" onClick={() => copyCode((item.data as Template).code)}>
+                      {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      {copied ? 'Copied' : 'Copy'}
+                    </Button>
+                  </div>
+                  <pre className="bg-muted/80 p-4 rounded-lg font-mono text-xs overflow-x-auto max-h-[200px] overflow-y-auto border border-border/50">
+                    <code>{(item.data as Template).code}</code>
+                  </pre>
+                </div>
+              )}
+              
+              {item.type === 'pipeline' && (
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold flex items-center gap-1.5">
+                      <Terminal className="w-4 h-4 text-violet-400" /> Run
+                    </span>
+                    <Button variant="secondary" size="sm" className="h-7 text-xs gap-1" onClick={() => copyCode(`synergy.run ${(item.data as typeof SYNERGY_DEFINITIONS[0]).id} --input '{"query": "your input"}'`)}>
+                      {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      {copied ? 'Copied' : 'Copy'}
+                    </Button>
+                  </div>
+                  <pre className="bg-muted/80 p-3 rounded-lg font-mono text-xs overflow-x-auto border border-border/50">
+                    <code>synergy.run {(item.data as typeof SYNERGY_DEFINITIONS[0]).id} --input '{`{"query": "your input"}`}'</code>
+                  </pre>
+                </div>
+              )}
+              
+              {item.type === 'capability' && (
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold flex items-center gap-1.5">
+                      <Terminal className="w-4 h-4 text-emerald-400" /> Usage
+                    </span>
+                    <Button variant="secondary" size="sm" className="h-7 text-xs gap-1" onClick={() => copyCode(`substrate.run ${(item.data as CapabilityArtifact).id} --input "your input"`)}>
+                      {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      {copied ? 'Copied' : 'Copy'}
+                    </Button>
+                  </div>
+                  <pre className="bg-muted/80 p-3 rounded-lg font-mono text-xs overflow-x-auto border border-border/50">
+                    <code>{`substrate.run ${(item.data as CapabilityArtifact).id} --input "your input"`}</code>
+                  </pre>
+                </div>
+              )}
+            </>
           )}
           
           {/* Actions */}

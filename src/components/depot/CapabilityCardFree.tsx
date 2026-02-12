@@ -10,7 +10,10 @@ import {
   Cpu,
   Check,
   Unlock,
+  Lock,
+  Crown,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -18,6 +21,7 @@ import {
   type CapabilityArtifact,
   type CapabilityCategory,
 } from '@/lib/capabilities/depot';
+import { isCrownJewelCapability } from '@/lib/capabilities/crown-jewel-gate';
 import { cn } from '@/lib/utils';
 
 interface CapabilityCardFreeProps {
@@ -36,6 +40,7 @@ const difficultyColors: Record<string, string> = {
 export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }: CapabilityCardFreeProps) {
   const config = categoryConfig[capability.category];
   const CategoryIcon = config?.icon;
+  const isGated = isCrownJewelCapability(capability.id);
   
   // Format last updated
   const lastUpdated = new Date(capability.lastUpdated);
@@ -60,10 +65,17 @@ export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }
             </div>
             
             {/* FREE Badge */}
-            <Badge className="text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
-              <Unlock className="w-2.5 h-2.5 mr-1" />
-              FREE
-            </Badge>
+            {isGated ? (
+              <Badge className="text-[10px] bg-amber-500/10 text-amber-400 border-amber-500/30">
+                <Crown className="w-2.5 h-2.5 mr-1" />
+                ENTERPRISE
+              </Badge>
+            ) : (
+              <Badge className="text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
+                <Unlock className="w-2.5 h-2.5 mr-1" />
+                FREE
+              </Badge>
+            )}
           </div>
 
           {/* Title + Version */}
@@ -121,25 +133,53 @@ export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }
         <CardFooter className="relative p-3 md:p-4 pt-0 flex items-center justify-between border-t border-border/30 mt-auto">
           {/* Status */}
           <div>
-            <div className="flex items-center gap-1.5 text-emerald-400">
-              <Check className="w-4 h-4" />
-              <span className="font-semibold">Unlocked</span>
-            </div>
-            <div className="text-[10px] text-muted-foreground">
-              Available by default
-            </div>
+            {isGated ? (
+              <>
+                <div className="flex items-center gap-1.5 text-amber-400">
+                  <Lock className="w-4 h-4" />
+                  <span className="font-semibold text-sm">Enterprise Only</span>
+                </div>
+                <div className="text-[10px] text-muted-foreground">
+                  Upgrade to unlock
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-1.5 text-emerald-400">
+                  <Check className="w-4 h-4" />
+                  <span className="font-semibold">Unlocked</span>
+                </div>
+                <div className="text-[10px] text-muted-foreground">
+                  Available by default
+                </div>
+              </>
+            )}
           </div>
 
           {/* View Details Button */}
-          <Button 
-            size="sm" 
-            variant="outline" 
-            onClick={onViewDetails}
-            className="h-9 px-3 touch-manipulation text-xs md:text-sm"
-          >
-            Details
-            <ChevronRight className="w-3 h-3 ml-1" />
-          </Button>
+          {isGated ? (
+            <Button 
+              size="sm" 
+              variant="outline" 
+              asChild
+              className="h-9 px-3 touch-manipulation text-xs md:text-sm border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+            >
+              <Link to="/engines">
+                Upgrade
+                <ChevronRight className="w-3 h-3 ml-1" />
+              </Link>
+            </Button>
+          ) : (
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={onViewDetails}
+              className="h-9 px-3 touch-manipulation text-xs md:text-sm"
+            >
+              Details
+              <ChevronRight className="w-3 h-3 ml-1" />
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </div>
