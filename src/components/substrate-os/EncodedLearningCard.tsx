@@ -1,6 +1,6 @@
 /**
- * Encoded Learning Card
- * Shows real-time learning activity and topic mastery for the Encoded code-writing agent
+ * ENCODE Learning Card
+ * Shows real-time learning activity and topic mastery for the ENCODE code execution module
  */
 
 import { useState, useEffect } from 'react';
@@ -140,7 +140,7 @@ export function EncodedLearningCard() {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-fuchsia-400">
             <Code className="w-5 h-5" />
-            Encoded Learning
+            ENCODE Learning
           </CardTitle>
           <div className="flex items-center gap-2">
             <Button
@@ -319,7 +319,7 @@ export function EncodedLearningCard() {
               <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
                 <div className="flex items-center gap-2 text-sm font-medium mb-2">
                   <TrendingUp className="w-4 h-4 text-primary" />
-                  How to Improve Encoded
+                  How to Improve ENCODE
                 </div>
                 <ul className="text-xs text-muted-foreground space-y-1.5">
                   <li className="flex items-start gap-2">

@@ -1,8 +1,8 @@
 /**
- * Encoded Tab — Self-Evolution Coding Interface
- * v8.0.0 SYNERGY+ Epoch — Lov-baseline with guardrails, anchor checks, and change classification
- * Provides chat interface to the Substrate Coder + Sandbox validation preview
- * Part of the 14-module cognitive architecture
+ * ENCODE Tab — Substrate Execution & Generation Interface
+ * v9.1.0 ARCHITECT Epoch — USER → DECODE → ENCODE pipeline
+ * DECODE handles conversational intent parsing; ENCODE handles code execution + sandbox preview
+ * Part of the 21-module cognitive architecture
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
@@ -148,7 +148,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
     
     // Start 24/7 background learning (15 min cycles)
     startBackgroundLearning(15 * 60 * 1000);
-    console.log('[Encoded] 24/7 learning engine started');
+    console.log('[ENCODE] 24/7 learning engine started');
     
     // Set up progress callback so Encoded reports what it's doing
     setProgressCallback((stage, message, detail) => {
@@ -224,7 +224,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         const overall = getOverallHealth();
         
         addAgentMessage(
-          `**🔧 Encoded Health Report**\n\n` +
+          `**🔧 ENCODE Health Report**\n\n` +
           `**Services**\n` +
           `- Coder: ${health.coder.state === 'closed' ? '✅' : '⚠️'} ${health.coder.healthScore}% (${health.coder.state})\n` +
           `- Sandbox: ${health.sandbox.state === 'closed' ? '✅' : '⚠️'} ${health.sandbox.healthScore}% (${health.sandbox.state})\n` +
@@ -736,7 +736,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
 
   function parseImprovementRequest(input: string): { module: string; change_type: string; description: string } {
     // Simple parsing - extract module and change type from input
-    const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'ripple', 'access', 'decode', 'modernizer', 'integration'];
+    const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'ripple', 'access', 'decode', 'encode', 'modernizer', 'integration'];
     const foundModule = modules.find(m => input.toLowerCase().includes(m)) || 'system';
     
     const changeTypes = ['edge_function', 'config_update', 'prompt_refinement', 'rate_limit', 'rls_policy'];
@@ -789,7 +789,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         <Card className="border-dashed border-system-amber/30 bg-muted/50">
           <CardContent className="py-12 text-center">
             <Bot className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">Encoded requires Operator privileges</p>
+            <p className="text-sm text-muted-foreground">ENCODE requires Operator privileges</p>
           </CardContent>
         </Card>
       </main>
@@ -806,9 +806,12 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
           </div>
           <div>
             <h2 className="text-lg font-semibold flex items-center gap-2">
-              Encoded
+              ENCODE
+              <Badge variant="outline" className="text-[10px] border-cyan-500/40 text-cyan-400 bg-cyan-500/10">
+                via DECODE
+              </Badge>
               <Badge variant="outline" className="text-[10px] border-fuchsia-500/40 text-fuchsia-400 bg-fuchsia-500/10">
-                v4.0.0
+                v9.1.0
               </Badge>
               {lastGuardResult && (
                 <Badge 
@@ -838,7 +841,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               )}
             </h2>
             <p className="text-xs text-muted-foreground font-mono">
-              read → plan → write → guard → read → fix → verify → finalize
+              USER → DECODE (intent) → ENCODE (execute) → preview → apply
             </p>
           </div>
         </div>
@@ -905,8 +908,8 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         <Card className="border-primary/20 bg-card/50 backdrop-blur-xl">
           <CardHeader className="border-b border-border/50 py-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Bot className="w-4 h-4 text-primary" />
-              Agent Chat
+              <MessageSquare className="w-4 h-4 text-cyan-400" />
+              DECODE → ENCODE Chat
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0 flex flex-col h-[500px]">
@@ -915,9 +918,9 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               {messages.length === 0 ? (
                 <div className="h-full flex items-center justify-center text-center">
                   <div className="space-y-3">
-                    <Bot className="w-10 h-10 mx-auto text-muted-foreground/30" />
+                    <MessageSquare className="w-10 h-10 mx-auto text-muted-foreground/30" />
                     <p className="text-sm text-muted-foreground">
-                      Describe what you want to build or improve.
+                      Talk to DECODE — it will parse your intent and route execution to ENCODE.
                     </p>
                     <div className="flex flex-wrap gap-2 justify-center">
                         {['Add rate limiting to Brain', 'Create a health check function', 'Improve error handling'].map(example => (
@@ -977,7 +980,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                            msg.role === 'preview' ? 'Impact Preview' :
                            msg.role === 'approval' ? 'Approval Required' :
                            msg.role === 'blocked' ? 'BLOCKED' :
-                           'Encoded'}
+                           'DECODE → ENCODE'}
                         </span>
                         <span className="text-[10px] text-muted-foreground/50">
                           {msg.timestamp.toLocaleTimeString()}
@@ -1076,7 +1079,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Describe a code change or improvement..."
+                  placeholder="Tell DECODE what you need — it routes intent to ENCODE..."
                   className="min-h-[60px] resize-none bg-muted/50 border-border/50"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
