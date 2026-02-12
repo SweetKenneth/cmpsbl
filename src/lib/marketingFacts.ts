@@ -115,9 +115,9 @@ export const LINES_OF_CODE_DISPLAY = '175k+';
 // VERSION INFO
 // =============================================================================
 
-export const SUBSTRATE_VERSION = '8.5.0';
-export const SUBSTRATE_CODENAME = 'SYNERGY+';
-export const SUBSTRATE_EPOCH = 'SYNERGY+';
+export const SUBSTRATE_VERSION = '9.0.0';
+export const SUBSTRATE_CODENAME = 'ARCHITECT';
+export const SUBSTRATE_EPOCH = 'ARCHITECT';
 
 // =============================================================================
 // PERFORMANCE CLAIMS (only include if verifiable)

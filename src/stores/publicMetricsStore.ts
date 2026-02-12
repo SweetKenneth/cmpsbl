@@ -80,14 +80,14 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '8.5.0',
-  codename: 'SYNERGY+',
-  epoch: 'SYNERGY+',
+  version: '9.0.0',
+  codename: 'ARCHITECT',
+  epoch: 'ARCHITECT',
   buildDate: new Date().toISOString().split('T')[0],
   
   // Architecture Counts
-  modulesCount: 14,
-  layersCount: 5,
+  modulesCount: 20,
+  layersCount: 6,
   
   // Synergy Metrics (98 core + 22 S-tier + 27 discovery = 147)
   synergyPipelinesCount: 147,
