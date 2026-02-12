@@ -16,7 +16,7 @@ const registry: SynergyRegistry = {
 };
 
 /**
- * All 147 cross-module synergies (98 core + 22 S-tier + 27 discovery synergies)
+ * All 200 cross-module synergies (88 core + 22 S-tier + 27 discovery + 32 S-tier + 53 infrastructure = 200)
  * Each combines 2-5 modules for enhanced capability within the 20-module architecture
  */
 export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
