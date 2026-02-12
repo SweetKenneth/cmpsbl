@@ -1,9 +1,9 @@
 /**
  * Meta-Engine Types
- * v8.5.0 SYNERGY+ Epoch — 22 Meta-Engines orchestrating 70 base engines
+ * v9.0.0 ARCHITECT Epoch — 24 Meta-Engines orchestrating 76 base engines
  * 
  * Meta-Engines orchestrate multiple engines into unified execution pipelines.
- * 3-layer architecture: 325 Capabilities → 70 Engines → 22 Meta-Engines
+ * 3-layer architecture: 379 Capabilities → 76 Engines → 24 Meta-Engines
  */
 
 import type { EngineId, EngineExecutionResult } from '../types';
@@ -60,7 +60,10 @@ export type MetaEngineId =
   | 'world_first_governance'    // DEFENSE + ACCESS + RIPPLE + INCLUSIVE world-first enhancements
   // v8.5.0 additions (2) — High-Value Expansion Meta-Engines
   | 'resilience_shield'         // Sandbox + Prompt Safety + Saga + Policy Access
-  | 'deep_cognition_nexus';     // Deep Cognition + Dialogue + Observability + Tech Debt
+  | 'deep_cognition_nexus'      // Deep Cognition + Dialogue + Observability + Tech Debt
+  // v9.0.0 additions (2) — Infrastructure Cross-Module Meta-Engines
+  | 'enterprise_trust_fabric'   // Zero Trust + Compliance Audit + Relay Encryption
+  | 'platform_economics_engine'; // FinOps + Knowledge Retrieval + Revenue Attribution
 
 export interface MetaEngineDefinition {
   id: MetaEngineId;

@@ -1,6 +1,6 @@
 /**
  * Engine Registry
- * v8.5.0 SYNERGY+ Epoch — 70 Cognitive Engines orchestrating 325 Capabilities
+ * v9.0.0 ARCHITECT Epoch — 76 Cognitive Engines orchestrating 379 Capabilities
  * 
  * Each engine orchestrates multiple related capabilities into
  * a compound execution unit with enhanced value and IP protection.
@@ -1593,6 +1593,112 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     cacheable: true,
     capabilityCount: 4,
   },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INFRASTRUCTURE LAYER ENGINES (6) — v9.0.0 ARCHITECT Epoch
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  knowledge_retrieval_engine: {
+    id: 'knowledge_retrieval_engine',
+    name: 'Knowledge Retrieval Engine',
+    description: 'MEMORY full-stack retrieval: vector index management, multi-model embedding pipelines, hybrid RAG with re-ranking, knowledge graph extraction, and context window optimization.',
+    category: 'knowledge',
+    capabilities: ['vector_index_manager', 'embedding_pipeline', 'rag_retriever', 'knowledge_graph_builder', 'context_window_optimizer', 'memory_tier_migrator', 'semantic_dedup', 'temporal_memory_index', 'memory_consistency_checker'],
+    primaryModules: ['MEMORY'],
+    layer: 'infrastructure',
+    synergyMultiplier: 3.2,
+    complexityScore: 9,
+    autonomyLevel: 'autonomous',
+    executionMode: 'adaptive',
+    averageLatencyMs: 180,
+    cacheable: true,
+    capabilityCount: 9,
+  },
+  
+  delivery_orchestrator: {
+    id: 'delivery_orchestrator',
+    name: 'Delivery Orchestrator',
+    description: 'RELAY outbound delivery: webhook fan-out with retry, multi-channel notification routing, circuit breaking, dead letter queues, payload transformation, and encrypted delivery.',
+    category: 'communication',
+    capabilities: ['webhook_dispatcher', 'notification_router', 'delivery_receipt_tracker', 'outbound_rate_limiter', 'payload_transformer', 'dead_letter_queue', 'relay_circuit_breaker', 'scheduled_dispatch', 'relay_encryption_gateway'],
+    primaryModules: ['RELAY'],
+    layer: 'infrastructure',
+    synergyMultiplier: 2.9,
+    complexityScore: 8,
+    autonomyLevel: 'autonomous',
+    executionMode: 'parallel',
+    averageLatencyMs: 100,
+    cacheable: false,
+    capabilityCount: 9,
+  },
+  
+  compliance_audit_engine: {
+    id: 'compliance_audit_engine',
+    name: 'Compliance & Audit Engine',
+    description: 'AUDIT tamper-evident compliance: immutable event logs with Merkle proofs, hash chain verification, SOC 2/ISO 27001 report generation, data lineage tracking, and regulatory alerting.',
+    category: 'governance',
+    capabilities: ['immutable_event_log', 'hash_chain_verifier', 'compliance_report_generator', 'data_lineage_tracker', 'access_log_analyzer', 'retention_policy_enforcer', 'change_diff_recorder', 'audit_query_engine', 'regulatory_alert_engine'],
+    primaryModules: ['AUDIT'],
+    layer: 'infrastructure',
+    synergyMultiplier: 3.0,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'sequential',
+    averageLatencyMs: 150,
+    cacheable: false,
+    capabilityCount: 9,
+  },
+  
+  zero_trust_engine: {
+    id: 'zero_trust_engine',
+    name: 'Zero Trust Engine',
+    description: 'IDENTITY enterprise identity: SAML/OIDC SSO federation, row-level tenant isolation, hierarchical RBAC, token lifecycle management, device trust evaluation, and directory sync.',
+    category: 'security',
+    capabilities: ['sso_federation', 'tenant_isolation_engine', 'role_hierarchy_manager', 'identity_verification', 'token_lifecycle_manager', 'impersonation_controller', 'device_trust_evaluator', 'directory_sync', 'session_revocation_broadcast'],
+    primaryModules: ['IDENTITY'],
+    layer: 'infrastructure',
+    synergyMultiplier: 3.4,
+    complexityScore: 10,
+    autonomyLevel: 'supervised',
+    executionMode: 'adaptive',
+    averageLatencyMs: 80,
+    cacheable: false,
+    capabilityCount: 9,
+  },
+  
+  finops_engine: {
+    id: 'finops_engine',
+    name: 'FinOps Engine',
+    description: 'ECONOMY financial operations: sub-second usage metering, invoice aggregation, ML cost anomaly detection, budget governance, credit ledger, revenue attribution, and marketplace settlement.',
+    category: 'resource',
+    capabilities: ['usage_metering_engine', 'billing_aggregator', 'cost_anomaly_detector', 'budget_governor', 'price_tier_evaluator', 'credit_ledger', 'revenue_attribution', 'compute_cost_optimizer', 'marketplace_settlement'],
+    primaryModules: ['ECONOMY'],
+    layer: 'infrastructure',
+    synergyMultiplier: 2.8,
+    complexityScore: 8,
+    autonomyLevel: 'autonomous',
+    executionMode: 'parallel',
+    averageLatencyMs: 60,
+    cacheable: true,
+    capabilityCount: 9,
+  },
+  
+  resilience_lab: {
+    id: 'resilience_lab',
+    name: 'Resilience Lab',
+    description: 'SANDBOX isolated testing: ephemeral environments, chaos injection, synthetic load generation, A/B experiments, snapshot/restore, regression detection, and resource governance.',
+    category: 'operational',
+    capabilities: ['ephemeral_environment', 'config_preview', 'capability_test_harness', 'chaos_injection_engine', 'snapshot_restore', 'a_b_experiment_runner', 'synthetic_load_generator', 'regression_detector', 'sandbox_resource_governor'],
+    primaryModules: ['SANDBOX'],
+    layer: 'infrastructure',
+    synergyMultiplier: 3.1,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'staged',
+    averageLatencyMs: 300,
+    cacheable: false,
+    capabilityCount: 9,
+  },
 };
 
 // ============================================================================
@@ -1667,7 +1773,7 @@ export function getEngineSummary() {
     averageSynergyMultiplier: totalMultiplier / engines.length,
     averageComplexityScore: totalComplexity / engines.length,
     totalWorldFirstEnhancements: 56,
-    totalHighValueCapabilities: 56,
+    totalHighValueCapabilities: 110,
     totalSynergyPipelines: 147,
   };
 }
@@ -1680,20 +1786,20 @@ export const ENGINE_IDS: EngineId[] = Object.keys(ENGINE_REGISTRY) as EngineId[]
 
 export const ENGINES_BY_CATEGORY: Record<EngineCategory, EngineId[]> = {
   cognitive: ['reasoning_engine', 'learning_engine', 'memory_engine', 'foresight_engine', 'metacognition_engine', 'hypothesis_engine', 'deep_cognition_engine'],
-  operational: ['resilience_engine', 'optimization_engine', 'orchestration_engine', 'scheduling_engine', 'sandbox_engine'],
+  operational: ['resilience_engine', 'optimization_engine', 'orchestration_engine', 'scheduling_engine', 'sandbox_engine', 'resilience_lab'],
   intelligence: ['synthesis_engine', 'adaptation_engine', 'insight_engine', 'prediction_engine'],
-  governance: ['compliance_engine', 'quality_engine', 'audit_engine'],
-  security: ['threat_engine', 'defense_engine', 'trust_engine', 'attack_surface_engine', 'incident_engine', 'prompt_safety_engine', 'policy_access_engine'],
+  governance: ['compliance_engine', 'quality_engine', 'audit_engine', 'compliance_audit_engine'],
+  security: ['threat_engine', 'defense_engine', 'trust_engine', 'attack_surface_engine', 'incident_engine', 'prompt_safety_engine', 'policy_access_engine', 'zero_trust_engine'],
   evolution: ['evolution_engine', 'modernization_engine', 'technical_debt_engine'],
-  communication: ['broadcast_engine', 'event_engine', 'saga_engine'],
+  communication: ['broadcast_engine', 'event_engine', 'saga_engine', 'delivery_orchestrator'],
   integration: ['routing_engine', 'transformation_engine'],
   analytics: ['monitoring_engine', 'capacity_engine', 'observability_engine'],
   experience: ['accessibility_engine', 'personalization_engine'],
-  knowledge: ['graph_engine', 'context_engine'],
+  knowledge: ['graph_engine', 'context_engine', 'knowledge_retrieval_engine'],
   autonomy: ['self_healing_engine', 'self_documentation_engine'],
   creativity: ['imagination_engine', 'innovation_engine', 'dream_engine'],
   perception: ['intent_engine', 'emotion_engine', 'multimodal_engine', 'dialogue_engine'],
-  resource: ['budget_engine', 'quota_engine', 'entitlement_engine'],
+  resource: ['budget_engine', 'quota_engine', 'entitlement_engine', 'finops_engine'],
   workflow: ['pipeline_engine', 'coordination_engine', 'delegation_engine'],
   enhancement: [
     'attention_memory_engine',

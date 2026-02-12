@@ -1,6 +1,6 @@
 /**
  * Meta-Engine Registry
- * v8.5.0 SYNERGY+ Epoch — 22 Meta-Engines Orchestrating 70 Engines → 325 Capabilities
+ * v9.0.0 ARCHITECT Epoch — 24 Meta-Engines Orchestrating 76 Engines → 379 Capabilities
  * 
  * Meta-Engines provide the highest level of abstraction,
  * combining multiple engines into unified execution pipelines.
@@ -543,6 +543,54 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
       'Technical debt prioritization',
     ],
   },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ENTERPRISE TRUST FABRIC — v9.0.0 ARCHITECT Epoch
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  enterprise_trust_fabric: {
+    id: 'enterprise_trust_fabric',
+    name: 'Enterprise Trust Fabric',
+    description: 'End-to-end enterprise trust combining zero-trust identity, tamper-evident compliance auditing, and encrypted relay delivery into a unified governance mesh.',
+    category: 'governance',
+    engines: ['zero_trust_engine', 'compliance_audit_engine', 'delivery_orchestrator'],
+    totalCapabilities: 27,
+    compoundSynergyMultiplier: 8.2,
+    complexityScore: 10,
+    orchestrationMode: 'staged',
+    estimatedLatencyMs: 350,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'SOC 2 / ISO 27001 continuous compliance',
+      'Zero-trust identity with full audit trail',
+      'Encrypted cross-system data delivery',
+      'Multi-tenant enterprise onboarding',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PLATFORM ECONOMICS ENGINE — v9.0.0 ARCHITECT Epoch
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  platform_economics_engine: {
+    id: 'platform_economics_engine',
+    name: 'Platform Economics Engine',
+    description: 'Full-stack cost and value attribution combining FinOps metering, knowledge-driven context optimization, and revenue analytics into a unified platform economics layer.',
+    category: 'resource',
+    engines: ['finops_engine', 'knowledge_retrieval_engine', 'resilience_lab'],
+    totalCapabilities: 27,
+    compoundSynergyMultiplier: 7.6,
+    complexityScore: 9,
+    orchestrationMode: 'adaptive',
+    estimatedLatencyMs: 280,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Per-capability cost attribution and ROI',
+      'Intelligent context optimization for cost reduction',
+      'Marketplace settlement and billing',
+      'Capacity planning with cost modeling',
+    ],
+  },
 };
 
 // ============================================================================
@@ -566,8 +614,7 @@ export function getMetaEnginesByEngine(engineId: string): MetaEngineDefinition[]
 }
 
 export function getTotalCapabilitiesReached(): number {
-  // Count based on v8.1.0 expanded coverage (62 engines × ~4 capabilities each)
-  return 325; // All capabilities reachable through meta-engines (269 + 56 high-value v8.5.0)
+  return 379; // All capabilities reachable through meta-engines (v9.0.0)
 }
 
 export function getMetaEngineSummary() {
@@ -618,7 +665,7 @@ export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]
   cognitive: ['cognitive_mesh', 'world_first_cognitive'],
   protection: ['system_guardian', 'security_fortress'],
   autonomous: ['autonomous_operator', 'world_first_operational'],
-  governance: ['quality_fabric', 'world_first_governance'],
+  governance: ['quality_fabric', 'world_first_governance', 'enterprise_trust_fabric'],
   intelligence: ['intelligence_pipeline', 'world_first_intelligence'],
   experience: ['adaptation_suite'],
   performance: ['performance_optimizer'],
@@ -628,7 +675,7 @@ export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]
   self_management: ['self_governance'],
   creativity: ['creative_forge'],
   perception: ['perception_matrix'],
-  resource: ['resource_governor'],
+  resource: ['resource_governor', 'platform_economics_engine'],
   workflow: ['workflow_orchestrator'],
 };
 

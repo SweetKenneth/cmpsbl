@@ -1,6 +1,6 @@
 /**
  * Cognitive Engine Types
- * v8.5.0 SYNERGY+ Epoch — 70 Engines + 22 Meta-Engines
+ * v9.0.0 ARCHITECT Epoch — 76 Engines + 24 Meta-Engines
  * 
  * Engines consolidate related capabilities into compound execution units.
  * This architecture provides:
@@ -9,7 +9,7 @@
  * - Simplified API surface for consumers
  * - IP protection through orchestration complexity
  * 
- * v8.5.0 covers 325 capabilities across 70 engines + 22 meta-engines
+ * v9.0.0 covers 379 capabilities across 76 engines + 24 meta-engines
  */
 
 import type { CapabilityId, ModuleLayer } from '../capabilities';
@@ -162,7 +162,18 @@ export type EngineId =
   | 'config_runtime_engine'        // CORE: FeatureFlagEngine, ConfigHotReload, EnvironmentValidator
   | 'adapter_transform_engine'     // INTEGRATION: AdapterHealthMonitor, WebhookOrchestrator, DataTransformer
   | 'cognitive_accessibility_engine'  // INCLUSIVE: CognitiveLoadOptimizer, AccessibilityScorer, RemediationEngine
-  | 'evolution_governance_engine'; // MODERNIZER: EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
+  | 'evolution_governance_engine'  // MODERNIZER: EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW v9.0.0 ENGINES — 6 Infrastructure Layer Engines
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  | 'knowledge_retrieval_engine'   // MEMORY: vector indexing, embedding, RAG, knowledge graphs, context optimization
+  | 'delivery_orchestrator'        // RELAY: webhook dispatch, notification routing, circuit breaking, DLQ
+  | 'compliance_audit_engine'      // AUDIT: immutable logs, hash chains, data lineage, compliance reporting
+  | 'zero_trust_engine'            // IDENTITY: SSO federation, tenant isolation, token lifecycle, device trust
+  | 'finops_engine'                // ECONOMY: usage metering, billing aggregation, cost anomaly, budget governance
+  | 'resilience_lab';              // SANDBOX: ephemeral envs, chaos injection, load gen, regression detection
 
 export interface EngineDefinition {
   id: EngineId;
@@ -179,7 +190,7 @@ export interface EngineDefinition {
   autonomyLevel: 'assisted' | 'supervised' | 'autonomous';
   
   // Execution characteristics
-  executionMode: 'sequential' | 'parallel' | 'adaptive' | 'streaming';
+  executionMode: 'sequential' | 'parallel' | 'adaptive' | 'streaming' | 'staged';
   averageLatencyMs: number;
   cacheable: boolean;
   
@@ -285,18 +296,20 @@ export interface CapabilitySource {
 }
 
 export const CAPABILITY_INVENTORY = {
-  version: '8.5.0',
+  version: '9.0.0',
   synergies: 147,
   worldFirst: 56,
   highValue: 56,
+  infrastructure: 54,
   archived: 10,
   native: 76,
-  total: 325,
+  total: 379,
   engineCoverage: {
     originalEngines: 48,
     worldFirstEngines: 14,
     highValueEngines: 8,
-    totalEngines: 70,
-    metaEngines: 22,
+    infrastructureEngines: 6,
+    totalEngines: 76,
+    metaEngines: 24,
   },
 };

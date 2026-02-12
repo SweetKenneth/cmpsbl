@@ -294,6 +294,14 @@ export const executePromptSafetyEngine: EngineExecutor = (ctx) => executeEngine(
 export const executeObservabilityEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeTechnicalDebtEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
+// v9.0.0 Infrastructure Layer Engines (6)
+export const executeKnowledgeRetrievalEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeDeliveryOrchestrator: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeComplianceAuditEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeZeroTrustEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeFinopsEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeResilienceLab: EngineExecutor = (ctx) => executeEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -416,6 +424,14 @@ export const ENGINE_EXECUTORS: Record<EngineId, EngineExecutor> = {
   prompt_safety_engine: executePromptSafetyEngine,
   observability_engine: executeObservabilityEngine,
   technical_debt_engine: executeTechnicalDebtEngine,
+  
+  // v9.0.0 Infrastructure Layer Engines (6)
+  knowledge_retrieval_engine: executeKnowledgeRetrievalEngine,
+  delivery_orchestrator: executeDeliveryOrchestrator,
+  compliance_audit_engine: executeComplianceAuditEngine,
+  zero_trust_engine: executeZeroTrustEngine,
+  finops_engine: executeFinopsEngine,
+  resilience_lab: executeResilienceLab,
 };
 
 // ============================================================================

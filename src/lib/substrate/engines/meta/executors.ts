@@ -224,6 +224,10 @@ export const executeWorldFirstGovernance: MetaEngineExecutor = (ctx) => executeM
 export const executeResilienceShield: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executeDeepCognitionNexus: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
+// v9.0.0 additions — Infrastructure Cross-Module Meta-Engines
+export const executeEnterpriseTrustFabric: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executePlatformEconomicsEngine: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -255,6 +259,9 @@ export const META_ENGINE_EXECUTORS: Record<MetaEngineId, MetaEngineExecutor> = {
   // v8.5.0 additions — High-Value Expansion Meta-Engines
   resilience_shield: executeResilienceShield,
   deep_cognition_nexus: executeDeepCognitionNexus,
+  // v9.0.0 additions — Infrastructure Cross-Module Meta-Engines
+  enterprise_trust_fabric: executeEnterpriseTrustFabric,
+  platform_economics_engine: executePlatformEconomicsEngine,
 };
 
 // ============================================================================

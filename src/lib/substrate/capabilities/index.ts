@@ -132,7 +132,7 @@ export type CapabilityId =
   | 'goal_alignment_validator'
   | 'execution_priority_balancer';
 
-export type ModuleLayer = 'Kernel' | 'Cognitive' | 'Operational' | 'Admin' | 'Orchestrator';
+export type ModuleLayer = 'Kernel' | 'Cognitive' | 'Operational' | 'Admin' | 'Orchestrator' | 'infrastructure';
 
 export interface CapabilityDefinition {
   id: CapabilityId;
@@ -1330,6 +1330,7 @@ class CapabilityEngine {
       Operational: 0,
       Admin: 0,
       Orchestrator: 0,
+      infrastructure: 0,
     };
     
     const byRisk: Record<'low' | 'medium' | 'high', number> = {
