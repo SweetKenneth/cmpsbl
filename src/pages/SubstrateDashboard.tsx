@@ -1,8 +1,8 @@
 /**
  * CMPSBL Substrate — Dashboard
- * v7.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v9.0.0 — Cognitive Orchestration Substrate (20-Module Architecture)
  *
- * Unified control center for all 14 substrate modules:
+ * Unified control center for all 20 substrate modules:
  * 
  * KERNEL LAYER:
  * - Core: Kernel scheduler, lifecycle, orchestration
