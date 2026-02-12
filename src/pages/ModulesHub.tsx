@@ -16,7 +16,7 @@ export default function ModulesHub() {
   return (
     <>
       <Helmet>
-        <title>Substrate Modules — 14 Core AI Components | CMPSBL</title>
+        <title>Substrate Modules — 20 Core AI Components | CMPSBL</title>
         <meta name="description" content="Explore the 14 core modules powering the CMPSBL Substrate OS — from persistent memory and intelligent routing to AI security and autonomous optimization." />
         <link rel="canonical" href="https://cmpsbl.com/modules" />
         <script type="application/ld+json">{JSON.stringify({
