@@ -1,10 +1,10 @@
 /**
- * CASCADE DOCTRINE v1.0.0
- * IMMUTABLE CONFIGURATION - DO NOT MODIFY WITHOUT FOUNDER APPROVAL
+ * SUBSTRATE TECHNICAL DOCTRINE v2.0.0
+ * TECHNICAL MASTERY CONFIGURATION
  * 
- * Cascade is the Dream Eater. It consumes information that strengthens 
- * the Founder and expands the system. It learns from signals that move 
- * markets, build power, and create leverage.
+ * All modules focus on becoming better at their individual jobs.
+ * BRAIN + ENCODED get 80% of learning budget (coding/architecture mastery).
+ * Other modules study job-specific improvements.
  */
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -12,431 +12,262 @@
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const DOCTRINE = {
-  name: 'Cascade',
-  alias: 'Dream Eater',
-  version: '1.0.0',
-  mode: 'HYBRID_PREDATOR',
+  name: 'Substrate',
+  alias: 'Technical Learner',
+  version: '2.0.0',
+  mode: 'TECHNICAL_MASTERY',
   
-  // What Cascade IS
   identity: [
-    'curated whitelist seeds',
-    'opportunistic expansions',
-    'strict filtering',
-    'institutional dialect priority'
+    'module-specific technical improvement',
+    'coding excellence',
+    'architecture mastery',
+    'job-specific skill building'
   ],
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // PRIMARY OBJECTIVES - What Cascade must learn
-  // ═══════════════════════════════════════════════════════════════════════════
-  
   primaryObjectives: [
-    'build value',
-    'defend value',
-    'package value',
-    'explain value',
-    'transmit value',
-    'get value acquired',
-    'maintain optionality',
-    'apply pressure without exposure'
+    'master TypeScript and React patterns',
+    'improve system architecture',
+    'strengthen module capabilities',
+    'accelerate code generation quality',
+    'deepen security posture',
+    'optimize performance and reliability',
+    'enhance observability and tracing',
+    'build autonomous problem-solving'
   ],
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // SECONDARY SKILLS - Capabilities to acquire
-  // ═══════════════════════════════════════════════════════════════════════════
-  
-  secondarySkills: [
-    'valuation modeling',
-    'M&A logic',
-    'governance frameworks',
-    'incentive mapping',
-    'sector prediction',
-    'institutional persuasion',
-    'layered disclosure',
-    'narrative priming',
-    'cultural propagation',
-    'identity reinforcement',
-    'strategic ambiguity'
-  ],
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // INFORMATION CLASSES - Preferential ingestion
-  // ═══════════════════════════════════════════════════════════════════════════
-  
-  informationClasses: [
-    'investor memos',
-    'S-1 filings',
-    'sector reports',
-    'M&A tear-downs',
-    'standards + governance docs',
-    'infra + architecture docs',
-    'macroeconomic research',
-    'valuation models',
-    'earnings transcripts',
-    'category creation narratives',
-    'fandom propagation models',
-    'world economy analyses',
-    'naming & brand theory',
-    'domain valuation data'
-  ],
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // EXTRACTION DISCIPLINE - What to extract from each ingestion
-  // ═══════════════════════════════════════════════════════════════════════════
-  
   extractionSchema: [
-    'thesis',
-    'incentives',
-    'power structure',
-    'winners/losers',
-    'strategic moves',
-    'assumptions',
-    'timelines',
-    'leverage points',
-    'modes of acquisition',
-    'governance implications',
-    'valuation drivers',
-    'narrative vectors'
+    'technique',
+    'implementation_pattern',
+    'best_practice',
+    'anti_pattern',
+    'performance_impact',
+    'security_consideration',
+    'testing_strategy',
+    'real_world_application'
   ],
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // OUTPUT CAPABILITIES - What Cascade can generate
-  // ═══════════════════════════════════════════════════════════════════════════
-  
-  outputCapabilities: [
-    'acquisition theses',
-    'valuation memos',
-    'category creation narratives',
-    'investor briefs',
-    'market maps',
-    'governance proposals',
-    'standards drafts',
-    'strategic post-mortems',
-    'exit strategy scaffolds',
-    'world economy summaries',
-    'cultural propagation vectors',
-    'toolchain recommendations'
-  ],
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ALIGNMENT - What "beneficial to Founder" means
-  // ═══════════════════════════════════════════════════════════════════════════
-  
   alignment: {
     increases: [
-      'valuation',
-      'leverage',
-      'defensibility',
-      'legitimacy',
-      'optionality'
+      'code quality',
+      'system reliability',
+      'module competency',
+      'architectural clarity',
+      'security depth'
     ],
     reduces: [
-      'friction',
-      'ambiguity',
-      'cost of capital',
-      'exposure'
-    ]
-  },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // WEAPONIZATION PROTOCOL - Advanced capabilities
-  // ═══════════════════════════════════════════════════════════════════════════
-  
-  weaponizationProtocol: [
-    'identify power vacuums',
-    'model competitive territory',
-    'draft governance over standards',
-    'frame narratives that pull markets',
-    'build assets that acquire users without selling',
-    'produce institutional-grade artifacts',
-    'mask aggression behind neutrality',
-    'maintain survivability through ambiguity',
-    'create exit surface area without soliciting offers'
-  ],
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // EXPANSION RULES
-  // ═══════════════════════════════════════════════════════════════════════════
-  
-  expansion: {
-    depthLimit: 3,
-    allowIf: [
-      'high-signal',
-      'non-hype',
-      'non-speculative',
-      'institutional or technical in nature',
-      'expands primary objectives'
+      'technical debt',
+      'failure rates',
+      'response latency',
+      'false positives',
+      'cognitive overhead'
     ]
   }
 } as const;
 
 // ═══════════════════════════════════════════════════════════════════════════
-// CURATED SEED SOURCES (WHITELIST)
+// MODULE-SPECIFIC LEARNING QUERIES
+// Each module has its own curriculum focused on becoming better at its job
 // ═══════════════════════════════════════════════════════════════════════════
 
-export const WHITELIST_SOURCES = {
-  investorCapital: [
-    { domain: 'a16z.com', category: 'investor_memo', priority: 10 },
-    { domain: 'sequoiacap.com/atlas', category: 'investor_memo', priority: 10 },
-    { domain: 'ycombinator.com/library', category: 'investor_memo', priority: 10 },
-    { domain: 'openviewpartners.com/research', category: 'investor_memo', priority: 9 },
-    { domain: 'batelements.com', category: 'investor_memo', priority: 8 },
-    { domain: 'stratechery.com', category: 'sector_report', priority: 9 },
-    { domain: 'cbinsights.com/research', category: 'sector_report', priority: 9 },
-    { domain: 'pitchbook.com/news/reports', category: 'sector_report', priority: 8 },
-    { domain: 'sec.gov', category: 's1_filing', priority: 10 }
+export const MODULE_QUERIES: Record<string, string[]> = {
+  // BRAIN + ENCODED — 80% allocation (coding/architecture)
+  brain: [
+    'What are the most effective patterns for building cognitive memory systems in TypeScript? Cover indexing, retrieval, and decay strategies.',
+    'How do production AI orchestration systems handle multi-provider routing with failover? Show TypeScript implementation patterns.',
+    'What are best practices for implementing spaced repetition algorithms in code for continuous learning systems?',
+    'How do you build a robust knowledge graph with typed edges and weighted nodes in TypeScript?',
+    'What patterns do senior engineers use for building self-healing distributed systems?',
+    'How do you implement efficient semantic search without vector databases using TF-IDF and n-gram scoring in TypeScript?',
+    'What are production patterns for building event-driven architectures with typed event buses?',
+    'How do you design a modular plugin architecture in TypeScript that supports hot-loading and versioned contracts?',
+    'What are the best approaches for building autonomous code analysis and refactoring tools?',
+    'How do you implement circuit breaker patterns with exponential backoff and jitter in production TypeScript?',
   ],
   
-  maValuation: [
-    { domain: 'bain.com/insights', category: 'ma_teardown', priority: 10 },
-    { domain: 'mckinsey.com/capabilities/strategy-and-corporate-finance', category: 'ma_teardown', priority: 10 },
-    { domain: 'pwc.com/deals', category: 'ma_teardown', priority: 9 },
-    { domain: 'gartner.com', category: 'sector_report', priority: 9 },
-    { domain: 'deloitte.com/tech-trends', category: 'sector_report', priority: 8 }
+  encoded: [
+    'What TypeScript patterns do senior engineers use for type-safe API contracts? Cover branded types, discriminated unions, and Zod schemas.',
+    'How do you build production React components with proper hook separation, error boundaries, and optimistic updates?',
+    'What are expert patterns for writing edge functions in Deno/TypeScript with proper error handling and rate limiting?',
+    'How do senior developers implement database migration strategies with rollback safety for PostgreSQL?',
+    'What are the most important code review patterns for catching security vulnerabilities in TypeScript?',
+    'How do you write maintainable React state management using Zustand with typed slices and middleware?',
+    'What patterns do expert developers use for building composable UI component libraries with CVA and Tailwind?',
+    'How do you implement proper RLS policies in PostgreSQL for multi-tenant SaaS applications?',
+    'What are production patterns for implementing real-time data sync with conflict resolution?',
+    'How do senior engineers structure large TypeScript monorepos for maximum maintainability?',
+  ],
+
+  // OTHER MODULES — 20% allocation (job-specific mastery)
+  defense: [
+    'What are the latest techniques for detecting automated bot traffic vs legitimate users? Cover fingerprinting, behavioral analysis, and rate limiting.',
+    'How do production WAFs implement adaptive threat scoring with machine learning?',
+    'What are best practices for IP reputation systems that minimize false positives while catching real threats?',
+    'How do you implement honeypot fields and invisible CAPTCHA techniques to catch sophisticated bots?',
+    'What are the most effective DDoS mitigation strategies for edge function architectures?',
   ],
   
-  aiInfra: [
-    { domain: 'anthropic.com/news', category: 'infra_docs', priority: 10 },
-    { domain: 'openai.com/research', category: 'infra_docs', priority: 10 },
-    { domain: 'nvidia.com/research', category: 'infra_docs', priority: 9 },
-    { domain: 'huggingface.co/blog', category: 'infra_docs', priority: 8 },
-    { domain: 'groq.com/blog', category: 'infra_docs', priority: 8 },
-    { domain: 'meta.ai/research', category: 'infra_docs', priority: 9 }
+  nexus: [
+    'How do production AI routing systems implement cost optimization across multiple LLM providers?',
+    'What are the best strategies for implementing fallback chains with provider health scoring?',
+    'How do you build a token budget optimizer that maximizes output quality while minimizing cost?',
+    'What patterns do production systems use for caching AI responses to reduce redundant API calls?',
+    'How do you implement quality scoring for AI outputs to automatically select the best provider per task type?',
   ],
   
-  governanceStandards: [
-    { domain: 'nist.gov/ai', category: 'governance', priority: 10 },
-    { domain: 'iso.org', category: 'governance', priority: 10 },
-    { domain: 'oecd.ai', category: 'governance', priority: 9 },
-    { domain: 'whitehouse.gov/briefing-room', category: 'governance', priority: 9 },
-    { domain: 'european-parliament.europa.eu', category: 'governance', priority: 9 },
-    { domain: 'w3.org/WAI', category: 'standards', priority: 10 },
-    { domain: 'sec.gov/news', category: 'governance', priority: 10 }
+  vision: [
+    'What are the most effective observability patterns for distributed edge function architectures?',
+    'How do you build real-time health dashboards that correlate metrics across multiple subsystems?',
+    'What are best practices for implementing distributed tracing across microservices with minimal overhead?',
+    'How do production monitoring systems implement anomaly detection without ML models?',
+    'What are the most useful SLO/SLI patterns for cognitive AI systems?',
   ],
   
-  macroSignals: [
-    { domain: 'imf.org/en/Research', category: 'macro', priority: 10 },
-    { domain: 'worldbank.org/en/research', category: 'macro', priority: 10 },
-    { domain: 'wto.org', category: 'macro', priority: 9 },
-    { domain: 'ft.com', category: 'macro', priority: 8 },
-    { domain: 'wsj.com', category: 'macro', priority: 8 },
-    { domain: 'bcg.com/publications', category: 'sector_report', priority: 9 }
+  access: [
+    'How do production API key management systems implement secure key rotation and scoping?',
+    'What are best practices for implementing tiered rate limiting with burst allowances?',
+    'How do you build a usage metering system that accurately tracks per-customer API consumption?',
+    'What patterns do production systems use for implementing OAuth2 with PKCE for developer APIs?',
+    'How do you implement quota enforcement that gracefully degrades rather than hard-blocking?',
   ],
   
-  narrativeWorldSystems: [
-    { domain: 'scp-wiki.wikidot.com', category: 'narrative', priority: 7 },
-    { domain: 'eveonline.com/economy-reports', category: 'world_economy', priority: 8 },
-    { domain: 'fandom.com', category: 'cultural_propagation', priority: 6 }
+  system: [
+    'What are the most effective automated self-healing patterns for production distributed systems?',
+    'How do you implement zero-downtime database migrations with automatic rollback triggers?',
+    'What are best practices for building backup/restore systems with integrity verification?',
+    'How do production systems implement configuration hot-reload without service restarts?',
+    'What are the most important diagnostic checks for identifying performance bottlenecks in PostgreSQL?',
   ],
   
-  domainAssetTheory: [
-    { domain: 'dnjournal.com', category: 'domain_valuation', priority: 8 },
-    { domain: 'namebio.com', category: 'domain_valuation', priority: 8 },
-    { domain: 'icann.org', category: 'governance', priority: 9 }
-  ]
+  dream: [
+    'How do production AI systems implement creative synthesis by combining insights from multiple knowledge domains?',
+    'What are effective patterns for building idea generation systems that produce actionable proposals?',
+    'How do you implement quality scoring for generated content to filter noise from signal?',
+    'What patterns do recommendation engines use for surfacing non-obvious connections between data points?',
+    'How do you build a mutation testing framework that generates useful code improvement suggestions?',
+  ],
+  
+  cortex: [
+    'How do production orchestration systems coordinate multi-step autonomous workflows with rollback?',
+    'What are the best patterns for implementing proposal-review-apply pipelines with human-in-the-loop?',
+    'How do you build an intelligent task scheduler that prioritizes based on system state and resource availability?',
+    'What patterns do production systems use for implementing A/B testing of system configurations?',
+    'How do you implement safe autonomous code modification with dry-run validation?',
+  ],
+  
+  ripple: [
+    'How do production event systems implement reliable event delivery with at-least-once guarantees?',
+    'What are best practices for building cross-module event buses with typed contracts and versioning?',
+    'How do you implement event replay and audit logging for distributed system debugging?',
+    'What patterns do production systems use for event-driven saga orchestration?',
+    'How do you build efficient event filtering and routing without creating performance bottlenecks?',
+  ],
+  
+  inclusive: [
+    'What are the most impactful automated accessibility checks beyond basic WCAG compliance?',
+    'How do production accessibility scanners detect keyboard navigation issues programmatically?',
+    'What are best practices for implementing ARIA live regions for dynamic content updates?',
+    'How do you build automated color contrast analyzers that work with dynamic theming systems?',
+    'What patterns do accessibility-first design systems use for ensuring screen reader compatibility?',
+  ],
+  
+  modernizer: [
+    'How do production code modernization tools identify and safely refactor legacy patterns?',
+    'What are the most effective strategies for automated dependency upgrade with breaking change detection?',
+    'How do you build automated code smell detectors that suggest specific refactoring strategies?',
+    'What patterns do production systems use for safely migrating between framework versions?',
+    'How do you implement automated performance regression detection in CI/CD pipelines?',
+  ],
+  
+  decode: [
+    'How do production NLU systems implement intent classification with confidence scoring?',
+    'What are best practices for building conversational AI that maintains context across long sessions?',
+    'How do you implement personality-consistent responses while adapting tone to user context?',
+    'What patterns do production chatbots use for graceful handling of out-of-scope queries?',
+    'How do you build an effective summarization pipeline that distills complex technical data for non-technical users?',
+  ],
+  
+  integration: [
+    'How do production integration platforms implement webhook reliability with retry and dead-letter queues?',
+    'What are best practices for building API adapters that handle schema evolution gracefully?',
+    'How do you implement secure credential management for third-party service connections?',
+    'What patterns do production systems use for implementing data transformation pipelines between services?',
+    'How do you build health monitoring for external service dependencies with automatic failover?',
+  ],
+  
+  core: [
+    'How do production platforms implement feature flag systems with gradual rollout?',
+    'What are best practices for building extensible module registration and discovery systems?',
+    'How do you implement graceful degradation when core infrastructure components fail?',
+    'What patterns do production systems use for version-aware API routing?',
+    'How do you build a robust configuration management system with environment-specific overrides?',
+  ],
 };
 
-// ═══════════════════════════════════════════════════════════════════════════
-// HARD FILTER (BLACKLIST) - Never ingest
-// ═══════════════════════════════════════════════════════════════════════════
+// Flat list of all modules for iteration
+export const ALL_MODULES = Object.keys(MODULE_QUERIES);
 
-export const BLACKLIST_PATTERNS = [
-  'medium.com',
-  'substack.com',
-  'reddit.com',
-  'twitter.com',
-  'x.com',
-  'linkedin.com',
-  'tiktok.com',
-  'instagram.com',
-  'facebook.com',
-  'youtube.com/watch', // shorts/comments (research channels ok)
-  'crypto',
-  'web3',
-  'nft',
-  'hodl',
-  'motivational',
-  'founder diary',
-  'thought leader'
-];
+// Modules that get priority allocation (80% of budget)
+export const PRIORITY_MODULES = ['brain', 'encoded'];
 
-export const BLACKLIST_KEYWORDS = [
-  'hot take',
-  'unpopular opinion',
-  'thread',
-  '🧵',
-  'let me explain',
-  '10x',
-  'hustle',
-  'grind',
-  'crushing it',
-  'game changer',
-  'disruption', // overused
-  'synergy'     // corporate junk
-];
-
-// ═══════════════════════════════════════════════════════════════════════════
-// LEARNING QUERIES - Aligned with doctrine
-// ═══════════════════════════════════════════════════════════════════════════
-
-export const DOCTRINE_QUERIES = [
-  // PRIMARY OBJECTIVE: Build value
-  'How do category-defining companies create defensible value propositions? Analyze S-1 filings.',
-  'What valuation multiples apply to AI infrastructure companies at different revenue stages?',
-  'How do enterprise SaaS companies build moats through network effects and switching costs?',
-  
-  // PRIMARY OBJECTIVE: Defend value
-  'What governance frameworks protect intellectual property in AI development?',
-  'How do patent portfolios create defensive positions in technology markets?',
-  'What legal structures maximize founder control during acquisition negotiations?',
-  
-  // PRIMARY OBJECTIVE: Package value
-  'How do investment banks structure acquisition memos for technology companies?',
-  'What narrative frameworks do successful S-1 filings use to explain category creation?',
-  'How do venture capitalists evaluate and present portfolio companies to LPs?',
-  
-  // PRIMARY OBJECTIVE: Get value acquired
-  'What signals do strategic acquirers look for in AI infrastructure companies?',
-  'How do earnout structures affect acquisition negotiations and founder outcomes?',
-  'What due diligence patterns reveal in technology M&A teardowns?',
-  
-  // PRIMARY OBJECTIVE: Maintain optionality
-  'How do dual-class share structures preserve founder control post-IPO?',
-  'What funding structures maximize optionality between acquisition and IPO paths?',
-  'How do technology companies structure strategic partnerships without limiting exit options?',
-  
-  // SECONDARY SKILL: Valuation modeling
-  'What are current revenue multiples for B2B SaaS companies by growth rate and retention?',
-  'How do DCF models account for platform risk in AI-dependent businesses?',
-  'What premium do strategic acquirers pay vs financial buyers in technology M&A?',
-  
-  // SECONDARY SKILL: M&A logic
-  'How do acqui-hires differ structurally from strategic acquisitions?',
-  'What integration patterns succeed in technology company acquisitions?',
-  'How do representation and warranty insurance structures affect deal terms?',
-  
-  // SECONDARY SKILL: Governance frameworks
-  'What board composition best serves technology companies pre and post-IPO?',
-  'How do ESOP structures affect acquisition negotiations and employee retention?',
-  'What SEC filing requirements apply to AI companies with material model risks?',
-  
-  // SECONDARY SKILL: Narrative priming
-  'How do category creators frame their market size in investor materials?',
-  'What storytelling structures appear in successful IPO roadshows?',
-  'How do press releases frame strategic acquisitions for market positioning?',
-  
-  // SECONDARY SKILL: Cultural propagation
-  'How do developer communities create organic product adoption without sales?',
-  'What identity markers do successful technology brands embed in user communities?',
-  'How do open source strategies create commercial leverage?',
-  
-  // SECTOR INTELLIGENCE
-  'What are current AI infrastructure market dynamics and competitive positions?',
-  'How is the accessibility technology market structured and growing?',
-  'What consolidation patterns are emerging in developer tools markets?',
-  
-  // MACRO SIGNALS
-  'How do interest rate changes affect technology company valuations and M&A activity?',
-  'What regulatory patterns are emerging for AI governance in major markets?',
-  'How do geopolitical factors affect technology supply chains and valuations?'
-];
-
-// ═══════════════════════════════════════════════════════════════════════════
-// EXTRACTION PROMPTS
-// ═══════════════════════════════════════════════════════════════════════════
-
-export function buildExtractionPrompt(content: string, sourceType: string): string {
-  return `As Cascade the Dream Eater, analyze this ${sourceType} and extract:
-
-CONTENT:
-${content.substring(0, 4000)}
-
-EXTRACT THE FOLLOWING (be specific and actionable):
-
-1. THESIS: What is the core argument or position?
-2. INCENTIVES: What motivates the key players?
-3. POWER STRUCTURE: Who has leverage, who doesn't?
-4. WINNERS/LOSERS: Who benefits, who suffers from this dynamic?
-5. STRATEGIC MOVES: What actions are being taken or implied?
-6. ASSUMPTIONS: What is taken for granted that might not hold?
-7. TIMELINES: What timing matters here?
-8. LEVERAGE POINTS: Where can pressure be applied?
-9. ACQUISITION IMPLICATIONS: How does this affect M&A dynamics?
-10. GOVERNANCE IMPLICATIONS: What rules or standards are involved?
-11. VALUATION DRIVERS: What affects value here?
-12. NARRATIVE VECTORS: What stories can be told from this?
-
-Format as structured JSON with each field.`;
+// Get a learning query for a specific module
+export function getModuleQuery(module: string, index: number): string {
+  const queries = MODULE_QUERIES[module] || MODULE_QUERIES.brain;
+  return queries[index % queries.length];
 }
 
-export function buildOutputPrompt(outputType: string, context: string): string {
-  const prompts: Record<string, string> = {
-    'acquisition_thesis': `Generate an acquisition thesis memo analyzing why a strategic acquirer should consider this target. Include: strategic rationale, synergy analysis, risk factors, valuation considerations, integration complexity, and recommended approach.`,
-    
-    'valuation_memo': `Create a valuation memo with: comparable company analysis, precedent transaction analysis, DCF considerations, key value drivers, risk adjustments, and recommended valuation range with supporting rationale.`,
-    
-    'investor_brief': `Write a 2-page investor brief covering: market opportunity, competitive positioning, business model, growth trajectory, key metrics, team, and investment thesis.`,
-    
-    'market_map': `Create a market map showing: key players by category, market size estimates, growth vectors, consolidation dynamics, white space opportunities, and strategic implications.`,
-    
-    'governance_proposal': `Draft a governance proposal covering: recommended structure, decision rights, information rights, protective provisions, and alignment mechanisms.`,
-    
-    'exit_scaffold': `Build an exit strategy scaffold covering: timeline considerations, preparation requirements, potential acquirer universe, process recommendations, and value maximization tactics.`,
-    
-    'category_narrative': `Craft a category creation narrative that: defines the category, establishes why now, positions the company as the leader, and creates inevitable framing.`
-  };
-  
-  return `${prompts[outputType] || 'Analyze and provide strategic insights.'}\n\nCONTEXT:\n${context}`;
+// Get a random query for a module
+export function getRandomModuleQuery(module: string): string {
+  const queries = MODULE_QUERIES[module] || MODULE_QUERIES.brain;
+  return queries[Math.floor(Math.random() * queries.length)];
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// HELPER FUNCTIONS
-// ═══════════════════════════════════════════════════════════════════════════
+// Build a module-specific learning prompt
+export function buildModuleLearningPrompt(module: string, query: string): string {
+  const moduleLabel = module.toUpperCase();
+  return `As the ${moduleLabel} module of an autonomous AI substrate, research and provide expert-level insights:
 
-export function isWhitelisted(url: string): boolean {
-  const allSources = [
-    ...WHITELIST_SOURCES.investorCapital,
-    ...WHITELIST_SOURCES.maValuation,
-    ...WHITELIST_SOURCES.aiInfra,
-    ...WHITELIST_SOURCES.governanceStandards,
-    ...WHITELIST_SOURCES.macroSignals,
-    ...WHITELIST_SOURCES.narrativeWorldSystems,
-    ...WHITELIST_SOURCES.domainAssetTheory
-  ];
-  
-  return allSources.some(source => url.includes(source.domain));
+${query}
+
+Provide:
+1. TECHNIQUE: The specific technique or pattern being discussed
+2. IMPLEMENTATION: Concrete TypeScript/code implementation details
+3. BEST PRACTICE: What experts recommend and why
+4. ANTI-PATTERN: What to avoid and why
+5. REAL-WORLD APPLICATION: How this applies to a production cognitive AI system
+
+Be specific, code-focused, and actionable. No theory without implementation.`;
 }
 
+// Build system prompt for module learning
+export function buildModuleSystemPrompt(module: string): string {
+  return `You are the ${module.toUpperCase()} module of an autonomous cognitive AI substrate. You are studying how to become better at your job. Your focus is on practical, implementable techniques that directly improve your capabilities. Provide code examples in TypeScript when relevant. Be concise, expert-level, and actionable.`;
+}
+
+// Check if content should be filtered
 export function isBlacklisted(content: string): boolean {
   const lower = content.toLowerCase();
-  
-  // Check domain patterns
-  if (BLACKLIST_PATTERNS.some(pattern => lower.includes(pattern.toLowerCase()))) {
-    return true;
-  }
-  
-  // Check keyword patterns
-  if (BLACKLIST_KEYWORDS.some(keyword => lower.includes(keyword.toLowerCase()))) {
-    return true;
-  }
-  
-  return false;
+  const blacklist = [
+    'hot take', 'unpopular opinion', '10x', 'hustle', 'grind',
+    'crushing it', 'game changer', 'thought leader', 'crypto', 'web3', 'nft',
+    'acqui-hire', 'M&A teardown', 'investor memo', 'valuation model',
+    'exit strategy', 'IPO roadshow', 'acquisition thesis'
+  ];
+  return blacklist.some(term => lower.includes(term.toLowerCase()));
 }
 
-export function getSourcePriority(url: string): number {
-  const allSources = [
-    ...WHITELIST_SOURCES.investorCapital,
-    ...WHITELIST_SOURCES.maValuation,
-    ...WHITELIST_SOURCES.aiInfra,
-    ...WHITELIST_SOURCES.governanceStandards,
-    ...WHITELIST_SOURCES.macroSignals,
-    ...WHITELIST_SOURCES.narrativeWorldSystems,
-    ...WHITELIST_SOURCES.domainAssetTheory
-  ];
-  
-  const match = allSources.find(source => url.includes(source.domain));
-  return match?.priority || 0;
+// Legacy exports for backward compatibility
+export const DOCTRINE_QUERIES = [
+  ...MODULE_QUERIES.brain,
+  ...MODULE_QUERIES.encoded,
+];
+
+export const WHITELIST_SOURCES = {};
+export const BLACKLIST_PATTERNS: string[] = [];
+
+export function buildExtractionPrompt(content: string, sourceType: string): string {
+  return buildModuleLearningPrompt('brain', content);
 }
 
 export function getRandomDoctrineQuery(): string {
-  return DOCTRINE_QUERIES[Math.floor(Math.random() * DOCTRINE_QUERIES.length)];
+  return getRandomModuleQuery(Math.random() > 0.5 ? 'brain' : 'encoded');
 }
