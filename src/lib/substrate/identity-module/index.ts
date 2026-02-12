@@ -39,6 +39,8 @@ const state: IdentityModuleState = {
   currentActor: null,
   registeredActors: 0,
   signaturesIssued: 0,
+  passkeyCount: 0,
+  passwordlessEnforced: true,
 };
 
 function generateSignature(actorId: string): string {
