@@ -349,7 +349,7 @@ describe('Module Coverage', () => {
       }
     }
     
-    // At minimum the original 14 modules should be covered
+    // At minimum the original 14 core modules should be covered
     expect(usedModules.size).toBeGreaterThanOrEqual(14);
   });
   

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { TEMPLATES } from "@/data/templates";
 
-// The 20 modules of the substrate (6-layer architecture v9.0.0)
+// The 21 modules of the substrate (6-layer architecture v9.1.0 ARCHITECT)
 const MODULES = [
   // Kernel Layer
   { icon: Cpu, name: "Core", color: "text-orange-400", description: "Kernel scheduling" },
@@ -32,6 +32,7 @@ const MODULES = [
   { icon: Globe, name: "Integration", color: "text-emerald-400", description: "Enterprise" },
   // Orchestrator Layer
   { icon: Sparkles, name: "Cortex", color: "text-fuchsia-400", description: "Orchestrator" },
+  { icon: Sparkles, name: "Encode", color: "text-lime-400", description: "Execution engine" },
   // Human Compatibility Layer
   { icon: Eye, name: "Inclusive", color: "text-rose-400", description: "Human a11y" },
 ];

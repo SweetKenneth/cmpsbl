@@ -84,7 +84,7 @@ const OBSERVER_CAPABILITIES = [
   {
     icon: Brain,
     title: 'Watch AI Learn',
-    description: '14 modules continuously self-improve through autonomous learning cycles',
+    description: '21 modules continuously self-improve through autonomous learning cycles',
   },
   {
     icon: Activity,
@@ -197,7 +197,7 @@ export default function Auth() {
             </p>
             <p className="text-muted-foreground">
               As an observer, you gain read-only access to the cognitive substrate's 
-              autonomous learning system. No interaction required—just observe 14 modules 
+               autonomous learning system. No interaction required—just observe 21 modules 
               continuously improving themselves.
             </p>
           </div>
@@ -348,7 +348,7 @@ export default function Auth() {
                         </li>
                         <li className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" />
-                          <span>14 modules learning autonomously 24/7</span>
+                          <span>21 modules learning autonomously 24/7</span>
                         </li>
                         <li className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />

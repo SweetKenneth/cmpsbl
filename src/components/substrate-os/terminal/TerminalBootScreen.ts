@@ -8,7 +8,7 @@
  * - Updated version branding to v9.1.0 ARCHITECT
  * - 400+ capabilities, 100 engines, 25 meta-engines
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 340+ commands across 20 modules + infrastructure
+ * - 360+ commands across 21 modules + infrastructure
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
  */

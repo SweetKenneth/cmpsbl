@@ -284,7 +284,7 @@ export function useSystemConfig(key?: string) {
   });
 }
 
-// Combined health score for dashboard - all 14 modules (13 core + Inclusive human-compatibility)
+// Combined health score for dashboard - all 21 modules
 export function useSubstrateHealthScore() {
   const visionHealth = useVisionHealthOS();
   const brainStatus = useBrainStatusOS();

@@ -3,8 +3,8 @@
  * v9.0.0 ARCHITECT Epoch — Single-source-of-truth substrate interface
  * 
  * The Atlas provides:
- * - Unified module registry for all 20 modules across 6 layers
- * - Orchestration of 325 capabilities, 70 engines, 22 meta-engines
+ * - Unified module registry for all 21 modules across 6 layers
+ * - Orchestration of 400+ capabilities, 100 engines, 25 meta-engines
  * - SEBA, Autoblog, and Test adapters
  * - Capability toggles with persistence
  * - Full audit trail with secret redaction

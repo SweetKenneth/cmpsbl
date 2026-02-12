@@ -31,7 +31,7 @@ interface ModuleControlsGridProps {
 }
 
 export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
-  // Status hooks for all 14 modules
+  // Status hooks for all 21 modules
   const brainStatus = useBrainStatusOS();
   const defenseStatus = useDefenseStatusOS();
   const nexusStatus = useNexusStatusOS();
