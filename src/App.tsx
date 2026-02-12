@@ -84,6 +84,7 @@ const ExperimentationLab = lazy(() => import("./pages/ExperimentationLab"));
 const SubstrateCapabilitiesDocs = lazy(() => import("./pages/SubstrateCapabilitiesDocs"));
 const CapabilitiesDepot = lazy(() => import("./pages/CapabilitiesDepot"));
 const SynergyPipelines = lazy(() => import("./pages/SynergyPipelines"));
+const SubstrateStore = lazy(() => import("./pages/SubstrateStore"));
 const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed"));
 const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
