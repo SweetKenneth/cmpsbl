@@ -60,7 +60,10 @@ export type MetaEngineId =
   | 'world_first_governance'    // DEFENSE + ACCESS + RIPPLE + INCLUSIVE world-first enhancements
   // v8.5.0 additions (2) — High-Value Expansion Meta-Engines
   | 'resilience_shield'         // Sandbox + Prompt Safety + Saga + Policy Access
-  | 'deep_cognition_nexus';     // Deep Cognition + Dialogue + Observability + Tech Debt
+  | 'deep_cognition_nexus'      // Deep Cognition + Dialogue + Observability + Tech Debt
+  // v9.0.0 additions (2) — Infrastructure Cross-Module Meta-Engines
+  | 'enterprise_trust_fabric'   // Zero Trust + Compliance Audit + Relay Encryption
+  | 'platform_economics_engine'; // FinOps + Knowledge Retrieval + Revenue Attribution
 
 export interface MetaEngineDefinition {
   id: MetaEngineId;
