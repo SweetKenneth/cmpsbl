@@ -414,7 +414,7 @@ export default function SubstrateDashboard() {
             </ScrollArea>
           </div>
 
-          {/* Overview - All 14 modules */}
+          {/* Overview - All 20 modules */}
           <TabsContent value="overview" className="mt-6">
             <div className="space-y-8">
               {Object.entries(modulesByLayer).map(([layer, modules]) => (

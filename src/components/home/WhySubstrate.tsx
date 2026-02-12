@@ -415,7 +415,7 @@ export function WhySubstrate() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">14 Modules • 5 Layers</span>
+            <span className="text-xs">20 Modules • 6 Layers</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             What Makes It{" "}
