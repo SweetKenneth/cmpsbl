@@ -106,7 +106,7 @@ export default function SubstrateIntelligence() {
     <>
       <SEO 
         title="Substrate Intelligence | CMPSBL - AI Drift Prevention Technology"
-        description="The world's first cognitive orchestration substrate. 14-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $2,999/yr or acquire the IP."
+        description="The world's first cognitive orchestration substrate. 20-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $2,999/yr or acquire the IP."
         keywords={["AI behavioral drift", "chatbot consistency", "persistent memory AI", "self-improving AI", "cognitive orchestration", "AI substrate", "CMPSBL", "promptfluid", "autonomous AI", "enterprise AI"]}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
