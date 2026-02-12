@@ -40,7 +40,7 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
     }
   };
 
-  // All 14 modules in the substrate architecture
+  // All 20 modules in the substrate architecture
   const moduleStatus = [
     { name: 'Core', key: 'core', healthy: healthScore.modules.core, icon: Cpu, color: 'text-orange-400' },
     { name: 'Ripple', key: 'ripple', healthy: healthScore.modules.ripple, icon: Activity, color: 'text-cyan-400' },

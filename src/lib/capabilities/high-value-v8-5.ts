@@ -1,6 +1,6 @@
 /**
  * High-Value Capabilities v8.5.0
- * 56 new capabilities — 4 per module across all 14 modules
+ * 56 new capabilities — across all 20 modules
  * Total: 269 (existing) + 56 = 325 capabilities
  */
 

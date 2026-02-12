@@ -161,7 +161,7 @@ export default function SubstrateDemo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Interactive Demo — Substrate AI OS | promptfluid®"
-        description="Experience the 14-module cognitive operating system in action. Watch memory, reasoning, defense, and synthesis orchestrate in real-time."
+        description="Experience the 20-module cognitive operating system in action. Watch memory, reasoning, defense, and synthesis orchestrate in real-time."
       />
       <PublicNav />
 

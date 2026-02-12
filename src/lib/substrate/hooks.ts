@@ -1,9 +1,9 @@
 /**
  * Substrate React Hooks
- * v8.0.0 — SYNERGY+ Epoch React Integration Layer
+ * v9.0.0 — ARCHITECT Epoch React Integration Layer
  * 
- * Provides React hooks for all substrate engines across the 14-module architecture.
- * Enables seamless integration of cognitive capabilities (269) into React components.
+ * Provides React hooks for all substrate engines across the 20-module architecture.
+ * Enables seamless integration of cognitive capabilities (325) into React components.
  * 
  * Respects debugMode — when enabled, auto-refresh intervals are skipped
  */
