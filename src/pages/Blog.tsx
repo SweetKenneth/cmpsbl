@@ -57,6 +57,9 @@ import agentMemoryAntiPatternsImg from "@/assets/blog/agent-memory-anti-patterns
 import langchainMemoryImg from "@/assets/blog/langchain-memory-integration.jpg";
 import whyAgentsForgetImg from "@/assets/blog/why-agents-forget.jpg";
 import buildingAgentsLearnImg from "@/assets/blog/building-agents-that-learn.jpg";
+import protocolStandardsImg from "@/assets/blog/ai-protocol-standards-v9.jpg";
+import governanceComplianceImg from "@/assets/blog/ai-governance-compliance-v9.jpg";
+import threatIntelAdversarialImg from "@/assets/blog/ai-threat-intel-adversarial-v9.jpg";
 
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
@@ -299,6 +302,30 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
 
 // ─── Static human posts ───
 const HUMAN_POSTS: BlogPost[] = [
+  {
+    id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the ARCHITECT Epoch",
+    excerpt: "How v9.1.0's RELAY and IDENTITY modules establish a unified protocol layer for autonomous agent communication.",
+    href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",
+    date: "2026-02-10", readTime: "16 min", image: protocolStandardsImg,
+    imageAlt: "AI protocol standards visualization",
+    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+  },
+  {
+    id: 'governance-compliance-v9', title: "Autonomous AI Governance: From Theory to Runtime Enforcement",
+    excerpt: "The AUDIT and IDENTITY modules bring cryptographic compliance logging and universal actor attribution to autonomous systems.",
+    href: "/blog/autonomous-ai-governance-runtime-enforcement", category: "Governance",
+    date: "2026-02-08", readTime: "14 min", image: governanceComplianceImg,
+    imageAlt: "AI governance compliance framework",
+    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+  },
+  {
+    id: 'adversarial-threat-v9', title: "Adversarial AI in 2026: The DEFENSE Module's Response",
+    excerpt: "Inside the prompt injection countermeasures, behavioral fingerprinting, and zero-trust mesh that protect the substrate.",
+    href: "/blog/adversarial-ai-defense-module-response-2026", category: "Threat Intel",
+    date: "2026-02-06", readTime: "18 min", image: threatIntelAdversarialImg,
+    imageAlt: "Adversarial AI threat intelligence",
+    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+  },
   {
     id: 'evolving-software', title: "Evolving Software v6.x.x: The Breakthrough",
     excerpt: "CMPSBL v6.x.x represents a paradigm shift—systems that learn, adapt, and evolve autonomously. Now available via API.",

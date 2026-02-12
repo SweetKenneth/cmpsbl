@@ -20,6 +20,8 @@ import {
   Check,
   ExternalLink,
   Terminal,
+  Lock,
+  Crown,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -45,6 +47,7 @@ import {
   type CapabilityCategory,
 } from '@/lib/capabilities/depot';
 import { getCodeSnippet, getSDKImport, getQuickStartSnippet } from '@/lib/capabilities/depot/code-snippets';
+import { isCrownJewelCapability } from '@/lib/capabilities/crown-jewel-gate';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
@@ -71,6 +74,7 @@ const difficultyColors: Record<string, string> = {
 function ModalContent({ capability, categoryConfig }: { capability: CapabilityArtifact; categoryConfig: CapabilityDetailModalProps['categoryConfig'] }) {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'code'>('code');
+  const isGated = isCrownJewelCapability(capability.id);
   
   const config = categoryConfig[capability.category];
   const CategoryIcon = config?.icon;
@@ -112,11 +116,17 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
           {getTierConfig(capability.pricingTier).badge}
         </Badge>
         
-        {/* FREE Badge */}
-        <Badge className="text-xs bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
-          <Unlock className="w-2.5 h-2.5 mr-1" />
-          FREE
-        </Badge>
+        {isGated ? (
+          <Badge className="text-xs bg-amber-500/10 text-amber-400 border-amber-500/30">
+            <Crown className="w-2.5 h-2.5 mr-1" />
+            ENTERPRISE ONLY
+          </Badge>
+        ) : (
+          <Badge className="text-xs bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
+            <Unlock className="w-2.5 h-2.5 mr-1" />
+            FREE
+          </Badge>
+        )}
       </div>
       
       {/* Version info */}
@@ -144,54 +154,73 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
 
         {/* CODE TAB */}
         <TabsContent value="code" className="mt-4 space-y-4">
-          {/* Quick Import */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Terminal className="w-4 h-4" />
-                SDK Import
-              </h4>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleCopy(sdkImport)}
-                className="h-7 px-2 text-xs"
-              >
-                {copied ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
-                {copied ? 'Copied!' : 'Copy'}
+          {isGated ? (
+            <div className="p-6 rounded-xl border border-amber-500/20 bg-amber-500/5 text-center space-y-3">
+              <Lock className="w-10 h-10 text-amber-400 mx-auto" />
+              <h4 className="text-lg font-bold text-foreground">Enterprise Only</h4>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                This Crown Jewel capability requires an Enterprise subscription. 
+                Upgrade to unlock code snippets, SDK imports, and full documentation.
+              </p>
+              <Button asChild className="mt-2 bg-amber-600 hover:bg-amber-500">
+                <Link to="/engines">
+                  <Crown className="w-4 h-4 mr-2" />
+                  View Enterprise Plans
+                </Link>
               </Button>
             </div>
-            <pre className="p-3 rounded-lg bg-muted/50 border border-border/50 text-xs font-mono overflow-x-auto">
-              <code className="text-primary">{sdkImport}</code>
-            </pre>
-          </div>
+          ) : (
+            <>
+              {/* Quick Import */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <Terminal className="w-4 h-4" />
+                    SDK Import
+                  </h4>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleCopy(sdkImport)}
+                    className="h-7 px-2 text-xs"
+                  >
+                    {copied ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
+                    {copied ? 'Copied!' : 'Copy'}
+                  </Button>
+                </div>
+                <pre className="p-3 rounded-lg bg-muted/50 border border-border/50 text-xs font-mono overflow-x-auto">
+                  <code className="text-primary">{sdkImport}</code>
+                </pre>
+              </div>
 
-          {/* Full Code Snippet */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="text-sm font-semibold text-foreground">Full Example</h4>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleCopy(codeSnippet)}
-                className="h-7 px-2 text-xs"
-              >
-                {copied ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
-                {copied ? 'Copied!' : 'Copy'}
+              {/* Full Code Snippet */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-foreground">Full Example</h4>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleCopy(codeSnippet)}
+                    className="h-7 px-2 text-xs"
+                  >
+                    {copied ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
+                    {copied ? 'Copied!' : 'Copy'}
+                  </Button>
+                </div>
+                <pre className="p-4 rounded-lg bg-muted/50 border border-border/50 text-xs font-mono overflow-x-auto max-h-64 overflow-y-auto">
+                  <code className="text-muted-foreground whitespace-pre">{codeSnippet}</code>
+                </pre>
+              </div>
+
+              {/* Open in CodeLab CTA */}
+              <Button asChild className="w-full" variant="outline">
+                <Link to={`/codelab?capability=${capability.id}`}>
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Open in CodeLab
+                </Link>
               </Button>
-            </div>
-            <pre className="p-4 rounded-lg bg-muted/50 border border-border/50 text-xs font-mono overflow-x-auto max-h-64 overflow-y-auto">
-              <code className="text-muted-foreground whitespace-pre">{codeSnippet}</code>
-            </pre>
-          </div>
-
-          {/* Open in CodeLab CTA */}
-          <Button asChild className="w-full" variant="outline">
-            <Link to={`/codelab?capability=${capability.id}`}>
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Open in CodeLab
-            </Link>
-          </Button>
+            </>
+          )}
         </TabsContent>
 
         {/* OVERVIEW TAB */}
