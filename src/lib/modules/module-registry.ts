@@ -21,7 +21,7 @@ export interface ModuleInfo {
   name: string;
   tagline: string;
   description: string;
-  layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Administrative' | 'Orchestrator';
+  layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Administrative' | 'Orchestrator' | 'Infrastructure';
   icon: LucideIcon;
   color: string;
   useCaseH1: string;
