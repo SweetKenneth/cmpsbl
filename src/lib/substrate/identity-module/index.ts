@@ -1,6 +1,7 @@
 /**
  * IDENTITY Module — Universal Actor Attribution
  * v9.0.0 ARCHITECT Epoch — Human/agent/system identity, signatures, provenance
+ * Passwordless WebAuthn passkey authentication
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
@@ -15,6 +16,10 @@ export interface ActorIdentity {
   createdAt: number;
   lastActiveAt: number;
   metadata: Record<string, unknown>;
+  /** Registered passkey credential IDs */
+  passkeys: string[];
+  /** Whether this actor uses passwordless auth */
+  passwordless: boolean;
 }
 
 export interface IdentityModuleState {
@@ -22,6 +27,10 @@ export interface IdentityModuleState {
   currentActor: ActorIdentity | null;
   registeredActors: number;
   signaturesIssued: number;
+  /** Total passkeys registered across all actors */
+  passkeyCount: number;
+  /** Whether passwordless mode is enforced */
+  passwordlessEnforced: boolean;
 }
 
 const actors = new Map<string, ActorIdentity>();
