@@ -119,8 +119,8 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
     <motion.div
       layout
       className={cn(
-        "snap-start shrink-0 w-[280px] md:w-auto md:shrink md:snap-none",
-        "rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm",
+        "snap-start shrink-0 w-[280px] min-h-[180px]",
+        "rounded-xl border border-border bg-card",
         "hover:border-primary/30 hover:-translate-y-1 transition-all duration-200 cursor-pointer",
         "flex flex-col overflow-hidden"
       )}
