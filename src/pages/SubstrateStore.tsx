@@ -1,7 +1,7 @@
 /**
- * Substrate Store — Unified FREE Resource Hub
+ * Composable Artifacts — Unified FREE Resource Hub
  * Supreme × Canva inspired layout — Category-first, horizontal-scroll mobile UX
- * Combines: Capabilities (400+), Templates (200+), Pipelines (200+)
+ * Combines: Capabilities (400+), Templates (200+), Pipelines (200+) = 800+ Artifacts
  */
 
 import { useState, useMemo, useRef, useCallback } from 'react';
