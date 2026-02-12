@@ -1,10 +1,10 @@
 /**
  * Atlas Control Plane
- * v8.0.0 SYNERGY+ Epoch — Single-source-of-truth substrate interface
+ * v9.0.0 ARCHITECT Epoch — Single-source-of-truth substrate interface
  * 
  * The Atlas provides:
- * - Unified module registry for all 14 modules across 5 layers
- * - Orchestration of 269 capabilities, 62 engines, 20 meta-engines
+ * - Unified module registry for all 20 modules across 6 layers
+ * - Orchestration of 325 capabilities, 70 engines, 22 meta-engines
  * - SEBA, Autoblog, and Test adapters
  * - Capability toggles with persistence
  * - Full audit trail with secret redaction
