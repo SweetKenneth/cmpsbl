@@ -615,7 +615,7 @@ function ProofModeContent() {
                     {selectedScenario === "health" && (
                       <>
                         <p>✓ The substrate is deployed and responding to HTTP requests</p>
-                        <p>✓ All 14 modules are reachable (v6.0.0 architecture)</p>
+                        <p>✓ All 21 modules are reachable (v9.1.0 architecture)</p>
                         <p>✓ Edge functions are executing on Deno runtime in {EDGE_REGION}</p>
                         <p>✓ Version {SUBSTRATE_VERSION} is the active deployment</p>
                       </>

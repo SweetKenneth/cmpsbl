@@ -67,8 +67,8 @@ const modules = [
 
 const metrics = [
   { label: "Lines of Code", value: "175,000+", detail: "Production codebase" },
-  { label: "Modules", value: "14", detail: "Complete kernel architecture" },
-  { label: "Commands", value: "340+", detail: "Terminal-accessible operations" },
+  { label: "Modules", value: "21", detail: "Complete 6-layer architecture" },
+  { label: "Commands", value: "360+", detail: "Terminal-accessible operations" },
   { label: "AI Providers", value: "8+", detail: "With auto-failover" },
   { label: "Memory Tiers", value: "3", detail: "Hot, Warm, Cold architecture" },
   { label: "Uptime Target", value: "99.9%", detail: "With auto-heal mechanisms" },
@@ -85,11 +85,11 @@ const faqItems = [
   },
   {
     question: "Is this production-ready?",
-    answer: "Yes. CMPSBL is a live, operational system with 175,000+ lines of production code, 50+ database tables, and 340+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
+    answer: "Yes. CMPSBL is a live, operational system with 175,000+ lines of production code, 50+ database tables, and 360+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
   },
   {
     question: "What's included in a license?",
-    answer: "Developer License ($2,999/yr) includes: complete 20-module kernel across 6 layers, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 340+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
+    answer: "Developer License ($2,999/yr) includes: complete 21-module kernel across 6 layers, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 360+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
   },
   {
     question: "Can the entire IP be acquired?",
@@ -152,7 +152,7 @@ export default function SubstrateIntelligence() {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  20 Modules - Fully Documented
+                  21 Modules - Fully Documented
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
@@ -252,7 +252,7 @@ export default function SubstrateIntelligence() {
 [CORTEX]     ████████████ READY      14ms
 [INCLUSIVE]  ████████████ READY       8ms
 ─────────────────────────────────
-20 modules loaded | Health: 100%
+21 modules loaded | Health: 100%
 Boot complete in 117ms`}
                   </pre>
                 </CardContent>

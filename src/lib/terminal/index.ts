@@ -50,3 +50,8 @@ export {
 export {
   registerInfraHandlers,
 } from './infra-handlers';
+
+// ENCODE module handlers (v9.1.0)
+export {
+  registerEncodeModuleHandlers,
+} from './encode-handlers';

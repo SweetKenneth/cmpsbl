@@ -342,7 +342,7 @@ export function useSubstrateHealthScore() {
   };
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
-  const totalModules = 14; // v6.0.0: All 14 modules
+  const totalModules = 21; // v9.1.0: All 21 modules
   const healthScore = Math.round((healthyCount / totalModules) * 100);
 
   const refetchAll = () => {

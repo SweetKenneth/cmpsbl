@@ -145,7 +145,7 @@ export default function Investors() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {[
-                { icon: Layers, title: "Complete Substrate", desc: "All 14 modules with unified architecture" },
+                { icon: Layers, title: "Complete Substrate", desc: "All 21 modules with unified architecture" },
                 { icon: Brain, title: "BRAIN Module", desc: "Memory, learning, and DREAM-state reflection" },
                 { icon: Sparkles, title: "Cascade Interface", desc: "Natural language user interface layer" },
                 { icon: Shield, title: "DEFENSE Module", desc: "Bot detection and threat neutralization" },
