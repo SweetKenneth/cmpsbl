@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — Full 20-module capability showcase
+ * Why CMPSBL — Full 21-module capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v9.0.0 ARCHITECT Epoch: Complete representation of the 6-layer kernel architecture
+ * v9.1.0 ARCHITECT Epoch: Complete representation of the 6-layer kernel architecture
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -23,6 +23,14 @@ import {
   Settings,
   Layers,
   Plug,
+  Database,
+  Send,
+  FileCheck,
+  Fingerprint,
+  Coins,
+  FlaskConical,
+  Code2,
+  Accessibility,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -204,9 +212,9 @@ const differentiators = [
     iconColor: "text-fuchsia-500",
     glowColor: "violet",
   },
-  // HUMAN COMPATIBILITY (14th module)
+  // HUMAN COMPATIBILITY
   {
-    icon: Lock,
+    icon: Accessibility,
     title: "Inclusive A11y",
     layer: "Admin",
     description: "INCLUSIVE module provides human-compatibility pipeline with WCAG 2.2 scanning, accessibility repairs, and AI ethics governance.",
@@ -218,13 +226,107 @@ const differentiators = [
     iconColor: "text-pink-500",
     glowColor: "rose",
   },
+  // INFRASTRUCTURE LAYER (6 modules)
+  {
+    icon: Database,
+    title: "Vector Memory",
+    layer: "Infrastructure",
+    description: "MEMORY module provides vector embeddings, RAG orchestration, and semantic search across all knowledge stores.",
+    highlight: "RAG Pipeline",
+    stat: "∞",
+    statLabel: "Vectors",
+    color: "from-sky-500 to-blue-600",
+    iconBg: "bg-gradient-to-br from-sky-500/20 to-blue-500/20",
+    iconColor: "text-sky-500",
+    glowColor: "blue",
+  },
+  {
+    icon: Send,
+    title: "Outbound Relay",
+    layer: "Infrastructure",
+    description: "RELAY module handles outbound webhooks, email notifications, and cross-system event delivery.",
+    highlight: "Event Delivery",
+    stat: "<50ms",
+    statLabel: "Latency",
+    color: "from-lime-500 to-green-600",
+    iconBg: "bg-gradient-to-br from-lime-500/20 to-green-500/20",
+    iconColor: "text-lime-500",
+    glowColor: "green",
+  },
+  {
+    icon: FileCheck,
+    title: "Compliance Ledger",
+    layer: "Infrastructure",
+    description: "AUDIT module maintains an immutable compliance ledger for every action, decision, and data access across the substrate.",
+    highlight: "Immutable Trail",
+    stat: "100%",
+    statLabel: "Coverage",
+    color: "from-stone-500 to-gray-600",
+    iconBg: "bg-gradient-to-br from-stone-500/20 to-gray-500/20",
+    iconColor: "text-stone-500",
+    glowColor: "amber",
+  },
+  {
+    icon: Fingerprint,
+    title: "Actor Identity",
+    layer: "Infrastructure",
+    description: "IDENTITY module provides actor attribution, cryptographic signatures, and provenance tracking for every operation.",
+    highlight: "Zero-Trust Identity",
+    stat: "PKI",
+    statLabel: "Signatures",
+    color: "from-rose-500 to-red-600",
+    iconBg: "bg-gradient-to-br from-rose-500/20 to-red-500/20",
+    iconColor: "text-rose-500",
+    glowColor: "rose",
+  },
+  {
+    icon: Coins,
+    title: "Cost Attribution",
+    layer: "Infrastructure",
+    description: "ECONOMY module tracks cost attribution, budget enforcement, and economic optimization across all AI operations.",
+    highlight: "Budget Control",
+    stat: "$0.00",
+    statLabel: "Waste",
+    color: "from-amber-500 to-orange-600",
+    iconBg: "bg-gradient-to-br from-amber-500/20 to-orange-500/20",
+    iconColor: "text-amber-600",
+    glowColor: "amber",
+  },
+  {
+    icon: FlaskConical,
+    title: "Sandboxed Execution",
+    layer: "Infrastructure",
+    description: "SANDBOX module provides isolated execution environments for untrusted code, experiments, and safe AI tool-use.",
+    highlight: "Isolated Envs",
+    stat: "0",
+    statLabel: "Blast Radius",
+    color: "from-cyan-500 to-teal-600",
+    iconBg: "bg-gradient-to-br from-cyan-500/20 to-teal-500/20",
+    iconColor: "text-cyan-600",
+    glowColor: "cyan",
+  },
+  // ENCODE (Module #21)
+  {
+    icon: Code2,
+    title: "Code Intelligence",
+    layer: "Cognitive",
+    description: "ENCODE module powers code execution, generation intelligence, and the DECODE → ENCODE execution pipeline.",
+    highlight: "Code Execution",
+    stat: "AI",
+    statLabel: "Codegen",
+    color: "from-yellow-500 to-lime-600",
+    iconBg: "bg-gradient-to-br from-yellow-500/20 to-lime-500/20",
+    iconColor: "text-yellow-500",
+    glowColor: "amber",
+  },
 ];
 
 const LAYER_CONFIG = {
   Kernel: { color: 'text-orange-400', count: 3 },
-  Cognitive: { color: 'text-purple-400', count: 3 },
+  Cognitive: { color: 'text-purple-400', count: 4 },
   Operational: { color: 'text-blue-400', count: 3 },
   Admin: { color: 'text-emerald-400', count: 4 },
+  Infrastructure: { color: 'text-sky-400', count: 6 },
   Orchestrator: { color: 'text-fuchsia-400', count: 1 },
 };
 
@@ -418,7 +520,7 @@ export function WhySubstrate() {
             <span className="text-xs">21 Modules • 6 Layers</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
-            What Makes It{" "}
+            The Total{" "}
             <span 
               className="inline-block"
               style={{
@@ -429,7 +531,7 @@ export function WhySubstrate() {
                 animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
-              Complete
+              Package
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -455,7 +557,7 @@ export function WhySubstrate() {
             whileTap={{ scale: 0.98 }}
           >
             All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">14</Badge>
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">21</Badge>
           </motion.button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
             <motion.button
@@ -478,7 +580,7 @@ export function WhySubstrate() {
         
         {/* Features Grid - Enhanced Bento style with 3D tilt */}
         <motion.div 
-          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"
           layout
         >
           {filteredItems.map((item, idx) => (
