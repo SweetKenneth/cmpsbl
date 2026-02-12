@@ -3,7 +3,7 @@
  * v8.0.0 SYNERGY+ Epoch — Dedicated hook for MODERNIZER (Self-Upgrade) module operations
  * 
  * Respects debug mode kill-switch and shadow-to-production execution pipeline.
- * Part of the 5-layer, 14-module Cognitive Architecture.
+ * Part of the 6-layer, 20-module Cognitive Architecture.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
