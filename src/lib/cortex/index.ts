@@ -17,7 +17,7 @@ export const CORTEX_VERSION = '7.0.0';
 export const CORTEX_CODENAME = 'Orchestrator';
 
 // Module layers
-export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator';
+export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure';
 
 // Module registry
 export interface ModuleRegistryEntry {
@@ -46,6 +46,12 @@ export const MODULE_REGISTRY: Record<SubstrateModule, Omit<ModuleRegistryEntry, 
   integration: { module: 'integration', layer: 'operational', bootOrder: 12, dependencies: ['defense'] },
   inclusive: { module: 'inclusive', layer: 'administrative', bootOrder: 13, dependencies: ['integration'] },
   system: { module: 'system', layer: 'administrative', bootOrder: 14, dependencies: ['vision'] },
+  memory: { module: 'memory', layer: 'infrastructure', bootOrder: 15, dependencies: ['brain', 'nexus'] },
+  relay: { module: 'relay', layer: 'infrastructure', bootOrder: 16, dependencies: ['ripple', 'defense'] },
+  audit: { module: 'audit', layer: 'infrastructure', bootOrder: 17, dependencies: ['ripple'] },
+  identity: { module: 'identity', layer: 'infrastructure', bootOrder: 18, dependencies: ['access'] },
+  economy: { module: 'economy', layer: 'infrastructure', bootOrder: 19, dependencies: ['vision', 'nexus'] },
+  sandbox: { module: 'sandbox', layer: 'infrastructure', bootOrder: 20, dependencies: ['defense'] },
 };
 
 // Orchestration state
