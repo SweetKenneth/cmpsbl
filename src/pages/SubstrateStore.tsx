@@ -526,7 +526,7 @@ export default function SubstrateStore() {
             <div className="relative mb-3">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder="Search all resources..."
+                placeholder="Search 800+ artifacts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 h-12 text-base rounded-xl bg-card border-border"
