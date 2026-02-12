@@ -1,19 +1,22 @@
 /**
  * Blog — CMPSBL Research & Insights
- * Artifacts-inspired layout with featured posts, blended human/AI content,
- * color-coded cards (gold for human, silver for AI), and mobile-first UX.
+ * Supreme × Canva inspired layout matching the Composable Artifacts page.
+ * Category-first browsing with horizontal-scroll carousels, sticky toolbar,
+ * gold/silver border coding for human vs AI posts.
  */
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search, Sparkles, Bot, ArrowRight, Calendar, Clock,
-  User, Filter, ChevronRight, BookOpen, TrendingUp,
+  Search, Sparkles, Bot, Calendar, Clock,
+  User, ChevronRight, ChevronLeft, BookOpen, TrendingUp,
   Shield, Brain, Code, Accessibility, Layers, Eye,
+  Filter, X, Package, Unlock,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
@@ -74,6 +77,7 @@ function getAutoblogImage(postId: string): string {
 
 // ─── Types ───
 type PostSource = 'human' | 'ai';
+type SourceFilter = 'all' | 'human' | 'ai';
 
 interface BlogPost {
   id: string;
@@ -91,26 +95,209 @@ interface BlogPost {
   authorRole: string;
 }
 
-// ─── Category config with icons & colors ───
-const CATEGORIES = [
-  { id: 'All', label: 'All Posts', icon: Layers },
-  { id: 'Security', label: 'Security', icon: Shield },
-  { id: 'AI Technology', label: 'AI Technology', icon: Brain },
-  { id: 'Technology', label: 'Technology', icon: Code },
-  { id: 'Platform', label: 'Platform', icon: Layers },
-  { id: 'Research', label: 'Research', icon: TrendingUp },
-  { id: 'Development', label: 'Development', icon: Code },
-  { id: 'Accessibility', label: 'Accessibility', icon: Accessibility },
-  { id: 'Protocol', label: 'Protocol', icon: BookOpen },
-  { id: 'Governance', label: 'Governance', icon: Eye },
-  { id: 'Threat Intel', label: 'Threat Intel', icon: Shield },
-  { id: 'AI Security', label: 'AI Security', icon: Shield },
+// ─── Category config (matching SubstrateStore style) ───
+const BLOG_CATEGORIES = [
+  { id: 'Security', label: 'Security', icon: Shield, color: 'from-rose-500/20 to-rose-600/5', border: 'border-rose-500/30', text: 'text-rose-400', bg: 'bg-rose-500/10' },
+  { id: 'AI Technology', label: 'AI Technology', icon: Brain, color: 'from-violet-500/20 to-violet-600/5', border: 'border-violet-500/30', text: 'text-violet-400', bg: 'bg-violet-500/10' },
+  { id: 'Technology', label: 'Technology', icon: Code, color: 'from-blue-500/20 to-blue-600/5', border: 'border-blue-500/30', text: 'text-blue-400', bg: 'bg-blue-500/10' },
+  { id: 'Platform', label: 'Platform', icon: Layers, color: 'from-purple-500/20 to-purple-600/5', border: 'border-purple-500/30', text: 'text-purple-400', bg: 'bg-purple-500/10' },
+  { id: 'Research', label: 'Research', icon: TrendingUp, color: 'from-emerald-500/20 to-emerald-600/5', border: 'border-emerald-500/30', text: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+  { id: 'Development', label: 'Development', icon: Code, color: 'from-cyan-500/20 to-cyan-600/5', border: 'border-cyan-500/30', text: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+  { id: 'Accessibility', label: 'Accessibility', icon: Accessibility, color: 'from-amber-500/20 to-amber-600/5', border: 'border-amber-500/30', text: 'text-amber-400', bg: 'bg-amber-500/10' },
+  { id: 'Protocol', label: 'Protocol', icon: BookOpen, color: 'from-pink-500/20 to-pink-600/5', border: 'border-pink-500/30', text: 'text-pink-400', bg: 'bg-pink-500/10' },
+  { id: 'Governance', label: 'Governance', icon: Eye, color: 'from-indigo-500/20 to-indigo-600/5', border: 'border-indigo-500/30', text: 'text-indigo-400', bg: 'bg-indigo-500/10' },
+  { id: 'Threat Intel', label: 'Threat Intel', icon: Shield, color: 'from-red-500/20 to-red-600/5', border: 'border-red-500/30', text: 'text-red-400', bg: 'bg-red-500/10' },
+  { id: 'AI Security', label: 'AI Security', icon: Shield, color: 'from-orange-500/20 to-orange-600/5', border: 'border-orange-500/30', text: 'text-orange-400', bg: 'bg-orange-500/10' },
 ] as const;
 
-// ─── Source filter ───
-type SourceFilter = 'all' | 'human' | 'ai';
+// ─── Horizontal Scroll Carousel (same as SubstrateStore) ───
+function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const scroll = (dir: 'left' | 'right') => {
+    if (!ref.current) return;
+    const amount = ref.current.clientWidth * 0.7;
+    ref.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
+  };
 
-// ─── Static human posts (dates spread over the last year+) ───
+  return (
+    <div className={cn("group relative", className)}>
+      <button
+        onClick={() => scroll('left')}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hidden md:flex"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <div
+        ref={ref}
+        className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {children}
+      </div>
+      <button
+        onClick={() => scroll('right')}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hidden md:flex"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
+  );
+}
+
+// ─── Blog Post Card (carousel-sized, Supreme card style) ───
+function PostCard({ post, onClick }: { post: BlogPost; onClick: () => void }) {
+  const isHuman = post.source === 'human';
+  return (
+    <div
+      className={cn(
+        "snap-start shrink-0 w-[300px] min-h-[340px]",
+        "rounded-xl border bg-gradient-to-br overflow-hidden",
+        "hover:border-primary/30 hover:-translate-y-1 transition-all duration-200 cursor-pointer",
+        "flex flex-col",
+        isHuman
+          ? "border-amber-500/20 from-amber-500/[0.04] to-transparent"
+          : "border-slate-400/20 from-slate-400/[0.04] to-transparent",
+      )}
+      onClick={onClick}
+    >
+      {/* Top accent bar */}
+      <div className={cn(
+        "h-1 w-full",
+        isHuman
+          ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600"
+          : "bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500"
+      )} />
+
+      {/* Image */}
+      <div className="aspect-[16/10] overflow-hidden relative">
+        <img
+          src={post.image}
+          alt={post.imageAlt}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {/* Source badge */}
+        <div className="absolute top-2.5 right-2.5">
+          <Badge className={cn(
+            "text-[10px] font-bold backdrop-blur-md border",
+            isHuman
+              ? "bg-amber-500/20 text-amber-200 border-amber-400/40"
+              : "bg-slate-400/20 text-slate-200 border-slate-300/40"
+          )}>
+            {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
+            {isHuman ? 'Kenneth' : 'AI'}
+          </Badge>
+        </div>
+        {/* Category badge */}
+        <div className="absolute bottom-2.5 left-2.5">
+          <Badge variant="outline" className="text-[10px] bg-black/40 text-white border-white/20 backdrop-blur-md">
+            {post.category}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="font-bold text-sm leading-snug mb-1.5 line-clamp-2">{post.title}</h3>
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">{post.excerpt}</p>
+
+        {/* Author & meta footer */}
+        <div className="flex items-center gap-2.5">
+          {isHuman ? (
+            <img src={founderPhoto} alt={post.author} className="w-6 h-6 rounded-full object-cover ring-2 ring-amber-500/30" loading="lazy" />
+          ) : (
+            <div className="w-6 h-6 rounded-full bg-slate-500/20 border border-slate-400/30 flex items-center justify-center">
+              <Bot className="w-3 h-3 text-slate-400" />
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] font-medium truncate">{post.author}</p>
+            <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground">
+              <Calendar className="w-2.5 h-2.5" />
+              {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              <span>·</span>
+              <Clock className="w-2.5 h-2.5" />
+              {post.readTime}
+            </div>
+          </div>
+          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Grid Card (for grid view) ───
+function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
+  const isHuman = post.source === 'human';
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: Math.min(index * 0.03, 0.3) }}
+    >
+      <Link to={post.href}>
+        <div className={cn(
+          "group h-full rounded-xl border overflow-hidden transition-all duration-300",
+          "hover:-translate-y-1 hover:shadow-xl",
+          isHuman
+            ? "border-amber-500/25 hover:border-amber-400/50 hover:shadow-amber-500/10"
+            : "border-slate-400/25 hover:border-slate-300/50 hover:shadow-slate-400/10",
+          "bg-card"
+        )}>
+          <div className={cn(
+            "h-[3px] w-full",
+            isHuman
+              ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600"
+              : "bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500"
+          )} />
+
+          <div className="aspect-[16/10] overflow-hidden relative">
+            <img src={post.image} alt={post.imageAlt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute top-3 right-3">
+              <Badge className={cn(
+                "text-[10px] font-bold backdrop-blur-md border",
+                isHuman ? "bg-amber-500/20 text-amber-200 border-amber-400/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
+              )}>
+                {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
+                {isHuman ? 'Kenneth E Sweet Jr' : 'AI Generated'}
+              </Badge>
+            </div>
+            <div className="absolute bottom-3 left-3">
+              <Badge variant="outline" className="text-[10px] bg-black/40 text-white border-white/20 backdrop-blur-md">{post.category}</Badge>
+            </div>
+          </div>
+
+          <div className="p-5">
+            <h3 className="font-bold text-base leading-snug mb-2 line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
+            <p className="text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed">{post.excerpt}</p>
+            <div className="flex items-center gap-3">
+              {isHuman ? (
+                <img src={founderPhoto} alt={post.author} className="w-7 h-7 rounded-full object-cover ring-2 ring-amber-500/30" loading="lazy" />
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-slate-500/20 border border-slate-400/30 flex items-center justify-center">
+                  <Bot className="w-3.5 h-3.5 text-slate-400" />
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium truncate">{post.author}</p>
+                <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                  <span className="flex items-center gap-0.5"><Calendar className="w-2.5 h-2.5" />{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                  <span>·</span>
+                  <span className="flex items-center gap-0.5"><Clock className="w-2.5 h-2.5" />{post.readTime}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+// ─── Static human posts ───
 const HUMAN_POSTS: BlogPost[] = [
   {
     id: 'evolving-software', title: "Evolving Software v6.x.x: The Breakthrough",
@@ -378,203 +565,12 @@ const HUMAN_POSTS: BlogPost[] = [
   },
 ];
 
-// ─── Blog Post Card ───
-function PostCard({ post, index }: { post: BlogPost; index: number }) {
-  const isHuman = post.source === 'human';
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.4) }}
-    >
-      <Link to={post.href}>
-        <div
-          className={cn(
-            "group h-full rounded-xl border overflow-hidden transition-all duration-300",
-            "hover:-translate-y-1 hover:shadow-xl",
-            isHuman
-              ? "border-amber-500/25 hover:border-amber-400/50 hover:shadow-amber-500/10"
-              : "border-slate-400/25 hover:border-slate-300/50 hover:shadow-slate-400/10",
-            "bg-card"
-          )}
-        >
-          {/* Top accent line */}
-          <div className={cn(
-            "h-[3px] w-full",
-            isHuman
-              ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600"
-              : "bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500"
-          )} />
-
-          {/* Image */}
-          <div className="aspect-[16/10] overflow-hidden relative">
-            <img
-              src={post.image}
-              alt={post.imageAlt}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-            {/* Source badge overlay */}
-            <div className="absolute top-3 right-3">
-              <Badge className={cn(
-                "text-[10px] font-bold backdrop-blur-md border",
-                isHuman
-                  ? "bg-amber-500/20 text-amber-200 border-amber-400/40"
-                  : "bg-slate-400/20 text-slate-200 border-slate-300/40"
-              )}>
-                {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
-                {isHuman ? 'Kenneth E Sweet Jr' : 'AI Generated'}
-              </Badge>
-            </div>
-
-            {/* Category badge bottom-left */}
-            <div className="absolute bottom-3 left-3">
-              <Badge variant="outline" className="text-[10px] bg-black/40 text-white border-white/20 backdrop-blur-md">
-                {post.category}
-              </Badge>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="p-5">
-            <h3 className="font-bold text-base leading-snug mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-              {post.title}
-            </h3>
-            <p className="text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
-              {post.excerpt}
-            </p>
-
-            {/* Author & Meta */}
-            <div className="flex items-center gap-3">
-              {isHuman && (
-                <img
-                  src={founderPhoto}
-                  alt={post.author}
-                  className={cn(
-                    "w-7 h-7 rounded-full object-cover ring-2",
-                    "ring-amber-500/30"
-                  )}
-                  loading="lazy"
-                />
-              )}
-              {!isHuman && (
-                <div className="w-7 h-7 rounded-full bg-slate-500/20 border border-slate-400/30 flex items-center justify-center">
-                  <Bot className="w-3.5 h-3.5 text-slate-400" />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium truncate">{post.author}</p>
-                <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                  <span className="flex items-center gap-0.5">
-                    <Calendar className="w-2.5 h-2.5" />
-                    {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </span>
-                  <span>·</span>
-                  <span className="flex items-center gap-0.5">
-                    <Clock className="w-2.5 h-2.5" />
-                    {post.readTime}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
-
-// ─── Featured Card (large) ───
-function FeaturedCard({ post }: { post: BlogPost }) {
-  const isHuman = post.source === 'human';
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Link to={post.href}>
-        <div className={cn(
-          "group rounded-2xl border overflow-hidden transition-all duration-300",
-          "hover:shadow-2xl",
-          isHuman
-            ? "border-amber-500/30 hover:border-amber-400/60 hover:shadow-amber-500/15"
-            : "border-slate-400/30 hover:border-slate-300/60 hover:shadow-slate-400/15",
-          "bg-card"
-        )}>
-          {/* Top accent */}
-          <div className={cn(
-            "h-1 w-full",
-            isHuman
-              ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600"
-              : "bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500"
-          )} />
-
-          <div className="grid md:grid-cols-2 gap-0">
-            <div className="aspect-video md:aspect-auto md:min-h-[320px] overflow-hidden relative">
-              <img
-                src={post.image}
-                alt={post.imageAlt}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/20 hidden md:block" />
-              <div className="absolute top-4 left-4">
-                <Badge className="bg-primary/90 text-primary-foreground text-xs font-bold gap-1">
-                  <Sparkles className="w-3 h-3" /> Featured
-                </Badge>
-              </div>
-            </div>
-            <div className="p-8 md:p-10 flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-4">
-                <Badge variant="outline" className={cn(
-                  "text-xs",
-                  isHuman ? "border-amber-500/40 text-amber-400" : "border-slate-400/40 text-slate-400"
-                )}>
-                  {post.category}
-                </Badge>
-                <Badge variant="outline" className={cn(
-                  "text-[10px]",
-                  isHuman ? "border-amber-500/20 text-amber-300" : "border-slate-400/20 text-slate-300"
-                )}>
-                  {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
-                  {isHuman ? 'Kenneth E Sweet Jr' : 'AI'}
-                </Badge>
-              </div>
-              <h2 className="text-2xl md:text-3xl font-black mb-4 group-hover:text-primary transition-colors leading-tight">
-                {post.title}
-              </h2>
-              <p className="text-muted-foreground mb-6 leading-relaxed line-clamp-3">{post.excerpt}</p>
-
-              <div className="flex items-center gap-3">
-                {isHuman && (
-                  <img src={founderPhoto} alt={post.author} className="w-9 h-9 rounded-full ring-2 ring-amber-500/30 object-cover" />
-                )}
-                <div>
-                  <p className="text-sm font-semibold">{post.author}</p>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                    <span>·</span>
-                    <span>{post.readTime}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
-
 // ─── Main Blog Page ───
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sourceFilter, setSourceFilter] = useState<SourceFilter>('all');
+  const [viewMode, setViewMode] = useState<'browse' | 'grid'>('browse');
   const [autoPosts, setAutoPosts] = useState<BlogPost[]>([]);
 
   // Fetch auto-generated posts from DB
@@ -593,7 +589,7 @@ export default function Blog() {
           title: p.title,
           excerpt: p.excerpt || "AI-generated insight from the CMPSBL substrate.",
           href: `/blog/auto/${p.slug}`,
-          category: p.category || "AI Insight",
+          category: p.category || "AI Technology",
           date: p.published_at || new Date().toISOString(),
           readTime: "5 min",
           image: getAutoblogImage(p.id),
@@ -613,209 +609,346 @@ export default function Blog() {
     return merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [autoPosts]);
 
-  const featuredPosts = useMemo(() => allPosts.filter(p => p.featured), [allPosts]);
-
+  // Filter
   const filteredPosts = useMemo(() => {
     return allPosts.filter(post => {
-      if (post.featured && selectedCategory === "All" && !searchQuery && sourceFilter === 'all') return false; // shown in featured
-      const matchesSearch = !searchQuery || post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCat = selectedCategory === "All" || post.category === selectedCategory;
-      const matchesSource = sourceFilter === 'all' || post.source === sourceFilter;
-      return matchesSearch && matchesCat && matchesSource;
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        if (!post.title.toLowerCase().includes(q) && !post.excerpt.toLowerCase().includes(q)) return false;
+      }
+      if (selectedCategory && post.category !== selectedCategory) return false;
+      if (sourceFilter === 'human' && post.source !== 'human') return false;
+      if (sourceFilter === 'ai' && post.source !== 'ai') return false;
+      return true;
     });
   }, [allPosts, searchQuery, selectedCategory, sourceFilter]);
+
+  // Group by category for browse mode
+  const groupedByCategory = useMemo(() => {
+    const groups: Record<string, BlogPost[]> = {};
+    filteredPosts.forEach(post => {
+      if (!groups[post.category]) groups[post.category] = [];
+      groups[post.category].push(post);
+    });
+    return groups;
+  }, [filteredPosts]);
 
   const totalCount = allPosts.length;
   const humanCount = allPosts.filter(p => p.source === 'human').length;
   const aiCount = allPosts.filter(p => p.source === 'ai').length;
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
       <SEO
         title="Research & Insights — CMPSBL Blog"
-        description="Research, insights, and documentation on cognitive infrastructure, AI memory, autonomous systems, and intelligent orchestration. Written by humans and AI."
+        description="Research, insights, and documentation on cognitive infrastructure, AI memory, autonomous systems, and intelligent orchestration by Kenneth E Sweet Jr and AI."
         canonical="https://cmpsbl.com/blog"
-        keywords={['AI research', 'cognitive infrastructure', 'AI memory', 'autonomous AI', 'CMPSBL blog', 'AI security']}
+        keywords={['AI research', 'cognitive infrastructure', 'AI memory', 'autonomous AI', 'CMPSBL blog', 'AI security', 'Kenneth E Sweet Jr']}
       />
 
-      <PublicNav />
+      <div className="min-h-screen bg-background flex flex-col">
+        <PublicNav />
 
-      {/* ─── Hero ─── */}
-      <section className="relative z-10 container mx-auto px-4 pt-20 md:pt-32 pb-8">
-        <div className="max-w-5xl mx-auto">
-          {/* Mono header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6"
-          >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter">
-              <span className="font-mono text-primary">Research</span>
-              <span className="text-muted-foreground mx-2 md:mx-3">&</span>
-              <span className="font-mono bg-gradient-to-r from-foreground via-foreground/80 to-foreground bg-clip-text">
-                Insights
-              </span>
-            </h1>
-          </motion.div>
+        {/* ═══ HERO — Supreme drop announcement style ═══ */}
+        <section className="relative overflow-hidden border-b border-border/50">
+          {/* Background grid */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{
+            backgroundImage: 'linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)',
+            backgroundSize: '60px 60px'
+          }} />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl"
-          >
-            Written by humans and generated by AI — documentation of what we're building and where the field is headed.
-          </motion.p>
+          <div className="relative container mx-auto px-4 py-14 md:py-20 text-center">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+              {/* Top pill */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-card/50 mb-6 text-xs font-medium text-muted-foreground">
+                <BookOpen className="w-3 h-3 text-primary" />
+                HUMAN + AI AUTHORED
+              </div>
 
-          {/* Stats pills */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap gap-3 mb-8"
-          >
-            <Badge variant="outline" className="py-1.5 px-4 text-sm gap-2 border-border">
-              <BookOpen className="w-3.5 h-3.5" />
-              {totalCount} Articles
-            </Badge>
-            <Badge variant="outline" className="py-1.5 px-4 text-sm gap-2 border-amber-500/30 text-amber-400">
-              <User className="w-3.5 h-3.5" />
-              {humanCount} by Kenneth
-            </Badge>
-            <Badge variant="outline" className="py-1.5 px-4 text-sm gap-2 border-slate-400/30 text-slate-400">
-              <Bot className="w-3.5 h-3.5" />
-              {aiCount} AI Generated
-            </Badge>
-          </motion.div>
-
-          {/* Search + Filters */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1 max-w-xl">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search articles..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-11 h-11 bg-card border-border"
-              />
-            </div>
-
-            {/* Source filter pills */}
-            <div className="flex gap-1.5 bg-muted/50 rounded-lg p-1">
-              {([
-                { key: 'all' as SourceFilter, label: 'All', icon: Layers },
-                { key: 'human' as SourceFilter, label: 'Kenneth', icon: User },
-                { key: 'ai' as SourceFilter, label: 'AI', icon: Bot },
-              ]).map(f => (
-                <button
-                  key={f.key}
-                  onClick={() => setSourceFilter(f.key)}
-                  className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all",
-                    sourceFilter === f.key
-                      ? "bg-background text-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
+              {/* Supreme-style stacked type */}
+              <h1 className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-4">
+                <motion.span
+                  className="block font-mono uppercase tracking-[-0.05em]"
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
                 >
-                  <f.icon className="w-3 h-3" />
-                  {f.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Category ribbon ─── */}
-      <section className="container mx-auto px-4 py-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap" style={{ scrollbarWidth: 'none' }}>
-            {CATEGORIES.map(cat => {
-              const Icon = cat.icon;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={cn(
-                    "flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all border shrink-0",
-                    selectedCategory === cat.id
-                      ? "bg-primary text-primary-foreground border-primary shadow-md"
-                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
-                  )}
+                  Research
+                </motion.span>
+                <motion.span
+                  className="block bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan))] to-primary bg-clip-text text-transparent font-mono uppercase tracking-[-0.05em]"
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  <Icon className="w-3 h-3" />
-                  {cat.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+                  & Insights
+                </motion.span>
+              </h1>
 
-      {/* ─── Featured Posts ─── */}
-      {featuredPosts.length > 0 && selectedCategory === "All" && !searchQuery && sourceFilter === 'all' && (
-        <section className="container mx-auto px-4 py-8">
-          <div className="max-w-5xl mx-auto space-y-6">
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-5 h-5 text-amber-400" />
-              <h2 className="text-lg font-bold">Featured</h2>
-            </div>
-            {featuredPosts.map(post => (
-              <FeaturedCard key={post.id} post={post} />
-            ))}
+              {/* Animated counter badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.4, type: 'spring' }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-6"
+              >
+                <motion.span className="font-mono font-black text-2xl sm:text-3xl text-primary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
+                  {totalCount}+
+                </motion.span>
+                <span className="text-sm text-muted-foreground font-medium">Articles</span>
+              </motion.div>
+
+              <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
+                Written by Kenneth E Sweet Jr and generated by the CMPSBL substrate.
+                Documentation of what we're building and where the field is headed.
+              </p>
+
+              {/* Stats pills — matching SubstrateStore */}
+              <div className="flex flex-wrap justify-center gap-3 mb-8">
+                {[
+                  { label: 'by Kenneth', count: String(humanCount), dotClass: 'bg-gradient-to-r from-amber-500 to-yellow-400' },
+                  { label: 'AI Generated', count: String(aiCount), dotClass: 'bg-gradient-to-r from-slate-400 to-slate-300' },
+                ].map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 + i * 0.1 }}
+                  >
+                    <div className={cn("w-4 h-[3px] rounded", stat.dotClass)} />
+                    <span className="font-black text-lg">{stat.count}</span>
+                    <span className="text-xs text-muted-foreground">{stat.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </section>
-      )}
 
-      {/* ─── Legend ─── */}
-      <section className="container mx-auto px-4 py-4">
-        <div className="max-w-5xl mx-auto flex items-center gap-6 text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-[3px] rounded bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600" />
-            <span>Written by Kenneth E Sweet Jr</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-[3px] rounded bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500" />
-            <span>AI Generated</span>
-          </div>
-        </div>
-      </section>
+        {/* ═══ STICKY TOOLBAR ═══ */}
+        <section className="sticky top-16 z-40 border-b border-border/50 bg-background/95 backdrop-blur-xl">
+          <div className="container mx-auto px-4 py-3">
+            {/* Search */}
+            <div className="relative mb-3">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder={`Search ${totalCount}+ articles...`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-12 text-base rounded-xl bg-card border-border"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-muted">
+                  <X className="w-4 h-4 text-muted-foreground" />
+                </button>
+              )}
+            </div>
 
-      {/* ─── Posts Grid ─── */}
-      <section className="container mx-auto px-4 py-8 pb-20">
-        <div className="max-w-5xl mx-auto">
-          <AnimatePresence mode="wait">
-            {filteredPosts.length > 0 ? (
-              <motion.div
-                key={selectedCategory + sourceFilter + searchQuery}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {filteredPosts.map((post, i) => (
-                  <PostCard key={post.id} post={post} index={i} />
+            {/* Source filter tabs + view toggle */}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex gap-1.5 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+                {([
+                  { id: 'all' as SourceFilter, label: 'All', count: totalCount },
+                  { id: 'human' as SourceFilter, label: 'Kenneth', count: humanCount },
+                  { id: 'ai' as SourceFilter, label: 'AI Generated', count: aiCount },
+                ]).map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setSourceFilter(tab.id)}
+                    className={cn(
+                      "px-3.5 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all",
+                      sourceFilter === tab.id
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-muted"
+                    )}
+                  >
+                    {tab.label}
+                    <span className="ml-1.5 text-xs opacity-70">{tab.count}</span>
+                  </button>
                 ))}
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center py-20"
-              >
-                <Search className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-                <p className="text-lg text-muted-foreground">No articles found</p>
-                <p className="text-sm text-muted-foreground/60 mt-1">Try a different search term or category</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </section>
+              </div>
 
-      <EnhancedFooter />
-    </div>
+              {/* View toggle */}
+              <div className="hidden md:flex gap-1 shrink-0">
+                <button
+                  onClick={() => setViewMode('browse')}
+                  className={cn("p-2 rounded-lg transition-colors", viewMode === 'browse' ? 'bg-muted' : 'hover:bg-muted/50')}
+                  title="Category browse"
+                >
+                  <Layers className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={cn("p-2 rounded-lg transition-colors", viewMode === 'grid' ? 'bg-muted' : 'hover:bg-muted/50')}
+                  title="Grid view"
+                >
+                  <Filter className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Category pills — horizontal scroll */}
+          <div className="border-t border-border/30">
+            <div className="container mx-auto px-4 py-2.5">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide pr-8" style={{ scrollbarWidth: 'none' }}>
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap border transition-all shrink-0",
+                    !selectedCategory
+                      ? "bg-foreground text-background border-foreground"
+                      : "border-border text-muted-foreground hover:border-foreground/30"
+                  )}
+                >
+                  All Categories
+                </button>
+                {BLOG_CATEGORIES.map(cat => {
+                  const Icon = cat.icon;
+                  const hasItems = !!groupedByCategory[cat.id]?.length;
+                  if (!hasItems && selectedCategory !== cat.id) return null;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap border transition-all shrink-0 flex items-center gap-1.5",
+                        selectedCategory === cat.id
+                          ? cn(cat.bg, cat.text, cat.border)
+                          : "border-border text-muted-foreground hover:border-foreground/30"
+                      )}
+                    >
+                      <Icon className="w-3 h-3" />
+                      {cat.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ CONTENT ═══ */}
+        <main className="flex-1">
+          {/* Results count */}
+          <div className="container mx-auto px-4 pt-6 pb-2">
+            <p className="text-sm text-muted-foreground">
+              {filteredPosts.length} articles
+              {searchQuery && <> matching "<span className="text-foreground font-medium">{searchQuery}</span>"</>}
+            </p>
+          </div>
+
+          {/* Browse Mode: Horizontal carousels per category (mobile-first) */}
+          {(viewMode === 'browse' && !searchQuery && !selectedCategory) ? (
+            <div className="pb-12">
+              {BLOG_CATEGORIES.filter(cat => groupedByCategory[cat.id]?.length).map(cat => {
+                const items = groupedByCategory[cat.id] || [];
+                const Icon = cat.icon;
+
+                return (
+                  <section key={cat.id} className="mb-8">
+                    {/* Category header */}
+                    <div className="container mx-auto px-4 mb-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center", cat.bg)}>
+                            <Icon className={cn("w-4 h-4", cat.text)} />
+                          </div>
+                          <div>
+                            <h2 className="font-bold text-lg">{cat.label}</h2>
+                            <p className="text-xs text-muted-foreground">{items.length} articles</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => { setSelectedCategory(cat.id); setViewMode('grid'); }}
+                          className="text-xs text-primary font-medium flex items-center gap-1 hover:underline"
+                        >
+                          View all <ChevronRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Horizontal scroll carousel */}
+                    <div className="container mx-auto px-4">
+                      <ScrollCarousel>
+                        {items.map((post) => (
+                          <PostCard
+                            key={post.id}
+                            post={post}
+                            onClick={() => {
+                              // Navigate to post
+                              window.location.href = post.href;
+                            }}
+                          />
+                        ))}
+                      </ScrollCarousel>
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
+          ) : (
+            /* Grid Mode */
+            <div className="container mx-auto px-4 py-6">
+              {filteredPosts.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {filteredPosts.map((post, i) => (
+                    <GridPostCard key={post.id} post={post} index={i} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-20">
+                  <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">No articles found</h3>
+                  <p className="text-sm text-muted-foreground mb-4">Try adjusting your filters</p>
+                  <Button variant="ghost" onClick={() => { setSearchQuery(''); setSelectedCategory(null); setSourceFilter('all'); }}>
+                    Clear all filters
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Legend + CTA */}
+          <section className="border-t border-border/50 bg-card/30">
+            <div className="container mx-auto px-4 py-12 md:py-16 text-center">
+              {/* Legend */}
+              <div className="flex justify-center gap-6 mb-8 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-[3px] rounded bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600" />
+                  <span>Kenneth E Sweet Jr</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-[3px] rounded bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500" />
+                  <span>AI Generated</span>
+                </div>
+              </div>
+
+              <h2 className="text-2xl md:text-3xl font-black mb-3">Explore the Substrate</h2>
+              <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
+                Every article connects back to the cognitive infrastructure we're building.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Button asChild size="lg" className="gap-2">
+                  <Link to="/store">
+                    <Sparkles className="w-4 h-4" />
+                    Composable Artifacts
+                  </Link>
+                </Button>
+                <Button variant="outline" size="lg" className="gap-2" asChild>
+                  <Link to="/modules">
+                    <Layers className="w-4 h-4" />
+                    All Modules
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <EnhancedFooter />
+      </div>
+    </>
   );
 }
