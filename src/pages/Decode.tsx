@@ -1,6 +1,7 @@
 /**
- * promptfluid® Decode — The Interpreter Primitive
- * v8.0.0 SYNERGY+ — Human-Compatible Cognitive Interface
+ * promptfluid® Decode — The Interpreter & Intent Router
+ * v9.1.0 ARCHITECT — Human-Compatible Cognitive Interface
+ * Routes structured intent packets to ENCODE for execution
  * 
  * Mobile-first conversation interface
  */
@@ -32,13 +33,13 @@ interface ConnectionState {
   retryCount: number;
 }
 
-// Sample prompts — examples of what DECODE can interpret
+// Sample prompts — examples of what DECODE can interpret and route to ENCODE
 const SAMPLE_PROMPTS = [
   "What can the substrate do for my project?",
   "Explain how BRAIN memory works",
-  "How do I integrate with NEXUS providers?",
+  "Route an execution task to ENCODE",
   "What security features does DEFENSE offer?",
-  "Help me understand intent extraction",
+  "Show me ENCODE's task queue and receipts",
 ];
 
 export default function Decode() {
@@ -90,7 +91,7 @@ export default function Decode() {
   const initializeFresh = () => {
     setMessages([{
       role: 'system',
-      content: "DECODE ready. I parse natural language into structured intents and route them to the appropriate substrate modules. What would you like to do?",
+      content: "DECODE ready. I parse natural language into structured intents and route execution tasks to ENCODE. What would you like to do?",
       timestamp: new Date()
     }]);
   };
@@ -206,8 +207,8 @@ export default function Decode() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Decode — Interpreter Primitive | promptfluid®"
-        description="Decode is the substrate's interpreter primitive. It translates human ambiguity into substrate-structured cognition."
+        title="Decode — Intent Router & Interpreter | promptfluid®"
+        description="Decode is the substrate's intent router. It translates human ambiguity into structured task packets and routes execution to ENCODE."
       />
       
       {/* Consistent Navigation */}
@@ -223,7 +224,7 @@ export default function Decode() {
       <div className="relative z-10 border-b border-border/30 bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="font-medium text-sm">Decode Interpreter</span>
+            <span className="font-medium text-sm">Decode → ENCODE Router</span>
             <div className={`w-1.5 h-1.5 rounded-full ${
               connection.status === 'connected' ? 'bg-emerald-500' :
               connection.status === 'degraded' ? 'bg-amber-500 animate-pulse' :
@@ -272,7 +273,7 @@ export default function Decode() {
               <div className="flex justify-start animate-fade-in">
                 <div className="bg-card/60 backdrop-blur rounded-2xl px-3.5 py-2.5 md:px-5 md:py-4 border border-border/30">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Processing intent</span>
+                    <span className="text-xs text-muted-foreground">Routing to ENCODE</span>
                     <div className="flex gap-1">
                       <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-primary/40 rounded-full animate-bounce" />
                       <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
@@ -339,7 +340,7 @@ export default function Decode() {
         {/* Footer Attribution - Hidden on small screens */}
         <div className="hidden md:block px-6 py-2 border-t border-border/20">
           <p className="text-[10px] text-center text-muted-foreground/40">
-            Decode is an interpreter primitive • promptfluid® v2026.01
+            Decode routes intent to ENCODE • promptfluid® v9.1.0 ARCHITECT
           </p>
         </div>
       </div>

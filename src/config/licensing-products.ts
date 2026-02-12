@@ -26,7 +26,7 @@ export const LICENSING_PRODUCTS = {
     name: 'Developer License',
     description: 'For individual developers and small teams building with CMPSBL',
     features: [
-      'Full API access to all 14 modules',
+      'Full API access to all 21 modules',
       'Unlimited API calls (fair use)',
       'Unlimited memory storage',
       'Email support + documentation',

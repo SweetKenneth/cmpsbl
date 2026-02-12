@@ -515,7 +515,7 @@ export {
 // Re-export substrate client from lib
 export { 
   substrate, 
-  // Quick access module aliases (all 14 modules + SEBA)
+  // Quick access module aliases (all 21 modules + SEBA)
   // Use 'Mod' suffix to avoid conflicts with utility functions
   core,
   brain,

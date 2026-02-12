@@ -59,7 +59,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
 
   const handleDiagnostics = async () => {
     setDiagnosticsRunning(true);
-    voice.system('Running full diagnostics', 'Analyzing all 14 modules...', 'VISION');
+    voice.system('Running full diagnostics', 'Analyzing all 21 modules...', 'VISION');
     try {
       const result = await system.diagnostics();
       if (result?.success) {

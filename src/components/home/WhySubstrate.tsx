@@ -28,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Hexagon } from "lucide-react";
 
-// All capabilities mapped to the 20 modules in 6-layer architecture
+// All capabilities mapped to the 21 modules in 6-layer architecture
 const differentiators = [
   // KERNEL LAYER - Core infrastructure
   {
@@ -37,7 +37,7 @@ const differentiators = [
     layer: "Kernel",
     description: "CORE module handles task scheduling, cron jobs, and kernel-level coordination across all cognitive functions.",
     highlight: "Central Brain",
-    stat: "14",
+    stat: "21",
     statLabel: "Modules",
     color: "from-orange-500 to-amber-600",
     iconBg: "bg-gradient-to-br from-orange-500/20 to-amber-500/20",
@@ -415,7 +415,7 @@ export function WhySubstrate() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">20 Modules • 6 Layers</span>
+            <span className="text-xs">21 Modules • 6 Layers</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             What Makes It{" "}

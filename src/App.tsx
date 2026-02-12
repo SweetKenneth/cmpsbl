@@ -97,6 +97,7 @@ const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
 const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
 const AIOperatingSystem = lazy(() => import("./pages/AIOperatingSystem"));
+const EncodeInfo = lazy(() => import("./pages/products/EncodeInfo"));
 
 // Cluster pages (module deep-dives)
 const ClusterStudio = lazy(() => import("./pages/cluster/Studio"));
@@ -318,6 +319,7 @@ const App = () => {
                         <Route path="/modules" element={<ModulesHub />} />
                         <Route path="/modules/:slug" element={<ModuleDetail />} />
                         <Route path="/ai-operating-system" element={<AIOperatingSystem />} />
+                        <Route path="/products/encode" element={<EncodeInfo />} />
                         
                         {/* Cluster pages - module deep-dives */}
                         <Route path="/cluster/studio-autonomous-site-generator" element={<ClusterStudio />} />

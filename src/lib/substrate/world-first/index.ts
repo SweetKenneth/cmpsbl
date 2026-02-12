@@ -1,6 +1,6 @@
 /**
- * World-First Enhancements — v9.0.0 ARCHITECT Epoch
- * Central export for all 56 high-value autonomous functions across 20 modules
+ * World-First Enhancements — v9.1.0 ARCHITECT Epoch
+ * Central export for all 56 high-value autonomous functions across 21 modules
  */
 
 // BRAIN — Cognitive memory and attention
