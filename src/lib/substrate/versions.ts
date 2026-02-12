@@ -6,24 +6,31 @@
 // Core module versions (all 14 modules)
 export const MODULE_VERSIONS = {
   // Kernel Layer
-  core: { version: '8.5.0', codename: 'Foundation', layer: 'Kernel' },
-  ripple: { version: '8.5.0', codename: 'Cascade', layer: 'Kernel' },
-  access: { version: '8.5.0', codename: 'Gatekeeper', layer: 'Kernel' },
+  core: { version: '9.0.0', codename: 'Foundation', layer: 'Kernel' },
+  ripple: { version: '9.0.0', codename: 'Cascade', layer: 'Kernel' },
+  access: { version: '9.0.0', codename: 'Gatekeeper', layer: 'Kernel' },
   // Cognitive Layer
-  brain: { version: '8.5.0', codename: 'Memoria', layer: 'Cognitive' },
-  decode: { version: '8.5.0', codename: 'Interpreter', layer: 'Cognitive' },
+  brain: { version: '9.0.0', codename: 'Memoria', layer: 'Cognitive' },
+  decode: { version: '9.0.0', codename: 'Interpreter', layer: 'Cognitive' },
   // Operational Layer
-  nexus: { version: '8.5.0', codename: 'Router', layer: 'Operational' },
-  dream: { version: '8.5.0', codename: 'Nocturne', layer: 'Operational' },
-  defense: { version: '8.5.0', codename: 'Guardian', layer: 'Operational' },
-  vision: { version: '8.5.0', codename: 'Vee', layer: 'Operational' },
-  integration: { version: '8.5.0', codename: 'Bridge', layer: 'Operational' },
+  nexus: { version: '9.0.0', codename: 'Router', layer: 'Operational' },
+  dream: { version: '9.0.0', codename: 'Nocturne', layer: 'Operational' },
+  defense: { version: '9.0.0', codename: 'Guardian', layer: 'Operational' },
+  vision: { version: '9.0.0', codename: 'Vee', layer: 'Operational' },
+  integration: { version: '9.0.0', codename: 'Bridge', layer: 'Operational' },
   // Administrative Layer
-  system: { version: '8.5.0', codename: 'Production', layer: 'Administrative' },
-  modernizer: { version: '8.5.0', codename: 'Architect', layer: 'Administrative' },
-  inclusive: { version: '8.5.0', codename: 'Clarity', layer: 'Administrative' },
+  system: { version: '9.0.0', codename: 'Production', layer: 'Administrative' },
+  modernizer: { version: '9.0.0', codename: 'Architect', layer: 'Administrative' },
+  inclusive: { version: '9.0.0', codename: 'Clarity', layer: 'Administrative' },
   // Orchestrator Layer
-  cortex: { version: '8.5.0', codename: 'Orchestrator', layer: 'Orchestrator' },
+  cortex: { version: '9.0.0', codename: 'Orchestrator', layer: 'Orchestrator' },
+  // Infrastructure Layer (v9.0.0 — 20-Module Epoch)
+  memory: { version: '9.0.0', codename: 'Vault', layer: 'Infrastructure' },
+  relay: { version: '9.0.0', codename: 'Dispatch', layer: 'Infrastructure' },
+  audit: { version: '9.0.0', codename: 'Ledger', layer: 'Infrastructure' },
+  identity: { version: '9.0.0', codename: 'Provenance', layer: 'Infrastructure' },
+  economy: { version: '9.0.0', codename: 'Treasury', layer: 'Infrastructure' },
+  sandbox: { version: '9.0.0', codename: 'Crucible', layer: 'Infrastructure' },
 } as const;
 
 // Control plane versions
