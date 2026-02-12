@@ -195,7 +195,15 @@ export function PersistentChatbotDemo() {
                     </div>
                   ) : (
                     <>
-                      <div className={`inline-block px-4 py-2 rounded-2xl ${msg.role === 'user' ? 'bg-primary text-primary-foreground rounded-tr-sm' : msg.role === 'system' ? 'bg-muted/50 text-muted-foreground text-sm italic' : 'bg-muted rounded-tl-sm'}`}>{msg.content}</div>
+                      <div 
+                        className={`inline-block px-4 py-2 rounded-2xl ${msg.role === 'user' ? 'bg-primary text-primary-foreground rounded-tr-sm' : msg.role === 'system' ? 'bg-muted/50 text-muted-foreground text-sm italic' : 'bg-muted rounded-tl-sm'}
+                          [&_strong]:font-semibold [&_strong]:text-foreground
+                          [&_em]:italic [&_em]:text-muted-foreground
+                          [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:bg-black/20 [&_code]:text-xs [&_code]:font-mono
+                          [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2
+                          [&_pre]:my-2 [&_pre]:rounded-lg [&_pre]:overflow-x-auto`}
+                        dangerouslySetInnerHTML={{ __html: formatChatMessage(msg.content) }}
+                      />
                       <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
                         <Clock className="w-3 h-3" />
                         <span>{msg.timestamp.toLocaleTimeString()}</span>
