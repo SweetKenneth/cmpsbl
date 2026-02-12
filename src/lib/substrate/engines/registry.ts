@@ -1773,7 +1773,7 @@ export function getEngineSummary() {
     averageSynergyMultiplier: totalMultiplier / engines.length,
     averageComplexityScore: totalComplexity / engines.length,
     totalWorldFirstEnhancements: 56,
-    totalHighValueCapabilities: 56,
+    totalHighValueCapabilities: 110,
     totalSynergyPipelines: 147,
   };
 }
