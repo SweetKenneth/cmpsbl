@@ -1,6 +1,6 @@
 /**
  * Ripple Info — Communication Module Product Page
- * v8.0.0 SYNERGY+ Epoch — Part of 14-module substrate
+ * v9.1.0 ARCHITECT Epoch — Part of 21-module substrate
  */
 
 import { SEO } from "@/components/SEO";
@@ -18,7 +18,7 @@ export default function RippleInfo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Ripple Module — AI Communication & Marketing Orchestration | CMPSBL"
-        description="Generate multi-platform campaigns instantly with AI. Part of CMPSBL's 14-module cognitive substrate for intelligent content creation and distribution."
+        description="Generate multi-platform campaigns instantly with AI. Part of CMPSBL's 21-module cognitive substrate for intelligent content creation and distribution."
         canonical="https://cmpsbl.com/products/ripple"
         keywords={[
           'AI marketing orchestration',
@@ -51,7 +51,7 @@ export default function RippleInfo() {
             </span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Generate complete marketing campaigns across all channels with AI. Part of CMPSBL's 14-module 
+            Generate complete marketing campaigns across all channels with AI. Part of CMPSBL's 21-module 
             cognitive substrate for intelligent communication orchestration.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

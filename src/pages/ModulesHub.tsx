@@ -1,5 +1,5 @@
 /**
- * Modules Hub — Central index of all 14 substrate modules
+ * Modules Hub — Central index of all 21 substrate modules
  * SEO: /modules — captures "CMPSBL modules", "AI substrate components"
  */
 
@@ -16,14 +16,14 @@ export default function ModulesHub() {
   return (
     <>
       <Helmet>
-        <title>Substrate Modules — 20 Core AI Components | CMPSBL</title>
-        <meta name="description" content="Explore the 14 core modules powering the CMPSBL Substrate OS — from persistent memory and intelligent routing to AI security and autonomous optimization." />
+        <title>Substrate Modules — 21 AI Components | CMPSBL</title>
+        <meta name="description" content="Explore the 21 modules powering the CMPSBL Substrate OS — from persistent memory and intelligent routing to AI security, code generation, and autonomous optimization." />
         <link rel="canonical" href="https://cmpsbl.com/modules" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           "name": "CMPSBL Substrate Modules",
-          "description": "20 core AI modules organized across 6 architectural layers",
+          "description": "21 AI modules organized across 6 architectural layers",
           "url": "https://cmpsbl.com/modules",
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
           "hasPart": MODULE_REGISTRY.map(m => ({
@@ -53,7 +53,7 @@ export default function ModulesHub() {
                 Substrate Architecture
               </span>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                20 Modules. 6 Layers.{" "}
+                21 Modules. 6 Layers.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>

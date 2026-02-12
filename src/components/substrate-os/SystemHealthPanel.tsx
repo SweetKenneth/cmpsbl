@@ -1,6 +1,6 @@
 /**
- * System Health Panel v8.0.0 SYNERGY+ — Live health diagnostics and auto-heal
- * Real-time system status with healing controls for 14-module architecture
+ * System Health Panel v9.1.0 ARCHITECT — Live health diagnostics and auto-heal
+ * Real-time system status with healing controls for 21-module architecture
  */
 
 import { useState } from 'react';
@@ -40,7 +40,7 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
     }
   };
 
-  // All 20 modules in the substrate architecture
+  // All 21 modules in the substrate architecture
   const moduleStatus = [
     { name: 'Core', key: 'core', healthy: healthScore.modules.core, icon: Cpu, color: 'text-orange-400' },
     { name: 'Ripple', key: 'ripple', healthy: healthScore.modules.ripple, icon: Activity, color: 'text-cyan-400' },

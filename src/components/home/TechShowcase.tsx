@@ -1,5 +1,5 @@
 /**
- * Tech Showcase — Interactive demonstration of all 20 CMPSBL modules
+ * Tech Showcase — Interactive demonstration of all 21 CMPSBL modules
  * Premium terminal-style code display with syntax highlighting
  * v9.0.0: Full module coverage for the 6-layer kernel architecture + SEBA
  */
@@ -29,7 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// All 20 modules organized by 6-layer architecture + Inclusive human-compatibility
+// All 21 modules organized by 6-layer architecture
 const codeExamples = [
   // KERNEL LAYER
   {

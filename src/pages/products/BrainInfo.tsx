@@ -1,6 +1,6 @@
 /**
  * Brain Info — Core Cognitive Module Product Page
- * v8.0.0 SYNERGY+ Epoch — Part of 14-module substrate
+ * v9.1.0 ARCHITECT Epoch — Part of 21-module substrate
  */
 
 import { SEO } from "@/components/SEO";
@@ -18,7 +18,7 @@ export default function BrainInfo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Brain Module — Core Cognitive Intelligence Engine | CMPSBL"
-        description="The core cognitive engine of CMPSBL's 14-module substrate. Self-evolving AI with autonomous learning, dream cycle processing, and adaptive intelligence."
+        description="The core cognitive engine of CMPSBL's 21-module substrate. Self-evolving AI with autonomous learning, dream cycle processing, and adaptive intelligence."
         canonical="https://cmpsbl.com/products/brain"
         keywords={[
           'cognitive AI engine',
@@ -51,7 +51,7 @@ export default function BrainInfo() {
             </span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            The cognitive core of CMPSBL's 14-module substrate. Self-evolving AI with autonomous learning,
+            The cognitive core of CMPSBL's 21-module substrate. Self-evolving AI with autonomous learning,
             dream cycle processing, and adaptive intelligence that improves over time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -45,15 +45,15 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     icon: Cpu,
     color: "blue-500",
     useCaseH1: "Self-Bootstrapping AI Runtime for Autonomous Systems",
-    heroDescription: "CORE is the heartbeat of the substrate — a self-initializing runtime that boots 14 modules in dependency order, manages health checks, and provides the event bus that connects everything.",
+    heroDescription: "CORE is the heartbeat of the substrate — a self-initializing runtime that boots 21 modules in dependency order, manages health checks, and provides the event bus that connects everything.",
     features: ["Dependency-ordered boot sequence", "Health monitoring & auto-recovery", "Event bus (pub/sub) for inter-module messaging", "Hot-reload without downtime", "Module lifecycle management"],
     highlights: [
-      { title: "Zero-Downtime Hot Reload", description: "Swap module versions in production without dropping a single request. CORE manages graceful handoffs across all 14 modules simultaneously, keeping your AI stack online 24/7." },
+      { title: "Zero-Downtime Hot Reload", description: "Swap module versions in production without dropping a single request. CORE manages graceful handoffs across all 21 modules simultaneously, keeping your AI stack online 24/7." },
       { title: "Self-Healing Boot Sequence", description: "If a module fails during startup, CORE automatically retries with exponential backoff, re-orders dependencies, and boots degraded-mode alternatives — no human intervention required." },
       { title: "Sub-10ms Event Bus", description: "The built-in publish/subscribe event bus delivers inter-module messages in under 10 milliseconds, enabling real-time coordination across memory, security, routing, and orchestration layers." },
     ],
     codeSnippet: `import { useCore } from '@cmpsbl/substrate';\n\nconst { status, modules, reboot } = useCore();\n// status: 'booting' | 'ready' | 'degraded'\n// modules: Map<string, ModuleStatus>`,
-    integrations: ["All 14 modules depend on CORE", "Atlas Control Plane", "SEBA Evolution Agent"],
+    integrations: ["All 21 modules depend on CORE", "Atlas Control Plane", "SEBA Evolution Agent"],
     useCases: ["Enterprise AI platforms needing reliable orchestration", "Multi-agent systems requiring coordinated boot", "Mission-critical deployments with zero-downtime updates"],
   },
   {
@@ -197,7 +197,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
       { title: "Predictive Health Alerts", description: "VISION doesn't wait for failures — it detects degradation trends and alerts you before a module hits critical status, giving you time to intervene proactively." },
     ],
     codeSnippet: `import { useVision } from '@cmpsbl/substrate';\n\nconst { metrics, health, alerts } = useVision();\n// metrics.totalRequests, metrics.avgLatency\n// health: Record<ModuleName, HealthStatus>`,
-    integrations: ["All 14 modules", "External APM tools", "Webhook alerts"],
+    integrations: ["All 21 modules", "External APM tools", "Webhook alerts"],
     useCases: ["DevOps teams monitoring AI infrastructure", "Executive dashboards for AI ROI", "Debugging complex multi-module interactions"],
   },
   {
@@ -312,7 +312,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     layer: "Orchestrator",
     icon: Workflow,
     color: "fuchsia-500",
-    useCaseH1: "AI Meta-Orchestration: Coordinate 20 Modules as One Intelligence",
+    useCaseH1: "AI Meta-Orchestration: Coordinate 21 Modules as One Intelligence",
     heroDescription: "CORTEX is the conductor of the substrate symphony. It doesn't just manage modules — it discovers emergent capabilities from their interactions, creating intelligence greater than the sum of its parts.",
     features: ["Cross-module workflow orchestration", "Synergy pipeline discovery", "Emergent capability detection", "Adaptive resource allocation", "147 pre-built synergy pipelines"],
     highlights: [
@@ -321,7 +321,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
       { title: "Adaptive Resource Allocation", description: "CORTEX dynamically shifts compute resources between modules based on real-time demand. During high-traffic periods, routing gets priority; during off-peak, DREAM gets more cycles for optimization." },
     ],
     codeSnippet: `import { useCortex } from '@cmpsbl/substrate';\n\nconst { orchestrate, synergies } = useCortex();\nconst result = await orchestrate({\n  goal: 'Analyze and secure new deployment',\n  modules: ['defense', 'system', 'vision']\n});`,
-    integrations: ["All 20 modules", "SEBA (self-evolution)", "Atlas Control Plane"],
+    integrations: ["All 21 modules", "SEBA (self-evolution)", "Atlas Control Plane"],
     useCases: ["Complex multi-step AI workflows", "Autonomous AI operations", "Enterprise AI requiring coordinated intelligence"],
   },
 
@@ -379,11 +379,11 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     features: ["Append-only event logging", "Cryptographic hash chaining", "Cross-module event capture", "Compliance reporting", "Legal defensibility layer"],
     highlights: [
       { title: "Cryptographic Hash Chaining", description: "Every audit entry is linked to its predecessor via SHA-256 hashing, creating a tamper-evident chain. Any modification to historical records is instantly detectable." },
-      { title: "Cross-Module Event Capture", description: "AUDIT listens to all 20 modules via RIPPLE, automatically capturing governance decisions, security events, evolution proposals, and administrative actions without module-level instrumentation." },
+      { title: "Cross-Module Event Capture", description: "AUDIT listens to all 21 modules via RIPPLE, automatically capturing governance decisions, security events, evolution proposals, and administrative actions without module-level instrumentation." },
       { title: "Compliance-Ready Reports", description: "Generate SOC2, GDPR, and HIPAA-aligned audit reports with a single command. Filter by time range, actor, module, or action type with full chain-of-custody documentation." },
     ],
     codeSnippet: `import { useAuditModule } from '@cmpsbl/substrate';\n\nconst { log, verify, report } = useAuditModule();\nconst integrity = await verify();\n// integrity.valid: true\nconst compliance = await report({ standard: 'SOC2' });`,
-    integrations: ["All 20 modules (event capture)", "RELAY (compliance alerts)", "IDENTITY (actor attribution)"],
+    integrations: ["All 21 modules (event capture)", "RELAY (compliance alerts)", "IDENTITY (actor attribution)"],
     useCases: ["SOC2/GDPR compliance programs", "Enterprise audit trail requirements", "Legal defensibility for AI decisions"],
   },
   {

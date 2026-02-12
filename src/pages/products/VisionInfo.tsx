@@ -13,7 +13,7 @@ export default function VisionInfo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Vision Dashboard — Real-Time AI System Monitoring & Analytics | CMPSBL"
-        description="Centralized control panel for monitoring AI performance, system health, and security metrics in real-time. Part of CMPSBL's 14-module cognitive substrate."
+        description="Centralized control panel for monitoring AI performance, system health, and security metrics in real-time. Part of CMPSBL's 21-module cognitive substrate."
         canonical="https://cmpsbl.com/products/vision"
         keywords={[
           'real-time monitoring dashboard',

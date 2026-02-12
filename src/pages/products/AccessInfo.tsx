@@ -1,6 +1,6 @@
 /**
  * Access Info — Accessibility Module Product Page
- * v8.0.0 SYNERGY+ Epoch — Part of 14-module substrate
+ * v9.1.0 ARCHITECT Epoch — Part of 21-module substrate
  */
 
 import { SEO } from "@/components/SEO";
@@ -18,7 +18,7 @@ export default function AccessInfo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Access Module — Website Accessibility Compliance & WCAG Testing | CMPSBL"
-        description="Automated accessibility testing for WCAG 2.2, ADA, and Section 508. Part of CMPSBL's 14-module cognitive substrate with AI-powered scanning and fixes."
+        description="Automated accessibility testing for WCAG 2.2, ADA, and Section 508. Part of CMPSBL's 21-module cognitive substrate with AI-powered scanning and fixes."
         canonical="https://cmpsbl.com/products/access"
         keywords={[
           'website accessibility testing',
@@ -52,7 +52,7 @@ export default function AccessInfo() {
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Ensure your website is accessible to everyone with automated WCAG 2.2 compliance testing. 
-            Part of CMPSBL's 14-module cognitive substrate with AI-powered fixes.
+            Part of CMPSBL's 21-module cognitive substrate with AI-powered fixes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => navigate('/auth')} className="group">

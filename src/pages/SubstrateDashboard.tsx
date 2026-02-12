@@ -1,8 +1,8 @@
 /**
  * CMPSBL Substrate — Dashboard
- * v9.0.0 — Cognitive Orchestration Substrate (20-Module Architecture)
+ * v9.1.0 — Cognitive Orchestration Substrate (21-Module Architecture)
  *
- * Unified control center for all 20 substrate modules:
+ * Unified control center for all 21 substrate modules:
  * 
  * KERNEL LAYER:
  * - Core: Kernel scheduler, lifecycle, orchestration
@@ -64,7 +64,7 @@ interface SubstrateMetrics {
   decode_conversations: number;
 }
 
-// 20-module architecture organized by layer
+// 21-module architecture organized by layer
 const modulesByLayer = {
   kernel: [
     {
@@ -260,10 +260,10 @@ export default function SubstrateDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Dashboard — CMPSBL v9.0.0"
-        description="Cognitive orchestration substrate control center. Monitor all 20 modules across 6 layers including brain, decode, defense, nexus, vision, dream, memory, relay, audit, identity, economy, sandbox, and more."
+        title="Substrate Dashboard — CMPSBL v9.1.0"
+        description="Cognitive orchestration substrate control center. Monitor all 21 modules across 6 layers including brain, decode, encode, defense, nexus, vision, dream, memory, relay, audit, identity, economy, sandbox, and more."
         canonical="https://cmpsbl.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "20 modules", "cortex"]}
+        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "21 modules", "cortex"]}
       />
 
       <PublicNav />
@@ -273,7 +273,7 @@ export default function SubstrateDashboard() {
         <div className="max-w-6xl mx-auto mb-8 md:mb-12">
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <Layers className="w-3 h-3 mr-2" />
-            Live Infrastructure — 20 Modules
+            Live Infrastructure — 21 Modules
           </Badge>
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -414,7 +414,7 @@ export default function SubstrateDashboard() {
             </ScrollArea>
           </div>
 
-          {/* Overview - All 20 modules */}
+          {/* Overview - All 21 modules */}
           <TabsContent value="overview" className="mt-6">
             <div className="space-y-8">
               {Object.entries(modulesByLayer).map(([layer, modules]) => (
