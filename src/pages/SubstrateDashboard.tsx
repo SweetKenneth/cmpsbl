@@ -1,8 +1,8 @@
 /**
  * CMPSBL Substrate — Dashboard
- * v7.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v9.0.0 — Cognitive Orchestration Substrate (20-Module Architecture)
  *
- * Unified control center for all 14 substrate modules:
+ * Unified control center for all 20 substrate modules:
  * 
  * KERNEL LAYER:
  * - Core: Kernel scheduler, lifecycle, orchestration
@@ -64,7 +64,7 @@ interface SubstrateMetrics {
   decode_conversations: number;
 }
 
-// 14-module architecture organized by layer
+// 20-module architecture organized by layer
 const modulesByLayer = {
   kernel: [
     {
@@ -260,10 +260,10 @@ export default function SubstrateDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Dashboard — CMPSBL v8.0.0"
-        description="Cognitive orchestration substrate control center. Monitor all 14 modules including brain, decode, defense, nexus, vision, dream, integration, inclusive, cortex, and more."
+        title="Substrate Dashboard — CMPSBL v9.0.0"
+        description="Cognitive orchestration substrate control center. Monitor all 20 modules across 6 layers including brain, decode, defense, nexus, vision, dream, memory, relay, audit, identity, economy, sandbox, and more."
         canonical="https://cmpsbl.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "14 modules", "cortex"]}
+        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "20 modules", "cortex"]}
       />
 
       <PublicNav />
@@ -273,7 +273,7 @@ export default function SubstrateDashboard() {
         <div className="max-w-6xl mx-auto mb-8 md:mb-12">
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <Layers className="w-3 h-3 mr-2" />
-            Live Infrastructure — 14 Modules
+            Live Infrastructure — 20 Modules
           </Badge>
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -281,12 +281,12 @@ export default function SubstrateDashboard() {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">v8.0.0 SYNERGY+ — Cognitive Orchestration Substrate</p>
+              <p className="text-sm md:text-base text-muted-foreground">v9.0.0 ARCHITECT — Cognitive Orchestration Substrate</p>
             </div>
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            Unified control center for the AI orchestration substrate. All 14 modules organized in 5 layers, 147 synergy pipelines, 310+ terminal commands.
+            Unified control center for the AI orchestration substrate. All 20 modules organized in 6 layers, 147 synergy pipelines, 340+ terminal commands.
           </p>
           
           <div className="flex gap-3">
@@ -414,7 +414,7 @@ export default function SubstrateDashboard() {
             </ScrollArea>
           </div>
 
-          {/* Overview - All 14 modules */}
+          {/* Overview - All 20 modules */}
           <TabsContent value="overview" className="mt-6">
             <div className="space-y-8">
               {Object.entries(modulesByLayer).map(([layer, modules]) => (

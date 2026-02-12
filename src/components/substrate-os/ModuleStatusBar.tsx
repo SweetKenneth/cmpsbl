@@ -198,7 +198,7 @@ export function ModuleStatusBar() {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Module Status</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">5-layer / 14-module architecture</p>
+            <p className="text-[10px] text-muted-foreground font-mono">6-layer / 20-module architecture</p>
           </div>
         </div>
         

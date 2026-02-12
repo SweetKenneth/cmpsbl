@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * v8.5.0 SYNERGY+ Epoch
+ * v9.0.0 ARCHITECT Epoch
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
@@ -18,11 +18,11 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 14 core modules in 5-layer architecture */
-export const MODULES_COUNT = 14;
+/** 20 core modules in 6-layer architecture */
+export const MODULES_COUNT = 20;
 
-/** 5 architectural layers: Kernel, Cognitive, Operational, Admin, Orchestrator */
-export const LAYERS_COUNT = 5;
+/** 6 architectural layers: Kernel, Cognitive, Operational, Administrative, Orchestrator, Infrastructure */
+export const LAYERS_COUNT = 6;
 
 /** 
  * Synergy pipelines defined in capabilities/synergies/registry.ts
@@ -115,9 +115,9 @@ export const LINES_OF_CODE_DISPLAY = '175k+';
 // VERSION INFO
 // =============================================================================
 
-export const SUBSTRATE_VERSION = '8.5.0';
-export const SUBSTRATE_CODENAME = 'SYNERGY+';
-export const SUBSTRATE_EPOCH = 'SYNERGY+';
+export const SUBSTRATE_VERSION = '9.0.0';
+export const SUBSTRATE_CODENAME = 'ARCHITECT';
+export const SUBSTRATE_EPOCH = 'ARCHITECT';
 
 // =============================================================================
 // PERFORMANCE CLAIMS (only include if verifiable)

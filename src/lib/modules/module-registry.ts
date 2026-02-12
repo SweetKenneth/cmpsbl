@@ -1,5 +1,5 @@
 /**
- * Module Registry — Single source of truth for all 14 substrate modules
+ * Module Registry — Single source of truth for all 20 substrate modules
  * Used by: hub page, detail pages, mega-menu, footer, SEO
  */
 
