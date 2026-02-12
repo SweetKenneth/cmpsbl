@@ -259,6 +259,7 @@ export function getWorldModelSummary(): {
     operational: 0,
     administrative: 0,
     orchestrator: 0,
+    infrastructure: 0,
   };
   
   Object.values(MODULE_REGISTRY).forEach(config => {
