@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Send, Bot, User, Brain, Loader2, Sparkles, Clock, Database, RefreshCw, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { formatChatMessage } from '@/lib/ui/formatChatMessage';
 
 interface Message {
   id: string;
