@@ -1,6 +1,6 @@
 /**
- * CMPSBL® substrate — OS Surface v8.0.0 SYNERGY+ Epoch
- * PREMIUM EDITION — 14 modules, 310+ commands, 147 synergy pipelines
+ * CMPSBL® substrate — OS Surface v9.1.0 ARCHITECT Epoch
+ * PREMIUM EDITION — 21 modules, 360+ commands, 200 synergy pipelines
  */
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';

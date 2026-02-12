@@ -1,6 +1,6 @@
 /**
  * Terminal Command Registry
- * v9.0.0 ARCHITECT Epoch — 340+ commands across 20 modules + 7 infrastructure systems
+ * v9.1.0 ARCHITECT Epoch — 360+ commands across 21 modules
  * Complete list of all substrate commands organized by module
  */
 

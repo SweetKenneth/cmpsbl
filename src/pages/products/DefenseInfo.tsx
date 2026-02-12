@@ -1,6 +1,6 @@
 /**
  * Defense Info — Security Module Product Page
- * v8.0.0 SYNERGY+ Epoch — Part of 14-module substrate
+ * v9.1.0 ARCHITECT Epoch — Part of 21-module substrate
  */
 
 import { SEO } from "@/components/SEO";
@@ -18,7 +18,7 @@ export default function DefenseInfo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Defense Module — AI-Powered Threat Detection & Security | CMPSBL"
-        description="Enterprise security powered by AI behavioral analysis. Part of CMPSBL's 14-module cognitive substrate with real-time threat detection and adaptive learning."
+        description="Enterprise security powered by AI behavioral analysis. Part of CMPSBL's 21-module cognitive substrate with real-time threat detection and adaptive learning."
         canonical="https://cmpsbl.com/products/defense"
         keywords={[
           'AI threat detection',
@@ -51,7 +51,7 @@ export default function DefenseInfo() {
             </span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Enterprise-grade protection that learns from every threat. Part of CMPSBL's 14-module cognitive 
+            Enterprise-grade protection that learns from every threat. Part of CMPSBL's 21-module cognitive 
             substrate with behavioral intelligence that adapts in real-time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

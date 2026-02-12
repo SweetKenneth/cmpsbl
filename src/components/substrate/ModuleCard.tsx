@@ -5,7 +5,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2, Accessibility, Database, Send, FileCheck, Fingerprint, Coins, FlaskConical } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2, Accessibility, Database, Send, FileCheck, Fingerprint, Coins, FlaskConical, Code2 } from 'lucide-react';
 import { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleCardProps {
@@ -143,6 +143,12 @@ const moduleConfig: Record<SubstrateModule, {
     label: 'Sandbox',
     description: 'Isolated execution environments',
     color: 'text-cyan-600',
+  },
+  encode: {
+    icon: Code2,
+    label: 'Encode',
+    description: 'Code execution & generation intelligence',
+    color: 'text-yellow-500',
   },
 };
 

@@ -4,9 +4,9 @@
  * Full-featured terminal with comprehensive commands, autocomplete,
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
  * 
- * v8.0.0 SYNERGY+ Features:
- * - 340+ terminal commands across 20 modules
- * - 147 synergy pipelines with 125 executors
+ * v9.1.0 ARCHITECT Features:
+ * - 360+ terminal commands across 21 modules
+ * - 200 synergy pipelines with 125 executors
  * - Improved visual feedback for command execution
  * - Better animation states for results
  * - Enhanced mobile responsiveness with word-wrap fixes

@@ -14,9 +14,10 @@ import type { Json } from '@/integrations/supabase/types';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export type SubstrateModule = 
-  | 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'system'
+  | 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'encode' | 'system'
   | 'inclusive' | 'defense' | 'nexus' | 'vision' | 'dream'
-  | 'modernizer' | 'integration' | 'cortex';
+  | 'modernizer' | 'integration' | 'cortex'
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox';
 
 export interface ModuleKPIs {
   module: SubstrateModule;

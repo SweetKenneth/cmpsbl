@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v8.5.0 — SYNERGY+ Epoch — Complete AI Operating System with 14 modules + 7 infra systems + SEBA
+ * v9.1.0 — ARCHITECT Epoch — Complete AI Operating System with 21 modules + SEBA
  * 
  * Performance: Triple-deferred initialization for zero main-thread blocking
  * - Waits for document idle state
@@ -37,20 +37,20 @@ export async function initializeSubstrate(): Promise<void> {
     // Yield before heavy work
     await yieldToMain();
     
-    console.log('⚡ Booting promptfluid® Substrate v8.5.0 (SYNERGY+ Epoch)...');
+    console.log('⚡ Booting promptfluid® Substrate v9.1.0 (ARCHITECT Epoch)...');
     console.log('─────────────────────────────────────────');
     
-    // Boot sequence - CORE first, then other modules (14-module architecture: 13 core + cortex)
-    // INCLUSIVE positioned between SYSTEM and DEFENSE in lifecycle
-    const bootOrder: ('core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'inclusive' | 'modernizer' | 'integration' | 'cortex')[] = [
-      'core', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'modernizer', 'integration', 'cortex'
+    // Boot sequence - CORE first, then other modules (21-module architecture)
+    // ENCODE boots after BRAIN + DECODE; Infrastructure Six boot last
+    const bootOrder: ('core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'inclusive' | 'modernizer' | 'integration' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox')[] = [
+      'core', 'brain', 'decode', 'encode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'modernizer', 'integration', 'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'
     ];
     
     // First, call core.boot to initialize everything
     const bootResult = await substrate.invoke({ module: 'core', action: 'boot' });
     
     if (bootResult.success) {
-      console.log('✅ Substrate boot complete: 14 modules loaded | Health: 100%');
+      console.log('✅ Substrate boot complete: 21 modules loaded | Health: 100%');
     } else {
       // Fallback to individual pings with yielding between each
       let activeModules = 0;

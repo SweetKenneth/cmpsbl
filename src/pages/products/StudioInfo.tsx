@@ -1,6 +1,6 @@
 /**
  * Studio Info — Creative Module Product Page  
- * v8.0.0 SYNERGY+ Epoch — Part of 14-module substrate
+ * v9.1.0 ARCHITECT Epoch — Part of 21-module substrate
  */
 
 import { SEO } from "@/components/SEO";
@@ -18,7 +18,7 @@ export default function StudioInfo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Studio Module — AI Website Creation & Deployment | CMPSBL"
-        description="Build production-ready websites in minutes with AI. Part of CMPSBL's 14-module cognitive substrate for intelligent web development and deployment."
+        description="Build production-ready websites in minutes with AI. Part of CMPSBL's 21-module cognitive substrate for intelligent web development and deployment."
         canonical="https://cmpsbl.com/products/studio"
         keywords={[
           'AI website builder',
@@ -52,7 +52,7 @@ export default function StudioInfo() {
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Create production-ready websites in minutes with AI-powered design. Part of CMPSBL's 
-            14-module cognitive substrate for intelligent web development.
+            21-module cognitive substrate for intelligent web development.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => navigate('/auth')} className="group">

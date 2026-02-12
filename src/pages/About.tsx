@@ -131,7 +131,7 @@ export default function About() {
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold mb-4 text-foreground">The Substrate</h2>
           <p className="text-muted-foreground mb-10 text-lg">
-            14 integrated modules. 147 synergy pipelines. Production-ready cognitive infrastructure.
+            21 integrated modules. 200 synergy pipelines. Production-ready cognitive infrastructure.
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -199,7 +199,7 @@ export default function About() {
             {[
               { year: "2009", event: "Started building software—sites, apps, and tools for clients" },
               { year: "2024", event: "PromptFluid founded. CMPSBL substrate development begins." },
-              { year: "2025", event: "v8.0.0 SYNERGY+ Epoch — 14 modules, 147 pipelines, Engine Marketplace" },
+              { year: "2025", event: "v9.1.0 ARCHITECT Epoch — 21 modules, 200 pipelines, Engine Marketplace" },
               { year: "Now", event: "Production infrastructure serving developers and enterprises" }
             ].map((milestone, index) => (
               <div key={index} className="flex items-start gap-4">

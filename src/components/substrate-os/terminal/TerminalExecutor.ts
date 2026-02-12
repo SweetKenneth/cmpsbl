@@ -1,9 +1,9 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * v9.0.0 — ARCHITECT Epoch
+ * v9.1.0 — ARCHITECT Epoch
  * 
- * 20 modules | 340+ commands | 147 synergy pipelines | 7 infra systems | All handlers verified
+ * 21 modules | 360+ commands | 200 synergy pipelines | All handlers verified
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
@@ -335,10 +335,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│         SUBSTRATE OS v9.0.0 — COMMAND REFERENCE             │
+│         SUBSTRATE OS v9.1.0 — COMMAND REFERENCE             │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 22 + Synergies          │
-│  Architecture: 20-module + CLM + Infra + 147 Synergies      │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 21 + Synergies          │
+│  Architecture: 21-module + CLM + 200 Synergy Pipelines      │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │
@@ -686,7 +686,7 @@ export async function executeCommand(
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  20-Module Architecture — Full AI Operating System
+│  21-Module Architecture — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  Mode: ${roleDisplay}
@@ -714,6 +714,7 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  │
 │  ├─ ORCHESTRATOR LAYER ──────────────────────────────────────
 │  │  cortex://     policy intent, manual mode
+│  │  encode://     code execution, generation, CLM
 │  │
 │  ├─ INFRASTRUCTURE LAYER ────────────────────────────────────
 │  │  memory://     vector store, RAG, embeddings
@@ -725,8 +726,8 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal v9.0.0: aliases, macros, NLP, watch mode, audit
-│  20 modules | 340+ commands | 7 infra systems | health: 100%
+│  Terminal v9.1.0: aliases, macros, NLP, watch mode, audit
+│  21 modules | 360+ commands | 200 synergy pipelines | health: 100%
 │  promptfluid® — where dreams come to adapt
 │  
 └──────────────────────────────────────────────────────────────`;
@@ -4095,7 +4096,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         output += `│\n│  These engines orchestrate the substrate's 56 unique world-first\n`;
-        output += `│  enhancements across all 20 modules.\n`;
+        output += `│  enhancements across all 21 modules.\n`;
         output += `│\n└───────────────────────────────────────────────────────────────\n`;
         
         return { success: true, output, data: worldFirst };

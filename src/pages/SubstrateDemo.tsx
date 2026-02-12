@@ -89,7 +89,7 @@ const DEMO_SCENARIOS = [
   {
     name: 'Full Orchestration',
     sequence: ['cortex', 'access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'inclusive', 'system', 'integration', 'ripple'],
-    description: 'Complete 14-module orchestration across all 5 architectural layers',
+    description: 'Complete 21-module orchestration across all 6 architectural layers',
     icon: Sparkles,
   },
 ];
@@ -161,7 +161,7 @@ export default function SubstrateDemo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Interactive Demo — Substrate AI OS | promptfluid®"
-        description="Experience the 20-module cognitive operating system in action. Watch memory, reasoning, defense, and synthesis orchestrate in real-time."
+        description="Experience the 21-module cognitive operating system in action. Watch memory, reasoning, defense, and synthesis orchestrate in real-time."
       />
       <PublicNav />
 
@@ -195,7 +195,7 @@ export default function SubstrateDemo() {
                 className="text-3xl md:text-5xl font-bold mb-4"
               >
                 <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                  20 Modules
+                  21 Modules
                 </span>
                 <span className="text-foreground"> · 6 Layers · 1 Substrate</span>
               </motion.h1>

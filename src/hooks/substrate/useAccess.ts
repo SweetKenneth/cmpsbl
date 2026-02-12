@@ -3,7 +3,7 @@
  * v8.0.0 SYNERGY+ Epoch — Dedicated hook for ACCESS (Identity & Billing) module operations
  * 
  * Respects debug mode kill-switch for quota polling.
- * Part of the 6-layer, 20-module Cognitive Architecture.
+ * Part of the 6-layer, 21-module Cognitive Architecture.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

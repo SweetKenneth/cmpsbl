@@ -280,14 +280,14 @@ export function CortexTab({ enabled }: CortexTabProps) {
         <CardHeader>
           <CardTitle className="text-sm font-medium flex items-center gap-2">
             <Globe className="w-4 h-4 text-violet-400" />
-            World Model — 14-Module Registry
+            World Model — 21-Module Registry
           </CardTitle>
           <CardDescription className="text-xs">CORTEX maintains a complete model of all substrate modules</CardDescription>
         </CardHeader>
         <CardContent>
           {worldLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
-              {Array.from({ length: 14 }).map((_, i) => (
+              {Array.from({ length: 21 }).map((_, i) => (
                 <Skeleton key={i} className="h-16 rounded-lg" />
               ))}
             </div>

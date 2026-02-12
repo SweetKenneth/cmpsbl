@@ -39,7 +39,7 @@ const jsonLd = {
     "description": "Developer License - Annual"
   },
   "featureList": [
-    "20-module kernel architecture",
+    "21-module kernel architecture",
     "Persistent memory (3-tier system)",
     "Self-improvement engine",
     "Autonomous dream cycles",
@@ -63,6 +63,7 @@ const modules = [
   { name: "MODERNIZER", desc: "Self-improvement engine", icon: TrendingUp, layer: "Admin" },
   { name: "INCLUSIVE", desc: "Human compatibility, WCAG pipeline", icon: BadgeCheck, layer: "Admin" },
   { name: "CORTEX", desc: "Agency-class autonomous orchestration", icon: Sparkles, layer: "Orchestrator" },
+  { name: "ENCODE", desc: "Code execution & generation intelligence", icon: Code2, layer: "Orchestrator" },
 ];
 
 const metrics = [
@@ -106,7 +107,7 @@ export default function SubstrateIntelligence() {
     <>
       <SEO 
         title="Substrate Intelligence | CMPSBL - AI Drift Prevention Technology"
-        description="The world's first cognitive orchestration substrate. 20-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $2,999/yr or acquire the IP."
+        description="The world's first cognitive orchestration substrate. 21-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $2,999/yr or acquire the IP."
         keywords={["AI behavioral drift", "chatbot consistency", "persistent memory AI", "self-improving AI", "cognitive orchestration", "AI substrate", "CMPSBL", "promptfluid", "autonomous AI", "enterprise AI"]}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -261,12 +262,12 @@ Boot complete in 117ms`}
           </div>
         </section>
 
-        {/* 20-Module Architecture */}
+        {/* 21-Module Architecture */}
         <section className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4">20-Module Kernel Architecture</h2>
+                <h2 className="text-3xl font-bold mb-4">21-Module Kernel Architecture</h2>
                 <p className="text-muted-foreground">Six-layer design for cognitive orchestration</p>
               </div>
               
@@ -326,7 +327,7 @@ Boot complete in 117ms`}
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="text-3xl font-bold text-primary">$2,999<span className="text-lg font-normal text-muted-foreground">/year</span></div>
-                    <p className="text-sm text-muted-foreground">Complete 20-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Team, Research, Enterprise, and Strategic licenses also available.</p>
+                    <p className="text-sm text-muted-foreground">Complete 21-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Team, Research, Enterprise, and Strategic licenses also available.</p>
                     <div className="flex items-center gap-2 text-xs text-primary">
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Instant checkout • Developer access in minutes</span>

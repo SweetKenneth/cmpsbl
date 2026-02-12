@@ -384,8 +384,8 @@ export function HeroMetaSubstrate() {
               templates, pipelines, memory, CodeLab. 
               <span className="text-foreground font-semibold"> Subscribe to Engines</span> for 
               production-ready orchestration with 
-              <span className="text-foreground font-semibold"> 147 synergy pipelines</span> and 
-              <span className="text-foreground font-semibold"> 14 core modules</span>.
+              <span className="text-foreground font-semibold"> 200 synergy pipelines</span> and 
+              <span className="text-foreground font-semibold"> 21 core modules</span>.
             </motion.p>
             
             {/* CTA Buttons - NOT full width on mobile */}

@@ -1,7 +1,7 @@
 /**
  * Event Stream — Live system events feed
- * v8.0.0 SYNERGY+ Epoch — Real-time log viewer with filtering and LIVE indicator
- * Streams events from all 14 modules across the substrate
+ * v9.1.0 ARCHITECT Epoch — Real-time log viewer with filtering and LIVE indicator
+ * Streams events from all 21 modules across the substrate
  */
 
 import { useState, useEffect } from 'react';
