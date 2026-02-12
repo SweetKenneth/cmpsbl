@@ -7,6 +7,7 @@ import {
   Cpu, Waves, KeyRound, Brain, Languages,
   Shield, Network, Eye, Moon, Plug,
   Server, Accessibility, Wrench, Workflow,
+  Database, Send, FileCheck, Fingerprint, Coins, FlaskConical,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
