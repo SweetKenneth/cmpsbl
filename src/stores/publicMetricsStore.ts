@@ -95,7 +95,7 @@ export const DEFAULT_METRICS: PublicMetrics = {
   stierPipelinesCount: 32,
   
   // Templates
-  templatesCount: 112,
+  templatesCount: 200,
   
   // Engine Metrics (62 base + 8 high-value = 70)
   enginesCount: 70,
