@@ -1,6 +1,6 @@
 /**
  * Cognitive Engine Types
- * v8.5.0 SYNERGY+ Epoch — 70 Engines + 22 Meta-Engines
+ * v9.0.0 ARCHITECT Epoch — 76 Engines + 24 Meta-Engines
  * 
  * Engines consolidate related capabilities into compound execution units.
  * This architecture provides:
@@ -9,7 +9,7 @@
  * - Simplified API surface for consumers
  * - IP protection through orchestration complexity
  * 
- * v8.5.0 covers 325 capabilities across 70 engines + 22 meta-engines
+ * v9.0.0 covers 379 capabilities across 76 engines + 24 meta-engines
  */
 
 import type { CapabilityId, ModuleLayer } from '../capabilities';
