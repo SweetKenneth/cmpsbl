@@ -162,7 +162,18 @@ export type EngineId =
   | 'config_runtime_engine'        // CORE: FeatureFlagEngine, ConfigHotReload, EnvironmentValidator
   | 'adapter_transform_engine'     // INTEGRATION: AdapterHealthMonitor, WebhookOrchestrator, DataTransformer
   | 'cognitive_accessibility_engine'  // INCLUSIVE: CognitiveLoadOptimizer, AccessibilityScorer, RemediationEngine
-  | 'evolution_governance_engine'; // MODERNIZER: EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
+  | 'evolution_governance_engine'  // MODERNIZER: EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW v9.0.0 ENGINES — 6 Infrastructure Layer Engines
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  | 'knowledge_retrieval_engine'   // MEMORY: vector indexing, embedding, RAG, knowledge graphs, context optimization
+  | 'delivery_orchestrator'        // RELAY: webhook dispatch, notification routing, circuit breaking, DLQ
+  | 'compliance_audit_engine'      // AUDIT: immutable logs, hash chains, data lineage, compliance reporting
+  | 'zero_trust_engine'            // IDENTITY: SSO federation, tenant isolation, token lifecycle, device trust
+  | 'finops_engine'                // ECONOMY: usage metering, billing aggregation, cost anomaly, budget governance
+  | 'resilience_lab';              // SANDBOX: ephemeral envs, chaos injection, load gen, regression detection
 
 export interface EngineDefinition {
   id: EngineId;
