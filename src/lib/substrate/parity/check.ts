@@ -34,7 +34,7 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 14 substrate modules in boot order
+// All 20 substrate modules in boot order
 const SUBSTRATE_MODULES = [
   'core',
   'ripple',
@@ -50,6 +50,12 @@ const SUBSTRATE_MODULES = [
   'integration',
   'inclusive',
   'system',
+  'memory',
+  'relay',
+  'audit',
+  'identity',
+  'economy',
+  'sandbox',
 ] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
