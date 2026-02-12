@@ -1,6 +1,6 @@
 /**
  * Substrate Module Hooks - Barrel Export
- * v8.5.0 SYNERGY+ Epoch — Dedicated React hooks for all 14 substrate modules + SEBA
+ * v9.0.0 ARCHITECT Epoch — Dedicated React hooks for all 20 substrate modules + SEBA
  * 
  * Unified caching, loading/error states, and automatic cache invalidation
  */
@@ -28,6 +28,14 @@ export { useModernizer, type UseModernizerReturn } from './useModernizer';
 
 // Orchestrator Layer
 export { useCortex, type UseCortexReturn } from './useCortex';
+
+// Infrastructure Layer (v9.0.0 — 20-Module Epoch)
+export { useMemoryModule, type UseMemoryModuleReturn } from './useMemoryModule';
+export { useRelay, type UseRelayReturn } from './useRelay';
+export { useAuditModule, type UseAuditModuleReturn } from './useAuditModule';
+export { useIdentity, type UseIdentityReturn } from './useIdentity';
+export { useEconomy, type UseEconomyReturn } from './useEconomy';
+export { useSandbox, type UseSandboxReturn } from './useSandbox';
 
 // Self-Evolving Agent
 export { useSEBAHook as useSEBA, type UseSEBAHookReturn } from './useSEBA';

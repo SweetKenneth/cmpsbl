@@ -16,14 +16,14 @@ export default function ModulesHub() {
   return (
     <>
       <Helmet>
-        <title>Substrate Modules — 14 Core AI Components | CMPSBL</title>
+        <title>Substrate Modules — 20 Core AI Components | CMPSBL</title>
         <meta name="description" content="Explore the 14 core modules powering the CMPSBL Substrate OS — from persistent memory and intelligent routing to AI security and autonomous optimization." />
         <link rel="canonical" href="https://cmpsbl.com/modules" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           "name": "CMPSBL Substrate Modules",
-          "description": "14 core AI modules organized across 5 architectural layers",
+          "description": "20 core AI modules organized across 6 architectural layers",
           "url": "https://cmpsbl.com/modules",
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
           "hasPart": MODULE_REGISTRY.map(m => ({
@@ -53,7 +53,7 @@ export default function ModulesHub() {
                 Substrate Architecture
               </span>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                14 Modules. 5 Layers.{" "}
+                20 Modules. 6 Layers.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>
@@ -89,6 +89,7 @@ export default function ModulesHub() {
                         {layer === 'Operational' && 'Security, routing, monitoring, optimization, and connectivity'}
                         {layer === 'Administrative' && 'Deployment, accessibility, and architecture evolution'}
                         {layer === 'Orchestrator' && 'Cross-module coordination and emergent intelligence'}
+                        {layer === 'Infrastructure' && 'Knowledge, effects, compliance, identity, economics, and containment'}
                       </p>
                     </div>
                   </div>

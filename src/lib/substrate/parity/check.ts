@@ -34,7 +34,7 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 14 substrate modules in boot order
+// All 20 substrate modules in boot order
 const SUBSTRATE_MODULES = [
   'core',
   'ripple',
@@ -50,6 +50,12 @@ const SUBSTRATE_MODULES = [
   'integration',
   'inclusive',
   'system',
+  'memory',
+  'relay',
+  'audit',
+  'identity',
+  'economy',
+  'sandbox',
 ] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
@@ -70,6 +76,12 @@ const MODULE_HOOK_PATHS: Record<string, string> = {
   integration: 'src/hooks/substrate/useIntegration.ts',
   inclusive: 'src/hooks/substrate/useInclusive.ts',
   system: 'src/hooks/substrate/useSystem.ts',
+  memory: 'src/hooks/substrate/useMemoryModule.ts',
+  relay: 'src/hooks/substrate/useRelay.ts',
+  audit: 'src/hooks/substrate/useAuditModule.ts',
+  identity: 'src/hooks/substrate/useIdentity.ts',
+  economy: 'src/hooks/substrate/useEconomy.ts',
+  sandbox: 'src/hooks/substrate/useSandbox.ts',
 };
 
 // Module configuration registry - tracks what exists for each module
@@ -95,6 +107,12 @@ const MODULE_CONFIG: Record<string, {
   integration: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.integration, hookName: 'useIntegration' },
   inclusive: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.inclusive, hookName: 'useInclusive' },
   system: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.system, hookName: 'useSystem' },
+  memory: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.memory, hookName: 'useMemoryModule' },
+  relay: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.relay, hookName: 'useRelay' },
+  audit: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.audit, hookName: 'useAuditModule' },
+  identity: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.identity, hookName: 'useIdentity' },
+  economy: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.economy, hookName: 'useEconomy' },
+  sandbox: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sandbox, hookName: 'useSandbox' },
 };
 
 // Get module hook info

@@ -49,6 +49,12 @@ const SubstrateContext = createContext<SubstrateContextType>({
     integration: defaultModuleStatus,
     inclusive: defaultModuleStatus,
     cortex: defaultModuleStatus,
+    memory: defaultModuleStatus,
+    relay: defaultModuleStatus,
+    audit: defaultModuleStatus,
+    identity: defaultModuleStatus,
+    economy: defaultModuleStatus,
+    sandbox: defaultModuleStatus,
   },
   overallHealth: 0,
   refresh: async () => {},
@@ -80,6 +86,12 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     integration: defaultModuleStatus,
     inclusive: defaultModuleStatus,
     cortex: defaultModuleStatus,
+    memory: defaultModuleStatus,
+    relay: defaultModuleStatus,
+    audit: defaultModuleStatus,
+    identity: defaultModuleStatus,
+    economy: defaultModuleStatus,
+    sandbox: defaultModuleStatus,
   });
   
   const substrateRef = useRef<typeof import('@/lib/substrate').substrate | null>(null);

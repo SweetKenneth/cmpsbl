@@ -5,7 +5,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2, Accessibility } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2, Accessibility, Database, Send, FileCheck, Fingerprint, Coins, FlaskConical } from 'lucide-react';
 import { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleCardProps {
@@ -107,6 +107,42 @@ const moduleConfig: Record<SubstrateModule, {
     label: 'Inclusive',
     description: 'Human compatibility, WCAG, a11y',
     color: 'text-pink-500',
+  },
+  memory: {
+    icon: Database,
+    label: 'Memory',
+    description: 'Vector embeddings, RAG orchestration',
+    color: 'text-sky-500',
+  },
+  relay: {
+    icon: Send,
+    label: 'Relay',
+    description: 'Outbound webhooks, notifications',
+    color: 'text-lime-500',
+  },
+  audit: {
+    icon: FileCheck,
+    label: 'Audit',
+    description: 'Immutable compliance ledger',
+    color: 'text-stone-500',
+  },
+  identity: {
+    icon: Fingerprint,
+    label: 'Identity',
+    description: 'Actor attribution, signatures',
+    color: 'text-rose-500',
+  },
+  economy: {
+    icon: Coins,
+    label: 'Economy',
+    description: 'Cost attribution, budgets',
+    color: 'text-amber-600',
+  },
+  sandbox: {
+    icon: FlaskConical,
+    label: 'Sandbox',
+    description: 'Isolated execution environments',
+    color: 'text-cyan-600',
   },
 };
 
