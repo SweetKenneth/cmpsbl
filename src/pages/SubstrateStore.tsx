@@ -426,7 +426,7 @@ export default function SubstrateStore() {
   return (
     <>
       <Helmet>
-        <title>Substrate Store | {totalCount}+ Free Resources | CMPSBL</title>
+        <title>{`Substrate Store | ${totalCount}+ Free Resources | CMPSBL`}</title>
         <meta name="description" content={`Explore ${totalCount}+ free capabilities, templates, and pipelines. All unlocked. No signup required.`} />
       </Helmet>
       
