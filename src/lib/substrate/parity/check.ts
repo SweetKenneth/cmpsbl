@@ -76,6 +76,12 @@ const MODULE_HOOK_PATHS: Record<string, string> = {
   integration: 'src/hooks/substrate/useIntegration.ts',
   inclusive: 'src/hooks/substrate/useInclusive.ts',
   system: 'src/hooks/substrate/useSystem.ts',
+  memory: 'src/hooks/substrate/useMemoryModule.ts',
+  relay: 'src/hooks/substrate/useRelay.ts',
+  audit: 'src/hooks/substrate/useAuditModule.ts',
+  identity: 'src/hooks/substrate/useIdentity.ts',
+  economy: 'src/hooks/substrate/useEconomy.ts',
+  sandbox: 'src/hooks/substrate/useSandbox.ts',
 };
 
 // Module configuration registry - tracks what exists for each module
