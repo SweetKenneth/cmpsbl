@@ -97,12 +97,12 @@ export const DEFAULT_METRICS: PublicMetrics = {
   // Templates
   templatesCount: 112,
   
-  // Engine Metrics
-  enginesCount: 62,
-  metaEnginesCount: 20,
+  // Engine Metrics (62 base + 8 high-value = 70)
+  enginesCount: 70,
+  metaEnginesCount: 22,
   
-  // Capability Metrics
-  capabilitiesCount: 269,
+  // Capability Metrics (269 + 56 + 54 = 379)
+  capabilitiesCount: 379,
   archivedCapabilitiesCount: 136,
   
   // Terminal & Commands
