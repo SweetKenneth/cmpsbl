@@ -101,8 +101,8 @@ export const DEFAULT_METRICS: PublicMetrics = {
   enginesCount: 70,
   metaEnginesCount: 22,
   
-  // Capability Metrics (269 + 56 + 54 = 379)
-  capabilitiesCount: 379,
+  // Capability Metrics (269 + 56 + 54 + 21 = 400)
+  capabilitiesCount: 400,
   archivedCapabilitiesCount: 136,
   
   // Terminal & Commands

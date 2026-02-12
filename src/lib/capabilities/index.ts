@@ -39,7 +39,10 @@ export {
   IDENTITY_HV_CAPABILITIES,
   ECONOMY_HV_CAPABILITIES,
   SANDBOX_HV_CAPABILITIES,
+  APEX_CAPABILITIES,
+  APEX_CAPABILITY_COUNT,
   getInfraCapabilitiesByModule,
+  getApexCapabilitiesByModule,
   INFRASTRUCTURE_MODULES,
 } from './high-value-v9';
 
