@@ -665,7 +665,7 @@ export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]
   cognitive: ['cognitive_mesh', 'world_first_cognitive'],
   protection: ['system_guardian', 'security_fortress'],
   autonomous: ['autonomous_operator', 'world_first_operational'],
-  governance: ['quality_fabric', 'world_first_governance'],
+  governance: ['quality_fabric', 'world_first_governance', 'enterprise_trust_fabric'],
   intelligence: ['intelligence_pipeline', 'world_first_intelligence'],
   experience: ['adaptation_suite'],
   performance: ['performance_optimizer'],
@@ -675,7 +675,7 @@ export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]
   self_management: ['self_governance'],
   creativity: ['creative_forge'],
   perception: ['perception_matrix'],
-  resource: ['resource_governor'],
+  resource: ['resource_governor', 'platform_economics_engine'],
   workflow: ['workflow_orchestrator'],
 };
 
