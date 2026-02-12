@@ -50,9 +50,9 @@ export const SYNERGY_VERSION = {
 } as const;
 
 // Substrate version (SYNERGY+ Epoch)
-export const SUBSTRATE_VERSION = '8.5.0';
-export const SUBSTRATE_CODENAME = 'SYNERGY+';
-export const SUBSTRATE_EPOCH = 'SYNERGY+';
+export const SUBSTRATE_VERSION = '9.0.0';
+export const SUBSTRATE_CODENAME = 'ARCHITECT';
+export const SUBSTRATE_EPOCH = 'ARCHITECT';
 export const SUBSTRATE_BUILD = `${SUBSTRATE_VERSION}-${new Date().toISOString().split('T')[0]}`;
 
 // Get module version info
