@@ -89,13 +89,13 @@ export const DEFAULT_METRICS: PublicMetrics = {
   modulesCount: 20,
   layersCount: 6,
   
-  // Synergy Metrics (98 core + 22 S-tier + 27 discovery = 147)
-  synergyPipelinesCount: 147,
+  // Synergy Metrics (98 core + 22 S-tier + 27 discovery + 3 apex = 150)
+  synergyPipelinesCount: 150,
   synergyExecutorsCount: 125,
   stierPipelinesCount: 32,
   
   // Templates
-  templatesCount: 112,
+  templatesCount: 200,
   
   // Engine Metrics (62 base + 8 high-value = 70)
   enginesCount: 70,
