@@ -5,7 +5,7 @@
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
  * 
  * v8.0.0 SYNERGY+ Features:
- * - 310+ terminal commands across 14 modules
+ * - 340+ terminal commands across 20 modules
  * - 147 synergy pipelines with 125 executors
  * - Improved visual feedback for command execution
  * - Better animation states for results
