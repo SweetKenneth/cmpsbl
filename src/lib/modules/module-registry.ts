@@ -326,7 +326,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
 ];
 
 // Helpers
-export const LAYERS = ['Kernel', 'Cognitive', 'Operational', 'Administrative', 'Orchestrator'] as const;
+export const LAYERS = ['Kernel', 'Cognitive', 'Operational', 'Administrative', 'Orchestrator', 'Infrastructure'] as const;
 
 export const LAYER_COLORS: Record<string, string> = {
   Kernel: 'from-blue-500/20 to-cyan-500/20',
@@ -334,6 +334,7 @@ export const LAYER_COLORS: Record<string, string> = {
   Operational: 'from-green-500/20 to-orange-500/20',
   Administrative: 'from-slate-500/20 to-teal-500/20',
   Orchestrator: 'from-fuchsia-500/20 to-violet-500/20',
+  Infrastructure: 'from-yellow-500/20 to-amber-500/20',
 };
 
 export function getModulesByLayer(layer: string): ModuleInfo[] {
