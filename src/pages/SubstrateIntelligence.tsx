@@ -261,13 +261,13 @@ Boot complete in 117ms`}
           </div>
         </section>
 
-        {/* 14-Module Architecture */}
+        {/* 20-Module Architecture */}
         <section className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4">14-Module Kernel Architecture</h2>
-                <p className="text-muted-foreground">Five-layer design for cognitive orchestration</p>
+                <h2 className="text-3xl font-bold mb-4">20-Module Kernel Architecture</h2>
+                <p className="text-muted-foreground">Six-layer design for cognitive orchestration</p>
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
