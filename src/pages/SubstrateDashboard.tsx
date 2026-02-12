@@ -286,7 +286,7 @@ export default function SubstrateDashboard() {
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            Unified control center for the AI orchestration substrate. All 20 modules organized in 6 layers, 147 synergy pipelines, 340+ terminal commands.
+            Unified control center for the AI orchestration substrate. All 21 modules organized in 6 layers, 200+ synergy pipelines, 360+ terminal commands.
           </p>
           
           <div className="flex gap-3">

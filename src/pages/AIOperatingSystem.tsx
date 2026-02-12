@@ -33,8 +33,8 @@ const faqItems = [
     answer: "Yes. CMPSBL is model-agnostic and provider-agnostic. The NEXUS module intelligently routes to OpenAI, Google Gemini, Anthropic Claude, or local models based on task requirements. Bring your own keys (BYOK) and your existing AI stack — CMPSBL orchestrates everything underneath."
   },
   {
-    question: "What are the 20 modules in CMPSBL's AI Operating System?",
-    answer: "The 20 modules span 6 layers: Kernel (CORE runtime, RIPPLE event bus, ACCESS identity), Cognitive (BRAIN memory, DECODE personality), Operational (DEFENSE security, NEXUS routing, VISION observability, DREAM optimization, INTEGRATION adapters), Administrative (SYSTEM ops, INCLUSIVE accessibility, MODERNIZER evolution), Orchestrator (CORTEX meta-orchestration), and Infrastructure (MEMORY vector/RAG, RELAY webhooks, AUDIT compliance, IDENTITY attribution, ECONOMY cost tracking, SANDBOX isolation)."
+    question: "What are the 21 modules in CMPSBL's AI Operating System?",
+    answer: "The 21 modules span 6 layers: Kernel (CORE runtime, RIPPLE event bus, ACCESS identity), Cognitive (BRAIN memory, DECODE personality), Operational (DEFENSE security, NEXUS routing, VISION observability, DREAM optimization, INTEGRATION adapters), Administrative (SYSTEM ops, INCLUSIVE accessibility, MODERNIZER evolution), Orchestrator (CORTEX meta-orchestration, ENCODE code execution), and Infrastructure (MEMORY vector/RAG, RELAY webhooks, AUDIT compliance, IDENTITY attribution, ECONOMY cost tracking, SANDBOX isolation)."
   },
 ];
 
@@ -43,7 +43,7 @@ const pillars = [
   { icon: Network, title: "Intelligent Routing", description: "Multi-provider model routing that automatically selects the optimal AI model based on task complexity, cost, and latency.", link: "/modules/nexus" },
   { icon: Shield, title: "AI-Native Security", description: "Purpose-built threat detection for AI systems — prompt injection defense, adversarial filtering, and automated incident response.", link: "/modules/defense" },
   { icon: Moon, title: "Autonomous Optimization", description: "Off-peak self-improvement cycles that analyze patterns, consolidate memory, and tune performance — your AI gets smarter overnight.", link: "/modules/dream" },
-  { icon: Workflow, title: "Meta-Orchestration", description: "147 synergy pipelines coordinate all 14 modules as a unified intelligence, discovering emergent capabilities no single module possesses.", link: "/modules/cortex" },
+  { icon: Workflow, title: "Meta-Orchestration", description: "200+ synergy pipelines coordinate all 21 modules as a unified intelligence, discovering emergent capabilities no single module possesses.", link: "/modules/cortex" },
   { icon: Cpu, title: "Self-Healing Runtime", description: "Dependency-ordered boot, health monitoring, auto-recovery, and zero-downtime hot reload — production-grade reliability built in.", link: "/modules/core" },
 ];
 
@@ -89,10 +89,10 @@ export default function AIOperatingSystem() {
     <>
       <Helmet>
         <title>What is an AI Operating System? | CMPSBL — The First AI OS</title>
-        <meta name="description" content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the world's first — 20 modules, 6 layers, one intelligence." />
+        <meta name="description" content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the world's first — 21 modules, 6 layers, one intelligence." />
         <link rel="canonical" href="https://cmpsbl.com/ai-operating-system" />
         <meta property="og:title" content="What is an AI Operating System? | CMPSBL" />
-        <meta property="og:description" content="The world's first AI Operating System — 14 integrated modules for persistent memory, intelligent routing, AI security, and autonomous optimization." />
+        <meta property="og:description" content="The world's first AI Operating System — 21 integrated modules for persistent memory, intelligent routing, AI security, and autonomous optimization." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/ai-operating-system" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
@@ -128,7 +128,7 @@ export default function AIOperatingSystem() {
 
               <div className="flex flex-wrap gap-3 mt-10">
                 <Button asChild size="lg" className="rounded-xl">
-                  <Link to="/modules">Explore the 14 Modules <ArrowRight className="w-4 h-4 ml-2" /></Link>
+                  <Link to="/modules">Explore the 21 Modules <ArrowRight className="w-4 h-4 ml-2" /></Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="rounded-xl">
                   <Link to="/developers">Get Started Free</Link>
@@ -197,15 +197,15 @@ export default function AIOperatingSystem() {
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6 max-w-3xl">
               CMPSBL Substrate OS is the reference implementation of the AI Operating System category. 
-              With <strong className="text-foreground">14 integrated modules</strong> organized across <strong className="text-foreground">5 architectural layers</strong>, 
-              it provides the complete cognitive runtime for production AI — from the kernel event bus to meta-orchestration with 147 synergy pipelines.
+              With <strong className="text-foreground">21 integrated modules</strong> organized across <strong className="text-foreground">6 architectural layers</strong>, 
+              it provides the complete cognitive runtime for production AI — from the kernel event bus to meta-orchestration with 200+ synergy pipelines.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
               {[
-                { value: "14", label: "Integrated Modules" },
-                { value: "5", label: "Architectural Layers" },
-                { value: "147", label: "Synergy Pipelines" },
-                { value: "340+", label: "Terminal Commands" },
+                { value: "21", label: "Integrated Modules" },
+                { value: "6", label: "Architectural Layers" },
+                { value: "200+", label: "Synergy Pipelines" },
+                { value: "360+", label: "Terminal Commands" },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-4 rounded-xl border border-border bg-card">
                   <div className="text-2xl sm:text-3xl font-bold text-primary">{stat.value}</div>
@@ -251,7 +251,7 @@ export default function AIOperatingSystem() {
                 <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl">
-                <Link to="/modules">Explore All 14 Modules</Link>
+                <Link to="/modules">Explore All 21 Modules</Link>
               </Button>
             </div>
           </div>

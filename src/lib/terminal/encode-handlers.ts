@@ -1,0 +1,145 @@
+/**
+ * ENCODE Module Terminal Handlers
+ * v9.1.0 ARCHITECT — First-class module terminal commands
+ */
+
+import { registerHandler } from './validate-registry';
+import { log } from '@/lib/system/log';
+
+export function registerEncodeModuleHandlers(): void {
+  // encode.status — Module health and state
+  registerHandler('encode.status', async () => {
+    const { getEncodeState, getEncodeHealth } = await import('@/lib/substrate/encode-module/index');
+    const state = getEncodeState();
+    const health = getEncodeHealth();
+    return {
+      success: true,
+      data: {
+        initialized: state.initialized,
+        health: `${health}%`,
+        tasksQueued: state.totalTasksQueued,
+        tasksCompleted: state.totalTasksCompleted,
+        tasksFailed: state.totalTasksFailed,
+        lastRun: state.lastRunAt || 'never',
+        queueDepth: state.taskQueue.length,
+        receiptCount: state.receipts.length,
+      },
+    };
+  });
+
+  // encode.queue — View current task queue
+  registerHandler('encode.queue', async () => {
+    const { getTaskQueue } = await import('@/lib/substrate/encode-module/index');
+    const queue = getTaskQueue();
+    return {
+      success: true,
+      data: {
+        count: queue.length,
+        tasks: queue.map(t => ({
+          id: t.id,
+          status: t.status,
+          surface: t.targetSurface,
+          intent: t.intentSummary.slice(0, 80),
+          queued: t.createdAt,
+        })),
+      },
+    };
+  });
+
+  // encode.receipts — View completion receipts
+  registerHandler('encode.receipts', async () => {
+    const { getReceipts } = await import('@/lib/substrate/encode-module/index');
+    const receipts = getReceipts(20);
+    return {
+      success: true,
+      data: {
+        count: receipts.length,
+        receipts: receipts.map(r => ({
+          taskId: r.taskId,
+          success: r.success,
+          artifacts: r.artifacts.length,
+          learnings: r.learnings.length,
+          brainReceipt: r.brainReceiptId || 'none',
+          completed: r.completedAt,
+          ms: r.executionMs,
+        })),
+      },
+    };
+  });
+
+  // decode.inbox — CLM reports from ENCODE + Infrastructure Six
+  registerHandler('decode.inbox', async () => {
+    const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+    const feed = await moduleCLM.getFeed(30);
+    const clmModules = ['encode', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'];
+    const relevant = feed.filter(f => clmModules.includes(f.moduleId));
+    return {
+      success: true,
+      data: {
+        totalReports: relevant.length,
+        reports: relevant.map(r => ({
+          module: r.moduleId.toUpperCase(),
+          title: r.title,
+          type: r.analysisType,
+          confidence: r.confidence,
+          priority: r.priority,
+          timestamp: r.createdAt,
+        })),
+      },
+    };
+  });
+
+  // clm.run_all — Trigger CLM for all 7 new modules
+  registerHandler('clm.run_all', async () => {
+    const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+    const results = await moduleCLM.runAllModuleLearning();
+    return {
+      success: true,
+      message: `CLM completed for ${results.length} modules`,
+      data: {
+        cyclesRun: results.length,
+        modules: results.map(r => ({
+          module: r.moduleId.toUpperCase(),
+          title: r.title,
+          confidence: r.confidence,
+          priority: r.priority,
+        })),
+      },
+    };
+  });
+
+  // clm.run <module> — Trigger CLM for a single module
+  registerHandler('clm.run', async () => {
+    return {
+      success: false,
+      error: 'Usage: clm.run <module>',
+      examples: ['clm.run encode', 'clm.run memory', 'clm.run relay', 'clm.run audit', 'clm.run identity', 'clm.run economy', 'clm.run sandbox'],
+    };
+  });
+
+  // encode.help
+  registerHandler('encode.help', async () => {
+    return {
+      success: true,
+      formatted: [
+        '',
+        '┌─────────────────────────────────────────────┐',
+        '│       ENCODE MODULE — Terminal Commands      │',
+        '└─────────────────────────────────────────────┘',
+        '',
+        '  encode.status    Module health & task stats',
+        '  encode.queue     Current task queue from DECODE',
+        '  encode.receipts  Completion receipts with BRAIN refs',
+        '  decode.inbox     CLM reports from all modules',
+        '  clm.run_all      Run CLM for ENCODE + Infra Six',
+        '  clm.run <mod>    Run CLM for specific module',
+        '',
+        '  ENCODE receives structured task packets from',
+        '  DECODE only. Talk to DECODE to direct ENCODE.',
+        '',
+      ],
+    };
+  });
+
+  log.info('terminal', 'ENCODE module handlers registered', { count: 7 });
+}

@@ -105,8 +105,8 @@ export default function Foundations() {
             doctrine, and self-improvement.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">14 Modules</Badge>
-            <Badge variant="outline">260+ Commands</Badge>
+            <Badge variant="outline">21 Modules</Badge>
+            <Badge variant="outline">360+ Commands</Badge>
             <Badge variant="outline">Production Ready</Badge>
           </div>
         </div>

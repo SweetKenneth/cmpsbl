@@ -38,8 +38,8 @@ export const MARKETPLACE_PRODUCTS = {
     price_id: 'price_1SteXGQ7FtTiAL4aFfqLPytS',
     amount: 29900, // $299
     name: 'Substrate OS License',
-    description: 'Full CMPSBL Substrate OS with BYOK support. 14 modules, single-install license with domain binding.',
-    includes: ['Core OS', '14 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
+    description: 'Full CMPSBL Substrate OS with BYOK support. 21 modules, single-install license with domain binding.',
+    includes: ['Core OS', '21 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
   },
   
   // World Engine - $299

@@ -28,6 +28,7 @@ export { useModernizer, type UseModernizerReturn } from './useModernizer';
 
 // Orchestrator Layer
 export { useCortex, type UseCortexReturn } from './useCortex';
+export { useEncode, type UseEncodeReturn } from './useEncode';
 
 // Infrastructure Layer (v9.0.0 — 20-Module Epoch)
 export { useMemoryModule, type UseMemoryModuleReturn } from './useMemoryModule';

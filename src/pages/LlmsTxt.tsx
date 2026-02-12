@@ -27,9 +27,9 @@ CMPSBL Substrate OS v8.0.0 SYNERGY+ adopts and implements LLMS.txt as its primar
 
 ## About
 
-CMPSBL® is a unified cognitive infrastructure platform (substrate OS) with 14 modules, real-time observability, adaptive learning, and multi-provider routing.
+CMPSBL® is a unified cognitive infrastructure platform (substrate OS) with 21 modules, real-time observability, adaptive learning, and multi-provider routing.
 
-## 14-Module Architecture (v8.0.0 SYNERGY+)
+## 21-Module Architecture (v9.1.0 ARCHITECT)
 
 ### KERNEL Layer
 - CORE — Scheduling, lifecycle, boot sequencing
@@ -54,6 +54,15 @@ CMPSBL® is a unified cognitive infrastructure platform (substrate OS) with 14 m
 
 ### Orchestrator Layer
 - CORTEX — Policy intent, agency orchestration
+- ENCODE — Code execution engine, BRAIN-integrated
+
+### Infrastructure Layer
+- MEMORY — Vector/RAG orchestration
+- RELAY — Webhook delivery
+- AUDIT — Compliance logging
+- IDENTITY — Actor attribution
+- ECONOMY — Cost tracking
+- SANDBOX — Isolated execution
 
 ## AI Governance Reference Namespace
 

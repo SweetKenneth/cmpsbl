@@ -1,8 +1,8 @@
 /**
  * Module Parity Exports
- * v8.0.0 SYNERGY+ Epoch — Cross-module standards enforcement
+ * v9.1.0 ARCHITECT Epoch — Cross-module standards enforcement
  * 
- * Ensures all 14 modules adhere to the Module Parity Standard
+ * Ensures all 21 modules adhere to the Module Parity Standard
  */
 
 export {
