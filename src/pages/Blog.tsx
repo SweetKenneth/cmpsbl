@@ -426,7 +426,7 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
                   : "bg-slate-400/20 text-slate-200 border-slate-300/40"
               )}>
                 {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
-                {isHuman ? 'Author' : 'AI Generated'}
+                {isHuman ? 'Kenneth E Sweet Jr' : 'AI Generated'}
               </Badge>
             </div>
 
@@ -541,7 +541,7 @@ function FeaturedCard({ post }: { post: BlogPost }) {
                   isHuman ? "border-amber-500/20 text-amber-300" : "border-slate-400/20 text-slate-300"
                 )}>
                   {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
-                  {isHuman ? 'Author' : 'AI'}
+                  {isHuman ? 'Kenneth E Sweet Jr' : 'AI'}
                 </Badge>
               </div>
               <h2 className="text-2xl md:text-3xl font-black mb-4 group-hover:text-primary transition-colors leading-tight">
@@ -682,7 +682,7 @@ export default function Blog() {
             </Badge>
             <Badge variant="outline" className="py-1.5 px-4 text-sm gap-2 border-amber-500/30 text-amber-400">
               <User className="w-3.5 h-3.5" />
-              {humanCount} by Author
+              {humanCount} by Kenneth
             </Badge>
             <Badge variant="outline" className="py-1.5 px-4 text-sm gap-2 border-slate-400/30 text-slate-400">
               <Bot className="w-3.5 h-3.5" />
@@ -707,7 +707,7 @@ export default function Blog() {
             <div className="flex gap-1.5 bg-muted/50 rounded-lg p-1">
               {([
                 { key: 'all' as SourceFilter, label: 'All', icon: Layers },
-                { key: 'human' as SourceFilter, label: 'Author', icon: User },
+                { key: 'human' as SourceFilter, label: 'Kenneth', icon: User },
                 { key: 'ai' as SourceFilter, label: 'AI', icon: Bot },
               ]).map(f => (
                 <button
@@ -775,7 +775,7 @@ export default function Blog() {
         <div className="max-w-5xl mx-auto flex items-center gap-6 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <div className="w-6 h-[3px] rounded bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600" />
-            <span>Written by Author</span>
+            <span>Written by Kenneth E Sweet Jr</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-6 h-[3px] rounded bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500" />
