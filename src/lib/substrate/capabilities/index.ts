@@ -1330,6 +1330,7 @@ class CapabilityEngine {
       Operational: 0,
       Admin: 0,
       Orchestrator: 0,
+      infrastructure: 0,
     };
     
     const byRisk: Record<'low' | 'medium' | 'high', number> = {
