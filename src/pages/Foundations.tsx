@@ -121,8 +121,8 @@ export default function Foundations() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              CMPSBL v8.0.0 SYNERGY+ presents a unified cognitive infrastructure platform 
-              implementing a five-layer, 14-module kernel architecture with 147 synergy pipelines. 
+              CMPSBL v9.0.0 ARCHITECT presents a unified cognitive infrastructure platform 
+              implementing a six-layer, 20-module kernel architecture with 147 synergy pipelines. 
               The system provides persistent runtime with 3-tier memory (Hot/Warm/Cold), adaptive 
               learning cycles, multi-provider AI routing, real-time observability, and self-improvement pipelines.
             </p>

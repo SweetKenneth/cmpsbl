@@ -30,7 +30,7 @@ const OBSERVER_FEATURES = [
   {
     icon: FileText,
     title: "Documentation Access",
-    description: "Full access to the 26-document FNDTN v6 library covering all 14 modules."
+    description: "Full access to the 26-document FNDTN v6 library covering all 20 modules."
   },
   {
     icon: BookOpen,
@@ -45,7 +45,7 @@ const OBSERVER_FEATURES = [
   {
     icon: Layers,
     title: "Architecture Overview",
-    description: "Understand the five-layer, 14-module kernel architecture of CMPSBL v6.0.0."
+    description: "Understand the six-layer, 20-module kernel architecture of CMPSBL v9.0.0."
   }
 ];
 
@@ -74,8 +74,8 @@ export default function Insights() {
             Explore documentation, architecture, and standards with read-only visibility.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">v6.0.0</Badge>
-            <Badge variant="outline">14 Modules</Badge>
+            <Badge variant="outline">v9.0.0</Badge>
+            <Badge variant="outline">20 Modules</Badge>
             <Badge variant="outline">Read-Only</Badge>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function Insights() {
             <p>
               The <strong>Observer</strong> tier provides read-only access to CMPSBL documentation, 
               architecture references, and standards materials. Observers can review the full 
-              FNDTN v6.0.0 library, understand the 14-module kernel architecture, and access 
+              FNDTN v6.0.0 library, understand the 20-module kernel architecture, and access 
               governance namespace documentation.
             </p>
             <p>

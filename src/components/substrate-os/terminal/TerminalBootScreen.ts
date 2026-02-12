@@ -1,14 +1,14 @@
 /**
- * Terminal Boot Screen v8.5.0
- * Unique neural-organic visualization of the 14-module architecture
+ * Terminal Boot Screen v9.0.0
+ * Unique neural-organic visualization of the 20-module architecture
  * Mobile-friendly with no mid-word line breaks
  * 
- * v8.5.0 SYNERGY+ Epoch Changes:
+ * v9.0.0 ARCHITECT Epoch Changes:
  * - 147 synergy pipelines, 125 executors, 32 S-tier discoveries
- * - Updated version branding to v8.5.0 SYNERGY+
- * - 269 capabilities, 62 engines, 20 meta-engines
+ * - Updated version branding to v9.0.0 ARCHITECT
+ * - 325 capabilities, 70 engines, 22 meta-engines
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 340+ commands across 14 modules + infrastructure
+ * - 340+ commands across 20 modules + infrastructure
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
  */
@@ -117,7 +117,7 @@ export function generateMobileBootScreen(): string[] {
     '  │                                │',
     '  └────────────────────────────────┘',
     '',
-  '  ◉ 14 modules operational',
+  '  ◉ 20 modules operational',
   '  ◉ 340+ commands available',
   '  ◉ 147 synergies | 125 executors',
   '  ◉ 269 capabilities | 62 engines',
@@ -207,7 +207,7 @@ export function generateDesktopBootScreen(): string[] {
     '  └───────────────────────────────────────────────────────┘',
     '',
   '  ╔═══════════════════════════════════════════════════════╗',
-  '  ║  14 MODULES │ 340+ CMDS │ 147 SYNERGIES │ 269 CAPS   ║',
+  '  ║  20 MODULES │ 340+ CMDS │ 147 SYNERGIES │ 325 CAPS   ║',
   '  ║  Type \'help\' for commands • \'cortex.status\' for mode  ║',
   '  ╚═══════════════════════════════════════════════════════╝',
     '',
