@@ -1,7 +1,7 @@
 /**
- * Substrate Store — Unified FREE Resource Hub
+ * Composable Artifacts — Unified FREE Resource Hub
  * Supreme × Canva inspired layout — Category-first, horizontal-scroll mobile UX
- * Combines: Capabilities (400+), Templates (200+), Pipelines (200+)
+ * Combines: Capabilities (400+), Templates (200+), Pipelines (200+) = 800+ Artifacts
  */
 
 import { useState, useMemo, useRef, useCallback } from 'react';
@@ -120,7 +120,10 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
       layout
       className={cn(
         "snap-start shrink-0 w-[280px] min-h-[180px]",
-        "rounded-xl border border-border bg-card",
+        "rounded-xl border bg-gradient-to-br",
+        item.type === 'capability' ? 'border-emerald-500/20 from-emerald-500/[0.04] to-transparent' :
+        item.type === 'template' ? 'border-cyan-500/20 from-cyan-500/[0.04] to-transparent' :
+        'border-violet-500/20 from-violet-500/[0.04] to-transparent',
         "hover:border-primary/30 hover:-translate-y-1 transition-all duration-200 cursor-pointer",
         "flex flex-col overflow-hidden"
       )}
@@ -426,8 +429,8 @@ export default function SubstrateStore() {
   return (
     <>
       <Helmet>
-        <title>{`Substrate Store | ${totalCount}+ Free Resources | CMPSBL`}</title>
-        <meta name="description" content={`Explore ${totalCount}+ free capabilities, templates, and pipelines. All unlocked. No signup required.`} />
+        <title>{`Composable Artifacts | 800+ Free Resources | CMPSBL`}</title>
+        <meta name="description" content="Explore 800+ free composable artifacts — capabilities, templates, and synergy pipelines. All unlocked. No signup required." />
       </Helmet>
       
       <div className="min-h-screen bg-background flex flex-col">
@@ -454,14 +457,44 @@ export default function SubstrateStore() {
               </div>
               
               <h1 className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-4">
-                <span className="block">SUBSTRATE</span>
-                <span className="block bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan))] to-primary bg-clip-text text-transparent">
-                  STORE
-                </span>
+                <motion.span 
+                  className="block font-mono uppercase tracking-[-0.05em]"
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                >
+                  Composable
+                </motion.span>
+                <motion.span 
+                  className="block bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan))] to-primary bg-clip-text text-transparent font-mono uppercase tracking-[-0.05em]"
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  Artifacts
+                </motion.span>
               </h1>
+
+              {/* Animated counter badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.4, type: 'spring' }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-6"
+              >
+                <motion.span 
+                  className="font-mono font-black text-2xl sm:text-3xl text-primary"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  800+
+                </motion.span>
+                <span className="text-sm text-muted-foreground font-medium">Artifacts</span>
+              </motion.div>
               
               <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
-                {totalCount}+ capabilities, templates, and pipelines. 
+                Capabilities, templates, and synergy pipelines. 
                 All free. Copy the code. Build something.
               </p>
               
@@ -471,12 +504,18 @@ export default function SubstrateStore() {
                   { label: 'Capabilities', count: String(capCount), color: 'bg-emerald-500' },
                   { label: 'Templates', count: String(ALL_TEMPLATES.length), color: 'bg-cyan-500' },
                   { label: 'Pipelines', count: String(pipeCount), color: 'bg-violet-500' },
-                ].map(stat => (
-                  <div key={stat.label} className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border">
+                ].map((stat, i) => (
+                  <motion.div 
+                    key={stat.label} 
+                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 + i * 0.1 }}
+                  >
                     <div className={cn("w-2 h-2 rounded-full", stat.color)} />
                     <span className="font-black text-lg">{stat.count}+</span>
                     <span className="text-xs text-muted-foreground">{stat.label}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
@@ -490,7 +529,7 @@ export default function SubstrateStore() {
             <div className="relative mb-3">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder="Search all resources..."
+                placeholder="Search 800+ artifacts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 h-12 text-base rounded-xl bg-card border-border"

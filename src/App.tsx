@@ -292,6 +292,7 @@ const App = () => {
                         <Route path="/capabilities" element={<SubstrateStore />} />
                         <Route path="/synergies" element={<SubstrateStore />} />
                         <Route path="/store" element={<SubstrateStore />} />
+                        <Route path="/artifacts" element={<SubstrateStore />} />
                         <Route path="/engines" element={<EngineMarketplace />} />
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                         <Route path="/clear-cache" element={<ClearCache />} />

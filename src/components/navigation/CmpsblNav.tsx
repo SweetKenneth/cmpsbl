@@ -111,9 +111,7 @@ export function CmpsblNav() {
         { name: "AI Operating System", href: "/ai-operating-system", description: "The definitive AI OS — what it is and why it matters", icon: Globe, badge: "AIDO" },
         { name: "All Modules", href: "/modules", description: "20 core substrate modules across 6 layers", icon: Layers, badge: "NEW" },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
-        { name: "Capability Depot", href: "/capabilities", description: "Atomic, stateless building blocks", icon: Sparkles, badge: "FREE" },
-        { name: "Template Alley", href: "/marketplace", description: "Starting points for learning & remixing", icon: Layers, badge: "FREE" },
-        { name: "Synergy Pipelines", href: "/synergies", description: "Exploratory orchestration patterns", icon: Zap, badge: "FREE" },
+        { name: "Composable Artifacts", href: "/store", description: "800+ capabilities, templates & pipelines — all free", icon: Sparkles, badge: "800+" },
         { name: "Engine Marketplace", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
@@ -513,9 +511,9 @@ export function CmpsblNav() {
               >
               {[
                   { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
-                  { name: "Capability Depot", href: "/capabilities", icon: Sparkles, badge: "FREE" },
-                  { name: "Template Alley", href: "/marketplace", icon: Layers, badge: "FREE" },
+                  { name: "Composable Artifacts", href: "/store", icon: Sparkles, badge: "800+" },
                   { name: "Engine Marketplace", href: "/engines", icon: Terminal, badge: "OEM" },
+                  { name: "CodeLab", href: "/codelab", icon: Terminal, badge: "FREE" },
                 ].map((item, idx) => (
                   <Link
                     key={item.href}
