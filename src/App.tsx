@@ -280,7 +280,7 @@ const App = () => {
                         <Route path="/gaming" element={<GamingSubstrate />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />
                         <Route path="/use-cases" element={<UseCases />} />
-                        <Route path="/marketplace" element={<Marketplace />} />
+                        <Route path="/marketplace" element={<SubstrateStore />} />
                         <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
                         <Route path="/intelligence" element={<SubstrateIntelligence />} />
                         <Route path="/substrate/licensing" element={<SubstrateLicensing />} />
