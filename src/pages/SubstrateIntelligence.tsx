@@ -326,7 +326,7 @@ Boot complete in 117ms`}
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="text-3xl font-bold text-primary">$2,999<span className="text-lg font-normal text-muted-foreground">/year</span></div>
-                    <p className="text-sm text-muted-foreground">Complete 14-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Team, Research, Enterprise, and Strategic licenses also available.</p>
+                    <p className="text-sm text-muted-foreground">Complete 20-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Team, Research, Enterprise, and Strategic licenses also available.</p>
                     <div className="flex items-center gap-2 text-xs text-primary">
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Instant checkout • Developer access in minutes</span>
