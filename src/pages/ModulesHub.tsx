@@ -23,7 +23,7 @@ export default function ModulesHub() {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           "name": "CMPSBL Substrate Modules",
-          "description": "14 core AI modules organized across 5 architectural layers",
+          "description": "20 core AI modules organized across 6 architectural layers",
           "url": "https://cmpsbl.com/modules",
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
           "hasPart": MODULE_REGISTRY.map(m => ({
