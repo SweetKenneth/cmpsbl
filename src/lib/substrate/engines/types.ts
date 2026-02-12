@@ -296,18 +296,20 @@ export interface CapabilitySource {
 }
 
 export const CAPABILITY_INVENTORY = {
-  version: '8.5.0',
+  version: '9.0.0',
   synergies: 147,
   worldFirst: 56,
   highValue: 56,
+  infrastructure: 54,
   archived: 10,
   native: 76,
-  total: 325,
+  total: 379,
   engineCoverage: {
     originalEngines: 48,
     worldFirstEngines: 14,
     highValueEngines: 8,
-    totalEngines: 70,
-    metaEngines: 22,
+    infrastructureEngines: 6,
+    totalEngines: 76,
+    metaEngines: 24,
   },
 };
