@@ -153,7 +153,12 @@ await capabilityEngine.execute('personality_adaptation_engine', {
 - **Streaming Response Pipeline** (`substrate/streaming-pipeline/`): SSE-based partial response streaming for real-time DECODE output. `createStream()`, `pushChunk()`, `endStream()`. **Tier: Builder**
 - **NL Terminal Interface** (`substrate/nl-terminal/`): Natural language → structured command translation layer. `parseNL()`, `suggestCommands()`, `getParseHistory()`. **Tier: Builder**
 
+### v9.0.0 (2026-02-12) — ARCHITECT Epoch
+- **Cryptographic Identity Context** (`decode/identity-context.ts`): Binds Decode memory to hardware-verified passkey identities. `buildIdentityContext()`, `isReturningUser()`, `getIdentityContext()`. Enables persistent, phishing-resistant user recognition.
+- **WebAuthn Passkey Auth** (`identity-module/webauthn.ts`): Face ID / Touch ID / Windows Hello via W3C WebAuthn. Zero passwords. Device-bound credentials only.
+- **Audit Chain Integration**: All auth events (registration, authentication, revocation, rejection) are immutably logged via AUDIT module hash chain.
+
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.0.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
