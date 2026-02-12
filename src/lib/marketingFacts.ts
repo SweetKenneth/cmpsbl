@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * v8.5.0 SYNERGY+ Epoch
+ * v9.0.0 ARCHITECT Epoch
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
