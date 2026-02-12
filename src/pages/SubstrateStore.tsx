@@ -120,7 +120,10 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
       layout
       className={cn(
         "snap-start shrink-0 w-[280px] min-h-[180px]",
-        "rounded-xl border border-border bg-card",
+        "rounded-xl border bg-gradient-to-br",
+        item.type === 'capability' ? 'border-emerald-500/20 from-emerald-500/[0.04] to-transparent' :
+        item.type === 'template' ? 'border-cyan-500/20 from-cyan-500/[0.04] to-transparent' :
+        'border-violet-500/20 from-violet-500/[0.04] to-transparent',
         "hover:border-primary/30 hover:-translate-y-1 transition-all duration-200 cursor-pointer",
         "flex flex-col overflow-hidden"
       )}

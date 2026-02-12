@@ -511,9 +511,9 @@ export function CmpsblNav() {
               >
               {[
                   { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
-                  { name: "Capability Depot", href: "/capabilities", icon: Sparkles, badge: "FREE" },
-                  { name: "Template Alley", href: "/marketplace", icon: Layers, badge: "FREE" },
+                  { name: "Composable Artifacts", href: "/store", icon: Sparkles, badge: "800+" },
                   { name: "Engine Marketplace", href: "/engines", icon: Terminal, badge: "OEM" },
+                  { name: "CodeLab", href: "/codelab", icon: Terminal, badge: "FREE" },
                 ].map((item, idx) => (
                   <Link
                     key={item.href}
