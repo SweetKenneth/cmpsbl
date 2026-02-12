@@ -1,9 +1,9 @@
 /**
  * Synergy Registry
- * v8.0.0 SYNERGY+ — Cross-Module Pipeline Registration (147 Pipelines)
+ * v9.0.0 ARCHITECT — Cross-Module Pipeline Registration (200 Pipelines)
  * 
  * Defines all available synergies that combine 2+ modules
- * Includes 32 S-tier premium pipelines + 27 discovery synergies (147 total)
+ * Includes 32 S-tier premium pipelines + 27 discovery + 53 infrastructure-era = 200 total
  */
 
 import type { SynergyDefinition, SynergyExecutor, SynergyRegistry } from './types';
