@@ -207,7 +207,7 @@ export function generateDesktopBootScreen(): string[] {
     '  └───────────────────────────────────────────────────────┘',
     '',
   '  ╔═══════════════════════════════════════════════════════╗',
-  '  ║  14 MODULES │ 340+ CMDS │ 147 SYNERGIES │ 269 CAPS   ║',
+  '  ║  20 MODULES │ 340+ CMDS │ 147 SYNERGIES │ 325 CAPS   ║',
   '  ║  Type \'help\' for commands • \'cortex.status\' for mode  ║',
   '  ╚═══════════════════════════════════════════════════════╝',
     '',
