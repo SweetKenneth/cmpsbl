@@ -289,8 +289,9 @@ const App = () => {
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
-                        <Route path="/capabilities" element={<CapabilitiesDepot />} />
-                        <Route path="/synergies" element={<SynergyPipelines />} />
+                        <Route path="/capabilities" element={<SubstrateStore />} />
+                        <Route path="/synergies" element={<SubstrateStore />} />
+                        <Route path="/store" element={<SubstrateStore />} />
                         <Route path="/engines" element={<EngineMarketplace />} />
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                         <Route path="/clear-cache" element={<ClearCache />} />
