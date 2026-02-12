@@ -18,11 +18,11 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 14 core modules in 5-layer architecture */
-export const MODULES_COUNT = 14;
+/** 20 core modules in 6-layer architecture */
+export const MODULES_COUNT = 20;
 
-/** 5 architectural layers: Kernel, Cognitive, Operational, Admin, Orchestrator */
-export const LAYERS_COUNT = 5;
+/** 6 architectural layers: Kernel, Cognitive, Operational, Administrative, Orchestrator, Infrastructure */
+export const LAYERS_COUNT = 6;
 
 /** 
  * Synergy pipelines defined in capabilities/synergies/registry.ts
