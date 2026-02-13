@@ -1,43 +1,42 @@
 /**
- * Crown Jewel Gate — Enterprise-only content gating
- * Checks if a capability, template, or pipeline is a Crown Jewel
- * and should hide code/details behind an Enterprise upgrade prompt.
+ * Crown Jewel Gate — Strategic Asset Protection
+ * v9.2.0 ARCHITECT Epoch — Discovery & Lockdown
+ * 
+ * Single entry point for all Crown Jewel checks.
+ * Delegates to the canonical crown-jewel-registry for all lookups.
  */
 
-import { CROWN_JEWEL_IDS } from '@/config/lnchbl-tier-map';
-
-/** Crown Jewel capability IDs that are Enterprise-gated */
-const CROWN_JEWEL_KEYWORDS = [
-  'seba', 'modernizer', 'cortex', 'evolution', 'dream-pool-federation',
-  'self-repair', 'autonomous-workflow', 'dream-lucidity',
-  'self-evolving', 'recursive', 'self-improvement',
-  'autonomous-evolution', 'self-healing',
-];
+import { isCrownJewel, isCrownJewelExtended, CROWN_JEWEL_IDS } from './crown-jewel-registry';
 
 /** Check if a capability ID maps to a Crown Jewel */
 export function isCrownJewelCapability(capId: string): boolean {
-  // Direct match against tier map IDs
-  const normalized = capId.replace(/^cap-/, '').replace(/-/g, '_');
-  if (CROWN_JEWEL_IDS.includes(normalized)) return true;
-  
-  // Keyword match for registry IDs that reference Crown Jewel concepts
-  const lower = capId.toLowerCase();
-  return CROWN_JEWEL_KEYWORDS.some(kw => lower.includes(kw));
+  return isCrownJewelExtended(capId);
 }
 
-/** Check if a template is Crown Jewel (self-improvement related) */
+/** Check if a template is Crown Jewel */
 export function isCrownJewelTemplate(templateId: string, name: string): boolean {
-  const combined = `${templateId} ${name}`.toLowerCase();
-  return CROWN_JEWEL_KEYWORDS.some(kw => combined.includes(kw));
+  return isCrownJewelExtended(templateId, name);
 }
 
 /** Check if a pipeline is Crown Jewel */
 export function isCrownJewelPipeline(pipelineId: string, name: string): boolean {
-  const combined = `${pipelineId} ${name}`.toLowerCase();
-  return CROWN_JEWEL_KEYWORDS.some(kw => combined.includes(kw));
+  return isCrownJewelExtended(pipelineId, name);
 }
 
-/** Check any item type */
-export function isCrownJewelItem(id: string, name: string = ''): boolean {
-  return isCrownJewelCapability(id) || isCrownJewelTemplate(id, name) || isCrownJewelPipeline(id, name);
+/** Check if an engine is Crown Jewel */
+export function isCrownJewelEngine(engineId: string): boolean {
+  return isCrownJewel(engineId);
 }
+
+/** Check if a meta-engine is Crown Jewel */
+export function isCrownJewelMetaEngine(metaEngineId: string): boolean {
+  return isCrownJewel(metaEngineId);
+}
+
+/** Check any item type — unified gate */
+export function isCrownJewelItem(id: string, name: string = ''): boolean {
+  return isCrownJewelExtended(id, name);
+}
+
+// Re-export for backward compatibility
+export { CROWN_JEWEL_IDS, isCrownJewel, isCrownJewelExtended };
