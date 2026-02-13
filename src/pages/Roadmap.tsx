@@ -15,7 +15,7 @@ export default function Roadmap() {
       items: [
         {
           icon: Brain,
-          title: "CMPSBL v8.0.0 — SYNERGY+ Epoch",
+          title: "CMPSBL v9.1.0 — ARCHITECT Epoch",
           description: "Production-ready cognitive OS with complete 21-module architecture: Core, Ripple, Access, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, System, Modernizer, Integration, Cortex orchestrator, Inclusive, Memory, Relay, Audit, Identity, Economy, Sandbox. 400+ capabilities, 200 synergy pipelines.",
           status: "Live",
           technologies: ["Supabase", "Edge Functions", "TypeScript", "React"]
@@ -166,7 +166,7 @@ export default function Roadmap() {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-[hsl(var(--system-amber))]" />
-                <span>8 Planned for 2025-2026</span>
+                <span>8 Planned for 2026-2027</span>
               </div>
             </div>
           </div>

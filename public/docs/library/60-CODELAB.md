@@ -183,7 +183,7 @@ CodeLab integrates with the VISION module for comprehensive observability:
 
 | Feature | Scope |
 |---------|-------|
-| **Module Health** | Real-time status of all 14 modules |
+| **Module Health** | Real-time status of all 21 modules |
 | **Circuit States** | Current breaker positions and failure counts |
 | **Execution Logs** | Filtered view of recent operations |
 | **Quota Status** | Current usage against limits |

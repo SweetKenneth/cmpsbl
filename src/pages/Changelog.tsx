@@ -1,6 +1,6 @@
 /**
- * CMPSBL v8.0.0 SYNERGY+ Epoch — Living Evolution Log
- * A continuous record of why the system evolved during the SYNERGY+ era.
+ * CMPSBL v9.1.0 ARCHITECT Epoch — Living Evolution Log
+ * A continuous record of why the system evolved across all epochs.
  * 
  * This is not a changelog. This is a living document that records
  * the pressures, responses, and emergent capabilities of an evolving substrate.
@@ -105,7 +105,7 @@ const evolutionLogV8: EvolutionEntry[] = [
     date: "2026-02-04",
     pressures: [
       "SEBA v2.0.0 achieved full spectrum autonomous evolution",
-      "Synergy pipelines reached 147 production configurations",
+      "Synergy pipelines reached 200 production configurations",
       "Documentation library required v8 alignment"
     ],
     responses: [
@@ -133,7 +133,7 @@ const evolutionLogV8: EvolutionEntry[] = [
       "Public-facing documentation restructured for clarity"
     ],
     capabilities: [
-      "v8.0.0 SYNERGY+ Epoch launched with 147 production pipelines",
+      "v8.0.0 SYNERGY+ Epoch launched with 200 production pipelines",
       "125 specialized executors across all cognitive layers",
       "The age of full-spectrum autonomous evolution began"
     ]
@@ -264,10 +264,10 @@ export default function Changelog() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Evolution Log | CMPSBL v8.x.x SYNERGY+ Epoch"
-        description="A continuous record of why the CMPSBL substrate evolved during the v8 SYNERGY+ Epoch. The age of full-spectrum autonomous evolution."
+        title="Evolution Log | CMPSBL v9.1.0 ARCHITECT Epoch"
+        description="A continuous record of why the CMPSBL substrate evolved. From SYNERGY+ to ARCHITECT — the age of full-spectrum autonomous evolution."
         canonical="https://cmpsbl.com/changelog"
-        keywords={["CMPSBL changelog", "substrate evolution", "SYNERGY+ epoch", "v8 release", "AI evolution log", "cognitive substrate updates"]}
+        keywords={["CMPSBL changelog", "substrate evolution", "ARCHITECT epoch", "v9.1.0 release", "AI evolution log", "cognitive substrate updates"]}
       />
       <PublicNav />
 
@@ -275,13 +275,13 @@ export default function Changelog() {
         {/* Header */}
         <header className="text-center mb-12">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
-            v8.x.x — SYNERGY+ Epoch
+            v9.1.0 — ARCHITECT Epoch
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            CMPSBL v8.x.x — Living Evolution Log
+            CMPSBL — Living Evolution Log
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            A continuous record of why the system evolved during the SYNERGY+ Epoch
+            A continuous record of why the system evolved — from SYNERGY+ through ARCHITECT
           </p>
           
           {/* Explanatory Note */}

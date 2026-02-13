@@ -220,7 +220,7 @@ function HeroSection() {
             className="mb-6 px-4 py-2 text-sm border-emerald-500/30 bg-emerald-500/5"
           >
             <Combine className="w-4 h-4 mr-2" />
-            FREE — Synergy Pipelines v8.0.0
+            FREE — Synergy Pipelines v9.1.0
           </Badge>
           
           {/* Main title */}
