@@ -92,6 +92,7 @@ const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
+const StartHere = lazy(() => import("./pages/StartHere"));
 
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
@@ -455,7 +456,8 @@ const App = () => {
                         
                         {/* Legacy/unused pages */}
                         <Route path="/index" element={<Navigate to="/" replace />} />
-                        <Route path="/pricing" element={<Navigate to="/" replace />} />
+                        <Route path="/pricing" element={<SubstrateLicensing />} />
+                        <Route path="/start-here" element={<StartHere />} />
                         <Route path="/checkout" element={<Navigate to="/" replace />} />
                         <Route path="/enterprise" element={<Navigate to="/" replace />} />
                         <Route path="/sandbox" element={<Navigate to="/" replace />} />

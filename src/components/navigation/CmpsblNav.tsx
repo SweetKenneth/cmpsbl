@@ -108,13 +108,14 @@ export function CmpsblNav() {
       name: "Platform",
       icon: Cpu,
       items: [
+        { name: "Start Here", href: "/start-here", description: "New to CMPSBL? Get oriented and build something real", icon: Rocket },
         { name: "AI Operating System", href: "/ai-operating-system", description: "The definitive AI OS — what it is and why it matters", icon: Globe, badge: "AIDO" },
         { name: "All Modules", href: "/modules", description: "21 core substrate modules across 6 layers", icon: Layers, badge: "NEW" },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
-        { name: "Composable Artifacts", href: "/store", description: "800+ capabilities, templates & pipelines — all free", icon: Sparkles, badge: "800+" },
+        { name: "Composable Artifacts", href: "/store", description: "Tier-scoped capabilities, templates & pipelines", icon: Sparkles },
         { name: "Engine Marketplace", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
+        { name: "Pricing", href: "/pricing", description: "Free, Builder, Pro & Enterprise tiers", icon: Layers },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
@@ -124,6 +125,7 @@ export function CmpsblNav() {
       items: [
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
         { name: "Developer Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
+        { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
         { name: "Substrate Intelligence", href: "/intelligence", description: "Technology proof & acquisition info", icon: Brain },
         { name: "Documentation", href: "/documentation", description: "Complete API reference", icon: FileText },
         { name: "Persistent Memory Docs", href: "/docs/persistent-memory", description: "Quickstart integration guide", icon: Brain },
@@ -511,7 +513,7 @@ export function CmpsblNav() {
               >
               {[
                   { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
-                  { name: "Composable Artifacts", href: "/store", icon: Sparkles, badge: "800+" },
+                  { name: "Composable Artifacts", href: "/store", icon: Sparkles },
                   { name: "Engine Marketplace", href: "/engines", icon: Terminal, badge: "OEM" },
                   { name: "CodeLab", href: "/codelab", icon: Terminal, badge: "FREE" },
                 ].map((item, idx) => (
@@ -695,7 +697,7 @@ export function CmpsblNav() {
                 className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground"
               >
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span className="font-mono">v9.1.0</span>
+                <span className="font-mono">v9.3.0</span>
                 <span>•</span>
                 <span>All Systems Operational</span>
               </motion.div>

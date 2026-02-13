@@ -131,12 +131,12 @@ export default function CodeLab() {
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-4">
-              Everything Free. Build Intelligent Apps.
+              Free Tier. Real Building. Intelligent Apps.
             </p>
             
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
               {FREE_TEMPLATES.length}+ templates, {capabilitiesCount}+ capabilities, {pipelinesCount} pipelines, and persistent memory — 
-              all unlocked and ready to use.
+              included in the free tier and ready to use.
             </p>
 
             {/* FREE Resources Grid */}

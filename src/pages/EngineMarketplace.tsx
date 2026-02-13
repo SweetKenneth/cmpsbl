@@ -667,12 +667,12 @@ export default function EngineMarketplace() {
             >
               <Badge variant="outline" className="mb-4 border-emerald-500/30 text-emerald-500">
                 <Gift className="w-3 h-3 mr-1" />
-                100% Free
+                Free Tier Included
               </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Free First</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore the Free Tier</h2>
               <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg">
-                Templates, pipelines, memory, and CodeLab are all FREE for exploration.
-                Engines are the only products — everything else is adoption fuel.
+                Templates, pipelines, memory, and CodeLab are included in the free tier.
+                Engines are the only products — exploration tools fuel adoption.
               </p>
               <div className="flex flex-wrap justify-center gap-3 md:gap-4">
                 <Button variant="outline" size="lg" asChild className="gap-2">

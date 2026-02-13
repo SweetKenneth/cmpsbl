@@ -206,7 +206,7 @@ function EnginesShowcase() {
           <span className="text-xs font-bold text-foreground">Engine Subscriptions</span>
         </div>
         <p className="text-[11px] sm:text-xs text-muted-foreground">
-          The only products. Everything else is free.
+          The only products. Exploration tools are included in the free tier.
         </p>
       </div>
       
@@ -331,7 +331,7 @@ export function EnginesMembershipHero() {
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
               <Check className="w-3 h-3 text-emerald-500" />
-              <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 uppercase tracking-wide">All Free</span>
+              <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Free Tier</span>
             </div>
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
           </div>
