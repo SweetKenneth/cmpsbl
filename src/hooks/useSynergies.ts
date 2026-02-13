@@ -1,6 +1,6 @@
 /**
  * useSynergies Hook
- * v8.0.0 — SYNERGY+ Epoch React hook for cross-module synergy execution (147 pipelines, 125 executors)
+ * v9.1.0 ARCHITECT — React hook for cross-module synergy execution (200 pipelines, 125 executors)
  */
 
 import { useState, useCallback, useMemo } from 'react';
@@ -102,7 +102,7 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     return {
       total: synergies.length,
       byCategory,
-      withExecutors: 125, // v8.0.0 SYNERGY+ — 125 custom executors
+      withExecutors: 125, // v9.1.0 ARCHITECT — 125 custom executors
       avgEstimatedMs: Math.round(avgMs),
       stierCount,
     };

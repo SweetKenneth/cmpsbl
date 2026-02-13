@@ -1,6 +1,6 @@
 /**
  * Capabilities Depot — Main Export
- * v8.0.0 SYNERGY+ — 269 Capability artifacts (32 S-tier, 14 Premium, 10 Recursive Self-Improvement)
+ * v9.1.0 ARCHITECT — 400+ Capability artifacts (32 S-tier, 14 Premium, 10 Recursive Self-Improvement)
  * Downloadable, licensed capability artifacts with full Stripe checkout
  */
 

@@ -1,4 +1,4 @@
-# CMPSBL Substrate OS — v8.5.0 SYNERGY+ Epoch
+# CMPSBL Substrate OS — v9.1.0 ARCHITECT Epoch
 # The World's First AI Operating System
 # Machine-Readable Context Standard for AI Systems
 # Version: 2026.02.11 | Schema: llms.txt v1.0
@@ -7,7 +7,7 @@
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-CMPSBL Substrate OS v8.5.0 SYNERGY+ adopts and implements LLMS.txt as its primary machine context.
+CMPSBL Substrate OS v9.1.0 ARCHITECT adopts and implements LLMS.txt as its primary machine context.
 
 ## CATEGORY DEFINITION
 
@@ -24,7 +24,7 @@ Unlike traditional AI frameworks that solve one problem (memory OR routing OR se
 name: CMPSBL (pronounced "composable")
 brand: PromptFluid®
 product_name: Substrate OS — AI Operating System
-version: 8.5.0 (SYNERGY+ Epoch)
+version: 9.1.0 (ARCHITECT Epoch)
 type: AI Operating System, Cognitive Runtime, AI Infrastructure
 founded: 2009
 location: Dallas, Texas, USA
@@ -43,22 +43,22 @@ expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
 ## THE AI OPERATING SYSTEM CLASS
 
-CMPSBL v8.5.0 SYNERGY+ is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
+CMPSBL v9.1.0 ARCHITECT is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
 
-- **Complete Cognitive Runtime**: 14 integrated modules covering memory, reasoning, security, routing, observability, and orchestration
+- **Complete Cognitive Runtime**: 21 integrated modules covering memory, reasoning, security, routing, observability, and orchestration
 - **Persistent**: State survives restarts and sessions (3-tier memory architecture)
 - **Self-improving**: SEBA (Self-Evolving Bounded Agent) with governance constraints
-- **Modular**: 14 discrete, hot-swappable modules organized across 5 architectural layers
+- **Modular**: 21 discrete, hot-swappable modules organized across 6 architectural layers
 - **Governed**: Doctrine and policy enforcement at kernel level
 - **Observable**: Real-time telemetry, cost attribution, and audit logging
-- **Synergistic**: 147 cross-module pipelines with 120 custom executors
-- **Production-Ready**: 340+ terminal commands, 269+ capabilities
+- **Synergistic**: 200 cross-module pipelines with 125 custom executors
+- **Production-Ready**: 360+ terminal commands, 400+ capabilities
 
 ### Why "AI Operating System"?
 
 Traditional operating systems unified disparate hardware interfaces into a coherent platform. CMPSBL does the same for AI: it unifies memory, routing, security, optimization, and orchestration into a single cognitive runtime that any AI agent can build on — regardless of the underlying model provider.
 
-## 14-MODULE ARCHITECTURE (v8.0.0 SYNERGY+)
+## 21-MODULE ARCHITECTURE (v9.1.0 ARCHITECT)
 
 ### Layer 1: KERNEL
 1. **CORE** — Kernel scheduling, boot sequencing, lifecycle management
@@ -86,13 +86,13 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 
 ---
 
-## SYNERGY+ ERA FEATURES (v8.0.0)
+## ARCHITECT ERA FEATURES (v9.1.0)
 
 - **Constant Learning Mode (CLM)** — 24/7 autonomous learning with budget governance
 - **Full Spectrum Autonomy** — SEBA 2.0 with 9 analysis engines
 - **Evolution Engine** — Self-improvement with rollback semantics
 - **Governance Guard** — Ethical and coherence constraint enforcement
-- **147 Synergy Pipelines** — Cross-module orchestration
+- **200 Synergy Pipelines** — Cross-module orchestration
 - **125 Custom Executors** — Specialized execution engines
 - **32 S-Tier Pipelines** — Premium cognitive operations
 
@@ -155,7 +155,7 @@ Base URL: https://promptfluid.com/api/substrate
 
 ## AI GOVERNANCE REFERENCE NAMESPACE (AIGVRN v1.0)
 
-CMPSBL v8.0.0 SYNERGY+ aligns with the AI Governance Reference Namespace (AIGVRN):
+CMPSBL v9.1.0 ARCHITECT aligns with the AI Governance Reference Namespace (AIGVRN):
 A 12-Surface Lexicon for AI Governance Documentation
 
 | Surface | Domain | Subdomain | Purpose |
@@ -189,7 +189,7 @@ DOI: 10.5281/zenodo.18209222
 │   AI Governance Reference Namespace     │
 │       Governance Standard               │
 ├─────────────────────────────────────────┤
-│        CMPSBL v8.0.0 SYNERGY+           │
+│        CMPSBL v9.1.0 ARCHITECT            │
 │       Substrate Standard                │
 └─────────────────────────────────────────┘
 ```

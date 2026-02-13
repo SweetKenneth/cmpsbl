@@ -1,6 +1,6 @@
 /**
  * useDecode Hook
- * v8.0.0 — SYNERGY+ Epoch Dedicated hook for DECODE (Interpreter) module operations
+ * v9.1.0 ARCHITECT — Dedicated hook for DECODE (Interpreter) module operations
  * Respects debug mode kill-switch
  */
 

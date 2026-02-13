@@ -1,6 +1,6 @@
 /**
  * useInclusive Hook
- * v8.0.0 SYNERGY+ — Dedicated hook for INCLUSIVE (Human Compatibility) module operations
+ * v9.1.0 ARCHITECT — Dedicated hook for INCLUSIVE (Human Compatibility) module operations
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

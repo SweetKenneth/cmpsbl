@@ -1,4 +1,4 @@
-# CMPSBL Substrate OS v8.0.0 SYNERGY+ robots.txt - 2026 SEO Optimized
+# CMPSBL Substrate OS v9.1.0 ARCHITECT robots.txt - 2026 SEO Optimized
 # https://cmpsbl.com/robots.txt
 # Last updated: 2026-02-08
 
@@ -22,7 +22,7 @@ Allow: /.well-known/ai-plugin.json
 Allow: /.well-known/security.txt
 
 # =============================================================
-# v8.0.0 SUBSTRATE CORE PAGES: Highest Priority
+# v9.1.0 SUBSTRATE CORE PAGES: Highest Priority
 # =============================================================
 Allow: /os
 Allow: /substrate

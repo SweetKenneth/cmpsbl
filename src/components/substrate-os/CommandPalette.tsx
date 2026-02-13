@@ -1,6 +1,6 @@
 /**
- * Command Palette v8.0.0 — SYNERGY+ Epoch Quick actions terminal-style
- * OS-like command interface for substrate operations (310+ commands)
+ * Command Palette v9.1.0 — ARCHITECT Epoch Quick actions terminal-style
+ * OS-like command interface for substrate operations (360+ commands)
  */
 
 import { useState, useRef, useEffect } from 'react';
@@ -48,16 +48,16 @@ const AVAILABLE_COMMANDS = [
   { command: 'dream.mutate', description: 'Trigger mutation/evolution', category: 'dream' },
   { command: 'dream.reflect', description: 'Dream reflection cycle', category: 'dream' },
   
-  // SEBA commands (v8.0.0 SYNERGY+)
+  // SEBA commands
   { command: 'seba.status', description: 'Show SEBA autonomous agent status', category: 'seba' },
   { command: 'seba.propose', description: 'Trigger proposal generation cycle', category: 'seba' },
   { command: 'seba.audit', description: 'View recent SEBA audit log', category: 'seba' },
   
-  // CLM commands (v8.0.0 SYNERGY+)
+  // CLM commands
   { command: 'clm.status', description: 'Show Constant Learning Mode status', category: 'clm' },
   { command: 'clm.cycle', description: 'Trigger manual CLM learning cycle', category: 'clm' },
   
-  // Cortex commands (v8.0.0 SYNERGY+)
+  // Cortex commands
   { command: 'cortex.status', description: 'Show Cortex orchestrator status', category: 'cortex' },
   { command: 'cortex.propose', description: 'Generate architectural proposal', category: 'cortex' },
   
@@ -254,7 +254,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
         <div className="p-4 space-y-2">
           {/* Welcome message */}
           <div className="text-muted-foreground text-xs">
-            substrate os v8.0.0 | synergy+ epoch — type 'help' for commands
+            substrate os v9.1.0 | architect epoch — type 'help' for commands
           </div>
           
           {/* Command History */}

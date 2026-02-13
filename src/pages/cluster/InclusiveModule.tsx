@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module — Human Compatibility Pipeline
- * v8.0.0 SYNERGY+ — 14th Substrate Module
+ * v9.1.0 ARCHITECT — Substrate Module
  */
 
 import { Link } from "react-router-dom";

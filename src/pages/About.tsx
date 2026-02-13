@@ -9,7 +9,7 @@ import heroImage from "@/assets/hero/neon-data-center.jpg";
 import earthWindowImage from "@/assets/hero/neon-dream-cosmos.jpg";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 export default function About() {
-  // v8.0.0 — Current CMPSBL product portfolio
+  // v9.1.0 — Current CMPSBL product portfolio
   const products = [
     { icon: Brain, name: "CMPSBL Substrate", description: "21-module cognitive orchestration OS with persistent memory" },
     { icon: Shield, name: "DEFENSE Module", description: "Enterprise-grade threat detection and bot protection" },

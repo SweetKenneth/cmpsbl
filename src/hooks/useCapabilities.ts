@@ -1,6 +1,6 @@
 /**
  * useCapabilities Hook
- * v8.0.0 — SYNERGY+ Epoch React hook for capability management (269 capabilities)
+ * v9.1.0 ARCHITECT — React hook for capability management (400+ capabilities)
  */
 
 import { useState, useCallback, useMemo } from 'react';

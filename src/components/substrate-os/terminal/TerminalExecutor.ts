@@ -377,9 +377,9 @@ function generateFullHelp(): string {
 │    seba         (${COMMAND_CATEGORIES.seba.commands.length.toString().padStart(2)} cmds)  Self-evolving bounded agent         │
 │                                                             │
 │  ⚡ ENGINE LAYER                                             │
-│    engine       (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  62 engines + 20 meta-engines       │
+│    engine       (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  76 engines + 24 meta-engines       │
 │                                                             │
-│  ⚙ INFRASTRUCTURE (v8.5.0)                                   │
+│  ⚙ INFRASTRUCTURE                                            │
 │    infra        (${COMMAND_CATEGORIES.infra.commands.length.toString().padStart(2)} cmds)  Cron, snapshots, analytics, NL     │
 │    patch        ( 4 cmds)  Distribution patch dispatch        │
 │                                                             │
@@ -458,10 +458,10 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SYNERGY ENGINE v8.0.0 (147 Pipelines) ─────────────────────┐
+┌─ SYNERGY ENGINE v9.1.0 (200 Pipelines) ─────────────────────┐
 │                                                             │
 │  cortex.synergy.status    Engine overview                   │
-│  cortex.synergy.list      List all 147 pipelines            │
+│  cortex.synergy.list      List all 200 pipelines            │
 │  cortex.synergy.get <id>  Get pipeline details              │
 │  cortex.synergy.execute   Execute a pipeline                │
 │  cortex.synergy.dry_run   Preview execution (no effects)    │
@@ -471,7 +471,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ INFRASTRUCTURE v8.5.0 ──────────────────────────────────────┐
+┌─ INFRASTRUCTURE ──────────────────────────────────────────────┐
 │                                                             │
 │  ┌─ CRON SCHEDULER ─────────────────────────────────────┐   │
 │  │  cron.list              View all scheduled jobs       │   │
@@ -680,7 +680,7 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v8.5.0
+│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v9.1.0
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
@@ -988,7 +988,7 @@ ${identityLine}│  Mode: ${roleDisplay}
     } else if (base === 'decode.learn') {
       result = await decode.learn(args[0] || '', args[1]);
     }
-    // DECODE Personality subsystem (v8.0.0 SYNERGY+)
+    // DECODE Personality subsystem
     else if (base === 'decode.personality.list') {
       const { personalityEngine } = await import('@/lib/substrate/decode');
       const profiles = personalityEngine.list();
@@ -1514,7 +1514,7 @@ ${allFeatures.map(f => {
     } else if (base === 'system.module') {
       result = await system.module(args[0] || '');
     }
-    // v8.0.0: Capability Auto-Adapt System
+    // Capability Auto-Adapt System
     else if (base === 'system.scan_adapt') {
       const { runScanAdapt, getManifest, listCapabilities, getCapability } = await import('@/lib/capabilities');
       
@@ -2444,7 +2444,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         payload: { eligible } 
       });
     }
-    // v8.0.0: Cross-Module Synergy Engine (147 Pipelines, 125 Executors)
+    // Cross-Module Synergy Engine (200 Pipelines, 125 Executors)
     else if (base === 'cortex.synergy.status') {
       try {
         const { listSynergies } = await import('@/lib/capabilities/synergies');
@@ -2453,9 +2453,9 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         return {
           success: true,
           output: `
-┌─ SYNERGY ENGINE v8.0.0 ──────────────────────────────────────
+┌─ SYNERGY ENGINE v9.1.0 ──────────────────────────────────────
 │
-│  Pipelines:  147 total
+│  Pipelines:  200 total
 │  Executors:  125 custom
 │  Categories: 8
 │
@@ -3913,9 +3913,9 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  COGNITIVE ENGINE SYSTEM v8.1.0 — SYNERGY+ Epoch             ║
+║  COGNITIVE ENGINE SYSTEM v9.1.0 — ARCHITECT Epoch              ║
 ╠══════════════════════════════════════════════════════════════╣
-║  Architecture: Capabilities (269) → Engines (62) → Meta (20) ║
+║  Architecture: Capabilities (400+) → Engines (76) → Meta (24) ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  ENGINES                                                     ║
 ║  Total:          ${String(engineSummary.totalEngines).padEnd(3)}                                        ║
