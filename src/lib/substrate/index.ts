@@ -515,8 +515,7 @@ export {
 // Re-export substrate client from lib
 export { 
   substrate, 
-  // Quick access module aliases (all 21 modules + SEBA)
-  // Use 'Mod' suffix to avoid conflicts with utility functions
+  // Quick access module aliases (all 21 modules + SEBA + Infrastructure Six)
   core,
   brain,
   decode,
@@ -532,7 +531,84 @@ export {
   inclusive,
   cortex,
   seba,
+  // Infrastructure Six + Encode (v9.2.0)
+  memoryMod,
+  relayMod,
+  auditMod,
+  identityMod,
+  economyMod,
+  sandboxMod,
+  encodeMod,
   type SubstrateModule, 
   type SubstrateRequest, 
   type SubstrateResponse 
 } from '../substrate';
+
+// Infrastructure Module direct exports (v9.2.0)
+export {
+  initMemoryModule,
+  ingestKnowledge,
+  semanticSearch,
+  getMemoryModuleState,
+  getMemoryModuleHealth,
+  type VectorEntry,
+  type RAGPipeline,
+  type MemoryModuleState,
+} from './memory-module/index';
+
+export {
+  initRelay,
+  dispatch as relayDispatch,
+  getRelayState,
+  getRelayHealth,
+  type DeliveryRecord,
+  type RelayModuleState,
+} from './relay-module/index';
+
+export {
+  initAudit,
+  recordAuditEntry,
+  verifyAuditChain,
+  getAuditLog,
+  getAuditState,
+  getAuditHealth,
+  type AuditEntry as AuditModuleEntry,
+  type AuditModuleState,
+} from './audit-module/index';
+
+export {
+  initIdentity,
+  registerActor,
+  whoami,
+  setCurrentActor,
+  signAction,
+  getIdentityState,
+  getIdentityHealth,
+  type ActorIdentity,
+  type ActorType,
+  type IdentityModuleState,
+} from './identity-module/index';
+
+export {
+  initEconomy,
+  recordCost,
+  setBudget,
+  getCostsByModule,
+  getEconomyState,
+  getEconomyHealth,
+  type CostRecord,
+  type BudgetConfig,
+  type EconomyModuleState,
+} from './economy-module/index';
+
+export {
+  initSandbox,
+  createSandbox,
+  execute as sandboxExecute,
+  teardown as sandboxTeardown,
+  getSandboxState,
+  getSandboxHealth,
+  type SandboxEnvironment,
+  type SandboxExecution,
+  type SandboxModuleState,
+} from './sandbox-module/index';

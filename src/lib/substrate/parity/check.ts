@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * v9.1.0 — ARCHITECT Epoch Ensures every module meets the substrate standard
+ * v9.2.0 — ARCHITECT Epoch — All 21 modules at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */
@@ -109,11 +109,11 @@ const MODULE_CONFIG: Record<string, {
   integration: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.integration, hookName: 'useIntegration' },
   inclusive: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.inclusive, hookName: 'useInclusive' },
   system: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.system, hookName: 'useSystem' },
-  memory: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.memory, hookName: 'useMemoryModule' },
-  relay: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.relay, hookName: 'useRelay' },
-  audit: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.audit, hookName: 'useAuditModule' },
-  identity: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.identity, hookName: 'useIdentity' },
-  economy: { hasHook: true, hasTerminalCommands: false, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.economy, hookName: 'useEconomy' },
+  memory: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.memory, hookName: 'useMemoryModule' },
+  relay: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.relay, hookName: 'useRelay' },
+  audit: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.audit, hookName: 'useAuditModule' },
+  identity: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.identity, hookName: 'useIdentity' },
+  economy: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.economy, hookName: 'useEconomy' },
   sandbox: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sandbox, hookName: 'useSandbox' },
   encode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.encode, hookName: 'useEncode' },
 };

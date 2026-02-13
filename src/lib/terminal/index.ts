@@ -1,6 +1,6 @@
 /**
  * Terminal Module Exports
- * v9.1.0 ARCHITECT — Command execution, validation, governance, synergy, SEBA, encoded commands, and infrastructure (360+ commands)
+ * v9.2.0 ARCHITECT — Command execution, validation, governance, synergy, SEBA, encoded commands, infrastructure, and all 21 modules (360+ commands)
  */
 
 // Command execution with governance
@@ -55,3 +55,8 @@ export {
 export {
   registerEncodeModuleHandlers,
 } from './encode-handlers';
+
+// Infrastructure Six module handlers (v9.2.0)
+export {
+  registerInfraModuleHandlers,
+} from './infra-module-handlers';

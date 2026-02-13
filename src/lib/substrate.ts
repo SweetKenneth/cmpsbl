@@ -1,35 +1,17 @@
 /**
  * promptfluid® Substrate Client
- * v9.1.0 — ARCHITECT Epoch — Cognitive Orchestration Substrate (21-Module Architecture)
+ * v9.2.0 — ARCHITECT Epoch — Cognitive Orchestration Substrate (21-Module Architecture)
  * 
- * Phase 4A: Engine Bus Integration
- * - Engine Bus: Canonical routing layer for all engine execution
- * - All engine dispatch routes through engineBus.dispatch()
+ * Full 21-module integration with Infrastructure Six:
+ * - Kernel (3): Core, Ripple, Access
+ * - Cognitive (2): Brain, Decode
+ * - Operational (5): Defense, Nexus, Vision, Dream, Integration
+ * - Administrative (3): System, Modernizer, Inclusive
+ * - Orchestrator (2): Cortex, Encode
+ * - Infrastructure (6): Memory, Relay, Audit, Identity, Economy, Sandbox
  * 
- * Phase 3: Reasoning + Governance Integration
- * - Reasoning Engine: Unified causal + systems_reason + hypothesis_test
- * - Governance Guard: Unified ethical + coherence_check
- * - Learning Engine: Unified train + optimize + reinforce
- * - Imagination Engine: Unified dream + synthesize + pattern_fusion
- * 
- * Full-system audit completed: 2026-01-29
- * All module/action handlers verified, terminal commands wired, types synchronized.
- * 
- * Unified API for all 14 substrate modules (13 core + 1 orchestrator):
- * - Core: Kernel (scheduler, lifecycle, routing)
- * - Ripple: Message bus (queues, pub/sub, events)
- * - Access: Identity (API keys, quotas, usage)
- * - Brain: Three-tier memory, learning engine, imagination engine, reasoning engine, governance guard, knowledge graph
- * - Decode: Intent decoding, cognitive interface
- * - Defense: Security, bot detection, threats
- * - Nexus: AI routing, multi-provider
- * - Vision: Observability, metrics, health
- * - Dream: Nocturnal processing, mutation
- * - System: Administration, backup, healing
- * - Modernizer: Self-upgrade, proposals
- * - Integration: Enterprise adapters, auto-discovery, LLM governance
- * - Inclusive: Human compatibility pipeline, WCAG scanning, a11y repairs
- * - Cortex: Agency-class orchestrator, governance, evolution
+ * All modules expose: status(), pulse(), and domain-specific methods
+ * All modules wired into: terminal, CLM, parity, events, health, BRAIN writeback
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -1393,6 +1375,175 @@ class SubstrateClient {
   };
 
   // ═══════════════════════════════════════════════════════════════
+  // MEMORY MODULE — Vector/RAG Orchestration (Infrastructure)
+  // ═══════════════════════════════════════════════════════════════
+
+  memory = {
+    status: async () => {
+      const { getMemoryModuleState, getMemoryModuleHealth } = await import('./substrate/memory-module/index');
+      const state = getMemoryModuleState();
+      return { success: true, module: 'memory' as SubstrateModule, action: 'status', data: { ...state, health: getMemoryModuleHealth() }, timestamp: new Date().toISOString() };
+    },
+    pulse: () => this.invoke({ module: 'memory', action: 'pulse' }),
+    ingest: (source: string, format: string, options?: { chunkSize?: number }) =>
+      this.invoke({ module: 'memory', action: 'ingest', payload: { source, format, ...options } }),
+    search: (query: string, options?: { limit?: number; threshold?: number }) =>
+      this.invoke({ module: 'memory', action: 'search', payload: { query, ...options } }),
+    state: async () => {
+      const { getMemoryModuleState } = await import('./substrate/memory-module/index');
+      return { success: true, module: 'memory' as SubstrateModule, action: 'state', data: getMemoryModuleState(), timestamp: new Date().toISOString() };
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // RELAY MODULE — Outbound Webhook Dispatch (Infrastructure)
+  // ═══════════════════════════════════════════════════════════════
+
+  relay = {
+    status: async () => {
+      const { getRelayState, getRelayHealth } = await import('./substrate/relay-module/index');
+      const state = getRelayState();
+      return { success: true, module: 'relay' as SubstrateModule, action: 'status', data: { ...state, health: getRelayHealth() }, timestamp: new Date().toISOString() };
+    },
+    pulse: () => this.invoke({ module: 'relay', action: 'pulse' }),
+    dispatch: (target: string, payload: unknown, options?: { retries?: number }) =>
+      this.invoke({ module: 'relay', action: 'dispatch', payload: { target, payload, ...options } }),
+    deliveries: async (limit?: number) => {
+      const { getRelayState } = await import('./substrate/relay-module/index');
+      const state = getRelayState();
+      return { success: true, module: 'relay' as SubstrateModule, action: 'deliveries', data: { deliveries: state.deliveries.slice(-(limit ?? 20)) }, timestamp: new Date().toISOString() };
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // AUDIT MODULE — Immutable Compliance Ledger (Infrastructure)
+  // ═══════════════════════════════════════════════════════════════
+
+  audit = {
+    status: async () => {
+      const { getAuditState, getAuditHealth } = await import('./substrate/audit-module/index');
+      const state = getAuditState();
+      return { success: true, module: 'audit' as SubstrateModule, action: 'status', data: { ...state, health: getAuditHealth() }, timestamp: new Date().toISOString() };
+    },
+    pulse: () => this.invoke({ module: 'audit', action: 'pulse' }),
+    log: async (limit?: number) => {
+      const { getAuditLog } = await import('./substrate/audit-module/index');
+      return { success: true, module: 'audit' as SubstrateModule, action: 'log', data: { entries: getAuditLog(limit ?? 50) }, timestamp: new Date().toISOString() };
+    },
+    record: async (module: string, action: string, resource: string, resourceId: string) => {
+      const { recordAuditEntry } = await import('./substrate/audit-module/index');
+      const entry = recordAuditEntry({ id: 'system', type: 'system' }, module, action, resource, resourceId);
+      return { success: true, module: 'audit' as SubstrateModule, action: 'record', data: entry, timestamp: new Date().toISOString() };
+    },
+    verify: async () => {
+      const { verifyAuditChain } = await import('./substrate/audit-module/index');
+      return { success: true, module: 'audit' as SubstrateModule, action: 'verify', data: verifyAuditChain(), timestamp: new Date().toISOString() };
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // IDENTITY MODULE — Universal Actor Attribution (Infrastructure)
+  // ═══════════════════════════════════════════════════════════════
+
+  identity = {
+    status: async () => {
+      const { getIdentityState, getIdentityHealth } = await import('./substrate/identity-module/index');
+      const state = getIdentityState();
+      return { success: true, module: 'identity' as SubstrateModule, action: 'status', data: { ...state, health: getIdentityHealth() }, timestamp: new Date().toISOString() };
+    },
+    pulse: () => this.invoke({ module: 'identity', action: 'pulse' }),
+    whoami: async () => {
+      const { whoami } = await import('./substrate/identity-module/index');
+      return { success: true, module: 'identity' as SubstrateModule, action: 'whoami', data: whoami(), timestamp: new Date().toISOString() };
+    },
+    register: async (id: string, type: 'human' | 'agent' | 'system', displayName: string) => {
+      const { registerActor } = await import('./substrate/identity-module/index');
+      return { success: true, module: 'identity' as SubstrateModule, action: 'register', data: registerActor(id, type, displayName), timestamp: new Date().toISOString() };
+    },
+    sign: async (actorId: string, action: string) => {
+      const { signAction } = await import('./substrate/identity-module/index');
+      return { success: true, module: 'identity' as SubstrateModule, action: 'sign', data: signAction(actorId, action), timestamp: new Date().toISOString() };
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // ECONOMY MODULE — Cost Attribution & Budget Engine (Infrastructure)
+  // ═══════════════════════════════════════════════════════════════
+
+  economy = {
+    status: async () => {
+      const { getEconomyState, getEconomyHealth } = await import('./substrate/economy-module/index');
+      const state = getEconomyState();
+      return { success: true, module: 'economy' as SubstrateModule, action: 'status', data: { ...state, health: getEconomyHealth() }, timestamp: new Date().toISOString() };
+    },
+    pulse: () => this.invoke({ module: 'economy', action: 'pulse' }),
+    recordCost: (module: string, action: string, tokenCount: number, computeMs: number, costMillicents: number) =>
+      this.invoke({ module: 'economy', action: 'record_cost', payload: { module, action, tokenCount, computeMs, costMillicents } }),
+    setBudget: async (module: string, dailyLimitMillicents: number) => {
+      const { setBudget } = await import('./substrate/economy-module/index');
+      setBudget(module, dailyLimitMillicents);
+      return { success: true, module: 'economy' as SubstrateModule, action: 'set_budget', data: { module, dailyLimitMillicents }, timestamp: new Date().toISOString() };
+    },
+    spend: async (module?: string) => {
+      const { getEconomyState, getCostsByModule } = await import('./substrate/economy-module/index');
+      const data = module ? { module, costMillicents: getCostsByModule(module) } : getEconomyState();
+      return { success: true, module: 'economy' as SubstrateModule, action: 'spend', data, timestamp: new Date().toISOString() };
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // SANDBOX MODULE — Isolated Execution Environments (Infrastructure)
+  // ═══════════════════════════════════════════════════════════════
+
+  sandboxMod = {
+    status: async () => {
+      const { getSandboxState, getSandboxHealth } = await import('./substrate/sandbox-module/index');
+      const state = getSandboxState();
+      return { success: true, module: 'sandbox' as SubstrateModule, action: 'status', data: { ...state, health: getSandboxHealth() }, timestamp: new Date().toISOString() };
+    },
+    pulse: () => this.invoke({ module: 'sandbox', action: 'pulse' }),
+    create: async (options?: { ttl?: string; isolation?: 'standard' | 'strict' | 'hermetic' }) => {
+      const { createSandbox } = await import('./substrate/sandbox-module/index');
+      return { success: true, module: 'sandbox' as SubstrateModule, action: 'create', data: createSandbox(options), timestamp: new Date().toISOString() };
+    },
+    execute: async (sandboxId: string, code: string) => {
+      const { execute } = await import('./substrate/sandbox-module/index');
+      return { success: true, module: 'sandbox' as SubstrateModule, action: 'execute', data: execute(sandboxId, code), timestamp: new Date().toISOString() };
+    },
+    teardown: async (sandboxId: string) => {
+      const { teardown } = await import('./substrate/sandbox-module/index');
+      teardown(sandboxId);
+      return { success: true, module: 'sandbox' as SubstrateModule, action: 'teardown', data: { id: sandboxId }, timestamp: new Date().toISOString() };
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // ENCODE MODULE — Code Execution Intelligence (Orchestrator)
+  // ═══════════════════════════════════════════════════════════════
+
+  encode = {
+    status: async () => {
+      const { getEncodeState, getEncodeHealth } = await import('./substrate/encode-module/index');
+      const state = getEncodeState();
+      return { success: true, module: 'encode' as SubstrateModule, action: 'status', data: { ...state, health: getEncodeHealth() }, timestamp: new Date().toISOString() };
+    },
+    pulse: () => this.invoke({ module: 'encode', action: 'pulse' }),
+    queue: async () => {
+      const { getTaskQueue } = await import('./substrate/encode-module/index');
+      return { success: true, module: 'encode' as SubstrateModule, action: 'queue', data: { tasks: getTaskQueue() }, timestamp: new Date().toISOString() };
+    },
+    receipts: async (limit?: number) => {
+      const { getReceipts } = await import('./substrate/encode-module/index');
+      return { success: true, module: 'encode' as SubstrateModule, action: 'receipts', data: { receipts: getReceipts(limit ?? 20) }, timestamp: new Date().toISOString() };
+    },
+    init: async () => {
+      const { initEncode } = await import('./substrate/encode-module/index');
+      initEncode();
+      return { success: true, module: 'encode' as SubstrateModule, action: 'init', data: { initialized: true }, timestamp: new Date().toISOString() };
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════════
   // SEBA MODULE — Self-Evolving Bounded Agent (v7.0.0)
   // ═══════════════════════════════════════════════════════════════
   
@@ -1501,3 +1652,11 @@ export const integration = substrate.integration;
 export const inclusive = substrate.inclusive;
 export const cortex = substrate.cortex;
 export const seba = substrate.seba;
+// Infrastructure Six + Encode (v9.2.0)
+export const memoryMod = substrate.memory;
+export const relayMod = substrate.relay;
+export const auditMod = substrate.audit;
+export const identityMod = substrate.identity;
+export const economyMod = substrate.economy;
+export const sandboxMod = substrate.sandboxMod;
+export const encodeMod = substrate.encode;

@@ -32,6 +32,8 @@ import {
   Radio,
   Orbit,
   Waves,
+  Moon,
+  Plug,
 } from 'lucide-react';
 import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
 import { type ModuleName, type ModuleSelfAnalysis } from '@/lib/substrate/module-clm';
@@ -60,7 +62,8 @@ const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
   modernizer: RefreshCw,
   system: Settings,
   decode: FileText,
-  autoblog: TrendingUp,
+  dream: Moon,
+  integration: Plug,
   encode: FileText,
   memory: FileText,
   relay: FileText,
@@ -82,7 +85,8 @@ const MODULE_COLORS: Record<ModuleName, string> = {
   modernizer: 'from-emerald-500/20 to-emerald-600/5 border-emerald-500/30',
   system: 'from-gray-500/20 to-gray-600/5 border-gray-500/30',
   decode: 'from-indigo-500/20 to-indigo-600/5 border-indigo-500/30',
-  autoblog: 'from-violet-500/20 to-violet-600/5 border-violet-500/30',
+  dream: 'from-violet-500/20 to-violet-600/5 border-violet-500/30',
+  integration: 'from-fuchsia-500/20 to-fuchsia-600/5 border-fuchsia-500/30',
   encode: 'from-yellow-500/20 to-yellow-600/5 border-yellow-500/30',
   memory: 'from-sky-500/20 to-sky-600/5 border-sky-500/30',
   relay: 'from-lime-500/20 to-lime-600/5 border-lime-500/30',
@@ -104,7 +108,8 @@ const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
   modernizer: 'text-emerald-400',
   system: 'text-gray-400',
   decode: 'text-indigo-400',
-  autoblog: 'text-violet-400',
+  dream: 'text-violet-400',
+  integration: 'text-fuchsia-400',
   encode: 'text-yellow-400',
   memory: 'text-sky-400',
   relay: 'text-lime-400',
