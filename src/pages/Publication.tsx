@@ -41,10 +41,10 @@ export default function Publication() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="promptfluid substrate — DOI Publication"
-        description="DOI publication for the promptfluid cognitive substrate, including architecture, brain, nexus routing, defense intelligence, learning cycles, dream protocol, and licensing."
-        canonical="https://promptfluid.com/publication"
-        keywords={['promptfluid DOI', 'cognitive substrate', 'AI research artifact', 'Zenodo publication', 'OpenAIRE']}
+        title="CMPSBL Substrate — DOI Publication"
+        description="DOI publication for the CMPSBL cognitive substrate, including architecture, brain, nexus routing, defense intelligence, learning cycles, dream protocol, and licensing."
+        canonical="https://cmpsbl.com/publication"
+        keywords={['CMPSBL DOI', 'cognitive substrate', 'AI research artifact', 'Zenodo publication', 'OpenAIRE']}
         type="article"
       />
 

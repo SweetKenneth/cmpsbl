@@ -14,7 +14,7 @@ const PromptFluidAccess = () => {
           content="Discover PromptFluid Access, the comprehensive identity and billing system managing authentication, permissions, licensing, and payment operations with trust-based retention." 
         />
         <meta name="keywords" content="identity management, billing system, authentication, licensing, payment processing, PromptFluid Access" />
-        <link rel="canonical" href="https://www.promptfluid.com/blog/promptfluid-access-identity-billing" />
+        <link rel="canonical" href="https://cmpsbl.com/blog/promptfluid-access-identity-billing" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

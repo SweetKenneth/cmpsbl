@@ -12,7 +12,7 @@ const PromptFluidMarketDisruptor = () => {
       <SEO
         title="PromptFluid's Vision: A Different Approach to AI Platforms"
         description="How we're building adaptive intelligence, security-first architecture, and autonomous learning into our platform design."
-        canonical="https://www.promptfluid.com/blog/promptfluid-market-disruptor"
+        canonical="https://cmpsbl.com/blog/promptfluid-market-disruptor"
         keywords={["AI platform design", "adaptive AI", "multi-model orchestration", "AI security platform"]}
       />
 

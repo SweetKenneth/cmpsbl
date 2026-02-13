@@ -12,7 +12,7 @@ const ProductRoadmap2025 = () => {
       <SEO
         title="PromptFluid Product Roadmap 2025-2026"
         description="Upcoming features, release timelines, and innovations in adaptive AI, security, accessibility, and automation."
-        canonical="https://www.promptfluid.com/blog/product-roadmap-2025"
+        canonical="https://cmpsbl.com/blog/product-roadmap-2025"
         keywords={["AI product roadmap", "PromptFluid features", "AI platform development", "AI innovation timeline"]}
       />
 

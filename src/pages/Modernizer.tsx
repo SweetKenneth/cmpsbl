@@ -25,9 +25,9 @@ const Modernizer = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="AI Website Modernizer — Transform Legacy Sites | PromptFluid"
+        title="AI Website Modernizer — Transform Legacy Sites | CMPSBL"
         description="Turn outdated websites into modern, accessible, SEO-optimized experiences in minutes. Export clean code or host with us."
-        canonical="https://promptfluid.com/modernizer"
+        canonical="https://cmpsbl.com/modernizer"
       />
       
       <PublicNav />

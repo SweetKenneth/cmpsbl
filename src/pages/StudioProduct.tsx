@@ -171,9 +171,9 @@ export default function StudioProduct() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
       <SEO 
-        title="PromptFluid Studio — Rapid Application Builder | AI-Powered Development"
-        description="Build production-ready applications in minutes with PromptFluid Studio. AI-powered code generation, instant deployment, and 200+ pre-built components. Transform ideas into reality."
-        canonical="https://promptfluid.com/projects/studio"
+        title="CMPSBL Studio — Rapid Application Builder | AI-Powered"
+        description="Build production-ready applications in minutes with CMPSBL Studio. AI-powered code generation, instant deployment, and 200+ pre-built components."
+        canonical="https://cmpsbl.com/projects/studio"
         keywords={[
           'rapid application development',
           'AI code generation',

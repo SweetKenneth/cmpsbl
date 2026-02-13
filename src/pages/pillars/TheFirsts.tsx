@@ -37,9 +37,9 @@ export default function TheFirsts() {
   return (
     <>
       <SEO
-        title="PromptFluid: The Firsts – A Manifesto of AI Creation and Web Transformation"
-        description="How PromptFluid became the first AI ecosystem to repair, dream, defend, and evolve on its own — with public valuations and a cinematic timeline."
-        canonical="https://promptfluid.com/pillars/promptfluid-the-firsts"
+        title="CMPSBL: The Firsts – A Manifesto of AI Creation and Web Transformation"
+        description="How CMPSBL became the first AI ecosystem to repair, dream, defend, and evolve on its own — with public valuations and a cinematic timeline."
+        canonical="https://cmpsbl.com/pillars/promptfluid-the-firsts"
         image={ogImage}
         type="article"
         keywords={[
@@ -61,21 +61,21 @@ export default function TheFirsts() {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": "PromptFluid: The Firsts — Manifesto Chronicle",
-          "description": "The official chronicle of PromptFluid's verified firsts — how AI began to repair, defend, rebuild, and learn across the web.",
+          "headline": "CMPSBL: The Firsts — Manifesto Chronicle",
+          "description": "The official chronicle of CMPSBL's verified firsts — how AI began to repair, defend, rebuild, and learn across the web.",
           "image": ogImage,
           "datePublished": "2025-11-04",
           "dateModified": "2025-11-04",
           "author": {
             "@type": "Organization",
-            "name": "PromptFluid"
+            "name": "CMPSBL"
           },
           "publisher": {
             "@type": "Organization",
-            "name": "PromptFluid",
+            "name": "CMPSBL",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://promptfluid.com/logo.png"
+              "url": "https://cmpsbl.com/logo.png"
             }
           }
         })}
@@ -91,13 +91,13 @@ export default function TheFirsts() {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://promptfluid.com"
+              "item": "https://cmpsbl.com"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "The Firsts",
-              "item": "https://promptfluid.com/pillars/promptfluid-the-firsts"
+              "item": "https://cmpsbl.com/pillars/promptfluid-the-firsts"
             }
           ]
         })}

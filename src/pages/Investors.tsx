@@ -52,9 +52,9 @@ export default function Investors() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Acquisition Opportunity — promptfluid® AI Substrate"
+        title="Acquisition Opportunity — CMPSBL® AI Substrate"
         description="Strategic acquisition opportunity. First-of-its-kind AI orchestration substrate with live production systems, 100% proprietary technology, and 15 years of shipping experience."
-        canonical="https://promptfluid.com/investors"
+        canonical="https://cmpsbl.com/investors"
         keywords={['AI acquisition', 'AI infrastructure', 'strategic acquisition', 'AI substrate']}
       />
 

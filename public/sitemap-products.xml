@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- PromptFluid Products Sitemap - 2026 SEO Optimized -->
+<!-- CMPSBL Products Sitemap - 2026 SEO Optimized -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <!-- PRODUCT: Defense -->
   <url>
-    <loc>https://promptfluid.com/products/defense</loc>
-    <lastmod>2026-01-13</lastmod>
+    <loc>https://cmpsbl.com/products/defense</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/products/defense" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/defense" />
     <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
       <image:title>Defense - AI WordPress Bot Detection</image:title>
       <image:caption>Protect WordPress sites from automated attacks with AI-powered bot detection</image:caption>
     </image:image>
@@ -20,13 +20,13 @@
   
   <!-- PRODUCT: Clarity -->
   <url>
-    <loc>https://promptfluid.com/products/clarity</loc>
-    <lastmod>2026-01-13</lastmod>
+    <loc>https://cmpsbl.com/products/clarity</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/products/clarity" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/clarity" />
     <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
       <image:title>Clarity - WCAG Accessibility Scanner</image:title>
       <image:caption>Automated WCAG 2.2 accessibility compliance scanning and remediation</image:caption>
     </image:image>
@@ -34,13 +34,13 @@
   
   <!-- PRODUCT: Brain -->
   <url>
-    <loc>https://promptfluid.com/products/brain</loc>
-    <lastmod>2026-01-13</lastmod>
+    <loc>https://cmpsbl.com/products/brain</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/products/brain" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/brain" />
     <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
       <image:title>Brain - AI Orchestration Gateway</image:title>
       <image:caption>Multi-provider AI routing, failover, and cost optimization</image:caption>
     </image:image>
@@ -48,13 +48,13 @@
   
   <!-- PRODUCT: Modernizer -->
   <url>
-    <loc>https://promptfluid.com/products/modernizer</loc>
-    <lastmod>2026-01-13</lastmod>
+    <loc>https://cmpsbl.com/products/modernizer</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/products/modernizer" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/modernizer" />
     <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
       <image:title>Modernizer - Legacy to React Conversion</image:title>
       <image:caption>Transform outdated websites into modern React applications</image:caption>
     </image:image>
@@ -62,13 +62,13 @@
   
   <!-- PRODUCT: Cascade -->
   <url>
-    <loc>https://promptfluid.com/products/cascade</loc>
-    <lastmod>2026-01-13</lastmod>
+    <loc>https://cmpsbl.com/products/cascade</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/products/cascade" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/cascade" />
     <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
       <image:title>Cascade - Autonomous AI Dream Engine</image:title>
       <image:caption>Self-improving AI system with dream-state processing</image:caption>
     </image:image>
@@ -76,13 +76,13 @@
   
   <!-- PRODUCT: Marketing -->
   <url>
-    <loc>https://promptfluid.com/products/marketing</loc>
-    <lastmod>2026-01-13</lastmod>
+    <loc>https://cmpsbl.com/products/marketing</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/products/marketing" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/marketing" />
     <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
       <image:title>Marketing - AI Content Generation</image:title>
       <image:caption>AI-powered content creation and SEO optimization</image:caption>
     </image:image>

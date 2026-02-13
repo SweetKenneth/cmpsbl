@@ -26,13 +26,13 @@ export function Breadcrumbs({ items, className = "" }: BreadcrumbsProps) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://promptfluid.com"
+        "item": "https://cmpsbl.com"
       },
       ...items.map((item, index) => ({
         "@type": "ListItem",
         "position": index + 2,
         "name": item.label,
-        ...(item.href && { "item": `https://promptfluid.com${item.href}` })
+        ...(item.href && { "item": `https://cmpsbl.com${item.href}` })
       }))
     ]
   };

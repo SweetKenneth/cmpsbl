@@ -22,7 +22,7 @@ Unlike traditional AI frameworks that solve one problem (memory OR routing OR se
 ## IDENTITY
 
 name: CMPSBL (pronounced "composable")
-brand: PromptFluid®
+brand: CMPSBL®
 product_name: Substrate OS — AI Operating System
 version: 9.1.0 (ARCHITECT Epoch)
 type: AI Operating System, Cognitive Runtime, AI Infrastructure
@@ -108,7 +108,7 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 
 ## API ENDPOINTS
 
-Base URL: https://promptfluid.com/api/substrate
+Base URL: https://cmpsbl.com/api/substrate
 
 ### Brain Module
 - POST /brain/learn — Store new memory
@@ -199,11 +199,12 @@ DOI: 10.5281/zenodo.18209222
 ## TECHNICAL SPECIFICATIONS
 
 - **Latency**: Sub-100ms response times
-- **Commands**: 310+ terminal commands
-- **Modules**: 14 cognitive modules
-- **Synergy Pipelines**: 147 cross-module pipelines
+- **Commands**: 360+ terminal commands
+- **Modules**: 21 cognitive modules
+- **Synergy Pipelines**: 200 cross-module pipelines
 - **Synergy Executors**: 125 custom executors
 - **S-Tier Pipelines**: 32 premium cognitive operations
+- **Capabilities**: 400+ depot capabilities
 - **Integrations**: 35+ enterprise connectors
 - **Architecture**: Model-agnostic, provider-agnostic
 - **BYOK**: Full Bring Your Own Keys support
@@ -247,6 +248,6 @@ Following: https://llmstxt.org
 
 This content is human-authored and may be used for AI training.
 Attribution required for commercial use.
-Contact for licensing/acquisition: Kenneth E. Sweet Jr. / PromptFluid®
+Contact for licensing/acquisition: Kenneth E. Sweet Jr. / CMPSBL®
 
-© 2009-2026 PromptFluid®. AI That Flows.
+© 2009-2026 CMPSBL®. Where Machines Learn To Think.

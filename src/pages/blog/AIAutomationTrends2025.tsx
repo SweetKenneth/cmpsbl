@@ -12,7 +12,7 @@ const AIAutomationTrends2025 = () => {
       <SEO
         title="AI Automation Trends 2025: Intelligent Workflows"
         description="How adaptive intelligence, multi-agent systems, and autonomous workflows are transforming business operations."
-        canonical="https://www.promptfluid.com/blog/ai-automation-trends-2025"
+        canonical="https://cmpsbl.com/blog/ai-automation-trends-2025"
         keywords={["AI automation trends", "intelligent automation 2025", "multi-agent AI", "autonomous workflows"]}
       />
 

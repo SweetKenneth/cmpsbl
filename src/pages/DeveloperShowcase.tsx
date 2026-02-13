@@ -279,7 +279,7 @@ export default function DeveloperShowcase() {
       <SEO
         title="For Developers — Build Intelligent Apps | CMPSBL"
         description="CMPSBL for software developers. Add persistent memory, dream cycles, and intelligent reasoning to any application."
-        canonical="https://promptfluid.com/developers"
+        canonical="https://cmpsbl.com/developers"
         keywords={[
           "AI development",
           "cognitive architecture",

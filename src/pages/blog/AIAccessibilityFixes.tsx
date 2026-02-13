@@ -12,7 +12,7 @@ export default function AutomatedAccessibilityFixes() {
       <SEO
         title="Automated Accessibility Fixes for WordPress: How AI Solves 80% of Issues"
         description="Discover how AI-powered automated accessibility fixes transform WordPress WCAG compliance. Learn what can be automated and why one-click remediation changes everything."
-        canonical="https://promptfluid.com/blog/automated-accessibility-fixes-wordpress"
+        canonical="https://cmpsbl.com/blog/automated-accessibility-fixes-wordpress"
         keywords={[
           "automated accessibility fixes",
           "ai accessibility wordpress",

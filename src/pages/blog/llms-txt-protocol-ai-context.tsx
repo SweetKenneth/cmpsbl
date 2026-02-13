@@ -15,7 +15,7 @@ export default function LLMsTxtProtocolAIContext() {
       <SEO 
         title="LLMs.txt: The Protocol for Machine-Readable AI Context Sharing | CMPSBL"
         description="How CMPSBL uses LLMs.txt to provide structured context to AI systems, and why we believe this should become a standard protocol for AI-human interaction across the web."
-        canonical="https://promptfluid.com/blog/llms-txt-protocol-ai-context"
+        canonical="https://cmpsbl.com/blog/llms-txt-protocol-ai-context"
         keywords={[
           'LLMs.txt', 'AI context protocol', 'machine-readable context', 'AI interaction standard',
           'large language models', 'AI governance', 'context sharing protocol', 'AI communication',

@@ -12,7 +12,7 @@ const AIBusinessOperations2025 = () => {
       <SEO
         title="AI in Business Operations 2025: Practical Guide"
         description="How leading organizations leverage adaptive intelligence to transform operations, reduce costs, and create sustainable competitive advantages."
-        canonical="https://www.promptfluid.com/blog/ai-business-operations-2025"
+        canonical="https://cmpsbl.com/blog/ai-business-operations-2025"
         keywords={["AI business operations", "enterprise AI", "business process automation", "operational efficiency"]}
       />
 
