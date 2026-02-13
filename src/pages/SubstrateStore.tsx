@@ -25,6 +25,7 @@ import {
   Unlock, Play, Moon, MessageSquare, X, Lock, Crown,
 } from 'lucide-react';
 import { isCrownJewelItem } from '@/lib/capabilities/crown-jewel-gate';
+import { useUserRole } from '@/hooks/useUserRole';
 
 import {
   filterCapabilities,
@@ -405,6 +406,7 @@ export default function SubstrateStore() {
   
   const capCount = useMetric('capabilitiesCount');
   const pipeCount = useMetric('synergyPipelinesCount');
+  const { isGovernor } = useUserRole();
   
   // Build unified items list
   const allItems = useMemo((): UnifiedItem[] => {
@@ -763,6 +765,59 @@ export default function SubstrateStore() {
             </div>
           )}
           
+          {/* ═══ ADMIN-ONLY: Crown Jewel Reference Section ═══ */}
+          {isGovernor && crownJewelItems.length > 0 && (
+            <section className="border-t border-amber-500/20 bg-amber-500/[0.02]">
+              <div className="container mx-auto px-4 py-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <Crown className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-lg flex items-center gap-2">
+                      Crown Jewels
+                      <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-400 border-amber-500/30">
+                        ADMIN ONLY
+                      </Badge>
+                    </h2>
+                    <p className="text-xs text-muted-foreground">
+                      {crownJewelItems.length} restricted artifacts — discovery reference only
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                  {crownJewelItems.map((item, i) => {
+                    const name = item.data.name;
+                    const typeLabel = item.type === 'capability' ? 'Capability' : item.type === 'template' ? 'Template' : 'Pipeline';
+                    return (
+                      <div
+                        key={`cj-${item.type}-${i}`}
+                        className="rounded-xl border border-amber-500/15 bg-amber-500/[0.02] p-4 opacity-60 pointer-events-none select-none"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-400 border-amber-500/20">
+                            {typeLabel}
+                          </Badge>
+                          <span className="text-[10px] font-bold text-amber-400/70 flex items-center gap-0.5">
+                            <Lock className="w-2.5 h-2.5" /> RESTRICTED
+                          </span>
+                        </div>
+                        <h4 className="text-sm font-semibold truncate">{name}</h4>
+                        <p className="text-[10px] text-muted-foreground mt-1 line-clamp-2">{item.data.description}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <p className="text-[11px] text-muted-foreground/60 mt-6 text-center italic">
+                  These artifacts are locked down and excluded from all public, enterprise, SDK, and API discovery. 
+                  A separate Tiering Patch will follow for distribution decisions.
+                </p>
+              </div>
+            </section>
+          )}
+
           {/* Engine CTA */}
           <section className="border-t border-border/50 bg-card/30">
             <div className="container mx-auto px-4 py-12 md:py-16 text-center">
