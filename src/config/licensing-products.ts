@@ -1,5 +1,5 @@
 /**
- * CMPSBL Substrate Licensing Products Configuration v8.0.0
+ * CMPSBL Substrate Licensing Products Configuration v9.1.0
  * Aligned with Stripe pricing (Feb 2026)
  * 
  * Developer License:

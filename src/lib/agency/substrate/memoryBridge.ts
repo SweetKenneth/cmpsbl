@@ -2,7 +2,7 @@
  * Substrate Memory Bridge
  * Routes successful tasks to global substrate brain
  * 
- * v8.0.0 SYNERGY+: Integrates with unified memory_core lifecycle
+ * v9.1.0 ARCHITECT: Integrates with unified memory_core lifecycle
  */
 
 import { supabase } from '@/integrations/supabase/client';

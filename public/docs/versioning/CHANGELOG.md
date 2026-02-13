@@ -1,7 +1,7 @@
 # CMPSBL Substrate — Living Evolution Log
 
-**Version Lock:** Public versions are major-only (v6.x.x, v7.x.x, v8.x.x)  
-**Status:** Living Document (v8.x.x)  
+**Version Lock:** Public versions are major-only (v6.x.x, v7.x.x, v8.x.x, v9.x.x)  
+**Status:** Living Document (v9.x.x)  
 
 ---
 
@@ -33,7 +33,62 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 
 ---
 
-## v8.x.x — SYNERGY+ Epoch (Living)
+## v9.x.x — ARCHITECT Epoch (Living)
+
+### Evolution 021 — 2026-02-13
+
+**Observed Pressures**
+- 21-module architecture required a dedicated Infrastructure layer
+- Version references were fragmented across v7/v8 epoch markers
+- Evolution observability needed unified stamp and receipt systems
+
+**Learned Responses**
+- Infrastructure layer formalized with 6 modules: Memory, Relay, Audit, Identity, Economy, Sandbox
+- ENCODE promoted to first-class Module #21 in the Orchestrator layer
+- All 21 modules synchronized to v9.1.0 ARCHITECT standard
+
+**Resulting Capabilities**
+- The substrate operates as a 21-module, 6-layer cognitive architecture
+- 400+ capabilities, 200 synergy pipelines, 100 engines
+- Single source of truth for all version information
+
+---
+
+### Evolution 020 — 2026-02-11
+
+**Observed Pressures**
+- Integrity audit revealed version drift between code and documentation
+- Engine and meta-engine counts needed formal synchronization
+
+**Learned Responses**
+- Engine registry formalized at 76 engines + 24 meta-engines
+- Documentation library synchronized across all surfaces
+
+**Resulting Capabilities**
+- Zero version drift between code constants and documentation
+- Engine marketplace reflects accurate production-ready counts
+
+---
+
+### Evolution 019 — 2026-02-10
+
+**Observed Pressures**
+- SEBA evolution cycle needed cross-validation of predicted vs actual impact
+- Modernizer needed independent observability from SEBA analysis
+
+**Learned Responses**
+- Cross-Validator engine reconciles predicted impact against actual metrics
+- Omega Observer Engine (v2.0) provides automated insight generation
+
+**Resulting Capabilities**
+- Evolution confidence scoring tracks reliability trends per module
+- Deep audit of evolution cycles via modernizer commands
+
+---
+
+## v8.x.x — SYNERGY+ Epoch (Frozen)
+
+**Period:** 2026-02-03 to 2026-02-10
 
 ### Evolution 018 — 2026-02-09
 
@@ -63,7 +118,7 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 
 **Learned Responses**
 - Sitemap indices expanded with blog and product subsitemaps
-- LLMs.txt upgraded to v8.0.0 SYNERGY+ specification
+- LLMs.txt upgraded to v9.1.0 ARCHITECT specification
 - robots.txt optimized for GPTBot, ClaudeBot, PerplexityBot
 
 **Resulting Capabilities**
@@ -257,5 +312,5 @@ From scattered functions, a unified substrate crystallized. The cognitive orches
 
 ---
 
-*CMPSBL OS Substrate — Living Evolution Log*  
+*CMPSBL OS Substrate v9.1.0 — Living Evolution Log*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

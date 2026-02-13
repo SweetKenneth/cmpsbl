@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — System Architecture
 
-**Version 8.0.0 | Scientific Publication**
+**Version 9.1.0 | Scientific Publication**
 
 ---
 

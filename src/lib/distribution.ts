@@ -8,7 +8,7 @@
  * may alter these values. They are burned into the binary at build time.
  * 
  * @module distribution
- * @version 8.0.0
+ * @version 9.1.0
  */
 
 // ─── Immutable Canon Identity ────────────────────────────────────────────────

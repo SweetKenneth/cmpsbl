@@ -1,6 +1,6 @@
 /**
  * React Hook for Meta-Engines
- * v8.0.0 SYNERGY+ — Access compound engine orchestration across 20 meta-engines
+ * v9.1.0 ARCHITECT — Access compound engine orchestration across 24 meta-engines
  */
 
 import { useState, useCallback, useMemo } from 'react';

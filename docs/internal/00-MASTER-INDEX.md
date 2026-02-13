@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 8.5.0 | SYNERGY+ Epoch | CONFIDENTIAL**
+**Version 9.1.0 | ARCHITECT Epoch | CONFIDENTIAL**
 
 ---
 
@@ -183,24 +183,24 @@ EVOLUTION ENGINES (2)
 | CLM Budget Governor | CLM | Daily token budget with kill switch for runaway learning |
 | **Synergy Multiplier** | Engine System | 2-8x value amplification through orchestration |
 | **Complexity Score** | Engine System | IP protection rating 1-10 per engine |
-| **Capability Count** | Capability Registry | **325 total capabilities across 14 modules** |
-| **Engine Count** | Engine System | **70 engines orchestrating 325 capabilities** |
+| **Capability Count** | Capability Registry | **400+ total capabilities across 21 modules** |
+| **Engine Count** | Engine System | **76 engines + 24 meta-engines orchestrating 400+ capabilities** |
 | **Tier Gate** | Capability Gate | **Enterprise-only self-improvement enforcement** |
-| **Infrastructure** | 20 Systems | **Production hardening across all tiers** |
+| **Infrastructure** | 27 Systems | **Production hardening across all tiers** |
 
-### v8.5.0 — SYNERGY+ Epoch
+### v9.1.0 — ARCHITECT Epoch
 
 | Category | Engines | Capabilities Orchestrated | Avg Synergy Multiplier |
 |----------|---------|---------------------------|------------------------|
-| Cognitive | 6 | 56 | 2.25x |
-| Operational | 4 | 48 | 2.43x |
-| Intelligence | 4 | 36 | 2.18x |
-| Governance | 3 | 24 | 2.10x |
-| Security | 5 | 20 | 2.40x |
-| Evolution | 2 | 18 | 2.70x |
-| Enhancement | 14 | 56 (world-first) | 4.6x |
-| Communication + Others | 24 | 11 | 2.5x |
-| **TOTAL** | **62** | **269** | **3.2x avg** |
+| Cognitive | 8 | 72 | 2.35x |
+| Operational | 6 | 64 | 2.55x |
+| Intelligence | 6 | 48 | 2.28x |
+| Governance | 4 | 32 | 2.20x |
+| Security | 6 | 28 | 2.50x |
+| Evolution | 4 | 24 | 2.80x |
+| Enhancement | 18 | 72 (world-first) | 4.8x |
+| Infrastructure | 24 | 60 | 2.6x |
+| **TOTAL** | **76 + 24 meta** | **400+** | **3.4x avg** |
 
 ### Self-Improvement Boundary
 
@@ -217,17 +217,13 @@ EVOLUTION ENGINES (2)
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| **8.5.0** | **SYNERGY+** | **27 infrastructure systems, 340+ commands, 7 automation systems, LNCHBL distribution** |
-| 8.1.0 | SYNERGY+ | World-First Enhancement Integration, 269 capabilities |
+| **9.1.0** | **ARCHITECT** | **21 modules, 6 layers, 400+ capabilities, 200 pipelines, 76+24 engines, ENCODE module** |
+| 8.5.0 | SYNERGY+ | 27 infrastructure systems, 340+ commands, 7 automation systems, LNCHBL distribution |
 | 8.0.0 | SYNERGY+ | 310+ terminal commands, 147 synergies, 62 engines |
-| 7.7.0 | ENGINE+ | 20 Cognitive Engines consolidating 76 capabilities |
-| 7.6.0 | SYNERGY+ | 76 capabilities (+56 new), INCLUSIVE auto-repair |
-| 7.5.3 | SYNERGY+ | 147 synergy pipelines, 125 executors |
-| 7.5.0 | SYNERGY | 56 world-first functions across 14 modules |
 | 7.0.0 | SEBA | Bounded autonomy, 67 tests |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

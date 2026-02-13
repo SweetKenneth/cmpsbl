@@ -1,5 +1,5 @@
 /**
- * Marketplace Product Configuration v8.0.0
+ * Marketplace Product Configuration v9.1.0
  * PATCH pricing-stripe-unification-v1
  * 
  * PRICING RULES:

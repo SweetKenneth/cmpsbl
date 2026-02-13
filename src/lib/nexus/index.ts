@@ -107,8 +107,8 @@ export {
 export * from './circuitBreaker';
 
 // Version info
-export const NEXUS_VERSION = '8.0.0';
-export const NEXUS_CODENAME = 'SYNERGY+ Router';
+export const NEXUS_VERSION = '9.1.0';
+export const NEXUS_CODENAME = 'ARCHITECT Router';
 
 // Provider registry
 export const SUPPORTED_PROVIDERS = [

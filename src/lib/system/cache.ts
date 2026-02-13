@@ -1,6 +1,6 @@
 /**
  * Production Caching System
- * v8.0.0 SYNERGY+ — Safe caching for read-heavy widgets with TTL and invalidation
+ * v9.1.0 ARCHITECT — Safe caching for read-heavy widgets with TTL and invalidation
  */
 
 export interface CacheEntry<T> {

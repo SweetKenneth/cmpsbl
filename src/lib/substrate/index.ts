@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Core Exports
- * v8.5.0 — SYNERGY+ Epoch (3-Layer Architecture)
+ * v9.1.0 — ARCHITECT Epoch (6-Layer Architecture)
  * 
  * Complete export of all substrate engines, hooks, and utilities.
  * 3-Layer Architecture: Capabilities (269) → Engines (62) → Meta-Engines (20)
@@ -233,7 +233,7 @@ export {
 
 export { useCLM, type UseCLMReturn } from './clm/useCLM';
 
-// CLM Module Hooks v8.0.0 SYNERGY+
+// CLM Module Hooks v9.1.0 ARCHITECT
 export {
   registerModuleHooks,
   getRegisteredModules,
@@ -247,7 +247,7 @@ export {
   type ModuleLearningHook,
 } from './clm/module-hooks';
 
-// Module-Specific CLM v8.0.0 SYNERGY+
+// Module-Specific CLM v9.1.0 ARCHITECT
 export {
   moduleCLM,
   ModuleCLMClient,
@@ -288,7 +288,7 @@ export {
 
 export { useSEBA, type UseSEBAReturn } from './seba/useSEBA';
 
-// Cross-Module Capabilities v8.0.0 SYNERGY+
+// Cross-Module Capabilities v9.1.0 ARCHITECT
 export {
   capabilityEngine,
   CapabilityEngineClient,
@@ -302,7 +302,7 @@ export {
 
 export { useCapabilities, type UseCapabilitiesReturn } from './capabilities/useCapabilities';
 
-// Archived Edge Function Adapters v8.0.0 SYNERGY+
+// Archived Edge Function Adapters v9.1.0 ARCHITECT
 export {
   archivedAdapters,
   invokeHypothesisTest,

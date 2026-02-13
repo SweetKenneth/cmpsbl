@@ -1,7 +1,7 @@
 /**
  * Code Snippet Generator for Capabilities
  * Generates SDK import and usage examples for each capability
- * v1.0.0 SYNERGY+
+ * v1.0.0 ARCHITECT
  */
 
 import type { CapabilityArtifact } from './types';

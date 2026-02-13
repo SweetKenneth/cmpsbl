@@ -241,7 +241,7 @@ export function SEO({
     applicationSubCategory: 'Cognitive Infrastructure Layer',
     operatingSystem: 'Web Browser',
     browserRequirements: 'Requires JavaScript',
-    softwareVersion: 'v8.0.0',
+    softwareVersion: 'v9.1.0',
     screenshot: image,
     offers: {
       '@type': 'Offer',

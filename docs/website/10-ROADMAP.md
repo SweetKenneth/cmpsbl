@@ -10,11 +10,11 @@
 
 ---
 
-## Current State: v7.5.3
+## Current State: v9.1.0
 
-**Status: Production Ready — SYNERGY+ Epoch**
+**Status: Production Ready — ARCHITECT Epoch**
 
-The substrate has achieved full operational capability with all 14 modules deployed and stable, plus 147 synergy pipelines.
+The substrate has achieved full operational capability with all 21 modules deployed and stable, 200 synergy pipelines, 400+ capabilities, and 100 engines.
 
 ### Completed Milestones
 
@@ -148,10 +148,10 @@ Enterprise and Research tier customers participate in quarterly roadmap reviews 
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v7.5.3 | Feb 2026 | SYNERGY+ Epoch, 147 pipelines, 136+ depot capabilities |
-| v7.5.0 | Jan 2026 | Production-grade additions, 42 new functions |
+| v9.1.0 | Feb 2026 | ARCHITECT Epoch, 21 modules, 400+ capabilities, 200 pipelines, 100 engines |
+| v8.5.0 | Feb 2026 | SYNERGY+ Epoch, 200 pipelines, 125 executors |
+| v7.5.3 | Feb 2026 | SEBA Era, bounded autonomy, 147 pipelines |
 | v7.0.0 | Jan 2026 | Production release, 14 modules |
-| v6.3.1 | Jan 2026 | FNDTN documentation suite |
 | v6.0.0 | Dec 2025 | Licensing model, enterprise features |
 | v5.0.0 | Nov 2025 | Self-evolution engine |
 | v4.0.0 | Oct 2025 | Observability layer |

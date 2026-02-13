@@ -75,7 +75,7 @@ export interface PublicMetricsStore {
 }
 
 // =============================================================================
-// DEFAULT VALUES (SYNERGY+ Epoch verified counts)
+// DEFAULT VALUES (ARCHITECT Epoch verified counts)
 // =============================================================================
 
 export const DEFAULT_METRICS: PublicMetrics = {
@@ -175,7 +175,7 @@ export function useMetric<K extends keyof PublicMetrics>(key: K): PublicMetrics[
   return usePublicMetricsStore((state) => state.metrics[key]);
 }
 
-/** Get the full version string (e.g., "8.5.0 SYNERGY+") */
+/** Get the full version string (e.g., "9.1.0 ARCHITECT") */
 export function useVersionString(): string {
   return usePublicMetricsStore((state) => 
     `${state.metrics.version} ${state.metrics.codename}`
