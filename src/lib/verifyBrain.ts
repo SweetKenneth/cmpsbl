@@ -1,7 +1,7 @@
 /**
  * CMPSBL Brain Verification
  * Confirms all core systems are online and operational
- * v8.0.0 SYNERGY+ Epoch
+ * v9.1.0 ARCHITECT Epoch
  */
 
 import { supabase } from '@/integrations/supabase/client';

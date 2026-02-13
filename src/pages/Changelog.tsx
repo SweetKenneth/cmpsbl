@@ -21,8 +21,88 @@ interface EvolutionEntry {
   capabilities: string[];
 }
 
-// Living Evolution Log — v8.x.x Series (SYNERGY+ Epoch)
+// Living Evolution Log — v9.x.x Series (ARCHITECT Epoch)
 // Each entry documents WHY the system changed, never HOW
+const evolutionLogV9: EvolutionEntry[] = [
+  {
+    id: "v9-evolution-003",
+    date: "2026-02-13",
+    pressures: [
+      "21-module architecture required a dedicated Infrastructure layer",
+      "Version references were fragmented across v7/v8 epoch markers",
+      "Evolution observability needed unified stamp and receipt systems"
+    ],
+    responses: [
+      "Infrastructure layer formalized with 6 modules: Memory, Relay, Audit, Identity, Economy, Sandbox",
+      "ENCODE promoted to first-class Module #21 in the Orchestrator layer",
+      "Complete codebase sweep replaced 200+ legacy version references"
+    ],
+    capabilities: [
+      "The substrate operates as a 21-module, 6-layer cognitive architecture",
+      "400+ capabilities, 200 synergy pipelines, 100 engines",
+      "Single source of truth for all version information via versions.ts"
+    ]
+  },
+  {
+    id: "v9-evolution-002",
+    date: "2026-02-11",
+    pressures: [
+      "Integrity audit revealed version drift between code and documentation",
+      "Module layer assignments were inconsistent across surfaces",
+      "Engine and meta-engine counts needed formal synchronization"
+    ],
+    responses: [
+      "Comprehensive integrity audit corrected all layer assignments",
+      "Engine registry formalized at 76 engines + 24 meta-engines",
+      "Documentation library synchronized across internal, public, and academic surfaces"
+    ],
+    capabilities: [
+      "Zero version drift between code constants and documentation",
+      "Architectural queries return consistent layer groupings",
+      "Engine marketplace reflects accurate production-ready counts"
+    ]
+  },
+  {
+    id: "v9-evolution-001",
+    date: "2026-02-10",
+    pressures: [
+      "SEBA evolution cycle needed cross-validation of predicted vs actual impact",
+      "Proposal chaining required dependent execution sequences",
+      "Modernizer needed independent observability from SEBA analysis"
+    ],
+    responses: [
+      "Cross-Validator engine reconciles predicted impact against actual metrics",
+      "Proposal Chaining enables dependent architectural change sequences",
+      "Omega Observer Engine (v2.0) provides automated insight generation"
+    ],
+    capabilities: [
+      "Evolution confidence scoring tracks reliability trends per module",
+      "Dependent proposals execute in governed sequences with rollback",
+      "Deep audit of evolution cycles via modernizer.status, modernizer.diff"
+    ]
+  },
+  {
+    id: "v9-foundation",
+    date: "2026-02-10",
+    pressures: [
+      "SYNERGY+ proved the pipeline architecture but scope was limited to 14 modules",
+      "Infrastructure capabilities existed but lacked formal module boundaries",
+      "The substrate needed architectural expansion to support production scale"
+    ],
+    responses: [
+      "ARCHITECT epoch declared as v9.1.0 release milestone",
+      "7 new Infrastructure + Orchestrator modules formalized",
+      "All 21 modules promoted to v9.1.0 simultaneously"
+    ],
+    capabilities: [
+      "v9.1.0 ARCHITECT Epoch launched with 21 modules across 6 layers",
+      "76 cognitive engines + 24 meta-engines orchestrating 400+ capabilities",
+      "The age of full-spectrum cognitive architecture began"
+    ]
+  }
+];
+
+// Archived Evolution Log — v8.x.x Series (SYNERGY+ Epoch — Frozen)
 const evolutionLogV8: EvolutionEntry[] = [
   {
     id: "v8-evolution-005",
@@ -60,63 +140,6 @@ const evolutionLogV8: EvolutionEntry[] = [
       "Dream Eater operates with proper rate limiting and mood synchronization",
       "All major pages optimized for Google and LLM-based discovery",
       "GPTBot, ClaudeBot, PerplexityBot properly configured in robots.txt"
-    ]
-  },
-  {
-    id: "v8-evolution-003",
-    date: "2026-02-07",
-    pressures: [
-      "Substrate Intelligence page needed completion for investors",
-      "Engine Marketplace required mobile responsiveness fixes",
-      "Developer Academy Sandbox was desktop-only"
-    ],
-    responses: [
-      "Built comprehensive Substrate Intelligence page with proof architecture",
-      "Fixed mobile layouts across marketplace and academy",
-      "Responsive grid system implemented for Sandbox environment"
-    ],
-    capabilities: [
-      "Investors can access full substrate proof and acquisition information",
-      "Mobile users can browse engines and interact with academy",
-      "Sandbox accessible on all device sizes"
-    ]
-  },
-  {
-    id: "v8-evolution-002",
-    date: "2026-02-05",
-    pressures: [
-      "SYNERGY+ architecture required unified version registry",
-      "21-module ecosystem needed single source of truth for versions",
-      "Control plane versions were scattered across codebase"
-    ],
-    responses: [
-      "Created src/lib/substrate/versions.ts as canonical version registry",
-      "All 21 modules + 4 control planes unified under v9.1.0",
-      "Synergy Engine metrics consolidated (200 pipelines, 125 executors)"
-    ],
-    capabilities: [
-      "Single import for all version information substrate-wide",
-      "Version compatibility utilities available for dependency checking",
-      "Layer-based module grouping for architectural queries"
-    ]
-  },
-  {
-    id: "v8-evolution-001",
-    date: "2026-02-04",
-    pressures: [
-      "SEBA v2.0.0 achieved full spectrum autonomous evolution",
-      "Synergy pipelines reached 200 production configurations",
-      "Documentation library required v8 alignment"
-    ],
-    responses: [
-      "SYNERGY+ epoch declared as v8.0.0 release milestone",
-      "All 21 modules promoted to v9.1.0 simultaneously",
-      "SEBA 2.0.0 codename changed to 'Full Spectrum Autonomy'"
-    ],
-    capabilities: [
-      "SYNERGY+ Epoch represents the most connected substrate state",
-      "9 SEBA analysis engines for full-spectrum evolution",
-      "Complete cognitive-evolution pipeline with 10 improvement categories"
     ]
   },
   {
@@ -229,6 +252,12 @@ const archivedVersions = [
     summary: "SEBA v1.0.0 emerged as the Self-Evolving Bounded Agent. 5-phase cognitive-evolution pipeline with governance gates. Advisory, Governed, and Autonomous modes crystallized. Full audit trail from cognitive insight to executed evolution. The foundation for SYNERGY+ was laid."
   },
   {
+    version: "v8.x.x",
+    era: "SYNERGY+ Epoch — Full Spectrum Pipelines",
+    period: "2026-02-03 to 2026-02-10",
+    summary: "The SYNERGY+ Epoch consolidated the substrate's pipeline architecture, reaching 200 production pipelines and 125 specialized executors. SEBA v2.0.0 achieved full spectrum autonomous evolution with 9 cognitive analysis engines. SEO and AI crawler optimization matured. The foundation was laid for the ARCHITECT Epoch."
+  },
+  {
     version: "v6.x.x",
     era: "Human Compatibility Era",
     period: "2026-01-25 to 2026-01-30",
@@ -265,7 +294,7 @@ export default function Changelog() {
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
         title="Evolution Log | CMPSBL v9.1.0 ARCHITECT Epoch"
-        description="A continuous record of why the CMPSBL substrate evolved. From SYNERGY+ to ARCHITECT — the age of full-spectrum autonomous evolution."
+        description="A continuous record of why the CMPSBL substrate evolved. From Genesis through ARCHITECT — the age of full-spectrum cognitive architecture."
         canonical="https://cmpsbl.com/changelog"
         keywords={["CMPSBL changelog", "substrate evolution", "ARCHITECT epoch", "v9.1.0 release", "AI evolution log", "cognitive substrate updates"]}
       />
@@ -281,7 +310,7 @@ export default function Changelog() {
             CMPSBL — Living Evolution Log
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            A continuous record of why the system evolved — from SYNERGY+ through ARCHITECT
+            A continuous record of why the system evolved — from Genesis through ARCHITECT
           </p>
           
           {/* Explanatory Note */}
@@ -294,15 +323,15 @@ export default function Changelog() {
           </Card>
         </header>
 
-        {/* v8 Living Evolution Log */}
+        {/* v9 Living Evolution Log */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
             <span className="text-3xl">◆</span>
-            v8.x.x — SYNERGY+ Epoch
+            v9.x.x — ARCHITECT Epoch
           </h2>
           
           <div className="space-y-8">
-            {evolutionLogV8.map((entry) => (
+            {evolutionLogV9.map((entry) => (
               <Card key={entry.id} className="border-l-4 border-l-primary">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -344,6 +373,65 @@ export default function Changelog() {
                       {entry.capabilities.map((capability, i) => (
                         <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
                           <span className="text-emerald-500/60 mt-0.5">▸</span>
+                          {capability}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <Separator className="my-12" />
+
+        {/* v8 Frozen Evolution Log */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
+            <span className="text-3xl opacity-80">◆</span>
+            v8.x.x — SYNERGY+ Epoch
+            <Badge variant="secondary" className="ml-2 text-xs">Frozen</Badge>
+          </h2>
+          
+          <div className="space-y-8">
+            {evolutionLogV8.map((entry) => (
+              <Card key={entry.id} className="border-l-4 border-l-muted-foreground/60">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono text-muted-foreground">{entry.id}</span>
+                    <span className="text-sm text-muted-foreground">{entry.date}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-amber-500/70 mb-2">Observed Pressures</h4>
+                    <ul className="space-y-1">
+                      {entry.pressures.map((pressure, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-amber-500/40 mt-0.5">▸</span>
+                          {pressure}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-blue-500/70 mb-2">Learned Responses</h4>
+                    <ul className="space-y-1">
+                      {entry.responses.map((response, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-blue-500/40 mt-0.5">▸</span>
+                          {response}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-emerald-500/70 mb-2">Resulting Capabilities</h4>
+                    <ul className="space-y-1">
+                      {entry.capabilities.map((capability, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-emerald-500/40 mt-0.5">▸</span>
                           {capability}
                         </li>
                       ))}

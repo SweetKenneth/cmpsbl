@@ -1,8 +1,8 @@
 # CMPSBL Substrate — User Manual
 
-**v8.5.0 — SYNERGY+ Epoch (Self-Evolving Bounded Agent)**
+**v9.1.0 — ARCHITECT Epoch (Self-Evolving Bounded Agent)**
 
-*Last Updated: 2026-02-11*
+*Last Updated: 2026-02-13*
 
 ---
 

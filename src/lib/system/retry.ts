@@ -1,6 +1,6 @@
 /**
  * Retry Policy System
- * v8.0.0 SYNERGY+ — Exponential backoff with jitter for transient failures
+ * v9.1.0 ARCHITECT — Exponential backoff with jitter for transient failures
  */
 
 import { isRetryableError, fromError, type AppError } from './errors';

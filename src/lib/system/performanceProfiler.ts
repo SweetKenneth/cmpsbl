@@ -1,5 +1,5 @@
 /**
- * SYSTEM Performance Profiler v8.0.0 SYNERGY+
+ * SYSTEM Performance Profiler v9.1.0 ARCHITECT
  * Deep performance analysis and optimization recommendations
  */
  

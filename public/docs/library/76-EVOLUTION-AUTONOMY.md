@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — SEBA Safety & Governance v2.0.0
 
-**Version 8.0.0 (SEBA 2.0.0) | Full Spectrum Autonomous Evolution**
+**Version 9.1.0 (SEBA 2.0.0) | Full Spectrum Autonomous Evolution**
 
 ---
 

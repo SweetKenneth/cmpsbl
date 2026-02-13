@@ -38,8 +38,8 @@ interface MetricField {
 
 const METRIC_FIELDS: MetricField[] = [
   // Version
-  { key: 'version', label: 'Version', description: 'Substrate version (e.g., 8.0.0)', type: 'string', icon: Settings, category: 'version' },
-  { key: 'codename', label: 'Codename', description: 'Epoch codename (e.g., SYNERGY+)', type: 'string', icon: Settings, category: 'version' },
+  { key: 'version', label: 'Version', description: 'Substrate version (e.g., 9.1.0)', type: 'string', icon: Settings, category: 'version' },
+  { key: 'codename', label: 'Codename', description: 'Epoch codename (e.g., ARCHITECT)', type: 'string', icon: Settings, category: 'version' },
   { key: 'epoch', label: 'Epoch', description: 'Current epoch name', type: 'string', icon: Settings, category: 'version' },
   
   // Architecture

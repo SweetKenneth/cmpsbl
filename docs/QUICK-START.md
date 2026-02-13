@@ -2,7 +2,7 @@
 
 **Get started with the Cognitive OS in 5 minutes**
 
-*Version 8.0.0 SYNERGY+ — Updated 2026-02-08*
+*Version 9.1.0 ARCHITECT — Updated 2026-02-13*
 
 ---
 

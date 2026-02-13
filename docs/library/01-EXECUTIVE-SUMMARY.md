@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Executive Summary
 
-**Version 8.0.0 | Scientific Publication**
+**Version 9.1.0 | Scientific Publication**
 
 ---
 
@@ -251,5 +251,5 @@ For licensing, acquisition, or research collaboration inquiries:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

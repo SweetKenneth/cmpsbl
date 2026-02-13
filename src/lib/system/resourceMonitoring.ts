@@ -1,6 +1,6 @@
 /**
  * SYSTEM Module — Resource Monitoring
- * v8.0.0 SYNERGY+ — CPU, memory, storage, and connection pool monitoring
+ * v9.1.0 ARCHITECT — CPU, memory, storage, and connection pool monitoring
  */
 
 import { supabase } from '@/integrations/supabase/client';

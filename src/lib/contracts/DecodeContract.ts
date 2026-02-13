@@ -68,7 +68,7 @@ const epistemic: EpistemicContract = {
  */
 const conversational: ConversationalContract = {
   format(output: string): string {
-    // v8.0.0: Return plain text without cryptic markers for clarity
+    // v9.1.0: Return plain text without cryptic markers for clarity
     return output;
   },
   
