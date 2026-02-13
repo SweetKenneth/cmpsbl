@@ -7,8 +7,10 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, displayName?: string) => Promise<void>;
+  /** Passwordless sign-in via magic link */
+  signInWithMagicLink: (email: string) => Promise<void>;
+  /** Passwordless sign-up via magic link */
+  signUpWithMagicLink: (email: string, displayName?: string) => Promise<void>;
   signOut: () => Promise<void>;
   isAdmin: () => Promise<boolean>;
 }
@@ -34,7 +36,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let subscription: { unsubscribe: () => void } | null = null;
     
-    // Defer Supabase initialization to reduce initial bundle
     getSupabase().then(supabase => {
       supabaseRef.current = supabase;
       
@@ -49,6 +50,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { data } = supabase.auth.onAuthStateChange((_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // Navigate to OS on successful sign-in
+        if (_event === 'SIGNED_IN' && session) {
+          navigate('/os');
+        }
       });
       subscription = data.subscription;
     });
@@ -56,57 +62,63 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription?.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signInWithMagicLink = async (email: string) => {
     try {
       const supabase = await getSupabase();
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithOtp({
         email,
-        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/os`,
+        },
       });
       
       if (error) throw error;
       
-      toast.success('Successfully signed in!');
-      navigate('/os');
+      toast.success('Check your email for a secure sign-in link.', {
+        description: 'No password needed — click the link to authenticate.',
+        duration: 6000,
+      });
     } catch (error: any) {
-      console.error('Sign in error:', error);
-      toast.error(error.message || 'Failed to sign in');
+      console.error('Magic link error:', error);
+      toast.error(error.message || 'Failed to send sign-in link');
       throw error;
     }
   };
 
-  const signUp = async (email: string, password: string, displayName?: string) => {
+  const signUpWithMagicLink = async (email: string, displayName?: string) => {
     try {
       const supabase = await getSupabase();
-      const redirectUrl = `${window.location.origin}/admin`;
+      const redirectUrl = `${window.location.origin}/os`;
       
-      const { error, data } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signInWithOtp({
         email,
-        password,
         options: {
           emailRedirectTo: redirectUrl,
           data: {
-            display_name: displayName || email.split('@')[0]
-          }
-        }
+            display_name: displayName || email.split('@')[0],
+          },
+        },
       });
       
       if (error) throw error;
       
       // Send welcome email
-      if (data.user) {
-        await supabase.functions.invoke('bot-sniper-welcome', {
+      if (data) {
+        supabase.functions.invoke('bot-sniper-welcome', {
           body: { 
-            email: data.user.email,
+            email,
             name: displayName || email.split('@')[0]
           }
         }).catch(err => console.log('Welcome email error:', err));
       }
       
-      toast.success('Account created! Check your email to verify.');
+      toast.success('Secure link sent! Check your email.', {
+        description: 'Click the link to create your account — zero passwords, ever.',
+        duration: 6000,
+      });
     } catch (error: any) {
       console.error('Sign up error:', error);
-      toast.error(error.message || 'Failed to sign up');
+      toast.error(error.message || 'Failed to send sign-up link');
       throw error;
     }
   };
@@ -142,7 +154,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signIn, signUp, signOut, isAdmin }}>
+    <AuthContext.Provider value={{ user, session, loading, signInWithMagicLink, signUpWithMagicLink, signOut, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
