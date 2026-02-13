@@ -8,8 +8,10 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { useEffect, lazy, Suspense, useState } from "react";
 import { MotionConfig } from "framer-motion";
 import { SEOProvider } from "@/contexts/SEOContext";
-import ToasterComponents from "@/components/app/ToasterComponents";
 import { debugMode } from "@/lib/debug-mode";
+import SmartToastRenderer from "@/components/toast/SmartToastRenderer";
+import DecodeFloat from "@/components/decode/DecodeFloat";
+import { installLastInteractionTracking } from "@/lib/ui/lastInteraction";
 import { isLovableEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
 // Mobile crash diagnostics (opt-in via ?diag=1)
@@ -217,9 +219,10 @@ const App = () => {
 
   const substrateAutoInit = !isPreviewEnv && debugMode.allowModulePolling();
 
-  // Install mobile watchdog once on mount (diag mode only)
+  // Install mobile watchdog + interaction tracking once on mount
   useEffect(() => {
     const cleanup = installMobileWatchdog();
+    const cleanupTracking = installLastInteractionTracking();
 
     if (diagEnabled()) {
       diagLog("log", "App mounted", {
@@ -228,7 +231,10 @@ const App = () => {
       });
     }
 
-    return cleanup;
+    return () => {
+      cleanup?.();
+      cleanupTracking?.();
+    };
   }, []);
 
   // Manage debug mode: enable in Safe Mode, disable otherwise for full operation
@@ -255,7 +261,8 @@ const App = () => {
             <Suspense fallback={<PageLoader />}>
               <SubstrateProvider autoInit={substrateAutoInit}>
                 <TooltipProvider>
-                  <ToasterComponents />
+                  <SmartToastRenderer />
+                  <DecodeFloat />
                   <BrowserRouter>
                   <ScrollToTop />
                   <AuthProvider>

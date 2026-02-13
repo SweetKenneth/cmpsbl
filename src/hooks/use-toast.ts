@@ -1,4 +1,6 @@
 import * as React from "react";
+import { pushToast } from "@/components/toast/SmartToastStore";
+import type { SmartToastVariant } from "@/components/toast/SmartToastStore";
 
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
@@ -85,8 +87,6 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action;
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
@@ -136,6 +136,22 @@ type Toast = Omit<ToasterToast, "id">;
 
 function toast({ ...props }: Toast) {
   const id = genId();
+
+  // Bridge to SmartToast system so it appears in-viewport
+  const variant: SmartToastVariant = props.variant === "destructive" ? "error" : "info";
+  const message = [
+    typeof props.title === "string" ? props.title : "",
+    typeof props.description === "string" ? props.description : "",
+  ].filter(Boolean).join(" — ");
+
+  if (message) {
+    pushToast({
+      message,
+      variant,
+      anchor: "decode",
+      durationMs: 5000,
+    });
+  }
 
   const update = (props: ToasterToast) =>
     dispatch({
