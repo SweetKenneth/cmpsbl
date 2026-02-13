@@ -278,7 +278,7 @@ export default function CapabilitiesDepotPage() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
                     <Check className="w-3 h-3 mr-1" />
-                    All Free
+                    Free Tier
                   </Badge>
                   <button
                     onClick={() => setShowDisclaimer(true)}
@@ -325,8 +325,8 @@ export default function CapabilitiesDepotPage() {
         <section className="border-t border-border/30 bg-muted/30">
           <div className="container mx-auto px-4 py-8 text-center">
             <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-              <strong>Capability</strong> = atomic, free, unlocked. <strong>Engine</strong> = saved, governed, monetized.
-              Everything free fuels adoption. Engines are the products.
+              <strong>Capability</strong> = atomic, composable primitive. <strong>Engine</strong> = saved, governed, monetized.
+              Free tier capabilities fuel adoption. Engines are the products.
             </p>
           </div>
         </section>

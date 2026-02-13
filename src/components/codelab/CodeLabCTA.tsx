@@ -50,7 +50,7 @@ export function CodeLabCTA() {
               <div className="text-center lg:text-left">
                 <Badge variant="outline" className="mb-5 border-emerald-500/30 bg-emerald-500/10 text-emerald-500 gap-1.5">
                   <Unlock className="w-3 h-3" />
-                  All Free — No Account Required
+                  Free Tier — No Account Required
                 </Badge>
                 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight leading-[1.1]">

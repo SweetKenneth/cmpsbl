@@ -19,7 +19,7 @@ export const TIER_PRODUCTS = {
     name: 'CMPSBL Builder',
     description: 'Self-improving apps with sealed Experience Crown Jewels',
     features: [
-      'Everything in Free tier',
+      'All Free tier capabilities included',
       '7 sealed Experience Crown Jewels',
       'In-run self-improvement (bounded)',
       'Goal optimization (bounded)',

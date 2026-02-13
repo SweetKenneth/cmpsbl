@@ -534,8 +534,8 @@ export default function SubstrateStore() {
   return (
     <>
       <Helmet>
-        <title>{`Composable Artifacts | 800+ Free Resources | CMPSBL`}</title>
-        <meta name="description" content="Build self-improving software — even on the free tier. 800+ composable artifacts with real memory, real execution, and real composition." />
+        <title>{`Composable Artifacts | Tier-Scoped Resources | CMPSBL`}</title>
+        <meta name="description" content="Build self-improving software — even on the free tier. Hundreds of composable artifacts with real memory, real execution, and real composition." />
       </Helmet>
       
       <div className="min-h-screen bg-background flex flex-col">
@@ -633,7 +633,7 @@ export default function SubstrateStore() {
             <div className="relative mb-3">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder="Search 800+ artifacts..."
+                placeholder="Search artifacts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 h-12 text-base rounded-xl bg-card border-border"
