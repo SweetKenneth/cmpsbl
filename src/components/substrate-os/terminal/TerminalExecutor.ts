@@ -2051,12 +2051,58 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
     else if (base === 'modernizer.verify') {
       try {
         const { checkEligibility, formatEligibility } = await import('@/lib/evolve/eligibility-gate');
-        const result = await checkEligibility();
+        const { evolutionRuns } = await import('@/lib/evolve/evolution-runs');
+        const { evolutionReceipts } = await import('@/lib/evolve/evolution-receipts');
+        
+        const eligibility = await checkEligibility();
+        const activeRun = await evolutionRuns.getActiveRun();
+        const recentRuns = await evolutionRuns.getAllRuns(5);
+        
+        const lines = [formatEligibility(eligibility)];
+        
+        // Show active run verification status
+        if (activeRun) {
+          lines.push('');
+          lines.push('╔══════════════════════════════════════════════════════════════╗');
+          lines.push('║  ACTIVE RUN VERIFICATION                                     ║');
+          lines.push('╠══════════════════════════════════════════════════════════════╣');
+          lines.push(`║  Run ID:  ${activeRun.run_id.slice(0, 16)}...`);
+          lines.push(`║  Phase:   ${activeRun.phase}`);
+          lines.push(`║  Risk:    ${activeRun.risk_level}`);
+          lines.push(`║  Conf:    ${activeRun.confidence_score !== null ? (activeRun.confidence_score * 100).toFixed(0) + '%' : 'N/A'}`);
+          lines.push('╚══════════════════════════════════════════════════════════════╝');
+        }
+        
+        // Show before/after stats from recent completed runs
+        const completedRuns = recentRuns.filter(r => r.phase === 'verified' || r.phase === 'production_applied');
+        if (completedRuns.length > 0) {
+          lines.push('');
+          lines.push('╔══════════════════════════════════════════════════════════════╗');
+          lines.push('║  RECENT EVOLUTION STATS (before → after)                     ║');
+          lines.push('╠══════════════════════════════════════════════════════════════╣');
+          for (const run of completedRuns.slice(0, 3)) {
+            const receipts = await evolutionReceipts.getReceiptsForRun(run.run_id);
+            const receipt = receipts[0];
+            if (receipt?.health_before && receipt?.health_after) {
+              const before = receipt.health_before.overall_score;
+              const after = receipt.health_after.overall_score;
+              const delta = after - before;
+              const arrow = delta >= 0 ? '↑' : '↓';
+              const icon = delta >= 0 ? '✅' : '⚠️';
+              lines.push(`║  ${icon} ${run.run_id.slice(0, 12)} │ Health: ${(before * 100).toFixed(1)}% → ${(after * 100).toFixed(1)}% (${arrow}${Math.abs(delta * 100).toFixed(1)}%)`);
+              lines.push(`║     Changes: ${receipt.changes_applied.length} │ Tests: ${receipt.tests_passed}/${receipt.tests_run}`);
+            } else {
+              const meta = run.metadata || {};
+              lines.push(`║  ⏳ ${run.run_id.slice(0, 12)} │ Phase: ${run.phase} │ Actions: ${(meta.total_actions as number) || 0}`);
+            }
+          }
+          lines.push('╚══════════════════════════════════════════════════════════════╝');
+        }
         
         return {
           success: true,
-          output: formatEligibility(result),
-          data: result,
+          output: lines.join('\n'),
+          data: { eligibility, activeRun, completedRuns: completedRuns.length },
         };
       } catch (err) {
         return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Verify failed'}` };

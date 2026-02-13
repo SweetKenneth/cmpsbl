@@ -63,7 +63,7 @@ export interface AtlasAuditEntry {
 export interface ModuleRegistryEntry {
   id: string;
   name: string;
-  layer: 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator';
+  layer: 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure';
   status: 'healthy' | 'degraded' | 'offline';
   actions: ModuleAction[];
   capabilities: string[];

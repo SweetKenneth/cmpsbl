@@ -143,7 +143,7 @@ export async function modernizerScan(options: ScanOptions = {}): Promise<ScanRes
       system_snapshot: {
         timestamp: new Date().toISOString(),
         substrate_version: SUBSTRATE_VERSION,
-        modules_active: 14,
+        modules_active: 21,
         health_overall: codeHealth.stability_score,
       },
       edge_analysis: edgeAnalysis,
@@ -193,7 +193,7 @@ function createErrorResult(scanId: string, errorMessage: string, duration: numbe
     system_snapshot: {
       timestamp: new Date().toISOString(),
       substrate_version: SUBSTRATE_VERSION,
-      modules_active: 14,
+      modules_active: 21,
       health_overall: 0,
     },
     edge_analysis: {

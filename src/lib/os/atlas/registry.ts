@@ -182,6 +182,91 @@ export const MODULE_REGISTRY: ModuleRegistryEntry[] = [
       { id: 'apply', name: 'Apply Evolution', risk: 'high', reversible: true, requiresConfirmation: true },
     ],
   },
+  {
+    id: 'encode',
+    name: 'Encode',
+    layer: 'orchestrator',
+    status: 'healthy',
+    capabilities: ['encode.generate', 'encode.shadow', 'encode.promote'],
+    actions: [
+      { id: 'generate', name: 'Generate Code', risk: 'medium', reversible: true, requiresConfirmation: true },
+      { id: 'shadow', name: 'Shadow Practice', risk: 'low', reversible: true, requiresConfirmation: false },
+      { id: 'promote', name: 'Promote to Production', risk: 'high', reversible: true, requiresConfirmation: true },
+    ],
+  },
+  // Infrastructure Layer
+  {
+    id: 'memory',
+    name: 'Memory',
+    layer: 'infrastructure',
+    status: 'healthy',
+    capabilities: ['memory.store', 'memory.recall', 'memory.consolidate'],
+    actions: [
+      { id: 'store', name: 'Store Vector', risk: 'low', reversible: true, requiresConfirmation: false },
+      { id: 'recall', name: 'Semantic Recall', risk: 'low', reversible: true, requiresConfirmation: false },
+      { id: 'consolidate', name: 'Consolidate Memory', risk: 'medium', reversible: true, requiresConfirmation: true },
+    ],
+  },
+  {
+    id: 'relay',
+    name: 'Relay',
+    layer: 'infrastructure',
+    status: 'healthy',
+    capabilities: ['relay.send', 'relay.queue', 'relay.status'],
+    actions: [
+      { id: 'send', name: 'Send Webhook', risk: 'medium', reversible: false, requiresConfirmation: true },
+      { id: 'queue', name: 'Queue Message', risk: 'low', reversible: true, requiresConfirmation: false },
+      { id: 'status', name: 'Delivery Status', risk: 'low', reversible: true, requiresConfirmation: false },
+    ],
+  },
+  {
+    id: 'audit',
+    name: 'Audit',
+    layer: 'infrastructure',
+    status: 'healthy',
+    capabilities: ['audit.log', 'audit.query', 'audit.verify'],
+    actions: [
+      { id: 'log', name: 'Log Event', risk: 'low', reversible: false, requiresConfirmation: false },
+      { id: 'query', name: 'Query Logs', risk: 'low', reversible: true, requiresConfirmation: false },
+      { id: 'verify', name: 'Verify Chain', risk: 'low', reversible: true, requiresConfirmation: false },
+    ],
+  },
+  {
+    id: 'identity',
+    name: 'Identity',
+    layer: 'infrastructure',
+    status: 'healthy',
+    capabilities: ['identity.resolve', 'identity.sign', 'identity.verify'],
+    actions: [
+      { id: 'resolve', name: 'Resolve Actor', risk: 'low', reversible: true, requiresConfirmation: false },
+      { id: 'sign', name: 'Sign Identity', risk: 'medium', reversible: false, requiresConfirmation: true },
+      { id: 'verify', name: 'Verify Signature', risk: 'low', reversible: true, requiresConfirmation: false },
+    ],
+  },
+  {
+    id: 'economy',
+    name: 'Economy',
+    layer: 'infrastructure',
+    status: 'healthy',
+    capabilities: ['economy.cost', 'economy.budget', 'economy.report'],
+    actions: [
+      { id: 'cost', name: 'Track Cost', risk: 'low', reversible: true, requiresConfirmation: false },
+      { id: 'budget', name: 'Set Budget', risk: 'medium', reversible: true, requiresConfirmation: true },
+      { id: 'report', name: 'Cost Report', risk: 'low', reversible: true, requiresConfirmation: false },
+    ],
+  },
+  {
+    id: 'sandbox',
+    name: 'Sandbox',
+    layer: 'infrastructure',
+    status: 'healthy',
+    capabilities: ['sandbox.create', 'sandbox.execute', 'sandbox.destroy'],
+    actions: [
+      { id: 'create', name: 'Create Sandbox', risk: 'low', reversible: true, requiresConfirmation: false },
+      { id: 'execute', name: 'Execute in Sandbox', risk: 'medium', reversible: true, requiresConfirmation: true },
+      { id: 'destroy', name: 'Destroy Sandbox', risk: 'low', reversible: true, requiresConfirmation: false },
+    ],
+  },
 ];
 
 /**

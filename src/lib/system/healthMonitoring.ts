@@ -39,13 +39,33 @@ export interface MonitoringState {
 }
 
 const DEFAULT_ALERT_CONFIGS: AlertConfig[] = [
+  // Kernel Layer
+  { module: 'core', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 5 },
+  { module: 'defense', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 10 },
+  { module: 'vision', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 20 },
+  { module: 'access', criticalThreshold: 25, warningThreshold: 45, enabled: true, cooldownMinutes: 10 },
+  { module: 'ripple', criticalThreshold: 25, warningThreshold: 45, enabled: true, cooldownMinutes: 15 },
+  // Cognitive Layer
   { module: 'brain', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
   { module: 'decode', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
-  { module: 'defense', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 10 },
   { module: 'nexus', criticalThreshold: 25, warningThreshold: 45, enabled: true, cooldownMinutes: 15 },
-  { module: 'vision', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 20 },
   { module: 'dream', criticalThreshold: 40, warningThreshold: 60, enabled: true, cooldownMinutes: 30 },
+  // Operational Layer
+  { module: 'integration', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
+  // Administrative Layer
   { module: 'system', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 5 },
+  { module: 'inclusive', criticalThreshold: 40, warningThreshold: 60, enabled: true, cooldownMinutes: 20 },
+  { module: 'modernizer', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
+  // Orchestrator Layer
+  { module: 'cortex', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
+  { module: 'encode', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
+  // Infrastructure Layer
+  { module: 'memory', criticalThreshold: 25, warningThreshold: 45, enabled: true, cooldownMinutes: 10 },
+  { module: 'relay', criticalThreshold: 25, warningThreshold: 45, enabled: true, cooldownMinutes: 10 },
+  { module: 'audit', criticalThreshold: 25, warningThreshold: 45, enabled: true, cooldownMinutes: 10 },
+  { module: 'identity', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 10 },
+  { module: 'economy', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
+  { module: 'sandbox', criticalThreshold: 35, warningThreshold: 55, enabled: true, cooldownMinutes: 20 },
 ];
 
 // In-memory alert state

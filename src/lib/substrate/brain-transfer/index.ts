@@ -24,7 +24,8 @@ function clampPriority(value: number): number {
 
 export type TransferModule = 
   | 'core' | 'ripple' | 'access' | 'nexus' | 'dream' | 'integration'
-  | 'system' | 'modernizer' | 'decode' | 'defense' | 'cortex' | 'vision' | 'inclusive';
+  | 'system' | 'modernizer' | 'decode' | 'defense' | 'cortex' | 'vision' | 'inclusive'
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'encode';
 
 export interface ModuleTransferConfig {
   module: TransferModule;
@@ -254,6 +255,93 @@ const MODULE_CONFIGS: Record<TransferModule, ModuleTransferConfig> = {
     hotCacheLimit: 60,
     minConfidence: 0.6,
   },
+  encode: {
+    module: 'encode',
+    relevanceSignals: [
+      'code generation', 'shadow practice', 'production promotion', 'task packet',
+      'code review', 'refactor', 'implementation', 'synthesis', 'compilation',
+      'transpile', 'scaffold', 'template', 'boilerplate', 'snippet', 'diff',
+      'merge', 'commit', 'patch', 'write-back', 'receipt',
+    ],
+    memoryTypes: ['learned', 'heuristic', 'pattern', 'code'],
+    hotCategoryPrefix: 'encode_transfer',
+    hotCacheLimit: 70,
+    minConfidence: 0.6,
+  },
+
+  // ── Infrastructure Layer ──
+  memory: {
+    module: 'memory',
+    relevanceSignals: [
+      'vector', 'embedding', 'semantic', 'rag', 'retrieval', 'recall',
+      'consolidation', 'tiering', 'hot', 'warm', 'cold', 'archive',
+      'similarity', 'cosine', 'index', 'chunk', 'context window',
+    ],
+    memoryTypes: ['learned', 'heuristic', 'pattern', 'system'],
+    hotCategoryPrefix: 'memory_transfer',
+    hotCacheLimit: 60,
+    minConfidence: 0.5,
+  },
+  relay: {
+    module: 'relay',
+    relevanceSignals: [
+      'webhook', 'outbound', 'delivery', 'retry', 'queue', 'side-effect',
+      'notification', 'callback', 'dispatch', 'endpoint', 'payload',
+      'signature', 'hmac', 'idempotency', 'receipt', 'fanout',
+    ],
+    memoryTypes: ['learned', 'heuristic', 'pattern', 'delivery'],
+    hotCategoryPrefix: 'relay_transfer',
+    hotCacheLimit: 50,
+    minConfidence: 0.5,
+  },
+  audit: {
+    module: 'audit',
+    relevanceSignals: [
+      'compliance', 'audit trail', 'immutable log', 'chain', 'hash',
+      'cryptographic', 'tamper-proof', 'retention', 'regulatory', 'gdpr',
+      'soc2', 'evidence', 'attestation', 'non-repudiation',
+    ],
+    memoryTypes: ['learned', 'heuristic', 'pattern', 'compliance'],
+    hotCategoryPrefix: 'audit_transfer',
+    hotCacheLimit: 40,
+    minConfidence: 0.6,
+  },
+  identity: {
+    module: 'identity',
+    relevanceSignals: [
+      'actor', 'attribution', 'signature', 'webauthn', 'passkey', 'biometric',
+      'fingerprint', 'device', 'session', 'credential', 'certificate',
+      'zero-trust', 'mfa', 'identity resolution', 'principal',
+    ],
+    memoryTypes: ['learned', 'heuristic', 'pattern', 'security'],
+    hotCategoryPrefix: 'identity_transfer',
+    hotCacheLimit: 50,
+    minConfidence: 0.6,
+  },
+  economy: {
+    module: 'economy',
+    relevanceSignals: [
+      'cost', 'budget', 'pricing', 'billing', 'usage', 'metering',
+      'attribution', 'roi', 'margin', 'marketplace', 'subscription',
+      'revenue', 'quota', 'overage', 'forecast', 'optimization',
+    ],
+    memoryTypes: ['learned', 'heuristic', 'pattern', 'financial'],
+    hotCategoryPrefix: 'economy_transfer',
+    hotCacheLimit: 50,
+    minConfidence: 0.5,
+  },
+  sandbox: {
+    module: 'sandbox',
+    relevanceSignals: [
+      'isolation', 'sandbox', 'speculative', 'safe execution', 'containment',
+      'rollback', 'ephemeral', 'disposable', 'test environment', 'staging',
+      'preview', 'canary', 'feature flag', 'experiment', 'ab test',
+    ],
+    memoryTypes: ['learned', 'heuristic', 'pattern', 'execution'],
+    hotCategoryPrefix: 'sandbox_transfer',
+    hotCacheLimit: 40,
+    minConfidence: 0.5,
+  },
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -404,6 +492,13 @@ const CROSS_MODULE_ROUTES: Record<TransferModule, TransferModule[]> = {
   modernizer:   ['cortex', 'system', 'vision'],
   inclusive:    ['decode', 'modernizer', 'vision'] as any,
   cortex:       ['modernizer', 'system', 'dream'] as any,
+  encode:       ['decode', 'brain', 'cortex'] as any,
+  memory:       ['brain', 'core', 'vision'] as any,
+  relay:        ['ripple', 'integration', 'audit'],
+  audit:        ['identity', 'defense', 'system'],
+  identity:     ['access', 'defense', 'audit'],
+  economy:      ['access', 'system', 'vision'],
+  sandbox:      ['encode', 'modernizer', 'system'],
 };
 
 /**
@@ -625,6 +720,16 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
   ingested: number;
   errors: number;
 }> {
+  const INFRA_PATTERNS = [
+    { title: 'Module Health Probing', content: 'Each infrastructure module should respond to status probes within 100ms. Use lightweight heartbeat queries (SELECT 1) rather than full diagnostics for routine checks.', priority: 90 },
+    { title: 'Graceful Degradation', content: 'When an infrastructure module is unavailable, upstream modules should continue with reduced functionality rather than failing entirely. Cache last-known-good state.', priority: 95 },
+    { title: 'Resource Pooling', content: 'Share connection pools and compute resources across infrastructure modules. Use semaphores to prevent resource exhaustion during peak load.', priority: 88 },
+  ];
+  const ENCODE_PATTERNS = [
+    { title: 'Shadow-First Execution', content: 'All code generation must run in shadow mode first. Compare output quality against baselines before promoting. Never auto-commit without human gate.', priority: 97 },
+    { title: 'Task Packet Validation', content: 'Validate every EncodeTaskPacket against the schema before execution. Reject malformed packets with descriptive errors. Log all packets for audit.', priority: 94 },
+    { title: 'Write-Back Receipts', content: 'After every ENCODE execution, write a receipt to BRAIN with: task type, duration, quality score, and whether it was promoted. This feeds the learning loop.', priority: 92 },
+  ];
   const patternSets: Record<TransferModule, typeof DECODE_PATTERNS> = {
     core: CORE_PATTERNS,
     ripple: RIPPLE_PATTERNS,
@@ -639,6 +744,13 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     modernizer: MODERNIZER_PATTERNS,
     inclusive: INCLUSIVE_PATTERNS,
     cortex: CORTEX_PATTERNS,
+    encode: ENCODE_PATTERNS,
+    memory: INFRA_PATTERNS,
+    relay: INFRA_PATTERNS,
+    audit: INFRA_PATTERNS,
+    identity: INFRA_PATTERNS,
+    economy: INFRA_PATTERNS,
+    sandbox: INFRA_PATTERNS,
   };
 
   const patterns = patternSets[module];
@@ -790,7 +902,8 @@ export async function getAllModuleKnowledgeReports(): Promise<ModuleKnowledgeRep
   const modules: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
     'defense', 'vision', 'integration', 'system', 'modernizer',
-    'inclusive', 'cortex',
+    'inclusive', 'cortex', 'encode',
+    'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
 
   const reports: ModuleKnowledgeReport[] = [];
@@ -879,7 +992,8 @@ export async function pruneUnhelpfulPatterns(): Promise<{ pruned: number }> {
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
     'defense', 'vision', 'integration', 'system', 'modernizer',
-    'inclusive', 'cortex',
+    'inclusive', 'cortex', 'encode',
+    'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
 
   let totalPruned = 0;
@@ -932,6 +1046,13 @@ const MODULE_DEPENDENCIES: Record<TransferModule, TransferModule[]> = {
   modernizer:   ['core', 'system', 'vision'],
   inclusive:    ['core', 'system'],
   cortex:       ['core', 'nexus', 'system', 'vision'],
+  encode:       ['core', 'decode', 'brain' as TransferModule],
+  memory:       ['core'],
+  relay:        ['core', 'ripple'],
+  audit:        ['core', 'identity'],
+  identity:     ['core', 'access'],
+  economy:      ['core', 'access'],
+  sandbox:      ['core', 'system'],
 };
 
 export interface DependencyHealth {
@@ -996,7 +1117,8 @@ export async function getAllDependencyHealth(): Promise<DependencyHealth[]> {
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
     'defense', 'vision', 'integration', 'system', 'modernizer',
-    'inclusive', 'cortex',
+    'inclusive', 'cortex', 'encode',
+    'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
 
   const results: DependencyHealth[] = [];
