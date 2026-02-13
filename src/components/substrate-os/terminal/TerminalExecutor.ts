@@ -625,6 +625,17 @@ export async function executeCommand(
     if (module && module in infraModuleAliases) {
       return { success: true, output: generateModuleHelp(infraModuleAliases[module] as keyof typeof COMMAND_CATEGORIES) };
     }
+    // ENCODE module help
+    if (module === 'encode') {
+      const { registerEncodeModuleHandlers } = await import('@/lib/terminal/encode-handlers');
+      registerEncodeModuleHandlers();
+      const { getHandler } = await import('@/lib/terminal/validate-registry');
+      const helpHandler = getHandler('encode.help');
+      if (helpHandler) {
+        const helpResult = await helpHandler() as any;
+        return { success: true, output: helpResult?.formatted?.join('\n') || 'ENCODE module help' };
+      }
+    }
     return { success: true, output: generateFullHelp() };
   }
 

@@ -449,6 +449,14 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help encoded', description: 'Encoded agent commands', category: 'meta', icon: PenTool, requiresOperator: false },
   { command: 'help infra', description: 'Infrastructure commands (cron, snapshots, etc)', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help patch', description: 'Patch dispatch commands', category: 'meta', icon: Send, requiresOperator: false },
+  // Infrastructure Six + ENCODE module help (v9.2.0)
+  { command: 'help memory', description: 'Memory (vector/RAG) module commands', category: 'meta', icon: Database, requiresOperator: false },
+  { command: 'help relay', description: 'Relay (outbound webhooks) module commands', category: 'meta', icon: Send, requiresOperator: false },
+  { command: 'help audit', description: 'Audit (compliance ledger) module commands', category: 'meta', icon: FileCheck, requiresOperator: false },
+  { command: 'help identity', description: 'Identity (actor attribution) module commands', category: 'meta', icon: Key, requiresOperator: false },
+  { command: 'help economy', description: 'Economy (cost/budget) module commands', category: 'meta', icon: CreditCard, requiresOperator: false },
+  { command: 'help sandbox', description: 'Sandbox (isolated execution) module commands', category: 'meta', icon: Box, requiresOperator: false },
+  { command: 'help encode', description: 'Encode (code generation) module commands', category: 'meta', icon: PenTool, requiresOperator: false },
   // Terminal Controls
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
@@ -708,6 +716,15 @@ export const SANDBOX_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'sandbox.destroy', description: 'Destroy sandbox', category: 'sandbox_mod', icon: XCircle, requiresOperator: true, args: '<sandbox_id>' },
 ];
 
+// ENCODE MODULE — Code generation & transformation (v9.2.0)
+export const ENCODE_MOD_COMMANDS: CommandDefinition[] = [
+  { command: 'encode.status', description: 'Code generation engine status', category: 'cortex', icon: PenTool, requiresOperator: false },
+  { command: 'encode.queue', description: 'View pending task packets from DECODE', category: 'cortex', icon: List, requiresOperator: false },
+  { command: 'encode.receipts', description: 'Completion receipts with BRAIN refs', category: 'cortex', icon: FileCheck, requiresOperator: false, args: '[limit]' },
+  { command: 'encode.health', description: 'ENCODE module health score', category: 'cortex', icon: Activity, requiresOperator: false },
+  { command: 'encode.help', description: 'ENCODE module command reference', category: 'cortex', icon: Terminal, requiresOperator: false },
+];
+
 // PATCH — Distribution Patch Dispatch v8.5.0
 export const PATCH_COMMANDS: CommandDefinition[] = [
   { command: 'patch.send', description: 'Dispatch a patch to LNCHBL', category: 'infra', icon: Send, requiresOperator: true, args: '<version> <changelog> [capabilities] [engines]', example: 'patch.send 2.1.0 "Enable dream synthesis" dream_synthesis reasoning_engine' },
@@ -745,6 +762,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...IDENTITY_MOD_COMMANDS,
   ...ECONOMY_MOD_COMMANDS,
   ...SANDBOX_MOD_COMMANDS,
+  ...ENCODE_MOD_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {

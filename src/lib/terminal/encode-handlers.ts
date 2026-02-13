@@ -125,11 +125,13 @@ export function registerEncodeModuleHandlers(): void {
         '',
         '┌─────────────────────────────────────────────┐',
         '│       ENCODE MODULE — Terminal Commands      │',
+        '│       v9.2.0 ARCHITECT Epoch                 │',
         '└─────────────────────────────────────────────┘',
         '',
         '  encode.status    Module health & task stats',
         '  encode.queue     Current task queue from DECODE',
         '  encode.receipts  Completion receipts with BRAIN refs',
+        '  encode.health    ENCODE module health score',
         '  decode.inbox     CLM reports from all modules',
         '  clm.run_all      Run CLM for ENCODE + Infra Six',
         '  clm.run <mod>    Run CLM for specific module',
@@ -137,9 +139,23 @@ export function registerEncodeModuleHandlers(): void {
         '  ENCODE receives structured task packets from',
         '  DECODE only. Talk to DECODE to direct ENCODE.',
         '',
+        '  Integration points:',
+        '  ├── DECODE → routes intent to ENCODE',
+        '  ├── BRAIN  → context recall & knowledge writeback',
+        '  ├── MEMORY → code embedding & snippet retrieval',
+        '  ├── AUDIT  → all generations & applications logged',
+        '  ├── VISION → quality metrics & tracking',
+        '  └── SANDBOX → generated code tested in isolation',
+        '',
       ],
     };
   });
 
-  log.info('terminal', 'ENCODE module handlers registered', { count: 7 });
+  // encode.health
+  registerHandler('encode.health', async () => {
+    const { getEncodeHealth } = await import('@/lib/substrate/encode-module/index');
+    return { success: true, data: { health: getEncodeHealth(), module: 'ENCODE', layer: 'Orchestrator' } };
+  });
+
+  log.info('terminal', 'ENCODE module handlers registered', { count: 8 });
 }

@@ -721,16 +721,66 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
   ingested: number;
   errors: number;
 }> {
-  const INFRA_PATTERNS = [
-    { title: 'Module Health Probing', content: 'Each infrastructure module should respond to status probes within 100ms. Use lightweight heartbeat queries (SELECT 1) rather than full diagnostics for routine checks.', priority: 90 },
-    { title: 'Graceful Degradation', content: 'When an infrastructure module is unavailable, upstream modules should continue with reduced functionality rather than failing entirely. Cache last-known-good state.', priority: 95 },
-    { title: 'Resource Pooling', content: 'Share connection pools and compute resources across infrastructure modules. Use semaphores to prevent resource exhaustion during peak load.', priority: 88 },
-  ];
   const ENCODE_PATTERNS = [
     { title: 'Shadow-First Execution', content: 'All code generation must run in shadow mode first. Compare output quality against baselines before promoting. Never auto-commit without human gate.', priority: 97 },
     { title: 'Task Packet Validation', content: 'Validate every EncodeTaskPacket against the schema before execution. Reject malformed packets with descriptive errors. Log all packets for audit.', priority: 94 },
     { title: 'Write-Back Receipts', content: 'After every ENCODE execution, write a receipt to BRAIN with: task type, duration, quality score, and whether it was promoted. This feeds the learning loop.', priority: 92 },
+    { title: 'DECODE-Only Input Gate', content: 'ENCODE only accepts task packets routed through DECODE. Direct invocations are rejected. This ensures all intent passes through the interpretive layer for governance.', priority: 96 },
+    { title: 'Code Quality Scoring', content: 'Score generated code 0-1 on: TypeScript correctness, style adherence, test coverage potential, security patterns, and substrate convention compliance. Block promotion below 0.7.', priority: 93 },
+    { title: 'BRAIN Context Recall', content: 'Before generating code, recall relevant patterns from BRAIN hot memory and MEMORY vector store. Inject as context window. This ensures code follows learned substrate conventions.', priority: 91 },
   ];
+
+  const MEMORY_PATTERNS = [
+    { title: 'Vector Index Maintenance', content: 'Rebuild HNSW index when insertions exceed 10% of current size. Use ef_construction=128 for build quality, ef_search=64 for query speed. Monitor recall@10 to detect index drift.', priority: 95 },
+    { title: 'RAG Chunk Strategy', content: 'Chunk documents at 512 tokens with 64 token overlap. Use semantic boundaries (paragraphs, sections) when possible. Embed chunks with text-embedding-3-small for cost efficiency.', priority: 93 },
+    { title: 'Embedding Cache Warming', content: 'Pre-compute embeddings for frequently accessed content. Cache top-100 query embeddings with 1hr TTL. Batch embed new content in groups of 50 to minimize API calls.', priority: 90 },
+    { title: 'Cross-Module Recall Protocol', content: 'MEMORY serves as the retrieval backbone for BRAIN cognitive tiers. Hot tier queries route through MEMORY vector index. BRAIN manages semantic meaning; MEMORY handles storage/retrieval infrastructure.', priority: 97 },
+    { title: 'Memory Deduplication', content: 'Before storing vectors, compute cosine similarity against top-5 nearest. If similarity >0.95, merge metadata rather than creating duplicates. Log dedup events for audit.', priority: 91 },
+    { title: 'Cold Storage Compression', content: 'Vectors accessed <3 times in 30 days move to cold tier. Compress embeddings using PQ (product quantization) for 8x storage savings. Decompress on-demand for recall.', priority: 88 },
+  ];
+
+  const RELAY_PATTERNS = [
+    { title: 'Webhook Signature Verification', content: 'Sign all outbound webhooks with HMAC-SHA256 using per-endpoint secrets. Include timestamp in signature to prevent replay attacks. Verify signatures on retry to detect tampering.', priority: 97 },
+    { title: 'Exponential Backoff Delivery', content: 'Retry failed deliveries with exponential backoff: 1s, 4s, 16s, 64s, 256s (max). After 5 failures, move to dead-letter queue. Never retry 4xx errors except 429 (rate limit).', priority: 95 },
+    { title: 'Circuit Breaker Per Endpoint', content: 'Track failure rates per endpoint. Open circuit after 5 consecutive failures or >50% failure rate in 5min window. Half-open probe every 30s. Close after 3 consecutive successes.', priority: 93 },
+    { title: 'Fanout Event Routing', content: 'One event can target multiple endpoints. Process in priority order. If any critical endpoint fails, flag event for operator review. Non-critical endpoint failures dont block others.', priority: 90 },
+    { title: 'Delivery Idempotency', content: 'Include unique delivery ID in every webhook payload. Endpoints should deduplicate using this ID. Store delivery IDs for 72 hours for replay protection.', priority: 92 },
+    { title: 'Dead Letter Replay', content: 'Dead letters are stored with full original payload and failure context. Support manual replay with one-click. Auto-replay when circuit breaker closes (max 50 per batch).', priority: 88 },
+  ];
+
+  const AUDIT_PATTERNS = [
+    { title: 'Hash Chain Integrity', content: 'Every audit entry includes SHA-256 hash of previous entry. Chain verification runs every 6 hours. Any break triggers DEFENSE alert and freezes writes until investigated.', priority: 98 },
+    { title: 'Module Coverage Enforcement', content: 'AUDIT monitors ALL 21 modules. Each module must emit started/succeeded/failed events. Missing event coverage triggers parity warning. Coverage target: 100% of state-changing operations.', priority: 96 },
+    { title: 'Retention Policy Enforcement', content: 'Hot audit data: 90 days full detail. Warm: 1 year summarized. Cold: 7 years compressed archives. GDPR deletion requests must cascade through all tiers within 72 hours.', priority: 93 },
+    { title: 'Actor Attribution Chain', content: 'Every audit entry must have actor attribution from IDENTITY module. System actions attributed to service accounts. Human actions require authenticated session. Anonymous actions tagged as "system:anonymous".', priority: 97 },
+    { title: 'Compliance Report Generation', content: 'SOC2 reports aggregate audit data by control objective. GDPR reports filter by data subject. Both formats auto-generated monthly. Gap analysis highlights missing controls.', priority: 90 },
+    { title: 'Tamper Detection Alerting', content: 'If hash chain verification fails, immediately: 1) freeze audit writes, 2) alert DEFENSE module, 3) capture forensic snapshot, 4) notify operator via RELAY webhook.', priority: 99 },
+  ];
+
+  const IDENTITY_PATTERNS = [
+    { title: 'Actor Resolution Strategy', content: 'Resolve actors by: 1) auth session token, 2) API key, 3) service account credential. Cache resolved identities for 5 minutes. Invalidate cache on role change or key rotation.', priority: 95 },
+    { title: 'Cryptographic Signature Protocol', content: 'Sign all critical actions with actor private key. Verify signatures before execution. Store signatures in AUDIT trail. Use Ed25519 for performance (3x faster than RSA).', priority: 93 },
+    { title: 'Zero-Trust Attribution', content: 'Never trust client-provided actor IDs. Always derive from authenticated session. Cross-reference with ACCESS module for authorization. Log attribution failures to DEFENSE.', priority: 97 },
+    { title: 'Service Account Governance', content: 'Service accounts have explicit scope limitations. Rotate credentials every 30 days. Monitor for anomalous usage patterns. Disable after 90 days of inactivity.', priority: 91 },
+    { title: 'Multi-Factor Action Signing', content: 'High-risk actions (delete, deploy, config change) require MFA confirmation. Store MFA challenge results in AUDIT. Rate limit MFA attempts to prevent brute force.', priority: 94 },
+  ];
+
+  const ECONOMY_PATTERNS = [
+    { title: 'Real-Time Cost Attribution', content: 'Every API call and compute operation records: module, action, tokens_used, compute_ms, cost_millicents. Aggregate in 1-minute windows for real-time budget dashboards.', priority: 95 },
+    { title: 'Budget Alert Thresholds', content: 'Alert at 50%, 75%, 90%, and 100% of daily budget. Hard-block non-essential operations at 100%. Essential operations (DEFENSE, AUDIT) exempt from budget limits.', priority: 97 },
+    { title: 'Cost Forecasting Model', content: 'Use 7-day rolling average for spend forecasting. Weight recent days higher (exponential decay). Alert if projected spend exceeds budget by >20%. Adjust per-module quotas dynamically.', priority: 90 },
+    { title: 'Marketplace Cost Signals', content: 'Publish cost-per-capability metrics to marketplace. Developers see estimated costs before subscribing. Track actual vs estimated for pricing accuracy. Refund overcharges automatically.', priority: 88 },
+    { title: 'Module Cost Ranking', content: 'Rank modules by cost efficiency (value delivered / cost). Recommend optimization targets monthly. Flag modules with >30% cost increase without corresponding value increase.', priority: 92 },
+  ];
+
+  const SANDBOX_PATTERNS = [
+    { title: 'Isolation Guarantees', content: 'Sandboxes run with strict CSP headers and no network access by default. File system is copy-on-write. Memory limited to 256MB. CPU limited to 30s per execution. Auto-teardown after TTL.', priority: 97 },
+    { title: 'Speculative Execution Protocol', content: 'Before any production code change, run in sandbox first. Compare output against expected behavior. If sandbox execution fails, block production promotion. Log all sandbox runs for AUDIT.', priority: 95 },
+    { title: 'Sandbox Pool Management', content: 'Pre-warm 3 sandbox environments for instant availability. Recycle sandboxes after each use (full state wipe). Monitor pool utilization and scale up during peak hours.', priority: 90 },
+    { title: 'Canary Testing Integration', content: 'MODERNIZER uses SANDBOX for canary testing before shadow-apply. Run evolved code in sandbox with production-like inputs. Compare output quality scores before promoting.', priority: 93 },
+    { title: 'Resource Leak Detection', content: 'Monitor sandbox memory and CPU usage during execution. Flag executions that approach limits. Auto-kill runaway processes after 30s. Report resource leaks to VISION for trending.', priority: 91 },
+  ];
+
   const patternSets: Record<TransferModule, typeof DECODE_PATTERNS> = {
     core: CORE_PATTERNS,
     ripple: RIPPLE_PATTERNS,
@@ -746,12 +796,12 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     inclusive: INCLUSIVE_PATTERNS,
     cortex: CORTEX_PATTERNS,
     encode: ENCODE_PATTERNS,
-    memory: INFRA_PATTERNS,
-    relay: INFRA_PATTERNS,
-    audit: INFRA_PATTERNS,
-    identity: INFRA_PATTERNS,
-    economy: INFRA_PATTERNS,
-    sandbox: INFRA_PATTERNS,
+    memory: MEMORY_PATTERNS,
+    relay: RELAY_PATTERNS,
+    audit: AUDIT_PATTERNS,
+    identity: IDENTITY_PATTERNS,
+    economy: ECONOMY_PATTERNS,
+    sandbox: SANDBOX_PATTERNS,
   };
 
   const patterns = patternSets[module];
