@@ -175,7 +175,7 @@ export default function BrainInfo() {
               { title: "Shared Dream Learning", description: "Protocol allows multiple instances to swap dream artifacts and learn new skills without explicit training." },
               { title: "Emotional Intelligence", description: "Persona Adaptation provides real-time empathy and conversational intelligence, adapting to each user's context and emotional state." },
               { title: "Multi-Provider Routing", description: "Intelligent routing across OpenAI, Anthropic, Google, and more—automatic fallback and cost optimization." },
-              { title: "14-Module Synergy", description: "Seamlessly integrates with all other CMPSBL modules for emergent capabilities none could achieve alone." }
+              { title: "21-Module Synergy", description: "Seamlessly integrates with all other CMPSBL modules for emergent capabilities none could achieve alone." }
             ].map((benefit, index) => (
               <Card key={index} className="p-6">
                 <CheckCircle className="w-8 h-8 text-primary mb-4" />

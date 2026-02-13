@@ -11,7 +11,7 @@ import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 export default function About() {
   // v8.0.0 — Current CMPSBL product portfolio
   const products = [
-    { icon: Brain, name: "CMPSBL Substrate", description: "14-module cognitive orchestration OS with persistent memory" },
+    { icon: Brain, name: "CMPSBL Substrate", description: "21-module cognitive orchestration OS with persistent memory" },
     { icon: Shield, name: "DEFENSE Module", description: "Enterprise-grade threat detection and bot protection" },
     { icon: Eye, name: "VISION Module", description: "Full observability and system introspection layer" },
     { icon: Server, name: "NEXUS Gateway", description: "Multi-provider AI routing with BYOK architecture" },
@@ -148,7 +148,7 @@ export default function About() {
 
           <div className="mt-12 bg-card border border-border rounded-lg p-6 md:p-8">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">v8.5.0 SYNERGY+ Epoch</span> — 175,000+ lines of production code. 325 capabilities, 70 engines, 22 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
+              <span className="font-semibold">v9.1.0 ARCHITECT Epoch</span> — 175,000+ lines of production code. 400+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
             </p>
           </div>
         </div>

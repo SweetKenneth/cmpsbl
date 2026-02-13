@@ -38,9 +38,9 @@ const getFreeTools = () => {
 
 // Legacy static export for initial render
 const freeTools = [
-  { name: "Templates", icon: Package, count: "112+", color: "text-cyan-500" },
-  { name: "Pipelines", icon: Layers, count: "147", color: "text-violet-500" },
-  { name: "Capabilities", icon: Zap, count: "269", color: "text-amber-500" },
+  { name: "Templates", icon: Package, count: "200+", color: "text-cyan-500" },
+  { name: "Pipelines", icon: Layers, count: "200", color: "text-violet-500" },
+  { name: "Capabilities", icon: Zap, count: "400+", color: "text-amber-500" },
   { name: "Memory", icon: Brain, count: "∞", color: "text-rose-500" },
   { name: "CodeLab", icon: Code, count: "Live", color: "text-emerald-500" },
 ];

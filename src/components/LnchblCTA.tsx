@@ -58,7 +58,7 @@ export function LnchblCTA() {
             </h2>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-              Get your own copy of the full CMPSBL substrate — the same 14-module, self-evolving AI operating system 
+              Get your own copy of the full CMPSBL substrate — the same 21-module, self-evolving AI operating system 
               you see here — completely free from our companion site.
             </p>
 

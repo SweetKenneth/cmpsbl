@@ -375,7 +375,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
         </div>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Module Control Panels</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">14-module kernel architecture</p>
+          <p className="text-[10px] text-muted-foreground font-mono">21-module 6-layer architecture</p>
         </div>
       </div>
 
