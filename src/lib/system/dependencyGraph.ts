@@ -1,6 +1,6 @@
 /**
  * SYSTEM Dependency Graph
- * v8.0.0 SYNERGY+ — Runtime dependency tracking and impact analysis
+ * v9.1.0 ARCHITECT — Runtime dependency tracking and impact analysis
  */
  
  import { SUBSTRATE_MODULES, type SubstrateModuleName } from '../core';

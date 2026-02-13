@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module Types
- * v8.0.0 SYNERGY+ Epoch — Human Compatibility Pipeline
+ * v9.1.0 ARCHITECT Epoch — Human Compatibility Pipeline
  * @origin(cmptbl) — Migrated from legacy CMPTBL utilities
  */
 

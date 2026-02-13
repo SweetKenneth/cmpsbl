@@ -1,6 +1,6 @@
 /**
  * PromptFluid Nexus - Health-Weighted Provider Routing
- * v8.0.0 SYNERGY+ Epoch — Intelligent provider selection based on health scores
+ * v9.1.0 ARCHITECT Epoch — Intelligent provider selection based on health scores
  * 
  * Supports 8 providers with automatic failover and cost optimization
  */

@@ -1,6 +1,6 @@
 /**
  * NEXUS Load Balancer
- * v8.0.0 SYNERGY+ — Intelligent request distribution across 8 AI providers
+ * v9.1.0 ARCHITECT — Intelligent request distribution across 8 AI providers
  */
  
  // Provider load state

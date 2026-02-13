@@ -1,5 +1,5 @@
 /**
- * BRAIN Module Enhancements — v8.0.0 SYNERGY+ Epoch
+ * BRAIN Module Enhancements — v9.1.0 ARCHITECT Epoch
  * AttentionMechanism, MemoryConsolidator, SemanticIndexer, EmotionalResonance
  */
 

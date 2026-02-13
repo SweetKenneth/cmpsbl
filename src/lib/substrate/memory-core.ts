@@ -1,6 +1,6 @@
 /**
  * Cognitive Memory Core
- * v8.0.0 — SYNERGY+ Epoch: Unified Memory Lifecycle Module
+ * v9.1.0 — ARCHITECT Epoch: Unified Memory Lifecycle Module
  * 
  * Merges all memory operations into a single authoritative module:
  * - Ingest: Capture raw input from all sources

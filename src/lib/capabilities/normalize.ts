@@ -1,6 +1,6 @@
 /**
  * Capability Output Normalizer
- * v8.0.0 — SYNERGY+ Epoch Output Shaping for Consistent Responses
+ * v9.1.0 — ARCHITECT Epoch Output Shaping for Consistent Responses
  */
 
 export interface NormalizedOutput<T = unknown> {

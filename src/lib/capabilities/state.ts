@@ -1,8 +1,8 @@
 /**
  * Capability State Management
- * v8.0.0 — SYNERGY+ Epoch Enable/Disable State for Governed Capabilities
+ * v9.1.0 — ARCHITECT Epoch Enable/Disable State for Governed Capabilities
  * 
- * Controls runtime availability of 269 capabilities without code changes.
+ * Controls runtime availability of 400+ capabilities without code changes.
  * Disabled capabilities remain registered but are inert (cannot be invoked).
  */
 

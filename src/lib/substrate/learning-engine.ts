@@ -1,6 +1,6 @@
 /**
  * Learning Engine
- * v8.0.0 — SYNERGY+ Epoch: Unified Cognitive Learning Module
+ * v9.1.0 — ARCHITECT Epoch: Unified Cognitive Learning Module
  * 
  * Merges all learning operations into a single authoritative module:
  * - Train: Active learning from external sources

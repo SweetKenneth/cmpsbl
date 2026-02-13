@@ -1,5 +1,5 @@
 /**
- * DREAM Insight Generator v8.0.0 SYNERGY+
+ * DREAM Insight Generator v9.1.0 ARCHITECT
  * Pattern-based insight generation from memories
  */
  

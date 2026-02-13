@@ -1,6 +1,6 @@
 /**
- * PromptFluid Vision - Real-Time Metric Aggregation v8.0.0
- * SYNERGY+ Epoch Live metric collection, aggregation, and streaming
+ * PromptFluid Vision - Real-Time Metric Aggregation v9.1.0
+ * ARCHITECT Epoch Live metric collection, aggregation, and streaming
  */
 
 import { supabase } from '@/integrations/supabase/client';

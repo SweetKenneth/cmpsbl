@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * v8.0.0 SYNERGY+ Epoch — Seed Investment Opportunity
+ * v9.1.0 ARCHITECT Epoch — Seed Investment Opportunity
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Accessibility, Eye, Wrench, Server, ArrowLeft, Sparkles } from "lucide-react";
@@ -67,7 +67,7 @@ export default function InvestorsPublic() {
     { icon: Target, label: "Cognitive Engines", value: "100", color: "text-muted-foreground" }
   ];
 
-  // v8.0.0 — Current CMPSBL substrate modules
+  // v9.1.0 — Current CMPSBL substrate modules
   const products = [
     {
       icon: Brain,

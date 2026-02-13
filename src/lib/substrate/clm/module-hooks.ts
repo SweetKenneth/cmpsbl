@@ -1,6 +1,6 @@
 /**
  * CLM Module Integration Hooks
- * v8.0.0 SYNERGY+ — Per-module learning hooks for CLM autonomous operation
+ * v9.1.0 ARCHITECT — Per-module learning hooks for CLM autonomous operation
  * 
  * Each substrate module registers its own learning KPIs and reflection methods.
  * CLM calls these hooks during autonomous learning cycles within the 14-module architecture.

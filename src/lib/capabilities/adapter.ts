@@ -1,6 +1,6 @@
 /**
  * Capability Adapter
- * v8.0.0 — SYNERGY+ Epoch Universal Invocation Wrapper
+ * v9.1.0 — ARCHITECT Epoch Universal Invocation Wrapper
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -32,7 +32,7 @@ export async function invokeCapability<T = unknown>(
     };
   }
   
-  // Check if capability is enabled (v8.0.0 toggle state)
+  // Check if capability is enabled (v9.1.0 toggle state)
   if (!isCapabilityEnabled(capabilityId)) {
     return {
       success: false,

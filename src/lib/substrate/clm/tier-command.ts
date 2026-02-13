@@ -1,6 +1,6 @@
 /**
  * CLM Tier Command
- * v8.0.0 — SYNERGY+ Epoch First-class tier command for CLM governance
+ * v9.1.0 — ARCHITECT Epoch First-class tier command for CLM governance
  * 
  * Provides:
  * - tier.get → current tier + limits + budget settings

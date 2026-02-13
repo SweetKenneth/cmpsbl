@@ -210,7 +210,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // EVENT FABRIC — v8.0.0 SYNERGY+
+  // EVENT FABRIC — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   event_fabric: {
@@ -234,7 +234,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // DATA HIGHWAY — v8.0.0 SYNERGY+
+  // DATA HIGHWAY — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   data_highway: {
@@ -258,7 +258,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // KNOWLEDGE NEXUS — v8.0.0 SYNERGY+
+  // KNOWLEDGE NEXUS — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   knowledge_nexus: {
@@ -282,7 +282,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // SELF GOVERNANCE — v8.0.0 SYNERGY+
+  // SELF GOVERNANCE — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   self_governance: {
@@ -306,7 +306,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // CREATIVE FORGE — v8.0.0
+  // CREATIVE FORGE — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   creative_forge: {
@@ -330,7 +330,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // PERCEPTION MATRIX — v8.0.0
+  // PERCEPTION MATRIX — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   perception_matrix: {
@@ -354,7 +354,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // RESOURCE GOVERNOR — v8.0.0
+  // RESOURCE GOVERNOR — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   resource_governor: {
@@ -378,7 +378,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // WORKFLOW ORCHESTRATOR — v8.0.0
+  // WORKFLOW ORCHESTRATOR — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   workflow_orchestrator: {

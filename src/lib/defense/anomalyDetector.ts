@@ -1,5 +1,5 @@
 /**
- * DEFENSE Anomaly Detector v8.0.0 SYNERGY+
+ * DEFENSE Anomaly Detector v9.1.0 ARCHITECT
  * Real-time behavioral anomaly detection and classification
  */
  

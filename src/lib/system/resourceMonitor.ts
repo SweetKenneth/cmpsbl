@@ -1,6 +1,6 @@
 /**
  * SYSTEM Resource Monitor
- * v8.0.0 SYNERGY+ — Real-time resource tracking and alerts
+ * v9.1.0 ARCHITECT — Real-time resource tracking and alerts
  */
  
  // Resource metrics

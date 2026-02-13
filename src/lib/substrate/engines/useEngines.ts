@@ -1,6 +1,6 @@
 /**
  * React Hook for Cognitive Engines
- * v8.0.0 SYNERGY+ — Access compound capability execution across 62 engines
+ * v9.1.0 ARCHITECT — Access compound capability execution across 76 engines
  */
 
 import { useState, useCallback, useMemo } from 'react';

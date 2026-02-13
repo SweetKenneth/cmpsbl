@@ -194,7 +194,7 @@ export interface EngineDefinition {
   averageLatencyMs: number;
   cacheable: boolean;
   
-  // v8.0.0 additions (all optional for backward compatibility)
+  // v9.1.0 additions (all optional for backward compatibility)
   capabilityCount?: number;        // Explicit count for metrics
   worldFirstEnhancements?: string[]; // Linked world-first classes
   synergyPipelines?: string[];    // Linked synergy executor names
@@ -279,7 +279,7 @@ export interface EngineSummary {
   averageSynergyMultiplier: number;
   averageComplexityScore: number;
   
-  // v8.0.0 additions
+  // v9.1.0 additions
   totalWorldFirstEnhancements: number;
   totalSynergyPipelines: number;
 }

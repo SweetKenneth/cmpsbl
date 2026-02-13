@@ -1,6 +1,6 @@
 /**
- * promptfluid® Nexus Module v8.0.0
- * SYNERGY+ Epoch — Multi-Provider AI Routing & Health-Weighted Selection
+ * promptfluid® Nexus Module v9.1.0
+ * ARCHITECT Epoch — Multi-Provider AI Routing & Health-Weighted Selection
  * 
  * The nervous system for all AI provider interactions:
  * - Health-weighted provider selection across 8 providers

@@ -1,6 +1,6 @@
 /**
  * DREAM Pattern Mutation Engine
- * v8.0.0 SYNERGY+ — Novel idea generation through pattern combination
+ * v9.1.0 ARCHITECT — Novel idea generation through pattern combination
  */
  
  import { supabase } from '@/integrations/supabase/client';

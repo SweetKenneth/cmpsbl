@@ -1,6 +1,6 @@
 /**
  * Archived Edge Function Loader
- * v8.0.0 SYNERGY+ — Scans ONLY _archived edge functions for capability ingestion
+ * v9.1.0 ARCHITECT — Scans ONLY _archived edge functions for capability ingestion
  * 
  * This loader explicitly ignores:
  * - /edge/ (live functions)
@@ -24,7 +24,7 @@ import { setCapabilityEnabled, isCapabilityEnabled } from './state';
 // ARCHIVED CAPABILITIES CATALOG
 // ============================================================================
 // These are the 10 high-value archived functions integrated into the substrate
-// via archived-adapters.ts (v8.0.0 SYNERGY+)
+// via archived-adapters.ts (v9.1.0 ARCHITECT)
 
 export interface ArchivedCapabilityDef {
   id: string;

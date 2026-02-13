@@ -264,7 +264,7 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
                 </p>
                 <span className="text-muted-foreground/30">|</span>
                 <span className="text-[10px] font-mono text-cyan-400/80">
-                  v8.0.0
+                  v9.1.0
                 </span>
               </div>
             </div>

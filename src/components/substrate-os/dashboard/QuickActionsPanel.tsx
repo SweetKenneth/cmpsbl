@@ -1,5 +1,5 @@
 /**
- * Quick Actions Panel v8.0.0 — SYNERGY+ Epoch System-wide controls
+ * Quick Actions Panel v9.1.0 — ARCHITECT Epoch System-wide controls
  * Heal, backup, restart, diagnostics with Substrate Voice notifications
  */
 

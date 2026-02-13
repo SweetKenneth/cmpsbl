@@ -1,5 +1,5 @@
 /**
- * BRAIN Attention Mechanism v8.0.0 SYNERGY+
+ * BRAIN Attention Mechanism v9.1.0 ARCHITECT
  * Priority-weighted memory retrieval with decay and salience scoring
  */
  
