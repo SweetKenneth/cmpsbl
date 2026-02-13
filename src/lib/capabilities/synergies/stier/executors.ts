@@ -1297,7 +1297,7 @@ export async function executeFrictionAutoRemovalEngine(
       { stage: 'activation', users: 2246, dropOff: 0.15 },
     ],
     frictionPoints: [
-      { page: 'signup', element: 'password_requirements', dropOff: 0.18 },
+      { page: 'signup', element: 'email_verification_wait', dropOff: 0.18 },
       { page: 'onboarding', element: 'tutorial_length', dropOff: 0.12 },
     ],
   };
