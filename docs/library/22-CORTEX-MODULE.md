@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORTEX Module Deep Dive
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
+**Version 9.1.0 (ARCHITECT Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-022 |
 | **Module** | CORTEX |
 | **Layer** | Orchestrator |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 | **Capabilities** | 7 |
 
 ---
@@ -163,7 +163,7 @@ CORTEX implements the PEARL autonomous loop:
 
 ## 6. Changelog
 
-### v7.6.0 (2026-02-06) — SYNERGY+ Epoch
+### v7.6.0 (2026-02-06) — ARCHITECT Epoch Foundations
 - **4 NEW Capabilities**: multi_agent_coordinator, task_decomposition_engine, goal_alignment_validator, execution_priority_balancer
 - **Total Capabilities**: 7
 
@@ -176,5 +176,5 @@ CORTEX implements the PEARL autonomous loop:
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

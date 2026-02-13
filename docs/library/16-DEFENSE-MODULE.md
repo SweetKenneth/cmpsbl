@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DEFENSE Module Deep Dive
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
+**Version 9.1.0 (ARCHITECT Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-016 |
 | **Module** | DEFENSE |
 | **Layer** | Operational |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 | **Capabilities** | 6 |
 
 ---
@@ -171,5 +171,5 @@ await capabilityEngine.execute('incident_response_automator', {
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

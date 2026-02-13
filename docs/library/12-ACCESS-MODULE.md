@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — ACCESS Module Deep Dive
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
+**Version 9.1.0 (ARCHITECT Epoch) | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-012 |
 | **Module** | ACCESS |
 | **Layer** | Kernel |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 
 ---
 
@@ -177,5 +177,5 @@ Gradual rollout controls with percentage-based targeting. Functions: `isEnabled(
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -1,8 +1,8 @@
 # Atlas Command Interface
 
-**Version:** 8.5.0  
+**Version:** 9.1.0  
 **Module:** Atlas Control Plane  
-**Status:** Production (SYNERGY+ Epoch)
+**Status:** Production (ARCHITECT Epoch)
 
 ---
 
@@ -284,4 +284,4 @@ help infra      → Infrastructure commands (cron, ratelimit, snapshot, etc.)
 
 ---
 
-*Atlas Command v8.5.0 — SYNERGY+ Epoch*
+*Atlas Command v9.1.0 — ARCHITECT Epoch*

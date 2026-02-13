@@ -1,13 +1,13 @@
 # CMPSBL OS Substrate — Capability System
 
 **Document ID:** CMPSBL-ACAD-004  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
 ## 1. Capability System Overview
 
-The CMPSBL Substrate implements a formal capability system with 269 registered capabilities across 14 modules. Capabilities are the atomic units of functionality that can be invoked, composed, and governed.
+The CMPSBL Substrate implements a formal capability system with 400+ registered capabilities across 21 modules. Capabilities are the atomic units of functionality that can be invoked, composed, and governed.
 
 ### 1.1 Design Principles
 
@@ -365,5 +365,5 @@ registerCapability({
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Capability System*  
+*CMPSBL OS Substrate v9.1.0 — Capability System*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

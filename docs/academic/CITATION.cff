@@ -2,13 +2,13 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 title: "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution"
-version: 8.0.0
-date-released: 2026-02-09
+version: 9.1.0
+date-released: 2026-02-13
 abstract: >-
   The CMPSBL OS Substrate is a cognitive orchestration system that provides 
   persistent memory, autonomous learning, multi-provider AI routing, and 
   verifiable self-evolution for artificial intelligence systems. The substrate 
-  implements 269 capabilities across 14 modules, 147 synergy pipelines, and a 
+  implements 400+ capabilities across 21 modules, 200 synergy pipelines, and a 
   three-tier autonomy governance model with cryptographic evolution stamps.
 keywords:
   - cognitive architecture
@@ -53,7 +53,7 @@ references:
     authors:
       - family-names: Sweet Jr
         given-names: Kenneth E
-    title: "CMPSBL OS Substrate v8.0.0: The SYNERGY+ Epoch"
+    title: "CMPSBL OS Substrate v9.1.0: The ARCHITECT Epoch"
     year: 2026
     journal: PromptFluid Technical Reports
     issue: TR-2026-002
@@ -63,7 +63,7 @@ preferred-citation:
     - family-names: Sweet Jr
       given-names: Kenneth E
   title: "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution"
-  version: 8.0.0
+  version: 9.1.0
   year: 2026
   doi: 10.5281/zenodo.XXXXXXX
   url: https://github.com/promptfluid/substrate

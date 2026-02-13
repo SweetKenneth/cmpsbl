@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Cross-Module Synergy Pipelines
 
-**Version 7.5.3 (SYNERGY+) | Executable Reference**
+**Version 9.1.0 (ARCHITECT) | Executable Reference**
 
 ---
 
@@ -420,5 +420,5 @@ try {
 
 ---
 
-*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*  
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

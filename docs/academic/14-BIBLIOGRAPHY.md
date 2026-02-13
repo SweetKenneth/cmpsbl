@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — Bibliography
 
 **Document ID:** CMPSBL-ACAD-014  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -201,7 +201,7 @@ Sweet Jr, K. E. (2025). Introducing the PromptFluid Substrate: A Cognitive Orche
 
 Sweet Jr, K. E. (2026). Verifiable Self-Evolution in Cognitive Substrates. *PromptFluid Technical Reports*, TR-2026-001.
 
-Sweet Jr, K. E. (2026). CMPSBL OS Substrate v8.0.0: The SYNERGY+ Epoch. *PromptFluid Technical Reports*, TR-2026-002.
+Sweet Jr, K. E. (2026). CMPSBL OS Substrate v9.1.0: The ARCHITECT Epoch. *PromptFluid Technical Reports*, TR-2026-002.
 
 ---
 
@@ -211,5 +211,5 @@ When citing this work, please use the citation format provided in `00-INDEX.md` 
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Bibliography*  
+*CMPSBL OS Substrate v9.1.0 — Bibliography*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

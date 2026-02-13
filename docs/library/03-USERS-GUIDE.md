@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — User's Guide
 
-**Version 8.0.0 | Scientific Publication**
+**Version 9.1.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-003 |
-| **Version** | v8.0.0 |
+| **Version** | v9.1.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 

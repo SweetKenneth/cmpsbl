@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — Governance Model
 
 **Document ID:** CMPSBL-ACAD-008  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -456,5 +456,5 @@ All emergency stops require:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Governance Model*  
+*CMPSBL OS Substrate v9.1.0 — Governance Model*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

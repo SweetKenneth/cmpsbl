@@ -1,13 +1,13 @@
 # CMPSBL OS Substrate — System Architecture
 
 **Document ID:** CMPSBL-ACAD-002  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
 ## 1. Architectural Overview
 
-The CMPSBL Substrate implements a 5-layer, 14-module architecture designed for modularity, observability, and governed autonomy.
+The CMPSBL Substrate implements a 6-layer, 21-module architecture designed for modularity, observability, and governed autonomy.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -279,5 +279,5 @@ The architecture provides defined extension points:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — System Architecture*  
+*CMPSBL OS Substrate v9.1.0 — System Architecture*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

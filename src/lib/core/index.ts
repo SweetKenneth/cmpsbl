@@ -12,12 +12,12 @@
 
 // ============ Constants ============
 
-export const SUBSTRATE_VERSION = '8.0.0';
-export const SUBSTRATE_CODENAME = 'SYNERGY+';
-export const CORE_VERSION = '8.0.0';
+export const SUBSTRATE_VERSION = '9.1.0';
+export const SUBSTRATE_CODENAME = 'ARCHITECT';
+export const CORE_VERSION = '9.1.0';
 export const CORE_CODENAME = 'Foundation';
 
-// All 14 substrate modules in canonical boot order
+// All 21 substrate modules in canonical boot order
 export const SUBSTRATE_MODULES = [
   'core',
   'ripple',
@@ -33,12 +33,19 @@ export const SUBSTRATE_MODULES = [
   'integration',
   'inclusive',
   'system',
+  'memory',
+  'relay',
+  'audit',
+  'identity',
+  'economy',
+  'sandbox',
+  'encode',
 ] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Module layer classification
-export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator';
+export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure';
 
 export const MODULE_LAYERS: Record<SubstrateModuleName, ModuleLayer> = {
   core: 'kernel',
@@ -55,6 +62,13 @@ export const MODULE_LAYERS: Record<SubstrateModuleName, ModuleLayer> = {
   integration: 'operational',
   inclusive: 'administrative',
   system: 'administrative',
+  memory: 'infrastructure',
+  relay: 'infrastructure',
+  audit: 'infrastructure',
+  identity: 'infrastructure',
+  economy: 'infrastructure',
+  sandbox: 'infrastructure',
+  encode: 'orchestrator',
 };
 
 // ============ Types ============
@@ -211,6 +225,13 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     integration: ['defense'],
     inclusive: ['integration'],
     system: ['vision'],
+    memory: ['core', 'brain'],
+    relay: ['core', 'ripple'],
+    audit: ['core', 'access'],
+    identity: ['core', 'access'],
+    economy: ['core', 'nexus'],
+    sandbox: ['core', 'defense'],
+    encode: ['cortex', 'brain'],
   };
   
   return deps[module] || [];

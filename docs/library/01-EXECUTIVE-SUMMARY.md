@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-001 |
-| **Version** | v8.0.0 |
+| **Version** | v9.1.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 

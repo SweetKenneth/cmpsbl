@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Evolution Observability
 
-**Version 8.0.0 | Investor Documentation**
+**Version 9.1.0 | Investor Documentation**
 
 ---
 
@@ -12,7 +12,7 @@
 | **Module** | SEBA / MODERNIZER |
 | **Layer** | Observability |
 | **Audience** | Investors, Technical Due Diligence |
-| **Version** | v8.0.0 |
+| **Version** | v9.1.0 |
 
 ---
 
@@ -240,7 +240,7 @@ Unlike black-box AI systems, the CMPSBL Substrate offers:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Evolution Observability*
+*CMPSBL OS Substrate v9.1.0 — Evolution Observability*
 *Proof that AI can safely improve itself.*
 
 *© 2025-2026 PromptFluid®. All rights reserved.*

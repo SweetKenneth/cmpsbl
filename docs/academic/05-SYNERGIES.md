@@ -1,13 +1,13 @@
 # CMPSBL OS Substrate — Synergy Pipelines
 
 **Document ID:** CMPSBL-ACAD-005  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
 ## 1. Synergy System Overview
 
-Synergies are pre-defined cross-module pipelines that orchestrate multiple capabilities to accomplish complex tasks. The SYNERGY+ epoch introduced 147 synergy definitions with 125 custom executors and 32 S-tier (critical) pipelines.
+Synergies are pre-defined cross-module pipelines that orchestrate multiple capabilities to accomplish complex tasks. The ARCHITECT epoch expanded to 200 synergy definitions with 125 custom executors and 32 S-tier (critical) pipelines.
 
 ### 1.1 Design Philosophy
 
@@ -441,5 +441,5 @@ registerSynergy({
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Synergy Pipelines*  
+*CMPSBL OS Substrate v9.1.0 — Synergy Pipelines*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

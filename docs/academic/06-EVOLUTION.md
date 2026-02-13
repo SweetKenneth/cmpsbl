@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — Evolution Mechanics
 
 **Document ID:** CMPSBL-ACAD-006  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -425,5 +425,5 @@ Only these operations are allowed during repair:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Evolution Mechanics*  
+*CMPSBL OS Substrate v9.1.0 — Evolution Mechanics*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

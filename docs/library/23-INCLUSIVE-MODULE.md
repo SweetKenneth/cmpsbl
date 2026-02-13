@@ -1,6 +1,6 @@
 # INCLUSIVE Module — Human Compatibility Pipeline
 
-**Version 8.5.0 (SYNERGY+ Epoch) | 14th Substrate Module**
+**Version 9.1.0 (ARCHITECT Epoch) | 14th Substrate Module**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Module ID** | INCLUSIVE |
 | **Layer** | Human Compatibility |
 | **Boot Order** | 14 (after System, before Defense) |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 | **Origin** | @origin(cmptbl) + @origin(clarity) |
 
 ---
@@ -194,5 +194,5 @@ inclusive.coverage
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

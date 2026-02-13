@@ -1,7 +1,7 @@
 # Capability System Manifest
-## v8.5.0 — SYNERGY+ Epoch (269 Capabilities → 62 Engines → 20 Meta-Engines)
+## v9.1.0 — ARCHITECT Epoch (400+ Capabilities → 76 Engines → 24 Meta-Engines)
 
-Generated: 2026-02-06
+Generated: 2026-02-13
 
 ---
 
@@ -208,4 +208,4 @@ const summary = getEngineSummary();
 
 ---
 
-promptfluid® v8.5.0 — SYNERGY+ Epoch Capability & Engine System
+promptfluid® v9.1.0 — ARCHITECT Epoch Capability & Engine System

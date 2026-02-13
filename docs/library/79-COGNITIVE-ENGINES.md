@@ -1,5 +1,5 @@
 # Cognitive Engines
-## v8.5.0 — SYNERGY+ Epoch (Infrastructure Integration)
+## v9.1.0 — ARCHITECT Epoch (Infrastructure Integration)
 
 ---
 
@@ -156,7 +156,7 @@ Engines focused on observability and capacity.
 | `self_healing_engine` | Autonomous recovery, backup integrity, **dependency health** | 2.8x |
 | `self_documentation_engine` | Auto-documentation with impact analysis | 2.4x |
 
-### Creativity Engines (3) — v8.0.0
+### Creativity Engines (3) — v9.1.0
 
 | Engine | Description | Synergy |
 |--------|-------------|---------|
@@ -164,7 +164,7 @@ Engines focused on observability and capacity.
 | `innovation_engine` | Cross-domain pattern fusion with emergent detection | 2.8x |
 | `dream_engine` | Nocturnal optimization with memory consolidation | 2.4x |
 
-### Perception Engines (3) — v8.0.0
+### Perception Engines (3) — v9.1.0
 
 | Engine | Description | Synergy |
 |--------|-------------|---------|
@@ -172,7 +172,7 @@ Engines focused on observability and capacity.
 | `emotion_engine` | Emotional resonance detection with affect analysis | 2.3x |
 | `multimodal_engine` | Cross-modal synthesis with semantic bridging | 2.7x |
 
-### Resource Engines (3) — v8.0.0
+### Resource Engines (3) — v9.1.0
 
 | Engine | Description | Synergy |
 |--------|-------------|---------|
@@ -180,7 +180,7 @@ Engines focused on observability and capacity.
 | `quota_engine` | Rate limiting with burst prediction, **adaptive rate limiting** | 2.2x |
 | `entitlement_engine` | Access control, permission graphs, **capability gate, feature flags** | 2.4x |
 
-### Workflow Engines (3) — v8.0.0
+### Workflow Engines (3) — v9.1.0
 
 | Engine | Description | Synergy |
 |--------|-------------|---------|
@@ -237,7 +237,7 @@ Meta-Engines orchestrate multiple engines into unified pipelines:
 | `knowledge_nexus` | 3 | 5.8x |
 | `self_governance` | 3 | 6.5x |
 
-### v8.0.0 Meta-Engines (4)
+### v9.1.0 Meta-Engines (4)
 
 | Meta-Engine | Engines | Compound Synergy | Description |
 |-------------|---------|------------------|-------------|
@@ -257,7 +257,7 @@ Meta-Engines orchestrate multiple engines into unified pipelines:
 
 ---
 
-## Infrastructure Integration (v8.5.0)
+## Infrastructure Integration (v9.1.0)
 
 The 20 infrastructure systems integrate with engines at the execution layer:
 
@@ -327,12 +327,12 @@ function MyComponent() {
 
 ---
 
-## Patch Dispatch Integration (v8.5.0)
+## Patch Dispatch Integration (v9.1.0)
 
 The engine system supports cross-distribution dispatch via the `cmpsbl-patch-dispatch` edge function. Patches can deliver new engine definitions, capability mappings, and tier assignments to the LNCHBL distribution. See [85-LNCHBL-DISTRIBUTION.md](./85-LNCHBL-DISTRIBUTION.md) for the patch protocol specification.
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
-*22 Meta-Engines × 70 Engines × 325 Capabilities × 27 Infrastructure Systems*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
+*24 Meta-Engines × 76 Engines × 400+ Capabilities × 27 Infrastructure Systems*
 *© 2025-2026 PromptFluid®. All rights reserved.*
