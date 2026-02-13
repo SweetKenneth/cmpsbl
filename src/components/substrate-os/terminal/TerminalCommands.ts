@@ -10,7 +10,7 @@ import type { LucideIcon } from 'lucide-react';
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -659,6 +659,55 @@ export const INFRA_COMMANDS: CommandDefinition[] = [
   { command: 'nl.history', description: 'NL parse history', category: 'infra', icon: Clock, requiresOperator: false },
 ];
 
+// ═══ Infrastructure Module Commands (v9.1.0 ARCHITECT) ═══
+export const MEMORY_MOD_COMMANDS: CommandDefinition[] = [
+  { command: 'memory.status', description: 'Vector/RAG orchestration status', category: 'memory_mod', icon: Database, requiresOperator: false },
+  { command: 'memory.recall', description: 'Semantic recall from vector store', category: 'memory_mod', icon: Search, requiresOperator: false, args: '<query> [limit]', example: 'memory.recall "security policy" 5' },
+  { command: 'memory.ingest', description: 'Ingest document/data source', category: 'memory_mod', icon: Database, requiresOperator: true, args: '<source> [format]', example: 'memory.ingest docs/ pdf' },
+  { command: 'memory.consolidate', description: 'Run memory consolidation cycle', category: 'memory_mod', icon: Database, requiresOperator: true },
+  { command: 'memory.tiers', description: 'View memory tier distribution', category: 'memory_mod', icon: Layers, requiresOperator: false },
+];
+
+export const RELAY_MOD_COMMANDS: CommandDefinition[] = [
+  { command: 'relay.status', description: 'Outbound effects hub status', category: 'relay_mod', icon: Send, requiresOperator: false },
+  { command: 'relay.dispatch', description: 'Dispatch outbound webhook', category: 'relay_mod', icon: Send, requiresOperator: true, args: '<target_url> <payload>', example: 'relay.dispatch https://api.example.com/hook "{}"' },
+  { command: 'relay.queue', description: 'View delivery queue', category: 'relay_mod', icon: List, requiresOperator: false, args: '[status]' },
+  { command: 'relay.deliveries', description: 'Recent delivery history', category: 'relay_mod', icon: Activity, requiresOperator: false, args: '[limit]' },
+  { command: 'relay.retry', description: 'Retry failed delivery', category: 'relay_mod', icon: PlayCircle, requiresOperator: true, args: '<delivery_id>' },
+];
+
+export const AUDIT_MOD_COMMANDS: CommandDefinition[] = [
+  { command: 'audit.status', description: 'Immutable compliance ledger status', category: 'audit_mod', icon: FileCheck, requiresOperator: false },
+  { command: 'audit.query', description: 'Query audit trail', category: 'audit_mod', icon: Search, requiresOperator: false, args: '[module] [action] [since]', example: 'audit.query defense block 24h' },
+  { command: 'audit.verify', description: 'Verify hash chain integrity', category: 'audit_mod', icon: Shield, requiresOperator: false },
+  { command: 'audit.report', description: 'Generate compliance report', category: 'audit_mod', icon: FileText, requiresOperator: false, args: '[standard]', example: 'audit.report SOC2' },
+  { command: 'audit.export', description: 'Export audit log', category: 'audit_mod', icon: Database, requiresOperator: true, args: '[format] [since]' },
+];
+
+export const IDENTITY_MOD_COMMANDS: CommandDefinition[] = [
+  { command: 'identity.status', description: 'Universal actor attribution status', category: 'identity_mod', icon: Key, requiresOperator: false },
+  { command: 'identity.whoami', description: 'Current actor identity + signature', category: 'identity_mod', icon: Users, requiresOperator: false },
+  { command: 'identity.resolve', description: 'Resolve actor by ID', category: 'identity_mod', icon: Search, requiresOperator: false, args: '<actor_id>' },
+  { command: 'identity.sign', description: 'Sign action with identity', category: 'identity_mod', icon: Lock, requiresOperator: true, args: '<action> <payload>' },
+  { command: 'identity.verify', description: 'Verify identity signature', category: 'identity_mod', icon: Shield, requiresOperator: false, args: '<signature>' },
+];
+
+export const ECONOMY_MOD_COMMANDS: CommandDefinition[] = [
+  { command: 'economy.status', description: 'Cost attribution & budget status', category: 'economy_mod', icon: CreditCard, requiresOperator: false },
+  { command: 'economy.cost', description: 'Track cost for operation', category: 'economy_mod', icon: CreditCard, requiresOperator: false, args: '[module] [period]', example: 'economy.cost nexus 24h' },
+  { command: 'economy.budget', description: 'View/set budget limits', category: 'economy_mod', icon: Gauge, requiresOperator: false, args: '[module]' },
+  { command: 'economy.report', description: 'Cost attribution report', category: 'economy_mod', icon: Activity, requiresOperator: false, args: '[period]', example: 'economy.report 7d' },
+  { command: 'economy.forecast', description: 'Spend forecast', category: 'economy_mod', icon: Activity, requiresOperator: false, args: '[days]' },
+];
+
+export const SANDBOX_MOD_COMMANDS: CommandDefinition[] = [
+  { command: 'sandbox.status', description: 'Isolated execution environment status', category: 'sandbox_mod', icon: Box, requiresOperator: false },
+  { command: 'sandbox.create', description: 'Create new sandbox environment', category: 'sandbox_mod', icon: Box, requiresOperator: true, args: '[name] [ttl]', example: 'sandbox.create test-env 1h' },
+  { command: 'sandbox.execute', description: 'Execute code in sandbox', category: 'sandbox_mod', icon: PlayCircle, requiresOperator: true, args: '<sandbox_id> <code>' },
+  { command: 'sandbox.list', description: 'List active sandboxes', category: 'sandbox_mod', icon: List, requiresOperator: false },
+  { command: 'sandbox.destroy', description: 'Destroy sandbox', category: 'sandbox_mod', icon: XCircle, requiresOperator: true, args: '<sandbox_id>' },
+];
+
 // PATCH — Distribution Patch Dispatch v8.5.0
 export const PATCH_COMMANDS: CommandDefinition[] = [
   { command: 'patch.send', description: 'Dispatch a patch to LNCHBL', category: 'infra', icon: Send, requiresOperator: true, args: '<version> <changelog> [capabilities] [engines]', example: 'patch.send 2.1.0 "Enable dream synthesis" dream_synthesis reasoning_engine' },
@@ -690,6 +739,12 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...META_COMMANDS,
   ...INFRA_COMMANDS,
   ...PATCH_COMMANDS,
+  ...MEMORY_MOD_COMMANDS,
+  ...RELAY_MOD_COMMANDS,
+  ...AUDIT_MOD_COMMANDS,
+  ...IDENTITY_MOD_COMMANDS,
+  ...ECONOMY_MOD_COMMANDS,
+  ...SANDBOX_MOD_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
@@ -713,6 +768,12 @@ export const COMMAND_CATEGORIES = {
   engine: { label: 'ENGINE', color: 'text-cyan-400', borderColor: 'border-cyan-500/30', commands: ENGINE_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
   infra: { label: 'INFRA', color: 'text-lime-400', borderColor: 'border-lime-500/30', commands: INFRA_COMMANDS },
+  memory_mod: { label: 'MEMORY', color: 'text-sky-400', borderColor: 'border-sky-500/30', commands: MEMORY_MOD_COMMANDS },
+  relay_mod: { label: 'RELAY', color: 'text-lime-400', borderColor: 'border-lime-500/30', commands: RELAY_MOD_COMMANDS },
+  audit_mod: { label: 'AUDIT', color: 'text-stone-400', borderColor: 'border-stone-500/30', commands: AUDIT_MOD_COMMANDS },
+  identity_mod: { label: 'IDENTITY', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: IDENTITY_MOD_COMMANDS },
+  economy_mod: { label: 'ECONOMY', color: 'text-amber-400', borderColor: 'border-amber-500/30', commands: ECONOMY_MOD_COMMANDS },
+  sandbox_mod: { label: 'SANDBOX', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SANDBOX_MOD_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {

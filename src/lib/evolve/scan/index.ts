@@ -257,7 +257,8 @@ function getArchitectureMap(): Record<string, string[]> {
     cognitive: ['BRAIN', 'DECODE', 'DREAM'],
     operational: ['DEFENSE', 'NEXUS', 'VISION'],
     administrative: ['SYSTEM', 'MODERNIZER', 'INTEGRATION', 'INCLUSIVE'],
-    orchestrator: ['CORTEX'],
+    orchestrator: ['CORTEX', 'ENCODE'],
+    infrastructure: ['MEMORY', 'RELAY', 'AUDIT', 'IDENTITY', 'ECONOMY', 'SANDBOX'],
   };
 }
 

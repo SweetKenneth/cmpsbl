@@ -408,7 +408,7 @@ const SYSTEM_PATTERNS = [
   { title: 'Audit Trail Completeness', content: 'Every state-changing operation must log: who (user/system), what (action), when (timestamp), where (module), why (trigger), and how (method). Store in audit_logs with 90-day retention.', priority: 95 },
   { title: 'Capability Registry Management', content: 'Each capability has: key, enabled flag, metadata, and dependencies. Before enabling, check all dependencies are enabled. Before disabling, warn about dependents. Use dependency graph for safe ordering.', priority: 92 },
   { title: 'Graceful Degradation', content: 'When a module fails, the system should degrade gracefully: disable the module\'s features, log the failure, and continue operating. Never let one module crash the entire system.', priority: 97 },
-  { title: 'Bootstrap Ordering', content: 'Boot modules in dependency order: Kernel (1-3) → Cognitive (4-6) → Operational (7-10) → Administrative (11-13) → Orchestrator (14). Each module reports ready before next tier starts.', priority: 88 },
+  { title: 'Bootstrap Ordering', content: 'Boot modules in dependency order: Kernel (1-3) → Cognitive (4-6) → Operational (7-10) → Administrative (11-14) → Orchestrator (15-16) → Infrastructure (17-22). Each module reports ready before next tier starts. 21 modules total across 6 layers.', priority: 88 },
 ];
 
 const MODERNIZER_PATTERNS = [
