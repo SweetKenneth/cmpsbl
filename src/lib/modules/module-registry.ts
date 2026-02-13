@@ -375,7 +375,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     icon: FileCheck,
     color: "stone-500",
     useCaseH1: "Tamper-Evident Audit Logging for Enterprise AI Compliance",
-    heroDescription: "AUDIT provides an immutable, cryptographically-chained event ledger that captures every significant action across all 20 modules — built for SOC2, GDPR, and legal defensibility.",
+    heroDescription: "AUDIT provides an immutable, cryptographically-chained event ledger that captures every significant action across all 21 modules — built for SOC2, GDPR, and legal defensibility.",
     features: ["Append-only event logging", "Cryptographic hash chaining", "Cross-module event capture", "Compliance reporting", "Legal defensibility layer"],
     highlights: [
       { title: "Cryptographic Hash Chaining", description: "Every audit entry is linked to its predecessor via SHA-256 hashing, creating a tamper-evident chain. Any modification to historical records is instantly detectable." },

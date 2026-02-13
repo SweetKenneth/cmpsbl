@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * v9.0.0 ARCHITECT Epoch
+ * v9.1.0 ARCHITECT Epoch
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
@@ -18,8 +18,8 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 20 core modules in 6-layer architecture */
-export const MODULES_COUNT = 20;
+/** 21 modules in 6-layer architecture */
+export const MODULES_COUNT = 21;
 
 /** 6 architectural layers: Kernel, Cognitive, Operational, Administrative, Orchestrator, Infrastructure */
 export const LAYERS_COUNT = 6;
@@ -47,13 +47,13 @@ export const STIER_PIPELINES_COUNT = 32;
 
 /**
  * Base engines in ENGINE_REGISTRY
- * v9.0.0: 70 (v8.5.0) + 6 infrastructure = 76
+ * v9.1.0: 76 cognitive engines
  */
 export const ENGINES_COUNT = 76;
 
 /**
  * Meta-engines that orchestrate multiple base engines
- * v9.0.0: 22 (v8.5.0) + 2 infrastructure cross-module = 24
+ * v9.1.0: 24 meta-engines
  */
 export const META_ENGINES_COUNT = 24;
 
@@ -85,7 +85,7 @@ export const ARCHIVED_CAPABILITIES_COUNT = 136;
  * Total terminal commands across all modules
  * Derived from TerminalCommands.ts ALL_COMMANDS array
  */
-export const TERMINAL_COMMANDS_COUNT = 340;
+export const TERMINAL_COMMANDS_COUNT = 360;
 
 // =============================================================================
 // INTEGRATION ADAPTERS
@@ -115,7 +115,7 @@ export const LINES_OF_CODE_DISPLAY = '175k+';
 // VERSION INFO
 // =============================================================================
 
-export const SUBSTRATE_VERSION = '9.0.0';
+export const SUBSTRATE_VERSION = '9.1.0';
 export const SUBSTRATE_CODENAME = 'ARCHITECT';
 export const SUBSTRATE_EPOCH = 'ARCHITECT';
 

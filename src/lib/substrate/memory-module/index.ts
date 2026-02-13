@@ -1,6 +1,6 @@
 /**
  * MEMORY Module — Vector & RAG Orchestration
- * v9.0.0 ARCHITECT Epoch — Structured knowledge retrieval, embedding lifecycle, semantic recall
+ * v9.1.0 ARCHITECT Epoch — Structured knowledge retrieval, embedding lifecycle, semantic recall
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';

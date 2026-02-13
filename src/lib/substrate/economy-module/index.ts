@@ -1,6 +1,6 @@
 /**
  * ECONOMY Module — Cost Attribution & Budget Engine
- * v9.0.0 ARCHITECT Epoch — Real-time cost tracking, budget enforcement, pricing signals
+ * v9.1.0 ARCHITECT Epoch — Real-time cost tracking, budget enforcement, pricing signals
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';

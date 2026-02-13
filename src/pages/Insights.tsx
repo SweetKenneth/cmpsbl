@@ -114,7 +114,7 @@ export default function Insights() {
             <p>
               The <strong>Observer</strong> tier provides read-only access to CMPSBL documentation, 
               architecture references, and standards materials. Observers can review the full 
-              FNDTN v6.0.0 library, understand the 20-module kernel architecture, and access 
+              FNDTN v6.0.0 library, understand the 21-module kernel architecture, and access 
               governance namespace documentation.
             </p>
             <p>

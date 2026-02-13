@@ -1,11 +1,11 @@
 /**
- * Terminal Boot Screen v9.0.0
- * Unique neural-organic visualization of the 20-module architecture
+ * Terminal Boot Screen v9.1.0
+ * Unique neural-organic visualization of the 21-module architecture
  * Mobile-friendly with no mid-word line breaks
  * 
- * v9.0.0 ARCHITECT Epoch Changes:
+ * v9.1.0 ARCHITECT Epoch:
  * - 200 synergy pipelines, 125 executors, 32 S-tier discoveries
- * - Updated version branding to v9.1.0 ARCHITECT
+ * - 21-module architecture across 6 layers
  * - 400+ capabilities, 100 engines, 25 meta-engines
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
  * - 360+ commands across 21 modules + infrastructure

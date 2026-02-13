@@ -1,6 +1,6 @@
 /**
  * Synergy Registry
- * v9.0.0 ARCHITECT — Cross-Module Pipeline Registration (200 Pipelines)
+ * v9.1.0 ARCHITECT — Cross-Module Pipeline Registration (200 Pipelines)
  * 
  * Defines all available synergies that combine 2+ modules
  * Includes 32 S-tier premium pipelines + 27 discovery + 53 infrastructure-era = 200 total
@@ -17,7 +17,7 @@ const registry: SynergyRegistry = {
 
 /**
  * All 200 cross-module synergies (88 core + 22 S-tier + 27 discovery + 32 S-tier + 53 infrastructure = 200)
- * Each combines 2-5 modules for enhanced capability within the 20-module architecture
+ * Each combines 2-5 modules for enhanced capability within the 21-module architecture
  */
 export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   // === INTELLIGENCE SYNERGIES ===

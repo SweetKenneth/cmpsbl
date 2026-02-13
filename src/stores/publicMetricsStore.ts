@@ -1,6 +1,6 @@
 /**
  * Public Metrics Store
- * v9.0.0 ARCHITECT Epoch — Single Source of Truth for all public-facing metrics
+ * v9.1.0 ARCHITECT Epoch — Single Source of Truth for all public-facing metrics
  * 
  * This Zustand store serves as the canonical source for all marketing numbers,
  * version info, and capability counts across the entire substrate.
@@ -80,13 +80,13 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '9.0.0',
+  version: '9.1.0',
   codename: 'ARCHITECT',
   epoch: 'ARCHITECT',
   buildDate: new Date().toISOString().split('T')[0],
   
   // Architecture Counts
-  modulesCount: 20,
+  modulesCount: 21,
   layersCount: 6,
   
   // Synergy Metrics (88 core + 27 discovery + 32 S-tier + 53 infrastructure = 200)
@@ -97,16 +97,16 @@ export const DEFAULT_METRICS: PublicMetrics = {
   // Templates
   templatesCount: 200,
   
-  // Engine Metrics (62 base + 8 high-value = 70)
-  enginesCount: 70,
-  metaEnginesCount: 22,
+  // Engine Metrics (76 base + 24 meta = 100)
+  enginesCount: 76,
+  metaEnginesCount: 24,
   
   // Capability Metrics (269 + 56 + 54 + 21 = 400)
   capabilitiesCount: 400,
   archivedCapabilitiesCount: 136,
   
   // Terminal & Commands
-  terminalCommandsCount: 340,
+  terminalCommandsCount: 360,
   
   // Integration
   integrationAdaptersCount: 35,
