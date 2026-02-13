@@ -5,7 +5,7 @@
  * A proof-of-concept for evolving software: learns from verified resolutions,
  * escalates uncertainty, and produces audit-safe responses.
  * 
- * Integrations with 14-module architecture:
+ * Integrations with 21-module architecture:
  * - BRAIN: Read-only recall + reinforcement for verified resolutions
  * - DECODE: Intent classification + sentiment detection
  * - VISION: Pain pattern detection across support history

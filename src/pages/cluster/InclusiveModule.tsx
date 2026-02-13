@@ -16,7 +16,7 @@ export default function InclusiveModule() {
     <>
       <SEO
         title="INCLUSIVE Module — Human Compatibility Pipeline | CMPSBL"
-        description="AI that scans and fixes accessibility issues as it audits, delivering living WCAG 2.2 compliance. The 14th substrate module for human compatibility."
+        description="AI that scans and fixes accessibility issues as it audits, delivering living WCAG 2.2 compliance. A core substrate module for human compatibility."
         canonical="https://cmpsbl.com/cluster/inclusive-module-accessibility"
         image={ogImage}
         type="article"
@@ -69,7 +69,7 @@ export default function InclusiveModule() {
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 INCLUSIVE Module
               </h1>
-              <p className="text-xl text-muted-foreground">Human Compatibility Pipeline — 14th Substrate Module</p>
+              <p className="text-xl text-muted-foreground">Human Compatibility Pipeline — Core Substrate Module</p>
             </div>
           </div>
 
@@ -115,7 +115,7 @@ export default function InclusiveModule() {
             <section>
               <h2 className="text-3xl font-bold mb-4">Substrate Integration</h2>
               <p className="text-muted-foreground mb-4">
-                INCLUSIVE is the 14th module in the substrate boot sequence, positioned after SYSTEM and before DEFENSE:
+                INCLUSIVE is a core module in the substrate boot sequence, positioned after SYSTEM and before DEFENSE:
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">

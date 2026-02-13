@@ -107,7 +107,7 @@ const INTENT_PATTERNS: Record<string, RegExp[]> = {
 // ============ Entity Extractors ============
 
 const ENTITY_PATTERNS: Record<string, RegExp> = {
-  module: /\b(brain|nexus|vision|dream|defense|access|system|decode|cortex|ripple|modernizer|integration|inclusive|core)\b/i,
+  module: /\b(brain|nexus|vision|dream|defense|access|system|decode|cortex|ripple|modernizer|integration|inclusive|core|memory|relay|audit|identity|economy|sandbox|encode)\b/i,
   uuid: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i,
   number: /\b(\d+(?:\.\d+)?)\b/,
   date: /\b(\d{4}-\d{2}-\d{2})\b/,
@@ -319,7 +319,7 @@ function generateAlternatives(input: string, matchedIntent?: string): string[] {
   const tokens = tokenize(input);
   
   // Generate module.action combinations from tokens
-  const modules = ['brain', 'nexus', 'vision', 'dream', 'system', 'access'];
+  const modules = ['brain', 'nexus', 'vision', 'dream', 'system', 'access', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox', 'encode'];
   
   for (const token of tokens) {
     for (const module of modules) {
@@ -378,8 +378,8 @@ export function validateAgainstContract(
 
 // ============ Module Metadata ============
 
-export const DECODE_VERSION = '7.0.0';
-export const DECODE_CODENAME = 'Interpreter';
+export const DECODE_VERSION = '9.1.0';
+export const DECODE_CODENAME = 'ARCHITECT Interpreter';
 
 export interface DecodeModuleStatus {
   version: string;
