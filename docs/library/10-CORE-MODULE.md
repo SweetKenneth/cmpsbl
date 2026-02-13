@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORE Module Deep Dive
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
+**Version 9.1.0 (ARCHITECT Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-010 |
 | **Module** | CORE |
 | **Layer** | Kernel |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 | **Capabilities** | 6 |
 
 ---
@@ -222,5 +222,5 @@ CORE integrates with all modules:
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

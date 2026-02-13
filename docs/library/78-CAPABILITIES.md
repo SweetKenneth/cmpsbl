@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Capabilities Reference
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
+**Version 9.1.0 (ARCHITECT Epoch) | Production Ready**
 
 ---
 
@@ -11,9 +11,9 @@
 | **Document ID** | CMPSBL-LIB-078 |
 | **Layer** | Cross-Module |
 | **Status** | Production Ready |
-| **Version** | v8.5.0 |
-| **Total Capabilities** | 269 |
-| **Synergy Pipelines** | 147 |
+| **Version** | v9.1.0 |
+| **Total Capabilities** | 400+ |
+| **Synergy Pipelines** | 200 |
 | **Executor Count** | 125 |
 | **Infrastructure Systems** | 20 |
 | **Tiered Capabilities** | 68 |
@@ -233,6 +233,6 @@ Any capability that modifies the system's own behavior, code, architecture, or o
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
-*269 Capabilities × 62 Engines × 20 Meta-Engines × 20 Infrastructure Systems*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
+*400+ Capabilities × 76 Engines × 24 Meta-Engines × 27 Infrastructure Systems*
 *© 2025-2026 PromptFluid®. All rights reserved.*

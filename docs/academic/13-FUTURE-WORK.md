@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — Future Research Directions
 
 **Document ID:** CMPSBL-ACAD-013  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -343,5 +343,5 @@ Researchers interested in contributing to CMPSBL research should:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Future Research Directions*  
+*CMPSBL OS Substrate v9.1.0 — Future Research Directions*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

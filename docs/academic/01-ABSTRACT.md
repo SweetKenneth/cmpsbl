@@ -1,13 +1,13 @@
 # CMPSBL OS Substrate — Abstract & Introduction
 
 **Document ID:** CMPSBL-ACAD-001  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
 ## 1. Abstract
 
-We present the CMPSBL OS Substrate, a cognitive orchestration system designed to enable autonomous, verifiable self-evolution in artificial intelligence systems. The substrate provides: (1) persistent memory with dreaming cycles for offline learning consolidation; (2) multi-provider AI routing with intelligent fallback cascades; (3) a governed capability system with 269 registered capabilities across 14 functional modules; (4) cryptographically verifiable evolution stamps that prove self-modification occurred; and (5) a three-tier autonomy governance model with circuit breaker safety mechanisms.
+We present the CMPSBL OS Substrate, a cognitive orchestration system designed to enable autonomous, verifiable self-evolution in artificial intelligence systems. The substrate provides: (1) persistent memory with dreaming cycles for offline learning consolidation; (2) multi-provider AI routing with intelligent fallback cascades; (3) a governed capability system with 400+ registered capabilities across 21 functional modules; (4) cryptographically verifiable evolution stamps that prove self-modification occurred; and (5) a three-tier autonomy governance model with circuit breaker safety mechanisms.
 
 Unlike black-box AI systems, the CMPSBL Substrate produces observable, auditable evidence of its self-improvement processes. Evolution stamps embedded in modified code link back to database-persisted proposals, enabling complete traceability from observed pressure through learned response to resulting capability enhancement.
 
@@ -136,5 +136,5 @@ The CMPSBL Substrate incorporates insights from the open-source community, acade
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Abstract & Introduction*  
+*CMPSBL OS Substrate v9.1.0 — Abstract & Introduction*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

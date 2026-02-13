@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Adaptive Interface
- * v8.0.0 — SYNERGY+ Epoch Dynamic UI adaptation based on accessibility profiles
+ * v9.1.0 — ARCHITECT Epoch Dynamic UI adaptation based on accessibility profiles
  */
  
  // Adaptation profile

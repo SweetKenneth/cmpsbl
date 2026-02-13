@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — License
 
 **Document ID:** CMPSBL-ACAD-015  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -210,5 +210,5 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — License*  
+*CMPSBL OS Substrate v9.1.0 — License*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

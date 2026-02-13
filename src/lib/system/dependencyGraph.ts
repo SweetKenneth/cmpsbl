@@ -47,6 +47,13 @@
    integration: ['defense'],
    inclusive: ['integration'],
    cortex: ['brain', 'vision'],
+   memory: ['core', 'brain'],
+   relay: ['core', 'ripple'],
+   audit: ['core', 'access'],
+   identity: ['core', 'access'],
+   economy: ['core', 'nexus'],
+   sandbox: ['core', 'defense'],
+   encode: ['cortex', 'brain'],
  };
  
  // Build and cache the graph

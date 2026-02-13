@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate Status Widget
- * v8.0.0 — SYNERGY+ Epoch compact status indicator
+ * v9.1.0 — ARCHITECT Epoch compact status indicator
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';

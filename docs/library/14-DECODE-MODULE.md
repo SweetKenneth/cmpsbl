@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DECODE Module Deep Dive
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Production Ready**
+**Version 9.1.0 (ARCHITECT Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-014 |
 | **Module** | DECODE |
 | **Layer** | Cognitive |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 | **Capabilities** | 7 |
 
 ---

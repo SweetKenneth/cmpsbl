@@ -1,8 +1,8 @@
 # promptfluid® Substrate — Documentation Index
 
-**v8.5.0 — Cognitive Orchestration Substrate for AI Systems**
+**v9.1.0 — Cognitive Orchestration Substrate for AI Systems**
 
-*Last Updated: 2026-02-08*
+*Last Updated: 2026-02-13*
 
 ---
 
@@ -39,9 +39,9 @@ This directory contains all documentation required to understand, deploy, operat
 
 | Field | Value |
 |-------|-------|
-| Document Set | PF-DOCS-8.5.0 |
-| Version | v8.5.0 |
-| Last Updated | 2026-02-11 |
+| Document Set | PF-DOCS-9.1.0 |
+| Version | v9.1.0 |
+| Last Updated | 2026-02-13 |
 | Maintainer | Kenneth E Sweet Jr |
 | Contact | Dev@CMPSBL.com |
 
@@ -51,9 +51,9 @@ This directory contains all documentation required to understand, deploy, operat
 
 | Substrate Version | Docs Version | Status |
 |-------------------|--------------|--------|
-| v8.5.0 (SYNERGY+ Epoch) | v8.5.0 | **Current** |
+| v9.1.0 (ARCHITECT Epoch) | v9.1.0 | **Current** |
+| v8.x.x (SYNERGY+ Epoch) | v8.5.0 | Archived |
 | v7.x.x (SYNERGY Era) | v7.0.0 | Archived |
-| v6.x.x (Human Compatibility) | v6.0.0 | Archived |
 
 ---
 

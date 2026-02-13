@@ -1,8 +1,8 @@
 # 09. Terminal Command Reference
 
 **CMPSBL OS Substrate — Internal Engineering Library**
-**Version 8.5.0 SYNERGY+ Epoch | Updated 2026-02-11**
-**340+ Commands | 14 Modules | 7 Infrastructure Systems | Full Observability**
+**Version 9.1.0 ARCHITECT Epoch | Updated 2026-02-13**
+**360+ Commands | 21 Modules | 7 Infrastructure Systems | Full Observability**
 
 ---
 
@@ -629,6 +629,6 @@ data: {"done": true, "total_tokens": 150}
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
-*340+ Commands | 15 Module Prefixes | 7 Infrastructure Namespaces | 4 New Command Groups*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch — Internal Engineering Library*
+*360+ Commands | 21 Module Prefixes | 7 Infrastructure Namespaces | 4 New Command Groups*
 *© 2025-2026 PromptFluid®. All rights reserved.*

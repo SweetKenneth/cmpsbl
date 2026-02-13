@@ -268,4 +268,4 @@ You can't replicate this by wiring APIs together. The synergies emerge from deep
 
 ---
 
-*CMPSBL® v8.5.0 SYNERGY+ Epoch — Where AI Modules Work Together*
+*CMPSBL® v9.1.0 ARCHITECT Epoch — Where AI Modules Work Together*

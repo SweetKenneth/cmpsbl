@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — Observability Infrastructure
 
 **Document ID:** CMPSBL-ACAD-007  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -435,5 +435,5 @@ GET /export/audit?start=2026-01-01&end=2026-02-01&format=json
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Observability Infrastructure*  
+*CMPSBL OS Substrate v9.1.0 — Observability Infrastructure*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

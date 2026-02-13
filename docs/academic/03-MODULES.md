@@ -1,13 +1,13 @@
 # CMPSBL OS Substrate — Module Taxonomy
 
 **Document ID:** CMPSBL-ACAD-003  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
 ## 1. Module Overview
 
-The CMPSBL Substrate organizes functionality into 14 distinct modules, each with clearly defined responsibilities, interfaces, and dependencies.
+The CMPSBL Substrate organizes functionality into 21 distinct modules, each with clearly defined responsibilities, interfaces, and dependencies.
 
 | № | Module | Layer | Primary Responsibility |
 |---|--------|-------|------------------------|
@@ -421,5 +421,5 @@ All modules follow independent semantic versioning within the substrate version:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Module Taxonomy*  
+*CMPSBL OS Substrate v9.1.0 — Module Taxonomy*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

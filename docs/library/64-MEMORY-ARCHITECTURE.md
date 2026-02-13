@@ -1,6 +1,6 @@
 # Memory Architecture
 
-**CMPSBL Substrate OS v8.5.0 — Cognitive Memory Core (SYNERGY+ Epoch)**
+**CMPSBL Substrate OS v9.1.0 — Cognitive Memory Core (ARCHITECT Epoch)**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Module** | BRAIN (Memory Subsystem) |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 | **Status** | Production |
 | **Last Updated** | February 2026 |
 
@@ -276,5 +276,5 @@ function MemoryDashboard() {
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

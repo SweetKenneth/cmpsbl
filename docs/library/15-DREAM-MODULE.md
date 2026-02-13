@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DREAM Module Deep Dive
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
+**Version 9.1.0 (ARCHITECT Epoch) | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-015 |
 | **Module** | DREAM |
 | **Layer** | Cognitive |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 
 ---
 
@@ -184,5 +184,5 @@ The Experimentation Lab (`/lab`) showcases five live DREAM-powered demos:
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

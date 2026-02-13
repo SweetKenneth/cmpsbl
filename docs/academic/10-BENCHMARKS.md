@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — Performance Benchmarks
 
 **Document ID:** CMPSBL-ACAD-010  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -337,5 +337,5 @@ This document presents measured performance characteristics of the CMPSBL Substr
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Performance Benchmarks*  
+*CMPSBL OS Substrate v9.1.0 — Performance Benchmarks*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

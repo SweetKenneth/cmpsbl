@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — Deployment Model
 
 **Document ID:** CMPSBL-ACAD-011  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -361,5 +361,5 @@ The CMPSBL Substrate is designed to run on commodity cloud infrastructure with m
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Deployment Model*  
+*CMPSBL OS Substrate v9.1.0 — Deployment Model*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — Security Model
 
 **Document ID:** CMPSBL-ACAD-012  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -412,5 +412,5 @@ All database tables implement PostgreSQL RLS:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Security Model*  
+*CMPSBL OS Substrate v9.1.0 — Security Model*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

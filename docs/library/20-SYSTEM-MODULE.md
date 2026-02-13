@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — SYSTEM Module Deep Dive
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Scientific Publication**
+**Version 9.1.0 (ARCHITECT Epoch) | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-020 |
 | **Module** | SYSTEM |
 | **Layer** | Administrative / Orchestrator |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 
 ---
 
@@ -237,5 +237,5 @@ Automatic test triggering after evolution changes. Functions: `onEvolutionComple
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

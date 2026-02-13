@@ -1,7 +1,7 @@
 # CMPSBL OS Substrate — API Reference
 
 **Document ID:** CMPSBL-ACAD-009  
-**Version:** v8.0.0 (SYNERGY+ Epoch)
+**Version:** v9.1.0 (ARCHITECT Epoch)
 
 ---
 
@@ -688,5 +688,5 @@ const result = await client.synergies.execute('intel.research_and_report', {
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — API Reference*  
+*CMPSBL OS Substrate v9.1.0 — API Reference*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

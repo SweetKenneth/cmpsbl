@@ -186,5 +186,5 @@ Resource Limits:
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch — Internal Engineering Library*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -62,7 +62,7 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
                    System for Autonomous AI Evolution}},
   year         = 2026,
   publisher    = {Zenodo},
-  version      = {v8.0.0},
+  version      = {v9.1.0},
   doi          = {10.5281/zenodo.XXXXXXX},
   url          = {https://github.com/promptfluid/substrate}
 }
@@ -70,15 +70,15 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
 
 ### APA 7th Edition
 
-Sweet Jr, K. E. (2026). *CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution* (Version 8.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+Sweet Jr, K. E. (2026). *CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution* (Version 9.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
 
 ### Chicago 17th Edition
 
-Sweet Jr, Kenneth E. "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution." Version 8.0.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.XXXXXXX.
+Sweet Jr, Kenneth E. "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution." Version 9.1.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.XXXXXXX.
 
 ### IEEE
 
-K. E. Sweet Jr, "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution," version 8.0.0, Zenodo, 2026. [Online]. Available: https://doi.org/10.5281/zenodo.XXXXXXX
+K. E. Sweet Jr, "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution," version 9.1.0, Zenodo, 2026. [Online]. Available: https://doi.org/10.5281/zenodo.XXXXXXX
 
 ---
 

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — API Reference
 
-**Version 8.0.0 | Scientific Publication**
+**Version 9.1.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-004 |
-| **Version** | v8.0.0 |
+| **Version** | v9.1.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -847,5 +847,5 @@ For API access, licensing, or support:
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

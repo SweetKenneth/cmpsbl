@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — LNCHBL Distribution Tiers
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Public Reference**
+**Version 9.1.0 (ARCHITECT Epoch) | Public Reference**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-085 |
 | **Layer** | Distribution |
 | **Status** | Active |
-| **Version** | v8.5.0 |
+| **Version** | v9.1.0 |
 | **Total Tiered Capabilities** | 68 |
 
 ---
@@ -230,5 +230,5 @@ CMPSBL dispatches patches to LNCHBL via the `cmpsbl-patch-dispatch` edge functio
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

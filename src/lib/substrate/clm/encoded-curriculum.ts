@@ -1,6 +1,6 @@
 /**
  * Encoded Code-Writing Curriculum
- * v8.0.0 — SYNERGY+ Epoch Exclusive curriculum for code-writing mastery
+ * v9.1.0 — ARCHITECT Epoch Exclusive curriculum for code-writing mastery
  * 
  * 24/7 learning focused ONLY on code-writing excellence.
  * Topics cover: patterns, anti-patterns, architecture, testing, refactoring,

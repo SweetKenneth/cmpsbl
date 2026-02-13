@@ -498,5 +498,5 @@ Each of the 14 enhancement engines orchestrates 4 world-first capabilities from 
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
-*20 Meta-Engines × 62 Engines × 269 Capabilities = Full Orchestration*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
+*24 Meta-Engines × 76 Engines × 400+ Capabilities = Full Orchestration*
