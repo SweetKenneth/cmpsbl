@@ -1,6 +1,6 @@
 /**
  * Terminal Type Definitions
- * v8.5.0 — SYNERGY+ Epoch Terminal Configuration (340+ commands)
+ * v9.1.0 — ARCHITECT Epoch Terminal Configuration (360+ commands)
  */
 
 export interface CommandResult {

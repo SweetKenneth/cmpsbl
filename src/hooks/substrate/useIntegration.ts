@@ -1,6 +1,6 @@
 /**
  * useIntegration Hook
- * v8.0.0 SYNERGY+ Epoch — Dedicated hook for INTEGRATION module operations
+ * v9.1.0 ARCHITECT Epoch — Dedicated hook for INTEGRATION module operations
  * 
  * Respects debug mode kill-switch for connection polling.
  * Part of the 6-layer, 20-module Cognitive Architecture.

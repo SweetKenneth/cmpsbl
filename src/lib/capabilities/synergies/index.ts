@@ -1,6 +1,6 @@
 /**
  * Synergy System Exports
- * v8.0.0 SYNERGY+ — Cross-Module Pipeline Infrastructure (147 Pipelines, 125 Executors, 32 S-tier)
+ * v9.1.0 ARCHITECT — Cross-Module Pipeline Infrastructure (200 Pipelines, 125 Executors, 32 S-tier)
  */
 
 // Types

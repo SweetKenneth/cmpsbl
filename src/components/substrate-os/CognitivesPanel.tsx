@@ -1,6 +1,6 @@
 /**
  * Cognitives Panel — Operator Console for Cognitive Registry
- * v8.0.0 SYNERGY+ Epoch — Displays minted cognitives with status, metrics, and controls
+ * v9.1.0 ARCHITECT Epoch — Displays minted cognitives with status, metrics, and controls
  * Integrated with the 6-layer, 21-module architecture
  */
 

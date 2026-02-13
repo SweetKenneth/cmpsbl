@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Provider
- * v6.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v9.1.0 — Cognitive Orchestration Substrate (21-Module Architecture)
  * 
  * Performance: Lazy-loads substrate module, uses requestIdleCallback.
  * Stability: Single initialization, no polling loops during idle, 

@@ -1,6 +1,6 @@
 /**
  * PublicNav — Re-exports CmpsblNav
- * v8.0.0 SYNERGY+ Epoch
+ * v9.1.0 ARCHITECT Epoch
  */
 
 export { CmpsblNav as PublicNav } from "@/components/navigation/CmpsblNav";

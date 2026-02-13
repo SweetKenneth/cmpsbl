@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module Tab — Human Compatibility Pipeline
- * v8.0.0 SYNERGY+ Epoch — WCAG Scanning, Repair, Validation, Profiling, Reporting
+ * v9.1.0 ARCHITECT Epoch — WCAG Scanning, Repair, Validation, Profiling, Reporting
  * 
  * Full glue layer integration across 21 modules:
  * - SYSTEM: self_scan → system.audit
