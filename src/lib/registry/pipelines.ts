@@ -117,6 +117,6 @@ export function getPipelineNames(): readonly string[] {
 /**
  * Export registry version for documentation
  */
-export const PIPELINE_REGISTRY_VERSION = '9.0.0' as const;
+export const PIPELINE_REGISTRY_VERSION = '9.1.0' as const;
 export const PIPELINE_REGISTRY_STATUS = 'descriptive_only' as const;
 export const PIPELINE_REGISTRY_COUNT = 200 as const;

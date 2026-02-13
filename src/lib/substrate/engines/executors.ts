@@ -5,7 +5,7 @@
  * Each executor orchestrates multiple capabilities into a unified result.
  * Executors manage context sharing, error handling, and synergy calculations.
  * 
- * Architecture: 325 Capabilities → 70 Engines → 22 Meta-Engines
+ * Architecture: 400 Capabilities → 76 Engines → 24 Meta-Engines
  */
 import type {
   EngineId,

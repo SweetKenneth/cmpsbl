@@ -1,8 +1,8 @@
 /**
  * Substrate Utilities
- * v9.0.0 — ARCHITECT Epoch Helper Functions & Common Patterns
+ * v9.1.0 — ARCHITECT Epoch Helper Functions & Common Patterns
  * 
- * Provides utility functions for common substrate operations across the 20-module architecture.
+ * Provides utility functions for common substrate operations across the 21-module architecture.
  */
 
 import { substrate, type SubstrateModule, type SubstrateResponse } from '../substrate';

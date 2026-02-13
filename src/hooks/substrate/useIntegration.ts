@@ -3,7 +3,7 @@
  * v9.1.0 ARCHITECT Epoch — Dedicated hook for INTEGRATION module operations
  * 
  * Respects debug mode kill-switch for connection polling.
- * Part of the 6-layer, 20-module Cognitive Architecture.
+ * Part of the 6-layer, 21-module Cognitive Architecture.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

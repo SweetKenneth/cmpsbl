@@ -1,6 +1,6 @@
 /**
  * Infrastructure-Era Synergy Pipelines
- * v9.0.0 ARCHITECT Epoch — 53 new pipelines leveraging the 6 Infrastructure modules
+ * v9.1.0 ARCHITECT Epoch — 53 new pipelines leveraging the 6 Infrastructure modules
  * (MEMORY, RELAY, AUDIT, IDENTITY, ECONOMY, SANDBOX)
  * 
  * These pipelines exploit the new Infrastructure layer's intersection

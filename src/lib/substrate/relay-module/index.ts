@@ -1,6 +1,6 @@
 /**
  * RELAY Module — Outbound Effects Hub
- * v9.0.0 ARCHITECT Epoch — Webhooks, notifications, retry queues, delivery guarantees
+ * v9.1.0 ARCHITECT Epoch — Webhooks, notifications, retry queues, delivery guarantees
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';

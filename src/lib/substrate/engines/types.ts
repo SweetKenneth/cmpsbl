@@ -1,6 +1,6 @@
 /**
  * Cognitive Engine Types
- * v9.0.0 ARCHITECT Epoch — 76 Engines + 24 Meta-Engines
+ * v9.1.0 ARCHITECT Epoch — 76 Engines + 24 Meta-Engines
  * 
  * Engines consolidate related capabilities into compound execution units.
  * This architecture provides:
@@ -9,7 +9,7 @@
  * - Simplified API surface for consumers
  * - IP protection through orchestration complexity
  * 
- * v9.0.0 covers 379 capabilities across 76 engines + 24 meta-engines
+ * v9.1.0 covers 400 capabilities across 76 engines + 24 meta-engines
  */
 
 import type { CapabilityId, ModuleLayer } from '../capabilities';
@@ -296,7 +296,7 @@ export interface CapabilitySource {
 }
 
 export const CAPABILITY_INVENTORY = {
-  version: '9.0.0',
+  version: '9.1.0',
   synergies: 147,
   worldFirst: 56,
   highValue: 56,

@@ -1,6 +1,6 @@
 /**
  * IDENTITY Module — Universal Actor Attribution
- * v9.0.0 ARCHITECT Epoch — Human/agent/system identity, signatures, provenance
+ * v9.1.0 ARCHITECT Epoch — Human/agent/system identity, signatures, provenance
  * Passwordless WebAuthn passkey authentication
  */
 

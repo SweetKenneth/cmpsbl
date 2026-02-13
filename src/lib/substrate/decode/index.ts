@@ -1,9 +1,9 @@
 /**
  * promptfluid® DECODE Module
- * v9.0.0 ARCHITECT Epoch — Interpreter Primitive with Personality Profiles
+ * v9.1.0 ARCHITECT Epoch — Interpreter Primitive with Personality Profiles
  * + Cryptographic Identity Context
  * 
- * Part of the 6-layer, 20-module Cognitive Architecture
+ * Part of the 6-layer, 21-module Cognitive Architecture
  */
 
 export {

@@ -1,6 +1,6 @@
 /**
  * PasskeyButton — Passwordless Authentication Trigger
- * v9.0.0 ARCHITECT Epoch
+ * v9.1.0 ARCHITECT Epoch
  * 
  * Renders Face ID / Touch ID / Windows Hello prompt.
  * No password fields. No shared secrets. Hardware-bound only.

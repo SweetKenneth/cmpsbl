@@ -1,6 +1,6 @@
 /**
  * SANDBOX Module — Isolated Execution Environments
- * v9.0.0 ARCHITECT Epoch — Speculative runs, containment, evolution testing
+ * v9.1.0 ARCHITECT Epoch — Speculative runs, containment, evolution testing
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';

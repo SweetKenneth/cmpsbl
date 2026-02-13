@@ -1,6 +1,6 @@
 /**
  * AUDIT Module — Immutable Compliance Ledger
- * v9.0.0 ARCHITECT Epoch — Append-only logging, hash chaining, cross-module capture
+ * v9.1.0 ARCHITECT Epoch — Append-only logging, hash chaining, cross-module capture
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';

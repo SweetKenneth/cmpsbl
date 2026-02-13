@@ -1,6 +1,6 @@
 /**
  * WebAuthn / Passkey — Cryptographic Device-Bound Authentication
- * v9.0.0 ARCHITECT Epoch
+ * v9.1.0 ARCHITECT Epoch
  * 
  * Replaces passwords with phishing-resistant, hardware-bound credentials.
  * Supports Face ID, Touch ID, Windows Hello, and FIDO2 security keys.
