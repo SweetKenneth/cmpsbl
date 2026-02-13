@@ -171,9 +171,10 @@ async function defaultIngestLearning(module: SubstrateModule, insight: string, c
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_MODULES: SubstrateModule[] = [
-  'core', 'ripple', 'access', 'brain', 'decode', 'system',
+  'core', 'ripple', 'access', 'brain', 'decode', 'encode', 'system',
   'inclusive', 'defense', 'nexus', 'vision', 'dream',
-  'modernizer', 'integration', 'cortex'
+  'modernizer', 'integration', 'cortex',
+  'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
 ];
 
 // Register default hooks for all modules
