@@ -68,7 +68,7 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 ### What We Have That Others Don't
 
 1. **Self-Improvement Engine** — The system upgrades its own code. This compounds daily.
-2. **Integrated Architecture** — 14 modules designed together, not bolted on.
+2. **Integrated Architecture** — 21 modules designed together, not bolted on.
 3. **Model Agnosticism** — Works with ANY AI provider. Zero lock-in.
 4. **Dream Cycles** — Autonomous learning without human intervention.
 5. **Defense-First** — Security built into the core, not added later.
@@ -85,10 +85,10 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 
 ## Traction
 
-- 14 integrated modules in production
-- 147 synergy pipelines with 125 custom executors
+- 21 integrated modules in production
+- 200 synergy pipelines with 125 custom executors
 - 175,000+ lines of production code
-- 269+ depot capabilities
+- 400+ depot capabilities
 - 27 production-hardening infrastructure systems
 - Self-healing with 95%+ uptime
 - Auto-upgrading codebase (SEBA v2.0)

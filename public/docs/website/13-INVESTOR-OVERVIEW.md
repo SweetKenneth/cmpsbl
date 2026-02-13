@@ -87,7 +87,7 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Moat | Description | Durability |
 |------|-------------|------------|
-| **Integrated Architecture** | 14 modules designed together | High |
+| **Integrated Architecture** | 21 modules designed together | High |
 | **Self-Evolution** | System improves its own code | Very High |
 | **Accumulated Learning** | Patterns compound over time | Very High |
 | **Network Effects** | Federated learning benefits all | Growing |
@@ -103,7 +103,7 @@ CMPSBL provides complete cognitive infrastructure:
 
 ### Defensibility
 
-1. **Technical Complexity** — Integration of 14 modules is hard to replicate
+1. **Technical Complexity** — Integration of 21 modules is hard to replicate
 2. **Self-Improvement** — The system gets better at improving itself
 3. **Learning Accumulation** — Patterns can't be recreated quickly
 4. **Switching Costs** — Deep integration with customer applications
@@ -135,9 +135,9 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Metric | Value |
 |--------|-------|
-| **Modules in Production** | 14 |
-| **Synergy Pipelines** | 147 |
-| **Depot Capabilities** | 269+ |
+| **Modules in Production** | 21 |
+| **Synergy Pipelines** | 200 |
+| **Depot Capabilities** | 400+ |
 | **Infrastructure Systems** | 27 |
 | **Production Codebase** | 175k+ LOC |
 | **System Uptime** | 99%+ |

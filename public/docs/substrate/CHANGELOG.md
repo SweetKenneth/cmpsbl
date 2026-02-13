@@ -125,10 +125,10 @@
 
 ### Architecture
 
-- **14-Module Kernel** — Canonical five-layer architecture: Kernel (CORE, RIPPLE, ACCESS), Cognitive (BRAIN, DECODE, DREAM), Operational (DEFENSE, NEXUS, VISION, INTEGRATION), Administrative (SYSTEM, MODERNIZER, INCLUSIVE), Orchestrator (CORTEX).
+- **21-Module Architecture** — Six-layer architecture: Kernel (CORE, RIPPLE, ACCESS), Cognitive (BRAIN, DECODE, DREAM), Operational (DEFENSE, NEXUS, VISION, INTEGRATION), Administrative (SYSTEM, MODERNIZER, INCLUSIVE), Orchestrator (CORTEX, ENCODE), Infrastructure (MEMORY, RELAY, AUDIT, IDENTITY, ECONOMY, SANDBOX).
 - **INCLUSIVE Module** — First-class human compatibility pipeline with WCAG 2.2 scanning, auto-repair, validation, and accessibility profiles.
 - **CORTEX Module** — Agency-class orchestrator operating in manual mode (no auto-apply without human approval).
-- **260+ Terminal Commands** — Full command registry across all 14 modules.
+- **360+ Terminal Commands** — Full command registry across all 21 modules.
 
 ### BRAIN Cognitive Skills
 

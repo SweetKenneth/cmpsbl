@@ -25,7 +25,7 @@ export default function System() {
       <div className="max-w-2xl mx-auto space-y-6">
         <div>
           <h1 className="text-4xl font-bold mb-2">System Control</h1>
-          <p className="text-muted-foreground">Backend connection management | v8.0.0 SYNERGY+ — 14-Module Architecture</p>
+          <p className="text-muted-foreground">Backend connection management | v9.1.0 ARCHITECT — 21-Module Architecture</p>
         </div>
 
         <Card>

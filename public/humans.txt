@@ -61,9 +61,9 @@ Cortex: Policy orchestration
 
 /* COLOPHON */
 
-CMPSBL® Substrate OS v8.0.0 SYNERGY+ Epoch
-14 Core Modules • 310+ Terminal Commands
-147 Synergy Pipelines • 269+ Depot Capabilities
+CMPSBL® Substrate OS v9.1.0 ARCHITECT Epoch
+21 Modules • 360+ Terminal Commands
+200 Synergy Pipelines • 400+ Depot Capabilities
 WCAG 2.2 Accessibility via INCLUSIVE Module
 
 CMPSBL® — Cognitive Infrastructure for AI.
