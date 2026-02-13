@@ -414,9 +414,14 @@ export default function SubstrateStore() {
     return [...caps, ...temps, ...pipes];
   }, []);
   
-  // Filter by product type, category, and search
+  // Filter by product type, category, search — and EXCLUDE Crown Jewels from public view
   const filteredItems = useMemo(() => {
     return allItems.filter(item => {
+      // Crown Jewel lockdown — remove from ALL public listings
+      const itemId = item.type === 'capability' ? item.data.id : item.type === 'template' ? item.data.id : item.data.id;
+      const itemName = item.type === 'capability' ? item.data.name : item.type === 'template' ? item.data.name : item.data.name;
+      if (isCrownJewelItem(itemId, itemName)) return false;
+
       // Product type
       if (productType === 'capabilities' && item.type !== 'capability') return false;
       if (productType === 'templates' && item.type !== 'template') return false;
@@ -440,6 +445,15 @@ export default function SubstrateStore() {
       return true;
     });
   }, [allItems, productType, selectedCategory, searchQuery]);
+
+  // Crown Jewels — admin-only reference list (never interactive for non-admins)
+  const crownJewelItems = useMemo(() => {
+    return allItems.filter(item => {
+      const itemId = item.type === 'capability' ? item.data.id : item.type === 'template' ? item.data.id : item.data.id;
+      const itemName = item.type === 'capability' ? item.data.name : item.type === 'template' ? item.data.name : item.data.name;
+      return isCrownJewelItem(itemId, itemName);
+    });
+  }, [allItems]);
   
   // Group by category for browse mode
   const groupedByCategory = useMemo(() => {
