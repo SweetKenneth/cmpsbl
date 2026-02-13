@@ -25,7 +25,7 @@ const LIBRARY_DOCS = [
   { id: "00", name: "INDEX", title: "Documentation Overview", description: "Complete guide to CMPSBL documentation" },
   { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary", description: "High-level overview for investors" },
   { id: "02", name: "WHAT-IS-CMPSBL", title: "What is CMPSBL?", description: "Introduction to cognitive infrastructure" },
-  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "14-module architecture deep dive" },
+  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "21-module architecture deep dive" },
   { id: "04", name: "USE-CASES", title: "Use Cases", description: "Real-world applications" },
   { id: "05", name: "ARCHITECTURE", title: "Architecture Overview", description: "Technical foundation" },
   { id: "06", name: "GETTING-STARTED", title: "Getting Started", description: "Quick start guide" },
@@ -84,7 +84,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="CMPSBL Substrate OS v8.0.0 SYNERGY+ Epoch — Reference standard for the substrate class. Download documentation, browse the 14-module architecture, and access archival records." />
+        <meta name="description" content="CMPSBL Substrate OS v9.1.0 ARCHITECT Epoch — Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -94,13 +94,13 @@ export default function Foundations() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Layers className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">v8.0.0 SYNERGY+ Epoch</span>
+            <span className="text-sm font-mono text-primary">v9.1.0 ARCHITECT Epoch</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             Foundations
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            CMPSBL Substrate OS v8.0.0 is the reference implementation and proposed standard 
+            CMPSBL Substrate OS v9.1.0 is the reference implementation and proposed standard 
             for the <strong>substrate class</strong> of AI systems — persistent runtime, memory, 
             doctrine, and self-improvement.
           </p>
@@ -135,11 +135,11 @@ export default function Foundations() {
           </CardContent>
         </Card>
 
-        {/* 14-Module Architecture */}
+        {/* 21-Module Architecture */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
             <Layers className="w-6 h-6 text-primary" />
-            14-Module Architecture
+            21-Module Architecture
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
             {MODULES.map((mod) => (

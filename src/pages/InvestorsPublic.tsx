@@ -61,10 +61,10 @@ export default function InvestorsPublic() {
   };
 
   const metrics = [
-    { icon: Users, label: "Integrated Modules", value: "14", color: "text-emerald-500" },
-    { icon: TrendingUp, label: "Synergy Pipelines", value: "147", color: "text-primary" },
-    { icon: Award, label: "Capabilities", value: "269+", color: "text-amber-500" },
-    { icon: Target, label: "Custom Executors", value: "125", color: "text-muted-foreground" }
+    { icon: Users, label: "Integrated Modules", value: "21", color: "text-emerald-500" },
+    { icon: TrendingUp, label: "Synergy Pipelines", value: "200", color: "text-primary" },
+    { icon: Award, label: "Capabilities", value: "400+", color: "text-amber-500" },
+    { icon: Target, label: "Cognitive Engines", value: "100", color: "text-muted-foreground" }
   ];
 
   // v8.0.0 — Current CMPSBL substrate modules

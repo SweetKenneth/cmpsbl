@@ -31,9 +31,9 @@ export default function Solutions() {
       icon: Zap,
       name: "Engine Marketplace",
       tagline: "Production-Ready Orchestrations",
-      description: "70 engines and 22 meta-engines. Governed, versioned, enterprise-grade cognitive orchestrations with subscription access.",
-      features: ["70 production engines", "22 meta-engines", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees"],
-      metrics: ["92 Total Engines", "OEM Licensed", "Production Ready"],
+      description: "76 engines and 24 meta-engines. Governed, versioned, enterprise-grade cognitive orchestrations with subscription access.",
+      features: ["76 production engines", "24 meta-engines", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees"],
+      metrics: ["100 Total Engines", "OEM Licensed", "Production Ready"],
       link: "/engines"
     },
     {
@@ -77,8 +77,8 @@ export default function Solutions() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Solutions — CMPSBL Cognitive Infrastructure Products"
-        description="Explore CMPSBL's v8.0.0 product suite: Cognitive Substrate, Defense Module, Engine Marketplace, Persistent Memory, and Enterprise solutions."
+        title="Solutions — CMPSBL v9.1.0 Cognitive Infrastructure Products"
+        description="Explore CMPSBL's v9.1.0 product suite: 21-Module Cognitive Substrate, Defense Module, Engine Marketplace, Persistent Memory, and Enterprise solutions."
         canonical="https://cmpsbl.com/solutions"
         keywords={['cognitive infrastructure', 'AI memory', 'enterprise AI', 'engine marketplace', 'persistent memory', 'CMPSBL']}
       />

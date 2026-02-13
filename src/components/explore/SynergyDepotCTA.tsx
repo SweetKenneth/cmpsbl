@@ -105,11 +105,11 @@ export function SynergyDepotCTA() {
 
                 {/* Stats */}
                 <div className="flex justify-around py-5 mb-6 rounded-2xl bg-gradient-to-br from-violet-500/5 to-purple-500/5 border border-violet-500/10">
-                  <StatBadge value="147" label="Pipelines" />
+                  <StatBadge value="200" label="Pipelines" />
                   <div className="w-px bg-violet-500/20" />
-                  <StatBadge value="32" label="S-Tier" />
+                  <StatBadge value="21" label="Modules" />
                   <div className="w-px bg-violet-500/20" />
-                  <StatBadge value="125" label="Executors" />
+                  <StatBadge value="6" label="Layers" />
                 </div>
 
                 {/* Feature highlights */}
@@ -178,7 +178,7 @@ export function SynergyDepotCTA() {
 
                 {/* Stats */}
                 <div className="flex justify-around py-5 mb-6 rounded-2xl bg-gradient-to-br from-emerald-500/5 to-teal-500/5 border border-emerald-500/10">
-                  <StatBadge value="86+" label="Artifacts" />
+                  <StatBadge value="400+" label="Capabilities" />
                   <div className="w-px bg-emerald-500/20" />
                   <StatBadge value="7" label="Categories" />
                   <div className="w-px bg-emerald-500/20" />

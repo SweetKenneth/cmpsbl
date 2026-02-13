@@ -540,10 +540,10 @@ export function HeroMetaSubstrate() {
             {/* Inner glow */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
             
-            <AnimatedStat value={14} label="Modules" delay={0} />
-            <AnimatedStat value={147} label="Synergies" delay={1} />
-            <AnimatedStat value={160} suffix="k+" label="Lines of Code" delay={2} />
-            <AnimatedStat value={310} label="Commands" delay={3} />
+            <AnimatedStat value={21} label="Modules" delay={0} />
+            <AnimatedStat value={200} label="Synergies" delay={1} />
+            <AnimatedStat value={175} suffix="k+" label="Lines of Code" delay={2} />
+            <AnimatedStat value={360} label="Commands" delay={3} />
           </div>
         </motion.div>
       </div>
