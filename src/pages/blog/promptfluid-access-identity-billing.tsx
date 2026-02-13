@@ -8,19 +8,19 @@ const PromptFluidAccess = () => {
   return (
     <>
       <Helmet>
-        <title>PromptFluid Access: Identity, Licensing & Billing System | PromptFluid</title>
+        <title>ACCESS Module: Identity, Licensing & Billing | CMPSBL®</title>
         <meta 
           name="description" 
-          content="Discover PromptFluid Access, the comprehensive identity and billing system managing authentication, permissions, licensing, and payment operations with trust-based retention." 
+          content="CMPSBL's ACCESS module manages authentication, permissions, licensing, and billing with zero-password cryptographic identity and trust-based retention." 
         />
-        <meta name="keywords" content="identity management, billing system, authentication, licensing, payment processing, PromptFluid Access" />
+        <meta name="keywords" content="identity management, AI billing, authentication, licensing system, CMPSBL Access, zero-password auth" />
         <link rel="canonical" href="https://cmpsbl.com/blog/promptfluid-access-identity-billing" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "TechArticle",
-            "headline": "PromptFluid Access: Identity, Licensing & Billing System",
-            "description": "Discover PromptFluid Access, the comprehensive identity and billing system managing authentication, permissions, licensing, and payment operations with trust-based retention.",
+            "headline": "ACCESS Module: Identity, Licensing & Billing",
+            "description": "CMPSBL's ACCESS module manages authentication, permissions, licensing, and billing with zero-password cryptographic identity.",
             "author": {
               "@type": "Person",
               "name": "Kenneth E Sweet Jr",
@@ -28,16 +28,16 @@ const PromptFluidAccess = () => {
             },
             "publisher": {
               "@type": "Organization",
-              "name": "PromptFluid",
+              "name": "CMPSBL",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://www.promptfluid.com/logo.png"
+                "url": "https://cmpsbl.com/logo.png"
               }
             },
             "datePublished": "2025-09-30",
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": "https://www.promptfluid.com/blog/promptfluid-access-identity-billing"
+              "@id": "https://cmpsbl.com/blog/promptfluid-access-identity-billing"
             }
           })}
         </script>

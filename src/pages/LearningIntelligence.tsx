@@ -67,8 +67,9 @@ export default function LearningIntelligence() {
   return (
     <>
       <SEO 
-        title="Learning Intelligence | CMPSBL Vision"
-        description="View AI learning patterns, system heuristics, and adaptive recommendations from CMPSBL Brain module."
+        title="Learning Intelligence — AI Heuristics & Patterns | CMPSBL®"
+        description="Real-time view of AI learning patterns, system heuristics, and adaptive recommendations powering CMPSBL's self-improving cognitive substrate."
+        keywords={['AI learning intelligence', 'system heuristics', 'adaptive AI patterns', 'CMPSBL learning', 'cognitive improvement']}
       />
       
       <div className="container mx-auto p-6 space-y-6">

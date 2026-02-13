@@ -10,9 +10,9 @@ export default function AISystemsThatDreamPressRelease() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Introduces Experimental Dream Cycle AI Systems"
-        description="Cascade and SimNap explore structured dream cycles, self-reflection, and autonomous learning—powered by a free-tier AI router."
-        keywords={["AI systems", "autonomous learning", "AI dreams", "Cascade", "Dream Eater", "PromptFluid"]}
+        title="AI Systems That Dream: Experimental Dream Cycles | CMPSBL®"
+        description="Exploring structured dream cycles, self-reflection loops, and autonomous learning in CMPSBL's cognitive substrate. How AI systems consolidate knowledge offline."
+        keywords={['AI dream cycles', 'autonomous learning', 'self-reflection AI', 'cognitive consolidation', 'CMPSBL Dream Eater']}
       />
       
       <PublicNav />

@@ -6,8 +6,9 @@ export default function Privacy() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Privacy Policy | PromptFluid"
-        description="PromptFluid's privacy policy explains how we collect, use, and protect your personal information."
+        title="Privacy Policy | CMPSBL®"
+        description="How CMPSBL collects, uses, and protects your data. Transparent privacy practices for our cognitive substrate platform and developer tools."
+        keywords={['privacy policy', 'data protection', 'CMPSBL privacy', 'AI platform privacy']}
       />
       <PublicNav />
       

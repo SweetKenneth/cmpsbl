@@ -189,8 +189,8 @@ export default function Analytics() {
   return (
     <>
       <SEO
-        title="Analytics Dashboard"
-        description="Real-time internal metrics and insights for PromptFluid systems"
+        title="Analytics Dashboard — CMPSBL®"
+        description="Real-time internal metrics and insights for CMPSBL substrate systems."
         noindex={true}
       />
       

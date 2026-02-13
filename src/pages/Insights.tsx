@@ -54,7 +54,7 @@ export default function Insights() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>Substrate Insights — Observer Tier | CMPSBL</title>
-        <meta name="description" content="Observer-level access to CMPSBL Substrate OS v7.5.3. Read-only visibility into architecture, documentation, and standards without system access." />
+        <meta name="description" content="Observer-level access to CMPSBL Substrate OS v9.1.0 ARCHITECT Epoch. Read-only visibility into architecture, documentation, and system standards." />
       </Helmet>
 
       <PublicNav />

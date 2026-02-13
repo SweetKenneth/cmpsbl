@@ -10,10 +10,10 @@ const ProductRoadmap2025 = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="PromptFluid Product Roadmap 2025-2026"
-        description="Upcoming features, release timelines, and innovations in adaptive AI, security, accessibility, and automation."
+        title="CMPSBL Product Roadmap 2025–2026 | AI Substrate Evolution"
+        description="Upcoming features and milestones for CMPSBL's cognitive substrate. From 21-module ARCHITECT Epoch to autonomous evolution and enterprise integrations."
         canonical="https://cmpsbl.com/blog/product-roadmap-2025"
-        keywords={["AI product roadmap", "PromptFluid features", "AI platform development", "AI innovation timeline"]}
+        keywords={['AI roadmap 2026', 'CMPSBL features', 'cognitive substrate roadmap', 'AI platform evolution']}
       />
 
       <PublicNav />

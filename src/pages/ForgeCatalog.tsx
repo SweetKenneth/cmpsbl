@@ -111,7 +111,7 @@ export default function ForgeCatalog() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SEO title="Bot Catalog — CMPSBL" description="Browse and manage cognitive bots" />
+      <SEO title="Cognitive Forge Catalog — CMPSBL®" description="Browse, mint, and manage cognitive bots within CMPSBL's substrate. Assemble AI agents with specialized skills and deploy them instantly." keywords={['cognitive bots', 'AI agent catalog', 'CMPSBL forge', 'bot management']} />
       <OSHeader userEmail={user?.email} role={role} />
 
       <main className="flex-1 container mx-auto px-4 py-6 max-w-6xl">

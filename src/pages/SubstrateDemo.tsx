@@ -171,8 +171,9 @@ export default function SubstrateDemo() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Interactive Demo — Substrate AI OS | promptfluid®"
-        description="Experience the 21-module cognitive operating system in action. Watch memory, reasoning, defense, and synthesis orchestrate in real-time."
+        title="Interactive Demo — 21-Module AI Operating System | CMPSBL®"
+        description="Experience CMPSBL's cognitive substrate live. Watch memory, reasoning, defense, and synthesis orchestrate across 21 modules in real-time."
+        keywords={['AI demo', 'cognitive substrate demo', 'AI operating system demo', 'CMPSBL interactive', 'live AI orchestration']}
       />
       <PublicNav />
 

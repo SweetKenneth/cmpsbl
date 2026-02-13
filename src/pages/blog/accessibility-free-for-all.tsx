@@ -9,8 +9,8 @@ export default function AccessibilityFreeForAll() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="We Made Accessibility Free For All | PromptFluid"
-        description="Accessibility should never be locked behind a paywall. PromptFluid is making WCAG scanning and fixing 100% free forever through the INCLUSIVE Module."
+        title="We Made Accessibility Free For All | CMPSBL®"
+        description="Accessibility should never be locked behind a paywall. CMPSBL's INCLUSIVE module makes WCAG scanning and fixing 100% free forever."
         canonical="https://cmpsbl.com/blog/accessibility-free-for-all"
         keywords={[
           "free accessibility scanner",

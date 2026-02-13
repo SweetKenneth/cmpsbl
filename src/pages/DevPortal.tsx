@@ -5592,9 +5592,9 @@ export default function DevPortal() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Substrate Modules — promptfluid® Cognitive SDK"
-        description="Compose cognition as software with the promptfluid substrate SDK. 72 modular primitives for memory, routing, governance, and execution."
-        keywords={['cognitive substrate', 'substrate modules', 'substrate SDK', 'cognition as software', 'AI composition']}
+        title="Substrate Modules — CMPSBL® Cognitive SDK"
+        description="Compose cognition as software with CMPSBL's substrate SDK. 21 modular primitives for memory, routing, governance, security, and execution."
+        keywords={['cognitive substrate SDK', 'AI modules', 'CMPSBL SDK', 'cognition as software', 'substrate composition']}
       />
       <PublicNav />
 

@@ -51,8 +51,9 @@ export default function InvestorPackets() {
   return (
     <>
       <SEO 
-        title="Investor Packets - PromptFluid Vision"
-        description="Generate automated investor packets with current valuation and metrics"
+        title="Investor Packets — CMPSBL® Vision"
+        description="Generate automated investor packets with real-time valuation metrics, traction data, and substrate architecture summaries for CMPSBL."
+        keywords={['investor packets', 'CMPSBL valuation', 'AI startup metrics', 'investor materials']}
       />
       <div className="container mx-auto p-6 space-y-6">
         <div>

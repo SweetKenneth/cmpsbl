@@ -23,8 +23,9 @@ export default function BrainAnalytics() {
   return (
     <>
       <SEO 
-        title="Brain Analytics | PromptFluid"
-        description="PromptFluid Brain Analytics - Monitor Decode AI learning, memory patterns, and autonomous decision-making"
+        title="Brain Analytics — AI Learning & Memory Monitoring | CMPSBL®"
+        description="Monitor AI learning patterns, memory recall accuracy, and autonomous decision-making across CMPSBL's cognitive substrate in real-time."
+        keywords={['AI analytics', 'brain monitoring', 'AI learning patterns', 'memory analytics', 'cognitive metrics']}
       />
       <BrainPasscode>
         <div className="w-full max-w-7xl mx-auto space-y-6 px-3 sm:px-4">

@@ -134,8 +134,8 @@ export default function HumansTxt() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>Humans.txt — promptfluid®</title>
-        <meta name="description" content="The people, philosophy, and technology behind promptfluid® cognitive orchestration platform." />
+        <title>Humans.txt — CMPSBL®</title>
+        <meta name="description" content="The people, philosophy, and technology behind CMPSBL's cognitive orchestration substrate." />
       </Helmet>
 
       <PublicNav />

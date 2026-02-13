@@ -101,8 +101,9 @@ export default function SystemAudit() {
     <BrainPasscode>
       <div className="min-h-screen bg-background px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <SEO
-          title="System Audit | PromptFluid"
-          description="Comprehensive audit of PromptFluid Brain ecosystem"
+          title="System Audit — Substrate Health Check | CMPSBL®"
+          description="Comprehensive audit of CMPSBL's 21-module cognitive substrate. Module health, pipeline integrity, and compliance verification."
+          keywords={['system audit', 'AI health check', 'substrate audit', 'CMPSBL diagnostics']}
         />
 
         <div className="max-w-7xl mx-auto space-y-6">

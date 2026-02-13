@@ -10,10 +10,10 @@ const PromptFluidMarketDisruptor = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="PromptFluid's Vision: A Different Approach to AI Platforms"
-        description="How we're building adaptive intelligence, security-first architecture, and autonomous learning into our platform design."
+        title="CMPSBL: A Different Approach to AI Infrastructure"
+        description="How CMPSBL's cognitive substrate disrupts AI platforms with adaptive intelligence, security-first architecture, and autonomous self-improvement."
         canonical="https://cmpsbl.com/blog/promptfluid-market-disruptor"
-        keywords={["AI platform design", "adaptive AI", "multi-model orchestration", "AI security platform"]}
+        keywords={['AI infrastructure disruption', 'cognitive substrate', 'adaptive AI platform', 'CMPSBL market position']}
       />
 
       <PublicNav />

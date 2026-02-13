@@ -8,9 +8,9 @@ const DefenseFinancialServices = () => {
   return (
     <>
       <SEO 
-        title="Bot Protection for Financial Services | PromptFluid Defense"
-        description="Protect banking portals, investment platforms, and payment systems from AI bot attacks. Stop account takeover, transaction fraud, and credential stuffing with behavioral AI security."
-        keywords={["fintech cybersecurity", "banking bot protection", "financial services security", "account takeover prevention", "payment fraud protection", "fintech compliance security", "PCI DSS bot defense", "financial app security"]}
+        title="AI Bot Protection for Financial Services | CMPSBL Defense"
+        description="Stop account takeover and transaction fraud with CMPSBL's behavioral AI security. Built for banking, fintech, and payment platforms requiring PCI DSS compliance."
+        keywords={['fintech cybersecurity', 'banking bot protection', 'account takeover prevention', 'PCI DSS AI security', 'CMPSBL financial defense']}
       />
       
       <div className="min-h-screen bg-background">

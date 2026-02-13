@@ -10,9 +10,9 @@ const PromptFluidStudioGuide = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Studio: Build Apps That Think"
-        description="Learn how PromptFluid Studio leverages Cascade AI to build complete, deployable applications from natural language descriptions with autonomous architecture decisions."
-        keywords={["PromptFluid Studio", "AI app builder", "autonomous development", "Cascade AI", "React applications"]}
+        title="STUDIO Module: AI-Powered App Generation | CMPSBL®"
+        description="CMPSBL Studio generates production-ready applications from natural language. Autonomous architecture decisions, code generation, and deployment in one cognitive workflow."
+        keywords={['AI app builder', 'code generation', 'autonomous development', 'CMPSBL Studio', 'AI-powered development']}
       />
       
       <PublicNav />
