@@ -3,11 +3,11 @@
  * Brain Knowledge Transfer Pipelines — v2.0.0
  * 
  * Universal knowledge transfer system that distills Brain memories
- * into actionable expertise for ALL 13 modules (Brain itself is the source).
+ * into actionable expertise for ALL 20 modules (Brain itself is the source).
  * Each module gets a specialized pipeline that extracts relevant patterns
  * and injects them into hot memory for instant recall.
  * 
- * v2.0.0 — Full Coverage: All 13 non-brain modules + cross-module insight sharing
+ * v2.1.0 — Full Coverage: All 20 non-brain modules + Infrastructure Six + ENCODE + cross-module insight sharing
  * v1.0.0 — Initial: DECODE, DEFENSE, CORTEX, VISION, INCLUSIVE
  */
 
@@ -622,7 +622,8 @@ export async function getAllEvolutionConfidence(): Promise<EvolutionConfidence[]
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
     'defense', 'vision', 'integration', 'system', 'modernizer',
-    'inclusive', 'cortex',
+    'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit',
+    'identity', 'economy', 'sandbox',
   ];
 
   const results: EvolutionConfidence[] = [];
@@ -817,7 +818,8 @@ export async function transferAllModules(): Promise<{
   const modules: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
     'defense', 'vision', 'integration', 'system', 'modernizer',
-    'inclusive', 'cortex',
+    'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit',
+    'identity', 'economy', 'sandbox',
   ];
   const results: TransferBatch[] = [];
 
@@ -843,7 +845,8 @@ export async function ingestAllModulePatterns(): Promise<{
   const modules: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
     'defense', 'vision', 'integration', 'system', 'modernizer',
-    'inclusive', 'cortex',
+    'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit',
+    'identity', 'economy', 'sandbox',
   ];
   const results = {} as Record<TransferModule, { ingested: number; errors: number }>;
   let totalIngested = 0;
