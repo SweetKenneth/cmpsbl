@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**PromptFluid® CMPSBL OS — v8.5.0 Library (SYNERGY+ Epoch)**
+**PromptFluid® CMPSBL OS — v9.1.0 Library (ARCHITECT Epoch)**
 
 ---
 
@@ -9,15 +9,17 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v8.5.0 (SYNERGY+) |
+| **Version** | v9.1.0 (ARCHITECT) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | February 2026 |
 | **Author** | Kenneth E. Sweet Jr. ([ORCID](https://orcid.org/0009-0001-4237-1243)) |
-| **Capabilities** | 325 Cross-Module Capabilities |
-| **Cognitive Engines** | 70 Compound Execution Units |
-| **Meta-Engines** | 22 High-Order Orchestrators |
-| **Synergy Pipelines** | 147 Executable Pipelines |
+| **Modules** | 21 (14 Core + 6 Infrastructure + ENCODE) |
+| **Capabilities** | 400+ Cross-Module Capabilities |
+| **Cognitive Engines** | 76 Base Engines |
+| **Meta-Engines** | 24 High-Order Orchestrators |
+| **Synergy Pipelines** | 200 Executable Pipelines |
+| **Templates** | 200 Composable Templates |
 | **Infrastructure Systems** | 27 Production-Hardening Modules |
 | **Tiered Capabilities** | 68 (FREE/Builder/Pro/Enterprise) |
 | **Avg Synergy Multiplier** | 3.2x |
@@ -48,7 +50,8 @@ This library is part of the **FNDTN v8** standards package, which presents:
 | v7.6.0 (SYNERGY+) | 2026-02-06 | 76 Capabilities, INCLUSIVE Auto-Repair |
 | v8.0.0 (ENGINE+) | 2026-02-08 | 62 Cognitive Engines, Compound Execution |
 | v8.1.0 (SYNERGY+) | 2026-02-09 | World-First Enhancement Integration, 269 Capabilities |
-| **v8.5.0 (SYNERGY+)** | 2026-02-11 | **27 Infrastructure Systems, 340+ Commands, 7 Automation Systems, LNCHBL Distribution** |
+| v8.5.0 (SYNERGY+) | 2026-02-11 | 27 Infrastructure Systems, 340+ Commands, LNCHBL Distribution |
+| **v9.1.0 (ARCHITECT)** | 2026-02-13 | **21 Modules, 400+ Capabilities, 200 Pipelines, 100 Engines, ENCODE Module** |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
@@ -84,7 +87,7 @@ This library is part of the **FNDTN v8** standards package, which presents:
 | Document | Title | Description |
 |----------|-------|-------------|
 | [01-EXECUTIVE-SUMMARY.md](./01-EXECUTIVE-SUMMARY.md) | Executive Summary | High-level overview for researchers and institutions |
-| [02-SYSTEM-ARCHITECTURE.md](./02-SYSTEM-ARCHITECTURE.md) | System Architecture | 14-module kernel architecture with diagrams |
+| [02-SYSTEM-ARCHITECTURE.md](./02-SYSTEM-ARCHITECTURE.md) | System Architecture | 21-module architecture with 6 layers |
 | [03-USERS-GUIDE.md](./03-USERS-GUIDE.md) | User's Guide | Complete operational guide for substrate users |
 | [04-API-REFERENCE.md](./04-API-REFERENCE.md) | API Reference | Public interface specification |
 
@@ -106,6 +109,23 @@ This library is part of the **FNDTN v8** standards package, which presents:
 | [21-MODERNIZER-MODULE.md](./21-MODERNIZER-MODULE.md) | MODERNIZER | Self-improvement, hot-swap, canary deploy, schema migration, deprecation lifecycle |
 | [22-CORTEX-MODULE.md](./22-CORTEX-MODULE.md) | CORTEX | Agency orchestrator, dynamic pipeline, budget governor |
 | [23-INCLUSIVE-MODULE.md](./23-INCLUSIVE-MODULE.md) | INCLUSIVE | Human compatibility pipeline |
+
+### Infrastructure Layer Modules (v9.1.0)
+
+| Document | Module | Purpose |
+|----------|--------|---------|
+| [24-MEMORY-MODULE.md](./24-MEMORY-MODULE.md) | MEMORY | Vector/RAG orchestration and semantic recall |
+| [25-RELAY-MODULE.md](./25-RELAY-MODULE.md) | RELAY | Centralized outbound webhooks and side-effect delivery |
+| [26-AUDIT-MODULE.md](./26-AUDIT-MODULE.md) | AUDIT | Immutable, cryptographically-chained compliance logging |
+| [27-IDENTITY-MODULE.md](./27-IDENTITY-MODULE.md) | IDENTITY | Universal human/agent actor attribution |
+| [28-ECONOMY-MODULE.md](./28-ECONOMY-MODULE.md) | ECONOMY | Real-time cost attribution, budgeting, marketplace signaling |
+| [29-SANDBOX-MODULE.md](./29-SANDBOX-MODULE.md) | SANDBOX | Isolated environments for safe code execution |
+
+### Orchestrator Layer Extension (v9.1.0)
+
+| Document | Module | Purpose |
+|----------|--------|---------|
+| [30-ENCODE-MODULE.md](./30-ENCODE-MODULE.md) | ENCODE | Code generation, transformation, and preview scoring |
 
 ### Scientific Validation
 
@@ -144,12 +164,12 @@ This library is part of the **FNDTN v8** standards package, which presents:
 |----------|--------|-------------|
 | [75-EVOLUTION-LIFECYCLE.md](./75-EVOLUTION-LIFECYCLE.md) | Evolution Lifecycle | Modernizer 5-phase cycle |
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
-| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 147 cross-module executable pipelines |
-| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Capabilities** | **325 cross-module capabilities, 27 infrastructure systems** |
-| [79-COGNITIVE-ENGINES.md](./79-COGNITIVE-ENGINES.md) | **Cognitive Engines** | **70 engines, 22 meta-engines, 325 capabilities (v8.5.0)** |
+| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 200 cross-module executable pipelines |
+| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Capabilities** | **400+ cross-module capabilities** |
+| [79-COGNITIVE-ENGINES.md](./79-COGNITIVE-ENGINES.md) | **Cognitive Engines** | **76 engines, 24 meta-engines, 100 total (v9.1.0)** |
 | [80-ATLAS-COMMAND.md](./80-ATLAS-COMMAND.md) | Atlas Command | Atlas control plane terminal reference |
 | [80-EVOLUTION-OBSERVABILITY.md](./80-EVOLUTION-OBSERVABILITY.md) | Evolution Observability | Investor-facing evolution visibility & stamps |
-| [85-LNCHBL-DISTRIBUTION.md](./85-LNCHBL-DISTRIBUTION.md) | **LNCHBL Distribution** | **68 tiered capabilities, self-improvement Enterprise-only** |
+| [85-LNCHBL-DISTRIBUTION.md](./85-LNCHBL-DISTRIBUTION.md) | **LNCHBL Distribution** | **114 tiered capabilities, self-improvement Enterprise-only** |
 
 ### Infrastructure Systems (v8.5.0)
 
@@ -241,14 +261,14 @@ Read all documents in order.
   title        = {{CMPSBL OS Substrate: A Cognitive Orchestration 
                    System for Autonomous AI Operations}},
   year         = 2026,
-  version      = {v8.5.0},
+  version      = {v9.1.0},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
-  note         = {Production system with 175,000+ lines of code, 62 cognitive engines, 27 infrastructure systems}
+  note         = {Production system with 21 modules, 400+ capabilities, 100 cognitive engines}
 }
 ```
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
