@@ -14,28 +14,35 @@ CMPSBL® is built on three core principles:
 
 ---
 
-## The 14-Module Architecture
+## The 21-Module Architecture (v9.1.0)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    ORCHESTRATOR LAYER                        │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  CORTEX (Policy)  │  INTEGRATION (External APIs)        ││
+│  │  CORTEX (Policy)  │  ENCODE (Code Generation)           ││
+│  └─────────────────────────────────────────────────────────┘│
+├─────────────────────────────────────────────────────────────┤
+│                  INFRASTRUCTURE LAYER (v9.1.0)               │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │  MEMORY  │  RELAY  │  AUDIT  │  IDENTITY  │  ECONOMY   ││
+│  │          │         │         │            │  SANDBOX    ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                      ADMIN LAYER                             │
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │  SYSTEM (Health)  │  MODERNIZER  │  INCLUSIVE (A11y)    ││
+│  │                   │  INTEGRATION                        ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                   OPERATIONS LAYER                           │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  DREAM  │  DEFENSE  │  NEXUS  │  VISION  │  INTEGRATION ││
+│  │  DREAM  │  DEFENSE  │  NEXUS  │  VISION                ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                   COGNITIVE LAYER                            │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  BRAIN (Memory)  │  DECODE (NLP)  │  NEXUS (AI Routing) ││
+│  │  BRAIN (Memory)  │  DECODE (NLP)                        ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                    KERNEL LAYER                              │
@@ -49,7 +56,7 @@ CMPSBL® is built on three core principles:
 
 ## Layer Overview
 
-### Kernel Layer (Boot Order 1-3)
+### Kernel Layer (3 Modules)
 Foundation services that all other modules depend on.
 
 | Module | Purpose |
@@ -58,7 +65,7 @@ Foundation services that all other modules depend on.
 | **RIPPLE** | Event bus, pub/sub, cross-module messaging |
 | **ACCESS** | API keys, rate limits, entitlements |
 
-### Cognitive Layer (Boot Order 4-5)
+### Cognitive Layer (2 Modules)
 Intelligence and memory capabilities.
 
 | Module | Purpose |
@@ -66,7 +73,7 @@ Intelligence and memory capabilities.
 | **BRAIN** | Memory storage, recall, consolidation |
 | **DECODE** | Natural language interpretation |
 
-### Operations Layer (Boot Order 6-10)
+### Operations Layer (4 Modules)
 Runtime services for learning, security, AI, and visibility.
 
 | Module | Purpose |
@@ -75,18 +82,8 @@ Runtime services for learning, security, AI, and visibility.
 | **DEFENSE** | Security, threat detection, rate limiting |
 | **NEXUS** | Multi-provider AI routing |
 | **VISION** | Observability, metrics, tracing |
-| **INTEGRATION** | External APIs, webhooks, adapters |
 
-### Operations Layer (Boot Order 7-9)
-Runtime services for security, AI, and visibility.
-
-| Module | Purpose |
-|--------|---------|
-| **DEFENSE** | Security, threat detection, rate limiting |
-| **NEXUS** | Multi-provider AI routing |
-| **VISION** | Observability, metrics, tracing |
-
-### Admin Layer (Boot Order 11-13)
+### Admin Layer (4 Modules)
 System management and self-improvement.
 
 | Module | Purpose |
@@ -94,13 +91,27 @@ System management and self-improvement.
 | **SYSTEM** | Health, diagnostics, backup/restore |
 | **MODERNIZER** | Evolution engine, self-improvement |
 | **INCLUSIVE** | Accessibility scanning, WCAG enforcement |
+| **INTEGRATION** | Enterprise adapter framework, plugin SDK |
 
-### Orchestrator Layer (Boot Order 14)
-High-level coordination.
+### Infrastructure Layer (6 Modules — v9.1.0)
+Foundational services for autonomous, high-trust operations.
+
+| Module | Purpose |
+|--------|---------|
+| **MEMORY** | Vector/RAG orchestration, semantic recall |
+| **RELAY** | Centralized outbound webhooks, side-effect delivery |
+| **AUDIT** | Immutable, cryptographically-chained compliance logging |
+| **IDENTITY** | Universal human/agent actor attribution |
+| **ECONOMY** | Real-time cost attribution, budgeting |
+| **SANDBOX** | Isolated environments for safe code execution |
+
+### Orchestrator Layer (2 Modules)
+High-level coordination and code generation.
 
 | Module | Purpose |
 |--------|---------|
 | **CORTEX** | Policy intent, autonomous decision-making |
+| **ENCODE** | Code generation, transformation, preview scoring |
 
 ---
 
@@ -261,4 +272,4 @@ ripple.on('brain.memory.created', (event) => {
 
 ---
 
-*CMPSBL® — Architecture for the Cognitive Era*
+*CMPSBL® v9.1.0 ARCHITECT Epoch — Architecture for the Cognitive Era*

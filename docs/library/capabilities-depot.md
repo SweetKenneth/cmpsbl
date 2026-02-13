@@ -6,7 +6,7 @@
 
 ## What is the Capabilities Depot?
 
-The Capabilities Depot is a **free exploration layer** containing 269+ atomic cognitive capabilities. Capabilities are stateless building blocks — use them freely to learn, experiment, and prototype.
+The Capabilities Depot is a **free exploration layer** containing 400+ atomic cognitive capabilities across 21 modules. Capabilities are stateless building blocks — use them freely to learn, experiment, and prototype.
 
 **Engines are the products. Capabilities are adoption fuel.**
 
@@ -15,8 +15,8 @@ The Capabilities Depot is a **free exploration layer** containing 269+ atomic co
 ## Key Principles
 
 ### 1. FREE to Use
-- All 269+ capabilities are unlocked
-- No pricing, no checkout, no paywalls
+- All 400+ capabilities are unlocked
+- Spanning 21 modules across 6 architectural layers
 - Explore freely in terminal, CodeLab, or via API
 
 ### 2. Atomic & Stateless
@@ -86,4 +86,4 @@ const result = await substrate.capability.run('capability_name', {
 
 ---
 
-*CMPSBL® Capabilities Depot — v4.0.0 (FREE)*
+*CMPSBL® Capabilities Depot — v9.1.0 (FREE)*

@@ -1,6 +1,6 @@
-# Cross-Module Synergy Capabilities v8.5.0
+# Cross-Module Synergy Capabilities v9.1.0
 
-**147 Synergy Pipelines with 125 Custom Executors — The CMPSBL® Advantage**
+**200 Synergy Pipelines across 21 Modules — The CMPSBL® Advantage**
 
 ---
 

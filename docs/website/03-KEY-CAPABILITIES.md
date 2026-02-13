@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v8.0.0**
+**What CMPSBL® Does — Technical Overview v9.1.0 ARCHITECT Epoch**
 
 ---
 
@@ -48,17 +48,17 @@ const context = await agent.getContext(userMessage);
 | Intent Parsing | DECODE | Natural language interpretation, command routing |
 | Orchestration | CORTEX | Policy intent, autonomous decision-making |
 | Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
-| **Cross-Module Synergies** | CORTEX | **147 pipelines, 125 executors, 310+ terminal commands** |
+| **Cross-Module Synergies** | CORTEX | **200 pipelines, 400+ capabilities, 21 modules** |
 
 ---
 
-## Cross-Module Synergy Engine (v8.0.0)
+## Cross-Module Synergy Engine (v9.1.0)
 
 ### The Problem
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
 
 ### Our Solution
-**147 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities. All synergies are FREE to explore via [Synergy Pipelines](/synergies):
+**200 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities. All synergies are FREE to explore via [Synergy Pipelines](/synergies):
 
 | Category | Pipelines | Description |
 |----------|-----------|-------------|
@@ -360,4 +360,4 @@ system.health
 
 ---
 
-*CMPSBL® v8.0.0 SYNERGY+ — Cognitive Infrastructure for Production AI*
+*CMPSBL® v9.1.0 ARCHITECT Epoch — Cognitive Infrastructure for Production AI*

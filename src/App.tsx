@@ -159,6 +159,11 @@ const LangChainMemoryIntegration = lazy(() => import("./pages/blog/LangChainMemo
 const WhyAgentsForget = lazy(() => import("./pages/blog/WhyAgentsForget"));
 const BuildingAgentsThatLearn = lazy(() => import("./pages/blog/BuildingAgentsThatLearn"));
 
+// v9.1.0 ARCHITECT Epoch blog posts
+const MachineProtocolStandards = lazy(() => import("./pages/blog/MachineProtocolStandards"));
+const AutonomousAIGovernance = lazy(() => import("./pages/blog/AutonomousAIGovernance"));
+const AdversarialAIDefense = lazy(() => import("./pages/blog/AdversarialAIDefense"));
+
 // Dynamic AutoBlog post page
 const AutoBlogPost = lazy(() => import("./pages/blog/AutoBlogPost"));
 
@@ -372,6 +377,11 @@ const App = () => {
                         <Route path="/blog/langchain-memory-integration" element={<LangChainMemoryIntegration />} />
                         <Route path="/blog/why-agents-forget" element={<WhyAgentsForget />} />
                         <Route path="/blog/building-agents-that-learn" element={<BuildingAgentsThatLearn />} />
+                        
+                        {/* v9.1.0 ARCHITECT Epoch Posts */}
+                        <Route path="/blog/machine-protocol-standards-v9" element={<MachineProtocolStandards />} />
+                        <Route path="/blog/autonomous-ai-governance-v9" element={<AutonomousAIGovernance />} />
+                        <Route path="/blog/adversarial-ai-defense-v9" element={<AdversarialAIDefense />} />
                         
                         {/* Dynamic AutoBlog Posts */}
                         <Route path="/blog/auto/:slug" element={<AutoBlogPost />} />
