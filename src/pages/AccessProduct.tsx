@@ -50,9 +50,9 @@ export default function AccessProduct() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
       <SEO 
-        title="PromptFluid Access — Free Accessibility Platform | WCAG Compliance"
-        description="Make the web accessible to everyone — 100% free. AI-powered WCAG compliance, automated alt text, screen reader optimization, and accessibility fixes. Accessibility should never be behind a paywall."
-        canonical="https://promptfluid.com/products/access"
+        title="CMPSBL Access — Free Accessibility Platform | WCAG"
+        description="Make the web accessible to everyone — 100% free. AI-powered WCAG compliance, automated alt text, screen reader optimization, and accessibility fixes."
+        canonical="https://cmpsbl.com/products/access"
         keywords={[
           'free web accessibility',
           'free WCAG compliance',

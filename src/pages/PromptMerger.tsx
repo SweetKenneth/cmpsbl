@@ -152,9 +152,9 @@ export default function PromptMerger() {
   return (
     <div className="space-y-6 animate-fade-in px-4 sm:px-0">
       <SEO
-        title="Prompt Merger | PromptFluid"
+        title="Prompt Merger — CMPSBL"
         description="Transform ideas into deployable MVPs through intelligent prompt fusion"
-        canonical="https://promptfluid.com/prompt-merger"
+        canonical="https://cmpsbl.com/prompt-merger"
       />
       
       <div>

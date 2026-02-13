@@ -193,7 +193,7 @@ export default function DefenseProduct() {
       <SEO 
         title="RCKBL (Rockable) — AI-Powered WordPress Security | Official Download"
         description="Download RCKBL: Advanced AI-powered bot protection for WordPress. Stop credential stuffing, spam bots, and automated attacks with behavioral analysis."
-        canonical="https://promptfluid.com/projects/defense"
+        canonical="https://cmpsbl.com/projects/defense"
         keywords={[
           'WordPress security plugin',
           'AI bot detection',

@@ -25,9 +25,9 @@ export default function Marketing() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Marketing Hub — PromptFluid Campaign Management"
-        description="Campaign management and analytics for PromptFluid marketing initiatives."
-        canonical="https://promptfluid.com/marketing"
+        title="Marketing Hub — CMPSBL Campaign Management"
+        description="Campaign management and analytics for CMPSBL marketing initiatives."
+        canonical="https://cmpsbl.com/marketing"
         keywords={['marketing analytics', 'campaign management', 'AI marketing']}
       />
 

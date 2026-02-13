@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- PromptFluid Blog Sitemap - 2026 SEO Optimized -->
+<!-- CMPSBL Blog Sitemap - 2026 SEO Optimized -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
@@ -7,22 +7,22 @@
   
   <!-- BLOG INDEX -->
   <url>
-    <loc>https://promptfluid.com/blog</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/blog" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/blog" />
   </url>
   
-  <!-- V6.X.X PILLAR: EVOLVING SOFTWARE BREAKTHROUGH -->
+  <!-- V9.1.0 ARCHITECT ARTICLES -->
   <url>
-    <loc>https://promptfluid.com/blog/evolving-software-v6-breakthrough</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/evolving-software-v6-breakthrough</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.98</priority>
     <news:news>
       <news:publication>
-        <news:name>PromptFluid Blog</news:name>
+        <news:name>CMPSBL Blog</news:name>
         <news:language>en</news:language>
       </news:publication>
       <news:publication_date>2026-01-30</news:publication_date>
@@ -30,20 +30,20 @@
       <news:keywords>evolving software, self-improving AI, CMPSBL, adaptive systems, cognitive infrastructure</news:keywords>
     </news:news>
     <image:image>
-      <image:loc>https://promptfluid.com/assets/blog/evolving-software-v6-breakthrough.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/assets/blog/evolving-software-v6-breakthrough.jpg</image:loc>
       <image:title>Evolving Software v6.x.x Breakthrough</image:title>
     </image:image>
   </url>
   
-  <!-- V6.X.X CLUSTER: LLMS.TXT PROTOCOL -->
+  <!-- LLMS.TXT PROTOCOL -->
   <url>
-    <loc>https://promptfluid.com/blog/llms-txt-protocol-ai-context</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/llms-txt-protocol-ai-context</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.92</priority>
     <news:news>
       <news:publication>
-        <news:name>PromptFluid Blog</news:name>
+        <news:name>CMPSBL Blog</news:name>
         <news:language>en</news:language>
       </news:publication>
       <news:publication_date>2026-01-30</news:publication_date>
@@ -51,20 +51,20 @@
       <news:keywords>LLMs.txt, AI protocol, context sharing, machine-readable, AI interaction</news:keywords>
     </news:news>
     <image:image>
-      <image:loc>https://promptfluid.com/assets/blog/llms-txt-protocol-standard.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/assets/blog/llms-txt-protocol-standard.jpg</image:loc>
       <image:title>LLMs.txt Protocol Standard</image:title>
     </image:image>
   </url>
   
-  <!-- V6.X.X CLUSTER: AI GOVERNANCE NAMESPACE -->
+  <!-- AI GOVERNANCE NAMESPACE -->
   <url>
-    <loc>https://promptfluid.com/blog/ai-governance-namespace-unified-terminology</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/ai-governance-namespace-unified-terminology</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.92</priority>
     <news:news>
       <news:publication>
-        <news:name>PromptFluid Blog</news:name>
+        <news:name>CMPSBL Blog</news:name>
         <news:language>en</news:language>
       </news:publication>
       <news:publication_date>2026-01-30</news:publication_date>
@@ -72,20 +72,20 @@
       <news:keywords>AI governance, terminology, namespace, cognitive systems, standardization</news:keywords>
     </news:news>
     <image:image>
-      <image:loc>https://promptfluid.com/assets/blog/ai-governance-namespace-unified.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/assets/blog/ai-governance-namespace-unified.jpg</image:loc>
       <image:title>AI Governance Namespace</image:title>
     </image:image>
   </url>
   
   <!-- SECURITY ARTICLES -->
   <url>
-    <loc>https://promptfluid.com/blog/wordpress-bot-defense</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/wordpress-bot-defense</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
     <news:news>
       <news:publication>
-        <news:name>PromptFluid Blog</news:name>
+        <news:name>CMPSBL Blog</news:name>
         <news:language>en</news:language>
       </news:publication>
       <news:publication_date>2026-01-10</news:publication_date>
@@ -93,34 +93,34 @@
       <news:keywords>WordPress, security, bot detection, AI</news:keywords>
     </news:news>
     <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
       <image:title>WordPress Bot Defense</image:title>
     </image:image>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/blog/top-security-plugins-2025</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/top-security-plugins-2025</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/blog/ai-cybersecurity-evolution-2025</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/ai-cybersecurity-evolution-2025</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   
   <!-- ACCESSIBILITY ARTICLES -->
   <url>
-    <loc>https://promptfluid.com/blog/wordpress-accessibility-guide</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/wordpress-accessibility-guide</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
     <news:news>
       <news:publication>
-        <news:name>PromptFluid Blog</news:name>
+        <news:name>CMPSBL Blog</news:name>
         <news:language>en</news:language>
       </news:publication>
       <news:publication_date>2026-01-08</news:publication_date>
@@ -128,51 +128,51 @@
       <news:keywords>WordPress, accessibility, WCAG, compliance</news:keywords>
     </news:news>
     <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
       <image:title>WordPress Accessibility Guide</image:title>
     </image:image>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/blog/wcag-2-2-wordpress-changes</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/wcag-2-2-wordpress-changes</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/blog/automated-accessibility-fixes-wordpress</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/automated-accessibility-fixes-wordpress</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   
   <!-- AI ARTICLES -->
   <url>
-    <loc>https://promptfluid.com/blog/ai-automation-trends-2025</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/ai-automation-trends-2025</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/blog/ai-business-operations-2025</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/ai-business-operations-2025</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   
   <!-- COMPANY ARTICLES -->
   <url>
-    <loc>https://promptfluid.com/blog/promptfluid-market-disruptor</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/cmpsbl-market-disruptor</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/blog/product-roadmap-2025</loc>
-    <lastmod>2026-01-30</lastmod>
+    <loc>https://cmpsbl.com/blog/product-roadmap-2025</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>

@@ -10,9 +10,9 @@ export default function Studio() {
   return (
     <>
       <SEO
-        title="PromptFluid Studio — Autonomous Site Generator (Rebuilder Inside)"
+        title="CMPSBL Studio — Autonomous Site Generator"
         description="From legacy to modern in minutes: Studio rebuilds sites with accessibility and SEO baked in."
-        canonical="https://promptfluid.com/cluster/studio-autonomous-site-generator"
+        canonical="https://cmpsbl.com/cluster/studio-autonomous-site-generator"
         image={ogImage}
         type="article"
         keywords={[

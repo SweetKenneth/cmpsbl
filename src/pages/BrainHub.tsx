@@ -79,9 +79,9 @@ export default function BrainHub() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Brain Hub — AI Intelligence Tools | PromptFluid"
-        description="Access all PromptFluid Brain intelligence tools: training console, analytics, ML engine, learning intelligence, and autonomous consciousness monitoring."
-        canonical="https://promptfluid.com/brain-hub"
+        title="Brain Hub — AI Intelligence Tools | CMPSBL"
+        description="Access all CMPSBL Brain intelligence tools: training console, analytics, ML engine, learning intelligence, and autonomous consciousness monitoring."
+        canonical="https://cmpsbl.com/brain-hub"
         keywords={[
           'AI brain tools',
           'machine learning console',

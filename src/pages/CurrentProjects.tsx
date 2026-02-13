@@ -21,7 +21,7 @@ export default function CurrentProjects() {
       status: "Live",
       statusColor: "bg-[hsl(var(--system-green))]",
       features: ["AI bot detection", "Behavioral fingerprinting", "Real-time blocking", "WordPress plugin", "Adaptive CAPTCHA", "Device scoring"],
-      href: "https://promptfluid.com/projects/defense",
+      href: "https://cmpsbl.com/projects/defense",
       external: true
     },
     {
@@ -69,7 +69,7 @@ export default function CurrentProjects() {
       status: "Deployed",
       statusColor: "bg-primary",
       features: ["Memory reflection", "Dream cycles", "Autonomous learning", "Self-improvement", "Pattern synthesis", "Verified proof"],
-      href: "https://promptfluid.com/projects/brain",
+      href: "https://cmpsbl.com/projects/brain",
       external: true
     },
     {
@@ -81,7 +81,7 @@ export default function CurrentProjects() {
       status: "Running",
       statusColor: "bg-primary",
       features: ["20+ providers", "Auto fallbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero downtime"],
-      href: "https://promptfluid.com/blog/ai-triad-intelligent-routing",
+      href: "https://cmpsbl.com/blog/ai-triad-intelligent-routing",
       external: true
     },
     {
@@ -101,10 +101,10 @@ export default function CurrentProjects() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Current Projects — PromptFluid Shipped Systems"
-        description="Explore PromptFluid's ecosystem of shipped products: RCKBL, RNDRBL, PTCHBL, SPLCBL, Cascade, AI Nexus, and XCTBL Space. Real systems that work."
-        canonical="https://promptfluid.com/projects"
-        keywords={['PromptFluid projects', 'AI security', 'accessibility tools', 'WordPress plugins', 'autonomous AI']}
+        title="Current Projects — CMPSBL Shipped Systems"
+        description="Explore CMPSBL's ecosystem of shipped products: RCKBL, RNDRBL, PTCHBL, SPLCBL, Cascade, AI Nexus, and XCTBL Space. Real systems that work."
+        canonical="https://cmpsbl.com/projects"
+        keywords={['CMPSBL projects', 'AI security', 'accessibility tools', 'WordPress plugins', 'autonomous AI']}
       />
 
       <PublicNav />

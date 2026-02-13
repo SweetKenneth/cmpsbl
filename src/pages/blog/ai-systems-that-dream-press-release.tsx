@@ -175,8 +175,8 @@ export default function AISystemsThatDreamPressRelease() {
                 </a>
               </p>
               <p>
-                <a href="https://PromptFluid.com" className="text-primary hover:underline">
-                  PromptFluid.com
+                <a href="https://CMPSBL.com" className="text-primary hover:underline">
+                  CMPSBL.com
                 </a>
               </p>
             </div>

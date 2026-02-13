@@ -78,8 +78,8 @@ interface SEOProps {
 
 export function SEO({
   title = 'CMPSBL® — Cognitive Infrastructure for AI',
-  description = 'CMPSBL is the cognitive infrastructure layer for AI applications. Persistent memory, self-learning, multi-provider routing, and self-evolution. 14 integrated modules, 325+ capabilities.',
-  canonical = 'https://cmpsbl.com',
+  description = 'CMPSBL is the cognitive infrastructure layer for AI applications. Persistent memory, self-learning, multi-provider routing, and self-evolution. 21 integrated modules, 400+ capabilities.',
+  canonical,
   image = 'https://cmpsbl.com/og-default.jpg',
   type = 'website',
   author = 'Kenneth E Sweet Jr',
@@ -97,6 +97,13 @@ export function SEO({
   const twitterHandle = '@cmpsbl';
   const fullTitle = title.includes('CMPSBL') ? title : `${title} | ${siteName}`;
   const currentDate = new Date().toISOString();
+
+  // Route-aware canonical: auto-generate from current path if not provided
+  const resolvedCanonical = canonical || (() => {
+    if (typeof window === 'undefined') return 'https://cmpsbl.com';
+    const path = window.location.pathname;
+    return `https://cmpsbl.com${path === '/' ? '' : path}`;
+  })();
 
   // Organization Schema
   const organizationSchema = {
@@ -194,11 +201,11 @@ export function SEO({
   const webPageSchema = {
     '@context': 'https://schema.org',
     '@type': type === 'article' ? 'Article' : type === 'product' ? 'ProductPage' : 'WebPage',
-    '@id': `${canonical}#webpage`,
+    '@id': `${resolvedCanonical}#webpage`,
     name: fullTitle,
     headline: fullTitle,
     description: description,
-    url: canonical,
+    url: resolvedCanonical,
     image: {
       '@type': 'ImageObject',
       url: image,
@@ -223,7 +230,7 @@ export function SEO({
     }),
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': canonical
+      '@id': resolvedCanonical
     },
     speakable: {
       '@type': 'SpeakableSpecification',
@@ -254,8 +261,8 @@ export function SEO({
       'Persistent memory system',
       'Self-learning Dream Cycles',
       'Multi-provider AI routing',
-      '14 integrated modules',
-      '325+ capabilities',
+      '21 integrated modules',
+      '400+ capabilities',
       'Enterprise-ready'
     ],
     author: { '@id': 'https://cmpsbl.com/#organization' },
@@ -345,7 +352,7 @@ export function SEO({
   const articleSchema = type === 'article' ? {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    '@id': `${canonical}#article`,
+    '@id': `${resolvedCanonical}#article`,
     headline: fullTitle,
     description: description,
     image: {
@@ -364,7 +371,7 @@ export function SEO({
     publisher: { '@id': 'https://cmpsbl.com/#organization' },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': canonical
+      '@id': resolvedCanonical
     },
     articleSection: 'Technology',
     keywords: keywords.join(', ')
@@ -380,7 +387,7 @@ export function SEO({
       <meta name="author" content={author} />
       <meta name="publisher" content="CMPSBL" />
       <meta name="copyright" content="© 2009-2026 CMPSBL®" />
-      <link rel="canonical" href={canonical} />
+      <link rel="canonical" href={resolvedCanonical} />
       
       {/* Performance Hints */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -399,7 +406,7 @@ export function SEO({
       
       {/* Open Graph */}
       <meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
-      <meta property="og:url" content={canonical} />
+      <meta property="og:url" content={resolvedCanonical} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
@@ -414,7 +421,7 @@ export function SEO({
       
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={canonical} />
+      <meta name="twitter:url" content={resolvedCanonical} />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
@@ -442,8 +449,8 @@ export function SEO({
       
       {/* RSS & Alternates */}
       <link rel="alternate" type="application/rss+xml" title={`${siteName} Blog RSS`} href="/rss.xml" />
-      <link rel="alternate" hrefLang="en" href={canonical} />
-      <link rel="alternate" hrefLang="x-default" href={canonical} />
+      <link rel="alternate" hrefLang="en" href={resolvedCanonical} />
+      <link rel="alternate" hrefLang="x-default" href={resolvedCanonical} />
       
       {/* Structured Data JSON-LD */}
       <script type="application/ld+json">

@@ -13,7 +13,7 @@ const HowPromptFluidWorks = () => {
           content="Discover how PromptFluid's Cascade AI and unified ecosystem delivers adaptive intelligence through seamless orchestration, learning, and automation." 
         />
         <meta name="keywords" content="PromptFluid, Cascade AI, AI orchestration, adaptive intelligence, AI ecosystem, machine learning platform" />
-        <link rel="canonical" href="https://www.promptfluid.com/blog/how-promptfluid-works-cascade-ai-ecosystem" />
+        <link rel="canonical" href="https://cmpsbl.com/blog/how-promptfluid-works-cascade-ai-ecosystem" />
         <meta property="og:title" content="How PromptFluid Works: Meet Cascade AI and the Ecosystem That Makes AI Flow" />
         <meta property="og:description" content="Discover how PromptFluid's Cascade AI delivers adaptive intelligence through seamless orchestration and learning." />
         <meta property="og:type" content="article" />

@@ -15,7 +15,7 @@ export default function EvolvingSoftwareV6Breakthrough() {
       <SEO 
         title="Evolving Software v6.x.x: The Breakthrough in Self-Improving AI Systems | CMPSBL"
         description="CMPSBL v6.x.x represents a paradigm shift in software development—systems that learn, adapt, and evolve autonomously. Explore the hardened infrastructure now available via API for building truly adaptive applications."
-        canonical="https://promptfluid.com/blog/evolving-software-v6-breakthrough"
+        canonical="https://cmpsbl.com/blog/evolving-software-v6-breakthrough"
         keywords={[
           'evolving software', 'self-improving AI', 'adaptive systems', 'CMPSBL v6',
           'cognitive infrastructure', 'autonomous software evolution', 'AI development platform',

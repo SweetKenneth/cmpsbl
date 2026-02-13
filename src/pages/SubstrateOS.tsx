@@ -513,9 +513,9 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Substrate OS — promptfluid®"
+        title="Substrate OS v9.1.0 — CMPSBL®"
         description="Cognitive orchestration substrate control surface."
-        canonical="https://promptfluid.com/os"
+        canonical="https://cmpsbl.com/os"
         keywords={["substrate os", "cognitive orchestration", "ai dashboard"]}
       />
 
