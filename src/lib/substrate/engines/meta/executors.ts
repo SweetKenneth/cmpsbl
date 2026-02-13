@@ -208,7 +208,7 @@ export const executeDataHighway: MetaEngineExecutor = (ctx) => executeMetaEngine
 export const executeKnowledgeNexus: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executeSelfGovernance: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
-// v8.0.0 additions
+// Expansion additions
 export const executeCreativeForge: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executePerceptionMatrix: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executeResourceGovernor: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
@@ -220,7 +220,7 @@ export const executeWorldFirstOperational: MetaEngineExecutor = (ctx) => execute
 export const executeWorldFirstIntelligence: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executeWorldFirstGovernance: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
-// v8.5.0 additions — High-Value Expansion Meta-Engines
+// High-Value Expansion Meta-Engines
 export const executeResilienceShield: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executeDeepCognitionNexus: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
@@ -246,7 +246,7 @@ export const META_ENGINE_EXECUTORS: Record<MetaEngineId, MetaEngineExecutor> = {
   data_highway: executeDataHighway,
   knowledge_nexus: executeKnowledgeNexus,
   self_governance: executeSelfGovernance,
-  // v8.0.0 additions
+  // Expansion additions
   creative_forge: executeCreativeForge,
   perception_matrix: executePerceptionMatrix,
   resource_governor: executeResourceGovernor,
@@ -256,7 +256,7 @@ export const META_ENGINE_EXECUTORS: Record<MetaEngineId, MetaEngineExecutor> = {
   world_first_operational: executeWorldFirstOperational,
   world_first_intelligence: executeWorldFirstIntelligence,
   world_first_governance: executeWorldFirstGovernance,
-  // v8.5.0 additions — High-Value Expansion Meta-Engines
+  // High-Value Expansion Meta-Engines
   resilience_shield: executeResilienceShield,
   deep_cognition_nexus: executeDeepCognitionNexus,
   // v9.0.0 additions — Infrastructure Cross-Module Meta-Engines

@@ -62,7 +62,7 @@ This library is part of the **FNDTN v8** standards package, which presents:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CMPSBL OS SUBSTRATE                          │
-│                   v8.5.0 (SYNERGY+)                             │
+│                   v9.1.0 (ARCHITECT)                            │
 ├─────────────────────────────────────────────────────────────────┤
 │  Created By:        Kenneth E Sweet Jr                          │
 │  Organization:      PromptFluid®                                │

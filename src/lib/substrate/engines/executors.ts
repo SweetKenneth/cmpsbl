@@ -1,6 +1,6 @@
 /**
  * Engine Executors
- * v8.5.0 SYNERGY+ Epoch — 70 Engines Compound Capability Execution
+ * v9.1.0 ARCHITECT — 76 Engines Compound Capability Execution
  * 
  * Each executor orchestrates multiple capabilities into a unified result.
  * Executors manage context sharing, error handling, and synergy calculations.
@@ -207,34 +207,34 @@ export const executeSelfHealingEngine: EngineExecutor = (ctx) => executeEngine(c
 export const executeSelfDocumentationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v8.0.0 NEW ENGINES — 16 Additional
+// EXPANSION ENGINES — 16 Additional
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Creativity Engines (v8.0.0)
+// Creativity Engines
 export const executeImaginationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeInnovationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeDreamEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
-// Perception Engines (v8.0.0)
+// Perception Engines
 export const executeIntentEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeEmotionEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeMultimodalEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
-// Resource Engines (v8.0.0)
+// Resource Engines
 export const executeBudgetEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeQuotaEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeEntitlementEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
-// Workflow Engines (v8.0.0)
+// Workflow Engines
 export const executePipelineEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeCoordinationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeDelegationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
-// Advanced Cognitive (v8.0.0)
+// Advanced Cognitive
 export const executeMetacognitionEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeHypothesisEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
-// Advanced Security (v8.0.0)
+// Advanced Security
 export const executeAttackSurfaceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeIncidentEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
@@ -284,7 +284,7 @@ export const executeCognitiveAccessibilityEngine: EngineExecutor = (ctx) => exec
 // MODERNIZER Module Enhancements
 export const executeEvolutionGovernanceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
-// v8.5.0 High-Value Capability Engines (8)
+// High-Value Capability Engines (8)
 export const executeSandboxEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeSagaEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executePolicyAccessEngine: EngineExecutor = (ctx) => executeEngine(ctx);
@@ -364,7 +364,7 @@ export const ENGINE_EXECUTORS: Record<EngineId, EngineExecutor> = {
   self_documentation_engine: executeSelfDocumentationEngine,
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // v8.0.0 NEW ENGINES
+  // EXPANSION ENGINES
   // ═══════════════════════════════════════════════════════════════════════════
   
   // Creativity
@@ -415,7 +415,7 @@ export const ENGINE_EXECUTORS: Record<EngineId, EngineExecutor> = {
   cognitive_accessibility_engine: executeCognitiveAccessibilityEngine,
   evolution_governance_engine: executeEvolutionGovernanceEngine,
   
-  // v8.5.0 High-Value Capability Engines (8)
+  // High-Value Capability Engines (8)
   sandbox_engine: executeSandboxEngine,
   saga_engine: executeSagaEngine,
   policy_access_engine: executePolicyAccessEngine,

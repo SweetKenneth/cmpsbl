@@ -1,12 +1,12 @@
 # CMPSBL OS Substrate — LNCHBL Tiers & Infrastructure
 
-**Version 8.5.0 (SYNERGY+ Epoch) | Tier Map v4.1.0 | Internal Reference**
+**Version 9.1.0 (ARCHITECT Epoch) | Tier Map v4.1.0 | Internal Reference**
 
 ---
 
 ## Classification
 
-> **INTERNAL USE ONLY** — Tier enforcement architecture and v8.5.0 infrastructure systems.
+> **INTERNAL USE ONLY** — Tier enforcement architecture and infrastructure systems.
 
 ---
 
@@ -54,9 +54,9 @@ Non-recursive self-improvement is Enterprise-only.
 
 ---
 
-## v8.5.0 New Engines (8) & Meta-Engines (2)
+## Expansion Engines (8) & Meta-Engines (2)
 
-### Engines (62 → 70)
+### Engines (62 → 76)
 
 | Engine | Module | Tier |
 |--------|--------|------|
@@ -94,5 +94,5 @@ Non-recursive self-improvement is Enterprise-only.
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — Tier Map v4.1.0*
+*CMPSBL OS Substrate v9.1.0 — Tier Map v4.1.0*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -194,7 +194,7 @@ defense.audit
 
 ---
 
-## v8.5.0 Infrastructure Integration
+## Infrastructure Integration
 
 ### Boot Health Gates
 - **Location:** `src/lib/substrate/boot-health-gates/`
@@ -219,5 +219,5 @@ defense.audit
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch — Internal Engineering Library*
 *© 2025-2026 PromptFluid®. All rights reserved.*

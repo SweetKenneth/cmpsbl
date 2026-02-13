@@ -1,8 +1,8 @@
 /**
  * Meta-Engine System
- * v8.5.0 — SYNERGY+ Epoch: High-Value Expansion
+ * v9.1.0 ARCHITECT — High-Value Expansion
  * 
- * Architecture: Capabilities (325) → Engines (70) → Meta-Engines (22)
+ * Architecture: Capabilities (400+) → Engines (76) → Meta-Engines (24)
  * 
  * Meta-Engines consolidate multiple engines into unified execution
  * pipelines with compound synergy multipliers (4.6x - 8.2x).
@@ -52,7 +52,7 @@ export {
   executeDataHighway,
   executeKnowledgeNexus,
   executeSelfGovernance,
-  // v8.0.0 additions
+  // Expansion additions
   executeCreativeForge,
   executePerceptionMatrix,
   executeResourceGovernor,
@@ -62,7 +62,7 @@ export {
   executeWorldFirstOperational,
   executeWorldFirstIntelligence,
   executeWorldFirstGovernance,
-  // v8.5.0 additions — High-Value Expansion Meta-Engines
+  // High-Value Expansion Meta-Engines
   executeResilienceShield,
   executeDeepCognitionNexus,
 } from './executors';
