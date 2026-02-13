@@ -746,3 +746,9 @@ All colors MUST be HSL.
 [data-sonner-toaster] > * {
   pointer-events: auto !important;
 }
+
+/* Smart Toast entrance animation */
+@keyframes smartToastIn {
+  from { transform: translateY(8px); opacity: 0; }
+  to { opacity: 1; }
+}
