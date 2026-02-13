@@ -1,6 +1,6 @@
 /**
  * System Module Exports
- * v8.0.0 SYNERGY+ — Administration, Healing, and Production Hardening
+ * v9.1.0 ARCHITECT — Administration, Healing, and Production Hardening
  */
 
 // Error handling
@@ -100,8 +100,8 @@ export { reconnectSupabase } from './supabaseReconnect';
 export { getLocalModeStatus } from './localMode';
 
 // Version info
-export const SYSTEM_VERSION = '8.0.0';
-export const SYSTEM_CODENAME = 'SYNERGY+';
+export const SYSTEM_VERSION = '9.1.0';
+export const SYSTEM_CODENAME = 'ARCHITECT';
 
 export type SystemStatus = 'healthy' | 'degraded' | 'critical' | 'maintenance';
 

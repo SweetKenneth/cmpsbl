@@ -39,7 +39,7 @@ export type EngineCategory =
   | 'orchestration';  // High-level meta-engine coordination (NEW v8.1.0)
 
 // ============================================================================
-// ENGINE DEFINITIONS — 56 Total (v8.0.0) + 8 v8.5.0
+// ENGINE DEFINITIONS — 76 Total
 // ============================================================================
 
 export type EngineId =
@@ -100,7 +100,7 @@ export type EngineId =
   | 'self_documentation_engine'
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // NEW v8.0.0 ENGINES — 16 Additional
+  // EXPANSION ENGINES — 16 Additional
   // ═══════════════════════════════════════════════════════════════════════════
   
   // Creativity Engines (3) — DREAM + BRAIN synthesis
@@ -132,7 +132,7 @@ export type EngineId =
   | 'incident_engine'         // Response automation, blast radius
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // NEW v8.5.0 ENGINES — 8 High-Value Capability Engines
+  // HIGH-VALUE CAPABILITY ENGINES — 8 Additional
   // ═══════════════════════════════════════════════════════════════════════════
   
   | 'sandbox_engine'           // CORE: runtime validation, dependency resolution, hot-reload, sandboxing
@@ -285,7 +285,7 @@ export interface EngineSummary {
 }
 
 // ============================================================================
-// CAPABILITY SOURCES — v8.0.0
+// CAPABILITY SOURCES
 // ============================================================================
 
 export interface CapabilitySource {

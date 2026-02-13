@@ -1,6 +1,6 @@
 /**
  * Encoded Learning Engine
- * v8.0.0 — SYNERGY+ Epoch 24/7 continuous learning for code-writing mastery
+ * v9.1.0 ARCHITECT — 24/7 continuous learning for code-writing mastery
  * 
  * This engine runs permanently, studying code patterns, analyzing mistakes,
  * and improving Encoded's ability to write better code.

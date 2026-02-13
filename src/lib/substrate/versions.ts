@@ -50,7 +50,7 @@ export const SYNERGY_VERSION = {
   stierPipelines: 32,
 } as const;
 
-// Substrate version (SYNERGY+ Epoch)
+// Substrate version (ARCHITECT Epoch)
 export const SUBSTRATE_VERSION = '9.1.0';
 export const SUBSTRATE_CODENAME = 'ARCHITECT';
 export const SUBSTRATE_EPOCH = 'ARCHITECT';

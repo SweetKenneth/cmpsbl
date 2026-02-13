@@ -200,7 +200,7 @@ OFFLINE: All requests rejected (manual recovery only)
 
 ---
 
-## v8.5.0 Infrastructure Integration
+## Infrastructure Integration
 
 ### Adaptive Rate Limiting
 - **Location:** `src/lib/substrate/adaptive-rate-limit/`
@@ -220,5 +220,5 @@ OFFLINE: All requests rejected (manual recovery only)
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch — Internal Engineering Library*
 *© 2025-2026 PromptFluid®. All rights reserved.*

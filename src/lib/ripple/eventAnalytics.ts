@@ -1,6 +1,6 @@
 /**
  * RIPPLE Event Analytics
- * v8.0.0 — SYNERGY+ Epoch Event stream analysis and pattern detection
+ * v9.1.0 ARCHITECT — Event stream analysis and pattern detection
  */
  
  import { ripple, type RippleEvent, type EventStatus } from './index';

@@ -24,10 +24,10 @@ export type MetaEngineCategory =
   | 'integration'     // Cross-system coordination
   | 'knowledge'       // Knowledge management
   | 'self_management' // Autonomous self-management
-  | 'creativity'      // Creative and innovation workflows (NEW v8.0.0)
-  | 'perception'      // Understanding and intent (NEW v8.0.0)
-  | 'resource'        // Budget and quota management (NEW v8.0.0)
-  | 'workflow';       // Complex workflow orchestration (NEW v8.0.0)
+  | 'creativity'      // Creative and innovation workflows
+  | 'perception'      // Understanding and intent
+  | 'resource'        // Budget and quota management
+  | 'workflow';       // Complex workflow orchestration
 
 // ============================================================================
 // META-ENGINE DEFINITIONS — 16 Total
@@ -48,17 +48,17 @@ export type MetaEngineId =
   | 'data_highway'
   | 'knowledge_nexus'
   | 'self_governance'
-  // v8.0.0 additions (4)
+  // Expansion additions (4)
   | 'creative_forge'         // Imagination + Innovation + Dream
   | 'perception_matrix'      // Intent + Emotion + Multimodal
   | 'resource_governor'      // Budget + Quota + Entitlement
   | 'workflow_orchestrator'  // Pipeline + Coordination + Delegation
-  // v8.1.0 additions (4) — World-First Enhancement Meta-Engines
+  // World-First Enhancement Meta-Engines (4)
   | 'world_first_cognitive'     // BRAIN + DECODE + DREAM world-first enhancements
   | 'world_first_operational'   // NEXUS + SYSTEM + CORE + INTEGRATION world-first enhancements
   | 'world_first_intelligence'  // VISION + CORTEX + MODERNIZER world-first enhancements
   | 'world_first_governance'    // DEFENSE + ACCESS + RIPPLE + INCLUSIVE world-first enhancements
-  // v8.5.0 additions (2) — High-Value Expansion Meta-Engines
+  // High-Value Expansion Meta-Engines (2)
   | 'resilience_shield'         // Sandbox + Prompt Safety + Saga + Policy Access
   | 'deep_cognition_nexus'      // Deep Cognition + Dialogue + Observability + Tech Debt
   // v9.0.0 additions (2) — Infrastructure Cross-Module Meta-Engines

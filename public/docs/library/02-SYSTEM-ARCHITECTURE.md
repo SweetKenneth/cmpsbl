@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-002 |
-| **Version** | v8.0.0 |
+| **Version** | v9.1.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -636,5 +636,5 @@ The CMPSBL OS Substrate implements a sophisticated multi-layer architecture desi
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

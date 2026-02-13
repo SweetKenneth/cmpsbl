@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Academic Documentation
 
-## v8.0.0 SYNERGY+ Epoch | Scientific Publication Set
+## v9.1.0 ARCHITECT Epoch | Scientific Publication Set
 
 **Document Set Version:** 1.0.0  
 **Release Date:** February 9, 2026  
@@ -44,7 +44,7 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
 |----------|-------|
 | **System Type** | Cognitive Orchestration Substrate |
 | **Formal Name** | CMPSBL OS Substrate |
-| **Version** | v8.0.0 (SYNERGY+ Epoch) |
+| **Version** | v9.1.0 (ARCHITECT Epoch) |
 | **Model Dependency** | Agnostic |
 | **Provider Dependency** | Agnostic |
 | **Infrastructure** | Commodity Cloud |
@@ -116,7 +116,7 @@ This documentation follows SemVer 2.0.0:
 - **MINOR:** New features, backward compatible
 - **PATCH:** Bug fixes, documentation updates
 
-Current Version: **v8.0.0 SYNERGY+ Epoch**
+Current Version: **v9.1.0 ARCHITECT Epoch**
 
 ---
 
@@ -132,5 +132,5 @@ This documentation describes the **public interface** and **architectural patter
 
 ---
 
-*CMPSBL OS Substrate v8.0.0 — Academic Documentation Set*  
+*CMPSBL OS Substrate v9.1.0 — Academic Documentation Set*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

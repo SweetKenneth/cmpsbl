@@ -120,7 +120,7 @@ When any module drops below 40, **auto-heal triggers automatically**.
 
 ---
 
-## Infrastructure Systems (v8.5.0)
+## Infrastructure Systems
 
 The substrate includes 7 autonomous infrastructure systems that provide **automation gravity** — tasks that previously required manual intervention now run automatically:
 
@@ -138,4 +138,4 @@ These systems are managed through **33 dedicated terminal commands** under the `
 
 ---
 
-*CMPSBL OS Substrate v8.5.0 — SYNERGY+ Epoch — Internal Engineering Library*
+*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch — Internal Engineering Library*
