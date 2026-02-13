@@ -1,6 +1,6 @@
 /**
  * Capability Guards
- * v8.0.0 — SYNERGY+ Epoch Governance + Safety Layer
+ * v9.1.0 — ARCHITECT Epoch Governance + Safety Layer
  */
 
 import type { CapabilityGuardContext, GuardResult, CapabilityRisk } from './types';

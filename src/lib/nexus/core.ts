@@ -1,8 +1,8 @@
 /**
  * PromptFluid Nexus Brain Core
- * v8.0.0 SYNERGY+ Epoch — Central AI orchestration and intelligence processing
+ * v9.1.0 ARCHITECT Epoch — Central AI orchestration and intelligence processing
  * 
- * Integrates with 62 Engines and 20 Meta-Engines for cognitive operations
+ * Integrates with 76 Engines and 24 Meta-Engines for cognitive operations
  */
 
 import { routeToBestModel } from './router';

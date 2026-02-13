@@ -1,6 +1,6 @@
 /**
  * Synergy Executors
- * v8.0.0 — SYNERGY+ Epoch Real Module Integration for Cross-Module Pipelines
+ * v9.1.0 — ARCHITECT Epoch Real Module Integration for Cross-Module Pipelines
  * 
  * 125 custom executors that implement actual synergy logic
  * (76 core + 22 S-tier + 27 discovery pipelines)

@@ -1,6 +1,6 @@
 /**
  * RIPPLE React Hook
- * v8.0.0 — SYNERGY+ Epoch React integration for RIPPLE Event Bus
+ * v9.1.0 — ARCHITECT Epoch React integration for RIPPLE Event Bus
  * 
  * Respects debugMode — when enabled, auto-refresh is skipped
  */

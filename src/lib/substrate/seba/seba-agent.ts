@@ -1,7 +1,7 @@
 /**
  * Self-Evolving Bounded Agent (SEBA)
  * v2.1.0 — Full Spectrum Autonomous Evolution
- * v8.0.0 SYNERGY+ Epoch Integration
+ * v9.1.0 ARCHITECT Epoch Integration
  * 
  * Complete cognitive pipeline with 9 analysis engines:
  * 1. Core 4: Memory, Learning, Imagination, Reasoning

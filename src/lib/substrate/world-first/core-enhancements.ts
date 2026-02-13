@@ -1,5 +1,5 @@
 /**
- * CORE Module Enhancements — v8.0.0 SYNERGY+ Epoch
+ * CORE Module Enhancements — v9.1.0 ARCHITECT Epoch
  * FeatureFlagEngine, ConfigHotReload, EnvironmentValidator
  */
 

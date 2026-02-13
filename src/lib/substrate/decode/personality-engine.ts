@@ -7,7 +7,7 @@
  * 
  * Integrates with 21-module architecture for personality-aware responses.
  * 
- * v8.0.0 Changes:
+ * v9.1.0 Changes:
  *   - New direct/professional baseline (no more poetry/metaphors)
  *   - Server-side personality storage in brain_config
  *   - Terminal commands sync with backend
@@ -100,7 +100,7 @@ export interface DecodeInterpretation {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY PROFILES REGISTRY (v8.0.0 - Direct, Professional)
+// PERSONALITY PROFILES REGISTRY (v9.1.0 - Direct, Professional)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const PERSONALITY_PROFILES: Record<PersonalityProfile, PersonalityConfig> = {
@@ -148,7 +148,7 @@ export const PERSONALITY_PROFILES: Record<PersonalityProfile, PersonalityConfig>
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY ENGINE CLIENT (v8.0.0 - Server-Synced)
+// PERSONALITY ENGINE CLIENT (v9.1.0 - Server-Synced)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CONFIDENCE_THRESHOLD_FOR_AUTO_SWITCH = 0.6;
@@ -180,7 +180,7 @@ class PersonalityEngineClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // SERVER SYNC (v8.0.0)
+  // SERVER SYNC (v9.1.0)
   // ═══════════════════════════════════════════════════════════════════════════
 
   /**
@@ -307,7 +307,7 @@ class PersonalityEngineClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // DETECTION (v8.0.0 - Simplified, trait-based)
+  // DETECTION (v9.1.0 - Simplified, trait-based)
   // ═══════════════════════════════════════════════════════════════════════════
 
   /**
@@ -447,7 +447,7 @@ class PersonalityEngineClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // INTERPRETATION (v8.0.0 - Trait-based)
+  // INTERPRETATION (v9.1.0 - Trait-based)
   // ═══════════════════════════════════════════════════════════════════════════
 
   /**

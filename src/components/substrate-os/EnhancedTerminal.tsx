@@ -1,5 +1,5 @@
 /**
- * Enhanced Terminal v8.0.0 SYNERGY+ - BIOHACK EDITION
+ * Enhanced Terminal v9.1.0 ARCHITECT - BIOHACK EDITION
  * Space Age Bio-Hacking Neural Interface Terminal
  * Full-featured terminal with comprehensive commands, autocomplete,
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions

@@ -1,6 +1,6 @@
 /**
  * Support Bot Engine
- * v8.0.0 SYNERGY+ Epoch — Governed Evolving Support System
+ * v9.1.0 ARCHITECT Epoch — Governed Evolving Support System
  * 
  * A proof-of-concept for evolving software: learns from verified resolutions,
  * escalates uncertainty, and produces audit-safe responses.

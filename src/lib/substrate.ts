@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Client
- * v8.5.0 — SYNERGY+ Epoch — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v9.1.0 — ARCHITECT Epoch — Cognitive Orchestration Substrate (21-Module Architecture)
  * 
  * Phase 4A: Engine Bus Integration
  * - Engine Bus: Canonical routing layer for all engine execution
@@ -1209,7 +1209,7 @@ class SubstrateClient {
   };
 
   // ═══════════════════════════════════════════════════════════════
-  // INCLUSIVE MODULE v8.0.0 — Human Compatibility Pipeline
+  // INCLUSIVE MODULE v9.1.0 — Human Compatibility Pipeline
   // @origin(cmptbl) — 14th Substrate Module
   // Position: Between SYSTEM and DEFENSE in lifecycle
   // Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.

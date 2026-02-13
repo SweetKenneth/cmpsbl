@@ -1,6 +1,6 @@
 /**
  * Imagination Engine
- * v8.0.0 — SYNERGY+ Epoch: Unified Cognitive Imagination Module
+ * v9.1.0 — ARCHITECT Epoch: Unified Cognitive Imagination Module
  * 
  * Merges all generative/synthesis operations into a single authoritative module:
  * - Dream: Autonomous nocturnal processing

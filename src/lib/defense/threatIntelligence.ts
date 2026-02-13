@@ -1,6 +1,6 @@
 /**
  * DEFENSE Threat Intelligence Engine
- * v8.0.0 — SYNERGY+ Epoch Attack Detection & IP Reputation
+ * v9.1.0 — ARCHITECT Epoch Attack Detection & IP Reputation
  * 
  * Threat intelligence with IP reputation,
  * attack pattern detection, and proactive threat assessment.

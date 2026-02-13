@@ -1,6 +1,6 @@
 /**
  * Module-Specific CLM (Constant Learning Mode)
- * v8.0.0 SYNERGY+ Epoch — Specialized self-learning for each of the 14 substrate modules
+ * v9.1.0 ARCHITECT Epoch — Specialized self-learning for each of the 21 substrate modules
  * 
  * Each module learns about:
  * - Its own performance metrics and 269 capability integrations

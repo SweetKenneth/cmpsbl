@@ -1,6 +1,6 @@
 /**
  * Defense Module Exports
- * v8.0.0 SYNERGY+ — Security, Rate Limiting, Circuit Breakers, and Secret Redaction
+ * v9.1.0 ARCHITECT — Security, Rate Limiting, Circuit Breakers, and Secret Redaction
  */
 
 // Core threat detection and risk analysis

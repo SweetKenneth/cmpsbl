@@ -1,6 +1,6 @@
 /**
  * ACCESS Session Manager
- * v8.0.0 — SYNERGY+ Epoch — Secure session lifecycle and tracking
+ * v9.1.0 — ARCHITECT Epoch — Secure session lifecycle and tracking
  */
  
  import { supabase } from '@/integrations/supabase/client';

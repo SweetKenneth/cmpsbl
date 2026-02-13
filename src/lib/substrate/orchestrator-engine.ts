@@ -1,6 +1,6 @@
 /**
  * Orchestrator Engine
- * v8.0.0 — SYNERGY+ Epoch Unified Cognitive Pipeline
+ * v9.1.0 — ARCHITECT Epoch Unified Cognitive Pipeline
  * 
  * The Orchestrator Engine chains all cognitive engines into unified workflows.
  * It provides high-level orchestration patterns for common cognitive tasks.

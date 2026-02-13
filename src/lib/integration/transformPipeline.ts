@@ -1,6 +1,6 @@
 /**
  * INTEGRATION Transform Pipeline
- * v8.0.0 — SYNERGY+ Epoch Data transformation and mapping engine
+ * v9.1.0 — ARCHITECT Epoch Data transformation and mapping engine
  */
  
  // Transform step

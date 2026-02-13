@@ -1,6 +1,6 @@
 /**
  * Terminal Command Aliases
- * v8.0.0 — SYNERGY+ Epoch Shorthand aliases for 310+ commands
+ * v9.1.0 — ARCHITECT Epoch Shorthand aliases for 360+ commands
  */
 
 export interface AliasDefinition {
@@ -32,7 +32,7 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'dc', expansion: 'dream.cycle', description: 'Dream cycle' },
   { alias: 'ds', expansion: 'dream.status', description: 'Dream status' },
   
-  // Modernizer shortcuts (v8.0.0 SYNERGY+ Evolution Cycle)
+  // Modernizer shortcuts (v9.1.0 ARCHITECT Evolution Cycle)
   { alias: 'me', expansion: 'modernizer.evolve', description: 'Evolution Cycle' },
   { alias: 'ms', expansion: 'modernizer.evolve status', description: 'Evolution status' },
   { alias: 'ma', expansion: 'modernizer.evolve shadow', description: 'Apply shadow' },

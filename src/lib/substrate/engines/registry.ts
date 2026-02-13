@@ -472,7 +472,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // COMMUNICATION ENGINES (2) — v8.0.0 SYNERGY+
+  // COMMUNICATION ENGINES (2) — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   broadcast_engine: {
@@ -517,7 +517,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // INTEGRATION ENGINES (2) — v8.0.0 SYNERGY+
+  // INTEGRATION ENGINES (2) — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   routing_engine: {
@@ -563,7 +563,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // ANALYTICS ENGINES (2) — v8.0.0 SYNERGY+
+  // ANALYTICS ENGINES (2) — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   monitoring_engine: {
@@ -609,7 +609,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // EXPERIENCE ENGINES (2) — v8.0.0 SYNERGY+
+  // EXPERIENCE ENGINES (2) — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   accessibility_engine: {
@@ -655,7 +655,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // KNOWLEDGE ENGINES (2) — v8.0.0 SYNERGY+
+  // KNOWLEDGE ENGINES (2) — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   graph_engine: {
@@ -701,7 +701,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // AUTONOMY ENGINES (2) — v8.0.0 SYNERGY+
+  // AUTONOMY ENGINES (2) — v9.1.0 ARCHITECT
   // ═══════════════════════════════════════════════════════════════════════════
   
   self_healing_engine: {
@@ -747,7 +747,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // CREATIVITY ENGINES (3) — v8.0.0
+  // CREATIVITY ENGINES (3) — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   imagination_engine: {
@@ -819,7 +819,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // PERCEPTION ENGINES (3) — v8.0.0
+  // PERCEPTION ENGINES (3) — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   intent_engine: {
@@ -891,7 +891,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // RESOURCE ENGINES (3) — v8.0.0
+  // RESOURCE ENGINES (3) — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   budget_engine: {
@@ -963,7 +963,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // WORKFLOW ENGINES (3) — v8.0.0
+  // WORKFLOW ENGINES (3) — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   pipeline_engine: {
@@ -1036,7 +1036,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // ADVANCED COGNITIVE ENGINES (2) — v8.0.0
+  // ADVANCED COGNITIVE ENGINES (2) — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   metacognition_engine: {
@@ -1084,7 +1084,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // ADVANCED SECURITY ENGINES (2) — v8.0.0
+  // ADVANCED SECURITY ENGINES (2) — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   attack_surface_engine: {
@@ -1132,7 +1132,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // WORLD-FIRST ENHANCEMENT ENGINES (14) — v8.1.0
+  // WORLD-FIRST ENHANCEMENT ENGINES (14) — v9.1.0
   // One engine per module, consolidating all 56 world-first enhancements
   // ═══════════════════════════════════════════════════════════════════════════
   
@@ -1455,7 +1455,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // HIGH-VALUE CAPABILITY ENGINES (8) — v8.5.0
+  // HIGH-VALUE CAPABILITY ENGINES (8) — v9.1.0
   // ═══════════════════════════════════════════════════════════════════════════
   
   sandbox_engine: {

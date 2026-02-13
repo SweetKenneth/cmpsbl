@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Decode Contract Implementation
- * v8.0.0 — SYNERGY+ Epoch Substrate Interpreter Primitive
+ * v9.1.0 — ARCHITECT Epoch Substrate Interpreter Primitive
  * 
  * This implements the Decode contract as defined in the RFC.
  * Decode is non-executive, epistemic, reflective, translational, and non-anthropomorphic.

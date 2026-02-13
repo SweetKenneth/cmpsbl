@@ -1,5 +1,5 @@
  /**
-  * NEXUS Circuit Breaker v8.0.0 SYNERGY+ Epoch
+  * NEXUS Circuit Breaker v9.1.0 ARCHITECT Epoch
   * Intelligent provider failure detection and recovery
   */
  

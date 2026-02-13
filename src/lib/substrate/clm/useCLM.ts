@@ -1,6 +1,6 @@
 /**
  * CLM React Hook
- * v8.0.0 SYNERGY+ Epoch — React integration for Constant Learning Mode
+ * v9.1.0 ARCHITECT Epoch — React integration for Constant Learning Mode
  */
 
 import { useState, useEffect, useCallback } from 'react';

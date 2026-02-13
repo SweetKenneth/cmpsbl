@@ -1,6 +1,6 @@
 /**
  * PromptFluid Nexus Router
- * v8.0.0 SYNERGY+ Epoch — Intelligent model selection and request routing
+ * v9.1.0 ARCHITECT Epoch — Intelligent model selection and request routing
  * 
  * Part of the multi-provider AI infrastructure supporting 8 providers
  */

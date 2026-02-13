@@ -1,6 +1,6 @@
 /**
  * Governance Guard — Unified Ethical & Coherence Constraints
- * v8.0.0 — SYNERGY+ Epoch: Governance Integration + SEBA
+ * v9.1.0 — ARCHITECT Epoch: Governance Integration + SEBA
  * 
  * Merges:
  * - brain.ethical → ethical_constraint_check

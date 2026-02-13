@@ -1,6 +1,6 @@
 /**
  * Atlas Autoblog Adapter
- * v8.0.0 SYNERGY+ — Autoblog integration for Atlas control plane
+ * v9.1.0 ARCHITECT — Autoblog integration for Atlas control plane
  */
 
 import { 

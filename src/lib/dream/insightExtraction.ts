@@ -1,6 +1,6 @@
 /**
  * DREAM Insight Extraction Engine
- * v8.0.0 SYNERGY+ — Knowledge Synthesis & Recommendation Generation
+ * v9.1.0 ARCHITECT — Knowledge Synthesis & Recommendation Generation
  * 
  * Extracts actionable insights from dream cycles and synthesizes
  * cross-domain knowledge.

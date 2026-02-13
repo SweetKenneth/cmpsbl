@@ -1,6 +1,6 @@
 /**
  * Standardized Error System
- * v8.0.0 SYNERGY+ — Production-grade error handling with redaction
+ * v9.1.0 ARCHITECT — Production-grade error handling with redaction
  */
 
 import { generateTraceId } from './trace';

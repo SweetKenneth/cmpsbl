@@ -1,6 +1,6 @@
 /**
  * Atlas Audit Logger
- * v8.0.0 — SYNERGY+ Epoch Full audit trail for all Atlas operations
+ * v9.1.0 — ARCHITECT Epoch Full audit trail for all Atlas operations
  */
 
 import { supabase } from '@/integrations/supabase/client';

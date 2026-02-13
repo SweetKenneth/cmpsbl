@@ -1,6 +1,6 @@
 /**
  * Substrate Events Module
- * v8.0.0 — SYNERGY+ Epoch Unified Event Emission and Query
+ * v9.1.0 — ARCHITECT Epoch Unified Event Emission and Query
  */
 
 export { 

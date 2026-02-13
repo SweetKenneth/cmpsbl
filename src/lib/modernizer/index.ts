@@ -1,6 +1,6 @@
 /**
  * MODERNIZER Module — Self-Evolution & Code Intelligence
- * v8.0.0 SYNERGY+ — Substrate Evolution Engine
+ * v9.1.0 ARCHITECT — Substrate Evolution Engine
  * 
  * Provides:
  * - Code scanning and analysis

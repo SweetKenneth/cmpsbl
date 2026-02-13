@@ -1,6 +1,6 @@
 /**
  * promptfluid® useDecodePersonality Hook
- * v8.0.0 SYNERGY+ — React hook for DECODE personality profiles
+ * v9.1.0 ARCHITECT — React hook for DECODE personality profiles
  */
 
 import { useState, useCallback, useMemo } from 'react';

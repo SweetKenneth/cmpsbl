@@ -1,5 +1,5 @@
 /**
- * INCLUSIVE Module Enhancements — v8.0.0 SYNERGY+ Epoch
+ * INCLUSIVE Module Enhancements — v9.1.0 ARCHITECT Epoch
  * CognitiveLoadOptimizer, AccessibilityScorer, RemediationEngine
  */
 
