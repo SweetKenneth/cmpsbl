@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Scan Engine
- * v8.0.0 SYNERGY+ — 14th Substrate Module
+ * v9.1.0 ARCHITECT — INCLUSIVE Substrate Module
  * @origin(cmptbl) — WCAG criterion mappings from CMPTBL utilities
  * 
  * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.

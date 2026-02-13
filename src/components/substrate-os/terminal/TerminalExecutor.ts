@@ -149,7 +149,7 @@ function formatEvolutionLogForTerminal(): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY FORMATTERS (v8.0.0 SYNERGY+)
+// PERSONALITY FORMATTERS (v9.1.0 ARCHITECT)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function formatPersonalityList(profiles: Array<{ id: string; name: string; description: string }>): string {

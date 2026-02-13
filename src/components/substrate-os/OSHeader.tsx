@@ -1,5 +1,5 @@
 /**
- * OS Header v8.0.0 SYNERGY+ — Substrate identity with animated status indicators
+ * OS Header v9.1.0 ARCHITECT — Substrate identity with animated status indicators
  * Glassmorphic design with live telemetry, gradient accents, and audio controls
  */
 

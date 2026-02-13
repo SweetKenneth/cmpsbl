@@ -1,6 +1,6 @@
 /**
  * useCore Hook
- * v8.0.0 SYNERGY+ — Dedicated hook for CORE (Kernel) module operations
+ * v9.1.0 ARCHITECT — Dedicated hook for CORE (Kernel) module operations
  * Respects debugMode — when enabled, polling is disabled
  */
 

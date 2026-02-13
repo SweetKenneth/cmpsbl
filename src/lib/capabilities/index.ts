@@ -1,6 +1,6 @@
 /**
  * Capability System
- * v8.0.0 SYNERGY+ Epoch — Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
+ * v9.1.0 ARCHITECT Epoch — Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
  * 
  * This module provides:
  * - Registry: Single source of truth for 269 capabilities
@@ -11,7 +11,7 @@
  * - State: Enable/disable toggle management
  * - Confidence: Feedback + scoring
  * - Normalize: Output shaping
- * - Synergies: Cross-module pipeline orchestration (147 pipelines, 125 executors, 32 S-tier)
+ * - Synergies: Cross-module pipeline orchestration (200 pipelines, 125 executors, 32 S-tier)
  * - Depot: Capability Marketplace components
  */
 

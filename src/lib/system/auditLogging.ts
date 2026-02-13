@@ -1,6 +1,6 @@
 /**
  * SYSTEM Module — Audit Logging
- * v8.0.0 — SYNERGY+ Epoch — Comprehensive audit trail and compliance logging
+ * v9.1.0 — ARCHITECT Epoch — Comprehensive audit trail and compliance logging
  */
 
 import { supabase } from '@/integrations/supabase/client';

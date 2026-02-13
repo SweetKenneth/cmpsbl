@@ -1,7 +1,7 @@
 /**
  * Self-Evolving Bounded Agent (SEBA) Types
  * v2.1.0 — Full Cognitive × Evolution × Governance
- * v8.0.0 SYNERGY+ Epoch Integration
+ * v9.1.0 ARCHITECT Epoch Integration
  * 
  * The Holy Grail: A complete cognitive pipeline that proposes its own
  * improvements, governance-gates them for safety/coherence, and applies

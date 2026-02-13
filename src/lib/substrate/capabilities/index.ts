@@ -1,6 +1,6 @@
 /**
  * Cross-Module Capability Registry
- * v8.0.0 SYNERGY+ Epoch — Synergy-Powered Substrate Capabilities (269 Total)
+ * v9.1.0 ARCHITECT Epoch — Synergy-Powered Substrate Capabilities (400+ Total)
  * 
  * Implements 269 emergent capabilities from module intersections:
  * - 10 Core Synergies (original)

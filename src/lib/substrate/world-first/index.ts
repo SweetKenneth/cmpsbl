@@ -127,7 +127,7 @@ export {
 
 /**
  * World-First Enhancement Registry
- * Complete catalog of v8.0.0 SYNERGY+ Epoch enhancements
+ * Complete catalog of v9.1.0 ARCHITECT Epoch enhancements
  */
 export const worldFirstEnhancements = {
   version: '8.0.0',

@@ -1,5 +1,5 @@
 /**
- * Documentation Hub — v8.0.0 SYNERGY+ Epoch
+ * Documentation Hub — v9.1.0 ARCHITECT Epoch
  * Complete developer documentation for CMPSBL cognitive substrate
  */
 

@@ -1,5 +1,5 @@
 /**
- * Modernizer Tab v8.0.0 SYNERGY+ - Full Featured Self-Improvement Engine
+ * Modernizer Tab v9.1.0 ARCHITECT - Full Featured Self-Improvement Engine
  * Dedicated tab for substrate self-upgrade system with:
  * - Easy copy proposal IDs
  * - Working Apply/Rollback buttons

@@ -1,6 +1,6 @@
 /**
  * Capability Registry
- * v8.0.0 SYNERGY+ — Single Source of Truth for 269 Edge-Adapted Capabilities
+ * v9.1.0 ARCHITECT — Single Source of Truth for 400+ Edge-Adapted Capabilities
  */
 
 import type { RegisteredCapability, CapabilityStatus, CapabilityMetadata } from './types';

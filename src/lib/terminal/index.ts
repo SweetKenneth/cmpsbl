@@ -1,6 +1,6 @@
 /**
  * Terminal Module Exports
- * v8.5.0 SYNERGY+ — Command execution, validation, governance, synergy, SEBA, encoded commands, and infrastructure (340+ commands)
+ * v9.1.0 ARCHITECT — Command execution, validation, governance, synergy, SEBA, encoded commands, and infrastructure (360+ commands)
  */
 
 // Command execution with governance

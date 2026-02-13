@@ -1,5 +1,5 @@
 /**
- * CORTEX Module Enhancements — v8.0.0 SYNERGY+ Epoch
+ * CORTEX Module Enhancements — v9.1.0 ARCHITECT Epoch
  * PipelineScheduler, MultiAgentCoordinator, GoalDecomposer, DecisionGovernor
  */
 
