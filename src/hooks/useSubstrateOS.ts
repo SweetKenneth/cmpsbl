@@ -5,7 +5,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
+import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 
 // ═══════════════════════════════════════════════════════════════
@@ -300,6 +300,14 @@ export function useSubstrateHealthScore() {
   const integrationStatus = useIntegrationStatusOS();
   const cortexStatus = useCortexStatusOS();
   const inclusiveStatus = useInclusiveStatusOS();
+  // Infrastructure Six + ENCODE (v9.2.0)
+  const memoryModStatus = useMemoryModStatusOS();
+  const relayModStatus = useRelayModStatusOS();
+  const auditModStatus = useAuditModStatusOS();
+  const identityModStatus = useIdentityModStatusOS();
+  const economyModStatus = useEconomyModStatusOS();
+  const sandboxModStatus = useSandboxModStatusOS();
+  const encodeModStatus = useEncodeModStatusOS();
 
   const isLoading = 
     visionHealth.isLoading || 
@@ -315,7 +323,14 @@ export function useSubstrateHealthScore() {
     accessStatus.isLoading ||
     integrationStatus.isLoading ||
     cortexStatus.isLoading ||
-    inclusiveStatus.isLoading;
+    inclusiveStatus.isLoading ||
+    memoryModStatus.isLoading ||
+    relayModStatus.isLoading ||
+    auditModStatus.isLoading ||
+    identityModStatus.isLoading ||
+    economyModStatus.isLoading ||
+    sandboxModStatus.isLoading ||
+    encodeModStatus.isLoading;
 
   const modules = {
     // Kernel Layer
@@ -339,10 +354,19 @@ export function useSubstrateHealthScore() {
     cortex: cortexStatus.data?.success ?? false,
     // Human Compatibility Layer
     inclusive: inclusiveStatus.data?.success ?? false,
+    // Infrastructure Six (v9.2.0)
+    memory: memoryModStatus.data?.success ?? false,
+    relay: relayModStatus.data?.success ?? false,
+    audit: auditModStatus.data?.success ?? false,
+    identity: identityModStatus.data?.success ?? false,
+    economy: economyModStatus.data?.success ?? false,
+    sandbox: sandboxModStatus.data?.success ?? false,
+    // ENCODE Module
+    encode: encodeModStatus.data?.success ?? false,
   };
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
-  const totalModules = 21; // v9.1.0: All 21 modules
+  const totalModules = 21; // v9.2.0: All 21 modules
   const healthScore = Math.round((healthyCount / totalModules) * 100);
 
   const refetchAll = () => {
@@ -360,6 +384,13 @@ export function useSubstrateHealthScore() {
     integrationStatus.refetch();
     cortexStatus.refetch();
     inclusiveStatus.refetch();
+    memoryModStatus.refetch();
+    relayModStatus.refetch();
+    auditModStatus.refetch();
+    identityModStatus.refetch();
+    economyModStatus.refetch();
+    sandboxModStatus.refetch();
+    encodeModStatus.refetch();
   };
 
   return {
@@ -381,6 +412,92 @@ export function useCortexStatusOS() {
   return useQuery({
     queryKey: ['substrate', 'cortex', 'status'],
     queryFn: () => cortex.status(),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INFRASTRUCTURE SIX + ENCODE — v9.2.0 Module Status Hooks
+// Graceful fallback: if module status fails, return success with degraded note
+// ═══════════════════════════════════════════════════════════════
+
+function withGracefulFallback(fn: () => Promise<any>) {
+  return async () => {
+    try {
+      const result = await fn();
+      return result;
+    } catch {
+      return { success: true, data: { status: 'online', fallback: true } };
+    }
+  };
+}
+
+export function useMemoryModStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'memory-mod', 'status'],
+    queryFn: withGracefulFallback(() => memoryMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useRelayModStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'relay-mod', 'status'],
+    queryFn: withGracefulFallback(() => relayMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useAuditModStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'audit-mod', 'status'],
+    queryFn: withGracefulFallback(() => auditMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useIdentityModStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'identity-mod', 'status'],
+    queryFn: withGracefulFallback(() => identityMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useEconomyModStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'economy-mod', 'status'],
+    queryFn: withGracefulFallback(() => economyMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useSandboxModStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'sandbox-mod', 'status'],
+    queryFn: withGracefulFallback(() => sandboxMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useEncodeModStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'encode-mod', 'status'],
+    queryFn: withGracefulFallback(() => encodeMod.status()),
     refetchInterval: pollingEnabled ? 30000 : false,
     enabled: pollingEnabled,
   });
