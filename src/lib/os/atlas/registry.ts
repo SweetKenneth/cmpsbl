@@ -5,7 +5,7 @@
 
 import type { ModuleRegistryEntry, ModuleAction } from './types';
 
-// The canonical 14-module registry
+// The canonical 21-module registry
 export const MODULE_REGISTRY: ModuleRegistryEntry[] = [
   // Kernel Layer
   {

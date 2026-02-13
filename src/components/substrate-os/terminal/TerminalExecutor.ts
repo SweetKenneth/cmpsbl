@@ -1350,7 +1350,7 @@ ${identityLine}│  Mode: ${roleDisplay}
 ║                                                              ║
 ║  Batches (cumulative — each adds to previous):               ║
 ║    1: polling-intervals (basic poll loops)                   ║
-║    2: + module-status-polling (14 module status calls)       ║
+║    2: + module-status-polling (21 module status calls)       ║
 ║    3: + auto-refresh (dashboard auto-update)                 ║
 ║    4: + realtime-subscriptions (Supabase channels)           ║
 ║                                                              ║

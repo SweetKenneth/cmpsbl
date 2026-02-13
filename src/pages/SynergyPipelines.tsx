@@ -767,7 +767,7 @@ export default function SynergyPipelines() {
         <title>Synergy Pipelines | Multi-Module Cognitive Fusion | promptfluid®</title>
         <meta 
           name="description" 
-          content="Discover 120 synergy pipelines including 22 S-tier premium offerings that combine 14 cognitive modules for emergent AI capabilities. Explore how BRAIN, CORTEX, DECODE, and more create intelligence beyond their individual functions." 
+          content="Discover 200 synergy pipelines including 22 S-tier premium offerings that combine 21 cognitive modules for emergent AI capabilities. Explore how BRAIN, CORTEX, DECODE, and more create intelligence beyond their individual functions." 
         />
         <meta name="keywords" content="synergy pipelines, cognitive fusion, multi-module AI, emergent intelligence, promptfluid, substrate, S-tier pipelines" />
       </Helmet>
