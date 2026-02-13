@@ -1,6 +1,6 @@
 /**
  * Engine Marketplace (OEM) — Premium Registry-Driven Subscription Commerce
- * v8.0.0 SYNERGY+ Epoch — All 62 engines + 20 meta-engines from live registries
+ * v9.1.0 ARCHITECT — All 76 engines + 24 meta-engines from live registries
  * Self-improvement engines = internal (showcased, not sold)
  * 
  * UNIQUE DESIGN: Cinematic, premium, completely distinctive to CMPSBL

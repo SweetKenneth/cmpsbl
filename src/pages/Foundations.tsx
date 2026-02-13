@@ -127,7 +127,7 @@ export default function Foundations() {
               learning cycles, multi-provider AI routing, real-time observability, and self-improvement pipelines.
             </p>
             <p>
-              This release establishes three interconnected standards: <strong>SYNERGY+</strong> as the 
+              This release establishes three interconnected standards: <strong>ARCHITECT</strong> as the 
               substrate mechanics standard, the <strong>AI Governance Reference Namespace</strong> as 
               the governance semantics layer, and <strong>LLMS.txt</strong> as the machine-readable 
               context format for AI systems.

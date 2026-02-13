@@ -1,6 +1,6 @@
 /**
  * Substrate OS Dashboard Hooks
- * v8.0.0 — SYNERGY+ Epoch Real-time telemetry and control hooks for the OS surface
+ * v9.1.0 ARCHITECT — Real-time telemetry and control hooks for the OS surface
  * Respects debug mode kill-switch
  */
 
