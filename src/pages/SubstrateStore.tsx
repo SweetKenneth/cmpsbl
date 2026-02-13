@@ -1,5 +1,6 @@
 /**
- * Composable Artifacts — Unified FREE Resource Hub
+ * Composable Artifacts — Unified Resource Hub
+ * v9.3.0 ARCHITECT — Tier Split & Black-Box Enforcement
  * Supreme × Canva inspired layout — Category-first, horizontal-scroll mobile UX
  * Combines: Capabilities (400+), Templates (200+), Pipelines (200+) = 800+ Artifacts
  */
@@ -24,7 +25,13 @@ import {
   Sparkles, Workflow, Network, Accessibility, Filter,
   Unlock, Play, Moon, MessageSquare, X, Lock, Crown,
 } from 'lucide-react';
-import { isCrownJewelItem } from '@/lib/capabilities/crown-jewel-gate';
+import { 
+  isCrownJewelItem, 
+  isExperienceJewelItem, 
+  getItemTierBadge, 
+  getUpgradeTierLabel,
+  type ArtifactTierBadge,
+} from '@/lib/capabilities/crown-jewel-gate';
 import { useUserRole } from '@/hooks/useUserRole';
 
 import {
@@ -63,6 +70,44 @@ function mapTemplateCat(cat: string): string {
     system: 'automation', world_engine: 'orchestration',
   };
   return map[cat] || 'automation';
+}
+
+// ─── Tier Badge Component ───
+function TierBadge({ badge }: { badge: ArtifactTierBadge }) {
+  switch (badge) {
+    case 'FREE':
+      return (
+        <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-0.5">
+          <Unlock className="w-2.5 h-2.5" /> FREE
+        </span>
+      );
+    case 'BUILDER':
+      return (
+        <span className="text-[10px] font-bold text-blue-400 flex items-center gap-0.5">
+          <Lock className="w-2.5 h-2.5" /> BUILDER
+        </span>
+      );
+    case 'PRO':
+      return (
+        <span className="text-[10px] font-bold text-purple-400 flex items-center gap-0.5">
+          <Lock className="w-2.5 h-2.5" /> PRO
+        </span>
+      );
+    case 'BLACK-BOX':
+      return (
+        <span className="text-[10px] font-bold text-orange-400 flex items-center gap-0.5">
+          <Lock className="w-2.5 h-2.5" /> BLACK-BOX
+        </span>
+      );
+    case 'CMPSBL CORE':
+      return (
+        <span className="text-[10px] font-bold text-amber-400 flex items-center gap-0.5">
+          <Crown className="w-2.5 h-2.5" /> CMPSBL CORE
+        </span>
+      );
+    default:
+      return null;
+  }
 }
 
 // ─── Horizontal Scroll Carousel ───
@@ -109,16 +154,11 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
     ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30' 
     : 'bg-violet-500/10 text-violet-400 border-violet-500/30';
   
-  const name = item.type === 'capability' ? item.data.name 
-    : item.type === 'template' ? item.data.name 
-    : item.data.name;
-    
-  const desc = item.type === 'capability' ? item.data.description
-    : item.type === 'template' ? item.data.description
-    : item.data.description;
-
-  const itemId = item.type === 'capability' ? item.data.id : item.type === 'template' ? item.data.id : item.data.id;
-  const isGated = isCrownJewelItem(itemId, name);
+  const name = item.data.name;
+  const desc = item.data.description;
+  const itemId = item.data.id;
+  const tierBadge = getItemTierBadge(itemId, name);
+  const isBlackBoxed = tierBadge === 'BUILDER' || tierBadge === 'PRO' || tierBadge === 'BLACK-BOX';
 
   return (
     <motion.div
@@ -126,7 +166,7 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
       className={cn(
         "snap-start shrink-0 w-[280px] min-h-[180px]",
         "rounded-xl border bg-gradient-to-br",
-        isGated ? 'border-amber-500/20 from-amber-500/[0.04] to-transparent' :
+        isBlackBoxed ? 'border-blue-500/20 from-blue-500/[0.04] to-transparent' :
         item.type === 'capability' ? 'border-emerald-500/20 from-emerald-500/[0.04] to-transparent' :
         item.type === 'template' ? 'border-cyan-500/20 from-cyan-500/[0.04] to-transparent' :
         'border-violet-500/20 from-violet-500/[0.04] to-transparent',
@@ -139,25 +179,24 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
       {/* Top accent bar */}
       <div className={cn(
         "h-1 w-full",
-        isGated ? 'bg-amber-500' :
+        isBlackBoxed ? 'bg-gradient-to-r from-blue-500 to-purple-500' :
         item.type === 'capability' ? 'bg-emerald-500' : item.type === 'template' ? 'bg-cyan-500' : 'bg-violet-500'
       )} />
       
       <div className="p-4 flex-1 flex flex-col">
-        {/* Type + badges */}
+        {/* Type + tier badge */}
         <div className="flex items-center justify-between mb-3">
-          <Badge variant="outline" className={cn("text-[10px]", typeColor)}>
-            {typeLabel}
-          </Badge>
-          {isGated ? (
-            <span className="text-[10px] font-bold text-amber-400 flex items-center gap-0.5">
-              <Lock className="w-2.5 h-2.5" /> ENTERPRISE
-            </span>
-          ) : (
-            <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-0.5">
-              <Unlock className="w-2.5 h-2.5" /> FREE
-            </span>
-          )}
+          <div className="flex items-center gap-1.5">
+            <Badge variant="outline" className={cn("text-[10px]", typeColor)}>
+              {typeLabel}
+            </Badge>
+            {isBlackBoxed && (
+              <Badge variant="outline" className="text-[9px] bg-orange-500/10 text-orange-400 border-orange-500/20">
+                BLACK-BOX
+              </Badge>
+            )}
+          </div>
+          <TierBadge badge={tierBadge} />
         </div>
         
         {/* Name */}
@@ -208,10 +247,13 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const name = item.type === 'capability' ? item.data.name : item.type === 'template' ? item.data.name : item.data.name;
-  const desc = item.type === 'capability' ? item.data.description : item.type === 'template' ? item.data.description : item.data.description;
-  const itemId = item.type === 'capability' ? item.data.id : item.type === 'template' ? item.data.id : item.data.id;
-  const isGated = isCrownJewelItem(itemId, name);
+  const name = item.data.name;
+  const desc = item.data.description;
+  const itemId = item.data.id;
+  const tierBadge = getItemTierBadge(itemId, name);
+  const isBlackBoxed = tierBadge === 'BUILDER' || tierBadge === 'PRO' || tierBadge === 'BLACK-BOX';
+  const isArchitectureOnly = tierBadge === 'CMPSBL CORE';
+  const upgradeLabel = isBlackBoxed ? getUpgradeTierLabel(itemId) : null;
   
   return (
     <motion.div
@@ -238,14 +280,22 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
         <div className="p-6 pb-4">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <Badge variant="outline" className={cn(
-                "text-xs mb-2",
-                item.type === 'capability' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
-                item.type === 'template' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30' :
-                'bg-violet-500/10 text-violet-400 border-violet-500/30'
-              )}>
-                {item.type === 'capability' ? 'Capability' : item.type === 'template' ? 'Template' : 'Pipeline'}
-              </Badge>
+              <div className="flex items-center gap-2 mb-2">
+                <Badge variant="outline" className={cn(
+                  "text-xs",
+                  item.type === 'capability' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
+                  item.type === 'template' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30' :
+                  'bg-violet-500/10 text-violet-400 border-violet-500/30'
+                )}>
+                  {item.type === 'capability' ? 'Capability' : item.type === 'template' ? 'Template' : 'Pipeline'}
+                </Badge>
+                {isBlackBoxed && (
+                  <Badge variant="outline" className="text-xs bg-orange-500/10 text-orange-400 border-orange-500/20">
+                    BLACK-BOX
+                  </Badge>
+                )}
+                <TierBadge badge={tierBadge} />
+              </div>
               <h2 className="text-2xl font-black">{name}</h2>
             </div>
             <button onClick={onClose} className="p-2 rounded-lg hover:bg-muted transition-colors">
@@ -305,20 +355,31 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
             )}
           </div>
           
-          {/* Code snippet — gated for Crown Jewels */}
-          {isGated ? (
-            <div className="p-6 rounded-xl border border-amber-500/20 bg-amber-500/5 text-center space-y-3">
-              <Lock className="w-8 h-8 text-amber-400 mx-auto" />
-              <h4 className="text-base font-bold text-foreground">Enterprise Only</h4>
+          {/* Code snippet — gated for black-boxed & architecture */}
+          {(isBlackBoxed || isArchitectureOnly) ? (
+            <div className={cn(
+              "p-6 rounded-xl border text-center space-y-3",
+              isBlackBoxed 
+                ? "border-blue-500/20 bg-blue-500/5" 
+                : "border-amber-500/20 bg-amber-500/5"
+            )}>
+              <Lock className={cn("w-8 h-8 mx-auto", isBlackBoxed ? "text-blue-400" : "text-amber-400")} />
+              <h4 className="text-base font-bold text-foreground">
+                {isBlackBoxed ? 'Sealed Artifact' : 'Architecture — Admin Only'}
+              </h4>
               <p className="text-xs text-muted-foreground">
-                This Crown Jewel artifact requires an Enterprise subscription to view code and usage details.
+                {isBlackBoxed 
+                  ? `This artifact exposes power, not blueprints. Execution-only access with ${upgradeLabel}.`
+                  : 'This architecture artifact is restricted to CMPSBL core. Not available at any tier.'}
               </p>
-              <Button asChild size="sm" className="bg-amber-600 hover:bg-amber-500">
-                <Link to="/engines">
-                  <Crown className="w-3.5 h-3.5 mr-1.5" />
-                  View Enterprise Plans
-                </Link>
-              </Button>
+              {isBlackBoxed && (
+                <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-500">
+                  <Link to="/engines">
+                    <Zap className="w-3.5 h-3.5 mr-1.5" />
+                    Unlock with {upgradeLabel}
+                  </Link>
+                </Button>
+              )}
             </div>
           ) : (
             <>
@@ -416,12 +477,12 @@ export default function SubstrateStore() {
     return [...caps, ...temps, ...pipes];
   }, []);
   
-  // Filter by product type, category, search — and EXCLUDE Crown Jewels from public view
+  // Filter: hide Architecture Crown Jewels, show Experience Crown Jewels with badges
   const filteredItems = useMemo(() => {
     return allItems.filter(item => {
-      // Crown Jewel lockdown — remove from ALL public listings
-      const itemId = item.type === 'capability' ? item.data.id : item.type === 'template' ? item.data.id : item.data.id;
-      const itemName = item.type === 'capability' ? item.data.name : item.type === 'template' ? item.data.name : item.data.name;
+      const itemId = item.data.id;
+      const itemName = item.data.name;
+      // Architecture Crown Jewels: completely hidden from public
       if (isCrownJewelItem(itemId, itemName)) return false;
 
       // Product type
@@ -439,8 +500,8 @@ export default function SubstrateStore() {
       // Search
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
-        const name = item.type === 'capability' ? item.data.name : item.type === 'template' ? item.data.name : item.data.name;
-        const desc = item.type === 'capability' ? item.data.description : item.type === 'template' ? item.data.description : item.data.description;
+        const name = item.data.name;
+        const desc = item.data.description;
         if (!name.toLowerCase().includes(q) && !desc.toLowerCase().includes(q)) return false;
       }
       
@@ -448,13 +509,9 @@ export default function SubstrateStore() {
     });
   }, [allItems, productType, selectedCategory, searchQuery]);
 
-  // Crown Jewels — admin-only reference list (never interactive for non-admins)
-  const crownJewelItems = useMemo(() => {
-    return allItems.filter(item => {
-      const itemId = item.type === 'capability' ? item.data.id : item.type === 'template' ? item.data.id : item.data.id;
-      const itemName = item.type === 'capability' ? item.data.name : item.type === 'template' ? item.data.name : item.data.name;
-      return isCrownJewelItem(itemId, itemName);
-    });
+  // Architecture Crown Jewels — admin-only reference
+  const architectureJewelItems = useMemo(() => {
+    return allItems.filter(item => isCrownJewelItem(item.data.id, item.data.name));
   }, [allItems]);
   
   // Group by category for browse mode
@@ -478,22 +535,20 @@ export default function SubstrateStore() {
     <>
       <Helmet>
         <title>{`Composable Artifacts | 800+ Free Resources | CMPSBL`}</title>
-        <meta name="description" content="Explore 800+ free composable artifacts — capabilities, templates, and synergy pipelines. All unlocked. No signup required." />
+        <meta name="description" content="Build self-improving software — even on the free tier. 800+ composable artifacts with real memory, real execution, and real composition." />
       </Helmet>
       
       <div className="min-h-screen bg-background flex flex-col">
         <PublicNav />
         
-        {/* ═══ HERO — Supreme drop announcement style ═══ */}
+        {/* ═══ HERO ═══ */}
         <section className="relative overflow-hidden border-b border-border/50">
-          {/* Background grid */}
           <div className="absolute inset-0 opacity-[0.03]" style={{
             backgroundImage: 'linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)',
             backgroundSize: '60px 60px'
           }} />
           
           <div className="relative container mx-auto px-4 py-14 md:py-20 text-center">
-            {/* Supreme-style stacked type */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -501,7 +556,7 @@ export default function SubstrateStore() {
             >
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-card/50 mb-6 text-xs font-medium text-muted-foreground">
                 <Unlock className="w-3 h-3 text-emerald-400" />
-                EVERYTHING FREE — NO SIGNUP
+                BUILD REAL THINGS — FREE TIER
               </div>
               
               <h1 className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-4">
@@ -523,7 +578,7 @@ export default function SubstrateStore() {
                 </motion.span>
               </h1>
 
-              {/* Animated counter badge */}
+              {/* Counter badge */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -541,9 +596,11 @@ export default function SubstrateStore() {
                 <span className="text-sm text-muted-foreground font-medium">Artifacts</span>
               </motion.div>
               
-              <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
-                Capabilities, templates, and synergy pipelines. 
-                All free. Copy the code. Build something.
+              <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-4">
+                Build self-improving software — even on the free tier.
+              </p>
+              <p className="text-sm text-muted-foreground/70 max-w-lg mx-auto mb-8">
+                Real memory, real execution, real composition. Advanced intelligence unlocked by tiers — architecture stays protected.
               </p>
               
               {/* Stats pills */}
@@ -573,7 +630,6 @@ export default function SubstrateStore() {
         {/* ═══ STICKY TOOLBAR ═══ */}
         <section className="sticky top-16 z-40 border-b border-border/50 bg-background/95 backdrop-blur-xl">
           <div className="container mx-auto px-4 py-3">
-            {/* Search */}
             <div className="relative mb-3">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
@@ -589,7 +645,6 @@ export default function SubstrateStore() {
               )}
             </div>
             
-            {/* Product type tabs + view toggle */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex gap-1.5 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
                 {([
@@ -614,7 +669,6 @@ export default function SubstrateStore() {
                 ))}
               </div>
               
-              {/* View toggle */}
               <div className="hidden md:flex gap-1 shrink-0">
                 <button
                   onClick={() => setViewMode('browse')}
@@ -634,7 +688,7 @@ export default function SubstrateStore() {
             </div>
           </div>
           
-          {/* Category pills — horizontal scroll */}
+          {/* Category pills */}
           <div className="border-t border-border/30">
             <div className="container mx-auto px-4 py-2.5">
               <div className="flex gap-2 overflow-x-auto scrollbar-hide pr-8" style={{ scrollbarWidth: 'none' }}>
@@ -674,7 +728,6 @@ export default function SubstrateStore() {
 
         {/* ═══ CONTENT ═══ */}
         <main className="flex-1">
-          {/* Results count */}
           <div className="container mx-auto px-4 pt-6 pb-2">
             <p className="text-sm text-muted-foreground">
               {filteredItems.length} resources
@@ -682,7 +735,7 @@ export default function SubstrateStore() {
             </p>
           </div>
           
-          {/* Browse Mode: Horizontal carousels per category (mobile-first) */}
+          {/* Browse Mode */}
           {(viewMode === 'browse' && !searchQuery) ? (
             <div className="pb-12">
               {UNIFIED_CATEGORIES.filter(cat => groupedByCategory[cat.id]?.length).map(cat => {
@@ -691,7 +744,6 @@ export default function SubstrateStore() {
                 
                 return (
                   <section key={cat.id} className="mb-8">
-                    {/* Category header */}
                     <div className="container mx-auto px-4 mb-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
@@ -712,7 +764,6 @@ export default function SubstrateStore() {
                       </div>
                     </div>
                     
-                    {/* Horizontal scroll carousel */}
                     <div className="container mx-auto px-4">
                       <ScrollCarousel>
                         {items.slice(0, 20).map((item, i) => (
@@ -740,7 +791,7 @@ export default function SubstrateStore() {
               })}
             </div>
           ) : (
-            /* Grid Mode: Dense masonry-style grid */
+            /* Grid Mode */
             <div className="container mx-auto px-4 py-6">
               {filteredItems.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -765,8 +816,8 @@ export default function SubstrateStore() {
             </div>
           )}
           
-          {/* ═══ ADMIN-ONLY: Crown Jewel Reference Section ═══ */}
-          {isGovernor && crownJewelItems.length > 0 && (
+          {/* ═══ ADMIN-ONLY: Architecture Crown Jewels Reference ═══ */}
+          {isGovernor && architectureJewelItems.length > 0 && (
             <section className="border-t border-amber-500/20 bg-amber-500/[0.02]">
               <div className="container mx-auto px-4 py-10">
                 <div className="flex items-center gap-3 mb-6">
@@ -775,19 +826,19 @@ export default function SubstrateStore() {
                   </div>
                   <div>
                     <h2 className="font-bold text-lg flex items-center gap-2">
-                      Crown Jewels
+                      Architecture Crown Jewels
                       <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-400 border-amber-500/30">
                         ADMIN ONLY
                       </Badge>
                     </h2>
                     <p className="text-xs text-muted-foreground">
-                      {crownJewelItems.length} restricted artifacts — discovery reference only
+                      {architectureJewelItems.length} architecture artifacts — never released, never distributed
                     </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {crownJewelItems.map((item, i) => {
+                  {architectureJewelItems.map((item, i) => {
                     const name = item.data.name;
                     const typeLabel = item.type === 'capability' ? 'Capability' : item.type === 'template' ? 'Template' : 'Pipeline';
                     return (
@@ -800,7 +851,7 @@ export default function SubstrateStore() {
                             {typeLabel}
                           </Badge>
                           <span className="text-[10px] font-bold text-amber-400/70 flex items-center gap-0.5">
-                            <Lock className="w-2.5 h-2.5" /> RESTRICTED
+                            <Lock className="w-2.5 h-2.5" /> ARCHITECTURE
                           </span>
                         </div>
                         <h4 className="text-sm font-semibold truncate">{name}</h4>
@@ -811,8 +862,7 @@ export default function SubstrateStore() {
                 </div>
 
                 <p className="text-[11px] text-muted-foreground/60 mt-6 text-center italic">
-                  These artifacts are locked down and excluded from all public, enterprise, SDK, and API discovery. 
-                  A separate Tiering Patch will follow for distribution decisions.
+                  Architecture Crown Jewels are permanently restricted. Experience Crown Jewels are now tiered as black-boxed sealed artifacts.
                 </p>
               </div>
             </section>
