@@ -1,12 +1,12 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * v9.1.0 — ARCHITECT Epoch
+ * v9.2.0 — ARCHITECT Epoch
  * 
  * 21 modules | 360+ commands | 200 synergy pipelines | All handlers verified
  */
 
-import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
+import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
@@ -4493,27 +4493,48 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       return { success: false, output: `▓ Unknown patch command: ${base}\n  Type 'patch.help' for available commands` };
     }
 
-    // ═══ INFRASTRUCTURE MODULE HANDLERS (v9.1.0 ARCHITECT) ═══
-    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.')) {
-      const [mod, action] = base.split('.');
-      const moduleLabel = mod.toUpperCase();
-      
-      if (action === 'status') {
-        return {
-          success: true,
-          output: `◉ ${moduleLabel} MODULE — v9.1.0 ARCHITECT\n\n  Status:  ONLINE\n  Layer:   Infrastructure\n  Health:  100%\n  Uptime:  Active since boot\n\n  Type 'help ${mod}' for all ${moduleLabel} commands`,
-        };
-      }
-      
-      // Generic handler for infrastructure module commands
+    // ═══ INFRASTRUCTURE SIX + ENCODE MODULE HANDLERS (v9.2.0 ARCHITECT) ═══
+    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.')) {
       try {
-        const invokeResult = await substrate.invoke({ module: mod as any, action });
-        if (invokeResult?.success) {
-          return { success: true, output: `◉ ${moduleLabel}.${action}\n\n${JSON.stringify(invokeResult.data || invokeResult, null, 2)}` };
+        // Lazy-register Infrastructure Six + Encode handlers on first use
+        const { registerInfraModuleHandlers } = await import('@/lib/terminal/infra-module-handlers');
+        registerInfraModuleHandlers();
+        const { registerEncodeModuleHandlers } = await import('@/lib/terminal/encode-handlers');
+        registerEncodeModuleHandlers();
+        
+        const { getHandler } = await import('@/lib/terminal/validate-registry');
+        const handler = getHandler(base);
+        
+        if (handler) {
+          const handlerResult = await handler();
+          const data = handlerResult as Record<string, unknown>;
+          
+          // If handler returned a formatted output, use it directly
+          if (data?.formatted && Array.isArray(data.formatted)) {
+            return { success: true, output: (data.formatted as string[]).join('\n') };
+          }
+          
+          if (data?.success === false) {
+            return { success: false, output: `▓ ${data.error || 'Command failed'}` };
+          }
+          
+          return {
+            success: true,
+            output: `◉ ${base}\n\n${JSON.stringify(data?.data || data, null, 2)}`,
+            data: data?.data || data,
+          };
+        } else {
+          // Fallback to substrate.invoke for commands not in registry
+          const [mod, action] = base.split('.');
+          const moduleLabel = mod.toUpperCase();
+          const invokeResult = await substrate.invoke({ module: mod as any, action });
+          if (invokeResult?.success) {
+            return { success: true, output: `◉ ${moduleLabel}.${action}\n\n${JSON.stringify(invokeResult.data || invokeResult, null, 2)}` };
+          }
+          return { success: false, output: `▓ ${moduleLabel} command not found: ${base}\n  Type '${mod}.help' for available commands` };
         }
-        return { success: true, output: `◉ ${moduleLabel}.${action} — Executed\n\n  Module: ${moduleLabel}\n  Action: ${action}\n  Result: OK` };
-      } catch {
-        return { success: true, output: `◉ ${moduleLabel}.${action} — Executed\n\n  Module: ${moduleLabel}\n  Action: ${action}\n  Result: OK (simulated)` };
+      } catch (err) {
+        return { success: false, output: `▓ Module error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
 

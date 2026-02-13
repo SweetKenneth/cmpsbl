@@ -1,5 +1,5 @@
 /**
- * promptfluid® Substrate Client
+ * CMPSBL® Substrate Client
  * v9.2.0 — ARCHITECT Epoch — Cognitive Orchestration Substrate (21-Module Architecture)
  * 
  * Full 21-module integration with Infrastructure Six:
