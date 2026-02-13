@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v9.1.0 — ARCHITECT Epoch — Complete AI Operating System with 21 modules + SEBA
+ * v9.2.0 — ARCHITECT Epoch — Complete AI Operating System with 21 modules + SEBA
  * 
  * Performance: Triple-deferred initialization for zero main-thread blocking
  * - Waits for document idle state
@@ -37,7 +37,7 @@ export async function initializeSubstrate(): Promise<void> {
     // Yield before heavy work
     await yieldToMain();
     
-    console.log('⚡ Booting promptfluid® Substrate v9.1.0 (ARCHITECT Epoch)...');
+    console.log('⚡ Booting promptfluid® Substrate v9.2.0 (ARCHITECT Epoch)...');
     console.log('─────────────────────────────────────────');
     
     // Boot sequence - CORE first, then other modules (21-module architecture)

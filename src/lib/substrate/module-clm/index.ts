@@ -1,12 +1,12 @@
 /**
  * Module-Specific CLM (Constant Learning Mode)
- * v9.1.0 ARCHITECT Epoch — Specialized self-learning for each of the 21 substrate modules
+ * v9.2.0 ARCHITECT Epoch — Specialized self-learning for each of the 21 substrate modules
  * 
  * Each module learns about:
- * - Its own performance metrics and 269 capability integrations
- * - How to improve its processing via 62 compound engines
- * - Patterns in its failures and successes across 147 synergy pipelines
- * - Cross-module optimization opportunities via 20 meta-engines
+ * - Its own performance metrics and 400+ capability integrations
+ * - How to improve its processing via 100 compound engines
+ * - Patterns in its failures and successes across 200 synergy pipelines
+ * - Cross-module optimization opportunities via 24 meta-engines
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -29,7 +29,8 @@ export type ModuleName =
   | 'modernizer'
   | 'system'
   | 'decode'
-  | 'autoblog'
+  | 'dream'
+  | 'integration'
   | 'encode'
   | 'memory'
   | 'relay'
@@ -303,25 +304,17 @@ Provide specific reliability and operational improvements.`,
 - What user facts am I failing to extract and remember?
 Provide specific conversational and system-awareness improvements.`,
   },
-  autoblog: {
-    moduleId: 'autoblog',
-    displayName: 'AUTOBLOG',
-    learningTopics: [
-      'Technical writing: clarity, structure, SEO for AI/security content',
-      'Content quality: originality scoring, fact verification, citation practices',
-      'Tone consistency: brand voice matching, audience-appropriate language',
-      'Publishing cadence: optimal timing, topic freshness, trend awareness',
-      'Content pipeline: draft → review → publish workflow optimization',
-      'Engagement analysis: what topics resonate, what gets shared',
-    ],
-    kpis: ['content_quality_score', 'tone_match_rate', 'posting_consistency', 'uniqueness_score'],
-    selfReflectionPrompt: `As the AUTOBLOG content engine, how can I become a better technical writer?
-- Is my content quality improving over time?
-- Am I maintaining a consistent, authoritative tone?
-- What topics generate the most engagement and why?
-- How can I improve originality and reduce generic AI-sounding content?
-- What SEO patterns should I follow for AI/security topics?
-Provide specific content quality improvements.`,
+  dream: {
+    moduleId: 'dream', displayName: 'DREAM',
+    learningTopics: ['Off-peak pattern analysis', 'Memory consolidation strategies', 'Performance auto-tuning', 'Dream pool collective intelligence', 'Insight propagation timing'],
+    kpis: ['consolidation_quality', 'insight_hit_rate', 'optimization_impact', 'cycle_efficiency'],
+    selfReflectionPrompt: 'As the DREAM module, how can I improve overnight consolidation and insight generation?',
+  },
+  integration: {
+    moduleId: 'integration', displayName: 'INTEGRATION',
+    learningTopics: ['Adapter reliability', 'Enterprise system sync', 'API versioning strategies', 'Webhook delivery patterns', 'Data transformation pipelines'],
+    kpis: ['adapter_uptime', 'sync_latency_ms', 'transform_accuracy', 'connection_health'],
+    selfReflectionPrompt: 'As the INTEGRATION module, how can I improve adapter reliability and enterprise sync?',
   },
   encode: {
     moduleId: 'encode',
