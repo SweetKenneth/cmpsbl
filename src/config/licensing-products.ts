@@ -1,13 +1,55 @@
 /**
- * CMPSBL Substrate Licensing Products Configuration v9.1.0
+ * CMPSBL Substrate Licensing Products Configuration v9.3.0
  * Aligned with Stripe pricing (Feb 2026)
  * 
- * Developer License:
- * - Monthly: $39/month
- * - Annual: $299/year (save ~36%)
- * 
- * Research/Enterprise/Strategic: Contact sales
+ * Tier Model:
+ * - Free: $0 (full building, no Experience Jewels)
+ * - Builder: $49/month (sealed Experience Jewels, in-run SI)
+ * - Pro: $149/month (CLM, cross-session, all Experience Jewels)
+ * - Developer SDK: $39/month or $299/year
+ * - Enterprise: Custom
  */
+
+export const TIER_PRODUCTS = {
+  builder: {
+    product_id: 'prod_TyObH8wzkQ9myM',
+    price_id: 'price_1T0Ro7Q7FtTiAL4as3eV39L9',
+    amount: 4900, // $49/month
+    interval: 'month' as const,
+    name: 'CMPSBL Builder',
+    description: 'Self-improving apps with sealed Experience Crown Jewels',
+    features: [
+      'Everything in Free tier',
+      '7 sealed Experience Crown Jewels',
+      'In-run self-improvement (bounded)',
+      'Goal optimization (bounded)',
+      'Creative synthesis (dream-assisted)',
+      'End-to-end reasoning pipelines (sealed)',
+      'Email + docs support',
+    ],
+    checkout_enabled: true,
+  },
+  pro: {
+    product_id: 'prod_TyObyIgiIa28nD',
+    price_id: 'price_1T0Ro9Q7FtTiAL4aOxvDTMGc',
+    amount: 14900, // $149/month
+    interval: 'month' as const,
+    name: 'CMPSBL Pro',
+    description: 'Compound intelligence with CLM and cross-project learning',
+    features: [
+      'Everything in Builder tier',
+      'All 28 Experience Crown Jewels',
+      'CLM (bounded + governed)',
+      'Cross-session learning',
+      'Cross-executor learning',
+      'Memory optimization',
+      'Performance tuning surfaces',
+      'Pattern reuse across projects',
+      'Priority email support',
+    ],
+    checkout_enabled: true,
+  },
+} as const;
 
 export const LICENSING_PRODUCTS = {
   developer: {
@@ -38,7 +80,7 @@ export const LICENSING_PRODUCTS = {
   team: {
     product_id: null,
     price_id: null,
-    amount: null, // Contact sales
+    amount: null,
     interval: 'custom' as const,
     name: 'Team License',
     description: 'For development teams up to 10 seats',
@@ -50,12 +92,12 @@ export const LICENSING_PRODUCTS = {
       'Team onboarding session (90 min)',
       'Slack/Discord priority channel',
     ],
-    checkout_enabled: false, // Contact-based
+    checkout_enabled: false,
   },
   research: {
     product_id: null,
     price_id: null,
-    amount: null, // Contact sales
+    amount: null,
     interval: 'custom' as const,
     name: 'Research License',
     description: 'For universities, research labs, and academic institutions',
@@ -67,12 +109,12 @@ export const LICENSING_PRODUCTS = {
       'Academic support channel',
       'Early access to new features',
     ],
-    checkout_enabled: false, // Contact-based
+    checkout_enabled: false,
   },
   enterprise: {
     product_id: null,
     price_id: null,
-    amount: null, // Contact sales
+    amount: null,
     interval: 'custom' as const,
     name: 'Enterprise License',
     description: 'For enterprises embedding CMPSBL into products and platforms',
@@ -84,12 +126,12 @@ export const LICENSING_PRODUCTS = {
       'Custom integration support',
       'Quarterly roadmap alignment calls',
     ],
-    checkout_enabled: false, // Contact-based
+    checkout_enabled: false,
   },
   strategic: {
     product_id: null,
     price_id: null,
-    amount: null, // Custom pricing
+    amount: null,
     interval: 'custom' as const,
     name: 'Strategic / Exclusive License',
     description: 'For strategic partners, autonomy/robotics, cloud providers',
@@ -101,7 +143,7 @@ export const LICENSING_PRODUCTS = {
       'Direct engineering team access',
       'Co-marketing opportunities',
     ],
-    checkout_enabled: false, // Contact-based
+    checkout_enabled: false,
   },
 } as const;
 

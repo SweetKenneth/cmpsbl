@@ -1,25 +1,25 @@
 # Licensing & Pricing
 
-**CMPSBL® Cognitive Infrastructure Licensing**
+**CMPSBL® Cognitive Infrastructure Licensing — v9.3.0**
 
 ---
 
 ## Philosophy
 
-> **"Everything is free to explore. Engines are canon."**
+> **"Build self-improving software — even on the free tier."**
 
-CMPSBL offers a tiered approach: explore for free, pay when you need production-grade guarantees.
+CMPSBL gives every developer real memory, real execution, and real composition. Advanced intelligence is unlocked by tiers — architecture stays protected.
 
 ---
 
 ## Overview
 
-| Layer | Cost | What You Get |
-|-------|------|--------------|
-| **Free Exploration** | $0 | Capability Depot, Template Alley, Synergy Pipelines, Persistent Memory |
-| **Engine Marketplace (OEM)** | Subscription | First-party canonized orchestrations with SLAs |
-| **Full SDK Access** | $39/mo+ | Complete API access to all 14 modules |
-| **Enterprise** | Custom | Self-hosted source code, compliance, support |
+| Tier | Cost | What You Get |
+|------|------|--------------|
+| **Free** | $0 | Full Artifact Store, Persistent Memory, Executor, Composition |
+| **Builder** | $49/mo | Self-improving apps, sealed Experience artifacts |
+| **Pro** | $149/mo | Compound intelligence, CLM, cross-project learning |
+| **Enterprise** | Custom | Governed intelligence, source code, compliance |
 
 ---
 
@@ -27,132 +27,94 @@ CMPSBL offers a tiered approach: explore for free, pay when you need production-
 
 **$0 — Always Free**
 
-Explore the full power of CMPSBL without any cost.
+Build real systems with the full power of the CMPSBL substrate.
 
 ### Includes
 
 | Feature | Access |
 |---------|--------|
-| **Capability Depot** | ✓ All atomic capabilities |
-| **Template Alley** | ✓ All templates |
-| **Synergy Pipelines** | ✓ All 147 pipelines |
-| **Persistent Memory** | ✓ Bounded memory for agents |
-| **CodeLab** | ✓ Limited executions |
+| **Artifact Store** | ✓ 800+ Capabilities, Templates, Pipelines |
+| **Persistent Memory** | ✓ Project-scoped, bounded |
+| **Executors** | ✓ Create + execute |
+| **Composition** | ✓ Full artifact composition |
+| **Projects** | ✓ Public + private |
+| **Publishing** | ✓ Non-crown artifacts |
 
 ### Limitations
 
-- No persistence (exploratory only)
-- No governance or versioning
-- No SLA guarantees
+- No CLM (Constant Learning Method)
+- No cross-project learning
+- No memory optimization
+- No Experience Crown Jewels
 - Community support only
-
-### Get Started
 
 No signup required. [Explore now →](/capabilities)
 
 ---
 
-## Persistent Memory (FREE)
+## Builder Tier
 
-Add persistent memory to any agent in under an hour:
+**$49/month**
 
-```typescript
-import { withPersistentMemory } from '@cmpsbl/memory';
+Ship self-improving applications with sealed intelligence.
 
-const agent = withPersistentMemory({
-  agentId: 'my-agent',
-  scope: 'project'
-});
-```
+### Includes
 
-**What's free:**
-- Bounded persistent memory
-- Safe recall defaults
-- Per-agent isolation
-- Graceful degradation
-
-**What requires engines:**
-- Recall optimization
-- Long-horizon identity
-- Cross-agent continuity
-- Memory audits
-
-[Persistent Memory Quickstart →](/docs/persistent-memory)
-
----
-
-## Engine Marketplace (OEM)
-
-**Starting at $99/month**
-
-First-party, canonized orchestrations hardened for production.
-
-### Professional Tier — $99/month
-
-| Feature | Included |
-|---------|----------|
-| **Core Engines** | Memory, Routing, Security |
-| **Execution** | Unlimited |
-| **Persistence** | ✓ Full |
-| **Versioning** | ✓ |
-| **SLA** | 99.5% uptime |
-| **Support** | Email |
-
-### Enterprise Tier — Custom
-
-| Feature | Included |
-|---------|----------|
-| **All Engines** | Full catalog |
-| **SLA** | 99.9% uptime |
-| **Support** | Dedicated |
-| **Custom Engines** | Available |
-| **Audit Trail** | Full |
-
-[Browse Engines →](/engines)
-
----
-
-## Full SDK Access
-
-For developers who need complete API access beyond free exploration.
-
-### Developer License — $39/month
-
-**$39/month or $299/year** (save ~36% annually)
-
-| Feature | Included |
-|---------|----------|
-| **All 14 Modules** | Full API access |
-| **API Calls** | Unlimited (fair use) |
-| **Memory Storage** | Unlimited |
-| **AI Routing** | Unlimited |
+| Feature | Access |
+|---------|--------|
+| **Everything in Free** | ✓ |
+| **Experience Crown Jewels** | 7 sealed artifacts |
+| **In-Run Self-Improvement** | ✓ Bounded |
+| **Goal Optimization** | ✓ Bounded |
+| **Creative Synthesis** | ✓ Dream-assisted |
+| **End-to-End Reasoning** | ✓ Sealed pipeline |
 | **Support** | Email + docs |
-| **Updates** | All during subscription |
 
-### Team License — Contact Sales
+**Scope:** Single-project, single-executor.
 
-| Feature | Included |
-|---------|----------|
-| **Everything in Developer** | Plus... |
-| **Team Size** | Up to 10 developers |
-| **Shared Projects** | ✓ |
-| **Team Analytics** | ✓ |
+Some artifacts expose power, not blueprints.
+
+[Upgrade to Builder →](/substrate/licensing)
+
+---
+
+## Pro Tier
+
+**$149/month**
+
+Compound intelligence across sessions, executors, and projects.
+
+### Includes
+
+| Feature | Access |
+|---------|--------|
+| **Everything in Builder** | ✓ |
+| **All Experience Crown Jewels** | 28 sealed artifacts |
+| **CLM** | ✓ Bounded + governed |
+| **Cross-Session Learning** | ✓ |
+| **Cross-Executor Learning** | ✓ |
+| **Memory Optimization** | ✓ |
+| **Performance Tuning** | ✓ |
+| **Pattern Reuse** | ✓ Across projects |
+| **Support** | Priority email |
+
+[Upgrade to Pro →](/substrate/licensing)
 
 ---
 
 ## Enterprise License
 
-**$49,999/year** — Full source code with self-hosted deployment.
+**Custom** — Governed intelligence for regulated environments.
 
 ### Includes
 
-- ✓ Everything in SDK licenses
-- ✓ **Source code access**
-- ✓ Unlimited self-hosted deployments
-- ✓ Air-gapped / on-premise
+- ✓ Everything in Pro
+- ✓ **Source code access** (self-hosted deployment)
+- ✓ Unlimited on-premise / air-gapped instances
 - ✓ 99.9% SLA guarantee
 - ✓ Dedicated support channel
 - ✓ Compliance documentation
+- ✓ Custom governance configurations
 - ✓ Training sessions
 
 ### Best For
@@ -161,37 +123,36 @@ For developers who need complete API access beyond free exploration.
 - Companies with compliance requirements
 - Production deployments requiring source access
 
+[Contact Sales →](mailto:PromptFluid@gmail.com)
+
 ---
 
-## Research License
+## Black-Box Artifacts
 
-**$19,999/year** — For academic institutions and research labs.
+Experience Crown Jewels are released as **sealed artifacts** — you get the power, not the blueprint.
 
-### Includes
-
-- ✓ Everything in Developer
-- ✓ Multi-deployment (up to 5 instances)
-- ✓ Research collaboration features
-- ✓ Priority support
-- ✓ Quarterly technical calls
-- ✓ Early access to new features
+- ✓ Full execution capability
+- ✗ No source visibility
+- ✗ No config exposure
+- ✗ No export or cloning
+- ✗ No prompt leakage
 
 ---
 
 ## Comparison
 
-| Feature | Free | Engines | Developer | Enterprise |
-|---------|------|---------|-----------|------------|
-| Capability Depot | ✓ | ✓ | ✓ | ✓ |
-| Template Alley | ✓ | ✓ | ✓ | ✓ |
-| Synergy Pipelines | ✓ | ✓ | ✓ | ✓ |
+| Feature | Free | Builder | Pro | Enterprise |
+|---------|------|---------|-----|------------|
+| Artifact Store (800+) | ✓ | ✓ | ✓ | ✓ |
 | Persistent Memory | ✓ | ✓ | ✓ | ✓ |
-| Engine Access | — | ✓ | — | ✓ |
-| Full SDK | — | — | ✓ | ✓ |
-| Persistence | — | ✓ | ✓ | ✓ |
-| Governance | — | ✓ | — | ✓ |
-| SLA | — | ✓ | — | ✓ |
+| Executors | ✓ | ✓ | ✓ | ✓ |
+| Composition | ✓ | ✓ | ✓ | ✓ |
+| Experience Jewels | — | 7 | 28 | Negotiated |
+| Self-Improvement | — | In-run | Cross-session | Governed |
+| CLM | — | — | ✓ | ✓ |
+| Memory Optimization | — | — | ✓ | ✓ |
 | Source Code | — | — | — | ✓ |
+| SLA | — | — | — | 99.9% |
 
 ---
 
@@ -201,23 +162,23 @@ For developers who need complete API access beyond free exploration.
 |------|------|-------------|
 | **AI Provider Keys** | All paid tiers | OpenAI, Anthropic, Google, etc. |
 | **Infrastructure** | Enterprise only | Your servers or cloud account |
-| **Database** | Enterprise only | PostgreSQL (Supabase recommended) |
+| **Database** | Enterprise only | PostgreSQL recommended |
 
 ---
 
 ## FAQs
 
 ### Is the free tier really free?
-Yes. Capability Depot, Template Alley, Synergy Pipelines, and Persistent Memory are free forever. No credit card required.
+Yes. Artifact Store, Persistent Memory, Executors, and Composition are free forever. No credit card required.
 
-### What's the difference between free and engines?
-Free layers are exploratory — execute and inspect, but nothing is saved. Engines are canonized — saved, versioned, governed, with SLA guarantees.
+### What are Experience Crown Jewels?
+Sealed artifacts that give you advanced capabilities (self-healing, goal optimization, creative synthesis) without exposing the underlying architecture. You experience the power — you don't see the blueprint.
 
 ### Can I start free and upgrade later?
-Absolutely. Explore free, then upgrade to Engines or SDK access when you need production features.
+Absolutely. Build for free, then unlock sealed intelligence when you need it.
 
-### What happens when my license expires?
-Your deployment continues to run, but you won't receive updates or support.
+### What happens when my subscription ends?
+Your projects continue working. You lose access to Experience Crown Jewels and advanced features until you resubscribe.
 
 ---
 
@@ -225,12 +186,11 @@ Your deployment continues to run, but you won't receive updates or support.
 
 | Action | Link |
 |--------|------|
-| **Explore Free** | [Capability Depot](/capabilities) |
-| **Add Memory** | [Persistent Memory](/docs/persistent-memory) |
-| **Developer License** | [Checkout](/substrate/licensing) |
-| **Engine Marketplace** | [Browse Engines](/engines) |
+| **Explore Free** | [Artifact Store](/store) |
+| **Builder ($49/mo)** | [Checkout](/substrate/licensing) |
+| **Pro ($149/mo)** | [Checkout](/substrate/licensing) |
 | **Contact Sales** | PromptFluid@gmail.com |
 
 ---
 
-*CMPSBL® — Explore Free, Canonize When Ready*
+*CMPSBL® — Build self-improving software, even on the free tier.*
