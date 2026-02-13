@@ -1,149 +1,121 @@
 /**
- * CMPSBL Substrate Licensing Products Configuration v9.3.0
- * Aligned with Stripe pricing (Feb 2026)
+ * CMPSBL Unified Pricing — v10.0.0
  * 
- * Tier Model:
- * - Free: $0 (full building, no Experience Jewels)
- * - Builder: $49/month (sealed Experience Jewels, in-run SI)
- * - Pro: $149/month (CLM, cross-session, all Experience Jewels)
- * - Developer SDK: $39/month or $299/year
- * - Enterprise: Custom
+ * Three tiers. One subscription. Everything included.
+ *   Free   → $0     (build real systems, artifact store, memory, composition)
+ *   Creator → $49/mo (all engines, templates, SDK, 7 Experience Jewels)
+ *   Architect → $149/mo (CLM, cross-project learning, all 28 Jewels, priority)
+ *   Enterprise → Custom (source access, SLA, dedicated support)
+ *
+ * Template Generator remains as a standalone one-time purchase ($29).
  */
 
-export const TIER_PRODUCTS = {
-  builder: {
-    product_id: 'prod_TyObH8wzkQ9myM',
-    price_id: 'price_1T0Ro7Q7FtTiAL4as3eV39L9',
+export const UNIFIED_TIERS = {
+  free: {
+    product_id: null,
+    price_id: null,
+    amount: 0,
+    interval: 'month' as const,
+    name: 'Free',
+    tagline: 'Build real systems at zero cost',
+    description: 'Full building capabilities with persistent memory and composition.',
+    features: [
+      'Artifact Store access',
+      'Persistent memory (bounded)',
+      'Composition engine',
+      'All executors & runners',
+      'Community support',
+      'Public documentation',
+    ],
+    checkout_enabled: false,
+  },
+  creator: {
+    product_id: 'prod_TyP9TVucbprd82',
+    price_id: 'price_1T0SLKQ7FtTiAL4aonaF0po1',
     amount: 4900, // $49/month
     interval: 'month' as const,
-    name: 'CMPSBL Builder',
-    description: 'Self-improving apps with sealed Experience Crown Jewels',
+    name: 'Creator',
+    tagline: 'Full substrate access for builders',
+    description: 'All engines, templates, SDK/API, and self-improving capabilities.',
     features: [
-      'All Free tier capabilities included',
-      '7 sealed Experience Crown Jewels',
-      'In-run self-improvement (bounded)',
-      'Goal optimization (bounded)',
-      'Creative synthesis (dream-assisted)',
-      'End-to-end reasoning pipelines (sealed)',
+      'Everything in Free',
+      'All engines & meta-engines',
+      'All templates & marketplace items',
+      'Full SDK / API access',
+      '7 Experience Crown Jewels',
+      'In-run self-improvement',
+      'Goal optimization',
+      'Dream-assisted creative synthesis',
       'Email + docs support',
     ],
     checkout_enabled: true,
   },
-  pro: {
-    product_id: 'prod_TyObyIgiIa28nD',
-    price_id: 'price_1T0Ro9Q7FtTiAL4aOxvDTMGc',
+  architect: {
+    product_id: 'prod_TyP9U1DMXaHX1S',
+    price_id: 'price_1T0SLMQ7FtTiAL4a8QbdCBqR',
     amount: 14900, // $149/month
     interval: 'month' as const,
-    name: 'CMPSBL Pro',
-    description: 'Compound intelligence with CLM and cross-project learning',
+    name: 'Architect',
+    tagline: 'Compound intelligence across projects',
+    description: 'CLM, cross-project learning, all 28 Experience Jewels, and priority support.',
     features: [
-      'Everything in Builder tier',
+      'Everything in Creator',
       'All 28 Experience Crown Jewels',
-      'CLM (bounded + governed)',
+      'Constant Learning Mode (CLM)',
       'Cross-session learning',
       'Cross-executor learning',
       'Memory optimization',
       'Performance tuning surfaces',
       'Pattern reuse across projects',
+      'Team seats (up to 5)',
       'Priority email support',
     ],
     checkout_enabled: true,
-  },
-} as const;
-
-export const LICENSING_PRODUCTS = {
-  developer: {
-    monthly: {
-      product_id: 'prod_TwbbSoGvPk62xt',
-      price_id: 'price_1SyiOSQ7FtTiAL4a0nLYNaww',
-      amount: 3900, // $39/month
-      interval: 'month' as const,
-    },
-    annual: {
-      product_id: 'prod_TwbbkEwx63DMli',
-      price_id: 'price_1SyiOTQ7FtTiAL4ahfSITWgg',
-      amount: 29900, // $299/year
-      interval: 'year' as const,
-    },
-    name: 'Developer License',
-    description: 'For individual developers and small teams building with CMPSBL',
-    features: [
-      'Full API access to all 21 modules',
-      'Unlimited API calls (fair use)',
-      'Unlimited memory storage',
-      'Email support + documentation',
-      'Community forum access',
-      'Updates included during subscription',
-    ],
-    checkout_enabled: true,
-  },
-  team: {
-    product_id: null,
-    price_id: null,
-    amount: null,
-    interval: 'custom' as const,
-    name: 'Team License',
-    description: 'For development teams up to 10 seats',
-    features: [
-      'Everything in Developer License',
-      'Up to 10 developer seats included',
-      'Priority email support',
-      'API key management dashboard',
-      'Team onboarding session (90 min)',
-      'Slack/Discord priority channel',
-    ],
-    checkout_enabled: false,
-  },
-  research: {
-    product_id: null,
-    price_id: null,
-    amount: null,
-    interval: 'custom' as const,
-    name: 'Research License',
-    description: 'For universities, research labs, and academic institutions',
-    features: [
-      'Full API access for internal research',
-      'Multi-deployment (up to 5 instances)',
-      'Publication rights with attribution',
-      'Quarterly technical calls',
-      'Academic support channel',
-      'Early access to new features',
-    ],
-    checkout_enabled: false,
   },
   enterprise: {
     product_id: null,
     price_id: null,
     amount: null,
     interval: 'custom' as const,
-    name: 'Enterprise License',
-    description: 'For enterprises embedding CMPSBL into products and platforms',
+    name: 'Enterprise',
+    tagline: 'Full governance and control',
+    description: 'Source code access, SLA, dedicated support, and custom deployment.',
     features: [
-      'Source code access — self-hosted deployment',
-      'Unlimited on-premise/air-gapped instances',
+      'Everything in Architect',
+      'Source code access',
+      'Self-hosted deployment',
+      'Unlimited team seats',
       '99.9% SLA guarantee',
       'Dedicated support channel',
       'Custom integration support',
-      'Quarterly roadmap alignment calls',
+      'Quarterly roadmap alignment',
     ],
     checkout_enabled: false,
   },
-  strategic: {
-    product_id: null,
-    price_id: null,
-    amount: null,
-    interval: 'custom' as const,
-    name: 'Strategic / Exclusive License',
-    description: 'For strategic partners, autonomy/robotics, cloud providers',
-    features: [
-      'Field or region-specific exclusivity options',
-      'OEM / platform integration rights',
-      'Roadmap alignment and co-authored validation',
-      'Custom terms and partnership structure',
-      'Direct engineering team access',
-      'Co-marketing opportunities',
-    ],
-    checkout_enabled: false,
+} as const;
+
+/** Standalone one-time purchase — kept separate from tier subscriptions */
+export const TEMPLATE_GENERATOR = {
+  product_id: 'prod_TwSqj6y5PfMkPy',
+  amount: 2900, // $29 one-time
+  name: 'Template Generator',
+  description: 'Generate custom AI templates from natural language. One-time purchase, lifetime access.',
+} as const;
+
+// Legacy re-exports for backward compatibility
+export const TIER_PRODUCTS = {
+  builder: UNIFIED_TIERS.creator,
+  pro: UNIFIED_TIERS.architect,
+} as const;
+
+export const LICENSING_PRODUCTS = {
+  developer: {
+    monthly: { product_id: UNIFIED_TIERS.creator.product_id, price_id: UNIFIED_TIERS.creator.price_id, amount: UNIFIED_TIERS.creator.amount, interval: 'month' as const },
+    annual: { product_id: UNIFIED_TIERS.creator.product_id, price_id: UNIFIED_TIERS.creator.price_id, amount: UNIFIED_TIERS.creator.amount, interval: 'month' as const },
+    name: UNIFIED_TIERS.creator.name,
+    description: UNIFIED_TIERS.creator.description,
+    features: UNIFIED_TIERS.creator.features,
+    checkout_enabled: true,
   },
 } as const;
 

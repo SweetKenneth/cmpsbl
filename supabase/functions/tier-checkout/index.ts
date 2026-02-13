@@ -1,6 +1,5 @@
 /**
- * Tier Checkout — Create Stripe checkout session for Builder/Pro tiers
- * Builder: $49/mo | Pro: $149/mo
+ * Tier Checkout — Unified pricing: Creator $49/mo | Architect $149/mo
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -13,14 +12,25 @@ const corsHeaders = {
 };
 
 const TIER_PRICES: Record<string, { price_id: string; product_id: string; amount: number }> = {
+  creator: {
+    price_id: 'price_1T0SLKQ7FtTiAL4aonaF0po1',
+    product_id: 'prod_TyP9TVucbprd82',
+    amount: 4900,
+  },
+  architect: {
+    price_id: 'price_1T0SLMQ7FtTiAL4a8QbdCBqR',
+    product_id: 'prod_TyP9U1DMXaHX1S',
+    amount: 14900,
+  },
+  // Legacy aliases
   builder: {
-    price_id: 'price_1T0Ro7Q7FtTiAL4as3eV39L9',
-    product_id: 'prod_TyObH8wzkQ9myM',
+    price_id: 'price_1T0SLKQ7FtTiAL4aonaF0po1',
+    product_id: 'prod_TyP9TVucbprd82',
     amount: 4900,
   },
   pro: {
-    price_id: 'price_1T0Ro9Q7FtTiAL4aOxvDTMGc',
-    product_id: 'prod_TyObyIgiIa28nD',
+    price_id: 'price_1T0SLMQ7FtTiAL4a8QbdCBqR',
+    product_id: 'prod_TyP9U1DMXaHX1S',
     amount: 14900,
   },
 };
@@ -40,7 +50,6 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_ANON_KEY") ?? ""
     );
 
-    // Get user if authenticated
     let userEmail: string | undefined;
     let userId: string | undefined;
     const authHeader = req.headers.get("Authorization");
@@ -55,13 +64,12 @@ serve(async (req) => {
     const { tier } = body;
 
     if (!tier || !TIER_PRICES[tier]) {
-      throw new Error(`Invalid tier: ${tier}. Must be 'builder' or 'pro'.`);
+      throw new Error(`Invalid tier: ${tier}. Must be 'creator' or 'architect'.`);
     }
 
     const priceConfig = TIER_PRICES[tier];
     const origin = req.headers.get("origin") || "https://cmpsbl.lovable.app";
 
-    // Check if customer exists
     let customerId: string | undefined;
     if (userEmail) {
       const customers = await stripe.customers.list({ email: userEmail, limit: 1 });
@@ -73,25 +81,17 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : userEmail || undefined,
-      line_items: [
-        {
-          price: priceConfig.price_id,
-          quantity: 1,
-        },
-      ],
+      line_items: [{ price: priceConfig.price_id, quantity: 1 }],
       mode: 'subscription',
       success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${tier}`,
-      cancel_url: `${origin}/substrate/licensing?canceled=true`,
+      cancel_url: `${origin}/pricing?canceled=true`,
       metadata: {
         tier,
         product_id: priceConfig.product_id,
         user_id: userId || '',
       },
       subscription_data: {
-        metadata: {
-          tier,
-          user_id: userId || '',
-        },
+        metadata: { tier, user_id: userId || '' },
       },
     });
 
@@ -99,19 +99,13 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ url: session.url, session_id: session.id }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200,
-      }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
     );
   } catch (error) {
     console.error("Tier checkout error:", error);
     return new Response(
       JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400,
-      }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
     );
   }
 });
