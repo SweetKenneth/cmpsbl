@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — LNCHBL Tiers & Infrastructure
 
-**Version 9.1.0 (ARCHITECT Epoch) | Tier Map v4.1.0 | Internal Reference**
+**Version 9.3.0 (ARCHITECT Epoch) | Tier Map v5.0.0 | Internal Reference**
 
 ---
 
@@ -10,47 +10,144 @@
 
 ---
 
+## Official Tiers (v9.3.0)
+
+| Tier | Price | Key Value |
+|------|-------|-----------|
+| FREE | $0 | Full building, artifact composition, persistent memory |
+| Builder | $49/month | Self-improving apps, Experience Crown Jewels (basic) |
+| Pro | $149/month | Compound intelligence, CLM, cross-project learning |
+| Enterprise | Custom ($10k–$15k/mo target) | Governed intelligence, manual enablement |
+| **CMPSBL** | Internal | Crown Jewels (Architecture class) |
+
+---
+
 ## Self-Improvement Boundary
 
-**Recursive self-improvement (Crown Jewels) is CMPSBL-ONLY.**
-Non-recursive self-improvement is Enterprise-only.
+**Recursive self-improvement (Architecture Crown Jewels) is CMPSBL-ONLY.**
+Non-recursive self-improvement surfaces are available via Experience Crown Jewels (black-boxed).
 
-| Tier | Non-Recursive SI | Crown Jewels (Recursive SI) |
-|------|------------------|-----------------------------|
-| FREE | ❌ | ❌ |
-| Builder | ❌ | ❌ |
-| Pro | ❌ | ❌ |
-| Enterprise | ✅ | ❌ |
-| **CMPSBL** | ✅ | **✅** |
-
----
-
-## Tier Counts (v4.1.0 — 114 distributed + 10 Crown Jewels)
-
-| Tier | Count | Key Categories |
-|------|-------|---------------|
-| FREE | 16 | cognitive, integration, infrastructure, intelligence |
-| Builder | 26 | reliability, observability, memory, communication |
-| Pro | 24 | intelligence, operations, governance, platform |
-| Enterprise | 48 | self-improvement (non-recursive), platform, world-first, security |
-| CMPSBL-Only | 10 | Crown Jewels (recursive self-improvement) |
+| Tier | Non-Recursive SI | Experience Jewels | Architecture Jewels |
+|------|------------------|-------------------|---------------------|
+| FREE | ❌ | ❌ | ❌ |
+| Builder | ✅ (in-run, bounded) | ✅ (7 artifacts) | ❌ |
+| Pro | ✅ (cross-session) | ✅ (all 28 artifacts) | ❌ |
+| Enterprise | ✅ (governed) | ✅ (negotiated) | ❌ |
+| **CMPSBL** | ✅ | ✅ | **✅** |
 
 ---
 
-## Crown Jewels — CMPSBL-Only (10)
+## FREE Tier — First Class Citizen
 
-| Capability | Classification |
-|-----------|---------------|
-| SEBA Engine | Autonomous self-evolving bounded agent |
-| Modernizer | Shadow-to-production code modification |
-| Cortex Agency | Recursive PROPOSE→APPLY→LEARN loop |
-| Evolution A/B | Parallel self-modification testing |
-| Evolution Rollback | Auto-revert of self-applied changes |
-| Evolution Sandbox | Isolated recursive evolution environment |
-| Dream Pool Federation | Cross-agency autonomous dream sharing |
-| Self-Repair Engine | Autonomous self-repair |
-| Autonomous Workflow Composer | Self-assembling autonomous workflows |
-| Dream Lucidity Control | Directed autonomous dream exploration |
+### MUST HAVE
+- Full access to Artifact Store (800+ artifacts)
+- Read + Write: Capabilities, Templates, Synergy Pipelines (non-crown)
+- Persistent Memory (project-scoped)
+- Executor creation + execution
+- Artifact composition
+- Public + private projects
+- Marketplace browsing
+- Artifact publishing (non-crown)
+
+### MUST NOT HAVE
+- CLM (Constant Learning Method)
+- Cross-project learning
+- Memory optimization / compression
+- Capability discovery engines
+- Architecture mutation
+- Governance kernels
+- Meta-learning
+
+---
+
+## Crown Jewel Classification (v9.3.0)
+
+### A. Architecture Crown Jewels — NEVER RELEASED (33 artifacts)
+
+| Rule | Enforcement |
+|------|-------------|
+| admin_only | true |
+| sdk_exposed | false |
+| api_exposed | false |
+| ui_visible | false (admin reference only) |
+| search_indexed | false |
+| export | forbidden |
+
+Examples: Recursive self-optimization core, architecture refactorers, meta-learning accelerators, governance kernels, CLM internals, compression algorithms, SEBA Engine, Cortex Engine, Modernizer.
+
+### B. Experience Crown Jewels — BLACK-BOXED (28 artifacts)
+
+Released as sealed artifacts with execution-only interfaces.
+
+| Rule | Enforcement |
+|------|-------------|
+| black_box | true |
+| sealed_execution | true |
+| non_exportable | true |
+| source_visible | false |
+| config_exposed | false |
+| cloneable | false |
+
+---
+
+## Black-Box Enforcement Rules (MANDATORY)
+
+Applied to ALL Experience Crown Jewels:
+
+- No source visibility
+- No internal config exposure
+- No prompt leakage
+- No memory introspection
+- No system graph visibility
+- No cross-project bleed
+- No export
+- No duplication
+- No artifact cloning
+- No composition into discovery engines
+
+**Enforced at:** UI (no inspect panels), SDK (sealed interfaces), API (execution-only endpoints), Logs (redacted), Memory (opaque handles only).
+
+---
+
+## Tier Access to Experience Crown Jewels
+
+### Builder ($49/month) — 7 artifacts
+
+| Capability | Type |
+|-----------|------|
+| Recursive Goal Optimizer | Bounded goal optimization |
+| Emergent Behavior Analyzer | Detection only |
+| Self-Healing Mesh | Neural self-repair |
+| End-to-End Reasoning | Sealed pipeline |
+| Creative Evolution Engine | Dream-assisted synthesis |
+| Creative Forge | Creative generation meta-engine |
+| Chaos Resilience | Resilience framework |
+
+**Scope:** Single-project, single-executor, in-run self-improvement only.
+
+### Pro ($149/month) — All 28 artifacts
+
+Everything in Builder, plus:
+
+| Capability | Type |
+|-----------|------|
+| Emergent Threat Anticipator | Pre-zero-day defense |
+| Decision Confidence Governor | Confidence gating |
+| Friction Auto-Removal | UX optimization |
+| Autonomous Evolution | Bounded evolution |
+| Self-Healing Synergy | Cross-system healing |
+| Cognitive Mesh | Orchestration |
+| Attack Surface Engine | Security mapping |
+| Knowledge Retrieval Engine | Full RAG |
+| + 13 additional engines/meta-engines | See registry |
+
+**Scope:** CLM (bounded + governed), cross-session learning, cross-executor learning, memory optimization, pattern reuse across projects.
+
+### Enterprise (Custom) — Negotiated
+
+- No automatic Architecture Jewel access
+- Manual enablement only
+- Custom governance configurations
 
 ---
 
@@ -78,21 +175,32 @@ Non-recursive self-improvement is Enterprise-only.
 
 ---
 
-## Non-Recursive Self-Improvement (Enterprise — 9 capabilities)
+## Safety + Moat Protection
 
-| Capability | What It Does |
-|-----------|-------------|
-| Impact Replay | Post-change verification |
-| Dream → Proposal | Insight-to-proposal conversion |
-| Dream Chains | Dependent proposal sequences |
-| Knowledge Auto-Fill | Self-directed learning |
-| Hot-Swap | Operator-initiated engine replacement |
-| Deprecation Lifecycle | Managed capability sunset |
-| Evolution Impact Forecast | Outcome modeling |
-| Evolution Lineage Tracker | Proposal ancestry |
-| Cognitive Debt Analyzer | Debt prioritization |
+### REMOVE from public surfaces for Architecture Jewels:
+- SDK catalogs
+- API discovery
+- Search
+- Docs
+- Public registries
+
+### ADD for all Experience Jewels:
+- audit_log: true
+- usage_monitoring: true
+- anomaly_alerts: enabled
 
 ---
 
-*CMPSBL OS Substrate v9.1.0 — Tier Map v4.1.0*
+## Final Invariants (DO NOT VIOLATE)
+
+- Free users must be able to build
+- No architecture leakage
+- No reversible learning paths
+- No extractable mutation logic
+- Experience > Explanation
+- Architecture remains irreducible
+
+---
+
+*CMPSBL OS Substrate v9.3.0 — Tier Map v5.0.0*
 *© 2025-2026 PromptFluid®. All rights reserved.*
