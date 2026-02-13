@@ -10,10 +10,10 @@ const AIProductComparison2025 = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="AI Platform Comparison 2025: Paid vs Free-Tier Networks"
-        description="How PromptFluid's free-tier provider network eliminates AI costs through intelligent routing across Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic."
+        title="AI Platform Comparison 2025: Cost Optimization | CMPSBL®"
+        description="How CMPSBL's NEXUS module eliminates AI costs through intelligent multi-model routing across Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic."
         canonical="https://cmpsbl.com/blog/ai-platform-comparison-2025"
-        keywords={["AI platform comparison", "free tier AI", "multi-model orchestration", "AI cost optimization"]}
+        keywords={['AI platform comparison', 'free tier AI', 'multi-model routing', 'AI cost optimization', 'CMPSBL Nexus']}
       />
 
       <PublicNav />

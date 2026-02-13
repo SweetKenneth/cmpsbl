@@ -8,9 +8,9 @@ const DefenseLegalServices = () => {
   return (
     <>
       <SEO 
-        title="AI Bot Protection for Law Firms | PromptFluid Defense for Legal Services"
-        description="Protect your law firm's client portal, case management system, and confidential data from AI-powered bot attacks. Advanced behavioral analysis and compliance-focused security designed specifically for legal practices."
-        keywords={["law firm cybersecurity", "legal website security", "attorney bot protection", "client portal security", "legal data protection", "law practice security software", "attorney website protection", "legal compliance security"]}
+        title="AI Bot Protection for Law Firms | CMPSBL Defense for Legal"
+        description="Protect client portals, case management systems, and confidential legal data from AI bot attacks. CMPSBL's behavioral analysis built for law firm compliance."
+        keywords={['law firm cybersecurity', 'legal bot protection', 'client portal security', 'attorney website protection', 'CMPSBL legal defense']}
       />
       
       <div className="min-h-screen bg-background">

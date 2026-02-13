@@ -9,7 +9,7 @@ import heroImg from "@/assets/blog/ai-governance-compliance-v9.jpg";
 export default function AutonomousAIGovernance() {
   return (
     <>
-      <SEO title="Autonomous AI Governance: Runtime Enforcement | promptfluid®" description="The AUDIT and IDENTITY modules bring cryptographic compliance logging and universal actor attribution." />
+      <SEO title="Autonomous AI Governance: Runtime Enforcement | CMPSBL®" description="CMPSBL's AUDIT and IDENTITY modules deliver cryptographic compliance logging and universal actor attribution for enterprise AI governance." keywords={['AI governance', 'runtime compliance', 'audit logging', 'AI identity attribution', 'SOC 2 AI', 'HIPAA AI compliance']} />
       <PublicNav />
       <main className="min-h-screen bg-background">
         <article className="container max-w-3xl mx-auto px-4 py-16">

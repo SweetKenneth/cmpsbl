@@ -514,9 +514,9 @@ export default function SubstrateOS() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Substrate OS v9.1.0 — CMPSBL®"
-        description="Cognitive orchestration substrate control surface."
+        description="Control surface for CMPSBL's 21-module cognitive substrate. Terminal, cognitive registry, event stream, and real-time system monitoring."
         canonical="https://cmpsbl.com/os"
-        keywords={["substrate os", "cognitive orchestration", "ai dashboard"]}
+        keywords={['substrate OS', 'cognitive orchestration dashboard', 'AI operating system', 'CMPSBL terminal', '21-module substrate']}
       />
 
       {/* Background Effects */}

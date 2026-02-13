@@ -9,9 +9,9 @@ const PromptFluidRipple = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Ripple: Intelligent Network Integration & API Routing"
-        description="Discover PromptFluid Ripple, the network orchestration layer that connects services, routes requests, and manages backend queues with intelligent load balancing and failover."
-        keywords={["API routing", "network integration", "load balancing", "service mesh", "queue management", "PromptFluid Ripple"]}
+        title="RIPPLE Module: Network Integration & API Routing | CMPSBL®"
+        description="CMPSBL's RIPPLE module orchestrates inter-service communication with intelligent routing, load balancing, and failover across the 21-module substrate."
+        keywords={['API routing', 'network orchestration', 'service mesh AI', 'CMPSBL Ripple', 'intelligent load balancing']}
       />
       
       <PublicNav />

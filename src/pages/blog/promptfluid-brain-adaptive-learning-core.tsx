@@ -10,9 +10,9 @@ const PromptFluidBrain = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Brain: Adaptive AI Learning Core"
-        description="Explore PromptFluid Brain, the adaptive AI orchestration and learning core that evolves prompts, manages memory, and continuously improves system intelligence."
-        keywords={["AI learning", "adaptive AI", "prompt evolution", "AI memory", "machine learning", "PromptFluid Brain"]}
+        title="BRAIN Module: Adaptive AI Learning Core | CMPSBL®"
+        description="CMPSBL's BRAIN module powers autonomous learning, prompt evolution, and persistent memory. The cognitive engine that makes AI systems self-improving."
+        keywords={['adaptive AI learning', 'AI memory management', 'self-improving AI', 'CMPSBL Brain', 'cognitive engine']}
       />
       
       <PublicNav />

@@ -96,9 +96,9 @@ export default function ThreatFeed() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <SEO
-        title="Global Threat Intelligence Feed | PromptFluid Defense"
-        description="Real-time threat intelligence and bot attack patterns from the PromptFluid Defense network. Public API available for developers and security researchers."
-        keywords={["threat intelligence", "bot attacks", "security feed", "API", "real-time threats", "cyber security"]}
+        title="Global Threat Intelligence Feed | CMPSBL® Defense"
+        description="Real-time threat intelligence and bot attack patterns from CMPSBL's DEFENSE module. Public API for developers and security researchers."
+        keywords={['threat intelligence feed', 'bot attack patterns', 'security API', 'CMPSBL Defense', 'real-time cyber threats']}
       />
 
       <div className="container mx-auto px-4 py-16">

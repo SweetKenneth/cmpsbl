@@ -63,7 +63,7 @@ export default function Register() {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <Helmet>
-          <title>Registration Received | promptfluid®</title>
+          <title>Registration Received | CMPSBL®</title>
         </Helmet>
 
         <PublicNav />
@@ -103,7 +103,7 @@ export default function Register() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>Register as Observer | promptfluid®</title>
+        <title>Register as Observer | CMPSBL®</title>
         <meta name="description" content="Register for observer-level access to CMPSBL Substrate OS documentation and standards materials." />
       </Helmet>
 

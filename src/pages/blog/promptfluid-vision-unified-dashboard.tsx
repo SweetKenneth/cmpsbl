@@ -9,9 +9,9 @@ const PromptFluidVision = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Vision: Unified Admin Dashboard & Analytics"
-        description="Discover PromptFluid Vision, the centralized command center for monitoring AI operations, analyzing system performance, and controlling all ecosystem modules in real-time."
-        keywords={["AI dashboard", "analytics platform", "system monitoring", "admin panel", "PromptFluid Vision", "AI operations"]}
+        title="VISION Module: AI System Dashboard & Analytics | CMPSBL®"
+        description="CMPSBL's VISION module provides centralized monitoring for all 21 substrate modules. Real-time AI performance analytics, system health, and operational intelligence."
+        keywords={['AI dashboard', 'system monitoring', 'AI analytics', 'CMPSBL Vision', 'cognitive substrate monitoring']}
       />
       
       <PublicNav />

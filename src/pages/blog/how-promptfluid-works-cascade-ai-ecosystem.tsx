@@ -7,32 +7,32 @@ const HowPromptFluidWorks = () => {
   return (
     <>
       <Helmet>
-        <title>How PromptFluid Works: Meet Cascade AI and the Ecosystem That Makes AI Flow</title>
+        <title>How the CMPSBL Cognitive Substrate Works | Architecture Deep Dive</title>
         <meta 
           name="description" 
-          content="Discover how PromptFluid's Cascade AI and unified ecosystem delivers adaptive intelligence through seamless orchestration, learning, and automation." 
+          content="Deep dive into CMPSBL's cognitive substrate architecture. Dream cycles, neural orchestration, 21-module kernel, and how autonomous AI systems learn and evolve." 
         />
-        <meta name="keywords" content="PromptFluid, Cascade AI, AI orchestration, adaptive intelligence, AI ecosystem, machine learning platform" />
+        <meta name="keywords" content="CMPSBL architecture, cognitive substrate, AI orchestration, dream cycles, autonomous learning, 21-module kernel" />
         <link rel="canonical" href="https://cmpsbl.com/blog/how-promptfluid-works-cascade-ai-ecosystem" />
-        <meta property="og:title" content="How PromptFluid Works: Meet Cascade AI and the Ecosystem That Makes AI Flow" />
-        <meta property="og:description" content="Discover how PromptFluid's Cascade AI delivers adaptive intelligence through seamless orchestration and learning." />
+        <meta property="og:title" content="How the CMPSBL Cognitive Substrate Works | Architecture Deep Dive" />
+        <meta property="og:description" content="Deep dive into CMPSBL's cognitive substrate architecture and autonomous AI orchestration." />
         <meta property="og:type" content="article" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
-            "headline": "How PromptFluid Works: Meet Cascade AI and the Ecosystem That Makes AI Flow",
-            "description": "Discover how PromptFluid's Cascade AI and unified ecosystem delivers adaptive intelligence through seamless orchestration, learning, and automation.",
+            "headline": "How the CMPSBL Cognitive Substrate Works",
+            "description": "Deep dive into CMPSBL's cognitive substrate architecture, dream cycles, neural orchestration, and autonomous AI learning.",
             "author": {
               "@type": "Organization",
-              "name": "PromptFluid"
+              "name": "CMPSBL"
             },
             "publisher": {
               "@type": "Organization",
-              "name": "PromptFluid",
+              "name": "CMPSBL",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://www.promptfluid.com/logo.png"
+                "url": "https://cmpsbl.com/logo.png"
               }
             },
             "datePublished": "2025-11-01",

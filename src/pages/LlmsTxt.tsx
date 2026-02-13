@@ -150,8 +150,8 @@ export default function LlmsTxt() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>LLMS.txt Standard | promptfluid®</title>
-        <meta name="description" content="LLMS.txt is a machine-readable context standard for AI systems developed by llmstxt.org. We follow it and recommend it for web designers and system builders." />
+        <title>LLMS.txt Standard | CMPSBL®</title>
+        <meta name="description" content="LLMS.txt is a machine-readable context standard for AI systems. CMPSBL follows and recommends it for web designers and system builders." />
       </Helmet>
 
       <PublicNav />

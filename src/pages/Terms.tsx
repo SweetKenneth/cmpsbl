@@ -6,8 +6,9 @@ export default function Terms() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Terms of Service | PromptFluid"
-        description="Read PromptFluid's terms of service governing the use of our AI infrastructure platform and services."
+        title="Terms of Service | CMPSBL®"
+        description="Terms governing use of CMPSBL's cognitive substrate platform, developer licenses, and AI infrastructure services."
+        keywords={['terms of service', 'CMPSBL terms', 'AI platform terms', 'developer license terms']}
       />
       <PublicNav />
       

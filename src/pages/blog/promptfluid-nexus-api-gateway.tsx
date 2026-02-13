@@ -9,9 +9,9 @@ const PromptFluidNexus = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Nexus: AI Gateway & Orchestration Mesh"
-        description="Discover PromptFluid Nexus, the API gateway that intelligently routes AI tasks to optimal providers, manages caching, and ensures consistent performance across the ecosystem."
-        keywords={["API gateway", "AI orchestration", "request routing", "caching layer", "provider management", "PromptFluid Nexus"]}
+        title="NEXUS Module: AI Gateway & Multi-Model Routing | CMPSBL®"
+        description="CMPSBL's NEXUS module intelligently routes AI tasks to optimal model providers with caching, fallback logic, and cost optimization across the substrate."
+        keywords={['AI gateway', 'multi-model routing', 'CMPSBL Nexus', 'AI orchestration mesh', 'provider management']}
       />
       
       <PublicNav />

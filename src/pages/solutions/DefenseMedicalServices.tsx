@@ -8,9 +8,9 @@ const DefenseMedicalServices = () => {
   return (
     <>
       <SEO 
-        title="HIPAA-Compliant Bot Protection for Healthcare | PromptFluid Defense"
-        description="Protect patient portals, telemedicine platforms, and medical records from AI bot attacks. HIPAA-compliant behavioral analysis stops credential stuffing and data breaches for healthcare providers."
-        keywords={["healthcare cybersecurity", "HIPAA security software", "patient portal security", "medical practice bot protection", "healthcare data protection", "telemedicine security", "EMR security", "HIPAA compliance software"]}
+        title="HIPAA-Compliant AI Bot Protection for Healthcare | CMPSBL Defense"
+        description="Protect patient portals and medical records from AI bot attacks. CMPSBL's behavioral analysis delivers HIPAA-compliant security for healthcare providers."
+        keywords={['healthcare cybersecurity', 'HIPAA bot protection', 'patient portal security', 'medical AI security', 'CMPSBL healthcare defense']}
       />
       
       <div className="min-h-screen bg-background">
