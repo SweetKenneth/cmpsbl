@@ -17,9 +17,16 @@ CMPSBL gives every developer real memory, real execution, and real composition. 
 | Tier | Cost | What You Get |
 |------|------|--------------|
 | **Free** | $0 | Full Artifact Store, Persistent Memory, Executor, Composition |
-| **Builder** | $49/mo | Self-improving apps, sealed Experience artifacts |
-| **Pro** | $149/mo | Compound intelligence, CLM, cross-project learning |
+| **Creator** | $49/mo | Self-improving apps, sealed Experience artifacts |
+| **Architect** | $149/mo | Compound intelligence, CLM, cross-project learning |
 | **Enterprise** | Custom | Governed intelligence, source code, compliance |
+
+### Standalone Purchases
+
+| Product | Cost | What You Get |
+|---------|------|--------------|
+| **Composable Cognitives** | $39 each | Superpowered AI agents — no account required |
+| **Template Generator** | $29 one-time | On-demand template creation engine |
 
 ---
 
@@ -48,11 +55,11 @@ Build real systems with the full power of the CMPSBL substrate.
 - No Experience Crown Jewels
 - Community support only
 
-No signup required. [Explore now →](/capabilities)
+No signup required. [Explore now →](/store)
 
 ---
 
-## Builder Tier
+## Creator Tier
 
 **$49/month**
 
@@ -74,11 +81,11 @@ Ship self-improving applications with sealed intelligence.
 
 Some artifacts expose power, not blueprints.
 
-[Upgrade to Builder →](/substrate/licensing)
+[Upgrade to Creator →](/pricing)
 
 ---
 
-## Pro Tier
+## Architect Tier
 
 **$149/month**
 
@@ -88,7 +95,7 @@ Compound intelligence across sessions, executors, and projects.
 
 | Feature | Access |
 |---------|--------|
-| **Everything in Builder** | ✓ |
+| **Everything in Creator** | ✓ |
 | **All Experience Crown Jewels** | 28 sealed artifacts |
 | **CLM** | ✓ Bounded + governed |
 | **Cross-Session Learning** | ✓ |
@@ -98,7 +105,7 @@ Compound intelligence across sessions, executors, and projects.
 | **Pattern Reuse** | ✓ Across projects |
 | **Support** | Priority email |
 
-[Upgrade to Pro →](/substrate/licensing)
+[Upgrade to Architect →](/pricing)
 
 ---
 
@@ -108,7 +115,7 @@ Compound intelligence across sessions, executors, and projects.
 
 ### Includes
 
-- ✓ Everything in Pro
+- ✓ Everything in Architect
 - ✓ **Source code access** (self-hosted deployment)
 - ✓ Unlimited on-premise / air-gapped instances
 - ✓ 99.9% SLA guarantee
@@ -127,6 +134,24 @@ Compound intelligence across sessions, executors, and projects.
 
 ---
 
+## Standalone Products
+
+### Composable Cognitives ($39 each)
+
+Superpowered AI agents delivered as downloadable ZIP artifacts. No account required — purchase via Stripe and download immediately.
+
+Available agents: Research, Coding, Analyst, Ops, Writer (plus a free Hybrid).
+
+[Browse Cognitives →](/composable-cognitives)
+
+### Template Generator ($29 one-time)
+
+Unlock the template generation engine to create custom templates on demand from any starting point. One-time purchase, separate from subscription tiers.
+
+[Learn More →](/pricing)
+
+---
+
 ## Black-Box Artifacts
 
 Experience Crown Jewels are released as **sealed artifacts** — you get the power, not the blueprint.
@@ -141,8 +166,8 @@ Experience Crown Jewels are released as **sealed artifacts** — you get the pow
 
 ## Comparison
 
-| Feature | Free | Builder | Pro | Enterprise |
-|---------|------|---------|-----|------------|
+| Feature | Free | Creator | Architect | Enterprise |
+|---------|------|---------|-----------|------------|
 | Artifact Store (800+) | ✓ | ✓ | ✓ | ✓ |
 | Persistent Memory | ✓ | ✓ | ✓ | ✓ |
 | Executors | ✓ | ✓ | ✓ | ✓ |
@@ -180,6 +205,9 @@ Absolutely. Build for free, then unlock sealed intelligence when you need it.
 ### What happens when my subscription ends?
 Your projects continue working. You lose access to Experience Crown Jewels and advanced features until you resubscribe.
 
+### Do I need an account to buy Cognitives?
+No. Composable Cognitives use a frictionless Stripe checkout — no account required.
+
 ---
 
 ## Get Started
@@ -187,8 +215,9 @@ Your projects continue working. You lose access to Experience Crown Jewels and a
 | Action | Link |
 |--------|------|
 | **Explore Free** | [Artifact Store](/store) |
-| **Builder ($49/mo)** | [Checkout](/substrate/licensing) |
-| **Pro ($149/mo)** | [Checkout](/substrate/licensing) |
+| **Creator ($49/mo)** | [Checkout](/pricing) |
+| **Architect ($149/mo)** | [Checkout](/pricing) |
+| **Buy a Cognitive ($39)** | [Cognitives](/composable-cognitives) |
 | **Contact Sales** | PromptFluid@gmail.com |
 
 ---

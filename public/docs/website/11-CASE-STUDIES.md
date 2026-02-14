@@ -226,8 +226,9 @@ Ready to build your case study?
 
 | Tier | Best For |
 |------|----------|
-| **Developer** | Startups, MVPs, proof of concepts |
-| **Research** | Academic research, R&D projects |
+| **Free** | Exploration, prototyping, proof of concepts |
+| **Creator ($49/mo)** | Startups, MVPs, shipping self-improving apps |
+| **Architect ($149/mo)** | Teams needing cross-project intelligence |
 | **Enterprise** | Production deployments, enterprise scale |
 
 [Get Started →](./06-GETTING-STARTED.md)
