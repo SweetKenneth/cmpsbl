@@ -12,9 +12,9 @@
 
 // ============ Constants ============
 
-export const SUBSTRATE_VERSION = '9.1.0';
+export const SUBSTRATE_VERSION = '10.1.0';
 export const SUBSTRATE_CODENAME = 'ARCHITECT';
-export const CORE_VERSION = '9.1.0';
+export const CORE_VERSION = '10.1.0';
 export const CORE_CODENAME = 'Foundation';
 
 // All 21 substrate modules in canonical boot order
