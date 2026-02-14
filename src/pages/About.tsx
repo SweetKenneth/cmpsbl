@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useMetric } from "@/stores/publicMetricsStore";
 import { Shield, Brain, Zap, Users, ArrowRight, CheckCircle, Accessibility, Eye, Wrench, Server } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,8 @@ const stagger = (delay: number) => ({
 });
 
 export default function About() {
+  const version = useMetric('version');
+  const codename = useMetric('codename');
   const products = [
     { icon: Brain, name: "CMPSBL Substrate", description: "21-module cognitive orchestration OS with persistent memory" },
     { icon: Shield, name: "DEFENSE Module", description: "Enterprise-grade threat detection and bot protection" },
@@ -190,7 +193,7 @@ export default function About() {
 
           <motion.div {...fadeUp} className="mt-12 bg-card border border-border rounded-xl p-6 md:p-8 shadow-sm">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">v9.3.0 ARCHITECT Epoch</span> — 175,000+ lines of production code. 400+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
+              <span className="font-semibold">v{version} {codename} Epoch</span> — 175,000+ lines of production code. 400+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
             </p>
           </motion.div>
         </div>
@@ -245,7 +248,7 @@ export default function About() {
             {[
               { year: "2009", event: "Started building software—sites, apps, and tools for clients" },
               { year: "2024", event: "CMPSBL® founded. Substrate development begins." },
-              { year: "2025", event: "v9.3.0 ARCHITECT Epoch — 21 modules, 200 pipelines, Composable Artifacts Store" },
+              { year: "2025", event: `v${version} ${codename} Epoch — 21 modules, 200 pipelines, Composable Artifacts Store` },
               { year: "Now", event: "Production infrastructure serving developers and enterprises" }
             ].map((milestone, index) => (
               <motion.div

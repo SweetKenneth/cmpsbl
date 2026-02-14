@@ -1,6 +1,6 @@
 # CMPSBL® Documentation
 
-**v9.3.0 — ARCHITECT Epoch | Cognitive Orchestration Substrate for AI Systems**
+**v10.1.0 — ARCHITECT Epoch | Cognitive Orchestration Substrate for AI Systems**
 
 ---
 
@@ -131,4 +131,4 @@ See [Pricing & Licensing](./07-LICENSING.md) for details.
 
 ---
 
-*CMPSBL® v9.3.0 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v10.1.0 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era*

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — LNCHBL Tiers & Infrastructure
 
-**Version 9.3.0 (ARCHITECT Epoch) | Tier Map v5.0.0 | Internal Reference**
+**Version 10.1.0 (ARCHITECT Epoch) | Tier Map v5.0.0 | Internal Reference**
 
 ---
 
@@ -10,7 +10,7 @@
 
 ---
 
-## Official Tiers (v9.3.0)
+## Official Tiers (v10.1.0)
 
 | Tier | Price | Key Value |
 |------|-------|-----------|
@@ -60,7 +60,7 @@ Non-recursive self-improvement surfaces are available via Experience Crown Jewel
 
 ---
 
-## Crown Jewel Classification (v9.3.0)
+## Crown Jewel Classification (v10.1.0)
 
 ### A. Architecture Crown Jewels — NEVER RELEASED (34 artifacts)
 
@@ -203,5 +203,5 @@ Everything in Builder, plus:
 
 ---
 
-*CMPSBL OS Substrate v9.3.0 — Tier Map v5.0.0*
+*CMPSBL OS Substrate v10.1.0 — Tier Map v5.0.0*
 *© 2025-2026 PromptFluid®. All rights reserved.*

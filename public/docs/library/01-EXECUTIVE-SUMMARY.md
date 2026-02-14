@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Executive Summary
 
-**Version 9.1.0 | Scientific Publication**
+**Version 10.1.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-001 |
-| **Version** | v9.1.0 |
+| **Version** | v10.1.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -251,5 +251,5 @@ For licensing, acquisition, or research collaboration inquiries:
 
 ---
 
-*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v10.1.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

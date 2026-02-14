@@ -115,9 +115,12 @@ export const LINES_OF_CODE_DISPLAY = '175k+';
 // VERSION INFO
 // =============================================================================
 
-export const SUBSTRATE_VERSION = '9.1.0';
-export const SUBSTRATE_CODENAME = 'ARCHITECT';
-export const SUBSTRATE_EPOCH = 'ARCHITECT';
+import { getMetric } from '@/stores/publicMetricsStore';
+
+/** @deprecated Use getMetric('version') directly — kept for backward compatibility */
+export const SUBSTRATE_VERSION = getMetric('version');
+export const SUBSTRATE_CODENAME = getMetric('codename');
+export const SUBSTRATE_EPOCH = getMetric('epoch');
 
 // =============================================================================
 // PERFORMANCE CLAIMS (only include if verifiable)

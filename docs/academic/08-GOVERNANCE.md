@@ -1,6 +1,6 @@
 # Governance Model
 
-## CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch
+## CMPSBL OS Substrate v10.1.0 — ARCHITECT Epoch
 
 **DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
 **Author:** Kenneth E Sweet Jr (ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX))
@@ -63,7 +63,7 @@ The governance model addresses several AI safety concerns:
 
 ---
 
-*CMPSBL OS Substrate v9.1.0 — Academic Documentation*  
+*CMPSBL OS Substrate v10.1.0 — Academic Documentation*  
 *Kenneth E Sweet Jr · ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)*  
 *DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)*  
 *© 2025–2026 PromptFluid®. All rights reserved.*

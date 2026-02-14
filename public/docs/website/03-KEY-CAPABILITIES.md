@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v9.3.0**
+**What CMPSBL® Does — Technical Overview v10.1.0**
 
 ---
 
@@ -361,4 +361,4 @@ system.health
 
 ---
 
-*CMPSBL® v9.3.0 — Cognitive Infrastructure for Production AI*
+*CMPSBL® v10.1.0 — Cognitive Infrastructure for Production AI*
