@@ -198,7 +198,12 @@ export default function Auth() {
       });
 
       if (verifyError || !verifyData?.success || !verifyData?.session) {
-        toast.error(verifyData?.error || 'Face ID verification failed — is your passkey registered?');
+        const errMsg = verifyData?.error || 'Face ID verification failed';
+        if (errMsg.includes('Unknown passkey') || errMsg.includes('register')) {
+          toast.error('This Face ID credential isn\'t registered yet. Sign in with email first, then register Face ID from your profile.', { duration: 8000 });
+        } else {
+          toast.error(errMsg);
+        }
         return;
       }
 
