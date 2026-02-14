@@ -5,7 +5,7 @@
  * Combines: Capabilities (400+), Templates (200+), Pipelines (200+) = 800+ Artifacts
  */
 
-import { useState, useMemo, useRef, useCallback } from 'react';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
@@ -255,26 +255,28 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
   const isArchitectureOnly = tierBadge === 'CMPSBL CORE';
   const upgradeLabel = isBlackBoxed ? getUpgradeTierLabel(itemId) : null;
   
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end md:items-center justify-center"
+      className="fixed inset-0 z-[12000] grid place-items-center p-4 bg-black/60 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        className="bg-card border border-border rounded-t-2xl md:rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+        className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Handle bar (mobile) */}
-        <div className="flex justify-center pt-3 md:hidden">
-          <div className="w-12 h-1.5 rounded-full bg-muted-foreground/30" />
-        </div>
         
         {/* Header */}
         <div className="p-6 pb-4">
