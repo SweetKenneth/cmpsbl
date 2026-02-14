@@ -147,6 +147,7 @@ export function CmpsblNav() {
       icon: Users,
       items: [
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
+        { name: "PromptFluid", href: "https://promptfluid.com", description: "Our parent company & portfolio", icon: Building2, external: true },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
         { name: "Library", href: "/library", description: "Documentation library", icon: BookOpen },
       ]
@@ -318,61 +319,69 @@ export function CmpsblNav() {
                       <div className="h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
 
                       <div className="p-2">
-                        {activeNavSection.items.map((item) => (
-                          <Link
-                            key={item.href}
-                            to={item.href}
-                            className={cn(
-                              "flex items-start gap-3 p-3 rounded-lg transition-colors duration-150 group/item",
-                              "hover:bg-muted",
-                              isActive(item.href) && "bg-muted"
-                            )}
-                          >
-                            {item.icon && (
-                              <div
-                                className={cn(
-                                  "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
-                                  "bg-muted group-hover/item:bg-primary/10",
-                                  isActive(item.href) && "bg-primary/10 text-primary"
-                                )}
-                              >
-                                <item.icon
+                        {activeNavSection.items.map((item) => {
+                          const linkClass = cn(
+                            "flex items-start gap-3 p-3 rounded-lg transition-colors duration-150 group/item",
+                            "hover:bg-muted",
+                            isActive(item.href) && "bg-muted"
+                          );
+                          const content = (
+                            <>
+                              {item.icon && (
+                                <div
                                   className={cn(
-                                    "w-5 h-5 transition-colors",
-                                    isActive(item.href)
-                                      ? "text-primary"
-                                      : "text-muted-foreground group-hover/item:text-primary"
-                                  )}
-                                />
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0 pt-0.5">
-                              <div className="flex items-center gap-2">
-                                <span
-                                  className={cn(
-                                    "font-semibold text-sm transition-colors",
-                                    isActive(item.href) ? "text-primary" : "text-foreground"
+                                    "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
+                                    "bg-muted group-hover/item:bg-primary/10",
+                                    isActive(item.href) && "bg-primary/10 text-primary"
                                   )}
                                 >
-                                  {item.name}
-                                </span>
-                                {item.badge && (
-                                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
-                                    {item.badge}
+                                  <item.icon
+                                    className={cn(
+                                      "w-5 h-5 transition-colors",
+                                      isActive(item.href)
+                                        ? "text-primary"
+                                        : "text-muted-foreground group-hover/item:text-primary"
+                                    )}
+                                  />
+                                </div>
+                              )}
+                              <div className="flex-1 min-w-0 pt-0.5">
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className={cn(
+                                      "font-semibold text-sm transition-colors",
+                                      isActive(item.href) ? "text-primary" : "text-foreground"
+                                    )}
+                                  >
+                                    {item.name}
                                   </span>
-                                )}
-                                {item.external && (
-                                  <ExternalLink className="w-3 h-3 text-muted-foreground" />
+                                  {item.badge && (
+                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                                      {item.badge}
+                                    </span>
+                                  )}
+                                  {item.external && (
+                                    <ExternalLink className="w-3 h-3 text-muted-foreground" />
+                                  )}
+                                </div>
+                                {item.description && (
+                                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                                    {item.description}
+                                  </p>
                                 )}
                               </div>
-                              {item.description && (
-                                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                                  {item.description}
-                                </p>
-                              )}
-                            </div>
-                          </Link>
-                        ))}
+                            </>
+                          );
+                          return item.external ? (
+                            <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                              {content}
+                            </a>
+                          ) : (
+                            <Link key={item.href} to={item.href} className={linkClass}>
+                              {content}
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   </motion.div>
