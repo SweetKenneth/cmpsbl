@@ -1,5 +1,6 @@
-import { Bell, Search, LogOut, Menu, Map } from "lucide-react";
+import { Bell, Search, LogOut, Menu, Map, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMetric } from "@/stores/publicMetricsStore";
 
@@ -37,6 +38,18 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
       </div>
 
       <div className="flex items-center gap-2 lg:gap-3">
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex gap-2"
+          asChild
+        >
+          <Link to="/">
+            <Home className="w-4 h-4" />
+            <span className="hidden lg:inline">Home</span>
+          </Link>
+        </Button>
+
         <Button
           variant="outline"
           size="sm"
