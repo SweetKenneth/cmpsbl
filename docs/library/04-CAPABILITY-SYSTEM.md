@@ -47,19 +47,19 @@ Every capability has the following metadata:
 
 | Category | Count | Examples |
 |----------|-------|---------|
-| **Memory & Learning** | ~50 | Memory query, reinforcement, knowledge graph, session reflection |
+| **Memory & Learning** | ~52 | Memory query, reinforcement, knowledge graph topology, session reflection, memory playground |
 | **AI Routing** | ~30 | Provider selection, failover, cost optimization, load balancing |
 | **Security & Defense** | ~40 | Threat detection, bot filtering, behavioral analysis, incident response |
-| **Evolution** | ~25 | Propose improvement, validate, apply, rollback, stamp |
-| **Orchestration** | ~35 | Pipeline execution, agency management, task assignment |
+| **Evolution** | ~27 | Propose improvement, validate, apply, rollback, stamp, evolution receipts |
+| **Orchestration** | ~36 | Pipeline execution, agency management, task assignment, agent mesh |
 | **Observability** | ~30 | Health monitoring, SLA tracking, anomaly detection, alerting |
 | **NLP & Communication** | ~25 | Intent classification, response generation, personality |
 | **Infrastructure** | ~45 | Vector search, webhook delivery, audit logging, cost tracking |
 | **Accessibility** | ~20 | WCAG scanning, automated remediation, compliance reporting |
 | **Integration** | ~30 | API adapters, data sync, transform pipelines |
 | **Governance** | ~35 | Autonomy tiers, circuit breakers, bounded authority |
-| **Autonomous Learning** | ~20 | Dream cycles, creative synthesis, pattern discovery |
-| **Cognitive** | ~25 | Self-reflection, meta-learning, cognitive bootstrapping |
+| **Autonomous Learning** | ~22 | Dream cycles, creative synthesis, pattern discovery, dream feeder API |
+| **Cognitive** | ~27 | Self-reflection, meta-learning, cognitive bootstrapping, brain orchestrator |
 
 ---
 
@@ -107,7 +107,7 @@ Capabilities are assigned to tiers based on complexity, cost, and strategic valu
 | **Free** | Public | ~80 |
 | **Pro** | Paid subscription | ~150 |
 | **Enterprise** | Enterprise contract | ~120 |
-| **CMPSBL-Only** | Internal only | ~54 (Crown Jewels) |
+| **CMPSBL-Only** | Internal only | ~55 (Crown Jewels) |
 
 Crown Jewels are capabilities classified as architecturally sensitive. They are never exposed at any external tier.
 

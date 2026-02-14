@@ -62,7 +62,7 @@ Non-recursive self-improvement surfaces are available via Experience Crown Jewel
 
 ## Crown Jewel Classification (v9.3.0)
 
-### A. Architecture Crown Jewels — NEVER RELEASED (33 artifacts)
+### A. Architecture Crown Jewels — NEVER RELEASED (34 artifacts)
 
 | Rule | Enforcement |
 |------|-------------|
@@ -73,9 +73,9 @@ Non-recursive self-improvement surfaces are available via Experience Crown Jewel
 | search_indexed | false |
 | export | forbidden |
 
-Examples: Recursive self-optimization core, architecture refactorers, meta-learning accelerators, governance kernels, CLM internals, compression algorithms, SEBA Engine, Cortex Engine, Modernizer.
+Examples: Recursive self-optimization core, architecture refactorers, meta-learning accelerators, governance kernels, CLM internals, compression algorithms, SEBA Engine, Cortex Engine, Modernizer, Brain Orchestrator (5-phase cognitive loop).
 
-### B. Experience Crown Jewels — BLACK-BOXED (28 artifacts)
+### B. Experience Crown Jewels — BLACK-BOXED (29 artifacts)
 
 Released as sealed artifacts with execution-only interfaces.
 
@@ -125,7 +125,7 @@ Applied to ALL Experience Crown Jewels:
 
 **Scope:** Single-project, single-executor, in-run self-improvement only.
 
-### Pro ($149/month) — All 28 artifacts
+### Pro ($149/month) — All 29 artifacts
 
 Everything in Builder, plus:
 
@@ -139,6 +139,7 @@ Everything in Builder, plus:
 | Cognitive Mesh | Orchestration |
 | Attack Surface Engine | Security mapping |
 | Knowledge Retrieval Engine | Full RAG |
+| Knowledge Graph Topology | Semantic graph, BFS traversal, clustering |
 | + 13 additional engines/meta-engines | See registry |
 
 **Scope:** CLM (bounded + governed), cross-session learning, cross-executor learning, memory optimization, pattern reuse across projects.
