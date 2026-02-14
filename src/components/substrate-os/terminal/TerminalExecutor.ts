@@ -149,7 +149,7 @@ function formatEvolutionLogForTerminal(): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY FORMATTERS (v9.1.0 ARCHITECT)
+// PERSONALITY FORMATTERS (v9.3.0 ARCHITECT)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function formatPersonalityList(profiles: Array<{ id: string; name: string; description: string }>): string {
@@ -735,7 +735,6 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  │  defense://    security, threats, anomalies
 │  │  nexus://      AI routing, multi-provider
 │  │  vision://     observability, metrics
-│  │  integration://enterprise adapters, LLM governance
 │  │
 │  ├─ ADMIN LAYER ─────────────────────────────────────────────
 │  │  system://     orchestration, lifecycle, heal
@@ -744,6 +743,7 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  │
 │  ├─ ORCHESTRATOR LAYER ──────────────────────────────────────
 │  │  cortex://     policy intent, manual mode
+│  │  integration://enterprise adapters, discovery
 │  │  encode://     code execution, generation, CLM
 │  │
 │  ├─ INFRASTRUCTURE LAYER ────────────────────────────────────
@@ -1659,7 +1659,7 @@ ${allFeatures.map(f => {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
     }
-    // ═══ EVOLUTION CYCLE v6.5.0 ═══
+    // ═══ EVOLUTION CYCLE v9.3.0 ═══
     else if (base === 'modernizer.evolve') {
       const { evolutionCycle } = await import('@/lib/substrate/evolution-cycle');
       
@@ -4159,7 +4159,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // ENGINE — Cognitive Engine System v8.1.0
+    // ENGINE — Cognitive Engine System v9.3.0
     // ═══════════════════════════════════════════════════════════════════════════
     
     else if (base === 'engine.status') {
@@ -4532,7 +4532,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     }
 
-    // ═══ INFRASTRUCTURE COMMANDS (v8.5.0) ═══
+    // ═══ INFRASTRUCTURE COMMANDS (v9.3.0) ═══
     else if (base.startsWith('cron.') || base.startsWith('ratelimit.') || base.startsWith('snapshot.') || base.startsWith('analytics.') || base.startsWith('stream.') || base.startsWith('file.') || base.startsWith('nl.')) {
       try {
         // Lazy-register infra handlers on first use

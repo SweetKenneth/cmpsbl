@@ -1,6 +1,6 @@
 /**
  * Terminal Type Definitions
- * v9.1.0 — ARCHITECT Epoch Terminal Configuration (360+ commands)
+ * v9.3.0 — ARCHITECT Epoch Terminal Configuration (360+ commands)
  */
 
 export interface CommandResult {
@@ -44,8 +44,8 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓  PROMPTFLUID® SUBSTRATE OS v9.1.0   ▓',
-  '  ▓  ARCHITECT Epoch Cognitive OS       ▓',
+  '  ▓  CMPSBL® SUBSTRATE OS v9.3.0         ▓',
+  '  ▓  ARCHITECT Epoch Cognitive OS         ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
   '  ┌─ BOOTSTRAP ───────────────────────────┐',
@@ -65,13 +65,18 @@ export const BOOT_MESSAGES = [
   '  │                                       │',
   '  │  ★ ORCHESTRATOR                       │',
   '  │    ◉ cortex   ◉ integration           │',
+  '  │    ◉ encode                           │',
+  '  │                                       │',
+  '  │  ◎ INFRASTRUCTURE                     │',
+  '  │    ◉ memory   ◉ relay     ◉ audit     │',
+  '  │    ◉ identity ◉ economy   ◉ sandbox   │',
   '  │                                       │',
   '  └───────────────────────────────────────┘',
   '',
   '  ◉ 21 modules operational',
   '  ◉ 360+ commands available',
-  '  ◉ 200+ synergy pipelines | 125 executors',
-  '  ◉ 400+ capabilities | 100+ engines',
+  '  ◉ 200 synergy pipelines | 100 engines',
+  '  ◉ 400+ capabilities | 76 + 24 meta-engines',
   '  ◉ Health: 100%',
   '',
   '  Type \'help\' for commands',
