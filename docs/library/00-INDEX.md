@@ -46,6 +46,7 @@
 <tr><td>14</td><td><a href="./14-MARKETPLACE.md">Marketplace &amp; Distribution</a></td><td>Capability marketplace and agent marketplace</td></tr>
 <tr><td>15</td><td><a href="./15-USE-CASES.md">Use Cases</a></td><td>Real-world applications and integrations</td></tr>
 <tr><td>16</td><td><a href="./16-GLOSSARY.md">Glossary</a></td><td>Terminology and definitions</td></tr>
+<tr><td>17</td><td><a href="./17-INTENT-MESH.md">Intent Mesh</a></td><td>Emergent cross-module intelligence layer (v10.0)</td></tr>
 </tbody>
 </table>
 

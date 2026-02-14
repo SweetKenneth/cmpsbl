@@ -37,6 +37,7 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
 | 15 | Bibliography | `15-BIBLIOGRAPHY.md` | References and prior art |
 | 16 | License | `LICENSE.md` | Licensing terms |
 | 17 | Citation | `CITATION.cff` | Machine-readable citation |
+| 18 | Intent Mesh | `16-INTENT-MESH.md` | Emergent cross-module intelligence via capability advertisement |
 
 ---
 

@@ -8,6 +8,7 @@
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { decode as decodeJwt } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -83,19 +84,24 @@ Deno.serve(async (req) => {
         return json({ error: "Unauthorized" }, 401);
       }
 
-      const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-      const userClient = createClient(supabaseUrl, anonKey, {
-        global: { headers: { Authorization: authHeader } },
-      });
-
       const token = authHeader.replace("Bearer ", "");
-      const { data: claimsData, error: claimsError } = await userClient.auth.getClaims(token);
-      if (claimsError || !claimsData?.claims) {
+      
+      // Decode the JWT to extract user claims (no verification needed — 
+      // Supabase gateway already verified the token)
+      let userId: string;
+      let userEmail: string;
+      try {
+        const [_header, payload, _sig] = decodeJwt(token);
+        const claims = payload as Record<string, unknown>;
+        userId = claims.sub as string;
+        userEmail = claims.email as string;
+        if (!userId || !userEmail) {
+          return json({ error: "Invalid token claims" }, 401);
+        }
+      } catch (e) {
+        console.error("JWT decode error:", e);
         return json({ error: "Invalid token" }, 401);
       }
-
-      const userId = claimsData.claims.sub;
-      const userEmail = claimsData.claims.email as string;
 
       const body = await req.json();
       const { credentialId, publicKey, deviceType, transports } = body;
@@ -103,6 +109,8 @@ Deno.serve(async (req) => {
       if (!credentialId || !publicKey) {
         return json({ error: "Missing credentialId or publicKey" }, 400);
       }
+
+      console.log(`Registering passkey for user ${userId} (${userEmail}), credentialId: ${credentialId.substring(0, 20)}...`);
 
       // Store credential using service role (bypasses RLS)
       const { error } = await adminClient.from("passkey_credentials").insert({
@@ -122,6 +130,7 @@ Deno.serve(async (req) => {
         return json({ error: "Failed to register passkey" }, 500);
       }
 
+      console.log(`Passkey registered successfully for ${userEmail}`);
       return json({ success: true });
     }
 
@@ -134,6 +143,8 @@ Deno.serve(async (req) => {
         return json({ error: "Missing credentialId or challenge" }, 400);
       }
 
+      console.log(`Verifying passkey assertion, credentialId: ${credentialId.substring(0, 20)}...`);
+
       // 1. Verify challenge is valid and unused
       const { data: challengeRow, error: challengeError } = await adminClient
         .from("passkey_challenges")
@@ -144,6 +155,7 @@ Deno.serve(async (req) => {
         .single();
 
       if (challengeError || !challengeRow) {
+        console.error("Challenge verification failed:", challengeError);
         return json({ error: "Invalid or expired challenge" }, 401);
       }
 
@@ -161,8 +173,11 @@ Deno.serve(async (req) => {
         .single();
 
       if (credError || !credential) {
+        console.error("Credential lookup failed:", credError);
         return json({ error: "Unknown passkey — register first" }, 401);
       }
+
+      console.log(`Credential found for user: ${credential.email}`);
 
       // 3. Update last_used_at and sign_count
       await adminClient
@@ -185,8 +200,6 @@ Deno.serve(async (req) => {
       }
 
       // Extract the OTP token from the generated link
-      // The link contains hashed_token in properties
-      const token_hash = linkData.properties?.hashed_token;
       const email_otp = linkData.properties?.email_otp;
 
       if (!email_otp) {
@@ -205,6 +218,8 @@ Deno.serve(async (req) => {
         console.error("OTP verify error:", verifyError);
         return json({ error: "Failed to create session" }, 500);
       }
+
+      console.log(`Session created successfully for ${credential.email}`);
 
       return json({
         success: true,

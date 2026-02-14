@@ -39,6 +39,7 @@
 | 18 | [Business Model & Economics](./18-BUSINESS-MODEL.md) | Pricing, margins, marketplace economics | 🟡 Medium |
 | 19 | [Investor Cheat Sheet](./19-INVESTOR-CHEAT-SHEET.md) | Quick reference for investor conversations | 🟢 Low |
 | 20 | [Onboarding Guide](./20-ONBOARDING.md) | New employee / new developer onboarding | 🟢 Low |
+| 21 | [Intent Mesh Internals](./21-INTENT-MESH-INTERNALS.md) | Emergent capability mesh — routing, governance, trade secrets | 🔴 Critical |
 
 ---
 

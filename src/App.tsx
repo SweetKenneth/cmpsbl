@@ -109,6 +109,9 @@ const AIOperatingSystem = lazy(() => import("./pages/AIOperatingSystem"));
 const EncodeInfo = lazy(() => import("./pages/products/EncodeInfo"));
 
 
+// PromptFluid portfolio page (accessible via menu + promptfluid.com domain)
+const PromptFluidHome = lazy(() => import("./pages/PromptFluidHome"));
+
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
 const Solutions = lazy(() => import("./pages/Solutions"));
@@ -335,6 +338,7 @@ const App = () => {
                         <Route path="/library" element={<Library />} />
                         <Route path="/support" element={<Support />} />
                         <Route path="/explore" element={<Explore />} />
+                        <Route path="/promptfluid" element={<PromptFluidHome />} />
                         
                         {/* Module pages (de-shrouded SEO) */}
                         <Route path="/modules" element={<ModulesHub />} />
