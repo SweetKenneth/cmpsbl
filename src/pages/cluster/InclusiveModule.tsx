@@ -197,10 +197,6 @@ export default function InclusiveModule() {
                   <span className="font-semibold">Verify — Plugin Certification</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link to="/cluster/studio-autonomous-site-generator" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
-                  <span className="font-semibold">Studio — Site Generator</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
                 <Link to="/" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
                   <span className="font-semibold">Home</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

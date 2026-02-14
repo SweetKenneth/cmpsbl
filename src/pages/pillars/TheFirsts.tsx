@@ -145,7 +145,7 @@ export default function TheFirsts() {
               We are <strong>PromptFluid</strong>. Not a company that built tools—<strong>a current that built its own intelligence</strong>. In 2025, we treat AI as water: adaptive, reflective, uncontainable. Conversation becomes creation. Orchestration becomes the mind.
             </p>
             <p className="text-lg leading-relaxed mb-6">
-              Start here, then follow the river into our products: <Link to="/cluster/inclusive-module-accessibility" className="text-primary hover:underline">INCLUSIVE: human compatibility</Link>, <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="text-primary hover:underline">SPLCBL: plugin certification</Link>, <Link to="/cluster/studio-autonomous-site-generator" className="text-primary hover:underline">Studio: autonomous site generator</Link>, and <Link to="/" className="text-primary hover:underline">home</Link>.
+              Start here, then follow the river into our products: <Link to="/cluster/inclusive-module-accessibility" className="text-primary hover:underline">INCLUSIVE: human compatibility</Link>, <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="text-primary hover:underline">SPLCBL: plugin certification</Link>, and <Link to="/" className="text-primary hover:underline">home</Link>.
             </p>
           </section>
 
@@ -345,12 +345,6 @@ export default function TheFirsts() {
                       <td className="border border-border p-3">WCAG 2.2 scanning operational</td>
                     </tr>
                     <tr>
-                      <td className="border border-border p-3"><Link to="/cluster/studio-autonomous-site-generator" className="text-primary hover:underline">Studio</Link></td>
-                      <td className="border border-border p-3">App/Site Builder (50% Complete)</td>
-                      <td className="border border-border p-3">$600K–$1.0M</td>
-                      <td className="border border-border p-3">Core features working, deployment pending</td>
-                    </tr>
-                    <tr>
                       <td className="border border-border p-3">RCKBL (Rockable)</td>
                       <td className="border border-border p-3">WordPress Security - Production Ready</td>
                       <td className="border border-border p-3">$400K–$800K</td>
@@ -408,10 +402,6 @@ export default function TheFirsts() {
                 <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors">
                   <h4 className="font-semibold mb-2">SPLCBL (Spliceable)</h4>
                   <p className="text-sm text-muted-foreground">AI Plugin Certification</p>
-                </Link>
-                <Link to="/cluster/studio-autonomous-site-generator" className="p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors">
-                  <h4 className="font-semibold mb-2">Studio</h4>
-                  <p className="text-sm text-muted-foreground">App/Site Builder (In Development - 50% Complete)</p>
                 </Link>
               </div>
               <Link to="/" className="inline-flex items-center gap-2 mt-6 text-primary hover:underline">
