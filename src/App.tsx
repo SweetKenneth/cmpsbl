@@ -399,9 +399,13 @@ const App = () => {
                         <Route path="/blog/building-agents-that-learn" element={<BuildingAgentsThatLearn />} />
                         
                         {/* v9.1.0 ARCHITECT Epoch Posts */}
-                        <Route path="/blog/machine-protocol-standards-v9" element={<MachineProtocolStandards />} />
-                        <Route path="/blog/autonomous-ai-governance-v9" element={<AutonomousAIGovernance />} />
-                        <Route path="/blog/adversarial-ai-defense-v9" element={<AdversarialAIDefense />} />
+                        <Route path="/blog/machine-protocol-standards-architect-epoch" element={<MachineProtocolStandards />} />
+                        <Route path="/blog/autonomous-ai-governance-runtime-enforcement" element={<AutonomousAIGovernance />} />
+                        <Route path="/blog/adversarial-ai-defense-module-response-2026" element={<AdversarialAIDefense />} />
+                        {/* Legacy v9 slug redirects */}
+                        <Route path="/blog/machine-protocol-standards-v9" element={<Navigate to="/blog/machine-protocol-standards-architect-epoch" replace />} />
+                        <Route path="/blog/autonomous-ai-governance-v9" element={<Navigate to="/blog/autonomous-ai-governance-runtime-enforcement" replace />} />
+                        <Route path="/blog/adversarial-ai-defense-v9" element={<Navigate to="/blog/adversarial-ai-defense-module-response-2026" replace />} />
                         
                         {/* Dynamic AutoBlog Posts */}
                         <Route path="/blog/auto/:slug" element={<AutoBlogPost />} />

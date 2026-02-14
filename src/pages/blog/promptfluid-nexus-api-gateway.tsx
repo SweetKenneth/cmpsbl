@@ -25,11 +25,11 @@ const PromptFluidNexus = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            PromptFluid Nexus: The AI Orchestration Gateway
+            NEXUS Module: The AI Orchestration Gateway
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore Nexus, the intelligent API gateway that routes AI tasks to optimal free-tier providers, manages caching strategies, and orchestrates the provider network for maximum performance at zero cost.
+            Explore NEXUS, the intelligent API gateway that routes AI tasks to optimal providers, manages caching strategies, and orchestrates the provider network for maximum performance at zero cost.
           </p>
 
           <AuthorBio publishDate="2025-09-25" readTime="10 min read" />
@@ -53,18 +53,18 @@ const PromptFluidNexus = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
               <Layers className="h-8 w-8 text-primary" />
-              What is PromptFluid Nexus?
+              What is the NEXUS Module?
             </h2>
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Nexus serves as the intelligent gateway orchestrating Cascade AI's daily decisions across the free-tier AI 
-                provider mesh. Every request from the master scheduler's nine brain cycles flows through Nexus.
+                NEXUS serves as the intelligent gateway orchestrating the substrate's cognitive decisions across the multi-provider 
+                AI mesh. Every request from BRAIN's cognitive cycles flows through NEXUS.
               </p>
               
               <p>
-                Unlike simple API proxies, Nexus actively manages the autonomous AI lifecycle. It routes simple tasks to 
-                Groq's ultra-fast free-tier and complex reasoning to Together AI, Hyperbolic, DeepSeek, and Cerebras.
+                Unlike simple API proxies, NEXUS actively manages the autonomous AI lifecycle. It routes simple tasks to 
+                fast inference providers and complex reasoning to specialized models across the provider network.
               </p>
             </div>
           </section>
@@ -206,9 +206,9 @@ const PromptFluidNexus = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How PromptFluid Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
                 <p className="text-sm text-muted-foreground">
-                  Discover how Nexus fits into the complete PromptFluid ecosystem architecture.
+                  Discover how NEXUS fits into the complete substrate architecture.
                 </p>
               </Link>
 
@@ -216,9 +216,9 @@ const PromptFluidNexus = () => {
                 to="/blog/cascade-ai-adaptive-intelligence-brain" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">Cascade AI Deep Dive</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">Adaptive Intelligence Deep Dive</h3>
                 <p className="text-sm text-muted-foreground">
-                  Learn how Cascade AI determines optimal routing decisions for Nexus.
+                  Learn how the cognitive engine determines optimal routing decisions for NEXUS.
                 </p>
               </Link>
             </div>
