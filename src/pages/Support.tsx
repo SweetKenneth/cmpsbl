@@ -77,7 +77,7 @@ export default function Support() {
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base">Documentation</CardTitle>
                   <CardDescription className="text-sm">
-                    Browse the complete FNDTN v7 library
+                    Browse the complete FNDTN v8 library
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
