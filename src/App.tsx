@@ -64,6 +64,7 @@ const SubstrateOS = lazy(() => import("./pages/SubstrateOS"));
 const SubstrateDemo = lazy(() => import("./pages/SubstrateDemo"));
 const ProofMode = lazy(() => import("./pages/ProofMode"));
 const Documentation = lazy(() => import("./pages/Documentation"));
+const IntentMeshPublic = lazy(() => import("./pages/IntentMeshPublic"));
 const Publication = lazy(() => import("./pages/Publication"));
 const DevPortal = lazy(() => import("./pages/DevPortal"));
 const Changelog = lazy(() => import("./pages/Changelog"));
@@ -294,6 +295,7 @@ const App = () => {
                         <Route path="/demos" element={<STierDemos />} />
                         <Route path="/publication" element={<Publication />} />
                         <Route path="/documentation" element={<Documentation />} />
+                        <Route path="/intent-mesh" element={<IntentMeshPublic />} />
                         <Route path="/changelog" element={<Changelog />} />
                         <Route path="/codelab" element={<CodeLab />} />
                         <Route path="/forge" element={<CognitiveForge />} />

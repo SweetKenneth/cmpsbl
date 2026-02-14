@@ -1,0 +1,327 @@
+/**
+ * Intent Mesh — Public Website Documentation Page
+ * /intent-mesh — SEO-optimized public doc about the mesh architecture
+ */
+
+import { Helmet } from "react-helmet-async";
+import { ArrowRight, Brain, Network, Shield, Zap, Eye, BarChart3, Layers, RefreshCw, GitBranch, Target, Lightbulb } from "lucide-react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 },
+};
+
+const RESOLVER_STATS = {
+  totalResolvers: 34,
+  totalModules: 21,
+  discoveryMethods: 4,
+  dashboardViews: 6,
+};
+
+const ARCHITECTURE_LAYERS = [
+  { icon: Layers, name: "Advertisement", desc: "Each module publishes resolvers declaring its capabilities" },
+  { icon: GitBranch, name: "Routing", desc: "Dynamic domain-based matching with composite chaining" },
+  { icon: Shield, name: "Governance", desc: "Kill switch + risk gating — mutations blocked by default" },
+  { icon: BarChart3, name: "Learning", desc: "Pipeline crystallization + CLM feedback loop" },
+  { icon: Lightbulb, name: "Discovery", desc: "Gap analysis + autonomous module self-discovery" },
+  { icon: RefreshCw, name: "Refinement", desc: "Multi-turn resolution + intent quality scoring" },
+];
+
+const MODULE_GROUPS = [
+  {
+    layer: "Kernel",
+    modules: [
+      { name: "BRAIN", resolvers: 3, desc: "Reasoning, prediction, cross-module insight" },
+      { name: "MEMORY", resolvers: 4, desc: "Semantic search, pattern matching, learning context" },
+      { name: "CORTEX", resolvers: 3, desc: "Orchestration, bottleneck analysis, workflow coordination" },
+    ],
+  },
+  {
+    layer: "Cognitive",
+    modules: [
+      { name: "DECODE", resolvers: 2, desc: "Intent analysis, context enrichment" },
+      { name: "ENCODE", resolvers: 2, desc: "Code analysis, generation context" },
+      { name: "DREAM", resolvers: 2, desc: "Synthesis context, exploration insights" },
+    ],
+  },
+  {
+    layer: "Operational",
+    modules: [
+      { name: "DEFENSE", resolvers: 7, desc: "Threat scoring, IP reputation, anomaly detection, geo analysis" },
+      { name: "IDENTITY", resolvers: 4, desc: "Actor resolution, trust scoring, auth strength" },
+      { name: "VISION", resolvers: 4, desc: "Session analytics, usage patterns, anomaly scoring" },
+    ],
+  },
+  {
+    layer: "Administrative",
+    modules: [
+      { name: "ECONOMY", resolvers: 4, desc: "Cost forecasting, budget checks, quota status" },
+      { name: "AUDIT", resolvers: 3, desc: "Compliance scoring, change velocity, forensics" },
+      { name: "ACCESS", resolvers: 2, desc: "Developer profiles, permission auditing" },
+    ],
+  },
+  {
+    layer: "Orchestrator",
+    modules: [
+      { name: "NEXUS", resolvers: 2, desc: "Provider health, optimal AI model routing" },
+      { name: "RELAY", resolvers: 3, desc: "Email resolution, delivery history, engagement scoring" },
+      { name: "SANDBOX", resolvers: 2, desc: "Safe evaluation, safety assessment" },
+    ],
+  },
+  {
+    layer: "Infrastructure",
+    modules: [
+      { name: "SYSTEM", resolvers: 2, desc: "Health checks, incident analysis" },
+      { name: "MODERNIZER", resolvers: 2, desc: "Evolution status, upgrade readiness" },
+      { name: "INCLUSIVE", resolvers: 2, desc: "Accessibility scoring, usability assessment" },
+      { name: "RIPPLE", resolvers: 2, desc: "Webhook health, event propagation" },
+      { name: "INTEGRATION", resolvers: 2, desc: "Connector status, schema mapping" },
+    ],
+  },
+];
+
+const SELF_IMPROVEMENT_FEATURES = [
+  {
+    icon: Target,
+    title: "Module Self-Discovery",
+    desc: "All 21 modules autonomously introspect their data assets, analyze failed intents, and propose new capabilities for human approval.",
+  },
+  {
+    icon: BarChart3,
+    title: "Intent Quality Scoring",
+    desc: "Every intent is scored 0–100 across resolution rate, response richness, latency, and cross-module coverage with trend detection.",
+  },
+  {
+    icon: RefreshCw,
+    title: "CLM Feedback Loop",
+    desc: "Scoring insights automatically inject learning topics into each module's Continuous Learning Model, teaching modules to ask better questions.",
+  },
+  {
+    icon: Zap,
+    title: "Auto-Expansion Scheduler",
+    desc: "Periodic cycles run discovery (4h), gap analysis (2h), scoring (1h), and full expansion (24h) — all governed by the kill switch.",
+  },
+];
+
+export default function IntentMeshPublic() {
+  return (
+    <>
+      <Helmet>
+        <title>Intent Mesh — Emergent Module Intelligence | CMPSBL</title>
+        <meta
+          name="description"
+          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across 21 modules with 34+ resolvers. Self-learning, self-improving AI substrate intelligence."
+        />
+        <meta property="og:title" content="Intent Mesh — Emergent Module Intelligence | CMPSBL" />
+        <meta property="og:description" content="Autonomous cross-module capability discovery with self-learning, pipeline crystallization, and intent quality scoring." />
+        <link rel="canonical" href="https://cmpsbl.lovable.app/intent-mesh" />
+      </Helmet>
+
+      <div className="min-h-screen bg-background text-foreground">
+        {/* Hero */}
+        <section className="relative overflow-hidden border-b border-border">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+          <div className="relative max-w-6xl mx-auto px-6 py-20 md:py-28">
+            <motion.div {...fadeUp} className="max-w-3xl">
+              <div className="flex items-center gap-2 mb-4">
+                <Network className="w-5 h-5 text-primary" />
+                <span className="text-sm font-mono text-muted-foreground tracking-wider uppercase">
+                  CMPSBL OS Substrate v10.3
+                </span>
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+                Intent Mesh
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
+                Emergent cross-module intelligence. 21 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {Object.entries(RESOLVER_STATS).map(([key, value]) => (
+                  <div key={key} className="bg-card border border-border rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-primary">{value}</div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {key === "totalResolvers" ? "Resolvers" : key === "totalModules" ? "Modules" : key === "discoveryMethods" ? "Discovery Methods" : "Dashboard Views"}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Architecture */}
+        <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+          <motion.div {...fadeUp}>
+            <h2 className="text-3xl font-bold mb-4">Six-Layer Architecture</h2>
+            <p className="text-muted-foreground mb-10 max-w-2xl">
+              The mesh operates across six distinct layers, each providing a specific capability class — from capability advertisement through autonomous self-improvement.
+            </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {ARCHITECTURE_LAYERS.map((layer) => (
+                <div key={layer.name} className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-colors">
+                  <layer.icon className="w-6 h-6 text-primary mb-3" />
+                  <h3 className="font-semibold text-lg mb-2">{layer.name}</h3>
+                  <p className="text-sm text-muted-foreground">{layer.desc}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Resolution Flow */}
+        <section className="border-y border-border bg-muted/30">
+          <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+            <motion.div {...fadeUp}>
+              <h2 className="text-3xl font-bold mb-4">How Intent Resolution Works</h2>
+              <p className="text-muted-foreground mb-8 max-w-2xl">
+                A module broadcasts an intent with domains. The router matches capable resolvers, executes them in parallel, composes results, and logs an auditable receipt.
+              </p>
+              <div className="bg-card border border-border rounded-xl p-6 md:p-8 font-mono text-sm overflow-x-auto">
+                <pre className="text-muted-foreground whitespace-pre leading-relaxed">{`Module A (DEFENSE)
+  │ broadcast("actor_enrichment", domains: [identity, security])
+  ▼
+Intent Router
+  ├──► IDENTITY.resolve_actor  →  { actor_id, display_name, trust_level }
+  ├──► IDENTITY.trust_score    →  { trust_score, risk_flags }
+  ├──► ECONOMY.actor_value     →  { lifetime_value, roi, tier }
+  └──► AUDIT.actor_history     →  { audit_entries, risk_actions }
+  ▼
+Composed Result (merged from 4 resolvers across 3 modules)
+  ▼
+Receipt → mesh_intents (auditable, realtime)
+  ▼
+Score (78/100) → CLM Feedback → Gap Detection`}</pre>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Self-Improvement */}
+        <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+          <motion.div {...fadeUp}>
+            <h2 className="text-3xl font-bold mb-4">Self-Improving Intelligence</h2>
+            <p className="text-muted-foreground mb-10 max-w-2xl">
+              The mesh doesn't just route — it learns. Every interaction feeds back into the system, making it smarter over time.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              {SELF_IMPROVEMENT_FEATURES.map((feat) => (
+                <div key={feat.title} className="bg-card border border-border rounded-xl p-6">
+                  <feat.icon className="w-6 h-6 text-primary mb-3" />
+                  <h3 className="font-semibold text-lg mb-2">{feat.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{feat.desc}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Module Registry */}
+        <section className="border-y border-border bg-muted/30">
+          <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+            <motion.div {...fadeUp}>
+              <h2 className="text-3xl font-bold mb-4">21-Module Resolver Registry</h2>
+              <p className="text-muted-foreground mb-10 max-w-2xl">
+                Every module in the substrate participates in the mesh, advertising capabilities that other modules can discover and compose dynamically.
+              </p>
+              <div className="space-y-8">
+                {MODULE_GROUPS.map((group) => (
+                  <div key={group.layer}>
+                    <h3 className="text-sm font-mono text-primary tracking-wider uppercase mb-3">{group.layer} Layer</h3>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {group.modules.map((mod) => (
+                        <div key={mod.name} className="bg-card border border-border rounded-lg p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-semibold font-mono text-sm">{mod.name}</span>
+                            <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                              {mod.resolvers} resolvers
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">{mod.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Governance */}
+        <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+          <motion.div {...fadeUp}>
+            <h2 className="text-3xl font-bold mb-4">Governance & Safety</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-card border border-border rounded-xl p-6">
+                <Shield className="w-6 h-6 text-primary mb-3" />
+                <h3 className="font-semibold mb-2">Kill Switch</h3>
+                <p className="text-sm text-muted-foreground">OFF by default. When disabled, all broadcasts return immediately with no execution.</p>
+              </div>
+              <div className="bg-card border border-border rounded-xl p-6">
+                <Eye className="w-6 h-6 text-primary mb-3" />
+                <h3 className="font-semibold mb-2">Read-Only Default</h3>
+                <p className="text-sm text-muted-foreground">All resolvers default to read risk. Mutations blocked unless governance mode is explicitly escalated.</p>
+              </div>
+              <div className="bg-card border border-border rounded-xl p-6">
+                <Brain className="w-6 h-6 text-primary mb-3" />
+                <h3 className="font-semibold mb-2">Human Approval</h3>
+                <p className="text-sm text-muted-foreground">Self-discovered capabilities require human approval before entering the live manifest.</p>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* CTA */}
+        <section className="border-t border-border">
+          <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+            <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
+            <p className="text-muted-foreground mb-8">
+              The Intent Mesh is one layer of the CMPSBL OS Substrate — a 21-module cognitive orchestration system.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link
+                to="/modules"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
+              >
+                All 21 Modules <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/documentation"
+                className="inline-flex items-center gap-2 border border-border px-6 py-3 rounded-lg font-medium hover:bg-muted transition-colors"
+              >
+                Documentation
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "Intent Mesh",
+              applicationCategory: "DeveloperApplication",
+              operatingSystem: "Cloud",
+              description: "Emergent cross-module intelligence layer for autonomous capability discovery across 21 AI substrate modules.",
+              author: {
+                "@type": "Person",
+                name: "Kenneth E Sweet Jr",
+              },
+              publisher: {
+                "@type": "Organization",
+                name: "PromptFluid",
+              },
+              softwareVersion: "10.3.0",
+            }),
+          }}
+        />
+      </div>
+    </>
+  );
+}
