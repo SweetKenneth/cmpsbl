@@ -62,6 +62,16 @@ const COMMAND_PATTERNS: CommandPattern[] = [
   { patterns: [/\bcortex\s*status\b/i, /\borchestrator\b/i], command: 'cortex.status', description: 'Check cortex status' },
   { patterns: [/\bsynerg/i, /\blist\s+synergies\b/i], command: 'cortex.synergy.list', description: 'List synergy pipelines' },
 
+  // Mesh / Discovery
+  { patterns: [/\bmesh\s*status\b/i, /\bmesh\s*info\b/i], command: 'mesh.status', description: 'Check mesh status' },
+  { patterns: [/\bmesh\s*log\b/i, /\bmesh\s*history\b/i, /\bmesh\s*receipts?\b/i], command: 'mesh.log', description: 'Show mesh activity log' },
+  { patterns: [/\bmesh\s*discover\b/i, /\bdiscover\s*capabilit/i, /\brun\s+discovery\b/i, /\bgap\s*analysis\b/i], command: 'mesh.discover', description: 'Run capability discovery cycle' },
+  { patterns: [/\bmesh\s*gaps?\b/i, /\bcapability\s*gaps?\b/i], command: 'mesh.gaps', description: 'Show capability gaps' },
+  { patterns: [/\bmesh\s*recommend/i, /\bcapability\s*recommend/i], command: 'mesh.recommendations', description: 'Show capability recommendations' },
+  { patterns: [/\bmesh\s*expand\b/i, /\bexpand\s*(?:mesh|capabilities)\b/i], command: 'mesh.expand', description: 'Expand mesh with recommended capabilities' },
+  { patterns: [/\bmesh\s*affinity\b/i, /\bmodule\s*affinity\b/i], command: 'mesh.affinity', description: 'Analyze cross-module affinity' },
+  { patterns: [/\bmesh\s*broadcast\b/i], command: 'mesh.broadcast', description: 'Broadcast a mesh intent' },
+
   // Decode
   { patterns: [/\bdecode\s*status\b/i], command: 'decode.status', description: 'Check decode status' },
 
