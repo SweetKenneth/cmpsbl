@@ -149,7 +149,7 @@ export function getIdentityEngine() {
 }
 
 // Re-exports for WebAuthn and auth config
-export { registerPasskey, authenticateWithPasskey, isWebAuthnSupported, isPlatformAuthenticatorAvailable, getUserPasskeys, revokePasskey } from './webauthn';
+export { registerPasskey, authenticateWithPasskey, isWebAuthnSupported, isPlatformAuthenticatorAvailable, getUserPasskeys, revokePasskey, linkPasskeyToEmail, getEmailForPasskey } from './webauthn';
 export type { PasskeyCredential, PasskeyRegistrationResult, PasskeyAuthenticationResult } from './webauthn';
 export { AUTH_CONFIG, isPasswordAuthAllowed, isPasskeyPrimary, setAuthMode } from './auth-config';
 export type { AuthConfig, AuthMode } from './auth-config';

@@ -56,10 +56,63 @@ export interface PasskeyAuthenticationResult {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CREDENTIAL STORE (in-memory, synced to IDENTITY module)
+// CREDENTIAL STORE (localStorage-persisted)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const credentialStore = new Map<string, PasskeyCredential[]>();
+const PASSKEY_STORE_KEY = 'cmpsbl_passkey_credentials';
+const PASSKEY_EMAIL_MAP_KEY = 'cmpsbl_passkey_email_map';
+
+function loadCredentialStore(): Map<string, PasskeyCredential[]> {
+  try {
+    const raw = localStorage.getItem(PASSKEY_STORE_KEY);
+    if (!raw) return new Map();
+    const parsed = JSON.parse(raw) as Record<string, PasskeyCredential[]>;
+    return new Map(Object.entries(parsed));
+  } catch {
+    return new Map();
+  }
+}
+
+function saveCredentialStore(store: Map<string, PasskeyCredential[]>) {
+  try {
+    const obj: Record<string, PasskeyCredential[]> = {};
+    for (const [k, v] of store) obj[k] = v;
+    localStorage.setItem(PASSKEY_STORE_KEY, JSON.stringify(obj));
+  } catch { /* storage full or unavailable */ }
+}
+
+/** Map credentialId → email for auto-login after Face ID */
+function loadEmailMap(): Map<string, string> {
+  try {
+    const raw = localStorage.getItem(PASSKEY_EMAIL_MAP_KEY);
+    if (!raw) return new Map();
+    return new Map(Object.entries(JSON.parse(raw)));
+  } catch {
+    return new Map();
+  }
+}
+
+function saveEmailMap(map: Map<string, string>) {
+  try {
+    const obj: Record<string, string> = {};
+    for (const [k, v] of map) obj[k] = v;
+    localStorage.setItem(PASSKEY_EMAIL_MAP_KEY, JSON.stringify(obj));
+  } catch { /* storage full or unavailable */ }
+}
+
+/** Register a passkey-to-email mapping so Face ID can auto-login */
+export function linkPasskeyToEmail(credentialId: string, email: string) {
+  const map = loadEmailMap();
+  map.set(credentialId, email);
+  saveEmailMap(map);
+}
+
+/** Look up the email associated with a passkey credential */
+export function getEmailForPasskey(credentialId: string): string | null {
+  return loadEmailMap().get(credentialId) || null;
+}
+
+const credentialStore = loadCredentialStore();
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CAPABILITY DETECTION
@@ -205,10 +258,11 @@ export async function registerPasskey(
       aaguid: '', // Extracted from attestation if needed
     };
 
-    // Store locally
+    // Store locally and persist
     const userCreds = credentialStore.get(userId) || [];
     userCreds.push(passkey);
     credentialStore.set(userId, userCreds);
+    saveCredentialStore(credentialStore);
 
     emit({
       module: 'identity',
@@ -294,11 +348,12 @@ export async function authenticateWithPasskey(
       userHandle: response.userHandle ? bufferToBase64url(response.userHandle) : null,
     };
 
-    // Update last used timestamp in store
+    // Update last used timestamp in store and persist
     for (const [uid, creds] of credentialStore) {
       const cred = creds.find(c => c.credentialId === result.credentialId);
       if (cred) {
         cred.lastUsedAt = Date.now();
+        saveCredentialStore(credentialStore);
         break;
       }
     }
