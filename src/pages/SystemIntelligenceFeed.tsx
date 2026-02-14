@@ -1,6 +1,6 @@
 /**
  * System Intelligence Feed — Observer Mode
- * v7.0.0 — Immersive Observer Mode experience
+ * v9.3.0 ARCHITECT Epoch — Immersive Observer Mode experience
  * 
  * A unique, cinematic view into the substrate's autonomous learning.
  * Observers witness CLM in action without any interaction.

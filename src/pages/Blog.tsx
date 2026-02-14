@@ -471,11 +471,11 @@ const HUMAN_POSTS: BlogPost[] = [
     source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
-    id: 'pf-works', title: "How PromptFluid Works",
+    id: 'pf-works', title: "How CMPSBL Works",
     excerpt: "Deep dive: dream cycles, neural orchestration, and experimental AI concepts.",
     href: "/blog/how-promptfluid-works-cascade-ai-ecosystem", category: "Technology",
     date: "2025-07-10", readTime: "18 min", image: howPFWorksImg,
-    imageAlt: "PromptFluid Cascade AI ecosystem",
+    imageAlt: "CMPSBL cognitive AI ecosystem",
     source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
@@ -487,7 +487,7 @@ const HUMAN_POSTS: BlogPost[] = [
     source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
-    id: 'studio', title: "PromptFluid Studio",
+    id: 'studio', title: "CMPSBL Studio",
     excerpt: "AI-assisted development platform generating production-ready code.",
     href: "/blog/promptfluid-studio-build-apps-that-think", category: "Development",
     date: "2025-05-05", readTime: "13 min", image: pfStudioImg,
@@ -552,14 +552,14 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'comparison', title: "AI Product Comparison 2025",
-    excerpt: "How PromptFluid compares to OpenAI, Anthropic, and other AI platforms.",
+    excerpt: "How CMPSBL compares to OpenAI, Anthropic, and other AI platforms.",
     href: "/blog/ai-product-comparison-2025", category: "Research",
     date: "2025-06-12", readTime: "18 min", image: aiComparisonImg,
     imageAlt: "AI product comparison chart",
     source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
-    id: 'disruptor', title: "PromptFluid Market Disruptor",
+    id: 'disruptor', title: "CMPSBL Market Disruptor",
     excerpt: "How cognitive infrastructure is reshaping the AI landscape.",
     href: "/blog/promptfluid-market-disruptor", category: "Research",
     date: "2025-05-08", readTime: "14 min", image: marketDisruptorImg,

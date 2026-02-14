@@ -948,10 +948,10 @@ export default function SubstrateOS() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>promptfluid® substrate os</span>
+              <span>CMPSBL® substrate os</span>
             </div>
             <span>•</span>
-            <span>v7.x.x</span>
+            <span>v9.3.0</span>
           </div>
           <div className="flex items-center gap-4">
             <a href="/changelog" className="hover:text-cyan-400 transition-colors">evolution</a>

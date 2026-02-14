@@ -1,6 +1,6 @@
 /**
- * promptfluid® — Cognitive Orchestration Substrate
- * v2026.01 — Streamlined Application Entry
+ * CMPSBL® — Cognitive Orchestration Substrate
+ * v9.3.0 ARCHITECT Epoch — Streamlined Application Entry
  */
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -156,7 +156,7 @@ const WordPressAccessibilityGuide = lazy(() => import("./pages/blog/WordPressAcc
 const WCAG22Changes = lazy(() => import("./pages/blog/WCAG22Changes"));
 const AIAccessibilityFixes = lazy(() => import("./pages/blog/AIAccessibilityFixes"));
 
-// New v6.x.x pillar/cluster posts
+// Pillar/cluster posts
 const EvolvingSoftwareV6Breakthrough = lazy(() => import("./pages/blog/evolving-software-v6-breakthrough"));
 const LLMsTxtProtocol = lazy(() => import("./pages/blog/llms-txt-protocol-ai-context"));
 const AIGovernanceNamespace = lazy(() => import("./pages/blog/ai-governance-namespace-unified-terminology"));
@@ -168,7 +168,7 @@ const LangChainMemoryIntegration = lazy(() => import("./pages/blog/LangChainMemo
 const WhyAgentsForget = lazy(() => import("./pages/blog/WhyAgentsForget"));
 const BuildingAgentsThatLearn = lazy(() => import("./pages/blog/BuildingAgentsThatLearn"));
 
-// v9.1.0 ARCHITECT Epoch blog posts
+// ARCHITECT Epoch blog posts
 const MachineProtocolStandards = lazy(() => import("./pages/blog/MachineProtocolStandards"));
 const AutonomousAIGovernance = lazy(() => import("./pages/blog/AutonomousAIGovernance"));
 const AdversarialAIDefense = lazy(() => import("./pages/blog/AdversarialAIDefense"));
@@ -398,7 +398,7 @@ const App = () => {
                         <Route path="/blog/why-agents-forget" element={<WhyAgentsForget />} />
                         <Route path="/blog/building-agents-that-learn" element={<BuildingAgentsThatLearn />} />
                         
-                        {/* v9.1.0 ARCHITECT Epoch Posts */}
+                        {/* ARCHITECT Epoch Posts */}
                         <Route path="/blog/machine-protocol-standards-architect-epoch" element={<MachineProtocolStandards />} />
                         <Route path="/blog/autonomous-ai-governance-runtime-enforcement" element={<AutonomousAIGovernance />} />
                         <Route path="/blog/adversarial-ai-defense-module-response-2026" element={<AdversarialAIDefense />} />

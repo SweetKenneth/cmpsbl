@@ -129,7 +129,7 @@ export default function Register() {
             Register as Observer
           </h1>
           <p className="text-muted-foreground">
-            Join the observer list for CMPSBL v6.0.0 updates and documentation access.
+            Join the observer list for CMPSBL updates and documentation access.
           </p>
         </div>
 
@@ -196,7 +196,7 @@ export default function Register() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                <span>Full FNDTN v6.0.0 documentation library (26 documents)</span>
+                <span>Full FNDTN v8 documentation library</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
