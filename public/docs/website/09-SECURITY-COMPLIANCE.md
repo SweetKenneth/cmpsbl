@@ -136,6 +136,18 @@ Enterprise tier includes:
 
 ## Authentication & Access
 
+### Passwordless Authentication (IDENTITY Module)
+
+CMPSBL® enforces **passwordless-first authentication** via the IDENTITY module (v9.3.0):
+
+| Method | Description |
+|--------|-------------|
+| **WebAuthn / Passkeys** | Face ID, Touch ID, platform authenticators — no shared secrets |
+| **Magic Links** | Email-based OTP sign-in — zero passwords |
+| **Conditional UI** | Browser autofill passkey prompts |
+
+No passwords are stored, transmitted, or phished. The system enforces `PASSKEY_ONLY` mode by default.
+
 ### API Key Management
 
 | Feature | Description |
