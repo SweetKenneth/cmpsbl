@@ -3480,6 +3480,36 @@ export type Database = {
         }
         Relationships: []
       }
+      cognitive_orders: {
+        Row: {
+          chosen_name: string | null
+          created_at: string
+          id: string
+          payment_status: string
+          sku: string
+          stripe_session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          chosen_name?: string | null
+          created_at?: string
+          id?: string
+          payment_status?: string
+          sku: string
+          stripe_session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          chosen_name?: string | null
+          created_at?: string
+          id?: string
+          payment_status?: string
+          sku?: string
+          stripe_session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       cognitive_registry: {
         Row: {
           api_url: string | null
@@ -3546,6 +3576,33 @@ export type Database = {
           status?: string
           updated_at?: string
           version?: string
+        }
+        Relationships: []
+      }
+      cognitive_stripe_map: {
+        Row: {
+          currency: string
+          price_cents: number
+          sku: string
+          stripe_price_id: string | null
+          stripe_product_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          currency?: string
+          price_cents?: number
+          sku: string
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          currency?: string
+          price_cents?: number
+          sku?: string
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

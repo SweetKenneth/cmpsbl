@@ -95,6 +95,9 @@ const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDoc
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 const StartHere = lazy(() => import("./pages/StartHere"));
+const ComposableCognitives = lazy(() => import("./pages/ComposableCognitives"));
+const CognitivesSuccess = lazy(() => import("./pages/CognitivesSuccess"));
+const CognitivesDownload = lazy(() => import("./pages/CognitivesDownload"));
 
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
@@ -311,6 +314,9 @@ const App = () => {
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                         <Route path="/clear-cache" element={<ClearCache />} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
+                        <Route path="/composable-cognitives" element={<ComposableCognitives />} />
+                        <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
+                        <Route path="/composable-cognitives/download" element={<CognitivesDownload />} />
 
                         {/* Marketing / Info */}
                         <Route path="/about" element={<About />} />

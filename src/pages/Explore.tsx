@@ -75,6 +75,26 @@ export default function Explore() {
       {/* Hero Section */}
       <HeroMetaSubstrate />
 
+      {/* Composable Cognitives CTA */}
+      <section className="relative z-10 py-10 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto text-center space-y-4 p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent"
+        >
+          <h2 className="text-2xl font-bold">Composable Cognitives</h2>
+          <p className="text-muted-foreground">Own superpowered agents. Download once. Run anywhere.</p>
+          <Button asChild size="lg" className="gap-2 font-mono">
+            <Link to="/composable-cognitives">
+              <Sparkles className="w-4 h-4" />
+              Shop Cognitives
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
+        </motion.div>
+      </section>
+
       {/* LNCHBL Free Download CTA */}
       <LnchblCTA />
 
