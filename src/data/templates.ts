@@ -5920,9 +5920,25 @@ class CodeGenerator {
   
   private async validateCode(code: string, language: string): Promise<boolean> {
     try {
-      // Basic syntax check
-      new Function(code);
-      return true;
+      // Safe syntax validation using balanced-delimiter heuristics
+      // Never execute user code via Function constructor
+      if (!code || code.trim().length === 0) return false;
+      
+      const opens = ['{', '(', '['];
+      const closes = ['}', ')', ']'];
+      const stack: string[] = [];
+      
+      for (const ch of code) {
+        const openIdx = opens.indexOf(ch);
+        const closeIdx = closes.indexOf(ch);
+        if (openIdx !== -1) stack.push(closes[openIdx]);
+        else if (closeIdx !== -1) {
+          if (stack.length === 0 || stack[stack.length - 1] !== ch) return false;
+          stack.pop();
+        }
+      }
+      
+      return stack.length === 0;
     } catch {
       return false;
     }
