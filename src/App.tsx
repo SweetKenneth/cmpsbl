@@ -98,6 +98,7 @@ const StartHere = lazy(() => import("./pages/StartHere"));
 const ComposableCognitives = lazy(() => import("./pages/ComposableCognitives"));
 const CognitivesSuccess = lazy(() => import("./pages/CognitivesSuccess"));
 const CognitivesDownload = lazy(() => import("./pages/CognitivesDownload"));
+const AdminCognitiveUploads = lazy(() => import("./pages/AdminCognitiveUploads"));
 
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
@@ -317,6 +318,7 @@ const App = () => {
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
                         <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
                         <Route path="/composable-cognitives/download" element={<CognitivesDownload />} />
+                        <Route path="/admin/cognitive-uploads" element={<AdminCognitiveUploads />} />
 
                         {/* Marketing / Info */}
                         <Route path="/about" element={<About />} />
