@@ -35,12 +35,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let subscription: { unsubscribe: () => void } | null = null;
+    let isMounted = true;
     
     getSupabase().then(supabase => {
+      if (!isMounted) return;
       supabaseRef.current = supabase;
       
       // Check for existing session
       supabase.auth.getSession().then(({ data: { session } }) => {
+        if (!isMounted) return;
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -48,18 +51,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Set up auth state listener
       const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (!isMounted) return;
         setSession(session);
         setUser(session?.user ?? null);
+        setLoading(false);
         
-        // Navigate to OS on successful sign-in
-        if (_event === 'SIGNED_IN' && session) {
+        // Navigate to OS on successful sign-in (only if not already there)
+        if (_event === 'SIGNED_IN' && session && !window.location.pathname.startsWith('/os')) {
           navigate('/os');
         }
       });
       subscription = data.subscription;
     });
 
-    return () => subscription?.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const signInWithMagicLink = async (email: string) => {
