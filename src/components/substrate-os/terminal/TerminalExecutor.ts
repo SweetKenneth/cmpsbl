@@ -4658,7 +4658,8 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         registerInfraModuleHandlers();
         const { registerEncodeModuleHandlers } = await import('@/lib/terminal/encode-handlers');
         registerEncodeModuleHandlers();
-        
+        const { registerMeshHandlers } = await import('@/lib/terminal/mesh-handlers');
+        registerMeshHandlers();
         const { getHandler } = await import('@/lib/terminal/validate-registry');
         const handler = getHandler(base);
         

@@ -6549,6 +6549,51 @@ export type Database = {
         }
         Relationships: []
       }
+      mesh_intents: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          governance_mode: string
+          id: string
+          input_summary: Json | null
+          intent_type: string
+          output_summary: Json | null
+          resolved_by: string[]
+          source_module: string
+          success: boolean
+          target_modules: string[]
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          governance_mode?: string
+          id?: string
+          input_summary?: Json | null
+          intent_type: string
+          output_summary?: Json | null
+          resolved_by?: string[]
+          source_module: string
+          success?: boolean
+          target_modules?: string[]
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          governance_mode?: string
+          id?: string
+          input_summary?: Json | null
+          intent_type?: string
+          output_summary?: Json | null
+          resolved_by?: string[]
+          source_module?: string
+          success?: boolean
+          target_modules?: string[]
+        }
+        Relationships: []
+      }
       modernizer_analytics: {
         Row: {
           analysis_result: Json | null

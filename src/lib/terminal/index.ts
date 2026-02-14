@@ -60,3 +60,8 @@ export {
 export {
   registerInfraModuleHandlers,
 } from './infra-module-handlers';
+
+// Intent Mesh handlers (v10.0)
+export {
+  registerMeshHandlers,
+} from './mesh-handlers';
