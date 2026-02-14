@@ -130,6 +130,36 @@ const MODULE_DOMAIN_KNOWLEDGE: Record<string, {
     dataAssets: ['provider_health', 'routing_history', 'model_performance'],
     potentialOutputs: ['provider_status', 'best_model', 'latency_estimate', 'cost_estimate', 'fallback_chain', 'provider_reliability'],
   },
+  ENCODE: {
+    naturalDomains: ['code', 'generation', 'refactoring', 'typescript', 'react', 'architecture', 'patterns'],
+    dataAssets: ['code_history', 'pattern_library', 'refactoring_logs', 'architecture_manifest'],
+    potentialOutputs: ['code_quality_score', 'pattern_matches', 'tech_debt_estimate', 'refactoring_suggestions', 'recommended_pattern', 'dependency_graph', 'architecture_fit'],
+  },
+  MODERNIZER: {
+    naturalDomains: ['evolution', 'upgrade', 'migration', 'shadow', 'deployment', 'diff', 'regression'],
+    dataAssets: ['evolution_runs', 'upgrade_plans', 'diff_history', 'regression_logs'],
+    potentialOutputs: ['evolution_phase', 'risk_score', 'rollback_available', 'shadow_accuracy', 'readiness_score', 'migration_complexity', 'estimated_duration'],
+  },
+  SYSTEM: {
+    naturalDomains: ['health', 'monitoring', 'self_heal', 'resource', 'capacity', 'incident', 'reliability'],
+    dataAssets: ['health_checks', 'incident_logs', 'resource_metrics', 'self_heal_history'],
+    potentialOutputs: ['health_status', 'uptime_pct', 'resource_usage', 'error_rate', 'root_cause', 'impact_scope', 'mttr_ms', 'self_heal_success'],
+  },
+  ACCESS: {
+    naturalDomains: ['auth', 'permission', 'api_key', 'quota', 'developer', 'subscription', 'billing'],
+    dataAssets: ['api_key_logs', 'permission_grants', 'quota_usage', 'subscription_history'],
+    potentialOutputs: ['developer_tier', 'subscription_status', 'api_key_count', 'quota_remaining', 'permission_level', 'anomalous_access', 'billing_status'],
+  },
+  RIPPLE: {
+    naturalDomains: ['webhook', 'integration', 'sync', 'adapter', 'event', 'realtime', 'propagation'],
+    dataAssets: ['webhook_logs', 'sync_history', 'adapter_configs', 'event_streams'],
+    potentialOutputs: ['delivery_success_rate', 'avg_latency_ms', 'failure_pattern', 'retry_count', 'propagation_status', 'subscriber_count', 'dedup_rate'],
+  },
+  INTEGRATION: {
+    naturalDomains: ['connector', 'adapter', 'enterprise', 'api', 'sync', 'transform', 'mapping'],
+    dataAssets: ['connector_configs', 'transform_pipelines', 'api_schemas', 'sync_logs'],
+    potentialOutputs: ['connector_health', 'sync_status', 'mapping_quality', 'field_coverage', 'transform_accuracy', 'compatibility_score'],
+  },
 };
 
 // ─── Gap Analysis ───

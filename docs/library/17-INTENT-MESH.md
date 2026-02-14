@@ -2,7 +2,7 @@
 
 # Intent Mesh — Emergent Module Intelligence Layer
 
-### CMPSBL OS Substrate v10.1.0
+### CMPSBL OS Substrate v10.3.0
 
 **Classification:** Library — No Trade Secrets  
 **Audience:** Investors · Researchers · Developers · Partners  
@@ -15,47 +15,48 @@
 
 ## 1. Executive Summary
 
-The Intent Mesh is a v10.0 architectural advancement that enables **autonomous cross-module capability discovery and composition**. Instead of explicitly coded module-to-module routes (orchestration), modules broadcast "intents" — declarative requests for data or enrichment — and the mesh dynamically routes them to all capable resolvers across the substrate.
+The Intent Mesh is a v10.0+ architectural advancement that enables **autonomous cross-module capability discovery, composition, and self-improvement**. Instead of explicitly coded module-to-module routes, modules broadcast "intents" — declarative requests for data or enrichment — and the mesh dynamically routes them to all capable resolvers across the substrate.
 
-**v10.1** extends the mesh with **live realtime feeds**, **intent replay**, and **pipeline crystallization** — the ability to save discovered resolver chains as reusable pipelines.
-
-**Key Innovation:** Modules understand what other modules can do, leverage each other's capabilities in emergent patterns that were never explicitly programmed, and the system learns from itself by crystallizing successful patterns into replayable configurations.
+**Key Innovation:** Modules understand what other modules can do, leverage each other's capabilities in emergent patterns never explicitly programmed, and the system continuously learns from itself — crystallizing successful patterns, scoring intent quality, and autonomously discovering new capabilities.
 
 | Property | Value |
 |----------|-------|
-| Version | v10.1.0 |
-| Resolvers | 20 (across 11 modules) |
+| Version | v10.3.0 |
+| Resolvers | 34 (across 21 modules) |
+| Discovery Methods | 4 (Introspection, Gap Response, Affinity Bridge, Intent Learning) |
 | Governance | Kill switch (OFF by default) + read-only enforcement |
-| Database | `mesh_intents` + `mesh_saved_pipelines` (RLS-protected, realtime-enabled) |
-| Dashboard | `/os → Observe → Mesh` (Live Feed + Pipelines views) |
-| Terminal Commands | 13 (`mesh.*` namespace) |
+| Database | `mesh_intents` + `mesh_saved_pipelines` + `mesh_discovery_*` + `mesh_capability_recommendations` |
+| Dashboard | `/os → Observe → Mesh` (6 views: Live, Pipelines, Proposals, Scoring, Scheduler, Topology) |
+| Terminal Commands | 18+ (`mesh.*` namespace) |
 
 ---
 
 ## 2. Architectural Overview
 
-### 2.1 Four-Layer Design
+### 2.1 Six-Layer Design
 
 <table>
 <tr><th>Layer</th><th>Component</th><th>Purpose</th></tr>
 <tr><td>Advertisement</td><td>Capability Manifest</td><td>Each module publishes resolvers declaring what it can do</td></tr>
-<tr><td>Routing</td><td>Intent Router</td><td>Matches broadcasted intents to capable resolvers by domain</td></tr>
+<tr><td>Routing</td><td>Intent Router + Composite Chains</td><td>Matches intents to resolvers; chains resolvers for multi-step enrichment</td></tr>
 <tr><td>Governance</td><td>Kill Switch + Risk Gating</td><td>Controls mesh activation and blocks unsafe operations</td></tr>
-<tr><td>Learning</td><td>Pipeline Crystallization</td><td>Saves discovered resolver chains as reusable configurations</td></tr>
+<tr><td>Learning</td><td>Pipeline Crystallization + CLM Feedback</td><td>Saves discovered chains; feeds scoring insights into module learning</td></tr>
+<tr><td>Discovery</td><td>Gap Analysis + Module Self-Discovery</td><td>Identifies capability gaps; modules propose new resolvers autonomously</td></tr>
+<tr><td>Refinement</td><td>Multi-Turn Resolution + Intent Scoring</td><td>Iterative intent improvement; quality scoring for all interactions</td></tr>
 </table>
 
 ### 2.2 Relationship to Existing Orchestration
 
 The Intent Mesh **supplements, not replaces**, the existing orchestration layer:
 
-| Aspect | Orchestration (v9.x) | Intent Mesh (v10.1) |
+| Aspect | Orchestration (v9.x) | Intent Mesh (v10.3) |
 |--------|----------------------|---------------------|
 | Routing | Explicit, coded pipelines | Dynamic, domain-based matching |
 | Discovery | Developer must know target module | Automatic via capability manifest |
-| Composition | Predefined sequences | Emergent parallel resolution |
+| Composition | Predefined sequences | Emergent parallel + chained resolution |
 | Safety | Pipeline-level governance | Kill switch + risk-level gating |
-| Learning | Static pipeline definitions | Crystallized pipelines from discovery |
-| Replay | Manual re-execution | One-click replay of any historical intent |
+| Learning | Static pipeline definitions | Self-scoring, CLM feedback, auto-expansion |
+| Self-Improvement | Manual updates | Autonomous module self-discovery |
 
 ---
 
@@ -68,29 +69,30 @@ The manifest is the "phone book" of the mesh. Each module advertises resolvers w
 - **Produces**: Output keys the resolver generates
 - **Risk Level**: `read` (default), `enrich`, or `mutate`
 
-### 3.1 Current Resolver Registry (20 Resolvers)
+### 3.1 Resolver Registry (34 Resolvers across 21 Modules)
 
 <table>
-<tr><th>Module</th><th>Resolver</th><th>Domains</th><th>Risk</th></tr>
-<tr><td>DEFENSE</td><td>threat_score</td><td>security, threat, ip</td><td>read</td></tr>
-<tr><td>DEFENSE</td><td>ip_reputation</td><td>security, ip, reputation</td><td>read</td></tr>
-<tr><td>DEFENSE</td><td>anomaly_detect</td><td>security, anomaly, behavior</td><td>read</td></tr>
-<tr><td>RELAY</td><td>email_by_actor</td><td>identity, email, contact</td><td>read</td></tr>
-<tr><td>RELAY</td><td>delivery_history</td><td>delivery, webhook, notification</td><td>read</td></tr>
-<tr><td>VISION</td><td>last_login</td><td>session, login, identity</td><td>read</td></tr>
-<tr><td>VISION</td><td>session_timeline</td><td>session, timeline, behavior</td><td>read</td></tr>
-<tr><td>VISION</td><td>anomaly_score</td><td>anomaly, behavior, session</td><td>read</td></tr>
-<tr><td>IDENTITY</td><td>resolve_actor</td><td>identity, actor, profile</td><td>read</td></tr>
-<tr><td>IDENTITY</td><td>trust_score</td><td>identity, trust, security</td><td>read</td></tr>
-<tr><td>ECONOMY</td><td>actor_value</td><td>economy, value, cost</td><td>read</td></tr>
-<tr><td>ECONOMY</td><td>budget_check</td><td>economy, budget, cost</td><td>read</td></tr>
-<tr><td>MEMORY</td><td>recall_context</td><td>memory, context, knowledge</td><td>read</td></tr>
-<tr><td>MEMORY</td><td>pattern_match</td><td>memory, pattern, history</td><td>read</td></tr>
-<tr><td>AUDIT</td><td>actor_history</td><td>audit, history, compliance</td><td>read</td></tr>
-<tr><td>BRAIN</td><td>reasoning_context</td><td>reasoning, cognition, decision</td><td>read</td></tr>
-<tr><td>SANDBOX</td><td>safe_eval</td><td>execution, validation, code</td><td>read</td></tr>
-<tr><td>INCLUSIVE</td><td>accessibility_score</td><td>accessibility, compliance, wcag</td><td>read</td></tr>
-<tr><td>CORTEX</td><td>orchestration_status</td><td>orchestration, pipeline, capacity</td><td>read</td></tr>
+<tr><th>Module</th><th>Resolvers</th><th>Key Domains</th></tr>
+<tr><td>DEFENSE</td><td>7 — threat_score, ip_reputation, anomaly_detect, geo_analysis, rate_limit_status, threat_timeline, fingerprint_analysis</td><td>security, threat, ip, anomaly, geo, fingerprint</td></tr>
+<tr><td>RELAY</td><td>3 — email_by_actor, delivery_history, engagement_score</td><td>email, delivery, communication</td></tr>
+<tr><td>VISION</td><td>4 — last_login, session_timeline, anomaly_score, usage_analytics</td><td>session, behavior, analytics, performance</td></tr>
+<tr><td>IDENTITY</td><td>4 — resolve_actor, trust_score, auth_strength, access_history</td><td>identity, trust, authentication, authorization</td></tr>
+<tr><td>ECONOMY</td><td>4 — actor_value, budget_check, cost_forecast, quota_status</td><td>economy, cost, budget, quota</td></tr>
+<tr><td>MEMORY</td><td>4 — recall_context, pattern_match, semantic_search, learning_context</td><td>memory, context, semantic, learning</td></tr>
+<tr><td>AUDIT</td><td>3 — actor_history, compliance_score, change_velocity</td><td>audit, compliance, governance</td></tr>
+<tr><td>BRAIN</td><td>3 — reasoning_context, prediction, cross_module_insight</td><td>reasoning, prediction, intelligence</td></tr>
+<tr><td>SANDBOX</td><td>2 — safe_eval, safety_assessment</td><td>execution, validation, safety</td></tr>
+<tr><td>INCLUSIVE</td><td>2 — accessibility_score, usability_assessment</td><td>accessibility, usability, wcag</td></tr>
+<tr><td>CORTEX</td><td>3 — orchestration_status, bottleneck_analysis, workflow_coordination</td><td>orchestration, pipeline, workflow</td></tr>
+<tr><td>DECODE</td><td>2 — intent_analysis, context_enrichment</td><td>intent, parsing, entity_recognition</td></tr>
+<tr><td>NEXUS</td><td>2 — provider_health, optimal_routing</td><td>provider, routing, ai</td></tr>
+<tr><td>DREAM</td><td>2 — synthesis_context, exploration_insights</td><td>dream, synthesis, creativity</td></tr>
+<tr><td>ENCODE</td><td>2 — code_analysis, generation_context</td><td>code, architecture, patterns</td></tr>
+<tr><td>MODERNIZER</td><td>2 — evolution_status, upgrade_readiness</td><td>evolution, upgrade, migration</td></tr>
+<tr><td>SYSTEM</td><td>2 — health_check, incident_analysis</td><td>health, monitoring, incident</td></tr>
+<tr><td>ACCESS</td><td>2 — developer_profile, permission_audit</td><td>auth, developer, permission</td></tr>
+<tr><td>RIPPLE</td><td>2 — webhook_health, event_propagation</td><td>webhook, event, realtime</td></tr>
+<tr><td>INTEGRATION</td><td>2 — connector_status, schema_mapping</td><td>connector, enterprise, transform</td></tr>
 </table>
 
 ---
@@ -116,10 +118,10 @@ The manifest is the "phone book" of the mesh. Each module advertises resolvers w
                                     │   (audit)    │
                                     └──────────────┘
                                            │
-                                    ┌──────▼───────┐
-                                    │ Crystallize? │  → mesh_saved_pipelines
-                                    │  (optional)  │     (reusable config)
-                                    └──────────────┘
+                               ┌───────────┼───────────┐
+                               ▼           ▼           ▼
+                          Crystallize  Score Quality  Gap Detect
+                          (pipeline)   (0-100)       (discovery)
 ```
 
 ---
@@ -147,128 +149,180 @@ Modules cannot query themselves — the router automatically filters out resolve
 
 ---
 
-## 6. Auditability & Live Observability
+## 6. Multi-Turn Refinement (v10.2)
 
-Every mesh interaction produces a **receipt** stored in `mesh_intents`:
+When an initial broadcast returns partial results, the refinement engine iteratively improves resolution:
 
-| Column | Type | Description |
-|--------|------|-------------|
-| intent_type | text | What was requested |
-| source_module | text | Who asked |
-| target_modules | text[] | Who was queried |
-| resolved_by | text[] | Who responded successfully |
-| input_summary | jsonb | Sanitized input (sensitive data redacted) |
-| output_summary | jsonb | Sanitized output |
-| governance_mode | text | read_only / governed / emergency |
-| success | boolean | Whether any resolver responded |
-| duration_ms | integer | Total resolution time |
+1. **Expand Domains** — adds related domains based on what responded
+2. **Deepen Results** — follows up on received data with deeper queries
+3. **Cross-Pollinate** — feeds one module's output as another's input
 
-### 6.1 Live Realtime Feed (v10.1)
-
-The `mesh_intents` table is enrolled in Supabase Realtime. The dashboard subscribes to `INSERT` events and displays new receipts **instantly** with:
-- Animated entry with toast notifications (`🔗 DEFENSE → IDENTITY, RELAY`)
-- Green pulsing "LIVE" and "streaming" indicators
-- No manual refresh required
-
-### 6.2 Terminal History & Replay (v10.1)
-
-| Command | Description |
-|---------|-------------|
-| `mesh.history [n]` | Deep history with full input/output data |
-| `mesh.replay <id>` | Re-broadcast any historical receipt's exact intent |
-| `mesh.save <name>` | Crystallize latest successful receipt as a reusable pipeline |
-| `mesh.pipelines` | List all saved/crystallized pipelines |
-| `mesh.run <name>` | Execute a saved pipeline by name or ID |
+| Property | Value |
+|----------|-------|
+| Max Turns | 5 (default 3) |
+| Strategies | 3 (Deepen → Expand → Cross-Pollinate) |
+| Stop Condition | No new data keys discovered |
+| Auto-Trigger | When `shouldRefine()` detects partial resolution |
 
 ---
 
-## 7. Pipeline Crystallization (v10.1)
+## 7. Composite Resolver Chains (v10.2)
 
-When the mesh discovers a productive resolver chain (e.g., DEFENSE → IDENTITY + RELAY + ECONOMY), users can **crystallize** that configuration into a saved pipeline:
+Chains resolvers so one resolver's output feeds the next:
+
+```
+ip → DEFENSE.threat_score → IDENTITY.resolve_actor → MEMORY.recall_context
+```
+
+- **Discovery**: BFS algorithm finds chains up to 4 steps deep
+- **Execution**: Sequential, with accumulated data flowing forward
+- **Governance**: All steps inherit the chain's governance mode
+
+---
+
+## 8. Module Self-Discovery (v10.2)
+
+All 21 modules autonomously discover new capabilities using 4 methods:
+
+| Method | Description | Confidence |
+|--------|-------------|------------|
+| Introspection | Module examines its own data assets for latent capabilities | 0.60 |
+| Gap Response | Module analyzes failed intents that targeted it | 0.50 |
+| Affinity Bridge | Module proposes bridges to high-affinity modules | 0.55 |
+| Intent Learning | Module learns from scoring which intents it handles poorly | 0.65 |
+
+**Approval Flow**: Proposals surface in the OS Dashboard → Mesh → Proposals tab for human approval before being added to the live manifest.
+
+---
+
+## 9. Intent Quality Scoring (v10.2)
+
+Every intent type is scored on a 0-100 scale across 5 dimensions:
+
+| Dimension | Weight | Description |
+|-----------|--------|-------------|
+| Resolution Rate | 30% | How often resolvers successfully respond |
+| Response Richness | 25% | How many data keys are returned |
+| Latency Efficiency | 15% | How fast resolvers respond |
+| Cross-Module Coverage | 30% | How many modules contribute |
+| Refinement Efficiency | — | How many turns were needed (fewer = better) |
+
+Scores are tracked over time with **trend detection** (improving / stable / declining).
+
+---
+
+## 10. CLM Feedback Loop (v10.3)
+
+Scoring insights automatically feed into Continuous Learning Model (CLM) topics:
+
+```
+Intent Scoring → Extract Insights → Inject CLM Topics → Module Self-Reflection
+```
+
+| Insight Type | Priority | Example |
+|-------------|----------|---------|
+| Low resolution rate | High | "Broaden domains for 'threat_analysis' intent" |
+| Sparse responses | Medium | "Add more output fields to resolver schemas" |
+| Low cross-module coverage | Medium | "Add 'behavior' and 'analytics' domains" |
+| Declining quality | High | "Investigate resolver changes or latency spikes" |
+| Strong patterns | Low | "Replicate input/output structure of top-scoring intents" |
+
+---
+
+## 11. Auto-Expansion Scheduler (v10.3)
+
+Periodic cycles that self-improve the manifest:
+
+| Cycle | Interval | Purpose |
+|-------|----------|---------|
+| Module Self-Discovery | 4 hours | Each module introspects and proposes |
+| Gap Analysis | 2 hours | Scan failed/partial intents |
+| Intent Quality Scoring | 1 hour | Score effectiveness + CLM feedback |
+| Full Expansion | 24 hours | Apply high-confidence proposals (≥0.85) |
+
+Kill switch: Disabled when mesh is disabled. Manual trigger available via dashboard.
+
+---
+
+## 12. Mesh Topology Visualization (v10.3)
+
+Force-directed canvas graph showing all 21 modules as nodes with connections based on:
+- Shared domains between modules
+- Real traffic routes from mesh receipts
+- Connection strength (line thickness)
+
+Interactive: Click modules to inspect, expandable fullscreen mode.
+
+---
+
+## 13. Pipeline Crystallization (v10.1)
+
+When the mesh discovers a productive resolver chain, users can crystallize it into a saved pipeline:
 
 | Property | Description |
 |----------|-------------|
-| Storage | `mesh_saved_pipelines` table (RLS-protected, realtime-enabled) |
+| Storage | `mesh_saved_pipelines` table (RLS-protected) |
 | Source | Any successful mesh receipt |
-| Contents | Source module, intent type, domains, governance mode, resolver chain, input template |
 | Replay | One-click re-broadcast with identical configuration |
 | Tracking | Run count and last execution timestamp |
 
-### 7.1 Crystallization Flow
+---
 
-```
-Receipt (successful) → User clicks "Save" → Names the pipeline
-    → Stored in mesh_saved_pipelines → Available in Pipelines tab
-    → Replayable via dashboard button or `mesh.run <name>` terminal command
-    → Each replay generates a new receipt (full auditability)
-```
+## 14. Dashboard Interface (6 Views)
 
-### 7.2 Why This Matters
-
-Pipeline crystallization closes the **discovery-to-reuse loop**:
-1. The mesh **discovers** novel module cooperation patterns
-2. Users **observe** successful interactions via the live feed
-3. Users **crystallize** productive patterns into named pipelines
-4. Pipelines are **replayed** on demand, generating new receipts
-5. The system **learns from itself** — emergent behavior becomes codified knowledge
+| View | Purpose |
+|------|---------|
+| **Live** | Realtime streaming receipts, resolver map, stats grid, test broadcast |
+| **Pipelines** | Crystallized pipelines with replay buttons |
+| **Proposals** | Module self-discovered capabilities awaiting approval |
+| **Scoring** | Intent quality leaderboard with module rankings |
+| **Scheduler** | Start/stop auto-expansion cycles, view lifetime stats |
+| **Topology** | Force-directed graph of 21-module mesh connectivity |
 
 ---
 
-## 8. Dashboard Interface
-
-The mesh dashboard (`/os → Observe → Mesh`) provides two views:
-
-### 8.1 Live View
-- **Stats Grid**: Modules, resolvers, intents, success rate, latency, saved pipelines
-- **Resolver Map**: Module-by-module breakdown with risk badges
-- **Test Broadcast**: One-click DEFENSE → actor_enrichment simulation
-- **Top Routes**: Visual bar chart of most-used module-to-module routes
-- **Live Receipts**: Realtime streaming feed with hover-to-save pipeline action
-
-### 8.2 Pipelines View
-- **Crystallized Pipelines**: Card grid showing name, resolver chain, governance mode, run count
-- **Replay Button**: Execute any saved pipeline with one click
-- **Status Badges**: Active/inactive pipeline indicators
-
----
-
-## 9. Terminal Command Reference (13 Commands)
+## 15. Terminal Command Reference (18+ Commands)
 
 | Command | Description |
 |---------|-------------|
 | `mesh.status` | Get mesh state, stats, and top routes |
 | `mesh.toggle` | Toggle mesh on/off (kill switch) |
-| `mesh.on` | Enable the intent mesh |
-| `mesh.off` | Disable the intent mesh (kill switch) |
-| `mesh.log` | View recent mesh receipts (compact) |
-| `mesh.history [n]` | Deep history with input/output data (default 25) |
+| `mesh.on` / `mesh.off` | Enable / disable the intent mesh |
+| `mesh.log` | View recent mesh receipts |
+| `mesh.history [n]` | Deep history with input/output data |
 | `mesh.replay <id>` | Replay a specific receipt's intent |
 | `mesh.save <name>` | Save latest successful receipt as pipeline |
-| `mesh.pipelines` | List all saved/crystallized pipelines |
-| `mesh.run <name>` | Run a saved pipeline by name or ID |
+| `mesh.pipelines` | List saved pipelines |
+| `mesh.run <name>` | Run a saved pipeline |
 | `mesh.resolvers` | List all module resolvers |
-| `mesh.broadcast` | Test broadcast DEFENSE → actor_enrichment |
+| `mesh.broadcast` | Test broadcast |
+| `mesh.discover.all` | Run self-discovery across all 21 modules |
+| `mesh.scores` | View intent quality leaderboard |
+| `mesh.approve <id>` | Approve a self-discovered proposal |
+| `mesh.clm.feedback` | Run CLM feedback loop manually |
+| `mesh.clm.summary` | View CLM feedback summary |
 | `mesh.help` | Show command reference |
 
 ---
 
-## 10. Competitive Significance
+## 16. Competitive Significance
 
 The Intent Mesh creates a **capability moat** that is difficult to replicate:
 
 1. **Emergent Intelligence**: Module interactions emerge from capability matching, not hardcoded logic
-2. **Self-Documenting**: Every interaction produces an auditable receipt
-3. **Self-Learning**: Discovered patterns crystallize into reusable pipelines
-4. **Governed Freedom**: The system can be given more autonomy without losing control
-5. **Network Effect**: Each new module/resolver exponentially increases possible interactions
-6. **Live Observability**: Realtime streaming of cross-module cooperation as it happens
-7. **No Known Precedent**: No comparable system exists that combines autonomous module discovery, pipeline crystallization, read-only governance, a human kill switch, and cryptographic auditability in a single architecture
+2. **Self-Learning**: Discovered patterns crystallize into reusable pipelines; scoring feeds back into CLM
+3. **Self-Improving**: Modules autonomously discover and propose new capabilities
+4. **Full Coverage**: All 21 modules participate with 34+ resolvers
+5. **Governed Freedom**: Kill switch + risk gating + human approval for new capabilities
+6. **Network Effect**: Each new module/resolver exponentially increases possible interactions
+7. **Auditable**: Every interaction produces a receipt; every proposal has provenance
+8. **No Known Precedent**: No comparable system combines autonomous module discovery, intent quality scoring, CLM feedback loops, pipeline crystallization, and cryptographic auditability in a single architecture
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v10.1.0 — Intent Mesh*
+*CMPSBL OS Substrate v10.3.0 — Intent Mesh*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  

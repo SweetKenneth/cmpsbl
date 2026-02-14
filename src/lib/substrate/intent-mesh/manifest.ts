@@ -488,6 +488,138 @@ export const MESH_MANIFEST: MeshResolver[] = [
     risk: 'read',
     enabled: true,
   },
+
+  // ── ENCODE ──
+  {
+    id: 'encode.code_analysis',
+    module: 'ENCODE',
+    description: 'Analyze code patterns, architecture, and technical debt',
+    domains: ['code', 'architecture', 'patterns'],
+    accepts: ['context', 'pattern', 'module'],
+    produces: ['code_quality_score', 'pattern_matches', 'tech_debt_estimate', 'refactoring_suggestions'],
+    risk: 'read',
+    enabled: true,
+  },
+  {
+    id: 'encode.generation_context',
+    module: 'ENCODE',
+    description: 'Provide code generation context and pattern recommendations',
+    domains: ['generation', 'typescript', 'react'],
+    accepts: ['context', 'component_type'],
+    produces: ['recommended_pattern', 'dependency_graph', 'architecture_fit', 'code_template'],
+    risk: 'read',
+    enabled: true,
+  },
+
+  // ── MODERNIZER ──
+  {
+    id: 'modernizer.evolution_status',
+    module: 'MODERNIZER',
+    description: 'Get status and risk assessment of evolution runs',
+    domains: ['evolution', 'upgrade', 'migration'],
+    accepts: ['plan_id', 'module', 'operation'],
+    produces: ['evolution_phase', 'risk_score', 'rollback_available', 'shadow_accuracy'],
+    risk: 'read',
+    enabled: true,
+  },
+  {
+    id: 'modernizer.upgrade_readiness',
+    module: 'MODERNIZER',
+    description: 'Assess module readiness for upgrade or migration',
+    domains: ['upgrade', 'deployment', 'regression'],
+    accepts: ['module', 'target_version'],
+    produces: ['readiness_score', 'blocking_issues', 'migration_complexity', 'estimated_duration'],
+    risk: 'read',
+    enabled: true,
+  },
+
+  // ── SYSTEM ──
+  {
+    id: 'system.health_check',
+    module: 'SYSTEM',
+    description: 'Get system health status and resource utilization',
+    domains: ['health', 'monitoring', 'resource'],
+    accepts: ['module', 'metric', 'check_type'],
+    produces: ['health_status', 'uptime_pct', 'resource_usage', 'error_rate'],
+    risk: 'read',
+    enabled: true,
+  },
+  {
+    id: 'system.incident_analysis',
+    module: 'SYSTEM',
+    description: 'Analyze incidents and self-heal outcomes',
+    domains: ['incident', 'reliability', 'self_heal'],
+    accepts: ['incident_id', 'module', 'time_range'],
+    produces: ['root_cause', 'impact_scope', 'mttr_ms', 'self_heal_success', 'prevention_recommendation'],
+    risk: 'read',
+    enabled: true,
+  },
+
+  // ── ACCESS ──
+  {
+    id: 'access.developer_profile',
+    module: 'ACCESS',
+    description: 'Get developer profile, subscription, and API key status',
+    domains: ['auth', 'developer', 'subscription'],
+    accepts: ['actor_id', 'api_key_id', 'developer_id'],
+    produces: ['developer_tier', 'subscription_status', 'api_key_count', 'quota_remaining'],
+    risk: 'read',
+    enabled: true,
+  },
+  {
+    id: 'access.permission_audit',
+    module: 'ACCESS',
+    description: 'Audit permissions, API key usage, and quota consumption',
+    domains: ['permission', 'api_key', 'quota'],
+    accepts: ['actor_id', 'module'],
+    produces: ['permission_level', 'api_usage_pct', 'anomalous_access', 'billing_status'],
+    risk: 'read',
+    enabled: true,
+  },
+
+  // ── RIPPLE ──
+  {
+    id: 'ripple.webhook_health',
+    module: 'RIPPLE',
+    description: 'Get webhook and integration health metrics',
+    domains: ['webhook', 'integration', 'sync'],
+    accepts: ['webhook_id', 'event_type', 'target_url'],
+    produces: ['delivery_success_rate', 'avg_latency_ms', 'failure_pattern', 'retry_count'],
+    risk: 'read',
+    enabled: true,
+  },
+  {
+    id: 'ripple.event_propagation',
+    module: 'RIPPLE',
+    description: 'Track event propagation and realtime sync status',
+    domains: ['event', 'realtime', 'propagation'],
+    accepts: ['event_type', 'source_module'],
+    produces: ['propagation_status', 'subscriber_count', 'delivery_lag_ms', 'dedup_rate'],
+    risk: 'read',
+    enabled: true,
+  },
+
+  // ── INTEGRATION ──
+  {
+    id: 'integration.connector_status',
+    module: 'INTEGRATION',
+    description: 'Get connector health and enterprise integration status',
+    domains: ['connector', 'enterprise', 'api'],
+    accepts: ['connector_id', 'adapter'],
+    produces: ['connector_health', 'sync_status', 'last_sync_at', 'error_count'],
+    risk: 'read',
+    enabled: true,
+  },
+  {
+    id: 'integration.schema_mapping',
+    module: 'INTEGRATION',
+    description: 'Analyze schema mappings and data transform quality',
+    domains: ['adapter', 'transform', 'mapping'],
+    accepts: ['connector_id', 'schema'],
+    produces: ['mapping_quality', 'field_coverage', 'transform_accuracy', 'compatibility_score'],
+    risk: 'read',
+    enabled: true,
+  },
 ];
 
 /** Get all resolvers for a specific module */
