@@ -1,6 +1,6 @@
 # Platform Features
 
-**CMPSBL® — Explore Free, Canonize When Ready**
+**CMPSBL® — Explore Free, Build with Composables**
 
 ---
 
@@ -8,7 +8,7 @@
 
 > **"Everything is free to explore. Engines are canon."**
 
-CMPSBL provides a tiered platform where exploration is free and unlimited, while production-grade orchestration is available through canonized engines.
+CMPSBL provides a tiered platform where exploration is free and unlimited, while production-grade orchestration is available through subscription tiers and individual purchases.
 
 ---
 
@@ -16,22 +16,22 @@ CMPSBL provides a tiered platform where exploration is free and unlimited, while
 
 | Feature | Access | Persistence | Purpose |
 |---------|--------|-------------|---------|
-| **Capability Depot** | FREE | None | Atomic, stateless building blocks |
-| **Template Alley** | FREE | None | Starting points for learning & remixing |
-| **Synergy Pipelines** | FREE | None | Exploratory orchestration patterns |
+| **Composable Artifacts** | FREE | None | Capabilities, templates, synergies — unified storefront |
+| **Composable Cognitives** | $39 each | Downloadable | Superpowered AI agents as artifacts |
 | **Persistent Memory** | FREE | Bounded | Drop-in memory for any agent |
 | **CodeLab** | Free tier | Session | Live development environment |
-| **Engine Marketplace (OEM)** | Subscription | Governed | First-party canonized orchestrations |
+| **Template Generator** | $29 one-time | Licensed | Generate custom templates on demand |
+| **Subscription Tiers** | Free / $49 / $149 | Governed | Tiered access to engines, jewels, advanced features |
 
 ---
 
-## FREE Layers
+## Composable Artifacts (FREE)
 
-### Capability Depot (FREE)
+The [Composable Artifacts Store](/store) is the unified resource hub consolidating the Capability Depot, Template Alley, and Synergy Pipelines into a single browsing experience.
+
+### Capability Depot
 
 **Atomic, stateless building blocks provided free for exploration.**
-
-Capabilities are the smallest units of cognitive functionality. They execute and return results without persistence or governance.
 
 | Principle | Description |
 |-----------|-------------|
@@ -40,23 +40,11 @@ Capabilities are the smallest units of cognitive functionality. They execute and
 | **Free** | No cost, no limits |
 | **Exploratory** | For learning and prototyping |
 
-**What you can do:**
-- Execute any capability instantly
-- Inspect results and behavior
-- Chain capabilities manually
-- Remix and experiment
-
-**What you cannot do:**
-- Save capability configurations
-- Version capability usage
-- Govern capability access
-- Share orchestrations
-
 [Explore Capabilities →](/capabilities)
 
 ---
 
-### Template Alley (FREE)
+### Template Alley
 
 **Free starting points designed for learning and remixing.**
 
@@ -68,22 +56,11 @@ Templates are pre-built patterns that demonstrate cognitive architectures. Fork 
 | **Pro** | 45+ | Advanced workflows |
 | **Elite** | 34+ | Complex orchestrations |
 
-**What you can do:**
-- Browse all templates
-- Preview code and structure
-- Fork for local experimentation
-- Learn from implementations
-
-**What you cannot do:**
-- Canonize templates as engines
-- Promote to governed state
-- Version template modifications
-
-[Browse Templates →](/marketplace)
+[Browse Templates →](/store)
 
 ---
 
-### Synergy Pipelines (FREE)
+### Synergy Pipelines
 
 **Exploratory orchestration patterns demonstrating powerful cross-module coordination.**
 
@@ -99,19 +76,26 @@ Synergy Pipelines are the 147 cross-module orchestrations that combine 2-5 modul
 | **Automation** | 16 | Autonomous repair, evolution |
 | **Orchestration** | 13 | Multi-agent coordination |
 
-**What you can do:**
-- Execute any pipeline
-- Inspect execution results
-- Dry-run (no side effects)
-- Chain pipelines manually
-
-**What you cannot do:**
-- Save pipeline configurations
-- Register custom pipelines
-- Version pipeline runs
-- Promote to engines
-
 [Try Synergies →](/synergies)
+
+---
+
+## Composable Cognitives
+
+**Superpowered AI agents delivered as downloadable artifacts.**
+
+Purchase and download specialized AI agents without creating an account. Each Cognitive is a black-boxed ZIP artifact with a personalization step.
+
+| Cognitive | Specialization | Price |
+|-----------|---------------|-------|
+| **Research** | Market research, competitor analysis | $39 |
+| **Coding** | Code generation, debugging, optimization | $39 |
+| **Analyst** | Data analysis, reporting, insights | $39 |
+| **Ops** | Operations, automation, monitoring | $39 |
+| **Writer** | Content creation, editing, copywriting | $39 |
+| **Hybrid** | General-purpose multi-skill | FREE |
+
+[Browse Cognitives →](/composable-cognitives)
 
 ---
 
@@ -136,13 +120,21 @@ const agent = withPersistentMemory({
 - Per-agent isolation
 - Graceful degradation
 
-**What requires engines:**
+**What requires subscription tiers:**
 - Recall optimization
 - Long-horizon identity
 - Cross-agent continuity
 - Memory audits
 
 [Persistent Memory Quickstart →](/docs/persistent-memory)
+
+---
+
+## Template Generator ($29)
+
+A standalone, one-time purchase that unlocks the template generation engine. Create custom templates on demand from any starting point.
+
+[Learn More →](/pricing)
 
 ---
 
@@ -166,50 +158,24 @@ CodeLab is a **live, execution-first development environment** for building cogn
 | Tier | Features |
 |------|----------|
 | **Free** | Limited executions, session persistence |
-| **Pro** | Unlimited executions, project persistence |
-| **Enterprise** | Team collaboration, audit logs |
+| **Creator** | Unlimited executions, project persistence |
+| **Architect** | Team collaboration, audit logs |
 
 [Open CodeLab →](/codelab)
 
 ---
 
-## Engine Marketplace (OEM)
+## Subscription Tiers
 
-### What is the Engine Marketplace?
+### Unified Pricing
 
-The Engine Marketplace (OEM) offers **first-party, canonized orchestrations** hardened for reliable production execution.
+| Tier | Price | What's Included |
+|------|-------|-----------------|
+| **Free** | $0 | Artifact Store access, persistent memory, exploration |
+| **Creator** | $49/mo | All engines, templates, SDK/API access, 7 Experience Jewels |
+| **Architect** | $149/mo | Advanced CLM, cross-project learning, all 28 Experience Jewels |
 
-Engines are the governed, versioned, authoritative form of orchestration. When you need guarantees, you need engines.
-
-### Engine vs Free Layers
-
-| Feature | Free Layers | Engines |
-|---------|-------------|---------|
-| Execution | ✓ | ✓ |
-| Inspection | ✓ | ✓ |
-| Persistence | ✗ | ✓ |
-| Versioning | ✗ | ✓ |
-| Governance | ✗ | ✓ |
-| SLA Guarantees | ✗ | ✓ |
-| Audit Trail | ✗ | ✓ |
-
-### Available Engines
-
-| Category | Engines | Description |
-|----------|---------|-------------|
-| **Memory** | 5+ | Recall optimization, long-horizon identity |
-| **Routing** | 8+ | Multi-provider coordination, fallback chains |
-| **Security** | 6+ | Threat detection, compliance automation |
-| **Automation** | 10+ | Workflow orchestration, task automation |
-
-### Pricing
-
-| Tier | Price | Features |
-|------|-------|----------|
-| **Professional** | $99/mo | Core engines, standard support |
-| **Enterprise** | Custom | All engines, SLA, dedicated support |
-
-[Browse Engines →](/engines)
+[View Pricing →](/pricing)
 
 ---
 
@@ -217,9 +183,9 @@ Engines are the governed, versioned, authoritative form of orchestration. When y
 
 | Term | Definition |
 |------|------------|
-| **Capability** | Atomic, free, stateless building block |
-| **Template** | Free starting point for learning and remixing |
-| **Synergy Pipeline** | Exploratory, free, non-durable orchestration |
+| **Composable Artifact** | Any capability, template, or synergy in the unified store |
+| **Composable Cognitive** | Superpowered AI agent delivered as a downloadable artifact |
+| **Template Generator** | Licensed tool for on-demand template creation |
 | **Engine** | Saved, governed, authoritative orchestration |
 
 ---
@@ -228,7 +194,7 @@ Engines are the governed, versioned, authoritative form of orchestration. When y
 
 ```
 ┌───────────────────────────────────────────────────────┐
-│                   FREE EXPLORATION                     │
+│              COMPOSABLE ARTIFACTS (FREE)               │
 ├─────────────┬─────────────┬─────────────┬─────────────┤
 │  Capability │   Template  │   Synergy   │  Persistent │
 │    Depot    │    Alley    │  Pipelines  │   Memory    │
@@ -238,8 +204,8 @@ Engines are the governed, versioned, authoritative form of orchestration. When y
                            │
                            ▼
 ┌───────────────────────────────────────────────────────┐
-│               ENGINE MARKETPLACE (OEM)                 │
-│           Canonized • Governed • Guaranteed            │
+│          SUBSCRIPTION TIERS + COGNITIVES               │
+│      Creator • Architect • Cognitives • Generator     │
 └───────────────────────────────────────────────────────┘
 ```
 
@@ -262,4 +228,4 @@ Engines are the governed, versioned, authoritative form of orchestration. When y
 
 ---
 
-*CMPSBL® — Explore Free, Canonize When Ready*
+*CMPSBL® — Explore Free, Build with Composables*

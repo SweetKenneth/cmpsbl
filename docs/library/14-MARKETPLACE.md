@@ -1,9 +1,9 @@
 <div align="center">
 
-# Marketplace & Distribution
+# Distribution & Composables
 
 <table>
-<tr><td><strong>Document</strong></td><td>14 — Marketplace</td></tr>
+<tr><td><strong>Document</strong></td><td>14 — Distribution</td></tr>
 <tr><td><strong>Classification</strong></td><td>Library — No Trade Secrets</td></tr>
 <tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
 </table>
@@ -12,56 +12,58 @@
 
 ---
 
-## Capability Marketplace
+## Composable Artifacts Store
 
-The substrate includes a marketplace where capabilities can be discovered, installed, and composed:
+The substrate includes a unified storefront where capabilities, templates, and synergy pipelines can be discovered and explored:
 
 | Feature | Description |
 |---------|-------------|
-| **Discovery** | Browse capabilities by category, module, tier, and popularity |
-| **Installation** | One-click capability activation |
-| **Composition** | Build custom synergy pipelines from marketplace capabilities |
+| **Discovery** | Browse artifacts by category, module, tier, and popularity |
+| **Activation** | One-click capability activation |
+| **Composition** | Build custom synergy pipelines from available artifacts |
 | **Rating** | Community ratings and usage metrics |
-| **Tiering** | Capabilities gated by subscription plan |
+| **Tiering** | Artifacts gated by subscription tier (Free / Creator / Architect) |
 
 ---
 
-## Agent Marketplace
+## Composable Cognitives
 
-The **Agency** system allows pre-configured multi-agent teams to be deployed as turnkey solutions:
+**Superpowered AI agents** delivered as downloadable artifacts, purchasable without an account:
 
 | Component | Description |
 |-----------|-------------|
-| **Templates** | Pre-built agency configurations for common use cases |
-| **Agents** | Specialized cognitive agents with defined roles and skills |
-| **Workflows** | Pre-configured task workflows and automation |
-| **Dream Pooling** | Shared learning across agency members |
+| **Agents** | Specialized cognitive agents (Research, Coding, Analyst, Ops, Writer) |
+| **Hybrid** | Free general-purpose cognitive |
+| **Personalization** | Name and configure your cognitive at purchase |
+| **Delivery** | Black-boxed ZIP artifact for local execution |
 
-### Agency Templates
+### Available Cognitives
 
-| Template | Use Case | Agents |
-|----------|----------|--------|
-| Research Agency | Market research, competitor analysis | Researcher, Analyst, Writer |
-| Content Agency | Content creation and optimization | Writer, Editor, SEO Specialist |
-| Support Agency | Customer support automation | Intake, Resolver, Escalation |
-| Custom | Build your own | User-defined |
+| Cognitive | Use Case | Price |
+|-----------|----------|-------|
+| Research | Market research, competitor analysis | $39 |
+| Coding | Code generation, debugging, optimization | $39 |
+| Analyst | Data analysis, reporting, insights | $39 |
+| Ops | Operations, automation, monitoring | $39 |
+| Writer | Content creation, editing, copywriting | $39 |
+| Hybrid | General-purpose multi-skill | FREE |
 
 ---
 
 ## Distribution Tiers
 
-| Tier | Capabilities | Price Point |
-|------|-------------|-------------|
-| **Free** | ~80 core capabilities | $0 |
-| **Pro** | ~230 capabilities | Subscription |
-| **Enterprise** | ~350 capabilities | Contract |
+| Tier | Access | Price Point |
+|------|--------|-------------|
+| **Free** | Artifact Store, persistent memory, exploration | $0 |
+| **Creator** | All engines, templates, SDK/API, 7 Experience Jewels | $49/mo |
+| **Architect** | Advanced CLM, cross-project learning, 28 Experience Jewels | $149/mo |
 | **CMPSBL-Only** | All 400+ (incl. Crown Jewels) | Internal |
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)

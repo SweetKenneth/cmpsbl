@@ -54,7 +54,7 @@ The substrate has achieved full operational capability with all 21 modules deplo
 | Initiative | Description | Status |
 |------------|-------------|--------|
 | **SDK v2.0** | TypeScript + Python SDKs with full type safety | In Progress |
-| **Marketplace Foundation** | Template and module marketplace infrastructure | Planned |
+| **Composable Ecosystem** | Artifact Store and Cognitive distribution infrastructure | Planned |
 | **Federated Learning** | Cross-instance learning with privacy preservation | Planned |
 | **Advanced Analytics** | Deeper insights into cognitive operations | Planned |
 
@@ -96,7 +96,7 @@ The substrate has achieved full operational capability with all 21 modules deplo
 | Initiative | Description |
 |------------|-------------|
 | **CMPSBL Cloud** | Fully managed substrate-as-a-service |
-| **Module Marketplace** | Community-built modules and templates |
+| **Composable Ecosystem** | Community-built modules and templates |
 | **Industry Verticals** | Healthcare, Legal, Finance specializations |
 | **Research API** | Academic access program expansion |
 
@@ -125,7 +125,7 @@ The substrate has achieved full operational capability with all 21 modules deplo
 ### Goals
 
 - **10,000+** production deployments
-- **100+** marketplace modules
+- **100+** composable modules
 - **10** major enterprise partnerships
 - **3** industry-specific solutions
 

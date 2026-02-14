@@ -20,11 +20,11 @@ CMPSBL offers a **tiered approach** to AI orchestration:
 
 | Layer | Cost | Persistence | Purpose |
 |-------|------|-------------|---------|
-| **Capability Depot** | FREE | None | Atomic, stateless building blocks |
-| **Template Alley** | FREE | None | Starting points for learning & remixing |
-| **Synergy Pipelines** | FREE | None | Exploratory orchestration patterns |
+| **Composable Artifacts** | FREE | None | Capabilities, templates, synergies — unified storefront |
+| **Composable Cognitives** | $39 each | Downloadable | Superpowered AI agents delivered as artifacts |
 | **Persistent Memory** | FREE | Bounded | Drop-in memory for any agent |
-| **Engine Marketplace** | Paid | Canonized | First-party hardened orchestrations |
+| **Template Generator** | $29 one-time | Licensed | Generate custom templates on demand |
+| **Subscription Tiers** | Free / $49 / $149 | Governed | Tiered access to engines, jewels, and advanced features |
 
 ---
 
@@ -57,11 +57,11 @@ const context = await agent.getContext(userMessage);
 | [What is CMPSBL?](./02-WHAT-IS-CMPSBL.md) | Plain-English introduction |
 | [Getting Started](./06-GETTING-STARTED.md) | Full SDK quick start guide |
 
-### Free Exploration Layers
+### Explore & Build
 | Document | Description |
 |----------|-------------|
-| [Capability Depot](/capabilities) | Atomic, stateless building blocks (FREE) |
-| [Template Alley](/marketplace) | Starting points for remixing (FREE) |
+| [Composable Artifacts](/store) | Capabilities, templates, and synergies (FREE) |
+| [Composable Cognitives](/composable-cognitives) | Superpowered AI agents ($39) |
 | [Synergy Pipelines](/synergies) | Exploratory orchestrations (FREE) |
 
 ### For Developers
@@ -100,19 +100,22 @@ const context = await agent.getContext(userMessage);
 
 | Term | Definition |
 |------|------------|
-| **Capability** | Atomic, free, stateless building block |
-| **Synergy Pipeline** | Exploratory, free, non-durable orchestration |
+| **Composable Artifact** | Any capability, template, or synergy pipeline available in the unified store |
+| **Composable Cognitive** | A superpowered AI agent delivered as a downloadable artifact |
 | **Engine** | Saved, governed, authoritative orchestration |
+| **Template Generator** | Licensed tool for on-demand template creation ($29) |
 
 ---
 
-## Licensing Model
+## Pricing Model
 
-CMPSBL® uses a **hybrid licensing model**:
+CMPSBL® uses a **unified tiered model**:
 
-- **Free Tier:** Capability Depot, Template Alley, Synergy Pipelines, Persistent Memory
-- **Engine Marketplace (OEM):** First-party canonized orchestrations with subscriptions
-- **Enterprise Tier:** Full source code with self-hosted deployment rights
+- **Free ($0):** First-class builder access to the Artifact Store and persistent memory
+- **Creator ($49/mo):** All engines, templates, SDK/API access, and 7 Experience Jewels
+- **Architect ($149/mo):** Advanced CLM, cross-project learning, all 28 Experience Jewels
+- **Template Generator ($29):** Standalone one-time purchase for template generation
+- **Composable Cognitives ($39 each):** Individual AI agent purchases, no account required
 
 See [Pricing & Licensing](./07-LICENSING.md) for details.
 

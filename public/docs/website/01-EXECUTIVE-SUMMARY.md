@@ -49,9 +49,10 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 
 | Stream | Description |
 |--------|-------------|
-| **Infrastructure Licensing** | Annual licenses: Developer ($2,999) → Team ($9,999) → Research ($19,999) → Enterprise ($49,999) |
+| **Subscription Tiers** | Free ($0), Creator ($49/mo), Architect ($149/mo) |
+| **Composable Cognitives** | Superpowered AI agents at $39 each |
+| **Template Generator** | One-time $29 purchase for template generation |
 | **Usage-Based SaaS** | Per-memory, per-request, per-learning-cycle |
-| **Marketplace** | Templates, trained specialists, knowledge graphs |
 
 ### Unit Economics
 

@@ -9,10 +9,10 @@
 | Goal | Time | Recommended Path |
 |------|------|------------------|
 | **Add memory to existing agent** | < 1 hour | [Persistent Memory Quickstart](/docs/persistent-memory) |
-| **Explore capabilities** | Free | [Capability Depot](/capabilities) |
-| **Build from templates** | Free | [Template Alley](/marketplace) |
+| **Explore artifacts** | Free | [Composable Artifacts Store](/store) |
+| **Get an AI agent** | $39 | [Composable Cognitives](/composable-cognitives) |
 | **Test orchestration patterns** | Free | [Synergy Pipelines](/synergies) |
-| **Deploy production engines** | Subscription | [Engine Marketplace](/engines) |
+| **Unlock all engines** | Subscription | [Pricing](/pricing) |
 
 ---
 
@@ -72,7 +72,7 @@ For production deployments using the complete substrate.
 
 - Node.js 18+ 
 - API keys for at least one AI provider (OpenAI, Anthropic, etc.)
-- CMPSBL license (Developer tier or higher)
+- CMPSBL license (Creator tier or higher)
 
 ### Import the SDK
 
@@ -118,9 +118,9 @@ const response = await substrate.nexus.route({
 
 ## Free Exploration Layers
 
-### Capability Depot (FREE)
+### Composable Artifacts Store (FREE)
 
-Atomic, stateless building blocks for exploration:
+The unified storefront for all capabilities, templates, and synergy pipelines:
 
 ```typescript
 // Capabilities are free, non-governed, non-persistent
@@ -129,7 +129,7 @@ const result = await capability.execute(input);
 // Results are ephemeral - nothing is saved
 ```
 
-[Explore Capabilities →](/capabilities)
+[Browse Artifacts →](/store)
 
 ### Template Alley (FREE)
 
@@ -141,7 +141,7 @@ const template = await templates.preview('customer-support');
 // Fork, modify, experiment - nothing is canonized
 ```
 
-[Browse Templates →](/marketplace)
+[Browse Templates →](/store)
 
 ### Synergy Pipelines (FREE)
 
@@ -159,20 +159,20 @@ const result = await cortex.synergy.execute('smart-recall', {
 
 ---
 
-## Production Engines
+## Subscription Tiers
 
-When you need governed, reliable orchestration, upgrade to Engines:
+When you need governed, reliable orchestration, choose a subscription tier:
 
-| Feature | Free Layers | Engines |
-|---------|-------------|---------|
-| Execution | ✓ | ✓ |
-| Inspection | ✓ | ✓ |
-| Persistence | ✗ | ✓ |
-| Versioning | ✗ | ✓ |
-| Governance | ✗ | ✓ |
-| SLA Guarantees | ✗ | ✓ |
+| Feature | Free | Creator ($49/mo) | Architect ($149/mo) |
+|---------|------|-------------------|----------------------|
+| Artifact Store | ✓ | ✓ | ✓ |
+| Persistent Memory | ✓ | ✓ | ✓ |
+| All Engines | ✗ | ✓ | ✓ |
+| SDK/API Access | ✗ | ✓ | ✓ |
+| Experience Jewels | ✗ | 7 | 28 |
+| Cross-Project Learning | ✗ | ✗ | ✓ |
 
-[Engine Marketplace →](/engines)
+[View Pricing →](/pricing)
 
 ---
 
@@ -248,10 +248,10 @@ CMPSBL_MEMORY_TIER=hot
 | Goal | Resource |
 |------|----------|
 | Add memory to existing agent | [Persistent Memory](/docs/persistent-memory) |
-| Explore capabilities | [Capability Depot](/capabilities) |
+| Explore artifacts | [Composable Artifacts](/store) |
 | Understand architecture | [Architecture](./05-ARCHITECTURE.md) |
 | See real examples | [Use Cases](./04-USE-CASES.md) |
-| Choose a plan | [Licensing](./07-LICENSING.md) |
+| Choose a plan | [Pricing](/pricing) |
 
 ---
 
