@@ -1,7 +1,7 @@
 /**
  * Intent Mesh — Terminal Handlers
- * v10.2.0 — mesh.* command namespace
- * Adds refinement, chain discovery, gap flushing
+ * v10.3.0 — mesh.* command namespace
+ * Adds: module self-discovery, intent scoring, auto-scheduler, proposals
  */
 
 import { registerHandler } from './validate-registry';
@@ -402,34 +402,132 @@ export function registerMeshHandlers() {
     return { success: true, data: { message: 'Gap detection buffer flushed to discovery engine' } };
   });
 
+  // ═══ mesh.discover.all — Run self-discovery for all 21 modules ═══
+  registerHandler('mesh.discover.all', async () => {
+    const { runAllModuleDiscovery, persistProposals } = await import('@/lib/substrate/intent-mesh');
+    const result = await runAllModuleDiscovery();
+    const allProposals = result.moduleResults.flatMap(r => r.proposals);
+    const persisted = await persistProposals(allProposals.slice(0, 20));
+    return {
+      success: true,
+      data: {
+        modulesScanned: result.moduleResults.length,
+        totalProposals: result.totalProposals,
+        persisted,
+        durationMs: result.durationMs,
+        topModules: result.moduleResults
+          .filter(r => r.proposals.length > 0)
+          .sort((a, b) => b.proposals.length - a.proposals.length)
+          .slice(0, 5)
+          .map(r => ({ module: r.module, proposals: r.proposals.length, findings: r.introspectionFindings.length })),
+      },
+    };
+  });
+
+  // ═══ mesh.discover <module> — Self-discovery for one module ═══
+  registerHandler('mesh.discover.module', async (args?: string) => {
+    if (!args?.trim()) return { success: false, error: 'Usage: mesh.discover.module <MODULE_NAME>' };
+    const { runModuleDiscovery, persistProposals } = await import('@/lib/substrate/intent-mesh');
+    const result = await runModuleDiscovery(args.trim());
+    if (result.proposals.length > 0) await persistProposals(result.proposals);
+    return {
+      success: true,
+      data: {
+        module: result.module,
+        proposals: result.proposals.map(p => ({ id: p.proposedResolverId, method: p.discoveryMethod, confidence: p.confidenceScore, description: p.description })),
+        introspection: result.introspectionFindings,
+        gapResponses: result.gapResponses,
+        durationMs: result.durationMs,
+      },
+    };
+  });
+
+  // ═══ mesh.scores — Intent quality leaderboard ═══
+  registerHandler('mesh.scores', async () => {
+    const { getIntentLeaderboard } = await import('@/lib/substrate/intent-mesh');
+    const board = await getIntentLeaderboard();
+    return {
+      success: true,
+      data: {
+        topIntents: board.topIntents.slice(0, 5).map(s => ({ intent: s.intentType, source: s.sourceModule, score: s.overallScore, trend: s.trend })),
+        worstIntents: board.worstIntents.slice(0, 5).map(s => ({ intent: s.intentType, source: s.sourceModule, score: s.overallScore, trend: s.trend })),
+        moduleRankings: board.moduleRankings.slice(0, 10),
+      },
+    };
+  });
+
+  // ═══ mesh.proposals — View pending module proposals ═══
+  registerHandler('mesh.proposals', async () => {
+    const { getPendingRecommendations } = await import('@/lib/substrate/intent-mesh');
+    const recs = await getPendingRecommendations();
+    return {
+      success: true,
+      data: {
+        count: recs.length,
+        proposals: recs.slice(0, 15).map(r => ({ resolver: r.proposedResolverId, module: r.targetModule, confidence: r.confidenceScore, description: r.proposedDescription })),
+      },
+    };
+  });
+
+  // ═══ mesh.approve <resolver_id> — Approve a proposal ═══
+  registerHandler('mesh.approve', async (args?: string) => {
+    if (!args?.trim()) return { success: false, error: 'Usage: mesh.approve <resolver_id>' };
+    const { approveProposal } = await import('@/lib/substrate/intent-mesh');
+    const ok = await approveProposal(args.trim());
+    return { success: ok, data: { message: ok ? `Approved and added: ${args.trim()}` : 'Proposal not found or already applied' } };
+  });
+
+  // ═══ mesh.reject <resolver_id> — Reject a proposal ═══
+  registerHandler('mesh.reject', async (args?: string) => {
+    if (!args?.trim()) return { success: false, error: 'Usage: mesh.reject <resolver_id>' };
+    const { rejectProposal } = await import('@/lib/substrate/intent-mesh');
+    const ok = await rejectProposal(args.trim());
+    return { success: ok, data: { message: ok ? `Rejected: ${args.trim()}` : 'Proposal not found' } };
+  });
+
+  // ═══ mesh.scheduler — View/control auto-expansion scheduler ═══
+  registerHandler('mesh.scheduler', async (args?: string) => {
+    const { meshScheduler } = await import('@/lib/substrate/intent-mesh');
+    if (args?.trim() === 'start') { meshScheduler.start(); return { success: true, data: { message: 'Scheduler started' } }; }
+    if (args?.trim() === 'stop') { meshScheduler.stop(); return { success: true, data: { message: 'Scheduler stopped' } }; }
+    if (args?.trim() === 'run') { const r = await meshScheduler.runOnce(); return { success: true, data: { message: 'Full cycle complete', ...r } }; }
+    return { success: true, data: meshScheduler.getState() };
+  });
+
   // ═══ mesh.help — Full command reference ═══
   registerHandler('mesh.help', async () => {
     return {
       success: true,
       data: {
-        description: 'Intent Mesh — Emergent Module Intelligence (v10.2)',
+        description: 'Intent Mesh — Emergent Module Intelligence (v10.3)',
         commands: {
           'mesh.status': 'Get mesh state, stats, and top routes',
           'mesh.toggle': 'Toggle mesh on/off (kill switch)',
-          'mesh.on': 'Enable the intent mesh',
-          'mesh.off': 'Disable the intent mesh (kill switch)',
+          'mesh.on / mesh.off': 'Enable/disable the intent mesh',
           'mesh.log': 'View recent mesh receipts (compact)',
-          'mesh.history [n]': 'Deep history with input/output data (default 25)',
+          'mesh.history [n]': 'Deep history with input/output data',
           'mesh.replay <id>': 'Replay a specific receipt\'s intent',
-          'mesh.save <name>': 'Save latest successful receipt as reusable pipeline',
-          'mesh.pipelines': 'List all saved/crystallized pipelines',
-          'mesh.run <name>': 'Run a saved pipeline by name or ID',
+          'mesh.save <name>': 'Save receipt as reusable pipeline',
+          'mesh.pipelines': 'List saved/crystallized pipelines',
+          'mesh.run <name>': 'Run a saved pipeline',
           'mesh.resolvers': 'List all module resolvers',
           'mesh.broadcast': 'Test broadcast DEFENSE → actor_enrichment',
-          'mesh.refine [n]': 'Multi-turn refined broadcast (n = max turns, default 3)',
+          'mesh.refine [n]': 'Multi-turn refined broadcast',
           'mesh.chains [keys]': 'Discover composite resolver chains',
-          'mesh.chain.run <keys>': 'Execute optimal chain for given input keys',
-          'mesh.flush': 'Force-flush pending gap signals to discovery',
-          'mesh.discover': 'Run full discovery cycle (gaps → recommendations)',
+          'mesh.chain.run <keys>': 'Execute optimal chain',
+          'mesh.flush': 'Force-flush pending gap signals',
+          'mesh.discover': 'Run discovery cycle (gaps → recommendations)',
+          'mesh.discover.all': '🆕 Run self-discovery for all 21 modules',
+          'mesh.discover.module <name>': '🆕 Run self-discovery for one module',
+          'mesh.scores': '🆕 Intent quality leaderboard',
+          'mesh.proposals': '🆕 View pending module proposals',
+          'mesh.approve <id>': '🆕 Approve a proposal → add to manifest',
+          'mesh.reject <id>': '🆕 Reject a proposal',
+          'mesh.scheduler [start|stop|run]': '🆕 Auto-expansion scheduler',
           'mesh.gaps': 'View open capability gaps',
-          'mesh.recommendations': 'View pending resolver recommendations',
-          'mesh.expand': 'Apply high-confidence recommendations to manifest',
-          'mesh.affinity': 'Analyze cross-module connection density',
+          'mesh.recommendations': 'View pending recommendations',
+          'mesh.expand': 'Apply high-confidence recommendations',
+          'mesh.affinity': 'Cross-module connection density',
           'mesh.help': 'Show this help',
         },
       },
