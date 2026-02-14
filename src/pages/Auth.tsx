@@ -1,6 +1,6 @@
 /**
- * Observer Mode Authentication — Passwordless
- * v9.3.0 ARCHITECT — Passkey-first, magic link auth. Zero passwords.
+ * Sign In — Passwordless Authentication
+ * Simple, clear sign-in with Face ID or magic link
  */
 
 import { useState, useEffect } from 'react';
@@ -11,120 +11,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import { 
-  Eye, Brain, Activity, Sparkles, Radio, Cpu, 
-  Shield, Layers, BarChart3, Lock, ArrowRight, Fingerprint, Mail
+  Fingerprint, Mail, ArrowRight, Shield, CheckCircle2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
-import { PasskeyButton } from '@/components/auth/PasskeyButton';
-import { isWebAuthnSupported, isPlatformAuthenticatorAvailable, registerPasskey, authenticateWithPasskey, linkPasskeyToEmail, getEmailForPasskey } from '@/lib/substrate/identity-module';
+import { isWebAuthnSupported, isPlatformAuthenticatorAvailable, authenticateWithPasskey } from '@/lib/substrate/identity-module';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-
-// Animated background particles
-function ObserverParticles() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1 h-1 rounded-full bg-cyan-500/30"
-          initial={{ 
-            x: Math.random() * 100 + '%',
-            y: Math.random() * 100 + '%',
-            opacity: 0
-          }}
-          animate={{ 
-            y: [null, '-20%'],
-            opacity: [0, 0.6, 0]
-          }}
-          transition={{
-            duration: 4 + Math.random() * 4,
-            repeat: Infinity,
-            delay: Math.random() * 4,
-            ease: 'easeOut'
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// CLM Status Indicator
-function CLMStatusBadge() {
-  const [pulse, setPulse] = useState(true);
-  
-  useEffect(() => {
-    const interval = setInterval(() => setPulse(p => !p), 2000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <motion.div
-      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30"
-      animate={{ scale: pulse ? 1 : 1.02 }}
-      transition={{ duration: 0.5 }}
-    >
-      <span className="relative flex h-2 w-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-      </span>
-      <span className="text-xs font-mono text-emerald-400">24/7 CLM ACTIVE</span>
-    </motion.div>
-  );
-}
-
-// Observer capabilities list
-const OBSERVER_CAPABILITIES = [
-  {
-    icon: BarChart3,
-    title: 'Dashboard Telemetry',
-    description: 'View real-time system health, module status, and performance metrics',
-    path: '/os'
-  },
-  {
-    icon: Brain,
-    title: 'Watch AI Learn',
-    description: '21 modules continuously self-improve through autonomous learning cycles',
-  },
-  {
-    icon: Activity,
-    title: 'System Intelligence Feed',
-    description: 'See live improvement requests, KPIs, and reflections from every module',
-    path: '/system-feed'
-  },
-  {
-    icon: Layers,
-    title: 'Module Health',
-    description: 'Monitor Brain, Defense, Nexus, Dream, Vision, and 16 more substrate modules',
-  },
-];
-
-// Module icons animation
-function ModuleIconsStrip() {
-  const modules = [Brain, Shield, Radio, Cpu, Eye, Sparkles];
-  
-  return (
-    <div className="flex items-center justify-center gap-3 py-4">
-      {modules.map((Icon, i) => (
-        <motion.div
-          key={i}
-          className="w-8 h-8 rounded-lg bg-primary/5 border border-primary/20 flex items-center justify-center"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.1 }}
-          whileHover={{ scale: 1.1, borderColor: 'rgb(var(--primary))' }}
-        >
-          <Icon className="w-4 h-4 text-primary/70" />
-        </motion.div>
-      ))}
-    </div>
-  );
-}
 
 export default function Auth() {
   const { signInWithMagicLink, signUpWithMagicLink } = useAuth();
@@ -145,6 +40,8 @@ export default function Auth() {
     e.preventDefault();
     setLoading(true);
     try {
+      // Set pending flag so Face ID prompt shows after magic link redirect
+      localStorage.setItem('cmpsbl_pending_passkey_email', loginEmail);
       await signInWithMagicLink(loginEmail);
       setMagicLinkSent('login');
     } catch {
@@ -158,6 +55,8 @@ export default function Auth() {
     e.preventDefault();
     setLoading(true);
     try {
+      // Set pending flag so Face ID prompt shows after magic link redirect
+      localStorage.setItem('cmpsbl_pending_passkey_email', signupEmail);
       await signUpWithMagicLink(signupEmail, signupDisplayName);
       setMagicLinkSent('signup');
     } catch {
@@ -200,7 +99,7 @@ export default function Auth() {
       if (verifyError || !verifyData?.success || !verifyData?.session) {
         const errMsg = verifyData?.error || 'Face ID verification failed';
         if (errMsg.includes('Unknown passkey') || errMsg.includes('register')) {
-          toast.error('This Face ID credential isn\'t registered yet. Sign in with email first, then register Face ID from your profile.', { duration: 8000 });
+          toast.error('This Face ID isn\'t registered yet. Sign in with email first — you\'ll be prompted to set up Face ID after.', { duration: 8000 });
         } else {
           toast.error(errMsg);
         }
@@ -228,393 +127,292 @@ export default function Auth() {
     }
   };
 
-  const handlePasskeyRegister = async () => {
-    const email = signupEmail || loginEmail;
-    if (!email) {
-      toast.error('Enter your email first, then register Face ID.');
-      return;
-    }
-    setLoading(true);
-    try {
-      // First sign up / sign in via magic link so the user exists
-      toast.info('First, verify your email to link Face ID to your account.');
-      await signUpWithMagicLink(email, signupDisplayName || email.split('@')[0]);
-      setMagicLinkSent('signup');
-      
-      // Store email locally so after they verify, we can prompt passkey registration
-      localStorage.setItem('cmpsbl_pending_passkey_email', email);
-    } catch {
-      toast.error('Sign-up failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const SETUP_STEPS = [
+    { num: '1', text: 'Enter your email and click "Send Link"' },
+    { num: '2', text: 'Open the link in your email to sign in' },
+    { num: '3', text: 'You\'ll be prompted to set up Face ID — tap "Set Up Face ID"' },
+    { num: '4', text: 'Next time, just use Face ID to sign in instantly' },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-background">
       <PublicNav />
       
-      <div className="flex-1 flex flex-col lg:flex-row relative">
-        {/* Background effects */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-fuchsia-500/5 rounded-full blur-[120px]" />
-        </div>
-        <ObserverParticles />
-
-      {/* Left Panel - Observer Mode Info */}
-      <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center relative">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-lg mx-auto lg:mx-0"
-        >
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 via-primary/10 to-fuchsia-500/20 border border-cyan-500/30 flex items-center justify-center">
-                <Eye className="w-7 h-7 text-cyan-400" />
-              </div>
-              <div>
-                <h1 className="text-3xl lg:text-4xl font-bold">
-                  <span className="bg-gradient-to-r from-cyan-400 via-primary to-fuchsia-400 bg-clip-text text-transparent">
-                    Observer Mode
-                  </span>
-                </h1>
-                <p className="text-sm text-muted-foreground font-mono">substrate visibility layer</p>
-              </div>
-            </div>
-            <CLMStatusBadge />
-          </div>
-
-          {/* Description */}
-          <div className="mb-8 space-y-4">
-            <p className="text-lg text-foreground/90">
-              Watch the substrate think, learn, and evolve in real-time.
-            </p>
-            <p className="text-muted-foreground">
-              As an observer, you gain read-only access to the cognitive substrate's 
-               autonomous learning system. No interaction required—just observe 21 modules 
-              continuously improving themselves.
-            </p>
-          </div>
-
-          {/* Module icons */}
-          <ModuleIconsStrip />
-
-          {/* Capabilities */}
-          <div className="space-y-3 mt-6">
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-              Observer Access Includes
-            </h3>
-            <div className="grid gap-3">
-              {OBSERVER_CAPABILITIES.map((cap, i) => (
-                <motion.div
-                  key={cap.title}
-                  className="flex items-start gap-3 p-3 rounded-xl bg-card/50 border border-border/50 backdrop-blur-sm"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                >
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                    <cap.icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-foreground">{cap.title}</h4>
-                    <p className="text-xs text-muted-foreground">{cap.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Passwordless notice */}
+      <div className="flex-1 flex flex-col lg:flex-row">
+        {/* Left Panel - How It Works */}
+        <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
           <motion.div
-            className="mt-8 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="max-w-lg mx-auto lg:mx-0"
           >
-            <div className="flex items-start gap-3">
-              <Fingerprint className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-              <div>
-                <p className="text-sm text-emerald-200/90 font-medium">Passwordless Authentication</p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Zero passwords. Sign in with Face ID, Touch ID, or a secure email link. 
-                  Your identity is cryptographically bound to your device.
-                </p>
+            <div className="mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center">
+                  <Fingerprint className="w-7 h-7 text-primary" />
+                </div>
+                <div>
+                  <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
+                    Sign In
+                  </h1>
+                  <p className="text-sm text-muted-foreground">No passwords — ever</p>
+                </div>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
-      </div>
 
-      {/* Right Panel - Auth Forms */}
-      <div className="lg:w-1/2 p-8 lg:p-12 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="w-full max-w-md"
-        >
-          <Tabs defaultValue="signup" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login" className="gap-2">
-                <Fingerprint className="w-3.5 h-3.5" />
-                Sign In
-              </TabsTrigger>
-              <TabsTrigger value="signup" className="gap-2">
-                <Eye className="w-3.5 h-3.5" />
-                Become Observer
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="login">
-              <Card className="border-border/50 bg-card/80 backdrop-blur-xl">
-                {magicLinkSent === 'login' ? (
-                  <div className="p-8 text-center space-y-4">
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto"
-                    >
-                      <Mail className="w-8 h-8 text-emerald-400" />
-                    </motion.div>
-                    <h3 className="text-lg font-semibold">Check Your Email</h3>
-                    <p className="text-sm text-muted-foreground">
-                      We sent a secure sign-in link to <strong className="text-foreground">{loginEmail}</strong>. 
-                      Click it to authenticate — no password needed.
-                    </p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setMagicLinkSent(null)}
-                      className="mt-4"
-                    >
-                      ← Try a different email
-                    </Button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleLogin}>
-                    <CardHeader>
-                      <CardTitle>Welcome Back</CardTitle>
-                      <CardDescription>
-                        Sign in with your device or email — zero passwords
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {/* Passkey auth button */}
-                      {webAuthnAvailable && (
-                        <div className="space-y-2">
-                          <PasskeyButton
-                            mode="authenticate"
-                            onAuthenticate={handlePasskeyAuth}
-                            disabled={loading}
-                            className="w-full"
-                            size="lg"
-                          />
-                          <div className="relative my-4">
-                            <div className="absolute inset-0 flex items-center">
-                              <span className="w-full border-t border-border/50" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                              <span className="bg-card px-2 text-muted-foreground">or use email</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="login-email">Email</Label>
-                        <Input
-                          id="login-email"
-                          type="email"
-                          placeholder="your@email.com"
-                          value={loginEmail}
-                          onChange={(e) => setLoginEmail(e.target.value)}
-                          required
-                          disabled={loading}
-                          className="bg-background/50"
-                        />
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button type="submit" className="w-full gap-2" disabled={loading}>
-                        <Mail className="w-4 h-4" />
-                        {loading ? 'Sending link...' : 'Send Sign-In Link'}
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </CardFooter>
-                  </form>
-                )}
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="signup">
-              <Card className="border-cyan-500/20 bg-card/80 backdrop-blur-xl">
-                {magicLinkSent === 'signup' ? (
-                  <div className="p-8 text-center space-y-4">
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      className="w-16 h-16 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mx-auto"
-                    >
-                      <Mail className="w-8 h-8 text-cyan-400" />
-                    </motion.div>
-                    <h3 className="text-lg font-semibold">Verify Your Identity</h3>
-                    <p className="text-sm text-muted-foreground">
-                      We sent a secure link to <strong className="text-foreground">{signupEmail}</strong>. 
-                      Click it to activate your observer access — cryptographically verified, zero passwords.
-                    </p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setMagicLinkSent(null)}
-                      className="mt-4"
-                    >
-                      ← Try a different email
-                    </Button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSignup}>
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-                          <Eye className="w-5 h-5 text-cyan-400" />
-                        </div>
-                        <div>
-                          <CardTitle>Become an Observer</CardTitle>
-                          <CardDescription>
-                            Join the substrate visibility layer
-                          </CardDescription>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {/* What you get */}
-                      <div className="bg-gradient-to-r from-cyan-500/5 to-fuchsia-500/5 rounded-lg p-4 border border-cyan-500/10">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Sparkles className="w-4 h-4 text-cyan-400" />
-                          <span className="text-sm font-medium">What you'll see:</span>
-                        </div>
-                        <ul className="space-y-2 text-xs text-muted-foreground">
-                          <li className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
-                            <span>Live <strong className="text-foreground">/os</strong> dashboard with system health</span>
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" />
-                            <span>21 modules learning autonomously 24/7</span>
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                            <span>System Intelligence Feed at <strong className="text-foreground">/system-feed</strong></span>
-                          </li>
-                        </ul>
-                      </div>
+            {/* How Face ID Setup Works */}
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-foreground mb-4">
+                How to set up Face ID sign-in
+              </h2>
+              <div className="space-y-3">
+                {SETUP_STEPS.map((step, i) => (
+                  <motion.div
+                    key={step.num}
+                    className="flex items-start gap-3 p-3 rounded-xl bg-card/50 border border-border/50"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.1 }}
+                  >
+                    <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0 text-xs font-bold text-primary">
+                      {step.num}
+                    </div>
+                    <p className="text-sm text-foreground/90 pt-0.5">{step.text}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
 
-                      {/* Passkey registration */}
-                      {webAuthnAvailable && (
-                        <div className="space-y-2">
-                          <PasskeyButton
-                            mode="register"
-                            onRegister={handlePasskeyRegister}
-                            disabled={loading}
-                            className="w-full"
-                            size="lg"
-                          />
-                          <p className="text-[10px] text-center text-muted-foreground">
-                            Register Face ID / Touch ID for instant future access
-                          </p>
-                          <div className="relative my-2">
-                            <div className="absolute inset-0 flex items-center">
-                              <span className="w-full border-t border-border/50" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                              <span className="bg-card px-2 text-muted-foreground">then verify email</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="space-y-2">
-                        <Label htmlFor="signup-name">Display Name</Label>
-                        <Input
-                          id="signup-name"
-                          type="text"
-                          placeholder="Your Name"
-                          value={signupDisplayName}
-                          onChange={(e) => setSignupDisplayName(e.target.value)}
-                          disabled={loading}
-                          className="bg-background/50"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="signup-email">Email</Label>
-                        <Input
-                          id="signup-email"
-                          type="email"
-                          placeholder="your@email.com"
-                          value={signupEmail}
-                          onChange={(e) => setSignupEmail(e.target.value)}
-                          required
-                          disabled={loading}
-                          className="bg-background/50"
-                        />
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex-col gap-3">
-                      <Button type="submit" className="w-full gap-2" disabled={loading}>
-                        <Mail className="w-4 h-4" />
-                        {loading ? 'Sending link...' : 'Send Verification Link'}
-                      </Button>
-                      <p className="text-[10px] text-muted-foreground text-center">
-                        Zero passwords — your identity is cryptographically verified via email link + device passkey
-                      </p>
-                    </CardFooter>
-                  </form>
-                )}
-              </Card>
-            </TabsContent>
-          </Tabs>
-
-          {/* Security badge */}
-          <motion.div
-            className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            <Shield className="w-3.5 h-3.5" />
-            <span>Passwordless • Phishing-resistant • Device-bound cryptographic identity</span>
-          </motion.div>
-
-          <div className="mt-6 space-y-4">
-            <div className="text-center">
-              <a 
-                href="/" 
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            {/* Already have Face ID? */}
+            {webAuthnAvailable && (
+              <motion.div
+                className="p-4 rounded-xl bg-primary/5 border border-primary/20"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
               >
-                ← Back to Home
-              </a>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Already set up Face ID?</p>
+                    <p className="text-xs text-muted-foreground mt-1 mb-3">
+                      If you've already registered Face ID, use the button on the sign-in tab to log in instantly.
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            <motion.div
+              className="mt-6 flex items-center gap-2 text-xs text-muted-foreground"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+            >
+              <Shield className="w-3.5 h-3.5" />
+              <span>Passwordless • Phishing-resistant • Device-bound identity</span>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Right Panel - Auth Forms */}
+        <div className="lg:w-1/2 p-8 lg:p-12 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="w-full max-w-md"
+          >
+            <Tabs defaultValue="signin" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="signin" className="gap-2">
+                  <Fingerprint className="w-3.5 h-3.5" />
+                  Sign In
+                </TabsTrigger>
+                <TabsTrigger value="signup" className="gap-2">
+                  <Mail className="w-3.5 h-3.5" />
+                  Create Account
+                </TabsTrigger>
+              </TabsList>
+              
+              {/* SIGN IN TAB */}
+              <TabsContent value="signin">
+                <Card className="border-border/50 bg-card/80 backdrop-blur-xl">
+                  {magicLinkSent === 'login' ? (
+                    <div className="p-8 text-center space-y-4">
+                      <motion.div
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto"
+                      >
+                        <Mail className="w-8 h-8 text-primary" />
+                      </motion.div>
+                      <h3 className="text-lg font-semibold">Check Your Email</h3>
+                      <p className="text-sm text-muted-foreground">
+                        We sent a sign-in link to <strong className="text-foreground">{loginEmail}</strong>.
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Click the link to sign in. After signing in, you'll be asked if you want to set up Face ID for instant future access.
+                      </p>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setMagicLinkSent(null)}
+                        className="mt-4"
+                      >
+                        ← Try a different email
+                      </Button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleLogin}>
+                      <CardHeader>
+                        <CardTitle>Welcome Back</CardTitle>
+                        <CardDescription>
+                          Use Face ID for instant access, or sign in with your email.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {/* Face ID button */}
+                        {webAuthnAvailable && (
+                          <div className="space-y-2">
+                            <Button
+                              type="button"
+                              onClick={handlePasskeyAuth}
+                              disabled={loading}
+                              className="w-full gap-2"
+                              size="lg"
+                            >
+                              <Fingerprint className="w-5 h-5" />
+                              Sign In with Face ID
+                            </Button>
+                            <div className="relative my-4">
+                              <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-border/50" />
+                              </div>
+                              <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-card px-2 text-muted-foreground">or use email</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="login-email">Email</Label>
+                          <Input
+                            id="login-email"
+                            type="email"
+                            placeholder="your@email.com"
+                            value={loginEmail}
+                            onChange={(e) => setLoginEmail(e.target.value)}
+                            required
+                            disabled={loading}
+                            className="bg-background/50"
+                          />
+                        </div>
+                      </CardContent>
+                      <CardFooter>
+                        <Button type="submit" variant="outline" className="w-full gap-2" disabled={loading}>
+                          <Mail className="w-4 h-4" />
+                          {loading ? 'Sending...' : 'Send Sign-In Link'}
+                          <ArrowRight className="w-4 h-4" />
+                        </Button>
+                      </CardFooter>
+                    </form>
+                  )}
+                </Card>
+              </TabsContent>
+              
+              {/* SIGN UP TAB */}
+              <TabsContent value="signup">
+                <Card className="border-border/50 bg-card/80 backdrop-blur-xl">
+                  {magicLinkSent === 'signup' ? (
+                    <div className="p-8 text-center space-y-4">
+                      <motion.div
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto"
+                      >
+                        <Mail className="w-8 h-8 text-primary" />
+                      </motion.div>
+                      <h3 className="text-lg font-semibold">Check Your Email</h3>
+                      <p className="text-sm text-muted-foreground">
+                        We sent a verification link to <strong className="text-foreground">{signupEmail}</strong>.
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Click the link to verify your account. Once verified, you'll be prompted to set up Face ID so you never need to check email again.
+                      </p>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setMagicLinkSent(null)}
+                        className="mt-4"
+                      >
+                        ← Try a different email
+                      </Button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSignup}>
+                      <CardHeader>
+                        <CardTitle>Create Account</CardTitle>
+                        <CardDescription>
+                          Enter your email to get started. After verifying, you'll set up Face ID for instant access.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-name">Display Name</Label>
+                          <Input
+                            id="signup-name"
+                            type="text"
+                            placeholder="Your Name"
+                            value={signupDisplayName}
+                            onChange={(e) => setSignupDisplayName(e.target.value)}
+                            disabled={loading}
+                            className="bg-background/50"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-email">Email</Label>
+                          <Input
+                            id="signup-email"
+                            type="email"
+                            placeholder="your@email.com"
+                            value={signupEmail}
+                            onChange={(e) => setSignupEmail(e.target.value)}
+                            required
+                            disabled={loading}
+                            className="bg-background/50"
+                          />
+                        </div>
+                      </CardContent>
+                      <CardFooter className="flex-col gap-3">
+                        <Button type="submit" className="w-full gap-2" disabled={loading}>
+                          <Mail className="w-4 h-4" />
+                          {loading ? 'Sending...' : 'Send Verification Link'}
+                        </Button>
+                        <p className="text-[10px] text-muted-foreground text-center">
+                          No passwords needed. You'll verify via email, then set up Face ID.
+                        </p>
+                      </CardFooter>
+                    </form>
+                  )}
+                </Card>
+              </TabsContent>
+            </Tabs>
+
+            <div className="mt-6 space-y-4">
+              <div className="text-center">
+                <a 
+                  href="/" 
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  ← Back to Home
+                </a>
+              </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-3 text-xs">
-              <a href="/system-feed" className="text-muted-foreground hover:text-primary transition-colors">
-                System Feed
-              </a>
-              <span className="text-muted-foreground">•</span>
-              <a href="/library" className="text-muted-foreground hover:text-primary transition-colors">
-                Docs
-              </a>
-              <span className="text-muted-foreground">•</span>
-              <a href="/blog" className="text-muted-foreground hover:text-primary transition-colors">
-                Blog
-              </a>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+          </motion.div>
+        </div>
       </div>
       
       <EnhancedFooter />
