@@ -100,12 +100,10 @@ const navSections: NavSection[] = [
     ],
   },
   {
-    title: "Studio & Creation",
+    title: "Creation",
     items: [
-      { name: "Studio", href: "/studio", icon: Zap },
       { name: "Creative Generation", href: "/creative-generation", icon: Sparkles },
       { name: "Prompt Merger", href: "/prompt-merger", icon: Combine },
-      { name: "Marketing Studio", href: "/marketing-studio", icon: Palette },
     ],
   },
   {
@@ -160,7 +158,7 @@ export function Sidebar({ isOpen, onToggle }: { isOpen?: boolean; onToggle?: () 
     "Main Dashboards": true,
     "Brain Intelligence": false,
     "Defense & Security": false,
-    "Studio & Creation": false,
+    "Creation": false,
     "Access & Ripple": false,
     "Core Management": false,
     "System Operations": false,
