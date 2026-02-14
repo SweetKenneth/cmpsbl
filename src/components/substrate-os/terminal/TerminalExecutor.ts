@@ -1,7 +1,7 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * v9.2.0 — ARCHITECT Epoch
+ * v9.3.0 — ARCHITECT Epoch
  * 
  * 21 modules | 360+ commands | 200 synergy pipelines | All handlers verified
  */
@@ -434,22 +434,25 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ CLM (CONSTANT LEARNING MODE) v6.7.0 ───────────────────────┐
+┌─ CLM (CONSTANT LEARNING MODE) v9.3.0 ───────────────────────┐
 │                                                             │
 │  clm.status          Status, budget, queue size             │
 │  clm.enable          Enable autonomous learning             │
 │  clm.disable         Disable autonomous learning            │
 │  clm.cycle           Run a manual CLM cycle                 │
+│  clm.run <module>    Run CLM for a single module            │
+│  clm.run_all         Run CLM for ALL 21 modules             │
 │  clm.budget          View daily budget allocation           │
 │  clm.kill_switch     Activate/deactivate kill switch        │
 │  clm.topics          View topic bank with mastery           │
 │  clm.add_topic       Add custom topic to bank               │
 │  clm.review_queue    View spaced repetition queue           │
 │  clm.next_review     Get next review item                   │
+│  decode.inbox        CLM reports from ALL 21 modules        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SEBA (SELF-EVOLVING BOUNDED AGENT) v1.0.0 ─────────────────┐
+┌─ SEBA (SELF-EVOLVING BOUNDED AGENT) v9.3.0 ───────────────────┐
 │                                                             │
 │  seba.status         Agent state, mode, and statistics      │
 │  seba.enable         Enable bounded autonomy                │
@@ -466,7 +469,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SYNERGY ENGINE v9.1.0 (200 Pipelines) ─────────────────────┐
+┌─ SYNERGY ENGINE v9.3.0 (200 Pipelines) ─────────────────────┐
 │                                                             │
 │  cortex.synergy.status    Engine overview                   │
 │  cortex.synergy.list      List all 200 pipelines            │
@@ -526,7 +529,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ ENCODED AGENT v2.3.0 ──────────────────────────────────────┐
+┌─ ENCODED AGENT v9.3.0 ──────────────────────────────────────┐
 │                                                             │
 │  encoded.status          Agent status and configuration     │
 │  encoded.generate        Generate code (with task spec)     │
@@ -553,7 +556,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ TERMINAL FEATURES v5.0.0 ──────────────────────────────────┐
+┌─ TERMINAL FEATURES v9.3.0 ──────────────────────────────────┐
 │                                                             │
 │  alias               Shorthand commands                     │
 │  macro               Multi-command scripts (@name)          │
@@ -2567,7 +2570,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         return {
           success: true,
           output: `
-┌─ SYNERGY ENGINE v9.1.0 ──────────────────────────────────────
+┌─ SYNERGY ENGINE v9.3.0 ──────────────────────────────────────
 │
 │  Pipelines:  200 total
 │  Executors:  125 custom
@@ -2854,7 +2857,149 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // CLM (Constant Learning Mode) v6.7.0
+    // DECODE INBOX — CLM reports from ALL 21 modules
+    // ═══════════════════════════════════════════════════════════════
+    else if (base === 'decode.inbox') {
+      try {
+        const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+        const feed = await moduleCLM.getFeed(args[0] ? parseInt(args[0]) : 50);
+        
+        if (feed.length === 0) {
+          return {
+            success: true,
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  DECODE INBOX — Module Intelligence Feed                      ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  No CLM reports yet. Run 'clm.run_all' to generate.         ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+          };
+        }
+        
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from 21 Modules               ║
+╠══════════════════════════════════════════════════════════════╣\n`;
+        
+        for (const r of feed.slice(0, 20)) {
+          const mod = r.moduleId.toUpperCase().padEnd(12);
+          const pri = r.priority === 'critical' ? '🔴' : r.priority === 'high' ? '🟠' : r.priority === 'medium' ? '🟡' : '🟢';
+          const conf = `${(r.confidence * 100).toFixed(0)}%`;
+          output += `║  ${pri} [${mod}] ${r.title.substring(0, 35).padEnd(35)} ${conf.padEnd(4)} ║\n`;
+        }
+        
+        if (feed.length > 20) {
+          output += `║  ... and ${feed.length - 20} more reports                                ║\n`;
+        }
+        output += `╠══════════════════════════════════════════════════════════════╣
+║  Commands: clm.run_all | clm.run <module> | decode.inbox     ║
+╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: true, output, data: feed };
+      } catch (err) {
+        return { success: false, output: `▓ Inbox error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // CLM.RUN_ALL — Run CLM for ALL 21 modules
+    // ═══════════════════════════════════════════════════════════════
+    else if (base === 'clm.run_all') {
+      try {
+        const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+        const results = await moduleCLM.runAllModuleLearning();
+        
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  CLM — All Module Learning Complete                           ║
+╠══════════════════════════════════════════════════════════════╣
+║  Modules analyzed: ${String(results.length).padEnd(2)} / 21                                   ║
+╠══════════════════════════════════════════════════════════════╣\n`;
+        
+        for (const r of results) {
+          const mod = r.moduleId.toUpperCase().padEnd(12);
+          const conf = `${(r.confidence * 100).toFixed(0)}%`;
+          output += `║  ✓ ${mod} ${r.title.substring(0, 35).padEnd(35)} ${conf.padEnd(4)} ║\n`;
+        }
+        
+        if (results.length === 0) {
+          output += `║  No new insights generated. Modules are stable.              ║\n`;
+        }
+        
+        output += `╚══════════════════════════════════════════════════════════════╝`;
+        return { success: true, output, data: results };
+      } catch (err) {
+        return { success: false, output: `▓ CLM run_all error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // CLM.RUN <module> — Run CLM for a single module
+    // ═══════════════════════════════════════════════════════════════
+    else if (base === 'clm.run') {
+      const moduleArg = args[0]?.toLowerCase();
+      const validModules = [
+        'core', 'ripple', 'access', 'brain', 'decode', 'dream',
+        'defense', 'nexus', 'vision', 'system', 'modernizer', 'inclusive',
+        'cortex', 'integration', 'encode', 'memory', 'relay', 'audit',
+        'identity', 'economy', 'sandbox',
+      ];
+      
+      if (!moduleArg || !validModules.includes(moduleArg)) {
+        return {
+          success: false,
+          output: `▓ Usage: clm.run <module>
+
+  Available modules (21):
+  ┌─ KERNEL ──────────────────────────────────────────
+  │  core, ripple, access
+  ├─ COGNITION ───────────────────────────────────────
+  │  brain, decode, dream
+  ├─ OPERATIONS ──────────────────────────────────────
+  │  defense, nexus, vision
+  ├─ ADMIN ───────────────────────────────────────────
+  │  system, modernizer, inclusive
+  ├─ ORCHESTRATOR ────────────────────────────────────
+  │  cortex, integration, encode
+  ├─ INFRASTRUCTURE ──────────────────────────────────
+  │  memory, relay, audit, identity, economy, sandbox
+  └───────────────────────────────────────────────────`,
+        };
+      }
+      
+      try {
+        const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+        const analysis = await moduleCLM.runModuleLearning(moduleArg as any);
+        
+        if (!analysis) {
+          return {
+            success: true,
+            output: `◉ CLM cycle for ${moduleArg.toUpperCase()} — no new insights (module may be learning or stable)`,
+          };
+        }
+        
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  CLM — ${moduleArg.toUpperCase().padEnd(12)} Learning Complete                     ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Title:      ${analysis.title.substring(0, 45).padEnd(45)} ║
+║  Type:       ${analysis.analysisType.padEnd(45)} ║
+║  Confidence: ${((analysis.confidence * 100).toFixed(0) + '%').padEnd(45)} ║
+║  Priority:   ${analysis.priority.padEnd(45)} ║
+║                                                              ║
+║  ${analysis.content.substring(0, 58).padEnd(58)} ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: analysis,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ CLM run error for ${moduleArg}: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // CLM (Constant Learning Mode) v9.3.0
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'clm.status') {
       try {
@@ -2863,7 +3008,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return {
           success: true,
           output: `╔══════════════════════════════════════════════════════════════╗
-║  CONSTANT LEARNING MODE — v6.7.0                             ║
+║  CONSTANT LEARNING MODE — v9.3.0 ARCHITECT                   ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Status:      ${status.enabled ? '🟢 ENABLED' : '🔴 DISABLED'}                                    ║
 ║  Kill Switch: ${status.kill_switch ? '🛑 ACTIVE' : '✅ OFF'}                                      ║
@@ -3027,7 +3172,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // SEBA (Self-Evolving Bounded Agent) v1.0.0
+    // SEBA (Self-Evolving Bounded Agent) v9.3.0
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'seba.status') {
       try {
@@ -3046,7 +3191,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return {
           success: true,
           output: `╔══════════════════════════════════════════════════════════════╗
-║  SEBA v2.0.0 — Full Spectrum Autonomy                         ║
+║  SEBA v9.3.0 — Full Spectrum Autonomy                         ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Mode:        ${(config.mode || 'advisory').padEnd(46)}║
@@ -4027,7 +4172,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  COGNITIVE ENGINE SYSTEM v9.1.0 — ARCHITECT Epoch              ║
+║  COGNITIVE ENGINE SYSTEM v9.3.0 — ARCHITECT Epoch              ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Architecture: Capabilities (400+) → Engines (76) → Meta (24) ║
 ╠══════════════════════════════════════════════════════════════╣
@@ -4265,7 +4410,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  META-ENGINE SYSTEM v8.1.0                                   ║
+║  META-ENGINE SYSTEM v9.3.0                                   ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Total Meta-Engines:    ${String(summary.totalMetaEngines).padEnd(2)}                                    ║
 ║  Engines Orchestrated:  ${String(summary.totalEnginesOrchestrated).padEnd(2)}                                    ║
