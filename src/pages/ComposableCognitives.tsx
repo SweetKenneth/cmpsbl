@@ -23,7 +23,7 @@ import { NameChooser } from "@/components/cognitives/NameChooser";
 import { COGNITIVES_CATALOG, INSTALL_SNIPPETS, type CognitiveItem } from "@/lib/cognitives/catalog";
 import { validateCognitiveName } from "@/lib/cognitives/nameGen";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
+import { pushToast } from "@/components/toast/SmartToastStore";
 import { cn } from "@/lib/utils";
 
 // Creature images
@@ -202,13 +202,12 @@ function CognitiveCard({ item, chosenName, onBuy }: { item: CognitiveItem; chose
 export default function ComposableCognitives() {
   const [searchParams] = useSearchParams();
   const [chosenName, setChosenName] = useState("");
-  const { user } = useAuth();
   const canceled = searchParams.get("canceled") === "1";
 
   const handleBuy = useCallback(async (sku: string) => {
     const validation = validateCognitiveName(chosenName);
     if (!validation.valid) {
-      alert(validation.error || "Please enter a valid name");
+      pushToast({ message: validation.error || "Please enter a valid name", variant: "warning", anchor: "interaction", durationMs: 4000 });
       return;
     }
     try {
@@ -220,7 +219,7 @@ export default function ComposableCognitives() {
       if (data?.url) { window.location.href = data.url; }
     } catch (err) {
       console.error("Checkout error:", err);
-      alert("Checkout failed. Please try again.");
+      pushToast({ message: "Checkout failed. Please try again.", variant: "error", anchor: "interaction", durationMs: 5000 });
     }
   }, [chosenName]);
 
