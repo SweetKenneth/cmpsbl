@@ -11,22 +11,35 @@ import type {
 } from './types';
 import { registerCapability, deprecateCapability, listCapabilities } from './registry';
 
-// Known substrate module mappings
+// Known substrate module mappings (all 21 modules)
 const SUBSTRATE_MODULES: Record<string, string[]> = {
-  BRAIN: ['memory', 'learning', 'reflection', 'knowledge', 'synthesis', 'cognitive'],
-  CORTEX: ['agency', 'proposal', 'evaluation', 'execution', 'autonomous'],
-  MODERNIZER: ['upgrade', 'improvement', 'evolution', 'self-improve'],
-  SYSTEM: ['admin', 'diagnostic', 'resilience', 'status', 'health'],
-  DEFENSE: ['bot', 'threat', 'security', 'ip-reputation', 'rate-limit'],
-  DECODE: ['chat', 'dream', 'generation', 'user-facing'],
-  NEXUS: ['routing', 'ai-provider', 'text', 'image', 'video'],
-  VISION: ['observability', 'metrics', 'monitoring', 'telemetry'],
-  INCLUSIVE: ['accessibility', 'wcag', 'a11y', 'scan'],
+  // Kernel layer
+  CORE: ['kernel', 'scheduler', 'lifecycle'],
   RIPPLE: ['message', 'bus', 'pub-sub', 'event', 'queue'],
   ACCESS: ['api-key', 'billing', 'metering', 'quota'],
+  // Cognitive layer
+  BRAIN: ['memory', 'learning', 'reflection', 'knowledge', 'synthesis', 'cognitive'],
+  VISION: ['observability', 'metrics', 'monitoring', 'telemetry'],
+  CORTEX: ['agency', 'proposal', 'evaluation', 'execution', 'autonomous'],
+  // Operational layer
+  MODERNIZER: ['upgrade', 'improvement', 'evolution', 'self-improve'],
+  DECODE: ['chat', 'intent', 'generation', 'user-facing', 'interpreter'],
+  DEFENSE: ['bot', 'threat', 'security', 'ip-reputation', 'rate-limit'],
+  NEXUS: ['routing', 'ai-provider', 'text', 'image', 'video'],
   DREAM: ['dream-eater', 'metabolic', 'ingestion'],
+  // Administrative layer
   INTEGRATION: ['adapter', 'enterprise', 'discovery'],
-  CORE: ['kernel', 'scheduler', 'lifecycle'],
+  INCLUSIVE: ['accessibility', 'wcag', 'a11y', 'scan'],
+  SYSTEM: ['admin', 'diagnostic', 'resilience', 'status', 'health'],
+  // Infrastructure layer
+  MEMORY: ['vector', 'rag', 'semantic-recall', 'embedding'],
+  RELAY: ['webhook', 'outbound', 'side-effect', 'delivery'],
+  AUDIT: ['compliance', 'immutable-log', 'chain', 'ledger'],
+  IDENTITY: ['actor', 'attribution', 'human-agent', 'fingerprint'],
+  ECONOMY: ['cost', 'budget', 'marketplace', 'pricing'],
+  SANDBOX: ['isolated', 'execution', 'speculative', 'safe-run'],
+  // Orchestrator layer
+  ENCODE: ['encode', 'transform', 'pipeline', 'orchestrate'],
 };
 
 // Edge functions that were FULLY migrated to substrate and DELETED
