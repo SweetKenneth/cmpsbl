@@ -62,7 +62,7 @@ export default function SystemVerify() {
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold">PromptFluid System Verification</h1>
+          <h1 className="text-4xl font-bold">CMPSBL System Verification</h1>
           <p className="text-muted-foreground">
             Verify all ecosystem components are online and operational
           </p>

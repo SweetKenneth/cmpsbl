@@ -195,9 +195,9 @@ export function TemplateGenerator() {
 
           {/* CTA */}
           <Button asChild size="lg" className="w-full gap-2 bg-gradient-to-r from-primary to-violet-600 hover:opacity-90">
-            <Link to="/marketplace">
+            <Link to="/store">
               <ShoppingCart className="w-5 h-5" />
-              Browse All 97+ Templates
+              Browse All Templates
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>

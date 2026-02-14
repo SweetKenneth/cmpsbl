@@ -66,8 +66,8 @@ export function ObserverModeOverlay({
         </div>
         {showUpgrade && (
           <Button variant="outline" size="sm" asChild className="gap-1 mt-2">
-            <Link to="/marketplace">
-              Explore Marketplace
+            <Link to="/store">
+              Explore Artifacts
               <ArrowUpRight className="w-3 h-3" />
             </Link>
           </Button>

@@ -78,7 +78,7 @@ export default function BrainControl() {
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
             <Brain className="w-12 h-12 text-primary" />
-            <h1 className="text-4xl font-bold">PromptFluid Brain</h1>
+            <h1 className="text-4xl font-bold">CMPSBL Brain</h1>
           </div>
           <p className="text-muted-foreground">
             AI Orchestration & Learning Control Center

@@ -1,5 +1,5 @@
 /**
- * META HERO: CMPSBL (Composable) By PromptFluid
+ * META HERO: CMPSBL® (Composable)
  * Classic "Where machines learn to dream" headline with Engines Membership showcase
  * Mobile-first, performance-optimized, visually stunning
  */
@@ -380,12 +380,12 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.3 }}
               className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              <span className="text-emerald-500 font-bold">Free tier includes real dev tools</span> — 
-              templates, pipelines, memory, CodeLab. 
-              <span className="text-foreground font-semibold"> Subscribe to Engines</span> for 
-              production-ready orchestration with 
-              <span className="text-foreground font-semibold"> 200 synergy pipelines</span> and 
-              <span className="text-foreground font-semibold"> 21 core modules</span>.
+              The cognitive operating system that gives your AI{' '}
+              <span className="text-foreground font-semibold">persistent memory</span>,{' '}
+              <span className="text-foreground font-semibold">self-learning</span>, and{' '}
+              <span className="text-foreground font-semibold">multi-provider routing</span> — 
+              out of the box. 21 integrated modules. One substrate.{' '}
+              <span className="text-emerald-500 font-bold">Start free, scale to enterprise.</span>
             </motion.p>
             
             {/* CTA Buttons - NOT full width on mobile */}
@@ -497,9 +497,9 @@ export function HeroMetaSubstrate() {
         >
           {[
             { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory", hoverColor: "hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-emerald-500/10" },
-            { icon: Sparkles, label: "Free Pipelines", href: "/synergies", hoverColor: "hover:border-violet-500/50 hover:bg-violet-500/10 hover:shadow-violet-500/10" },
-            { icon: Code, label: "Free Templates", href: "/marketplace", hoverColor: "hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-cyan-500/10" },
-            { icon: Layers, label: "Engine Marketplace", href: "/engines", hoverColor: "hover:border-primary/50 hover:bg-primary/10 hover:shadow-primary/10" },
+            { icon: Sparkles, label: "Composable Artifacts", href: "/store", hoverColor: "hover:border-violet-500/50 hover:bg-violet-500/10 hover:shadow-violet-500/10" },
+            { icon: Code, label: "Composable Cognitives", href: "/composable-cognitives", hoverColor: "hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-cyan-500/10" },
+            { icon: Layers, label: "Engines", href: "/engines", hoverColor: "hover:border-primary/50 hover:bg-primary/10 hover:shadow-primary/10" },
           ].map((item, index) => (
             <motion.div
               key={item.label}

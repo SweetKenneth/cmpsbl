@@ -312,7 +312,7 @@ Boot complete in 117ms`}
                     <div className="text-3xl font-bold">$27–$499</div>
                     <p className="text-sm text-muted-foreground">Pre-built drift prevention engines. Drop-in solutions for <strong className="text-foreground">memory persistence, self-correction, and behavioral anchoring.</strong></p>
                     <Button variant="outline" asChild className="w-full">
-                      <Link to="/marketplace">Browse Templates</Link>
+                      <Link to="/store">Browse Templates</Link>
                     </Button>
                   </CardContent>
                 </Card>

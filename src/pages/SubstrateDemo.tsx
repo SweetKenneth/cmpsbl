@@ -439,7 +439,7 @@ export default function SubstrateDemo() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild size="lg" className="gap-2">
-                  <Link to="/marketplace">
+                  <Link to="/store">
                     Browse Templates
                     <ArrowRight className="w-4 h-4" />
                   </Link>

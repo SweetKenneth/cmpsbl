@@ -133,7 +133,7 @@ export default function TemplateAlley() {
                 <Check className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
                 <div className="text-sm text-muted-foreground">
                   <strong className="text-foreground">Templates are free starting points.</strong> Copy the code, remix it, make it yours.
-                  For production-ready orchestration, explore our <Link to="/engines" className="text-primary hover:underline">Engine Marketplace</Link>.
+                  For production-ready orchestration, explore our <Link to="/engines" className="text-primary hover:underline">Engines</Link>.
                 </div>
               </div>
             </div>
@@ -371,7 +371,7 @@ export default function TemplateAlley() {
               <Button asChild size="lg">
                 <Link to="/engines">
                   <Code className="w-4 h-4 mr-2" />
-                  View Engine Marketplace
+                  View Engines
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">

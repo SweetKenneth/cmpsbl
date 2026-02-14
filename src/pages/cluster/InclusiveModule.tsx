@@ -43,7 +43,7 @@ export default function InclusiveModule() {
           "datePublished": "2025-11-04",
           "author": {
             "@type": "Organization",
-            "name": "PromptFluid"
+            "name": "CMPSBL"
           }
         })}
       </script>
@@ -172,9 +172,9 @@ export default function InclusiveModule() {
             </section>
 
             <section className="p-8 bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl border border-primary/20">
-              <h3 className="text-2xl font-bold mb-4">Built by PromptFluid®</h3>
+              <h3 className="text-2xl font-bold mb-4">Built by CMPSBL®</h3>
               <p className="text-muted-foreground mb-6">
-                The INCLUSIVE module is part of the CMPSBL cognitive orchestration substrate, developed by PromptFluid®. 
+                The INCLUSIVE module is part of the CMPSBL cognitive orchestration substrate. 
                 Accessibility is a fundamental right—not a feature.
               </p>
               <Link 

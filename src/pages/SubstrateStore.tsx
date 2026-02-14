@@ -894,7 +894,7 @@ export default function SubstrateStore() {
                 <Button asChild size="lg" className="gap-2">
                   <Link to="/engines">
                     <Zap className="w-4 h-4" />
-                    Engine Marketplace
+                    Engines
                   </Link>
                 </Button>
                 <Button variant="outline" size="lg" className="gap-2" asChild>

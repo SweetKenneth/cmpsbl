@@ -16,7 +16,7 @@ export default function About() {
     { icon: Eye, name: "VISION Module", description: "Full observability and system introspection layer" },
     { icon: Server, name: "NEXUS Gateway", description: "Multi-provider AI routing with BYOK architecture" },
     { icon: Accessibility, name: "INCLUSIVE Module", description: "Human compatibility pipeline with WCAG scanning & AI remediation" },
-    { icon: Zap, name: "Engine Marketplace", description: "Production-ready cognitive orchestrations" },
+    { icon: Zap, name: "Engines", description: "Production-ready cognitive orchestrations" },
   ];
 
   return (
@@ -198,8 +198,8 @@ export default function About() {
           <div className="space-y-6">
             {[
               { year: "2009", event: "Started building software—sites, apps, and tools for clients" },
-              { year: "2024", event: "PromptFluid founded. CMPSBL substrate development begins." },
-              { year: "2025", event: "v9.1.0 ARCHITECT Epoch — 21 modules, 200 pipelines, Engine Marketplace" },
+              { year: "2024", event: "CMPSBL® founded. Substrate development begins." },
+              { year: "2025", event: "v9.3.0 ARCHITECT Epoch — 21 modules, 200 pipelines, Composable Artifacts Store" },
               { year: "Now", event: "Production infrastructure serving developers and enterprises" }
             ].map((milestone, index) => (
               <div key={index} className="flex items-start gap-4">
