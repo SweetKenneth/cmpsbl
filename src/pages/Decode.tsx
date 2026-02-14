@@ -1,6 +1,6 @@
 /**
  * promptfluid® Decode — The Interpreter Primitive
- * v9.1.0 ARCHITECT — Human-Compatible Cognitive Interface
+ * v9.3.0 ARCHITECT — Human-Compatible Cognitive Interface
  * 
  * Mobile-first conversation interface
  */

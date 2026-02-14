@@ -1,6 +1,6 @@
 /**
  * Access Info — Accessibility Module Product Page
- * v9.1.0 ARCHITECT Epoch — Part of 21-module substrate
+ * v9.3.0 ARCHITECT Epoch — Part of 21-module substrate
  */
 
 import { SEO } from "@/components/SEO";

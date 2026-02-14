@@ -1,6 +1,6 @@
 /**
  * CodeLab — Free Developer Playground for the CMPSBL Substrate
- * v9.1.0 ARCHITECT — A unique space for devs to explore, build, and launch with free templates
+ * v9.3.0 ARCHITECT — A unique space for devs to explore, build, and launch with free templates
  */
 
 import { useState } from "react";

@@ -1,6 +1,6 @@
 /**
  * Persistent Memory Marketing Landing Page
- * v9.1.0 ARCHITECT Epoch
+ * v9.3.0 ARCHITECT Epoch
  * 
  * Hero-driven conversion page focusing on the value proposition
  * without mentioning substrate, OS, or internal architecture.

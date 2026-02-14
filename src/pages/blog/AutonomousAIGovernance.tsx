@@ -17,7 +17,7 @@ export default function AutonomousAIGovernance() {
           <h1 className="text-4xl font-black mb-4">Autonomous AI Governance: From Theory to Runtime Enforcement</h1>
           <p className="text-muted-foreground mb-8">February 8, 2026 · 14 min read · Kenneth E Sweet Jr</p>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
-            <p className="text-lg leading-relaxed">AI governance has been a whitepaper exercise for too long. With v9.1.0's AUDIT and IDENTITY infrastructure modules, governance becomes a runtime property — not a post-hoc review.</p>
+            <p className="text-lg leading-relaxed">AI governance has been a whitepaper exercise for too long. With the AUDIT and IDENTITY infrastructure modules, governance becomes a runtime property — not a post-hoc review.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">AUDIT: Immutable Compliance Logging</h2>
             <p>The AUDIT module introduces cryptographically-chained compliance logs. Every capability invocation, every engine execution, and every data access is recorded in an append-only ledger with hash-chain integrity. Tampering with audit records is computationally infeasible — the same guarantees blockchain offers, without the overhead.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">IDENTITY: Who Did What, and Why</h2>

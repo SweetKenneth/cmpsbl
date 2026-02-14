@@ -1,6 +1,6 @@
 /**
  * Encode Info — Execution & Generation Module Product Page
- * v9.1.0 ARCHITECT Epoch — Module #21
+ * v9.3.0 ARCHITECT Epoch — Module #21
  */
 
 import { SEO } from "@/components/SEO";

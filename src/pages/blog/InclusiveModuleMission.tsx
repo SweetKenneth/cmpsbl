@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module Mission — Human Compatibility Pipeline
- * v9.1.0 ARCHITECT — PromptFluid®
+ * v9.3.0 ARCHITECT — PromptFluid®
  */
 
 import { SEO } from "@/components/SEO";
