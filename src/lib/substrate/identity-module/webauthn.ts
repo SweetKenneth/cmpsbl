@@ -310,7 +310,8 @@ export function generateAuthenticationOptions(
 }
 
 export async function authenticateWithPasskey(
-  allowCredentials: { id: string; transports?: AuthenticatorTransport[] }[] = []
+  allowCredentials: { id: string; transports?: AuthenticatorTransport[] }[] = [],
+  serverChallenge?: string
 ): Promise<PasskeyAuthenticationResult> {
   if (!isWebAuthnSupported()) {
     return { success: false, credentialId: null, signature: null, userHandle: null, error: 'WebAuthn not supported' };
@@ -318,9 +319,11 @@ export async function authenticateWithPasskey(
 
   try {
     const options = generateAuthenticationOptions(undefined, allowCredentials);
+    // Use server-provided challenge if available, otherwise fall back to local
+    const challenge = serverChallenge || options.challenge;
 
     const publicKeyOptions: PublicKeyCredentialRequestOptions = {
-      challenge: base64urlToBuffer(options.challenge),
+      challenge: base64urlToBuffer(challenge),
       rpId: options.rpId,
       allowCredentials: options.allowCredentials.map(c => ({
         id: base64urlToBuffer(c.id),
