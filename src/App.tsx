@@ -270,8 +270,10 @@ const App = () => {
                   <DecodeFloat />
                   <BrowserRouter>
                   <ScrollToTop />
-                  <AuthProvider>
-                    <RegisterPasskeyPrompt />
+                   <AuthProvider>
+                    <Suspense fallback={null}>
+                      <RegisterPasskeyPrompt />
+                    </Suspense>
                     <Suspense fallback={<PageLoader />}>
                       <Routes>
                         {/* Core Public Pages */}
