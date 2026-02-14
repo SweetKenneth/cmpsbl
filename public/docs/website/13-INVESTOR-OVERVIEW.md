@@ -57,9 +57,10 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Stream | Model | Gross Margin |
 |--------|-------|--------------|
-| **Infrastructure Licensing** | Annual subscriptions | 90%+ |
+| **Subscription Tiers** | Free / Creator ($49) / Architect ($149) | 90%+ |
+| **Composable Cognitives** | AI agent sales ($39 each) | 85%+ |
+| **Template Generator** | One-time purchase ($29) | 90%+ |
 | **Professional Services** | Implementation support | 70% |
-| **Marketplace** (Future) | Revenue share on modules | 80% |
 
 ### Pricing Structure
 

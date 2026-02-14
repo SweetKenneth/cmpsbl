@@ -31,7 +31,7 @@ const context = await agent.getContext(userMessage);
 | **Template Alley** | FREE | None | Starting points for learning |
 | **Synergy Pipelines** | FREE | None | Exploratory orchestration |
 | **Persistent Memory** | FREE | Bounded | Drop-in memory for agents |
-| **Engine Marketplace** | Paid | Governed | Production orchestrations |
+| **Subscription Tiers** | Free / $49 / $149 | Governed | Engines, jewels, advanced features |
 
 ---
 
@@ -306,7 +306,7 @@ Built-in accessibility compliance pipeline:
 | **Reporting** | Compliance reports in JSON or Markdown |
 
 ### Features
-- **Template Scanning** — Scan all marketplace templates automatically
+- **Template Scanning** — Scan all storefront templates automatically
 - **User Profiles** — Adaptive experiences for different needs
 - **Coverage Tracking** — Monitor accessibility coverage over time
 - **Self-Scan** — The substrate scans its own UI
