@@ -39,6 +39,7 @@ import {
 import { MeshProposalsPanel } from './mesh/MeshProposalsPanel';
 import { MeshScoringPanel } from './mesh/MeshScoringPanel';
 import { MeshSchedulerPanel } from './mesh/MeshSchedulerPanel';
+import { MeshTopologyGraph } from './mesh/MeshTopologyGraph';
 
 export function MeshActivityTab() {
   const { enabled, toggle } = useMeshToggle();
@@ -50,7 +51,7 @@ export function MeshActivityTab() {
   const [savingId, setSavingId] = useState<string | null>(null);
   const [pipelineName, setPipelineName] = useState('');
   const [runningPipeline, setRunningPipeline] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<'live' | 'pipelines' | 'proposals' | 'scoring' | 'scheduler'>('live');
+  const [activeView, setActiveView] = useState<'live' | 'pipelines' | 'proposals' | 'scoring' | 'scheduler' | 'topology'>('live');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const modules = getMeshModules();
@@ -227,6 +228,12 @@ export function MeshActivityTab() {
               className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'scheduler' ? 'bg-violet-500/20 text-violet-400' : 'text-muted-foreground hover:text-foreground')}
             >
               <Timer className="w-3 h-3 inline mr-1" />Scheduler
+            </button>
+            <button 
+              onClick={() => setActiveView('topology')}
+              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'topology' ? 'bg-emerald-500/20 text-emerald-400' : 'text-muted-foreground hover:text-foreground')}
+            >
+              <Network className="w-3 h-3 inline mr-1" />Topology
             </button>
           </div>
           <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}>
@@ -509,6 +516,8 @@ export function MeshActivityTab() {
         <MeshScoringPanel />
       ) : activeView === 'scheduler' ? (
         <MeshSchedulerPanel />
+      ) : activeView === 'topology' ? (
+        <MeshTopologyGraph />
       ) : null}
     </motion.main>
   );

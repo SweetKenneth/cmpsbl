@@ -494,6 +494,30 @@ export function registerMeshHandlers() {
     return { success: true, data: meshScheduler.getState() };
   });
 
+  // ═══ mesh.clm.feedback — Run CLM feedback loop from scoring data ═══
+  registerHandler('mesh.clm.feedback', async () => {
+    const { runCLMFeedbackLoop } = await import('@/lib/substrate/intent-mesh');
+    const result = await runCLMFeedbackLoop();
+    return {
+      success: true,
+      data: {
+        modulesUpdated: result.modulesUpdated,
+        insightsGenerated: result.insightsGenerated,
+        insights: result.insights.slice(0, 10).map(i => ({
+          module: i.module,
+          priority: i.priority,
+          topic: i.topic.slice(0, 120),
+        })),
+      },
+    };
+  });
+
+  // ═══ mesh.clm.summary — Get CLM feedback summary ═══
+  registerHandler('mesh.clm.summary', async () => {
+    const { getCLMFeedbackSummary } = await import('@/lib/substrate/intent-mesh');
+    return { success: true, data: getCLMFeedbackSummary() };
+  });
+
   // ═══ mesh.help — Full command reference ═══
   registerHandler('mesh.help', async () => {
     return {
@@ -517,13 +541,15 @@ export function registerMeshHandlers() {
           'mesh.chain.run <keys>': 'Execute optimal chain',
           'mesh.flush': 'Force-flush pending gap signals',
           'mesh.discover': 'Run discovery cycle (gaps → recommendations)',
-          'mesh.discover.all': '🆕 Run self-discovery for all 21 modules',
-          'mesh.discover.module <name>': '🆕 Run self-discovery for one module',
-          'mesh.scores': '🆕 Intent quality leaderboard',
-          'mesh.proposals': '🆕 View pending module proposals',
-          'mesh.approve <id>': '🆕 Approve a proposal → add to manifest',
-          'mesh.reject <id>': '🆕 Reject a proposal',
-          'mesh.scheduler [start|stop|run]': '🆕 Auto-expansion scheduler',
+          'mesh.discover.all': 'Run self-discovery for all 21 modules',
+          'mesh.discover.module <name>': 'Run self-discovery for one module',
+          'mesh.scores': 'Intent quality leaderboard',
+          'mesh.proposals': 'View pending module proposals',
+          'mesh.approve <id>': 'Approve a proposal → add to manifest',
+          'mesh.reject <id>': 'Reject a proposal',
+          'mesh.scheduler [start|stop|run]': 'Auto-expansion scheduler',
+          'mesh.clm.feedback': '🆕 Run CLM feedback loop from scoring → learning',
+          'mesh.clm.summary': '🆕 View CLM feedback summary across modules',
           'mesh.gaps': 'View open capability gaps',
           'mesh.recommendations': 'View pending recommendations',
           'mesh.expand': 'Apply high-confidence recommendations',
