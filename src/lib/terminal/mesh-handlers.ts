@@ -1,7 +1,7 @@
 /**
  * Intent Mesh — Terminal Handlers
- * v10.1.0 — mesh.* command namespace
- * Adds mesh.history, mesh.replay, mesh.save, mesh.pipelines
+ * v10.2.0 — mesh.* command namespace
+ * Adds refinement, chain discovery, gap flushing
  */
 
 import { registerHandler } from './validate-registry';
@@ -214,7 +214,7 @@ export function registerMeshHandlers() {
     };
   });
 
-  // ═══ mesh.run <name_or_id> — Run a saved pipeline by name or ID ═══
+  // ═══ mesh.run <name_or_id> — Run a saved pipeline ═══
   registerHandler('mesh.run', async (args?: string) => {
     if (!args?.trim()) {
       return { success: false, error: 'Usage: mesh.run <pipeline_name_or_id>. See mesh.pipelines for available.' };
@@ -293,12 +293,121 @@ export function registerMeshHandlers() {
     };
   });
 
+  // ═══ mesh.refine — Multi-turn refined broadcast ═══
+  registerHandler('mesh.refine', async (args?: string) => {
+    const { isMeshEnabled, resolveWithRefinement } = await import('@/lib/substrate/intent-mesh');
+    if (!isMeshEnabled()) {
+      return { success: false, error: 'Intent Mesh is disabled. Run mesh.on first.' };
+    }
+    
+    const maxTurns = parseInt(args || '3', 10);
+    const result = await resolveWithRefinement({
+      sourceModule: 'DEFENSE',
+      intentType: 'actor_enrichment',
+      domains: ['security', 'identity', 'session'],
+      input: { ip: '192.168.1.1', actor_id: 'test-actor' },
+      governanceMode: 'read_only',
+    }, { maxTurns });
+
+    return {
+      success: true,
+      data: {
+        totalTurns: result.totalTurns,
+        improved: result.improved,
+        totalResolversUsed: result.totalResolversUsed,
+        totalDurationMs: result.totalDurationMs,
+        dataKeysCollected: Object.keys(result.composedResult).filter(k => !k.startsWith('_')).length,
+        turns: result.turns,
+        composedResult: result.composedResult,
+      },
+    };
+  });
+
+  // ═══ mesh.chains — Discover composite resolver chains ═══
+  registerHandler('mesh.chains', async (args?: string) => {
+    const { discoverChains, getChainSummary } = await import('@/lib/substrate/intent-mesh');
+    
+    if (args?.trim()) {
+      // Discover chains for specific seed inputs
+      const seeds = args.split(',').map(s => s.trim());
+      const chains = discoverChains(seeds, { maxDepth: 4, maxChains: 10 });
+      return {
+        success: true,
+        data: {
+          seedInputs: seeds,
+          chainsFound: chains.length,
+          chains: chains.map(c => ({
+            name: c.name,
+            depth: c.depth,
+            steps: c.steps.map(s => s.resolverId),
+            outputs: c.totalOutputs.length,
+          })),
+        },
+      };
+    }
+    
+    const summary = getChainSummary();
+    return {
+      success: true,
+      data: {
+        totalChains: summary.totalChains,
+        maxDepth: summary.maxDepth,
+        uniqueModules: summary.uniqueModules,
+        topChains: summary.topChains,
+        hint: 'Run mesh.chains <key1,key2> to discover chains for specific inputs (e.g., mesh.chains ip,actor_id)',
+      },
+    };
+  });
+
+  // ═══ mesh.chain.run <seed_keys> — Execute the optimal chain for given inputs ═══
+  registerHandler('mesh.chain.run', async (args?: string) => {
+    if (!args?.trim()) {
+      return { success: false, error: 'Usage: mesh.chain.run <key1,key2> — e.g., mesh.chain.run ip,actor_id' };
+    }
+    
+    const { isMeshEnabled, findOptimalChain, executeChain } = await import('@/lib/substrate/intent-mesh');
+    if (!isMeshEnabled()) {
+      return { success: false, error: 'Intent Mesh is disabled. Run mesh.on first.' };
+    }
+    
+    const seeds = args.split(',').map(s => s.trim());
+    const chain = findOptimalChain('enrichment', seeds);
+    
+    if (!chain) {
+      return { success: false, error: `No composite chains found for inputs: ${seeds.join(', ')}` };
+    }
+    
+    const input: Record<string, unknown> = {};
+    for (const key of seeds) input[key] = `test-${key}`;
+    
+    const result = await executeChain(chain, input);
+    
+    return {
+      success: true,
+      data: {
+        chainName: chain.name,
+        stepsCompleted: `${result.stepsCompleted}/${result.stepsTotal}`,
+        totalDurationMs: result.totalDurationMs,
+        dataKeysProduced: Object.keys(result.composedData).filter(k => !k.startsWith('_')).length,
+        steps: result.stepResults,
+        composedData: result.composedData,
+      },
+    };
+  });
+
+  // ═══ mesh.flush — Force-flush pending gap signals ═══
+  registerHandler('mesh.flush', async () => {
+    const { flushGapDetection } = await import('@/lib/substrate/intent-mesh');
+    await flushGapDetection();
+    return { success: true, data: { message: 'Gap detection buffer flushed to discovery engine' } };
+  });
+
   // ═══ mesh.help — Full command reference ═══
   registerHandler('mesh.help', async () => {
     return {
       success: true,
       data: {
-        description: 'Intent Mesh — Emergent Module Intelligence (v10.1)',
+        description: 'Intent Mesh — Emergent Module Intelligence (v10.2)',
         commands: {
           'mesh.status': 'Get mesh state, stats, and top routes',
           'mesh.toggle': 'Toggle mesh on/off (kill switch)',
@@ -312,6 +421,15 @@ export function registerMeshHandlers() {
           'mesh.run <name>': 'Run a saved pipeline by name or ID',
           'mesh.resolvers': 'List all module resolvers',
           'mesh.broadcast': 'Test broadcast DEFENSE → actor_enrichment',
+          'mesh.refine [n]': 'Multi-turn refined broadcast (n = max turns, default 3)',
+          'mesh.chains [keys]': 'Discover composite resolver chains',
+          'mesh.chain.run <keys>': 'Execute optimal chain for given input keys',
+          'mesh.flush': 'Force-flush pending gap signals to discovery',
+          'mesh.discover': 'Run full discovery cycle (gaps → recommendations)',
+          'mesh.gaps': 'View open capability gaps',
+          'mesh.recommendations': 'View pending resolver recommendations',
+          'mesh.expand': 'Apply high-confidence recommendations to manifest',
+          'mesh.affinity': 'Analyze cross-module connection density',
           'mesh.help': 'Show this help',
         },
       },

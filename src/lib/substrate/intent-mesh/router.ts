@@ -96,6 +96,13 @@ export async function broadcastIntent(intent: Omit<MeshIntent, 'id' | 'timestamp
     duration_ms: totalDurationMs,
   }).catch(() => {}); // Non-blocking
 
+  // Auto-discovery: if resolution was partial/failed, queue gap analysis
+  const isPartial = resolvedBy.length < externalResolvers.length;
+  const isFailed = !responses.some(r => r.success);
+  if ((isPartial || isFailed) && !(intent.input as any)?._refinementTurn) {
+    queueGapDetection(intent, resolvedBy, externalResolvers.map(r => r.module));
+  }
+
   return resolution;
 }
 
@@ -159,6 +166,76 @@ async function executeResolver(
     };
   }
 }
+
+/**
+ * Queue gap detection for failed/partial intents (non-blocking)
+ */
+function queueGapDetection(
+  intent: Omit<MeshIntent, 'id' | 'timestamp'>,
+  resolvedBy: string[],
+  targetModules: string[]
+): void {
+  // Debounce: store in memory, batch-analyze periodically
+  pendingGapIntents.push({
+    sourceModule: intent.sourceModule,
+    intentType: intent.intentType,
+    domains: intent.domains,
+    resolvedBy,
+    targetModules,
+    timestamp: new Date().toISOString(),
+  });
+  
+  // Auto-flush when we accumulate enough gap signals
+  if (pendingGapIntents.length >= GAP_DETECTION_THRESHOLD) {
+    flushGapDetection();
+  }
+}
+
+// Gap detection buffer
+interface PendingGapIntent {
+  sourceModule: string;
+  intentType: string;
+  domains: string[];
+  resolvedBy: string[];
+  targetModules: string[];
+  timestamp: string;
+}
+
+const pendingGapIntents: PendingGapIntent[] = [];
+const GAP_DETECTION_THRESHOLD = 5;
+
+/**
+ * Flush accumulated gap signals to discovery engine
+ */
+async function flushGapDetection(): Promise<void> {
+  if (pendingGapIntents.length === 0) return;
+  
+  const batch = pendingGapIntents.splice(0, pendingGapIntents.length);
+  
+  try {
+    // Log gap signals to database for discovery engine to pick up
+    const gapSignals = batch.map(g => ({
+      source_module: g.sourceModule,
+      intent_type: g.intentType,
+      domains: g.domains,
+      needed_outputs: [],
+      available_resolvers: g.targetModules.length,
+      responding_resolvers: g.resolvedBy.length,
+      missing_modules: g.targetModules.filter(m => !g.resolvedBy.includes(m)),
+      gap_severity: g.resolvedBy.length === 0 ? 'high' : 'medium',
+      frequency: 1,
+      status: 'open',
+    }));
+    
+    await supabase.from('mesh_discovery_gaps').insert(gapSignals as any[]);
+    console.log(`[IntentMesh] Flushed ${batch.length} gap signals to discovery engine`);
+  } catch (err) {
+    console.warn('[IntentMesh] Failed to flush gap signals:', err);
+  }
+}
+
+/** Expose flush for terminal command use */
+export { flushGapDetection };
 
 /**
  * Log a mesh receipt to the database

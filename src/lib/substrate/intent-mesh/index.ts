@@ -35,6 +35,7 @@ export {
   broadcastIntent,
   getRecentReceipts,
   getMeshStats,
+  flushGapDetection,
 } from './router';
 
 // Toggle — kill switch
@@ -68,3 +69,21 @@ export {
   type CapabilityRecommendation,
   type DiscoveryRunResult,
 } from './discovery-engine';
+
+// Refinement Engine — multi-turn intent resolution
+export {
+  resolveWithRefinement,
+  shouldRefine,
+  type RefinementResult,
+  type RefinementContext,
+} from './refinement';
+
+// Composite Chains — resolver chaining for richer responses
+export {
+  discoverChains,
+  findOptimalChain,
+  executeChain,
+  getChainSummary,
+  type CompositeChain,
+  type CompositeResult,
+} from './composite';
