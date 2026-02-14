@@ -123,3 +123,14 @@ export {
   type SchedulerConfig,
   type SchedulerState,
 } from './auto-scheduler';
+
+// CLM Feedback Loop — scoring insights auto-feed into module learning
+export {
+  runCLMFeedbackLoop,
+  getDynamicTopics,
+  getDynamicTopicStrings,
+  getCLMFeedbackSummary,
+  clearDynamicTopics,
+  type CLMFeedbackInsight,
+  type CLMFeedbackResult,
+} from './clm-feedback';

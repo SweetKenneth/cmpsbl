@@ -12,6 +12,7 @@ import { debugMode } from "@/lib/debug-mode";
 import SmartToastRenderer from "@/components/toast/SmartToastRenderer";
 import DecodeFloat from "@/components/decode/DecodeFloat";
 import { installLastInteractionTracking } from "@/lib/ui/lastInteraction";
+import { installSiteGuard } from "@/lib/defense/site-guard";
 import { isLovableEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
 // Mobile crash diagnostics (opt-in via ?diag=1)
@@ -228,6 +229,7 @@ const App = () => {
   useEffect(() => {
     const cleanup = installMobileWatchdog();
     const cleanupTracking = installLastInteractionTracking();
+    const cleanupSiteGuard = installSiteGuard();
 
     if (diagEnabled()) {
       diagLog("log", "App mounted", {
@@ -239,6 +241,7 @@ const App = () => {
     return () => {
       cleanup?.();
       cleanupTracking?.();
+      cleanupSiteGuard?.();
     };
   }, []);
 

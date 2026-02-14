@@ -1,7 +1,7 @@
 /**
  * Mesh Auto-Expansion Scheduler
- * v10.2.0 — Periodic discovery cycles that self-improve the manifest
- * 
+ * v10.3.0 — Periodic discovery cycles that self-improve the manifest
+ * Now includes CLM feedback loop integration
  * Runs on configurable intervals:
  * - Module self-discovery: every 4 hours (each module introspects)
  * - Gap analysis: every 2 hours (scan failed intents)
@@ -16,6 +16,7 @@ import { isMeshEnabled } from './toggle';
 import { runDiscoveryCycle } from './discovery-engine';
 import { runAllModuleDiscovery, persistProposals } from './module-discovery';
 import { calculateIntentScores, getIntentLeaderboard } from './intent-scoring';
+import { runCLMFeedbackLoop } from './clm-feedback';
 
 // ─── Types ───
 
@@ -189,17 +190,21 @@ class MeshAutoScheduler {
   /**
    * Run intent quality scoring
    */
-  async runIntentScoringCycle(): Promise<{ intentsScored: number }> {
+  async runIntentScoringCycle(): Promise<{ intentsScored: number; clmInsights: number }> {
     try {
       const scores = await calculateIntentScores();
+      
+      // Run CLM feedback loop — scoring insights → module learning topics
+      const feedback = await runCLMFeedbackLoop();
+      
       this.state.lastIntentScoring = new Date().toISOString();
       this.state.totalCyclesRun++;
 
-      console.log(`[MeshScheduler] Intent scoring: ${scores.length} intent types scored`);
-      return { intentsScored: scores.length };
+      console.log(`[MeshScheduler] Intent scoring: ${scores.length} scored, ${feedback.insightsGenerated} CLM insights → ${feedback.modulesUpdated} modules`);
+      return { intentsScored: scores.length, clmInsights: feedback.insightsGenerated };
     } catch (err) {
       console.warn('[MeshScheduler] Intent scoring failed:', err);
-      return { intentsScored: 0 };
+      return { intentsScored: 0, clmInsights: 0 };
     }
   }
 
