@@ -5,38 +5,26 @@ import type { SmartToast } from "./SmartToastStore";
 import { getLastInteractionPoint } from "@/lib/ui/lastInteraction";
 import { clamp } from "@/lib/ui/viewport";
 
-function getDecodeAnchorRect() {
-  const el = document.getElementById("decode-float-anchor");
-  if (!el) return null;
-  return el.getBoundingClientRect();
-}
-
-function computePosition(toast: SmartToast) {
-  const pad = 12;
+function computePosition() {
+  const pad = 16;
   const vw = window.innerWidth;
   const vh = window.innerHeight;
+  const toastW = 320;
 
-  if (toast.anchor === "center") {
-    return { left: vw / 2, top: vh * 0.78, transform: "translate(-50%, 0)" };
+  // Always try last interaction point first
+  const p = getLastInteractionPoint();
+  if (p) {
+    return {
+      left: clamp(p.x - toastW / 2, pad, vw - toastW - pad),
+      top: clamp(p.y - 70, pad, vh - 100),
+    };
   }
 
-  if (toast.anchor === "interaction") {
-    const p = getLastInteractionPoint();
-    if (p) {
-      return { left: clamp(p.x, pad, vw - 340), top: clamp(p.y - 60, pad, vh - 80), transform: "translate(0, 0)" };
-    }
-    return { left: vw / 2, top: vh * 0.78, transform: "translate(-50%, 0)" };
-  }
-
-  // default: decode anchor
-  const r = getDecodeAnchorRect();
-  if (r) {
-    const left = clamp(r.left + r.width / 2 - 160, pad, vw - pad - 320);
-    const top = clamp(r.top - 12, pad, vh - pad);
-    return { left, top, transform: "translate(0, -100%)" };
-  }
-
-  return { left: vw / 2, top: vh * 0.78, transform: "translate(-50%, 0)" };
+  // Fallback: bottom-center of viewport
+  return {
+    left: clamp(vw / 2 - toastW / 2, pad, vw - toastW - pad),
+    top: vh - 120,
+  };
 }
 
 const variantColors: Record<string, string> = {
@@ -62,7 +50,7 @@ export default function SmartToastRenderer() {
       aria-relevant="additions"
     >
       {toasts.map((t, i) => {
-        const pos = computePosition(t);
+        const pos = computePosition();
         const accent = variantColors[t.variant || "info"];
 
         return (
@@ -72,8 +60,7 @@ export default function SmartToastRenderer() {
               position: "fixed",
               left: pos.left,
               top: pos.top - i * 68,
-              transform: pos.transform,
-              width: "min(320px, calc(100vw - 24px))",
+              width: "min(320px, calc(100vw - 32px))",
               pointerEvents: "auto",
               animation: "smartToastIn 180ms ease-out",
             }}
