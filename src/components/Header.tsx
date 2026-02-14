@@ -1,4 +1,4 @@
-import { Bell, Search, LogOut, Menu, Map, Home } from "lucide-react";
+import { Bell, Search, LogOut, Menu, Map, Home, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -47,6 +47,18 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           <Link to="/">
             <Home className="w-4 h-4" />
             <span className="hidden lg:inline">Home</span>
+          </Link>
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex gap-2"
+          asChild
+        >
+          <Link to="/demos">
+            <Crown className="w-4 h-4" />
+            <span className="hidden lg:inline">Demos</span>
           </Link>
         </Button>
 

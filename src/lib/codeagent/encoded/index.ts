@@ -125,6 +125,23 @@ export {
   type GraduatedThresholds,
 } from './feedback-loop';
 
+// System Manifest — Architecture Awareness (v9.3.0)
+export {
+  SYSTEM_MODULES,
+  SYSTEM_COMPONENTS,
+  SYSTEM_ROUTES,
+  ENCODE_IDENTITY,
+  resolveModule,
+  resolveComponent,
+  resolveModuleByPath,
+  getModulesByLayer,
+  getDependencyChain,
+  getSystemSummary,
+  type ModuleEntry,
+  type ComponentEntry,
+  type RouteEntry,
+} from './system-manifest';
+
 // Shadow Practice Engine (v3.2.0)
 export {
   shadowPractice,
