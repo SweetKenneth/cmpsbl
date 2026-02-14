@@ -83,11 +83,11 @@ LangChain is a popular open-source library for building LLM applications. CMPSBL
 
 ### Overview
 
-Mem0 focuses specifically on memory for AI applications. CMPSBL includes memory plus 13 other integrated modules.
+Mem0 focuses specifically on memory for AI applications. CMPSBL includes memory plus 20 other integrated modules.
 
 ### Comparison
 
-| Aspect | Mem0 | CMPSBL® BRAIN + 13 |
+| Aspect | Mem0 | CMPSBL® BRAIN + 20 |
 |--------|------|-------------------|
 | **Memory Storage** | ✓ Yes | ✓ Multi-tier |
 | **Memory Compression** | Basic | Advanced (temporal, semantic) |

@@ -68,7 +68,7 @@ Plus your own AI provider costs (you pay OpenAI, Anthropic, etc. directly).
 
 ### What's included in the license?
 
-All 21 modules, full documentation, version updates, and support appropriate to your tier. You bring your own AI provider keys and infrastructure.
+All 21 modules (including IDENTITY for passwordless WebAuthn), full documentation, version updates, and support appropriate to your tier. You bring your own AI provider keys and infrastructure.
 
 ### Can I use this for commercial products?
 

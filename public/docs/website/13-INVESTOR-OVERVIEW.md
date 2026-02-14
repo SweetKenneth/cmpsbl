@@ -145,7 +145,7 @@ CMPSBL provides complete cognitive infrastructure:
 
 ### Technical Milestones
 
-- [x] Complete 14-module architecture
+- [x] Complete 21-module architecture
 - [x] Self-evolution engine operational
 - [x] Multi-provider AI routing
 - [x] Enterprise security layer
@@ -192,7 +192,7 @@ CMPSBL provides complete cognitive infrastructure:
 ### Leadership
 
 **Kenneth E. Sweet Jr.** — Founder & Chief Cognitive Engineer
-- Creator and architect of the 14-module substrate
+- Creator and architect of the 21-module substrate
 - Deep expertise in cognitive systems and AI infrastructure
 - ORCID: 0009-0001-4237-1243
 

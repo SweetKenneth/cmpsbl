@@ -158,7 +158,7 @@ CodeLab is a **live, execution-first development environment** for building cogn
 |---------|-------------|
 | **Live Execution** | Real substrate execution, not simulations |
 | **Visual Builder** | Drag-and-drop workflow creation |
-| **Full SDK Access** | All 14 modules available |
+| **Full SDK Access** | All 21 modules available |
 | **Synergy Testing** | Test cross-module pipelines |
 
 ### Tiers
@@ -257,7 +257,7 @@ Engines are the governed, versioned, authoritative form of orchestration. When y
 
 - [Persistent Memory Quickstart](/docs/persistent-memory) — Add memory in < 1 hour
 - [Getting Started](./06-GETTING-STARTED.md) — Full SDK setup
-- [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) — 147-pipeline reference
+- [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) — 200-pipeline reference
 - [Architecture](./05-ARCHITECTURE.md) — Technical deep-dive
 
 ---

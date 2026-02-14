@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v9.1.0**
+**What CMPSBL® Does — Technical Overview v9.3.0**
 
 ---
 
@@ -48,7 +48,8 @@ const context = await agent.getContext(userMessage);
 | Intent Parsing | DECODE | Natural language interpretation, command routing |
 | Orchestration | CORTEX | Policy intent, autonomous decision-making |
 | Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
-| **Cross-Module Synergies** | CORTEX | **147 pipelines, 125 executors, 171+ deployed actions** |
+| **Identity** | IDENTITY | Passwordless WebAuthn, actor attribution, sessions |
+| **Cross-Module Synergies** | CORTEX | **200 pipelines, 125 executors, 171+ deployed actions** |
 
 ---
 
@@ -360,4 +361,4 @@ system.health
 
 ---
 
-*CMPSBL® v9.1.0 — Cognitive Infrastructure for Production AI*
+*CMPSBL® v9.3.0 — Cognitive Infrastructure for Production AI*

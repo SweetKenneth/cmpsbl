@@ -14,7 +14,7 @@ CMPSBL® is built on three core principles:
 
 ---
 
-## The 14-Module Architecture
+## The 21-Module Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -25,17 +25,22 @@ CMPSBL® is built on three core principles:
 ├─────────────────────────────────────────────────────────────┤
 │                      ADMIN LAYER                             │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  SYSTEM (Health)  │  MODERNIZER  │  INCLUSIVE (A11y)    ││
+│  │  SYSTEM │ MODERNIZER │ INCLUSIVE │ SANDBOX │ USER-MANUAL ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                   OPERATIONS LAYER                           │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  DREAM  │  DEFENSE  │  NEXUS  │  VISION  │  INTEGRATION ││
+│  │  DREAM  │  DEFENSE  │  NEXUS  │  VISION  │  ECONOMY     ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                   COGNITIVE LAYER                            │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  BRAIN (Memory)  │  DECODE (NLP)                        ││
+│  │  BRAIN (Memory)  │  DECODE (NLP)  │  MEMORY (Tiers)     ││
+│  └─────────────────────────────────────────────────────────┘│
+├─────────────────────────────────────────────────────────────┤
+│                 INFRASTRUCTURE LAYER                         │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │  RELAY (Routing)  │  AUDIT (Logging)  │  IDENTITY (Auth) ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                    KERNEL LAYER                              │
@@ -77,7 +82,7 @@ Runtime services for learning, security, AI, and visibility.
 | **VISION** | Observability, metrics, tracing |
 | **INTEGRATION** | External APIs, webhooks, adapters |
 
-### Admin Layer (Boot Order 11-13)
+### Admin Layer (Boot Order 11-15)
 System management and self-improvement.
 
 | Module | Purpose |
@@ -85,13 +90,26 @@ System management and self-improvement.
 | **SYSTEM** | Health, diagnostics, backup/restore |
 | **MODERNIZER** | Evolution engine, self-improvement |
 | **INCLUSIVE** | Accessibility scanning, WCAG enforcement |
+| **SANDBOX** | Isolated execution environments |
+| **USER-MANUAL** | Auto-generated documentation |
 
-### Orchestrator Layer (Boot Order 14)
+### Infrastructure Layer (Boot Order 16-18)
+Core infrastructure services.
+
+| Module | Purpose |
+|--------|---------|
+| **RELAY** | Message routing and dispatch |
+| **AUDIT** | Immutable event logging and compliance |
+| **IDENTITY** | Actor attribution, passwordless WebAuthn, sessions |
+
+### Orchestrator Layer (Boot Order 19-21)
 High-level coordination.
 
 | Module | Purpose |
 |--------|---------|
 | **CORTEX** | Policy intent, autonomous decision-making |
+| **ECONOMY** | Usage metering and cost attribution |
+| **INTEGRATION** | External APIs, webhooks, adapters |
 
 ---
 
