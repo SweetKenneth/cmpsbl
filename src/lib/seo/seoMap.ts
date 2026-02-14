@@ -20,11 +20,29 @@ export interface PageSEO {
 }
 
 const OG_BASE = 'https://cmpsbl.com';
-const OG_DEFAULT = `${OG_BASE}/og-default.jpg`;
+const OG_DEFAULT = `${OG_BASE}/og/home.jpg`;
 const OG_FEATURE = `${OG_BASE}/og-feature.jpg`;
-const OG_DOCS = `${OG_BASE}/og-docs.jpg`;
-const OG_BLOG = `${OG_BASE}/og-blog.jpg`;
-const OG_ABOUT = `${OG_BASE}/og-about.jpg`;
+const OG_DOCS = `${OG_BASE}/og/documentation.jpg`;
+const OG_BLOG = `${OG_BASE}/og/blog.jpg`;
+const OG_ABOUT = `${OG_BASE}/og/about.jpg`;
+
+// Page-specific OG images
+const OG_SUBSTRATE_OS = `${OG_BASE}/og/substrate-os.jpg`;
+const OG_MODULES = `${OG_BASE}/og/modules.jpg`;
+const OG_STORE = `${OG_BASE}/og/store.jpg`;
+const OG_COGNITIVES = `${OG_BASE}/og/cognitives.jpg`;
+const OG_ENGINES = `${OG_BASE}/og/engines.jpg`;
+const OG_MEMORY = `${OG_BASE}/og/persistent-memory.jpg`;
+const OG_DECODE = `${OG_BASE}/og/decode.jpg`;
+const OG_DREAM = `${OG_BASE}/og/dream-feeder.jpg`;
+const OG_PROOF = `${OG_BASE}/og/proof.jpg`;
+const OG_FORGE = `${OG_BASE}/og/forge.jpg`;
+const OG_GAMING = `${OG_BASE}/og/gaming.jpg`;
+const OG_DEVELOPERS = `${OG_BASE}/og/developers.jpg`;
+const OG_PRICING = `${OG_BASE}/og/pricing.jpg`;
+const OG_SOLUTIONS = `${OG_BASE}/og/solutions.jpg`;
+const OG_INVESTORS = `${OG_BASE}/og/investors.jpg`;
+const OG_ACADEMY = `${OG_BASE}/og/academy.jpg`;
 
 /**
  * Master SEO map keyed by route path.
@@ -53,7 +71,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Explore the CMPSBL Substrate OS: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads.',
     ogTitle: 'Substrate OS — The Engine Behind Cognitive AI',
     ogDescription: 'Real-time telemetry, module health, and autonomous orchestration inside the AI operating system.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_SUBSTRATE_OS,
     keywords: ['substrate OS', 'AI runtime', 'cognitive orchestration', 'module telemetry', 'AI workload management', 'substrate dashboard'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -64,7 +82,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'The definitive guide to AI operating systems: how CMPSBL orchestrates memory, learning, defense, and 400+ capabilities in a unified runtime.',
     ogTitle: 'The AI Operating System — Explained',
     ogDescription: 'How a cognitive runtime orchestrates memory, learning, and multi-provider AI in one unified layer.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_SUBSTRATE_OS,
     keywords: ['AI operating system definition', 'cognitive runtime', 'AI OS architecture', 'what is AI OS', 'unified AI platform', 'AIDO'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -75,7 +93,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Browse all 21 core modules across 6 layers: Kernel, Cognitive, Operational, Administrative, Orchestrator, and Infrastructure.',
     ogTitle: '21 Modules Powering the Substrate',
     ogDescription: 'Explore every module from BRAIN to DEFENSE — organized by architectural layer.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_MODULES,
     keywords: ['substrate modules', 'AI architecture layers', 'BRAIN module', 'DEFENSE module', 'cognitive layer', 'kernel modules', 'AI module catalog'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -86,7 +104,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Access 400+ tier-scoped capabilities, synergy pipelines, and templates in the CMPSBL artifact marketplace.',
     ogTitle: 'Artifact Marketplace — 400+ AI Capabilities',
     ogDescription: 'Browse and deploy capabilities, templates, and synergy pipelines for your cognitive workloads.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_STORE,
     keywords: ['AI capabilities marketplace', 'synergy pipelines', 'composable artifacts', 'AI templates', 'capability depot', 'CMPSBL store'],
     schema: 'product',
     intent: 'Feature/Capability',
@@ -97,7 +115,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Build, buy, and deploy superpowered cognitive agents you own forever. Download once, run anywhere, no subscriptions.',
     ogTitle: 'Composable Cognitives — AI Agents You Own',
     ogDescription: 'Superpowered agents downloaded once and run anywhere — no lock-in, no subscriptions.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_COGNITIVES,
     keywords: ['composable cognitives', 'AI agents download', 'own your AI', 'cognitive agents', 'portable AI agents', 'agent marketplace'],
     schema: 'product',
     intent: 'Feature/Capability',
@@ -108,7 +126,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'First-party canonized orchestration engines: pre-built AI workflows validated and versioned by CMPSBL engineering.',
     ogTitle: 'Engines — OEM Orchestrations',
     ogDescription: 'Pre-validated orchestration engines for enterprise AI workloads.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_ENGINES,
     keywords: ['AI engines', 'orchestration engines', 'canonized workflows', 'OEM AI engines', 'pre-built AI pipelines'],
     schema: 'product',
     intent: 'Feature/Capability',
@@ -119,7 +137,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Add persistent memory to any AI agent in under an hour. Free tier available. Works with LangChain, CrewAI, and custom frameworks.',
     ogTitle: 'Persistent Memory — Add Memory to Any Agent',
     ogDescription: 'Give your AI agent a permanent memory in under an hour. Free.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_MEMORY,
     keywords: ['persistent memory AI', 'agent memory', 'AI memory API', 'LangChain memory', 'free AI memory', 'agent state persistence'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -130,7 +148,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Interact with the CMPSBL substrate through natural language commands. The Decode Engine translates intent into module actions.',
     ogTitle: 'Decode — Talk to Your Substrate',
     ogDescription: 'A natural language terminal that translates intent into substrate operations.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_DECODE,
     keywords: ['Decode engine', 'natural language terminal', 'AI CLI', 'substrate commands', 'intent-to-action', 'cognitive terminal'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -141,7 +159,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Feed the Dream Eater: CMPSBL\'s autonomous learning system that processes experience data into heuristic improvements during idle cycles.',
     ogTitle: 'Dream Feeder — AI That Learns While Idle',
     ogDescription: 'Autonomous dream cycles that convert experience into intelligence.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_DREAM,
     keywords: ['dream cycles AI', 'autonomous learning', 'AI dream feeder', 'heuristic improvement', 'idle learning AI', 'self-improving AI'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -152,7 +170,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Cryptographic proof of every AI operation. Proof Mode generates tamper-evident execution records for audit and compliance.',
     ogTitle: 'Proof Mode — Verifiable AI',
     ogDescription: 'Tamper-evident proof of every cognitive operation for enterprise compliance.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_PROOF,
     keywords: ['AI proof mode', 'verifiable AI', 'execution proof', 'AI audit trail', 'cryptographic AI logging', 'compliance AI'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -207,7 +225,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Design, train, and deploy custom cognitive agents in the Forge. Drag-and-drop skill composition with automatic competency tracking.',
     ogTitle: 'Cognitive Forge — Build Your AI Agent',
     ogDescription: 'Drag-and-drop agent builder with skill composition and competency tracking.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_FORGE,
     keywords: ['cognitive forge', 'AI agent builder', 'custom AI agents', 'drag drop AI', 'agent composition tool', 'build AI agents'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -229,7 +247,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Power game NPCs with persistent memory, adaptive behavior, and dream-cycle learning. Built for Unreal, Unity, and custom engines.',
     ogTitle: 'Gaming AI — NPCs That Learn',
     ogDescription: 'Cognitive NPC engines with persistent memory and adaptive behavior for games.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_GAMING,
     keywords: ['gaming AI', 'cognitive NPC', 'AI game logic', 'persistent NPC memory', 'adaptive game AI', 'Unity AI NPC'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -255,7 +273,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Everything developers need: SDKs, REST APIs, webhooks, and integration guides for building on the CMPSBL substrate.',
     ogTitle: 'CMPSBL Developer Hub',
     ogDescription: 'SDKs, APIs, webhooks, and integration guides for building on the substrate.',
-    ogImage: OG_DOCS,
+    ogImage: OG_DEVELOPERS,
     keywords: ['CMPSBL developer hub', 'AI SDK', 'substrate API', 'AI integration guide', 'developer portal AI', 'cognitive API'],
     schema: 'docs',
     intent: 'Docs/Developer',
@@ -277,7 +295,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Step-by-step guide to integrating persistent memory into your AI agent. Covers LangChain, CrewAI, and raw SDK approaches.',
     ogTitle: 'Persistent Memory Quickstart',
     ogDescription: 'Add persistent memory to your agent in 15 minutes — step-by-step guide.',
-    ogImage: OG_DOCS,
+    ogImage: OG_MEMORY,
     keywords: ['persistent memory quickstart', 'AI memory integration', 'LangChain memory guide', 'CrewAI memory', 'agent memory tutorial'],
     schema: 'docs',
     intent: 'Docs/Developer',
@@ -288,7 +306,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Complete reference for all 400+ substrate capabilities: parameters, tier availability, synergy compatibility, and usage examples.',
     ogTitle: 'Capability Reference — 400+ Functions',
     ogDescription: 'Browse the full catalog of AI capabilities with parameters and examples.',
-    ogImage: OG_DOCS,
+    ogImage: OG_STORE,
     keywords: ['AI capabilities reference', 'substrate functions', 'capability catalog', 'AI function reference', 'API capability docs'],
     schema: 'docs',
     intent: 'Docs/Developer',
@@ -299,7 +317,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Learn to build on the substrate with interactive, AI-powered tutorials. From beginner agent builders to advanced orchestration.',
     ogTitle: 'Developer Academy — Learn AI Building',
     ogDescription: 'Interactive tutorials from beginner to advanced substrate development.',
-    ogImage: OG_DOCS,
+    ogImage: OG_ACADEMY,
     keywords: ['AI developer academy', 'interactive AI tutorials', 'learn AI building', 'substrate training', 'cognitive development course'],
     schema: 'docs',
     intent: 'Docs/Developer',
@@ -336,7 +354,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Enterprise-ready cognitive infrastructure for healthcare, finance, legal, and manufacturing. SOC 2 compliant, on-prem available.',
     ogTitle: 'Enterprise AI Solutions by CMPSBL',
     ogDescription: 'Industry-specific cognitive infrastructure with compliance and on-prem deployment.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_SOLUTIONS,
     keywords: ['enterprise AI solutions', 'industry AI applications', 'SOC 2 AI', 'healthcare AI', 'finance AI platform', 'on-prem AI'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -347,7 +365,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Real-world use cases: autonomous research agencies, code review pipelines, customer support agents, and self-healing infrastructure.',
     ogTitle: 'AI Use Cases — Real Deployments',
     ogDescription: 'See how teams deploy autonomous research, code review, and self-healing AI.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_SOLUTIONS,
     keywords: ['AI use cases', 'autonomous research AI', 'code review AI', 'customer support AI agents', 'self-healing AI infrastructure'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -358,7 +376,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Transparent pricing for every team size. Free tier with persistent memory, Builder for production, Pro for scale, Enterprise for compliance.',
     ogTitle: 'CMPSBL Pricing — Start Free',
     ogDescription: 'Free tier to Enterprise: transparent pricing for cognitive infrastructure.',
-    ogImage: OG_DEFAULT,
+    ogImage: OG_PRICING,
     keywords: ['CMPSBL pricing', 'AI platform pricing', 'free AI tier', 'enterprise AI pricing', 'cognitive infrastructure cost'],
     schema: 'product',
     intent: 'Pricing/Plans',
@@ -369,7 +387,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Enterprise licensing for the CMPSBL substrate: volume agreements, OEM embedding, white-label options, and dedicated support.',
     ogTitle: 'Enterprise Licensing — CMPSBL',
     ogDescription: 'Volume licensing, OEM embedding, and white-label agreements for enterprises.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_PRICING,
     keywords: ['AI enterprise licensing', 'OEM AI agreement', 'white-label AI', 'substrate licensing', 'volume AI license'],
     schema: 'product',
     intent: 'Pricing/Plans',
@@ -391,7 +409,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'CMPSBL represents a generational acquisition opportunity: 17 years of R&D, 21 modules, 400+ capabilities, and defensible IP.',
     ogTitle: 'Investment & Acquisition — CMPSBL',
     ogDescription: '17 years of R&D, 21 modules, 400+ capabilities — a generational acquisition opportunity.',
-    ogImage: OG_ABOUT,
+    ogImage: OG_INVESTORS,
     keywords: ['CMPSBL acquisition', 'AI startup investment', 'cognitive infrastructure acquisition', 'AI IP portfolio', 'strategic AI acquisition'],
     schema: 'about',
     intent: 'About/Trust',
@@ -402,7 +420,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Browse community and first-party templates, integrations, and pre-built cognitive workflows in the CMPSBL marketplace.',
     ogTitle: 'CMPSBL Marketplace',
     ogDescription: 'Templates, integrations, and pre-built cognitive workflows.',
-    ogImage: OG_FEATURE,
+    ogImage: OG_STORE,
     keywords: ['AI marketplace', 'cognitive templates', 'AI integrations marketplace', 'pre-built AI workflows', 'CMPSBL marketplace'],
     schema: 'product',
     intent: 'Feature/Capability',
