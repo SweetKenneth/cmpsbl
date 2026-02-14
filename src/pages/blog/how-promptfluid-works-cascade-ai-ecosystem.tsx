@@ -49,7 +49,7 @@ const HowPromptFluidWorks = () => {
             <span className="mx-2">/</span>
             <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
             <span className="mx-2">/</span>
-            <span className="text-foreground">How PromptFluid Works</span>
+            <span className="text-foreground">How the CMPSBL Substrate Works</span>
           </nav>
 
           {/* Hero Header */}
@@ -64,10 +64,10 @@ const HowPromptFluidWorks = () => {
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent leading-tight">
-              How PromptFluid Works: Meet Cascade AI and the Ecosystem That Makes AI Flow
+              How CMPSBL Works: The Cognitive Substrate That Makes AI Flow
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Discover how PromptFluid's Cascade AI orchestrates adaptive intelligence through a unified ecosystem 
+              Discover how the CMPSBL substrate — created by PromptFluid — orchestrates adaptive intelligence through a unified ecosystem 
               where artificial intelligence learns, evolves, and operates without friction.
             </p>
             <div className="flex items-center gap-4 mt-6 text-sm text-muted-foreground">
@@ -81,32 +81,32 @@ const HowPromptFluidWorks = () => {
           <section className="prose prose-lg max-w-none mb-16">
             <p className="text-lg leading-relaxed">
               In an era where artificial intelligence has become essential to modern operations, most platforms offer 
-              disconnected tools that require constant manual intervention. PromptFluid takes a fundamentally different 
+              disconnected tools that require constant manual intervention. CMPSBL takes a fundamentally different 
               approach: we've built an entire ecosystem where AI doesn't just respond to commands—it learns, adapts, 
               and flows seamlessly through every layer of your operations.
             </p>
             
             <p className="text-lg leading-relaxed">
-              At the heart of this ecosystem lives <strong>Cascade AI</strong>, our internally-built orchestration 
-              intelligence that makes the entire PromptFluid platform adaptive, learning, and autonomous. Cascade isn't 
-              just another AI model—it's the living nervous system that connects every product, learns from every 
+              At the heart of this ecosystem lives <strong>the cognitive engine</strong>, PromptFluid's internally-built orchestration 
+              intelligence that makes the entire CMPSBL substrate adaptive, learning, and autonomous. It isn't 
+              just another AI model—it's the living nervous system that connects every module, learns from every 
               interaction, and ensures intelligence flows exactly where it's needed, when it's needed.
             </p>
 
             <p className="text-lg leading-relaxed">
-              This comprehensive guide reveals how PromptFluid works under the hood, why Cascade AI represents a 
-              paradigm shift in intelligent automation, and how our unified ecosystem delivers capabilities that 
+              This comprehensive guide reveals how the CMPSBL substrate works under the hood, why its cognitive engine represents a 
+              paradigm shift in intelligent automation, and how the unified 21-module architecture delivers capabilities that 
               isolated AI tools simply cannot match.
             </p>
           </section>
 
           {/* Section 1: Understanding the PromptFluid Philosophy */}
           <section className="mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">Understanding the PromptFluid Philosophy: AI That Flows</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">Understanding the CMPSBL Philosophy: AI That Flows</h2>
             
             <p className="text-lg leading-relaxed mb-6">
               Before diving into technical architecture, it's essential to understand the guiding philosophy that 
-              shapes every PromptFluid product: <strong>AI That Flows</strong>. This principle means artificial 
+              shapes every CMPSBL module: <strong>AI That Flows</strong>. This principle means artificial 
               intelligence should operate like water—adapting to the shape of any challenge, moving through systems 
               without obstruction, and finding the most efficient path to accomplish objectives.
             </p>
@@ -121,9 +121,9 @@ const HowPromptFluidWorks = () => {
                 <div>
                   <h4 className="text-xl font-semibold mb-2 text-primary">1. Adaptive Learning</h4>
                   <p className="text-muted-foreground leading-relaxed">
-                    Traditional AI systems require retraining or fine-tuning when faced with new scenarios. PromptFluid's 
-                    Cascade AI continuously learns from every interaction, automatically updating its understanding without 
-                    manual intervention. When a user submits a prompt, Cascade doesn't just execute—it observes outcomes, 
+                    Traditional AI systems require retraining or fine-tuning when faced with new scenarios. CMPSBL's 
+                    cognitive engine continuously learns from every interaction, automatically updating its understanding without 
+                    manual intervention. When a task is submitted, the engine doesn't just execute—it observes outcomes, 
                     identifies patterns, and refines future responses based on what worked.
                   </p>
                 </div>
@@ -141,9 +141,9 @@ const HowPromptFluidWorks = () => {
                 <div>
                   <h4 className="text-xl font-semibold mb-2 text-primary">3. Autonomous Operation</h4>
                   <p className="text-muted-foreground leading-relaxed">
-                    The ultimate expression of fluid AI is autonomy. Cascade doesn't wait for instructions on every 
+                    The ultimate expression of fluid AI is autonomy. The cognitive engine doesn't wait for instructions on every 
                     decision—it evaluates context, determines optimal approaches, and executes workflows independently. 
-                    Our autonomy scoring system measures how effectively Cascade operates without human guidance, with 
+                    The autonomy scoring system measures how effectively the substrate operates without human guidance, with 
                     the goal of achieving near-complete autonomous intelligence.
                   </p>
                 </div>
@@ -151,8 +151,8 @@ const HowPromptFluidWorks = () => {
             </div>
 
             <p className="text-lg leading-relaxed">
-              These pillars aren't theoretical aspirations—they're engineered into every component of the PromptFluid 
-              ecosystem, from database design to API routing to user interfaces. When you use PromptFluid, you're not 
+              These pillars aren't theoretical aspirations—they're engineered into every component of the CMPSBL 
+              substrate, from database design to API routing to user interfaces. When you use CMPSBL, you're not 
               just accessing tools; you're engaging with a living, learning system that becomes more capable with every 
               interaction.
             </p>
@@ -160,15 +160,15 @@ const HowPromptFluidWorks = () => {
 
           {/* Section 2: Meet Cascade AI */}
           <section className="mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">Meet Cascade AI: The Brain Behind Adaptive Intelligence</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">The Cognitive Engine: Adaptive Intelligence at the Core</h2>
             
             <p className="text-lg leading-relaxed mb-6">
               <Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="text-primary hover:underline">
-                Cascade AI
-              </Link> represents our most ambitious engineering achievement: an autonomous orchestration layer that 
+                The cognitive engine
+              </Link> represents PromptFluid's most ambitious engineering achievement: an autonomous orchestration layer that 
               operates 24/7, executing 8,640 intelligent decisions daily across nine specialized brain cycles. Unlike
-              traditional AI that waits for commands, Cascade actively learns, builds code, researches best practices, 
-              and evolves the entire PromptFluid codebase—all without human intervention. Think of Cascade as a 
+              traditional AI that waits for commands, the engine actively learns, builds code, researches best practices, 
+              and evolves the entire CMPSBL substrate—all without human intervention. Think of it as a 
               self-improving AI engineer that gets smarter every 30 minutes.
             </p>
 
@@ -178,9 +178,9 @@ const HowPromptFluidWorks = () => {
                 Autonomous Operation: 9 Brain Cycles Running Every 30 Minutes
               </h3>
               <p className="text-muted-foreground mb-6">
-                Cascade operates through a master scheduler that orchestrates nine specialized intelligence cycles, 
+              The engine operates through a master scheduler that orchestrates nine specialized intelligence cycles, 
                 each optimized for specific cognitive tasks. With 8,640 daily free-tier AI calls across Google AI Studio, 
-                Cerebras, Groq, Together AI, DeepSeek, and Hyperbolic, Cascade distributes its thinking power strategically across:
+                Cerebras, Groq, Together AI, DeepSeek, and Hyperbolic, the substrate distributes its thinking power strategically across:
               </p>
               <div className="grid md:grid-cols-2 gap-4 mb-6">
                 <div className="bg-card border border-border rounded-lg p-4">
@@ -329,7 +329,7 @@ const HowPromptFluidWorks = () => {
             <p className="text-lg leading-relaxed mb-6">
               Cascade operates on a 30-minute cycle controlled by a master scheduler. Every half hour, it wakes up, 
               assesses what needs to be done, and executes its nine brain cycles in optimal order. This isn't reactive 
-              AI waiting for commands—it's proactive intelligence continuously improving the PromptFluid codebase:
+              AI waiting for commands—it's proactive intelligence continuously improving the CMPSBL substrate:
             </p>
 
             <ol className="space-y-6 mb-8">
@@ -396,19 +396,19 @@ const HowPromptFluidWorks = () => {
 
           {/* Section 3: The PromptFluid Ecosystem */}
           <section className="mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">The PromptFluid Ecosystem: Products That Work as One</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">The CMPSBL Ecosystem: 21 Modules That Work as One</h2>
             
             <p className="text-lg leading-relaxed mb-8">
-              Cascade AI doesn't operate in isolation—it powers an integrated ecosystem of products designed to work 
+              The cognitive engine doesn't operate in isolation—it powers an integrated ecosystem of 21 modules designed to work 
               seamlessly together. Each component serves a specific purpose while contributing to the collective 
-              intelligence of the entire system. Here's how the pieces fit together:
+              intelligence of the entire substrate. Here are the core modules:
             </p>
 
             {/* PromptFluid Brain */}
             <div className="bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Brain className="w-10 h-10 text-primary" />
-                <h3 className="text-2xl font-bold">PromptFluid Brain</h3>
+                <h3 className="text-2xl font-bold">BRAIN Module</h3>
               </div>
               <p className="text-lg leading-relaxed mb-4">
                 <strong>Role:</strong> Adaptive AI Orchestration and Learning Core
@@ -426,13 +426,13 @@ const HowPromptFluidWorks = () => {
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Activity className="w-10 h-10 text-accent" />
-                <h3 className="text-2xl font-bold">PromptFluid Vision</h3>
+                <h3 className="text-2xl font-bold">VISION Module</h3>
               </div>
               <p className="text-lg leading-relaxed mb-4">
                 <strong>Role:</strong> Unified Admin Dashboard and Analytics Interface
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Vision provides complete visibility into your PromptFluid ecosystem. Monitor Brain activity in real-time, 
+                VISION provides complete visibility into your CMPSBL substrate. Monitor Brain activity in real-time, 
                 review learning patterns, analyze API usage across the free-tier provider network, and control all platform modules from a 
                 single interface. Vision transforms raw operational data into actionable insights, showing you exactly 
                 how your AI infrastructure performs and where optimizations can be made.
@@ -443,7 +443,7 @@ const HowPromptFluidWorks = () => {
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Code className="w-10 h-10 text-primary" />
-                <h3 className="text-2xl font-bold">PromptFluid Studio</h3>
+                <h3 className="text-2xl font-bold">STUDIO Module</h3>
               </div>
               <p className="text-lg leading-relaxed mb-4">
                 <strong>Role:</strong> Autonomous App and Site Builder
@@ -463,7 +463,7 @@ const HowPromptFluidWorks = () => {
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Shield className="w-10 h-10 text-accent" />
-                <h3 className="text-2xl font-bold">PromptFluid Defense</h3>
+                <h3 className="text-2xl font-bold">DEFENSE Module</h3>
               </div>
               <p className="text-lg leading-relaxed mb-4">
                 <strong>Role:</strong> AI Bot Protection and Threat Intelligence System
@@ -480,7 +480,7 @@ const HowPromptFluidWorks = () => {
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Network className="w-10 h-10 text-primary" />
-                <h3 className="text-2xl font-bold">PromptFluid Nexus</h3>
+                <h3 className="text-2xl font-bold">NEXUS Module</h3>
               </div>
               <p className="text-lg leading-relaxed mb-4">
                 <strong>Role:</strong> API Gateway and Orchestration Mesh
@@ -497,16 +497,16 @@ const HowPromptFluidWorks = () => {
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Zap className="w-10 h-10 text-accent" />
-                <h3 className="text-2xl font-bold">PromptFluid Ripple</h3>
+                <h3 className="text-2xl font-bold">RIPPLE Module</h3>
               </div>
               <p className="text-lg leading-relaxed mb-4">
                 <strong>Role:</strong> Network Integrator and API Router
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Ripple connects external services, routes requests between PromptFluid components, and manages backend 
-                queues for asynchronous operations. When Studio needs to generate images through Stability.ai or videos 
-                through RunwayML, Ripple handles the integration. It's the connective tissue that allows PromptFluid 
-                to integrate with any external service while maintaining unified intelligence through Cascade.
+                RIPPLE connects external services, routes requests between CMPSBL modules, and manages backend 
+                queues for asynchronous operations. When STUDIO needs to generate images or videos 
+                through external providers, RIPPLE handles the integration. It's the connective tissue that allows CMPSBL 
+                to integrate with any external service while maintaining unified intelligence through the cognitive engine.
               </p>
             </div>
 
@@ -514,15 +514,15 @@ const HowPromptFluidWorks = () => {
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Lock className="w-10 h-10 text-primary" />
-                <h3 className="text-2xl font-bold">PromptFluid Access</h3>
+                <h3 className="text-2xl font-bold">ACCESS Module</h3>
               </div>
               <p className="text-lg leading-relaxed mb-4">
                 <strong>Role:</strong> Identity, Licensing, and Billing System
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Access manages authentication, user permissions, subscription tiers, billing tokens, and payment 
-                deferral credits. Built on trust-based retention principles, Access never deletes accounts for failed 
-                payments—instead, it pauses services with generous grace periods. Cascade learns usage patterns to 
+                ACCESS manages authentication, user permissions, and the unified 3-tier subscription model (Free, Creator $49/mo, Architect $149/mo). 
+                Built on trust-based retention principles, ACCESS never deletes accounts for failed 
+                payments—instead, it pauses services with generous grace periods. The cognitive engine learns usage patterns to 
                 predict resource needs and optimize billing efficiency, ensuring you're never surprised by costs.
               </p>
             </div>
@@ -531,15 +531,15 @@ const HowPromptFluidWorks = () => {
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Activity className="w-10 h-10 text-accent" />
-                <h3 className="text-2xl font-bold">PromptFluid Core</h3>
+                <h3 className="text-2xl font-bold">CORE Module</h3>
               </div>
               <p className="text-lg leading-relaxed mb-4">
                 <strong>Role:</strong> System Kernel and Universal Config Layer
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Core defines environment variables, secret management, health monitoring, and system-wide configuration. 
-                It's the foundation that ensures every PromptFluid component has access to necessary resources while 
-                maintaining security and consistency. Core handles nightly synchronization, backup management, and the 
+                It's the foundation that ensures every CMPSBL module has access to necessary resources while 
+                maintaining security and consistency. CORE handles nightly synchronization, backup management, and the 
                 local autonomy protocol that allows offline operation when needed.
               </p>
             </div>
@@ -550,9 +550,9 @@ const HowPromptFluidWorks = () => {
             <h2 className="text-4xl font-bold mb-6 text-foreground">Free-Tier Provider Network: Intelligent Provider Orchestration</h2>
             
             <p className="text-lg leading-relaxed mb-6">
-              One of Cascade AI's most powerful capabilities is orchestrating multiple specialized AI providers through 
+              One of the substrate's most powerful capabilities is orchestrating multiple specialized AI providers through 
               <Link to="/blog/ai-triad-intelligent-routing" className="text-primary hover:underline">the free-tier provider network</Link>. 
-              Rather than forcing all tasks through a single model, Cascade intelligently routes requests based on the 
+              Rather than forcing all tasks through a single model, NEXUS intelligently routes requests based on the 
               nature of the work, cost considerations, and performance requirements.
             </p>
 
@@ -566,10 +566,10 @@ const HowPromptFluidWorks = () => {
                   <strong>Specialty:</strong> Logical reasoning, structured problem-solving, rapid inference
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  When speed matters and logic is paramount, Cascade routes to Groq. Their custom LPU (Language Processing 
-                  Unit) architecture delivers inference speeds far beyond traditional GPUs, making Groq ideal for 
-                  real-time reasoning, classification tasks, and logical decision trees. Cascade uses Groq for operations 
-                  that require immediate responses without sacrificing accuracy.
+                   When speed matters and logic is paramount, NEXUS routes to Groq. Their custom LPU (Language Processing 
+                   Unit) architecture delivers inference speeds far beyond traditional GPUs, making Groq ideal for 
+                   real-time reasoning, classification tasks, and logical decision trees. The substrate uses Groq for operations 
+                   that require immediate responses without sacrificing accuracy.
                 </p>
               </div>
 
@@ -582,9 +582,9 @@ const HowPromptFluidWorks = () => {
                   <strong>Specialty:</strong> Secondary inference, redundancy, load balancing
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  Cerebras provides Llama 3.3-70B as a high-performance secondary option. When Groq is unavailable or 
-                  rate-limited, Cascade seamlessly routes to Cerebras without any degradation in quality. This ensures 
-                  continuous operation and high availability for PromptFluid's AI capabilities.
+                   Cerebras provides Llama 3.3-70B as a high-performance secondary option. When Groq is unavailable or 
+                   rate-limited, NEXUS seamlessly routes to Cerebras without any degradation in quality. This ensures 
+                   continuous operation and high availability for the substrate's AI capabilities.
                 </p>
               </div>
 
@@ -597,10 +597,10 @@ const HowPromptFluidWorks = () => {
                   <strong>Specialty:</strong> Llama 3.1-70B turbo for deep analysis and complex tasks
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  Together AI's Llama 3.1-70B turbo excels at complex reasoning, multi-step analysis, and tasks requiring 
-                  deeper understanding. Cascade routes to Together AI when tasks require careful consideration of 
-                  implications or well-structured outputs. This is particularly important in Defense's threat assessment 
-                  and Access's policy enforcement.
+                   Together AI's Llama 3.1-70B turbo excels at complex reasoning, multi-step analysis, and tasks requiring 
+                   deeper understanding. NEXUS routes to Together AI when tasks require careful consideration of 
+                   implications or well-structured outputs. This is particularly important in DEFENSE's threat assessment 
+                   and ACCESS's policy enforcement.
                 </p>
               </div>
 
@@ -613,16 +613,16 @@ const HowPromptFluidWorks = () => {
                   <strong>Specialty:</strong> Additional redundancy, global availability, cost-free operation
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  DeepSeek (deepseek-chat) and Hyperbolic (Llama 3.1-70B) provide extended coverage and maximum 
-                  redundancy. When primary providers are unavailable, Cascade routes to these providers to ensure 
-                  continuous operation. This multi-layered approach guarantees PromptFluid never experiences AI 
-                  downtime—all while maintaining $0 operational costs.
+                   DeepSeek (deepseek-chat) and Hyperbolic (Llama 3.1-70B) provide extended coverage and maximum 
+                   redundancy. When primary providers are unavailable, NEXUS routes to these providers to ensure 
+                   continuous operation. This multi-layered approach guarantees CMPSBL never experiences AI 
+                   downtime—all while maintaining $0 operational costs.
                 </p>
               </div>
             </div>
 
             <p className="text-lg leading-relaxed">
-              The beauty of the free-tier provider network is that you never need to think about which provider to use—Cascade makes these 
+              The beauty of the free-tier provider network is that you never need to think about which provider to use—NEXUS makes these 
               decisions automatically based on task analysis, current API availability, performance optimization, and historical 
               performance data. The result is intelligent routing that maximizes quality at zero cost, all 
               happening transparently behind the scenes.
@@ -631,27 +631,27 @@ const HowPromptFluidWorks = () => {
 
           {/* Section 5: Real-World Applications */}
           <section className="mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">Real-World Applications: How Cascade Powers Everything</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">Real-World Applications: How the Substrate Powers Everything</h2>
             
             <p className="text-lg leading-relaxed mb-8">
               Abstract architecture is interesting, but practical applications demonstrate real value. Here's how 
-              Cascade AI and the PromptFluid ecosystem deliver tangible results across different use cases:
+              the cognitive engine and the CMPSBL substrate deliver tangible results across different use cases:
             </p>
 
             <div className="space-y-8">
               <div className="bg-card border border-border rounded-lg p-6">
                 <h3 className="text-2xl font-semibold mb-4">Autonomous Application Development</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  A developer describes an e-commerce platform idea to PromptFluid Studio. Cascade immediately analyzes 
-                  requirements, determining that the project needs user authentication (handled through Access), product 
-                  image generation (routed through Ripple to Stability.ai), payment processing (integrated via Nexus), 
-                  and bot protection for checkout flows (managed by Defense).
+                  A developer describes an e-commerce platform idea to STUDIO. The cognitive engine immediately analyzes 
+                  requirements, determining that the project needs user authentication (handled through ACCESS), product 
+                  image generation (routed through RIPPLE), payment processing (integrated via NEXUS), 
+                  and bot protection for checkout flows (managed by DEFENSE).
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  Studio generates the complete React application with proper architecture, TypeScript interfaces, 
-                  Tailwind styling, and deployment configuration. Meanwhile, Brain learns from this project's patterns, 
+                  STUDIO generates the complete React application with proper architecture, TypeScript interfaces, 
+                  Tailwind styling, and deployment configuration. Meanwhile, BRAIN learns from this project's patterns, 
                   making future e-commerce builds faster and more refined. The developer goes from idea to deployed 
-                  application in hours, not weeks—and Cascade handles all the complex orchestration invisibly.
+                  application in hours, not weeks—and the substrate handles all the complex orchestration invisibly.
                 </p>
               </div>
 
@@ -708,41 +708,41 @@ const HowPromptFluidWorks = () => {
             <h2 className="text-4xl font-bold mb-6 text-foreground">Pricing That Scales With Your Ambitions</h2>
             
             <p className="text-lg leading-relaxed mb-8">
-              PromptFluid's pricing reflects our philosophy: powerful technology should be accessible, scaling smoothly 
+              CMPSBL's pricing reflects the PromptFluid philosophy: powerful technology should be accessible, scaling smoothly 
               from experimentation to enterprise deployment without sudden cost cliffs or feature walls.
             </p>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <div className="bg-card border border-border rounded-lg p-6">
-                <h3 className="text-2xl font-bold mb-2 text-primary">Starter</h3>
-                <p className="text-3xl font-bold mb-4">$19<span className="text-base font-normal text-muted-foreground">/mo</span></p>
+                <h3 className="text-2xl font-bold mb-2 text-primary">Free</h3>
+                <p className="text-3xl font-bold mb-4">$0</p>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>✓ Basic builder access</li>
-                  <li>✓ Limited Studio spins</li>
+                  <li>✓ First-class builder access</li>
+                  <li>✓ Artifact Store</li>
+                  <li>✓ Persistent memory</li>
                   <li>✓ Core AI routing</li>
-                  <li>✓ 3-day free trial</li>
                 </ul>
               </div>
 
               <div className="bg-gradient-to-br from-primary/20 to-accent/20 border-2 border-primary rounded-lg p-6">
-                <h3 className="text-2xl font-bold mb-2 text-primary">Pro</h3>
+                <h3 className="text-2xl font-bold mb-2 text-primary">Creator</h3>
                 <p className="text-3xl font-bold mb-4">$49<span className="text-base font-normal text-muted-foreground">/mo</span></p>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>✓ Unlimited projects</li>
-                  <li>✓ Full API access</li>
-                  <li>✓ Early integrations</li>
+                  <li>✓ All engines & templates</li>
+                  <li>✓ SDK/API access</li>
+                  <li>✓ 7 Experience Jewels</li>
                   <li>✓ Priority support</li>
                 </ul>
               </div>
 
               <div className="bg-card border border-border rounded-lg p-6">
-                <h3 className="text-2xl font-bold mb-2 text-primary">Studio</h3>
-                <p className="text-3xl font-bold mb-4">$99<span className="text-base font-normal text-muted-foreground">/mo</span></p>
+                <h3 className="text-2xl font-bold mb-2 text-primary">Architect</h3>
+                <p className="text-3xl font-bold mb-4">$149<span className="text-base font-normal text-muted-foreground">/mo</span></p>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>✓ Team collaboration</li>
-                  <li>✓ Private instances</li>
-                  <li>✓ Priority builds</li>
-                  <li>✓ Advanced analytics</li>
+                  <li>✓ Advanced CLM</li>
+                  <li>✓ Cross-project learning</li>
+                  <li>✓ All 28 Experience Jewels</li>
+                  <li>✓ Full substrate access</li>
                 </ul>
               </div>
 
@@ -761,8 +761,8 @@ const HowPromptFluidWorks = () => {
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-3">Trust-Based Retention</h3>
               <p className="text-muted-foreground leading-relaxed">
-                PromptFluid never punishes temporary payment failures. Accounts receive 7-day grace periods with 
-                continued automation access. We never delete accounts for missed payments—only pause services with 
+                CMPSBL never punishes temporary payment failures. Accounts receive 7-day grace periods with 
+                continued access. We never delete accounts for missed payments—only pause services with 
                 friendly offboarding and celebration of your journey. When you're ready to return, everything is exactly 
                 as you left it.
               </p>
@@ -771,11 +771,11 @@ const HowPromptFluidWorks = () => {
 
           {/* Section 7: Why Cascade Changes Everything */}
           <section className="mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">Why Cascade Changes Everything</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">Why This Architecture Changes Everything</h2>
             
             <p className="text-lg leading-relaxed mb-8">
               Most AI platforms offer disconnected tools that require you to be the orchestrator—manually deciding 
-              which model to use, stitching together services, and managing complexity yourself. Cascade inverts this 
+              which model to use, stitching together services, and managing complexity yourself. CMPSBL inverts this 
               relationship: instead of you managing AI, AI manages itself while serving you.
             </p>
 
@@ -805,10 +805,10 @@ const HowPromptFluidWorks = () => {
                 <div>
                   <h3 className="text-xl font-semibold mb-2">Invisible Complexity</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Complex orchestration happens transparently. You don't need to understand API routing, cost 
-                    optimization, fallback strategies, or model selection—Cascade handles it all while giving you 
-                    simple, powerful interfaces through Vision and Studio. Complexity exists where it should: hidden 
-                    in infrastructure.
+                   Complex orchestration happens transparently. You don't need to understand API routing, cost 
+                   optimization, fallback strategies, or model selection—NEXUS handles it all while giving you 
+                   simple, powerful interfaces through VISION and STUDIO. Complexity exists where it should: hidden 
+                   in infrastructure.
                   </p>
                 </div>
               </div>
@@ -822,10 +822,10 @@ const HowPromptFluidWorks = () => {
                 <div>
                   <h3 className="text-xl font-semibold mb-2">Cost Intelligence</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Cascade actively optimizes costs without sacrificing quality. By routing to the most cost-effective 
-                    provider for each task, implementing smart caching, and batching similar requests, Cascade typically 
-                    reduces AI spending by 40-60% compared to using premium models for everything. You get enterprise 
-                    capabilities at startup costs.
+                   The cognitive engine actively optimizes costs without sacrificing quality. By routing to the most cost-effective 
+                   provider for each task, implementing smart caching, and batching similar requests, the substrate typically 
+                   reduces AI spending by 40-60% compared to using premium models for everything. You get enterprise 
+                   capabilities at startup costs.
                   </p>
                 </div>
               </div>
@@ -839,10 +839,10 @@ const HowPromptFluidWorks = () => {
                 <div>
                   <h3 className="text-xl font-semibold mb-2">Ecosystem Synergy</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Because Brain, Vision, Studio, Defense, Nexus, Ripple, Access, and Core all share Cascade's 
-                    learning layer, improvements in one area benefit everything. When Studio learns better app 
-                    architecture patterns, Defense's code analysis improves. When Vision identifies usage patterns, 
-                    Nexus optimizes routing. This synergy compounds over time.
+                   Because BRAIN, VISION, STUDIO, DEFENSE, NEXUS, RIPPLE, ACCESS, and CORE all share the substrate's 
+                   learning layer, improvements in one area benefit everything. When STUDIO learns better app 
+                   architecture patterns, DEFENSE's code analysis improves. When VISION identifies usage patterns, 
+                   NEXUS optimizes routing. This synergy compounds over time.
                   </p>
                 </div>
               </div>
@@ -856,9 +856,9 @@ const HowPromptFluidWorks = () => {
                 <div>
                   <h3 className="text-xl font-semibold mb-2">Future-Proof Architecture</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    When new AI providers emerge or existing ones improve, Cascade integrates them seamlessly. You're 
-                    not locked into today's technology—Cascade evolves with the AI landscape, automatically leveraging 
-                    new capabilities as they become available. Your investment in PromptFluid appreciates over time.
+                   When new AI providers emerge or existing ones improve, NEXUS integrates them seamlessly. You're 
+                   not locked into today's technology—the substrate evolves with the AI landscape, automatically leveraging 
+                   new capabilities as they become available. Your investment in CMPSBL appreciates over time.
                   </p>
                 </div>
               </div>
@@ -870,31 +870,31 @@ const HowPromptFluidWorks = () => {
             <h2 className="text-4xl font-bold mb-6 text-foreground">The Future of Intelligent Automation</h2>
             
             <p className="text-lg leading-relaxed mb-6">
-              PromptFluid and Cascade AI represent a fundamental shift in how we interact with artificial intelligence. 
-              Rather than treating AI as a tool you must constantly direct, Cascade enables AI that flows—adapting to 
+              CMPSBL — built by PromptFluid — represents a fundamental shift in how we interact with artificial intelligence. 
+              Rather than treating AI as a tool you must constantly direct, the substrate enables AI that flows—adapting to 
               challenges, learning from outcomes, and operating autonomously while remaining completely aligned with 
               your objectives.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
               This isn't science fiction or distant future technology. It's operational today, powering applications, 
-              protecting infrastructure, generating content, and optimizing costs for users across the PromptFluid 
-              ecosystem. Every interaction makes Cascade smarter. Every project teaches it new patterns. Every challenge 
+              protecting infrastructure, generating content, and optimizing costs for users across the CMPSBL 
+              substrate. Every interaction makes the system smarter. Every project teaches it new patterns. Every challenge 
               refines its capabilities.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
               The vision is simple but profound: <strong>AI that flows</strong>—intelligence that moves through your 
               operations like water, finding the most efficient path, adapting to obstacles, and delivering results 
-              without friction. With Cascade at the core and an integrated ecosystem supporting every use case, 
-              PromptFluid makes this vision real.
+              without friction. With the cognitive engine at the core and 21 integrated modules supporting every use case, 
+              CMPSBL makes this vision real.
             </p>
 
             <div className="bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 border border-primary/30 rounded-lg p-8 text-center">
-              <h3 className="text-2xl font-bold mb-4">Experience Cascade AI in Action</h3>
+              <h3 className="text-2xl font-bold mb-4">Experience the CMPSBL Substrate</h3>
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
                 Join developers, creators, and enterprises who've discovered what fluid intelligence can do. Start with 
-                our 3-day free trial and watch Cascade learn, adapt, and optimize from your very first interaction.
+                the free tier and watch the substrate learn, adapt, and optimize from your very first interaction.
               </p>
               <Link 
                 to="/" 
@@ -914,9 +914,9 @@ const HowPromptFluidWorks = () => {
                 to="/blog/cascade-ai-adaptive-intelligence-brain" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2">Cascade AI Deep Dive</h3>
+                <h3 className="text-lg font-semibold mb-2">Cognitive Engine Deep Dive</h3>
                 <p className="text-sm text-muted-foreground">
-                  Explore the learning mechanisms and adaptive capabilities that power Cascade's autonomous intelligence.
+                  Explore the learning mechanisms and adaptive capabilities that power the substrate's autonomous intelligence.
                 </p>
               </Link>
 
@@ -924,9 +924,9 @@ const HowPromptFluidWorks = () => {
                 to="/blog/promptfluid-studio-build-apps-that-think" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2">PromptFluid Studio Guide</h3>
+                <h3 className="text-lg font-semibold mb-2">STUDIO Module Guide</h3>
                 <p className="text-sm text-muted-foreground">
-                  Discover how Studio leverages Cascade AI to build complete applications from natural language descriptions.
+                  Discover how STUDIO leverages the cognitive engine to build complete applications from natural language descriptions.
                 </p>
               </Link>
 

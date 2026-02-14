@@ -155,7 +155,7 @@ const PromptFluidBrain = () => {
               <div className="bg-card border border-border rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
                   <Sparkles className="w-5 h-5 text-primary" />
-                  <h3 className="text-xl font-semibold text-foreground">Multi-Model Fine-Tuning (Q2 2025)</h3>
+                  <h3 className="text-xl font-semibold text-foreground">Multi-Model Fine-Tuning (2026)</h3>
                 </div>
                 <p className="text-muted-foreground">
                   Brain will generate custom fine-tuned models based on user-specific patterns, creating specialized variants 
@@ -166,7 +166,7 @@ const PromptFluidBrain = () => {
               <div className="bg-card border border-border rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp className="w-5 h-5 text-primary" />
-                  <h3 className="text-xl font-semibold text-foreground">Predictive Intelligence (Q3 2025)</h3>
+                  <h3 className="text-xl font-semibold text-foreground">Predictive Intelligence (2026)</h3>
                 </div>
                 <p className="text-muted-foreground">
                   Brain will anticipate user needs before they're explicitly requested, proactively suggesting optimizations 
@@ -177,7 +177,7 @@ const PromptFluidBrain = () => {
               <div className="bg-card border border-border rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
                   <Zap className="w-5 h-5 text-primary" />
-                  <h3 className="text-xl font-semibold text-foreground">Federated Learning Network (Q4 2025)</h3>
+                  <h3 className="text-xl font-semibold text-foreground">Federated Learning Network (2026)</h3>
                 </div>
                 <p className="text-muted-foreground">
                   Brain instances across different environments will share anonymized learnings, creating collective intelligence 

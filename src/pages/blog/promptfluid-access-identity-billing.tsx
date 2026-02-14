@@ -157,31 +157,31 @@ const PromptFluidAccess = () => {
                   <div className="space-y-6">
                     <div className="border-b border-border pb-6">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-lg font-semibold text-foreground">Starter - Free</span>
-                        <span className="text-sm text-muted-foreground">Always free</span>
+                        <span className="text-lg font-semibold text-foreground">Free — $0</span>
+                        <span className="text-sm text-primary">✓ Live</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">Basic builder access, limited AI spins, essential integrations</p>
+                      <p className="text-sm text-muted-foreground">First-class builder access, Artifact Store, persistent memory, essential integrations</p>
                     </div>
                     <div className="border-b border-border pb-6">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-lg font-semibold text-foreground">Pro - Usage-Based</span>
-                        <span className="text-sm text-primary">Planned</span>
+                        <span className="text-lg font-semibold text-foreground">Creator — $49/mo</span>
+                        <span className="text-sm text-primary">✓ Live</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">Unlimited projects, API access, early feature previews</p>
+                      <p className="text-sm text-muted-foreground">All engines, templates, SDK/API access, 7 Experience Jewels, priority support</p>
                     </div>
                     <div className="border-b border-border pb-6">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-lg font-semibold text-foreground">Studio - Usage-Based</span>
-                        <span className="text-sm text-muted-foreground">Planned</span>
+                        <span className="text-lg font-semibold text-foreground">Architect — $149/mo</span>
+                        <span className="text-sm text-primary">✓ Live</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">Team collaboration, private instances, priority builds</p>
+                      <p className="text-sm text-muted-foreground">Advanced CLM, cross-project learning, all 28 Experience Jewels, full substrate access</p>
                     </div>
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-lg font-semibold text-foreground">Enterprise - Custom</span>
-                        <span className="text-sm text-muted-foreground">Planned</span>
+                        <span className="text-lg font-semibold text-foreground">Enterprise — Custom</span>
+                        <span className="text-sm text-muted-foreground">Contact Us</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">White-label deployment, private models, full integration support</p>
+                      <p className="text-sm text-muted-foreground">White-label deployment, private models, dedicated support, full integration</p>
                     </div>
                   </div>
                 </div>
@@ -212,7 +212,7 @@ const PromptFluidAccess = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-foreground">Advanced RBAC</span>
-                      <span className="text-sm text-muted-foreground">Planned Q2 2025</span>
+                      <span className="text-sm text-accent font-semibold">Beta</span>
                     </div>
                   </div>
                 </div>
