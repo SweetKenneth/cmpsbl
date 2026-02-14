@@ -84,13 +84,17 @@ export const MODULE_CLM_CONFIGS: Record<ModuleName, ModuleLearningConfig> = {
       'Boot sequence: initialization order, dependency resolution',
       'Health monitoring: heartbeat intervals, failure detection thresholds',
       'Cross-module communication: event bus patterns, message passing',
+      'Mesh intent composition: how to broadcast richer intents to the capability mesh',
+      'Capability self-discovery: introspecting own data assets to advertise new resolvers',
     ],
-    kpis: ['boot_time_ms', 'routing_accuracy', 'scheduler_throughput', 'uptime_percentage'],
-    selfReflectionPrompt: `As the CORE module (Kernel Layer), analyze my scheduler and lifecycle management:
+    kpis: ['boot_time_ms', 'routing_accuracy', 'scheduler_throughput', 'uptime_percentage', 'mesh_intent_quality'],
+    selfReflectionPrompt: `As the CORE module (Kernel Layer), analyze my scheduler, lifecycle management, AND mesh participation:
 - Is my boot sequence optimal? Are there unnecessary blocking steps?
 - How efficiently am I routing tasks between modules?
 - Am I detecting and recovering from module failures fast enough?
 - What patterns in my routing decisions could be improved?
+- What new capabilities could I advertise on the Intent Mesh that I'm not yet sharing?
+- How can I ask better intent questions so other modules can help me more effectively?
 Provide specific, actionable improvements.`,
   },
   brain: {

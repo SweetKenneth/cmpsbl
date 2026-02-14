@@ -1,14 +1,19 @@
 /**
  * Intent Mesh — Module Exports
- * v10.0.0 — Emergent Module Intelligence Layer
+ * v10.2.0 — Emergent Module Intelligence Layer
  * 
  * The Intent Mesh enables autonomous cross-module capability discovery
  * and composition. Modules broadcast intents, the mesh routes to capable
  * resolvers, and every interaction produces an auditable receipt.
  * 
+ * v10.2 additions:
+ * - Per-module self-discovery (21 modules discover their own capabilities)
+ * - Intent quality scoring (modules learn which intents get best responses)
+ * - Auto-expansion scheduler (periodic self-improvement cycles)
+ * 
  * Kill switch: mesh.toggle (off by default)
  * Dashboard: /os → Observe → Mesh Activity
- * Terminal: mesh.status, mesh.log, mesh.toggle, mesh.broadcast
+ * Terminal: mesh.status, mesh.log, mesh.toggle, mesh.broadcast, mesh.discover.all
  */
 
 // Types
@@ -87,3 +92,34 @@ export {
   type CompositeChain,
   type CompositeResult,
 } from './composite';
+
+// Module Self-Discovery — per-module autonomous capability discovery
+export {
+  runModuleDiscovery,
+  runAllModuleDiscovery,
+  persistProposals,
+  approveProposal,
+  rejectProposal,
+  getModuleDiscoveryStates,
+  getDiscoveryModules,
+  type ModuleProposal,
+  type ModuleDiscoveryResult,
+  type ModuleDiscoveryState,
+} from './module-discovery';
+
+// Intent Quality Scoring — learn which intents get best responses
+export {
+  scoreResolution,
+  calculateIntentScores,
+  getIntentLeaderboard,
+  getModuleIntentInsights,
+  type IntentQualityScore,
+  type IntentLeaderboard,
+} from './intent-scoring';
+
+// Auto-Expansion Scheduler — periodic self-improvement cycles
+export {
+  meshScheduler,
+  type SchedulerConfig,
+  type SchedulerState,
+} from './auto-scheduler';
