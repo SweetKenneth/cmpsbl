@@ -55,11 +55,13 @@ const DEFAULT_CONFIG: CircuitConfig = {
   monitorWindowMs: 300000, // 5 minutes
 };
 
-// All 14 substrate modules
+// All 21 substrate modules
 const SUBSTRATE_MODULES = [
-  'core', 'ripple', 'access', 'brain', 'decode', 'system',
-  'inclusive', 'defense', 'nexus', 'vision', 'dream',
-  'modernizer', 'integration', 'cortex'
+  'core', 'ripple', 'access', 'brain', 'vision', 'cortex',
+  'modernizer', 'decode', 'defense', 'nexus', 'dream',
+  'integration', 'inclusive', 'system',
+  'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
+  'encode'
 ] as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -2,24 +2,52 @@
 
 These functions have been consolidated into the unified `pf-substrate` endpoint.
 
-## Active Substrate Modules (14 modules)
+## Active Substrate Modules (21 modules / 6 layers)
 
+### Kernel Layer
 | Module | Purpose | Endpoint |
 |--------|---------|----------|
-| **Brain** | Memory, learning, reflection, knowledge synthesis | `/pf-substrate?module=brain&action=*` |
-| **Decode** | User-facing chat, dream generation, proposals | `/pf-substrate?module=decode&action=*` |
-| **Defense** | Bot detection, threat analysis, IP reputation | `/pf-substrate?module=defense&action=*` |
-| **Nexus** | Multi-provider AI routing (text, image, video) | `/pf-substrate?module=nexus&action=*` |
-| **Vision** | Observability, metrics, health monitoring | `/pf-substrate?module=vision&action=*` |
-| **Dream** | Dream-Eater operations, metabolic regulation | `/pf-substrate?module=dream&action=*` |
-| **System** | Administration, diagnostics, resilience | `/pf-substrate?module=system&action=*` |
-| **Modernizer** | Self-upgrade, improvement proposals | `/pf-substrate?module=modernizer&action=*` |
 | **Core** | Kernel, scheduler, lifecycle management | `/pf-substrate?module=core&action=*` |
 | **Ripple** | Message bus, pub/sub, event queues | `/pf-substrate?module=ripple&action=*` |
 | **Access** | API keys, billing, metering | `/pf-substrate?module=access&action=*` |
-| **Integration** | Enterprise adapters, auto-discovery | `/pf-substrate?module=integration&action=*` |
+
+### Cognitive Layer
+| Module | Purpose | Endpoint |
+|--------|---------|----------|
+| **Brain** | Memory, learning, reflection, knowledge synthesis | `/pf-substrate?module=brain&action=*` |
+| **Vision** | Observability, metrics, health monitoring | `/pf-substrate?module=vision&action=*` |
 | **Cortex** | Agency-class autonomous proposal/evaluation/execution loop | `/pf-substrate?module=cortex&action=*` |
-| **Inclusive** | Accessibility scanning, WCAG compliance, human-compatibility | `/pf-substrate?module=inclusive&action=*` |
+
+### Operational Layer
+| Module | Purpose | Endpoint |
+|--------|---------|----------|
+| **Modernizer** | Self-upgrade, improvement proposals | `/pf-substrate?module=modernizer&action=*` |
+| **Decode** | Intent routing, system voice, chat | `/pf-substrate?module=decode&action=*` |
+| **Defense** | Bot detection, threat analysis, IP reputation | `/pf-substrate?module=defense&action=*` |
+| **Nexus** | Multi-provider AI routing (text, image, video) | `/pf-substrate?module=nexus&action=*` |
+| **Dream** | Dream-Eater operations, metabolic regulation | `/pf-substrate?module=dream&action=*` |
+
+### Administrative Layer
+| Module | Purpose | Endpoint |
+|--------|---------|----------|
+| **Integration** | Enterprise adapters, auto-discovery | `/pf-substrate?module=integration&action=*` |
+| **Inclusive** | Accessibility scanning, 86-rule WCAG 2.2 compliance | `/pf-substrate?module=inclusive&action=*` |
+| **System** | Administration, diagnostics, resilience | `/pf-substrate?module=system&action=*` |
+
+### Infrastructure Layer
+| Module | Purpose | Endpoint |
+|--------|---------|----------|
+| **Memory** | Vector/RAG orchestration, semantic recall | `/pf-substrate?module=memory&action=*` |
+| **Relay** | Centralized outbound webhooks, side-effect delivery | `/pf-substrate?module=relay&action=*` |
+| **Audit** | Immutable, cryptographically-chained compliance logging | `/pf-substrate?module=audit&action=*` |
+| **Identity** | Universal human/agent actor attribution | `/pf-substrate?module=identity&action=*` |
+| **Economy** | Real-time cost attribution, budgeting, marketplace | `/pf-substrate?module=economy&action=*` |
+| **Sandbox** | Isolated environments for safe code execution | `/pf-substrate?module=sandbox&action=*` |
+
+### Orchestrator Layer
+| Module | Purpose | Endpoint |
+|--------|---------|----------|
+| **Encode** | Transform pipelines, orchestration encoding | `/pf-substrate?module=encode&action=*` |
 
 ## Deleted Legacy Redirects (Cleaned Up 2026-01-28)
 
