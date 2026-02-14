@@ -54,7 +54,7 @@ const PromptFluidStudioGuide = () => {
           <section className="mb-16">
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                PromptFluid Studio isn't just another code generator—it's an autonomous application builder that understands intent, makes architectural decisions, handles deployment complexity, and learns from every project.
+                CMPSBL Studio isn't just another code generator—it's an autonomous application builder that understands intent, makes architectural decisions, handles deployment complexity, and learns from every project.
               </p>
             </div>
           </section>
@@ -201,7 +201,7 @@ const PromptFluidStudioGuide = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How PromptFluid Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
                 <p className="text-sm text-muted-foreground">
                   Understand the complete ecosystem that powers Studio's autonomous capabilities.
                 </p>
