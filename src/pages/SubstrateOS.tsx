@@ -10,7 +10,7 @@ import {
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
   Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna,
   ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight, Eye,
-  LogOut, Home, ToggleRight
+  LogOut, Home, ToggleRight, Network
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -51,6 +51,7 @@ import { EnginesTab } from '@/components/substrate-os/EnginesTab';
 import { PublicMetricsTab } from '@/components/substrate-os/PublicMetricsTab';
 import { PatchAuthoringTab } from '@/components/substrate-os/PatchAuthoringTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
+import { MeshActivityTab } from '@/components/substrate-os/MeshActivityTab';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -91,6 +92,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'cyan', description: 'System overview' },
     { id: 'events', label: 'Events', icon: Activity, color: 'amber', description: 'Live activity feed' },
     { id: 'cognitives', label: 'Cognitives', icon: Bot, color: 'fuchsia', description: 'Bot registry' },
+    ...(isOperator ? [{ id: 'mesh', label: 'Mesh', icon: Network, color: 'amber', description: 'Intent Mesh activity', minRole: 'operator' as const }] : []),
   ];
 
   const operateTabs: TabConfig[] = [
@@ -748,6 +750,9 @@ export default function SubstrateOS() {
 
             {/* Nexus AI Router */}
             {activeTab === 'nexus' && isOperator && <NexusTab />}
+
+            {/* Intent Mesh */}
+            {activeTab === 'mesh' && isOperator && <MeshActivityTab />}
 
             {/* Backups */}
             {activeTab === 'backups' && isOperator && (
