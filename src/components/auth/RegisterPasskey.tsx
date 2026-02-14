@@ -1,14 +1,14 @@
 /**
- * RegisterPasskey — Prompt authenticated users to register Face ID
- * Shows after email verification if they started from the signup flow,
- * or can be triggered manually from settings.
+ * RegisterPasskey — Face ID setup prompt shown after magic link login
+ * Automatically appears when user lands on /os after verifying email.
+ * Also available as a standalone button for settings.
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Fingerprint, X, CheckCircle } from 'lucide-react';
+import { Fingerprint, X, CheckCircle, Smartphone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { registerPasskey, isPlatformAuthenticatorAvailable } from '@/lib/substrate/identity-module';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,12 +23,27 @@ export function RegisterPasskeyPrompt() {
   useEffect(() => {
     if (!user || !session) return;
     
-    // Check if there's a pending passkey registration from signup
+    // Check if there's a pending passkey registration (set during login/signup)
     const pendingEmail = localStorage.getItem('cmpsbl_pending_passkey_email');
-    if (pendingEmail && pendingEmail === user.email) {
-      isPlatformAuthenticatorAvailable().then(available => {
-        if (available) setShow(true);
-      });
+    
+    // Show prompt if:
+    // 1. There's a pending email that matches the logged-in user
+    // 2. OR if user just logged in and hasn't registered a passkey yet
+    const shouldPrompt = pendingEmail && pendingEmail === user.email;
+    
+    if (shouldPrompt) {
+      // Small delay so the /os page renders first
+      const timer = setTimeout(() => {
+        isPlatformAuthenticatorAvailable().then(available => {
+          if (available) {
+            setShow(true);
+          } else {
+            // Clean up if device doesn't support it
+            localStorage.removeItem('cmpsbl_pending_passkey_email');
+          }
+        });
+      }, 1500);
+      return () => clearTimeout(timer);
     }
   }, [user, session]);
 
@@ -41,7 +56,7 @@ export function RegisterPasskeyPrompt() {
       const result = await registerPasskey(user.id, displayName);
       
       if (result.success && result.credential) {
-        // Store credential server-side via edge function
+        // Store credential server-side
         const { error } = await supabase.functions.invoke('passkey-auth/register', {
           method: 'POST',
           body: {
@@ -54,75 +69,132 @@ export function RegisterPasskeyPrompt() {
 
         if (error) {
           console.error('Server passkey registration error:', error);
-          toast.error('Face ID registered locally but server sync failed. Try again later.');
+          toast.error('Face ID saved locally but server sync failed. You can try again from settings.');
         } else {
-          toast.success('Face ID registered — next time, just look at your phone to sign in.');
+          toast.success('Face ID set up! Next time, just use Face ID to sign in.');
           setDone(true);
           localStorage.removeItem('cmpsbl_pending_passkey_email');
           
-          // Auto-hide after 3 seconds
-          setTimeout(() => setShow(false), 3000);
+          // Auto-hide after 4 seconds
+          setTimeout(() => setShow(false), 4000);
         }
       }
     } catch (err) {
       console.error('Passkey registration error:', err);
-      toast.error('Face ID registration failed');
+      toast.error('Face ID setup failed — you can try again from settings.');
     } finally {
       setLoading(false);
     }
   }, [user, session]);
 
-  const handleDismiss = () => {
+  const handleSkip = () => {
     setShow(false);
     localStorage.removeItem('cmpsbl_pending_passkey_email');
+    toast.info('You can set up Face ID later from your settings.', { duration: 4000 });
   };
 
   return (
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-6"
           style={{ paddingTop: 'env(safe-area-inset-top, 20px)', paddingBottom: 'env(safe-area-inset-bottom, 20px)' }}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" onClick={handleDismiss} />
-          <Card className="relative border-primary/30 bg-card/95 backdrop-blur-xl shadow-xl w-full max-w-md">
-            <CardHeader className="pb-2 relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-2 h-6 w-6"
-                onClick={handleDismiss}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-              <CardTitle className="text-base flex items-center gap-2">
-                {done ? <CheckCircle className="h-5 w-5 text-green-500" /> : <Fingerprint className="h-5 w-5 text-primary" />}
-                {done ? 'Face ID Registered' : 'Enable Face ID Sign-In'}
-              </CardTitle>
-              <CardDescription className="text-xs">
-                {done 
-                  ? 'Next time, just use Face ID — no email needed.'
-                  : 'Sign in instantly with Face ID. No passwords, no emails.'}
-              </CardDescription>
-            </CardHeader>
-            {!done && (
-              <CardContent className="pt-0 pb-4">
+          <div className="absolute inset-0 bg-background/70 backdrop-blur-md" onClick={handleSkip} />
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          >
+            <Card className="relative border-primary/30 bg-card/95 backdrop-blur-xl shadow-2xl w-full max-w-sm">
+              <CardHeader className="pb-3 relative text-center">
                 <Button
-                  onClick={handleRegister}
-                  disabled={loading}
-                  className="w-full gap-2"
-                  size="sm"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-2 top-2 h-7 w-7"
+                  onClick={handleSkip}
                 >
-                  <Fingerprint className="h-4 w-4" />
-                  {loading ? 'Registering...' : 'Register Face ID'}
+                  <X className="h-4 w-4" />
                 </Button>
-              </CardContent>
-            )}
-          </Card>
+
+                {/* Icon */}
+                <div className="mx-auto mb-3">
+                  {done ? (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="w-16 h-16 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center"
+                    >
+                      <CheckCircle className="h-8 w-8 text-accent-foreground" />
+                    </motion.div>
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                      <Fingerprint className="h-8 w-8 text-primary" />
+                    </div>
+                  )}
+                </div>
+
+                <CardTitle className="text-lg">
+                  {done ? 'Face ID is ready!' : 'Set up Face ID?'}
+                </CardTitle>
+                <CardDescription className="text-sm">
+                  {done 
+                    ? 'Next time you sign in, just use Face ID — no email needed.'
+                    : 'Sign in instantly next time with just your face. Takes 5 seconds.'}
+                </CardDescription>
+              </CardHeader>
+
+              {!done && (
+                <CardContent className="pt-0 pb-5 space-y-3">
+                  {/* How it works mini explainer */}
+                  <div className="bg-muted/50 rounded-lg p-3 space-y-2">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Smartphone className="h-3.5 w-3.5" />
+                      <span>Your device stores a secure key — we never see your face data</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={handleRegister}
+                    disabled={loading}
+                    className="w-full gap-2"
+                    size="lg"
+                  >
+                    <Fingerprint className="h-5 w-5" />
+                    {loading ? 'Setting up...' : 'Set Up Face ID'}
+                  </Button>
+                  
+                  <Button
+                    onClick={handleSkip}
+                    variant="ghost"
+                    className="w-full text-muted-foreground"
+                    size="sm"
+                  >
+                    Skip for now
+                  </Button>
+                </CardContent>
+              )}
+
+              {done && (
+                <CardContent className="pt-0 pb-5">
+                  <Button
+                    onClick={() => setShow(false)}
+                    variant="outline"
+                    className="w-full"
+                    size="sm"
+                  >
+                    Continue
+                  </Button>
+                </CardContent>
+              )}
+            </Card>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
@@ -187,7 +259,7 @@ export function RegisterPasskeyButton() {
       className="gap-2"
     >
       <Fingerprint className="h-4 w-4" />
-      {registered ? 'Face ID Registered ✓' : loading ? 'Registering...' : 'Register Face ID'}
+      {registered ? 'Face ID Registered ✓' : loading ? 'Setting up...' : 'Set Up Face ID'}
     </Button>
   );
 }
