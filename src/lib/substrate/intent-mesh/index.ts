@@ -53,3 +53,18 @@ export {
   deletePipeline,
   type MeshSavedPipeline,
 } from './pipelines';
+
+// Discovery Engine — autonomous gap analysis and capability expansion
+export {
+  analyzeGaps,
+  generateRecommendations,
+  analyzeModuleAffinity,
+  runDiscoveryCycle,
+  getOpenGaps,
+  getPendingRecommendations,
+  applyRecommendation,
+  getDiscoveryHistory,
+  type CapabilityGap,
+  type CapabilityRecommendation,
+  type DiscoveryRunResult,
+} from './discovery-engine';

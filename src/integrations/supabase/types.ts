@@ -6549,6 +6549,149 @@ export type Database = {
         }
         Relationships: []
       }
+      mesh_capability_recommendations: {
+        Row: {
+          applied_at: string | null
+          confidence_score: number
+          created_at: string
+          gap_id: string | null
+          id: string
+          proposed_accepts: string[]
+          proposed_description: string
+          proposed_domains: string[]
+          proposed_produces: string[]
+          proposed_resolver_id: string
+          reasoning: string | null
+          status: string
+          target_module: string
+        }
+        Insert: {
+          applied_at?: string | null
+          confidence_score?: number
+          created_at?: string
+          gap_id?: string | null
+          id?: string
+          proposed_accepts?: string[]
+          proposed_description: string
+          proposed_domains?: string[]
+          proposed_produces?: string[]
+          proposed_resolver_id: string
+          reasoning?: string | null
+          status?: string
+          target_module: string
+        }
+        Update: {
+          applied_at?: string | null
+          confidence_score?: number
+          created_at?: string
+          gap_id?: string | null
+          id?: string
+          proposed_accepts?: string[]
+          proposed_description?: string
+          proposed_domains?: string[]
+          proposed_produces?: string[]
+          proposed_resolver_id?: string
+          reasoning?: string | null
+          status?: string
+          target_module?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mesh_capability_recommendations_gap_id_fkey"
+            columns: ["gap_id"]
+            isOneToOne: false
+            referencedRelation: "mesh_discovery_gaps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mesh_discovery_gaps: {
+        Row: {
+          available_resolvers: number
+          created_at: string
+          domains: string[]
+          frequency: number
+          gap_severity: string
+          id: string
+          intent_type: string
+          last_seen_at: string
+          missing_modules: string[]
+          needed_outputs: string[]
+          resolved_by_capability: string | null
+          responding_resolvers: number
+          source_module: string
+          status: string
+        }
+        Insert: {
+          available_resolvers?: number
+          created_at?: string
+          domains?: string[]
+          frequency?: number
+          gap_severity?: string
+          id?: string
+          intent_type: string
+          last_seen_at?: string
+          missing_modules?: string[]
+          needed_outputs?: string[]
+          resolved_by_capability?: string | null
+          responding_resolvers?: number
+          source_module: string
+          status?: string
+        }
+        Update: {
+          available_resolvers?: number
+          created_at?: string
+          domains?: string[]
+          frequency?: number
+          gap_severity?: string
+          id?: string
+          intent_type?: string
+          last_seen_at?: string
+          missing_modules?: string[]
+          needed_outputs?: string[]
+          resolved_by_capability?: string | null
+          responding_resolvers?: number
+          source_module?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      mesh_discovery_runs: {
+        Row: {
+          capabilities_expanded: number
+          created_at: string
+          duration_ms: number
+          gaps_found: number
+          id: string
+          modules_analyzed: number
+          recommendations_generated: number
+          run_type: string
+          summary: Json | null
+        }
+        Insert: {
+          capabilities_expanded?: number
+          created_at?: string
+          duration_ms?: number
+          gaps_found?: number
+          id?: string
+          modules_analyzed?: number
+          recommendations_generated?: number
+          run_type?: string
+          summary?: Json | null
+        }
+        Update: {
+          capabilities_expanded?: number
+          created_at?: string
+          duration_ms?: number
+          gaps_found?: number
+          id?: string
+          modules_analyzed?: number
+          recommendations_generated?: number
+          run_type?: string
+          summary?: Json | null
+        }
+        Relationships: []
+      }
       mesh_intents: {
         Row: {
           created_at: string
