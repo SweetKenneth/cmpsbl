@@ -1,9 +1,11 @@
 /**
  * AUDIT Module — Immutable Compliance Ledger
- * v9.1.0 ARCHITECT Epoch — Append-only logging, hash chaining, cross-module capture
+ * v9.3.0 ARCHITECT Epoch — Append-only logging, hash chaining, cross-module capture
+ * Circuit Breaker + Hot-Swap + Graceful Fallback
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
+import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 
 export interface AuditEntry {
   id: string;
@@ -49,16 +51,27 @@ const state: AuditModuleState = {
   modulesMonitored: [],
 };
 
+let moduleEngine: ModuleEngine | null = null;
+
 export function initAudit(): void {
   emitStarted('audit', 'init', {});
-  state.initialized = true;
-  // AUDIT listens to ALL modules
-  state.modulesMonitored = [
-    'core', 'ripple', 'access', 'brain', 'decode', 'encode', 'defense', 'nexus',
-    'vision', 'dream', 'integration', 'system', 'modernizer', 'inclusive',
-    'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
-  ];
-  emitSucceeded('audit', 'init', { monitored: state.modulesMonitored.length });
+  try {
+    initCircuitBreaker('audit', { failureThreshold: 8, recoveryTimeout: 15_000 }); // Higher threshold — audit must be resilient
+    moduleEngine = activateModuleEngine('audit', '9.3.0');
+    state.initialized = true;
+    state.modulesMonitored = [
+      'core', 'ripple', 'access', 'brain', 'decode', 'encode', 'defense', 'nexus',
+      'vision', 'dream', 'integration', 'system', 'modernizer', 'inclusive',
+      'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
+    ];
+    emitSucceeded('audit', 'init', { monitored: state.modulesMonitored.length, engineId: moduleEngine.instance.id });
+  } catch (err) {
+    state.initialized = true;
+    state.modulesMonitored = ['core', 'ripple', 'access', 'brain', 'decode', 'encode', 'defense', 'nexus',
+      'vision', 'dream', 'integration', 'system', 'modernizer', 'inclusive',
+      'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'];
+    emitFailed('audit', 'init', err instanceof Error ? err.message : String(err));
+  }
 }
 
 export function recordAuditEntry(
@@ -67,18 +80,33 @@ export function recordAuditEntry(
   previousState: unknown = null, newState: unknown = null,
   metadata: Record<string, string> = {}
 ): AuditEntry {
-  const partial = {
-    id: `audit-${Date.now()}-${auditLog.length}`,
-    timestamp: Date.now(), actor, module, action, resource, resourceId,
-    previousState, newState, metadata, previousHash: lastHash,
+  const fallbackEntry: AuditEntry = {
+    id: `audit-fallback-${Date.now()}`, timestamp: Date.now(), actor, module, action,
+    resource, resourceId, previousState, newState, metadata,
+    hash: 'fallback', previousHash: lastHash,
   };
-  const hash = computeHash(partial);
-  const entry: AuditEntry = { ...partial, hash };
-  auditLog.push(entry);
-  lastHash = hash;
-  state.totalEntries = auditLog.length;
-  state.lastEntry = entry.id;
-  return entry;
+
+  const { result } = withResilienceSync(
+    'audit',
+    () => {
+      const partial = {
+        id: `audit-${Date.now()}-${auditLog.length}`,
+        timestamp: Date.now(), actor, module, action, resource, resourceId,
+        previousState, newState, metadata, previousHash: lastHash,
+      };
+      const hash = computeHash(partial);
+      const entry: AuditEntry = { ...partial, hash };
+      auditLog.push(entry);
+      lastHash = hash;
+      state.totalEntries = auditLog.length;
+      state.lastEntry = entry.id;
+      return entry;
+    },
+    fallbackEntry,
+    'record'
+  );
+
+  return result;
 }
 
 export function verifyAuditChain(): { valid: boolean; brokenAt: number | null } {
@@ -97,3 +125,11 @@ export function getAuditLog(limit?: number): AuditEntry[] {
 
 export function getAuditState(): AuditModuleState { return { ...state }; }
 export function getAuditHealth(): number { return state.chainValid ? 100 : 0; }
+
+export function getAuditResilience() {
+  return getModuleResilienceReport('audit', getAuditHealth());
+}
+
+export function getAuditEngine() {
+  return moduleEngine;
+}

@@ -1,9 +1,11 @@
 /**
  * MEMORY Module — Vector & RAG Orchestration
- * v9.1.0 ARCHITECT Epoch — Structured knowledge retrieval, embedding lifecycle, semantic recall
+ * v9.3.0 ARCHITECT Epoch — Structured knowledge retrieval, embedding lifecycle, semantic recall
+ * Circuit Breaker + Hot-Swap + Graceful Fallback
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
+import { initCircuitBreaker, withResilience, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 
 export interface VectorEntry {
   id: string;
@@ -42,25 +44,47 @@ const state: MemoryModuleState = {
   lastIngestion: null,
 };
 
+let moduleEngine: ModuleEngine | null = null;
+
 export function initMemoryModule(): void {
   emitStarted('memory', 'init', {});
-  state.initialized = true;
-  emitSucceeded('memory', 'init', { totalVectors: state.totalVectors });
+  try {
+    initCircuitBreaker('memory', { failureThreshold: 5, recoveryTimeout: 30_000 });
+    moduleEngine = activateModuleEngine('memory', '9.3.0');
+    state.initialized = true;
+    emitSucceeded('memory', 'init', { totalVectors: state.totalVectors, engineId: moduleEngine.instance.id });
+  } catch (err) {
+    state.initialized = true; // graceful — module still works without engine
+    emitFailed('memory', 'init', err instanceof Error ? err.message : String(err));
+  }
 }
 
 export async function ingestKnowledge(source: string, format: string, options?: { chunkSize?: number }): Promise<{ ingested: number; source: string }> {
   emitStarted('memory', 'ingest', { source, format });
-  const result = { ingested: 0, source };
-  state.lastIngestion = new Date().toISOString();
+  const { result } = await withResilience(
+    'memory',
+    () => {
+      const ingested = 0;
+      state.lastIngestion = new Date().toISOString();
+      return { ingested, source };
+    },
+    { ingested: 0, source },
+    'ingest'
+  );
   emitSucceeded('memory', 'ingest', result);
   return result;
 }
 
 export async function semanticSearch(query: string, options?: { limit?: number; threshold?: number }): Promise<VectorEntry[]> {
   emitStarted('memory', 'search', { query });
-  const results: VectorEntry[] = [];
-  emitSucceeded('memory', 'search', { resultCount: results.length });
-  return results;
+  const { result } = await withResilience<VectorEntry[]>(
+    'memory',
+    () => [],
+    [],
+    'search'
+  );
+  emitSucceeded('memory', 'search', { resultCount: result.length });
+  return result;
 }
 
 export function getMemoryModuleState(): MemoryModuleState {
@@ -69,4 +93,12 @@ export function getMemoryModuleState(): MemoryModuleState {
 
 export function getMemoryModuleHealth(): number {
   return state.indexHealth;
+}
+
+export function getMemoryResilience() {
+  return getModuleResilienceReport('memory', state.indexHealth);
+}
+
+export function getMemoryEngine() {
+  return moduleEngine;
 }
