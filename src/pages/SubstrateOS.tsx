@@ -513,10 +513,10 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Substrate OS v9.1.0 — CMPSBL®"
-        description="Control surface for CMPSBL's 21-module cognitive substrate. Terminal, cognitive registry, event stream, and real-time system monitoring."
+        title="Substrate OS v9.1.0 — AI Operating System"
+        description="Explore the CMPSBL Substrate OS: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads."
         canonical="https://cmpsbl.com/os"
-        keywords={['substrate OS', 'cognitive orchestration dashboard', 'AI operating system', 'CMPSBL terminal', '21-module substrate']}
+        keywords={['substrate OS', 'AI runtime', 'cognitive orchestration', 'module telemetry', 'AI workload management', 'substrate dashboard']}
       />
 
       {/* Background Effects */}

@@ -6,9 +6,9 @@ export default function Terms() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Terms of Service | CMPSBL®"
-        description="Terms governing use of CMPSBL's cognitive substrate platform, developer licenses, and AI infrastructure services."
-        keywords={['terms of service', 'CMPSBL terms', 'AI platform terms', 'developer license terms']}
+        title="Terms of Service — CMPSBL®"
+        description="Terms of service for the CMPSBL substrate platform. Covers usage rights, intellectual property, and service-level commitments."
+        keywords={['CMPSBL terms of service', 'AI platform terms', 'substrate usage terms', 'service agreement AI']}
       />
       <PublicNav />
       

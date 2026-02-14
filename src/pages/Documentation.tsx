@@ -23,10 +23,10 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title={`Documentation — CMPSBL Substrate v${version} Developer Guides`}
-        description={`Complete developer documentation for the CMPSBL cognitive orchestration substrate. ${modulesCount} modules, ${capabilitiesCount}+ capabilities, API references, and integration guides.`}
-        canonical="https://cmpsbl.com/docs"
-        keywords={['CMPSBL documentation', 'cognitive orchestration substrate', 'API reference', 'developer guides', 'AI integration', 'BYOK', 'bring your own keys']}
+        title="Documentation — CMPSBL Developer Guide"
+        description="Complete technical documentation for the CMPSBL substrate: module reference, API specs, configuration, and deployment guides."
+        canonical="https://cmpsbl.com/documentation"
+        keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'module documentation', 'technical guide AI']}
       />
 
       <PublicNav />

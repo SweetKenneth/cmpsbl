@@ -667,10 +667,10 @@ export default function Blog() {
   return (
     <>
       <SEO
-        title="Research & Insights — CMPSBL Blog"
-        description="Research, insights, and documentation on cognitive infrastructure, AI memory, autonomous systems, and intelligent orchestration by Kenneth E Sweet Jr and AI."
+        title="Blog — AI Infrastructure Research & Insights"
+        description="Research, deep-dives, and engineering insights on cognitive infrastructure, AI memory, governance, and the ARCHITECT Epoch."
         canonical="https://cmpsbl.com/blog"
-        keywords={['AI research', 'cognitive infrastructure', 'AI memory', 'autonomous AI', 'CMPSBL blog', 'AI security', 'Kenneth E Sweet Jr']}
+        keywords={['CMPSBL blog', 'AI infrastructure blog', 'cognitive AI research', 'AI memory insights', 'substrate engineering blog']}
       />
 
       <div className="min-h-screen bg-background flex flex-col">

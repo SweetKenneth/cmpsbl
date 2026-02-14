@@ -47,10 +47,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
-        title="CMPSBL® Substrate OS v9.1.0 — 21-Module Cognitive Infrastructure"
-        description="The cognitive infrastructure standard: 21 modules, 6 layers, 200+ synergy pipelines, 400+ capabilities, 360+ terminal commands. Free tier with real building access, plus Builder and Pro tiers for advanced intelligence."
+        title="CMPSBL® — Cognitive Infrastructure for AI"
+        description="CMPSBL is the cognitive infrastructure layer powering persistent memory, self-learning, and multi-provider routing. 21 modules, 400+ capabilities."
         canonical="https://cmpsbl.com"
-        keywords={['CMPSBL', 'Substrate OS', 'v9.1.0', 'ARCHITECT', '21-module architecture', 'cognitive OS', 'AI governance', 'persistent memory', 'dream cycles', 'synergy pipelines', 'engine marketplace']}
+        keywords={['cognitive infrastructure', 'AI operating system', 'persistent memory AI', 'self-learning AI', 'CMPSBL substrate', 'AI memory layer', 'multi-provider routing']}
       />
 
       <PublicNav />
