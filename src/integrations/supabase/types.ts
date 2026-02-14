@@ -6983,6 +6983,69 @@ export type Database = {
         }
         Relationships: []
       }
+      passkey_challenges: {
+        Row: {
+          challenge: string
+          created_at: string
+          expires_at: string
+          id: string
+          used: boolean | null
+        }
+        Insert: {
+          challenge: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          used?: boolean | null
+        }
+        Update: {
+          challenge?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          used?: boolean | null
+        }
+        Relationships: []
+      }
+      passkey_credentials: {
+        Row: {
+          created_at: string
+          credential_id: string
+          device_type: string | null
+          email: string
+          id: string
+          last_used_at: string | null
+          public_key: string
+          sign_count: number | null
+          transports: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          credential_id: string
+          device_type?: string | null
+          email: string
+          id?: string
+          last_used_at?: string | null
+          public_key: string
+          sign_count?: number | null
+          transports?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          credential_id?: string
+          device_type?: string | null
+          email?: string
+          id?: string
+          last_used_at?: string | null
+          public_key?: string
+          sign_count?: number | null
+          transports?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       pf_ai_logs: {
         Row: {
           completion_tokens: number | null
@@ -11116,6 +11179,7 @@ export type Database = {
       }
       check_modernizer_quota: { Args: { p_user_id: string }; Returns: boolean }
       cleanup_expired_cache: { Args: never; Returns: undefined }
+      cleanup_expired_challenges: { Args: never; Returns: undefined }
       cleanup_old_daily_state: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       generate_bot_sniper_api_key: {
