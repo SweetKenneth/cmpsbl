@@ -77,7 +77,7 @@ const GamingSubstrate = lazy(() => import("./pages/GamingSubstrate"));
 const DeveloperShowcase = lazy(() => import("./pages/DeveloperShowcase"));
 const UseCases = lazy(() => import("./pages/UseCases"));
 const AgencyPortal = lazy(() => import("./pages/AgencyPortal"));
-const Modernizer = lazy(() => import("./pages/Modernizer"));
+
 const Marketplace = lazy(() => import("./pages/Marketplace"));
 const MarketplaceSuccess = lazy(() => import("./pages/MarketplaceSuccess"));
 const SubstrateIntelligence = lazy(() => import("./pages/SubstrateIntelligence"));
@@ -108,10 +108,6 @@ const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
 const AIOperatingSystem = lazy(() => import("./pages/AIOperatingSystem"));
 const EncodeInfo = lazy(() => import("./pages/products/EncodeInfo"));
 
-// Cluster pages (module deep-dives)
-
-
-const ClusterInclusive = lazy(() => import("./pages/cluster/InclusiveModule"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -349,8 +345,8 @@ const App = () => {
                         {/* Cluster pages - module deep-dives */}
                         <Route path="/cluster/studio-autonomous-site-generator" element={<Navigate to="/" replace />} />
                         <Route path="/cluster/verify-worlds-first-ai-plugin-certification" element={<Navigate to="/" replace />} />
-                        <Route path="/cluster/inclusive-module-accessibility" element={<ClusterInclusive />} />
-                        <Route path="/cluster/clarity-ai-accessibility-and-autofix" element={<Navigate to="/cluster/inclusive-module-accessibility" replace />} />
+                        <Route path="/cluster/inclusive-module-accessibility" element={<Navigate to="/" replace />} />
+                        <Route path="/cluster/clarity-ai-accessibility-and-autofix" element={<Navigate to="/" replace />} />
                         
                         {/* Auth & Legal */}
                         <Route path="/auth" element={<Auth />} />
@@ -488,7 +484,7 @@ const App = () => {
                         <Route path="/system-map" element={<Navigate to="/" replace />} />
                         <Route path="/studio" element={<Navigate to="/" replace />} />
                         <Route path="/studio/*" element={<Navigate to="/" replace />} />
-                        <Route path="/modernizer" element={<Modernizer />} />
+                        <Route path="/modernizer" element={<Navigate to="/" replace />} />
                         
                         {/* Demo/test pages */}
                         <Route path="/demo-admin" element={<Navigate to="/" replace />} />
