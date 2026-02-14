@@ -47,8 +47,8 @@ export const COPYRIGHT_NOTICE = {
     'PromptFluid Nexus™',
     'PromptFluid Ripple™',
   ],
-  legalWarning: `All Rights Reserved. Unauthorized access, use, or distribution of PromptFluid's proprietary APIs, networks, products, or intellectual property is strictly prohibited and subject to legal prosecution.`,
-  enforcementNotice: `This system is protected by PromptFluid Defense™. All access attempts are monitored, logged, and analyzed for security threats.`,
+  legalWarning: `All Rights Reserved. Unauthorized access, use, or distribution of CMPSBL's proprietary APIs, networks, products, or intellectual property is strictly prohibited and subject to legal prosecution.`,
+  enforcementNotice: `This system is protected by CMPSBL DEFENSE™ (a PromptFluid product). All access attempts are monitored, logged, and analyzed for security threats.`,
 };
 
 export function isDomain(hostname: string, type: 'backend' | 'frontend'): boolean {
