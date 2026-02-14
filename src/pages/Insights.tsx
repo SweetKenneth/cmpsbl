@@ -114,7 +114,7 @@ export default function Insights() {
             <p>
               The <strong>Observer</strong> tier provides read-only access to CMPSBL documentation, 
               architecture references, and standards materials. Observers can review the full 
-              FNDTN v6.0.0 library, understand the 21-module kernel architecture, and access 
+              FNDTN v8 library, understand the 21-module kernel architecture, and access 
               governance namespace documentation.
             </p>
             <p>
@@ -135,7 +135,7 @@ export default function Insights() {
               <Card className="h-full hover:border-primary/30 transition-colors">
                 <CardContent className="p-5">
                   <Layers className="w-8 h-8 text-primary mb-3" />
-                  <h3 className="font-semibold mb-1">FNDTN v6 Library</h3>
+                  <h3 className="font-semibold mb-1">FNDTN v8 Library</h3>
                   <p className="text-sm text-muted-foreground">26 documents covering architecture, modules, and evidence</p>
                 </CardContent>
               </Card>
@@ -167,7 +167,7 @@ export default function Insights() {
             <Eye className="w-12 h-12 text-primary mx-auto mb-4" />
             <h2 className="text-2xl font-semibold mb-3">Register as Observer</h2>
             <p className="text-muted-foreground max-w-xl mx-auto mb-6">
-              Join the observer list to receive updates on CMPSBL v6 documentation releases, 
+              Join the observer list to receive updates on CMPSBL documentation releases, 
               standards publications, and research materials.
             </p>
             <Button size="lg" asChild>
@@ -207,7 +207,7 @@ export default function Insights() {
         {/* Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
           <p className="text-sm text-muted-foreground">
-            CMPSBL Substrate OS v6.0.0 by{" "}
+            CMPSBL Substrate OS v9.3.0 by{" "}
             <a 
               href="https://orcid.org/0009-0001-4237-1243" 
               target="_blank" 
@@ -216,7 +216,7 @@ export default function Insights() {
             >
               Kenneth E. Sweet Jr.
             </a>
-            {" "}• PromptFluid • January 2026
+            {" "}• CMPSBL® • February 2026
           </p>
         </div>
       </main>
