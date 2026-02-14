@@ -100,8 +100,9 @@ export { reconnectSupabase } from './supabaseReconnect';
 export { getLocalModeStatus } from './localMode';
 
 // Version info
-export const SYSTEM_VERSION = '9.1.0';
-export const SYSTEM_CODENAME = 'ARCHITECT';
+import { getMetric } from '@/stores/publicMetricsStore';
+export const SYSTEM_VERSION = getMetric('version');
+export const SYSTEM_CODENAME = getMetric('codename');
 
 export type SystemStatus = 'healthy' | 'degraded' | 'critical' | 'maintenance';
 

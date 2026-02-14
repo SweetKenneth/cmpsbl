@@ -1,6 +1,6 @@
 # License
 
-## CMPSBL OS Substrate v9.1.0
+## CMPSBL OS Substrate v10.1.0
 
 ---
 
@@ -30,7 +30,7 @@ This license does not grant rights to:
 
 ---
 
-*CMPSBL OS Substrate v9.1.0 — Academic Documentation*  
+*CMPSBL OS Substrate v10.1.0 — Academic Documentation*  
 *Kenneth E Sweet Jr · ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)*  
 *DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)*  
 *© 2025–2026 PromptFluid®. All rights reserved.*

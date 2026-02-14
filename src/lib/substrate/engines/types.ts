@@ -296,7 +296,7 @@ export interface CapabilitySource {
 }
 
 export const CAPABILITY_INVENTORY = {
-  version: '9.1.0',
+  version: '10.1.0',
   synergies: 147,
   worldFirst: 56,
   highValue: 56,

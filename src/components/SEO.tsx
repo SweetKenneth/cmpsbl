@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { getMetric } from '@/stores/publicMetricsStore';
 
 interface SEOProps {
   title?: string;
@@ -94,6 +95,7 @@ export function SEO({
   howTo
 }: SEOProps) {
   const siteName = 'CMPSBL';
+  const substrateVersion = getMetric('version');
   const twitterHandle = '@cmpsbl';
   const fullTitle = title.includes('CMPSBL') ? title : `${title} | ${siteName}`;
   const currentDate = new Date().toISOString();
@@ -248,7 +250,7 @@ export function SEO({
     applicationSubCategory: 'Cognitive Infrastructure Layer',
     operatingSystem: 'Web Browser',
     browserRequirements: 'Requires JavaScript',
-    softwareVersion: 'v9.1.0',
+    softwareVersion: `v${substrateVersion}`,
     screenshot: image,
     offers: {
       '@type': 'Offer',

@@ -10,7 +10,7 @@
 
 ---
 
-## Current State: v9.3.0
+## Current State: v10.1.0
 
 **Status: Production Ready — ARCHITECT Epoch**
 
@@ -152,6 +152,7 @@ Enterprise and Research tier customers participate in quarterly roadmap reviews 
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v10.1.0 | Feb 2026 | ARCHITECT Epoch, Intent Mesh, Pipeline Crystallization, unified version sync |
 | v9.3.0 | Feb 2026 | ARCHITECT Epoch, Identity module, Crown Jewel protection, passwordless auth |
 | v9.1.0 | Feb 2026 | ARCHITECT Epoch, 21 modules, 400+ capabilities, 200 pipelines, 100 engines |
 | v8.5.0 | Feb 2026 | SYNERGY+ Epoch, 147 pipelines, 269+ depot capabilities, 27 infrastructure systems |

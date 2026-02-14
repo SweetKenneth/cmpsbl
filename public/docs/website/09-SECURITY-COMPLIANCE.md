@@ -138,7 +138,7 @@ Enterprise tier includes:
 
 ### Passwordless Authentication (IDENTITY Module)
 
-CMPSBL® enforces **passwordless-first authentication** via the IDENTITY module (v9.3.0):
+CMPSBL® enforces **passwordless-first authentication** via the IDENTITY module (v10.1.0):
 
 | Method | Description |
 |--------|-------------|
