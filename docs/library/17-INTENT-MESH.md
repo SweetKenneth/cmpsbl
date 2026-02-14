@@ -2,7 +2,7 @@
 
 # Intent Mesh — Emergent Module Intelligence Layer
 
-### CMPSBL OS Substrate v10.0.0
+### CMPSBL OS Substrate v10.1.0
 
 **Classification:** Library — No Trade Secrets  
 **Audience:** Investors · Researchers · Developers · Partners  
@@ -17,40 +17,45 @@
 
 The Intent Mesh is a v10.0 architectural advancement that enables **autonomous cross-module capability discovery and composition**. Instead of explicitly coded module-to-module routes (orchestration), modules broadcast "intents" — declarative requests for data or enrichment — and the mesh dynamically routes them to all capable resolvers across the substrate.
 
-**Key Innovation:** Modules understand what other modules can do and leverage each other's capabilities in emergent patterns that were never explicitly programmed.
+**v10.1** extends the mesh with **live realtime feeds**, **intent replay**, and **pipeline crystallization** — the ability to save discovered resolver chains as reusable pipelines.
+
+**Key Innovation:** Modules understand what other modules can do, leverage each other's capabilities in emergent patterns that were never explicitly programmed, and the system learns from itself by crystallizing successful patterns into replayable configurations.
 
 | Property | Value |
 |----------|-------|
-| Version Introduced | v10.0.0 |
+| Version | v10.1.0 |
 | Resolvers | 20 (across 11 modules) |
 | Governance | Kill switch (OFF by default) + read-only enforcement |
-| Database | `mesh_intents` table (RLS-protected, realtime-enabled) |
-| Dashboard | `/os → Observe → Mesh` |
-| Terminal Commands | 8 (`mesh.*` namespace) |
+| Database | `mesh_intents` + `mesh_saved_pipelines` (RLS-protected, realtime-enabled) |
+| Dashboard | `/os → Observe → Mesh` (Live Feed + Pipelines views) |
+| Terminal Commands | 13 (`mesh.*` namespace) |
 
 ---
 
 ## 2. Architectural Overview
 
-### 2.1 Three-Layer Design
+### 2.1 Four-Layer Design
 
 <table>
 <tr><th>Layer</th><th>Component</th><th>Purpose</th></tr>
 <tr><td>Advertisement</td><td>Capability Manifest</td><td>Each module publishes resolvers declaring what it can do</td></tr>
 <tr><td>Routing</td><td>Intent Router</td><td>Matches broadcasted intents to capable resolvers by domain</td></tr>
 <tr><td>Governance</td><td>Kill Switch + Risk Gating</td><td>Controls mesh activation and blocks unsafe operations</td></tr>
+<tr><td>Learning</td><td>Pipeline Crystallization</td><td>Saves discovered resolver chains as reusable configurations</td></tr>
 </table>
 
 ### 2.2 Relationship to Existing Orchestration
 
 The Intent Mesh **supplements, not replaces**, the existing orchestration layer:
 
-| Aspect | Orchestration (v9.x) | Intent Mesh (v10.0) |
+| Aspect | Orchestration (v9.x) | Intent Mesh (v10.1) |
 |--------|----------------------|---------------------|
 | Routing | Explicit, coded pipelines | Dynamic, domain-based matching |
 | Discovery | Developer must know target module | Automatic via capability manifest |
 | Composition | Predefined sequences | Emergent parallel resolution |
 | Safety | Pipeline-level governance | Kill switch + risk-level gating |
+| Learning | Static pipeline definitions | Crystallized pipelines from discovery |
+| Replay | Manual re-execution | One-click replay of any historical intent |
 
 ---
 
@@ -107,8 +112,13 @@ The manifest is the "phone book" of the mesh. Each module advertises resolvers w
                                     └──────────────┘
                                            │
                                     ┌──────▼───────┐
-                                    │   Receipt    │  → mesh_intents table
+                                    │   Receipt    │  → mesh_intents (realtime)
                                     │   (audit)    │
+                                    └──────────────┘
+                                           │
+                                    ┌──────▼───────┐
+                                    │ Crystallize? │  → mesh_saved_pipelines
+                                    │  (optional)  │     (reusable config)
                                     └──────────────┘
 ```
 
@@ -137,7 +147,7 @@ Modules cannot query themselves — the router automatically filters out resolve
 
 ---
 
-## 6. Auditability
+## 6. Auditability & Live Observability
 
 Every mesh interaction produces a **receipt** stored in `mesh_intents`:
 
@@ -153,23 +163,112 @@ Every mesh interaction produces a **receipt** stored in `mesh_intents`:
 | success | boolean | Whether any resolver responded |
 | duration_ms | integer | Total resolution time |
 
+### 6.1 Live Realtime Feed (v10.1)
+
+The `mesh_intents` table is enrolled in Supabase Realtime. The dashboard subscribes to `INSERT` events and displays new receipts **instantly** with:
+- Animated entry with toast notifications (`🔗 DEFENSE → IDENTITY, RELAY`)
+- Green pulsing "LIVE" and "streaming" indicators
+- No manual refresh required
+
+### 6.2 Terminal History & Replay (v10.1)
+
+| Command | Description |
+|---------|-------------|
+| `mesh.history [n]` | Deep history with full input/output data |
+| `mesh.replay <id>` | Re-broadcast any historical receipt's exact intent |
+| `mesh.save <name>` | Crystallize latest successful receipt as a reusable pipeline |
+| `mesh.pipelines` | List all saved/crystallized pipelines |
+| `mesh.run <name>` | Execute a saved pipeline by name or ID |
+
 ---
 
-## 7. Competitive Significance
+## 7. Pipeline Crystallization (v10.1)
+
+When the mesh discovers a productive resolver chain (e.g., DEFENSE → IDENTITY + RELAY + ECONOMY), users can **crystallize** that configuration into a saved pipeline:
+
+| Property | Description |
+|----------|-------------|
+| Storage | `mesh_saved_pipelines` table (RLS-protected, realtime-enabled) |
+| Source | Any successful mesh receipt |
+| Contents | Source module, intent type, domains, governance mode, resolver chain, input template |
+| Replay | One-click re-broadcast with identical configuration |
+| Tracking | Run count and last execution timestamp |
+
+### 7.1 Crystallization Flow
+
+```
+Receipt (successful) → User clicks "Save" → Names the pipeline
+    → Stored in mesh_saved_pipelines → Available in Pipelines tab
+    → Replayable via dashboard button or `mesh.run <name>` terminal command
+    → Each replay generates a new receipt (full auditability)
+```
+
+### 7.2 Why This Matters
+
+Pipeline crystallization closes the **discovery-to-reuse loop**:
+1. The mesh **discovers** novel module cooperation patterns
+2. Users **observe** successful interactions via the live feed
+3. Users **crystallize** productive patterns into named pipelines
+4. Pipelines are **replayed** on demand, generating new receipts
+5. The system **learns from itself** — emergent behavior becomes codified knowledge
+
+---
+
+## 8. Dashboard Interface
+
+The mesh dashboard (`/os → Observe → Mesh`) provides two views:
+
+### 8.1 Live View
+- **Stats Grid**: Modules, resolvers, intents, success rate, latency, saved pipelines
+- **Resolver Map**: Module-by-module breakdown with risk badges
+- **Test Broadcast**: One-click DEFENSE → actor_enrichment simulation
+- **Top Routes**: Visual bar chart of most-used module-to-module routes
+- **Live Receipts**: Realtime streaming feed with hover-to-save pipeline action
+
+### 8.2 Pipelines View
+- **Crystallized Pipelines**: Card grid showing name, resolver chain, governance mode, run count
+- **Replay Button**: Execute any saved pipeline with one click
+- **Status Badges**: Active/inactive pipeline indicators
+
+---
+
+## 9. Terminal Command Reference (13 Commands)
+
+| Command | Description |
+|---------|-------------|
+| `mesh.status` | Get mesh state, stats, and top routes |
+| `mesh.toggle` | Toggle mesh on/off (kill switch) |
+| `mesh.on` | Enable the intent mesh |
+| `mesh.off` | Disable the intent mesh (kill switch) |
+| `mesh.log` | View recent mesh receipts (compact) |
+| `mesh.history [n]` | Deep history with input/output data (default 25) |
+| `mesh.replay <id>` | Replay a specific receipt's intent |
+| `mesh.save <name>` | Save latest successful receipt as pipeline |
+| `mesh.pipelines` | List all saved/crystallized pipelines |
+| `mesh.run <name>` | Run a saved pipeline by name or ID |
+| `mesh.resolvers` | List all module resolvers |
+| `mesh.broadcast` | Test broadcast DEFENSE → actor_enrichment |
+| `mesh.help` | Show command reference |
+
+---
+
+## 10. Competitive Significance
 
 The Intent Mesh creates a **capability moat** that is difficult to replicate:
 
 1. **Emergent Intelligence**: Module interactions emerge from capability matching, not hardcoded logic
 2. **Self-Documenting**: Every interaction produces an auditable receipt
-3. **Governed Freedom**: The system can be given more autonomy without losing control
-4. **Network Effect**: Each new module/resolver exponentially increases possible interactions
-5. **No Known Precedent**: No comparable system exists that combines autonomous module discovery, read-only governance, a human kill switch, and cryptographic auditability in a single architecture
+3. **Self-Learning**: Discovered patterns crystallize into reusable pipelines
+4. **Governed Freedom**: The system can be given more autonomy without losing control
+5. **Network Effect**: Each new module/resolver exponentially increases possible interactions
+6. **Live Observability**: Realtime streaming of cross-module cooperation as it happens
+7. **No Known Precedent**: No comparable system exists that combines autonomous module discovery, pipeline crystallization, read-only governance, a human kill switch, and cryptographic auditability in a single architecture
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v10.0.0 — Intent Mesh*
+*CMPSBL OS Substrate v10.1.0 — Intent Mesh*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
