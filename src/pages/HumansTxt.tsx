@@ -68,7 +68,7 @@ Dream: Memory consolidation engine
 
 /* COLOPHON */
 
-CMPSBL Substrate OS v9.1.0 ARCHITECT Epoch
+CMPSBL Substrate OS v9.3.0 ARCHITECT Epoch
 21 Core Modules • 360+ Terminal Commands
 200 Synergy Pipelines • 400+ Capabilities
 WCAG 2.2 Accessibility via INCLUSIVE Module

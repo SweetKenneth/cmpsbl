@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate — Dashboard
- * v9.1.0 — Cognitive Orchestration Substrate (21-Module Architecture)
+ * v9.3.0 — Cognitive Orchestration Substrate (21-Module Architecture)
  *
  * Unified control center for all 21 substrate modules:
  * 
@@ -260,7 +260,7 @@ export default function SubstrateDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Dashboard — CMPSBL v9.1.0"
+        title="Substrate Dashboard — CMPSBL v9.3.0"
         description="Cognitive orchestration substrate control center. Monitor all 21 modules across 6 layers including brain, decode, encode, defense, nexus, vision, dream, memory, relay, audit, identity, economy, sandbox, and more."
         canonical="https://cmpsbl.com/substrate"
         keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "21 modules", "cortex"]}
@@ -281,7 +281,7 @@ export default function SubstrateDashboard() {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">v9.0.0 ARCHITECT — Cognitive Orchestration Substrate</p>
+              <p className="text-sm md:text-base text-muted-foreground">v9.3.0 ARCHITECT — Cognitive Orchestration Substrate</p>
             </div>
           </div>
           

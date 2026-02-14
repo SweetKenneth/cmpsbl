@@ -47,7 +47,7 @@ export default function SystemInitializer() {
 
       toast({
         title: "🌙 System Initialized Successfully",
-        description: "All Cascade v9.2.0 systems are now active and operational.",
+        description: "All substrate v9.3.0 systems are now active and operational.",
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -84,7 +84,7 @@ export default function SystemInitializer() {
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            🌊 Cascade v9.2.0 System Initializer
+            🌊 Substrate v9.3.0 System Initializer
           </CardTitle>
           <CardDescription>
             Activate FluidMind, Circadian Intelligence, and Dreamstate systems
@@ -96,7 +96,7 @@ export default function SystemInitializer() {
               {getStatusIcon(steps.fluidmind)}
               <div className="flex-1">
                 <p className="font-medium">FluidMind Synchronization</p>
-                <p className="text-sm text-muted-foreground">v9.2.0 baseline confirmation</p>
+                <p className="text-sm text-muted-foreground">v9.3.0 baseline confirmation</p>
               </div>
             </div>
 

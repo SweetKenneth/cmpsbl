@@ -1,5 +1,5 @@
 /**
- * CMPSBL® substrate — OS Surface v9.1.0 ARCHITECT Epoch
+ * CMPSBL® substrate — OS Surface v9.3.0 ARCHITECT Epoch
  * PREMIUM EDITION — 21 modules, 360+ commands, 200 synergy pipelines
  */
 
@@ -252,7 +252,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
         {!collapsed && (
           <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span>CMPSBL v9.1.0</span>
+            <span>CMPSBL v9.3.0</span>
           </div>
         )}
       </div>
@@ -513,7 +513,7 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Substrate OS v9.1.0 — AI Operating System"
+        title="Substrate OS v9.3.0 — AI Operating System"
         description="Explore the CMPSBL Substrate OS: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads."
         canonical="https://cmpsbl.com/os"
         keywords={['substrate OS', 'AI runtime', 'cognitive orchestration', 'module telemetry', 'AI workload management', 'substrate dashboard']}

@@ -1,6 +1,6 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * v9.1.0 ARCHITECT Epoch — 21-module, 6-layer visualization
+ * v9.3.0 ARCHITECT Epoch — 21-module, 6-layer visualization
  */
 
 import { useState, useEffect, useCallback } from 'react';

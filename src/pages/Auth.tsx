@@ -1,6 +1,6 @@
 /**
  * Observer Mode Authentication — Passwordless
- * v9.1.0 ARCHITECT — Passkey-first, magic link auth. Zero passwords.
+ * v9.3.0 ARCHITECT — Passkey-first, magic link auth. Zero passwords.
  */
 
 import { useState, useEffect } from 'react';

@@ -304,7 +304,7 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
 const HUMAN_POSTS: BlogPost[] = [
   {
     id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the ARCHITECT Epoch",
-    excerpt: "How v9.1.0's RELAY and IDENTITY modules establish a unified protocol layer for autonomous agent communication.",
+    excerpt: "How the RELAY and IDENTITY modules establish a unified protocol layer for autonomous agent communication.",
     href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",
     date: "2026-02-10", readTime: "16 min", image: protocolStandardsImg,
     imageAlt: "AI protocol standards visualization",
