@@ -31,6 +31,7 @@ import aiCybersecurityImg from "@/assets/blog/ai-cybersecurity-evolution-2025.jp
 import aiHackersImg from "@/assets/blog/ai-hackers-underground-2025.jpg";
 import howPFWorksImg from "@/assets/blog/how-promptfluid-works-cascade.jpg";
 import cascadeAIImg from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
+import cascadeAIBrainImg from "@/assets/blog/cascade-ai-adaptive-brain.jpg";
 import pfStudioImg from "@/assets/blog/promptfluid-studio-build-apps.jpg";
 import aiTriadImg from "@/assets/blog/ai-triad-intelligent-routing.jpg";
 import pfBrainImg from "@/assets/blog/promptfluid-brain-learning-core.jpg";
@@ -71,7 +72,20 @@ import autoblog6 from '@/assets/autoblog/autoblog-6.jpg';
 import autoblog7 from '@/assets/autoblog/autoblog-7.jpg';
 import autoblog8 from '@/assets/autoblog/autoblog-8.jpg';
 
-const AUTOBLOG_IMAGES = [autoblog1, autoblog2, autoblog3, autoblog4, autoblog5, autoblog6, autoblog7, autoblog8];
+import autoblog9 from '@/assets/autoblog/autoblog-9.jpg';
+import autoblog10 from '@/assets/autoblog/autoblog-10.jpg';
+import autoblog11 from '@/assets/autoblog/autoblog-11.jpg';
+import autoblog12 from '@/assets/autoblog/autoblog-12.jpg';
+import autoblog13 from '@/assets/autoblog/autoblog-13.jpg';
+import autoblog14 from '@/assets/autoblog/autoblog-14.jpg';
+import autoblog15 from '@/assets/autoblog/autoblog-15.jpg';
+import autoblog16 from '@/assets/autoblog/autoblog-16.jpg';
+import autoblog17 from '@/assets/autoblog/autoblog-17.jpg';
+import autoblog18 from '@/assets/autoblog/autoblog-18.jpg';
+import autoblog19 from '@/assets/autoblog/autoblog-19.jpg';
+import autoblog20 from '@/assets/autoblog/autoblog-20.jpg';
+
+const AUTOBLOG_IMAGES = [autoblog1, autoblog2, autoblog3, autoblog4, autoblog5, autoblog6, autoblog7, autoblog8, autoblog9, autoblog10, autoblog11, autoblog12, autoblog13, autoblog14, autoblog15, autoblog16, autoblog17, autoblog18, autoblog19, autoblog20];
 
 function getAutoblogImage(postId: string): string {
   const hash = postId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -482,7 +496,7 @@ const HUMAN_POSTS: BlogPost[] = [
     id: 'cascade', title: "Cascade AI: Adaptive Intelligence",
     excerpt: "How autonomous dream cycles enable continuous learning and reflection.",
     href: "/blog/cascade-ai-adaptive-intelligence-brain", category: "AI Technology",
-    date: "2025-06-08", readTime: "16 min", image: cascadeAIImg,
+    date: "2025-06-08", readTime: "16 min", image: cascadeAIBrainImg,
     imageAlt: "Adaptive AI brain in dream state",
     source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
