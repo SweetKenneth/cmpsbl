@@ -181,7 +181,7 @@ export default function Auth() {
       }
 
       // 2. Run WebAuthn with the server challenge
-      const result = await authenticateWithPasskey();
+      const result = await authenticateWithPasskey([], challengeData.challenge);
       if (!result.success || !result.credentialId) {
         return; // User cancelled or Face ID failed
       }
