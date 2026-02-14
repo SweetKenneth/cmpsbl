@@ -1,283 +1,93 @@
-# CMPSBL OS Substrate — System Architecture
+# System Architecture
 
-**Document ID:** CMPSBL-ACAD-002  
-**Version:** v9.1.0 (ARCHITECT Epoch)
+## CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch
 
----
-
-## 1. Architectural Overview
-
-The CMPSBL Substrate implements a 6-layer, 21-module architecture designed for modularity, observability, and governed autonomy.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     LAYER 5: INTERFACE                       │
-│  Terminal │ Atlas Dashboard │ API Gateway │ WebSocket        │
-├─────────────────────────────────────────────────────────────┤
-│                     LAYER 4: ORCHESTRATION                   │
-│  Synergy Pipelines │ Capability Registry │ State Management  │
-├─────────────────────────────────────────────────────────────┤
-│                     LAYER 3: INTELLIGENCE                    │
-│  BRAIN │ DECODE │ STREAM │ AGENCY │ ADAPT │ INCLUSIVE       │
-├─────────────────────────────────────────────────────────────┤
-│                     LAYER 2: OPERATIONS                      │
-│  NEXUS │ DEFENSE │ VISION │ INTEGRATION │ RESOURCE │ ACCESS │
-├─────────────────────────────────────────────────────────────┤
-│                     LAYER 1: INFRASTRUCTURE                  │
-│  PostgreSQL │ Edge Functions │ Storage │ Authentication     │
-└─────────────────────────────────────────────────────────────┘
-```
+**DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
+**Author:** Kenneth E Sweet Jr (ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX))  
+**Affiliation:** PromptFluid®
 
 ---
 
-## 2. Layer Definitions
+## 2. System Architecture
 
-### 2.1 Layer 1: Infrastructure
+The CMPSBL Substrate employs a layered modular architecture consisting of 21 modules organized into 6 functional layers. The design prioritizes failure isolation, event-driven communication, and verifiable state transitions.
 
-The foundational layer provides persistent storage, serverless compute, and authentication services.
+### 2.1 Architectural Principles
 
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| Database | PostgreSQL | Persistent state, RLS security |
-| Compute | Edge Functions (Deno) | Serverless execution |
-| Storage | Object Storage | File and artifact persistence |
-| Auth | OAuth 2.0 / JWT | Identity and access management |
+The architecture is governed by five invariants:
 
-**Design Principle:** Infrastructure is provider-agnostic. The substrate can deploy to any PostgreSQL-compatible database and any Deno-compatible edge runtime.
+1. **Module Isolation.** Each module operates within its own failure boundary. A module failure does not propagate to other modules.
 
-### 2.2 Layer 2: Operations
+2. **Event-Driven Communication.** Inter-module communication occurs exclusively through a typed event bus (RIPPLE). Direct function calls between modules are prohibited.
 
-Operational modules handle external communication, security, observability, and resource management.
+3. **Defense-in-Depth.** Security controls are applied at every layer — authentication at the kernel, threat detection at the operational layer, and audit logging at the infrastructure layer.
 
-| Module | Responsibility |
-|--------|----------------|
-| NEXUS | Multi-provider AI routing with fallback cascade |
-| DEFENSE | Behavioral bot detection and threat mitigation |
-| VISION | Unified observability and telemetry |
-| INTEGRATION | External service connectivity |
-| RESOURCE | Compute and token budget management |
-| ACCESS | Developer API keys and quota enforcement |
+4. **Self-Healing.** The system continuously monitors its own health and initiates automated repair when degradation is detected.
 
-### 2.3 Layer 3: Intelligence
+5. **Verifiable State Transitions.** Every self-modification produces a cryptographic stamp that enables post-hoc verification and rollback.
 
-Intelligence modules implement cognitive capabilities including memory, interpretation, and learning.
+### 2.2 Layer Architecture
 
-| Module | Responsibility |
-|--------|----------------|
-| BRAIN | Persistent memory, dream cycles, learning consolidation |
-| DECODE | Natural language interpretation and contract execution |
-| STREAM | Real-time data processing and event orchestration |
-| AGENCY | Multi-agent coordination and task delegation |
-| ADAPT | Self-optimization and configuration tuning |
-| INCLUSIVE | Accessibility compliance and internationalization |
+The 6 layers, from bottom to top:
 
-### 2.4 Layer 4: Orchestration
+**Layer 1 — Kernel (3 modules).** Provides system configuration (CORE), event-driven communication (RIPPLE), and access control (ACCESS). All other layers depend on the kernel.
 
-The orchestration layer coordinates cross-module operations and manages system state.
+**Layer 2 — Cognitive (3 modules).** Implements persistent memory with confidence scoring (BRAIN), system observability (VISION), and multi-module orchestration (CORTEX).
 
-| Component | Purpose |
-|-----------|---------|
-| Synergy Pipelines | Pre-defined cross-module execution patterns |
-| Capability Registry | Central catalog of 269 registered capabilities |
-| State Management | Global system state and configuration |
-| Governance Engine | Autonomy mode enforcement and circuit breakers |
+**Layer 3 — Operational (5 modules).** Provides self-evolution (MODERNIZER), natural language processing (DECODE), security (DEFENSE), multi-provider AI routing (NEXUS), and autonomous learning (DREAM).
 
-### 2.5 Layer 5: Interface
+**Layer 4 — Administrative (3 modules).** Handles external integrations (INTEGRATION), accessibility compliance (INCLUSIVE), and system health monitoring (SYSTEM).
 
-User-facing interfaces for human and programmatic interaction.
+**Layer 5 — Infrastructure (6 modules).** Provides vector storage (MEMORY), outbound delivery (RELAY), immutable logging (AUDIT), actor attribution (IDENTITY), cost tracking (ECONOMY), and isolated execution (SANDBOX).
 
-| Interface | Purpose |
-|-----------|---------|
-| Terminal | Command-line interface with 310+ commands |
-| Atlas Dashboard | Visual system administration |
-| API Gateway | REST/GraphQL external access |
-| WebSocket | Real-time event streaming |
+**Layer 6 — Orchestrator (1 module).** Cross-layer transform pipelines (ENCODE) coordinate complex multi-module workflows.
 
----
+### 2.3 The RIPPLE Event Bus
 
-## 3. Module Interaction Model
+RIPPLE implements a publish-subscribe event bus with the following properties:
 
-### 3.1 Request Flow
+- **Typed payloads.** Every event is associated with a schema. Payloads that do not conform to the schema are rejected.
+- **Silent rejection.** Malformed events are dropped without notification to the publisher. This prevents retry storms.
+- **Fan-out delivery.** A single event may have multiple subscribers. Delivery is guaranteed at-least-once.
+- **Priority levels.** Events are classified as critical, normal, or background, determining delivery order.
 
-```
-User Request
-     │
-     ▼
-┌─────────┐
-│ DECODE  │ ← Interpret intent
-└────┬────┘
-     │
-     ▼
-┌─────────┐
-│ BRAIN   │ ← Retrieve context from memory
-└────┬────┘
-     │
-     ▼
-┌─────────┐
-│ NEXUS   │ ← Route to appropriate AI provider
-└────┬────┘
-     │
-     ▼
-┌─────────┐
-│ VISION  │ ← Log telemetry and metrics
-└────┬────┘
-     │
-     ▼
-Response
-```
+### 2.4 Module Isolation via Circuit Breakers
 
-### 3.2 Synergy Execution
-
-Synergies are pre-defined multi-module pipelines that accomplish complex tasks:
-
-```
-Synergy: "research_and_report"
-     │
-     ├─► AGENCY: Spawn research agents
-     │
-     ├─► INTEGRATION: Fetch external data
-     │
-     ├─► BRAIN: Store findings in memory
-     │
-     ├─► DECODE: Generate report narrative
-     │
-     └─► STREAM: Deliver to user in real-time
-```
-
----
-
-## 4. Data Flow Architecture
-
-### 4.1 Memory Pipeline
-
-```
-┌──────────┐     ┌──────────┐     ┌──────────┐
-│ Working  │────►│ Short    │────►│ Long     │
-│ Memory   │     │ Term     │     │ Term     │
-└──────────┘     └──────────┘     └──────────┘
-     │                                  │
-     │         ┌──────────┐            │
-     └────────►│ Dream    │◄───────────┘
-               │ Cycle    │
-               └────┬─────┘
-                    │
-                    ▼
-               ┌──────────┐
-               │ Insights │
-               │ & Props  │
-               └──────────┘
-```
-
-### 4.2 Evolution Pipeline
-
-```
-┌──────────┐     ┌──────────┐     ┌──────────┐
-│ Observe  │────►│ Propose  │────►│ Evaluate │
-│ Pressure │     │ Change   │     │ Risk     │
-└──────────┘     └──────────┘     └──────────┘
-                                       │
-                                       ▼
-┌──────────┐     ┌──────────┐     ┌──────────┐
-│ Generate │◄────│ Execute  │◄────│ Approve  │
-│ Stamp    │     │ Change   │     │ (if req) │
-└──────────┘     └──────────┘     └──────────┘
-```
-
----
-
-## 5. Scalability Model
-
-### 5.1 Horizontal Scaling
-
-| Component | Scaling Strategy |
-|-----------|------------------|
-| Edge Functions | Stateless, auto-scaled by platform |
-| Database | Read replicas, connection pooling |
-| AI Providers | Multi-provider load distribution |
-| WebSocket | Pub/sub with channel partitioning |
-
-### 5.2 Performance Targets
-
-| Metric | Target | Measured |
-|--------|--------|----------|
-| API Latency (p50) | < 100ms | 67ms |
-| API Latency (p99) | < 500ms | 312ms |
-| Capability Invocation | < 50ms | 23ms |
-| Synergy Execution | < 2s | 1.4s |
-| Evolution Stamp | < 100ms | 78ms |
-
----
-
-## 6. Fault Tolerance
-
-### 6.1 Provider Fallback
-
-The NEXUS module implements a multi-tier fallback cascade:
-
-```
-Primary Provider (e.g., OpenAI)
-     │
-     ▼ [failure]
-Secondary Provider (e.g., Anthropic)
-     │
-     ▼ [failure]
-Tertiary Provider (e.g., Google)
-     │
-     ▼ [failure]
-Cached Response / Graceful Degradation
-```
-
-### 6.2 Circuit Breaker
-
-The evolution system includes a circuit breaker that halts autonomous operations upon failure:
+Each module maintains a health score on a 0–100 scale. When consecutive failures reduce the score below a critical threshold, a circuit breaker opens:
 
 | State | Behavior |
 |-------|----------|
-| CLOSED | Evolution allowed |
-| OPEN | Evolution blocked, manual reset required |
-| HALF-OPEN | Limited operations for testing recovery |
+| Closed | Normal operation; requests accepted |
+| Open | Requests rejected; recovery timer active |
+| Half-Open | Limited requests accepted for testing |
+
+The transition from Open to Half-Open occurs after a fixed timeout. The transition from Half-Open to Closed requires consecutive successful operations. This three-state model ensures that recovering modules are tested before resuming full load.
+
+### 2.5 Boot Sequence
+
+Modules boot in a fixed, dependency-ordered sequence: CORE → RIPPLE → ACCESS → BRAIN → VISION → CORTEX → MODERNIZER → DECODE → DEFENSE → NEXUS → DREAM → INTEGRATION → INCLUSIVE → SYSTEM → Infrastructure modules → ENCODE.
+
+The boot order cannot be changed. Each module validates its dependencies before declaring readiness.
+
+### 2.6 Request Processing Pipeline
+
+Incoming requests traverse a multi-stage pipeline:
+
+1. Authentication and rate limiting (ACCESS)
+2. Threat analysis (DEFENSE)
+3. Actor attribution (IDENTITY)
+4. Intent classification (DECODE)
+5. Module routing (CORTEX)
+6. Operation execution (target module)
+7. Event broadcast (RIPPLE)
+8. Cost recording (ECONOMY)
+9. Audit logging (AUDIT)
+
+Stages 7–9 execute asynchronously and do not affect response latency.
 
 ---
 
-## 7. Security Boundaries
-
-### 7.1 Trust Zones
-
-```
-┌─────────────────────────────────────────┐
-│           PUBLIC ZONE                    │
-│  Website │ Documentation │ Public API    │
-├─────────────────────────────────────────┤
-│           AUTHENTICATED ZONE             │
-│  Dashboard │ Terminal │ Capabilities     │
-├─────────────────────────────────────────┤
-│           PRIVILEGED ZONE                │
-│  Evolution │ Self-Modification │ Admin   │
-├─────────────────────────────────────────┤
-│           INFRASTRUCTURE ZONE            │
-│  Database │ Secrets │ Encryption Keys    │
-└─────────────────────────────────────────┘
-```
-
-### 7.2 Row-Level Security
-
-All database tables implement PostgreSQL Row-Level Security (RLS) policies to enforce access control at the data layer.
-
----
-
-## 8. Extensibility Points
-
-The architecture provides defined extension points:
-
-| Extension Point | Mechanism | Purpose |
-|-----------------|-----------|---------|
-| Custom Capabilities | Registry API | Add new operations |
-| Custom Synergies | Pipeline DSL | Define new workflows |
-| Custom Modules | Module Interface | Add new functional areas |
-| Webhooks | Event Subscription | External integration |
-| Plugins | Plugin API | Third-party extensions |
-
----
-
-*CMPSBL OS Substrate v9.1.0 — System Architecture*  
-*© 2025-2026 PromptFluid®. All rights reserved.*
+*CMPSBL OS Substrate v9.1.0 — Academic Documentation*  
+*Kenneth E Sweet Jr · ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)*  
+*DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)*  
+*© 2025–2026 PromptFluid®. All rights reserved.*

@@ -3,12 +3,12 @@ message: "If you use this software, please cite it as below."
 type: software
 title: "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution"
 version: 9.1.0
-date-released: 2026-02-13
+date-released: 2026-02-14
 abstract: >-
-  The CMPSBL OS Substrate is a cognitive orchestration system that provides 
-  persistent memory, autonomous learning, multi-provider AI routing, and 
-  verifiable self-evolution for artificial intelligence systems. The substrate 
-  implements 400+ capabilities across 21 modules, 200 synergy pipelines, and a 
+  The CMPSBL OS Substrate is a cognitive orchestration system that provides
+  persistent memory, autonomous learning, multi-provider AI routing, and
+  verifiable self-evolution for artificial intelligence systems. The substrate
+  implements 400+ capabilities across 21 modules, 200 synergy pipelines, and a
   three-tier autonomy governance model with cryptographic evolution stamps.
 keywords:
   - cognitive architecture
@@ -18,7 +18,7 @@ keywords:
   - verifiable computing
   - multi-agent systems
   - persistent memory
-  - dreaming AI
+  - cognitive orchestration
 license: Apache-2.0
 authors:
   - family-names: Sweet Jr
