@@ -51,6 +51,17 @@ type UnifiedItem =
   | { type: 'template'; data: Template }
   | { type: 'pipeline'; data: typeof SYNERGY_DEFINITIONS[0] };
 
+/** Extract difficulty and category from any unified item for tier gating */
+function getItemMeta(item: UnifiedItem): { difficulty?: string; category?: string } {
+  if (item.type === 'template') {
+    return { difficulty: (item.data as any).difficulty, category: (item.data as any).category };
+  }
+  if (item.type === 'capability') {
+    return { difficulty: (item.data as any).difficulty, category: (item.data as any).category };
+  }
+  return {};
+}
+
 // ─── Category System (unified across all 3 product types) ───
 const UNIFIED_CATEGORIES = [
   { id: 'intelligence', label: 'Intelligence', icon: Brain, color: 'from-violet-500/20 to-violet-600/5', border: 'border-violet-500/30', text: 'text-violet-400', bg: 'bg-violet-500/10' },
@@ -157,7 +168,8 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
   const name = item.data.name;
   const desc = item.data.description;
   const itemId = item.data.id;
-  const tierBadge = getItemTierBadge(itemId, name);
+  const meta = getItemMeta(item);
+  const tierBadge = getItemTierBadge(itemId, name, meta.difficulty, meta.category);
   const isBlackBoxed = tierBadge === 'BUILDER' || tierBadge === 'PRO' || tierBadge === 'BLACK-BOX';
 
   return (
@@ -250,10 +262,11 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
   const name = item.data.name;
   const desc = item.data.description;
   const itemId = item.data.id;
-  const tierBadge = getItemTierBadge(itemId, name);
+  const meta = getItemMeta(item);
+  const tierBadge = getItemTierBadge(itemId, name, meta.difficulty, meta.category);
   const isBlackBoxed = tierBadge === 'BUILDER' || tierBadge === 'PRO' || tierBadge === 'BLACK-BOX';
   const isArchitectureOnly = tierBadge === 'CMPSBL CORE';
-  const upgradeLabel = isBlackBoxed ? getUpgradeTierLabel(itemId) : null;
+  const upgradeLabel = isBlackBoxed ? getUpgradeTierLabel(itemId, name, meta.difficulty, meta.category) : null;
   
   useEffect(() => {
     const prev = document.body.style.overflow;
