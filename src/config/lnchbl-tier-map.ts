@@ -63,6 +63,9 @@ export const FREE_CAPABILITIES: TieredCapability[] = [
   { id: 'conversation_analytics', name: 'Conversation Analytics', tier: 'free', category: 'cognitive', description: 'Turn-level conversation quality metrics' },
   { id: 'emotion_baseline', name: 'Emotion Baseline Detector', tier: 'free', category: 'cognitive', description: 'Baseline emotional tone tracking per session' },
   { id: 'nexus_health_monitor', name: 'Nexus Health Monitor', tier: 'free', category: 'integration', description: 'Provider health status and uptime tracking' },
+  // v9.3.0 — Repurposed from edge functions
+  { id: 'dream_feeder_api', name: 'Dream Feeder API', tier: 'free', category: 'experience', description: 'Public dream submission endpoint for Dream-Eater interaction' },
+  { id: 'memory_playground', name: 'Memory Playground', tier: 'free', category: 'experience', description: 'Interactive memory store/recall/forget SDK demo' },
 ];
 
 /**
@@ -98,6 +101,8 @@ export const BUILDER_CAPABILITIES: TieredCapability[] = [
   { id: 'signal_priority_queue', name: 'Signal Priority Queue', tier: 'builder', category: 'communication', description: 'Priority-ordered inter-module signal delivery' },
   { id: 'config_snapshot', name: 'Config Snapshot & Restore', tier: 'builder', category: 'infrastructure', description: 'Point-in-time configuration backup and restore' },
   { id: 'audit_trail_lite', name: 'Audit Trail (Lite)', tier: 'builder', category: 'observability', description: 'Lightweight operation audit logging for debugging' },
+  // v9.3.0 — Repurposed from edge functions
+  { id: 'evolution_receipts', name: 'Evolution Receipts', tier: 'builder', category: 'observability', description: 'Read-only sanitized evolution audit trail with receipt history' },
 ];
 
 /**
@@ -198,6 +203,8 @@ export const ENTERPRISE_CAPABILITIES: TieredCapability[] = [
   { id: 'intelligent_cache_engine', name: 'Intelligent Cache Engine', tier: 'enterprise', category: 'performance', description: 'Predictive caching with semantic-aware eviction' },
   { id: 'governance_workflow', name: 'Governance Workflow Engine', tier: 'enterprise', category: 'governance', description: 'Multi-stage approval workflows for sensitive operations' },
   { id: 'substrate_telemetry_export', name: 'Substrate Telemetry Export', tier: 'enterprise', category: 'observability', description: 'Export telemetry to external APM and monitoring systems' },
+  // v9.3.0 — Repurposed from edge functions
+  { id: 'agent_mesh', name: 'Agent Mesh', tier: 'enterprise', category: 'platform', description: 'Multi-agent coordination patterns: chain, parallel, supervisor, debate, swarm' },
 ];
 
 /** All capabilities combined */

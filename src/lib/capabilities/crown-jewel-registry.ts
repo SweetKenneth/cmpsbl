@@ -71,6 +71,9 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'self_governance',
   'cognitive_mesh',
 
+  // Cognitive orchestration (from pf-brain-orchestrator)
+  'brain_orchestrator',
+
   // LNCHBL Crown Jewels (original 10 — architecture class)
   'cortex_engine',
   'seba_engine',
@@ -99,6 +102,7 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'cap-chaos-resilience',               // Chaos resilience framework
 
   // ── PRO TIER ($149) — CLM, cross-session, cross-executor learning ──
+  'knowledge_graph_topology',           // Semantic graph with typed relations, clustering, BFS
   'stier-emergent-threat-anticipator',  // Pre-zero-day defense
   'stier-audit-grade-decision-ledger',  // Immutable decision ledger
   'stier-decision-confidence-governor', // Confidence gating
@@ -135,6 +139,7 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'pro'> = {
   'creative_forge': 'builder',
   'cap-chaos-resilience': 'builder',
   // Pro tier
+  'knowledge_graph_topology': 'pro',
   'stier-emergent-threat-anticipator': 'pro',
   'stier-audit-grade-decision-ledger': 'pro',
   'stier-decision-confidence-governor': 'pro',
@@ -223,6 +228,9 @@ const ARCHITECTURE_PATTERNS = [
   'seba',
   'cortex_engine',
   'modernizer',
+  'brain-orchestrator',
+  'brain_orchestrator',
+  'cognitive-cycle',
   'dream-pool-federation',
   'dream_pool_federation',
   'dream-lucidity',
@@ -642,6 +650,15 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['creative_forge'], dangerIfExposed: 'Dream control protocol exposed',
     crown_jewel: true, admin_only: true,
   },
+  {
+    id: 'brain_orchestrator', name: 'Brain Orchestrator', artifactType: 'engine', modules: ['BRAIN', 'DREAM', 'CORTEX'],
+    classification: 'architecture',
+    reason: '5-phase cognitive cycle (consume, reflect, mutate, integrate, rest) — autonomous learning orchestration',
+    enables: 'Autonomous cognitive loop — the living substrate heartbeat',
+    composesWith: ['cognitive_mesh', 'creative_forge', 'dream_lucidity_control'],
+    dangerIfExposed: 'Cognitive orchestration cycle is the substrate doctrine; enables replication of learning loop',
+    crown_jewel: true, admin_only: true,
+  },
 
   // ══════════════════════════════════════════════════════
   // B. EXPERIENCE CROWN JEWELS — BLACK-BOXED, TIERED
@@ -748,6 +765,20 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
   },
 
   // ── PRO TIER ($149) ──
+  {
+    id: 'knowledge_graph_topology',
+    name: 'Knowledge Graph Topology Engine',
+    artifactType: 'engine',
+    modules: ['BRAIN', 'MEMORY', 'CORTEX'],
+    classification: 'experience',
+    reason: 'Semantic graph builder with typed relations, clustering, and BFS traversal — emergent memory structure',
+    enables: 'Knowledge topology — emergent memory structure with graph-based discovery',
+    composesWith: ['knowledge_retrieval_engine', 'cognitive_mesh', 'recursive-knowledge-crystallization'],
+    dangerIfExposed: 'Graph construction algorithm and clustering heuristics are proprietary',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true,
+    minimumTier: 'pro',
+  },
   {
     id: 'stier-emergent-threat-anticipator',
     name: 'Emergent Threat Anticipator',
