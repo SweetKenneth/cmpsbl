@@ -98,3 +98,6 @@ verify_jwt = false
 
 [functions.cmpsbl-patch-download]
 verify_jwt = false
+
+[functions.passkey-auth]
+verify_jwt = false
