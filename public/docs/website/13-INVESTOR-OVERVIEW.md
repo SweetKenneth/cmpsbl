@@ -64,12 +64,14 @@ CMPSBL provides complete cognitive infrastructure:
 
 ### Pricing Structure
 
-| Tier | Annual Price | Target Customer |
-|------|--------------|-----------------|
-| **Developer** | $15,000 | Startups, small teams |
-| **Research** | $80,000 | Academic, R&D |
-| **Enterprise** | $180,000 | Production deployments |
-| **Strategic** | Custom | Cloud providers, OEMs |
+| Tier | Price | Target Customer |
+|------|-------|-----------------|
+| **Free** | $0 | Exploration, prototyping |
+| **Creator** | $49/mo | Individual devs, startups |
+| **Architect** | $149/mo | Teams, advanced intelligence |
+| **Enterprise** | Custom | Production, regulated industries |
+| **Composable Cognitives** | $39 each | Any buyer (no account needed) |
+| **Template Generator** | $29 one-time | Developers building templates |
 
 ### Unit Economics (Target)
 

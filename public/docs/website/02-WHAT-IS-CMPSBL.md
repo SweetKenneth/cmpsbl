@@ -14,8 +14,8 @@ CMPSBL® (Composable) is the **operating system for AI applications**. Just like
 
 > **"Everything is free to explore. Engines are canon."**
 
-- **Explore freely:** Capability Depot, Template Alley, and Synergy Pipelines are FREE and non-durable
-- **Canonize when ready:** Engines are saved, governed, and authoritative
+- **Explore freely:** The Composable Artifacts Store gives you free access to capabilities, templates, and synergy pipelines
+- **Upgrade when ready:** Subscription tiers unlock engines, Experience Jewels, and advanced intelligence
 - **Start with memory:** Add persistent memory to any existing agent in under an hour
 
 ---
@@ -70,27 +70,28 @@ const context = await agent.getContext(userMessage);
 
 ## The Tiered Architecture
 
-### Free Exploration Layers
+### Free Exploration Layer
 
 | Layer | Purpose | Persistence |
 |-------|---------|-------------|
-| **Capability Depot** | Atomic, stateless building blocks | None |
-| **Template Alley** | Starting points for learning & remixing | None |
-| **Synergy Pipelines** | Exploratory orchestration patterns | None |
+| **Composable Artifacts Store** | Capabilities, templates, synergies — unified storefront | None |
 | **Persistent Memory** | Drop-in memory for any agent | Bounded, safe defaults |
 
-### Canonized Layers
+### Paid Products
 
-| Layer | Purpose | Persistence |
-|-------|---------|-------------|
-| **Engine Marketplace (OEM)** | First-party hardened orchestrations | Full governance |
-| **Enterprise Substrate** | Self-hosted full control | Enterprise-grade |
+| Product | Purpose | Access |
+|---------|---------|--------|
+| **Composable Cognitives** | Superpowered AI agents ($39 each) | No account required |
+| **Template Generator** | On-demand template creation ($29) | One-time purchase |
+| **Creator Tier** | Engines, SDK/API, 7 Experience Jewels ($49/mo) | Subscription |
+| **Architect Tier** | CLM, cross-project learning, 28 Jewels ($149/mo) | Subscription |
+| **Enterprise** | Source code, self-hosted, compliance | Custom |
 
 ---
 
 ## How It Works
 
-### The 3-Layer Architecture
+### The 6-Layer Architecture
 
 ```
 ┌─────────────────────────────────────────┐
@@ -102,6 +103,7 @@ const context = await agent.getContext(userMessage);
 ┌─────────────────────────────────────────┐
 │           CMPSBL® SUBSTRATE             │
 │  Memory • Learning • Routing • Security │
+│       21 Modules • 6 Layers             │
 └──────────────────┬──────────────────────┘
                    │
                    ▼
@@ -129,6 +131,9 @@ Send requests to the best AI for the job. If one provider fails, automatically r
 ### Self-Evolution
 The system proposes improvements to its own code. Human-approved changes are automatically deployed. The infrastructure improves itself.
 
+### Composable Cognitives
+Superpowered AI agents (Research, Coding, Analyst, Ops, Writer) delivered as downloadable artifacts. Purchase and use without creating an account.
+
 ---
 
 ## Who Is It For?
@@ -136,8 +141,8 @@ The system proposes improvements to its own code. Human-approved changes are aut
 | Audience | Use Case | Start Here |
 |----------|----------|------------|
 | **Agent Developers** | Add memory to existing agents | [Persistent Memory](/docs/persistent-memory) |
-| **Startups** | Ship AI features 10x faster | [Capability Depot](/capabilities) |
-| **Enterprises** | Compliance-ready AI infrastructure | [Engine Marketplace](/engines) |
+| **Startups** | Ship AI features 10x faster | [Composable Artifacts](/store) |
+| **Enterprises** | Compliance-ready AI infrastructure | [Pricing](/pricing) |
 | **Researchers** | Experiment with memory and learning | [Synergy Pipelines](/synergies) |
 
 ---
@@ -156,10 +161,10 @@ The system proposes improvements to its own code. Human-approved changes are aut
 
 | Term | Definition |
 |------|------------|
-| **Capability** | Atomic, free, stateless building block |
-| **Template** | Free starting point for learning and remixing |
-| **Synergy Pipeline** | Exploratory, free, non-durable orchestration |
+| **Composable Artifact** | Any capability, template, or synergy in the unified store |
+| **Composable Cognitive** | Superpowered AI agent delivered as a downloadable artifact |
 | **Engine** | Saved, governed, authoritative orchestration |
+| **Template Generator** | Licensed tool for on-demand template creation |
 
 ---
 

@@ -63,15 +63,16 @@ Foundation services that all other modules depend on.
 | **RIPPLE** | Event bus, pub/sub, cross-module messaging |
 | **ACCESS** | API keys, rate limits, entitlements |
 
-### Cognitive Layer (Boot Order 4-5)
+### Cognitive Layer (Boot Order 4-6)
 Intelligence and memory capabilities.
 
 | Module | Purpose |
 |--------|---------|
 | **BRAIN** | Memory storage, recall, consolidation |
 | **DECODE** | Natural language interpretation |
+| **MEMORY** | Multi-tier memory lifecycle management |
 
-### Operations Layer (Boot Order 6-10)
+### Operations Layer (Boot Order 7-11)
 Runtime services for learning, security, AI, and visibility.
 
 | Module | Purpose |
@@ -80,9 +81,8 @@ Runtime services for learning, security, AI, and visibility.
 | **DEFENSE** | Security, threat detection, rate limiting |
 | **NEXUS** | Multi-provider AI routing |
 | **VISION** | Observability, metrics, tracing |
-| **INTEGRATION** | External APIs, webhooks, adapters |
 
-### Admin Layer (Boot Order 11-15)
+### Admin Layer (Boot Order 12-16)
 System management and self-improvement.
 
 | Module | Purpose |
@@ -93,7 +93,7 @@ System management and self-improvement.
 | **SANDBOX** | Isolated execution environments |
 | **USER-MANUAL** | Auto-generated documentation |
 
-### Infrastructure Layer (Boot Order 16-18)
+### Infrastructure Layer (Boot Order 17-19)
 Core infrastructure services.
 
 | Module | Purpose |
@@ -102,7 +102,7 @@ Core infrastructure services.
 | **AUDIT** | Immutable event logging and compliance |
 | **IDENTITY** | Actor attribution, passwordless WebAuthn, sessions |
 
-### Orchestrator Layer (Boot Order 19-21)
+### Orchestrator Layer (Boot Order 20-21)
 High-level coordination.
 
 | Module | Purpose |

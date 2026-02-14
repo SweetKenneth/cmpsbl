@@ -23,7 +23,7 @@ The AI infrastructure market includes several categories:
 | Factor | Build In-House | CMPSBL® |
 |--------|----------------|---------|
 | **Time to Market** | 6-18 months | Days to weeks |
-| **Engineering Cost** | $500K-$2M+ | $39/mo - $299/yr (Developer) |
+| **Engineering Cost** | $500K-$2M+ | Free tier or $49-$149/mo |
 | **Maintenance** | Ongoing team needed | Included |
 | **Expertise Required** | Deep ML/AI knowledge | Basic integration |
 | **Risk** | High (unknown unknowns) | Low (proven system) |
@@ -98,6 +98,7 @@ Mem0 focuses specifically on memory for AI applications. CMPSBL includes memory 
 | **Self-Evolution** | ✗ No | ✓ MODERNIZER |
 | **Observability** | Limited | ✓ Full VISION |
 | **Accessibility** | ✗ No | ✓ INCLUSIVE |
+| **Identity** | ✗ No | ✓ Passwordless WebAuthn |
 
 ### When to Use Each
 
@@ -203,11 +204,15 @@ Using AI providers directly gives you model access. CMPSBL sits between your app
 | **Opportunity Cost** | High | Low |
 | **Time to Production** | 12-18 months | 1-4 weeks |
 
-### Developer License
+### Subscription Pricing
 
-For individual developers and small teams:
-- **Monthly:** $39/month
-- **Annual:** $299/year (save ~36%)
+For individual developers and teams:
+
+| Tier | Price | Best For |
+|------|-------|----------|
+| **Free** | $0 | Exploration, prototyping |
+| **Creator** | $49/mo | Shipping self-improving apps |
+| **Architect** | $149/mo | Cross-project intelligence |
 
 ---
 
@@ -225,10 +230,10 @@ For individual developers and small teams:
 
 | Tier | Best For |
 |------|----------|
-| **Developer ($39/mo or $299/yr)** | Individual devs, small teams |
-| **Team** | Teams up to 10 seats (Contact sales) |
-| **Research** | Academic, R&D (Contact sales) |
-| **Enterprise** | Production, enterprise (Contact sales) |
+| **Free ($0)** | Exploration, prototyping, learning |
+| **Creator ($49/mo)** | Individual devs, small teams shipping apps |
+| **Architect ($149/mo)** | Teams needing cross-project intelligence |
+| **Enterprise (Custom)** | Production, regulated industries |
 
 [Get Started →](./06-GETTING-STARTED.md)
 

@@ -29,13 +29,13 @@ Yes. The MODERNIZER module proposes code improvements, which go through confiden
 ### What technology stack does CMPSBL use?
 
 - **Frontend:** React + TypeScript + Vite + Tailwind
-- **Backend:** Supabase (PostgreSQL + Edge Functions)
+- **Backend:** PostgreSQL + Edge Functions (Lovable Cloud)
 - **AI:** Model-agnostic, connects to any provider
 - **Infrastructure:** Runs on any cloud or on-premise
 
 ### Can I self-host CMPSBL?
 
-Yes, with an Enterprise license. Enterprise tier includes source code access and self-hosted deployment rights. API tiers (Developer/Team/Research) use our secure hosted infrastructure.
+Yes, with an Enterprise license. Enterprise tier includes source code access and self-hosted deployment rights. Subscription tiers (Creator/Architect) use our secure hosted infrastructure.
 
 ### How does memory work?
 
@@ -57,12 +57,18 @@ Your data stays on your infrastructure. We never see your memories, prompts, or 
 
 ### How much does it cost?
 
-Pricing options:
-- **Developer:** $39/month or $299/year
-- **Team:** Contact sales
-- **Research:** Contact sales
-- **Enterprise:** Contact sales
-- **Strategic:** Custom
+CMPSBL uses a unified tiered pricing model:
+
+| Tier | Price | What You Get |
+|------|-------|--------------|
+| **Free** | $0 | Artifact Store, Persistent Memory, Executors, Composition |
+| **Creator** | $49/mo | Self-improving apps, 7 Experience Jewels, SDK/API access |
+| **Architect** | $149/mo | CLM, cross-project learning, all 28 Experience Jewels |
+| **Enterprise** | Custom | Source code, self-hosted, compliance, SLA |
+
+Plus standalone purchases:
+- **Composable Cognitives:** $39 each (no account required)
+- **Template Generator:** $29 one-time
 
 Plus your own AI provider costs (you pay OpenAI, Anthropic, etc. directly).
 
@@ -76,7 +82,7 @@ Yes. All license tiers allow commercial use. Enterprise tier includes additional
 
 ### Do you offer trials?
 
-Developer licenses include a 30-day money-back guarantee. Enterprise evaluations are available upon request.
+The Free tier gives you full access to the Artifact Store, Persistent Memory, and Composition — no credit card required. Enterprise evaluations are available upon request.
 
 ---
 
@@ -96,7 +102,7 @@ LangChain is a library — you still build everything yourself. CMPSBL is a comp
 
 ### How is this different from Mem0?
 
-Mem0 is focused specifically on memory. CMPSBL includes memory (BRAIN module) plus 13 other integrated modules for routing, security, learning, observability, and more.
+Mem0 is focused specifically on memory. CMPSBL includes memory (BRAIN module) plus 20 other integrated modules for routing, security, learning, observability, identity, and more.
 
 ### Why haven't others built this?
 
@@ -112,18 +118,19 @@ Yes. Security is built into the core with:
 - Rate limiting and bot detection
 - Input sanitization
 - Access control
+- Passwordless WebAuthn authentication (IDENTITY module)
 - Complete audit logging
 - Compliance-ready patterns (SOC 2, GDPR)
 
 ### Where does my data live?
 
-**API tiers (Developer/Team/Research):** Your data is processed on our secure hosted infrastructure. We follow strict data isolation and never share or use your data for training.
+**Subscription tiers (Free/Creator/Architect):** Your data is processed on our secure hosted infrastructure. We follow strict data isolation and never share or use your data for training.
 
 **Enterprise tier:** Full self-hosted deployment — your data stays entirely on your infrastructure.
 
 ### How do you handle API keys?
 
-**API tiers:** You provide your AI provider keys via secure environment configuration. Keys are encrypted and never logged.
+**Subscription tiers:** You provide your AI provider keys via secure environment configuration. Keys are encrypted and never logged.
 
 **Enterprise tier:** Keys are stored in your own environment (environment variables or secrets manager). We never see them.
 
@@ -133,12 +140,13 @@ Yes. Security is built into the core with:
 
 ### How quickly can I get started?
 
-Developer tier has automated checkout — you can start building within an hour of signing up.
+The Free tier requires no signup — start exploring the Artifact Store immediately. Creator and Architect tiers have automated checkout via Stripe.
 
 ### What support is available?
 
-- **Developer:** Email support, documentation, community forum
-- **Research:** Priority email, quarterly technical calls
+- **Free:** Community support, documentation
+- **Creator:** Email support, documentation
+- **Architect:** Priority email, quarterly technical calls
 - **Enterprise:** Dedicated support channel, custom integration help
 
 ### Do you offer consulting or custom development?
