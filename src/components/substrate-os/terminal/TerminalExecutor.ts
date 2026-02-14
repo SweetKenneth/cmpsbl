@@ -335,10 +335,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│         SUBSTRATE OS v9.1.0 — COMMAND REFERENCE             │
+│          CMPSBL® OS v9.3.0 — COMMAND REFERENCE              │
 ├─────────────────────────────────────────────────────────────┤
 │  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 21 + Synergies          │
-│  Architecture: 21-module + CLM + 200 Synergy Pipelines      │
+│  Architecture: 21-module / 6-layer + 200 Synergy Pipelines  │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │
@@ -526,7 +526,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ ENCODED AGENT v8.1.0 ──────────────────────────────────────┐
+┌─ ENCODED AGENT v2.3.0 ──────────────────────────────────────┐
 │                                                             │
 │  encoded.status          Agent status and configuration     │
 │  encoded.generate        Generate code (with task spec)     │
@@ -540,7 +540,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ ENGINE SYSTEM v8.1.0 (62 Engines + 20 Meta) ───────────────┐
+┌─ ENGINE SYSTEM v9.3.0 (76 Engines + 24 Meta = 100) ─────────┐
 │                                                             │
 │  engine.list [cat]       List engines by category           │
 │  engine.get <id>         Engine details                     │
@@ -707,13 +707,13 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v9.1.0
+│  ██╔═══╝ ██╔════╝     CMPSBL® OS v9.3.0 ARCHITECT
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  21-Module Architecture — Full AI Operating System
+│  21-Module / 6-Layer Architecture — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  Mode: ${roleDisplay}
@@ -753,9 +753,10 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal v9.1.0: aliases, macros, NLP, watch mode, audit
+│  Terminal v9.3.0: aliases, macros, NLP, watch mode, audit
 │  21 modules | 360+ commands | 200 synergy pipelines | health: 100%
-│  promptfluid® — where dreams come to adapt
+│  400+ capabilities | 100 engines (76 base + 24 meta)
+│  CMPSBL® — where dreams come to adapt
 │  
 └──────────────────────────────────────────────────────────────`;
     return { success: true, output: identity };

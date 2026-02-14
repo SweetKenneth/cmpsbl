@@ -51,6 +51,7 @@ import { ModuleLearningFeed } from '@/components/substrate-os/ModuleLearningFeed
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
+  core: Cpu,
   brain: Brain,
   cortex: Cpu,
   defense: Shield,
@@ -74,6 +75,7 @@ const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
 };
 
 const MODULE_COLORS: Record<ModuleName, string> = {
+  core: 'from-slate-500/20 to-slate-600/5 border-slate-500/30',
   brain: 'from-purple-500/20 to-purple-600/5 border-purple-500/30',
   cortex: 'from-blue-500/20 to-blue-600/5 border-blue-500/30',
   defense: 'from-red-500/20 to-red-600/5 border-red-500/30',
@@ -97,6 +99,7 @@ const MODULE_COLORS: Record<ModuleName, string> = {
 };
 
 const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
+  core: 'text-slate-400',
   brain: 'text-purple-400',
   cortex: 'text-blue-400',
   defense: 'text-red-400',
