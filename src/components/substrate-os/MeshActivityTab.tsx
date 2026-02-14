@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { 
   RefreshCw, Network, Activity, Shield, Zap, Eye, 
   CheckCircle, XCircle, ArrowRight, Power, Radio,
-  Save, Play, Bookmark, History, Layers
+  Save, Play, Bookmark, History, Layers, Lightbulb, Trophy, Timer
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -36,6 +36,9 @@ import {
   runSavedPipeline,
   type MeshSavedPipeline,
 } from '@/lib/substrate/intent-mesh/pipelines';
+import { MeshProposalsPanel } from './mesh/MeshProposalsPanel';
+import { MeshScoringPanel } from './mesh/MeshScoringPanel';
+import { MeshSchedulerPanel } from './mesh/MeshSchedulerPanel';
 
 export function MeshActivityTab() {
   const { enabled, toggle } = useMeshToggle();
@@ -47,7 +50,7 @@ export function MeshActivityTab() {
   const [savingId, setSavingId] = useState<string | null>(null);
   const [pipelineName, setPipelineName] = useState('');
   const [runningPipeline, setRunningPipeline] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<'live' | 'pipelines'>('live');
+  const [activeView, setActiveView] = useState<'live' | 'pipelines' | 'proposals' | 'scoring' | 'scheduler'>('live');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const modules = getMeshModules();
@@ -206,6 +209,24 @@ export function MeshActivityTab() {
               className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'pipelines' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
             >
               <Layers className="w-3 h-3 inline mr-1" />Pipelines ({savedPipelines.length})
+            </button>
+            <button 
+              onClick={() => setActiveView('proposals')}
+              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'proposals' ? 'bg-fuchsia-500/20 text-fuchsia-400' : 'text-muted-foreground hover:text-foreground')}
+            >
+              <Lightbulb className="w-3 h-3 inline mr-1" />Proposals
+            </button>
+            <button 
+              onClick={() => setActiveView('scoring')}
+              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'scoring' ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground')}
+            >
+              <Trophy className="w-3 h-3 inline mr-1" />Scoring
+            </button>
+            <button 
+              onClick={() => setActiveView('scheduler')}
+              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'scheduler' ? 'bg-violet-500/20 text-violet-400' : 'text-muted-foreground hover:text-foreground')}
+            >
+              <Timer className="w-3 h-3 inline mr-1" />Scheduler
             </button>
           </div>
           <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}>
@@ -412,7 +433,7 @@ export function MeshActivityTab() {
             </Card>
           </div>
         </div>
-      ) : (
+      ) : activeView === 'pipelines' ? (
         /* ═══ SAVED PIPELINES VIEW ═══ */
         <div className="space-y-4">
           <Card className="border border-cyan-500/20 bg-cyan-500/5">
@@ -482,7 +503,13 @@ export function MeshActivityTab() {
             </div>
           )}
         </div>
-      )}
+      ) : activeView === 'proposals' ? (
+        <MeshProposalsPanel />
+      ) : activeView === 'scoring' ? (
+        <MeshScoringPanel />
+      ) : activeView === 'scheduler' ? (
+        <MeshSchedulerPanel />
+      ) : null}
     </motion.main>
   );
 }
