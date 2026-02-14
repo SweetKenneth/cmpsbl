@@ -133,10 +133,10 @@ export default function InvestorsPublic() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Investors — CMPSBL® Funding Opportunity"
-        description="Invest in CMPSBL's cognitive substrate infrastructure. 100+ projects shipped over 15 years. Six live products. Seeking seed investment."
+        title="Acquisition Opportunity — CMPSBL® Substrate"
+        description="CMPSBL represents a generational acquisition opportunity: 17 years of R&D, 21 modules, 400+ capabilities, and defensible IP."
         canonical="https://cmpsbl.com/investors"
-        keywords={['AI startup investment', 'cognitive substrate', 'AI infrastructure funding', 'seed investment opportunity', 'CMPSBL']}
+        keywords={['CMPSBL acquisition', 'AI startup investment', 'cognitive infrastructure acquisition', 'AI IP portfolio', 'strategic AI acquisition']}
       />
       
       

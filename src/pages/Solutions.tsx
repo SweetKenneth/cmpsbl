@@ -77,8 +77,8 @@ export default function Solutions() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Solutions — CMPSBL v9.1.0 Cognitive Infrastructure Products"
-        description="Explore CMPSBL's v9.1.0 product suite: 21-Module Cognitive Substrate, Defense Module, Engine Marketplace, Persistent Memory, and Enterprise solutions."
+        title="Enterprise AI Solutions — Industry Applications"
+        description="Enterprise-ready cognitive infrastructure for healthcare, finance, legal, and manufacturing. SOC 2 compliant, on-prem available."
         canonical="https://cmpsbl.com/solutions"
         keywords={['cognitive infrastructure', 'AI memory', 'enterprise AI', 'engine marketplace', 'persistent memory', 'CMPSBL']}
       />

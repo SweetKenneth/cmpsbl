@@ -22,10 +22,10 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="About CMPSBL | Cognitive Orchestration Substrate"
-        description="CMPSBL is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems."
+        title="About CMPSBL — Founded 2009, Dallas TX"
+        description="CMPSBL was founded in 2009 by Kenneth E Sweet Jr. From Dallas, TX to a 21-module cognitive infrastructure powering the future of AI."
         canonical="https://cmpsbl.com/about"
-        keywords={['CMPSBL', 'cognitive orchestration', 'AI infrastructure', 'autonomous systems', 'accessibility tools']}
+        keywords={['about CMPSBL', 'Kenneth Sweet', 'CMPSBL founder', 'Dallas AI company', 'cognitive infrastructure story', 'AI startup Texas']}
       />
       
       <script type="application/ld+json">
