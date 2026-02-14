@@ -102,21 +102,19 @@ export function CmpsblNav() {
     navigate('/');
   };
 
-  // Nav menu — Platform focus (dev tools), footer handles: substrate internals, standards, contact
+  // Nav menu — Product-first architecture, optimized for discovery
   const navSections: NavSection[] = [
     {
-      name: "Platform",
-      icon: Cpu,
+      name: "Product",
+      icon: Layers,
       items: [
-        { name: "Start Here", href: "/start-here", description: "New to CMPSBL? Get oriented and build something real", icon: Rocket },
         { name: "AI Operating System", href: "/ai-operating-system", description: "The definitive AI OS — what it is and why it matters", icon: Globe, badge: "AIDO" },
-        { name: "All Modules", href: "/modules", description: "21 core substrate modules across 6 layers", icon: Layers, badge: "NEW" },
+        { name: "All Modules", href: "/modules", description: "21 core substrate modules across 6 layers", icon: Layers },
+        { name: "Intent Mesh", href: "/intent-mesh", description: "Autonomous inter-module communication layer", icon: Brain, badge: "NEW" },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
-        { name: "Composable Artifacts", href: "/store", description: "Tier-scoped capabilities, templates & pipelines", icon: Sparkles },
-        { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap, badge: "NEW" },
+        { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap },
         { name: "Engines", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
-        { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "Pricing", href: "/pricing", description: "Free, Creator, Architect & Enterprise tiers", icon: Layers },
+        { name: "Composable Artifacts", href: "/store", description: "Capabilities, templates & synergy pipelines", icon: Sparkles },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
@@ -124,22 +122,24 @@ export function CmpsblNav() {
       name: "Developers",
       icon: Code,
       items: [
+        { name: "Start Here", href: "/start-here", description: "New to CMPSBL? Get oriented fast", icon: Rocket },
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
-        { name: "Developer Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
+        { name: "Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
+        { name: "Documentation", href: "/documentation", description: "Complete API reference & guides", icon: FileText },
+        { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
-        { name: "Substrate Intelligence", href: "/intelligence", description: "Technology proof & acquisition info", icon: Brain },
-        { name: "Documentation", href: "/documentation", description: "Complete API reference", icon: FileText },
-        { name: "Persistent Memory Docs", href: "/docs/persistent-memory", description: "Quickstart integration guide", icon: Brain },
         { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
       ]
     },
     {
-      name: "Enterprise",
+      name: "Solutions",
       icon: Building2,
       items: [
-        { name: "Solutions", href: "/solutions", description: "Enterprise solutions", icon: Building2 },
-        { name: "Use Cases", href: "/use-cases", description: "Industry applications", icon: Sparkles },
-        { name: "Licensing", href: "/substrate/licensing", description: "Enterprise agreements", icon: FileText },
+        { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
+        { name: "Use Cases", href: "/use-cases", description: "Industry applications & examples", icon: Sparkles },
+        { name: "Pricing", href: "/pricing", description: "Free, Creator, Architect & Enterprise tiers", icon: Layers },
+        { name: "Licensing", href: "/substrate/licensing", description: "Enterprise agreements & OEM", icon: FileText },
+        { name: "Intelligence", href: "/intelligence", description: "Technology proof & acquisition info", icon: Shield },
       ]
     },
     {
@@ -149,7 +149,7 @@ export function CmpsblNav() {
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "PromptFluid", href: "/promptfluid", description: "Our parent company & portfolio", icon: Building2 },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
-        { name: "Library", href: "/library", description: "Documentation library", icon: BookOpen },
+        { name: "Library", href: "/library", description: "Technical documentation library", icon: BookOpen },
       ]
     },
   ];
