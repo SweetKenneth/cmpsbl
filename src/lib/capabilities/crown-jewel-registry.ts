@@ -49,6 +49,9 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'recursive-knowledge-crystallization',
   'recursive-infinite-context',
 
+  // Recursive Self-Improvement pipeline (architecture-class)
+  'recursive-self-improvement',
+
   // S-Tier Governance & Control
   'stier-intelligence-governance-kernel',
   'stier-self-scaling-intelligence-fabric',
@@ -202,6 +205,7 @@ export function getExperienceJewelTier(id: string): 'builder' | 'pro' | null {
 /** Architecture Crown Jewel keyword patterns */
 const ARCHITECTURE_PATTERNS = [
   'recursive-self-optimization',
+  'recursive-self-improvement',
   'self-evolving',
   'meta-learning',
   'cognitive-bootstrapping',
