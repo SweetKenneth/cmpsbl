@@ -81,12 +81,15 @@ export function RegisterPasskeyPrompt() {
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-6"
+          style={{ paddingTop: 'env(safe-area-inset-top, 20px)', paddingBottom: 'env(safe-area-inset-bottom, 20px)' }}
         >
-          <Card className="border-primary/30 bg-card/95 backdrop-blur-xl shadow-xl">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" onClick={handleDismiss} />
+          <Card className="relative border-primary/30 bg-card/95 backdrop-blur-xl shadow-xl w-full max-w-md">
             <CardHeader className="pb-2 relative">
               <Button
                 variant="ghost"

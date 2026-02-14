@@ -198,7 +198,7 @@ Deno.serve(async (req) => {
       const { data: verifyData, error: verifyError } = await adminClient.auth.verifyOtp({
         email: credential.email,
         token: email_otp,
-        type: "email",
+        type: "magiclink",
       });
 
       if (verifyError || !verifyData.session) {
