@@ -40,7 +40,7 @@ export const UNIFIED_TIERS = {
     features: [
       'Everything in Free',
       'All engines & meta-engines',
-      'All templates & marketplace items',
+      'All templates & artifacts',
       'Full SDK / API access',
       '7 Experience Crown Jewels',
       'In-run self-improvement',
@@ -119,5 +119,5 @@ export const LICENSING_PRODUCTS = {
   },
 } as const;
 
-export const CONTACT_EMAIL = 'PromptFluid@gmail.com';
-export const CONTACT_PHONE = '(214) 548-0883';
+export const CONTACT_EMAIL = 'Dev@CMPSBL.com';
+export const CONTACT_PHONE = '(760) FLUID-AI';

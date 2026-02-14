@@ -22,10 +22,10 @@ export default function Roadmap() {
         },
         {
           icon: Store,
-          title: "Template Marketplace Launch",
-          description: "70+ production templates for gaming AI, RAG pipelines, world engines, and enterprise agents. Tiered pricing from $9 to $199.",
+          title: "Composable Artifacts Store",
+          description: "200+ free templates, 400+ capabilities, and 200 synergy pipelines in a unified storefront. Browse, remix, and build.",
           status: "Live",
-          technologies: ["Templates", "SDK", "Developer Tools", "Marketplace"]
+          technologies: ["Templates", "SDK", "Developer Tools", "Artifacts"]
         }
       ]
     },
@@ -62,10 +62,10 @@ export default function Roadmap() {
         },
         {
           icon: Accessibility,
-          title: "Agency Marketplace",
-          description: "Pre-trained cognitive agencies for specific verticals: Legal AI, Healthcare AI, Finance AI. Deploy in minutes.",
+          title: "Vertical Composable Cognitives",
+          description: "Pre-trained cognitive agents for specific verticals: Legal AI, Healthcare AI, Finance AI. Purchase and deploy in minutes.",
           status: "Concept",
-          technologies: ["Pre-trained Agents", "Vertical AI", "One-click Deploy"]
+          technologies: ["Composable Cognitives", "Vertical AI", "One-click Deploy"]
         }
       ]
     },
@@ -107,7 +107,7 @@ export default function Roadmap() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="2026-2027 Roadmap | CMPSBL — The Future of AI Governance"
-        description="Explore CMPSBL's roadmap: 21-module cognitive OS, template marketplace, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
+        description="Explore CMPSBL's roadmap: 21-module cognitive OS, Composable Artifacts, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
         canonical="https://cmpsbl.com/roadmap"
         keywords={[
           'CMPSBL roadmap',

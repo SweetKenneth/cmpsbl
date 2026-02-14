@@ -1,6 +1,6 @@
 /**
- * Engine Marketplace (OEM) — Premium Registry-Driven Subscription Commerce
- * v9.1.0 ARCHITECT — All 76 engines + 24 meta-engines from live registries
+ * Engines (OEM) — Premium Registry-Driven Subscription Commerce
+ * v9.3.0 ARCHITECT — All 76 engines + 24 meta-engines from live registries
  * Self-improvement engines = internal (showcased, not sold)
  * 
  * UNIQUE DESIGN: Cinematic, premium, completely distinctive to CMPSBL
@@ -207,10 +207,10 @@ export default function EngineMarketplace() {
   return (
     <>
       <SEO
-        title={`Cognitive Engine Marketplace | ${summary.totalEngines}+ Production AI Engines | CMPSBL®`}
-        description="Subscribe to production-ready cognitive engines for AI orchestration. 62+ engines, 20 meta-engines, enterprise pricing. Multi-provider routing, persistent memory, self-improvement."
+        title={`Cognitive Engines | ${summary.totalEngines}+ Production AI Engines | CMPSBL®`}
+        description="Subscribe to production-ready cognitive engines for AI orchestration. 76+ engines, 24 meta-engines, tiered pricing. Multi-provider routing, persistent memory, self-improvement."
         canonical="https://cmpsbl.com/engines"
-        keywords={["cognitive engines", "AI orchestration", "subscription AI", "enterprise AI engines", "multi-provider routing", "AI marketplace", "production AI", "CMPSBL engines"]}
+        keywords={["cognitive engines", "AI orchestration", "subscription AI", "enterprise AI engines", "multi-provider routing", "composable artifacts", "production AI", "CMPSBL engines"]}
         type="product"
         product={{
           name: "CMPSBL Engine Subscription",
@@ -272,7 +272,7 @@ export default function EngineMarketplace() {
                 className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-primary/40 bg-gradient-to-r from-primary/15 via-primary/10 to-violet-500/15 backdrop-blur-md mb-8 shadow-xl shadow-primary/10"
               >
                 <Crown className="w-5 h-5 text-primary" />
-                <span className="text-sm font-bold text-foreground">Official Engine Marketplace</span>
+                <span className="text-sm font-bold text-foreground">Official Engine Registry</span>
                 <div className="flex items-center gap-1.5 pl-3 border-l border-primary/30">
                   <motion.div
                     className="w-2 h-2 rounded-full bg-emerald-500"
@@ -682,7 +682,7 @@ export default function EngineMarketplace() {
                   </Link>
                 </Button>
                 <Button variant="outline" size="lg" asChild className="gap-2">
-                  <Link to="/marketplace">
+                  <Link to="/store">
                     <Package className="w-4 h-4" />
                     Free Templates
                   </Link>

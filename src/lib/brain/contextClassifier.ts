@@ -134,7 +134,7 @@ export function classifyContext(content: string, metadata?: Record<string, any>)
 /**
  * Extract goal reference from content or use default
  */
-export function extractGoalRef(content: string, defaultGoal: string = 'make PromptFluid profitable'): string {
+export function extractGoalRef(content: string, defaultGoal: string = 'make CMPSBL profitable'): string {
   const goalPatterns = [
     /goal:\s*([^\n]+)/i,
     /objective:\s*([^\n]+)/i,

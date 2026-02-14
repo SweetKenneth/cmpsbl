@@ -29,9 +29,9 @@ export default function Solutions() {
     },
     {
       icon: Zap,
-      name: "Engine Marketplace",
+      name: "Engines",
       tagline: "Production-Ready Orchestrations",
-      description: "76 engines and 24 meta-engines. Governed, versioned, enterprise-grade cognitive orchestrations with subscription access.",
+      description: "76 engines and 24 meta-engines. Governed, versioned, enterprise-grade cognitive orchestrations via Creator and Architect tiers.",
       features: ["76 production engines", "24 meta-engines", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees"],
       metrics: ["100 Total Engines", "OEM Licensed", "Production Ready"],
       link: "/engines"
@@ -80,7 +80,7 @@ export default function Solutions() {
         title="Enterprise AI Solutions — Industry Applications"
         description="Enterprise-ready cognitive infrastructure for healthcare, finance, legal, and manufacturing. SOC 2 compliant, on-prem available."
         canonical="https://cmpsbl.com/solutions"
-        keywords={['cognitive infrastructure', 'AI memory', 'enterprise AI', 'engine marketplace', 'persistent memory', 'CMPSBL']}
+        keywords={['cognitive infrastructure', 'AI memory', 'enterprise AI', 'composable artifacts', 'persistent memory', 'CMPSBL']}
       />
       
       <PublicNav />

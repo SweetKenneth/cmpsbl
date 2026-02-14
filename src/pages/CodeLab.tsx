@@ -142,7 +142,7 @@ export default function CodeLab() {
             {/* FREE Resources Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8">
               <Link 
-                to="/marketplace" 
+                to="/store" 
                 className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-cyan-500/30 transition-all"
               >
                 <Package className="w-8 h-8 text-cyan-500 mx-auto mb-2" />
@@ -204,7 +204,7 @@ export default function CodeLab() {
               <Button asChild size="lg" variant="ghost" className="gap-2">
                 <Link to="/engines">
                   <Code className="w-5 h-5" />
-                  Engine Marketplace
+                  Engines
                 </Link>
               </Button>
             </div>
@@ -537,8 +537,8 @@ const response = await substrate.nexus.text(
                   </p>
                 </div>
                 <Button asChild size="lg" className="gap-2 shrink-0">
-                  <Link to="/marketplace">
-                    Browse Marketplace
+                  <Link to="/store">
+                    Browse Artifacts
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
@@ -661,11 +661,11 @@ const response = await substrate.nexus.text(
               <h3 className="font-semibold mb-2">Need Premium Templates?</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 Advanced patterns like Drift Prevention Engine, Self-Healing Chatbots, 
-                and the AI Template Generator are available in the Marketplace.
+                and the AI Template Generator are available in the Composable Artifacts Store.
               </p>
               <Button asChild>
-                <Link to="/marketplace">
-                  Browse Marketplace <ArrowRight className="w-4 h-4 ml-2" />
+                <Link to="/store">
+                  Browse Artifacts <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
             </Card>

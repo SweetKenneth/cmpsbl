@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * v9.1.0 ARCHITECT Epoch — Seed Investment Opportunity
+ * v9.3.0 ARCHITECT Epoch — Seed Investment Opportunity
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Accessibility, Eye, Wrench, Server, ArrowLeft, Sparkles } from "lucide-react";
@@ -101,9 +101,9 @@ export default function InvestorsPublic() {
     },
     {
       icon: Sparkles,
-      name: "Engine Marketplace",
+      name: "Composable Artifacts & Engines",
       subtitle: "Production Orchestrations",
-      description: "62+ engines and 20 meta-engines for governed, versioned cognitive workflows."
+      description: "76+ engines, 24 meta-engines, and 400+ capabilities in a unified storefront."
     }
   ];
 
@@ -111,12 +111,12 @@ export default function InvestorsPublic() {
     {
       icon: Rocket,
       title: "Production Infrastructure",
-      description: "14 integrated modules, 175,000+ lines of code, self-evolving architecture that improves overnight."
+      description: "21 integrated modules, 175,000+ lines of code, self-evolving architecture that improves overnight."
     },
     {
       icon: DollarSign,
       title: "Revenue Model",
-      description: "Engine Marketplace subscriptions + enterprise licensing. Free exploration layer drives adoption."
+      description: "Tiered subscriptions (Free / Creator $49 / Architect $149) + Composable Cognitives ($39 each) + enterprise licensing."
     },
     {
       icon: BarChart,

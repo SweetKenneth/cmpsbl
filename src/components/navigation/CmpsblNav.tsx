@@ -114,9 +114,9 @@ export function CmpsblNav() {
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
         { name: "Composable Artifacts", href: "/store", description: "Tier-scoped capabilities, templates & pipelines", icon: Sparkles },
         { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap, badge: "NEW" },
-        { name: "Engine Marketplace", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
+        { name: "Engines", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "Pricing", href: "/pricing", description: "Free, Builder, Pro & Enterprise tiers", icon: Layers },
+        { name: "Pricing", href: "/pricing", description: "Free, Creator, Architect & Enterprise tiers", icon: Layers },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
@@ -515,7 +515,7 @@ export function CmpsblNav() {
               {[
                   { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
                   { name: "Composable Artifacts", href: "/store", icon: Sparkles },
-                  { name: "Engine Marketplace", href: "/engines", icon: Terminal, badge: "OEM" },
+                  { name: "Engines", href: "/engines", icon: Terminal, badge: "OEM" },
                   { name: "CodeLab", href: "/codelab", icon: Terminal, badge: "FREE" },
                 ].map((item, idx) => (
                   <Link

@@ -22,29 +22,29 @@ const WordPressBotDefense = () => {
           "@type": "TechArticle",
           "headline": "The Complete Guide to WordPress Bot Detection and Defense in 2025",
           "description": "How AI-powered behavioral analysis is revolutionizing WordPress security—and why traditional firewalls can't keep up with modern bot attacks",
-          "image": "https://promptfluid.com/wordpress-bot-defense-guide.jpg",
+          "image": "https://cmpsbl.com/wordpress-bot-defense-guide.jpg",
           "author": {
             "@type": "Person",
             "name": "Kenneth E Sweet Jr",
             "jobTitle": "Founder & Security Engineer",
             "affiliation": {
               "@type": "Organization",
-              "name": "PromptFluid"
+              "name": "CMPSBL"
             }
           },
           "publisher": {
             "@type": "Organization",
-            "name": "PromptFluid",
+            "name": "CMPSBL",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://promptfluid.com/logo.png"
+              "url": "https://cmpsbl.com/logo.png"
             }
           },
           "datePublished": "2025-01-19",
           "dateModified": "2025-01-19",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://promptfluid.com/blog/wordpress-bot-defense"
+            "@id": "https://cmpsbl.com/blog/wordpress-bot-defense"
           },
           "keywords": "wordpress security, bot protection, AI security, behavioral analysis",
           "articleSection": "Security",

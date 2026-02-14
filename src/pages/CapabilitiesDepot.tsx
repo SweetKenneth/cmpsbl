@@ -133,7 +133,7 @@ export default function CapabilitiesDepotPage() {
                 <Check className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
                 <div className="text-sm text-muted-foreground">
                   <strong className="text-foreground">Capabilities are primitives.</strong> Use them freely in your apps.
-                  For saved, governed orchestration with persistence and versioning, explore our <Link to="/engines" className="text-primary hover:underline">Engine Marketplace</Link>.
+                  For saved, governed orchestration with persistence and versioning, explore our <Link to="/engines" className="text-primary hover:underline">Engines</Link>.
                 </div>
               </div>
             </div>
@@ -310,7 +310,7 @@ export default function CapabilitiesDepotPage() {
           <div className="container mx-auto px-4 py-12 text-center">
             <h2 className="text-2xl font-bold mb-4">Need Production Engines?</h2>
             <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              Capabilities are free primitives. For saved, governed orchestration with persistence and versioning, explore our Engine Marketplace.
+              Capabilities are free primitives. For saved, governed orchestration with persistence and versioning, explore our Engines.
             </p>
             <Button asChild>
               <Link to="/engines">

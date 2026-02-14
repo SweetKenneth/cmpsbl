@@ -28,7 +28,7 @@ export function getAgencyPortalUrl(slug: string): string {
   // Use current origin or fallback to production domain
   const origin = typeof window !== 'undefined' 
     ? window.location.origin 
-    : 'https://promptfluid.com';
+    : 'https://cmpsbl.com';
   
   return `${origin}/a/${slug}`;
 }

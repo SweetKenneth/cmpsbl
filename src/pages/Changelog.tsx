@@ -59,7 +59,7 @@ const evolutionLogV9: EvolutionEntry[] = [
     capabilities: [
       "Zero version drift between code constants and documentation",
       "Architectural queries return consistent layer groupings",
-      "Engine marketplace reflects accurate production-ready counts"
+      "Engine registry reflects accurate production-ready counts"
     ]
   },
   {
