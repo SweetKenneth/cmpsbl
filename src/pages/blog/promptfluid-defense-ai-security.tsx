@@ -26,11 +26,11 @@ const PromptFluidDefense = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            PromptFluid Defense: AI-Powered Security That Adapts
+            DEFENSE Module: AI-Powered Security That Adapts
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore Defense, the intelligent security layer that protects PromptFluid applications from bots, fraud, and automated threats through advanced behavioral analysis.
+            Explore DEFENSE, the intelligent security layer that protects the CMPSBL substrate from bots, fraud, and automated threats through advanced behavioral analysis.
           </p>
 
           <AuthorBio publishDate="2025-09-05" readTime="10 min read" />
@@ -54,16 +54,16 @@ const PromptFluidDefense = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
               <Shield className="h-8 w-8 text-primary" />
-              What is PromptFluid Defense?
+              What is the DEFENSE Module?
             </h2>
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Defense serves as the security backbone of the PromptFluid ecosystem, protecting applications from malicious bots, automated abuse, and sophisticated fraud attempts.
+                DEFENSE serves as the security backbone of the CMPSBL substrate, protecting applications from malicious bots, automated abuse, and sophisticated fraud attempts.
               </p>
               
               <p>
-                Unlike signature-based security tools that rely on static rules, Defense leverages Cascade AI and Brain's learning capabilities to detect and adapt to emerging threats in real-time.
+                Unlike signature-based security tools that rely on static rules, DEFENSE leverages the cognitive engine and BRAIN's learning capabilities to detect and adapt to emerging threats in real-time.
               </p>
             </div>
           </section>
@@ -221,9 +221,9 @@ const PromptFluidDefense = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How PromptFluid Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
                 <p className="text-sm text-muted-foreground">
-                  Discover how Defense integrates with the complete PromptFluid ecosystem.
+                  Discover how DEFENSE integrates with the complete substrate architecture.
                 </p>
               </Link>
 
@@ -231,9 +231,9 @@ const PromptFluidDefense = () => {
                 to="/blog/promptfluid-vision-unified-dashboard" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">PromptFluid Vision</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">VISION: System Dashboard</h3>
                 <p className="text-sm text-muted-foreground">
-                  Learn how Vision provides real-time visibility into Defense threat intelligence.
+                  Learn how VISION provides real-time visibility into DEFENSE threat intelligence.
                 </p>
               </Link>
             </div>

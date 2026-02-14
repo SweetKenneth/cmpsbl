@@ -25,11 +25,11 @@ const PromptFluidRipple = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            PromptFluid Ripple: Intelligent Network Orchestration
+            RIPPLE Module: Intelligent Network Orchestration
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore Ripple, the network integration layer that seamlessly connects services, intelligently routes requests, and manages complex workflows across the PromptFluid ecosystem.
+            Explore RIPPLE, the network integration layer that seamlessly connects services, intelligently routes requests, and manages complex workflows across the CMPSBL substrate.
           </p>
 
           <AuthorBio publishDate="2025-09-10" readTime="8 min read" />
@@ -53,16 +53,16 @@ const PromptFluidRipple = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
               <Radio className="h-8 w-8 text-primary" />
-              What is PromptFluid Ripple?
+              What is the RIPPLE Module?
             </h2>
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Ripple serves as the connective tissue of the PromptFluid ecosystem, managing how services communicate, how requests flow between modules, and how resources are allocated across the infrastructure.
+                RIPPLE serves as the connective tissue of the CMPSBL substrate, managing how services communicate, how requests flow between modules, and how resources are allocated across the infrastructure.
               </p>
               
               <p>
-                While Nexus handles AI provider routing, Ripple orchestrates everything else—external API integrations, inter-module communication, queue management, and network-level optimizations.
+                While <Link to="/blog/promptfluid-nexus-api-gateway" className="text-primary hover:underline">NEXUS</Link> handles AI provider routing, RIPPLE orchestrates everything else—external API integrations, inter-module communication, queue management, and network-level optimizations.
               </p>
             </div>
           </section>
@@ -204,9 +204,9 @@ const PromptFluidRipple = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How PromptFluid Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
                 <p className="text-sm text-muted-foreground">
-                  Discover how Ripple connects all ecosystem components through intelligent networking.
+                  Discover how RIPPLE connects all substrate modules through intelligent networking.
                 </p>
               </Link>
 
@@ -216,7 +216,7 @@ const PromptFluidRipple = () => {
               >
                 <h3 className="text-lg font-semibold mb-2 text-foreground">Free-Tier Provider Routing</h3>
                 <p className="text-sm text-muted-foreground">
-                  Learn how Nexus and Ripple work together to route AI and non-AI requests optimally.
+                  Learn how NEXUS and RIPPLE work together to route AI and non-AI requests optimally.
                 </p>
               </Link>
             </div>

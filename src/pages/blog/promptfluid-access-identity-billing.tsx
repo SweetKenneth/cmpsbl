@@ -65,11 +65,11 @@ const PromptFluidAccess = () => {
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-[1.1] tracking-tight">
-                PromptFluid Access: Trust-Based Identity & Billing
+                ACCESS Module: Trust-Based Identity & Billing
               </h1>
 
               <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
-                Explore Access, the unified system managing authentication, permissions, licensing, and billing operations with human-centered policies that prioritize user trust over rigid enforcement.
+                Explore ACCESS, the unified system managing authentication, permissions, licensing, and billing operations with human-centered policies that prioritize user trust over rigid enforcement.
               </p>
             </div>
           </div>
@@ -81,19 +81,19 @@ const PromptFluidAccess = () => {
                 
                 <h2 className="text-3xl mt-20 mb-8 flex items-center gap-4">
                   <Key className="w-8 h-8 text-primary" />
-                  What is PromptFluid Access?
+                  What is the ACCESS Module?
                 </h2>
 
                 <p className="text-xl leading-relaxed text-foreground font-light mb-12">
-                  Access serves as the authorization and monetization backbone of the PromptFluid ecosystem, handling everything related to user identity, permissions, subscription management, and payment processing.
+                  ACCESS serves as the authorization and monetization backbone of the CMPSBL substrate, handling everything related to user identity, permissions, subscription management, and payment processing.
                 </p>
 
                 <p>
-                  Unlike traditional systems that aggressively enforce payment collection, Access implements trust-based retention—accounts never delete on payment failure, services continue during grace periods, and user relationships matter more than rigid policies.
+                  Unlike traditional systems that aggressively enforce payment collection, ACCESS implements trust-based retention—accounts never delete on payment failure, services continue during grace periods, and user relationships matter more than rigid policies.
                 </p>
 
                 <p>
-                  Every user interaction with <Link to="/blog/promptfluid-studio-build-apps-that-think" className="text-primary hover:underline">Studio</Link>, <Link to="/blog/promptfluid-vision-unified-dashboard" className="text-primary hover:underline">Vision</Link>, or any ecosystem component passes through Access for authentication and authorization.
+                  Every user interaction with <Link to="/blog/promptfluid-studio-build-apps-that-think" className="text-primary hover:underline">STUDIO</Link>, <Link to="/blog/promptfluid-vision-unified-dashboard" className="text-primary hover:underline">VISION</Link>, or any substrate module passes through ACCESS for authentication and authorization.
                 </p>
 
                 <h2 className="text-3xl mt-20 mb-8">Core Capabilities</h2>
@@ -140,15 +140,15 @@ const PromptFluidAccess = () => {
                 <h2 className="text-3xl mt-20 mb-8">Trust-Based Retention Philosophy</h2>
 
                 <p>
-                  Most SaaS platforms immediately suspend services when payment methods fail or subscriptions expire. PromptFluid takes a different approach. When a payment fails, Access enters a 7-day grace period where all services continue operating normally.
+                  Most SaaS platforms immediately suspend services when payment methods fail or subscriptions expire. CMPSBL takes a different approach. When a payment fails, ACCESS enters a 7-day grace period where all services continue operating normally.
                 </p>
 
                 <p>
-                  If payment still hasn't resolved after the grace period, Access pauses new builds and high-cost operations but maintains existing deployments. Users can access historical projects, view analytics, and export data without artificial restrictions.
+                  If payment still hasn't resolved after the grace period, ACCESS pauses new builds and high-cost operations but maintains existing deployments. Users can access historical projects, view analytics, and export data without artificial restrictions.
                 </p>
 
                 <p>
-                  <strong className="text-foreground">Accounts never delete automatically.</strong> When users offboard, Access archives their data for potential future reactivation and celebrates their usage streak—how long they've been part of the PromptFluid community.
+                  <strong className="text-foreground">Accounts never delete automatically.</strong> When users offboard, ACCESS archives their data for potential future reactivation and celebrates their usage streak—how long they've been part of the CMPSBL community.
                 </p>
 
                 <h2 className="text-3xl mt-20 mb-8">Current Subscription Tiers</h2>
@@ -220,7 +220,7 @@ const PromptFluidAccess = () => {
                 <h2 className="text-3xl mt-20 mb-8">Why Trust-Based Retention Works</h2>
 
                 <p>
-                  The traditional SaaS approach treats users as risks to be mitigated through aggressive payment enforcement. PromptFluid recognizes that building long-term relationships generates more value than extracting maximum short-term revenue.
+                  The traditional SaaS approach treats users as risks to be mitigated through aggressive payment enforcement. CMPSBL recognizes that building long-term relationships generates more value than extracting maximum short-term revenue.
                 </p>
 
                 <p>
@@ -235,7 +235,7 @@ const PromptFluidAccess = () => {
             <div className="container mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold mb-6">Experience Trust-Based Services</h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-                Join the PromptFluid ecosystem and experience authentication and billing that respects your relationship.
+                Join the CMPSBL ecosystem and experience authentication and billing that respects your relationship.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link to="/auth">

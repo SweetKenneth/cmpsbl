@@ -26,11 +26,11 @@ const PromptFluidBrain = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            PromptFluid Brain: The Adaptive Learning Core
+            BRAIN Module: The Adaptive Learning Core
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Discover how PromptFluid Brain orchestrates AI intelligence, evolves system prompts, and continuously learns from every interaction.
+            Discover how the BRAIN module orchestrates AI intelligence, evolves system prompts, and continuously learns from every interaction within the CMPSBL substrate.
           </p>
 
           <AuthorBio publishDate="2025-08-28" readTime="10 min read" />
@@ -54,12 +54,12 @@ const PromptFluidBrain = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
               <Brain className="h-8 w-8 text-primary" />
-              What is PromptFluid Brain?
+              What is the BRAIN Module?
             </h2>
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                At the heart of the PromptFluid ecosystem lies the Brain—an adaptive AI orchestration and learning core that makes every component smarter over time.
+                At the heart of the CMPSBL substrate lies BRAIN—an adaptive AI orchestration and learning core that makes every module smarter over time.
               </p>
               
               <p>
@@ -191,17 +191,16 @@ const PromptFluidBrain = () => {
           <section className="bg-card border border-border rounded-lg p-8 text-center">
             <h3 className="text-xl font-bold mb-4 text-foreground">Experience Adaptive Intelligence</h3>
             <p className="text-muted-foreground mb-6">
-              See how Brain makes every component of PromptFluid smarter over time through continuous learning.
+              See how BRAIN makes every module of the CMPSBL substrate smarter over time through continuous learning.
             </p>
             <Link 
-              to="/" 
+              to="/modules" 
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
             >
-              Start Free Trial →
+              Explore All Modules →
             </Link>
           </section>
 
-          {/* Related Articles */}
           <section className="mt-16 pt-8 border-t border-border">
             <h2 className="text-2xl font-bold mb-6 text-foreground">Related Articles</h2>
             <div className="grid md:grid-cols-2 gap-6">
@@ -209,9 +208,9 @@ const PromptFluidBrain = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How PromptFluid Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
                 <p className="text-sm text-muted-foreground">
-                  Explore the complete ecosystem that Brain powers through adaptive intelligence.
+                  Explore the complete architecture that BRAIN powers through adaptive intelligence.
                 </p>
               </Link>
 
@@ -219,9 +218,9 @@ const PromptFluidBrain = () => {
                 to="/blog/cascade-ai-adaptive-intelligence-brain" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">Cascade AI Deep Dive</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">Adaptive Intelligence Deep Dive</h3>
                 <p className="text-sm text-muted-foreground">
-                  Understand how Cascade AI leverages Brain's learning to route tasks intelligently.
+                  Understand how the cognitive engine leverages BRAIN's learning to route tasks intelligently.
                 </p>
               </Link>
             </div>

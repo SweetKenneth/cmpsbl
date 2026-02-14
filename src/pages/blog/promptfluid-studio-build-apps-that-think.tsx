@@ -26,11 +26,11 @@ const PromptFluidStudioGuide = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            PromptFluid Studio: Build Apps That Think
+            STUDIO Module: Build Apps That Think
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Discover how Studio leverages Cascade AI to transform ideas into deployable applications with autonomous architecture decisions and continuous learning.
+            Discover how STUDIO leverages the CMPSBL cognitive engine to transform ideas into deployable applications with autonomous architecture decisions and continuous learning.
           </p>
 
           <AuthorBio publishDate="2025-08-10" readTime="14 min read" />
