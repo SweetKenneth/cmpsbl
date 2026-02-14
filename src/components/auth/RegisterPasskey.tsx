@@ -100,8 +100,7 @@ export function RegisterPasskeyPrompt() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-6"
-          style={{ paddingTop: 'env(safe-area-inset-top, 20px)', paddingBottom: 'env(safe-area-inset-bottom, 20px)' }}
+          className="fixed inset-0 z-[11000] flex items-center justify-center p-6"
         >
           {/* Backdrop */}
           <div className="absolute inset-0 bg-background/70 backdrop-blur-md" onClick={handleSkip} />

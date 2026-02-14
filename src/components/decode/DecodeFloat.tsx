@@ -125,7 +125,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
         style={{
           position: "fixed",
           right: 16,
-          bottom: "calc(16px + env(safe-area-inset-bottom, 0px))",
+          bottom: "calc(80px + env(safe-area-inset-bottom, 0px))",
           zIndex: 10001,
           contain: "layout",
         }}
@@ -182,7 +182,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           className="animate-scale-in"
           style={{
             position: "fixed",
-            bottom: "calc(80px + env(safe-area-inset-bottom, 0px))",
+            bottom: "calc(144px + env(safe-area-inset-bottom, 0px))",
             right: 16,
             width: "min(384px, calc(100vw - 32px))",
             height: "min(520px, calc(100vh - 120px))",
