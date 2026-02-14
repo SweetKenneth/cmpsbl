@@ -110,7 +110,7 @@ const EncodeInfo = lazy(() => import("./pages/products/EncodeInfo"));
 
 // Cluster pages (module deep-dives)
 
-const ClusterVerify = lazy(() => import("./pages/cluster/Verify"));
+
 const ClusterInclusive = lazy(() => import("./pages/cluster/InclusiveModule"));
 
 // Marketing / Info pages
@@ -348,7 +348,7 @@ const App = () => {
                         
                         {/* Cluster pages - module deep-dives */}
                         <Route path="/cluster/studio-autonomous-site-generator" element={<Navigate to="/" replace />} />
-                        <Route path="/cluster/verify-worlds-first-ai-plugin-certification" element={<ClusterVerify />} />
+                        <Route path="/cluster/verify-worlds-first-ai-plugin-certification" element={<Navigate to="/" replace />} />
                         <Route path="/cluster/inclusive-module-accessibility" element={<ClusterInclusive />} />
                         <Route path="/cluster/clarity-ai-accessibility-and-autofix" element={<Navigate to="/cluster/inclusive-module-accessibility" replace />} />
                         
