@@ -18,6 +18,7 @@ import { learningEngine } from '../learning-engine';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export type ModuleName = 
+  | 'core'
   | 'brain'
   | 'cortex'
   | 'defense'
@@ -74,6 +75,24 @@ export interface ModuleCLMState {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const MODULE_CLM_CONFIGS: Record<ModuleName, ModuleLearningConfig> = {
+  core: {
+    moduleId: 'core',
+    displayName: 'CORE',
+    learningTopics: [
+      'Scheduler optimization: task prioritization, lifecycle management',
+      'Routing efficiency: module discovery, load distribution',
+      'Boot sequence: initialization order, dependency resolution',
+      'Health monitoring: heartbeat intervals, failure detection thresholds',
+      'Cross-module communication: event bus patterns, message passing',
+    ],
+    kpis: ['boot_time_ms', 'routing_accuracy', 'scheduler_throughput', 'uptime_percentage'],
+    selfReflectionPrompt: `As the CORE module (Kernel Layer), analyze my scheduler and lifecycle management:
+- Is my boot sequence optimal? Are there unnecessary blocking steps?
+- How efficiently am I routing tasks between modules?
+- Am I detecting and recovering from module failures fast enough?
+- What patterns in my routing decisions could be improved?
+Provide specific, actionable improvements.`,
+  },
   brain: {
     moduleId: 'brain',
     displayName: 'BRAIN',

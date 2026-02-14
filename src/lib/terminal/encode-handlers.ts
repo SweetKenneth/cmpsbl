@@ -67,17 +67,15 @@ export function registerEncodeModuleHandlers(): void {
     };
   });
 
-  // decode.inbox — CLM reports from ENCODE + Infrastructure Six
+  // decode.inbox — CLM reports from ALL 21 modules
   registerHandler('decode.inbox', async () => {
     const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
-    const feed = await moduleCLM.getFeed(30);
-    const clmModules = ['encode', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'];
-    const relevant = feed.filter(f => clmModules.includes(f.moduleId));
+    const feed = await moduleCLM.getFeed(50);
     return {
       success: true,
       data: {
-        totalReports: relevant.length,
-        reports: relevant.map(r => ({
+        totalReports: feed.length,
+        reports: feed.map(r => ({
           module: r.moduleId.toUpperCase(),
           title: r.title,
           type: r.analysisType,
@@ -89,15 +87,16 @@ export function registerEncodeModuleHandlers(): void {
     };
   });
 
-  // clm.run_all — Trigger CLM for all 7 new modules
+  // clm.run_all — Trigger CLM for ALL 21 modules
   registerHandler('clm.run_all', async () => {
     const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
     const results = await moduleCLM.runAllModuleLearning();
     return {
       success: true,
-      message: `CLM completed for ${results.length} modules`,
+      message: `CLM completed for ${results.length} of 21 modules`,
       data: {
         cyclesRun: results.length,
+        totalModules: 21,
         modules: results.map(r => ({
           module: r.moduleId.toUpperCase(),
           title: r.title,
@@ -113,7 +112,15 @@ export function registerEncodeModuleHandlers(): void {
     return {
       success: false,
       error: 'Usage: clm.run <module>',
-      examples: ['clm.run encode', 'clm.run memory', 'clm.run relay', 'clm.run audit', 'clm.run identity', 'clm.run economy', 'clm.run sandbox'],
+      examples: [
+        'clm.run core', 'clm.run ripple', 'clm.run access',
+        'clm.run brain', 'clm.run decode', 'clm.run dream',
+        'clm.run defense', 'clm.run nexus', 'clm.run vision', 'clm.run integration',
+        'clm.run system', 'clm.run modernizer', 'clm.run inclusive',
+        'clm.run cortex', 'clm.run encode',
+        'clm.run memory', 'clm.run relay', 'clm.run audit',
+        'clm.run identity', 'clm.run economy', 'clm.run sandbox',
+      ],
     };
   });
 
@@ -125,15 +132,15 @@ export function registerEncodeModuleHandlers(): void {
         '',
         '┌─────────────────────────────────────────────┐',
         '│       ENCODE MODULE — Terminal Commands      │',
-        '│       v9.2.0 ARCHITECT Epoch                 │',
+        '│       v9.3.0 ARCHITECT Epoch                 │',
         '└─────────────────────────────────────────────┘',
         '',
         '  encode.status    Module health & task stats',
         '  encode.queue     Current task queue from DECODE',
         '  encode.receipts  Completion receipts with BRAIN refs',
         '  encode.health    ENCODE module health score',
-        '  decode.inbox     CLM reports from all modules',
-        '  clm.run_all      Run CLM for ENCODE + Infra Six',
+        '  decode.inbox     CLM reports from ALL 21 modules',
+        '  clm.run_all      Run CLM for all 21 modules',
         '  clm.run <mod>    Run CLM for specific module',
         '',
         '  ENCODE receives structured task packets from',

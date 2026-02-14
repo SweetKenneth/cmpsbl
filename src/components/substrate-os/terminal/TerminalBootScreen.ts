@@ -1,14 +1,15 @@
 /**
- * Terminal Boot Screen v9.1.0
+ * Terminal Boot Screen v9.3.0
  * Unique neural-organic visualization of the 21-module architecture
  * Mobile-friendly with no mid-word line breaks
  * 
- * v9.1.0 ARCHITECT Epoch:
+ * v9.3.0 ARCHITECT Epoch:
  * - 200 synergy pipelines, 125 executors, 32 S-tier discoveries
  * - 21-module architecture across 6 layers
- * - 400+ capabilities, 100 engines, 25 meta-engines
+ * - 400+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
  * - 360+ commands across 21 modules + infrastructure
+ * - CLM across all 21 modules
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
  */
@@ -59,7 +60,7 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║              PROMPTFLUID® SUBSTRATE OS v9.1.0             ║
+  ║                CMPSBL® OS v9.3.0                     ║
   ║               ARCHITECT Epoch Cognitive OS                  ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
@@ -93,8 +94,8 @@ export function generateMobileBootScreen(): string[] {
   return [
     '',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓  PROMPTFLUID® SUBSTRATE OS     ▓',
-  '  ▓  Version 9.1.0 — ARCHITECT     ▓',
+  '  ▓     CMPSBL® OS v9.3.0          ▓',
+  '  ▓     ARCHITECT Epoch            ▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
     '  ┌─ BOOTSTRAP ────────────────────┐',
@@ -124,9 +125,9 @@ export function generateMobileBootScreen(): string[] {
   '  ◉ 21 modules operational',
   '  ◉ 360+ commands available',
   '  ◉ 200+ synergies | 125 executors',
-  '  ◉ 400+ capabilities | 100+ engines',
+  '  ◉ 400+ capabilities | 100 engines',
   '  ◉ 7 infrastructure systems',
-  '  ◉ CLM: ENCODE + Infra Six reporting',
+  '  ◉ CLM: all 21 modules reporting',
   '  ◉ Health: 100%',
     '',
     '  Type \'help\' for commands',
@@ -156,7 +157,7 @@ export function generateDesktopBootScreen(): string[] {
     '  ░   ██║     ███████╗╚██████╔╝██║██████╔╝                ░',
     '  ░   ╚═╝     ╚══════╝ ╚═════╝ ╚═╝╚═════╝                 ░',
     '  ░                                                       ░',
-    '  ░   SUBSTRATE OS v9.1.0 ARCHITECT                       ░',
+    '  ░   CMPSBL® OS v9.3.0 ARCHITECT                        ░',
     '  ░   Cognitive Operating System                          ░',
     '  ░   "Where Dreams Come To Adapt"                        ░',
     '  ░                                                       ░',
@@ -225,7 +226,7 @@ export function generateDesktopBootScreen(): string[] {
     '',
   '  ╔═══════════════════════════════════════════════════════╗',
   '  ║  21 MODULES │ 360+ CMDS │ 200+ SYNERGIES │ 400+ CAPS ║',
-  '  ║  CLM: ENCODE + Infra Six reporting to DECODE          ║',
+  '  ║  CLM: all 21 modules reporting to DECODE               ║',
   '  ║  Type \'help\' for commands • \'cortex.status\' for mode  ║',
   '  ╚═══════════════════════════════════════════════════════╝',
     '',

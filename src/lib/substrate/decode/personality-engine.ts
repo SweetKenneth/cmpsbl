@@ -1,7 +1,7 @@
 /**
- * promptfluid® DECODE Personality Engine
- * v9.1.0 ARCHITECT — Dynamic Personality Profiles (Server-Synced)
- * 
+ * CMPSBL® DECODE Personality Engine
+ * v9.3.0 ARCHITECT — Dynamic Personality Profiles (Server-Synced)
+ *
  * Personality profiles now sync with the backend edge function.
  * Changes made via terminal commands persist to the database.
  * 
