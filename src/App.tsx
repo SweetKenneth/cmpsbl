@@ -25,6 +25,7 @@ import { MobilePreviewSafeMode } from "@/components/system/MobilePreviewSafeMode
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
 const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
+const RegisterPasskeyPrompt = lazy(() => import("@/components/auth/RegisterPasskey").then(m => ({ default: m.RegisterPasskeyPrompt })));
 
 // Scroll to top on route change - immediate scroll for better UX
 const ScrollToTop = () => {
@@ -270,6 +271,7 @@ const App = () => {
                   <BrowserRouter>
                   <ScrollToTop />
                   <AuthProvider>
+                    <RegisterPasskeyPrompt />
                     <Suspense fallback={<PageLoader />}>
                       <Routes>
                         {/* Core Public Pages */}

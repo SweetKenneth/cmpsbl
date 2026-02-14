@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,6 +22,7 @@ import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PasskeyButton } from '@/components/auth/PasskeyButton';
 import { isWebAuthnSupported, isPlatformAuthenticatorAvailable, registerPasskey, authenticateWithPasskey, linkPasskeyToEmail, getEmailForPasskey } from '@/lib/substrate/identity-module';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 // Animated background particles
@@ -126,6 +128,7 @@ function ModuleIconsStrip() {
 
 export default function Auth() {
   const { signInWithMagicLink, signUpWithMagicLink } = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [webAuthnAvailable, setWebAuthnAvailable] = useState(false);
   
@@ -167,20 +170,53 @@ export default function Auth() {
   const handlePasskeyAuth = async () => {
     setLoading(true);
     try {
-      const result = await authenticateWithPasskey();
-      if (result.success && result.credentialId) {
-        // Look up the email linked to this passkey
-        const linkedEmail = getEmailForPasskey(result.credentialId);
-        if (linkedEmail) {
-          toast.success('Face ID verified — sending sign-in link...');
-          await signInWithMagicLink(linkedEmail);
-          setLoginEmail(linkedEmail);
-          setMagicLinkSent('login');
-        } else {
-          toast.info('Face ID verified, but no email linked. Enter your email to complete sign-in.');
-        }
+      // 1. Get a server-generated challenge
+      const { data: challengeData, error: challengeError } = await supabase.functions.invoke('passkey-auth/challenge', {
+        method: 'POST',
+        body: {},
+      });
+      if (challengeError || !challengeData?.challenge) {
+        toast.error('Failed to start Face ID — try again');
+        return;
       }
-    } catch {
+
+      // 2. Run WebAuthn with the server challenge
+      const result = await authenticateWithPasskey();
+      if (!result.success || !result.credentialId) {
+        return; // User cancelled or Face ID failed
+      }
+
+      // 3. Send assertion to server for verification + instant session
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke('passkey-auth/verify', {
+        method: 'POST',
+        body: {
+          credentialId: result.credentialId,
+          challenge: challengeData.challenge,
+          signature: result.signature,
+          userHandle: result.userHandle,
+        },
+      });
+
+      if (verifyError || !verifyData?.success || !verifyData?.session) {
+        toast.error(verifyData?.error || 'Face ID verification failed — is your passkey registered?');
+        return;
+      }
+
+      // 4. Set the session directly — instant login!
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: verifyData.session.access_token,
+        refresh_token: verifyData.session.refresh_token,
+      });
+
+      if (sessionError) {
+        toast.error('Session creation failed');
+        return;
+      }
+
+      toast.success('Signed in with Face ID');
+      navigate('/os');
+    } catch (err: any) {
+      console.error('Passkey auth error:', err);
       toast.error('Face ID authentication failed');
     } finally {
       setLoading(false);
@@ -193,17 +229,17 @@ export default function Auth() {
       toast.error('Enter your email first, then register Face ID.');
       return;
     }
+    setLoading(true);
     try {
-      setLoading(true);
-      const userId = email; // Use email as the user handle so it's discoverable
-      const result = await registerPasskey(userId, signupDisplayName || email.split('@')[0] || 'Observer');
-      if (result.success && result.credential) {
-        // Link this credential to the email for future auto-login
-        linkPasskeyToEmail(result.credential.credentialId, email);
-        toast.success('Face ID registered! You can now sign in with just your face.');
-      }
+      // First sign up / sign in via magic link so the user exists
+      toast.info('First, verify your email to link Face ID to your account.');
+      await signUpWithMagicLink(email, signupDisplayName || email.split('@')[0]);
+      setMagicLinkSent('signup');
+      
+      // Store email locally so after they verify, we can prompt passkey registration
+      localStorage.setItem('cmpsbl_pending_passkey_email', email);
     } catch {
-      toast.error('Face ID registration failed');
+      toast.error('Sign-up failed');
     } finally {
       setLoading(false);
     }
