@@ -44,3 +44,12 @@ export {
   enableMesh,
   disableMesh,
 } from './toggle';
+
+// Pipelines — crystallized mesh configurations
+export {
+  getSavedPipelines,
+  savePipelineFromReceipt,
+  runSavedPipeline,
+  deletePipeline,
+  type MeshSavedPipeline,
+} from './pipelines';

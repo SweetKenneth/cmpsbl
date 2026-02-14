@@ -6594,6 +6594,68 @@ export type Database = {
         }
         Relationships: []
       }
+      mesh_saved_pipelines: {
+        Row: {
+          created_at: string
+          description: string | null
+          discovered_from: string | null
+          domains: string[]
+          governance_mode: string
+          id: string
+          input_template: Json | null
+          intent_type: string
+          is_active: boolean | null
+          last_run_at: string | null
+          name: string
+          resolver_chain: string[]
+          run_count: number | null
+          source_module: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          discovered_from?: string | null
+          domains?: string[]
+          governance_mode?: string
+          id?: string
+          input_template?: Json | null
+          intent_type: string
+          is_active?: boolean | null
+          last_run_at?: string | null
+          name: string
+          resolver_chain?: string[]
+          run_count?: number | null
+          source_module: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          discovered_from?: string | null
+          domains?: string[]
+          governance_mode?: string
+          id?: string
+          input_template?: Json | null
+          intent_type?: string
+          is_active?: boolean | null
+          last_run_at?: string | null
+          name?: string
+          resolver_chain?: string[]
+          run_count?: number | null
+          source_module?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mesh_saved_pipelines_discovered_from_fkey"
+            columns: ["discovered_from"]
+            isOneToOne: false
+            referencedRelation: "mesh_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       modernizer_analytics: {
         Row: {
           analysis_result: Json | null
