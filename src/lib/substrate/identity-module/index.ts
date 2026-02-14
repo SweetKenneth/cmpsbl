@@ -1,10 +1,11 @@
 /**
  * IDENTITY Module — Universal Actor Attribution
- * v9.1.0 ARCHITECT Epoch — Human/agent/system identity, signatures, provenance
- * Passwordless WebAuthn passkey authentication
+ * v9.3.0 ARCHITECT Epoch — Human/agent/system identity, signatures, provenance
+ * Circuit Breaker + Hot-Swap + Graceful Fallback + Passwordless WebAuthn
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
+import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 
 export type ActorType = 'human' | 'agent' | 'system';
 
@@ -16,9 +17,7 @@ export interface ActorIdentity {
   createdAt: number;
   lastActiveAt: number;
   metadata: Record<string, unknown>;
-  /** Registered passkey credential IDs */
   passkeys: string[];
-  /** Whether this actor uses passwordless auth */
   passwordless: boolean;
 }
 
@@ -27,9 +26,7 @@ export interface IdentityModuleState {
   currentActor: ActorIdentity | null;
   registeredActors: number;
   signaturesIssued: number;
-  /** Total passkeys registered across all actors */
   passkeyCount: number;
-  /** Whether passwordless mode is enforced */
   passwordlessEnforced: boolean;
 }
 
@@ -43,6 +40,8 @@ const state: IdentityModuleState = {
   passwordlessEnforced: true,
 };
 
+let moduleEngine: ModuleEngine | null = null;
+
 function generateSignature(actorId: string): string {
   const data = `${actorId}:${Date.now()}:${Math.random()}`;
   let hash = 0;
@@ -55,24 +54,43 @@ function generateSignature(actorId: string): string {
 
 export function initIdentity(): void {
   emitStarted('identity', 'init', {});
-  state.initialized = true;
-  // Register system actor
-  registerActor('system', 'system', 'Substrate System');
-  emitSucceeded('identity', 'init', {});
+  try {
+    initCircuitBreaker('identity', { failureThreshold: 5, recoveryTimeout: 30_000 });
+    moduleEngine = activateModuleEngine('identity', '9.3.0');
+    state.initialized = true;
+    registerActor('system', 'system', 'Substrate System');
+    emitSucceeded('identity', 'init', { engineId: moduleEngine.instance.id });
+  } catch (err) {
+    state.initialized = true;
+    registerActor('system', 'system', 'Substrate System');
+    emitFailed('identity', 'init', err instanceof Error ? err.message : String(err));
+  }
 }
 
 export function registerActor(id: string, type: ActorType, displayName: string, metadata: Record<string, unknown> = {}): ActorIdentity {
-  const sig = generateSignature(id);
-  const actor: ActorIdentity = {
-    id, type, displayName, signature: sig,
-    createdAt: Date.now(), lastActiveAt: Date.now(), metadata,
-    passkeys: [], passwordless: true,
-  };
-  actors.set(id, actor);
-  state.registeredActors = actors.size;
-  state.signaturesIssued++;
-  emit({ module: 'identity', event_type: 'actor_registered', outcome: 'succeeded', data: { actorId: id, type } });
-  return actor;
+  const { result } = withResilienceSync(
+    'identity',
+    () => {
+      const sig = generateSignature(id);
+      const actor: ActorIdentity = {
+        id, type, displayName, signature: sig,
+        createdAt: Date.now(), lastActiveAt: Date.now(), metadata,
+        passkeys: [], passwordless: true,
+      };
+      actors.set(id, actor);
+      state.registeredActors = actors.size;
+      state.signaturesIssued++;
+      emit({ module: 'identity', event_type: 'actor_registered', outcome: 'succeeded', data: { actorId: id, type } });
+      return actor;
+    },
+    {
+      id, type, displayName, signature: 'fallback-sig',
+      createdAt: Date.now(), lastActiveAt: Date.now(), metadata,
+      passkeys: [], passwordless: true,
+    },
+    'register_actor'
+  );
+  return result;
 }
 
 export function whoami(): ActorIdentity | null {
@@ -121,6 +139,14 @@ export function getActorPasskeys(actorId: string): string[] {
 
 export function getIdentityState(): IdentityModuleState { return { ...state }; }
 export function getIdentityHealth(): number { return state.initialized ? 100 : 0; }
+
+export function getIdentityResilience() {
+  return getModuleResilienceReport('identity', getIdentityHealth());
+}
+
+export function getIdentityEngine() {
+  return moduleEngine;
+}
 
 // Re-exports for WebAuthn and auth config
 export { registerPasskey, authenticateWithPasskey, isWebAuthnSupported, isPlatformAuthenticatorAvailable, getUserPasskeys, revokePasskey } from './webauthn';
