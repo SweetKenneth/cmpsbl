@@ -147,7 +147,7 @@ export function CmpsblNav() {
       icon: Users,
       items: [
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
-        { name: "PromptFluid", href: "https://promptfluid.com", description: "Our parent company & portfolio", icon: Building2, external: true },
+        { name: "PromptFluid", href: "/promptfluid", description: "Our parent company & portfolio", icon: Building2 },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
         { name: "Library", href: "/library", description: "Documentation library", icon: BookOpen },
       ]
