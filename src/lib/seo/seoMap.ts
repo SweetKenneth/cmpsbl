@@ -1,6 +1,6 @@
 /**
  * seoMap.ts — Centralized SEO Metadata Registry
- * v9.1.0 ARCHITECT Epoch
+ * v9.3.0 ARCHITECT Epoch
  *
  * Single source of truth for every PUBLIC indexed page.
  * Each entry has a UNIQUE primary keyword — no cannibalization.
@@ -49,7 +49,7 @@ export const seoMap: Record<string, PageSEO> = {
     primaryKeyword: 'cognitive infrastructure for AI',
   },
   '/os': {
-    title: 'Substrate OS v9.1.0 — AI Operating System',
+    title: 'Substrate OS v9.3.0 — AI Operating System',
     description: 'Explore the CMPSBL Substrate OS: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads.',
     ogTitle: 'Substrate OS — The Engine Behind Cognitive AI',
     ogDescription: 'Real-time telemetry, module health, and autonomous orchestration inside the AI operating system.',
@@ -318,11 +318,11 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/changelog': {
     title: 'Changelog — Substrate Version History',
-    description: 'Track every update to the CMPSBL substrate: new modules, capabilities, patches, and architecture changes from v1.0 to v9.1.0.',
+    description: 'Track every update to the CMPSBL substrate: new modules, capabilities, patches, and architecture changes from v1.0 to v9.3.0.',
     ogTitle: 'Changelog — What\'s New in CMPSBL',
-    ogDescription: 'Complete version history from v1.0 to v9.1.0 ARCHITECT Epoch.',
+    ogDescription: 'Complete version history from v1.0 to v9.3.0 ARCHITECT Epoch.',
     ogImage: OG_DOCS,
-    keywords: ['CMPSBL changelog', 'substrate updates', 'version history AI', 'AI platform changelog', 'v9.1.0 release notes'],
+    keywords: ['CMPSBL changelog', 'substrate updates', 'version history AI', 'AI platform changelog', 'v9.3.0 release notes'],
     schema: 'docs',
     intent: 'Docs/Developer',
     primaryKeyword: 'CMPSBL substrate changelog',

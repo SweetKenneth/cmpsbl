@@ -9,7 +9,7 @@ import heroImage from "@/assets/hero/neon-data-center.jpg";
 import earthWindowImage from "@/assets/hero/neon-dream-cosmos.jpg";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 export default function About() {
-  // v9.1.0 — Current CMPSBL product portfolio
+  // v9.3.0 — Current CMPSBL product portfolio
   const products = [
     { icon: Brain, name: "CMPSBL Substrate", description: "21-module cognitive orchestration OS with persistent memory" },
     { icon: Shield, name: "DEFENSE Module", description: "Enterprise-grade threat detection and bot protection" },
@@ -51,7 +51,7 @@ export default function About() {
       <section className="relative w-full">
         <img 
           src={heroImage}
-          alt="Modern sustainable architecture with natural light, representing PromptFluid's grounded approach to building AI systems"
+          alt="Modern sustainable architecture with natural light, representing CMPSBL's grounded approach to building AI systems"
           className="absolute inset-0 w-full h-[60vh] object-cover"
         />
         <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
@@ -79,7 +79,7 @@ export default function About() {
             <div className="flex flex-col md:flex-row gap-8 items-start">
               <img 
                 src={founderPhoto}
-                alt="Kenneth E. Sweet Jr. - Founder of PromptFluid"
+                alt="Kenneth E. Sweet Jr. - Founder of CMPSBL, created by PromptFluid"
                 className="w-32 h-32 rounded-full object-cover ring-4 ring-primary/20 flex-shrink-0"
               />
               <div className="flex-1">
@@ -148,7 +148,7 @@ export default function About() {
 
           <div className="mt-12 bg-card border border-border rounded-lg p-6 md:p-8">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">v9.1.0 ARCHITECT Epoch</span> — 175,000+ lines of production code. 400+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
+              <span className="font-semibold">v9.3.0 ARCHITECT Epoch</span> — 175,000+ lines of production code. 400+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
             </p>
           </div>
         </div>
@@ -219,7 +219,7 @@ export default function About() {
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Explore?</h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Discover how PromptFluid's infrastructure can work for you.
+            Discover how CMPSBL's cognitive infrastructure can work for you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/investors">

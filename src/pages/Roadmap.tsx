@@ -15,7 +15,7 @@ export default function Roadmap() {
       items: [
         {
           icon: Brain,
-          title: "CMPSBL v9.1.0 — ARCHITECT Epoch",
+          title: "CMPSBL v9.3.0 — ARCHITECT Epoch",
           description: "Production-ready cognitive OS with complete 21-module architecture: Core, Ripple, Access, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, System, Modernizer, Integration, Cortex orchestrator, Inclusive, Memory, Relay, Audit, Identity, Economy, Sandbox. 400+ capabilities, 200 synergy pipelines.",
           status: "Live",
           technologies: ["Supabase", "Edge Functions", "TypeScript", "React"]
@@ -129,7 +129,7 @@ export default function Roadmap() {
       <section className="relative w-full">
         <img 
           src={heroImage}
-          alt="Product roadmap visualization with timeline and milestones representing PromptFluid's strategic direction"
+          alt="Product roadmap visualization with timeline and milestones representing CMPSBL's strategic direction"
           className="absolute inset-0 w-full h-[60vh] object-cover"
         />
         <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />

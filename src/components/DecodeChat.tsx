@@ -205,7 +205,7 @@ export function DecodeChat() {
       icon: "✍️",
       title: "Write Content",
       description: "Create marketing copy",
-      prompt: "Write compelling marketing copy for PromptFluid's AI security platform"
+      prompt: "Write compelling marketing copy for CMPSBL's cognitive infrastructure platform"
     },
     {
       icon: "🧠",

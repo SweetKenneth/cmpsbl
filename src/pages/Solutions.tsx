@@ -15,7 +15,7 @@ export default function Solutions() {
       tagline: "Cognitive Infrastructure OS",
       description: "The 21-module cognitive operating system. Persistent memory, self-learning, multi-provider routing, and self-evolution — all in one platform.",
       features: ["21 integrated modules", "Persistent memory system", "Self-learning Dream Cycles", "Multi-provider AI routing", "Self-evolution capabilities", "175,000+ lines production code"],
-      metrics: ["v9.1.0 ARCHITECT", "Live", "Enterprise Ready"],
+      metrics: ["v9.3.0 ARCHITECT", "Live", "Enterprise Ready"],
       link: "/substrate"
     },
     {
@@ -89,7 +89,7 @@ export default function Solutions() {
       <section className="relative w-full">
         <img 
           src={heroImage}
-          alt="Modern data center infrastructure with server racks and blue lighting representing PromptFluid's enterprise-grade systems"
+          alt="Modern data center infrastructure with server racks and blue lighting representing CMPSBL's enterprise-grade systems"
           className="absolute inset-0 w-full h-[50vh] object-cover"
         />
         <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
