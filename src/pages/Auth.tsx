@@ -20,7 +20,7 @@ import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PasskeyButton } from '@/components/auth/PasskeyButton';
-import { isWebAuthnSupported, isPlatformAuthenticatorAvailable, registerPasskey, authenticateWithPasskey } from '@/lib/substrate/identity-module';
+import { isWebAuthnSupported, isPlatformAuthenticatorAvailable, registerPasskey, authenticateWithPasskey, linkPasskeyToEmail, getEmailForPasskey } from '@/lib/substrate/identity-module';
 import { toast } from 'sonner';
 
 // Animated background particles
@@ -165,32 +165,47 @@ export default function Auth() {
   };
 
   const handlePasskeyAuth = async () => {
+    setLoading(true);
     try {
       const result = await authenticateWithPasskey();
-      if (result.success) {
-        toast.success('Passkey verified — signing in...');
-        // Passkey verified client-side; trigger magic link for actual session
-        if (loginEmail) {
-          await signInWithMagicLink(loginEmail);
+      if (result.success && result.credentialId) {
+        // Look up the email linked to this passkey
+        const linkedEmail = getEmailForPasskey(result.credentialId);
+        if (linkedEmail) {
+          toast.success('Face ID verified — sending sign-in link...');
+          await signInWithMagicLink(linkedEmail);
+          setLoginEmail(linkedEmail);
           setMagicLinkSent('login');
         } else {
-          toast.info('Enter your email and tap the link we send to complete sign-in.');
+          toast.info('Face ID verified, but no email linked. Enter your email to complete sign-in.');
         }
       }
     } catch {
-      toast.error('Passkey authentication failed');
+      toast.error('Face ID authentication failed');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handlePasskeyRegister = async () => {
+    const email = signupEmail || loginEmail;
+    if (!email) {
+      toast.error('Enter your email first, then register Face ID.');
+      return;
+    }
     try {
-      const userId = `observer-${Date.now()}`;
-      const result = await registerPasskey(userId, signupDisplayName || signupEmail || 'Observer');
-      if (result.success) {
-        toast.success('Passkey registered! Now enter your email to complete sign-up.');
+      setLoading(true);
+      const userId = email; // Use email as the user handle so it's discoverable
+      const result = await registerPasskey(userId, signupDisplayName || email.split('@')[0] || 'Observer');
+      if (result.success && result.credential) {
+        // Link this credential to the email for future auto-login
+        linkPasskeyToEmail(result.credential.credentialId, email);
+        toast.success('Face ID registered! You can now sign in with just your face.');
       }
     } catch {
-      toast.error('Passkey registration failed');
+      toast.error('Face ID registration failed');
+    } finally {
+      setLoading(false);
     }
   };
 
