@@ -207,7 +207,10 @@ export default function ComposableCognitives() {
   const handleBuy = useCallback(async (sku: string) => {
     const validation = validateCognitiveName(chosenName);
     if (!validation.valid) {
-      pushToast({ message: validation.error || "Please enter a valid name", variant: "warning", anchor: "interaction", durationMs: 4000 });
+      pushToast({ message: validation.error || "Please name your Cognitive first — scroll up to the name field", variant: "warning", anchor: "center", durationMs: 5000 });
+      // Scroll to name input
+      const nameInput = document.querySelector('input[placeholder*="Nova"]') || document.querySelector('input[placeholder*="Agent"]');
+      if (nameInput) nameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
     try {
@@ -219,7 +222,7 @@ export default function ComposableCognitives() {
       if (data?.url) { window.location.href = data.url; }
     } catch (err) {
       console.error("Checkout error:", err);
-      pushToast({ message: "Checkout failed. Please try again.", variant: "error", anchor: "interaction", durationMs: 5000 });
+      pushToast({ message: "Checkout failed. Please try again.", variant: "error", anchor: "center", durationMs: 5000 });
     }
   }, [chosenName]);
 
