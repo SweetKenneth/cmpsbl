@@ -69,8 +69,8 @@ const CascadeAIDeepDive = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed mb-8">
               <p>
-                Cascade explores multiple specialized intelligence cycles, each designed for specific cognitive tasks. 
-                Using free-tier AI providers including Google AI Studio, Groq, and others, Cascade distributes its 
+              BRAIN explores multiple specialized intelligence cycles, each designed for specific cognitive tasks. 
+                Using free-tier AI providers including Google AI Studio, Groq, and others, the cognitive engine distributes 
                 processing across various learning and analysis tasks.
               </p>
             </div>
@@ -217,7 +217,7 @@ const CascadeAIDeepDive = () => {
               >
                 <h3 className="text-lg font-semibold mb-2 text-foreground">Free-Tier Provider Network</h3>
                 <p className="text-sm text-muted-foreground">
-                  Learn how Cascade routes tasks intelligently across Groq, Cerebras, Google AI Studio, and more.
+                  Learn how the substrate routes tasks intelligently across Groq, Cerebras, Google AI Studio, and more.
                 </p>
               </Link>
             </div>

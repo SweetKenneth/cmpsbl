@@ -81,7 +81,7 @@ const PromptFluidNexus = () => {
                   <div>
                     <h3 className="text-xl font-semibold mb-2 text-foreground">Intelligent Request Routing</h3>
                     <p className="text-muted-foreground">
-                      Nexus receives routing recommendations from Cascade and translates them into actual API calls, handling credential management, endpoint selection, and response normalization.
+                      NEXUS receives routing recommendations from BRAIN's cognitive engine and translates them into actual API calls, handling credential management, endpoint selection, and response normalization.
                     </p>
                   </div>
                 </div>

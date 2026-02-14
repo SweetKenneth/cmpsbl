@@ -45,7 +45,7 @@ const OBSERVER_FEATURES = [
   {
     icon: Layers,
     title: "Architecture Overview",
-    description: "Understand the six-layer, 21-module kernel architecture of CMPSBL v9.1.0."
+    description: "Understand the six-layer, 21-module kernel architecture of CMPSBL v9.3.0."
   }
 ];
 
@@ -54,7 +54,7 @@ export default function Insights() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>Substrate Insights — Observer Tier | CMPSBL</title>
-        <meta name="description" content="Observer-level access to CMPSBL Substrate OS v9.1.0 ARCHITECT Epoch. Read-only visibility into architecture, documentation, and system standards." />
+        <meta name="description" content="Observer-level access to CMPSBL Substrate OS v9.3.0 ARCHITECT Epoch. Read-only visibility into architecture, documentation, and system standards." />
       </Helmet>
 
       <PublicNav />
@@ -74,7 +74,7 @@ export default function Insights() {
             Explore documentation, architecture, and standards with read-only visibility.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">v9.1.0</Badge>
+            <Badge variant="outline">v9.3.0</Badge>
             <Badge variant="outline">21 Modules</Badge>
             <Badge variant="outline">Read-Only</Badge>
           </div>

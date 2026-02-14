@@ -63,18 +63,18 @@ const ProductRoadmap2025 = () => {
 
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-foreground">
-              Q1 2025: Foundation
+              Q1 2025: Foundation ✓
             </h2>
             
             <div className="space-y-4">
               <div className="border-l-4 border-primary bg-card rounded-r-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="h-5 w-5 text-primary" />
-                  <h3 className="font-bold text-foreground">RCKBL WordPress Plugin</h3>
+                  <h3 className="font-bold text-foreground">DEFENSE Module (Bot Protection)</h3>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>Private Beta (February 2025)</span>
+                  <span>Shipped — February 2025</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
                   Behavioral bot detection, real-time threat intelligence, adaptive challenge systems.
@@ -88,21 +88,21 @@ const ProductRoadmap2025 = () => {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>Internal Testing (March 2025)</span>
+                  <span>Shipped — March 2025</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  Dynamic provider selection across Groq, Cerebras, Together AI, DeepSeek, Hyperbolic—all free-tier.
+                  Dynamic provider selection across Groq, Cerebras, Together AI, DeepSeek, Hyperbolic — all free-tier.
                 </p>
               </div>
 
               <div className="border-l-4 border-primary bg-card rounded-r-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="h-5 w-5 text-primary" />
-                  <h3 className="font-bold text-foreground">Brain Learning Core</h3>
+                  <h3 className="font-bold text-foreground">BRAIN Learning Core</h3>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>Active Development (March 2025)</span>
+                  <span>Shipped — March 2025</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
                   Autonomous learning from every AI interaction. Pattern recognition, prompt optimization.
@@ -120,49 +120,49 @@ const ProductRoadmap2025 = () => {
 
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-foreground">
-              Q2 2025: Expansion
+              Q2 2025: Expansion ✓
             </h2>
             
             <div className="space-y-4">
-              <div className="border-l-4 border-amber-500 bg-card rounded-r-lg p-6">
+              <div className="border-l-4 border-primary bg-card rounded-r-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-amber-500" />
-                  <h3 className="font-bold text-foreground">Studio MVP</h3>
+                  <CheckCircle className="h-5 w-5 text-primary" />
+                  <h3 className="font-bold text-foreground">STUDIO MVP</h3>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>April-May 2025</span>
+                  <span>Shipped — May 2025</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
                   Natural language to React component generation. One-click deployment.
                 </p>
               </div>
 
-              <div className="border-l-4 border-amber-500 bg-card rounded-r-lg p-6">
+              <div className="border-l-4 border-primary bg-card rounded-r-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-amber-500" />
+                  <CheckCircle className="h-5 w-5 text-primary" />
                   <h3 className="font-bold text-foreground">Universal Defense SDK</h3>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>May 2025</span>
+                  <span>Shipped — May 2025</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  Defense capabilities beyond WordPress. React, Vue, Next.js, Express middleware.
+                  DEFENSE capabilities beyond WordPress. React, Vue, Next.js, Express middleware.
                 </p>
               </div>
 
-              <div className="border-l-4 border-green-500 bg-card rounded-r-lg p-6">
+              <div className="border-l-4 border-primary bg-card rounded-r-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  <h3 className="font-bold text-foreground">PTCHBL - Free Accessibility</h3>
+                  <CheckCircle className="h-5 w-5 text-primary" />
+                  <h3 className="font-bold text-foreground">INCLUSIVE Module (PTCHBL)</h3>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>LIVE</span>
+                  <span>Shipped — Live</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  AI-driven WCAG 2.2 scanning and fixes—completely free. 86+ automated checks.
+                  AI-driven WCAG 2.2 scanning and fixes — completely free. 86+ automated checks.
                 </p>
               </div>
             </div>
@@ -170,46 +170,46 @@ const ProductRoadmap2025 = () => {
 
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-foreground">
-              Q3-Q4 2025: Marketing & Enterprise
+              Q3–Q4 2025: Platform Maturity ✓
             </h2>
             
             <div className="space-y-4">
-              <div className="border-l-4 border-muted bg-card rounded-r-lg p-6">
+              <div className="border-l-4 border-primary bg-card rounded-r-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-muted-foreground" />
+                  <CheckCircle className="h-5 w-5 text-primary" />
                   <h3 className="font-bold text-foreground">Marketing Studio</h3>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>July-August 2025</span>
+                  <span>Shipped — August 2025</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
                   Multi-channel campaign generation, SEO content, audience analysis.
                 </p>
               </div>
 
-              <div className="border-l-4 border-muted bg-card rounded-r-lg p-6">
+              <div className="border-l-4 border-primary bg-card rounded-r-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-muted-foreground" />
+                  <CheckCircle className="h-5 w-5 text-primary" />
                   <h3 className="font-bold text-foreground">Creative Pipeline</h3>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>September 2025</span>
+                  <span>Shipped — September 2025</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
                   Image and video generation across Stability.ai, Replicate, RunwayML.
                 </p>
               </div>
 
-              <div className="border-l-4 border-muted bg-card rounded-r-lg p-6">
+              <div className="border-l-4 border-primary bg-card rounded-r-lg p-6">
                 <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-muted-foreground" />
-                  <h3 className="font-bold text-foreground">Vision Dashboard</h3>
+                  <CheckCircle className="h-5 w-5 text-primary" />
+                  <h3 className="font-bold text-foreground">VISION Dashboard</h3>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="h-4 w-4" />
-                  <span>October 2025</span>
+                  <span>Shipped — October 2025</span>
                 </div>
                 <p className="text-muted-foreground text-sm">
                   Centralized command center. Usage analytics, team collaboration, audit logging.
@@ -220,12 +220,12 @@ const ProductRoadmap2025 = () => {
 
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-foreground">
-              2026: Autonomous Operations
+              2026: ARCHITECT Epoch — Now
             </h2>
             
             <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Advanced autonomous agents, vertical market solutions, enterprise self-serve deployment, and Cascade enhancements including simulated dream cycles for strategic planning.
+                v9.3.0 ARCHITECT Epoch is live — 21 integrated modules, 200 synergy pipelines, 100 engines (76 base + 24 meta), unified pricing (Free / Creator / Architect), and the Composable Artifacts Store. Dream cycles, cross-project learning, and autonomous improvement are shipping now.
               </p>
               
               <p>

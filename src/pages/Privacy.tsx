@@ -14,13 +14,13 @@ export default function Privacy() {
       
       <main className="container mx-auto px-4 py-16 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
-        <p className="text-muted-foreground mb-8">Last updated: December 21, 2025</p>
+        <p className="text-muted-foreground mb-8">Last updated: February 14, 2026</p>
         
         <div className="prose prose-lg dark:prose-invert max-w-none space-y-8">
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
             <p className="text-muted-foreground leading-relaxed">
-              PromptFluid ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
+              CMPSBL®, a product of PromptFluid ("we," "our," or "us"), is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
             </p>
           </section>
 
@@ -115,8 +115,8 @@ export default function Privacy() {
               If you have questions about this Privacy Policy, please contact us at:
             </p>
             <p className="text-muted-foreground mt-4">
-              <strong>Email:</strong> privacy@promptfluid.com<br />
-              <strong>Phone:</strong> (760) FLUID-AI
+              <strong>Email:</strong> Dev@CMPSBL.com<br />
+               <strong>Phone:</strong> (760) FLUID-AI
             </p>
           </section>
         </div>

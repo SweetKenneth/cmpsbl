@@ -1,5 +1,5 @@
 /**
- * FNDTN v7 — Foundations
+ * FNDTN v8 — Foundations
  * Standards release page with documentation index and download surface
  */
 
@@ -53,6 +53,13 @@ const MODULES = [
   { name: "INTEGRATION", icon: Globe, desc: "Connectors" },
   { name: "INCLUSIVE", icon: Users, desc: "Accessibility" },
   { name: "CORTEX", icon: Layers, desc: "Policy orchestration" },
+  { name: "ATLAS", icon: Globe, desc: "Capability registry" },
+  { name: "FORGE", icon: Zap, desc: "Cognitive factory" },
+  { name: "SENTINEL", icon: Shield, desc: "Runtime guard" },
+  { name: "CHRONICLE", icon: BookOpen, desc: "Audit trail" },
+  { name: "HARMONY", icon: Users, desc: "Team coordination" },
+  { name: "PRISM", icon: Eye, desc: "Multi-lens analysis" },
+  { name: "BEACON", icon: Zap, desc: "Signal dispatch" },
 ];
 
 export default function Foundations() {
@@ -84,7 +91,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="CMPSBL Substrate OS v9.1.0 ARCHITECT Epoch — Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
+        <meta name="description" content="CMPSBL Substrate OS v9.3.0 ARCHITECT Epoch — Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -94,13 +101,13 @@ export default function Foundations() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Layers className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">v9.1.0 ARCHITECT Epoch</span>
+            <span className="text-sm font-mono text-primary">v9.3.0 ARCHITECT Epoch</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             Foundations
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            CMPSBL Substrate OS v9.1.0 is the reference implementation and proposed standard 
+            CMPSBL Substrate OS v9.3.0 is the reference implementation and proposed standard 
             for the <strong>substrate class</strong> of AI systems — persistent runtime, memory, 
             doctrine, and self-improvement.
           </p>
@@ -121,8 +128,8 @@ export default function Foundations() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              CMPSBL v9.1.0 ARCHITECT presents a unified cognitive infrastructure platform 
-              implementing a six-layer, 21-module kernel architecture with 200 synergy pipelines. 
+              CMPSBL v9.3.0 ARCHITECT presents a unified cognitive infrastructure platform 
+              implementing a six-layer, 21-module kernel architecture with 200 synergy pipelines.
               The system provides persistent runtime with 3-tier memory (Hot/Warm/Cold), adaptive 
               learning cycles, multi-provider AI routing, real-time observability, and self-improvement pipelines.
             </p>
@@ -161,7 +168,7 @@ export default function Foundations() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-primary/10 border border-primary/30">
                 <h4 className="font-medium text-primary mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL v9.1.0 ARCHITECT</p>
+                <p className="text-sm text-muted-foreground">CMPSBL v9.3.0 ARCHITECT</p>
               </Link>
               <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Governance Standard</h4>
@@ -196,7 +203,7 @@ export default function Foundations() {
                   Complete Bundle
                 </CardTitle>
                 <CardDescription>
-                  Full FNDTN v7.0.0 documentation package
+                  Full FNDTN v8 documentation package
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -355,7 +362,7 @@ export default function Foundations() {
         {/* Author Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
           <p className="text-sm text-muted-foreground">
-            v9.1.0 ARCHITECT by{" "}
+            v9.3.0 ARCHITECT by{" "}
             <a 
               href="https://orcid.org/0009-0001-4237-1243" 
               target="_blank" 
