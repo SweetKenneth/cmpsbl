@@ -115,7 +115,7 @@ export function CmpsblNav() {
         { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap },
         { name: "Engines", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
         { name: "Composable Artifacts", href: "/store", description: "Capabilities, templates & synergy pipelines", icon: Sparkles },
-        { name: "Showcase", href: "/showcase", description: "Live proof-of-capability demonstrations", icon: Rocket },
+        { name: "Proof Stamp", href: "/showcase", description: "Live proof-of-capability demonstrations", icon: Rocket },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
@@ -526,7 +526,7 @@ export function CmpsblNav() {
                   { name: "Composable Artifacts", href: "/store", icon: Sparkles },
                   { name: "Composable Cognitives", href: "/composable-cognitives", icon: Zap },
                   { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
-                  { name: "Showcase", href: "/showcase", icon: Rocket },
+                  { name: "Proof Stamp", href: "/showcase", icon: Rocket },
                 ].map((item, idx) => (
                   <Link
                     key={item.href}
