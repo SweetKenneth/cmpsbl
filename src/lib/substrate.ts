@@ -33,6 +33,31 @@ export interface SubstrateResponse<T = unknown> {
   timestamp: string;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// DYNAMIC TIMEOUT CONFIGURATION
+// Long-running commands get extended timeouts (60s); status/pulse get short ones (15s).
+// Hard ceiling of 60s prevents runaway processes.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const LONG_RUNNING_ACTIONS = new Set([
+  'optimize', 'tier', 'prune', 'cognitive_cycle', 'deep_think',
+  'graph_build', 'synthesize', 'dream', 'reflect', 'continuous_learn',
+  'reinforce_cycle', 'scan', 'evolve', 'heal', 'backup', 'restore',
+  'cycle', 'propose', 'execute', 'pattern_fusion', 'insight_synthesize',
+  'insight_aggregate', 'coherence_check', 'scan_adapt', 'run_all',
+]);
+
+const QUICK_ACTIONS = new Set([
+  'status', 'pulse', 'health', 'version', 'config', 'list',
+  'providers', 'rules', 'limits', 'posture', 'mood',
+]);
+
+function getTimeoutForAction(action: string): number {
+  if (LONG_RUNNING_ACTIONS.has(action)) return 60000;
+  if (QUICK_ACTIONS.has(action)) return 15000;
+  return 30000;
+}
+
 class SubstrateClient {
   private static instance: SubstrateClient;
 
@@ -46,56 +71,70 @@ class SubstrateClient {
   }
 
   async invoke<T = unknown>(request: SubstrateRequest): Promise<SubstrateResponse<T>> {
+    const timeoutMs = getTimeoutForAction(request.action);
+
     try {
-      const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: request,
-      });
+      // Use AbortController for proper timeout that cancels the underlying fetch
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-      const now = new Date().toISOString();
+      try {
+        const { data, error } = await supabase.functions.invoke('pf-substrate', {
+          body: request,
+        });
 
-      if (error) {
+        clearTimeout(timeoutId);
+        const now = new Date().toISOString();
+
+        if (error) {
+          return {
+            success: false,
+            module: request.module,
+            action: request.action,
+            error: error.message,
+            timestamp: now,
+          };
+        }
+
+        // Many substrate actions return HTTP 200 with a JSON body containing { success: false, ... }.
+        const payload = data as any;
+        if (payload && typeof payload === 'object' && 'success' in payload && payload.success === false) {
+          const message =
+            payload.error_message ||
+            payload.error ||
+            payload.message ||
+            'Command failed';
+
+          return {
+            success: false,
+            module: request.module,
+            action: request.action,
+            error: String(message),
+            data: payload as T,
+            timestamp: now,
+          };
+        }
+
         return {
-          success: false,
+          success: true,
           module: request.module,
           action: request.action,
-          error: error.message,
+          data: data as T,
           timestamp: now,
         };
+      } catch (fetchErr) {
+        clearTimeout(timeoutId);
+        throw fetchErr;
       }
-
-      // Many substrate actions return HTTP 200 with a JSON body containing { success: false, ... }.
-      // Treat that as a failure so the terminal/UI doesn't show confusing “2xx but error” states.
-      const payload = data as any;
-      if (payload && typeof payload === 'object' && 'success' in payload && payload.success === false) {
-        const message =
-          payload.error_message ||
-          payload.error ||
-          payload.message ||
-          'Command failed';
-
-        return {
-          success: false,
-          module: request.module,
-          action: request.action,
-          error: String(message),
-          data: payload as T,
-          timestamp: now,
-        };
-      }
-
-      return {
-        success: true,
-        module: request.module,
-        action: request.action,
-        data: data as T,
-        timestamp: now,
-      };
     } catch (err) {
+      const isTimeout = err instanceof DOMException && err.name === 'AbortError';
       return {
         success: false,
         module: request.module,
         action: request.action,
-        error: err instanceof Error ? err.message : 'Unknown error',
+        error: isTimeout
+          ? `Command timed out after ${timeoutMs / 1000}s. The operation may still be running on the server.`
+          : (err instanceof Error ? err.message : 'Unknown error'),
         timestamp: new Date().toISOString(),
       };
     }

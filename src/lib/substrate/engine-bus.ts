@@ -35,7 +35,7 @@ export type EngineName =
 export type DispatchStage = 'pending' | 'routing' | 'executing' | 'completed' | 'failed';
 
 export interface DispatchOptions {
-  /** Timeout in milliseconds (default: 30000) */
+  /** Timeout in milliseconds (default: 60000 for long ops, 30000 otherwise) */
   timeout?: number;
   /** Number of retries on failure (default: 0) */
   retries?: number;
@@ -179,8 +179,10 @@ class EngineBusClient {
   ): Promise<DispatchResult<T>> {
     const startTime = new Date();
     const correlationId = crypto.randomUUID();
+    // Dynamic timeout: long-running cognitive commands get 60s
+    const longRunning = ['optimize', 'tier', 'cognitive_cycle', 'deep_think', 'synthesize', 'graph_build', 'reflect', 'dream', 'cycle', 'scan', 'evolve', 'heal'].some(k => command.includes(k));
     const {
-      timeout = 30000,
+      timeout = longRunning ? 60000 : 30000,
       retries = 0,
       retryDelay = 1000,
       deterministicMode = false,
@@ -451,11 +453,12 @@ class EngineBusClient {
     payload: Record<string, unknown>,
     timeout: number
   ): Promise<T> {
-    const timeoutId = setTimeout(() => {
-      throw new Error('TIMEOUT');
-    }, timeout);
+    // Use Promise.race with a proper timeout promise for correct cancellation
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error(`TIMEOUT: ${command} exceeded ${timeout}ms limit`)), timeout);
+    });
 
-    try {
+    const execPromise = (async () => {
       const { data, error } = await supabase.functions.invoke('pf-substrate', {
         body: {
           module: 'brain',
@@ -469,9 +472,9 @@ class EngineBusClient {
       if (data?.success === false) throw new Error(data.error || data.message || 'Command failed');
 
       return data as T;
-    } finally {
-      clearTimeout(timeoutId);
-    }
+    })();
+
+    return Promise.race([execPromise, timeoutPromise]);
   }
 
   private createErrorResult<T>(
