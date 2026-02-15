@@ -264,7 +264,7 @@ export function DecodeChat() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 w-96 h-[600px] glass border border-primary/30 rounded-2xl shadow-glow-lg z-50 flex flex-col overflow-hidden animate-scale-in">
+    <div className="fixed inset-4 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 sm:h-[600px] glass border border-primary/30 rounded-2xl shadow-glow-lg z-50 flex flex-col overflow-hidden animate-scale-in">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border/50 bg-gradient-to-r from-primary/10 via-primary-variant/10 to-accent/10">
         <div className="flex items-center gap-2">
