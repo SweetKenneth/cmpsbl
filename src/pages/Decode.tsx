@@ -7,6 +7,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, RefreshCw } from "lucide-react";
+import { DecodeMarkdown } from "@/components/decode/DecodeMarkdown";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { decode, substrate } from "@/lib/substrate";
@@ -256,7 +257,7 @@ export default function Decode() {
                       : 'bg-card/60 backdrop-blur text-foreground border border-border/30'
                   }`}
                 >
-                  <p className="text-sm md:text-[15px] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                  <DecodeMarkdown content={msg.content} isUser={msg.role === 'user'} className="text-sm md:text-[15px]" />
                   
                   {msg.metadata?.processing_time && msg.role === 'interpreter' && (
                     <div className="flex items-center gap-2 mt-1.5 md:mt-2">

@@ -16,12 +16,12 @@ interface DecodeMarkdownProps {
 
 export function DecodeMarkdown({ content, className, isUser = false }: DecodeMarkdownProps) {
   return (
-    <div className={cn('decode-markdown', isUser && 'decode-markdown--user', className)}>
+    <div className={cn('decode-markdown text-current [&_*]:text-inherit', isUser && 'decode-markdown--user', className)}>
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
         p: ({ children }) => (
-          <p className="mb-1.5 last:mb-0 leading-relaxed">{children}</p>
+          <p className={cn("mb-1.5 last:mb-0 leading-relaxed", isUser ? "text-primary-foreground" : "text-foreground")}>{children}</p>
         ),
         strong: ({ children }) => (
           <strong className={cn('font-semibold', isUser ? 'text-primary-foreground' : 'text-foreground')}>
@@ -114,7 +114,9 @@ export function DecodeMarkdown({ content, className, isUser = false }: DecodeMar
           </td>
         ),
       }}
-    />
+    >
+      {content}
+    </ReactMarkdown>
     </div>
   );
 }
