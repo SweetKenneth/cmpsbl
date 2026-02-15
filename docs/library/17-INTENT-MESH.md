@@ -2,12 +2,12 @@
 
 # Intent Mesh — Emergent Module Intelligence Layer
 
-### CMPSBL OS Substrate v10.3.0
+### CMPSBL OS Substrate v10.4.0
 
 **Classification:** Library — No Trade Secrets  
 **Audience:** Investors · Researchers · Developers · Partners  
 **DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
-**Last Updated:** February 14, 2026
+**Last Updated:** February 15, 2026
 
 </div>
 
@@ -21,19 +21,19 @@ The Intent Mesh is a v10.0+ architectural advancement that enables **autonomous 
 
 | Property | Value |
 |----------|-------|
-| Version | v10.3.0 |
-| Resolvers | 34 (across 21 modules) |
-| Discovery Methods | 4 (Introspection, Gap Response, Affinity Bridge, Intent Learning) |
+| Version | v10.4.0 |
+| Resolvers | 34+ (across 21 modules, auto-expanding) |
+| Discovery Methods | 7 (Introspection, Gap Response, Affinity Bridge, Intent Learning, Live Gap Execution, Affinity Matrix, Pattern Recognition) |
 | Governance | Kill switch (OFF by default) + read-only enforcement |
 | Database | `mesh_intents` + `mesh_saved_pipelines` + `mesh_discovery_*` + `mesh_capability_recommendations` |
 | Dashboard | `/os → Observe → Mesh` (6 views: Live, Pipelines, Proposals, Scoring, Scheduler, Topology) |
-| Terminal Commands | 18+ (`mesh.*` namespace) |
+| Terminal Commands | 26+ (`mesh.*` namespace) |
 
 ---
 
 ## 2. Architectural Overview
 
-### 2.1 Six-Layer Design
+### 2.1 Eight-Layer Design
 
 <table>
 <tr><th>Layer</th><th>Component</th><th>Purpose</th></tr>
@@ -43,13 +43,15 @@ The Intent Mesh is a v10.0+ architectural advancement that enables **autonomous 
 <tr><td>Learning</td><td>Pipeline Crystallization + CLM Feedback</td><td>Saves discovered chains; feeds scoring insights into module learning</td></tr>
 <tr><td>Discovery</td><td>Gap Analysis + Module Self-Discovery</td><td>Identifies capability gaps; modules propose new resolvers autonomously</td></tr>
 <tr><td>Refinement</td><td>Multi-Turn Resolution + Intent Scoring</td><td>Iterative intent improvement; quality scoring for all interactions</td></tr>
+<tr><td>Live Analysis</td><td>Live Gap Execution + Affinity Matrix</td><td>Real DB-backed gap analysis with auto-proposals; persistent affinity tracking with drift detection</td></tr>
+<tr><td>Pattern Intelligence</td><td>Pattern Recognition + Auto-Crystallization</td><td>Detects recurring intent sequences and auto-suggests pipeline crystallization</td></tr>
 </table>
 
 ### 2.2 Relationship to Existing Orchestration
 
 The Intent Mesh **supplements, not replaces**, the existing orchestration layer:
 
-| Aspect | Orchestration (v9.x) | Intent Mesh (v10.3) |
+| Aspect | Orchestration (v9.x) | Intent Mesh (v10.4) |
 |--------|----------------------|---------------------|
 | Routing | Explicit, coded pipelines | Dynamic, domain-based matching |
 | Discovery | Developer must know target module | Automatic via capability manifest |
@@ -57,6 +59,9 @@ The Intent Mesh **supplements, not replaces**, the existing orchestration layer:
 | Safety | Pipeline-level governance | Kill switch + risk-level gating |
 | Learning | Static pipeline definitions | Self-scoring, CLM feedback, auto-expansion |
 | Self-Improvement | Manual updates | Autonomous module self-discovery |
+| Gap Analysis | Manual inspection | Live DB-backed gap execution with auto-proposals |
+| Affinity | Unknown | Persistent matrix with drift detection and clusters |
+| Patterns | N/A | Auto-detected sequences crystallized into pipelines |
 
 ---
 
@@ -69,7 +74,7 @@ The manifest is the "phone book" of the mesh. Each module advertises resolvers w
 - **Produces**: Output keys the resolver generates
 - **Risk Level**: `read` (default), `enrich`, or `mutate`
 
-### 3.1 Resolver Registry (34 Resolvers across 21 Modules)
+### 3.1 Resolver Registry (34+ Resolvers across 21 Modules)
 
 <table>
 <tr><th>Module</th><th>Resolvers</th><th>Key Domains</th></tr>
@@ -122,6 +127,11 @@ The manifest is the "phone book" of the mesh. Each module advertises resolvers w
                                ▼           ▼           ▼
                           Crystallize  Score Quality  Gap Detect
                           (pipeline)   (0-100)       (discovery)
+                                           │
+                               ┌───────────┼───────────┐
+                               ▼           ▼           ▼
+                          Live Gaps    Affinity     Patterns
+                          (auto-fix)   (drift)      (sequences)
 ```
 
 ---
@@ -229,7 +239,81 @@ Intent Scoring → Extract Insights → Inject CLM Topics → Module Self-Reflec
 
 ---
 
-## 11. Auto-Expansion Scheduler (v10.3)
+## 11. Live Gap Execution (v10.4) — NEW
+
+Runs discovery against **real database receipt data** instead of structural analysis alone. Queries actual `mesh_intents` to find:
+
+| Analysis | Description |
+|----------|-------------|
+| **Failure patterns** | Intents that consistently fail or partially resolve |
+| **Domain traffic gaps** | Domains with traffic but no resolvers |
+| **Unresponsive modules** | Modules frequently targeted but never responding |
+| **Auto-proposals** | New resolvers auto-generated from failure patterns |
+
+### Output: LiveGapReport
+
+- **Module response rates** — per-module targeted vs. responded ratio
+- **Domain coverage map** — which domains have resolvers vs. traffic
+- **Severity classification** — critical / high / medium / low
+- **Auto-proposals** — resolver specs auto-derived from failure data
+
+Terminal: `mesh.live.gaps`
+
+---
+
+## 12. Cross-Module Affinity Matrix (v10.4) — NEW
+
+Builds a **persistent affinity matrix** showing which module pairs collaborate best, with drift detection:
+
+### Two Signal Sources
+
+| Source | Weight | Description |
+|--------|--------|-------------|
+| **Structural** | 40% | Shared domains between module resolvers |
+| **Behavioral** | 60% | Co-resolution frequency from actual mesh receipts |
+
+### Key Features
+
+- **Drift detection**: Compares current snapshot with previous; alerts on significant affinity changes (>15%)
+- **Trend classification**: strengthening / stable / weakening / new
+- **Cluster detection**: BFS-based discovery of tightly connected module groups
+- **Module strength ranking**: Average affinity and connection count per module
+
+### Output: AffinityMatrix
+
+- `edges[]` — all module pair connections with scores and trends
+- `moduleStrengths[]` — per-module average affinity and strongest partner
+- `clusters[]` — detected tightly-coupled module groups with cohesion scores
+- `driftAlerts[]` — pairs where affinity shifted significantly since last snapshot
+
+Terminal: `mesh.affinity.matrix`, `mesh.affinity.module <name>`
+
+---
+
+## 13. Intent Pattern Recognition (v10.4) — NEW
+
+Detects **recurring intent sequences** from temporal analysis of mesh receipts and auto-suggests pipeline crystallization:
+
+### Three Pattern Types
+
+| Pattern | Detection Method | Pipeline Suggestion |
+|---------|-----------------|---------------------|
+| **Co-occurrence** | Intents firing within 10-second windows | When ≥5 co-occurrences detected |
+| **Sequential** | Intent A consistently followed by B within 30 seconds | When ≥5 sequences with <5s avg gap |
+| **Collaboration** | Same module set consistently co-resolving | When ≥5 co-resolutions detected |
+
+### Output: PatternReport
+
+- Co-occurrence patterns with frequency and confidence
+- Sequential chains with average interval timing
+- Collaboration patterns with module sets and intent coverage
+- **Auto-generated pipeline suggestions** with reasoning
+
+Terminal: `mesh.patterns`
+
+---
+
+## 14. Auto-Expansion Scheduler (v10.4)
 
 Periodic cycles that self-improve the manifest:
 
@@ -239,12 +323,13 @@ Periodic cycles that self-improve the manifest:
 | Gap Analysis | 2 hours | Scan failed/partial intents |
 | Intent Quality Scoring | 1 hour | Score effectiveness + CLM feedback |
 | Full Expansion | 24 hours | Apply high-confidence proposals (≥0.85) |
+| **Advanced Discovery** | On-demand | Live gaps + affinity matrix + pattern recognition |
 
-Kill switch: Disabled when mesh is disabled. Manual trigger available via dashboard.
+Kill switch: Disabled when mesh is disabled. Manual trigger available via dashboard and `mesh.discover.advanced`.
 
 ---
 
-## 12. Mesh Topology Visualization (v10.3)
+## 15. Mesh Topology Visualization (v10.3)
 
 Force-directed canvas graph showing all 21 modules as nodes with connections based on:
 - Shared domains between modules
@@ -255,20 +340,20 @@ Interactive: Click modules to inspect, expandable fullscreen mode.
 
 ---
 
-## 13. Pipeline Crystallization (v10.1)
+## 16. Pipeline Crystallization (v10.1)
 
 When the mesh discovers a productive resolver chain, users can crystallize it into a saved pipeline:
 
 | Property | Description |
 |----------|-------------|
 | Storage | `mesh_saved_pipelines` table (RLS-protected) |
-| Source | Any successful mesh receipt |
+| Source | Any successful mesh receipt or pattern detection |
 | Replay | One-click re-broadcast with identical configuration |
 | Tracking | Run count and last execution timestamp |
 
 ---
 
-## 14. Dashboard Interface (6 Views)
+## 17. Dashboard Interface (6 Views)
 
 | View | Purpose |
 |------|---------|
@@ -281,7 +366,7 @@ When the mesh discovers a productive resolver chain, users can crystallize it in
 
 ---
 
-## 15. Terminal Command Reference (18+ Commands)
+## 18. Terminal Command Reference (26+ Commands)
 
 | Command | Description |
 |---------|-------------|
@@ -296,16 +381,25 @@ When the mesh discovers a productive resolver chain, users can crystallize it in
 | `mesh.run <name>` | Run a saved pipeline |
 | `mesh.resolvers` | List all module resolvers |
 | `mesh.broadcast` | Test broadcast |
+| `mesh.refine [n]` | Multi-turn refined broadcast |
+| `mesh.chains [keys]` | Discover composite resolver chains |
+| `mesh.chain.run <keys>` | Execute optimal chain |
 | `mesh.discover.all` | Run self-discovery across all 21 modules |
-| `mesh.scores` | View intent quality leaderboard |
+| `mesh.discover.module <name>` | Run self-discovery for one module |
+| `mesh.discover.advanced` | Run all v10.4 discovery phases |
+| `mesh.scores` | Intent quality leaderboard |
 | `mesh.approve <id>` | Approve a self-discovered proposal |
 | `mesh.clm.feedback` | Run CLM feedback loop manually |
 | `mesh.clm.summary` | View CLM feedback summary |
+| `mesh.live.gaps` | Live gap execution against real DB data |
+| `mesh.affinity.matrix` | Full cross-module affinity matrix |
+| `mesh.affinity.module <name>` | Affinity partners for one module |
+| `mesh.patterns` | Detect intent patterns & pipeline suggestions |
 | `mesh.help` | Show command reference |
 
 ---
 
-## 16. Competitive Significance
+## 19. Competitive Significance
 
 The Intent Mesh creates a **capability moat** that is difficult to replicate:
 
@@ -315,14 +409,17 @@ The Intent Mesh creates a **capability moat** that is difficult to replicate:
 4. **Full Coverage**: All 21 modules participate with 34+ resolvers
 5. **Governed Freedom**: Kill switch + risk gating + human approval for new capabilities
 6. **Network Effect**: Each new module/resolver exponentially increases possible interactions
-7. **Auditable**: Every interaction produces a receipt; every proposal has provenance
-8. **No Known Precedent**: No comparable system combines autonomous module discovery, intent quality scoring, CLM feedback loops, pipeline crystallization, and cryptographic auditability in a single architecture
+7. **Live Analysis**: Real DB-backed gap execution with auto-generated resolver proposals
+8. **Drift Detection**: Persistent affinity matrix detects when module relationships change
+9. **Pattern Intelligence**: Temporal analysis discovers recurring sequences for automatic pipeline crystallization
+10. **Auditable**: Every interaction produces a receipt; every proposal has provenance
+11. **No Known Precedent**: No comparable system combines autonomous module discovery, live gap analysis, affinity matrices with drift detection, temporal pattern recognition, intent quality scoring, CLM feedback loops, pipeline crystallization, and cryptographic auditability in a single architecture
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v10.3.0 — Intent Mesh*
+*CMPSBL OS Substrate v10.4.0 — Intent Mesh*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  

@@ -134,3 +134,27 @@ export {
   type CLMFeedbackInsight,
   type CLMFeedbackResult,
 } from './clm-feedback';
+
+// Live Gap Execution — real DB-backed gap analysis with auto-proposals
+export {
+  runLiveGapExecution,
+  type LiveGap,
+  type LiveGapReport,
+  type ResolverProposal,
+} from './live-gap-execution';
+
+// Cross-Module Affinity Matrix — persistent affinity tracking with drift detection
+export {
+  buildAffinityMatrix,
+  getModuleAffinity,
+  type AffinityEdge,
+  type AffinityMatrix,
+} from './affinity-matrix';
+
+// Intent Pattern Recognition — detect recurring sequences and auto-suggest pipelines
+export {
+  detectPatterns,
+  getLatestPatterns,
+  type IntentPattern,
+  type PatternReport,
+} from './pattern-recognition';
