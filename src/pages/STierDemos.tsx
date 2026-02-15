@@ -41,10 +41,10 @@ const DEMOS: DemoConfig[] = [
   {
     id: 'self-heal',
     title: 'Self-Healing Architecture',
-    subtitle: 'Break it. Watch it fix itself.',
+    subtitle: 'Introduce failure. Observe recovery.',
     icon: Shield,
     color: 'text-emerald-400',
-    description: 'Inject a fault into the substrate and watch it autonomously detect, diagnose, and repair — with a full audit trail.',
+    description: 'Inject a fault into the substrate and observe autonomous detection, diagnosis, and repair — without human intervention.',
     capabilities: ['Fault Injection', 'Auto-Detection', 'Autonomous Repair', 'Audit Trail'],
     investorHook: 'No human intervention. The system heals itself.',
   },
@@ -54,29 +54,29 @@ const DEMOS: DemoConfig[] = [
     subtitle: 'Every thought has a lineage.',
     icon: GitBranch,
     color: 'text-violet-400',
-    description: 'Trace the full reasoning chain of any output — which model, engine, heuristics, and memories contributed.',
+    description: 'Trace how outputs are formed across models, heuristics, memory, and reasoning layers. Nothing is opaque. Nothing is hand-waved.',
     capabilities: ['Reasoning Trace', 'Model Attribution', 'Heuristic Lineage', 'Cryptographic Seal'],
     investorHook: 'AI supply-chain transparency. Regulators love it.',
   },
   {
     id: 'sovereign',
     title: 'Sovereign Execution',
-    subtitle: 'No internet? No problem.',
+    subtitle: 'No network. No dependency. No permission.',
     icon: WifiOff,
     color: 'text-amber-400',
-    description: 'Prove the substrate runs entirely offline — full cognitive operations with persistent memory, zero cloud dependency.',
-    capabilities: ['Offline Operation', 'Local Memory', 'Edge Compute', 'Zero-Dependency'],
+    description: 'Demonstrates full cognitive execution with zero external connectivity. Memory, reasoning, and decision flow persist entirely within the substrate — no cloud calls, no silent fallbacks.',
+    capabilities: ['Offline Cognition', 'Local Memory Persistence', 'Edge-Native Execution'],
     investorHook: '"What if OpenAI goes down?" — This kills that objection.',
   },
   {
     id: 'living-map',
     title: 'Living Architecture',
-    subtitle: 'See the organism breathe.',
+    subtitle: 'See the system regulate itself.',
     icon: Activity,
     color: 'text-cyan-400',
-    description: 'A real-time animated visualization of the entire 21-module substrate — modules pulse, connections glow, bottlenecks turn red.',
-    capabilities: ['Real-Time Telemetry', 'Module Pulse', 'Data Flow Viz', 'Bottleneck Detection'],
-    investorHook: 'Investors don\'t see a dashboard. They see a living system.',
+    description: 'A real-time visualization of the substrate in motion. Observe module activation, signal flow, and adaptive response as the system processes live input.',
+    capabilities: ['Live Telemetry', 'Module Pulse', 'Cognitive Flow Mapping'],
+    investorHook: 'You\'re not watching an animation. You\'re watching metabolism.',
   },
 ];
 
@@ -606,7 +606,7 @@ export default function STierDemos() {
                 transition={{ delay: 0.3, duration: 0.6 }}
                 className="block bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent"
               >
-                Don't Take Our Word.
+                Don't Believe Claims.
               </motion.span>
               <motion.span 
                 initial={{ opacity: 0, y: 20 }}
@@ -614,7 +614,7 @@ export default function STierDemos() {
                 transition={{ delay: 0.5, duration: 0.6 }}
                 className="block bg-gradient-to-r from-primary via-primary to-foreground bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.15)]"
               >
-                Watch It Prove Itself.
+                Trigger Systems.
               </motion.span>
             </h1>
             
@@ -624,8 +624,9 @@ export default function STierDemos() {
               transition={{ delay: 0.7, duration: 0.5 }}
               className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed"
             >
-              Live, interactive proof-of-moat. Every demo runs against the real substrate — 
-              no mocks, no staging, no smoke.
+              Every showcase runs on the live CMPSBL substrate.<br />
+              No mocks. No replays. No precomputed output.<br />
+              <span className="text-foreground/80 font-medium">What you see is the system thinking in real time.</span>
             </motion.p>
 
             <motion.div
@@ -635,7 +636,7 @@ export default function STierDemos() {
               className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground/60"
             >
               <div className="w-2 h-2 rounded-full bg-primary/60 animate-pulse" />
-              <span>Scroll below to explore live demos</span>
+              <span>Explore live substrate behavior ↓</span>
             </motion.div>
           </motion.div>
         </div>
@@ -650,9 +651,19 @@ export default function STierDemos() {
           className="flex items-center gap-3 mb-6"
         >
           <Separator className="flex-1" />
-          <span className="text-xs text-muted-foreground tracking-widest uppercase font-medium">Select a Demo</span>
+          <span className="text-xs text-muted-foreground tracking-widest uppercase font-medium">Select a System Behavior</span>
           <Separator className="flex-1" />
         </motion.div>
+
+        {/* Credibility line */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-center text-xs text-muted-foreground/50 mb-6 max-w-lg mx-auto leading-relaxed"
+        >
+          These are not examples. They are live executions of the same substrate developers integrate into production systems.
+        </motion.p>
 
         {/* Horizontal Scroll Demo Cards */}
         <div
@@ -718,6 +729,7 @@ export default function STierDemos() {
                         <ChevronRight className="w-3 h-3 animate-pulse" /> Active below
                       </motion.div>
                     )}
+                    <p className="mt-2 text-[9px] text-muted-foreground/35 italic">Executing on the same substrate used in production systems.</p>
                   </CardContent>
                 </Card>
               </motion.div>
