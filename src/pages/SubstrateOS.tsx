@@ -54,6 +54,7 @@ import { PublicMetricsTab } from '@/components/substrate-os/PublicMetricsTab';
 import { PatchAuthoringTab } from '@/components/substrate-os/PatchAuthoringTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
 import { MeshActivityTab } from '@/components/substrate-os/MeshActivityTab';
+import { AnalyticsTab } from '@/components/substrate-os/AnalyticsTab';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -145,10 +146,9 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       tier: 'creator',
       tabs: [
         { id: 'terminal', label: 'Terminal', icon: Terminal, color: 'emerald', description: 'Command interface', tier: 'creator' },
-        { id: 'cognitives', label: 'Cognitives', icon: Bot, color: 'fuchsia', description: 'Bot registry & management', tier: 'creator' },
+        { id: 'analytics', label: 'Analytics', icon: Activity, color: 'cyan', description: 'Traffic & usage analytics', tier: 'creator' },
         { id: 'events', label: 'Events', icon: Activity, color: 'amber', description: 'Live activity feed', tier: 'creator' },
         { id: 'engines', label: 'Engines', icon: Layers, color: 'fuchsia', description: 'Execute & manage engines', tier: 'creator' },
-        ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'creator' as SubstrateTier }] : []),
       ],
     },
     {
@@ -177,7 +177,9 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
         { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'Architecture mutation', tier: 'cmpsbl' },
         { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'Author LNCHBL patches', tier: 'cmpsbl' },
         { id: 'metrics', label: 'Metrics', icon: Gauge, color: 'cyan', description: 'Public metrics control', tier: 'cmpsbl' },
-        { id: 'mint', label: 'Mint', icon: Sparkles, color: 'purple', description: 'Create cognitives & agencies', tier: 'cmpsbl' },
+        { id: 'cognitives', label: 'Cognitives', icon: Bot, color: 'fuchsia', description: 'Bot registry & management', tier: 'cmpsbl' },
+        { id: 'mint', label: 'Mint', icon: Sparkles, color: 'purple', description: 'Forge cognitives & agencies', tier: 'cmpsbl' },
+        ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'cmpsbl' as SubstrateTier }] : []),
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Administrative controls', tier: 'cmpsbl' },
       ],
     },
@@ -840,9 +842,15 @@ export default function SubstrateOS() {
               </motion.div>
             )}
 
+            {activeTab === 'analytics' && hasAccessToCurrentTab && (
+              <motion.main key="analytics" className="flex-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <AnalyticsTab />
+              </motion.main>
+            )}
+
             {activeTab === 'cognitives' && hasAccessToCurrentTab && (
               <motion.main key="cognitives" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <TabHeader icon={Bot} title="Cognitive Registry" subtitle="minted cognitives • management console" color="fuchsia" tier="creator" />
+                <TabHeader icon={Bot} title="Cognitive Registry" subtitle="minted cognitives • CMPSBL admin only" color="fuchsia" tier="cmpsbl" />
                 <CognitivesPanel />
               </motion.main>
             )}
