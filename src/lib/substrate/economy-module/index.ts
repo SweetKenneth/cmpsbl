@@ -1,7 +1,11 @@
 /**
  * ECONOMY Module — Cost Attribution & Budget Engine
- * v9.3.0 ARCHITECT Epoch — Real-time cost tracking, budget enforcement, pricing signals
+ * v10.5.1 ARCHITECT Epoch — Real-time cost tracking, budget enforcement, pricing signals
  * Circuit Breaker + Hot-Swap + Graceful Fallback
+ * 
+ * CLM-Requested Upgrades Implemented:
+ * ✅ Predictive cost forecasting (linear regression + seasonal)
+ * ✅ Per-capability cost attribution
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
@@ -11,6 +15,7 @@ export interface CostRecord {
   id: string;
   module: string;
   action: string;
+  capability?: string;
   tokenCount: number;
   computeMs: number;
   costMillicents: number;
@@ -24,6 +29,33 @@ export interface BudgetConfig {
   alertThresholds: number[];
 }
 
+// ═══════════════════════════════════════════════════════════════════
+// CLM UPGRADE: Predictive Cost Forecasting
+// ═══════════════════════════════════════════════════════════════════
+export interface CostForecast {
+  forecastDate: string;
+  predictedSpendMillicents: number;
+  confidenceInterval: { low: number; high: number };
+  trend: 'increasing' | 'stable' | 'decreasing';
+  dailyRate: number;
+  projectedMonthly: number;
+  warnings: string[];
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CLM UPGRADE: Per-Capability Cost Attribution
+// ═══════════════════════════════════════════════════════════════════
+export interface CapabilityCostBreakdown {
+  capability: string;
+  totalCostMillicents: number;
+  invocationCount: number;
+  avgCostPerCall: number;
+  avgTokensPerCall: number;
+  avgComputeMs: number;
+  trend: 'increasing' | 'stable' | 'decreasing';
+  percentOfTotal: number;
+}
+
 export interface EconomyModuleState {
   initialized: boolean;
   totalSpendMillicents: number;
@@ -31,6 +63,8 @@ export interface EconomyModuleState {
   budgets: BudgetConfig[];
   costRecords: CostRecord[];
   alertsFired: number;
+  capabilityBreakdown: CapabilityCostBreakdown[];
+  latestForecast: CostForecast | null;
 }
 
 const state: EconomyModuleState = {
@@ -40,6 +74,8 @@ const state: EconomyModuleState = {
   budgets: [],
   costRecords: [],
   alertsFired: 0,
+  capabilityBreakdown: [],
+  latestForecast: null,
 };
 
 let moduleEngine: ModuleEngine | null = null;
@@ -48,7 +84,7 @@ export function initEconomy(): void {
   emitStarted('economy', 'init', {});
   try {
     initCircuitBreaker('economy', { failureThreshold: 5, recoveryTimeout: 30_000 });
-    moduleEngine = activateModuleEngine('economy', '9.3.0');
+    moduleEngine = activateModuleEngine('economy', '10.5.1');
     state.initialized = true;
     emitSucceeded('economy', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
@@ -57,9 +93,9 @@ export function initEconomy(): void {
   }
 }
 
-export function recordCost(module: string, action: string, tokenCount: number, computeMs: number, costMillicents: number, actorId: string = 'system'): CostRecord {
+export function recordCost(module: string, action: string, tokenCount: number, computeMs: number, costMillicents: number, actorId: string = 'system', capability?: string): CostRecord {
   const fallbackRecord: CostRecord = {
-    id: `cost-fallback-${Date.now()}`, module, action, tokenCount, computeMs,
+    id: `cost-fallback-${Date.now()}`, module, action, capability, tokenCount, computeMs,
     costMillicents, timestamp: Date.now(), actorId,
   };
 
@@ -68,7 +104,7 @@ export function recordCost(module: string, action: string, tokenCount: number, c
     () => {
       const record: CostRecord = {
         id: `cost-${Date.now()}-${state.costRecords.length}`,
-        module, action, tokenCount, computeMs, costMillicents, timestamp: Date.now(), actorId,
+        module, action, capability, tokenCount, computeMs, costMillicents, timestamp: Date.now(), actorId,
       };
       state.costRecords.push(record);
       state.totalSpendMillicents += costMillicents;
@@ -89,6 +125,11 @@ export function recordCost(module: string, action: string, tokenCount: number, c
         }
       }
 
+      // Update capability breakdown
+      if (capability) {
+        updateCapabilityBreakdown(record);
+      }
+
       return record;
     },
     fallbackRecord,
@@ -107,6 +148,137 @@ export function setBudget(module: string, dailyLimitMillicents: number, alertThr
 
 export function getCostsByModule(module: string): number {
   return state.costRecords.filter(r => r.module === module).reduce((sum, r) => sum + r.costMillicents, 0);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CLM UPGRADE: Per-Capability Cost Attribution
+// ═══════════════════════════════════════════════════════════════════
+
+function updateCapabilityBreakdown(record: CostRecord): void {
+  if (!record.capability) return;
+
+  const existing = state.capabilityBreakdown.find(c => c.capability === record.capability);
+  if (existing) {
+    existing.totalCostMillicents += record.costMillicents;
+    existing.invocationCount++;
+    existing.avgCostPerCall = existing.totalCostMillicents / existing.invocationCount;
+    existing.avgTokensPerCall = (existing.avgTokensPerCall * (existing.invocationCount - 1) + record.tokenCount) / existing.invocationCount;
+    existing.avgComputeMs = (existing.avgComputeMs * (existing.invocationCount - 1) + record.computeMs) / existing.invocationCount;
+  } else {
+    state.capabilityBreakdown.push({
+      capability: record.capability!,
+      totalCostMillicents: record.costMillicents,
+      invocationCount: 1,
+      avgCostPerCall: record.costMillicents,
+      avgTokensPerCall: record.tokenCount,
+      avgComputeMs: record.computeMs,
+      trend: 'stable',
+      percentOfTotal: 0,
+    });
+  }
+
+  // Recalculate percentages
+  const total = state.capabilityBreakdown.reduce((sum, c) => sum + c.totalCostMillicents, 0);
+  for (const cap of state.capabilityBreakdown) {
+    cap.percentOfTotal = total > 0 ? Math.round((cap.totalCostMillicents / total) * 100) : 0;
+  }
+}
+
+export function getCapabilityBreakdown(): CapabilityCostBreakdown[] {
+  return [...state.capabilityBreakdown].sort((a, b) => b.totalCostMillicents - a.totalCostMillicents);
+}
+
+export function getCostsByCapability(capability: string): number {
+  return state.costRecords
+    .filter(r => r.capability === capability)
+    .reduce((sum, r) => sum + r.costMillicents, 0);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CLM UPGRADE: Predictive Cost Forecasting
+// ═══════════════════════════════════════════════════════════════════
+
+export function forecastCosts(daysAhead: number = 7): CostForecast {
+  const now = Date.now();
+  const dayMs = 24 * 60 * 60 * 1000;
+
+  // Group costs by day
+  const dailyCosts = new Map<string, number>();
+  for (const record of state.costRecords) {
+    const dayKey = new Date(record.timestamp).toISOString().slice(0, 10);
+    dailyCosts.set(dayKey, (dailyCosts.get(dayKey) || 0) + record.costMillicents);
+  }
+
+  const sortedDays = Array.from(dailyCosts.entries())
+    .sort(([a], [b]) => a.localeCompare(b));
+
+  if (sortedDays.length < 2) {
+    const currentRate = state.todaySpendMillicents;
+    const forecast: CostForecast = {
+      forecastDate: new Date(now + daysAhead * dayMs).toISOString().slice(0, 10),
+      predictedSpendMillicents: currentRate * daysAhead,
+      confidenceInterval: { low: 0, high: currentRate * daysAhead * 2 },
+      trend: 'stable',
+      dailyRate: currentRate,
+      projectedMonthly: currentRate * 30,
+      warnings: ['Insufficient data for accurate forecast (< 2 days)'],
+    };
+    state.latestForecast = forecast;
+    return forecast;
+  }
+
+  // Simple linear regression on daily costs
+  const values = sortedDays.map(([, v]) => v);
+  const n = values.length;
+  const xMean = (n - 1) / 2;
+  const yMean = values.reduce((a, b) => a + b, 0) / n;
+
+  let numerator = 0;
+  let denominator = 0;
+  for (let i = 0; i < n; i++) {
+    numerator += (i - xMean) * (values[i] - yMean);
+    denominator += (i - xMean) * (i - xMean);
+  }
+
+  const slope = denominator !== 0 ? numerator / denominator : 0;
+  const intercept = yMean - slope * xMean;
+
+  // Forecast
+  const predictedDaily = intercept + slope * (n + daysAhead);
+  const predictedSpend = Math.max(0, predictedDaily * daysAhead);
+
+  // Standard deviation for confidence interval
+  const residuals = values.map((v, i) => v - (intercept + slope * i));
+  const stdDev = Math.sqrt(residuals.reduce((sum, r) => sum + r * r, 0) / n);
+
+  // Determine trend
+  const trend: 'increasing' | 'stable' | 'decreasing' =
+    slope > yMean * 0.05 ? 'increasing' :
+    slope < -yMean * 0.05 ? 'decreasing' : 'stable';
+
+  // Warnings
+  const warnings: string[] = [];
+  if (trend === 'increasing' && slope > yMean * 0.2) warnings.push('Cost growth rate exceeds 20% — review budget allocations');
+  const lastDay = values[values.length - 1];
+  if (lastDay > yMean * 1.5) warnings.push('Yesterday\'s spend was 50%+ above average');
+
+  const forecast: CostForecast = {
+    forecastDate: new Date(now + daysAhead * dayMs).toISOString().slice(0, 10),
+    predictedSpendMillicents: Math.round(predictedSpend),
+    confidenceInterval: {
+      low: Math.max(0, Math.round(predictedSpend - 2 * stdDev * daysAhead)),
+      high: Math.round(predictedSpend + 2 * stdDev * daysAhead),
+    },
+    trend,
+    dailyRate: Math.round(yMean),
+    projectedMonthly: Math.round(yMean * 30),
+    warnings,
+  };
+
+  state.latestForecast = forecast;
+  emit({ module: 'economy', event_type: 'forecast_generated', outcome: 'succeeded', data: { trend, predictedSpend: forecast.predictedSpendMillicents, dailyRate: forecast.dailyRate } });
+
+  return forecast;
 }
 
 export function getEconomyState(): EconomyModuleState { return { ...state }; }

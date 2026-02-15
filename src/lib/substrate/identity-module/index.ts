@@ -1,13 +1,43 @@
 /**
  * IDENTITY Module — Universal Actor Attribution
- * v9.3.0 ARCHITECT Epoch — Human/agent/system identity, signatures, provenance
+ * v10.5.1 ARCHITECT Epoch — Human/agent/system identity, signatures, provenance
  * Circuit Breaker + Hot-Swap + Graceful Fallback + Passwordless WebAuthn
+ * 
+ * CLM-Requested Upgrades Implemented:
+ * ✅ Actor reputation scoring (trust/reliability metrics)
+ * ✅ Cross-agency identity portability
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 
 export type ActorType = 'human' | 'agent' | 'system';
+
+// ═══════════════════════════════════════════════════════════════════
+// CLM UPGRADE: Actor Reputation Scoring
+// ═══════════════════════════════════════════════════════════════════
+export interface ActorReputation {
+  trustScore: number;        // 0-100
+  reliabilityRate: number;   // 0-1
+  totalActions: number;
+  successfulActions: number;
+  failedActions: number;
+  escalations: number;
+  lastReputationUpdate: number;
+  tier: 'untrusted' | 'basic' | 'trusted' | 'verified' | 'elite';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CLM UPGRADE: Cross-Agency Identity Portability
+// ═══════════════════════════════════════════════════════════════════
+export interface PortableIdentity {
+  actorId: string;
+  originAgency: string;
+  linkedAgencies: string[];
+  portabilityToken: string;
+  createdAt: number;
+  lastSyncedAt: number;
+}
 
 export interface ActorIdentity {
   id: string;
@@ -19,6 +49,8 @@ export interface ActorIdentity {
   metadata: Record<string, unknown>;
   passkeys: string[];
   passwordless: boolean;
+  reputation: ActorReputation;
+  portableIdentity?: PortableIdentity;
 }
 
 export interface IdentityModuleState {
@@ -28,6 +60,8 @@ export interface IdentityModuleState {
   signaturesIssued: number;
   passkeyCount: number;
   passwordlessEnforced: boolean;
+  avgTrustScore: number;
+  portableIdentities: number;
 }
 
 const actors = new Map<string, ActorIdentity>();
@@ -38,6 +72,8 @@ const state: IdentityModuleState = {
   signaturesIssued: 0,
   passkeyCount: 0,
   passwordlessEnforced: true,
+  avgTrustScore: 0,
+  portableIdentities: 0,
 };
 
 let moduleEngine: ModuleEngine | null = null;
@@ -52,11 +88,32 @@ function generateSignature(actorId: string): string {
   return `sig-${Math.abs(hash).toString(16).padStart(16, '0')}`;
 }
 
+function createDefaultReputation(): ActorReputation {
+  return {
+    trustScore: 50,
+    reliabilityRate: 1.0,
+    totalActions: 0,
+    successfulActions: 0,
+    failedActions: 0,
+    escalations: 0,
+    lastReputationUpdate: Date.now(),
+    tier: 'basic',
+  };
+}
+
+function calculateTier(score: number): ActorReputation['tier'] {
+  if (score >= 90) return 'elite';
+  if (score >= 75) return 'verified';
+  if (score >= 50) return 'trusted';
+  if (score >= 25) return 'basic';
+  return 'untrusted';
+}
+
 export function initIdentity(): void {
   emitStarted('identity', 'init', {});
   try {
     initCircuitBreaker('identity', { failureThreshold: 5, recoveryTimeout: 30_000 });
-    moduleEngine = activateModuleEngine('identity', '9.3.0');
+    moduleEngine = activateModuleEngine('identity', '10.5.1');
     state.initialized = true;
     registerActor('system', 'system', 'Substrate System');
     emitSucceeded('identity', 'init', { engineId: moduleEngine.instance.id });
@@ -76,10 +133,17 @@ export function registerActor(id: string, type: ActorType, displayName: string, 
         id, type, displayName, signature: sig,
         createdAt: Date.now(), lastActiveAt: Date.now(), metadata,
         passkeys: [], passwordless: true,
+        reputation: createDefaultReputation(),
       };
+      // System actors start with higher trust
+      if (type === 'system') {
+        actor.reputation.trustScore = 95;
+        actor.reputation.tier = 'elite';
+      }
       actors.set(id, actor);
       state.registeredActors = actors.size;
       state.signaturesIssued++;
+      updateAvgTrustScore();
       emit({ module: 'identity', event_type: 'actor_registered', outcome: 'succeeded', data: { actorId: id, type } });
       return actor;
     },
@@ -87,6 +151,7 @@ export function registerActor(id: string, type: ActorType, displayName: string, 
       id, type, displayName, signature: 'fallback-sig',
       createdAt: Date.now(), lastActiveAt: Date.now(), metadata,
       passkeys: [], passwordless: true,
+      reputation: createDefaultReputation(),
     },
     'register_actor'
   );
@@ -135,6 +200,139 @@ export function removePasskeyFromActor(actorId: string, credentialId: string): b
 
 export function getActorPasskeys(actorId: string): string[] {
   return actors.get(actorId)?.passkeys || [];
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CLM UPGRADE: Actor Reputation Scoring
+// ═══════════════════════════════════════════════════════════════════
+
+export function recordActorOutcome(actorId: string, success: boolean, escalated: boolean = false): ActorReputation | null {
+  const actor = actors.get(actorId);
+  if (!actor) return null;
+
+  const rep = actor.reputation;
+  rep.totalActions++;
+  if (success) {
+    rep.successfulActions++;
+  } else {
+    rep.failedActions++;
+  }
+  if (escalated) {
+    rep.escalations++;
+  }
+
+  // Calculate reliability rate
+  rep.reliabilityRate = rep.totalActions > 0 ? rep.successfulActions / rep.totalActions : 1.0;
+
+  // Update trust score (weighted formula)
+  const reliabilityWeight = 0.5;
+  const volumeWeight = 0.2;
+  const escalationPenalty = 0.3;
+
+  const volumeBonus = Math.min(20, Math.log2(rep.totalActions + 1) * 5);
+  const escalationCost = rep.totalActions > 0 ? (rep.escalations / rep.totalActions) * 100 : 0;
+
+  rep.trustScore = Math.max(0, Math.min(100, Math.round(
+    (rep.reliabilityRate * 100 * reliabilityWeight) +
+    (volumeBonus * volumeWeight * 5) -
+    (escalationCost * escalationPenalty)
+  )));
+
+  rep.tier = calculateTier(rep.trustScore);
+  rep.lastReputationUpdate = Date.now();
+
+  updateAvgTrustScore();
+
+  emit({
+    module: 'identity',
+    event_type: 'reputation_updated',
+    outcome: 'succeeded',
+    data: { actorId, trustScore: rep.trustScore, tier: rep.tier, reliability: rep.reliabilityRate },
+  });
+
+  return { ...rep };
+}
+
+export function getActorReputation(actorId: string): ActorReputation | null {
+  return actors.get(actorId)?.reputation ?? null;
+}
+
+export function getReputationLeaderboard(limit: number = 10): Array<{ actorId: string; displayName: string; reputation: ActorReputation }> {
+  return Array.from(actors.values())
+    .sort((a, b) => b.reputation.trustScore - a.reputation.trustScore)
+    .slice(0, limit)
+    .map(a => ({ actorId: a.id, displayName: a.displayName, reputation: { ...a.reputation } }));
+}
+
+function updateAvgTrustScore(): void {
+  const allActors = Array.from(actors.values());
+  state.avgTrustScore = allActors.length > 0
+    ? Math.round(allActors.reduce((sum, a) => sum + a.reputation.trustScore, 0) / allActors.length)
+    : 0;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CLM UPGRADE: Cross-Agency Identity Portability
+// ═══════════════════════════════════════════════════════════════════
+
+export function createPortableIdentity(actorId: string, originAgency: string): PortableIdentity | null {
+  const actor = actors.get(actorId);
+  if (!actor) return null;
+
+  // Require minimum trust for portability
+  if (actor.reputation.trustScore < 50) {
+    emit({ module: 'identity', event_type: 'portability_denied', outcome: 'failed', data: { actorId, reason: 'Insufficient trust score', trustScore: actor.reputation.trustScore } });
+    return null;
+  }
+
+  const portable: PortableIdentity = {
+    actorId,
+    originAgency,
+    linkedAgencies: [originAgency],
+    portabilityToken: generateSignature(`portable-${actorId}-${originAgency}`),
+    createdAt: Date.now(),
+    lastSyncedAt: Date.now(),
+  };
+
+  actor.portableIdentity = portable;
+  state.portableIdentities++;
+
+  emit({
+    module: 'identity',
+    event_type: 'portable_identity_created',
+    outcome: 'succeeded',
+    data: { actorId, originAgency, token: portable.portabilityToken.slice(0, 12) + '...' },
+  });
+
+  return portable;
+}
+
+export function linkAgency(actorId: string, agencyId: string): boolean {
+  const actor = actors.get(actorId);
+  if (!actor?.portableIdentity) return false;
+
+  if (!actor.portableIdentity.linkedAgencies.includes(agencyId)) {
+    actor.portableIdentity.linkedAgencies.push(agencyId);
+    actor.portableIdentity.lastSyncedAt = Date.now();
+
+    emit({
+      module: 'identity',
+      event_type: 'agency_linked',
+      outcome: 'succeeded',
+      data: { actorId, agencyId, totalLinked: actor.portableIdentity.linkedAgencies.length },
+    });
+  }
+
+  return true;
+}
+
+export function getPortableIdentity(actorId: string): PortableIdentity | null {
+  return actors.get(actorId)?.portableIdentity ?? null;
+}
+
+export function verifyPortabilityToken(actorId: string, token: string): boolean {
+  const actor = actors.get(actorId);
+  return actor?.portableIdentity?.portabilityToken === token;
 }
 
 export function getIdentityState(): IdentityModuleState { return { ...state }; }
