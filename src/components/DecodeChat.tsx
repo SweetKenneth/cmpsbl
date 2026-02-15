@@ -5,6 +5,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle, X, Send, Sparkles, RefreshCw, WifiOff } from "lucide-react";
+import { DecodeMarkdown } from "./decode/DecodeMarkdown";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { decode, substrate } from "@/lib/substrate";
@@ -322,7 +323,7 @@ export function DecodeChat() {
                   <p className="text-[1.05rem] leading-relaxed">{msg.generatedText}</p>
                 </div>
               )}
-              <p className="text-[1.05rem] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+              <DecodeMarkdown content={msg.content} isUser={msg.role === 'user'} className="text-[1.05rem]" />
               {/* Admin: show provider badge */}
               {mode === 'admin' && msg.provider && msg.provider !== 'fallback' && (
                 <div className="mt-2 flex items-center gap-1 text-[10px] text-muted-foreground">
