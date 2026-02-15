@@ -15,6 +15,13 @@ interface DecodeMarkdownProps {
 }
 
 export function DecodeMarkdown({ content, className, isUser = false }: DecodeMarkdownProps) {
+  // Strip AI thinking/reasoning tags before rendering
+  const cleanContent = content
+    .replace(/<think>[\s\S]*?<\/think>/gi, '')
+    .replace(/<reasoning>[\s\S]*?<\/reasoning>/gi, '')
+    .replace(/<thought>[\s\S]*?<\/thought>/gi, '')
+    .trim();
+
   return (
     <div className={cn('decode-markdown text-current [&_*]:text-inherit', isUser && 'decode-markdown--user', className)}>
     <ReactMarkdown
@@ -115,7 +122,7 @@ export function DecodeMarkdown({ content, className, isUser = false }: DecodeMar
         ),
       }}
     >
-      {content}
+      {cleanContent}
     </ReactMarkdown>
     </div>
   );

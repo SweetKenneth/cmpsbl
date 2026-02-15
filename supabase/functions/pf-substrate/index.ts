@@ -5586,6 +5586,13 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
       // Route through Nexus
       const result = await routeToProvider(message as string, systemPrompt, conversationHistory as Array<{role: string; content: string}>);
 
+      // Strip thinking/reasoning tags from AI response (e.g. <think>...</think>)
+      result.content = result.content
+        .replace(/<think>[\s\S]*?<\/think>/gi, '')
+        .replace(/<reasoning>[\s\S]*?<\/reasoning>/gi, '')
+        .replace(/<thought>[\s\S]*?<\/thought>/gi, '')
+        .trim();
+
       // Log conversation
       await supabase.from("cascade_conversations").insert({
         message: message as string,
