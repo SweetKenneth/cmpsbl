@@ -1,11 +1,11 @@
 /**
- * Quick Actions Panel v9.1.0 — ARCHITECT Epoch System-wide controls
- * Heal, backup, restart, diagnostics with Substrate Voice notifications
+ * Quick Actions Panel v10.5.1 — Cinematic system controls
+ * Premium glassmorphic action cards with animated feedback
  */
 
 import { 
   Wrench, Server, Activity, Loader2, Shield, 
-  Zap, Terminal, CheckCircle2, Sparkles
+  Zap, Terminal, CheckCircle2
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -36,44 +36,44 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
   };
 
   const handleHealAll = async () => {
-    pushToast({ message: 'Auto-Heal initiated — Scanning all modules for degradation...', variant: 'info' });
+    pushToast({ message: 'Auto-Heal initiated — Scanning all modules...', variant: 'info' });
     voice.info('Initiating system-wide heal', 'Scanning all modules for degradation...', 'SYSTEM');
     try {
       await healMutation.mutateAsync(undefined);
-      pushToast({ message: 'System heal complete — All modules restored to optimal state', variant: 'success' });
-      voice.success('System heal complete', 'All modules restored to optimal state', 'SYSTEM');
+      pushToast({ message: 'System heal complete', variant: 'success' });
+      voice.success('System heal complete', 'All modules restored', 'SYSTEM');
       healthScore.refetch();
       showSuccess('heal');
     } catch {
-      pushToast({ message: 'Heal operation failed — Manual intervention may be required', variant: 'error' });
-      voice.error('Heal operation failed', 'Manual intervention may be required', 'SYSTEM');
+      pushToast({ message: 'Heal operation failed', variant: 'error' });
+      voice.error('Heal failed', 'Manual intervention may be required', 'SYSTEM');
     }
   };
 
   const handleBackup = async () => {
-    voice.info('Creating system backup', 'Capturing current substrate state...', 'SYSTEM');
+    voice.info('Creating system backup', 'Capturing substrate state...', 'SYSTEM');
     try {
       const result = await backupMutation.mutateAsync();
       voice.success('Backup complete', `Snapshot saved: ${(result as any)?.backup_id?.slice(0, 8) || 'OK'}`, 'SYSTEM');
       showSuccess('backup');
     } catch {
-      voice.error('Backup failed', 'Storage write error detected', 'SYSTEM');
+      voice.error('Backup failed', 'Storage write error', 'SYSTEM');
     }
   };
 
   const handleDiagnostics = async () => {
     setDiagnosticsRunning(true);
-    voice.system('Running full diagnostics', 'Analyzing all 21 modules...', 'VISION');
+    voice.system('Running diagnostics', 'Analyzing all 21 modules...', 'VISION');
     try {
       const result = await system.diagnostics();
       if (result?.success) {
-        voice.success('Diagnostics complete', 'All systems nominal. No anomalies detected.', 'VISION');
+        voice.success('Diagnostics complete', 'All systems nominal', 'VISION');
         showSuccess('diagnostics');
       } else {
-        voice.warning('Diagnostics found issues', 'Review module health for details', 'VISION');
+        voice.warning('Issues found', 'Review module health', 'VISION');
       }
     } catch {
-      voice.error('Diagnostics failed', 'Unable to complete system analysis', 'VISION');
+      voice.error('Diagnostics failed', 'Unable to complete analysis', 'VISION');
     } finally {
       setDiagnosticsRunning(false);
     }
@@ -81,63 +81,40 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
 
   const actions = [
     {
-      id: 'heal',
-      label: 'Auto-Heal',
-      icon: Wrench,
+      id: 'heal', label: 'Auto-Heal', icon: Wrench,
       description: 'Repair unhealthy modules',
-      gradient: 'bg-gradient-to-br from-emerald-500 to-green-600',
-      glowColor: 'emerald',
-      isPending: healMutation.isPending,
+      color: 'emerald', isPending: healMutation.isPending,
       onClick: handleHealAll,
-      variant: 'success' as const,
     },
     {
-      id: 'backup',
-      label: 'Backup',
-      icon: Server,
+      id: 'backup', label: 'Backup', icon: Server,
       description: 'Create system snapshot',
-      gradient: 'bg-gradient-to-br from-blue-500 to-cyan-600',
-      glowColor: 'cyan',
-      isPending: backupMutation.isPending,
+      color: 'cyan', isPending: backupMutation.isPending,
       onClick: handleBackup,
-      variant: 'primary' as const,
     },
     {
-      id: 'diagnostics',
-      label: 'Diagnostics',
-      icon: Activity,
+      id: 'diagnostics', label: 'Diagnostics', icon: Activity,
       description: 'Full system analysis',
-      gradient: 'bg-gradient-to-br from-amber-500 to-orange-600',
-      glowColor: 'amber',
-      isPending: diagnosticsRunning,
+      color: 'amber', isPending: diagnosticsRunning,
       onClick: handleDiagnostics,
-      variant: 'warning' as const,
     },
     {
-      id: 'terminal',
-      label: 'Terminal',
-      icon: Terminal,
-      description: 'Open command interface',
-      gradient: 'bg-gradient-to-br from-fuchsia-500 to-purple-600',
-      glowColor: 'fuchsia',
-      isPending: false,
+      id: 'terminal', label: 'Terminal', icon: Terminal,
+      description: 'Command interface',
+      color: 'fuchsia', isPending: false,
       onClick: onOpenTerminal,
-      variant: 'default' as const,
     },
   ];
 
   if (!enabled) {
     return (
       <motion.div 
-        className="p-8 rounded-2xl border border-dashed border-border/30 bg-muted/5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        className="p-10 rounded-2xl border border-dashed border-border/20 bg-muted/5"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
       >
         <div className="text-center">
-          <Shield className="w-10 h-10 mx-auto mb-3 text-muted-foreground/20" />
-          <p className="text-sm text-muted-foreground/60 italic">
-            Quick actions require operator access
-          </p>
+          <Shield className="w-10 h-10 mx-auto mb-3 text-muted-foreground/15" />
+          <p className="text-sm text-muted-foreground/40 italic">Quick actions require operator access</p>
         </div>
       </motion.div>
     );
@@ -145,121 +122,106 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
 
   return (
     <motion.div 
-      className="p-6 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 via-card/50 to-transparent backdrop-blur-xl"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 }}
+      className="relative rounded-2xl border border-border/30 overflow-hidden"
+      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
     >
-      <div className="flex items-center gap-3 mb-5">
-        <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/30 flex items-center justify-center">
-          <Zap className="w-5 h-5 text-cyan-400" />
-          <motion.div
-            className="absolute inset-0 rounded-xl border border-cyan-400/30"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-        </div>
-        <div>
-          <h3 className="text-sm font-semibold text-foreground">Quick Actions</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">SYSTEM-WIDE CONTROLS</p>
-        </div>
-        <Badge 
-          variant="outline" 
-          className={cn(
-            "ml-auto text-[9px] font-mono",
-            healthScore.isHealthy 
-              ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10"
-              : "border-amber-500/50 text-amber-400 bg-amber-500/10"
-          )}
-        >
-          <motion.span 
+      <div className="absolute inset-0 bg-gradient-to-br from-card/95 via-card/60 to-card/30 backdrop-blur-2xl" />
+      
+      <div className="relative p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <motion.div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/15 to-fuchsia-500/15 border border-cyan-500/25 flex items-center justify-center">
+            <Zap className="w-5 h-5 text-cyan-400" />
+            <motion.div
+              className="absolute inset-0 rounded-xl border border-cyan-400/20"
+              animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0, 0.4] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+          </motion.div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">Quick Actions</h3>
+            <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">SYSTEM CONTROLS</p>
+          </div>
+          <Badge 
+            variant="outline" 
             className={cn(
-              "w-1.5 h-1.5 rounded-full mr-1.5",
-              healthScore.isHealthy ? "bg-emerald-500" : "bg-amber-500"
+              "ml-auto text-[9px] font-mono gap-1.5",
+              healthScore.isHealthy 
+                ? "border-emerald-500/30 text-emerald-400/80 bg-emerald-500/5"
+                : "border-amber-500/30 text-amber-400/80 bg-amber-500/5"
             )}
-            animate={{ opacity: [1, 0.5, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-          {healthScore.isHealthy ? 'ALL SYSTEMS GO' : 'ATTENTION NEEDED'}
-        </Badge>
-      </div>
+          >
+            <motion.span 
+              className={cn("w-1.5 h-1.5 rounded-full", healthScore.isHealthy ? "bg-emerald-500" : "bg-amber-500")}
+              animate={{ opacity: [1, 0.4, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+            {healthScore.isHealthy ? 'ALL SYSTEMS GO' : 'ATTENTION'}
+          </Badge>
+        </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {actions.map((action, idx) => {
-          const ActionIcon = action.icon;
-          const isSuccess = actionSuccess[action.id];
-          
-          return (
-            <motion.button
-              key={action.id}
-              onClick={action.onClick}
-              disabled={action.isPending}
-              className={cn(
-                "group relative p-5 rounded-xl border transition-all text-left overflow-hidden",
-                "hover:scale-[1.02] active:scale-[0.98]",
-                action.variant === 'success' && "border-emerald-500/30 hover:border-emerald-500/60 bg-gradient-to-br from-emerald-500/5 to-transparent",
-                action.variant === 'primary' && "border-cyan-500/30 hover:border-cyan-500/60 bg-gradient-to-br from-cyan-500/5 to-transparent",
-                action.variant === 'warning' && "border-amber-500/30 hover:border-amber-500/60 bg-gradient-to-br from-amber-500/5 to-transparent",
-                action.variant === 'default' && "border-fuchsia-500/30 hover:border-fuchsia-500/60 bg-gradient-to-br from-fuchsia-500/5 to-transparent",
-                action.isPending && "opacity-70 cursor-not-allowed"
-              )}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 + idx * 0.05 }}
-              whileHover={{ y: -2 }}
-            >
-              {/* Hover glow effect */}
-              <div className={cn(
-                "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10",
-                action.glowColor === 'emerald' && "bg-emerald-500/10",
-                action.glowColor === 'cyan' && "bg-cyan-500/10",
-                action.glowColor === 'amber' && "bg-amber-500/10",
-                action.glowColor === 'fuchsia' && "bg-fuchsia-500/10"
-              )} />
-              
-              <div className={cn(
-                "w-10 h-10 rounded-xl flex items-center justify-center mb-4 shadow-lg transition-transform group-hover:scale-110",
-                action.gradient
-              )}>
-                {action.isPending ? (
-                  <Loader2 className="w-5 h-5 text-white animate-spin" />
-                ) : isSuccess ? (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <CheckCircle2 className="w-5 h-5 text-white" />
-                  </motion.div>
-                ) : (
-                  <ActionIcon className="w-5 h-5 text-white" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {actions.map((action, idx) => {
+            const ActionIcon = action.icon;
+            const isSuccess = actionSuccess[action.id];
+            
+            return (
+              <motion.button
+                key={action.id}
+                onClick={action.onClick}
+                disabled={action.isPending}
+                className={cn(
+                  "group relative p-5 rounded-xl border text-left overflow-hidden transition-all duration-200",
+                  `border-${action.color}-500/15 hover:border-${action.color}-500/40`,
+                  action.isPending && "opacity-60 cursor-not-allowed"
                 )}
-              </div>
-              <h4 className="text-sm font-semibold text-foreground mb-1 flex items-center gap-2">
-                {action.label}
-                {isSuccess && (
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="text-[10px] text-emerald-400 font-mono"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 + idx * 0.06 }}
+                whileHover={{ y: -3, transition: { duration: 0.15 } }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {/* Background gradient on hover */}
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                  `from-${action.color}-500/[0.06] to-transparent`
+                )} />
+                
+                {/* Glow on hover */}
+                <div className={cn(
+                  "absolute -inset-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-2xl -z-10",
+                  `bg-${action.color}-500/10`
+                )} />
+                
+                <div className="relative">
+                  <div className={cn(
+                    "w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-200",
+                    `bg-gradient-to-br from-${action.color}-500 to-${action.color}-600`,
+                    "shadow-lg"
+                  )}
+                    style={{ boxShadow: `0 8px 24px -4px var(--tw-shadow-color, rgba(0,0,0,0.2))` }}
                   >
-                    ✓ DONE
-                  </motion.span>
-                )}
-              </h4>
-              <p className="text-[11px] text-muted-foreground leading-relaxed">{action.description}</p>
-              
-              {/* Decorative corner */}
-              <div className={cn(
-                "absolute top-2 right-2 w-1.5 h-1.5 rounded-full opacity-50",
-                action.variant === 'success' && "bg-emerald-400",
-                action.variant === 'primary' && "bg-cyan-400",
-                action.variant === 'warning' && "bg-amber-400",
-                action.variant === 'default' && "bg-fuchsia-400"
-              )} />
-            </motion.button>
-          );
-        })}
+                    {action.isPending ? (
+                      <Loader2 className="w-5 h-5 text-white animate-spin" />
+                    ) : isSuccess ? (
+                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 400 }}>
+                        <CheckCircle2 className="w-5 h-5 text-white" />
+                      </motion.div>
+                    ) : (
+                      <ActionIcon className="w-5 h-5 text-white" />
+                    )}
+                  </div>
+                  <h4 className="text-sm font-semibold text-foreground mb-0.5 flex items-center gap-2">
+                    {action.label}
+                    {isSuccess && (
+                      <motion.span initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="text-[10px] text-emerald-400 font-mono">✓</motion.span>
+                    )}
+                  </h4>
+                  <p className="text-[11px] text-muted-foreground/60 leading-relaxed">{action.description}</p>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
     </motion.div>
   );

@@ -1,6 +1,6 @@
 /**
- * Dashboard Metrics Hero v9.1.0 ARCHITECT - Premium system overview
- * Large health ring with gradient accents - 21 Modules, 6 Layers
+ * Dashboard Metrics Hero v10.5.1 ARCHITECT — Cinematic system overview
+ * Orbital health ring, floating module constellation, real-time telemetry
  */
 
 import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility, RefreshCw, Database, Send, ClipboardCheck, Fingerprint, DollarSign, Box, Code, Globe } from 'lucide-react';
@@ -9,38 +9,30 @@ import { useMetric } from '@/stores/publicMetricsStore';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
 const MODULES_CONFIG = [
-  // Kernel (3)
-  { id: 'core', label: 'Core', icon: Cpu, color: 'text-orange-400', bg: 'bg-orange-500', hsl: 'hsl(25, 95%, 53%)' },
-  { id: 'ripple', label: 'Ripple', icon: Radio, color: 'text-cyan-400', bg: 'bg-cyan-500', hsl: 'hsl(188, 86%, 53%)' },
-  { id: 'access', label: 'Access', icon: Key, color: 'text-amber-400', bg: 'bg-amber-500', hsl: 'hsl(38, 92%, 50%)' },
-  // Cognitive (3)
-  { id: 'brain', label: 'Brain', icon: Brain, color: 'text-purple-400', bg: 'bg-purple-500', hsl: 'hsl(270, 67%, 58%)' },
-  { id: 'decode', label: 'Decode', icon: Activity, color: 'text-fuchsia-400', bg: 'bg-fuchsia-500', hsl: 'hsl(292, 84%, 61%)' },
-  { id: 'dream', label: 'Dream', icon: Moon, color: 'text-violet-400', bg: 'bg-violet-500', hsl: 'hsl(258, 90%, 66%)' },
-  // Operational (4)
-  { id: 'defense', label: 'Defense', icon: Shield, color: 'text-red-400', bg: 'bg-red-500', hsl: 'hsl(0, 84%, 60%)' },
-  { id: 'nexus', label: 'Nexus', icon: Zap, color: 'text-green-400', bg: 'bg-green-500', hsl: 'hsl(142, 76%, 42%)' },
-  { id: 'vision', label: 'Vision', icon: Eye, color: 'text-blue-400', bg: 'bg-blue-500', hsl: 'hsl(217, 91%, 60%)' },
-  { id: 'encode', label: 'Encode', icon: Code, color: 'text-lime-400', bg: 'bg-lime-500', hsl: 'hsl(84, 81%, 44%)' },
-  // Administrative (4)
-  { id: 'system', label: 'System', icon: Settings, color: 'text-emerald-400', bg: 'bg-emerald-500', hsl: 'hsl(160, 84%, 39%)' },
-  { id: 'modernizer', label: 'Modernizer', icon: Sparkles, color: 'text-rose-400', bg: 'bg-rose-500', hsl: 'hsl(350, 89%, 60%)' },
-  { id: 'integration', label: 'Integration', icon: Plug, color: 'text-teal-400', bg: 'bg-teal-500', hsl: 'hsl(173, 80%, 40%)' },
-  { id: 'inclusive', label: 'Inclusive', icon: Accessibility, color: 'text-pink-400', bg: 'bg-pink-500', hsl: 'hsl(330, 81%, 60%)' },
-  // Orchestrator (2)
-  { id: 'cortex', label: 'Cortex', icon: GitBranch, color: 'text-indigo-400', bg: 'bg-indigo-500', hsl: 'hsl(239, 84%, 67%)' },
-  { id: 'atlas', label: 'Atlas', icon: Globe, color: 'text-sky-400', bg: 'bg-sky-500', hsl: 'hsl(199, 89%, 48%)' },
-  // Infrastructure (7)
-  { id: 'memory', label: 'Memory', icon: Database, color: 'text-cyan-300', bg: 'bg-cyan-400', hsl: 'hsl(187, 92%, 69%)' },
-  { id: 'relay', label: 'Relay', icon: Send, color: 'text-amber-300', bg: 'bg-amber-400', hsl: 'hsl(45, 93%, 58%)' },
-  { id: 'audit', label: 'Audit', icon: ClipboardCheck, color: 'text-slate-400', bg: 'bg-slate-500', hsl: 'hsl(215, 16%, 47%)' },
-  { id: 'identity', label: 'Identity', icon: Fingerprint, color: 'text-emerald-300', bg: 'bg-emerald-400', hsl: 'hsl(160, 84%, 60%)' },
-  { id: 'economy', label: 'Economy', icon: DollarSign, color: 'text-yellow-400', bg: 'bg-yellow-500', hsl: 'hsl(48, 96%, 53%)' },
-  { id: 'sandbox', label: 'Sandbox', icon: Box, color: 'text-orange-300', bg: 'bg-orange-400', hsl: 'hsl(27, 96%, 61%)' },
+  { id: 'core', label: 'Core', icon: Cpu, color: 'text-orange-400', hsl: '25, 95%, 53%' },
+  { id: 'ripple', label: 'Ripple', icon: Radio, color: 'text-cyan-400', hsl: '188, 86%, 53%' },
+  { id: 'access', label: 'Access', icon: Key, color: 'text-amber-400', hsl: '38, 92%, 50%' },
+  { id: 'brain', label: 'Brain', icon: Brain, color: 'text-purple-400', hsl: '270, 67%, 58%' },
+  { id: 'decode', label: 'Decode', icon: Activity, color: 'text-fuchsia-400', hsl: '292, 84%, 61%' },
+  { id: 'dream', label: 'Dream', icon: Moon, color: 'text-violet-400', hsl: '258, 90%, 66%' },
+  { id: 'defense', label: 'Defense', icon: Shield, color: 'text-red-400', hsl: '0, 84%, 60%' },
+  { id: 'nexus', label: 'Nexus', icon: Zap, color: 'text-green-400', hsl: '142, 76%, 42%' },
+  { id: 'vision', label: 'Vision', icon: Eye, color: 'text-blue-400', hsl: '217, 91%, 60%' },
+  { id: 'encode', label: 'Encode', icon: Code, color: 'text-lime-400', hsl: '84, 81%, 44%' },
+  { id: 'system', label: 'System', icon: Settings, color: 'text-emerald-400', hsl: '160, 84%, 39%' },
+  { id: 'modernizer', label: 'Modernizer', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
+  { id: 'integration', label: 'Integration', icon: Plug, color: 'text-teal-400', hsl: '173, 80%, 40%' },
+  { id: 'inclusive', label: 'Inclusive', icon: Accessibility, color: 'text-pink-400', hsl: '330, 81%, 60%' },
+  { id: 'cortex', label: 'Cortex', icon: GitBranch, color: 'text-indigo-400', hsl: '239, 84%, 67%' },
+  { id: 'atlas', label: 'Atlas', icon: Globe, color: 'text-sky-400', hsl: '199, 89%, 48%' },
+  { id: 'memory', label: 'Memory', icon: Database, color: 'text-cyan-300', hsl: '187, 92%, 69%' },
+  { id: 'relay', label: 'Relay', icon: Send, color: 'text-amber-300', hsl: '45, 93%, 58%' },
+  { id: 'audit', label: 'Audit', icon: ClipboardCheck, color: 'text-slate-400', hsl: '215, 16%, 47%' },
+  { id: 'identity', label: 'Identity', icon: Fingerprint, color: 'text-emerald-300', hsl: '160, 84%, 60%' },
+  { id: 'economy', label: 'Economy', icon: DollarSign, color: 'text-yellow-400', hsl: '48, 96%, 53%' },
 ];
 
 export function DashboardMetricsHero() {
@@ -52,241 +44,235 @@ export function DashboardMetricsHero() {
   const activeCount = healthScore.activeCount;
   const totalModules = healthScore.totalModules;
 
+  const statusColor = healthScore.isHealthy ? 'emerald' : healthScore.isDegraded ? 'amber' : 'red';
+  const statusLabel = healthScore.isHealthy ? 'OPTIMAL' : healthScore.isDegraded ? 'DEGRADED' : 'CRITICAL';
+
   return (
     <motion.div 
-      className="relative p-6 lg:p-8 rounded-3xl border border-border/40 bg-gradient-to-br from-card/90 via-card/50 to-transparent backdrop-blur-xl overflow-hidden"
+      className="relative rounded-3xl border border-border/30 overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Animated gradient background effects */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div 
-          className="absolute top-0 left-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-[100px]"
-          animate={{ 
-            x: [0, 20, 0],
-            y: [0, -20, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute bottom-0 right-1/4 w-80 h-80 bg-fuchsia-500/10 rounded-full blur-[100px]"
-          animate={{ 
-            x: [0, -20, 0],
-            y: [0, 20, 0],
-            scale: [1.1, 1, 1.1],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Subtle grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:40px_40px]" />
-      </div>
+      {/* Layered background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-card/95 via-card/60 to-card/30 backdrop-blur-2xl" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px]" />
+      
+      {/* Animated ambient orbs */}
+      <motion.div 
+        className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-cyan-500/8 blur-[120px]"
+        animate={{ x: [0, 40, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div 
+        className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-fuchsia-500/8 blur-[120px]"
+        animate={{ x: [0, -30, 0], y: [0, 40, 0], scale: [1.1, 0.9, 1.1] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-primary/5 blur-[100px]"
+        animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-      <div className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-        {/* Health Ring */}
-        <div className="relative flex-shrink-0">
-          <svg className="w-52 h-52 -rotate-90" viewBox="0 0 200 200">
-            {/* Background track */}
-            <circle
-              cx="100"
-              cy="100"
-              r="85"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="6"
-              className="text-border/20"
-            />
-            {/* Inner decorative ring */}
-            <circle
-              cx="100"
-              cy="100"
-              r="72"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1"
-              className="text-border/10"
-              strokeDasharray="4 8"
-            />
-            {/* Gradient definition */}
-            <defs>
-              <linearGradient id="healthGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor={healthScore.isHealthy ? "#10b981" : healthScore.isDegraded ? "#f59e0b" : "#ef4444"} />
-                <stop offset="50%" stopColor={healthScore.isHealthy ? "#22d3ee" : healthScore.isDegraded ? "#fbbf24" : "#fb7185"} />
-                <stop offset="100%" stopColor={healthScore.isHealthy ? "#06b6d4" : healthScore.isDegraded ? "#f97316" : "#f43f5e"} />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-            {/* Progress arc */}
-            <motion.circle
-              cx="100"
-              cy="100"
-              r="85"
-              fill="none"
-              stroke="url(#healthGradient)"
-              strokeWidth="10"
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              filter="url(#glow)"
-              initial={{ strokeDashoffset: circumference }}
-              animate={{ strokeDashoffset: circumference - progress }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-            />
-          </svg>
+      {/* Animated border glow */}
+      <div className="absolute inset-0 rounded-3xl border border-transparent" 
+        style={{ background: 'linear-gradient(var(--background), var(--background)) padding-box, linear-gradient(135deg, hsl(185 100% 50% / 0.15), transparent 40%, transparent 60%, hsl(280 100% 65% / 0.15)) border-box' }} 
+      />
+
+      <div className="relative p-8 lg:p-10">
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
           
-          {/* Center content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <motion.span 
-              className={cn(
-                "text-6xl font-black font-mono tracking-tight",
-                healthScore.isHealthy ? "text-emerald-400" : 
-                healthScore.isDegraded ? "text-amber-400" : "text-red-400"
-              )}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
-            >
-              {healthScore.healthScore}
-            </motion.span>
-            <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-[0.3em] mt-1">
-              SYSTEM HEALTH
-            </span>
-          </div>
+          {/* === Orbital Health Ring === */}
+          <div className="relative flex-shrink-0 group">
+            {/* Outer orbital ring decoration */}
+            <motion.div
+              className="absolute -inset-4 rounded-full border border-dashed border-border/20"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute -inset-8 rounded-full border border-dotted border-border/10"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 180, repeat: Infinity, ease: "linear" }}
+            />
 
-          {/* Outer glow ring */}
-          <motion.div 
-            className={cn(
-              "absolute inset-2 rounded-full blur-2xl opacity-40 -z-10",
-              healthScore.isHealthy ? "bg-emerald-500" : 
-              healthScore.isDegraded ? "bg-amber-500" : "bg-red-500"
-            )}
-            animate={{ opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          />
-          
-          {/* Spinning decoration */}
-          <motion.div
-            className="absolute inset-0 rounded-full border border-dashed border-current/10"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
-
-        {/* Stats & Module Grid */}
-        <div className="flex-1 space-y-6 w-full">
-          {/* Quick Stats */}
-          <div className="grid grid-cols-3 gap-3">
-            <motion.div 
-              className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/10 to-cyan-500/5 border border-cyan-500/30 hover:border-cyan-500/50 transition-colors"
-              whileHover={{ y: -2 }}
-            >
-              <span className="text-[10px] text-cyan-400 font-mono uppercase tracking-wider block mb-1">MODULES</span>
-              <span className="text-2xl font-bold text-foreground">{activeCount}<span className="text-muted-foreground/60 text-lg">/{totalModules}</span></span>
-            </motion.div>
-            <motion.div 
-              className="p-4 rounded-xl bg-gradient-to-br from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/30 hover:border-fuchsia-500/50 transition-colors"
-              whileHover={{ y: -2 }}
-            >
-              <span className="text-[10px] text-fuchsia-400 font-mono uppercase tracking-wider block mb-1">STATUS</span>
-              <span className={cn(
-                "text-lg font-bold uppercase",
-                healthScore.isHealthy ? "text-emerald-400" : 
-                healthScore.isDegraded ? "text-amber-400" : "text-red-400"
-              )}>
-                {healthScore.isHealthy ? "OPTIMAL" : healthScore.isDegraded ? "DEGRADED" : "CRITICAL"}
-              </span>
-            </motion.div>
-            <motion.div 
-              className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/30 hover:border-amber-500/50 transition-colors"
-              whileHover={{ y: -2 }}
-            >
-              <span className="text-[10px] text-amber-400 font-mono uppercase tracking-wider block mb-1">SUBSTRATE</span>
-              <span className="text-lg font-bold text-foreground font-mono">v{version}</span>
-            </motion.div>
-          </div>
-
-          {/* Module Mini Grid - 21 modules */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">Module Status</span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="h-6 px-2 text-[10px]"
-                onClick={() => healthScore.refetch()}
-                disabled={healthScore.isLoading}
-              >
-                <RefreshCw className={cn("w-3 h-3 mr-1", healthScore.isLoading && "animate-spin")} />
-                Refresh
-              </Button>
-            </div>
-            <TooltipProvider delayDuration={100}>
-              <div className="grid grid-cols-7 lg:grid-cols-14 gap-2">
-                {MODULES_CONFIG.map((module, idx) => {
-                  const ModIcon = module.icon;
-                  const isActive = healthScore.modules[module.id as keyof typeof healthScore.modules];
-                  
-                  return (
-                    <Tooltip key={module.id}>
-                      <TooltipTrigger asChild>
-                        <motion.div
-                          className={cn(
-                            "relative w-full aspect-square rounded-xl flex items-center justify-center border transition-all cursor-pointer",
-                            "hover:scale-110 hover:shadow-lg hover:z-10",
-                            isActive 
-                              ? cn("border-current/40 bg-current/10", module.color)
-                              : "border-border/30 bg-muted/10 opacity-50"
-                          )}
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.1 + idx * 0.03, type: "spring", stiffness: 300 }}
-                          whileHover={{ y: -4 }}
-                          style={isActive ? { boxShadow: `0 0 20px ${module.hsl}30` } : undefined}
-                        >
-                          <ModIcon className={cn("w-4 h-4", isActive ? module.color : "text-muted-foreground/50")} />
-                          <motion.span 
-                            className={cn(
-                              "absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-background",
-                              isActive ? "bg-emerald-500" : "bg-red-500/60"
-                            )}
-                            animate={isActive ? { scale: [1, 1.2, 1] } : {}}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          />
-                        </motion.div>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" className="text-xs">
-                        <p className="font-medium">{module.label}</p>
-                        <p className={cn("text-[10px]", isActive ? "text-emerald-400" : "text-red-400")}>
-                          {isActive ? "Online" : "Offline"}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  );
-                })}
-              </div>
-            </TooltipProvider>
-          </div>
-          
-          {/* Live indicator */}
-          <div className="flex items-center gap-3 pt-2">
-            <div className="flex items-center gap-2">
-              <motion.div 
-                className="w-2 h-2 rounded-full bg-emerald-500"
-                animate={{ opacity: [1, 0.5, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+            <svg className="w-56 h-56 -rotate-90" viewBox="0 0 200 200">
+              {/* Track */}
+              <circle cx="100" cy="100" r="85" fill="none" stroke="currentColor" strokeWidth="4" className="text-border/15" />
+              <circle cx="100" cy="100" r="72" fill="none" stroke="currentColor" strokeWidth="1" className="text-border/8" strokeDasharray="3 9" />
+              <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-border/8" />
+              
+              <defs>
+                <linearGradient id="heroHealthGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor={healthScore.isHealthy ? "#10b981" : healthScore.isDegraded ? "#f59e0b" : "#ef4444"} />
+                  <stop offset="50%" stopColor={healthScore.isHealthy ? "#22d3ee" : healthScore.isDegraded ? "#fbbf24" : "#fb7185"} />
+                  <stop offset="100%" stopColor={healthScore.isHealthy ? "#06b6d4" : healthScore.isDegraded ? "#f97316" : "#f43f5e"} />
+                </linearGradient>
+                <filter id="heroGlow">
+                  <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                  <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              
+              <motion.circle
+                cx="100" cy="100" r="85" fill="none"
+                stroke="url(#heroHealthGradient)" strokeWidth="8" strokeLinecap="round"
+                strokeDasharray={circumference} filter="url(#heroGlow)"
+                initial={{ strokeDashoffset: circumference }}
+                animate={{ strokeDashoffset: circumference - progress }}
+                transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
               />
-              <span className="text-[10px] text-muted-foreground font-mono">LIVE TELEMETRY</span>
+            </svg>
+            
+            {/* Center display */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <motion.span 
+                className={cn(
+                  "text-6xl font-black font-mono tracking-tighter",
+                  `text-${statusColor}-400`
+                )}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 15 }}
+              >
+                {healthScore.healthScore}
+              </motion.span>
+              <span className="text-[9px] text-muted-foreground/70 font-mono uppercase tracking-[0.4em] mt-1">
+                health
+              </span>
             </div>
-            <div className="h-3 w-px bg-border/50" />
-            <span className="text-[10px] text-muted-foreground font-mono">
-              Last sync: {new Date().toLocaleTimeString()}
-            </span>
+
+            {/* Pulsing halo */}
+            <motion.div 
+              className={cn(
+                "absolute inset-4 rounded-full blur-3xl -z-10 opacity-30",
+                `bg-${statusColor}-500`
+              )}
+              animate={{ opacity: [0.15, 0.35, 0.15], scale: [0.95, 1.05, 0.95] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+
+          {/* === Stats & Module Constellation === */}
+          <div className="flex-1 space-y-8 w-full">
+            
+            {/* Stat Cards Row */}
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { label: 'MODULES', value: `${activeCount}`, suffix: `/${totalModules}`, color: 'cyan' },
+                { label: 'STATUS', value: statusLabel, color: statusColor },
+                { label: 'VERSION', value: `v${version}`, color: 'amber' },
+              ].map((stat, idx) => (
+                <motion.div 
+                  key={stat.label}
+                  className={cn(
+                    "relative p-4 rounded-2xl border overflow-hidden group cursor-default",
+                    `border-${stat.color}-500/20 hover:border-${stat.color}-500/40`
+                  )}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + idx * 0.1, duration: 0.5 }}
+                  whileHover={{ y: -3, transition: { duration: 0.2 } }}
+                >
+                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-[0.06]", `from-${stat.color}-500 to-transparent`)} />
+                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-[0.1] transition-opacity duration-300", `from-${stat.color}-500 to-transparent`)} />
+                  <span className={cn("text-[10px] font-mono uppercase tracking-[0.2em] block mb-1.5", `text-${stat.color}-400/80`)}>
+                    {stat.label}
+                  </span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-foreground font-mono">{stat.value}</span>
+                    {stat.suffix && <span className="text-lg text-muted-foreground/40 font-mono">{stat.suffix}</span>}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Module Constellation */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Module Constellation</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-6 px-2 text-[10px] text-muted-foreground hover:text-foreground"
+                  onClick={() => healthScore.refetch()}
+                  disabled={healthScore.isLoading}
+                >
+                  <RefreshCw className={cn("w-3 h-3 mr-1", healthScore.isLoading && "animate-spin")} />
+                  Refresh
+                </Button>
+              </div>
+              
+              <TooltipProvider delayDuration={50}>
+                <div className="grid grid-cols-7 lg:grid-cols-11 xl:grid-cols-21 gap-2">
+                  {MODULES_CONFIG.map((module, idx) => {
+                    const ModIcon = module.icon;
+                    const isActive = healthScore.modules[module.id as keyof typeof healthScore.modules];
+                    
+                    return (
+                      <Tooltip key={module.id}>
+                        <TooltipTrigger asChild>
+                          <motion.div
+                            className={cn(
+                              "relative w-full aspect-square rounded-xl flex items-center justify-center border cursor-pointer",
+                              "transition-all duration-200",
+                              isActive 
+                                ? "border-border/40 bg-card/80 hover:bg-card hover:border-border/60"
+                                : "border-border/20 bg-muted/5 opacity-40"
+                            )}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: isActive ? 1 : 0.4, scale: 1 }}
+                            transition={{ delay: 0.5 + idx * 0.03, type: "spring", stiffness: 400, damping: 20 }}
+                            whileHover={{ y: -4, scale: 1.15, transition: { duration: 0.15 } }}
+                            style={isActive ? { 
+                              boxShadow: `0 0 24px hsla(${module.hsl}, 0.15), 0 0 8px hsla(${module.hsl}, 0.08)` 
+                            } : undefined}
+                          >
+                            <ModIcon className={cn("w-4 h-4", isActive ? module.color : "text-muted-foreground/30")} />
+                            <motion.span 
+                              className={cn(
+                                "absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border-2 border-background",
+                                isActive ? "bg-emerald-500" : "bg-muted-foreground/20"
+                              )}
+                              animate={isActive ? { scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] } : {}}
+                              transition={{ duration: 2.5, repeat: Infinity }}
+                            />
+                          </motion.div>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom" className="text-xs border-border/50 bg-popover/95 backdrop-blur-xl">
+                          <p className="font-semibold">{module.label}</p>
+                          <p className={cn("text-[10px]", isActive ? "text-emerald-400" : "text-red-400")}>
+                            {isActive ? "● Online" : "○ Offline"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    );
+                  })}
+                </div>
+              </TooltipProvider>
+            </div>
+            
+            {/* Live telemetry footer */}
+            <div className="flex items-center gap-4 pt-1">
+              <div className="flex items-center gap-2">
+                <motion.div 
+                  className="w-1.5 h-1.5 rounded-full bg-emerald-500"
+                  animate={{ opacity: [1, 0.3, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+                <span className="text-[9px] text-muted-foreground/50 font-mono tracking-wider">LIVE</span>
+              </div>
+              <div className="h-3 w-px bg-border/30" />
+              <span className="text-[9px] text-muted-foreground/40 font-mono">
+                {new Date().toLocaleTimeString('en-US', { hour12: false })}
+              </span>
+              <div className="h-3 w-px bg-border/30" />
+              <span className="text-[9px] text-muted-foreground/40 font-mono">ARCHITECT EPOCH</span>
+            </div>
           </div>
         </div>
       </div>
