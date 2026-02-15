@@ -37,7 +37,7 @@ Last update: 2026/02/01
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
-Backend: Supabase (Lovable Cloud)
+Backend: CMPSBL Cloud (Nexus Fleet)
 AI: Multi-provider orchestration via Nexus
 
 Standards: HTML5, CSS3, ES2024
@@ -105,7 +105,7 @@ export default function HumansTxt() {
       items: [
         { label: "Frontend", value: "React + TypeScript + Tailwind" },
         { label: "Framework", value: "Vite" },
-        { label: "Backend", value: "Supabase (Lovable Cloud)" },
+        { label: "Backend", value: "CMPSBL Cloud (Nexus Fleet)" },
         { label: "State", value: "TanStack Query" },
         { label: "Components", value: "Radix UI + shadcn/ui" },
       ]

@@ -211,7 +211,7 @@ export function useEncoded() {
     // Computed
     isDryRun: config.executionMode === 'dry_run',
     isSebaIntegrated: config.sebaIntegration,
-    isCloudAI: config.primaryModel === 'cloud_ai',
+    isNexusFleet: config.primaryModel === 'nexus_fleet',
   };
 }
 

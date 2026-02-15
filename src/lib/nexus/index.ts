@@ -1,19 +1,27 @@
 /**
- * promptfluid® Nexus Module v9.1.0
- * ARCHITECT Epoch — Multi-Provider AI Routing & Health-Weighted Selection
+ * promptfluid® Nexus Module v5.0.0
+ * ARCHITECT Epoch — Free-Tier Multi-Provider AI Routing & Fleet Governance
  * 
  * The nervous system for all AI provider interactions:
- * - Health-weighted provider selection across 8 providers
- * - Multi-provider fallback chains with circuit breakers
- * - Real-time performance tracking and cost optimization
- * - Budget governance integration with daily/monthly limits
+ * - Fleet-managed routing across 7 free-tier providers
+ * - Health-weighted selection with exponential decay scoring
+ * - RPM/RPD governance at 80% safety margin
+ * - Task-type → model affinity mapping
+ * - Real-time fleet introspection and cost tracking
+ * - Zero paid AI dependencies
  */
 
-// Core routing
+// Core routing (v5.0.0 fleet-managed)
 export {
   routeToBestModel,
   fallbackToLocalMode,
+  recordProviderOutcome,
+  getFleetStatus,
+  getEncodeProvider,
+  FLEET_REGISTRY,
   type ModelExecutor,
+  type FleetProvider,
+  type TaskType,
 } from './router';
 
 // Health-weighted routing
@@ -107,19 +115,20 @@ export {
 export * from './circuitBreaker';
 
 // Version info
-export const NEXUS_VERSION = '9.1.0';
-export const NEXUS_CODENAME = 'ARCHITECT Router';
+export const NEXUS_VERSION = '5.0.0';
+export const NEXUS_CODENAME = 'ARCHITECT Fleet Router';
 
-// Provider registry
+// Provider registry — free-tier only, zero paid dependencies
 export const SUPPORTED_PROVIDERS = [
   'groq',
-  'together', 
   'cerebras',
+  'sambanova',
+  'google',
+  'deepseek',
+  'together',
   'openrouter',
   'stability',
   'fal',
-  'google',
-  'cloud',
 ] as const;
 
 export type SupportedProvider = typeof SUPPORTED_PROVIDERS[number];
@@ -131,24 +140,26 @@ export const PROVIDER_CAPABILITIES: Record<SupportedProvider, {
   latency: 'low' | 'medium' | 'high';
   quality: 'standard' | 'high' | 'premium';
 }> = {
-  groq: { types: ['text', 'reasoning'], freeTier: true, latency: 'low', quality: 'high' },
+  groq: { types: ['text', 'reasoning', 'code'], freeTier: true, latency: 'low', quality: 'high' },
+  cerebras: { types: ['text', 'refinement', 'code'], freeTier: true, latency: 'low', quality: 'high' },
+  sambanova: { types: ['text', 'reasoning'], freeTier: true, latency: 'low', quality: 'high' },
+  google: { types: ['text', 'image', 'multimodal', 'code'], freeTier: true, latency: 'medium', quality: 'premium' },
+  deepseek: { types: ['text', 'reasoning', 'code'], freeTier: true, latency: 'medium', quality: 'high' },
   together: { types: ['text', 'research'], freeTier: true, latency: 'medium', quality: 'high' },
-  cerebras: { types: ['text', 'refinement'], freeTier: true, latency: 'low', quality: 'high' },
   openrouter: { types: ['text', 'research'], freeTier: false, latency: 'medium', quality: 'premium' },
   stability: { types: ['image'], freeTier: false, latency: 'medium', quality: 'premium' },
   fal: { types: ['image', 'video'], freeTier: false, latency: 'medium', quality: 'high' },
-  google: { types: ['text', 'image', 'multimodal'], freeTier: true, latency: 'medium', quality: 'premium' },
-  cloud: { types: ['text', 'reasoning', 'code'], freeTier: true, latency: 'low', quality: 'premium' },
 };
 
 /**
- * Quick provider selection helper
+ * Quick provider selection helper — routes to best free-tier provider
  */
 export function getQuickProvider(taskType: 'text' | 'image' | 'code' | 'research'): SupportedProvider {
   switch (taskType) {
     case 'text':
-    case 'code':
       return 'groq';
+    case 'code':
+      return 'groq'; // Best for code: ultra-fast Llama 3.3 70B
     case 'research':
       return 'together';
     case 'image':

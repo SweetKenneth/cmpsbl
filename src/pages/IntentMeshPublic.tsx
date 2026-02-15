@@ -137,7 +137,7 @@ export default function IntentMeshPublic() {
         />
         <meta property="og:title" content="Intent Mesh — Emergent Module Intelligence | CMPSBL" />
         <meta property="og:description" content="Autonomous cross-module capability discovery with self-learning, pipeline crystallization, and intent quality scoring." />
-        <link rel="canonical" href="https://cmpsbl.lovable.app/intent-mesh" />
+        <link rel="canonical" href="https://cmpsbl.com/intent-mesh" />
       </Helmet>
 
       <PublicNav />

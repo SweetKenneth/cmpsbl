@@ -1,17 +1,19 @@
 /**
- * Cloud AI Usage Card
- * v1.0.0 — Tracks Cloud AI gateway usage for evolution cycles
+ * Nexus AI Usage Card
+ * v2.0.0 — Tracks Nexus fleet usage across free-tier providers
+ * Zero paid AI dependencies — all routing via Nexus fleet
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Gauge, RefreshCw, TrendingUp, Zap, AlertTriangle } from 'lucide-react';
+import { Gauge, RefreshCw, TrendingUp, Zap, AlertTriangle, Activity } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { getFleetStatus } from '@/lib/nexus/router';
 
 interface UsageStats {
   today: { calls: number; tokens: number };
@@ -19,32 +21,23 @@ interface UsageStats {
   thisMonth: { calls: number; tokens: number };
 }
 
-// Budget limits synced with SEBA v2.1.0 safety controls
-// These are conservative free tier estimates based on Lovable AI gateway
-const FREE_TIER_LIMITS = {
-  daily: 50,      // ~50 calls/day included free
-  weekly: 300,    // ~300 calls/week
-  monthly: 1000,  // ~1000 calls/month included free
+// Nexus fleet daily capacity (sum of all free-tier RPDs at 80%)
+const FLEET_LIMITS = {
+  daily: 12352,     // Total RPD across all providers
+  weekly: 86464,
+  monthly: 370560,
 };
 
-// Cost per call estimate (after free tier)
-const COST_PER_CALL_CENTS = 0.1; // ~$0.001 per call
-
-// Each SEBA evolution cycle uses ~2-3 LLM calls:
-// 1. SEBA analyze (pf-seba-llm-analyze)
-// 2. Encoded generate (pf-encoded-agent) 
-// 3. Optional: verification call
+// Each SEBA evolution cycle uses ~2-3 LLM calls
 const CALLS_PER_CYCLE = 2.5;
+const DAILY_CYCLE_LIMIT = Math.floor(FLEET_LIMITS.daily / CALLS_PER_CYCLE);
+const MONTHLY_CYCLE_LIMIT = Math.floor(FLEET_LIMITS.monthly / CALLS_PER_CYCLE);
 
-// Budget-aware limits (conservative for safety)
-// 50 calls/day ÷ 2.5 calls/cycle = ~20 cycles/day max
-const DAILY_CYCLE_LIMIT = Math.floor(FREE_TIER_LIMITS.daily / CALLS_PER_CYCLE);
-const MONTHLY_CYCLE_LIMIT = Math.floor(FREE_TIER_LIMITS.monthly / CALLS_PER_CYCLE);
-
-export function CloudAIUsageCard() {
+export function NexusUsageCard() {
   const [usage, setUsage] = useState<UsageStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fleetHealth, setFleetHealth] = useState<number>(0);
 
   const fetchUsage = useCallback(async () => {
     setLoading(true);
@@ -52,45 +45,46 @@ export function CloudAIUsageCard() {
     
     try {
       const now = new Date();
-      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
-      const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-      // Fetch usage from cloud AI usage table
+      // Fetch usage from ai_usage_log
       const { data, error: fetchError } = await supabase
-        .from('lovable_ai_usage')
-        .select('date, calls_used, tokens_used, category')
-        .gte('date', monthStart.split('T')[0])
-        .order('date', { ascending: false });
+        .from('ai_usage_log')
+        .select('created_at, tokens_used, provider')
+        .gte('created_at', monthStart)
+        .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;
 
-      // Aggregate by period
       const today = { calls: 0, tokens: 0 };
       const thisWeek = { calls: 0, tokens: 0 };
       const thisMonth = { calls: 0, tokens: 0 };
 
       const todayDate = now.toISOString().split('T')[0];
-      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
       (data || []).forEach((row: any) => {
-        thisMonth.calls += row.calls_used || 0;
+        thisMonth.calls++;
         thisMonth.tokens += row.tokens_used || 0;
 
-        if (row.date >= weekAgo) {
-          thisWeek.calls += row.calls_used || 0;
+        if (row.created_at >= weekAgo) {
+          thisWeek.calls++;
           thisWeek.tokens += row.tokens_used || 0;
         }
 
-        if (row.date === todayDate) {
-          today.calls += row.calls_used || 0;
+        if (row.created_at?.startsWith(todayDate)) {
+          today.calls++;
           today.tokens += row.tokens_used || 0;
         }
       });
 
       setUsage({ today, thisWeek, thisMonth });
+
+      // Get fleet health
+      const fleet = getFleetStatus();
+      setFleetHealth(fleet.healthyCount);
     } catch (err) {
-      console.error('Failed to fetch Cloud AI usage:', err);
+      console.error('Failed to fetch Nexus usage:', err);
       setError('Failed to load usage data');
     } finally {
       setLoading(false);
@@ -99,18 +93,18 @@ export function CloudAIUsageCard() {
 
   useEffect(() => {
     fetchUsage();
-    const interval = setInterval(fetchUsage, 60000); // Refresh every minute
+    const interval = setInterval(fetchUsage, 60000);
     return () => clearInterval(interval);
   }, [fetchUsage]);
 
   const getDailyPercent = () => {
     if (!usage) return 0;
-    return Math.min(100, (usage.today.calls / FREE_TIER_LIMITS.daily) * 100);
+    return Math.min(100, (usage.today.calls / FLEET_LIMITS.daily) * 100);
   };
 
   const getMonthlyPercent = () => {
     if (!usage) return 0;
-    return Math.min(100, (usage.thisMonth.calls / FREE_TIER_LIMITS.monthly) * 100);
+    return Math.min(100, (usage.thisMonth.calls / FLEET_LIMITS.monthly) * 100);
   };
 
   const getStatusColor = (percent: number) => {
@@ -119,14 +113,8 @@ export function CloudAIUsageCard() {
     return 'text-emerald-400 bg-emerald-500/20 border-emerald-500/40';
   };
 
-  const estimateCycles = (callsRemaining: number) => {
-    return Math.floor(callsRemaining / CALLS_PER_CYCLE);
-  };
-
-  const dailyRemaining = Math.max(0, FREE_TIER_LIMITS.daily - (usage?.today.calls || 0));
-  const monthlyRemaining = Math.max(0, FREE_TIER_LIMITS.monthly - (usage?.thisMonth.calls || 0));
-  const dailyCyclesRemaining = estimateCycles(dailyRemaining);
-  const monthlyCyclesRemaining = estimateCycles(monthlyRemaining);
+  const dailyRemaining = Math.max(0, FLEET_LIMITS.daily - (usage?.today.calls || 0));
+  const monthlyRemaining = Math.max(0, FLEET_LIMITS.monthly - (usage?.thisMonth.calls || 0));
 
   return (
     <motion.div
@@ -134,13 +122,16 @@ export function CloudAIUsageCard() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
     >
-      <Card className="border-indigo-400/30 bg-gradient-to-br from-indigo-500/10 via-background to-transparent shadow-lg shadow-indigo-500/5 hover:shadow-indigo-500/10 transition-shadow">
+      <Card className="border-cyan-400/30 bg-gradient-to-br from-cyan-500/10 via-background to-transparent shadow-lg shadow-cyan-500/5 hover:shadow-cyan-500/10 transition-shadow">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500/30 to-indigo-600/20 flex items-center justify-center border border-indigo-400/30 shadow-sm shadow-indigo-500/20">
-              <Gauge className="w-4 h-4 text-indigo-300" />
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500/30 to-cyan-600/20 flex items-center justify-center border border-cyan-400/30 shadow-sm shadow-cyan-500/20">
+              <Activity className="w-4 h-4 text-cyan-300" />
             </div>
-            <span className="text-foreground/90">Cloud AI Usage</span>
+            <span className="text-foreground/90">Nexus Fleet Usage</span>
+            <Badge variant="outline" className="ml-1 text-[9px] text-emerald-400 bg-emerald-500/10 border-emerald-500/30">
+              {fleetHealth}/7 healthy
+            </Badge>
             <Button
               size="icon"
               variant="ghost"
@@ -170,7 +161,7 @@ export function CloudAIUsageCard() {
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">Today</span>
                   <span className="font-mono text-foreground/90">
-                    {usage.today.calls} / {FREE_TIER_LIMITS.daily}
+                    {usage.today.calls.toLocaleString()} / {FLEET_LIMITS.daily.toLocaleString()}
                   </span>
                 </div>
                 <Progress 
@@ -179,10 +170,10 @@ export function CloudAIUsageCard() {
                 />
                 <div className="flex items-center justify-between">
                   <Badge variant="outline" className={cn("text-[9px]", getStatusColor(getDailyPercent()))}>
-                    {dailyRemaining} remaining
+                    {dailyRemaining.toLocaleString()} remaining
                   </Badge>
                   <span className="text-[10px] text-muted-foreground">
-                    ~{estimateCycles(dailyRemaining)} cycles
+                    ~{Math.floor(dailyRemaining / CALLS_PER_CYCLE)} cycles
                   </span>
                 </div>
               </div>
@@ -192,7 +183,7 @@ export function CloudAIUsageCard() {
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">This Month</span>
                   <span className="font-mono text-foreground/90">
-                    {usage.thisMonth.calls} / {FREE_TIER_LIMITS.monthly}
+                    {usage.thisMonth.calls.toLocaleString()} / {FLEET_LIMITS.monthly.toLocaleString()}
                   </span>
                 </div>
                 <Progress 
@@ -201,10 +192,10 @@ export function CloudAIUsageCard() {
                 />
                 <div className="flex items-center justify-between">
                   <Badge variant="outline" className={cn("text-[9px]", getStatusColor(getMonthlyPercent()))}>
-                    {monthlyRemaining} remaining
+                    {monthlyRemaining.toLocaleString()} remaining
                   </Badge>
                   <span className="text-[10px] text-muted-foreground">
-                    ~{estimateCycles(monthlyRemaining)} cycles
+                    ~{Math.floor(monthlyRemaining / CALLS_PER_CYCLE)} cycles
                   </span>
                 </div>
               </div>
@@ -216,46 +207,30 @@ export function CloudAIUsageCard() {
                     <Zap className="w-3 h-3" />
                     This Week
                   </div>
-                  <p className="text-lg font-bold text-foreground/90">{usage.thisWeek.calls}</p>
+                  <p className="text-lg font-bold text-foreground/90">{usage.thisWeek.calls.toLocaleString()}</p>
                 </div>
                 <div className="p-2.5 rounded-lg bg-background/60 border border-border/40">
                   <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
                     <TrendingUp className="w-3 h-3" />
-                    Est. Cost
+                    Cost
                   </div>
-                  <p className="text-lg font-bold text-emerald-400">
-                    ${((Math.max(0, usage.thisMonth.calls - FREE_TIER_LIMITS.monthly) * COST_PER_CALL_CENTS) / 100).toFixed(2)}
-                  </p>
+                  <p className="text-lg font-bold text-emerald-400">$0.00</p>
                 </div>
               </div>
-
-              {/* Warning if approaching limit */}
-              {getMonthlyPercent() >= 80 && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30"
-                >
-                  <div className="flex items-center gap-2 text-amber-300 text-xs">
-                    <AlertTriangle className="w-4 h-4 shrink-0" />
-                    <span>
-                      Approaching monthly limit. Consider adding credits in{' '}
-                      <strong>Settings → Workspace → Usage</strong>.
-                    </span>
-                  </div>
-                </motion.div>
-              )}
             </>
           )}
 
           <p className="text-[10px] text-muted-foreground/70 text-center pt-1">
-            Free tier: ~{FREE_TIER_LIMITS.daily}/day, ~{FREE_TIER_LIMITS.monthly}/month calls
+            Nexus fleet: 7 free-tier providers, ~{FLEET_LIMITS.daily.toLocaleString()} calls/day
           </p>
           <p className="text-[10px] text-muted-foreground/60 text-center">
-            ≈ {DAILY_CYCLE_LIMIT} cycles/day, {MONTHLY_CYCLE_LIMIT} cycles/month (SEBA advisory mode)
+            ≈ {DAILY_CYCLE_LIMIT.toLocaleString()} cycles/day, {MONTHLY_CYCLE_LIMIT.toLocaleString()} cycles/month — zero cost
           </p>
         </CardContent>
       </Card>
     </motion.div>
   );
 }
+
+// Backward compat export
+export const CloudAIUsageCard = NexusUsageCard;

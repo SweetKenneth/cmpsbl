@@ -260,14 +260,14 @@ export function registerEncodedHandlers(): void {
     };
   });
 
-  // encoded.model.cloud — Use Cloud AI as primary
-  registerHandler('encoded.model.cloud', async () => {
-    const result = await updateEncodedConfig({ primaryModel: 'cloud_ai' });
+  // encoded.model.nexus — Use Nexus fleet as primary
+  registerHandler('encoded.model.nexus', async () => {
+    const result = await updateEncodedConfig({ primaryModel: 'nexus_fleet' });
     
     return {
       success: result.success,
       message: result.success 
-        ? 'Primary model set to CLOUD AI (Gemini 3 Flash)'
+        ? 'Primary model set to NEXUS FLEET (Groq → Cerebras → DeepSeek)'
         : result.error,
     };
   });

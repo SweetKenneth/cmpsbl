@@ -1,12 +1,13 @@
 /**
  * Encoded Guardrail Policy — Single Source of Truth
- * v2.1.0 — Enhanced destructive detection, comprehensive narrative bans, strict approval gates
+ * v2.2.0 — Enhanced destructive detection, comprehensive narrative bans, strict approval gates
+ * ENCODE routes through Nexus (free-tier) — zero external AI costs
  */
 
 export type ChangeClass = 'comment_only' | 'additive' | 'localized' | 'destructive';
 export type RiskBand = 'minimal' | 'low' | 'medium' | 'high' | 'critical';
 export type ExecutionMode = 'dry_run' | 'human_approval' | 'semi_autonomous' | 'autonomous';
-export type PrimaryModel = 'cloud_ai' | 'free_tier';
+export type PrimaryModel = 'nexus_fleet' | 'free_tier';
 
 /**
  * Encoded configuration for runtime behavior
@@ -18,20 +19,21 @@ export interface EncodedConfig {
   sebaIntegration: boolean;
   /** Whether to learn from every execution */
   clmTraining: boolean;
-  /** Primary AI model to use */
+  /** Primary AI model to use — always Nexus fleet routing */
   primaryModel: PrimaryModel;
   /** Max self-fix attempts */
   maxRetries: number;
 }
 
 /**
- * Default configuration for Encoded v2.1.0
+ * Default configuration for Encoded v2.2.0
+ * Routes through Nexus fleet — zero paid AI dependencies
  */
 export const DEFAULT_ENCODED_CONFIG: EncodedConfig = {
   executionMode: 'dry_run',        // Default: show, don't write
   sebaIntegration: false,          // Default: independent from SEBA
   clmTraining: true,               // Default: learn from everything
-  primaryModel: 'cloud_ai',      // Use Cloud AI (Gemini) first
+  primaryModel: 'nexus_fleet',     // Nexus fleet routing (Groq → Cerebras → DeepSeek)
   maxRetries: 3,                   // Max self-fix attempts
 };
 
@@ -75,16 +77,16 @@ export const ENCODED_POLICY = {
 
   /** Patterns that indicate dangerous code (forbidden) */
   dangerousPatterns: [
-    /\beval\s*\(/i,                              // eval()
-    /\bnew\s+Function\s*\(/i,                   // new Function()
-    /\bFunction\s*\(/i,                         // Function()
-    /document\.write\s*\(/i,                    // document.write
-    /innerHTML\s*=\s*[^"'`]*\+/i,               // innerHTML with concatenation
-    /\.innerHTML\s*=\s*\$\{/i,                  // innerHTML with template literal
-    /process\.env\.\w+\s*=\s*/i,                // Direct env modification
-    /fs\.(?:unlink|rmdir|rm)Sync?\s*\(/i,       // File deletion
-    /child_process\s*\.\s*exec\s*\(/i,          // Command execution
-    /\brequire\s*\(\s*['"]\s*child_process/i,   // Importing child_process
+    /\beval\s*\(/i,
+    /\bnew\s+Function\s*\(/i,
+    /\bFunction\s*\(/i,
+    /document\.write\s*\(/i,
+    /innerHTML\s*=\s*[^"'`]*\+/i,
+    /\.innerHTML\s*=\s*\$\{/i,
+    /process\.env\.\w+\s*=\s*/i,
+    /fs\.(?:unlink|rmdir|rm)Sync?\s*\(/i,
+    /child_process\s*\.\s*exec\s*\(/i,
+    /\brequire\s*\(\s*['"]\s*child_process/i,
   ] as readonly RegExp[],
 
   // ═══════════════════════════════════════════════════════════════
@@ -93,7 +95,6 @@ export const ENCODED_POLICY = {
   
   /** Patterns that indicate narrative/personality code (forbidden) */
   narrativePatterns: [
-    // Self-reference patterns
     /glitch in my neural network/i,
     /i['']?m recovering/i,
     /as an ai/i,
@@ -102,35 +103,25 @@ export const ENCODED_POLICY = {
     /\bI\b(?:'m| am) (?:an? )?(?:AI|assistant|bot|model)/i,
     /my (?:training|programming)/i,
     /my (?:capabilities|limitations)/i,
-    
-    // Apologetic patterns
     /sorry,? (?:i |but )/i,
     /i apologize/i,
     /i can't (?:help|do|provide)/i,
     /unfortunately,? i/i,
     /i'm not able to/i,
-    
-    // Thinking-out-loud patterns
     /let me think/i,
     /hmm,? (?:let me|i think)/i,
     /let me (?:check|see|consider)/i,
     /thinking about (?:this|that|it)/i,
     /i (?:think|believe|feel) that/i,
-    
-    // Conversational filler
     /^(?:ok|okay|alright|sure),?\s+/i,
     /^(?:well|so|now),?\s+/i,
     /^(?:great|perfect|excellent)!?\s+/i,
     /here(?:'s| is) (?:the|my|a)/i,
     /i(?:'ll| will) (?:help|assist|provide)/i,
-    
-    // Meta commentary
     /this code (?:will|should|can)/i,
     /the (?:above|following) code/i,
     /note that (?:this|the)/i,
     /please (?:note|remember)/i,
-    
-    // Uncertainty markers
     /i(?:'m| am) not sure/i,
     /might (?:be|have|need)/i,
     /could (?:be|have|need)/i,
