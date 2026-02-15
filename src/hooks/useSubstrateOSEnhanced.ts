@@ -34,21 +34,16 @@ export function useBrainTiering() {
   
   return useMutation({
     mutationFn: async (batchSize?: number) => {
-      const { data, error } = await import('@/integrations/supabase/client').then(m => 
-        m.supabase.functions.invoke('pf-brain-memory-tiering', {
-          body: { batch_size: batchSize || 500 }
-        })
-      );
-      if (error) throw error;
-      return data;
+      // Use substrate memory-gc module for tiering instead of archived edge function
+      const { runMemoryGC } = await import('@/lib/substrate/memory-gc');
+      return runMemoryGC();
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
-      const stats = data?.stats || {};
-      const promoted = stats.promoted_to_hot || 0;
-      const demoted = stats.demoted_to_warm || 0;
-      const pruned = stats.pruned || 0;
+      const promoted = 0; // GC focuses on demotion, not promotion
+      const demoted = (data?.hot_demoted || 0) + (data?.warm_demoted || 0);
+      const pruned = data?.cold_archived || 0;
       toast.success(`Tiering complete: ${demoted} demoted, ${promoted} promoted, ${pruned} pruned`);
     },
     onError: (error) => {
@@ -62,19 +57,14 @@ export function useBrainPrune() {
   
   return useMutation({
     mutationFn: async (options?: { dry_run?: boolean }) => {
-      const { data, error } = await import('@/integrations/supabase/client').then(m => 
-        m.supabase.functions.invoke('pf-brain-memory-prune', {
-          body: options || {}
-        })
-      );
-      if (error) throw error;
-      return data;
+      // Use substrate memory-gc module for pruning instead of archived edge function
+      const { runMemoryGC } = await import('@/lib/substrate/memory-gc');
+      return runMemoryGC();
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
-      const stats = data?.stats || data?.summary || {};
-      const totalPruned = stats.total_pruned || stats.pruned_noise + stats.pruned_duplicates + stats.pruned_low_value || 0;
+      const totalPruned = (data?.hot_demoted || 0) + (data?.warm_demoted || 0) + (data?.cold_archived || 0);
       if (variables?.dry_run) {
         toast.info(`Prune preview: ${totalPruned} memories would be removed`);
       } else {
@@ -92,21 +82,26 @@ export function useBrainBatchTiering() {
   
   return useMutation({
     mutationFn: async (options?: { batch_size?: number; max_batches?: number }) => {
-      const { data, error } = await import('@/integrations/supabase/client').then(m => 
-        m.supabase.functions.invoke('pf-brain-batch-tiering', {
-          body: options || { batch_size: 500, max_batches: 10 }
-        })
-      );
-      if (error) throw error;
-      return data;
+      // Use substrate memory-gc module for batch tiering instead of archived edge function
+      const { runMemoryGC } = await import('@/lib/substrate/memory-gc');
+      const maxBatches = options?.max_batches || 10;
+      let totalDemoted = 0;
+      let totalProcessed = 0;
+      
+      for (let i = 0; i < maxBatches; i++) {
+        const result = await runMemoryGC();
+        const demoted = (result?.hot_demoted || 0) + (result?.warm_demoted || 0);
+        totalDemoted += demoted;
+        totalProcessed += result?.total_processed || 0;
+        if (demoted === 0 && (result?.total_processed || 0) === 0) break;
+      }
+      
+      return { demoted: totalDemoted, processed: totalProcessed };
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
-      const stats = data?.stats || {};
-      const processed = stats.scored || stats.demoted_to_warm || 0;
-      const demoted = stats.demoted_to_warm || 0;
-      toast.success(`Batch tiering complete: ${demoted} demoted, ${processed} scored`);
+      toast.success(`Batch tiering complete: ${data.demoted} demoted, ${data.processed} processed`);
     },
     onError: (error) => {
       toast.error(`Batch tiering failed: ${error instanceof Error ? error.message : 'Unknown error'}`);

@@ -252,19 +252,19 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
             
             <div>
               <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
-                <span className="text-foreground">substrate</span>
+                <span className="text-foreground">CMPSBL</span>
                 <span className="relative">
-                  <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 bg-clip-text text-transparent">os</span>
+                  <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 bg-clip-text text-transparent">OS</span>
                   <Sparkles className="absolute -top-1 -right-4 w-3 h-3 text-cyan-400 animate-pulse" />
                 </span>
               </h1>
               <div className="flex items-center gap-2 mt-0.5">
                 <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                  seba era • cognitive orchestration
+                  architect epoch • cognitive orchestration
                 </p>
                 <span className="text-muted-foreground/30">|</span>
                 <span className="text-[10px] font-mono text-cyan-400/80">
-                  v{versionData?.version || '10.1.0'}
+                  v{versionData?.version || '10.5.0'}
                 </span>
               </div>
             </div>
