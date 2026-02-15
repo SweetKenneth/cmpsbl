@@ -3522,7 +3522,7 @@ export async function executeHolisticSystemInsight(
   // Step 1: VISION - Collect all metrics
   const visionStart = performance.now();
   const systemMetrics = {
-    modules: 14,
+    modules: 21,
     healthScore: 0.96,
     activeConnections: 23,
     eventRate: 150,
@@ -4510,7 +4510,7 @@ export async function executeMultiModalTaskRouting(
   // Step 4: VISION - Resource availability
   const visionStart = performance.now();
   const resources = {
-    modulesAvailable: 14,
+    modulesAvailable: 21,
     currentLoad: 0.45,
     estimatedWaitTime: '50ms',
   };

@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 
 export default function CognitiveForge() {
   const { user, loading: authLoading } = useAuth();
-  const { role, isOperator, loading: roleLoading } = useUserRole();
+  const { role, isOperator, isGovernor, loading: roleLoading } = useUserRole();
   const [activeTab, setActiveTab] = useState('build');
 
   if (!authLoading && !user) {
@@ -54,7 +54,6 @@ export default function CognitiveForge() {
   }
 
   // Governor-only (CMPSBL internal feature)
-  const { isGovernor } = useUserRole();
   if (!isGovernor) {
     return (
       <div className="min-h-screen bg-background">

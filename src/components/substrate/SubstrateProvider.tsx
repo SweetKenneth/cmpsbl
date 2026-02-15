@@ -134,7 +134,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     // Don't refresh if unmounted
     if (!mountedRef.current) return;
 
-    // Check all 14 substrate modules (13 core + cortex orchestrator)
+    // Check all 21 substrate modules across 6 layers
     const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'modernizer', 'integration', 'cortex'];
     const results = await Promise.all(moduleList.map(checkModule));
 

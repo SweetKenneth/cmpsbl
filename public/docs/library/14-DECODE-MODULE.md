@@ -1,10 +1,18 @@
 # CMPSBL OS Substrate — DECODE Module Deep Dive
 
-**Version 6.3.0 | Scientific Publication**
+**Version 10.5.0 | ARCHITECT Epoch**
 
 ---
 
 ## Document Metadata
+
+| Field | Value |
+|-------|-------|
+| **Document ID** | CMPSBL-LIB-014 |
+| **Module** | DECODE |
+| **Layer** | Cognitive |
+| **Version** | v10.5.0 |
+| **Architecture** | 21 modules across 6 layers |
 
 | Field | Value |
 |-------|-------|
@@ -139,5 +147,5 @@ DECODE leverages BRAIN for context:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v10.5.0 — ARCHITECT Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
