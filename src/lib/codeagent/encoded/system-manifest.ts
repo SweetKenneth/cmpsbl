@@ -332,7 +332,7 @@ export const SYSTEM_ROUTES: RouteEntry[] = [
   { path: '/os', component: 'SubstrateOS', description: 'Substrate OS with DECODE + ENCODE tabs', auth: 'public' },
   { path: '/demo', component: 'SubstrateDemo', description: 'Interactive substrate demos', auth: 'public' },
   { path: '/proof', component: 'ProofMode', description: 'Proof-of-capability demonstrations', auth: 'public' },
-  { path: '/demos', component: 'STierDemos', description: 'S-Tier investor demo showcase', auth: 'public' },
+  { path: '/showcase', component: 'STierDemos', description: 'S-Tier investor showcase — live proof-of-capability', auth: 'public' },
   { path: '/decode', component: 'Decode', description: 'DECODE intent interface', auth: 'public' },
   { path: '/blog', component: 'Blog', description: 'Blog and publications', auth: 'public' },
   { path: '/auth', component: 'Auth', description: 'Authentication', auth: 'public' },

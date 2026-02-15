@@ -295,7 +295,7 @@ const App = () => {
                         <Route path="/os" element={<SubstrateOS />} />
                         <Route path="/demo" element={<SubstrateDemo />} />
                         <Route path="/proof" element={<ProofMode />} />
-                        <Route path="/demos" element={<STierDemos />} />
+                        <Route path="/showcase" element={<STierDemos />} />
                         <Route path="/publication" element={<Publication />} />
                         <Route path="/documentation" element={<Documentation />} />
                         <Route path="/intent-mesh" element={<IntentMeshPublic />} />
