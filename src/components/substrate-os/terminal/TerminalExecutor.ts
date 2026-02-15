@@ -2218,6 +2218,30 @@ ${allFeatures.map(f => {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.confidence <plan_id>' };
       }
       result = await substrate.invoke({ module: 'modernizer', action: 'confidence', payload: { plan_id: args[0] } });
+    } else if (base === 'modernizer.stamps') {
+      // Evolution stamps — same as seba.stamps but via modernizer namespace
+      const limit = parseInt(args[0]) || 10;
+      try {
+        const { data: stamps, error } = await supabase
+          .from('brain_events')
+          .select('*')
+          .eq('event_type', 'evolution_stamp')
+          .order('created_at', { ascending: false })
+          .limit(limit);
+        if (error) return { success: false, output: `▓ Stamp query error: ${error.message}` };
+        if (!stamps || stamps.length === 0) {
+          return { success: true, output: '◉ No evolution stamps found\n  Stamps are created when evolutions apply to production.\n  Run: modernizer.evolve → shadow → production to generate stamps.' };
+        }
+        let output = `╔══════════════════════════════════════════════════════════════╗\n║  EVOLUTION STAMPS — Verification Trail                        ║\n╠══════════════════════════════════════════════════════════════╣\n`;
+        for (const stamp of stamps) {
+          const data = stamp.data as Record<string, any>;
+          output += `║  🔏 ${data?.stamp_id || 'N/A'}\n║     Plan: ${(data?.plan_id || 'N/A').substring(0, 8)}  |  Type: ${data?.change_type || 'evolution'}  |  ${new Date(stamp.created_at).toLocaleDateString()}\n╠──────────────────────────────────────────────────────────────╣\n`;
+        }
+        output = output.slice(0, -67) + '╚══════════════════════════════════════════════════════════════╝';
+        return { success: true, output, data: stamps };
+      } catch (err) {
+        return { success: false, output: `▓ Stamps error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
     }
 
     // ═══ v0.7.6/v0.7.7: CIRCUIT BREAKER, AUTONOMY, RECEIPTS ═══
@@ -2641,6 +2665,8 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       result = await integration.policies();
     } else if (base === 'integration.audit_log') {
       result = await integration.auditLog({ adapter_id: args[0], limit: args[1] ? parseInt(args[1]) : undefined });
+    } else if (base === 'integration.governance') {
+      result = await integration.policies();
     } else if (base === 'integration.connect') {
       if (!args[0] || !args[1]) {
         return { success: false, output: '▓ ERROR: Type and name required\n  Usage: integration.connect <type> <name> <config>' };
@@ -3005,6 +3031,41 @@ ${categories.map(c => `│  ${c.category.padEnd(15)} ${c.count.toString().padSta
         return { success: false, output: `▓ Categories error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
+    else if (base === 'cortex.synergy.pipeline') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Synergy IDs required\n  Usage: cortex.synergy.pipeline <id1,id2,...> [input_json]' };
+      }
+      try {
+        const { executeSynergy } = await import('@/lib/capabilities/synergies');
+        const synergyIds = args[0].split(',').map(s => s.trim());
+        const input = args[1] ? JSON.parse(args[1]) : {};
+        const results = [];
+        let currentInput = input;
+        let totalMs = 0;
+        for (const sid of synergyIds) {
+          const r = await executeSynergy(sid, currentInput, { caller: 'terminal-pipeline' });
+          results.push(r);
+          totalMs += r.totalDurationMs;
+          if (!r.success) break;
+          currentInput = { ...currentInput, previousOutput: r };
+        }
+        const allOk = results.every(r => r.success);
+        let output = `
+┌─ SYNERGY PIPELINE (${synergyIds.length} stages) ──────────────────────────
+│
+│  ${allOk ? '✓' : '✗'} Overall: ${allOk ? 'SUCCESS' : 'PARTIAL FAILURE'}
+│  Total Duration: ${totalMs}ms
+│`;
+        for (let i = 0; i < results.length; i++) {
+          const r = results[i];
+          output += `\n│  ${i + 1}. ${r.success ? '✓' : '✗'} ${r.synergyId} (${r.totalDurationMs}ms)`;
+        }
+        output += `\n│\n└──────────────────────────────────────────────────────────────`;
+        return { success: allOk, output, data: results };
+      } catch (err) {
+        return { success: false, output: `▓ Pipeline error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
     else if (base === 'cortex.synergy.modules') {
       try {
         const { getSynergiesByModule, listSynergies } = await import('@/lib/capabilities/synergies');
@@ -3139,6 +3200,71 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return { success: true, output, data: feed };
       } catch (err) {
         return { success: false, output: `▓ Inbox error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // MCLM — Module-specific CLM (mclm.status, mclm.run, mclm.run.all, mclm.feed)
+    // ═══════════════════════════════════════════════════════════════
+    else if (base === 'mclm.status') {
+      try {
+        const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+        const statesObj: Record<string, any> = {};
+        for (const mod of ALL_21_MODULES) {
+          statesObj[mod.key] = moduleCLM.getModuleState?.(mod.key as any) || {};
+        }
+        let output = `╔══════════════════════════════════════════════════════════════╗\n║  MODULE CLM STATUS — All 21 Modules                           ║\n╠══════════════════════════════════════════════════════════════╣\n`;
+        for (const mod of ALL_21_MODULES) {
+          const s = statesObj[mod.key] || {};
+          const icon = s.enabled ? '🟢' : '⚫';
+          output += `║  ${icon} ${mod.label.padEnd(14)} [${mod.layer.substring(0, 5).padEnd(5)}]  cycles: ${String(s.cycles || 0).padEnd(3)} ║\n`;
+        }
+        output += `╚══════════════════════════════════════════════════════════════╝`;
+        return { success: true, output, data: statesObj };
+      } catch (err) {
+        return { success: false, output: `▓ MCLM status error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'mclm.run') {
+      const moduleArg = args[0]?.toLowerCase();
+      if (!moduleArg) {
+        return { success: false, output: '▓ Usage: mclm.run <module>\n  Example: mclm.run brain' };
+      }
+      try {
+        const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+        const analysis = await moduleCLM.runModuleLearning(moduleArg as any);
+        if (!analysis) {
+          return { success: true, output: `◉ MCLM cycle for ${moduleArg.toUpperCase()} — no new insights` };
+        }
+        return { success: true, output: `◉ MCLM ${moduleArg.toUpperCase()}: ${analysis.title}\n  Type: ${analysis.analysisType}  Confidence: ${(analysis.confidence * 100).toFixed(0)}%`, data: analysis };
+      } catch (err) {
+        return { success: false, output: `▓ MCLM run error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'mclm.run.all') {
+      try {
+        const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+        const results = await moduleCLM.runAllModuleLearning();
+        return { success: true, output: `◉ MCLM run all complete — ${results.length} insights generated across 21 modules`, data: results };
+      } catch (err) {
+        return { success: false, output: `▓ MCLM run all error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'mclm.feed') {
+      try {
+        const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
+        const feed = await moduleCLM.getFeed(args[0] ? parseInt(args[0]) : 20);
+        if (feed.length === 0) {
+          return { success: true, output: '◉ MCLM feed is empty — run mclm.run.all to generate' };
+        }
+        let output = `┌─ MCLM INTELLIGENCE FEED (${feed.length}) ──────────────────────────\n│\n`;
+        for (const r of feed.slice(0, 15)) {
+          output += `│  ${r.moduleId.toUpperCase().padEnd(12)} ${r.title.substring(0, 40).padEnd(40)} ${(r.confidence * 100).toFixed(0)}%\n`;
+        }
+        output += `│\n└──────────────────────────────────────────────────────────────`;
+        return { success: true, output, data: feed };
+      } catch (err) {
+        return { success: false, output: `▓ MCLM feed error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
 
@@ -3823,6 +3949,36 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return { success: true, output, data: result.data };
       } catch (err) {
         return { success: false, output: `▓ History error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.config') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        if (args[0] && args[0].includes('=')) {
+          const [key, val] = args[0].split('=');
+          const result = await sebaAgent.handleCommand('config', { key, value: val });
+          return { success: result.success, output: result.success ? `◉ SEBA config updated: ${key} = ${val}` : `▓ ${result.message}`, data: result.data };
+        }
+        const result = await sebaAgent.handleCommand('config');
+        return { success: result.success, output: `◉ SEBA Configuration\n\n${JSON.stringify(result.data, null, 2)}`, data: result.data };
+      } catch (err) {
+        return { success: false, output: `▓ Config error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.thresholds') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        if (args[0] === 'auto_approve' && args[1]) {
+          const result = await sebaAgent.handleCommand('config', { key: 'auto_approve_threshold', value: parseFloat(args[1]) });
+          return { success: result.success, output: `◉ Auto-approve threshold set to ${args[1]}` };
+        }
+        if (args[0] === 'risk' && args[1]) {
+          const result = await sebaAgent.handleCommand('config', { key: 'risk_tolerance', value: args[1] });
+          return { success: result.success, output: `◉ Risk tolerance set to ${args[1]}` };
+        }
+        const result = await sebaAgent.handleCommand('status');
+        const state = (result.data as any)?.state || {};
+        return { success: true, output: `◉ SEBA Thresholds\n  Auto-approve: ≥${(state.auto_approve_threshold || 0.85).toFixed(2)}\n  Risk tolerance: ${(state.risk_tolerance || 'low').toUpperCase()}\n\n  Usage: seba.thresholds auto_approve <0.0-1.0>\n         seba.thresholds risk <low|medium|high>` };
+      } catch (err) {
+        return { success: false, output: `▓ Thresholds error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'seba.stamps') {
       // Evolution stamp verification command
@@ -4583,6 +4739,67 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     }
     
+    else if (base === 'engine.batch') {
+      try {
+        const { runEngine } = await import('@/lib/substrate/engines');
+        const engineIds = args[0]?.split(',');
+        if (!engineIds || engineIds.length === 0) {
+          return { success: false, output: '▓ Usage: engine.batch <engine_id1,engine_id2,...> [parallel]' };
+        }
+        const parallel = args[1] === 'true';
+        const input = args[2] ? JSON.parse(args[2]) : {};
+        
+        const executor = async (id: string) => runEngine(id as any, input);
+        const results = parallel
+          ? await Promise.allSettled(engineIds.map(executor))
+          : [];
+        
+        if (!parallel) {
+          for (const id of engineIds) {
+            results.push({ status: 'fulfilled', value: await executor(id) } as any);
+          }
+        }
+        
+        const succeeded = results.filter(r => r.status === 'fulfilled' && (r as any).value?.success).length;
+        let output = `◉ ENGINE BATCH: ${engineIds.length} engines, ${parallel ? 'parallel' : 'sequential'}\n  Succeeded: ${succeeded}/${engineIds.length}\n`;
+        for (let i = 0; i < results.length; i++) {
+          const r = results[i];
+          const val = r.status === 'fulfilled' ? (r as any).value : null;
+          output += `\n  ${val?.success ? '✓' : '✗'} ${engineIds[i]} ${val?.totalDurationMs ? `(${val.totalDurationMs}ms)` : ''}`;
+        }
+        return { success: succeeded === engineIds.length, output, data: results };
+      } catch (err) {
+        return { success: false, output: `▓ Batch error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'engine.history') {
+      const limit = args[0] ? parseInt(args[0]) : 10;
+      try {
+        const { data: history, error } = await supabase
+          .from('brain_events')
+          .select('*')
+          .eq('event_type', 'engine_execution')
+          .order('created_at', { ascending: false })
+          .limit(limit);
+        if (error) {
+          return { success: false, output: `▓ History error: ${error.message}` };
+        }
+        if (!history || history.length === 0) {
+          return { success: true, output: '◉ No engine execution history found' };
+        }
+        let output = `┌─ ENGINE EXECUTION HISTORY (${history.length}) ───────────────────────\n│\n`;
+        for (const h of history) {
+          const d = h.data as Record<string, any> || {};
+          output += `│  ${new Date(h.created_at).toLocaleString()} │ ${(d.engine_id || 'unknown').padEnd(24)} │ ${d.success ? '✓' : '✗'} ${d.duration_ms || 0}ms\n`;
+        }
+        output += `│\n└──────────────────────────────────────────────────────────────`;
+        return { success: true, output, data: history };
+      } catch (err) {
+        return { success: false, output: `▓ History error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
     else if (base === 'engine.worldfirst') {
       try {
         const { listEngines } = await import('@/lib/substrate/engines');
@@ -4727,6 +4944,40 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         };
       } catch (err) {
         return { success: false, output: `▓ Meta get error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'meta.batch') {
+      try {
+        const { runMetaEngine } = await import('@/lib/substrate/engines');
+        const metaIds = args[0]?.split(',');
+        if (!metaIds || metaIds.length === 0) {
+          return { success: false, output: '▓ Usage: meta.batch <meta_id1,meta_id2,...> [parallel]' };
+        }
+        const parallel = args[1] === 'true';
+        const input = args[2] ? JSON.parse(args[2]) : {};
+        
+        const executor = async (id: string) => runMetaEngine(id as any, input);
+        const results = parallel
+          ? await Promise.allSettled(metaIds.map(executor))
+          : [];
+        
+        if (!parallel) {
+          for (const id of metaIds) {
+            results.push({ status: 'fulfilled', value: await executor(id) } as any);
+          }
+        }
+        
+        const succeeded = results.filter(r => r.status === 'fulfilled' && (r as any).value?.success).length;
+        let output = `◉ META-ENGINE BATCH: ${metaIds.length} meta-engines, ${parallel ? 'parallel' : 'sequential'}\n  Succeeded: ${succeeded}/${metaIds.length}\n`;
+        for (let i = 0; i < results.length; i++) {
+          const r = results[i];
+          const val = r.status === 'fulfilled' ? (r as any).value : null;
+          output += `\n  ${val?.success ? '✓' : '✗'} ${metaIds[i]} ${val?.totalDurationMs ? `(${val.totalDurationMs}ms)` : ''}`;
+        }
+        return { success: succeeded === metaIds.length, output, data: results };
+      } catch (err) {
+        return { success: false, output: `▓ Meta batch error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
     
@@ -4892,7 +5143,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══ INFRASTRUCTURE SIX + ENCODE MODULE HANDLERS (v9.2.0 ARCHITECT) ═══
-    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.')) {
+    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.')) {
       try {
         // Lazy-register Infrastructure Six + Encode handlers on first use
         const { registerInfraModuleHandlers } = await import('@/lib/terminal/infra-module-handlers');
@@ -4901,6 +5152,8 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         registerEncodeModuleHandlers();
         const { registerMeshHandlers } = await import('@/lib/terminal/mesh-handlers');
         registerMeshHandlers();
+        const { registerEncodedHandlers } = await import('@/lib/terminal/encoded-handlers');
+        registerEncodedHandlers();
         const { getHandler } = await import('@/lib/terminal/validate-registry');
         const handler = getHandler(base);
         
