@@ -15,7 +15,9 @@ import { Link } from "react-router-dom";
 import { 
   FileText, Download, ExternalLink, Archive, BookOpen, 
   Layers, Terminal, Brain, Shield, Eye, Zap, Users,
-  Globe, Cpu, Settings, Code, Moon, Network, Printer
+  Globe, Cpu, Settings, Code, Moon, Network, Printer,
+  Radio, Key, Landmark, DollarSign, Box, ScrollText,
+  Fingerprint, Send, Lock
 } from "lucide-react";
 import { toast } from "sonner";
 import { usePrintDocument } from "@/hooks/usePrintDocument";
@@ -41,32 +43,32 @@ const LIBRARY_DOCS = [
 const MODULES = [
   // Kernel Layer
   { name: "CORE", icon: Cpu, desc: "Scheduling & lifecycle", layer: "Kernel" },
-  { name: "RIPPLE", icon: Network, desc: "Event bus", layer: "Kernel" },
-  { name: "ACCESS", icon: Users, desc: "Identity & permissions", layer: "Kernel" },
+  { name: "RIPPLE", icon: Radio, desc: "Event bus & propagation", layer: "Kernel" },
+  { name: "ACCESS", icon: Key, desc: "Identity & permissions", layer: "Kernel" },
   // Cognitive Layer
-  { name: "BRAIN", icon: Brain, desc: "3-tier memory", layer: "Cognitive" },
-  { name: "DECODE", icon: Terminal, desc: "Intent parsing", layer: "Cognitive" },
+  { name: "BRAIN", icon: Brain, desc: "3-tier memory engine", layer: "Cognitive" },
+  { name: "DECODE", icon: Terminal, desc: "Intent parsing & voice", layer: "Cognitive" },
   { name: "DREAM", icon: Moon, desc: "Pattern synthesis", layer: "Cognitive" },
   // Operational Layer
-  { name: "DEFENSE", icon: Shield, desc: "Threat detection", layer: "Operational" },
-  { name: "NEXUS", icon: Zap, desc: "AI routing", layer: "Operational" },
-  { name: "VISION", icon: Eye, desc: "Observability", layer: "Operational" },
-  { name: "ENCODE", icon: Code, desc: "Code generation", layer: "Operational" },
+  { name: "DEFENSE", icon: Shield, desc: "Threat intelligence", layer: "Operational" },
+  { name: "NEXUS", icon: Zap, desc: "AI provider routing", layer: "Operational" },
+  { name: "VISION", icon: Eye, desc: "Observability & traces", layer: "Operational" },
+  { name: "ENCODE", icon: Code, desc: "Autonomous code engine", layer: "Operational" },
   // Administrative Layer
-  { name: "SYSTEM", icon: Settings, desc: "Orchestration", layer: "Administrative" },
-  { name: "MODERNIZER", icon: Code, desc: "Self-upgrade", layer: "Administrative" },
-  { name: "INTEGRATION", icon: Globe, desc: "Connectors", layer: "Administrative" },
-  { name: "INCLUSIVE", icon: Users, desc: "Accessibility", layer: "Administrative" },
+  { name: "SYSTEM", icon: Settings, desc: "Orchestration & config", layer: "Administrative" },
+  { name: "MODERNIZER", icon: Landmark, desc: "Self-upgrade engine", layer: "Administrative" },
+  { name: "INTEGRATION", icon: Globe, desc: "External connectors", layer: "Administrative" },
+  { name: "INCLUSIVE", icon: Users, desc: "Accessibility engine", layer: "Administrative" },
   // Orchestrator Layer
   { name: "CORTEX", icon: Layers, desc: "Policy orchestration", layer: "Orchestrator" },
   { name: "ATLAS", icon: Globe, desc: "Capability registry", layer: "Orchestrator" },
   // Infrastructure Layer
-  { name: "MEMORY", icon: Brain, desc: "Vector/RAG recall", layer: "Infrastructure" },
-  { name: "RELAY", icon: Network, desc: "Outbound routing", layer: "Infrastructure" },
-  { name: "AUDIT", icon: Shield, desc: "Compliance logging", layer: "Infrastructure" },
-  { name: "IDENTITY", icon: Users, desc: "Actor attribution", layer: "Infrastructure" },
-  { name: "ECONOMY", icon: Zap, desc: "Cost tracking", layer: "Infrastructure" },
-  { name: "SANDBOX", icon: Settings, desc: "Safe execution", layer: "Infrastructure" },
+  { name: "MEMORY", icon: Box, desc: "Vector/RAG recall", layer: "Infrastructure" },
+  { name: "RELAY", icon: Send, desc: "Outbound delivery", layer: "Infrastructure" },
+  { name: "AUDIT", icon: ScrollText, desc: "Compliance logging", layer: "Infrastructure" },
+  { name: "IDENTITY", icon: Fingerprint, desc: "Actor attribution", layer: "Infrastructure" },
+  { name: "ECONOMY", icon: DollarSign, desc: "Cost & budget tracking", layer: "Infrastructure" },
+  { name: "SANDBOX", icon: Lock, desc: "Safe execution env", layer: "Infrastructure" },
 ];
 
 export default function Foundations() {
@@ -98,7 +100,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="CMPSBL Substrate OS v9.3.0 ARCHITECT Epoch — Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
+        <meta name="description" content="CMPSBL Substrate OS v10.5.0 ARCHITECT Epoch — Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -108,20 +110,21 @@ export default function Foundations() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Layers className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">v9.3.0 ARCHITECT Epoch</span>
+            <span className="text-sm font-mono text-primary">v10.5.0 ARCHITECT Epoch</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             Foundations
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            CMPSBL Substrate OS v9.3.0 is the reference implementation and proposed standard 
+            CMPSBL Substrate OS v10.5.0 is the reference implementation and proposed standard 
             for the <strong>substrate class</strong> of AI systems — persistent runtime, memory, 
             doctrine, and self-improvement.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             <Badge variant="outline">21 Modules</Badge>
-            <Badge variant="outline">360+ Commands</Badge>
-            <Badge variant="outline">Production Ready</Badge>
+            <Badge variant="outline">6 Layers</Badge>
+            <Badge variant="outline">400+ Capabilities</Badge>
+            <Badge variant="outline">200+ Synergy Pipelines</Badge>
           </div>
         </div>
 
@@ -135,10 +138,11 @@ export default function Foundations() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              CMPSBL v9.3.0 ARCHITECT presents a unified cognitive infrastructure platform 
-              implementing a six-layer, 21-module kernel architecture with 200 synergy pipelines.
-              The system provides persistent runtime with 3-tier memory (Hot/Warm/Cold), adaptive 
-              learning cycles, multi-provider AI routing, real-time observability, and self-improvement pipelines.
+              CMPSBL v10.5.0 ARCHITECT presents a unified cognitive infrastructure platform 
+              implementing a six-layer, 21-module kernel architecture with 200+ synergy pipelines
+              and 400+ capabilities. The system provides persistent runtime with tiered memory,
+              adaptive learning cycles, multi-provider AI routing, real-time observability,
+              autonomous inter-module communication via the Intent Mesh, and self-improvement pipelines.
             </p>
             <p>
               This release establishes three interconnected standards: <strong>ARCHITECT</strong> as the 
@@ -175,7 +179,7 @@ export default function Foundations() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-primary/10 border border-primary/30">
                 <h4 className="font-medium text-primary mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL v9.3.0 ARCHITECT</p>
+                <p className="text-sm text-muted-foreground">CMPSBL v10.5.0 ARCHITECT</p>
               </Link>
               <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Governance Standard</h4>
@@ -369,7 +373,7 @@ export default function Foundations() {
         {/* Author Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
           <p className="text-sm text-muted-foreground">
-            v9.3.0 ARCHITECT by{" "}
+            v10.5.0 ARCHITECT by{" "}
             <a 
               href="https://orcid.org/0009-0001-4237-1243" 
               target="_blank" 

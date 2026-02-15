@@ -83,26 +83,54 @@ const conversational: ConversationalContract = {
  * Authority Layer Implementation
  * Routes to substrate modules without execution authority
  */
+/**
+ * Helper: create a module router that queries the substrate singleton
+ */
+function moduleRouter(moduleName: string, method: string) {
+  return async (input: string): Promise<unknown> => {
+    try {
+      const mod = (substrate as any)[moduleName];
+      if (mod && typeof mod[method] === 'function') {
+        const response = await mod[method](input);
+        return response?.data ?? response;
+      }
+      // Fallback: route via brain recall tagged with module
+      const response = await substrate.brain.recall(`[${moduleName.toUpperCase()}] ${input}`, 5);
+      return response.data;
+    } catch {
+      return { module: moduleName, status: 'unavailable', query: input };
+    }
+  };
+}
+
 const authority: AuthorityContract = {
-  async toBrain(input: string): Promise<unknown> {
-    const response = await substrate.brain.recall(input, 10);
-    return response.data;
-  },
-
-  async toNexus(input: string): Promise<unknown> {
-    const response = await substrate.nexus.route(input);
-    return response.data;
-  },
-
-  async toDefense(input: string): Promise<unknown> {
-    const response = await substrate.defense.analyze({ query: input });
-    return response.data;
-  },
-
-  async toVision(input: string): Promise<unknown> {
-    const response = await substrate.vision.metrics();
-    return response.data;
-  }
+  // Kernel
+  toCore:         moduleRouter('core', 'status'),
+  toRipple:       moduleRouter('ripple', 'query'),
+  toAccess:       moduleRouter('access', 'query'),
+  // Cognitive
+  toBrain:        async (input) => (await substrate.brain.recall(input, 10)).data,
+  toDream:        moduleRouter('dream', 'synthesize'),
+  // Operational
+  toDefense:      async (input) => (await substrate.defense.analyze({ query: input })).data,
+  toNexus:        async (input) => (await substrate.nexus.route(input)).data,
+  toVision:       async () => (await substrate.vision.metrics()).data,
+  toEncode:       moduleRouter('encode', 'status'),
+  // Administrative
+  toSystem:       moduleRouter('system', 'status'),
+  toModernizer:   moduleRouter('modernizer', 'scan'),
+  toIntegration:  moduleRouter('integration', 'query'),
+  toInclusive:    moduleRouter('inclusive', 'scan'),
+  // Orchestrator
+  toCortex:       moduleRouter('cortex', 'analyze'),
+  toAtlas:        moduleRouter('atlas', 'query'),
+  // Infrastructure
+  toMemory:       moduleRouter('memory', 'recall'),
+  toRelay:        moduleRouter('relay', 'status'),
+  toAudit:        moduleRouter('audit', 'query'),
+  toIdentity:     moduleRouter('identity', 'resolve'),
+  toEconomy:      moduleRouter('economy', 'report'),
+  toSandbox:      moduleRouter('sandbox', 'status'),
 };
 
 /**
@@ -159,12 +187,17 @@ export async function processDecodeInput(input: DecodeInput): Promise<DecodeResp
   
   // Optionally invoke substrate modules
   if (input.invokeSubstrate) {
-    response.substrate = {
-      brain: await authority.toBrain(raw),
-      nexus: await authority.toNexus(raw),
-      defense: await authority.toDefense(raw),
-      vision: await authority.toVision(raw)
-    };
+    // Query all 21 modules (20 non-DECODE) in parallel for full substrate awareness
+    const moduleRoutes = Object.entries(authority) as [string, (i: string) => Promise<unknown>][];
+    const results = await Promise.allSettled(
+      moduleRoutes.map(async ([key, fn]) => ({ key: key.replace('to', '').toLowerCase(), data: await fn(raw) }))
+    );
+    response.substrate = {};
+    for (const r of results) {
+      if (r.status === 'fulfilled') {
+        response.substrate[r.value.key] = r.value.data;
+      }
+    }
   }
   
   return response;
