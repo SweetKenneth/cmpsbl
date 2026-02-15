@@ -1,6 +1,6 @@
 /**
  * RELAY Module CLM — Constant Learning Mode
- * v9.3.0 ARCHITECT Epoch — Circuit Breaker + Hot-Swap Aware
+ * v10.5.1 ARCHITECT Epoch — Circuit Breaker + Hot-Swap Aware
  */
 
 import { emit } from '../events';
@@ -19,10 +19,13 @@ export async function runRelayCLMCycle(): Promise<CLMReport> {
     `Pending queue: ${state.pendingQueue}, failed: ${state.totalFailed}`,
     `Circuit: ${resilience.circuit.state} (${resilience.circuit.failures} failures, ${resilience.circuit.totalTrips} trips)`,
     `Engine: ${resilience.engineCount} active, grade: ${resilience.grade}`,
+    `Retry policy: base ${state.retryPolicy.baseDelayMs}ms, max ${state.retryPolicy.maxDelayMs}ms, jitter ${state.retryPolicy.jitterFactor}`,
+    `Retries executed: ${state.totalRetries}, avg backoff: ${Math.round(state.avgBackoffMs)}ms`,
+    `Webhook signatures: ${state.signatureConfigs.size} targets configured`,
   ];
   const proposedUpgrades = [
-    'Add webhook signature verification',
-    'Implement adaptive retry backoff',
+    '✅ Webhook signature verification — IMPLEMENTED (HMAC-SHA256)',
+    '✅ Adaptive retry backoff — IMPLEMENTED (exponential + jitter)',
     resilience.grade !== 'healthy' ? 'Review relay circuit trips — delivery pipeline may need attention' : null,
   ].filter(Boolean) as string[];
   const risks: string[] = [];
@@ -30,7 +33,7 @@ export async function runRelayCLMCycle(): Promise<CLMReport> {
   if (state.pendingQueue > 50) risks.push('Large pending queue');
   if (resilience.circuit.state === 'open') risks.push('CIRCUIT OPEN — dispatches blocked');
 
-  const report: CLMReport = { module: 'relay', cycleId, learnings, proposedUpgrades, risks, confidence: state.initialized ? 0.75 : 0.3, timestamp: new Date().toISOString() };
+  const report: CLMReport = { module: 'relay', cycleId, learnings, proposedUpgrades, risks, confidence: state.initialized ? 0.85 : 0.3, timestamp: new Date().toISOString() };
   await memoryCore.remember(JSON.stringify(report), 'insight', 0.7, { source: 'clm-relay' });
   emit({ module: 'relay', event_type: 'clm_cycle', outcome: 'succeeded', data: { cycleId, grade: resilience.grade } });
   return report;

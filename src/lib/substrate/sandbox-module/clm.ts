@@ -1,6 +1,6 @@
 /**
  * SANDBOX Module CLM — Constant Learning Mode
- * v9.3.0 ARCHITECT Epoch — Circuit Breaker + Hot-Swap Aware
+ * v10.5.1 ARCHITECT Epoch — Circuit Breaker + Hot-Swap Aware
  */
 
 import { emit } from '../events';
@@ -18,17 +18,19 @@ export async function runSandboxCLMCycle(): Promise<CLMReport> {
     `Executions: ${state.totalExecutions}, blocked: ${state.blockedExecutions}`,
     `Circuit: ${resilience.circuit.state} (${resilience.circuit.failures} failures, ${resilience.circuit.totalTrips} trips)`,
     `Engine: ${resilience.engineCount} active, grade: ${resilience.grade}`,
+    `Snapshots: ${state.snapshotCount} created, ${state.totalRestorations} restored`,
+    `Resource limits enforced: ${state.resourceLimitsEnforced} times`,
   ];
   const proposedUpgrades = [
-    'Implement sandbox resource limits',
-    'Add sandbox snapshot/restore',
+    '✅ Sandbox resource limits — IMPLEMENTED (CPU/memory/time/concurrent)',
+    '✅ Sandbox snapshot/restore — IMPLEMENTED (max 5 per sandbox)',
     resilience.grade !== 'healthy' ? 'Sandbox circuit degraded — isolated execution compromised' : null,
   ].filter(Boolean) as string[];
   const risks: string[] = [];
   if (state.blockedExecutions > state.totalExecutions * 0.1) risks.push('High block rate');
   if (resilience.circuit.state === 'open') risks.push('CIRCUIT OPEN — sandbox creation blocked');
 
-  const report: CLMReport = { module: 'sandbox', cycleId, learnings, proposedUpgrades, risks, confidence: state.initialized ? 0.75 : 0.3, timestamp: new Date().toISOString() };
+  const report: CLMReport = { module: 'sandbox', cycleId, learnings, proposedUpgrades, risks, confidence: state.initialized ? 0.85 : 0.3, timestamp: new Date().toISOString() };
   await memoryCore.remember(JSON.stringify(report), 'insight', 0.7, { source: 'clm-sandbox' });
   emit({ module: 'sandbox', event_type: 'clm_cycle', outcome: 'succeeded', data: { cycleId, grade: resilience.grade } });
   return report;
