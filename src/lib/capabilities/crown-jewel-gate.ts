@@ -1,11 +1,11 @@
 /**
  * Crown Jewel Gate — Strategic Asset Protection
- * v9.3.0 ARCHITECT — Tier Split, Black-Box Enforcement & Category Gating
+ * v10.5.0 ARCHITECT — Tier Split, Black-Box Enforcement & Category Gating
  * 
  * Architecture Crown Jewels: admin_only, never visible
- * Experience Crown Jewels: black-boxed, tiered (Builder/Pro)
- * Category/Difficulty Gating: World Engine → PRO, Elite → PRO, Premium → BUILDER
- * S-Tier Capabilities: PRO minimum
+ * Experience Crown Jewels: black-boxed, tiered (Creator/Architect)
+ * Category/Difficulty Gating: World Engine → ARCHITECT, Elite → ARCHITECT, Premium → CREATOR
+ * S-Tier Capabilities: ARCHITECT minimum
  */
 
 import { 
@@ -21,7 +21,10 @@ import {
   type CrownJewelClassification,
 } from './crown-jewel-registry';
 
-export type ArtifactTierBadge = 'FREE' | 'BUILDER' | 'PRO' | 'BLACK-BOX' | 'CMPSBL CORE';
+export type ArtifactTierBadge = 'FREE' | 'CREATOR' | 'ARCHITECT' | 'BLACK-BOX' | 'CMPSBL CORE';
+
+/** User subscription tiers */
+export type UserTier = 'free' | 'creator' | 'architect' | 'enterprise';
 
 /** Check if an item is an Architecture Crown Jewel (hidden from all non-admins) */
 export function isArchitectureJewelItem(id: string, name: string = ''): boolean {
@@ -72,7 +75,7 @@ export function isCrownJewelItem(id: string, name: string = ''): boolean {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * World Engine templates — ALL gated to PRO minimum.
+ * World Engine templates — ALL gated to ARCHITECT minimum.
  * These contain proprietary simulation, ECS, and physics code.
  */
 function isWorldEngineItem(id: string, name: string = ''): boolean {
@@ -81,7 +84,7 @@ function isWorldEngineItem(id: string, name: string = ''): boolean {
 }
 
 /**
- * S-Tier capabilities — PRO minimum.
+ * S-Tier capabilities — ARCHITECT minimum.
  * Flagship enterprise-grade synergy pipelines.
  */
 function isSTierItem(id: string): boolean {
@@ -90,9 +93,8 @@ function isSTierItem(id: string): boolean {
 
 /**
  * Difficulty-based tier mapping for templates.
- * - elite → PRO (highest non-crown-jewel value)
- * - premium → BUILDER (substantial value, upgrade incentive)
- * - pro → BUILDER
+ * - elite/expert → ARCHITECT (highest non-crown-jewel value)
+ * - premium/pro → CREATOR (substantial value, upgrade incentive)
  * - advanced → FREE (entry point, creates upgrade desire)
  * - intermediate → FREE
  * - beginner → FREE
@@ -103,10 +105,10 @@ const DIFFICULTY_TIER_MAP: Record<DifficultyLevel, ArtifactTierBadge> = {
   beginner: 'FREE',
   intermediate: 'FREE',
   advanced: 'FREE',
-  premium: 'BUILDER',
-  pro: 'BUILDER',
-  elite: 'PRO',
-  expert: 'PRO',
+  premium: 'CREATOR',
+  pro: 'CREATOR',
+  elite: 'ARCHITECT',
+  expert: 'ARCHITECT',
 };
 
 /**
@@ -125,16 +127,16 @@ export function getItemTierBadge(
   // 2. Experience jewels: check tier
   if (isExperienceCrownJewel(id)) {
     const tier = getExperienceJewelTier(id);
-    if (tier === 'builder') return 'BUILDER';
-    if (tier === 'pro') return 'PRO';
+    if (tier === 'creator') return 'CREATOR';
+    if (tier === 'architect') return 'ARCHITECT';
     return 'BLACK-BOX';
   }
   
-  // 3. World Engine — ALL PRO (too valuable for free)
-  if (isWorldEngineItem(id, name) || category === 'world_engine') return 'PRO';
+  // 3. World Engine — ALL ARCHITECT (too valuable for free)
+  if (isWorldEngineItem(id, name) || category === 'world_engine') return 'ARCHITECT';
   
-  // 4. S-Tier capabilities — PRO minimum
-  if (isSTierItem(id)) return 'PRO';
+  // 4. S-Tier capabilities — ARCHITECT minimum
+  if (isSTierItem(id)) return 'ARCHITECT';
   
   // 5. Difficulty-based gating for templates
   if (difficulty && DIFFICULTY_TIER_MAP[difficulty as DifficultyLevel]) {
@@ -149,15 +151,15 @@ export function getItemTierBadge(
  */
 export function canAccessExperienceJewel(
   id: string, 
-  userTier: 'starter' | 'builder' | 'pro' | 'enterprise'
+  userTier: UserTier
 ): boolean {
   if (!isExperienceCrownJewel(id)) return true; // Not a jewel, allow
   
   const requiredTier = getExperienceJewelTier(id);
   if (!requiredTier) return false;
   
-  const tierOrder = { starter: 0, builder: 1, pro: 2, enterprise: 3 };
-  return tierOrder[userTier] >= tierOrder[requiredTier];
+  const tierOrder: Record<string, number> = { free: 0, creator: 1, builder: 1, architect: 2, pro: 2, enterprise: 3 };
+  return (tierOrder[userTier] ?? 0) >= (tierOrder[requiredTier] ?? 0);
 }
 
 /**
@@ -165,17 +167,17 @@ export function canAccessExperienceJewel(
  */
 export function canAccessTieredItem(
   badge: ArtifactTierBadge,
-  userTier: 'starter' | 'builder' | 'pro' | 'enterprise'
+  userTier: UserTier
 ): boolean {
   const badgeToMinTier: Record<ArtifactTierBadge, number> = {
     'FREE': 0,
-    'BUILDER': 1,
-    'PRO': 2,
+    'CREATOR': 1,
+    'ARCHITECT': 2,
     'BLACK-BOX': 2,
     'CMPSBL CORE': 99, // admin only
   };
-  const tierOrder = { starter: 0, builder: 1, pro: 2, enterprise: 3 };
-  return tierOrder[userTier] >= badgeToMinTier[badge];
+  const tierOrder: Record<string, number> = { free: 0, creator: 1, architect: 2, enterprise: 3 };
+  return (tierOrder[userTier] ?? 0) >= badgeToMinTier[badge];
 }
 
 /**
@@ -184,16 +186,60 @@ export function canAccessTieredItem(
 export function getUpgradeTierLabel(id: string, name: string = '', difficulty?: string, category?: string): string {
   // Check experience jewels first
   const jewelTier = getExperienceJewelTier(id);
-  if (jewelTier === 'builder') return 'Creator ($49/mo)';
-  if (jewelTier === 'pro') return 'Architect ($149/mo)';
+  if (jewelTier === 'creator') return 'Creator ($49/mo)';
+  if (jewelTier === 'architect') return 'Architect ($149/mo)';
   
   // Check category/difficulty badge
   const badge = getItemTierBadge(id, name, difficulty, category);
-  if (badge === 'BUILDER') return 'Creator ($49/mo)';
-  if (badge === 'PRO') return 'Architect ($149/mo)';
+  if (badge === 'CREATOR') return 'Creator ($49/mo)';
+  if (badge === 'ARCHITECT') return 'Architect ($149/mo)';
   if (badge === 'CMPSBL CORE') return 'CMPSBL Internal';
   
-  return 'Enterprise';
+  return 'Enterprise ($499/mo)';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// BLACK-BOX ENFORCEMENT — UI Action Blocking
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Check if source code preview should be blocked for this item.
+ * Architecture jewels: always blocked (item hidden anyway).
+ * Experience jewels: always blocked — sealed runtime only.
+ */
+export function isSourcePreviewBlocked(id: string, name: string = ''): boolean {
+  return isCrownJewelExtended(id, name) || isExperienceCrownJewel(id);
+}
+
+/**
+ * Check if export/download should be blocked for this item.
+ * Architecture jewels: always blocked.
+ * Experience jewels: blocked — no artifact cloning.
+ */
+export function isExportBlocked(id: string, name: string = ''): boolean {
+  return isCrownJewelExtended(id, name) || isExperienceCrownJewel(id);
+}
+
+/**
+ * Check if code copy (clipboard) should be blocked for this item.
+ * Architecture jewels: always blocked.
+ * Experience jewels: blocked — no source extraction.
+ */
+export function isCopyBlocked(id: string, name: string = ''): boolean {
+  return isCrownJewelExtended(id, name) || isExperienceCrownJewel(id);
+}
+
+/**
+ * Get a user-friendly message for why an action is blocked.
+ */
+export function getBlackBoxMessage(id: string, name: string = ''): string {
+  if (isArchitectureCrownJewelExtended(id, name)) {
+    return 'This architecture artifact is restricted to CMPSBL core. Not available at any tier.';
+  }
+  if (isExperienceCrownJewel(id)) {
+    return 'This artifact is delivered as a sealed runtime. Source code, export, and cloning are disabled to protect proprietary architecture.';
+  }
+  return '';
 }
 
 // Re-export for backward compatibility
