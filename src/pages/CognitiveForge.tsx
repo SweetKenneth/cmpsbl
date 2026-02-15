@@ -53,7 +53,9 @@ export default function CognitiveForge() {
     );
   }
 
-  if (!isOperator) {
+  // Governor-only (CMPSBL internal feature)
+  const { isGovernor } = useUserRole();
+  if (!isGovernor) {
     return (
       <div className="min-h-screen bg-background">
         <OSHeader userEmail={user?.email} role={role} />
@@ -64,9 +66,9 @@ export default function CognitiveForge() {
                 <Hammer className="w-16 h-16 text-amber-500/50" />
                 <div className="absolute inset-0 bg-amber-500/20 rounded-full blur-xl" />
               </div>
-              <h2 className="text-xl font-semibold mb-2">Operator Access Required</h2>
+              <h2 className="text-xl font-semibold mb-2">Governor Access Required</h2>
               <p className="text-sm text-muted-foreground">
-                The Cognitive Forge is only available to Operators and Governors.
+                The Cognitive Forge is an internal CMPSBL tool. Cognitives are available for purchase at $39 each.
               </p>
             </CardContent>
           </Card>
