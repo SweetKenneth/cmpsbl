@@ -10,9 +10,12 @@ import { supabase } from '@/integrations/supabase/client';
 // ═══════════════════════════════════════════════════════════════
 
 export type ModuleName =
-  | 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'nexus'
-  | 'dream' | 'defense' | 'vision' | 'integration' | 'system'
-  | 'modernizer' | 'inclusive' | 'cortex';
+  | 'core' | 'ripple' | 'access'                          // Kernel
+  | 'brain' | 'decode' | 'dream'                           // Cognitive
+  | 'defense' | 'nexus' | 'vision' | 'encode'              // Operational
+  | 'system' | 'modernizer' | 'integration' | 'inclusive'   // Administrative
+  | 'cortex' | 'atlas'                                      // Orchestrator
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'; // Infrastructure
 
 export interface CostRecord {
   module: ModuleName;
@@ -57,20 +60,34 @@ export interface CostAlert {
 // ═══════════════════════════════════════════════════════════════
 
 const DEFAULT_BUDGETS: Record<ModuleName, ModuleBudget> = {
+  // Kernel
   core:        { module: 'core',        daily_token_limit: 50000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
   ripple:      { module: 'ripple',      daily_token_limit: 20000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
   access:      { module: 'access',      daily_token_limit: 30000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  // Cognitive
   brain:       { module: 'brain',       daily_token_limit: 100000, daily_cost_limit_cents: 0, alert_threshold_pct: 70 },
   decode:      { module: 'decode',      daily_token_limit: 200000, daily_cost_limit_cents: 0, alert_threshold_pct: 70 },
-  nexus:       { module: 'nexus',       daily_token_limit: 150000, daily_cost_limit_cents: 0, alert_threshold_pct: 75 },
   dream:       { module: 'dream',       daily_token_limit: 80000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  // Operational
   defense:     { module: 'defense',     daily_token_limit: 30000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  nexus:       { module: 'nexus',       daily_token_limit: 150000, daily_cost_limit_cents: 0, alert_threshold_pct: 75 },
   vision:      { module: 'vision',      daily_token_limit: 40000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
-  integration: { module: 'integration', daily_token_limit: 50000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  encode:      { module: 'encode',      daily_token_limit: 120000, daily_cost_limit_cents: 0, alert_threshold_pct: 75 },
+  // Administrative
   system:      { module: 'system',      daily_token_limit: 60000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
   modernizer:  { module: 'modernizer',  daily_token_limit: 100000, daily_cost_limit_cents: 0, alert_threshold_pct: 75 },
+  integration: { module: 'integration', daily_token_limit: 50000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
   inclusive:   { module: 'inclusive',    daily_token_limit: 30000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  // Orchestrator
   cortex:      { module: 'cortex',      daily_token_limit: 80000,  daily_cost_limit_cents: 0, alert_threshold_pct: 75 },
+  atlas:       { module: 'atlas',       daily_token_limit: 40000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  // Infrastructure
+  memory:      { module: 'memory',      daily_token_limit: 60000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  relay:       { module: 'relay',       daily_token_limit: 30000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  audit:       { module: 'audit',       daily_token_limit: 20000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  identity:    { module: 'identity',    daily_token_limit: 25000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  economy:     { module: 'economy',     daily_token_limit: 30000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
+  sandbox:     { module: 'sandbox',     daily_token_limit: 50000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
 };
 
 // In-memory cost accumulator for fast tracking
@@ -231,9 +248,12 @@ export async function getGlobalCostSummary(): Promise<{
   alerts: CostAlert[];
 }> {
   const modules: ModuleName[] = [
-    'core', 'ripple', 'access', 'brain', 'decode', 'nexus',
-    'dream', 'defense', 'vision', 'integration', 'system',
-    'modernizer', 'inclusive', 'cortex',
+    'core', 'ripple', 'access',
+    'brain', 'decode', 'dream',
+    'defense', 'nexus', 'vision', 'encode',
+    'system', 'modernizer', 'integration', 'inclusive',
+    'cortex', 'atlas',
+    'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
 
   const summaries: ModuleCostSummary[] = [];

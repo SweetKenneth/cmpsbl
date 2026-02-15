@@ -23,14 +23,34 @@ interface AnomalySignal {
 }
 
 const CORRELATION_GROUPS: Record<string, string[]> = {
-  defense: ['access', 'system', 'nexus'],
-  nexus: ['brain', 'decode', 'cortex'],
-  vision: ['defense', 'system', 'nexus'],
-  brain: ['nexus', 'dream', 'cortex'],
-  system: ['defense', 'access', 'modernizer'],
-  access: ['defense', 'system'],
-  dream: ['brain', 'cortex'],
-  integration: ['nexus', 'system'],
+  // Kernel
+  core: ['ripple', 'access', 'system'],
+  ripple: ['core', 'cortex', 'integration', 'relay'],
+  access: ['defense', 'system', 'identity', 'economy'],
+  // Cognitive
+  brain: ['nexus', 'dream', 'cortex', 'memory'],
+  decode: ['brain', 'nexus', 'encode', 'inclusive'],
+  dream: ['brain', 'cortex', 'memory'],
+  // Operational
+  defense: ['access', 'system', 'nexus', 'audit'],
+  nexus: ['brain', 'decode', 'cortex', 'relay'],
+  vision: ['defense', 'system', 'nexus', 'audit'],
+  encode: ['decode', 'brain', 'sandbox'],
+  // Administrative
+  system: ['defense', 'access', 'modernizer', 'audit'],
+  modernizer: ['system', 'cortex', 'vision'],
+  integration: ['nexus', 'system', 'relay'],
+  inclusive: ['decode', 'modernizer', 'vision'],
+  // Orchestrator
+  cortex: ['brain', 'nexus', 'modernizer'],
+  atlas: ['cortex', 'brain', 'vision'],
+  // Infrastructure
+  memory: ['brain', 'core', 'dream'],
+  relay: ['ripple', 'integration', 'nexus'],
+  audit: ['system', 'defense', 'identity'],
+  identity: ['access', 'audit', 'economy'],
+  economy: ['access', 'nexus', 'identity'],
+  sandbox: ['encode', 'defense', 'system'],
 };
 
 /**

@@ -16,9 +16,18 @@ export interface ModuleBudget {
 
 const BASE_DAILY_BUDGET = 100000; // Total daily token pool
 const MODULE_LIST = [
-  'brain', 'core', 'ripple', 'access', 'nexus', 'defense',
-  'vision', 'dream', 'decode', 'integration', 'system',
-  'modernizer', 'inclusive', 'cortex',
+  // Kernel
+  'core', 'ripple', 'access',
+  // Cognitive
+  'brain', 'decode', 'dream',
+  // Operational
+  'defense', 'nexus', 'vision', 'encode',
+  // Administrative
+  'system', 'modernizer', 'integration', 'inclusive',
+  // Orchestrator
+  'cortex', 'atlas',
+  // Infrastructure
+  'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
 ];
 
 /**

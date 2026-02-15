@@ -12,9 +12,12 @@ import { supabase } from '@/integrations/supabase/client';
 // ═══════════════════════════════════════════════════════════════
 
 export type ModuleName =
-  | 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'nexus'
-  | 'dream' | 'defense' | 'vision' | 'integration' | 'system'
-  | 'modernizer' | 'inclusive' | 'cortex';
+  | 'core' | 'ripple' | 'access'
+  | 'brain' | 'decode' | 'dream'
+  | 'defense' | 'nexus' | 'vision' | 'encode'
+  | 'system' | 'modernizer' | 'integration' | 'inclusive'
+  | 'cortex' | 'atlas'
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox';
 
 export type GateVerdict = 'pass' | 'warn' | 'block';
 

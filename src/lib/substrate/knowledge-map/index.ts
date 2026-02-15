@@ -11,9 +11,12 @@ import { supabase } from '@/integrations/supabase/client';
 // ═══════════════════════════════════════════════════════════════
 
 export type ModuleName =
-  | 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'nexus'
-  | 'dream' | 'defense' | 'vision' | 'integration' | 'system'
-  | 'modernizer' | 'inclusive' | 'cortex';
+  | 'core' | 'ripple' | 'access'
+  | 'brain' | 'decode' | 'dream'
+  | 'defense' | 'nexus' | 'vision' | 'encode'
+  | 'system' | 'modernizer' | 'integration' | 'inclusive'
+  | 'cortex' | 'atlas'
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox';
 
 export interface KnowledgeNode {
   module: ModuleName;
@@ -57,20 +60,34 @@ export interface KnowledgeMap {
 // ═══════════════════════════════════════════════════════════════
 
 const EXPECTED_DOMAINS: Record<ModuleName, string[]> = {
+  // Kernel
   core:        ['memory', 'storage', 'persistence', 'cache', 'optimization'],
   ripple:      ['events', 'propagation', 'pub-sub', 'streaming', 'ordering'],
   access:      ['auth', 'permissions', 'api-keys', 'quotas', 'rbac'],
+  // Cognitive
   brain:       ['recall', 'learning', 'consolidation', 'tiering', 'search'],
   decode:      ['conversation', 'personality', 'formatting', 'context'],
-  nexus:       ['routing', 'providers', 'fallback', 'cost', 'health'],
   dream:       ['synthesis', 'creativity', 'association', 'novelty'],
+  // Operational
   defense:     ['security', 'threats', 'rate-limiting', 'anomaly'],
+  nexus:       ['routing', 'providers', 'fallback', 'cost', 'health'],
   vision:      ['observability', 'metrics', 'tracing', 'alerting'],
-  integration: ['webhooks', 'transforms', 'connectors', 'schemas'],
+  encode:      ['codegen', 'filesystem', 'structural-awareness', 'scoring'],
+  // Administrative
   system:      ['health', 'governance', 'configuration', 'audit'],
   modernizer:  ['evolution', 'upgrades', 'diffs', 'rollback'],
+  integration: ['webhooks', 'transforms', 'connectors', 'schemas'],
   inclusive:   ['accessibility', 'wcag', 'aria', 'focus-management'],
+  // Orchestrator
   cortex:      ['architecture', 'proposals', 'orchestration', 'design'],
+  atlas:       ['topology', 'capability-mapping', 'gap-analysis', 'discovery'],
+  // Infrastructure
+  memory:      ['vector-recall', 'rag', 'tiering', 'embeddings'],
+  relay:       ['outbound-routing', 'channel-selection', 'delivery'],
+  audit:       ['compliance', 'immutable-logging', 'retention', 'soc2'],
+  identity:    ['actor-attribution', 'webauthn', 'device-trust', 'sessions'],
+  economy:     ['cost-tracking', 'budgets', 'forecasting', 'roi'],
+  sandbox:     ['code-execution', 'isolation', 'safety', 'rollback'],
 };
 
 // ═══════════════════════════════════════════════════════════════
