@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { Send, X, Sparkles, RefreshCw, WifiOff } from "lucide-react";
+import { DecodeMarkdown } from "./DecodeMarkdown";
 import { decode, substrate } from "@/lib/substrate";
 
 type Props = {
@@ -237,7 +238,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
                       <p>{msg.generatedText}</p>
                     </div>
                   )}
-                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                  <DecodeMarkdown content={msg.content} isUser={msg.role === "user"} />
                 </div>
               </div>
             ))}
