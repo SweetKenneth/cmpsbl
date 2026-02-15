@@ -1,5 +1,5 @@
 /**
- * CMPSBL® substrate — OS Surface v10.4.0 ARCHITECT Epoch
+ * CMPSBL® substrate — OS Surface v10.5.0 ARCHITECT Epoch
  * TIER-GATED EDITION — FREE / CREATOR / ARCHITECT / CMPSBL
  * 
  * All tabs visible to all users with tier badges.
@@ -383,7 +383,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
           <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span>CMPSBL v10.4.0</span>
+              <span>CMPSBL v10.5.0</span>
             </div>
             <TierBadge tier={userTier} size="xs" />
           </div>
@@ -670,8 +670,8 @@ export default function SubstrateOS() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SEO
-        title="Substrate OS v10.4.0 — AI Operating System"
+        <SEO
+          title="CMPSBL OS v10.5.0 — AI Operating System"
         description="Explore the CMPSBL Substrate OS: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads."
         canonical="https://cmpsbl.com/os"
         keywords={['substrate OS', 'AI runtime', 'cognitive orchestration', 'module telemetry', 'AI workload management', 'substrate dashboard']}
@@ -998,7 +998,7 @@ export default function SubstrateOS() {
               <span>CMPSBL® substrate os</span>
             </div>
             <span>•</span>
-            <span>v10.4.0</span>
+            <span>v10.5.0</span>
             <span>•</span>
             <TierBadge tier={userTier} size="xs" />
           </div>

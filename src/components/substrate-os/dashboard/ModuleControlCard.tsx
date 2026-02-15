@@ -26,7 +26,7 @@ export interface ModuleAction {
 export interface ModuleControlCardProps {
   id: string;
   name: string;
-  layer: 'kernel' | 'cognitive' | 'operational' | 'admin' | 'orchestrator';
+  layer: string;
   icon: React.ElementType;
   description: string;
   isActive: boolean;
@@ -40,12 +40,13 @@ export interface ModuleControlCardProps {
   delay?: number;
 }
 
-const layerBadges = {
+const layerBadges: Record<string, { label: string; color: string }> = {
   kernel: { label: 'KERNEL', color: 'border-orange-500/50 text-orange-400 bg-orange-500/10' },
   cognitive: { label: 'COGNITIVE', color: 'border-purple-500/50 text-purple-400 bg-purple-500/10' },
   operational: { label: 'OPERATIONAL', color: 'border-blue-500/50 text-blue-400 bg-blue-500/10' },
   admin: { label: 'ADMIN', color: 'border-emerald-500/50 text-emerald-400 bg-emerald-500/10' },
   orchestrator: { label: 'ORCHESTRATOR', color: 'border-fuchsia-500/50 text-fuchsia-400 bg-fuchsia-500/10' },
+  infrastructure: { label: 'INFRA', color: 'border-cyan-500/50 text-cyan-400 bg-cyan-500/10' },
 };
 
 export function ModuleControlCard({
