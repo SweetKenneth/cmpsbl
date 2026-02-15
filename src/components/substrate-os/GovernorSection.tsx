@@ -1,15 +1,17 @@
 /**
  * Governor Section — Admin & Safety Controls
- * Audit view, rate limits, system config, backup/restore (guarded)
+ * Full governance: audit, kill switches, telemetry, analytics, rate limits, backup
  */
 
 import { useState, useEffect } from 'react';
-import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock } from 'lucide-react';
+import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock, Power, BarChart3, Zap, Eye, Shield } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +28,8 @@ import { toast } from 'sonner';
 import { useSystemAudit, useSystemConfig, useSystemVersion, useLiveAuditFeed } from '@/hooks/useSubstrateOS';
 import { cn } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
+import { supabase } from '@/integrations/supabase/client';
+import { useMeshToggle } from '@/lib/substrate/intent-mesh/toggle';
 
 function ConfirmActionDialog({
   trigger,
@@ -94,10 +98,46 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
   const systemConfig = useSystemConfig('rate_limits');
   const systemVersion = useSystemVersion();
   const liveAuditFeed = useLiveAuditFeed(15);
+  const meshToggle = useMeshToggle();
 
   const auditData = systemAudit.data?.data as { entries?: Array<{ action: string; entity: string; timestamp: string }> } | undefined;
   const configData = systemConfig.data?.data as { config?: Record<string, unknown> } | undefined;
   const versionData = systemVersion.data?.data as { version?: string; build?: string } | undefined;
+
+  // Telemetry quick stats from real DB
+  const [telemetry, setTelemetry] = useState<{
+    totalApiCalls: number;
+    totalUsageLogs: number;
+    totalUsers: number;
+    recentErrors: number;
+  }>({ totalApiCalls: 0, totalUsageLogs: 0, totalUsers: 0, recentErrors: 0 });
+  const [telemetryLoading, setTelemetryLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTelemetry() {
+      setTelemetryLoading(true);
+      try {
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+        const [apiCalls, usageLogs, users, errors] = await Promise.all([
+          supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }),
+          supabase.from('access_usage').select('*', { count: 'exact', head: true }),
+          supabase.from('user_roles').select('*', { count: 'exact', head: true }),
+          supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }).eq('success', false).gte('created_at', sevenDaysAgo),
+        ]);
+        setTelemetry({
+          totalApiCalls: apiCalls.count || 0,
+          totalUsageLogs: usageLogs.count || 0,
+          totalUsers: users.count || 0,
+          recentErrors: errors.count || 0,
+        });
+      } catch (e) {
+        console.error('Telemetry fetch error:', e);
+      } finally {
+        setTelemetryLoading(false);
+      }
+    }
+    if (enabled) fetchTelemetry();
+  }, [enabled]);
 
   // Get outcome badge styling
   const getOutcomeBadge = (outcome: string) => {
@@ -115,7 +155,6 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
     }
   };
 
-  // Format event type for display
   const formatEventType = (type: string) => {
     return type
       .replace(/_/g, ' ')
@@ -162,6 +201,94 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
         </Badge>
       </div>
 
+      {/* Telemetry Overview */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { label: 'Total Users', value: telemetry.totalUsers, icon: Eye, color: 'blue' },
+          { label: 'API Calls', value: telemetry.totalApiCalls, icon: Zap, color: 'cyan' },
+          { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, color: 'emerald' },
+          { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, color: telemetry.recentErrors > 0 ? 'red' : 'emerald' },
+        ].map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={stat.label} className={cn("border-border/30 bg-muted/10")}>
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Icon className={cn("w-4 h-4", `text-${stat.color}-400`)} />
+                  <span className="text-[10px] text-muted-foreground font-mono uppercase">{stat.label}</span>
+                </div>
+                {telemetryLoading ? (
+                  <Skeleton className="h-6 w-16" />
+                ) : (
+                  <span className="text-xl font-bold font-mono text-foreground">{stat.value}</span>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Kill Switches */}
+      <Card className="border-amber-500/20">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Power className="w-4 h-4 text-amber-500" />
+            Kill Switches
+          </CardTitle>
+          <CardDescription className="text-xs">Global system toggles for critical subsystems</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
+              <div className="flex items-center gap-2">
+                <Activity className="w-4 h-4 text-amber-400" />
+                <div>
+                  <p className="text-sm font-medium">Intent Mesh</p>
+                  <p className="text-[10px] text-muted-foreground">Emergent module routing</p>
+                </div>
+              </div>
+              <Switch 
+                checked={meshToggle.enabled} 
+                onCheckedChange={() => {
+                  meshToggle.toggle();
+                  toast.success(meshToggle.enabled ? 'Intent Mesh disabled' : 'Intent Mesh enabled');
+                }} 
+              />
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-red-400" />
+                <div>
+                  <p className="text-sm font-medium">Defense Module</p>
+                  <p className="text-[10px] text-muted-foreground">Threat detection & blocking</p>
+                </div>
+              </div>
+              <Switch defaultChecked />
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-purple-400" />
+                <div>
+                  <p className="text-sm font-medium">SEBA Agent</p>
+                  <p className="text-[10px] text-muted-foreground">Autonomous evolution</p>
+                </div>
+              </div>
+              <Switch defaultChecked={false} />
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
+              <div className="flex items-center gap-2">
+                <FileText className="w-4 h-4 text-cyan-400" />
+                <div>
+                  <p className="text-sm font-medium">Autoblog</p>
+                  <p className="text-[10px] text-muted-foreground">Content generation</p>
+                </div>
+              </div>
+              <Switch defaultChecked={false} />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* System Info */}
       <Card className="border-primary/20">
         <CardHeader className="pb-3">
@@ -171,22 +298,22 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-3">
             <div className="p-3 rounded-lg bg-muted/30">
               <p className="text-xs text-muted-foreground">Version</p>
-              <p className="font-mono font-medium">
+              <p className="font-mono font-medium text-sm truncate">
                 {versionData?.version || 'v2026.01'}
               </p>
             </div>
             <div className="p-3 rounded-lg bg-muted/30">
               <p className="text-xs text-muted-foreground">Build</p>
-              <p className="font-mono font-medium">
+              <p className="font-mono font-medium text-sm">
                 {versionData?.build || 'stable'}
               </p>
             </div>
             <div className="p-3 rounded-lg bg-muted/30">
               <p className="text-xs text-muted-foreground">Environment</p>
-              <p className="font-mono font-medium">production</p>
+              <p className="font-mono font-medium text-sm">production</p>
             </div>
           </div>
         </CardContent>

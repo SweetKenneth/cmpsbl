@@ -466,9 +466,9 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
         </button>
       </div>
 
-      <div className="flex flex-col lg:grid lg:grid-cols-4 gap-6">
+      <div className="flex flex-col lg:grid lg:grid-cols-4 gap-4 sm:gap-6">
         {/* Left Panel - Browse */}
-        <div className="lg:col-span-3 space-y-4 order-1">
+        <div className="lg:col-span-3 space-y-4 order-1 min-w-0">
           {/* Search & Filter */}
           <div className="flex gap-3">
             <div className="relative flex-1">
@@ -483,8 +483,8 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
           </div>
           
           {/* Category Filter */}
-          <ScrollArea className="w-full">
-            <div className="flex gap-2 pb-2">
+          <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex gap-2 pb-2 w-max">
               {categories.map(cat => {
                 const config = CATEGORY_CONFIG[cat] || { color: 'text-muted-foreground' };
                 return (
@@ -503,7 +503,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
                 );
               })}
             </div>
-          </ScrollArea>
+          </div>
           
           {/* Engine/Meta-Engine Grid */}
           <ScrollArea className="h-[400px] sm:h-[600px]">

@@ -166,7 +166,7 @@ export function MeshActivityTab() {
       exit={{ opacity: 0 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center">
             <Network className="w-5 h-5 text-amber-400" />
@@ -199,56 +199,58 @@ export function MeshActivityTab() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {/* View toggle */}
-          <div className="flex items-center border border-border/30 rounded-lg overflow-hidden">
-            <button 
-              onClick={() => setActiveView('live')}
-              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'live' ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground')}
-            >
-              <Activity className="w-3 h-3 inline mr-1" />Live
-            </button>
-            <button 
-              onClick={() => setActiveView('pipelines')}
-              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'pipelines' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
-            >
-              <Layers className="w-3 h-3 inline mr-1" />Pipelines ({savedPipelines.length})
-            </button>
-            <button 
-              onClick={() => setActiveView('proposals')}
-              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'proposals' ? 'bg-fuchsia-500/20 text-fuchsia-400' : 'text-muted-foreground hover:text-foreground')}
-            >
-              <Lightbulb className="w-3 h-3 inline mr-1" />Proposals
-            </button>
-            <button 
-              onClick={() => setActiveView('scoring')}
-              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'scoring' ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground')}
-            >
-              <Trophy className="w-3 h-3 inline mr-1" />Scoring
-            </button>
-            <button 
-              onClick={() => setActiveView('scheduler')}
-              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'scheduler' ? 'bg-violet-500/20 text-violet-400' : 'text-muted-foreground hover:text-foreground')}
-            >
-              <Timer className="w-3 h-3 inline mr-1" />Scheduler
-            </button>
-            <button 
-              onClick={() => setActiveView('topology')}
-              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'topology' ? 'bg-emerald-500/20 text-emerald-400' : 'text-muted-foreground hover:text-foreground')}
-            >
-              <Network className="w-3 h-3 inline mr-1" />Topology
-            </button>
-            <button 
-              onClick={() => setActiveView('health')}
-              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'health' ? 'bg-red-500/20 text-red-400' : 'text-muted-foreground hover:text-foreground')}
-            >
-              <Activity className="w-3 h-3 inline mr-1" />Health
-            </button>
-            <button 
-              onClick={() => setActiveView('federation')}
-              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'federation' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
-            >
-              <Network className="w-3 h-3 inline mr-1" />Federation
-            </button>
+          {/* View toggle - scrollable on mobile */}
+          <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 sm:w-auto">
+            <div className="flex items-center border border-border/30 rounded-lg overflow-hidden w-max">
+              <button 
+                onClick={() => setActiveView('live')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'live' ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground')}
+              >
+                <Activity className="w-3 h-3 inline mr-1" />Live
+              </button>
+              <button 
+                onClick={() => setActiveView('pipelines')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'pipelines' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
+              >
+                <Layers className="w-3 h-3 inline mr-1" />Pipelines ({savedPipelines.length})
+              </button>
+              <button 
+                onClick={() => setActiveView('proposals')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'proposals' ? 'bg-fuchsia-500/20 text-fuchsia-400' : 'text-muted-foreground hover:text-foreground')}
+              >
+                <Lightbulb className="w-3 h-3 inline mr-1" />Proposals
+              </button>
+              <button 
+                onClick={() => setActiveView('scoring')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'scoring' ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground')}
+              >
+                <Trophy className="w-3 h-3 inline mr-1" />Scoring
+              </button>
+              <button 
+                onClick={() => setActiveView('scheduler')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'scheduler' ? 'bg-violet-500/20 text-violet-400' : 'text-muted-foreground hover:text-foreground')}
+              >
+                <Timer className="w-3 h-3 inline mr-1" />Scheduler
+              </button>
+              <button 
+                onClick={() => setActiveView('topology')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'topology' ? 'bg-emerald-500/20 text-emerald-400' : 'text-muted-foreground hover:text-foreground')}
+              >
+                <Network className="w-3 h-3 inline mr-1" />Topology
+              </button>
+              <button 
+                onClick={() => setActiveView('health')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'health' ? 'bg-red-500/20 text-red-400' : 'text-muted-foreground hover:text-foreground')}
+              >
+                <Activity className="w-3 h-3 inline mr-1" />Health
+              </button>
+              <button 
+                onClick={() => setActiveView('federation')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'federation' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
+              >
+                <Network className="w-3 h-3 inline mr-1" />Federation
+              </button>
+            </div>
           </div>
           <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}>
             <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
@@ -262,7 +264,7 @@ export function MeshActivityTab() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
         <StatCard label="Modules" value={modules.length} icon={<Radio className="h-4 w-4 text-cyan-400" />} />
         <StatCard label="Resolvers" value={activeResolvers} icon={<Zap className="h-4 w-4 text-amber-400" />} />
         <StatCard label="Intents" value={stats?.totalIntents || 0} icon={<Activity className="h-4 w-4 text-fuchsia-400" />} />
