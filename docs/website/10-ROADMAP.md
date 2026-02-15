@@ -20,7 +20,7 @@ The substrate has achieved full operational capability with all 21 modules deplo
 
 | Milestone | Status | Date |
 |-----------|--------|------|
-| 14-module architecture | ✓ Complete | Q4 2025 |
+| 21-module architecture (6 layers) | ✓ Complete | Q1 2026 |
 | Self-evolution engine | ✓ Complete | Q4 2025 |
 | Multi-provider AI routing | ✓ Complete | Q4 2025 |
 | Dual-tier memory system | ✓ Complete | Q1 2026 |
@@ -37,7 +37,7 @@ The substrate has achieved full operational capability with all 21 modules deplo
 
 **Theme: Production Hardening**
 
-- [x] Complete 14-module integration testing
+- [x] Complete 21-module integration testing
 - [x] Enterprise security certifications (SOC 2 preparation)
 - [x] Documentation library completion
 - [x] Dream cycle optimization
@@ -148,10 +148,10 @@ Enterprise and Research tier customers participate in quarterly roadmap reviews 
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v9.1.0 | Feb 2026 | ARCHITECT Epoch, 21 modules, 400+ capabilities, 200 pipelines, 100 engines |
+| v10.5.0 | Feb 2026 | ARCHITECT Epoch, 21 modules, 6 layers, 400+ capabilities, 200+ pipelines |
+| v9.1.0 | Feb 2026 | Infrastructure + Orchestrator layers, 21 modules formalized |
 | v8.5.0 | Feb 2026 | SYNERGY+ Epoch, 200 pipelines, 125 executors |
-| v7.5.3 | Feb 2026 | SEBA Era, bounded autonomy, 147 pipelines |
-| v7.0.0 | Jan 2026 | Production release, 14 modules |
+| v7.0.0 | Jan 2026 | Production release, original module set |
 | v6.0.0 | Dec 2025 | Licensing model, enterprise features |
 | v5.0.0 | Nov 2025 | Self-evolution engine |
 | v4.0.0 | Oct 2025 | Observability layer |

@@ -43,7 +43,7 @@ Every company building AI applications solves the same problems:
 
 CMPSBL provides complete cognitive infrastructure:
 - **Persistent memory** that survives sessions
-- **Self-learning** that improves overnight
+- **Self-learning** that improves autonomously
 - **Multi-provider routing** with zero lock-in
 - **Enterprise security** built-in
 - **Full observability** across all operations
@@ -57,18 +57,10 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Stream | Model | Gross Margin |
 |--------|-------|--------------|
-| **Infrastructure Licensing** | Annual subscriptions | 90%+ |
+| **Master Substrate SaaS** | Monthly subscriptions (Free → $149/mo) | 90%+ |
+| **Infrastructure Licensing** | Via LNCHBL.com (Free → Enterprise) | 90%+ |
+| **Marketplace** | Revenue share on modules | 80% |
 | **Professional Services** | Implementation support | 70% |
-| **Marketplace** (Future) | Revenue share on modules | 80% |
-
-### Pricing Structure
-
-| Tier | Annual Price | Target Customer |
-|------|--------------|-----------------|
-| **Developer** | $15,000 | Startups, small teams |
-| **Research** | $80,000 | Academic, R&D |
-| **Enterprise** | $180,000 | Production deployments |
-| **Strategic** | Custom | Cloud providers, OEMs |
 
 ### Unit Economics (Target)
 
@@ -87,10 +79,10 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Moat | Description | Durability |
 |------|-------------|------------|
-| **Integrated Architecture** | 14 modules designed together | High |
+| **Integrated Architecture** | 21 modules across 6 layers designed together | High |
 | **Self-Evolution** | System improves its own code | Very High |
 | **Accumulated Learning** | Patterns compound over time | Very High |
-| **Network Effects** | Federated learning benefits all | Growing |
+| **Network Effects** | Federated learning benefits all instances | Growing |
 
 ### Differentiation
 
@@ -103,29 +95,10 @@ CMPSBL provides complete cognitive infrastructure:
 
 ### Defensibility
 
-1. **Technical Complexity** — Integration of 14 modules is hard to replicate
-2. **Self-Improvement** — The system gets better at improving itself
+1. **Technical Complexity** — Integration of 21 modules across 6 layers is extremely hard to replicate
+2. **Self-Improvement** — The system compounds its own improvements daily
 3. **Learning Accumulation** — Patterns can't be recreated quickly
 4. **Switching Costs** — Deep integration with customer applications
-
----
-
-## Market Size
-
-### TAM/SAM/SOM
-
-| Market | Size | Rationale |
-|--------|------|-----------|
-| **TAM** | $50B+ | Enterprise AI infrastructure |
-| **SAM** | $10B | Production AI application infrastructure |
-| **SOM** | $500M | Cognitive infrastructure for AI apps |
-
-### Growth Drivers
-
-1. **AI Adoption Acceleration** — More companies building AI applications
-2. **Production Requirements** — POCs becoming production systems
-3. **Infrastructure Demand** — Build vs. buy shifting to buy
-4. **Compliance Pressure** — Enterprise security requirements growing
 
 ---
 
@@ -135,19 +108,21 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Metric | Value |
 |--------|-------|
-| **Modules in Production** | 14 |
-| **Edge Functions Deployed** | 45+ |
+| **Modules in Production** | 21 across 6 layers |
+| **Synergy Pipelines** | 200+ with 400+ capabilities |
 | **System Uptime** | 99%+ |
-| **Self-Evolution Active** | Yes |
+| **Self-Evolution** | Active — ARCHITECT Epoch v10.5.0 |
 
 ### Technical Milestones
 
-- [x] Complete 14-module architecture
+- [x] Complete 21-module architecture across 6 layers
 - [x] Self-evolution engine operational
 - [x] Multi-provider AI routing
 - [x] Enterprise security layer
 - [x] Full observability dashboard
-- [x] Dream cycle learning
+- [x] Autonomous learning cycles
+- [x] Intent Mesh distributed resolution
+- [x] Dual revenue model (SaaS + Licensing)
 
 ### Validation
 
@@ -162,18 +137,10 @@ CMPSBL provides complete cognitive infrastructure:
 
 ### Strategy
 
-1. **Developer Adoption** — Low-friction developer tier
-2. **Enterprise Expansion** — Upgrade path to enterprise
-3. **Strategic Partnerships** — Cloud provider integrations
-
-### Sales Motion
-
-| Channel | Target | Motion |
-|---------|--------|--------|
-| **Developer** | Startups | Self-serve, automated checkout |
-| **Research** | Institutions | Outbound, academic network |
-| **Enterprise** | Large companies | Direct sales |
-| **Strategic** | Cloud providers | Partnership development |
+1. **Developer Adoption** — Free tier with zero friction
+2. **Enterprise Expansion** — Natural upgrade path
+3. **Licensing Channel** — LNCHBL.com for self-hosted deployments
+4. **Strategic Partnerships** — Cloud provider integrations
 
 ### Early Focus
 
@@ -189,13 +156,9 @@ CMPSBL provides complete cognitive infrastructure:
 ### Leadership
 
 **Kenneth E. Sweet Jr.** — Founder & Chief Cognitive Engineer
-- Creator and architect of the 14-module substrate
+- Creator and architect of the 21-module substrate
 - Deep expertise in cognitive systems and AI infrastructure
 - ORCID: 0009-0001-4237-1243
-
-### Advisors
-
-*(Expanding)*
 
 ---
 
@@ -221,38 +184,12 @@ CMPSBL provides complete cognitive infrastructure:
 
 ## Use of Funds
 
-### Investment Focus
-
 | Area | Allocation | Purpose |
 |------|------------|---------|
 | **Engineering** | 50% | SDK development, feature expansion |
 | **Sales & Marketing** | 30% | Developer marketing, enterprise sales |
 | **Operations** | 15% | Infrastructure, support |
 | **G&A** | 5% | Legal, finance, admin |
-
-### Key Hires
-
-1. Head of Developer Relations
-2. Enterprise Sales Lead
-3. Senior Backend Engineers (x3)
-4. Solutions Architect
-
----
-
-## Investment Opportunity
-
-### Why Now
-
-1. **Market Timing** — AI moving from experiment to production
-2. **Technical Readiness** — Complete system demonstrated
-3. **First Mover** — Integrated cognitive infrastructure
-4. **Defensible** — Self-improvement compounds daily
-
-### What We're Seeking
-
-- Strategic investment to accelerate go-to-market
-- Partners with enterprise AI relationships
-- Advisors with infrastructure scaling experience
 
 ---
 
@@ -266,4 +203,4 @@ CMPSBL provides complete cognitive infrastructure:
 
 *Confidential — For Investor Evaluation*
 
-*CMPSBL® — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v10.5.0 — Cognitive Infrastructure for the AI Era*

@@ -1,6 +1,6 @@
 # Getting Started
 
-**Quick Start Guide for CMPSBL® v9.1.0**
+**Quick Start Guide for CMPSBL® v10.5.0**
 
 ---
 
@@ -13,12 +13,13 @@
 | **Build from templates** | Free | [Template Alley](/marketplace) |
 | **Test orchestration patterns** | Free | [Synergy Pipelines](/synergies) |
 | **Deploy production engines** | Subscription | [Engine Marketplace](/engines) |
+| **Self-host the substrate** | License | [LNCHBL.com](https://lnchbl.com) |
 
 ---
 
 ## Path 1: Persistent Memory (Recommended)
 
-Add persistent memory to any existing agent or React app in under an hour. No rewrites. No new framework.
+Add persistent memory to any existing agent or React app in under an hour.
 
 ### Step 1: Install
 
@@ -33,17 +34,14 @@ import { withPersistentMemory } from '@cmpsbl/memory';
 
 const agent = withPersistentMemory({
   agentId: 'my-support-agent',
-  scope: 'project'  // or 'session'
+  scope: 'project'
 });
 ```
 
 ### Step 3: Use Memory-Aware Responses
 
 ```typescript
-// Get context for any input
 const context = await agent.getContext(userMessage);
-
-// Use context in your LLM prompt
 const prompt = userMessage + context.contextString;
 ```
 
@@ -57,7 +55,6 @@ function ChatComponent() {
   
   const handleSend = async (message: string) => {
     const context = await respond(message);
-    // Use context.contextString in your LLM call
   };
 }
 ```
@@ -73,8 +70,8 @@ For production deployments using the complete substrate.
 ### Prerequisites
 
 - Node.js 18+ 
-- API keys for at least one AI provider (OpenAI, Anthropic, etc.)
-- CMPSBL license (Developer tier or higher)
+- API keys for at least one AI provider
+- CMPSBL account (free tier or above)
 
 ### Installation
 
@@ -127,10 +124,8 @@ const response = await substrate.nexus.route({
 Atomic, stateless building blocks for exploration:
 
 ```typescript
-// Capabilities are free, non-governed, non-persistent
 const capability = await depot.load('semantic-analysis');
 const result = await capability.execute(input);
-// Results are ephemeral - nothing is saved
 ```
 
 [Explore Capabilities →](/capabilities)
@@ -139,25 +134,11 @@ const result = await capability.execute(input);
 
 Starting points for learning and remixing:
 
-```typescript
-// Templates are free, for learning only
-const template = await templates.preview('customer-support');
-// Fork, modify, experiment - nothing is canonized
-```
-
 [Browse Templates →](/marketplace)
 
 ### Synergy Pipelines (FREE)
 
-Exploratory orchestration patterns:
-
-```typescript
-// Execute synergy pipelines ephemerally
-const result = await cortex.synergy.execute('smart-recall', {
-  query: 'user preferences'
-});
-// Inspection and execution only - no save, no versioning
-```
+Exploratory orchestration across 200+ pipelines:
 
 [Try Synergies →](/synergies)
 
@@ -209,40 +190,17 @@ When you need governed, reliable orchestration, upgrade to Engines:
 
 ---
 
-## REST API
-
-```bash
-# Remember something
-curl -X POST https://api.cmpsbl.com/v1/brain/remember \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"content": "User prefers dark mode", "category": "preference"}'
-
-# Route a request
-curl -X POST https://api.cmpsbl.com/v1/nexus/route \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "Hello, how are you?"}'
-```
-
----
-
 ## Configuration
 
 ### Environment Variables
 
 ```env
-# Required for SDK
-CMPSBL_API_KEY=your_license_key
+CMPSBL_API_KEY=your_api_key
 
 # AI Providers (at least one required)
 OPENAI_API_KEY=sk-...
 ANTHROPIC_API_KEY=sk-ant-...
 GOOGLE_AI_KEY=...
-
-# Optional
-CMPSBL_LOG_LEVEL=info
-CMPSBL_MEMORY_TIER=hot
 ```
 
 ---
@@ -254,8 +212,8 @@ CMPSBL_MEMORY_TIER=hot
 | Add memory to existing agent | [Persistent Memory](/docs/persistent-memory) |
 | Explore capabilities | [Capability Depot](/capabilities) |
 | Understand architecture | [Architecture](./05-ARCHITECTURE.md) |
-| See real examples | [Use Cases](./04-USE-CASES.md) |
-| Choose a plan | [Licensing](./07-LICENSING.md) |
+| Build on master substrate | [Pricing](/pricing) |
+| Self-host | [LNCHBL.com](https://lnchbl.com) |
 
 ---
 
@@ -266,4 +224,4 @@ CMPSBL_MEMORY_TIER=hot
 
 ---
 
-*CMPSBL® — Start Building Smarter AI*
+*CMPSBL® v10.5.0 — Start Building Smarter AI*

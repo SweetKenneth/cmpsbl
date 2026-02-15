@@ -1,6 +1,6 @@
 # Architecture Overview
 
-**Technical Foundation of CMPSBL®**
+**CMPSBL® Cognitive Infrastructure — v10.5.0 ARCHITECT Epoch**
 
 ---
 
@@ -8,268 +8,115 @@
 
 CMPSBL® is built on three core principles:
 
-1. **Composability** — Discrete modules that can be assembled in any configuration
-2. **Observability** — Complete visibility into every layer of execution  
+1. **Composability** — Discrete modules that assemble in any configuration
+2. **Observability** — Complete visibility into system behavior
 3. **Autonomy** — Systems that learn, adapt, and self-optimize
 
 ---
 
-## The 21-Module Architecture (v9.1.0)
+## The 21-Module Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    ORCHESTRATOR LAYER                        │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │  CORTEX (Policy)  │  ENCODE (Code Generation)           ││
-│  └─────────────────────────────────────────────────────────┘│
-├─────────────────────────────────────────────────────────────┤
-│                  INFRASTRUCTURE LAYER (v9.1.0)               │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │  MEMORY  │  RELAY  │  AUDIT  │  IDENTITY  │  ECONOMY   ││
-│  │          │         │         │            │  SANDBOX    ││
-│  └─────────────────────────────────────────────────────────┘│
-├─────────────────────────────────────────────────────────────┤
-│                      ADMIN LAYER                             │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │  SYSTEM (Health)  │  MODERNIZER  │  INCLUSIVE (A11y)    ││
-│  │                   │  INTEGRATION                        ││
-│  └─────────────────────────────────────────────────────────┘│
-├─────────────────────────────────────────────────────────────┤
-│                   OPERATIONS LAYER                           │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │  DREAM  │  DEFENSE  │  NEXUS  │  VISION                ││
-│  └─────────────────────────────────────────────────────────┘│
-├─────────────────────────────────────────────────────────────┤
-│                   COGNITIVE LAYER                            │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │  BRAIN (Memory)  │  DECODE (NLP)                        ││
-│  └─────────────────────────────────────────────────────────┘│
-├─────────────────────────────────────────────────────────────┤
-│                    KERNEL LAYER                              │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │  CORE (Config)  │  RIPPLE (Events)  │  ACCESS (Auth)    ││
-│  └─────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────┘
-```
+CMPSBL organizes intelligence across **6 layers** with **21 specialized modules**, each responsible for a distinct cognitive function. Together they produce **200+ synergy pipelines** and **400+ capabilities**.
+
+### Layer Overview
+
+| Layer | Modules | Purpose |
+|-------|---------|---------|
+| **Kernel** | 3 | Foundation services — configuration, events, access control |
+| **Cognitive** | 2 | Intelligence — memory, natural language understanding |
+| **Operations** | 4 | Runtime — learning, security, AI routing, observability |
+| **Admin** | 4 | Management — health, evolution, accessibility, integrations |
+| **Infrastructure** | 6 | Trust — orchestration, compliance, identity, cost management |
+| **Orchestrator** | 2 | Coordination — policy intent, code generation |
 
 ---
 
-## Layer Overview
+## What Each Layer Does
 
-### Kernel Layer (3 Modules)
-Foundation services that all other modules depend on.
+### Kernel Layer
+The foundation everything else depends on. Manages configuration, cross-module messaging, and access entitlements.
 
-| Module | Purpose |
-|--------|---------|
-| **CORE** | Configuration, constants, feature flags |
-| **RIPPLE** | Event bus, pub/sub, cross-module messaging |
-| **ACCESS** | API keys, rate limits, entitlements |
+### Cognitive Layer
+The intelligence core. Persistent multi-tier memory that remembers across sessions, and natural language interpretation that understands user intent.
 
-### Cognitive Layer (2 Modules)
-Intelligence and memory capabilities.
+### Operations Layer
+Runtime services that keep things running, learning, and secure. Autonomous learning cycles, multi-provider AI routing, enterprise security, and real-time observability.
 
-| Module | Purpose |
-|--------|---------|
-| **BRAIN** | Memory storage, recall, consolidation |
-| **DECODE** | Natural language interpretation |
+### Admin Layer
+System management and self-improvement. Health diagnostics, autonomous code evolution, accessibility compliance, and enterprise adapter frameworks.
 
-### Operations Layer (4 Modules)
-Runtime services for learning, security, AI, and visibility.
+### Infrastructure Layer
+Foundational trust services. Semantic recall, outbound delivery, immutable compliance logging, universal identity attribution, real-time cost management, and isolated execution environments.
 
-| Module | Purpose |
-|--------|---------|
-| **DREAM** | Autonomous learning cycles |
-| **DEFENSE** | Security, threat detection, rate limiting |
-| **NEXUS** | Multi-provider AI routing |
-| **VISION** | Observability, metrics, tracing |
-
-### Admin Layer (4 Modules)
-System management and self-improvement.
-
-| Module | Purpose |
-|--------|---------|
-| **SYSTEM** | Health, diagnostics, backup/restore |
-| **MODERNIZER** | Evolution engine, self-improvement |
-| **INCLUSIVE** | Accessibility scanning, WCAG enforcement |
-| **INTEGRATION** | Enterprise adapter framework, plugin SDK |
-
-### Infrastructure Layer (6 Modules — v9.1.0)
-Foundational services for autonomous, high-trust operations.
-
-| Module | Purpose |
-|--------|---------|
-| **MEMORY** | Vector/RAG orchestration, semantic recall |
-| **RELAY** | Centralized outbound webhooks, side-effect delivery |
-| **AUDIT** | Immutable, cryptographically-chained compliance logging |
-| **IDENTITY** | Universal human/agent actor attribution |
-| **ECONOMY** | Real-time cost attribution, budgeting |
-| **SANDBOX** | Isolated environments for safe code execution |
-
-### Orchestrator Layer (2 Modules)
-High-level coordination and code generation.
-
-| Module | Purpose |
-|--------|---------|
-| **CORTEX** | Policy intent, autonomous decision-making |
-| **ENCODE** | Code generation, transformation, preview scoring |
+### Orchestrator Layer
+High-level coordination. Policy-driven decision-making and intelligent code generation with preview scoring.
 
 ---
 
-## Memory Architecture
+## Memory System
 
-### Four-Tier Storage
+CMPSBL features a **multi-tier memory architecture** that automatically manages the lifecycle of stored knowledge:
 
-```
-┌───────────────────────────────────────┐
-│            HOT MEMORY                  │
-│   Fast access, recent context          │
-│   Capacity: 127 records                │
-│   Retention: 7 days                    │
-└─────────────────┬─────────────────────┘
-                  │ Demotion
-                  ▼
-┌───────────────────────────────────────┐
-│           WARM MEMORY                  │
-│   Frequently accessed, intermediate    │
-│   Capacity: 2,000 records              │
-│   Retention: 30 days                   │
-└─────────────────┬─────────────────────┘
-                  │ Compression
-                  ▼
-┌───────────────────────────────────────┐
-│           COLD MEMORY                  │
-│   Compressed patterns, long-term       │
-│   Capacity: 200 records                │
-│   Retention: Forever                   │
-└─────────────────┬─────────────────────┘
-                  │ Archive
-                  ▼
-┌───────────────────────────────────────┐
-│          LEGACY MEMORY                 │
-│   Archived, rarely accessed            │
-│   Capacity: Unlimited                  │
-│   Retention: Forever                   │
-└───────────────────────────────────────┘
-```
+- **Active memories** are instantly accessible for real-time context
+- **Intermediate memories** are retained for recurring access patterns
+- **Archived memories** are compressed but never lost
+- **Protected memories** (identity, principles, safety) are immutable
 
-### Memory Value Scoring
-Each memory is scored based on:
-- **Recency** — When was it last accessed?
-- **Frequency** — How often is it accessed?
-- **Confidence** — How reliable is the information?
-
-### Protected Memory Types
-Foundational knowledge is protected with special handling:
-- **Core Identity** — Locked at 1.0 value, zero decay
-- **Principles** — Never demoted or pruned
-- **Safety Laws** — Immutable system constraints
+The system automatically scores, compresses, and promotes/demotes memories based on usage patterns — no manual management required.
 
 ---
 
-## Event-Driven Architecture
+## Event-Driven Communication
 
-### RIPPLE Event Bus
+All modules communicate through a unified event system that provides:
 
-All modules communicate via the RIPPLE event bus:
-
-```typescript
-// Module emits event
-ripple.emit('brain.memory.created', { id, content });
-
-// Other modules subscribe
-ripple.on('brain.memory.created', (event) => {
-  // VISION logs it
-  // DREAM considers it for learning
-  // DEFENSE checks for threats
-});
-```
-
-### Benefits
-- **Loose Coupling** — Modules don't depend on each other directly
-- **Extensibility** — Add new modules without changing existing ones
-- **Observability** — Every event is traceable
+- **Loose Coupling** — Modules operate independently
+- **Extensibility** — Add capabilities without changing existing ones
+- **Full Traceability** — Every interaction is observable
 
 ---
 
-## Self-Evolution Engine
+## Self-Evolution
 
-### The 5-Phase Lifecycle
+The substrate continuously improves itself through a governed lifecycle:
 
-```
-┌─────────┐    ┌──────────┐    ┌──────────┐    ┌────────┐    ┌─────────┐
-│ COGNIZE │ -> │ PROPOSE  │ -> │ EVALUATE │ -> │  GATE  │ -> │  APPLY  │
-│ Observe │    │ Generate │    │  Score   │    │ Review │    │ Deploy  │
-└─────────┘    └──────────┘    └──────────┘    └────────┘    └─────────┘
-```
+1. **Observe** — Identify improvement opportunities
+2. **Propose** — Generate change candidates
+3. **Evaluate** — Score by impact and risk
+4. **Gate** — Human approval for significant changes
+5. **Deploy** — Apply with automatic rollback on failure
 
-| Phase | Description |
-|-------|-------------|
-| **Cognize** | Scan system for improvement opportunities |
-| **Propose** | Generate code change proposals |
-| **Evaluate** | Score proposals by impact and risk |
-| **Gate** | Human approval for high-impact changes |
-| **Apply** | Deploy approved changes |
-
-### Safety Controls
-- **Confidence Threshold** — Only 80%+ confidence proposals auto-apply
-- **Shadow Testing** — Test changes before production
-- **Automatic Rollback** — Revert on errors
-- **Audit Trail** — Every change is logged
+All changes are confidence-gated, shadow-tested, and fully auditable.
 
 ---
 
-## Security Model
+## Security
 
-### Defense in Depth
+Defense-in-depth security built into the core:
 
-```
-┌─────────────────────────────────────────┐
-│           Rate Limiting                  │ Layer 1
-├─────────────────────────────────────────┤
-│           Bot Detection                  │ Layer 2
-├─────────────────────────────────────────┤
-│           Input Validation               │ Layer 3
-├─────────────────────────────────────────┤
-│           Access Control                 │ Layer 4
-├─────────────────────────────────────────┤
-│           Audit Logging                  │ Layer 5
-└─────────────────────────────────────────┘
-```
-
-### Key Principles
-- **Zero Trust** — Verify every request
-- **Least Privilege** — Minimal access by default
-- **Defense in Depth** — Multiple layers of protection
-- **Audit Everything** — Complete trail of all actions
+- **Zero Trust** — Every request is verified
+- **Adaptive Protection** — Security learns from attack patterns
+- **Compliance Ready** — SOC 2, GDPR patterns built in
+- **Complete Audit Trail** — Every action is logged immutably
 
 ---
 
-## Infrastructure
-
-### Technology Stack
-
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | React + TypeScript + Vite |
-| **Backend** | Supabase (PostgreSQL + Edge Functions) |
-| **AI** | Model-agnostic, provider-agnostic |
-| **Infrastructure** | Commodity cloud (any provider) |
-
-### Deployment Options
+## Deployment Options
 
 | Option | Description |
 |--------|-------------|
-| **Cloud** | Fully managed, instant setup |
-| **Self-Hosted** | Your infrastructure, your control |
-| **Hybrid** | Mix of cloud and on-premise |
+| **Master Substrate** | Build on our managed infrastructure with full features |
+| **Licensed Substrate** | Deploy on your own infrastructure via [LNCHBL.com](https://lnchbl.com) |
+| **Hybrid** | Mix of managed and self-hosted components |
 
 ---
 
 ## Next Steps
 
 - [Getting Started](./06-GETTING-STARTED.md) — Start building
-- [Licensing](./07-LICENSING.md) — Choose your plan
+- [Licensing](./07-LICENSING.md) — Self-hosted licensing
+- [Pricing](/pricing) — Build on the master substrate
 
 ---
 
-*CMPSBL® v9.1.0 ARCHITECT Epoch — Architecture for the Cognitive Era*
+*CMPSBL® v10.5.0 ARCHITECT Epoch — Cognitive Infrastructure for Production AI*

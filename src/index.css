@@ -734,9 +734,15 @@ All colors MUST be HSL.
   }
 }
 
-/* Ensure toaster container is visible above all layers */
+/* Ensure toaster container is visible above all layers but doesn't affect layout */
 [data-sonner-toaster] {
   z-index: 999999 !important;
+  position: fixed !important;
+  pointer-events: none !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast] {
+  pointer-events: auto !important;
 }
 
 /* Smart Toast entrance animation */

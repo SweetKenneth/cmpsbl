@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v9.1.0 ARCHITECT Epoch**
+**What CMPSBL® Does — v10.5.0 ARCHITECT Epoch**
 
 ---
 
@@ -23,129 +23,43 @@ const context = await agent.getContext(userMessage);
 
 ---
 
-## Platform Tiers
-
-| Layer | Cost | Persistence | Purpose |
-|-------|------|-------------|---------|
-| **Capability Depot** | FREE | None | Atomic, stateless building blocks |
-| **Template Alley** | FREE | None | Starting points for learning |
-| **Synergy Pipelines** | FREE | None | Exploratory orchestration |
-| **Persistent Memory** | FREE | Bounded | Drop-in memory for agents |
-| **Engine Marketplace** | Paid | Governed | Production orchestrations |
-
----
-
 ## Capability Matrix
 
-| Capability | Module | Description |
-|------------|--------|-------------|
-| Persistent Memory | BRAIN | Multi-tier storage, semantic recall, automatic compression |
-| Self-Learning | DREAM | Autonomous overnight learning, pattern synthesis |
-| AI Routing | NEXUS | Multi-provider routing, fallback chains, cost optimization |
-| Security | DEFENSE | Rate limiting, bot detection, threat intelligence |
-| Observability | VISION | Real-time dashboards, health monitoring, telemetry |
-| Self-Evolution | MODERNIZER | Code proposals, confidence gating, auto-upgrades |
-| Intent Parsing | DECODE | Natural language interpretation, command routing |
-| Orchestration | CORTEX | Policy intent, autonomous decision-making |
-| Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
-| **Cross-Module Synergies** | CORTEX | **200 pipelines, 400+ capabilities, 21 modules** |
+| Capability | What It Does |
+|------------|-------------|
+| **Persistent Memory** | Multi-tier storage that remembers across sessions and auto-manages lifecycle |
+| **Self-Learning** | Autonomous learning cycles that make the system smarter over time |
+| **AI Routing** | Intelligent multi-provider routing with fallback, cost, and quality optimization |
+| **Security** | Enterprise-grade protection with adaptive threat response |
+| **Observability** | Real-time dashboards, health monitoring, and full telemetry |
+| **Self-Evolution** | Governed code improvements with confidence gating and rollback |
+| **Intent Parsing** | Natural language understanding with command routing |
+| **Orchestration** | Policy-driven autonomous decision-making |
+| **Accessibility** | WCAG scanning, auto-repair, and compliance reporting |
+| **Intent Mesh** | Distributed resolution engine for cross-module collaboration |
+| **Cross-Module Synergies** | **200+ pipelines, 400+ capabilities across 21 modules** |
 
 ---
 
-## Cross-Module Synergy Engine (v9.1.0)
+## Cross-Module Synergy Engine
 
 ### The Problem
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
 
 ### Our Solution
-**200 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities. All synergies are FREE to explore via [Synergy Pipelines](/synergies):
+**200+ synergy pipelines** that orchestrate multiple modules together for emergent capabilities:
 
-| Category | Pipelines | Description |
-|----------|-----------|-------------|
-| **Intelligence** | 27 | Cognitive fusion, causal inference, hypothesis testing, API intelligence |
-| **Security** | 21 | Attack surface mapping, zero-day defense, creative threat modeling |
-| **Resilience** | 21 | Predictive healing, blast radius containment, proactive maintenance |
-| **Optimization** | 20 | Cost routing, token budget, config optimization, resource imagination |
-| **Accessibility** | 17 | Universal design, accessible AI, cognitive profiling |
-| **Automation** | 16 | Autonomous repair, predictive evolution, entitlement evolution |
-| **Orchestration** | 13 | Multi-agent coordination, distributed config sync, team coordination |
+| Category | Pipelines | What It Achieves |
+|----------|-----------|-----------------|
+| **Intelligence** | 27+ | Cognitive fusion, causal inference, hypothesis testing |
+| **Security** | 21+ | Attack surface mapping, adaptive defense, threat modeling |
+| **Resilience** | 21+ | Predictive healing, blast radius containment, proactive maintenance |
+| **Optimization** | 20+ | Cost routing, token budgeting, resource management |
+| **Accessibility** | 17+ | Universal design, adaptive AI, cognitive profiling |
+| **Automation** | 16+ | Autonomous repair, predictive evolution |
+| **Orchestration** | 13+ | Multi-agent coordination, distributed sync |
 
-### Example Synergies
-
-| Synergy | Modules | What It Does |
-|---------|---------|--------------|
-| `holistic-system-insight` | VISION + BRAIN + CORTEX + DREAM | Full system awareness with predictive insights |
-| `full-stack-evolution` | CORTEX + MODERNIZER + BRAIN + VISION + DEFENSE | Autonomous code evolution with security validation |
-| `zero-day-defense` | DEFENSE + BRAIN + VISION + CORTEX | Proactive threat detection and response |
-| `creative-threat-modeling` | DREAM + DEFENSE + BRAIN | AI imagines novel attack vectors **(v7.5.2)** |
-| `predictive-evolution-engine` | VISION + DREAM + MODERNIZER | Predictive fix synthesis **(v7.5.2)** |
-| `accessible-ai-generation` | NEXUS + INCLUSIVE + DECODE | AI outputs adapted for accessibility **(v7.5.2)** |
-
----
-
-## v7.5.2 New Discoveries (15 Pipelines)
-
-| Synergy | Modules | Category | Description |
-|---------|---------|----------|-------------|
-| `external-data-enrichment` | INTEGRATION + BRAIN + DECODE + NEXUS | Intelligence | External data enhanced with semantic indexing |
-| `api-intelligence-layer` | INTEGRATION + BRAIN + CORTEX + VISION | Intelligence | API responses transformed with contextual logic |
-| `creative-threat-modeling` | DREAM + DEFENSE + BRAIN | Security | AI imagines novel attack vectors |
-| `accessibility-event-stream` | RIPPLE + INCLUSIVE + VISION | Accessibility | Accessibility events captured and analyzed |
-| `config-optimization-learning` | CORE + DREAM + BRAIN + VISION | Optimization | Configuration tuned via pattern discovery |
-| `entitlement-evolution` | ACCESS + DREAM + CORTEX | Automation | Entitlements optimized via usage patterns |
-| `proactive-maintenance-engine` | MODERNIZER + VISION + BRAIN | Resilience | Maintenance predicted from degradation patterns |
-| `resource-demand-imagination` | SYSTEM + DREAM + CORTEX | Optimization | Capacity planning via demand synthesis |
-| `accessible-ai-generation` | NEXUS + INCLUSIVE + DECODE | Accessibility | AI outputs adapted for accessibility |
-| `security-posture-evolution` | DEFENSE + MODERNIZER + BRAIN + CORTEX | Security | Security policies evolved autonomously |
-| `semantic-event-enrichment` | RIPPLE + DECODE + BRAIN + VISION | Intelligence | Events enriched with semantic context |
-| `distributed-config-sync` | CORE + INTEGRATION + RIPPLE + DEFENSE | Orchestration | Config synchronized across adapters |
-| `predictive-evolution-engine` | VISION + DREAM + MODERNIZER | Automation | Degradation detected, fixes synthesized |
-| `api-entitlement-fortress` | ACCESS + INTEGRATION + DEFENSE + VISION | Security | API access controlled with threat prevention |
-| `cognitive-accessibility-profiler` | BRAIN + INCLUSIVE + VISION + DECODE | Accessibility | User accessibility needs learned over time |
-
----
-
-## v7.5.0 Capabilities
-
-### Production-Grade Additions (42 New Functions)
-
-| Category | New Capabilities | Module |
-|----------|------------------|--------|
-| **Query Optimization** | LRU caching, query planning, execution optimization | BRAIN |
-| **Memory Consolidation** | Similarity grouping, merge detection, importance scoring | BRAIN |
-| **Load Balancing** | Weighted routing, slot management, request queuing | NEXUS |
-| **Behavioral Analysis** | Trust scoring, pattern detection, threat correlation | DEFENSE |
-| **Incident Response** | Workflow automation, escalation, resolution tracking | DEFENSE |
-| **Alert Management** | Deduplication, escalation chains, intelligent routing | VISION |
-| **Dependency Graphs** | Runtime dependency tracking, impact analysis | SYSTEM |
-| **Resource Monitoring** | Memory, CPU, network metrics aggregation | SYSTEM |
-| **Workflow Engine** | Multi-step pipelines, cross-module orchestration | CORTEX |
-| **Permission Graphs** | Hierarchical RBAC, inheritance resolution | ACCESS |
-| **Context Engine** | Multi-turn memory, session state management | DECODE |
-| **Creative Synthesis** | Pattern mutation, novel insight generation | DREAM |
-| **Event Analytics** | Stream analysis, pattern detection, correlations | RIPPLE |
-| **Transform Pipelines** | Data mapping, schema conversion, validation | INTEGRATION |
-| **Adaptive Interfaces** | Dynamic UI adaptation, accessibility profiling | INCLUSIVE |
-| **Impact Analysis** | Change prediction, breaking change detection | MODERNIZER |
-
-### Terminal Commands
-
-```bash
-# List all synergies
-cortex.synergy.list
-
-# Get synergy details
-cortex.synergy.get smart-recall
-
-# Execute a synergy
-cortex.synergy.execute adaptive-routing
-
-# Dry-run (no side effects)
-cortex.synergy.dry_run cognitive-fusion
-
-# Chain synergies together
-cortex.synergy.pipeline smart-recall,cognitive-fusion
-```
+All synergies are FREE to explore via [Synergy Pipelines](/synergies).
 
 ---
 
@@ -154,21 +68,14 @@ cortex.synergy.pipeline smart-recall,cognitive-fusion
 ### The Problem
 Traditional AI has no memory. Every conversation starts fresh.
 
-### Our Solution
-Multi-tier memory architecture with automatic compression:
+### What It Does
+Multi-tier memory that automatically manages the full lifecycle of stored knowledge. Memories are scored, compressed, and promoted based on usage — the system never forgets what matters.
 
-| Tier | Capacity | Retention | Use Case |
-|------|----------|-----------|----------|
-| **Hot** | 127 records | 7 days | Recent context, active sessions |
-| **Warm** | 2,000 records | 30 days | Frequently accessed, intermediate recall |
-| **Cold** | 200 records | Forever | Compressed patterns, long-term knowledge |
-| **Legacy** | Unlimited | Forever | Archived, rarely accessed |
-
-### Features
+### Highlights
 - **Semantic Search** — Find memories by meaning, not keywords
-- **Automatic Compression** — Old memories compressed, not lost
-- **Value Scoring** — Frequently accessed memories score higher
-- **Protected Memory** — Core identity and principles are locked with 1.0 value, zero decay
+- **Automatic Lifecycle** — Old memories are compressed, not lost
+- **Value Scoring** — Important memories are prioritized automatically
+- **Protected Memory** — Core identity and principles are immutable
 - **Cross-Session Persistence** — Memories survive restarts
 
 ---
@@ -178,21 +85,14 @@ Multi-tier memory architecture with automatic compression:
 ### The Problem
 AI doesn't improve from experience. Same mistakes forever.
 
-### Our Solution
-Autonomous "dream cycles" that synthesize learning:
+### What It Does
+Autonomous learning cycles that synthesize patterns from interactions and apply high-confidence improvements. The system literally gets smarter while you sleep.
 
-| Phase | What Happens |
-|-------|--------------|
-| **Collect** | Gather interactions from the day |
-| **Analyze** | Find patterns, successes, failures |
-| **Synthesize** | Generate improved heuristics |
-| **Apply** | Update system with new learnings |
-
-### Features
-- **Scheduled Cycles** — Run during low-traffic periods
-- **Pattern Extraction** — Identify what works, what doesn't
-- **Confidence Gating** — Only high-confidence learnings apply
-- **Audit Trail** — Every learning decision is logged
+### Highlights
+- **Scheduled Cycles** — Runs during low-traffic periods
+- **Pattern Synthesis** — Identifies what works and what doesn't
+- **Confidence Gating** — Only validated learnings are applied
+- **Full Audit Trail** — Every learning decision is logged
 
 ---
 
@@ -201,22 +101,15 @@ Autonomous "dream cycles" that synthesize learning:
 ### The Problem
 Locked into one AI provider. No fallback. No optimization.
 
-### Our Solution
-Intelligent routing across multiple providers:
+### What It Does
+Intelligent routing across multiple AI providers with automatic failover and optimization:
 
-| Provider | Status |
-|----------|--------|
-| OpenAI | ✓ Supported |
-| Anthropic | ✓ Supported |
-| Google AI | ✓ Supported |
-| Mistral | ✓ Supported |
-| Open Source | ✓ Supported |
+- **Automatic Fallback** — If one fails, routes to another instantly
+- **Cost Optimization** — Routes to the most cost-effective provider for each task
+- **Quality Routing** — Complex tasks go to the best models
+- **Response Caching** — Reduces redundant API calls
 
-### Features
-- **Automatic Fallback** — If one fails, route to another
-- **Cost Optimization** — Route to cheapest provider for the task
-- **Quality Routing** — Route complex tasks to best models
-- **Response Caching** — Cache frequent requests
+Supports OpenAI, Anthropic, Google AI, Mistral, and open-source models.
 
 ---
 
@@ -225,21 +118,13 @@ Intelligent routing across multiple providers:
 ### The Problem
 AI applications are vulnerable to attacks, abuse, and manipulation.
 
-### Our Solution
-Enterprise-grade security built into the core:
+### What It Does
+Enterprise-grade, adaptive security built into the core:
 
-| Layer | Protection |
-|-------|------------|
-| **Rate Limiting** | Prevent abuse and DoS |
-| **Bot Detection** | Behavioral fingerprinting |
-| **Input Sanitization** | Block injection attacks |
-| **Audit Logging** | Complete trail of all actions |
-
-### Features
-- **Adaptive Rules** — Security learns from attacks
-- **Threat Intelligence** — Shared threat patterns
-- **Zero-Trust Architecture** — Verify everything
-- **Compliance Ready** — SOC 2, GDPR patterns
+- **Adaptive Rules** — Security learns from attack patterns
+- **Threat Intelligence** — Shared threat patterns across the network
+- **Zero-Trust Architecture** — Every request is verified
+- **Compliance Ready** — SOC 2, GDPR patterns built in
 
 ---
 
@@ -248,21 +133,13 @@ Enterprise-grade security built into the core:
 ### The Problem
 AI is a black box. No visibility into decisions.
 
-### Our Solution
-Complete observability across the entire system:
+### What It Does
+Complete observability across the entire system with real-time dashboards for health, performance, learning progress, and security status.
 
-| Dashboard | Shows |
-|-----------|-------|
-| **Health** | System status, uptime, errors |
-| **Performance** | Latency, throughput, costs |
-| **Learning** | Memory growth, pattern adoption |
-| **Security** | Threats blocked, anomalies |
-
-### Features
 - **Real-Time Metrics** — Live system status
 - **Historical Trends** — Performance over time
-- **Alerting** — Notify on anomalies
-- **Drill-Down** — Trace individual requests
+- **Smart Alerting** — Notify on anomalies
+- **Drill-Down** — Trace individual requests end to end
 
 ---
 
@@ -271,21 +148,13 @@ Complete observability across the entire system:
 ### The Problem
 Code rots. Systems need constant maintenance.
 
-### Our Solution
-The system proposes improvements to its own code:
+### What It Does
+The system proposes, evaluates, and applies improvements to its own code with human oversight for significant changes.
 
-| Phase | Description |
-|-------|-------------|
-| **Scan** | Identify improvement opportunities |
-| **Propose** | Generate code change proposals |
-| **Gate** | Human review for high-impact changes |
-| **Apply** | Automatic deployment of approved changes |
-
-### Features
 - **Confidence Gating** — Only safe changes auto-apply
-- **Shadow Testing** — Test changes before applying
-- **Rollback** — Automatic revert on failures
-- **Audit Trail** — Complete history of all changes
+- **Shadow Testing** — Changes are tested before deployment
+- **Automatic Rollback** — Reverts on failure
+- **Complete Audit Trail** — Full history of all changes
 
 ---
 
@@ -294,25 +163,25 @@ The system proposes improvements to its own code:
 ### The Problem
 Most AI applications are not accessible to users with disabilities.
 
-### Our Solution
-Built-in accessibility compliance pipeline:
+### What It Does
+Built-in accessibility compliance with automated scanning, intelligent fix generation, and regression detection.
 
-| Feature | Description |
-|---------|-------------|
-| **WCAG Scanning** | Automated A, AA, AAA compliance checks |
-| **Auto-Repair** | Intelligent fix generation for common issues |
-| **Validation** | Regression detection on repairs |
-| **Reporting** | Compliance reports in JSON or Markdown |
-
-### Features
-- **Template Scanning** — Scan all marketplace templates automatically
-- **User Profiles** — Adaptive experiences for different needs
-- **Coverage Tracking** — Monitor accessibility coverage over time
+- **WCAG Scanning** — A, AA, AAA compliance checks
+- **Auto-Repair** — Intelligent fixes for common issues
+- **Coverage Tracking** — Monitor accessibility over time
 - **Self-Scan** — The substrate scans its own UI
 
 ---
 
 ## Integration Patterns
+
+### SDK (TypeScript)
+```typescript
+import { substrate } from '@cmpsbl/sdk';
+
+await substrate.brain.remember('User prefers dark mode');
+const response = await substrate.nexus.route('Hello');
+```
 
 ### REST API
 ```bash
@@ -324,40 +193,15 @@ POST /api/substrate
 }
 ```
 
-### SDK (TypeScript)
-```typescript
-import { substrate } from '@cmpsbl/sdk';
-
-await substrate.brain.remember('User prefers dark mode');
-const response = await substrate.nexus.route('Hello');
-
-// Execute synergy pipeline
-const result = await substrate.cortex.synergy.execute('smart-recall', {
-  query: 'user preferences'
-});
-```
-
-### Terminal
-```bash
-# Memory
-brain.remember "Important fact" observation
-
-# Synergies
-cortex.synergy.execute cognitive-fusion
-
-# Health
-system.health
-```
-
 ---
 
 ## Next Steps
 
 - [Use Cases](./04-USE-CASES.md) — See it in action
-- [Architecture](./05-ARCHITECTURE.md) — Deep technical dive
+- [Architecture](./05-ARCHITECTURE.md) — System overview
 - [Getting Started](./06-GETTING-STARTED.md) — Start building
 - [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) — Full synergy reference
 
 ---
 
-*CMPSBL® v9.1.0 ARCHITECT Epoch — Cognitive Infrastructure for Production AI*
+*CMPSBL® v10.5.0 ARCHITECT Epoch — Cognitive Infrastructure for Production AI*

@@ -30,7 +30,7 @@ All capabilities are accessed through a single endpoint.
 
 ## v7.5.0 New Capabilities
 
-This version adds **42 new production-grade functions** across all 14 modules:
+This version adds **42 new production-grade functions** across modules:
 
 ### BRAIN — Query Optimization & Consolidation
 ```json

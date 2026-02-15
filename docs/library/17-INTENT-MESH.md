@@ -2,9 +2,9 @@
 
 # Intent Mesh — Emergent Module Intelligence Layer
 
-### CMPSBL OS Substrate v10.4.0
+### CMPSBL OS Substrate v10.5.0
 
-**Classification:** Library — No Trade Secrets  
+**Classification:** Library — Internal Reference Only
 **Audience:** Investors · Researchers · Developers · Partners  
 **DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
 **Last Updated:** February 15, 2026
@@ -21,7 +21,7 @@ The Intent Mesh is a v10.0+ architectural advancement that enables **autonomous 
 
 | Property | Value |
 |----------|-------|
-| Version | v10.4.0 |
+| Version | v10.5.0 |
 | Resolvers | 34+ (across 21 modules, auto-expanding) |
 | Discovery Methods | 7 (Introspection, Gap Response, Affinity Bridge, Intent Learning, Live Gap Execution, Affinity Matrix, Pattern Recognition) |
 | Governance | Kill switch (OFF by default) + read-only enforcement |
@@ -419,12 +419,12 @@ The Intent Mesh creates a **capability moat** that is difficult to replicate:
 
 <div align="center">
 
-*CMPSBL OS Substrate v10.4.0 — Intent Mesh*
+*CMPSBL OS Substrate v10.5.0 — Intent Mesh*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
-ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
-DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
+ORCID: [0009-0001-4237-1243](https://orcid.org/0009-0001-4237-1243)
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 PromptFluid®. All rights reserved.  
+**CONFIDENTIAL — Internal Library Reference Only**
 
 </div>

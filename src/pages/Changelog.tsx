@@ -85,7 +85,7 @@ const evolutionLogV9: EvolutionEntry[] = [
     id: "v9-foundation",
     date: "2026-02-10",
     pressures: [
-      "SYNERGY+ proved the pipeline architecture but scope was limited to 14 modules",
+      "SYNERGY+ proved the pipeline architecture but scope needed expansion beyond the original module set",
       "Infrastructure capabilities existed but lacked formal module boundaries",
       "The substrate needed architectural expansion to support production scale"
     ],

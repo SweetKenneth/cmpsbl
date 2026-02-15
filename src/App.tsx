@@ -268,12 +268,12 @@ const App = () => {
       ) : (
         <MotionConfig reducedMotion={isPreviewEnv ? "always" : "user"}>
           <QueryClientProvider client={queryClient}>
-          <SonnerToaster />
-          <SmartToastRenderer />
           <SEOProvider>
             <Suspense fallback={<PageLoader />}>
               <SubstrateProvider autoInit={substrateAutoInit}>
                 <TooltipProvider>
+                  <SmartToastRenderer />
+                  <SonnerToaster />
                   <DecodeFloat />
                   <BrowserRouter>
                   <ScrollToTop />

@@ -24,8 +24,6 @@ CMPSBL® (Composable) is the **operating system for AI applications**. Just like
 
 ### Without CMPSBL
 
-Every AI application today faces the same challenges:
-
 | Challenge | Impact |
 |-----------|--------|
 | **AI has no memory** | Forgets everything after each conversation |
@@ -68,66 +66,29 @@ const context = await agent.getContext(userMessage);
 
 ---
 
-## The Tiered Architecture
+## The Architecture
 
-### Free Exploration Layers
+CMPSBL® is built from **21 specialized modules** organized across **6 layers**, producing **200+ synergy pipelines** and **400+ capabilities**.
 
-| Layer | Purpose | Persistence |
-|-------|---------|-------------|
-| **Capability Depot** | Atomic, stateless building blocks | None |
-| **Template Alley** | Starting points for learning & remixing | None |
-| **Synergy Pipelines** | Exploratory orchestration patterns | None |
-| **Persistent Memory** | Drop-in memory for any agent | Bounded, safe defaults |
-
-### Canonized Layers
-
-| Layer | Purpose | Persistence |
-|-------|---------|-------------|
-| **Engine Marketplace (OEM)** | First-party hardened orchestrations | Full governance |
-| **Enterprise Substrate** | Self-hosted full control | Enterprise-grade |
-
----
-
-## How It Works
-
-### The 3-Layer Architecture
-
-```
-┌─────────────────────────────────────────┐
-│           YOUR APPLICATION              │
-│    (React, Vue, Mobile, API, etc.)      │
-└──────────────────┬──────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────┐
-│           CMPSBL® SUBSTRATE             │
-│  Memory • Learning • Routing • Security │
-└──────────────────┬──────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────┐
-│           AI PROVIDERS                  │
-│   OpenAI • Anthropic • Google • etc.    │
-└─────────────────────────────────────────┘
-```
+| Layer | What It Does |
+|-------|-------------|
+| **Kernel** | Foundation — configuration, events, access control |
+| **Cognitive** | Intelligence — persistent memory, natural language understanding |
+| **Operations** | Runtime — learning, security, AI routing, observability |
+| **Admin** | Management — health, evolution, accessibility, integrations |
+| **Infrastructure** | Trust — compliance, identity, cost management, sandboxing |
+| **Orchestrator** | Coordination — policy intent, code generation |
 
 Your application talks to CMPSBL. CMPSBL handles everything else.
 
 ---
 
-## Key Concepts
+## Two Ways to Use CMPSBL
 
-### The Brain
-Persistent memory that remembers across sessions. Stores preferences, context, learned patterns. Automatically compresses old memories to stay efficient.
-
-### Dream Cycles
-Overnight learning that synthesizes patterns from the day's interactions. The system literally gets smarter while you sleep.
-
-### Multi-Provider Routing
-Send requests to the best AI for the job. If one provider fails, automatically routes to another. Optimizes for cost, speed, or quality.
-
-### Self-Evolution
-The system proposes improvements to its own code. Human-approved changes are automatically deployed. The infrastructure improves itself.
+| Option | Description | Best For |
+|--------|-------------|----------|
+| **Build on Master Substrate** | Use our managed infrastructure with all features included | Teams that want to ship fast |
+| **License a Substrate** | Deploy on your own infrastructure via [LNCHBL.com](https://lnchbl.com) | Teams with compliance or sovereignty requirements |
 
 ---
 
@@ -172,4 +133,4 @@ The system proposes improvements to its own code. Human-approved changes are aut
 
 ---
 
-*CMPSBL® — Where Machines Learn To Think*
+*CMPSBL® v10.5.0 — Where Machines Learn To Think*

@@ -1,6 +1,6 @@
 # Market Comparison
 
-**How CMPSBL® Compares to Alternatives**
+**How CMPSBL® Compares to Alternatives — v10.5.0**
 
 ---
 
@@ -23,151 +23,47 @@ The AI infrastructure market includes several categories:
 | Factor | Build In-House | CMPSBL® |
 |--------|----------------|---------|
 | **Time to Market** | 6-18 months | Days to weeks |
-| **Engineering Cost** | $500K-$2M+ | $15K-$180K/year |
+| **Engineering Cost** | $500K-$2M+ | Free to $149/mo (SaaS) or license |
 | **Maintenance** | Ongoing team needed | Included |
 | **Expertise Required** | Deep ML/AI knowledge | Basic integration |
-| **Risk** | High (unknown unknowns) | Low (proven system) |
+| **Risk** | High | Low (proven system) |
 | **Scaling** | Complex, expensive | Built-in |
-
-### Hidden Costs of Building
-
-When teams build cognitive infrastructure from scratch, they often underestimate:
-
-| Hidden Cost | Reality |
-|-------------|---------|
-| **Memory System** | 3-6 months to build a robust solution |
-| **Multi-Provider Routing** | Complex failover, cost optimization |
-| **Security Layer** | Enterprise requirements are extensive |
-| **Self-Improvement** | Rarely attempted, hard to get right |
-| **Observability** | Often an afterthought |
-| **Maintenance** | 20-40% of initial build, ongoing |
 
 ---
 
 ## CMPSBL vs. LangChain
 
-### Overview
-
-LangChain is a popular open-source library for building LLM applications. CMPSBL is a complete cognitive infrastructure layer.
-
-### Comparison
-
 | Aspect | LangChain | CMPSBL® |
 |--------|-----------|---------|
 | **Type** | Library (you build) | Infrastructure (complete) |
-| **Memory** | Basic chain memory | Multi-tier, compressed, scored |
-| **Learning** | None built-in | Autonomous dream cycles |
+| **Memory** | Basic chain memory | Multi-tier, managed lifecycle |
+| **Learning** | None built-in | Autonomous learning cycles |
 | **Security** | You implement | Enterprise-grade, built-in |
 | **Multi-Provider** | Manual setup | Intelligent routing |
 | **Self-Evolution** | None | Core feature |
 | **Observability** | Third-party needed | Integrated |
-| **Production Ready** | Requires work | Out of the box |
-
-### When to Use Each
-
-**Choose LangChain if:**
-- You want maximum flexibility and control
-- You have a strong engineering team
-- You're building a simple POC
-- You don't need persistent memory
-
-**Choose CMPSBL if:**
-- You want production-ready infrastructure
-- You need persistent, learning systems
-- Security and compliance matter
-- You want self-improving systems
+| **Modules** | N/A | 21 across 6 layers |
 
 ---
 
 ## CMPSBL vs. Mem0
 
-### Overview
-
-Mem0 focuses specifically on memory for AI applications. CMPSBL includes memory plus 13 other integrated modules.
-
-### Comparison
-
-| Aspect | Mem0 | CMPSBL® BRAIN + 13 |
-|--------|------|-------------------|
-| **Memory Storage** | ✓ Yes | ✓ Multi-tier |
-| **Memory Compression** | Basic | Advanced (temporal, semantic) |
-| **Memory Scoring** | Limited | Recency, frequency, confidence |
-| **AI Routing** | ✗ No | ✓ Multi-provider |
-| **Learning** | ✗ No | ✓ Dream cycles |
+| Aspect | Mem0 | CMPSBL® |
+|--------|------|---------|
+| **Memory Storage** | ✓ Yes | ✓ Multi-tier, lifecycle-managed |
+| **Memory Compression** | Basic | Advanced |
+| **AI Routing** | ✗ | ✓ Multi-provider |
+| **Learning** | ✗ | ✓ Autonomous |
 | **Security** | Basic | Enterprise-grade |
-| **Self-Evolution** | ✗ No | ✓ MODERNIZER |
-| **Observability** | Limited | ✓ Full VISION |
-| **Accessibility** | ✗ No | ✓ INCLUSIVE |
-
-### When to Use Each
-
-**Choose Mem0 if:**
-- You only need memory capabilities
-- You're adding to an existing stack
-- Cost is primary concern
-
-**Choose CMPSBL if:**
-- You need an integrated cognitive layer
-- Security, learning, routing matter
-- You want a complete solution
+| **Self-Evolution** | ✗ | ✓ |
+| **Accessibility** | ✗ | ✓ |
+| **Total Modules** | 1 | 21 |
 
 ---
 
 ## CMPSBL vs. Vector Databases
 
-### Overview
-
-Vector databases (Pinecone, Weaviate, Qdrant) store embeddings for semantic search. CMPSBL uses vector storage as part of a larger cognitive system.
-
-### Comparison
-
-| Aspect | Vector DBs | CMPSBL® |
-|--------|-----------|---------|
-| **Vector Storage** | Primary purpose | One component |
-| **Memory Lifecycle** | You manage | Automated |
-| **Compression** | Manual | Automatic |
-| **Learning** | None | Built-in |
-| **Context Building** | Manual | Automatic |
-| **AI Routing** | None | Intelligent |
-| **Security** | Basic | Enterprise |
-
-### How They Work Together
-
-CMPSBL uses vector storage internally but adds:
-- Memory lifecycle management
-- Automatic compression and scoring
-- Cross-memory relationships
-- Learning from access patterns
-
----
-
-## CMPSBL vs. OpenAI / Anthropic Direct
-
-### Overview
-
-Using AI providers directly gives you model access. CMPSBL sits between your app and providers, adding cognitive capabilities.
-
-### Comparison
-
-| Aspect | Direct API | Through CMPSBL® |
-|--------|-----------|-----------------|
-| **Memory** | None | Persistent, learning |
-| **Provider Lock-in** | Yes | No (multi-provider) |
-| **Failover** | Manual | Automatic |
-| **Cost Optimization** | Manual | Intelligent routing |
-| **Learning** | None | Autonomous |
-| **Security** | Basic | Enterprise-grade |
-| **Observability** | Limited | Complete |
-
-### Why Add CMPSBL
-
-| Benefit | Description |
-|---------|-------------|
-| **Provider Agnostic** | Switch providers without code changes |
-| **Automatic Fallback** | If one provider fails, route to another |
-| **Cost Optimization** | Route to cheapest provider for the task |
-| **Memory Layer** | AI that actually remembers |
-| **Learning** | AI that improves over time |
+Vector databases store embeddings for search. CMPSBL uses vector storage as one component within a larger cognitive system that adds lifecycle management, learning, and intelligence.
 
 ---
 
@@ -175,12 +71,8 @@ Using AI providers directly gives you model access. CMPSBL sits between your app
 
 | Feature | In-House | LangChain | Mem0 | CMPSBL® |
 |---------|----------|-----------|------|---------|
-| Memory | Build | Basic | ✓ | ✓✓ |
-| Multi-tier Memory | Build | ✗ | ✗ | ✓ |
-| Memory Compression | Build | ✗ | ✗ | ✓ |
+| Persistent Memory | Build | Basic | ✓ | ✓✓ |
 | Multi-Provider | Build | Manual | ✗ | ✓ |
-| Intelligent Routing | Build | ✗ | ✗ | ✓ |
-| Automatic Fallback | Build | ✗ | ✗ | ✓ |
 | Learning | ✗ | ✗ | ✗ | ✓ |
 | Self-Evolution | ✗ | ✗ | ✗ | ✓ |
 | Enterprise Security | Build | ✗ | ✗ | ✓ |
@@ -190,42 +82,15 @@ Using AI providers directly gives you model access. CMPSBL sits between your app
 
 ---
 
-## Total Cost of Ownership
+## Two Ways to Get Started
 
-### 3-Year Comparison (Enterprise Scale)
+| Option | Description | Best For |
+|--------|-------------|----------|
+| **Master Substrate** | Build on our managed platform — Free to Pro tiers | Ship fast, zero ops |
+| **Licensed Substrate** | Deploy on your infrastructure via [LNCHBL.com](https://lnchbl.com) | Full control, compliance |
 
-| Cost Factor | Build In-House | CMPSBL Enterprise |
-|-------------|----------------|-------------------|
-| **Year 1 Development** | $1,200,000 | $0 |
-| **Year 1 License** | $0 | $180,000 |
-| **Year 2-3 Maintenance** | $480,000 | Included |
-| **Year 2-3 License** | $0 | $360,000 |
-| **Opportunity Cost** | High | Low |
-| **3-Year Total** | **$1,680,000+** | **$540,000** |
-| **Time to Production** | 12-18 months | 1-4 weeks |
+[Get Started →](./06-GETTING-STARTED.md) | [Pricing →](/pricing) | [Licensing →](/substrate/licensing)
 
 ---
 
-## Making the Decision
-
-### Choose CMPSBL When:
-
-1. **Speed matters** — You need production AI fast
-2. **Memory is critical** — AI must remember across sessions
-3. **Learning is valued** — Systems should improve over time
-4. **Security is required** — Enterprise compliance needs
-5. **Flexibility is important** — No vendor lock-in
-
-### Start Your Evaluation
-
-| Tier | Best For |
-|------|----------|
-| **Developer ($15K)** | Startups, small teams |
-| **Research ($80K)** | Academic, R&D |
-| **Enterprise ($180K)** | Production, enterprise |
-
-[Get Started →](./06-GETTING-STARTED.md)
-
----
-
-*CMPSBL® — The Complete Cognitive Infrastructure*
+*CMPSBL® v10.5.0 — The Complete Cognitive Infrastructure*

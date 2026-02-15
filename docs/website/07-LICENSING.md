@@ -1,25 +1,35 @@
-# Licensing & Pricing
+# Licensing
 
-**CMPSBL® Cognitive Infrastructure Licensing — v9.3.0**
-
----
-
-## Philosophy
-
-> **"Build self-improving software — even on the free tier."**
-
-CMPSBL gives every developer real memory, real execution, and real composition. Advanced intelligence is unlocked by tiers — architecture stays protected.
+**CMPSBL® Infrastructure Licensing — v10.5.0**
 
 ---
 
-## Overview
+## What Is Licensing?
+
+Licensing is for teams that want to **deploy the CMPSBL substrate on their own infrastructure**. You get the substrate itself — the same cognitive engine that powers our master substrate — running in your environment, under your control.
+
+> **Looking to build on our managed infrastructure instead?** See [Pricing](/pricing) for Master Substrate plans.
+
+---
+
+## How to Get a License
+
+All substrate licenses are available through **[LNCHBL.com](https://lnchbl.com)**.
+
+1. Visit [LNCHBL.com](https://lnchbl.com)
+2. Choose your tier
+3. Download and deploy
+
+---
+
+## License Tiers
 
 | Tier | Cost | What You Get |
 |------|------|--------------|
-| **Free** | $0 | Full Artifact Store, Persistent Memory, Executor, Composition |
+| **Free** | $0 | Full Artifact Store, Persistent Memory, Executors, Composition |
 | **Builder** | $49/mo | Self-improving apps, sealed Experience artifacts |
 | **Pro** | $149/mo | Compound intelligence, CLM, cross-project learning |
-| **Enterprise** | Custom | Governed intelligence, source code, compliance |
+| **Enterprise** | Custom | Source code access, governed intelligence, compliance |
 
 ---
 
@@ -38,23 +48,21 @@ Build real systems with the full power of the CMPSBL substrate.
 | **Executors** | ✓ Create + execute |
 | **Composition** | ✓ Full artifact composition |
 | **Projects** | ✓ Public + private |
-| **Publishing** | ✓ Non-crown artifacts |
 
 ### Limitations
 
 - No CLM (Constant Learning Method)
 - No cross-project learning
-- No memory optimization
 - No Experience Crown Jewels
 - Community support only
 
-No signup required. [Explore now →](/capabilities)
+Download free at [LNCHBL.com →](https://lnchbl.com)
 
 ---
 
 ## Builder Tier
 
-**$49/month**
+**$49/month** — via [LNCHBL.com](https://lnchbl.com)
 
 Ship self-improving applications with sealed intelligence.
 
@@ -66,21 +74,15 @@ Ship self-improving applications with sealed intelligence.
 | **Experience Crown Jewels** | 7 sealed artifacts |
 | **In-Run Self-Improvement** | ✓ Bounded |
 | **Goal Optimization** | ✓ Bounded |
-| **Creative Synthesis** | ✓ Dream-assisted |
+| **Creative Synthesis** | ✓ |
 | **End-to-End Reasoning** | ✓ Sealed pipeline |
 | **Support** | Email + docs |
-
-**Scope:** Single-project, single-executor.
-
-Some artifacts expose power, not blueprints.
-
-[Upgrade to Builder →](/substrate/licensing)
 
 ---
 
 ## Pro Tier
 
-**$149/month**
+**$149/month** — via [LNCHBL.com](https://lnchbl.com)
 
 Compound intelligence across sessions, executors, and projects.
 
@@ -97,8 +99,6 @@ Compound intelligence across sessions, executors, and projects.
 | **Performance Tuning** | ✓ |
 | **Pattern Reuse** | ✓ Across projects |
 | **Support** | Priority email |
-
-[Upgrade to Pro →](/substrate/licensing)
 
 ---
 
@@ -127,6 +127,17 @@ Compound intelligence across sessions, executors, and projects.
 
 ---
 
+## Licensing vs. Pricing
+
+| | **Licensing** (This Page) | **Pricing** ([View →](/pricing)) |
+|---|---|---|
+| **What** | Deploy substrate on YOUR infrastructure | Build on OUR managed master substrate |
+| **Where** | Your servers, your cloud | CMPSBL.com hosted |
+| **Get it at** | [LNCHBL.com](https://lnchbl.com) | [CMPSBL.com/pricing](/pricing) |
+| **Best for** | Teams needing full control, compliance, sovereignty | Teams that want to ship fast with zero ops |
+
+---
+
 ## Black-Box Artifacts
 
 Experience Crown Jewels are released as **sealed artifacts** — you get the power, not the blueprint.
@@ -135,24 +146,6 @@ Experience Crown Jewels are released as **sealed artifacts** — you get the pow
 - ✗ No source visibility
 - ✗ No config exposure
 - ✗ No export or cloning
-- ✗ No prompt leakage
-
----
-
-## Comparison
-
-| Feature | Free | Builder | Pro | Enterprise |
-|---------|------|---------|-----|------------|
-| Artifact Store (800+) | ✓ | ✓ | ✓ | ✓ |
-| Persistent Memory | ✓ | ✓ | ✓ | ✓ |
-| Executors | ✓ | ✓ | ✓ | ✓ |
-| Composition | ✓ | ✓ | ✓ | ✓ |
-| Experience Jewels | — | 7 | 28 | Negotiated |
-| Self-Improvement | — | In-run | Cross-session | Governed |
-| CLM | — | — | ✓ | ✓ |
-| Memory Optimization | — | — | ✓ | ✓ |
-| Source Code | — | — | — | ✓ |
-| SLA | — | — | — | 99.9% |
 
 ---
 
@@ -161,8 +154,8 @@ Experience Crown Jewels are released as **sealed artifacts** — you get the pow
 | Item | Tier | Description |
 |------|------|-------------|
 | **AI Provider Keys** | All paid tiers | OpenAI, Anthropic, Google, etc. |
-| **Infrastructure** | Enterprise only | Your servers or cloud account |
-| **Database** | Enterprise only | PostgreSQL recommended |
+| **Infrastructure** | All tiers | Your servers or cloud account |
+| **Database** | All tiers | PostgreSQL recommended |
 
 ---
 
@@ -172,13 +165,13 @@ Experience Crown Jewels are released as **sealed artifacts** — you get the pow
 Yes. Artifact Store, Persistent Memory, Executors, and Composition are free forever. No credit card required.
 
 ### What are Experience Crown Jewels?
-Sealed artifacts that give you advanced capabilities (self-healing, goal optimization, creative synthesis) without exposing the underlying architecture. You experience the power — you don't see the blueprint.
+Sealed artifacts that give you advanced capabilities without exposing the underlying architecture. You experience the power — you don't see the blueprint.
 
 ### Can I start free and upgrade later?
 Absolutely. Build for free, then unlock sealed intelligence when you need it.
 
-### What happens when my subscription ends?
-Your projects continue working. You lose access to Experience Crown Jewels and advanced features until you resubscribe.
+### What's the difference between Licensing and Pricing?
+Licensing gives you the substrate to run on your infrastructure (via LNCHBL.com). Pricing is for building on our managed master substrate (on CMPSBL.com).
 
 ---
 
@@ -186,11 +179,11 @@ Your projects continue working. You lose access to Experience Crown Jewels and a
 
 | Action | Link |
 |--------|------|
-| **Explore Free** | [Artifact Store](/store) |
-| **Builder ($49/mo)** | [Checkout](/substrate/licensing) |
-| **Pro ($149/mo)** | [Checkout](/substrate/licensing) |
-| **Contact Sales** | PromptFluid@gmail.com |
+| **Download Free** | [LNCHBL.com](https://lnchbl.com) |
+| **Builder ($49/mo)** | [LNCHBL.com](https://lnchbl.com) |
+| **Pro ($149/mo)** | [LNCHBL.com](https://lnchbl.com) |
+| **Enterprise** | [Contact Sales](mailto:PromptFluid@gmail.com) |
 
 ---
 
-*CMPSBL® — Build self-improving software, even on the free tier.*
+*CMPSBL® — Deploy cognitive infrastructure on your terms.*

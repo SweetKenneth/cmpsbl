@@ -158,7 +158,7 @@ CodeLab is a **live, execution-first development environment** for building cogn
 |---------|-------------|
 | **Live Execution** | Real substrate execution, not simulations |
 | **Visual Builder** | Drag-and-drop workflow creation |
-| **Full SDK Access** | All 14 modules available |
+| **Full SDK Access** | All 21 modules available |
 | **Synergy Testing** | Test cross-module pipelines |
 
 ### Tiers
