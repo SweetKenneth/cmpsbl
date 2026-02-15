@@ -196,280 +196,204 @@ export const DREAM_COMMANDS: CommandDefinition[] = [
 ];
 
 export const SYSTEM_COMMANDS: CommandDefinition[] = [
-  { command: 'system.status', description: 'Global system status', category: 'system', icon: Cpu, requiresOperator: false },
-  { command: 'system.health', description: 'Full system health', category: 'system', icon: Activity, requiresOperator: false },
-  { command: 'system.doctor', description: 'Quick diagnostics (env, DB, routing, providers)', category: 'system', icon: CheckCircle, requiresOperator: false },
-  { command: 'system.verify', description: 'Non-destructive checks with pass/fail results', category: 'system', icon: CheckCircle, requiresOperator: false, args: '[--verbose]' },
-  { command: 'system.resilience', description: 'Resilience snapshot (circuits, health, heals)', category: 'system', icon: Shield, requiresOperator: false, args: '[role]', example: 'system.resilience operator' },
-  { command: 'system.version', description: 'Substrate version', category: 'system', icon: Cpu, requiresOperator: false },
-  { command: 'system.config', description: 'View configuration', category: 'system', icon: Settings, requiresOperator: false, args: '[key]' },
-  { command: 'system.audit', description: 'Query health incidents & audit log', category: 'system', icon: Eye, requiresOperator: false, args: '[since] [type]', example: 'system.audit 24h heal' },
-  { command: 'system.diagnostics', description: 'Full diagnostics', category: 'system', icon: Cpu, requiresOperator: false, args: '[--full]' },
+  { command: 'system.status', description: 'Global system status (all 21 modules)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.health', description: 'Full system health (all 21 modules)', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.doctor', description: 'Quick diagnostics (env, DB, routing, providers)', category: 'system', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.verify', description: 'Non-destructive checks with pass/fail results', category: 'system', icon: CheckCircle, requiresOperator: false, requiredTier: 'free', args: '[--verbose]' },
+  { command: 'system.resilience', description: 'Resilience snapshot (circuits, health, heals)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free', args: '[role]', example: 'system.resilience operator' },
+  { command: 'system.version', description: 'Substrate version', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.config', description: 'View configuration', category: 'system', icon: Settings, requiresOperator: false, requiredTier: 'free', args: '[key]' },
+  { command: 'system.audit', description: 'Query health incidents & audit log', category: 'system', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '[since] [type]', example: 'system.audit 24h heal' },
+  { command: 'system.diagnostics', description: 'Full diagnostics (all 21 modules)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free', args: '[--full]' },
   { command: 'system.heal', description: 'Self-healing trigger', category: 'system', icon: Shield, requiresOperator: true, requiredTier: 'architect', args: '[target] [force]' },
   { command: 'system.restart', description: 'Restart service', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'architect', args: '[service]' },
   { command: 'system.backup', description: 'Create backup snapshot', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'architect', args: '[include_data]' },
   { command: 'system.restore', description: 'Restore from backup', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'governor', args: '<backup_id> [validate_only]' },
-  { command: 'system.restore_portable', description: 'Restore from portable JSON backup (governor only)', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'governor', args: '<json> [--dry-run] [--mode=merge|replace]' },
-  { command: 'system.list_backups', description: 'List available backups', category: 'system', icon: Database, requiresOperator: false },
+  { command: 'system.restore_portable', description: 'Restore from portable JSON backup', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'governor', args: '<json> [--dry-run] [--mode=merge|replace]' },
+  { command: 'system.list_backups', description: 'List available backups', category: 'system', icon: Database, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.upgrade.propose', description: 'Propose upgrade (shadow)', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'architect', args: '[scope] [notes]' },
-  { command: 'system.upgrade.list', description: 'List upgrade plans', category: 'system', icon: Cpu, requiresOperator: false },
+  { command: 'system.upgrade.list', description: 'List upgrade plans', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.upgrade.apply', description: 'Apply upgrade plan', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'governor', args: '<plan_id>' },
   { command: 'system.upgrade.rollback', description: 'Rollback upgrade', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'governor', args: '<plan_id>' },
-  // v5.6.0: Module Registry + Inventory
-  { command: 'system.modules', description: 'List all registered modules', category: 'system', icon: Box, requiresOperator: false, args: '[--full|--health|--dag|--roles|--boot|--inventory]' },
-  { command: 'system.module', description: 'Get specific module details', category: 'system', icon: Box, requiresOperator: false, args: '<module_name>' },
-  { command: 'system.changelog', description: 'View living evolution log', category: 'system', icon: FileText, requiresOperator: false },
-  { command: 'system.evolution', description: 'View living evolution log (alias)', category: 'system', icon: FileText, requiresOperator: false },
-  // v7.0.0: Capability Auto-Adapt System
-  { command: 'system.scan_adapt', description: 'Scan edge functions for overlap and auto-adapt capabilities', category: 'system', icon: Search, requiresOperator: true, args: '[--dry-run|--confirm|--prune-unused|--verbose]', example: 'system.scan_adapt --dry-run' },
-  { command: 'system.capabilities', description: 'List all registered capabilities', category: 'system', icon: Box, requiresOperator: false, args: '[--active|--deprecated|--all]' },
-  { command: 'system.capability', description: 'Get capability details', category: 'system', icon: Box, requiresOperator: false, args: '<capability_id>' },
+  { command: 'system.modules', description: 'List all 21 registered modules', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '[--full|--health|--dag|--roles|--boot|--inventory]' },
+  { command: 'system.module', description: 'Get specific module details', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '<module_name>' },
+  { command: 'system.changelog', description: 'View living evolution log', category: 'system', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.evolution', description: 'View living evolution log (alias)', category: 'system', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.scan_adapt', description: 'Scan edge functions for auto-adapt', category: 'system', icon: Search, requiresOperator: true, requiredTier: 'architect', args: '[--dry-run|--confirm|--prune-unused|--verbose]', example: 'system.scan_adapt --dry-run' },
+  { command: 'system.capabilities', description: 'List all registered capabilities', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '[--active|--deprecated|--all]' },
+  { command: 'system.capability', description: 'Get capability details', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '<capability_id>' },
 ];
 
 export const MODERNIZER_COMMANDS: CommandDefinition[] = [
-  { command: 'modernizer.status', description: 'Modernizer service status', category: 'modernizer', icon: Sparkles, requiresOperator: false },
-  { command: 'modernizer.jobs', description: 'List evolution runs (active + completed)', category: 'modernizer', icon: Activity, requiresOperator: false, args: '[limit]' },
-  
-  // ═══ EVOLUTION CYCLE v0.7.7 (Primary Commands) ═══
+  { command: 'modernizer.status', description: 'Modernizer service status', category: 'modernizer', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'modernizer.jobs', description: 'List evolution runs (active + completed)', category: 'modernizer', icon: Activity, requiresOperator: false, requiredTier: 'free', args: '[limit]' },
   { command: 'modernizer.evolve', description: 'Unified Evolution Cycle (scan → plan → shadow → production → verify)', category: 'modernizer', icon: Sparkles, requiresOperator: true, requiredTier: 'architect', args: '[shadow|production|verify|abort|status] [--confirm]', example: 'modernizer.evolve shadow' },
-  
-  // ═══ COGNITIVE SCAN v0.7.7 ═══
   { command: 'modernizer.scan', description: 'Cognitive systems scan (4-phase: edge/system/health/LLM)', category: 'modernizer', icon: Search, requiresOperator: true, requiredTier: 'architect', args: '[--explain|--llm-report|--dry-run]', example: 'modernizer.scan --explain' },
-  
-  // ═══ CIRCUIT BREAKER v0.7.6 ═══
-  { command: 'modernizer.circuit', description: 'Evolution circuit breaker control', category: 'modernizer', icon: Shield, requiresOperator: false, args: '[status|reset|open <reason>]', example: 'modernizer.circuit status' },
-  
-  // ═══ AUTONOMY v0.7.6 ═══
-  { command: 'modernizer.autonomy', description: 'Governed autonomy settings', category: 'modernizer', icon: Settings, requiresOperator: true, args: '[status|set <mode>]', example: 'modernizer.autonomy set governed' },
-  
-  // ═══ RECEIPTS v0.7.5 ═══
-  { command: 'modernizer.receipts', description: 'List evolution receipts (audit trail)', category: 'modernizer', icon: Database, requiresOperator: false, args: '[limit]' },
-  { command: 'modernizer.receipt', description: 'View specific evolution receipt', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<run_id>' },
-  
-  // ═══ OMEGA OBSERVER ENGINE v1.0.0 ═══
-  { command: 'modernizer.verify', description: 'Eligibility gate (plan-independent)', category: 'modernizer', icon: Shield, requiresOperator: false, args: '[component]', example: 'modernizer.verify brain' },
-  { command: 'modernizer.analyze', description: 'Forward intent projection (what will change)', category: 'modernizer', icon: Search, requiresOperator: false, args: '[component]', example: 'modernizer.analyze memory' },
-  { command: 'modernizer.forensics', description: 'Historical truth (what has changed)', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<component> [--since 24h|7d|last_run]', example: 'modernizer.forensics brain --since 24h' },
-  { command: 'modernizer.omega', description: 'Ω Unified observer v2.0 (can/will/has)', category: 'modernizer', icon: Eye, requiresOperator: false, args: '[component] [--since 24h|7d|30d] [--compact]', example: 'modernizer.omega brain --since 7d' },
-  
-  // Plan management
-  { command: 'modernizer.plans', description: 'List active evolution plan', category: 'modernizer', icon: Activity, requiresOperator: false },
-  { command: 'modernizer.review', description: 'Review a specific plan', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
-  { command: 'modernizer.validate', description: 'Validate plan readiness', category: 'modernizer', icon: Shield, requiresOperator: false, args: '<plan_id>' },
-  { command: 'modernizer.diff', description: 'View plan diff and health comparison', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
+  { command: 'modernizer.circuit', description: 'Evolution circuit breaker control', category: 'modernizer', icon: Shield, requiresOperator: false, requiredTier: 'free', args: '[status|reset|open <reason>]', example: 'modernizer.circuit status' },
+  { command: 'modernizer.autonomy', description: 'Governed autonomy settings', category: 'modernizer', icon: Settings, requiresOperator: true, requiredTier: 'architect', args: '[status|set <mode>]', example: 'modernizer.autonomy set governed' },
+  { command: 'modernizer.receipts', description: 'List evolution receipts (audit trail)', category: 'modernizer', icon: Database, requiresOperator: false, requiredTier: 'free', args: '[limit]' },
+  { command: 'modernizer.receipt', description: 'View specific evolution receipt', category: 'modernizer', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<run_id>' },
+  { command: 'modernizer.verify', description: 'Eligibility gate (plan-independent)', category: 'modernizer', icon: Shield, requiresOperator: false, requiredTier: 'free', args: '[component]', example: 'modernizer.verify brain' },
+  { command: 'modernizer.analyze', description: 'Forward intent projection (what will change)', category: 'modernizer', icon: Search, requiresOperator: false, requiredTier: 'free', args: '[component]', example: 'modernizer.analyze memory' },
+  { command: 'modernizer.forensics', description: 'Historical truth (what has changed)', category: 'modernizer', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<component> [--since 24h|7d|last_run]', example: 'modernizer.forensics brain --since 24h' },
+  { command: 'modernizer.omega', description: 'Ω Unified observer v2.0 (can/will/has)', category: 'modernizer', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '[component] [--since 24h|7d|30d] [--compact]', example: 'modernizer.omega brain --since 7d' },
+  { command: 'modernizer.plans', description: 'List active evolution plan', category: 'modernizer', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'modernizer.review', description: 'Review a specific plan', category: 'modernizer', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<plan_id>' },
+  { command: 'modernizer.validate', description: 'Validate plan readiness', category: 'modernizer', icon: Shield, requiresOperator: false, requiredTier: 'free', args: '<plan_id>' },
+  { command: 'modernizer.diff', description: 'View plan diff and health comparison', category: 'modernizer', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<plan_id>' },
   { command: 'modernizer.rollback', description: 'Rollback an applied plan', category: 'modernizer', icon: Shield, requiresOperator: true, requiredTier: 'governor', args: '<plan_id>' },
   { command: 'modernizer.delete', description: 'Delete/reject a plan', category: 'modernizer', icon: Shield, requiresOperator: true, requiredTier: 'architect', args: '<plan_id>' },
-  { command: 'modernizer.applied', description: 'List all applied improvements', category: 'modernizer', icon: Activity, requiresOperator: false },
-  { command: 'modernizer.archived', description: 'Scan archived functions to repurpose', category: 'modernizer', icon: Database, requiresOperator: false },
+  { command: 'modernizer.applied', description: 'List all applied improvements', category: 'modernizer', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'modernizer.archived', description: 'Scan archived functions to repurpose', category: 'modernizer', icon: Database, requiresOperator: false, requiredTier: 'free' },
   { command: 'modernizer.implement', description: 'Generate code for archived function repurposing', category: 'modernizer', icon: Sparkles, requiresOperator: true, requiredTier: 'governor', args: '<archived_function> <target_action>' },
-  { command: 'modernizer.export', description: 'Export job assets', category: 'modernizer', icon: Database, requiresOperator: true, args: '<job_id>' },
-  { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false },
-  { command: 'modernizer.refresh', description: 'Resync metrics and clear stale hints', category: 'modernizer', icon: Activity, requiresOperator: true },
-  { command: 'modernizer.stamps', description: 'View evolution stamps for verification', category: 'modernizer', icon: FileCheck, requiresOperator: false, args: '[limit]', example: 'modernizer.stamps 5' },
+  { command: 'modernizer.export', description: 'Export job assets', category: 'modernizer', icon: Database, requiresOperator: true, requiredTier: 'creator', args: '<job_id>' },
+  { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'modernizer.refresh', description: 'Resync metrics and clear stale hints', category: 'modernizer', icon: Activity, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'modernizer.stamps', description: 'View evolution stamps for verification', category: 'modernizer', icon: FileCheck, requiresOperator: false, requiredTier: 'free', args: '[limit]', example: 'modernizer.stamps 5' },
 ];
 
 // CORE module — Kernel, scheduler, lifecycle
 export const CORE_COMMANDS: CommandDefinition[] = [
-  { command: 'core.status', description: 'Kernel status with uptime', category: 'core', icon: Server, requiresOperator: false },
-  { command: 'core.pulse', description: 'Lightweight heartbeat', category: 'core', icon: Activity, requiresOperator: false },
-  { command: 'core.boot', description: 'Initialize boot sequence', category: 'core', icon: PlayCircle, requiresOperator: true },
-  { command: 'core.schedule', description: 'Schedule a delayed job', category: 'core', icon: Clock, requiresOperator: true, args: '<module> <action> [delay]', example: 'core.schedule brain reflect 5m' },
-  { command: 'core.jobs', description: 'List scheduled jobs', category: 'core', icon: List, requiresOperator: false, args: '[status] [limit]' },
-  { command: 'core.process', description: 'Process next queued job', category: 'core', icon: PlayCircle, requiresOperator: true },
-  { command: 'core.config', description: 'Get/set system config', category: 'core', icon: Settings, requiresOperator: true, args: '[key] [value]' },
-  { command: 'core.shutdown', description: 'Graceful system shutdown', category: 'core', icon: Server, requiresOperator: true },
+  { command: 'core.status', description: 'Kernel status with uptime', category: 'core', icon: Server, requiresOperator: false, requiredTier: 'free' },
+  { command: 'core.pulse', description: 'Lightweight heartbeat', category: 'core', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'core.boot', description: 'Initialize boot sequence', category: 'core', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'core.schedule', description: 'Schedule a delayed job', category: 'core', icon: Clock, requiresOperator: true, requiredTier: 'creator', args: '<module> <action> [delay]', example: 'core.schedule brain reflect 5m' },
+  { command: 'core.jobs', description: 'List scheduled jobs', category: 'core', icon: List, requiresOperator: false, requiredTier: 'free', args: '[status] [limit]' },
+  { command: 'core.process', description: 'Process next queued job', category: 'core', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'core.config', description: 'Get/set system config', category: 'core', icon: Settings, requiresOperator: true, requiredTier: 'architect', args: '[key] [value]' },
+  { command: 'core.shutdown', description: 'Graceful system shutdown', category: 'core', icon: Server, requiresOperator: true, requiredTier: 'governor' },
 ];
 
 // RIPPLE module v2.0 — Hybrid Event Orchestrator
 export const RIPPLE_COMMANDS: CommandDefinition[] = [
-  // Status & health
-  { command: 'ripple.status', description: 'Bus status with job breakdown + 24h analytics', category: 'ripple', icon: Radio, requiresOperator: false },
-  { command: 'ripple.pulse', description: 'Lightweight heartbeat', category: 'ripple', icon: Activity, requiresOperator: false },
-  { command: 'ripple.metrics', description: 'Bus metrics for Vision integration', category: 'ripple', icon: Gauge, requiresOperator: false },
-  
-  // Topics & events
-  { command: 'ripple.topics', description: 'List all topics', category: 'ripple', icon: List, requiresOperator: false },
-  { command: 'ripple.events', description: 'Get event log with status', category: 'ripple', icon: Activity, requiresOperator: false, args: '[topic] [limit] [status]' },
-  { command: 'ripple.publish', description: 'Publish event + fan-out to subscribers', category: 'ripple', icon: Send, requiresOperator: true, args: '<topic> <event_type> [payload]', example: 'ripple.publish system.alerts health_check "{}"' },
-  { command: 'ripple.subscribe', description: 'Subscribe module/action to topic', category: 'ripple', icon: Radio, requiresOperator: true, args: '<topic> <module> <action> [max_attempts]' },
-  { command: 'ripple.replay', description: 'Re-process events on topic', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '<topic> [limit]', example: 'ripple.replay system.alerts 10' },
-  
-  // Jobs & queues
-  { command: 'ripple.jobs', description: 'List jobs with filtering', category: 'ripple', icon: List, requiresOperator: false, args: '[queue] [status] [limit]' },
-  { command: 'ripple.enqueue', description: 'Add job to queue', category: 'ripple', icon: List, requiresOperator: true, args: '<queue> <payload> [priority] [delay]' },
-  { command: 'ripple.dequeue', description: 'Get next pending job', category: 'ripple', icon: List, requiresOperator: true, args: '[queue]' },
-  { command: 'ripple.work', description: 'Process job(s) from queue', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '[queue] [--once]', example: 'ripple.work events --once' },
-  { command: 'ripple.drain', description: 'Process all pending jobs in queue', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '[queue]' },
-  
-  // Delivery semantics
-  { command: 'ripple.ack', description: 'Acknowledge job as succeeded', category: 'ripple', icon: Shield, requiresOperator: true, args: '<job_id>' },
-  { command: 'ripple.nack', description: 'Reject job (increment attempts)', category: 'ripple', icon: Shield, requiresOperator: true, args: '<job_id> [reason]' },
-  { command: 'ripple.dead_letter', description: 'View dead-letter jobs', category: 'ripple', icon: Shield, requiresOperator: false, args: '[queue] [limit]' },
-  { command: 'ripple.retry', description: 'Retry dead-letter job', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '<job_id>' },
-  
-  // Circuit breakers
-  { command: 'ripple.circuits', description: 'View subscriber circuit breakers', category: 'ripple', icon: Activity, requiresOperator: false },
+  { command: 'ripple.status', description: 'Bus status with job breakdown + 24h analytics', category: 'ripple', icon: Radio, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.pulse', description: 'Lightweight heartbeat', category: 'ripple', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.metrics', description: 'Bus metrics for Vision integration', category: 'ripple', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.topics', description: 'List all topics', category: 'ripple', icon: List, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.events', description: 'Get event log with status', category: 'ripple', icon: Activity, requiresOperator: false, requiredTier: 'free', args: '[topic] [limit] [status]' },
+  { command: 'ripple.publish', description: 'Publish event + fan-out to subscribers', category: 'ripple', icon: Send, requiresOperator: true, requiredTier: 'creator', args: '<topic> <event_type> [payload]', example: 'ripple.publish system.alerts health_check "{}"' },
+  { command: 'ripple.subscribe', description: 'Subscribe module/action to topic', category: 'ripple', icon: Radio, requiresOperator: true, requiredTier: 'creator', args: '<topic> <module> <action> [max_attempts]' },
+  { command: 'ripple.replay', description: 'Re-process events on topic', category: 'ripple', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<topic> [limit]', example: 'ripple.replay system.alerts 10' },
+  { command: 'ripple.jobs', description: 'List jobs with filtering', category: 'ripple', icon: List, requiresOperator: false, requiredTier: 'free', args: '[queue] [status] [limit]' },
+  { command: 'ripple.enqueue', description: 'Add job to queue', category: 'ripple', icon: List, requiresOperator: true, requiredTier: 'creator', args: '<queue> <payload> [priority] [delay]' },
+  { command: 'ripple.dequeue', description: 'Get next pending job', category: 'ripple', icon: List, requiresOperator: true, requiredTier: 'creator', args: '[queue]' },
+  { command: 'ripple.work', description: 'Process job(s) from queue', category: 'ripple', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '[queue] [--once]', example: 'ripple.work events --once' },
+  { command: 'ripple.drain', description: 'Process all pending jobs in queue', category: 'ripple', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect', args: '[queue]' },
+  { command: 'ripple.ack', description: 'Acknowledge job as succeeded', category: 'ripple', icon: Shield, requiresOperator: true, requiredTier: 'creator', args: '<job_id>' },
+  { command: 'ripple.nack', description: 'Reject job (increment attempts)', category: 'ripple', icon: Shield, requiresOperator: true, requiredTier: 'creator', args: '<job_id> [reason]' },
+  { command: 'ripple.dead_letter', description: 'View dead-letter jobs', category: 'ripple', icon: Shield, requiresOperator: false, requiredTier: 'free', args: '[queue] [limit]' },
+  { command: 'ripple.retry', description: 'Retry dead-letter job', category: 'ripple', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<job_id>' },
+  { command: 'ripple.circuits', description: 'View subscriber circuit breakers', category: 'ripple', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 ];
 
 // ACCESS module v2.1 — API keys, subscriptions, entitlements, identity, bootstrap
 export const ACCESS_COMMANDS: CommandDefinition[] = [
-  // Status & pulse
-  { command: 'access.status', description: 'Module status (v2.1)', category: 'access', icon: Key, requiresOperator: false },
-  { command: 'access.pulse', description: 'Lightweight heartbeat', category: 'access', icon: Activity, requiresOperator: false },
-  
-  // Identity & Bootstrap (NEW)
-  { command: 'access.bootstrap', description: 'Bootstrap developer identity + roles', category: 'access', icon: Users, requiresOperator: false, args: '[display_name]', example: 'access.bootstrap Kenneth' },
-  { command: 'access.identity', description: 'Get current session identity + roles', category: 'access', icon: Users, requiresOperator: false },
-  
-  // Developer CRUD
-  { command: 'access.register', description: 'Register as developer (requires auth)', category: 'access', icon: Users, requiresOperator: true, args: '[display_name]', example: 'access.register "My App"' },
-  { command: 'access.developer', description: 'Get developer profile', category: 'access', icon: Users, requiresOperator: false, args: '[developer_id]' },
-  { command: 'access.developers', description: 'List all developers (admin)', category: 'access', icon: Users, requiresOperator: true },
-  
-  // API Key lifecycle
-  { command: 'access.create_key', description: 'Create API key', category: 'access', icon: Key, requiresOperator: true, args: '[name] [scopes...]', example: 'access.create_key "My Key" substrate.read substrate.write' },
-  { command: 'access.validate_key', description: 'Validate API key', category: 'access', icon: Shield, requiresOperator: true, args: '<api_key>' },
-  { command: 'access.revoke_key', description: 'Revoke API key', category: 'access', icon: Lock, requiresOperator: true, args: '<key_id>' },
-  { command: 'access.list_keys', description: 'List your API keys', category: 'access', icon: List, requiresOperator: false },
-  
-  // Usage & Quota
-  { command: 'access.usage', description: 'Get usage statistics', category: 'access', icon: Gauge, requiresOperator: false, args: '[product_code] [days]', example: 'access.usage scan 30' },
-  { command: 'access.quota', description: 'Check quota remaining', category: 'access', icon: Gauge, requiresOperator: false, args: '[api_key_id]' },
-  
-  // Subscriptions & Entitlements
-  { command: 'access.subscription', description: 'Get subscription info', category: 'access', icon: Key, requiresOperator: false },
-  { command: 'access.entitlements', description: 'List your entitlements', category: 'access', icon: Shield, requiresOperator: false },
-  
-  // Product catalog
-  { command: 'access.products', description: 'List available products/entitlements', category: 'access', icon: Box, requiresOperator: false, args: '[category]', example: 'access.products cmptbl' },
+  { command: 'access.status', description: 'Module status (v2.1)', category: 'access', icon: Key, requiresOperator: false, requiredTier: 'free' },
+  { command: 'access.pulse', description: 'Lightweight heartbeat', category: 'access', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'access.bootstrap', description: 'Bootstrap developer identity + roles', category: 'access', icon: Users, requiresOperator: false, requiredTier: 'free', args: '[display_name]', example: 'access.bootstrap Kenneth' },
+  { command: 'access.identity', description: 'Get current session identity + roles', category: 'access', icon: Users, requiresOperator: false, requiredTier: 'free' },
+  { command: 'access.register', description: 'Register as developer (requires auth)', category: 'access', icon: Users, requiresOperator: true, requiredTier: 'creator', args: '[display_name]', example: 'access.register "My App"' },
+  { command: 'access.developer', description: 'Get developer profile', category: 'access', icon: Users, requiresOperator: false, requiredTier: 'free', args: '[developer_id]' },
+  { command: 'access.developers', description: 'List all developers (admin)', category: 'access', icon: Users, requiresOperator: true, requiredTier: 'governor' },
+  { command: 'access.create_key', description: 'Create API key', category: 'access', icon: Key, requiresOperator: true, requiredTier: 'creator', args: '[name] [scopes...]', example: 'access.create_key "My Key" substrate.read substrate.write' },
+  { command: 'access.validate_key', description: 'Validate API key', category: 'access', icon: Shield, requiresOperator: true, requiredTier: 'creator', args: '<api_key>' },
+  { command: 'access.revoke_key', description: 'Revoke API key', category: 'access', icon: Lock, requiresOperator: true, requiredTier: 'architect', args: '<key_id>' },
+  { command: 'access.list_keys', description: 'List your API keys', category: 'access', icon: List, requiresOperator: false, requiredTier: 'free' },
+  { command: 'access.usage', description: 'Get usage statistics', category: 'access', icon: Gauge, requiresOperator: false, requiredTier: 'free', args: '[product_code] [days]', example: 'access.usage scan 30' },
+  { command: 'access.quota', description: 'Check quota remaining', category: 'access', icon: Gauge, requiresOperator: false, requiredTier: 'free', args: '[api_key_id]' },
+  { command: 'access.subscription', description: 'Get subscription info', category: 'access', icon: Key, requiresOperator: false, requiredTier: 'free' },
+  { command: 'access.entitlements', description: 'List your entitlements', category: 'access', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'access.products', description: 'List available products/entitlements', category: 'access', icon: Box, requiresOperator: false, requiredTier: 'free', args: '[category]', example: 'access.products cmptbl' },
 ];
 
 // INTEGRATION module v2.0 — Adapters, Connections, Discovery, Governance
 export const INTEGRATION_COMMANDS: CommandDefinition[] = [
-  // Status & pulse
-  { command: 'integration.status', description: 'Integration module status (v2.0)', category: 'integration', icon: Plug, requiresOperator: false },
-  { command: 'integration.pulse', description: 'Lightweight heartbeat', category: 'integration', icon: Activity, requiresOperator: false },
-  
-  // Adapters & connections
-  { command: 'integration.adapters', description: 'List available adapters by category', category: 'integration', icon: Box, requiresOperator: false, args: '[category]', example: 'integration.adapters enterprise' },
-  { command: 'integration.connect', description: 'Connect adapter with mode', category: 'integration', icon: Plug, requiresOperator: true, args: '<mode> <adapter_id>', example: 'integration.connect mock PostgreSQL' },
-  { command: 'integration.disconnect', description: 'Disconnect connection by ID', category: 'integration', icon: Plug, requiresOperator: true, args: '<connection_id>' },
-  { command: 'integration.connections', description: 'List active connections', category: 'integration', icon: Globe, requiresOperator: false },
-  { command: 'integration.test', description: 'Test adapter connectivity', category: 'integration', icon: Activity, requiresOperator: true, args: '<adapter_id>', example: 'integration.test PostgreSQL' },
-  
-  // Discovery
-  { command: 'integration.discover', description: 'Discover system (shallow by default)', category: 'integration', icon: Search, requiresOperator: true, args: '<adapter_id> [depth]', example: 'integration.discover PostgreSQL' },
-  { command: 'integration.discovered', description: 'List discoveries', category: 'integration', icon: List, requiresOperator: false, args: '[adapter_id]' },
-  
-  // Command mapping & execution
-  { command: 'integration.map_command', description: 'Map terminal command to adapter', category: 'integration', icon: GitBranch, requiresOperator: true, args: '<adapter_id> <command> "<description>"', example: 'integration.map_command PostgreSQL payroll "Run payroll"' },
-  { command: 'integration.mapped_commands', description: 'List mapped commands', category: 'integration', icon: Terminal, requiresOperator: false, args: '[adapter_id]' },
-  { command: 'integration.execute', description: 'Execute governed command', category: 'integration', icon: PlayCircle, requiresOperator: true, args: '<adapter_id> <command> [params_json]', example: 'integration.execute PostgreSQL payroll' },
-  
-  // Governance & audit
-  { command: 'integration.policies', description: 'Get governance policies', category: 'integration', icon: Shield, requiresOperator: false },
-  { command: 'integration.set_policy', description: 'Set governance policy', category: 'integration', icon: Lock, requiresOperator: true, args: '[adapter_id] <policy>' },
-  { command: 'integration.governance', description: 'Governance status', category: 'integration', icon: Shield, requiresOperator: false },
-  { command: 'integration.audit_log', description: 'View governance audit log', category: 'integration', icon: Eye, requiresOperator: false, args: '[adapter_id] [limit]' },
-  
-  // Enterprise verticals
-  { command: 'integration.game_discover', description: 'Discover game engine APIs', category: 'integration', icon: Workflow, requiresOperator: true, args: '<engine_type>', example: 'integration.game_discover unity' },
-  { command: 'integration.enterprise_discover', description: 'Discover enterprise APIs', category: 'integration', icon: Users, requiresOperator: true, args: '<system_type>', example: 'integration.enterprise_discover salesforce' },
-  { command: 'integration.dev_discover', description: 'Discover dev platform APIs', category: 'integration', icon: GitBranch, requiresOperator: true, args: '<platform_type>', example: 'integration.dev_discover github' },
-  { command: 'integration.payroll', description: 'Execute payroll operation', category: 'integration', icon: CreditCard, requiresOperator: true, args: '<adapter_id> <operation> [params]' },
-  { command: 'integration.customer_service', description: 'Execute customer service op', category: 'integration', icon: Users, requiresOperator: true, args: '<adapter_id> <operation> [params]' },
+  { command: 'integration.status', description: 'Integration module status (v2.0)', category: 'integration', icon: Plug, requiresOperator: false, requiredTier: 'free' },
+  { command: 'integration.pulse', description: 'Lightweight heartbeat', category: 'integration', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'integration.adapters', description: 'List available adapters by category', category: 'integration', icon: Box, requiresOperator: false, requiredTier: 'free', args: '[category]', example: 'integration.adapters enterprise' },
+  { command: 'integration.connect', description: 'Connect adapter with mode', category: 'integration', icon: Plug, requiresOperator: true, requiredTier: 'creator', args: '<mode> <adapter_id>', example: 'integration.connect mock PostgreSQL' },
+  { command: 'integration.disconnect', description: 'Disconnect connection by ID', category: 'integration', icon: Plug, requiresOperator: true, requiredTier: 'creator', args: '<connection_id>' },
+  { command: 'integration.connections', description: 'List active connections', category: 'integration', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'integration.test', description: 'Test adapter connectivity', category: 'integration', icon: Activity, requiresOperator: true, requiredTier: 'creator', args: '<adapter_id>', example: 'integration.test PostgreSQL' },
+  { command: 'integration.discover', description: 'Discover system (shallow by default)', category: 'integration', icon: Search, requiresOperator: true, requiredTier: 'creator', args: '<adapter_id> [depth]', example: 'integration.discover PostgreSQL' },
+  { command: 'integration.discovered', description: 'List discoveries', category: 'integration', icon: List, requiresOperator: false, requiredTier: 'free', args: '[adapter_id]' },
+  { command: 'integration.map_command', description: 'Map terminal command to adapter', category: 'integration', icon: GitBranch, requiresOperator: true, requiredTier: 'architect', args: '<adapter_id> <command> "<description>"', example: 'integration.map_command PostgreSQL payroll "Run payroll"' },
+  { command: 'integration.mapped_commands', description: 'List mapped commands', category: 'integration', icon: Terminal, requiresOperator: false, requiredTier: 'free', args: '[adapter_id]' },
+  { command: 'integration.execute', description: 'Execute governed command', category: 'integration', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<adapter_id> <command> [params_json]', example: 'integration.execute PostgreSQL payroll' },
+  { command: 'integration.policies', description: 'Get governance policies', category: 'integration', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'integration.set_policy', description: 'Set governance policy', category: 'integration', icon: Lock, requiresOperator: true, requiredTier: 'architect', args: '[adapter_id] <policy>' },
+  { command: 'integration.governance', description: 'Governance status', category: 'integration', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'integration.audit_log', description: 'View governance audit log', category: 'integration', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '[adapter_id] [limit]' },
+  { command: 'integration.game_discover', description: 'Discover game engine APIs', category: 'integration', icon: Workflow, requiresOperator: true, requiredTier: 'architect', args: '<engine_type>', example: 'integration.game_discover unity' },
+  { command: 'integration.enterprise_discover', description: 'Discover enterprise APIs', category: 'integration', icon: Users, requiresOperator: true, requiredTier: 'architect', args: '<system_type>', example: 'integration.enterprise_discover salesforce' },
+  { command: 'integration.dev_discover', description: 'Discover dev platform APIs', category: 'integration', icon: GitBranch, requiresOperator: true, requiredTier: 'architect', args: '<platform_type>', example: 'integration.dev_discover github' },
+  { command: 'integration.payroll', description: 'Execute payroll operation', category: 'integration', icon: CreditCard, requiresOperator: true, requiredTier: 'architect', args: '<adapter_id> <operation> [params]' },
+  { command: 'integration.customer_service', description: 'Execute customer service op', category: 'integration', icon: Users, requiresOperator: true, requiredTier: 'architect', args: '<adapter_id> <operation> [params]' },
 ];
 
 // CORTEX module v2.0 — Agency-class orchestrator with lifecycle, panic, dispatch, evolution
 export const CORTEX_COMMANDS: CommandDefinition[] = [
-  // Status & health
-  { command: 'cortex.status', description: 'Full status + capabilities + circuits', category: 'cortex', icon: Wand2, requiresOperator: false },
-  { command: 'cortex.health', description: 'Health + connected modules + circuits', category: 'cortex', icon: Activity, requiresOperator: false },
-  { command: 'cortex.pulse', description: 'Lightweight heartbeat', category: 'cortex', icon: Activity, requiresOperator: false },
-  { command: 'cortex.diagnostics', description: 'Deep self-analysis', category: 'cortex', icon: Search, requiresOperator: false },
-  
-  // Mode control
-  { command: 'cortex.mode', description: 'Get/set mode (manual|shadow|auto)', category: 'cortex', icon: Settings, requiresOperator: false, args: '[manual|shadow|auto]', example: 'cortex.mode shadow' },
-  { command: 'cortex.restart', description: 'Soft reload cortex state', category: 'cortex', icon: PlayCircle, requiresOperator: true },
-  
-  // Panic controls
-  { command: 'cortex.panic', description: 'Panic mode controls', category: 'cortex', icon: Shield, requiresOperator: true, args: '<freeze|resume|status> [reason]', example: 'cortex.panic freeze "Emergency"' },
-  
-  // Dispatch & observe
-  { command: 'cortex.dispatch', description: 'Execute module.action with governance', category: 'cortex', icon: Send, requiresOperator: true, args: '<module.action> [args]', example: 'cortex.dispatch brain.reflect' },
-  { command: 'cortex.observe', description: 'Subscribe to module events', category: 'cortex', icon: Eye, requiresOperator: false, args: '[module] [event_types]' },
-  
-  // PAAEL Loop
-  { command: 'cortex.propose', description: 'Generate improvement proposal', category: 'cortex', icon: Wand2, requiresOperator: true, args: '<goal> [context]', example: 'cortex.propose "Optimize memory tiering"' },
-  { command: 'cortex.evaluate', description: 'Score and assess proposal', category: 'cortex', icon: Search, requiresOperator: true, args: '[proposal_id] [criteria]' },
-  { command: 'cortex.apply', description: 'Execute approved changes', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<proposal_id> [target_module]' },
-  { command: 'cortex.rollback', description: 'Rollback applied changes', category: 'cortex', icon: Shield, requiresOperator: true, args: '<apply_id> [reason]' },
-  { command: 'cortex.audit', description: 'Query decisions and deltas', category: 'cortex', icon: Eye, requiresOperator: false, args: '[since] [type]', example: 'cortex.audit 24h proposal' },
-  { command: 'cortex.learn', description: 'Ingest outcome for reinforcement', category: 'cortex', icon: Brain, requiresOperator: true, args: '<outcome> [proposal_id] [feedback]', example: 'cortex.learn success prop_abc123' },
-  { command: 'cortex.summary', description: 'Human-readable context dump', category: 'cortex', icon: Terminal, requiresOperator: false },
-  
-  // Evolution sequencing
-  { command: 'cortex.plan', description: 'Rank evolution sequences by priority', category: 'cortex', icon: Workflow, requiresOperator: false, args: '[sequence_id]' },
-  { command: 'cortex.run', description: 'Execute sequence in shadow mode', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<sequence_id> [mode]', example: 'cortex.run abc123 shadow' },
-  
-  // v5.6.0: World Model + Introspection
-  { command: 'cortex.world', description: 'Full module registry snapshot', category: 'cortex', icon: Globe, requiresOperator: false, args: '[--dag|--roles|--eligible]' },
-  { command: 'cortex.inventory', description: 'Module inventory with eligibility', category: 'cortex', icon: Box, requiresOperator: false },
-  
-  // v7.0.0: Cross-Module Synergy Engine (120 Pipelines, 98 Executors)
-  { command: 'cortex.synergy.status', description: 'Synergy engine overview (pipelines, executors, health)', category: 'cortex', icon: Workflow, requiresOperator: false },
-  { command: 'cortex.synergy.list', description: 'List all 120 synergy pipelines', category: 'cortex', icon: List, requiresOperator: false, args: '[--category <cat>|--module <mod>]', example: 'cortex.synergy.list --category intelligence' },
-  { command: 'cortex.synergy.get', description: 'Get synergy pipeline details', category: 'cortex', icon: Eye, requiresOperator: false, args: '<synergy_id>', example: 'cortex.synergy.get smart-recall' },
-  { command: 'cortex.synergy.execute', description: 'Execute a synergy pipeline', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<synergy_id> [input_json]', example: 'cortex.synergy.execute adaptive-routing' },
-  { command: 'cortex.synergy.dry_run', description: 'Dry-run a synergy (no side effects)', category: 'cortex', icon: Eye, requiresOperator: false, args: '<synergy_id> [input_json]', example: 'cortex.synergy.dry_run cognitive-fusion' },
-  { command: 'cortex.synergy.recommend', description: 'Get recommended synergies for context', category: 'cortex', icon: Sparkles, requiresOperator: false, args: '[context_json]' },
-  { command: 'cortex.synergy.pipeline', description: 'Execute chained synergy pipeline', category: 'cortex', icon: Workflow, requiresOperator: true, args: '<synergy1,synergy2,...> [input_json]', example: 'cortex.synergy.pipeline smart-recall,cognitive-fusion' },
-  { command: 'cortex.synergy.categories', description: 'List synergy categories with counts', category: 'cortex', icon: Box, requiresOperator: false },
-  { command: 'cortex.synergy.modules', description: 'List synergies by module involvement', category: 'cortex', icon: Database, requiresOperator: false, args: '[module]', example: 'cortex.synergy.modules brain' },
+  { command: 'cortex.status', description: 'Full status + capabilities + circuits', category: 'cortex', icon: Wand2, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.health', description: 'Health + connected modules + circuits', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.pulse', description: 'Lightweight heartbeat', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.diagnostics', description: 'Deep self-analysis', category: 'cortex', icon: Search, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.mode', description: 'Get/set mode (manual|shadow|auto)', category: 'cortex', icon: Settings, requiresOperator: false, requiredTier: 'free', args: '[manual|shadow|auto]', example: 'cortex.mode shadow' },
+  { command: 'cortex.restart', description: 'Soft reload cortex state', category: 'cortex', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'cortex.panic', description: 'Panic mode controls', category: 'cortex', icon: Shield, requiresOperator: true, requiredTier: 'governor', args: '<freeze|resume|status> [reason]', example: 'cortex.panic freeze "Emergency"' },
+  { command: 'cortex.dispatch', description: 'Execute module.action with governance', category: 'cortex', icon: Send, requiresOperator: true, requiredTier: 'creator', args: '<module.action> [args]', example: 'cortex.dispatch brain.reflect' },
+  { command: 'cortex.observe', description: 'Subscribe to module events', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '[module] [event_types]' },
+  { command: 'cortex.propose', description: 'Generate improvement proposal', category: 'cortex', icon: Wand2, requiresOperator: true, requiredTier: 'creator', args: '<goal> [context]', example: 'cortex.propose "Optimize memory tiering"' },
+  { command: 'cortex.evaluate', description: 'Score and assess proposal', category: 'cortex', icon: Search, requiresOperator: true, requiredTier: 'creator', args: '[proposal_id] [criteria]' },
+  { command: 'cortex.apply', description: 'Execute approved changes', category: 'cortex', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect', args: '<proposal_id> [target_module]' },
+  { command: 'cortex.rollback', description: 'Rollback applied changes', category: 'cortex', icon: Shield, requiresOperator: true, requiredTier: 'governor', args: '<apply_id> [reason]' },
+  { command: 'cortex.audit', description: 'Query decisions and deltas', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '[since] [type]', example: 'cortex.audit 24h proposal' },
+  { command: 'cortex.learn', description: 'Ingest outcome for reinforcement', category: 'cortex', icon: Brain, requiresOperator: true, requiredTier: 'creator', args: '<outcome> [proposal_id] [feedback]', example: 'cortex.learn success prop_abc123' },
+  { command: 'cortex.summary', description: 'Human-readable context dump', category: 'cortex', icon: Terminal, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.plan', description: 'Rank evolution sequences by priority', category: 'cortex', icon: Workflow, requiresOperator: false, requiredTier: 'free', args: '[sequence_id]' },
+  { command: 'cortex.run', description: 'Execute sequence in shadow mode', category: 'cortex', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect', args: '<sequence_id> [mode]', example: 'cortex.run abc123 shadow' },
+  { command: 'cortex.world', description: 'Full module registry snapshot', category: 'cortex', icon: Globe, requiresOperator: false, requiredTier: 'free', args: '[--dag|--roles|--eligible]' },
+  { command: 'cortex.inventory', description: 'Module inventory with eligibility', category: 'cortex', icon: Box, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.synergy.status', description: 'Synergy engine overview (pipelines, executors, health)', category: 'cortex', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.synergy.list', description: 'List all 200 synergy pipelines', category: 'cortex', icon: List, requiresOperator: false, requiredTier: 'free', args: '[--category <cat>|--module <mod>]', example: 'cortex.synergy.list --category intelligence' },
+  { command: 'cortex.synergy.get', description: 'Get synergy pipeline details', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<synergy_id>', example: 'cortex.synergy.get smart-recall' },
+  { command: 'cortex.synergy.execute', description: 'Execute a synergy pipeline', category: 'cortex', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<synergy_id> [input_json]', example: 'cortex.synergy.execute adaptive-routing' },
+  { command: 'cortex.synergy.dry_run', description: 'Dry-run a synergy (no side effects)', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<synergy_id> [input_json]', example: 'cortex.synergy.dry_run cognitive-fusion' },
+  { command: 'cortex.synergy.recommend', description: 'Get recommended synergies for context', category: 'cortex', icon: Sparkles, requiresOperator: false, requiredTier: 'free', args: '[context_json]' },
+  { command: 'cortex.synergy.pipeline', description: 'Execute chained synergy pipeline', category: 'cortex', icon: Workflow, requiresOperator: true, requiredTier: 'architect', args: '<synergy1,synergy2,...> [input_json]', example: 'cortex.synergy.pipeline smart-recall,cognitive-fusion' },
+  { command: 'cortex.synergy.categories', description: 'List synergy categories with counts', category: 'cortex', icon: Box, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.synergy.modules', description: 'List synergies by module involvement', category: 'cortex', icon: Database, requiresOperator: false, requiredTier: 'free', args: '[module]', example: 'cortex.synergy.modules brain' },
 ];
 
 // INCLUSIVE module v1.0 — Human Compatibility Pipeline (WCAG Scanning, Repair, Validation)
 import { Accessibility } from 'lucide-react';
 
 export const INCLUSIVE_COMMANDS: CommandDefinition[] = [
-  // Status & health
-  { command: 'inclusive.status', description: 'Module status with global score', category: 'inclusive', icon: Accessibility, requiresOperator: false },
-  { command: 'inclusive.health', description: 'Health check', category: 'inclusive', icon: Activity, requiresOperator: false },
-  { command: 'inclusive.pulse', description: 'Lightweight heartbeat', category: 'inclusive', icon: Activity, requiresOperator: false },
-  
-  // Core pipeline
-  { command: 'inclusive.scan', description: 'Scan URL/HTML for WCAG issues', category: 'inclusive', icon: Eye, requiresOperator: true, args: '<target> [--wcag A|AA|AAA] [--depth quick|standard|deep]', example: 'inclusive.scan https://example.com' },
-  { command: 'inclusive.self_scan', description: 'Scan the substrate UI itself', category: 'inclusive', icon: Eye, requiresOperator: true },
-  { command: 'inclusive.repair', description: 'Auto-fix accessibility issues', category: 'inclusive', icon: Wand2, requiresOperator: true, args: '<target> [issues...]', example: 'inclusive.repair https://example.com' },
-  { command: 'inclusive.validate', description: 'Validate repairs, check for regressions', category: 'inclusive', icon: Shield, requiresOperator: true, args: '<target>' },
-  { command: 'inclusive.profile', description: 'Build user adaptive profile', category: 'inclusive', icon: Users, requiresOperator: true, args: '<context>' },
-  { command: 'inclusive.report', description: 'Generate compliance report', category: 'inclusive', icon: Database, requiresOperator: false, args: '<target> [json|markdown]' },
-  
-  // Extended operations
-  { command: 'inclusive.scan_all_templates', description: 'Scan all marketplace templates', category: 'inclusive', icon: Search, requiresOperator: true },
-  { command: 'inclusive.regressions', description: 'Get regressions in last N hours', category: 'inclusive', icon: Activity, requiresOperator: false, args: '[hours]', example: 'inclusive.regressions 24' },
-  { command: 'inclusive.coverage', description: 'Template coverage stats', category: 'inclusive', icon: Gauge, requiresOperator: false },
+  { command: 'inclusive.status', description: 'Module status with global score', category: 'inclusive', icon: Accessibility, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.health', description: 'Health check', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.pulse', description: 'Lightweight heartbeat', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.scan', description: 'Scan URL/HTML for WCAG issues', category: 'inclusive', icon: Eye, requiresOperator: true, requiredTier: 'creator', args: '<target> [--wcag A|AA|AAA] [--depth quick|standard|deep]', example: 'inclusive.scan https://example.com' },
+  { command: 'inclusive.self_scan', description: 'Scan the substrate UI itself', category: 'inclusive', icon: Eye, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'inclusive.repair', description: 'Auto-fix accessibility issues', category: 'inclusive', icon: Wand2, requiresOperator: true, requiredTier: 'architect', args: '<target> [issues...]', example: 'inclusive.repair https://example.com' },
+  { command: 'inclusive.validate', description: 'Validate repairs, check for regressions', category: 'inclusive', icon: Shield, requiresOperator: true, requiredTier: 'creator', args: '<target>' },
+  { command: 'inclusive.profile', description: 'Build user adaptive profile', category: 'inclusive', icon: Users, requiresOperator: true, requiredTier: 'creator', args: '<context>' },
+  { command: 'inclusive.report', description: 'Generate compliance report', category: 'inclusive', icon: Database, requiresOperator: false, requiredTier: 'free', args: '<target> [json|markdown]' },
+  { command: 'inclusive.scan_all_templates', description: 'Scan all marketplace templates', category: 'inclusive', icon: Search, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'inclusive.regressions', description: 'Get regressions in last N hours', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free', args: '[hours]', example: 'inclusive.regressions 24' },
+  { command: 'inclusive.coverage', description: 'Template coverage stats', category: 'inclusive', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
 ];
 
 // CLM (Constant Learning Mode) commands — v6.7.0
 export const CLM_COMMANDS: CommandDefinition[] = [
-  // Status & control
-  { command: 'clm.status', description: 'CLM status (budget, topics, queue)', category: 'clm', icon: Brain, requiresOperator: false },
-  { command: 'clm.enable', description: 'Enable Constant Learning Mode', category: 'clm', icon: Brain, requiresOperator: true },
-  { command: 'clm.disable', description: 'Disable Constant Learning Mode', category: 'clm', icon: Brain, requiresOperator: true },
-  { command: 'clm.cycle', description: 'Run a manual CLM cycle', category: 'clm', icon: Activity, requiresOperator: true },
-  
-  // Budget & governance
-  { command: 'clm.budget', description: 'View daily budget allocation', category: 'clm', icon: Gauge, requiresOperator: false },
-  { command: 'clm.kill_switch', description: 'Activate/deactivate kill switch', category: 'clm', icon: Shield, requiresOperator: true, args: '<on|off>', example: 'clm.kill_switch on' },
-  
-  // Topics & curriculum
-  { command: 'clm.topics', description: 'View topic bank with mastery scores', category: 'clm', icon: List, requiresOperator: false },
-  { command: 'clm.add_topic', description: 'Add custom topic to bank', category: 'clm', icon: Brain, requiresOperator: true, args: '<topic> <category>', example: 'clm.add_topic "quantum computing" science' },
-  
-  // Spaced repetition
-  { command: 'clm.review_queue', description: 'View spaced repetition queue', category: 'clm', icon: Clock, requiresOperator: false },
-  { command: 'clm.next_review', description: 'Get next review item', category: 'clm', icon: Brain, requiresOperator: false },
+  { command: 'clm.status', description: 'CLM status (budget, topics, queue)', category: 'clm', icon: Brain, requiresOperator: false, requiredTier: 'free' },
+  { command: 'clm.enable', description: 'Enable Constant Learning Mode', category: 'clm', icon: Brain, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'clm.disable', description: 'Disable Constant Learning Mode', category: 'clm', icon: Brain, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'clm.cycle', description: 'Run a manual CLM cycle', category: 'clm', icon: Activity, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'clm.budget', description: 'View daily budget allocation', category: 'clm', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'clm.kill_switch', description: 'Activate/deactivate kill switch', category: 'clm', icon: Shield, requiresOperator: true, requiredTier: 'governor', args: '<on|off>', example: 'clm.kill_switch on' },
+  { command: 'clm.topics', description: 'View topic bank with mastery scores', category: 'clm', icon: List, requiresOperator: false, requiredTier: 'free' },
+  { command: 'clm.add_topic', description: 'Add custom topic to bank', category: 'clm', icon: Brain, requiresOperator: true, requiredTier: 'creator', args: '<topic> <category>', example: 'clm.add_topic "quantum computing" science' },
+  { command: 'clm.review_queue', description: 'View spaced repetition queue', category: 'clm', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'clm.next_review', description: 'Get next review item', category: 'clm', icon: Brain, requiresOperator: false, requiredTier: 'free' },
 ];
 
 export const META_COMMANDS: CommandDefinition[] = [
@@ -624,143 +548,122 @@ export const MODULE_CLM_COMMANDS: CommandDefinition[] = [
 ];
 
 export const ENCODED_COMMANDS: CommandDefinition[] = [
-  { command: 'encoded.status', description: 'Agent status and configuration', category: 'cortex', icon: PenTool, requiresOperator: false },
-  { command: 'encoded.config', description: 'View current configuration', category: 'cortex', icon: Settings, requiresOperator: false },
-  { command: 'encoded.skills', description: 'View skill proficiency levels', category: 'cortex', icon: Brain, requiresOperator: false },
-  { command: 'encoded.metrics', description: 'Quality metrics and success rates', category: 'cortex', icon: Activity, requiresOperator: false },
-  { command: 'encoded.dry_run', description: 'Enable dry-run mode (preview only)', category: 'cortex', icon: FileCheck, requiresOperator: true },
-  { command: 'encoded.enable', description: 'Enable human approval mode', category: 'cortex', icon: PenTool, requiresOperator: true },
-  { command: 'encoded.semi_auto', description: 'Enable semi-autonomous mode', category: 'cortex', icon: PenTool, requiresOperator: true },
-  { command: 'encoded.verify', description: 'Verify code against guardrails', category: 'cortex', icon: FileCheck, requiresOperator: true, args: '<code>' },
-  { command: 'encoded.generate', description: 'Generate code (with task spec)', category: 'cortex', icon: FileEdit, requiresOperator: true },
-  { command: 'encoded.analyze', description: 'Analyze code quality metrics', category: 'cortex', icon: Activity, requiresOperator: true, args: '<code>' },
-  { command: 'encoded.patterns', description: 'List learned code patterns', category: 'cortex', icon: Brain, requiresOperator: false },
-  { command: 'encoded.history', description: 'Recent Encoded executions', category: 'cortex', icon: Clock, requiresOperator: false },
-  { command: 'encoded.seba.enable', description: 'Enable SEBA integration', category: 'cortex', icon: GitBranch, requiresOperator: true },
-  { command: 'encoded.seba.disable', description: 'Disable SEBA integration', category: 'cortex', icon: GitBranch, requiresOperator: true },
-  { command: 'encoded.model.lovable', description: 'Use Lovable AI as primary', category: 'cortex', icon: Sparkles, requiresOperator: true },
-  { command: 'encoded.model.free', description: 'Use free-tier as primary', category: 'cortex', icon: Sparkles, requiresOperator: true },
-  { command: 'encoded.help', description: 'Show all encoded commands', category: 'cortex', icon: Terminal, requiresOperator: false },
+  { command: 'encoded.status', description: 'Agent status and configuration', category: 'cortex', icon: PenTool, requiresOperator: false, requiredTier: 'free' },
+  { command: 'encoded.config', description: 'View current configuration', category: 'cortex', icon: Settings, requiresOperator: false, requiredTier: 'free' },
+  { command: 'encoded.skills', description: 'View skill proficiency levels', category: 'cortex', icon: Brain, requiresOperator: false, requiredTier: 'free' },
+  { command: 'encoded.metrics', description: 'Quality metrics and success rates', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'encoded.dry_run', description: 'Enable dry-run mode (preview only)', category: 'cortex', icon: FileCheck, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'encoded.enable', description: 'Enable human approval mode', category: 'cortex', icon: PenTool, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'encoded.semi_auto', description: 'Enable semi-autonomous mode', category: 'cortex', icon: PenTool, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'encoded.verify', description: 'Verify code against guardrails', category: 'cortex', icon: FileCheck, requiresOperator: true, requiredTier: 'creator', args: '<code>' },
+  { command: 'encoded.generate', description: 'Generate code (with task spec)', category: 'cortex', icon: FileEdit, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'encoded.analyze', description: 'Analyze code quality metrics', category: 'cortex', icon: Activity, requiresOperator: true, requiredTier: 'creator', args: '<code>' },
+  { command: 'encoded.patterns', description: 'List learned code patterns', category: 'cortex', icon: Brain, requiresOperator: false, requiredTier: 'free' },
+  { command: 'encoded.history', description: 'Recent Encoded executions', category: 'cortex', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'encoded.seba.enable', description: 'Enable SEBA integration', category: 'cortex', icon: GitBranch, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'encoded.seba.disable', description: 'Disable SEBA integration', category: 'cortex', icon: GitBranch, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'encoded.model.lovable', description: 'Use Lovable AI as primary', category: 'cortex', icon: Sparkles, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'encoded.model.free', description: 'Use free-tier as primary', category: 'cortex', icon: Sparkles, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'encoded.help', description: 'Show all encoded commands', category: 'cortex', icon: Terminal, requiresOperator: false, requiredTier: 'free' },
 ];
 
-// ENGINE — Cognitive Engine System v8.1.0
 export const ENGINE_COMMANDS: CommandDefinition[] = [
-  // Engine browsing
-  { command: 'engine.status', description: 'Engine system overview', category: 'engine', icon: Cpu, requiresOperator: false },
-  { command: 'engine.list', description: 'List all 62 engines', category: 'engine', icon: List, requiresOperator: false, args: '[category]', example: 'engine.list cognitive' },
-  { command: 'engine.get', description: 'Get engine details', category: 'engine', icon: Search, requiresOperator: false, args: '<engine_id>', example: 'engine.get reasoning_engine' },
-  { command: 'engine.categories', description: 'List engine categories', category: 'engine', icon: Box, requiresOperator: false },
-  
-  // Engine execution
-  { command: 'engine.run', description: 'Execute an engine', category: 'engine', icon: PlayCircle, requiresOperator: true, args: '<engine_id> [json_input]', example: 'engine.run reasoning_engine {"query":"test"}' },
-  { command: 'engine.batch', description: 'Execute multiple engines', category: 'engine', icon: Workflow, requiresOperator: true, args: '<engine_ids> [parallel]', example: 'engine.batch reasoning_engine,learning_engine true' },
-  
-  // Meta-engine browsing
-  { command: 'meta.status', description: 'Meta-engine system overview', category: 'engine', icon: Workflow, requiresOperator: false },
-  { command: 'meta.list', description: 'List all 20 meta-engines', category: 'engine', icon: List, requiresOperator: false },
-  { command: 'meta.get', description: 'Get meta-engine details', category: 'engine', icon: Search, requiresOperator: false, args: '<meta_engine_id>', example: 'meta.get cognitive_mesh' },
-  
-  // Meta-engine execution
-  { command: 'meta.run', description: 'Execute a meta-engine', category: 'engine', icon: PlayCircle, requiresOperator: true, args: '<meta_engine_id> [json_input]', example: 'meta.run cognitive_mesh {"task":"analyze"}' },
-  { command: 'meta.batch', description: 'Execute multiple meta-engines', category: 'engine', icon: Workflow, requiresOperator: true, args: '<meta_engine_ids> [parallel]', example: 'meta.batch cognitive_mesh,system_guardian true' },
-  
-  // World-first engines
-  { command: 'engine.worldfirst', description: 'List 14 world-first enhancement engines', category: 'engine', icon: Sparkles, requiresOperator: false },
-  { command: 'engine.synergy', description: 'View synergy metrics', category: 'engine', icon: Activity, requiresOperator: false },
-  
-  // History
-  { command: 'engine.history', description: 'View recent engine executions', category: 'engine', icon: Clock, requiresOperator: false, args: '[limit]', example: 'engine.history 10' },
+  { command: 'engine.status', description: 'Engine system overview (76 + 24 meta)', category: 'engine', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engine.list', description: 'List all 76 engines', category: 'engine', icon: List, requiresOperator: false, requiredTier: 'free', args: '[category]', example: 'engine.list cognitive' },
+  { command: 'engine.get', description: 'Get engine details', category: 'engine', icon: Search, requiresOperator: false, requiredTier: 'free', args: '<engine_id>', example: 'engine.get reasoning_engine' },
+  { command: 'engine.categories', description: 'List engine categories', category: 'engine', icon: Box, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engine.run', description: 'Execute an engine', category: 'engine', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<engine_id> [json_input]', example: 'engine.run reasoning_engine {"query":"test"}' },
+  { command: 'engine.batch', description: 'Execute multiple engines', category: 'engine', icon: Workflow, requiresOperator: true, requiredTier: 'architect', args: '<engine_ids> [parallel]', example: 'engine.batch reasoning_engine,learning_engine true' },
+  { command: 'meta.status', description: 'Meta-engine system overview', category: 'engine', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
+  { command: 'meta.list', description: 'List all 24 meta-engines', category: 'engine', icon: List, requiresOperator: false, requiredTier: 'free' },
+  { command: 'meta.get', description: 'Get meta-engine details', category: 'engine', icon: Search, requiresOperator: false, requiredTier: 'free', args: '<meta_engine_id>', example: 'meta.get cognitive_mesh' },
+  { command: 'meta.run', description: 'Execute a meta-engine', category: 'engine', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect', args: '<meta_engine_id> [json_input]', example: 'meta.run cognitive_mesh {"task":"analyze"}' },
+  { command: 'meta.batch', description: 'Execute multiple meta-engines', category: 'engine', icon: Workflow, requiresOperator: true, requiredTier: 'architect', args: '<meta_engine_ids> [parallel]', example: 'meta.batch cognitive_mesh,system_guardian true' },
+  { command: 'engine.worldfirst', description: 'List 14 world-first enhancement engines', category: 'engine', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engine.synergy', description: 'View synergy metrics', category: 'engine', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engine.history', description: 'View recent engine executions', category: 'engine', icon: Clock, requiresOperator: false, requiredTier: 'free', args: '[limit]', example: 'engine.history 10' },
 ];
 
-// ═══ Infrastructure Commands (v8.5.0) ═══
 export const INFRA_COMMANDS: CommandDefinition[] = [
-  // Cron Runner
-  { command: 'cron.list', description: 'List all scheduled jobs', category: 'infra', icon: Clock, requiresOperator: false },
-  { command: 'cron.stats', description: 'Cron runner statistics', category: 'infra', icon: Gauge, requiresOperator: false },
-  { command: 'cron.start', description: 'Start the cron runner', category: 'infra', icon: PlayCircle, requiresOperator: true },
-  { command: 'cron.stop', description: 'Stop all cron jobs', category: 'infra', icon: XCircle, requiresOperator: true },
-  { command: 'cron.trigger', description: 'Manually trigger a job', category: 'infra', icon: Zap, requiresOperator: true, args: '<job-id>', example: 'cron.trigger health-check' },
-  { command: 'cron.history', description: 'View cron run history', category: 'infra', icon: Clock, requiresOperator: false },
-  { command: 'cron.enable', description: 'Enable a specific job', category: 'infra', icon: CheckCircle, requiresOperator: true, args: '<job-id>' },
-  { command: 'cron.disable', description: 'Disable a specific job', category: 'infra', icon: XCircle, requiresOperator: true, args: '<job-id>' },
-  // Rate Limiter
-  { command: 'ratelimit.status', description: 'Persistent rate limiter status', category: 'infra', icon: Gauge, requiresOperator: false },
-  { command: 'ratelimit.buckets', description: 'List all rate limit buckets', category: 'infra', icon: Database, requiresOperator: false },
-  { command: 'ratelimit.cleanup', description: 'Cleanup expired buckets', category: 'infra', icon: Settings, requiresOperator: true },
-  // Rollback Snapshots
-  { command: 'snapshot.list', description: 'List all state snapshots', category: 'infra', icon: Database, requiresOperator: false },
-  { command: 'snapshot.capture', description: 'Capture current state snapshot', category: 'infra', icon: Database, requiresOperator: true },
-  { command: 'snapshot.stats', description: 'Snapshot storage statistics', category: 'infra', icon: Gauge, requiresOperator: false },
-  { command: 'snapshot.diff', description: 'Diff a snapshot vs current', category: 'infra', icon: GitBranch, requiresOperator: false, args: '<snapshot-id>' },
-  { command: 'snapshot.restore', description: 'Restore from snapshot', category: 'infra', icon: Database, requiresOperator: true, args: '<snapshot-id>' },
-  { command: 'snapshot.delete', description: 'Delete a snapshot', category: 'infra', icon: XCircle, requiresOperator: true, args: '<snapshot-id>' },
-  { command: 'snapshot.prune', description: 'Prune old snapshots', category: 'infra', icon: Settings, requiresOperator: true },
-  // Capability Analytics
-  { command: 'analytics.summary', description: 'Capability usage summary (24h)', category: 'infra', icon: Activity, requiresOperator: false },
-  { command: 'analytics.top', description: 'Top used capabilities', category: 'infra', icon: Sparkles, requiresOperator: false },
-  { command: 'analytics.dead', description: 'Dead/unused capabilities', category: 'infra', icon: XCircle, requiresOperator: false },
-  { command: 'analytics.rising', description: 'Rising capability trends', category: 'infra', icon: Activity, requiresOperator: false },
-  { command: 'analytics.flush', description: 'Flush analytics to storage', category: 'infra', icon: Database, requiresOperator: true },
-  // Streaming Pipeline
-  { command: 'stream.status', description: 'Streaming pipeline status', category: 'infra', icon: Radio, requiresOperator: false },
-  { command: 'stream.active', description: 'Active stream sessions', category: 'infra', icon: Activity, requiresOperator: false },
-  // File Processing
-  { command: 'file.status', description: 'File processing pipeline status', category: 'infra', icon: FileText, requiresOperator: false },
-  { command: 'file.history', description: 'File processing history', category: 'infra', icon: Clock, requiresOperator: false },
-  { command: 'file.formats', description: 'Supported file formats', category: 'infra', icon: FileCheck, requiresOperator: false },
-  // Natural Language Terminal
-  { command: 'nl.parse', description: 'Parse natural language to command', category: 'infra', icon: MessageSquare, requiresOperator: false, args: '<query>', example: 'nl.parse "show me system health"' },
-  { command: 'nl.intents', description: 'List known NL intents', category: 'infra', icon: Search, requiresOperator: false },
-  { command: 'nl.history', description: 'NL parse history', category: 'infra', icon: Clock, requiresOperator: false },
+  { command: 'cron.list', description: 'List all scheduled jobs', category: 'infra', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cron.stats', description: 'Cron runner statistics', category: 'infra', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cron.start', description: 'Start the cron runner', category: 'infra', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'cron.stop', description: 'Stop all cron jobs', category: 'infra', icon: XCircle, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'cron.trigger', description: 'Manually trigger a job', category: 'infra', icon: Zap, requiresOperator: true, requiredTier: 'creator', args: '<job-id>', example: 'cron.trigger health-check' },
+  { command: 'cron.history', description: 'View cron run history', category: 'infra', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cron.enable', description: 'Enable a specific job', category: 'infra', icon: CheckCircle, requiresOperator: true, requiredTier: 'creator', args: '<job-id>' },
+  { command: 'cron.disable', description: 'Disable a specific job', category: 'infra', icon: XCircle, requiresOperator: true, requiredTier: 'creator', args: '<job-id>' },
+  { command: 'ratelimit.status', description: 'Persistent rate limiter status', category: 'infra', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ratelimit.buckets', description: 'List all rate limit buckets', category: 'infra', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ratelimit.cleanup', description: 'Cleanup expired buckets', category: 'infra', icon: Settings, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'snapshot.list', description: 'List all state snapshots', category: 'infra', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'snapshot.capture', description: 'Capture current state snapshot', category: 'infra', icon: Database, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'snapshot.stats', description: 'Snapshot storage statistics', category: 'infra', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'snapshot.diff', description: 'Diff a snapshot vs current', category: 'infra', icon: GitBranch, requiresOperator: false, requiredTier: 'free', args: '<snapshot-id>' },
+  { command: 'snapshot.restore', description: 'Restore from snapshot', category: 'infra', icon: Database, requiresOperator: true, requiredTier: 'governor', args: '<snapshot-id>' },
+  { command: 'snapshot.delete', description: 'Delete a snapshot', category: 'infra', icon: XCircle, requiresOperator: true, requiredTier: 'architect', args: '<snapshot-id>' },
+  { command: 'snapshot.prune', description: 'Prune old snapshots', category: 'infra', icon: Settings, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'analytics.summary', description: 'Capability usage summary (24h)', category: 'infra', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'analytics.top', description: 'Top used capabilities', category: 'infra', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'analytics.dead', description: 'Dead/unused capabilities', category: 'infra', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'analytics.rising', description: 'Rising capability trends', category: 'infra', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'analytics.flush', description: 'Flush analytics to storage', category: 'infra', icon: Database, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'stream.status', description: 'Streaming pipeline status', category: 'infra', icon: Radio, requiresOperator: false, requiredTier: 'free' },
+  { command: 'stream.active', description: 'Active stream sessions', category: 'infra', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'file.status', description: 'File processing pipeline status', category: 'infra', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'file.history', description: 'File processing history', category: 'infra', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'file.formats', description: 'Supported file formats', category: 'infra', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'nl.parse', description: 'Parse natural language to command', category: 'infra', icon: MessageSquare, requiresOperator: false, requiredTier: 'free', args: '<query>', example: 'nl.parse "show me system health"' },
+  { command: 'nl.intents', description: 'List known NL intents', category: 'infra', icon: Search, requiresOperator: false, requiredTier: 'free' },
+  { command: 'nl.history', description: 'NL parse history', category: 'infra', icon: Clock, requiresOperator: false, requiredTier: 'free' },
 ];
 
-// ═══ Infrastructure Module Commands (v9.1.0 ARCHITECT) ═══
 export const MEMORY_MOD_COMMANDS: CommandDefinition[] = [
-  { command: 'memory.status', description: 'Vector/RAG orchestration status', category: 'memory_mod', icon: Database, requiresOperator: false },
-  { command: 'memory.recall', description: 'Semantic recall from vector store', category: 'memory_mod', icon: Search, requiresOperator: false, args: '<query> [limit]', example: 'memory.recall "security policy" 5' },
-  { command: 'memory.ingest', description: 'Ingest document/data source', category: 'memory_mod', icon: Database, requiresOperator: true, args: '<source> [format]', example: 'memory.ingest docs/ pdf' },
-  { command: 'memory.consolidate', description: 'Run memory consolidation cycle', category: 'memory_mod', icon: Database, requiresOperator: true },
-  { command: 'memory.tiers', description: 'View memory tier distribution', category: 'memory_mod', icon: Layers, requiresOperator: false },
+  { command: 'memory.status', description: 'Vector/RAG orchestration status', category: 'memory_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'memory.recall', description: 'Semantic recall from vector store', category: 'memory_mod', icon: Search, requiresOperator: false, requiredTier: 'free', args: '<query> [limit]', example: 'memory.recall "security policy" 5' },
+  { command: 'memory.ingest', description: 'Ingest document/data source', category: 'memory_mod', icon: Database, requiresOperator: true, requiredTier: 'creator', args: '<source> [format]', example: 'memory.ingest docs/ pdf' },
+  { command: 'memory.consolidate', description: 'Run memory consolidation cycle', category: 'memory_mod', icon: Database, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'memory.tiers', description: 'View memory tier distribution', category: 'memory_mod', icon: Layers, requiresOperator: false, requiredTier: 'free' },
 ];
 
 export const RELAY_MOD_COMMANDS: CommandDefinition[] = [
-  { command: 'relay.status', description: 'Outbound effects hub status', category: 'relay_mod', icon: Send, requiresOperator: false },
-  { command: 'relay.dispatch', description: 'Dispatch outbound webhook', category: 'relay_mod', icon: Send, requiresOperator: true, args: '<target_url> <payload>', example: 'relay.dispatch https://api.example.com/hook "{}"' },
-  { command: 'relay.queue', description: 'View delivery queue', category: 'relay_mod', icon: List, requiresOperator: false, args: '[status]' },
-  { command: 'relay.deliveries', description: 'Recent delivery history', category: 'relay_mod', icon: Activity, requiresOperator: false, args: '[limit]' },
-  { command: 'relay.retry', description: 'Retry failed delivery', category: 'relay_mod', icon: PlayCircle, requiresOperator: true, args: '<delivery_id>' },
+  { command: 'relay.status', description: 'Outbound effects hub status', category: 'relay_mod', icon: Send, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.dispatch', description: 'Dispatch outbound webhook', category: 'relay_mod', icon: Send, requiresOperator: true, requiredTier: 'creator', args: '<target_url> <payload>', example: 'relay.dispatch https://api.example.com/hook "{}"' },
+  { command: 'relay.queue', description: 'View delivery queue', category: 'relay_mod', icon: List, requiresOperator: false, requiredTier: 'free', args: '[status]' },
+  { command: 'relay.deliveries', description: 'Recent delivery history', category: 'relay_mod', icon: Activity, requiresOperator: false, requiredTier: 'free', args: '[limit]' },
+  { command: 'relay.retry', description: 'Retry failed delivery', category: 'relay_mod', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<delivery_id>' },
 ];
 
 export const AUDIT_MOD_COMMANDS: CommandDefinition[] = [
-  { command: 'audit.status', description: 'Immutable compliance ledger status', category: 'audit_mod', icon: FileCheck, requiresOperator: false },
-  { command: 'audit.query', description: 'Query audit trail', category: 'audit_mod', icon: Search, requiresOperator: false, args: '[module] [action] [since]', example: 'audit.query defense block 24h' },
-  { command: 'audit.verify', description: 'Verify hash chain integrity', category: 'audit_mod', icon: Shield, requiresOperator: false },
-  { command: 'audit.report', description: 'Generate compliance report', category: 'audit_mod', icon: FileText, requiresOperator: false, args: '[standard]', example: 'audit.report SOC2' },
-  { command: 'audit.export', description: 'Export audit log', category: 'audit_mod', icon: Database, requiresOperator: true, args: '[format] [since]' },
+  { command: 'audit.status', description: 'Immutable compliance ledger status', category: 'audit_mod', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.query', description: 'Query audit trail', category: 'audit_mod', icon: Search, requiresOperator: false, requiredTier: 'free', args: '[module] [action] [since]', example: 'audit.query defense block 24h' },
+  { command: 'audit.verify', description: 'Verify hash chain integrity', category: 'audit_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.report', description: 'Generate compliance report', category: 'audit_mod', icon: FileText, requiresOperator: false, requiredTier: 'free', args: '[standard]', example: 'audit.report SOC2' },
+  { command: 'audit.export', description: 'Export audit log', category: 'audit_mod', icon: Database, requiresOperator: true, requiredTier: 'architect', args: '[format] [since]' },
 ];
 
 export const IDENTITY_MOD_COMMANDS: CommandDefinition[] = [
-  { command: 'identity.status', description: 'Universal actor attribution status', category: 'identity_mod', icon: Key, requiresOperator: false },
-  { command: 'identity.whoami', description: 'Current actor identity + signature', category: 'identity_mod', icon: Users, requiresOperator: false },
-  { command: 'identity.resolve', description: 'Resolve actor by ID', category: 'identity_mod', icon: Search, requiresOperator: false, args: '<actor_id>' },
-  { command: 'identity.sign', description: 'Sign action with identity', category: 'identity_mod', icon: Lock, requiresOperator: true, args: '<action> <payload>' },
-  { command: 'identity.verify', description: 'Verify identity signature', category: 'identity_mod', icon: Shield, requiresOperator: false, args: '<signature>' },
+  { command: 'identity.status', description: 'Universal actor attribution status', category: 'identity_mod', icon: Key, requiresOperator: false, requiredTier: 'free' },
+  { command: 'identity.whoami', description: 'Current actor identity + signature', category: 'identity_mod', icon: Users, requiresOperator: false, requiredTier: 'free' },
+  { command: 'identity.resolve', description: 'Resolve actor by ID', category: 'identity_mod', icon: Search, requiresOperator: false, requiredTier: 'free', args: '<actor_id>' },
+  { command: 'identity.sign', description: 'Sign action with identity', category: 'identity_mod', icon: Lock, requiresOperator: true, requiredTier: 'architect', args: '<action> <payload>' },
+  { command: 'identity.verify', description: 'Verify identity signature', category: 'identity_mod', icon: Shield, requiresOperator: false, requiredTier: 'free', args: '<signature>' },
 ];
 
 export const ECONOMY_MOD_COMMANDS: CommandDefinition[] = [
-  { command: 'economy.status', description: 'Cost attribution & budget status', category: 'economy_mod', icon: CreditCard, requiresOperator: false },
-  { command: 'economy.cost', description: 'Track cost for operation', category: 'economy_mod', icon: CreditCard, requiresOperator: false, args: '[module] [period]', example: 'economy.cost nexus 24h' },
-  { command: 'economy.budget', description: 'View/set budget limits', category: 'economy_mod', icon: Gauge, requiresOperator: false, args: '[module]' },
-  { command: 'economy.report', description: 'Cost attribution report', category: 'economy_mod', icon: Activity, requiresOperator: false, args: '[period]', example: 'economy.report 7d' },
-  { command: 'economy.forecast', description: 'Spend forecast', category: 'economy_mod', icon: Activity, requiresOperator: false, args: '[days]' },
+  { command: 'economy.status', description: 'Cost attribution & budget status', category: 'economy_mod', icon: CreditCard, requiresOperator: false, requiredTier: 'free' },
+  { command: 'economy.cost', description: 'Track cost for operation', category: 'economy_mod', icon: CreditCard, requiresOperator: false, requiredTier: 'free', args: '[module] [period]', example: 'economy.cost nexus 24h' },
+  { command: 'economy.budget', description: 'View/set budget limits', category: 'economy_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free', args: '[module]' },
+  { command: 'economy.report', description: 'Cost attribution report', category: 'economy_mod', icon: Activity, requiresOperator: false, requiredTier: 'free', args: '[period]', example: 'economy.report 7d' },
+  { command: 'economy.forecast', description: 'Spend forecast', category: 'economy_mod', icon: Activity, requiresOperator: false, requiredTier: 'free', args: '[days]' },
 ];
 
 export const SANDBOX_MOD_COMMANDS: CommandDefinition[] = [
-  { command: 'sandbox.status', description: 'Isolated execution environment status', category: 'sandbox_mod', icon: Box, requiresOperator: false },
-  { command: 'sandbox.create', description: 'Create new sandbox environment', category: 'sandbox_mod', icon: Box, requiresOperator: true, args: '[name] [ttl]', example: 'sandbox.create test-env 1h' },
-  { command: 'sandbox.execute', description: 'Execute code in sandbox', category: 'sandbox_mod', icon: PlayCircle, requiresOperator: true, args: '<sandbox_id> <code>' },
-  { command: 'sandbox.list', description: 'List active sandboxes', category: 'sandbox_mod', icon: List, requiresOperator: false },
-  { command: 'sandbox.destroy', description: 'Destroy sandbox', category: 'sandbox_mod', icon: XCircle, requiresOperator: true, args: '<sandbox_id>' },
+  { command: 'sandbox.status', description: 'Isolated execution environment status', category: 'sandbox_mod', icon: Box, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.create', description: 'Create new sandbox environment', category: 'sandbox_mod', icon: Box, requiresOperator: true, requiredTier: 'creator', args: '[name] [ttl]', example: 'sandbox.create test-env 1h' },
+  { command: 'sandbox.execute', description: 'Execute code in sandbox', category: 'sandbox_mod', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<sandbox_id> <code>' },
+  { command: 'sandbox.list', description: 'List active sandboxes', category: 'sandbox_mod', icon: List, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.destroy', description: 'Destroy sandbox', category: 'sandbox_mod', icon: XCircle, requiresOperator: true, requiredTier: 'architect', args: '<sandbox_id>' },
 ];
 
 // ENCODE MODULE — Code generation & transformation (v9.2.0)
