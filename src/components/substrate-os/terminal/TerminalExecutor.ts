@@ -816,7 +816,7 @@ export async function executeCommand(
 │  ██████╗ ███████╗     Cognitive Operating System
 │  ██╔═══╝ ██╔════╝     CMPSBL® OS v10.5.0 ARCHITECT
 │  ██║     ███████╗     
-│  ██║     ╚════██║     Environment: Lovable Cloud
+│  ██║     ╚════██║     Environment: CMPSBL Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 

@@ -15,7 +15,7 @@ export interface ResearchQuery {
 
 export interface ResearchResult {
   query_id: string;
-  source_api: 'lovable' | 'groq' | 'web_search';
+  source_api: 'cloud' | 'groq' | 'web_search';
   raw_data: any;
   extracted_insights: string[];
   relevance_score: number;

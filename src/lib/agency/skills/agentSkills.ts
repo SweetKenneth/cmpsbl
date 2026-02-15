@@ -1,7 +1,7 @@
 /**
  * Agent Skills Module v3.0 — Expanded executable capabilities
  * Each skill maps to task primitives agents CAN actually execute
- * Using: Groq (AI) + Firecrawl (Web) + Lovable AI Gateway
+ * Using: Groq (AI) + Firecrawl (Web) + Cloud AI Gateway
  */
 
 export interface AgentSkill {
@@ -10,7 +10,7 @@ export interface AgentSkill {
   description: string;
   icon: string;
   category: 'research' | 'content' | 'data' | 'seo' | 'analysis' | 'business' | 'learning';
-  handlers: string[]; // Available: groq, firecrawl, lovable
+  handlers: string[]; // Available: groq, firecrawl, cloud
   isExecutable: boolean;
 }
 
@@ -31,7 +31,7 @@ export const AGENT_SKILLS: Record<string, AgentSkill> = {
     description: 'Analyze and synthesize information with AI',
     icon: '📊',
     category: 'analysis',
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     isExecutable: true,
   },
   writing: {
@@ -40,7 +40,7 @@ export const AGENT_SKILLS: Record<string, AgentSkill> = {
     description: 'Generate optimized content, articles, and copy',
     icon: '✍️',
     category: 'content',
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     isExecutable: true,
   },
   seo: {
@@ -76,7 +76,7 @@ export const AGENT_SKILLS: Record<string, AgentSkill> = {
     description: 'Business planning, validation, and growth strategies',
     icon: '💼',
     category: 'business',
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     isExecutable: true,
   },
   learning: {
@@ -85,7 +85,7 @@ export const AGENT_SKILLS: Record<string, AgentSkill> = {
     description: 'Learn new techniques and improve capabilities',
     icon: '🎓',
     category: 'learning',
-    handlers: ['firecrawl', 'groq', 'lovable'],
+    handlers: ['firecrawl', 'groq', 'cloud'],
     isExecutable: true,
   },
   outreach: {
@@ -94,7 +94,7 @@ export const AGENT_SKILLS: Record<string, AgentSkill> = {
     description: 'Create outreach emails, pitches, and messaging',
     icon: '📧',
     category: 'content',
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     isExecutable: true,
   },
   local_seo: {

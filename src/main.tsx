@@ -16,7 +16,7 @@ createRoot(document.getElementById("root")!).render(
 );
 
 // Defer service worker registration to avoid render-blocking
-// AND avoid registering SW in Lovable editor/preview (can cause mobile reload/cache loops)
+// AND avoid registering SW in editor/preview (can cause mobile reload/cache loops)
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   const qs = new URLSearchParams(window.location.search);
   const host = window.location.hostname;

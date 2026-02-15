@@ -1,6 +1,6 @@
 import React from "react";
 
-const DEFAULT_PUBLISHED_URL = "https://promptfluid-substrate.lovable.app";
+const DEFAULT_PUBLISHED_URL = "https://cmpsbl.lovable.app";
 
 function buildPreviewFullUrl(): string {
   try {

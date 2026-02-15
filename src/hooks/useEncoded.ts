@@ -211,7 +211,7 @@ export function useEncoded() {
     // Computed
     isDryRun: config.executionMode === 'dry_run',
     isSebaIntegrated: config.sebaIntegration,
-    isLovableAI: config.primaryModel === 'lovable_ai',
+    isCloudAI: config.primaryModel === 'cloud_ai',
   };
 }
 

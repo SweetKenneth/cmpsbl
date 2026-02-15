@@ -371,7 +371,7 @@ export function EnvironmentSetup() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                <span>Add them to your Lovable Cloud secrets (Cloud → Secrets)</span>
+                <span>Add them to your Cloud secrets (Cloud → Secrets)</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold shrink-0">3</span>

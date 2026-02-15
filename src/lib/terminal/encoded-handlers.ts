@@ -260,14 +260,14 @@ export function registerEncodedHandlers(): void {
     };
   });
 
-  // encoded.model.lovable — Use Lovable AI as primary
-  registerHandler('encoded.model.lovable', async () => {
-    const result = await updateEncodedConfig({ primaryModel: 'lovable_ai' });
+  // encoded.model.cloud — Use Cloud AI as primary
+  registerHandler('encoded.model.cloud', async () => {
+    const result = await updateEncodedConfig({ primaryModel: 'cloud_ai' });
     
     return {
       success: result.success,
       message: result.success 
-        ? 'Primary model set to LOVABLE AI (Gemini 3 Flash)'
+        ? 'Primary model set to CLOUD AI (Gemini 3 Flash)'
         : result.error,
     };
   });

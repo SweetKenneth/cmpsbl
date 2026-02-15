@@ -119,7 +119,7 @@ export const SUPPORTED_PROVIDERS = [
   'stability',
   'fal',
   'google',
-  'lovable',
+  'cloud',
 ] as const;
 
 export type SupportedProvider = typeof SUPPORTED_PROVIDERS[number];
@@ -138,7 +138,7 @@ export const PROVIDER_CAPABILITIES: Record<SupportedProvider, {
   stability: { types: ['image'], freeTier: false, latency: 'medium', quality: 'premium' },
   fal: { types: ['image', 'video'], freeTier: false, latency: 'medium', quality: 'high' },
   google: { types: ['text', 'image', 'multimodal'], freeTier: true, latency: 'medium', quality: 'premium' },
-  lovable: { types: ['text', 'reasoning', 'code'], freeTier: true, latency: 'low', quality: 'premium' },
+  cloud: { types: ['text', 'reasoning', 'code'], freeTier: true, latency: 'low', quality: 'premium' },
 };
 
 /**

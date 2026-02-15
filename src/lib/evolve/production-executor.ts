@@ -253,7 +253,7 @@ class ProductionExecutor {
     run_id: string, 
     artifacts: Array<{ file_path: string; content: string; operation: string }>
   ): Promise<{ success: boolean; error?: string; tests_run?: number; tests_passed?: number }> {
-    // In production, this would write files via the Lovable API
+    // In production, this would write files via the Cloud API
     // For now, we mark them as applied and run verification
     
     let tests_passed = 0;

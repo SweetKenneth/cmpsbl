@@ -638,7 +638,7 @@ export function IntegrationsHub() {
                     <div>
                       <h5 className="font-semibold mb-2">Add secrets to your project</h5>
                       <p className="text-sm text-muted-foreground mb-2">
-                        Add your API keys as secrets in Lovable Cloud. Go to Settings → Cloud → Secrets.
+                        Add your API keys as secrets in Cloud. Go to Settings → Cloud → Secrets.
                       </p>
                     </div>
                   </div>

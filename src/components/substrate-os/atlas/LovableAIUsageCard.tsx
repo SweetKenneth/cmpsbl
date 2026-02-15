@@ -1,6 +1,6 @@
 /**
- * Lovable AI Usage Card
- * v1.0.0 — Tracks Lovable AI gateway usage for evolution cycles
+ * Cloud AI Usage Card
+ * v1.0.0 — Tracks Cloud AI gateway usage for evolution cycles
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -41,7 +41,7 @@ const CALLS_PER_CYCLE = 2.5;
 const DAILY_CYCLE_LIMIT = Math.floor(FREE_TIER_LIMITS.daily / CALLS_PER_CYCLE);
 const MONTHLY_CYCLE_LIMIT = Math.floor(FREE_TIER_LIMITS.monthly / CALLS_PER_CYCLE);
 
-export function LovableAIUsageCard() {
+export function CloudAIUsageCard() {
   const [usage, setUsage] = useState<UsageStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +56,7 @@ export function LovableAIUsageCard() {
       const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-      // Fetch usage from lovable_ai_usage table
+      // Fetch usage from cloud AI usage table
       const { data, error: fetchError } = await supabase
         .from('lovable_ai_usage')
         .select('date, calls_used, tokens_used, category')
@@ -90,7 +90,7 @@ export function LovableAIUsageCard() {
 
       setUsage({ today, thisWeek, thisMonth });
     } catch (err) {
-      console.error('Failed to fetch Lovable AI usage:', err);
+      console.error('Failed to fetch Cloud AI usage:', err);
       setError('Failed to load usage data');
     } finally {
       setLoading(false);
@@ -140,7 +140,7 @@ export function LovableAIUsageCard() {
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500/30 to-indigo-600/20 flex items-center justify-center border border-indigo-400/30 shadow-sm shadow-indigo-500/20">
               <Gauge className="w-4 h-4 text-indigo-300" />
             </div>
-            <span className="text-foreground/90">Lovable AI Usage</span>
+            <span className="text-foreground/90">Cloud AI Usage</span>
             <Button
               size="icon"
               variant="ghost"

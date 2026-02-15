@@ -45,7 +45,7 @@ export function AnalyticsTab() {
   const fetchAnalytics = useCallback(async () => {
     setLoading(true);
     try {
-      // Use the built-in Lovable analytics API
+      // Use the built-in analytics API
       const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90;
       const endDate = new Date().toISOString().split('T')[0];
       const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];

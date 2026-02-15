@@ -14,7 +14,7 @@ import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import DecodeFloat from "@/components/decode/DecodeFloat";
 import { installLastInteractionTracking } from "@/lib/ui/lastInteraction";
 import { installSiteGuard } from "@/lib/defense/site-guard";
-import { isLovableEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
+import { isEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
 // Mobile crash diagnostics (opt-in via ?diag=1)
 import { installMobileWatchdog } from "@/lib/client/mobile-watchdog";
@@ -204,7 +204,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  const isPreviewEnv = isLovableEditorPreviewEnv();
+  const isPreviewEnv = isEditorPreviewEnv();
 
   const previewParams = (() => {
     try {
@@ -221,7 +221,7 @@ const App = () => {
   const isMobileDevice =
     typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
 
-  // Default: Safe Mode in embedded (Lovable) mobile preview.
+  // Default: Safe Mode in embedded mobile preview.
   // Override with ?previewFull=1
   const mobilePreviewSafeMode =
     (previewParams.previewSafe || (isPreviewEnv && isMobileDevice)) && !previewParams.previewFull;

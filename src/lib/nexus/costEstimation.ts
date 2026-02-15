@@ -64,7 +64,7 @@ const PROVIDER_PRICING: Record<string, { input: number; output: number }> = {
   cerebras: { input: 0.3, output: 0.6 },
   openrouter: { input: 2.0, output: 4.0 },
   google: { input: 1.0, output: 2.0 },
-  lovable: { input: 0, output: 0 }, // Free tier
+  cloud: { input: 0, output: 0 }, // Free tier
   stability: { input: 0, output: 50.0 }, // Per image
   fal: { input: 0, output: 30.0 }, // Per image
 };
@@ -152,7 +152,7 @@ export function findCheapestProvider(
   // Quality filter
   if (qualityRequirement === 'high') {
     const highQuality = candidates.filter(c => 
-      ['google', 'lovable', 'openrouter'].includes(c.provider)
+      ['google', 'cloud', 'openrouter'].includes(c.provider)
     );
     return highQuality[0] || candidates[0];
   }
@@ -363,9 +363,9 @@ export function getCostOptimizations(
 
   // Check for expensive provider usage
   for (const [provider, cost] of Object.entries(report.byProvider)) {
-    if (cost > report.totalSpent * 0.5 && provider !== 'lovable') {
+     if (cost > report.totalSpent * 0.5 && provider !== 'cloud') {
       suggestions.push({
-        suggestion: `Consider using Lovable AI (free tier) for compatible tasks instead of ${provider}`,
+        suggestion: `Consider using Cloud AI (free tier) for compatible tasks instead of ${provider}`,
         potentialSavings: Math.ceil(cost * 0.3),
       });
     }
