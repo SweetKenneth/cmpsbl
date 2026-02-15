@@ -265,23 +265,91 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
       const start = Date.now();
 
       try {
-        // In production, this calls the pf-nexus-router edge function
-        // which handles actual API key management and provider calls
-        const result = {
+        // Call pf-nexus-router edge function for real AI completion
+        const { createClient } = await import('@supabase/supabase-js');
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+        
+        if (!supabaseUrl || !supabaseKey) {
+          throw new Error('Supabase not configured');
+        }
+
+        const client = createClient(supabaseUrl, supabaseKey);
+        const { data, error } = await client.functions.invoke('pf-nexus-router', {
+          body: {
+            prompt,
+            context,
+            provider: provider.id,
+            model: provider.model,
+            maxTokens: 1500,
+            temperature: 0.7,
+            metadata: {
+              routeKey: 'nexus-fleet',
+              providerId: provider.id,
+              latencyClass: provider.latencyClass,
+            },
+          },
+        });
+
+        if (error) throw error;
+
+        const content = data?.content || data?.response || '';
+        const latencyMs = Date.now() - start;
+
+        recordProviderOutcome(provider.id, true, latencyMs);
+
+        // Track usage in ai_usage_log
+        try {
+          await client.from('ai_usage_log').insert({
+            provider: provider.id,
+            model: provider.model,
+            category: context?.routeKey || 'nexus_fleet',
+            response_time_ms: latencyMs,
+            success: true,
+            tokens_used: content.length / 4, // rough estimate
+            cost: 0, // free tier
+            metadata: {
+              latency_class: provider.latencyClass,
+              prompt_length: prompt.length,
+              response_length: content.length,
+            },
+          });
+        } catch {
+          // Non-critical — don't block on usage logging
+        }
+
+        return {
           success: true,
-          content: `[${provider.id}] ${prompt}`,
-          confidence: 0.9,
+          content,
+          confidence: content.length > 500 ? 0.9 : content.length > 100 ? 0.7 : 0.5,
           metadata: {
             source: provider.id,
             model: provider.model,
             latencyClass: provider.latencyClass,
+            latencyMs,
           },
         };
-
-        recordProviderOutcome(provider.id, true, Date.now() - start);
-        return result;
       } catch (error) {
-        recordProviderOutcome(provider.id, false, Date.now() - start);
+        const latencyMs = Date.now() - start;
+        recordProviderOutcome(provider.id, false, latencyMs);
+
+        // Track failed usage
+        try {
+          const { supabase } = await import('@/integrations/supabase/client');
+          await supabase.from('ai_usage_log').insert({
+            provider: provider.id,
+            model: provider.model,
+            category: 'nexus_fleet',
+            response_time_ms: latencyMs,
+            success: false,
+            metadata: {
+              error: error instanceof Error ? error.message : 'Unknown',
+            },
+          });
+        } catch {
+          // Non-critical
+        }
+
         throw error;
       }
     },
