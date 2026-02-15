@@ -179,7 +179,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
         "overflow-hidden",
         className
       )}
-      style={{ maxHeight: compact ? '70vh' : '600px' }}
+      style={{ maxHeight: compact ? '70vh' : '600px', height: compact ? 'auto' : '600px' }}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-gradient-to-r from-cyan-500/10 via-transparent to-purple-500/10">
@@ -210,7 +210,11 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4" ref={scrollRef}>
+      <div 
+        className="flex-1 overflow-y-auto p-4 min-h-0" 
+        ref={scrollRef}
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
         <div className="space-y-4">
           <AnimatePresence mode="popLayout">
             {messages.map((msg, index) => (

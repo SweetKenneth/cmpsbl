@@ -69,47 +69,84 @@ export function AnalyticsTab() {
         });
       }
 
-      // Build analytics from what we have access to
-      // Since we can't directly access Lovable's analytics API from code,
-      // we'll pull from our internal tables
-      const { data: usageData } = await supabase
+      // Pull from internal tables - try recent first, fallback to all-time
+      let { data: usageData } = await supabase
         .from('ai_usage_log')
         .select('*')
         .gte('created_at', startDate)
         .order('created_at', { ascending: false })
         .limit(1000);
 
-      const { data: accessUsage } = await supabase
+      let { data: accessUsage } = await supabase
         .from('access_usage')
         .select('*')
         .gte('created_at', startDate)
         .order('created_at', { ascending: false })
         .limit(1000);
 
-      // Build time series
+      // If no recent data, fetch all-time data so we don't show zeros
+      if ((!usageData || usageData.length === 0) && (!accessUsage || accessUsage.length === 0)) {
+        const [allUsage, allAccess] = await Promise.all([
+          supabase.from('ai_usage_log').select('*').order('created_at', { ascending: false }).limit(1000),
+          supabase.from('access_usage').select('*').order('created_at', { ascending: false }).limit(1000),
+        ]);
+        usageData = allUsage.data;
+        accessUsage = allAccess.data;
+      }
+
+      // Also pull from audit_logs and brain metrics for richer data
+      const { data: auditData } = await supabase
+        .from('audit_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(500);
+
+      const { data: brainMetrics } = await supabase
+        .from('brain_metrics')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(500);
+
+      // Combine all data sources for richer metrics
+      const allRecords = [
+        ...(usageData || []).map(u => ({ ...u, source: 'ai' })),
+        ...(accessUsage || []).map(u => ({ ...u, source: 'access' })),
+        ...(auditData || []).map(a => ({ created_at: a.created_at, provider: a.performed_by || 'system', category: a.entity_type || a.action, source: 'audit' })),
+        ...(brainMetrics || []).map(b => ({ created_at: b.created_at, provider: 'brain', category: 'brain', source: 'brain' })),
+      ];
+
+      // Determine actual date range from data if recent period is empty
+      const allDates = allRecords.map(r => r.created_at).filter(Boolean).sort();
+      const hasRecentData = allRecords.some(r => r.created_at && r.created_at >= startDate);
+      
+      // Use data's actual date range if no recent data
+      const effectiveStart = hasRecentData ? startDate : (allDates[0]?.split('T')[0] || startDate);
+      const effectiveEnd = hasRecentData ? endDate : (allDates[allDates.length - 1]?.split('T')[0] || endDate);
+      
+      // Build time series from effective range
+      const seriesStart = new Date(effectiveStart);
+      const seriesEnd = new Date(effectiveEnd);
+      const daySpan = Math.max(1, Math.ceil((seriesEnd.getTime() - seriesStart.getTime()) / (24 * 60 * 60 * 1000)) + 1);
+      const displayDays = Math.min(daySpan, 30); // Cap at 30 bars
+
       const series: { date: string; visitors: number; pageviews: number }[] = [];
-      for (let i = days - 1; i >= 0; i--) {
-        const d = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+      for (let i = displayDays - 1; i >= 0; i--) {
+        const d = new Date(seriesEnd.getTime() - i * 24 * 60 * 60 * 1000);
         const dateStr = d.toISOString().split('T')[0];
-        const dayUsage = (usageData || []).filter(u => u.created_at?.startsWith(dateStr));
-        const dayAccess = (accessUsage || []).filter(u => u.created_at?.startsWith(dateStr));
-        const uniqueProviders = new Set(dayUsage.map(u => u.provider));
+        const dayRecords = allRecords.filter(r => r.created_at?.startsWith(dateStr));
+        const uniqueProviders = new Set(dayRecords.map(r => (r as any).provider).filter(Boolean));
         series.push({
           date: dateStr,
-          visitors: uniqueProviders.size + dayAccess.length,
-          pageviews: dayUsage.length + dayAccess.length,
+          visitors: Math.max(uniqueProviders.size, dayRecords.length > 0 ? 1 : 0),
+          pageviews: dayRecords.length,
         });
       }
 
       // Top categories/modules as "pages"
       const catCounts = new Map<string, number>();
-      (usageData || []).forEach(u => {
-        const cat = u.category || 'general';
+      allRecords.forEach(r => {
+        const cat = (r as any).category || (r as any).module || r.source || 'general';
         catCounts.set(cat, (catCounts.get(cat) || 0) + 1);
-      });
-      (accessUsage || []).forEach(u => {
-        const mod = u.module || 'api';
-        catCounts.set(mod, (catCounts.get(mod) || 0) + 1);
       });
 
       const topPages = Array.from(catCounts.entries())
@@ -117,10 +154,11 @@ export function AnalyticsTab() {
         .slice(0, 10)
         .map(([path, views]) => ({ path: `/${path}`, views }));
 
-      // Provider distribution
+      // Provider/source distribution
       const provCounts = new Map<string, number>();
-      (usageData || []).forEach(u => {
-        provCounts.set(u.provider || 'unknown', (provCounts.get(u.provider || 'unknown') || 0) + 1);
+      allRecords.forEach(r => {
+        const prov = (r as any).provider || r.source || 'unknown';
+        provCounts.set(prov, (provCounts.get(prov) || 0) + 1);
       });
 
       const totalVisitors = series.reduce((s, d) => s + d.visitors, 0);
@@ -147,6 +185,8 @@ export function AnalyticsTab() {
         devices: [
           { type: 'API', count: (accessUsage || []).length },
           { type: 'AI', count: (usageData || []).length },
+          { type: 'Audit', count: (auditData || []).length },
+          { type: 'Brain', count: (brainMetrics || []).length },
         ],
         countries: [],
       });

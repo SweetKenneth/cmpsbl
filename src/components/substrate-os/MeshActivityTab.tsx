@@ -198,10 +198,10 @@ export function MeshActivityTab() {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto overflow-hidden">
           {/* View toggle - scrollable on mobile */}
-          <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 sm:w-auto">
-            <div className="flex items-center border border-border/30 rounded-lg overflow-hidden w-max">
+          <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 sm:w-auto scrollbar-thin">
+            <div className="flex items-center border border-border/30 rounded-lg overflow-hidden w-max min-w-0">
               <button 
                 onClick={() => setActiveView('live')}
                 className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'live' ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground')}
@@ -252,14 +252,22 @@ export function MeshActivityTab() {
               </button>
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}>
+          <Button variant="ghost" size="sm" onClick={refresh} disabled={loading} className="shrink-0">
             <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
           </Button>
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/30">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/30 shrink-0">
             <Power className={cn("w-4 h-4", enabled ? "text-emerald-400" : "text-red-400")} />
             <span className="text-xs font-medium">Kill Switch</span>
             <Switch checked={enabled} onCheckedChange={handleToggle} />
           </div>
+        </div>
+        {/* Mobile kill switch row */}
+        <div className="flex sm:hidden items-center justify-between px-3 py-2 rounded-lg bg-muted/30 border border-border/30">
+          <div className="flex items-center gap-2">
+            <Power className={cn("w-4 h-4", enabled ? "text-emerald-400" : "text-red-400")} />
+            <span className="text-xs font-medium">Kill Switch</span>
+          </div>
+          <Switch checked={enabled} onCheckedChange={handleToggle} />
         </div>
       </div>
 
