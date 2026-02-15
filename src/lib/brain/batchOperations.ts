@@ -383,7 +383,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
     const { data: hotCandidates } = await supabase
       .from('brain_memory_hot')
       .select('*')
-      .lt('last_accessed_at', staleCutoff)
+      .lt('last_used', staleCutoff)
       .lt('value_score', 0.5)
       .limit(50);
 
