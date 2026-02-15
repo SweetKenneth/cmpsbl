@@ -1,7 +1,5 @@
 /**
- * Capacity Monitor Widget v10.5.0
- * Real-time monitoring of developer activity and substrate load
- * Glassmorphic design matching dashboard aesthetic
+ * Capacity Monitor Widget v10.5.1 — Premium glassmorphic load monitor
  */
 
 import { useState, useEffect } from 'react';
@@ -64,8 +62,7 @@ export function CapacityMonitor() {
         requestsPerMinute: { current: currentRPM, limit: rpmLimit },
         tokenConsumption: { today: tokensToday, thisHour: tokensThisHour, dailyBudget: dailyTokenBudget },
         costBurnRate: { hourly: costThisHour, daily: costToday, projected: costThisHour * 24 },
-        loadPercent,
-        status,
+        loadPercent, status,
       });
     } catch (error) {
       console.error('Failed to fetch capacity metrics:', error);
@@ -88,22 +85,21 @@ export function CapacityMonitor() {
 
   if (loading) {
     return (
-      <motion.div 
-        className="p-6 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 via-card/50 to-transparent backdrop-blur-xl"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-500/20 border border-yellow-500/30 flex items-center justify-center">
-            <Zap className="w-5 h-5 text-yellow-400" />
+      <motion.div className="relative rounded-2xl border border-border/30 overflow-hidden" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <div className="absolute inset-0 bg-gradient-to-br from-card/95 via-card/60 to-card/30 backdrop-blur-2xl" />
+        <div className="relative p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/15 to-amber-500/15 border border-yellow-500/25 flex items-center justify-center">
+              <Zap className="w-5 h-5 text-yellow-400" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Capacity Monitor</h3>
+              <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">LOADING...</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-sm font-semibold text-foreground">Capacity Monitor</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">LOADING...</p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}
           </div>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}
         </div>
       </motion.div>
     );
@@ -112,144 +108,106 @@ export function CapacityMonitor() {
   if (!metrics) return null;
 
   const statusConfig = {
-    healthy: { border: 'border-emerald-500/30', text: 'text-emerald-400', bg: 'bg-emerald-500/10', label: 'HEALTHY' },
-    elevated: { border: 'border-amber-500/30', text: 'text-amber-400', bg: 'bg-amber-500/10', label: 'ELEVATED' },
-    critical: { border: 'border-red-500/30', text: 'text-red-400', bg: 'bg-red-500/10', label: 'CRITICAL' },
+    healthy: { border: 'border-emerald-500/20', text: 'text-emerald-400/80', bg: 'bg-emerald-500/5', label: 'HEALTHY' },
+    elevated: { border: 'border-amber-500/20', text: 'text-amber-400/80', bg: 'bg-amber-500/5', label: 'ELEVATED' },
+    critical: { border: 'border-red-500/20', text: 'text-red-400/80', bg: 'bg-red-500/5', label: 'CRITICAL' },
   };
   const sc = statusConfig[metrics.status];
 
   const cards = [
-    {
-      icon: Users, iconColor: 'text-blue-400',
-      iconBg: 'bg-blue-500/20 border-blue-500/40',
-      label: 'Developers', value: metrics.activeDevelopers.last24h, suffix: '/ 24h',
-      sub: `${metrics.activeDevelopers.last7d} / 7d • ${metrics.activeDevelopers.total} total`,
-      border: 'border-blue-500/30', hover: 'hover:border-blue-500/50',
-      bg: 'from-blue-500/10 to-blue-500/5',
-    },
-    {
-      icon: TrendingUp, iconColor: 'text-green-400',
-      iconBg: 'bg-green-500/20 border-green-500/40',
-      label: 'Requests/min', value: metrics.requestsPerMinute.current, suffix: 'RPM',
-      sub: `Limit: ${formatNumber(metrics.requestsPerMinute.limit)}`,
-      border: 'border-green-500/30', hover: 'hover:border-green-500/50',
-      bg: 'from-green-500/10 to-green-500/5',
-    },
-    {
-      icon: Brain, iconColor: 'text-purple-400',
-      iconBg: 'bg-purple-500/20 border-purple-500/40',
-      label: 'Tokens', value: formatNumber(metrics.tokenConsumption.today), suffix: 'today',
-      sub: `${formatNumber(metrics.tokenConsumption.thisHour)} / hour`,
-      border: 'border-purple-500/30', hover: 'hover:border-purple-500/50',
-      bg: 'from-purple-500/10 to-purple-500/5',
-    },
-    {
-      icon: DollarSign, iconColor: 'text-yellow-400',
-      iconBg: 'bg-yellow-500/20 border-yellow-500/40',
-      label: 'Cost', value: `$${metrics.costBurnRate.daily.toFixed(2)}`, suffix: 'today',
-      sub: `~$${metrics.costBurnRate.projected.toFixed(2)} projected`,
-      border: 'border-yellow-500/30', hover: 'hover:border-yellow-500/50',
-      bg: 'from-yellow-500/10 to-yellow-500/5',
-    },
+    { icon: Users, iconColor: 'text-blue-400', label: 'Developers', value: metrics.activeDevelopers.last24h, suffix: '/ 24h', sub: `${metrics.activeDevelopers.last7d} / 7d • ${metrics.activeDevelopers.total} total`, color: 'blue' },
+    { icon: TrendingUp, iconColor: 'text-green-400', label: 'Requests/min', value: metrics.requestsPerMinute.current, suffix: 'RPM', sub: `Limit: ${formatNumber(metrics.requestsPerMinute.limit)}`, color: 'green' },
+    { icon: Brain, iconColor: 'text-purple-400', label: 'Tokens', value: formatNumber(metrics.tokenConsumption.today), suffix: 'today', sub: `${formatNumber(metrics.tokenConsumption.thisHour)} / hour`, color: 'purple' },
+    { icon: DollarSign, iconColor: 'text-yellow-400', label: 'Cost', value: `$${metrics.costBurnRate.daily.toFixed(2)}`, suffix: 'today', sub: `~$${metrics.costBurnRate.projected.toFixed(2)} projected`, color: 'yellow' },
   ];
 
   return (
     <motion.div 
-      className="p-6 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 via-card/50 to-transparent backdrop-blur-xl overflow-hidden relative"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.05 }}
+      className="relative rounded-2xl border border-border/30 overflow-hidden"
+      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
     >
-      {/* Ambient glow */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-60 h-60 bg-yellow-500/5 rounded-full blur-[80px]" />
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-br from-card/95 via-card/60 to-card/30 backdrop-blur-2xl" />
+      <motion.div className="absolute -top-20 -right-20 w-60 h-60 bg-yellow-500/5 rounded-full blur-[100px]" 
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity }} />
 
-      {/* Header */}
-      <div className="relative flex items-center justify-between mb-5">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-500/20 border border-yellow-500/30 flex items-center justify-center">
-            <Zap className="w-5 h-5 text-yellow-400" />
+      <div className="relative p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/15 to-amber-500/15 border border-yellow-500/25 flex items-center justify-center">
+              <Zap className="w-5 h-5 text-yellow-400" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Capacity Monitor</h3>
+              <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">REAL-TIME LOAD</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-sm font-semibold text-foreground">Capacity Monitor</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">REAL-TIME LOAD ANALYSIS</p>
-          </div>
+          <Badge variant="outline" className={cn("text-[9px] font-mono gap-1.5", sc.border, sc.text, sc.bg)}>
+            {metrics.status === 'critical' && <AlertTriangle className="w-3 h-3" />}
+            <motion.span className={cn("w-1.5 h-1.5 rounded-full", metrics.status === 'healthy' ? 'bg-emerald-500' : metrics.status === 'elevated' ? 'bg-amber-500' : 'bg-red-500')}
+              animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            {sc.label}
+          </Badge>
         </div>
-        <Badge variant="outline" className={cn("text-[9px] font-mono gap-1.5", sc.border, sc.text, sc.bg)}>
-          {metrics.status === 'critical' && <AlertTriangle className="w-3 h-3" />}
-          <motion.span 
-            className={cn("w-1.5 h-1.5 rounded-full", metrics.status === 'healthy' ? 'bg-emerald-500' : metrics.status === 'elevated' ? 'bg-amber-500' : 'bg-red-500')}
-            animate={{ opacity: [1, 0.5, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-          {sc.label}
-        </Badge>
-      </div>
 
-      {/* System Load */}
-      <div className="relative space-y-2 mb-5">
-        <div className="flex justify-between text-xs font-mono">
-          <span className="text-muted-foreground">System Load</span>
-          <span className={cn(
-            metrics.loadPercent > 80 ? 'text-red-400' : metrics.loadPercent > 50 ? 'text-amber-400' : 'text-emerald-400'
-          )}>
-            {metrics.loadPercent}%
-          </span>
-        </div>
-        <Progress 
-          value={metrics.loadPercent} 
-          className={cn(
-            "h-2.5 rounded-full",
+        {/* System Load */}
+        <div className="space-y-2 mb-5">
+          <div className="flex justify-between text-xs font-mono">
+            <span className="text-muted-foreground/60">System Load</span>
+            <span className={cn(metrics.loadPercent > 80 ? 'text-red-400' : metrics.loadPercent > 50 ? 'text-amber-400' : 'text-emerald-400')}>
+              {metrics.loadPercent}%
+            </span>
+          </div>
+          <Progress value={metrics.loadPercent} className={cn("h-2 rounded-full",
             metrics.loadPercent > 80 ? "[&>div]:bg-gradient-to-r [&>div]:from-red-500 [&>div]:to-rose-400" :
             metrics.loadPercent > 50 ? "[&>div]:bg-gradient-to-r [&>div]:from-amber-500 [&>div]:to-yellow-400" :
-            "[&>div]:bg-gradient-to-r [&>div]:from-emerald-500 [&>div]:to-green-400"
-          )}
-        />
-      </div>
-
-      {/* Metric Cards */}
-      <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-        {cards.map((card, idx) => {
-          const CardIcon = card.icon;
-          return (
-            <motion.div
-              key={card.label}
-              className={cn(
-                "p-4 rounded-xl border bg-gradient-to-br transition-all",
-                card.border, card.hover, card.bg
-              )}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + idx * 0.05 }}
-              whileHover={{ y: -2 }}
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center border", card.iconBg)}>
-                  <CardIcon className={cn("w-3.5 h-3.5", card.iconColor)} />
-                </div>
-                <span className="text-[10px] text-muted-foreground font-mono uppercase">{card.label}</span>
-              </div>
-              <div className="font-mono">
-                <span className="text-xl font-bold text-foreground">{card.value}</span>
-                <span className="text-xs text-muted-foreground ml-1">{card.suffix}</span>
-              </div>
-              <p className="text-[10px] text-muted-foreground mt-1">{card.sub}</p>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Token Budget */}
-      <div className="relative space-y-1.5">
-        <div className="flex justify-between text-[10px] font-mono">
-          <span className="text-muted-foreground">Token Budget</span>
-          <span className="text-foreground">{formatNumber(metrics.tokenConsumption.today)} / {formatNumber(metrics.tokenConsumption.dailyBudget)}</span>
+            "[&>div]:bg-gradient-to-r [&>div]:from-emerald-500 [&>div]:to-cyan-400"
+          )} />
         </div>
-        <Progress 
-          value={(metrics.tokenConsumption.today / metrics.tokenConsumption.dailyBudget) * 100} 
-          className="h-1.5 rounded-full"
-        />
+
+        {/* Metric Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+          {cards.map((card, idx) => {
+            const CardIcon = card.icon;
+            return (
+              <motion.div
+                key={card.label}
+                className={cn("p-4 rounded-xl border transition-all duration-200",
+                  `border-${card.color}-500/15 hover:border-${card.color}-500/30`
+                )}
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + idx * 0.05 }}
+                whileHover={{ y: -2, transition: { duration: 0.15 } }}
+              >
+                <div className={cn("absolute inset-0 bg-gradient-to-br rounded-xl opacity-[0.04]", `from-${card.color}-500 to-transparent`)} />
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center border",
+                      `bg-${card.color}-500/10 border-${card.color}-500/25`
+                    )}>
+                      <CardIcon className={cn("w-3.5 h-3.5", card.iconColor)} />
+                    </div>
+                    <span className="text-[10px] text-muted-foreground/60 font-mono uppercase">{card.label}</span>
+                  </div>
+                  <div className="font-mono">
+                    <span className="text-xl font-bold text-foreground">{card.value}</span>
+                    <span className="text-xs text-muted-foreground/40 ml-1">{card.suffix}</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/40 mt-1">{card.sub}</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Token Budget */}
+        <div className="space-y-1.5">
+          <div className="flex justify-between text-[10px] font-mono">
+            <span className="text-muted-foreground/50">Token Budget</span>
+            <span className="text-foreground/60">{formatNumber(metrics.tokenConsumption.today)} / {formatNumber(metrics.tokenConsumption.dailyBudget)}</span>
+          </div>
+          <Progress value={(metrics.tokenConsumption.today / metrics.tokenConsumption.dailyBudget) * 100} className="h-1.5 rounded-full" />
+        </div>
       </div>
     </motion.div>
   );
