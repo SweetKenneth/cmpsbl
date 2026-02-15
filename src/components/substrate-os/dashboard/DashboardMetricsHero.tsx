@@ -3,7 +3,7 @@
  * Large health ring with gradient accents - 21 Modules, 6 Layers
  */
 
-import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility, RefreshCw } from 'lucide-react';
+import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility, RefreshCw, Database, Send, ClipboardCheck, Fingerprint, DollarSign, Box, Code, Globe } from 'lucide-react';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { useMetric } from '@/stores/publicMetricsStore';
 import { cn } from '@/lib/utils';
@@ -13,20 +13,34 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
 const MODULES_CONFIG = [
+  // Kernel (3)
   { id: 'core', label: 'Core', icon: Cpu, color: 'text-orange-400', bg: 'bg-orange-500', hsl: 'hsl(25, 95%, 53%)' },
   { id: 'ripple', label: 'Ripple', icon: Radio, color: 'text-cyan-400', bg: 'bg-cyan-500', hsl: 'hsl(188, 86%, 53%)' },
   { id: 'access', label: 'Access', icon: Key, color: 'text-amber-400', bg: 'bg-amber-500', hsl: 'hsl(38, 92%, 50%)' },
+  // Cognitive (3)
   { id: 'brain', label: 'Brain', icon: Brain, color: 'text-purple-400', bg: 'bg-purple-500', hsl: 'hsl(270, 67%, 58%)' },
   { id: 'decode', label: 'Decode', icon: Activity, color: 'text-fuchsia-400', bg: 'bg-fuchsia-500', hsl: 'hsl(292, 84%, 61%)' },
-  { id: 'nexus', label: 'Nexus', icon: Zap, color: 'text-green-400', bg: 'bg-green-500', hsl: 'hsl(142, 76%, 42%)' },
-  { id: 'defense', label: 'Defense', icon: Shield, color: 'text-red-400', bg: 'bg-red-500', hsl: 'hsl(0, 84%, 60%)' },
-  { id: 'vision', label: 'Vision', icon: Eye, color: 'text-blue-400', bg: 'bg-blue-500', hsl: 'hsl(217, 91%, 60%)' },
   { id: 'dream', label: 'Dream', icon: Moon, color: 'text-violet-400', bg: 'bg-violet-500', hsl: 'hsl(258, 90%, 66%)' },
+  // Operational (4)
+  { id: 'defense', label: 'Defense', icon: Shield, color: 'text-red-400', bg: 'bg-red-500', hsl: 'hsl(0, 84%, 60%)' },
+  { id: 'nexus', label: 'Nexus', icon: Zap, color: 'text-green-400', bg: 'bg-green-500', hsl: 'hsl(142, 76%, 42%)' },
+  { id: 'vision', label: 'Vision', icon: Eye, color: 'text-blue-400', bg: 'bg-blue-500', hsl: 'hsl(217, 91%, 60%)' },
+  { id: 'encode', label: 'Encode', icon: Code, color: 'text-lime-400', bg: 'bg-lime-500', hsl: 'hsl(84, 81%, 44%)' },
+  // Administrative (4)
   { id: 'system', label: 'System', icon: Settings, color: 'text-emerald-400', bg: 'bg-emerald-500', hsl: 'hsl(160, 84%, 39%)' },
   { id: 'modernizer', label: 'Modernizer', icon: Sparkles, color: 'text-rose-400', bg: 'bg-rose-500', hsl: 'hsl(350, 89%, 60%)' },
   { id: 'integration', label: 'Integration', icon: Plug, color: 'text-teal-400', bg: 'bg-teal-500', hsl: 'hsl(173, 80%, 40%)' },
-  { id: 'cortex', label: 'Cortex', icon: GitBranch, color: 'text-indigo-400', bg: 'bg-indigo-500', hsl: 'hsl(239, 84%, 67%)' },
   { id: 'inclusive', label: 'Inclusive', icon: Accessibility, color: 'text-pink-400', bg: 'bg-pink-500', hsl: 'hsl(330, 81%, 60%)' },
+  // Orchestrator (2)
+  { id: 'cortex', label: 'Cortex', icon: GitBranch, color: 'text-indigo-400', bg: 'bg-indigo-500', hsl: 'hsl(239, 84%, 67%)' },
+  { id: 'atlas', label: 'Atlas', icon: Globe, color: 'text-sky-400', bg: 'bg-sky-500', hsl: 'hsl(199, 89%, 48%)' },
+  // Infrastructure (7)
+  { id: 'memory', label: 'Memory', icon: Database, color: 'text-cyan-300', bg: 'bg-cyan-400', hsl: 'hsl(187, 92%, 69%)' },
+  { id: 'relay', label: 'Relay', icon: Send, color: 'text-amber-300', bg: 'bg-amber-400', hsl: 'hsl(45, 93%, 58%)' },
+  { id: 'audit', label: 'Audit', icon: ClipboardCheck, color: 'text-slate-400', bg: 'bg-slate-500', hsl: 'hsl(215, 16%, 47%)' },
+  { id: 'identity', label: 'Identity', icon: Fingerprint, color: 'text-emerald-300', bg: 'bg-emerald-400', hsl: 'hsl(160, 84%, 60%)' },
+  { id: 'economy', label: 'Economy', icon: DollarSign, color: 'text-yellow-400', bg: 'bg-yellow-500', hsl: 'hsl(48, 96%, 53%)' },
+  { id: 'sandbox', label: 'Sandbox', icon: Box, color: 'text-orange-300', bg: 'bg-orange-400', hsl: 'hsl(27, 96%, 61%)' },
 ];
 
 export function DashboardMetricsHero() {
