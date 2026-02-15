@@ -8,7 +8,7 @@
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
-import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition } from './TerminalCommands';
+import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition, getCommandTier, meetsRequiredTier, getTierIcon, getTierLabel, type CommandTier } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
 import { resolveAlias, addAlias, removeAlias, formatAliasHelp } from './useTerminalAliases';
 import { getMacro, createMacro, deleteMacro, formatMacroHelp, formatMacroDetail } from './useTerminalMacros';
@@ -317,12 +317,14 @@ function generateModuleHelp(module: keyof typeof COMMAND_CATEGORIES): string {
   
   for (const cmd of cat.commands) {
     const paddedCmd = cmd.command.padEnd(maxCmdLen + 2);
-    const opMarker = cmd.requiresOperator ? '⚡' : '○';
+    const tier = getCommandTier(cmd);
+    const tierIcon = getTierIcon(tier);
+    const tierTag = tier !== 'free' ? ` [${getTierLabel(tier)}]` : '';
     const argsHint = cmd.args ? ` ${cmd.args}` : '';
-    output += `│ ${opMarker} ${paddedCmd} ∷ ${cmd.description}${argsHint}\n`;
+    output += `│ ${tierIcon} ${paddedCmd} ∷ ${cmd.description}${argsHint}${tierTag}\n`;
   }
   
-  output += `│\n│ ⚡ = Operator required  ○ = Observer accessible\n`;
+  output += `│\n│ ○ = Free  ◆ = Creator  ★ = Architect  ◉ = Governor\n`;
   output += `└──────────────────────────────────────────────────────────`;
   
   return output;
@@ -335,10 +337,16 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│          CMPSBL® OS v9.3.0 — COMMAND REFERENCE              │
+│          CMPSBL® OS v10.5.0 — COMMAND REFERENCE             │
 ├─────────────────────────────────────────────────────────────┤
 │  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 21 + Synergies          │
 │  Architecture: 21-module / 6-layer + 200 Synergy Pipelines  │
+│                                                             │
+│  Access Tiers:                                              │
+│    ○ FREE        Read-only, status, pulse                   │
+│    ◆ CREATOR     Actions, mutations ($49/mo)                │
+│    ★ ARCHITECT   Evolution, modernizer ($149/mo)            │
+│    ◉ GOVERNOR    System restore, admin (CMPSBL only)        │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │
@@ -582,7 +590,8 @@ function generateFullHelp(): string {
 // Execute a substrate command
 export async function executeCommand(
   command: string, 
-  isOperator: boolean
+  isOperator: boolean,
+  userTier?: CommandTier
 ): Promise<ExecutionResult> {
   const { base, args } = parseArgs(command);
   
@@ -930,13 +939,19 @@ ${identityLine}│  Mode: ${roleDisplay}
     return { success: true, output: formatAuditLog(getLocalAuditLog(), limit) };
   }
 
-  // Check if command requires operator
+  // Check if command requires a specific tier
   const cmdDef = ALL_COMMANDS.find(c => c.command.toLowerCase() === base);
-  if (cmdDef?.requiresOperator && !isOperator) {
-    return { 
-      success: false, 
-      output: `▓ ACCESS DENIED: Operator privileges required for '${base}'\n  ${getRandomItem(PERSONALITY_RESPONSES.error)}` 
-    };
+  if (cmdDef) {
+    const requiredTier = getCommandTier(cmdDef);
+    const effectiveTier: CommandTier = userTier || (isOperator ? 'creator' : 'free');
+    if (!meetsRequiredTier(effectiveTier, requiredTier)) {
+      const tierLabel = getTierLabel(requiredTier);
+      const currentLabel = getTierLabel(effectiveTier);
+      return { 
+        success: false, 
+        output: `▓ ACCESS DENIED: ${tierLabel} tier required for '${base}'\n  Your tier: ${currentLabel}\n  Upgrade at cmpsbl.lovable.app/pricing to unlock this command.\n  ${getRandomItem(PERSONALITY_RESPONSES.error)}` 
+      };
+    }
   }
 
   // Execute substrate commands

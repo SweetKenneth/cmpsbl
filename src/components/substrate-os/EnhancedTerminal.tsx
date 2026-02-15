@@ -31,6 +31,7 @@ import {
 } from './terminal/TerminalTypes';
 import { ALL_COMMANDS, searchCommands, type CommandDefinition } from './terminal/TerminalCommands';
 import { executeCommand, type ExecutionResult } from './terminal/TerminalExecutor';
+import { useUserRole } from '@/hooks/useUserRole';
 import { resolveAlias } from './terminal/useTerminalAliases';
 import { getMacro } from './terminal/useTerminalMacros';
 import { scheduleCommand, parseDelay, formatScheduleConfirmation } from './terminal/useTerminalScheduler';
@@ -46,6 +47,7 @@ interface EnhancedTerminalProps {
 }
 
 export function EnhancedTerminal({ enabled, className, fullHeight = false }: EnhancedTerminalProps) {
+  const { role: userTier } = useUserRole();
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<CommandResult[]>([]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -146,7 +148,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     const startTime = Date.now();
     const resultId = addResult(resolvedCmd, 'pending', getRandomItem(PERSONALITY_RESPONSES.thinking));
 
-    const result = await executeCommand(resolvedCmd, enabled);
+    const result = await executeCommand(resolvedCmd, enabled, userTier);
     const duration = Date.now() - startTime;
 
     // Record to audit log
@@ -264,7 +266,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
       const seconds = parseDelay(interval);
       if (seconds) {
         const watchId = startWatch(watchCmd, seconds / 1000, async (cmd) => {
-          const res = await executeCommand(cmd, enabled);
+          const res = await executeCommand(cmd, enabled, userTier);
           return { success: res.success, output: res.output };
         });
         updateResult(resultId, 'success', `◉ Watch started: ${watchId.slice(0, 12)}\n  Command: ${watchCmd}\n  Interval: ${interval}\n  Use 'watch stop ${watchId.slice(0, 8)}' to stop`, duration);
@@ -282,7 +284,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
       const schedCmd = parts.slice(1).join('__');
       try {
         const id = scheduleCommand(schedCmd, delay, async (cmd) => {
-          const res = await executeCommand(cmd, enabled);
+          const res = await executeCommand(cmd, enabled, userTier);
           addResult(cmd, res.success ? 'success' : 'error', `[Scheduled] ${res.output}`);
           return { success: res.success, output: res.output };
         });

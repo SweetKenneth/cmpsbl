@@ -1,30 +1,36 @@
 /**
  * User Role Detection Hook — Centralized Access Identity
- * Determines Observer / Operator / Governor access level
+ * Determines Free / Creator / Architect / Governor access level
  * 
  * Uses the Access module's identity endpoint for unified role resolution
  * across Dashboard, Terminal, Modernizer, and all substrate modules.
  * 
- * Role Hierarchy (governor ⊇ operator ⊇ observer):
- * - Observer: Any authenticated user (read-only telemetry)
- * - Operator: Users with 'operator' or higher role (can trigger safe actions)
- * - Governor: Admin users only (full system access, including backups/restores)
+ * Role Hierarchy (governor ⊇ architect ⊇ creator ⊇ free):
+ * - Free: Any authenticated user (read-only dashboard, basic commands)
+ * - Creator: Users with 'operator' or 'moderator' role (terminal, engines, analytics)
+ * - Architect: Users with specific architect entitlements (evolution, modernizer, mesh)
+ * - Governor: Admin users only (full system access, cognitive forge, agencies, mints)
  * 
- * @version 2.1.0 — Unified with Access module identity
+ * @version 3.0.0 — Unified with pricing tiers
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-export type SubstrateRole = 'observer' | 'operator' | 'governor';
+export type SubstrateRole = 'free' | 'creator' | 'architect' | 'governor';
 
 interface UserRoleState {
   role: SubstrateRole;
   loading: boolean;
-  isObserver: boolean;
-  isOperator: boolean;
+  isFree: boolean;
+  isCreator: boolean;
+  isArchitect: boolean;
   isGovernor: boolean;
+  /** @deprecated Use isFree instead */
+  isObserver: boolean;
+  /** @deprecated Use isCreator instead */
+  isOperator: boolean;
   displayName: string | null;
   developerId: string | null;
   refresh: () => Promise<void>;
@@ -32,14 +38,14 @@ interface UserRoleState {
 
 export function useUserRole(): UserRoleState {
   const { user } = useAuth();
-  const [role, setRole] = useState<SubstrateRole>('observer');
+  const [role, setRole] = useState<SubstrateRole>('free');
   const [loading, setLoading] = useState(true);
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [developerId, setDeveloperId] = useState<string | null>(null);
 
   const detectRole = useCallback(async () => {
     if (!user) {
-      setRole('observer');
+      setRole('free');
       setDisplayName(null);
       setDeveloperId(null);
       setLoading(false);
@@ -71,24 +77,26 @@ export function useUserRole(): UserRoleState {
         return;
       }
 
-      const { data: isOperatorRole } = await supabase.rpc('has_role_text', {
-        _user_id: user.id,
-        _role: 'operator'
-      });
-
-      if (isOperatorRole === true) {
-        setRole('operator');
-        setLoading(false);
-        return;
-      }
-
+      // Check for architect role (moderator maps to architect)
       const { data: isModerator } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'moderator'
       });
 
       if (isModerator === true) {
-        setRole('operator');
+        setRole('architect');
+        setLoading(false);
+        return;
+      }
+
+      // Check for creator role (operator maps to creator)
+      const { data: isOperatorRole } = await supabase.rpc('has_role_text', {
+        _user_id: user.id,
+        _role: 'operator'
+      });
+
+      if (isOperatorRole === true) {
+        setRole('creator');
         setLoading(false);
         return;
       }
@@ -100,8 +108,13 @@ export function useUserRole(): UserRoleState {
         });
 
         if (!identityError && identityResult?.success) {
-          const substrateRole = identityResult.substrate_role as SubstrateRole;
-          setRole(substrateRole);
+          // Map legacy roles to new tier names
+          const legacyRole = identityResult.substrate_role;
+          const mappedRole: SubstrateRole = 
+            legacyRole === 'governor' ? 'governor' :
+            legacyRole === 'operator' ? 'creator' :
+            'free';
+          setRole(mappedRole);
           setDisplayName(identityResult.developer?.display_name || null);
           setDeveloperId(identityResult.developer?.id || null);
           setLoading(false);
@@ -111,11 +124,43 @@ export function useUserRole(): UserRoleState {
         // Continue to default
       }
 
-      // Default to observer for authenticated users
-      setRole('observer');
+      // Check subscription tier from access_subscriptions
+      try {
+        const { data: dev } = await supabase
+          .from('access_developers')
+          .select('id')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        if (dev) {
+          const { data: sub } = await supabase
+            .from('access_subscriptions')
+            .select('tier')
+            .eq('developer_id', dev.id)
+            .eq('status', 'active')
+            .maybeSingle();
+          
+          if (sub?.tier) {
+            const tierMap: Record<string, SubstrateRole> = {
+              'enterprise': 'architect',
+              'pro': 'architect',
+              'builder': 'creator',
+              'free': 'free',
+            };
+            setRole(tierMap[sub.tier] || 'free');
+            setLoading(false);
+            return;
+          }
+        }
+      } catch {
+        // Continue to default
+      }
+
+      // Default to free for authenticated users
+      setRole('free');
     } catch (error) {
       console.error('Role detection error:', error);
-      setRole('observer');
+      setRole('free');
     } finally {
       setLoading(false);
     }
@@ -125,12 +170,22 @@ export function useUserRole(): UserRoleState {
     detectRole();
   }, [detectRole]);
 
+  // Tier hierarchy: governor > architect > creator > free
+  const isGovernor = role === 'governor';
+  const isArchitect = isGovernor || role === 'architect';
+  const isCreator = isArchitect || role === 'creator';
+  const isFree = true; // Everyone is at least free
+
   return {
     role,
     loading,
-    isObserver: true, // Everyone can observe
-    isOperator: role === 'operator' || role === 'governor',
-    isGovernor: role === 'governor',
+    isFree,
+    isCreator,
+    isArchitect,
+    isGovernor,
+    // Legacy compatibility
+    isObserver: isFree,
+    isOperator: isCreator,
     displayName,
     developerId,
     refresh: detectRole,
