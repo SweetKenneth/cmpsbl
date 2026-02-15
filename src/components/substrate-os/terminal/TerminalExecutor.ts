@@ -1114,6 +1114,61 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       result = await brain.coherenceCheck(args[0] as 'standard' | 'deep' | undefined);
     } else if (base === 'brain.forecast') {
       result = await brain.forecast(args[0], args[1]);
+    } else if (base === 'brain.forecast_eval') {
+      result = await substrate.invoke({ module: 'brain', action: 'forecast_eval' });
+    } else if (base === 'brain.causal') {
+      result = await substrate.invoke({ module: 'brain', action: 'causal', payload: { query_id: args[0] } });
+    } else if (base === 'brain.ethical') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Proposed action required\n  Usage: brain.ethical <proposed_action>' };
+      }
+      result = await substrate.invoke({ module: 'brain', action: 'ethical', payload: { content: args.join(' ') } });
+    } else if (base === 'brain.self_critique') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Output content required\n  Usage: brain.self_critique <output> [output_type]' };
+      }
+      result = await substrate.invoke({ module: 'brain', action: 'self_critique', payload: { output: args[0], output_type: args[1] || 'text' } });
+    } else if (base === 'brain.systems_reason') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: System and issue required\n  Usage: brain.systems_reason <system> <issue>' };
+      }
+      result = await substrate.invoke({ module: 'brain', action: 'systems_reason', payload: { system: args[0], issue: args.slice(1).join(' ') } });
+    } else if (base === 'brain.pattern_fusion') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Problem required\n  Usage: brain.pattern_fusion <problem> [domain_1] [domain_2]' };
+      }
+      result = await substrate.invoke({ module: 'brain', action: 'pattern_fusion', payload: { problem: args[0], domain1: args[1], domain2: args[2] } });
+    } else if (base === 'brain.synthesize_knowledge') {
+      result = await substrate.invoke({ module: 'brain', action: 'synthesize_knowledge' });
+    } else if (base === 'brain.lesson_compress') {
+      result = await substrate.invoke({ module: 'brain', action: 'lesson_compress', payload: { timeframe: args[0] || 'last_hour' } });
+    } else if (base === 'brain.curiosity_reflect') {
+      result = await substrate.invoke({ module: 'brain', action: 'curiosity_reflect' });
+    } else if (base === 'brain.tone_detect') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Message required\n  Usage: brain.tone_detect <message>' };
+      }
+      result = await substrate.invoke({ module: 'brain', action: 'tone_detect', payload: { message: args.join(' ') } });
+    } else if (base === 'brain.insight_aggregate') {
+      result = await substrate.invoke({ module: 'brain', action: 'insight_aggregate' });
+    } else if (base === 'brain.insight_synthesize') {
+      result = await substrate.invoke({ module: 'brain', action: 'insight_synthesize' });
+    } else if (base === 'brain.temporal_score') {
+      result = await substrate.invoke({ module: 'brain', action: 'temporal_score', payload: { query: args[0], context_type: args[1] } });
+    } else if (base === 'brain.reflexive_plan') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Task required\n  Usage: brain.reflexive_plan <task> [context]' };
+      }
+      result = await substrate.invoke({ module: 'brain', action: 'reflexive_plan', payload: { task: args[0], context: args.slice(1).join(' ') || undefined } });
+    } else if (base === 'brain.reward') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Memory ID required\n  Usage: brain.reward <memory_id> [reward_score] [outcome_type]' };
+      }
+      result = await substrate.invoke({ module: 'brain', action: 'reward', payload: { memory_id: args[0], reward_score: args[1] ? parseFloat(args[1]) : 0.1, outcome_type: args[2] || 'positive' } });
+    } else if (base === 'brain.reinforce_cycle') {
+      result = await substrate.invoke({ module: 'brain', action: 'reinforce_cycle', payload: { lookbackHours: args[0] ? parseInt(args[0]) : 24, minScore: args[1] ? parseFloat(args[1]) : 0.5 } });
+    } else if (base === 'brain.persona_refine') {
+      result = await substrate.invoke({ module: 'brain', action: 'persona_refine' });
     }
 
     // DECODE module
@@ -1368,6 +1423,71 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     } else if (base === 'system.diagnostics') {
       const full = args.includes('--full');
       result = await substrate.invoke({ module: 'system', action: 'diagnostics', payload: { full } });
+    } else if (base === 'system.doctor') {
+      // Quick diagnostics: env, DB, routing, providers
+      try {
+        const [sysResult, visionResult, nexusResult, defenseResult] = await Promise.allSettled([
+          system.status(),
+          vision.pulse(),
+          substrate.invoke({ module: 'nexus', action: 'pulse' }),
+          defense.posture(),
+        ]);
+        const sysOk = sysResult.status === 'fulfilled' && sysResult.value?.success !== false;
+        const visOk = visionResult.status === 'fulfilled' && visionResult.value?.success !== false;
+        const nexOk = nexusResult.status === 'fulfilled' && nexusResult.value?.success !== false;
+        const defOk = defenseResult.status === 'fulfilled' && defenseResult.value?.success !== false;
+        const allOk = sysOk && visOk && nexOk && defOk;
+        const passed = [sysOk, visOk, nexOk, defOk].filter(Boolean).length;
+        return {
+          success: allOk,
+          output: `
+╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM DOCTOR — Quick Diagnostics                            ║
+╠══════════════════════════════════════════════════════════════╣
+║  ${sysOk ? '✅' : '❌'} System Status      ${sysOk ? 'PASS' : 'FAIL'}                                  ║
+║  ${visOk ? '✅' : '❌'} Vision Pulse       ${visOk ? 'PASS' : 'FAIL'}                                  ║
+║  ${nexOk ? '✅' : '❌'} Nexus Routing      ${nexOk ? 'PASS' : 'FAIL'}                                  ║
+║  ${defOk ? '✅' : '❌'} Defense Posture    ${defOk ? 'PASS' : 'FAIL'}                                  ║
+╠══════════════════════════════════════════════════════════════╣
+║  Result: ${passed}/4 checks passed  ${allOk ? '🟢 HEALTHY' : '🟡 DEGRADED'}                      ║
+╚══════════════════════════════════════════════════════════════╝`,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Doctor error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'system.verify') {
+      // Non-destructive verification of all 21 modules
+      const verbose = args.includes('--verbose');
+      try {
+        const moduleChecks = ALL_21_MODULES.map(async (mod) => {
+          try {
+            const r = await substrate.invoke({ module: mod.key as any, action: 'pulse' });
+            return { key: mod.key, label: mod.label, layer: mod.layer, ok: r?.success !== false };
+          } catch {
+            return { key: mod.key, label: mod.label, layer: mod.layer, ok: false };
+          }
+        });
+        const results = await Promise.allSettled(moduleChecks);
+        const checks = results.map(r => r.status === 'fulfilled' ? r.value : { key: '?', label: '?', layer: '?', ok: false });
+        const passed = checks.filter(c => c.ok).length;
+        const failed = checks.filter(c => !c.ok);
+        let output = `
+╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM VERIFY — Non-Destructive Module Check                 ║
+╠══════════════════════════════════════════════════════════════╣
+║  Modules Checked: 21    Passed: ${String(passed).padEnd(2)}    Failed: ${String(21 - passed).padEnd(2)}           ║
+╠══════════════════════════════════════════════════════════════╣`;
+        for (const c of checks) {
+          output += `\n║  ${c.ok ? '✅' : '❌'} ${c.label.padEnd(14)} [${c.layer.substring(0, 5).padEnd(5)}]  ${c.ok ? 'PASS' : 'FAIL'}                      ║`;
+        }
+        output += `
+╠══════════════════════════════════════════════════════════════╣
+║  Overall: ${passed === 21 ? '🟢 ALL SYSTEMS NOMINAL' : `🟡 ${21 - passed} MODULE(S) NEED ATTENTION`}                       ║
+╚══════════════════════════════════════════════════════════════╝`;
+        return { success: passed === 21, output };
+      } catch (err) {
+        return { success: false, output: `▓ Verify error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
     } else if (base === 'system.resilience') {
       const role = args[0] as 'observer' | 'operator' | undefined;
       result = await system.resilience(role);
