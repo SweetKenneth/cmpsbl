@@ -18,7 +18,7 @@ To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/02/08
+Last update: 2026/02/15
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
@@ -61,9 +61,11 @@ Cortex: Policy orchestration
 
 /* COLOPHON */
 
-CMPSBL® Substrate OS v9.1.0 ARCHITECT Epoch
-21 Modules • 360+ Terminal Commands
+CMPSBL® Substrate OS v10.5.1 ARCHITECT Epoch
+21 Modules • 400+ Terminal Commands
 200 Synergy Pipelines • 400+ Depot Capabilities
+CLM Engine v2.0 • Universal Brain Transfer Pipeline
+Nexus Fleet v5.0 • Infrastructure Hardening
 WCAG 2.2 Accessibility via INCLUSIVE Module
 
 CMPSBL® — Cognitive Infrastructure for AI.

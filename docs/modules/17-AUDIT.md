@@ -6,7 +6,7 @@
 
 Layer 6 — Infrastructure
 
-v9.3.0 ARCHITECT Epoch
+v10.5.1 ARCHITECT Epoch
 
 </div>
 
@@ -26,12 +26,41 @@ AUDIT provides tamper-evident, immutable logging for every security-relevant and
 | Structured Queries | Search and filter audit logs by time, actor, module, action | Free |
 | Tamper Evidence | Chained hashes ensure log integrity | Free |
 | Actor Attribution | Link every action to a specific user, API key, or system process | Pro |
-| Compliance Reports | Generate audit reports for regulatory requirements | Pro |
+| Compliance Report Templates (v10.5.1) | Pre-built generators for SOC2, GDPR, HIPAA, ISO27001 | Pro |
 | Log Retention Policies | Configurable retention periods by event category | Pro |
+| Audit Entry Compression (v10.5.1) | Automatic compression of verbose state fields on entries > 24h old | Pro |
 | Chain-of-Custody Verification | Cryptographic proof that logs have not been altered | Enterprise |
 | Cross-Instance Audit | Aggregate audit trails across multiple substrate deployments | Enterprise |
-| Regulatory Templates | Pre-built report formats for SOC 2, GDPR, HIPAA | CMPSBL |
 | Real-Time Compliance Monitoring | Continuous compliance posture assessment | CMPSBL |
+
+---
+
+## Compliance Report Templates (v10.5.1)
+
+AUDIT now includes built-in report generators for four major compliance frameworks:
+
+| Framework | Report Contents |
+|-----------|----------------|
+| **SOC2** | Access controls, data integrity, availability metrics, change management |
+| **GDPR** | Data processing records, consent tracking, right-to-erasure compliance, breach notifications |
+| **HIPAA** | Access audit trails, encryption status, minimum necessary enforcement, BAA compliance |
+| **ISO27001** | Information security controls, risk assessments, incident response, continuous improvement |
+
+Reports are generated from audit log data and can be exported in JSON or Markdown format.
+
+---
+
+## Audit Entry Compression (v10.5.1)
+
+To optimize storage without sacrificing audit integrity:
+
+| Age | Action |
+|-----|--------|
+| < 24h | Full detail preserved (all state fields) |
+| 24h–7d | Verbose `before`/`after` state fields nullified, hash preserved |
+| > 7d | Compressed to essential fields only (actor, action, timestamp, hash) |
+
+Compression is non-destructive — the `integrity_hash` chain remains valid regardless of compression level.
 
 ---
 
@@ -65,8 +94,6 @@ Verification:
   If any entry was modified, all subsequent hashes will mismatch
 ```
 
-This provides cryptographic proof that no log entry has been altered, inserted, or deleted after creation.
-
 ---
 
 ## Event Categories
@@ -92,6 +119,7 @@ This provides cryptographic proof that no log entry has been altered, inserted, 
 | MODERNIZER | Evolution events are logged with full before/after state |
 | VISION | Audit data feeds compliance dashboards |
 | RIPPLE | Subscribes to `*.audit` events from all modules |
+| BRAIN | Receives compliance pattern heuristics via Brain Transfer |
 
 ---
 
@@ -107,7 +135,7 @@ This provides cryptographic proof that no log entry has been altered, inserted, 
 
 <div align="center">
 
-CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch
+CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch
 
 Kenneth E Sweet Jr · PromptFluid
 

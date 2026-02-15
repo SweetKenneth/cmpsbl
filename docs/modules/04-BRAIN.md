@@ -4,7 +4,7 @@
 
 **Layer:** Cognitive · **Boot Order:** 4 · **Dependencies:** CORE, RIPPLE
 
-**v9.3.0 ARCHITECT Epoch**
+**v10.5.1 ARCHITECT Epoch**
 
 </div>
 
@@ -41,6 +41,53 @@ User Input → Episodic (T1) stores the interaction
                 ▼
            Meta-cognitive (T4) tracks what BRAIN knows well vs. poorly
 ```
+
+---
+
+## Universal Brain Transfer Pipeline (v10.5.0+)
+
+BRAIN now serves as the **central knowledge hub** for all 21 modules via the Universal Brain Transfer Pipeline. Knowledge discovered in any module is automatically routed to relevant consumers:
+
+```
+BRAIN Memories
+      │
+      ▼
+┌──────────────────┐
+│  Relevance Engine │  Score memories against module specializations
+└────────┬─────────┘
+         │
+         ├──► DECODE — Conversation patterns, epistemic signals
+         ├──► DEFENSE — Threat signatures, behavioral baselines
+         ├──► MEMORY — Embedding refresh signals, staleness data
+         ├──► ECONOMY — Cost patterns, budget heuristics
+         ├──► RELAY — Delivery reliability data
+         ├──► AUDIT — Compliance patterns
+         ├──► IDENTITY — Actor behavior profiles
+         ├──► SANDBOX — Execution safety heuristics
+         └──► All 21 modules — Cross-module insights
+```
+
+### Transfer Mechanics
+
+| Field | Description |
+|-------|-------------|
+| **Frequency** | Every 5 minutes (via CLM Engine) |
+| **Selection** | Top 50 memories by relevance per cycle |
+| **Routing** | Tag-based affinity matching per module |
+| **Injection** | Hot tier (`brain_memory_hot`) for instant recall |
+| **Feedback** | Relevance scores updated via EMA feedback loop |
+
+---
+
+## Memory Consolidation Engine (v10.5.0+)
+
+Server-side autonomous consolidation runs every 5 minutes:
+
+| Operation | Criteria | Action |
+|-----------|----------|--------|
+| **Promotion** | Warm → Hot | access_count > 10 within 24h |
+| **Demotion** | Hot → Warm | No access in 48h |
+| **Pruning** | Cold deletion | confidence < 0.1 AND age > 30 days |
 
 ---
 
@@ -129,6 +176,7 @@ Every memory has a confidence score (0.0 to 1.0):
 | User confirms accuracy | +0.15 |
 | Contradicted by new information | -0.20 |
 | Not accessed in 30 days | Gradual decay |
+| Relevance feedback (v10.5.0+) | EMA adjustment ±0.05 |
 
 ---
 
@@ -147,6 +195,7 @@ BRAIN maintains a graph of related memories:
 - **Context enrichment**: When recalling memory A, also surface closely associated memories
 - **Contradiction detection**: Linked memories with conflicting content flagged for review
 - **Dream synthesis**: DREAM uses association paths to discover non-obvious connections
+- **Cross-module transfer**: Association paths inform Brain Transfer routing decisions
 
 ---
 
@@ -160,6 +209,7 @@ Automatic cleanup of low-value memories:
 | Not accessed in 90 days + confidence < 0.2 | Archive |
 | Contradicted 3+ times | Flag for review |
 | Orphaned (no associations, no access in 30 days) | Soft delete |
+| Cold tier + confidence < 0.1 + age > 30 days (v10.5.0+) | Server-side pruning |
 
 ---
 
@@ -174,6 +224,8 @@ Automatic cleanup of low-value memories:
 | `brain.associate` | Link two memories |
 | `brain.stats` | Memory statistics (counts by tier, avg confidence) |
 | `brain.search` | Full-text search across all tiers |
+| `brain.transfer` | Trigger knowledge transfer to target modules (v10.5.0+) |
+| `brain.consolidate` | Trigger memory consolidation cycle (v10.5.0+) |
 
 ---
 
@@ -187,6 +239,9 @@ Automatic cleanup of low-value memories:
 | `memory.decayed` | Memory confidence decreased |
 | `memory.reinforced` | Memory confidence increased |
 | `memory.contradiction` | Conflicting memory detected |
+| `memory.promoted` | Memory moved hot ← warm (v10.5.0+) |
+| `memory.demoted` | Memory moved warm ← hot (v10.5.0+) |
+| `memory.transferred` | Memory injected into target module (v10.5.0+) |
 
 ---
 
@@ -199,6 +254,8 @@ Automatic cleanup of low-value memories:
 | Recall latency | < 50ms |
 | Association lookup | < 10ms |
 | Embedding generation | < 100ms (via NEXUS) |
+| Transfer cycle | < 6s (server-side) |
+| Consolidation cycle | < 3s (server-side) |
 
 ---
 
@@ -206,17 +263,20 @@ Automatic cleanup of low-value memories:
 
 | Module | Integration |
 |--------|-------------|
-| **DECODE** | Provides context for intent parsing |
+| **DECODE** | Provides context for intent parsing; receives conversation patterns via transfer |
 | **DREAM** | Source material for autonomous synthesis |
 | **VISION** | Memory usage metrics and trends |
 | **CORTEX** | Cross-module context assembly |
-| **DEFENSE** | Memory poisoning detection |
+| **DEFENSE** | Memory poisoning detection; receives threat signatures via transfer |
+| **MEMORY** | Embedding storage and RAG recall; receives staleness signals via transfer |
+| **ECONOMY** | Receives cost pattern heuristics via transfer |
+| **CLM Engine** | 24/7 server-side orchestration of transfer and consolidation |
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  

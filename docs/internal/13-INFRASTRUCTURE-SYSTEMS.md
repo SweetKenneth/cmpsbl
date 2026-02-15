@@ -4,7 +4,7 @@
 
 ### CONFIDENTIAL — Trade Secret
 
-**v9.3.0 ARCHITECT Epoch**
+**v10.5.1 ARCHITECT Epoch**
 
 </div>
 
@@ -12,16 +12,44 @@
 
 ## Infrastructure Layer Modules
 
-The Infrastructure layer contains 6 specialized modules added in v9.3.0:
+The Infrastructure layer contains 6 specialized modules, all upgraded in v10.5.1 with CLM-driven enhancements:
 
-| Module | Purpose | Boot Order |
-|--------|---------|------------|
-| **MEMORY** | Vector storage, RAG recall, embedding management | 15 |
-| **RELAY** | Outbound webhooks, notifications, external delivery | 16 |
-| **AUDIT** | Immutable compliance logging, audit trails | 17 |
-| **IDENTITY** | Actor attribution, session management, fingerprinting | 18 |
-| **ECONOMY** | Cost tracking, budgeting, metering | 19 |
-| **SANDBOX** | Safe code execution, isolated runtime environments | 20 |
+| Module | Purpose | Boot Order | v10.5.1 Upgrades |
+|--------|---------|------------|------------------|
+| **MEMORY** | Vector storage, RAG recall, embedding management | 15 | Staleness detection, relevance feedback |
+| **RELAY** | Outbound webhooks, notifications, external delivery | 16 | HMAC signatures, adaptive retry |
+| **AUDIT** | Immutable compliance logging, audit trails | 17 | SOC2/GDPR/HIPAA/ISO27001 templates, compression |
+| **IDENTITY** | Actor attribution, session management, fingerprinting | 18 | Reputation scoring, cross-agency portability |
+| **ECONOMY** | Cost tracking, budgeting, metering | 19 | Predictive forecasting, per-capability attribution |
+| **SANDBOX** | Safe code execution, isolated runtime environments | 20 | Resource limit enforcement, snapshot/restore |
+
+---
+
+## Cross-Cutting: CLM Engine v2.0
+
+All infrastructure modules are now serviced by the server-side CLM Engine running autonomously every 5 minutes:
+
+```
+┌──────────────────────────────────────────────┐
+│  CLM Engine v2.0 (pf-clm-engine)             │
+│  5-Phase Lifecycle — Every 5 Minutes          │
+├──────────────────────────────────────────────┤
+│  Phase 1: Cognitive Cycle (learn/reflect)     │
+│  Phase 2: Module Self-Analysis (rotating)     │
+│  Phase 3: Topic Study (10 domains)            │
+│  Phase 4: Brain Transfer (→ all 21 modules)   │
+│  Phase 5: Memory Consolidation (tier mgmt)    │
+└──────────────────────────────────────────────┘
+```
+
+### Budget & Governance
+
+| Limit | Value |
+|-------|-------|
+| Max cycles/day | 200 |
+| Max cycles/hour | 12 |
+| Quiet hours | 2am–6am UTC (reduced intensity) |
+| Kill switch | Global disable via `clm_engine_enabled` flag |
 
 ---
 
@@ -43,13 +71,24 @@ Embedding Input → Dimension Reduction → Index → Store
 | ANN recall@10 | > 95% |
 | Max vectors | 1,000,000 per tenant |
 
+### Embedding Staleness Detection (v10.5.1)
+
+Tracks `embeddingVersion` on every vector. When model version advances:
+- Stale vectors are flagged and queued for re-embedding
+- Re-embedding runs during CLM Phase 3
+- Staleness threshold: 20% triggers automatic re-embedding batch
+
+### Relevance Feedback Loop (v10.5.1)
+
+- EMA learning rate α = 0.1
+- Every retrieval adjusts `relevanceScore` based on utility feedback
+- Scores below 0.05 mark vectors as pruning candidates
+
 ### RAG Pipeline
 
 ```
-Query → Embed → Vector Search (top-k=10) → Re-rank → Context Assembly → LLM
+Query → Embed → Vector Search (top-k=10) → Re-rank → Relevance Adjust → Context Assembly → LLM
 ```
-
-Re-ranking uses cross-encoder scoring with threshold 0.3 for inclusion.
 
 ---
 
@@ -59,11 +98,18 @@ Re-ranking uses cross-encoder scoring with threshold 0.3 for inclusion.
 
 | Feature | Implementation |
 |---------|---------------|
-| Retry policy | Exponential backoff: 1s, 2s, 4s, 8s, 16s (5 attempts) |
-| Signature | HMAC-SHA256 of payload with per-endpoint secret |
+| Retry policy | Adaptive exponential backoff with jitter (v10.5.1) |
+| Signature | HMAC-SHA256 of timestamp + payload with per-endpoint secret (v10.5.1) |
 | Timeout | 10s per delivery attempt |
 | Dead letter | After 5 failures, move to dead letter queue |
 | Rate limit | 100 deliveries/minute per endpoint |
+
+### Signature Header Format (v10.5.1)
+
+```
+X-Substrate-Signature: sha256={hmac}
+X-Substrate-Timestamp: {unix_timestamp}
+```
 
 ### Notification Channels
 
@@ -76,6 +122,23 @@ Re-ranking uses cross-encoder scoring with threshold 0.3 for inclusion.
 ---
 
 ## AUDIT Module Internals
+
+### Compliance Report Templates (v10.5.1)
+
+| Framework | Generator | Output Format |
+|-----------|-----------|---------------|
+| SOC2 | `audit.compliance_report('soc2')` | JSON / Markdown |
+| GDPR | `audit.compliance_report('gdpr')` | JSON / Markdown |
+| HIPAA | `audit.compliance_report('hipaa')` | JSON / Markdown |
+| ISO27001 | `audit.compliance_report('iso27001')` | JSON / Markdown |
+
+### Entry Compression (v10.5.1)
+
+| Age | Compression Level |
+|-----|------------------|
+| < 24h | Full detail (all state fields) |
+| 24h–7d | Verbose state fields nullified, hash preserved |
+| > 7d | Essential fields only (actor, action, timestamp, hash) |
 
 ### Log Schema
 
@@ -113,10 +176,29 @@ interface AuditEntry {
 
 ## IDENTITY Module Internals
 
+### Actor Reputation System (v10.5.1)
+
+```typescript
+interface ActorReputation {
+  actor_id: string;
+  trust_score: number;       // 0.0–1.0
+  tier: 'untrusted' | 'basic' | 'verified' | 'trusted' | 'elite';
+  successful_ops: number;
+  violations: number;
+  last_updated: string;
+}
+```
+
+### Cross-Agency Portability (v10.5.1)
+
+Signed JWT tokens carry identity + reputation between agencies:
+- Payload: `actor_id`, `trust_score`, `tier`, `origin_agency`, `issued_at`, `expires_at`
+- Signature: HMAC-SHA256 with substrate-level secret
+
 ### Actor Resolution
 
 ```
-Request → Extract Auth Token → Resolve User ID → Enrich with Profile → Attach to Context
+Request → Extract Auth Token → Resolve User ID → Check Reputation → Enrich with Profile → Attach to Context
 ```
 
 | Identity Source | Priority | Method |
@@ -131,6 +213,25 @@ Request → Extract Auth Token → Resolve User ID → Enrich with Profile → A
 
 ## ECONOMY Module Internals
 
+### Predictive Cost Forecasting (v10.5.1)
+
+```typescript
+interface CostForecast {
+  dailyForecast: number;     // millicents
+  weeklyForecast: number;
+  monthlyForecast: number;
+  confidenceInterval: number; // ± range at 95%
+  trendDirection: 'increasing' | 'stable' | 'decreasing';
+  anomalyFlag: boolean;      // True if >2σ deviation
+}
+```
+
+Forecasts recalculated hourly by CLM Engine using linear regression on 30-day historical data.
+
+### Per-Capability Attribution (v10.5.1)
+
+Every capability now tracks: `totalCalls`, `totalCost`, `avgCostPerCall`, `avgTokensPerCall`, `trend`.
+
 ### Cost Tracking
 
 Every metered operation records:
@@ -139,9 +240,10 @@ Every metered operation records:
 interface EconomyEvent {
   module: string;
   action: string;
+  capability: string;        // v10.5.1
   tokens_used: number;
   compute_ms: number;
-  cost_millicents: number;   // 1/10th of a cent
+  cost_millicents: number;
   developer_id: string;
   api_key_id: string;
   product_code: string;
@@ -156,26 +258,40 @@ interface EconomyEvent {
 | Daily budget | cost > daily_limit | Block non-essential requests |
 | Monthly budget | cost > monthly_limit × 0.8 | Alert + throttle |
 | Per-request | estimated > max_request_cost | Reject with explanation |
+| Forecast anomaly | >2σ deviation | Alert + investigation |
 
 ---
 
 ## SANDBOX Module Internals
+
+### Resource Limit Enforcement (v10.5.1)
+
+| Resource | Default | Max | Enforcement |
+|----------|---------|-----|-------------|
+| CPU time | 5s | 30s | Kill |
+| Memory | 128MB | 512MB | OOM kill |
+| Execution time | 30s | 5min | Timeout kill |
+| Concurrency | 5 | 10 | Queue rejection |
+| Output | 1MB | 10MB | Truncation |
+
+### Snapshot/Restore (v10.5.1)
+
+- Max 5 snapshots per sandbox
+- Includes: variables, function definitions, execution context
+- Auto-cleanup: oldest removed when limit reached
 
 ### Execution Environment
 
 | Feature | Specification |
 |---------|--------------|
 | Runtime | Isolated V8 isolate (Deno-based) |
-| Memory limit | 128MB per execution |
-| CPU time limit | 5 seconds |
 | Network access | Allowlisted domains only |
 | File system | No access |
-| Max concurrent | 10 sandboxes |
 
 ### Security Boundary
 
 ```
-User Code → Parse → AST Safety Check → Sandbox Execute → Output Sanitize → Return
+User Code → Parse → AST Safety Check → Resource Allocation → Sandbox Execute → Output Sanitize → Return
 ```
 
 AST safety check rejects:
@@ -188,7 +304,7 @@ AST safety check rejects:
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch — INTERNAL USE ONLY*
+*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch — INTERNAL USE ONLY*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  

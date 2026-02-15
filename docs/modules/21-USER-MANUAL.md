@@ -4,7 +4,7 @@
 
 ### Complete Usage Guide
 
-v9.3.0 ARCHITECT Epoch
+v10.5.1 ARCHITECT Epoch
 
 </div>
 
@@ -252,7 +252,7 @@ brain.config consolidation_threshold 0.6
 
 <div align="center">
 
-CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch
+CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch
 
 Kenneth E Sweet Jr · PromptFluid
 
