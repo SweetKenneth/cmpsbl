@@ -58,7 +58,7 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         >
           <Link to="/showcase">
             <Crown className="w-4 h-4" />
-            <span className="hidden lg:inline">Proof Stamp</span>
+            <span className="hidden lg:inline">Showcase</span>
           </Link>
         </Button>
 

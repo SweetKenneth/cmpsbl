@@ -115,7 +115,7 @@ export function CmpsblNav() {
         { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap },
         { name: "Engines", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
         { name: "Composable Artifacts", href: "/store", description: "Capabilities, templates & synergy pipelines", icon: Sparkles },
-        { name: "Proof Stamp", href: "/showcase", description: "Live proof-of-capability demonstrations", icon: Rocket },
+        { name: "Showcase", href: "/showcase", description: "Live proof-of-capability demonstrations", icon: Rocket },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
@@ -526,15 +526,17 @@ export function CmpsblNav() {
                   { name: "Composable Artifacts", href: "/store", icon: Sparkles },
                   { name: "Composable Cognitives", href: "/composable-cognitives", icon: Zap },
                   { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
-                  { name: "Proof Stamp", href: "/showcase", icon: Rocket },
+                  { name: "Showcase", href: "/showcase", icon: Rocket, badge: "PROOF" },
                 ].map((item, idx) => (
                   <Link
                     key={item.href}
                     to={item.href}
                     className={cn(
-                      "flex items-center gap-3 p-4 rounded-xl transition-colors touch-manipulation",
+                      "flex items-center gap-3 p-4 rounded-xl transition-all touch-manipulation",
                       "bg-card hover:bg-secondary border border-border shadow-sm",
-                      isActive(item.href) && "bg-primary/10 border-primary/30"
+                      isActive(item.href) && "bg-primary/10 border-primary/30",
+                      item.badge === "PROOF" && !isActive(item.href) && "border-primary/25 shadow-[0_0_12px_-3px_hsl(var(--primary)/0.25)] bg-primary/[0.03]",
+                      item.badge === "PROOF" && isActive(item.href) && "shadow-[0_0_18px_-3px_hsl(var(--primary)/0.35)]"
                     )}
                   >
                     <item.icon className={cn(
