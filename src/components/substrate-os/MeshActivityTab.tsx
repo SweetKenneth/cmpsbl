@@ -40,6 +40,8 @@ import { MeshProposalsPanel } from './mesh/MeshProposalsPanel';
 import { MeshScoringPanel } from './mesh/MeshScoringPanel';
 import { MeshSchedulerPanel } from './mesh/MeshSchedulerPanel';
 import { MeshTopologyGraph } from './mesh/MeshTopologyGraph';
+import { MeshHealthPanel } from './mesh/MeshHealthPanel';
+import { MeshFederationPanel } from './mesh/MeshFederationPanel';
 
 export function MeshActivityTab() {
   const { enabled, toggle } = useMeshToggle();
@@ -51,7 +53,7 @@ export function MeshActivityTab() {
   const [savingId, setSavingId] = useState<string | null>(null);
   const [pipelineName, setPipelineName] = useState('');
   const [runningPipeline, setRunningPipeline] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<'live' | 'pipelines' | 'proposals' | 'scoring' | 'scheduler' | 'topology'>('live');
+  const [activeView, setActiveView] = useState<'live' | 'pipelines' | 'proposals' | 'scoring' | 'scheduler' | 'topology' | 'health' | 'federation'>('live');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const modules = getMeshModules();
@@ -234,6 +236,18 @@ export function MeshActivityTab() {
               className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'topology' ? 'bg-emerald-500/20 text-emerald-400' : 'text-muted-foreground hover:text-foreground')}
             >
               <Network className="w-3 h-3 inline mr-1" />Topology
+            </button>
+            <button 
+              onClick={() => setActiveView('health')}
+              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'health' ? 'bg-red-500/20 text-red-400' : 'text-muted-foreground hover:text-foreground')}
+            >
+              <Activity className="w-3 h-3 inline mr-1" />Health
+            </button>
+            <button 
+              onClick={() => setActiveView('federation')}
+              className={cn("px-3 py-1.5 text-xs font-medium transition-colors", activeView === 'federation' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
+            >
+              <Network className="w-3 h-3 inline mr-1" />Federation
             </button>
           </div>
           <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}>
@@ -518,6 +532,10 @@ export function MeshActivityTab() {
         <MeshSchedulerPanel />
       ) : activeView === 'topology' ? (
         <MeshTopologyGraph />
+      ) : activeView === 'health' ? (
+        <MeshHealthPanel />
+      ) : activeView === 'federation' ? (
+        <MeshFederationPanel />
       ) : null}
     </motion.main>
   );

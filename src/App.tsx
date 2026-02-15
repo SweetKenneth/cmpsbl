@@ -10,6 +10,7 @@ import { MotionConfig } from "framer-motion";
 import { SEOProvider } from "@/contexts/SEOContext";
 import { debugMode } from "@/lib/debug-mode";
 import SmartToastRenderer from "@/components/toast/SmartToastRenderer";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import DecodeFloat from "@/components/decode/DecodeFloat";
 import { installLastInteractionTracking } from "@/lib/ui/lastInteraction";
 import { installSiteGuard } from "@/lib/defense/site-guard";
@@ -271,6 +272,7 @@ const App = () => {
               <SubstrateProvider autoInit={substrateAutoInit}>
                 <TooltipProvider>
                   <SmartToastRenderer />
+                  <SonnerToaster position="bottom-right" richColors />
                   <DecodeFloat />
                   <BrowserRouter>
                   <ScrollToTop />
