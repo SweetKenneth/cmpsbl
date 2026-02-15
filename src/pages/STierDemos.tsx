@@ -552,6 +552,7 @@ function delay(ms: number) { return new Promise(r => setTimeout(r, ms)); }
 
 export default function STierDemos() {
   const [activeDemo, setActiveDemo] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const DemoComponent = activeDemo === 'self-heal' ? SelfHealingDemo :
     activeDemo === 'provenance' ? ProvenanceDemo :
@@ -574,7 +575,7 @@ export default function STierDemos() {
             <Crown className="w-6 h-6 text-primary" />
             <Badge variant="outline" className="text-primary border-primary/50">S-TIER</Badge>
           </div>
-          <h1 className="text-3xl lg:text-4xl font-bold mb-2">Capability Demos</h1>
+          <h1 className="text-3xl lg:text-4xl font-bold mb-2">Showcase</h1>
           <p className="text-muted-foreground max-w-2xl">
             Interactive proof-of-moat demonstrations. Each demo runs live against the substrate — no mocks, no smoke and mirrors.
           </p>
@@ -582,30 +583,45 @@ export default function STierDemos() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Demo Cards Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {/* Horizontal Scroll Demo Cards */}
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           {DEMOS.map(demo => {
             const Icon = demo.icon;
             const isActive = activeDemo === demo.id;
             return (
-              <motion.div key={demo.id} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+              <motion.div
+                key={demo.id}
+                whileTap={{ scale: 0.97 }}
+                className="snap-start shrink-0"
+                style={{ width: isActive ? '280px' : '240px' }}
+              >
                 <Card
-                  className={`cursor-pointer transition-all h-full ${
-                    isActive ? 'border-primary shadow-lg shadow-primary/10' : 'hover:border-primary/30'
+                  className={`cursor-pointer transition-all h-full relative overflow-hidden ${
+                    isActive
+                      ? 'border-primary shadow-[0_0_25px_-5px_hsl(var(--primary)/0.4)] scale-[1.03]'
+                      : 'hover:border-primary/30'
                   }`}
                   onClick={() => setActiveDemo(isActive ? null : demo.id)}
                 >
-                  <CardHeader className="pb-2">
+                  {/* Glow effect for active card */}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 pointer-events-none" />
+                  )}
+                  <CardHeader className="pb-2 relative z-10">
                     <div className="flex items-center gap-2 mb-1">
                       <Icon className={`w-5 h-5 ${demo.color}`} />
                       <CardTitle className="text-sm">{demo.title}</CardTitle>
                     </div>
                     <p className="text-xs text-muted-foreground italic">{demo.subtitle}</p>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-xs text-muted-foreground mb-3">{demo.description}</p>
+                  <CardContent className="pt-0 relative z-10">
+                    <p className="text-xs text-muted-foreground mb-3 line-clamp-3">{demo.description}</p>
                     <div className="flex flex-wrap gap-1">
-                      {demo.capabilities.map(c => (
+                      {demo.capabilities.slice(0, 3).map(c => (
                         <Badge key={c} variant="secondary" className="text-[10px] h-5">{c}</Badge>
                       ))}
                     </div>
@@ -621,7 +637,7 @@ export default function STierDemos() {
           })}
         </div>
 
-        {/* Active Demo Area */}
+        {/* Active Demo Area — appears below on mobile */}
         <AnimatePresence mode="wait">
           {activeDemo && DemoComponent && (
             <motion.div
@@ -630,8 +646,9 @@ export default function STierDemos() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
+              className="mt-6"
             >
-              <Card className="border-primary/30">
+              <Card className="border-primary/30 shadow-lg shadow-primary/5">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
@@ -654,7 +671,7 @@ export default function STierDemos() {
         {!activeDemo && (
           <div className="text-center py-12 text-muted-foreground">
             <Activity className="w-8 h-8 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">Select a demo above to begin</p>
+            <p className="text-sm">Tap a demo card above to begin</p>
           </div>
         )}
       </div>
