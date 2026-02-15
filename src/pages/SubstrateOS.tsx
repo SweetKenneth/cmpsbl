@@ -1,6 +1,9 @@
 /**
- * CMPSBL® substrate — OS Surface v9.3.0 ARCHITECT Epoch
- * PREMIUM EDITION — 21 modules, 360+ commands, 200 synergy pipelines
+ * CMPSBL® substrate — OS Surface v10.4.0 ARCHITECT Epoch
+ * TIER-GATED EDITION — FREE / CREATOR / ARCHITECT / CMPSBL
+ * 
+ * All tabs visible to all users with tier badges.
+ * Locked tabs show upgrade prompts to drive conversion.
  */
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
@@ -10,7 +13,7 @@ import {
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
   Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna,
   ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight, Eye,
-  LogOut, Home, ToggleRight, Network
+  LogOut, Home, ToggleRight, Network, Crown, Star, Rocket
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -45,7 +48,6 @@ import { CodeAgentTab } from '@/components/substrate-os/CodeAgentTab';
 import { CortexTab } from '@/components/substrate-os/CortexTab';
 import { InclusiveTab } from '@/components/substrate-os/InclusiveTab';
 import { NexusTab } from '@/components/substrate-os/NexusTab';
-import { CapabilitiesTab } from '@/components/substrate-os/CapabilitiesTab';
 import { AtlasTab } from '@/components/substrate-os/AtlasTab';
 import { EnginesTab } from '@/components/substrate-os/EnginesTab';
 import { PublicMetricsTab } from '@/components/substrate-os/PublicMetricsTab';
@@ -55,7 +57,57 @@ import { MeshActivityTab } from '@/components/substrate-os/MeshActivityTab';
 import { cn } from '@/lib/utils';
 
 // ============================================
-// Tab Groups Configuration
+// Tier System
+// ============================================
+type SubstrateTier = 'free' | 'creator' | 'architect' | 'cmpsbl';
+
+const TIER_CONFIG: Record<SubstrateTier, {
+  label: string;
+  color: string;
+  borderColor: string;
+  bgColor: string;
+  textColor: string;
+  icon: React.ElementType;
+  price?: string;
+}> = {
+  free: {
+    label: 'FREE',
+    color: 'emerald',
+    borderColor: 'border-emerald-500/40',
+    bgColor: 'bg-emerald-500/10',
+    textColor: 'text-emerald-400',
+    icon: Eye,
+  },
+  creator: {
+    label: 'CREATOR',
+    color: 'cyan',
+    borderColor: 'border-cyan-500/40',
+    bgColor: 'bg-cyan-500/10',
+    textColor: 'text-cyan-400',
+    icon: Star,
+    price: '$49/mo',
+  },
+  architect: {
+    label: 'ARCHITECT',
+    color: 'fuchsia',
+    borderColor: 'border-fuchsia-500/40',
+    bgColor: 'bg-fuchsia-500/10',
+    textColor: 'text-fuchsia-400',
+    icon: Rocket,
+    price: '$149/mo',
+  },
+  cmpsbl: {
+    label: 'CMPSBL',
+    color: 'amber',
+    borderColor: 'border-amber-500/40',
+    bgColor: 'bg-amber-500/10',
+    textColor: 'text-amber-400',
+    icon: Crown,
+  },
+};
+
+// ============================================
+// Tab Groups Configuration — Tier-Gated
 // ============================================
 interface TabConfig {
   id: string;
@@ -63,94 +115,153 @@ interface TabConfig {
   icon: React.ElementType;
   color: string;
   description: string;
-  minRole?: 'observer' | 'operator' | 'governor';
+  tier: SubstrateTier;
 }
 
 interface TabGroup {
   id: string;
   label: string;
   icon: React.ElementType;
+  tier: SubstrateTier;
   tabs: TabConfig[];
 }
 
-function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boolean, isObserverOnly: boolean): TabGroup[] {
-  // Observer-only mode: minimal tabs, no operator/governor tabs
-  if (isObserverOnly) {
-    return [
-      { 
-        id: 'observe', 
-        label: 'Observe', 
-        icon: Gauge, 
-        tabs: [
-          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'cyan', description: 'System overview' },
-        ] 
-      },
-    ];
-  }
-
-  const observeTabs: TabConfig[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'cyan', description: 'System overview' },
-    { id: 'events', label: 'Events', icon: Activity, color: 'amber', description: 'Live activity feed' },
-    { id: 'cognitives', label: 'Cognitives', icon: Bot, color: 'fuchsia', description: 'Bot registry' },
-    ...(isOperator ? [{ id: 'mesh', label: 'Mesh', icon: Network, color: 'amber', description: 'Intent Mesh activity', minRole: 'operator' as const }] : []),
+function getTabGroups(hasAgency: boolean): TabGroup[] {
+  return [
+    {
+      id: 'free',
+      label: 'Free',
+      icon: Eye,
+      tier: 'free',
+      tabs: [
+        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'cyan', description: 'System overview & health', tier: 'free' },
+        { id: 'health', label: 'Health', icon: Activity, color: 'emerald', description: 'System health monitor', tier: 'free' },
+      ],
+    },
+    {
+      id: 'creator',
+      label: 'Creator',
+      icon: Star,
+      tier: 'creator',
+      tabs: [
+        { id: 'terminal', label: 'Terminal', icon: Terminal, color: 'emerald', description: 'Command interface', tier: 'creator' },
+        { id: 'cognitives', label: 'Cognitives', icon: Bot, color: 'fuchsia', description: 'Bot registry & management', tier: 'creator' },
+        { id: 'events', label: 'Events', icon: Activity, color: 'amber', description: 'Live activity feed', tier: 'creator' },
+        { id: 'engines', label: 'Engines', icon: Layers, color: 'fuchsia', description: 'Execute & manage engines', tier: 'creator' },
+        ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'creator' as SubstrateTier }] : []),
+      ],
+    },
+    {
+      id: 'architect',
+      label: 'Architect',
+      icon: Rocket,
+      tier: 'architect',
+      tabs: [
+        { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Autonomous capability mesh', tier: 'architect' },
+        { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & orchestration', tier: 'architect' },
+        { id: 'codeagent', label: 'ENCODE', icon: Bot, color: 'fuchsia', description: 'DECODE → ENCODE pipeline', tier: 'architect' },
+        { id: 'modules', label: 'Modules', icon: Cpu, color: 'orange', description: 'Core · Ripple · Access', tier: 'architect' },
+        { id: 'cortex', label: 'Cortex', icon: Wand2, color: 'violet', description: 'Cognitive orchestrator', tier: 'architect' },
+        { id: 'atlas', label: 'Atlas', icon: Gauge, color: 'cyan', description: 'Control plane', tier: 'architect' },
+        { id: 'modernizer', label: 'Modernizer', icon: Wand2, color: 'fuchsia', description: 'Self-upgrade engine', tier: 'architect' },
+        { id: 'inclusive', label: 'Inclusive', icon: Users, color: 'teal', description: 'Accessibility engine', tier: 'architect' },
+        { id: 'backups', label: 'Backups', icon: HardDrive, color: 'blue', description: 'Backup & restore', tier: 'architect' },
+      ],
+    },
+    {
+      id: 'cmpsbl',
+      label: 'CMPSBL',
+      icon: Crown,
+      tier: 'cmpsbl',
+      tabs: [
+        { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'Architecture mutation', tier: 'cmpsbl' },
+        { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'Author LNCHBL patches', tier: 'cmpsbl' },
+        { id: 'metrics', label: 'Metrics', icon: Gauge, color: 'cyan', description: 'Public metrics control', tier: 'cmpsbl' },
+        { id: 'mint', label: 'Mint', icon: Sparkles, color: 'purple', description: 'Create cognitives & agencies', tier: 'cmpsbl' },
+        { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Administrative controls', tier: 'cmpsbl' },
+      ],
+    },
   ];
+}
 
-  const operateTabs: TabConfig[] = [
-    { id: 'terminal', label: 'Terminal', icon: Terminal, color: 'emerald', description: 'Command interface' },
-    ...(isOperator ? [
-      { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & images', minRole: 'operator' as const },
-      { id: 'codeagent', label: 'ENCODE', icon: Bot, color: 'fuchsia', description: 'DECODE → ENCODE', minRole: 'operator' as const },
-      { id: 'core', label: 'Core', icon: Cpu, color: 'orange', description: 'Kernel controls', minRole: 'operator' as const },
-      { id: 'ripple', label: 'Ripple', icon: Radio, color: 'cyan', description: 'Message bus', minRole: 'operator' as const },
-      { id: 'access', label: 'Access', icon: Key, color: 'amber', description: 'Identity & keys', minRole: 'operator' as const },
-      { id: 'cortex', label: 'Cortex', icon: Wand2, color: 'violet', description: 'Orchestrator', minRole: 'operator' as const },
-      { id: 'inclusive', label: 'Inclusive', icon: Users, color: 'teal', description: 'Accessibility', minRole: 'operator' as const },
-    ] : []),
-  ];
+// Map substrate role to tier access
+function getRoleTier(role: string, isGovernor: boolean): SubstrateTier {
+  if (isGovernor) return 'cmpsbl';
+  if (role === 'operator') return 'architect';
+  return 'free'; // observers get free tier
+}
 
-  const evolveTabs: TabConfig[] = [
-    ...(isOperator ? [
-      { id: 'atlas', label: 'Atlas', icon: Gauge, color: 'cyan', description: 'Control plane', minRole: 'operator' as const },
-      { id: 'engines', label: 'Engines', icon: Layers, color: 'fuchsia', description: 'Execute engines', minRole: 'operator' as const },
-      { id: 'capabilities', label: 'Capabilities', icon: ToggleRight, color: 'cyan', description: 'Toggle capabilities', minRole: 'operator' as const },
-      { id: 'modernizer', label: 'Modernizer', icon: Wand2, color: 'fuchsia', description: 'Self-upgrade', minRole: 'operator' as const },
-    ] : []),
-    ...(isGovernor ? [
-      { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'System evolution', minRole: 'governor' as const },
-      { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'Author LNCHBL patches', minRole: 'governor' as const },
-      { id: 'metrics', label: 'Metrics', icon: Gauge, color: 'cyan', description: 'Public metrics control', minRole: 'governor' as const },
-    ] : []),
-    ...(isOperator ? [
-      { id: 'backups', label: 'Backups', icon: HardDrive, color: 'blue', description: 'Backup & restore', minRole: 'operator' as const },
-    ] : []),
-  ];
-
-  const createTabs: TabConfig[] = [
-    ...(isGovernor ? [
-      { id: 'mint', label: 'Mint', icon: Sparkles, color: 'purple', description: 'Create cognitives', minRole: 'governor' as const },
-    ] : []),
-    ...(hasAgency ? [
-      { id: 'agency', label: 'My Agency', icon: Building2, color: 'blue', description: 'Agency portal' },
-    ] : []),
-  ];
-
-  const groups: TabGroup[] = [
-    { id: 'observe', label: 'Observe', icon: Gauge, tabs: observeTabs },
-    { id: 'operate', label: 'Operate', icon: Terminal, tabs: operateTabs },
-  ];
-
-  if (evolveTabs.length > 0) {
-    groups.push({ id: 'evolve', label: 'Evolve', icon: Dna, tabs: evolveTabs });
-  }
-  if (createTabs.length > 0) {
-    groups.push({ id: 'create', label: 'Create', icon: Sparkles, tabs: createTabs });
-  }
-
-  return groups;
+function canAccessTier(userTier: SubstrateTier, requiredTier: SubstrateTier): boolean {
+  const tierOrder: SubstrateTier[] = ['free', 'creator', 'architect', 'cmpsbl'];
+  return tierOrder.indexOf(userTier) >= tierOrder.indexOf(requiredTier);
 }
 
 // ============================================
-// Enhanced Sidebar Navigation
+// Tier Badge Component
+// ============================================
+function TierBadge({ tier, size = 'sm' }: { tier: SubstrateTier; size?: 'sm' | 'xs' }) {
+  const config = TIER_CONFIG[tier];
+  return (
+    <Badge 
+      variant="outline" 
+      className={cn(
+        config.borderColor, config.textColor, config.bgColor,
+        size === 'xs' ? 'text-[8px] h-3.5 px-1' : 'text-[9px] h-4 px-1.5'
+      )}
+    >
+      {config.label}
+    </Badge>
+  );
+}
+
+// ============================================
+// Upgrade Prompt Component
+// ============================================
+function UpgradePrompt({ requiredTier }: { requiredTier: SubstrateTier }) {
+  const config = TIER_CONFIG[requiredTier];
+  return (
+    <motion.div 
+      className="container mx-auto px-4 py-6 max-w-2xl"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
+      <div className={cn(
+        "rounded-2xl border-2 border-dashed p-12 text-center space-y-6",
+        config.borderColor, config.bgColor
+      )}>
+        <div className={cn(
+          "w-16 h-16 rounded-2xl border flex items-center justify-center mx-auto",
+          config.borderColor, config.bgColor
+        )}>
+          <Lock className={cn("w-8 h-8", config.textColor)} />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-xl font-bold text-foreground">
+            {config.label} Tier Required
+          </h2>
+          <p className="text-sm text-muted-foreground max-w-md mx-auto">
+            This feature is available on the <span className={cn("font-semibold", config.textColor)}>{config.label}</span> tier
+            {config.price && <span> ({config.price})</span>}.
+            Upgrade to unlock this capability.
+          </p>
+        </div>
+        <Button 
+          className={cn("gap-2", config.bgColor, config.textColor, "hover:opacity-80 border", config.borderColor)}
+          variant="outline"
+          asChild
+        >
+          <Link to="/pricing">
+            <Rocket className="w-4 h-4" />
+            View Plans
+          </Link>
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
+
+// ============================================
+// Enhanced Sidebar Navigation — Tier-Labeled
 // ============================================
 interface SidebarNavProps {
   groups: TabGroup[];
@@ -159,69 +270,86 @@ interface SidebarNavProps {
   collapsed?: boolean;
   onClose?: () => void;
   onLogout: () => void;
+  userTier: SubstrateTier;
 }
 
-function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose, onLogout }: SidebarNavProps) {
+function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose, onLogout, userTier }: SidebarNavProps) {
   return (
     <div className={cn(
       "flex flex-col h-full bg-background border-r border-border",
-      collapsed ? "w-16" : "w-60"
+      collapsed ? "w-16" : "w-64"
     )}>
       <ScrollArea className="flex-1 py-4">
         <nav className="space-y-6 px-2">
-          {groups.map((group, groupIdx) => (
-            <motion.div 
-              key={group.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: groupIdx * 0.05 }}
-            >
-              {!collapsed && (
-                <div className="flex items-center gap-2 px-3 mb-2">
-                  <group.icon className="w-3.5 h-3.5 text-muted-foreground" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                    {group.label}
-                  </span>
+          {groups.map((group, groupIdx) => {
+            const tierConfig = TIER_CONFIG[group.tier];
+            const hasAccess = canAccessTier(userTier, group.tier);
+            
+            return (
+              <motion.div 
+                key={group.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: groupIdx * 0.05 }}
+              >
+                {!collapsed && (
+                  <div className="flex items-center gap-2 px-3 mb-2">
+                    <group.icon className={cn("w-3.5 h-3.5", hasAccess ? tierConfig.textColor : "text-muted-foreground/50")} />
+                    <span className={cn(
+                      "text-[10px] font-bold uppercase tracking-[0.2em]",
+                      hasAccess ? tierConfig.textColor : "text-muted-foreground/50"
+                    )}>
+                      {group.label}
+                    </span>
+                    <TierBadge tier={group.tier} size="xs" />
+                  </div>
+                )}
+                <div className="space-y-1">
+                  {group.tabs.map((tab) => {
+                    const isActive = activeTab === tab.id;
+                    const tabAccessible = canAccessTier(userTier, tab.tier);
+                    
+                    return (
+                      <motion.button
+                        key={tab.id}
+                        onClick={() => {
+                          onTabChange(tab.id);
+                          onClose?.();
+                        }}
+                        className={cn(
+                          "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
+                          collapsed ? "justify-center" : "",
+                          isActive
+                            ? "bg-primary/10 text-primary border border-primary/30"
+                            : tabAccessible
+                              ? "text-muted-foreground hover:text-foreground hover:bg-muted"
+                              : "text-muted-foreground/40 hover:text-muted-foreground/60 hover:bg-muted/30"
+                        )}
+                        whileHover={{ x: collapsed ? 0 : 4 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <tab.icon className={cn(
+                          "w-4 h-4 shrink-0", 
+                          isActive ? "text-primary" : !tabAccessible ? "opacity-40" : ""
+                        )} />
+                        {!collapsed && (
+                          <>
+                            <span className="flex-1 text-left">{tab.label}</span>
+                            {!tabAccessible && <Lock className="w-3 h-3 opacity-40" />}
+                            {isActive && tabAccessible && <ChevronRight className="w-3 h-3 opacity-60" />}
+                          </>
+                        )}
+                      </motion.button>
+                    );
+                  })}
                 </div>
-              )}
-              <div className="space-y-1">
-                {group.tabs.map((tab) => {
-                  const isActive = activeTab === tab.id;
-                  
-                  return (
-                    <motion.button
-                      key={tab.id}
-                      onClick={() => {
-                        onTabChange(tab.id);
-                        onClose?.();
-                      }}
-                      className={cn(
-                        "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
-                        collapsed ? "justify-center" : "",
-                        isActive
-                          ? "bg-primary/10 text-primary border border-primary/30"
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                      )}
-                      whileHover={{ x: collapsed ? 0 : 4 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <tab.icon className={cn("w-4 h-4 shrink-0", isActive && "text-primary")} />
-                      {!collapsed && (
-                        <>
-                          <span className="flex-1 text-left">{tab.label}</span>
-                          {isActive && <ChevronRight className="w-3 h-3 opacity-60" />}
-                        </>
-                      )}
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </nav>
       </ScrollArea>
       
-      {/* Footer with navigation */}
+      {/* Footer */}
       <div className={cn("border-t border-border", collapsed ? "p-2" : "p-3")}>
         <div className={cn("flex gap-2", collapsed ? "flex-col" : "")}>
           <Button
@@ -252,9 +380,12 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
           </Button>
         </div>
         {!collapsed && (
-          <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span>CMPSBL v9.3.0</span>
+          <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span>CMPSBL v10.4.0</span>
+            </div>
+            <TierBadge tier={userTier} size="xs" />
           </div>
         )}
       </div>
@@ -270,11 +401,12 @@ interface TabHeaderProps {
   title: string;
   subtitle: string;
   color: string;
+  tier: SubstrateTier;
   badge?: React.ReactNode;
   action?: React.ReactNode;
 }
 
-function TabHeader({ icon: Icon, title, subtitle, color, badge, action }: TabHeaderProps) {
+function TabHeader({ icon: Icon, title, subtitle, color, tier, badge, action }: TabHeaderProps) {
   const colorMap: Record<string, string> = {
     emerald: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400',
     fuchsia: 'bg-fuchsia-500/20 border-fuchsia-500/40 text-fuchsia-400',
@@ -282,6 +414,10 @@ function TabHeader({ icon: Icon, title, subtitle, color, badge, action }: TabHea
     purple: 'bg-purple-500/20 border-purple-500/40 text-purple-400',
     blue: 'bg-blue-500/20 border-blue-500/40 text-blue-400',
     cyan: 'bg-cyan-500/20 border-cyan-500/40 text-cyan-400',
+    orange: 'bg-orange-500/20 border-orange-500/40 text-orange-400',
+    red: 'bg-red-500/20 border-red-500/40 text-red-400',
+    violet: 'bg-violet-500/20 border-violet-500/40 text-violet-400',
+    teal: 'bg-teal-500/20 border-teal-500/40 text-teal-400',
   };
   
   return (
@@ -291,11 +427,14 @@ function TabHeader({ icon: Icon, title, subtitle, color, badge, action }: TabHea
       animate={{ opacity: 1, y: 0 }}
     >
       <div className="flex items-center gap-4">
-        <div className={cn("w-10 h-10 rounded-xl border flex items-center justify-center", colorMap[color])}>
+        <div className={cn("w-10 h-10 rounded-xl border flex items-center justify-center", colorMap[color] || colorMap.cyan)}>
           <Icon className="w-5 h-5" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-foreground">{title}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg font-bold text-foreground">{title}</h2>
+            <TierBadge tier={tier} />
+          </div>
           <p className="text-xs text-muted-foreground font-mono">{subtitle}</p>
         </div>
       </div>
@@ -308,7 +447,7 @@ function TabHeader({ icon: Icon, title, subtitle, color, badge, action }: TabHea
 }
 
 // ============================================
-// Governor Panel
+// Governor Panel (CMPSBL-only)
 // ============================================
 function GovernorPanel({ enabled }: { enabled: boolean }) {
   const [auditLogs, setAuditLogs] = useState<Array<{ id: string; action: string; entity_type: string; created_at: string }>>([]);
@@ -321,7 +460,6 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
     const loadData = async () => {
       setLoading(true);
       try {
-        // Load audit logs from audit_logs table
         const { data: auditData } = await import('@/integrations/supabase/client').then(m =>
           m.supabase
             .from('audit_logs')
@@ -330,22 +468,15 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
             .limit(10)
         );
         
-        if (auditData) {
-          setAuditLogs(auditData);
-        }
+        if (auditData) setAuditLogs(auditData);
         
-        // Load settings from system_config table
         const { data: configData } = await import('@/integrations/supabase/client').then(m =>
-          m.supabase
-            .from('system_config')
-            .select('key, value')
-            .limit(6)
+          m.supabase.from('system_config').select('key, value').limit(6)
         );
         
         if (configData) {
           setSettings(configData.map(c => ({ key: c.key, value: String(c.value) })));
         } else {
-          // Fallback to default settings
           setSettings([
             { key: 'maintenance_mode', value: 'false' },
             { key: 'api_rate_limit', value: '100/min' },
@@ -355,12 +486,9 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
         }
       } catch (error) {
         console.error('Failed to load governor data:', error);
-        // Use fallback settings
         setSettings([
           { key: 'maintenance_mode', value: 'false' },
           { key: 'api_rate_limit', value: '100/min' },
-          { key: 'max_memory_tier_size', value: '10000' },
-          { key: 'dream_cycle_interval', value: '24h' },
         ]);
       } finally {
         setLoading(false);
@@ -370,34 +498,10 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
     loadData();
   }, [enabled]);
 
-  if (!enabled) {
-    return (
-      <div className="rounded-2xl border border-dashed border-red-500/20 bg-muted/5 backdrop-blur-xl p-8">
-        <div className="text-center">
-          <Lock className="w-10 h-10 mx-auto mb-4 text-muted-foreground/30" />
-          <p className="text-sm text-muted-foreground italic">Governor controls restricted to administrators</p>
-        </div>
-      </div>
-    );
-  }
+  if (!enabled) return null;
 
   return (
-    <motion.div 
-      className="space-y-4"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-red-500/20 border border-red-500/40 flex items-center justify-center">
-          <AlertTriangle className="w-4 h-4 text-red-400" />
-        </div>
-        <div>
-          <h3 className="text-sm font-semibold text-foreground">Governor Controls</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">administrative operations</p>
-        </div>
-        <Badge variant="outline" className="ml-auto text-[10px] border-red-500/40 text-red-400 bg-red-500/10">ADMIN</Badge>
-      </div>
-      
+    <motion.div className="space-y-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
       <div className="grid md:grid-cols-2 gap-4">
         <div className="rounded-xl border border-blue-500/20 bg-muted/10 backdrop-blur-xl p-4">
           <div className="flex items-center gap-2 mb-3">
@@ -423,10 +527,7 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
               </div>
             </ScrollArea>
           ) : (
-            <div className="py-4 text-center space-y-2">
-              <p className="text-xs text-muted-foreground/70 italic">No recent audit events</p>
-              <p className="text-[10px] text-muted-foreground/50">System activity is being monitored</p>
-            </div>
+            <p className="text-xs text-muted-foreground/70 italic py-4 text-center">No recent audit events</p>
           )}
         </div>
         
@@ -458,6 +559,58 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
 }
 
 // ============================================
+// Merged Modules Tab (Core + Ripple + Access)
+// ============================================
+function MergedModulesTab({ enabled }: { enabled: boolean }) {
+  const [activeModule, setActiveModule] = useState<'core' | 'ripple' | 'access'>('core');
+  
+  return (
+    <motion.main 
+      className="container mx-auto px-4 py-6 max-w-7xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <TabHeader 
+        icon={Cpu}
+        title="Substrate Modules"
+        subtitle="core kernel · ripple bus · access identity"
+        color="orange"
+        tier="architect"
+      />
+      
+      <div className="flex gap-2 p-1.5 rounded-xl bg-muted/30 border border-border/30 w-fit mb-6">
+        {[
+          { id: 'core' as const, label: 'Core Kernel', icon: Cpu },
+          { id: 'ripple' as const, label: 'Ripple Bus', icon: Radio },
+          { id: 'access' as const, label: 'Access Identity', icon: Key },
+        ].map(mod => (
+          <button
+            key={mod.id}
+            onClick={() => setActiveModule(mod.id)}
+            className={cn(
+              "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeModule === mod.id
+                ? "bg-orange-500/20 text-orange-400 border border-orange-500/40 shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            )}
+          >
+            <mod.icon className="w-4 h-4" />
+            {mod.label}
+          </button>
+        ))}
+      </div>
+      
+      <AnimatePresence mode="wait">
+        {activeModule === 'core' && <CoreKernelTab key="core" enabled={enabled} />}
+        {activeModule === 'ripple' && <RippleMessageBusTab key="ripple" enabled={enabled} />}
+        {activeModule === 'access' && <AccessIdentityTab key="access" enabled={enabled} />}
+      </AnimatePresence>
+    </motion.main>
+  );
+}
+
+// ============================================
 // Main Component
 // ============================================
 export default function SubstrateOS() {
@@ -470,11 +623,14 @@ export default function SubstrateOS() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   
-  // Observer-only mode: user is authenticated but only has observer role
-  const isObserverOnly = !!user && role === 'observer';
-  
+  const userTier = getRoleTier(role, isGovernor);
   const isCritical = healthScore.healthScore < 40;
-  const tabGroups = getTabGroups(isOperator, isGovernor, !!userAgency, isObserverOnly);
+  const tabGroups = getTabGroups(!!userAgency);
+
+  // Find current tab config
+  const allTabs = tabGroups.flatMap(g => g.tabs);
+  const currentTabConfig = allTabs.find(t => t.id === activeTab);
+  const hasAccessToCurrentTab = currentTabConfig ? canAccessTier(userTier, currentTabConfig.tier) : true;
 
   const handleLogout = async () => {
     try {
@@ -515,7 +671,7 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Substrate OS v9.3.0 — AI Operating System"
+        title="Substrate OS v10.4.0 — AI Operating System"
         description="Explore the CMPSBL Substrate OS: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads."
         canonical="https://cmpsbl.com/os"
         keywords={['substrate OS', 'AI runtime', 'cognitive orchestration', 'module telemetry', 'AI workload management', 'substrate dashboard']}
@@ -532,18 +688,21 @@ export default function SubstrateOS() {
       <div className="flex-1 flex overflow-hidden">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block">
-          <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} onLogout={handleLogout} />
+          <SidebarNav 
+            groups={tabGroups} 
+            activeTab={activeTab} 
+            onTabChange={setActiveTab} 
+            onLogout={handleLogout} 
+            userTier={userTier}
+          />
         </div>
 
-        {/* Mobile Navigation - all users get access to navigation */}
+        {/* Mobile Bottom Nav */}
         <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
-          <div className={cn(
-            "grid px-2 py-2",
-            isObserverOnly ? "grid-cols-3" : "grid-cols-5"
-          )}>
-            {/* Show available tabs */}
-            {tabGroups.flatMap(g => g.tabs).slice(0, isObserverOnly ? 1 : 4).map((tab) => {
+          <div className="grid grid-cols-5 px-2 py-2">
+            {allTabs.slice(0, 4).map((tab) => {
               const isActive = activeTab === tab.id;
+              const accessible = canAccessTier(userTier, tab.tier);
               return (
                 <button
                   key={tab.id}
@@ -552,7 +711,9 @@ export default function SubstrateOS() {
                     "flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all",
                     isActive 
                       ? "text-primary bg-primary/10" 
-                      : "text-muted-foreground active:bg-muted/50"
+                      : accessible
+                        ? "text-muted-foreground active:bg-muted/50"
+                        : "text-muted-foreground/30"
                   )}
                 >
                   <tab.icon className="w-5 h-5" />
@@ -560,39 +721,13 @@ export default function SubstrateOS() {
                 </button>
               );
             })}
-            
-            {/* System Feed link for observers */}
-            {isObserverOnly && (
-              <Link
-                to="/system-feed"
-                className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
-              >
-                <Activity className="w-5 h-5" />
-                <span className="text-[10px] font-medium">Feed</span>
-              </Link>
-            )}
-            
-            {/* Sign Out button for observers (they don't have sidebar access) */}
-            {isObserverOnly && (
-              <button
-                onClick={handleLogout}
-                className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
-              >
-                <LogOut className="w-5 h-5" />
-                <span className="text-[10px] font-medium">Sign Out</span>
-              </button>
-            )}
-            
-            {/* More menu for operators/governors */}
-            {!isObserverOnly && (
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
-              >
-                <Menu className="w-5 h-5" />
-                <span className="text-[10px] font-medium">More</span>
-              </button>
-            )}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
+            >
+              <Menu className="w-5 h-5" />
+              <span className="text-[10px] font-medium">More</span>
+            </button>
           </div>
         </div>
 
@@ -601,15 +736,27 @@ export default function SubstrateOS() {
             <div className="p-4 border-b border-border/50">
               <h3 className="font-semibold">Navigation</h3>
             </div>
-            <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} onClose={() => setSidebarOpen(false)} onLogout={handleLogout} />
+            <SidebarNav 
+              groups={tabGroups} 
+              activeTab={activeTab} 
+              onTabChange={setActiveTab} 
+              onClose={() => setSidebarOpen(false)} 
+              onLogout={handleLogout}
+              userTier={userTier}
+            />
           </SheetContent>
         </Sheet>
 
         {/* Content Area */}
         <div className="flex-1 overflow-auto pb-24 lg:pb-0">
           <AnimatePresence mode="wait">
-            {/* Dashboard */}
-            {activeTab === 'dashboard' && (
+            {/* If user doesn't have access, show upgrade prompt */}
+            {!hasAccessToCurrentTab && currentTabConfig && (
+              <UpgradePrompt key="upgrade" requiredTier={currentTabConfig.tier} />
+            )}
+
+            {/* ═══ FREE TIER ═══ */}
+            {activeTab === 'dashboard' && hasAccessToCurrentTab && (
               <motion.main 
                 key="dashboard"
                 className="container mx-auto px-4 py-6 max-w-7xl space-y-6"
@@ -617,55 +764,59 @@ export default function SubstrateOS() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                {/* Observer Mode Banner */}
-                {isObserverOnly && (
+                {canAccessTier(userTier, 'architect') && <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />}
+                <DashboardMetricsHero />
+                {canAccessTier(userTier, 'creator') && <CapacityMonitor />}
+                {canAccessTier(userTier, 'creator') && <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />}
+                {canAccessTier(userTier, 'creator') && <ModuleControlsGrid enabled={isOperator} />}
+                {canAccessTier(userTier, 'architect') && <BrainIntelligencePanel enabled={isOperator} />}
+                <SystemHealthPanel enabled={canAccessTier(userTier, 'creator')} />
+                {canAccessTier(userTier, 'creator') && <EventStream />}
+                
+                {/* Upgrade CTA for free users */}
+                {userTier === 'free' && (
                   <motion.div 
-                    className="rounded-xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/5 via-background to-fuchsia-500/5 p-4"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-2xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/5 via-background to-fuchsia-500/5 p-8 text-center space-y-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-                          <Eye className="w-5 h-5 text-cyan-400" />
-                        </div>
-                        <div>
-                          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                            Observer Mode
-                            <Badge variant="outline" className="text-[10px] border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse mr-1" />
-                              24/7 CLM Active
-                            </Badge>
-                          </h3>
-                          <p className="text-xs text-muted-foreground">
-                            You have read-only access. Watch the substrate learn autonomously.
-                          </p>
-                        </div>
-                      </div>
-                      <a 
-                        href="/system-feed" 
-                        className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
-                      >
-                        View Feed <ArrowUpRight className="w-3 h-3" />
-                      </a>
+                    <div className="flex items-center justify-center gap-3">
+                      <TierBadge tier="creator" />
+                      <span className="text-muted-foreground">•</span>
+                      <TierBadge tier="architect" />
                     </div>
+                    <h3 className="text-lg font-bold text-foreground">Unlock the full substrate</h3>
+                    <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                      Upgrade to Creator for terminal access, cognitives, and engines. 
+                      Or go Architect for the Intent Mesh, Cortex, and full module control.
+                    </p>
+                    <Button variant="outline" className="border-cyan-500/40 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20" asChild>
+                      <Link to="/pricing">
+                        <Rocket className="w-4 h-4 mr-2" />
+                        View Plans
+                      </Link>
+                    </Button>
                   </motion.div>
                 )}
-                
-                {!isObserverOnly && <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />}
-                <DashboardMetricsHero />
-                {isOperator && <CapacityMonitor />}
-                {!isObserverOnly && <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />}
-                {!isObserverOnly && <ModuleControlsGrid enabled={isOperator} />}
-                {!isObserverOnly && <BrainIntelligencePanel enabled={isOperator} />}
-                <SystemHealthPanel enabled={isOperator} />
-                {!isObserverOnly && <EventStream />}
-                {!isObserverOnly && <GovernorPanel enabled={isGovernor} />}
               </motion.main>
             )}
 
-            {/* Terminal */}
-            {activeTab === 'terminal' && (
+            {activeTab === 'health' && hasAccessToCurrentTab && (
+              <motion.main 
+                key="health"
+                className="container mx-auto px-4 py-6 max-w-7xl"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <TabHeader icon={Activity} title="System Health" subtitle="real-time health monitoring" color="emerald" tier="free" />
+                <SystemHealthPanel enabled={true} />
+              </motion.main>
+            )}
+
+            {/* ═══ CREATOR TIER ═══ */}
+            {activeTab === 'terminal' && hasAccessToCurrentTab && (
               <motion.div 
                 key="terminal"
                 className="container mx-auto px-4 py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]"
@@ -674,10 +825,7 @@ export default function SubstrateOS() {
                 exit={{ opacity: 0 }}
               >
                 <TabHeader 
-                  icon={Terminal}
-                  title="Substrate Terminal"
-                  subtitle="cognitive command interface"
-                  color="emerald"
+                  icon={Terminal} title="Substrate Terminal" subtitle="cognitive command interface" color="emerald" tier="creator"
                   badge={
                     <Badge variant="outline" className={cn(
                       isOperator ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" : "border-amber-500/50 text-amber-400 bg-amber-500/10"
@@ -692,210 +840,34 @@ export default function SubstrateOS() {
               </motion.div>
             )}
 
-            {/* Cognitives */}
-            {activeTab === 'cognitives' && (
-              <motion.main 
-                key="cognitives"
-                className="container mx-auto px-4 py-6 max-w-7xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <TabHeader 
-                  icon={Bot}
-                  title="Cognitive Registry"
-                  subtitle="minted cognitives • operator console"
-                  color="fuchsia"
-                />
+            {activeTab === 'cognitives' && hasAccessToCurrentTab && (
+              <motion.main key="cognitives" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <TabHeader icon={Bot} title="Cognitive Registry" subtitle="minted cognitives • management console" color="fuchsia" tier="creator" />
                 <CognitivesPanel />
               </motion.main>
             )}
 
-            {/* Events */}
-            {activeTab === 'events' && (
-              <motion.main 
-                key="events"
-                className="container mx-auto px-4 py-6 max-w-7xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <TabHeader 
-                  icon={Activity}
-                  title="Event Stream"
-                  subtitle="real-time substrate activity"
-                  color="amber"
-                />
+            {activeTab === 'events' && hasAccessToCurrentTab && (
+              <motion.main key="events" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <TabHeader icon={Activity} title="Event Stream" subtitle="real-time substrate activity" color="amber" tier="creator" />
                 <EventStream />
               </motion.main>
             )}
 
-            {/* CodeAgent */}
-            {activeTab === 'codeagent' && isOperator && <CodeAgentTab enabled={isOperator} />}
+            {activeTab === 'engines' && hasAccessToCurrentTab && <EnginesTab enabled={isOperator} />}
 
-            {/* Core Kernel */}
-            {activeTab === 'core' && isOperator && <CoreKernelTab enabled={isOperator} />}
-
-            {/* Ripple Message Bus */}
-            {activeTab === 'ripple' && isOperator && <RippleMessageBusTab enabled={isOperator} />}
-
-            {/* Access Identity */}
-            {activeTab === 'access' && isOperator && <AccessIdentityTab enabled={isOperator} />}
-
-            {/* Cortex Orchestrator */}
-            {activeTab === 'cortex' && isOperator && <CortexTab enabled={isOperator} />}
-
-            {/* Inclusive Accessibility */}
-            {activeTab === 'inclusive' && isOperator && <InclusiveTab enabled={isOperator} />}
-
-            {/* Nexus AI Router */}
-            {activeTab === 'nexus' && isOperator && <NexusTab />}
-
-            {/* Intent Mesh */}
-            {activeTab === 'mesh' && isOperator && <MeshActivityTab />}
-
-            {/* Backups */}
-            {activeTab === 'backups' && isOperator && (
-              <motion.main 
-                key="backups"
-                className="container mx-auto px-4 py-6 max-w-7xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <BackupRestorePanel enabled={isOperator} />
-              </motion.main>
-            )}
-
-            {/* Atlas Control Plane */}
-            {activeTab === 'atlas' && isOperator && (
-              <motion.main 
-                key="atlas"
-                className="container mx-auto px-4 py-6 max-w-7xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <AtlasTab />
-              </motion.main>
-            )}
-
-            {/* Engines */}
-            {activeTab === 'engines' && isOperator && <EnginesTab enabled={isOperator} />}
-
-            {/* Capabilities */}
-            {activeTab === 'capabilities' && isOperator && (
-              <motion.main 
-                key="capabilities"
-                className="container mx-auto px-4 py-6 max-w-7xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <TabHeader 
-                  icon={ToggleRight}
-                  title="Capabilities"
-                  subtitle="archived edge function adapters • toggle controls"
-                  color="cyan"
-                />
-                <CapabilitiesTab />
-              </motion.main>
-            )}
-
-            {/* Modernizer */}
-            {activeTab === 'modernizer' && isOperator && <ModernizerTab enabled={isOperator} />}
-
-            {/* Evolution */}
-            {activeTab === 'evolution' && isGovernor && (
-              <motion.main 
-                key="evolution"
-                className="container mx-auto px-4 py-6 max-w-7xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <EvolutionTab />
-              </motion.main>
-            )}
-
-            {/* Public Metrics */}
-            {activeTab === 'metrics' && isGovernor && <PublicMetricsTab />}
-
-            {/* Patch Authoring */}
-            {activeTab === 'patches' && isGovernor && <PatchAuthoringTab />}
-
-            {/* Mint */}
-            {activeTab === 'mint' && isGovernor && (
-              <motion.main 
-                key="mint"
-                className="container mx-auto px-4 py-6 max-w-6xl space-y-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <TabHeader 
-                  icon={Sparkles}
-                  title="Cognitive Mint"
-                  subtitle="forge cognitives • assemble agencies"
-                  color="purple"
-                />
-
-                <div className="flex gap-2 p-1.5 rounded-xl bg-muted/30 border border-border/30 w-fit">
-                  <button
-                    onClick={() => setMintSubTab('agency')}
-                    className={cn(
-                      "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
-                      mintSubTab === 'agency'
-                        ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/40 shadow-sm"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                    )}
-                  >
-                    <Users className="w-4 h-4" />
-                    Agency Mint
-                  </button>
-                  <a
-                    href="/forge"
-                    className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                  >
-                    <Bot className="w-4 h-4" />
-                    Cognitive Forge
-                    <ArrowUpRight className="w-3 h-3" />
-                  </a>
-                </div>
-
-                {mintSubTab === 'agency' && (
-                  <Tabs defaultValue="create" className="space-y-4">
-                    <TabsList className="bg-muted/30 border border-border/30">
-                      <TabsTrigger value="create" className="gap-2 data-[state=active]:bg-fuchsia-500/20 data-[state=active]:text-fuchsia-400">
-                        <Sparkles className="w-4 h-4" />Create Agency
-                      </TabsTrigger>
-                      <TabsTrigger value="gallery" className="gap-2 data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
-                        <Users className="w-4 h-4" />Gallery
-                      </TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="create"><AgencyMintWizard onComplete={() => {}} /></TabsContent>
-                    <TabsContent value="gallery"><AgencyGallery /></TabsContent>
-                  </Tabs>
-                )}
-              </motion.main>
-            )}
-
-            {/* Agency */}
-            {activeTab === 'agency' && userAgency && (
-              <motion.main 
-                key="agency"
-                className="container mx-auto px-4 py-6 max-w-6xl space-y-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
+            {activeTab === 'agency' && hasAccessToCurrentTab && userAgency && (
+              <motion.main key="agency" className="container mx-auto px-4 py-6 max-w-6xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
                       <Building2 className="w-5 h-5 text-blue-400" />
                     </div>
                     <div>
-                      <h2 className="text-lg font-bold">{userAgency.name}</h2>
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-lg font-bold">{userAgency.name}</h2>
+                        <TierBadge tier="creator" />
+                      </div>
                       <p className="text-xs text-muted-foreground font-mono">{userAgency.status === 'deployed' ? 'deployed • active' : userAgency.status || 'pending'}</p>
                     </div>
                   </div>
@@ -907,7 +879,6 @@ export default function SubstrateOS() {
                     <ExternalLink className="w-4 h-4" />
                   </Link>
                 </div>
-
                 <Card className="border border-blue-500/20 bg-muted/10 backdrop-blur-xl">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -943,6 +914,77 @@ export default function SubstrateOS() {
                 </Card>
               </motion.main>
             )}
+
+            {/* ═══ ARCHITECT TIER ═══ */}
+            {activeTab === 'mesh' && hasAccessToCurrentTab && <MeshActivityTab />}
+            {activeTab === 'nexus' && hasAccessToCurrentTab && <NexusTab />}
+            {activeTab === 'codeagent' && hasAccessToCurrentTab && <CodeAgentTab enabled={isOperator} />}
+            {activeTab === 'modules' && hasAccessToCurrentTab && <MergedModulesTab enabled={isOperator} />}
+            {activeTab === 'cortex' && hasAccessToCurrentTab && <CortexTab enabled={isOperator} />}
+            {activeTab === 'atlas' && hasAccessToCurrentTab && (
+              <motion.main key="atlas" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <AtlasTab />
+              </motion.main>
+            )}
+            {activeTab === 'modernizer' && hasAccessToCurrentTab && <ModernizerTab enabled={isOperator} />}
+            {activeTab === 'inclusive' && hasAccessToCurrentTab && <InclusiveTab enabled={isOperator} />}
+            {activeTab === 'backups' && hasAccessToCurrentTab && (
+              <motion.main key="backups" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <BackupRestorePanel enabled={isOperator} />
+              </motion.main>
+            )}
+
+            {/* ═══ CMPSBL TIER ═══ */}
+            {activeTab === 'evolution' && hasAccessToCurrentTab && (
+              <motion.main key="evolution" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <EvolutionTab />
+              </motion.main>
+            )}
+            {activeTab === 'metrics' && hasAccessToCurrentTab && <PublicMetricsTab />}
+            {activeTab === 'patches' && hasAccessToCurrentTab && <PatchAuthoringTab />}
+            
+            {activeTab === 'mint' && hasAccessToCurrentTab && (
+              <motion.main key="mint" className="container mx-auto px-4 py-6 max-w-6xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <TabHeader icon={Sparkles} title="Cognitive Mint" subtitle="forge cognitives • assemble agencies" color="purple" tier="cmpsbl" />
+                <div className="flex gap-2 p-1.5 rounded-xl bg-muted/30 border border-border/30 w-fit">
+                  <button
+                    onClick={() => setMintSubTab('agency')}
+                    className={cn(
+                      "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+                      mintSubTab === 'agency'
+                        ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/40 shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    )}
+                  >
+                    <Users className="w-4 h-4" />Agency Mint
+                  </button>
+                  <a href="/forge" className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                    <Bot className="w-4 h-4" />Cognitive Forge<ArrowUpRight className="w-3 h-3" />
+                  </a>
+                </div>
+                {mintSubTab === 'agency' && (
+                  <Tabs defaultValue="create" className="space-y-4">
+                    <TabsList className="bg-muted/30 border border-border/30">
+                      <TabsTrigger value="create" className="gap-2 data-[state=active]:bg-fuchsia-500/20 data-[state=active]:text-fuchsia-400">
+                        <Sparkles className="w-4 h-4" />Create Agency
+                      </TabsTrigger>
+                      <TabsTrigger value="gallery" className="gap-2 data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
+                        <Users className="w-4 h-4" />Gallery
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="create"><AgencyMintWizard onComplete={() => {}} /></TabsContent>
+                    <TabsContent value="gallery"><AgencyGallery /></TabsContent>
+                  </Tabs>
+                )}
+              </motion.main>
+            )}
+
+            {activeTab === 'governor' && hasAccessToCurrentTab && (
+              <motion.main key="governor" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <TabHeader icon={AlertTriangle} title="Governor Controls" subtitle="administrative operations • system configuration" color="red" tier="cmpsbl" />
+                <GovernorPanel enabled={isGovernor} />
+              </motion.main>
+            )}
           </AnimatePresence>
         </div>
       </div>
@@ -956,11 +998,14 @@ export default function SubstrateOS() {
               <span>CMPSBL® substrate os</span>
             </div>
             <span>•</span>
-            <span>v9.3.0</span>
+            <span>v10.4.0</span>
+            <span>•</span>
+            <TierBadge tier={userTier} size="xs" />
           </div>
           <div className="flex items-center gap-4">
             <a href="/changelog" className="hover:text-cyan-400 transition-colors">evolution</a>
             <a href="/documentation" className="hover:text-cyan-400 transition-colors">docs</a>
+            <a href="/pricing" className="hover:text-fuchsia-400 transition-colors">upgrade</a>
           </div>
         </div>
       </footer>
