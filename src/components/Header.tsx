@@ -56,9 +56,9 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           className="flex gap-2"
           asChild
         >
-          <Link to="/demos">
+          <Link to="/showcase">
             <Crown className="w-4 h-4" />
-            <span className="hidden lg:inline">Demos</span>
+            <span className="hidden lg:inline">Showcase</span>
           </Link>
         </Button>
 
