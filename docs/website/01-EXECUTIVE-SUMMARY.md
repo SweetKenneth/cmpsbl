@@ -24,11 +24,11 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 | Capability | What It Does | Business Value |
 |------------|--------------|----------------|
 | **Persistent Memory** | AI remembers across sessions | Better user experiences |
-| **Self-Learning** | System improves overnight | Reduced maintenance costs |
-| **Multi-Provider Routing** | Works with any AI (OpenAI, Anthropic, etc.) | Zero vendor lock-in |
+| **Self-Learning** | System improves autonomously | Reduced maintenance costs |
+| **Multi-Provider Routing** | Works with any AI provider | Zero vendor lock-in |
 | **Security Layer** | Enterprise-grade protection | Compliance-ready |
-| **Observability** | See everything happening | Debug and optimize |
-| **Self-Evolution** | Code upgrades itself | Lower engineering overhead |
+| **Observability** | Complete system visibility | Debug and optimize |
+| **Self-Evolution** | Infrastructure improves itself | Lower engineering overhead |
 
 ---
 
@@ -49,17 +49,9 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 
 | Stream | Description |
 |--------|-------------|
-| **Infrastructure Licensing** | Annual licenses: Developer ($2,999) → Team ($9,999) → Research ($19,999) → Enterprise ($49,999) |
-| **Usage-Based SaaS** | Per-memory, per-request, per-learning-cycle |
+| **Master Substrate (SaaS)** | Build on our managed infrastructure — Free, Builder ($49/mo), Pro ($149/mo) |
+| **Infrastructure Licensing** | Self-hosted substrate via LNCHBL.com — Free to Enterprise tiers |
 | **Marketplace** | Templates, trained specialists, knowledge graphs |
-
-### Unit Economics
-
-| Metric | Value |
-|--------|-------|
-| Gross Margin | 90%+ |
-| CAC Payback | < 6 months |
-| Net Revenue Retention | 120%+ |
 
 ---
 
@@ -68,9 +60,9 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 ### What We Have That Others Don't
 
 1. **Self-Improvement Engine** — The system upgrades its own code. This compounds daily.
-2. **Integrated Architecture** — 14 modules designed together, not bolted on.
+2. **Integrated Architecture** — 21 modules across 6 layers designed together, not bolted on.
 3. **Model Agnosticism** — Works with ANY AI provider. Zero lock-in.
-4. **Dream Cycles** — Autonomous learning without human intervention.
+4. **Autonomous Learning** — Gets smarter without human intervention.
 5. **Defense-First** — Security built into the core, not added later.
 
 ### Defensibility
@@ -78,18 +70,17 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 | Moat | Description |
 |------|-------------|
 | **Accumulated Learning** | Patterns and memories can't be replicated quickly |
-| **Compounding Self-Improvement** | The system gets better at improving |
+| **Compounding Self-Improvement** | The system gets better at improving itself |
 | **Network Effects** | Federated instances share learnings |
 
 ---
 
 ## Traction
 
-- 14 integrated modules in production
-- 147 synergy pipelines with 125 custom executors
-- 175,000+ lines of production code
+- 21 integrated modules across 6 layers in production
+- 200+ synergy pipelines with 400+ capabilities
 - Self-healing with 95%+ uptime
-- Auto-upgrading codebase (SEBA v2.0)
+- Auto-upgrading codebase (ARCHITECT Epoch v10.5.0)
 
 ---
 

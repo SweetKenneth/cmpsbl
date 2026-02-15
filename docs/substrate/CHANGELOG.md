@@ -13,7 +13,7 @@
 - **v7.0.0 SEBA Era** — Canonical release of Self-Evolving Bounded Agent with autonomous improvement under governance constraints.
 - **120 Synergy Pipelines** — Cross-module orchestration pipelines across Intelligence, Autonomy, Security, Cost, and Compliance categories.
 - **98 Custom Executors** — Specialized execution engines for synergy pipeline operations.
-- **14-Module Kernel** — Full v7.0.0 alignment across CORE, RIPPLE, ACCESS, BRAIN, DECODE, NEXUS, DEFENSE, VISION, DREAM, SYSTEM, MODERNIZER, INTEGRATION, INCLUSIVE, CORTEX.
+- **Original Module Kernel** — Full v7.0.0 alignment across CORE, RIPPLE, ACCESS, BRAIN, DECODE, NEXUS, DEFENSE, VISION, DREAM, SYSTEM, MODERNIZER, INTEGRATION, INCLUSIVE, CORTEX (later expanded to 21 modules in v9.1.0+).
 
 ### SEBA Features
 
@@ -126,7 +126,7 @@
 ### Architecture
 
 - **Engine Bus Routing** — Phase 4A telemetry and state contracts for engine orchestration.
-- **14-Module Canonical Model** — All modules verified operational with 260+ commands.
+- **Module Canonical Model** — All modules verified operational with 260+ commands (later expanded to 21 modules in ARCHITECT epoch).
 
 ---
 

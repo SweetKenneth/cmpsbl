@@ -1,12 +1,12 @@
 # Security & Compliance
 
-**Enterprise-Grade Protection for Cognitive Infrastructure**
+**Enterprise-Grade Protection for Cognitive Infrastructure — v10.5.0**
 
 ---
 
 ## Security Philosophy
 
-CMPSBL® is built with security as a core principle, not an afterthought. Every module, every data path, every API call is designed with defense in depth.
+CMPSBL® is built with security as a core principle, not an afterthought. Every module, every data path, every API call is protected by multiple layers of defense.
 
 > **"Security isn't a feature — it's the foundation."**
 
@@ -16,59 +16,27 @@ CMPSBL® is built with security as a core principle, not an afterthought. Every 
 
 ### Defense in Depth
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 1: Network Security                                   │
-│  ├── TLS 1.3 encryption in transit                          │
-│  ├── DDoS protection                                        │
-│  └── IP allowlisting (Enterprise)                           │
-├─────────────────────────────────────────────────────────────┤
-│  Layer 2: Authentication & Authorization                     │
-│  ├── API key validation                                      │
-│  ├── JWT token verification                                  │
-│  └── Role-based access control                               │
-├─────────────────────────────────────────────────────────────┤
-│  Layer 3: Application Security                               │
-│  ├── Rate limiting (adaptive)                                │
-│  ├── Bot detection (behavioral)                              │
-│  └── Input sanitization                                      │
-├─────────────────────────────────────────────────────────────┤
-│  Layer 4: Data Security                                      │
-│  ├── Encryption at rest (AES-256)                            │
-│  ├── Memory isolation per tenant                             │
-│  └── Secure key management                                   │
-├─────────────────────────────────────────────────────────────┤
-│  Layer 5: Audit & Monitoring                                 │
-│  ├── Complete audit trail                                    │
-│  ├── Real-time anomaly detection                             │
-│  └── Security event logging                                  │
-└─────────────────────────────────────────────────────────────┘
-```
+CMPSBL implements multiple independent security layers that protect the system even if any single layer is compromised:
+
+- **Network Security** — Encryption in transit, DDoS protection, IP allowlisting (Enterprise)
+- **Authentication & Authorization** — API key validation, token verification, role-based access
+- **Application Security** — Adaptive rate limiting, behavioral bot detection, input sanitization
+- **Data Security** — Encryption at rest, tenant isolation, secure key management
+- **Audit & Monitoring** — Complete audit trail, real-time anomaly detection, security event logging
 
 ---
 
 ## The DEFENSE Module
 
-The dedicated security module provides:
+The dedicated security module provides adaptive, intelligent threat response:
 
-| Capability | Description |
+| Capability | What It Does |
 |------------|-------------|
-| **Adaptive Rate Limiting** | Dynamic limits based on behavior patterns |
-| **Bot Detection** | Behavioral fingerprinting to identify automated attacks |
-| **Threat Intelligence** | Shared threat patterns across federated instances |
-| **Input Validation** | Sanitization of all inputs to prevent injection |
-| **Anomaly Detection** | ML-based detection of unusual patterns |
-
-### Threat Response
-
-```
-Threat Detected → Analyze → Classify → Respond → Learn
-                                ↓
-                    ┌─────────────────────┐
-                    │ Block    │ Rate     │ Alert   │
-                    │ Request  │ Limit    │ Admin   │
-                    └─────────────────────┘
-```
+| **Adaptive Rate Limiting** | Dynamically adjusts limits based on behavior |
+| **Bot Detection** | Identifies automated attacks through behavioral analysis |
+| **Threat Intelligence** | Shares threat patterns across federated instances |
+| **Input Validation** | Sanitizes all inputs to prevent injection |
+| **Anomaly Detection** | Detects unusual patterns in real-time |
 
 ---
 
@@ -76,25 +44,16 @@ Threat Detected → Analyze → Classify → Respond → Learn
 
 ### Your Data, Your Control
 
-| Principle | Implementation |
-|-----------|----------------|
-| **Data Sovereignty** | All data stays on your infrastructure |
-| **No Data Access** | CMPSBL never accesses your data |
+| Principle | What It Means |
+|-----------|---------------|
+| **Data Sovereignty** | Licensed substrate — data stays on your infrastructure |
 | **Tenant Isolation** | Complete memory isolation per user/tenant |
-| **Encryption** | AES-256 at rest, TLS 1.3 in transit |
-
-### Memory Privacy
-
-- User memories are isolated by default
-- Cross-user learning uses anonymized, aggregated patterns only
-- Explicit consent required for any data sharing
-- Right to deletion: `brain.forget()` removes data permanently
+| **Encryption** | At rest and in transit |
+| **Right to Deletion** | Data is permanently removed on request |
 
 ---
 
 ## Compliance Readiness
-
-### Frameworks Supported
 
 | Framework | Status |
 |-----------|--------|
@@ -106,58 +65,18 @@ Threat Detected → Analyze → Classify → Respond → Learn
 
 ### Audit Capabilities
 
-Every action in CMPSBL is logged:
-
-```typescript
-// Automatic audit logging
-{
-  "timestamp": "2026-01-15T10:30:00Z",
-  "action": "brain.remember",
-  "actor": "user:123",
-  "resource": "memory:456",
-  "result": "success",
-  "metadata": {
-    "ip": "192.168.1.1",
-    "user_agent": "...",
-    "session_id": "..."
-  }
-}
-```
-
-### Compliance Reports
-
-Enterprise tier includes:
-- Quarterly security reviews
-- Compliance documentation
-- Audit log exports
-- Security certification assistance
+Every action in CMPSBL is immutably logged with actor, resource, result, and metadata. Enterprise tier includes quarterly security reviews, compliance documentation, and audit log exports.
 
 ---
 
 ## Authentication & Access
 
-### API Key Management
-
-| Feature | Description |
+| Feature | What It Does |
 |---------|-------------|
-| **Scoped Keys** | Limit keys to specific modules/actions |
-| **Expiration** | Automatic key rotation support |
-| **Rate Limits** | Per-key rate limiting |
-| **Usage Tracking** | Monitor key usage patterns |
-
-### Access Control
-
-```typescript
-// Role-based access example
-const policy = {
-  role: 'analyst',
-  permissions: [
-    'brain.recall',      // Can read memories
-    'vision.metrics',    // Can view metrics
-    // Cannot: brain.remember, system.*, modernizer.*
-  ]
-};
-```
+| **Scoped Keys** | Limit access to specific modules/actions |
+| **Key Rotation** | Automatic expiration and rotation support |
+| **Per-Key Rate Limits** | Granular rate limiting |
+| **Usage Tracking** | Monitor access patterns |
 
 ---
 
@@ -165,25 +84,23 @@ const policy = {
 
 ### For Developers
 
-1. **Rotate API keys regularly** — Use the ACCESS module's key rotation
-2. **Use scoped permissions** — Minimum necessary access
-3. **Enable audit logging** — Track all access patterns
-4. **Monitor anomalies** — Set up alerts for unusual patterns
-5. **Keep updated** — Apply security patches promptly
+1. Rotate API keys regularly
+2. Use scoped permissions — minimum necessary access
+3. Enable audit logging
+4. Monitor anomalies with alerting
+5. Keep updated with security patches
 
 ### For Enterprise
 
-1. **Deploy behind VPN** — Additional network security layer
-2. **Use IP allowlisting** — Restrict access by IP range
-3. **Enable SSO** — Integrate with identity providers
-4. **Regular security reviews** — Quarterly assessments
-5. **Incident response plan** — Prepared procedures
+1. Deploy behind VPN for additional network security
+2. Use IP allowlisting
+3. Integrate with SSO / identity providers
+4. Conduct regular security reviews
+5. Maintain incident response procedures
 
 ---
 
 ## Incident Response
-
-### Response Timeline
 
 | Severity | Response Time | Resolution Target |
 |----------|---------------|-------------------|
@@ -192,41 +109,6 @@ const policy = {
 | **Medium** | 4 hours | 72 hours |
 | **Low** | 24 hours | 7 days |
 
-### Communication
-
-- Immediate notification for critical issues
-- Status page updates
-- Post-incident reports
-- Root cause analysis
-
----
-
-## Penetration Testing
-
-### Scope
-
-Enterprise customers may conduct penetration testing with:
-- 14-day advance notice
-- Defined scope and rules of engagement
-- Coordination with security team
-
-### Bug Bounty
-
-We maintain a responsible disclosure program:
-- PromptFluid@gmail.com for vulnerability reports
-- Recognition for valid findings
-- Coordinated disclosure timeline
-
----
-
-## Certifications & Attestations
-
-| Certification | Status |
-|---------------|--------|
-| **SOC 2 Type II** | In progress |
-| **ISO 27001** | Roadmap 2026 |
-| **HIPAA** | Available on request |
-
 ---
 
 ## Contact Security
@@ -234,8 +116,8 @@ We maintain a responsible disclosure program:
 | Purpose | Contact |
 |---------|---------|
 | **All Security Inquiries** | PromptFluid@gmail.com |
-| **Web** | https://cmpsbl.com |
+| **Vulnerability Reports** | PromptFluid@gmail.com |
 
 ---
 
-*CMPSBL® — Security by Design, Compliance by Default*
+*CMPSBL® v10.5.0 — Security by Design, Compliance by Default*

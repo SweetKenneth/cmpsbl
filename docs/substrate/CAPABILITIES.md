@@ -279,9 +279,9 @@ const result = await substrate.brain.recall('user context');
 | Observability & Health | 6 | VISION |
 | Human Compatibility | 6 | INCLUSIVE |
 
-**Total: 48+ capabilities across 14 modules**
+**Total: 400+ capabilities across 21 modules (6 layers)**
 
 ---
 
-*CMPSBL Substrate OS v6.0.0*
+*CMPSBL Substrate OS v10.5.0*
 *© 2025-2026 PromptFluid®. All rights reserved.*
