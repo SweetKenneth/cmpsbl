@@ -562,7 +562,7 @@ export const ENCODED_COMMANDS: CommandDefinition[] = [
   { command: 'encoded.history', description: 'Recent Encoded executions', category: 'cortex', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'encoded.seba.enable', description: 'Enable SEBA integration', category: 'cortex', icon: GitBranch, requiresOperator: true, requiredTier: 'architect' },
   { command: 'encoded.seba.disable', description: 'Disable SEBA integration', category: 'cortex', icon: GitBranch, requiresOperator: true, requiredTier: 'architect' },
-  { command: 'encoded.model.cloud', description: 'Use Cloud AI as primary', category: 'cortex', icon: Sparkles, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'encoded.model.nexus', description: 'Use Nexus fleet as primary', category: 'cortex', icon: Sparkles, requiresOperator: true, requiredTier: 'architect' },
   { command: 'encoded.model.free', description: 'Use free-tier as primary', category: 'cortex', icon: Sparkles, requiresOperator: true, requiredTier: 'creator' },
   { command: 'encoded.help', description: 'Show all encoded commands', category: 'cortex', icon: Terminal, requiresOperator: false, requiredTier: 'free' },
 ];

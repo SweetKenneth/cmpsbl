@@ -1045,7 +1045,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       const currentLabel = getTierLabel(effectiveTier);
       return { 
         success: false, 
-        output: `▓ ACCESS DENIED: ${tierLabel} tier required for '${base}'\n  Your tier: ${currentLabel}\n  Upgrade at cmpsbl.lovable.app/pricing to unlock this command.\n  ${getRandomItem(PERSONALITY_RESPONSES.error)}` 
+        output: `▓ ACCESS DENIED: ${tierLabel} tier required for '${base}'\n  Your tier: ${currentLabel}\n  Upgrade at cmpsbl.com/pricing to unlock this command.\n  ${getRandomItem(PERSONALITY_RESPONSES.error)}` 
       };
     }
   }
@@ -1503,7 +1503,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       // Portable backup restore (governor only) - expects JSON input or file reference
       const effTier: CommandTier = userTier || (isOperator ? 'creator' : 'free');
       if (!meetsRequiredTier(effTier, 'governor')) {
-        return { success: false, output: `▓ ACCESS DENIED: GOVERNOR tier required for 'system.restore_portable'\n  Your tier: ${getTierLabel(effTier)}\n  Upgrade at cmpsbl.lovable.app/pricing to unlock this command.` };
+        return { success: false, output: `▓ ACCESS DENIED: GOVERNOR tier required for 'system.restore_portable'\n  Your tier: ${getTierLabel(effTier)}\n  Upgrade at cmpsbl.com/pricing to unlock this command.` };
       }
       // Parse mode from args
       const dryRun = args.includes('--dry-run');
@@ -2930,7 +2930,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       }
       const effTier2: CommandTier = userTier || (isOperator ? 'creator' : 'free');
       if (!meetsRequiredTier(effTier2, 'creator')) {
-        return { success: false, output: `▓ ACCESS DENIED: CREATOR tier required for synergy execution\n  Your tier: ${getTierLabel(effTier2)}\n  Upgrade at cmpsbl.lovable.app/pricing` };
+        return { success: false, output: `▓ ACCESS DENIED: CREATOR tier required for synergy execution\n  Your tier: ${getTierLabel(effTier2)}\n  Upgrade at cmpsbl.com/pricing` };
       }
       try {
         const { executeSynergy } = await import('@/lib/capabilities/synergies');

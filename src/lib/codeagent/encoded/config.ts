@@ -1,6 +1,7 @@
 /**
  * Encoded Configuration Manager
- * v2.0.0 — Runtime configuration with Atlas integration
+ * v2.1.0 — Runtime configuration with Atlas integration
+ * Routes through Nexus fleet — zero paid AI dependencies
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -37,11 +38,15 @@ export async function getEncodedConfig(): Promise<EncodedConfig> {
 
     if (data?.metadata) {
       const meta = data.metadata as Record<string, unknown>;
+      // Migrate old cloud_ai values to nexus_fleet
+      let primaryModel = (meta.primary_model as PrimaryModel) || DEFAULT_ENCODED_CONFIG.primaryModel;
+      if (primaryModel === 'cloud_ai' as any) primaryModel = 'nexus_fleet';
+      
       cachedConfig = {
         executionMode: (meta.execution_mode as ExecutionMode) || DEFAULT_ENCODED_CONFIG.executionMode,
         sebaIntegration: Boolean(meta.seba_integration ?? DEFAULT_ENCODED_CONFIG.sebaIntegration),
         clmTraining: Boolean(meta.clm_training ?? DEFAULT_ENCODED_CONFIG.clmTraining),
-        primaryModel: (meta.primary_model as PrimaryModel) || DEFAULT_ENCODED_CONFIG.primaryModel,
+        primaryModel,
         maxRetries: Number(meta.max_retries) || DEFAULT_ENCODED_CONFIG.maxRetries,
       };
     } else {
@@ -80,7 +85,7 @@ export async function updateEncodedConfig(
       .from('atlas_capabilities')
       .upsert({
         key: 'encoded_config',
-        description: 'Encoded v2.0.0 configuration',
+        description: 'Encoded v2.2.0 configuration — Nexus fleet routing',
         enabled: true,
         metadata,
       }, { onConflict: 'key' });
@@ -146,8 +151,8 @@ export function getExecutionModeLabel(mode: ExecutionMode): string {
  */
 export function getPrimaryModelLabel(model: PrimaryModel): string {
   switch (model) {
-    case 'cloud_ai':
-      return 'Cloud AI (GPT-5-mini)';
+    case 'nexus_fleet':
+      return 'Nexus Fleet (Groq → Cerebras → DeepSeek)';
     case 'free_tier':
       return 'Free Tier (Groq/Cerebras)';
   }
