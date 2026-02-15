@@ -20,7 +20,7 @@ import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
 import { ProposalStore } from '@/lib/substrate/seba/proposal-store';
 import { cn } from '@/lib/utils';
 import type { SEBAMode } from '@/lib/substrate/seba';
-import { LovableAIUsageCard } from './LovableAIUsageCard';
+import { CloudAIUsageCard } from './LovableAIUsageCard';
 
 interface ProposedAction {
   type: string;
@@ -509,8 +509,8 @@ export function AtlasAutonomyPanel() {
           </Card>
         </motion.div>
 
-        {/* Lovable AI Usage Card */}
-        <LovableAIUsageCard />
+        {/* Cloud AI Usage Card */}
+        <CloudAIUsageCard />
       </div>
 
       {/* Pending Proposals */}

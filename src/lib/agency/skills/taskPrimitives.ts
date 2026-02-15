@@ -1,7 +1,7 @@
 /**
  * Task Primitives v3.0 — Comprehensive executable tasks
  * Expanded for business building, SEO, domain reputation, agent learning
- * Using: Groq (AI) + Firecrawl (Web Scraping/Search) + Lovable AI
+ * Using: Groq (AI) + Firecrawl (Web Scraping/Search) + Cloud AI
  */
 
 import type { AgentSkillId } from './agentSkills';
@@ -20,7 +20,7 @@ export interface TaskPrimitive {
   
   // Requirements - only use available handlers
   skills: AgentSkillId[];
-  handlers: ('groq' | 'firecrawl' | 'lovable')[];
+  handlers: ('groq' | 'firecrawl' | 'cloud')[];
   
   // Execution config
   executionProfiles: ExecutionProfile[];
@@ -322,7 +322,7 @@ const CONTENT_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['topic', 'keywords?', 'tone?'],
     outputs: ['article', 'meta_description', 'title'],
     skills: ['writing', 'analysis'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run', 'leader_route'],
     estimatedDurationMs: 25000,
     telemetryFields: ['tasks_completed'],
@@ -337,7 +337,7 @@ const CONTENT_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['target_info', 'purpose', 'offer?'],
     outputs: ['email_draft', 'subject_lines', 'follow_up'],
     skills: ['writing'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run', 'batch'],
     estimatedDurationMs: 20000,
     telemetryFields: ['tasks_completed'],
@@ -352,7 +352,7 @@ const CONTENT_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['topic', 'platform?', 'tone?'],
     outputs: ['posts', 'hashtags', 'hooks'],
     skills: ['writing'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run'],
     estimatedDurationMs: 15000,
     telemetryFields: ['tasks_completed'],
@@ -367,7 +367,7 @@ const CONTENT_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['topic', 'target_keyword', 'word_count?'],
     outputs: ['article', 'meta_tags', 'internal_links', 'backlink_anchors'],
     skills: ['writing', 'seo'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run'],
     estimatedDurationMs: 35000,
     telemetryFields: ['tasks_completed'],
@@ -382,7 +382,7 @@ const CONTENT_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['target_site', 'topic_ideas', 'credentials?'],
     outputs: ['pitch_email', 'topic_proposals', 'bio', 'samples_summary'],
     skills: ['writing', 'seo'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run', 'batch'],
     estimatedDurationMs: 20000,
     telemetryFields: ['tasks_completed'],
@@ -397,7 +397,7 @@ const CONTENT_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['announcement', 'company_info', 'quotes?'],
     outputs: ['press_release', 'boilerplate', 'distribution_targets'],
     skills: ['writing'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run'],
     estimatedDurationMs: 25000,
     telemetryFields: ['tasks_completed'],
@@ -412,7 +412,7 @@ const CONTENT_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['topic', 'target_urls?', 'brand_mention?'],
     outputs: ['comments', 'engagement_strategies', 'best_practices'],
     skills: ['writing', 'seo'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run', 'batch'],
     estimatedDurationMs: 20000,
     telemetryFields: ['tasks_completed'],
@@ -427,7 +427,7 @@ const CONTENT_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['product_info', 'target_audience?', 'keywords?'],
     outputs: ['description', 'bullet_points', 'seo_title', 'meta_description'],
     skills: ['writing'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run', 'batch'],
     estimatedDurationMs: 15000,
     telemetryFields: ['tasks_completed'],
@@ -445,7 +445,7 @@ const BUSINESS_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['industry', 'keywords?', 'style?'],
     outputs: ['name_ideas', 'domain_suggestions', 'social_handle_availability'],
     skills: ['writing', 'research'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run'],
     estimatedDurationMs: 20000,
     telemetryFields: ['tasks_completed'],
@@ -460,7 +460,7 @@ const BUSINESS_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['product_service', 'target_audience', 'competitors?'],
     outputs: ['value_prop', 'taglines', 'elevator_pitch', 'unique_selling_points'],
     skills: ['writing', 'analysis'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run'],
     estimatedDurationMs: 25000,
     telemetryFields: ['tasks_completed'],
@@ -475,7 +475,7 @@ const BUSINESS_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['business_description', 'revenue_model?'],
     outputs: ['model_analysis', 'revenue_streams', 'cost_structure', 'recommendations'],
     skills: ['analysis', 'research'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run'],
     estimatedDurationMs: 30000,
     telemetryFields: ['tasks_completed'],
@@ -505,7 +505,7 @@ const BUSINESS_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['product_service', 'target_action', 'audience?'],
     outputs: ['headline', 'subheadline', 'body_copy', 'cta_options', 'trust_elements'],
     skills: ['writing'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run'],
     estimatedDurationMs: 25000,
     telemetryFields: ['tasks_completed'],
@@ -520,7 +520,7 @@ const BUSINESS_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['business_description', 'funding_goal?', 'stage?'],
     outputs: ['slide_outline', 'key_metrics', 'narrative', 'investor_faqs'],
     skills: ['writing', 'analysis'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['single_run'],
     estimatedDurationMs: 30000,
     telemetryFields: ['tasks_completed'],
@@ -646,7 +646,7 @@ const LEARNING_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['current_workflow', 'pain_points?'],
     outputs: ['optimizations', 'automations', 'efficiency_gains', 'implementation_steps'],
     skills: ['analysis'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['learning'],
     estimatedDurationMs: 25000,
     telemetryFields: ['tasks_completed'],
@@ -661,7 +661,7 @@ const LEARNING_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['task_history', 'success_criteria?'],
     outputs: ['heuristics', 'patterns', 'shortcuts', 'best_practices'],
     skills: ['analysis'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['learning'],
     estimatedDurationMs: 30000,
     telemetryFields: ['tasks_completed'],
@@ -676,7 +676,7 @@ const LEARNING_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['insight_type', 'content'],
     outputs: ['contribution_id', 'validation_status', 'impact_score'],
     skills: ['analysis'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['learning'],
     estimatedDurationMs: 15000,
     telemetryFields: ['tasks_completed'],
@@ -691,7 +691,7 @@ const LEARNING_PRIMITIVES: Record<string, TaskPrimitive> = {
     inputs: ['output_samples', 'use_case'],
     outputs: ['template', 'variables', 'usage_guide', 'variations'],
     skills: ['writing', 'analysis'],
-    handlers: ['groq', 'lovable'],
+    handlers: ['groq', 'cloud'],
     executionProfiles: ['learning'],
     estimatedDurationMs: 25000,
     telemetryFields: ['tasks_completed'],

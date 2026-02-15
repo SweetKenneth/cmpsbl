@@ -69,7 +69,7 @@ const providerHealth = new Map<SupportedProvider, {
 }>();
 
 // Initialize health tracking
-const providers: SupportedProvider[] = ['groq', 'together', 'cerebras', 'openrouter', 'google', 'lovable'];
+const providers: SupportedProvider[] = ['groq', 'together', 'cerebras', 'openrouter', 'google', 'cloud'];
 providers.forEach(p => {
   providerHealth.set(p, {
     healthy: true,
@@ -83,13 +83,13 @@ providers.forEach(p => {
 // Default failover chains
 const DEFAULT_FAILOVER_CHAINS: Record<string, FailoverChain> = {
   text: {
-    primary: 'lovable',
+    primary: 'cloud',
     secondary: ['groq', 'together', 'google'],
     maxRetries: 3,
     retryDelay: 500,
   },
   code: {
-    primary: 'lovable',
+    primary: 'cloud',
     secondary: ['groq', 'cerebras'],
     maxRetries: 3,
     retryDelay: 500,
@@ -347,7 +347,7 @@ export function selectProvider(
     .map(([p]) => p);
 
   if (healthyProviders.length === 0) {
-    return 'lovable'; // Fallback
+    return 'cloud'; // Fallback
   }
 
   switch (strategy) {
@@ -364,7 +364,7 @@ export function selectProvider(
     
     case 'cost-optimized':
       // Prefer free tier providers
-      if (healthyProviders.includes('lovable')) return 'lovable';
+      if (healthyProviders.includes('cloud' as SupportedProvider)) return 'cloud' as SupportedProvider;
       if (healthyProviders.includes('cerebras')) return 'cerebras';
       if (healthyProviders.includes('groq')) return 'groq';
       return healthyProviders[0];

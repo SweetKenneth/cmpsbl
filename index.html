@@ -13,13 +13,13 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- PWA manifest: disabled in Lovable preview to avoid auth-bridge/CORS loops -->
+    <!-- PWA manifest: disabled in editor preview to avoid auth-bridge/CORS loops -->
     <script>
       (function () {
         const qs = new URLSearchParams(location.search);
         const host = location.hostname;
 
-        // Treat Lovable editor/preview as "preview" even when no token is present.
+        // Treat editor/preview as "preview" even when no token is present.
         // (Mobile editor can use different origins.)
         let isEmbedded = false;
         try {

@@ -6,7 +6,7 @@
 export type ChangeClass = 'comment_only' | 'additive' | 'localized' | 'destructive';
 export type RiskBand = 'minimal' | 'low' | 'medium' | 'high' | 'critical';
 export type ExecutionMode = 'dry_run' | 'human_approval' | 'semi_autonomous' | 'autonomous';
-export type PrimaryModel = 'lovable_ai' | 'free_tier';
+export type PrimaryModel = 'cloud_ai' | 'free_tier';
 
 /**
  * Encoded configuration for runtime behavior
@@ -31,7 +31,7 @@ export const DEFAULT_ENCODED_CONFIG: EncodedConfig = {
   executionMode: 'dry_run',        // Default: show, don't write
   sebaIntegration: false,          // Default: independent from SEBA
   clmTraining: true,               // Default: learn from everything
-  primaryModel: 'lovable_ai',      // Use Lovable AI (Gemini) first
+  primaryModel: 'cloud_ai',      // Use Cloud AI (Gemini) first
   maxRetries: 3,                   // Max self-fix attempts
 };
 

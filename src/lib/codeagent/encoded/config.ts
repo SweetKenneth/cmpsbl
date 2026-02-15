@@ -146,8 +146,8 @@ export function getExecutionModeLabel(mode: ExecutionMode): string {
  */
 export function getPrimaryModelLabel(model: PrimaryModel): string {
   switch (model) {
-    case 'lovable_ai':
-      return 'Lovable AI (GPT-5-mini)';
+    case 'cloud_ai':
+      return 'Cloud AI (GPT-5-mini)';
     case 'free_tier':
       return 'Free Tier (Groq/Cerebras)';
   }

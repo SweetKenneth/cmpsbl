@@ -230,7 +230,7 @@ function trackBehavior(): void {
  * Call once at app initialization
  */
 export function installSiteGuard(): (() => void) | undefined {
-  // Don't install in development or in the Lovable preview
+  // Don't install in development or in the editor preview
   if (import.meta.env.DEV) {
     console.log('[SiteGuard] Skipping — development mode');
     return;

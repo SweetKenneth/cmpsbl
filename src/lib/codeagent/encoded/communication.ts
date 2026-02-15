@@ -251,7 +251,7 @@ export function formatHelp(): string[] {
   
   lines.push('  Model Configuration');
   lines.push('  ───────────────────');
-  lines.push('    encoded.model.lovable Use Lovable AI (Gemini)');
+  lines.push('    encoded.model.cloud   Use Cloud AI (Gemini)');
   lines.push('    encoded.model.free    Use free-tier fallback');
   lines.push('');
   

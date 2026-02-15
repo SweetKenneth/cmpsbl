@@ -161,7 +161,7 @@ export async function runDeploymentPipeline(
     updateStage('deploy', 'running');
     const deployStart = Date.now();
     
-    // Note: Actual deployment happens through Lovable's edge function deploy mechanism
+    // Note: Actual deployment happens through the edge function deploy mechanism
     // This records the intent and prepares the deployment
     await recordDeployment(config.functionName, config.code, {
       styleScore,

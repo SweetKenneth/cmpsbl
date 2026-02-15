@@ -2,7 +2,7 @@
  * SEBA LLM Analyzer
  * v1.0.0 — AI-Enhanced Cognitive Analysis with Predicted Impact Metrics
  * 
- * Uses Lovable AI to perform deeper analysis than heuristics alone,
+ * Uses Cloud AI to perform deeper analysis than heuristics alone,
  * generating predicted impact metrics like "+13% memory efficiency".
  */
 
