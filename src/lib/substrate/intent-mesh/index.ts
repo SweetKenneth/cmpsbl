@@ -158,3 +158,25 @@ export {
   type IntentPattern,
   type PatternReport,
 } from './pattern-recognition';
+
+// Mesh Health Monitor — real-time health checks with drift alerts
+export {
+  checkMeshHealth,
+  onHealthAlert,
+  type MeshHealthAlert,
+  type MeshHealthStatus,
+} from './mesh-health-monitor';
+
+// Cross-Instance Federation — multi-substrate resolver sharing
+export {
+  getFederationConfig,
+  updateFederationConfig,
+  loadFederationConfig,
+  publishManifest,
+  getKnownPeers,
+  getFederationStats,
+  federatedResolve,
+  type FederationPeer,
+  type FederationConfig,
+  type FederationStats,
+} from './mesh-federation';
