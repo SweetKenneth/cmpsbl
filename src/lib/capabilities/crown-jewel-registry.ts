@@ -101,7 +101,7 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'creative_forge',                     // Creative generation meta-engine
   'cap-chaos-resilience',               // Chaos resilience framework
 
-  // ── PRO TIER ($149) — CLM, cross-session, cross-executor learning ──
+  // ── ARCHITECT TIER ($149) — CLM, cross-session, cross-executor learning ──
   'knowledge_graph_topology',           // Semantic graph with typed relations, clustering, BFS
   'stier-emergent-threat-anticipator',  // Pre-zero-day defense
   'stier-audit-grade-decision-ledger',  // Immutable decision ledger
@@ -129,40 +129,40 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
 ]);
 
 /** Map experience jewels to their minimum tier */
-export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'pro'> = {
-  // Builder tier
-  'recursive-goal-optimizer': 'builder',
-  'recursive-emergent-behavior-analyzer': 'builder',
-  'recursive-self-healing-mesh': 'builder',
-  'syn-end-to-end-reasoning': 'builder',
-  'creative_evolution_engine': 'builder',
-  'creative_forge': 'builder',
-  'cap-chaos-resilience': 'builder',
-  // Pro tier
-  'knowledge_graph_topology': 'pro',
-  'stier-emergent-threat-anticipator': 'pro',
-  'stier-audit-grade-decision-ledger': 'pro',
-  'stier-decision-confidence-governor': 'pro',
-  'stier-friction-auto-removal-engine': 'pro',
-  'syn-autonomous-evolution': 'pro',
-  'syn-self-healing': 'pro',
-  'cap-cognitive-mesh': 'pro',
-  'self_healing_engine': 'pro',
-  'attack_surface_engine': 'pro',
-  'knowledge_retrieval_engine': 'pro',
-  'delivery_orchestrator': 'pro',
-  'compliance_audit_engine': 'pro',
-  'zero_trust_engine': 'pro',
-  'finops_engine': 'pro',
-  'resilience_lab': 'pro',
-  'system_guardian': 'pro',
-  'security_fortress': 'pro',
-  'enterprise_trust_fabric': 'pro',
-  'platform_economics_engine': 'pro',
-  'world_first_cognitive': 'pro',
-  'world_first_operational': 'pro',
-  'world_first_intelligence': 'pro',
-  'world_first_governance': 'pro',
+export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
+  // Creator tier ($49)
+  'recursive-goal-optimizer': 'creator',
+  'recursive-emergent-behavior-analyzer': 'creator',
+  'recursive-self-healing-mesh': 'creator',
+  'syn-end-to-end-reasoning': 'creator',
+  'creative_evolution_engine': 'creator',
+  'creative_forge': 'creator',
+  'cap-chaos-resilience': 'creator',
+  // Architect tier ($149)
+  'knowledge_graph_topology': 'architect',
+  'stier-emergent-threat-anticipator': 'architect',
+  'stier-audit-grade-decision-ledger': 'architect',
+  'stier-decision-confidence-governor': 'architect',
+  'stier-friction-auto-removal-engine': 'architect',
+  'syn-autonomous-evolution': 'architect',
+  'syn-self-healing': 'architect',
+  'cap-cognitive-mesh': 'architect',
+  'self_healing_engine': 'architect',
+  'attack_surface_engine': 'architect',
+  'knowledge_retrieval_engine': 'architect',
+  'delivery_orchestrator': 'architect',
+  'compliance_audit_engine': 'architect',
+  'zero_trust_engine': 'architect',
+  'finops_engine': 'architect',
+  'resilience_lab': 'architect',
+  'system_guardian': 'architect',
+  'security_fortress': 'architect',
+  'enterprise_trust_fabric': 'architect',
+  'platform_economics_engine': 'architect',
+  'world_first_cognitive': 'architect',
+  'world_first_operational': 'architect',
+  'world_first_intelligence': 'architect',
+  'world_first_governance': 'architect',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -201,7 +201,7 @@ export function isExperienceCrownJewel(id: string): boolean {
 }
 
 /** Get the minimum tier required for an experience jewel */
-export function getExperienceJewelTier(id: string): 'builder' | 'pro' | null {
+export function getExperienceJewelTier(id: string): 'creator' | 'architect' | null {
   if (EXPERIENCE_TIER_MAP[id]) return EXPERIENCE_TIER_MAP[id];
   const normalized = id.replace(/^(cap-|stier-|syn-|recursive-)/, '').replace(/-/g, '_');
   return EXPERIENCE_TIER_MAP[normalized] ?? null;

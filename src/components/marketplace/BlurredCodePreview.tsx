@@ -14,6 +14,8 @@ interface BlurredCodePreviewProps {
   isPurchased?: boolean;
   onBuy: () => void;
   isLoading?: boolean;
+  /** When true, source is permanently sealed — no purchase can unlock it */
+  isBlackBoxed?: boolean;
 }
 
 // Redact sensitive implementation details
@@ -60,10 +62,11 @@ function redactCode(code: string): string {
   }).join('\n');
 }
 
-export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading }: BlurredCodePreviewProps) {
+export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading, isBlackBoxed }: BlurredCodePreviewProps) {
   const [revealHint, setRevealHint] = useState(false);
   
-  const displayCode = isPurchased ? code : redactCode(code);
+  // Black-boxed items never reveal source, even if purchased
+  const displayCode = (isPurchased && !isBlackBoxed) ? code : redactCode(code);
   const lineCount = code.split('\n').length;
 
   return (
@@ -95,7 +98,7 @@ export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading }: Blur
             "p-4 overflow-x-auto text-sm font-mono max-h-[400px] overflow-y-auto",
             !isPurchased && "select-none"
           )}>
-            <code className="text-zinc-100">
+            <code className={cn("text-zinc-100", isBlackBoxed && "select-none")}>
               {displayCode.split('\n').map((line, i) => (
                 <div key={i} className="flex">
                   <span className="w-10 text-right pr-4 text-zinc-600 select-none shrink-0">
@@ -116,15 +119,40 @@ export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading }: Blur
             </code>
           </pre>
 
-          {/* Gradient overlay for non-purchased */}
-          {!isPurchased && (
+          {/* Gradient overlay for non-purchased or black-boxed */}
+          {(!isPurchased || isBlackBoxed) && (
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent pointer-events-none" />
           )}
         </div>
       </div>
 
-      {/* Purchase overlay */}
-      {!isPurchased && (
+      {/* Black-box sealed overlay — permanent, no purchase can unlock */}
+      {isBlackBoxed && (
+        <div 
+          className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/70 backdrop-blur-[3px] rounded-xl"
+        >
+          <div className="text-center space-y-4 p-6">
+            <div className="w-16 h-16 mx-auto rounded-full bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
+              <Shield className="w-8 h-8 text-orange-400" />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-lg font-bold text-white">
+                Sealed Runtime
+              </h4>
+              <p className="text-sm text-zinc-400 max-w-xs mx-auto">
+                This artifact is delivered as a black-boxed runtime. Source code is permanently sealed to protect proprietary architecture.
+              </p>
+            </div>
+            <Badge variant="outline" className="text-[10px] border-orange-500/50 text-orange-400 gap-1">
+              <Lock className="w-3 h-3" />
+              Black-Box Protected
+            </Badge>
+          </div>
+        </div>
+      )}
+
+      {/* Purchase overlay — only for non-purchased, non-black-boxed items */}
+      {!isPurchased && !isBlackBoxed && (
         <div 
           className={cn(
             "absolute inset-0 flex flex-col items-center justify-center",

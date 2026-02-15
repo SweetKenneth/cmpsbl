@@ -92,16 +92,16 @@ function TierBadge({ badge }: { badge: ArtifactTierBadge }) {
           <Unlock className="w-2.5 h-2.5" /> FREE
         </span>
       );
-    case 'BUILDER':
+    case 'CREATOR':
       return (
         <span className="text-[10px] font-bold text-blue-400 flex items-center gap-0.5">
-          <Lock className="w-2.5 h-2.5" /> BUILDER
+          <Lock className="w-2.5 h-2.5" /> CREATOR
         </span>
       );
-    case 'PRO':
+    case 'ARCHITECT':
       return (
         <span className="text-[10px] font-bold text-purple-400 flex items-center gap-0.5">
-          <Lock className="w-2.5 h-2.5" /> PRO
+          <Lock className="w-2.5 h-2.5" /> ARCHITECT
         </span>
       );
     case 'BLACK-BOX':
@@ -170,7 +170,7 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
   const itemId = item.data.id;
   const meta = getItemMeta(item);
   const tierBadge = getItemTierBadge(itemId, name, meta.difficulty, meta.category);
-  const isBlackBoxed = tierBadge === 'BUILDER' || tierBadge === 'PRO' || tierBadge === 'BLACK-BOX';
+  const isBlackBoxed = tierBadge === 'CREATOR' || tierBadge === 'ARCHITECT' || tierBadge === 'BLACK-BOX';
 
   return (
     <motion.div
@@ -264,7 +264,7 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
   const itemId = item.data.id;
   const meta = getItemMeta(item);
   const tierBadge = getItemTierBadge(itemId, name, meta.difficulty, meta.category);
-  const isBlackBoxed = tierBadge === 'BUILDER' || tierBadge === 'PRO' || tierBadge === 'BLACK-BOX';
+  const isBlackBoxed = tierBadge === 'CREATOR' || tierBadge === 'ARCHITECT' || tierBadge === 'BLACK-BOX';
   const isArchitectureOnly = tierBadge === 'CMPSBL CORE';
   const upgradeLabel = isBlackBoxed ? getUpgradeTierLabel(itemId, name, meta.difficulty, meta.category) : null;
   

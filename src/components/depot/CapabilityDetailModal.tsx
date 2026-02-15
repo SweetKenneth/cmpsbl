@@ -47,8 +47,10 @@ import {
   type CapabilityCategory,
 } from '@/lib/capabilities/depot';
 import { getCodeSnippet, getSDKImport, getQuickStartSnippet } from '@/lib/capabilities/depot/code-snippets';
-import { isCrownJewelCapability } from '@/lib/capabilities/crown-jewel-gate';
+import { isCrownJewelCapability, isSourcePreviewBlocked, isCopyBlocked } from '@/lib/capabilities/crown-jewel-gate';
+import { isExperienceCrownJewel } from '@/lib/capabilities/crown-jewel-registry';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 interface CapabilityDetailModalProps {
@@ -75,6 +77,9 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'code'>('code');
   const isGated = isCrownJewelCapability(capability.id);
+  const isBlackBoxed = isExperienceCrownJewel(capability.id);
+  const isCodeBlocked = isSourcePreviewBlocked(capability.id, capability.name);
+  const isCopyDisabled = isCopyBlocked(capability.id, capability.name);
   
   const config = categoryConfig[capability.category];
   const CategoryIcon = config?.icon;
@@ -89,6 +94,10 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
   const quickStart = getQuickStartSnippet(capability);
 
   const handleCopy = async (text: string) => {
+    if (isCopyDisabled) {
+      toast.error('Copy disabled — this artifact is black-box protected');
+      return;
+    }
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -154,18 +163,26 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
 
         {/* CODE TAB */}
         <TabsContent value="code" className="mt-4 space-y-4">
-          {isGated ? (
-            <div className="p-6 rounded-xl border border-amber-500/20 bg-amber-500/5 text-center space-y-3">
-              <Lock className="w-10 h-10 text-amber-400 mx-auto" />
-              <h4 className="text-lg font-bold text-foreground">Enterprise Only</h4>
+          {(isGated || isBlackBoxed) ? (
+            <div className={cn(
+              "p-6 rounded-xl border text-center space-y-3",
+              isBlackBoxed && !isGated
+                ? "border-orange-500/20 bg-orange-500/5"
+                : "border-amber-500/20 bg-amber-500/5"
+            )}>
+              <Lock className={cn("w-10 h-10 mx-auto", isBlackBoxed && !isGated ? "text-orange-400" : "text-amber-400")} />
+              <h4 className="text-lg font-bold text-foreground">
+                {isGated ? 'Enterprise Only' : 'Sealed Runtime'}
+              </h4>
               <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                This Crown Jewel capability requires an Enterprise subscription. 
-                Upgrade to unlock code snippets, SDK imports, and full documentation.
+                {isGated 
+                  ? 'This Crown Jewel capability requires an Enterprise subscription. Upgrade to unlock code snippets, SDK imports, and full documentation.'
+                  : 'This artifact is delivered as a black-boxed runtime. Source code, export, and cloning are permanently disabled to protect proprietary architecture.'}
               </p>
-              <Button asChild className="mt-2 bg-amber-600 hover:bg-amber-500">
+              <Button asChild className={cn("mt-2", isBlackBoxed && !isGated ? "bg-orange-600 hover:bg-orange-500" : "bg-amber-600 hover:bg-amber-500")}>
                 <Link to="/engines">
                   <Crown className="w-4 h-4 mr-2" />
-                  View Enterprise Plans
+                  {isGated ? 'View Enterprise Plans' : 'View Plans'}
                 </Link>
               </Button>
             </div>
