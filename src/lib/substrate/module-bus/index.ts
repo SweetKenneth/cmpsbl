@@ -11,9 +11,12 @@ import { supabase } from '@/integrations/supabase/client';
 // ═══════════════════════════════════════════════════════════════
 
 export type ModuleName =
-  | 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'nexus'
-  | 'dream' | 'defense' | 'vision' | 'integration' | 'system'
-  | 'modernizer' | 'inclusive' | 'cortex';
+  | 'core' | 'ripple' | 'access'                          // Kernel
+  | 'brain' | 'decode' | 'dream'                           // Cognitive
+  | 'defense' | 'nexus' | 'vision' | 'encode'              // Operational
+  | 'system' | 'modernizer' | 'integration' | 'inclusive'   // Administrative
+  | 'cortex' | 'atlas'                                      // Orchestrator
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'; // Infrastructure
 
 export type SignalPriority = 'low' | 'normal' | 'high' | 'critical';
 
@@ -87,15 +90,15 @@ export const SIGNAL_TYPES = {
 
 /** Auto-routing: which modules should receive which signal types */
 const AUTO_ROUTES: Record<string, ModuleName[]> = {
-  [SIGNAL_TYPES.THREAT_DETECTED]: ['access', 'system', 'vision'],
-  [SIGNAL_TYPES.RATE_LIMIT_BREACH]: ['nexus', 'access', 'defense'],
-  [SIGNAL_TYPES.PROVIDER_DOWN]: ['nexus', 'decode', 'dream'],
-  [SIGNAL_TYPES.REGRESSION_DETECTED]: ['modernizer', 'system', 'cortex'],
-  [SIGNAL_TYPES.PATTERN_LEARNED]: ['cortex', 'dream', 'modernizer'],
-  [SIGNAL_TYPES.QUOTA_WARNING]: ['nexus', 'system', 'access'],
-  [SIGNAL_TYPES.COST_SPIKE]: ['nexus', 'system', 'access'],
-  [SIGNAL_TYPES.DREAM_INSIGHT]: ['cortex', 'modernizer', 'brain'],
-  [SIGNAL_TYPES.HEALTH_DEGRADED]: ['system', 'vision', 'cortex'],
+  [SIGNAL_TYPES.THREAT_DETECTED]: ['access', 'system', 'vision', 'audit', 'identity'],
+  [SIGNAL_TYPES.RATE_LIMIT_BREACH]: ['nexus', 'access', 'defense', 'economy'],
+  [SIGNAL_TYPES.PROVIDER_DOWN]: ['nexus', 'decode', 'dream', 'relay'],
+  [SIGNAL_TYPES.REGRESSION_DETECTED]: ['modernizer', 'system', 'cortex', 'audit'],
+  [SIGNAL_TYPES.PATTERN_LEARNED]: ['cortex', 'dream', 'modernizer', 'memory'],
+  [SIGNAL_TYPES.QUOTA_WARNING]: ['nexus', 'system', 'access', 'economy'],
+  [SIGNAL_TYPES.COST_SPIKE]: ['nexus', 'system', 'access', 'economy'],
+  [SIGNAL_TYPES.DREAM_INSIGHT]: ['cortex', 'modernizer', 'brain', 'memory'],
+  [SIGNAL_TYPES.HEALTH_DEGRADED]: ['system', 'vision', 'cortex', 'audit'],
 };
 
 // ═══════════════════════════════════════════════════════════════
