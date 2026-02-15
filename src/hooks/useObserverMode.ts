@@ -1,66 +1,75 @@
 /**
- * Observer Mode Hook
- * Provides view-only restrictions for observer role users
- * Observers can see dashboard components but cannot interact with them
+ * Tier Access Guard Hook
+ * Provides tier-based restrictions for substrate controls
+ * Free users can see dashboard but cannot interact with gated features
  */
 
-import { useUserRole } from './useUserRole';
+import { useUserRole, type SubstrateRole } from './useUserRole';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { useCallback } from 'react';
 
+const TIER_LABELS: Record<SubstrateRole, string> = {
+  free: 'Free',
+  creator: 'Creator ($49/mo)',
+  architect: 'Architect ($149/mo)',
+  governor: 'Governor (Admin)',
+};
+
 interface ObserverModeState {
-  /** Whether user is in observer-only mode */
+  /** Whether user is on free tier only */
   isObserverOnly: boolean;
-  /** Whether user can interact with controls */
+  /** Whether user can interact with controls (creator+) */
   canInteract: boolean;
-  /** Whether user can execute commands */
+  /** Whether user can execute commands (creator+) */
   canExecute: boolean;
-  /** Whether user can modify settings */
+  /** Whether user can modify settings (architect+) */
   canModify: boolean;
   /** Show restricted action toast */
-  showRestrictionToast: () => void;
+  showRestrictionToast: (requiredTier?: SubstrateRole) => void;
   /** Wrap an action with permission check */
   guardAction: <T extends (...args: any[]) => any>(
     action: T,
-    requiredLevel?: 'operator' | 'governor'
+    requiredTier?: SubstrateRole
   ) => (...args: Parameters<T>) => ReturnType<T> | undefined;
 }
 
 export function useObserverMode(): ObserverModeState {
   const { user } = useAuth();
-  const { role, isOperator, isGovernor } = useUserRole();
+  const { role, isCreator, isArchitect, isGovernor } = useUserRole();
 
-  // Observer-only: authenticated but only observer role
-  const isObserverOnly = !!user && role === 'observer';
+  // Free-only: authenticated but only free role
+  const isObserverOnly = !!user && role === 'free';
 
   // Interaction permissions
-  const canInteract = isOperator || isGovernor;
-  const canExecute = isOperator || isGovernor;
-  const canModify = isGovernor;
+  const canInteract = isCreator;
+  const canExecute = isCreator;
+  const canModify = isArchitect;
 
-  const showRestrictionToast = useCallback(() => {
-    toast.error('Observer Mode', {
-      description: 'Your account is in observer mode. Upgrade to operator or governor access to interact with controls.',
+  const showRestrictionToast = useCallback((requiredTier: SubstrateRole = 'creator') => {
+    toast.error('Access Restricted', {
+      description: `This feature requires ${TIER_LABELS[requiredTier]} access. Your current tier: ${TIER_LABELS[role]}.`,
       duration: 4000,
     });
-  }, []);
+  }, [role]);
 
   const guardAction = useCallback(<T extends (...args: any[]) => any>(
     action: T,
-    requiredLevel: 'operator' | 'governor' = 'operator'
+    requiredTier: SubstrateRole = 'creator'
   ) => {
     return (...args: Parameters<T>): ReturnType<T> | undefined => {
-      const hasPermission = requiredLevel === 'governor' ? isGovernor : isOperator;
+      const tierOrder: SubstrateRole[] = ['free', 'creator', 'architect', 'governor'];
+      const requiredLevel = tierOrder.indexOf(requiredTier);
+      const currentLevel = tierOrder.indexOf(role);
       
-      if (!hasPermission) {
-        showRestrictionToast();
+      if (currentLevel < requiredLevel) {
+        showRestrictionToast(requiredTier);
         return undefined;
       }
       
       return action(...args);
     };
-  }, [isOperator, isGovernor, showRestrictionToast]);
+  }, [role, showRestrictionToast]);
 
   return {
     isObserverOnly,

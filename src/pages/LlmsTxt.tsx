@@ -80,9 +80,9 @@ Base URL: https://cmpsbl.com/api/substrate
 - POST /decode/chat — Epistemic conversation
 - POST /nexus/route — AI provider routing
 
-## Access Roles
+## Access Tiers
 
-Observer (read-only) · Operator (actions) · Governor (admin)
+Free (read-only) · Creator ($49/mo) · Architect ($149/mo) · Governor (admin)
 
 ## Contact
 

@@ -1,20 +1,67 @@
 /**
  * Terminal Command Registry
- * v9.1.0 ARCHITECT Epoch — 360+ commands across 21 modules
+ * v10.5.0 ARCHITECT Epoch — 360+ commands across 21 modules
  * Complete list of all substrate commands organized by module
+ * 
+ * Tier Gating: free | creator | architect | governor
+ *   free      = Status, pulse, read-only queries
+ *   creator   = Actions, mutations, basic operations ($49/mo)
+ *   architect = Evolution, modernizer, advanced ops ($149/mo)
+ *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */
 
 import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck, Layers, CheckCircle, XCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import type { SubstrateRole } from '@/hooks/useUserRole';
+
+export type CommandTier = SubstrateRole; // 'free' | 'creator' | 'architect' | 'governor'
 
 export interface CommandDefinition {
   command: string;
   description: string;
   category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod';
   icon: LucideIcon;
+  /** @deprecated Use requiredTier instead */
   requiresOperator: boolean;
+  /** Minimum tier required to execute this command */
+  requiredTier?: CommandTier;
   args?: string;
   example?: string;
+}
+
+/** Check if a user's tier meets the command requirement */
+export function meetsRequiredTier(userTier: CommandTier, requiredTier: CommandTier): boolean {
+  const tierOrder: CommandTier[] = ['free', 'creator', 'architect', 'governor'];
+  return tierOrder.indexOf(userTier) >= tierOrder.indexOf(requiredTier);
+}
+
+/** Get the required tier for a command (uses requiredTier if set, falls back to requiresOperator mapping) */
+export function getCommandTier(cmd: CommandDefinition): CommandTier {
+  if (cmd.requiredTier) return cmd.requiredTier;
+  // Legacy fallback: requiresOperator=true → creator, false → free
+  return cmd.requiresOperator ? 'creator' : 'free';
+}
+
+const TIER_LABELS: Record<CommandTier, string> = {
+  free: 'FREE',
+  creator: 'CREATOR',
+  architect: 'ARCHITECT',
+  governor: 'GOVERNOR',
+};
+
+export function getTierLabel(tier: CommandTier): string {
+  return TIER_LABELS[tier] || tier.toUpperCase();
+}
+
+const TIER_ICONS: Record<CommandTier, string> = {
+  free: '○',
+  creator: '◆',
+  architect: '★',
+  governor: '◉',
+};
+
+export function getTierIcon(tier: CommandTier): string {
+  return TIER_ICONS[tier] || '○';
 }
 
 export const BRAIN_COMMANDS: CommandDefinition[] = [
@@ -158,16 +205,16 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.config', description: 'View configuration', category: 'system', icon: Settings, requiresOperator: false, args: '[key]' },
   { command: 'system.audit', description: 'Query health incidents & audit log', category: 'system', icon: Eye, requiresOperator: false, args: '[since] [type]', example: 'system.audit 24h heal' },
   { command: 'system.diagnostics', description: 'Full diagnostics', category: 'system', icon: Cpu, requiresOperator: false, args: '[--full]' },
-  { command: 'system.heal', description: 'Self-healing trigger', category: 'system', icon: Shield, requiresOperator: true, args: '[target] [force]' },
-  { command: 'system.restart', description: 'Restart service', category: 'system', icon: Cpu, requiresOperator: true, args: '[service]' },
-  { command: 'system.backup', description: 'Create backup snapshot', category: 'system', icon: Database, requiresOperator: true, args: '[include_data]' },
-  { command: 'system.restore', description: 'Restore from backup', category: 'system', icon: Database, requiresOperator: true, args: '<backup_id> [validate_only]' },
-  { command: 'system.restore_portable', description: 'Restore from portable JSON backup (governor only)', category: 'system', icon: Database, requiresOperator: true, args: '<json> [--dry-run] [--mode=merge|replace]' },
+  { command: 'system.heal', description: 'Self-healing trigger', category: 'system', icon: Shield, requiresOperator: true, requiredTier: 'architect', args: '[target] [force]' },
+  { command: 'system.restart', description: 'Restart service', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'architect', args: '[service]' },
+  { command: 'system.backup', description: 'Create backup snapshot', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'architect', args: '[include_data]' },
+  { command: 'system.restore', description: 'Restore from backup', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'governor', args: '<backup_id> [validate_only]' },
+  { command: 'system.restore_portable', description: 'Restore from portable JSON backup (governor only)', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'governor', args: '<json> [--dry-run] [--mode=merge|replace]' },
   { command: 'system.list_backups', description: 'List available backups', category: 'system', icon: Database, requiresOperator: false },
-  { command: 'system.upgrade.propose', description: 'Propose upgrade (shadow)', category: 'system', icon: Cpu, requiresOperator: true, args: '[scope] [notes]' },
+  { command: 'system.upgrade.propose', description: 'Propose upgrade (shadow)', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'architect', args: '[scope] [notes]' },
   { command: 'system.upgrade.list', description: 'List upgrade plans', category: 'system', icon: Cpu, requiresOperator: false },
-  { command: 'system.upgrade.apply', description: 'Apply upgrade plan', category: 'system', icon: Cpu, requiresOperator: true, args: '<plan_id>' },
-  { command: 'system.upgrade.rollback', description: 'Rollback upgrade', category: 'system', icon: Cpu, requiresOperator: true, args: '<plan_id>' },
+  { command: 'system.upgrade.apply', description: 'Apply upgrade plan', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'governor', args: '<plan_id>' },
+  { command: 'system.upgrade.rollback', description: 'Rollback upgrade', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'governor', args: '<plan_id>' },
   // v5.6.0: Module Registry + Inventory
   { command: 'system.modules', description: 'List all registered modules', category: 'system', icon: Box, requiresOperator: false, args: '[--full|--health|--dag|--roles|--boot|--inventory]' },
   { command: 'system.module', description: 'Get specific module details', category: 'system', icon: Box, requiresOperator: false, args: '<module_name>' },
@@ -184,10 +231,10 @@ export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.jobs', description: 'List evolution runs (active + completed)', category: 'modernizer', icon: Activity, requiresOperator: false, args: '[limit]' },
   
   // ═══ EVOLUTION CYCLE v0.7.7 (Primary Commands) ═══
-  { command: 'modernizer.evolve', description: 'Unified Evolution Cycle (scan → plan → shadow → production → verify)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '[shadow|production|verify|abort|status] [--confirm]', example: 'modernizer.evolve shadow' },
+  { command: 'modernizer.evolve', description: 'Unified Evolution Cycle (scan → plan → shadow → production → verify)', category: 'modernizer', icon: Sparkles, requiresOperator: true, requiredTier: 'architect', args: '[shadow|production|verify|abort|status] [--confirm]', example: 'modernizer.evolve shadow' },
   
   // ═══ COGNITIVE SCAN v0.7.7 ═══
-  { command: 'modernizer.scan', description: 'Cognitive systems scan (4-phase: edge/system/health/LLM)', category: 'modernizer', icon: Search, requiresOperator: true, args: '[--explain|--llm-report|--dry-run]', example: 'modernizer.scan --explain' },
+  { command: 'modernizer.scan', description: 'Cognitive systems scan (4-phase: edge/system/health/LLM)', category: 'modernizer', icon: Search, requiresOperator: true, requiredTier: 'architect', args: '[--explain|--llm-report|--dry-run]', example: 'modernizer.scan --explain' },
   
   // ═══ CIRCUIT BREAKER v0.7.6 ═══
   { command: 'modernizer.circuit', description: 'Evolution circuit breaker control', category: 'modernizer', icon: Shield, requiresOperator: false, args: '[status|reset|open <reason>]', example: 'modernizer.circuit status' },
@@ -210,11 +257,11 @@ export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.review', description: 'Review a specific plan', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
   { command: 'modernizer.validate', description: 'Validate plan readiness', category: 'modernizer', icon: Shield, requiresOperator: false, args: '<plan_id>' },
   { command: 'modernizer.diff', description: 'View plan diff and health comparison', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
-  { command: 'modernizer.rollback', description: 'Rollback an applied plan', category: 'modernizer', icon: Shield, requiresOperator: true, args: '<plan_id>' },
-  { command: 'modernizer.delete', description: 'Delete/reject a plan', category: 'modernizer', icon: Shield, requiresOperator: true, args: '<plan_id>' },
+  { command: 'modernizer.rollback', description: 'Rollback an applied plan', category: 'modernizer', icon: Shield, requiresOperator: true, requiredTier: 'governor', args: '<plan_id>' },
+  { command: 'modernizer.delete', description: 'Delete/reject a plan', category: 'modernizer', icon: Shield, requiresOperator: true, requiredTier: 'architect', args: '<plan_id>' },
   { command: 'modernizer.applied', description: 'List all applied improvements', category: 'modernizer', icon: Activity, requiresOperator: false },
   { command: 'modernizer.archived', description: 'Scan archived functions to repurpose', category: 'modernizer', icon: Database, requiresOperator: false },
-  { command: 'modernizer.implement', description: 'Generate code for archived function repurposing', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<archived_function> <target_action>' },
+  { command: 'modernizer.implement', description: 'Generate code for archived function repurposing', category: 'modernizer', icon: Sparkles, requiresOperator: true, requiredTier: 'governor', args: '<archived_function> <target_action>' },
   { command: 'modernizer.export', description: 'Export job assets', category: 'modernizer', icon: Database, requiresOperator: true, args: '<job_id>' },
   { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false },
   { command: 'modernizer.refresh', description: 'Resync metrics and clear stale hints', category: 'modernizer', icon: Activity, requiresOperator: true },
