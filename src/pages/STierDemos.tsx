@@ -562,23 +562,51 @@ export default function STierDemos() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
-      <div className="border-b border-border/50 bg-gradient-to-b from-primary/5 to-transparent">
-        <div className="max-w-6xl mx-auto px-4 py-8 lg:py-12">
-          <div className="flex items-center gap-3 mb-4">
+      <div className="relative border-b border-border/50 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-primary/8 blur-[80px] pointer-events-none" />
+        
+        <div className="relative max-w-6xl mx-auto px-4 py-12 lg:py-20">
+          <div className="flex items-center gap-3 mb-6">
             <Link to="/">
               <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground">
                 ← Home
               </Button>
             </Link>
           </div>
-          <div className="flex items-center gap-3 mb-2">
-            <Crown className="w-6 h-6 text-primary" />
-            <Badge variant="outline" className="text-primary border-primary/50">S-TIER</Badge>
-          </div>
-          <h1 className="text-3xl lg:text-4xl font-bold mb-2">Showcase</h1>
-          <p className="text-muted-foreground max-w-2xl">
-            Interactive proof-of-moat demonstrations. Each demo runs live against the substrate — no mocks, no smoke and mirrors.
-          </p>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="relative">
+                <Shield className="w-10 h-10 text-primary" />
+                <div className="absolute inset-0 animate-ping opacity-20">
+                  <Shield className="w-10 h-10 text-primary" />
+                </div>
+              </div>
+              <Badge variant="outline" className="text-primary border-primary/50 text-sm px-3 py-1 tracking-wider">PROOF STAMP</Badge>
+            </div>
+            
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+              <span className="bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent">
+                Don't Take Our Word.
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-primary via-primary to-foreground bg-clip-text text-transparent">
+                Watch It Prove Itself.
+              </span>
+            </h1>
+            
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+              Live, interactive proof-of-moat. Every demo runs against the real substrate — 
+              no mocks, no staging, no smoke.
+            </p>
+          </motion.div>
         </div>
       </div>
 
