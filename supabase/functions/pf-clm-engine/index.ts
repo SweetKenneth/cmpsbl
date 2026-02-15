@@ -3,12 +3,15 @@
  * Runs autonomously via pg_cron — NO browser required
  * 
  * Executes the full CLM pipeline every cycle:
- * 1. Check budget/rate limits
- * 2. Run brain/cognitive_cycle (learn → reflect → synthesize → dream)
- * 3. Run module self-analysis for each active module
- * 4. Log learning telemetry
+ * 1. Budget/rate limit check
+ * 2. Brain cognitive cycle (learn → reflect → synthesize → dream)
+ * 3. Module self-analysis (rotating)
+ * 4. Learning topic study via Nexus fleet
+ * 5. Brain Transfer Pipeline (distribute learnings to all modules)
+ * 6. Memory Consolidation (dedup, tier promotion/demotion, pruning)
+ * 7. Telemetry recording
  * 
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -19,17 +22,41 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "1.0.0";
-const MAX_CYCLES_PER_HOUR = 12; // Max 12 cognitive cycles per hour
-const MAX_CYCLES_PER_DAY = 200; // 80% of 250 theoretical max
+const CLM_VERSION = "2.0.0";
+const MAX_CYCLES_PER_HOUR = 12;
+const MAX_CYCLES_PER_DAY = 200;
 
-// Modules that participate in CLM self-analysis
+// All 20 modules that participate in CLM
 const CLM_MODULES = [
   'brain', 'decode', 'defense', 'nexus', 'vision', 'dream',
   'cortex', 'ripple', 'modernizer', 'encode', 'access',
   'system', 'inclusive', 'integration', 'memory', 'relay',
   'audit', 'identity', 'economy', 'sandbox'
 ];
+
+// Module transfer configs — relevance signals for brain→module knowledge routing
+const MODULE_RELEVANCE: Record<string, string[]> = {
+  decode:       ['response', 'conversation', 'chat', 'personality', 'tone', 'user', 'context'],
+  defense:      ['security', 'threat', 'attack', 'vulnerability', 'injection', 'bot', 'anomaly'],
+  nexus:        ['routing', 'provider', 'model', 'fallback', 'latency', 'cost', 'health'],
+  vision:       ['trace', 'diagnostic', 'observability', 'metric', 'monitor', 'alert', 'latency'],
+  dream:        ['dream', 'synthesis', 'creative', 'imagination', 'insight', 'hypothesis'],
+  cortex:       ['architecture', 'design', 'pattern', 'proposal', 'refactor', 'structure'],
+  encode:       ['code generation', 'task packet', 'code review', 'refactor', 'implementation'],
+  memory:       ['vector', 'embedding', 'semantic', 'rag', 'retrieval', 'recall', 'tiering'],
+  relay:        ['webhook', 'outbound', 'delivery', 'retry', 'queue', 'notification'],
+  audit:        ['compliance', 'audit trail', 'immutable', 'chain', 'retention', 'regulatory'],
+  identity:     ['actor', 'attribution', 'signature', 'webauthn', 'session', 'credential'],
+  economy:      ['cost', 'budget', 'pricing', 'billing', 'usage', 'metering', 'roi'],
+  sandbox:      ['isolation', 'sandbox', 'speculative', 'safe execution', 'containment'],
+  access:       ['permission', 'role', 'authorization', 'api key', 'token', 'quota'],
+  ripple:       ['event', 'propagation', 'broadcast', 'publish', 'subscribe', 'cascade'],
+  system:       ['health', 'audit', 'configuration', 'settings', 'admin', 'governance'],
+  modernizer:   ['upgrade', 'evolution', 'modernize', 'refactor', 'migrate', 'diff'],
+  inclusive:    ['accessibility', 'a11y', 'wcag', 'aria', 'screen reader', 'keyboard'],
+  integration:  ['webhook', 'api', 'endpoint', 'transform', 'pipeline', 'data sync'],
+  core:         ['memory', 'storage', 'persistence', 'state', 'cache', 'retrieve'],
+};
 
 // Learning topics for autonomous study
 const LEARNING_TOPICS = [
@@ -62,7 +89,6 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Parse request — cron sends minimal body
     let action = 'cycle';
     try {
       const body = await req.json();
@@ -74,13 +100,12 @@ serve(async (req) => {
     console.log(`⚡ CLM Engine v${CLM_VERSION} | action=${action}`);
 
     // ═══════════════════════════════════════════════════════════
-    // BUDGET CHECK — Enforce daily/hourly limits
+    // BUDGET CHECK
     // ═══════════════════════════════════════════════════════════
     const now = new Date();
     const todayKey = now.toISOString().split('T')[0];
     const currentHour = now.getUTCHours();
 
-    // Count today's cycles
     const { count: todayCycles } = await supabase
       .from('brain_events')
       .select('id', { count: 'exact', head: true })
@@ -88,17 +113,10 @@ serve(async (req) => {
       .gte('created_at', `${todayKey}T00:00:00Z`);
 
     if ((todayCycles || 0) >= MAX_CYCLES_PER_DAY) {
-      console.log(`⏸️ Daily budget exhausted: ${todayCycles}/${MAX_CYCLES_PER_DAY}`);
-      return new Response(JSON.stringify({
-        success: true,
-        skipped: true,
-        reason: 'daily_budget_exhausted',
-        cycles_today: todayCycles,
-        max_daily: MAX_CYCLES_PER_DAY,
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      return new Response(JSON.stringify({ success: true, skipped: true, reason: 'daily_budget_exhausted' }), 
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Count this hour's cycles
     const hourStart = new Date(now);
     hourStart.setMinutes(0, 0, 0);
     const { count: hourCycles } = await supabase
@@ -108,56 +126,40 @@ serve(async (req) => {
       .gte('created_at', hourStart.toISOString());
 
     if ((hourCycles || 0) >= MAX_CYCLES_PER_HOUR) {
-      console.log(`⏸️ Hourly budget exhausted: ${hourCycles}/${MAX_CYCLES_PER_HOUR}`);
-      return new Response(JSON.stringify({
-        success: true,
-        skipped: true,
-        reason: 'hourly_budget_exhausted',
-        cycles_this_hour: hourCycles,
-        max_hourly: MAX_CYCLES_PER_HOUR,
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      return new Response(JSON.stringify({ success: true, skipped: true, reason: 'hourly_budget_exhausted' }), 
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // QUIET HOURS — Reduce intensity during off-peak (2am-6am UTC)
-    // ═══════════════════════════════════════════════════════════
     const isQuietHours = currentHour >= 2 && currentHour <= 6;
     const cycleIntensity = isQuietHours ? 'low' : 'full';
+    const cycleNumber = (todayCycles || 0) + 1;
 
-    // ═══════════════════════════════════════════════════════════
-    // PHASE 1: Run Cognitive Cycle via pf-substrate
-    // ═══════════════════════════════════════════════════════════
     const cycleResults: Record<string, any> = {
       cognitive_cycle: null,
       module_analysis: [],
       learning_topic: null,
-      telemetry: null,
+      brain_transfer: null,
+      memory_consolidation: null,
     };
 
+    // ═══════════════════════════════════════════════════════════
+    // PHASE 1: Cognitive Cycle via pf-substrate
+    // ═══════════════════════════════════════════════════════════
     try {
       const { data: cycleData, error: cycleError } = await supabase.functions.invoke('pf-substrate', {
-        body: {
-          module: 'brain',
-          action: 'cognitive_cycle',
-        },
+        body: { module: 'brain', action: 'cognitive_cycle' },
       });
-
-      if (cycleError) {
-        console.error('Cognitive cycle error:', cycleError);
-        cycleResults.cognitive_cycle = { success: false, error: String(cycleError) };
-      } else {
-        cycleResults.cognitive_cycle = { success: true, phases: cycleData?.phases || {} };
-        console.log('✅ Cognitive cycle complete');
-      }
+      cycleResults.cognitive_cycle = cycleError 
+        ? { success: false, error: String(cycleError) } 
+        : { success: true, phases: cycleData?.phases || {} };
+      console.log(cycleError ? '❌ Cognitive cycle failed' : '✅ Cognitive cycle complete');
     } catch (err) {
-      console.error('Cognitive cycle exception:', err);
       cycleResults.cognitive_cycle = { success: false, error: String(err) };
     }
 
     // ═══════════════════════════════════════════════════════════
-    // PHASE 2: Module Self-Analysis (rotate through modules)
+    // PHASE 2: Module Self-Analysis (rotating)
     // ═══════════════════════════════════════════════════════════
-    // Pick 2-3 modules per cycle to avoid overload
     const modulesPerCycle = isQuietHours ? 1 : 3;
     const cycleIndex = (todayCycles || 0) % CLM_MODULES.length;
     const selectedModules = [];
@@ -167,7 +169,6 @@ serve(async (req) => {
 
     for (const moduleName of selectedModules) {
       try {
-        // Fetch recent events for this module
         const { data: moduleEvents } = await supabase
           .from('brain_events')
           .select('event_type, outcome, data, created_at')
@@ -179,7 +180,6 @@ serve(async (req) => {
         const totalCount = moduleEvents?.length || 0;
         const successRate = totalCount > 0 ? successCount / totalCount : 0;
 
-        // Generate a learning insight
         const insight = {
           module: moduleName,
           events_analyzed: totalCount,
@@ -188,14 +188,13 @@ serve(async (req) => {
           recent_patterns: moduleEvents?.slice(0, 3).map((e: any) => e.event_type) || [],
         };
 
-        // Store as brain event
         await supabase.from('brain_events').insert({
           event_type: 'module_learning_insight',
           module: moduleName,
           outcome: 'success',
           data: {
             title: `${moduleName.toUpperCase()} Self-Analysis`,
-            content: `Module ${moduleName} analyzed: ${totalCount} recent events, ${(successRate * 100).toFixed(0)}% success rate. Health: ${insight.health_trend}.`,
+            content: `Module ${moduleName}: ${totalCount} events, ${(successRate * 100).toFixed(0)}% success. Health: ${insight.health_trend}.`,
             insight,
             source: 'clm_server_engine',
             version: CLM_VERSION,
@@ -210,27 +209,19 @@ serve(async (req) => {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // PHASE 3: Learning Topic Study (pick one topic per cycle)
+    // PHASE 3: Learning Topic Study
     // ═══════════════════════════════════════════════════════════
     if (!isQuietHours) {
-      const topicIndex = (todayCycles || 0) % LEARNING_TOPICS.length;
+      const topicIndex = cycleNumber % LEARNING_TOPICS.length;
       const topic = LEARNING_TOPICS[topicIndex];
 
       try {
-        // Use Nexus router to study this topic
         const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
-          body: {
-            module: 'brain',
-            action: 'deep_think',
-            data: {
-              question: topic.prompt,
-              depth: 'medium',
-            },
-          },
+          body: { module: 'brain', action: 'deep_think', data: { question: topic.prompt, depth: 'medium' } },
         });
 
         if (!studyError && studyResult?.success) {
-          // Store learning as memory
+          // Store learning as both brain_event AND as a hot memory for cross-module recall
           await supabase.from('brain_events').insert({
             event_type: 'technical_learning_cycle',
             module: 'brain',
@@ -244,19 +235,208 @@ serve(async (req) => {
             },
           });
 
+          // Also persist as hot memory for immediate recall
+          await supabase.from('brain_memory_hot').insert({
+            content: `[CLM Learning: ${topic.domain}] ${studyResult?.analysis?.substring?.(0, 500) || topic.prompt}`,
+            context: `clm_study:${topic.domain}`,
+            priority: 7,
+            access_count: 0,
+            metadata: { domain: topic.domain, source: 'clm_server_engine', cycle: cycleNumber },
+          });
+
           cycleResults.learning_topic = { domain: topic.domain, success: true };
           console.log(`📚 Studied: ${topic.domain}`);
         } else {
-          cycleResults.learning_topic = { domain: topic.domain, success: false, error: String(studyError) };
+          cycleResults.learning_topic = { domain: topic.domain, success: false };
         }
       } catch (err) {
-        console.warn('Learning topic study failed:', err);
         cycleResults.learning_topic = { domain: topic.domain, success: false };
       }
     }
 
     // ═══════════════════════════════════════════════════════════
-    // PHASE 4: Telemetry & Cycle Record
+    // PHASE 4: Brain Transfer Pipeline (every 3rd cycle)
+    // Distributes recent learnings from brain → all module hot caches
+    // ═══════════════════════════════════════════════════════════
+    if (cycleNumber % 3 === 0 && !isQuietHours) {
+      try {
+        const transferStartTime = Date.now();
+        let transferred = 0;
+        let enriched = 0;
+
+        // Pick 2 modules to transfer knowledge to this cycle
+        const transferModules = [
+          CLM_MODULES[(cycleNumber / 3) % CLM_MODULES.length],
+          CLM_MODULES[((cycleNumber / 3) + 1) % CLM_MODULES.length],
+        ];
+
+        for (const targetModule of transferModules) {
+          const signals = MODULE_RELEVANCE[targetModule] || [];
+          if (signals.length === 0) continue;
+
+          // Find recent brain memories relevant to this module
+          for (const signal of signals.slice(0, 3)) { // Top 3 signals per module
+            const { data: relevantMemories } = await supabase
+              .from('brain_memories')
+              .select('id, content, confidence, metadata')
+              .ilike('content', `%${signal}%`)
+              .gte('confidence', 0.6)
+              .order('created_at', { ascending: false })
+              .limit(3);
+
+            if (relevantMemories?.length) {
+              for (const mem of relevantMemories) {
+                try {
+                  await supabase.from('brain_memory_hot').insert({
+                    content: `[${targetModule.toUpperCase()}_TRANSFER] ${mem.content.substring(0, 400)}`,
+                    context: `${targetModule}_transfer:auto`,
+                    priority: Math.min(10, Math.max(1, Math.round((mem.confidence || 0.7) * 10))),
+                    access_count: 0,
+                    metadata: { 
+                      source_memory_id: mem.id, 
+                      target_module: targetModule,
+                      signal,
+                      transferred_at: new Date().toISOString(),
+                      source: 'clm_brain_transfer',
+                    },
+                  });
+                  transferred++;
+                } catch {
+                  // Dedup conflict — memory already transferred
+                  enriched++;
+                }
+              }
+            }
+          }
+        }
+
+        const transferDuration = Date.now() - transferStartTime;
+        cycleResults.brain_transfer = { 
+          success: true, 
+          modules: transferModules, 
+          transferred, 
+          enriched, 
+          duration_ms: transferDuration 
+        };
+
+        // Log transfer event
+        await supabase.from('brain_events').insert({
+          event_type: 'brain_knowledge_transfer',
+          module: 'brain',
+          outcome: 'success',
+          data: { modules: transferModules, transferred, enriched, duration_ms: transferDuration, source: 'clm_server_engine' },
+        });
+
+        console.log(`🔄 Brain Transfer: ${transferred} memories → [${transferModules.join(', ')}] in ${transferDuration}ms`);
+      } catch (err) {
+        console.warn('Brain transfer failed:', err);
+        cycleResults.brain_transfer = { success: false, error: String(err) };
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // PHASE 5: Memory Consolidation (every 6th cycle)
+    // Dedup, tier promotion, stale memory demotion, pruning
+    // ═══════════════════════════════════════════════════════════
+    if (cycleNumber % 6 === 0) {
+      try {
+        const consolidationStart = Date.now();
+        let promoted = 0;
+        let demoted = 0;
+        let pruned = 0;
+
+        // 5a: Promote high-access warm memories to hot
+        const { data: warmHighAccess } = await supabase
+          .from('brain_memory_warm')
+          .select('id, content, confidence, access_count, memory_type, metadata, source')
+          .gte('access_count', 3)
+          .gte('confidence', 0.7)
+          .order('access_count', { ascending: false })
+          .limit(10);
+
+        for (const mem of warmHighAccess || []) {
+          try {
+            await supabase.from('brain_memory_hot').insert({
+              content: mem.content,
+              context: `promoted:${mem.memory_type || 'general'}`,
+              priority: Math.min(10, Math.max(1, Math.round((mem.confidence || 0.7) * 10))),
+              access_count: mem.access_count || 0,
+              metadata: { ...((mem.metadata as any) || {}), promoted_from: 'warm', promoted_at: new Date().toISOString() },
+            });
+            promoted++;
+          } catch {
+            // Already exists in hot — skip
+          }
+        }
+
+        // 5b: Demote stale hot memories (no access in 7 days, low priority)
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 3600000).toISOString();
+        const { data: staleHot } = await supabase
+          .from('brain_memory_hot')
+          .select('id, content, priority, access_count, metadata')
+          .lte('priority', 3)
+          .lt('created_at', sevenDaysAgo)
+          .limit(20);
+
+        for (const mem of staleHot || []) {
+          if ((mem.access_count || 0) < 2) {
+            try {
+              // Move to warm
+              await supabase.from('brain_memory_warm').insert({
+                content: mem.content,
+                memory_type: 'general',
+                confidence: (mem.priority || 5) / 10,
+                access_count: mem.access_count || 0,
+                metadata: { ...((mem.metadata as any) || {}), demoted_from: 'hot', demoted_at: new Date().toISOString() },
+              });
+              await supabase.from('brain_memory_hot').delete().eq('id', mem.id);
+              demoted++;
+            } catch {
+              // Non-fatal
+            }
+          }
+        }
+
+        // 5c: Prune cold memories with very low confidence (>30 days old, confidence <0.3)
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 3600000).toISOString();
+        const { data: coldLow, count: prunedCount } = await supabase
+          .from('brain_memory_cold')
+          .select('id', { count: 'exact' })
+          .lt('confidence', 0.3)
+          .lt('created_at', thirtyDaysAgo)
+          .limit(50);
+
+        if (coldLow?.length) {
+          const ids = coldLow.map((m: any) => m.id);
+          await supabase.from('brain_memory_cold').delete().in('id', ids);
+          pruned = ids.length;
+        }
+
+        const consolidationDuration = Date.now() - consolidationStart;
+        cycleResults.memory_consolidation = { 
+          success: true, 
+          promoted, 
+          demoted, 
+          pruned, 
+          duration_ms: consolidationDuration 
+        };
+
+        await supabase.from('brain_events').insert({
+          event_type: 'memory_consolidation',
+          module: 'brain',
+          outcome: 'success',
+          data: { promoted, demoted, pruned, duration_ms: consolidationDuration, source: 'clm_server_engine' },
+        });
+
+        console.log(`🧹 Consolidation: ↑${promoted} promoted, ↓${demoted} demoted, 🗑️${pruned} pruned (${consolidationDuration}ms)`);
+      } catch (err) {
+        console.warn('Memory consolidation failed:', err);
+        cycleResults.memory_consolidation = { success: false, error: String(err) };
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // PHASE 6: Telemetry & Cycle Record
     // ═══════════════════════════════════════════════════════════
     const durationMs = Date.now() - startTime;
     const cycleRecord = {
@@ -265,16 +445,22 @@ serve(async (req) => {
       outcome: cycleResults.cognitive_cycle?.success ? 'success' : 'partial',
       data: {
         version: CLM_VERSION,
-        cycle_number: (todayCycles || 0) + 1,
+        cycle_number: cycleNumber,
         intensity: cycleIntensity,
         duration_ms: durationMs,
         phases: {
           cognitive_cycle: cycleResults.cognitive_cycle?.success || false,
           modules_analyzed: cycleResults.module_analysis.length,
           learning_topic: cycleResults.learning_topic?.domain || null,
+          brain_transfer: cycleResults.brain_transfer?.transferred || 0,
+          memory_consolidation: cycleResults.memory_consolidation ? {
+            promoted: cycleResults.memory_consolidation.promoted,
+            demoted: cycleResults.memory_consolidation.demoted,
+            pruned: cycleResults.memory_consolidation.pruned,
+          } : null,
         },
         budget: {
-          daily_used: (todayCycles || 0) + 1,
+          daily_used: cycleNumber,
           daily_max: MAX_CYCLES_PER_DAY,
           hourly_used: (hourCycles || 0) + 1,
           hourly_max: MAX_CYCLES_PER_HOUR,
@@ -284,12 +470,12 @@ serve(async (req) => {
 
     await supabase.from('brain_events').insert(cycleRecord);
 
-    console.log(`✅ CLM cycle #${(todayCycles || 0) + 1} complete in ${durationMs}ms`);
+    console.log(`✅ CLM cycle #${cycleNumber} complete in ${durationMs}ms`);
 
     return new Response(JSON.stringify({
       success: true,
       version: CLM_VERSION,
-      cycle_number: (todayCycles || 0) + 1,
+      cycle_number: cycleNumber,
       intensity: cycleIntensity,
       duration_ms: durationMs,
       results: cycleResults,
