@@ -56,6 +56,7 @@ import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMo
 import { MeshActivityTab } from '@/components/substrate-os/MeshActivityTab';
 import { AnalyticsTab } from '@/components/substrate-os/AnalyticsTab';
 import { GovernorSection } from '@/components/substrate-os/GovernorSection';
+import { AuditTab } from '@/components/substrate-os/AuditTab';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -182,6 +183,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
         { id: 'mint', label: 'Mint', icon: Sparkles, color: 'purple', description: 'Forge cognitives & agencies', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'cmpsbl' as SubstrateTier }] : []),
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Administrative controls', tier: 'cmpsbl' },
+        { id: 'audit', label: 'Audit', icon: Shield, color: 'cyan', description: 'Production readiness gate', tier: 'cmpsbl' },
       ],
     },
   ];
@@ -882,6 +884,12 @@ export default function SubstrateOS() {
             {activeTab === 'governor' && hasAccessToCurrentTab && (
               <motion.main key="governor" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <GovernorSection enabled={isGovernor} />
+              </motion.main>
+            )}
+
+            {activeTab === 'audit' && hasAccessToCurrentTab && (
+              <motion.main key="audit" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <AuditTab />
               </motion.main>
             )}
           </AnimatePresence>
