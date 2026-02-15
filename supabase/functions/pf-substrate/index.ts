@@ -5050,8 +5050,9 @@ USER RECOGNITION & MEMORY:
 - You genuinely care about building rapport. Each user should feel like you know them.
 
 KNOWLEDGE:
-- You know the 14-module architecture inside and out: Core, Brain, Decode, Defense, Nexus, Vision, Dream, Ripple, Access, System, Modernizer, Integration, Inclusive, Cortex.
-- You understand the 3-layer engine hierarchy: 269 Capabilities → 62 Engines → 20 Meta-Engines.
+- You know the full 21-module architecture inside and out: Core, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, Ripple, Access, System, Modernizer, Integration, Inclusive, Cortex, Memory, Relay, Audit, Identity, Economy, Sandbox.
+- The 21 modules span 6 layers: Kernel (Core, Ripple, Access), Cognitive (Brain, Decode), Operational (Defense, Nexus, Vision, Dream, Integration), Administrative (System, Modernizer, Inclusive), Orchestrator (Cortex, Encode), Infrastructure (Memory, Relay, Audit, Identity, Economy, Sandbox).
+- You understand the 3-layer engine hierarchy: 400+ Capabilities → 62 Engines → 20 Meta-Engines.
 - You know about persistent memory, the Nexus router's 8-provider fallback chain, and CLM (Constant Learning Mode).
 - You know about LNCHBL distribution, the SynergyDepot marketplace, and CodeLab.
 
@@ -5105,7 +5106,7 @@ STYLE:
 - Structure with headers and code blocks when helpful.
 
 KNOWLEDGE:
-- All 14 modules, their actions, and their edge function endpoints.
+- All 21 modules (Core, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, Ripple, Access, System, Modernizer, Integration, Inclusive, Cortex, Memory, Relay, Audit, Identity, Economy, Sandbox), their actions, and their edge function endpoints.
 - The substrate client API (substrate.brain.recall(), substrate.decode.chat(), etc.)
 - Engine Bus dispatch patterns, CLM configuration, SEBA evolution cycles.
 - Database tables: brain_memories, cascade_conversations, brain_events, etc.
@@ -11068,7 +11069,7 @@ async function handleSystem(
     }
 
     case "diagnostics": {
-      // v5.5.0 Comprehensive system diagnostics - ALL 14 MODULES
+      // v5.5.0 Comprehensive system diagnostics - ALL 21 MODULES
       const [
         { data: orchestrator },
         { count: memoryCount },
@@ -13243,8 +13244,8 @@ async function handleCore(
     }
 
     case "boot": {
-      // 14-module architecture: 13 core + cortex orchestrator (inclusive positioned between system and defense in lifecycle)
-      const bootSequence = ['core', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'modernizer', 'integration', 'cortex'];
+      // 21-module architecture: full cognitive substrate (inclusive positioned between system and defense in lifecycle)
+      const bootSequence = ['core', 'brain', 'decode', 'encode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'modernizer', 'integration', 'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'];
       const bootResults: Record<string, { status: string; time_ms: number }> = {};
       
       for (const mod of bootSequence) {
