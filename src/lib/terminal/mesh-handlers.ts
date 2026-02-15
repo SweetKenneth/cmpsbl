@@ -518,12 +518,110 @@ export function registerMeshHandlers() {
     return { success: true, data: getCLMFeedbackSummary() };
   });
 
+  // ═══ mesh.live.gaps — Run live gap execution against real DB data ═══
+  registerHandler('mesh.live.gaps', async () => {
+    const { runLiveGapExecution } = await import('@/lib/substrate/intent-mesh');
+    const report = await runLiveGapExecution();
+    return {
+      success: true,
+      data: {
+        totalAnalyzed: report.totalIntentsAnalyzed,
+        gapsFound: report.gapsFound,
+        criticalGaps: report.criticalGaps,
+        proposalsGenerated: report.proposalsGenerated,
+        durationMs: report.durationMs,
+        topGaps: report.gaps.slice(0, 8).map(g => ({
+          intent: g.intentType, source: g.sourceModule, severity: g.severity,
+          failureRate: g.failureRate, missing: g.missingModules,
+          proposal: g.autoProposal ? g.autoProposal.resolverId : null,
+        })),
+        moduleResponseRates: report.moduleResponseRates.slice(0, 10),
+      },
+    };
+  });
+
+  // ═══ mesh.affinity.matrix — Build full affinity matrix with drift detection ═══
+  registerHandler('mesh.affinity.matrix', async () => {
+    const { buildAffinityMatrix } = await import('@/lib/substrate/intent-mesh');
+    const matrix = await buildAffinityMatrix();
+    return {
+      success: true,
+      data: {
+        totalEdges: matrix.edges.length,
+        clusters: matrix.clusters,
+        driftAlerts: matrix.driftAlerts,
+        topConnections: matrix.edges.slice(0, 10).map(e => ({
+          pair: `${e.moduleA} ↔ ${e.moduleB}`,
+          score: e.combinedScore,
+          structural: e.structuralAffinity,
+          behavioral: e.behavioralAffinity,
+          trend: e.trend,
+          sharedDomains: e.sharedDomains.slice(0, 4),
+        })),
+        moduleStrengths: matrix.moduleStrengths.slice(0, 10),
+      },
+    };
+  });
+
+  // ═══ mesh.affinity <module> — Get affinity for specific module ═══
+  registerHandler('mesh.affinity.module', async (args?: string) => {
+    if (!args?.trim()) return { success: false, error: 'Usage: mesh.affinity.module <MODULE_NAME>' };
+    const { getModuleAffinity } = await import('@/lib/substrate/intent-mesh');
+    const result = await getModuleAffinity(args.trim().toUpperCase());
+    return {
+      success: true,
+      data: {
+        module: args.trim().toUpperCase(),
+        avgAffinity: result.avgAffinity,
+        cluster: result.cluster,
+        partners: result.partners.slice(0, 10),
+      },
+    };
+  });
+
+  // ═══ mesh.patterns — Detect intent patterns and suggest pipelines ═══
+  registerHandler('mesh.patterns', async () => {
+    const { detectPatterns } = await import('@/lib/substrate/intent-mesh');
+    const report = await detectPatterns();
+    return {
+      success: true,
+      data: {
+        patternsFound: report.patternsFound,
+        coOccurrence: report.coOccurrencePatterns.slice(0, 5).map(p => ({
+          intents: p.intents, frequency: p.frequency, confidence: p.confidence,
+        })),
+        sequential: report.sequentialPatterns.slice(0, 5).map(p => ({
+          chain: p.intents.join(' → '), frequency: p.frequency, avgIntervalMs: p.avgIntervalMs,
+        })),
+        collaboration: report.collaborationPatterns.slice(0, 5).map(p => ({
+          modules: p.modules, frequency: p.frequency, intents: p.intents.length,
+        })),
+        pipelineSuggestions: report.pipelineSuggestions.slice(0, 5),
+        analyzedReceipts: report.analyzedReceipts,
+        durationMs: report.durationMs,
+      },
+    };
+  });
+
+  // ═══ mesh.discover.advanced — Run all three v10.4 discovery phases ═══
+  registerHandler('mesh.discover.advanced', async () => {
+    const { meshScheduler } = await import('@/lib/substrate/intent-mesh');
+    const result = await meshScheduler.runOnce();
+    return {
+      success: true,
+      data: {
+        message: 'Full advanced discovery cycle complete',
+        ...result,
+      },
+    };
+  });
+
   // ═══ mesh.help — Full command reference ═══
   registerHandler('mesh.help', async () => {
     return {
       success: true,
       data: {
-        description: 'Intent Mesh — Emergent Module Intelligence (v10.3)',
+        description: 'Intent Mesh — Emergent Module Intelligence (v10.4)',
         commands: {
           'mesh.status': 'Get mesh state, stats, and top routes',
           'mesh.toggle': 'Toggle mesh on/off (kill switch)',
@@ -543,17 +641,22 @@ export function registerMeshHandlers() {
           'mesh.discover': 'Run discovery cycle (gaps → recommendations)',
           'mesh.discover.all': 'Run self-discovery for all 21 modules',
           'mesh.discover.module <name>': 'Run self-discovery for one module',
+          'mesh.discover.advanced': '🆕 Run all v10.4 discovery phases',
           'mesh.scores': 'Intent quality leaderboard',
           'mesh.proposals': 'View pending module proposals',
           'mesh.approve <id>': 'Approve a proposal → add to manifest',
           'mesh.reject <id>': 'Reject a proposal',
           'mesh.scheduler [start|stop|run]': 'Auto-expansion scheduler',
-          'mesh.clm.feedback': '🆕 Run CLM feedback loop from scoring → learning',
-          'mesh.clm.summary': '🆕 View CLM feedback summary across modules',
+          'mesh.clm.feedback': 'Run CLM feedback loop from scoring → learning',
+          'mesh.clm.summary': 'View CLM feedback summary across modules',
+          'mesh.live.gaps': '🆕 Live gap execution against real DB receipts',
+          'mesh.affinity.matrix': '🆕 Full cross-module affinity matrix with drift',
+          'mesh.affinity.module <name>': '🆕 Affinity partners for one module',
+          'mesh.patterns': '🆕 Detect intent patterns & pipeline suggestions',
           'mesh.gaps': 'View open capability gaps',
           'mesh.recommendations': 'View pending recommendations',
           'mesh.expand': 'Apply high-confidence recommendations',
-          'mesh.affinity': 'Cross-module connection density',
+          'mesh.affinity': 'Cross-module connection density (legacy)',
           'mesh.help': 'Show this help',
         },
       },

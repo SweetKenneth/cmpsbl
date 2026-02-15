@@ -4,7 +4,7 @@
  */
 
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, Brain, Network, Shield, Zap, Eye, BarChart3, Layers, RefreshCw, GitBranch, Target, Lightbulb } from "lucide-react";
+import { ArrowRight, Brain, Network, Shield, Zap, Eye, BarChart3, Layers, RefreshCw, GitBranch, Target, Lightbulb, Activity, Radar, Route } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -17,8 +17,9 @@ const fadeUp = {
 const RESOLVER_STATS = {
   totalResolvers: 34,
   totalModules: 21,
-  discoveryMethods: 4,
+  discoveryMethods: 7,
   dashboardViews: 6,
+  terminalCommands: 26,
 };
 
 const ARCHITECTURE_LAYERS = [
@@ -28,6 +29,8 @@ const ARCHITECTURE_LAYERS = [
   { icon: BarChart3, name: "Learning", desc: "Pipeline crystallization + CLM feedback loop" },
   { icon: Lightbulb, name: "Discovery", desc: "Gap analysis + autonomous module self-discovery" },
   { icon: RefreshCw, name: "Refinement", desc: "Multi-turn resolution + intent quality scoring" },
+  { icon: Activity, name: "Live Analysis", desc: "Real DB-backed gap execution with auto-proposals + affinity drift detection" },
+  { icon: Route, name: "Pattern Intelligence", desc: "Temporal sequence detection with auto pipeline crystallization" },
 ];
 
 const MODULE_GROUPS = [
@@ -104,6 +107,21 @@ const SELF_IMPROVEMENT_FEATURES = [
     title: "Auto-Expansion Scheduler",
     desc: "Periodic cycles run discovery (4h), gap analysis (2h), scoring (1h), and full expansion (24h) — all governed by the kill switch.",
   },
+  {
+    icon: Activity,
+    title: "Live Gap Execution",
+    desc: "Queries real DB receipts to surface consistently failing intents, unresponsive modules, and auto-generates resolver proposals from failure patterns.",
+  },
+  {
+    icon: Radar,
+    title: "Cross-Module Affinity Matrix",
+    desc: "Persistent affinity tracking combining structural (shared domains) and behavioral (co-resolution) signals with drift detection and cluster discovery.",
+  },
+  {
+    icon: Route,
+    title: "Intent Pattern Recognition",
+    desc: "Temporal analysis detects co-occurrence, sequential chains, and collaboration patterns. Stable patterns auto-suggest pipeline crystallization.",
+  },
 ];
 
 export default function IntentMeshPublic() {
@@ -129,7 +147,7 @@ export default function IntentMeshPublic() {
               <div className="flex items-center gap-2 mb-4">
                 <Network className="w-5 h-5 text-primary" />
                 <span className="text-sm font-mono text-muted-foreground tracking-wider uppercase">
-                  CMPSBL OS Substrate v10.3
+                  CMPSBL OS Substrate v10.4
                 </span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
@@ -138,12 +156,12 @@ export default function IntentMeshPublic() {
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
                 Emergent cross-module intelligence. 21 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {Object.entries(RESOLVER_STATS).map(([key, value]) => (
                   <div key={key} className="bg-card border border-border rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-primary">{value}</div>
                     <div className="text-xs text-muted-foreground mt-1">
-                      {key === "totalResolvers" ? "Resolvers" : key === "totalModules" ? "Modules" : key === "discoveryMethods" ? "Discovery Methods" : "Dashboard Views"}
+                      {key === "totalResolvers" ? "Resolvers" : key === "totalModules" ? "Modules" : key === "discoveryMethods" ? "Discovery Methods" : key === "dashboardViews" ? "Dashboard Views" : key === "terminalCommands" ? "Terminal Commands" : key}
                     </div>
                   </div>
                 ))}
@@ -155,11 +173,11 @@ export default function IntentMeshPublic() {
         {/* Architecture */}
         <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
           <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-bold mb-4">Six-Layer Architecture</h2>
+            <h2 className="text-3xl font-bold mb-4">Eight-Layer Architecture</h2>
             <p className="text-muted-foreground mb-10 max-w-2xl">
               The mesh operates across six distinct layers, each providing a specific capability class — from capability advertisement through autonomous self-improvement.
             </p>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {ARCHITECTURE_LAYERS.map((layer) => (
                 <div key={layer.name} className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-colors">
                   <layer.icon className="w-6 h-6 text-primary mb-3" />
@@ -317,7 +335,7 @@ Score (78/100) → CLM Feedback → Gap Detection`}</pre>
                 "@type": "Organization",
                 name: "PromptFluid",
               },
-              softwareVersion: "10.3.0",
+              softwareVersion: "10.4.0",
             }),
           }}
         />

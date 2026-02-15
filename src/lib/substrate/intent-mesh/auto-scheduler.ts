@@ -17,6 +17,9 @@ import { runDiscoveryCycle } from './discovery-engine';
 import { runAllModuleDiscovery, persistProposals } from './module-discovery';
 import { calculateIntentScores, getIntentLeaderboard } from './intent-scoring';
 import { runCLMFeedbackLoop } from './clm-feedback';
+import { runLiveGapExecution } from './live-gap-execution';
+import { buildAffinityMatrix } from './affinity-matrix';
+import { detectPatterns } from './pattern-recognition';
 
 // ─── Types ───
 
@@ -231,6 +234,26 @@ class MeshAutoScheduler {
   }
 
   /**
+   * Run live gap execution + affinity + pattern recognition (v10.4 phases)
+   */
+  async runAdvancedDiscoveryCycle(): Promise<{ liveGaps: number; affinityEdges: number; patterns: number }> {
+    try {
+      const [gapReport, matrix, patternReport] = await Promise.all([
+        runLiveGapExecution(),
+        buildAffinityMatrix(),
+        detectPatterns(),
+      ]);
+
+      this.state.totalCyclesRun++;
+      console.log(`[MeshScheduler] Advanced discovery: ${gapReport.gapsFound} live gaps, ${matrix.edges.length} affinity edges, ${patternReport.patternsFound} patterns`);
+      return { liveGaps: gapReport.gapsFound, affinityEdges: matrix.edges.length, patterns: patternReport.patternsFound };
+    } catch (err) {
+      console.warn('[MeshScheduler] Advanced discovery failed:', err);
+      return { liveGaps: 0, affinityEdges: 0, patterns: 0 };
+    }
+  }
+
+  /**
    * Run a single full cycle manually (all phases)
    */
   async runOnce(): Promise<{
@@ -238,17 +261,20 @@ class MeshAutoScheduler {
     gapAnalysis: { gaps: number; recommendations: number };
     intentScoring: number;
     expansion: number;
+    advancedDiscovery: { liveGaps: number; affinityEdges: number; patterns: number };
   }> {
     const md = await this.runModuleDiscoveryCycle();
     const ga = await this.runGapAnalysisCycle();
     const is = await this.runIntentScoringCycle();
     const ex = await this.runFullExpansionCycle();
+    const ad = await this.runAdvancedDiscoveryCycle();
     
     return {
       moduleDiscovery: md.totalProposals,
       gapAnalysis: { gaps: ga.gapsFound, recommendations: ga.recommendations },
       intentScoring: is.intentsScored,
       expansion: ex.expanded,
+      advancedDiscovery: ad,
     };
   }
 
