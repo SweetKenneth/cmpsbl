@@ -2,7 +2,7 @@
 
 # System Architecture
 
-### CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch
+### CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch
 
 <table>
 <tr><td><strong>Document</strong></td><td>02 — System Architecture</td></tr>
@@ -102,12 +102,12 @@ The plumbing. Vector storage, delivery, compliance, identity, economics, and saf
 
 | Module | Purpose |
 |--------|---------|
-| **MEMORY** | Vector storage, RAG pipelines, semantic recall, and embedding management. |
-| **RELAY** | Outbound delivery — webhooks, side effects, and notification pipelines. |
-| **AUDIT** | Immutable compliance logging, chain-of-custody, and decision ledger. |
-| **IDENTITY** | Actor attribution — distinguishes human, agent, and system actions with cryptographic fingerprints. |
-| **ECONOMY** | Cost tracking, budget governance, marketplace pricing, and FinOps. |
-| **SANDBOX** | Isolated execution environments for speculative operations and safe testing. |
+| **MEMORY** | Vector storage, RAG pipelines, semantic recall, embedding staleness detection, and relevance feedback loop. |
+| **RELAY** | Outbound delivery — webhooks with HMAC-SHA256 signatures, adaptive retry with jitter, and notification pipelines. |
+| **AUDIT** | Immutable compliance logging, chain-of-custody, SOC2/GDPR/HIPAA/ISO27001 report generation, and entry compression. |
+| **IDENTITY** | Actor attribution with reputation scoring (5 tiers), cross-agency identity portability via signed JWT tokens. |
+| **ECONOMY** | Cost tracking, predictive forecasting via linear regression, per-capability cost attribution, and budget governance. |
+| **SANDBOX** | Isolated execution environments with hard resource limits, snapshot/restore system, and AST safety checks. |
 
 ### Layer 6 — Orchestrator
 
@@ -220,7 +220,7 @@ Continue to [`03-MODULE-REFERENCE.md`](./03-MODULE-REFERENCE.md) for a detailed 
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)

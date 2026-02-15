@@ -6,7 +6,7 @@
 
 Layer 6 — Infrastructure
 
-v9.3.0 ARCHITECT Epoch
+v10.5.1 ARCHITECT Epoch
 
 </div>
 
@@ -27,6 +27,8 @@ MEMORY provides the substrate's vector storage and retrieval infrastructure. It 
 | Vector Storage | Store and index high-dimensional embeddings | Free |
 | RAG Pipeline | Retrieve relevant context and inject into AI prompts | Pro |
 | Hybrid Search | Combine semantic similarity with keyword and metadata filters | Pro |
+| Embedding Staleness Detection (v10.5.1) | Track embedding model versions and flag stale vectors for re-embedding | Pro |
+| Relevance Feedback Loop (v10.5.1) | EMA-based relevance scoring that adjusts retrieval weights based on utility | Pro |
 | Embedding Updates | Re-embed content when models improve | Enterprise |
 | Cross-User Search | Search across user boundaries (admin only) | Enterprise |
 | Knowledge Graph Construction | Build relationship graphs from embedding clusters | CMPSBL |
@@ -53,8 +55,47 @@ MEMORY provides the substrate's vector storage and retrieval infrastructure. It 
 │                                          │
 │  Retrieves top-k relevant chunks and     │
 │  injects them into the AI prompt context │
+├──────────────────────────────────────────┤
+│     Embedding Health (v10.5.1)           │
+│                                          │
+│  Staleness Detection → Version Tracking  │
+│  Relevance Feedback → EMA Scoring        │
 └──────────────────────────────────────────┘
 ```
+
+---
+
+## Embedding Staleness Detection (v10.5.1)
+
+MEMORY now tracks `embeddingVersion` on every vector and compares against the current model version:
+
+| Field | Description |
+|-------|-------------|
+| `embeddingVersion` | Model version used to generate the vector |
+| `currentVersion` | Latest available embedding model version |
+| `staleCount` | Number of vectors needing re-embedding |
+| `stalePercentage` | Proportion of stale vectors in the store |
+
+When staleness exceeds 20%, MEMORY automatically queues re-embedding jobs via the CLM Engine.
+
+---
+
+## Relevance Feedback Loop (v10.5.1)
+
+Every retrieval operation now feeds back into relevance scoring:
+
+```
+Retrieval → Was result useful? → EMA adjustment
+                                    │
+                                    ├── Useful: relevanceScore += α × (1 - current)
+                                    └── Not useful: relevanceScore -= α × current
+```
+
+| Parameter | Value |
+|-----------|-------|
+| α (learning rate) | 0.1 |
+| Initial relevance | 0.5 |
+| Minimum threshold | 0.05 (below = candidate for pruning) |
 
 ---
 
@@ -65,6 +106,7 @@ MEMORY provides the substrate's vector storage and retrieval infrastructure. It 
 | Query Embedding | Convert user query to vector | Model selection |
 | Candidate Retrieval | Find top-N similar vectors | N (default: 20) |
 | Re-Ranking | Score candidates by relevance, recency, and confidence | Weights |
+| Relevance Feedback | Apply EMA-adjusted relevance scores (v10.5.1) | Learning rate |
 | Context Assembly | Format retrieved chunks for prompt injection | Template |
 | Token Budget | Ensure context fits within model's context window | Max tokens |
 
@@ -86,12 +128,13 @@ MEMORY provides the substrate's vector storage and retrieval infrastructure. It 
 
 | Module | Integration |
 |--------|------------|
-| BRAIN | Stores and retrieves memory embeddings |
+| BRAIN | Stores and retrieves memory embeddings; receives staleness signals via Brain Transfer |
 | NEXUS | Routes embedding generation to appropriate AI provider |
 | DECODE | Semantic search for intent matching |
 | DREAM | Embeds dream insights for future retrieval |
 | CORTEX | RAG context injection for orchestration decisions |
-| RIPPLE | Emits `memory.embedded`, `memory.search_complete` |
+| RIPPLE | Emits `memory.embedded`, `memory.search_complete`, `memory.stale_detected` |
+| CLM Engine | Server-side re-embedding and relevance recalculation every 5 minutes |
 
 ---
 
@@ -99,7 +142,7 @@ MEMORY provides the substrate's vector storage and retrieval infrastructure. It 
 
 | Table | Purpose |
 |-------|---------|
-| `memory_vectors` | Vector embeddings with metadata |
+| `memory_vectors` | Vector embeddings with metadata and `embeddingVersion` |
 | `memory_chunks` | Source text chunks before embedding |
 | `memory_indexes` | Index configuration and statistics |
 
@@ -107,7 +150,7 @@ MEMORY provides the substrate's vector storage and retrieval infrastructure. It 
 
 <div align="center">
 
-CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch
+CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch
 
 Kenneth E Sweet Jr · PromptFluid
 

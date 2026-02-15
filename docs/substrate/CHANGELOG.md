@@ -4,6 +4,65 @@
 
 ---
 
+## 2026-02-15 · v10.5.1 (ARCHITECT Epoch — Infrastructure Hardening)
+
+⟨This entry describes the CLM Engine v2.0, Universal Brain Transfer Pipeline, Memory Consolidation Engine, Nexus Fleet v5.0, and infrastructure module upgrades across MEMORY, RELAY, AUDIT, IDENTITY, ECONOMY, and SANDBOX.⟩
+
+### CLM Engine v2.0
+
+- **Server-Side 24/7 Autonomous Learning** — `pf-clm-engine` edge function runs a 5-phase lifecycle every 5 minutes via `pg_cron`.
+- **Phase 1: Cognitive Cycle** — Learn/reflect/synthesize/dream operations without browser dependency.
+- **Phase 2: Module Self-Analysis** — Rotating analysis across all 20 modules (1 per cycle).
+- **Phase 3: Topic Study** — Studies 10 technical domains (security, performance, patterns, etc.) via Nexus Fleet.
+- **Phase 4: Brain Transfer** — Routes top-50 memories to all 21 modules by tag affinity.
+- **Phase 5: Memory Consolidation** — Automated hot/warm/cold tiering with promotion, demotion, and pruning.
+- **Budget Governance** — Max 200 cycles/day, 12/hour. Quiet hours 2am–6am UTC.
+
+### Universal Brain Transfer Pipeline
+
+- **Cross-Module Knowledge Distribution** — BRAIN memories are scored against module affinity maps and injected into `brain_memory_hot` for instant recall.
+- **Relevance Feedback** — EMA-based scoring adjusts future routing based on utilization signals.
+- **21-Module Coverage** — Every module receives domain-specific knowledge from the central memory system.
+
+### MEMORY Module (v10.5.1)
+
+- **Embedding Staleness Detection** — Tracks `embeddingVersion` per vector; flags stale embeddings when model version advances.
+- **Relevance Feedback Loop** — EMA (α=0.1) adjusts `relevanceScore` based on retrieval utility.
+- **Auto Re-Embedding** — Stale vectors queued for re-embedding when staleness exceeds 20%.
+
+### RELAY Module (v10.5.1)
+
+- **HMAC-SHA256 Webhook Signatures** — All outbound webhooks cryptographically signed with per-endpoint secrets.
+- **Adaptive Retry Backoff** — Jitter-based exponential delay preventing thundering herd effects.
+
+### AUDIT Module (v10.5.1)
+
+- **Compliance Report Templates** — Built-in generators for SOC2, GDPR, HIPAA, and ISO27001.
+- **Entry Compression** — Verbose state fields nullified on entries >24h old; essential-only after 7d.
+
+### IDENTITY Module (v10.5.1)
+
+- **Actor Reputation Scoring** — Trust scores (0.0–1.0) mapped to 5 tiers: untrusted → basic → verified → trusted → elite.
+- **Cross-Agency Identity Portability** — Signed JWT tokens carry identity and reputation between agencies.
+
+### ECONOMY Module (v10.5.1)
+
+- **Predictive Cost Forecasting** — Linear regression on historical data with confidence intervals and anomaly detection.
+- **Per-Capability Cost Attribution** — Granular tracking of `avgCostPerCall` and `avgTokensPerCall` per capability.
+
+### SANDBOX Module (v10.5.1)
+
+- **Hard Resource Limit Enforcement** — CPU (5s), memory (128MB), execution time (30s), concurrency (5) with kill-on-exceed.
+- **Snapshot/Restore System** — Save and restore sandbox state (max 5 snapshots per sandbox).
+
+### Nexus Fleet v5.0.0
+
+- **Multi-Provider Fleet** — Groq, Cerebras, SambaNova, Google AI Studio, DeepSeek with health-weighted selection.
+- **Task Affinity Routing** — Reasoning, coding, and research tasks mapped to optimal providers.
+- **RPM/RPD Governance** — 80% safety margin per provider with exponential decay scoring.
+
+---
+
 ## 2026-02-03 · v7.0.0 (SEBA Era)
 
 ⟨This entry describes the SEBA Era canonical release establishing the Self-Evolving Bounded Agent architecture, 120 synergy pipelines, and 98 custom executors.⟩
@@ -549,8 +608,8 @@
 | Document ID | PF-CHANGELOG-001 |
 | Voice | Decode Interpreter (Epistemic) |
 | Status | PUBLIC |
-| Last Updated | 2026-01-23 |
-| Substrate Version | 4.1.1 |
+| Last Updated | 2026-02-15 |
+| Substrate Version | 10.5.1 |
 
 ---
 

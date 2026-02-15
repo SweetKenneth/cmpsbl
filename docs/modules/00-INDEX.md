@@ -4,7 +4,7 @@
 
 ### Complete Reference for All 21 Modules
 
-**v9.3.0 ARCHITECT Epoch**
+**v10.5.1 ARCHITECT Epoch**
 
 </div>
 
@@ -28,7 +28,7 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 
 | Doc | Module | Purpose |
 |-----|--------|---------|
-| [04](./04-BRAIN.md) | **BRAIN** | Four-tier memory system |
+| [04](./04-BRAIN.md) | **BRAIN** | Four-tier memory system with Universal Brain Transfer Pipeline |
 | [05](./05-DECODE.md) | **DECODE** | Natural language → structured intent |
 | [06](./06-DREAM.md) | **DREAM** | Autonomous learning, creative synthesis |
 
@@ -37,7 +37,7 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 | Doc | Module | Purpose |
 |-----|--------|---------|
 | [07](./07-DEFENSE.md) | **DEFENSE** | Security perimeter, threat detection |
-| [08](./08-NEXUS.md) | **NEXUS** | AI provider routing, cost optimization |
+| [08](./08-NEXUS.md) | **NEXUS** | AI fleet routing (v5.0.0), cost optimization |
 | [09](./09-VISION.md) | **VISION** | Observability, metrics, trend analysis |
 | [10](./10-INTEGRATION.md) | **INTEGRATION** | External system adapters |
 
@@ -59,19 +59,31 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 
 | Doc | Module | Purpose |
 |-----|--------|---------|
-| [15](./15-MEMORY.md) | **MEMORY** | Vector store, RAG, embeddings |
-| [16](./16-RELAY.md) | **RELAY** | Webhooks, outbound notifications |
-| [17](./17-AUDIT.md) | **AUDIT** | Immutable compliance logging |
-| [18](./18-IDENTITY.md) | **IDENTITY** | Actor attribution, sessions |
-| [19](./19-ECONOMY.md) | **ECONOMY** | Cost tracking, budgeting, metering |
-| [20](./20-SANDBOX.md) | **SANDBOX** | Safe code execution, isolation |
+| [15](./15-MEMORY.md) | **MEMORY** | Vector store, RAG, embeddings, staleness detection |
+| [16](./16-RELAY.md) | **RELAY** | Webhooks, HMAC signatures, adaptive retry |
+| [17](./17-AUDIT.md) | **AUDIT** | Immutable compliance logging, SOC2/GDPR/HIPAA/ISO27001 reports |
+| [18](./18-IDENTITY.md) | **IDENTITY** | Actor attribution, reputation scoring, cross-agency portability |
+| [19](./19-ECONOMY.md) | **ECONOMY** | Cost tracking, predictive forecasting, per-capability attribution |
+| [20](./20-SANDBOX.md) | **SANDBOX** | Safe code execution, resource limits, state snapshots |
 | [21](./21-USER-MANUAL.md) | **User Manual** | Complete usage guide |
+
+---
+
+## Cross-Cutting Systems (v10.5.0+)
+
+| System | Description |
+|--------|-------------|
+| **CLM Engine** | Server-side 24/7 autonomous learning (5-minute cycles via cron) |
+| **Brain Transfer Pipeline** | Universal knowledge distribution from BRAIN to all 21 modules |
+| **Memory Consolidation** | Automated hot/warm/cold tiering with promotion, demotion, and pruning |
+| **Nexus Fleet v5.0.0** | Multi-provider AI routing with health-weighted selection and RPM governance |
+| **Intent Mesh** | 12-layer emergent capability discovery and composition |
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  

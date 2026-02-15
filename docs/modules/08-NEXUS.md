@@ -2,11 +2,11 @@
 
 # Module 08 — NEXUS
 
-### Multi-Provider AI Routing and Cost Optimization
+### Multi-Provider AI Fleet Routing and Cost Optimization
 
 Layer 3 — Operational
 
-v9.3.0 ARCHITECT Epoch
+v10.5.1 ARCHITECT Epoch
 
 </div>
 
@@ -14,7 +14,7 @@ v9.3.0 ARCHITECT Epoch
 
 ## Purpose
 
-NEXUS abstracts AI provider complexity. Applications send requests to the substrate; NEXUS determines which provider, model, and configuration handles them. Provider failures, pricing changes, and capability gaps become invisible to the application.
+NEXUS abstracts AI provider complexity. Applications send requests to the substrate; NEXUS determines which provider, model, and configuration handles them. Provider failures, pricing changes, and capability gaps become invisible to the application. As of v5.0.0, NEXUS operates as a full **fleet manager** with health-weighted selection, strict RPM/RPD governance, and task-specific affinity routing.
 
 ---
 
@@ -25,6 +25,8 @@ NEXUS abstracts AI provider complexity. Applications send requests to the substr
 | Provider Routing | Route requests to the optimal provider based on task requirements | Free |
 | Health Monitoring | Track provider uptime, latency, and error rates | Free |
 | Automatic Failover | Seamlessly retry on alternate providers when one fails | Free |
+| Fleet Governance (v5.0.0) | RPM/RPD limits with 80% safety margin per provider | Free |
+| Task Affinity Routing (v5.0.0) | Map reasoning/coding/research tasks to optimal models | Free |
 | Cost Tracking | Per-request cost calculation and reporting | Pro |
 | Budget Enforcement | Daily and monthly spending limits with alerts | Pro |
 | Load Balancing | Distribute requests across providers to avoid rate limits | Pro |
@@ -35,9 +37,42 @@ NEXUS abstracts AI provider complexity. Applications send requests to the substr
 
 ---
 
+## Nexus Fleet (v5.0.0)
+
+The Nexus Router v5.0.0 replaces all direct AI provider dependencies with a centralized fleet:
+
+| Provider | Models | RPM | Strength | Priority |
+|----------|--------|-----|----------|----------|
+| **Groq** | llama-3.3-70b-versatile | 30 | Fastest inference | 1 |
+| **Cerebras** | llama-3.3-70b | 30 | Low-latency fallback | 2 |
+| **SambaNova** | Meta-Llama-3.1-70B | 10 | High throughput | 3 |
+| **Google AI Studio** | gemini-2.0-flash | 15 | Multimodal, long context | 4 |
+| **DeepSeek** | deepseek-chat | 30 | Cost-efficient reasoning | 5 |
+
+### Health-Weighted Selection
+
+Provider scores use exponential decay:
+
+```
+score = base_weight × health_factor × (1 - load_pressure)
+health_factor = e^(-failures × 0.5)
+```
+
+### Task Affinity Matrix
+
+| Task Type | Primary Provider | Fallback |
+|-----------|-----------------|----------|
+| Reasoning | DeepSeek | Google AI Studio |
+| Coding | Groq | Cerebras |
+| Research | Google AI Studio | SambaNova |
+| Classification | Groq | Cerebras |
+| Summarization | Cerebras | SambaNova |
+
+---
+
 ## Routing Decision Engine
 
-When a request arrives, NEXUS evaluates all available providers using a weighted scoring system:
+When a request arrives, NEXUS evaluates all available providers:
 
 | Factor | Weight | Description |
 |--------|--------|-------------|
@@ -46,22 +81,6 @@ When a request arrives, NEXUS evaluates all available providers using a weighted
 | Latency | 0.20 | Expected response time based on recent measurements |
 | Cost Efficiency | 0.15 | Cost per token or per request for this model |
 | Current Load | 0.05 | Active request count relative to rate limits |
-
-The provider with the highest composite score receives the request.
-
----
-
-## Supported Providers
-
-| Provider | Models | Strengths |
-|----------|--------|-----------|
-| OpenAI | GPT-4, GPT-4o, GPT-3.5 | Function calling, broad capability |
-| Anthropic | Claude 3.5 Sonnet, Claude 3 Opus | Long context, nuanced reasoning |
-| Google | Gemini Pro, Gemini Flash | Multimodal, speed |
-| Mistral | Large, Medium, Small | European hosting, function calling |
-| Custom | Any OpenAI-compatible API | Self-hosted or specialized models |
-
-Adding a new provider requires only an API key and endpoint URL. No code changes.
 
 ---
 
@@ -80,23 +99,8 @@ Request → Provider A
                     │
                     ├─ Success → Return response
                     │
-                    └─ Failure → Select Provider C
-                          │
-                          └─ All providers failed → Return error with diagnostics
+                    └─ All providers failed → Return error with diagnostics
 ```
-
-The caller never sees the failover. Response format is identical regardless of which provider handled the request.
-
----
-
-## Cost Optimization Strategy
-
-| Task Complexity | Routing Strategy |
-|----------------|-----------------|
-| Simple (classification, extraction) | Cheapest available model |
-| Medium (summarization, Q&A) | Mid-tier model with best cost-per-quality ratio |
-| Complex (reasoning, analysis) | Most capable model regardless of cost |
-| Critical (evolution proposals, security) | Primary provider with verified quality |
 
 ---
 
@@ -104,12 +108,14 @@ The caller never sees the failover. Response format is identical regardless of w
 
 | Module | Integration |
 |--------|------------|
-| ECONOMY | Receives per-request cost data for budget tracking |
-| BRAIN | Stores provider performance history as operational memory |
+| ECONOMY | Receives per-request cost data for budget tracking and forecasting |
+| BRAIN | Stores provider performance history; receives routing heuristics via transfer |
 | DREAM | Feeds routing outcomes into dream cycles for weight optimization |
 | VISION | Provides provider health dashboards and cost trend analysis |
 | RIPPLE | Emits `nexus.routed`, `nexus.failover`, `nexus.budget_alert` |
 | ACCESS | Enforces per-key provider restrictions and quotas |
+| ENCODE | Uses `nexus_fleet` model for code generation tasks |
+| CLM Engine | Routes cognitive cycle prompts through fleet |
 
 ---
 
@@ -121,6 +127,7 @@ The caller never sees the failover. Response format is identical regardless of w
 | Per-provider circuit breaker | 3 consecutive failures within 60 seconds |
 | Provider recovery check | Every 30 seconds after circuit opens |
 | Full module circuit breaker | All providers unhealthy simultaneously |
+| RPM safety margin | 80% of provider limit |
 
 ---
 
@@ -136,7 +143,7 @@ The caller never sees the failover. Response format is identical regardless of w
 
 <div align="center">
 
-CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch
+CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch
 
 Kenneth E Sweet Jr · PromptFluid
 

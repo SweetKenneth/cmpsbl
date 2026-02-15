@@ -4,7 +4,7 @@
 
 ### CONFIDENTIAL — Trade Secret
 
-**v9.3.0 ARCHITECT Epoch**
+**v10.5.1 ARCHITECT Epoch**
 
 </div>
 
@@ -35,6 +35,8 @@ interface BrainRecord {
   access_count: number;          // Retrieval counter
   last_accessed: string;         // ISO timestamp
   embedding_vector: number[];    // 1536-dim float32
+  embeddingVersion: string;      // Model version tracker (v10.5.1)
+  relevanceScore: number;        // EMA-adjusted relevance (v10.5.1)
   associations: string[];        // Related memory IDs
   source_module: string;         // Originating module
   tags: string[];                // Semantic tags
@@ -42,6 +44,71 @@ interface BrainRecord {
   created_at: string;
   updated_at: string;
 }
+```
+
+---
+
+## Universal Brain Transfer Pipeline (v10.5.0+)
+
+BRAIN distributes knowledge to all 21 modules via relevance-based routing:
+
+### Transfer Algorithm
+
+```
+1. SELECT top 50 memories WHERE confidence > 0.3 AND last_accessed within 24h
+2. FOR each memory:
+   a. Score against each module's tag affinity map
+   b. Route to modules with affinity score > 0.5
+   c. Inject into brain_memory_hot with source attribution
+3. UPDATE relevance scores via EMA feedback
+4. LOG transfer receipt to AUDIT
+```
+
+### Module Affinity Map
+
+| Module | Affinity Tags |
+|--------|--------------|
+| DECODE | `conversation`, `intent`, `epistemic`, `language` |
+| DEFENSE | `threat`, `security`, `anomaly`, `behavioral` |
+| MEMORY | `embedding`, `vector`, `staleness`, `retrieval` |
+| ECONOMY | `cost`, `budget`, `pricing`, `usage` |
+| RELAY | `delivery`, `webhook`, `notification`, `retry` |
+| AUDIT | `compliance`, `logging`, `governance`, `chain` |
+| IDENTITY | `actor`, `session`, `authentication`, `trust` |
+| SANDBOX | `execution`, `isolation`, `resource`, `safety` |
+
+---
+
+## Memory Consolidation Engine (v10.5.0+)
+
+Server-side consolidation runs every 5 minutes via CLM Engine:
+
+### Promotion Logic (Warm → Hot)
+
+```sql
+SELECT id FROM brain_memories
+WHERE tier = 'warm'
+  AND access_count > 10
+  AND last_accessed > NOW() - INTERVAL '24 hours'
+-- Move to brain_memory_hot
+```
+
+### Demotion Logic (Hot → Warm)
+
+```sql
+SELECT id FROM brain_memory_hot
+WHERE last_accessed < NOW() - INTERVAL '48 hours'
+  AND access_count < 3
+-- Move to brain_memories (warm)
+```
+
+### Pruning Logic (Cold Deletion)
+
+```sql
+DELETE FROM brain_memories
+WHERE tier = 'cold'
+  AND confidence < 0.1
+  AND created_at < NOW() - INTERVAL '30 days'
 ```
 
 ---
@@ -60,7 +127,7 @@ Raw Input → Deduplicate → Normalize → Embed → Score → Store
 |-------|-----------|-----------------|
 | 1. **Deduplicate** | Cosine similarity check against existing memories. Threshold: **0.92** — above this, memories merge rather than create new entries. |
 | 2. **Normalize** | Content standardization: lowercase, strip noise tokens, resolve pronouns against session context. |
-| 3. **Embed** | Generate 1536-dimension embedding vector via NEXUS-routed model. Fallback: local TF-IDF if provider unavailable. |
+| 3. **Embed** | Generate 1536-dimension embedding vector via NEXUS Fleet. Track `embeddingVersion`. Fallback: local TF-IDF if provider unavailable. |
 | 4. **Score** | Compute initial confidence using the **Value Score Formula** (see doc 03). Initial confidence = `base_weight × source_reliability × content_novelty`. |
 | 5. **Store** | Write to database with full metadata. Emit `memory.stored` event to RIPPLE bus. |
 
@@ -96,6 +163,8 @@ Where:
 - `access_frequency` = `min(1.0, access_count / 50)`
 - `importance` = pre-computed importance score
 
+Post-ranking, results are adjusted by `relevanceScore` (EMA feedback, v10.5.1).
+
 ### Retrieval Limits
 
 | Context | Max Results | Timeout |
@@ -104,6 +173,7 @@ Where:
 | Context enrichment | 5 | 30ms |
 | Dream synthesis | 25 | 200ms |
 | Cross-module | 3 | 20ms |
+| Brain Transfer | 50 | 500ms |
 
 ---
 
@@ -134,8 +204,6 @@ When a memory is successfully used (retrieved and led to a positive outcome):
 new_confidence = min(1.0, current_confidence + boost × (1 - current_confidence))
 ```
 
-Where `boost` values are:
-
 | Outcome | Boost |
 |---------|-------|
 | Direct retrieval success | 0.05 |
@@ -143,6 +211,8 @@ Where `boost` values are:
 | Cross-referenced by DREAM | 0.03 |
 | User explicitly confirmed | 0.15 |
 | Contradicted by new data | -0.20 |
+| Relevance feedback positive (v10.5.1) | +0.05 (EMA) |
+| Relevance feedback negative (v10.5.1) | -0.05 (EMA) |
 
 ---
 
@@ -156,12 +226,13 @@ Memories are subject to automated garbage collection:
 | Not accessed in 90 days AND confidence < 0.2 | Archive |
 | Contradicted 3+ times | Flag for review |
 | Orphan (no associations, no access in 30 days) | Soft delete |
+| Cold + confidence < 0.1 + age > 30 days (v10.5.0+) | Server-side pruning via CLM |
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch — INTERNAL USE ONLY*
+*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch — INTERNAL USE ONLY*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
