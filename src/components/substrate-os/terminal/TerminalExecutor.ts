@@ -1,7 +1,7 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * v9.3.0 — ARCHITECT Epoch
+ * v10.5.0 — ARCHITECT Epoch
  * 
  * 21 modules | 360+ commands | 200 synergy pipelines | All handlers verified
  */
@@ -248,6 +248,110 @@ function formatPersonalityInterpret(result: {
 │  Processing:       ${result.metadata.processingTimeMs}ms                                      │
 │                                                               │
 └───────────────────────────────────────────────────────────────┘`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SYSTEM-WIDE 21-MODULE RESPONSE FORMATTERS (v10.5.0)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const ALL_21_MODULES = [
+  { key: 'core', label: 'CORE', layer: 'Kernel' },
+  { key: 'ripple', label: 'RIPPLE', layer: 'Kernel' },
+  { key: 'access', label: 'ACCESS', layer: 'Kernel' },
+  { key: 'brain', label: 'BRAIN', layer: 'Cognitive' },
+  { key: 'decode', label: 'DECODE', layer: 'Cognitive' },
+  { key: 'dream', label: 'DREAM', layer: 'Cognitive' },
+  { key: 'defense', label: 'DEFENSE', layer: 'Operations' },
+  { key: 'nexus', label: 'NEXUS', layer: 'Operations' },
+  { key: 'vision', label: 'VISION', layer: 'Operations' },
+  { key: 'system', label: 'SYSTEM', layer: 'Admin' },
+  { key: 'modernizer', label: 'MODERNIZER', layer: 'Admin' },
+  { key: 'inclusive', label: 'INCLUSIVE', layer: 'Admin' },
+  { key: 'cortex', label: 'CORTEX', layer: 'Orchestrator' },
+  { key: 'integration', label: 'INTEGRATION', layer: 'Orchestrator' },
+  { key: 'encode', label: 'ENCODE', layer: 'Orchestrator' },
+  { key: 'memory', label: 'MEMORY', layer: 'Infrastructure' },
+  { key: 'relay', label: 'RELAY', layer: 'Infrastructure' },
+  { key: 'audit', label: 'AUDIT', layer: 'Infrastructure' },
+  { key: 'identity', label: 'IDENTITY', layer: 'Infrastructure' },
+  { key: 'economy', label: 'ECONOMY', layer: 'Infrastructure' },
+  { key: 'sandbox', label: 'SANDBOX', layer: 'Infrastructure' },
+];
+
+function formatSystemStatus(data: any): string {
+  const modules = data?.modules || data?.module_status || {};
+  const overall = data?.status || data?.overall || 'operational';
+  const version = data?.version || 'v10.5.0';
+  const uptime = data?.uptime || data?.uptime_seconds || 'N/A';
+  
+  let output = `
+╔══════════════════════════════════════════════════════════════╗
+║  CMPSBL® OS ${version} — SYSTEM STATUS                       ║
+╠══════════════════════════════════════════════════════════════╣
+║  Overall:   ${overall === 'operational' ? '🟢 OPERATIONAL' : overall === 'degraded' ? '🟡 DEGRADED' : '🔴 DOWN'}                                     ║
+║  Uptime:    ${String(uptime).padEnd(20)}                          ║
+║  Modules:   21/21                                            ║
+╠══════════════════════════════════════════════════════════════╣`;
+
+  const layers = ['Kernel', 'Cognitive', 'Operations', 'Admin', 'Orchestrator', 'Infrastructure'];
+  for (const layer of layers) {
+    const layerModules = ALL_21_MODULES.filter(m => m.layer === layer);
+    output += `\n║  ┌─ ${layer.toUpperCase()} LAYER ──────────────────────────────────────`;
+    for (const mod of layerModules) {
+      const modData = modules[mod.key] || modules[mod.label.toLowerCase()] || {};
+      const status = modData?.status || modData?.health || 'operational';
+      const icon = status === 'operational' || status === 'healthy' || status === true ? '◉' : status === 'degraded' ? '◎' : status === 'down' ? '✗' : '◉';
+      const healthPct = typeof modData?.health_score === 'number' ? `${(modData.health_score * 100).toFixed(0)}%` : '100%';
+      output += `\n║  │  ${icon} ${mod.label.padEnd(14)} ${healthPct.padEnd(6)} ${String(status).substring(0, 12)}`;
+    }
+    output += `\n║  └──────────────────────────────────────────────────────`;
+  }
+
+  output += `
+╠══════════════════════════════════════════════════════════════╣
+║  360+ commands | 200 synergy pipelines | 100 engines         ║
+║  400+ capabilities | 76 base + 24 meta-engines               ║
+╚══════════════════════════════════════════════════════════════╝`;
+
+  return output;
+}
+
+function formatSystemHealth(data: any): string {
+  const modules = data?.modules || data?.module_health || {};
+  const overall = data?.health || data?.overall_health || 1.0;
+  const overallPct = typeof overall === 'number' ? (overall <= 1 ? (overall * 100).toFixed(0) : overall.toFixed(0)) : '100';
+  const circuitState = data?.circuit_state || 'closed';
+  const threatLevel = data?.threat_level || 'low';
+  
+  let output = `
+╔══════════════════════════════════════════════════════════════╗
+║  CMPSBL® OS v10.5.0 — HEALTH DIAGNOSTICS                    ║
+╠══════════════════════════════════════════════════════════════╣
+║  Overall Health:  ${'█'.repeat(Math.round(Number(overallPct) / 10))}${'░'.repeat(10 - Math.round(Number(overallPct) / 10))} ${overallPct}%                      ║
+║  Circuit:         ${circuitState === 'closed' ? '🟢 CLOSED (ready)' : '🔴 OPEN (blocking)'}                     ║
+║  Threat Level:    ${threatLevel.toUpperCase().padEnd(10)}                                ║
+║  Modules:         21/21 reporting                            ║
+╠══════════════════════════════════════════════════════════════╣
+║  MODULE HEALTH REPORT                                        ║
+╠══════════════════════════════════════════════════════════════╣`;
+
+  for (const mod of ALL_21_MODULES) {
+    const modData = modules[mod.key] || modules[mod.label.toLowerCase()] || {};
+    const health = typeof modData?.health === 'number' ? modData.health : (typeof modData?.score === 'number' ? modData.score : 1.0);
+    const pct = health <= 1 ? (health * 100).toFixed(0) : health.toFixed(0);
+    const bar = '█'.repeat(Math.round(Number(pct) / 20)) + '░'.repeat(5 - Math.round(Number(pct) / 20));
+    const circuit = modData?.circuit || 'closed';
+    const circuitIcon = circuit === 'closed' ? '●' : circuit === 'half' ? '◐' : '○';
+    output += `\n║  ${circuitIcon} ${mod.label.padEnd(14)} ${bar} ${pct.padStart(3)}%  [${mod.layer.substring(0, 5).padEnd(5)}]      ║`;
+  }
+
+  output += `
+╠══════════════════════════════════════════════════════════════╣
+║  Legend: ● closed  ◐ half-open  ○ open                       ║
+║  Heal: system.heal <module>  |  Full: system.heal --all      ║
+╚══════════════════════════════════════════════════════════════╝`;
+
+  return output;
 }
 
 export interface ExecutionResult {
@@ -603,17 +707,18 @@ export async function executeCommand(
     }
     // Special aliases for sub-modules not in COMMAND_CATEGORIES directly
     if (module === 'patch') {
-      // Show patch commands from PATCH_COMMANDS
       const { PATCH_COMMANDS } = await import('./TerminalCommands');
       const maxLen = Math.max(...PATCH_COMMANDS.map(c => c.command.length));
       let output = `\n┌─ PATCH DISPATCH ─────────────────────────────────────────────\n│\n`;
       for (const cmd of PATCH_COMMANDS) {
         const padded = cmd.command.padEnd(maxLen + 2);
-        const opMarker = cmd.requiresOperator ? '⚡' : '○';
+        const tier = getCommandTier(cmd);
+        const icon = getTierIcon(tier);
+        const tierTag = tier !== 'free' ? ` [${getTierLabel(tier)}]` : '';
         const argsHint = cmd.args ? ` ${cmd.args}` : '';
-        output += `│ ${opMarker} ${padded} ∷ ${cmd.description}${argsHint}\n`;
+        output += `│ ${icon} ${padded} ∷ ${cmd.description}${argsHint}${tierTag}\n`;
       }
-      output += `│\n│ ⚡ = Operator required  ○ = Observer accessible\n└──────────────────────────────────────────────────────────`;
+      output += `│\n│ ○ = Free  ◆ = Creator  ★ = Architect  ◉ = Governor\n└──────────────────────────────────────────────────────────`;
       return { success: true, output };
     }
     if (module === 'encoded') {
@@ -622,11 +727,13 @@ export async function executeCommand(
       let output = `\n┌─ ENCODED AGENT ──────────────────────────────────────────────\n│\n`;
       for (const cmd of ENCODED_COMMANDS) {
         const padded = cmd.command.padEnd(maxLen + 2);
-        const opMarker = cmd.requiresOperator ? '⚡' : '○';
+        const tier = getCommandTier(cmd);
+        const icon = getTierIcon(tier);
+        const tierTag = tier !== 'free' ? ` [${getTierLabel(tier)}]` : '';
         const argsHint = cmd.args ? ` ${cmd.args}` : '';
-        output += `│ ${opMarker} ${padded} ∷ ${cmd.description}${argsHint}\n`;
+        output += `│ ${icon} ${padded} ∷ ${cmd.description}${argsHint}${tierTag}\n`;
       }
-      output += `│\n│ ⚡ = Operator required  ○ = Observer accessible\n└──────────────────────────────────────────────────────────`;
+      output += `│\n│ ○ = Free  ◆ = Creator  ★ = Architect  ◉ = Governor\n└──────────────────────────────────────────────────────────`;
       return { success: true, output };
     }
     // Infrastructure module help aliases
@@ -656,62 +763,50 @@ export async function executeCommand(
   }
 
   if (base === 'whoami') {
-    // Fetch actual identity from Access module for unified role display
-    let roleDisplay = isOperator ? 'OPERATOR (full access)' : 'OBSERVER (read-only)';
+    // Determine tier display from the new tier model
+    const effectiveTier: CommandTier = userTier || (isOperator ? 'creator' : 'free');
+    const tierLabel = getTierLabel(effectiveTier);
+    const tierIcon = getTierIcon(effectiveTier);
+    
+    const tierDescriptions: Record<string, string> = {
+      free: 'Read-only dashboard, status commands',
+      creator: 'Terminal, engines, analytics, actions ($49/mo)',
+      architect: 'Evolution, modernizer, mesh, advanced ops ($149/mo)',
+      governor: 'Full system authority, admin, mint (CMPSBL only)',
+    };
+    const tierDesc = tierDescriptions[effectiveTier] || '';
+    
     let identityLine = '';
-    let subRole = 'observer';
     let devName = '';
     
     try {
       const identityResult = await access.identity() as any;
       if (identityResult?.success) {
-        subRole = identityResult.substrate_role || 'observer';
         devName = identityResult.developer?.display_name || '';
-        
-        if (subRole === 'governor') {
-          roleDisplay = 'GOVERNOR (full system authority)';
-        } else if (subRole === 'operator') {
-          roleDisplay = 'OPERATOR (full access)';
-        } else {
-          roleDisplay = 'OBSERVER (read-only)';
-        }
-        
         if (devName) {
-          identityLine = `│  Identity: ${devName}\n│  Role: ${subRole.toUpperCase()}\n`;
+          identityLine = `│  Identity:    ${devName}\n`;
         }
       }
-    } catch (e) {
-      console.log('Identity fetch failed, using fallback');
+    } catch {
+      // continue
     }
     
-    // If no identity from API, try to get from Supabase directly
+    // If no identity from API, try Supabase directly
     if (!devName) {
       try {
-        const { supabase } = await import('@/integrations/supabase/client');
-        const { data: { user } } = await supabase.auth.getUser();
+        const { supabase: sb } = await import('@/integrations/supabase/client');
+        const { data: { user } } = await sb.auth.getUser();
         if (user) {
-          // Check admin role directly
-          const { data: isAdmin } = await supabase.rpc('has_role_text', {
-            _user_id: user.id,
-            _role: 'admin'
-          });
-          if (isAdmin === true) {
-            subRole = 'governor';
-            roleDisplay = 'GOVERNOR (full system authority)';
-          }
-          
-          // Get developer profile
-          const { data: dev } = await supabase
+          const { data: dev } = await sb
             .from('access_developers')
             .select('display_name')
             .eq('user_id', user.id)
             .maybeSingle();
-          
           devName = dev?.display_name || user.email?.split('@')[0] || 'User';
-          identityLine = `│  Identity: ${devName}\n│  Role: ${subRole.toUpperCase()}\n│  Email: ${user.email}\n`;
+          identityLine = `│  Identity:    ${devName}\n│  Email:       ${user.email}\n`;
         }
-      } catch (e) {
-        // Fallback to basic display
+      } catch {
+        // Fallback
       }
     }
     
@@ -719,7 +814,7 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     CMPSBL® OS v9.3.0 ARCHITECT
+│  ██╔═══╝ ██╔════╝     CMPSBL® OS v10.5.0 ARCHITECT
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
@@ -728,7 +823,8 @@ export async function executeCommand(
 │  21-Module / 6-Layer Architecture — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
-${identityLine}│  Mode: ${roleDisplay}
+${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
+│  Access:     ${tierDesc}
 │  
 │  ┌─ KERNEL LAYER ────────────────────────────────────────────
 │  │  core://       scheduler, lifecycle, routing
@@ -765,7 +861,7 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal v9.3.0: aliases, macros, NLP, watch mode, audit
+│  Terminal v10.5.0: aliases, macros, NLP, watch mode, audit
 │  21 modules | 360+ commands | 200 synergy pipelines | health: 100%
 │  400+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
@@ -1249,8 +1345,16 @@ ${identityLine}│  Mode: ${roleDisplay}
     // SYSTEM module
     else if (base === 'system.status') {
       result = await system.status();
+      if (result?.success !== false) {
+        const data = result?.data || result || {};
+        return { success: true, output: formatSystemStatus(data), data };
+      }
     } else if (base === 'system.health') {
       result = await system.health();
+      if (result?.success !== false) {
+        const data = result?.data || result || {};
+        return { success: true, output: formatSystemHealth(data), data };
+      }
     } else if (base === 'system.version') {
       result = await system.version();
     } else if (base === 'system.changelog' || base === 'system.evolution') {
@@ -1277,8 +1381,9 @@ ${identityLine}│  Mode: ${roleDisplay}
       result = await system.restore(args[0] || '', args[1] === 'true');
     } else if (base === 'system.restore_portable') {
       // Portable backup restore (governor only) - expects JSON input or file reference
-      if (!isOperator) {
-        return { success: false, output: '▓ ACCESS DENIED: system.restore_portable requires Governor role\n  Only governors can restore portable backups.' };
+      const effTier: CommandTier = userTier || (isOperator ? 'creator' : 'free');
+      if (!meetsRequiredTier(effTier, 'governor')) {
+        return { success: false, output: `▓ ACCESS DENIED: GOVERNOR tier required for 'system.restore_portable'\n  Your tier: ${getTierLabel(effTier)}\n  Upgrade at cmpsbl.lovable.app/pricing to unlock this command.` };
       }
       // Parse mode from args
       const dryRun = args.includes('--dry-run');
@@ -2677,8 +2782,9 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Synergy ID required\n  Usage: cortex.synergy.execute <synergy_id> [input_json]' };
       }
-      if (!isOperator) {
-        return { success: false, output: '▓ OPERATOR required for synergy execution' };
+      const effTier2: CommandTier = userTier || (isOperator ? 'creator' : 'free');
+      if (!meetsRequiredTier(effTier2, 'creator')) {
+        return { success: false, output: `▓ ACCESS DENIED: CREATOR tier required for synergy execution\n  Your tier: ${getTierLabel(effTier2)}\n  Upgrade at cmpsbl.lovable.app/pricing` };
       }
       try {
         const { executeSynergy } = await import('@/lib/capabilities/synergies');

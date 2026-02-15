@@ -1,6 +1,6 @@
 /**
  * Terminal Type Definitions
- * v9.3.0 — ARCHITECT Epoch Terminal Configuration (360+ commands)
+ * v10.5.0 — ARCHITECT Epoch Terminal Configuration (360+ commands)
  */
 
 export interface CommandResult {
@@ -44,7 +44,7 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓  CMPSBL® SUBSTRATE OS v9.3.0         ▓',
+  '  ▓  CMPSBL® SUBSTRATE OS v10.5.0        ▓',
   '  ▓  ARCHITECT Epoch Cognitive OS         ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
