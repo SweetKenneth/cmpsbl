@@ -15,6 +15,7 @@ import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { system } from '@/lib/substrate';
 import { useSubstrateVoice } from '@/components/substrate-os/audio';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface QuickActionsPanelProps {
   enabled: boolean;
@@ -35,13 +36,16 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
   };
 
   const handleHealAll = async () => {
+    toast.success('Auto-Heal initiated', { description: 'Scanning all modules for degradation...' });
     voice.info('Initiating system-wide heal', 'Scanning all modules for degradation...', 'SYSTEM');
     try {
       await healMutation.mutateAsync(undefined);
+      toast.success('System heal complete', { description: 'All modules restored to optimal state' });
       voice.success('System heal complete', 'All modules restored to optimal state', 'SYSTEM');
       healthScore.refetch();
       showSuccess('heal');
     } catch {
+      toast.error('Heal operation failed', { description: 'Manual intervention may be required' });
       voice.error('Heal operation failed', 'Manual intervention may be required', 'SYSTEM');
     }
   };
