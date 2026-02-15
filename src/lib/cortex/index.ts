@@ -2,7 +2,7 @@
  * promptfluid® CORTEX Module v7.0.0
  * Agency-Class Orchestrator & Cross-Module Governance
  * 
- * The 14th module - the orchestrator layer for:
+ * The orchestrator layer for:
  * - Cross-module coordination and governance
  * - Agency-class task orchestration
  * - World model maintenance
@@ -270,7 +270,7 @@ export function getWorldModelSummary(): {
   return {
     version: cortexState.worldModelVersion,
     layers,
-    totalModules: 14,
+    totalModules: 21,
     governanceMode: cortexState.governanceMode,
   };
 }

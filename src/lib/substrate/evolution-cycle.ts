@@ -236,7 +236,7 @@ class EvolutionCycleClient {
           }));
 
           const scan_results: ScanResult = {
-            modules_scanned: 14,
+            modules_scanned: 21,
             improvements_found: scanResult.proposals.length,
             risk_level: 'low',
             proposals: proposalItems,
@@ -287,7 +287,7 @@ class EvolutionCycleClient {
           data: {
             plan: newState.current_plan,
             scan_results: {
-              modules_scanned: 14,
+              modules_scanned: 21,
               improvements_found: scanResult.proposals.length,
               risk_level: 'low',
               proposals: scanResult.proposals,

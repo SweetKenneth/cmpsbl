@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module — Human Compatibility Pipeline
- * v9.1.0 ARCHITECT — 14th Substrate Module
+ * v9.1.0 ARCHITECT — Substrate Module
  *
  * @origin(cmptbl) — Migrated from archived CMPTBL utilities
  * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.

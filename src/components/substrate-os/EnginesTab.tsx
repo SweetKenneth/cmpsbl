@@ -416,9 +416,9 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
       exit={{ opacity: 0 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/40 flex items-center justify-center">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/40 flex items-center justify-center flex-shrink-0">
             <Layers className="w-5 h-5 text-cyan-400" />
           </div>
           <div>
@@ -428,7 +428,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Badge variant="outline" className="text-[10px] border-cyan-500/40 text-cyan-400 bg-cyan-500/10">
             {engineSummary.totalCapabilitiesOrchestrated} capabilities
           </Badge>
@@ -466,9 +466,9 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
         </button>
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-6">
+      <div className="flex flex-col lg:grid lg:grid-cols-4 gap-6">
         {/* Left Panel - Browse */}
-        <div className="lg:col-span-3 space-y-4">
+        <div className="lg:col-span-3 space-y-4 order-1">
           {/* Search & Filter */}
           <div className="flex gap-3">
             <div className="relative flex-1">
@@ -506,7 +506,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
           </ScrollArea>
           
           {/* Engine/Meta-Engine Grid */}
-          <ScrollArea className="h-[600px]">
+          <ScrollArea className="h-[400px] sm:h-[600px]">
             <AnimatePresence mode="wait">
               {activeSubTab === 'engines' ? (
                 <motion.div
@@ -514,7 +514,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 pr-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 pr-4"
                 >
                   {filteredEngines.map(engine => (
                     <EngineCard
@@ -531,7 +531,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid md:grid-cols-2 gap-4 pr-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pr-4"
                 >
                   {filteredMetaEngines.map(me => (
                     <MetaEngineCard
@@ -548,7 +548,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
         </div>
 
         {/* Right Panel - Execution & History */}
-        <div className="space-y-4">
+        <div className="space-y-4 order-2">
           {/* Input Panel */}
           <Card className="border border-border/50 bg-muted/10 backdrop-blur-xl">
             <CardHeader className="pb-3">
