@@ -563,85 +563,141 @@ export default function STierDemos() {
     <div className="min-h-screen bg-background">
       {/* Hero */}
       <div className="relative border-b border-border/50 overflow-hidden">
+        {/* Layered ambient glow */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
-        <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-primary/8 blur-[80px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-primary/6 blur-[140px] pointer-events-none animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute top-0 right-0 w-[350px] h-[350px] rounded-full bg-primary/8 blur-[100px] pointer-events-none animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
+        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] rounded-full bg-accent/10 blur-[80px] pointer-events-none animate-pulse" style={{ animationDuration: '5s', animationDelay: '2s' }} />
         
-        <div className="relative max-w-6xl mx-auto px-4 py-12 lg:py-20">
+        <div className="relative max-w-6xl mx-auto px-4 py-14 lg:py-24">
           <div className="flex items-center gap-3 mb-6">
             <Link to="/">
-              <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground">
+              <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground hover:text-foreground transition-colors">
                 ← Home
               </Button>
             </Link>
           </div>
           
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-3xl mx-auto"
           >
-            <div className="flex items-center justify-center gap-3 mb-4">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
               <div className="relative">
-                <Shield className="w-10 h-10 text-primary" />
-                <div className="absolute inset-0 animate-ping opacity-20">
-                  <Shield className="w-10 h-10 text-primary" />
-                </div>
+                <div className="absolute -inset-3 rounded-full bg-primary/10 blur-md animate-pulse" style={{ animationDuration: '3s' }} />
+                <Shield className="w-11 h-11 text-primary relative z-10 drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)]" />
               </div>
-              <Badge variant="outline" className="text-primary border-primary/50 text-sm px-3 py-1 tracking-wider">PROOF STAMP</Badge>
-            </div>
+              <Badge variant="outline" className="text-primary border-primary/40 text-sm px-4 py-1.5 tracking-widest font-semibold backdrop-blur-sm bg-primary/5">
+                PROOF STAMP
+              </Badge>
+            </motion.div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4">
-              <span className="bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight mb-5 leading-[1.1]">
+              <motion.span 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="block bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent"
+              >
                 Don't Take Our Word.
-              </span>
-              <br />
-              <span className="bg-gradient-to-r from-primary via-primary to-foreground bg-clip-text text-transparent">
+              </motion.span>
+              <motion.span 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+                className="block bg-gradient-to-r from-primary via-primary to-foreground bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.15)]"
+              >
                 Watch It Prove Itself.
-              </span>
+              </motion.span>
             </h1>
             
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+              className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed"
+            >
               Live, interactive proof-of-moat. Every demo runs against the real substrate — 
               no mocks, no staging, no smoke.
-            </p>
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.4 }}
+              className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground/60"
+            >
+              <div className="w-2 h-2 rounded-full bg-primary/60 animate-pulse" />
+              <span>Scroll below to explore live demos</span>
+            </motion.div>
           </motion.div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        {/* Section label */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex items-center gap-3 mb-6"
+        >
+          <Separator className="flex-1" />
+          <span className="text-xs text-muted-foreground tracking-widest uppercase font-medium">Select a Demo</span>
+          <Separator className="flex-1" />
+        </motion.div>
+
         {/* Horizontal Scroll Demo Cards */}
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+          className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {DEMOS.map(demo => {
+          {DEMOS.map((demo, idx) => {
             const Icon = demo.icon;
             const isActive = activeDemo === demo.id;
             return (
               <motion.div
                 key={demo.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * idx + 0.4, duration: 0.4 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.97 }}
                 className="snap-start shrink-0"
-                style={{ width: isActive ? '280px' : '240px' }}
+                style={{ width: isActive ? '290px' : '250px', transition: 'width 0.3s ease' }}
               >
                 <Card
-                  className={`cursor-pointer transition-all h-full relative overflow-hidden ${
+                  className={`cursor-pointer transition-all duration-300 h-full relative overflow-hidden group ${
                     isActive
-                      ? 'border-primary shadow-[0_0_25px_-5px_hsl(var(--primary)/0.4)] scale-[1.03]'
-                      : 'hover:border-primary/30'
+                      ? 'border-primary shadow-[0_0_30px_-5px_hsl(var(--primary)/0.35)] scale-[1.02]'
+                      : 'hover:border-primary/40 hover:shadow-[0_0_15px_-5px_hsl(var(--primary)/0.15)]'
                   }`}
                   onClick={() => setActiveDemo(isActive ? null : demo.id)}
                 >
-                  {/* Glow effect for active card */}
-                  {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 pointer-events-none" />
-                  )}
+                  {/* Glow overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-primary/4 pointer-events-none transition-opacity duration-300 ${
+                    isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-60'
+                  }`} />
+                  {/* Top accent line */}
+                  <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent transition-opacity duration-300 ${
+                    isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'
+                  }`} />
+                  
                   <CardHeader className="pb-2 relative z-10">
                     <div className="flex items-center gap-2 mb-1">
-                      <Icon className={`w-5 h-5 ${demo.color}`} />
+                      <div className={`p-1.5 rounded-lg transition-all duration-300 ${
+                        isActive ? 'bg-primary/15 shadow-[0_0_10px_hsl(var(--primary)/0.2)]' : 'bg-muted/50 group-hover:bg-primary/10'
+                      }`}>
+                        <Icon className={`w-4 h-4 ${demo.color} transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`} />
+                      </div>
                       <CardTitle className="text-sm">{demo.title}</CardTitle>
                     </div>
                     <p className="text-xs text-muted-foreground italic">{demo.subtitle}</p>
@@ -654,9 +710,13 @@ export default function STierDemos() {
                       ))}
                     </div>
                     {isActive && (
-                      <div className="mt-3 flex items-center gap-1 text-primary text-xs font-medium">
-                        <ChevronRight className="w-3 h-3" /> Active below
-                      </div>
+                      <motion.div 
+                        initial={{ opacity: 0, x: -5 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="mt-3 flex items-center gap-1 text-primary text-xs font-medium"
+                      >
+                        <ChevronRight className="w-3 h-3 animate-pulse" /> Active below
+                      </motion.div>
                     )}
                   </CardContent>
                 </Card>
@@ -665,24 +725,29 @@ export default function STierDemos() {
           })}
         </div>
 
-        {/* Active Demo Area — appears below on mobile */}
+        {/* Active Demo Area */}
         <AnimatePresence mode="wait">
           {activeDemo && DemoComponent && (
             <motion.div
               key={activeDemo}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="mt-6"
+              initial={{ opacity: 0, y: 25, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-8"
             >
-              <Card className="border-primary/30 shadow-lg shadow-primary/5">
+              <Card className="border-primary/20 shadow-[0_0_40px_-10px_hsl(var(--primary)/0.12)] relative overflow-hidden">
+                {/* Subtle top glow */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
                       {(() => { const d = DEMOS.find(d => d.id === activeDemo)!; const I = d.icon; return <><I className={`w-5 h-5 ${d.color}`} />{d.title}</>; })()}
                     </CardTitle>
-                    <Badge variant="outline" className="text-xs">LIVE DEMO</Badge>
+                    <Badge variant="outline" className="text-xs gap-1.5 border-primary/30">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                      LIVE
+                    </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground italic">
                     {DEMOS.find(d => d.id === activeDemo)?.investorHook}
@@ -697,10 +762,20 @@ export default function STierDemos() {
         </AnimatePresence>
 
         {!activeDemo && (
-          <div className="text-center py-12 text-muted-foreground">
-            <Activity className="w-8 h-8 mx-auto mb-3 opacity-30" />
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-center py-16 text-muted-foreground"
+          >
+            <div className="relative inline-block mb-4">
+              <Activity className="w-10 h-10 opacity-20" />
+              <div className="absolute inset-0 animate-ping opacity-10">
+                <Activity className="w-10 h-10" />
+              </div>
+            </div>
             <p className="text-sm">Tap a demo card above to begin</p>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
