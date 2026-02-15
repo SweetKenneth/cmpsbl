@@ -69,50 +69,62 @@ export function AnalyticsTab() {
         });
       }
 
-      // Pull from internal tables - try recent first, fallback to all-time
-      let { data: usageData } = await supabase
-        .from('ai_usage_log')
-        .select('*')
-        .gte('created_at', startDate)
-        .order('created_at', { ascending: false })
-        .limit(1000);
+      // Pull from all data sources in parallel — brain_events is primary (45k+ records)
+      const [brainEventsRes, brainMetricsRes, usageRes, accessRes, auditRes] = await Promise.all([
+        supabase
+          .from('brain_events')
+          .select('id, event_type, module, outcome, created_at')
+          .gte('created_at', startDate)
+          .order('created_at', { ascending: false })
+          .limit(1000),
+        supabase
+          .from('brain_metrics')
+          .select('id, created_at, metric_name')
+          .gte('created_at', startDate)
+          .order('created_at', { ascending: false })
+          .limit(1000),
+        supabase
+          .from('ai_usage_log')
+          .select('*')
+          .gte('created_at', startDate)
+          .order('created_at', { ascending: false })
+          .limit(500),
+        supabase
+          .from('access_usage')
+          .select('*')
+          .gte('created_at', startDate)
+          .order('created_at', { ascending: false })
+          .limit(500),
+        supabase
+          .from('audit_logs')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(200),
+      ]);
 
-      let { data: accessUsage } = await supabase
-        .from('access_usage')
-        .select('*')
-        .gte('created_at', startDate)
-        .order('created_at', { ascending: false })
-        .limit(1000);
+      let brainEvents = brainEventsRes.data || [];
+      let brainMetrics = brainMetricsRes.data || [];
+      let usageData = usageRes.data || [];
+      let accessUsage = accessRes.data || [];
+      const auditData = auditRes.data || [];
 
-      // If no recent data, fetch all-time data so we don't show zeros
-      if ((!usageData || usageData.length === 0) && (!accessUsage || accessUsage.length === 0)) {
-        const [allUsage, allAccess] = await Promise.all([
-          supabase.from('ai_usage_log').select('*').order('created_at', { ascending: false }).limit(1000),
-          supabase.from('access_usage').select('*').order('created_at', { ascending: false }).limit(1000),
+      // If no recent brain data, fetch all-time so we don't show zeros
+      if (brainEvents.length === 0 && brainMetrics.length === 0) {
+        const [allEvents, allMetrics] = await Promise.all([
+          supabase.from('brain_events').select('id, event_type, module, outcome, created_at').order('created_at', { ascending: false }).limit(1000),
+          supabase.from('brain_metrics').select('id, created_at, metric_name').order('created_at', { ascending: false }).limit(1000),
         ]);
-        usageData = allUsage.data;
-        accessUsage = allAccess.data;
+        brainEvents = allEvents.data || [];
+        brainMetrics = allMetrics.data || [];
       }
-
-      // Also pull from audit_logs and brain metrics for richer data
-      const { data: auditData } = await supabase
-        .from('audit_logs')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(500);
-
-      const { data: brainMetrics } = await supabase
-        .from('brain_metrics')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(500);
 
       // Combine all data sources for richer metrics
       const allRecords = [
-        ...(usageData || []).map(u => ({ ...u, source: 'ai' })),
-        ...(accessUsage || []).map(u => ({ ...u, source: 'access' })),
-        ...(auditData || []).map(a => ({ created_at: a.created_at, provider: a.performed_by || 'system', category: a.entity_type || a.action, source: 'audit' })),
-        ...(brainMetrics || []).map(b => ({ created_at: b.created_at, provider: 'brain', category: 'brain', source: 'brain' })),
+        ...(brainEvents).map(e => ({ created_at: e.created_at, provider: e.module || 'brain', category: e.event_type || 'event', source: 'brain_events' as string })),
+        ...(brainMetrics).map(b => ({ created_at: b.created_at, provider: 'brain', category: b.metric_name || 'metric', source: 'brain_metrics' as string })),
+        ...(usageData).map(u => ({ ...u, source: 'ai' as string })),
+        ...(accessUsage).map(u => ({ ...u, source: 'access' as string })),
+        ...(auditData).map(a => ({ created_at: a.created_at, provider: a.performed_by || 'system', category: a.entity_type || a.action, source: 'audit' as string })),
       ];
 
       // Determine actual date range from data if recent period is empty
@@ -183,10 +195,10 @@ export function AnalyticsTab() {
         topPages,
         sources: Array.from(provCounts.entries()).map(([name, count]) => ({ name, count })),
         devices: [
-          { type: 'API', count: (accessUsage || []).length },
-          { type: 'AI', count: (usageData || []).length },
-          { type: 'Audit', count: (auditData || []).length },
-          { type: 'Brain', count: (brainMetrics || []).length },
+          { type: 'Brain Events', count: brainEvents.length },
+          { type: 'Brain Metrics', count: brainMetrics.length },
+          { type: 'AI Usage', count: usageData.length },
+          { type: 'Audit', count: auditData.length },
         ],
         countries: [],
       });

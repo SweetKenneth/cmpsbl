@@ -55,6 +55,7 @@ import { PatchAuthoringTab } from '@/components/substrate-os/PatchAuthoringTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
 import { MeshActivityTab } from '@/components/substrate-os/MeshActivityTab';
 import { AnalyticsTab } from '@/components/substrate-os/AnalyticsTab';
+import { GovernorSection } from '@/components/substrate-os/GovernorSection';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -448,117 +449,7 @@ function TabHeader({ icon: Icon, title, subtitle, color, tier, badge, action }: 
   );
 }
 
-// ============================================
-// Governor Panel (CMPSBL-only)
-// ============================================
-function GovernorPanel({ enabled }: { enabled: boolean }) {
-  const [auditLogs, setAuditLogs] = useState<Array<{ id: string; action: string; entity_type: string; created_at: string }>>([]);
-  const [settings, setSettings] = useState<Array<{ key: string; value: string }>>([]);
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-    if (!enabled) return;
-    
-    const loadData = async () => {
-      setLoading(true);
-      try {
-        const { data: auditData } = await import('@/integrations/supabase/client').then(m =>
-          m.supabase
-            .from('audit_logs')
-            .select('id, action, entity_type, created_at')
-            .order('created_at', { ascending: false })
-            .limit(10)
-        );
-        
-        if (auditData) setAuditLogs(auditData);
-        
-        const { data: configData } = await import('@/integrations/supabase/client').then(m =>
-          m.supabase.from('system_config').select('key, value').limit(6)
-        );
-        
-        if (configData) {
-          setSettings(configData.map(c => ({ key: c.key, value: String(c.value) })));
-        } else {
-          setSettings([
-            { key: 'maintenance_mode', value: 'false' },
-            { key: 'api_rate_limit', value: '100/min' },
-            { key: 'max_memory_tier_size', value: '10000' },
-            { key: 'dream_cycle_interval', value: '24h' },
-          ]);
-        }
-      } catch (error) {
-        console.error('Failed to load governor data:', error);
-        setSettings([
-          { key: 'maintenance_mode', value: 'false' },
-          { key: 'api_rate_limit', value: '100/min' },
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadData();
-  }, [enabled]);
-
-  if (!enabled) return null;
-
-  return (
-    <motion.div className="space-y-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-blue-500/20 bg-muted/10 backdrop-blur-xl p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
-              <FileText className="w-3.5 h-3.5 text-blue-400" />
-            </div>
-            <span className="text-sm font-medium text-foreground">Audit Log</span>
-          </div>
-          {loading ? (
-            <div className="space-y-2">{[1, 2, 3].map(i => <Skeleton key={i} className="h-8 w-full rounded-lg" />)}</div>
-          ) : auditLogs.length > 0 ? (
-            <ScrollArea className="h-[120px]">
-              <div className="space-y-2">
-                {auditLogs.map((entry) => (
-                  <div key={entry.id} className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 text-xs">
-                    <Badge variant="outline" className="text-[9px] h-4 border-blue-500/30">{entry.action}</Badge>
-                    <span className="text-muted-foreground truncate">{entry.entity_type || 'system'}</span>
-                    <span className="text-muted-foreground/50 text-[9px] ml-auto">
-                      {new Date(entry.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          ) : (
-            <p className="text-xs text-muted-foreground/70 italic py-4 text-center">No recent audit events</p>
-          )}
-        </div>
-        
-        <div className="rounded-xl border border-amber-500/20 bg-muted/10 backdrop-blur-xl p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center">
-              <Settings className="w-3.5 h-3.5 text-amber-400" />
-            </div>
-            <span className="text-sm font-medium text-foreground">Configuration</span>
-          </div>
-          {loading ? (
-            <Skeleton className="h-[120px] w-full rounded-lg" />
-          ) : (
-            <ScrollArea className="h-[120px]">
-              <div className="text-xs space-y-2">
-                {settings.map((setting, idx) => (
-                  <div key={idx} className="flex justify-between p-2 rounded-lg bg-muted/20">
-                    <span className="text-muted-foreground capitalize">{setting.key.replace(/_/g, ' ')}</span>
-                    <span className="font-mono text-foreground">{setting.value}</span>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+// GovernorPanel removed — now uses the full GovernorSection component
 
 // ============================================
 // Merged Modules Tab (Core + Ripple + Access)
@@ -990,8 +881,7 @@ export default function SubstrateOS() {
 
             {activeTab === 'governor' && hasAccessToCurrentTab && (
               <motion.main key="governor" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <TabHeader icon={AlertTriangle} title="Governor Controls" subtitle="administrative operations • system configuration" color="red" tier="cmpsbl" />
-                <GovernorPanel enabled={isGovernor} />
+                <GovernorSection enabled={isGovernor} />
               </motion.main>
             )}
           </AnimatePresence>
