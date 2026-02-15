@@ -137,8 +137,8 @@ export function CmpsblNav() {
       items: [
         { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
         { name: "Use Cases", href: "/use-cases", description: "Industry applications & examples", icon: Sparkles },
-        { name: "Pricing", href: "/pricing", description: "Free, Creator, Architect & Enterprise tiers", icon: Layers },
-        { name: "Licensing", href: "/substrate/licensing", description: "Enterprise agreements & OEM", icon: FileText },
+        { name: "Pricing", href: "/pricing", description: "Build on our master substrate", icon: Layers },
+        { name: "Licensing", href: "/licensing", description: "Deploy on your own infrastructure", icon: FileText },
         { name: "Intelligence", href: "/intelligence", description: "Technology proof & acquisition info", icon: Shield },
       ]
     },
