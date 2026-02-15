@@ -86,6 +86,7 @@ const MarketplaceSuccess = lazy(() => import("./pages/MarketplaceSuccess"));
 const SubstrateIntelligence = lazy(() => import("./pages/SubstrateIntelligence"));
 const SubstrateLicensing = lazy(() => import("./pages/SubstrateLicensing"));
 const SubstrateLicensingSuccess = lazy(() => import("./pages/SubstrateLicensingSuccess"));
+const SubstrateLicensingDownload = lazy(() => import("./pages/SubstrateLicensingDownload"));
 const ExperimentationLab = lazy(() => import("./pages/ExperimentationLab"));
 const SubstrateCapabilitiesDocs = lazy(() => import("./pages/SubstrateCapabilitiesDocs"));
 const CapabilitiesDepot = lazy(() => import("./pages/CapabilitiesDepot"));
@@ -313,7 +314,8 @@ const App = () => {
                         <Route path="/marketplace" element={<SubstrateStore />} />
                         <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
                         <Route path="/intelligence" element={<SubstrateIntelligence />} />
-                        <Route path="/substrate/licensing" element={<SubstrateLicensing />} />
+                        <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
+                        <Route path="/licensing" element={<SubstrateLicensingDownload />} />
                         <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
                         <Route path="/lab" element={<ExperimentationLab />} />
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />

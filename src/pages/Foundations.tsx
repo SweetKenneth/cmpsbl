@@ -39,27 +39,34 @@ const LIBRARY_DOCS = [
 ];
 
 const MODULES = [
-  { name: "CORE", icon: Cpu, desc: "Scheduling & lifecycle" },
-  { name: "RIPPLE", icon: Network, desc: "Event bus" },
-  { name: "ACCESS", icon: Users, desc: "Identity & permissions" },
-  { name: "BRAIN", icon: Brain, desc: "3-tier memory" },
-  { name: "DECODE", icon: Terminal, desc: "Intent parsing" },
-  { name: "DREAM", icon: Moon, desc: "Pattern synthesis" },
-  { name: "DEFENSE", icon: Shield, desc: "Threat detection" },
-  { name: "NEXUS", icon: Zap, desc: "AI routing" },
-  { name: "VISION", icon: Eye, desc: "Observability" },
-  { name: "SYSTEM", icon: Settings, desc: "Orchestration" },
-  { name: "MODERNIZER", icon: Code, desc: "Self-upgrade" },
-  { name: "INTEGRATION", icon: Globe, desc: "Connectors" },
-  { name: "INCLUSIVE", icon: Users, desc: "Accessibility" },
-  { name: "CORTEX", icon: Layers, desc: "Policy orchestration" },
-  { name: "ATLAS", icon: Globe, desc: "Capability registry" },
-  { name: "FORGE", icon: Zap, desc: "Cognitive factory" },
-  { name: "SENTINEL", icon: Shield, desc: "Runtime guard" },
-  { name: "CHRONICLE", icon: BookOpen, desc: "Audit trail" },
-  { name: "HARMONY", icon: Users, desc: "Team coordination" },
-  { name: "PRISM", icon: Eye, desc: "Multi-lens analysis" },
-  { name: "BEACON", icon: Zap, desc: "Signal dispatch" },
+  // Kernel Layer
+  { name: "CORE", icon: Cpu, desc: "Scheduling & lifecycle", layer: "Kernel" },
+  { name: "RIPPLE", icon: Network, desc: "Event bus", layer: "Kernel" },
+  { name: "ACCESS", icon: Users, desc: "Identity & permissions", layer: "Kernel" },
+  // Cognitive Layer
+  { name: "BRAIN", icon: Brain, desc: "3-tier memory", layer: "Cognitive" },
+  { name: "DECODE", icon: Terminal, desc: "Intent parsing", layer: "Cognitive" },
+  { name: "DREAM", icon: Moon, desc: "Pattern synthesis", layer: "Cognitive" },
+  // Operational Layer
+  { name: "DEFENSE", icon: Shield, desc: "Threat detection", layer: "Operational" },
+  { name: "NEXUS", icon: Zap, desc: "AI routing", layer: "Operational" },
+  { name: "VISION", icon: Eye, desc: "Observability", layer: "Operational" },
+  { name: "ENCODE", icon: Code, desc: "Code generation", layer: "Operational" },
+  // Administrative Layer
+  { name: "SYSTEM", icon: Settings, desc: "Orchestration", layer: "Administrative" },
+  { name: "MODERNIZER", icon: Code, desc: "Self-upgrade", layer: "Administrative" },
+  { name: "INTEGRATION", icon: Globe, desc: "Connectors", layer: "Administrative" },
+  { name: "INCLUSIVE", icon: Users, desc: "Accessibility", layer: "Administrative" },
+  // Orchestrator Layer
+  { name: "CORTEX", icon: Layers, desc: "Policy orchestration", layer: "Orchestrator" },
+  { name: "ATLAS", icon: Globe, desc: "Capability registry", layer: "Orchestrator" },
+  // Infrastructure Layer
+  { name: "MEMORY", icon: Brain, desc: "Vector/RAG recall", layer: "Infrastructure" },
+  { name: "RELAY", icon: Network, desc: "Outbound routing", layer: "Infrastructure" },
+  { name: "AUDIT", icon: Shield, desc: "Compliance logging", layer: "Infrastructure" },
+  { name: "IDENTITY", icon: Users, desc: "Actor attribution", layer: "Infrastructure" },
+  { name: "ECONOMY", icon: Zap, desc: "Cost tracking", layer: "Infrastructure" },
+  { name: "SANDBOX", icon: Settings, desc: "Safe execution", layer: "Infrastructure" },
 ];
 
 export default function Foundations() {

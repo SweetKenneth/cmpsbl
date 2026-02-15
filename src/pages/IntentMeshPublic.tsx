@@ -7,6 +7,8 @@ import { Helmet } from "react-helmet-async";
 import { ArrowRight, Brain, Network, Shield, Zap, Eye, BarChart3, Layers, RefreshCw, GitBranch, Target, Lightbulb, Activity, Radar, Route } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -23,14 +25,14 @@ const RESOLVER_STATS = {
 };
 
 const ARCHITECTURE_LAYERS = [
-  { icon: Layers, name: "Advertisement", desc: "Each module publishes resolvers declaring its capabilities" },
-  { icon: GitBranch, name: "Routing", desc: "Dynamic domain-based matching with composite chaining" },
-  { icon: Shield, name: "Governance", desc: "Kill switch + risk gating — mutations blocked by default" },
-  { icon: BarChart3, name: "Learning", desc: "Pipeline crystallization + CLM feedback loop" },
-  { icon: Lightbulb, name: "Discovery", desc: "Gap analysis + autonomous module self-discovery" },
-  { icon: RefreshCw, name: "Refinement", desc: "Multi-turn resolution + intent quality scoring" },
-  { icon: Activity, name: "Live Analysis", desc: "Real DB-backed gap execution with auto-proposals + affinity drift detection" },
-  { icon: Route, name: "Pattern Intelligence", desc: "Temporal sequence detection with auto pipeline crystallization" },
+  { icon: Layers, name: "Advertisement", desc: "Modules declare capabilities for autonomous composition" },
+  { icon: GitBranch, name: "Routing", desc: "Intelligent domain-based matching with composite resolution" },
+  { icon: Shield, name: "Governance", desc: "Kill-switch and risk gating — safe by default" },
+  { icon: BarChart3, name: "Learning", desc: "Continuous improvement through interaction feedback" },
+  { icon: Lightbulb, name: "Discovery", desc: "Autonomous capability gap detection and proposal" },
+  { icon: RefreshCw, name: "Refinement", desc: "Multi-turn resolution with quality scoring" },
+  { icon: Activity, name: "Live Analysis", desc: "Real-time gap detection with auto-proposals" },
+  { icon: Route, name: "Pattern Intelligence", desc: "Sequential pattern detection with pipeline optimization" },
 ];
 
 const MODULE_GROUPS = [
@@ -90,37 +92,37 @@ const SELF_IMPROVEMENT_FEATURES = [
   {
     icon: Target,
     title: "Module Self-Discovery",
-    desc: "All 21 modules autonomously introspect their data assets, analyze failed intents, and propose new capabilities for human approval.",
+    desc: "All 21 modules autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
   },
   {
     icon: BarChart3,
     title: "Intent Quality Scoring",
-    desc: "Every intent is scored 0–100 across resolution rate, response richness, latency, and cross-module coverage with trend detection.",
+    desc: "Every interaction is quality-scored and tracked, enabling continuous improvement across all module capabilities.",
   },
   {
     icon: RefreshCw,
-    title: "CLM Feedback Loop",
-    desc: "Scoring insights automatically inject learning topics into each module's Continuous Learning Model, teaching modules to ask better questions.",
+    title: "Continuous Learning",
+    desc: "Insights from every resolution automatically feed back into the system, making each module progressively more capable.",
   },
   {
     icon: Zap,
-    title: "Auto-Expansion Scheduler",
-    desc: "Periodic cycles run discovery (4h), gap analysis (2h), scoring (1h), and full expansion (24h) — all governed by the kill switch.",
+    title: "Autonomous Expansion",
+    desc: "Scheduled cycles discover gaps, propose improvements, and expand capabilities — all governed by a global safety switch.",
   },
   {
     icon: Activity,
-    title: "Live Gap Execution",
-    desc: "Queries real DB receipts to surface consistently failing intents, unresponsive modules, and auto-generates resolver proposals from failure patterns.",
+    title: "Live Gap Detection",
+    desc: "Real-time analysis surfaces unresolved intents and capability gaps, auto-generating improvement proposals.",
   },
   {
     icon: Radar,
-    title: "Cross-Module Affinity Matrix",
-    desc: "Persistent affinity tracking combining structural (shared domains) and behavioral (co-resolution) signals with drift detection and cluster discovery.",
+    title: "Cross-Module Affinity",
+    desc: "The mesh learns which modules work best together, discovering collaboration clusters and optimizing routing over time.",
   },
   {
     icon: Route,
-    title: "Intent Pattern Recognition",
-    desc: "Temporal analysis detects co-occurrence, sequential chains, and collaboration patterns. Stable patterns auto-suggest pipeline crystallization.",
+    title: "Pattern Recognition",
+    desc: "Detects recurring interaction patterns and crystallizes them into optimized pipelines for faster future resolution.",
   },
 ];
 
@@ -138,6 +140,7 @@ export default function IntentMeshPublic() {
         <link rel="canonical" href="https://cmpsbl.lovable.app/intent-mesh" />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background text-foreground">
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border">
@@ -193,25 +196,22 @@ export default function IntentMeshPublic() {
         <section className="border-y border-border bg-muted/30">
           <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-4">How Intent Resolution Works</h2>
+              <h2 className="text-3xl font-bold mb-4">Seamless Intent Resolution</h2>
               <p className="text-muted-foreground mb-8 max-w-2xl">
-                A module broadcasts an intent with domains. The router matches capable resolvers, executes them in parallel, composes results, and logs an auditable receipt.
+                When a module needs enriched data, it broadcasts an intent. The mesh autonomously discovers capable responders, composes results from multiple modules, and learns from every interaction.
               </p>
               <div className="bg-card border border-border rounded-xl p-6 md:p-8 font-mono text-sm overflow-x-auto">
-                <pre className="text-muted-foreground whitespace-pre leading-relaxed">{`Module A (DEFENSE)
-  │ broadcast("actor_enrichment", domains: [identity, security])
+                <pre className="text-muted-foreground whitespace-pre leading-relaxed">{`Module broadcasts intent
   ▼
-Intent Router
-  ├──► IDENTITY.resolve_actor  →  { actor_id, display_name, trust_level }
-  ├──► IDENTITY.trust_score    →  { trust_score, risk_flags }
-  ├──► ECONOMY.actor_value     →  { lifetime_value, roi, tier }
-  └──► AUDIT.actor_history     →  { audit_entries, risk_actions }
+Mesh discovers capable responders
   ▼
-Composed Result (merged from 4 resolvers across 3 modules)
+Parallel resolution across modules
   ▼
-Receipt → mesh_intents (auditable, realtime)
+Composed enriched result
   ▼
-Score (78/100) → CLM Feedback → Gap Detection`}</pre>
+Auditable receipt + quality score
+  ▼
+Learning feedback → improved future routing`}</pre>
               </div>
             </motion.div>
           </div>
@@ -335,11 +335,12 @@ Score (78/100) → CLM Feedback → Gap Detection`}</pre>
                 "@type": "Organization",
                 name: "PromptFluid",
               },
-              softwareVersion: "10.4.0",
+              softwareVersion: "10.5.0",
             }),
           }}
         />
       </div>
+      <EnhancedFooter />
     </>
   );
 }
