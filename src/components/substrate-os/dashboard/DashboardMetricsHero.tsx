@@ -80,8 +80,8 @@ export function DashboardMetricsHero() {
         style={{ background: 'linear-gradient(var(--background), var(--background)) padding-box, linear-gradient(135deg, hsl(185 100% 50% / 0.15), transparent 40%, transparent 60%, hsl(280 100% 65% / 0.15)) border-box' }} 
       />
 
-      <div className="relative p-8 lg:p-10">
-        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
+      <div className="relative p-4 sm:p-8 lg:p-10">
+        <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-10 lg:gap-14">
           
           {/* === Orbital Health Ring === */}
           <div className="relative flex-shrink-0 group">
@@ -97,7 +97,7 @@ export function DashboardMetricsHero() {
               transition={{ duration: 180, repeat: Infinity, ease: "linear" }}
             />
 
-            <svg className="w-56 h-56 -rotate-90" viewBox="0 0 200 200">
+            <svg className="w-40 h-40 sm:w-56 sm:h-56 -rotate-90" viewBox="0 0 200 200">
               {/* Track */}
               <circle cx="100" cy="100" r="85" fill="none" stroke="currentColor" strokeWidth="4" className="text-border/15" />
               <circle cx="100" cy="100" r="72" fill="none" stroke="currentColor" strokeWidth="1" className="text-border/8" strokeDasharray="3 9" />
@@ -129,7 +129,7 @@ export function DashboardMetricsHero() {
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <motion.span 
                 className={cn(
-                  "text-6xl font-black font-mono tracking-tighter",
+                  "text-4xl sm:text-6xl font-black font-mono tracking-tighter",
                   `text-${statusColor}-400`
                 )}
                 initial={{ scale: 0, opacity: 0 }}
@@ -158,7 +158,7 @@ export function DashboardMetricsHero() {
           <div className="flex-1 space-y-8 w-full">
             
             {/* Stat Cards Row */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {[
                 { label: 'MODULES', value: `${activeCount}`, suffix: `/${totalModules}`, color: 'cyan' },
                 { label: 'STATUS', value: statusLabel, color: statusColor },
@@ -167,7 +167,7 @@ export function DashboardMetricsHero() {
                 <motion.div 
                   key={stat.label}
                   className={cn(
-                    "relative p-4 rounded-2xl border overflow-hidden group cursor-default",
+                    "relative p-2.5 sm:p-4 rounded-2xl border overflow-hidden group cursor-default",
                     `border-${stat.color}-500/20 hover:border-${stat.color}-500/40`
                   )}
                   initial={{ opacity: 0, y: 15 }}
@@ -177,12 +177,12 @@ export function DashboardMetricsHero() {
                 >
                   <div className={cn("absolute inset-0 bg-gradient-to-br opacity-[0.06]", `from-${stat.color}-500 to-transparent`)} />
                   <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-[0.1] transition-opacity duration-300", `from-${stat.color}-500 to-transparent`)} />
-                  <span className={cn("text-[10px] font-mono uppercase tracking-[0.2em] block mb-1.5", `text-${stat.color}-400/80`)}>
+                  <span className={cn("text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.1em] sm:tracking-[0.2em] block mb-1 sm:mb-1.5", `text-${stat.color}-400/80`)}>
                     {stat.label}
                   </span>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-bold text-foreground font-mono">{stat.value}</span>
-                    {stat.suffix && <span className="text-lg text-muted-foreground/40 font-mono">{stat.suffix}</span>}
+                  <div className="flex items-baseline gap-0.5 sm:gap-1">
+                    <span className="text-base sm:text-2xl font-bold text-foreground font-mono truncate">{stat.value}</span>
+                    {stat.suffix && <span className="text-sm sm:text-lg text-muted-foreground/40 font-mono">{stat.suffix}</span>}
                   </div>
                 </motion.div>
               ))}
@@ -208,7 +208,7 @@ export function DashboardMetricsHero() {
               </div>
               
               <TooltipProvider delayDuration={50}>
-                <div className="grid grid-cols-7 lg:grid-cols-11 xl:grid-cols-21 gap-2">
+                <div className="grid grid-cols-5 sm:grid-cols-7 lg:grid-cols-11 xl:grid-cols-21 gap-1.5 sm:gap-2">
                   {MODULES_CONFIG.map((module, idx) => {
                     const ModIcon = module.icon;
                     const isActive = healthScore.modules[module.id as keyof typeof healthScore.modules];

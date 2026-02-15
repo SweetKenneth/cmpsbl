@@ -196,14 +196,14 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       animate={{ opacity: 1, y: 0 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center">
-            <Accessibility className="w-6 h-6 text-teal-400" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center shrink-0">
+            <Accessibility className="w-5 sm:w-6 h-5 sm:h-6 text-teal-400" />
           </div>
           <div>
-            <h2 className="text-xl font-bold">INCLUSIVE Module</h2>
-            <p className="text-xs text-muted-foreground font-mono">human compatibility pipeline • WCAG 2.2</p>
+            <h2 className="text-lg sm:text-xl font-bold">INCLUSIVE Module</h2>
+            <p className="text-[10px] sm:text-xs text-muted-foreground font-mono">human compatibility pipeline • WCAG 2.2</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -230,7 +230,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       </div>
 
       {/* Score Cards */}
-      <div className="grid md:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         {/* Global Score */}
         <Card className="border-teal-500/20 bg-muted/10 backdrop-blur-xl">
           <CardHeader className="pb-3">
@@ -332,39 +332,41 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
           <CardDescription className="text-xs">Scan any URL for WCAG 2.2 compliance</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Input
               placeholder="https://example.com or paste HTML"
               value={scanUrl}
               onChange={(e) => setScanUrl(e.target.value)}
               className="flex-1 bg-muted/30"
             />
-            <Select value={wcagLevel} onValueChange={(v) => setWcagLevel(v as any)}>
-              <SelectTrigger className="w-24 bg-muted/30">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="A">Level A</SelectItem>
-                <SelectItem value="AA">Level AA</SelectItem>
-                <SelectItem value="AAA">Level AAA</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              onClick={() => scanUrl && scanMutation.mutate(scanUrl)}
-              disabled={!scanUrl || scanMutation.isPending}
-              className="gap-2"
-            >
-              {scanMutation.isPending ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
-              Scan
-            </Button>
+            <div className="flex gap-2">
+              <Select value={wcagLevel} onValueChange={(v) => setWcagLevel(v as any)}>
+                <SelectTrigger className="w-24 bg-muted/30">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="A">Level A</SelectItem>
+                  <SelectItem value="AA">Level AA</SelectItem>
+                  <SelectItem value="AAA">Level AAA</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                onClick={() => scanUrl && scanMutation.mutate(scanUrl)}
+                disabled={!scanUrl || scanMutation.isPending}
+                className="gap-2"
+              >
+                {scanMutation.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+                Scan
+              </Button>
+            </div>
           </div>
 
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex flex-wrap gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -377,7 +379,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
                 ) : (
                   <Sparkles className="w-4 h-4" />
                 )}
-                Self-Scan Substrate UI
+                Self-Scan UI
               </Button>
               <Button
                 variant="outline"
@@ -392,7 +394,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
                 ) : (
                   <Wrench className="w-4 h-4" />
                 )}
-                Manual Repair
+                Repair
               </Button>
             </div>
             
@@ -406,7 +408,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
               />
               <Label htmlFor="auto-repair" className="text-xs font-medium cursor-pointer flex items-center gap-1.5">
                 <Wrench className="w-3 h-3" />
-                Auto-Fix After Scan
+                Auto-Fix
               </Label>
             </div>
           </div>
@@ -511,7 +513,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
           <CardDescription className="text-xs">End-to-end accessibility workflow</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 overflow-x-auto">
             {[
               { name: 'Scan', icon: Eye, desc: 'Detect issues' },
               { name: 'Repair', icon: Wrench, desc: 'Auto-fix violations' },
@@ -519,13 +521,13 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
               { name: 'Profile', icon: Users, desc: 'Adaptive UX' },
               { name: 'Report', icon: FileText, desc: 'Document compliance' },
             ].map((step, i) => (
-              <div key={step.name} className="flex items-center gap-2 flex-1">
-                <div className="flex-1 text-center p-3 rounded-lg bg-muted/20 border border-teal-500/20">
-                  <step.icon className="w-5 h-5 text-teal-400 mx-auto mb-1" />
-                  <p className="text-xs font-medium text-teal-400">{step.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{step.desc}</p>
+              <div key={step.name} className="flex items-center gap-1 sm:gap-2 flex-1 min-w-[60px]">
+                <div className="flex-1 text-center p-2 sm:p-3 rounded-lg bg-muted/20 border border-teal-500/20">
+                  <step.icon className="w-4 sm:w-5 h-4 sm:h-5 text-teal-400 mx-auto mb-1" />
+                  <p className="text-[10px] sm:text-xs font-medium text-teal-400">{step.name}</p>
+                  <p className="text-[9px] sm:text-[10px] text-muted-foreground hidden sm:block">{step.desc}</p>
                 </div>
-                {i < 4 && <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />}
+                {i < 4 && <ChevronRight className="w-3 sm:w-4 h-3 sm:h-4 text-muted-foreground shrink-0" />}
               </div>
             ))}
           </div>

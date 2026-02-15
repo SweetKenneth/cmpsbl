@@ -230,8 +230,8 @@ export function CognitivesPanel() {
               </p>
             </div>
           ) : (
-            <ScrollArea className="h-[400px] -mx-2 px-2">
-              <div className="space-y-3">
+            <ScrollArea className="h-[400px]">
+              <div className="space-y-3 pr-2">
                 {cognitives.map((cognitive) => {
                   const ClassIcon = CLASS_ICONS[cognitive.class] || Bot;
                   const classColor = CLASS_COLORS[cognitive.class] || 'gray';
@@ -267,12 +267,13 @@ export function CognitivesPanel() {
                     <div 
                       key={cognitive.id}
                       className={cn(
-                        "p-4 rounded-xl border bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm transition-all duration-300",
+                        "p-3 sm:p-4 rounded-xl border bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm transition-all duration-300",
                         "hover:bg-white/10 hover:shadow-lg",
+                        "overflow-hidden",
                         colorBorderMap[classColor] || colorBorderMap.cyan
                       )}
                     >
-                      <div className="flex items-start gap-3">
+                      <div className="flex items-start gap-2 sm:gap-3 min-w-0">
                         <div className={cn(
                           "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border",
                           colorIconBgMap[classColor] || colorIconBgMap.cyan

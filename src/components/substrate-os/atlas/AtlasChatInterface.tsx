@@ -51,11 +51,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
   // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
-      // Find the actual scrollable viewport inside ScrollArea
-      const viewport = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
-      if (viewport) {
-        viewport.scrollTop = viewport.scrollHeight;
-      }
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -214,7 +210,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
+      <div className="flex-1 overflow-y-auto p-4" ref={scrollRef}>
         <div className="space-y-4">
           <AnimatePresence mode="popLayout">
             {messages.map((msg, index) => (
@@ -307,7 +303,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
             </motion.div>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
       {/* Quick Commands */}
       <div className="px-4 py-2 border-t border-border/30 bg-muted/30">
