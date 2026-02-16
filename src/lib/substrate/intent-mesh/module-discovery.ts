@@ -378,39 +378,73 @@ export async function persistProposals(proposals: ModuleProposal[]): Promise<num
 
 /**
  * Approve a module proposal — add its resolver to the live manifest
+ * AND crystallize it as a permanent saved pipeline
  */
-export async function approveProposal(resolverId: string): Promise<boolean> {
-  const existingIds = new Set(MESH_MANIFEST.map(r => r.id));
-  if (existingIds.has(resolverId)) return false;
-
-  // Look up proposal from database
-  const { data } = await supabase
+export async function approveProposal(proposalId: string): Promise<boolean> {
+  // Look up proposal from database by record ID first, fallback to proposed_resolver_id
+  let proposal: any = null;
+  
+  const { data: byId } = await supabase
     .from('mesh_capability_recommendations')
     .select('*')
-    .eq('proposed_resolver_id', resolverId)
-    .eq('status', 'proposed')
+    .eq('id', proposalId)
+    .in('status', ['proposed', 'pending'])
     .limit(1);
+  
+  proposal = (byId as any)?.[0];
+  
+  if (!proposal) {
+    const { data: byResolver } = await supabase
+      .from('mesh_capability_recommendations')
+      .select('*')
+      .eq('proposed_resolver_id', proposalId)
+      .in('status', ['proposed', 'pending'])
+      .limit(1);
+    proposal = (byResolver as any)?.[0];
+  }
 
-  const proposal = (data as any)?.[0];
   if (!proposal) return false;
 
-  // Add to live manifest
-  MESH_MANIFEST.push({
-    id: proposal.proposed_resolver_id,
-    module: proposal.target_module,
-    description: proposal.proposed_description,
-    domains: proposal.proposed_domains || [],
-    accepts: proposal.proposed_accepts || [],
-    produces: proposal.proposed_produces || [],
-    risk: 'read',
-    enabled: true,
-  });
+  const resolverId = proposal.proposed_resolver_id || proposalId;
+  const existingIds = new Set(MESH_MANIFEST.map(r => r.id));
 
-  // Mark as applied
+  // Add to live manifest if not already present
+  if (!existingIds.has(resolverId)) {
+    MESH_MANIFEST.push({
+      id: resolverId,
+      module: proposal.target_module,
+      description: proposal.proposed_description || '',
+      domains: proposal.proposed_domains || [],
+      accepts: proposal.proposed_accepts || [],
+      produces: proposal.proposed_produces || [],
+      risk: 'read',
+      enabled: true,
+    });
+  }
+
+  // Mark as applied in recommendations table
   await supabase
     .from('mesh_capability_recommendations')
     .update({ status: 'applied', applied_at: new Date().toISOString() } as any)
-    .eq('proposed_resolver_id', resolverId);
+    .eq('id', proposal.id);
+
+  // Crystallize into a permanent saved pipeline
+  const pipelineData = {
+    name: `${proposal.target_module}: ${(resolverId || '').split('.').pop()?.replace(/_/g, ' ')}`,
+    description: proposal.proposed_description || `Approved resolver from ${proposal.target_module} module self-discovery`,
+    source_module: proposal.target_module || 'UNKNOWN',
+    intent_type: (resolverId || '').split('.').pop() || 'capability',
+    domains: proposal.proposed_domains || [],
+    governance_mode: 'governed',
+    resolver_chain: [resolverId],
+    input_template: {},
+    discovered_from: proposal.id,
+    is_active: true,
+  };
+
+  await supabase
+    .from('mesh_saved_pipelines')
+    .insert([pipelineData as any]);
 
   return true;
 }
@@ -418,13 +452,22 @@ export async function approveProposal(resolverId: string): Promise<boolean> {
 /**
  * Reject a module proposal
  */
-export async function rejectProposal(resolverId: string): Promise<boolean> {
+export async function rejectProposal(proposalId: string): Promise<boolean> {
+  // Try by record ID first, fallback to proposed_resolver_id
   const { error } = await supabase
     .from('mesh_capability_recommendations')
     .update({ status: 'rejected' } as any)
-    .eq('proposed_resolver_id', resolverId);
+    .eq('id', proposalId);
 
-  return !error;
+  if (error) {
+    const { error: err2 } = await supabase
+      .from('mesh_capability_recommendations')
+      .update({ status: 'rejected' } as any)
+      .eq('proposed_resolver_id', proposalId);
+    return !err2;
+  }
+
+  return true;
 }
 
 /**
