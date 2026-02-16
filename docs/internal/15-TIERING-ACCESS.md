@@ -4,7 +4,7 @@
 
 ### CONFIDENTIAL — Trade Secret
 
-**v9.3.0 ARCHITECT Epoch**
+**v10.5.3 ARCHITECT Epoch**
 
 </div>
 
@@ -15,81 +15,93 @@
 | Tier | Target Audience | Monthly Price | Key Limits |
 |------|----------------|---------------|------------|
 | **Free** | Developers, evaluation | $0 | 1,000 calls/day, 5 modules |
-| **Pro** | Small teams, startups | $99/mo | 50,000 calls/day, 15 modules |
-| **Enterprise** | Organizations | Custom | Unlimited calls, 18 modules |
-| **CMPSBL** | Internal only | N/A | All 21 modules + crown jewels |
+| **Creator** | Builders, startups | $49/mo | 50,000 calls/day, 15 modules |
+| **Architect** | Teams, enterprises | $149/mo | Unlimited calls, 18 modules |
+| **Enterprise** | Organizations | Custom | Unlimited calls, all modules |
+| **CMPSBL** | Internal only | N/A | All 21 modules + all crown jewels |
 
 ---
 
 ## Module Access Matrix
 
-| Module | Free | Pro | Enterprise | CMPSBL |
-|--------|------|-----|------------|--------|
-| CORE | ✅ | ✅ | ✅ | ✅ |
-| RIPPLE | ✅ | ✅ | ✅ | ✅ |
-| ACCESS | ✅ | ✅ | ✅ | ✅ |
-| BRAIN | ✅ | ✅ | ✅ | ✅ |
-| DECODE | ✅ | ✅ | ✅ | ✅ |
-| DREAM | ❌ | ✅ | ✅ | ✅ |
-| DEFENSE | ❌ | ✅ | ✅ | ✅ |
-| NEXUS | ❌ | ✅ | ✅ | ✅ |
-| VISION | ❌ | ✅ | ✅ | ✅ |
-| INTEGRATION | ❌ | ✅ | ✅ | ✅ |
-| SYSTEM | ❌ | ✅ | ✅ | ✅ |
-| MODERNIZER | ❌ | ❌ | ✅ | ✅ |
-| INCLUSIVE | ❌ | ✅ | ✅ | ✅ |
-| CORTEX | ❌ | ❌ | ✅ | ✅ |
-| MEMORY | ❌ | ✅ | ✅ | ✅ |
-| RELAY | ❌ | ❌ | ✅ | ✅ |
-| AUDIT | ❌ | ❌ | ✅ | ✅ |
-| IDENTITY | ❌ | ✅ | ✅ | ✅ |
-| ECONOMY | ❌ | ✅ | ✅ | ✅ |
-| SANDBOX | ❌ | ❌ | ✅ | ✅ |
-| ENCODE | ❌ | ✅ | ✅ | ✅ |
-| **Crown Jewels** | ❌ | ❌ | ❌ | ✅ |
+| Module | Free | Creator | Architect | Enterprise | CMPSBL |
+|--------|------|---------|-----------|------------|--------|
+| CORE | ✅ | ✅ | ✅ | ✅ | ✅ |
+| RIPPLE | ✅ | ✅ | ✅ | ✅ | ✅ |
+| ACCESS | ✅ | ✅ | ✅ | ✅ | ✅ |
+| BRAIN | ✅ | ✅ | ✅ | ✅ | ✅ |
+| DECODE | ✅ | ✅ | ✅ | ✅ | ✅ |
+| DREAM | ❌ | ✅ | ✅ | ✅ | ✅ |
+| DEFENSE | ❌ | ✅ | ✅ | ✅ | ✅ |
+| NEXUS | ❌ | ✅ | ✅ | ✅ | ✅ |
+| VISION | ❌ | ✅ | ✅ | ✅ | ✅ |
+| INTEGRATION | ❌ | ✅ | ✅ | ✅ | ✅ |
+| SYSTEM | ❌ | ✅ | ✅ | ✅ | ✅ |
+| MODERNIZER | ❌ | ❌ | ✅ | ✅ | ✅ |
+| INCLUSIVE | ❌ | ✅ | ✅ | ✅ | ✅ |
+| CORTEX | ❌ | ❌ | ✅ | ✅ | ✅ |
+| MEMORY | ❌ | ✅ | ✅ | ✅ | ✅ |
+| RELAY | ❌ | ❌ | ✅ | ✅ | ✅ |
+| AUDIT | ❌ | ❌ | ✅ | ✅ | ✅ |
+| IDENTITY | ❌ | ✅ | ✅ | ✅ | ✅ |
+| ECONOMY | ❌ | ✅ | ✅ | ✅ | ✅ |
+| SANDBOX | ❌ | ❌ | ✅ | ✅ | ✅ |
+| ENCODE | ❌ | ✅ | ✅ | ✅ | ✅ |
+| **Crown Jewels** | ❌ | ✅ (Creator) | ✅ (Architect) | ✅ (Enterprise) | ✅ (All) |
 
 ---
 
-## v10.5.2 Crown Jewel Registry (Complete)
+## v10.5.3 Crown Jewel Registry (Complete — 35 Jewels)
 
-### 🔴 CMPSBL-Only — Recursive Cognition & Meta-Intelligence
+### 🔴 CMPSBL-Only — Recursive Cognition & Meta-Intelligence (9)
 
 | Capability | Module | Description |
 |-----------|--------|-------------|
 | Meta-Reasoning | BRAIN | Recursive cognition — brain reasons about its own reasoning chains |
 | Hypothesis Generation | BRAIN | Autonomous hypothesis creation from cross-module data patterns |
+| Cognitive Load Balancing | BRAIN | Distributes cognitive tasks across engines based on real-time load |
+| Autonomous Goal Decomposition | BRAIN | Breaks complex goals into sub-goals and assigns to optimal modules |
 | Insight Synthesis | MEMORY | Cross-domain knowledge synthesis producing novel discoveries |
 | Lucidity Control | DREAM | Dream depth/lucidity management for creative exploration |
+| Cross-Pollination Synthesis | DREAM | Cross-instance dream pooling merging insights across deployments |
 | Cascade Failure Prevention | CORTEX | Predictive cascade failure prevention across dependency chains |
-| Error Meta-Learning | ENCODE | Self-improving error pattern recognition |
-| Auto-Tiering Meta-Tuning | BRAIN | Self-tuning memory tier watermarks |
-| Shadow Loop Auto-Resolution | MODERNIZER | Autonomous stuck evolution cycle resolution |
-| Circuit Predictive Management | CORE | Pre-emptive circuit health management |
+| Self-Healing Orchestration | CORTEX | Autonomous pipeline repair with real-time rerouting |
 
-### 🟡 Enterprise — Advanced Security & Operations
+### 🟡 Architect — Advanced Security, Intelligence & Governance (14)
 
 | Capability | Module | Description |
 |-----------|--------|-------------|
 | Zero-Day Detection | DEFENSE | Novel attack patterns beyond known signatures |
 | Attack Correlation | DEFENSE | Cross-IP/session distributed campaign linking |
+| Behavioral Fingerprinting | DEFENSE | Behavioral signatures beyond device fingerprints |
 | Identity Graph | IDENTITY | Cross-session identity graph construction |
+| Behavioral Biometrics | IDENTITY | Continuous authentication via interaction patterns |
 | Incident Prediction | SYSTEM | Predictive incident detection from health telemetry |
+| Capacity Forecasting | SYSTEM | Predicts capacity limits and recommends scaling |
 | Forensic Timeline | AUDIT | Automated forensic timeline for compliance investigations |
+| Regulatory Autopilot | AUDIT | Auto-generates SOC2/GDPR/HIPAA compliance reports |
+| Temporal Reasoning | MEMORY | Temporal causal chain analysis across memories |
+| Semantic Refactoring | ENCODE | Behavior-preserving refactoring with formal verification |
+| Dependency Impact Analysis | CORTEX | Blast radius mapping across dependency graphs |
+| Model Quality Scoring | NEXUS | Real-time model output quality and hallucination detection |
 | Shadow Loop Detection | MODERNIZER | Stale evolution run detection |
-| Circuit Recovery (Graduated) | CORE | Graduated health probe circuit recovery |
-| Auto-Tiering Enforcement | BRAIN | Watermark-based memory tier enforcement |
-| Error Prevention Engine | ENCODE | Proactive error fingerprint prevention |
 
-### 🟢 Pro — Operational Intelligence
+### 🟢 Creator — Operational Intelligence & Optimization (12)
 
 | Capability | Module | Description |
 |-----------|--------|-------------|
 | Knowledge Gap Detection | MEMORY | Stale/incomplete knowledge detection |
 | Cost Anomaly Detection | ECONOMY | Cost spike prediction and anomaly alerting |
+| Value Attribution | ECONOMY | Revenue attribution to specific capabilities |
 | User Journey Mapping | VISION | Complete user journey reconstruction |
+| Cohort Analysis | VISION | Behavioral cohort segmentation and retention analysis |
 | Provider Failure Prediction | NEXUS | Provider outage and degradation forecasting |
 | Architecture Drift Detection | ENCODE | Codebase drift from intended design patterns |
-| Error-Pattern Lookup | ENCODE | Error fingerprint database queries |
+| Pattern Consolidation | DREAM | Repeated pattern consolidation into reusable templates |
+| Channel Optimization | RELAY | Optimal delivery channel determination per recipient |
+| Intent Evolution Tracking | DECODE | User intent trajectory prediction over time |
+| Event Dedup Intelligence | RIPPLE | Semantic event deduplication beyond exact matches |
+| Health Prediction | INTEGRATION | Connector failure prediction before impact |
 
 ---
 
@@ -123,7 +135,7 @@ function checkEntitlement(developerId: string, module: string, action: string): 
 
 Crown jewel meta-engines are protected by multiple layers:
 
-1. **Tier check** — Only CMPSBL tier
+1. **Tier check** — Only CMPSBL tier for recursive/autonomous jewels
 2. **IP allowlist** — Only from known internal IPs
 3. **MFA verification** — Requires additional authentication factor
 4. **Audit logging** — Every access logged to encrypted, separate trail
@@ -147,20 +159,21 @@ Patterns scanned:
 
 ## Quota System
 
-| Quota Type | Free | Pro | Enterprise |
-|------------|------|-----|------------|
+| Quota Type | Free | Creator | Architect |
+|------------|------|---------|-----------|
 | API calls/day | 1,000 | 50,000 | Unlimited |
 | Token usage/day | 100K | 5M | Custom |
 | Memory entries | 1,000 | 100,000 | 1,000,000 |
 | Dream cycles/hour | 0 | 6 | 12 |
 | Agencies | 0 | 3 | Unlimited |
 | Agents per agency | 0 | 5 | 20 |
+| Crown Jewels | 0 | 12 (Creator) | 26 (Architect) |
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch — INTERNAL USE ONLY*
+*CMPSBL OS Substrate v10.5.3 — ARCHITECT Epoch — INTERNAL USE ONLY*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
