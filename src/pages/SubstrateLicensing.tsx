@@ -17,6 +17,7 @@ import {
   Brain, Shield, Zap, CheckCircle2, ArrowRight, Mail, Phone,
   Building2, Sparkles, Crown, Layers
 } from "lucide-react";
+import { TierUnlockSection } from "@/components/pricing/TierUnlockSection";
 
 const TIER_META = [
   {
@@ -190,6 +191,9 @@ export default function SubstrateLicensing() {
             </div>
           </div>
         </section>
+
+        {/* What You Unlock at Each Tier */}
+        <TierUnlockSection />
 
         {/* No Hidden Fees */}
         <section className="py-16 border-t border-border/50">
