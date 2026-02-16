@@ -104,8 +104,14 @@ export function MeshProposalsPanel() {
   const handleApprove = async (proposal: ModuleProposal) => {
     setProcessingId(proposal.id);
     try {
-      await approveProposal(proposal.id);
-      toast.success(`Approved: ${proposal.proposedResolverId}`);
+      const success = await approveProposal(proposal.id);
+      if (success) {
+        toast.success(`✅ Crystallized: ${proposal.proposedResolverId} → saved as permanent pipeline`);
+        // Immediately remove from local state for instant UI feedback
+        setProposals(prev => prev.filter(p => p.id !== proposal.id));
+      } else {
+        toast.error('Proposal not found or already processed');
+      }
       await loadProposals();
     } catch {
       toast.error('Approval failed');
@@ -117,8 +123,11 @@ export function MeshProposalsPanel() {
   const handleReject = async (proposal: ModuleProposal) => {
     setProcessingId(proposal.id);
     try {
-      await rejectProposal(proposal.id);
-      toast.info(`Rejected: ${proposal.proposedResolverId}`);
+      const success = await rejectProposal(proposal.id);
+      if (success) {
+        toast.info(`Rejected: ${proposal.proposedResolverId}`);
+        setProposals(prev => prev.filter(p => p.id !== proposal.id));
+      }
       await loadProposals();
     } catch {
       toast.error('Rejection failed');
