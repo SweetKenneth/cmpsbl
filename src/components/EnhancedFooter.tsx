@@ -61,7 +61,7 @@ export function EnhancedFooter() {
         { name: "Foundations", href: "/foundations" },
         { name: "llms.txt", href: "/llms-txt" },
         { name: "humans.txt", href: "/humans-txt" },
-        { name: "Changelog", href: "/changelog" },
+        { name: "Evolution Log", href: "/changelog" },
         { name: "Roadmap", href: "/roadmap" },
       ]
     },
