@@ -21,8 +21,74 @@ interface EvolutionEntry {
   capabilities: string[];
 }
 
-// Living Evolution Log — v9.x.x Series (ARCHITECT Epoch)
+// Living Evolution Log — v10.x.x Series (ARCHITECT Epoch — Infrastructure Hardening)
 // Each entry documents WHY the system changed, never HOW
+const evolutionLogV10: EvolutionEntry[] = [
+  {
+    id: "v10-evolution-003",
+    date: "2026-02-16",
+    pressures: [
+      "CLM reports showed all 21 modules requesting high-value capability upgrades",
+      "SEBA proposals consistently flagged hot memory tier overflow (1,671 entries vs 500 limit)",
+      "Infrastructure modules lacked domain-specific intelligence (staleness, signatures, compliance, forecasting)"
+    ],
+    responses: [
+      "Batch-granted high-value CLM-requested upgrades across 6 infrastructure modules simultaneously",
+      "MEMORY received embedding staleness detection and EMA-based relevance feedback loops",
+      "RELAY received HMAC-SHA256 webhook signatures and adaptive retry backoff with jitter",
+      "AUDIT received SOC2/GDPR/HIPAA/ISO27001 compliance report templates and log compression",
+      "ECONOMY received predictive cost forecasting (linear regression) and per-capability cost attribution",
+      "IDENTITY received actor reputation scoring (5 tiers) and cross-agency identity portability via JWT",
+      "SANDBOX received hard resource limit enforcement and snapshot/restore system"
+    ],
+    capabilities: [
+      "All 6 Infrastructure modules now self-report ✅ on previously-requested CLM upgrades",
+      "Memory staleness auto-detection prevents embedding drift across model version advances",
+      "Compliance audit generation covers 4 major frameworks on demand",
+      "Cost trend forecasting with confidence intervals enables proactive budget governance"
+    ]
+  },
+  {
+    id: "v10-evolution-002",
+    date: "2026-02-15",
+    pressures: [
+      "Brain knowledge was trapped in central storage — modules couldn't access cross-domain insights",
+      "Memory consolidation (hot/warm/cold tiering) only ran during active browser sessions",
+      "CLM learning cycles required human presence to trigger"
+    ],
+    responses: [
+      "CLM Engine v2.0 deployed as autonomous server-side edge function running 24/7 via cron",
+      "Universal Brain Transfer Pipeline routes top-50 memories to all 21 modules by tag affinity",
+      "Memory Consolidation Engine automates promotion, demotion, and pruning of memory tiers"
+    ],
+    capabilities: [
+      "The substrate learns autonomously every 5 minutes without requiring a browser session",
+      "Brain knowledge flows to specialized modules (Decode, Defense, Nexus) for domain-specific recall",
+      "Hot tier overflow is automatically managed via promotion/demotion thresholds"
+    ]
+  },
+  {
+    id: "v10-evolution-001",
+    date: "2026-02-15",
+    pressures: [
+      "Nexus Fleet v4 was limited to Groq-only routing with static provider selection",
+      "No health-weighted provider selection meant failures cascaded without intelligent failover",
+      "Task affinity was not considered — all tasks routed identically regardless of complexity"
+    ],
+    responses: [
+      "Nexus Fleet v5.0.0 expanded to 5 providers: Groq, Cerebras, SambaNova, Google, DeepSeek",
+      "Health-weighted selection scores providers on success rate, latency, and cost efficiency",
+      "Task affinity routing matches task types to optimal provider capabilities"
+    ],
+    capabilities: [
+      "Multi-provider fleet with automatic failover and health-based load balancing",
+      "Complex reasoning tasks route to high-capability providers; simple tasks route to fast/cheap ones",
+      "Fleet operates within CLM Engine's 80% daily Nexus budget allocation"
+    ]
+  },
+];
+
+// Living Evolution Log — v9.x.x Series (ARCHITECT Epoch)
 const evolutionLogV9: EvolutionEntry[] = [
   {
     id: "v9-evolution-003",
@@ -246,16 +312,22 @@ const evolutionLogV7: EvolutionEntry[] = [
 // Archived major versions (frozen historical records)
 const archivedVersions = [
   {
-    version: "v7.x.x",
-    era: "SEBA Era — Bounded Autonomy",
-    period: "2026-01-30 to 2026-02-03",
-    summary: "SEBA v1.0.0 emerged as the Self-Evolving Bounded Agent. 5-phase cognitive-evolution pipeline with governance gates. Advisory, Governed, and Autonomous modes crystallized. Full audit trail from cognitive insight to executed evolution. The foundation for SYNERGY+ was laid."
+    version: "v9.x.x",
+    era: "ARCHITECT Epoch — Module Architecture",
+    period: "2026-02-10 to 2026-02-14",
+    summary: "The ARCHITECT Epoch formalized the 21-module, 6-layer cognitive architecture. SEBA Cross-Validator and Proposal Chaining enabled governed evolution sequences. Omega Observer Engine v2.0 provided independent insight generation. Infrastructure layer crystallized with Memory, Relay, Audit, Identity, Economy, and Sandbox modules."
   },
   {
     version: "v8.x.x",
     era: "SYNERGY+ Epoch — Full Spectrum Pipelines",
     period: "2026-02-03 to 2026-02-10",
     summary: "The SYNERGY+ Epoch consolidated the substrate's pipeline architecture, reaching 200 production pipelines and 125 specialized executors. SEBA v2.0.0 achieved full spectrum autonomous evolution with 9 cognitive analysis engines. SEO and AI crawler optimization matured. The foundation was laid for the ARCHITECT Epoch."
+  },
+  {
+    version: "v7.x.x",
+    era: "SEBA Era — Bounded Autonomy",
+    period: "2026-01-30 to 2026-02-03",
+    summary: "SEBA v1.0.0 emerged as the Self-Evolving Bounded Agent. 5-phase cognitive-evolution pipeline with governance gates. Advisory, Governed, and Autonomous modes crystallized. Full audit trail from cognitive insight to executed evolution."
   },
   {
     version: "v6.x.x",
@@ -293,10 +365,10 @@ export default function Changelog() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Evolution Log | CMPSBL v9.1.0 ARCHITECT Epoch"
+        title="Evolution Log | CMPSBL v10.5.1 ARCHITECT Epoch"
         description="A continuous record of why the CMPSBL substrate evolved. From Genesis through ARCHITECT — the age of full-spectrum cognitive architecture."
         canonical="https://cmpsbl.com/changelog"
-        keywords={["CMPSBL changelog", "substrate evolution", "ARCHITECT epoch", "v9.1.0 release", "AI evolution log", "cognitive substrate updates"]}
+        keywords={["CMPSBL evolution log", "substrate evolution", "ARCHITECT epoch", "v10.5.1 release", "AI evolution log", "cognitive substrate updates"]}
       />
       <PublicNav />
 
@@ -304,7 +376,7 @@ export default function Changelog() {
         {/* Header */}
         <header className="text-center mb-12">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
-            v9.1.0 — ARCHITECT Epoch
+            v10.5.1 — ARCHITECT Epoch
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             CMPSBL — Living Evolution Log
@@ -323,16 +395,75 @@ export default function Changelog() {
           </Card>
         </header>
 
-        {/* v9 Living Evolution Log */}
+        {/* v10 Living Evolution Log */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
             <span className="text-3xl">◆</span>
-            v9.x.x — ARCHITECT Epoch
+            v10.x.x — ARCHITECT Epoch · Infrastructure Hardening
+          </h2>
+          
+          <div className="space-y-8">
+            {evolutionLogV10.map((entry) => (
+              <Card key={entry.id} className="border-l-4 border-l-primary">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono text-muted-foreground">{entry.id}</span>
+                    <span className="text-sm text-muted-foreground">{entry.date}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-amber-500 mb-2">Observed Pressures</h4>
+                    <ul className="space-y-1">
+                      {entry.pressures.map((pressure, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-amber-500/60 mt-0.5">▸</span>
+                          {pressure}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-blue-500 mb-2">Learned Responses</h4>
+                    <ul className="space-y-1">
+                      {entry.responses.map((response, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-blue-500/60 mt-0.5">▸</span>
+                          {response}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-emerald-500 mb-2">Resulting Capabilities</h4>
+                    <ul className="space-y-1">
+                      {entry.capabilities.map((capability, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-emerald-500/60 mt-0.5">▸</span>
+                          {capability}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <Separator className="my-12" />
+
+        {/* v9 Frozen Evolution Log */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
+            <span className="text-3xl opacity-80">◆</span>
+            v9.x.x — ARCHITECT Epoch · Foundation
+            <Badge variant="secondary" className="ml-2 text-xs">Frozen</Badge>
           </h2>
           
           <div className="space-y-8">
             {evolutionLogV9.map((entry) => (
-              <Card key={entry.id} className="border-l-4 border-l-primary">
+              <Card key={entry.id} className="border-l-4 border-l-muted-foreground/60">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-mono text-muted-foreground">{entry.id}</span>
