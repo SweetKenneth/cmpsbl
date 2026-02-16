@@ -8,12 +8,12 @@
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { 
+import {
   Loader2, Lock, Terminal, AlertTriangle, RefreshCw, FileText,
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
   Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna,
   ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight, Eye,
-  LogOut, Home, ToggleRight, Network, Crown, Star, Rocket
+  LogOut, Home, ToggleRight, Network, Crown, Star, Rocket, MessageSquare
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -57,6 +57,7 @@ import { MeshActivityTab } from '@/components/substrate-os/MeshActivityTab';
 import { AnalyticsTab } from '@/components/substrate-os/AnalyticsTab';
 import { GovernorSection } from '@/components/substrate-os/GovernorSection';
 import { AuditTab } from '@/components/substrate-os/AuditTab';
+import { SoundingBoard } from '@/components/governance/SoundingBoard';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -182,6 +183,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
         { id: 'cognitives', label: 'Cognitives', icon: Bot, color: 'fuchsia', description: 'Bot registry & management', tier: 'cmpsbl' },
         { id: 'mint', label: 'Mint', icon: Sparkles, color: 'purple', description: 'Forge cognitives & agencies', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'cmpsbl' as SubstrateTier }] : []),
+        { id: 'sounding', label: 'Sounding Board', icon: MessageSquare, color: 'indigo', description: 'Module advisory feed', tier: 'cmpsbl' },
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Administrative controls', tier: 'cmpsbl' },
         { id: 'audit', label: 'Audit', icon: Shield, color: 'cyan', description: 'Production readiness gate', tier: 'cmpsbl' },
       ],
@@ -878,6 +880,12 @@ export default function SubstrateOS() {
                     <TabsContent value="gallery"><AgencyGallery /></TabsContent>
                   </Tabs>
                 )}
+              </motion.main>
+            )}
+
+            {activeTab === 'sounding' && hasAccessToCurrentTab && (
+              <motion.main key="sounding" className="container mx-auto px-4 py-6 max-w-5xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <SoundingBoard />
               </motion.main>
             )}
 

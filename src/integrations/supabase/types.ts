@@ -7200,6 +7200,54 @@ export type Database = {
         }
         Relationships: []
       }
+      module_sounding_board: {
+        Row: {
+          body: string
+          confidence: number | null
+          created_at: string
+          governor_action_at: string | null
+          governor_rationale: string | null
+          governor_status: string | null
+          id: string
+          metadata: Json | null
+          module_slug: string
+          post_type: string
+          severity: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          confidence?: number | null
+          created_at?: string
+          governor_action_at?: string | null
+          governor_rationale?: string | null
+          governor_status?: string | null
+          id?: string
+          metadata?: Json | null
+          module_slug: string
+          post_type: string
+          severity?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          confidence?: number | null
+          created_at?: string
+          governor_action_at?: string | null
+          governor_rationale?: string | null
+          governor_status?: string | null
+          id?: string
+          metadata?: Json | null
+          module_slug?: string
+          post_type?: string
+          severity?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       nexus_logs: {
         Row: {
           cost_usd_est: number
