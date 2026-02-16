@@ -45,7 +45,24 @@
 | IDENTITY | ❌ | ✅ | ✅ | ✅ |
 | ECONOMY | ❌ | ✅ | ✅ | ✅ |
 | SANDBOX | ❌ | ❌ | ✅ | ✅ |
+| ENCODE | ❌ | ✅ | ✅ | ✅ |
 | **Crown Jewels** | ❌ | ❌ | ❌ | ✅ |
+
+---
+
+## v10.5.1 Capability Tiering (Crown Jewel Decisions)
+
+| Capability | Module | Free | Pro | Enterprise | CMPSBL |
+|-----------|--------|------|-----|------------|--------|
+| Error-Pattern Lookup | ENCODE | ❌ | ✅ | ✅ | ✅ |
+| Error Prevention Engine | ENCODE | ❌ | ❌ | ✅ | ✅ |
+| Error Meta-Learning | ENCODE | ❌ | ❌ | ❌ | 🔴 |
+| Auto-Tiering Enforcement | BRAIN | ❌ | ❌ | ✅ | ✅ |
+| Auto-Tiering Meta-Tuning | BRAIN | ❌ | ❌ | ❌ | 🔴 |
+| Shadow Loop Detection | MODERNIZER | ❌ | ❌ | ✅ | ✅ |
+| Shadow Loop Auto-Resolution | MODERNIZER | ❌ | ❌ | ❌ | 🔴 |
+| Circuit Recovery (Graduated) | CORE | ❌ | ❌ | ✅ | ✅ |
+| Circuit Predictive Management | CORE | ❌ | ❌ | ❌ | 🔴 |
 
 ---
 

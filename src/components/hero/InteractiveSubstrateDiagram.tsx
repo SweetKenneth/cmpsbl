@@ -26,88 +26,100 @@ interface ModuleNode {
 const modules: ModuleNode[] = [
   {
     id: "brain",
-    name: "Brain",
+    name: "BRAIN",
     icon: Brain,
     color: "text-cyan-300",
     glowColor: "shadow-[0_0_30px_rgba(34,211,238,0.6)]",
-    position: { x: 50, y: 18 },
-    description: "Memory • Learning • Reflection",
-    actions: 10
+    position: { x: 50, y: 15 },
+    description: "Memory • Auto-Tiering • Cognitive Recall",
+    actions: 12
   },
   {
     id: "decode",
-    name: "Decode",
+    name: "DECODE",
     icon: MessageSquare,
     color: "text-fuchsia-400",
     glowColor: "shadow-[0_0_30px_rgba(232,121,249,0.6)]",
-    position: { x: 18, y: 42 },
-    description: "Intent • Conversation • Understanding",
+    position: { x: 15, y: 38 },
+    description: "Intent • NL Understanding • Personality",
     actions: 5
   },
   {
     id: "defense",
-    name: "Defense",
+    name: "DEFENSE",
     icon: Shield,
     color: "text-amber-300",
     glowColor: "shadow-[0_0_30px_rgba(252,211,77,0.6)]",
-    position: { x: 82, y: 42 },
-    description: "Security • Threat Detection • Protection",
+    position: { x: 85, y: 38 },
+    description: "Threat Detection • Input Scanning • Security",
     actions: 7
   },
   {
     id: "nexus",
-    name: "Nexus",
+    name: "NEXUS",
     icon: Zap,
     color: "text-emerald-300",
     glowColor: "shadow-[0_0_30px_rgba(110,231,183,0.6)]",
-    position: { x: 14, y: 72 },
-    description: "AI Routing • Multi-Provider • BYOK",
-    actions: 4
+    position: { x: 12, y: 68 },
+    description: "Fleet Routing • Multi-Provider • Health-Weighted",
+    actions: 6
+  },
+  {
+    id: "encode",
+    name: "ENCODE",
+    icon: Cpu,
+    color: "text-orange-300",
+    glowColor: "shadow-[0_0_30px_rgba(253,186,116,0.6)]",
+    position: { x: 88, y: 68 },
+    description: "Code Generation • Error Patterns • Task Engine",
+    actions: 8
   },
   {
     id: "vision",
-    name: "Vision",
+    name: "VISION",
     icon: Eye,
     color: "text-sky-300",
     glowColor: "shadow-[0_0_30px_rgba(125,211,252,0.6)]",
-    position: { x: 50, y: 82 },
-    description: "Observability • Metrics • Health",
+    position: { x: 30, y: 85 },
+    description: "Observability • Health Scoring • Metrics",
     actions: 14
   },
   {
     id: "dream",
-    name: "Dream",
+    name: "DREAM",
     icon: Moon,
     color: "text-violet-300",
     glowColor: "shadow-[0_0_30px_rgba(196,181,253,0.6)]",
-    position: { x: 86, y: 72 },
-    description: "Cycles • Mutation • Transformation",
+    position: { x: 70, y: 85 },
+    description: "Autonomous Learning • Mutation • Synthesis",
     actions: 3
   },
   {
-    id: "system",
-    name: "System",
-    icon: Settings,
+    id: "core",
+    name: "CORE",
+    icon: Network,
     color: "text-rose-300",
     glowColor: "shadow-[0_0_30px_rgba(253,164,175,0.6)]",
     position: { x: 50, y: 50 },
-    description: "Core • Orchestration • Control",
-    actions: 9
+    description: "Kernel • Circuit Recovery • Orchestration",
+    actions: 11
   }
 ];
 
 // Connection lines between modules
 const connections = [
-  { from: "brain", to: "system" },
-  { from: "decode", to: "system" },
-  { from: "defense", to: "system" },
-  { from: "nexus", to: "system" },
-  { from: "vision", to: "system" },
-  { from: "dream", to: "system" },
+  { from: "brain", to: "core" },
+  { from: "decode", to: "core" },
+  { from: "defense", to: "core" },
+  { from: "nexus", to: "core" },
+  { from: "vision", to: "core" },
+  { from: "dream", to: "core" },
+  { from: "encode", to: "core" },
   { from: "brain", to: "decode" },
   { from: "brain", to: "dream" },
   { from: "defense", to: "vision" },
-  { from: "nexus", to: "vision" },
+  { from: "nexus", to: "encode" },
+  { from: "encode", to: "brain" },
 ];
 
 // Memoized data pulse component - only renders when active
@@ -431,7 +443,7 @@ export function InteractiveSubstrateDiagram() {
         <div className="bg-background/80 backdrop-blur-md rounded-lg px-3 py-2 border border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs font-mono text-cyan-300">SUBSTRATE v3.11</span>
+            <span className="text-xs font-mono text-cyan-300">SUBSTRATE v10.5.1</span>
           </div>
         </div>
       </div>
