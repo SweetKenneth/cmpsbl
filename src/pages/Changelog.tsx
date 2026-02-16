@@ -25,6 +25,30 @@ interface EvolutionEntry {
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogV10: EvolutionEntry[] = [
   {
+    id: "v10-evolution-004",
+    date: "2026-02-16",
+    pressures: [
+      "BRAIN CLM flagged hot memory tier at 1,671 entries (334% over 500 limit) — system memory performance degrading",
+      "MODERNIZER CLM reported 3 consecutive evolution runs stuck in shadow_applied phase — shadow loop detected",
+      "CORE CLM requested autonomous circuit recovery — manual resets were required after breaker trips",
+      "ENCODE CLM requested error-pattern library — failed task chains were being repeated without learning"
+    ],
+    responses: [
+      "BRAIN Auto-Tiering Engine deployed with watermark-based soft/hard enforcement and demotion cascades",
+      "MODERNIZER Shadow Loop Resolver auto-detects stale shadow runs, enforces timeouts, and escalates on loops",
+      "CORE Circuit Recovery Engine provides graduated health probing with exponential backoff and auto-reset",
+      "ENCODE Error-Pattern Library fingerprints failures, clusters by category, and prevents repeat errors",
+      "All 21 modules received formal CLM acknowledgment events confirming their requests were heard and resolved"
+    ],
+    capabilities: [
+      "Hot memory tier will never exceed configured limits — autonomous demotion cascades are now governed",
+      "Evolution runs cannot get stuck — shadow loops are auto-detected and resolved within configurable timeouts",
+      "Tripped circuits self-heal through graduated probing — zero manual intervention required",
+      "Failed task patterns are learned and used proactively to prevent repeat failures on new submissions",
+      "Module CLM feedback loop is now fully bidirectional — modules propose, the substrate delivers and acknowledges"
+    ]
+  },
+  {
     id: "v10-evolution-003",
     date: "2026-02-16",
     pressures: [
