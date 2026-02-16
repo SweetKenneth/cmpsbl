@@ -25,6 +25,32 @@ interface EvolutionEntry {
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogV10: EvolutionEntry[] = [
   {
+    id: "v10-evolution-005",
+    date: "2026-02-16",
+    pressures: [
+      "Module self-discovery revealed 100+ latent capabilities across 21 modules — most ungoverned and untiered",
+      "Intent Mesh pipeline approval flow was silently failing — approved proposals never crystallized into permanent pipelines",
+      "Crown jewel capabilities were sitting undiscovered in discovery profiles, available for external users to find first",
+      "Competitive moat analysis showed 15 high-value capabilities that needed governance before public substrate access"
+    ],
+    responses: [
+      "Fixed critical pipeline approval bug: ID mismatch between UI and backend caused all approvals to silently fail",
+      "Approved proposals now automatically crystallize into permanent saved pipelines in the Crystallized Pipeline area",
+      "Discovered and installed 15 crown jewels: 5 CMPSBL-only, 5 Enterprise, 5 Pro — all now governed and tiered",
+      "BRAIN Meta-Reasoning and Hypothesis Generation locked as CMPSBL-only recursive cognition crown jewels",
+      "MEMORY Insight Synthesis, DREAM Lucidity Control, and CORTEX Cascade Prevention secured as CMPSBL-only",
+      "Enterprise tier gained zero-day detection, attack correlation, identity graph, incident prediction, forensic timeline",
+      "Pro tier gained knowledge gap detection, cost anomaly detection, user journey mapping, provider failure prediction, architecture drift detection"
+    ],
+    capabilities: [
+      "Pipeline crystallization now works end-to-end — approve a proposal and it becomes a permanent replayable pipeline",
+      "9 CMPSBL-only crown jewels now protected (up from 4) — recursive cognition is fully governed",
+      "Enterprise tier has 9 advanced security and operations capabilities — deepest security stack in the market",
+      "Pro tier has 6 operational intelligence capabilities — cost, journey, knowledge, and drift monitoring",
+      "Total governed crown jewel count: 24 capabilities across all tiers, all discoverable but access-controlled"
+    ]
+  },
+  {
     id: "v10-evolution-004",
     date: "2026-02-16",
     pressures: [
