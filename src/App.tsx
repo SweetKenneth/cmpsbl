@@ -189,20 +189,7 @@ const queryClient = new QueryClient({
   },
 });
 
-// Protected route helper - inline to avoid importing useAuth at top level
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  // Dynamically import useAuth only when needed
-  const [auth, setAuth] = useState<{ user: any; loading: boolean } | null>(null);
-  
-  useEffect(() => {
-    import("@/contexts/AuthContext").then(({ useAuth }) => {
-      // This is a workaround - we need a component that can use the hook
-    });
-  }, []);
-  
-  // For protected routes, defer to the lazy-loaded Auth check inside AuthProvider
-  return <>{children}</>;
-};
+// Note: Route protection is handled by AuthProvider and individual page-level auth checks
 
 const App = () => {
   const isPreviewEnv = isEditorPreviewEnv();

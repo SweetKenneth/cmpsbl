@@ -1,6 +1,6 @@
 /**
  * Substrate Module Hooks - Barrel Export
- * v9.1.0 ARCHITECT Epoch — Dedicated React hooks for all 21 substrate modules + SEBA
+ * v10.5.4 ARCHITECT Epoch — Dedicated React hooks for all 21 substrate modules + SEBA
  * 
  * Unified caching, loading/error states, and automatic cache invalidation
  */

@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Core Exports
- * v9.1.0 — ARCHITECT Epoch (6-Layer Architecture)
+ * v10.5.4 — ARCHITECT Epoch (6-Layer Architecture)
  * 
  * Complete export of all substrate engines, hooks, and utilities.
  * 3-Layer Architecture: Capabilities (269) → Engines (62) → Meta-Engines (20)
