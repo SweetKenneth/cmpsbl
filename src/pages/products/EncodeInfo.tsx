@@ -56,7 +56,7 @@ export default function EncodeInfo() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => navigate('/os')}>
-              Open Substrate OS <ArrowRight className="w-4 h-4 ml-2" />
+              Open World Engine <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <Button size="lg" variant="outline" onClick={() => navigate('/modules')}>
               All 21 Modules

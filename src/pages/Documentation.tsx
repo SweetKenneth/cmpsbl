@@ -24,7 +24,7 @@ export default function Documentation() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Documentation — CMPSBL Developer Guide"
-        description="Complete technical documentation for the CMPSBL substrate: module reference, API specs, configuration, and deployment guides."
+        description="Complete technical documentation for the CMPSBL World Engine: module reference, API specs, configuration, and deployment guides."
         canonical="https://cmpsbl.com/documentation"
         keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'module documentation', 'technical guide AI']}
       />
@@ -59,8 +59,8 @@ export default function Documentation() {
             </h1>
             
             <p className="text-xl text-muted-foreground">
-              Complete guide to the CMPSBL substrate v{version}. {modulesCount} integrated modules, {capabilitiesCount}+ capabilities, and everything you need to build cognitive AI systems.
-              <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for substrate operators.</span>
+              Complete guide to the CMPSBL World Engine v{version}. {modulesCount} integrated modules, {capabilitiesCount}+ capabilities, and everything you need to build cognitive AI systems.
+              <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for World Engine operators.</span>
             </p>
           </div>
         </div>

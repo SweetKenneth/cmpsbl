@@ -1,5 +1,5 @@
 /**
- * DashboardAudio - Central audio control panel for the Substrate OS dashboard
+ * DashboardAudio - Central audio control panel for the CMPSBL World Engine dashboard
  * On mobile: opens a centered modal with tabs for music and settings
  * On desktop: shows individual dropdown panels
  */

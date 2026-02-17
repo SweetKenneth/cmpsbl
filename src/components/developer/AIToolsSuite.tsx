@@ -416,7 +416,7 @@ try {
 
 ### Memory Operations
 
-This module handles persistent memory storage and retrieval using the CMPSBL Substrate SDK.
+This module handles persistent memory storage and retrieval using the CMPSBL World Engine SDK.
 
 **Features:**
 - Semantic memory storage

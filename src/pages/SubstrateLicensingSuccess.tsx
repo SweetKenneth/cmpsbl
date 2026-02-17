@@ -62,7 +62,7 @@ export default function SubstrateLicensingSuccess() {
   return (
     <>
       <SEO
-        title="License Activated | CMPSBL Substrate"
+        title="License Activated | CMPSBL World Engine"
         description="Your CMPSBL Developer License has been activated."
       />
 
@@ -108,7 +108,7 @@ export default function SubstrateLicensingSuccess() {
                     </div>
                     <h1 className="text-2xl font-bold mb-2">Developer License Activated!</h1>
                     <p className="text-muted-foreground mb-4">
-                      Welcome to the CMPSBL substrate. Your license is now active.
+                      Welcome to the CMPSBL World Engine. Your license is now active.
                     </p>
                     <div className="flex items-center justify-center gap-2 text-sm">
                       <Badge variant="secondary">{license.email}</Badge>

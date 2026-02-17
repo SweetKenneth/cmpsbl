@@ -57,7 +57,7 @@ export default function Explore() {
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
         title="Clockless — powered by the CMPSBL World Engine"
-        description="Clockless is a persistent, clockless world engine powered by CMPSBL. Cognition that compounds over time. 21 modules, self-learning, multi-provider routing."
+        description="Clockless is a persistent world engine powered by the CMPSBL World Engine. Where machines learn to dream, adapt, evolve, and remember. 21 modules, self-learning, multi-provider routing."
         canonical="https://cmpsbl.com"
         keywords={['Clockless', 'CMPSBL World Engine', 'cognitive infrastructure', 'persistent memory AI', 'self-learning AI', 'AI memory layer', 'multi-provider routing']}
       />

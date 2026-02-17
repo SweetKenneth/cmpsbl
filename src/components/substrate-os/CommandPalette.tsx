@@ -134,7 +134,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
     }
     
     if (trimmed === 'version') {
-      addResult('version', 'success', 'Clockless — CMPSBL World Engine v10.5.1\nARCHITECT Epoch — 21 modules, 60+ crystallized pipelines\nCognition That Compounds. | 360+ commands');
+      addResult('version', 'success', 'Clockless — CMPSBL World Engine v10.5.4\nARCHITECT Epoch — 21 modules, 60+ crystallized pipelines\nWhere machines learn to dream. | 360+ commands');
       return;
     }
     

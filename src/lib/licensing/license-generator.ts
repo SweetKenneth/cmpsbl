@@ -1,6 +1,6 @@
 /**
  * License Key Generator & Validator
- * Single-install license system for Substrate OS
+ * Single-install license system for the CMPSBL World Engine
  */
 
 import { supabase } from '@/integrations/supabase/client';

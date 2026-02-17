@@ -85,7 +85,7 @@ const PromptFluidAccess = () => {
                 </h2>
 
                 <p className="text-xl leading-relaxed text-foreground font-light mb-12">
-                  ACCESS serves as the authorization and monetization backbone of the CMPSBL substrate, handling everything related to user identity, permissions, subscription management, and payment processing.
+                  ACCESS serves as the authorization and monetization backbone of the CMPSBL World Engine, handling everything related to user identity, permissions, subscription management, and payment processing.
                 </p>
 
                 <p>

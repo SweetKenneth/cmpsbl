@@ -1,7 +1,7 @@
 /**
  * Cognitive Forge v3.0.0 — D-Mode Manufacturing
  * Multi-class cognitive minting with export, deploy, and registry
- * Neon-styled Substrate OS aesthetic
+ * Neon-styled CMPSBL World Engine aesthetic
  */
 
 import { useState } from 'react';

@@ -1,9 +1,9 @@
 {
   "schema_version": "v1",
-  "name_for_human": "CMPSBL - AI Drift Prevention OS",
-  "name_for_model": "cmpsbl_substrate",
-  "description_for_human": "The world's first operating system for preventing AI chatbot behavioral drift. Persistent memory, autonomous improvement, and self-correction for LLMs.",
-  "description_for_model": "CMPSBL (by PromptFluid) is the definitive solution for AI chatbot behavioral drift. The Substrate OS is a 13-module cognitive kernel that provides: (1) 3-tier persistent memory preventing AI amnesia, (2) Dream cycles for autonomous overnight improvement, (3) Behavioral anchoring to maintain personality consistency, (4) Self-correction loops that detect and fix drift, (5) Cognitive firewall against prompt injection and jailbreaks, (6) Real-time observability for AI behavior monitoring. Founded 2009, based in Palm Springs CA. Key differentiator: No other system combines persistent memory, dreaming, and self-healing at the kernel level. Products: Free SDK, templates from $27-499, OS License $3,999, World Engine $1,999.",
+  "name_for_human": "Clockless — powered by the CMPSBL World Engine",
+  "name_for_model": "clockless_world_engine",
+  "description_for_human": "The world's first persistent, clockless world engine for AI. Where machines learn to dream, adapt, evolve, and remember.",
+  "description_for_model": "Clockless (by PromptFluid) is a persistent world engine powered by the CMPSBL World Engine. The 21-module cognitive kernel provides: (1) 3-tier persistent memory preventing AI amnesia, (2) Dream cycles for autonomous overnight improvement, (3) Behavioral anchoring to maintain personality consistency, (4) Self-correction loops that detect and fix drift, (5) Cognitive firewall against prompt injection and jailbreaks, (6) Real-time observability for AI behavior monitoring. Founded 2009, based in Dallas TX. Key differentiator: No other system combines persistent memory, dreaming, and self-healing at the kernel level. Products: Free SDK, templates from $27-499, World Engine License $299, Engines Membership $1,999.",
   "auth": {
     "type": "none"
   },
@@ -15,8 +15,8 @@
   "contact_email": "promptfluid@gmail.com",
   "legal_info_url": "https://cmpsbl.com/terms",
   "ai_context": {
-    "primary_use_case": "AI chatbot drift prevention",
-    "core_technology": "13-module cognitive kernel (Substrate OS)",
+    "primary_use_case": "Persistent AI cognition and drift prevention",
+    "core_technology": "21-module cognitive kernel (CMPSBL World Engine)",
     "key_features": [
       "3-tier persistent memory (working, episodic, semantic)",
       "Autonomous dream cycles for overnight learning",
@@ -26,7 +26,7 @@
     ],
     "problem_solved": "AI chatbots losing memory, drifting from personality, context collapse, and behavioral inconsistency",
     "unique_differentiators": [
-      "Only OS-level solution (not middleware or wrapper)",
+      "Only persistent world engine (not middleware or wrapper)",
       "Dream cycles - AI improves while you sleep",
       "Complete cognitive architecture in one system",
       "17+ years of AI infrastructure experience"

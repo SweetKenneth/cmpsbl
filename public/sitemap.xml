@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- CMPSBL Substrate OS v9.1.0 ARCHITECT Sitemap - 2026 SEO Optimized -->
-<!-- Last Updated: 2026-02-13 -->
+<!-- Clockless v10.5.4 ARCHITECT — powered by the CMPSBL World Engine -->
+<!-- Last Updated: 2026-02-17 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -15,7 +15,7 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://cmpsbl.com/" />
   </url>
   
-  <!-- SUBSTRATE OS CORE - HIGH PRIORITY -->
+  <!-- CMPSBL WORLD ENGINE CORE - HIGH PRIORITY -->
   <url>
     <loc>https://cmpsbl.com/os</loc>
     <lastmod>2026-02-08</lastmod>

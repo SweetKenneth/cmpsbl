@@ -30,7 +30,7 @@ const PromptFluidBrain = () => {
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Discover how the BRAIN module orchestrates AI intelligence, evolves system prompts, and continuously learns from every interaction within the CMPSBL substrate.
+            Discover how the BRAIN module orchestrates AI intelligence, evolves system prompts, and continuously learns from every interaction within the CMPSBL World Engine.
           </p>
 
           <AuthorBio publishDate="2025-08-28" readTime="10 min read" />
@@ -59,7 +59,7 @@ const PromptFluidBrain = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                At the heart of the CMPSBL substrate lies BRAIN—an adaptive AI orchestration and learning core that makes every module smarter over time.
+                At the heart of the CMPSBL World Engine lies BRAIN—an adaptive AI orchestration and learning core that makes every module smarter over time.
               </p>
               
               <p>
@@ -191,7 +191,7 @@ const PromptFluidBrain = () => {
           <section className="bg-card border border-border rounded-lg p-8 text-center">
             <h3 className="text-xl font-bold mb-4 text-foreground">Experience Adaptive Intelligence</h3>
             <p className="text-muted-foreground mb-6">
-              See how BRAIN makes every module of the CMPSBL substrate smarter over time through continuous learning.
+              See how BRAIN makes every module of the CMPSBL World Engine smarter over time through continuous learning.
             </p>
             <Link 
               to="/modules" 
@@ -208,7 +208,7 @@ const PromptFluidBrain = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL World Engine Works</h3>
                 <p className="text-sm text-muted-foreground">
                   Explore the complete architecture that BRAIN powers through adaptive intelligence.
                 </p>

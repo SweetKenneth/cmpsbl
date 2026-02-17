@@ -1086,7 +1086,7 @@ export class AtlasCommandInterpreter {
   private handleVersionInfo(): CommandResult {
     return {
       success: true,
-      message: `🔮 **Atlas Control Plane**\n\n**Version:** 10.5.0\n**Codename:** ARCHITECT\n**Command Interpreter:** v10.5.0\n\n**Substrate OS:**\n• 21 Core Modules\n• 200 Synergy Pipelines\n• 6-Layer Architecture\n• Bounded Autonomy Framework\n\n**Capabilities:**\n• Conversational Control\n• SEBA Evolution\n• Continuous Learning\n• Intent Mesh\n• Full Audit Logging`,
+      message: `🔮 **Atlas Control Plane**\n\n**Version:** 10.5.4\n**Codename:** ARCHITECT\n**Command Interpreter:** v10.5.4\n\n**CMPSBL World Engine:**\n• 21 Core Modules\n• 200 Synergy Pipelines\n• 6-Layer Architecture\n• Bounded Autonomy Framework\n\n**Capabilities:**\n• Conversational Control\n• SEBA Evolution\n• Continuous Learning\n• Intent Mesh\n• Full Audit Logging`,
     };
   }
 

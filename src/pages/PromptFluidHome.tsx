@@ -46,7 +46,7 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "PromptFluid Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "CMPSBL Substrate Born", description: "Launched the first public cognitive operating system — 21 modules, 6 layers." },
+  { year: "2024", title: "CMPSBL World Engine Born", description: "Launched the first public cognitive world engine — 21 modules, 6 layers." },
   { year: "2025", title: "175k+ Lines of Code", description: "Grew to 400+ capabilities, 200 synergy pipelines, and 8-provider AI routing." },
   { year: "2026", title: "ARCHITECT Epoch v9.3", description: "Self-evolving codebase with autonomous learning, dream cycles, and composable cognitives." },
 ];

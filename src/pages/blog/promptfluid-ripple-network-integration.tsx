@@ -29,7 +29,7 @@ const PromptFluidRipple = () => {
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore RIPPLE, the network integration layer that seamlessly connects services, intelligently routes requests, and manages complex workflows across the CMPSBL substrate.
+            Explore RIPPLE, the network integration layer that seamlessly connects services, intelligently routes requests, and manages complex workflows across the CMPSBL World Engine.
           </p>
 
           <AuthorBio publishDate="2025-09-10" readTime="8 min read" />
@@ -58,7 +58,7 @@ const PromptFluidRipple = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                RIPPLE serves as the connective tissue of the CMPSBL substrate, managing how services communicate, how requests flow between modules, and how resources are allocated across the infrastructure.
+                RIPPLE serves as the connective tissue of the CMPSBL World Engine, managing how services communicate, how requests flow between modules, and how resources are allocated across the infrastructure.
               </p>
               
               <p>
@@ -204,7 +204,7 @@ const PromptFluidRipple = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL World Engine Works</h3>
                 <p className="text-sm text-muted-foreground">
                   Discover how RIPPLE connects all substrate modules through intelligent networking.
                 </p>

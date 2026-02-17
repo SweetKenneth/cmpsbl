@@ -1,6 +1,6 @@
 /**
- * CMPSBL Substrate — Dashboard
- * v9.3.0 — Cognitive Orchestration Substrate (21-Module Architecture)
+ * Clockless — CMPSBL World Engine Dashboard
+ * v10.5.4 — Cognitive Orchestration (21-Module Architecture)
  *
  * Unified control center for all 21 substrate modules:
  * 
@@ -280,8 +280,8 @@ export default function SubstrateDashboard() {
               <Activity className="w-6 h-6 md:w-7 md:h-7 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">v9.3.0 ARCHITECT — Cognitive Orchestration Substrate</p>
+              <h1 className="text-2xl md:text-4xl font-bold">CMPSBL World Engine</h1>
+              <p className="text-sm md:text-base text-muted-foreground">v10.5.4 ARCHITECT — Clockless Cognitive Orchestration</p>
             </div>
           </div>
           

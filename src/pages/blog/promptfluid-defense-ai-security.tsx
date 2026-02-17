@@ -30,7 +30,7 @@ const PromptFluidDefense = () => {
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore DEFENSE, the intelligent security layer that protects the CMPSBL substrate from bots, fraud, and automated threats through advanced behavioral analysis.
+            Explore DEFENSE, the intelligent security layer that protects the CMPSBL World Engine from bots, fraud, and automated threats through advanced behavioral analysis.
           </p>
 
           <AuthorBio publishDate="2025-09-05" readTime="10 min read" />
@@ -59,7 +59,7 @@ const PromptFluidDefense = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                DEFENSE serves as the security backbone of the CMPSBL substrate, protecting applications from malicious bots, automated abuse, and sophisticated fraud attempts.
+                DEFENSE serves as the security backbone of the CMPSBL World Engine, protecting applications from malicious bots, automated abuse, and sophisticated fraud attempts.
               </p>
               
               <p>
@@ -221,7 +221,7 @@ const PromptFluidDefense = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL World Engine Works</h3>
                 <p className="text-sm text-muted-foreground">
                   Discover how DEFENSE integrates with the complete substrate architecture.
                 </p>

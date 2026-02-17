@@ -48,7 +48,7 @@ export function ExperienceMarkers({ category }: ExperienceMarkersProps) {
         From Our Engineering Experience
       </h4>
       <p className="text-xs text-muted-foreground mb-4">
-        These insights come directly from building and operating the CMPSBL substrate in production environments.
+        These insights come directly from building and operating the CMPSBL World Engine in production environments.
       </p>
       <div className="grid sm:grid-cols-2 gap-3">
         {links.map(({ icon: Icon, label, href, description }) => (

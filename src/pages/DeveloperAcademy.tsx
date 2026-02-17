@@ -27,8 +27,8 @@ const DeveloperAcademy = () => {
   return (
     <>
       <Helmet>
-        <title>Developer Academy | CMPSBL Substrate</title>
-        <meta name="description" content="Master the CMPSBL Substrate SDK with interactive tutorials, skill progression, and AI-powered learning tools." />
+        <title>Developer Academy | CMPSBL World Engine</title>
+        <meta name="description" content="Master the CMPSBL World Engine SDK with interactive tutorials, skill progression, and AI-powered learning tools." />
       </Helmet>
       
       <div className="min-h-screen flex flex-col bg-background">

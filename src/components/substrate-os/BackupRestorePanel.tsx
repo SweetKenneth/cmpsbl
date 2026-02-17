@@ -1,5 +1,5 @@
 /**
- * Backup & Restore Panel for Substrate OS — v3.0
+ * Backup & Restore Panel for CMPSBL World Engine — v3.0
  * Enhanced with exportable backups, retention management, permanent failsafe,
  * and sellable package exports with install wizard
  */

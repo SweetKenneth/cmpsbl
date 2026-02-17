@@ -1,7 +1,7 @@
 /**
  * CMPSBL® Canon Identity Lock
  * 
- * This file defines the immutable distribution identity for the CMPSBL substrate.
+ * This file defines the immutable distribution identity for the CMPSBL World Engine.
  * These values are compile-time constants enforced by TypeScript literal types.
  * 
  * SECURITY: No runtime toggles, environment flags, or configuration mutations
