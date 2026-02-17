@@ -2,11 +2,36 @@
 
 **CMPSBL® — The Cognitive Infrastructure Company**
 
+**v10.5.1 ARCHITECT Epoch** · Updated February 17, 2026
+
 ---
 
 ## Investment Thesis
 
 > **CMPSBL is building the infrastructure layer that will power the next generation of AI applications — systems that remember, learn, and improve themselves.**
+
+---
+
+## World Firsts
+
+> *To the best of our knowledge, the following are industry firsts achieved by PromptFluid® through the CMPSBL OS Substrate. We welcome any evidence of prior art.*
+
+| Achievement | Description | Evidence |
+|-------------|-------------|----------|
+| **Autonomous AI Dream State** | First AI system to enter an offline dream state for memory synthesis, consolidation, and creative recombination (Simnap & Cascade) | [Zenodo DOI: 10.5281/zenodo.18234910](https://zenodo.org/records/18234910?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkxZDYzZjFlLWM2NTctNDAzNi04ZWE4LTIzNWNiMDljMGQ2NyIsImRhdGEiOnt9LCJyYW5kb20iOiIzZTlkMjA5MzQ0ZGFkNDI2ZTZlMTkwMWYxMzFmOTczYSJ9.H3FugoEHTR2ilPEtZEr-kqRiTgW0FeUDXOrcEE92lek4FK0_h0dNUyJWvtxW-KCHuIEeiqbN5Zot8EqEvXq5gQ) |
+| **Self-Evolving Bounded Agent (SEBA)** | First verifiable self-improving AI system with cryptographic evolution stamps, rollback semantics, and human-in-the-loop governance | Substrate v7.0.0+ |
+| **21-Module Cognitive OS** | First complete cognitive operating system with 21 integrated modules across 6 architectural layers, operating as a unified substrate | Production since v9.1.0 |
+| **Intent Mesh** | First emergent capability discovery system where modules advertise, compose, and crystallize cross-module pipelines autonomously | 60+ crystallized pipelines |
+| **Universal Brain Transfer Pipeline** | First system to automatically route memories from a central BRAIN to all 21 modules based on relevance scoring and tag affinity | CLM Engine v2.0 |
+| **DECODE → ENCODE Pipeline** | First governed natural-language-to-code execution pipeline where AI never receives raw input — all intent passes through normalization, enrichment, and safety gates | v10.5.3 |
+| **Graduated Autonomy Framework** | First AI code execution system with mastery-based safety thresholds (Novice → Master), where destructive capability scales with demonstrated competence | ENCODE module |
+| **Cognitive Continuous Learning Mode** | First 24/7 server-side autonomous learning system (5-phase lifecycle, 5-minute cycles) running independently of browser sessions | CLM Engine v2.0 |
+| **Memory Tiering with Staleness Detection** | First AI memory system with hot/warm/cold tiering, embedding staleness tracking, and automated re-embedding when model versions advance | MEMORY module v10.5.1 |
+| **Actor Reputation Scoring** | First AI identity system with trust scores (0.0–1.0) mapped to 5 reputation tiers with cross-agency identity portability via signed JWTs | IDENTITY module v10.5.1 |
+| **Multi-Provider Fleet with Task Affinity** | First AI routing system with health-weighted multi-provider selection (5+ providers) and task-type-to-provider affinity mapping | Nexus Fleet v5.0.0 |
+| **AI Governance Reference Namespace** | First published namespace standard (AIGVRN v1.0) for unified AI governance terminology across 12 governance surfaces | [Zenodo DOI: 10.5281/zenodo.18209222](https://zenodo.org/records/18209222) |
+| **Predictive Cost Forecasting for AI** | First system providing linear regression cost forecasting with confidence intervals and per-capability cost attribution for AI operations | ECONOMY module v10.5.1 |
+| **Cascade Failure Prevention** | First AI system with proactive cascade failure detection across module dependency graphs, preventing chain-reaction outages | RIPPLE module Crown Jewel |
 
 ---
 
@@ -43,11 +68,12 @@ Every company building AI applications solves the same problems:
 
 CMPSBL provides complete cognitive infrastructure:
 - **Persistent memory** that survives sessions
-- **Self-learning** that improves overnight
+- **Self-learning** that improves autonomously
 - **Multi-provider routing** with zero lock-in
 - **Enterprise security** built-in
 - **Full observability** across all operations
 - **Self-evolution** that maintains the codebase
+- **Code execution engine** (ENCODE) with governed generation
 
 ---
 
@@ -57,21 +83,10 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Stream | Model | Gross Margin |
 |--------|-------|--------------|
-| **Subscription Tiers** | Free / Creator ($49) / Architect ($149) | 90%+ |
-| **Composable Cognitives** | AI agent sales ($39 each) | 85%+ |
-| **Template Generator** | One-time purchase ($29) | 90%+ |
+| **Master Substrate SaaS** | Monthly subscriptions (Free → $149/mo) | 90%+ |
+| **Infrastructure Licensing** | Via LNCHBL.com (Free → Enterprise) | 90%+ |
+| **Marketplace** | Revenue share on modules | 80% |
 | **Professional Services** | Implementation support | 70% |
-
-### Pricing Structure
-
-| Tier | Price | Target Customer |
-|------|-------|-----------------|
-| **Free** | $0 | Exploration, prototyping |
-| **Creator** | $49/mo | Individual devs, startups |
-| **Architect** | $149/mo | Teams, advanced intelligence |
-| **Enterprise** | Custom | Production, regulated industries |
-| **Composable Cognitives** | $39 each | Any buyer (no account needed) |
-| **Template Generator** | $29 one-time | Developers building templates |
 
 ### Unit Economics (Target)
 
@@ -90,10 +105,11 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Moat | Description | Durability |
 |------|-------------|------------|
-| **Integrated Architecture** | 21 modules designed together | High |
+| **Integrated Architecture** | 21 modules across 6 layers designed together | High |
 | **Self-Evolution** | System improves its own code | Very High |
 | **Accumulated Learning** | Patterns compound over time | Very High |
-| **Network Effects** | Federated learning benefits all | Growing |
+| **Network Effects** | Federated learning benefits all instances | Growing |
+| **ENCODE Pipeline** | Governed code generation with graduated autonomy | Very High |
 
 ### Differentiation
 
@@ -104,32 +120,6 @@ CMPSBL provides complete cognitive infrastructure:
 | Vector DBs | Storage only | Intelligence layer |
 | AI Providers | Models only | Infrastructure layer |
 
-### Defensibility
-
-1. **Technical Complexity** — Integration of 21 modules is hard to replicate
-2. **Self-Improvement** — The system gets better at improving itself
-3. **Learning Accumulation** — Patterns can't be recreated quickly
-4. **Switching Costs** — Deep integration with customer applications
-
----
-
-## Market Size
-
-### TAM/SAM/SOM
-
-| Market | Size | Rationale |
-|--------|------|-----------|
-| **TAM** | $50B+ | Enterprise AI infrastructure |
-| **SAM** | $10B | Production AI application infrastructure |
-| **SOM** | $500M | Cognitive infrastructure for AI apps |
-
-### Growth Drivers
-
-1. **AI Adoption Acceleration** — More companies building AI applications
-2. **Production Requirements** — POCs becoming production systems
-3. **Infrastructure Demand** — Build vs. buy shifting to buy
-4. **Compliance Pressure** — Enterprise security requirements growing
-
 ---
 
 ## Traction
@@ -138,29 +128,27 @@ CMPSBL provides complete cognitive infrastructure:
 
 | Metric | Value |
 |--------|-------|
-| **Modules in Production** | 21 |
-| **Synergy Pipelines** | 200 |
-| **Depot Capabilities** | 400+ |
-| **Infrastructure Systems** | 27 |
-| **Production Codebase** | 175k+ LOC |
+| **Modules in Production** | 21 across 6 layers (incl. ENCODE) |
+| **Crystallized Pipelines** | 60+ via Intent Mesh |
+| **Capabilities** | 50+ public, additional internal |
+| **Crown Jewels** | 21 (one per module) |
 | **System Uptime** | 99%+ |
-| **Self-Evolution Active** | Yes (SEBA v2.0) |
+| **Self-Evolution** | Active — ARCHITECT Epoch v10.5.1 |
 
 ### Technical Milestones
 
-- [x] Complete 21-module architecture
-- [x] Self-evolution engine operational
-- [x] Multi-provider AI routing
+- [x] Complete 21-module architecture across 6 layers
+- [x] Self-evolution engine operational (SEBA)
+- [x] Multi-provider AI routing (Nexus Fleet v5.0)
 - [x] Enterprise security layer
 - [x] Full observability dashboard
-- [x] Dream cycle learning
-
-### Validation
-
-- Production-ready system demonstrated
-- Complete documentation library
-- Scientific validation (Zenodo archived)
-- Enterprise-grade architecture
+- [x] Autonomous learning cycles (CLM Engine v2.0)
+- [x] Intent Mesh distributed resolution (60+ pipelines)
+- [x] Dual revenue model (SaaS + Licensing)
+- [x] ENCODE code execution engine with graduated autonomy
+- [x] Universal Brain Transfer Pipeline
+- [x] Memory consolidation with staleness detection
+- [x] AI Governance Namespace (AIGVRN v1.0) published
 
 ---
 
@@ -168,25 +156,10 @@ CMPSBL provides complete cognitive infrastructure:
 
 ### Strategy
 
-1. **Developer Adoption** — Low-friction developer tier
-2. **Enterprise Expansion** — Upgrade path to enterprise
-3. **Strategic Partnerships** — Cloud provider integrations
-
-### Sales Motion
-
-| Channel | Target | Motion |
-|---------|--------|--------|
-| **Developer** | Startups | Self-serve, automated checkout |
-| **Research** | Institutions | Outbound, academic network |
-| **Enterprise** | Large companies | Direct sales |
-| **Strategic** | Cloud providers | Partnership development |
-
-### Early Focus
-
-1. **AI-native startups** — Companies building AI-first products
-2. **Enterprise innovation teams** — AI labs within large companies
-3. **Research institutions** — Academic AI research
-4. **AI agencies** — Building AI for clients
+1. **Developer Adoption** — Free tier with zero friction
+2. **Enterprise Expansion** — Natural upgrade path
+3. **Licensing Channel** — LNCHBL.com for self-hosted deployments
+4. **Strategic Partnerships** — Cloud provider integrations
 
 ---
 
@@ -198,10 +171,6 @@ CMPSBL provides complete cognitive infrastructure:
 - Creator and architect of the 21-module substrate
 - Deep expertise in cognitive systems and AI infrastructure
 - ORCID: 0009-0001-4237-1243
-
-### Advisors
-
-*(Expanding)*
 
 ---
 
@@ -216,50 +185,6 @@ CMPSBL provides complete cognitive infrastructure:
 | 2028 | $15M | 300 |
 | 2029 | $50M | 800 |
 
-### Path to Profitability
-
-- 90%+ gross margins from Day 1
-- Low CAC through developer adoption
-- High retention through deep integration
-- Break-even targeted at $5M ARR
-
----
-
-## Use of Funds
-
-### Investment Focus
-
-| Area | Allocation | Purpose |
-|------|------------|---------|
-| **Engineering** | 50% | SDK development, feature expansion |
-| **Sales & Marketing** | 30% | Developer marketing, enterprise sales |
-| **Operations** | 15% | Infrastructure, support |
-| **G&A** | 5% | Legal, finance, admin |
-
-### Key Hires
-
-1. Head of Developer Relations
-2. Enterprise Sales Lead
-3. Senior Backend Engineers (x3)
-4. Solutions Architect
-
----
-
-## Investment Opportunity
-
-### Why Now
-
-1. **Market Timing** — AI moving from experiment to production
-2. **Technical Readiness** — Complete system demonstrated
-3. **First Mover** — Integrated cognitive infrastructure
-4. **Defensible** — Self-improvement compounds daily
-
-### What We're Seeking
-
-- Strategic investment to accelerate go-to-market
-- Partners with enterprise AI relationships
-- Advisors with infrastructure scaling experience
-
 ---
 
 ## Contact
@@ -272,4 +197,4 @@ CMPSBL provides complete cognitive infrastructure:
 
 *Confidential — For Investor Evaluation*
 
-*CMPSBL® — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v10.5.1 — Cognitive Infrastructure for the AI Era*
