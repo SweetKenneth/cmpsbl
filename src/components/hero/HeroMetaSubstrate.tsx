@@ -210,14 +210,15 @@ export function HeroMetaSubstrate() {
               <span 
                 className="inline-block"
                 style={{
-                  backgroundImage: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--neon-purple)) 50%, hsl(var(--primary)) 100%)",
-                  backgroundSize: "200% auto",
-                  animation: "gradient-shift 8s ease-in-out infinite",
+                  backgroundImage: "linear-gradient(135deg, hsl(32 60% 65%) 0%, hsl(38 80% 55%) 20%, hsl(28 50% 45%) 45%, hsl(42 90% 65%) 65%, hsl(32 60% 50%) 85%, hsl(38 80% 55%) 100%)",
+                  backgroundSize: "300% auto",
+                  animation: "gradient-shift 12s ease-in-out infinite",
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   color: "transparent",
                   WebkitTextStroke: "0px transparent",
                   padding: "0 0.15em 0.05em 0",
+                  filter: "drop-shadow(0 0 30px hsl(38 80% 55% / 0.15))",
                 }}
               >
                 Clockless
