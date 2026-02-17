@@ -28,7 +28,7 @@ const TIER_DISPLAY = [
     price: '$49/mo', 
     gradient: 'from-blue-500 to-cyan-500',
     icon: Sparkles,
-    tagline: '12 intelligent capabilities that optimize before you ask'
+    tagline: '29 intelligent capabilities including 17 Crown Jewels that optimize before you ask'
   },
   { 
     tier: 'architect' as const, 
@@ -36,7 +36,7 @@ const TIER_DISPLAY = [
     price: '$149/mo', 
     gradient: 'from-violet-500 to-purple-500',
     icon: Crown,
-    tagline: '14 advanced capabilities for security, compliance, and deep intelligence'
+    tagline: '39 advanced capabilities including 25 Crown Jewels for security, compliance, and deep intelligence'
   },
   { 
     tier: 'enterprise' as const, 
@@ -44,7 +44,7 @@ const TIER_DISPLAY = [
     price: 'Custom', 
     gradient: 'from-amber-500 to-orange-500',
     icon: Building2,
-    tagline: 'Full sovereignty with source access and custom governance'
+    tagline: '24 sovereign capabilities with source access, custom governance, and 21 Crown Jewels'
   },
 ];
 

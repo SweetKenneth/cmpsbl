@@ -70,7 +70,7 @@ Ship self-improving applications with sealed intelligence.
 | Feature | Access |
 |---------|--------|
 | **Everything in Free** | ✓ |
-| **Experience Crown Jewels** | 7 sealed artifacts |
+| **Experience Crown Jewels** | 17 sealed artifacts |
 | **In-Run Self-Improvement** | ✓ Bounded |
 | **Goal Optimization** | ✓ Bounded |
 | **Creative Synthesis** | ✓ Dream-assisted |
@@ -96,7 +96,7 @@ Compound intelligence across sessions, executors, and projects.
 | Feature | Access |
 |---------|--------|
 | **Everything in Creator** | ✓ |
-| **All Experience Crown Jewels** | 28 sealed artifacts |
+| **All Experience Crown Jewels** | 42 sealed artifacts |
 | **CLM** | ✓ Bounded + governed |
 | **Cross-Session Learning** | ✓ |
 | **Cross-Executor Learning** | ✓ |
@@ -172,7 +172,7 @@ Experience Crown Jewels are released as **sealed artifacts** — you get the pow
 | Persistent Memory | ✓ | ✓ | ✓ | ✓ |
 | Executors | ✓ | ✓ | ✓ | ✓ |
 | Composition | ✓ | ✓ | ✓ | ✓ |
-| Experience Jewels | — | 7 | 28 | Negotiated |
+| Experience Jewels | — | 17 | 42 | Negotiated |
 | Self-Improvement | — | In-run | Cross-session | Governed |
 | CLM | — | — | ✓ | ✓ |
 | Memory Optimization | — | — | ✓ | ✓ |
