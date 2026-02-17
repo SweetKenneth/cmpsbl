@@ -48,6 +48,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { DefenseAnalytics } from "@/components/substrate-os/DefenseAnalytics";
 
 interface SubstrateStatus {
   healthy: boolean;
@@ -440,12 +441,18 @@ export default function SubstrateDashboard() {
           {/* Scrollable tabs for mobile - NO overlap */}
           <div className="relative">
             <ScrollArea className="w-full">
-              <TabsList className="inline-flex h-auto p-1 bg-muted/50 rounded-lg w-max min-w-full md:w-full md:grid md:grid-cols-6 gap-1">
+              <TabsList className="inline-flex h-auto p-1 bg-muted/50 rounded-lg w-max min-w-full md:w-full md:grid md:grid-cols-7 gap-1">
                 <TabsTrigger 
                   value="overview" 
                   className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
                 >
                   Overview
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="defense" 
+                  className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
+                >
+                  🛡️ Defense
                 </TabsTrigger>
                 <TabsTrigger 
                   value="kernel" 
@@ -481,6 +488,11 @@ export default function SubstrateDashboard() {
               <ScrollBar orientation="horizontal" className="h-2" />
             </ScrollArea>
           </div>
+
+          {/* Defense Analytics - Live Feed */}
+          <TabsContent value="defense" className="mt-6">
+            <DefenseAnalytics />
+          </TabsContent>
 
           {/* Overview - All 21 modules */}
           <TabsContent value="overview" className="mt-6">
@@ -540,6 +552,7 @@ export default function SubstrateDashboard() {
                   {layer === 'operational' && 'Active defense, routing, and observability systems.'}
                   {layer === 'admin' && 'Administrative controls, modernization, and compliance tools.'}
                   {layer === 'orchestrator' && 'Agency-class orchestration with propose → evaluate → apply → audit → learn loop.'}
+                  {layer === 'infrastructure' && 'Foundation services: persistence, messaging, compliance, identity, and cost governance.'}
                 </p>
               </div>
               
