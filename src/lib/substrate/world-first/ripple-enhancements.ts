@@ -1,5 +1,5 @@
 /**
- * RIPPLE Module Enhancements — v9.1.0 ARCHITECT Epoch
+ * RIPPLE Module Enhancements — v10.5.4 ARCHITECT Epoch
  * EventRouter, PriorityQueue, DeadLetterHandler, EventReplay
  */
 

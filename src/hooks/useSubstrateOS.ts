@@ -1,5 +1,5 @@
 /**
- * Substrate OS Dashboard Hooks
+ * CMPSBL World Engine Dashboard Hooks
  * v10.5.4 ARCHITECT — Real-time telemetry and control hooks for the OS surface
  * Respects debug mode kill-switch
  */
@@ -300,7 +300,7 @@ export function useSubstrateHealthScore() {
   const integrationStatus = useIntegrationStatusOS();
   const cortexStatus = useCortexStatusOS();
   const inclusiveStatus = useInclusiveStatusOS();
-  // Infrastructure Six + ENCODE (v9.2.0)
+  // Infrastructure Six + ENCODE (v10.5.4)
   const memoryModStatus = useMemoryModStatusOS();
   const relayModStatus = useRelayModStatusOS();
   const auditModStatus = useAuditModStatusOS();
@@ -354,7 +354,7 @@ export function useSubstrateHealthScore() {
     cortex: cortexStatus.data?.success ?? false,
     // Human Compatibility Layer
     inclusive: inclusiveStatus.data?.success ?? false,
-    // Infrastructure Six (v9.2.0)
+    // Infrastructure Six (v10.5.4)
     memory: memoryModStatus.data?.success ?? false,
     relay: relayModStatus.data?.success ?? false,
     audit: auditModStatus.data?.success ?? false,
@@ -366,7 +366,7 @@ export function useSubstrateHealthScore() {
   };
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
-  const totalModules = 21; // v9.2.0: All 21 modules
+  const totalModules = 21; // v10.5.4: All 21 modules
   const healthScore = Math.round((healthyCount / totalModules) * 100);
 
   const refetchAll = () => {
@@ -418,7 +418,7 @@ export function useCortexStatusOS() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// INFRASTRUCTURE SIX + ENCODE — v9.2.0 Module Status Hooks
+// INFRASTRUCTURE SIX + ENCODE — v10.5.4 Module Status Hooks
 // Graceful fallback: if module status fails, return success with degraded note
 // ═══════════════════════════════════════════════════════════════
 

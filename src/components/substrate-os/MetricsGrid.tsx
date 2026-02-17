@@ -1,5 +1,5 @@
 /**
- * Metrics Grid v9.1.0 ARCHITECT Epoch — Premium live system metrics with animations
+ * Metrics Grid v10.5.4 ARCHITECT Epoch — Premium live system metrics with animations
  * Enhanced visual indicators, mini charts, and glassmorphic design
  * ARCHITECT Epoch: Includes CLM, 62 engines, and autonomous learning metrics
  */
@@ -389,7 +389,7 @@ export function MetricsGrid() {
           </StatusPanel>
         )}
         
-        {/* SEBA Status Panel - v9.1.0 ARCHITECT */}
+        {/* SEBA Status Panel - v10.5.4 ARCHITECT */}
         <motion.div 
           className="p-4 rounded-xl border bg-gradient-to-br from-indigo-500/10 via-muted/20 to-transparent backdrop-blur-xl border-indigo-500/20"
           initial={{ opacity: 0, y: 20 }}

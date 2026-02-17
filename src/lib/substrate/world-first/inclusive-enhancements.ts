@@ -1,5 +1,5 @@
 /**
- * INCLUSIVE Module Enhancements — v9.1.0 ARCHITECT Epoch
+ * INCLUSIVE Module Enhancements — v10.5.4 ARCHITECT Epoch
  * CognitiveLoadOptimizer, AccessibilityScorer, RemediationEngine
  */
 

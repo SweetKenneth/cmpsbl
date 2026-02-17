@@ -15,7 +15,7 @@ export default function Roadmap() {
       items: [
         {
           icon: Brain,
-          title: "CMPSBL v9.3.0 — ARCHITECT Epoch",
+          title: "CMPSBL v10.5.4 — ARCHITECT Epoch",
           description: "Production-ready cognitive OS with complete 21-module architecture: Core, Ripple, Access, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, System, Modernizer, Integration, Cortex orchestrator, Inclusive, Memory, Relay, Audit, Identity, Economy, Sandbox. 400+ capabilities, 200 synergy pipelines.",
           status: "Live",
           technologies: ["Supabase", "Edge Functions", "TypeScript", "React"]
