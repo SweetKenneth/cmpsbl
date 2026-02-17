@@ -94,8 +94,8 @@ export const DEFAULT_METRICS: PublicMetrics = {
   synergyExecutorsCount: 125,
   stierPipelinesCount: 32,
   
-  // Templates
-  templatesCount: 200,
+  // Templates (base + high-value + expansion = 201+)
+  templatesCount: 201,
   
   // Engine Metrics (76 base + 24 meta = 100)
   enginesCount: 76,

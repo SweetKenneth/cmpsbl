@@ -28,7 +28,7 @@ import { getPublicMetrics } from "@/stores/publicMetricsStore";
 const getFreeTools = () => {
   const metrics = getPublicMetrics();
   return [
-    { name: "Templates", icon: Package, count: "112+", color: "text-cyan-500" },
+    { name: "Templates", icon: Package, count: "200+", color: "text-cyan-500" },
     { name: "Pipelines", icon: Layers, count: String(metrics.synergyPipelinesCount), color: "text-violet-500" },
     { name: "Capabilities", icon: Zap, count: String(metrics.capabilitiesCount), color: "text-amber-500" },
     { name: "Memory", icon: Brain, count: "∞", color: "text-rose-500" },
