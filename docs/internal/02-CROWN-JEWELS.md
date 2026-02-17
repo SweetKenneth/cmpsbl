@@ -2,14 +2,14 @@
 
 # 🔒 Crown Jewels Registry
 
-### 155+ Strategically Sensitive Artifacts — CRITICAL CLASSIFICATION
+### 197+ Strategically Sensitive Artifacts — CRITICAL CLASSIFICATION
 
 <table>
 <tr><td><strong>Document</strong></td><td>02 — Crown Jewels Registry</td></tr>
 <tr><td><strong>Classification</strong></td><td>🔴 CRITICAL — Core IP</td></tr>
-<tr><td><strong>Version</strong></td><td>v10.6.0 ARCHITECT Epoch</td></tr>
+<tr><td><strong>Version</strong></td><td>v10.7.0 ARCHITECT Epoch</td></tr>
 <tr><td><strong>Last Audit</strong></td><td>February 17, 2026</td></tr>
-<tr><td><strong>Status</strong></td><td>Wave 3 Discovery Complete — 126 Capability Crown Jewels Locked</td></tr>
+<tr><td><strong>Status</strong></td><td>Wave 4 Discovery Complete — 168 Capability Crown Jewels Locked</td></tr>
 </table>
 
 </div>
@@ -24,11 +24,11 @@
 
 Crown Jewels are strategically sensitive artifacts that represent the substrate's competitive moat. They must never be exposed publicly at any tier, plan, SDK, or API.
 
-**Total Crown Jewels:** 157
+**Total Crown Jewels:** 199
 
 | Artifact Type | Count |
 |---------------|-------|
-| Capabilities | 126 |
+| Capabilities | 168 |
 | Synergy Pipelines | 3 |
 | Engines | 16 |
 | Meta-Engines | 12 |
@@ -125,39 +125,96 @@ An artifact is classified as a Crown Jewel if ANY of the following are true:
 
 | # | Name | ID | Modules | Threat |
 |---|------|----|---------|--------|
-| 57 | Provider Trust Scoring | `cj2-nexus-provider-trust-scoring` | NEXUS, VISION, DEFENSE | Trust scoring reveals provider evaluation strategy |
-| 58 | Anomaly Precognition Engine | `cj2-vision-anomaly-precognition` | VISION, BRAIN, CORTEX | Precognition reveals detection sensitivity thresholds |
-| 59 | Selective Amnesia Engine | `cj2-memory-selective-amnesia` | MEMORY, BRAIN, DEFENSE | Selective deletion reveals memory graph structure |
-| 60 | Adaptive Delivery Optimizer | `cj2-relay-adaptive-delivery` | RELAY, VISION, CORTEX | Delivery optimization reveals behavioral prediction model |
-| 61 | Causal Attribution Engine | `cj2-audit-causal-attribution` | AUDIT, VISION, BRAIN, CORTEX | Causal model reveals decision tracing architecture |
-| 62 | Zero-Day Attack Synthesizer | `cj2-defense-zero-day-synthesis` | DEFENSE, DREAM, ENCODE | Synthesized attack vectors could be weaponized |
-| 63 | Trust Decay Modeler | `cj2-identity-trust-decay-model` | IDENTITY, VISION, BRAIN | Trust decay curves reveal authentication bypass timing |
-| 64 | Multi-Objective Optimizer | `cj2-cortex-multi-objective-optimizer` | CORTEX, VISION, ECONOMY | Pareto frontier reveals system optimization boundaries |
-| 65 | Knowledge Distillation Engine | `cj2-brain-knowledge-distillation` | BRAIN, CORTEX, MEMORY | Distillation reveals knowledge representation internals |
-| 66 | Lucid Dream Intervention | `cj2-dream-lucid-intervention` | DREAM, CORTEX, BRAIN | Intervention protocol reveals dream control architecture |
-| 67 | Semantic Debt Detector | `cj2-encode-semantic-debt-detector` | ENCODE, VISION, BRAIN | Debt detection reveals code quality assessment internals |
-| 68 | Empathic Calibration Engine | `cj2-decode-empathic-calibration` | DECODE, BRAIN, VISION | Empathic model reveals emotional manipulation vectors |
-| 69 | Dynamic Pricing Engine | `cj2-economy-dynamic-pricing` | ECONOMY, VISION, CORTEX | Pricing model reveals economic strategy |
-| 70 | Chaos Orchestration Engine | `cj2-sandbox-chaos-orchestrator` | SANDBOX, SYSTEM, DEFENSE | Chaos orchestration reveals failure mode taxonomy |
-| 71 | Cognitive Horizon Scanner | `cj2-vision-cognitive-horizon-scanner` | VISION, DREAM, CORTEX | Horizon scanning reveals system awareness boundaries |
-| 72 | Entitlement Reasoning Engine | `cj2-access-entitlement-reasoning` | ACCESS, CORTEX, IDENTITY | Entitlement reasoning reveals access control boundaries |
-| 73 | Adaptive Circuit Topology | `cj2-nerve-adaptive-circuit-topology` | NERVE, SYSTEM, CORTEX | Circuit topology reveals protection architecture |
-| 74 | Cognitive Accessibility Engine | `cj2-inclusive-cognitive-accessibility` | INCLUSIVE, DECODE, VISION | Accessibility adaptation reveals output manipulation |
+| 57–74 | *See Wave 2 Architect experience jewels in registry* | Various | Various | Various strategic threats |
 
 ### Tier 3 — Experience (Creator — Sealed Black-Box) — 10 New
 
 | # | Name | ID | Modules | Threat |
 |---|------|----|---------|--------|
-| 75 | Semantic Event Router | `cj2-ripple-semantic-event-routing` | RIPPLE, BRAIN, DECODE | Semantic routing reveals event classification |
-| 76 | Contextual Humor Engine | `cj2-decode-contextual-humor` | DECODE, BRAIN, DREAM | Humor model reveals personality adaptation algorithms |
-| 77 | Memory Consolidation Engine | `cj2-brain-memory-consolidation` | BRAIN, MEMORY, DREAM | Consolidation reveals memory architecture optimization |
-| 78 | Reputation Scoring Engine | `cj2-defense-reputation-scoring` | DEFENSE, IDENTITY, VISION | Reputation scoring reveals behavioral evaluation |
-| 79 | Webhook Intelligence Engine | `cj2-relay-webhook-intelligence` | RELAY, BRAIN, DEFENSE | Webhook analysis reveals integration architecture |
-| 80 | Test Oracle Engine | `cj2-encode-test-oracle` | ENCODE, BRAIN, SANDBOX | Oracle generation reveals verification strategy |
-| 81 | Latency Prediction Engine | `cj2-nexus-latency-prediction` | NEXUS, VISION, CORTEX | Latency prediction reveals provider profiling |
-| 82 | Usage Forecasting Engine | `cj2-economy-usage-forecasting` | ECONOMY, VISION, BRAIN | Forecasting reveals usage pattern analysis |
-| 83 | Capability Recommendation Engine | `cj2-atlas-capability-recommendation` | ATLAS, BRAIN, VISION | Recommendation reveals capability dependency graph |
-| 84 | Predictive Healing Engine | `cj2-medic-predictive-healing` | MEDIC, VISION, SYSTEM | Predictive healing reveals degradation signatures |
+| 75–84 | *See Wave 2 Creator experience jewels in registry* | Various | Various | Various strategic threats |
+
+---
+
+## Crown Jewel Capabilities — Wave 3 (42 NEW)
+
+### Tier 0 — Architecture (CMPSBL-Only) — 14 New
+
+| # | Name | ID | Modules | Threat |
+|---|------|----|---------|--------|
+| 85–98 | *See Wave 3 Architecture jewels (cj3-cortex-strategic-foresight through cj3-vision-emergent-signal-detector)* | Various | Various | Various existential threats |
+
+### Tier 2 — Experience (Architect — Sealed Black-Box) — 18 New
+
+| # | Name | ID | Modules | Threat |
+|---|------|----|---------|--------|
+| 99–116 | *See Wave 3 Architect experience jewels in registry* | Various | Various | Various strategic threats |
+
+### Tier 3 — Experience (Creator — Sealed Black-Box) — 10 New
+
+| # | Name | ID | Modules | Threat |
+|---|------|----|---------|--------|
+| 117–126 | *See Wave 3 Creator experience jewels in registry* | Various | Various | Various strategic threats |
+
+---
+
+## Crown Jewel Capabilities — Wave 4 (42 NEW)
+
+### Tier 0 — Architecture (CMPSBL-Only) — 14 New
+
+| # | Name | ID | Modules | Threat |
+|---|------|----|---------|--------|
+| 127 | Recursive Abstraction Engine | `cj4-cortex-recursive-abstraction` | CORTEX, BRAIN, VISION | Abstraction layers reveal cognitive hierarchy architecture |
+| 128 | Semantic Entanglement Engine | `cj4-brain-semantic-entanglement` | BRAIN, CORTEX, MEMORY | Entanglement reveals deep knowledge relationship model |
+| 129 | Autonomous Ideation Engine | `cj4-dream-autonomous-ideation` | DREAM, BRAIN, CORTEX | Ideation pipeline reveals creative generation architecture |
+| 130 | Quantum Resilience Framework | `cj4-system-quantum-resilience` | SYSTEM, DEFENSE, CORTEX | Resilience model reveals system failure tolerance boundaries |
+| 131 | Cognitive Deception Engine | `cj4-defense-cognitive-deception` | DEFENSE, BRAIN, DECODE | Deception model reveals defense strategy internals |
+| 132 | Emergent Strategy Engine | `cj4-cortex-emergent-strategy` | CORTEX, VISION, BRAIN | Strategy emergence reveals decision-making architecture |
+| 133 | Knowledge Fusion Reactor | `cj4-brain-knowledge-fusion-reactor` | BRAIN, DREAM, CORTEX | Fusion algorithm reveals knowledge synthesis architecture |
+| 134 | Intent Verification Engine | `cj4-encode-intent-verification` | ENCODE, DECODE, CORTEX | Verification reveals intent-to-code translation boundaries |
+| 135 | Substrate Homeostasis Engine | `cj4-core-substrate-homeostasis` | CORE, SYSTEM, CORTEX | Homeostasis parameters reveal substrate equilibrium model |
+| 136 | Architectural Telomere Engine | `cj4-modernizer-architectural-telomere` | MODERNIZER, SYSTEM, CORTEX | Telomere model reveals architecture aging and renewal boundaries |
+| 137 | Synthetic Intuition Engine | `cj4-dream-synthetic-intuition` | DREAM, BRAIN, CORTEX | Intuition synthesis reveals pattern recognition internals |
+| 138 | Priority Landscape Engine | `cj4-cortex-priority-landscape` | CORTEX, VISION, BRAIN | Priority model reveals cognitive resource allocation strategy |
+| 139 | Autonomous Triage Engine | `cj4-system-autonomous-triage` | SYSTEM, CORTEX, DEFENSE | Triage algorithm reveals system health assessment model |
+| 140 | Precognitive Modeling Engine | `cj4-vision-precognitive-modeling` | VISION, BRAIN, CORTEX | Precognition reveals future-state prediction architecture |
+
+### Tier 2 — Experience (Architect — Sealed Black-Box) — 18 New
+
+| # | Name | ID | Modules | Threat |
+|---|------|----|---------|--------|
+| 141 | Threat Prediction Engine | `cj4-defense-threat-prediction` | DEFENSE, VISION, BRAIN | Prediction model reveals threat assessment internals |
+| 142 | Cognitive Load Heatmap | `cj4-vision-cognitive-load-heatmap` | VISION, CORTEX, SYSTEM | Heatmap reveals processing bottleneck topology |
+| 143 | Semantic Memory Versioning | `cj4-memory-semantic-versioning` | MEMORY, BRAIN, CORTEX | Versioning reveals memory mutation tracking architecture |
+| 144 | Channel Failover Intelligence | `cj4-relay-channel-failover` | RELAY, VISION, DEFENSE | Failover strategy reveals delivery resilience architecture |
+| 145 | Compliance Simulation Engine | `cj4-audit-compliance-simulation` | AUDIT, CORTEX, DEFENSE | Simulation reveals compliance evaluation boundaries |
+| 146 | Session Forensics Engine | `cj4-identity-session-forensics` | IDENTITY, AUDIT, DEFENSE | Forensics reveals session reconstruction capabilities |
+| 147 | Workflow Compression | `cj4-cortex-workflow-compression` | CORTEX, VISION, ECONOMY | Compression reveals workflow optimization architecture |
+| 148 | Knowledge Aging Engine | `cj4-brain-knowledge-aging` | BRAIN, MEMORY, VISION | Aging model reveals knowledge lifecycle architecture |
+| 149 | Innovation Scoring | `cj4-dream-innovation-scoring` | DREAM, VISION, CORTEX | Scoring reveals creative evaluation criteria |
+| 150 | Behavioral Testing Engine | `cj4-encode-behavioral-testing` | ENCODE, DECODE, SANDBOX | Testing reveals behavior-specification mapping |
+| 151 | Margin Optimization | `cj4-economy-margin-optimization` | ECONOMY, NEXUS, VISION | Optimization reveals economic strategy internals |
+| 152 | Sandbox Resource Prediction | `cj4-sandbox-resource-prediction` | SANDBOX, VISION, SYSTEM | Prediction reveals resource estimation model |
+| 153 | Neurodiversity Adaptation | `cj4-inclusive-neurodiversity-adaptation` | INCLUSIVE, DECODE, VISION | Adaptation reveals cognitive accessibility model |
+| 154 | Signal Prioritization Engine | `cj4-nerve-signal-prioritization` | NERVE, CORTEX, VISION | Prioritization reveals inter-module communication hierarchy |
+| 155 | Anomalous Usage Detection | `cj4-access-anomalous-usage-detection` | ACCESS, DEFENSE, VISION | Detection reveals usage pattern analysis model |
+| 156 | Trend Extrapolation Engine | `cj4-vision-trend-extrapolation` | VISION, BRAIN, CORTEX | Extrapolation reveals predictive modeling architecture |
+| 157 | Cultural Adaptation Engine | `cj4-decode-cultural-adaptation` | DECODE, BRAIN, VISION | Adaptation reveals cultural model internals |
+| 158 | Capacity Simulation | `cj4-system-capacity-simulation` | SYSTEM, VISION, CORTEX | Simulation reveals scaling decision architecture |
+
+### Tier 3 — Experience (Creator — Sealed Black-Box) — 10 New
+
+| # | Name | ID | Modules | Threat |
+|---|------|----|---------|--------|
+| 159 | Event Correlation Engine | `cj4-ripple-event-correlation` | RIPPLE, BRAIN, VISION | Correlation reveals event relationship analysis |
+| 160 | Tone Calibration Engine | `cj4-decode-tone-calibration` | DECODE, BRAIN, VISION | Calibration reveals personality adaptation model |
+| 161 | Memory Deduplication | `cj4-brain-memory-deduplication` | BRAIN, MEMORY | Deduplication reveals knowledge graph structure |
+| 162 | Quality Prediction | `cj4-nexus-quality-prediction` | NEXUS, VISION, BRAIN | Prediction reveals model evaluation criteria |
+| 163 | Regression Prevention Guard | `cj4-encode-regression-prevention` | ENCODE, SANDBOX, VISION | Prevention reveals change impact analysis model |
+| 164 | Behavioral Baseline Engine | `cj4-defense-behavioral-baseline` | DEFENSE, IDENTITY, VISION | Baseline reveals behavioral evaluation model |
+| 165 | Waste Detection Engine | `cj4-economy-waste-detection` | ECONOMY, VISION, SYSTEM | Detection reveals resource utilization model |
+| 166 | Smart Batching Engine | `cj4-relay-smart-batching` | RELAY, BRAIN, ECONOMY | Batching reveals delivery optimization strategy |
+| 167 | Integration Health Forecasting | `cj4-integration-health-forecasting` | INTEGRATION, VISION, SYSTEM | Forecasting reveals connector monitoring model |
+| 168 | Workflow Suggestion Engine | `cj4-atlas-workflow-suggestion` | ATLAS, BRAIN, CORTEX | Suggestion reveals capability dependency analysis |
 
 ---
 
@@ -225,13 +282,14 @@ All Crown Jewels have been:
 - ✅ Removed from capability search
 - ✅ Hidden from SDK/API catalogs
 - ✅ Admin-only UI section created
-- ✅ Wave 2 (42 new) fully registered and tiered
+- ✅ Wave 3 (42 new) fully registered and tiered
+- ✅ Wave 4 (42 new) fully registered and tiered
 
 ---
 
 ## Audit Schedule
 
-- Quarterly re-audit of all 115 entries
+- Quarterly re-audit of all 199 entries
 - Selective declassification review (if any)
 - Tiering patch review (separate process)
 
@@ -239,7 +297,7 @@ All Crown Jewels have been:
 
 <div align="center">
 
-*CMPSBL OS Substrate v10.5.5 — ARCHITECT Epoch — INTERNAL USE ONLY*
+*CMPSBL OS Substrate v10.7.0 — ARCHITECT Epoch — INTERNAL USE ONLY*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)

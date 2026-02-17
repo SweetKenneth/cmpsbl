@@ -1,6 +1,6 @@
 /**
  * Public Capability Manifest — Tier-Safe, Outcome-Oriented
- * v10.6.0 ARCHITECT Epoch — 126 Crown Jewels (Wave 1 + 2 + 3)
+ * v10.7.0 ARCHITECT Epoch — 168 Crown Jewels (Wave 1 + 2 + 3 + 4)
  * 
  * RULES:
  * - NO CMPSBL-only Crown Jewels by name or description
@@ -21,7 +21,7 @@ export interface PublicCapability {
 
 export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   // ══════════════════════════════════════════════════════
-  // CREATOR TIER ($49/mo) — 12 core + 17 crown jewels = 29
+  // CREATOR TIER ($9/mo) — 12 core + 27 crown jewels = 39
   // ══════════════════════════════════════════════════════
   {
     name: 'Knowledge Gap Detection',
@@ -277,7 +277,7 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   },
 
   // ══════════════════════════════════════════════════════
-  // ARCHITECT TIER ($149/mo) — 14 existing + 25 crown jewels = 39
+  // ARCHITECT TIER ($19/mo) — 14 existing + 43 crown jewels = 57
   // ══════════════════════════════════════════════════════
   {
     name: 'Zero-Day Detection',
@@ -832,7 +832,7 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   },
 
   // ══════════════════════════════════════════════════════
-  // WAVE 3 — CREATOR ($49/mo) — 10 new crown jewels
+  // WAVE 3 — CREATOR ($9/mo) — 10 new crown jewels
   // ══════════════════════════════════════════════════════
   {
     name: 'Drift Correction Engine',
@@ -926,7 +926,7 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   },
 
   // ══════════════════════════════════════════════════════
-  // WAVE 3 — ARCHITECT ($149/mo) — 18 new crown jewels
+  // WAVE 3 — ARCHITECT ($19/mo) — 18 new crown jewels
   // ══════════════════════════════════════════════════════
   {
     name: 'Cognitive Fatigue Detection',
@@ -1216,6 +1216,266 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
     tier: 'enterprise',
     module: 'MODERNIZER',
     outcome_summary: 'Generate and execute multi-phase migration plans with automated rollback and validation',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+
+  // ══════════════════════════════════════════════════════
+  // WAVE 4 — CREATOR ($9/mo) — 10 new crown jewels
+  // ══════════════════════════════════════════════════════
+  {
+    name: 'Event Correlation Engine',
+    tier: 'creator',
+    module: 'RIPPLE',
+    outcome_summary: 'Correlate related events across modules to surface hidden cause-and-effect chains',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Tone Calibration Engine',
+    tier: 'creator',
+    module: 'DECODE',
+    outcome_summary: 'Auto-calibrate AI communication tone to match brand voice and audience expectations',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Memory Deduplication',
+    tier: 'creator',
+    module: 'BRAIN',
+    outcome_summary: 'Automatically merge duplicate and near-duplicate memories to keep knowledge clean',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Quality Prediction',
+    tier: 'creator',
+    module: 'NEXUS',
+    outcome_summary: 'Predict AI output quality before generation to pre-select the best model for each task',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Regression Prevention Guard',
+    tier: 'creator',
+    module: 'ENCODE',
+    outcome_summary: 'Detect potential regressions before deployment by analyzing code change impact patterns',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Behavioral Baseline Engine',
+    tier: 'creator',
+    module: 'DEFENSE',
+    outcome_summary: 'Establish behavioral baselines per user to detect deviation and potential compromise',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Waste Detection Engine',
+    tier: 'creator',
+    module: 'ECONOMY',
+    outcome_summary: 'Identify wasted compute, idle resources, and redundant operations to cut costs',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Smart Batching Engine',
+    tier: 'creator',
+    module: 'RELAY',
+    outcome_summary: 'Intelligently batch related notifications and deliveries to reduce noise and improve engagement',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Integration Health Forecasting',
+    tier: 'creator',
+    module: 'INTEGRATION',
+    outcome_summary: 'Forecast integration health trends and predict which connectors will degrade next',
+    category: 'observability',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Workflow Suggestion Engine',
+    tier: 'creator',
+    module: 'ATLAS',
+    outcome_summary: 'Suggest optimal workflows based on project patterns and capability usage history',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+
+  // ══════════════════════════════════════════════════════
+  // WAVE 4 — ARCHITECT ($19/mo) — 18 new crown jewels
+  // ══════════════════════════════════════════════════════
+  {
+    name: 'Threat Prediction Engine',
+    tier: 'architect',
+    module: 'DEFENSE',
+    outcome_summary: 'Predict attack vectors and pre-deploy countermeasures before threats materialize',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Cognitive Load Heatmap',
+    tier: 'architect',
+    module: 'VISION',
+    outcome_summary: 'Visualize cognitive load distribution across modules to identify processing bottlenecks',
+    category: 'observability',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Semantic Memory Versioning',
+    tier: 'architect',
+    module: 'MEMORY',
+    outcome_summary: 'Version control for memories — track changes, diff states, and rollback knowledge mutations',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Channel Failover Intelligence',
+    tier: 'architect',
+    module: 'RELAY',
+    outcome_summary: 'Automatically failover to backup channels when primary delivery paths degrade',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Compliance Simulation Engine',
+    tier: 'architect',
+    module: 'AUDIT',
+    outcome_summary: 'Simulate compliance audits against draft policies before enforcement to prevent false positives',
+    category: 'compliance',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Session Forensics Engine',
+    tier: 'architect',
+    module: 'IDENTITY',
+    outcome_summary: 'Reconstruct complete session histories for security investigations with full event replay',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Workflow Compression',
+    tier: 'architect',
+    module: 'CORTEX',
+    outcome_summary: 'Compress multi-step workflows into fewer optimized stages without losing functionality',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Knowledge Aging Engine',
+    tier: 'architect',
+    module: 'BRAIN',
+    outcome_summary: 'Age knowledge entries based on relevance decay and auto-archive stale information',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Innovation Scoring',
+    tier: 'architect',
+    module: 'DREAM',
+    outcome_summary: 'Score dream-cycle outputs by novelty and practical applicability to prioritize implementations',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Behavioral Testing Engine',
+    tier: 'architect',
+    module: 'ENCODE',
+    outcome_summary: 'Generate behavior-driven tests from natural language specifications automatically',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Margin Optimization',
+    tier: 'architect',
+    module: 'ECONOMY',
+    outcome_summary: 'Optimize cost margins across capabilities by rebalancing provider allocation and caching',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Sandbox Resource Prediction',
+    tier: 'architect',
+    module: 'SANDBOX',
+    outcome_summary: 'Predict sandbox resource requirements before execution to prevent OOM and timeout failures',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Neurodiversity Adaptation',
+    tier: 'architect',
+    module: 'INCLUSIVE',
+    outcome_summary: 'Adapt interfaces for neurodivergent users with ADHD, dyslexia, and autism-specific optimizations',
+    category: 'compliance',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Signal Prioritization Engine',
+    tier: 'architect',
+    module: 'NERVE',
+    outcome_summary: 'Prioritize inter-module signals by urgency and impact to reduce communication overhead',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Anomalous Usage Detection',
+    tier: 'architect',
+    module: 'ACCESS',
+    outcome_summary: 'Detect anomalous API usage patterns that may indicate credential compromise or abuse',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Trend Extrapolation Engine',
+    tier: 'architect',
+    module: 'VISION',
+    outcome_summary: 'Extrapolate system and behavioral trends to forecast future states weeks in advance',
+    category: 'observability',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Cultural Adaptation Engine',
+    tier: 'architect',
+    module: 'DECODE',
+    outcome_summary: 'Adapt AI outputs for cultural context including idioms, formality, and regional expectations',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Capacity Simulation',
+    tier: 'architect',
+    module: 'SYSTEM',
+    outcome_summary: 'Simulate capacity scenarios to validate scaling decisions before committing resources',
     category: 'optimization',
     public_safe: true,
     is_crown_jewel: true,
