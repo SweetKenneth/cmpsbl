@@ -347,15 +347,26 @@ export function HeroMetaSubstrate() {
               </motion.span>
             </h1>
 
-            {/* Tagline — Cognition That Compounds */}
-            <motion.p
+            {/* Tagline — Typed scrolling text */}
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.25 }}
-              className="text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wide mb-5 sm:mb-8"
+              className="text-xl sm:text-2xl md:text-3xl font-light tracking-wide mb-5 sm:mb-8"
             >
-              Cognition That Compounds.
-            </motion.p>
+              <span className="text-muted-foreground">Where machines learn to </span>
+              <TypedText 
+                texts={["dream.", "adapt.", "evolve.", "remember.", "compose."]}
+                gradientColors={[
+                  "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
+                  "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+                  "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
+                  "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
+                  "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
+                ]}
+                className="font-semibold"
+              />
+            </motion.div>
             
             {/* Subheadline */}
             <motion.p 
