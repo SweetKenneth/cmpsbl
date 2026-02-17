@@ -1,8 +1,8 @@
 /**
  * PromptFluid Nexus - Health-Weighted Provider Routing
- * v9.1.0 ARCHITECT Epoch — Intelligent provider selection based on health scores
+ * v10.5.4 ARCHITECT Epoch — Intelligent provider selection based on health scores
  * 
- * Supports 8 providers with automatic failover and cost optimization
+ * Supports 7 providers with automatic failover and cost optimization
  */
 
 import { supabase } from '@/integrations/supabase/client';

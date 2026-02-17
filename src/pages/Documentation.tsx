@@ -1,5 +1,5 @@
 /**
- * Documentation Hub — v9.3.0 ARCHITECT Epoch
+ * Documentation Hub — v10.5.4 ARCHITECT Epoch
  * Complete developer documentation for CMPSBL cognitive substrate
  */
 
@@ -142,7 +142,7 @@ await substrate.keys.usage('openai', 30); // 30 day usage`}
                   <div className="p-4 border-l-4 border-amber-500 bg-amber-500/10 rounded-r-lg">
                     <h4 className="font-semibold mb-1 text-foreground">Supported Providers</h4>
                     <p className="text-sm text-muted-foreground">
-                      OpenAI, Anthropic, Groq, Together, DeepSeek, Mistral, Cohere, Fireworks, Hyperbolic, Cerebras
+                      Groq, Cerebras, SambaNova, Google AI Studio, DeepSeek, Together, OpenRouter (BYOK: OpenAI, Anthropic, Mistral, Cohere, Fireworks)
                     </p>
                   </div>
                 </div>
@@ -355,7 +355,7 @@ Authorization: Bearer <supabase-jwt>`}
             Deploy your own substrate instance and start building with BYOK architecture.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/dev">
+            <Link to="/developers">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
                 Developer Portal
                 <ArrowRight className="w-4 h-4 ml-2" />

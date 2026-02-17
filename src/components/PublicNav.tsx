@@ -1,6 +1,6 @@
 /**
  * PublicNav — Re-exports CmpsblNav
- * v9.1.0 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  */
 
 export { CmpsblNav as PublicNav } from "@/components/navigation/CmpsblNav";
