@@ -1,6 +1,6 @@
 /**
  * Crown Jewel Registry — Canonical Source of Truth
- * v10.6.0 ARCHITECT — Tier Split & Black-Box Enforcement (Wave 1 + 2 + 3)
+ * v10.7.0 ARCHITECT — Tier Split & Black-Box Enforcement (Wave 1 + 2 + 3 + 4)
  * 
  * Crown Jewels are split into TWO categories:
  * 
@@ -10,7 +10,7 @@
  * 
  * B. EXPERIENCE CROWN JEWELS — Released as SEALED (black-boxed) artifacts.
  *    Execution-only, no source visibility, no config exposure, no export.
- *    Tiered: Builder ($49) and Pro ($149) get increasing access.
+ *    Tiered: Creator ($9) and Architect ($19) get increasing access.
  */
 
 export type CrownJewelClassification = 'architecture' | 'experience';
@@ -125,6 +125,22 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'cj3-cortex-cognitive-scheduling',
   'cj3-system-graceful-degradation',
   'cj3-vision-emergent-signal-detector',
+
+  // v10.7.0 — Wave 4 Architecture Crown Jewels (14 new)
+  'cj4-cortex-recursive-abstraction',
+  'cj4-brain-semantic-entanglement',
+  'cj4-dream-autonomous-ideation',
+  'cj4-system-quantum-resilience',
+  'cj4-defense-cognitive-deception',
+  'cj4-cortex-emergent-strategy',
+  'cj4-brain-knowledge-fusion-reactor',
+  'cj4-encode-intent-verification',
+  'cj4-core-substrate-homeostasis',
+  'cj4-modernizer-architectural-telomere',
+  'cj4-dream-synthetic-intuition',
+  'cj4-cortex-priority-landscape',
+  'cj4-system-autonomous-triage',
+  'cj4-vision-precognitive-modeling',
 ]);
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -132,7 +148,7 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
-  // ── BUILDER TIER ($49) — Single-project, in-run self-improvement ──
+  // ── CREATOR TIER ($9) — Single-project, in-run self-improvement ──
   'recursive-goal-optimizer',           // Bounded goal optimization
   'recursive-emergent-behavior-analyzer', // Emergent behavior detection
   'recursive-self-healing-mesh',        // Self-healing neural mesh
@@ -141,7 +157,7 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'creative_forge',                     // Creative generation meta-engine
   'cap-chaos-resilience',               // Chaos resilience framework
 
-  // ── ARCHITECT TIER ($149) — CLM, cross-session, cross-executor learning ──
+  // ── ARCHITECT TIER ($19) — CLM, cross-session, cross-executor learning ──
   'knowledge_graph_topology',           // Semantic graph with typed relations, clustering, BFS
   'stier-emergent-threat-anticipator',  // Pre-zero-day defense
   'stier-audit-grade-decision-ledger',  // Immutable decision ledger
@@ -245,6 +261,38 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'cj3-relay-delivery-confirmation',
   'cj3-integration-dependency-radar',
   'cj3-brain-context-window-optimizer',
+
+  // v10.7.0 — Wave 4 Experience Crown Jewels (28 new)
+  // ── Architect Tier ──
+  'cj4-defense-threat-prediction',
+  'cj4-vision-cognitive-load-heatmap',
+  'cj4-memory-semantic-versioning',
+  'cj4-relay-channel-failover',
+  'cj4-audit-compliance-simulation',
+  'cj4-identity-session-forensics',
+  'cj4-cortex-workflow-compression',
+  'cj4-brain-knowledge-aging',
+  'cj4-dream-innovation-scoring',
+  'cj4-encode-behavioral-testing',
+  'cj4-economy-margin-optimization',
+  'cj4-sandbox-resource-prediction',
+  'cj4-inclusive-neurodiversity-adaptation',
+  'cj4-nerve-signal-prioritization',
+  'cj4-access-anomalous-usage-detection',
+  'cj4-vision-trend-extrapolation',
+  'cj4-decode-cultural-adaptation',
+  'cj4-system-capacity-simulation',
+  // ── Creator Tier ──
+  'cj4-ripple-event-correlation',
+  'cj4-decode-tone-calibration',
+  'cj4-brain-memory-deduplication',
+  'cj4-nexus-quality-prediction',
+  'cj4-encode-regression-prevention',
+  'cj4-defense-behavioral-baseline',
+  'cj4-economy-waste-detection',
+  'cj4-relay-smart-batching',
+  'cj4-integration-health-forecasting',
+  'cj4-atlas-workflow-suggestion',
 ]);
 
 /** Map experience jewels to their minimum tier */
@@ -354,6 +402,35 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
   'cj3-relay-delivery-confirmation': 'creator',
   'cj3-integration-dependency-radar': 'creator',
   'cj3-brain-context-window-optimizer': 'creator',
+  // v10.7.0 — Wave 4
+  'cj4-defense-threat-prediction': 'architect',
+  'cj4-vision-cognitive-load-heatmap': 'architect',
+  'cj4-memory-semantic-versioning': 'architect',
+  'cj4-relay-channel-failover': 'architect',
+  'cj4-audit-compliance-simulation': 'architect',
+  'cj4-identity-session-forensics': 'architect',
+  'cj4-cortex-workflow-compression': 'architect',
+  'cj4-brain-knowledge-aging': 'architect',
+  'cj4-dream-innovation-scoring': 'architect',
+  'cj4-encode-behavioral-testing': 'architect',
+  'cj4-economy-margin-optimization': 'architect',
+  'cj4-sandbox-resource-prediction': 'architect',
+  'cj4-inclusive-neurodiversity-adaptation': 'architect',
+  'cj4-nerve-signal-prioritization': 'architect',
+  'cj4-access-anomalous-usage-detection': 'architect',
+  'cj4-vision-trend-extrapolation': 'architect',
+  'cj4-decode-cultural-adaptation': 'architect',
+  'cj4-system-capacity-simulation': 'architect',
+  'cj4-ripple-event-correlation': 'creator',
+  'cj4-decode-tone-calibration': 'creator',
+  'cj4-brain-memory-deduplication': 'creator',
+  'cj4-nexus-quality-prediction': 'creator',
+  'cj4-encode-regression-prevention': 'creator',
+  'cj4-defense-behavioral-baseline': 'creator',
+  'cj4-economy-waste-detection': 'creator',
+  'cj4-relay-smart-batching': 'creator',
+  'cj4-integration-health-forecasting': 'creator',
+  'cj4-atlas-workflow-suggestion': 'creator',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -465,6 +542,21 @@ const ARCHITECTURE_PATTERNS = [
   'cognitive-scheduling',
   'graceful-degradation',
   'emergent-signal',
+  // v10.7.0 wave 4 architecture patterns
+  'recursive-abstraction',
+  'semantic-entanglement',
+  'autonomous-ideation',
+  'quantum-resilience',
+  'cognitive-deception',
+  'emergent-strategy',
+  'knowledge-fusion-reactor',
+  'intent-verification',
+  'substrate-homeostasis',
+  'architectural-telomere',
+  'synthetic-intuition',
+  'priority-landscape',
+  'autonomous-triage',
+  'precognitive-modeling',
 ];
 
 /** Extended check including keyword patterns — architecture only */

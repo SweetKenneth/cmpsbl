@@ -51,7 +51,7 @@
 
 ---
 
-## v10.5.3 Crown Jewel Registry (Complete — 35 Jewels)
+## v10.7.0 Crown Jewel Registry (Complete — 77 Jewels + Wave 4)
 
 ### 🔴 CMPSBL-Only — Recursive Cognition & Meta-Intelligence (9)
 
@@ -167,7 +167,7 @@ Patterns scanned:
 | Dream cycles/hour | 0 | 6 | 12 |
 | Agencies | 0 | 3 | Unlimited |
 | Agents per agency | 0 | 5 | 20 |
-| Crown Jewels | 0 | 12 (Creator) | 26 (Architect) |
+| Crown Jewels | 0 | 37 (Creator) | 73 (Creator+Architect) |
 
 ---
 
