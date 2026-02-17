@@ -65,6 +65,7 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 | [18](./18-IDENTITY.md) | **IDENTITY** | Actor attribution, reputation scoring, cross-agency portability |
 | [19](./19-ECONOMY.md) | **ECONOMY** | Cost tracking, predictive forecasting, per-capability attribution |
 | [20](./20-SANDBOX.md) | **SANDBOX** | Safe code execution, resource limits, state snapshots |
+| [22](./22-ENCODE.md) | **ENCODE** | Code execution engine, DECODE→ENCODE pipeline, CLM |
 | [21](./21-USER-MANUAL.md) | **User Manual** | Complete usage guide |
 
 ---
