@@ -1,54 +1,246 @@
 /**
- * Unified Pricing Page — Free / Creator / Architect / Enterprise
- * One subscription unlocks everything in that tier. No add-ons.
+ * Unified Pricing Page — Benefits-First Layout
+ * v10.5.4 ARCHITECT Epoch
+ * 
+ * Structure:
+ *   1. Hero — Value proposition
+ *   2. Benefits Showcase — Capabilities, Pipelines, Templates per tier (horizontal scroll mobile)
+ *   3. Pricing Cards — Horizontal scroll on mobile
+ *   4. FAQ + Contact
  */
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { UNIFIED_TIERS, CONTACT_EMAIL, CONTACT_PHONE } from "@/config/licensing-products";
 import {
+  getCapabilitiesByTier,
+  getCrownJewelsByTier,
+  type PublicCapability,
+} from "@/lib/capabilities/public-capability-manifest";
+import {
   Brain, Shield, Zap, CheckCircle2, ArrowRight, Mail, Phone,
-  Building2, Sparkles, Crown, Layers
+  Building2, Sparkles, Crown, Layers, Star, Workflow, FileText,
+  ChevronLeft, ChevronRight, Lock, Gem,
 } from "lucide-react";
-import { TierUnlockSection } from "@/components/pricing/TierUnlockSection";
 
-const TIER_META = [
+// ── Tier visual config ──
+const TIERS = [
   {
     key: 'free' as const,
     icon: Layers,
     gradient: 'from-slate-500 to-zinc-500',
+    bgGlow: 'bg-slate-500/5',
     cta: 'Get Started Free',
     popular: false,
+    headline: 'Build Real Systems — Zero Cost',
+    benefitSummary: 'Full building capabilities with persistent memory, composition engine, and access to the Artifact Store.',
+    pipelineCount: 0,
+    templateExamples: ['Basic agent templates', 'Starter project scaffolds'],
+    capabilityHighlights: [
+      'Persistent memory (bounded)',
+      'Composition engine',
+      'All executors & runners',
+      'Artifact Store access',
+    ],
   },
   {
     key: 'creator' as const,
     icon: Sparkles,
     gradient: 'from-blue-500 to-cyan-500',
+    bgGlow: 'bg-blue-500/5',
     cta: 'Subscribe — $49/mo',
     popular: true,
+    headline: 'Autonomous Intelligence That Works While You Don\'t',
+    benefitSummary: '19 capabilities including 7 Crown Jewels that predict, protect, and optimize your systems without manual intervention.',
+    pipelineCount: 20,
+    templateExamples: ['Multi-agent workflows', 'RAG pipeline templates', 'Security scan templates', 'Cost optimization playbooks'],
+    capabilityHighlights: [
+      'Auto-recover from module failures',
+      'Predict cost spikes before they hit',
+      'Smart rate shaping for API traffic',
+      'AI-powered accessibility auto-fix',
+      'Isolated sandbox experimentation',
+      'On-demand compliance snapshots',
+    ],
   },
   {
     key: 'architect' as const,
     icon: Crown,
     gradient: 'from-violet-500 to-purple-500',
+    bgGlow: 'bg-violet-500/5',
     cta: 'Subscribe — $149/mo',
     popular: false,
+    headline: 'Compound Intelligence Across Everything',
+    benefitSummary: '21 advanced capabilities with 7 Crown Jewels — cross-project learning, forensic timelines, dream-state synthesis, and cascade failure prevention.',
+    pipelineCount: 40,
+    templateExamples: ['Cross-project learning pipelines', 'Compliance audit generators', 'Threat intelligence workflows', 'Architecture migration plans'],
+    capabilityHighlights: [
+      'Zero-day attack detection',
+      'Cross-module orchestration',
+      'Dream-state creative synthesis',
+      'Cascade failure prevention',
+      'Intelligent cost arbitrage',
+      'Auto-generate compliance reports',
+    ],
   },
   {
     key: 'enterprise' as const,
     icon: Building2,
     gradient: 'from-amber-500 to-orange-500',
+    bgGlow: 'bg-amber-500/5',
     cta: 'Contact Sales',
     popular: false,
+    headline: 'Full Sovereignty — Your Infrastructure, Your Rules',
+    benefitSummary: '10 enterprise capabilities with 7 Crown Jewels — air-gapped deployment, threat intelligence networks, and multi-tenant isolation with SLA guarantees.',
+    pipelineCount: 60,
+    templateExamples: ['Air-gapped deployment configs', 'Multi-tenant isolation templates', 'Federated identity workflows', 'Enterprise governance policies'],
+    capabilityHighlights: [
+      'Multi-tenant memory isolation',
+      'Sovereign identity federation',
+      'Enterprise threat intel network',
+      'SLA-backed delivery guarantees',
+      'Org-wide cost governance',
+      'Cross-deployment observability',
+    ],
   },
 ];
+
+// ── Horizontal Scroll Container ──
+function HorizontalScroll({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    const amount = scrollRef.current.offsetWidth * 0.8;
+    scrollRef.current.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="relative group">
+      <button
+        onClick={() => scroll('left')}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hover:bg-muted"
+        aria-label="Scroll left"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <div
+        ref={scrollRef}
+        className={`flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 ${className}`}
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {children}
+      </div>
+      <button
+        onClick={() => scroll('right')}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hover:bg-muted"
+        aria-label="Scroll right"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
+  );
+}
+
+// ── Tier Benefit Card ──
+function TierBenefitCard({ tier }: { tier: typeof TIERS[number] }) {
+  const capabilities = getCapabilitiesByTier(tier.key === 'free' ? 'creator' : tier.key as 'creator' | 'architect' | 'enterprise');
+  const crownJewels = tier.key === 'free' ? [] : getCrownJewelsByTier(tier.key as 'creator' | 'architect' | 'enterprise');
+  const Icon = tier.icon;
+
+  return (
+    <div className="min-w-[320px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink md:w-full">
+      <Card className={`h-full relative overflow-hidden ${tier.bgGlow} border-border/50`}>
+        <div className={`h-1.5 bg-gradient-to-r ${tier.gradient}`} />
+        <CardContent className="p-6 space-y-5">
+          {/* Header */}
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-xl bg-gradient-to-r ${tier.gradient} flex items-center justify-center`}>
+              <Icon className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="font-bold text-lg">{UNIFIED_TIERS[tier.key]?.name ?? tier.key}</h3>
+              {tier.popular && (
+                <Badge variant="default" className="text-[10px] px-1.5 py-0">Most Popular</Badge>
+              )}
+            </div>
+          </div>
+
+          <h4 className="font-semibold text-foreground">{tier.headline}</h4>
+          <p className="text-sm text-muted-foreground">{tier.benefitSummary}</p>
+
+          {/* Key Capabilities */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              <Zap className="w-3.5 h-3.5 text-primary" />
+              Key Capabilities
+            </div>
+            <ul className="space-y-1.5">
+              {tier.capabilityHighlights.map((cap, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                  <span className="text-muted-foreground">{cap}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Crown Jewels */}
+          {crownJewels.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                <Gem className="w-3.5 h-3.5 text-amber-500" />
+                Crown Jewels ({crownJewels.length})
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {crownJewels.map((cj) => (
+                  <Badge key={cj.name} variant="outline" className="text-[10px] border-amber-500/30 text-amber-600 dark:text-amber-400">
+                    {cj.name}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Pipelines */}
+          {tier.pipelineCount > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                <Workflow className="w-3.5 h-3.5 text-violet-500" />
+                Crystallized Pipelines
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {tier.pipelineCount}+ pre-built, proven cross-module workflows ready to deploy
+              </p>
+            </div>
+          )}
+
+          {/* Templates */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              <FileText className="w-3.5 h-3.5 text-cyan-500" />
+              Templates Included
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {tier.templateExamples.map((t, i) => (
+                <Badge key={i} variant="secondary" className="text-[10px]">
+                  {t}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 export default function SubstrateLicensing() {
   const [checkingOut, setCheckingOut] = useState<string | null>(null);
@@ -90,132 +282,148 @@ export default function SubstrateLicensing() {
     <>
       <SEO
         title="Pricing | CMPSBL — Cognitive Infrastructure"
-        description="Simple, unified pricing. Free to start, Creator at $49/mo, Architect at $149/mo. One subscription unlocks everything — no hidden fees or add-ons."
-        keywords={["CMPSBL pricing", "cognitive infrastructure", "AI substrate", "Creator tier", "Architect tier"]}
+        description="Autonomous capabilities that predict, protect, and optimize. Free to start, Creator at $49/mo, Architect at $149/mo. See what you unlock at each tier."
+        keywords={["CMPSBL pricing", "cognitive infrastructure", "AI substrate", "Creator tier", "Architect tier", "Crown Jewels"]}
       />
 
       <PublicNav />
 
       <main className="min-h-screen bg-background">
-        {/* Hero */}
+        {/* ═══ Hero ═══ */}
         <section className="relative py-20 md:py-28 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="container mx-auto px-4 relative">
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="outline" className="mb-6 px-4 py-2 text-sm border-primary/30">
-                <Brain className="w-4 h-4 mr-2 inline" />
-                Simple, Unified Pricing
+                <Star className="w-4 h-4 mr-2 inline text-amber-500" />
+                50 Capabilities · 60 Pipelines · Unlimited Templates
               </Badge>
 
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
                 <span className="bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-                  One Plan. Everything Included.
+                  Intelligence That Works While You Don't
                 </span>
               </h1>
 
-              <p className="text-xl text-muted-foreground mb-4">
-                No separate engine fees. No SDK add-ons. No surprise charges.
+              <p className="text-xl text-muted-foreground mb-3">
+                Autonomous capabilities that predict failures, prevent attacks, and optimize costs — <strong className="text-foreground">before you even ask</strong>.
               </p>
-              <p className="text-lg text-muted-foreground">
-                Pick your tier and unlock <strong className="text-foreground">all</strong> substrate capabilities at that level.
+              <p className="text-base text-muted-foreground">
+                See what you unlock at each tier, then choose your plan below.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Pricing Cards */}
+        {/* ═══ Benefits Showcase — What You Unlock ═══ */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-              {TIER_META.map((meta) => {
-                const tier = UNIFIED_TIERS[meta.key];
-                const Icon = meta.icon;
-                const price = formatPrice(tier.amount);
-                const isLoading = checkingOut === meta.key;
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <h2 className="text-3xl font-bold mb-3">What You Unlock at Each Tier</h2>
+              <p className="text-muted-foreground">
+                Capabilities, crystallized pipelines, and templates — all included with your subscription. No add-ons, no surprise fees.
+              </p>
+            </div>
 
-                return (
-                  <Card
-                    key={meta.key}
-                    className={`relative overflow-hidden transition-all hover:shadow-lg ${
-                      meta.popular ? 'ring-2 ring-primary shadow-lg' : ''
-                    }`}
-                  >
-                    {meta.popular && (
-                      <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-bl-lg font-medium">
-                        Most Popular
-                      </div>
-                    )}
-                    <div className={`h-2 bg-gradient-to-r ${meta.gradient}`} />
-                    <CardHeader className="pb-4">
-                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${meta.gradient} flex items-center justify-center mb-4`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <CardTitle className="text-xl">{tier.name}</CardTitle>
-                      <CardDescription className="text-sm min-h-[40px]">
-                        {tier.tagline ?? tier.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-5">
-                      <div>
-                        <span className="text-3xl font-bold">{price}</span>
-                        {tier.amount !== null && tier.amount > 0 && (
-                          <span className="text-muted-foreground text-sm">/mo</span>
-                        )}
-                        {tier.amount === null && (
-                          <span className="text-muted-foreground text-sm block">Contact us</span>
-                        )}
-                      </div>
+            {/* Desktop: Grid, Mobile: Horizontal Scroll */}
+            <div className="hidden lg:grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+              {TIERS.map((tier) => (
+                <TierBenefitCard key={tier.key} tier={tier} />
+              ))}
+            </div>
+            <div className="lg:hidden">
+              <HorizontalScroll>
+                {TIERS.map((tier) => (
+                  <TierBenefitCard key={tier.key} tier={tier} />
+                ))}
+              </HorizontalScroll>
+            </div>
 
-                      <ul className="space-y-2.5">
-                        {tier.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                            <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
+            {/* Scarcity hint */}
+            <p className="text-center text-xs text-muted-foreground/60 mt-8 italic">
+              Not all Crown Jewels are released to the public. Some capabilities remain internal to preserve system integrity.
+            </p>
+          </div>
+        </section>
 
-                      <Button
-                        className="w-full gap-2"
-                        variant={meta.popular ? 'default' : 'outline'}
-                        onClick={() => handleCta(meta.key)}
-                        disabled={isLoading}
-                      >
-                        {isLoading ? 'Redirecting…' : meta.cta}
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+        {/* ═══ Stats Bar ═══ */}
+        <section className="py-8 border-y border-border/30">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center">
+              {[
+                { value: '50+', label: 'Capabilities' },
+                { value: '60', label: 'Crystallized Pipelines' },
+                { value: '21', label: 'Modules' },
+                { value: '21', label: 'Crown Jewels' },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <div className="text-2xl md:text-3xl font-bold text-primary">{stat.value}</div>
+                  <div className="text-xs text-muted-foreground">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* What You Unlock at Each Tier */}
-        <TierUnlockSection />
+        {/* ═══ Pricing Cards — Horizontal scroll on mobile ═══ */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <h2 className="text-3xl font-bold mb-3">Simple, Unified Pricing</h2>
+              <p className="text-muted-foreground">
+                One subscription. Everything at that tier included. No engine add-ons, no SDK fees.
+              </p>
+            </div>
 
-        {/* No Hidden Fees */}
+            {/* Desktop: Grid, Mobile: Horizontal Scroll */}
+            <div className="hidden lg:grid lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {TIERS.map((meta) => (
+                <PricingCard
+                  key={meta.key}
+                  meta={meta}
+                  checkingOut={checkingOut}
+                  onCta={handleCta}
+                  formatPrice={formatPrice}
+                />
+              ))}
+            </div>
+            <div className="lg:hidden">
+              <HorizontalScroll>
+                {TIERS.map((meta) => (
+                  <PricingCard
+                    key={meta.key}
+                    meta={meta}
+                    checkingOut={checkingOut}
+                    onCta={handleCta}
+                    formatPrice={formatPrice}
+                  />
+                ))}
+              </HorizontalScroll>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ No Hidden Fees ═══ */}
         <section className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">No Hidden Fees</h2>
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <h2 className="text-3xl font-bold mb-3">No Hidden Fees</h2>
               <p className="text-muted-foreground">
-                Every tier includes full access to the capabilities at that level. No engine add-ons, no SDK licensing fees, no per-seat surprises.
+                Every tier includes full access to capabilities, pipelines, and templates at that level.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {[
                 { icon: Zap, title: 'All Engines Included', desc: 'Every engine and meta-engine at your tier level — no separate subscription.' },
                 { icon: Shield, title: 'SDK & API Bundled', desc: 'Full API access ships with Creator and above. No developer license required.' },
-                { icon: Sparkles, title: 'Templates & Marketplace', desc: 'All marketplace items and templates included at Creator+. No per-item fees.' },
+                { icon: Sparkles, title: 'Pipelines & Templates', desc: 'All crystallized pipelines and templates at your tier level. No per-item fees.' },
               ].map((item, i) => {
-                const Icon = item.icon;
+                const ItemIcon = item.icon;
                 return (
                   <Card key={i} className="bg-card/50">
                     <CardContent className="p-6 text-center">
                       <div className="mx-auto w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                        <Icon className="w-6 h-6 text-primary" />
+                        <ItemIcon className="w-6 h-6 text-primary" />
                       </div>
                       <h3 className="font-semibold mb-2">{item.title}</h3>
                       <p className="text-sm text-muted-foreground">{item.desc}</p>
@@ -227,17 +435,17 @@ export default function SubstrateLicensing() {
           </div>
         </section>
 
-        {/* FAQ */}
+        {/* ═══ FAQ ═══ */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked</h2>
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="max-w-2xl mx-auto space-y-4">
               {[
+                { q: 'What are Crown Jewels?', a: 'Crown Jewels are our highest-value capabilities — each one represents a breakthrough in autonomous intelligence that no competitor offers.' },
+                { q: 'What are crystallized pipelines?', a: 'Pipelines discovered by the Intent Mesh that proved valuable and were permanently saved as reusable cross-module workflows.' },
                 { q: 'Do I need a separate developer license?', a: 'No. SDK and API access are included in Creator and Architect tiers.' },
-                { q: 'Are engines billed separately?', a: 'No. All engines at your tier level are included in your subscription.' },
                 { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. Changes take effect at the next billing cycle.' },
-                { q: 'What\'s the difference between Creator and Architect?', a: 'Creator includes 7 Experience Jewels and single-project scope. Architect adds CLM, cross-project learning, all 28 Jewels, and team seats.' },
-                { q: 'Is there a free trial?', a: 'The Free tier is permanently free with full building capabilities. Upgrade when you need advanced features.' },
+                { q: 'Is there a free trial?', a: 'The Free tier is permanently free with full building capabilities. Upgrade when you need autonomous intelligence.' },
               ].map((faq, i) => (
                 <Card key={i} className="bg-card/50">
                   <CardContent className="p-5">
@@ -250,7 +458,7 @@ export default function SubstrateLicensing() {
           </div>
         </section>
 
-        {/* Contact */}
+        {/* ═══ Contact ═══ */}
         <section className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-lg mx-auto text-center space-y-4">
@@ -279,5 +487,77 @@ export default function SubstrateLicensing() {
 
       <EnhancedFooter />
     </>
+  );
+}
+
+// ── Pricing Card Component ──
+function PricingCard({
+  meta,
+  checkingOut,
+  onCta,
+  formatPrice,
+}: {
+  meta: typeof TIERS[number];
+  checkingOut: string | null;
+  onCta: (key: string) => void;
+  formatPrice: (amount: number | null) => string;
+}) {
+  const tier = UNIFIED_TIERS[meta.key];
+  const Icon = meta.icon;
+  const price = formatPrice(tier.amount);
+  const isLoading = checkingOut === meta.key;
+
+  return (
+    <div className="min-w-[300px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink md:w-full">
+      <Card className={`relative overflow-hidden transition-all hover:shadow-lg h-full ${
+        meta.popular ? 'ring-2 ring-primary shadow-lg' : ''
+      }`}>
+        {meta.popular && (
+          <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-bl-lg font-medium">
+            Most Popular
+          </div>
+        )}
+        <div className={`h-2 bg-gradient-to-r ${meta.gradient}`} />
+        <CardHeader className="pb-4">
+          <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${meta.gradient} flex items-center justify-center mb-4`}>
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+          <CardTitle className="text-xl">{tier.name}</CardTitle>
+          <p className="text-sm text-muted-foreground min-h-[40px]">
+            {tier.tagline ?? tier.description}
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <div>
+            <span className="text-3xl font-bold">{price}</span>
+            {tier.amount !== null && tier.amount > 0 && (
+              <span className="text-muted-foreground text-sm">/mo</span>
+            )}
+            {tier.amount === null && (
+              <span className="text-muted-foreground text-sm block">Contact us</span>
+            )}
+          </div>
+
+          <ul className="space-y-2">
+            {tier.features.map((feature, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <Button
+            className="w-full gap-2"
+            variant={meta.popular ? 'default' : 'outline'}
+            onClick={() => onCta(meta.key)}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Redirecting…' : meta.cta}
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
