@@ -61,7 +61,7 @@ Cortex: Policy orchestration
 
 /* COLOPHON */
 
-CMPSBL® Substrate OS v10.5.1 ARCHITECT Epoch
+Clockless v10.5.4 ARCHITECT Epoch — powered by the CMPSBL World Engine
 21 Modules • 400+ Terminal Commands
 200 Synergy Pipelines • 400+ Depot Capabilities
 CLM Engine v2.0 • Universal Brain Transfer Pipeline

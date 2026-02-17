@@ -1,5 +1,5 @@
 /**
- * Enhanced Substrate OS Hooks — Live data from database
+ * Enhanced CMPSBL World Engine Hooks — Live data from database
  * Real-time telemetry with no mock data
  */
 

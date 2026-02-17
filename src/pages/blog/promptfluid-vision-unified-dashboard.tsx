@@ -31,7 +31,7 @@ const VisionModuleGuide = () => {
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore VISION, the unified dashboard that provides real-time visibility into every component of the CMPSBL substrate with powerful analytics and centralized control.
+            Explore VISION, the unified dashboard that provides real-time visibility into every component of the CMPSBL World Engine with powerful analytics and centralized control.
           </p>
 
           <AuthorBio publishDate="2025-09-20" readTime="10 min read" />
@@ -58,7 +58,7 @@ const VisionModuleGuide = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                VISION serves as the control plane for the entire CMPSBL substrate, providing a single interface to monitor, analyze, and manage all 21 modules.
+                VISION serves as the control plane for the entire CMPSBL World Engine, providing a single interface to monitor, analyze, and manage all 21 modules.
               </p>
               <p>
                 Unlike fragmented monitoring tools that require jumping between multiple interfaces, VISION unifies operational visibility. One dashboard shows the complete state of your AI infrastructure.
@@ -145,7 +145,7 @@ const VisionModuleGuide = () => {
             <h2 className="text-2xl font-bold mb-6 text-foreground">Related Articles</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <Link to="/blog/how-promptfluid-works-cascade-ai-ecosystem" className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors">
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL World Engine Works</h3>
                 <p className="text-sm text-muted-foreground">Discover the complete architecture that VISION monitors and controls.</p>
               </Link>
               <Link to="/blog/promptfluid-brain-adaptive-learning-core" className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors">

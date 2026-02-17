@@ -57,9 +57,9 @@ export const seoMap: Record<string, PageSEO> = {
   // ═══════════════════════════════════════════════════
   '/': {
     title: 'Clockless — powered by the CMPSBL World Engine',
-    description: 'Clockless is a persistent, clockless world engine powered by CMPSBL. Cognition that compounds over time. 21 modules, self-learning, multi-provider routing.',
+    description: 'Clockless is a persistent world engine powered by the CMPSBL World Engine. Where machines learn to dream, adapt, evolve, and remember. 21 modules, self-learning, multi-provider routing.',
     ogTitle: 'Clockless — powered by the CMPSBL World Engine',
-    ogDescription: 'Cognition That Compounds.',
+    ogDescription: 'Where machines learn to dream.',
     ogImage: OG_DEFAULT,
     keywords: ['Clockless', 'CMPSBL World Engine', 'cognitive infrastructure', 'persistent memory AI', 'self-learning AI', 'AI memory layer', 'multi-provider routing'],
     schema: 'home',

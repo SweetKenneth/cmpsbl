@@ -104,7 +104,7 @@ export default function Register() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>Register as Observer | CMPSBL®</title>
-        <meta name="description" content="Register for observer-level access to CMPSBL Substrate OS documentation and standards materials." />
+        <meta name="description" content="Register for observer-level access to Clockless documentation and standards materials." />
       </Helmet>
 
       <PublicNav />

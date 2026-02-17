@@ -53,12 +53,12 @@ export function LnchblCTA() {
                   animation: "gradientShift 4s ease-in-out infinite",
                 }}
               >
-                Public Cognitive Substrate
+                Public CMPSBL World Engine
               </span>
             </h2>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-              Get your own copy of the full CMPSBL substrate — the same 21-module, self-evolving AI operating system 
+              Get your own copy of the full CMPSBL World Engine — the same 21-module, self-evolving cognitive runtime 
               you see here — completely free from our companion site.
             </p>
 

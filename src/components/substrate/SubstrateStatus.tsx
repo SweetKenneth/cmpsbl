@@ -1,6 +1,6 @@
 /**
- * CMPSBL Substrate Status Widget
- * v9.1.0 — ARCHITECT Epoch compact status indicator
+ * CMPSBL World Engine Status Widget
+ * v10.5.4 — ARCHITECT Epoch compact status indicator
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -38,10 +38,10 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         <AlertCircle className="h-4 w-4 text-destructive" />
       )}
       <span className="text-muted-foreground">
-        CMPSBL substrate: {activeCount}/{totalModules} modules
+        CMPSBL World Engine: {activeCount}/{totalModules} modules
       </span>
       <Badge variant="outline" className="text-xs">
-        v9.3.0
+        v10.5.4
       </Badge>
     </div>
   );

@@ -1,4 +1,4 @@
-# CMPSBL Substrate OS v9.1.0 ARCHITECT robots.txt - 2026 SEO Optimized
+# Clockless v10.5.4 ARCHITECT — powered by the CMPSBL World Engine — robots.txt
 # https://cmpsbl.com/robots.txt
 # Last updated: 2026-02-08
 

@@ -100,7 +100,7 @@ export function EnhancedFooter() {
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-1 max-w-[280px] font-semibold text-foreground">
-                Cognition That Compounds.
+                Where machines learn to dream.
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-4 max-w-[280px]">
                 Clockless is powered by the CMPSBL World Engine.

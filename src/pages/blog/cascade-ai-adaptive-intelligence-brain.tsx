@@ -30,7 +30,7 @@ const CascadeAIDeepDive = () => {
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore the learning mechanisms, memory systems, and autonomous capabilities that make the Brain module the most advanced orchestration intelligence in the CMPSBL substrate.
+            Explore the learning mechanisms, memory systems, and autonomous capabilities that make the Brain module the most advanced orchestration intelligence in the CMPSBL World Engine.
           </p>
 
           <AuthorBio publishDate="2025-08-01" readTime="12 min read" />

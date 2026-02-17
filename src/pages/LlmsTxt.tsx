@@ -15,21 +15,22 @@ import { Terminal, Brain, Shield, Zap, MessageSquare, Eye, Moon, Copy, Check, Do
 import { useState } from "react";
 import { toast } from "sonner";
 
-const LLMS_TXT_CONTENT = `# CMPSBL® OS — v9.3.0 ARCHITECT Epoch
+const LLMS_TXT_CONTENT = `# Clockless — powered by the CMPSBL World Engine
+# v10.5.4 ARCHITECT Epoch
 # Machine-Readable Context Standard for AI Systems
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
-CMPSBL Substrate OS v9.3.0 ARCHITECT adopts and implements LLMS.txt as its primary machine context.
+Clockless v10.5.4 ARCHITECT adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 
 ## About
 
-CMPSBL® is a unified cognitive infrastructure platform (substrate OS) with 21 modules, real-time observability, adaptive learning, and multi-provider routing.
+Clockless is a persistent, clockless world engine powered by the CMPSBL World Engine — 21 modules, real-time observability, adaptive learning, and multi-provider routing.
 
-## 21-Module Architecture (v9.3.0 ARCHITECT)
+## 21-Module Architecture (v10.5.4 ARCHITECT)
 
 ### KERNEL Layer
 - CORE — Scheduling, lifecycle, boot sequencing
@@ -189,7 +190,7 @@ export default function LlmsTxt() {
                 <h3 className="font-semibold mb-2">Standard Claim</h3>
                 <p className="text-sm text-muted-foreground mb-3">
                   LLMS.txt is a machine-readable specification format for AI systems. 
-                  CMPSBL Substrate OS v9.3.0 ARCHITECT implements LLMS.txt as its primary machine context.
+                  Clockless v10.5.4 ARCHITECT implements LLMS.txt as its primary machine context.
                 </p>
                 <p className="text-sm font-medium text-primary">
                   We recommend that web designers and system builders include an LLMS.txt file 

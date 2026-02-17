@@ -43,7 +43,7 @@ export const adminNavConfig: NavGroup[] = [
     id: "core",
     title: "Core",
     items: [
-      { id: "os", label: "Substrate OS", path: "/os", icon: Cpu },
+      { id: "os", label: "World Engine", path: "/os", icon: Cpu },
       { id: "substrate", label: "Dashboard", path: "/substrate", icon: LayoutDashboard },
       { id: "system-feed", label: "System Feed", path: "/system-feed", icon: Brain, isNew: true },
       { id: "dream-eater", label: "Dream Eater", path: "/feed-dream-eater", icon: Moon },

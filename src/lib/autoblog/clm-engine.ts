@@ -143,7 +143,7 @@ async function generateChangelogContent(
         title = `🧬 System Evolution: ${digest?.improvements[0] || 'Performance Update'}`;
         body = `## What Changed
 
-The Substrate OS completed an autonomous evolution cycle.
+The CMPSBL World Engine completed an autonomous evolution cycle.
 
 ### Improvements Applied
 

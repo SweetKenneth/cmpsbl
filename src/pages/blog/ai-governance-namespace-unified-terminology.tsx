@@ -127,7 +127,7 @@ export default function AIGovernanceNamespaceUnifiedTerminology() {
               </p>
               
               <p className="text-muted-foreground leading-relaxed">
-                We encountered this problem internally as we developed the CMPSBL Substrate OS. Different modules 
+                We encountered this problem internally as we developed the CMPSBL World Engine. Different modules 
                 used different terms for the same governance concepts. Documentation became inconsistent. The 
                 solution wasn't just creating a glossary—it was establishing authoritative definitions tied to 
                 persistent identifiers through a structured namespace.
@@ -218,7 +218,7 @@ export default function AIGovernanceNamespaceUnifiedTerminology() {
                 and intervention in AI operations.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8">Integration with CMPSBL Substrate OS</h2>
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8">Integration with the CMPSBL World Engine</h2>
               
               <p className="text-muted-foreground leading-relaxed">
                 CMPSBL FNDTN v6 references this namespace as its governance semantics layer. The INCLUSIVE module 

@@ -162,7 +162,7 @@ export default function MarketplaceSuccess() {
                             Your License Key
                           </h3>
                           <Badge variant="outline" className="text-xs">
-                            {productType === 'os' ? 'Substrate OS' : 'Template'}
+                            {productType === 'os' ? 'World Engine' : 'Template'}
                           </Badge>
                         </div>
                         
@@ -229,7 +229,7 @@ export default function MarketplaceSuccess() {
                         ) : (
                           <Download className="w-5 h-5" />
                         )}
-                        {downloading ? "Preparing Download..." : "Download Substrate OS Package"}
+                        {downloading ? "Preparing Download..." : "Download World Engine Package"}
                       </Button>
                     )}
 
@@ -241,7 +241,7 @@ export default function MarketplaceSuccess() {
                           <>
                             <div className="flex items-start gap-3 text-sm">
                               <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                              <span>Click the download button above to get the Substrate OS package</span>
+                              <span>Click the download button above to get the World Engine package</span>
                             </div>
                             <div className="flex items-start gap-3 text-sm">
                               <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">2</span>

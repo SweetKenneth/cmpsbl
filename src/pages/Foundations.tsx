@@ -100,7 +100,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="CMPSBL Substrate OS v10.5.0 ARCHITECT Epoch — Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
+        <meta name="description" content="Clockless v10.5.0 ARCHITECT Epoch — powered by the CMPSBL World Engine. Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -116,7 +116,7 @@ export default function Foundations() {
             Foundations
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            CMPSBL Substrate OS v10.5.0 is the reference implementation and proposed standard 
+            Clockless v10.5.0, powered by the CMPSBL World Engine, is the reference implementation and proposed standard 
             for the <strong>substrate class</strong> of AI systems — persistent runtime, memory, 
             doctrine, and self-improvement.
           </p>

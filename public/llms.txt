@@ -1,13 +1,13 @@
-# CMPSBL Substrate OS — v9.1.0 ARCHITECT Epoch
-# The World's First AI Operating System
+# Clockless — powered by the CMPSBL World Engine
+# v10.5.4 ARCHITECT Epoch
 # Machine-Readable Context Standard for AI Systems
-# Version: 2026.02.11 | Schema: llms.txt v1.0
+# Version: 2026.02.17 | Schema: llms.txt v1.0
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-CMPSBL Substrate OS v9.1.0 ARCHITECT adopts and implements LLMS.txt as its primary machine context.
+Clockless v10.5.4 ARCHITECT adopts and implements LLMS.txt as its primary machine context.
 
 ## CATEGORY DEFINITION
 
@@ -23,9 +23,9 @@ Unlike traditional AI frameworks that solve one problem (memory OR routing OR se
 
 name: CMPSBL (pronounced "composable")
 brand: CMPSBL®
-product_name: Substrate OS — AI Operating System
-version: 9.1.0 (ARCHITECT Epoch)
-type: AI Operating System, Cognitive Runtime, AI Infrastructure
+product_name: Clockless — powered by the CMPSBL World Engine
+version: 10.5.4 (ARCHITECT Epoch)
+type: Clockless World Engine, Cognitive Runtime, AI Infrastructure
 founded: 2009
 location: Dallas, Texas, USA
 website: https://cmpsbl.com

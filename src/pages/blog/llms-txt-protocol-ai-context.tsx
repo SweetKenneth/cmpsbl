@@ -126,7 +126,7 @@ export default function LLMsTxtProtocolAIContext() {
                 <h4 className="text-lg font-semibold text-foreground mb-4">Example LLMs.txt Structure</h4>
                 <pre className="text-sm text-muted-foreground overflow-x-auto">
 {`# System Identity
-name: CMPSBL Substrate
+name: CMPSBL World Engine
 version: v6.x.x
 purpose: Evolving cognitive infrastructure
 
