@@ -163,7 +163,7 @@ export function DefenseAnalytics() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
@@ -268,12 +268,12 @@ export function DefenseAnalytics() {
                   const config = getActionConfig(event.action);
                   const Icon = config.icon;
                   return (
-                    <Card key={event.id} className="p-3 md:p-4 hover:border-primary/30 transition-colors">
-                      <div className="flex items-start gap-3">
+                    <Card key={event.id} className="p-3 md:p-4 hover:border-primary/30 transition-colors overflow-hidden">
+                      <div className="flex items-start gap-3 min-w-0">
                         <div className={`w-8 h-8 rounded-lg ${config.bg} flex items-center justify-center shrink-0 mt-0.5`}>
                           <Icon className={`w-4 h-4 ${config.color}`} />
                         </div>
-                        <div className="flex-1 min-w-0 space-y-1">
+                        <div className="flex-1 min-w-0 space-y-1 overflow-hidden">
                           <div className="flex items-center gap-2 flex-wrap">
                             <Badge variant="outline" className={`text-[10px] ${config.bg} ${config.color} border-current/30`}>
                               {config.label}
@@ -287,17 +287,17 @@ export function DefenseAnalytics() {
                             </span>
                           </div>
                           <p className="text-sm truncate">{event.reason}</p>
-                          <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-                            <span className="font-mono">{event.ip}</span>
+                          <div className="flex items-center gap-3 text-[11px] text-muted-foreground overflow-hidden">
+                            <span className="font-mono truncate">{event.ip}</span>
                             {event.fingerprint_family && (
-                              <span>• {event.fingerprint_family}</span>
+                              <span className="truncate">• {event.fingerprint_family}</span>
                             )}
                             {event.endpoint && event.endpoint !== 'site-guard' && (
-                              <span>• {event.endpoint}</span>
+                              <span className="truncate">• {event.endpoint}</span>
                             )}
                           </div>
                           {event.user_agent && (
-                            <p className="text-[10px] text-muted-foreground/60 truncate font-mono">{event.user_agent}</p>
+                            <p className="text-[10px] text-muted-foreground/60 truncate font-mono max-w-full">{event.user_agent}</p>
                           )}
                         </div>
                       </div>
@@ -437,10 +437,10 @@ export function DefenseAnalytics() {
 
                   return (
                     <div key={entry.ip} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs font-mono text-muted-foreground w-5">#{i + 1}</span>
-                          <span className="font-mono text-sm">{entry.ip}</span>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                        <div className="flex items-center gap-2 flex-wrap min-w-0">
+                          <span className="text-xs font-mono text-muted-foreground w-5 shrink-0">#{i + 1}</span>
+                          <span className="font-mono text-sm truncate">{entry.ip}</span>
                           <Badge variant="outline" className={`text-[10px] ${riskBadge(avgRisk)}`}>
                             Risk: {avgRisk}
                           </Badge>
@@ -448,7 +448,7 @@ export function DefenseAnalytics() {
                             {getActionConfig(topAction).label}
                           </Badge>
                         </div>
-                        <span className="text-sm font-bold">{entry.count} events</span>
+                        <span className="text-sm font-bold shrink-0 pl-7 sm:pl-0">{entry.count} events</span>
                       </div>
                       <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                         <div
