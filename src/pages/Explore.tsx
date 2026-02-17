@@ -56,10 +56,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
-        title="CMPSBL® — Cognitive Infrastructure for AI"
-        description="CMPSBL is the cognitive infrastructure layer powering persistent memory, self-learning, and multi-provider routing. 21 modules, 400+ capabilities."
+        title="Clockless — powered by the CMPSBL World Engine"
+        description="Clockless is a persistent, clockless world engine powered by CMPSBL. Cognition that compounds over time. 21 modules, self-learning, multi-provider routing."
         canonical="https://cmpsbl.com"
-        keywords={['cognitive infrastructure', 'AI operating system', 'persistent memory AI', 'self-learning AI', 'CMPSBL substrate', 'AI memory layer', 'multi-provider routing']}
+        keywords={['Clockless', 'CMPSBL World Engine', 'cognitive infrastructure', 'persistent memory AI', 'self-learning AI', 'AI memory layer', 'multi-provider routing']}
       />
 
       <PublicNav />

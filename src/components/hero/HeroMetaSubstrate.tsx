@@ -322,7 +322,7 @@ export function HeroMetaSubstrate() {
               >
                 <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               </motion.div>
-              <span className="text-xs sm:text-sm font-bold text-foreground tracking-wide">Cognitive Operating System</span>
+              <span className="text-xs sm:text-sm font-bold text-foreground tracking-wide">powered by the CMPSBL World Engine</span>
               
               {/* Live indicator */}
               <div className="flex items-center gap-1.5 pl-2.5 border-l border-primary/30">
@@ -335,56 +335,40 @@ export function HeroMetaSubstrate() {
               </div>
             </motion.div>
             
-            {/* Main headline - Classic "Where machines learn to dream" */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-5 sm:mb-8" style={{ contain: "layout" }}>
+            {/* Main headline — Clockless */}
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-3 sm:mb-5" style={{ contain: "layout" }}>
               <motion.span 
-                className="text-foreground block"
+                className="block"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 }}
               >
-                Where Machines
-              </motion.span>
-              <motion.span 
-                className="text-foreground block mt-1"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.25 }}
-              >
-                Learn To
-              </motion.span>
-              <motion.span 
-                className="block mt-2 sm:mt-3"
-                style={{ minHeight: "1.15em", height: "1.15em", contain: "strict", overflow: "hidden" }}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.35 }}
-              >
-                <TypedText 
-                  texts={["Dream.", "Remember.", "Adapt.", "Evolve.", "Persist."]}
-                  gradientColors={[
-                    "linear-gradient(135deg, hsl(280 80% 60%), hsl(310 80% 65%))",
-                    "linear-gradient(135deg, hsl(185 100% 50%), hsl(200 80% 60%))",
-                    "linear-gradient(135deg, hsl(30 90% 55%), hsl(45 95% 55%))",
-                    "linear-gradient(135deg, hsl(145 80% 50%), hsl(175 70% 50%))",
-                    "linear-gradient(135deg, hsl(var(--primary)), hsl(260 90% 60%))",
-                  ]}
-                />
+                <span className="bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent">Clockless</span>
               </motion.span>
             </h1>
+
+            {/* Tagline — Cognition That Compounds */}
+            <motion.p
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.25 }}
+              className="text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wide mb-5 sm:mb-8"
+            >
+              Cognition That Compounds.
+            </motion.p>
             
-            {/* Subheadline - Emphasize free dev tools + engines subscription */}
+            {/* Subheadline */}
             <motion.p 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
               className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              The cognitive operating system that gives your AI{' '}
+              A persistent, clockless world engine that gives your AI{' '}
               <span className="text-foreground font-semibold">persistent memory</span>,{' '}
               <span className="text-foreground font-semibold">self-learning</span>, and{' '}
               <span className="text-foreground font-semibold">multi-provider routing</span> — 
-              out of the box. 21 integrated modules. One substrate.{' '}
+              out of the box. 21 integrated modules. One engine.{' '}
               <span className="text-emerald-500 font-bold">Start free, scale to enterprise.</span>
             </motion.p>
             

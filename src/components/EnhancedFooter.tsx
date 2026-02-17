@@ -70,7 +70,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Support", href: "/support" },
         { name: "Contact", href: "/contact" },
-        { name: "CMPSBL OS", href: "/substrate" },
+        { name: "World Engine", href: "/substrate" },
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
         { name: "Investors", href: "/investors" },
@@ -99,8 +99,11 @@ export function EnhancedFooter() {
                 <CmpsblLogo size="sm" className="sm:hidden" />
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 max-w-[280px]">
-                The cognitive operating system where machines learn to dream.
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-1 max-w-[280px] font-semibold text-foreground">
+                Cognition That Compounds.
+              </p>
+              <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-4 max-w-[280px]">
+                Clockless is powered by the CMPSBL World Engine.
               </p>
               
               {/* Social Links - Larger touch targets on mobile */}
@@ -202,7 +205,7 @@ export function EnhancedFooter() {
               
               {/* Brand Line - Stack on very small screens */}
               <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-4 text-[11px] sm:text-xs text-muted-foreground text-center">
-                <span>CMPSBL (Composable) By PromptFluid</span>
+                <span>Clockless — powered by the CMPSBL World Engine · By PromptFluid</span>
                 <span className="hidden sm:inline text-border">•</span>
                 <span className="inline-flex items-center gap-1">
                   Made with <Heart className="w-3 h-3 text-destructive fill-destructive animate-pulse" /> by humans who care

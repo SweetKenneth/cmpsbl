@@ -175,7 +175,7 @@ export function SubstrateCapabilities({ compact = false }: SubstrateCapabilities
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
             {totalFeatures}+ cognitive abilities baked into our templates. Every template inherits 
-            these production-ready features from the CMPSBL Substrate OS.
+            these production-ready features from the CMPSBL World Engine.
           </p>
         </div>
 
