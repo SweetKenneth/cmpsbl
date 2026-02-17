@@ -57,11 +57,13 @@ const TIERS = [
     bgGlow: 'bg-blue-500/5',
     cta: 'Subscribe — $49/mo',
     popular: true,
-    headline: 'Autonomous Intelligence That Works While You Don\'t',
-    benefitSummary: '19 capabilities including 7 Crown Jewels that predict, protect, and optimize your systems without manual intervention.',
+    headline: 'Everything in Free + Autonomous Intelligence',
+    benefitSummary: 'All 76 engines, 8 meta-engines, 7 Crown Jewels, full SDK/API access, and self-improving capabilities that predict, protect, and optimize.',
     pipelineCount: 20,
     templateExamples: ['Multi-agent workflows', 'RAG pipeline templates', 'Security scan templates', 'Cost optimization playbooks'],
     capabilityHighlights: [
+      'All 76 base engines (up from 30 in Free)',
+      '8 meta-engines for compound orchestration',
       'Auto-recover from module failures',
       'Predict cost spikes before they hit',
       'Smart rate shaping for API traffic',
@@ -77,11 +79,13 @@ const TIERS = [
     bgGlow: 'bg-violet-500/5',
     cta: 'Subscribe — $149/mo',
     popular: false,
-    headline: 'Compound Intelligence Across Everything',
-    benefitSummary: '21 advanced capabilities with 7 Crown Jewels — cross-project learning, forensic timelines, dream-state synthesis, and cascade failure prevention.',
+    headline: 'Everything in Creator + Compound Intelligence',
+    benefitSummary: 'All Creator capabilities plus 16 meta-engines (up from 8), all 28 Crown Jewels, cross-project learning, forensic timelines, and cascade failure prevention.',
     pipelineCount: 40,
     templateExamples: ['Cross-project learning pipelines', 'Compliance audit generators', 'Threat intelligence workflows', 'Architecture migration plans'],
     capabilityHighlights: [
+      '16 meta-engines (up from 8 in Creator)',
+      'All 28 Crown Jewels (up from 7)',
       'Zero-day attack detection',
       'Cross-module orchestration',
       'Dream-state creative synthesis',
@@ -97,11 +101,13 @@ const TIERS = [
     bgGlow: 'bg-amber-500/5',
     cta: 'Contact Sales',
     popular: false,
-    headline: 'Full Sovereignty — Your Infrastructure, Your Rules',
-    benefitSummary: '10 enterprise capabilities with 7 Crown Jewels — air-gapped deployment, threat intelligence networks, and multi-tenant isolation with SLA guarantees.',
+    headline: 'Everything in Architect + Full Sovereignty',
+    benefitSummary: 'All Architect capabilities plus all 24 meta-engines, source code access, air-gapped deployment, and SLA guarantees.',
     pipelineCount: 60,
     templateExamples: ['Air-gapped deployment configs', 'Multi-tenant isolation templates', 'Federated identity workflows', 'Enterprise governance policies'],
     capabilityHighlights: [
+      'All 24 meta-engines (up from 16 in Architect)',
+      'All 200+ templates across every tier',
       'Multi-tenant memory isolation',
       'Sovereign identity federation',
       'Enterprise threat intel network',
@@ -414,7 +420,7 @@ export default function SubstrateLicensing() {
             </div>
             <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
               {[
-                { icon: Zap, title: 'Tiered Engine Access', desc: 'All 76 engines included from Creator. Meta-engines scale by tier (8→16→24). Recursive self-improvement meta-engines remain CMPSBL-only.' },
+                { icon: Zap, title: 'Tiered Engine Access', desc: 'Free gets 30 core engines. Creator unlocks all 76 engines + 8 meta-engines. Architect adds 16 meta-engines. Enterprise gets all 24. Each tier includes everything from the tier below.' },
                 { icon: Shield, title: 'SDK & API Bundled', desc: 'Full API access ships with Creator and above. No developer license required.' },
                 { icon: Sparkles, title: 'Pipelines & Templates', desc: 'All crystallized pipelines and templates at your tier level. No per-item fees.' },
               ].map((item, i) => {
@@ -442,7 +448,7 @@ export default function SubstrateLicensing() {
             <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4">
               {[
                 { q: 'What are Crown Jewels?', a: 'Crown Jewels are our highest-value capabilities — each one represents a breakthrough in autonomous intelligence that no competitor offers.' },
-                { q: 'Are all engines available at every tier?', a: 'All 76 base engines are available from Creator tier onward. Meta-engines scale: Creator gets 8, Architect gets 16, Enterprise gets all 24. The 9 recursive self-improvement meta-engines are CMPSBL-internal only and never exposed externally.' },
+                { q: 'Are all engines available at every tier?', a: 'Free includes 30 core engines. Creator unlocks all 76 base engines plus 8 meta-engines. Architect includes everything in Creator plus 16 meta-engines. Enterprise includes everything in Architect plus all 24 meta-engines. The 9 recursive self-improvement meta-engines are CMPSBL-internal only.' },
                 { q: 'What are crystallized pipelines?', a: 'Pipelines discovered by the Intent Mesh that proved valuable and were permanently saved as reusable cross-module workflows.' },
                 { q: 'Do I need a separate developer license?', a: 'No. SDK and API access are included in Creator and Architect tiers.' },
                 { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. Changes take effect at the next billing cycle.' },
