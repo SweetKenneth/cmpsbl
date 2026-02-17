@@ -51,7 +51,7 @@
 
 ---
 
-## v10.7.0 Crown Jewel Registry (Complete — 77 Jewels + Wave 4)
+## v10.8.0 Crown Jewel Registry (Complete — 77 Jewels + Wave 4 + 50 Crystallized Pipelines)
 
 ### 🔴 CMPSBL-Only — Recursive Cognition & Meta-Intelligence (9)
 
@@ -168,6 +168,7 @@ Patterns scanned:
 | Agencies | 0 | 3 | Unlimited |
 | Agents per agency | 0 | 5 | 20 |
 | Crown Jewels | 0 | 37 (Creator) | 73 (Creator+Architect) |
+| Crystallized Pipelines | 0 | 14 | 32 (Creator+Architect) |
 
 ---
 

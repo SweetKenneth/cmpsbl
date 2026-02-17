@@ -124,7 +124,7 @@ export default function Foundations() {
             <Badge variant="outline">21 Modules</Badge>
             <Badge variant="outline">6 Layers</Badge>
             <Badge variant="outline">400+ Capabilities</Badge>
-            <Badge variant="outline">200+ Synergy Pipelines</Badge>
+            <Badge variant="outline">250+ Synergy Pipelines</Badge>
           </div>
         </div>
 

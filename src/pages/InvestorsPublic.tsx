@@ -19,7 +19,7 @@ const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
   { title: "21-Module Cognitive OS", desc: "First complete cognitive OS with 21 modules across 6 architectural layers", badge: "Production" },
-  { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-module crystallization", badge: "60+ Pipelines" },
+  { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-module crystallization", badge: "50 Crystallized" },
   { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "v10.5.3" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
   { title: "Cognitive Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM v2.0" },
@@ -59,7 +59,7 @@ export default function InvestorsPublic() {
 
   const metrics = [
     { icon: Layers, label: "Integrated Modules", value: "21", color: "text-primary" },
-    { icon: Zap, label: "Crystallized Pipelines", value: "60+", color: "text-emerald-500" },
+    { icon: Zap, label: "Crystallized Pipelines", value: "50", color: "text-emerald-500" },
     { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
     { icon: Globe, label: "Architecture Layers", value: "6", color: "text-violet-400" }
   ];
@@ -70,7 +70,7 @@ export default function InvestorsPublic() {
     { icon: Shield, name: "DEFENSE Module", subtitle: "Enterprise Security", description: "Bot protection, threat detection, and governance guardrails for production AI." },
     { icon: Server, name: "NEXUS Gateway", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
     { icon: Code, name: "ENCODE Engine", subtitle: "Governed Code Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "Intent Mesh", subtitle: "Emergent Orchestration", description: "Modules advertise, compose, and crystallize cross-module pipelines autonomously. 60+ crystallized." },
+    { icon: Sparkles, name: "Intent Mesh", subtitle: "Emergent Orchestration", description: "Modules advertise, compose, and crystallize cross-module pipelines autonomously. 50 Crown Jewel pipelines." },
   ];
 
   const highlights = [
@@ -84,7 +84,7 @@ export default function InvestorsPublic() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Investor Relations — CMPSBL® Cognitive Infrastructure"
-        description="CMPSBL: 21-module cognitive OS, 14 documented world firsts, 60+ crystallized pipelines. Seeking seed investment for AI infrastructure."
+        description="CMPSBL: 21-module cognitive OS, 14 documented world firsts, 50 crystallized Crown Jewel pipelines. Seeking seed investment for AI infrastructure."
         canonical="https://cmpsbl.com/investors"
         keywords={['CMPSBL investment', 'AI startup investment', 'cognitive infrastructure', 'AI IP portfolio', 'seed investment AI']}
       />

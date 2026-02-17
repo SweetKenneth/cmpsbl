@@ -2,14 +2,14 @@
 
 # 🔒 Crown Jewels Registry
 
-### 197+ Strategically Sensitive Artifacts — CRITICAL CLASSIFICATION
+### 249+ Strategically Sensitive Artifacts — CRITICAL CLASSIFICATION
 
 <table>
 <tr><td><strong>Document</strong></td><td>02 — Crown Jewels Registry</td></tr>
 <tr><td><strong>Classification</strong></td><td>🔴 CRITICAL — Core IP</td></tr>
-<tr><td><strong>Version</strong></td><td>v10.7.0 ARCHITECT Epoch</td></tr>
+<tr><td><strong>Version</strong></td><td>v10.8.0 ARCHITECT Epoch</td></tr>
 <tr><td><strong>Last Audit</strong></td><td>February 17, 2026</td></tr>
-<tr><td><strong>Status</strong></td><td>Wave 4 Discovery Complete — 168 Capability Crown Jewels Locked</td></tr>
+<tr><td><strong>Status</strong></td><td>Wave 4 + 50 Crystallized Pipelines Complete — 168 Capabilities + 50 Pipelines Locked</td></tr>
 </table>
 
 </div>
@@ -24,11 +24,12 @@
 
 Crown Jewels are strategically sensitive artifacts that represent the substrate's competitive moat. They must never be exposed publicly at any tier, plan, SDK, or API.
 
-**Total Crown Jewels:** 199
+**Total Crown Jewels:** 249
 
 | Artifact Type | Count |
 |---------------|-------|
 | Capabilities | 168 |
+| Crystallized Pipelines | 50 |
 | Synergy Pipelines | 3 |
 | Engines | 16 |
 | Meta-Engines | 12 |
