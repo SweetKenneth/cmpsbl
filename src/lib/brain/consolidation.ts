@@ -1,6 +1,6 @@
 /**
  * BRAIN Memory Consolidation Engine
- * v9.1.0 ARCHITECT — Pattern Extraction & Deduplication
+ * v10.5.4 ARCHITECT — Pattern Extraction & Deduplication
  * 
  * Memory consolidation and pattern extraction during low-activity
  * periods to improve recall efficiency.

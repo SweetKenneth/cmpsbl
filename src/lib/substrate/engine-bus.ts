@@ -1,6 +1,6 @@
 /**
  * promptfluid® Engine Bus
- * v9.1.0 — ARCHITECT Epoch: Canonical Routing Layer with Telemetry Integration
+ * v10.5.4 — ARCHITECT Epoch: Canonical Routing Layer with Telemetry Integration
  * 
  * The Engine Bus is the single execution router for all substrate engines.
  * All engine execution must route through engine_bus.dispatch().

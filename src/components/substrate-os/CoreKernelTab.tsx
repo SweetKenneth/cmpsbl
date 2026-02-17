@@ -1,6 +1,6 @@
 /**
  * CORE Kernel Tab — Job Scheduler, System State, Lifecycle
- * v9.1.0 ARCHITECT Epoch — Part of the 6-layer, 21-module architecture
+ * v10.5.4 ARCHITECT Epoch — Part of the 6-layer, 21-module architecture
  */
 
 import { useState } from 'react';

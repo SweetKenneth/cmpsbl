@@ -1,6 +1,6 @@
 /**
  * DEFENSE Incident Response Engine
- * v9.1.0 ARCHITECT — Automated Response Playbooks & Remediation
+ * v10.5.4 ARCHITECT — Automated Response Playbooks & Remediation
  * 
  * Automated incident response with playbook execution
  * and coordinated remediation.

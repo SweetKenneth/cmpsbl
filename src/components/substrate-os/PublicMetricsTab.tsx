@@ -1,6 +1,6 @@
 /**
  * Public Metrics Dashboard Tab
- * v9.1.0 ARCHITECT Epoch — Single source of truth for all public-facing metrics
+ * v10.5.4 ARCHITECT Epoch — Single source of truth for all public-facing metrics
  * 
  * Update values here to sync across the entire substrate in real-time.
  */

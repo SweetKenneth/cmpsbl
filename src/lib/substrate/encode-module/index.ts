@@ -1,6 +1,6 @@
 /**
  * ENCODE Module — Code Execution & Generation Intelligence
- * v9.1.0 ARCHITECT Epoch — Module #21, first-class substrate module
+ * v10.5.4 ARCHITECT Epoch — Module #21, first-class substrate module
  * 
  * ENCODE is the substrate's code execution engine, receiving structured task packets
  * from DECODE (the human-facing intent router) and producing governed code artifacts.

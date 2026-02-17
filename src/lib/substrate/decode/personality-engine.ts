@@ -1,13 +1,13 @@
 /**
  * CMPSBL® DECODE Personality Engine
- * v9.3.0 ARCHITECT — Dynamic Personality Profiles (Server-Synced)
+ * v10.5.4 ARCHITECT — Dynamic Personality Profiles (Server-Synced)
  *
  * Personality profiles now sync with the backend edge function.
  * Changes made via terminal commands persist to the database.
  * 
  * Integrates with 21-module architecture for personality-aware responses.
  * 
- * v9.1.0 Changes:
+ * v10.5.4 Changes:
  *   - New direct/professional baseline (no more poetry/metaphors)
  *   - Server-side personality storage in brain_config
  *   - Terminal commands sync with backend

@@ -1,6 +1,6 @@
 /**
  * seoMap.ts — Centralized SEO Metadata Registry
- * v9.3.0 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  *
  * Single source of truth for every PUBLIC indexed page.
  * Each entry has a UNIQUE primary keyword — no cannibalization.

@@ -1,6 +1,6 @@
 /**
  * Capabilities Control Panel
- * v9.1.0 ARCHITECT — Dashboard tab for toggling 400+ capabilities on/off
+ * v10.5.4 ARCHITECT — Dashboard tab for toggling 400+ capabilities on/off
  */
 
 import { useState, useEffect } from 'react';

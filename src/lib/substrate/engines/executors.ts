@@ -1,6 +1,6 @@
 /**
  * Engine Executors
- * v9.1.0 ARCHITECT — 76 Engines Compound Capability Execution
+ * v10.5.4 ARCHITECT — 76 Engines Compound Capability Execution
  * 
  * Each executor orchestrates multiple capabilities into a unified result.
  * Executors manage context sharing, error handling, and synergy calculations.

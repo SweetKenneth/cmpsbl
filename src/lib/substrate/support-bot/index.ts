@@ -1,6 +1,6 @@
 /**
  * Support Bot Engine
- * v9.1.0 ARCHITECT Epoch — Governed Evolving Support System
+ * v10.5.4 ARCHITECT Epoch — Governed Evolving Support System
  * 
  * A proof-of-concept for evolving software: learns from verified resolutions,
  * escalates uncertainty, and produces audit-safe responses.

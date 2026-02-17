@@ -1,6 +1,6 @@
 /**
  * Agency Production — Unified exports for all production-ready agency features
- * v9.1.0 ARCHITECT Epoch — Cognitive Agent Infrastructure
+ * v10.5.4 ARCHITECT Epoch — Cognitive Agent Infrastructure
  */
 
 // Core types

@@ -1,6 +1,6 @@
 /**
  * Support Bot React Hook
- * v9.1.0 ARCHITECT Epoch — Governed Evolving Support System
+ * v10.5.4 ARCHITECT Epoch — Governed Evolving Support System
  * 
  * Provides React integration for the support bot engine.
  * Respects debugMode — when enabled, auto-refresh is disabled.

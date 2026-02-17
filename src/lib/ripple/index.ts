@@ -1,6 +1,6 @@
 /**
  * RIPPLE Event Bus
- * v9.1.0 ARCHITECT — Hybrid Push/Pull Event Orchestrator
+ * v10.5.4 ARCHITECT — Hybrid Push/Pull Event Orchestrator
  * 
  * RIPPLE is the nervous system of the substrate:
  * - PUSH mode: Automatic event fan-out to subscribers

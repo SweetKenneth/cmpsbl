@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * v9.1.0 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
@@ -47,13 +47,13 @@ export const STIER_PIPELINES_COUNT = 32;
 
 /**
  * Base engines in ENGINE_REGISTRY
- * v9.1.0: 76 cognitive engines
+ * v10.5.4: 76 cognitive engines
  */
 export const ENGINES_COUNT = 76;
 
 /**
  * Meta-engines that orchestrate multiple base engines
- * v9.1.0: 24 meta-engines
+ * v10.5.4: 24 meta-engines
  */
 export const META_ENGINES_COUNT = 24;
 

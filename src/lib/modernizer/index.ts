@@ -1,6 +1,6 @@
 /**
  * MODERNIZER Module — Self-Evolution & Code Intelligence
- * v9.1.0 ARCHITECT — Substrate Evolution Engine
+ * v10.5.4 ARCHITECT — Substrate Evolution Engine
  * 
  * Provides:
  * - Code scanning and analysis

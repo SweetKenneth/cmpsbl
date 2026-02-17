@@ -1,6 +1,6 @@
 /**
  * ENCODE Tab — Substrate Execution & Generation Interface
- * v9.1.0 ARCHITECT Epoch — USER → DECODE → ENCODE pipeline
+ * v10.5.4 ARCHITECT Epoch — USER → DECODE → ENCODE pipeline
  * DECODE handles conversational intent parsing; ENCODE handles code execution + sandbox preview
  * Part of the 21-module cognitive architecture
  */

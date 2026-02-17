@@ -1,6 +1,6 @@
 /**
  * RIPPLE Event Analytics
- * v9.1.0 ARCHITECT — Event stream analysis and pattern detection
+ * v10.5.4 ARCHITECT — Event stream analysis and pattern detection
  */
  
  import { ripple, type RippleEvent, type EventStatus } from './index';

@@ -1,6 +1,6 @@
 /**
  * Terminal Registry Validator
- * v9.1.0 — ARCHITECT Epoch Ensures all 360+ commands are properly wired
+ * v10.5.4 — ARCHITECT Epoch Ensures all 360+ commands are properly wired
  */
 
 import { log } from '@/lib/system/log';

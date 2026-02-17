@@ -1,7 +1,7 @@
 /**
  * Tech Showcase — Interactive demonstration of all 21 CMPSBL modules
  * Premium terminal-style code display with syntax highlighting
- * v9.0.0: Full module coverage for the 6-layer kernel architecture + SEBA
+ * v10.5.4: Full module coverage for the 6-layer kernel architecture + SEBA
  */
 
 import { useState, useEffect, useMemo } from "react";

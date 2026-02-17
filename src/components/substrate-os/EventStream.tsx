@@ -1,6 +1,6 @@
 /**
  * Event Stream — Live system events feed
- * v9.1.0 ARCHITECT Epoch — Real-time log viewer with filtering and LIVE indicator
+ * v10.5.4 ARCHITECT Epoch — Real-time log viewer with filtering and LIVE indicator
  * Streams events from all 21 modules across the substrate
  */
 

@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Scan Engine
- * v9.1.0 ARCHITECT — Full 86-Rule WCAG 2.2 Compliance Scanner
+ * v10.5.4 ARCHITECT — Full 86-Rule WCAG 2.2 Compliance Scanner
  * @origin(cmptbl) — WCAG criterion mappings from CMPTBL utilities
  * @origin(pf-clarity-universal-scan) — Full 86-rule matrix absorbed into substrate
  * 

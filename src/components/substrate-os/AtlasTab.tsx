@@ -1,6 +1,6 @@
 /**
  * Atlas Control Plane Tab
- * v9.1.0 ARCHITECT Epoch — Single-source-of-truth substrate interface with CLM + SEBA integration
+ * v10.5.4 ARCHITECT Epoch — Single-source-of-truth substrate interface with CLM + SEBA integration
  * Orchestrates 400+ capabilities across 76 engines and 24 meta-engines
  */
 

@@ -1,6 +1,6 @@
 /**
  * CORTEX Module Tab — Agency-class Orchestrator Dashboard
- * v9.1.0 ARCHITECT Epoch — Policy Intent Layer + Evolution Sequencing
+ * v10.5.4 ARCHITECT Epoch — Policy Intent Layer + Evolution Sequencing
  * Orchestrates all 21 modules across 6 architectural layers
  */
 

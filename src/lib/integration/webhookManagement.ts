@@ -1,6 +1,6 @@
 /**
  * INTEGRATION Module — Webhook Management
- * v9.1.0 ARCHITECT — Inbound/outbound webhooks, signatures, and retry logic
+ * v10.5.4 ARCHITECT — Inbound/outbound webhooks, signatures, and retry logic
  */
 
 import { supabase } from '@/integrations/supabase/client';

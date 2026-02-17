@@ -1,6 +1,6 @@
 /**
  * Synergy Terminal Handlers
- * v9.1.0 — ARCHITECT Epoch Terminal commands for 200 synergy pipelines with 125 custom executors
+ * v10.5.4 — ARCHITECT Epoch Terminal commands for 200 synergy pipelines with 125 custom executors
  */
 
 import { registerHandler } from './validate-registry';

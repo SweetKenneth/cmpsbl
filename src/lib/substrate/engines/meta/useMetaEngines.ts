@@ -1,6 +1,6 @@
 /**
  * React Hook for Meta-Engines
- * v9.1.0 ARCHITECT — Access compound engine orchestration across 24 meta-engines
+ * v10.5.4 ARCHITECT — Access compound engine orchestration across 24 meta-engines
  */
 
 import { useState, useCallback, useMemo } from 'react';

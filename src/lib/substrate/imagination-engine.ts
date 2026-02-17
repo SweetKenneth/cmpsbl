@@ -1,6 +1,6 @@
 /**
  * Imagination Engine
- * v9.1.0 — ARCHITECT Epoch: Unified Cognitive Imagination Module
+ * v10.5.4 — ARCHITECT Epoch: Unified Cognitive Imagination Module
  * 
  * Merges all generative/synthesis operations into a single authoritative module:
  * - Dream: Autonomous nocturnal processing

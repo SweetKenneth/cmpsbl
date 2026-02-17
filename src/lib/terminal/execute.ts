@@ -1,6 +1,6 @@
 /**
  * Terminal Execution Wrapper
- * v9.1.0 ARCHITECT — Governed command execution with tracing and redaction
+ * v10.5.4 ARCHITECT — Governed command execution with tracing and redaction
  */
 
 import { generateTraceId } from '@/lib/system/trace';

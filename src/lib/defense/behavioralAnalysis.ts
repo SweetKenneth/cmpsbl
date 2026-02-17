@@ -1,6 +1,6 @@
 /**
  * DEFENSE Behavioral Analysis
- * v9.1.0 ARCHITECT — User and entity behavior analytics for threat detection
+ * v10.5.4 ARCHITECT — User and entity behavior analytics for threat detection
  */
  
  import { supabase } from '@/integrations/supabase/client';

@@ -1,6 +1,6 @@
 /**
  * useSystem Hook
- * v9.1.0 ARCHITECT Epoch — Dedicated hook for SYSTEM (Administration) module operations
+ * v10.5.4 ARCHITECT Epoch — Dedicated hook for SYSTEM (Administration) module operations
  * 
  * Part of the 6-layer, 21-module Cognitive Architecture
  */

@@ -1,6 +1,6 @@
 /**
  * Request Tracing System
- * v9.1.0 — ARCHITECT Epoch Distributed tracing for substrate operations
+ * v10.5.4 — ARCHITECT Epoch Distributed tracing for substrate operations
  */
 
 // Trace ID format: pf-{timestamp_base36}-{random_hex}

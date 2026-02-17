@@ -1,6 +1,6 @@
 /**
  * Substrate Utilities
- * v9.1.0 — ARCHITECT Epoch Helper Functions & Common Patterns
+ * v10.5.4 — ARCHITECT Epoch Helper Functions & Common Patterns
  * 
  * Provides utility functions for common substrate operations across the 21-module architecture.
  */

@@ -1,6 +1,6 @@
 /**
  * Reasoning Engine — Unified Higher-Order Reasoning
- * v9.1.0 — ARCHITECT Epoch: Reasoning Compression
+ * v10.5.4 — ARCHITECT Epoch: Reasoning Compression
  * 
  * Merges:
  * - brain.causal → causal_mapping

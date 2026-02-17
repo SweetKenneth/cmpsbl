@@ -1,6 +1,6 @@
 /**
  * Decode Identity Context — Cryptographic User Recognition
- * v9.1.0 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  * 
  * Binds Decode's conversational memory to cryptographically verified identities.
  * No passwords, no cookies — device-bound secure enclave signatures.

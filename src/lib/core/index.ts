@@ -1,6 +1,6 @@
 /**
  * CORE Module — Substrate Foundation Layer
- * v9.1.0 — ARCHITECT Epoch Kernel Bootstrap & Base Utilities
+ * v10.5.4 — ARCHITECT Epoch Kernel Bootstrap & Base Utilities
  * 
  * The foundational module that provides:
  * - Substrate boot sequence management

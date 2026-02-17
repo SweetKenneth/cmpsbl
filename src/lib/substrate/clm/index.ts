@@ -1,6 +1,6 @@
 /**
  * Constant Learning Mode (CLM) Module
- * v9.1.0 ARCHITECT Epoch — Always-on, rate-limited, spaced, reflective learning
+ * v10.5.4 ARCHITECT Epoch — Always-on, rate-limited, spaced, reflective learning
  * 
  * Now includes dedicated Encoded learning engine for 24/7 code-writing improvement.
  * Integrates with 62 Engines and 20 Meta-Engines for comprehensive skill building.

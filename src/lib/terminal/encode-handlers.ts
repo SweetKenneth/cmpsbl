@@ -1,6 +1,6 @@
 /**
  * ENCODE Module Terminal Handlers
- * v9.1.0 ARCHITECT — First-class module terminal commands
+ * v10.5.4 ARCHITECT — First-class module terminal commands
  */
 
 import { registerHandler } from './validate-registry';

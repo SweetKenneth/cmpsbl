@@ -1,6 +1,6 @@
 /**
  * useDecode Hook
- * v9.1.0 ARCHITECT — Dedicated hook for DECODE (Interpreter) module operations
+ * v10.5.4 ARCHITECT — Dedicated hook for DECODE (Interpreter) module operations
  * Respects debug mode kill-switch
  */
 

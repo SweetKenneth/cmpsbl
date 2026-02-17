@@ -1,6 +1,6 @@
 /**
  * Module CLM React Hook
- * v9.1.0 ARCHITECT Epoch — React integration for 21-module self-learning
+ * v10.5.4 ARCHITECT Epoch — React integration for 21-module self-learning
  */
 
 import { useState, useEffect, useCallback } from 'react';

@@ -1,6 +1,6 @@
 /**
  * Composable Artifacts — Unified Resource Hub
- * v9.3.0 ARCHITECT — Tier Split & Black-Box Enforcement
+ * v10.5.4 ARCHITECT — Tier Split & Black-Box Enforcement
  * Supreme × Canva inspired layout — Category-first, horizontal-scroll mobile UX
  * Combines: Capabilities (400+), Templates (200+), Pipelines (200+) = 800+ Artifacts
  */

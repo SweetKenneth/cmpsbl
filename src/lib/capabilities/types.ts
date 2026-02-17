@@ -1,6 +1,6 @@
 /**
  * Capability System Types
- * v9.1.0 ARCHITECT — Auto-Adapt Edge Function Ingestion (400+ capabilities)
+ * v10.5.4 ARCHITECT — Auto-Adapt Edge Function Ingestion (400+ capabilities)
  */
 
 export type CapabilityRisk = 'low' | 'medium' | 'high';

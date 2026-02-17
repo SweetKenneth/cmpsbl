@@ -1,6 +1,6 @@
 /**
  * useModernizer Hook
- * v9.1.0 ARCHITECT — Dedicated hook for MODERNIZER (Self-Upgrade) module operations
+ * v10.5.4 ARCHITECT — Dedicated hook for MODERNIZER (Self-Upgrade) module operations
  * 
  * Respects debug mode kill-switch and shadow-to-production execution pipeline.
  * Part of the 6-layer, 21-module Cognitive Architecture.

@@ -1,6 +1,6 @@
 /**
  * Secret Redaction System
- * v9.1.0 ARCHITECT — Comprehensive secret masking for logs, UIs, and errors
+ * v10.5.4 ARCHITECT — Comprehensive secret masking for logs, UIs, and errors
  */
 
 // Patterns that indicate sensitive keys

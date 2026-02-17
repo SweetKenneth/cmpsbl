@@ -1,6 +1,6 @@
 /**
  * Authentication Configuration — Passwordless Enforcement
- * v9.1.0 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  * 
  * Global auth mode configuration. When PASSKEY_ONLY, password fields
  * are suppressed across the entire UI and password-based auth is disabled.
