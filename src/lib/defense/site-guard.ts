@@ -239,7 +239,7 @@ export function installSiteGuard(): (() => void) | undefined {
   // Run initial bot detection
   const result = detectBot();
   
-  if (result.isBot || result.confidence > 0.3) {
+  if (result.isBot || result.confidence >= 0.3) {
     console.warn(`[SiteGuard] Suspicious activity detected (confidence: ${(result.confidence * 100).toFixed(0)}%):`, result.signals);
     reportDetection(result);
   }

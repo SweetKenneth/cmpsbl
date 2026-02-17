@@ -33,7 +33,8 @@ import { useState, useEffect } from "react";
 import { 
   Brain, Shield, MessageSquare, Zap, Eye, Activity, RefreshCw, 
   CheckCircle2, AlertTriangle, Layers, ArrowRight, Cpu, Radio, 
-  Key, Settings, Sparkles, Plug, Wand2, Accessibility, Moon 
+  Key, Settings, Sparkles, Plug, Wand2, Accessibility, Moon,
+  Database, Network, ClipboardCheck, Fingerprint, Coins, Box, FileCode
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -202,6 +203,71 @@ const modulesByLayer = {
       actions: ["propose", "evaluate", "apply", "audit", "learn"],
     },
   ],
+  infrastructure: [
+    {
+      id: "memory",
+      name: "Memory",
+      description: "Embedding store, staleness detection, relevance feedback",
+      icon: Database,
+      color: "text-teal-500",
+      bg: "bg-teal-500/10",
+      actions: ["store", "recall", "compress", "stale-check"],
+    },
+    {
+      id: "relay",
+      name: "Relay",
+      description: "HMAC verification, adaptive retry, webhook dispatch",
+      icon: Network,
+      color: "text-sky-500",
+      bg: "bg-sky-500/10",
+      actions: ["dispatch", "verify", "retry", "status"],
+    },
+    {
+      id: "audit",
+      name: "Audit",
+      description: "Compliance templates, log compression, SOC2/GDPR",
+      icon: ClipboardCheck,
+      color: "text-slate-400",
+      bg: "bg-slate-400/10",
+      actions: ["log", "compress", "export", "compliance"],
+    },
+    {
+      id: "identity",
+      name: "Identity",
+      description: "Actor reputation, passkeys, biometric portability",
+      icon: Fingerprint,
+      color: "text-rose-400",
+      bg: "bg-rose-400/10",
+      actions: ["register", "authenticate", "reputation", "passkey"],
+    },
+    {
+      id: "economy",
+      name: "Economy",
+      description: "Predictive cost forecasting, per-capability attribution",
+      icon: Coins,
+      color: "text-amber-500",
+      bg: "bg-amber-500/10",
+      actions: ["forecast", "attribute", "budget", "report"],
+    },
+    {
+      id: "sandbox",
+      name: "Sandbox",
+      description: "Resource limits, state snapshots, isolated execution",
+      icon: Box,
+      color: "text-lime-500",
+      bg: "bg-lime-500/10",
+      actions: ["create", "snapshot", "restore", "enforce"],
+    },
+    {
+      id: "encode",
+      name: "Encode",
+      description: "Structural generation, filesystem-aware, error patterns",
+      icon: FileCode,
+      color: "text-cyan-500",
+      bg: "bg-cyan-500/10",
+      actions: ["generate", "validate", "structure", "pattern"],
+    },
+  ],
 };
 
 // Flatten all modules for iteration
@@ -211,6 +277,7 @@ const allModules = [
   ...modulesByLayer.operational,
   ...modulesByLayer.admin,
   ...modulesByLayer.orchestrator,
+  ...modulesByLayer.infrastructure,
 ];
 
 const layerLabels: Record<string, { label: string; color: string }> = {
@@ -219,6 +286,7 @@ const layerLabels: Record<string, { label: string; color: string }> = {
   operational: { label: "OPERATIONAL", color: "text-blue-400 border-blue-500/30" },
   admin: { label: "ADMIN", color: "text-emerald-400 border-emerald-500/30" },
   orchestrator: { label: "ORCHESTRATOR", color: "text-violet-400 border-violet-500/30" },
+  infrastructure: { label: "INFRASTRUCTURE", color: "text-teal-400 border-teal-500/30" },
 };
 
 export default function SubstrateDashboard() {
