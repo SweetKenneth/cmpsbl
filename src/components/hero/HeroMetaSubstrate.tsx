@@ -208,11 +208,12 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <span 
-                className="bg-clip-text text-transparent"
+                className="bg-clip-text text-transparent inline-block pr-[0.05em]"
                 style={{
                   backgroundImage: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--neon-purple)) 50%, hsl(var(--primary)) 100%)",
                   backgroundSize: "200% auto",
                   animation: "gradient-shift 8s ease-in-out infinite",
+                  paddingRight: "0.08em",
                 }}
               >
                 Clockless
