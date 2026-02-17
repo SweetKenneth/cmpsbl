@@ -2,7 +2,7 @@
 
 # Capability System
 
-### 400+ Composable Capabilities
+### 480+ Composable Capabilities
 
 <table>
 <tr><td><strong>Document</strong></td><td>04 — Capability System</td></tr>
@@ -106,11 +106,11 @@ Capabilities are assigned to tiers based on complexity, cost, and strategic valu
 |------|--------|-------------------|
 | **Free** | Public | ~80 |
 | **Creator** | Paid subscription ($49/mo) | ~170 |
-| **Architect** | Paid subscription ($149/mo) | ~140 |
-| **Enterprise** | Enterprise contract | ~50 |
-| **CMPSBL-Only** | Internal only | ~84 (Crown Jewels) |
+| **Architect** | Paid subscription ($149/mo) | ~170 |
+| **Enterprise** | Enterprise contract | ~60 |
+| **CMPSBL-Only** | Internal only | ~125+ (Crown Jewels) |
 
-Crown Jewels are capabilities classified as architecturally sensitive. There are **84 Crown Jewel capabilities** distributed across all 21 modules in two waves, with weighted allocation based on module importance. They span CMPSBL-only (27 architecture), Architect (31 experience), and Creator (15 experience) tiers — plus engines, meta-engines, and pipelines totaling 115 crown jewel artifacts.
+Crown Jewels are capabilities classified as architecturally sensitive. There are **125+ Crown Jewel capabilities** distributed across all 21 modules in three waves, with weighted allocation based on module importance. They span CMPSBL-only (40+ architecture), Architect (43 experience), Creator (27 experience), and Enterprise (35+ experience) tiers — plus engines, meta-engines, and pipelines totaling 155+ crown jewel artifacts.
 
 ---
 
@@ -122,7 +122,7 @@ Continue to [`05-SYNERGY-PIPELINES.md`](./05-SYNERGY-PIPELINES.md) for the cross
 
 <div align="center">
 
-*CMPSBL OS Substrate v10.5.5 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v10.6.0 — ARCHITECT Epoch*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
