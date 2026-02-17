@@ -171,7 +171,7 @@ function HeroBackground() {
 // ─── Main Hero ──────────────────────────────────────────────────
 export function HeroMetaSubstrate() {
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-8 pb-8 sm:pb-12 overflow-hidden">
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-8 pb-8 sm:pb-12 overflow-x-clip overflow-y-visible">
       <HeroBackground />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
@@ -202,7 +202,7 @@ export function HeroMetaSubstrate() {
             
             {/* CLOCKLESS — massive, clean */}
             <motion.h1 
-              className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[10rem] font-black tracking-[-0.05em] leading-[0.9] mb-6 sm:mb-8 px-1"
+              className="text-[4.5rem] sm:text-8xl md:text-9xl lg:text-[10rem] font-black tracking-[-0.05em] leading-[0.9] mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
