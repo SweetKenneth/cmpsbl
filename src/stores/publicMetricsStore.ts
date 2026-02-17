@@ -40,6 +40,7 @@ export interface PublicMetrics {
   
   // Capability Metrics
   capabilitiesCount: number;
+  crownJewelCapabilitiesCount: number;
   archivedCapabilitiesCount: number;
   
   // Terminal & Commands
@@ -103,6 +104,7 @@ export const DEFAULT_METRICS: PublicMetrics = {
   
   // Capability Metrics (269 + 56 + 54 + 21 = 400)
   capabilitiesCount: 400,
+  crownJewelCapabilitiesCount: 42,
   archivedCapabilitiesCount: 136,
   
   // Terminal & Commands
