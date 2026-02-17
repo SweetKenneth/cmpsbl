@@ -4,6 +4,42 @@
 
 ---
 
+## 2026-02-17 · v10.5.4 (ARCHITECT Epoch — ENCODE, Capabilities, Pricing)
+
+⟨This entry describes the ENCODE module integration, 21 Crown Jewel capabilities, Intent Mesh crystallization fix, mobile-first pricing redesign, World Firsts investor documentation, and unified tier model.⟩
+
+### ENCODE Module (v10.5.3)
+
+- **Code Execution Engine** — Governed DECODE→ENCODE pipeline for natural-language-to-code execution.
+- **Graduated Autonomy** — Mastery-based safety thresholds (Novice → Master) scaling destructive capability.
+- **CLM Self-Improvement** — Internal codebase study across 33 directories and 31 critical files.
+- **Expert Patterns Library** — Production-grade DNA for TypeScript, React, Security, Performance.
+- **Shadow Practice** — Non-production execution of SEBA proposals for training.
+
+### Capability Expansion (v10.5.4)
+
+- **21 Crown Jewels** — One Crown Jewel capability per module across Creator, Architect, and Enterprise tiers.
+- **50+ Public Capabilities** — Expanded public capability manifest with outcome-oriented descriptions.
+- **Unified Tier Model** — Free / Creator ($49/mo) / Architect ($149/mo) / Enterprise with clear capability boundaries.
+
+### Intent Mesh Crystallization Fix
+
+- **Pipeline Backfill** — 25 pipelines recovered from 82 approved recommendations that failed due to FK constraint.
+- **Total Crystallized Pipelines** — 60+ production-ready cross-module workflows.
+
+### Pricing & Investor Documentation
+
+- **Mobile-First Pricing** — Benefits-first layout with horizontal scroll cards on mobile.
+- **World Firsts** — 14 documented industry firsts added to investor overview with Zenodo links.
+- **All Docs Updated** — All 5 documentation sets (library, academic, internal, modules, website) updated to v10.5.1.
+
+### Analytics Consolidation
+
+- **Third-Party Removal** — Google Analytics and legacy beacon scripts removed from index.html.
+- **Internal Telemetry** — OS Dashboard now single source of truth using 5 internal tables.
+
+---
+
 ## 2026-02-15 · v10.5.1 (ARCHITECT Epoch — Infrastructure Hardening)
 
 ⟨This entry describes the CLM Engine v2.0, Universal Brain Transfer Pipeline, Memory Consolidation Engine, Nexus Fleet v5.0, and infrastructure module upgrades across MEMORY, RELAY, AUDIT, IDENTITY, ECONOMY, and SANDBOX.⟩

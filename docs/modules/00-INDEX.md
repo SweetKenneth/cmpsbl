@@ -40,13 +40,14 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 | [08](./08-NEXUS.md) | **NEXUS** | AI fleet routing (v5.0.0), cost optimization |
 | [09](./09-VISION.md) | **VISION** | Observability, metrics, trend analysis |
 | [10](./10-INTEGRATION.md) | **INTEGRATION** | External system adapters |
+| [22](./22-ENCODE.md) | **ENCODE** | Code execution engine, DECODE→ENCODE pipeline, CLM |
 
 ### Layer 4 — Administrative
 
 | Doc | Module | Purpose |
 |-----|--------|---------|
 | [11](./11-SYSTEM.md) | **SYSTEM** | Lifecycle orchestration, backup/restore |
-| [12](./12-MODERNIZER.md) | **MODERNIZER** | Evolution engine, self-improvement |
+| [12](./12-MODERNIZER.md) | **MODERNIZER** | Evolution engine, self-improvement (SEBA) |
 | [13](./13-INCLUSIVE.md) | **INCLUSIVE** | Accessibility, WCAG compliance |
 
 ### Layer 5 — Orchestrator
@@ -65,20 +66,21 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 | [18](./18-IDENTITY.md) | **IDENTITY** | Actor attribution, reputation scoring, cross-agency portability |
 | [19](./19-ECONOMY.md) | **ECONOMY** | Cost tracking, predictive forecasting, per-capability attribution |
 | [20](./20-SANDBOX.md) | **SANDBOX** | Safe code execution, resource limits, state snapshots |
-| [22](./22-ENCODE.md) | **ENCODE** | Code execution engine, DECODE→ENCODE pipeline, CLM |
 | [21](./21-USER-MANUAL.md) | **User Manual** | Complete usage guide |
 
 ---
 
-## Cross-Cutting Systems (v10.5.0+)
+## Cross-Cutting Systems (v10.5.1)
 
 | System | Description |
 |--------|-------------|
-| **CLM Engine** | Server-side 24/7 autonomous learning (5-minute cycles via cron) |
+| **CLM Engine v2.0** | Server-side 24/7 autonomous learning (5-minute cycles via cron) |
 | **Brain Transfer Pipeline** | Universal knowledge distribution from BRAIN to all 21 modules |
 | **Memory Consolidation** | Automated hot/warm/cold tiering with promotion, demotion, and pruning |
 | **Nexus Fleet v5.0.0** | Multi-provider AI routing with health-weighted selection and RPM governance |
-| **Intent Mesh** | 12-layer emergent capability discovery and composition |
+| **Intent Mesh** | 60+ crystallized pipelines via emergent capability discovery and composition |
+| **DECODE → ENCODE** | Governed natural-language-to-code pipeline with graduated autonomy |
+| **Crown Jewels** | 21 Crown Jewel capabilities — one per module across all tiers |
 
 ---
 

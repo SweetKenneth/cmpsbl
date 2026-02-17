@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Hub
 
-**v10.5.1 ARCHITECT Epoch** · Updated February 15, 2026
+**v10.5.1 ARCHITECT Epoch** · Updated February 17, 2026
 
 ---
 
@@ -12,7 +12,7 @@
 | [`/docs/internal/`](./internal/) | Internal team, operators | **Yes** |
 | [`/docs/academic/`](./academic/) | Researchers, labs, universities | No |
 | [`/docs/substrate/`](./substrate/) | Technical reference | No |
-| [`/docs/modules/`](./modules/) | Module deep dives (all 21) | No |
+| [`/docs/modules/`](./modules/) | Module deep dives (all 21 incl. ENCODE) | No |
 
 ---
 
@@ -28,7 +28,7 @@ Start with [`/docs/internal/00-INDEX.md`](./internal/00-INDEX.md) — full trade
 Start with [`/docs/academic/00-INDEX.md`](./academic/00-INDEX.md) — formatted for OSF, Zenodo, and ORCID submission.
 
 ### Technical Reference
-- [Module Deep Dives](./modules/00-INDEX.md) — all 21 modules across 6 layers
+- [Module Deep Dives](./modules/00-INDEX.md) — all 21 modules across 6 layers (incl. ENCODE)
 - [Module Actions Registry](./substrate/MODULE-ACTIONS-REGISTRY.md) — all 21 module actions
 - [Capabilities](./substrate/CAPABILITIES.md) — registered capabilities
 - [Changelog](./substrate/CHANGELOG.md) — version history
@@ -39,10 +39,14 @@ Start with [`/docs/academic/00-INDEX.md`](./academic/00-INDEX.md) — formatted 
 
 | Feature | Description |
 |---------|-------------|
+| **ENCODE Module** | Governed code execution engine — DECODE→ENCODE pipeline, CLM, graduated autonomy |
 | **CLM Engine v2.0** | Server-side 24/7 autonomous learning — 5-phase lifecycle every 5 minutes |
 | **Universal Brain Transfer** | Knowledge distribution from BRAIN to all 21 modules via relevance routing |
 | **Memory Consolidation** | Automated hot/warm/cold tiering with promotion, demotion, and pruning |
 | **Nexus Fleet v5.0** | Health-weighted multi-provider routing (Groq, Cerebras, SambaNova, Google, DeepSeek) |
+| **Intent Mesh** | 60+ crystallized pipelines via emergent capability discovery |
+| **21 Crown Jewels** | One Crown Jewel capability per module across all tiers |
+| **Unified Tier Model** | Free / Creator ($49) / Architect ($149) / Enterprise |
 | **MEMORY upgrades** | Embedding staleness detection, relevance feedback loop (EMA) |
 | **RELAY upgrades** | HMAC-SHA256 webhook signatures, adaptive retry with jitter |
 | **AUDIT upgrades** | SOC2/GDPR/HIPAA/ISO27001 compliance templates, entry compression |

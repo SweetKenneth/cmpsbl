@@ -1,6 +1,6 @@
 # CMPSBL® Documentation
 
-**v9.1.0 — ARCHITECT Epoch | Cognitive Orchestration Substrate for AI Systems**
+**v10.5.1 — ARCHITECT Epoch | Cognitive Orchestration Substrate for AI Systems**
 
 ---
 
@@ -8,7 +8,7 @@
 
 This documentation provides everything you need to understand, evaluate, and build with CMPSBL® (Composable) — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.
 
-**What's Inside:** 21 integrated modules, 200 synergy pipelines, 200 templates, 400+ depot capabilities, 100 engines, and the SEBA (Self-Evolving Bounded Agent) architecture.
+**What's Inside:** 21 integrated modules (incl. ENCODE), 60+ crystallized pipelines, 200+ templates, 400+ capabilities, 21 Crown Jewels, and the SEBA (Self-Evolving Bounded Agent) architecture.
 
 ---
 
@@ -69,7 +69,7 @@ const context = await agent.getContext(userMessage);
 |----------|-------------|
 | [Architecture Overview](./05-ARCHITECTURE.md) | Technical deep dive |
 | [Key Capabilities](./03-KEY-CAPABILITIES.md) | Feature reference |
-| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 200-pipeline matrix |
+| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | Pipeline matrix |
 | [Platform Features](./10-MARKETPLACE-FEATURES.md) | CodeLab, Templates, Depot |
 
 ### For Business Leaders
@@ -83,38 +83,10 @@ const context = await agent.getContext(userMessage);
 ### For Decision Makers
 | Document | Description |
 |----------|-------------|
-| [Pricing & Licensing](./07-LICENSING.md) | Hybrid licensing model |
+| [Pricing & Licensing](./07-LICENSING.md) | Unified tier model (Free/Creator/Architect/Enterprise) |
 | [Security & Compliance](./09-SECURITY-COMPLIANCE.md) | Enterprise requirements |
-| [Roadmap](./10-ROADMAP.md) | 2028 development plan |
-| [Investor Overview](./13-INVESTOR-OVERVIEW.md) | Investment thesis |
-
----
-
-## The Pitch
-
-> **"We built the operating system for AI applications — memory, learning, security, and multi-provider routing that literally improves itself over time."**
-
----
-
-## Definitions
-
-| Term | Definition |
-|------|------------|
-| **Capability** | Atomic, free, stateless building block |
-| **Synergy Pipeline** | Exploratory, free, non-durable orchestration |
-| **Engine** | Saved, governed, authoritative orchestration |
-
----
-
-## Licensing Model
-
-CMPSBL® uses a **hybrid licensing model**:
-
-- **Free Tier:** Capability Depot, Template Alley, Synergy Pipelines, Persistent Memory
-- **Engine Marketplace (OEM):** First-party canonized orchestrations with subscriptions
-- **Enterprise Tier:** Full source code with self-hosted deployment rights
-
-See [Pricing & Licensing](./07-LICENSING.md) for details.
+| [Roadmap](./10-ROADMAP.md) | Development plan |
+| [Investor Overview](./13-INVESTOR-OVERVIEW.md) | Investment thesis with World Firsts |
 
 ---
 
@@ -128,4 +100,4 @@ See [Pricing & Licensing](./07-LICENSING.md) for details.
 
 ---
 
-*CMPSBL® v9.1.0 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v10.5.1 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era*
