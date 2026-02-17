@@ -1,6 +1,6 @@
 /**
  * Public Capability Manifest — Tier-Safe, Outcome-Oriented
- * v10.5.3 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  * 
  * RULES:
  * - NO CMPSBL-only Crown Jewels by name or description
@@ -16,11 +16,12 @@ export interface PublicCapability {
   outcome_summary: string;
   category: 'security' | 'intelligence' | 'optimization' | 'compliance' | 'observability';
   public_safe: true;
+  is_crown_jewel?: boolean;
 }
 
 export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   // ══════════════════════════════════════════════════════
-  // CREATOR TIER ($49/mo)
+  // CREATOR TIER ($49/mo) — 12 core + 7 new crown jewels = 19
   // ══════════════════════════════════════════════════════
   {
     name: 'Knowledge Gap Detection',
@@ -118,9 +119,73 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
     category: 'observability',
     public_safe: true,
   },
+  // ── NEW Creator Crown Jewels (one per module not yet covered) ──
+  {
+    name: 'Hot-Path Auto-Recovery',
+    tier: 'creator',
+    module: 'CORE',
+    outcome_summary: 'Automatically detect and recover from module failures without downtime or manual intervention',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Smart Rate Shaping',
+    tier: 'creator',
+    module: 'ACCESS',
+    outcome_summary: 'Intelligently shape API traffic to maximize throughput without exceeding quotas',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Contextual Recall Boost',
+    tier: 'creator',
+    module: 'BRAIN',
+    outcome_summary: 'Automatically surface the most relevant memories based on conversation context and intent',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Autonomous A11y Remediation',
+    tier: 'creator',
+    module: 'INCLUSIVE',
+    outcome_summary: 'Auto-fix common accessibility violations with one-click AI-generated code patches',
+    category: 'compliance',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Execution Safety Net',
+    tier: 'creator',
+    module: 'SANDBOX',
+    outcome_summary: 'Run untrusted code and experiments in isolated environments with zero production risk',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Compliance Snapshot',
+    tier: 'creator',
+    module: 'AUDIT',
+    outcome_summary: 'Generate point-in-time compliance snapshots for any audit period on demand',
+    category: 'compliance',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Budget Guardian',
+    tier: 'creator',
+    module: 'ECONOMY',
+    outcome_summary: 'Set spending limits and receive real-time alerts before budgets are exceeded',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
 
   // ══════════════════════════════════════════════════════
-  // ARCHITECT TIER ($149/mo)
+  // ARCHITECT TIER ($149/mo) — 14 existing + 7 new crown jewels = 21
   // ══════════════════════════════════════════════════════
   {
     name: 'Zero-Day Detection',
@@ -226,9 +291,73 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
     category: 'intelligence',
     public_safe: true,
   },
+  // ── NEW Architect Crown Jewels ──
+  {
+    name: 'Adaptive Personality Engine',
+    tier: 'architect',
+    module: 'DECODE',
+    outcome_summary: 'Dynamically adjust AI personality and tone based on user sentiment and context in real-time',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Dream-State Synthesis',
+    tier: 'architect',
+    module: 'DREAM',
+    outcome_summary: 'Generate novel solutions by combining patterns discovered during autonomous off-peak analysis',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Cascade Failure Prevention',
+    tier: 'architect',
+    module: 'RIPPLE',
+    outcome_summary: 'Detect and halt cascading failures across modules before they propagate system-wide',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Predictive Connector Health',
+    tier: 'architect',
+    module: 'INTEGRATION',
+    outcome_summary: 'Forecast integration breakdowns days in advance using historical health patterns',
+    category: 'observability',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Intelligent Cost Arbitrage',
+    tier: 'architect',
+    module: 'NEXUS',
+    outcome_summary: 'Automatically route requests to the cheapest provider that meets quality thresholds',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Cross-Module Orchestration',
+    tier: 'architect',
+    module: 'CORTEX',
+    outcome_summary: 'Compose multi-module workflows that discover emergent capabilities beyond individual modules',
+    category: 'intelligence',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Architecture Modernization Planner',
+    tier: 'architect',
+    module: 'MODERNIZER',
+    outcome_summary: 'Generate risk-scored migration roadmaps with incremental execution plans for legacy systems',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
 
   // ══════════════════════════════════════════════════════
-  // ENTERPRISE (Custom)
+  // ENTERPRISE (Custom) — 3 existing + 7 new crown jewels = 10
   // ══════════════════════════════════════════════════════
   {
     name: 'Source Code Access',
@@ -254,11 +383,80 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
     category: 'compliance',
     public_safe: true,
   },
+  // ── NEW Enterprise Crown Jewels ──
+  {
+    name: 'Multi-Tenant Intelligence Isolation',
+    tier: 'enterprise',
+    module: 'BRAIN',
+    outcome_summary: 'Complete memory and intelligence isolation across tenants with zero data leakage guarantees',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Sovereign Identity Federation',
+    tier: 'enterprise',
+    module: 'IDENTITY',
+    outcome_summary: 'Federate identity across organizations with cryptographic provenance and trust portability',
+    category: 'compliance',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Enterprise Threat Intelligence Network',
+    tier: 'enterprise',
+    module: 'DEFENSE',
+    outcome_summary: 'Share anonymized threat intelligence across deployments for collective defense',
+    category: 'security',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Guaranteed Delivery SLA',
+    tier: 'enterprise',
+    module: 'RELAY',
+    outcome_summary: 'Cryptographically-verified delivery guarantees with contractual SLA enforcement',
+    category: 'compliance',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Autonomous Cost Governance',
+    tier: 'enterprise',
+    module: 'ECONOMY',
+    outcome_summary: 'Organization-wide budget enforcement with automated chargeback and departmental allocation',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Cross-Deployment Observability',
+    tier: 'enterprise',
+    module: 'VISION',
+    outcome_summary: 'Unified monitoring across all substrate deployments with centralized dashboards and alerting',
+    category: 'observability',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
+  {
+    name: 'Evolution Sandbox Clusters',
+    tier: 'enterprise',
+    module: 'SANDBOX',
+    outcome_summary: 'Run parallel evolution experiments across sandbox clusters with automated winner selection',
+    category: 'optimization',
+    public_safe: true,
+    is_crown_jewel: true,
+  },
 ];
 
 /** Get capabilities for a specific tier */
 export function getCapabilitiesByTier(tier: PublicCapability['tier']): PublicCapability[] {
   return PUBLIC_CAPABILITY_MANIFEST.filter(c => c.tier === tier);
+}
+
+/** Get crown jewels for a tier */
+export function getCrownJewelsByTier(tier: PublicCapability['tier']): PublicCapability[] {
+  return PUBLIC_CAPABILITY_MANIFEST.filter(c => c.tier === tier && c.is_crown_jewel);
 }
 
 /** Get capabilities grouped by category */
