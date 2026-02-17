@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 
-export type SubscriptionTier = 'starter' | 'builder' | 'pro' | 'enterprise';
+export type SubscriptionTier = 'free' | 'starter' | 'creator' | 'builder' | 'pro' | 'architect' | 'enterprise';
 
 interface EngineSubscriptionState {
   subscribed: boolean;
@@ -22,7 +22,7 @@ interface EngineSubscriptionState {
 export function useEngineSubscription() {
   const [state, setState] = useState<EngineSubscriptionState>({
     subscribed: false,
-    tier: 'starter',
+    tier: 'free',
     subscription_end: null,
     isLoading: true,
     error: null,
@@ -38,7 +38,7 @@ export function useEngineSubscription() {
 
       setState({
         subscribed: data?.subscribed ?? false,
-        tier: data?.tier ?? 'starter',
+        tier: data?.tier ?? 'free',
         subscription_end: data?.subscription_end ?? null,
         isLoading: false,
         error: null,
@@ -106,12 +106,15 @@ export function useEngineSubscription() {
 
   const canAccessTier = useCallback((requiredTier: SubscriptionTier): boolean => {
     const tierPriority: Record<SubscriptionTier, number> = {
-      starter: 0,
-      builder: 1,
-      pro: 2,
+      free: 0,
+      starter: 0, // legacy alias
+      creator: 1,
+      builder: 1, // legacy alias
+      architect: 2,
+      pro: 2, // legacy alias
       enterprise: 3,
     };
-    return tierPriority[state.tier] >= tierPriority[requiredTier];
+    return (tierPriority[state.tier] ?? 0) >= (tierPriority[requiredTier] ?? 0);
   }, [state.tier]);
 
   return {

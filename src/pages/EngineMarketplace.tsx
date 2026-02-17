@@ -140,17 +140,15 @@ export default function EngineMarketplace() {
   const { tier: currentTier, subscribed, startCheckout, isLoading: subLoading } = useEngineSubscription();
   
   const handleSubscribe = useCallback(async (planId: SubscriptionPlan) => {
-    if (planId === 'starter') {
-      // Redirect to sign up for free tier
+    if (planId === 'free') {
       window.location.href = '/auth?redirect=/engines';
       return;
     }
     if (planId === 'enterprise') {
-      window.location.href = 'mailto:enterprise@cmpsbl.ai?subject=Enterprise%20Engine%20Subscription';
+      window.location.href = 'mailto:Dev@CMPSBL.com?subject=Enterprise%20Engine%20Subscription';
       return;
     }
     
-    // Check if user is authenticated before checkout
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       toast.info('Please sign in to subscribe');
@@ -158,7 +156,9 @@ export default function EngineMarketplace() {
       return;
     }
     
-    await startCheckout(planId as 'builder' | 'pro', billingInterval);
+    // Map unified tier names to checkout function
+    const checkoutTier = planId === 'creator' ? 'builder' : planId === 'architect' ? 'pro' : planId;
+    await startCheckout(checkoutTier as 'builder' | 'pro', billingInterval);
   }, [startCheckout, billingInterval]);
 
   // Load from real registries
@@ -207,8 +207,8 @@ export default function EngineMarketplace() {
   return (
     <>
       <SEO
-        title={`Cognitive Engines | ${summary.totalEngines}+ Production AI Engines | CMPSBL®`}
-        description="Subscribe to production-ready cognitive engines for AI orchestration. 76+ engines, 24 meta-engines, tiered pricing. Multi-provider routing, persistent memory, self-improvement."
+        title={`Clockless Cognitive Engines | ${summary.totalEngines}+ Production AI Engines | CMPSBL®`}
+        description="Subscribe to production-ready cognitive engines for the Clockless World Engine. 76+ engines, 24 meta-engines, tiered pricing. Multi-provider routing, persistent memory, self-improvement."
         canonical="https://cmpsbl.com/engines"
         keywords={["cognitive engines", "AI orchestration", "subscription AI", "enterprise AI engines", "multi-provider routing", "composable artifacts", "production AI", "CMPSBL engines"]}
         type="product"
@@ -409,12 +409,12 @@ export default function EngineMarketplace() {
                     transition={{ delay: index * 0.1 }}
                     className={cn(
                       "relative p-5 sm:p-6 rounded-2xl border transition-all overflow-visible",
-                      plan.id === 'pro' 
+                      plan.id === 'creator' 
                         ? "border-primary bg-gradient-to-br from-primary/10 to-violet-500/10 ring-2 ring-primary/30 shadow-xl shadow-primary/10 mt-8 sm:mt-0" 
                         : "border-border bg-card hover:border-primary/30"
                     )}
                   >
-                    {plan.id === 'pro' && (
+                    {plan.id === 'creator' && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                         <Badge className="bg-primary text-primary-foreground shadow-lg whitespace-nowrap">
                           <Star className="w-3 h-3 mr-1" />
@@ -423,7 +423,7 @@ export default function EngineMarketplace() {
                       </div>
                     )}
                     
-                    <div className={cn(plan.id === 'pro' ? "pt-3" : "pt-1")}>
+                    <div className={cn(plan.id === 'creator' ? "pt-3" : "pt-1")}>
                       <h3 className="font-bold text-lg sm:text-xl mb-2">{plan.name}</h3>
                       <div className="flex items-baseline gap-1 mb-1">
                         <span className="text-3xl sm:text-4xl font-black">
@@ -456,14 +456,14 @@ export default function EngineMarketplace() {
                       
                       <Button 
                         className="w-full" 
-                        variant={plan.id === 'pro' ? 'default' : 'outline'}
+                        variant={plan.id === 'creator' ? 'default' : 'outline'}
                         size="default"
                         disabled={currentTier === plan.id || subLoading}
                         onClick={() => handleSubscribe(plan.id)}
                       >
                         {currentTier === plan.id 
                           ? 'Current Plan' 
-                          : plan.id === 'starter' 
+                          : plan.id === 'free' 
                             ? 'Get Started Free' 
                             : plan.id === 'enterprise' 
                               ? 'Contact Sales' 
@@ -546,8 +546,8 @@ export default function EngineMarketplace() {
                 >
                   <option value="all">All Tiers</option>
                   <option value="free">Free</option>
-                  <option value="standard">Builder ($49/mo)</option>
-                  <option value="advanced">Pro ($149/mo)</option>
+                  <option value="standard">Creator ($49/mo)</option>
+                  <option value="advanced">Architect ($149/mo)</option>
                 </select>
               </div>
             </div>

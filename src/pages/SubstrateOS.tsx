@@ -558,7 +558,7 @@ export default function SubstrateOS() {
             <div className="absolute inset-0 w-20 h-20 mx-auto rounded-2xl bg-cyan-500/30 blur-2xl animate-pulse" />
           </div>
           <div className="space-y-2">
-            <p className="text-base font-semibold font-mono text-cyan-400">substrate os</p>
+            <p className="text-base font-semibold font-mono text-cyan-400">clockless world engine</p>
             <p className="text-xs text-muted-foreground font-mono animate-pulse">initializing cognitive substrate...</p>
           </div>
         </motion.div>
@@ -569,10 +569,10 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
         <SEO
-          title="CMPSBL OS v10.5.0 — AI Operating System"
-        description="Explore the CMPSBL Substrate OS: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads."
+          title="Clockless World Engine v10.5 — AI Operating System | CMPSBL®"
+        description="Explore the Clockless World Engine: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads."
         canonical="https://cmpsbl.com/os"
-        keywords={['substrate OS', 'AI runtime', 'cognitive orchestration', 'module telemetry', 'AI workload management', 'substrate dashboard']}
+        keywords={['Clockless', 'World Engine', 'AI runtime', 'cognitive orchestration', 'module telemetry', 'AI workload management', 'CMPSBL']}
       />
 
       {/* Background Effects — Cinematic ambient lighting */}
@@ -911,7 +911,7 @@ export default function SubstrateOS() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>CMPSBL® substrate os</span>
+              <span>CMPSBL® clockless world engine</span>
             </div>
             <span>•</span>
             <span>v10.5.0</span>

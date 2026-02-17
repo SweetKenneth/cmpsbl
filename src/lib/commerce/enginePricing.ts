@@ -1,6 +1,11 @@
 /**
  * Engine Subscription Pricing Configuration
- * v8.1.0 — Canonical pricing tiers for Engines + Meta-Engines
+ * v10.5.4 — Unified tier naming (Free/Creator/Architect/Enterprise)
+ * 
+ * Free: 30 engines + 1 meta-engine
+ * Creator: All 76 engines + 8 meta-engines
+ * Architect: All 76 engines + 16 meta-engines
+ * Enterprise: All 76 engines + all 24 meta-engines
  * 
  * Self-improvement/evolution engines are INTERNAL (not purchasable)
  */
@@ -12,13 +17,13 @@ import type { MetaEngineId } from '@/lib/substrate/engines/meta/types';
 // SUBSCRIPTION PLANS
 // ============================================================================
 
-export type SubscriptionPlan = 'starter' | 'builder' | 'pro' | 'enterprise';
+export type SubscriptionPlan = 'free' | 'creator' | 'architect' | 'enterprise';
 
 export interface PlanDefinition {
   id: SubscriptionPlan;
   name: string;
   monthlyPrice: number;
-  yearlyPrice: number; // ~2 months free
+  yearlyPrice: number;
   description: string;
   features: string[];
   executionsPerMonth: number;
@@ -27,47 +32,51 @@ export interface PlanDefinition {
 }
 
 export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
-  starter: {
-    id: 'starter',
-    name: 'Starter',
+  free: {
+    id: 'free',
+    name: 'Free',
     monthlyPrice: 0,
     yearlyPrice: 0,
-    description: 'Free tier with core engine access',
+    description: 'Core engine access with 1 meta-engine',
     features: [
-      'Core engines included',
+      '30 core engines',
+      '1 meta-engine (Cognitive Mesh)',
       '100 executions/month',
       'Community support',
       'Basic analytics',
     ],
     executionsPerMonth: 100,
-    includesMetaEngines: false,
+    includesMetaEngines: true,
     engineTiers: ['free'],
   },
-  builder: {
-    id: 'builder',
-    name: 'Builder',
+  creator: {
+    id: 'creator',
+    name: 'Creator',
     monthlyPrice: 49,
-    yearlyPrice: 490, // ~2 months free
-    description: 'Full engine access for developers',
+    yearlyPrice: 490,
+    description: 'Everything in Free, plus all 76 engines + 8 meta-engines',
     features: [
-      'All standard engines',
+      'Everything in Free, plus:',
+      'All 76 engines (up from 30)',
+      '8 meta-engines (up from 1)',
       '2,000 executions/month',
       'Priority queue',
       'Email support',
       'Advanced analytics',
     ],
     executionsPerMonth: 2000,
-    includesMetaEngines: false,
+    includesMetaEngines: true,
     engineTiers: ['free', 'standard'],
   },
-  pro: {
-    id: 'pro',
-    name: 'Pro',
+  architect: {
+    id: 'architect',
+    name: 'Architect',
     monthlyPrice: 149,
-    yearlyPrice: 1490, // ~2 months free
-    description: 'Meta-engines for advanced orchestration',
+    yearlyPrice: 1490,
+    description: 'Everything in Creator, plus 16 meta-engines',
     features: [
-      'All engines + meta-engines',
+      'Everything in Creator, plus:',
+      'All 76 engines + 16 meta-engines (up from 8)',
       '10,000 executions/month',
       'Priority execution',
       'Slack support',
@@ -83,9 +92,10 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
     name: 'Enterprise',
     monthlyPrice: 499,
     yearlyPrice: 4990,
-    description: 'Custom limits + SLA + dedicated support',
+    description: 'Everything in Architect, plus all 24 meta-engines',
     features: [
-      'Unlimited engines',
+      'Everything in Architect, plus:',
+      'All 76 engines + all 24 meta-engines (up from 16)',
       'Custom execution limits',
       'SLA guarantee (99.9%)',
       'Dedicated support',
@@ -93,11 +103,14 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
       'Unlimited team seats',
       'On-prem option',
     ],
-    executionsPerMonth: -1, // Unlimited
+    executionsPerMonth: -1,
     includesMetaEngines: true,
     engineTiers: ['free', 'standard', 'advanced', 'meta', 'enterprise'],
   },
 };
+
+// Legacy aliases for backward compatibility
+export type { SubscriptionPlan as LegacyPlan };
 
 // ============================================================================
 // ENGINE VISIBILITY & MONETIZATION
@@ -108,7 +121,7 @@ export type EngineVisibility = 'free' | 'standard' | 'advanced' | 'meta' | 'inte
 export interface EngineMonetization {
   visibility: EngineVisibility;
   requiredPlan: SubscriptionPlan;
-  isInternal: boolean; // True = shown as platform capability, not purchasable
+  isInternal: boolean;
 }
 
 // Internal engines (self-improvement) - showcased but not sold
@@ -122,70 +135,100 @@ const INTERNAL_ENGINE_IDS: string[] = [
 
 // Internal meta-engines
 const INTERNAL_META_ENGINE_IDS: string[] = [
-  'autonomous_operator', // Contains evolution_engine
-  'self_governance',     // Contains self_healing and self_documentation
+  'autonomous_operator',
+  'self_governance',
   'world_first_cognitive',
   'world_first_operational',
   'world_first_intelligence',
   'world_first_governance',
 ];
 
-// Free tier engines
+// Free tier engines (30 core engines — generous foundation)
 const FREE_ENGINE_IDS: string[] = [
   'memory_engine',
   'context_engine',
   'event_engine',
+  'learning_engine',
+  'resilience_engine',
+  'optimization_engine',
+  'orchestration_engine',
+  'scheduling_engine',
+  'adaptation_engine',
+  'insight_engine',
+  'prediction_engine',
+  'compliance_engine',
+  'quality_engine',
+  'audit_engine',
+  'defense_engine',
+  'trust_engine',
+  'broadcast_engine',
+  'routing_engine',
+  'transformation_engine',
+  'monitoring_engine',
+  'capacity_engine',
+  'accessibility_engine',
+  'personalization_engine',
+  'graph_engine',
+  'imagination_engine',
+  'innovation_engine',
+  'dream_engine',
+  'intent_engine',
+  'pipeline_engine',
+  'coordination_engine',
 ];
 
-// Advanced tier engines
+// Free meta-engine (1 generous inclusion)
+const FREE_META_ENGINE_IDS: string[] = [
+  'cognitive_mesh',
+];
+
+// Advanced tier engines (require Architect)
 const ADVANCED_ENGINE_IDS: string[] = [
   'reasoning_engine',
   'foresight_engine',
   'synthesis_engine',
-  'graph_engine',
   'threat_engine',
   'attack_surface_engine',
+  'emotion_engine',
+  'multimodal_engine',
+  'budget_engine',
+  'quota_engine',
+  'entitlement_engine',
+  'delegation_engine',
 ];
 
 /**
  * Get monetization config for an engine
  */
 export function getEngineMonetization(engineId: EngineId | string): EngineMonetization {
-  // Internal engines - showcased but not sold
   if (INTERNAL_ENGINE_IDS.includes(engineId)) {
     return { visibility: 'internal', requiredPlan: 'enterprise', isInternal: true };
   }
-  
-  // Free tier
   if (FREE_ENGINE_IDS.includes(engineId)) {
-    return { visibility: 'free', requiredPlan: 'starter', isInternal: false };
+    return { visibility: 'free', requiredPlan: 'free', isInternal: false };
   }
-  
-  // Advanced tier
   if (ADVANCED_ENGINE_IDS.includes(engineId)) {
-    return { visibility: 'advanced', requiredPlan: 'pro', isInternal: false };
+    return { visibility: 'advanced', requiredPlan: 'architect', isInternal: false };
   }
-  
-  // Enhancement engines (v8.1.0) - Enterprise only
   if (engineId.includes('enhancement') || engineId.includes('world_first')) {
     return { visibility: 'enterprise', requiredPlan: 'enterprise', isInternal: false };
   }
-  
-  // Default to standard tier
-  return { visibility: 'standard', requiredPlan: 'builder', isInternal: false };
+  // Default to standard tier (Creator)
+  return { visibility: 'standard', requiredPlan: 'creator', isInternal: false };
 }
 
 /**
  * Get monetization config for a meta-engine
  */
 export function getMetaEngineMonetization(metaEngineId: MetaEngineId | string): EngineMonetization {
-  // Internal meta-engines
   if (INTERNAL_META_ENGINE_IDS.includes(metaEngineId)) {
     return { visibility: 'internal', requiredPlan: 'enterprise', isInternal: true };
   }
-  
-  // All other meta-engines require Pro
-  return { visibility: 'meta', requiredPlan: 'pro', isInternal: false };
+  if (FREE_META_ENGINE_IDS.includes(metaEngineId)) {
+    return { visibility: 'free', requiredPlan: 'free', isInternal: false };
+  }
+  // All other meta-engines require Architect
+  return { visibility: 'meta', requiredPlan: 'architect', isInternal: false };
 }
 
 // ============================================================================
@@ -205,19 +248,19 @@ export const TIER_DISPLAY: Record<EngineVisibility, {
     priceLabel: 'Included',
   },
   standard: { 
-    label: 'Builder', 
+    label: 'Creator', 
     color: 'text-cyan-400', 
     badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
     priceLabel: '$49/mo',
   },
   advanced: { 
-    label: 'Pro', 
+    label: 'Architect', 
     color: 'text-amber-400', 
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
     priceLabel: '$149/mo',
   },
   meta: { 
-    label: 'Pro', 
+    label: 'Architect', 
     color: 'text-primary', 
     badge: 'bg-primary/10 text-primary border-primary/30',
     priceLabel: '$149/mo',
