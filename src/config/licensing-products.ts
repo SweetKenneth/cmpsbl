@@ -22,6 +22,7 @@ export const UNIFIED_TIERS = {
     features: [
       'Artifact Store access',
       '30 core engines',
+      '120+ free templates',
       'Persistent memory (bounded)',
       'Composition engine',
       'All executors & runners',
@@ -42,7 +43,8 @@ export const UNIFIED_TIERS = {
       'Everything in Free',
       'All 76 base engines',
       '8 meta-engines (standard + operational)',
-      'All templates & artifacts',
+      '160+ templates (Free + Creator)',
+      'All artifacts',
       'Full SDK / API access',
       '7 Experience Crown Jewels',
       'In-run self-improvement',
@@ -63,6 +65,7 @@ export const UNIFIED_TIERS = {
     features: [
       'Everything in Creator',
       'All 76 engines + 16 meta-engines',
+      '190+ templates (Free + Creator + Architect)',
       'All 28 Experience Crown Jewels',
       'Constant Learning Mode (CLM)',
       'Cross-session learning',
@@ -86,6 +89,7 @@ export const UNIFIED_TIERS = {
     features: [
       'Everything in Architect',
       'All 76 engines + all 24 meta-engines',
+      'All 200+ templates',
       'Source code access',
       'Self-hosted deployment',
       'Unlimited team seats',

@@ -9,7 +9,7 @@ import {
   Database, Sparkles, Target, Activity, Users, FileText,
   Code, Settings, TrendingUp, Key, Bell, Cpu
 } from 'lucide-react';
-import type { Template } from './templates';
+import type { Template, RequiredTier } from './templates';
 
 export const EXPANSION_TEMPLATES: Template[] = [
   // === ENCODE MODULE ===

@@ -41,7 +41,7 @@ import {
   type CapabilityCategory,
   type CapabilityArtifact,
 } from '@/lib/capabilities/depot';
-import { ALL_TEMPLATES, type Template } from '@/data/templates';
+import { ALL_TEMPLATES, type Template, getTemplateTier } from '@/data/templates';
 import { SYNERGY_DEFINITIONS } from '@/lib/capabilities/synergies/registry';
 
 // ─── Product Type ───

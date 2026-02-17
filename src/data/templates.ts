@@ -15,6 +15,8 @@ import {
   Users, PlayCircle, Code, Zap, Eye, Image, TrendingUp
 } from 'lucide-react';
 
+export type RequiredTier = 'free' | 'creator' | 'architect' | 'enterprise';
+
 export interface Template {
   id: string;
   name: string;
@@ -25,6 +27,26 @@ export interface Template {
   estimatedTime: string;
   features: string[];
   code: string;
+  requiredTier?: RequiredTier;
+}
+
+/** Derive tier from difficulty when requiredTier is not explicitly set */
+export function getTemplateTier(template: Template): RequiredTier {
+  if (template.requiredTier) return template.requiredTier;
+  switch (template.difficulty) {
+    case 'beginner':
+    case 'intermediate':
+      return 'free';
+    case 'advanced':
+      return 'creator';
+    case 'premium':
+    case 'pro':
+      return 'architect';
+    case 'elite':
+      return 'enterprise';
+    default:
+      return 'free';
+  }
 }
 
 export const TEMPLATES: Template[] = [
@@ -10671,7 +10693,16 @@ export function getCategoryCounts(): Record<string, number> {
   return counts;
 }
 
+/** Count templates by tier (using difficulty-based derivation when requiredTier not set) */
+export function getTierCounts(): Record<RequiredTier, number> {
+  const counts: Record<RequiredTier, number> = { free: 0, creator: 0, architect: 0, enterprise: 0 };
+  for (const template of ALL_TEMPLATES) {
+    counts[getTemplateTier(template)]++;
+  }
+  return counts;
+}
+
 // Get template by ID
 export function getTemplateById(id: string): Template | undefined {
-  return TEMPLATES.find(t => t.id === id);
+  return ALL_TEMPLATES.find(t => t.id === id);
 }
