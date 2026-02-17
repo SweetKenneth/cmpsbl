@@ -40,10 +40,12 @@ const TIERS = [
     cta: 'Get Started Free',
     popular: false,
     headline: 'Build Real Systems — Zero Cost',
-    benefitSummary: 'Full building capabilities with persistent memory, composition engine, and access to the Artifact Store.',
+    benefitSummary: '30 core engines, 1 meta-engine (Cognitive Mesh), persistent memory, composition engine, and full Artifact Store access.',
     pipelineCount: 0,
     templateExamples: ['Basic agent templates', 'Starter project scaffolds'],
     capabilityHighlights: [
+      '30 core engines included',
+      '1 meta-engine (Cognitive Mesh)',
       'Persistent memory (bounded)',
       'Composition engine',
       'All executors & runners',
@@ -420,7 +422,7 @@ export default function SubstrateLicensing() {
             </div>
             <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
               {[
-                { icon: Zap, title: 'Tiered Engine Access', desc: 'Free gets 30 core engines. Creator unlocks all 76 engines + 8 meta-engines. Architect adds 16 meta-engines. Enterprise gets all 24. Each tier includes everything from the tier below.' },
+                { icon: Zap, title: 'Tiered Engine Access', desc: 'Free gets 30 engines + 1 meta-engine. Creator unlocks all 76 engines + 8 meta-engines. Architect gets 16 meta-engines. Enterprise gets all 24. Each tier includes everything below.' },
                 { icon: Shield, title: 'SDK & API Bundled', desc: 'Full API access ships with Creator and above. No developer license required.' },
                 { icon: Sparkles, title: 'Pipelines & Templates', desc: 'All crystallized pipelines and templates at your tier level. No per-item fees.' },
               ].map((item, i) => {
@@ -448,7 +450,7 @@ export default function SubstrateLicensing() {
             <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4">
               {[
                 { q: 'What are Crown Jewels?', a: 'Crown Jewels are our highest-value capabilities — each one represents a breakthrough in autonomous intelligence that no competitor offers.' },
-                { q: 'Are all engines available at every tier?', a: 'Free includes 30 core engines. Creator unlocks all 76 base engines plus 8 meta-engines. Architect includes everything in Creator plus 16 meta-engines. Enterprise includes everything in Architect plus all 24 meta-engines. The 9 recursive self-improvement meta-engines are CMPSBL-internal only.' },
+                { q: 'Are all engines available at every tier?', a: 'Free includes 30 core engines + 1 meta-engine (Cognitive Mesh). Creator unlocks all 76 base engines plus 8 meta-engines. Architect includes everything in Creator plus 16 meta-engines. Enterprise includes everything in Architect plus all 24 meta-engines. The 9 recursive self-improvement meta-engines are CMPSBL-internal only.' },
                 { q: 'What are crystallized pipelines?', a: 'Pipelines discovered by the Intent Mesh that proved valuable and were permanently saved as reusable cross-module workflows.' },
                 { q: 'Do I need a separate developer license?', a: 'No. SDK and API access are included in Creator and Architect tiers.' },
                 { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. Changes take effect at the next billing cycle.' },

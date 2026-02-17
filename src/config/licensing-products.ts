@@ -21,7 +21,7 @@ export const UNIFIED_TIERS = {
     description: 'Full building capabilities with persistent memory and composition.',
     features: [
       'Artifact Store access',
-      '30 core engines',
+      '30 core engines + 1 meta-engine',
       '120+ free templates',
       'Persistent memory (bounded)',
       'Composition engine',
