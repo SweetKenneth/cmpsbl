@@ -21,8 +21,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-// Import free templates
-import { TEMPLATES, Template } from "@/data/templates";
+// Import templates with tier support
+import { TEMPLATES, ALL_TEMPLATES, Template, getTemplateTier } from "@/data/templates";
 
 // Components
 import { ExplorerCards } from "@/components/codelab/ExplorerCards";
@@ -40,10 +40,8 @@ import { useObsMode } from "@/lib/ui/obsfunction-mode";
 import { renderDialect } from "@/lib/ui/dialect-render";
 import { DIALECT_LABELS } from "@/lib/ui/display-dialect";
 
-// Filter FREE templates only (beginner & intermediate, not premium/elite/pro)
-const FREE_TEMPLATES = TEMPLATES.filter(t => 
-  t.difficulty === 'beginner' || t.difficulty === 'intermediate'
-);
+// Filter FREE templates only (tier-based)
+const FREE_TEMPLATES = ALL_TEMPLATES.filter(t => getTemplateTier(t) === 'free');
 
 // Group by category
 const templatesByCategory = FREE_TEMPLATES.reduce((acc, t) => {

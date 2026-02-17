@@ -11,7 +11,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TEMPLATES, ALL_TEMPLATES, type Template } from "@/data/templates";
+import { TEMPLATES, ALL_TEMPLATES, type Template, getTemplateTier, type RequiredTier } from "@/data/templates";
 import { Input } from "@/components/ui/input";
 import { 
   Code, 
@@ -34,6 +34,7 @@ import {
   ChevronUp,
   Wand2,
   Zap,
+  Lock as LockIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { openCheckoutRedirect } from "@/lib/checkout/checkoutRedirect";
@@ -106,9 +107,9 @@ export default function TemplateAlley() {
   return (
     <>
       <SEO
-        title={`Template Alley | ${ALL_TEMPLATES.length}+ Free Templates | CMPSBL`}
-        description={`Explore ${ALL_TEMPLATES.length}+ free templates for learning and remixing. All templates unlocked.`}
-        keywords={["AI templates", "free templates", "cognitive templates", "code templates"]}
+        title={`Template Alley | ${ALL_TEMPLATES.length}+ Templates | CMPSBL`}
+        description={`Explore ${ALL_TEMPLATES.length}+ templates across Free, Creator, Architect, and Enterprise tiers.`}
+        keywords={["AI templates", "cognitive templates", "code templates", "tiered templates"]}
       />
       
       <div className="min-h-screen bg-background flex flex-col">
@@ -117,14 +118,13 @@ export default function TemplateAlley() {
         {/* Hero */}
         <section className="py-16 md:py-24 border-b border-border/50 bg-gradient-to-b from-cyan-500/5 to-background">
           <div className="container mx-auto px-4 text-center">
-            <Badge className="mb-4 bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
-              <Unlock className="w-3 h-3 mr-1" />
-              ALL UNLOCKED
+            <Badge className="mb-4 bg-cyan-500/10 text-cyan-500 border-cyan-500/30">
+              <Package className="w-3 h-3 mr-1" />
+              {ALL_TEMPLATES.length}+ TEMPLATES
             </Badge>
             <h1 className="text-3xl md:text-5xl font-bold mb-4">Template Alley</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-              {ALL_TEMPLATES.length}+ free templates with copy-paste code.
-              Starting points for learning, remixing, and building.
+              {ALL_TEMPLATES.length}+ templates with copy-paste code — tiered across Free, Creator, Architect, and Enterprise.
             </p>
             
             {/* Explainer */}
@@ -260,7 +260,7 @@ export default function TemplateAlley() {
 
         {/* Grid */}
         <main className="flex-1 container mx-auto px-4 py-8 pt-0">
-          <p className="text-sm text-muted-foreground mb-6">Showing {filteredTemplates.length} of {ALL_TEMPLATES.length} free templates</p>
+          <p className="text-sm text-muted-foreground mb-6">Showing {filteredTemplates.length} of {ALL_TEMPLATES.length} templates</p>
           {filteredTemplates.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredTemplates.map((template) => {
@@ -286,10 +286,21 @@ export default function TemplateAlley() {
                           {template.difficulty}
                         </Badge>
                       </div>
-                      <Badge className="text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
-                        <Check className="w-2.5 h-2.5 mr-1" />
-                        FREE
-                      </Badge>
+                      {(() => {
+                        const tier = getTemplateTier(template);
+                        const tierStyles: Record<RequiredTier, string> = {
+                          free: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+                          creator: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
+                          architect: 'bg-violet-500/10 text-violet-400 border-violet-500/30',
+                          enterprise: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+                        };
+                        return (
+                          <Badge className={cn("text-[10px]", tierStyles[tier])}>
+                            {tier === 'free' ? <Check className="w-2.5 h-2.5 mr-1" /> : <LockIcon className="w-2.5 h-2.5 mr-1" />}
+                            {tier.toUpperCase()}
+                          </Badge>
+                        );
+                      })()}
                     </div>
                     
                     <h3 className="font-semibold text-lg mb-2">{template.name}</h3>
