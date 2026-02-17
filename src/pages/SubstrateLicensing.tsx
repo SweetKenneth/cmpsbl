@@ -296,7 +296,7 @@ export default function SubstrateLicensing() {
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="outline" className="mb-4 sm:mb-6 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm border-primary/30">
                 <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 inline text-amber-500" />
-                50 Capabilities · 60 Pipelines · Unlimited Templates
+                50+ Capabilities · 60 Pipelines · 200+ Templates
               </Badge>
 
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-4 sm:mb-6">
