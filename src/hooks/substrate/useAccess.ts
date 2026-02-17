@@ -1,6 +1,6 @@
 /**
  * useAccess Hook
- * v9.1.0 ARCHITECT — Dedicated hook for ACCESS (Identity & Billing) module operations
+ * v10.5.4 ARCHITECT — Dedicated hook for ACCESS (Identity & Billing) module operations
  * 
  * Respects debug mode kill-switch for quota polling.
  * Part of the 6-layer, 21-module Cognitive Architecture.

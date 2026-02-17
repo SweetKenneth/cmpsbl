@@ -1,7 +1,7 @@
 /**
  * Why CMPSBL — Full 21-module capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v9.1.0 ARCHITECT Epoch: Complete representation of the 6-layer kernel architecture
+ * v10.5.4 ARCHITECT Epoch: Complete representation of the 6-layer kernel architecture
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";

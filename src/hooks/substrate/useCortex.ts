@@ -1,6 +1,6 @@
 /**
  * useCortex Hook
- * v9.1.0 ARCHITECT — Dedicated hook for CORTEX (Orchestrator) module operations
+ * v10.5.4 ARCHITECT — Dedicated hook for CORTEX (Orchestrator) module operations
  * Respects debug mode kill-switch
  */
 

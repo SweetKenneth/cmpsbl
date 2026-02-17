@@ -1,6 +1,6 @@
 /**
  * Rich Chat Message Formatter — XSS-safe markdown rendering for all chat interfaces
- * v9.1.0 — Supports bold, italic, code, headers, lists, links, and blockquotes
+ * v10.5.4 — Supports bold, italic, code, headers, lists, links, and blockquotes
  */
 
 // Escape HTML to prevent XSS attacks

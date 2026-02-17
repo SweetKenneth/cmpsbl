@@ -1,6 +1,6 @@
 /**
  * DREAM Nightmare Mode — Simulation-Only Artifact Generator
- * v9.1.0 ARCHITECT — Read-Only, No Feedback Loops
+ * v10.5.4 ARCHITECT — Read-Only, No Feedback Loops
  * 
  * Nightmare Mode generates hypothetical threat scenarios for analysis.
  * These are ARTIFACTS ONLY — they do not trigger any system actions.

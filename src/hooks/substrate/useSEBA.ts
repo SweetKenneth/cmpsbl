@@ -1,6 +1,6 @@
 /**
  * useSEBA Hook
- * v9.1.0 ARCHITECT — Dedicated hook for SEBA (Self-Evolving Bounded Agent) operations
+ * v10.5.4 ARCHITECT — Dedicated hook for SEBA (Self-Evolving Bounded Agent) operations
  * Respects debug mode kill-switch
  */
 

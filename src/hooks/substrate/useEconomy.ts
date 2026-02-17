@@ -1,6 +1,6 @@
 /**
  * useEconomy Hook — ECONOMY module operations
- * v9.1.0 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';

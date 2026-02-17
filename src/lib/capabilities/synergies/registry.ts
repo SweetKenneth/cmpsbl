@@ -1,6 +1,6 @@
 /**
  * Synergy Registry
- * v9.1.0 ARCHITECT — Cross-Module Pipeline Registration (200 Pipelines)
+ * v10.5.4 ARCHITECT — Cross-Module Pipeline Registration (200 Pipelines)
  * 
  * Defines all available synergies that combine 2+ modules
  * Includes 32 S-tier premium pipelines + 27 discovery + 53 infrastructure-era = 200 total

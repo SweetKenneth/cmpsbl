@@ -1,6 +1,6 @@
 /**
  * MODERNIZER Module — Code Analysis Engine
- * v9.1.0 — ARCHITECT Epoch Complexity analysis, duplication detection, and quality metrics
+ * v10.5.4 — ARCHITECT Epoch Complexity analysis, duplication detection, and quality metrics
  */
 
 // ============ Types ============

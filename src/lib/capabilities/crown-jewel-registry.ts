@@ -1,6 +1,6 @@
 /**
  * Crown Jewel Registry — Canonical Source of Truth
- * v9.3.0 ARCHITECT — Tier Split & Black-Box Enforcement
+ * v10.5.4 ARCHITECT — Tier Split & Black-Box Enforcement
  * 
  * Crown Jewels are split into TWO categories:
  * 

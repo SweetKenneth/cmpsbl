@@ -4,7 +4,7 @@
  * Full-featured terminal with comprehensive commands, autocomplete,
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
  * 
- * v9.1.0 ARCHITECT Features:
+ * v10.5.4 ARCHITECT Features:
  * - 360+ terminal commands across 21 modules
  * - 200 synergy pipelines with 125 executors
  * - Improved visual feedback for command execution

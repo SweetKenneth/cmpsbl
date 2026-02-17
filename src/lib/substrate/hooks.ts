@@ -1,6 +1,6 @@
 /**
  * Substrate React Hooks
- * v9.0.0 — ARCHITECT Epoch React Integration Layer
+ * v10.5.4 — ARCHITECT Epoch React Integration Layer
  * 
  * Provides React hooks for all substrate engines across the 21-module architecture.
  * Enables seamless integration of cognitive capabilities (325) into React components.

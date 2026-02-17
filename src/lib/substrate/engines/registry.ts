@@ -1,6 +1,6 @@
 /**
  * Engine Registry
- * v9.1.0 ARCHITECT Epoch — 76 Cognitive Engines orchestrating 400 Capabilities
+ * v10.5.4 ARCHITECT Epoch — 76 Cognitive Engines orchestrating 400 Capabilities
  * 
  * Each engine orchestrates multiple related capabilities into
  * a compound execution unit with enhanced value and IP protection.

@@ -1,6 +1,6 @@
 /**
  * Production Rate Limiting
- * v9.1.0 ARCHITECT — Client-side rate limiting for sensitive operations
+ * v10.5.4 ARCHITECT — Client-side rate limiting for sensitive operations
  */
 
 export interface RateLimitConfig {

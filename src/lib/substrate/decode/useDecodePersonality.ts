@@ -1,6 +1,6 @@
 /**
  * CMPSBL® useDecodePersonality Hook
- * v9.3.0 ARCHITECT — React hook for DECODE personality profiles
+ * v10.5.4 ARCHITECT — React hook for DECODE personality profiles
  */
 
 import { useState, useCallback, useMemo } from 'react';

@@ -1,6 +1,6 @@
 /**
  * VISION Alert Management
- * v9.1.0 ARCHITECT — Intelligent alerting with deduplication and escalation
+ * v10.5.4 ARCHITECT — Intelligent alerting with deduplication and escalation
  */
  
  import { supabase } from '@/integrations/supabase/client';

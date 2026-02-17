@@ -1,6 +1,6 @@
 /**
  * useArchivedCapabilities Hook
- * v9.1.0 ARCHITECT — React hook for accessing archived edge function capabilities
+ * v10.5.4 ARCHITECT — React hook for accessing archived edge function capabilities
  */
 
 import { useState, useCallback } from 'react';

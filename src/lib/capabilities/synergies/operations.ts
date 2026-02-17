@@ -1,6 +1,6 @@
 /**
  * Substrate Daily Operations Integration
- * v9.1.0 — ARCHITECT Epoch Integrates 200 synergy pipelines into substrate workflows
+ * v10.5.4 — ARCHITECT Epoch Integrates 200 synergy pipelines into substrate workflows
  */
 
 import { executeSynergy, listSynergies, getRecommendedSynergies } from '../index';

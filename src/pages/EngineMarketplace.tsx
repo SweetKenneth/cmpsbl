@@ -1,6 +1,6 @@
 /**
  * Engines (OEM) — Premium Registry-Driven Subscription Commerce
- * v9.3.0 ARCHITECT — All 76 engines + 24 meta-engines from live registries
+ * v10.5.4 ARCHITECT — All 76 engines + 24 meta-engines from live registries
  * Self-improvement engines = internal (showcased, not sold)
  * 
  * UNIQUE DESIGN: Cinematic, premium, completely distinctive to CMPSBL

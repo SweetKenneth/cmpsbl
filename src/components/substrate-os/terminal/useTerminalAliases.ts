@@ -1,6 +1,6 @@
 /**
  * Terminal Command Aliases
- * v9.1.0 — ARCHITECT Epoch Shorthand aliases for 360+ commands
+ * v10.5.4 — ARCHITECT Epoch Shorthand aliases for 360+ commands
  */
 
 export interface AliasDefinition {

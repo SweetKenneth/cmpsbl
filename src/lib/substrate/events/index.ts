@@ -1,6 +1,6 @@
 /**
  * Substrate Events Module
- * v9.1.0 — ARCHITECT Epoch Unified Event Emission and Query
+ * v10.5.4 — ARCHITECT Epoch Unified Event Emission and Query
  */
 
 export { 

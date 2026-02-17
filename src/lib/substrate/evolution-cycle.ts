@@ -1,6 +1,6 @@
 /**
  * Evolution Cycle Engine
- * v9.1.0 — ARCHITECT Epoch: Unified on evolution_runs (Single Source of Truth)
+ * v10.5.4 — ARCHITECT Epoch: Unified on evolution_runs (Single Source of Truth)
  * 
  * Unified evolution engine that reads/writes from evolution_runs table.
  * 

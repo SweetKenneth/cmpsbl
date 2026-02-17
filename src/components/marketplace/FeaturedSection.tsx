@@ -1,7 +1,7 @@
 /**
  * FeaturedSection — Premium hero products with compelling visuals
  * Mobile-first design, high conversion focus
- * v9.1.0 — ARCHITECT Epoch 21-module architecture + SEBA
+ * v10.5.4 — ARCHITECT Epoch 21-module architecture + SEBA
  * OS License now redirects to licensing page (tiered pricing)
  */
 

@@ -1,6 +1,6 @@
 /**
  * useDefense Hook
- * v9.1.0 ARCHITECT — Dedicated hook for DEFENSE module operations
+ * v10.5.4 ARCHITECT — Dedicated hook for DEFENSE module operations
  * Respects debugMode — when enabled, polling is disabled
  */
 

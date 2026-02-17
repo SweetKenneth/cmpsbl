@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Substrate Client
- * v9.2.0 — ARCHITECT Epoch — Cognitive Orchestration Substrate (21-Module Architecture)
+ * v10.5.4 — ARCHITECT Epoch — Cognitive Orchestration Substrate (21-Module Architecture)
  * 
  * Full 21-module integration with Infrastructure Six:
  * - Kernel (3): Core, Ripple, Access

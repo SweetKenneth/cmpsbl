@@ -1,6 +1,6 @@
 /**
  * Substrate OS Dashboard Hooks
- * v9.1.0 ARCHITECT — Real-time telemetry and control hooks for the OS surface
+ * v10.5.4 ARCHITECT — Real-time telemetry and control hooks for the OS surface
  * Respects debug mode kill-switch
  */
 

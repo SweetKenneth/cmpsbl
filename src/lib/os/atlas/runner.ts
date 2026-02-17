@@ -1,6 +1,6 @@
 /**
  * Atlas Module Runner
- * v9.1.0 — ARCHITECT Epoch Unified execution layer for all module actions
+ * v10.5.4 — ARCHITECT Epoch Unified execution layer for all module actions
  */
 
 import { supabase } from '@/integrations/supabase/client';

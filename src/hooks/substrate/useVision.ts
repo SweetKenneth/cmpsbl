@@ -1,6 +1,6 @@
 /**
  * useVision Hook
- * v9.1.0 ARCHITECT — Dedicated hook for VISION module operations
+ * v10.5.4 ARCHITECT — Dedicated hook for VISION module operations
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

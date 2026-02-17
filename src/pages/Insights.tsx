@@ -45,7 +45,7 @@ const OBSERVER_FEATURES = [
   {
     icon: Layers,
     title: "Architecture Overview",
-    description: "Understand the six-layer, 21-module kernel architecture of CMPSBL v9.3.0."
+    description: "Understand the six-layer, 21-module kernel architecture of CMPSBL v10.5.4."
   }
 ];
 
@@ -74,7 +74,7 @@ export default function Insights() {
             Explore documentation, architecture, and standards with read-only visibility.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">v9.3.0</Badge>
+            <Badge variant="outline">v10.5.4</Badge>
             <Badge variant="outline">21 Modules</Badge>
             <Badge variant="outline">Read-Only</Badge>
           </div>

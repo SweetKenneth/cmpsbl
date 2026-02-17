@@ -1,6 +1,6 @@
 /**
  * Substrate Integration Module
- * v9.1.0 ARCHITECT — Memory bridge, dream pipeline, and global pooling
+ * v10.5.4 ARCHITECT — Memory bridge, dream pipeline, and global pooling
  */
 
 export * from './memoryBridge';

@@ -1,6 +1,6 @@
 /**
  * Identity Audit Events — Legally Defensible Authentication Logging
- * v9.1.0 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  * 
  * Every authentication event is recorded into the AUDIT chain.
  * These records are immutable and cryptographically linked.

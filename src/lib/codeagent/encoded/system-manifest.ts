@@ -1,6 +1,6 @@
 /**
  * ENCODE System Manifest — Architecture Awareness Registry
- * v9.3.0 ARCHITECT — Gives ENCODE a canonical map of the living system
+ * v10.5.4 ARCHITECT — Gives ENCODE a canonical map of the living system
  *
  * This manifest solves ENCODE's "blind agent" problem: without it, ENCODE
  * has no idea that a footer exists, where BRAIN lives, or that it is itself

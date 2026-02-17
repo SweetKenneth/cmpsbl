@@ -1,6 +1,6 @@
 /**
  * Learning Engine
- * v9.1.0 — ARCHITECT Epoch: Unified Cognitive Learning Module
+ * v10.5.4 — ARCHITECT Epoch: Unified Cognitive Learning Module
  * 
  * Merges all learning operations into a single authoritative module:
  * - Train: Active learning from external sources

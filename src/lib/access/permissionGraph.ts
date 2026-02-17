@@ -1,6 +1,6 @@
 /**
  * ACCESS Permission Graph
- * v9.1.0 ARCHITECT — Hierarchical permission resolution with inheritance
+ * v10.5.4 ARCHITECT — Hierarchical permission resolution with inheritance
  */
  
  import { supabase } from '@/integrations/supabase/client';

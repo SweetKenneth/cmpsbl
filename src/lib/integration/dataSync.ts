@@ -1,6 +1,6 @@
 /**
  * INTEGRATION Module — Data Synchronization
- * v9.1.0 ARCHITECT — Bi-directional sync, conflict resolution, and change tracking
+ * v10.5.4 ARCHITECT — Bi-directional sync, conflict resolution, and change tracking
  */
 
 import { supabase } from '@/integrations/supabase/client';

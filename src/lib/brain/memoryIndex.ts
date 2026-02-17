@@ -1,6 +1,6 @@
 /**
  * BRAIN Memory Index Engine
- * v9.1.0 ARCHITECT — Fast memory lookup with semantic indexing
+ * v10.5.4 ARCHITECT — Fast memory lookup with semantic indexing
  */
  
  import { supabase } from '@/integrations/supabase/client';

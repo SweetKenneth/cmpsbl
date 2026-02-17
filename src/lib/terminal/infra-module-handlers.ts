@@ -1,6 +1,6 @@
 /**
  * Infrastructure Six Module Terminal Handlers
- * v9.2.0 ARCHITECT — Full terminal integration for MEMORY, RELAY, AUDIT, IDENTITY, ECONOMY, SANDBOX
+ * v10.5.4 ARCHITECT — Full terminal integration for MEMORY, RELAY, AUDIT, IDENTITY, ECONOMY, SANDBOX
  */
 
 import { registerHandler } from './validate-registry';

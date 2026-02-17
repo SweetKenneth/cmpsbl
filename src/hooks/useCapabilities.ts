@@ -1,6 +1,6 @@
 /**
  * useCapabilities Hook
- * v9.1.0 ARCHITECT — React hook for capability management (400+ capabilities)
+ * v10.5.4 ARCHITECT — React hook for capability management (400+ capabilities)
  */
 
 import { useState, useCallback, useMemo } from 'react';

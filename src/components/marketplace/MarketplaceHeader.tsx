@@ -1,7 +1,7 @@
 /**
  * MarketplaceHeader — Premium hero with immersive visuals
  * Mobile-first, visually compelling marketplace entrance
- * v9.1.0 - 21 modules, full human compatibility
+ * v10.5.4 - 21 modules, full human compatibility
  */
 
 import { motion } from 'framer-motion';

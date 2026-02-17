@@ -1,6 +1,6 @@
 /**
  * CMPSBL® DECODE Module
- * v9.3.0 ARCHITECT Epoch — Interpreter Primitive with Personality Profiles
+ * v10.5.4 ARCHITECT Epoch — Interpreter Primitive with Personality Profiles
  * + Cryptographic Identity Context
  * 
  * Part of the 6-layer, 21-module Cognitive Architecture

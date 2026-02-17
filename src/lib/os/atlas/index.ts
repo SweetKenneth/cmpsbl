@@ -1,6 +1,6 @@
 /**
  * Atlas Control Plane
- * v9.1.0 ARCHITECT Epoch — Single-source-of-truth substrate interface
+ * v10.5.4 ARCHITECT Epoch — Single-source-of-truth substrate interface
  * 
  * The Atlas provides:
  * - Unified module registry for all 21 modules across 6 layers

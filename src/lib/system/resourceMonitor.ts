@@ -1,6 +1,6 @@
 /**
  * SYSTEM Resource Monitor
- * v9.1.0 ARCHITECT — Real-time resource tracking and alerts
+ * v10.5.4 ARCHITECT — Real-time resource tracking and alerts
  */
  
  // Resource metrics

@@ -1,6 +1,6 @@
 /**
  * React Hook for Cognitive Engines
- * v9.1.0 ARCHITECT — Access compound capability execution across 76 engines
+ * v10.5.4 ARCHITECT — Access compound capability execution across 76 engines
  */
 
 import { useState, useCallback, useMemo } from 'react';

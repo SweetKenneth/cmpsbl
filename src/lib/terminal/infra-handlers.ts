@@ -1,6 +1,6 @@
 /**
  * Infrastructure Terminal Handlers
- * v9.1.0 — Terminal commands for the 7 new infrastructure systems
+ * v10.5.4 — Terminal commands for the 7 new infrastructure systems
  */
 
 import { registerHandler } from './validate-registry';

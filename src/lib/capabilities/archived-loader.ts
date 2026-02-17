@@ -1,6 +1,6 @@
 /**
  * Archived Edge Function Loader
- * v9.1.0 ARCHITECT — Scans ONLY _archived edge functions for capability ingestion
+ * v10.5.4 ARCHITECT — Scans ONLY _archived edge functions for capability ingestion
  * 
  * This loader explicitly ignores:
  * - /edge/ (live functions)

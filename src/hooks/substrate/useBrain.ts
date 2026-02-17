@@ -1,6 +1,6 @@
 /**
  * useBrain Hook
- * v9.1.0 ARCHITECT — Dedicated hook for BRAIN (Cognitive Memory) module operations
+ * v10.5.4 ARCHITECT — Dedicated hook for BRAIN (Cognitive Memory) module operations
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
