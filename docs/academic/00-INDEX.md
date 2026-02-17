@@ -1,9 +1,9 @@
 # CMPSBL OS Substrate — Academic Documentation
 
-## v9.1.0 ARCHITECT Epoch | Scientific Publication Set
+## v10.5.1 ARCHITECT Epoch | Scientific Publication Set
 
-**Document Set Version:** 2.0.0  
-**Release Date:** February 14, 2026  
+**Document Set Version:** 3.0.0  
+**Release Date:** February 17, 2026  
 **DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
 **ORCID:** [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
 **License:** Apache 2.0 (Core) | CC BY 4.0 (Documentation)
@@ -12,7 +12,7 @@
 
 ## Abstract
 
-The CMPSBL OS Substrate is a cognitive orchestration system that provides persistent memory, autonomous learning, multi-provider AI routing, and verifiable self-evolution for artificial intelligence systems. Implemented as a 21-module, 6-layer architecture with 400+ registered capabilities and 200 synergy pipelines, the system introduces a three-tier autonomy governance model with cryptographic evolution stamps enabling post-hoc verification of all self-modifications. This documentation set describes the public architecture, module taxonomy, capability system, and governance mechanisms.
+The CMPSBL OS Substrate is a cognitive orchestration system that provides persistent memory, autonomous learning, multi-provider AI routing, governed code execution (ENCODE), and verifiable self-evolution for artificial intelligence systems. Implemented as a 21-module, 6-layer architecture with 400+ registered capabilities, 60+ crystallized pipelines, and 21 Crown Jewel capabilities, the system introduces a three-tier autonomy governance model with cryptographic evolution stamps enabling post-hoc verification of all self-modifications. This documentation set describes the public architecture, module taxonomy, capability system, and governance mechanisms.
 
 ---
 
@@ -22,10 +22,10 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
 |---|----------|----------|-------------|
 | 01 | Abstract & Introduction | `01-ABSTRACT.md` | Research context, problem statement, contributions |
 | 02 | System Architecture | `02-ARCHITECTURE.md` | 6-layer, 21-module architectural blueprint |
-| 03 | Module Taxonomy | `03-MODULES.md` | Complete module reference with interfaces |
+| 03 | Module Taxonomy | `03-MODULES.md` | Complete module reference with interfaces (incl. ENCODE) |
 | 04 | Capability System | `04-CAPABILITIES.md` | 400+ registered capabilities and composition |
-| 05 | Synergy Pipelines | `05-SYNERGIES.md` | Cross-module orchestration (200 pipelines) |
-| 06 | Evolution Mechanics | `06-EVOLUTION.md` | Self-modification system with verifiable stamps |
+| 05 | Synergy Pipelines | `05-SYNERGIES.md` | Cross-module orchestration (60+ crystallized) |
+| 06 | Evolution Mechanics | `06-EVOLUTION.md` | Self-modification system with verifiable stamps (SEBA) |
 | 07 | Observability | `07-OBSERVABILITY.md` | Evolution stamps, receipts, audit trails |
 | 08 | Governance Model | `08-GOVERNANCE.md` | Three-tier autonomy, circuit breakers, safety |
 | 09 | Cognitive Systems | `09-COGNITIVE.md` | Memory, learning, dreaming architectures |
@@ -47,13 +47,13 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
 |----------|-------|
 | System Type | Cognitive Orchestration Substrate |
 | Formal Name | CMPSBL OS Substrate |
-| Version | v9.1.0 (ARCHITECT Epoch) |
+| Version | v10.5.1 (ARCHITECT Epoch) |
 | Model Dependency | Agnostic |
 | Provider Dependency | Agnostic |
 | Infrastructure | Commodity Cloud |
-| Modules | 21 (6 layers) |
-| Capabilities | 400+ |
-| Synergy Pipelines | 200 |
+| Modules | 21 (6 layers) — includes ENCODE |
+| Capabilities | 400+ (50+ public, 21 Crown Jewels) |
+| Crystallized Pipelines | 60+ |
 
 ---
 
@@ -68,7 +68,7 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
                    System for Autonomous AI Evolution}},
   year         = 2026,
   publisher    = {Zenodo},
-  version      = {v9.1.0},
+  version      = {v10.5.1},
   doi          = {10.5281/zenodo.XXXXXXX},
   url          = {https://github.com/promptfluid/substrate}
 }
@@ -76,11 +76,11 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
 
 ### APA 7th Edition
 
-Sweet Jr, K. E. (2026). *CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution* (Version 9.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+Sweet Jr, K. E. (2026). *CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution* (Version 10.5.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
 
 ### IEEE
 
-K. E. Sweet Jr, "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution," version 9.1.0, Zenodo, 2026. [Online]. Available: https://doi.org/10.5281/zenodo.XXXXXXX
+K. E. Sweet Jr, "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution," version 10.5.1, Zenodo, 2026. [Online]. Available: https://doi.org/10.5281/zenodo.XXXXXXX
 
 ---
 
@@ -102,5 +102,5 @@ This documentation describes the public interface and architectural patterns of 
 
 ---
 
-*CMPSBL OS Substrate v9.1.0 — Academic Documentation Set*  
+*CMPSBL OS Substrate v10.5.1 — Academic Documentation Set*  
 *© 2025–2026 PromptFluid®. All rights reserved.*
