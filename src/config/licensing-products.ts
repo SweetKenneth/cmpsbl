@@ -3,7 +3,7 @@
  * 
  * Three tiers. One subscription. Everything included.
  *   Free   → $0     (build real systems, artifact store, memory, composition)
- *   Creator → $49/mo (all engines, templates, SDK, 7 Experience Jewels)
+ *   Creator → $49/mo (base engines, 3 meta-engines, templates, SDK, 7 Jewels)
  *   Architect → $149/mo (CLM, cross-project learning, all 28 Jewels, priority)
  *   Enterprise → Custom (source access, SLA, dedicated support)
  *
@@ -36,10 +36,11 @@ export const UNIFIED_TIERS = {
     interval: 'month' as const,
     name: 'Creator',
     tagline: 'Full substrate access for builders',
-    description: 'All engines, templates, SDK/API, and self-improving capabilities.',
+    description: 'Base engines, standard meta-engines, templates, SDK/API, and self-improving capabilities.',
     features: [
       'Everything in Free',
-      'All engines & meta-engines',
+      '14 base engines (cognitive, operational, kernel)',
+      '3 standard meta-engines',
       'All templates & artifacts',
       'Full SDK / API access',
       '7 Experience Crown Jewels',
@@ -60,6 +61,7 @@ export const UNIFIED_TIERS = {
     description: 'CLM, cross-project learning, all 28 Experience Jewels, and priority support.',
     features: [
       'Everything in Creator',
+      'All 14 engines + 8 advanced meta-engines',
       'All 28 Experience Crown Jewels',
       'Constant Learning Mode (CLM)',
       'Cross-session learning',
@@ -82,6 +84,7 @@ export const UNIFIED_TIERS = {
     description: 'Source code access, SLA, dedicated support, and custom deployment.',
     features: [
       'Everything in Architect',
+      'All engines + all 12 meta-engines',
       'Source code access',
       'Self-hosted deployment',
       'Unlimited team seats',
