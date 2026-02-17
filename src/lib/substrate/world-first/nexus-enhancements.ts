@@ -1,5 +1,5 @@
 /**
- * NEXUS Module Enhancements — v9.1.0 ARCHITECT Epoch
+ * NEXUS Module Enhancements — v10.5.4 ARCHITECT Epoch
  * BudgetGovernance, LoadBalancer, RequestQueue, CostArbitrage
  */
 

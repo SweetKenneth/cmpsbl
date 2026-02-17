@@ -1,5 +1,5 @@
 /**
- * Brain Intelligence Panel v9.1.0 ARCHITECT — Advanced cognitive controls
+ * Brain Intelligence Panel v10.5.4 ARCHITECT — Advanced cognitive controls
  * Deep thinking, curiosity engine, learning patterns
  */
 

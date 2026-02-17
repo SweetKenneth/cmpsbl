@@ -1,5 +1,5 @@
 /**
- * BRAIN Module Enhancements — v9.1.0 ARCHITECT Epoch
+ * BRAIN Module Enhancements — v10.5.4 ARCHITECT Epoch
  * AttentionMechanism, MemoryConsolidator, SemanticIndexer, EmotionalResonance
  */
 

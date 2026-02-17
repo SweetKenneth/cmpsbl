@@ -1,5 +1,5 @@
 /**
- * Substrate OS Audio Components Index
+ * CMPSBL World Engine Audio Components Index
  */
 
 export { useSubstrateVoice, substrateVoiceStyles } from './SubstrateVoice';

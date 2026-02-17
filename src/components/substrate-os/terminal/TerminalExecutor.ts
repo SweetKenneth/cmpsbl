@@ -149,7 +149,7 @@ function formatEvolutionLogForTerminal(): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY FORMATTERS (v9.3.0 ARCHITECT)
+// PERSONALITY FORMATTERS (v10.5.4 ARCHITECT)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function formatPersonalityList(profiles: Array<{ id: string; name: string; description: string }>): string {
@@ -546,7 +546,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ CLM (CONSTANT LEARNING MODE) v9.3.0 ───────────────────────┐
+┌─ CLM (CONSTANT LEARNING MODE) v10.5.4 ──────────────────────┐
 │                                                             │
 │  clm.status          Status, budget, queue size             │
 │  clm.enable          Enable autonomous learning             │
@@ -564,7 +564,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SEBA (SELF-EVOLVING BOUNDED AGENT) v9.3.0 ───────────────────┐
+┌─ SEBA (SELF-EVOLVING BOUNDED AGENT) v10.5.4 ──────────────────┐
 │                                                             │
 │  seba.status         Agent state, mode, and statistics      │
 │  seba.enable         Enable bounded autonomy                │
@@ -581,7 +581,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SYNERGY ENGINE v9.3.0 (200 Pipelines) ─────────────────────┐
+┌─ SYNERGY ENGINE v10.5.4 (200 Pipelines) ────────────────────┐
 │                                                             │
 │  cortex.synergy.status    Engine overview                   │
 │  cortex.synergy.list      List all 200 pipelines            │
@@ -641,7 +641,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ ENCODED AGENT v9.3.0 ──────────────────────────────────────┐
+┌─ ENCODED AGENT v10.5.4 ─────────────────────────────────────┐
 │                                                             │
 │  encoded.status          Agent status and configuration     │
 │  encoded.generate        Generate code (with task spec)     │
@@ -655,7 +655,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ ENGINE SYSTEM v9.3.0 (76 Engines + 24 Meta = 100) ─────────┐
+┌─ ENGINE SYSTEM v10.5.4 (76 Engines + 24 Meta = 100) ────────┐
 │                                                             │
 │  engine.list [cat]       List engines by category           │
 │  engine.get <id>         Engine details                     │
@@ -668,7 +668,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ TERMINAL FEATURES v9.3.0 ──────────────────────────────────┐
+┌─ TERMINAL FEATURES v10.5.4 ─────────────────────────────────┐
 │                                                             │
 │  alias               Shorthand commands                     │
 │  macro               Multi-command scripts (@name)          │
@@ -1899,7 +1899,7 @@ ${allFeatures.map(f => {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
     }
-    // ═══ EVOLUTION CYCLE v9.3.0 ═══
+    // ═══ EVOLUTION CYCLE v10.5.4 ═══
     else if (base === 'modernizer.evolve') {
       const { evolutionCycle } = await import('@/lib/substrate/evolution-cycle');
       
@@ -2836,7 +2836,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         return {
           success: true,
           output: `
-┌─ SYNERGY ENGINE v9.3.0 ──────────────────────────────────────
+┌─ SYNERGY ENGINE v10.5.4 ─────────────────────────────────────
 │
 │  Pipelines:  200 total
 │  Executors:  125 custom
@@ -3366,7 +3366,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // CLM (Constant Learning Mode) v9.3.0
+    // CLM (Constant Learning Mode) v10.5.4
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'clm.status') {
       try {
@@ -3375,7 +3375,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return {
           success: true,
           output: `╔══════════════════════════════════════════════════════════════╗
-║  CONSTANT LEARNING MODE — v9.3.0 ARCHITECT                   ║
+║  CONSTANT LEARNING MODE — v10.5.4 ARCHITECT                  ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Status:      ${status.enabled ? '🟢 ENABLED' : '🔴 DISABLED'}                                    ║
 ║  Kill Switch: ${status.kill_switch ? '🛑 ACTIVE' : '✅ OFF'}                                      ║
@@ -3539,7 +3539,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // SEBA (Self-Evolving Bounded Agent) v9.3.0
+    // SEBA (Self-Evolving Bounded Agent) v10.5.4
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'seba.status') {
       try {
@@ -3558,7 +3558,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return {
           success: true,
           output: `╔══════════════════════════════════════════════════════════════╗
-║  SEBA v9.3.0 — Full Spectrum Autonomy                         ║
+║  SEBA v10.5.4 — Full Spectrum Autonomy                        ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Mode:        ${(config.mode || 'advisory').padEnd(46)}║
@@ -4556,7 +4556,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // ENGINE — Cognitive Engine System v9.3.0
+    // ENGINE — Cognitive Engine System v10.5.4
     // ═══════════════════════════════════════════════════════════════════════════
     
     else if (base === 'engine.status') {
@@ -4569,7 +4569,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  COGNITIVE ENGINE SYSTEM v9.3.0 — ARCHITECT Epoch              ║
+║  COGNITIVE ENGINE SYSTEM v10.5.4 — ARCHITECT Epoch             ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Architecture: Capabilities (400+) → Engines (76) → Meta (24) ║
 ╠══════════════════════════════════════════════════════════════╣
@@ -4868,7 +4868,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  META-ENGINE SYSTEM v9.3.0                                   ║
+║  META-ENGINE SYSTEM v10.5.4                                  ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Total Meta-Engines:    ${String(summary.totalMetaEngines).padEnd(2)}                                    ║
 ║  Engines Orchestrated:  ${String(summary.totalEnginesOrchestrated).padEnd(2)}                                    ║
@@ -5024,7 +5024,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     }
 
-    // ═══ INFRASTRUCTURE COMMANDS (v9.3.0) ═══
+    // ═══ INFRASTRUCTURE COMMANDS (v10.5.4) ═══
     else if (base.startsWith('cron.') || base.startsWith('ratelimit.') || base.startsWith('snapshot.') || base.startsWith('analytics.') || base.startsWith('stream.') || base.startsWith('file.') || base.startsWith('nl.')) {
       try {
         // Lazy-register infra handlers on first use
@@ -5142,7 +5142,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       return { success: false, output: `▓ Unknown patch command: ${base}\n  Type 'patch.help' for available commands` };
     }
 
-    // ═══ INFRASTRUCTURE SIX + ENCODE MODULE HANDLERS (v9.2.0 ARCHITECT) ═══
+    // ═══ INFRASTRUCTURE SIX + ENCODE MODULE HANDLERS (v10.5.4 ARCHITECT) ═══
     else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.')) {
       try {
         // Lazy-register Infrastructure Six + Encode handlers on first use

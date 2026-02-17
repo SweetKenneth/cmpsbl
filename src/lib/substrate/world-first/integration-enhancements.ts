@@ -1,5 +1,5 @@
 /**
- * INTEGRATION Module Enhancements — v9.1.0 ARCHITECT Epoch
+ * INTEGRATION Module Enhancements — v10.5.4 ARCHITECT Epoch
  * AdapterHealthMonitor, WebhookOrchestrator, DataTransformer
  */
 

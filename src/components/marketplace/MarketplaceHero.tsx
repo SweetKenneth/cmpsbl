@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { TEMPLATES } from "@/data/templates";
 
-// The 21 modules of the substrate (6-layer architecture v9.1.0 ARCHITECT)
+// The 21 modules of the substrate (6-layer architecture v10.5.4 ARCHITECT)
 const MODULES = [
   // Kernel Layer
   { icon: Cpu, name: "Core", color: "text-orange-400", description: "Kernel scheduling" },

@@ -341,7 +341,7 @@ export default function Decode() {
         {/* Footer Attribution - Hidden on small screens */}
         <div className="hidden md:block px-6 py-2 border-t border-border/20">
           <p className="text-[10px] text-center text-muted-foreground/40">
-            Decode is an interpreter primitive • CMPSBL® v9.3.0
+            Decode is an interpreter primitive • CMPSBL® v10.5.4
           </p>
         </div>
       </div>

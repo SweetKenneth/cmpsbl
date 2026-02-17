@@ -420,7 +420,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help encoded', description: 'Encoded agent commands', category: 'meta', icon: PenTool, requiresOperator: false },
   { command: 'help infra', description: 'Infrastructure commands (cron, snapshots, etc)', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help patch', description: 'Patch dispatch commands', category: 'meta', icon: Send, requiresOperator: false },
-  // Infrastructure Six + ENCODE module help (v9.2.0)
+  // Infrastructure Six + ENCODE module help (v10.5.4)
   { command: 'help memory', description: 'Memory (vector/RAG) module commands', category: 'meta', icon: Database, requiresOperator: false },
   { command: 'help relay', description: 'Relay (outbound webhooks) module commands', category: 'meta', icon: Send, requiresOperator: false },
   { command: 'help audit', description: 'Audit (compliance ledger) module commands', category: 'meta', icon: FileCheck, requiresOperator: false },
@@ -666,7 +666,7 @@ export const SANDBOX_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'sandbox.destroy', description: 'Destroy sandbox', category: 'sandbox_mod', icon: XCircle, requiresOperator: true, requiredTier: 'architect', args: '<sandbox_id>' },
 ];
 
-// ENCODE MODULE — Code generation & transformation (v9.2.0)
+// ENCODE MODULE — Code generation & transformation (v10.5.4)
 export const ENCODE_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'encode.status', description: 'Code generation engine status', category: 'cortex', icon: PenTool, requiresOperator: false },
   { command: 'encode.queue', description: 'View pending task packets from DECODE', category: 'cortex', icon: List, requiresOperator: false },

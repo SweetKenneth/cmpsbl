@@ -1,5 +1,5 @@
 /**
- * CMPSBL v9.1.0 ARCHITECT Epoch — Living Evolution Log
+ * CMPSBL v10.5.4 ARCHITECT Epoch — Living Evolution Log
  * A continuous record of why the system evolved across all epochs.
  * 
  * This is not a changelog. This is a living document that records

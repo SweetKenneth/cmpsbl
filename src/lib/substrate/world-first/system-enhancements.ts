@@ -1,5 +1,5 @@
 /**
- * SYSTEM Module Enhancements — v9.1.0 ARCHITECT Epoch
+ * SYSTEM Module Enhancements — v10.5.4 ARCHITECT Epoch
  * ResourceProfiler, DependencyGraph, SelfHealOrchestrator, BackupIntegrity
  */
 

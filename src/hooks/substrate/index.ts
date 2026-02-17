@@ -30,7 +30,7 @@ export { useModernizer, type UseModernizerReturn } from './useModernizer';
 export { useCortex, type UseCortexReturn } from './useCortex';
 export { useEncode, type UseEncodeReturn } from './useEncode';
 
-// Infrastructure Layer (v9.1.0 — 21-Module Epoch)
+// Infrastructure Layer (v10.5.4 — 21-Module Epoch)
 export { useMemoryModule, type UseMemoryModuleReturn } from './useMemoryModule';
 export { useRelay, type UseRelayReturn } from './useRelay';
 export { useAuditModule, type UseAuditModuleReturn } from './useAuditModule';

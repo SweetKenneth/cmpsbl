@@ -1,5 +1,5 @@
 /**
- * Module Control Card v9.1.0 ARCHITECT — Individual module powerhouse control
+ * Module Control Card v10.5.4 ARCHITECT — Individual module powerhouse control
  * Gradient accents, real-time status, action buttons with Substrate Voice
  */
 
