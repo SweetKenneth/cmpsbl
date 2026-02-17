@@ -1,6 +1,6 @@
 /**
  * Capability System
- * v9.1.0 ARCHITECT Epoch — Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
+ * v10.5.4 ARCHITECT Epoch — Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
  * 
  * This module provides:
  * - Registry: Single source of truth for 269 capabilities

@@ -1,6 +1,6 @@
 /**
  * Substrate Module Version Registry
- * v9.2.0 — ARCHITECT Epoch — Single source of truth for all module versions
+ * v10.5.4 — ARCHITECT Epoch — Single source of truth for all module versions
  */
 
 // Core module versions (all 21 modules)
