@@ -25,26 +25,26 @@ const TIER_DISPLAY = [
   { 
     tier: 'creator' as const, 
     label: 'Creator', 
-    price: '$49/mo', 
+    price: '$9/mo', 
     gradient: 'from-blue-500 to-cyan-500',
     icon: Sparkles,
-    tagline: '37+ intelligent capabilities including 27 Crown Jewels that optimize before you ask'
+    tagline: 'Expanded capabilities, executable artifacts, and light automation for builders shipping products'
   },
   { 
     tier: 'architect' as const, 
     label: 'Architect', 
-    price: '$149/mo', 
+    price: '$19/mo', 
     gradient: 'from-violet-500 to-purple-500',
     icon: Crown,
-    tagline: '55+ advanced capabilities including 43 Crown Jewels for security, compliance, and deep intelligence'
+    tagline: 'Cross-module orchestration, audit views, batch execution, and priority routing for serious builders'
   },
   { 
     tier: 'enterprise' as const, 
     label: 'Enterprise', 
-    price: 'Custom', 
+    price: '$99/mo', 
     gradient: 'from-amber-500 to-orange-500',
     icon: Building2,
-    tagline: '35+ sovereign capabilities with source access, custom governance, and exclusive Crown Jewels'
+    tagline: 'Org workspaces, compliance exports, governance policies, and SLA-aware controls for teams'
   },
 ];
 
@@ -81,7 +81,7 @@ export function TierUnlockSection() {
           </Badge>
           <h2 className="text-3xl font-bold mb-4">What You Unlock at Each Tier</h2>
           <p className="text-muted-foreground">
-            Each tier adds autonomous capabilities that work behind the scenes — predicting, protecting, and optimizing without manual intervention.
+            Each tier adds capabilities that work behind the scenes — predicting, protecting, and optimizing.
           </p>
         </div>
 

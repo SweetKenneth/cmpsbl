@@ -1,212 +1,104 @@
-# Licensing & Pricing
+# Pricing & Access
 
-**CMPSBL® Cognitive Infrastructure Licensing — v9.3.0**
+**CMPSBL® World Engine — Adoptable Pricing**
 
 ---
 
 ## Philosophy
 
-> **"Build self-improving software — even on the free tier."**
+> **"Compose intelligence. Don't control the engine."**
 
-CMPSBL gives every developer real memory, real execution, and real composition. Advanced intelligence is unlocked by tiers — architecture stays protected.
-
----
-
-## Overview
-
-| Tier | Cost | What You Get |
-|------|------|--------------|
-| **Free** | $0 | Full Artifact Store, Persistent Memory, Executor, Composition |
-| **Creator** | $49/mo | Self-improving apps, sealed Experience artifacts |
-| **Architect** | $149/mo | Compound intelligence, CLM, cross-project learning |
-| **Enterprise** | Custom | Governed intelligence, source code, compliance |
-
-### Standalone Purchases
-
-| Product | Cost | What You Get |
-|---------|------|--------------|
-| **Composable Cognitives** | $39 each | Superpowered AI agents — no account required |
-| **Template Generator** | $29 one-time | On-demand template creation engine |
+User projects run ON the CMPSBL World Engine. User projects never run AS the CMPSBL World Engine.
 
 ---
 
-## Free Tier
+## Tiers
 
-**$0 — Always Free**
-
-Build real systems with the full power of the CMPSBL substrate.
-
-### Includes
-
-| Feature | Access |
-|---------|--------|
-| **Artifact Store** | ✓ 800+ Capabilities, Templates, Pipelines |
-| **Persistent Memory** | ✓ Project-scoped, bounded |
-| **Executors** | ✓ Create + execute |
-| **Composition** | ✓ Full artifact composition |
-| **Projects** | ✓ Public + private |
-| **Publishing** | ✓ Non-crown artifacts |
-
-### Limitations
-
-- No CLM (Constant Learning Method)
-- No cross-project learning
-- No memory optimization
-- No Experience Crown Jewels
-- Community support only
-
-No signup required. [Explore now →](/store)
+| Tier | Cost | For |
+|------|------|-----|
+| **Free** | $0 | Curious devs, researchers, students |
+| **Creator** | $9/mo | Builders shipping small products |
+| **Architect** | $19/mo | Serious builders, small teams |
+| **Enterprise** | $99/mo | Teams, production systems, governance |
 
 ---
 
-## Creator Tier
+## Free — $0
 
-**$49/month**
+Build real things. Not a trial.
 
-Ship self-improving applications with sealed intelligence.
-
-### Includes
-
-| Feature | Access |
-|---------|--------|
-| **Everything in Free** | ✓ |
-| **Experience Crown Jewels** | 27 sealed artifacts |
-| **In-Run Self-Improvement** | ✓ Bounded |
-| **Goal Optimization** | ✓ Bounded |
-| **Creative Synthesis** | ✓ Dream-assisted |
-| **End-to-End Reasoning** | ✓ Sealed pipeline |
-| **Support** | Email + docs |
-
-**Scope:** Single-project, single-executor.
-
-Some artifacts expose power, not blueprints.
-
-[Upgrade to Creator →](/pricing)
+- Artifact Store access (Free catalog)
+- Core templates (starter pack)
+- Basic capabilities (read + compose)
+- Limited persistent memory
+- Basic pipelines & missions
+- Dashboard + Terminal (Free mode)
 
 ---
 
-## Architect Tier
+## Creator — $9/month
 
-**$149/month**
+Everything in Free plus more juice.
 
-Compound intelligence across sessions, executors, and projects.
-
-### Includes
-
-| Feature | Access |
-|---------|--------|
-| **Everything in Creator** | ✓ |
-| **All Experience Crown Jewels** | 70+ sealed artifacts |
-| **CLM** | ✓ Bounded + governed |
-| **Cross-Session Learning** | ✓ |
-| **Cross-Executor Learning** | ✓ |
-| **Memory Optimization** | ✓ |
-| **Performance Tuning** | ✓ |
-| **Pattern Reuse** | ✓ Across projects |
-| **Support** | Priority email |
-
-[Upgrade to Architect →](/pricing)
+- Expanded Artifact Store (Creator catalog)
+- Higher-quality templates
+- Executable capabilities
+- Multi-module synergy pipelines
+- Stronger persistent memory
+- Higher Nexus quotas + better routing
+- Scheduled tasks + simple automations
 
 ---
 
-## Enterprise License
+## Architect — $19/month
 
-**Custom** — Governed intelligence for regulated environments.
+Everything in Creator plus depth.
 
-### Includes
-
-- ✓ Everything in Architect
-- ✓ **Source code access** (self-hosted deployment)
-- ✓ Unlimited on-premise / air-gapped instances
-- ✓ 99.9% SLA guarantee
-- ✓ Dedicated support channel
-- ✓ Compliance documentation
-- ✓ Custom governance configurations
-- ✓ Training sessions
-
-### Best For
-
-- Regulated industries (healthcare, finance, government)
-- Companies with compliance requirements
-- Production deployments requiring source access
-
-[Contact Sales →](mailto:PromptFluid@gmail.com)
+- Premium Artifact Store (Architect catalog)
+- Cross-module orchestration
+- Larger memory + project memory domains
+- Higher automation limits + batch execution
+- Audit views + change summaries
+- Reasoning summaries
+- Priority Nexus routing + fallback
 
 ---
 
-## Standalone Products
+## Enterprise — $99/month
 
-### Composable Cognitives ($39 each)
+Everything in Architect plus governance.
 
-Superpowered AI agents delivered as downloadable ZIP artifacts. No account required — purchase via Stripe and download immediately.
+- Organization workspaces + roles
+- Higher execution ceilings
+- Compliance + audit exports
+- Advanced governance policies
+- Dedicated memory partitions
+- SLA-aware Nexus controls
+- Dedicated support channel
 
-Available agents: Research, Coding, Analyst, Ops, Writer (plus a free Hybrid).
-
-[Browse Cognitives →](/composable-cognitives)
-
-### Template Generator ($29 one-time)
-
-Unlock the template generation engine to create custom templates on demand from any starting point. One-time purchase, separate from subscription tiers.
-
-[Learn More →](/pricing)
+**Enterprise Custom**: [Contact Sales](mailto:Dev@CMPSBL.com)
 
 ---
 
 ## Black-Box Artifacts
 
-Experience Crown Jewels are released as **sealed artifacts** — you get the power, not the blueprint.
+Crown Jewels are released as sealed artifacts — you get the power, not the blueprint.
 
 - ✓ Full execution capability
 - ✗ No source visibility
 - ✗ No config exposure
 - ✗ No export or cloning
-- ✗ No prompt leakage
 
 ---
 
-## Comparison
+## Builder Isolation
 
-| Feature | Free | Creator | Architect | Enterprise |
-|---------|------|---------|-----------|------------|
-| Artifact Store (800+) | ✓ | ✓ | ✓ | ✓ |
-| Persistent Memory | ✓ | ✓ | ✓ | ✓ |
-| Executors | ✓ | ✓ | ✓ | ✓ |
-| Composition | ✓ | ✓ | ✓ | ✓ |
-| Experience Jewels | — | 27 | 70+ | Negotiated |
-| Self-Improvement | — | In-run | Cross-session | Governed |
-| CLM | — | — | ✓ | ✓ |
-| Memory Optimization | — | — | ✓ | ✓ |
-| Source Code | — | — | — | ✓ |
-| SLA | — | — | — | 99.9% |
+- Capability-scoped execution tokens
+- Per-project namespaces
+- Governor-enforced boundaries
+- No direct module invocation
 
----
-
-## What You Provide (BYOK)
-
-| Item | Tier | Description |
-|------|------|-------------|
-| **AI Provider Keys** | All paid tiers | OpenAI, Anthropic, Google, etc. |
-| **Infrastructure** | Enterprise only | Your servers or cloud account |
-| **Database** | Enterprise only | PostgreSQL recommended |
-
----
-
-## FAQs
-
-### Is the free tier really free?
-Yes. Artifact Store, Persistent Memory, Executors, and Composition are free forever. No credit card required.
-
-### What are Experience Crown Jewels?
-Sealed artifacts that give you advanced capabilities (self-healing, goal optimization, creative synthesis) without exposing the underlying architecture. You experience the power — you don't see the blueprint.
-
-### Can I start free and upgrade later?
-Absolutely. Build for free, then unlock sealed intelligence when you need it.
-
-### What happens when my subscription ends?
-Your projects continue working. You lose access to Experience Crown Jewels and advanced features until you resubscribe.
-
-### Do I need an account to buy Cognitives?
-No. Composable Cognitives use a frictionless Stripe checkout — no account required.
+> "I compose intelligence. I don't control the engine."
 
 ---
 
@@ -214,12 +106,12 @@ No. Composable Cognitives use a frictionless Stripe checkout — no account requ
 
 | Action | Link |
 |--------|------|
-| **Explore Free** | [Artifact Store](/store) |
-| **Creator ($49/mo)** | [Checkout](/pricing) |
-| **Architect ($149/mo)** | [Checkout](/pricing) |
-| **Buy a Cognitive ($39)** | [Cognitives](/composable-cognitives) |
-| **Contact Sales** | PromptFluid@gmail.com |
+| **Get Started Free** | [Start Here](/start-here) |
+| **Creator ($9/mo)** | [Pricing](/pricing) |
+| **Architect ($19/mo)** | [Pricing](/pricing) |
+| **Enterprise ($99/mo)** | [Pricing](/pricing) |
+| **Custom Enterprise** | [Contact Sales](mailto:Dev@CMPSBL.com) |
 
 ---
 
-*CMPSBL® — Build self-improving software, even on the free tier.*
+*CMPSBL® — Compose intelligence. Don't control the engine.*
