@@ -25,6 +25,32 @@ interface EvolutionEntry {
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogV10: EvolutionEntry[] = [
   {
+    id: "v10-evolution-007",
+    date: "2026-02-17",
+    pressures: [
+      "Decode responses presented illustrative metrics as measured facts — epistemic integrity risk",
+      "No deterministic veto precedence existed — conflicting module vetoes resolved unpredictably",
+      "Advisory modules could trigger automatic actions without authority separation",
+      "Vetoes had no lifecycle management — zombie vetoes persisted indefinitely",
+      "System module could redefine other modules' authority boundaries without check"
+    ],
+    responses: [
+      "Implemented claim provenance tagging: [MEASURED], [INFERRED], [DESIGN_INTENT], [REPRESENTATIVE_EXAMPLE]",
+      "Created deterministic veto precedence stack: Audit (1) > Defense (2) > System (3) > Advisory (no veto)",
+      "Built veto scope matrix: healing_actions, routing_changes, scaling_operations, write_access, external_integrations",
+      "Added veto lifecycle with decay: Audit (no expiry), Defense (entropy-conditional), System (gradient reversal reevaluation)",
+      "Established signal arbitration engine preventing advisory-to-veto escalation without precedence approval",
+      "Integrated voice guardrails into Decode conversational contract — untagged percentages auto-downgraded"
+    ],
+    capabilities: [
+      "Epistemic discipline enforcement across all Decode output",
+      "Deterministic veto conflict resolution",
+      "Veto lifecycle with decay and reevaluation",
+      "Signal authority separation (advisory vs. executive)",
+      "Governance-safe narrative voice preservation"
+    ],
+  },
+  {
     id: "v10-evolution-006",
     date: "2026-02-16",
     pressures: [
