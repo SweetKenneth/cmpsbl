@@ -24,7 +24,7 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { WhySubstrate } from "@/components/home/WhySubstrate";
 import { BuiltForSection } from "@/components/home/BuiltForSection";
-import { TechShowcase } from "@/components/home/TechShowcase";
+
 import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
 import { SynergyDepotCTA } from "@/components/explore/SynergyDepotCTA";
 import { LnchblCTA } from "@/components/LnchblCTA";
@@ -114,11 +114,6 @@ export default function Explore() {
 
       {/* Why Substrate - 21 Module Differentiators */}
       <WhySubstrate />
-
-      <SectionDivider />
-
-      {/* Tech Showcase - Interactive SDK Code Examples */}
-      <TechShowcase />
 
       <SectionDivider />
 
