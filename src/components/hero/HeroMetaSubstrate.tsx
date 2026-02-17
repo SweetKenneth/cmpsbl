@@ -336,36 +336,40 @@ export function HeroMetaSubstrate() {
             </motion.div>
             
             {/* Main headline — Clockless */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-3 sm:mb-5" style={{ contain: "layout" }}>
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none mb-4 sm:mb-6" style={{ contain: "layout" }}>
               <motion.span 
                 className="block"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.15 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.6 }}
               >
-                <span className="bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent">Clockless</span>
+                <span className="bg-gradient-to-r from-primary via-violet-500 to-primary bg-[length:200%_auto] animate-[gradient-shift_6s_ease-in-out_infinite] bg-clip-text text-transparent">Clockless</span>
               </motion.span>
             </h1>
 
-            {/* Tagline — Typed scrolling text */}
+            {/* Tagline — "Where machines learn to" on one line, typed word centered below */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
-              className="text-xl sm:text-2xl md:text-3xl font-light tracking-wide mb-5 sm:mb-8"
+              className="mb-6 sm:mb-8 text-center lg:text-left"
             >
-              <span className="text-muted-foreground">Where machines learn to </span>
-              <TypedText 
-                texts={["dream.", "adapt.", "evolve.", "remember.", "compose."]}
-                gradientColors={[
-                  "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
-                  "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                  "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
-                  "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
-                  "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
-                ]}
-                className="font-semibold"
-              />
+              <div className="text-base sm:text-xl md:text-2xl font-medium tracking-wide text-muted-foreground mb-1">
+                Where machines learn to
+              </div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+                <TypedText 
+                  texts={["dream.", "adapt.", "evolve.", "remember.", "compose."]}
+                  gradientColors={[
+                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
+                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+                    "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
+                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
+                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
+                  ]}
+                  className="font-bold"
+                />
+              </div>
             </motion.div>
             
             {/* Subheadline */}
