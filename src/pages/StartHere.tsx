@@ -1,23 +1,26 @@
 /**
  * Start Here — Onboarding Landing Page
- * v9.3.0 ARCHITECT Epoch
+ * v10.5.4 ARCHITECT Epoch
  */
 
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { ArrowRight, Sparkles, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function StartHere() {
   return (
-    <>
-      <Helmet>
-        <title>Start Here | CMPSBL — Build Self-Improving Software</title>
-        <meta name="description" content="New to CMPSBL? Start here. Learn how to build with composable artifacts, persistent memory, and self-improving pipelines — all on the free tier." />
-      </Helmet>
+    <div className="min-h-screen bg-background flex flex-col">
+      <SEO
+        title="Start Here | Clockless — Build Self-Improving Software"
+        description="New to CMPSBL? Start here. Learn how to build with composable artifacts, persistent memory, and self-improving pipelines — all on the free tier."
+        canonical="https://cmpsbl.com/start-here"
+        keywords={['CMPSBL getting started', 'start here', 'onboarding', 'composable artifacts', 'persistent memory']}
+      />
       <PublicNav />
-      <main className="min-h-screen bg-background">
+      <main className="flex-1">
         <div className="container mx-auto px-4 py-20 max-w-3xl">
           {/* H1 */}
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-8">
@@ -90,6 +93,7 @@ export default function StartHere() {
           </div>
         </div>
       </main>
-    </>
+      <EnhancedFooter />
+    </div>
   );
 }

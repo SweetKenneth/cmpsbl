@@ -47,13 +47,13 @@ const milestones = [
   { year: "2009", title: "PromptFluid Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
   { year: "2024", title: "CMPSBL World Engine Born", description: "Launched the first public cognitive world engine — 21 modules, 6 layers." },
-  { year: "2025", title: "175k+ Lines of Code", description: "Grew to 400+ capabilities, 200 synergy pipelines, and 8-provider AI routing." },
-  { year: "2026", title: "ARCHITECT Epoch v9.3", description: "Self-evolving codebase with autonomous learning, dream cycles, and composable cognitives." },
+  { year: "2025", title: "175k+ Lines of Code", description: "Grew to 400+ capabilities, 200 synergy pipelines, and 7-provider AI routing." },
+  { year: "2026", title: "ARCHITECT Epoch v10.5.4", description: "Self-evolving codebase with autonomous learning, dream cycles, and composable cognitives." },
 ];
 
 const capabilities = [
   { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and tiered memory architecture." },
-  { icon: Cpu, title: "Multi-Provider Routing", description: "8-provider AI fallback chain with intelligent cost optimization. Never locked into a single vendor." },
+  { icon: Cpu, title: "Multi-Provider Routing", description: "7-provider AI fallback chain with intelligent cost optimization. Never locked into a single vendor." },
   { icon: Layers, title: "21-Module Architecture", description: "Six specialized layers — Kernel, Cognitive, Operational, Administrative, Orchestrator, Infrastructure." },
   { icon: Shield, title: "Self-Evolving Codebase", description: "SEBA + Modernizer modules continuously scan, propose, and apply patches autonomously." },
   { icon: Zap, title: "400+ Capabilities", description: "Production-ready engines, synergy pipelines, and a capabilities depot — all orchestrated through a unified terminal." },

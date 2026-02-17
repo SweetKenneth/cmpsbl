@@ -225,7 +225,7 @@ const ProductRoadmap2025 = () => {
             
             <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
               <p>
-                v9.3.0 ARCHITECT Epoch is live — 21 integrated modules, 200 synergy pipelines, 100 engines (76 base + 24 meta), unified pricing (Free / Creator / Architect), and the Composable Artifacts Store. Dream cycles, cross-project learning, and autonomous improvement are shipping now.
+                v10.5.4 ARCHITECT Epoch is live — 21 integrated modules, 200 synergy pipelines, 100 engines (76 base + 24 meta), unified pricing (Free / Creator / Architect), and the Composable Artifacts Store. Dream cycles, cross-project learning, and autonomous improvement are shipping now.
               </p>
               
               <p>

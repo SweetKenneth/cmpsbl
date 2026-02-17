@@ -1,6 +1,6 @@
 /**
  * Public Metrics Store
- * v9.1.0 ARCHITECT Epoch — Single Source of Truth for all public-facing metrics
+ * v10.5.4 ARCHITECT Epoch — Single Source of Truth for all public-facing metrics
  * 
  * This Zustand store serves as the canonical source for all marketing numbers,
  * version info, and capability counts across the entire substrate.
@@ -80,7 +80,7 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '10.1.0',
+  version: '10.5.4',
   codename: 'ARCHITECT',
   epoch: 'ARCHITECT',
   buildDate: new Date().toISOString().split('T')[0],
@@ -122,7 +122,7 @@ export const DEFAULT_METRICS: PublicMetrics = {
   wcagLevel: 'WCAG 2.2 AA',
   
   // Providers
-  providersCount: 6,
+  providersCount: 7,
   byokSupported: true,
 };
 

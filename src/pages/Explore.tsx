@@ -181,7 +181,7 @@ export default function Explore() {
                 <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">Remembers</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                Persistent memory, self-evolving architecture, and an 8-provider AI fallback chain —
+                Persistent memory, self-evolving architecture, and a 7-provider AI fallback chain —
                 running on 175k+ lines of production code. Start free today.
               </p>
               
@@ -190,7 +190,7 @@ export default function Explore() {
                 {[
                   { value: "21", label: "Modules" },
                   { value: "100", label: "Engines" },
-                  { value: "8", label: "AI Providers" },
+                  { value: "7", label: "AI Providers" },
                   { value: "99.9%", label: "Uptime" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
