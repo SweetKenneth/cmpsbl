@@ -25,6 +25,66 @@ interface EvolutionEntry {
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogV10: EvolutionEntry[] = [
   {
+    id: "v10-evolution-010",
+    date: "2026-02-17",
+    pressures: [
+      "Pricing page was not mobile-first — tier cards were unreadable on small viewports",
+      "Investor documentation lacked a consolidated record of industry-first achievements",
+      "Documentation suite was out of sync with ENCODE module integration and v10.5.4 changes"
+    ],
+    responses: [
+      "Rebuilt pricing page as fully mobile-first with horizontal-scroll tier cards and benefits-first layout",
+      "Created 'World Firsts' section in Investor Overview documenting 14 industry milestones with Zenodo DOI citation",
+      "Synchronized all five documentation sets (library, academic, internal, modules, website) to v10.5.4",
+      "Integrated ENCODE module deep dives into module registry and updated changelog with latest entries"
+    ],
+    capabilities: [
+      "Mobile-first pricing with snap-scroll tier browsing — benefits above, checkout below",
+      "Investor-facing World Firsts narrative with verifiable academic citations",
+      "Full documentation parity across all doc sets for ENCODE and v10.5.x series"
+    ],
+  },
+  {
+    id: "v10-evolution-009",
+    date: "2026-02-17",
+    pressures: [
+      "Only 15 crown jewels governed — 21 modules lacked full coverage for tiered licensing",
+      "Pricing page led with price cards instead of capability value — poor conversion signal",
+      "Stripe checkout flow needed validation after tier restructuring"
+    ],
+    responses: [
+      "Discovered and installed 21 new crown jewel capabilities — one per module across Creator, Architect, Enterprise, and CMPSBL tiers",
+      "Redesigned pricing page to benefits-first layout showcasing capabilities, pipelines, and templates before price cards",
+      "Validated Stripe tier-checkout edge function flow for seamless subscription upgrades",
+      "Added Stats Bar highlighting 50+ capabilities, 60 crystallized pipelines, and 21 modules"
+    ],
+    capabilities: [
+      "Every module now has a designated crown jewel capability — full 21-module coverage",
+      "Benefits-first pricing conversion funnel with horizontal mobile scroll",
+      "Stripe checkout verified end-to-end for all tiers"
+    ],
+  },
+  {
+    id: "v10-evolution-008",
+    date: "2026-02-17",
+    pressures: [
+      "Analytics dashboard blended human traffic metrics with substrate telemetry — inaccurate and misleading",
+      "Legacy third-party analytics scripts in index.html blocked page load and leaked data externally",
+      "Obsolete edge functions (google-analytics, cascade-metrics-collector) consumed deployment resources"
+    ],
+    responses: [
+      "Removed ~160 lines of blocking inline JavaScript from index.html including Google Analytics and legacy Space Analytics Tracker",
+      "Rewrote AnalyticsTab to aggregate honest telemetry from five internal tables: brain_events, brain_metrics, ai_usage_log, access_usage, audit_logs",
+      "Deleted obsolete google-analytics and cascade-metrics-collector edge functions",
+      "Established OS Dashboard as single source of truth for all substrate observability"
+    ],
+    capabilities: [
+      "Analytics now reflect actual substrate operations — no fabricated visitor counts",
+      "Faster page loads with third-party script removal",
+      "OS Dashboard is the canonical telemetry source for all modules"
+    ],
+  },
+  {
     id: "v10-evolution-007",
     date: "2026-02-17",
     pressures: [
@@ -468,10 +528,10 @@ export default function Changelog() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Evolution Log | CMPSBL v10.5.1 ARCHITECT Epoch"
+        title="Evolution Log | CMPSBL v10.5.4 ARCHITECT Epoch"
         description="A continuous record of why the CMPSBL substrate evolved. From Genesis through ARCHITECT — the age of full-spectrum cognitive architecture."
         canonical="https://cmpsbl.com/changelog"
-        keywords={["CMPSBL evolution log", "substrate evolution", "ARCHITECT epoch", "v10.5.1 release", "AI evolution log", "cognitive substrate updates"]}
+        keywords={["CMPSBL evolution log", "substrate evolution", "ARCHITECT epoch", "v10.5.4 release", "AI evolution log", "cognitive substrate updates"]}
       />
       <PublicNav />
 
