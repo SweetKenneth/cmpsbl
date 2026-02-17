@@ -438,13 +438,20 @@ export async function approveProposal(proposalId: string): Promise<boolean> {
     governance_mode: 'governed',
     resolver_chain: [resolverId],
     input_template: {},
-    discovered_from: proposal.id,
+    discovered_from: null, // FK to mesh_intents — set null for discovery-originated pipelines
     is_active: true,
   };
 
-  await supabase
+  const { error: pipelineError } = await supabase
     .from('mesh_saved_pipelines')
     .insert([pipelineData as any]);
+
+  if (pipelineError) {
+    console.error('[Mesh:Proposals] Pipeline crystallization failed:', pipelineError);
+    // Still return true since the recommendation was applied, but log the failure
+  } else {
+    console.log(`[Mesh:Proposals] ✅ Crystallized pipeline: ${pipelineData.name}`);
+  }
 
   return true;
 }

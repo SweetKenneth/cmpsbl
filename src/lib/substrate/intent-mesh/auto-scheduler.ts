@@ -20,6 +20,7 @@ import { runCLMFeedbackLoop } from './clm-feedback';
 import { runLiveGapExecution } from './live-gap-execution';
 import { buildAffinityMatrix } from './affinity-matrix';
 import { detectPatterns } from './pattern-recognition';
+import { discoverCapabilities, getDiscoverySummary } from '../capability-discovery';
 
 // ─── Types ───
 
@@ -152,8 +153,14 @@ class MeshAutoScheduler {
   /**
    * Run module self-discovery for all 21 modules
    */
-  async runModuleDiscoveryCycle(): Promise<{ totalProposals: number }> {
+  async runModuleDiscoveryCycle(): Promise<{ totalProposals: number; endpointHealth: number }> {
     try {
+      // Phase 1: Endpoint probing — discover module health and operation coverage
+      const probeResults = await discoverCapabilities();
+      const summary = getDiscoverySummary(probeResults);
+      console.log(`[MeshScheduler] Endpoint probe: ${summary.availableOperations}/${summary.totalOperations} ops, avg health ${summary.avgHealth}%`);
+
+      // Phase 2: Mesh self-discovery — propose new resolvers from data assets
       const result = await runAllModuleDiscovery();
       const allProposals = result.moduleResults.flatMap(r => r.proposals);
       
@@ -165,10 +172,10 @@ class MeshAutoScheduler {
       this.state.totalProposalsGenerated += persisted;
 
       console.log(`[MeshScheduler] Module discovery: ${result.totalProposals} proposals from ${result.moduleResults.length} modules, ${persisted} persisted`);
-      return { totalProposals: persisted };
+      return { totalProposals: persisted, endpointHealth: summary.avgHealth };
     } catch (err) {
       console.warn('[MeshScheduler] Module discovery failed:', err);
-      return { totalProposals: 0 };
+      return { totalProposals: 0, endpointHealth: 0 };
     }
   }
 

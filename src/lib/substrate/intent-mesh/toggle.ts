@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Kill Switch / Toggle
- * v10.0.0 — Granular control over mesh behavior
+ * v10.5.3 — Auto-starts scheduler when mesh is enabled
  */
 
 import { create } from 'zustand';
@@ -16,12 +16,33 @@ export const useMeshToggle = create<MeshToggleState>()(
   persist(
     (set) => ({
       enabled: false, // OFF by default — opt-in safety
-      setEnabled: (enabled) => set({ enabled }),
-      toggle: () => set((s) => ({ enabled: !s.enabled })),
+      setEnabled: (enabled) => {
+        set({ enabled });
+        // Auto-start/stop scheduler when mesh toggles
+        syncScheduler(enabled);
+      },
+      toggle: () => set((s) => {
+        const next = !s.enabled;
+        syncScheduler(next);
+        return { enabled: next };
+      }),
     }),
     { name: 'mesh-toggle-v10' }
   )
 );
+
+/** Lazy-load scheduler to avoid circular imports */
+function syncScheduler(enabled: boolean) {
+  import('./auto-scheduler').then(({ meshScheduler }) => {
+    if (enabled && !meshScheduler.getState().isRunning) {
+      meshScheduler.start();
+      console.log('[Mesh] Auto-started scheduler with mesh toggle');
+    } else if (!enabled && meshScheduler.getState().isRunning) {
+      meshScheduler.stop();
+      console.log('[Mesh] Auto-stopped scheduler with mesh toggle');
+    }
+  }).catch(() => {});
+}
 
 /** Check if mesh is enabled (non-hook version for library code) */
 export function isMeshEnabled(): boolean {
