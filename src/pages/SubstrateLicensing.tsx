@@ -1,6 +1,6 @@
 /**
  * Unified Pricing Page — Mobile-First, Benefits-First Layout
- * v10.5.4 ARCHITECT Epoch
+ * v10.5.5 ARCHITECT Epoch
  * 
  * Structure:
  *   1. Hero — Value proposition
@@ -60,7 +60,7 @@ const TIERS = [
     cta: 'Subscribe — $49/mo',
     popular: true,
     headline: 'Everything in Free + Autonomous Intelligence',
-    benefitSummary: 'All 76 engines, 8 meta-engines, 7 Crown Jewels, full SDK/API access, and self-improving capabilities that predict, protect, and optimize.',
+    benefitSummary: 'All 76 engines, 8 meta-engines, 17 Crown Jewels, full SDK/API access, and self-improving capabilities that predict, protect, and optimize.',
     pipelineCount: 20,
     templateExamples: ['Multi-agent workflows', 'RAG pipeline templates', 'Security scan templates', 'Cost optimization playbooks'],
     capabilityHighlights: [
@@ -82,12 +82,12 @@ const TIERS = [
     cta: 'Subscribe — $149/mo',
     popular: false,
     headline: 'Everything in Creator + Compound Intelligence',
-    benefitSummary: 'All Creator capabilities plus 16 meta-engines (up from 8), all 28 Crown Jewels, cross-project learning, forensic timelines, and cascade failure prevention.',
+    benefitSummary: 'All Creator capabilities plus 16 meta-engines (up from 8), all 42 Crown Jewels, cross-project learning, forensic timelines, and cascade failure prevention.',
     pipelineCount: 40,
     templateExamples: ['Cross-project learning pipelines', 'Compliance audit generators', 'Threat intelligence workflows', 'Architecture migration plans'],
     capabilityHighlights: [
       '16 meta-engines (up from 8 in Creator)',
-      'All 28 Crown Jewels (up from 7)',
+      'All 42 Crown Jewels (up from 17)',
       'Zero-day attack detection',
       'Cross-module orchestration',
       'Dream-state creative synthesis',
@@ -304,7 +304,7 @@ export default function SubstrateLicensing() {
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="outline" className="mb-4 sm:mb-6 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm border-primary/30">
                 <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 inline text-amber-500" />
-                50+ Capabilities · 60 Pipelines · 200+ Templates
+                442+ Capabilities · 84 Crown Jewels · 60 Pipelines · 200+ Templates
               </Badge>
 
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-4 sm:mb-6">
@@ -359,10 +359,10 @@ export default function SubstrateLicensing() {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 md:gap-16 text-center max-w-2xl sm:max-w-none mx-auto">
               {[
-                { value: '50+', label: 'Capabilities' },
+                { value: '442+', label: 'Capabilities' },
+                { value: '84', label: 'Crown Jewels' },
                 { value: '60', label: 'Crystallized Pipelines' },
                 { value: '21', label: 'Modules' },
-                { value: '21', label: 'Crown Jewels' },
               ].map((stat) => (
                 <div key={stat.label}>
                   <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">{stat.value}</div>
@@ -449,7 +449,7 @@ export default function SubstrateLicensing() {
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Frequently Asked</h2>
             <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4">
               {[
-                { q: 'What are Crown Jewels?', a: 'Crown Jewels are our highest-value capabilities — each one represents a breakthrough in autonomous intelligence that no competitor offers.' },
+                { q: 'What are Crown Jewels?', a: 'Crown Jewels are our 84 highest-value capabilities across two discovery waves — each one represents a breakthrough in autonomous intelligence that no competitor offers. 17 are available at Creator, 25 more at Architect, and 14 more at Enterprise, with additional architecture-class jewels reserved internally.' },
                 { q: 'Are all engines available at every tier?', a: 'Free includes 30 core engines + 1 meta-engine (Cognitive Mesh). Creator unlocks all 76 base engines plus 8 meta-engines. Architect includes everything in Creator plus 16 meta-engines. Enterprise includes everything in Architect plus all 24 meta-engines. The 9 recursive self-improvement meta-engines are CMPSBL-internal only.' },
                 { q: 'What are crystallized pipelines?', a: 'Pipelines discovered by the Intent Mesh that proved valuable and were permanently saved as reusable cross-module workflows.' },
                 { q: 'Do I need a separate developer license?', a: 'No. SDK and API access are included in Creator and Architect tiers.' },
