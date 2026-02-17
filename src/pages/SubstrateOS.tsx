@@ -160,7 +160,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Rocket,
       tier: 'architect',
       tabs: [
-        { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Autonomous capability mesh', tier: 'architect' },
+        { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & orchestration', tier: 'architect' },
         { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & orchestration', tier: 'architect' },
         { id: 'codeagent', label: 'ENCODE', icon: Bot, color: 'fuchsia', description: 'DECODE → ENCODE pipeline', tier: 'architect' },
         { id: 'modules', label: 'Modules', icon: Cpu, color: 'orange', description: 'Core · Ripple · Access', tier: 'architect' },
@@ -177,6 +177,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Crown,
       tier: 'cmpsbl',
       tabs: [
+        { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Autonomous capability mesh', tier: 'cmpsbl' },
         { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'Architecture mutation', tier: 'cmpsbl' },
         { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'Author LNCHBL patches', tier: 'cmpsbl' },
         { id: 'metrics', label: 'Metrics', icon: Gauge, color: 'cyan', description: 'Public metrics control', tier: 'cmpsbl' },
