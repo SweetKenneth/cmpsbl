@@ -102,9 +102,9 @@ export const DEFAULT_METRICS: PublicMetrics = {
   enginesCount: 76,
   metaEnginesCount: 24,
   
-  // Capability Metrics (269 + 56 + 54 + 21 = 400)
-  capabilitiesCount: 400,
-  crownJewelCapabilitiesCount: 42,
+  // Capability Metrics (269 + 56 + 54 + 21 + 42 = 442)
+  capabilitiesCount: 442,
+  crownJewelCapabilitiesCount: 84,
   archivedCapabilitiesCount: 136,
   
   // Terminal & Commands

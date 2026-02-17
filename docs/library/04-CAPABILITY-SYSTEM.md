@@ -105,12 +105,12 @@ Capabilities are assigned to tiers based on complexity, cost, and strategic valu
 | Tier | Access | Approximate Count |
 |------|--------|-------------------|
 | **Free** | Public | ~80 |
-| **Creator** | Paid subscription ($49/mo) | ~150 |
-| **Architect** | Paid subscription ($149/mo) | ~120 |
+| **Creator** | Paid subscription ($49/mo) | ~170 |
+| **Architect** | Paid subscription ($149/mo) | ~140 |
 | **Enterprise** | Enterprise contract | ~50 |
-| **CMPSBL-Only** | Internal only | ~42 (Crown Jewels) |
+| **CMPSBL-Only** | Internal only | ~84 (Crown Jewels) |
 
-Crown Jewels are capabilities classified as architecturally sensitive. There are **42 Crown Jewel capabilities** distributed across all 21 modules, with weighted allocation based on module importance. They span CMPSBL-only (13 architecture), Architect (13 experience), and Creator (5 experience) tiers — plus engines, meta-engines, and pipelines totaling 73 crown jewel artifacts.
+Crown Jewels are capabilities classified as architecturally sensitive. There are **84 Crown Jewel capabilities** distributed across all 21 modules in two waves, with weighted allocation based on module importance. They span CMPSBL-only (27 architecture), Architect (31 experience), and Creator (15 experience) tiers — plus engines, meta-engines, and pipelines totaling 115 crown jewel artifacts.
 
 ---
 
@@ -122,7 +122,7 @@ Continue to [`05-SYNERGY-PIPELINES.md`](./05-SYNERGY-PIPELINES.md) for the cross
 
 <div align="center">
 
-*CMPSBL OS Substrate v10.5.4 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v10.5.5 — ARCHITECT Epoch*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)

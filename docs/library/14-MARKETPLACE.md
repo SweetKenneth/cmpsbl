@@ -55,15 +55,15 @@ The substrate includes a unified storefront where capabilities, templates, and s
 | Tier | Access | Price Point |
 |------|--------|-------------|
 | **Free** | Artifact Store, persistent memory, exploration | $0 |
-| **Creator** | All engines, templates, SDK/API, 7 Experience Jewels | $49/mo |
-| **Architect** | Advanced CLM, cross-project learning, 28 Experience Jewels | $149/mo |
-| **CMPSBL-Only** | All 400+ (incl. Crown Jewels) | Internal |
+| **Creator** | All engines, templates, SDK/API, 15 Experience Jewels | $49/mo |
+| **Architect** | Advanced CLM, cross-project learning, 49 Experience Jewels | $149/mo |
+| **CMPSBL-Only** | All 442+ (incl. 84 Crown Jewels) | Internal |
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v10.5.5 — ARCHITECT Epoch*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
