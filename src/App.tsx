@@ -88,6 +88,7 @@ const SubstrateLicensing = lazy(() => import("./pages/SubstrateLicensing"));
 const SubstrateLicensingSuccess = lazy(() => import("./pages/SubstrateLicensingSuccess"));
 const SubstrateLicensingDownload = lazy(() => import("./pages/SubstrateLicensingDownload"));
 const ExperimentationLab = lazy(() => import("./pages/ExperimentationLab"));
+const ClocklessWorldEngine = lazy(() => import("./pages/ClocklessWorldEngine"));
 const SubstrateCapabilitiesDocs = lazy(() => import("./pages/SubstrateCapabilitiesDocs"));
 const CapabilitiesDepot = lazy(() => import("./pages/CapabilitiesDepot"));
 const SynergyPipelines = lazy(() => import("./pages/SynergyPipelines"));
@@ -318,6 +319,7 @@ const App = () => {
                         <Route path="/licensing" element={<SubstrateLicensingDownload />} />
                         <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
                         <Route path="/lab" element={<ExperimentationLab />} />
+                        <Route path="/clockless-world-engine" element={<ClocklessWorldEngine />} />
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />

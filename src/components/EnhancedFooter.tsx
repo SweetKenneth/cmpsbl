@@ -47,7 +47,7 @@ export function EnhancedFooter() {
       title: "Learn",
       links: [
         { name: "Developer Academy", href: "/academy" },
-        { name: "INCLUSIVE Module", href: "/cluster/inclusive-module-accessibility" },
+        { name: "Clockless", href: "/clockless-world-engine" },
         { name: "Publication", href: "/publication" },
         { name: "Library", href: "/library" },
         { name: "Use Cases", href: "/use-cases" },
