@@ -4,6 +4,7 @@
  */
 
 import { useState } from "react";
+import { TechShowcase } from "@/components/home/TechShowcase";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -690,7 +691,8 @@ const response = await substrate.nexus.text(
           </TabsContent>
 
           {/* SDK Reference Tab */}
-          <TabsContent value="sdk">
+          <TabsContent value="sdk" className="space-y-8">
+            <TechShowcase />
             <SDKQuickReference />
           </TabsContent>
 
