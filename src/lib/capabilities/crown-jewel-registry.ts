@@ -85,6 +85,14 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'self_repair_engine',
   'autonomous_workflow_composer',
   'dream_lucidity_control',
+
+  // v10.5.4 — Module Crown Jewel Capabilities (architecture class)
+  'cj-brain-semantic-compression',
+  'cj-dream-cross-pollination',
+  'cj-cortex-cognitive-load-balancer',
+  'cj-encode-graduated-autonomy',
+  'cj-core-cascade-prevention',
+  'cj-brain-meta-reasoning',
 ]);
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -126,6 +134,21 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'world_first_operational',            // World-first operational
   'world_first_intelligence',           // World-first intelligence
   'world_first_governance',             // World-first governance
+
+  // v10.5.4 — Module Crown Jewel Capabilities (experience class)
+  'cj-brain-associative-recall',        // Associative recall synthesis
+  'cj-dream-pattern-crystallizer',      // Dream pattern crystallization
+  'cj-encode-semantic-refactoring',     // Semantic code refactoring
+  'cj-decode-adaptive-personality',     // Adaptive personality engine
+  'cj-nexus-model-quality-scoring',     // Model quality scoring
+  'cj-identity-sovereign-federation',   // Sovereign identity federation
+  'cj-identity-behavioral-fingerprinting', // Behavioral fingerprinting
+  'cj-audit-forensic-timeline',         // Forensic timeline reconstruction
+  'cj-defense-behavioral-biometrics',   // Behavioral biometric engine
+  'cj-encode-mutation-testing',         // Autonomous mutation testing
+  'cj-decode-intent-evolution',         // Intent evolution tracker
+  'cj-ripple-event-dedup',             // Event dedup intelligence
+  'cj-economy-value-attribution',       // Value attribution engine
 ]);
 
 /** Map experience jewels to their minimum tier */
@@ -163,6 +186,20 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
   'world_first_operational': 'architect',
   'world_first_intelligence': 'architect',
   'world_first_governance': 'architect',
+  // v10.5.4 — Module Crown Jewel Capabilities
+  'cj-brain-associative-recall': 'architect',
+  'cj-dream-pattern-crystallizer': 'architect',
+  'cj-encode-semantic-refactoring': 'architect',
+  'cj-decode-adaptive-personality': 'architect',
+  'cj-nexus-model-quality-scoring': 'architect',
+  'cj-identity-sovereign-federation': 'architect',
+  'cj-identity-behavioral-fingerprinting': 'architect',
+  'cj-audit-forensic-timeline': 'architect',
+  'cj-defense-behavioral-biometrics': 'creator',
+  'cj-encode-mutation-testing': 'creator',
+  'cj-decode-intent-evolution': 'creator',
+  'cj-ripple-event-dedup': 'creator',
+  'cj-economy-value-attribution': 'creator',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -237,6 +274,13 @@ const ARCHITECTURE_PATTERNS = [
   'dream_lucidity',
   'autonomous-workflow-composer',
   'autonomous_workflow',
+  // v10.5.4 new architecture crown jewels
+  'semantic-compression',
+  'cross-pollination',
+  'cognitive-load-balancer',
+  'graduated-autonomy',
+  'cascade-prevention',
+  'meta-reasoning',
 ];
 
 /** Extended check including keyword patterns — architecture only */
@@ -975,8 +1019,222 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['enterprise_trust_fabric'], dangerIfExposed: 'Governance implementation exposed',
     crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
   },
+
+  // ══════════════════════════════════════════════════════
+  // C. v10.5.4 MODULE CROWN JEWEL CAPABILITIES (42 total)
+  // ══════════════════════════════════════════════════════
+
+  // ── ARCHITECTURE — CMPSBL-ONLY ──
+  {
+    id: 'cj-brain-semantic-compression', name: 'Semantic Memory Compression',
+    artifactType: 'capability', modules: ['BRAIN', 'MEMORY', 'CORTEX'],
+    classification: 'architecture',
+    reason: 'Compresses vast knowledge into dense semantic representations without information loss',
+    enables: 'Infinite effective memory through lossless semantic compression algorithms',
+    composesWith: ['recursive-infinite-context', 'knowledge_retrieval_engine'],
+    dangerIfExposed: 'Compression algorithm is core IP; eliminates memory capacity advantage',
+    crown_jewel: true, admin_only: true,
+  },
+  {
+    id: 'cj-dream-cross-pollination', name: 'Cross-Domain Pollination Synthesizer',
+    artifactType: 'capability', modules: ['DREAM', 'BRAIN', 'CORTEX'],
+    classification: 'architecture',
+    reason: 'Synthesizes novel insights by cross-pollinating patterns across unrelated domains',
+    enables: 'Breakthrough innovation through inter-domain pattern transfer',
+    composesWith: ['creative_forge', 'recursive-capability-discoverer'],
+    dangerIfExposed: 'Cross-pollination heuristics reveal creative reasoning architecture',
+    crown_jewel: true, admin_only: true,
+  },
+  {
+    id: 'cj-cortex-cognitive-load-balancer', name: 'Cognitive Load Balancer',
+    artifactType: 'capability', modules: ['CORTEX', 'VISION', 'BRAIN'],
+    classification: 'architecture',
+    reason: 'Dynamically distributes cognitive workload across modules to prevent saturation',
+    enables: 'Graceful degradation under cognitive overload with priority-based task shedding',
+    composesWith: ['stier-self-scaling-intelligence-fabric', 'autonomous_operator'],
+    dangerIfExposed: 'Load distribution algorithm reveals cognitive capacity boundaries',
+    crown_jewel: true, admin_only: true,
+  },
+  {
+    id: 'cj-encode-graduated-autonomy', name: 'Graduated Autonomy Controller',
+    artifactType: 'capability', modules: ['ENCODE', 'CORTEX', 'DEFENSE'],
+    classification: 'architecture',
+    reason: 'Dynamically adjusts ENCODE autonomy level based on mastery score and safety metrics',
+    enables: 'Self-regulating code generation with earned trust levels',
+    composesWith: ['evolution_governance_engine', 'stier-policy-aware-intelligence-gate'],
+    dangerIfExposed: 'Autonomy escalation algorithm reveals trust boundaries and override vectors',
+    crown_jewel: true, admin_only: true,
+  },
+  {
+    id: 'cj-core-cascade-prevention', name: 'Cascade Failure Prevention',
+    artifactType: 'capability', modules: ['CORE', 'RIPPLE', 'DEFENSE', 'SYSTEM'],
+    classification: 'architecture',
+    reason: 'Prevents cascading failures across the module network through proactive circuit isolation',
+    enables: 'Fault containment preventing single-module failures from propagating systemically',
+    composesWith: ['system_guardian', 'self_healing_engine'],
+    dangerIfExposed: 'Cascade prevention topology reveals inter-module failure dependencies',
+    crown_jewel: true, admin_only: true,
+  },
+  {
+    id: 'cj-brain-meta-reasoning', name: 'Meta-Reasoning Engine',
+    artifactType: 'capability', modules: ['BRAIN', 'CORTEX', 'DECODE'],
+    classification: 'architecture',
+    reason: 'Reasons about its own reasoning process — identifies flawed logic chains autonomously',
+    enables: 'Self-correcting reasoning with cognitive bias detection and mitigation',
+    composesWith: ['metacognition_engine', 'cognitive_mesh'],
+    dangerIfExposed: 'Meta-reasoning architecture reveals cognitive self-correction boundaries',
+    crown_jewel: true, admin_only: true,
+  },
+
+  // ── EXPERIENCE — ARCHITECT TIER ──
+  {
+    id: 'cj-brain-associative-recall', name: 'Associative Recall Synthesis',
+    artifactType: 'capability', modules: ['BRAIN', 'MEMORY', 'DECODE'],
+    classification: 'experience',
+    reason: 'Recalls memories through multi-hop associative chains — not just keyword matching',
+    enables: 'Human-like associative memory with emergent connection discovery',
+    composesWith: ['knowledge_graph_topology', 'recursive-knowledge-crystallization'],
+    dangerIfExposed: 'Associative retrieval heuristics reveal memory graph traversal strategy',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+  },
+  {
+    id: 'cj-dream-pattern-crystallizer', name: 'Dream Pattern Crystallizer',
+    artifactType: 'capability', modules: ['DREAM', 'BRAIN', 'VISION'],
+    classification: 'experience',
+    reason: 'Crystallizes ephemeral dream-state patterns into permanent reusable templates',
+    enables: 'Autonomous pattern extraction from dream cycles into production artifacts',
+    composesWith: ['creative_evolution_engine', 'recursive-knowledge-crystallization'],
+    dangerIfExposed: 'Pattern crystallization algorithm reveals dream-to-production pipeline',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+  },
+  {
+    id: 'cj-encode-semantic-refactoring', name: 'Semantic Code Refactoring',
+    artifactType: 'capability', modules: ['ENCODE', 'BRAIN', 'MODERNIZER'],
+    classification: 'experience',
+    reason: 'Refactors code based on semantic intent rather than syntactic patterns',
+    enables: 'Intent-preserving code transformation with full regression safety',
+    composesWith: ['evolution_engine', 'self_documentation_engine'],
+    dangerIfExposed: 'Semantic understanding of code intent reveals code generation internals',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+  },
+  {
+    id: 'cj-decode-adaptive-personality', name: 'Adaptive Personality Engine',
+    artifactType: 'capability', modules: ['DECODE', 'BRAIN', 'VISION'],
+    classification: 'experience',
+    reason: 'Personality adapts in real-time based on user engagement signals and context',
+    enables: 'Dynamic personality optimization that maximizes user satisfaction and task completion',
+    composesWith: ['world_first_cognitive', 'creative_forge'],
+    dangerIfExposed: 'Personality adaptation algorithm is proprietary behavioral IP',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+  },
+  {
+    id: 'cj-nexus-model-quality-scoring', name: 'Model Quality Scoring Engine',
+    artifactType: 'capability', modules: ['NEXUS', 'VISION', 'BRAIN'],
+    classification: 'experience',
+    reason: 'Scores AI model output quality in real-time to optimize routing decisions',
+    enables: 'Continuous model quality assessment with automatic routing adjustment',
+    composesWith: ['world_first_operational', 'stier-decision-confidence-governor'],
+    dangerIfExposed: 'Quality scoring heuristics reveal routing optimization strategy',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+  },
+  {
+    id: 'cj-identity-sovereign-federation', name: 'Sovereign Identity Federation',
+    artifactType: 'capability', modules: ['IDENTITY', 'ACCESS', 'AUDIT'],
+    classification: 'experience',
+    reason: 'Federated identity with sovereign data residency and cross-jurisdiction compliance',
+    enables: 'Cross-border identity federation with data sovereignty guarantees',
+    composesWith: ['enterprise_trust_fabric', 'zero_trust_engine'],
+    dangerIfExposed: 'Federation protocol reveals trust negotiation and data residency enforcement',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+  },
+  {
+    id: 'cj-identity-behavioral-fingerprinting', name: 'Behavioral Fingerprinting',
+    artifactType: 'capability', modules: ['IDENTITY', 'DEFENSE', 'VISION'],
+    classification: 'experience',
+    reason: 'Creates unique behavioral fingerprints from interaction patterns for identity verification',
+    enables: 'Passwordless identity verification through behavioral biometric analysis',
+    composesWith: ['zero_trust_engine', 'security_fortress'],
+    dangerIfExposed: 'Fingerprinting algorithm reveals identity verification bypass vectors',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+  },
+  {
+    id: 'cj-audit-forensic-timeline', name: 'Forensic Timeline Reconstruction',
+    artifactType: 'capability', modules: ['AUDIT', 'VISION', 'BRAIN'],
+    classification: 'experience',
+    reason: 'Reconstructs complete event timelines from fragmented audit data for incident analysis',
+    enables: 'Post-incident forensic analysis with causal chain reconstruction',
+    composesWith: ['compliance_audit_engine', 'enterprise_trust_fabric'],
+    dangerIfExposed: 'Timeline reconstruction algorithm reveals audit data correlation methods',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+  },
+
+  // ── EXPERIENCE — CREATOR TIER ──
+  {
+    id: 'cj-defense-behavioral-biometrics', name: 'Behavioral Biometric Engine',
+    artifactType: 'capability', modules: ['DEFENSE', 'IDENTITY', 'BRAIN'],
+    classification: 'experience',
+    reason: 'Detects threat actors through behavioral biometric anomaly detection',
+    enables: 'Real-time threat detection via keystroke dynamics, mouse patterns, and timing analysis',
+    composesWith: ['attack_surface_engine', 'stier-emergent-threat-anticipator'],
+    dangerIfExposed: 'Biometric detection thresholds reveal evasion techniques',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'builder',
+  },
+  {
+    id: 'cj-encode-mutation-testing', name: 'Autonomous Mutation Testing',
+    artifactType: 'capability', modules: ['ENCODE', 'SANDBOX', 'VISION'],
+    classification: 'experience',
+    reason: 'Autonomously generates code mutations to discover untested edge cases',
+    enables: 'Self-improving test coverage through intelligent mutation injection and survival analysis',
+    composesWith: ['resilience_lab', 'evolution_engine'],
+    dangerIfExposed: 'Mutation generation patterns reveal code vulnerability scanning strategy',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'builder',
+  },
+  {
+    id: 'cj-decode-intent-evolution', name: 'Intent Evolution Tracker',
+    artifactType: 'capability', modules: ['DECODE', 'BRAIN', 'VISION'],
+    classification: 'experience',
+    reason: 'Tracks how user intent shifts across sessions to predict future needs',
+    enables: 'Predictive intent modeling — anticipates user needs before they express them',
+    composesWith: ['world_first_cognitive', 'recursive-goal-optimizer'],
+    dangerIfExposed: 'Intent evolution model reveals predictive behavior analysis',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'builder',
+  },
+  {
+    id: 'cj-ripple-event-dedup', name: 'Event Dedup Intelligence',
+    artifactType: 'capability', modules: ['RIPPLE', 'BRAIN', 'CORE'],
+    classification: 'experience',
+    reason: 'Intelligent event deduplication that distinguishes true duplicates from similar-but-different events',
+    enables: 'Noise reduction in event streams while preserving critical signal fidelity',
+    composesWith: ['system_guardian', 'world_first_operational'],
+    dangerIfExposed: 'Dedup heuristics reveal event classification and priority algorithms',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'builder',
+  },
+  {
+    id: 'cj-economy-value-attribution', name: 'Value Attribution Engine',
+    artifactType: 'capability', modules: ['ECONOMY', 'VISION', 'CORTEX'],
+    classification: 'experience',
+    reason: 'Attributes business value to individual AI capabilities for ROI measurement',
+    enables: 'Per-capability ROI tracking with causal attribution across multi-step workflows',
+    composesWith: ['platform_economics_engine', 'finops_engine'],
+    dangerIfExposed: 'Value attribution model reveals economic optimization strategy',
+    crown_jewel: true, admin_only: false,
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'builder',
+  },
 ];
 
 export const CROWN_JEWEL_COUNT = CROWN_JEWEL_REGISTRY.length;
 export const ARCHITECTURE_COUNT = CROWN_JEWEL_REGISTRY.filter(e => e.classification === 'architecture').length;
 export const EXPERIENCE_COUNT = CROWN_JEWEL_REGISTRY.filter(e => e.classification === 'experience').length;
+export const CROWN_JEWEL_CAPABILITY_COUNT = CROWN_JEWEL_REGISTRY.filter(e => e.artifactType === 'capability').length;
