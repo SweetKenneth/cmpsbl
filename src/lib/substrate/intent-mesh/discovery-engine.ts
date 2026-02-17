@@ -699,6 +699,28 @@ export async function applyRecommendation(resolverId: string): Promise<boolean> 
     .update({ status: 'applied', applied_at: new Date().toISOString() } as any)
     .eq('proposed_resolver_id', resolverId);
 
+  // Crystallize into a permanent saved pipeline
+  const pipelineData = {
+    name: `${rec.targetModule}: ${resolverId.split('.').pop()?.replace(/_/g, ' ')}`,
+    description: rec.proposedDescription || `Approved resolver from ${rec.targetModule} discovery`,
+    source_module: rec.targetModule,
+    intent_type: resolverId.split('.').pop() || 'capability',
+    domains: rec.proposedDomains || [],
+    governance_mode: 'governed',
+    resolver_chain: [resolverId],
+    input_template: {},
+    discovered_from: null, // FK to mesh_intents — set null for discovery-originated pipelines
+    is_active: true,
+  };
+
+  const { error: pipeErr } = await supabase
+    .from('mesh_saved_pipelines')
+    .insert([pipelineData as any]);
+
+  if (pipeErr) {
+    console.error('[Mesh:Discovery] Pipeline crystallization failed:', pipeErr);
+  }
+
   return true;
 }
 
