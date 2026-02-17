@@ -354,7 +354,7 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.25 }}
               className="mb-6 sm:mb-8 text-center lg:text-left"
             >
-              <div className="text-base sm:text-xl md:text-2xl font-medium tracking-wide text-muted-foreground mb-1">
+              <div className="text-lg sm:text-2xl md:text-3xl font-semibold tracking-wide text-muted-foreground mb-2 sm:mb-3">
                 Where machines learn to
               </div>
               <div className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
