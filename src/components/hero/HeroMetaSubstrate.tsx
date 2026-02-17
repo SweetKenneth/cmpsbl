@@ -1,20 +1,17 @@
 /**
- * META HERO: CMPSBL® (Composable)
- * Classic "Where machines learn to dream" headline with Engines Membership showcase
- * Mobile-first, performance-optimized, visually stunning
+ * META HERO: Clockless® — powered by the CMPSBL World Engine
+ * Studio-grade hero with cinematic typography and fluid motion
+ * v10.6.0 ARCHITECT Epoch
  */
 
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
   BookOpen,
-  Gamepad2,
   Code,
-  Building2,
-  Play,
   Sparkles,
   ChevronDown,
   Layers,
@@ -23,7 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { EnginesMembershipHero } from "./EnginesMembershipHero";
 
-// Enhanced typing animation with smooth morphing
+// ─── Typing Animation ──────────────────────────────────────────
 function TypedText({ texts, gradientColors, className }: { 
   texts: string[]; 
   gradientColors?: string[];
@@ -35,7 +32,7 @@ function TypedText({ texts, gradientColors, className }: {
   
   useEffect(() => {
     const currentText = texts[currentIndex];
-    const typingSpeed = isDeleting ? 35 : 70;
+    const typingSpeed = isDeleting ? 30 : 65;
     
     if (!isDeleting && displayText === currentText) {
       const timeout = setTimeout(() => setIsDeleting(true), 2800);
@@ -66,39 +63,25 @@ function TypedText({ texts, gradientColors, className }: {
     backgroundClip: "text" as const,
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
-    contain: "layout style paint" as const,
   }), [currentGradient]);
   
   return (
-    <span 
-      className={cn("inline-flex items-baseline", className)}
-      style={gradientStyle}
-    >
-      <span style={{ display: "inline-block" }}>{displayText}</span>
+    <span className={cn("inline-flex items-baseline", className)} style={gradientStyle}>
+      <span className="inline-block min-w-[1ch]">{displayText}</span>
       <motion.span 
         animate={{ opacity: [1, 0, 1] }}
-        transition={{ duration: 1, repeat: Infinity, ease: "linear", times: [0, 0.5, 1] }}
-        style={{
-          display: "inline-block",
-          width: "3px",
-          height: "0.85em",
-          marginLeft: "2px",
-          background: "currentColor",
-          WebkitTextFillColor: "hsl(var(--primary))",
-          borderRadius: "1px",
-        }}
+        transition={{ duration: 0.8, repeat: Infinity, ease: "linear", times: [0, 0.5, 1] }}
+        className="inline-block w-[3px] h-[0.75em] ml-0.5 rounded-sm"
+        style={{ background: "hsl(var(--primary))" }}
         aria-hidden="true"
       />
     </span>
   );
 }
 
-// Enhanced stats with animated counters, shimmer effect and premium polish
+// ─── Animated Stat ──────────────────────────────────────────────
 function AnimatedStat({ value, label, suffix = "", delay = 0 }: { 
-  value: number; 
-  label: string; 
-  suffix?: string;
-  delay?: number;
+  value: number; label: string; suffix?: string; delay?: number;
 }) {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -106,7 +89,6 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
   
   useEffect(() => {
     if (hasAnimated) return;
-    
     const currentRef = ref.current;
     if (!currentRef) return;
     
@@ -115,11 +97,11 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
         if (entry.isIntersecting && !hasAnimated) {
           setHasAnimated(true);
           let start = 0;
-          const duration = 2000;
+          const duration = 1800;
           const step = (timestamp: number) => {
             if (!start) start = timestamp;
             const progress = Math.min((timestamp - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 4); // ease-out quart
+            const eased = 1 - Math.pow(1 - progress, 4);
             setCount(Math.floor(eased * value));
             if (progress < 1) requestAnimationFrame(step);
           };
@@ -127,7 +109,7 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
           observer.disconnect();
         }
       },
-      { threshold: 0.5, rootMargin: "50px" }
+      { threshold: 0.3 }
     );
     
     observer.observe(currentRef);
@@ -136,228 +118,118 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
   
   return (
     <motion.div 
-      ref={ref} 
-      className="relative text-center p-4 sm:p-5 rounded-2xl transition-all duration-300 group cursor-default overflow-hidden" 
-      style={{ contain: "layout style" }}
-      initial={{ opacity: 0, y: 20 }}
+      ref={ref}
+      className="relative text-center py-5 sm:py-6 group"
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.9 + delay * 0.1, duration: 0.5 }}
-      whileHover={{ scale: 1.04, y: -3 }}
+      transition={{ delay: 1 + delay * 0.08, duration: 0.5 }}
     >
-      {/* Hover glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/10 group-hover:via-primary/5 group-hover:to-violet-500/10 transition-all duration-500 rounded-2xl" />
-      
-      {/* Border glow on hover */}
-      <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-primary/20 transition-all duration-300" />
-      
-      <div className="relative z-10">
-        <motion.div 
-          className="text-3xl sm:text-4xl md:text-5xl font-black tabular-nums"
-          animate={hasAnimated ? { scale: [1, 1.02, 1] } : {}}
-          transition={{ duration: 0.3 }}
-        >
-          <span className="bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent">
-            {count}{suffix}
-          </span>
-        </motion.div>
-        <div className="text-[11px] sm:text-sm text-muted-foreground font-semibold mt-2 tracking-wide uppercase">{label}</div>
+      <div className="text-2xl sm:text-3xl md:text-4xl font-black tabular-nums tracking-tight text-foreground">
+        {count}{suffix}
       </div>
+      <div className="text-[10px] sm:text-xs text-muted-foreground font-semibold mt-1.5 tracking-widest uppercase">{label}</div>
     </motion.div>
   );
 }
 
-// Floating background particles
-function BackgroundParticles() {
-  const particles = useMemo(() => 
-    Array.from({ length: 30 }).map((_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: 2 + Math.random() * 3,
-      duration: 15 + Math.random() * 20,
-      delay: Math.random() * 10,
-    })), []
-  );
-  
+// ─── Background ─────────────────────────────────────────────────
+function HeroBackground() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute rounded-full bg-primary/20"
-          style={{
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            width: p.size,
-            height: p.size,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            x: [0, Math.random() * 20 - 10, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{
-            duration: p.duration,
-            delay: p.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// Scroll indicator
-function ScrollIndicator() {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 2 }}
-      className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
-    >
-      <span className="text-xs text-muted-foreground/60 font-medium tracking-wider uppercase">Scroll</span>
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Base */}
+      <div className="absolute inset-0 bg-background" />
+      
+      {/* Gradient orbs — reduced count, bigger, softer */}
       <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <ChevronDown className="w-5 h-5 text-muted-foreground/40" />
-      </motion.div>
-    </motion.div>
-  );
-}
-
-export function HeroMetaSubstrate() {
-  return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-2 sm:pt-8 pb-6 sm:pb-10 overflow-visible safe-area-inset">
-      {/* Multi-layer animated background */}
-      <div className="absolute inset-0 bg-background overflow-hidden">
-        {/* Animated gradient orbs */}
-        <motion.div
-          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.12) 0%, transparent 50%)",
-          }}
-          animate={{
-            x: [-200, 100, -200],
-            y: [-200, 50, -200],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-0 right-0 w-[800px] h-[800px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)",
-          }}
-          animate={{
-            x: [200, -100, 200],
-            y: [200, -50, 200],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.08) 0%, transparent 50%)",
-          }}
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.5, 0.8, 0.5],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
+        className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.08) 0%, transparent 60%)" }}
+        animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute -bottom-40 -right-40 w-[700px] h-[700px] rounded-full"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.06) 0%, transparent 60%)" }}
+        animate={{ x: [0, -60, 0], y: [0, -30, 0] }}
+        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+      />
       
-      {/* Subtle floating particles */}
-      <BackgroundParticles />
-      
-      {/* Grid overlay with subtle animation */}
+      {/* Subtle grid */}
       <div 
-        className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]"
         style={{
-          backgroundImage: `
-            linear-gradient(hsl(var(--primary)) 1px, transparent 1px), 
-            linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
-          `,
+          backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
           backgroundSize: "80px 80px",
         }}
       />
       
-      {/* Vignette overlay for depth */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.4) 100%)",
-        }}
-      />
+      {/* Vignette */}
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.5) 100%)" }} />
+    </div>
+  );
+}
+
+// ─── Main Hero ──────────────────────────────────────────────────
+export function HeroMetaSubstrate() {
+  return (
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-8 pb-8 sm:pb-12 overflow-hidden">
+      <HeroBackground />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
-        {/* Top section: Text + Visualization side by side */}
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center mb-8 sm:mb-20">
-          {/* Left: Headlines and CTAs */}
+        {/* Two-column layout */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-12 sm:mb-20">
+          
+          {/* Left column — Copy */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
             className="text-center lg:text-left order-1"
           >
-            {/* Tagline badge with shimmer */}
+            {/* Engine badge */}
             <motion.div
-              initial={{ opacity: 0, y: -15 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="relative inline-flex items-center gap-2.5 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border border-primary/40 bg-gradient-to-r from-primary/15 via-primary/10 to-violet-500/15 backdrop-blur-md mb-6 sm:mb-8 shadow-xl shadow-primary/10 overflow-hidden group"
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/50 backdrop-blur-md mb-8 sm:mb-10"
             >
-              {/* Animated shimmer */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full"
-                animate={{ translateX: ["−100%", "200%"] }}
-                transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-              />
-              
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-              >
-                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-              </motion.div>
-              <span className="text-xs sm:text-sm font-bold text-foreground tracking-wide">powered by the CMPSBL World Engine</span>
-              
-              {/* Live indicator */}
-              <div className="flex items-center gap-1.5 pl-2.5 border-l border-primary/30">
-                <motion.div
-                  className="w-2 h-2 rounded-full bg-emerald-500"
-                  animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                />
-                <span className="text-[10px] sm:text-xs font-semibold text-emerald-500 uppercase tracking-wider">Live</span>
-              </div>
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs font-semibold text-muted-foreground tracking-wide">powered by the CMPSBL World Engine</span>
+              <span className="flex items-center gap-1 pl-2 border-l border-border/50">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>
+              </span>
             </motion.div>
             
-            {/* Main headline — Clockless */}
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none mb-4 sm:mb-6" style={{ contain: "layout" }}>
-              <motion.span 
-                className="block"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15, duration: 0.6 }}
-              >
-                <span className="bg-gradient-to-r from-primary via-violet-500 to-primary bg-[length:200%_auto] animate-[gradient-shift_6s_ease-in-out_infinite] bg-clip-text text-transparent">Clockless</span>
-              </motion.span>
-            </h1>
-
-            {/* Tagline — "Where machines learn to" on one line, typed word centered below */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
+            {/* CLOCKLESS — massive, clean */}
+            <motion.h1 
+              className="text-[4.5rem] sm:text-8xl md:text-9xl lg:text-[10rem] font-black tracking-[-0.06em] leading-[0.85] mb-6 sm:mb-8"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
-              className="mb-6 sm:mb-8 text-center lg:text-left"
+              transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="text-lg sm:text-2xl md:text-3xl font-semibold tracking-wide text-muted-foreground mb-2 sm:mb-3">
+              <span 
+                className="bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--neon-purple)) 50%, hsl(var(--primary)) 100%)",
+                  backgroundSize: "200% auto",
+                  animation: "gradient-shift 8s ease-in-out infinite",
+                }}
+              >
+                Clockless
+              </span>
+            </motion.h1>
+
+            {/* Tagline block — two lines, centered on mobile */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mb-8 sm:mb-10"
+            >
+              <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-muted-foreground tracking-tight leading-snug">
                 Where machines learn to
-              </div>
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+              </p>
+              <div className="mt-1 sm:mt-2 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-none min-h-[1.2em]">
                 <TypedText 
                   texts={["dream.", "adapt.", "evolve.", "remember.", "compose."]}
                   gradientColors={[
@@ -367,117 +239,115 @@ export function HeroMetaSubstrate() {
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
                   ]}
-                  className="font-bold"
                 />
               </div>
             </motion.div>
             
-            {/* Subheadline */}
+            {/* Subtitle */}
             <motion.p 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
+              transition={{ delay: 0.4 }}
+              className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 leading-relaxed"
             >
               A persistent, clockless world engine that gives your AI{' '}
               <span className="text-foreground font-semibold">persistent memory</span>,{' '}
               <span className="text-foreground font-semibold">self-learning</span>, and{' '}
-              <span className="text-foreground font-semibold">multi-provider routing</span> — 
-              out of the box. 21 integrated modules. One engine.{' '}
+              <span className="text-foreground font-semibold">multi-provider routing</span>{' '}
+              — out of the box. 21 integrated modules. One engine.{' '}
               <span className="text-emerald-500 font-bold">Start free, scale to enterprise.</span>
             </motion.p>
             
-            {/* CTA Buttons - NOT full width on mobile */}
+            {/* CTAs */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4"
+              transition={{ delay: 0.5 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3"
             >
               <Button 
                 asChild 
                 size="lg" 
-                className="gap-2.5 px-6 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-target tap-highlight-none"
+                className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Link to="/codelab">
-                  <Code className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Code className="w-4 h-4" />
                   Start Free
-                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
               <Button 
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="gap-2.5 px-6 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-semibold group border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 touch-target tap-highlight-none active:scale-[0.98]"
+                className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 active:scale-[0.98]"
               >
                 <Link to="/engines">
-                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Sparkles className="w-4 h-4" />
                   View Engines
                 </Link>
               </Button>
             </motion.div>
             
-            {/* Academic Documentation Link */}
+            {/* Research link */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mt-5 sm:mt-8 text-center lg:text-left"
+              transition={{ delay: 0.65 }}
+              className="mt-6 sm:mt-8 text-center lg:text-left"
             >
               <a 
                 href="https://zenodo.org/records/18234910?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkxZDYzZjFlLWM2NTctNDAzNi04ZWE4LTIzNWNiMDljMGQ2NyIsImRhdGEiOnt9LCJyYW5kb20iOiIzZTlkMjA5MzQ0ZGFkNDI2ZTZlMTkwMWYxMzFmOTczYSJ9.H3FugoEHTR2ilPEtZEr-kqRiTgW0FeUDXOrcEE92lek4FK0_h0dNUyJWvtxW-KCHuIEeiqbN5Zot8EqEvXq5gQ"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-4 sm:px-5 py-3 rounded-xl border border-primary/20 bg-gradient-to-r from-primary/5 to-violet-500/5 hover:from-primary/10 hover:to-violet-500/10 hover:border-primary/40 transition-all duration-300 group shadow-sm hover:shadow-md"
+                className="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl border border-border/40 bg-card/40 backdrop-blur-sm hover:bg-card/70 hover:border-primary/30 transition-all duration-300 group"
               >
-                <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
+                <div className="p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/15 transition-colors">
+                  <BookOpen className="w-4 h-4 text-primary" />
                 </div>
-                <div className="text-left min-w-0">
-                  <span className="block text-xs sm:text-sm font-semibold text-foreground group-hover:text-primary transition-colors">Research Documentation</span>
-                  <span className="block text-[10px] sm:text-xs text-muted-foreground truncate">Zenodo • DOI: 10.5281/zenodo.18234910</span>
+                <div className="text-left">
+                  <span className="block text-xs font-semibold text-foreground group-hover:text-primary transition-colors">Research Documentation</span>
+                  <span className="block text-[10px] text-muted-foreground">Zenodo • DOI: 10.5281/zenodo.18234910</span>
                 </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 hidden sm:block" />
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all hidden sm:block" />
               </a>
             </motion.div>
           </motion.div>
           
-          {/* Right: Engines Membership Hero */}
+          {/* Right column — Engines visualization */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="order-2 flex items-center justify-center"
           >
             <EnginesMembershipHero />
           </motion.div>
         </div>
         
-        {/* Integration badges - Shows compatibility with major AI providers */}
+        {/* Integration badges */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65 }}
+          transition={{ delay: 0.7 }}
           className="mb-6 sm:mb-8"
         >
-          <p className="text-xs text-muted-foreground text-center mb-3">Works with your stack</p>
-          <div className="flex flex-wrap justify-center gap-2">
+          <p className="text-[10px] sm:text-xs text-muted-foreground/60 text-center mb-3 uppercase tracking-widest font-medium">Works with your stack</p>
+          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
             {[
-              { name: 'OpenAI', color: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
-              { name: 'Anthropic', color: 'bg-orange-500/10 text-orange-500 border-orange-500/20' },
-              { name: 'Google AI', color: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
-              { name: 'LangChain', color: 'bg-teal-500/10 text-teal-500 border-teal-500/20' },
-              { name: 'Vercel AI', color: 'bg-foreground/10 text-foreground border-foreground/20' },
+              { name: 'OpenAI', color: 'bg-emerald-500/8 text-emerald-600 dark:text-emerald-400 border-emerald-500/15' },
+              { name: 'Anthropic', color: 'bg-orange-500/8 text-orange-600 dark:text-orange-400 border-orange-500/15' },
+              { name: 'Google AI', color: 'bg-blue-500/8 text-blue-600 dark:text-blue-400 border-blue-500/15' },
+              { name: 'LangChain', color: 'bg-teal-500/8 text-teal-600 dark:text-teal-400 border-teal-500/15' },
+              { name: 'Vercel AI', color: 'bg-muted text-foreground/70 border-border/30' },
             ].map((integration, index) => (
               <motion.span
                 key={integration.name}
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.7 + index * 0.05 }}
+                transition={{ delay: 0.75 + index * 0.04 }}
                 className={cn(
-                  "px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium border",
-                  "backdrop-blur-sm transition-all duration-200 hover:scale-105",
+                  "px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium border backdrop-blur-sm",
                   integration.color
                 )}
               >
@@ -487,57 +357,46 @@ export function HeroMetaSubstrate() {
           </div>
         </motion.div>
 
-        {/* Use case pills with enhanced styling */}
+        {/* Feature pills */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.75 }}
-          className="flex justify-start sm:justify-center gap-2 sm:gap-4 mb-8 sm:mb-20 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-2 sm:pb-0"
+          transition={{ delay: 0.8 }}
+          className="flex justify-start sm:justify-center gap-2 sm:gap-3 mb-10 sm:mb-16 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
-            { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory", hoverColor: "hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-emerald-500/10" },
-            { icon: Sparkles, label: "Composable Artifacts", href: "/store", hoverColor: "hover:border-violet-500/50 hover:bg-violet-500/10 hover:shadow-violet-500/10" },
-            { icon: Code, label: "Composable Cognitives", href: "/composable-cognitives", hoverColor: "hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-cyan-500/10" },
-            { icon: Layers, label: "Engines", href: "/engines", hoverColor: "hover:border-primary/50 hover:bg-primary/10 hover:shadow-primary/10" },
+            { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory" },
+            { icon: Sparkles, label: "Composable Artifacts", href: "/store" },
+            { icon: Code, label: "Composable Cognitives", href: "/composable-cognitives" },
+            { icon: Layers, label: "Engines", href: "/engines" },
           ].map((item, index) => (
             <motion.div
               key={item.label}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.85 + index * 0.1 }}
+              transition={{ delay: 0.85 + index * 0.06 }}
             >
               <Link
                 to={item.href}
-                className={cn(
-                  "flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full border border-border/50 bg-card/60 backdrop-blur-md shrink-0",
-                  "hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 shadow-sm hover:shadow-lg",
-                  item.hoverColor
-                )}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-border/40 bg-card/40 backdrop-blur-sm shrink-0 hover:bg-card/80 hover:border-primary/30 hover:shadow-md transition-all duration-300 active:scale-[0.97]"
               >
-                <item.icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-muted-foreground" />
-                <span className="text-xs sm:text-sm font-medium text-foreground whitespace-nowrap">{item.label}</span>
+                <item.icon className="w-3.5 h-3.5 text-muted-foreground" />
+                <span className="text-xs font-medium text-foreground/80 whitespace-nowrap">{item.label}</span>
               </Link>
             </motion.div>
           ))}
         </motion.div>
         
-        {/* Stats bar with premium glass styling */}
+        {/* Stats bar */}
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
+          transition={{ delay: 0.95 }}
           className="relative"
         >
-          {/* Multi-layer glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-violet-500/10 blur-3xl" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent blur-2xl" />
-          
-          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 p-3 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/50 bg-gradient-to-br from-card/70 via-card/50 to-card/70 backdrop-blur-xl shadow-2xl shadow-black/10 overflow-hidden">
-            {/* Animated border gradient */}
-            <div className="absolute inset-0 rounded-3xl p-px bg-gradient-to-br from-primary/30 via-transparent to-violet-500/30 pointer-events-none" style={{ mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", maskComposite: "xor" }} />
-            
-            {/* Inner glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+          <div className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/30 rounded-2xl border border-border/40 bg-card/30 backdrop-blur-xl overflow-hidden">
+            {/* Top edge highlight */}
+            <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
             
             <AnimatedStat value={21} label="Modules" delay={0} />
             <AnimatedStat value={200} label="Synergies" delay={1} />
@@ -548,7 +407,20 @@ export function HeroMetaSubstrate() {
       </div>
       
       {/* Scroll indicator */}
-      <ScrollIndicator />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5"
+      >
+        <span className="text-[10px] text-muted-foreground/40 font-medium tracking-widest uppercase">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="w-4 h-4 text-muted-foreground/30" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
