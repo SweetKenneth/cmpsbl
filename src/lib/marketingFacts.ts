@@ -27,8 +27,15 @@ export const LAYERS_COUNT = 6;
 /** 
  * Synergy pipelines defined in capabilities/synergies/registry.ts
  * 88 core + 27 discovery + 32 S-tier + 53 infrastructure-era = 200
+ * + 50 crystallized crown jewel pipelines = 250 total
  */
-export const SYNERGY_PIPELINES_COUNT = 200;
+export const SYNERGY_PIPELINES_COUNT = 250;
+
+/**
+ * Crystallized Crown Jewel pipelines from Intent Mesh discovery
+ * 10 CMPSBL + 8 Enterprise + 18 Architect + 14 Creator = 50
+ */
+export const CRYSTALLIZED_PIPELINES_COUNT = 50;
 
 /**
  * Synergy executors defined in capabilities/synergies/executors

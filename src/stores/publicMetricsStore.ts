@@ -90,8 +90,8 @@ export const DEFAULT_METRICS: PublicMetrics = {
   modulesCount: 21,
   layersCount: 6,
   
-  // Synergy Metrics (88 core + 27 discovery + 32 S-tier + 53 infrastructure = 200)
-  synergyPipelinesCount: 200,
+  // Synergy Metrics (88 core + 27 discovery + 32 S-tier + 53 infrastructure = 200 + 50 crystallized = 250)
+  synergyPipelinesCount: 250,
   synergyExecutorsCount: 125,
   stierPipelinesCount: 32,
   
@@ -102,9 +102,9 @@ export const DEFAULT_METRICS: PublicMetrics = {
   enginesCount: 76,
   metaEnginesCount: 24,
   
-  // Capability Metrics (480+)
-  capabilitiesCount: 484,
-  crownJewelCapabilitiesCount: 126,
+  // Capability Metrics (525+)
+  capabilitiesCount: 525,
+  crownJewelCapabilitiesCount: 168,
   archivedCapabilitiesCount: 136,
   
   // Terminal & Commands
