@@ -122,13 +122,13 @@ All 9 crown jewel meta-engines are:
 
 ## Engine Tier Access
 
-| Tier | Base Engines | Meta-Engines | Recursive/Self-Improvement |
-|------|-------------|--------------|---------------------------|
-| **Free** | 5 core (Event Router, Key Manager, Rate Limiter, Memory Indexer, Intent Parser) | 0 | ❌ |
-| **Creator** | All 14 | 3 standard (Evolution Evaluator, Synergy Composer, Proposal Gate) | ❌ |
-| **Architect** | All 14 | 8 (standard + Cognitive Mesh, System Guardian, Performance Optimizer, Knowledge Nexus, Event Fabric) | ❌ |
-| **Enterprise** | All 14 | All 12 non-recursive | ❌ |
-| **CMPSBL** | All 14 | All 12 + 9 recursive self-improvement | ✅ Full access |
+| Tier | Base Engines (76) | Meta-Engines (24) | Recursive Self-Improvement (9) |
+|------|-------------------|-------------------|-------------------------------|
+| **Free** | 30 core (cognitive, operational, intelligence, governance, security) | 0 | ❌ |
+| **Creator** | All 76 | 8 (standard + operational + creative) | ❌ |
+| **Architect** | All 76 | 16 (+ world-first, resilience, deep cognition) | ❌ |
+| **Enterprise** | All 76 | All 24 | ❌ |
+| **CMPSBL** | All 76 | All 24 + 9 recursive self-improvement | ✅ Full access |
 
 ---
 
