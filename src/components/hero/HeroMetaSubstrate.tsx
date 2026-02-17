@@ -211,7 +211,7 @@ export function HeroMetaSubstrate() {
               <img 
                 src={clocklessHeroLogo} 
                 alt="Clockless" 
-                className="h-[80px] sm:h-[120px] md:h-[150px] lg:h-[200px] w-auto max-w-full object-contain"
+                className="h-[160px] sm:h-[180px] md:h-[200px] lg:h-[240px] w-auto max-w-[95vw] object-contain drop-shadow-[0_0_30px_hsl(var(--primary)/0.3)]"
               />
             </motion.div>
 
