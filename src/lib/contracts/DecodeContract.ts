@@ -15,6 +15,8 @@ import {
   DecodeInput
 } from './DecodeContractTypes';
 import { substrate } from '../substrate';
+import { applyVoiceGuardrails, needsGuardrails } from '../substrate/governance/decode-voice-guardrails';
+import { validateEpistemicIntegrity } from '../substrate/governance/decode-response-policy';
 
 /**
  * Epistemic Layer Implementation
@@ -68,7 +70,11 @@ const epistemic: EpistemicContract = {
  */
 const conversational: ConversationalContract = {
   format(output: string): string {
-    // v9.1.0: Return plain text without cryptic markers for clarity
+    // v10.5.3: Apply epistemic guardrails before output
+    if (needsGuardrails(output)) {
+      const result = applyVoiceGuardrails(output);
+      return result.output;
+    }
     return output;
   },
   

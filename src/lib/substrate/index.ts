@@ -132,6 +132,39 @@ export {
   type EthicalResult,
 } from './governance-guard';
 
+// Governance v10.5.3 — Veto Authority, Epistemic Discipline, Signal Arbitration
+export {
+  vetoAuthority,
+  vetoLifecycle,
+  signalArbitration,
+  enforceResponsePolicy,
+  validateEpistemicIntegrity,
+  applyVoiceGuardrails,
+  needsGuardrails,
+  tagClaim,
+  stripTags,
+  normalizeScope,
+  isModuleAffected,
+  getScopesForModule,
+  ALLOWED_SCOPES,
+  SCOPE_MATRIX,
+  DEFAULT_SCOPE,
+  type VetoRequest,
+  type VetoResolution,
+  type VetoAuthority as VetoAuthorityType,
+  type VetoScope as VetoScopeType,
+  type VetoLifecycleEntry,
+  type VetoLifecycleState,
+  type EntropySnapshot,
+  type ModuleSignal,
+  type ArbitrationResult,
+  type SignalSeverity,
+  type ProvenanceTag,
+  type PolicyResult,
+  type PolicyViolation,
+  type VoiceGuardrailResult,
+} from './governance';
+
 // Orchestrator Engine - Unified Cognitive Pipeline (v6.6.0)
 export {
   orchestratorEngine,
