@@ -114,11 +114,21 @@ interface EngineHealth {
 ## Crown Jewel Engine Restrictions
 
 All 9 crown jewel meta-engines are:
-- **Excluded** from Enterprise and Pro tiers
+- **CMPSBL-only** — never exposed to any external tier (Creator, Architect, or Enterprise)
 - **Cannot be exported** via API
 - **Cannot be described** in public documentation beyond name and general category
 - **Execution logs** are stored in a separate, encrypted audit trail
 - **Source code** is isolated from main codebase deployment
+
+## Engine Tier Access
+
+| Tier | Base Engines | Meta-Engines | Recursive/Self-Improvement |
+|------|-------------|--------------|---------------------------|
+| **Free** | 5 core (Event Router, Key Manager, Rate Limiter, Memory Indexer, Intent Parser) | 0 | ❌ |
+| **Creator** | All 14 | 3 standard (Evolution Evaluator, Synergy Composer, Proposal Gate) | ❌ |
+| **Architect** | All 14 | 8 (standard + Cognitive Mesh, System Guardian, Performance Optimizer, Knowledge Nexus, Event Fabric) | ❌ |
+| **Enterprise** | All 14 | All 12 non-recursive | ❌ |
+| **CMPSBL** | All 14 | All 12 + 9 recursive self-improvement | ✅ Full access |
 
 ---
 

@@ -414,7 +414,7 @@ export default function SubstrateLicensing() {
             </div>
             <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
               {[
-                { icon: Zap, title: 'All Engines Included', desc: 'Every engine and meta-engine at your tier level — no separate subscription.' },
+                { icon: Zap, title: 'Tiered Engine Access', desc: 'Engines and meta-engines are progressively unlocked at each tier. Recursive self-improvement meta-engines remain CMPSBL-only.' },
                 { icon: Shield, title: 'SDK & API Bundled', desc: 'Full API access ships with Creator and above. No developer license required.' },
                 { icon: Sparkles, title: 'Pipelines & Templates', desc: 'All crystallized pipelines and templates at your tier level. No per-item fees.' },
               ].map((item, i) => {
@@ -442,6 +442,7 @@ export default function SubstrateLicensing() {
             <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4">
               {[
                 { q: 'What are Crown Jewels?', a: 'Crown Jewels are our highest-value capabilities — each one represents a breakthrough in autonomous intelligence that no competitor offers.' },
+                { q: 'Are all engines available at every tier?', a: 'No. Base engines are progressively unlocked. Creator gets all 14 base engines and 3 standard meta-engines. Architect adds 5 more advanced meta-engines. Enterprise unlocks all 12. Recursive self-improvement meta-engines are CMPSBL-internal only.' },
                 { q: 'What are crystallized pipelines?', a: 'Pipelines discovered by the Intent Mesh that proved valuable and were permanently saved as reusable cross-module workflows.' },
                 { q: 'Do I need a separate developer license?', a: 'No. SDK and API access are included in Creator and Architect tiers.' },
                 { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. Changes take effect at the next billing cycle.' },
