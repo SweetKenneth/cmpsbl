@@ -42,6 +42,7 @@ import { MeshSchedulerPanel } from './mesh/MeshSchedulerPanel';
 import { MeshTopologyGraph } from './mesh/MeshTopologyGraph';
 import { MeshHealthPanel } from './mesh/MeshHealthPanel';
 import { MeshFederationPanel } from './mesh/MeshFederationPanel';
+import { PipelinesExplorer } from './mesh/PipelinesExplorer';
 
 export function MeshActivityTab() {
   const { enabled, toggle } = useMeshToggle();
@@ -92,11 +93,19 @@ export function MeshActivityTab() {
             const updated = [newReceipt, ...prev].slice(0, 50);
             return updated;
           });
-          // Flash notification for live activity
           toast.info(
             `🔗 ${newReceipt.source_module} → ${(newReceipt.resolved_by || []).join(', ')}`,
             { description: `${newReceipt.intent_type} (${newReceipt.duration_ms}ms)`, duration: 3000 }
           );
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'mesh_saved_pipelines' },
+        async () => {
+          // Auto-refresh pipelines when they change
+          const p = await getSavedPipelines();
+          setSavedPipelines(p);
         }
       )
       .subscribe();
@@ -465,77 +474,14 @@ export function MeshActivityTab() {
           </div>
         </div>
       ) : activeView === 'pipelines' ? (
-        /* ═══ SAVED PIPELINES VIEW ═══ */
-        <div className="space-y-4">
-          <Card className="border border-cyan-500/20 bg-cyan-500/5">
-            <CardContent className="py-4">
-              <div className="flex items-center gap-3">
-                <Layers className="w-5 h-5 text-cyan-400" />
-                <div>
-                  <p className="text-sm font-medium">Crystallized Pipelines</p>
-                  <p className="text-xs text-muted-foreground">
-                    Resolver chains discovered by the mesh, saved as reusable pipelines. Replay any configuration on demand.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {savedPipelines.length === 0 ? (
-            <Card className="border border-border/30 bg-muted/10">
-              <CardContent className="py-12 text-center">
-                <Bookmark className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">No saved pipelines yet.</p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Hover over a successful receipt in the Live view and click "Save" to crystallize it.
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {savedPipelines.map(pipeline => (
-                <Card key={pipeline.id} className="border border-border/30 bg-muted/10 hover:border-cyan-500/30 transition-colors">
-                  <CardContent className="p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-bold truncate">{pipeline.name}</h3>
-                      <Badge variant={pipeline.is_active ? 'default' : 'secondary'} className="text-[9px]">
-                        {pipeline.is_active ? 'active' : 'inactive'}
-                      </Badge>
-                    </div>
-                    {pipeline.description && (
-                      <p className="text-xs text-muted-foreground line-clamp-2">{pipeline.description}</p>
-                    )}
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge variant="outline" className="text-[9px]">{pipeline.source_module}</Badge>
-                      <ArrowRight className="w-3 h-3 text-muted-foreground" />
-                      {(pipeline.resolver_chain || []).map((r: string) => (
-                        <Badge key={r} variant="secondary" className="text-[9px]">{r}</Badge>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-                      <span>{pipeline.governance_mode} • {pipeline.intent_type}</span>
-                      <span>{pipeline.run_count || 0} runs</span>
-                    </div>
-                    <Button 
-                      size="sm" className="w-full gap-2"
-                      onClick={() => handleRunPipeline(pipeline)}
-                      disabled={runningPipeline === pipeline.id || !enabled}
-                    >
-                      {runningPipeline === pipeline.id ? (
-                        <RefreshCw className="h-3 w-3 animate-spin" />
-                      ) : (
-                        <Play className="h-3 w-3" />
-                      )}
-                      Replay Pipeline
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
+        <PipelinesExplorer
+          pipelines={savedPipelines}
+          enabled={enabled}
+          onRunPipeline={handleRunPipeline}
+          runningPipeline={runningPipeline}
+        />
       ) : activeView === 'proposals' ? (
-        <MeshProposalsPanel />
+        <MeshProposalsPanel onPipelineChange={refresh} />
       ) : activeView === 'scoring' ? (
         <MeshScoringPanel />
       ) : activeView === 'scheduler' ? (

@@ -347,12 +347,40 @@ export async function runAllModuleDiscovery(): Promise<{
 
 /**
  * Persist module proposals to database for dashboard approval
+ * Deduplicates against existing proposals and saved pipelines
  */
 export async function persistProposals(proposals: ModuleProposal[]): Promise<number> {
   if (proposals.length === 0) return 0;
 
   try {
-    const rows = proposals.map(p => ({
+    // Fetch existing proposal resolver IDs to prevent duplicates
+    const { data: existingProposals } = await supabase
+      .from('mesh_capability_recommendations')
+      .select('proposed_resolver_id')
+      .in('status', ['proposed', 'pending', 'applied']);
+    const existingProposalIds = new Set((existingProposals || []).map((r: any) => r.proposed_resolver_id));
+
+    // Fetch existing saved pipelines to prevent duplicates
+    const { data: existingPipelines } = await supabase
+      .from('mesh_saved_pipelines')
+      .select('resolver_chain, name');
+    const existingPipelineResolvers = new Set<string>();
+    const existingPipelineNames = new Set<string>();
+    (existingPipelines || []).forEach((p: any) => {
+      if (p.name) existingPipelineNames.add(p.name.toLowerCase());
+      (p.resolver_chain || []).forEach((r: string) => existingPipelineResolvers.add(r));
+    });
+
+    // Filter out duplicates
+    const uniqueProposals = proposals.filter(p => {
+      if (existingProposalIds.has(p.proposedResolverId)) return false;
+      if (existingPipelineResolvers.has(p.proposedResolverId)) return false;
+      return true;
+    });
+
+    if (uniqueProposals.length === 0) return 0;
+
+    const rows = uniqueProposals.map(p => ({
       target_module: p.module,
       proposed_resolver_id: p.proposedResolverId,
       proposed_description: p.description,
@@ -369,7 +397,7 @@ export async function persistProposals(proposals: ModuleProposal[]): Promise<num
       .insert(rows as any[]);
 
     if (error) throw error;
-    return proposals.length;
+    return uniqueProposals.length;
   } catch (err) {
     console.warn('[ModuleDiscovery] Failed to persist proposals:', err);
     return 0;
@@ -428,9 +456,22 @@ export async function approveProposal(proposalId: string): Promise<boolean> {
     .update({ status: 'applied', applied_at: new Date().toISOString() } as any)
     .eq('id', proposal.id);
 
+  // Check for duplicate pipeline before crystallizing
+  const pipelineName = `${proposal.target_module}: ${(resolverId || '').split('.').pop()?.replace(/_/g, ' ')}`;
+  const { data: existingPipeline } = await supabase
+    .from('mesh_saved_pipelines')
+    .select('id')
+    .or(`name.eq.${pipelineName},resolver_chain.cs.{${resolverId}}`)
+    .limit(1);
+
+  if ((existingPipeline as any)?.length > 0) {
+    console.log(`[Mesh:Proposals] Pipeline already exists, skipping crystallization: ${pipelineName}`);
+    return true;
+  }
+
   // Crystallize into a permanent saved pipeline
   const pipelineData = {
-    name: `${proposal.target_module}: ${(resolverId || '').split('.').pop()?.replace(/_/g, ' ')}`,
+    name: pipelineName,
     description: proposal.proposed_description || `Approved resolver from ${proposal.target_module} module self-discovery`,
     source_module: proposal.target_module || 'UNKNOWN',
     intent_type: (resolverId || '').split('.').pop() || 'capability',
@@ -438,7 +479,7 @@ export async function approveProposal(proposalId: string): Promise<boolean> {
     governance_mode: 'governed',
     resolver_chain: [resolverId],
     input_template: {},
-    discovered_from: null, // FK to mesh_intents — set null for discovery-originated pipelines
+    discovered_from: null,
     is_active: true,
   };
 
@@ -448,7 +489,6 @@ export async function approveProposal(proposalId: string): Promise<boolean> {
 
   if (pipelineError) {
     console.error('[Mesh:Proposals] Pipeline crystallization failed:', pipelineError);
-    // Still return true since the recommendation was applied, but log the failure
   } else {
     console.log(`[Mesh:Proposals] ✅ Crystallized pipeline: ${pipelineData.name}`);
   }
