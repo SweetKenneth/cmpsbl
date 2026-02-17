@@ -24,6 +24,7 @@ import {
   ChevronRight, ChevronLeft, Cpu, Clock, Terminal,
   Sparkles, Workflow, Network, Accessibility, Filter,
   Unlock, Play, Moon, MessageSquare, X, Lock, Crown,
+  ArrowUpDown, SortAsc,
 } from 'lucide-react';
 import { 
   isCrownJewelItem, 
@@ -41,26 +42,50 @@ import {
   type CapabilityCategory,
   type CapabilityArtifact,
 } from '@/lib/capabilities/depot';
-import { ALL_TEMPLATES, type Template, getTemplateTier } from '@/data/templates';
+import { ALL_TEMPLATES, type Template, getTemplateTier, type RequiredTier } from '@/data/templates';
 import { SYNERGY_DEFINITIONS } from '@/lib/capabilities/synergies/registry';
 
 // ─── Product Type ───
 type ProductType = 'all' | 'capabilities' | 'templates' | 'pipelines';
+type SortMode = 'featured' | 'name-asc' | 'name-desc' | 'tier-asc' | 'tier-desc';
+type TierFilter = 'all' | RequiredTier;
 type UnifiedItem = 
   | { type: 'capability'; data: CapabilityArtifact }
   | { type: 'template'; data: Template }
   | { type: 'pipeline'; data: typeof SYNERGY_DEFINITIONS[0] };
 
-/** Extract difficulty and category from any unified item for tier gating */
-function getItemMeta(item: UnifiedItem): { difficulty?: string; category?: string } {
+/** Extract difficulty, category, and tags from any unified item */
+function getItemMeta(item: UnifiedItem): { difficulty?: string; category?: string; tags?: string[] } {
   if (item.type === 'template') {
-    return { difficulty: (item.data as any).difficulty, category: (item.data as any).category };
+    return { difficulty: (item.data as any).difficulty, category: (item.data as any).category, tags: (item.data as any).features };
   }
   if (item.type === 'capability') {
-    return { difficulty: (item.data as any).difficulty, category: (item.data as any).category };
+    return { difficulty: (item.data as any).difficulty, category: (item.data as any).category, tags: (item.data as any).requiredModules };
+  }
+  if (item.type === 'pipeline') {
+    const p = item.data as typeof SYNERGY_DEFINITIONS[0];
+    return { category: p.category, tags: p.modules.map(m => m.name) };
   }
   return {};
 }
+
+/** Get the resolved tier for any unified item */
+function getUnifiedItemTier(item: UnifiedItem): RequiredTier {
+  if (item.type === 'template') return getTemplateTier(item.data as Template);
+  // For capabilities and pipelines, derive from the tier badge system
+  const meta = getItemMeta(item);
+  const badge = getItemTierBadge(item.data.id, item.data.name, meta.difficulty, meta.category);
+  switch (badge) {
+    case 'FREE': return 'free';
+    case 'CREATOR': return 'creator';
+    case 'ARCHITECT': return 'architect';
+    case 'BLACK-BOX': return 'architect';
+    case 'CMPSBL CORE': return 'enterprise';
+    default: return 'free';
+  }
+}
+
+const TIER_ORDER: Record<RequiredTier, number> = { free: 0, creator: 1, architect: 2, enterprise: 3 };
 
 // ─── Category System (unified across all 3 product types) ───
 const UNIFIED_CATEGORIES = [
@@ -479,6 +504,8 @@ export default function SubstrateStore() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<UnifiedItem | null>(null);
   const [viewMode, setViewMode] = useState<'browse' | 'grid'>('browse');
+  const [tierFilter, setTierFilter] = useState<TierFilter>('all');
+  const [sortMode, setSortMode] = useState<SortMode>('featured');
   
   const capCount = useMetric('capabilitiesCount');
   const pipeCount = useMetric('synergyPipelinesCount');
@@ -492,9 +519,9 @@ export default function SubstrateStore() {
     return [...caps, ...temps, ...pipes];
   }, []);
   
-  // Filter: hide Architecture Crown Jewels, show Experience Crown Jewels with badges
+  // Filter: hide Architecture Crown Jewels, apply product/category/search/tier filters
   const filteredItems = useMemo(() => {
-    return allItems.filter(item => {
+    let results = allItems.filter(item => {
       const itemId = item.data.id;
       const itemName = item.data.name;
       // Architecture Crown Jewels: completely hidden from public
@@ -512,17 +539,39 @@ export default function SubstrateStore() {
         if (item.type === 'pipeline' && item.data.category !== selectedCategory) return false;
       }
       
-      // Search
+      // Tier filter
+      if (tierFilter !== 'all') {
+        if (getUnifiedItemTier(item) !== tierFilter) return false;
+      }
+      
+      // Search (name + description + tags/features)
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
         const name = item.data.name;
         const desc = item.data.description;
-        if (!name.toLowerCase().includes(q) && !desc.toLowerCase().includes(q)) return false;
+        const meta = getItemMeta(item);
+        const tags = (meta.tags || []).join(' ').toLowerCase();
+        if (!name.toLowerCase().includes(q) && !desc.toLowerCase().includes(q) && !tags.includes(q)) return false;
       }
       
       return true;
     });
-  }, [allItems, productType, selectedCategory, searchQuery]);
+
+    // Sort
+    if (sortMode !== 'featured') {
+      results = [...results].sort((a, b) => {
+        switch (sortMode) {
+          case 'name-asc': return a.data.name.localeCompare(b.data.name);
+          case 'name-desc': return b.data.name.localeCompare(a.data.name);
+          case 'tier-asc': return TIER_ORDER[getUnifiedItemTier(a)] - TIER_ORDER[getUnifiedItemTier(b)];
+          case 'tier-desc': return TIER_ORDER[getUnifiedItemTier(b)] - TIER_ORDER[getUnifiedItemTier(a)];
+          default: return 0;
+        }
+      });
+    }
+
+    return results;
+  }, [allItems, productType, selectedCategory, searchQuery, tierFilter, sortMode]);
 
   // Architecture Crown Jewels — admin-only reference
   const architectureJewelItems = useMemo(() => {
@@ -684,21 +733,62 @@ export default function SubstrateStore() {
                 ))}
               </div>
               
-              <div className="hidden md:flex gap-1 shrink-0">
-                <button
-                  onClick={() => setViewMode('browse')}
-                  className={cn("p-2 rounded-lg transition-colors", viewMode === 'browse' ? 'bg-muted' : 'hover:bg-muted/50')}
-                  title="Category browse"
+              {/* Tier filter + Sort + View toggle */}
+              <div className="flex items-center gap-2 shrink-0">
+                {/* Tier filter pills */}
+                <div className="hidden sm:flex gap-1 border-r border-border/50 pr-2 mr-1">
+                  {([
+                    { id: 'all' as const, label: 'All Tiers', color: '' },
+                    { id: 'free' as const, label: 'Free', color: 'text-emerald-400' },
+                    { id: 'creator' as const, label: 'Creator', color: 'text-cyan-400' },
+                    { id: 'architect' as const, label: 'Architect', color: 'text-violet-400' },
+                    { id: 'enterprise' as const, label: 'Enterprise', color: 'text-amber-400' },
+                  ] as { id: TierFilter; label: string; color: string }[]).map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => setTierFilter(t.id)}
+                      className={cn(
+                        "px-2.5 py-1 rounded-md text-[11px] font-medium whitespace-nowrap transition-all",
+                        tierFilter === t.id
+                          ? "bg-muted text-foreground"
+                          : cn("text-muted-foreground hover:bg-muted/50", t.color && `hover:${t.color}`)
+                      )}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Sort dropdown */}
+                <select
+                  value={sortMode}
+                  onChange={(e) => setSortMode(e.target.value as SortMode)}
+                  className="hidden md:block h-8 px-2 pr-7 rounded-lg text-xs bg-card border border-border text-foreground appearance-none cursor-pointer"
+                  style={{ backgroundImage: 'none' }}
                 >
-                  <Layers className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={cn("p-2 rounded-lg transition-colors", viewMode === 'grid' ? 'bg-muted' : 'hover:bg-muted/50')}
-                  title="Grid view"
-                >
-                  <Filter className="w-4 h-4" />
-                </button>
+                  <option value="featured">Featured</option>
+                  <option value="name-asc">Name A–Z</option>
+                  <option value="name-desc">Name Z–A</option>
+                  <option value="tier-asc">Tier ↑</option>
+                  <option value="tier-desc">Tier ↓</option>
+                </select>
+
+                <div className="hidden md:flex gap-1">
+                  <button
+                    onClick={() => setViewMode('browse')}
+                    className={cn("p-2 rounded-lg transition-colors", viewMode === 'browse' ? 'bg-muted' : 'hover:bg-muted/50')}
+                    title="Category browse"
+                  >
+                    <Layers className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode('grid')}
+                    className={cn("p-2 rounded-lg transition-colors", viewMode === 'grid' ? 'bg-muted' : 'hover:bg-muted/50')}
+                    title="Grid view"
+                  >
+                    <Filter className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -744,10 +834,21 @@ export default function SubstrateStore() {
         {/* ═══ CONTENT ═══ */}
         <main className="flex-1">
           <div className="container mx-auto px-4 pt-6 pb-2">
-            <p className="text-sm text-muted-foreground">
-              {filteredItems.length} resources
-              {searchQuery && <> matching "<span className="text-foreground font-medium">{searchQuery}</span>"</>}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                {filteredItems.length} resources
+                {tierFilter !== 'all' && <> · <span className="text-foreground font-medium capitalize">{tierFilter}</span> tier</>}
+                {searchQuery && <> matching "<span className="text-foreground font-medium">{searchQuery}</span>"</>}
+              </p>
+              {(tierFilter !== 'all' || searchQuery || selectedCategory) && (
+                <button 
+                  onClick={() => { setTierFilter('all'); setSearchQuery(''); setSelectedCategory(null); setProductType('all'); setSortMode('featured'); }}
+                  className="text-xs text-primary hover:underline"
+                >
+                  Clear all filters
+                </button>
+              )}
+            </div>
           </div>
           
           {/* Browse Mode */}
