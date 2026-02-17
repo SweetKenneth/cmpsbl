@@ -134,7 +134,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
     }
     
     if (trimmed === 'version') {
-      addResult('version', 'success', 'promptfluid® Substrate OS v9.1.0\nARCHITECT Epoch — 400+ Capabilities, 200+ Pipelines\n21-module architecture | 100+ Engines | 25+ Meta-Engines | 360+ commands');
+      addResult('version', 'success', 'Clockless — CMPSBL World Engine v10.5.1\nARCHITECT Epoch — 21 modules, 60+ crystallized pipelines\nCognition That Compounds. | 360+ commands');
       return;
     }
     
@@ -254,7 +254,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
         <div className="p-4 space-y-2">
           {/* Welcome message */}
           <div className="text-muted-foreground text-xs">
-            substrate os v9.1.0 | architect epoch — type 'help' for commands
+            clockless v10.5.1 | cmpsbl world engine — type 'help' for commands
           </div>
           
           {/* Command History */}

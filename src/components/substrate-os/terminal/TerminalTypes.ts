@@ -44,8 +44,8 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓  CMPSBL® SUBSTRATE OS v10.5.0        ▓',
-  '  ▓  ARCHITECT Epoch Cognitive OS         ▓',
+  '  ▓  CLOCKLESS — CMPSBL WORLD ENGINE   ▓',
+  '  ▓  v10.5.1 ARCHITECT Epoch           ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
   '  ┌─ BOOTSTRAP ───────────────────────────┐',

@@ -251,8 +251,8 @@ export function CmpsblNav() {
             >
               <CmpsblLogo size="sm" className="transition-transform duration-300 group-hover:scale-105" />
               <div className="hidden sm:flex flex-col">
-                <span className="text-lg font-bold tracking-tight leading-none">CMPSBL</span>
-                <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Substrate OS</span>
+                <span className="text-lg font-bold tracking-tight leading-none">Clockless</span>
+                <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">CMPSBL World Engine</span>
               </div>
             </Link>
 
@@ -508,9 +508,9 @@ export function CmpsblNav() {
                   className="flex items-center gap-3"
                 >
                   <CmpsblLogo size="md" />
-                  <div>
-                    <div className="text-xl font-bold tracking-tight">CMPSBL</div>
-                    <div className="text-xs text-muted-foreground font-medium">Substrate OS v8.0</div>
+                   <div>
+                    <div className="text-xl font-bold tracking-tight">Clockless</div>
+                    <div className="text-xs text-muted-foreground font-medium">CMPSBL World Engine</div>
                   </div>
                 </motion.div>
               </div>

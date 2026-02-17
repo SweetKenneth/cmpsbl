@@ -150,7 +150,7 @@ export async function logSystemAction(
   details?: Record<string, unknown>
 ): Promise<string> {
   return logAudit({
-    actor: { type: 'system', id: 'substrate', name: 'Substrate OS' },
+    actor: { type: 'system', id: 'substrate', name: 'CMPSBL World Engine' },
     action: { type: 'execute', name: actionName, category: 'config' },
     resource: { type: resourceType, id: resourceId },
     outcome,
