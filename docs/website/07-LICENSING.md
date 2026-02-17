@@ -1,177 +1,125 @@
-# Licensing
+# Pricing & Access
 
-**CMPSBL® Infrastructure Licensing — v10.5.0**
-
----
-
-## What Is Licensing?
-
-Licensing is for teams that want to **deploy the CMPSBL substrate on their own infrastructure**. You get the substrate itself — the same cognitive engine that powers our master substrate — running in your environment, under your control.
-
-> **Looking to build on our managed infrastructure instead?** See [Pricing](/pricing) for Master Substrate plans.
+**CMPSBL® World Engine — Adoptable Pricing**
 
 ---
 
-## How to Get a License
+## Philosophy
 
-All substrate licenses are available through **[LNCHBL.com](https://lnchbl.com)**.
+> **"Compose intelligence. Don't control the engine."**
 
-1. Visit [LNCHBL.com](https://lnchbl.com)
-2. Choose your tier
-3. Download and deploy
+User projects run ON the CMPSBL World Engine. User projects never run AS the CMPSBL World Engine. Internal systems remain first-party and non-exportable.
 
 ---
 
-## License Tiers
+## Tiers
 
-| Tier | Cost | What You Get |
-|------|------|--------------|
-| **Free** | $0 | Full Artifact Store, Persistent Memory, Executors, Composition |
-| **Builder** | $49/mo | Self-improving apps, sealed Experience artifacts |
-| **Pro** | $149/mo | Compound intelligence, CLM, cross-project learning |
-| **Enterprise** | Custom | Source code access, governed intelligence, compliance |
-
----
-
-## Free Tier
-
-**$0 — Always Free**
-
-Build real systems with the full power of the CMPSBL substrate.
-
-### Includes
-
-| Feature | Access |
-|---------|--------|
-| **Artifact Store** | ✓ 800+ Capabilities, Templates, Pipelines |
-| **Persistent Memory** | ✓ Project-scoped, bounded |
-| **Executors** | ✓ Create + execute |
-| **Composition** | ✓ Full artifact composition |
-| **Projects** | ✓ Public + private |
-
-### Limitations
-
-- No CLM (Constant Learning Method)
-- No cross-project learning
-- No Experience Crown Jewels
-- Community support only
-
-Download free at [LNCHBL.com →](https://lnchbl.com)
+| Tier | Cost | For |
+|------|------|-----|
+| **Free** | $0 | Curious devs, researchers, students |
+| **Creator** | $9/mo | Builders shipping small products |
+| **Architect** | $19/mo | Serious builders, small teams |
+| **Enterprise** | $99/mo | Teams, production systems, governance |
 
 ---
 
-## Builder Tier
+## Free — $0
 
-**$49/month** — via [LNCHBL.com](https://lnchbl.com)
+Build real things. Not a trial.
 
-Ship self-improving applications with sealed intelligence.
+- Artifact Store access (Free catalog)
+- Core templates (starter pack)
+- Basic capabilities (read + compose)
+- Limited persistent memory
+- Basic pipelines & missions
+- Dashboard + Terminal (Free mode)
 
-### Includes
-
-| Feature | Access |
-|---------|--------|
-| **Everything in Free** | ✓ |
-| **Experience Crown Jewels** | 7 sealed artifacts |
-| **In-Run Self-Improvement** | ✓ Bounded |
-| **Goal Optimization** | ✓ Bounded |
-| **Creative Synthesis** | ✓ |
-| **End-to-End Reasoning** | ✓ Sealed pipeline |
-| **Support** | Email + docs |
+Does not include automation, advanced orchestration, or self-improvement loops.
 
 ---
 
-## Pro Tier
+## Creator — $9/month
 
-**$149/month** — via [LNCHBL.com](https://lnchbl.com)
+Everything in Free plus more juice.
 
-Compound intelligence across sessions, executors, and projects.
-
-### Includes
-
-| Feature | Access |
-|---------|--------|
-| **Everything in Builder** | ✓ |
-| **All Experience Crown Jewels** | 28 sealed artifacts |
-| **CLM** | ✓ Bounded + governed |
-| **Cross-Session Learning** | ✓ |
-| **Cross-Executor Learning** | ✓ |
-| **Memory Optimization** | ✓ |
-| **Performance Tuning** | ✓ |
-| **Pattern Reuse** | ✓ Across projects |
-| **Support** | Priority email |
+- Expanded Artifact Store (Creator catalog)
+- Higher-quality templates
+- Executable capabilities
+- Multi-module synergy pipelines
+- Stronger persistent memory
+- Higher Nexus quotas + better routing
+- Scheduled tasks + simple automations
+- Email + docs support
 
 ---
 
-## Enterprise License
+## Architect — $19/month
 
-**Custom** — Governed intelligence for regulated environments.
+Everything in Creator plus depth.
 
-### Includes
-
-- ✓ Everything in Pro
-- ✓ **Source code access** (self-hosted deployment)
-- ✓ Unlimited on-premise / air-gapped instances
-- ✓ 99.9% SLA guarantee
-- ✓ Dedicated support channel
-- ✓ Compliance documentation
-- ✓ Custom governance configurations
-- ✓ Training sessions
-
-### Best For
-
-- Regulated industries (healthcare, finance, government)
-- Companies with compliance requirements
-- Production deployments requiring source access
-
-[Contact Sales →](mailto:PromptFluid@gmail.com)
+- Premium Artifact Store (Architect catalog)
+- Cross-module orchestration
+- Larger memory + project memory domains
+- Higher automation limits + batch execution
+- Audit views + change summaries
+- Reasoning summaries
+- Priority Nexus routing + fallback options
+- Priority email support
 
 ---
 
-## Licensing vs. Pricing
+## Enterprise — $99/month
 
-| | **Licensing** (This Page) | **Pricing** ([View →](/pricing)) |
-|---|---|---|
-| **What** | Deploy substrate on YOUR infrastructure | Build on OUR managed master substrate |
-| **Where** | Your servers, your cloud | CMPSBL.com hosted |
-| **Get it at** | [LNCHBL.com](https://lnchbl.com) | [CMPSBL.com/pricing](/pricing) |
-| **Best for** | Teams needing full control, compliance, sovereignty | Teams that want to ship fast with zero ops |
+Everything in Architect plus governance.
 
----
+- Organization workspaces + roles
+- Higher execution ceilings
+- Compliance + audit exports
+- Advanced governance policies
+- Dedicated memory partitions
+- SLA-aware Nexus controls
+- Provider budget pinning
+- Dedicated support channel
 
-## Black-Box Artifacts
+**Enterprise Custom** (sales-led): Dedicated instances, custom compliance, SOC2 requirements.
 
-Experience Crown Jewels are released as **sealed artifacts** — you get the power, not the blueprint.
-
-- ✓ Full execution capability
-- ✗ No source visibility
-- ✗ No config exposure
-- ✗ No export or cloning
+[Contact Sales →](mailto:Dev@CMPSBL.com)
 
 ---
 
-## What You Provide (BYOK)
+## Crown Jewels
 
-| Item | Tier | Description |
-|------|------|-------------|
-| **AI Provider Keys** | All paid tiers | OpenAI, Anthropic, Google, etc. |
-| **Infrastructure** | All tiers | Your servers or cloud account |
-| **Database** | All tiers | PostgreSQL recommended |
+Not all Crown Jewels are released to the public. Certain capabilities, orchestration systems, and recursive intelligence remain internal by design.
+
+Public Crown Jewels are tiered:
+- **Creator**: Safe experience jewels
+- **Architect**: Advanced sealed capabilities
+- **Enterprise**: Governance-grade sealed systems
+
+---
+
+## Builder Isolation
+
+- Capability-scoped execution tokens
+- Per-project namespaces (hard isolation)
+- Governor-enforced boundaries
+- No direct module invocation
+- Artifact exports include only user-created assets
+
+> "I compose intelligence. I don't control the engine."
 
 ---
 
 ## FAQs
 
 ### Is the free tier really free?
-Yes. Artifact Store, Persistent Memory, Executors, and Composition are free forever. No credit card required.
-
-### What are Experience Crown Jewels?
-Sealed artifacts that give you advanced capabilities without exposing the underlying architecture. You experience the power — you don't see the blueprint.
+Yes. Build projects, run capabilities, use templates, save outputs. No credit card required.
 
 ### Can I start free and upgrade later?
-Absolutely. Build for free, then unlock sealed intelligence when you need it.
+Absolutely. Upgrade when you need more power.
 
-### What's the difference between Licensing and Pricing?
-Licensing gives you the substrate to run on your infrastructure (via LNCHBL.com). Pricing is for building on our managed master substrate (on CMPSBL.com).
+### What happens when my subscription ends?
+Your projects continue working. You lose access to paid-tier capabilities until you resubscribe.
 
 ---
 
@@ -179,11 +127,12 @@ Licensing gives you the substrate to run on your infrastructure (via LNCHBL.com)
 
 | Action | Link |
 |--------|------|
-| **Download Free** | [LNCHBL.com](https://lnchbl.com) |
-| **Builder ($49/mo)** | [LNCHBL.com](https://lnchbl.com) |
-| **Pro ($149/mo)** | [LNCHBL.com](https://lnchbl.com) |
-| **Enterprise** | [Contact Sales](mailto:PromptFluid@gmail.com) |
+| **Get Started Free** | [Start Here](/start-here) |
+| **Creator ($9/mo)** | [Pricing](/pricing) |
+| **Architect ($19/mo)** | [Pricing](/pricing) |
+| **Enterprise ($99/mo)** | [Pricing](/pricing) |
+| **Custom Enterprise** | [Contact Sales](mailto:Dev@CMPSBL.com) |
 
 ---
 
-*CMPSBL® — Deploy cognitive infrastructure on your terms.*
+*CMPSBL® — Compose intelligence. Don't control the engine.*

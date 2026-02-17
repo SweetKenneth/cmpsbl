@@ -1,13 +1,14 @@
 /**
- * CMPSBL Unified Pricing — v10.0.0
+ * CMPSBL Adoptable Pricing — Pricing & Access Patch
  * 
- * Three tiers. One subscription. Everything included.
- *   Free   → $0     (build real systems, artifact store, memory, composition)
- *   Creator → $49/mo (all 76 engines, 8 meta-engines, templates, SDK, 7 Jewels)
- *   Architect → $149/mo (all 76 engines, 16 meta-engines, CLM, all 28 Jewels, priority)
- *   Enterprise → Custom (source access, SLA, dedicated support)
+ * Four tiers. Adoptable pricing. Zero IP leakage.
+ *   Free     → $0       (build real things, starter artifacts, bounded memory)
+ *   Creator  → $9/mo    (expanded catalog, executable capabilities, light automation)
+ *   Architect → $19/mo  (premium artifacts, cross-module orchestration, audit views)
+ *   Enterprise → $99/mo (org workspaces, compliance, SLA-aware routing, governance)
  *
- * Template Generator remains as a standalone one-time purchase ($29).
+ * Core Rule: User projects run ON the CMPSBL World Engine.
+ *            User projects never run AS the CMPSBL World Engine.
  */
 
 export const UNIFIED_TIERS = {
@@ -17,88 +18,82 @@ export const UNIFIED_TIERS = {
     amount: 0,
     interval: 'month' as const,
     name: 'Free',
-    tagline: 'Build real systems at zero cost',
-    description: 'Full building capabilities with persistent memory and composition.',
+    tagline: 'Build real things — zero cost',
+    description: 'Core templates, starter artifacts, bounded memory, and shared runtime. Not a trial — a real tier.',
     features: [
-      'Artifact Store access',
-      '30 core engines + 1 meta-engine',
-      '120+ free templates',
-      'Persistent memory (bounded)',
-      'Composition engine',
-      'All executors & runners',
+      'Artifact Store access (Free catalog)',
+      'Core templates (starter pack)',
+      'Basic capabilities (read + compose)',
+      'Limited persistent memory (per-user)',
+      'Basic pipelines & missions',
+      'Shared Nexus routing (with quotas)',
+      'Dashboard + Terminal (Free mode)',
       'Community support',
-      'Public documentation',
     ],
     checkout_enabled: false,
   },
   creator: {
-    product_id: 'prod_TyP9TVucbprd82',
-    price_id: 'price_1T0SLKQ7FtTiAL4aonaF0po1',
-    amount: 4900, // $49/month
+    product_id: 'prod_TzwJfkmkooYhwU',
+    price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
+    amount: 900, // $9/month
     interval: 'month' as const,
     name: 'Creator',
-    tagline: 'Full substrate access for builders',
-    description: 'All 76 engines, 8 meta-engines, templates, SDK/API, and self-improving capabilities.',
+    tagline: 'More juice for builders shipping products',
+    description: 'Expanded catalog, executable capabilities, private memory, light automation — everything in Free plus real power.',
     features: [
       'Everything in Free, plus:',
-      'All 76 base engines (up from 30)',
-      '8 meta-engines',
-      '160+ templates (all Free + Creator-tier)',
-      'All artifacts',
-      'Full SDK / API access',
-      '27 Experience Crown Jewels',
-      'In-run self-improvement',
-      'Goal optimization',
-      'Dream-assisted creative synthesis',
+      'Expanded Artifact Store (Creator catalog)',
+      'More + higher-quality templates',
+      'Executable capabilities (run + compose)',
+      'Multi-module synergy pipelines',
+      'Stronger persistent memory (bigger limits)',
+      'Higher Nexus quotas + better routing',
+      'Scheduled tasks + simple automations',
       'Email + docs support',
     ],
     checkout_enabled: true,
   },
   architect: {
-    product_id: 'prod_TyP9U1DMXaHX1S',
-    price_id: 'price_1T0SLMQ7FtTiAL4a8QbdCBqR',
-    amount: 14900, // $149/month
+    product_id: 'prod_TzwJtYd5I4rH7j',
+    price_id: 'price_1T1wR8Q7FtTiAL4aJ3TYghDH',
+    amount: 1900, // $19/month
     interval: 'month' as const,
     name: 'Architect',
-    tagline: 'Compound intelligence across projects',
-    description: 'Everything in Creator plus 16 meta-engines, CLM, cross-project learning, and all 28 Crown Jewels.',
+    tagline: 'Best value-to-power ratio for serious builders',
+    description: 'Premium artifacts, cross-module orchestration, larger memory, batch execution, audit views, and priority routing.',
     features: [
       'Everything in Creator, plus:',
-      'All 76 engines + 16 meta-engines (up from 8)',
-      '190+ templates (all Free + Creator + Architect-tier)',
-      '70+ Experience Crown Jewels (up from 27)',
-      'Constant Learning Mode (CLM)',
-      'Cross-session learning',
-      'Cross-executor learning',
-      'Memory optimization',
-      'Performance tuning surfaces',
-      'Pattern reuse across projects',
-      'Team seats (up to 5)',
+      'Premium Artifact Store (Architect catalog)',
+      'Cross-module orchestration (higher complexity)',
+      'Larger memory + project memory domains',
+      'Higher automation limits + batch execution',
+      'Audit views + change summaries',
+      'Reasoning summaries',
+      'Priority Nexus routing + fallback options',
       'Priority email support',
     ],
     checkout_enabled: true,
   },
   enterprise: {
-    product_id: null,
-    price_id: null,
-    amount: null,
-    interval: 'custom' as const,
+    product_id: 'prod_TzwJm6Ji4E3Vca',
+    price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
+    amount: 9900, // $99/month
+    interval: 'month' as const,
     name: 'Enterprise',
-    tagline: 'Full governance and control',
-    description: 'Everything in Architect plus all 24 meta-engines, source access, SLA, and dedicated support.',
+    tagline: 'Governance, control, and reliability for teams',
+    description: 'Org workspaces, compliance exports, advanced governance, dedicated memory, and SLA-aware controls.',
     features: [
       'Everything in Architect, plus:',
-      'All 76 engines + all 24 meta-engines (up from 16)',
-      'All 200+ templates (every tier included)',
-      'Source code access',
-      'Self-hosted deployment',
-      'Unlimited team seats',
-      '99.9% SLA guarantee',
+      'Organization workspaces + roles',
+      'Higher execution ceilings',
+      'Compliance + audit exports',
+      'Advanced governance policies',
+      'Dedicated memory partitions',
+      'SLA-aware Nexus controls',
+      'Provider budget pinning',
       'Dedicated support channel',
-      'Custom integration support',
-      'Quarterly roadmap alignment',
     ],
-    checkout_enabled: false,
+    checkout_enabled: true,
   },
 } as const;
 

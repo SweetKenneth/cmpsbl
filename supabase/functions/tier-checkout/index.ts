@@ -1,5 +1,5 @@
 /**
- * Tier Checkout — Unified pricing: Creator $49/mo | Architect $149/mo
+ * Tier Checkout — Adoptable Pricing: Creator $9/mo | Architect $19/mo | Enterprise $99/mo
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -13,25 +13,30 @@ const corsHeaders = {
 
 const TIER_PRICES: Record<string, { price_id: string; product_id: string; amount: number }> = {
   creator: {
-    price_id: 'price_1T0SLKQ7FtTiAL4aonaF0po1',
-    product_id: 'prod_TyP9TVucbprd82',
-    amount: 4900,
+    price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
+    product_id: 'prod_TzwJfkmkooYhwU',
+    amount: 900,
   },
   architect: {
-    price_id: 'price_1T0SLMQ7FtTiAL4a8QbdCBqR',
-    product_id: 'prod_TyP9U1DMXaHX1S',
-    amount: 14900,
+    price_id: 'price_1T1wR8Q7FtTiAL4aJ3TYghDH',
+    product_id: 'prod_TzwJtYd5I4rH7j',
+    amount: 1900,
+  },
+  enterprise: {
+    price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
+    product_id: 'prod_TzwJm6Ji4E3Vca',
+    amount: 9900,
   },
   // Legacy aliases
   builder: {
-    price_id: 'price_1T0SLKQ7FtTiAL4aonaF0po1',
-    product_id: 'prod_TyP9TVucbprd82',
-    amount: 4900,
+    price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
+    product_id: 'prod_TzwJfkmkooYhwU',
+    amount: 900,
   },
   pro: {
-    price_id: 'price_1T0SLMQ7FtTiAL4a8QbdCBqR',
-    product_id: 'prod_TyP9U1DMXaHX1S',
-    amount: 14900,
+    price_id: 'price_1T1wR8Q7FtTiAL4aJ3TYghDH',
+    product_id: 'prod_TzwJtYd5I4rH7j',
+    amount: 1900,
   },
 };
 
@@ -64,7 +69,7 @@ serve(async (req) => {
     const { tier } = body;
 
     if (!tier || !TIER_PRICES[tier]) {
-      throw new Error(`Invalid tier: ${tier}. Must be 'creator' or 'architect'.`);
+      throw new Error(`Invalid tier: ${tier}. Must be 'creator', 'architect', or 'enterprise'.`);
     }
 
     const priceConfig = TIER_PRICES[tier];

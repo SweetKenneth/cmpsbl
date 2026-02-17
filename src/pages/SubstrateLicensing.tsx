@@ -1,12 +1,12 @@
 /**
- * Unified Pricing Page — Mobile-First, Benefits-First Layout
- * v10.6.0 ARCHITECT Epoch
+ * Unified Pricing Page — Adoptable Pricing, Benefits-First Layout
  * 
  * Structure:
  *   1. Hero — Value proposition
- *   2. Benefits Showcase — Capabilities, Pipelines, Templates per tier (horizontal scroll mobile)
+ *   2. Benefits Showcase — What you get at each tier
  *   3. Pricing Cards — Horizontal scroll on mobile
- *   4. FAQ + Contact
+ *   4. Black-Box Notice
+ *   5. FAQ + Contact
  */
 
 import { useState, useRef } from "react";
@@ -20,14 +20,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { UNIFIED_TIERS, CONTACT_EMAIL, CONTACT_PHONE } from "@/config/licensing-products";
 import {
-  getCapabilitiesByTier,
-  getCrownJewelsByTier,
-  type PublicCapability,
-} from "@/lib/capabilities/public-capability-manifest";
-import {
   Brain, Shield, Zap, CheckCircle2, ArrowRight, Mail, Phone,
   Building2, Sparkles, Crown, Layers, Star, Workflow, FileText,
-  ChevronLeft, ChevronRight, Lock, Gem,
+  ChevronLeft, ChevronRight, Lock, Gem, XCircle,
 } from "lucide-react";
 
 // ── Tier visual config ──
@@ -39,17 +34,20 @@ const TIERS = [
     bgGlow: 'bg-slate-500/5',
     cta: 'Get Started Free',
     popular: false,
-    headline: 'Build Real Systems — Zero Cost',
-    benefitSummary: '30 core engines, 1 meta-engine (Cognitive Mesh), persistent memory, composition engine, and full Artifact Store access.',
-    pipelineCount: 0,
-    templateExamples: ['Basic agent templates', 'Starter project scaffolds'],
+    headline: 'Build Real Things — Zero Cost',
+    benefitSummary: 'Core templates, starter artifacts, bounded persistent memory, and shared runtime. Not a trial — a permanent tier for learning and prototyping.',
     capabilityHighlights: [
-      '30 core engines included',
-      '1 meta-engine (Cognitive Mesh)',
-      'Persistent memory (bounded)',
-      'Composition engine',
-      'All executors & runners',
-      'Artifact Store access',
+      'Artifact Store access (Free catalog)',
+      'Core templates (starter pack)',
+      'Basic capabilities (read + compose)',
+      'Limited persistent memory',
+      'Basic pipelines & missions',
+      'Dashboard + Terminal (Free mode)',
+    ],
+    doesNotInclude: [
+      'High-power automation',
+      'Advanced orchestration',
+      'Self-improvement loops',
     ],
   },
   {
@@ -57,21 +55,23 @@ const TIERS = [
     icon: Sparkles,
     gradient: 'from-blue-500 to-cyan-500',
     bgGlow: 'bg-blue-500/5',
-    cta: 'Subscribe — $49/mo',
+    cta: 'Subscribe — $9/mo',
     popular: true,
-    headline: 'Everything in Free + Autonomous Intelligence',
-    benefitSummary: 'All 76 engines, 8 meta-engines, 27 Crown Jewels, full SDK/API access, and self-improving capabilities that predict, protect, and optimize.',
-    pipelineCount: 20,
-    templateExamples: ['Multi-agent workflows', 'RAG pipeline templates', 'Security scan templates', 'Cost optimization playbooks'],
+    headline: 'Everything in Free + Real Power',
+    benefitSummary: 'Expanded catalog, executable capabilities, private memory, multi-module synergy, and light automation. A real upgrade you can feel.',
     capabilityHighlights: [
-      'All 76 base engines (up from 30 in Free)',
-      '8 meta-engines for compound orchestration',
-      'Auto-recover from module failures',
-      'Predict cost spikes before they hit',
-      'Smart rate shaping for API traffic',
-      'AI-powered accessibility auto-fix',
-      'Isolated sandbox experimentation',
-      'On-demand compliance snapshots',
+      'Expanded Artifact Store (Creator catalog)',
+      'Higher-quality templates',
+      'Executable capabilities',
+      'Multi-module synergy pipelines',
+      'Stronger persistent memory',
+      'Higher Nexus quotas + better routing',
+      'Scheduled tasks + simple automations',
+    ],
+    doesNotInclude: [
+      'Black-Box Crown Jewels',
+      'Full recursive self-improvement',
+      'Direct module invocation',
     ],
   },
   {
@@ -79,21 +79,22 @@ const TIERS = [
     icon: Crown,
     gradient: 'from-violet-500 to-purple-500',
     bgGlow: 'bg-violet-500/5',
-    cta: 'Subscribe — $149/mo',
+    cta: 'Subscribe — $19/mo',
     popular: false,
-    headline: 'Everything in Creator + Compound Intelligence',
-    benefitSummary: 'All Creator capabilities plus 16 meta-engines (up from 8), 70+ Crown Jewels, cross-project learning, forensic timelines, and cascade failure prevention.',
-    pipelineCount: 40,
-    templateExamples: ['Cross-project learning pipelines', 'Compliance audit generators', 'Threat intelligence workflows', 'Architecture migration plans'],
+    headline: 'Everything in Creator + Depth',
+    benefitSummary: 'Premium artifacts, cross-module orchestration, larger memory domains, batch execution, audit views, reasoning summaries, and priority routing.',
     capabilityHighlights: [
-      '16 meta-engines (up from 8 in Creator)',
-      '70+ Crown Jewels (up from 27)',
-      'Zero-day attack detection',
+      'Premium Artifact Store (Architect catalog)',
       'Cross-module orchestration',
-      'Dream-state creative synthesis',
-      'Cascade failure prevention',
-      'Intelligent cost arbitrage',
-      'Auto-generate compliance reports',
+      'Larger memory + project domains',
+      'Higher automation + batch execution',
+      'Audit views + change summaries',
+      'Reasoning summaries',
+      'Priority Nexus routing + fallback',
+    ],
+    doesNotInclude: [
+      'Crown Jewels that expose the moat',
+      'Internal module execution access',
     ],
   },
   {
@@ -101,21 +102,23 @@ const TIERS = [
     icon: Building2,
     gradient: 'from-amber-500 to-orange-500',
     bgGlow: 'bg-amber-500/5',
-    cta: 'Contact Sales',
+    cta: 'Subscribe — $99/mo',
     popular: false,
-    headline: 'Everything in Architect + Full Sovereignty',
-    benefitSummary: 'All Architect capabilities plus all 24 meta-engines, source code access, air-gapped deployment, and SLA guarantees.',
-    pipelineCount: 60,
-    templateExamples: ['Air-gapped deployment configs', 'Multi-tenant isolation templates', 'Federated identity workflows', 'Enterprise governance policies'],
+    headline: 'Everything in Architect + Governance',
+    benefitSummary: 'Organization workspaces, compliance exports, advanced governance policies, dedicated memory partitions, and SLA-aware routing controls.',
     capabilityHighlights: [
-      'All 24 meta-engines (up from 16 in Architect)',
-      'All 200+ templates across every tier',
-      'Multi-tenant memory isolation',
-      'Sovereign identity federation',
-      'Enterprise threat intel network',
-      'SLA-backed delivery guarantees',
-      'Org-wide cost governance',
-      'Cross-deployment observability',
+      'Org workspaces + roles',
+      'Higher execution ceilings',
+      'Compliance + audit exports',
+      'Advanced governance policies',
+      'Dedicated memory partitions',
+      'SLA-aware Nexus controls',
+      'Provider budget pinning',
+      'Dedicated support channel',
+    ],
+    doesNotInclude: [
+      'CMPSBL-internal Crown Jewels',
+      'Recursive improvement internals',
     ],
   },
 ];
@@ -159,8 +162,6 @@ function HorizontalScroll({ children, className = '' }: { children: React.ReactN
 
 // ── Tier Benefit Card (mobile-first) ──
 function TierBenefitCard({ tier }: { tier: typeof TIERS[number] }) {
-  const capabilities = getCapabilitiesByTier(tier.key === 'free' ? 'creator' : tier.key as 'creator' | 'architect' | 'enterprise');
-  const crownJewels = tier.key === 'free' ? [] : getCrownJewelsByTier(tier.key as 'creator' | 'architect' | 'enterprise');
   const Icon = tier.icon;
 
   return (
@@ -184,11 +185,11 @@ function TierBenefitCard({ tier }: { tier: typeof TIERS[number] }) {
           <h4 className="font-semibold text-sm sm:text-base text-foreground leading-tight">{tier.headline}</h4>
           <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{tier.benefitSummary}</p>
 
-          {/* Key Capabilities */}
+          {/* What You Get */}
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wider">
               <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary" />
-              Key Capabilities
+              What You Get
             </div>
             <ul className="space-y-1 sm:space-y-1.5">
               {tier.capabilityHighlights.map((cap, i) => (
@@ -200,50 +201,23 @@ function TierBenefitCard({ tier }: { tier: typeof TIERS[number] }) {
             </ul>
           </div>
 
-          {/* Crown Jewels */}
-          {crownJewels.length > 0 && (
+          {/* What's Not Included */}
+          {tier.doesNotInclude && tier.doesNotInclude.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                <Gem className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-500" />
-                Crown Jewels ({crownJewels.length})
+                <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-muted-foreground/60" />
+                Not Included
               </div>
-              <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                {crownJewels.map((cj) => (
-                  <Badge key={cj.name} variant="outline" className="text-[9px] sm:text-[10px] border-amber-500/30 text-amber-600 dark:text-amber-400">
-                    {cj.name}
-                  </Badge>
+              <ul className="space-y-1">
+                {tier.doesNotInclude.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs sm:text-sm">
+                    <XCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-muted-foreground/40 mt-0.5 shrink-0" />
+                    <span className="text-muted-foreground/60">{item}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           )}
-
-          {/* Pipelines */}
-          {tier.pipelineCount > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                <Workflow className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-violet-500" />
-                Crystallized Pipelines
-              </div>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                {tier.pipelineCount}+ pre-built, proven cross-module workflows ready to deploy
-              </p>
-            </div>
-          )}
-
-          {/* Templates */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-cyan-500" />
-              Templates Included
-            </div>
-            <div className="flex flex-wrap gap-1 sm:gap-1.5">
-              {tier.templateExamples.map((t, i) => (
-                <Badge key={i} variant="secondary" className="text-[9px] sm:text-[10px]">
-                  {t}
-                </Badge>
-              ))}
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>
@@ -253,7 +227,7 @@ function TierBenefitCard({ tier }: { tier: typeof TIERS[number] }) {
 export default function SubstrateLicensing() {
   const [checkingOut, setCheckingOut] = useState<string | null>(null);
 
-  const handleCheckout = async (tier: 'creator' | 'architect') => {
+  const handleCheckout = async (tier: 'creator' | 'architect' | 'enterprise') => {
     setCheckingOut(tier);
     try {
       const { data, error } = await supabase.functions.invoke('tier-checkout', {
@@ -273,8 +247,8 @@ export default function SubstrateLicensing() {
   const handleCta = (key: string) => {
     if (key === 'free') {
       window.location.href = '/start-here';
-    } else if (key === 'creator' || key === 'architect') {
-      handleCheckout(key);
+    } else if (key === 'creator' || key === 'architect' || key === 'enterprise') {
+      handleCheckout(key as 'creator' | 'architect' | 'enterprise');
     } else {
       window.location.href = `mailto:${CONTACT_EMAIL}?subject=Enterprise%20Inquiry`;
     }
@@ -290,8 +264,8 @@ export default function SubstrateLicensing() {
     <>
       <SEO
         title="Pricing | CMPSBL — Cognitive Infrastructure"
-        description="Autonomous capabilities that predict, protect, and optimize. Free to start, Creator at $49/mo, Architect at $149/mo. See what you unlock at each tier."
-        keywords={["CMPSBL pricing", "cognitive infrastructure", "AI substrate", "Creator tier", "Architect tier", "Crown Jewels"]}
+        description="Adoptable pricing for the CMPSBL World Engine. Free to build, $9/mo Creator, $19/mo Architect, $99/mo Enterprise. Compose intelligence — don't control the engine."
+        keywords={["CMPSBL pricing", "cognitive infrastructure", "AI substrate", "Creator tier", "Architect tier"]}
       />
 
       <PublicNav />
@@ -304,20 +278,25 @@ export default function SubstrateLicensing() {
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="outline" className="mb-4 sm:mb-6 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm border-primary/30">
                 <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 inline text-amber-500" />
-                480+ Capabilities · 125+ Crown Jewels · 60+ Pipelines · 200+ Templates
+                Adoptable Pricing · Build Real Things for Free
               </Badge>
 
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-4 sm:mb-6">
                 <span className="bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-                  Intelligence That Works While You Don't
+                  Compose Intelligence.
+                </span>
+                <br />
+                <span className="text-muted-foreground text-2xl sm:text-3xl md:text-4xl">
+                  Don't Control the Engine.
                 </span>
               </h1>
 
               <p className="text-base sm:text-xl text-muted-foreground mb-2 sm:mb-3">
-                Autonomous capabilities that predict failures, prevent attacks, and optimize costs — <strong className="text-foreground">before you even ask</strong>.
+                Build on the CMPSBL World Engine — <strong className="text-foreground">not as it</strong>.
+                Free users build real things. Paid tiers unlock more power.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground">
-                See what you unlock at each tier, then choose your plan below.
+                No gimmicks. No crippled free tier. Upgrade when you need more.
               </p>
             </div>
           </div>
@@ -327,9 +306,9 @@ export default function SubstrateLicensing() {
         <section className="py-10 sm:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-6 sm:mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">What You Unlock at Each Tier</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">What You Get at Each Tier</h2>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Capabilities, crystallized pipelines, and templates — all included with your subscription.
+                Every tier is cumulative. Free is real. Paid tiers add more power, not permissions you should've had.
               </p>
             </div>
 
@@ -347,29 +326,10 @@ export default function SubstrateLicensing() {
               </HorizontalScroll>
             </div>
 
-            {/* Scarcity hint */}
+            {/* Crown Jewels notice */}
             <p className="text-center text-[10px] sm:text-xs text-muted-foreground/60 mt-6 sm:mt-8 italic">
               Not all Crown Jewels are released to the public. Some capabilities remain internal to preserve system integrity.
             </p>
-          </div>
-        </section>
-
-        {/* ═══ Stats Bar ═══ */}
-        <section className="py-6 sm:py-8 border-y border-border/30">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 md:gap-16 text-center max-w-2xl sm:max-w-none mx-auto">
-              {[
-                { value: '480+', label: 'Capabilities' },
-                { value: '125+', label: 'Crown Jewels' },
-                { value: '60+', label: 'Crystallized Pipelines' },
-                { value: '21', label: 'Modules' },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">{stat.value}</div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">{stat.label}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -377,9 +337,9 @@ export default function SubstrateLicensing() {
         <section className="py-10 sm:py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-6 sm:mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Simple, Unified Pricing</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Simple, Fair Pricing</h2>
               <p className="text-sm sm:text-base text-muted-foreground">
-                One subscription. Everything at that tier included. No engine add-ons, no SDK fees.
+                One subscription. Everything at that tier included. No surprise fees.
               </p>
             </div>
 
@@ -411,20 +371,20 @@ export default function SubstrateLicensing() {
           </div>
         </section>
 
-        {/* ═══ No Hidden Fees ═══ */}
+        {/* ═══ Builder Isolation ═══ */}
         <section className="py-10 sm:py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-6 sm:mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">No Hidden Fees</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Builder Isolation</h2>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Every tier includes full access to capabilities, pipelines, and templates at that level.
+                You compose intelligence. You don't control the engine.
               </p>
             </div>
             <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
               {[
-                { icon: Zap, title: 'Tiered Engine Access', desc: 'Free gets 30 engines + 1 meta-engine. Creator unlocks all 76 engines + 8 meta-engines. Architect gets 16 meta-engines. Enterprise gets all 24. Each tier includes everything below.' },
-                { icon: Shield, title: 'SDK & API Bundled', desc: 'Full API access ships with Creator and above. No developer license required.' },
-                { icon: Sparkles, title: 'Pipelines & Templates', desc: 'All crystallized pipelines and templates at your tier level. No per-item fees.' },
+                { icon: Shield, title: 'Capability-Scoped Tokens', desc: 'Every run is scoped to your tier, project, and capability. No cross-project bleed.' },
+                { icon: Lock, title: 'Per-Project Namespaces', desc: 'Hard isolation between projects. No memory leaks across boundaries.' },
+                { icon: Zap, title: 'Governor-Enforced Boundaries', desc: 'All runs pass policy checks. Internal modules are never directly invocable.' },
               ].map((item, i) => {
                 const ItemIcon = item.icon;
                 return (
@@ -449,12 +409,12 @@ export default function SubstrateLicensing() {
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Frequently Asked</h2>
             <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4">
               {[
-                { q: 'What are Crown Jewels?', a: 'Crown Jewels are our 125+ highest-value capabilities across three discovery waves — each one represents a breakthrough in autonomous intelligence that no competitor offers. 27 are available at Creator, 43 more at Architect, and 35+ more at Enterprise, with additional architecture-class jewels reserved internally.' },
-                { q: 'Are all engines available at every tier?', a: 'Free includes 30 core engines + 1 meta-engine (Cognitive Mesh). Creator unlocks all 76 base engines plus 8 meta-engines. Architect includes everything in Creator plus 16 meta-engines. Enterprise includes everything in Architect plus all 24 meta-engines. The 9 recursive self-improvement meta-engines are CMPSBL-internal only.' },
-                { q: 'What are crystallized pipelines?', a: 'Pipelines discovered by the Intent Mesh that proved valuable and were permanently saved as reusable cross-module workflows.' },
-                { q: 'Do I need a separate developer license?', a: 'No. SDK and API access are included in Creator and Architect tiers.' },
+                { q: 'Is the free tier actually useful?', a: 'Yes. Free users can build projects, run capabilities, use templates, and save outputs. It\'s not a trial — it\'s a permanent tier for learning and prototyping.' },
+                { q: 'What are Crown Jewels?', a: 'Our highest-value sealed capabilities. Some are available at paid tiers. Others remain internal to preserve system integrity. You experience the power — you don\'t see the blueprint.' },
+                { q: 'What\'s the difference between Creator and Architect?', a: 'Creator ($9/mo) adds executable capabilities, private memory, and light automation. Architect ($19/mo) adds cross-module orchestration, batch execution, audit views, and priority routing. Most serious builders land at Architect.' },
                 { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. Changes take effect at the next billing cycle.' },
-                { q: 'Is there a free trial?', a: 'The Free tier is permanently free with full building capabilities. Upgrade when you need autonomous intelligence.' },
+                { q: 'What does "Builder Isolation" mean?', a: 'Your projects run ON the World Engine through templates, capabilities, and pipelines. You never have direct access to internal systems like CLM, CORTEX, or GOVERNOR. This protects both you and the platform.' },
+                { q: 'Is Enterprise self-serve?', a: 'Yes, $99/mo Enterprise is self-serve. For dedicated instances, custom compliance, or SOC2 requirements, contact us for custom pricing.' },
               ].map((faq, i) => (
                 <Card key={i} className="bg-card/50">
                   <CardContent className="p-4 sm:p-5">
@@ -471,9 +431,9 @@ export default function SubstrateLicensing() {
         <section className="py-10 sm:py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-lg mx-auto text-center space-y-3 sm:space-y-4">
-              <h2 className="text-xl sm:text-2xl font-bold">Enterprise or Questions?</h2>
+              <h2 className="text-xl sm:text-2xl font-bold">Custom Enterprise or Questions?</h2>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Reach out for custom pricing, strategic partnerships, or research licensing.
+                Reach out for dedicated instances, strategic partnerships, or custom compliance.
               </p>
               <div className="flex flex-col gap-3 justify-center">
                 <Button asChild size="lg" className="gap-2 w-full sm:w-auto sm:mx-auto">
@@ -541,9 +501,6 @@ function PricingCard({
             <span className="text-2xl sm:text-3xl font-bold">{price}</span>
             {tier.amount !== null && tier.amount > 0 && (
               <span className="text-muted-foreground text-xs sm:text-sm">/mo</span>
-            )}
-            {tier.amount === null && (
-              <span className="text-muted-foreground text-xs sm:text-sm block">Contact us</span>
             )}
           </div>
 
