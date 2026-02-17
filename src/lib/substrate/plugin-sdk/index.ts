@@ -12,7 +12,7 @@ export interface PluginManifest {
   version: string;
   author: string;
   description: string;
-  requiredTier: 'free' | 'builder' | 'pro' | 'enterprise';
+  requiredTier: 'free' | 'creator' | 'architect' | 'enterprise';
   permissions: PluginPermission[];
   capabilities: string[];
   engines: string[];

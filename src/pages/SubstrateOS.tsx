@@ -89,7 +89,7 @@ const TIER_CONFIG: Record<SubstrateTier, {
     bgColor: 'bg-cyan-500/10',
     textColor: 'text-cyan-400',
     icon: Star,
-    price: '$49/mo',
+    price: '$9/mo',
   },
   architect: {
     label: 'ARCHITECT',
@@ -98,7 +98,7 @@ const TIER_CONFIG: Record<SubstrateTier, {
     bgColor: 'bg-fuchsia-500/10',
     textColor: 'text-fuchsia-400',
     icon: Rocket,
-    price: '$149/mo',
+    price: '$19/mo',
   },
   cmpsbl: {
     label: 'CMPSBL',
@@ -160,7 +160,6 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Rocket,
       tier: 'architect',
       tabs: [
-        { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & orchestration', tier: 'architect' },
         { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & orchestration', tier: 'architect' },
         { id: 'codeagent', label: 'ENCODE', icon: Bot, color: 'fuchsia', description: 'DECODE → ENCODE pipeline', tier: 'architect' },
         { id: 'modules', label: 'Modules', icon: Cpu, color: 'orange', description: 'Core · Ripple · Access', tier: 'architect' },
