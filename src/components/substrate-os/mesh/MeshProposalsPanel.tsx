@@ -41,7 +41,7 @@ const METHOD_ICONS: Record<string, React.ReactNode> = {
   intent_learning: <Brain className="w-3 h-3" />,
 };
 
-export function MeshProposalsPanel() {
+export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: () => void }) {
   const [proposals, setProposals] = useState<ModuleProposal[]>([]);
   const [moduleStates, setModuleStates] = useState<ModuleDiscoveryState[]>([]);
   const [loading, setLoading] = useState(false);
@@ -107,8 +107,9 @@ export function MeshProposalsPanel() {
       const success = await approveProposal(proposal.id);
       if (success) {
         toast.success(`✅ Crystallized: ${proposal.proposedResolverId} → saved as permanent pipeline`);
-        // Immediately remove from local state for instant UI feedback
         setProposals(prev => prev.filter(p => p.id !== proposal.id));
+        // Notify parent to refresh pipelines list
+        onPipelineChange?.();
       } else {
         toast.error('Proposal not found or already processed');
       }
