@@ -1,6 +1,6 @@
 /**
  * Crown Jewel Registry — Canonical Source of Truth
- * v10.5.4 ARCHITECT — Tier Split & Black-Box Enforcement
+ * v10.6.0 ARCHITECT — Tier Split & Black-Box Enforcement (Wave 1 + 2 + 3)
  * 
  * Crown Jewels are split into TWO categories:
  * 
@@ -109,6 +109,22 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'cj2-dream-counterfactual-engine',
   'cj2-cortex-attention-allocation',
   'cj2-system-entropy-reversal',
+
+  // v10.6.0 — Wave 3 Architecture Crown Jewels (14 new)
+  'cj3-cortex-strategic-foresight',
+  'cj3-brain-causal-inference-engine',
+  'cj3-dream-emergent-property-detector',
+  'cj3-system-self-healing-topology',
+  'cj3-defense-threat-graph-reasoning',
+  'cj3-cortex-resource-arbitration',
+  'cj3-brain-concept-formation',
+  'cj3-encode-semantic-invariant-checker',
+  'cj3-core-autonomy-gradient-engine',
+  'cj3-modernizer-legacy-comprehension',
+  'cj3-dream-collective-unconscious',
+  'cj3-cortex-cognitive-scheduling',
+  'cj3-system-graceful-degradation',
+  'cj3-vision-emergent-signal-detector',
 ]);
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -168,35 +184,67 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
 
   // v10.5.5 — Wave 2 Experience Crown Jewels (28 new)
   // ── Architect Tier ($149) ──
-  'cj2-nexus-provider-trust-scoring',    // Provider trust scoring
-  'cj2-vision-anomaly-precognition',     // Anomaly precognition
-  'cj2-memory-selective-amnesia',        // Selective memory amnesia
-  'cj2-relay-adaptive-delivery',         // Adaptive delivery optimization
-  'cj2-audit-causal-attribution',        // Causal attribution engine
-  'cj2-defense-zero-day-synthesis',      // Zero-day attack synthesis
-  'cj2-identity-trust-decay-model',      // Trust decay modeling
-  'cj2-cortex-multi-objective-optimizer', // Multi-objective optimizer
-  'cj2-brain-knowledge-distillation',    // Knowledge distillation engine
-  'cj2-dream-lucid-intervention',        // Lucid dream intervention
-  'cj2-encode-semantic-debt-detector',   // Semantic debt detector
-  'cj2-decode-empathic-calibration',     // Empathic calibration engine
-  'cj2-economy-dynamic-pricing',         // Dynamic pricing engine
-  'cj2-sandbox-chaos-orchestrator',      // Chaos orchestration engine
-  'cj2-vision-cognitive-horizon-scanner', // Cognitive horizon scanner
-  'cj2-access-entitlement-reasoning',    // Entitlement reasoning engine
-  'cj2-nerve-adaptive-circuit-topology', // Adaptive circuit topology
-  'cj2-inclusive-cognitive-accessibility', // Cognitive accessibility engine
+  'cj2-nexus-provider-trust-scoring',
+  'cj2-vision-anomaly-precognition',
+  'cj2-memory-selective-amnesia',
+  'cj2-relay-adaptive-delivery',
+  'cj2-audit-causal-attribution',
+  'cj2-defense-zero-day-synthesis',
+  'cj2-identity-trust-decay-model',
+  'cj2-cortex-multi-objective-optimizer',
+  'cj2-brain-knowledge-distillation',
+  'cj2-dream-lucid-intervention',
+  'cj2-encode-semantic-debt-detector',
+  'cj2-decode-empathic-calibration',
+  'cj2-economy-dynamic-pricing',
+  'cj2-sandbox-chaos-orchestrator',
+  'cj2-vision-cognitive-horizon-scanner',
+  'cj2-access-entitlement-reasoning',
+  'cj2-nerve-adaptive-circuit-topology',
+  'cj2-inclusive-cognitive-accessibility',
   // ── Creator Tier ($49) ──
-  'cj2-ripple-semantic-event-routing',   // Semantic event routing
-  'cj2-decode-contextual-humor',         // Contextual humor engine
-  'cj2-brain-memory-consolidation',      // Memory consolidation engine
-  'cj2-defense-reputation-scoring',      // Reputation scoring engine
-  'cj2-relay-webhook-intelligence',      // Webhook intelligence
-  'cj2-encode-test-oracle',              // Test oracle engine
-  'cj2-nexus-latency-prediction',        // Latency prediction engine
-  'cj2-economy-usage-forecasting',       // Usage forecasting engine
-  'cj2-atlas-capability-recommendation', // Capability recommendation
-  'cj2-medic-predictive-healing',        // Predictive healing engine
+  'cj2-ripple-semantic-event-routing',
+  'cj2-decode-contextual-humor',
+  'cj2-brain-memory-consolidation',
+  'cj2-defense-reputation-scoring',
+  'cj2-relay-webhook-intelligence',
+  'cj2-encode-test-oracle',
+  'cj2-nexus-latency-prediction',
+  'cj2-economy-usage-forecasting',
+  'cj2-atlas-capability-recommendation',
+  'cj2-medic-predictive-healing',
+
+  // v10.6.0 — Wave 3 Experience Crown Jewels (28 new)
+  // ── Architect Tier ($149) ──
+  'cj3-decode-cognitive-fatigue',
+  'cj3-system-phantom-load',
+  'cj3-dream-cross-tenant-patterns',
+  'cj3-defense-blast-radius',
+  'cj3-decode-intent-disambiguation',
+  'cj3-audit-regulatory-radar',
+  'cj3-memory-provenance-tracking',
+  'cj3-nexus-provider-arbitrage',
+  'cj3-vision-behavioral-drift',
+  'cj3-cortex-pipeline-fusion',
+  'cj3-access-privilege-escalation',
+  'cj3-nerve-cognitive-load-shedding',
+  'cj3-inclusive-language-guard',
+  'cj3-sandbox-escape-detection',
+  'cj3-brain-knowledge-graph-healing',
+  'cj3-economy-revenue-impact',
+  'cj3-dream-replay-analysis',
+  'cj3-encode-mutation-impact',
+  // ── Creator Tier ($49) ──
+  'cj3-encode-drift-correction',
+  'cj3-decode-sentiment-routing',
+  'cj3-brain-proactive-cache',
+  'cj3-nexus-intelligent-retry',
+  'cj3-encode-schema-evolution',
+  'cj3-defense-anomaly-fingerprint',
+  'cj3-economy-cost-per-outcome',
+  'cj3-relay-delivery-confirmation',
+  'cj3-integration-dependency-radar',
+  'cj3-brain-context-window-optimizer',
 ]);
 
 /** Map experience jewels to their minimum tier */
@@ -248,7 +296,7 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
   'cj-decode-intent-evolution': 'creator',
   'cj-ripple-event-dedup': 'creator',
   'cj-economy-value-attribution': 'creator',
-  // v10.5.5 — Wave 2 Experience Crown Jewels
+  // v10.5.5 — Wave 2
   'cj2-nexus-provider-trust-scoring': 'architect',
   'cj2-vision-anomaly-precognition': 'architect',
   'cj2-memory-selective-amnesia': 'architect',
@@ -277,6 +325,35 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
   'cj2-economy-usage-forecasting': 'creator',
   'cj2-atlas-capability-recommendation': 'creator',
   'cj2-medic-predictive-healing': 'creator',
+  // v10.6.0 — Wave 3
+  'cj3-decode-cognitive-fatigue': 'architect',
+  'cj3-system-phantom-load': 'architect',
+  'cj3-dream-cross-tenant-patterns': 'architect',
+  'cj3-defense-blast-radius': 'architect',
+  'cj3-decode-intent-disambiguation': 'architect',
+  'cj3-audit-regulatory-radar': 'architect',
+  'cj3-memory-provenance-tracking': 'architect',
+  'cj3-nexus-provider-arbitrage': 'architect',
+  'cj3-vision-behavioral-drift': 'architect',
+  'cj3-cortex-pipeline-fusion': 'architect',
+  'cj3-access-privilege-escalation': 'architect',
+  'cj3-nerve-cognitive-load-shedding': 'architect',
+  'cj3-inclusive-language-guard': 'architect',
+  'cj3-sandbox-escape-detection': 'architect',
+  'cj3-brain-knowledge-graph-healing': 'architect',
+  'cj3-economy-revenue-impact': 'architect',
+  'cj3-dream-replay-analysis': 'architect',
+  'cj3-encode-mutation-impact': 'architect',
+  'cj3-encode-drift-correction': 'creator',
+  'cj3-decode-sentiment-routing': 'creator',
+  'cj3-brain-proactive-cache': 'creator',
+  'cj3-nexus-intelligent-retry': 'creator',
+  'cj3-encode-schema-evolution': 'creator',
+  'cj3-defense-anomaly-fingerprint': 'creator',
+  'cj3-economy-cost-per-outcome': 'creator',
+  'cj3-relay-delivery-confirmation': 'creator',
+  'cj3-integration-dependency-radar': 'creator',
+  'cj3-brain-context-window-optimizer': 'creator',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -373,6 +450,21 @@ const ARCHITECTURE_PATTERNS = [
   'counterfactual',
   'attention-allocation',
   'entropy-reversal',
+  // v10.6.0 wave 3 architecture patterns
+  'strategic-foresight',
+  'causal-inference',
+  'emergent-property',
+  'self-healing-topology',
+  'threat-graph',
+  'resource-arbitration',
+  'concept-formation',
+  'semantic-invariant',
+  'autonomy-gradient',
+  'legacy-comprehension',
+  'collective-unconscious',
+  'cognitive-scheduling',
+  'graceful-degradation',
+  'emergent-signal',
 ];
 
 /** Extended check including keyword patterns — architecture only */
