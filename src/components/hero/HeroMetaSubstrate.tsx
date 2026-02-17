@@ -5,6 +5,7 @@
  */
 
 import React, { useEffect, useState, useRef, useMemo } from "react";
+import clocklessHeroLogo from "@/assets/clockless-hero-logo.png";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -200,29 +201,19 @@ export function HeroMetaSubstrate() {
               </span>
             </motion.div>
             
-            {/* CLOCKLESS — massive, clean */}
-            <motion.h1 
-              className="text-[4.5rem] sm:text-8xl md:text-9xl lg:text-[10rem] font-black tracking-[-0.05em] leading-[0.9] mb-6 sm:mb-8"
+            {/* CLOCKLESS — logo image */}
+            <motion.div 
+              className="mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span 
-                className="inline-block"
-                style={{
-                  backgroundImage: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--neon-purple)) 50%, hsl(var(--primary)) 100%)",
-                  backgroundSize: "200% auto",
-                  animation: "gradient-shift 8s ease-in-out infinite",
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
-                  WebkitTextStroke: "0px transparent",
-                  padding: "0 0.15em 0.05em 0",
-                }}
-              >
-                Clockless
-              </span>
-            </motion.h1>
+              <img 
+                src={clocklessHeroLogo} 
+                alt="Clockless" 
+                className="h-[80px] sm:h-[120px] md:h-[150px] lg:h-[200px] w-auto max-w-full object-contain"
+              />
+            </motion.div>
 
             {/* Tagline block — two lines, centered on mobile */}
             <motion.div
