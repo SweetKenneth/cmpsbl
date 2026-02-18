@@ -7,9 +7,13 @@ import { runShadowProbe } from './probe';
 import { recordImmuneMetrics } from '@/lib/immune/recordMetrics';
 import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
 import { isShadowMeshEnabled } from '@/lib/system/flags';
+import { registerShadowStubs } from './stubs';
 
 export async function runShadowBatch() {
   if (!(await isShadowMeshEnabled())) return;
+
+  // Ensure stub executors are registered before probing
+  registerShadowStubs();
 
   for (const executor of PILOT_EXECUTORS) {
     const report = await runShadowProbe(executor);

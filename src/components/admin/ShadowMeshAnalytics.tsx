@@ -14,9 +14,12 @@ export function ShadowMeshAnalytics() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getShadowMeshAnalytics()
-      .then(setData)
-      .finally(() => setLoading(false));
+    const load = () => {
+      getShadowMeshAnalytics().then(setData).finally(() => setLoading(false));
+    };
+    load();
+    const interval = setInterval(load, 30_000); // auto-refresh every 30s
+    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
