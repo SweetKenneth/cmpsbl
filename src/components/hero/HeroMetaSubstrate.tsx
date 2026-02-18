@@ -202,7 +202,7 @@ export function HeroMetaSubstrate() {
             
             {/* CLOCKLESS — massive, clean */}
             <motion.h1 
-              className="text-[4.5rem] sm:text-8xl md:text-9xl lg:text-[10rem] font-black tracking-[-0.05em] leading-[0.9] mb-6 sm:mb-8"
+              className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7rem] font-black tracking-[-0.05em] leading-[0.9] mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
