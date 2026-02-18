@@ -25,7 +25,7 @@ export interface SheddingConfig {
   checkInterval: number;
 }
 
-// Module priority classifications
+// Module priority classifications — all 21 modules
 const MODULE_PRIORITIES: Record<string, ModulePriority> = {
   CORE: 'essential',
   BRAIN: 'essential',
@@ -36,9 +36,16 @@ const MODULE_PRIORITIES: Record<string, ModulePriority> = {
   VISION: 'important',
   DECODE: 'important',
   RIPPLE: 'important',
+  IDENTITY: 'important',
   MODERNIZER: 'standard',
   INTEGRATION: 'standard',
   CORTEX: 'standard',
+  MEMORY: 'standard',
+  RELAY: 'standard',
+  AUDIT: 'standard',
+  ECONOMY: 'standard',
+  ENCODE: 'standard',
+  SANDBOX: 'deferrable',
   INCLUSIVE: 'deferrable',
   DREAM: 'deferrable',
 };

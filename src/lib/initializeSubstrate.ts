@@ -64,6 +64,19 @@ export async function initializeSubstrate(): Promise<void> {
     }
     
     console.log('─────────────────────────────────────────');
+    
+    // Initialize subsystem health registry (Intent Mesh, AutoBlog, SEBA, Shadow Mesh)
+    try {
+      const { initSubsystemHealth } = await import('./substrate/subsystem-health');
+      initSubsystemHealth();
+    } catch { /* graceful — subsystem health is additive */ }
+    
+    // Start automatic circuit recovery engine
+    try {
+      const { startAutoRecovery } = await import('./substrate/core-circuit-recovery');
+      startAutoRecovery();
+    } catch { /* graceful — recovery is additive */ }
+    
     initialized = true;
   } catch (error) {
     console.error('❌ Substrate initialization failed:', error);
