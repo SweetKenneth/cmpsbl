@@ -58,6 +58,8 @@ import { AnalyticsTab } from '@/components/substrate-os/AnalyticsTab';
 import { GovernorSection } from '@/components/substrate-os/GovernorSection';
 import { AuditTab } from '@/components/substrate-os/AuditTab';
 import { SoundingBoard } from '@/components/governance/SoundingBoard';
+import { ShadowMeshToggle } from '@/components/admin/ShadowMeshToggle';
+import { ShadowMeshAnalytics } from '@/components/admin/ShadowMeshAnalytics';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -185,6 +187,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'cmpsbl' as SubstrateTier }] : []),
         { id: 'sounding', label: 'Sounding Board', icon: MessageSquare, color: 'indigo', description: 'Module advisory feed', tier: 'cmpsbl' },
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Administrative controls', tier: 'cmpsbl' },
+        { id: 'shadow-mesh', label: 'Shadow Mesh', icon: Shield, color: 'red', description: 'Immune wrapper & probing', tier: 'cmpsbl' },
         { id: 'audit', label: 'Audit', icon: Shield, color: 'cyan', description: 'Production readiness gate', tier: 'cmpsbl' },
       ],
     },
@@ -892,6 +895,24 @@ export default function SubstrateOS() {
             {activeTab === 'governor' && hasAccessToCurrentTab && (
               <motion.main key="governor" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <GovernorSection enabled={isGovernor} />
+              </motion.main>
+            )}
+
+            {activeTab === 'shadow-mesh' && hasAccessToCurrentTab && (
+              <motion.main key="shadow-mesh" className="container mx-auto px-4 py-6 max-w-4xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <div className="space-y-6">
+                  <div>
+                    <h1 className="text-2xl font-bold flex items-center gap-2">
+                      <Shield className="w-6 h-6 text-primary" />
+                      Shadow Mesh Control
+                    </h1>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Immune wrapper and adversarial probing for pilot executors.
+                    </p>
+                  </div>
+                  <ShadowMeshToggle />
+                  <ShadowMeshAnalytics />
+                </div>
               </motion.main>
             )}
 
