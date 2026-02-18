@@ -77,6 +77,7 @@ export const adminNavConfig: NavGroup[] = [
     id: "system",
     title: "System",
     items: [
+      { id: "shadow-mesh", label: "Shadow Mesh", path: "/admin/shadow-mesh", icon: Shield, isNew: true },
       { id: "proof", label: "Proof Mode", path: "/proof", icon: Shield },
       { id: "demo", label: "Demo", path: "/demo", icon: Activity },
       { id: "audit", label: "Audit Trail", path: "/audit", icon: ScrollText },
