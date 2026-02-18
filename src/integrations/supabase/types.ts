@@ -5764,6 +5764,36 @@ export type Database = {
         }
         Relationships: []
       }
+      immune_metrics: {
+        Row: {
+          escalations: number
+          executor: string
+          id: string
+          repair_successes: number
+          run_at: string
+          safe_failures: number
+          total_runs: number
+        }
+        Insert: {
+          escalations?: number
+          executor: string
+          id?: string
+          repair_successes?: number
+          run_at?: string
+          safe_failures?: number
+          total_runs?: number
+        }
+        Update: {
+          escalations?: number
+          executor?: string
+          id?: string
+          repair_successes?: number
+          run_at?: string
+          safe_failures?: number
+          total_runs?: number
+        }
+        Relationships: []
+      }
       integration_audit_log: {
         Row: {
           adapter_id: string | null
