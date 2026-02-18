@@ -193,7 +193,7 @@ export function HeroMetaSubstrate() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/50 backdrop-blur-md mb-8 sm:mb-10"
             >
               <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-semibold text-muted-foreground tracking-wide">powered by the CMPSBL World Engine</span>
+              <span className="text-xs font-semibold text-muted-foreground tracking-wide">A Cognitive Reality System · powered by the CMPSBL Substrate</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/50">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>
@@ -236,7 +236,7 @@ export function HeroMetaSubstrate() {
               </p>
               <div className="mt-1 sm:mt-2 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-none min-h-[1.2em]">
                 <TypedText 
-                  texts={["dream.", "adapt.", "evolve.", "remember.", "compose."]}
+                  texts={["persist.", "evolve.", "coordinate.", "compound.", "dream."]}
                   gradientColors={[
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
@@ -255,12 +255,12 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.4 }}
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 leading-relaxed"
             >
-              A persistent, clockless world engine that gives your AI{' '}
-              <span className="text-foreground font-semibold">persistent memory</span>,{' '}
-              <span className="text-foreground font-semibold">self-learning</span>, and{' '}
-              <span className="text-foreground font-semibold">multi-provider routing</span>{' '}
-              — out of the box. 21 integrated modules. One engine.{' '}
-              <span className="text-emerald-500 font-bold">Start free, scale to enterprise.</span>
+              Clockless is a governed cognitive reality where intelligence{' '}
+              <span className="text-foreground font-semibold">persists</span>,{' '}
+              <span className="text-foreground font-semibold">evolves autonomously</span>,{' '}
+              <span className="text-foreground font-semibold">coordinates systems</span>, and{' '}
+              <span className="text-foreground font-semibold">compounds value</span>{' '}
+              — without resets.
             </motion.p>
             
             {/* CTAs */}

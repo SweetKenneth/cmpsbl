@@ -56,8 +56,8 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
-        title="Clockless — powered by the CMPSBL World Engine"
-        description="Clockless is a persistent world engine powered by the CMPSBL World Engine. Where machines learn to dream, adapt, evolve, and remember. 21 modules, self-learning, multi-provider routing."
+        title="Clockless — A Cognitive Reality System | CMPSBL"
+        description="Clockless is a governed cognitive reality where intelligence persists, evolves autonomously, coordinates systems, and compounds value without resets. Powered by the CMPSBL Substrate."
         canonical="https://cmpsbl.com"
         keywords={['Clockless', 'CMPSBL World Engine', 'cognitive infrastructure', 'persistent memory AI', 'self-learning AI', 'AI memory layer', 'multi-provider routing']}
       />
