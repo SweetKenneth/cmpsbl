@@ -18,7 +18,7 @@ import {
   Brain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { EnginesMembershipHero } from "./EnginesMembershipHero";
+import { MemoryRiver } from "./MemoryRiver";
 
 // ─── Typing Animation ──────────────────────────────────────────
 function TypedText({ texts, gradientColors, className }: { 
@@ -319,14 +319,14 @@ export function HeroMetaSubstrate() {
             </motion.div>
           </motion.div>
           
-          {/* Right column — Engines visualization */}
+          {/* Right column — Memory River visualization */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="order-2 flex items-center justify-center"
           >
-            <EnginesMembershipHero />
+            <MemoryRiver />
           </motion.div>
         </div>
         

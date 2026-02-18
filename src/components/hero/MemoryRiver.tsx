@@ -1,0 +1,292 @@
+/**
+ * Memory River — The anti-chatbot hero visualization
+ * Intelligence that compounds instead of restarting.
+ * 
+ * Particles flow left-to-right using CSS @keyframes for buttery performance.
+ * Dream arcs upward, Defense diverts, Crystallized solidifies.
+ * Mobile-first, DOM-based (no canvas).
+ */
+
+import React, { memo, useMemo, useId } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+
+type ParticleType = "memory" | "dream" | "defense" | "crystallized" | "signal";
+
+const COLORS: Record<ParticleType, string> = {
+  memory: "var(--neon-cyan)",
+  dream: "var(--neon-purple)",
+  defense: "var(--neon-magenta)",
+  crystallized: "var(--primary)",
+  signal: "var(--muted-foreground)",
+};
+
+// ─── CSS Keyframes (injected once) ──────────────────────────────
+const KEYFRAMES_CSS = `
+@keyframes river-flow {
+  0%   { left: -5%; opacity: 0; }
+  5%   { opacity: 0.8; }
+  90%  { opacity: 0.8; }
+  100% { left: 105%; opacity: 0; }
+}
+@keyframes river-dream {
+  0%   { left: -5%; top: 48%; opacity: 0; }
+  5%   { opacity: 0.9; }
+  25%  { top: 25%; }
+  50%  { top: 15%; }
+  75%  { top: 25%; }
+  90%  { opacity: 0.9; }
+  100% { left: 105%; top: 48%; opacity: 0; }
+}
+@keyframes river-defense {
+  0%   { left: -5%; top: 35%; opacity: 0; }
+  5%   { opacity: 0.9; }
+  40%  { top: 35%; }
+  55%  { top: 68%; }
+  70%  { top: 60%; }
+  90%  { opacity: 0.9; top: 50%; }
+  100% { left: 105%; opacity: 0; }
+}
+@keyframes crystal-pulse {
+  0%, 100% { box-shadow: 0 0 12px 2px hsl(var(--primary) / 0.2); }
+  50%      { box-shadow: 0 0 24px 6px hsl(var(--primary) / 0.5); }
+}
+@keyframes river-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+`;
+
+// ─── Style injector ─────────────────────────────────────────────
+function RiverStyles() {
+  return <style dangerouslySetInnerHTML={{ __html: KEYFRAMES_CSS }} />;
+}
+
+// ─── Crystallized Node ──────────────────────────────────────────
+const CrystallizedNode = memo(function CrystallizedNode({
+  label, position, delay,
+}: { label: string; position: number; delay: number }) {
+  return (
+    <motion.div
+      className="absolute flex flex-col items-center gap-1 pointer-events-none z-10"
+      style={{ left: `${position}%`, top: "50%", transform: "translate(-50%, -50%)" }}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div
+        className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-sm rotate-45 border border-primary/50"
+        style={{
+          background: "hsl(var(--primary) / 0.12)",
+          animation: "crystal-pulse 3s ease-in-out infinite",
+        }}
+      />
+      <span className="text-[7px] sm:text-[8px] font-bold text-primary/50 tracking-[0.15em] uppercase whitespace-nowrap mt-0.5">
+        {label}
+      </span>
+    </motion.div>
+  );
+});
+
+// ─── CSS-Animated Particle ──────────────────────────────────────
+const Particle = memo(function Particle({
+  type, delay, row, duration,
+}: { type: ParticleType; delay: number; row: number; duration: number }) {
+  const isSignal = type === "signal";
+  const isDream = type === "dream";
+  const isDefense = type === "defense";
+  
+  const size = isSignal ? 3 : type === "crystallized" ? 8 : 6;
+  const top = 28 + row * 16;
+  const color = `hsl(${COLORS[type]})`;
+
+  const animName = isDream ? "river-dream" : isDefense ? "river-defense" : "river-flow";
+  const glow = isSignal ? "none" : `0 0 ${isDream ? 14 : 10}px 2px ${color}`;
+
+  return (
+    <div
+      className="absolute rounded-full pointer-events-none z-[5]"
+      style={{
+        width: size,
+        height: size,
+        background: color,
+        boxShadow: glow,
+        top: isDream || isDefense ? undefined : `${top}%`,
+        left: "-5%",
+        opacity: 0,
+        animation: `${animName} ${duration}s linear ${delay}s infinite`,
+      }}
+    >
+      {/* Trail line */}
+      {!isSignal && (
+        <div
+          className="absolute top-1/2 right-full -translate-y-1/2 h-[1px] rounded-full"
+          style={{
+            width: isDream ? 24 : isDefense ? 16 : 12,
+            background: `linear-gradient(to left, ${color}, transparent)`,
+            opacity: 0.5,
+          }}
+        />
+      )}
+    </div>
+  );
+});
+
+// ─── River Channel ──────────────────────────────────────────────
+function RiverChannel() {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Gradient band */}
+      <div
+        className="absolute left-0 right-0 top-[18%] bottom-[18%]"
+        style={{
+          background: `linear-gradient(180deg,
+            transparent 0%,
+            hsl(var(--primary) / 0.03) 20%,
+            hsl(var(--primary) / 0.07) 50%,
+            hsl(var(--primary) / 0.03) 80%,
+            transparent 100%
+          )`,
+        }}
+      />
+      {/* Flow lines */}
+      {[30, 46, 62].map((top, i) => (
+        <motion.div
+          key={i}
+          className="absolute left-0 right-0 h-px"
+          style={{
+            top: `${top}%`,
+            background: `linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.08) 15%, hsl(var(--primary) / 0.16) 50%, hsl(var(--primary) / 0.08) 85%, transparent 100%)`,
+          }}
+          animate={{ opacity: [0.3, 0.65, 0.3] }}
+          transition={{ duration: 3.5 + i * 0.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+        />
+      ))}
+      {/* Shimmer sweep */}
+      <div
+        className="absolute top-[30%] bottom-[30%] left-0 right-0 overflow-hidden"
+      >
+        <div
+          className="absolute inset-0 w-[40%] h-full"
+          style={{
+            background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.06), transparent)",
+            animation: "river-shimmer 6s linear infinite",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ─── Main ───────────────────────────────────────────────────────
+export const MemoryRiver = memo(function MemoryRiver() {
+  const particles = useMemo(() => {
+    const w: { id: number; type: ParticleType; delay: number; row: number; duration: number }[] = [];
+    let id = 0;
+    // Signal flow (background)
+    for (let i = 0; i < 12; i++)
+      w.push({ id: id++, type: "signal", delay: i * 0.7, row: i % 3, duration: 4.5 + (i % 3) * 0.5 });
+    // Memory
+    for (let i = 0; i < 6; i++)
+      w.push({ id: id++, type: "memory", delay: 0.2 + i * 1.8, row: i % 3, duration: 6.5 });
+    // Dream arcs
+    w.push({ id: id++, type: "dream", delay: 1, row: 1, duration: 8 });
+    w.push({ id: id++, type: "dream", delay: 5, row: 0, duration: 9 });
+    w.push({ id: id++, type: "dream", delay: 9.5, row: 2, duration: 7.5 });
+    // Defense
+    w.push({ id: id++, type: "defense", delay: 2.5, row: 0, duration: 5.5 });
+    w.push({ id: id++, type: "defense", delay: 7, row: 2, duration: 6 });
+    // Crystallized
+    w.push({ id: id++, type: "crystallized", delay: 1.5, row: 1, duration: 9 });
+    w.push({ id: id++, type: "crystallized", delay: 6, row: 0, duration: 10 });
+    return w;
+  }, []);
+
+  const crystals = useMemo(() => [
+    { label: "SEP-001", position: 24, delay: 2 },
+    { label: "SEP-042", position: 50, delay: 3 },
+    { label: "SEP-077", position: 76, delay: 4 },
+  ], []);
+
+  return (
+    <div className="w-full max-w-xl mx-auto lg:max-w-none">
+      <RiverStyles />
+
+      {/* Tagline */}
+      <motion.p
+        className="text-center text-[9px] sm:text-[10px] text-muted-foreground/35 font-semibold tracking-[0.25em] uppercase mb-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+      >
+        No resets · No forgetting · No clock
+      </motion.p>
+
+      {/* River */}
+      <motion.div
+        className="relative w-full h-32 sm:h-40 md:h-48 lg:h-52 rounded-xl sm:rounded-2xl overflow-hidden border border-border/20 bg-background/30"
+        initial={{ opacity: 0, scaleY: 0.7 }}
+        animate={{ opacity: 1, scaleY: 1 }}
+        transition={{ delay: 0.6, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          boxShadow: "0 0 80px -30px hsl(var(--primary) / 0.12), inset 0 1px 0 hsl(var(--primary) / 0.04)",
+        }}
+      >
+        <RiverChannel />
+        {particles.map((p) => <Particle key={p.id} {...p} />)}
+        {crystals.map((c) => <CrystallizedNode key={c.label} {...c} />)}
+
+        {/* Left origin glow */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-10 sm:w-14 pointer-events-none z-[8]"
+          style={{ background: "linear-gradient(90deg, hsl(var(--primary) / 0.1), transparent)" }}
+        />
+        <motion.div
+          className="absolute left-0.5 top-[30%] bottom-[30%] w-1 rounded-full pointer-events-none z-[9]"
+          style={{ background: "hsl(var(--primary) / 0.35)" }}
+          animate={{ opacity: [0.3, 0.7, 0.3], scaleY: [0.85, 1.15, 0.85] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Right infinity fade */}
+        <div
+          className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 pointer-events-none z-[8]"
+          style={{ background: "linear-gradient(270deg, hsl(var(--background)), transparent)" }}
+        />
+        <motion.span
+          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-muted-foreground/15 text-lg sm:text-2xl font-light pointer-events-none z-[9] select-none"
+          animate={{ opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        >
+          ∞
+        </motion.span>
+      </motion.div>
+
+      {/* Legend */}
+      <motion.div
+        className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-2.5 sm:mt-3.5"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4 }}
+      >
+        {([
+          { type: "memory" as ParticleType, label: "Memory" },
+          { type: "dream" as ParticleType, label: "Dream Cycle" },
+          { type: "defense" as ParticleType, label: "Defense" },
+          { type: "crystallized" as ParticleType, label: "Crystallized" },
+        ]).map(({ type, label }) => (
+          <div key={type} className="flex items-center gap-1.5">
+            <div
+              className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
+              style={{
+                background: `hsl(${COLORS[type]})`,
+                boxShadow: `0 0 6px 1px hsl(${COLORS[type]} / 0.5)`,
+              }}
+            />
+            <span className="text-[8px] sm:text-[10px] text-muted-foreground/45 font-medium tracking-wide">{label}</span>
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+});
