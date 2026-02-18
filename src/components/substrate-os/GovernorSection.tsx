@@ -100,6 +100,46 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
   const liveAuditFeed = useLiveAuditFeed(15);
   const meshToggle = useMeshToggle();
 
+  // Persisted kill switches via system_flags
+  const [killSwitches, setKillSwitches] = useState<Record<string, boolean>>({
+    seba_enabled: false,
+    autoblog_enabled: false,
+    defense_enabled: true,
+  });
+  const [killSwitchesLoading, setKillSwitchesLoading] = useState(true);
+
+  useEffect(() => {
+    if (!enabled) return;
+    supabase
+      .from('system_flags')
+      .select('key, enabled')
+      .in('key', ['seba_enabled', 'autoblog_enabled', 'defense_enabled'])
+      .then(({ data }) => {
+        if (data) {
+          const flags: Record<string, boolean> = {};
+          data.forEach((row: any) => { flags[row.key] = row.enabled; });
+          setKillSwitches(prev => ({ ...prev, ...flags }));
+        }
+        setKillSwitchesLoading(false);
+      });
+  }, [enabled]);
+
+  const toggleKillSwitch = async (key: string) => {
+    const newValue = !killSwitches[key];
+    setKillSwitches(prev => ({ ...prev, [key]: newValue }));
+    const { error } = await supabase
+      .from('system_flags')
+      .update({ enabled: newValue, updated_at: new Date().toISOString() })
+      .eq('key', key);
+    if (error) {
+      setKillSwitches(prev => ({ ...prev, [key]: !newValue }));
+      toast.error(`Failed to toggle ${key}`);
+    } else {
+      const label = key.replace('_enabled', '');
+      toast.success(`${label} ${newValue ? 'enabled' : 'disabled'}`);
+    }
+  };
+
   const auditData = systemAudit.data?.data as { entries?: Array<{ action: string; entity: string; timestamp: string }> } | undefined;
   const configData = systemConfig.data?.data as { config?: Record<string, unknown> } | undefined;
   const versionData = systemVersion.data?.data as { version?: string; build?: string } | undefined;
@@ -263,7 +303,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                   <p className="text-[10px] text-muted-foreground">Threat detection & blocking</p>
                 </div>
               </div>
-              <Switch defaultChecked />
+              <Switch 
+                checked={killSwitches.defense_enabled} 
+                onCheckedChange={() => toggleKillSwitch('defense_enabled')}
+                disabled={killSwitchesLoading}
+              />
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
               <div className="flex items-center gap-2">
@@ -273,7 +317,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                   <p className="text-[10px] text-muted-foreground">Autonomous evolution</p>
                 </div>
               </div>
-              <Switch defaultChecked={false} />
+              <Switch 
+                checked={killSwitches.seba_enabled} 
+                onCheckedChange={() => toggleKillSwitch('seba_enabled')}
+                disabled={killSwitchesLoading}
+              />
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
               <div className="flex items-center gap-2">
@@ -283,7 +331,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                   <p className="text-[10px] text-muted-foreground">Content generation</p>
                 </div>
               </div>
-              <Switch defaultChecked={false} />
+              <Switch 
+                checked={killSwitches.autoblog_enabled} 
+                onCheckedChange={() => toggleKillSwitch('autoblog_enabled')}
+                disabled={killSwitchesLoading}
+              />
             </div>
           </div>
         </CardContent>

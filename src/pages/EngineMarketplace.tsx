@@ -145,21 +145,30 @@ export default function EngineMarketplace() {
       return;
     }
     if (planId === 'enterprise') {
-      window.location.href = 'mailto:Dev@CMPSBL.com?subject=Enterprise%20Engine%20Subscription';
+      window.location.href = 'mailto:Dev@CMPSBL.com?subject=Enterprise%20Subscription';
       return;
     }
     
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       toast.info('Please sign in to subscribe');
-      window.location.href = `/auth?redirect=/engines&plan=${planId}&interval=${billingInterval}`;
+      window.location.href = `/auth?redirect=/engines&plan=${planId}`;
       return;
     }
     
-    // Map unified tier names to checkout function
-    const checkoutTier = planId === 'creator' ? 'builder' : planId === 'architect' ? 'pro' : planId;
-    await startCheckout(checkoutTier as 'builder' | 'pro', billingInterval);
-  }, [startCheckout, billingInterval]);
+    // Use unified tier checkout (same as pricing page)
+    toast.info('Opening checkout...');
+    const { data, error } = await supabase.functions.invoke('tier-checkout', {
+      body: { tier: planId },
+    });
+    if (error) {
+      toast.error('Checkout failed');
+      return;
+    }
+    if (data?.url) {
+      window.location.assign(data.url);
+    }
+  }, []);
 
   // Load from real registries
   const publicEngines = useMemo(() => getPublicEngines(), []);
@@ -214,7 +223,7 @@ export default function EngineMarketplace() {
         type="product"
         product={{
           name: "CMPSBL Engine Subscription",
-          price: "49",
+          price: "9",
           currency: "USD",
           availability: "InStock"
         }}

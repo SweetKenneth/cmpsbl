@@ -52,8 +52,8 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
   creator: {
     id: 'creator',
     name: 'Creator',
-    monthlyPrice: 49,
-    yearlyPrice: 490,
+    monthlyPrice: 9,
+    yearlyPrice: 108,
     description: 'Everything in Free, plus all 76 engines + 8 meta-engines',
     features: [
       'Everything in Free, plus:',
@@ -71,8 +71,8 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
   architect: {
     id: 'architect',
     name: 'Architect',
-    monthlyPrice: 149,
-    yearlyPrice: 1490,
+    monthlyPrice: 19,
+    yearlyPrice: 228,
     description: 'Everything in Creator, plus 16 meta-engines',
     features: [
       'Everything in Creator, plus:',
@@ -90,8 +90,8 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
   enterprise: {
     id: 'enterprise',
     name: 'Enterprise',
-    monthlyPrice: 499,
-    yearlyPrice: 4990,
+    monthlyPrice: 99,
+    yearlyPrice: 1188,
     description: 'Everything in Architect, plus all 24 meta-engines',
     features: [
       'Everything in Architect, plus:',
@@ -251,19 +251,19 @@ export const TIER_DISPLAY: Record<EngineVisibility, {
     label: 'Creator', 
     color: 'text-cyan-400', 
     badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
-    priceLabel: '$49/mo',
+    priceLabel: '$9/mo',
   },
   advanced: { 
     label: 'Architect', 
     color: 'text-amber-400', 
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-    priceLabel: '$149/mo',
+    priceLabel: '$19/mo',
   },
   meta: { 
     label: 'Architect', 
     color: 'text-primary', 
     badge: 'bg-primary/10 text-primary border-primary/30',
-    priceLabel: '$149/mo',
+    priceLabel: '$19/mo',
   },
   internal: { 
     label: 'Platform', 

@@ -352,6 +352,7 @@ export function useSubstrateHealthScore() {
     integration: integrationStatus.data?.success ?? false,
     // Orchestrator Layer
     cortex: cortexStatus.data?.success ?? false,
+    atlas: true, // Atlas control plane — always online (client-side module)
     // Human Compatibility Layer
     inclusive: inclusiveStatus.data?.success ?? false,
     // Infrastructure Six (v10.5.4)
