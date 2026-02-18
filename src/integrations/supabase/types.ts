@@ -5722,6 +5722,48 @@ export type Database = {
         }
         Relationships: []
       }
+      immune_escalations: {
+        Row: {
+          claimed_by: string | null
+          created_at: string
+          executor: string
+          id: string
+          module: string
+          payload: Json
+          resolution_note: string | null
+          resolved_at: string | null
+          scope: string
+          severity: string
+          status: string
+        }
+        Insert: {
+          claimed_by?: string | null
+          created_at?: string
+          executor: string
+          id?: string
+          module: string
+          payload?: Json
+          resolution_note?: string | null
+          resolved_at?: string | null
+          scope: string
+          severity: string
+          status?: string
+        }
+        Update: {
+          claimed_by?: string | null
+          created_at?: string
+          executor?: string
+          id?: string
+          module?: string
+          payload?: Json
+          resolution_note?: string | null
+          resolved_at?: string | null
+          scope?: string
+          severity?: string
+          status?: string
+        }
+        Relationships: []
+      }
       integration_audit_log: {
         Row: {
           adapter_id: string | null
