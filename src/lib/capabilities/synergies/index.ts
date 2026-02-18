@@ -141,9 +141,12 @@ export * from './stier';
 // Operations integration
 export * from './operations';
 
-// Auto-register executors
+// Auto-register executors (immune wrapper intercepts pilot executors)
 import { registerSynergyExecutor } from './registry';
 import { registerAllExecutors } from './executors';
 import { registerSTierExecutors } from './stier';
-registerAllExecutors(registerSynergyExecutor);
+import { createImmuneAwareRegister } from '@/immune/pilotExecutors';
+
+const immuneRegister = createImmuneAwareRegister(registerSynergyExecutor);
+registerAllExecutors(immuneRegister);
 registerSTierExecutors(registerSynergyExecutor);
