@@ -1,6 +1,6 @@
 /**
- * Crystallized Pipeline Registry — 50 Crown Jewel Pipelines
- * v10.8.0 ARCHITECT Epoch — Tiered Pipeline Crystallization
+ * Crystallized Pipeline Registry — 100 Crown Jewel Pipelines
+ * ARCHITECT Epoch — Tiered Pipeline Crystallization
  * 
  * Crystallized pipelines are multi-module resolver chains that emerged
  * from Intent Mesh discovery and were hardened into permanent, reusable
@@ -8,10 +8,10 @@
  * sealed, black-boxed workflow.
  * 
  * Tiers:
- *   CMPSBL-Only (Architecture) — 10 pipelines (never released)
- *   Enterprise — 8 pipelines
- *   Architect — 18 pipelines  
- *   Creator — 14 pipelines
+ *   CMPSBL-Only (Architecture) — 20 pipelines (never released)
+ *   Enterprise — 16 pipelines
+ *   Architect — 36 pipelines  
+ *   Creator — 28 pipelines
  */
 
 export type PipelineTier = 'cmpsbl' | 'enterprise' | 'architect' | 'creator';
@@ -25,11 +25,11 @@ export interface CrystallizedPipeline {
   tier: PipelineTier;
   category: 'security' | 'intelligence' | 'optimization' | 'compliance' | 'observability' | 'orchestration';
   isSealed: boolean;
-  discoveredFrom: string; // Intent Mesh receipt origin
+  discoveredFrom: string;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CMPSBL-ONLY PIPELINES (10) — Architecture-class, never released
+// CMPSBL-ONLY PIPELINES (20) — Architecture-class, never released
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
@@ -143,10 +143,121 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
     isSealed: true,
     discoveredFrom: 'mesh-receipt-alpha-010',
   },
+  // ── NEW CMPSBL-ONLY (10 additions) ──
+  {
+    id: 'cp-temporal-causality-engine',
+    name: 'Temporal Causality Engine',
+    modules: ['CORTEX', 'BRAIN', 'DREAM', 'MEMORY'],
+    description: 'Reconstructs causal chains across time to predict consequences of future mutations',
+    emergentProperty: 'Time-aware decision making across architecture changes',
+    tier: 'cmpsbl',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-011',
+  },
+  {
+    id: 'cp-consciousness-continuity-bridge',
+    name: 'Consciousness Continuity Bridge',
+    modules: ['MEMORY', 'BRAIN', 'CORTEX', 'DREAM'],
+    description: 'Preserves cognitive identity across cold restarts, migrations, and version upgrades',
+    emergentProperty: 'Unbroken identity persistence through infrastructure changes',
+    tier: 'cmpsbl',
+    category: 'orchestration',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-012',
+  },
+  {
+    id: 'cp-entropic-decay-reversal',
+    name: 'Entropic Decay Reversal',
+    modules: ['MODERNIZER', 'DREAM', 'CORTEX', 'SYSTEM'],
+    description: 'Detects entropy accumulation in knowledge stores and actively reverses degradation',
+    emergentProperty: 'Negative entropy maintenance in long-lived systems',
+    tier: 'cmpsbl',
+    category: 'optimization',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-013',
+  },
+  {
+    id: 'cp-adversarial-hypothesis-generator',
+    name: 'Adversarial Hypothesis Generator',
+    modules: ['DEFENSE', 'DREAM', 'BRAIN', 'CORTEX'],
+    description: 'Generates worst-case attack scenarios the system has never seen to strengthen defenses',
+    emergentProperty: 'Preemptive defense against novel attack vectors',
+    tier: 'cmpsbl',
+    category: 'security',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-014',
+  },
+  {
+    id: 'cp-value-crystallization-loop',
+    name: 'Value Crystallization Loop',
+    modules: ['CORTEX', 'BRAIN', 'ECONOMY', 'DREAM'],
+    description: 'Converts ephemeral insights into permanent value-generating structures',
+    emergentProperty: 'Automatic wealth creation from transient intelligence',
+    tier: 'cmpsbl',
+    category: 'orchestration',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-015',
+  },
+  {
+    id: 'cp-cognitive-immune-system',
+    name: 'Cognitive Immune System',
+    modules: ['DEFENSE', 'BRAIN', 'CORTEX', 'SYSTEM'],
+    description: 'Biological-inspired immune response to cognitive contamination and adversarial injection',
+    emergentProperty: 'Autonomous cognitive purity maintenance',
+    tier: 'cmpsbl',
+    category: 'security',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-016',
+  },
+  {
+    id: 'cp-recursive-abstraction-ladder',
+    name: 'Recursive Abstraction Ladder',
+    modules: ['BRAIN', 'DREAM', 'CORTEX', 'ENCODE'],
+    description: 'Elevates concrete patterns into progressively higher abstractions autonomously',
+    emergentProperty: 'Self-generating conceptual hierarchies',
+    tier: 'cmpsbl',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-017',
+  },
+  {
+    id: 'cp-substrate-dreaming-protocol',
+    name: 'Substrate Dreaming Protocol',
+    modules: ['DREAM', 'CORTEX', 'MEMORY', 'BRAIN'],
+    description: 'Offline synthesis where the substrate dreams solutions to unsolved problems',
+    emergentProperty: 'Sleep-cycle problem solving without active compute',
+    tier: 'cmpsbl',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-018',
+  },
+  {
+    id: 'cp-governance-genome-sequencer',
+    name: 'Governance Genome Sequencer',
+    modules: ['AUDIT', 'CORTEX', 'SYSTEM', 'BRAIN'],
+    description: 'Maps the complete governance genome and identifies mutation risks before they express',
+    emergentProperty: 'Predictive governance mutation analysis',
+    tier: 'cmpsbl',
+    category: 'compliance',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-019',
+  },
+  {
+    id: 'cp-infinite-horizon-planner',
+    name: 'Infinite Horizon Planner',
+    modules: ['CORTEX', 'DREAM', 'VISION', 'ECONOMY'],
+    description: 'Plans across unbounded time horizons with discounted future value optimization',
+    emergentProperty: 'Arbitrarily long strategic planning without horizon collapse',
+    tier: 'cmpsbl',
+    category: 'orchestration',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-alpha-020',
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ENTERPRISE PIPELINES (8) — Governance-grade sealed workflows
+// ENTERPRISE PIPELINES (16) — Governance-grade sealed workflows
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ENTERPRISE_PIPELINES: CrystallizedPipeline[] = [
@@ -238,10 +349,99 @@ const ENTERPRISE_PIPELINES: CrystallizedPipeline[] = [
     isSealed: true,
     discoveredFrom: 'mesh-receipt-ent-008',
   },
+  // ── NEW ENTERPRISE (8 additions) ──
+  {
+    id: 'cp-privilege-escalation-sentinel',
+    name: 'Privilege Escalation Sentinel',
+    modules: ['IDENTITY', 'DEFENSE', 'AUDIT', 'CORTEX'],
+    description: 'Detects anomalous privilege escalation patterns and auto-revokes before breach completion',
+    emergentProperty: 'Real-time privilege abuse prevention',
+    tier: 'enterprise',
+    category: 'security',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-ent-009',
+  },
+  {
+    id: 'cp-data-residency-enforcer',
+    name: 'Data Residency Enforcer',
+    modules: ['MEMORY', 'AUDIT', 'RELAY', 'IDENTITY'],
+    description: 'Guarantees data never leaves designated geographic or logical boundaries',
+    emergentProperty: 'Provable data sovereignty compliance',
+    tier: 'enterprise',
+    category: 'compliance',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-ent-010',
+  },
+  {
+    id: 'cp-org-knowledge-graph-weaver',
+    name: 'Org Knowledge Graph Weaver',
+    modules: ['BRAIN', 'MEMORY', 'CORTEX', 'VISION'],
+    description: 'Constructs and maintains a living knowledge graph across all organizational units',
+    emergentProperty: 'Emergent organizational intelligence from siloed data',
+    tier: 'enterprise',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-ent-011',
+  },
+  {
+    id: 'cp-incident-replay-simulator',
+    name: 'Incident Replay Simulator',
+    modules: ['SYSTEM', 'DEFENSE', 'VISION', 'AUDIT'],
+    description: 'Reconstructs and replays past incidents in sandbox to test improved responses',
+    emergentProperty: 'Retrospective defense improvement through simulation',
+    tier: 'enterprise',
+    category: 'security',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-ent-012',
+  },
+  {
+    id: 'cp-cost-attribution-fabric',
+    name: 'Cost Attribution Fabric',
+    modules: ['ECONOMY', 'AUDIT', 'IDENTITY', 'VISION'],
+    description: 'Attributes every cent of compute cost to specific users, teams, and workflows',
+    emergentProperty: 'Granular cost accountability across the organization',
+    tier: 'enterprise',
+    category: 'optimization',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-ent-013',
+  },
+  {
+    id: 'cp-federated-learning-mesh',
+    name: 'Federated Learning Mesh',
+    modules: ['BRAIN', 'RELAY', 'DEFENSE', 'CORTEX'],
+    description: 'Cross-deployment learning without raw data leaving tenant boundaries',
+    emergentProperty: 'Privacy-preserving collective intelligence',
+    tier: 'enterprise',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-ent-014',
+  },
+  {
+    id: 'cp-executive-decision-ledger',
+    name: 'Executive Decision Ledger',
+    modules: ['AUDIT', 'CORTEX', 'MEMORY', 'IDENTITY'],
+    description: 'Records every autonomous decision with full causal justification for board-level review',
+    emergentProperty: 'Boardroom-ready AI accountability',
+    tier: 'enterprise',
+    category: 'compliance',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-ent-015',
+  },
+  {
+    id: 'cp-disaster-recovery-orchestrator',
+    name: 'Disaster Recovery Orchestrator',
+    modules: ['SYSTEM', 'RELAY', 'MEMORY', 'DEFENSE'],
+    description: 'Autonomous multi-region failover with zero data loss and minimal recovery time',
+    emergentProperty: 'Sub-minute disaster recovery without human intervention',
+    tier: 'enterprise',
+    category: 'orchestration',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-ent-016',
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ARCHITECT PIPELINES (18) — Premium sealed workflows ($19/mo)
+// ARCHITECT PIPELINES (36) — Premium sealed workflows ($19/mo)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ARCHITECT_PIPELINES: CrystallizedPipeline[] = [
@@ -443,10 +643,209 @@ const ARCHITECT_PIPELINES: CrystallizedPipeline[] = [
     isSealed: true,
     discoveredFrom: 'mesh-receipt-arc-018',
   },
+  // ── NEW ARCHITECT (18 additions) ──
+  {
+    id: 'cp-multi-modal-reasoning-chain',
+    name: 'Multi-Modal Reasoning Chain',
+    modules: ['BRAIN', 'DECODE', 'VISION', 'CORTEX'],
+    description: 'Fuses text, image, and structured data into unified reasoning across modalities',
+    emergentProperty: 'Cross-modal insight synthesis',
+    tier: 'architect',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-019',
+  },
+  {
+    id: 'cp-autonomous-rollback-authority',
+    name: 'Autonomous Rollback Authority',
+    modules: ['SYSTEM', 'CORTEX', 'AUDIT', 'ENCODE'],
+    description: 'Detects regressions and autonomously rolls back to last-known-good state',
+    emergentProperty: 'Self-healing deployment with zero-downtime rollback',
+    tier: 'architect',
+    category: 'orchestration',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-020',
+  },
+  {
+    id: 'cp-signal-noise-separator',
+    name: 'Signal-Noise Separator',
+    modules: ['DECODE', 'BRAIN', 'CORTEX'],
+    description: 'Strips noise from high-volume data streams to surface actionable signals only',
+    emergentProperty: 'Pure signal extraction from chaotic inputs',
+    tier: 'architect',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-021',
+  },
+  {
+    id: 'cp-dependency-risk-mapper',
+    name: 'Dependency Risk Mapper',
+    modules: ['ENCODE', 'VISION', 'DEFENSE'],
+    description: 'Maps transitive dependency risks and predicts supply chain vulnerabilities',
+    emergentProperty: 'Proactive supply chain risk mitigation',
+    tier: 'architect',
+    category: 'security',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-022',
+  },
+  {
+    id: 'cp-adaptive-rate-limiter',
+    name: 'Adaptive Rate Limiter',
+    modules: ['NEXUS', 'DEFENSE', 'VISION'],
+    description: 'Dynamically adjusts rate limits based on real-time traffic patterns and trust scores',
+    emergentProperty: 'Intelligent throttling that protects without blocking legitimate traffic',
+    tier: 'architect',
+    category: 'security',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-023',
+  },
+  {
+    id: 'cp-knowledge-gap-discoverer',
+    name: 'Knowledge Gap Discoverer',
+    modules: ['BRAIN', 'DREAM', 'VISION'],
+    description: 'Identifies what the system does not know and prioritizes knowledge acquisition',
+    emergentProperty: 'Self-aware ignorance mapping',
+    tier: 'architect',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-024',
+  },
+  {
+    id: 'cp-performance-regression-oracle',
+    name: 'Performance Regression Oracle',
+    modules: ['VISION', 'ENCODE', 'SYSTEM'],
+    description: 'Predicts performance regressions from code changes before deployment',
+    emergentProperty: 'Pre-deploy performance guarantee',
+    tier: 'architect',
+    category: 'observability',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-025',
+  },
+  {
+    id: 'cp-intent-disambiguation-engine',
+    name: 'Intent Disambiguation Engine',
+    modules: ['DECODE', 'BRAIN', 'CORTEX'],
+    description: 'Resolves ambiguous user intents through multi-hypothesis scoring',
+    emergentProperty: 'High-confidence intent resolution from vague inputs',
+    tier: 'architect',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-026',
+  },
+  {
+    id: 'cp-workflow-bottleneck-eliminator',
+    name: 'Workflow Bottleneck Eliminator',
+    modules: ['VISION', 'CORTEX', 'SYSTEM'],
+    description: 'Identifies and restructures workflow bottlenecks in real-time',
+    emergentProperty: 'Continuous throughput optimization',
+    tier: 'architect',
+    category: 'optimization',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-027',
+  },
+  {
+    id: 'cp-cross-project-learning-bridge',
+    name: 'Cross-Project Learning Bridge',
+    modules: ['MEMORY', 'BRAIN', 'CORTEX'],
+    description: 'Transfers learned patterns between projects without leaking project-specific data',
+    emergentProperty: 'Privacy-safe knowledge portability',
+    tier: 'architect',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-028',
+  },
+  {
+    id: 'cp-anomaly-fingerprinting-chain',
+    name: 'Anomaly Fingerprinting Chain',
+    modules: ['VISION', 'DEFENSE', 'BRAIN'],
+    description: 'Creates unique fingerprints for anomaly types enabling instant future recognition',
+    emergentProperty: 'One-shot anomaly learning',
+    tier: 'architect',
+    category: 'observability',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-029',
+  },
+  {
+    id: 'cp-resource-contention-arbiter',
+    name: 'Resource Contention Arbiter',
+    modules: ['NEXUS', 'ECONOMY', 'CORTEX'],
+    description: 'Resolves competing resource claims using value-weighted priority scoring',
+    emergentProperty: 'Fair resource allocation under contention',
+    tier: 'architect',
+    category: 'optimization',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-030',
+  },
+  {
+    id: 'cp-semantic-versioning-guardian',
+    name: 'Semantic Versioning Guardian',
+    modules: ['ENCODE', 'BRAIN', 'AUDIT'],
+    description: 'Automatically determines semantic version bumps from behavioral change analysis',
+    emergentProperty: 'Human-free semantic versioning',
+    tier: 'architect',
+    category: 'compliance',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-031',
+  },
+  {
+    id: 'cp-feedback-loop-detector',
+    name: 'Feedback Loop Detector',
+    modules: ['VISION', 'CORTEX', 'BRAIN'],
+    description: 'Identifies runaway feedback loops before they destabilize system behavior',
+    emergentProperty: 'Early termination of dangerous positive feedback',
+    tier: 'architect',
+    category: 'observability',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-032',
+  },
+  {
+    id: 'cp-capability-maturity-scorer',
+    name: 'Capability Maturity Scorer',
+    modules: ['VISION', 'BRAIN', 'CORTEX'],
+    description: 'Scores each capability on a maturity ladder and recommends graduation paths',
+    emergentProperty: 'Quantified capability lifecycle management',
+    tier: 'architect',
+    category: 'observability',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-033',
+  },
+  {
+    id: 'cp-synthetic-benchmark-generator',
+    name: 'Synthetic Benchmark Generator',
+    modules: ['ENCODE', 'DREAM', 'VISION'],
+    description: 'Generates domain-specific benchmarks from production patterns for realistic testing',
+    emergentProperty: 'Production-representative testing without production data',
+    tier: 'architect',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-034',
+  },
+  {
+    id: 'cp-contextual-retry-strategist',
+    name: 'Contextual Retry Strategist',
+    modules: ['NEXUS', 'BRAIN', 'VISION'],
+    description: 'Selects retry strategies based on failure context rather than fixed backoff',
+    emergentProperty: 'Intelligent retry that adapts to failure cause',
+    tier: 'architect',
+    category: 'optimization',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-035',
+  },
+  {
+    id: 'cp-impact-radius-predictor',
+    name: 'Impact Radius Predictor',
+    modules: ['CORTEX', 'VISION', 'SYSTEM'],
+    description: 'Predicts the blast radius of any proposed change before execution',
+    emergentProperty: 'Pre-commit impact visualization',
+    tier: 'architect',
+    category: 'observability',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-arc-036',
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CREATOR PIPELINES (14) — Builder-friendly sealed workflows ($9/mo)
+// CREATOR PIPELINES (28) — Builder-friendly sealed workflows ($9/mo)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CREATOR_PIPELINES: CrystallizedPipeline[] = [
@@ -604,6 +1003,161 @@ const CREATOR_PIPELINES: CrystallizedPipeline[] = [
     isSealed: true,
     discoveredFrom: 'mesh-receipt-cre-014',
   },
+  // ── NEW CREATOR (14 additions) ──
+  {
+    id: 'cp-smart-cache-invalidator',
+    name: 'Smart Cache Invalidator',
+    modules: ['BRAIN', 'MEMORY', 'VISION'],
+    description: 'Predicts which cache entries will become stale and pre-invalidates them',
+    emergentProperty: 'Zero-stale-read caching',
+    tier: 'creator',
+    category: 'optimization',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-015',
+  },
+  {
+    id: 'cp-error-context-enricher',
+    name: 'Error Context Enricher',
+    modules: ['VISION', 'BRAIN', 'DECODE'],
+    description: 'Attaches rich contextual metadata to errors for instant root cause identification',
+    emergentProperty: 'One-glance error diagnosis',
+    tier: 'creator',
+    category: 'observability',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-016',
+  },
+  {
+    id: 'cp-prompt-quality-scorer',
+    name: 'Prompt Quality Scorer',
+    modules: ['DECODE', 'BRAIN', 'VISION'],
+    description: 'Scores prompt quality and suggests improvements before execution',
+    emergentProperty: 'Higher AI output quality through input optimization',
+    tier: 'creator',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-017',
+  },
+  {
+    id: 'cp-api-compatibility-checker',
+    name: 'API Compatibility Checker',
+    modules: ['INTEGRATION', 'ENCODE', 'BRAIN'],
+    description: 'Validates API changes against all known consumers before release',
+    emergentProperty: 'Breaking-change prevention across integrations',
+    tier: 'creator',
+    category: 'compliance',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-018',
+  },
+  {
+    id: 'cp-token-budget-optimizer',
+    name: 'Token Budget Optimizer',
+    modules: ['ECONOMY', 'BRAIN', 'NEXUS'],
+    description: 'Allocates token budgets across concurrent tasks for maximum total value',
+    emergentProperty: 'Value-maximized token spending',
+    tier: 'creator',
+    category: 'optimization',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-019',
+  },
+  {
+    id: 'cp-session-handoff-chain',
+    name: 'Session Handoff Chain',
+    modules: ['MEMORY', 'BRAIN', 'DECODE'],
+    description: 'Transfers full session context between agents without information loss',
+    emergentProperty: 'Seamless multi-agent session continuity',
+    tier: 'creator',
+    category: 'orchestration',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-020',
+  },
+  {
+    id: 'cp-response-calibration-pipeline',
+    name: 'Response Calibration Pipeline',
+    modules: ['DECODE', 'VISION', 'BRAIN'],
+    description: 'Calibrates AI response length, tone, and detail level to user preferences',
+    emergentProperty: 'Personalized response formatting',
+    tier: 'creator',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-021',
+  },
+  {
+    id: 'cp-integration-health-dashboard',
+    name: 'Integration Health Dashboard Chain',
+    modules: ['INTEGRATION', 'VISION', 'SYSTEM'],
+    description: 'Aggregates health signals from all connected integrations into a unified view',
+    emergentProperty: 'Single-pane integration monitoring',
+    tier: 'creator',
+    category: 'observability',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-022',
+  },
+  {
+    id: 'cp-smart-deduplication-engine',
+    name: 'Smart Deduplication Engine',
+    modules: ['BRAIN', 'MEMORY', 'ENCODE'],
+    description: 'Detects semantic duplicates across data stores even when syntactically different',
+    emergentProperty: 'Meaning-aware deduplication',
+    tier: 'creator',
+    category: 'optimization',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-023',
+  },
+  {
+    id: 'cp-auto-documentation-chain',
+    name: 'Auto-Documentation Chain',
+    modules: ['ENCODE', 'BRAIN', 'DECODE'],
+    description: 'Generates and maintains documentation from code behavior, not just comments',
+    emergentProperty: 'Living documentation that never goes stale',
+    tier: 'creator',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-024',
+  },
+  {
+    id: 'cp-graceful-degradation-router',
+    name: 'Graceful Degradation Router',
+    modules: ['NEXUS', 'SYSTEM', 'BRAIN'],
+    description: 'Routes requests to fallback providers with degraded but functional capabilities',
+    emergentProperty: 'Service continuity under provider failures',
+    tier: 'creator',
+    category: 'orchestration',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-025',
+  },
+  {
+    id: 'cp-metric-correlation-finder',
+    name: 'Metric Correlation Finder',
+    modules: ['VISION', 'BRAIN', 'ECONOMY'],
+    description: 'Discovers hidden correlations between metrics that humans miss',
+    emergentProperty: 'Non-obvious metric relationship discovery',
+    tier: 'creator',
+    category: 'observability',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-026',
+  },
+  {
+    id: 'cp-input-sanitization-chain',
+    name: 'Input Sanitization Chain',
+    modules: ['DEFENSE', 'DECODE', 'BRAIN'],
+    description: 'Multi-layer input sanitization that catches injection vectors standard filters miss',
+    emergentProperty: 'Deep sanitization beyond pattern matching',
+    tier: 'creator',
+    category: 'security',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-027',
+  },
+  {
+    id: 'cp-output-confidence-calibrator',
+    name: 'Output Confidence Calibrator',
+    modules: ['BRAIN', 'VISION', 'DECODE'],
+    description: 'Calibrates confidence scores so stated certainty matches actual accuracy',
+    emergentProperty: 'Trustworthy confidence reporting',
+    tier: 'creator',
+    category: 'intelligence',
+    isSealed: true,
+    discoveredFrom: 'mesh-receipt-cre-028',
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -617,13 +1171,13 @@ export const CRYSTALLIZED_PIPELINES: readonly CrystallizedPipeline[] = Object.fr
   ...CREATOR_PIPELINES,
 ]);
 
-export const CRYSTALLIZED_PIPELINE_COUNT = CRYSTALLIZED_PIPELINES.length; // 50
+export const CRYSTALLIZED_PIPELINE_COUNT = CRYSTALLIZED_PIPELINES.length; // 100
 
 export const CRYSTALLIZED_PIPELINE_TIER_COUNTS = {
-  cmpsbl: CMPSBL_PIPELINES.length,      // 10
-  enterprise: ENTERPRISE_PIPELINES.length, // 8
-  architect: ARCHITECT_PIPELINES.length,   // 18
-  creator: CREATOR_PIPELINES.length,       // 14
+  cmpsbl: CMPSBL_PIPELINES.length,        // 20
+  enterprise: ENTERPRISE_PIPELINES.length, // 16
+  architect: ARCHITECT_PIPELINES.length,   // 36
+  creator: CREATOR_PIPELINES.length,       // 28
 } as const;
 
 /** Get pipelines by tier */

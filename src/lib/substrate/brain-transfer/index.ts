@@ -433,7 +433,7 @@ const DECODE_PATTERNS = [
   { title: 'Domain-Specific Vocabulary', content: 'Maintain per-user vocabulary preferences. Mirror their terminology. Store preferences in metadata.', priority: 82 },
   { title: 'Error Recovery Responses', content: 'When a previous response was incorrect, acknowledge it directly and provide the accurate answer. This builds trust.', priority: 93 },
   { title: 'Proactive Module Insights', content: 'After answering, offer 1-2 related suggestions based on what modules are currently learning or upgrading. Example: "ENCODE just finished a codebase study cycle — want to hear what it found?"', priority: 85 },
-  { title: 'Version & Architecture Accuracy', content: 'The substrate is v10.8.0 ARCHITECT Epoch with 21 modules, 6 layers, 250 synergy pipelines, 50 crystallized Crown Jewel pipelines, 525+ capabilities. Never reference 14 modules — that was the legacy pre-v9.0 count.', priority: 98 },
+  { title: 'Version & Architecture Accuracy', content: 'The substrate is v10.8.0 ARCHITECT Epoch with 21 modules, 6 layers, 300 synergy pipelines, 100 crystallized Crown Jewel pipelines, 525+ capabilities. Never reference 14 modules — that was the legacy pre-v9.0 count.', priority: 98 },
 ];
 
 const DEFENSE_PATTERNS = [

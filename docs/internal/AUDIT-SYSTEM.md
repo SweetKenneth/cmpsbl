@@ -28,7 +28,7 @@ A first-class internal integrity primitive (ID: `substrate_health_check`) that v
 - Import & reference resolution
 - Terminal & capability wiring
 - Route integrity
-- Registry consistency (50 crystallized pipelines)
+- Registry consistency (100 crystallized pipelines)
 - Edge function presence (54+ active)
 - Database & security behavior (RLS enforcement)
 - Runtime render sanity

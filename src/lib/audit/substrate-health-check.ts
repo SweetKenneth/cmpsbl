@@ -299,10 +299,10 @@ function checkRegistry(): LayerResult {
   checks.push(
     check(
       'reg_pipelines_count',
-      CRYSTALLIZED_PIPELINE_COUNT === 50,
+      CRYSTALLIZED_PIPELINE_COUNT === 100,
       `${CRYSTALLIZED_PIPELINE_COUNT} crystallized pipelines in registry`,
-      CRYSTALLIZED_PIPELINE_COUNT !== 50
-        ? `Expected 50, got ${CRYSTALLIZED_PIPELINE_COUNT}`
+      CRYSTALLIZED_PIPELINE_COUNT !== 100
+        ? `Expected 100, got ${CRYSTALLIZED_PIPELINE_COUNT}`
         : undefined,
     ),
   );
