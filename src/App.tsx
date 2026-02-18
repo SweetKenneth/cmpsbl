@@ -237,15 +237,17 @@ const App = () => {
     };
   }, []);
 
-  // Manage debug mode: enable in Safe Mode, disable otherwise for full operation
+  // Only force debug mode ON in safe mode; clear stale debug-on state otherwise
   useEffect(() => {
     if (mobilePreviewSafeMode) {
       debugMode.enable();
-    } else {
-      // Ensure all background processes run normally
+    } else if (debugMode.isEnabled()) {
+      // Clear debug mode that was previously auto-enabled by safe mode
       debugMode.disable();
     }
-  }, [mobilePreviewSafeMode]);
+    // After this initial check, debug mode is user-controlled via terminal/console
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Track render rate of the App root (diag mode only)
   useRenderLoopDetector("App");
