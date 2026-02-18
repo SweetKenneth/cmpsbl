@@ -215,8 +215,8 @@ const App = () => {
   const mobilePreviewSafeMode =
     (previewParams.previewSafe || (isPreviewEnv && isMobileDevice)) && !previewParams.previewFull;
 
-  // Always allow substrate init — preview env should not block normal operation
-  const substrateAutoInit = debugMode.allowModulePolling();
+  // Always allow substrate init — no gates, all systems operational
+  const substrateAutoInit = true;
 
   // Install mobile watchdog + interaction tracking once on mount
   useEffect(() => {
