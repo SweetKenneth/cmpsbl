@@ -660,24 +660,101 @@ export default function SubstrateOS() {
             {activeTab === 'dashboard' && hasAccessToCurrentTab && (
               <motion.main 
                 key="dashboard"
-                className="container mx-auto px-4 py-6 max-w-7xl space-y-6"
+                className="container mx-auto px-4 py-6 max-w-7xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                {canAccessTier(userTier, 'architect') && <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />}
-                <DashboardMetricsHero />
-                {canAccessTier(userTier, 'creator') && <CapacityMonitor />}
-                {canAccessTier(userTier, 'creator') && <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />}
-                {canAccessTier(userTier, 'creator') && <ModuleControlsGrid enabled={isOperator} />}
-                {canAccessTier(userTier, 'architect') && <BrainIntelligencePanel enabled={isOperator} />}
-                <SystemHealthPanel enabled={canAccessTier(userTier, 'creator')} />
-                {canAccessTier(userTier, 'creator') && <EventStream />}
-                
+                {/* Two-column desktop layout: main content + live stream sidebar */}
+                <div className="flex flex-col xl:flex-row gap-6 items-start">
+
+                  {/* ── Left / Main column ── */}
+                  <div className="flex-1 min-w-0 space-y-6">
+                    {canAccessTier(userTier, 'architect') && <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />}
+                    <DashboardMetricsHero />
+                    {canAccessTier(userTier, 'creator') && <CapacityMonitor />}
+                    {canAccessTier(userTier, 'creator') && <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />}
+                    {canAccessTier(userTier, 'creator') && <ModuleControlsGrid enabled={isOperator} />}
+                    {canAccessTier(userTier, 'architect') && <BrainIntelligencePanel enabled={isOperator} />}
+                    <SystemHealthPanel enabled={canAccessTier(userTier, 'creator')} />
+                  </div>
+
+                  {/* ── Right / Live Sidebar (desktop only) ── */}
+                  <div className="hidden xl:flex flex-col gap-4 w-[340px] shrink-0 sticky top-6">
+                    {/* Substrate context card */}
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="rounded-2xl border border-border/30 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-xl p-5 space-y-3"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                          <Activity className="w-3.5 h-3.5 text-primary" />
+                        </div>
+                        <span className="text-xs font-semibold text-foreground/80 font-mono uppercase tracking-widest">Clockless Reality</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
+                        21 autonomous modules composing and healing in real-time. Every request is routed, 
+                        traced, and learned from — building a persistent cognitive layer that compounds 
+                        value without resets.
+                      </p>
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        {[
+                          { label: 'Modules', value: '21' },
+                          { label: 'Providers', value: '7' },
+                          { label: 'Uptime', value: '99.9%' },
+                          { label: 'Epoch', value: 'v10.5' },
+                        ].map(s => (
+                          <div key={s.label} className="rounded-lg bg-muted/30 border border-border/20 px-3 py-2 text-center">
+                            <div className="text-sm font-bold font-mono text-foreground">{s.value}</div>
+                            <div className="text-[9px] text-muted-foreground uppercase tracking-wider mt-0.5">{s.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+
+                    {/* Live event stream */}
+                    {canAccessTier(userTier, 'creator') && (
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.35 }}
+                      >
+                        <EventStream />
+                      </motion.div>
+                    )}
+
+                    {/* Upgrade CTA for non-creator users */}
+                    {!canAccessTier(userTier, 'creator') && (
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.35 }}
+                        className="rounded-2xl border border-cyan-500/30 bg-gradient-to-b from-cyan-500/5 to-transparent backdrop-blur-xl p-5 space-y-3 text-center"
+                      >
+                        <Rocket className="w-6 h-6 text-cyan-400 mx-auto" />
+                        <h3 className="text-sm font-semibold text-foreground">Unlock Live Stream</h3>
+                        <p className="text-[11px] text-muted-foreground leading-relaxed">
+                          Upgrade to Creator to see real-time substrate events as they flow through all 21 modules.
+                        </p>
+                        <Button size="sm" variant="outline" className="border-cyan-500/40 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 w-full text-xs" asChild>
+                          <Link to="/pricing">View Plans</Link>
+                        </Button>
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Mobile: EventStream below (existing behaviour) */}
+                <div className="xl:hidden mt-6">
+                  {canAccessTier(userTier, 'creator') && <EventStream />}
+                </div>
+
                 {/* Upgrade CTA for free users */}
                 {userTier === 'free' && (
                   <motion.div 
-                    className="rounded-2xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/5 via-background to-fuchsia-500/5 p-8 text-center space-y-4"
+                    className="rounded-2xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/5 via-background to-fuchsia-500/5 p-8 text-center space-y-4 mt-6"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 }}

@@ -10,6 +10,7 @@ import { generateAdversarialInputs } from './mutate';
 import { isShadowMeshEnabled } from '@/lib/system/flags';
 import { getSynergyExecutor } from '@/lib/capabilities/synergies/registry';
 import { log } from '@/lib/system/log';
+import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
 
 export interface ShadowProbeResult {
   input: Record<string, unknown>;
@@ -119,17 +120,11 @@ export async function runShadowProbe(
 }
 
 /**
- * Run shadow probes against all pilot executors
+ * Run shadow probes against all pilot executors.
+ * Uses the canonical PILOT_EXECUTORS list from @/immune/pilotExecutors
+ * rather than a local copy so additions/removals propagate automatically.
  */
 export async function runAllShadowProbes(): Promise<ShadowProbeReport[]> {
-  const PILOT_EXECUTORS = [
-    'adaptive-ui',
-    'cognitive-load-optimization',
-    'comprehensive-accessibility-audit',
-    'personalized-accessibility-engine',
-    'inclusive-content',
-  ];
-
   const reports: ShadowProbeReport[] = [];
   for (const name of PILOT_EXECUTORS) {
     reports.push(await runShadowProbe(name));

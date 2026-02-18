@@ -353,20 +353,23 @@ export function useSubstrateHealthScore() {
   });
 
   // Default to TRUE (healthy) when data hasn't loaded — prevents false-negative health reports
+  // NOTE: exactly 21 entries to match totalModules; 'atlas' is excluded from
+  //       MODULE_LIST (it's a static subsystem) so we must NOT include it here
+  //       or healthyCount can reach 22 → 22/21 × 100 = 105%.
   const modules = (batchQuery.data || {
     core: true, ripple: true, access: true,
     brain: true, decode: true, nexus: true,
     defense: true, vision: true, dream: true,
     system: true, modernizer: true,
     integration: true,
-    cortex: true, atlas: true, inclusive: true,
+    cortex: true, inclusive: true,
     memory: true, relay: true, audit: true, identity: true, economy: true, sandbox: true,
     encode: true,
   }) as Record<string, boolean>;
 
-  const healthyCount = Object.values(modules).filter(Boolean).length;
   const totalModules = 21;
-  const healthScore = Math.round((healthyCount / totalModules) * 100);
+  const healthyCount = Math.min(Object.values(modules).filter(Boolean).length, totalModules);
+  const healthScore = Math.min(100, Math.round((healthyCount / totalModules) * 100));
 
   return {
     isLoading: batchQuery.isLoading,

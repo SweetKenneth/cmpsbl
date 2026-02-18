@@ -224,11 +224,11 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     };
   }, [autoInit, refresh]);
 
-  // Calculate overall health from all initialized modules
+  // Calculate overall health from all initialized modules — clamped to 0-100
   const activeModules = Object.values(modules).filter(m => m.health > 0);
-  const overallHealth = activeModules.length > 0 
-    ? activeModules.reduce((sum, m) => sum + m.health, 0) / activeModules.length 
-    : 0;
+  const overallHealth = Math.min(100, activeModules.length > 0
+    ? activeModules.reduce((sum, m) => sum + m.health, 0) / activeModules.length
+    : 0);
 
   return (
     <SubstrateContext.Provider value={{ initialized, modules, overallHealth, refresh }}>
