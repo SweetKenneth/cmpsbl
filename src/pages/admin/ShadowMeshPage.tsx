@@ -4,6 +4,7 @@
  */
 
 import { ShadowMeshToggle } from "@/components/admin/ShadowMeshToggle";
+import { ShadowMeshAnalytics } from "@/components/admin/ShadowMeshAnalytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Zap, AlertTriangle } from "lucide-react";
@@ -31,6 +32,9 @@ export default function ShadowMeshPage() {
 
       {/* Toggle */}
       <ShadowMeshToggle />
+
+      {/* Analytics */}
+      <ShadowMeshAnalytics />
 
       {/* Operational Info */}
       <Card>
