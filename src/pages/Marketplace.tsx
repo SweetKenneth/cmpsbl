@@ -50,7 +50,7 @@ const categoryMeta: Record<string, { icon: React.ElementType; color: string; lab
   vision: { icon: Eye, color: "text-blue-500 bg-blue-500/10 border-blue-500/30", label: "Vision" },
   dream: { icon: Moon, color: "text-purple-500 bg-purple-500/10 border-purple-500/30", label: "Dream" },
   system: { icon: Settings, color: "text-slate-500 bg-slate-500/10 border-slate-500/30", label: "System" },
-  world_engine: { icon: Layers, color: "text-amber-500 bg-amber-500/10 border-amber-500/30", label: "World Engine" },
+  world_engine: { icon: Layers, color: "text-amber-500 bg-amber-500/10 border-amber-500/30", label: "Substrate" },
 };
 
 const difficultyColors: Record<string, string> = {

@@ -1,4 +1,4 @@
-# Clockless — powered by the CMPSBL World Engine
+# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
 # v10.5.4 ARCHITECT Epoch
 # Machine-Readable Context Standard for AI Systems
 # Version: 2026.02.17 | Schema: llms.txt v1.0
@@ -23,9 +23,9 @@ Unlike traditional AI frameworks that solve one problem (memory OR routing OR se
 
 name: CMPSBL (pronounced "composable")
 brand: CMPSBL®
-product_name: Clockless — powered by the CMPSBL World Engine
-version: 10.5.4 (ARCHITECT Epoch)
-type: Clockless World Engine, Cognitive Runtime, AI Infrastructure
+product_name: Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
+version: ARCHITECT Epoch
+type: Cognitive Reality, Cognitive Runtime, AI Infrastructure
 founded: 2009
 location: Dallas, Texas, USA
 website: https://cmpsbl.com

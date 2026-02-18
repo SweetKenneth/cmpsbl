@@ -21,7 +21,7 @@ const CATEGORIES = [
   { id: 'dream', name: 'Dream Cycles', icon: Moon, color: 'text-purple-500' },
   { id: 'vision', name: 'Observability', icon: Eye, color: 'text-blue-500' },
   { id: 'nexus', name: 'AI Routing', icon: Zap, color: 'text-emerald-500' },
-  { id: 'world_engine', name: 'World Engine', icon: Server, color: 'text-orange-500' },
+  { id: 'world_engine', name: 'Substrate', icon: Server, color: 'text-orange-500' },
   { id: 'system', name: 'System & Admin', icon: Settings, color: 'text-slate-500' },
 ];
 

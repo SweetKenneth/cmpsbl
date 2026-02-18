@@ -7,8 +7,8 @@
  *   Architect → $19/mo  (premium artifacts, cross-module orchestration, audit views)
  *   Enterprise → $99/mo (org workspaces, compliance, SLA-aware routing, governance)
  *
- * Core Rule: User projects run ON the CMPSBL World Engine.
- *            User projects never run AS the CMPSBL World Engine.
+ * Core Rule: User projects run ON the CMPSBL Substrate.
+ *            User projects never run AS the CMPSBL Substrate.
  */
 
 export const UNIFIED_TIERS = {

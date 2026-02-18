@@ -137,7 +137,7 @@ const InclusiveModuleMission = () => {
 
           <h2 className="text-3xl font-bold mt-12 mb-6">INCLUSIVE Integration with CMPSBL Ecosystem</h2>
           <p className="mb-6">
-            INCLUSIVE doesn't operate in isolation. As the 14th module of the <Link to="/solutions" className="text-primary hover:underline">CMPSBL World Engine</Link>, it benefits from and contributes to the broader adaptive intelligence platform.
+            INCLUSIVE doesn't operate in isolation. As the 14th module of the <Link to="/solutions" className="text-primary hover:underline">CMPSBL Substrate</Link>, it benefits from and contributes to the broader adaptive intelligence platform.
           </p>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">SYSTEM Integration: Audit Aggregation</h3>

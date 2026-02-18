@@ -268,7 +268,7 @@ export default function SubstrateLicensing() {
     <>
       <SEO
         title="Pricing | CMPSBL — Cognitive Infrastructure"
-        description="Adoptable pricing for the CMPSBL World Engine. Free to build, $9/mo Creator, $19/mo Architect, $99/mo Enterprise. Compose intelligence — don't control the engine."
+        description="Adoptable pricing for the CMPSBL Substrate. Free to build, $9/mo Creator, $19/mo Architect, $99/mo Enterprise. Compose intelligence — don't control the substrate."
         keywords={["CMPSBL pricing", "cognitive infrastructure", "AI substrate", "Creator tier", "Architect tier"]}
       />
 
@@ -296,7 +296,7 @@ export default function SubstrateLicensing() {
               </h1>
 
               <p className="text-base sm:text-xl text-muted-foreground mb-2 sm:mb-3">
-                Build on the CMPSBL World Engine — <strong className="text-foreground">not as it</strong>.
+                Build on the CMPSBL Substrate — <strong className="text-foreground">not as it</strong>.
                 Free users build real things. Paid tiers unlock more power.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground">
@@ -417,7 +417,7 @@ export default function SubstrateLicensing() {
                 { q: 'What are Crown Jewels?', a: 'Our highest-value sealed capabilities. Some are available at paid tiers. Others remain internal to preserve system integrity. You experience the power — you don\'t see the blueprint.' },
                 { q: 'What\'s the difference between Creator and Architect?', a: 'Creator ($9/mo) adds executable capabilities, private memory, and light automation. Architect ($19/mo) adds cross-module orchestration, batch execution, audit views, and priority routing. Most serious builders land at Architect.' },
                 { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. Changes take effect at the next billing cycle.' },
-                { q: 'What does "Builder Isolation" mean?', a: 'Your projects run ON the World Engine through templates, capabilities, and pipelines. You never have direct access to internal systems like CLM, CORTEX, or GOVERNOR. This protects both you and the platform.' },
+                { q: 'What does "Builder Isolation" mean?', a: 'Your projects run ON the Substrate through templates, capabilities, and pipelines. You never have direct access to internal systems like CLM, CORTEX, or GOVERNOR. This protects both you and the platform.' },
                 { q: 'Is Enterprise self-serve?', a: 'Yes, $99/mo Enterprise is self-serve. For dedicated instances, custom compliance, or SOC2 requirements, contact us for custom pricing.' },
               ].map((faq, i) => (
                 <Card key={i} className="bg-card/50">

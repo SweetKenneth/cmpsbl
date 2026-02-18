@@ -49,7 +49,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
     "url": "https://cmpsbl.com/capabilities",
     "isPartOf": {
       "@type": "WebSite",
-      "name": "CMPSBL World Engine",
+      "name": "CMPSBL Substrate",
       "url": "https://cmpsbl.com"
     },
     "breadcrumb": {
@@ -212,7 +212,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content="CMPSBL Capabilities Depot - Free Cognitive AI Library" />
-      <meta property="og:site_name" content="CMPSBL World Engine" />
+      <meta property="og:site_name" content="CMPSBL Substrate" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter */}

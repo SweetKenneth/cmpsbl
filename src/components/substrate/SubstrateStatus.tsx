@@ -1,5 +1,5 @@
 /**
- * CMPSBL World Engine Status Widget
+ * CMPSBL Substrate Status Widget
  * v10.5.4 — ARCHITECT Epoch compact status indicator
  */
 
@@ -38,7 +38,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         <AlertCircle className="h-4 w-4 text-destructive" />
       )}
       <span className="text-muted-foreground">
-        CMPSBL World Engine: {activeCount}/{totalModules} modules
+        CMPSBL Substrate: {activeCount}/{totalModules} modules
       </span>
       <Badge variant="outline" className="text-xs">
         v10.5.4

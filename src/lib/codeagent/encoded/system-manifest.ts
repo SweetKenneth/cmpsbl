@@ -329,7 +329,7 @@ export const SYSTEM_COMPONENTS: Record<string, ComponentEntry> = {
 export const SYSTEM_ROUTES: RouteEntry[] = [
   { path: '/', component: 'Explore', description: 'Homepage / landing', auth: 'public' },
   { path: '/substrate', component: 'SubstrateDashboard', description: 'Main substrate dashboard', auth: 'public' },
-  { path: '/os', component: 'SubstrateOS', description: 'CMPSBL World Engine with DECODE + ENCODE tabs', auth: 'public' },
+  { path: '/os', component: 'SubstrateOS', description: 'CMPSBL Substrate with DECODE + ENCODE tabs', auth: 'public' },
   { path: '/demo', component: 'SubstrateDemo', description: 'Interactive substrate demos', auth: 'public' },
   { path: '/proof', component: 'ProofMode', description: 'Proof-of-capability demonstrations', auth: 'public' },
   { path: '/showcase', component: 'STierDemos', description: 'S-Tier investor showcase — live proof-of-capability', auth: 'public' },

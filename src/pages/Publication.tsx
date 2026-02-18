@@ -41,8 +41,8 @@ export default function Publication() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="CMPSBL World Engine — DOI Publication"
-        description="DOI publication for the CMPSBL World Engine, including architecture, brain, nexus routing, defense intelligence, learning cycles, dream protocol, and licensing."
+        title="CMPSBL Substrate — DOI Publication"
+        description="DOI publication for the CMPSBL Substrate, including architecture, brain, nexus routing, defense intelligence, learning cycles, dream protocol, and licensing."
         canonical="https://cmpsbl.com/publication"
         keywords={['CMPSBL DOI', 'cognitive substrate', 'AI research artifact', 'Zenodo publication', 'OpenAIRE']}
         type="article"

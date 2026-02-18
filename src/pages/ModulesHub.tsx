@@ -22,7 +22,7 @@ export default function ModulesHub() {
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          "name": "CMPSBL World Engine Modules",
+          "name": "CMPSBL Substrate Modules",
           "description": "21 AI modules organized across 6 architectural layers",
           "url": "https://cmpsbl.com/modules",
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },

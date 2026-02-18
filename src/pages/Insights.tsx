@@ -54,7 +54,7 @@ export default function Insights() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>Substrate Insights — Observer Tier | CMPSBL</title>
-        <meta name="description" content="Observer-level access to the Clockless World Engine. Read-only visibility into architecture, documentation, and system standards." />
+        <meta name="description" content="Observer-level access to the Clockless Cognitive Reality. Read-only visibility into architecture, documentation, and system standards." />
       </Helmet>
 
       <PublicNav />

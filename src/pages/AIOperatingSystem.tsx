@@ -77,7 +77,7 @@ export default function AIOperatingSystem() {
   const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "CMPSBL World Engine",
+    "name": "CMPSBL Substrate",
     "description": "The world's first AI Operating System — 14 integrated modules providing persistent memory, intelligent routing, AI security, autonomous optimization, and meta-orchestration for production AI systems.",
     "url": "https://cmpsbl.com/ai-operating-system",
     "applicationCategory": "AI Operating System",
@@ -196,7 +196,7 @@ export default function AIOperatingSystem() {
               <Zap className="w-6 h-6 text-primary" /> CMPSBL: The First AI Operating System
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6 max-w-3xl">
-              The CMPSBL World Engine is the reference implementation of the AI Operating System category. 
+              The CMPSBL Substrate is the reference implementation of the Cognitive Reality category. 
               With <strong className="text-foreground">21 integrated modules</strong> organized across <strong className="text-foreground">6 architectural layers</strong>, 
               it provides the complete cognitive runtime for production AI — from the kernel event bus to meta-orchestration with 50 crystallized Crown Jewel pipelines.
             </p>

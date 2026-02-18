@@ -162,7 +162,7 @@ export default function MarketplaceSuccess() {
                             Your License Key
                           </h3>
                           <Badge variant="outline" className="text-xs">
-                            {productType === 'os' ? 'World Engine' : 'Template'}
+                            {productType === 'os' ? 'Substrate' : 'Template'}
                           </Badge>
                         </div>
                         

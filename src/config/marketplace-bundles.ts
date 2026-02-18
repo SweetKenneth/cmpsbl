@@ -320,9 +320,9 @@ export const STUDIO_LICENSES: StudioLicense[] = [
   {
     id: 'studio-professional',
     name: 'Studio Professional',
-    description: 'World Engine primitives with NPC memory and dream cycles.',
+    description: 'Substrate primitives with NPC memory and dream cycles.',
     includes: [
-      'World Engine Core',
+      'Substrate Core',
       'NPC Memory System',
       'Dream Cycles',
       'Persistent World State',
@@ -337,7 +337,7 @@ export const STUDIO_LICENSES: StudioLicense[] = [
   {
     id: 'studio-enterprise',
     name: 'Studio Enterprise',
-    description: 'Complete World Engine with multi-agent coordination and white-label.',
+    description: 'Complete Substrate with multi-agent coordination and white-label.',
     includes: [
       'Everything in Professional',
       'Multi-Agent Coordination',

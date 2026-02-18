@@ -201,7 +201,7 @@ const PromptFluidStudioGuide = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL World Engine Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>
                 <p className="text-sm text-muted-foreground">
                   Understand the complete ecosystem that powers Studio's autonomous capabilities.
                 </p>
