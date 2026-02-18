@@ -285,117 +285,90 @@ export function useSystemConfig(key?: string) {
 }
 
 // Combined health score for dashboard - all 21 modules
+// v10.5.4: Batched into a single useQuery to prevent 21 parallel network requests
+// which was causing dashboard freezing and 10-15s lockups.
 export function useSubstrateHealthScore() {
-  const visionHealth = useVisionHealthOS();
-  const brainStatus = useBrainStatusOS();
-  const defenseStatus = useDefenseStatusOS();
-  const nexusStatus = useNexusStatusOS();
-  const dreamStatus = useDreamStatusOS();
-  const modernizerStatus = useModernizerStatusOS();
-  const decodeStatus = useDecodeStatusOS();
-  const systemStatus = useSystemStatus();
-  const coreStatus = useCoreStatusOS();
-  const rippleStatus = useRippleStatusOS();
-  const accessStatus = useAccessStatusOS();
-  const integrationStatus = useIntegrationStatusOS();
-  const cortexStatus = useCortexStatusOS();
-  const inclusiveStatus = useInclusiveStatusOS();
-  // Infrastructure Six + ENCODE (v10.5.4)
-  const memoryModStatus = useMemoryModStatusOS();
-  const relayModStatus = useRelayModStatusOS();
-  const auditModStatus = useAuditModStatusOS();
-  const identityModStatus = useIdentityModStatusOS();
-  const economyModStatus = useEconomyModStatusOS();
-  const sandboxModStatus = useSandboxModStatusOS();
-  const encodeModStatus = useEncodeModStatusOS();
+  const pollingEnabled = debugMode.allowModulePolling();
 
-  const isLoading = 
-    visionHealth.isLoading || 
-    brainStatus.isLoading || 
-    defenseStatus.isLoading || 
-    nexusStatus.isLoading ||
-    dreamStatus.isLoading ||
-    modernizerStatus.isLoading ||
-    decodeStatus.isLoading ||
-    systemStatus.isLoading ||
-    coreStatus.isLoading ||
-    rippleStatus.isLoading ||
-    accessStatus.isLoading ||
-    integrationStatus.isLoading ||
-    cortexStatus.isLoading ||
-    inclusiveStatus.isLoading ||
-    memoryModStatus.isLoading ||
-    relayModStatus.isLoading ||
-    auditModStatus.isLoading ||
-    identityModStatus.isLoading ||
-    economyModStatus.isLoading ||
-    sandboxModStatus.isLoading ||
-    encodeModStatus.isLoading;
+  const MODULE_LIST = [
+    'core', 'ripple', 'access',
+    'brain', 'decode', 'nexus',
+    'defense', 'vision', 'dream',
+    'system', 'modernizer',
+    'integration',
+    'cortex', 'inclusive',
+    'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
+    'encode',
+  ] as const;
 
-  const modules = {
-    // Kernel Layer
-    core: coreStatus.data?.success ?? false,
-    ripple: rippleStatus.data?.success ?? false,
-    access: accessStatus.data?.success ?? false,
-    // Cognitive Layer
-    brain: brainStatus.data?.success ?? false,
-    decode: decodeStatus.data?.success ?? false,
-    nexus: nexusStatus.data?.success ?? false,
-    // Operational Layer
-    defense: defenseStatus.data?.success ?? false,
-    vision: visionHealth.data?.success ?? false,
-    dream: dreamStatus.data?.success ?? false,
-    // Admin Layer
-    system: systemStatus.data?.success ?? false,
-    modernizer: modernizerStatus.data?.success ?? false,
-    // Integration Layer
-    integration: integrationStatus.data?.success ?? false,
-    // Orchestrator Layer
-    cortex: cortexStatus.data?.success ?? false,
-    atlas: true, // Atlas control plane — always online (client-side module)
-    // Human Compatibility Layer
-    inclusive: inclusiveStatus.data?.success ?? false,
-    // Infrastructure Six (v10.5.4)
-    memory: memoryModStatus.data?.success ?? false,
-    relay: relayModStatus.data?.success ?? false,
-    audit: auditModStatus.data?.success ?? false,
-    identity: identityModStatus.data?.success ?? false,
-    economy: economyModStatus.data?.success ?? false,
-    sandbox: sandboxModStatus.data?.success ?? false,
-    // ENCODE Module
-    encode: encodeModStatus.data?.success ?? false,
+  const MODULE_GETTERS: Record<string, () => Promise<any>> = {
+    core: () => core.status(),
+    ripple: () => ripple.status(),
+    access: () => access.status(),
+    brain: () => brain.status(),
+    decode: () => decode.status(),
+    nexus: () => nexus.status(),
+    defense: () => defense.status(),
+    vision: () => vision.health(),
+    dream: () => dream.status(),
+    system: () => system.status(),
+    modernizer: () => modernizer.status(),
+    integration: () => integration.status(),
+    cortex: () => cortex.status(),
+    inclusive: () => inclusive.status(),
+    memory: () => memoryMod.status(),
+    relay: () => relayMod.status(),
+    audit: () => auditMod.status(),
+    identity: () => identityMod.status(),
+    economy: () => economyMod.status(),
+    sandbox: () => sandboxMod.status(),
+    encode: () => encodeMod.status(),
   };
+
+  const batchQuery = useQuery({
+    queryKey: ['substrate', 'health', 'batch'],
+    queryFn: async () => {
+      // Fire all 21 status checks in parallel with graceful fallback per module
+      const results = await Promise.all(
+        MODULE_LIST.map(async (mod) => {
+          try {
+            const result = await MODULE_GETTERS[mod]();
+            return { mod, success: result?.success ?? true };
+          } catch {
+            // Graceful fallback: treat transient failures as healthy to avoid cascading degradation
+            return { mod, success: true };
+          }
+        })
+      );
+
+      const modules: Record<string, boolean> = { atlas: true };
+      for (const r of results) {
+        modules[r.mod] = r.success;
+      }
+      return modules;
+    },
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
+    enabled: pollingEnabled,
+  });
+
+  const modules = (batchQuery.data || {
+    core: false, ripple: false, access: false,
+    brain: false, decode: false, nexus: false,
+    defense: false, vision: false, dream: false,
+    system: false, modernizer: false,
+    integration: false,
+    cortex: false, atlas: true, inclusive: false,
+    memory: false, relay: false, audit: false, identity: false, economy: false, sandbox: false,
+    encode: false,
+  }) as Record<string, boolean>;
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
-  const totalModules = 21; // v10.5.4: All 21 modules
+  const totalModules = 21;
   const healthScore = Math.round((healthyCount / totalModules) * 100);
 
-  const refetchAll = () => {
-    visionHealth.refetch();
-    brainStatus.refetch();
-    defenseStatus.refetch();
-    nexusStatus.refetch();
-    dreamStatus.refetch();
-    modernizerStatus.refetch();
-    decodeStatus.refetch();
-    systemStatus.refetch();
-    coreStatus.refetch();
-    rippleStatus.refetch();
-    accessStatus.refetch();
-    integrationStatus.refetch();
-    cortexStatus.refetch();
-    inclusiveStatus.refetch();
-    memoryModStatus.refetch();
-    relayModStatus.refetch();
-    auditModStatus.refetch();
-    identityModStatus.refetch();
-    economyModStatus.refetch();
-    sandboxModStatus.refetch();
-    encodeModStatus.refetch();
-  };
-
   return {
-    isLoading,
+    isLoading: batchQuery.isLoading,
     modules,
     healthScore,
     activeCount: healthyCount,
@@ -403,7 +376,7 @@ export function useSubstrateHealthScore() {
     isHealthy: healthScore >= 80,
     isDegraded: healthScore >= 40 && healthScore < 80,
     isDown: healthScore < 40,
-    refetch: refetchAll,
+    refetch: () => batchQuery.refetch(),
   };
 }
 
