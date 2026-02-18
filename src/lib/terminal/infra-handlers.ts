@@ -170,5 +170,38 @@ export function registerInfraHandlers(): void {
     return { success: true, data: { history: nlTerminal.history() } };
   });
 
-  log.info('terminal', 'Infrastructure handlers registered', { count: 30 });
+  // ═══ SUBSYSTEM HEALTH & HEALING ═══
+  registerHandler('system.subsystems', async () => {
+    const { getSubsystemDiagnostics } = await import('@/lib/substrate/subsystem-health');
+    const diag = getSubsystemDiagnostics();
+    return { success: true, data: diag };
+  });
+
+  registerHandler('system.heal.intent_mesh', async () => {
+    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
+    return await healSubsystem('intent_mesh');
+  });
+
+  registerHandler('system.heal.autoblog', async () => {
+    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
+    return await healSubsystem('autoblog');
+  });
+
+  registerHandler('system.heal.seba', async () => {
+    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
+    return await healSubsystem('seba');
+  });
+
+  registerHandler('system.heal.shadow_mesh', async () => {
+    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
+    return await healSubsystem('shadow_mesh');
+  });
+
+  registerHandler('system.heal.all_subsystems', async () => {
+    const { healAllSubsystems } = await import('@/lib/substrate/subsystem-health');
+    const results = await healAllSubsystems();
+    return { success: results.every(r => r.ok), data: results };
+  });
+
+  log.info('terminal', 'Infrastructure + subsystem handlers registered', { count: 36 });
 }

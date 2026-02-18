@@ -12,6 +12,7 @@ import { getIncidentSummary } from '../incident-timeline';
 import { getVersioningSummary } from '../pattern-versioning';
 import { getAllBreakerStates } from '../circuit-breaker';
 import { SUBSTRATE_VERSION, SUBSTRATE_CODENAME, SUBSTRATE_BUILD } from '../versions';
+import { getAllSubsystemHealth, getSubsystemDiagnostics, type SubsystemHealthEntry } from '../subsystem-health';
 
 export interface HealthStatus {
   status: 'healthy' | 'degraded' | 'critical' | 'unknown';
@@ -117,6 +118,21 @@ export function getHealthDashboard(): HealthStatus {
         detail: `State: ${b.state} | Failures: ${b.failures} | Trips: ${b.totalTrips}`,
         lastCheck: b.lastStateChange,
       });
+    }
+  }
+
+  // 6. Subsystem Health (Intent Mesh, AutoBlog, SEBA, Shadow Mesh)
+  const subsystemHealth = getAllSubsystemHealth();
+  for (const sub of subsystemHealth) {
+    systems.push({
+      name: `Subsystem: ${sub.name}`,
+      status: sub.status === 'healthy' ? 'ok' : sub.status === 'degraded' ? 'warn' : sub.status === 'critical' ? 'error' : 'offline',
+      score: sub.score,
+      detail: `${sub.detail} | Circuit: ${sub.circuit.state} | Heals: ${sub.healCount}`,
+      lastCheck: Date.now(),
+    });
+    if (sub.status === 'critical' || sub.status === 'offline') {
+      alerts.push({ level: 'warning', system: sub.name, message: `${sub.name} is ${sub.status} (score: ${sub.score})`, timestamp: Date.now() });
     }
   }
 

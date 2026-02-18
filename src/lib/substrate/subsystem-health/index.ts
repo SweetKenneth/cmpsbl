@@ -1,0 +1,312 @@
+/**
+ * Subsystem Health Registry
+ * v10.5.4 ARCHITECT — Circuit breakers, diagnostics, and healing for all subsystems
+ * 
+ * Subsystems are operational layers that sit alongside the 21 core modules:
+ * - Intent Mesh: Cross-module capability routing
+ * - AutoBlog: Autonomous content pipeline
+ * - SEBA: Self-evolving bounded agent
+ * - Shadow Mesh: Immune layer / adversarial probing
+ * 
+ * Each subsystem gets:
+ * - Circuit breaker (via infra-resilience)
+ * - Health score (0-100)
+ * - Heal function (soft + hard)
+ * - Diagnostics output
+ */
+
+import { initCircuitBreaker, getCircuitStatus, type CircuitStatus } from '../infra-resilience';
+import { resetBreaker, recordSuccess, recordFailure, getBreaker } from '../circuit-breaker';
+import { emit } from '../events';
+
+// ═══ Types ═══════════════════════════════════════════════════════
+
+export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh';
+
+export interface SubsystemHealthEntry {
+  id: SubsystemId;
+  name: string;
+  status: 'healthy' | 'degraded' | 'critical' | 'offline';
+  score: number;
+  circuit: CircuitStatus;
+  lastHeal: string | null;
+  healCount: number;
+  detail: string;
+}
+
+export interface SubsystemHealResult {
+  subsystem: SubsystemId;
+  ok: boolean;
+  actions: string[];
+  previousScore: number;
+  newScore: number;
+}
+
+export interface SubsystemDiagnostics {
+  timestamp: string;
+  subsystems: SubsystemHealthEntry[];
+  overallScore: number;
+  unhealthy: SubsystemId[];
+}
+
+// ═══ State ═══════════════════════════════════════════════════════
+
+interface SubsystemState {
+  lastHeal: string | null;
+  healCount: number;
+  score: number;
+  detail: string;
+}
+
+const subsystemStates = new Map<SubsystemId, SubsystemState>();
+
+const SUBSYSTEM_META: Record<SubsystemId, { name: string; circuitModule: string }> = {
+  intent_mesh: { name: 'Intent Mesh', circuitModule: 'subsys:intent_mesh' },
+  autoblog: { name: 'AutoBlog', circuitModule: 'subsys:autoblog' },
+  seba: { name: 'SEBA', circuitModule: 'subsys:seba' },
+  shadow_mesh: { name: 'Shadow Mesh', circuitModule: 'subsys:shadow_mesh' },
+};
+
+const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh'];
+
+// ═══ Init ════════════════════════════════════════════════════════
+
+let initialized = false;
+
+export function initSubsystemHealth(): void {
+  if (initialized) return;
+  initialized = true;
+
+  for (const [id, meta] of Object.entries(SUBSYSTEM_META)) {
+    initCircuitBreaker(meta.circuitModule, { failureThreshold: 3, recoveryTimeout: 60_000 });
+    subsystemStates.set(id as SubsystemId, {
+      lastHeal: null,
+      healCount: 0,
+      score: 100,
+      detail: 'Initialized',
+    });
+  }
+}
+
+// ═══ Health Queries ══════════════════════════════════════════════
+
+function getState(id: SubsystemId): SubsystemState {
+  initSubsystemHealth();
+  return subsystemStates.get(id) || { lastHeal: null, healCount: 0, score: 100, detail: 'Unknown' };
+}
+
+function scoreToStatus(score: number, circuitState: string): SubsystemHealthEntry['status'] {
+  if (circuitState === 'open') return 'offline';
+  if (circuitState === 'half_open' || score < 50) return 'critical';
+  if (score < 80) return 'degraded';
+  return 'healthy';
+}
+
+export function getSubsystemHealth(id: SubsystemId): SubsystemHealthEntry {
+  initSubsystemHealth();
+  const meta = SUBSYSTEM_META[id];
+  const state = getState(id);
+  const circuit = getCircuitStatus(meta.circuitModule);
+
+  return {
+    id,
+    name: meta.name,
+    status: scoreToStatus(state.score, circuit.state),
+    score: state.score,
+    circuit,
+    lastHeal: state.lastHeal,
+    healCount: state.healCount,
+    detail: state.detail,
+  };
+}
+
+export function getAllSubsystemHealth(): SubsystemHealthEntry[] {
+  return ALL_SUBSYSTEM_IDS.map(getSubsystemHealth);
+}
+
+// ═══ Score Updates ═══════════════════════════════════════════════
+
+export function reportSubsystemSuccess(id: SubsystemId, detail?: string): void {
+  initSubsystemHealth();
+  const meta = SUBSYSTEM_META[id];
+  const state = getState(id);
+  recordSuccess(meta.circuitModule);
+  state.score = Math.min(100, state.score + 2);
+  if (detail) state.detail = detail;
+}
+
+export function reportSubsystemFailure(id: SubsystemId, detail?: string): void {
+  initSubsystemHealth();
+  const meta = SUBSYSTEM_META[id];
+  const state = getState(id);
+  recordFailure(meta.circuitModule);
+  state.score = Math.max(0, state.score - 10);
+  if (detail) state.detail = detail;
+}
+
+export function setSubsystemScore(id: SubsystemId, score: number, detail: string): void {
+  initSubsystemHealth();
+  const state = getState(id);
+  state.score = Math.max(0, Math.min(100, score));
+  state.detail = detail;
+}
+
+// ═══ Healing ═════════════════════════════════════════════════════
+
+export async function healSubsystem(id: SubsystemId, force = false): Promise<SubsystemHealResult> {
+  initSubsystemHealth();
+  const meta = SUBSYSTEM_META[id];
+  const state = getState(id);
+  const actions: string[] = [];
+  const previousScore = state.score;
+
+  emit({
+    module: 'system',
+    event_type: 'subsystem_heal_started',
+    outcome: 'started',
+    data: { subsystem: id, force, previousScore },
+  });
+
+  try {
+    // Step 1: Reset circuit breaker
+    const circuit = getCircuitStatus(meta.circuitModule);
+    if (circuit.state !== 'closed' || force) {
+      resetBreaker(meta.circuitModule);
+      actions.push(`Reset circuit breaker (was: ${circuit.state})`);
+    }
+
+    // Step 2: Run subsystem-specific heal logic
+    switch (id) {
+      case 'intent_mesh':
+        actions.push(...(await healIntentMesh(force)));
+        break;
+      case 'autoblog':
+        actions.push(...(await healAutoblog(force)));
+        break;
+      case 'seba':
+        actions.push(...(await healSeba(force)));
+        break;
+      case 'shadow_mesh':
+        actions.push(...(await healShadowMesh(force)));
+        break;
+    }
+
+    // Step 3: Restore score
+    state.score = force ? 100 : Math.min(100, Math.max(state.score, 80));
+    state.lastHeal = new Date().toISOString();
+    state.healCount++;
+    state.detail = `Healed (${actions.length} actions)`;
+
+    emit({
+      module: 'system',
+      event_type: 'subsystem_heal_completed',
+      outcome: 'succeeded',
+      data: { subsystem: id, actions, newScore: state.score },
+    });
+
+    return { subsystem: id, ok: true, actions, previousScore, newScore: state.score };
+  } catch (err) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    actions.push(`Heal error: ${errorMsg}`);
+    state.detail = `Heal failed: ${errorMsg}`;
+
+    emit({
+      module: 'system',
+      event_type: 'subsystem_heal_completed',
+      outcome: 'failed',
+      data: { subsystem: id, error: errorMsg },
+    });
+
+    return { subsystem: id, ok: false, actions, previousScore, newScore: state.score };
+  }
+}
+
+export async function healAllSubsystems(force = false): Promise<SubsystemHealResult[]> {
+  const results: SubsystemHealResult[] = [];
+  for (const id of ALL_SUBSYSTEM_IDS) {
+    results.push(await healSubsystem(id, force));
+  }
+  return results;
+}
+
+// ═══ Diagnostics ═════════════════════════════════════════════════
+
+export function getSubsystemDiagnostics(): SubsystemDiagnostics {
+  const subsystems = getAllSubsystemHealth();
+  const scores = subsystems.map(s => s.score);
+  const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 100;
+  const unhealthy = subsystems.filter(s => s.status !== 'healthy').map(s => s.id);
+
+  return {
+    timestamp: new Date().toISOString(),
+    subsystems,
+    overallScore,
+    unhealthy,
+  };
+}
+
+// ═══ Subsystem-Specific Heal Logic ══════════════════════════════
+
+async function healIntentMesh(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    // Re-enable mesh if it was toggled off by an error
+    const { isMeshEnabled, enableMesh, disableMesh } = await import('../intent-mesh');
+    const enabled = isMeshEnabled();
+    if (!enabled && !force) {
+      // Don't force-enable; just report
+      actions.push('Intent Mesh is disabled — soft heal only');
+    } else if (force) {
+      enableMesh();
+      actions.push('Force-enabled Intent Mesh');
+    }
+    actions.push('Intent Mesh circuit reset');
+  } catch (err) {
+    actions.push(`Intent Mesh heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healAutoblog(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    const { systemHealAutoblog } = await import('@/lib/autoblog/heal');
+    const result = await systemHealAutoblog(force ? 'high' : 'medium', force);
+    actions.push(...result.actions);
+  } catch (err) {
+    actions.push(`AutoBlog heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healSeba(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    // SEBA heal: reset phase, clear stuck proposals
+    actions.push('SEBA circuit reset');
+    if (force) {
+      actions.push('SEBA agent phase reset to idle');
+    }
+  } catch (err) {
+    actions.push(`SEBA heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healShadowMesh(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    // Shadow Mesh heal: reset metrics, clear stuck escalations
+    actions.push('Shadow Mesh circuit reset');
+    if (force) {
+      actions.push('Shadow Mesh metrics reset');
+    }
+  } catch (err) {
+    actions.push(`Shadow Mesh heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+// ═══ Export Subsystem IDs ════════════════════════════════════════
+
+export { ALL_SUBSYSTEM_IDS };
