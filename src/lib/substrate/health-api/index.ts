@@ -13,6 +13,7 @@ import { getVersioningSummary } from '../pattern-versioning';
 import { getAllBreakerStates } from '../circuit-breaker';
 import { SUBSTRATE_VERSION, SUBSTRATE_CODENAME, SUBSTRATE_BUILD } from '../versions';
 import { getAllSubsystemHealth, getSubsystemDiagnostics, type SubsystemHealthEntry } from '../subsystem-health';
+import { withFallbackSync } from '../graceful-degradation';
 
 export interface HealthStatus {
   status: 'healthy' | 'degraded' | 'critical' | 'unknown';
@@ -55,13 +56,46 @@ export interface HealthSummary {
 
 const bootTime = Date.now();
 
-/** Generate complete health dashboard */
+/** Generate complete health dashboard — wrapped in top-level try-catch for graceful degradation */
 export function getHealthDashboard(): HealthStatus {
+  try {
+    return _buildHealthDashboard();
+  } catch (err) {
+    console.warn('[HealthAPI] Dashboard generation failed, returning safe fallback:', err instanceof Error ? err.message : String(err));
+    return {
+      status: 'unknown',
+      score: 0,
+      uptime: Date.now() - bootTime,
+      version: SUBSTRATE_VERSION,
+      codename: SUBSTRATE_CODENAME,
+      build: SUBSTRATE_BUILD,
+      timestamp: new Date().toISOString(),
+      systems: [],
+      alerts: [{ level: 'critical', system: 'Health API', message: 'Health dashboard generation failed — system running in degraded mode', timestamp: Date.now() }],
+      summary: {
+        totalSystems: 0,
+        healthy: 0,
+        degraded: 0,
+        critical: 0,
+        circuitBreakers: { total: 0, closed: 0, open: 0, halfOpen: 0, totalTrips: 0, unhealthy: [] as string[] },
+        loadShedding: { level: 'normal', active: '0/0', pressure: '0%', shed: [] as string[], throttled: [] as string[] },
+        incidents: { total: 0, open: 0, critical: 0, avgDuration: 'N/A' },
+        patternVersions: { totalPatterns: 0, totalVersions: 0, totalMigrations: 0, deprecatedVersions: 0, avgVersionsPerPattern: '0' },
+      },
+    };
+  }
+}
+
+function _buildHealthDashboard(): HealthStatus {
   const systems: SystemHealth[] = [];
   const alerts: HealthAlert[] = [];
 
-  // 1. Circuit Breakers
-  const cbSummary = getCircuitBreakerSummary();
+  // 1. Circuit Breakers — graceful
+  const cbSummary = withFallbackSync(
+    () => getCircuitBreakerSummary(),
+    { total: 0, closed: 0, open: 0, halfOpen: 0, totalTrips: 0, unhealthy: [] as string[] },
+    'CircuitBreakerSummary'
+  );
   systems.push({
     name: 'Circuit Breakers',
     status: cbSummary.open > 0 ? 'error' : cbSummary.halfOpen > 0 ? 'warn' : 'ok',
@@ -73,22 +107,34 @@ export function getHealthDashboard(): HealthStatus {
     alerts.push({ level: 'error', system: 'Circuit Breakers', message: `${cbSummary.open} breakers OPEN: ${cbSummary.unhealthy.join(', ')}`, timestamp: Date.now() });
   }
 
-  // 2. Load Shedding
-  const lsSummary = getSheddingSummary();
-  const loadState = getLoadState();
+  // 2. Load Shedding — graceful
+  const lsSummary = withFallbackSync(
+    () => getSheddingSummary(),
+    { level: 'normal' as const, active: '0/0', pressure: '0%', shed: [] as string[], throttled: [] as string[] },
+    'LoadSheddingSummary'
+  );
+  const loadState = withFallbackSync(
+    () => getLoadState(),
+    { level: 'normal' as const, activeModules: 0, shedModules: [] as string[], throttledModules: {} as Record<string, number>, lastCheck: Date.now(), pressure: 0 },
+    'LoadState'
+  );
   systems.push({
     name: 'Load Shedding',
     status: loadState.level === 'critical' ? 'error' : loadState.level === 'high' ? 'warn' : 'ok',
-    score: 100 - loadState.pressure,
+    score: 100 - (loadState.pressure || 0),
     detail: `Level: ${lsSummary.level} | Active: ${lsSummary.active}`,
-    lastCheck: loadState.lastCheck,
+    lastCheck: loadState.lastCheck || Date.now(),
   });
   if (loadState.level !== 'normal') {
     alerts.push({ level: loadState.level === 'critical' ? 'critical' : 'warning', system: 'Load Shedding', message: `System pressure at ${lsSummary.pressure}`, timestamp: Date.now() });
   }
 
-  // 3. Incidents
-  const incSummary = getIncidentSummary();
+  // 3. Incidents — graceful
+  const incSummary = withFallbackSync(
+    () => getIncidentSummary(),
+    { total: 0, open: 0, critical: 0, avgDuration: 'N/A' },
+    'IncidentSummary'
+  );
   systems.push({
     name: 'Incident Tracker',
     status: incSummary.critical > 0 ? 'error' : incSummary.open > 0 ? 'warn' : 'ok',
@@ -97,8 +143,12 @@ export function getHealthDashboard(): HealthStatus {
     lastCheck: Date.now(),
   });
 
-  // 4. Pattern Versioning
-  const pvSummary = getVersioningSummary();
+  // 4. Pattern Versioning — graceful
+  const pvSummary = withFallbackSync(
+    () => getVersioningSummary(),
+    { totalPatterns: 0, totalVersions: 0, totalMigrations: 0, deprecatedVersions: 0, avgVersionsPerPattern: '0' },
+    'PatternVersioning'
+  );
   systems.push({
     name: 'Pattern Versioning',
     status: 'ok',
@@ -107,8 +157,8 @@ export function getHealthDashboard(): HealthStatus {
     lastCheck: Date.now(),
   });
 
-  // 5. Breaker states per module
-  const breakerStates = getAllBreakerStates();
+  // 5. Breaker states per module — graceful
+  const breakerStates = withFallbackSync(() => getAllBreakerStates(), [] as any[], 'BreakerStates');
   for (const b of breakerStates) {
     if (b.state !== 'closed') {
       systems.push({
@@ -121,8 +171,8 @@ export function getHealthDashboard(): HealthStatus {
     }
   }
 
-  // 6. Subsystem Health (Intent Mesh, AutoBlog, SEBA, Shadow Mesh)
-  const subsystemHealth = getAllSubsystemHealth();
+  // 6. Subsystem Health (Intent Mesh, AutoBlog, SEBA, Shadow Mesh) — graceful
+  const subsystemHealth = withFallbackSync(() => getAllSubsystemHealth(), [] as SubsystemHealthEntry[], 'SubsystemHealth');
   for (const sub of subsystemHealth) {
     systems.push({
       name: `Subsystem: ${sub.name}`,

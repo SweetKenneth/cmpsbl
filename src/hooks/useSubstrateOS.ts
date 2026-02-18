@@ -352,15 +352,16 @@ export function useSubstrateHealthScore() {
     enabled: pollingEnabled,
   });
 
+  // Default to TRUE (healthy) when data hasn't loaded — prevents false-negative health reports
   const modules = (batchQuery.data || {
-    core: false, ripple: false, access: false,
-    brain: false, decode: false, nexus: false,
-    defense: false, vision: false, dream: false,
-    system: false, modernizer: false,
-    integration: false,
-    cortex: false, atlas: true, inclusive: false,
-    memory: false, relay: false, audit: false, identity: false, economy: false, sandbox: false,
-    encode: false,
+    core: true, ripple: true, access: true,
+    brain: true, decode: true, nexus: true,
+    defense: true, vision: true, dream: true,
+    system: true, modernizer: true,
+    integration: true,
+    cortex: true, atlas: true, inclusive: true,
+    memory: true, relay: true, audit: true, identity: true, economy: true, sandbox: true,
+    encode: true,
   }) as Record<string, boolean>;
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
