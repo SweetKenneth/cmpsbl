@@ -13,6 +13,8 @@
 
 import { getBreaker, canExecute, recordSuccess, resetBreaker, getAllBreakerStates, type CircuitBreaker } from '../circuit-breaker';
 import { emit } from '../events';
+import { runPredictionCycle } from '../predictive-failure';
+import { calculatePressure, updatePressure } from '../load-shedding';
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
@@ -236,7 +238,31 @@ export function startAutoRecovery(): void {
   if (probeTimer) return;
   
   probeTimer = setInterval(() => {
+    // 1. Run circuit recovery probes
     runRecoveryCycle();
+    
+    // 2. Run predictive failure analysis
+    try {
+      const predictions = runPredictionCycle();
+      if (predictions.length > 0) {
+        emit({
+          module: 'core',
+          event_type: 'predictive_failure_detected',
+          outcome: predictions.some(p => p.severity === 'critical') ? 'failed' : 'succeeded',
+          data: { count: predictions.length, critical: predictions.filter(p => p.severity === 'critical').length },
+        });
+      }
+    } catch { /* graceful — predictions are additive */ }
+    
+    // 3. Update system pressure from breaker states
+    try {
+      const allBreakers = getAllBreakerStates();
+      const openCount = allBreakers.filter(b => b.state === 'open').length;
+      const halfOpenCount = allBreakers.filter(b => b.state === 'half_open').length;
+      const errorRate = allBreakers.length > 0 ? (openCount + halfOpenCount * 0.5) / Math.max(allBreakers.length, 1) : 0;
+      const pressure = calculatePressure({ errorRate, queueDepth: state.activeRecoveries.size });
+      updatePressure(pressure);
+    } catch { /* graceful — pressure calculation is additive */ }
   }, config.probeIntervalMs);
 
   emit({

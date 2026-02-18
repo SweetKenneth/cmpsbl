@@ -14,6 +14,9 @@ import { getAllBreakerStates } from '../circuit-breaker';
 import { SUBSTRATE_VERSION, SUBSTRATE_CODENAME, SUBSTRATE_BUILD } from '../versions';
 import { getAllSubsystemHealth, getSubsystemDiagnostics, type SubsystemHealthEntry } from '../subsystem-health';
 import { withFallbackSync } from '../graceful-degradation';
+import { getActivePredictions } from '../predictive-failure';
+import { getDependencies, getDownDependencies } from '../dependency-health';
+import { getRecoveryState } from '../core-circuit-recovery';
 
 export interface HealthStatus {
   status: 'healthy' | 'degraded' | 'critical' | 'unknown';
@@ -184,6 +187,58 @@ function _buildHealthDashboard(): HealthStatus {
     if (sub.status === 'critical' || sub.status === 'offline') {
       alerts.push({ level: 'warning', system: sub.name, message: `${sub.name} is ${sub.status} (score: ${sub.score})`, timestamp: Date.now() });
     }
+  }
+
+  // 7. Predictive Failure Alerts — graceful
+  const activePredictions = withFallbackSync(() => getActivePredictions(), [] as any[], 'PredictiveFailure');
+  for (const pred of activePredictions) {
+    if (pred.severity === 'critical' || pred.severity === 'high') {
+      alerts.push({
+        level: pred.severity === 'critical' ? 'critical' : 'warning',
+        system: pred.moduleId,
+        message: `Predicted ${pred.metric} failure in ${Math.round(pred.estimatedTimeToFailureMs / 1000)}s (confidence: ${Math.round(pred.confidence * 100)}%)`,
+        timestamp: pred.createdAt,
+      });
+    }
+  }
+  if (activePredictions.length > 0) {
+    systems.push({
+      name: 'Predictive Failure',
+      status: activePredictions.some((p: any) => p.severity === 'critical') ? 'error' : activePredictions.length > 0 ? 'warn' : 'ok',
+      score: Math.max(0, 100 - activePredictions.length * 15),
+      detail: `${activePredictions.length} active predictions`,
+      lastCheck: Date.now(),
+    });
+  }
+
+  // 8. Dependency Health — graceful
+  const deps = withFallbackSync(() => getDependencies(), [] as any[], 'DependencyHealth');
+  const downDeps = withFallbackSync(() => getDownDependencies(), [] as any[], 'DownDependencies');
+  if (deps.length > 0) {
+    const healthyDeps = deps.filter((d: any) => d.status === 'healthy').length;
+    systems.push({
+      name: 'Dependency Health',
+      status: downDeps.length > 0 ? 'error' : healthyDeps < deps.length ? 'warn' : 'ok',
+      score: deps.length > 0 ? Math.round((healthyDeps / deps.length) * 100) : 100,
+      detail: `${healthyDeps}/${deps.length} healthy`,
+      lastCheck: Date.now(),
+    });
+    for (const d of downDeps) {
+      alerts.push({ level: 'error', system: 'Dependencies', message: `${d.name} is DOWN (${d.consecutiveFailures} consecutive failures)`, timestamp: d.lastCheckAt || Date.now() });
+    }
+  }
+
+  // 9. Circuit Recovery Engine — graceful
+  const recovery = withFallbackSync(() => getRecoveryState(), { running: false, activeRecoveries: 0, totalRecoveries: 0, totalFailures: 0, recentHistory: [], config: {} as any }, 'RecoveryEngine');
+  systems.push({
+    name: 'Auto-Recovery Engine',
+    status: recovery.running ? 'ok' : 'warn',
+    score: recovery.running ? 100 : 50,
+    detail: `${recovery.running ? 'Running' : 'Stopped'} | Recovered: ${recovery.totalRecoveries} | Active: ${recovery.activeRecoveries}`,
+    lastCheck: Date.now(),
+  });
+  if (!recovery.running) {
+    alerts.push({ level: 'warning', system: 'Auto-Recovery', message: 'Circuit recovery engine is not running', timestamp: Date.now() });
   }
 
   // Calculate overall

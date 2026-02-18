@@ -15,6 +15,8 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { recordSuccess as cbRecordSuccess, recordFailure as cbRecordFailure, canExecute as cbCanExecute } from '@/lib/substrate/circuit-breaker';
+import { recordSample } from '@/lib/substrate/predictive-failure';
 
 export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox';
 
@@ -72,6 +74,19 @@ class SubstrateClient {
 
   async invoke<T = unknown>(request: SubstrateRequest): Promise<SubstrateResponse<T>> {
     const timeoutMs = getTimeoutForAction(request.action);
+    const circuitKey = `module:${request.module}`;
+    const invokeStart = Date.now();
+
+    // Circuit breaker pre-check — reject if module circuit is open
+    if (!cbCanExecute(circuitKey)) {
+      return {
+        success: false,
+        module: request.module,
+        action: request.action,
+        error: `Module ${request.module} circuit is OPEN — request rejected. Will auto-recover.`,
+        timestamp: new Date().toISOString(),
+      };
+    }
 
     try {
       // Use AbortController for proper timeout that cancels the underlying fetch
@@ -85,8 +100,14 @@ class SubstrateClient {
 
         clearTimeout(timeoutId);
         const now = new Date().toISOString();
+        const latency = Date.now() - invokeStart;
+
+        // Feed latency into predictive failure engine
+        recordSample({ moduleId: request.module, metric: 'latency_ms', value: latency, timestamp: Date.now() });
 
         if (error) {
+          cbRecordFailure(circuitKey);
+          recordSample({ moduleId: request.module, metric: 'error_rate', value: 1, timestamp: Date.now() });
           return {
             success: false,
             module: request.module,
@@ -105,6 +126,9 @@ class SubstrateClient {
             payload.message ||
             'Command failed';
 
+          // Soft failure — don't trip circuit for business-logic failures
+          recordSample({ moduleId: request.module, metric: 'error_rate', value: 0.5, timestamp: Date.now() });
+
           return {
             success: false,
             module: request.module,
@@ -114,6 +138,10 @@ class SubstrateClient {
             timestamp: now,
           };
         }
+
+        // Success — record to circuit breaker
+        cbRecordSuccess(circuitKey);
+        recordSample({ moduleId: request.module, metric: 'error_rate', value: 0, timestamp: Date.now() });
 
         return {
           success: true,
@@ -128,6 +156,8 @@ class SubstrateClient {
       }
     } catch (err) {
       const isTimeout = err instanceof DOMException && err.name === 'AbortError';
+      cbRecordFailure(circuitKey);
+      recordSample({ moduleId: request.module, metric: 'error_rate', value: 1, timestamp: Date.now() });
       return {
         success: false,
         module: request.module,
