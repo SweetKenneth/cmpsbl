@@ -100,7 +100,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="Clockless v10.5.0 ARCHITECT Epoch — powered by the CMPSBL World Engine. Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
+        <meta name="description" content="Clockless ARCHITECT Epoch — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -116,9 +116,9 @@ export default function Foundations() {
             Foundations
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            Clockless v10.5.0, powered by the CMPSBL World Engine, is the reference implementation and proposed standard 
-            for the <strong>substrate class</strong> of AI systems — persistent runtime, memory, 
-            doctrine, and self-improvement.
+            Clockless, powered by the CMPSBL Substrate, is the reference implementation and proposed standard 
+            for the <strong>cognitive reality class</strong> of AI systems — persistent runtime, memory, 
+            governance, and self-improvement.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             <Badge variant="outline">21 Modules</Badge>

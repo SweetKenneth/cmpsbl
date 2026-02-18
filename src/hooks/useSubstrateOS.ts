@@ -1,5 +1,5 @@
 /**
- * CMPSBL World Engine Dashboard Hooks
+ * CMPSBL Substrate Dashboard Hooks
  * v10.5.4 ARCHITECT — Real-time telemetry and control hooks for the OS surface
  * Respects debug mode kill-switch
  */

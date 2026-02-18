@@ -70,7 +70,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Support", href: "/support" },
         { name: "Contact", href: "/contact" },
-        { name: "World Engine", href: "/substrate" },
+        { name: "Substrate", href: "/substrate" },
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
         { name: "Investors", href: "/investors" },

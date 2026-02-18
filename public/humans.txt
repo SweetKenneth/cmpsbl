@@ -61,7 +61,7 @@ Cortex: Policy orchestration
 
 /* COLOPHON */
 
-Clockless v10.5.4 ARCHITECT Epoch — powered by the CMPSBL World Engine
+Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
 21 Modules • 400+ Terminal Commands
 200 Synergy Pipelines • 400+ Depot Capabilities
 CLM Engine v2.0 • Universal Brain Transfer Pipeline

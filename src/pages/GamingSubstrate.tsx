@@ -1,5 +1,5 @@
 /**
- * Gaming CMPSBL — NPC Brains, World Engines & Persistent Memory
+ * Gaming CMPSBL — NPC Brains, Cognitive Reality & Persistent Memory
  * Polished showcase for game developers
  */
 
@@ -295,7 +295,7 @@ export default function GamingSubstrate() {
           "video game AI",
           "LLM NPCs",
           "AI companions",
-          "world engine",
+          "cognitive reality",
           "game development AI",
           "CMPSBL",
         ]}

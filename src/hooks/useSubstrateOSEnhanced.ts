@@ -1,5 +1,5 @@
 /**
- * Enhanced CMPSBL World Engine Hooks — Advanced brain operations
+ * Enhanced CMPSBL Substrate Hooks — Advanced brain operations
  * Mutations for cognitive intelligence features
  */
 

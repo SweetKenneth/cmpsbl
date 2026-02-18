@@ -346,7 +346,7 @@ export default function SubstrateCapabilitiesDocs() {
           
           <p className="text-lg text-muted-foreground max-w-3xl">
             Every template includes <span className="text-foreground font-medium">48+ production-ready cognitive capabilities</span> from 
-            the CMPSBL World Engine. Use these features via the SDK in any template.
+            the CMPSBL Substrate. Use these features via the SDK in any template.
           </p>
 
           {/* Quick Stats */}

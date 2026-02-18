@@ -1,5 +1,5 @@
 /**
- * META HERO: Clockless® — powered by the CMPSBL World Engine
+ * META HERO: Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate
  * Studio-grade hero with cinematic typography and fluid motion
  * v10.6.0 ARCHITECT Epoch
  */

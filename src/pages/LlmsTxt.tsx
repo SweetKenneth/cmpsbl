@@ -15,7 +15,7 @@ import { Terminal, Brain, Shield, Zap, MessageSquare, Eye, Moon, Copy, Check, Do
 import { useState } from "react";
 import { toast } from "sonner";
 
-const LLMS_TXT_CONTENT = `# Clockless — powered by the CMPSBL World Engine
+const LLMS_TXT_CONTENT = `# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
 # v10.5.4 ARCHITECT Epoch
 # Machine-Readable Context Standard for AI Systems
 
@@ -28,7 +28,7 @@ Clockless v10.5.4 ARCHITECT adopts and implements LLMS.txt as its primary machin
 
 ## About
 
-Clockless is a persistent, clockless world engine powered by the CMPSBL World Engine — 21 modules, real-time observability, adaptive learning, and multi-provider routing.
+Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 21 modules, real-time observability, adaptive learning, and multi-provider routing.
 
 ## 21-Module Architecture (v10.5.4 ARCHITECT)
 

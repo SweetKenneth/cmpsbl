@@ -134,7 +134,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
     }
     
     if (trimmed === 'version') {
-      addResult('version', 'success', 'Clockless — CMPSBL World Engine v10.8.0\nARCHITECT Epoch — 21 modules, 50 crystallized Crown Jewel pipelines, 250 synergy pipelines\nWhere machines learn to dream. | 360+ commands');
+      addResult('version', 'success', 'Clockless — CMPSBL Substrate\nA Cognitive Reality System — 21 modules, 50 crystallized Crown Jewel pipelines, 250 synergy pipelines\nWhere machines learn to persist, evolve, coordinate, compound, and dream. | 360+ commands');
       return;
     }
     
@@ -254,7 +254,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
         <div className="p-4 space-y-2">
           {/* Welcome message */}
           <div className="text-muted-foreground text-xs">
-            clockless v10.5.1 | cmpsbl world engine — type 'help' for commands
+            clockless | cmpsbl substrate — cognitive reality — type 'help' for commands
           </div>
           
           {/* Command History */}

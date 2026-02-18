@@ -29,7 +29,7 @@ export default function About() {
   const version = useMetric('version');
   const codename = useMetric('codename');
   const products = [
-    { icon: Brain, name: "CMPSBL World Engine", description: "21-module cognitive orchestration engine with persistent memory" },
+    { icon: Brain, name: "CMPSBL Substrate", description: "21-module cognitive orchestration substrate with persistent memory" },
     { icon: Shield, name: "DEFENSE Module", description: "Enterprise-grade threat detection and bot protection" },
     { icon: Eye, name: "VISION Module", description: "Full observability and system introspection layer" },
     { icon: Server, name: "NEXUS Gateway", description: "Multi-provider AI routing with BYOK architecture" },

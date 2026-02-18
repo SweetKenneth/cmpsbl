@@ -4,7 +4,7 @@
  * 
  * Architecture Crown Jewels: admin_only, never visible
  * Experience Crown Jewels: black-boxed, tiered (Creator/Architect)
- * Category/Difficulty Gating: World Engine → ARCHITECT, Elite → ARCHITECT, Premium → CREATOR
+ * Category/Difficulty Gating: Substrate → ARCHITECT, Elite → ARCHITECT, Premium → CREATOR
  * S-Tier Capabilities: ARCHITECT minimum
  */
 
@@ -75,7 +75,7 @@ export function isCrownJewelItem(id: string, name: string = ''): boolean {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * World Engine templates — ALL gated to ARCHITECT minimum.
+ * Substrate templates — ALL gated to ARCHITECT minimum.
  * These contain proprietary simulation, ECS, and physics code.
  */
 function isWorldEngineItem(id: string, name: string = ''): boolean {
@@ -113,7 +113,7 @@ const DIFFICULTY_TIER_MAP: Record<DifficultyLevel, ArtifactTierBadge> = {
 
 /**
  * Get the tier badge for a store item.
- * Priority: Architecture > Experience > World Engine > S-Tier > Difficulty > FREE
+ * Priority: Architecture > Experience > Substrate > S-Tier > Difficulty > FREE
  */
 export function getItemTierBadge(
   id: string, 
@@ -132,7 +132,7 @@ export function getItemTierBadge(
     return 'BLACK-BOX';
   }
   
-  // 3. World Engine — ALL ARCHITECT (too valuable for free)
+  // 3. Substrate — ALL ARCHITECT (too valuable for free)
   if (isWorldEngineItem(id, name) || category === 'world_engine') return 'ARCHITECT';
   
   // 4. S-Tier capabilities — ARCHITECT minimum

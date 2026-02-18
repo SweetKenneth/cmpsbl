@@ -1,4 +1,4 @@
-# Clockless v10.5.4 ARCHITECT — powered by the CMPSBL World Engine — robots.txt
+# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate — robots.txt
 # https://cmpsbl.com/robots.txt
 # Last updated: 2026-02-08
 

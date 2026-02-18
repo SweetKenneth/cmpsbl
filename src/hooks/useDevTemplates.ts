@@ -66,7 +66,7 @@ export function useTemplateCategories() {
       return [
         { id: "all", name: "All Templates", count: data?.length || 0, icon: "📦" },
         { id: "gaming", name: "Gaming", count: counts["gaming"] || 0, icon: "🎮" },
-        { id: "world_engine", name: "World Engine", count: counts["world_engine"] || 0, icon: "🌍" },
+        { id: "world_engine", name: "Substrate", count: counts["world_engine"] || 0, icon: "🌍" },
         { id: "chatbot", name: "Chatbot", count: counts["chatbot"] || 0, icon: "💬" },
         { id: "agent", name: "AI Agent", count: counts["agent"] || 0, icon: "🤖" },
         { id: "rag", name: "RAG Pipeline", count: counts["rag"] || 0, icon: "📚" },

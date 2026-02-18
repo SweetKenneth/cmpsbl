@@ -208,7 +208,7 @@ export default function EngineMarketplace() {
     <>
       <SEO
         title={`Clockless Cognitive Engines | ${summary.totalEngines}+ Production AI Engines | CMPSBL®`}
-        description="Subscribe to production-ready cognitive engines for the Clockless World Engine. 76+ engines, 24 meta-engines, tiered pricing. Multi-provider routing, persistent memory, self-improvement."
+        description="Subscribe to production-ready cognitive engines for Clockless. 76+ engines, 24 meta-engines, tiered pricing. Multi-provider routing, persistent memory, self-improvement."
         canonical="https://cmpsbl.com/engines"
         keywords={["cognitive engines", "AI orchestration", "subscription AI", "enterprise AI engines", "multi-provider routing", "composable artifacts", "production AI", "CMPSBL engines"]}
         type="product"
