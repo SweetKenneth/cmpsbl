@@ -46,20 +46,25 @@ let state: DebugModeState = {
   disabledFeatures: [],
 };
 
-// Load from localStorage on init
+// Load from localStorage on init — but default to OFF for normal operation
 function loadState(): void {
   if (typeof window === 'undefined') return;
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      state = JSON.parse(stored);
-      if (state.enabled) {
-        console.warn('[DebugMode] 🔴 DEBUG MODE ACTIVE — Background activity disabled');
-        console.warn('[DebugMode] Disabled:', state.disabledFeatures.join(', '));
+      const parsed = JSON.parse(stored);
+      // Only restore debug mode if it was explicitly enabled by the user (not auto-enabled)
+      // By default, systems should run normally
+      if (parsed.enabled) {
+        // Clear stale debug state — system should start fresh
+        localStorage.removeItem(STORAGE_KEY);
+        console.log('[DebugMode] 🟢 Cleared stale debug state — all systems operational');
+        return;
       }
+      state = parsed;
     }
   } catch {
-    // Silent fail
+    // Silent fail — default to debug OFF
   }
 }
 

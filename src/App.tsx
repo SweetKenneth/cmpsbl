@@ -215,7 +215,8 @@ const App = () => {
   const mobilePreviewSafeMode =
     (previewParams.previewSafe || (isPreviewEnv && isMobileDevice)) && !previewParams.previewFull;
 
-  const substrateAutoInit = !isPreviewEnv && debugMode.allowModulePolling();
+  // Always allow substrate init — preview env should not block normal operation
+  const substrateAutoInit = debugMode.allowModulePolling();
 
   // Install mobile watchdog + interaction tracking once on mount
   useEffect(() => {
@@ -237,15 +238,18 @@ const App = () => {
     };
   }, []);
 
-  // Only force debug mode ON in safe mode; clear stale debug-on state otherwise
+  // Force debug mode OFF on startup — all systems should run normally
+  // Debug mode is only user-controlled via terminal/console after this
   useEffect(() => {
     if (mobilePreviewSafeMode) {
-      debugMode.enable();
+      // Even in safe mode, don't enable debug — just reduce rendering
     } else if (debugMode.isEnabled()) {
-      // Clear debug mode that was previously auto-enabled by safe mode
       debugMode.disable();
     }
-    // After this initial check, debug mode is user-controlled via terminal/console
+    // Clear any persisted debug state on every mount
+    if (debugMode.isEnabled() && !mobilePreviewSafeMode) {
+      debugMode.disable();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
