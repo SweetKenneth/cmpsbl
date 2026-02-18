@@ -12,6 +12,7 @@ import {
 } from '@/lib/contracts/DecodeContract';
 import { DecodeInput, DecodeResponse } from '@/lib/contracts/DecodeContractTypes';
 import { decode } from '@/lib/substrate';
+import { sanitizeClocklessTerminology } from '@/lib/substrate/decode/clockless-identity';
 
 interface UseDecodeOptions {
   /** Whether to invoke substrate modules on each query */
@@ -131,9 +132,11 @@ export function useDecodeChat(sessionId?: string) {
 
       if (response.success) {
         const data = response.data as any;
+        const rawReply = data?.reply || 'I received your thought.';
+        const reply = sanitizeClocklessTerminology(rawReply);
         setMessages(prev => [...prev, {
           role: 'assistant',
-          content: data?.reply || 'I received your thought.',
+          content: reply,
           timestamp: new Date(),
           metadata: {
             provider: data?.provider,

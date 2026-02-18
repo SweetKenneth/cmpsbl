@@ -17,6 +17,7 @@ import {
   type PolicyResult, 
   type ProvenanceTag 
 } from './decode-response-policy';
+import { sanitizeClocklessTerminology } from '../decode/clockless-identity';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -69,6 +70,9 @@ const EXAMPLE_CLARIFICATION = ' [REPRESENTATIVE_EXAMPLE]';
 export function applyVoiceGuardrails(rawOutput: string): VoiceGuardrailResult {
   const clarifications: string[] = [];
   let output = rawOutput;
+
+  // Step 0: Sanitize deprecated terminology (World Engine → Cognitive Reality, etc.)
+  output = sanitizeClocklessTerminology(output);
 
   // Step 1: Run epistemic policy enforcement
   const policy = enforceResponsePolicy(output);

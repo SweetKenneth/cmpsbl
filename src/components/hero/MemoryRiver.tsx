@@ -32,9 +32,9 @@ const KEYFRAMES_CSS = `
 @keyframes river-dream {
   0%   { left: -5%; top: 48%; opacity: 0; }
   5%   { opacity: 0.9; }
-  25%  { top: 25%; }
-  50%  { top: 15%; }
-  75%  { top: 25%; }
+  25%  { top: 22%; }
+  50%  { top: 12%; }
+  75%  { top: 22%; }
   90%  { opacity: 0.9; }
   100% { left: 105%; top: 48%; opacity: 0; }
 }
@@ -42,18 +42,22 @@ const KEYFRAMES_CSS = `
   0%   { left: -5%; top: 35%; opacity: 0; }
   5%   { opacity: 0.9; }
   40%  { top: 35%; }
-  55%  { top: 68%; }
-  70%  { top: 60%; }
+  55%  { top: 72%; }
+  70%  { top: 62%; }
   90%  { opacity: 0.9; top: 50%; }
   100% { left: 105%; opacity: 0; }
 }
 @keyframes crystal-pulse {
-  0%, 100% { box-shadow: 0 0 12px 2px hsl(var(--primary) / 0.2); }
-  50%      { box-shadow: 0 0 24px 6px hsl(var(--primary) / 0.5); }
+  0%, 100% { box-shadow: 0 0 12px 2px hsl(var(--primary) / 0.2), 0 0 4px 1px hsl(var(--primary) / 0.1); }
+  50%      { box-shadow: 0 0 28px 8px hsl(var(--primary) / 0.45), 0 0 8px 2px hsl(var(--primary) / 0.3); }
 }
 @keyframes river-shimmer {
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(200%); }
+}
+@keyframes river-breathe {
+  0%, 100% { opacity: 0.04; }
+  50%      { opacity: 0.09; }
 }
 `;
 
@@ -74,13 +78,21 @@ const CrystallizedNode = memo(function CrystallizedNode({
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div
-        className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-sm rotate-45 border border-primary/50"
-        style={{
-          background: "hsl(var(--primary) / 0.12)",
-          animation: "crystal-pulse 3s ease-in-out infinite",
-        }}
-      />
+      {/* Outer ring */}
+      <div className="relative">
+        <div
+          className="absolute -inset-1.5 rounded-full opacity-20"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent)" }}
+        />
+        <div
+          className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-sm rotate-45 border border-primary/60"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.06))",
+            animation: "crystal-pulse 3s ease-in-out infinite",
+            animationDelay: `${delay * 0.3}s`,
+          }}
+        />
+      </div>
       <span className="text-[7px] sm:text-[8px] font-bold text-primary/50 tracking-[0.15em] uppercase whitespace-nowrap mt-0.5">
         {label}
       </span>
@@ -136,6 +148,15 @@ const Particle = memo(function Particle({
 function RiverChannel() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Breathing ambient glow */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(ellipse at 30% 50%, hsl(var(--neon-cyan) / 0.04) 0%, transparent 60%),
+                       radial-gradient(ellipse at 70% 40%, hsl(var(--neon-purple) / 0.03) 0%, transparent 50%)`,
+          animation: "river-breathe 5s ease-in-out infinite",
+        }}
+      />
       {/* Gradient band */}
       <div
         className="absolute left-0 right-0 top-[18%] bottom-[18%]"
@@ -143,34 +164,32 @@ function RiverChannel() {
           background: `linear-gradient(180deg,
             transparent 0%,
             hsl(var(--primary) / 0.03) 20%,
-            hsl(var(--primary) / 0.07) 50%,
+            hsl(var(--primary) / 0.08) 50%,
             hsl(var(--primary) / 0.03) 80%,
             transparent 100%
           )`,
         }}
       />
       {/* Flow lines */}
-      {[30, 46, 62].map((top, i) => (
+      {[28, 44, 60].map((top, i) => (
         <motion.div
           key={i}
           className="absolute left-0 right-0 h-px"
           style={{
             top: `${top}%`,
-            background: `linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.08) 15%, hsl(var(--primary) / 0.16) 50%, hsl(var(--primary) / 0.08) 85%, transparent 100%)`,
+            background: `linear-gradient(90deg, transparent 0%, hsl(var(--neon-cyan) / 0.06) 10%, hsl(var(--primary) / 0.18) 50%, hsl(var(--neon-purple) / 0.06) 90%, transparent 100%)`,
           }}
-          animate={{ opacity: [0.3, 0.65, 0.3] }}
+          animate={{ opacity: [0.3, 0.7, 0.3] }}
           transition={{ duration: 3.5 + i * 0.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
         />
       ))}
       {/* Shimmer sweep */}
-      <div
-        className="absolute top-[30%] bottom-[30%] left-0 right-0 overflow-hidden"
-      >
+      <div className="absolute top-[28%] bottom-[28%] left-0 right-0 overflow-hidden">
         <div
-          className="absolute inset-0 w-[40%] h-full"
+          className="absolute inset-0 w-[30%] h-full"
           style={{
-            background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.06), transparent)",
-            animation: "river-shimmer 6s linear infinite",
+            background: "linear-gradient(90deg, transparent, hsl(var(--neon-cyan) / 0.05), hsl(var(--primary) / 0.07), transparent)",
+            animation: "river-shimmer 5s linear infinite",
           }}
         />
       </div>

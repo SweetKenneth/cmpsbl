@@ -1,5 +1,5 @@
 /**
- * DashboardAudio - Central audio control panel for the CMPSBL World Engine dashboard
+ * DashboardAudio - Central audio control panel for the Clockless Cognitive Reality dashboard
  * On mobile: opens a centered modal with tabs for music and settings
  * On desktop: shows individual dropdown panels
  */

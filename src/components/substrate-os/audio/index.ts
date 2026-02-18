@@ -1,5 +1,5 @@
 /**
- * CMPSBL World Engine Audio Components Index
+ * Clockless Cognitive Reality Audio Components Index
  */
 
 export { useSubstrateVoice, substrateVoiceStyles } from './SubstrateVoice';

@@ -1,5 +1,5 @@
 /**
- * Enhanced CMPSBL World Engine Hooks — Live data from database
+ * Enhanced Clockless Cognitive Reality Hooks — Live data from database
  * Real-time telemetry with no mock data
  */
 

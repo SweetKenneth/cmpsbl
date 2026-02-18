@@ -59,7 +59,7 @@ export default function Explore() {
         title="Clockless — A Cognitive Reality System | CMPSBL"
         description="Clockless is a governed cognitive reality where intelligence persists, evolves autonomously, coordinates systems, and compounds value without resets. Powered by the CMPSBL Substrate."
         canonical="https://cmpsbl.com"
-        keywords={['Clockless', 'CMPSBL World Engine', 'cognitive infrastructure', 'persistent memory AI', 'self-learning AI', 'AI memory layer', 'multi-provider routing']}
+        keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'cognitive infrastructure', 'persistent memory AI', 'self-learning AI', 'AI memory layer', 'multi-provider routing']}
       />
 
       <PublicNav />

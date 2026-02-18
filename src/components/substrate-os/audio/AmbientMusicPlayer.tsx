@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import composableDreamin from '@/assets/audio/Composable_Dreamin.mp3';
 import composableDreamin2 from '@/assets/audio/Composable_Dreamin_2.mp3';
+import clockless from '@/assets/audio/Clockless.mp3';
 
 // ============================================================================
 // AMBIENT TRACKS
@@ -29,6 +30,12 @@ const AMBIENT_TRACKS = [
     name: 'Composable Dreamin 2',
     description: 'Extended substrate flow',
     url: composableDreamin2,
+  },
+  {
+    id: 'clockless',
+    name: 'Clockless',
+    description: 'Cognitive Reality anthem',
+    url: clockless,
   },
 ];
 
