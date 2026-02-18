@@ -153,14 +153,27 @@ function classifySeverity(outcome: string): TimelineEvent['severity'] {
 }
 
 const MODULE_RELATIONS: Record<string, string[]> = {
-  core: ['brain', 'system'],
-  brain: ['core', 'dream', 'decode'],
-  nexus: ['integration', 'brain'],
-  defense: ['access', 'vision'],
-  vision: ['defense', 'core'],
-  system: ['core', 'modernizer'],
-  modernizer: ['system', 'cortex'],
-  cortex: ['brain', 'modernizer'],
+  core: ['brain', 'system', 'ripple'],
+  brain: ['core', 'dream', 'decode', 'cortex', 'memory'],
+  nexus: ['integration', 'brain', 'relay'],
+  defense: ['access', 'vision', 'identity'],
+  vision: ['defense', 'core', 'decode'],
+  system: ['core', 'modernizer', 'audit'],
+  modernizer: ['system', 'cortex', 'encode'],
+  cortex: ['brain', 'modernizer', 'encode'],
+  decode: ['brain', 'vision', 'inclusive'],
+  encode: ['cortex', 'modernizer', 'sandbox'],
+  dream: ['brain', 'inclusive'],
+  ripple: ['core', 'relay', 'integration'],
+  access: ['defense', 'identity', 'economy'],
+  inclusive: ['decode', 'dream', 'vision'],
+  integration: ['nexus', 'ripple', 'relay'],
+  memory: ['brain', 'cortex', 'audit'],
+  relay: ['ripple', 'integration', 'nexus'],
+  audit: ['system', 'memory', 'identity'],
+  identity: ['access', 'defense', 'audit'],
+  economy: ['access', 'audit', 'sandbox'],
+  sandbox: ['encode', 'economy', 'defense'],
 };
 
 function isRelatedModule(a: string, b: string): boolean {

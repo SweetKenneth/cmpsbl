@@ -31,8 +31,27 @@ let flushTimer: ReturnType<typeof setTimeout> | null = null;
 const FLUSH_INTERVAL_MS = 1000;
 const MAX_QUEUE_SIZE = 20;
 
+// Track consecutive flush failures for circuit-breaker-like behavior
+let consecutiveFlushFailures = 0;
+const MAX_FLUSH_FAILURES = 5;
+const FLUSH_BACKOFF_BASE_MS = 2000;
+
 async function flushEvents(): Promise<void> {
   if (eventQueue.length === 0) return;
+
+  // Circuit breaker: if too many consecutive failures, skip flush and drain queue slowly
+  if (consecutiveFlushFailures >= MAX_FLUSH_FAILURES) {
+    const backoff = FLUSH_BACKOFF_BASE_MS * Math.pow(2, Math.min(consecutiveFlushFailures - MAX_FLUSH_FAILURES, 5));
+    // Drop oldest events to prevent memory growth
+    if (eventQueue.length > MAX_QUEUE_SIZE * 2) {
+      eventQueue.splice(0, eventQueue.length - MAX_QUEUE_SIZE);
+    }
+    // Attempt recovery probe after backoff
+    if (Date.now() % backoff < FLUSH_INTERVAL_MS) {
+      consecutiveFlushFailures = Math.max(0, consecutiveFlushFailures - 1);
+    }
+    return;
+  }
 
   const events = eventQueue.splice(0, eventQueue.length);
   
@@ -49,14 +68,19 @@ async function flushEvents(): Promise<void> {
     );
 
     if (error) {
-      log.error('events', 'Failed to flush events', { error: error.message, count: events.length });
+      consecutiveFlushFailures++;
+      log.error('events', 'Failed to flush events', { error: error.message, count: events.length, failures: consecutiveFlushFailures });
       // Re-queue failed events (up to limit)
-      eventQueue.unshift(...events.slice(0, MAX_QUEUE_SIZE - eventQueue.length));
+      const requeue = events.slice(0, Math.max(0, MAX_QUEUE_SIZE - eventQueue.length));
+      eventQueue.unshift(...requeue);
     } else {
+      consecutiveFlushFailures = 0;
       log.debug('events', `Flushed ${events.length} events`);
     }
   } catch (err) {
-    log.error('events', 'Event flush error', { error: String(err) });
+    consecutiveFlushFailures++;
+    log.error('events', 'Event flush error', { error: String(err), failures: consecutiveFlushFailures });
+    // Don't re-queue on hard errors to prevent infinite loops
   }
 }
 
