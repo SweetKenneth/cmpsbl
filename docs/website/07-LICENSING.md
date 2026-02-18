@@ -1,6 +1,6 @@
 # Pricing & Access
 
-**CMPSBL® World Engine — Adoptable Pricing**
+**Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate**
 
 ---
 
@@ -8,7 +8,7 @@
 
 > **"Compose intelligence. Don't control the engine."**
 
-User projects run ON the CMPSBL World Engine. User projects never run AS the CMPSBL World Engine. Internal systems remain first-party and non-exportable.
+User projects run ON the CMPSBL Substrate. User projects never run AS the CMPSBL Substrate. Internal systems remain first-party and non-exportable.
 
 ---
 
@@ -33,6 +33,7 @@ Build real things. Not a trial.
 - Limited persistent memory
 - Basic pipelines & missions
 - Dashboard + Terminal (Free mode)
+- 300+ synergy pipelines
 
 Does not include automation, advanced orchestration, or self-improvement loops.
 
@@ -46,6 +47,7 @@ Everything in Free plus more juice.
 - Higher-quality templates
 - Executable capabilities
 - Multi-module synergy pipelines
+- 28 crystallized Crown Jewel pipelines
 - Stronger persistent memory
 - Higher Nexus quotas + better routing
 - Scheduled tasks + simple automations
@@ -60,6 +62,7 @@ Everything in Creator plus depth.
 - Premium Artifact Store (Architect catalog)
 - Cross-module orchestration
 - Larger memory + project memory domains
+- 64 crystallized Crown Jewel pipelines
 - Higher automation limits + batch execution
 - Audit views + change summaries
 - Reasoning summaries
@@ -77,6 +80,7 @@ Everything in Architect plus governance.
 - Compliance + audit exports
 - Advanced governance policies
 - Dedicated memory partitions
+- 80 crystallized Crown Jewel pipelines
 - SLA-aware Nexus controls
 - Provider budget pinning
 - Dedicated support channel
@@ -87,14 +91,18 @@ Everything in Architect plus governance.
 
 ---
 
-## Crown Jewels
+## Crown Jewels & Crystallized Pipelines
+
+The substrate includes 100 crystallized pipelines — high-value multi-module resolver chains discovered via the Intent Mesh and hardened into permanent execution templates.
+
+| Tier | Crystallized Pipelines | Access |
+|------|----------------------|--------|
+| **CMPSBL-Only** | 20 | Internal — never released |
+| **Enterprise** | 16 | Governance-grade sealed |
+| **Architect** | 36 | Premium sealed |
+| **Creator** | 28 | Builder-friendly sealed |
 
 Not all Crown Jewels are released to the public. Certain capabilities, orchestration systems, and recursive intelligence remain internal by design.
-
-Public Crown Jewels are tiered:
-- **Creator**: Safe experience jewels
-- **Architect**: Advanced sealed capabilities
-- **Enterprise**: Governance-grade sealed systems
 
 ---
 
@@ -135,4 +143,4 @@ Your projects continue working. You lose access to paid-tier capabilities until 
 
 ---
 
-*CMPSBL® — Compose intelligence. Don't control the engine.*
+*Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate*

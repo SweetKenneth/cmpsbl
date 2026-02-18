@@ -48,7 +48,7 @@ This is **not** testing, linting, or QA. It is a **structural integrity guarante
 - Detects dead or broken route references
 
 ### E. Registry Consistency
-- Validates 50 crystallized pipelines exist in registry
+- Validates 100 crystallized pipelines exist in registry
 - Confirms pipeline shape integrity (id, name, tier, modules)
 - Verifies tier distribution (≥3 distinct tiers)
 

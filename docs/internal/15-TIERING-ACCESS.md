@@ -51,7 +51,7 @@
 
 ---
 
-## v10.8.0 Crown Jewel Registry (Complete — 77 Jewels + Wave 4 + 50 Crystallized Pipelines)
+## v10.8.0 Crown Jewel Registry (Complete — 77 Jewels + Wave 4 + 100 Crystallized Pipelines)
 
 ### 🔴 CMPSBL-Only — Recursive Cognition & Meta-Intelligence (9)
 

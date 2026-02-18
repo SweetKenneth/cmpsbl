@@ -90,8 +90,8 @@ export const DEFAULT_METRICS: PublicMetrics = {
   modulesCount: 21,
   layersCount: 6,
   
-  // Synergy Metrics (88 core + 27 discovery + 32 S-tier + 53 infrastructure = 200 + 50 crystallized = 250)
-  synergyPipelinesCount: 250,
+  // Synergy Metrics (88 core + 27 discovery + 32 S-tier + 53 infrastructure = 200 + 100 crystallized = 300)
+  synergyPipelinesCount: 300,
   synergyExecutorsCount: 125,
   stierPipelinesCount: 32,
   

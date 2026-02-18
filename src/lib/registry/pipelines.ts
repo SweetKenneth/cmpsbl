@@ -119,4 +119,4 @@ export function getPipelineNames(): readonly string[] {
  */
 export const PIPELINE_REGISTRY_VERSION = '10.8.0' as const;
 export const PIPELINE_REGISTRY_STATUS = 'descriptive_only' as const;
-export const PIPELINE_REGISTRY_COUNT = 250 as const; // 200 synergy + 50 crystallized
+export const PIPELINE_REGISTRY_COUNT = 300 as const; // 200 synergy + 100 crystallized

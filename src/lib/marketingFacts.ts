@@ -24,12 +24,12 @@ export const MODULES_COUNT = 21;
 /** 6 architectural layers: Kernel, Cognitive, Operational, Administrative, Orchestrator, Infrastructure */
 export const LAYERS_COUNT = 6;
 
-/** 
+/**
  * Synergy pipelines defined in capabilities/synergies/registry.ts
  * 88 core + 27 discovery + 32 S-tier + 53 infrastructure-era = 200
- * + 50 crystallized crown jewel pipelines = 250 total
+ * + 100 crystallized crown jewel pipelines = 300 total
  */
-export const SYNERGY_PIPELINES_COUNT = 250;
+export const SYNERGY_PIPELINES_COUNT = 300;
 
 /**
  * Crystallized Crown Jewel pipelines from Intent Mesh discovery
