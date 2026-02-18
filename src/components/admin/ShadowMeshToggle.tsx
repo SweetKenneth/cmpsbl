@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Shield, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { invalidateFlagCache } from "@/lib/system/flags";
+import { startShadowScheduler, stopShadowScheduler } from "@/lib/shadow/scheduler";
 
 export function ShadowMeshToggle() {
   const [enabled, setEnabled] = useState(false);
@@ -43,7 +44,18 @@ export function ShadowMeshToggle() {
     }
 
     invalidateFlagCache("shadow_mesh_enabled");
-    toast.success(`Shadow Mesh ${next ? "activated" : "deactivated"}`);
+
+    // Wire scheduler to the toggle: enabling starts it (idempotent),
+    // disabling tears it down so Chrome doesn't keep running probes.
+    if (next) {
+      startShadowScheduler();
+    } else {
+      stopShadowScheduler();
+    }
+
+    toast.success(`Shadow Mesh ${next ? "activated" : "deactivated"}`, {
+      description: next ? "Scheduler started — probes will run every 15 min." : "Scheduler stopped.",
+    });
   }
 
   if (loading) {
