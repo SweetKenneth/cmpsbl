@@ -208,15 +208,11 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <span 
-                className="inline-block"
+                className="inline-block clockless-river-text"
                 style={{
-                  backgroundImage: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--neon-purple)) 50%, hsl(var(--primary)) 100%)",
-                  backgroundSize: "200% auto",
-                  animation: "gradient-shift 8s ease-in-out infinite",
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   color: "transparent",
-                  WebkitTextStroke: "0px transparent",
                   padding: "0 0.15em 0.05em 0",
                 }}
               >
