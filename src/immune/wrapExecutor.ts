@@ -2,7 +2,7 @@
  * Executor Immune Pilot — Wrapper
  * Wraps a synergy executor with defense (preflight), repair, and escalation
  *
- * If EXECUTOR_IMMUNE_PILOT flag is OFF → passthrough.
+ * Controlled by shadow_mesh_enabled system flag (DB-backed, admin-toggled).
  */
 
 import type {
@@ -11,13 +11,11 @@ import type {
   EscalationPayload,
 } from './types';
 import type { SynergyExecutionContext, SynergyResult } from '@/lib/capabilities/synergies/types';
-import { isEnabled } from '@/lib/substrate/feature-flags';
+import { isShadowMeshEnabled } from '@/lib/system/flags';
 import { logImmuneEvent, redactContext } from './logger';
 import { enqueueEscalation } from './queue';
 import { repair } from './repairs';
 import { incrementMetric, recordOutcome } from './metrics';
-
-const FLAG_ID = 'EXECUTOR_IMMUNE_PILOT';
 
 /** Simple hash for input tracing (not cryptographic) */
 function hashInput(input: Record<string, unknown>): string {
@@ -104,8 +102,8 @@ export function wrapExecutor(
   config: WrapConfig,
 ): (ctx: SynergyExecutionContext) => Promise<SynergyResult> {
   return async (ctx: SynergyExecutionContext): Promise<SynergyResult> => {
-    // ── FLAG CHECK ──
-    if (!isEnabled(FLAG_ID)) {
+    // ── FLAG CHECK (DB-backed system flag) ──
+    if (!(await isShadowMeshEnabled())) {
       return executorFn(ctx);
     }
 

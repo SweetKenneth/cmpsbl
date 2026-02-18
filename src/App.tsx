@@ -100,6 +100,7 @@ const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
+const ShadowMeshPage = lazy(() => import("./pages/admin/ShadowMeshPage"));
 const StartHere = lazy(() => import("./pages/StartHere"));
 const ComposableCognitives = lazy(() => import("./pages/ComposableCognitives"));
 const CognitivesSuccess = lazy(() => import("./pages/CognitivesSuccess"));
@@ -416,6 +417,7 @@ const App = () => {
                         
                         {/* Admin routes */}
                         <Route path="/admin/patches" element={<AdminPatches />} />
+                        <Route path="/admin/shadow-mesh" element={<ShadowMeshPage />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         
