@@ -1,6 +1,7 @@
-# CMPSBL OS Substrate — DECODE Module Deep Dive
+# Clockless Cognitive Reality — DECODE Module Deep Dive
 
-**Version 10.5.0 | ARCHITECT Epoch**
+**Version 10.5.4 | ARCHITECT Epoch**
+**System:** Clockless — A Cognitive Reality System powered by the CMPSBL Substrate
 
 ---
 
@@ -25,10 +26,11 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    CMPSBL OS SUBSTRATE                          │
+│              CLOCKLESS — COGNITIVE REALITY SYSTEM               │
 ├─────────────────────────────────────────────────────────────────┤
 │  Created By:        Kenneth E Sweet Jr                          │
 │  Organization:      PromptFluid®                                │
+│  Infrastructure:    CMPSBL Substrate (21 modules, 6 layers)     │
 ├─────────────────────────────────────────────────────────────────┤
 │  For licensing or acquisition inquiries:                        │
 │  Email: Dev@CMPSBL.com | Phone: (760) FLUID-AI           │
@@ -147,5 +149,6 @@ DECODE leverages BRAIN for context:
 
 ---
 
-*CMPSBL OS Substrate v10.5.0 — ARCHITECT Epoch*
+*Clockless Cognitive Reality v10.5.4 — ARCHITECT Epoch*
+*Powered by the CMPSBL Substrate*
 *© 2025-2026 PromptFluid®. All rights reserved.*

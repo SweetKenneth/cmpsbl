@@ -4,7 +4,7 @@
 
 **Layer:** Cognitive · **Boot Order:** 5 · **Dependencies:** CORE, BRAIN
 
-**v9.3.0 ARCHITECT Epoch**
+**v10.5.4 ARCHITECT Epoch — Clockless Cognitive Reality**
 
 </div>
 
@@ -189,7 +189,8 @@ New Request → Check Identity Context
 
 <div align="center">
 
-*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch*
+*Clockless Cognitive Reality v10.5.4 — ARCHITECT Epoch*
+*Powered by the CMPSBL Substrate*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
