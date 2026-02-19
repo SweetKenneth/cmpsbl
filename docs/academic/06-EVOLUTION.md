@@ -1,80 +1,84 @@
-# Evolution Mechanics
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Evolution Mechanics — CMPSBL OS Substrate</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-## CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch
+<h1>Evolution Mechanics</h1>
+<p><strong>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</strong></p>
+<p>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
+Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)</p>
+<hr />
 
-**DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
-**Author:** Kenneth E Sweet Jr (ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX))
+<h2>6. Evolution Mechanics</h2>
+<p>The substrate's evolution engine enables verifiable self-modification — the system can propose, validate, apply, and roll back improvements to its own behavior.</p>
 
----
+<h3>6.1 Evolution Lifecycle</h3>
+<p>Self-modification follows a seven-stage lifecycle:</p>
+<ol>
+<li><strong>Observe.</strong> VISION monitors system performance and identifies improvement opportunities through anomaly detection and trend analysis.</li>
+<li><strong>Propose.</strong> MODERNIZER generates a formal evolution proposal specifying the change, expected impact, risk assessment, and rollback plan.</li>
+<li><strong>Validate.</strong> The proposal is tested against regression criteria: functional correctness, performance impact, governance compliance, and safety constraints.</li>
+<li><strong>Approve.</strong> Authorization is granted according to the current autonomy tier. Manual mode requires explicit human approval. Supervised mode applies with post-hoc review. Autonomous mode proceeds within predefined bounds.</li>
+<li><strong>Apply.</strong> The validated change is applied to the live system.</li>
+<li><strong>Stamp.</strong> A cryptographic evolution stamp is generated containing: timestamp, proposer identity, approver identity, change description, diff hash, pre-state hash, post-state hash, regression results, and rollback availability.</li>
+<li><strong>Monitor.</strong> SYSTEM monitors the post-evolution system for regression. If degradation exceeds thresholds, automatic rollback is triggered.</li>
+</ol>
 
-## 6. Evolution Mechanics
+<h3>6.2 Evolution Scope</h3>
+<table>
+<tr><th>Modifiable</th><th>Examples</th></tr>
+<tr><td>System prompts</td><td>Response templates, intent classifiers</td></tr>
+<tr><td>Routing logic</td><td>Provider weights, failover priorities</td></tr>
+<tr><td>Memory strategies</td><td>Decay rates, reinforcement weights</td></tr>
+<tr><td>Defense rules</td><td>Threat thresholds, behavioral signatures</td></tr>
+<tr><td>Pipeline configurations</td><td>Step ordering, error handling</td></tr>
+</table>
 
-The substrate's evolution engine enables verifiable self-modification — the system can propose, validate, apply, and roll back improvements to its own behavior.
+<table>
+<tr><th>Immutable</th><th>Reason</th></tr>
+<tr><td>Governance rules</td><td>Bounded authority constraint</td></tr>
+<tr><td>Database schemas</td><td>Safety boundary</td></tr>
+<tr><td>Access control policies</td><td>Security boundary</td></tr>
+<tr><td>Crown Jewel capabilities</td><td>Strategic boundary</td></tr>
+<tr><td>Its own evolution rules</td><td>Meta-stability requirement</td></tr>
+</table>
 
-### 6.1 Evolution Lifecycle
+<h3>6.3 Verifiability</h3>
+<p>Evolution stamps enable post-hoc verification. Given a stamp, any authorized party can confirm: the change was formally proposed, regression tests passed, the appropriate authority approved it, pre- and post-state hashes match, and rollback remains available.</p>
 
-Self-modification follows a seven-stage lifecycle:
+<h3>6.4 Rollback Semantics</h3>
+<ul>
+<li><strong>State capture.</strong> Full system state is captured before evolution application.</li>
+<li><strong>Rollback trigger.</strong> Can be triggered manually, by automated regression detection, or by governance override.</li>
+<li><strong>Atomic rollback.</strong> Restores the complete pre-evolution state — partial rollbacks are not supported.</li>
+<li><strong>Stamp preservation.</strong> Even rolled-back evolutions retain their stamps, creating a complete history including failed experiments.</li>
+</ul>
 
-1. **Observe.** VISION monitors system performance and identifies improvement opportunities through anomaly detection and trend analysis.
+<hr />
 
-2. **Propose.** MODERNIZER generates a formal evolution proposal specifying the change, expected impact, risk assessment, and rollback plan.
+<p><em>CMPSBL OS Substrate v9.1.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
-3. **Validate.** The proposal is tested against regression criteria: functional correctness, performance impact, governance compliance, and safety constraints.
-
-4. **Approve.** Authorization is granted according to the current autonomy tier (§8). Manual mode requires explicit human approval. Supervised mode applies the change with post-hoc review. Autonomous mode proceeds within predefined bounds.
-
-5. **Apply.** The validated change is applied to the live system.
-
-6. **Stamp.** A cryptographic evolution stamp is generated containing: timestamp, proposer identity, approver identity, change description, diff hash, pre-state hash, post-state hash, regression results, and rollback availability.
-
-7. **Monitor.** SYSTEM monitors the post-evolution system for regression. If degradation exceeds thresholds, automatic rollback is triggered.
-
-### 6.2 Evolution Scope
-
-The evolution engine may modify:
-
-| Modifiable | Examples |
-|-----------|---------|
-| System prompts | Response templates, intent classifiers |
-| Routing logic | Provider weights, failover priorities |
-| Memory strategies | Decay rates, reinforcement weights |
-| Defense rules | Threat thresholds, behavioral signatures |
-| Pipeline configurations | Step ordering, error handling |
-
-The evolution engine may not modify:
-
-| Immutable | Reason |
-|-----------|--------|
-| Governance rules | Bounded authority constraint |
-| Database schemas | Safety boundary |
-| Access control policies | Security boundary |
-| Crown Jewel capabilities | Strategic boundary |
-| Its own evolution rules | Meta-stability requirement |
-
-### 6.3 Verifiability
-
-Evolution stamps enable post-hoc verification. Given a stamp, any authorized party can confirm:
-
-1. The change was formally proposed (not injected)
-2. Regression tests passed before application
-3. The appropriate authority approved the change
-4. Pre- and post-state hashes match the claimed modification
-5. Rollback remains available within the retention window
-
-This verifiability is critical for regulatory compliance and audit requirements.
-
-### 6.4 Rollback Semantics
-
-Every evolution maintains rollback capability:
-
-- **State capture.** Full system state is captured before evolution application.
-- **Rollback trigger.** Can be triggered manually, by automated regression detection, or by governance override.
-- **Atomic rollback.** The rollback restores the complete pre-evolution state — partial rollbacks are not supported to prevent inconsistency.
-- **Stamp preservation.** Even rolled-back evolutions retain their stamps, creating a complete history including failed experiments.
-
----
-
-*CMPSBL OS Substrate v9.1.0 — Academic Documentation*  
-*Kenneth E Sweet Jr · ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)*  
-*DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)*  
-*© 2025–2026 PromptFluid®. All rights reserved.*
+</div>
+</body>
+</html>

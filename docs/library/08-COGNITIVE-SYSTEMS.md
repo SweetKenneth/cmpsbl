@@ -1,127 +1,109 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Cognitive Systems — CMPSBL OS Substrate</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-size:9pt;overflow-x:auto;border-radius:6px}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# Cognitive Systems
-
-### Memory, Learning, Dreaming, and Reflection
-
+<h1>Cognitive Systems</h1>
+<p><strong>Memory, Learning, Dreaming, and Reflection</strong></p>
 <table>
 <tr><td><strong>Document</strong></td><td>08 — Cognitive Systems</td></tr>
 <tr><td><strong>Classification</strong></td><td>Library — No Trade Secrets</td></tr>
 <tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
 </table>
+<hr />
 
+<h2>The Cognitive Architecture</h2>
+<p>The substrate's cognitive systems give it something no other AI infrastructure provides: <strong>persistent, structured, self-improving intelligence</strong>. Three modules form the cognitive core:</p>
+<ul>
+<li><strong>BRAIN</strong> — Memory and knowledge</li>
+<li><strong>DREAM</strong> — Autonomous learning</li>
+<li><strong>VISION</strong> — Self-observation</li>
+</ul>
+
+<hr />
+
+<div class="card">
+<h2>1. Memory (BRAIN Module)</h2>
+
+<h3>Memory Types</h3>
+<table>
+<tr><th>Type</th><th>What It Stores</th><th>Example</th></tr>
+<tr><td><strong>Episodic</strong></td><td>Events and interactions</td><td>"User asked about pricing on Feb 10"</td></tr>
+<tr><td><strong>Semantic</strong></td><td>Facts and knowledge</td><td>"The substrate has 21 modules"</td></tr>
+<tr><td><strong>Procedural</strong></td><td>How-to knowledge</td><td>"To route a request, check provider health first"</td></tr>
+<tr><td><strong>Meta-cognitive</strong></td><td>Self-knowledge</td><td>"Memory queries are 23% faster after Tuesday's evolution"</td></tr>
+</table>
+
+<h3>Confidence Scoring</h3>
+<p>Every memory has a <strong>confidence score</strong> from 0.0 to 1.0:</p>
+<ul>
+<li><strong>New memories</strong> start at a baseline confidence</li>
+<li><strong>Reinforcement</strong> increases confidence when validated by new evidence</li>
+<li><strong>Decay</strong> reduces confidence over time if not accessed or reinforced</li>
+<li><strong>Contradiction</strong> reduces confidence when conflicting information is encountered</li>
+</ul>
+
+<h3>Knowledge Graphs</h3>
+<p>BRAIN constructs knowledge graphs connecting related concepts with typed edges: <code>supports</code>, <code>contradicts</code>, <code>derives_from</code>, and <code>temporal</code>.</p>
+
+<h3>Session Reflection</h3>
+<p>At configurable intervals, BRAIN performs <strong>session reflection</strong> — reviewing all module activity and extracting meta-insights about what worked, what failed, and what patterns are emerging.</p>
 </div>
 
----
+<div class="card">
+<h2>2. Autonomous Learning (DREAM Module)</h2>
 
-## The Cognitive Architecture
+<h3>Dream Cycles</h3>
+<p>During idle periods, DREAM activates autonomous learning cycles:</p>
+<ol>
+<li><strong>Recall</strong> — retrieve recent memories from BRAIN</li>
+<li><strong>Pattern Mining</strong> — identify recurring patterns</li>
+<li><strong>Creative Synthesis</strong> — generate novel combinations and hypotheses</li>
+<li><strong>Insight Extraction</strong> — distill patterns into actionable insights</li>
+<li><strong>Memory Storage</strong> — store new insights back in BRAIN</li>
+</ol>
 
-The substrate's cognitive systems give it something no other AI infrastructure provides: **persistent, structured, self-improving intelligence**. Three modules form the cognitive core:
+<h3>What DREAM Produces</h3>
+<table>
+<tr><th>Output</th><th>Description</th></tr>
+<tr><td><strong>Patterns</strong></td><td>Recurring behaviors identified across many interactions</td></tr>
+<tr><td><strong>Insights</strong></td><td>Actionable conclusions drawn from pattern analysis</td></tr>
+<tr><td><strong>Hypotheses</strong></td><td>Predictions that can be tested in future interactions</td></tr>
+<tr><td><strong>Connections</strong></td><td>New links between previously unrelated memories</td></tr>
+</table>
 
-- **BRAIN** — Memory and knowledge
-- **DREAM** — Autonomous learning
-- **VISION** — Self-observation
+<h3>Budget Governance</h3>
+<p>DREAM operates within strict budgets: maximum compute time, maximum AI provider calls, maximum cost per cycle, and mandatory cool-down periods.</p>
+</div>
 
-Together, they create a system that remembers, learns while idle, and watches its own performance — continuously.
+<div class="card">
+<h2>3. Self-Observation (VISION Module)</h2>
+<p>VISION provides the system's ability to <em>see itself</em>: health monitoring, performance tracking, anomaly detection, SLA compliance, and trend analysis. VISION data feeds into DREAM (for learning) and MODERNIZER (for evolution proposals).</p>
+</div>
 
----
+<hr />
 
-## 1. Memory (BRAIN Module)
-
-### Memory Types
-
-| Type | What It Stores | Example |
-|------|---------------|---------|
-| **Episodic** | Events and interactions | "User asked about pricing on Feb 10" |
-| **Semantic** | Facts and knowledge | "The substrate has 21 modules" |
-| **Procedural** | How-to knowledge | "To route a request, check provider health first" |
-| **Meta-cognitive** | Self-knowledge | "Memory queries are 23% faster after Tuesday's evolution" |
-
-### Confidence Scoring
-
-Every memory has a **confidence score** from 0.0 to 1.0:
-
-- **New memories** start at a baseline confidence
-- **Reinforcement** increases confidence when a memory is validated by new evidence
-- **Decay** reduces confidence over time if a memory is not accessed or reinforced
-- **Contradiction** reduces confidence when conflicting information is encountered
-
-This means the system doesn't just know things — it knows *how well* it knows them. A query for "what is our best-performing AI provider?" returns not just an answer but a confidence level: "Anthropic Claude, confidence 0.87."
-
-### Knowledge Graphs
-
-BRAIN constructs knowledge graphs from stored memories, connecting related concepts with typed edges:
-
-- `supports` — one memory reinforces another
-- `contradicts` — one memory conflicts with another
-- `derives_from` — one memory was inferred from another
-- `temporal` — memories are ordered in time
-
-These graphs enable the system to answer not just "what do I know?" but "how does what I know connect?"
-
-### Session Reflection
-
-At configurable intervals, BRAIN performs **session reflection** — reviewing all module activity over a time window and extracting meta-insights:
-
-- What worked well?
-- What failed?
-- What patterns are emerging?
-- What should be reinforced or deprecated?
-
----
-
-## 2. Autonomous Learning (DREAM Module)
-
-### Dream Cycles
-
-During idle periods, DREAM activates autonomous learning cycles:
-
-1. **Recall** — retrieve recent memories from BRAIN
-2. **Pattern Mining** — identify recurring patterns across memories
-3. **Creative Synthesis** — generate novel combinations and hypotheses
-4. **Insight Extraction** — distill patterns into actionable insights
-5. **Memory Storage** — store new insights back in BRAIN
-
-### What DREAM Produces
-
-| Output | Description |
-|--------|-------------|
-| **Patterns** | Recurring behaviors or outcomes identified across many interactions |
-| **Insights** | Actionable conclusions drawn from pattern analysis |
-| **Hypotheses** | Predictions that can be tested in future interactions |
-| **Connections** | New links between previously unrelated memories |
-
-### Budget Governance
-
-DREAM operates within strict budgets:
-- Maximum compute time per cycle
-- Maximum AI provider calls per cycle
-- Maximum cost per cycle
-- Cool-down period between cycles
-
-This prevents autonomous learning from consuming excessive resources.
-
----
-
-## 3. Self-Observation (VISION Module)
-
-VISION provides the system's ability to *see itself*:
-
-- **Health monitoring** — real-time scores for all 21 modules
-- **Performance tracking** — response times, error rates, throughput
-- **Anomaly detection** — statistical outlier identification
-- **SLA compliance** — tracking against service level agreements
-- **Trend analysis** — long-term performance trajectories
-
-VISION data feeds into DREAM (for learning) and MODERNIZER (for evolution proposals).
-
----
-
-## The Cognitive Loop
-
-These three modules create a continuous cognitive loop:
-
-```
+<h2>The Cognitive Loop</h2>
+<pre>
 VISION observes performance
        ↓
 DREAM learns from observations
@@ -135,25 +117,16 @@ System improves
 VISION observes improved performance
        ↓
 (cycle repeats)
-```
+</pre>
+<p>This is what makes the substrate a <strong>cognitive</strong> system, not just an AI wrapper.</p>
 
-This is what makes the substrate a **cognitive** system, not just an AI wrapper.
+<hr />
 
----
-
-## What's Next
-
-Continue to [`09-AI-ROUTING.md`](./09-AI-ROUTING.md) for multi-provider AI routing.
-
----
-
-<div align="center">
-
-*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
-
-**Kenneth E Sweet Jr** · PromptFluid®  
-ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
-
-© 2025–2026 PromptFluid®. All rights reserved.
+<p><em>CMPSBL OS Substrate v9.1.0 — Library Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
+</body>
+</html>

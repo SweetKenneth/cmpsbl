@@ -1,90 +1,92 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Distribution &amp; Composables — CMPSBL OS Substrate</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# Distribution & Composables
-
+<h1>Distribution &amp; Composables</h1>
 <table>
 <tr><td><strong>Document</strong></td><td>14 — Distribution</td></tr>
 <tr><td><strong>Classification</strong></td><td>Library — No Trade Secrets</td></tr>
 <tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
 </table>
+<hr />
 
+<div class="card">
+<h2>Composable Artifacts Store</h2>
+<table>
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td><strong>Discovery</strong></td><td>Browse artifacts by category, module, tier, and popularity</td></tr>
+<tr><td><strong>Activation</strong></td><td>One-click capability activation</td></tr>
+<tr><td><strong>Composition</strong></td><td>Build custom synergy pipelines from available artifacts</td></tr>
+<tr><td><strong>Crystallized Pipelines</strong></td><td>100 Crown Jewel pipelines discovered via Intent Mesh</td></tr>
+<tr><td><strong>Rating</strong></td><td>Community ratings and usage metrics</td></tr>
+<tr><td><strong>Tiering</strong></td><td>Artifacts gated by subscription tier (Free / Creator / Architect / Enterprise)</td></tr>
+</table>
 </div>
 
----
+<div class="card">
+<h2>Composable Cognitives</h2>
+<p><strong>Superpowered AI agents</strong> delivered as downloadable artifacts, purchasable without an account:</p>
+<table>
+<tr><th>Cognitive</th><th>Use Case</th><th>Price</th></tr>
+<tr><td>Research</td><td>Market research, competitor analysis</td><td>$39</td></tr>
+<tr><td>Coding</td><td>Code generation, debugging, optimization</td><td>$39</td></tr>
+<tr><td>Analyst</td><td>Data analysis, reporting, insights</td><td>$39</td></tr>
+<tr><td>Ops</td><td>Operations, automation, monitoring</td><td>$39</td></tr>
+<tr><td>Writer</td><td>Content creation, editing, copywriting</td><td>$39</td></tr>
+<tr><td>Hybrid</td><td>General-purpose multi-skill</td><td>FREE</td></tr>
+</table>
+</div>
 
-## Composable Artifacts Store
+<div class="card">
+<h2>Crystallized Pipelines (Crown Jewels)</h2>
+<p>100 high-value multi-module resolver chains discovered via the Intent Mesh:</p>
+<table>
+<tr><th>Tier</th><th>Count</th><th>Access</th></tr>
+<tr><td><strong>Creator</strong></td><td>28</td><td>Builder-friendly sealed workflows</td></tr>
+<tr><td><strong>Architect</strong></td><td>36</td><td>Premium sealed workflows</td></tr>
+<tr><td><strong>Enterprise</strong></td><td>16</td><td>Governance-grade sealed workflows</td></tr>
+<tr><td><strong>CMPSBL-Only</strong></td><td>20</td><td>Internal — never released</td></tr>
+</table>
+</div>
 
-The substrate includes a unified storefront where capabilities, templates, crystallized pipelines, and synergy pipelines can be discovered and explored:
+<hr />
 
-| Feature | Description |
-|---------|-------------|
-| **Discovery** | Browse artifacts by category, module, tier, and popularity |
-| **Activation** | One-click capability activation |
-| **Composition** | Build custom synergy pipelines from available artifacts |
-| **Crystallized Pipelines** | 100 Crown Jewel pipelines discovered via Intent Mesh |
-| **Rating** | Community ratings and usage metrics |
-| **Tiering** | Artifacts gated by subscription tier (Free / Creator / Architect / Enterprise) |
+<h2>Distribution Tiers</h2>
+<table>
+<tr><th>Tier</th><th>Access</th><th>Price Point</th></tr>
+<tr><td><strong>Free</strong></td><td>Artifact Store, persistent memory, 300+ synergy pipelines</td><td>$0</td></tr>
+<tr><td><strong>Creator</strong></td><td>All engines, 28 crystallized pipelines, templates, SDK/API</td><td>$9/mo</td></tr>
+<tr><td><strong>Architect</strong></td><td>64 crystallized pipelines, cross-project learning, 70+ Crown Jewels</td><td>$19/mo</td></tr>
+<tr><td><strong>Enterprise</strong></td><td>80 crystallized pipelines, governance, compliance</td><td>$99/mo</td></tr>
+<tr><td><strong>CMPSBL-Only</strong></td><td>All 500+ (incl. 168+ Crown Jewels), 100 crystallized pipelines</td><td>Internal</td></tr>
+</table>
 
----
+<hr />
 
-## Composable Cognitives
-
-**Superpowered AI agents** delivered as downloadable artifacts, purchasable without an account:
-
-| Component | Description |
-|-----------|-------------|
-| **Agents** | Specialized cognitive agents (Research, Coding, Analyst, Ops, Writer) |
-| **Hybrid** | Free general-purpose cognitive |
-| **Personalization** | Name and configure your cognitive at purchase |
-| **Delivery** | Black-boxed ZIP artifact for local execution |
-
-### Available Cognitives
-
-| Cognitive | Use Case | Price |
-|-----------|----------|-------|
-| Research | Market research, competitor analysis | $39 |
-| Coding | Code generation, debugging, optimization | $39 |
-| Analyst | Data analysis, reporting, insights | $39 |
-| Ops | Operations, automation, monitoring | $39 |
-| Writer | Content creation, editing, copywriting | $39 |
-| Hybrid | General-purpose multi-skill | FREE |
-
----
-
-## Crystallized Pipelines (Crown Jewels)
-
-100 high-value multi-module resolver chains discovered via the Intent Mesh:
-
-| Tier | Count | Access |
-|------|-------|--------|
-| **Creator** | 28 | Builder-friendly sealed workflows |
-| **Architect** | 36 | Premium sealed workflows |
-| **Enterprise** | 16 | Governance-grade sealed workflows |
-| **CMPSBL-Only** | 20 | Internal — never released |
-
-Categories: Security · Intelligence · Optimization · Compliance · Observability · Orchestration
-
----
-
-## Distribution Tiers
-
-| Tier | Access | Price Point |
-|------|--------|-------------|
-| **Free** | Artifact Store, persistent memory, 300+ synergy pipelines | $0 |
-| **Creator** | All engines, 28 crystallized pipelines, templates, SDK/API | $9/mo |
-| **Architect** | 64 crystallized pipelines, cross-project learning, 70+ Crown Jewels | $19/mo |
-| **Enterprise** | 80 crystallized pipelines, governance, compliance | $99/mo |
-| **CMPSBL-Only** | All 500+ (incl. 168+ Crown Jewels), 100 crystallized pipelines | Internal |
-
----
-
-<div align="center">
-
-*Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate*
-
-**Kenneth E Sweet Jr** · PromptFluid®  
-ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
-
-© 2025–2026 PromptFluid®. All rights reserved.
+<p><em>Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
+</body>
+</html>

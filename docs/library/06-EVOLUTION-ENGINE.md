@@ -1,120 +1,115 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Evolution Engine — CMPSBL OS Substrate</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-size:9pt;overflow-x:auto;border-radius:6px}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# Evolution Engine
-
-### Self-Improvement with Verifiable Stamps
-
+<h1>Evolution Engine</h1>
+<p><strong>Self-Improvement with Verifiable Stamps</strong></p>
 <table>
 <tr><td><strong>Document</strong></td><td>06 — Evolution Engine</td></tr>
 <tr><td><strong>Classification</strong></td><td>Library — No Trade Secrets</td></tr>
 <tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
 </table>
+<hr />
 
-</div>
+<h2>What Makes the Substrate Alive</h2>
+<p>Most software is static — it does exactly what it was programmed to do until a human updates it. The CMPSBL Substrate is different. It <strong>proposes improvements to itself</strong>, validates them, applies them with cryptographic proof, and can roll them back if they fail.</p>
+<p>This is not speculative. It is running in production today.</p>
 
----
+<hr />
 
-## What Makes the Substrate Alive
-
-Most software is static — it does exactly what it was programmed to do until a human updates it. The CMPSBL Substrate is different. It **proposes improvements to itself**, validates them, applies them with cryptographic proof, and can roll them back if they fail.
-
-This is not speculative. It is running in production today.
-
----
-
-## The Evolution Lifecycle
-
-```
-OBSERVE → PROPOSE → VALIDATE → APPROVE → APPLY → STAMP → MONITOR
+<h2>The Evolution Lifecycle</h2>
+<pre>OBSERVE → PROPOSE → VALIDATE → APPROVE → APPLY → STAMP → MONITOR
                                                           ↓
-                                                    [ROLLBACK if needed]
-```
+                                                    [ROLLBACK if needed]</pre>
 
-### 1. Observe
-The system monitors its own performance through VISION — tracking response times, error rates, memory quality, and capability usage. When it detects an opportunity for improvement, it generates an observation.
+<div class="card">
+<h3>1. Observe</h3>
+<p>The system monitors its own performance through VISION — tracking response times, error rates, memory quality, and capability usage. When it detects an opportunity for improvement, it generates an observation.</p>
+</div>
 
-### 2. Propose
-MODERNIZER generates a formal evolution proposal:
-- What will change
-- Why it should change
-- Expected impact
-- Risk assessment
-- Rollback plan
+<div class="card">
+<h3>2. Propose</h3>
+<p>MODERNIZER generates a formal evolution proposal: what will change, why it should change, expected impact, risk assessment, and rollback plan.</p>
+</div>
 
-### 3. Validate
-The proposal is tested against regression criteria:
-- Does it break existing functionality?
-- Does it degrade performance?
-- Does it violate governance bounds?
-- Does it pass safety checks?
+<div class="card">
+<h3>3. Validate</h3>
+<p>The proposal is tested against regression criteria: does it break existing functionality, degrade performance, violate governance bounds, or fail safety checks?</p>
+</div>
 
-### 4. Approve
-Based on the current autonomy tier:
-- **Manual** — human must approve
-- **Supervised** — system applies, human reviews
-- **Autonomous** — system applies within bounds
+<div class="card">
+<h3>4. Approve</h3>
+<p>Based on the current autonomy tier: <strong>Manual</strong> — human must approve; <strong>Supervised</strong> — system applies, human reviews; <strong>Autonomous</strong> — system applies within bounds.</p>
+</div>
 
-### 5. Apply
-The change is applied to the live system.
+<div class="card">
+<h3>5. Apply</h3>
+<p>The change is applied to the live system.</p>
+</div>
 
-### 6. Stamp
-A cryptographic evolution stamp is generated, recording:
-- What changed
-- Who authorized it
-- Pre/post state hashes
-- Regression results
-- Rollback availability
+<div class="card">
+<h3>6. Stamp</h3>
+<p>A cryptographic evolution stamp is generated, recording: what changed, who authorized it, pre/post state hashes, regression results, and rollback availability.</p>
+</div>
 
-### 7. Monitor
-The system monitors the impact of the change. If degradation is detected, rollback is triggered automatically.
+<div class="card">
+<h3>7. Monitor</h3>
+<p>The system monitors the impact of the change. If degradation is detected, rollback is triggered automatically.</p>
+</div>
 
----
+<hr />
 
-## What Can Evolve?
+<h2>What Can Evolve?</h2>
+<table>
+<tr><th>Category</th><th>Examples</th></tr>
+<tr><td><strong>Prompts</strong></td><td>System prompts, response templates, intent classifiers</td></tr>
+<tr><td><strong>Routing logic</strong></td><td>Provider selection weights, failover priorities</td></tr>
+<tr><td><strong>Memory strategies</strong></td><td>Decay rates, reinforcement weights, consolidation rules</td></tr>
+<tr><td><strong>Defense rules</strong></td><td>Threat thresholds, behavioral signatures, block rules</td></tr>
+<tr><td><strong>Pipeline configurations</strong></td><td>Synergy pipeline ordering, error handling</td></tr>
+</table>
+<p>The evolution engine <strong>cannot</strong> modify: its own governance rules, database schemas, access control policies, or Crown Jewel capabilities.</p>
 
-| Category | Examples |
-|----------|---------|
-| **Prompts** | System prompts, response templates, intent classifiers |
-| **Routing logic** | Provider selection weights, failover priorities |
-| **Memory strategies** | Decay rates, reinforcement weights, consolidation rules |
-| **Defense rules** | Threat thresholds, behavioral signatures, block rules |
-| **Pipeline configurations** | Synergy pipeline ordering, error handling |
+<hr />
 
-The evolution engine **cannot** modify:
-- Its own governance rules (bounded authority)
-- Database schemas (safety boundary)
-- Access control policies (security boundary)
-- Crown jewel capabilities (strategic boundary)
+<h2>Verifiability</h2>
+<p>Every evolution is verifiable. Given an evolution stamp, anyone can confirm:</p>
+<ol>
+<li>The change was proposed, not injected</li>
+<li>Regression tests passed before application</li>
+<li>The appropriate authority approved it</li>
+<li>The system state before and after is hash-verifiable</li>
+<li>Rollback is available</li>
+</ol>
+<p>This makes the substrate's self-improvement <strong>auditable</strong> — a requirement for enterprise adoption and regulatory compliance.</p>
 
----
+<hr />
 
-## Verifiability
-
-Every evolution is verifiable. Given an evolution stamp, anyone can confirm:
-
-1. The change was proposed, not injected
-2. Regression tests passed before application
-3. The appropriate authority approved it
-4. The system state before and after is hash-verifiable
-5. Rollback is available
-
-This makes the substrate's self-improvement **auditable** — a requirement for enterprise adoption and regulatory compliance.
-
----
-
-## What's Next
-
-Continue to [`07-GOVERNANCE-MODEL.md`](./07-GOVERNANCE-MODEL.md) for the three-tier autonomy governance model.
-
----
-
-<div align="center">
-
-*CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch*
-
-**Kenneth E Sweet Jr** · PromptFluid®  
-ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
-
-© 2025–2026 PromptFluid®. All rights reserved.
+<p><em>CMPSBL OS Substrate v9.1.0 — Library Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
+</body>
+</html>
