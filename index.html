@@ -83,6 +83,8 @@
     <link rel="dns-prefetch" href="https://bxodolqqczjuahwdrswy.supabase.co" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Supabase preconnect: only dns-prefetch above; full preconnect deferred to avoid wasting FCP budget -->
+    
     <!-- Third-party analytics removed — OS Dashboard is the single source of truth -->
     
     <!-- 2026 SEO: FCP Optimization - Critical CSS inline for immediate first paint -->
@@ -664,7 +666,20 @@
 
   <body>
     <!-- 2026 SEO: Semantic HTML structure - no blocking overlays for crawlers -->
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static shell for instant FCP — React replaces this on mount -->
+      <div style="min-height:100vh;display:flex;flex-direction:column;background:hsl(var(--background));color:hsl(var(--foreground))">
+        <nav style="position:sticky;top:0;z-index:50;background:hsl(var(--background));border-bottom:1px solid hsl(var(--border)/0.5);height:64px;display:flex;align-items:center;padding:0 1rem">
+          <span style="font-weight:700;font-size:1.125rem">CMPSBL</span>
+        </nav>
+        <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;text-align:center">
+          <div>
+            <h1 style="font-size:2.25rem;font-weight:700;line-height:1.2;margin-bottom:1rem">Substrate OS</h1>
+            <p style="color:hsl(var(--muted-foreground));font-size:1.125rem">Cognitive Infrastructure Standard</p>
+          </div>
+        </main>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
     
     <!-- 2026 SEO: Noscript fallback for SEO crawlers -->
