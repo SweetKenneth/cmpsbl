@@ -1,43 +1,48 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>MODERNIZER Module — Deep Dive</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}th,td{border:1px solid #ccc;padding:6px 8px}th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# Module 12 — MODERNIZER
+<h1>Module 12 — MODERNIZER</h1>
+<p><strong>Evolution Engine and Self-Improvement</strong></p>
+<p><strong>Layer 4 — Administrative</strong> · <strong>v9.3.0 ARCHITECT Epoch</strong></p>
+<hr />
 
-### Evolution Engine and Self-Improvement
+<h2>Purpose</h2>
+<p>MODERNIZER is the substrate's self-improvement engine. It identifies optimization opportunities, generates evolution proposals, evaluates them for safety, and applies approved changes — all under strict governance. This is how the substrate gets better over time without manual intervention.</p>
 
-Layer 4 — Administrative
+<h2>Capabilities</h2>
+<table>
+<tr><th>Capability</th><th>Description</th><th>Tier</th></tr>
+<tr><td>Opportunity Detection</td><td>Identifies areas where the substrate can improve</td><td>Free</td></tr>
+<tr><td>Proposal Generation</td><td>Creates structured evolution proposals</td><td>Pro</td></tr>
+<tr><td>Risk Assessment</td><td>Evaluates proposals for safety and reversibility</td><td>Pro</td></tr>
+<tr><td>Supervised Evolution</td><td>Apply proposals with human approval required</td><td>Pro</td></tr>
+<tr><td>Rollback</td><td>Revert any applied evolution to its previous state</td><td>Pro</td></tr>
+<tr><td>Autonomous Evolution</td><td>Apply low-risk proposals without human approval</td><td>Enterprise</td></tr>
+<tr><td>Evolution Chains</td><td>Sequence dependent proposals into multi-step improvements</td><td>Enterprise</td></tr>
+<tr><td>Meta-Evolution</td><td>Evolve the evolution process itself</td><td>CMPSBL</td></tr>
+<tr><td>Cross-Module Optimization</td><td>Proposals that span multiple modules simultaneously</td><td>CMPSBL</td></tr>
+</table>
 
-v9.3.0 ARCHITECT Epoch
-
-</div>
-
----
-
-## Purpose
-
-MODERNIZER is the substrate's self-improvement engine. It identifies optimization opportunities, generates evolution proposals, evaluates them for safety, and applies approved changes — all under strict governance. This is how the substrate gets better over time without manual intervention.
-
----
-
-## Capabilities
-
-| Capability | Description | Tier |
-|-----------|-------------|------|
-| Opportunity Detection | Identifies areas where the substrate can improve | Free |
-| Proposal Generation | Creates structured evolution proposals | Pro |
-| Risk Assessment | Evaluates proposals for safety and reversibility | Pro |
-| Supervised Evolution | Apply proposals with human approval required | Pro |
-| Rollback | Revert any applied evolution to its previous state | Pro |
-| Autonomous Evolution | Apply low-risk proposals without human approval | Enterprise |
-| Evolution Chains | Sequence dependent proposals into multi-step improvements | Enterprise |
-| Meta-Evolution | Evolve the evolution process itself | CMPSBL |
-| Cross-Module Optimization | Proposals that span multiple modules simultaneously | CMPSBL |
-
----
-
-## Evolution Pipeline
-
-```
-┌──────────────────┐
+<h2>Evolution Pipeline</h2>
+<div class="card">
+<pre>┌──────────────────┐
 │  1. DETECT        │  Scan module metrics for optimization opportunities
 │                   │  Minimum opportunity_score threshold: 0.25
 └────────┬─────────┘
@@ -51,7 +56,7 @@ MODERNIZER is the substrate's self-improvement engine. It identifies optimizatio
          ▼
 ┌──────────────────┐
 │  3. EVALUATE      │  Risk scoring by CORTEX
-│                   │  Risk categories: low (< 0.3), medium (0.3–0.7), high (> 0.7)
+│                   │  Risk categories: low (&lt; 0.3), medium (0.3–0.7), high (&gt; 0.7)
 └────────┬─────────┘
          │
          ▼
@@ -70,68 +75,56 @@ MODERNIZER is the substrate's self-improvement engine. It identifies optimizatio
 ┌──────────────────┐
 │  6. VERIFY        │  Monitor for 24 hours post-application
 │                   │  Auto-rollback if health degrades beyond threshold
-└──────────────────┘
-```
+└──────────────────┘</pre>
+</div>
 
----
+<h2>Evolution Categories</h2>
+<table>
+<tr><th>Category</th><th>Examples</th><th>Typical Risk</th></tr>
+<tr><td>Configuration</td><td>Threshold adjustments, weight tuning</td><td>Low</td></tr>
+<tr><td>Routing</td><td>Provider preference changes, failover order</td><td>Low–Medium</td></tr>
+<tr><td>Memory</td><td>Decay curve adjustments, consolidation rules</td><td>Medium</td></tr>
+<tr><td>Security</td><td>Detection rule updates, response thresholds</td><td>Medium–High</td></tr>
+<tr><td>Architecture</td><td>Module interaction patterns, new capabilities</td><td>High</td></tr>
+</table>
 
-## Evolution Categories
+<h2>Governance Controls</h2>
+<table>
+<tr><th>Control</th><th>Description</th></tr>
+<tr><td>Proposal Rate Limit</td><td>Maximum 10 proposals per day</td></tr>
+<tr><td>Concurrent Limit</td><td>Only 1 evolution can be in-progress at a time</td></tr>
+<tr><td>Mandatory Rollback Plan</td><td>Every proposal must include a reversal procedure</td></tr>
+<tr><td>Evolution Stamp</td><td>Cryptographic receipt proving what changed, when, and why</td></tr>
+<tr><td>24-Hour Observation</td><td>Post-application monitoring before marking as stable</td></tr>
+<tr><td>Human Override</td><td>Any evolution can be manually reverted at any time</td></tr>
+</table>
 
-| Category | Examples | Typical Risk |
-|----------|---------|-------------|
-| Configuration | Threshold adjustments, weight tuning | Low |
-| Routing | Provider preference changes, failover order | Low–Medium |
-| Memory | Decay curve adjustments, consolidation rules | Medium |
-| Security | Detection rule updates, response thresholds | Medium–High |
-| Architecture | Module interaction patterns, new capabilities | High |
+<h2>Integration with Other Modules</h2>
+<table>
+<tr><th>Module</th><th>Integration</th></tr>
+<tr><td>CORTEX</td><td>Evaluates proposals and authorizes execution</td></tr>
+<tr><td>BRAIN</td><td>Stores evolution history and outcome patterns</td></tr>
+<tr><td>DREAM</td><td>Feeds optimization insights from dream cycles</td></tr>
+<tr><td>VISION</td><td>Provides performance data that drives opportunity detection</td></tr>
+<tr><td>AUDIT</td><td>Logs every proposal, approval, application, and rollback</td></tr>
+<tr><td>RIPPLE</td><td>Emits modernizer.proposed, modernizer.applied, modernizer.rolled_back</td></tr>
+<tr><td>SYSTEM</td><td>Coordinates maintenance windows for high-risk evolutions</td></tr>
+</table>
 
----
+<h2>Database Tables</h2>
+<table>
+<tr><th>Table</th><th>Purpose</th></tr>
+<tr><td>evolution_proposals</td><td>All generated proposals with status and outcome</td></tr>
+<tr><td>evolution_stamps</td><td>Cryptographic receipts for applied evolutions</td></tr>
+<tr><td>evolution_rollbacks</td><td>Rollback records with before/after state</td></tr>
+</table>
 
-## Governance Controls
-
-| Control | Description |
-|---------|-------------|
-| Proposal Rate Limit | Maximum 10 proposals per day |
-| Concurrent Limit | Only 1 evolution can be in-progress at a time |
-| Mandatory Rollback Plan | Every proposal must include a reversal procedure |
-| Evolution Stamp | Cryptographic receipt proving what changed, when, and why |
-| 24-Hour Observation | Post-application monitoring before marking as stable |
-| Human Override | Any evolution can be manually reverted at any time |
-
----
-
-## Integration with Other Modules
-
-| Module | Integration |
-|--------|------------|
-| CORTEX | Evaluates proposals and authorizes execution |
-| BRAIN | Stores evolution history and outcome patterns |
-| DREAM | Feeds optimization insights from dream cycles |
-| VISION | Provides performance data that drives opportunity detection |
-| AUDIT | Logs every proposal, approval, application, and rollback |
-| RIPPLE | Emits `modernizer.proposed`, `modernizer.applied`, `modernizer.rolled_back` |
-| SYSTEM | Coordinates maintenance windows for high-risk evolutions |
-
----
-
-## Database Tables
-
-| Table | Purpose |
-|-------|---------|
-| `evolution_proposals` | All generated proposals with status and outcome |
-| `evolution_stamps` | Cryptographic receipts for applied evolutions |
-| `evolution_rollbacks` | Rollback records with before/after state |
-
----
-
-<div align="center">
-
-CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch
-
-Kenneth E Sweet Jr · PromptFluid
-
-ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX
-
-© 2025–2026 PromptFluid. All rights reserved.
+<hr />
+<p><em>CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch</em><br />
+<em>Kenneth E Sweet Jr · PromptFluid®</em><br />
+<em>ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX</em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
+</body>
+</html>

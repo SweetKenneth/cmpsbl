@@ -1,77 +1,74 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>RELAY Module — Deep Dive</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}th,td{border:1px solid #ccc;padding:6px 8px}th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# Module 16 — RELAY
+<h1>Module 16 — RELAY</h1>
+<p><strong>Webhooks and Outbound Notifications</strong></p>
+<p><strong>Layer 6 — Infrastructure</strong> · <strong>v10.5.1 ARCHITECT Epoch</strong></p>
+<hr />
 
-### Webhooks and Outbound Notifications
+<h2>Purpose</h2>
+<p>RELAY handles all outbound communication from the substrate — webhooks, email notifications, Slack messages, and custom delivery channels. It ensures reliable delivery with retry logic, deduplication, delivery tracking, and cryptographic signature verification.</p>
 
-Layer 6 — Infrastructure
+<h2>Capabilities</h2>
+<table>
+<tr><th>Capability</th><th>Description</th><th>Tier</th></tr>
+<tr><td>Webhook Delivery</td><td>Send HTTP POST payloads to configured endpoints</td><td>Free</td></tr>
+<tr><td>Delivery Tracking</td><td>Track delivery status (pending, sent, failed, confirmed)</td><td>Free</td></tr>
+<tr><td>Retry Logic</td><td>Exponential backoff with configurable max attempts</td><td>Free</td></tr>
+<tr><td>HMAC-SHA256 Signature Verification (v10.5.1)</td><td>Cryptographically sign all outbound webhooks for payload integrity</td><td>Free</td></tr>
+<tr><td>Adaptive Retry Backoff (v10.5.1)</td><td>Jitter-based exponential backoff preventing thundering herd</td><td>Free</td></tr>
+<tr><td>Email Notifications</td><td>Send templated emails via configured SMTP or API</td><td>Pro</td></tr>
+<tr><td>Delivery Deduplication</td><td>Prevent duplicate deliveries using idempotency keys</td><td>Pro</td></tr>
+<tr><td>Multi-Channel Routing</td><td>Route notifications to appropriate channels by type</td><td>Pro</td></tr>
+<tr><td>Slack Integration</td><td>Send notifications to Slack channels and DMs</td><td>Enterprise</td></tr>
+<tr><td>Custom Channels</td><td>Register custom delivery adapters</td><td>Enterprise</td></tr>
+<tr><td>Delivery Analytics</td><td>Track delivery rates, latency, and failure patterns</td><td>CMPSBL</td></tr>
+<tr><td>Smart Batching</td><td>Aggregate rapid-fire events into digest notifications</td><td>CMPSBL</td></tr>
+</table>
 
-v10.5.1 ARCHITECT Epoch
-
-</div>
-
----
-
-## Purpose
-
-RELAY handles all outbound communication from the substrate — webhooks, email notifications, Slack messages, and custom delivery channels. It ensures reliable delivery with retry logic, deduplication, delivery tracking, and cryptographic signature verification.
-
----
-
-## Capabilities
-
-| Capability | Description | Tier |
-|-----------|-------------|------|
-| Webhook Delivery | Send HTTP POST payloads to configured endpoints | Free |
-| Delivery Tracking | Track delivery status (pending, sent, failed, confirmed) | Free |
-| Retry Logic | Exponential backoff with configurable max attempts | Free |
-| HMAC-SHA256 Signature Verification (v10.5.1) | Cryptographically sign all outbound webhooks for payload integrity | Free |
-| Adaptive Retry Backoff (v10.5.1) | Jitter-based exponential backoff preventing thundering herd | Free |
-| Email Notifications | Send templated emails via configured SMTP or API | Pro |
-| Delivery Deduplication | Prevent duplicate deliveries using idempotency keys | Pro |
-| Multi-Channel Routing | Route notifications to appropriate channels by type | Pro |
-| Slack Integration | Send notifications to Slack channels and DMs | Enterprise |
-| Custom Channels | Register custom delivery adapters | Enterprise |
-| Delivery Analytics | Track delivery rates, latency, and failure patterns | CMPSBL |
-| Smart Batching | Aggregate rapid-fire events into digest notifications | CMPSBL |
-
----
-
-## Webhook Signature Verification (v10.5.1)
-
-All outbound webhooks are now signed using HMAC-SHA256:
-
-```
-Signature = HMAC-SHA256(endpoint_secret, timestamp + "." + payload_json)
+<h2>Webhook Signature Verification (v10.5.1)</h2>
+<div class="card">
+<p>All outbound webhooks are now signed using HMAC-SHA256:</p>
+<pre>Signature = HMAC-SHA256(endpoint_secret, timestamp + "." + payload_json)
 
 Headers sent:
   X-Substrate-Signature: sha256={signature}
-  X-Substrate-Timestamp: {unix_timestamp}
-```
+  X-Substrate-Timestamp: {unix_timestamp}</pre>
+<p>Receivers can verify payload integrity by recomputing the HMAC and comparing signatures.</p>
+</div>
 
-Receivers can verify payload integrity by recomputing the HMAC and comparing signatures.
+<h2>Adaptive Retry Backoff (v10.5.1)</h2>
+<p>Retry delays now include randomized jitter to prevent thundering herd:</p>
+<table>
+<tr><th>Attempt</th><th>Base Delay</th><th>Jitter Range</th><th>Effective Delay</th></tr>
+<tr><td>1</td><td>Immediate</td><td>—</td><td>0s</td></tr>
+<tr><td>2</td><td>30s</td><td>±15s</td><td>15–45s</td></tr>
+<tr><td>3</td><td>2min</td><td>±60s</td><td>1–3min</td></tr>
+<tr><td>4</td><td>15min</td><td>±5min</td><td>10–20min</td></tr>
+<tr><td>5</td><td>1hr</td><td>±15min</td><td>45min–1h15min</td></tr>
+<tr><td>Final</td><td>—</td><td>—</td><td>Mark permanently failed, alert operator</td></tr>
+</table>
 
----
-
-## Adaptive Retry Backoff (v10.5.1)
-
-Retry delays now include randomized jitter to prevent thundering herd:
-
-| Attempt | Base Delay | Jitter Range | Effective Delay |
-|---------|-----------|-------------|-----------------|
-| 1 | Immediate | — | 0s |
-| 2 | 30s | ±15s | 15–45s |
-| 3 | 2min | ±60s | 1–3min |
-| 4 | 15min | ±5min | 10–20min |
-| 5 | 1hr | ±15min | 45min–1h15min |
-| Final | — | — | Mark permanently failed, alert operator |
-
----
-
-## Delivery Flow
-
-```
-Event triggers notification
+<h2>Delivery Flow</h2>
+<div class="card">
+<pre>Event triggers notification
          │
          ▼
 ┌─────────────────┐
@@ -100,42 +97,34 @@ Event triggers notification
          │
          ├─ Success → Mark delivered, log in AUDIT
          │
-         └─ Failure → Queue for adaptive retry with jitter
-```
+         └─ Failure → Queue for adaptive retry with jitter</pre>
+</div>
 
----
+<h2>Integration with Other Modules</h2>
+<table>
+<tr><th>Module</th><th>Integration</th></tr>
+<tr><td>RIPPLE</td><td>Subscribes to events that trigger notifications</td></tr>
+<tr><td>INTEGRATION</td><td>Uses external adapters for delivery (Slack, email providers)</td></tr>
+<tr><td>AUDIT</td><td>Logs all delivery attempts and outcomes</td></tr>
+<tr><td>DEFENSE</td><td>Validates webhook endpoints before registration</td></tr>
+<tr><td>ECONOMY</td><td>Tracks notification costs (email API charges)</td></tr>
+<tr><td>BRAIN</td><td>Receives delivery reliability heuristics via Brain Transfer</td></tr>
+</table>
 
-## Integration with Other Modules
+<h2>Database Tables</h2>
+<table>
+<tr><th>Table</th><th>Purpose</th></tr>
+<tr><td>relay_webhooks</td><td>Registered webhook endpoints and configurations</td></tr>
+<tr><td>relay_deliveries</td><td>Delivery attempt log with status tracking</td></tr>
+<tr><td>relay_templates</td><td>Notification templates by channel and event type</td></tr>
+</table>
 
-| Module | Integration |
-|--------|------------|
-| RIPPLE | Subscribes to events that trigger notifications |
-| INTEGRATION | Uses external adapters for delivery (Slack, email providers) |
-| AUDIT | Logs all delivery attempts and outcomes |
-| DEFENSE | Validates webhook endpoints before registration |
-| ECONOMY | Tracks notification costs (email API charges) |
-| BRAIN | Receives delivery reliability heuristics via Brain Transfer |
-
----
-
-## Database Tables
-
-| Table | Purpose |
-|-------|---------|
-| `relay_webhooks` | Registered webhook endpoints and configurations |
-| `relay_deliveries` | Delivery attempt log with status tracking |
-| `relay_templates` | Notification templates by channel and event type |
-
----
-
-<div align="center">
-
-CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch
-
-Kenneth E Sweet Jr · PromptFluid
-
-ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX
-
-© 2025–2026 PromptFluid. All rights reserved.
+<hr />
+<p><em>CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch</em><br />
+<em>Kenneth E Sweet Jr · PromptFluid®</em><br />
+<em>ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX</em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
+</body>
+</html>

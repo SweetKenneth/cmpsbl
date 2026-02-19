@@ -1,61 +1,62 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>SYSTEM Module — Deep Dive</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}th,td{border:1px solid #ccc;padding:6px 8px}th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# Module 11 — SYSTEM
+<h1>Module 11 — SYSTEM</h1>
+<p><strong>Lifecycle Orchestration, Backup, and Recovery</strong></p>
+<p><strong>Layer 4 — Administrative</strong> · <strong>v9.3.0 ARCHITECT Epoch</strong></p>
+<hr />
 
-### Lifecycle Orchestration, Backup, and Recovery
+<h2>Purpose</h2>
+<p>SYSTEM manages the substrate's lifecycle — boot sequencing, health monitoring, auto-healing, backup, and restore. It is the operations manager that keeps all 21 modules running and recoverable.</p>
 
-Layer 4 — Administrative
+<h2>Capabilities</h2>
+<table>
+<tr><th>Capability</th><th>Description</th><th>Tier</th></tr>
+<tr><td>Boot Sequencing</td><td>Initialize all modules in dependency order</td><td>Free</td></tr>
+<tr><td>Health Monitoring</td><td>Continuous health score tracking for all modules</td><td>Free</td></tr>
+<tr><td>Auto-Heal</td><td>Detect and recover unhealthy modules automatically</td><td>Free</td></tr>
+<tr><td>Manual Heal</td><td>Operator-triggered module recovery</td><td>Pro</td></tr>
+<tr><td>Backup</td><td>Export substrate state to portable format</td><td>Pro</td></tr>
+<tr><td>Restore</td><td>Import substrate state from backup</td><td>Pro</td></tr>
+<tr><td>Scheduled Maintenance</td><td>Automated maintenance windows for optimization</td><td>Enterprise</td></tr>
+<tr><td>Cross-Instance Sync</td><td>Synchronize state across substrate deployments</td><td>Enterprise</td></tr>
+<tr><td>Hot Module Reload</td><td>Update module logic without downtime</td><td>CMPSBL</td></tr>
+<tr><td>Disaster Recovery</td><td>Full substrate reconstruction from minimal seed</td><td>CMPSBL</td></tr>
+</table>
 
-v9.3.0 ARCHITECT Epoch
+<h2>Boot Sequence</h2>
+<p>The substrate boots in strict layer order. Each layer must reach healthy status before the next begins:</p>
+<table>
+<tr><th>Phase</th><th>Layer</th><th>Modules</th><th>Target Time</th></tr>
+<tr><td>1</td><td>Kernel</td><td>CORE, RIPPLE, ACCESS</td><td>&lt; 1 second</td></tr>
+<tr><td>2</td><td>Infrastructure</td><td>MEMORY, AUDIT, IDENTITY, ECONOMY, SANDBOX, RELAY</td><td>&lt; 2 seconds</td></tr>
+<tr><td>3</td><td>Cognitive</td><td>BRAIN, DECODE, DREAM</td><td>&lt; 1 second</td></tr>
+<tr><td>4</td><td>Operational</td><td>DEFENSE, NEXUS, VISION, INTEGRATION</td><td>&lt; 500ms</td></tr>
+<tr><td>5</td><td>Administrative</td><td>SYSTEM, MODERNIZER, INCLUSIVE</td><td>&lt; 300ms</td></tr>
+<tr><td>6</td><td>Orchestrator</td><td>CORTEX</td><td>&lt; 200ms</td></tr>
+</table>
+<p>Total boot target: under 5 seconds for all 21 modules.</p>
 
-</div>
-
----
-
-## Purpose
-
-SYSTEM manages the substrate's lifecycle — boot sequencing, health monitoring, auto-healing, backup, and restore. It is the operations manager that keeps all 21 modules running and recoverable.
-
----
-
-## Capabilities
-
-| Capability | Description | Tier |
-|-----------|-------------|------|
-| Boot Sequencing | Initialize all modules in dependency order | Free |
-| Health Monitoring | Continuous health score tracking for all modules | Free |
-| Auto-Heal | Detect and recover unhealthy modules automatically | Free |
-| Manual Heal | Operator-triggered module recovery | Pro |
-| Backup | Export substrate state to portable format | Pro |
-| Restore | Import substrate state from backup | Pro |
-| Scheduled Maintenance | Automated maintenance windows for optimization | Enterprise |
-| Cross-Instance Sync | Synchronize state across substrate deployments | Enterprise |
-| Hot Module Reload | Update module logic without downtime | CMPSBL |
-| Disaster Recovery | Full substrate reconstruction from minimal seed | CMPSBL |
-
----
-
-## Boot Sequence
-
-The substrate boots in strict layer order. Each layer must reach healthy status before the next begins:
-
-| Phase | Layer | Modules | Target Time |
-|-------|-------|---------|-------------|
-| 1 | Kernel | CORE, RIPPLE, ACCESS | < 1 second |
-| 2 | Infrastructure | MEMORY, AUDIT, IDENTITY, ECONOMY, SANDBOX, RELAY | < 2 seconds |
-| 3 | Cognitive | BRAIN, DECODE, DREAM | < 1 second |
-| 4 | Operational | DEFENSE, NEXUS, VISION, INTEGRATION | < 500ms |
-| 5 | Administrative | SYSTEM, MODERNIZER, INCLUSIVE | < 300ms |
-| 6 | Orchestrator | CORTEX | < 200ms |
-
-Total boot target: under 5 seconds for all 21 modules.
-
----
-
-## Auto-Heal Process
-
-```
-SYSTEM detects module health < 0.3
+<h2>Auto-Heal Process</h2>
+<div class="card">
+<pre>SYSTEM detects module health &lt; 0.3
            │
            ▼
    Circuit breaker activated
@@ -79,75 +80,59 @@ SYSTEM detects module health < 0.3
                          │
                          ├─ Health restored → Resume
                          │
-                         └─ Failed → Mark module as degraded, alert operator
-```
+                         └─ Failed → Mark module as degraded, alert operator</pre>
+<p>Maximum auto-heal cycle: 30 seconds from detection to recovery.</p>
+</div>
 
-Maximum auto-heal cycle: 30 seconds from detection to recovery.
+<h2>Backup and Restore</h2>
+<table>
+<tr><th>Component</th><th>Included in Backup</th></tr>
+<tr><td>Memory tiers</td><td>All BRAIN memories with confidence scores</td></tr>
+<tr><td>Module configurations</td><td>Settings, thresholds, and weights</td></tr>
+<tr><td>Evolution history</td><td>All MODERNIZER proposals and outcomes</td></tr>
+<tr><td>Dream insights</td><td>DREAM cycle results and heuristics</td></tr>
+<tr><td>Audit trail</td><td>Complete AUDIT ledger</td></tr>
+<tr><td>API keys and quotas</td><td>ACCESS configuration (encrypted)</td></tr>
+</table>
+<p>Backups are portable JSON archives that can restore a substrate to any compatible deployment.</p>
 
----
+<h2>Health Score Aggregation</h2>
+<p>SYSTEM calculates a substrate-wide health score using layer-weighted averages:</p>
+<table>
+<tr><th>Layer</th><th>Weight</th></tr>
+<tr><td>Kernel</td><td>0.25</td></tr>
+<tr><td>Infrastructure</td><td>0.20</td></tr>
+<tr><td>Cognitive</td><td>0.20</td></tr>
+<tr><td>Operational</td><td>0.15</td></tr>
+<tr><td>Administrative</td><td>0.10</td></tr>
+<tr><td>Orchestrator</td><td>0.10</td></tr>
+</table>
+<pre>substrate_health = sum(module_health * layer_weight) / sum(layer_weights)</pre>
 
-## Backup and Restore
+<h2>Integration with Other Modules</h2>
+<table>
+<tr><th>Module</th><th>Integration</th></tr>
+<tr><td>All 21 modules</td><td>Monitors health scores and manages lifecycles</td></tr>
+<tr><td>VISION</td><td>Provides health data for dashboards</td></tr>
+<tr><td>AUDIT</td><td>Logs all lifecycle events (boot, heal, backup, restore)</td></tr>
+<tr><td>RIPPLE</td><td>Emits system.boot, system.heal, system.backup_complete</td></tr>
+<tr><td>CORTEX</td><td>Receives orchestration directives for maintenance windows</td></tr>
+</table>
 
-| Component | Included in Backup |
-|-----------|-------------------|
-| Memory tiers | All BRAIN memories with confidence scores |
-| Module configurations | Settings, thresholds, and weights |
-| Evolution history | All MODERNIZER proposals and outcomes |
-| Dream insights | DREAM cycle results and heuristics |
-| Audit trail | Complete AUDIT ledger |
-| API keys and quotas | ACCESS configuration (encrypted) |
+<h2>Database Tables</h2>
+<table>
+<tr><th>Table</th><th>Purpose</th></tr>
+<tr><td>module_health</td><td>Current and historical health scores per module</td></tr>
+<tr><td>backup_exports</td><td>Backup metadata and status tracking</td></tr>
+<tr><td>backup_restore_log</td><td>Restore operation history</td></tr>
+</table>
 
-Backups are portable JSON archives that can restore a substrate to any compatible deployment.
-
----
-
-## Health Score Aggregation
-
-SYSTEM calculates a substrate-wide health score using layer-weighted averages:
-
-| Layer | Weight |
-|-------|--------|
-| Kernel | 0.25 |
-| Infrastructure | 0.20 |
-| Cognitive | 0.20 |
-| Operational | 0.15 |
-| Administrative | 0.10 |
-| Orchestrator | 0.10 |
-
-Formula: `substrate_health = sum(module_health * layer_weight) / sum(layer_weights)`
-
----
-
-## Integration with Other Modules
-
-| Module | Integration |
-|--------|------------|
-| All 21 modules | Monitors health scores and manages lifecycles |
-| VISION | Provides health data for dashboards |
-| AUDIT | Logs all lifecycle events (boot, heal, backup, restore) |
-| RIPPLE | Emits `system.boot`, `system.heal`, `system.backup_complete` |
-| CORTEX | Receives orchestration directives for maintenance windows |
-
----
-
-## Database Tables
-
-| Table | Purpose |
-|-------|---------|
-| `module_health` | Current and historical health scores per module |
-| `backup_exports` | Backup metadata and status tracking |
-| `backup_restore_log` | Restore operation history |
-
----
-
-<div align="center">
-
-CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch
-
-Kenneth E Sweet Jr · PromptFluid
-
-ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX
-
-© 2025–2026 PromptFluid. All rights reserved.
+<hr />
+<p><em>CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch</em><br />
+<em>Kenneth E Sweet Jr · PromptFluid®</em><br />
+<em>ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX</em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
+</body>
+</html>
