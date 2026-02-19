@@ -13,6 +13,11 @@ import {
 import { DecodeInput, DecodeResponse } from '@/lib/contracts/DecodeContractTypes';
 import { decode } from '@/lib/substrate';
 import { sanitizeClocklessTerminology } from '@/lib/substrate/decode/clockless-identity';
+import {
+  attachTruthBoundary,
+  getInferredQualifier,
+  type TruthMode,
+} from '@/lib/substrate/health-registry';
 
 interface UseDecodeOptions {
   /** Whether to invoke substrate modules on each query */
@@ -133,7 +138,14 @@ export function useDecodeChat(sessionId?: string) {
       if (response.success) {
         const data = response.data as any;
         const rawReply = data?.reply || 'I received your thought.';
-        const reply = sanitizeClocklessTerminology(rawReply);
+        const sanitized = sanitizeClocklessTerminology(rawReply);
+
+        // Truth Boundary: tag infrastructure references with provenance
+        const boundary = attachTruthBoundary(sanitized, 'decode');
+        const reply = boundary.truth_mode === 'inferred_context'
+          ? `${getInferredQualifier()} ${sanitized}`
+          : sanitized;
+
         setMessages(prev => [...prev, {
           role: 'assistant',
           content: reply,
@@ -141,7 +153,9 @@ export function useDecodeChat(sessionId?: string) {
           metadata: {
             provider: data?.provider,
             processingTime,
-            module: 'decode'
+            module: 'decode',
+            truth_mode: boundary.truth_mode,
+            attribution: boundary.attribution,
           }
         }]);
         return response;

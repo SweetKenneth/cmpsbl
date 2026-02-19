@@ -11,6 +11,7 @@ import { isShadowMeshEnabled } from '@/lib/system/flags';
 import { getSynergyExecutor } from '@/lib/capabilities/synergies/registry';
 import { log } from '@/lib/system/log';
 import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
+import { updateHealthRegistry, updateShadowMeshState, getShadowMeshState } from '@/lib/substrate/health-registry';
 
 export interface ShadowProbeResult {
   input: Record<string, unknown>;
@@ -109,6 +110,22 @@ export async function runShadowProbe(
   }
 
   log.info('shadow', `Probe complete: ${executorName} — ${inputs.length} runs`, summary);
+
+  // Push shadow mesh state to CHR
+  const totalFails = summary.escalated + summary.failedSafe;
+  const loadIndex = inputs.length > 0 ? Math.round((totalFails / inputs.length) * 100) : 0;
+  updateShadowMeshState({ active: true, load_index: loadIndex });
+
+  // Register as synthetic shadow event (isolation-aware)
+  const shadowState = getShadowMeshState();
+  updateHealthRegistry(`shadow:${executorName}`, totalFails > 0 ? 'shadow_event' : 'healthy',
+    totalFails > 0 ? 'shadow_event' : 'boot',
+    shadowState.bleed_into_health ? 'synthetic_shadow_event' : 'synthetic_test',
+    {
+      detail: `${summary.success} ok, ${summary.repaired} repaired, ${summary.escalated} escalated, ${summary.failedSafe} safe-failed`,
+      score_override: totalFails > 0 ? 85 : 100,
+    }
+  );
 
   return {
     executor: executorName,
