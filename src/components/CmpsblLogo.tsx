@@ -11,6 +11,7 @@ interface CmpsblLogoProps {
   className?: string;
   iconOnly?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
+  priority?: boolean;
 }
 
 const sizeConfig = {
@@ -20,7 +21,7 @@ const sizeConfig = {
   xl: { className: "h-24", width: 96, height: 96 },
 };
 
-export function CmpsblLogo({ className, iconOnly = false, size = "md" }: CmpsblLogoProps) {
+export function CmpsblLogo({ className, iconOnly = false, size = "md", priority = false }: CmpsblLogoProps) {
   const { className: sizeClass, width, height } = sizeConfig[size];
   return (
     <img
@@ -28,9 +29,9 @@ export function CmpsblLogo({ className, iconOnly = false, size = "md" }: CmpsblL
       alt="CMPSBL By PromptFluid"
       width={width}
       height={height}
-      loading="lazy"
-      decoding="async"
-      fetchPriority="auto"
+      loading={priority ? "eager" : "lazy"}
+      decoding={priority ? "sync" : "async"}
+      fetchPriority={priority ? "high" : "auto"}
       className={cn(
         sizeClass,
         "w-auto object-contain",
