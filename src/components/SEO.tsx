@@ -391,9 +391,7 @@ export function SEO({
       <meta name="copyright" content="© 2009-2026 CMPSBL®" />
       <link rel="canonical" href={resolvedCanonical} />
       
-      {/* Performance Hints */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      {/* Performance Hints — preconnect for fonts already in index.html, only dns-prefetch here */}
       <link rel="dns-prefetch" href="https://cmpsbl.com" />
       
       {/* Viewport & Mobile */}
