@@ -1,80 +1,82 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>CMPSBL OS Substrate — Internal Documentation Index</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}th,td{border:1px solid #ccc;padding:6px 8px}th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# 🔒 CMPSBL OS Substrate — Internal Documentation
+<h1>🔒 CMPSBL OS Substrate — Internal Documentation</h1>
+<p><strong>CONFIDENTIAL — Trade Secrets Enclosed</strong></p>
+<p><strong>v10.5.1 ARCHITECT Epoch</strong></p>
+<hr />
 
-### CONFIDENTIAL — Trade Secrets Enclosed
+<p>⚠️ <strong>This documentation contains proprietary algorithms, implementation details, and trade secrets.</strong> Do not distribute outside of CMPSBL/PromptFluid without written authorization.</p>
 
-**v10.5.1 ARCHITECT Epoch**
+<h2>Document Inventory</h2>
+<table>
+<tr><th>№</th><th>Document</th><th>Description</th><th>Sensitivity</th></tr>
+<tr><td>01</td><td><a href="./01-ARCHITECTURE-INTERNALS.md">Architecture Internals</a></td><td>Full architecture with implementation secrets</td><td>🔴 High</td></tr>
+<tr><td>02</td><td><a href="./02-CROWN-JEWELS.md">Crown Jewels Registry</a></td><td>54 crown jewel artifacts — full catalog</td><td>🔴 Critical</td></tr>
+<tr><td>03</td><td><a href="./03-VALUE-SCORE-FORMULA.md">Value Score Formula</a></td><td>Proprietary scoring algorithm</td><td>🔴 Critical</td></tr>
+<tr><td>04</td><td><a href="./04-CONFIDENCE-GATING.md">Confidence Gating</a></td><td>Memory confidence thresholds and decay curves</td><td>🔴 Critical</td></tr>
+<tr><td>05</td><td><a href="./05-EVOLUTION-INTERNALS.md">Evolution Engine Internals</a></td><td>How self-improvement actually works (SEBA)</td><td>🔴 Critical</td></tr>
+<tr><td>06</td><td><a href="./06-BRAIN-INTERNALS.md">BRAIN Deep Dive</a></td><td>Memory architecture, normalization, graph topology</td><td>🔴 High</td></tr>
+<tr><td>07</td><td><a href="./07-DREAM-INTERNALS.md">DREAM Internals</a></td><td>Autonomous learning cycles, creative synthesis</td><td>🔴 High</td></tr>
+<tr><td>08</td><td><a href="./08-DEFENSE-PLAYBOOK.md">DEFENSE Playbook</a></td><td>Threat models, attack surfaces, response procedures</td><td>🔴 High</td></tr>
+<tr><td>09</td><td><a href="./09-NEXUS-INTERNALS.md">NEXUS Routing Logic</a></td><td>Provider selection algorithms, Fleet v5.0</td><td>🟡 Medium</td></tr>
+<tr><td>10</td><td><a href="./10-CORTEX-INTERNALS.md">CORTEX Orchestration</a></td><td>Multi-agent coordination, proposal evaluation</td><td>🔴 High</td></tr>
+<tr><td>11</td><td><a href="./11-ENGINE-REGISTRY.md">Engine &amp; Meta-Engine Registry</a></td><td>All 14 engines + 12 meta-engines with composition rules</td><td>🔴 High</td></tr>
+<tr><td>12</td><td><a href="./12-SYNERGY-INTERNALS.md">Synergy Pipeline Internals</a></td><td>How pipelines compose, execute, and recover</td><td>🟡 Medium</td></tr>
+<tr><td>13</td><td><a href="./13-INFRASTRUCTURE-SYSTEMS.md">Infrastructure Systems</a></td><td>Cron, rate limiter, snapshots, streaming, file processing</td><td>🟡 Medium</td></tr>
+<tr><td>14</td><td><a href="./14-OPERATIONAL-RUNBOOK.md">Operational Runbook</a></td><td>Day-to-day operations, troubleshooting, incident response</td><td>🟡 Medium</td></tr>
+<tr><td>15</td><td><a href="./15-TIERING-ACCESS.md">Tiering &amp; Access Control</a></td><td>Enterprise/Creator/Architect/Free tier logic, entitlements</td><td>🔴 High</td></tr>
+<tr><td>16</td><td><a href="./16-DATABASE-SCHEMA.md">Database Schema</a></td><td>Complete schema with relationships and RLS policies</td><td>🟡 Medium</td></tr>
+<tr><td>17</td><td><a href="./17-DEPLOYMENT.md">Deployment &amp; Infrastructure</a></td><td>Production infrastructure, edge function topology</td><td>🟡 Medium</td></tr>
+<tr><td>18</td><td><a href="./18-BUSINESS-MODEL.md">Business Model &amp; Economics</a></td><td>Pricing, margins, marketplace economics</td><td>🟡 Medium</td></tr>
+<tr><td>19</td><td><a href="./19-INVESTOR-CHEAT-SHEET.md">Investor Cheat Sheet</a></td><td>Quick reference for investor conversations</td><td>🟢 Low</td></tr>
+<tr><td>20</td><td><a href="./20-ONBOARDING.md">Onboarding Guide</a></td><td>New employee / new developer onboarding</td><td>🟢 Low</td></tr>
+<tr><td>21</td><td><a href="./21-INTENT-MESH-INTERNALS.md">Intent Mesh Internals</a></td><td>Emergent capability mesh — routing, governance, trade secrets</td><td>🔴 Critical</td></tr>
+</table>
 
----
+<h2>What's New in v10.5.1</h2>
+<table>
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td><strong>ENCODE Module</strong></td><td>Code execution engine with DECODE→ENCODE pipeline, graduated autonomy, CLM</td></tr>
+<tr><td><strong>CLM Engine v2.0</strong></td><td>Server-side 24/7 autonomous learning (5-phase lifecycle)</td></tr>
+<tr><td><strong>Intent Mesh Crystallization</strong></td><td>60+ pipelines crystallized from emergent discovery</td></tr>
+<tr><td><strong>21 Crown Jewels</strong></td><td>One Crown Jewel per module across all tiers</td></tr>
+<tr><td><strong>Universal Brain Transfer</strong></td><td>Knowledge routing from BRAIN to all 21 modules</td></tr>
+<tr><td><strong>Unified Tier Model</strong></td><td>Free/Creator/Architect/Enterprise with capabilities per tier</td></tr>
+</table>
 
-> ⚠️ **This documentation contains proprietary algorithms, implementation details, and trade secrets.**
-> Do not distribute outside of CMPSBL/PromptFluid without written authorization.
+<h2>Classification Legend</h2>
+<table>
+<tr><th>Level</th><th>Meaning</th></tr>
+<tr><td>🔴 Critical</td><td>Core IP — exposure would damage competitive moat</td></tr>
+<tr><td>🔴 High</td><td>Significant implementation details</td></tr>
+<tr><td>🟡 Medium</td><td>Operational knowledge, not easily weaponized</td></tr>
+<tr><td>🟢 Low</td><td>General internal knowledge</td></tr>
+</table>
+
+<hr />
+<p><em>CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch — INTERNAL USE ONLY</em><br />
+<em>Kenneth E Sweet Jr · PromptFluid®</em><br />
+<em>ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX</em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
-
----
-
-## Document Inventory
-
-| № | Document | Description | Sensitivity |
-|---|----------|-------------|-------------|
-| 01 | [Architecture Internals](./01-ARCHITECTURE-INTERNALS.md) | Full architecture with implementation secrets | 🔴 High |
-| 02 | [Crown Jewels Registry](./02-CROWN-JEWELS.md) | 54 crown jewel artifacts — full catalog | 🔴 Critical |
-| 03 | [Value Score Formula](./03-VALUE-SCORE-FORMULA.md) | Proprietary scoring algorithm | 🔴 Critical |
-| 04 | [Confidence Gating](./04-CONFIDENCE-GATING.md) | Memory confidence thresholds and decay curves | 🔴 Critical |
-| 05 | [Evolution Engine Internals](./05-EVOLUTION-INTERNALS.md) | How self-improvement actually works (SEBA) | 🔴 Critical |
-| 06 | [BRAIN Deep Dive](./06-BRAIN-INTERNALS.md) | Memory architecture, normalization, graph topology | 🔴 High |
-| 07 | [DREAM Internals](./07-DREAM-INTERNALS.md) | Autonomous learning cycles, creative synthesis | 🔴 High |
-| 08 | [DEFENSE Playbook](./08-DEFENSE-PLAYBOOK.md) | Threat models, attack surfaces, response procedures | 🔴 High |
-| 09 | [NEXUS Routing Logic](./09-NEXUS-INTERNALS.md) | Provider selection algorithms, Fleet v5.0 | 🟡 Medium |
-| 10 | [CORTEX Orchestration](./10-CORTEX-INTERNALS.md) | Multi-agent coordination, proposal evaluation | 🔴 High |
-| 11 | [Engine & Meta-Engine Registry](./11-ENGINE-REGISTRY.md) | All 14 engines + 12 meta-engines with composition rules | 🔴 High |
-| 12 | [Synergy Pipeline Internals](./12-SYNERGY-INTERNALS.md) | How pipelines compose, execute, and recover | 🟡 Medium |
-| 13 | [Infrastructure Systems](./13-INFRASTRUCTURE-SYSTEMS.md) | Cron, rate limiter, snapshots, streaming, file processing | 🟡 Medium |
-| 14 | [Operational Runbook](./14-OPERATIONAL-RUNBOOK.md) | Day-to-day operations, troubleshooting, incident response | 🟡 Medium |
-| 15 | [Tiering & Access Control](./15-TIERING-ACCESS.md) | Enterprise/Creator/Architect/Free tier logic, entitlements | 🔴 High |
-| 16 | [Database Schema](./16-DATABASE-SCHEMA.md) | Complete schema with relationships and RLS policies | 🟡 Medium |
-| 17 | [Deployment & Infrastructure](./17-DEPLOYMENT.md) | Production infrastructure, edge function topology | 🟡 Medium |
-| 18 | [Business Model & Economics](./18-BUSINESS-MODEL.md) | Pricing, margins, marketplace economics | 🟡 Medium |
-| 19 | [Investor Cheat Sheet](./19-INVESTOR-CHEAT-SHEET.md) | Quick reference for investor conversations | 🟢 Low |
-| 20 | [Onboarding Guide](./20-ONBOARDING.md) | New employee / new developer onboarding | 🟢 Low |
-| 21 | [Intent Mesh Internals](./21-INTENT-MESH-INTERNALS.md) | Emergent capability mesh — routing, governance, trade secrets | 🔴 Critical |
-
----
-
-## What's New in v10.5.1
-
-| Feature | Description |
-|---------|-------------|
-| **ENCODE Module** | Code execution engine with DECODE→ENCODE pipeline, graduated autonomy, CLM |
-| **CLM Engine v2.0** | Server-side 24/7 autonomous learning (5-phase lifecycle) |
-| **Intent Mesh Crystallization** | 60+ pipelines crystallized from emergent discovery |
-| **21 Crown Jewels** | One Crown Jewel per module across all tiers |
-| **Universal Brain Transfer** | Knowledge routing from BRAIN to all 21 modules |
-| **Unified Tier Model** | Free/Creator/Architect/Enterprise with capabilities per tier |
-
----
-
-## Classification Legend
-
-| Level | Meaning |
-|-------|---------|
-| 🔴 Critical | Core IP — exposure would damage competitive moat |
-| 🔴 High | Significant implementation details |
-| 🟡 Medium | Operational knowledge, not easily weaponized |
-| 🟢 Low | General internal knowledge |
-
----
-
-<div align="center">
-
-*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch — INTERNAL USE ONLY*
-
-**Kenneth E Sweet Jr** · PromptFluid®  
-ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
-DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
-
-© 2025–2026 PromptFluid®. All rights reserved.
-
-</div>
+</body>
+</html>
