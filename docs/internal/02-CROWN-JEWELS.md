@@ -1,308 +1,186 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Crown Jewels Registry — CRITICAL</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}th,td{border:1px solid #ccc;padding:6px 8px}th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# 🔒 Crown Jewels Registry
+<h1>🔒 Crown Jewels Registry</h1>
+<p><strong>249+ Strategically Sensitive Artifacts — CRITICAL CLASSIFICATION</strong></p>
+<p><strong>Document 02</strong> · <strong>Classification: 🔴 CRITICAL — Core IP</strong></p>
+<p><strong>Version:</strong> v10.8.0 ARCHITECT Epoch<br />
+<strong>Last Audit:</strong> February 17, 2026<br />
+<strong>Status:</strong> Wave 4 + 100 Crystallized Pipelines Complete — 168 Capabilities + 100 Pipelines Locked</p>
+<hr />
 
-### 249+ Strategically Sensitive Artifacts — CRITICAL CLASSIFICATION
+<p>⚠️ <strong>CRITICAL IP</strong> — This document catalogs the substrate's most sensitive artifacts. Exposure of ANY item would damage the competitive moat. Access restricted to founders and authorized personnel under NDA.</p>
 
+<h2>Overview</h2>
+<p>Crown Jewels are strategically sensitive artifacts that represent the substrate's competitive moat. They must never be exposed publicly at any tier, plan, SDK, or API.</p>
+<p><strong>Total Crown Jewels:</strong> 249</p>
 <table>
-<tr><td><strong>Document</strong></td><td>02 — Crown Jewels Registry</td></tr>
-<tr><td><strong>Classification</strong></td><td>🔴 CRITICAL — Core IP</td></tr>
-<tr><td><strong>Version</strong></td><td>v10.8.0 ARCHITECT Epoch</td></tr>
-<tr><td><strong>Last Audit</strong></td><td>February 17, 2026</td></tr>
-<tr><td><strong>Status</strong></td><td>Wave 4 + 100 Crystallized Pipelines Complete — 168 Capabilities + 100 Pipelines Locked</td></tr>
+<tr><th>Artifact Type</th><th>Count</th></tr>
+<tr><td>Capabilities</td><td>168</td></tr>
+<tr><td>Crystallized Pipelines</td><td>50</td></tr>
+<tr><td>Synergy Pipelines</td><td>3</td></tr>
+<tr><td>Engines</td><td>16</td></tr>
+<tr><td>Meta-Engines</td><td>12</td></tr>
 </table>
 
+<h2>Classification Criteria</h2>
+<p>An artifact is classified as a Crown Jewel if ANY of the following are true:</p>
+<ol>
+<li>Enables recursive self-improvement or autonomous evolution</li>
+<li>Enables cross-module orchestration at a systemic level</li>
+<li>Enables large-scale governance, control, or override</li>
+<li>Enables silent or difficult-to-detect system mutation</li>
+<li>Would significantly reduce CMPSBL's moat if copied</li>
+<li>Can be composed into higher-order meta-systems</li>
+<li>Is dangerous if misused, misunderstood, or repurposed</li>
+<li>Represents architectural knowledge rather than surface functionality</li>
+<li>Cannot be safely "unlearned" once exposed</li>
+</ol>
+
+<h2>Crown Jewel Capabilities — Wave 1 (42)</h2>
+
+<h3>Tier 0 — Existential (Exposure = Moat Destroyed) — CMPSBL-Only</h3>
+<table>
+<tr><th>#</th><th>Name</th><th>ID</th><th>Modules</th><th>Threat</th></tr>
+<tr><td>1</td><td>Recursive Self-Optimization Core</td><td><code>recursive-self-optimization-core</code></td><td>CORTEX, DREAM, BRAIN, SYSTEM, VISION</td><td>Core self-improvement loop becomes replicable</td></tr>
+<tr><td>2</td><td>Autonomous Architecture Refactorer</td><td><code>recursive-architecture-refactorer</code></td><td>SYSTEM, CORTEX, MODERNIZER, VISION</td><td>Architecture mutation patterns revealed</td></tr>
+<tr><td>3</td><td>Meta-Learning Accelerator</td><td><code>recursive-meta-learning-accelerator</code></td><td>BRAIN, DREAM, CORTEX, VISION</td><td>Core learning algorithm replicable</td></tr>
+<tr><td>4</td><td>Cognitive Bootstrapping Engine</td><td><code>recursive-cognitive-bootstrapping</code></td><td>CORTEX, BRAIN, DREAM, SYSTEM</td><td>Capability synthesis algorithm exposed</td></tr>
+<tr><td>5</td><td>Infinite Context Synthesizer</td><td><code>recursive-infinite-context</code></td><td>BRAIN, CORTEX, VISION</td><td>Compression algorithm is core IP</td></tr>
+<tr><td>6</td><td>Intelligence Governance Kernel</td><td><code>stier-intelligence-governance-kernel</code></td><td>CORTEX, DEFENSE, VISION, SYSTEM</td><td>Master governance algorithm enables total override</td></tr>
+<tr><td>7</td><td>Self-Scaling Intelligence Fabric</td><td><code>stier-self-scaling-intelligence-fabric</code></td><td>SYSTEM, VISION, CORTEX, RIPPLE</td><td>Scaling algorithm reveals cognitive architecture</td></tr>
+<tr><td>8</td><td>Semantic Memory Compression</td><td><code>cj-brain-semantic-compression</code></td><td>BRAIN, MEMORY, CORTEX</td><td>Compression algorithm eliminates memory advantage</td></tr>
+<tr><td>9</td><td>Cross-Domain Pollination Synthesizer</td><td><code>cj-dream-cross-pollination</code></td><td>DREAM, BRAIN, CORTEX</td><td>Cross-pollination heuristics reveal creative reasoning</td></tr>
+<tr><td>10</td><td>Cognitive Load Balancer</td><td><code>cj-cortex-cognitive-load-balancer</code></td><td>CORTEX, VISION, BRAIN</td><td>Load distribution reveals cognitive capacity boundaries</td></tr>
+<tr><td>11</td><td>Graduated Autonomy Controller</td><td><code>cj-encode-graduated-autonomy</code></td><td>ENCODE, CORTEX, DEFENSE</td><td>Autonomy escalation reveals trust boundaries</td></tr>
+<tr><td>12</td><td>Cascade Failure Prevention</td><td><code>cj-core-cascade-prevention</code></td><td>CORE, RIPPLE, DEFENSE, SYSTEM</td><td>Cascade topology reveals failure dependencies</td></tr>
+<tr><td>13</td><td>Meta-Reasoning Engine</td><td><code>cj-brain-meta-reasoning</code></td><td>BRAIN, CORTEX, DECODE</td><td>Meta-reasoning reveals self-correction boundaries</td></tr>
+</table>
+
+<h3>Tier 1 — Strategic (Exposure = Significant Advantage Lost)</h3>
+<table>
+<tr><th>#</th><th>Name</th><th>ID</th><th>Modules</th><th>Threat</th></tr>
+<tr><td>14</td><td>Self-Healing Neural Mesh</td><td><code>recursive-self-healing-mesh</code></td><td>SYSTEM, CORTEX, VISION</td><td>Internal repair topology revealed</td></tr>
+<tr><td>15</td><td>Emergent Capability Discoverer</td><td><code>recursive-capability-discoverer</code></td><td>DREAM, CORTEX, VISION, SYSTEM</td><td>Latent capability space exposed</td></tr>
+<tr><td>16</td><td>Knowledge Crystallization Engine</td><td><code>recursive-knowledge-crystallization</code></td><td>BRAIN, CORTEX, DECODE</td><td>Crystallization enables IP extraction</td></tr>
+<tr><td>17</td><td>Recursive Goal Optimizer</td><td><code>recursive-goal-optimizer</code></td><td>CORTEX, VISION, BRAIN</td><td>Goal refinement enables autonomous modification</td></tr>
+<tr><td>18</td><td>Emergent Behavior Analyzer</td><td><code>recursive-emergent-behavior-analyzer</code></td><td>VISION, BRAIN, CORTEX, DREAM</td><td>Detection patterns reveal behavioral boundaries</td></tr>
+<tr><td>19</td><td>Autonomous Ops Steward</td><td><code>stier-autonomous-ops-steward</code></td><td>SYSTEM, CORTEX, VISION, MODERNIZER</td><td>Self-maintenance patterns reveal vulnerabilities</td></tr>
+<tr><td>20</td><td>Intelligence Containment Engine</td><td><code>stier-intelligence-containment-engine</code></td><td>DEFENSE, BRAIN, DECODE, SYSTEM</td><td>Containment bypass vectors become discoverable</td></tr>
+<tr><td>21</td><td>Autonomy Rollback Authority</td><td><code>stier-autonomy-rollback-authority</code></td><td>CORTEX, DEFENSE, RIPPLE, SYSTEM</td><td>Kill switch architecture reveals control plane</td></tr>
+<tr><td>22</td><td>Cross-Pipeline Arbitration</td><td><code>stier-cross-pipeline-arbitration-engine</code></td><td>CORTEX, RIPPLE, DEFENSE</td><td>Arbitration logic reveals pipeline interaction model</td></tr>
+<tr><td>23</td><td>Policy-Aware Intelligence Gate</td><td><code>stier-policy-aware-intelligence-gate</code></td><td>CORTEX, DEFENSE, ACCESS, BRAIN</td><td>Policy evaluation reveals governance bypass vectors</td></tr>
+</table>
+
+<h3>Tier 2 & 3 — Experience Crown Jewels (Sealed Black-Box)</h3>
+<p>Refer to Wave 1 registry for items 24–42.</p>
+
+<h2>Crown Jewel Capabilities — Wave 2 (42 NEW)</h2>
+
+<h3>Tier 0 — Architecture (CMPSBL-Only) — 14 New</h3>
+<table>
+<tr><th>#</th><th>Name</th><th>ID</th><th>Modules</th><th>Threat</th></tr>
+<tr><td>43</td><td>Recursive Planning Engine</td><td><code>cj2-cortex-recursive-planning</code></td><td>CORTEX, BRAIN, VISION</td><td>Recursive planning depth reveals strategic decision boundaries</td></tr>
+<tr><td>44</td><td>Temporal Reasoning Engine</td><td><code>cj2-brain-temporal-reasoning</code></td><td>BRAIN, CORTEX, VISION</td><td>Temporal logic reveals causal inference architecture</td></tr>
+<tr><td>45</td><td>Generative Hypothesis Engine</td><td><code>cj2-dream-generative-hypothesis</code></td><td>DREAM, BRAIN, CORTEX, VISION</td><td>Hypothesis generation reveals creative reasoning core</td></tr>
+<tr><td>46</td><td>Topology Mutation Engine</td><td><code>cj2-system-topology-mutation</code></td><td>SYSTEM, CORTEX, MODERNIZER</td><td>Topology mutation reveals architecture plasticity</td></tr>
+<tr><td>47</td><td>Predictive State Modeler</td><td><code>cj2-vision-predictive-state-modeling</code></td><td>VISION, CORTEX, BRAIN</td><td>Predictive model reveals system behavior boundaries</td></tr>
+<tr><td>48</td><td>Adversarial Self-Simulation</td><td><code>cj2-defense-adversarial-simulation</code></td><td>DEFENSE, DREAM, CORTEX, SYSTEM</td><td>Self-attack patterns reveal undiscovered vulnerabilities</td></tr>
+<tr><td>49</td><td>Goal Decomposition Engine</td><td><code>cj2-cortex-goal-decomposition-engine</code></td><td>CORTEX, BRAIN, VISION</td><td>Decomposition algorithm reveals strategic execution model</td></tr>
+<tr><td>50</td><td>Episodic Replay Engine</td><td><code>cj2-brain-episodic-replay</code></td><td>BRAIN, MEMORY, DREAM</td><td>Replay strategy reveals memory consolidation architecture</td></tr>
+<tr><td>51</td><td>Intent-to-Code Compiler</td><td><code>cj2-encode-intent-compiler</code></td><td>ENCODE, DECODE, BRAIN, CORTEX</td><td>Intent compilation reveals code generation architecture</td></tr>
+<tr><td>52</td><td>Homeostatic Regulator</td><td><code>cj2-core-homeostatic-regulator</code></td><td>CORE, SYSTEM, VISION, DEFENSE</td><td>Homeostatic parameters reveal system stability boundaries</td></tr>
+<tr><td>53</td><td>Shadow Evolution Engine</td><td><code>cj2-modernizer-shadow-evolution</code></td><td>MODERNIZER, CORTEX, SANDBOX</td><td>Shadow evolution reveals safe mutation boundaries</td></tr>
+<tr><td>54</td><td>Counterfactual Reasoning Engine</td><td><code>cj2-dream-counterfactual-engine</code></td><td>DREAM, BRAIN, CORTEX</td><td>Counterfactual model reveals decision evaluation internals</td></tr>
+<tr><td>55</td><td>Attention Allocation Engine</td><td><code>cj2-cortex-attention-allocation</code></td><td>CORTEX, BRAIN, VISION</td><td>Attention allocation reveals cognitive priority architecture</td></tr>
+<tr><td>56</td><td>Entropy Reversal Engine</td><td><code>cj2-system-entropy-reversal</code></td><td>SYSTEM, CORTEX, MODERNIZER, DREAM</td><td>Entropy reversal is foundational self-improvement IP</td></tr>
+</table>
+
+<h2>Crown Jewel Synergy Pipelines (3)</h2>
+<table>
+<tr><th>#</th><th>Pipeline</th><th>ID</th><th>Modules</th><th>Threat</th></tr>
+<tr><td>1</td><td>Autonomous Evolution</td><td><code>syn-autonomous-evolution</code></td><td>CORTEX, BRAIN, MODERNIZER</td><td>Self-modification architecture revealed</td></tr>
+<tr><td>2</td><td>Self-Healing</td><td><code>syn-self-healing</code></td><td>SYSTEM, MODERNIZER, VISION</td><td>Vulnerability vectors exposed</td></tr>
+<tr><td>3</td><td>End-to-End Reasoning</td><td><code>syn-end-to-end-reasoning</code></td><td>DECODE, NEXUS, BRAIN, VISION</td><td>Full reasoning architecture revealed</td></tr>
+</table>
+
+<h2>Crown Jewel Engines (16)</h2>
+<table>
+<tr><th>Engine</th><th>Module</th><th>Why Crown Jewel</th></tr>
+<tr><td>Evolution Engine</td><td>MODERNIZER</td><td>Self-improvement + autonomous evolution</td></tr>
+<tr><td>Metacognition Engine</td><td>BRAIN</td><td>Self-reflection + recursive improvement</td></tr>
+<tr><td>Self-Healing Engine</td><td>SYSTEM</td><td>Autonomous mutation + silent repair</td></tr>
+<tr><td>Self-Documentation Engine</td><td>MODERNIZER</td><td>Architectural knowledge exposure</td></tr>
+<tr><td>Cortex Orchestration Engine</td><td>CORTEX</td><td>Cross-module systemic orchestration</td></tr>
+<tr><td>Creative Evolution Engine</td><td>DREAM</td><td>Knowledge mutation + genetic algorithms</td></tr>
+<tr><td>Evolution Governance Engine</td><td>MODERNIZER</td><td>System override + rollback authority</td></tr>
+<tr><td>Attack Surface Engine</td><td>DEFENSE</td><td>Reveals defenses if repurposed</td></tr>
+<tr><td>Knowledge Retrieval Engine</td><td>MEMORY</td><td>Complete memory topology</td></tr>
+<tr><td>Delivery Orchestrator</td><td>RELAY</td><td>Integration surface exposure</td></tr>
+<tr><td>Compliance & Audit Engine</td><td>AUDIT</td><td>Governance implementation details</td></tr>
+<tr><td>Zero Trust Engine</td><td>IDENTITY</td><td>Trust boundary architecture</td></tr>
+<tr><td>FinOps Engine</td><td>ECONOMY</td><td>Economic model and settlement</td></tr>
+<tr><td>Resilience Lab</td><td>SANDBOX</td><td>Production failure modes</td></tr>
+<tr><td>Brain Orchestrator</td><td>BRAIN/DREAM/CORTEX</td><td>5-phase cognitive cycle</td></tr>
+<tr><td>Self-Repair Engine</td><td>SYSTEM</td><td>Autonomous degradation repair</td></tr>
+</table>
+
+<h2>Crown Jewel Meta-Engines (12)</h2>
+<table>
+<tr><th>Meta-Engine</th><th>Engines Combined</th><th>Core Threat</th></tr>
+<tr><td>Autonomous Operator</td><td>evolution, orchestration, foresight, optimization</td><td>Self-driving ops architecture</td></tr>
+<tr><td>Self Governance</td><td>self-healing, self-doc, evolution</td><td>Self-sustaining consciousness model</td></tr>
+<tr><td>Cognitive Mesh</td><td>reasoning, learning, memory, foresight</td><td>Distributed cognition blueprint</td></tr>
+<tr><td>System Guardian</td><td>resilience, defense, threat</td><td>Complete protection topology</td></tr>
+<tr><td>Security Fortress</td><td>threat, defense, trust, compliance</td><td>Zero-trust implementation</td></tr>
+<tr><td>Creative Forge</td><td>imagination, innovation, dream</td><td>Proprietary creative algorithms</td></tr>
+<tr><td>Enterprise Trust Fabric</td><td>zero-trust, compliance-audit, delivery</td><td>Governance mesh architecture</td></tr>
+<tr><td>Platform Economics Engine</td><td>finops, knowledge-retrieval, resilience-lab</td><td>Economic model</td></tr>
+<tr><td>World-First Cognitive</td><td>attention-memory, intent, creative-evolution</td><td>Unique cognitive enhancements</td></tr>
+<tr><td>World-First Operational</td><td>provider-governance, resilience, config, adapter</td><td>Infrastructure optimization</td></tr>
+<tr><td>World-First Intelligence</td><td>predictive-analytics, cortex-orchestration, evolution-governance</td><td>Intelligence enhancement IP</td></tr>
+<tr><td>World-First Governance</td><td>threat-containment, entitlement-audit, event-replay, accessibility</td><td>Compliance architecture</td></tr>
+</table>
+
+<h2>Lockdown Status</h2>
+<div class="card">
+<ul>
+<li>✅ Marked with <code>crown_jewel: true</code></li>
+<li>✅ Set to <code>admin_only: true</code> (architecture) or black-boxed (experience)</li>
+<li>✅ Removed from public store listings</li>
+<li>✅ Removed from enterprise catalogs</li>
+<li>✅ Removed from template browsing</li>
+<li>✅ Removed from capability search</li>
+<li>✅ Hidden from SDK/API catalogs</li>
+<li>✅ Admin-only UI section created</li>
+<li>✅ Wave 3 (42 new) fully registered and tiered</li>
+<li>✅ Wave 4 (42 new) fully registered and tiered</li>
+</ul>
 </div>
 
----
-
-> ⚠️ **CRITICAL IP** — This document catalogs the substrate's most sensitive artifacts. Exposure of ANY item would damage the competitive moat. Access restricted to founders and authorized personnel under NDA.
-
----
-
-## Overview
-
-Crown Jewels are strategically sensitive artifacts that represent the substrate's competitive moat. They must never be exposed publicly at any tier, plan, SDK, or API.
-
-**Total Crown Jewels:** 249
-
-| Artifact Type | Count |
-|---------------|-------|
-| Capabilities | 168 |
-| Crystallized Pipelines | 50 |
-| Synergy Pipelines | 3 |
-| Engines | 16 |
-| Meta-Engines | 12 |
-
----
-
-## Classification Criteria
-
-An artifact is classified as a Crown Jewel if ANY of the following are true:
-
-1. Enables recursive self-improvement or autonomous evolution
-2. Enables cross-module orchestration at a systemic level
-3. Enables large-scale governance, control, or override
-4. Enables silent or difficult-to-detect system mutation
-5. Would significantly reduce CMPSBL's moat if copied
-6. Can be composed into higher-order meta-systems
-7. Is dangerous if misused, misunderstood, or repurposed
-8. Represents architectural knowledge rather than surface functionality
-9. Cannot be safely "unlearned" once exposed
-
----
-
-## Crown Jewel Capabilities — Wave 1 (42)
-
-### Tier 0 — Existential (Exposure = Moat Destroyed) — CMPSBL-Only
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 1 | Recursive Self-Optimization Core | `recursive-self-optimization-core` | CORTEX, DREAM, BRAIN, SYSTEM, VISION | Core self-improvement loop becomes replicable |
-| 2 | Autonomous Architecture Refactorer | `recursive-architecture-refactorer` | SYSTEM, CORTEX, MODERNIZER, VISION | Architecture mutation patterns revealed |
-| 3 | Meta-Learning Accelerator | `recursive-meta-learning-accelerator` | BRAIN, DREAM, CORTEX, VISION | Core learning algorithm replicable |
-| 4 | Cognitive Bootstrapping Engine | `recursive-cognitive-bootstrapping` | CORTEX, BRAIN, DREAM, SYSTEM | Capability synthesis algorithm exposed |
-| 5 | Infinite Context Synthesizer | `recursive-infinite-context` | BRAIN, CORTEX, VISION | Compression algorithm is core IP |
-| 6 | Intelligence Governance Kernel | `stier-intelligence-governance-kernel` | CORTEX, DEFENSE, VISION, SYSTEM | Master governance algorithm enables total override |
-| 7 | Self-Scaling Intelligence Fabric | `stier-self-scaling-intelligence-fabric` | SYSTEM, VISION, CORTEX, RIPPLE | Scaling algorithm reveals cognitive architecture |
-| 8 | Semantic Memory Compression | `cj-brain-semantic-compression` | BRAIN, MEMORY, CORTEX | Compression algorithm eliminates memory advantage |
-| 9 | Cross-Domain Pollination Synthesizer | `cj-dream-cross-pollination` | DREAM, BRAIN, CORTEX | Cross-pollination heuristics reveal creative reasoning |
-| 10 | Cognitive Load Balancer | `cj-cortex-cognitive-load-balancer` | CORTEX, VISION, BRAIN | Load distribution reveals cognitive capacity boundaries |
-| 11 | Graduated Autonomy Controller | `cj-encode-graduated-autonomy` | ENCODE, CORTEX, DEFENSE | Autonomy escalation reveals trust boundaries |
-| 12 | Cascade Failure Prevention | `cj-core-cascade-prevention` | CORE, RIPPLE, DEFENSE, SYSTEM | Cascade topology reveals failure dependencies |
-| 13 | Meta-Reasoning Engine | `cj-brain-meta-reasoning` | BRAIN, CORTEX, DECODE | Meta-reasoning reveals self-correction boundaries |
-
-### Tier 1 — Strategic (Exposure = Significant Advantage Lost)
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 14 | Self-Healing Neural Mesh | `recursive-self-healing-mesh` | SYSTEM, CORTEX, VISION | Internal repair topology revealed |
-| 15 | Emergent Capability Discoverer | `recursive-capability-discoverer` | DREAM, CORTEX, VISION, SYSTEM | Latent capability space exposed |
-| 16 | Knowledge Crystallization Engine | `recursive-knowledge-crystallization` | BRAIN, CORTEX, DECODE | Crystallization enables IP extraction |
-| 17 | Recursive Goal Optimizer | `recursive-goal-optimizer` | CORTEX, VISION, BRAIN | Goal refinement enables autonomous modification |
-| 18 | Emergent Behavior Analyzer | `recursive-emergent-behavior-analyzer` | VISION, BRAIN, CORTEX, DREAM | Detection patterns reveal behavioral boundaries |
-| 19 | Autonomous Ops Steward | `stier-autonomous-ops-steward` | SYSTEM, CORTEX, VISION, MODERNIZER | Self-maintenance patterns reveal vulnerabilities |
-| 20 | Intelligence Containment Engine | `stier-intelligence-containment-engine` | DEFENSE, BRAIN, DECODE, SYSTEM | Containment bypass vectors become discoverable |
-| 21 | Autonomy Rollback Authority | `stier-autonomy-rollback-authority` | CORTEX, DEFENSE, RIPPLE, SYSTEM | Kill switch architecture reveals control plane |
-| 22 | Cross-Pipeline Arbitration | `stier-cross-pipeline-arbitration-engine` | CORTEX, RIPPLE, DEFENSE | Arbitration logic reveals pipeline interaction model |
-| 23 | Policy-Aware Intelligence Gate | `stier-policy-aware-intelligence-gate` | CORTEX, DEFENSE, ACCESS, BRAIN | Policy evaluation reveals governance bypass vectors |
-
-### Tier 2 — Experience Crown Jewels (Architect Tier — Sealed Black-Box)
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 24–36 | *See Wave 1 Architect experience jewels* | `stier-emergent-threat-anticipator` through `cj-audit-forensic-timeline` | Various | Various strategic threats |
-
-### Tier 3 — Experience Crown Jewels (Creator Tier — Sealed Black-Box)
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 37–42 | *See Wave 1 Creator experience jewels* | `cap-chaos-resilience` through `cj-economy-value-attribution` | Various | Various strategic threats |
-
----
-
-## Crown Jewel Capabilities — Wave 2 (42 NEW)
-
-### Tier 0 — Architecture (CMPSBL-Only) — 14 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 43 | Recursive Planning Engine | `cj2-cortex-recursive-planning` | CORTEX, BRAIN, VISION | Recursive planning depth reveals strategic decision boundaries |
-| 44 | Temporal Reasoning Engine | `cj2-brain-temporal-reasoning` | BRAIN, CORTEX, VISION | Temporal logic reveals causal inference architecture |
-| 45 | Generative Hypothesis Engine | `cj2-dream-generative-hypothesis` | DREAM, BRAIN, CORTEX, VISION | Hypothesis generation reveals creative reasoning core |
-| 46 | Topology Mutation Engine | `cj2-system-topology-mutation` | SYSTEM, CORTEX, MODERNIZER | Topology mutation reveals architecture plasticity |
-| 47 | Predictive State Modeler | `cj2-vision-predictive-state-modeling` | VISION, CORTEX, BRAIN | Predictive model reveals system behavior boundaries |
-| 48 | Adversarial Self-Simulation | `cj2-defense-adversarial-simulation` | DEFENSE, DREAM, CORTEX, SYSTEM | Self-attack patterns reveal undiscovered vulnerabilities |
-| 49 | Goal Decomposition Engine | `cj2-cortex-goal-decomposition-engine` | CORTEX, BRAIN, VISION | Decomposition algorithm reveals strategic execution model |
-| 50 | Episodic Replay Engine | `cj2-brain-episodic-replay` | BRAIN, MEMORY, DREAM | Replay strategy reveals memory consolidation architecture |
-| 51 | Intent-to-Code Compiler | `cj2-encode-intent-compiler` | ENCODE, DECODE, BRAIN, CORTEX | Intent compilation reveals code generation architecture |
-| 52 | Homeostatic Regulator | `cj2-core-homeostatic-regulator` | CORE, SYSTEM, VISION, DEFENSE | Homeostatic parameters reveal system stability boundaries |
-| 53 | Shadow Evolution Engine | `cj2-modernizer-shadow-evolution` | MODERNIZER, CORTEX, SANDBOX | Shadow evolution reveals safe mutation boundaries |
-| 54 | Counterfactual Reasoning Engine | `cj2-dream-counterfactual-engine` | DREAM, BRAIN, CORTEX | Counterfactual model reveals decision evaluation internals |
-| 55 | Attention Allocation Engine | `cj2-cortex-attention-allocation` | CORTEX, BRAIN, VISION | Attention allocation reveals cognitive priority architecture |
-| 56 | Entropy Reversal Engine | `cj2-system-entropy-reversal` | SYSTEM, CORTEX, MODERNIZER, DREAM | Entropy reversal is foundational self-improvement IP |
-
-### Tier 2 — Experience (Architect — Sealed Black-Box) — 18 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 57–74 | *See Wave 2 Architect experience jewels in registry* | Various | Various | Various strategic threats |
-
-### Tier 3 — Experience (Creator — Sealed Black-Box) — 10 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 75–84 | *See Wave 2 Creator experience jewels in registry* | Various | Various | Various strategic threats |
-
----
-
-## Crown Jewel Capabilities — Wave 3 (42 NEW)
-
-### Tier 0 — Architecture (CMPSBL-Only) — 14 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 85–98 | *See Wave 3 Architecture jewels (cj3-cortex-strategic-foresight through cj3-vision-emergent-signal-detector)* | Various | Various | Various existential threats |
-
-### Tier 2 — Experience (Architect — Sealed Black-Box) — 18 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 99–116 | *See Wave 3 Architect experience jewels in registry* | Various | Various | Various strategic threats |
-
-### Tier 3 — Experience (Creator — Sealed Black-Box) — 10 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 117–126 | *See Wave 3 Creator experience jewels in registry* | Various | Various | Various strategic threats |
-
----
-
-## Crown Jewel Capabilities — Wave 4 (42 NEW)
-
-### Tier 0 — Architecture (CMPSBL-Only) — 14 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 127 | Recursive Abstraction Engine | `cj4-cortex-recursive-abstraction` | CORTEX, BRAIN, VISION | Abstraction layers reveal cognitive hierarchy architecture |
-| 128 | Semantic Entanglement Engine | `cj4-brain-semantic-entanglement` | BRAIN, CORTEX, MEMORY | Entanglement reveals deep knowledge relationship model |
-| 129 | Autonomous Ideation Engine | `cj4-dream-autonomous-ideation` | DREAM, BRAIN, CORTEX | Ideation pipeline reveals creative generation architecture |
-| 130 | Quantum Resilience Framework | `cj4-system-quantum-resilience` | SYSTEM, DEFENSE, CORTEX | Resilience model reveals system failure tolerance boundaries |
-| 131 | Cognitive Deception Engine | `cj4-defense-cognitive-deception` | DEFENSE, BRAIN, DECODE | Deception model reveals defense strategy internals |
-| 132 | Emergent Strategy Engine | `cj4-cortex-emergent-strategy` | CORTEX, VISION, BRAIN | Strategy emergence reveals decision-making architecture |
-| 133 | Knowledge Fusion Reactor | `cj4-brain-knowledge-fusion-reactor` | BRAIN, DREAM, CORTEX | Fusion algorithm reveals knowledge synthesis architecture |
-| 134 | Intent Verification Engine | `cj4-encode-intent-verification` | ENCODE, DECODE, CORTEX | Verification reveals intent-to-code translation boundaries |
-| 135 | Substrate Homeostasis Engine | `cj4-core-substrate-homeostasis` | CORE, SYSTEM, CORTEX | Homeostasis parameters reveal substrate equilibrium model |
-| 136 | Architectural Telomere Engine | `cj4-modernizer-architectural-telomere` | MODERNIZER, SYSTEM, CORTEX | Telomere model reveals architecture aging and renewal boundaries |
-| 137 | Synthetic Intuition Engine | `cj4-dream-synthetic-intuition` | DREAM, BRAIN, CORTEX | Intuition synthesis reveals pattern recognition internals |
-| 138 | Priority Landscape Engine | `cj4-cortex-priority-landscape` | CORTEX, VISION, BRAIN | Priority model reveals cognitive resource allocation strategy |
-| 139 | Autonomous Triage Engine | `cj4-system-autonomous-triage` | SYSTEM, CORTEX, DEFENSE | Triage algorithm reveals system health assessment model |
-| 140 | Precognitive Modeling Engine | `cj4-vision-precognitive-modeling` | VISION, BRAIN, CORTEX | Precognition reveals future-state prediction architecture |
-
-### Tier 2 — Experience (Architect — Sealed Black-Box) — 18 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 141 | Threat Prediction Engine | `cj4-defense-threat-prediction` | DEFENSE, VISION, BRAIN | Prediction model reveals threat assessment internals |
-| 142 | Cognitive Load Heatmap | `cj4-vision-cognitive-load-heatmap` | VISION, CORTEX, SYSTEM | Heatmap reveals processing bottleneck topology |
-| 143 | Semantic Memory Versioning | `cj4-memory-semantic-versioning` | MEMORY, BRAIN, CORTEX | Versioning reveals memory mutation tracking architecture |
-| 144 | Channel Failover Intelligence | `cj4-relay-channel-failover` | RELAY, VISION, DEFENSE | Failover strategy reveals delivery resilience architecture |
-| 145 | Compliance Simulation Engine | `cj4-audit-compliance-simulation` | AUDIT, CORTEX, DEFENSE | Simulation reveals compliance evaluation boundaries |
-| 146 | Session Forensics Engine | `cj4-identity-session-forensics` | IDENTITY, AUDIT, DEFENSE | Forensics reveals session reconstruction capabilities |
-| 147 | Workflow Compression | `cj4-cortex-workflow-compression` | CORTEX, VISION, ECONOMY | Compression reveals workflow optimization architecture |
-| 148 | Knowledge Aging Engine | `cj4-brain-knowledge-aging` | BRAIN, MEMORY, VISION | Aging model reveals knowledge lifecycle architecture |
-| 149 | Innovation Scoring | `cj4-dream-innovation-scoring` | DREAM, VISION, CORTEX | Scoring reveals creative evaluation criteria |
-| 150 | Behavioral Testing Engine | `cj4-encode-behavioral-testing` | ENCODE, DECODE, SANDBOX | Testing reveals behavior-specification mapping |
-| 151 | Margin Optimization | `cj4-economy-margin-optimization` | ECONOMY, NEXUS, VISION | Optimization reveals economic strategy internals |
-| 152 | Sandbox Resource Prediction | `cj4-sandbox-resource-prediction` | SANDBOX, VISION, SYSTEM | Prediction reveals resource estimation model |
-| 153 | Neurodiversity Adaptation | `cj4-inclusive-neurodiversity-adaptation` | INCLUSIVE, DECODE, VISION | Adaptation reveals cognitive accessibility model |
-| 154 | Signal Prioritization Engine | `cj4-nerve-signal-prioritization` | NERVE, CORTEX, VISION | Prioritization reveals inter-module communication hierarchy |
-| 155 | Anomalous Usage Detection | `cj4-access-anomalous-usage-detection` | ACCESS, DEFENSE, VISION | Detection reveals usage pattern analysis model |
-| 156 | Trend Extrapolation Engine | `cj4-vision-trend-extrapolation` | VISION, BRAIN, CORTEX | Extrapolation reveals predictive modeling architecture |
-| 157 | Cultural Adaptation Engine | `cj4-decode-cultural-adaptation` | DECODE, BRAIN, VISION | Adaptation reveals cultural model internals |
-| 158 | Capacity Simulation | `cj4-system-capacity-simulation` | SYSTEM, VISION, CORTEX | Simulation reveals scaling decision architecture |
-
-### Tier 3 — Experience (Creator — Sealed Black-Box) — 10 New
-
-| # | Name | ID | Modules | Threat |
-|---|------|----|---------|--------|
-| 159 | Event Correlation Engine | `cj4-ripple-event-correlation` | RIPPLE, BRAIN, VISION | Correlation reveals event relationship analysis |
-| 160 | Tone Calibration Engine | `cj4-decode-tone-calibration` | DECODE, BRAIN, VISION | Calibration reveals personality adaptation model |
-| 161 | Memory Deduplication | `cj4-brain-memory-deduplication` | BRAIN, MEMORY | Deduplication reveals knowledge graph structure |
-| 162 | Quality Prediction | `cj4-nexus-quality-prediction` | NEXUS, VISION, BRAIN | Prediction reveals model evaluation criteria |
-| 163 | Regression Prevention Guard | `cj4-encode-regression-prevention` | ENCODE, SANDBOX, VISION | Prevention reveals change impact analysis model |
-| 164 | Behavioral Baseline Engine | `cj4-defense-behavioral-baseline` | DEFENSE, IDENTITY, VISION | Baseline reveals behavioral evaluation model |
-| 165 | Waste Detection Engine | `cj4-economy-waste-detection` | ECONOMY, VISION, SYSTEM | Detection reveals resource utilization model |
-| 166 | Smart Batching Engine | `cj4-relay-smart-batching` | RELAY, BRAIN, ECONOMY | Batching reveals delivery optimization strategy |
-| 167 | Integration Health Forecasting | `cj4-integration-health-forecasting` | INTEGRATION, VISION, SYSTEM | Forecasting reveals connector monitoring model |
-| 168 | Workflow Suggestion Engine | `cj4-atlas-workflow-suggestion` | ATLAS, BRAIN, CORTEX | Suggestion reveals capability dependency analysis |
-
----
-
-## Crown Jewel Synergy Pipelines (3)
-
-| # | Pipeline | ID | Modules | Threat |
-|---|----------|----|---------|--------|
-| 1 | Autonomous Evolution | `syn-autonomous-evolution` | CORTEX, BRAIN, MODERNIZER | Self-modification architecture revealed |
-| 2 | Self-Healing | `syn-self-healing` | SYSTEM, MODERNIZER, VISION | Vulnerability vectors exposed |
-| 3 | End-to-End Reasoning | `syn-end-to-end-reasoning` | DECODE, NEXUS, BRAIN, VISION | Full reasoning architecture revealed |
-
----
-
-## Crown Jewel Engines (16)
-
-| Engine | Module | Why Crown Jewel |
-|--------|--------|----------------|
-| Evolution Engine | MODERNIZER | Self-improvement + autonomous evolution |
-| Metacognition Engine | BRAIN | Self-reflection + recursive improvement |
-| Self-Healing Engine | SYSTEM | Autonomous mutation + silent repair |
-| Self-Documentation Engine | MODERNIZER | Architectural knowledge exposure |
-| Cortex Orchestration Engine | CORTEX | Cross-module systemic orchestration |
-| Creative Evolution Engine | DREAM | Knowledge mutation + genetic algorithms |
-| Evolution Governance Engine | MODERNIZER | System override + rollback authority |
-| Attack Surface Engine | DEFENSE | Reveals defenses if repurposed |
-| Knowledge Retrieval Engine | MEMORY | Complete memory topology |
-| Delivery Orchestrator | RELAY | Integration surface exposure |
-| Compliance & Audit Engine | AUDIT | Governance implementation details |
-| Zero Trust Engine | IDENTITY | Trust boundary architecture |
-| FinOps Engine | ECONOMY | Economic model and settlement |
-| Resilience Lab | SANDBOX | Production failure modes |
-| Brain Orchestrator | BRAIN/DREAM/CORTEX | 5-phase cognitive cycle |
-| Self-Repair Engine | SYSTEM | Autonomous degradation repair |
-
----
-
-## Crown Jewel Meta-Engines (12)
-
-| Meta-Engine | Engines Combined | Core Threat |
-|-------------|-----------------|-------------|
-| Autonomous Operator | evolution, orchestration, foresight, optimization | Self-driving ops architecture |
-| Self Governance | self-healing, self-doc, evolution | Self-sustaining consciousness model |
-| Cognitive Mesh | reasoning, learning, memory, foresight | Distributed cognition blueprint |
-| System Guardian | resilience, defense, threat | Complete protection topology |
-| Security Fortress | threat, defense, trust, compliance | Zero-trust implementation |
-| Creative Forge | imagination, innovation, dream | Proprietary creative algorithms |
-| Enterprise Trust Fabric | zero-trust, compliance-audit, delivery | Governance mesh architecture |
-| Platform Economics Engine | finops, knowledge-retrieval, resilience-lab | Economic model |
-| World-First Cognitive | attention-memory, intent, creative-evolution | Unique cognitive enhancements |
-| World-First Operational | provider-governance, resilience, config, adapter | Infrastructure optimization |
-| World-First Intelligence | predictive-analytics, cortex-orchestration, evolution-governance | Intelligence enhancement IP |
-| World-First Governance | threat-containment, entitlement-audit, event-replay, accessibility | Compliance architecture |
-
----
-
-## Lockdown Status
-
-All Crown Jewels have been:
-
-- ✅ Marked with `crown_jewel: true`
-- ✅ Set to `admin_only: true` (architecture) or black-boxed (experience)
-- ✅ Removed from public store listings
-- ✅ Removed from enterprise catalogs
-- ✅ Removed from template browsing
-- ✅ Removed from capability search
-- ✅ Hidden from SDK/API catalogs
-- ✅ Admin-only UI section created
-- ✅ Wave 3 (42 new) fully registered and tiered
-- ✅ Wave 4 (42 new) fully registered and tiered
-
----
-
-## Audit Schedule
-
-- Quarterly re-audit of all 199 entries
-- Selective declassification review (if any)
-- Tiering patch review (separate process)
-
----
-
-<div align="center">
-
-*CMPSBL OS Substrate v10.7.0 — ARCHITECT Epoch — INTERNAL USE ONLY*
-
-**Kenneth E Sweet Jr** · PromptFluid®  
-ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) · DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
-
-© 2025–2026 PromptFluid®. All rights reserved.
+<hr />
+<p><em>CMPSBL OS Substrate v10.7.0 — ARCHITECT Epoch — INTERNAL USE ONLY</em><br />
+<em>Kenneth E Sweet Jr · PromptFluid®</em><br />
+<em>ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX</em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
+</body>
+</html>
