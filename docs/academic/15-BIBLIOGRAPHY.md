@@ -17,14 +17,16 @@
 <div class="page">
 
 <h1>Bibliography</h1>
-<p><strong>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</strong></p>
-<p>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
-Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)</p>
+<p><strong>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</strong></p>
+<p>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
+Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a>)</p>
 <hr />
 
 <h2>15. Bibliography</h2>
 
 <p>Anderson, J. R. (2007). <em>How Can the Human Mind Occur in the Physical Universe?</em> Oxford University Press.</p>
+
+<p>Bostrom, N. (2014). <em>Superintelligence: Paths, Dangers, Strategies</em>. Oxford University Press.</p>
 
 <p>Chase, H. (2022). LangChain: Building applications with LLMs through composability. GitHub. https://github.com/langchain-ai/langchain</p>
 
@@ -34,11 +36,15 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXX
 
 <p>Liu, J. (2022). LlamaIndex: Data framework for LLM applications. GitHub. https://github.com/run-llama/llama_index</p>
 
+<p>Mnih, V., et al. (2015). Human-level control through deep reinforcement learning. <em>Nature</em>, 518(7540), 529–533.</p>
+
 <p>Nakajima, Y. (2023). BabyAGI: Task-driven autonomous agent. GitHub. https://github.com/yoheinakajima/babyagi</p>
 
 <p>OpenAI. (2023). GPT-4 Technical Report. <em>arXiv preprint arXiv:2303.08774</em>.</p>
 
 <p>Richards, T. (2023). AutoGPT: An autonomous GPT-4 experiment. GitHub. https://github.com/Significant-Gravitas/AutoGPT</p>
+
+<p>Russell, S., &amp; Norvig, P. (2020). <em>Artificial Intelligence: A Modern Approach</em> (4th ed.). Pearson.</p>
 
 <p>Schmidhuber, J. (2003). Gödel machines: Self-referential universal problem solvers making provably optimal self-improvements. <em>arXiv preprint arXiv:cs/0309048</em>.</p>
 
@@ -46,15 +52,23 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXX
 
 <p>Sweet Jr, K. E. (2026a). Verifiable Self-Evolution in Cognitive Substrates. <em>PromptFluid Technical Reports</em>, TR-2026-001.</p>
 
-<p>Sweet Jr, K. E. (2026b). CMPSBL OS Substrate v9.1.0: The ARCHITECT Epoch. <em>PromptFluid Technical Reports</em>, TR-2026-002.</p>
+<p>Sweet Jr, K. E. (2026b). CMPSBL OS Substrate v10.8.0: The ARCHITECT Epoch. <em>PromptFluid Technical Reports</em>, TR-2026-002.</p>
+
+<p>Sweet Jr, K. E. (2026c). Autonomous AI Dream State: Offline Cognitive Consolidation for Production Systems. <em>PromptFluid Technical Reports</em>, TR-2026-003. DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a>.</p>
+
+<p>Tononi, G., &amp; Cirelli, C. (2014). Sleep and the price of plasticity. <em>Neuron</em>, 81(1), 12–34.</p>
 
 <p>Vaswani, A., et al. (2017). Attention is all you need. <em>Advances in Neural Information Processing Systems</em>, 30.</p>
 
+<p>Walker, M. P. (2017). <em>Why We Sleep: Unlocking the Power of Sleep and Dreams</em>. Scribner.</p>
+
+<p>Wu, Q., et al. (2023). AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation. <em>arXiv preprint arXiv:2308.08155</em>.</p>
+
 <hr />
 
-<p><em>CMPSBL OS Substrate v9.1.0 — Academic Documentation</em><br />
-<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
-<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>

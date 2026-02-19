@@ -14,6 +14,7 @@
   table{width:100%;border-collapse:collapse;margin:0.2in 0}
   th,td{border:1px solid #ccc;padding:6px 8px}
   th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:9pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
   .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
   hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
   @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
@@ -23,10 +24,10 @@
 <div class="page">
 
 <h1>System Architecture</h1>
-<p><strong>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</strong></p>
-<p>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
-Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)<br />
-Affiliation: PromptFluid®</p>
+<p><strong>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</strong></p>
+<p>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
+Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a>)<br />
+Affiliation: PromptFluid® · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></p>
 <hr />
 
 <h2>2. System Architecture</h2>
@@ -45,75 +46,179 @@ Affiliation: PromptFluid®</p>
 <li><strong>Verifiable State Transitions.</strong> Every self-modification produces a cryptographic stamp that enables post-hoc verification and rollback.</li>
 </ol>
 
-<h3>2.2 Layer Architecture</h3>
+<h3>2.2 Layer Architecture — ASCII Reference Diagram</h3>
 
-<p>The 6 layers, from bottom to top:</p>
+<div class="card">
+<pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                    LAYER 6 — ORCHESTRATOR                          │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │                        ENCODE                                 │  │
+│  │  Cross-layer transforms · DECODE→ENCODE pipeline · CLM v2.0  │  │
+│  │  Graduated Autonomy · Nexus Guard · Code/UI/DB/Edge/Docs     │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────────┤
+│                    LAYER 5 — INFRASTRUCTURE                        │
+│  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌──────┐ ┌────┐ │
+│  │ MEMORY  │ │  RELAY  │ │  AUDIT  │ │IDENTITY │ │ECONO.│ │SAND│ │
+│  │ Vector  │ │ Webhook │ │ Immut.  │ │ Actor   │ │FinOps│ │ Box│ │
+│  │ RAG     │ │ Deliver │ │ Ledger  │ │ Attrib. │ │ Cost │ │Isol│ │
+│  └─────────┘ └─────────┘ └─────────┘ └─────────┘ └──────┘ └────┘ │
+├─────────────────────────────────────────────────────────────────────┤
+│                    LAYER 4 — ADMINISTRATIVE                        │
+│  ┌──────────────────┐ ┌──────────────────┐ ┌────────────────────┐  │
+│  │   INTEGRATION    │ │    INCLUSIVE      │ │      SYSTEM        │  │
+│  │ External APIs    │ │ WCAG 2.2 (86     │ │ Self-healing       │  │
+│  │ Webhooks, Sync   │ │ criteria) a11y   │ │ Health monitoring  │  │
+│  └──────────────────┘ └──────────────────┘ └────────────────────┘  │
+├─────────────────────────────────────────────────────────────────────┤
+│                    LAYER 3 — OPERATIONAL                           │
+│  ┌───────────┐ ┌────────┐ ┌─────────┐ ┌───────┐ ┌──────────────┐  │
+│  │MODERNIZER │ │ DECODE │ │ DEFENSE │ │ NEXUS │ │    DREAM     │  │
+│  │ SEBA      │ │ NLP    │ │ Threat  │ │ Multi │ │ Autonomous   │  │
+│  │ Evolution │ │ Intent │ │ Detect  │ │ Prov. │ │ Learning     │  │
+│  │ Stamps    │ │ Epist. │ │ Bot/IP  │ │ Route │ │ Dream State  │  │
+│  └───────────┘ └────────┘ └─────────┘ └───────┘ └──────────────┘  │
+├─────────────────────────────────────────────────────────────────────┤
+│                    LAYER 2 — COGNITIVE                             │
+│  ┌──────────────────┐ ┌──────────────────┐ ┌────────────────────┐  │
+│  │      BRAIN       │ │     VISION       │ │      CORTEX        │  │
+│  │ 4-tier memory    │ │ Observability    │ │ Multi-module       │  │
+│  │ Confidence score │ │ Anomaly detect   │ │ orchestration      │  │
+│  │ Knowledge graph  │ │ SLA compliance   │ │ Agency coord.      │  │
+│  └──────────────────┘ └──────────────────┘ └────────────────────┘  │
+├─────────────────────────────────────────────────────────────────────┤
+│                    LAYER 1 — KERNEL                                │
+│  ┌──────────────────┐ ┌──────────────────┐ ┌────────────────────┐  │
+│  │      CORE        │ │     RIPPLE       │ │      ACCESS        │  │
+│  │ Config, boot     │ │ Typed event bus  │ │ Auth, RBAC, rate   │  │
+│  │ Constants, life  │ │ Pub/sub, schema  │ │ API keys, billing  │  │
+│  └──────────────────┘ └──────────────────┘ └────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+        ▲                      ▲                      ▲
+        │                      │                      │
+   ┌────┴────┐          ┌──────┴──────┐        ┌──────┴──────┐
+   │ Client  │          │  Edge Func  │        │ PostgreSQL  │
+   │ Browser │◄────────►│  (Deno)     │◄──────►│  + pgvector │
+   │ React   │  HTTPS   │  21 modules │  SQL   │  RLS, RT    │
+   └─────────┘          └─────────────┘        └─────────────┘
+                               ▲
+                               │ HTTPS (BYOK)
+                        ┌──────┴──────┐
+                        │ AI Providers│
+                        │ OpenAI      │
+                        │ Anthropic   │
+                        │ Google      │
+                        │ Mistral     │
+                        └─────────────┘
+</pre>
+</div>
 
-<p><strong>Layer 1 — Kernel (3 modules).</strong> Provides system configuration (CORE), event-driven communication (RIPPLE), and access control (ACCESS). All other layers depend on the kernel.</p>
+<p><em>Figure 1. CMPSBL OS Substrate — 6-layer, 21-module architecture with deployment topology. All inter-module communication flows through RIPPLE (Layer 1). External AI providers are accessed via NEXUS (Layer 3) using user-supplied API keys (BYOK model).</em></p>
 
-<p><strong>Layer 2 — Cognitive (3 modules).</strong> Implements persistent memory with confidence scoring (BRAIN), system observability (VISION), and multi-module orchestration (CORTEX).</p>
+<h3>2.3 Layer Descriptions</h3>
 
-<p><strong>Layer 3 — Operational (5 modules).</strong> Provides self-evolution (MODERNIZER), natural language processing (DECODE), security (DEFENSE), multi-provider AI routing (NEXUS), and autonomous learning (DREAM).</p>
+<p><strong>Layer 1 — Kernel (3 modules).</strong> Provides system configuration (CORE), event-driven communication (RIPPLE), and access control (ACCESS). All other layers depend on the kernel. CORE boots first and initializes the constant registry; RIPPLE provides typed pub/sub messaging; ACCESS enforces hierarchical RBAC with scoped API keys.</p>
 
-<p><strong>Layer 4 — Administrative (3 modules).</strong> Handles external integrations (INTEGRATION), accessibility compliance (INCLUSIVE), and system health monitoring (SYSTEM).</p>
+<p><strong>Layer 2 — Cognitive (3 modules).</strong> Implements persistent memory with confidence scoring (BRAIN), system observability with anomaly detection (VISION), and multi-module orchestration with agency coordination (CORTEX). BRAIN maintains a four-tier memory hierarchy (episodic, semantic, procedural, meta-cognitive) with proprietary decay curves. VISION tracks 21-module health scores. CORTEX executes multi-step pipelines with dependency resolution.</p>
 
-<p><strong>Layer 5 — Infrastructure (6 modules).</strong> Provides vector storage (MEMORY), outbound delivery (RELAY), immutable logging (AUDIT), actor attribution (IDENTITY), cost tracking (ECONOMY), and isolated execution (SANDBOX).</p>
+<p><strong>Layer 3 — Operational (5 modules).</strong> Provides self-evolution with cryptographic stamps (MODERNIZER/SEBA), epistemic natural language processing (DECODE), behavioral threat detection (DEFENSE), multi-provider AI routing with cost optimization (NEXUS), and autonomous offline learning (DREAM). DREAM implements the world's first autonomous AI dream state — an offline consolidation cycle analogous to biological sleep.</p>
 
-<p><strong>Layer 6 — Orchestrator (1 module).</strong> Cross-layer transform pipelines (ENCODE) coordinate complex multi-module workflows.</p>
+<p><strong>Layer 4 — Administrative (3 modules).</strong> Handles external API integrations and webhook management (INTEGRATION), WCAG 2.2 accessibility scanning across 86 criteria (INCLUSIVE), and autonomous self-healing with health monitoring (SYSTEM).</p>
 
-<h3>2.3 The RIPPLE Event Bus</h3>
+<p><strong>Layer 5 — Infrastructure (6 modules).</strong> Provides vector storage and RAG (MEMORY), outbound webhook delivery with retry logic (RELAY), immutable compliance logging with chain-of-custody verification (AUDIT), cryptographic actor attribution across human/agent/system boundaries (IDENTITY), FinOps cost tracking with budget governance (ECONOMY), and isolated execution environments for speculative operations (SANDBOX).</p>
+
+<p><strong>Layer 6 — Orchestrator (1 module).</strong> ENCODE operates above all other layers, accepting structured intent and orchestrating cross-layer transform pipelines across six domains: code, UI, documentation, database, edge functions, and tests. ENCODE operates under a Graduated Autonomy framework with a Nexus Guard that prevents destructive or self-referential modifications without explicit human approval.</p>
+
+<h3>2.4 The RIPPLE Event Bus</h3>
 
 <p>RIPPLE implements a publish-subscribe event bus with the following properties:</p>
 
 <ul>
-<li><strong>Typed payloads.</strong> Every event is associated with a schema. Payloads that do not conform to the schema are rejected.</li>
-<li><strong>Silent rejection.</strong> Malformed events are dropped without notification to the publisher. This prevents retry storms.</li>
+<li><strong>Typed payloads.</strong> Every event is associated with a Zod schema. Payloads that do not conform are silently rejected.</li>
+<li><strong>Silent rejection.</strong> Malformed events are dropped without notification to the publisher. This prevents retry storms and feedback amplification.</li>
 <li><strong>Fan-out delivery.</strong> A single event may have multiple subscribers. Delivery is guaranteed at-least-once.</li>
-<li><strong>Priority levels.</strong> Events are classified as critical, normal, or background, determining delivery order.</li>
+<li><strong>Priority levels.</strong> Events are classified as critical, normal, or background, determining delivery order and latency budgets.</li>
+<li><strong>Size limits.</strong> Payloads are bounded to prevent memory exhaustion. Events exceeding the limit are rejected.</li>
 </ul>
 
-<h3>2.4 Module Isolation via Circuit Breakers</h3>
+<h3>2.5 Module Isolation via Circuit Breakers</h3>
 
 <p>Each module maintains a health score on a 0–100 scale. When consecutive failures reduce the score below a critical threshold, a circuit breaker opens:</p>
 
 <table>
-<tr><th>State</th><th>Behavior</th></tr>
-<tr><td>Closed</td><td>Normal operation; requests accepted</td></tr>
-<tr><td>Open</td><td>Requests rejected; recovery timer active</td></tr>
-<tr><td>Half-Open</td><td>Limited requests accepted for testing</td></tr>
+<tr><th>State</th><th>Behavior</th><th>Transition Condition</th></tr>
+<tr><td>Closed</td><td>Normal operation; requests accepted</td><td>→ Open: consecutive failure threshold exceeded</td></tr>
+<tr><td>Open</td><td>Requests rejected; recovery timer active</td><td>→ Half-Open: fixed timeout expires</td></tr>
+<tr><td>Half-Open</td><td>Limited requests accepted for testing</td><td>→ Closed: consecutive successes; → Open: any failure</td></tr>
 </table>
 
-<p>The transition from Open to Half-Open occurs after a fixed timeout. The transition from Half-Open to Closed requires consecutive successful operations. This three-state model ensures that recovering modules are tested before resuming full load.</p>
+<p>This three-state model ensures that recovering modules are tested before resuming full load. The specific threshold values are proprietary (see Internal Documentation §01).</p>
 
-<h3>2.5 Boot Sequence</h3>
+<h3>2.6 Boot Sequence</h3>
 
-<p>Modules boot in a fixed, dependency-ordered sequence: CORE → RIPPLE → ACCESS → BRAIN → VISION → CORTEX → MODERNIZER → DECODE → DEFENSE → NEXUS → DREAM → INTEGRATION → INCLUSIVE → SYSTEM → Infrastructure modules → ENCODE.</p>
+<p>Modules boot in a fixed, dependency-ordered sequence:</p>
 
-<p>The boot order cannot be changed. Each module validates its dependencies before declaring readiness.</p>
+<div class="card">
+<pre>CORE → RIPPLE → ACCESS → BRAIN → VISION → CORTEX → MODERNIZER
+→ DECODE → DEFENSE → NEXUS → DREAM → INTEGRATION → INCLUSIVE
+→ SYSTEM → MEMORY → RELAY → AUDIT → IDENTITY → ECONOMY
+→ SANDBOX → ENCODE</pre>
+</div>
 
-<h3>2.6 Request Processing Pipeline</h3>
+<p>The boot order cannot be changed. Each module validates its dependencies before declaring readiness. If the event bus (RIPPLE) fails during boot, the system enters a degraded boot mode with direct function calls until RIPPLE recovers — the only exception to the event-driven communication rule.</p>
+
+<h3>2.7 Request Processing Pipeline</h3>
 
 <p>Incoming requests traverse a multi-stage pipeline:</p>
 
 <ol>
 <li>Authentication and rate limiting (ACCESS)</li>
-<li>Threat analysis (DEFENSE)</li>
-<li>Actor attribution (IDENTITY)</li>
-<li>Intent classification (DECODE)</li>
-<li>Module routing (CORTEX)</li>
+<li>Threat analysis and behavioral fingerprinting (DEFENSE)</li>
+<li>Actor attribution — human vs. agent vs. system (IDENTITY)</li>
+<li>Intent classification with epistemic markers (DECODE)</li>
+<li>Module routing and pipeline composition (CORTEX)</li>
 <li>Operation execution (target module)</li>
-<li>Event broadcast (RIPPLE)</li>
-<li>Cost recording (ECONOMY)</li>
-<li>Audit logging (AUDIT)</li>
+<li>Event broadcast to subscribers (RIPPLE)</li>
+<li>Cost recording and budget check (ECONOMY)</li>
+<li>Immutable audit logging (AUDIT)</li>
 </ol>
 
-<p>Stages 7–9 execute asynchronously and do not affect response latency.</p>
+<p>Stages 7–9 execute asynchronously and do not affect response latency. Defense stages may execute in parallel for performance optimization.</p>
+
+<h3>2.8 Inter-Module Data Flow</h3>
+
+<div class="card">
+<pre>
+  ┌────────────┐     RIPPLE Event Bus (typed, schema-validated)
+  │  Module A  │ ──publish──► ┌─────────┐ ──deliver──► ┌────────────┐
+  │ (producer) │              │ RIPPLE  │              │  Module B  │
+  └────────────┘              │ Schema  │              │ (consumer) │
+                              │ Validate│ ──deliver──► ┌────────────┐
+                              │ Fan-out │              │  Module C  │
+                              └─────────┘              │ (consumer) │
+                                                       └────────────┘
+  NO direct function calls. NO shared mutable state.
+  Modules communicate ONLY through events.
+</pre>
+</div>
+
+<h3>2.9 Failure Boundaries</h3>
+
+<p>The architecture enforces strict failure isolation:</p>
+
+<ul>
+<li><strong>Blast radius = 1 module.</strong> A failing module affects only itself; all other modules continue normal operation.</li>
+<li><strong>Graceful degradation.</strong> When a non-critical module (e.g., DREAM, INCLUSIVE) enters an open circuit state, the system continues serving requests with reduced functionality.</li>
+<li><strong>Cascading failure prevention.</strong> CORE monitors inter-module dependency chains and breaks cascading failures by pre-emptively opening circuit breakers on downstream modules.</li>
+<li><strong>Auto-healing.</strong> SYSTEM initiates automated diagnostics and repair when modules enter critical health states, with escalation to human operators for persistent failures.</li>
+</ul>
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v9.1.0 — Academic Documentation</em><br />
-<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
-<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
