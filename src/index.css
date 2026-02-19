@@ -1,6 +1,5 @@
 /* Admin System 2026 - Liquid Intelligence UI */
-@import './styles/admin/design-tokens.css';
-@import './styles/admin/animations.css';
+/* Admin design-tokens.css and animations.css are loaded on-demand via AdminLayout */
 
 @tailwind base;
 @tailwind components;
