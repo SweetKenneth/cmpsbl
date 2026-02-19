@@ -28,9 +28,9 @@ export function CmpsblLogo({ className, iconOnly = false, size = "md" }: CmpsblL
       alt="CMPSBL By PromptFluid"
       width={width}
       height={height}
-      loading={size === "sm" ? "eager" : "lazy"}
+      loading="lazy"
       decoding="async"
-      fetchPriority={size === "sm" ? "high" : "auto"}
+      fetchPriority="auto"
       className={cn(
         sizeClass,
         "w-auto object-contain",
