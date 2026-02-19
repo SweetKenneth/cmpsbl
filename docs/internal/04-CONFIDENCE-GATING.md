@@ -94,9 +94,9 @@ Where:
 <p>The current values represent the optimal balance discovered through production operation.</p>
 
 <hr />
-<p><em>INTERNAL USE ONLY</em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — INTERNAL USE ONLY</em><br />
 <em>Kenneth E Sweet Jr · PromptFluid®</em><br />
-<em>ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX</em></p>
+<em>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a> · DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></em></p>
 
 </div>
 </body>

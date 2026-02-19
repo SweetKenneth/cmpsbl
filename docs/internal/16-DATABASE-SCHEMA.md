@@ -138,9 +138,9 @@ agencies ─┬── agency_members ──── agent_competency
 </div>
 
 <hr />
-<p><em>CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch — INTERNAL USE ONLY</em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch — INTERNAL USE ONLY</em><br />
 <em>Kenneth E Sweet Jr · PromptFluid®</em><br />
-<em>ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a> · DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a> · DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>

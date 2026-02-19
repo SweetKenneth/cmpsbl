@@ -27,7 +27,7 @@
 <table>
 <tr><td><strong>Document</strong></td><td>01 — Executive Summary</td></tr>
 <tr><td><strong>Classification</strong></td><td>Library — No Trade Secrets</td></tr>
-<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
+<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></td></tr>
 </table>
 <hr />
 
@@ -151,9 +151,9 @@
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</em></p>
+<p><em>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</em></p>
 <p><strong>Kenneth E Sweet Jr</strong> · PromptFluid®<br />
-ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a> · DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></p>
+ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a> · DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></p>
 <p>© 2025–2026 PromptFluid®. All rights reserved.</p>
 
 </div>
