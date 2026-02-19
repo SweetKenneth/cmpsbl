@@ -18,6 +18,7 @@
 import { initCircuitBreaker, getCircuitStatus, type CircuitStatus } from '../infra-resilience';
 import { resetBreaker, recordSuccess, recordFailure, getBreaker } from '../circuit-breaker';
 import { emit } from '../events';
+import { updateHealthRegistry, getShadowMeshState, updateShadowMeshState } from '../health-registry';
 
 // ═══ Types ═══════════════════════════════════════════════════════
 
@@ -133,6 +134,13 @@ export function reportSubsystemSuccess(id: SubsystemId, detail?: string): void {
   recordSuccess(meta.circuitModule);
   state.score = Math.min(100, state.score + 2);
   if (detail) state.detail = detail;
+
+  // Push to CHR
+  updateHealthRegistry(`subsys:${id}`, 'healthy', 'boot', 'telemetry', {
+    breaker_state: 'closed',
+    detail: detail ?? 'Success',
+    score_override: state.score,
+  });
 }
 
 export function reportSubsystemFailure(id: SubsystemId, detail?: string): void {
@@ -142,6 +150,17 @@ export function reportSubsystemFailure(id: SubsystemId, detail?: string): void {
   recordFailure(meta.circuitModule);
   state.score = Math.max(0, state.score - 10);
   if (detail) state.detail = detail;
+
+  // Shadow mesh isolation: if shadow_mesh subsystem fails, tag as synthetic if isolation enabled
+  const source = id === 'shadow_mesh' && !getShadowMeshState().bleed_into_health
+    ? 'synthetic_shadow_event' as const
+    : 'telemetry' as const;
+
+  updateHealthRegistry(`subsys:${id}`, 'degraded', 'circuit_breaker', source, {
+    breaker_state: 'half_open',
+    detail: detail ?? 'Failure recorded',
+    score_override: state.score,
+  });
 }
 
 export function setSubsystemScore(id: SubsystemId, score: number, detail: string): void {
@@ -149,6 +168,11 @@ export function setSubsystemScore(id: SubsystemId, score: number, detail: string
   const state = getState(id);
   state.score = Math.max(0, Math.min(100, score));
   state.detail = detail;
+
+  updateHealthRegistry(`subsys:${id}`, score >= 80 ? 'healthy' : 'degraded', 'manual_override', 'manual', {
+    detail,
+    score_override: state.score,
+  });
 }
 
 // ═══ Healing ═════════════════════════════════════════════════════

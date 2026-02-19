@@ -645,3 +645,30 @@ export {
   type SandboxExecution,
   type SandboxModuleState,
 } from './sandbox-module/index';
+
+// ═══ Central Health Registry + Truth Boundary + Attribution Engine (v10.5.4) ═══
+export {
+  SYSTEM_TRUTH_MODE,
+  updateHealthRegistry,
+  logRecovery,
+  getRegistryEntry,
+  getAllRegistryEntries,
+  getRegistryChangeLog,
+  checkRegistryIntegrity,
+  attributeHealthDrop,
+  getAttributionSummary,
+  attachTruthBoundary,
+  referencesInfrastructure,
+  getInferredQualifier,
+  getShadowMeshState,
+  updateShadowMeshState,
+  resetRegistry,
+  type TruthMode,
+  type HealthCause,
+  type HealthSource,
+  type HealthEntryStatus,
+  type HealthRegistryEntry,
+  type AttributionResult,
+  type AttributionFactor,
+  type ShadowMeshState,
+} from './health-registry';

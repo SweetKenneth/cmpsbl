@@ -1,9 +1,9 @@
 /**
  * Substrate Health Dashboard API
- * v1.0.0 — Unified JSON endpoint for real-time system status
+ * v10.5.4 — Unified JSON endpoint for real-time system status
  * 
- * Aggregates health metrics from all substrate systems into
- * a single, queryable health dashboard response.
+ * All health reads are backed by the Central Health Registry (CHR).
+ * Dashboard/Terminal/Module Voice all consume this single source of truth.
  */
 
 import { getCircuitBreakerSummary } from '../circuit-breaker';
@@ -17,6 +17,7 @@ import { withFallbackSync } from '../graceful-degradation';
 import { getActivePredictions } from '../predictive-failure';
 import { getDependencies, getDownDependencies } from '../dependency-health';
 import { getRecoveryState } from '../core-circuit-recovery';
+import { updateHealthRegistry, getAttributionSummary, type HealthRegistryEntry } from '../health-registry';
 
 export interface HealthStatus {
   status: 'healthy' | 'degraded' | 'critical' | 'unknown';
@@ -160,15 +161,22 @@ function _buildHealthDashboard(): HealthStatus {
     lastCheck: Date.now(),
   });
 
-  // 5. Breaker states per module — graceful
+   // 5. Breaker states per module — graceful + push to CHR
   const breakerStates = withFallbackSync(() => getAllBreakerStates(), [] as any[], 'BreakerStates');
   for (const b of breakerStates) {
+    // Push every breaker into CHR for unified registry
+    const cause = b.state === 'open' ? 'circuit_breaker' as const : b.state === 'half_open' ? 'circuit_breaker' as const : 'boot' as const;
+    updateHealthRegistry(b.module, b.state === 'closed' ? 'healthy' : 'degraded', cause, 'telemetry', {
+      breaker_state: b.state as 'closed' | 'half_open' | 'open',
+      detail: `Failures: ${b.failures} | Trips: ${b.totalTrips}`,
+    });
+
     if (b.state !== 'closed') {
       systems.push({
         name: `Module: ${b.module}`,
         status: b.state === 'open' ? 'error' : 'warn',
         score: b.state === 'open' ? 0 : 50,
-        detail: `State: ${b.state} | Failures: ${b.failures} | Trips: ${b.totalTrips}`,
+        detail: `State: ${b.state} | Failures: ${b.failures} | Trips: ${b.totalTrips} | ${getAttributionSummary(b.module)}`,
         lastCheck: b.lastStateChange,
       });
     }
