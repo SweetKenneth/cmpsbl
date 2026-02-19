@@ -20,7 +20,7 @@
 <div class="page">
 
 <h1>License</h1>
-<p><strong>CMPSBL OS Substrate v10.1.0</strong></p>
+<p><strong>CMPSBL OS Substrate v10.8.0</strong></p>
 <hr />
 
 <div class="card">
@@ -52,9 +52,9 @@
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v10.1.0 — Academic Documentation</em><br />
-<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
-<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
