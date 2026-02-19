@@ -26,8 +26,8 @@
 <p><strong>CMPSBL OS Substrate v10.1.0 | Academic Paper</strong></p>
 <p><strong>Author:</strong> Kenneth E Sweet Jr<br />
 <strong>Affiliation:</strong> PromptFluid®<br />
-<strong>ORCID:</strong> <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a><br />
-<strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
+<strong>ORCID:</strong> <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a><br />
+<strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
 <strong>Date:</strong> February 14, 2026<br />
 <strong>License:</strong> CC BY 4.0</p>
 <hr />
@@ -147,13 +147,13 @@
   year         = 2026,
   publisher    = {Zenodo},
   version      = {v10.1.0},
-  doi          = {10.5281/zenodo.XXXXXXX},
+  doi          = {10.5281/zenodo.18234909},
   url          = {https://github.com/promptfluid/substrate}
 }
 </pre>
 
 <h3>APA 7th Edition</h3>
-<p>Sweet Jr, K. E. (2026). Intent Mesh: Emergent cross-module intelligence via capability advertisement, dynamic composition, and pipeline crystallization. <em>CMPSBL OS Substrate Technical Documentation</em>, v10.1.0. https://doi.org/10.5281/zenodo.XXXXXXX</p>
+<p>Sweet Jr, K. E. (2026). Intent Mesh: Emergent cross-module intelligence via capability advertisement, dynamic composition, and pipeline crystallization. <em>CMPSBL OS Substrate Technical Documentation</em>, v10.8.0. https://doi.org/10.5281/zenodo.18234909</p>
 
 <hr />
 
