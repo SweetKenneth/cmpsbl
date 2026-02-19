@@ -331,9 +331,9 @@ export function HeroMetaSubstrate() {
             >
               <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-widest mb-2">How Intelligence Flows</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Every interaction generates <span className="text-foreground font-medium">memory particles</span> that persist across sessions. 
-                <span className="text-primary font-medium"> Dream cycles</span> synthesize patterns overnight. 
-                <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Defense layers</span> detect and reject drift in real-time. 
+                Every interaction generates <span className="text-foreground font-medium">memory particles</span> that persist across sessions.{' '}
+                <span className="text-primary font-medium">Dream cycles</span> synthesize patterns overnight.{' '}
+                <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Defense layers</span> detect and reject drift in real-time.{' '}
                 Nothing resets. Everything compounds.
               </p>
             </motion.div>
@@ -348,13 +348,17 @@ export function HeroMetaSubstrate() {
               className="hidden lg:grid grid-cols-3 gap-3"
             >
               {[
-                { label: "Memory Depth", value: "Persistent", desc: "Survives restarts" },
-                { label: "Dream Cycles", value: "Autonomous", desc: "Self-improving" },
-                { label: "Defense Mesh", value: "Always-On", desc: "Drift-resistant" },
+                { label: "Memory Depth", value: "Persistent", desc: "Survives restarts", glow: "--neon-cyan" },
+                { label: "Dream Cycles", value: "Autonomous", desc: "Self-improving", glow: "--neon-purple" },
+                { label: "Defense Mesh", value: "Always-On", desc: "Drift-resistant", glow: "--neon-magenta" },
               ].map((item) => (
-                <div key={item.label} className="rounded-lg border border-border/20 bg-card/20 backdrop-blur-sm p-3 text-center">
+                <div 
+                  key={item.label} 
+                  className="rounded-lg border border-border/20 bg-card/30 backdrop-blur-sm p-3.5 text-center hover:border-border/40 transition-all duration-300 group"
+                  style={{ boxShadow: `0 0 20px -8px hsl(var(${item.glow}) / 0.1)` }}
+                >
                   <div className="text-[10px] text-muted-foreground/50 uppercase tracking-widest font-semibold mb-1">{item.label}</div>
-                  <div className="text-sm font-bold text-foreground">{item.value}</div>
+                  <div className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{item.value}</div>
                   <div className="text-[10px] text-muted-foreground mt-0.5">{item.desc}</div>
                 </div>
               ))}
@@ -367,7 +371,7 @@ export function HeroMetaSubstrate() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="mb-6 sm:mb-8"
+          className="mb-4 sm:mb-6"
         >
           <p className="text-[10px] sm:text-xs text-muted-foreground/60 text-center mb-3 uppercase tracking-widest font-medium">Works with your stack</p>
           <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
@@ -399,7 +403,7 @@ export function HeroMetaSubstrate() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex justify-start sm:justify-center gap-2 sm:gap-3 mb-10 sm:mb-16 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
+          className="flex justify-start sm:justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
             { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory" },
@@ -431,9 +435,12 @@ export function HeroMetaSubstrate() {
           transition={{ delay: 0.95 }}
           className="relative"
         >
-          <div className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/30 rounded-2xl border border-border/40 bg-card/30 backdrop-blur-xl overflow-hidden">
+          <div 
+            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/30 rounded-2xl border border-border/40 bg-card/30 backdrop-blur-xl overflow-hidden"
+            style={{ boxShadow: "0 0 40px -15px hsl(var(--primary) / 0.08), inset 0 1px 0 hsl(var(--primary) / 0.05)" }}
+          >
             {/* Top edge highlight */}
-            <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+            <div className="absolute top-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
             
             <AnimatedStat value={21} label="Modules" delay={0} />
             <AnimatedStat value={200} label="Synergies" delay={1} />
