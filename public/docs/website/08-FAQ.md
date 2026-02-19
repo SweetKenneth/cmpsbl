@@ -1,167 +1,107 @@
-# Frequently Asked Questions
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>FAQ — CMPSBL®</title>
+<style>
+@page { size: letter; margin: 0.8in; }
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #1a1a1a; max-width: 7in; margin: auto; }
+h1 { font-size: 20pt; border-bottom: 2px solid #1a1a1a; padding-bottom: 4pt; }
+h2 { font-size: 14pt; margin-top: 18pt; }
+h3 { font-size: 12pt; }
+table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+th, td { border: 1px solid #ccc; padding: 5pt 8pt; text-align: left; }
+th { background: #f5f5f5; font-weight: bold; }
+.card { border: 1px solid #e0e0e0; border-radius: 4pt; padding: 10pt 14pt; margin: 10pt 0; break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<h1>Frequently Asked Questions</h1>
+<p><strong>Common Questions About CMPSBL®</strong></p>
+
+<h2>General</h2>
+
+<div class="card">
+<h3>What is CMPSBL?</h3>
+<p>CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides memory, learning, multi-provider AI routing, security, and self-evolution capabilities. Think of it as the "operating system" for AI.</p>
+</div>
+
+<div class="card">
+<h3>How is this different from OpenAI or Anthropic?</h3>
+<p>We don't compete with AI model providers — we make them more valuable. CMPSBL sits between your application and AI providers, adding memory, learning, security, and routing. You can use any AI provider (or multiple) through CMPSBL.</p>
+</div>
+
+<div class="card">
+<h3>Do I need to use a specific AI provider?</h3>
+<p>No. CMPSBL is model-agnostic and provider-agnostic. You can use OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination.</p>
+</div>
+
+<div class="card">
+<h3>Can the system really improve itself?</h3>
+<p>Yes. The MODERNIZER module proposes code improvements, which go through confidence gating and (for significant changes) human approval before being applied.</p>
+</div>
+
+<h2>Technical</h2>
+
+<div class="card">
+<h3>What technology stack does CMPSBL use?</h3>
+<ul>
+<li><strong>Frontend:</strong> React + TypeScript + Vite + Tailwind</li>
+<li><strong>Backend:</strong> PostgreSQL + Edge Functions</li>
+<li><strong>AI:</strong> Model-agnostic, connects to any provider</li>
+<li><strong>Infrastructure:</strong> Runs on any cloud or on-premise</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>How does memory work?</h3>
+<p>Memory is stored in a four-tier system: Hot (127 records, 7 days), Warm (2,000 records, 30 days), Cold (200 records, forever), Legacy (unlimited, forever). The system automatically demotes, compresses, and optimizes memory over time. Protected memory types are locked at 1.0 value with zero decay.</p>
+</div>
+
+<h2>Business</h2>
+
+<div class="card">
+<h3>How much does it cost?</h3>
+<table>
+<tr><th>Tier</th><th>Price</th><th>What You Get</th></tr>
+<tr><td><strong>Free</strong></td><td>$0</td><td>Artifact Store, Persistent Memory, Composition</td></tr>
+<tr><td><strong>Creator</strong></td><td>$9/mo</td><td>Expanded store, executable capabilities, synergy pipelines</td></tr>
+<tr><td><strong>Architect</strong></td><td>$19/mo</td><td>Cross-module orchestration, larger memory</td></tr>
+<tr><td><strong>Enterprise</strong></td><td>$99/mo</td><td>Organization workspaces, governance, SLA</td></tr>
+</table>
+<p>Plus standalone: Composable Cognitives ($39 each), Template Generator ($29 one-time).</p>
+</div>
+
+<h2>Comparison</h2>
+
+<div class="card">
+<h3>How is this different from LangChain?</h3>
+<table>
+<tr><th>Aspect</th><th>LangChain</th><th>CMPSBL</th></tr>
+<tr><td>Type</td><td>Library</td><td>Infrastructure</td></tr>
+<tr><td>Memory</td><td>You build it</td><td>Built-in, multi-tier</td></tr>
+<tr><td>Learning</td><td>None</td><td>Autonomous</td></tr>
+<tr><td>Security</td><td>You build it</td><td>Built-in</td></tr>
+<tr><td>Evolution</td><td>None</td><td>Self-improving</td></tr>
+</table>
+</div>
+
+<h2>Security</h2>
+
+<div class="card">
+<h3>Is CMPSBL secure for enterprise use?</h3>
+<p>Yes. Security is built into the core: rate limiting, bot detection, input sanitization, passwordless WebAuthn authentication, complete audit logging, compliance-ready patterns (SOC 2, GDPR).</p>
+</div>
+
+<h2>Contact</h2>
+<table>
+<tr><th>Question Type</th><th>Contact</th></tr>
+<tr><td><strong>General</strong></td><td>PromptFluid@gmail.com</td></tr>
+<tr><td><strong>Web</strong></td><td>https://cmpsbl.com</td></tr>
+</table>
 
-**Common Questions About CMPSBL®**
+<p><em>CMPSBL® — Questions? We Have Answers.</em></p>
 
----
-
-## General
-
-### What is CMPSBL?
-
-CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides memory, learning, multi-provider AI routing, security, and self-evolution capabilities that your AI applications can use. Think of it as the "operating system" for AI.
-
-### How is this different from OpenAI or Anthropic?
-
-We don't compete with AI model providers — we make them more valuable. CMPSBL sits between your application and AI providers, adding memory, learning, security, and routing. You can use any AI provider (or multiple) through CMPSBL.
-
-### Do I need to use a specific AI provider?
-
-No. CMPSBL is model-agnostic and provider-agnostic. You can use OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination. We handle routing between them.
-
-### Can the system really improve itself?
-
-Yes. The MODERNIZER module proposes code improvements, which go through confidence gating and (for significant changes) human approval before being applied. The system literally upgrades its own code over time.
-
----
-
-## Technical
-
-### What technology stack does CMPSBL use?
-
-- **Frontend:** React + TypeScript + Vite + Tailwind
-- **Backend:** PostgreSQL + Edge Functions (Lovable Cloud)
-- **AI:** Model-agnostic, connects to any provider
-- **Infrastructure:** Runs on any cloud or on-premise
-
-### Can I self-host CMPSBL?
-
-Yes, with an Enterprise license. Enterprise tier includes source code access and self-hosted deployment rights. Subscription tiers (Creator/Architect) use our secure hosted infrastructure.
-
-### How does memory work?
-
-Memory is stored in a four-tier system:
-- **Hot memory:** Recent context, fast access, 127 records, 7-day retention
-- **Warm memory:** Frequently accessed, intermediate recall, 2,000 records, 30-day retention
-- **Cold memory:** Compressed patterns, long-term storage, 200 records, forever retention
-- **Legacy memory:** Archived, rarely accessed, unlimited capacity, forever retention
-
-The system automatically demotes, compresses, and optimizes memory over time. Protected memory types (core identity, principles, safety laws) are locked at 1.0 value with zero decay.
-
-### What about data privacy?
-
-Your data stays on your infrastructure. We never see your memories, prompts, or responses. The substrate runs entirely in your environment.
-
----
-
-## Business
-
-### How much does it cost?
-
-CMPSBL uses a unified tiered pricing model:
-
-| Tier | Price | What You Get |
-|------|-------|--------------|
-| **Free** | $0 | Artifact Store, Persistent Memory, Executors, Composition |
-| **Creator** | $49/mo | Self-improving apps, 7 Experience Jewels, SDK/API access |
-| **Architect** | $149/mo | CLM, cross-project learning, all 28 Experience Jewels |
-| **Enterprise** | Custom | Source code, self-hosted, compliance, SLA |
-
-Plus standalone purchases:
-- **Composable Cognitives:** $39 each (no account required)
-- **Template Generator:** $29 one-time
-
-Plus your own AI provider costs (you pay OpenAI, Anthropic, etc. directly).
-
-### What's included in the license?
-
-All 21 modules (including IDENTITY for passwordless WebAuthn), full documentation, version updates, and support appropriate to your tier. You bring your own AI provider keys and infrastructure.
-
-### Can I use this for commercial products?
-
-Yes. All license tiers allow commercial use. Enterprise tier includes additional features for production deployments.
-
-### Do you offer trials?
-
-The Free tier gives you full access to the Artifact Store, Persistent Memory, and Composition — no credit card required. Enterprise evaluations are available upon request.
-
----
-
-## Comparison
-
-### How is this different from LangChain?
-
-LangChain is a library — you still build everything yourself. CMPSBL is a complete system. It's the difference between buying lumber vs. buying a pre-built house.
-
-| Aspect | LangChain | CMPSBL |
-|--------|-----------|--------|
-| Type | Library | Infrastructure |
-| Memory | You build it | Built-in, multi-tier |
-| Learning | None | Autonomous |
-| Security | You build it | Built-in |
-| Evolution | None | Self-improving |
-
-### How is this different from Mem0?
-
-Mem0 is focused specifically on memory. CMPSBL includes memory (BRAIN module) plus 20 other integrated modules for routing, security, learning, observability, identity, and more.
-
-### Why haven't others built this?
-
-They have, partially. There are memory solutions, routing solutions, security solutions. No one has integrated them into a coherent cognitive system that self-improves. Integration is hard.
-
----
-
-## Security
-
-### Is CMPSBL secure for enterprise use?
-
-Yes. Security is built into the core with:
-- Rate limiting and bot detection
-- Input sanitization
-- Access control
-- Passwordless WebAuthn authentication (IDENTITY module)
-- Complete audit logging
-- Compliance-ready patterns (SOC 2, GDPR)
-
-### Where does my data live?
-
-**Subscription tiers (Free/Creator/Architect):** Your data is processed on our secure hosted infrastructure. We follow strict data isolation and never share or use your data for training.
-
-**Enterprise tier:** Full self-hosted deployment — your data stays entirely on your infrastructure.
-
-### How do you handle API keys?
-
-**Subscription tiers:** You provide your AI provider keys via secure environment configuration. Keys are encrypted and never logged.
-
-**Enterprise tier:** Keys are stored in your own environment (environment variables or secrets manager). We never see them.
-
----
-
-## Getting Started
-
-### How quickly can I get started?
-
-The Free tier requires no signup — start exploring the Artifact Store immediately. Creator and Architect tiers have automated checkout via Stripe.
-
-### What support is available?
-
-- **Free:** Community support, documentation
-- **Creator:** Email support, documentation
-- **Architect:** Priority email, quarterly technical calls
-- **Enterprise:** Dedicated support channel, custom integration help
-
-### Do you offer consulting or custom development?
-
-Yes. Professional services are available for custom integrations, specialized modules, or accelerated implementation.
-
----
-
-## Contact
-
-| Question Type | Contact |
-|---------------|---------|
-| **General** | PromptFluid@gmail.com |
-| **Web** | https://cmpsbl.com |
-
----
-
-*CMPSBL® — Questions? We Have Answers.*
+</body>
+</html>

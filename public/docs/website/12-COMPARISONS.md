@@ -1,249 +1,77 @@
-# Market Comparison
-
-**How CMPSBL® Compares to Alternatives**
-
----
-
-## The Landscape
-
-The AI infrastructure market includes several categories:
-
-1. **AI Model Providers** — OpenAI, Anthropic, Google
-2. **Orchestration Libraries** — LangChain, LlamaIndex
-3. **Memory Solutions** — Mem0, Zep
-4. **Vector Databases** — Pinecone, Weaviate
-5. **Full Platforms** — CMPSBL®
-
----
-
-## CMPSBL vs. Building In-House
-
-### The Build vs. Buy Decision
-
-| Factor | Build In-House | CMPSBL® |
-|--------|----------------|---------|
-| **Time to Market** | 6-18 months | Days to weeks |
-| **Engineering Cost** | $500K-$2M+ | Free tier or $49-$149/mo |
-| **Maintenance** | Ongoing team needed | Included |
-| **Expertise Required** | Deep ML/AI knowledge | Basic integration |
-| **Risk** | High (unknown unknowns) | Low (proven system) |
-| **Scaling** | Complex, expensive | Built-in |
-
-### Hidden Costs of Building
-
-When teams build cognitive infrastructure from scratch, they often underestimate:
-
-| Hidden Cost | Reality |
-|-------------|---------|
-| **Memory System** | 3-6 months to build a robust solution |
-| **Multi-Provider Routing** | Complex failover, cost optimization |
-| **Security Layer** | Enterprise requirements are extensive |
-| **Self-Improvement** | Rarely attempted, hard to get right |
-| **Observability** | Often an afterthought |
-| **Maintenance** | 20-40% of initial build, ongoing |
-
----
-
-## CMPSBL vs. LangChain
-
-### Overview
-
-LangChain is a popular open-source library for building LLM applications. CMPSBL is a complete cognitive infrastructure layer.
-
-### Comparison
-
-| Aspect | LangChain | CMPSBL® |
-|--------|-----------|---------|
-| **Type** | Library (you build) | Infrastructure (complete) |
-| **Memory** | Basic chain memory | Multi-tier, compressed, scored |
-| **Learning** | None built-in | Autonomous dream cycles |
-| **Security** | You implement | Enterprise-grade, built-in |
-| **Multi-Provider** | Manual setup | Intelligent routing |
-| **Self-Evolution** | None | CORE feature |
-| **Observability** | Third-party needed | Integrated |
-| **Production Ready** | Requires work | Out of the box |
-
-### When to Use Each
-
-**Choose LangChain if:**
-- You want maximum flexibility and control
-- You have a strong engineering team
-- You're building a simple POC
-- You don't need persistent memory
-
-**Choose CMPSBL if:**
-- You want production-ready infrastructure
-- You need persistent, learning systems
-- Security and compliance matter
-- You want self-improving systems
-
----
-
-## CMPSBL vs. Mem0
-
-### Overview
-
-Mem0 focuses specifically on memory for AI applications. CMPSBL includes memory plus 20 other integrated modules.
-
-### Comparison
-
-| Aspect | Mem0 | CMPSBL® BRAIN + 20 |
-|--------|------|-------------------|
-| **Memory Storage** | ✓ Yes | ✓ Multi-tier |
-| **Memory Compression** | Basic | Advanced (temporal, semantic) |
-| **Memory Scoring** | Limited | Recency, frequency, confidence |
-| **AI Routing** | ✗ No | ✓ Multi-provider |
-| **Learning** | ✗ No | ✓ DREAM cycles |
-| **Security** | Basic | Enterprise-grade |
-| **Self-Evolution** | ✗ No | ✓ MODERNIZER |
-| **Observability** | Limited | ✓ Full VISION |
-| **Accessibility** | ✗ No | ✓ INCLUSIVE |
-| **Identity** | ✗ No | ✓ Passwordless WebAuthn |
-
-### When to Use Each
-
-**Choose Mem0 if:**
-- You only need memory capabilities
-- You're adding to an existing stack
-- Cost is primary concern
-
-**Choose CMPSBL if:**
-- You need an integrated cognitive layer
-- Security, learning, routing matter
-- You want a complete solution
-
----
-
-## CMPSBL vs. Vector Databases
-
-### Overview
-
-Vector databases (Pinecone, Weaviate, Qdrant) store embeddings for semantic search. CMPSBL uses vector storage as part of a larger cognitive system.
-
-### Comparison
-
-| Aspect | Vector DBs | CMPSBL® |
-|--------|-----------|---------|
-| **Vector Storage** | Primary purpose | One component |
-| **Memory Lifecycle** | You manage | Automated |
-| **Compression** | Manual | Automatic |
-| **Learning** | None | Built-in |
-| **Context Building** | Manual | Automatic |
-| **AI Routing** | None | Intelligent |
-| **Security** | Basic | Enterprise |
-
-### How They Work Together
-
-CMPSBL uses vector storage internally but adds:
-- Memory lifecycle management
-- Automatic compression and scoring
-- Cross-memory relationships
-- Learning from access patterns
-
----
-
-## CMPSBL vs. OpenAI / Anthropic Direct
-
-### Overview
-
-Using AI providers directly gives you model access. CMPSBL sits between your app and providers, adding cognitive capabilities.
-
-### Comparison
-
-| Aspect | Direct API | Through CMPSBL® |
-|--------|-----------|-----------------|
-| **Memory** | None | Persistent, learning |
-| **Provider Lock-in** | Yes | No (multi-provider) |
-| **Failover** | Manual | Automatic |
-| **Cost Optimization** | Manual | Intelligent routing |
-| **Learning** | None | Autonomous |
-| **Security** | Basic | Enterprise-grade |
-| **Observability** | Limited | Complete |
-
-### Why Add CMPSBL
-
-| Benefit | Description |
-|---------|-------------|
-| **Provider Agnostic** | Switch providers without code changes |
-| **Automatic Fallback** | If one provider fails, route to another |
-| **Cost Optimization** | Route to cheapest provider for the task |
-| **Memory Layer** | AI that actually remembers |
-| **Learning** | AI that improves over time |
-
----
-
-## Feature Matrix
-
-| Feature | In-House | LangChain | Mem0 | CMPSBL® |
-|---------|----------|-----------|------|---------|
-| Memory | Build | Basic | ✓ | ✓✓ |
-| Multi-tier Memory | Build | ✗ | ✗ | ✓ |
-| Memory Compression | Build | ✗ | ✗ | ✓ |
-| Multi-Provider | Build | Manual | ✗ | ✓ |
-| Intelligent Routing | Build | ✗ | ✗ | ✓ |
-| Automatic Fallback | Build | ✗ | ✗ | ✓ |
-| Learning | ✗ | ✗ | ✗ | ✓ |
-| Self-Evolution | ✗ | ✗ | ✗ | ✓ |
-| Enterprise Security | Build | ✗ | ✗ | ✓ |
-| Observability | Build | ✗ | ✗ | ✓ |
-| Accessibility | Build | ✗ | ✗ | ✓ |
-| Production Ready | 6-18mo | Weeks | Days | Hours |
-
----
-
-## Total Cost of Ownership
-
-### 3-Year Comparison (Enterprise Scale)
-
-| Cost Factor | Build In-House | CMPSBL Enterprise |
-|-------------|----------------|-------------------|
-| **Year 1 Development** | $1,200,000 | $0 |
-| **Year 1 License** | $0 | Contact Sales |
-| **Year 2-3 Maintenance** | $480,000 | Included |
-| **Year 2-3 License** | $0 | Contact Sales |
-| **Opportunity Cost** | High | Low |
-| **Time to Production** | 12-18 months | 1-4 weeks |
-
-### Subscription Pricing
-
-For individual developers and teams:
-
-| Tier | Price | Best For |
-|------|-------|----------|
-| **Free** | $0 | Exploration, prototyping |
-| **Creator** | $49/mo | Shipping self-improving apps |
-| **Architect** | $149/mo | Cross-project intelligence |
-
----
-
-## Making the Decision
-
-### Choose CMPSBL When:
-
-1. **Speed matters** — You need production AI fast
-2. **Memory is critical** — AI must remember across sessions
-3. **Learning is valued** — Systems should improve over time
-4. **Security is required** — Enterprise compliance needs
-5. **Flexibility is important** — No vendor lock-in
-
-### Start Your Evaluation
-
-| Tier | Best For |
-|------|----------|
-| **Free ($0)** | Exploration, prototyping, learning |
-| **Creator ($49/mo)** | Individual devs, small teams shipping apps |
-| **Architect ($149/mo)** | Teams needing cross-project intelligence |
-| **Enterprise (Custom)** | Production, regulated industries |
-
-[Get Started →](./06-GETTING-STARTED.md)
-
----
-
-## Contact
-
-- **Email:** Dev@CMPSBL.com
-- **Phone:** (760) FLUID-AI
-
----
-
-*CMPSBL® — The Complete Cognitive Infrastructure*
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Market Comparison — CMPSBL®</title>
+<style>
+@page { size: letter; margin: 0.8in; }
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #1a1a1a; max-width: 7in; margin: auto; }
+h1 { font-size: 20pt; border-bottom: 2px solid #1a1a1a; padding-bottom: 4pt; }
+h2 { font-size: 14pt; margin-top: 18pt; }
+h3 { font-size: 12pt; }
+table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+th, td { border: 1px solid #ccc; padding: 5pt 8pt; text-align: left; }
+th { background: #f5f5f5; font-weight: bold; }
+.card { border: 1px solid #e0e0e0; border-radius: 4pt; padding: 10pt 14pt; margin: 10pt 0; break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<h1>Market Comparison</h1>
+<p><strong>How CMPSBL® Compares to Alternatives</strong></p>
+
+<h2>CMPSBL vs. Building In-House</h2>
+<table>
+<tr><th>Factor</th><th>Build In-House</th><th>CMPSBL®</th></tr>
+<tr><td><strong>Time to Market</strong></td><td>6–18 months</td><td>Days to weeks</td></tr>
+<tr><td><strong>Engineering Cost</strong></td><td>$500K–$2M+</td><td>Free tier or $9–$99/mo</td></tr>
+<tr><td><strong>Maintenance</strong></td><td>Ongoing team needed</td><td>Included</td></tr>
+<tr><td><strong>Expertise Required</strong></td><td>Deep ML/AI knowledge</td><td>Basic integration</td></tr>
+<tr><td><strong>Scaling</strong></td><td>Complex, expensive</td><td>Built-in</td></tr>
+</table>
+
+<h2>CMPSBL vs. LangChain</h2>
+<table>
+<tr><th>Aspect</th><th>LangChain</th><th>CMPSBL®</th></tr>
+<tr><td><strong>Type</strong></td><td>Library (you build)</td><td>Infrastructure (complete)</td></tr>
+<tr><td><strong>Memory</strong></td><td>Basic chain memory</td><td>Multi-tier, compressed, scored</td></tr>
+<tr><td><strong>Learning</strong></td><td>None built-in</td><td>Autonomous dream cycles</td></tr>
+<tr><td><strong>Security</strong></td><td>You implement</td><td>Enterprise-grade, built-in</td></tr>
+<tr><td><strong>Self-Evolution</strong></td><td>None</td><td>Core feature</td></tr>
+<tr><td><strong>Production Ready</strong></td><td>Requires work</td><td>Out of the box</td></tr>
+</table>
+
+<h2>CMPSBL vs. Mem0</h2>
+<table>
+<tr><th>Aspect</th><th>Mem0</th><th>CMPSBL® BRAIN + 20</th></tr>
+<tr><td>Memory Storage</td><td>✓ Yes</td><td>✓ Multi-tier</td></tr>
+<tr><td>Memory Compression</td><td>Basic</td><td>Advanced (temporal, semantic)</td></tr>
+<tr><td>AI Routing</td><td>✗ No</td><td>✓ Multi-provider</td></tr>
+<tr><td>Learning</td><td>✗ No</td><td>✓ DREAM cycles</td></tr>
+<tr><td>Security</td><td>Basic</td><td>Enterprise-grade</td></tr>
+<tr><td>Self-Evolution</td><td>✗ No</td><td>✓ MODERNIZER</td></tr>
+<tr><td>Identity</td><td>✗ No</td><td>✓ Passwordless WebAuthn</td></tr>
+</table>
+
+<h2>Feature Matrix</h2>
+<table>
+<tr><th>Feature</th><th>In-House</th><th>LangChain</th><th>Mem0</th><th>CMPSBL®</th></tr>
+<tr><td>Memory</td><td>Build</td><td>Basic</td><td>✓</td><td>✓✓</td></tr>
+<tr><td>Multi-tier Memory</td><td>Build</td><td>✗</td><td>✗</td><td>✓</td></tr>
+<tr><td>Multi-Provider</td><td>Build</td><td>Manual</td><td>✗</td><td>✓</td></tr>
+<tr><td>Learning</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td></tr>
+<tr><td>Self-Evolution</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td></tr>
+<tr><td>Enterprise Security</td><td>Build</td><td>✗</td><td>✗</td><td>✓</td></tr>
+<tr><td>Production Ready</td><td>6–18mo</td><td>Weeks</td><td>Days</td><td>Hours</td></tr>
+</table>
+
+<h2>Contact</h2>
+<ul>
+<li><strong>Email:</strong> Dev@CMPSBL.com</li>
+<li><strong>Phone:</strong> (760) FLUID-AI</li>
+</ul>
+
+<p><em>CMPSBL® — The Complete Cognitive Infrastructure</em></p>
+
+</body>
+</html>

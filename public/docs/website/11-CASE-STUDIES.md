@@ -1,238 +1,97 @@
-# Case Studies
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Case Studies — CMPSBL®</title>
+<style>
+@page { size: letter; margin: 0.8in; }
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #1a1a1a; max-width: 7in; margin: auto; }
+h1 { font-size: 20pt; border-bottom: 2px solid #1a1a1a; padding-bottom: 4pt; }
+h2 { font-size: 14pt; margin-top: 18pt; }
+h3 { font-size: 12pt; }
+table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+th, td { border: 1px solid #ccc; padding: 5pt 8pt; text-align: left; }
+th { background: #f5f5f5; font-weight: bold; }
+.card { border: 1px solid #e0e0e0; border-radius: 4pt; padding: 10pt 14pt; margin: 10pt 0; break-inside: avoid; }
+blockquote { border-left: 3pt solid #ccc; margin-left: 0; padding-left: 12pt; color: #555; font-style: italic; }
+</style>
+</head>
+<body>
 
-**Real-World CMPSBL® Implementations**
+<h1>Case Studies</h1>
+<p><strong>Real-World CMPSBL® Implementations</strong></p>
 
----
+<div class="card">
+<h2>Case Study 1: Enterprise Customer Support</h2>
+<h3>The Challenge</h3>
+<p>A mid-sized SaaS company with 50,000 customers: repetitive support, no learning, agent overload.</p>
+<h3>Results</h3>
+<table>
+<tr><th>Metric</th><th>Before</th><th>After</th><th>Improvement</th></tr>
+<tr><td>First Response Time</td><td>4 hours</td><td>12 minutes</td><td><strong>95% faster</strong></td></tr>
+<tr><td>Resolution Rate</td><td>65%</td><td>89%</td><td><strong>+24 points</strong></td></tr>
+<tr><td>Customer Satisfaction</td><td>3.2/5</td><td>4.6/5</td><td><strong>+44%</strong></td></tr>
+<tr><td>Support Cost per Ticket</td><td>$12.50</td><td>$3.80</td><td><strong>70% reduction</strong></td></tr>
+</table>
+<blockquote>"CMPSBL transformed our support from a cost center to a competitive advantage." — VP of Customer Success</blockquote>
+</div>
 
-## Overview
+<div class="card">
+<h2>Case Study 2: Research Knowledge Platform</h2>
+<h3>The Challenge</h3>
+<p>A research institution needed to accumulate knowledge, connect insights, and accelerate discovery.</p>
+<h3>Results</h3>
+<table>
+<tr><th>Metric</th><th>Before</th><th>After</th><th>Improvement</th></tr>
+<tr><td>Literature Review Time</td><td>3 weeks</td><td>3 days</td><td><strong>85% faster</strong></td></tr>
+<tr><td>Duplicate Research</td><td>23%</td><td>4%</td><td><strong>83% reduction</strong></td></tr>
+<tr><td>Time to First Insight</td><td>6 months</td><td>6 weeks</td><td><strong>75% faster</strong></td></tr>
+</table>
+<blockquote>"It's like having a research assistant that has read everything we've ever published and remembers all of it." — Research Director</blockquote>
+</div>
 
-These case studies illustrate how organizations are using CMPSBL® to build AI applications that remember, learn, and improve over time.
+<div class="card">
+<h2>Case Study 3: Personalized Learning Platform</h2>
+<h3>The Challenge</h3>
+<p>An EdTech startup wanted truly personalized education with adaptive learning and progress memory.</p>
+<h3>Results</h3>
+<table>
+<tr><th>Metric</th><th>Before</th><th>After</th><th>Improvement</th></tr>
+<tr><td>Completion Rate</td><td>34%</td><td>78%</td><td><strong>+129%</strong></td></tr>
+<tr><td>Test Scores</td><td>72% avg</td><td>86% avg</td><td><strong>+19%</strong></td></tr>
+<tr><td>Time to Mastery</td><td>12 weeks</td><td>7 weeks</td><td><strong>42% faster</strong></td></tr>
+</table>
+<blockquote>"Every student now has a tutor that knows exactly how they learn best." — Chief Learning Officer</blockquote>
+</div>
 
----
+<div class="card">
+<h2>Case Study 4: AI-Powered Content Platform</h2>
+<h3>The Challenge</h3>
+<p>A content marketing agency needed consistent brand voice, performance learning, and 10x scale.</p>
+<h3>Results</h3>
+<table>
+<tr><th>Metric</th><th>Before</th><th>After</th><th>Improvement</th></tr>
+<tr><td>Content Volume</td><td>20/month</td><td>200/month</td><td><strong>10x increase</strong></td></tr>
+<tr><td>Brand Consistency</td><td>65%</td><td>94%</td><td><strong>+45%</strong></td></tr>
+<tr><td>Engagement Rate</td><td>2.3%</td><td>5.7%</td><td><strong>+148%</strong></td></tr>
+<tr><td>Production Cost</td><td>$500/piece</td><td>$75/piece</td><td><strong>85% reduction</strong></td></tr>
+</table>
+<blockquote>"The system learns what our audience responds to and gets better every month." — Creative Director</blockquote>
+</div>
 
-## Case Study 1: Enterprise Customer Support
+<h2>Common Patterns</h2>
+<table>
+<tr><th>Pattern</th><th>Description</th></tr>
+<tr><td><strong>Memory-First Design</strong></td><td>Start by identifying what needs to be remembered</td></tr>
+<tr><td><strong>Learning Loops</strong></td><td>Feed outcomes back to the system</td></tr>
+<tr><td><strong>Human Oversight</strong></td><td>Keep humans in the loop for high-stakes decisions</td></tr>
+<tr><td><strong>Incremental Rollout</strong></td><td>Start with one use case, expand over time</td></tr>
+<tr><td><strong>Metrics from Day One</strong></td><td>Track performance to demonstrate value</td></tr>
+</table>
 
-### The Challenge
+<p><a href="./06-GETTING-STARTED.md">Get Started →</a></p>
 
-A mid-sized SaaS company with 50,000 customers struggled with:
-- **Repetitive Support:** Customers repeating themselves across tickets
-- **No Learning:** Same issues resolved differently each time
-- **Agent Overload:** High-value issues buried under routine queries
+<p><em>CMPSBL® — Building the Future of Intelligent Applications</em></p>
 
-### The Solution
-
-Deployed CMPSBL® as the cognitive layer for their support AI:
-
-```
-Customer Inquiry → CMPSBL® Substrate
-                        ↓
-          ┌─────────────────────────────┐
-          │ BRAIN: Customer history      │
-          │ DECODE: Intent parsing       │
-          │ NEXUS: AI response routing   │
-          │ DREAM: Learn from outcomes   │
-          └─────────────────────────────┘
-                        ↓
-                  AI Response
-```
-
-### Implementation Details
-
-| Module | Usage |
-|--------|-------|
-| **BRAIN** | Store customer history, preferences, past tickets |
-| **DECODE** | Parse intent from natural language queries |
-| **NEXUS** | Route to appropriate AI model based on complexity |
-| **DREAM** | Learn from successful resolutions |
-| **VISION** | Track support metrics and AI performance |
-
-### Results
-
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| First Response Time | 4 hours | 12 minutes | **95% faster** |
-| Resolution Rate | 65% | 89% | **+24 points** |
-| Customer Satisfaction | 3.2/5 | 4.6/5 | **+44%** |
-| Support Cost per Ticket | $12.50 | $3.80 | **70% reduction** |
-
-> *"CMPSBL transformed our support from a cost center to a competitive advantage. The AI actually knows our customers now."*
-> — VP of Customer Success
-
----
-
-## Case Study 2: Research Knowledge Platform
-
-### The Challenge
-
-A research institution needed to:
-- **Accumulate Knowledge:** Build on previous research, not restart
-- **Connect Insights:** Link related findings across teams
-- **Accelerate Discovery:** Reduce time from question to insight
-
-### The Solution
-
-Built a research assistant on CMPSBL® that accumulates institutional knowledge:
-
-```
-Research Query → Substrate
-                    ↓
-        ┌─────────────────────────┐
-        │ BRAIN: Prior research   │
-        │ BRAIN: Related papers   │
-        │ BRAIN: Team knowledge   │
-        └─────────────────────────┘
-                    ↓
-        Synthesized Response + Sources
-```
-
-### Implementation Details
-
-| Capability | Implementation |
-|------------|----------------|
-| **Knowledge Graph** | BRAIN stores connected concepts |
-| **Source Tracking** | Every fact linked to original source |
-| **Team Isolation** | Separate memory spaces per research group |
-| **Cross-Pollination** | Opt-in sharing of anonymized patterns |
-
-### Results
-
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Literature Review Time | 3 weeks | 3 days | **85% faster** |
-| Duplicate Research | 23% | 4% | **83% reduction** |
-| Cross-Team Collaboration | Low | High | **Significant increase** |
-| Time to First Insight | 6 months | 6 weeks | **75% faster** |
-
-> *"It's like having a research assistant that has read everything we've ever published and remembers all of it."*
-> — Research Director
-
----
-
-## Case Study 3: Personalized Learning Platform
-
-### The Challenge
-
-An EdTech startup wanted to create truly personalized education:
-- **Adaptive Learning:** Adjust to individual learning styles
-- **Progress Memory:** Remember where each student is
-- **Effective Teaching:** Learn what explanations work
-
-### The Solution
-
-CMPSBL® powers the adaptive learning engine:
-
-```
-Student Interaction → Substrate
-                          ↓
-            ┌───────────────────────────┐
-            │ BRAIN: Student profile     │
-            │ BRAIN: Learning history    │
-            │ DREAM: Optimize pedagogy   │
-            │ NEXUS: Generate content    │
-            └───────────────────────────┘
-                          ↓
-              Personalized Lesson
-```
-
-### Implementation Details
-
-| Feature | Module |
-|---------|--------|
-| **Student Profiles** | BRAIN stores learning style, pace, preferences |
-| **Progress Tracking** | BRAIN maintains detailed progress records |
-| **Content Generation** | NEXUS routes to best AI for content type |
-| **Pedagogy Learning** | DREAM learns which explanations work |
-
-### Results
-
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Completion Rate | 34% | 78% | **+129%** |
-| Test Scores | 72% avg | 86% avg | **+19%** |
-| Time to Mastery | 12 weeks | 7 weeks | **42% faster** |
-| Student Satisfaction | 3.4/5 | 4.8/5 | **+41%** |
-
-> *"Every student now has a tutor that knows exactly how they learn best and never forgets their progress."*
-> — Chief Learning Officer
-
----
-
-## Case Study 4: AI-Powered Content Platform
-
-### The Challenge
-
-A content marketing agency needed to:
-- **Maintain Brand Voice:** Consistent voice across all content
-- **Learn from Performance:** Improve based on what works
-- **Scale Production:** 10x content without 10x writers
-
-### The Solution
-
-CMPSBL® as the cognitive backbone for content generation:
-
-```
-Content Brief → Substrate
-                    ↓
-        ┌─────────────────────────┐
-        │ BRAIN: Brand voice      │
-        │ BRAIN: Past performance │
-        │ DREAM: Style evolution  │
-        │ NEXUS: Multi-model gen  │
-        └─────────────────────────┘
-                    ↓
-            Optimized Content
-```
-
-### Implementation Details
-
-| Capability | Implementation |
-|------------|----------------|
-| **Brand Memory** | BRAIN stores voice guidelines, examples, preferences |
-| **Performance Learning** | DREAM correlates content features with metrics |
-| **Multi-Model Generation** | NEXUS uses different models for different content types |
-| **Quality Scoring** | VISION tracks content quality metrics |
-
-### Results
-
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Content Volume | 20/month | 200/month | **10x increase** |
-| Brand Consistency | 65% | 94% | **+45%** |
-| Engagement Rate | 2.3% | 5.7% | **+148%** |
-| Production Cost | $500/piece | $75/piece | **85% reduction** |
-
-> *"The system learns what our audience responds to and gets better every month. It's like having a content strategist that never sleeps."*
-> — Creative Director
-
----
-
-## Common Patterns
-
-### What Successful Implementations Share
-
-| Pattern | Description |
-|---------|-------------|
-| **Memory-First Design** | Start by identifying what needs to be remembered |
-| **Learning Loops** | Feed outcomes back to the system |
-| **Human Oversight** | Keep humans in the loop for high-stakes decisions |
-| **Incremental Rollout** | Start with one use case, expand over time |
-| **Metrics from Day One** | Track performance to demonstrate value |
-
----
-
-## Start Your Own Story
-
-Ready to build your case study?
-
-| Tier | Best For |
-|------|----------|
-| **Free** | Exploration, prototyping, proof of concepts |
-| **Creator ($49/mo)** | Startups, MVPs, shipping self-improving apps |
-| **Architect ($149/mo)** | Teams needing cross-project intelligence |
-| **Enterprise** | Production deployments, enterprise scale |
-
-[Get Started →](./06-GETTING-STARTED.md)
-
----
-
-*CMPSBL® — Building the Future of Intelligent Applications*
+</body>
+</html>

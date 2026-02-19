@@ -1,39 +1,49 @@
-# CMPSBL® Documentation
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>CMPSBL® Documentation Index</title>
+<style>
+@page { size: letter; margin: 0.8in; }
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #1a1a1a; max-width: 7in; margin: auto; }
+h1 { font-size: 20pt; border-bottom: 2px solid #1a1a1a; padding-bottom: 4pt; }
+h2 { font-size: 14pt; margin-top: 18pt; }
+h3 { font-size: 12pt; }
+table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+th, td { border: 1px solid #ccc; padding: 5pt 8pt; text-align: left; }
+th { background: #f5f5f5; font-weight: bold; }
+.card { border: 1px solid #e0e0e0; border-radius: 4pt; padding: 10pt 14pt; margin: 10pt 0; break-inside: avoid; }
+pre { background: #f8f8f8; padding: 8pt; font-size: 9pt; border-radius: 3pt; overflow-x: auto; }
+code { font-family: 'Courier New', monospace; font-size: 9pt; }
+blockquote { border-left: 3pt solid #ccc; margin-left: 0; padding-left: 12pt; color: #555; }
+</style>
+</head>
+<body>
 
-**v10.1.0 — ARCHITECT Epoch | Cognitive Orchestration Substrate for AI Systems**
+<h1>CMPSBL® Documentation</h1>
+<p><strong>v10.5.4 — ARCHITECT Epoch | Cognitive Orchestration Substrate for AI Systems</strong></p>
 
----
+<h2>Welcome</h2>
+<p>This documentation provides everything you need to understand, evaluate, and build with CMPSBL® (Composable) — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.</p>
+<p><strong>What's Inside:</strong> 21 integrated modules, 200 synergy pipelines, 200 templates, 400+ depot capabilities, 100 engines, and the SEBA (Self-Evolving Bounded Agent) architecture.</p>
 
-## Welcome
+<h2>Philosophy</h2>
+<blockquote><strong>"Everything is free to explore. Engines are canon."</strong></blockquote>
 
-This documentation provides everything you need to understand, evaluate, and build with CMPSBL® (Composable) — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.
+<p>CMPSBL offers a <strong>tiered approach</strong> to AI orchestration:</p>
 
-**What's Inside:** 21 integrated modules, 200 synergy pipelines, 200 templates, 400+ depot capabilities, 100 engines, and the SEBA (Self-Evolving Bounded Agent) architecture.
+<table>
+<tr><th>Layer</th><th>Cost</th><th>Persistence</th><th>Purpose</th></tr>
+<tr><td><strong>Composable Artifacts</strong></td><td>FREE</td><td>None</td><td>Capabilities, templates, synergies — unified storefront</td></tr>
+<tr><td><strong>Composable Cognitives</strong></td><td>$39 each</td><td>Downloadable</td><td>Superpowered AI agents delivered as artifacts</td></tr>
+<tr><td><strong>Persistent Memory</strong></td><td>FREE</td><td>Bounded</td><td>Drop-in memory for any agent</td></tr>
+<tr><td><strong>Template Generator</strong></td><td>$29 one-time</td><td>Licensed</td><td>Generate custom templates on demand</td></tr>
+<tr><td><strong>Subscription Tiers</strong></td><td>Free / $9 / $19 / $99</td><td>Governed</td><td>Tiered access to engines, jewels, and advanced features</td></tr>
+</table>
 
----
-
-## Philosophy
-
-> **"Everything is free to explore. Engines are canon."**
-
-CMPSBL offers a **tiered approach** to AI orchestration:
-
-| Layer | Cost | Persistence | Purpose |
-|-------|------|-------------|---------|
-| **Composable Artifacts** | FREE | None | Capabilities, templates, synergies — unified storefront |
-| **Composable Cognitives** | $39 each | Downloadable | Superpowered AI agents delivered as artifacts |
-| **Persistent Memory** | FREE | Bounded | Drop-in memory for any agent |
-| **Template Generator** | $29 one-time | Licensed | Generate custom templates on demand |
-| **Subscription Tiers** | Free / $49 / $149 | Governed | Tiered access to engines, jewels, and advanced features |
-
----
-
-## Quick Start: Persistent Memory
-
-Add persistent memory to your existing agent in under an hour:
-
-```typescript
-import { withPersistentMemory } from '@cmpsbl/memory';
+<h2>Quick Start: Persistent Memory</h2>
+<p>Add persistent memory to your existing agent in under an hour:</p>
+<pre><code>import { withPersistentMemory } from '@cmpsbl/memory';
 
 const agent = withPersistentMemory({
   agentId: 'my-agent',
@@ -41,94 +51,87 @@ const agent = withPersistentMemory({
 });
 
 // Your agent now remembers
-const context = await agent.getContext(userMessage);
-```
+const context = await agent.getContext(userMessage);</code></pre>
+<p><a href="/docs/persistent-memory">Full Quickstart Guide →</a></p>
 
-[Full Quickstart Guide →](/docs/persistent-memory)
+<h2>Quick Navigation</h2>
 
----
+<h3>Getting Started</h3>
+<table>
+<tr><th>Document</th><th>Description</th></tr>
+<tr><td><a href="/docs/persistent-memory">Persistent Memory Quickstart</a></td><td>Add memory to any agent in &lt; 1 hour</td></tr>
+<tr><td><a href="./02-WHAT-IS-CMPSBL.md">What is CMPSBL?</a></td><td>Plain-English introduction</td></tr>
+<tr><td><a href="./06-GETTING-STARTED.md">Getting Started</a></td><td>Full SDK quick start guide</td></tr>
+</table>
 
-## Quick Navigation
+<h3>Explore &amp; Build</h3>
+<table>
+<tr><th>Document</th><th>Description</th></tr>
+<tr><td><a href="/store">Composable Artifacts</a></td><td>Capabilities, templates, and synergies (FREE)</td></tr>
+<tr><td><a href="/composable-cognitives">Composable Cognitives</a></td><td>Superpowered AI agents ($39)</td></tr>
+<tr><td><a href="/synergies">Synergy Pipelines</a></td><td>Exploratory orchestrations (FREE)</td></tr>
+</table>
 
-### Getting Started
-| Document | Description |
-|----------|-------------|
-| [Persistent Memory Quickstart](/docs/persistent-memory) | Add memory to any agent in < 1 hour |
-| [What is CMPSBL?](./02-WHAT-IS-CMPSBL.md) | Plain-English introduction |
-| [Getting Started](./06-GETTING-STARTED.md) | Full SDK quick start guide |
+<h3>For Developers</h3>
+<table>
+<tr><th>Document</th><th>Description</th></tr>
+<tr><td><a href="./05-ARCHITECTURE.md">Architecture Overview</a></td><td>Technical deep dive</td></tr>
+<tr><td><a href="./03-KEY-CAPABILITIES.md">Key Capabilities</a></td><td>Feature reference</td></tr>
+<tr><td><a href="./09-SYNERGY-CAPABILITIES.md">Synergy Capabilities</a></td><td>200-pipeline matrix</td></tr>
+<tr><td><a href="./10-MARKETPLACE-FEATURES.md">Platform Features</a></td><td>CodeLab, Templates, Depot</td></tr>
+</table>
 
-### Explore & Build
-| Document | Description |
-|----------|-------------|
-| [Composable Artifacts](/store) | Capabilities, templates, and synergies (FREE) |
-| [Composable Cognitives](/composable-cognitives) | Superpowered AI agents ($39) |
-| [Synergy Pipelines](/synergies) | Exploratory orchestrations (FREE) |
+<h3>For Business Leaders</h3>
+<table>
+<tr><th>Document</th><th>Description</th></tr>
+<tr><td><a href="./01-EXECUTIVE-SUMMARY.md">Executive Summary</a></td><td>Strategic overview</td></tr>
+<tr><td><a href="./04-USE-CASES.md">Use Cases</a></td><td>Industry applications</td></tr>
+<tr><td><a href="./11-CASE-STUDIES.md">Case Studies</a></td><td>Real-world examples</td></tr>
+<tr><td><a href="./12-COMPARISONS.md">Market Comparison</a></td><td>Competitive analysis</td></tr>
+</table>
 
-### For Developers
-| Document | Description |
-|----------|-------------|
-| [Architecture Overview](./05-ARCHITECTURE.md) | Technical deep dive |
-| [Key Capabilities](./03-KEY-CAPABILITIES.md) | Feature reference |
-| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 200-pipeline matrix |
-| [Platform Features](./10-MARKETPLACE-FEATURES.md) | CodeLab, Templates, Depot |
+<h3>For Decision Makers</h3>
+<table>
+<tr><th>Document</th><th>Description</th></tr>
+<tr><td><a href="./07-LICENSING.md">Pricing &amp; Licensing</a></td><td>Adoptable pricing model</td></tr>
+<tr><td><a href="./09-SECURITY-COMPLIANCE.md">Security &amp; Compliance</a></td><td>Enterprise requirements</td></tr>
+<tr><td><a href="./10-ROADMAP.md">Roadmap</a></td><td>2028 development plan</td></tr>
+<tr><td><a href="./13-INVESTOR-OVERVIEW.md">Investor Overview</a></td><td>Investment thesis</td></tr>
+</table>
 
-### For Business Leaders
-| Document | Description |
-|----------|-------------|
-| [Executive Summary](./01-EXECUTIVE-SUMMARY.md) | Strategic overview |
-| [Use Cases](./04-USE-CASES.md) | Industry applications |
-| [Case Studies](./11-CASE-STUDIES.md) | Real-world examples |
-| [Market Comparison](./12-COMPARISONS.md) | Competitive analysis |
+<h2>The Pitch</h2>
+<blockquote><strong>"We built the operating system for AI applications — memory, learning, security, and multi-provider routing that literally improves itself over time."</strong></blockquote>
 
-### For Decision Makers
-| Document | Description |
-|----------|-------------|
-| [Pricing & Licensing](./07-LICENSING.md) | Hybrid licensing model |
-| [Security & Compliance](./09-SECURITY-COMPLIANCE.md) | Enterprise requirements |
-| [Roadmap](./10-ROADMAP.md) | 2028 development plan |
-| [Investor Overview](./13-INVESTOR-OVERVIEW.md) | Investment thesis |
+<h2>Definitions</h2>
+<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td><strong>Composable Artifact</strong></td><td>Any capability, template, or synergy pipeline available in the unified store</td></tr>
+<tr><td><strong>Composable Cognitive</strong></td><td>A superpowered AI agent delivered as a downloadable artifact</td></tr>
+<tr><td><strong>Engine</strong></td><td>Saved, governed, authoritative orchestration</td></tr>
+<tr><td><strong>Template Generator</strong></td><td>Licensed tool for on-demand template creation ($29)</td></tr>
+</table>
 
----
+<h2>Pricing Model</h2>
+<p>CMPSBL® uses a <strong>unified adoptable pricing model</strong>:</p>
+<ul>
+<li><strong>Free ($0):</strong> First-class builder access to the Artifact Store and persistent memory</li>
+<li><strong>Creator ($9/mo):</strong> Expanded store, executable capabilities, synergy pipelines</li>
+<li><strong>Architect ($19/mo):</strong> Premium store, cross-module orchestration, larger memory</li>
+<li><strong>Enterprise ($99/mo):</strong> Organization workspaces, governance, SLA controls</li>
+<li><strong>Template Generator ($29):</strong> Standalone one-time purchase for template generation</li>
+<li><strong>Composable Cognitives ($39 each):</strong> Individual AI agent purchases, no account required</li>
+</ul>
+<p>See <a href="./07-LICENSING.md">Pricing &amp; Licensing</a> for details.</p>
 
-## The Pitch
+<h2>Contact</h2>
+<table>
+<tr><th>Channel</th><th>Details</th></tr>
+<tr><td><strong>Email</strong></td><td>Dev@CMPSBL.com</td></tr>
+<tr><td><strong>Phone</strong></td><td>(760) FLUID-AI</td></tr>
+<tr><td><strong>Web</strong></td><td>https://cmpsbl.com</td></tr>
+</table>
 
-> **"We built the operating system for AI applications — memory, learning, security, and multi-provider routing that literally improves itself over time."**
+<p><em>CMPSBL® v10.5.4 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era</em></p>
 
----
-
-## Definitions
-
-| Term | Definition |
-|------|------------|
-| **Composable Artifact** | Any capability, template, or synergy pipeline available in the unified store |
-| **Composable Cognitive** | A superpowered AI agent delivered as a downloadable artifact |
-| **Engine** | Saved, governed, authoritative orchestration |
-| **Template Generator** | Licensed tool for on-demand template creation ($29) |
-
----
-
-## Pricing Model
-
-CMPSBL® uses a **unified tiered model**:
-
-- **Free ($0):** First-class builder access to the Artifact Store and persistent memory
-- **Creator ($49/mo):** All engines, templates, SDK/API access, and 7 Experience Jewels
-- **Architect ($149/mo):** Advanced CLM, cross-project learning, all 28 Experience Jewels
-- **Template Generator ($29):** Standalone one-time purchase for template generation
-- **Composable Cognitives ($39 each):** Individual AI agent purchases, no account required
-
-See [Pricing & Licensing](./07-LICENSING.md) for details.
-
----
-
-## Contact
-
-| Channel | Details |
-|---------|---------|
-| **Email** | Dev@CMPSBL.com |
-| **Phone** | (760) FLUID-AI |
-| **Web** | https://cmpsbl.com |
-
----
-
-*CMPSBL® v10.1.0 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era*
+</body>
+</html>
