@@ -36,6 +36,16 @@ const PersistentMemoryLanding = () => {
         title="Persistent Memory for AI Agents | CMPSBL"
         description="Add persistent memory to your agent in under an hour. No rewrites. No new framework. Your agent just stops forgetting."
         keywords={['AI memory', 'agent memory', 'persistent memory', 'LLM memory', 'AI continuity']}
+        howTo={{
+          name: 'Add Persistent Memory to Your AI Agent',
+          description: 'Three steps to give your agent persistent memory that survives across sessions.',
+          totalTime: 'PT1H',
+          steps: [
+            { name: 'Import the memory SDK', text: 'Import withPersistentMemory from the @cmpsbl/memory package.' },
+            { name: 'Wrap your existing agent', text: 'Wrap your agent with withPersistentMemory({ agentId, scope }).' },
+            { name: 'Run your app', text: 'Memory recall happens automatically. Use context in your prompts.' },
+          ],
+        }}
       />
       <PublicNav />
       

@@ -1,6 +1,7 @@
 /**
  * Intent Mesh — Public Website Documentation Page
  * /intent-mesh — SEO-optimized public doc about the mesh architecture
+ * v10.5.4 — Now includes interactive force-directed mesh visualization
  */
 
 import { Helmet } from "react-helmet-async";
@@ -9,6 +10,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { IntentMeshGraph } from "@/components/substrate/IntentMeshGraph";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -171,6 +173,19 @@ export default function IntentMeshPublic() {
               </div>
             </motion.div>
           </div>
+        </section>
+
+        {/* Interactive Mesh Visualization */}
+        <section className="max-w-6xl mx-auto px-6 py-8">
+          <motion.div {...fadeUp}>
+            <h2 className="text-2xl font-bold mb-2">Live Mesh Topology</h2>
+            <p className="text-sm text-muted-foreground mb-6">
+              Hover modules to see resolver connections. Node size reflects resolver count.
+            </p>
+            <div className="rounded-xl border border-border bg-card/50 overflow-hidden" style={{ height: 480 }}>
+              <IntentMeshGraph className="h-full" />
+            </div>
+          </motion.div>
         </section>
 
         {/* Architecture */}
