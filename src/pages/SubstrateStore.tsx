@@ -24,7 +24,7 @@ import {
   ChevronRight, ChevronLeft, Cpu, Clock, Terminal,
   Sparkles, Workflow, Network, Accessibility, Filter,
   Unlock, Play, Moon, MessageSquare, X, Lock, Crown,
-  ArrowUpDown, SortAsc,
+  ArrowUpDown, SortAsc, Download, Bot,
 } from 'lucide-react';
 import { 
   isCrownJewelItem, 
@@ -44,15 +44,18 @@ import {
 } from '@/lib/capabilities/depot';
 import { ALL_TEMPLATES, type Template, getTemplateTier, type RequiredTier } from '@/data/templates';
 import { SYNERGY_DEFINITIONS } from '@/lib/capabilities/synergies/registry';
+import { COGNITIVES_CATALOG, type CognitiveItem } from '@/lib/cognitives/catalog';
+import { supabase } from '@/integrations/supabase/client';
 
 // ─── Product Type ───
-type ProductType = 'all' | 'capabilities' | 'templates' | 'pipelines';
+type ProductType = 'all' | 'capabilities' | 'templates' | 'pipelines' | 'cognitives';
 type SortMode = 'featured' | 'name-asc' | 'name-desc' | 'tier-asc' | 'tier-desc';
 type TierFilter = 'all' | RequiredTier;
 type UnifiedItem = 
   | { type: 'capability'; data: CapabilityArtifact }
   | { type: 'template'; data: Template }
-  | { type: 'pipeline'; data: typeof SYNERGY_DEFINITIONS[0] };
+  | { type: 'pipeline'; data: typeof SYNERGY_DEFINITIONS[0] }
+  | { type: 'cognitive'; data: CognitiveItem & { id: string; name: string; description: string } };
 
 /** Extract difficulty, category, and tags from any unified item */
 function getItemMeta(item: UnifiedItem): { difficulty?: string; category?: string; tags?: string[] } {
@@ -66,12 +69,16 @@ function getItemMeta(item: UnifiedItem): { difficulty?: string; category?: strin
     const p = item.data as typeof SYNERGY_DEFINITIONS[0];
     return { category: p.category, tags: p.modules.map(m => m.name) };
   }
+  if (item.type === 'cognitive') {
+    return { category: 'intelligence', tags: (item.data as any).capabilities?.slice(0, 3) };
+  }
   return {};
 }
 
 /** Get the resolved tier for any unified item */
 function getUnifiedItemTier(item: UnifiedItem): RequiredTier {
   if (item.type === 'template') return getTemplateTier(item.data as Template);
+  if (item.type === 'cognitive') return 'free'; // Cognitives are standalone purchasable products
   // For capabilities and pipelines, derive from the tier badge system
   const meta = getItemMeta(item);
   const badge = getItemTierBadge(item.data.id, item.data.name, meta.difficulty, meta.category);
@@ -183,19 +190,43 @@ function ScrollCarousel({ children, className }: { children: React.ReactNode; cl
 
 // ─── Unified Item Card ───
 function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void }) {
-  const typeLabel = item.type === 'capability' ? 'Capability' : item.type === 'template' ? 'Template' : 'Pipeline';
+  const [buyLoading, setBuyLoading] = useState(false);
+  const isCognitive = item.type === 'cognitive';
+  const cogData = isCognitive ? (item.data as CognitiveItem & { id: string; name: string; description: string }) : null;
+  const typeLabel = item.type === 'capability' ? 'Capability' : item.type === 'template' ? 'Template' : isCognitive ? 'Agent' : 'Pipeline';
   const typeColor = item.type === 'capability' 
     ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' 
     : item.type === 'template' 
     ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30' 
+    : isCognitive
+    ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
     : 'bg-violet-500/10 text-violet-400 border-violet-500/30';
   
   const name = item.data.name;
   const desc = item.data.description;
   const itemId = item.data.id;
   const meta = getItemMeta(item);
-  const tierBadge = getItemTierBadge(itemId, name, meta.difficulty, meta.category);
-  const isBlackBoxed = tierBadge === 'CREATOR' || tierBadge === 'ARCHITECT' || tierBadge === 'BLACK-BOX';
+  const tierBadge = isCognitive ? null : getItemTierBadge(itemId, name, meta.difficulty, meta.category);
+  const isBlackBoxed = !isCognitive && (tierBadge === 'CREATOR' || tierBadge === 'ARCHITECT' || tierBadge === 'BLACK-BOX');
+
+  const handleBuy = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!cogData) return;
+    setBuyLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("cognitives-checkout", {
+        body: { sku: cogData.sku, chosenName: cogData.displayName },
+      });
+      if (error) throw error;
+      if (data?.free && data?.redirect) { window.location.href = data.redirect; return; }
+      if (data?.url) { window.location.href = data.url; }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      toast.error("Checkout failed. Please try again.");
+    } finally {
+      setBuyLoading(false);
+    }
+  };
 
   return (
     <motion.div
@@ -203,6 +234,7 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
       className={cn(
         "snap-start shrink-0 w-[280px] min-h-[180px]",
         "rounded-xl border bg-gradient-to-br",
+        isCognitive ? 'border-amber-500/20 from-amber-500/[0.04] to-transparent' :
         isBlackBoxed ? 'border-blue-500/20 from-blue-500/[0.04] to-transparent' :
         item.type === 'capability' ? 'border-emerald-500/20 from-emerald-500/[0.04] to-transparent' :
         item.type === 'template' ? 'border-cyan-500/20 from-cyan-500/[0.04] to-transparent' :
@@ -216,28 +248,40 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
       {/* Top accent bar */}
       <div className={cn(
         "h-1 w-full",
+        isCognitive ? 'bg-gradient-to-r from-amber-500 to-orange-500' :
         isBlackBoxed ? 'bg-gradient-to-r from-blue-500 to-purple-500' :
         item.type === 'capability' ? 'bg-emerald-500' : item.type === 'template' ? 'bg-cyan-500' : 'bg-violet-500'
       )} />
       
       <div className="p-4 flex-1 flex flex-col">
-        {/* Type + tier badge */}
+        {/* Type + tier/price badge */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1.5">
             <Badge variant="outline" className={cn("text-[10px]", typeColor)}>
               {typeLabel}
             </Badge>
+            {isCognitive && (
+              <Badge variant="outline" className="text-[9px] bg-orange-500/10 text-orange-400 border-orange-500/20">
+                BLACK-BOX
+              </Badge>
+            )}
             {isBlackBoxed && (
               <Badge variant="outline" className="text-[9px] bg-orange-500/10 text-orange-400 border-orange-500/20">
                 BLACK-BOX
               </Badge>
             )}
           </div>
-          <TierBadge badge={tierBadge} />
+          {isCognitive && cogData ? (
+            <span className={cn("text-[11px] font-black", cogData.isFree ? "text-emerald-400" : "text-amber-400")}>
+              {cogData.isFree ? 'FREE' : `$${(cogData.priceCents / 100).toFixed(0)}`}
+            </span>
+          ) : tierBadge ? (
+            <TierBadge badge={tierBadge} />
+          ) : null}
         </div>
         
         {/* Name */}
-        <h3 className="font-bold text-sm leading-tight mb-1.5 line-clamp-2 group-hover:text-primary">
+        <h3 className="font-bold text-sm leading-tight mb-1.5 line-clamp-2">
           {name}
         </h3>
         
@@ -246,28 +290,46 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
           {desc}
         </p>
         
-        {/* Footer meta */}
-        <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-          {item.type === 'capability' && (
-            <span className="flex items-center gap-1">
-              <Cpu className="w-3 h-3" />
-              {(item.data as CapabilityArtifact).executorType}
-            </span>
-          )}
-          {item.type === 'template' && (
-            <span className="flex items-center gap-1">
-              <Code className="w-3 h-3" />
-              {(item.data as Template).difficulty}
-            </span>
-          )}
-          {item.type === 'pipeline' && (
-            <span className="flex items-center gap-1">
-              <Workflow className="w-3 h-3" />
-              {(item.data as typeof SYNERGY_DEFINITIONS[0]).modules.length} modules
-            </span>
-          )}
-          <ChevronRight className="w-3 h-3" />
-        </div>
+        {/* Footer */}
+        {isCognitive && cogData ? (
+          <Button
+            onClick={handleBuy}
+            disabled={buyLoading}
+            size="sm"
+            className="w-full gap-1.5 text-xs h-8"
+            variant={cogData.isFree ? "outline" : "default"}
+          >
+            {buyLoading ? (
+              <span className="animate-pulse">Processing...</span>
+            ) : cogData.isFree ? (
+              <><Download className="w-3 h-3" /> Free Download</>
+            ) : (
+              <><Zap className="w-3 h-3" /> Buy — ${(cogData.priceCents / 100).toFixed(0)}</>
+            )}
+          </Button>
+        ) : (
+          <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+            {item.type === 'capability' && (
+              <span className="flex items-center gap-1">
+                <Cpu className="w-3 h-3" />
+                {(item.data as CapabilityArtifact).executorType}
+              </span>
+            )}
+            {item.type === 'template' && (
+              <span className="flex items-center gap-1">
+                <Code className="w-3 h-3" />
+                {(item.data as Template).difficulty}
+              </span>
+            )}
+            {item.type === 'pipeline' && (
+              <span className="flex items-center gap-1">
+                <Workflow className="w-3 h-3" />
+                {(item.data as typeof SYNERGY_DEFINITIONS[0]).modules.length} modules
+              </span>
+            )}
+            <ChevronRight className="w-3 h-3" />
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -276,6 +338,9 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
 // ─── Detail Sheet (Supreme drop-style) ───
 function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void }) {
   const [copied, setCopied] = useState(false);
+  const [cogBuyLoading, setCogBuyLoading] = useState(false);
+  const isCognitive = item.type === 'cognitive';
+  const cogData = isCognitive ? (item.data as CognitiveItem & { id: string; name: string; description: string }) : null;
   
   const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
@@ -284,13 +349,31 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleCogBuy = async () => {
+    if (!cogData) return;
+    setCogBuyLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("cognitives-checkout", {
+        body: { sku: cogData.sku, chosenName: cogData.displayName },
+      });
+      if (error) throw error;
+      if (data?.free && data?.redirect) { window.location.href = data.redirect; return; }
+      if (data?.url) { window.location.href = data.url; }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      toast.error("Checkout failed. Please try again.");
+    } finally {
+      setCogBuyLoading(false);
+    }
+  };
+
   const name = item.data.name;
   const desc = item.data.description;
   const itemId = item.data.id;
   const meta = getItemMeta(item);
-  const tierBadge = getItemTierBadge(itemId, name, meta.difficulty, meta.category);
-  const isBlackBoxed = tierBadge === 'CREATOR' || tierBadge === 'ARCHITECT' || tierBadge === 'BLACK-BOX';
-  const isArchitectureOnly = tierBadge === 'CMPSBL CORE';
+  const tierBadge = isCognitive ? null : getItemTierBadge(itemId, name, meta.difficulty, meta.category);
+  const isBlackBoxed = !isCognitive && (tierBadge === 'CREATOR' || tierBadge === 'ARCHITECT' || tierBadge === 'BLACK-BOX');
+  const isArchitectureOnly = !isCognitive && tierBadge === 'CMPSBL CORE';
   const upgradeLabel = isBlackBoxed ? getUpgradeTierLabel(itemId, name, meta.difficulty, meta.category) : null;
   
   useEffect(() => {
@@ -325,16 +408,23 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
                   "text-xs",
                   item.type === 'capability' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
                   item.type === 'template' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30' :
+                  isCognitive ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' :
                   'bg-violet-500/10 text-violet-400 border-violet-500/30'
                 )}>
-                  {item.type === 'capability' ? 'Capability' : item.type === 'template' ? 'Template' : 'Pipeline'}
+                  {item.type === 'capability' ? 'Capability' : item.type === 'template' ? 'Template' : isCognitive ? 'Cognitive Agent' : 'Pipeline'}
                 </Badge>
-                {isBlackBoxed && (
+                {(isCognitive || isBlackBoxed) && (
                   <Badge variant="outline" className="text-xs bg-orange-500/10 text-orange-400 border-orange-500/20">
                     BLACK-BOX
                   </Badge>
                 )}
-                <TierBadge badge={tierBadge} />
+                {isCognitive && cogData ? (
+                  <span className={cn("text-sm font-black", cogData.isFree ? "text-emerald-400" : "text-amber-400")}>
+                    {cogData.isFree ? 'FREE' : `$${(cogData.priceCents / 100).toFixed(0)}`}
+                  </span>
+                ) : tierBadge ? (
+                  <TierBadge badge={tierBadge} />
+                ) : null}
               </div>
               <h2 className="text-2xl font-black">{name}</h2>
             </div>
@@ -393,10 +483,74 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
                 ))}
               </>
             )}
+            {isCognitive && cogData && (
+              <>
+                <Badge variant="outline" className="text-xs font-mono">
+                  {cogData.className}
+                </Badge>
+                <Badge variant="outline" className="text-xs">
+                  <Lock className="w-3 h-3 mr-1" />
+                  BLACK-BOX
+                </Badge>
+                <Badge variant="outline" className="text-xs">
+                  <Download className="w-3 h-3 mr-1" />
+                  ZIP Artifact
+                </Badge>
+              </>
+            )}
           </div>
           
-          {/* Code snippet — gated for black-boxed & architecture */}
-          {(isBlackBoxed || isArchitectureOnly) ? (
+          {/* Cognitive-specific: capabilities + buy */}
+          {isCognitive && cogData ? (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                {cogData.capabilities.map((cap, i) => (
+                  <div key={i} className="flex items-start gap-2.5 text-sm">
+                    <Check className="w-4 h-4 mt-0.5 shrink-0 text-amber-400" />
+                    <span className="text-muted-foreground">{cap}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 space-y-3">
+                <div className="flex items-baseline gap-2">
+                  {cogData.isFree ? (
+                    <span className="text-2xl font-black text-emerald-400">FREE</span>
+                  ) : (
+                    <>
+                      <span className="text-2xl font-black">${(cogData.priceCents / 100).toFixed(0)}</span>
+                      <span className="text-xs text-muted-foreground font-mono">one-time • own forever</span>
+                    </>
+                  )}
+                </div>
+                <Button
+                  onClick={handleCogBuy}
+                  disabled={cogBuyLoading}
+                  className="w-full gap-2"
+                  variant={cogData.isFree ? "outline" : "default"}
+                  size="lg"
+                >
+                  {cogBuyLoading ? (
+                    <span className="animate-pulse">Processing...</span>
+                  ) : cogData.isFree ? (
+                    <><Download className="w-4 h-4" /> Free Download</>
+                  ) : (
+                    <><Zap className="w-4 h-4" /> Buy & Download — ${(cogData.priceCents / 100).toFixed(0)}</>
+                  )}
+                </Button>
+                <p className="text-[10px] text-muted-foreground text-center">
+                  No subscription. No cloud dependency. MIT licensed.
+                </p>
+              </div>
+              
+              <Button variant="outline" size="sm" className="gap-2 w-full" asChild>
+                <Link to="/composable-cognitives">
+                  <Bot className="w-3.5 h-3.5" />
+                  View full Cognitives storefront
+                </Link>
+              </Button>
+            </div>
+          ) : (isBlackBoxed || isArchitectureOnly) ? (
             <div className={cn(
               "p-6 rounded-xl border text-center space-y-3",
               isBlackBoxed 
@@ -439,7 +593,6 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
                   </pre>
                 </div>
               )}
-              
               {item.type === 'pipeline' && (
                 <div className="relative">
                   <div className="flex items-center justify-between mb-2">
@@ -456,7 +609,6 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
                   </pre>
                 </div>
               )}
-              
               {item.type === 'capability' && (
                 <div className="relative">
                   <div className="flex items-center justify-between mb-2">
@@ -516,7 +668,11 @@ export default function SubstrateStore() {
     const caps: UnifiedItem[] = filterCapabilities({}).map(c => ({ type: 'capability' as const, data: c }));
     const temps: UnifiedItem[] = ALL_TEMPLATES.map(t => ({ type: 'template' as const, data: t }));
     const pipes: UnifiedItem[] = SYNERGY_DEFINITIONS.map(p => ({ type: 'pipeline' as const, data: p }));
-    return [...caps, ...temps, ...pipes];
+    const cogs: UnifiedItem[] = COGNITIVES_CATALOG.map(c => ({ 
+      type: 'cognitive' as const, 
+      data: { ...c, id: `cognitive-${c.sku}`, name: c.displayName, description: c.tagline } 
+    }));
+    return [...caps, ...temps, ...pipes, ...cogs];
   }, []);
   
   // Filter: hide Architecture Crown Jewels, apply product/category/search/tier filters
@@ -531,12 +687,14 @@ export default function SubstrateStore() {
       if (productType === 'capabilities' && item.type !== 'capability') return false;
       if (productType === 'templates' && item.type !== 'template') return false;
       if (productType === 'pipelines' && item.type !== 'pipeline') return false;
+      if (productType === 'cognitives' && item.type !== 'cognitive') return false;
       
       // Category
       if (selectedCategory) {
         if (item.type === 'capability' && item.data.category !== selectedCategory) return false;
         if (item.type === 'template' && mapTemplateCat(item.data.category) !== selectedCategory) return false;
         if (item.type === 'pipeline' && item.data.category !== selectedCategory) return false;
+        if (item.type === 'cognitive' && selectedCategory !== 'intelligence') return false;
       }
       
       // Tier filter
@@ -586,6 +744,7 @@ export default function SubstrateStore() {
       if (item.type === 'capability') cat = item.data.category;
       else if (item.type === 'template') cat = mapTemplateCat(item.data.category);
       else if (item.type === 'pipeline') cat = item.data.category;
+      else if (item.type === 'cognitive') cat = 'intelligence';
       
       if (!groups[cat]) groups[cat] = [];
       groups[cat].push(item);
@@ -670,6 +829,7 @@ export default function SubstrateStore() {
               {/* Stats pills */}
               <div className="flex flex-wrap justify-center gap-3 mb-8">
                 {[
+                  { label: 'Agents', count: String(COGNITIVES_CATALOG.length), color: 'bg-amber-500' },
                   { label: 'Capabilities', count: String(capCount), color: 'bg-emerald-500' },
                   { label: 'Templates', count: String(ALL_TEMPLATES.length), color: 'bg-cyan-500' },
                   { label: 'Pipelines', count: String(pipeCount), color: 'bg-violet-500' },
@@ -713,6 +873,7 @@ export default function SubstrateStore() {
               <div className="flex gap-1.5 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
                 {([
                   { id: 'all' as const, label: 'All', count: totalCount },
+                  { id: 'cognitives' as const, label: 'Agents', count: COGNITIVES_CATALOG.length },
                   { id: 'capabilities' as const, label: 'Capabilities', count: capCount },
                   { id: 'templates' as const, label: 'Templates', count: ALL_TEMPLATES.length },
                   { id: 'pipelines' as const, label: 'Pipelines', count: pipeCount },
