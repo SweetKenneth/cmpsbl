@@ -315,14 +315,50 @@ export function HeroMetaSubstrate() {
             </motion.div>
           </motion.div>
           
-          {/* Right column — Memory River visualization */}
+          {/* Right column — Memory River visualization + context */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="order-2 flex items-center justify-center"
+            className="order-2 flex flex-col gap-6"
           >
+            {/* Above River — Architecture context (desktop only) */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="hidden lg:block rounded-xl border border-border/20 bg-card/30 backdrop-blur-sm p-5"
+            >
+              <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-widest mb-2">How Intelligence Flows</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Every interaction generates <span className="text-foreground font-medium">memory particles</span> that persist across sessions. 
+                <span className="text-primary font-medium"> Dream cycles</span> synthesize patterns overnight. 
+                <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Defense layers</span> detect and reject drift in real-time. 
+                Nothing resets. Everything compounds.
+              </p>
+            </motion.div>
+
             <MemoryRiver />
+
+            {/* Below River — Live system pulse (desktop only) */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              className="hidden lg:grid grid-cols-3 gap-3"
+            >
+              {[
+                { label: "Memory Depth", value: "Persistent", desc: "Survives restarts" },
+                { label: "Dream Cycles", value: "Autonomous", desc: "Self-improving" },
+                { label: "Defense Mesh", value: "Always-On", desc: "Drift-resistant" },
+              ].map((item) => (
+                <div key={item.label} className="rounded-lg border border-border/20 bg-card/20 backdrop-blur-sm p-3 text-center">
+                  <div className="text-[10px] text-muted-foreground/50 uppercase tracking-widest font-semibold mb-1">{item.label}</div>
+                  <div className="text-sm font-bold text-foreground">{item.value}</div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">{item.desc}</div>
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
         </div>
         
