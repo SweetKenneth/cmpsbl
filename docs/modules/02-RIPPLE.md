@@ -1,90 +1,95 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>RIPPLE Module — Deep Dive</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# 📡 RIPPLE Module — Deep Dive
+<h1>📡 RIPPLE Module — Deep Dive</h1>
+<p><strong>Layer:</strong> Kernel · <strong>Boot Order:</strong> 2 · <strong>Dependencies:</strong> CORE</p>
+<p><strong>v9.3.0 ARCHITECT Epoch</strong></p>
+<hr />
 
-**Layer:** Kernel · **Boot Order:** 2 · **Dependencies:** CORE
+<h2>Purpose</h2>
+<p>RIPPLE is the <strong>event bus and message orchestration layer</strong>. It provides asynchronous communication between all 21 modules using a hybrid PUSH/PULL delivery model with built-in circuit breaker integration.</p>
+<p>Every inter-module communication flows through RIPPLE.</p>
 
-**v9.3.0 ARCHITECT Epoch**
+<h2>Capabilities</h2>
+<table>
+<tr><th>Capability</th><th>Description</th></tr>
+<tr><td>Event Publishing</td><td>Emit events to named topics</td></tr>
+<tr><td>Subscription Registry</td><td>Declarative topic subscriptions with wildcards</td></tr>
+<tr><td>Job Queue</td><td>Persistent job queue with retry and dead-letter support</td></tr>
+<tr><td>Fan-Out</td><td>Automatic event distribution to all subscribers</td></tr>
+<tr><td>Circuit Breaker Integration</td><td>Skip delivery to unhealthy subscribers</td></tr>
+<tr><td>Event Replay</td><td>Re-deliver past events for recovery</td></tr>
+</table>
 
+<h2>Architecture</h2>
+
+<div class="card">
+<h3>Hybrid Delivery Model</h3>
+<p>RIPPLE supports both delivery patterns:</p>
+<p><strong>PUSH Model (Default)</strong></p>
+<pre>Publisher → RIPPLE → Fan-out to all subscribers → Jobs created per subscriber</pre>
+<ul>
+<li>Automatic delivery</li>
+<li>Fire-and-forget semantics</li>
+<li>Jobs created for each subscriber</li>
+<li>Best for real-time notifications</li>
+</ul>
+<p><strong>PULL Model</strong></p>
+<pre>Publisher → RIPPLE → Job Queue → Worker calls ripple.work → Process → Ack/Nack</pre>
+<ul>
+<li>Manual job processing</li>
+<li>Explicit acknowledgment</li>
+<li>Back-pressure support</li>
+<li>Best for heavy processing</li>
+</ul>
 </div>
 
----
+<h2>Topic System</h2>
+<p>Events are organized by hierarchical topics with wildcard support:</p>
+<table>
+<tr><th>Pattern</th><th>Matches</th></tr>
+<tr><td>memory.stored</td><td>Exact match only</td></tr>
+<tr><td>memory.*</td><td>Any memory event</td></tr>
+<tr><td>*.started</td><td>Any module's started event</td></tr>
+<tr><td>*.*</td><td>All events (use sparingly)</td></tr>
+</table>
 
-## Purpose
+<h3>Reserved Topics</h3>
+<table>
+<tr><th>Topic</th><th>Purpose</th></tr>
+<tr><td>core.*</td><td>Module lifecycle events</td></tr>
+<tr><td>health.*</td><td>Health score changes</td></tr>
+<tr><td>circuit.*</td><td>Circuit breaker state changes</td></tr>
+<tr><td>dream.*</td><td>Dream cycle events</td></tr>
+<tr><td>evolution.*</td><td>Modernizer proposals</td></tr>
+<tr><td>security.*</td><td>Defense alerts</td></tr>
+</table>
 
-RIPPLE is the **event bus and message orchestration layer**. It provides asynchronous communication between all 21 modules using a hybrid PUSH/PULL delivery model with built-in circuit breaker integration.
-
-Every inter-module communication flows through RIPPLE.
-
----
-
-## Capabilities
-
-| Capability | Description |
-|-----------|-------------|
-| Event Publishing | Emit events to named topics |
-| Subscription Registry | Declarative topic subscriptions with wildcards |
-| Job Queue | Persistent job queue with retry and dead-letter support |
-| Fan-Out | Automatic event distribution to all subscribers |
-| Circuit Breaker Integration | Skip delivery to unhealthy subscribers |
-| Event Replay | Re-deliver past events for recovery |
-
----
-
-## Architecture
-
-### Hybrid Delivery Model
-
-RIPPLE supports both delivery patterns:
-
-**PUSH Model (Default)**
-```
-Publisher → RIPPLE → Fan-out to all subscribers → Jobs created per subscriber
-```
-- Automatic delivery
-- Fire-and-forget semantics
-- Jobs created for each subscriber
-- Best for real-time notifications
-
-**PULL Model**
-```
-Publisher → RIPPLE → Job Queue → Worker calls ripple.work → Process → Ack/Nack
-```
-- Manual job processing
-- Explicit acknowledgment
-- Back-pressure support
-- Best for heavy processing
-
----
-
-## Topic System
-
-Events are organized by hierarchical topics with wildcard support:
-
-| Pattern | Matches |
-|---------|---------|
-| `memory.stored` | Exact match only |
-| `memory.*` | Any memory event |
-| `*.started` | Any module's started event |
-| `*.*` | All events (use sparingly) |
-
-### Reserved Topics
-
-| Topic | Purpose |
-|-------|---------|
-| `core.*` | Module lifecycle events |
-| `health.*` | Health score changes |
-| `circuit.*` | Circuit breaker state changes |
-| `dream.*` | Dream cycle events |
-| `evolution.*` | Modernizer proposals |
-| `security.*` | Defense alerts |
-
----
-
-## Job Lifecycle
-
-```
-┌─────────┐     ┌─────────┐     ┌───────────┐     ┌───────────┐
+<h2>Job Lifecycle</h2>
+<div class="card">
+<pre>┌─────────┐     ┌─────────┐     ┌───────────┐     ┌───────────┐
 │ PENDING │────►│ RUNNING │────►│ SUCCEEDED │     │   DEAD    │
 │         │     │         │     │           │     │  LETTER   │
 └─────────┘     └────┬────┘     └───────────┘     └───────────┘
@@ -94,119 +99,96 @@ Events are organized by hierarchical topics with wildcard support:
                                 │          │  (after max retries)
                                 └──────┬───┘
                                        │
-                                       └──► Retry (with backoff)
-```
+                                       └──► Retry (with backoff)</pre>
+</div>
 
-### Job States
+<h3>Job States</h3>
+<table>
+<tr><th>State</th><th>Description</th><th>Retention</th></tr>
+<tr><td>pending</td><td>Awaiting processing</td><td>Until processed</td></tr>
+<tr><td>running</td><td>Currently executing</td><td>Duration of execution</td></tr>
+<tr><td>succeeded</td><td>Completed successfully</td><td>24 hours</td></tr>
+<tr><td>failed</td><td>Execution failed, may retry</td><td>Until retry or dead letter</td></tr>
+<tr><td>dead_letter</td><td>Exceeded retry limit</td><td>7 days</td></tr>
+</table>
 
-| State | Description | Retention |
-|-------|-------------|-----------|
-| `pending` | Awaiting processing | Until processed |
-| `running` | Currently executing | Duration of execution |
-| `succeeded` | Completed successfully | 24 hours |
-| `failed` | Execution failed, may retry | Until retry or dead letter |
-| `dead_letter` | Exceeded retry limit | 7 days |
+<h2>Retry Policy</h2>
+<table>
+<tr><th>Parameter</th><th>Default</th></tr>
+<tr><td>Max retries</td><td>3</td></tr>
+<tr><td>Backoff strategy</td><td>Exponential</td></tr>
+<tr><td>Base delay</td><td>1,000 ms</td></tr>
+<tr><td>Max delay</td><td>30,000 ms</td></tr>
+<tr><td>Jitter</td><td>±20%</td></tr>
+</table>
+<pre>delay = min(base × 2^attempt, max_delay) × (1 + random(-0.2, 0.2))</pre>
 
----
+<h2>Circuit Breaker Integration</h2>
+<p>RIPPLE monitors subscriber health before delivery:</p>
+<table>
+<tr><th>Subscriber State</th><th>Delivery Behavior</th></tr>
+<tr><td>closed (healthy)</td><td>Normal delivery</td></tr>
+<tr><td>open (unhealthy)</td><td>Skip delivery, queue for later replay</td></tr>
+<tr><td>half-open (testing)</td><td>Deliver one test event, monitor result</td></tr>
+</table>
+<p>When a subscriber's circuit opens, RIPPLE:</p>
+<ol>
+<li>Stops delivering events to that subscriber</li>
+<li>Queues events for replay when circuit closes</li>
+<li>Emits circuit.opened event</li>
+<li>After recovery timeout, delivers test event</li>
+<li>If test succeeds, replays queued events</li>
+</ol>
 
-## Retry Policy
+<h2>Terminal Commands</h2>
+<table>
+<tr><th>Command</th><th>Description</th></tr>
+<tr><td>ripple.status</td><td>Bus status and statistics</td></tr>
+<tr><td>ripple.jobs</td><td>View pending jobs (filterable by topic, state)</td></tr>
+<tr><td>ripple.events</td><td>Recent events (last 100)</td></tr>
+<tr><td>ripple.publish</td><td>Manually emit an event</td></tr>
+<tr><td>ripple.work</td><td>Process next pending job</td></tr>
+<tr><td>ripple.ack</td><td>Acknowledge job completion</td></tr>
+<tr><td>ripple.nack</td><td>Negative acknowledgment (trigger retry)</td></tr>
+<tr><td>ripple.replay</td><td>Replay a specific event</td></tr>
+<tr><td>ripple.drain</td><td>Process all pending jobs in queue</td></tr>
+<tr><td>ripple.subscribers</td><td>List all active subscriptions</td></tr>
+</table>
 
-| Parameter | Default |
-|-----------|---------|
-| Max retries | 3 |
-| Backoff strategy | Exponential |
-| Base delay | 1,000 ms |
-| Max delay | 30,000 ms |
-| Jitter | ±20% |
+<h2>Events Emitted</h2>
+<table>
+<tr><th>Event</th><th>When</th></tr>
+<tr><td>ripple.started</td><td>RIPPLE boots successfully</td></tr>
+<tr><td>ripple.event_published</td><td>Any event published</td></tr>
+<tr><td>ripple.job_completed</td><td>Job finishes (success or failure)</td></tr>
+<tr><td>ripple.dead_letter</td><td>Job moved to dead letter</td></tr>
+<tr><td>ripple.queue_depth_warning</td><td>Queue exceeds 80% capacity</td></tr>
+</table>
 
-```
-delay = min(base × 2^attempt, max_delay) × (1 + random(-0.2, 0.2))
-```
+<h2>Performance</h2>
+<table>
+<tr><th>Metric</th><th>Value</th></tr>
+<tr><td>Boot time</td><td>~3ms</td></tr>
+<tr><td>Publish latency</td><td>&lt; 5ms</td></tr>
+<tr><td>Fan-out capacity</td><td>1,000 subscribers</td></tr>
+<tr><td>Queue depth (max)</td><td>10,000 jobs</td></tr>
+<tr><td>Event retention</td><td>7 days</td></tr>
+<tr><td>Throughput</td><td>10,000 events/second</td></tr>
+</table>
 
----
-
-## Circuit Breaker Integration
-
-RIPPLE monitors subscriber health before delivery:
-
-| Subscriber State | Delivery Behavior |
-|-----------------|-------------------|
-| `closed` (healthy) | Normal delivery |
-| `open` (unhealthy) | Skip delivery, queue for later replay |
-| `half-open` (testing) | Deliver one test event, monitor result |
-
-When a subscriber's circuit opens, RIPPLE:
-1. Stops delivering events to that subscriber
-2. Queues events for replay when circuit closes
-3. Emits `circuit.opened` event
-4. After recovery timeout, delivers test event
-5. If test succeeds, replays queued events
-
----
-
-## Terminal Commands
-
-| Command | Description |
-|---------|-------------|
-| `ripple.status` | Bus status and statistics |
-| `ripple.jobs` | View pending jobs (filterable by topic, state) |
-| `ripple.events` | Recent events (last 100) |
-| `ripple.publish` | Manually emit an event |
-| `ripple.work` | Process next pending job |
-| `ripple.ack` | Acknowledge job completion |
-| `ripple.nack` | Negative acknowledgment (trigger retry) |
-| `ripple.replay` | Replay a specific event |
-| `ripple.drain` | Process all pending jobs in queue |
-| `ripple.subscribers` | List all active subscriptions |
-
----
-
-## Events Emitted
-
-| Event | When |
-|-------|------|
-| `ripple.started` | RIPPLE boots successfully |
-| `ripple.event_published` | Any event published |
-| `ripple.job_completed` | Job finishes (success or failure) |
-| `ripple.dead_letter` | Job moved to dead letter |
-| `ripple.queue_depth_warning` | Queue exceeds 80% capacity |
-
----
-
-## Performance
-
-| Metric | Value |
-|--------|-------|
-| Boot time | ~3ms |
-| Publish latency | < 5ms |
-| Fan-out capacity | 1,000 subscribers |
-| Queue depth (max) | 10,000 jobs |
-| Event retention | 7 days |
-| Throughput | 10,000 events/second |
-
----
-
-## Integration with Every Module
-
-RIPPLE is the nervous system — every module both publishes to and subscribes from RIPPLE:
-
-```
-CORE ──publish──► RIPPLE ──deliver──► BRAIN (memory events)
+<h2>Integration with Every Module</h2>
+<p>RIPPLE is the nervous system — every module both publishes to and subscribes from RIPPLE:</p>
+<pre>CORE ──publish──► RIPPLE ──deliver──► BRAIN (memory events)
 BRAIN ──publish──► RIPPLE ──deliver──► DREAM (synthesis triggers)
 DREAM ──publish──► RIPPLE ──deliver──► MODERNIZER (improvement proposals)
-DEFENSE ──publish──► RIPPLE ──deliver──► SYSTEM (security alerts)
-```
+DEFENSE ──publish──► RIPPLE ──deliver──► SYSTEM (security alerts)</pre>
 
----
-
-<div align="center">
-
-*CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch*
-
-**Kenneth E Sweet Jr** · PromptFluid®  
-ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
-DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
-
-© 2025–2026 PromptFluid®. All rights reserved.
+<hr />
+<p><em>CMPSBL OS Substrate v9.3.0 — ARCHITECT Epoch</em><br />
+<em>Kenneth E Sweet Jr · PromptFluid®</em><br />
+<em>ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a> · DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
+</body>
+</html>
