@@ -1,50 +1,86 @@
-# Audit System — Internal Documentation
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Audit System — Internal Documentation</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  ul,ol{margin-left:0.25in}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:9pt;overflow-x:auto;border-radius:4px}
+  code{font-family:"Courier New",monospace;font-size:9pt}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-## Overview
+<h1>Audit System — Internal Documentation</h1>
+<hr />
 
-The CMPSBL Substrate includes a multi-layer audit and verification framework located at `src/lib/audit/`. This framework validates production readiness across the entire stack.
+<h2>Overview</h2>
 
----
+<p>The CMPSBL Substrate includes a multi-layer audit and verification framework located at <code>src/lib/audit/</code>. This framework validates production readiness across the entire stack.</p>
 
-## Components
+<hr />
 
-### 1. Production Audit Engine (`audit-runner.ts`)
-The original audit engine that orchestrates category-specific checks (build, runtime, routes, imports, hooks, modules, terminal, supabase, UI, a11y, SEO, docs). Produces an `AuditReport` with severity-graded findings and a hard pass/fail gate.
+<h2>Components</h2>
 
-### 2. Audit Checks (`checks/`)
-Eight specialized check modules:
-- `system-manifest.ts` — System manifest validation
-- `routes.ts` — Route contract verification
-- `terminal.ts` — Terminal command registry validation
-- `modules.ts` — Module health checks
-- `seo.ts` — SEO metadata validation
-- `ui-contracts.ts` — UI component contract checks
-- `hooks-contracts.ts` — React hooks contract validation
-- `supabase-contracts.ts` — Database contract verification
+<div class="card">
+<h3>1. Production Audit Engine (audit-runner.ts)</h3>
+<p>The original audit engine that orchestrates category-specific checks (build, runtime, routes, imports, hooks, modules, terminal, supabase, UI, a11y, SEO, docs). Produces an <code>AuditReport</code> with severity-graded findings and a hard pass/fail gate.</p>
+</div>
 
-### 3. Substrate Health Check (`substrate-health-check.ts`)
-A first-class internal integrity primitive (ID: `substrate_health_check`) that validates **structural coherence** rather than feature correctness. It verifies:
-- Filesystem & structure integrity (21 modules)
-- Import & reference resolution
-- Terminal & capability wiring
-- Route integrity
-- Registry consistency (100 crystallized pipelines)
-- Edge function presence (54+ active)
-- Database & security behavior (RLS enforcement)
-- Runtime render sanity
+<div class="card">
+<h3>2. Audit Checks (checks/)</h3>
+<p>Eight specialized check modules:</p>
+<ul>
+<li><code>system-manifest.ts</code> — System manifest validation</li>
+<li><code>routes.ts</code> — Route contract verification</li>
+<li><code>terminal.ts</code> — Terminal command registry validation</li>
+<li><code>modules.ts</code> — Module health checks</li>
+<li><code>seo.ts</code> — SEO metadata validation</li>
+<li><code>ui-contracts.ts</code> — UI component contract checks</li>
+<li><code>hooks-contracts.ts</code> — React hooks contract validation</li>
+<li><code>supabase-contracts.ts</code> — Database contract verification</li>
+</ul>
+</div>
 
-**Key distinction:** The Health Check validates that the system is *coherent and governed*. The Audit Engine validates that the system is *production-ready*. They are complementary, not redundant.
+<div class="card">
+<h3>3. Substrate Health Check (substrate-health-check.ts)</h3>
+<p>A first-class internal integrity primitive (ID: <code>substrate_health_check</code>) that validates <strong>structural coherence</strong> rather than feature correctness. It verifies:</p>
+<ul>
+<li>Filesystem &amp; structure integrity (21 modules)</li>
+<li>Import &amp; reference resolution</li>
+<li>Terminal &amp; capability wiring</li>
+<li>Route integrity</li>
+<li>Registry consistency (100 crystallized pipelines)</li>
+<li>Edge function presence (54+ active)</li>
+<li>Database &amp; security behavior (RLS enforcement)</li>
+<li>Runtime render sanity</li>
+</ul>
+<p><strong>Key distinction:</strong> The Health Check validates that the system is <em>coherent and governed</em>. The Audit Engine validates that the system is <em>production-ready</em>. They are complementary, not redundant.</p>
+<p>See: <code>docs/internal/SUBSTRATE-HEALTH-CHECK.md</code> for full specification.</p>
+</div>
 
-See: `docs/internal/SUBSTRATE-HEALTH-CHECK.md` for full specification.
+<hr />
 
----
+<h2>Usage</h2>
 
-## Usage
-
-```typescript
+<pre>
 // Production Audit (feature/quality gate)
 import { runFullAudit } from '@/lib/audit';
 
 // Structural Health Check (integrity gate)
 import { runSubstrateHealthCheck } from '@/lib/audit/substrate-health-check';
-```
+</pre>
+
+</div>
+</body>
+</html>

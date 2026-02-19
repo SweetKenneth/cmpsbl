@@ -1,12 +1,30 @@
-<div align="center">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>CMPSBL OS Substrate — Library Index</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  a{color:#333;text-decoration:underline}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-# CMPSBL OS Substrate
-
-### Cognitive Orchestration System for Autonomous AI Evolution
-
-**v10.5.1 ARCHITECT Epoch**
-
----
+<h1>CMPSBL OS Substrate</h1>
+<p><strong>Cognitive Orchestration System for Autonomous AI Evolution</strong></p>
+<p><strong>v10.5.1 ARCHITECT Epoch</strong></p>
 
 <table>
 <tr><td><strong>Classification</strong></td><td>Library — No Trade Secrets</td></tr>
@@ -15,21 +33,12 @@
 <tr><td><strong>Last Updated</strong></td><td>February 17, 2026</td></tr>
 </table>
 
-</div>
+<hr />
 
----
-
-## Document Inventory
+<h2>Document Inventory</h2>
 
 <table>
-<thead>
-<tr>
-<th>№</th>
-<th>Document</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
+<tr><th>№</th><th>Document</th><th>Description</th></tr>
 <tr><td>01</td><td><a href="./01-EXECUTIVE-SUMMARY.md">Executive Summary</a></td><td>What the substrate is and why it matters</td></tr>
 <tr><td>02</td><td><a href="./02-SYSTEM-ARCHITECTURE.md">System Architecture</a></td><td>6-layer, 21-module architecture blueprint</td></tr>
 <tr><td>03</td><td><a href="./03-MODULE-REFERENCE.md">Module Reference</a></td><td>All 21 modules — purpose, capabilities, and interfaces</td></tr>
@@ -47,15 +56,14 @@
 <tr><td>15</td><td><a href="./15-USE-CASES.md">Use Cases</a></td><td>Real-world applications and integrations</td></tr>
 <tr><td>16</td><td><a href="./16-GLOSSARY.md">Glossary</a></td><td>Terminology and definitions</td></tr>
 <tr><td>17</td><td><a href="./17-INTENT-MESH.md">Intent Mesh</a></td><td>Emergent cross-module intelligence layer (60+ crystallized pipelines)</td></tr>
-</tbody>
 </table>
 
----
+<hr />
 
-## System at a Glance
+<h2>System at a Glance</h2>
 
 <table>
-<tr><td width="200"><strong>Type</strong></td><td>Cognitive Orchestration Substrate</td></tr>
+<tr><td><strong>Type</strong></td><td>Cognitive Orchestration Substrate</td></tr>
 <tr><td><strong>Modules</strong></td><td>21 (across 6 layers) — includes ENCODE code execution engine</td></tr>
 <tr><td><strong>Capabilities</strong></td><td>400+ (50+ public, 21 Crown Jewels)</td></tr>
 <tr><td><strong>Crystallized Pipelines</strong></td><td>60+ (via Intent Mesh)</td></tr>
@@ -64,29 +72,28 @@
 <tr><td><strong>License</strong></td><td>Apache 2.0 (Core) · CC BY 4.0 (Docs)</td></tr>
 </table>
 
----
+<hr />
 
-## What's New in v10.5.1
+<h2>What's New in v10.5.1</h2>
 
-| Feature | Description |
-|---------|-------------|
-| **ENCODE Module** | Governed code execution engine with DECODE→ENCODE pipeline, CLM, graduated autonomy |
-| **CLM Engine v2.0** | Server-side 24/7 autonomous learning — 5-phase lifecycle every 5 minutes |
-| **Universal Brain Transfer** | Knowledge distribution from BRAIN to all 21 modules via relevance routing |
-| **Intent Mesh** | 60+ crystallized pipelines via emergent capability discovery |
-| **Nexus Fleet v5.0** | Health-weighted multi-provider routing (5+ providers) |
-| **21 Crown Jewels** | One Crown Jewel capability per module |
+<table>
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td><strong>ENCODE Module</strong></td><td>Governed code execution engine with DECODE→ENCODE pipeline, CLM, graduated autonomy</td></tr>
+<tr><td><strong>CLM Engine v2.0</strong></td><td>Server-side 24/7 autonomous learning — 5-phase lifecycle every 5 minutes</td></tr>
+<tr><td><strong>Universal Brain Transfer</strong></td><td>Knowledge distribution from BRAIN to all 21 modules via relevance routing</td></tr>
+<tr><td><strong>Intent Mesh</strong></td><td>60+ crystallized pipelines via emergent capability discovery</td></tr>
+<tr><td><strong>Nexus Fleet v5.0</strong></td><td>Health-weighted multi-provider routing (5+ providers)</td></tr>
+<tr><td><strong>21 Crown Jewels</strong></td><td>One Crown Jewel capability per module</td></tr>
+</table>
 
----
+<hr />
 
-<div align="center">
-
-*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch*
-
-**Kenneth E Sweet Jr** · PromptFluid®  
-ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
-DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)
-
-© 2025–2026 PromptFluid®. All rights reserved.
+<p><em>CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch</em></p>
+<p><strong>Kenneth E Sweet Jr</strong> · PromptFluid®<br />
+ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a><br />
+DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></p>
+<p>© 2025–2026 PromptFluid®. All rights reserved.</p>
 
 </div>
+</body>
+</html>

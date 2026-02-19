@@ -1,67 +1,94 @@
-# CMPSBL OS Substrate — Academic Documentation
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>CMPSBL OS Substrate — Academic Documentation</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:9pt;overflow-x:auto;border-radius:4px}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  a{color:#333;text-decoration:underline}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-## v10.5.1 ARCHITECT Epoch | Scientific Publication Set
+<h1>CMPSBL OS Substrate — Academic Documentation</h1>
+<p><strong>v10.5.1 ARCHITECT Epoch | Scientific Publication Set</strong></p>
 
-**Document Set Version:** 3.0.0  
-**Release Date:** February 17, 2026  
-**DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
-**ORCID:** [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  
-**License:** Apache 2.0 (Core) | CC BY 4.0 (Documentation)
+<table>
+<tr><td><strong>Document Set Version</strong></td><td>3.0.0</td></tr>
+<tr><td><strong>Release Date</strong></td><td>February 17, 2026</td></tr>
+<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
+<tr><td><strong>ORCID</strong></td><td><a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></td></tr>
+<tr><td><strong>License</strong></td><td>Apache 2.0 (Core) | CC BY 4.0 (Documentation)</td></tr>
+</table>
+<hr />
 
----
+<h2>Abstract</h2>
 
-## Abstract
+<p>The CMPSBL OS Substrate is a cognitive orchestration system that provides persistent memory, autonomous learning, multi-provider AI routing, governed code execution (ENCODE), and verifiable self-evolution for artificial intelligence systems. Implemented as a 21-module, 6-layer architecture with 400+ registered capabilities, 60+ crystallized pipelines, and 21 Crown Jewel capabilities, the system introduces a three-tier autonomy governance model with cryptographic evolution stamps enabling post-hoc verification of all self-modifications. This documentation set describes the public architecture, module taxonomy, capability system, and governance mechanisms.</p>
 
-The CMPSBL OS Substrate is a cognitive orchestration system that provides persistent memory, autonomous learning, multi-provider AI routing, governed code execution (ENCODE), and verifiable self-evolution for artificial intelligence systems. Implemented as a 21-module, 6-layer architecture with 400+ registered capabilities, 60+ crystallized pipelines, and 21 Crown Jewel capabilities, the system introduces a three-tier autonomy governance model with cryptographic evolution stamps enabling post-hoc verification of all self-modifications. This documentation set describes the public architecture, module taxonomy, capability system, and governance mechanisms.
+<hr />
 
----
+<h2>Document Inventory</h2>
 
-## Document Inventory
+<table>
+<tr><th>№</th><th>Document</th><th>Filename</th><th>Description</th></tr>
+<tr><td>01</td><td>Abstract &amp; Introduction</td><td>01-ABSTRACT.md</td><td>Research context, problem statement, contributions</td></tr>
+<tr><td>02</td><td>System Architecture</td><td>02-ARCHITECTURE.md</td><td>6-layer, 21-module architectural blueprint</td></tr>
+<tr><td>03</td><td>Module Taxonomy</td><td>03-MODULES.md</td><td>Complete module reference with interfaces (incl. ENCODE)</td></tr>
+<tr><td>04</td><td>Capability System</td><td>04-CAPABILITIES.md</td><td>400+ registered capabilities and composition</td></tr>
+<tr><td>05</td><td>Synergy Pipelines</td><td>05-SYNERGIES.md</td><td>Cross-module orchestration (60+ crystallized)</td></tr>
+<tr><td>06</td><td>Evolution Mechanics</td><td>06-EVOLUTION.md</td><td>Self-modification system with verifiable stamps (SEBA)</td></tr>
+<tr><td>07</td><td>Observability</td><td>07-OBSERVABILITY.md</td><td>Evolution stamps, receipts, audit trails</td></tr>
+<tr><td>08</td><td>Governance Model</td><td>08-GOVERNANCE.md</td><td>Three-tier autonomy, circuit breakers, safety</td></tr>
+<tr><td>09</td><td>Cognitive Systems</td><td>09-COGNITIVE.md</td><td>Memory, learning, dreaming architectures</td></tr>
+<tr><td>10</td><td>Security Model</td><td>10-SECURITY.md</td><td>Defense-in-depth and threat posture</td></tr>
+<tr><td>11</td><td>Performance</td><td>11-BENCHMARKS.md</td><td>Measured system performance</td></tr>
+<tr><td>12</td><td>Deployment</td><td>12-DEPLOYMENT.md</td><td>Infrastructure requirements</td></tr>
+<tr><td>13</td><td>Related Work</td><td>13-RELATED-WORK.md</td><td>Comparison with prior systems</td></tr>
+<tr><td>14</td><td>Future Research</td><td>14-FUTURE-WORK.md</td><td>Open research directions</td></tr>
+<tr><td>15</td><td>Bibliography</td><td>15-BIBLIOGRAPHY.md</td><td>References and prior art</td></tr>
+<tr><td>16</td><td>License</td><td>LICENSE.md</td><td>Licensing terms</td></tr>
+<tr><td>17</td><td>Citation</td><td>CITATION.cff</td><td>Machine-readable citation</td></tr>
+<tr><td>18</td><td>Intent Mesh</td><td>16-INTENT-MESH.md</td><td>Emergent cross-module intelligence via capability advertisement</td></tr>
+</table>
 
-| № | Document | Filename | Description |
-|---|----------|----------|-------------|
-| 01 | Abstract & Introduction | `01-ABSTRACT.md` | Research context, problem statement, contributions |
-| 02 | System Architecture | `02-ARCHITECTURE.md` | 6-layer, 21-module architectural blueprint |
-| 03 | Module Taxonomy | `03-MODULES.md` | Complete module reference with interfaces (incl. ENCODE) |
-| 04 | Capability System | `04-CAPABILITIES.md` | 400+ registered capabilities and composition |
-| 05 | Synergy Pipelines | `05-SYNERGIES.md` | Cross-module orchestration (60+ crystallized) |
-| 06 | Evolution Mechanics | `06-EVOLUTION.md` | Self-modification system with verifiable stamps (SEBA) |
-| 07 | Observability | `07-OBSERVABILITY.md` | Evolution stamps, receipts, audit trails |
-| 08 | Governance Model | `08-GOVERNANCE.md` | Three-tier autonomy, circuit breakers, safety |
-| 09 | Cognitive Systems | `09-COGNITIVE.md` | Memory, learning, dreaming architectures |
-| 10 | Security Model | `10-SECURITY.md` | Defense-in-depth and threat posture |
-| 11 | Performance | `11-BENCHMARKS.md` | Measured system performance |
-| 12 | Deployment | `12-DEPLOYMENT.md` | Infrastructure requirements |
-| 13 | Related Work | `13-RELATED-WORK.md` | Comparison with prior systems |
-| 14 | Future Research | `14-FUTURE-WORK.md` | Open research directions |
-| 15 | Bibliography | `15-BIBLIOGRAPHY.md` | References and prior art |
-| 16 | License | `LICENSE.md` | Licensing terms |
-| 17 | Citation | `CITATION.cff` | Machine-readable citation |
-| 18 | Intent Mesh | `16-INTENT-MESH.md` | Emergent cross-module intelligence via capability advertisement |
+<hr />
 
----
+<h2>Type Classification</h2>
 
-## Type Classification
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>System Type</td><td>Cognitive Orchestration Substrate</td></tr>
+<tr><td>Formal Name</td><td>CMPSBL OS Substrate</td></tr>
+<tr><td>Version</td><td>v10.5.1 (ARCHITECT Epoch)</td></tr>
+<tr><td>Model Dependency</td><td>Agnostic</td></tr>
+<tr><td>Provider Dependency</td><td>Agnostic</td></tr>
+<tr><td>Infrastructure</td><td>Commodity Cloud</td></tr>
+<tr><td>Modules</td><td>21 (6 layers) — includes ENCODE</td></tr>
+<tr><td>Capabilities</td><td>400+ (50+ public, 21 Crown Jewels)</td></tr>
+<tr><td>Crystallized Pipelines</td><td>60+</td></tr>
+</table>
 
-| Property | Value |
-|----------|-------|
-| System Type | Cognitive Orchestration Substrate |
-| Formal Name | CMPSBL OS Substrate |
-| Version | v10.5.1 (ARCHITECT Epoch) |
-| Model Dependency | Agnostic |
-| Provider Dependency | Agnostic |
-| Infrastructure | Commodity Cloud |
-| Modules | 21 (6 layers) — includes ENCODE |
-| Capabilities | 400+ (50+ public, 21 Crown Jewels) |
-| Crystallized Pipelines | 60+ |
+<hr />
 
----
+<h2>Citation</h2>
 
-## Citation
+<h3>BibTeX</h3>
 
-### BibTeX
-
-```bibtex
+<pre>
 @software{cmpsbl_substrate_2026,
   author       = {Sweet Jr, Kenneth E},
   title        = {{CMPSBL OS Substrate: Cognitive Orchestration
@@ -72,35 +99,40 @@ The CMPSBL OS Substrate is a cognitive orchestration system that provides persis
   doi          = {10.5281/zenodo.XXXXXXX},
   url          = {https://github.com/promptfluid/substrate}
 }
-```
+</pre>
 
-### APA 7th Edition
+<h3>APA 7th Edition</h3>
 
-Sweet Jr, K. E. (2026). *CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution* (Version 10.5.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+<p>Sweet Jr, K. E. (2026). <em>CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution</em> (Version 10.5.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX</p>
 
-### IEEE
+<h3>IEEE</h3>
 
-K. E. Sweet Jr, "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution," version 10.5.1, Zenodo, 2026. [Online]. Available: https://doi.org/10.5281/zenodo.XXXXXXX
+<p>K. E. Sweet Jr, "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution," version 10.5.1, Zenodo, 2026. [Online]. Available: https://doi.org/10.5281/zenodo.XXXXXXX</p>
 
----
+<hr />
 
-## Disclosure
+<h2>Disclosure</h2>
 
-This documentation describes the public interface and architectural patterns of the CMPSBL Substrate. Implementation details including proprietary algorithms, internal prompt engineering, and trade secret processing pipelines are intentionally omitted to protect intellectual property while enabling academic study and interoperability research.
+<p>This documentation describes the public interface and architectural patterns of the CMPSBL Substrate. Implementation details including proprietary algorithms, internal prompt engineering, and trade secret processing pipelines are intentionally omitted to protect intellectual property while enabling academic study and interoperability research.</p>
 
----
+<hr />
 
-## Contact
+<h2>Contact</h2>
 
-| Field | Value |
-|-------|-------|
-| Author | Kenneth E Sweet Jr |
-| Organization | PromptFluid® |
-| Email | dev@cmpsbl.com |
-| ORCID | [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX) |
-| DOI | [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX) |
+<table>
+<tr><th>Field</th><th>Value</th></tr>
+<tr><td>Author</td><td>Kenneth E Sweet Jr</td></tr>
+<tr><td>Organization</td><td>PromptFluid®</td></tr>
+<tr><td>Email</td><td>dev@cmpsbl.com</td></tr>
+<tr><td>ORCID</td><td><a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></td></tr>
+<tr><td>DOI</td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
+</table>
 
----
+<hr />
 
-*CMPSBL OS Substrate v10.5.1 — Academic Documentation Set*  
-*© 2025–2026 PromptFluid®. All rights reserved.*
+<p><em>CMPSBL OS Substrate v10.5.1 — Academic Documentation Set</em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
+
+</div>
+</body>
+</html>

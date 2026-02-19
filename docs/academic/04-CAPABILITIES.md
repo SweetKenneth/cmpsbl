@@ -1,82 +1,110 @@
-# Capability System
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Capability System — CMPSBL OS Substrate</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}}
+</style>
+</head>
+<body>
+<div class="page">
 
-## CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch
+<h1>Capability System</h1>
+<p><strong>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</strong></p>
+<p>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
+Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)</p>
+<hr />
 
-**DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
-**Author:** Kenneth E Sweet Jr (ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX))
+<h2>4. Capability System</h2>
 
----
+<p>The substrate implements a capability-based architecture where each unit of functionality is registered, versioned, and composable. This section describes the capability model, lifecycle, and composition mechanics.</p>
 
-## 4. Capability System
+<h3>4.1 Capability Definition</h3>
 
-The substrate implements a capability-based architecture where each unit of functionality is registered, versioned, and composable. This section describes the capability model, lifecycle, and composition mechanics.
+<p>A capability is a registered unit of functionality with the following properties:</p>
 
-### 4.1 Capability Definition
+<ul>
+<li><strong>Identity.</strong> A unique identifier and human-readable name.</li>
+<li><strong>Module assignment.</strong> One or more modules that implement the capability.</li>
+<li><strong>Risk classification.</strong> Low, medium, or high, reflecting the potential impact of the capability.</li>
+<li><strong>Reversibility.</strong> Whether the operation can be undone.</li>
+<li><strong>Tier assignment.</strong> Which subscription tiers may access the capability.</li>
+<li><strong>Observability.</strong> Usage metrics, performance data, and value tracking.</li>
+</ul>
 
-A capability is a registered unit of functionality with the following properties:
+<h3>4.2 Capability Categories</h3>
 
-- **Identity.** A unique identifier and human-readable name.
-- **Module assignment.** One or more modules that implement the capability.
-- **Risk classification.** Low, medium, or high, reflecting the potential impact of the capability.
-- **Reversibility.** Whether the operation can be undone.
-- **Tier assignment.** Which subscription tiers may access the capability.
-- **Observability.** Usage metrics, performance data, and value tracking.
+<table>
+<tr><th>Category</th><th>Approximate Count</th><th>Domain</th></tr>
+<tr><td>Memory &amp; Learning</td><td>~50</td><td>Persistent storage, retrieval, reinforcement</td></tr>
+<tr><td>AI Routing</td><td>~30</td><td>Provider selection, failover, cost optimization</td></tr>
+<tr><td>Security &amp; Defense</td><td>~40</td><td>Threat detection, behavioral analysis</td></tr>
+<tr><td>Evolution</td><td>~25</td><td>Self-improvement proposals and validation</td></tr>
+<tr><td>Orchestration</td><td>~35</td><td>Multi-module pipeline execution</td></tr>
+<tr><td>Observability</td><td>~30</td><td>Health monitoring, anomaly detection</td></tr>
+<tr><td>NLP &amp; Communication</td><td>~25</td><td>Intent classification, response generation</td></tr>
+<tr><td>Infrastructure</td><td>~45</td><td>Vector storage, delivery, audit logging</td></tr>
+<tr><td>Accessibility</td><td>~20</td><td>WCAG scanning, automated remediation</td></tr>
+<tr><td>Integration</td><td>~30</td><td>External API connectivity</td></tr>
+<tr><td>Governance</td><td>~35</td><td>Autonomy management, bounded authority</td></tr>
+<tr><td>Autonomous Learning</td><td>~20</td><td>Dream cycles, creative synthesis</td></tr>
+<tr><td>Cognitive</td><td>~25</td><td>Self-reflection, meta-learning</td></tr>
+</table>
 
-### 4.2 Capability Categories
+<h3>4.3 Capability Lifecycle</h3>
 
-Capabilities are organized into 13 functional categories:
+<p>Capabilities follow a six-stage lifecycle:</p>
 
-| Category | Approximate Count | Domain |
-|----------|-------------------|--------|
-| Memory & Learning | ~50 | Persistent storage, retrieval, reinforcement |
-| AI Routing | ~30 | Provider selection, failover, cost optimization |
-| Security & Defense | ~40 | Threat detection, behavioral analysis |
-| Evolution | ~25 | Self-improvement proposals and validation |
-| Orchestration | ~35 | Multi-module pipeline execution |
-| Observability | ~30 | Health monitoring, anomaly detection |
-| NLP & Communication | ~25 | Intent classification, response generation |
-| Infrastructure | ~45 | Vector storage, delivery, audit logging |
-| Accessibility | ~20 | WCAG scanning, automated remediation |
-| Integration | ~30 | External API connectivity |
-| Governance | ~35 | Autonomy management, bounded authority |
-| Autonomous Learning | ~20 | Dream cycles, creative synthesis |
-| Cognitive | ~25 | Self-reflection, meta-learning |
+<ol>
+<li><strong>Proposed</strong> — suggested by a human operator or the evolution engine</li>
+<li><strong>Validated</strong> — tested against regression criteria and safety checks</li>
+<li><strong>Registered</strong> — added to the capability registry with full metadata</li>
+<li><strong>Active</strong> — available for invocation</li>
+<li><strong>Deprecated</strong> — marked for removal but still functional</li>
+<li><strong>Removed</strong> — deregistered and unavailable</li>
+</ol>
 
-### 4.3 Capability Lifecycle
+<h3>4.4 Composition</h3>
 
-Capabilities follow a six-stage lifecycle:
+<p>Capabilities compose into synergy pipelines (§5). Composition is governed by:</p>
 
-1. **Proposed** — suggested by a human operator or the evolution engine
-2. **Validated** — tested against regression criteria and safety checks
-3. **Registered** — added to the capability registry with full metadata
-4. **Active** — available for invocation
-5. **Deprecated** — marked for removal but still functional
-6. **Removed** — deregistered and unavailable
+<ul>
+<li><strong>Module compatibility.</strong> Not all capabilities can be chained; compatibility is defined in the registry.</li>
+<li><strong>Error propagation.</strong> Each pipeline defines how failures in intermediate capabilities are handled.</li>
+<li><strong>Rollback semantics.</strong> Pipelines that modify state define rollback procedures for partial execution.</li>
+</ul>
 
-### 4.4 Composition
+<h3>4.5 Tiering</h3>
 
-Capabilities compose into synergy pipelines (§5). Composition is governed by:
+<table>
+<tr><th>Tier</th><th>Access Model</th><th>Count</th></tr>
+<tr><td>Free</td><td>Public access</td><td>~80</td></tr>
+<tr><td>Pro</td><td>Paid subscription</td><td>~150</td></tr>
+<tr><td>Enterprise</td><td>Contract-based</td><td>~120</td></tr>
+<tr><td>Internal</td><td>Restricted (Crown Jewels)</td><td>~54</td></tr>
+</table>
 
-- **Module compatibility.** Not all capabilities can be chained; compatibility is defined in the registry.
-- **Error propagation.** Each pipeline defines how failures in intermediate capabilities are handled.
-- **Rollback semantics.** Pipelines that modify state define rollback procedures for partial execution.
+<p>Internal-tier capabilities represent architecturally sensitive functionality that is excluded from all external access.</p>
 
-### 4.5 Tiering
+<hr />
 
-Capabilities are assigned to four tiers based on complexity, cost, and strategic sensitivity:
+<p><em>CMPSBL OS Substrate v9.1.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
-| Tier | Access Model | Count |
-|------|-------------|-------|
-| Free | Public access | ~80 |
-| Pro | Paid subscription | ~150 |
-| Enterprise | Contract-based | ~120 |
-| Internal | Restricted (Crown Jewels) | ~54 |
-
-Internal-tier capabilities represent architecturally sensitive functionality that is excluded from all external access.
-
----
-
-*CMPSBL OS Substrate v9.1.0 — Academic Documentation*  
-*Kenneth E Sweet Jr · ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)*  
-*DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)*  
-*© 2025–2026 PromptFluid®. All rights reserved.*
+</div>
+</body>
+</html>

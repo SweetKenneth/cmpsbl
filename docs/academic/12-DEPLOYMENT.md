@@ -1,40 +1,65 @@
-# Deployment Model
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Deployment Model — CMPSBL OS Substrate</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-## CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch
+<h1>Deployment Model</h1>
+<p><strong>CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch</strong></p>
+<p>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
+Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)</p>
+<hr />
 
-**DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
-**Author:** Kenneth E Sweet Jr (ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX))
+<h2>12. Deployment Model</h2>
 
----
+<h3>12.1 Infrastructure Requirements</h3>
 
-## 12. Deployment Model
+<p>The substrate operates on commodity cloud infrastructure:</p>
 
-### 12.1 Infrastructure Requirements
+<table>
+<tr><th>Component</th><th>Technology</th><th>Purpose</th></tr>
+<tr><td>Database</td><td>PostgreSQL 15+ with pgvector</td><td>Persistent storage, RLS, real-time</td></tr>
+<tr><td>Edge Runtime</td><td>Deno-compatible platform</td><td>Module logic, API handlers</td></tr>
+<tr><td>Client</td><td>TypeScript / React</td><td>Terminal UI, admin dashboard</td></tr>
+<tr><td>AI Providers</td><td>External (BYOK)</td><td>LLM inference</td></tr>
+</table>
 
-The substrate operates on commodity cloud infrastructure:
+<h3>12.2 BYOK Model</h3>
 
-| Component | Technology | Purpose |
-|-----------|-----------|---------|
-| Database | PostgreSQL 15+ with pgvector | Persistent storage, RLS, real-time |
-| Edge Runtime | Deno-compatible platform | Module logic, API handlers |
-| Client | TypeScript / React | Terminal UI, admin dashboard |
-| AI Providers | External (BYOK) | LLM inference |
+<p>The substrate follows a Bring Your Own Keys model. Users provide their own infrastructure, AI provider API keys, and deployment environment. No compute resources are included. This ensures complete data sovereignty.</p>
 
-### 12.2 BYOK Model
+<h3>12.3 Deployment Topology</h3>
 
-The substrate follows a Bring Your Own Keys model. Users provide their own infrastructure, AI provider API keys, and deployment environment. No compute resources are included. This ensures complete data sovereignty.
+<p>The system follows a three-tier architecture: client (browser) → edge functions (Deno) → database (PostgreSQL) with external AI provider connections from the edge layer. All communication uses HTTPS/TLS.</p>
 
-### 12.3 Deployment Topology
+<h3>12.4 Data Sovereignty</h3>
 
-The system follows a three-tier architecture: client (browser) → edge functions (Deno) → database (PostgreSQL) with external AI provider connections from the edge layer. All communication uses HTTPS/TLS.
+<p>All data remains within the user's own infrastructure. The substrate does not transmit data to any external system other than the user-configured AI providers for inference requests.</p>
 
-### 12.4 Data Sovereignty
+<hr />
 
-All data remains within the user's own infrastructure. The substrate does not transmit data to any external system other than the user-configured AI providers for inference requests.
+<p><em>CMPSBL OS Substrate v10.5.1 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
----
-
-*CMPSBL OS Substrate v10.5.1 — Academic Documentation*  
-*Kenneth E Sweet Jr · ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)*  
-*DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)*  
-*© 2025–2026 PromptFluid®. All rights reserved.*
+</div>
+</body>
+</html>
