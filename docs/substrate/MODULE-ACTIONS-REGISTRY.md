@@ -5,20 +5,20 @@
 | Field | Value |
 |-------|-------|
 | Document ID | CMPSBL-MAR-001 |
-| Version | v2026.02.05 |
-| Last Updated | 2026-02-05 |
+| Version | v2026.02.19 |
+| Last Updated | 2026-02-19 |
 | Status | ACTIVE |
-| Substrate Version | 7.5.0 |
+| Substrate Version | 10.5.4 |
 | Type | Cognitive Orchestration Substrate |
-| Synergy Pipelines | 120 |
-| Synergy Executors | 98 |
-| Changelog | [CHANGELOG.md](./CHANGELOG.md) |
+| Synergy Pipelines | 200+ |
+| Synergy Executors | 125 |
+| Total Modules | 21 |
 
 ---
 
 ## Overview
 
-This document catalogs all registered module actions across the CMPSBL substrate v7.5.0. Each module exposes a set of actions via the unified `pf-substrate` endpoint or dedicated edge functions. The SEBA Era introduces 120 synergy pipelines, 98 custom executors, and **156 deployed actions** for cross-module orchestration.
+This document catalogs all registered module actions across the CMPSBL substrate v10.5.4. Each module exposes a set of actions via the unified `pf-substrate` endpoint or dedicated edge functions. The ARCHITECT Epoch introduces 200+ synergy pipelines, 125 custom executors, and **21 modules across 6 layers**.
 
 ### v7.5.0 Summary: 42 New Production Functions
 
@@ -389,25 +389,138 @@ Enterprise adapters, auto-discovery, command mapping, LLM governance.
 
 ---
 
+## Module: ENCODE (v10.5.3)
+
+Governed code execution engine, DECODE→ENCODE pipeline, graduated autonomy.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `generate` | Generate code from natural language | `prompt: string`, `language?: string`, `context?: object` | ✅ DEPLOYED |
+| `validate` | Validate generated code | `code: string`, `rules?: string[]` | ✅ DEPLOYED |
+| `execute` | Execute code in sandbox | `code: string`, `timeout_ms?: number` | ✅ DEPLOYED |
+| `status` | Get ENCODE module stats | — | ✅ DEPLOYED |
+| `mastery` | Get graduated autonomy mastery scores | — | ✅ DEPLOYED |
+| `patterns` | List expert patterns library | `category?: string` | ✅ DEPLOYED |
+| `pulse` | Lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
+## Module: MEMORY (v10.5.1)
+
+Vector store, RAG, embedding management, staleness detection.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `store` | Store vector embedding | `content: string`, `metadata?: object` | ✅ DEPLOYED |
+| `search` | Semantic vector search | `query: string`, `limit?: number`, `threshold?: number` | ✅ DEPLOYED |
+| `staleness` | Check embedding staleness | `threshold?: number` | ✅ DEPLOYED |
+| `reembed` | Re-embed stale vectors | `batch_size?: number` | ✅ DEPLOYED |
+| `status` | Get MEMORY module stats | — | ✅ DEPLOYED |
+| `pulse` | Lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
+## Module: RELAY (v10.5.1)
+
+Outbound webhooks with HMAC signatures and adaptive retry.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `send` | Send webhook with HMAC signature | `url: string`, `payload: object`, `secret?: string` | ✅ DEPLOYED |
+| `verify` | Verify inbound webhook signature | `signature: string`, `payload: string`, `secret: string` | ✅ DEPLOYED |
+| `retry_config` | Configure retry policy | `endpoint: string`, `max_retries?: number`, `backoff?: string` | ✅ DEPLOYED |
+| `status` | Get RELAY module stats | — | ✅ DEPLOYED |
+| `pulse` | Lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
+## Module: AUDIT (v10.5.1)
+
+Immutable compliance logging with SOC2/GDPR/HIPAA/ISO27001 report generation.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `log` | Write immutable audit entry | `action: string`, `entity_type: string`, `entity_id?: string`, `details?: object` | ✅ DEPLOYED |
+| `query` | Query audit log | `entity_type?: string`, `action?: string`, `start?: string`, `end?: string` | ✅ DEPLOYED |
+| `compliance_report` | Generate compliance report | `framework: 'soc2'|'gdpr'|'hipaa'|'iso27001'` | ✅ DEPLOYED |
+| `compress` | Compress old entries | `older_than_days?: number` | ✅ DEPLOYED |
+| `status` | Get AUDIT module stats | — | ✅ DEPLOYED |
+| `pulse` | Lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
+## Module: IDENTITY (v10.5.1)
+
+Actor attribution, reputation scoring, cross-agency identity portability.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `attribute` | Attribute action to actor | `actor_id: string`, `action: string`, `context?: object` | ✅ DEPLOYED |
+| `reputation` | Get/update actor reputation | `actor_id: string`, `signal?: string` | ✅ DEPLOYED |
+| `portable_token` | Generate portable identity JWT | `actor_id: string`, `target_agency?: string` | ✅ DEPLOYED |
+| `verify_token` | Verify portable identity JWT | `token: string` | ✅ DEPLOYED |
+| `status` | Get IDENTITY module stats | — | ✅ DEPLOYED |
+| `pulse` | Lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
+## Module: ECONOMY (v10.5.1)
+
+Cost tracking, predictive forecasting, per-capability cost attribution.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `track` | Track cost event | `capability: string`, `tokens?: number`, `cost_millicents?: number` | ✅ DEPLOYED |
+| `forecast` | Predictive cost forecast | `period?: string`, `confidence_level?: number` | ✅ DEPLOYED |
+| `attribution` | Per-capability cost breakdown | `period?: string`, `group_by?: string` | ✅ DEPLOYED |
+| `budget` | Get/set budget limits | `limit_cents?: number`, `alert_threshold?: number` | ✅ DEPLOYED |
+| `status` | Get ECONOMY module stats | — | ✅ DEPLOYED |
+| `pulse` | Lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
+## Module: SANDBOX (v10.5.1)
+
+Safe code execution with hard resource limits and snapshot/restore.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `create` | Create sandbox instance | `config?: object` | ✅ DEPLOYED |
+| `execute` | Execute code in sandbox | `sandbox_id: string`, `code: string`, `timeout_ms?: number` | ✅ DEPLOYED |
+| `snapshot` | Save sandbox state | `sandbox_id: string`, `label?: string` | ✅ DEPLOYED |
+| `restore` | Restore sandbox from snapshot | `snapshot_id: string` | ✅ DEPLOYED |
+| `destroy` | Destroy sandbox instance | `sandbox_id: string` | ✅ DEPLOYED |
+| `status` | Get SANDBOX module stats | — | ✅ DEPLOYED |
+| `pulse` | Lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
 ## Summary: Deployed Actions
 
-| Module | Deployed | Planned (Stubs) |
-|--------|----------|-----------------|
-| **Core** | 10 | 0 |
-| **Ripple** | 8 | 0 |
-| **Access** | 10 | 0 |
-| **Brain** | 10 | 9 |
-| **Decode** | 5 | 3 |
-| **Defense** | 7 | 7 |
-| **Nexus** | 4 | 5 |
-| **Vision** | 14 | 0 |
-| **Dream** | 3 | 6 |
-| **System** | 9 | 2 |
-| **Modernizer** | 4 | 2 |
-| **Integration** | 12 | 0 |
-| **Inclusive** | 8 | 0 |
-| **Cortex** | 9 | 0 |
-| **Total** | **156** | **13** |
+| Module | Deployed | Layer |
+|--------|----------|-------|
+| **Core** | 10 | Kernel |
+| **Ripple** | 8 | Kernel |
+| **Access** | 10 | Kernel |
+| **Brain** | 10 | Cognitive |
+| **Decode** | 5 | Cognitive |
+| **Dream** | 3 | Cognitive |
+| **Defense** | 7 | Operational |
+| **Nexus** | 4 | Operational |
+| **Vision** | 14 | Operational |
+| **Integration** | 12 | Operational |
+| **System** | 9 | Administrative |
+| **Modernizer** | 4 | Administrative |
+| **Inclusive** | 8 | Administrative |
+| **Cortex** | 9 | Orchestrator |
+| **Encode** | 7 | Orchestrator |
+| **Memory** | 6 | Infrastructure |
+| **Relay** | 5 | Infrastructure |
+| **Audit** | 6 | Infrastructure |
+| **Identity** | 6 | Infrastructure |
+| **Economy** | 6 | Infrastructure |
+| **Sandbox** | 7 | Infrastructure |
+| **Total** | **200+** | 6 Layers |
 
 ---
 
@@ -429,7 +542,6 @@ The substrate supports external integrations via the `integration-bus` edge func
 
 **Founder:** Kenneth E Sweet Jr  
 **Email:** promptfluid@gmail.com  
-**Phone:** (214) 548-0883  
 **Website:** https://cmpsbl.com
 
 ---

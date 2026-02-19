@@ -1,8 +1,8 @@
 # CMPSBL Substrate — User Manual
 
-**v9.1.0 — ARCHITECT Epoch (Self-Evolving Bounded Agent)**
+**v10.5.4 — ARCHITECT Epoch (21-Module Cognitive Orchestration Substrate)**
 
-*Last Updated: 2026-02-13*
+*Last Updated: 2026-02-19*
 
 ---
 
@@ -141,6 +141,15 @@ POST https://[project-id].supabase.co/functions/v1/pf-substrate
 | **system** | Administration | `status`, `health`, `heal`, `backup`, `restore`, `diagnostics` |
 | **modernizer** | Self-upgrade | `scan`, `propose`, `apply`, `status` |
 | **integration** | Enterprise adapters | `adapters`, `connect`, `discover`, `execute`, `governance` |
+| **inclusive** | Accessibility | `scan`, `repair`, `validate`, `profile` |
+| **cortex** | Orchestration | `workflow_execute`, `propose`, `evaluate` |
+| **encode** | Code execution | `generate`, `validate`, `execute`, `mastery` |
+| **memory** | Vector store / RAG | `store`, `search`, `staleness`, `reembed` |
+| **relay** | Webhooks | `send`, `verify`, `retry_config` |
+| **audit** | Compliance logging | `log`, `query`, `compliance_report`, `compress` |
+| **identity** | Actor attribution | `attribute`, `reputation`, `portable_token`, `verify_token` |
+| **economy** | Cost tracking | `track`, `forecast`, `attribution`, `budget` |
+| **sandbox** | Safe execution | `create`, `execute`, `snapshot`, `restore`, `destroy` |
 
 ---
 
@@ -557,6 +566,119 @@ Administrative operations.
 
 ---
 
+## Module: Encode
+
+Governed code execution engine with DECODE→ENCODE pipeline and graduated autonomy.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `generate` | Generate code from NL | `prompt`, `language?`, `context?` | ✅ Deployed |
+| `validate` | Validate generated code | `code`, `rules?` | ✅ Deployed |
+| `execute` | Execute in sandbox | `code`, `timeout_ms?` | ✅ Deployed |
+| `mastery` | Get autonomy mastery scores | — | ✅ Deployed |
+| `patterns` | Expert patterns library | `category?` | ✅ Deployed |
+| `status` | Module health | — | ✅ Deployed |
+
+---
+
+## Module: Memory (Infrastructure)
+
+Vector store, RAG, embedding staleness detection, relevance feedback.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `store` | Store vector embedding | `content`, `metadata?` | ✅ Deployed |
+| `search` | Semantic vector search | `query`, `limit?`, `threshold?` | ✅ Deployed |
+| `staleness` | Check embedding staleness | `threshold?` | ✅ Deployed |
+| `reembed` | Re-embed stale vectors | `batch_size?` | ✅ Deployed |
+| `status` | Module health | — | ✅ Deployed |
+
+---
+
+## Module: Relay (Infrastructure)
+
+HMAC-signed webhooks with adaptive retry and jitter.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `send` | Send HMAC-signed webhook | `url`, `payload`, `secret?` | ✅ Deployed |
+| `verify` | Verify inbound signature | `signature`, `payload`, `secret` | ✅ Deployed |
+| `retry_config` | Configure retry policy | `endpoint`, `max_retries?`, `backoff?` | ✅ Deployed |
+| `status` | Module health | — | ✅ Deployed |
+
+---
+
+## Module: Audit (Infrastructure)
+
+Immutable compliance logging with framework-specific report generation.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `log` | Write immutable audit entry | `action`, `entity_type`, `entity_id?`, `details?` | ✅ Deployed |
+| `query` | Query audit log | `entity_type?`, `action?`, `start?`, `end?` | ✅ Deployed |
+| `compliance_report` | Generate compliance report | `framework` (soc2/gdpr/hipaa/iso27001) | ✅ Deployed |
+| `compress` | Compress old entries | `older_than_days?` | ✅ Deployed |
+| `status` | Module health | — | ✅ Deployed |
+
+---
+
+## Module: Identity (Infrastructure)
+
+Actor attribution, reputation scoring, cross-agency identity portability.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `attribute` | Attribute action to actor | `actor_id`, `action`, `context?` | ✅ Deployed |
+| `reputation` | Get/update reputation | `actor_id`, `signal?` | ✅ Deployed |
+| `portable_token` | Generate portable identity JWT | `actor_id`, `target_agency?` | ✅ Deployed |
+| `verify_token` | Verify portable JWT | `token` | ✅ Deployed |
+| `status` | Module health | — | ✅ Deployed |
+
+---
+
+## Module: Economy (Infrastructure)
+
+Cost tracking, predictive forecasting, per-capability cost attribution.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `track` | Track cost event | `capability`, `tokens?`, `cost_millicents?` | ✅ Deployed |
+| `forecast` | Predictive cost forecast | `period?`, `confidence_level?` | ✅ Deployed |
+| `attribution` | Per-capability cost breakdown | `period?`, `group_by?` | ✅ Deployed |
+| `budget` | Get/set budget limits | `limit_cents?`, `alert_threshold?` | ✅ Deployed |
+| `status` | Module health | — | ✅ Deployed |
+
+---
+
+## Module: Sandbox (Infrastructure)
+
+Safe code execution with hard resource limits and snapshot/restore.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `create` | Create sandbox instance | `config?` | ✅ Deployed |
+| `execute` | Execute code in sandbox | `sandbox_id`, `code`, `timeout_ms?` | ✅ Deployed |
+| `snapshot` | Save sandbox state | `sandbox_id`, `label?` | ✅ Deployed |
+| `restore` | Restore from snapshot | `snapshot_id` | ✅ Deployed |
+| `destroy` | Destroy sandbox | `sandbox_id` | ✅ Deployed |
+| `status` | Module health | — | ✅ Deployed |
+
+---
+
 ## Authentication
 
 ### Public Endpoints
@@ -798,4 +920,4 @@ function Dashboard() {
 
 ---
 
-*promptfluid® — Cognitive Orchestration Substrate v4.0.0*
+*promptfluid® — Cognitive Orchestration Substrate v10.5.4 ARCHITECT Epoch*
