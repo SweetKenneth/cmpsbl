@@ -1,923 +1,161 @@
-# CMPSBL Substrate — User Manual
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>CMPSBL Substrate — User Manual</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}th,td{border:1px solid #ccc;padding:6px 8px}th{background:#f3f3f3;text-align:left}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:9pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  a{color:#333;text-decoration:underline}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-**v10.5.4 — ARCHITECT Epoch (21-Module Cognitive Orchestration Substrate)**
+<h1>CMPSBL Substrate — User Manual</h1>
+<p><strong>v10.8.0 — ARCHITECT Epoch (21-Module Cognitive Orchestration Substrate)</strong></p>
+<p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
+<strong>ORCID:</strong> <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a><br />
+<strong>OSF:</strong> <a href="https://osf.io/ah7nx/overview">osf.io/ah7nx</a><br />
+<em>Last Updated: 2026-02-19</em></p>
+<hr />
 
-*Last Updated: 2026-02-19*
+<h2>What is the Substrate?</h2>
 
----
+<p>The CMPSBL Substrate is a unified API gateway for cognitive AI operations. It provides:</p>
 
-## What is the Substrate?
+<ul>
+<li><strong>Memory &amp; Learning</strong> — 3-tier persistent memory (Hot/Warm/Cold), knowledge graphs, learning cycles</li>
+<li><strong>Conversational AI</strong> — Intent decoding, epistemic translation, dream generation</li>
+<li><strong>Security</strong> — Bot detection, threat analysis, behavioral firewalls</li>
+<li><strong>AI Routing</strong> — Multi-provider model selection with intelligent failover</li>
+<li><strong>Observability</strong> — Real-time health, distributed tracing, audit logs</li>
+<li><strong>Dream Processing</strong> — Autonomous cognition cycles for pattern extraction</li>
+<li><strong>Self-Evolution</strong> — SEBA (Self-Evolving Bounded Agent) for autonomous improvement</li>
+<li><strong>300+ Synergy Pipelines</strong> — Cross-module orchestration with 100 crystallized pipelines</li>
+<li><strong>500+ Capabilities</strong> — Comprehensive module coverage across 21 modules</li>
+</ul>
 
-The CMPSBL Substrate is a unified API gateway for cognitive AI operations. It provides:
+<p>All capabilities are accessed through a single endpoint.</p>
 
-- **Memory & Learning** — 3-tier persistent memory (Hot/Warm/Cold), knowledge graphs, learning cycles
-- **Conversational AI** — Intent decoding, epistemic translation, dream generation
-- **Security** — Bot detection, threat analysis, behavioral firewalls
-- **AI Routing** — Multi-provider model selection with intelligent failover
-- **Observability** — Real-time health, distributed tracing, audit logs
-- **Dream Processing** — Autonomous cognition cycles for pattern extraction
-- **Kernel Operations** — Job scheduling, lifecycle management, state machine
-- **Message Bus** — Async queues, pub/sub, event sourcing
-- **Identity & Billing** — API keys, quotas, usage metering
-- **Enterprise Integration** — 35+ adapters for external systems with LLM governance
-- **Self-Evolution** — SEBA (Self-Evolving Bounded Agent) for autonomous improvement
-- **120 Synergy Pipelines** — Cross-module orchestration with 98 custom executors
-- **156 Deployed Actions** — Comprehensive module coverage with v7.5.0 enhancements
+<hr />
 
-All capabilities are accessed through a single endpoint.
+<h2>Quick Start</h2>
 
----
+<h3>Basic Request Format</h3>
 
-## v7.5.0 New Capabilities
-
-This version adds **42 new production-grade functions** across modules:
-
-### BRAIN — Query Optimization & Consolidation
-```json
-{
-  "module": "brain",
-  "action": "query_optimize",
-  "payload": { "query": "user preferences", "use_cache": true }
-}
-```
-
-### NEXUS — Load Balancing
-```json
-{
-  "module": "nexus",
-  "action": "load_balance",
-  "payload": { "task_type": "text", "strategy": "weighted" }
-}
-```
-
-### DEFENSE — Behavioral Analysis
-```json
-{
-  "module": "defense",
-  "action": "behavioral_score",
-  "payload": { "entity_id": "user_123", "entity_type": "user" }
-}
-```
-
-### CORTEX — Workflow Engine
-```json
-{
-  "module": "cortex",
-  "action": "workflow_execute",
-  "payload": {
-    "workflow_id": "data-enrichment",
-    "context": { "userId": "123" }
-  }
-}
-```
-
-### SYSTEM — Dependency Graph
-```json
-{
-  "module": "system",
-  "action": "dependency_graph",
-  "payload": { "target": "brain" }
-}
-```
-
-### VISION — Alert Management
-```json
-{
-  "module": "vision",
-  "action": "alert_create",
-  "payload": {
-    "severity": "warning",
-    "message": "High memory usage",
-    "source": "brain"
-  }
-}
-```
-
----
-
-## Quick Start
-
-### API Endpoint
-
-```
-POST https://[project-id].supabase.co/functions/v1/pf-substrate
-```
-
-### Basic Request Format
-
-```json
-{
+<div class="card">
+<pre>{
   "module": "brain",
   "action": "status",
   "payload": {}
-}
-```
+}</pre>
+</div>
 
-### Response Format
+<h3>Response Format</h3>
 
-```json
-{
+<div class="card">
+<pre>{
   "success": true,
   "data": { ... },
-  "timestamp": "2026-01-13T..."
-}
-```
-
----
-
-## Modules Overview
-
-| Module | Purpose | Key Actions |
-|--------|---------|-------------|
-| **core** | Kernel (scheduler, lifecycle, routing) | `boot`, `schedule`, `config`, `shutdown`, `status` |
-| **ripple** | Message Bus (async, pub/sub) | `enqueue`, `publish`, `subscribe`, `status` |
-| **access** | Identity (API keys, billing) | `create_key`, `validate_key`, `get_usage`, `check_quota` |
-| **brain** | Memory, learning, reflection | `query`, `remember`, `reflect`, `reinforce`, `dream`, `status` |
-| **decode** | Chat, intent, dreams | `chat`, `intent`, `dream`, `learn`, `status` |
-| **defense** | Security, bots | `analyze`, `reputation`, `anomaly`, `posture`, `limits`, `status` |
-| **nexus** | AI routing | `route`, `providers`, `routeStats`, `status` |
-| **vision** | Observability | `health`, `healthSnapshot`, `dashboard`, `pulse`, `introspection` |
-| **dream** | Dream-Eater | `cycle`, `awaken`, `feed` |
-| **system** | Administration | `status`, `health`, `heal`, `backup`, `restore`, `diagnostics` |
-| **modernizer** | Self-upgrade | `scan`, `propose`, `apply`, `status` |
-| **integration** | Enterprise adapters | `adapters`, `connect`, `discover`, `execute`, `governance` |
-| **inclusive** | Accessibility | `scan`, `repair`, `validate`, `profile` |
-| **cortex** | Orchestration | `workflow_execute`, `propose`, `evaluate` |
-| **encode** | Code execution | `generate`, `validate`, `execute`, `mastery` |
-| **memory** | Vector store / RAG | `store`, `search`, `staleness`, `reembed` |
-| **relay** | Webhooks | `send`, `verify`, `retry_config` |
-| **audit** | Compliance logging | `log`, `query`, `compliance_report`, `compress` |
-| **identity** | Actor attribution | `attribute`, `reputation`, `portable_token`, `verify_token` |
-| **economy** | Cost tracking | `track`, `forecast`, `attribution`, `budget` |
-| **sandbox** | Safe execution | `create`, `execute`, `snapshot`, `restore`, `destroy` |
-
----
-
-## Module: Core (Kernel)
-
-The kernel that manages all other modules. Handles scheduling, routing, and lifecycle.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `boot` | Initialize all modules | — | ✅ Deployed |
-| `schedule` | Queue jobs with priority | `module`, `action`, `delay?`, `payload?` | ✅ Deployed |
-| `authorize` | Check permissions | `api_key`, `action` | ✅ Deployed |
-| `route` | Forward to module | `module`, `action`, `payload` | ✅ Deployed |
-| `config` | Get/set configuration | `key?`, `value?` | ✅ Deployed |
-| `shutdown` | Graceful shutdown | `confirm` | ✅ Deployed |
-| `status` | Get kernel status | — | ✅ Deployed |
-| `pulse` | Heartbeat | — | ✅ Deployed |
-
-### Examples
-
-**Schedule a Job:**
-```json
-{
-  "module": "core",
-  "action": "schedule",
-  "target_module": "brain",
-  "target_action": "reflect",
-  "delay": "5m"
-}
-```
-
----
-
-## Module: Ripple (Message Bus)
-
-Async job processing, pub/sub messaging, event sourcing.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `enqueue` | Add job to queue | `queue`, `job_type`, `payload` | ✅ Deployed |
-| `dequeue` | Get next job | `queue` | ✅ Deployed |
-| `publish` | Publish event | `topic`, `event_type`, `payload` | ✅ Deployed |
-| `subscribe` | Subscribe to topic | `topic`, `subscriber_module`, `subscriber_action` | ✅ Deployed |
-| `status` | Queue stats | — | ✅ Deployed |
-| `pulse` | Heartbeat | — | ✅ Deployed |
-
-### Examples
-
-**Publish Event:**
-```json
-{
-  "module": "ripple",
-  "action": "publish",
-  "topic": "memory.stored",
-  "event_type": "new_insight",
-  "payload": { "memory_id": "abc123" }
-}
-```
-
----
-
-## Module: Access (Identity & Billing)
-
-API key management, usage metering, quotas.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `create_key` | Generate new API key | `name`, `scopes?`, `expires_in_days?` | ✅ Deployed |
-| `validate_key` | Validate API key | `api_key` | ✅ Deployed |
-| `revoke_key` | Revoke API key | `key_id` | ✅ Deployed |
-| `list_keys` | List developer's keys | `developer_id?` | ✅ Deployed |
-| `get_usage` | Get usage stats | `start_date?`, `end_date?` | ✅ Deployed |
-| `check_quota` | Check remaining quota | `api_key_id` | ✅ Deployed |
-| `pulse` | Heartbeat | — | ✅ Deployed |
-
-### Examples
-
-**Create API Key:**
-```json
-{
-  "module": "access",
-  "action": "create_key",
-  "name": "Production API",
-  "scopes": ["brain:read", "nexus:write"]
-}
-```
-
----
-
-The cognitive memory system. Store, query, and evolve knowledge.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `status` | Check module health | — | ✅ Deployed |
-| `query` | Search memories | `query_text`, `limit?` | ✅ Deployed |
-| `remember` | Store new memory | `content`, `memory_type`, `confidence?`, `metadata?` | ✅ Deployed |
-| `reflect` | Generate daily reflection | — | ✅ Deployed |
-| `reinforce` | Boost memory confidence | `memory_id`, `boost?` | ✅ Deployed |
-| `dream` | Run dream cycle | — | ✅ Deployed |
-| `learn` | Ingest knowledge (via decode) | `content`, `source?` | ✅ Deployed |
-| `graphSummary` | Knowledge graph structure | — | ✅ Deployed |
-| `sessionReflection` | Cross-module activity reflection | `hours?` | ✅ Deployed |
-| `coldMigrate` | Move memories to cold storage | — | ✅ Deployed (standalone) |
-
-**Note:** Actions like `recall`, `synthesize`, `train`, `optimize`, `deepThink`, `hypothesisTest`, `cognitiveCycle`, `continuousLearn`, `forecast`, `graphBuild` are planned but not yet deployed via substrate.
-
-### Examples
-
-**Query Memories:**
-```json
-{
-  "module": "brain",
-  "action": "query",
-  "payload": {
-    "query_text": "machine learning",
-    "limit": 10
-  }
-}
-```
-
-**Store Memory:**
-```json
-{
-  "module": "brain",
-  "action": "remember",
-  "payload": {
-    "content": "Neural networks learn through backpropagation",
-    "type": "fact",
-    "source": "user_input",
-    "confidence": 0.9
-  }
-}
-```
-
-**Run Reflection:**
-```json
-{
-  "module": "brain",
-  "action": "reflect",
-  "payload": {}
-}
-```
-
----
-
-## Module: Decode
-
-Conversational AI with intent decoding. Epistemic translation layer for the substrate.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `status` | Check module health | — | ✅ Deployed |
-| `chat` | Process message | `message`, `sessionId?`, `conversationHistory?` | ✅ Deployed |
-| `intent` | Extract structured intent | `message` | ✅ Deployed |
-| `dream` | Initiate dream cycle | — | ✅ Deployed |
-| `learn` | Learn from interaction | `content`, `source?` | ✅ Deployed |
-
-**Note:** Actions like `propose`, `reflect`, `summary` are planned but not yet deployed via substrate.
-
-### Examples
-
-**Chat:**
-```json
-{
-  "module": "decode",
-  "action": "chat",
-  "payload": {
-    "message": "What can you help me with?",
-    "sessionId": "sess_abc123"
-  }
-}
-```
-
-**Extract Intent:**
-```json
-{
-  "module": "decode",
-  "action": "intent",
-  "payload": {
-    "message": "I need to analyze my website performance"
-  }
-}
-```
-
----
-
-## Module: Defense
-
-Security layer for bot detection and threat analysis.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `status` | Check module health | — | ✅ Deployed |
-| `analyze` | Analyze request for threats | `ip_address`, `user_agent?`, `page_url?` | ✅ Deployed |
-| `reputation` | Get IP reputation score | `ip_address` | ✅ Deployed |
-| `anomaly` | Detect anomalies | `timeWindow?` | ✅ Deployed |
-| `anomalyProbe` | Statistical z-score detection | `lookbackHours?` | ✅ Deployed |
-| `limits` | Unified rate limit status | — | ✅ Deployed |
-| `posture` | Consolidated security posture | — | ✅ Deployed |
-
-**Note:** Actions like `report`, `rules`, `block`, `unblock`, `threatFeed`, `rateLimit` are planned but not yet deployed via substrate.
-
-### Examples
-
-**Analyze Request:**
-```json
-{
-  "module": "defense",
-  "action": "analyze",
-  "payload": {
-    "ip_address": "192.168.1.1",
-    "user_agent": "Mozilla/5.0..."
-  }
-}
-```
-
-**Check Reputation:**
-```json
-{
-  "module": "defense",
-  "action": "reputation",
-  "payload": {
-    "ip": "192.168.1.1"
-  }
-}
-```
-
----
-
-## Module: Nexus
-
-Multi-provider AI routing. Automatically selects the best model.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `status` | Check available providers | — | ✅ Deployed |
-| `route` | Route to best provider | `prompt`, `systemPrompt?`, `temperature?` | ✅ Deployed |
-| `providers` | Provider availability matrix | — | ✅ Deployed |
-| `routeStats` | AI routing analytics (24h) | — | ✅ Deployed |
-
-**Note:** Actions like `text`, `image`, `video`, `embed`, `transcribe` are available via standalone edge functions but not yet in the substrate.
-
-### Provider Priority
-1. Groq (llama-3.3-70b-versatile) — fastest
-2. Cerebras (llama-3.3-70b) — fallback
-3. Together (Llama-3.1-70B) — tertiary
-4. DeepSeek (deepseek-chat) — final fallback
-
-### Examples
-
-**Route to Best Provider:**
-```json
-{
-  "module": "nexus",
-  "action": "route",
-  "payload": {
-    "prompt": "Explain quantum computing in simple terms"
-  }
-}
-```
-
-**Check Providers:**
-```json
-{
-  "module": "nexus",
-  "action": "providers",
-  "payload": {}
-}
-```
-
----
-
-## Module: Vision
-
-Observability, metrics, and health monitoring.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `status` | Check module health | — | ✅ Deployed |
-| `health` | Overall system health | — | ✅ Deployed |
-| `healthSnapshot` | Quick consolidated health | — | ✅ Deployed |
-| `metrics` | System-wide metrics | — | ✅ Deployed |
-| `logs` | Recent logs | `module?`, `limit?` | ✅ Deployed |
-| `alert` | Create alert | `severity`, `message` | ✅ Deployed |
-| `dashboard` | Dashboard data | — | ✅ Deployed |
-| `trace` | Distributed tracing | `traceId?`, `create?`, `module?`, `action?`, `duration_ms?` | ✅ Deployed |
-| `audit` | Audit log query | `entity?`, `action?` | ✅ Deployed |
-| `monitor` | Ecosystem health monitoring | — | ✅ Deployed |
-| `resilience` | Resilience framework probe | — | ✅ Deployed |
-| `analytics` | Threat analytics (24h) | — | ✅ Deployed |
-| `introspection` | Deep substrate self-analysis | — | ✅ Deployed |
-| `pulse` | Ultra-lightweight heartbeat | — | ✅ Deployed |
-| `quota` | AI usage quota observability | — | ✅ Deployed |
-
-### Examples
-
-**Check Health:**
-```json
-{
-  "module": "vision",
-  "action": "health",
-  "payload": {}
-}
-```
-
-**Get Dashboard:**
-```json
-{
-  "module": "vision",
-  "action": "dashboard",
-  "payload": {}
-}
-```
-
----
-
-## Module: Dream
-
-Dream-Eater operations for autonomous cognition.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `cycle` | Execute dream cycle | `force?`, `send_email?` | ✅ Deployed |
-| `awaken` | Awaken Dream-Eater | `action?` | ✅ Deployed |
-| `feed` | Submit dream for consumption | `dream_content`, `dream_type?` | ✅ Deployed |
-
-**Note:** Actions like `status`, `interpret`, `mutation`, `consume`, `reflect`, `mood` are planned but not yet deployed via substrate.
-
-### Examples
-
-**Feed Dream:**
-```json
-{
-  "module": "dream",
-  "action": "feed",
-  "payload": {
-    "dream_text": "I was floating through an endless library...",
-    "dream_type": "dream"
-  }
-}
-```
-
-**Get State:**
-```json
-{
-  "module": "dream",
-  "action": "state",
-  "payload": {}
-}
-```
-
----
-
-## Module: System
-
-Administrative operations.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `status` | Check system status | — | ✅ Deployed |
-| `health` | Full system health | — | ✅ Deployed |
-| `diagnostics` | Comprehensive diagnostics | — | ✅ Deployed |
-| `heal` | Full heal system | `target?`, `force?` | ✅ Deployed |
-| `backup` | Create validated backup | `include_data?`, `tables?` | ✅ Deployed |
-| `restore` | Restore from backup | `backup_id`, `validate_only?` | ✅ Deployed |
-| `audit` | System audit | — | ✅ Deployed |
-| `version` | Get substrate version | — | ✅ Deployed |
-| `restart` | Restart services | `service?` | ✅ Deployed |
-
-**Note:** Actions like `config`, `shutdown` are planned but not yet deployed via substrate.
-
-### Examples
-
-**Check System Status:**
-```json
-{
-  "module": "system",
-  "action": "status",
-  "payload": {}
-}
-```
-
-**Trigger Heal:**
-```json
-{
-  "module": "system",
-  "action": "heal",
-  "payload": {
-    "target": "brain",
-    "force": true
-  }
-}
-```
-
----
-
-## Module: Encode
-
-Governed code execution engine with DECODE→ENCODE pipeline and graduated autonomy.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `generate` | Generate code from NL | `prompt`, `language?`, `context?` | ✅ Deployed |
-| `validate` | Validate generated code | `code`, `rules?` | ✅ Deployed |
-| `execute` | Execute in sandbox | `code`, `timeout_ms?` | ✅ Deployed |
-| `mastery` | Get autonomy mastery scores | — | ✅ Deployed |
-| `patterns` | Expert patterns library | `category?` | ✅ Deployed |
-| `status` | Module health | — | ✅ Deployed |
-
----
-
-## Module: Memory (Infrastructure)
-
-Vector store, RAG, embedding staleness detection, relevance feedback.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `store` | Store vector embedding | `content`, `metadata?` | ✅ Deployed |
-| `search` | Semantic vector search | `query`, `limit?`, `threshold?` | ✅ Deployed |
-| `staleness` | Check embedding staleness | `threshold?` | ✅ Deployed |
-| `reembed` | Re-embed stale vectors | `batch_size?` | ✅ Deployed |
-| `status` | Module health | — | ✅ Deployed |
-
----
-
-## Module: Relay (Infrastructure)
-
-HMAC-signed webhooks with adaptive retry and jitter.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `send` | Send HMAC-signed webhook | `url`, `payload`, `secret?` | ✅ Deployed |
-| `verify` | Verify inbound signature | `signature`, `payload`, `secret` | ✅ Deployed |
-| `retry_config` | Configure retry policy | `endpoint`, `max_retries?`, `backoff?` | ✅ Deployed |
-| `status` | Module health | — | ✅ Deployed |
-
----
-
-## Module: Audit (Infrastructure)
-
-Immutable compliance logging with framework-specific report generation.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `log` | Write immutable audit entry | `action`, `entity_type`, `entity_id?`, `details?` | ✅ Deployed |
-| `query` | Query audit log | `entity_type?`, `action?`, `start?`, `end?` | ✅ Deployed |
-| `compliance_report` | Generate compliance report | `framework` (soc2/gdpr/hipaa/iso27001) | ✅ Deployed |
-| `compress` | Compress old entries | `older_than_days?` | ✅ Deployed |
-| `status` | Module health | — | ✅ Deployed |
-
----
-
-## Module: Identity (Infrastructure)
-
-Actor attribution, reputation scoring, cross-agency identity portability.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `attribute` | Attribute action to actor | `actor_id`, `action`, `context?` | ✅ Deployed |
-| `reputation` | Get/update reputation | `actor_id`, `signal?` | ✅ Deployed |
-| `portable_token` | Generate portable identity JWT | `actor_id`, `target_agency?` | ✅ Deployed |
-| `verify_token` | Verify portable JWT | `token` | ✅ Deployed |
-| `status` | Module health | — | ✅ Deployed |
-
----
-
-## Module: Economy (Infrastructure)
-
-Cost tracking, predictive forecasting, per-capability cost attribution.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `track` | Track cost event | `capability`, `tokens?`, `cost_millicents?` | ✅ Deployed |
-| `forecast` | Predictive cost forecast | `period?`, `confidence_level?` | ✅ Deployed |
-| `attribution` | Per-capability cost breakdown | `period?`, `group_by?` | ✅ Deployed |
-| `budget` | Get/set budget limits | `limit_cents?`, `alert_threshold?` | ✅ Deployed |
-| `status` | Module health | — | ✅ Deployed |
-
----
-
-## Module: Sandbox (Infrastructure)
-
-Safe code execution with hard resource limits and snapshot/restore.
-
-### Deployed Actions
-
-| Action | Description | Parameters | Status |
-|--------|-------------|------------|--------|
-| `create` | Create sandbox instance | `config?` | ✅ Deployed |
-| `execute` | Execute code in sandbox | `sandbox_id`, `code`, `timeout_ms?` | ✅ Deployed |
-| `snapshot` | Save sandbox state | `sandbox_id`, `label?` | ✅ Deployed |
-| `restore` | Restore from snapshot | `snapshot_id` | ✅ Deployed |
-| `destroy` | Destroy sandbox | `sandbox_id` | ✅ Deployed |
-| `status` | Module health | — | ✅ Deployed |
-
----
-
-## Authentication
-
-### Public Endpoints
-Some actions are public:
-- All `status` actions
-- `vision.health`
-- `dream.feed` (rate-limited)
-
-### Authenticated Endpoints
-Most actions require authentication via:
-```
-Authorization: Bearer <supabase-jwt>
-```
-
-Or using the Supabase client SDK:
-```typescript
-import { supabase } from "@/integrations/supabase/client";
-
-const { data, error } = await supabase.functions.invoke('pf-substrate', {
-  body: { module: 'brain', action: 'query', payload: { query_text: 'test' } }
-});
-```
-
----
-
-## Rate Limits
-
-| Scope | Limit |
-|-------|-------|
-| IP (general) | 100 req / 5 min |
-| IP (chat) | 20 req / 5 min |
-| IP (dream feed) | 15 req / 5 min |
-| Authenticated | 500 req / 5 min |
-| Daily per account | 5000 req / day |
-
-Exceeding limits returns `429 Too Many Requests`.
-
----
-
-## Error Responses
-
-| Code | Meaning |
-|------|---------|
-| `200` | Success |
-| `400` | Invalid request (missing module/action) |
-| `401` | Unauthorized |
-| `403` | Forbidden (blocked) |
-| `404` | Unknown module or action |
-| `422` | Validation failed |
-| `429` | Rate limit exceeded |
-| `500` | Internal error |
-
-Error response format:
-```json
-{
-  "success": false,
-  "error": "Error message here",
-  "code": "ERROR_CODE",
-  "timestamp": "2026-01-13T..."
-}
-```
-
----
-
-## TypeScript SDK
-
-### Installation
-
-The SDK is included in promptfluid® projects:
-
-```typescript
-import { substrate, brain, decode, defense, nexus, vision, dream, system } from '@/lib/substrate';
-```
-
-### Module Helpers
-
-```typescript
-// Brain operations - ✅ DEPLOYED
-await brain.query('machine learning', 10);
-await brain.remember('New fact', 'fact');
-await brain.reflect();
-await brain.graphSummary();
-await brain.sessionReflection(24);
-
-// Chat operations - ✅ DEPLOYED
-await decode.chat('Hello!', 'session_123');
-await decode.intent('Analyze my data');
-await decode.learn('content', 'source');
-
-// Security checks - ✅ DEPLOYED
-await defense.analyze({ fingerprint: {...} });
-await defense.reputation('192.168.1.1');
-await defense.anomaly('1h');
-await defense.posture();
-
-// AI routing - ✅ DEPLOYED
-await nexus.route('Complex task description');
-await nexus.providers();
-await nexus.routeStats();
-// Note: text/image/video via standalone pf-nexus-* functions
-
-// Health monitoring - ✅ DEPLOYED
-await vision.health();
-await vision.healthSnapshot();
-await vision.dashboard();
-await vision.pulse();
-
-// Dream operations - ✅ DEPLOYED
-await dream.feed('I was flying...', 'dream');
-await dream.cycle(true);
-await dream.awaken();
-
-// System admin - ✅ DEPLOYED
-await system.status();
-await system.health();
-await system.diagnostics();
-await system.heal('brain', true);
-```
-
----
-
-## External Integrations (BYOK)
-
-The substrate supports connecting external services with your own API keys.
-
-### Supported Integrations
-
-| Integration | Purpose | Status |
-|-------------|---------|--------|
-| **Stripe** | Payments, subscriptions, billing | ✅ Available |
-| **Twilio** | SMS, voice, messaging | ✅ Available |
-| **Shopify** | E-commerce, products, orders | ✅ Available |
-| **n8n** | Workflow automation | ✅ Available |
-| **Webhooks** | Custom API connections | ✅ Available |
-
-### Integration Examples
-
-**Connect Stripe:**
-```typescript
-await substrate.integrations.connect({
-  name: 'My Stripe',
-  integration_type: 'stripe',
-  config: { mode: 'live' },
-  credentials: { api_key: 'sk_live_...' }
-});
-
-// Call Stripe API
-await substrate.integrations.call('stripe-id', 'customers.create', {
-  email: 'user@example.com'
-});
-```
-
-**Connect Twilio:**
-```typescript
-await substrate.integrations.connect({
-  name: 'SMS Service',
-  integration_type: 'twilio',
-  config: { from_number: '+1234567890' },
-  credentials: { 
-    account_sid: 'AC...',
-    auth_token: '...'
-  }
-});
-
-// Send SMS
-await substrate.integrations.call('twilio-id', 'messages.create', {
-  to: '+1987654321',
-  body: 'Hello from substrate!'
-});
-```
-
-**Connect Custom Webhook:**
-```typescript
-await substrate.integrations.connect({
-  name: 'My API',
-  integration_type: 'webhook',
-  config: { 
-    endpoint_url: 'https://api.example.com/webhook',
-    method: 'POST'
-  },
-  credentials: { api_key: 'your-api-key' }
-});
-```
-
-### React Hooks
-
-```typescript
-import { 
-  useBrainStatus, 
-  useDecodeChat, 
-  useVisionHealth,
-  useSubstrateHealth 
-} from '@/hooks/useSubstrate';
-
-function Dashboard() {
-  const { data: health } = useVisionHealth();
-  const { modules, healthScore } = useSubstrateHealth();
-  const { messages, sendMessage } = useDecodeChat();
-  
-  return (
-    <div>
-      <p>System Health: {healthScore}%</p>
-      <p>Brain: {modules.brain?.active ? 'Active' : 'Inactive'}</p>
-    </div>
-  );
-}
-```
-
----
-
-## Best Practices
-
-1. **Always check status first** — Verify module health before heavy operations
-2. **Use session IDs** — For chat continuity, always pass `session_id`
-3. **Handle rate limits** — Implement exponential backoff on 429
-4. **Batch operations** — Use single requests with arrays when possible
-5. **Monitor via Vision** — Set up alerts for system degradation
-6. **Use typed payloads** — Leverage TypeScript types for validation
-
----
-
-## Security Notes
-
-- All inputs are sanitized for XSS/injection
-- Script tags and HTML are stripped
-- Jailbreak patterns are logged but handled gracefully
-- All security events are audited
-- Rate limiting is enforced per-IP and per-account
-
----
-
-## Support
-
-- **Documentation**: This manual
-- **Architecture**: `docs/ARCHITECTURE.md`
-- **Module Registry**: `docs/substrate/MODULE-ACTIONS-REGISTRY.md`
-- **Quick Start**: `docs/QUICK-START.md`
-- **Explained**: `docs/SUBSTRATE-EXPLAINED.md`
-
----
-
-*promptfluid® — Cognitive Orchestration Substrate v10.5.4 ARCHITECT Epoch*
+  "timestamp": "2026-02-19T..."
+}</pre>
+</div>
+
+<hr />
+
+<h2>Modules Overview</h2>
+
+<table>
+<tr><th>Module</th><th>Purpose</th><th>Key Actions</th></tr>
+<tr><td><strong>core</strong></td><td>Kernel (scheduler, lifecycle, routing)</td><td><code>boot</code>, <code>schedule</code>, <code>config</code>, <code>shutdown</code>, <code>status</code></td></tr>
+<tr><td><strong>ripple</strong></td><td>Message Bus (async, pub/sub)</td><td><code>enqueue</code>, <code>publish</code>, <code>subscribe</code>, <code>status</code></td></tr>
+<tr><td><strong>access</strong></td><td>Identity (API keys, billing)</td><td><code>create_key</code>, <code>validate_key</code>, <code>get_usage</code>, <code>check_quota</code></td></tr>
+<tr><td><strong>brain</strong></td><td>Memory, learning, reflection</td><td><code>query</code>, <code>remember</code>, <code>reflect</code>, <code>reinforce</code>, <code>dream</code>, <code>status</code></td></tr>
+<tr><td><strong>decode</strong></td><td>Chat, intent, dreams</td><td><code>chat</code>, <code>intent</code>, <code>dream</code>, <code>learn</code>, <code>status</code></td></tr>
+<tr><td><strong>defense</strong></td><td>Security, bots</td><td><code>analyze</code>, <code>reputation</code>, <code>anomaly</code>, <code>posture</code>, <code>limits</code>, <code>status</code></td></tr>
+<tr><td><strong>nexus</strong></td><td>AI routing</td><td><code>route</code>, <code>providers</code>, <code>routeStats</code>, <code>status</code></td></tr>
+<tr><td><strong>vision</strong></td><td>Observability</td><td><code>health</code>, <code>healthSnapshot</code>, <code>dashboard</code>, <code>pulse</code>, <code>introspection</code></td></tr>
+<tr><td><strong>dream</strong></td><td>Dream-Eater</td><td><code>cycle</code>, <code>awaken</code>, <code>feed</code></td></tr>
+<tr><td><strong>system</strong></td><td>Administration</td><td><code>status</code>, <code>health</code>, <code>heal</code>, <code>backup</code>, <code>restore</code>, <code>diagnostics</code></td></tr>
+<tr><td><strong>modernizer</strong></td><td>Self-upgrade</td><td><code>scan</code>, <code>propose</code>, <code>apply</code>, <code>status</code></td></tr>
+<tr><td><strong>integration</strong></td><td>Enterprise adapters</td><td><code>adapters</code>, <code>connect</code>, <code>discover</code>, <code>execute</code>, <code>governance</code></td></tr>
+<tr><td><strong>inclusive</strong></td><td>Accessibility</td><td><code>scan</code>, <code>repair</code>, <code>validate</code>, <code>profile</code></td></tr>
+<tr><td><strong>cortex</strong></td><td>Orchestration</td><td><code>workflow_execute</code>, <code>propose</code>, <code>evaluate</code></td></tr>
+<tr><td><strong>encode</strong></td><td>Code execution</td><td><code>generate</code>, <code>validate</code>, <code>execute</code>, <code>mastery</code></td></tr>
+<tr><td><strong>memory</strong></td><td>Vector store / RAG</td><td><code>store</code>, <code>search</code>, <code>staleness</code>, <code>reembed</code></td></tr>
+<tr><td><strong>relay</strong></td><td>Webhooks</td><td><code>send</code>, <code>verify</code>, <code>retry_config</code></td></tr>
+<tr><td><strong>audit</strong></td><td>Compliance logging</td><td><code>log</code>, <code>query</code>, <code>compliance_report</code>, <code>compress</code></td></tr>
+<tr><td><strong>identity</strong></td><td>Actor attribution</td><td><code>attribute</code>, <code>reputation</code>, <code>portable_token</code>, <code>verify_token</code></td></tr>
+<tr><td><strong>economy</strong></td><td>Cost tracking</td><td><code>track</code>, <code>forecast</code>, <code>attribution</code>, <code>budget</code></td></tr>
+<tr><td><strong>sandbox</strong></td><td>Safe execution</td><td><code>create</code>, <code>execute</code>, <code>snapshot</code>, <code>restore</code>, <code>destroy</code></td></tr>
+</table>
+
+<hr />
+
+<h2>Authentication</h2>
+
+<h3>Public Endpoints</h3>
+<p>Some actions are public: all <code>status</code> actions, <code>vision.health</code>, <code>dream.feed</code> (rate-limited).</p>
+
+<h3>Authenticated Endpoints</h3>
+<p>Most actions require authentication via <code>Authorization: Bearer &lt;jwt&gt;</code>.</p>
+
+<hr />
+
+<h2>Rate Limits</h2>
+
+<table>
+<tr><th>Scope</th><th>Limit</th></tr>
+<tr><td>IP (general)</td><td>100 req / 5 min</td></tr>
+<tr><td>IP (chat)</td><td>20 req / 5 min</td></tr>
+<tr><td>IP (dream feed)</td><td>15 req / 5 min</td></tr>
+<tr><td>Authenticated</td><td>500 req / 5 min</td></tr>
+<tr><td>Daily per account</td><td>5000 req / day</td></tr>
+</table>
+
+<hr />
+
+<h2>Error Responses</h2>
+
+<table>
+<tr><th>Code</th><th>Meaning</th></tr>
+<tr><td><code>200</code></td><td>Success</td></tr>
+<tr><td><code>400</code></td><td>Invalid request</td></tr>
+<tr><td><code>401</code></td><td>Unauthorized</td></tr>
+<tr><td><code>403</code></td><td>Forbidden (blocked)</td></tr>
+<tr><td><code>404</code></td><td>Unknown module or action</td></tr>
+<tr><td><code>429</code></td><td>Rate limit exceeded</td></tr>
+<tr><td><code>500</code></td><td>Internal error</td></tr>
+</table>
+
+<hr />
+
+<h2>Best Practices</h2>
+
+<ol>
+<li><strong>Always check status first</strong> — Verify module health before heavy operations</li>
+<li><strong>Use session IDs</strong> — For chat continuity, always pass <code>session_id</code></li>
+<li><strong>Handle rate limits</strong> — Implement exponential backoff on 429</li>
+<li><strong>Monitor via Vision</strong> — Set up alerts for system degradation</li>
+<li><strong>Use typed payloads</strong> — Leverage TypeScript types for validation</li>
+</ol>
+
+<hr />
+
+<p><em>CMPSBL Substrate OS v10.8.0 — ARCHITECT Epoch</em><br />
+<em>Kenneth E Sweet Jr · PromptFluid®</em><br />
+<em>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></em> · <em>OSF: <a href="https://osf.io/ah7nx/overview">osf.io/ah7nx</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
+
+</div>
+</body>
+</html>
