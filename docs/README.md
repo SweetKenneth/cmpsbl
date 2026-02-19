@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Hub
 
-**v10.5.1 ARCHITECT Epoch** · Updated February 17, 2026
+**v10.5.4 ARCHITECT Epoch** · Updated February 19, 2026
 
 ---
 
@@ -30,12 +30,13 @@ Start with [`/docs/academic/00-INDEX.md`](./academic/00-INDEX.md) — formatted 
 ### Technical Reference
 - [Module Deep Dives](./modules/00-INDEX.md) — all 21 modules across 6 layers (incl. ENCODE)
 - [Module Actions Registry](./substrate/MODULE-ACTIONS-REGISTRY.md) — all 21 module actions
+- [Architecture](./substrate/ARCHITECTURE.md) — system architecture
 - [Capabilities](./substrate/CAPABILITIES.md) — registered capabilities
 - [Changelog](./substrate/CHANGELOG.md) — version history
 
 ---
 
-## What's New in v10.5.1
+## What's New in v10.5.4
 
 | Feature | Description |
 |---------|-------------|
@@ -46,7 +47,9 @@ Start with [`/docs/academic/00-INDEX.md`](./academic/00-INDEX.md) — formatted 
 | **Nexus Fleet v5.0** | Health-weighted multi-provider routing (Groq, Cerebras, SambaNova, Google, DeepSeek) |
 | **Intent Mesh** | 60+ crystallized pipelines via emergent capability discovery |
 | **21 Crown Jewels** | One Crown Jewel capability per module across all tiers |
-| **Unified Tier Model** | Free / Creator ($49) / Architect ($149) / Enterprise |
+| **Adoptable Pricing** | Free ($0) / Creator ($9) / Architect ($19) / Enterprise ($99) |
+| **Truth Verification** | Automated parity checks between Dashboard, Terminal, and Registry |
+| **Telemetry Aggregator** | Unified observability across `ai_usage_log`, `access_usage`, and `brain_events` |
 | **MEMORY upgrades** | Embedding staleness detection, relevance feedback loop (EMA) |
 | **RELAY upgrades** | HMAC-SHA256 webhook signatures, adaptive retry with jitter |
 | **AUDIT upgrades** | SOC2/GDPR/HIPAA/ISO27001 compliance templates, entry compression |
@@ -67,5 +70,5 @@ Start with [`/docs/academic/00-INDEX.md`](./academic/00-INDEX.md) — formatted 
 
 ---
 
-*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch*  
+*CMPSBL OS Substrate v10.5.4 — ARCHITECT Epoch*  
 *© 2025–2026 PromptFluid®. All rights reserved.*

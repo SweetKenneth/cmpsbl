@@ -4,7 +4,7 @@
 
 ### Complete Reference for All 21 Modules
 
-**v10.5.1 ARCHITECT Epoch**
+**v10.5.4 ARCHITECT Epoch**
 
 </div>
 
@@ -40,7 +40,6 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 | [08](./08-NEXUS.md) | **NEXUS** | AI fleet routing (v5.0.0), cost optimization |
 | [09](./09-VISION.md) | **VISION** | Observability, metrics, trend analysis |
 | [10](./10-INTEGRATION.md) | **INTEGRATION** | External system adapters |
-| [22](./22-ENCODE.md) | **ENCODE** | Code execution engine, DECODE→ENCODE pipeline, CLM |
 
 ### Layer 4 — Administrative
 
@@ -55,6 +54,7 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 | Doc | Module | Purpose |
 |-----|--------|---------|
 | [14](./14-CORTEX.md) | **CORTEX** | Meta-orchestration, proposal evaluation |
+| [22](./22-ENCODE.md) | **ENCODE** | Governed code execution engine, DECODE→ENCODE pipeline, CLM |
 
 ### Layer 6 — Infrastructure
 
@@ -66,11 +66,16 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 | [18](./18-IDENTITY.md) | **IDENTITY** | Actor attribution, reputation scoring, cross-agency portability |
 | [19](./19-ECONOMY.md) | **ECONOMY** | Cost tracking, predictive forecasting, per-capability attribution |
 | [20](./20-SANDBOX.md) | **SANDBOX** | Safe code execution, resource limits, state snapshots |
+
+### Reference
+
+| Doc | Type | Purpose |
+|-----|------|---------|
 | [21](./21-USER-MANUAL.md) | **User Manual** | Complete usage guide |
 
 ---
 
-## Cross-Cutting Systems (v10.5.1)
+## Cross-Cutting Systems (v10.5.4)
 
 | System | Description |
 |--------|-------------|
@@ -81,12 +86,14 @@ The substrate consists of **21 modules** across **6 architectural layers**, each
 | **Intent Mesh** | 60+ crystallized pipelines via emergent capability discovery and composition |
 | **DECODE → ENCODE** | Governed natural-language-to-code pipeline with graduated autonomy |
 | **Crown Jewels** | 21 Crown Jewel capabilities — one per module across all tiers |
+| **Truth Verification** | Automated parity checks between Dashboard, Terminal, and Registry |
+| **Telemetry Aggregator** | Unified observability across usage, access, and brain event tables |
 
 ---
 
 <div align="center">
 
-*CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch*
+*CMPSBL OS Substrate v10.5.4 — ARCHITECT Epoch*
 
 **Kenneth E Sweet Jr** · PromptFluid®  
 ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)  

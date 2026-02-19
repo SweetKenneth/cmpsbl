@@ -20,7 +20,7 @@
 
 - **21 Crown Jewels** — One Crown Jewel capability per module across Creator, Architect, and Enterprise tiers.
 - **50+ Public Capabilities** — Expanded public capability manifest with outcome-oriented descriptions.
-- **Unified Tier Model** — Free / Creator ($49/mo) / Architect ($149/mo) / Enterprise with clear capability boundaries.
+- **Adoptable Pricing** — Free ($0) / Creator ($9/mo) / Architect ($19/mo) / Enterprise ($99/mo) with clear capability boundaries.
 
 ### Intent Mesh Crystallization Fix
 
