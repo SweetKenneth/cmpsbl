@@ -1,57 +1,64 @@
-# What is CMPSBL?
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>What is CMPSBL? — The Cognitive Infrastructure Layer</title>
+<style>
+@page { size: letter; margin: 0.8in; }
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #1a1a1a; max-width: 7in; margin: auto; }
+h1 { font-size: 20pt; border-bottom: 2px solid #1a1a1a; padding-bottom: 4pt; }
+h2 { font-size: 14pt; margin-top: 18pt; }
+h3 { font-size: 12pt; }
+table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+th, td { border: 1px solid #ccc; padding: 5pt 8pt; text-align: left; }
+th { background: #f5f5f5; font-weight: bold; }
+.card { border: 1px solid #e0e0e0; border-radius: 4pt; padding: 10pt 14pt; margin: 10pt 0; break-inside: avoid; }
+pre { background: #f8f8f8; padding: 8pt; font-size: 9pt; border-radius: 3pt; overflow-x: auto; }
+code { font-family: 'Courier New', monospace; font-size: 9pt; }
+blockquote { border-left: 3pt solid #ccc; margin-left: 0; padding-left: 12pt; color: #555; }
+</style>
+</head>
+<body>
 
-**The Cognitive Infrastructure Layer for AI Applications**
+<h1>What is CMPSBL?</h1>
+<p><strong>The Cognitive Infrastructure Layer for AI Applications</strong></p>
 
----
+<h2>In Plain English</h2>
+<p>CMPSBL® (Composable) is the <strong>operating system for AI applications</strong>. Just like your computer needs an operating system to manage memory, security, and applications, AI applications need a cognitive infrastructure layer to manage memory, learning, and intelligence.</p>
 
-## In Plain English
+<h2>Philosophy</h2>
+<blockquote><strong>"Everything is free to explore. Engines are canon."</strong></blockquote>
+<ul>
+<li><strong>Explore freely:</strong> The Composable Artifacts Store gives you free access to capabilities, templates, and synergy pipelines</li>
+<li><strong>Upgrade when ready:</strong> Subscription tiers unlock engines, Experience Jewels, and advanced intelligence</li>
+<li><strong>Start with memory:</strong> Add persistent memory to any existing agent in under an hour</li>
+</ul>
 
-CMPSBL® (Composable) is the **operating system for AI applications**. Just like your computer needs an operating system to manage memory, security, and applications, AI applications need a cognitive infrastructure layer to manage memory, learning, and intelligence.
+<h2>The Problem We Solve</h2>
 
----
+<h3>Without CMPSBL</h3>
+<table>
+<tr><th>Challenge</th><th>Impact</th></tr>
+<tr><td><strong>AI has no memory</strong></td><td>Forgets everything after each conversation</td></tr>
+<tr><td><strong>AI doesn't learn</strong></td><td>Same mistakes, forever</td></tr>
+<tr><td><strong>Vendor lock-in</strong></td><td>Stuck with one AI provider</td></tr>
+<tr><td><strong>Security gaps</strong></td><td>Vulnerable to attacks</td></tr>
+<tr><td><strong>Black box</strong></td><td>No visibility into what's happening</td></tr>
+</table>
 
-## Philosophy
+<h3>With CMPSBL</h3>
+<table>
+<tr><th>Capability</th><th>Result</th></tr>
+<tr><td><strong>Persistent Memory</strong></td><td>AI remembers users, preferences, context</td></tr>
+<tr><td><strong>Self-Learning</strong></td><td>Gets smarter from every interaction</td></tr>
+<tr><td><strong>Provider Freedom</strong></td><td>Use any AI model, switch anytime</td></tr>
+<tr><td><strong>Built-in Security</strong></td><td>Enterprise-grade protection</td></tr>
+<tr><td><strong>Full Observability</strong></td><td>See every decision, every action</td></tr>
+</table>
 
-> **"Everything is free to explore. Engines are canon."**
-
-- **Explore freely:** The Composable Artifacts Store gives you free access to capabilities, templates, and synergy pipelines
-- **Upgrade when ready:** Subscription tiers unlock engines, Experience Jewels, and advanced intelligence
-- **Start with memory:** Add persistent memory to any existing agent in under an hour
-
----
-
-## The Problem We Solve
-
-### Without CMPSBL
-
-Every AI application today faces the same challenges:
-
-| Challenge | Impact |
-|-----------|--------|
-| **AI has no memory** | Forgets everything after each conversation |
-| **AI doesn't learn** | Same mistakes, forever |
-| **Vendor lock-in** | Stuck with one AI provider |
-| **Security gaps** | Vulnerable to attacks |
-| **Black box** | No visibility into what's happening |
-
-### With CMPSBL
-
-| Capability | Result |
-|------------|--------|
-| **Persistent Memory** | AI remembers users, preferences, context |
-| **Self-Learning** | Gets smarter from every interaction |
-| **Provider Freedom** | Use any AI model, switch anytime |
-| **Built-in Security** | Enterprise-grade protection |
-| **Full Observability** | See every decision, every action |
-
----
-
-## Quick Start: Persistent Memory
-
-The fastest way to start with CMPSBL is **Persistent Memory**. Add memory to any existing agent or React app in under an hour:
-
-```typescript
-import { withPersistentMemory } from '@cmpsbl/memory';
+<h2>Quick Start: Persistent Memory</h2>
+<p>The fastest way to start with CMPSBL is <strong>Persistent Memory</strong>. Add memory to any existing agent or React app in under an hour:</p>
+<pre><code>import { withPersistentMemory } from '@cmpsbl/memory';
 
 const agent = withPersistentMemory({
   agentId: 'my-support-agent',
@@ -59,42 +66,30 @@ const agent = withPersistentMemory({
 });
 
 // Your agent now remembers
-const context = await agent.getContext(userMessage);
-```
+const context = await agent.getContext(userMessage);</code></pre>
+<p><strong>No rewrites. No new framework. Your agent just stops forgetting.</strong></p>
 
-**No rewrites. No new framework. Your agent just stops forgetting.**
+<h2>The Tiered Architecture</h2>
+<h3>Free Exploration Layer</h3>
+<table>
+<tr><th>Layer</th><th>Purpose</th><th>Persistence</th></tr>
+<tr><td><strong>Composable Artifacts Store</strong></td><td>Capabilities, templates, synergies — unified storefront</td><td>None</td></tr>
+<tr><td><strong>Persistent Memory</strong></td><td>Drop-in memory for any agent</td><td>Bounded, safe defaults</td></tr>
+</table>
 
-[Full Persistent Memory Quickstart →](/docs/persistent-memory)
+<h3>Paid Products</h3>
+<table>
+<tr><th>Product</th><th>Purpose</th><th>Access</th></tr>
+<tr><td><strong>Composable Cognitives</strong></td><td>Superpowered AI agents ($39 each)</td><td>No account required</td></tr>
+<tr><td><strong>Template Generator</strong></td><td>On-demand template creation ($29)</td><td>One-time purchase</td></tr>
+<tr><td><strong>Creator Tier</strong></td><td>Expanded store, executable capabilities ($9/mo)</td><td>Subscription</td></tr>
+<tr><td><strong>Architect Tier</strong></td><td>Cross-module orchestration, larger memory ($19/mo)</td><td>Subscription</td></tr>
+<tr><td><strong>Enterprise</strong></td><td>Organization workspaces, governance ($99/mo)</td><td>Subscription</td></tr>
+</table>
 
----
-
-## The Tiered Architecture
-
-### Free Exploration Layer
-
-| Layer | Purpose | Persistence |
-|-------|---------|-------------|
-| **Composable Artifacts Store** | Capabilities, templates, synergies — unified storefront | None |
-| **Persistent Memory** | Drop-in memory for any agent | Bounded, safe defaults |
-
-### Paid Products
-
-| Product | Purpose | Access |
-|---------|---------|--------|
-| **Composable Cognitives** | Superpowered AI agents ($39 each) | No account required |
-| **Template Generator** | On-demand template creation ($29) | One-time purchase |
-| **Creator Tier** | Engines, SDK/API, 7 Experience Jewels ($49/mo) | Subscription |
-| **Architect Tier** | CLM, cross-project learning, 28 Jewels ($149/mo) | Subscription |
-| **Enterprise** | Source code, self-hosted, compliance | Custom |
-
----
-
-## How It Works
-
-### The 6-Layer Architecture
-
-```
-┌─────────────────────────────────────────┐
+<h2>How It Works</h2>
+<h3>The 6-Layer Architecture</h3>
+<pre><code>┌─────────────────────────────────────────┐
 │           YOUR APPLICATION              │
 │    (React, Vue, Mobile, API, etc.)      │
 └──────────────────┬──────────────────────┘
@@ -110,71 +105,43 @@ const context = await agent.getContext(userMessage);
 ┌─────────────────────────────────────────┐
 │           AI PROVIDERS                  │
 │   OpenAI • Anthropic • Google • etc.    │
-└─────────────────────────────────────────┘
-```
+└─────────────────────────────────────────┘</code></pre>
+<p>Your application talks to CMPSBL. CMPSBL handles everything else.</p>
 
-Your application talks to CMPSBL. CMPSBL handles everything else.
+<h2>Key Concepts</h2>
+<div class="card"><h3>The Brain</h3><p>Persistent memory that remembers across sessions. Stores preferences, context, learned patterns. Automatically compresses old memories to stay efficient.</p></div>
+<div class="card"><h3>Dream Cycles</h3><p>Overnight learning that synthesizes patterns from the day's interactions. The system literally gets smarter while you sleep.</p></div>
+<div class="card"><h3>Multi-Provider Routing</h3><p>Send requests to the best AI for the job. If one provider fails, automatically routes to another. Optimizes for cost, speed, or quality.</p></div>
+<div class="card"><h3>Self-Evolution</h3><p>The system proposes improvements to its own code. Human-approved changes are automatically deployed. The infrastructure improves itself.</p></div>
+<div class="card"><h3>Composable Cognitives</h3><p>Superpowered AI agents (Research, Coding, Analyst, Ops, Writer) delivered as downloadable artifacts. Purchase and use without creating an account.</p></div>
 
----
+<h2>Who Is It For?</h2>
+<table>
+<tr><th>Audience</th><th>Use Case</th><th>Start Here</th></tr>
+<tr><td><strong>Agent Developers</strong></td><td>Add memory to existing agents</td><td><a href="/docs/persistent-memory">Persistent Memory</a></td></tr>
+<tr><td><strong>Startups</strong></td><td>Ship AI features 10x faster</td><td><a href="/store">Composable Artifacts</a></td></tr>
+<tr><td><strong>Enterprises</strong></td><td>Compliance-ready AI infrastructure</td><td><a href="/pricing">Pricing</a></td></tr>
+<tr><td><strong>Researchers</strong></td><td>Experiment with memory and learning</td><td><a href="/synergies">Synergy Pipelines</a></td></tr>
+</table>
 
-## Key Concepts
+<h2>Definitions</h2>
+<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td><strong>Composable Artifact</strong></td><td>Any capability, template, or synergy in the unified store</td></tr>
+<tr><td><strong>Composable Cognitive</strong></td><td>Superpowered AI agent delivered as a downloadable artifact</td></tr>
+<tr><td><strong>Engine</strong></td><td>Saved, governed, authoritative orchestration</td></tr>
+<tr><td><strong>Template Generator</strong></td><td>Licensed tool for on-demand template creation</td></tr>
+</table>
 
-### The Brain
-Persistent memory that remembers across sessions. Stores preferences, context, learned patterns. Automatically compresses old memories to stay efficient.
+<h2>Next Steps</h2>
+<ul>
+<li><a href="/docs/persistent-memory">Persistent Memory Quickstart</a> — Add memory in under an hour</li>
+<li><a href="./03-KEY-CAPABILITIES.md">Key Capabilities</a> — Deep dive into features</li>
+<li><a href="./04-USE-CASES.md">Use Cases</a> — Real-world applications</li>
+<li><a href="./06-GETTING-STARTED.md">Getting Started</a> — Full SDK setup</li>
+</ul>
 
-### Dream Cycles
-Overnight learning that synthesizes patterns from the day's interactions. The system literally gets smarter while you sleep.
+<p><em>CMPSBL® — Where Machines Learn To Think</em></p>
 
-### Multi-Provider Routing
-Send requests to the best AI for the job. If one provider fails, automatically routes to another. Optimizes for cost, speed, or quality.
-
-### Self-Evolution
-The system proposes improvements to its own code. Human-approved changes are automatically deployed. The infrastructure improves itself.
-
-### Composable Cognitives
-Superpowered AI agents (Research, Coding, Analyst, Ops, Writer) delivered as downloadable artifacts. Purchase and use without creating an account.
-
----
-
-## Who Is It For?
-
-| Audience | Use Case | Start Here |
-|----------|----------|------------|
-| **Agent Developers** | Add memory to existing agents | [Persistent Memory](/docs/persistent-memory) |
-| **Startups** | Ship AI features 10x faster | [Composable Artifacts](/store) |
-| **Enterprises** | Compliance-ready AI infrastructure | [Pricing](/pricing) |
-| **Researchers** | Experiment with memory and learning | [Synergy Pipelines](/synergies) |
-
----
-
-## What You Can Build
-
-- **Customer Support AI** that remembers every customer
-- **Personal Assistants** that learn your preferences
-- **Research Agents** that accumulate knowledge
-- **Content Systems** that improve their own output
-- **Any AI Application** that needs to be smarter
-
----
-
-## Definitions
-
-| Term | Definition |
-|------|------------|
-| **Composable Artifact** | Any capability, template, or synergy in the unified store |
-| **Composable Cognitive** | Superpowered AI agent delivered as a downloadable artifact |
-| **Engine** | Saved, governed, authoritative orchestration |
-| **Template Generator** | Licensed tool for on-demand template creation |
-
----
-
-## Next Steps
-
-- [Persistent Memory Quickstart](/docs/persistent-memory) — Add memory in under an hour
-- [Key Capabilities](./03-KEY-CAPABILITIES.md) — Deep dive into features
-- [Use Cases](./04-USE-CASES.md) — Real-world applications
-- [Getting Started](./06-GETTING-STARTED.md) — Full SDK setup
-
----
-
-*CMPSBL® — Where Machines Learn To Think*
+</body>
+</html>

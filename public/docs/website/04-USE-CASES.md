@@ -1,211 +1,140 @@
-# Use Cases
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Use Cases — CMPSBL®</title>
+<style>
+@page { size: letter; margin: 0.8in; }
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #1a1a1a; max-width: 7in; margin: auto; }
+h1 { font-size: 20pt; border-bottom: 2px solid #1a1a1a; padding-bottom: 4pt; }
+h2 { font-size: 14pt; margin-top: 18pt; }
+h3 { font-size: 12pt; }
+table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+th, td { border: 1px solid #ccc; padding: 5pt 8pt; text-align: left; }
+th { background: #f5f5f5; font-weight: bold; }
+.card { border: 1px solid #e0e0e0; border-radius: 4pt; padding: 10pt 14pt; margin: 10pt 0; break-inside: avoid; }
+pre { background: #f8f8f8; padding: 8pt; font-size: 9pt; border-radius: 3pt; overflow-x: auto; }
+code { font-family: 'Courier New', monospace; font-size: 9pt; }
+blockquote { border-left: 3pt solid #ccc; margin-left: 0; padding-left: 12pt; color: #555; }
+</style>
+</head>
+<body>
 
-**Real-World Applications of CMPSBL®**
+<h1>Use Cases</h1>
+<p><strong>Real-World Applications of CMPSBL®</strong></p>
 
----
+<h2>Overview</h2>
+<p>CMPSBL® isn't just technology — it's infrastructure that enables entirely new categories of AI applications. Here's what you can build.</p>
 
-## Overview
+<div class="card">
+<h2>1. Customer Support AI</h2>
+<h3>The Challenge</h3>
+<p>Traditional chatbots forget everything. Customers repeat themselves endlessly. No learning from past interactions.</p>
+<h3>With CMPSBL</h3>
+<table>
+<tr><th>Feature</th><th>Benefit</th></tr>
+<tr><td><strong>Memory</strong></td><td>Remember every customer, every ticket</td></tr>
+<tr><td><strong>Learning</strong></td><td>Improve responses based on what works</td></tr>
+<tr><td><strong>Routing</strong></td><td>Use the best AI for each question</td></tr>
+<tr><td><strong>Security</strong></td><td>Protect customer data</td></tr>
+</table>
+<p><strong>Result:</strong> 40% reduction in support time, 60% higher satisfaction</p>
+</div>
 
-CMPSBL® isn't just technology — it's infrastructure that enables entirely new categories of AI applications. Here's what you can build.
+<div class="card">
+<h2>2. Personal AI Assistants</h2>
+<h3>The Challenge</h3>
+<p>Assistants start fresh every time. No persistent preferences. No accumulated knowledge.</p>
+<h3>With CMPSBL</h3>
+<table>
+<tr><th>Feature</th><th>Benefit</th></tr>
+<tr><td><strong>Preferences</strong></td><td>Remember communication style, interests</td></tr>
+<tr><td><strong>Context</strong></td><td>Maintain ongoing projects and tasks</td></tr>
+<tr><td><strong>Learning</strong></td><td>Adapt to user behavior over time</td></tr>
+<tr><td><strong>Privacy</strong></td><td>User-isolated memory, secure storage</td></tr>
+</table>
+<p><strong>Result:</strong> Assistants that feel personal, not generic</p>
+</div>
 
----
+<div class="card">
+<h2>3. Research Agents</h2>
+<h3>The Challenge</h3>
+<p>Research requires accumulating knowledge over time. Traditional AI can't do this.</p>
+<h3>With CMPSBL</h3>
+<table>
+<tr><th>Feature</th><th>Benefit</th></tr>
+<tr><td><strong>Knowledge Base</strong></td><td>Accumulate findings across sessions</td></tr>
+<tr><td><strong>Connections</strong></td><td>Link related discoveries automatically</td></tr>
+<tr><td><strong>Sources</strong></td><td>Track where information came from</td></tr>
+<tr><td><strong>Synthesis</strong></td><td>Generate insights from accumulated data</td></tr>
+</table>
+<p><strong>Result:</strong> Research that compounds, not resets</p>
+</div>
 
-## 1. Customer Support AI
+<div class="card">
+<h2>4. Content Generation Systems</h2>
+<h3>The Challenge</h3>
+<p>Content AI produces generic output. No brand voice. No learning from performance.</p>
+<h3>With CMPSBL</h3>
+<table>
+<tr><th>Feature</th><th>Benefit</th></tr>
+<tr><td><strong>Voice Memory</strong></td><td>Maintain consistent brand voice</td></tr>
+<tr><td><strong>Performance Learning</strong></td><td>Learn from what content performs</td></tr>
+<tr><td><strong>Style Evolution</strong></td><td>Adapt based on feedback</td></tr>
+<tr><td><strong>Multi-Channel</strong></td><td>Consistent voice across platforms</td></tr>
+</table>
+<p><strong>Result:</strong> Content that improves its own effectiveness</p>
+</div>
 
-### The Challenge
-Traditional chatbots forget everything. Customers repeat themselves endlessly. No learning from past interactions.
+<div class="card">
+<h2>5. Enterprise Knowledge Management</h2>
+<h3>The Challenge</h3>
+<p>Organizational knowledge is scattered, siloed, and hard to find.</p>
+<h3>With CMPSBL</h3>
+<table>
+<tr><th>Feature</th><th>Benefit</th></tr>
+<tr><td><strong>Unified Memory</strong></td><td>Connect knowledge across systems</td></tr>
+<tr><td><strong>Access Control</strong></td><td>Role-based memory access</td></tr>
+<tr><td><strong>Audit Trail</strong></td><td>Track who accessed what</td></tr>
+<tr><td><strong>Learning</strong></td><td>Surface relevant knowledge proactively</td></tr>
+</table>
+<p><strong>Result:</strong> Institutional knowledge that's actually accessible</p>
+</div>
 
-### With CMPSBL
+<div class="card">
+<h2>6. AI-Powered Products</h2>
+<h3>The Challenge</h3>
+<p>Building AI into products requires solving memory, learning, security, and scaling.</p>
+<h3>With CMPSBL</h3>
+<table>
+<tr><th>Feature</th><th>Benefit</th></tr>
+<tr><td><strong>Drop-In Infrastructure</strong></td><td>Add AI capabilities in days, not months</td></tr>
+<tr><td><strong>Multi-Tenant</strong></td><td>Isolated memory per customer</td></tr>
+<tr><td><strong>Scalable</strong></td><td>From prototype to millions of users</td></tr>
+<tr><td><strong>Compliant</strong></td><td>Enterprise-ready security</td></tr>
+</table>
+<p><strong>Result:</strong> Ship AI products 10x faster</p>
+</div>
 
-| Feature | Benefit |
-|---------|---------|
-| **Memory** | Remember every customer, every ticket |
-| **Learning** | Improve responses based on what works |
-| **Routing** | Use the best AI for each question |
-| **Security** | Protect customer data |
+<h2>Industry Applications</h2>
+<table>
+<tr><th>Industry</th><th>Use Case</th></tr>
+<tr><td><strong>Healthcare</strong></td><td>Patient history, treatment protocols</td></tr>
+<tr><td><strong>Legal</strong></td><td>Case research, document analysis</td></tr>
+<tr><td><strong>Finance</strong></td><td>Market analysis, risk assessment</td></tr>
+<tr><td><strong>Education</strong></td><td>Personalized tutoring, progress tracking</td></tr>
+<tr><td><strong>E-Commerce</strong></td><td>Product recommendations, support</td></tr>
+<tr><td><strong>SaaS</strong></td><td>In-app assistants, onboarding</td></tr>
+</table>
 
-### Example Flow
-```
-Customer: "Hi, I'm having trouble with my order"
-AI: "Hi Sarah! I see you ordered the Pro Plan last week and had 
-     a shipping delay question. Is this about the same order?"
-```
+<h2>Getting Started</h2>
+<p>Ready to build? See:</p>
+<ul>
+<li><a href="./06-GETTING-STARTED.md">Getting Started</a> — Quick setup guide</li>
+<li><a href="./07-LICENSING.md">Licensing</a> — Pricing and plans</li>
+</ul>
 
-**Result:** 40% reduction in support time, 60% higher satisfaction
+<p><em>CMPSBL® — Build AI That Actually Remembers</em></p>
 
----
-
-## 2. Personal AI Assistants
-
-### The Challenge
-Assistants start fresh every time. No persistent preferences. No accumulated knowledge.
-
-### With CMPSBL
-
-| Feature | Benefit |
-|---------|---------|
-| **Preferences** | Remember communication style, interests |
-| **Context** | Maintain ongoing projects and tasks |
-| **Learning** | Adapt to user behavior over time |
-| **Privacy** | User-isolated memory, secure storage |
-
-### Example Flow
-```
-User: "Schedule my usual coffee meeting"
-AI: "Got it — booking Blue Bottle on Market St, Tuesday 10am 
-     with Alex. I'll send the calendar invite in your preferred 
-     minimal format."
-```
-
-**Result:** Assistants that feel personal, not generic
-
----
-
-## 3. Research Agents
-
-### The Challenge
-Research requires accumulating knowledge over time. Traditional AI can't do this.
-
-### With CMPSBL
-
-| Feature | Benefit |
-|---------|---------|
-| **Knowledge Base** | Accumulate findings across sessions |
-| **Connections** | Link related discoveries automatically |
-| **Sources** | Track where information came from |
-| **Synthesis** | Generate insights from accumulated data |
-
-### Example Flow
-```
-Agent: "After analyzing 200+ papers on battery technology,
-        I've identified 3 emerging trends and 5 key researchers
-        to follow. Here's my synthesis with confidence scores..."
-```
-
-**Result:** Research that compounds, not resets
-
----
-
-## 4. Content Generation Systems
-
-### The Challenge
-Content AI produces generic output. No brand voice. No learning from performance.
-
-### With CMPSBL
-
-| Feature | Benefit |
-|---------|---------|
-| **Voice Memory** | Maintain consistent brand voice |
-| **Performance Learning** | Learn from what content performs |
-| **Style Evolution** | Adapt based on feedback |
-| **Multi-Channel** | Consistent voice across platforms |
-
-### Example Flow
-```
-System: "Based on last month's performance, technical deep-dives 
-         get 3x more engagement than listicles for your audience.
-         I've adjusted my recommendations accordingly."
-```
-
-**Result:** Content that improves its own effectiveness
-
----
-
-## 5. Enterprise Knowledge Management
-
-### The Challenge
-Organizational knowledge is scattered, siloed, and hard to find.
-
-### With CMPSBL
-
-| Feature | Benefit |
-|---------|---------|
-| **Unified Memory** | Connect knowledge across systems |
-| **Access Control** | Role-based memory access |
-| **Audit Trail** | Track who accessed what |
-| **Learning** | Surface relevant knowledge proactively |
-
-### Example Flow
-```
-Employee: "What's our policy on vendor agreements?"
-AI: "Here's the policy document from Legal, plus 3 recent 
-     examples of approved vendor agreements from similar deals 
-     your team has done."
-```
-
-**Result:** Institutional knowledge that's actually accessible
-
----
-
-## 6. AI-Powered Products
-
-### The Challenge
-Building AI into products requires solving memory, learning, security, and scaling.
-
-### With CMPSBL
-
-| Feature | Benefit |
-|---------|---------|
-| **Drop-In Infrastructure** | Add AI capabilities in days, not months |
-| **Multi-Tenant** | Isolated memory per customer |
-| **Scalable** | From prototype to millions of users |
-| **Compliant** | Enterprise-ready security |
-
-### Example Flow
-```typescript
-// Add AI to any product
-const response = await substrate.route({
-  intent: 'generate_report',
-  context: await substrate.brain.recall('user_preferences'),
-  tenant: customerId
-});
-```
-
-**Result:** Ship AI products 10x faster
-
----
-
-## Industry Applications
-
-| Industry | Use Case |
-|----------|----------|
-| **Healthcare** | Patient history, treatment protocols |
-| **Legal** | Case research, document analysis |
-| **Finance** | Market analysis, risk assessment |
-| **Education** | Personalized tutoring, progress tracking |
-| **E-Commerce** | Product recommendations, support |
-| **SaaS** | In-app assistants, onboarding |
-
----
-
-## Competitive Differentiation
-
-### vs. Building In-House
-
-| Factor | In-House | CMPSBL |
-|--------|----------|--------|
-| Time to market | 6-12 months | Days |
-| Engineering cost | $500K+ | Licensing fee |
-| Maintenance | Ongoing | Included |
-| Scaling | Complex | Automatic |
-
-### vs. Other Platforms
-
-| Factor | Others | CMPSBL |
-|--------|--------|--------|
-| Memory | Basic | Multi-tier, compressed |
-| Learning | None | Autonomous dream cycles |
-| Routing | Single provider | Multi-provider |
-| Evolution | Manual | Self-improving |
-
----
-
-## Getting Started
-
-Ready to build? See:
-- [Getting Started](./06-GETTING-STARTED.md) — Quick setup guide
-- [Licensing](./07-LICENSING.md) — Pricing and plans
-
----
-
-*CMPSBL® — Build AI That Actually Remembers*
+</body>
+</html>

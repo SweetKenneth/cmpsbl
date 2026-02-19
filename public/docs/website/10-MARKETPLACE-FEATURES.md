@@ -1,231 +1,80 @@
-# Platform Features
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Platform Features — CMPSBL®</title>
+<style>
+@page { size: letter; margin: 0.8in; }
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; color: #1a1a1a; max-width: 7in; margin: auto; }
+h1 { font-size: 20pt; border-bottom: 2px solid #1a1a1a; padding-bottom: 4pt; }
+h2 { font-size: 14pt; margin-top: 18pt; }
+h3 { font-size: 12pt; }
+table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+th, td { border: 1px solid #ccc; padding: 5pt 8pt; text-align: left; }
+th { background: #f5f5f5; font-weight: bold; }
+.card { border: 1px solid #e0e0e0; border-radius: 4pt; padding: 10pt 14pt; margin: 10pt 0; break-inside: avoid; }
+pre { background: #f8f8f8; padding: 8pt; font-size: 9pt; border-radius: 3pt; overflow-x: auto; }
+code { font-family: 'Courier New', monospace; font-size: 9pt; }
+blockquote { border-left: 3pt solid #ccc; margin-left: 0; padding-left: 12pt; color: #555; }
+</style>
+</head>
+<body>
 
-**CMPSBL® — Explore Free, Build with Composables**
+<h1>Platform Features</h1>
+<p><strong>CMPSBL® — Explore Free, Build with Composables</strong></p>
 
----
+<blockquote><strong>"Everything is free to explore. Engines are canon."</strong></blockquote>
 
-## Philosophy
+<h2>Overview</h2>
+<table>
+<tr><th>Feature</th><th>Access</th><th>Persistence</th><th>Purpose</th></tr>
+<tr><td><strong>Composable Artifacts</strong></td><td>FREE</td><td>None</td><td>Capabilities, templates, synergies — unified storefront</td></tr>
+<tr><td><strong>Composable Cognitives</strong></td><td>$39 each</td><td>Downloadable</td><td>Superpowered AI agents as artifacts</td></tr>
+<tr><td><strong>Persistent Memory</strong></td><td>FREE</td><td>Bounded</td><td>Drop-in memory for any agent</td></tr>
+<tr><td><strong>CodeLab</strong></td><td>Free tier</td><td>Session</td><td>Live development environment</td></tr>
+<tr><td><strong>Template Generator</strong></td><td>$29 one-time</td><td>Licensed</td><td>Generate custom templates on demand</td></tr>
+<tr><td><strong>Subscription Tiers</strong></td><td>Free / $9 / $19 / $99</td><td>Governed</td><td>Tiered access to engines, jewels, advanced features</td></tr>
+</table>
 
-> **"Everything is free to explore. Engines are canon."**
+<h2>Composable Cognitives</h2>
+<p><strong>Superpowered AI agents delivered as downloadable artifacts.</strong></p>
+<table>
+<tr><th>Cognitive</th><th>Specialization</th><th>Price</th></tr>
+<tr><td><strong>Research</strong></td><td>Market research, competitor analysis</td><td>$39</td></tr>
+<tr><td><strong>Coding</strong></td><td>Code generation, debugging, optimization</td><td>$39</td></tr>
+<tr><td><strong>Analyst</strong></td><td>Data analysis, reporting, insights</td><td>$39</td></tr>
+<tr><td><strong>Ops</strong></td><td>Operations, automation, monitoring</td><td>$39</td></tr>
+<tr><td><strong>Writer</strong></td><td>Content creation, editing, copywriting</td><td>$39</td></tr>
+<tr><td><strong>Hybrid</strong></td><td>General-purpose multi-skill</td><td>FREE</td></tr>
+</table>
 
-CMPSBL provides a tiered platform where exploration is free and unlimited, while production-grade orchestration is available through subscription tiers and individual purchases.
-
----
-
-## Overview
-
-| Feature | Access | Persistence | Purpose |
-|---------|--------|-------------|---------|
-| **Composable Artifacts** | FREE | None | Capabilities, templates, synergies — unified storefront |
-| **Composable Cognitives** | $39 each | Downloadable | Superpowered AI agents as artifacts |
-| **Persistent Memory** | FREE | Bounded | Drop-in memory for any agent |
-| **CodeLab** | Free tier | Session | Live development environment |
-| **Template Generator** | $29 one-time | Licensed | Generate custom templates on demand |
-| **Subscription Tiers** | Free / $49 / $149 | Governed | Tiered access to engines, jewels, advanced features |
-
----
-
-## Composable Artifacts (FREE)
-
-The [Composable Artifacts Store](/store) is the unified resource hub consolidating the Capability Depot, Template Alley, and Synergy Pipelines into a single browsing experience.
-
-### Capability Depot
-
-**Atomic, stateless building blocks provided free for exploration.**
-
-| Principle | Description |
-|-----------|-------------|
-| **Stateless** | No memory between calls |
-| **Atomic** | Single-purpose functions |
-| **Free** | No cost, no limits |
-| **Exploratory** | For learning and prototyping |
-
-[Explore Capabilities →](/capabilities)
-
----
-
-### Template Alley
-
-**Free starting points designed for learning and remixing.**
-
-Templates are pre-built patterns that demonstrate cognitive architectures. Fork them, modify them, learn from them.
-
-| Tier | Templates | Purpose |
-|------|-----------|---------|
-| **Starter** | 30+ | Basic patterns |
-| **Pro** | 45+ | Advanced workflows |
-| **Elite** | 34+ | Complex orchestrations |
-
-[Browse Templates →](/store)
-
----
-
-### Synergy Pipelines
-
-**Exploratory orchestration patterns demonstrating powerful cross-module coordination.**
-
-Synergy Pipelines are the 147 cross-module orchestrations that combine 2-5 modules for emergent capabilities.
-
-| Category | Pipelines | Description |
-|----------|-----------|-------------|
-| **Intelligence** | 27 | Cognitive fusion, causal inference |
-| **Security** | 21 | Threat modeling, attack mapping |
-| **Resilience** | 21 | Predictive healing, maintenance |
-| **Optimization** | 20 | Cost routing, resource planning |
-| **Accessibility** | 17 | Universal design, profiling |
-| **Automation** | 16 | Autonomous repair, evolution |
-| **Orchestration** | 13 | Multi-agent coordination |
-
-[Try Synergies →](/synergies)
-
----
-
-## Composable Cognitives
-
-**Superpowered AI agents delivered as downloadable artifacts.**
-
-Purchase and download specialized AI agents without creating an account. Each Cognitive is a black-boxed ZIP artifact with a personalization step.
-
-| Cognitive | Specialization | Price |
-|-----------|---------------|-------|
-| **Research** | Market research, competitor analysis | $39 |
-| **Coding** | Code generation, debugging, optimization | $39 |
-| **Analyst** | Data analysis, reporting, insights | $39 |
-| **Ops** | Operations, automation, monitoring | $39 |
-| **Writer** | Content creation, editing, copywriting | $39 |
-| **Hybrid** | General-purpose multi-skill | FREE |
-
-[Browse Cognitives →](/composable-cognitives)
-
----
-
-### Persistent Memory (FREE)
-
-**Drop-in memory for any existing agent or React app.**
-
-Add persistent memory to your agent in under an hour without rebuilding your architecture.
-
-```typescript
-import { withPersistentMemory } from '@cmpsbl/memory';
+<h2>Persistent Memory (FREE)</h2>
+<pre><code>import { withPersistentMemory } from '@cmpsbl/memory';
 
 const agent = withPersistentMemory({
   agentId: 'my-agent',
   scope: 'project'
-});
-```
+});</code></pre>
 
-**What's included free:**
-- Bounded persistent memory
-- Safe recall defaults
-- Per-agent isolation
-- Graceful degradation
+<h2>CodeLab</h2>
+<table>
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td><strong>Live Execution</strong></td><td>Real substrate execution, not simulations</td></tr>
+<tr><td><strong>Visual Builder</strong></td><td>Drag-and-drop workflow creation</td></tr>
+<tr><td><strong>Full SDK Access</strong></td><td>All 21 modules available</td></tr>
+<tr><td><strong>Synergy Testing</strong></td><td>Test cross-module pipelines</td></tr>
+</table>
 
-**What requires subscription tiers:**
-- Recall optimization
-- Long-horizon identity
-- Cross-agent continuity
-- Memory audits
+<h2>Subscription Tiers</h2>
+<table>
+<tr><th>Tier</th><th>Price</th><th>What's Included</th></tr>
+<tr><td><strong>Free</strong></td><td>$0</td><td>Artifact Store, persistent memory, exploration</td></tr>
+<tr><td><strong>Creator</strong></td><td>$9/mo</td><td>Expanded store, executable capabilities, synergy pipelines</td></tr>
+<tr><td><strong>Architect</strong></td><td>$19/mo</td><td>Cross-module orchestration, larger memory, audit views</td></tr>
+<tr><td><strong>Enterprise</strong></td><td>$99/mo</td><td>Organization workspaces, governance, SLA controls</td></tr>
+</table>
 
-[Persistent Memory Quickstart →](/docs/persistent-memory)
+<p><em>CMPSBL® — Explore Free, Build with Composables</em></p>
 
----
-
-## Template Generator ($29)
-
-A standalone, one-time purchase that unlocks the template generation engine. Create custom templates on demand from any starting point.
-
-[Learn More →](/pricing)
-
----
-
-## CodeLab
-
-### What is CodeLab?
-
-CodeLab is a **live, execution-first development environment** for building cognitive applications. Unlike demos or sandboxes, CodeLab runs real schedulers and cognition.
-
-### Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **Live Execution** | Real substrate execution, not simulations |
-| **Visual Builder** | Drag-and-drop workflow creation |
-| **Full SDK Access** | All 21 modules available |
-| **Synergy Testing** | Test cross-module pipelines |
-
-### Tiers
-
-| Tier | Features |
-|------|----------|
-| **Free** | Limited executions, session persistence |
-| **Creator** | Unlimited executions, project persistence |
-| **Architect** | Team collaboration, audit logs |
-
-[Open CodeLab →](/codelab)
-
----
-
-## Subscription Tiers
-
-### Unified Pricing
-
-| Tier | Price | What's Included |
-|------|-------|-----------------|
-| **Free** | $0 | Artifact Store access, persistent memory, exploration |
-| **Creator** | $49/mo | All engines, templates, SDK/API access, 7 Experience Jewels |
-| **Architect** | $149/mo | Advanced CLM, cross-project learning, all 28 Experience Jewels |
-
-[View Pricing →](/pricing)
-
----
-
-## Definitions
-
-| Term | Definition |
-|------|------------|
-| **Composable Artifact** | Any capability, template, or synergy in the unified store |
-| **Composable Cognitive** | Superpowered AI agent delivered as a downloadable artifact |
-| **Template Generator** | Licensed tool for on-demand template creation |
-| **Engine** | Saved, governed, authoritative orchestration |
-
----
-
-## Development Flow
-
-```
-┌───────────────────────────────────────────────────────┐
-│              COMPOSABLE ARTIFACTS (FREE)               │
-├─────────────┬─────────────┬─────────────┬─────────────┤
-│  Capability │   Template  │   Synergy   │  Persistent │
-│    Depot    │    Alley    │  Pipelines  │   Memory    │
-└─────────────┴─────────────┴─────────────┴─────────────┘
-                           │
-                    (When ready)
-                           │
-                           ▼
-┌───────────────────────────────────────────────────────┐
-│          SUBSCRIPTION TIERS + COGNITIVES               │
-│      Creator • Architect • Cognitives • Generator     │
-└───────────────────────────────────────────────────────┘
-```
-
----
-
-## Support
-
-- **Documentation**: [docs.cmpsbl.com](https://docs.cmpsbl.com)
-- **Support**: [/support](/support)
-- **Email**: PromptFluid@gmail.com
-
----
-
-## Next Steps
-
-- [Persistent Memory Quickstart](/docs/persistent-memory) — Add memory in < 1 hour
-- [Getting Started](./06-GETTING-STARTED.md) — Full SDK setup
-- [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) — 200-pipeline reference
-- [Architecture](./05-ARCHITECTURE.md) — Technical deep-dive
-
----
-
-*CMPSBL® — Explore Free, Build with Composables*
+</body>
+</html>
