@@ -6,14 +6,11 @@
 <style>
   body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
   .page{max-width:8.5in;margin:0 auto;padding:0.8in}
-  h1{font-size:20pt;margin-bottom:0.3in}
-  h2{font-size:14pt;margin-top:0.4in}
-  h3{font-size:12pt;margin-top:0.25in}
-  p{margin-bottom:0.14in}
-  table{width:100%;border-collapse:collapse;margin:0.2in 0}
-  th,td{border:1px solid #ccc;padding:6px 8px}
-  th{background:#f3f3f3;text-align:left}
+  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}th,td{border:1px solid #ccc;padding:6px 8px}th{background:#f3f3f3;text-align:left}
   .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
   hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
   @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
 </style>
@@ -22,24 +19,24 @@
 <div class="page">
 
 <h1>Evolution Mechanics</h1>
-<p><strong>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</strong></p>
-<p>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
-Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)</p>
+<p><strong>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</strong></p>
+<p>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
+Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a>)</p>
 <hr />
 
 <h2>6. Evolution Mechanics</h2>
-<p>The substrate's evolution engine enables verifiable self-modification — the system can propose, validate, apply, and roll back improvements to its own behavior.</p>
+<p>The substrate's evolution engine enables verifiable self-modification — the system can propose, validate, apply, and roll back improvements to its own behavior. This is the world's first implementation of cryptographically verifiable, bounded self-evolution in a production AI system.</p>
 
-<h3>6.1 Evolution Lifecycle</h3>
-<p>Self-modification follows a seven-stage lifecycle:</p>
+<h3>6.1 Evolution Lifecycle (SEBA Framework)</h3>
+<p>Self-modification follows a seven-stage lifecycle governed by the Structured Evolution with Bounded Autonomy (SEBA) framework:</p>
 <ol>
 <li><strong>Observe.</strong> VISION monitors system performance and identifies improvement opportunities through anomaly detection and trend analysis.</li>
 <li><strong>Propose.</strong> MODERNIZER generates a formal evolution proposal specifying the change, expected impact, risk assessment, and rollback plan.</li>
 <li><strong>Validate.</strong> The proposal is tested against regression criteria: functional correctness, performance impact, governance compliance, and safety constraints.</li>
-<li><strong>Approve.</strong> Authorization is granted according to the current autonomy tier. Manual mode requires explicit human approval. Supervised mode applies with post-hoc review. Autonomous mode proceeds within predefined bounds.</li>
+<li><strong>Approve.</strong> Authorization is granted according to the current autonomy tier (Manual/Supervised/Autonomous).</li>
 <li><strong>Apply.</strong> The validated change is applied to the live system.</li>
 <li><strong>Stamp.</strong> A cryptographic evolution stamp is generated containing: timestamp, proposer identity, approver identity, change description, diff hash, pre-state hash, post-state hash, regression results, and rollback availability.</li>
-<li><strong>Monitor.</strong> SYSTEM monitors the post-evolution system for regression. If degradation exceeds thresholds, automatic rollback is triggered.</li>
+<li><strong>Monitor.</strong> SYSTEM monitors for regression. If degradation exceeds thresholds, automatic rollback is triggered.</li>
 </ol>
 
 <h3>6.2 Evolution Scope</h3>
@@ -51,7 +48,6 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXX
 <tr><td>Defense rules</td><td>Threat thresholds, behavioral signatures</td></tr>
 <tr><td>Pipeline configurations</td><td>Step ordering, error handling</td></tr>
 </table>
-
 <table>
 <tr><th>Immutable</th><th>Reason</th></tr>
 <tr><td>Governance rules</td><td>Bounded authority constraint</td></tr>
@@ -74,9 +70,9 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXX
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v9.1.0 — Academic Documentation</em><br />
-<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
-<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>

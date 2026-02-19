@@ -10,6 +10,7 @@
   h2{font-size:14pt;margin-top:0.4in}
   h3{font-size:12pt;margin-top:0.25in}
   p{margin-bottom:0.14in}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
   .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
   hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
   @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
@@ -19,9 +20,9 @@
 <div class="page">
 
 <h1>Module Taxonomy</h1>
-<p><strong>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</strong></p>
-<p>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
-Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)</p>
+<p><strong>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</strong></p>
+<p>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
+Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a>)</p>
 <hr />
 
 <h2>3. Module Taxonomy</h2>
@@ -70,14 +71,35 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXX
 
 <div class="card">
 <h3>3.6 Orchestrator Layer</h3>
-<p><strong>ENCODE.</strong> Cross-layer transform pipelines. Accepts structured input, orchestrates multi-module workflows, and produces structured output. Operates above all other layers.</p>
+<p><strong>ENCODE.</strong> Cross-layer transform pipelines. Accepts structured input, orchestrates multi-module workflows, and produces structured output. Operates above all other layers with graduated autonomy governance.</p>
 </div>
+
+<h3>3.7 Module Interaction Model — ASCII Reference</h3>
+<div class="card">
+<pre>
+  ┌─────────────────────────────────────────────────────────┐
+  │                   ENCODE (Orchestrator)                  │
+  ├─────────────────────────────────────────────────────────┤
+  │  MEMORY · RELAY · AUDIT · IDENTITY · ECONOMY · SANDBOX │
+  ├─────────────────────────────────────────────────────────┤
+  │         INTEGRATION · INCLUSIVE · SYSTEM                │
+  ├─────────────────────────────────────────────────────────┤
+  │   MODERNIZER · DECODE · DEFENSE · NEXUS · DREAM        │
+  ├─────────────────────────────────────────────────────────┤
+  │            BRAIN · VISION · CORTEX                      │
+  ├─────────────────────────────────────────────────────────┤
+  │            CORE · RIPPLE · ACCESS                       │
+  └─────────────────────────────────────────────────────────┘
+                    ▲ RIPPLE Event Bus ▲
+</pre>
+</div>
+<p>All inter-module communication passes through RIPPLE. No module may invoke another module's functions directly — this constraint is enforced at the architecture level and enables independent circuit breaking, evolution, and failure isolation.</p>
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v9.1.0 — Academic Documentation</em><br />
-<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
-<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
