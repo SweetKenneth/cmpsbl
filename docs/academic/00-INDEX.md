@@ -24,20 +24,21 @@
 <div class="page">
 
 <h1>CMPSBL OS Substrate — Academic Documentation</h1>
-<p><strong>v10.5.1 ARCHITECT Epoch | Scientific Publication Set</strong></p>
+<p><strong>v10.8.0 ARCHITECT Epoch | Scientific Publication Set</strong></p>
 
 <table>
-<tr><td><strong>Document Set Version</strong></td><td>3.0.0</td></tr>
-<tr><td><strong>Release Date</strong></td><td>February 17, 2026</td></tr>
-<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
-<tr><td><strong>ORCID</strong></td><td><a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></td></tr>
+<tr><td><strong>Document Set Version</strong></td><td>4.0.0</td></tr>
+<tr><td><strong>Release Date</strong></td><td>February 19, 2026</td></tr>
+<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></td></tr>
+<tr><td><strong>ORCID</strong></td><td><a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></td></tr>
+<tr><td><strong>OSF</strong></td><td><a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></td></tr>
 <tr><td><strong>License</strong></td><td>Apache 2.0 (Core) | CC BY 4.0 (Documentation)</td></tr>
 </table>
 <hr />
 
 <h2>Abstract</h2>
 
-<p>The CMPSBL OS Substrate is a cognitive orchestration system that provides persistent memory, autonomous learning, multi-provider AI routing, governed code execution (ENCODE), and verifiable self-evolution for artificial intelligence systems. Implemented as a 21-module, 6-layer architecture with 400+ registered capabilities, 60+ crystallized pipelines, and 21 Crown Jewel capabilities, the system introduces a three-tier autonomy governance model with cryptographic evolution stamps enabling post-hoc verification of all self-modifications. This documentation set describes the public architecture, module taxonomy, capability system, and governance mechanisms.</p>
+<p>The CMPSBL OS Substrate is a cognitive orchestration system that provides persistent memory, autonomous learning, multi-provider AI routing, governed code execution (ENCODE), and verifiable self-evolution for artificial intelligence systems. Implemented as a 21-module, 6-layer architecture with 500+ registered capabilities, 300+ synergy pipelines (100 crystallized), and 168 Crown Jewel capabilities, the system introduces a three-tier autonomy governance model with cryptographic evolution stamps enabling post-hoc verification of all self-modifications. This documentation set describes the public architecture, module taxonomy, capability system, and governance mechanisms while preserving the confidentiality of proprietary algorithms.</p>
 
 <hr />
 
@@ -46,23 +47,27 @@
 <table>
 <tr><th>№</th><th>Document</th><th>Filename</th><th>Description</th></tr>
 <tr><td>01</td><td>Abstract &amp; Introduction</td><td>01-ABSTRACT.md</td><td>Research context, problem statement, contributions</td></tr>
-<tr><td>02</td><td>System Architecture</td><td>02-ARCHITECTURE.md</td><td>6-layer, 21-module architectural blueprint</td></tr>
-<tr><td>03</td><td>Module Taxonomy</td><td>03-MODULES.md</td><td>Complete module reference with interfaces (incl. ENCODE)</td></tr>
-<tr><td>04</td><td>Capability System</td><td>04-CAPABILITIES.md</td><td>400+ registered capabilities and composition</td></tr>
-<tr><td>05</td><td>Synergy Pipelines</td><td>05-SYNERGIES.md</td><td>Cross-module orchestration (60+ crystallized)</td></tr>
-<tr><td>06</td><td>Evolution Mechanics</td><td>06-EVOLUTION.md</td><td>Self-modification system with verifiable stamps (SEBA)</td></tr>
+<tr><td>02</td><td>System Architecture</td><td>02-ARCHITECTURE.md</td><td>6-layer, 21-module blueprint with ASCII diagrams</td></tr>
+<tr><td>03</td><td>Module Taxonomy</td><td>03-MODULES.md</td><td>Complete module reference with interfaces</td></tr>
+<tr><td>04</td><td>Capability System</td><td>04-CAPABILITIES.md</td><td>500+ registered capabilities and composition</td></tr>
+<tr><td>05</td><td>Synergy Pipelines</td><td>05-SYNERGIES.md</td><td>Cross-module orchestration (300+, 100 crystallized)</td></tr>
+<tr><td>06</td><td>Evolution Mechanics</td><td>06-EVOLUTION.md</td><td>Self-modification with verifiable stamps (SEBA)</td></tr>
 <tr><td>07</td><td>Observability</td><td>07-OBSERVABILITY.md</td><td>Evolution stamps, receipts, audit trails</td></tr>
 <tr><td>08</td><td>Governance Model</td><td>08-GOVERNANCE.md</td><td>Three-tier autonomy, circuit breakers, safety</td></tr>
 <tr><td>09</td><td>Cognitive Systems</td><td>09-COGNITIVE.md</td><td>Memory, learning, dreaming architectures</td></tr>
 <tr><td>10</td><td>Security Model</td><td>10-SECURITY.md</td><td>Defense-in-depth and threat posture</td></tr>
-<tr><td>11</td><td>Performance</td><td>11-BENCHMARKS.md</td><td>Measured system performance</td></tr>
-<tr><td>12</td><td>Deployment</td><td>12-DEPLOYMENT.md</td><td>Infrastructure requirements</td></tr>
-<tr><td>13</td><td>Related Work</td><td>13-RELATED-WORK.md</td><td>Comparison with prior systems</td></tr>
+<tr><td>11</td><td>Performance</td><td>11-BENCHMARKS.md</td><td>Measured system performance and scalability</td></tr>
+<tr><td>12</td><td>Deployment</td><td>12-DEPLOYMENT.md</td><td>Infrastructure requirements and data sovereignty</td></tr>
+<tr><td>13</td><td>Related Work</td><td>13-RELATED-WORK.md</td><td>Comparison with prior cognitive systems</td></tr>
 <tr><td>14</td><td>Future Research</td><td>14-FUTURE-WORK.md</td><td>Open research directions</td></tr>
 <tr><td>15</td><td>Bibliography</td><td>15-BIBLIOGRAPHY.md</td><td>References and prior art</td></tr>
-<tr><td>16</td><td>License</td><td>LICENSE.md</td><td>Licensing terms</td></tr>
-<tr><td>17</td><td>Citation</td><td>CITATION.cff</td><td>Machine-readable citation</td></tr>
-<tr><td>18</td><td>Intent Mesh</td><td>16-INTENT-MESH.md</td><td>Emergent cross-module intelligence via capability advertisement</td></tr>
+<tr><td>16</td><td>Intent Mesh</td><td>16-INTENT-MESH.md</td><td>Emergent cross-module intelligence</td></tr>
+<tr><td>17</td><td>ENCODE &amp; Code Generation</td><td>17-ENCODE.md</td><td>Governed autonomous code execution</td></tr>
+<tr><td>18</td><td>Dream State &amp; Autonomous Learning</td><td>18-DREAM-STATE.md</td><td>World's first autonomous AI dream state</td></tr>
+<tr><td>19</td><td>World Firsts &amp; Novel Contributions</td><td>19-WORLD-FIRSTS.md</td><td>Novel contributions to AI systems research</td></tr>
+<tr><td>20</td><td>Ethical Considerations</td><td>20-ETHICS.md</td><td>AI safety, alignment, and responsible autonomy</td></tr>
+<tr><td>—</td><td>License</td><td>LICENSE.md</td><td>Licensing terms</td></tr>
+<tr><td>—</td><td>Citation</td><td>CITATION.cff</td><td>Machine-readable citation</td></tr>
 </table>
 
 <hr />
@@ -73,13 +78,25 @@
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td>System Type</td><td>Cognitive Orchestration Substrate</td></tr>
 <tr><td>Formal Name</td><td>CMPSBL OS Substrate</td></tr>
-<tr><td>Version</td><td>v10.5.1 (ARCHITECT Epoch)</td></tr>
-<tr><td>Model Dependency</td><td>Agnostic</td></tr>
-<tr><td>Provider Dependency</td><td>Agnostic</td></tr>
-<tr><td>Infrastructure</td><td>Commodity Cloud</td></tr>
-<tr><td>Modules</td><td>21 (6 layers) — includes ENCODE</td></tr>
-<tr><td>Capabilities</td><td>400+ (50+ public, 21 Crown Jewels)</td></tr>
-<tr><td>Crystallized Pipelines</td><td>60+</td></tr>
+<tr><td>Version</td><td>v10.8.0 (ARCHITECT Epoch)</td></tr>
+<tr><td>Model Dependency</td><td>Agnostic (BYOK)</td></tr>
+<tr><td>Provider Dependency</td><td>Agnostic (OpenAI, Anthropic, Google, Mistral, et al.)</td></tr>
+<tr><td>Infrastructure</td><td>Commodity Cloud (PostgreSQL + Deno Edge)</td></tr>
+<tr><td>Modules</td><td>21 across 6 layers</td></tr>
+<tr><td>Capabilities</td><td>500+ (168 Crown Jewels, sealed)</td></tr>
+<tr><td>Synergy Pipelines</td><td>300+ (100 crystallized)</td></tr>
+<tr><td>Engines</td><td>14 specialized + 12 meta-engines</td></tr>
+</table>
+
+<hr />
+
+<h2>Archival &amp; Reproducibility</h2>
+
+<table>
+<tr><th>Repository</th><th>URL</th></tr>
+<tr><td>Zenodo (DOI)</td><td><a href="https://doi.org/10.5281/zenodo.18234909">doi.org/10.5281/zenodo.18234909</a></td></tr>
+<tr><td>OSF (Preregistration &amp; Supplements)</td><td><a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></td></tr>
+<tr><td>ORCID (Author)</td><td><a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></td></tr>
 </table>
 
 <hr />
@@ -95,25 +112,25 @@
                    System for Autonomous AI Evolution}},
   year         = 2026,
   publisher    = {Zenodo},
-  version      = {v10.5.1},
-  doi          = {10.5281/zenodo.XXXXXXX},
-  url          = {https://github.com/promptfluid/substrate}
+  version      = {v10.8.0},
+  doi          = {10.5281/zenodo.18234909},
+  url          = {https://doi.org/10.5281/zenodo.18234909}
 }
 </pre>
 
 <h3>APA 7th Edition</h3>
 
-<p>Sweet Jr, K. E. (2026). <em>CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution</em> (Version 10.5.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX</p>
+<p>Sweet Jr, K. E. (2026). <em>CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution</em> (Version 10.8.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.18234909</p>
 
 <h3>IEEE</h3>
 
-<p>K. E. Sweet Jr, "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution," version 10.5.1, Zenodo, 2026. [Online]. Available: https://doi.org/10.5281/zenodo.XXXXXXX</p>
+<p>K. E. Sweet Jr, "CMPSBL OS Substrate: Cognitive Orchestration System for Autonomous AI Evolution," version 10.8.0, Zenodo, 2026. [Online]. Available: https://doi.org/10.5281/zenodo.18234909</p>
 
 <hr />
 
 <h2>Disclosure</h2>
 
-<p>This documentation describes the public interface and architectural patterns of the CMPSBL Substrate. Implementation details including proprietary algorithms, internal prompt engineering, and trade secret processing pipelines are intentionally omitted to protect intellectual property while enabling academic study and interoperability research.</p>
+<p>This documentation describes the public interface and architectural patterns of the CMPSBL Substrate. Implementation details including proprietary algorithms (Value Score Formula, Confidence Gating, normalization functions, creative synthesis heuristics), internal prompt engineering, and trade secret processing pipelines are intentionally omitted to protect intellectual property while enabling academic study, interoperability research, and comparative analysis.</p>
 
 <hr />
 
@@ -124,13 +141,16 @@
 <tr><td>Author</td><td>Kenneth E Sweet Jr</td></tr>
 <tr><td>Organization</td><td>PromptFluid®</td></tr>
 <tr><td>Email</td><td>dev@cmpsbl.com</td></tr>
-<tr><td>ORCID</td><td><a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></td></tr>
-<tr><td>DOI</td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
+<tr><td>ORCID</td><td><a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></td></tr>
+<tr><td>DOI</td><td><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></td></tr>
+<tr><td>OSF</td><td><a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></td></tr>
 </table>
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v10.5.1 — Academic Documentation Set</em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation Set</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>
