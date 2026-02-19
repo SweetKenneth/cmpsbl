@@ -1,48 +1,76 @@
-# Security Model
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Security Model — CMPSBL OS Substrate</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-## CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch
+<h1>Security Model</h1>
+<p><strong>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</strong></p>
+<p>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a><br />
+Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)</p>
+<hr />
 
-**DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
-**Author:** Kenneth E Sweet Jr (ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX))
+<h2>10. Security Model</h2>
 
----
+<p>The substrate implements defense-in-depth security with controls at every architectural layer.</p>
 
-## 10. Security Model
+<h3>10.1 Layer-Based Security</h3>
 
-The substrate implements defense-in-depth security with controls at every architectural layer.
+<table>
+<tr><th>Layer</th><th>Controls</th></tr>
+<tr><td>Kernel</td><td>API key validation, rate limiting, quota enforcement</td></tr>
+<tr><td>Cognitive</td><td>Memory access scoping, proposal validation</td></tr>
+<tr><td>Operational</td><td>Threat detection, behavioral analysis, bot filtering</td></tr>
+<tr><td>Administrative</td><td>Health monitoring, incident detection</td></tr>
+<tr><td>Infrastructure</td><td>Audit logging, actor attribution, isolated execution</td></tr>
+<tr><td>Orchestrator</td><td>Pipeline authorization, cross-module access control</td></tr>
+</table>
 
-### 10.1 Layer-Based Security
+<h3>10.2 Threat Detection</h3>
 
-| Layer | Controls |
-|-------|----------|
-| Kernel | API key validation, rate limiting, quota enforcement |
-| Cognitive | Memory access scoping, proposal validation |
-| Operational | Threat detection, behavioral analysis, bot filtering |
-| Administrative | Health monitoring, incident detection |
-| Infrastructure | Audit logging, actor attribution, isolated execution |
-| Orchestrator | Pipeline authorization, cross-module access control |
+<p>The DEFENSE module analyzes every incoming request across five dimensions: IP reputation, behavioral fingerprinting, rate anomalies, payload analysis, and bot detection. Responses range from allow to quarantine.</p>
 
-### 10.2 Threat Detection
+<h3>10.3 Access Control</h3>
 
-The DEFENSE module analyzes every incoming request across five dimensions: IP reputation, behavioral fingerprinting, rate anomalies, payload analysis, and bot detection. Responses range from allow to quarantine.
+<p>ACCESS implements hierarchical RBAC with scoped API keys. Each key specifies permitted modules, actions, and rate limits. Usage is metered per-request with cost tracking.</p>
 
-### 10.3 Access Control
+<h3>10.4 Data Protection</h3>
 
-ACCESS implements hierarchical RBAC with scoped API keys. Each key specifies permitted modules, actions, and rate limits. Usage is metered per-request with cost tracking.
+<ul>
+<li>Row-Level Security (RLS) enforces per-user data isolation at the database level</li>
+<li>All data is encrypted at rest and in transit</li>
+<li>Secrets are stored in an AES-GCM encrypted vault with per-module scoping</li>
+</ul>
 
-### 10.4 Data Protection
+<h3>10.5 Capability Protection</h3>
 
-- Row-Level Security (RLS) enforces per-user data isolation at the database level
-- All data is encrypted at rest and in transit
-- Secrets are stored in an AES-GCM encrypted vault with per-module scoping
+<p>54 capabilities are classified as Crown Jewels and excluded from all external access tiers. These capabilities are not visible in API catalogs, not searchable, and not accessible through any subscription plan.</p>
 
-### 10.5 Capability Protection
+<hr />
 
-54 capabilities are classified as Crown Jewels and excluded from all external access tiers. These capabilities are not visible in API catalogs, not searchable, and not accessible through any subscription plan.
+<p><em>CMPSBL OS Substrate v9.1.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
----
-
-*CMPSBL OS Substrate v9.1.0 — Academic Documentation*  
-*Kenneth E Sweet Jr · ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)*  
-*DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)*  
-*© 2025–2026 PromptFluid®. All rights reserved.*
+</div>
+</body>
+</html>

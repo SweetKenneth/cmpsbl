@@ -1,88 +1,115 @@
-# Abstract & Introduction
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Abstract &amp; Introduction — CMPSBL OS Substrate</title>
+<style>
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
+  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+  h1{font-size:20pt;margin-bottom:0.3in}
+  h2{font-size:14pt;margin-top:0.4in}
+  h3{font-size:12pt;margin-top:0.25in}
+  p{margin-bottom:0.14in}
+  ul,ol{margin-left:0.25in}
+  table{width:100%;border-collapse:collapse;margin:0.2in 0}
+  th,td{border:1px solid #ccc;padding:6px 8px}
+  th{background:#f3f3f3;text-align:left}
+  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
+  a{color:#333;text-decoration:underline}
+  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
 
-## CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch
+<h1>Abstract &amp; Introduction</h1>
+<p><strong>CMPSBL OS Substrate v9.1.0 — ARCHITECT Epoch</strong></p>
 
-**DOI:** [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)  
-**Author:** Kenneth E Sweet Jr (ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX))  
-**Affiliation:** PromptFluid®  
-**Date:** February 14, 2026  
-**License:** Apache 2.0 (Core) | CC BY 4.0 (Documentation)
+<table>
+<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
+<tr><td><strong>Author</strong></td><td>Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a>)</td></tr>
+<tr><td><strong>Affiliation</strong></td><td>PromptFluid®</td></tr>
+<tr><td><strong>Date</strong></td><td>February 14, 2026</td></tr>
+<tr><td><strong>License</strong></td><td>Apache 2.0 (Core) | CC BY 4.0 (Documentation)</td></tr>
+</table>
+<hr />
 
----
+<h2>Abstract</h2>
 
-## Abstract
+<p>We present the CMPSBL OS Substrate, a cognitive orchestration system that addresses four fundamental limitations of contemporary AI deployments: the absence of persistent memory, the lack of governance mechanisms, vendor lock-in to single providers, and the inability to self-improve. The substrate implements a 21-module, 6-layer architecture providing 400+ registered capabilities, 200 synergy pipelines, 14 specialized engines, and 12 meta-engines.</p>
 
-We present the CMPSBL OS Substrate, a cognitive orchestration system that addresses four fundamental limitations of contemporary AI deployments: the absence of persistent memory, the lack of governance mechanisms, vendor lock-in to single providers, and the inability to self-improve. The substrate implements a 21-module, 6-layer architecture providing 400+ registered capabilities, 200 synergy pipelines, 14 specialized engines, and 12 meta-engines.
+<p>Central to the system is a <em>verifiable self-evolution</em> mechanism: the substrate proposes improvements to its own behavior, validates them against regression criteria, applies them with cryptographic evolution stamps, and maintains full rollback capability. A three-tier autonomy governance model (Manual, Supervised, Autonomous) ensures human oversight scales appropriately with system maturity.</p>
 
-Central to the system is a *verifiable self-evolution* mechanism: the substrate proposes improvements to its own behavior, validates them against regression criteria, applies them with cryptographic evolution stamps, and maintains full rollback capability. A three-tier autonomy governance model (Manual, Supervised, Autonomous) ensures human oversight scales appropriately with system maturity.
+<p>The substrate operates as a provider-agnostic infrastructure layer, routing requests to any AI model (OpenAI, Anthropic, Google, Mistral, and others) with automatic failover and cost optimization. Persistent cognitive memory employs confidence scoring with temporal decay and reinforcement learning, enabling the system to track not only <em>what</em> it knows but <em>how reliably</em> it knows it.</p>
 
-The substrate operates as a provider-agnostic infrastructure layer, routing requests to any AI model (OpenAI, Anthropic, Google, Mistral, and others) with automatic failover and cost optimization. Persistent cognitive memory employs confidence scoring with temporal decay and reinforcement learning, enabling the system to track not only *what* it knows but *how reliably* it knows it.
+<p>This paper describes the public architectural patterns, module taxonomy, capability composition model, and governance mechanisms of the CMPSBL Substrate without exposing proprietary implementation details.</p>
 
-This paper describes the public architectural patterns, module taxonomy, capability composition model, and governance mechanisms of the CMPSBL Substrate without exposing proprietary implementation details.
+<hr />
 
----
+<h2>1. Introduction</h2>
 
-## 1. Introduction
+<h3>1.1 Problem Statement</h3>
 
-### 1.1 Problem Statement
+<p>Large language models have demonstrated remarkable capability across diverse tasks, yet deploying them in production environments exposes systemic limitations:</p>
 
-Large language models have demonstrated remarkable capability across diverse tasks, yet deploying them in production environments exposes systemic limitations:
+<ol>
+<li><strong>Statelessness.</strong> Each interaction begins from a blank slate. Knowledge accumulated during one session is unavailable in the next.</li>
+<li><strong>Ungoverned autonomy.</strong> AI systems operate without audit trails, bounded authority, or rollback mechanisms. Decisions are opaque and irreversible.</li>
+<li><strong>Provider coupling.</strong> Applications built atop a single AI provider inherit that provider's availability, pricing, and capability constraints.</li>
+<li><strong>Static capability.</strong> Deployed AI systems cannot learn from their own operational history or improve their performance without manual intervention.</li>
+</ol>
 
-1. **Statelessness.** Each interaction begins from a blank slate. Knowledge accumulated during one session is unavailable in the next.
+<p>These limitations are not merely inconvenient — they represent the primary barriers to enterprise AI adoption. Organizations require systems that remember, that can be audited, that are not locked to a single vendor, and that improve over time.</p>
 
-2. **Ungoverned autonomy.** AI systems operate without audit trails, bounded authority, or rollback mechanisms. Decisions are opaque and irreversible.
+<h3>1.2 Contributions</h3>
 
-3. **Provider coupling.** Applications built atop a single AI provider inherit that provider's availability, pricing, and capability constraints.
+<p>The CMPSBL OS Substrate addresses these limitations through the following contributions:</p>
 
-4. **Static capability.** Deployed AI systems cannot learn from their own operational history or improve their performance without manual intervention.
+<ul>
+<li><strong>Persistent Cognitive Memory</strong> (§3.1): A structured memory system with confidence scoring, temporal decay curves, reinforcement mechanisms, and knowledge graph construction.</li>
+<li><strong>Verifiable Self-Evolution</strong> (§6): A cryptographically stamped evolution engine that proposes, validates, and applies self-modifications with full rollback capability and immutable audit trails.</li>
+<li><strong>Three-Tier Autonomy Governance</strong> (§8): A graduated autonomy model — Manual, Supervised, and Autonomous — with circuit breakers, bounded authority, and human-in-the-loop approval queues.</li>
+<li><strong>Provider-Agnostic AI Routing</strong> (§3.5): A routing layer that abstracts AI providers behind a unified interface with automatic failover, load balancing, and cost optimization.</li>
+<li><strong>Module Isolation Architecture</strong> (§2): A 21-module design where each module operates independently with its own circuit breaker, health score, and failure boundary — eliminating single points of failure.</li>
+</ul>
 
-These limitations are not merely inconvenient — they represent the primary barriers to enterprise AI adoption. Organizations require systems that remember, that can be audited, that are not locked to a single vendor, and that improve over time.
+<h3>1.3 Scope</h3>
 
-### 1.2 Contributions
+<p>This document describes the <em>what</em> and <em>why</em> of the CMPSBL Substrate. Proprietary algorithms (Value Score Formula, Confidence Gating logic, normalization algorithms) are excluded to protect intellectual property. The focus is on architectural patterns, interfaces, and governance mechanisms that enable academic study, interoperability research, and comparative analysis.</p>
 
-The CMPSBL OS Substrate addresses these limitations through the following contributions:
+<h3>1.4 Terminology</h3>
 
-- **Persistent Cognitive Memory** (§3.1): A structured memory system with confidence scoring, temporal decay curves, reinforcement mechanisms, and knowledge graph construction.
+<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td>Substrate</td><td>The complete CMPSBL cognitive orchestration system</td></tr>
+<tr><td>Module</td><td>An isolated functional unit with its own circuit breaker and health score</td></tr>
+<tr><td>Capability</td><td>A registered, composable unit of functionality</td></tr>
+<tr><td>Synergy Pipeline</td><td>A cross-module orchestration workflow combining multiple capabilities</td></tr>
+<tr><td>Engine</td><td>A specialized processing system within a module</td></tr>
+<tr><td>Meta-Engine</td><td>A composite system combining multiple engines</td></tr>
+<tr><td>Evolution Stamp</td><td>A cryptographic receipt proving a self-modification occurred, was validated, and can be reversed</td></tr>
+<tr><td>Circuit Breaker</td><td>A failure isolation mechanism that stops a module from accepting requests when unhealthy</td></tr>
+<tr><td>Crown Jewel</td><td>A capability classified as architecturally sensitive (excluded from all external tiers)</td></tr>
+</table>
 
-- **Verifiable Self-Evolution** (§6): A cryptographically stamped evolution engine that proposes, validates, and applies self-modifications with full rollback capability and immutable audit trails.
+<h3>1.5 Document Organization</h3>
 
-- **Three-Tier Autonomy Governance** (§8): A graduated autonomy model — Manual, Supervised, and Autonomous — with circuit breakers, bounded authority, and human-in-the-loop approval queues.
+<p>Section 2 describes the 6-layer architecture. Section 3 catalogs all 21 modules. Section 4 presents the capability system. Section 5 details synergy pipelines. Section 6 explains the evolution engine. Section 7 covers observability. Section 8 describes the governance model. Sections 9–14 address cognitive systems, security, performance, deployment, related work, and future research directions.</p>
 
-- **Provider-Agnostic AI Routing** (§3.5): A routing layer that abstracts AI providers behind a unified interface with automatic failover, load balancing, and cost optimization.
+<hr />
 
-- **Module Isolation Architecture** (§2): A 21-module design where each module operates independently with its own circuit breaker, health score, and failure boundary — eliminating single points of failure.
+<h2>References</h2>
 
-### 1.3 Scope
+<p>See <a href="./15-BIBLIOGRAPHY.md">15-BIBLIOGRAPHY.md</a> for the complete reference list.</p>
 
-This document describes the *what* and *why* of the CMPSBL Substrate. Proprietary algorithms (Value Score Formula, Confidence Gating logic, normalization algorithms) are excluded to protect intellectual property. The focus is on architectural patterns, interfaces, and governance mechanisms that enable academic study, interoperability research, and comparative analysis.
+<hr />
 
-### 1.4 Terminology
+<p><em>CMPSBL OS Substrate v9.1.0 — Academic Documentation</em><br />
+<em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></em><br />
+<em>DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></em><br />
+<em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
-| Term | Definition |
-|------|-----------|
-| Substrate | The complete CMPSBL cognitive orchestration system |
-| Module | An isolated functional unit with its own circuit breaker and health score |
-| Capability | A registered, composable unit of functionality |
-| Synergy Pipeline | A cross-module orchestration workflow combining multiple capabilities |
-| Engine | A specialized processing system within a module |
-| Meta-Engine | A composite system combining multiple engines |
-| Evolution Stamp | A cryptographic receipt proving a self-modification occurred, was validated, and can be reversed |
-| Circuit Breaker | A failure isolation mechanism that stops a module from accepting requests when unhealthy |
-| Crown Jewel | A capability classified as architecturally sensitive (excluded from all external tiers) |
-
-### 1.5 Document Organization
-
-Section 2 describes the 6-layer architecture. Section 3 catalogs all 21 modules. Section 4 presents the capability system. Section 5 details synergy pipelines. Section 6 explains the evolution engine. Section 7 covers observability. Section 8 describes the governance model. Sections 9–14 address cognitive systems, security, performance, deployment, related work, and future research directions.
-
----
-
-## References
-
-See [15-BIBLIOGRAPHY.md](./15-BIBLIOGRAPHY.md) for the complete reference list.
-
----
-
-*CMPSBL OS Substrate v9.1.0 — Academic Documentation*  
-*Kenneth E Sweet Jr · ORCID: [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)*  
-*DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)*  
-*© 2025–2026 PromptFluid®. All rights reserved.*
+</div>
+</body>
+</html>
