@@ -270,6 +270,20 @@ export default function SubstrateLicensing() {
         title="Pricing | CMPSBL — Cognitive Infrastructure"
         description="Adoptable pricing for the CMPSBL Substrate. Free to build, $9/mo Creator, $19/mo Architect, $99/mo Enterprise. Compose intelligence — don't control the substrate."
         keywords={["CMPSBL pricing", "cognitive infrastructure", "AI substrate", "Creator tier", "Architect tier"]}
+        faq={[
+          { question: 'Is the free tier actually useful?', answer: 'Yes. Free users can build projects, run capabilities, use templates, and save outputs. It\'s not a trial — it\'s a permanent tier.' },
+          { question: 'What are Crown Jewels?', answer: 'Our highest-value sealed capabilities. Some are available at paid tiers. Others remain internal to preserve system integrity.' },
+          { question: 'What\'s the difference between Creator and Architect?', answer: 'Creator ($9/mo) adds executable capabilities, private memory, and light automation. Architect ($19/mo) adds cross-module orchestration, batch execution, audit views, and priority routing.' },
+          { question: 'Can I upgrade or downgrade anytime?', answer: 'Yes. Changes take effect at the next billing cycle.' },
+          { question: 'What does Builder Isolation mean?', answer: 'Your projects run ON the Substrate through templates, capabilities, and pipelines. You never have direct access to internal systems.' },
+          { question: 'Is Enterprise self-serve?', answer: 'Yes, $99/mo Enterprise is self-serve. For dedicated instances or SOC2, contact us for custom pricing.' },
+        ]}
+        product={{
+          name: 'CMPSBL Substrate Subscription',
+          price: '9',
+          currency: 'USD',
+          availability: 'InStock',
+        }}
       />
 
       <PublicNav />

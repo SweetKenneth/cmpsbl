@@ -416,7 +416,6 @@ export { useDecodePersonality, type UseDecodePersonalityReturn } from './decode/
 // Module Parity Enforcement v8.0.0 SYNERGY+
 export {
   checkModuleParity,
-  runParityCheck,
   getModulesNeedingWork,
   SUBSTRATE_MODULES_LIST,
   type ParityRequirement,
@@ -672,3 +671,28 @@ export {
   type AttributionFactor,
   type ShadowMeshState,
 } from './health-registry';
+
+// ═══ Truth Verification — Automated Parity Checks (v10.5.4) ═══
+export {
+  runParityCheck,
+  quickParityCheck,
+  type ParityCheckResult,
+  type ParityMismatch,
+} from './truth-verification';
+
+// ═══ Unified Telemetry Aggregation (v10.5.4) ═══
+export {
+  aggregateTelemetry,
+  type TelemetrySnapshot,
+  type AiTelemetry,
+  type AccessTelemetry,
+  type BrainTelemetry,
+  type OverallTelemetry,
+} from './telemetry-aggregator';
+
+// ═══ Changelog Auto-Generation (v10.5.4) ═══
+export {
+  fetchAutoChangelog,
+  formatChangelogDate,
+  type AutoChangelogEntry,
+} from './changelog-generator';
