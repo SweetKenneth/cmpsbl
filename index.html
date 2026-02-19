@@ -108,8 +108,8 @@
       /* Accessibility */
       .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
       
-      /* Root container - stable layout, CSS containment for paint optimization */
-      #root{min-height:100vh;display:flex;flex-direction:column;contain:layout style paint;content-visibility:auto}
+      /* Root container - stable layout */
+      #root{min-height:100vh;display:flex;flex-direction:column}
       
       /* Navigation shell - critical for above-the-fold */
       nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:hsl(var(--background));border-bottom:1px solid hsl(var(--border)/0.5)}
@@ -139,7 +139,7 @@
       .dark .glass{background:hsl(var(--card) / 0.4)}
       
       /* Framer Motion optimization - reduce forced reflows */
-      [data-framer-motion],[style*="transform"]{will-change:transform,opacity;contain:layout style paint}
+      [data-framer-motion],[style*="transform"]{will-change:transform,opacity}
       
       /* Skeleton loading animation - GPU accelerated */
       @keyframes skeleton-pulse{0%,100%{opacity:1}50%{opacity:0.5}}
@@ -153,65 +153,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
     
-    <!-- 2026 SEO: Deferred CSS loading - moves stylesheet out of critical path -->
-    <script>
-      // Defer non-critical CSS by converting to non-blocking with preload
-      (function() {
-        var h = document.head;
-        
-        // Preload CSS as high priority but non-render-blocking
-        function preloadCSS(href) {
-          var preload = document.createElement('link');
-          preload.rel = 'preload';
-          preload.as = 'style';
-          preload.href = href;
-          preload.onload = function() {
-            // Once preloaded, apply as stylesheet
-            this.onload = null;
-            this.rel = 'stylesheet';
-          };
-          h.appendChild(preload);
-        }
-        
-        // Convert render-blocking stylesheets to non-blocking
-        function makeNonBlocking(link) {
-          if (link.dataset.nbProcessed) return;
-          link.dataset.nbProcessed = '1';
-          link.media = 'print';
-          link.onload = function() { this.media = 'all'; this.onload = null; };
-        }
-        
-        // Process existing stylesheets
-        function processExisting() {
-          var links = h.querySelectorAll('link[rel="stylesheet"]');
-          for (var i = 0; i < links.length; i++) {
-            if (links[i].href && links[i].href.includes('/assets/')) {
-              makeNonBlocking(links[i]);
-            }
-          }
-        }
-        
-        // Run immediately
-        processExisting();
-        
-        // Observer for dynamically-added assets
-        var observer = new MutationObserver(function(mutations) {
-          for (var i = 0; i < mutations.length; i++) {
-            var nodes = mutations[i].addedNodes;
-            for (var j = 0; j < nodes.length; j++) {
-              var n = nodes[j];
-              if (n.tagName === 'LINK' && n.rel === 'stylesheet' && n.href && n.href.includes('/assets/')) {
-                makeNonBlocking(n);
-              }
-            }
-          }
-        });
-        observer.observe(h, { childList: true });
-        
-        // Cleanup after load
-        window.addEventListener('load', function() { observer.disconnect(); }, { once: true });
-      })();
-    </script>
+    <!-- CSS loads normally — deferring Tailwind CSS delays LCP by forcing unstyled React paint -->
     
     <!-- 2026 SEO: Primary Meta Tags — CMPSBL SUBSTRATE OS v8.0.0 -->
     <title>CMPSBL™ Substrate OS v8.0.0 — 14-Module Cognitive Infrastructure | AI Governance Standard</title>
