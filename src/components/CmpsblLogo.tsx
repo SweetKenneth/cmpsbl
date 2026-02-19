@@ -13,20 +13,26 @@ interface CmpsblLogoProps {
   size?: "sm" | "md" | "lg" | "xl";
 }
 
-const sizeClasses = {
-  sm: "h-10",
-  md: "h-12",
-  lg: "h-16",
-  xl: "h-24",
+const sizeConfig = {
+  sm: { className: "h-10", width: 40, height: 40 },
+  md: { className: "h-12", width: 48, height: 48 },
+  lg: { className: "h-16", width: 64, height: 64 },
+  xl: { className: "h-24", width: 96, height: 96 },
 };
 
 export function CmpsblLogo({ className, iconOnly = false, size = "md" }: CmpsblLogoProps) {
+  const { className: sizeClass, width, height } = sizeConfig[size];
   return (
     <img
       src={cmpsblLogo}
       alt="CMPSBL By PromptFluid"
+      width={width}
+      height={height}
+      loading={size === "sm" ? "eager" : "lazy"}
+      decoding="async"
+      fetchPriority={size === "sm" ? "high" : "auto"}
       className={cn(
-        sizeClasses[size],
+        sizeClass,
         "w-auto object-contain",
         iconOnly && "aspect-square object-left object-cover",
         className
