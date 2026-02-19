@@ -24,7 +24,7 @@
 <div class="page">
 
 <h1>CMPSBL OS Substrate — Documentation Hub</h1>
-<p><strong>v10.5.4 ARCHITECT Epoch</strong> · Updated February 19, 2026</p>
+<p><strong>v10.8.0 ARCHITECT Epoch</strong> · Updated February 19, 2026</p>
 <hr />
 
 <h2>Documentation Sets</h2>
@@ -70,7 +70,7 @@
 
 <hr />
 
-<h2>What's New in v10.5.4</h2>
+<h2>What's New in v10.8.0</h2>
 
 <table>
 <tr><th>Feature</th><th>Description</th></tr>
@@ -98,15 +98,16 @@
 
 <table>
 <tr><th>Field</th><th>Value</th></tr>
-<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
-<tr><td><strong>ORCID</strong></td><td><a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a></td></tr>
+<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></td></tr>
+<tr><td><strong>ORCID</strong></td><td><a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></td></tr>
+<tr><td><strong>OSF</strong></td><td><a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></td></tr>
 <tr><td><strong>Author</strong></td><td>Kenneth E Sweet Jr</td></tr>
 <tr><td><strong>Organization</strong></td><td>PromptFluid®</td></tr>
 </table>
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v10.5.4 — ARCHITECT Epoch</em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>

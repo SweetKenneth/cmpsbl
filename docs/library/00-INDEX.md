@@ -29,7 +29,7 @@
 <table>
 <tr><td><strong>Classification</strong></td><td>Library — No Trade Secrets</td></tr>
 <tr><td><strong>Audience</strong></td><td>Investors · Researchers · Developers · Partners</td></tr>
-<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></td></tr>
+<tr><td><strong>DOI</strong></td><td><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></td></tr>
 <tr><td><strong>Last Updated</strong></td><td>February 17, 2026</td></tr>
 </table>
 
@@ -88,10 +88,10 @@
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch</em></p>
+<p><em>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</em></p>
 <p><strong>Kenneth E Sweet Jr</strong> · PromptFluid®<br />
-ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a><br />
-DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></p>
+ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a><br />
+DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></p>
 <p>© 2025–2026 PromptFluid®. All rights reserved.</p>
 
 </div>

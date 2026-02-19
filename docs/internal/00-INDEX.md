@@ -20,7 +20,7 @@
 
 <h1>🔒 CMPSBL OS Substrate — Internal Documentation</h1>
 <p><strong>CONFIDENTIAL — Trade Secrets Enclosed</strong></p>
-<p><strong>v10.5.1 ARCHITECT Epoch</strong></p>
+<p><strong>v10.8.0 ARCHITECT Epoch</strong></p>
 <hr />
 
 <p>⚠️ <strong>This documentation contains proprietary algorithms, implementation details, and trade secrets.</strong> Do not distribute outside of CMPSBL/PromptFluid without written authorization.</p>
@@ -51,7 +51,7 @@
 <tr><td>21</td><td><a href="./21-INTENT-MESH-INTERNALS.md">Intent Mesh Internals</a></td><td>Emergent capability mesh — routing, governance, trade secrets</td><td>🔴 Critical</td></tr>
 </table>
 
-<h2>What's New in v10.5.1</h2>
+<h2>What's New in v10.8.0</h2>
 <table>
 <tr><th>Feature</th><th>Description</th></tr>
 <tr><td><strong>ENCODE Module</strong></td><td>Code execution engine with DECODE→ENCODE pipeline, graduated autonomy, CLM</td></tr>
@@ -72,9 +72,9 @@
 </table>
 
 <hr />
-<p><em>CMPSBL OS Substrate v10.5.1 — ARCHITECT Epoch — INTERNAL USE ONLY</em><br />
+<p><em>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch — INTERNAL USE ONLY</em><br />
 <em>Kenneth E Sweet Jr · PromptFluid®</em><br />
-<em>ORCID: XXXX-XXXX-XXXX-XXXX · DOI: 10.5281/zenodo.XXXXXXX</em><br />
+<em>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a> · DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
 </div>

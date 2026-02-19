@@ -122,10 +122,10 @@
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v10.5.4 — ARCHITECT Epoch</em></p>
+<p><em>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</em></p>
 <p><strong>Kenneth E Sweet Jr</strong> · PromptFluid®<br />
-ORCID: <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX">XXXX-XXXX-XXXX-XXXX</a><br />
-DOI: <a href="https://doi.org/10.5281/zenodo.XXXXXXX">10.5281/zenodo.XXXXXXX</a></p>
+ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a><br />
+DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></p>
 <p>© 2025–2026 PromptFluid®. All rights reserved.</p>
 
 </div>
