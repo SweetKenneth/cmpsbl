@@ -39,8 +39,8 @@ const getFreeTools = () => {
 // Legacy static export for initial render
 const freeTools = [
   { name: "Templates", icon: Package, count: "200+", color: "text-cyan-500" },
-  { name: "Pipelines", icon: Layers, count: "200", color: "text-violet-500" },
-  { name: "Capabilities", icon: Zap, count: "400+", color: "text-amber-500" },
+  { name: "Pipelines", icon: Layers, count: "300+", color: "text-violet-500" },
+  { name: "Capabilities", icon: Zap, count: "525+", color: "text-amber-500" },
   { name: "Memory", icon: Brain, count: "∞", color: "text-rose-500" },
   { name: "CodeLab", icon: Code, count: "Live", color: "text-emerald-500" },
 ];
@@ -273,7 +273,7 @@ function EnginesShowcase() {
           to="/engines"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 group"
         >
-          View All 62 Engines
+          View All 76 Engines
           <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
         </Link>
       </motion.div>
