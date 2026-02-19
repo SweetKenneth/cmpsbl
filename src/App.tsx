@@ -6,12 +6,14 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
-import { MotionConfig } from "framer-motion";
 import { SEOProvider } from "@/contexts/SEOContext";
 import { debugMode } from "@/lib/debug-mode";
-import SmartToastRenderer from "@/components/toast/SmartToastRenderer";
-import { Toaster as SonnerToaster } from "@/components/ui/sonner";
-import DecodeFloat from "@/components/decode/DecodeFloat";
+
+// Lazy-load non-critical UI components to reduce initial JS
+const MotionConfigWrapper = lazy(() => import("framer-motion").then(m => ({ default: m.MotionConfig })));
+const SmartToastRenderer = lazy(() => import("@/components/toast/SmartToastRenderer"));
+const SonnerToaster = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
+const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
 import { installLastInteractionTracking } from "@/lib/ui/lastInteraction";
 import { installSiteGuard } from "@/lib/defense/site-guard";
 import { isEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
@@ -48,7 +50,7 @@ const PageLoader = () => (
 
 // Core pages - only Explore eager loaded for LCP, rest lazy
 import Explore from "./pages/Explore";
-import NotFound from "./pages/NotFound";
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Lazy load all other pages to reduce initial bundle
 const Auth = lazy(() => import("./pages/Auth"));
@@ -261,7 +263,8 @@ const App = () => {
       {mobilePreviewSafeMode ? (
         <MobilePreviewSafeMode />
       ) : (
-        <MotionConfig reducedMotion={isPreviewEnv ? "always" : "user"}>
+        <Suspense fallback={null}>
+        <MotionConfigWrapper reducedMotion={isPreviewEnv ? "always" : "user"}>
           <QueryClientProvider client={queryClient}>
           <SEOProvider>
             <Suspense fallback={<PageLoader />}>
@@ -517,7 +520,8 @@ const App = () => {
           </Suspense>
         </SEOProvider>
         </QueryClientProvider>
-      </MotionConfig>
+      </MotionConfigWrapper>
+      </Suspense>
       )}
 
       {/* Diagnostic panel - only renders when ?diag=1 is present */}
