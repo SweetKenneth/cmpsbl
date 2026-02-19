@@ -1,4 +1,6 @@
 import { ReactNode } from "react";
+import "@/styles/admin/design-tokens.css";
+import "@/styles/admin/animations.css";
 import { UnifiedAdminSidebar } from "./UnifiedAdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
