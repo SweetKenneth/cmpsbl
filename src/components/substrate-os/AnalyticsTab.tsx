@@ -142,6 +142,14 @@ export function AnalyticsTab() {
         topModules,
         eventBreakdown,
         successRate,
+        immuneRuns: 0,
+        immuneRepairs: 0,
+        immuneEscalations: 0,
+        immuneSafeFailures: 0,
+        immuneRepairRate: 0,
+        encodeClaimed: 0,
+        encodeResolved: 0,
+        encodeResolutionRate: 0,
       });
     } catch (error) {
       console.error('Telemetry fetch error:', error);
