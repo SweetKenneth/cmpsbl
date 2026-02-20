@@ -127,6 +127,11 @@ export function EventStream() {
           <Badge variant="outline" className="text-[10px] h-5 font-mono">
             {filteredLogs.length} events
           </Badge>
+          {brainEvents.data?.fetchedAt && (
+            <span className="text-[9px] text-muted-foreground/50 font-mono hidden sm:inline">
+              {new Date(brainEvents.data.fetchedAt).toLocaleTimeString('en-US', { hour12: false })}
+            </span>
+          )}
         </div>
         
         {/* Filter Dropdown */}
