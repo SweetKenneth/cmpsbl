@@ -238,16 +238,16 @@ export default function Explore() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
-                  <Link to="/codelab">
-                    <Terminal className="w-5 h-5 mr-2" />
-                    Start in CodeLab
+                  <Link to="/start-here">
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    Start Here
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
-                  <Link to="/documentation">
-                    <BookOpen className="w-5 h-5 mr-2" />
-                    Read Docs
+                  <Link to="/store">
+                    <Terminal className="w-5 h-5 mr-2" />
+                    Browse the Store
                   </Link>
                 </Button>
               </div>
