@@ -83,25 +83,37 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
     {
       id: 'heal', label: 'Auto-Heal', icon: Wrench,
       description: 'Repair unhealthy modules',
-      color: 'emerald', isPending: healMutation.isPending,
+      borderClass: 'border-emerald-500/15 hover:border-emerald-500/40',
+      bgGradient: 'from-emerald-500/[0.06]', glowBg: 'bg-emerald-500/10',
+      iconGradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600',
+      isPending: healMutation.isPending,
       onClick: handleHealAll,
     },
     {
       id: 'backup', label: 'Backup', icon: Server,
       description: 'Create system snapshot',
-      color: 'cyan', isPending: backupMutation.isPending,
+      borderClass: 'border-cyan-500/15 hover:border-cyan-500/40',
+      bgGradient: 'from-cyan-500/[0.06]', glowBg: 'bg-cyan-500/10',
+      iconGradient: 'bg-gradient-to-br from-cyan-500 to-cyan-600',
+      isPending: backupMutation.isPending,
       onClick: handleBackup,
     },
     {
       id: 'diagnostics', label: 'Diagnostics', icon: Activity,
       description: 'Full system analysis',
-      color: 'amber', isPending: diagnosticsRunning,
+      borderClass: 'border-amber-500/15 hover:border-amber-500/40',
+      bgGradient: 'from-amber-500/[0.06]', glowBg: 'bg-amber-500/10',
+      iconGradient: 'bg-gradient-to-br from-amber-500 to-amber-600',
+      isPending: diagnosticsRunning,
       onClick: handleDiagnostics,
     },
     {
       id: 'terminal', label: 'Terminal', icon: Terminal,
       description: 'Command interface',
-      color: 'fuchsia', isPending: false,
+      borderClass: 'border-fuchsia-500/15 hover:border-fuchsia-500/40',
+      bgGradient: 'from-fuchsia-500/[0.06]', glowBg: 'bg-fuchsia-500/10',
+      iconGradient: 'bg-gradient-to-br from-fuchsia-500 to-fuchsia-600',
+      isPending: false,
       onClick: onOpenTerminal,
     },
   ];
@@ -171,7 +183,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
                 disabled={action.isPending}
                 className={cn(
                   "group relative p-5 rounded-xl border text-left overflow-hidden transition-all duration-200",
-                  `border-${action.color}-500/15 hover:border-${action.color}-500/40`,
+                  action.borderClass,
                   action.isPending && "opacity-60 cursor-not-allowed"
                 )}
                 initial={{ opacity: 0, y: 12 }}
@@ -183,19 +195,19 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
                 {/* Background gradient on hover */}
                 <div className={cn(
                   "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-                  `from-${action.color}-500/[0.06] to-transparent`
+                  action.bgGradient, "to-transparent"
                 )} />
                 
                 {/* Glow on hover */}
                 <div className={cn(
                   "absolute -inset-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-2xl -z-10",
-                  `bg-${action.color}-500/10`
+                  action.glowBg
                 )} />
                 
                 <div className="relative">
                   <div className={cn(
                     "w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-200",
-                    `bg-gradient-to-br from-${action.color}-500 to-${action.color}-600`,
+                    action.iconGradient,
                     "shadow-lg"
                   )}
                     style={{ boxShadow: `0 8px 24px -4px var(--tw-shadow-color, rgba(0,0,0,0.2))` }}

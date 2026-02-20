@@ -3,11 +3,14 @@
  * v10.5.4 — ARCHITECT Epoch Distributed tracing for substrate operations
  */
 
-// Trace ID format: pf-{timestamp_base36}-{random_hex}
+// Trace ID format: valid UUID v4 (required by brain_events table)
 export function generateTraceId(): string {
-  const timestamp = Date.now().toString(36);
-  const random = Math.random().toString(16).slice(2, 10);
-  return `pf-${timestamp}-${random}`;
+  // Generate RFC4122-compliant UUID v4
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
 
 export interface TraceContext {
@@ -97,8 +100,10 @@ export async function withTrace<T>(
 
 // Extract trace ID from various sources
 export function extractTraceId(source: unknown): string | undefined {
-  if (typeof source === 'string' && source.startsWith('pf-')) {
-    return source;
+  if (typeof source === 'string') {
+    // Accept both UUID format and legacy pf- format
+    if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(source)) return source;
+    if (source.startsWith('pf-')) return source;
   }
   
   if (typeof source === 'object' && source !== null) {

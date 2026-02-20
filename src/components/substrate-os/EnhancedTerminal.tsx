@@ -482,7 +482,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         isBiohack ? "biohack-terminal" : currentTheme.bg,
         isBiohack ? "" : "shadow-[0_0_40px_rgba(6,182,212,0.15)]",
         currentTheme.border,
-        isExpanded ? "fixed inset-4 z-50" : "",
+        isExpanded ? "fixed inset-4 z-[60]" : "",
         fullHeight ? "h-full flex flex-col" : "",
         className
       )}
