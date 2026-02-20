@@ -300,6 +300,45 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     if (!applied.includes('ALL_EMPTY_INJECT')) applied.push('ALL_EMPTY_INJECT');
   }
 
+  // 40) PLACEHOLDER_NATURALIZE — convert bracketed placeholders to natural defaults
+  // that pass isInputWellFormed validation (Phase 2.6 legacy consolidation)
+  const PLACEHOLDER_RE = /^\[(?:empty|probe):[\w-]+\]$/;
+  const NATURAL_DEFAULTS: Record<string, string> = {
+    content: '',
+    url: '',
+    domain: '',
+    userId: 'anonymous',
+    wcagLevel: 'AA',
+    ariaLabel: '',
+    target: 'self',
+    label: '',
+    description: '',
+  };
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && PLACEHOLDER_RE.test(copy[key])) {
+      copy[key] = NATURAL_DEFAULTS[key] ?? '';
+      if (!applied.includes('PLACEHOLDER_NATURALIZE')) applied.push('PLACEHOLDER_NATURALIZE');
+    }
+  }
+
+  // 41) FLATTENED_CSV_CLEANUP — clean up comma-joined artifacts from FLATTEN_ARRAY
+  // (trailing/leading commas, double commas, excess whitespace around commas)
+  if (applied.includes('FLATTEN_ARRAY')) {
+    for (const key of Object.keys(copy)) {
+      if (STRING_FIELDS.has(key) && typeof copy[key] === 'string' && copy[key].includes(',')) {
+        let cleaned = copy[key]
+          .replace(/,\s*,+/g, ',')     // collapse double commas
+          .replace(/^[\s,]+/, '')       // strip leading commas
+          .replace(/[\s,]+$/, '')       // strip trailing commas
+          .trim();
+        if (cleaned !== copy[key]) {
+          copy[key] = cleaned;
+          if (!applied.includes('FLATTENED_CSV_CLEANUP')) applied.push('FLATTENED_CSV_CLEANUP');
+        }
+      }
+    }
+  }
+
   // 23) HTML_ANGLE_ENCODE — encode < > in non-URL string fields (catches XSS beyond <script>)
   for (const key of Object.keys(copy)) {
     if (typeof copy[key] === 'string' && key !== 'url' && key !== 'target') {
