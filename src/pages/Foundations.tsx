@@ -78,8 +78,11 @@ export default function Foundations() {
   const handlePrintDownload = async (doc: typeof LIBRARY_DOCS[0]) => {
     setLoadingDoc(doc.id);
     try {
-      const filename = `${doc.id}-${doc.name}.md`;
-      const response = await fetch(`/docs/website/${filename}`);
+      const filename = `${doc.id}-${doc.name}`;
+      let response = await fetch(`/docs/website/${filename}.html`);
+      if (!response.ok) {
+        response = await fetch(`/docs/website/${filename}.md`);
+      }
       if (response.ok) {
         const content = await response.text();
         printDocument({
@@ -359,8 +362,8 @@ export default function Foundations() {
                   >
                     <Printer className={`w-4 h-4 ${loadingDoc === doc.id ? 'animate-pulse' : ''}`} />
                   </Button>
-                  <Button variant="ghost" size="sm" asChild title="Download Markdown">
-                    <a href={`/docs/website/${doc.id}-${doc.name}.md`} download>
+                  <Button variant="ghost" size="sm" asChild title="Download Document">
+                    <a href={`/docs/website/${doc.id}-${doc.name}.html`} download>
                       <Download className="w-4 h-4" />
                     </a>
                   </Button>

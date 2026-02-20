@@ -192,6 +192,31 @@ const getCategoryIcon = (category: string) => {
   return icons[category as keyof typeof icons] || FileText;
 };
 
+/** Inject mobile-first viewport + responsive CSS into HTML doc strings */
+function injectMobileCSS(html: string): string {
+  const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1">';
+  const mobileCss = `<style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { max-width: 100% !important; padding: 1rem !important; margin: 0 !important; word-wrap: break-word; overflow-wrap: break-word; font-size: 10pt; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; font-size: 9pt; }
+    pre { white-space: pre-wrap; word-break: break-word; max-width: 100%; }
+    img { max-width: 100%; height: auto; }
+    h1 { font-size: 16pt; }
+    h2 { font-size: 13pt; }
+    @media (min-width: 768px) {
+      body { max-width: 7in !important; margin: auto !important; padding: 0.8in !important; font-size: 11pt; }
+      table { font-size: 10pt; }
+      h1 { font-size: 20pt; }
+      h2 { font-size: 14pt; }
+    }
+  </style>`;
+  // Inject after <meta charset>
+  let result = html.replace(/<meta charset="utf-8"\s*\/?>/, `$&\n${viewport}`);
+  // Inject mobile CSS before closing </head>
+  result = result.replace('</head>', `${mobileCss}\n</head>`);
+  return result;
+}
+
 export default function Library() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [content, setContent] = useState<string>("");
@@ -212,23 +237,33 @@ export default function Library() {
 
   const featuredDocs = LIBRARY_DOCS.filter(d => d.featured);
 
+  const [isHtmlContent, setIsHtmlContent] = useState(false);
+
   useEffect(() => {
     if (!currentDoc) return;
     
     const loadDocument = async () => {
       setLoading(true);
       try {
-        // Handle special suffixed IDs like "09-SEC" → "09-SECURITY-COMPLIANCE.md"
+        // Handle special suffixed IDs like "09-SEC" → "09-SECURITY-COMPLIANCE"
         const baseId = currentDoc.id.split('-')[0];
-        const filename = `${baseId}-${currentDoc.name}.md`;
-        const response = await fetch(`/docs/website/${filename}`);
+        const filename = `${baseId}-${currentDoc.name}`;
+        // Try .html first (new format), fall back to .md
+        let response = await fetch(`/docs/website/${filename}.html`);
+        if (!response.ok) {
+          response = await fetch(`/docs/website/${filename}.md`);
+        }
         if (response.ok) {
           const text = await response.text();
+          const html = text.trimStart().startsWith('<!') || text.trimStart().startsWith('<html');
+          setIsHtmlContent(html);
           setContent(text);
         } else {
+          setIsHtmlContent(false);
           setContent("# Document Not Found\n\nThis document could not be loaded.");
         }
       } catch (error) {
+        setIsHtmlContent(false);
         setContent("# Error Loading Document\n\nAn error occurred while loading this document.");
       }
       setLoading(false);
@@ -681,6 +716,21 @@ export default function Library() {
                 animate={{ opacity: 1, y: 0 }}
                 className="library-content max-w-none"
               >
+                {isHtmlContent ? (
+                  <iframe
+                    srcDoc={injectMobileCSS(content)}
+                    className="w-full border-0 min-h-[80vh]"
+                    style={{ height: '100%' }}
+                    title={currentDoc.title}
+                    sandbox="allow-same-origin allow-popups"
+                    onLoad={(e) => {
+                      const iframe = e.currentTarget;
+                      if (iframe.contentDocument) {
+                        iframe.style.height = iframe.contentDocument.documentElement.scrollHeight + 'px';
+                      }
+                    }}
+                  />
+                ) : (
                 <ReactMarkdown 
                   remarkPlugins={[remarkGfm]}
                   components={{
@@ -734,7 +784,7 @@ export default function Library() {
                     ),
                     a: ({href, children}) => {
                       if (href) {
-                        const mdMatch = href.match(/(?:\.\/)?(\d{2})-([A-Z-]+)\.md$/i);
+                        const mdMatch = href.match(/(?:\.\/)?(\d{2})-([A-Z-]+)\.(?:md|html)$/i);
                         if (mdMatch) {
                           const docId = `${mdMatch[1]}-${mdMatch[2].toUpperCase()}`;
                           const targetDoc = LIBRARY_DOCS.find(d => `${d.id}-${d.name}` === docId);
@@ -845,6 +895,7 @@ export default function Library() {
                 >
                   {content}
                 </ReactMarkdown>
+                )}
               </motion.article>
             )}
           </div>
