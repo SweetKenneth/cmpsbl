@@ -4,11 +4,14 @@
  * Phase 2: deterministic repair telemetry
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, AlertCircle, CheckCircle, ShieldAlert, Loader2, Wrench } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Activity, AlertCircle, CheckCircle, ShieldAlert, Loader2, Wrench, RotateCcw } from "lucide-react";
 import { getShadowMeshAnalytics, type ShadowMeshAnalyticsData } from "@/lib/shadow/analytics";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 function pct(n: number): string {
   return `${(n * 100).toFixed(1)}%`;
@@ -17,22 +20,57 @@ function pct(n: number): string {
 export function ShadowMeshAnalytics() {
   const [data, setData] = useState<ShadowMeshAnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [resetting, setResetting] = useState(false);
+
+  const load = useCallback(() => {
+    getShadowMeshAnalytics().then(setData).finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
-    const load = () => {
-      getShadowMeshAnalytics().then(setData).finally(() => setLoading(false));
-    };
     load();
     const interval = setInterval(load, 30_000);
     return () => clearInterval(interval);
-  }, []);
+  }, [load]);
+
+  const handleReset = async () => {
+    setResetting(true);
+    try {
+      const { error: e1 } = await supabase.from('immune_metrics').delete().neq('executor', '__never__') as any;
+      const { error: e2 } = await supabase.from('immune_escalations').delete().neq('executor', '__never__') as any;
+      if (e1 || e2) throw new Error(e1?.message || e2?.message);
+      toast.success('Telemetry reset — all immune metrics cleared');
+      setData(null);
+      setLoading(true);
+      load();
+    } catch (err: any) {
+      toast.error(`Reset failed: ${err.message}`);
+    } finally {
+      setResetting(false);
+    }
+  };
+
+  const resetButton = (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleReset}
+      disabled={resetting}
+      className="gap-1.5"
+    >
+      {resetting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />}
+      Reset Telemetry
+    </Button>
+  );
 
   if (loading) {
     return (
       <Card>
-        <CardContent className="flex items-center gap-2 py-6">
-          <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">Loading analytics…</span>
+        <CardContent className="flex items-center justify-between py-6">
+          <div className="flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Loading analytics…</span>
+          </div>
+          {resetButton}
         </CardContent>
       </Card>
     );
@@ -41,10 +79,11 @@ export function ShadowMeshAnalytics() {
   if (!data || data.metrics.length === 0) {
     return (
       <Card>
-        <CardContent className="py-6">
+        <CardContent className="flex items-center justify-between py-6">
           <p className="text-sm text-muted-foreground">
             No shadow mesh data yet. Enable the toggle and wait for the first batch cycle (~15 min).
           </p>
+          {resetButton}
         </CardContent>
       </Card>
     );
@@ -56,11 +95,12 @@ export function ShadowMeshAnalytics() {
     <div className="space-y-4">
       {/* Phase 2: Repair KPIs */}
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-base flex items-center gap-2">
             <Wrench className="w-4 h-4 text-primary" />
             Repair Telemetry (Last 6h)
           </CardTitle>
+          {resetButton}
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
