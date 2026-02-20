@@ -16,6 +16,7 @@ export interface DeterministicRepairResult {
 
 const SCRIPT_RE = /<script[\s\S]*?<\/script>/gi;
 const SECRET_KEY_RE = /\b(token|api_key|apikey|password|secret|authorization)\b/i;
+const SQL_INJECT_RE = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|UNION|CREATE|EXEC)\b\s)/i;
 const MAX_STRING_LEN = 5000;
 const MAX_ARRAY_LEN = 1000;
 
@@ -24,6 +25,12 @@ const MAX_ARRAY_LEN = 1000;
  * If an input is missing ALL of these, DEFAULT_SHAPE fills them in.
  */
 const EXPECTED_KEYS = ['content', 'url', 'domain', 'userId', 'wcagLevel', 'ariaLabel'] as const;
+
+/** Known string-expected fields (arrays should be flattened) */
+const STRING_FIELDS = new Set(['content', 'url', 'domain', 'userId', 'ariaLabel', 'target', 'label', 'description']);
+
+/** Valid wcagLevel values */
+const VALID_WCAG_LEVELS = new Set(['A', 'AA', 'AAA']);
 
 /**
  * Attempt deterministic repairs on an input object.
@@ -87,7 +94,37 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 5) COERCE_TYPE — cast booleans and numbers to strings for string-expected fields
+  // 5) FLATTEN_ARRAY — convert arrays to comma-joined strings for known string fields
+  for (const key of Object.keys(copy)) {
+    if (STRING_FIELDS.has(key) && Array.isArray(copy[key])) {
+      copy[key] = (copy[key] as any[]).map(String).join(', ');
+      if (!applied.includes('FLATTEN_ARRAY')) applied.push('FLATTEN_ARRAY');
+    }
+  }
+
+  // 6) SQL_SANITIZE — strip SQL injection patterns from string values
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && SQL_INJECT_RE.test(copy[key])) {
+      copy[key] = copy[key].replace(SQL_INJECT_RE, '');
+      SQL_INJECT_RE.lastIndex = 0;
+      if (!applied.includes('SQL_SANITIZE')) applied.push('SQL_SANITIZE');
+    }
+    SQL_INJECT_RE.lastIndex = 0;
+  }
+
+  // 7) ENUM_CLAMP — normalize wcagLevel to valid values
+  if ('wcagLevel' in copy && typeof copy.wcagLevel === 'string') {
+    const upper = copy.wcagLevel.toUpperCase();
+    if (!VALID_WCAG_LEVELS.has(upper)) {
+      copy.wcagLevel = 'AA'; // safe default
+      if (!applied.includes('ENUM_CLAMP')) applied.push('ENUM_CLAMP');
+    } else if (copy.wcagLevel !== upper) {
+      copy.wcagLevel = upper;
+      if (!applied.includes('ENUM_CLAMP')) applied.push('ENUM_CLAMP');
+    }
+  }
+
+  // 8) COERCE_TYPE — cast booleans and numbers to strings for string-expected fields
   for (const key of Object.keys(copy)) {
     const val = copy[key];
     if (typeof val === 'boolean' || typeof val === 'number') {
@@ -96,7 +133,7 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 6) STRIP_EMPTY_OBJECTS — replace empty object values {} with empty string
+  // 9) STRIP_EMPTY_OBJECTS — replace empty object values {} with empty string
   for (const key of Object.keys(copy)) {
     const val = copy[key];
     if (val && typeof val === 'object' && !Array.isArray(val) && Object.keys(val).length === 0) {
@@ -105,7 +142,7 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 7) DEFAULT_SHAPE — if input has no recognized keys, inject minimum shape
+  // 10) DEFAULT_SHAPE — if input has no recognized keys, inject minimum shape
   const hasExpectedKey = EXPECTED_KEYS.some(k => k in copy);
   if (!hasExpectedKey && Object.keys(copy).length > 0) {
     copy.content = copy[Object.keys(copy)[0]] ?? '';
