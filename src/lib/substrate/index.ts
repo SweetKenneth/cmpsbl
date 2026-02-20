@@ -687,6 +687,8 @@ export {
   type AiTelemetry,
   type AccessTelemetry,
   type BrainTelemetry,
+  type ImmuneTelemetry,
+  type EncodeTelemetry,
   type OverallTelemetry,
 } from './telemetry-aggregator';
 

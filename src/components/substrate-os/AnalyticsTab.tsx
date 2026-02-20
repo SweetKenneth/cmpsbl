@@ -24,6 +24,16 @@ interface TelemetryData {
   topModules: { module: string; count: number }[];
   eventBreakdown: { type: string; count: number }[];
   successRate: number;
+  // Immune telemetry
+  immuneRuns: number;
+  immuneRepairs: number;
+  immuneEscalations: number;
+  immuneSafeFailures: number;
+  immuneRepairRate: number;
+  // ENCODE resolution telemetry
+  encodeClaimed: number;
+  encodeResolved: number;
+  encodeResolutionRate: number;
 }
 
 export function AnalyticsTab() {

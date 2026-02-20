@@ -103,9 +103,16 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     .order('created_at', { ascending: false })
     .limit(10);
 
+  // HONEST repair rate: repairs / (repairs + escalations + safe_failures)
+  // This prevents false 100% when most runs succeed without needing repair
+  const totalRepairsAll = Array.from(byExecutor.values()).reduce((s, m) => s + m.repairs, 0);
+  const totalEscalationsAll = Array.from(byExecutor.values()).reduce((s, m) => s + m.escalations, 0);
+  const totalSafeFailsAll = Array.from(byExecutor.values()).reduce((s, m) => s + m.safe_fails, 0);
+  const repairDenominator = totalRepairsAll + totalEscalationsAll + totalSafeFailsAll;
+
   const repairKPIs: RepairKPIs = {
     repair_attempt_rate: totalRunsAll > 0 ? totalRepairAttempts / totalRunsAll : 0,
-    repair_success_rate: totalRepairAttempts > 0 ? totalRepairSuccesses / totalRepairAttempts : 0,
+    repair_success_rate: repairDenominator > 0 ? totalRepairsAll / repairDenominator : 0,
     retry_rate: totalRunsAll > 0 ? totalRetries / totalRunsAll : 0,
   };
 
