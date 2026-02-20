@@ -271,9 +271,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/codelab">
-                  <Code className="w-4 h-4" />
-                  Start Free
+                <Link to="/start-here">
+                  <Layers className="w-4 h-4" />
+                  Start Here
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
@@ -283,9 +283,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 active:scale-[0.98]"
               >
-                <Link to="/engines">
+                <Link to="/store">
                   <Sparkles className="w-4 h-4" />
-                  View Engines
+                  Browse the Store
                 </Link>
               </Button>
             </motion.div>
