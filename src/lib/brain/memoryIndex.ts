@@ -1,6 +1,7 @@
 /**
  * BRAIN Memory Index Engine
- * v10.8.1 ARCHITECT — Per-user indexed memory with metacognitive awareness
+ * v10.9.0 ARCHITECT — Per-user indexed memory with causal graph,
+ * contradiction detection, and vector-aware indexing
  */
  
 import { supabase } from '@/integrations/supabase/client';
@@ -17,13 +18,25 @@ export interface IndexEntry {
   access_count: number;
   user_id?: string;
   agent_id?: string;
+  memory_type?: string;
+  has_embedding?: boolean;
+  decay_curve?: string;
 }
 
 // Search result
 export interface SearchResult {
   entry: IndexEntry;
   relevance: number;
-  match_type: 'exact' | 'keyword' | 'semantic';
+  match_type: 'exact' | 'keyword' | 'semantic' | 'causal';
+}
+
+// #7 Causal edge in local index
+export interface CausalEdge {
+  source_id: string;
+  target_id: string;
+  relationship: string;
+  strength: number;
+  causal_direction?: string;
 }
 
 // Per-user index partition
@@ -31,6 +44,7 @@ interface UserIndex {
   memories: Map<string, IndexEntry>;
   keywords: Map<string, Set<string>>;
   contexts: Map<string, Set<string>>;
+  causalEdges: CausalEdge[]; // #7
 }
 
 // Global index partitioned by user+agent
@@ -47,6 +61,7 @@ function getOrCreateUserIndex(userId?: string, agentId?: string): UserIndex {
       memories: new Map(),
       keywords: new Map(),
       contexts: new Map(),
+      causalEdges: [],
     });
   }
   return userIndexes.get(key)!;
@@ -55,59 +70,73 @@ function getOrCreateUserIndex(userId?: string, agentId?: string): UserIndex {
 /**
  * Build/rebuild the memory index for a specific user+agent
  */
-export async function buildIndex(userId?: string, agentId?: string): Promise<{ indexed: number; duration: number }> {
+export async function buildIndex(userId?: string, agentId?: string): Promise<{ indexed: number; edges: number; duration: number }> {
   const startTime = Date.now();
   const idx = getOrCreateUserIndex(userId, agentId);
   
-  // Clear this user's index
   idx.memories.clear();
   idx.keywords.clear();
   idx.contexts.clear();
+  idx.causalEdges = [];
   
   let indexed = 0;
   
-  // Build query filters
   const buildQuery = (table: string) => {
-    let q = supabase.from(table as any).select('id, content, context, value_score, access_count, created_at, user_id, agent_id');
+    let q = supabase.from(table as any).select('id, content, context, value_score, access_count, created_at, user_id, agent_id, memory_type, decay_curve');
     if (userId) q = q.eq('user_id', userId);
     if (agentId) q = q.eq('agent_id', agentId);
     return q.order('value_score', { ascending: false });
   };
 
-  type MemoryRow = { id: string; content: string; context: string; value_score?: number; access_count?: number; created_at: string; user_id?: string; agent_id?: string };
+  type MemoryRow = { id: string; content: string; context: string; value_score?: number; access_count?: number; created_at: string; user_id?: string; agent_id?: string; memory_type?: string; decay_curve?: string };
 
   // Index hot memories
   const { data: hotRaw } = await buildQuery('brain_memory_hot').limit(500);
-  const hotMemories = (hotRaw || []) as unknown as MemoryRow[];
-  for (const memory of hotMemories) {
+  for (const memory of (hotRaw || []) as unknown as MemoryRow[]) {
     indexMemory(memory, 'hot', idx);
     indexed++;
   }
   
   // Index warm memories
   const { data: warmRaw } = await buildQuery('brain_memory_warm').limit(1000);
-  const warmMemories = (warmRaw || []) as unknown as MemoryRow[];
-  for (const memory of warmMemories) {
+  for (const memory of (warmRaw || []) as unknown as MemoryRow[]) {
     indexMemory(memory, 'warm', idx);
     indexed++;
   }
+
+  // #7: Load causal edges
+  let edgeCount = 0;
+  const edgeQuery = supabase.from('brain_knowledge_edges' as any)
+    .select('source_memory_id, target_memory_id, relationship_type, strength, causal_direction');
+  if (userId) edgeQuery.eq('user_id', userId);
+  if (agentId) edgeQuery.eq('agent_id', agentId);
   
-  // Log index build
+  const { data: edgesRaw } = await edgeQuery.limit(500);
+  if (edgesRaw) {
+    for (const e of edgesRaw as any[]) {
+      idx.causalEdges.push({
+        source_id: e.source_memory_id,
+        target_id: e.target_memory_id,
+        relationship: e.relationship_type,
+        strength: e.strength,
+        causal_direction: e.causal_direction,
+      });
+      edgeCount++;
+    }
+  }
+  
   await supabase.from('brain_events').insert({
     module: 'brain',
     event_type: 'index.rebuilt',
-    data: { indexed, duration: Date.now() - startTime, userId, agentId } as unknown as Record<string, never>,
+    data: { indexed, edges: edgeCount, duration: Date.now() - startTime, userId, agentId } as unknown as Record<string, never>,
     outcome: 'success',
   });
   
-  return { indexed, duration: Date.now() - startTime };
+  return { indexed, edges: edgeCount, duration: Date.now() - startTime };
 }
 
-/**
- * Index a single memory into a user partition
- */
 function indexMemory(
-  memory: { id: string; content: string; context: string; value_score?: number; access_count?: number; created_at: string; user_id?: string; agent_id?: string },
+  memory: { id: string; content: string; context: string; value_score?: number; access_count?: number; created_at: string; user_id?: string; agent_id?: string; memory_type?: string; decay_curve?: string },
   tier: 'hot' | 'warm' | 'cold' | 'archive',
   idx: UserIndex
 ): void {
@@ -124,6 +153,8 @@ function indexMemory(
     access_count: memory.access_count ?? 0,
     user_id: memory.user_id,
     agent_id: memory.agent_id,
+    memory_type: memory.memory_type,
+    decay_curve: memory.decay_curve,
   };
   
   idx.memories.set(memory.id, entry);
@@ -139,6 +170,7 @@ function indexMemory(
 
 /**
  * Search the memory index for a specific user+agent
+ * #7: Includes causal graph traversal
  */
 export function searchIndex(
   query: string,
@@ -149,6 +181,7 @@ export function searchIndex(
     minScore?: number;
     userId?: string;
     agentId?: string;
+    includeCausal?: boolean;
   }
 ): SearchResult[] {
   const idx = getOrCreateUserIndex(options?.userId, options?.agentId);
@@ -156,7 +189,7 @@ export function searchIndex(
   const limit = options?.limit ?? 20;
   const minScore = options?.minScore ?? 0;
   
-  const candidates = new Map<string, { score: number; matchType: 'exact' | 'keyword' | 'semantic' }>();
+  const candidates = new Map<string, { score: number; matchType: 'exact' | 'keyword' | 'semantic' | 'causal' }>();
   
   // Exact match on context
   if (options?.context) {
@@ -183,6 +216,25 @@ export function searchIndex(
       }
     }
   }
+
+  // #7: Causal graph traversal — find causally linked memories
+  if (options?.includeCausal !== false) {
+    const directMatches = new Set(candidates.keys());
+    for (const edge of idx.causalEdges) {
+      if (directMatches.has(edge.source_id) && !candidates.has(edge.target_id)) {
+        candidates.set(edge.target_id, {
+          score: edge.strength * 0.6,
+          matchType: 'causal',
+        });
+      }
+      if (directMatches.has(edge.target_id) && !candidates.has(edge.source_id)) {
+        candidates.set(edge.source_id, {
+          score: edge.strength * 0.5,
+          matchType: 'causal',
+        });
+      }
+    }
+  }
   
   // Filter and sort
   const results: SearchResult[] = [];
@@ -206,6 +258,39 @@ export function searchIndex(
 }
 
 /**
+ * #7: Add a causal edge between memories
+ */
+export async function addCausalEdge(
+  sourceId: string,
+  targetId: string,
+  relationship: string,
+  strength: number,
+  causalDirection?: string,
+  userId?: string,
+  agentId?: string
+): Promise<void> {
+  const idx = getOrCreateUserIndex(userId, agentId);
+  
+  idx.causalEdges.push({
+    source_id: sourceId,
+    target_id: targetId,
+    relationship,
+    strength,
+    causal_direction: causalDirection,
+  });
+
+  await supabase.from('brain_knowledge_edges' as any).insert({
+    source_memory_id: sourceId,
+    target_memory_id: targetId,
+    relationship_type: relationship,
+    strength,
+    causal_direction: causalDirection,
+    user_id: userId,
+    agent_id: agentId,
+  });
+}
+
+/**
  * Get index statistics for a specific user+agent
  */
 export function getIndexStats(userId?: string, agentId?: string): {
@@ -213,14 +298,20 @@ export function getIndexStats(userId?: string, agentId?: string): {
   by_tier: Record<string, number>;
   by_context: Record<string, number>;
   unique_keywords: number;
+  causal_edges: number;
+  by_memory_type: Record<string, number>;
 } {
   const idx = getOrCreateUserIndex(userId, agentId);
   const byTier: Record<string, number> = { hot: 0, warm: 0, cold: 0, archive: 0 };
   const byContext: Record<string, number> = {};
+  const byMemoryType: Record<string, number> = {};
   
   for (const entry of idx.memories.values()) {
     byTier[entry.tier] = (byTier[entry.tier] || 0) + 1;
     byContext[entry.context] = (byContext[entry.context] || 0) + 1;
+    if (entry.memory_type) {
+      byMemoryType[entry.memory_type] = (byMemoryType[entry.memory_type] || 0) + 1;
+    }
   }
   
   return {
@@ -228,6 +319,8 @@ export function getIndexStats(userId?: string, agentId?: string): {
     by_tier: byTier,
     by_context: byContext,
     unique_keywords: idx.keywords.size,
+    causal_edges: idx.causalEdges.length,
+    by_memory_type: byMemoryType,
   };
 }
 

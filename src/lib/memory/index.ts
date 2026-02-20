@@ -1,10 +1,11 @@
 /**
- * @cmpsbl/memory - Persistent Memory SDK
+ * @cmpsbl/memory - Persistent Memory SDK v10.9.0
  * 
  * Add persistent memory to any agent or React app in under an hour.
- * No substrate knowledge required. No vector DB setup. No prompt hacks.
+ * Now with: Vector search, spaced repetition, contradiction detection,
+ * causal graphs, user fingerprinting, RAG pipeline, and audit provenance.
  */
 
 export { withPersistentMemory, type MemoryConfig, type MemoryContext } from './withPersistentMemory';
 export { usePersistentAgent, type PersistentAgentResult } from './usePersistentAgent';
-export { MemoryClient } from './client';
+export { MemoryClient, type RecallResult, type MemoryEntry, type MemoryMetaState, type ContradictionResult, type MemoryProvenance, type UserFingerprint } from './client';

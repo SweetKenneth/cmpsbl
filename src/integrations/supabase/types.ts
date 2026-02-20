@@ -2552,6 +2552,48 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_knowledge_edges: {
+        Row: {
+          agent_id: string | null
+          causal_direction: string | null
+          created_at: string | null
+          evidence_count: number | null
+          id: string
+          last_reinforced_at: string | null
+          relationship_type: string | null
+          source_memory_id: string
+          strength: number | null
+          target_memory_id: string
+          user_id: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          causal_direction?: string | null
+          created_at?: string | null
+          evidence_count?: number | null
+          id?: string
+          last_reinforced_at?: string | null
+          relationship_type?: string | null
+          source_memory_id: string
+          strength?: number | null
+          target_memory_id: string
+          user_id?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          causal_direction?: string | null
+          created_at?: string | null
+          evidence_count?: number | null
+          id?: string
+          last_reinforced_at?: string | null
+          relationship_type?: string | null
+          source_memory_id?: string
+          strength?: number | null
+          target_memory_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       brain_memories: {
         Row: {
           confidence: number | null
@@ -2599,6 +2641,7 @@ export type Database = {
           id: string
           memory_type: string | null
           metadata: Json | null
+          provenance: Json | null
           salience_score: number | null
           source_memory_id: string | null
           source_tier: string
@@ -2619,6 +2662,7 @@ export type Database = {
           id?: string
           memory_type?: string | null
           metadata?: Json | null
+          provenance?: Json | null
           salience_score?: number | null
           source_memory_id?: string | null
           source_tier: string
@@ -2639,6 +2683,7 @@ export type Database = {
           id?: string
           memory_type?: string | null
           metadata?: Json | null
+          provenance?: Json | null
           salience_score?: number | null
           source_memory_id?: string | null
           source_tier?: string
@@ -2657,10 +2702,12 @@ export type Database = {
           compression_ratio: number | null
           core_summary: string | null
           created_at: string | null
+          decay_curve: string | null
           embedding: string | null
           id: string
           last_accessed: string | null
           memory_type: string | null
+          provenance: Json | null
           salience_score: number | null
           source_refs: string[] | null
           summary: string
@@ -2676,10 +2723,12 @@ export type Database = {
           compression_ratio?: number | null
           core_summary?: string | null
           created_at?: string | null
+          decay_curve?: string | null
           embedding?: string | null
           id?: string
           last_accessed?: string | null
           memory_type?: string | null
+          provenance?: Json | null
           salience_score?: number | null
           source_refs?: string[] | null
           summary: string
@@ -2695,16 +2744,69 @@ export type Database = {
           compression_ratio?: number | null
           core_summary?: string | null
           created_at?: string | null
+          decay_curve?: string | null
           embedding?: string | null
           id?: string
           last_accessed?: string | null
           memory_type?: string | null
+          provenance?: Json | null
           salience_score?: number | null
           source_refs?: string[] | null
           summary?: string
           tags?: Json | null
           user_id?: string | null
           value_score?: number | null
+        }
+        Relationships: []
+      }
+      brain_memory_contradictions: {
+        Row: {
+          agent_id: string | null
+          confidence: number | null
+          contradiction_type: string | null
+          created_at: string | null
+          id: string
+          memory_a_content: string
+          memory_a_id: string
+          memory_a_tier: string
+          memory_b_content: string
+          memory_b_id: string
+          memory_b_tier: string
+          resolution: string | null
+          resolved_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          confidence?: number | null
+          contradiction_type?: string | null
+          created_at?: string | null
+          id?: string
+          memory_a_content: string
+          memory_a_id: string
+          memory_a_tier: string
+          memory_b_content: string
+          memory_b_id: string
+          memory_b_tier: string
+          resolution?: string | null
+          resolved_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          confidence?: number | null
+          contradiction_type?: string | null
+          created_at?: string | null
+          id?: string
+          memory_a_content?: string
+          memory_a_id?: string
+          memory_a_tier?: string
+          memory_b_content?: string
+          memory_b_id?: string
+          memory_b_tier?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -2715,7 +2817,9 @@ export type Database = {
           content: string
           context: string | null
           created_at: string | null
+          decay_curve: string | null
           decay_rate: number | null
+          ease_factor: number | null
           embedding: string | null
           goal_ref: string | null
           id: string
@@ -2723,7 +2827,11 @@ export type Database = {
           last_used: string | null
           memory_type: string | null
           metadata: Json | null
+          next_review_at: string | null
           priority: number | null
+          provenance: Json | null
+          repetition_interval_days: number | null
+          review_count: number | null
           salience_score: number | null
           tags: Json | null
           updated_at: string | null
@@ -2736,7 +2844,9 @@ export type Database = {
           content: string
           context?: string | null
           created_at?: string | null
+          decay_curve?: string | null
           decay_rate?: number | null
+          ease_factor?: number | null
           embedding?: string | null
           goal_ref?: string | null
           id?: string
@@ -2744,7 +2854,11 @@ export type Database = {
           last_used?: string | null
           memory_type?: string | null
           metadata?: Json | null
+          next_review_at?: string | null
           priority?: number | null
+          provenance?: Json | null
+          repetition_interval_days?: number | null
+          review_count?: number | null
           salience_score?: number | null
           tags?: Json | null
           updated_at?: string | null
@@ -2757,7 +2871,9 @@ export type Database = {
           content?: string
           context?: string | null
           created_at?: string | null
+          decay_curve?: string | null
           decay_rate?: number | null
+          ease_factor?: number | null
           embedding?: string | null
           goal_ref?: string | null
           id?: string
@@ -2765,7 +2881,11 @@ export type Database = {
           last_used?: string | null
           memory_type?: string | null
           metadata?: Json | null
+          next_review_at?: string | null
           priority?: number | null
+          provenance?: Json | null
+          repetition_interval_days?: number | null
+          review_count?: number | null
           salience_score?: number | null
           tags?: Json | null
           updated_at?: string | null
@@ -2781,15 +2901,22 @@ export type Database = {
           avg_salience: number | null
           cold_count: number | null
           cold_limit: number | null
+          compression_ratio: number | null
+          contradiction_count: number | null
           created_at: string | null
           demotions: number | null
           hot_count: number | null
           hot_limit: number | null
+          hourly_activity: Json | null
           id: string
           last_metacognition_update: string | null
+          last_strategy_adjustment: string | null
           last_tiering_run: string | null
+          peak_hours: number[] | null
           promotions: number | null
+          recall_accuracy: number | null
           recall_hit_rate: number | null
+          retrieval_strategy: string | null
           total_recalls: number | null
           total_stores: number | null
           updated_at: string | null
@@ -2803,15 +2930,22 @@ export type Database = {
           avg_salience?: number | null
           cold_count?: number | null
           cold_limit?: number | null
+          compression_ratio?: number | null
+          contradiction_count?: number | null
           created_at?: string | null
           demotions?: number | null
           hot_count?: number | null
           hot_limit?: number | null
+          hourly_activity?: Json | null
           id?: string
           last_metacognition_update?: string | null
+          last_strategy_adjustment?: string | null
           last_tiering_run?: string | null
+          peak_hours?: number[] | null
           promotions?: number | null
+          recall_accuracy?: number | null
           recall_hit_rate?: number | null
+          retrieval_strategy?: string | null
           total_recalls?: number | null
           total_stores?: number | null
           updated_at?: string | null
@@ -2825,15 +2959,22 @@ export type Database = {
           avg_salience?: number | null
           cold_count?: number | null
           cold_limit?: number | null
+          compression_ratio?: number | null
+          contradiction_count?: number | null
           created_at?: string | null
           demotions?: number | null
           hot_count?: number | null
           hot_limit?: number | null
+          hourly_activity?: Json | null
           id?: string
           last_metacognition_update?: string | null
+          last_strategy_adjustment?: string | null
           last_tiering_run?: string | null
+          peak_hours?: number[] | null
           promotions?: number | null
+          recall_accuracy?: number | null
           recall_hit_rate?: number | null
+          retrieval_strategy?: string | null
           total_recalls?: number | null
           total_stores?: number | null
           updated_at?: string | null
@@ -2886,20 +3027,28 @@ export type Database = {
         Row: {
           access_count: number | null
           agent_id: string | null
+          compressed_summary: string | null
+          compression_ratio: number | null
           content: string
           context: string | null
           core_summary: string | null
           created_at: string | null
+          decay_curve: string | null
           decay_rate: number | null
           demoted_at: string | null
+          ease_factor: number | null
           embedding: string | null
           goal_ref: string | null
           id: string
           last_accessed: string | null
           memory_type: string | null
           metadata: Json | null
+          next_review_at: string | null
           priority: number | null
           promoted_at: string | null
+          provenance: Json | null
+          repetition_interval_days: number | null
+          review_count: number | null
           salience_score: number | null
           source_memory_id: string | null
           tags: Json | null
@@ -2910,20 +3059,28 @@ export type Database = {
         Insert: {
           access_count?: number | null
           agent_id?: string | null
+          compressed_summary?: string | null
+          compression_ratio?: number | null
           content: string
           context?: string | null
           core_summary?: string | null
           created_at?: string | null
+          decay_curve?: string | null
           decay_rate?: number | null
           demoted_at?: string | null
+          ease_factor?: number | null
           embedding?: string | null
           goal_ref?: string | null
           id?: string
           last_accessed?: string | null
           memory_type?: string | null
           metadata?: Json | null
+          next_review_at?: string | null
           priority?: number | null
           promoted_at?: string | null
+          provenance?: Json | null
+          repetition_interval_days?: number | null
+          review_count?: number | null
           salience_score?: number | null
           source_memory_id?: string | null
           tags?: Json | null
@@ -2934,20 +3091,28 @@ export type Database = {
         Update: {
           access_count?: number | null
           agent_id?: string | null
+          compressed_summary?: string | null
+          compression_ratio?: number | null
           content?: string
           context?: string | null
           core_summary?: string | null
           created_at?: string | null
+          decay_curve?: string | null
           decay_rate?: number | null
           demoted_at?: string | null
+          ease_factor?: number | null
           embedding?: string | null
           goal_ref?: string | null
           id?: string
           last_accessed?: string | null
           memory_type?: string | null
           metadata?: Json | null
+          next_review_at?: string | null
           priority?: number | null
           promoted_at?: string | null
+          provenance?: Json | null
+          repetition_interval_days?: number | null
+          review_count?: number | null
           salience_score?: number | null
           source_memory_id?: string | null
           tags?: Json | null
@@ -3191,6 +3356,51 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_rag_contexts: {
+        Row: {
+          agent_id: string | null
+          context_string: string | null
+          created_at: string | null
+          id: string
+          model_used: string | null
+          query_text: string
+          recalled_memory_ids: string[] | null
+          recalled_tiers: string[] | null
+          response_quality: number | null
+          total_tokens: number | null
+          user_id: string | null
+          was_useful: boolean | null
+        }
+        Insert: {
+          agent_id?: string | null
+          context_string?: string | null
+          created_at?: string | null
+          id?: string
+          model_used?: string | null
+          query_text: string
+          recalled_memory_ids?: string[] | null
+          recalled_tiers?: string[] | null
+          response_quality?: number | null
+          total_tokens?: number | null
+          user_id?: string | null
+          was_useful?: boolean | null
+        }
+        Update: {
+          agent_id?: string | null
+          context_string?: string | null
+          created_at?: string | null
+          id?: string
+          model_used?: string | null
+          query_text?: string
+          recalled_memory_ids?: string[] | null
+          recalled_tiers?: string[] | null
+          response_quality?: number | null
+          total_tokens?: number | null
+          user_id?: string | null
+          was_useful?: boolean | null
+        }
+        Relationships: []
+      }
       brain_reach_domains: {
         Row: {
           active: boolean | null
@@ -3403,6 +3613,63 @@ export type Database = {
           prune_threshold?: number | null
           tier_name?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      brain_user_fingerprints: {
+        Row: {
+          agent_id: string
+          avg_message_length: number | null
+          communication_style: string | null
+          complexity_preference: string | null
+          first_seen_at: string | null
+          id: string
+          interaction_count: number | null
+          language_preference: string | null
+          last_seen_at: string | null
+          personality_signals: Json | null
+          preferred_topics: string[] | null
+          sentiment_trend: number | null
+          timezone_hint: string | null
+          top_keywords: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          agent_id: string
+          avg_message_length?: number | null
+          communication_style?: string | null
+          complexity_preference?: string | null
+          first_seen_at?: string | null
+          id?: string
+          interaction_count?: number | null
+          language_preference?: string | null
+          last_seen_at?: string | null
+          personality_signals?: Json | null
+          preferred_topics?: string[] | null
+          sentiment_trend?: number | null
+          timezone_hint?: string | null
+          top_keywords?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          agent_id?: string
+          avg_message_length?: number | null
+          communication_style?: string | null
+          complexity_preference?: string | null
+          first_seen_at?: string | null
+          id?: string
+          interaction_count?: number | null
+          language_preference?: string | null
+          last_seen_at?: string | null
+          personality_signals?: Json | null
+          preferred_topics?: string[] | null
+          sentiment_trend?: number | null
+          timezone_hint?: string | null
+          top_keywords?: string[] | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -11713,6 +11980,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_confidence_decay: {
+        Args: { p_agent_id: string; p_user_id: string }
+        Returns: Json
+      }
       calculate_memory_salience: {
         Args: {
           p_agent_id: string
@@ -11750,6 +12021,19 @@ export type Database = {
       cleanup_expired_challenges: { Args: never; Returns: undefined }
       cleanup_old_daily_state: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
+      compress_warm_memories: {
+        Args: { p_agent_id: string; p_max_words?: number; p_user_id: string }
+        Returns: Json
+      }
+      detect_memory_contradictions: {
+        Args: {
+          p_agent_id: string
+          p_new_content: string
+          p_new_memory_id: string
+          p_user_id: string
+        }
+        Returns: Json
+      }
       generate_bot_sniper_api_key: {
         Args: { p_key_name: string; p_user_id: string }
         Returns: string
@@ -11812,8 +12096,16 @@ export type Database = {
         Args: { p_agent_id: string; p_user_id: string }
         Returns: Json
       }
+      run_metacognitive_assessment: {
+        Args: { p_agent_id: string; p_user_id: string }
+        Returns: Json
+      }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      sm2_update_memory: {
+        Args: { p_memory_id: string; p_quality: number; p_tier: string }
+        Returns: Json
+      }
       track_memory_recall: {
         Args: { p_agent_id: string; p_hit: boolean; p_user_id: string }
         Returns: undefined
@@ -11824,6 +12116,15 @@ export type Database = {
       }
       update_ip_reputation: {
         Args: { p_action: string; p_ip: string; p_risk_score?: number }
+        Returns: undefined
+      }
+      update_user_fingerprint: {
+        Args: {
+          p_agent_id: string
+          p_keywords?: string[]
+          p_message_length: number
+          p_user_id: string
+        }
         Returns: undefined
       }
       upsert_dream_learning_metrics: {
@@ -11838,6 +12139,24 @@ export type Database = {
         Returns: string
       }
       validate_clarity_api_key: { Args: { p_api_key: string }; Returns: Json }
+      vector_memory_search: {
+        Args: {
+          p_agent_id: string
+          p_limit?: number
+          p_min_similarity?: number
+          p_query_embedding: string
+          p_user_id: string
+        }
+        Returns: {
+          content: string
+          created_at: string
+          id: string
+          memory_type: string
+          similarity: number
+          tier: string
+          value_score: number
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
