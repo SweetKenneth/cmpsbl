@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { getMetric } from '@/stores/publicMetricsStore';
+
 
 interface SEOProps {
   title?: string;
@@ -78,15 +78,15 @@ interface SEOProps {
 }
 
 export function SEO({
-  title = 'CMPSBL® — Cognitive Infrastructure for AI',
-  description = 'CMPSBL is the cognitive infrastructure layer for AI applications. Persistent memory, self-learning, multi-provider routing, and self-evolution. 21 integrated modules, 400+ capabilities.',
+  title = 'Composable AI Infrastructure | CMPSBL',
+  description = 'CMPSBL is governed cognitive infrastructure where intelligence persists, adapts, and compounds. Modular AI substrate for self-improving systems.',
   canonical,
   image = 'https://cmpsbl.com/og-default.jpg',
   type = 'website',
   author = 'Kenneth E Sweet Jr',
   publishedTime,
   modifiedTime,
-  keywords = ['cognitive infrastructure', 'AI memory', 'AI substrate', 'persistent memory', 'self-learning AI', 'multi-provider routing', 'CMPSBL'],
+  keywords = ['composable AI', 'cognitive infrastructure', 'AI substrate', 'persistent memory', 'self-improving software', 'governed AI', 'adaptive intelligence'],
   noindex = false,
   breadcrumbs,
   faq,
@@ -95,7 +95,6 @@ export function SEO({
   howTo
 }: SEOProps) {
   const siteName = 'CMPSBL';
-  const substrateVersion = getMetric('version');
   const twitterHandle = '@cmpsbl';
   const fullTitle = title.includes('CMPSBL') ? title : `${title} | ${siteName}`;
   const currentDate = new Date().toISOString();
@@ -130,7 +129,7 @@ export function SEO({
       width: 1200,
       height: 630
     },
-    description: 'Cognitive infrastructure layer for AI applications. Persistent memory, self-learning, multi-provider routing.',
+    description: 'Composable cognitive infrastructure for AI applications. Persistent memory, adaptive intelligence, governed orchestration.',
     foundingDate: '2009',
     slogan: 'Where Machines Learn To Think',
     founder: {
@@ -250,7 +249,6 @@ export function SEO({
     applicationSubCategory: 'Cognitive Infrastructure Layer',
     operatingSystem: 'Web Browser',
     browserRequirements: 'Requires JavaScript',
-    softwareVersion: `v${substrateVersion}`,
     screenshot: image,
     offers: {
       '@type': 'Offer',
@@ -258,14 +256,14 @@ export function SEO({
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock'
     },
-    description: 'Cognitive infrastructure layer for AI applications with persistent memory, self-learning, multi-provider routing, and self-evolution.',
+    description: 'Composable cognitive infrastructure for AI applications with persistent memory, adaptive intelligence, governed orchestration, and recursive improvement.',
     featureList: [
       'Persistent memory system',
-      'Self-learning Dream Cycles',
+      'Self-improving dream cycles',
       'Multi-provider AI routing',
-      '21 integrated modules',
-      '400+ capabilities',
-      'Enterprise-ready'
+      'Modular cognitive architecture',
+      'Composable AI capabilities',
+      'Enterprise-ready governed AI'
     ],
     author: { '@id': 'https://cmpsbl.com/#organization' },
     provider: { '@id': 'https://cmpsbl.com/#organization' }
