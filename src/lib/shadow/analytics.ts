@@ -101,7 +101,7 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     .from('immune_escalations')
     .select('executor, severity, scope, created_at, status')
     .order('created_at', { ascending: false })
-    .limit(10);
+    .limit(20);
 
   // HONEST repair rate: repairs / (repairs + escalations + safe_failures)
   // This prevents false 100% when most runs succeed without needing repair
