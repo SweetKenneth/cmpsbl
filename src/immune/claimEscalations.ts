@@ -59,14 +59,20 @@ export async function getEncodeWorkQueue(limit = 20): Promise<EncodeWorkItem[]> 
  * Claim an escalation (mark as "claimed" so no other process picks it up)
  */
 export async function claimEscalation(escalationId: string, claimedBy = 'ENCODE'): Promise<boolean> {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('immune_escalations')
     .update({ status: 'claimed', claimed_by: claimedBy })
     .eq('id', escalationId)
-    .eq('status', 'open');
+    .eq('status', 'open')
+    .select('id');
 
   if (error) {
     log.error('encode', `Failed to claim escalation ${escalationId}: ${error.message}`);
+    return false;
+  }
+  // Verify the update actually affected a row
+  if (!data || data.length === 0) {
+    log.warn('encode', `Claim returned no rows for ${escalationId} — may be already claimed or RLS blocked`);
     return false;
   }
   // Telemetry: record claim
