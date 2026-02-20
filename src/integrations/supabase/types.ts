@@ -6204,7 +6204,11 @@ export type Database = {
           escalations: number
           executor: string
           id: string
+          repair_attempted: boolean
+          repair_success: boolean
           repair_successes: number
+          repair_type: string | null
+          retry_attempted: boolean
           run_at: string
           safe_failures: number
           total_runs: number
@@ -6213,7 +6217,11 @@ export type Database = {
           escalations?: number
           executor: string
           id?: string
+          repair_attempted?: boolean
+          repair_success?: boolean
           repair_successes?: number
+          repair_type?: string | null
+          retry_attempted?: boolean
           run_at?: string
           safe_failures?: number
           total_runs?: number
@@ -6222,7 +6230,11 @@ export type Database = {
           escalations?: number
           executor?: string
           id?: string
+          repair_attempted?: boolean
+          repair_success?: boolean
           repair_successes?: number
+          repair_type?: string | null
+          retry_attempted?: boolean
           run_at?: string
           safe_failures?: number
           total_runs?: number

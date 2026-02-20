@@ -3,6 +3,10 @@
  * Wraps a synergy executor with defense (preflight), repair, and escalation
  *
  * Controlled by shadow_mesh_enabled system flag (DB-backed, admin-toggled).
+ *
+ * Phase 2: Deterministic repair + single retry before escalation.
+ * SAFETY: 1 repair max, 1 retry max, no recursion, no cross-module writes.
+ * Only active for the 5 pilot executors routed through this wrapper.
  */
 
 import type {
@@ -15,7 +19,9 @@ import { isShadowMeshEnabled } from '@/lib/system/flags';
 import { logImmuneEvent, redactContext } from './logger';
 import { enqueueEscalation } from './queue';
 import { repair } from './repairs';
+import { deterministicRepair } from './deterministic-repair';
 import { incrementMetric, recordOutcome } from './metrics';
+import { recordImmuneMetrics } from '@/lib/immune/recordMetrics';
 
 /** Simple hash for input tracing (not cryptographic) */
 function hashInput(input: Record<string, unknown>): string {
@@ -67,7 +73,6 @@ function preflightCheck(input: unknown): { valid: boolean; reason?: string } {
   if (typeof input !== 'object' || Array.isArray(input)) {
     return { valid: false, reason: `input is ${typeof input}, expected object` };
   }
-  // Check for absurdly large payloads (> 1MB serialized)
   try {
     const serialized = JSON.stringify(input);
     if (serialized.length > 1_000_000) {
@@ -95,6 +100,7 @@ export interface WrapConfig {
 
 /**
  * Wrap a synergy executor with immune defense+repair
+ * Phase 2: deterministic repair + single retry for pilot executors
  */
 export function wrapExecutor(
   executorFn: (ctx: SynergyExecutionContext) => Promise<SynergyResult>,
@@ -110,35 +116,100 @@ export function wrapExecutor(
     const { module, scope } = config;
     const input = ctx.input ?? {};
 
+    // ── Phase 2: repair telemetry state (guards against recursion) ──
+    let repairAttemptedFlag = false;
+    let repairSuccessFlag = false;
+    let repairTypeFlag: string | null = null;
+    let retryAttemptedFlag = false;
+
+    /** Persist repair telemetry for this run */
+    const persistTelemetry = async () => {
+      await recordImmuneMetrics({
+        executor: executorName,
+        total: 1,
+        repaired: repairSuccessFlag ? 1 : 0,
+        escalated: 0,
+        safeFail: 0,
+        repair_attempted: repairAttemptedFlag,
+        repair_success: repairSuccessFlag,
+        repair_type: repairTypeFlag,
+        retry_attempted: retryAttemptedFlag,
+      });
+    };
+
+    /**
+     * Phase 2: Attempt ONE deterministic repair + ONE retry.
+     * Returns the retry result or null if repair not applicable.
+     */
+    const tryDeterministicRepairAndRetry = async (
+      failingInput: Record<string, unknown>,
+    ): Promise<SynergyResult | null> => {
+      // Guard: only one repair per run
+      if (repairAttemptedFlag) return null;
+
+      const dr = deterministicRepair(failingInput);
+      if (!dr.repaired) return null;
+
+      repairAttemptedFlag = true;
+      repairTypeFlag = dr.repair_type ?? 'UNKNOWN';
+
+      // Guard: only one retry per run
+      retryAttemptedFlag = true;
+      const repairedCtx = { ...ctx, input: dr.repaired_input };
+
+      try {
+        const retryResult = await executorFn(repairedCtx);
+        const post = postcheck(retryResult);
+        if (post.valid && retryResult.success) {
+          repairSuccessFlag = true;
+          const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', dr.repaired_input, undefined, true);
+          logImmuneEvent(event);
+          recordOutcome('repaired_success');
+          await persistTelemetry();
+          return retryResult;
+        }
+        // Retry ran but postcheck or success failed
+        repairSuccessFlag = false;
+        return null;
+      } catch {
+        repairSuccessFlag = false;
+        return null;
+      }
+    };
+
     // ── PREFLIGHT (DEFENSE) ──
     const preflight = preflightCheck(input);
     if (!preflight.valid) {
       incrementMetric('preflightFailures');
 
-      // Attempt repair
+      // Phase 2: try deterministic repair before legacy repair
+      const drResult = await tryDeterministicRepairAndRetry(input as Record<string, unknown>);
+      if (drResult) return drResult;
+
+      // Legacy scope-specific repair fallback
       incrementMetric('repairAttempts');
       const repairResult = repair(scope, input as Record<string, unknown>, { traceId: ctx.traceId });
-      
+
       if (repairResult) {
-        // Retry with repaired input
         const repairedCtx = { ...ctx, input: repairResult.repairedInput };
         try {
           const result = await executorFn(repairedCtx);
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', repairResult.repairedInput);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
+          await persistTelemetry();
           return result;
         } catch (err) {
-          // Repair succeeded but executor still failed — escalate
           const errorMsg = err instanceof Error ? err.message : 'unknown error after repair';
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, errorMsg);
           recordOutcome('escalated');
+          await persistTelemetry();
           return createSafeFailure(ctx.synergyId, `Repaired input still failed: ${errorMsg}`);
         }
       } else {
-        // No repair available — escalate
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, preflight.reason ?? 'preflight failed');
         recordOutcome('escalated');
+        await persistTelemetry();
         return createSafeFailure(ctx.synergyId, `Preflight failed: ${preflight.reason}`);
       }
     }
@@ -150,18 +221,29 @@ export function wrapExecutor(
       // ── POSTCHECK ──
       const post = postcheck(result);
       if (!post.valid) {
-        incrementMetric('preflightFailures'); // count as a detected failure
+        incrementMetric('preflightFailures');
+
+        // Phase 2: try deterministic repair on postcheck failure
+        const drResult = await tryDeterministicRepairAndRetry(input as Record<string, unknown>);
+        if (drResult) return drResult;
+
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, `Postcheck failed: ${post.reason}`);
         recordOutcome('escalated');
+        await persistTelemetry();
         return createSafeFailure(ctx.synergyId, `Postcheck failed: ${post.reason}`);
       }
 
       recordOutcome('success');
+      await persistTelemetry();
       return result;
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'unknown execution error';
 
-      // ── REPAIR ATTEMPT (ONE SHOT) ──
+      // ── Phase 2: DETERMINISTIC REPAIR + SINGLE RETRY ──
+      const drResult = await tryDeterministicRepairAndRetry(input as Record<string, unknown>);
+      if (drResult) return drResult;
+
+      // Legacy repair fallback
       incrementMetric('repairAttempts');
       const repairResult = repair(scope, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
 
@@ -172,17 +254,19 @@ export function wrapExecutor(
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', repairResult.repairedInput);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
+          await persistTelemetry();
           return result;
         } catch (retryErr) {
           const retryMsg = retryErr instanceof Error ? retryErr.message : 'unknown';
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, retryMsg);
           recordOutcome('escalated');
+          await persistTelemetry();
           return createSafeFailure(ctx.synergyId, `Repair failed on retry: ${retryMsg}`);
         }
       } else {
-        // No repair — escalate
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
         recordOutcome('escalated');
+        await persistTelemetry();
         return createSafeFailure(ctx.synergyId, `Executor failed: ${errorMsg}`);
       }
     }
