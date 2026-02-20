@@ -1,13 +1,18 @@
 /**
  * Shadow Mesh Analytics Panel
- * Shows immune metrics and recent escalations for admin dashboard
+ * Shows immune metrics, repair KPIs, and per-executor breakdown for admin dashboard
+ * Phase 2: deterministic repair telemetry
  */
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, AlertCircle, CheckCircle, ShieldAlert, Loader2 } from "lucide-react";
+import { Activity, AlertCircle, CheckCircle, ShieldAlert, Loader2, Wrench } from "lucide-react";
 import { getShadowMeshAnalytics, type ShadowMeshAnalyticsData } from "@/lib/shadow/analytics";
+
+function pct(n: number): string {
+  return `${(n * 100).toFixed(1)}%`;
+}
 
 export function ShadowMeshAnalytics() {
   const [data, setData] = useState<ShadowMeshAnalyticsData | null>(null);
@@ -18,7 +23,7 @@ export function ShadowMeshAnalytics() {
       getShadowMeshAnalytics().then(setData).finally(() => setLoading(false));
     };
     load();
-    const interval = setInterval(load, 30_000); // auto-refresh every 30s
+    const interval = setInterval(load, 30_000);
     return () => clearInterval(interval);
   }, []);
 
@@ -45,23 +50,53 @@ export function ShadowMeshAnalytics() {
     );
   }
 
+  const { repairKPIs } = data;
+
   return (
     <div className="space-y-4">
-      {/* Metrics Grid */}
+      {/* Phase 2: Repair KPIs */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Wrench className="w-4 h-4 text-primary" />
+            Repair Telemetry (Last 6h)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="text-center p-3 rounded-md border border-border/50 bg-muted/30">
+              <div className="text-2xl font-bold text-foreground">{pct(repairKPIs.repair_attempt_rate)}</div>
+              <div className="text-xs text-muted-foreground mt-1">Repair Attempt Rate</div>
+            </div>
+            <div className="text-center p-3 rounded-md border border-border/50 bg-muted/30">
+              <div className="text-2xl font-bold text-foreground">{pct(repairKPIs.repair_success_rate)}</div>
+              <div className="text-xs text-muted-foreground mt-1">Repair Success %</div>
+            </div>
+            <div className="text-center p-3 rounded-md border border-border/50 bg-muted/30">
+              <div className="text-2xl font-bold text-foreground">{pct(repairKPIs.retry_rate)}</div>
+              <div className="text-xs text-muted-foreground mt-1">Retry Rate</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Per-Executor Breakdown */}
       <Card>
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <Activity className="w-4 h-4 text-primary" />
-            Shadow Mesh Health (Last 6h)
+            Per-Executor Health (Last 6h)
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {data.metrics.map((m) => {
-              const repairRate = m.total_runs
+              const legacyRepairRate = m.total_runs
                 ? Math.round((m.repairs / m.total_runs) * 100)
                 : 0;
-              const isHealthy = repairRate >= 60 && m.escalations <= 2; // SLO thresholds
+              const execRepairAttemptRate = m.total_runs > 0 ? m.repair_attempts / m.total_runs : 0;
+              const execRepairSuccessRate = m.repair_attempts > 0 ? m.repair_successes / m.repair_attempts : 0;
+              const isHealthy = legacyRepairRate >= 60 && m.escalations <= 2;
 
               return (
                 <div
@@ -78,9 +113,11 @@ export function ShadowMeshAnalytics() {
                   </div>
                   <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
                     <span>Runs: <strong className="text-foreground">{m.total_runs}</strong></span>
-                    <span>Repair: <strong className="text-foreground">{repairRate}%</strong></span>
-                    <span>Escalations: <strong className="text-foreground">{m.escalations}</strong></span>
                     <span>Safe Fails: <strong className="text-foreground">{m.safe_fails}</strong></span>
+                    <span>Escalations: <strong className="text-foreground">{m.escalations}</strong></span>
+                    <span>Legacy Repair: <strong className="text-foreground">{legacyRepairRate}%</strong></span>
+                    <span>Repair Attempts: <strong className="text-foreground">{m.repair_attempts}</strong></span>
+                    <span>Repair Success: <strong className="text-foreground">{pct(execRepairSuccessRate)}</strong></span>
                   </div>
                 </div>
               );

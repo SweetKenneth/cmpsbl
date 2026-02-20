@@ -24,6 +24,9 @@ export { wrapExecutor } from './wrapExecutor';
 // Repairs
 export { repair, registerRepair } from './repairs';
 
+// Deterministic Repair (Phase 2 — pilot executors only)
+export { deterministicRepair, type DeterministicRepairResult } from './deterministic-repair';
+
 // Logger
 export { logImmuneEvent, redactContext } from './logger';
 
