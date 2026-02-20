@@ -443,7 +443,7 @@ export function InteractiveSubstrateDiagram() {
         <div className="bg-background/80 backdrop-blur-md rounded-lg px-3 py-2 border border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs font-mono text-cyan-300">SUBSTRATE v10.5.1</span>
+            <span className="text-xs font-mono text-cyan-300">SUBSTRATE v10.9.0</span>
           </div>
         </div>
       </div>

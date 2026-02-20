@@ -176,7 +176,7 @@ export function HeroMetaSubstrate() {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Two-column layout */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-12 sm:mb-20">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center mb-8 sm:mb-20">
           
           {/* Left column — Copy */}
           <motion.div
@@ -202,7 +202,7 @@ export function HeroMetaSubstrate() {
             
             {/* CLOCKLESS — massive, clean */}
             <motion.h1 
-              className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7rem] font-black tracking-[-0.05em] leading-[0.9] mb-6 sm:mb-8"
+              className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7rem] font-black tracking-[-0.05em] leading-[0.9] mb-4 sm:mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -225,12 +225,12 @@ export function HeroMetaSubstrate() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="mb-8 sm:mb-10"
+              className="mb-6 sm:mb-10"
             >
               <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-muted-foreground tracking-tight leading-snug">
                 Where machines learn to
               </p>
-              <div className="mt-1 sm:mt-2 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-none min-h-[1.2em]">
+              <div className="mt-1 sm:mt-2 text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-none min-h-[1.15em]">
                 <TypedText 
                   texts={["persist.", "evolve.", "coordinate.", "compound.", "dream."]}
                   gradientColors={[
@@ -249,7 +249,7 @@ export function HeroMetaSubstrate() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 leading-relaxed"
+              className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
               Clockless is a governed cognitive reality where intelligence{' '}
               <span className="text-foreground font-semibold">persists</span>,{' '}
@@ -322,15 +322,15 @@ export function HeroMetaSubstrate() {
             transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="order-2 flex flex-col gap-6"
           >
-            {/* Above River — Architecture context (desktop only) */}
+            {/* Above River — Architecture context */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="hidden lg:block rounded-xl border border-border/20 bg-card/30 backdrop-blur-sm p-5"
+              className="hidden sm:block rounded-xl border border-border/20 bg-card/30 backdrop-blur-sm p-4 lg:p-5"
             >
-              <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-widest mb-2">How Intelligence Flows</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <h3 className="text-[10px] lg:text-xs font-bold text-foreground/70 uppercase tracking-widest mb-1.5 lg:mb-2">How Intelligence Flows</h3>
+              <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">
                 Every interaction generates <span className="text-foreground font-medium">memory particles</span> that persist across sessions.{' '}
                 <span className="text-primary font-medium">Dream cycles</span> synthesize patterns overnight.{' '}
                 <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Defense layers</span> detect and reject drift in real-time.{' '}
@@ -340,12 +340,12 @@ export function HeroMetaSubstrate() {
 
             <MemoryRiver />
 
-            {/* Below River — Live system pulse (desktop only) */}
+            {/* Below River — Live system pulse */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
-              className="hidden lg:grid grid-cols-3 gap-3"
+              className="grid grid-cols-3 gap-2 sm:gap-3"
             >
               {[
                 { label: "Memory Depth", value: "Persistent", desc: "Survives restarts", glow: "--neon-cyan" },
@@ -354,12 +354,12 @@ export function HeroMetaSubstrate() {
               ].map((item) => (
                 <div 
                   key={item.label} 
-                  className="rounded-lg border border-border/20 bg-card/30 backdrop-blur-sm p-3.5 text-center hover:border-border/40 transition-all duration-300 group"
+                  className="rounded-lg border border-border/20 bg-card/30 backdrop-blur-sm p-2.5 sm:p-3.5 text-center hover:border-border/40 transition-all duration-300 group"
                   style={{ boxShadow: `0 0 20px -8px hsl(var(${item.glow}) / 0.1)` }}
                 >
-                  <div className="text-[10px] text-muted-foreground/50 uppercase tracking-widest font-semibold mb-1">{item.label}</div>
-                  <div className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{item.value}</div>
-                  <div className="text-[10px] text-muted-foreground mt-0.5">{item.desc}</div>
+                  <div className="text-[8px] sm:text-[10px] text-muted-foreground/50 uppercase tracking-widest font-semibold mb-0.5 sm:mb-1">{item.label}</div>
+                  <div className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors">{item.value}</div>
+                  <div className="text-[8px] sm:text-[10px] text-muted-foreground mt-0.5 hidden sm:block">{item.desc}</div>
                 </div>
               ))}
             </motion.div>
