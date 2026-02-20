@@ -19,6 +19,8 @@ export interface EncodeWorkItem {
   suggestedFixHint: string;
   severity: string;
   createdAt: string;
+  /** Improvement #2: Include actual failing input for deterministic repair */
+  failingInput?: Record<string, unknown>;
 }
 
 /**
@@ -48,6 +50,7 @@ export async function getEncodeWorkQueue(limit = 20): Promise<EncodeWorkItem[]> 
       suggestedFixHint: payload?.suggestedFixHint ?? '',
       severity: row.severity,
       createdAt: row.created_at,
+      failingInput: (payload as any)?.failingInput ?? undefined,
     };
   });
 }

@@ -1,14 +1,15 @@
 /**
  * Shadow Mesh Analytics Panel
- * Shows immune metrics, repair KPIs, and per-executor breakdown for admin dashboard
- * Phase 2: deterministic repair telemetry
+ * Shows immune metrics, repair KPIs, ENCODE resolution stats,
+ * and per-executor breakdown for admin dashboard.
+ * v10.9.2: Auto-triggers escalation processing on load.
  */
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Activity, AlertCircle, CheckCircle, ShieldAlert, Loader2, Wrench, RotateCcw } from "lucide-react";
+import { Activity, AlertCircle, CheckCircle, ShieldAlert, Loader2, Wrench, RotateCcw, Cpu, Zap } from "lucide-react";
 import { getShadowMeshAnalytics, type ShadowMeshAnalyticsData } from "@/lib/shadow/analytics";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -17,20 +18,65 @@ function pct(n: number): string {
   return `${(n * 100).toFixed(1)}%`;
 }
 
+interface EncodeResolutionStats {
+  processed: number;
+  resolved: number;
+  failed: number;
+  skipped: number;
+  ranAt: string | null;
+}
+
 export function ShadowMeshAnalytics() {
   const [data, setData] = useState<ShadowMeshAnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [resetting, setResetting] = useState(false);
+  const [encodeRunning, setEncodeRunning] = useState(false);
+  const [encodeStats, setEncodeStats] = useState<EncodeResolutionStats | null>(null);
+  const hasAutoRun = useRef(false);
 
   const load = useCallback(() => {
     getShadowMeshAnalytics().then(setData).finally(() => setLoading(false));
   }, []);
+
+  // Auto-trigger ENCODE escalation processing on first load
+  const runEncode = useCallback(async () => {
+    setEncodeRunning(true);
+    try {
+      const { processEscalations } = await import('@/lib/substrate/encode-module/escalation-processor');
+      const result = await processEscalations(50);
+      setEncodeStats({
+        processed: result.processed,
+        resolved: result.resolved,
+        failed: result.failed,
+        skipped: result.skipped,
+        ranAt: new Date().toISOString(),
+      });
+      if (result.resolved > 0) {
+        toast.success(`ENCODE resolved ${result.resolved}/${result.processed} escalations`);
+        load(); // Refresh analytics after resolution
+      }
+    } catch (err) {
+      console.warn('[encode] Escalation processing failed:', err);
+    } finally {
+      setEncodeRunning(false);
+    }
+  }, [load]);
 
   useEffect(() => {
     load();
     const interval = setInterval(load, 30_000);
     return () => clearInterval(interval);
   }, [load]);
+
+  // Auto-run ENCODE once on mount
+  useEffect(() => {
+    if (!hasAutoRun.current) {
+      hasAutoRun.current = true;
+      // Slight delay to let analytics load first
+      const timer = setTimeout(() => runEncode(), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [runEncode]);
 
   const handleReset = async () => {
     setResetting(true);
@@ -40,6 +86,7 @@ export function ShadowMeshAnalytics() {
       if (e1 || e2) throw new Error(e1?.message || e2?.message);
       toast.success('Telemetry reset — all immune metrics cleared');
       setData(null);
+      setEncodeStats(null);
       setLoading(true);
       load();
     } catch (err: any) {
@@ -90,10 +137,70 @@ export function ShadowMeshAnalytics() {
   }
 
   const { repairKPIs } = data;
+  const openEscalations = data.recentEscalations.filter(e => e.status === 'open').length;
+  const resolvedEscalations = data.recentEscalations.filter(e => e.status === 'resolved').length;
 
   return (
     <div className="space-y-4">
-      {/* Phase 2: Repair KPIs */}
+      {/* ENCODE Resolution Engine */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Cpu className="w-4 h-4 text-primary" />
+            ENCODE Resolution Engine
+          </CardTitle>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="default"
+              size="sm"
+              onClick={runEncode}
+              disabled={encodeRunning}
+              className="gap-1.5"
+            >
+              {encodeRunning ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5" />}
+              Run ENCODE
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-4 gap-3">
+            <div className="text-center p-3 rounded-md border border-border/50 bg-muted/30">
+              <div className="text-2xl font-bold text-foreground">{openEscalations}</div>
+              <div className="text-xs text-muted-foreground mt-1">Open</div>
+            </div>
+            <div className="text-center p-3 rounded-md border border-border/50 bg-muted/30">
+              <div className="text-2xl font-bold text-primary">{resolvedEscalations}</div>
+              <div className="text-xs text-muted-foreground mt-1">Resolved</div>
+            </div>
+            <div className="text-center p-3 rounded-md border border-border/50 bg-muted/30">
+              <div className="text-2xl font-bold text-foreground">
+                {encodeStats ? encodeStats.resolved : '—'}
+              </div>
+              <div className="text-xs text-muted-foreground mt-1">Last Run Resolved</div>
+            </div>
+            <div className="text-center p-3 rounded-md border border-border/50 bg-muted/30">
+              <div className="text-2xl font-bold text-foreground">
+                {encodeStats ? `${encodeStats.processed}` : '—'}
+              </div>
+              <div className="text-xs text-muted-foreground mt-1">Last Run Processed</div>
+            </div>
+          </div>
+          {encodeStats && encodeStats.ranAt && (
+            <p className="text-xs text-muted-foreground mt-2">
+              Last run: {new Date(encodeStats.ranAt).toLocaleTimeString()} — 
+              {encodeStats.resolved}/{encodeStats.processed} resolved, {encodeStats.failed} failed, {encodeStats.skipped} skipped
+            </p>
+          )}
+          {encodeRunning && (
+            <p className="text-xs text-primary mt-2 flex items-center gap-1">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              ENCODE is processing open escalations…
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Repair KPIs */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-base flex items-center gap-2">
@@ -131,12 +238,10 @@ export function ShadowMeshAnalytics() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {data.metrics.map((m) => {
-              // HONEST repair rate: repairs / (repairs + escalations + safe_failures)
               const repairDenom = m.repairs + m.escalations + m.safe_fails;
               const honestRepairRate = repairDenom > 0
                 ? Math.round((m.repairs / repairDenom) * 100)
-                : 0; // 0% when no failure events recorded yet
-              const execRepairAttemptRate = m.total_runs > 0 ? m.repair_attempts / m.total_runs : 0;
+                : 0;
               const execRepairSuccessRate = m.repair_attempts > 0 ? m.repair_successes / m.repair_attempts : 0;
               const isHealthy = honestRepairRate >= 60 && m.escalations <= 2;
 
@@ -188,7 +293,10 @@ export function ShadowMeshAnalytics() {
                     <code className="font-mono font-medium">{e.executor}</code>
                     <p className="text-muted-foreground">{e.severity} — {e.scope}</p>
                   </div>
-                  <Badge variant="outline" className="text-xs shrink-0">
+                  <Badge 
+                    variant={e.status === 'resolved' ? 'default' : e.status === 'claimed' ? 'secondary' : 'outline'} 
+                    className="text-xs shrink-0"
+                  >
                     {e.status}
                   </Badge>
                 </div>
