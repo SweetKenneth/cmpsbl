@@ -601,6 +601,63 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     if (!applied.includes('FINAL_USERID_GUARANTEE')) applied.push('FINAL_USERID_GUARANTEE');
   }
 
+  // ── Enhancement #6: New rules for lowest-performing probes ──
+
+  // 49) ALIEN_KEY_STRIP — for shape_alien inputs (no recognized keys), strip unrecognized keys
+  //     after DEFAULT_SHAPE has injected the minimums. Prevents unknown_field validation failures.
+  if (applied.includes('DEFAULT_SHAPE')) {
+    const RECOGNIZED_KEYS = new Set([...EXPECTED_KEYS, 'target', 'label', 'description', 'preferences', 'payload', 'metadata', 'resource_id']);
+    const unknownKeys = Object.keys(copy).filter(k => !RECOGNIZED_KEYS.has(k));
+    if (unknownKeys.length > 5) {
+      for (const k of unknownKeys.slice(5)) {
+        delete copy[k];
+      }
+      if (!applied.includes('ALIEN_KEY_STRIP')) applied.push('ALIEN_KEY_STRIP');
+    }
+  }
+
+  // 50) ENTITY_ONLY_RECOVERY — if content is only HTML entities (no actual text), replace
+  if ('content' in copy && typeof copy.content === 'string') {
+    const stripped = copy.content.replace(/&\w+;/g, '').trim();
+    if (stripped.length === 0 && copy.content.length > 0) {
+      copy.content = 'audit target';
+      if (!applied.includes('ENTITY_ONLY_RECOVERY')) applied.push('ENTITY_ONLY_RECOVERY');
+    }
+  }
+
+  // 51) SQL_RESIDUE_CLEANUP — clean up residual SQL artifacts after sanitization
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      const val = copy[key].trim();
+      if (/^[;\s\-]+$/.test(val) || val === '-- ' || val === ';--' || val === '1=1') {
+        copy[key] = BACKFILL_DEFAULTS[key] ?? NATURAL_DEFAULTS[key] ?? 'default';
+        if (!applied.includes('SQL_RESIDUE_CLEANUP')) applied.push('SQL_RESIDUE_CLEANUP');
+      }
+    }
+  }
+
+  // 52) REQUIREDONE_GUARANTEE — ensure at least one locator field exists for schemas with requiredOneOf
+  const hasLocator = ('target' in copy && typeof copy.target === 'string' && copy.target.length > 0)
+    || ('url' in copy && typeof copy.url === 'string' && copy.url.length > 0)
+    || ('domain' in copy && typeof copy.domain === 'string' && copy.domain.length > 0)
+    || ('resource_id' in copy && typeof copy.resource_id === 'string' && (copy.resource_id as string).length > 0);
+  if (!hasLocator) {
+    copy.target = 'self';
+    if (!applied.includes('REQUIREDONE_GUARANTEE')) applied.push('REQUIREDONE_GUARANTEE');
+  }
+
+  // 53) ARIALABEL_GUARANTEE — ensure ariaLabel is never empty for accessibility executors
+  if ('ariaLabel' in copy && typeof copy.ariaLabel === 'string' && copy.ariaLabel.trim().length < 1) {
+    copy.ariaLabel = 'element';
+    if (!applied.includes('ARIALABEL_GUARANTEE')) applied.push('ARIALABEL_GUARANTEE');
+  }
+
+  // 54) PREFERENCES_EMPTY_OBJ — ensure preferences is {} not empty string
+  if ('preferences' in copy && copy.preferences === '') {
+    copy.preferences = {};
+    if (!applied.includes('PREFERENCES_EMPTY_OBJ')) applied.push('PREFERENCES_EMPTY_OBJ');
+  }
+
   if (applied.length === 0) {
     return { repaired: false, repaired_input: input };
   }

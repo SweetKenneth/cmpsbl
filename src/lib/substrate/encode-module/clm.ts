@@ -202,6 +202,32 @@ export async function runEncodeCLMCycle(): Promise<CLMReport> {
     risks.push('Task queue growing — may need parallel execution or priority triage');
   }
 
+  // Enhancement #11: Study repair rates from error-pattern library
+  try {
+    const { getLibraryStats } = await import('../encode-error-patterns/index');
+    const libStats = getLibraryStats();
+    learnings.push(`Error-pattern library: ${libStats.totalPatterns} patterns, ${libStats.criticalPatterns} critical, ${libStats.resolvedPatterns} resolved`);
+    if (libStats.criticalPatterns > 0) {
+      risks.push(`${libStats.criticalPatterns} critical error patterns detected — prioritize resolution`);
+    }
+    codebaseInsights.push({
+      area: 'error-patterns',
+      finding: `Top error categories: ${libStats.topCategories.slice(0, 3).map(c => `${c.category}(${c.count})`).join(', ')}`,
+      actionable: true,
+      priority: 93,
+    });
+  } catch { /* error-pattern lib not loaded */ }
+
+  // Enhancement #12: Study escalation learning loop metrics
+  try {
+    const { getLearningStats } = await import('../../../immune/escalation-learning');
+    const learnStats = getLearningStats();
+    learnings.push(`Escalation learning: ${learnStats.totalPatterns} patterns tracked, ${learnStats.promotedRules} rules promoted, ${learnStats.rejectedRules} rejected`);
+    if (learnStats.eligiblePatterns > 0) {
+      proposedUpgrades.push(`${learnStats.eligiblePatterns} escalation patterns eligible for rule synthesis`);
+    }
+  } catch { /* escalation-learning not loaded */ }
+
   // Study 6: Propose internal improvements
   proposedUpgrades.push('Deepen file-level knowledge of substrate modules for precise edits');
   proposedUpgrades.push('Map all export/import chains to prevent broken references');

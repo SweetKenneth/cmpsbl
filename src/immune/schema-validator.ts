@@ -200,7 +200,10 @@ export function validateInput(
 
   // Classify archetype
   const archetype = classifyArchetype(issues, hasInjection, inputKeys, schemaKeys);
-  const confidence = issues.length === 0 ? 1.0 : Math.max(0, 1 - (issues.length * 0.15));
+  // Enhancement #7: Smarter confidence — unknown_field issues penalize less than structural issues
+  const structuralIssues = issues.filter(i => i.issue !== 'unknown_field').length;
+  const unknownFieldIssues = issues.filter(i => i.issue === 'unknown_field').length;
+  const confidence = issues.length === 0 ? 1.0 : Math.max(0, 1 - (structuralIssues * 0.2) - (unknownFieldIssues * 0.03));
 
   return {
     valid: issues.filter(i => i.issue !== 'unknown_field').length === 0,
