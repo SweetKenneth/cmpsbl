@@ -2585,9 +2585,73 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_memory_archive: {
+        Row: {
+          access_count: number | null
+          agent_id: string | null
+          archived_at: string | null
+          archived_from_tier: string | null
+          archived_reason: string | null
+          content: string
+          context: string | null
+          core_summary: string | null
+          created_at: string | null
+          id: string
+          memory_type: string | null
+          metadata: Json | null
+          salience_score: number | null
+          source_memory_id: string | null
+          source_tier: string
+          tags: Json | null
+          user_id: string | null
+          value_score: number | null
+        }
+        Insert: {
+          access_count?: number | null
+          agent_id?: string | null
+          archived_at?: string | null
+          archived_from_tier?: string | null
+          archived_reason?: string | null
+          content: string
+          context?: string | null
+          core_summary?: string | null
+          created_at?: string | null
+          id?: string
+          memory_type?: string | null
+          metadata?: Json | null
+          salience_score?: number | null
+          source_memory_id?: string | null
+          source_tier: string
+          tags?: Json | null
+          user_id?: string | null
+          value_score?: number | null
+        }
+        Update: {
+          access_count?: number | null
+          agent_id?: string | null
+          archived_at?: string | null
+          archived_from_tier?: string | null
+          archived_reason?: string | null
+          content?: string
+          context?: string | null
+          core_summary?: string | null
+          created_at?: string | null
+          id?: string
+          memory_type?: string | null
+          metadata?: Json | null
+          salience_score?: number | null
+          source_memory_id?: string | null
+          source_tier?: string
+          tags?: Json | null
+          user_id?: string | null
+          value_score?: number | null
+        }
+        Relationships: []
+      }
       brain_memory_cold: {
         Row: {
           access_count: number | null
+          agent_id: string | null
           archived_at: string | null
           compression_level: number | null
           compression_ratio: number | null
@@ -2596,13 +2660,17 @@ export type Database = {
           embedding: string | null
           id: string
           last_accessed: string | null
+          memory_type: string | null
+          salience_score: number | null
           source_refs: string[] | null
           summary: string
           tags: Json | null
+          user_id: string | null
           value_score: number | null
         }
         Insert: {
           access_count?: number | null
+          agent_id?: string | null
           archived_at?: string | null
           compression_level?: number | null
           compression_ratio?: number | null
@@ -2611,13 +2679,17 @@ export type Database = {
           embedding?: string | null
           id?: string
           last_accessed?: string | null
+          memory_type?: string | null
+          salience_score?: number | null
           source_refs?: string[] | null
           summary: string
           tags?: Json | null
+          user_id?: string | null
           value_score?: number | null
         }
         Update: {
           access_count?: number | null
+          agent_id?: string | null
           archived_at?: string | null
           compression_level?: number | null
           compression_ratio?: number | null
@@ -2626,9 +2698,12 @@ export type Database = {
           embedding?: string | null
           id?: string
           last_accessed?: string | null
+          memory_type?: string | null
+          salience_score?: number | null
           source_refs?: string[] | null
           summary?: string
           tags?: Json | null
+          user_id?: string | null
           value_score?: number | null
         }
         Relationships: []
@@ -2636,6 +2711,7 @@ export type Database = {
       brain_memory_hot: {
         Row: {
           access_count: number | null
+          agent_id: string | null
           content: string
           context: string | null
           created_at: string | null
@@ -2645,14 +2721,18 @@ export type Database = {
           id: string
           importance_score: number | null
           last_used: string | null
+          memory_type: string | null
           metadata: Json | null
           priority: number | null
+          salience_score: number | null
           tags: Json | null
           updated_at: string | null
+          user_id: string | null
           value_score: number | null
         }
         Insert: {
           access_count?: number | null
+          agent_id?: string | null
           content: string
           context?: string | null
           created_at?: string | null
@@ -2662,14 +2742,18 @@ export type Database = {
           id?: string
           importance_score?: number | null
           last_used?: string | null
+          memory_type?: string | null
           metadata?: Json | null
           priority?: number | null
+          salience_score?: number | null
           tags?: Json | null
           updated_at?: string | null
+          user_id?: string | null
           value_score?: number | null
         }
         Update: {
           access_count?: number | null
+          agent_id?: string | null
           content?: string
           context?: string | null
           created_at?: string | null
@@ -2679,11 +2763,83 @@ export type Database = {
           id?: string
           importance_score?: number | null
           last_used?: string | null
+          memory_type?: string | null
           metadata?: Json | null
           priority?: number | null
+          salience_score?: number | null
           tags?: Json | null
           updated_at?: string | null
+          user_id?: string | null
           value_score?: number | null
+        }
+        Relationships: []
+      }
+      brain_memory_meta: {
+        Row: {
+          agent_id: string | null
+          archive_count: number | null
+          avg_salience: number | null
+          cold_count: number | null
+          cold_limit: number | null
+          created_at: string | null
+          demotions: number | null
+          hot_count: number | null
+          hot_limit: number | null
+          id: string
+          last_metacognition_update: string | null
+          last_tiering_run: string | null
+          promotions: number | null
+          recall_hit_rate: number | null
+          total_recalls: number | null
+          total_stores: number | null
+          updated_at: string | null
+          user_id: string | null
+          warm_count: number | null
+          warm_limit: number | null
+        }
+        Insert: {
+          agent_id?: string | null
+          archive_count?: number | null
+          avg_salience?: number | null
+          cold_count?: number | null
+          cold_limit?: number | null
+          created_at?: string | null
+          demotions?: number | null
+          hot_count?: number | null
+          hot_limit?: number | null
+          id?: string
+          last_metacognition_update?: string | null
+          last_tiering_run?: string | null
+          promotions?: number | null
+          recall_hit_rate?: number | null
+          total_recalls?: number | null
+          total_stores?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          warm_count?: number | null
+          warm_limit?: number | null
+        }
+        Update: {
+          agent_id?: string | null
+          archive_count?: number | null
+          avg_salience?: number | null
+          cold_count?: number | null
+          cold_limit?: number | null
+          created_at?: string | null
+          demotions?: number | null
+          hot_count?: number | null
+          hot_limit?: number | null
+          id?: string
+          last_metacognition_update?: string | null
+          last_tiering_run?: string | null
+          promotions?: number | null
+          recall_hit_rate?: number | null
+          total_recalls?: number | null
+          total_stores?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          warm_count?: number | null
+          warm_limit?: number | null
         }
         Relationships: []
       }
@@ -2729,6 +2885,7 @@ export type Database = {
       brain_memory_warm: {
         Row: {
           access_count: number | null
+          agent_id: string | null
           content: string
           context: string | null
           core_summary: string | null
@@ -2739,16 +2896,20 @@ export type Database = {
           goal_ref: string | null
           id: string
           last_accessed: string | null
+          memory_type: string | null
           metadata: Json | null
           priority: number | null
           promoted_at: string | null
+          salience_score: number | null
           source_memory_id: string | null
           tags: Json | null
           updated_at: string | null
+          user_id: string | null
           value_score: number | null
         }
         Insert: {
           access_count?: number | null
+          agent_id?: string | null
           content: string
           context?: string | null
           core_summary?: string | null
@@ -2759,16 +2920,20 @@ export type Database = {
           goal_ref?: string | null
           id?: string
           last_accessed?: string | null
+          memory_type?: string | null
           metadata?: Json | null
           priority?: number | null
           promoted_at?: string | null
+          salience_score?: number | null
           source_memory_id?: string | null
           tags?: Json | null
           updated_at?: string | null
+          user_id?: string | null
           value_score?: number | null
         }
         Update: {
           access_count?: number | null
+          agent_id?: string | null
           content?: string
           context?: string | null
           core_summary?: string | null
@@ -2779,12 +2944,15 @@ export type Database = {
           goal_ref?: string | null
           id?: string
           last_accessed?: string | null
+          memory_type?: string | null
           metadata?: Json | null
           priority?: number | null
           promoted_at?: string | null
+          salience_score?: number | null
           source_memory_id?: string | null
           tags?: Json | null
           updated_at?: string | null
+          user_id?: string | null
           value_score?: number | null
         }
         Relationships: []
@@ -11545,6 +11713,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_memory_salience: {
+        Args: {
+          p_agent_id: string
+          p_content: string
+          p_memory_type: string
+          p_user_id: string
+        }
+        Returns: number
+      }
       calculate_memory_value: {
         Args: {
           p_access_count: number
@@ -11580,6 +11757,14 @@ export type Database = {
       generate_clarity_api_key: {
         Args: { p_key_name: string; p_rate_limit?: number; p_user_id: string }
         Returns: Json
+      }
+      get_adaptive_memory_limits: {
+        Args: { p_agent_id: string; p_user_id: string }
+        Returns: {
+          cold_limit: number
+          hot_limit: number
+          warm_limit: number
+        }[]
       }
       has_role:
         | {
@@ -11623,8 +11808,16 @@ export type Database = {
         }[]
       }
       resolve_upgrade_plan_id: { Args: { p_ref: string }; Returns: string }
+      run_memory_tiering: {
+        Args: { p_agent_id: string; p_user_id: string }
+        Returns: Json
+      }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      track_memory_recall: {
+        Args: { p_agent_id: string; p_hit: boolean; p_user_id: string }
+        Returns: undefined
+      }
       track_template_interaction: {
         Args: { p_interaction_type: string; p_template_id: string }
         Returns: undefined
