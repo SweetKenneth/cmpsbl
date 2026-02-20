@@ -32,6 +32,12 @@ const STRING_FIELDS = new Set(['content', 'url', 'domain', 'userId', 'ariaLabel'
 /** Valid wcagLevel values */
 const VALID_WCAG_LEVELS = new Set(['A', 'AA', 'AAA']);
 
+/** Control character regex (strip \x00-\x1F except \n \r \t) */
+const CONTROL_CHAR_RE = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+
+/** Prototype pollution keys */
+const DANGEROUS_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
 /**
  * Attempt deterministic repairs on an input object.
  * Returns repaired=false if nothing changed.
@@ -142,11 +148,69 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 10) DEFAULT_SHAPE — if input has no recognized keys, inject minimum shape
+  // 10) DEFAULT_SHAPE — if input has no recognized keys OR is empty, inject minimum shape
   const hasExpectedKey = EXPECTED_KEYS.some(k => k in copy);
-  if (!hasExpectedKey && Object.keys(copy).length > 0) {
-    copy.content = copy[Object.keys(copy)[0]] ?? '';
+  if (!hasExpectedKey) {
+    const firstVal = Object.keys(copy).length > 0 ? copy[Object.keys(copy)[0]] : '';
+    copy.content = typeof firstVal === 'string' ? firstVal : '';
     if (!applied.includes('DEFAULT_SHAPE')) applied.push('DEFAULT_SHAPE');
+  }
+
+  // 11) NESTED_STRINGIFY — stringify nested objects in string-expected fields
+  for (const key of Object.keys(copy)) {
+    if (STRING_FIELDS.has(key) && copy[key] && typeof copy[key] === 'object' && !Array.isArray(copy[key])) {
+      try {
+        copy[key] = JSON.stringify(copy[key]);
+      } catch {
+        copy[key] = '';
+      }
+      if (!applied.includes('NESTED_STRINGIFY')) applied.push('NESTED_STRINGIFY');
+    }
+  }
+
+  // 12) CONTROL_CHAR_STRIP — remove dangerous control characters from strings
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && CONTROL_CHAR_RE.test(copy[key])) {
+      copy[key] = copy[key].replace(CONTROL_CHAR_RE, '');
+      CONTROL_CHAR_RE.lastIndex = 0;
+      if (!applied.includes('CONTROL_CHAR_STRIP')) applied.push('CONTROL_CHAR_STRIP');
+    }
+    CONTROL_CHAR_RE.lastIndex = 0;
+  }
+
+  // 13) PROTO_GUARD — remove prototype pollution keys
+  for (const key of Array.from(Object.keys(copy))) {
+    if (DANGEROUS_KEYS.has(key)) {
+      delete copy[key];
+      if (!applied.includes('PROTO_GUARD')) applied.push('PROTO_GUARD');
+    }
+    // Also strip __proto__ from nested object values
+    if (copy[key] && typeof copy[key] === 'object' && !Array.isArray(copy[key])) {
+      const nested = copy[key] as Record<string, unknown>;
+      for (const nk of Object.keys(nested)) {
+        if (DANGEROUS_KEYS.has(nk)) {
+          delete nested[nk];
+          if (!applied.includes('PROTO_GUARD')) applied.push('PROTO_GUARD');
+        }
+      }
+      // If nested object is now empty after stripping, convert to empty string
+      if (Object.keys(nested).length === 0) {
+        copy[key] = '';
+      }
+    }
+  }
+
+  // 14) DEEP_TYPE_COERCE — for non-string-field objects/arrays, stringify them
+  for (const key of Object.keys(copy)) {
+    const val = copy[key];
+    if (val && typeof val === 'object' && !Array.isArray(val) && !STRING_FIELDS.has(key)) {
+      try {
+        copy[key] = JSON.stringify(val);
+      } catch {
+        copy[key] = '';
+      }
+      if (!applied.includes('DEEP_TYPE_COERCE')) applied.push('DEEP_TYPE_COERCE');
+    }
   }
 
   if (applied.length === 0) {
