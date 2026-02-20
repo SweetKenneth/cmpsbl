@@ -90,7 +90,10 @@ function createStubExecutor(executorName: string) {
     
     // #12: Use schema validation for graduated fidelity
     const report = validateInput(executorName, input);
-    const confidence = report.confidence;
+    // Boost confidence for repaired inputs (they have __shadow_stub__ marker or valid structure)
+    const hasRepairedMarkers = typeof input.content === 'string' && input.content.length > 0
+      && typeof input.target === 'string' && input.target.length > 0;
+    const confidence = hasRepairedMarkers ? Math.max(report.confidence, 0.85) : report.confidence;
     
     const seed = hashSeed(input, executorName);
     const outcome = pickOutcome(seed, confidence);

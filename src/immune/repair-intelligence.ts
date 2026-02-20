@@ -318,9 +318,10 @@ export function intelligentRepair(
   const repaired = stagesApplied > 0 || primary.repaired || preNormChanged;
   const repairType = primary.repair_type ?? (chained ? 'PARALLEL_BRANCH' : undefined);
 
-  // Step 6: Confidence scoring (#3)
+  // Step 6: Confidence scoring (#3) — use POST-REPAIR validation confidence
+  const postRepairValidation = repaired ? validateInput(executor, finalInput) : report;
   const confidence = repaired
-    ? calculateRepairConfidence(executor, report.archetype, repairType ?? '', report.confidence)
+    ? calculateRepairConfidence(executor, report.archetype, repairType ?? '', postRepairValidation.confidence)
     : 0;
 
   return {
