@@ -228,6 +228,24 @@ export async function runEncodeCLMCycle(): Promise<CLMReport> {
     }
   } catch { /* escalation-learning not loaded */ }
 
+  // Enhancement #13: ENCODE escalation resolution telemetry
+  try {
+    const { getEscalationTelemetry } = await import('./escalation-telemetry');
+    const resTel = getEscalationTelemetry();
+    learnings.push(`Escalation resolution: ${resTel.totalResolved}/${resTel.totalClaimed} resolved (${(resTel.resolutionRate * 100).toFixed(0)}%), MTTR ${(resTel.mttrMs / 1000).toFixed(1)}s`);
+    if (resTel.backlogTrend > 0) {
+      risks.push(`Escalation backlog growing: inflow ${resTel.inflowRate.toFixed(2)}/min > outflow ${resTel.outflowRate.toFixed(2)}/min`);
+    }
+    if (resTel.learningLoop.rulesApplied > 0) {
+      codebaseInsights.push({
+        area: 'escalation-resolution',
+        finding: `Learning rules: ${resTel.learningLoop.rulesApplied} applied, ${(resTel.learningLoop.ruleEffectiveness * 100).toFixed(0)}% effective`,
+        actionable: resTel.learningLoop.ruleEffectiveness < 0.7,
+        priority: 91,
+      });
+    }
+  } catch { /* escalation-telemetry not loaded */ }
+
   // Study 6: Propose internal improvements
   proposedUpgrades.push('Deepen file-level knowledge of substrate modules for precise edits');
   proposedUpgrades.push('Map all export/import chains to prevent broken references');

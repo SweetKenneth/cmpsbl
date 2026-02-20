@@ -7,6 +7,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { getRepairIntelligenceStats, getEscalationPatterns } from '@/immune/repair-intelligence';
 import { getOutcomeStats, produceDreamDigest } from '@/immune/outcome-tracker';
+import { getEscalationTelemetry, type EscalationTelemetrySnapshot } from '@/lib/substrate/encode-module/escalation-telemetry';
 
 export interface MetricRow {
   executor: string;
@@ -49,6 +50,8 @@ export interface ShadowMeshAnalyticsData {
     highFailureRepairs: Array<{ repairType: string; executor: string; failRate: number; count: number }>;
     suggestions: string[];
   };
+  /** v3.0: ENCODE escalation resolution telemetry */
+  escalationResolution: EscalationTelemetrySnapshot;
 }
 
 export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData> {
@@ -114,5 +117,6 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     escalationPatterns: getEscalationPatterns(),
     outcomeStats: getOutcomeStats(),
     dreamDigest: produceDreamDigest(),
+    escalationResolution: getEscalationTelemetry(),
   };
 }
