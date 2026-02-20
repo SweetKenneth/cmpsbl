@@ -226,7 +226,7 @@ async function aggregateImmuneMetrics(): Promise<ImmuneTelemetry> {
     repairSuccesses,
     escalations,
     safeFailures,
-    honestRepairRate: denom > 0 ? repairSuccesses / denom : 1,
+    honestRepairRate: denom > 0 ? repairSuccesses / denom : 0,
     topExecutor,
   };
 }
@@ -268,7 +268,7 @@ function defaultBrain(): BrainTelemetry {
 }
 
 function defaultImmune(): ImmuneTelemetry {
-  return { totalRuns: 0, repairSuccesses: 0, escalations: 0, safeFailures: 0, honestRepairRate: 1, topExecutor: null };
+  return { totalRuns: 0, repairSuccesses: 0, escalations: 0, safeFailures: 0, honestRepairRate: 0, topExecutor: null };
 }
 
 function defaultEncode(): EncodeTelemetry {
