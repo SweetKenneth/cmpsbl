@@ -533,7 +533,6 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
   }
 
   // 42) EXECUTOR_REQUIRED_INJECT — ensure critical required fields exist with defaults
-  //     This catches cases where repair created content but missed userId, url, etc.
   if (!('userId' in copy) || copy.userId === '' || copy.userId === null || copy.userId === undefined) {
     copy.userId = 'anonymous';
     if (!applied.includes('EXECUTOR_REQUIRED_INJECT')) applied.push('EXECUTOR_REQUIRED_INJECT');
@@ -549,6 +548,57 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
   if (!('content' in copy) || copy.content === '' || copy.content === null || copy.content === undefined) {
     copy.content = 'audit target';
     if (!applied.includes('EXECUTOR_REQUIRED_INJECT')) applied.push('EXECUTOR_REQUIRED_INJECT');
+  }
+
+  // 43) POST_SANITIZE_RECOVERY — after sanitization rules strip content to empty/short, recover
+  //     This catches: SQL_SANITIZE leaving empty content, SANITIZE stripping <script> to empty,
+  //     EVENT_HANDLER_STRIP removing all content, HTML_ANGLE_ENCODE leaving only entities
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      const val = copy[key].trim();
+      // If sanitization left only whitespace, entities, or stripped markers
+      if (val === '' || val === '&lt;&gt;' || val === '&lt;/&gt;' || val === '[removed:function]' ||
+          val === '; --' || val === '--' || val === ';' || /^[\s;,\-]+$/.test(val)) {
+        copy[key] = BACKFILL_DEFAULTS[key] ?? NATURAL_DEFAULTS[key] ?? 'default';
+        if (!applied.includes('POST_SANITIZE_RECOVERY')) applied.push('POST_SANITIZE_RECOVERY');
+      }
+    }
+  }
+
+  // 44) URL_EMPTY_RECOVERY — after URL_NORMALIZE strips dangerous URLs, backfill
+  for (const urlKey of ['url', 'domain']) {
+    if (urlKey in copy && (copy[urlKey] === '' || copy[urlKey] === null || copy[urlKey] === undefined)) {
+      copy[urlKey] = BACKFILL_DEFAULTS[urlKey] ?? (urlKey === 'url' ? 'https://localhost' : 'localhost');
+      if (!applied.includes('URL_EMPTY_RECOVERY')) applied.push('URL_EMPTY_RECOVERY');
+    }
+  }
+
+  // 45) FUNCTION_GUARD_RECOVERY — replace [removed:function] markers with meaningful defaults
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && copy[key] === '[removed:function]') {
+      copy[key] = BACKFILL_DEFAULTS[key] ?? NATURAL_DEFAULTS[key] ?? 'default';
+      if (!applied.includes('FUNCTION_GUARD_RECOVERY')) applied.push('FUNCTION_GUARD_RECOVERY');
+    }
+  }
+
+  // 46) PATTERN_STRIPPED_RECOVERY — replace [pattern-stripped] markers
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && copy[key].includes('[pattern-stripped]')) {
+      copy[key] = BACKFILL_DEFAULTS[key] ?? NATURAL_DEFAULTS[key] ?? 'default';
+      if (!applied.includes('PATTERN_STRIPPED_RECOVERY')) applied.push('PATTERN_STRIPPED_RECOVERY');
+    }
+  }
+
+  // 47) FINAL_CONTENT_GUARANTEE — absolute last-resort: if content is still empty/invalid after all rules
+  if ('content' in copy && typeof copy.content === 'string' && copy.content.trim().length < 1) {
+    copy.content = 'audit target';
+    if (!applied.includes('FINAL_CONTENT_GUARANTEE')) applied.push('FINAL_CONTENT_GUARANTEE');
+  }
+
+  // 48) FINAL_USERID_GUARANTEE — ensure userId is never empty after all transforms
+  if ('userId' in copy && typeof copy.userId === 'string' && copy.userId.trim().length < 1) {
+    copy.userId = 'anonymous';
+    if (!applied.includes('FINAL_USERID_GUARANTEE')) applied.push('FINAL_USERID_GUARANTEE');
   }
 
   if (applied.length === 0) {
