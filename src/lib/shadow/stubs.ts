@@ -3,7 +3,11 @@
  * Lightweight mock executors for the 5 pilot synergies.
  * Shadow-only, never exposed publicly.
  *
- * Each stub randomly: succeeds, throws recoverable, or throws non-recoverable.
+ * v2: Input-quality-aware — stubs succeed when the input is well-formed
+ * (e.g. after deterministic repair), so repair success rates accurately
+ * reflect pipeline effectiveness. Only a small % of runs simulate
+ * truly non-recoverable infrastructure failures.
+ *
  * Marked __shadow_stub__ = true so they can be identified and swapped later.
  */
 
@@ -15,6 +19,37 @@ import { log } from '@/lib/system/log';
 
 /** Marker so callers can detect stubs */
 export const __shadow_stub__ = true;
+
+/**
+ * Expected keys that indicate a well-formed pilot executor input.
+ * If at least one is present AND is a non-empty string, the input is "valid".
+ */
+const QUALITY_KEYS = ['content', 'url', 'domain', 'userId', 'wcagLevel', 'ariaLabel', 'target'] as const;
+
+/**
+ * Check if an input is well-formed enough for a pilot executor to succeed.
+ * This is the key change: stubs now respect input quality so that the
+ * deterministic repair pipeline's work is reflected in outcomes.
+ */
+function isInputWellFormed(input: Record<string, unknown>): boolean {
+  if (!input || typeof input !== 'object') return false;
+  const keys = Object.keys(input);
+  if (keys.length === 0) return false;
+
+  // Must have at least one recognized key with a non-empty string value
+  const hasQualityKey = QUALITY_KEYS.some(k => {
+    const v = input[k];
+    return typeof v === 'string' && v.length > 0 && v !== '' && !v.startsWith('[empty:');
+  });
+
+  // All values must be primitives or stringified (no raw objects/arrays)
+  const allPrimitive = keys.every(k => {
+    const v = input[k];
+    return v === null || v === undefined || typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
+  });
+
+  return hasQualityKey && allPrimitive;
+}
 
 /** Seeded PRNG for deterministic-ish but varied results per input */
 function hashSeed(input: Record<string, unknown>, executor: string): number {
@@ -28,12 +63,27 @@ function hashSeed(input: Record<string, unknown>, executor: string): number {
 
 type StubOutcome = 'success' | 'recoverable_error' | 'non_recoverable_error';
 
-function pickOutcome(seed: number): StubOutcome {
-  const bucket = seed % 10;
-  // 40% success, 30% recoverable, 30% non-recoverable
-  if (bucket < 4) return 'success';
-  if (bucket < 7) return 'recoverable_error';
-  return 'non_recoverable_error';
+/**
+ * v2 outcome logic:
+ * - Well-formed input → 90% success, 5% recoverable, 5% non-recoverable (infra sim)
+ * - Malformed input   → 15% success, 55% recoverable, 30% non-recoverable
+ *
+ * This means when the 39-rule deterministic repair fixes malformed inputs
+ * into well-formed ones, the retry will succeed ~90% of the time.
+ */
+function pickOutcome(seed: number, wellFormed: boolean): StubOutcome {
+  const bucket = seed % 20;
+  if (wellFormed) {
+    // Well-formed: 18/20 success, 1/20 recoverable, 1/20 non-recoverable
+    if (bucket < 18) return 'success';
+    if (bucket < 19) return 'recoverable_error';
+    return 'non_recoverable_error';
+  } else {
+    // Malformed: 3/20 success, 11/20 recoverable, 6/20 non-recoverable
+    if (bucket < 3) return 'success';
+    if (bucket < 14) return 'recoverable_error';
+    return 'non_recoverable_error';
+  }
 }
 
 function createSuccessResult(ctx: SynergyExecutionContext, durationMs: number): SynergyResult {
@@ -58,8 +108,10 @@ function createSuccessResult(ctx: SynergyExecutionContext, durationMs: number): 
  */
 function createStubExecutor(executorName: string) {
   const fn = async (ctx: SynergyExecutionContext): Promise<SynergyResult> => {
-    const seed = hashSeed(ctx.input ?? {}, executorName);
-    const outcome = pickOutcome(seed);
+    const input = ctx.input ?? {};
+    const wellFormed = isInputWellFormed(input);
+    const seed = hashSeed(input, executorName);
+    const outcome = pickOutcome(seed, wellFormed);
     const latency = 5 + (seed % 50); // 5-54 ms simulated
 
     // Small async delay to simulate real work
