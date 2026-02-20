@@ -166,8 +166,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Eye,
       tier: 'free',
       tabs: [
-        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'cyan', description: 'System overview & health', tier: 'free' },
-        { id: 'health', label: 'Health', icon: Activity, color: 'emerald', description: 'System health monitor', tier: 'free' },
+        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'cyan', description: 'Overview, health & events', tier: 'free' },
       ],
     },
     {
@@ -177,8 +176,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       tier: 'creator',
       tabs: [
         { id: 'terminal', label: 'Terminal', icon: Terminal, color: 'emerald', description: 'Command interface', tier: 'creator' },
-        { id: 'analytics', label: 'Analytics', icon: Activity, color: 'cyan', description: 'Traffic & usage analytics', tier: 'creator' },
-        { id: 'events', label: 'Events', icon: Activity, color: 'amber', description: 'Live activity feed', tier: 'creator' },
+        { id: 'analytics', label: 'Analytics', icon: Activity, color: 'cyan', description: 'Traffic, usage & metrics', tier: 'creator' },
         { id: 'engines', label: 'Engines', icon: Layers, color: 'fuchsia', description: 'Execute & manage engines', tier: 'creator' },
       ],
     },
@@ -207,15 +205,10 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
         { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Autonomous capability mesh', tier: 'cmpsbl' },
         { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'Architecture mutation', tier: 'cmpsbl' },
         { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'Author LNCHBL patches', tier: 'cmpsbl' },
-        { id: 'metrics', label: 'Metrics', icon: Gauge, color: 'cyan', description: 'Public metrics control', tier: 'cmpsbl' },
-        { id: 'cognitives', label: 'Cognitives', icon: Bot, color: 'fuchsia', description: 'Bot registry & management', tier: 'cmpsbl' },
-        { id: 'mint', label: 'Mint', icon: Sparkles, color: 'purple', description: 'Forge cognitives & agencies', tier: 'cmpsbl' },
+        { id: 'forge', label: 'Forge', icon: Sparkles, color: 'fuchsia', description: 'Cognitives & agency mint', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'cmpsbl' as SubstrateTier }] : []),
-        { id: 'defense', label: 'Defense', icon: Shield, color: 'amber', description: 'Site-Guard threat analytics', tier: 'cmpsbl' },
-        { id: 'sounding', label: 'Sounding Board', icon: MessageSquare, color: 'indigo', description: 'Module advisory feed', tier: 'cmpsbl' },
-        { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Administrative controls', tier: 'cmpsbl' },
-        { id: 'shadow-mesh', label: 'Shadow Mesh', icon: Shield, color: 'red', description: 'Immune wrapper & probing', tier: 'cmpsbl' },
-        { id: 'audit', label: 'Audit', icon: Shield, color: 'cyan', description: 'Production readiness gate', tier: 'cmpsbl' },
+        { id: 'security', label: 'Security', icon: Shield, color: 'amber', description: 'Defense · Immune · Audit', tier: 'cmpsbl' },
+        { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Admin controls & advisory', tier: 'cmpsbl' },
       ],
     },
   ];
@@ -423,7 +416,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
            <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span>CMPSBL v10.9.1</span>
+              <span>CMPSBL v10.9.2</span>
             </div>
             <TierBadge tier={userTier} size="xs" />
           </div>
@@ -542,8 +535,189 @@ function MergedModulesTab({ enabled }: { enabled: boolean }) {
 }
 
 // ============================================
-// Memoized Dashboard Content — prevents re-renders on tab switch
+// Merged Forge Tab (Cognitives + Mint + Public Metrics)
 // ============================================
+function MergedForgeTab({ enabled, hasAgency }: { enabled: boolean; hasAgency: boolean }) {
+  const [activeForge, setActiveForge] = useState<'cognitives' | 'mint' | 'metrics'>('cognitives');
+
+  return (
+    <motion.main
+      className="container mx-auto px-4 py-6 max-w-7xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <TabHeader
+        icon={Sparkles}
+        title="Forge"
+        subtitle="cognitives · agency mint · public metrics"
+        color="fuchsia"
+        tier="cmpsbl"
+      />
+
+      <div className="flex gap-2 p-1.5 rounded-xl bg-muted/30 border border-border/30 w-fit mb-6">
+        {[
+          { id: 'cognitives' as const, label: 'Cognitives', icon: Bot },
+          { id: 'mint' as const, label: 'Agency Mint', icon: Users },
+          { id: 'metrics' as const, label: 'Public Metrics', icon: Gauge },
+        ].map(item => (
+          <button
+            key={item.id}
+            onClick={() => setActiveForge(item.id)}
+            className={cn(
+              "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeForge === item.id
+                ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/40 shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            )}
+          >
+            <item.icon className="w-4 h-4" />
+            {item.label}
+          </button>
+        ))}
+        <a href="/forge" className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50">
+          <Bot className="w-4 h-4" />Forge App<ArrowUpRight className="w-3 h-3" />
+        </a>
+      </div>
+
+      <Suspense fallback={<TabLoadingFallback />}>
+        <AnimatePresence mode="wait">
+          {activeForge === 'cognitives' && <CognitivesPanel key="cognitives" />}
+          {activeForge === 'mint' && (
+            <div key="mint">
+              <Tabs defaultValue="create" className="space-y-4">
+                <TabsList className="bg-muted/30 border border-border/30">
+                  <TabsTrigger value="create" className="gap-2 data-[state=active]:bg-fuchsia-500/20 data-[state=active]:text-fuchsia-400">
+                    <Sparkles className="w-4 h-4" />Create Agency
+                  </TabsTrigger>
+                  <TabsTrigger value="gallery" className="gap-2 data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
+                    <Users className="w-4 h-4" />Gallery
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="create"><AgencyMintWizard onComplete={() => {}} /></TabsContent>
+                <TabsContent value="gallery"><AgencyGallery /></TabsContent>
+              </Tabs>
+            </div>
+          )}
+          {activeForge === 'metrics' && <PublicMetricsTab key="metrics" />}
+        </AnimatePresence>
+      </Suspense>
+    </motion.main>
+  );
+}
+
+// ============================================
+// Merged Security Tab (Defense + Shadow Mesh + Audit)
+// ============================================
+function MergedSecurityTab({ isGovernor }: { isGovernor: boolean }) {
+  const [activeSec, setActiveSec] = useState<'defense' | 'immune' | 'audit'>('defense');
+
+  return (
+    <motion.main
+      className="container mx-auto px-4 py-6 max-w-7xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <TabHeader
+        icon={Shield}
+        title="Security Center"
+        subtitle="defense · immune wrapper · production audit"
+        color="amber"
+        tier="cmpsbl"
+      />
+
+      <div className="flex gap-2 p-1.5 rounded-xl bg-muted/30 border border-border/30 w-fit mb-6">
+        {[
+          { id: 'defense' as const, label: 'Defense', icon: Shield },
+          { id: 'immune' as const, label: 'Shadow Mesh', icon: Network },
+          { id: 'audit' as const, label: 'Audit Gate', icon: FileText },
+        ].map(item => (
+          <button
+            key={item.id}
+            onClick={() => setActiveSec(item.id)}
+            className={cn(
+              "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeSec === item.id
+                ? "bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            )}
+          >
+            <item.icon className="w-4 h-4" />
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      <Suspense fallback={<TabLoadingFallback />}>
+        <AnimatePresence mode="wait">
+          {activeSec === 'defense' && <DefenseAnalytics key="defense" />}
+          {activeSec === 'immune' && (
+            <div key="immune" className="space-y-6">
+              <ShadowMeshToggle />
+              <ShadowMeshAnalytics />
+            </div>
+          )}
+          {activeSec === 'audit' && <AuditTab key="audit" />}
+        </AnimatePresence>
+      </Suspense>
+    </motion.main>
+  );
+}
+
+// ============================================
+// Merged Governor Tab (Governor + Sounding Board)
+// ============================================
+function MergedGovernorTab({ isGovernor }: { isGovernor: boolean }) {
+  const [activeGov, setActiveGov] = useState<'controls' | 'advisory'>('controls');
+
+  return (
+    <motion.main
+      className="container mx-auto px-4 py-6 max-w-7xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <TabHeader
+        icon={AlertTriangle}
+        title="Governor"
+        subtitle="administrative controls · module advisory"
+        color="red"
+        tier="cmpsbl"
+      />
+
+      <div className="flex gap-2 p-1.5 rounded-xl bg-muted/30 border border-border/30 w-fit mb-6">
+        {[
+          { id: 'controls' as const, label: 'Admin Controls', icon: Settings },
+          { id: 'advisory' as const, label: 'Sounding Board', icon: MessageSquare },
+        ].map(item => (
+          <button
+            key={item.id}
+            onClick={() => setActiveGov(item.id)}
+            className={cn(
+              "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeGov === item.id
+                ? "bg-red-500/20 text-red-400 border border-red-500/40 shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            )}
+          >
+            <item.icon className="w-4 h-4" />
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      <Suspense fallback={<TabLoadingFallback />}>
+        <AnimatePresence mode="wait">
+          {activeGov === 'controls' && <GovernorSection key="controls" enabled={isGovernor} />}
+          {activeGov === 'advisory' && <SoundingBoard key="advisory" />}
+        </AnimatePresence>
+      </Suspense>
+    </motion.main>
+  );
+}
+
+
 const DashboardContent = memo(function DashboardContent({ 
   userTier, isOperator, isCritical, onOpenTerminal 
 }: { 
@@ -596,7 +770,7 @@ const DashboardContent = memo(function DashboardContent({
               { label: 'Modules', value: '21' },
               { label: 'Providers', value: '7' },
               { label: 'Uptime', value: '99.9%' },
-              { label: 'Epoch', value: 'v10.9.1' },
+              { label: 'Epoch', value: 'v10.9.2' },
             ].map(s => (
               <div key={s.label} className="rounded-lg bg-muted/30 border border-border/20 px-3 py-2 text-center">
                 <div className="text-sm font-bold font-mono text-foreground">{s.value}</div>
@@ -647,7 +821,7 @@ export default function SubstrateOS() {
   const { data: userAgency, isLoading: agencyLoading } = useUserAgency();
   const healthScore = useSubstrateHealthScore();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [mintSubTab, setMintSubTab] = useState<'forge' | 'agency'>('agency');
+  // mintSubTab removed — merged into MergedForgeTab
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   
@@ -750,8 +924,8 @@ export default function SubstrateOS() {
         <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
           <div className="grid grid-cols-5 px-2 py-2">
             {(() => {
-              // Prioritize: dashboard, analytics, terminal, health — only accessible ones
-              const priority = ['dashboard', 'analytics', 'terminal', 'health', 'events', 'engines', 'nexus', 'codeagent'];
+              // Prioritize: dashboard, analytics, terminal, engines — only accessible ones
+              const priority = ['dashboard', 'analytics', 'terminal', 'engines', 'nexus', 'codeagent', 'security', 'forge'];
               const accessibleTabs = allTabs.filter(t => canAccessTier(userTier, t.tier));
               const mobileTabs = priority
                 .map(id => accessibleTabs.find(t => t.id === id))
@@ -868,14 +1042,7 @@ export default function SubstrateOS() {
               </motion.main>
             )}
 
-            {activeTab === 'health' && hasAccessToCurrentTab && (
-              <motion.main key="health" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <TabHeader icon={Activity} title="System Health" subtitle="real-time health monitoring" color="emerald" tier="free" />
-                <Suspense fallback={<TabLoadingFallback />}>
-                  <SystemHealthPanel enabled={true} />
-                </Suspense>
-              </motion.main>
-            )}
+            {/* Health removed — already shown in Dashboard */}
 
             {/* ═══ CREATOR TIER ═══ */}
             {activeTab === 'terminal' && hasAccessToCurrentTab && (
@@ -904,22 +1071,40 @@ export default function SubstrateOS() {
               </motion.main>
             )}
 
-            {activeTab === 'cognitives' && hasAccessToCurrentTab && (
-              <motion.main key="cognitives" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <TabHeader icon={Bot} title="Cognitive Registry" subtitle="minted cognitives • CMPSBL admin only" color="fuchsia" tier="cmpsbl" />
-                <Suspense fallback={<TabLoadingFallback />}><CognitivesPanel /></Suspense>
-              </motion.main>
-            )}
-
-            {activeTab === 'events' && hasAccessToCurrentTab && (
-              <motion.main key="events" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <TabHeader icon={Activity} title="Event Stream" subtitle="real-time substrate activity" color="amber" tier="creator" />
-                <EventStream />
-              </motion.main>
-            )}
-
             {activeTab === 'engines' && hasAccessToCurrentTab && (
               <Suspense fallback={<TabLoadingFallback />}><EnginesTab enabled={isOperator} /></Suspense>
+            )}
+
+            {/* ═══ ARCHITECT TIER ═══ */}
+            {activeTab === 'mesh' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><MeshActivityTab /></Suspense>}
+            {activeTab === 'nexus' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><NexusTab /></Suspense>}
+            {activeTab === 'codeagent' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><CodeAgentTab enabled={isOperator} /></Suspense>}
+            {activeTab === 'modules' && hasAccessToCurrentTab && <MergedModulesTab enabled={isOperator} />}
+            {activeTab === 'cortex' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><CortexTab enabled={isOperator} /></Suspense>}
+            {activeTab === 'atlas' && hasAccessToCurrentTab && (
+              <motion.main key="atlas" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <Suspense fallback={<TabLoadingFallback />}><AtlasTab /></Suspense>
+              </motion.main>
+            )}
+            {activeTab === 'modernizer' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><ModernizerTab enabled={isOperator} /></Suspense>}
+            {activeTab === 'inclusive' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><InclusiveTab enabled={isOperator} /></Suspense>}
+            {activeTab === 'backups' && hasAccessToCurrentTab && (
+              <motion.main key="backups" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <Suspense fallback={<TabLoadingFallback />}><BackupRestorePanel enabled={isOperator} /></Suspense>
+              </motion.main>
+            )}
+
+            {/* ═══ CMPSBL TIER ═══ */}
+            {activeTab === 'evolution' && hasAccessToCurrentTab && (
+              <motion.main key="evolution" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <Suspense fallback={<TabLoadingFallback />}><EvolutionTab /></Suspense>
+              </motion.main>
+            )}
+            {activeTab === 'patches' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><PatchAuthoringTab /></Suspense>}
+
+            {/* ═══ FORGE (merged Cognitives + Mint) ═══ */}
+            {activeTab === 'forge' && hasAccessToCurrentTab && (
+              <MergedForgeTab enabled={isOperator} hasAgency={!!userAgency} />
             )}
 
             {activeTab === 'agency' && hasAccessToCurrentTab && userAgency && (
@@ -981,114 +1166,14 @@ export default function SubstrateOS() {
               </motion.main>
             )}
 
-            {/* ═══ ARCHITECT TIER ═══ */}
-            {activeTab === 'mesh' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><MeshActivityTab /></Suspense>}
-            {activeTab === 'nexus' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><NexusTab /></Suspense>}
-            {activeTab === 'codeagent' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><CodeAgentTab enabled={isOperator} /></Suspense>}
-            {activeTab === 'modules' && hasAccessToCurrentTab && <MergedModulesTab enabled={isOperator} />}
-            {activeTab === 'cortex' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><CortexTab enabled={isOperator} /></Suspense>}
-            {activeTab === 'atlas' && hasAccessToCurrentTab && (
-              <motion.main key="atlas" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Suspense fallback={<TabLoadingFallback />}><AtlasTab /></Suspense>
-              </motion.main>
-            )}
-            {activeTab === 'modernizer' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><ModernizerTab enabled={isOperator} /></Suspense>}
-            {activeTab === 'inclusive' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><InclusiveTab enabled={isOperator} /></Suspense>}
-            {activeTab === 'backups' && hasAccessToCurrentTab && (
-              <motion.main key="backups" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Suspense fallback={<TabLoadingFallback />}><BackupRestorePanel enabled={isOperator} /></Suspense>
-              </motion.main>
+            {/* ═══ SECURITY (merged Defense + Shadow Mesh + Audit) ═══ */}
+            {activeTab === 'security' && hasAccessToCurrentTab && (
+              <MergedSecurityTab isGovernor={isGovernor} />
             )}
 
-            {/* ═══ CMPSBL TIER ═══ */}
-            {activeTab === 'evolution' && hasAccessToCurrentTab && (
-              <motion.main key="evolution" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Suspense fallback={<TabLoadingFallback />}><EvolutionTab /></Suspense>
-              </motion.main>
-            )}
-            {activeTab === 'metrics' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><PublicMetricsTab /></Suspense>}
-            {activeTab === 'patches' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><PatchAuthoringTab /></Suspense>}
-            
-            {activeTab === 'mint' && hasAccessToCurrentTab && (
-              <motion.main key="mint" className="container mx-auto px-4 py-6 max-w-6xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <TabHeader icon={Sparkles} title="Cognitive Mint" subtitle="forge cognitives • assemble agencies" color="purple" tier="cmpsbl" />
-                <div className="flex gap-2 p-1.5 rounded-xl bg-muted/30 border border-border/30 w-fit">
-                  <button
-                    onClick={() => setMintSubTab('agency')}
-                    className={cn(
-                      "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
-                      mintSubTab === 'agency'
-                        ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/40 shadow-sm"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                    )}
-                  >
-                    <Users className="w-4 h-4" />Agency Mint
-                  </button>
-                  <a href="/forge" className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50">
-                    <Bot className="w-4 h-4" />Cognitive Forge<ArrowUpRight className="w-3 h-3" />
-                  </a>
-                </div>
-                <Suspense fallback={<TabLoadingFallback />}>
-                  {mintSubTab === 'agency' && (
-                    <Tabs defaultValue="create" className="space-y-4">
-                      <TabsList className="bg-muted/30 border border-border/30">
-                        <TabsTrigger value="create" className="gap-2 data-[state=active]:bg-fuchsia-500/20 data-[state=active]:text-fuchsia-400">
-                          <Sparkles className="w-4 h-4" />Create Agency
-                        </TabsTrigger>
-                        <TabsTrigger value="gallery" className="gap-2 data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
-                          <Users className="w-4 h-4" />Gallery
-                        </TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="create"><AgencyMintWizard onComplete={() => {}} /></TabsContent>
-                      <TabsContent value="gallery"><AgencyGallery /></TabsContent>
-                    </Tabs>
-                  )}
-                </Suspense>
-              </motion.main>
-            )}
-
-            {activeTab === 'defense' && hasAccessToCurrentTab && (
-              <motion.main key="defense" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Suspense fallback={<TabLoadingFallback />}><DefenseAnalytics /></Suspense>
-              </motion.main>
-            )}
-
-            {activeTab === 'sounding' && hasAccessToCurrentTab && (
-              <motion.main key="sounding" className="container mx-auto px-4 py-6 max-w-5xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Suspense fallback={<TabLoadingFallback />}><SoundingBoard /></Suspense>
-              </motion.main>
-            )}
-
+            {/* ═══ GOVERNOR (merged Governor + Sounding Board) ═══ */}
             {activeTab === 'governor' && hasAccessToCurrentTab && (
-              <motion.main key="governor" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Suspense fallback={<TabLoadingFallback />}><GovernorSection enabled={isGovernor} /></Suspense>
-              </motion.main>
-            )}
-
-            {activeTab === 'shadow-mesh' && hasAccessToCurrentTab && (
-              <motion.main key="shadow-mesh" className="container mx-auto px-4 py-6 max-w-4xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Suspense fallback={<TabLoadingFallback />}>
-                  <div className="space-y-6">
-                    <div>
-                      <h1 className="text-2xl font-bold flex items-center gap-2">
-                        <Shield className="w-6 h-6 text-primary" />
-                        Shadow Mesh Control
-                      </h1>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Immune wrapper and adversarial probing for pilot executors.
-                      </p>
-                    </div>
-                    <ShadowMeshToggle />
-                    <ShadowMeshAnalytics />
-                  </div>
-                </Suspense>
-              </motion.main>
-            )}
-
-            {activeTab === 'audit' && hasAccessToCurrentTab && (
-              <motion.main key="audit" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <Suspense fallback={<TabLoadingFallback />}><AuditTab /></Suspense>
-              </motion.main>
+              <MergedGovernorTab isGovernor={isGovernor} />
             )}
           </AnimatePresence>
         </div>
@@ -1103,7 +1188,7 @@ export default function SubstrateOS() {
               <span>CMPSBL® cognitive reality</span>
             </div>
             <span>•</span>
-            <span>v10.9.1</span>
+            <span>v10.9.2</span>
             <span>•</span>
             <TierBadge tier={userTier} size="xs" />
           </div>
