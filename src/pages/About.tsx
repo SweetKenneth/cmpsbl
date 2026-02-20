@@ -81,6 +81,7 @@ export default function About() {
           src={heroImage}
           alt="Modern sustainable architecture with natural light, representing CMPSBL's grounded approach to building AI systems"
           className="absolute inset-0 w-full h-[60vh] object-cover"
+          loading="eager"
         />
         <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
@@ -147,6 +148,7 @@ export default function About() {
           src={earthWindowImage}
           alt="Space station control room with panoramic view of Earth from orbit"
           className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />

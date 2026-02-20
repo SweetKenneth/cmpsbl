@@ -85,22 +85,58 @@ export default function Explore() {
       <HeroMetaSubstrate />
 
       {/* Composable Cognitives CTA */}
-      <section className="relative z-10 py-10 px-4">
+      <section className="relative z-10 py-12 sm:py-20 px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-3xl mx-auto text-center space-y-4 p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent"
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto"
         >
-          <h2 className="text-2xl font-bold">Composable Cognitives</h2>
-          <p className="text-muted-foreground">Own superpowered agents. Download once. Run anywhere.</p>
-          <Button asChild size="lg" className="gap-2 font-mono">
-            <Link to="/composable-cognitives">
-              <Sparkles className="w-4 h-4" />
-              Shop Cognitives
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
+          <div className="relative overflow-hidden rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.04] via-card/50 to-orange-500/[0.04] backdrop-blur-sm">
+            {/* Accent bar */}
+            <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500" />
+            
+            {/* Glow */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-amber-500/10 blur-[80px] pointer-events-none" />
+            
+            <div className="relative p-6 sm:p-10 md:p-12 text-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/25 mb-6"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                <span className="text-xs font-bold tracking-wide text-amber-500 uppercase">Composable Cognitives</span>
+              </motion.div>
+              
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
+                Own Superpowered{" "}
+                <span 
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--neon-amber, 45 93% 58%)), hsl(var(--primary)))",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  AI Agents
+                </span>
+              </h2>
+              <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
+                Download once. Run anywhere. No subscriptions, no vendor lock-in — 
+                just superpowered cognitive agents you own forever.
+              </p>
+              <Button asChild size="lg" className="px-8 h-13 text-base font-bold gap-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02] transition-all border-0">
+                <Link to="/composable-cognitives">
+                  <Sparkles className="w-5 h-5" />
+                  Shop Cognitives
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
         </motion.div>
       </section>
 
