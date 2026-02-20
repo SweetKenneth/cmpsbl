@@ -38,6 +38,18 @@ const CONTROL_CHAR_RE = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
 /** Prototype pollution keys */
 const DANGEROUS_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
+/** Measure object nesting depth */
+function measureDepth(obj: unknown, current = 0): number {
+  if (current > 10) return current; // safety cap
+  if (!obj || typeof obj !== 'object') return current;
+  let max = current;
+  for (const val of Object.values(obj as Record<string, unknown>)) {
+    if (val && typeof val === 'object') {
+      max = Math.max(max, measureDepth(val, current + 1));
+    }
+  }
+  return max;
+}
 /**
  * Attempt deterministic repairs on an input object.
  * Returns repaired=false if nothing changed.
@@ -210,6 +222,54 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
         copy[key] = '';
       }
       if (!applied.includes('DEEP_TYPE_COERCE')) applied.push('DEEP_TYPE_COERCE');
+    }
+  }
+
+  // 15) ENUM_TYPE_COERCE — cast non-string wcagLevel (e.g. number 999) to string before ENUM_CLAMP
+  if ('wcagLevel' in copy && typeof copy.wcagLevel !== 'string') {
+    const coerced = String(copy.wcagLevel).toUpperCase();
+    copy.wcagLevel = VALID_WCAG_LEVELS.has(coerced) ? coerced : 'AA';
+    if (!applied.includes('ENUM_TYPE_COERCE')) applied.push('ENUM_TYPE_COERCE');
+  }
+
+  // 16) PREFERENCES_NORMALIZE — ensure preferences field is always a plain object
+  if ('preferences' in copy) {
+    const pref = copy.preferences;
+    if (typeof pref === 'string') {
+      try { copy.preferences = JSON.parse(pref); } catch { copy.preferences = {}; }
+      if (!applied.includes('PREFERENCES_NORMALIZE')) applied.push('PREFERENCES_NORMALIZE');
+    } else if (typeof pref === 'number' || typeof pref === 'boolean' || Array.isArray(pref) || pref === null) {
+      copy.preferences = {};
+      if (!applied.includes('PREFERENCES_NORMALIZE')) applied.push('PREFERENCES_NORMALIZE');
+    }
+  }
+
+  // 17) DEEP_FLATTEN — flatten deeply nested objects (>3 levels) to prevent stack issues
+  for (const key of Object.keys(copy)) {
+    if (copy[key] && typeof copy[key] === 'object' && !Array.isArray(copy[key])) {
+      if (measureDepth(copy[key]) > 3) {
+        try { copy[key] = JSON.stringify(copy[key]); } catch { copy[key] = ''; }
+        if (!applied.includes('DEEP_FLATTEN')) applied.push('DEEP_FLATTEN');
+      }
+    }
+  }
+
+  // 18) WHITESPACE_NORMALIZE — collapse excessive whitespace/newlines in string values
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      const normalized = copy[key].replace(/\s{10,}/g, ' ').replace(/\n{5,}/g, '\n');
+      if (normalized !== copy[key]) {
+        copy[key] = normalized;
+        if (!applied.includes('WHITESPACE_NORMALIZE')) applied.push('WHITESPACE_NORMALIZE');
+      }
+    }
+  }
+
+  // 19) ARRAY_NONSTRING_COERCE — convert arrays in non-string fields to JSON strings
+  for (const key of Object.keys(copy)) {
+    if (Array.isArray(copy[key]) && !STRING_FIELDS.has(key)) {
+      try { copy[key] = JSON.stringify(copy[key]); } catch { copy[key] = '[]'; }
+      if (!applied.includes('ARRAY_NONSTRING_COERCE')) applied.push('ARRAY_NONSTRING_COERCE');
     }
   }
 

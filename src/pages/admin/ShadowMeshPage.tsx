@@ -42,7 +42,7 @@ export default function ShadowMeshPage() {
 
   return (
     <div className="space-y-6 p-6 max-w-4xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="space-y-3">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <Shield className="w-6 h-6 text-primary" />
@@ -57,7 +57,7 @@ export default function ShadowMeshPage() {
           variant="warning"
           loading={resetting}
           onClick={handleResetTelemetry}
-          className="w-full sm:w-auto"
+          className="w-full"
         >
           Reset Telemetry
         </ActionButton>
