@@ -1,13 +1,12 @@
 /**
- * CMPSBL® substrate — OS Surface v10.5.0 ARCHITECT Epoch
+ * CMPSBL® substrate — OS Surface v10.9.0 ARCHITECT Epoch
  * TIER-GATED EDITION — FREE / CREATOR / ARCHITECT / CMPSBL
  * 
- * All tabs visible to all users with tier badges.
- * Locked tabs show upgrade prompts to drive conversion.
+ * Performance-optimized with lazy-loaded tabs and memoized dashboard.
  */
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, lazy, Suspense, memo, useCallback } from 'react';
 import {
   Loader2, Lock, Terminal, AlertTriangle, RefreshCw, FileText,
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
@@ -30,37 +29,58 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { useUserAgency } from '@/hooks/useUserAgency';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
-import { EnhancedTerminal } from '@/components/substrate-os/EnhancedTerminal';
 import { EventStream } from '@/components/substrate-os/EventStream';
-import { BrainIntelligencePanel } from '@/components/substrate-os/BrainIntelligencePanel';
-import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
-import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
-import { BackupRestorePanel } from '@/components/substrate-os/BackupRestorePanel';
-import { EmergencyRecoveryPanel } from '@/components/substrate-os/EmergencyRecoveryPanel';
-import { ModernizerTab } from '@/components/substrate-os/ModernizerTab';
-import { CoreKernelTab } from '@/components/substrate-os/CoreKernelTab';
-import { RippleMessageBusTab } from '@/components/substrate-os/RippleMessageBusTab';
-import { AccessIdentityTab } from '@/components/substrate-os/AccessIdentityTab';
-import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
-import { AgencyGallery } from '@/components/agency/AgencyGallery';
-import { EvolutionTab } from '@/components/substrate-os/EvolutionTab';
-import { CodeAgentTab } from '@/components/substrate-os/CodeAgentTab';
-import { CortexTab } from '@/components/substrate-os/CortexTab';
-import { InclusiveTab } from '@/components/substrate-os/InclusiveTab';
-import { NexusTab } from '@/components/substrate-os/NexusTab';
-import { AtlasTab } from '@/components/substrate-os/AtlasTab';
-import { EnginesTab } from '@/components/substrate-os/EnginesTab';
-import { PublicMetricsTab } from '@/components/substrate-os/PublicMetricsTab';
-import { PatchAuthoringTab } from '@/components/substrate-os/PatchAuthoringTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
-import { MeshActivityTab } from '@/components/substrate-os/MeshActivityTab';
-import { AnalyticsTab } from '@/components/substrate-os/AnalyticsTab';
-import { GovernorSection } from '@/components/substrate-os/GovernorSection';
-import { AuditTab } from '@/components/substrate-os/AuditTab';
-import { SoundingBoard } from '@/components/governance/SoundingBoard';
-import { ShadowMeshToggle } from '@/components/admin/ShadowMeshToggle';
-import { ShadowMeshAnalytics } from '@/components/admin/ShadowMeshAnalytics';
 import { cn } from '@/lib/utils';
+
+// ============================================
+// Lazy-loaded tab components — only loaded when accessed
+// ============================================
+const EnhancedTerminal = lazy(() => import('@/components/substrate-os/EnhancedTerminal').then(m => ({ default: m.EnhancedTerminal })));
+const BrainIntelligencePanel = lazy(() => import('@/components/substrate-os/BrainIntelligencePanel').then(m => ({ default: m.BrainIntelligencePanel })));
+const SystemHealthPanel = lazy(() => import('@/components/substrate-os/SystemHealthPanel').then(m => ({ default: m.SystemHealthPanel })));
+const CognitivesPanel = lazy(() => import('@/components/substrate-os/CognitivesPanel').then(m => ({ default: m.CognitivesPanel })));
+const BackupRestorePanel = lazy(() => import('@/components/substrate-os/BackupRestorePanel').then(m => ({ default: m.BackupRestorePanel })));
+const EmergencyRecoveryPanel = lazy(() => import('@/components/substrate-os/EmergencyRecoveryPanel').then(m => ({ default: m.EmergencyRecoveryPanel })));
+const ModernizerTab = lazy(() => import('@/components/substrate-os/ModernizerTab').then(m => ({ default: m.ModernizerTab })));
+const CoreKernelTab = lazy(() => import('@/components/substrate-os/CoreKernelTab').then(m => ({ default: m.CoreKernelTab })));
+const RippleMessageBusTab = lazy(() => import('@/components/substrate-os/RippleMessageBusTab').then(m => ({ default: m.RippleMessageBusTab })));
+const AccessIdentityTab = lazy(() => import('@/components/substrate-os/AccessIdentityTab').then(m => ({ default: m.AccessIdentityTab })));
+const AgencyMintWizard = lazy(() => import('@/components/agency/AgencyMintWizard').then(m => ({ default: m.AgencyMintWizard })));
+const AgencyGallery = lazy(() => import('@/components/agency/AgencyGallery').then(m => ({ default: m.AgencyGallery })));
+const EvolutionTab = lazy(() => import('@/components/substrate-os/EvolutionTab').then(m => ({ default: m.EvolutionTab })));
+const CodeAgentTab = lazy(() => import('@/components/substrate-os/CodeAgentTab').then(m => ({ default: m.CodeAgentTab })));
+const CortexTab = lazy(() => import('@/components/substrate-os/CortexTab').then(m => ({ default: m.CortexTab })));
+const InclusiveTab = lazy(() => import('@/components/substrate-os/InclusiveTab').then(m => ({ default: m.InclusiveTab })));
+const NexusTab = lazy(() => import('@/components/substrate-os/NexusTab').then(m => ({ default: m.NexusTab })));
+const AtlasTab = lazy(() => import('@/components/substrate-os/AtlasTab').then(m => ({ default: m.AtlasTab })));
+const EnginesTab = lazy(() => import('@/components/substrate-os/EnginesTab').then(m => ({ default: m.EnginesTab })));
+const PublicMetricsTab = lazy(() => import('@/components/substrate-os/PublicMetricsTab').then(m => ({ default: m.PublicMetricsTab })));
+const PatchAuthoringTab = lazy(() => import('@/components/substrate-os/PatchAuthoringTab').then(m => ({ default: m.PatchAuthoringTab })));
+const MeshActivityTab = lazy(() => import('@/components/substrate-os/MeshActivityTab').then(m => ({ default: m.MeshActivityTab })));
+const AnalyticsTab = lazy(() => import('@/components/substrate-os/AnalyticsTab').then(m => ({ default: m.AnalyticsTab })));
+const GovernorSection = lazy(() => import('@/components/substrate-os/GovernorSection').then(m => ({ default: m.GovernorSection })));
+const AuditTab = lazy(() => import('@/components/substrate-os/AuditTab').then(m => ({ default: m.AuditTab })));
+const SoundingBoard = lazy(() => import('@/components/governance/SoundingBoard').then(m => ({ default: m.SoundingBoard })));
+const ShadowMeshToggle = lazy(() => import('@/components/admin/ShadowMeshToggle').then(m => ({ default: m.ShadowMeshToggle })));
+const ShadowMeshAnalytics = lazy(() => import('@/components/admin/ShadowMeshAnalytics').then(m => ({ default: m.ShadowMeshAnalytics })));
+const DefenseAnalytics = lazy(() => import('@/components/substrate-os/DefenseAnalytics').then(m => ({ default: m.DefenseAnalytics })));
+
+// ============================================
+// Tab Loading Fallback
+// ============================================
+function TabLoadingFallback() {
+  return (
+    <div className="flex items-center justify-center py-20">
+      <div className="text-center space-y-4">
+        <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
+          <Loader2 className="w-6 h-6 text-primary animate-spin" />
+        </div>
+        <p className="text-xs text-muted-foreground font-mono animate-pulse">Loading module...</p>
+      </div>
+    </div>
+  );
+}
 
 // ============================================
 // Tier System
@@ -198,7 +218,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
 function getRoleTier(role: string, isGovernor: boolean): SubstrateTier {
   if (isGovernor) return 'cmpsbl';
   if (role === 'operator') return 'architect';
-  return 'free'; // observers get free tier
+  return 'free';
 }
 
 function canAccessTier(userTier: SubstrateTier, requiredTier: SubstrateTier): boolean {
@@ -393,7 +413,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
           <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span>CMPSBL v10.5.0</span>
+              <span>CMPSBL v10.9.0</span>
             </div>
             <TierBadge tier={userTier} size="xs" />
           </div>
@@ -428,6 +448,7 @@ function TabHeader({ icon: Icon, title, subtitle, color, tier, badge, action }: 
     red: 'bg-red-500/20 border-red-500/40 text-red-400',
     violet: 'bg-violet-500/20 border-violet-500/40 text-violet-400',
     teal: 'bg-teal-500/20 border-teal-500/40 text-teal-400',
+    indigo: 'bg-indigo-500/20 border-indigo-500/40 text-indigo-400',
   };
   
   return (
@@ -455,8 +476,6 @@ function TabHeader({ icon: Icon, title, subtitle, color, tier, badge, action }: 
     </motion.div>
   );
 }
-
-// GovernorPanel removed — now uses the full GovernorSection component
 
 // ============================================
 // Merged Modules Tab (Core + Ripple + Access)
@@ -501,14 +520,113 @@ function MergedModulesTab({ enabled }: { enabled: boolean }) {
         ))}
       </div>
       
-      <AnimatePresence mode="wait">
-        {activeModule === 'core' && <CoreKernelTab key="core" enabled={enabled} />}
-        {activeModule === 'ripple' && <RippleMessageBusTab key="ripple" enabled={enabled} />}
-        {activeModule === 'access' && <AccessIdentityTab key="access" enabled={enabled} />}
-      </AnimatePresence>
+      <Suspense fallback={<TabLoadingFallback />}>
+        <AnimatePresence mode="wait">
+          {activeModule === 'core' && <CoreKernelTab key="core" enabled={enabled} />}
+          {activeModule === 'ripple' && <RippleMessageBusTab key="ripple" enabled={enabled} />}
+          {activeModule === 'access' && <AccessIdentityTab key="access" enabled={enabled} />}
+        </AnimatePresence>
+      </Suspense>
     </motion.main>
   );
 }
+
+// ============================================
+// Memoized Dashboard Content — prevents re-renders on tab switch
+// ============================================
+const DashboardContent = memo(function DashboardContent({ 
+  userTier, isOperator, isCritical, onOpenTerminal 
+}: { 
+  userTier: SubstrateTier; isOperator: boolean; isCritical: boolean; onOpenTerminal: () => void;
+}) {
+  return (
+    <div className="flex flex-col xl:flex-row gap-6 items-start">
+      {/* Left / Main column */}
+      <div className="flex-1 min-w-0 space-y-6">
+        {canAccessTier(userTier, 'architect') && (
+          <Suspense fallback={null}>
+            <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />
+          </Suspense>
+        )}
+        <DashboardMetricsHero />
+        {canAccessTier(userTier, 'creator') && <CapacityMonitor />}
+        {canAccessTier(userTier, 'creator') && <QuickActionsPanel enabled={isOperator} onOpenTerminal={onOpenTerminal} />}
+        {canAccessTier(userTier, 'creator') && <ModuleControlsGrid enabled={isOperator} />}
+        {canAccessTier(userTier, 'architect') && (
+          <Suspense fallback={<TabLoadingFallback />}>
+            <BrainIntelligencePanel enabled={isOperator} />
+          </Suspense>
+        )}
+        <Suspense fallback={<TabLoadingFallback />}>
+          <SystemHealthPanel enabled={canAccessTier(userTier, 'creator')} />
+        </Suspense>
+      </div>
+
+      {/* Right / Live Sidebar (desktop only) */}
+      <div className="hidden xl:flex flex-col gap-4 w-[340px] shrink-0 sticky top-6">
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-2xl border border-border/30 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-xl p-5 space-y-3"
+        >
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+              <Activity className="w-3.5 h-3.5 text-primary" />
+            </div>
+            <span className="text-xs font-semibold text-foreground/80 font-mono uppercase tracking-widest">Clockless Reality</span>
+          </div>
+          <p className="text-[11px] text-muted-foreground leading-relaxed">
+            21 autonomous modules composing and healing in real-time. Every request is routed, 
+            traced, and learned from — building a persistent cognitive layer that compounds 
+            value without resets.
+          </p>
+          <div className="grid grid-cols-2 gap-2 pt-1">
+            {[
+              { label: 'Modules', value: '21' },
+              { label: 'Providers', value: '7' },
+              { label: 'Uptime', value: '99.9%' },
+              { label: 'Epoch', value: 'v10.9' },
+            ].map(s => (
+              <div key={s.label} className="rounded-lg bg-muted/30 border border-border/20 px-3 py-2 text-center">
+                <div className="text-sm font-bold font-mono text-foreground">{s.value}</div>
+                <div className="text-[9px] text-muted-foreground uppercase tracking-wider mt-0.5">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {canAccessTier(userTier, 'creator') && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.35 }}
+          >
+            <EventStream />
+          </motion.div>
+        )}
+
+        {!canAccessTier(userTier, 'creator') && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.35 }}
+            className="rounded-2xl border border-cyan-500/30 bg-gradient-to-b from-cyan-500/5 to-transparent backdrop-blur-xl p-5 space-y-3 text-center"
+          >
+            <Rocket className="w-6 h-6 text-cyan-400 mx-auto" />
+            <h3 className="text-sm font-semibold text-foreground">Unlock Live Stream</h3>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Upgrade to Creator to see real-time substrate events as they flow through all 21 modules.
+            </p>
+            <Button size="sm" variant="outline" className="border-cyan-500/40 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 w-full text-xs" asChild>
+              <Link to="/pricing">View Plans</Link>
+            </Button>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+});
 
 // ============================================
 // Main Component
@@ -527,19 +645,20 @@ export default function SubstrateOS() {
   const isCritical = healthScore.healthScore < 40;
   const tabGroups = getTabGroups(!!userAgency);
 
-  // Find current tab config
   const allTabs = tabGroups.flatMap(g => g.tabs);
   const currentTabConfig = allTabs.find(t => t.id === activeTab);
   const hasAccessToCurrentTab = currentTabConfig ? canAccessTier(userTier, currentTabConfig.tier) : true;
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     try {
       await signOut();
       navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
     }
-  };
+  }, [signOut, navigate]);
+
+  const handleOpenTerminal = useCallback(() => setActiveTab('terminal'), []);
 
   if (!authLoading && !user) {
     return <Navigate to="/auth" replace />;
@@ -570,14 +689,14 @@ export default function SubstrateOS() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-        <SEO
-           title="Clockless Cognitive Reality — CMPSBL Substrate | CMPSBL®"
+      <SEO
+        title="Clockless Cognitive Reality — CMPSBL Substrate | CMPSBL®"
         description="Explore the CMPSBL Substrate: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads."
         canonical="https://cmpsbl.com/os"
         keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'AI runtime', 'cognitive orchestration', 'module telemetry', 'AI workload management']}
       />
 
-      {/* Background Effects — Cinematic ambient lighting */}
+      {/* Background Effects — CSS animations instead of framer-motion for performance */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/[0.03] rounded-full blur-[150px] animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-fuchsia-500/[0.03] rounded-full blur-[130px]" />
@@ -651,7 +770,6 @@ export default function SubstrateOS() {
         {/* Content Area */}
         <div className="flex-1 overflow-auto pb-24 lg:pb-0">
           <AnimatePresence mode="wait">
-            {/* If user doesn't have access, show upgrade prompt */}
             {!hasAccessToCurrentTab && currentTabConfig && (
               <UpgradePrompt key="upgrade" requiredTier={currentTabConfig.tier} />
             )}
@@ -665,88 +783,14 @@ export default function SubstrateOS() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                {/* Two-column desktop layout: main content + live stream sidebar */}
-                <div className="flex flex-col xl:flex-row gap-6 items-start">
+                <DashboardContent 
+                  userTier={userTier} 
+                  isOperator={isOperator} 
+                  isCritical={isCritical} 
+                  onOpenTerminal={handleOpenTerminal} 
+                />
 
-                  {/* ── Left / Main column ── */}
-                  <div className="flex-1 min-w-0 space-y-6">
-                    {canAccessTier(userTier, 'architect') && <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />}
-                    <DashboardMetricsHero />
-                    {canAccessTier(userTier, 'creator') && <CapacityMonitor />}
-                    {canAccessTier(userTier, 'creator') && <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />}
-                    {canAccessTier(userTier, 'creator') && <ModuleControlsGrid enabled={isOperator} />}
-                    {canAccessTier(userTier, 'architect') && <BrainIntelligencePanel enabled={isOperator} />}
-                    <SystemHealthPanel enabled={canAccessTier(userTier, 'creator')} />
-                  </div>
-
-                  {/* ── Right / Live Sidebar (desktop only) ── */}
-                  <div className="hidden xl:flex flex-col gap-4 w-[340px] shrink-0 sticky top-6">
-                    {/* Substrate context card */}
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="rounded-2xl border border-border/30 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-xl p-5 space-y-3"
-                    >
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
-                          <Activity className="w-3.5 h-3.5 text-primary" />
-                        </div>
-                        <span className="text-xs font-semibold text-foreground/80 font-mono uppercase tracking-widest">Clockless Reality</span>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        21 autonomous modules composing and healing in real-time. Every request is routed, 
-                        traced, and learned from — building a persistent cognitive layer that compounds 
-                        value without resets.
-                      </p>
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        {[
-                          { label: 'Modules', value: '21' },
-                          { label: 'Providers', value: '7' },
-                          { label: 'Uptime', value: '99.9%' },
-                          { label: 'Epoch', value: 'v10.5' },
-                        ].map(s => (
-                          <div key={s.label} className="rounded-lg bg-muted/30 border border-border/20 px-3 py-2 text-center">
-                            <div className="text-sm font-bold font-mono text-foreground">{s.value}</div>
-                            <div className="text-[9px] text-muted-foreground uppercase tracking-wider mt-0.5">{s.label}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-
-                    {/* Live event stream */}
-                    {canAccessTier(userTier, 'creator') && (
-                      <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.35 }}
-                      >
-                        <EventStream />
-                      </motion.div>
-                    )}
-
-                    {/* Upgrade CTA for non-creator users */}
-                    {!canAccessTier(userTier, 'creator') && (
-                      <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.35 }}
-                        className="rounded-2xl border border-cyan-500/30 bg-gradient-to-b from-cyan-500/5 to-transparent backdrop-blur-xl p-5 space-y-3 text-center"
-                      >
-                        <Rocket className="w-6 h-6 text-cyan-400 mx-auto" />
-                        <h3 className="text-sm font-semibold text-foreground">Unlock Live Stream</h3>
-                        <p className="text-[11px] text-muted-foreground leading-relaxed">
-                          Upgrade to Creator to see real-time substrate events as they flow through all 21 modules.
-                        </p>
-                        <Button size="sm" variant="outline" className="border-cyan-500/40 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 w-full text-xs" asChild>
-                          <Link to="/pricing">View Plans</Link>
-                        </Button>
-                      </motion.div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Mobile: EventStream below (existing behaviour) */}
+                {/* Mobile: EventStream below */}
                 <div className="xl:hidden mt-6">
                   {canAccessTier(userTier, 'creator') && <EventStream />}
                 </div>
@@ -781,27 +825,17 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'health' && hasAccessToCurrentTab && (
-              <motion.main 
-                key="health"
-                className="container mx-auto px-4 py-6 max-w-7xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
+              <motion.main key="health" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <TabHeader icon={Activity} title="System Health" subtitle="real-time health monitoring" color="emerald" tier="free" />
-                <SystemHealthPanel enabled={true} />
+                <Suspense fallback={<TabLoadingFallback />}>
+                  <SystemHealthPanel enabled={true} />
+                </Suspense>
               </motion.main>
             )}
 
             {/* ═══ CREATOR TIER ═══ */}
             {activeTab === 'terminal' && hasAccessToCurrentTab && (
-              <motion.div 
-                key="terminal"
-                className="container mx-auto px-4 py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
+              <motion.div key="terminal" className="container mx-auto px-4 py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <TabHeader 
                   icon={Terminal} title="Substrate Terminal" subtitle="cognitive command interface" color="emerald" tier="creator"
                   badge={
@@ -812,22 +846,24 @@ export default function SubstrateOS() {
                     </Badge>
                   }
                 />
-                <div className="flex-1 min-h-[500px]">
-                  <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
-                </div>
+                <Suspense fallback={<TabLoadingFallback />}>
+                  <div className="flex-1 min-h-[500px]">
+                    <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
+                  </div>
+                </Suspense>
               </motion.div>
             )}
 
             {activeTab === 'analytics' && hasAccessToCurrentTab && (
               <motion.main key="analytics" className="flex-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <AnalyticsTab />
+                <Suspense fallback={<TabLoadingFallback />}><AnalyticsTab /></Suspense>
               </motion.main>
             )}
 
             {activeTab === 'cognitives' && hasAccessToCurrentTab && (
               <motion.main key="cognitives" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <TabHeader icon={Bot} title="Cognitive Registry" subtitle="minted cognitives • CMPSBL admin only" color="fuchsia" tier="cmpsbl" />
-                <CognitivesPanel />
+                <Suspense fallback={<TabLoadingFallback />}><CognitivesPanel /></Suspense>
               </motion.main>
             )}
 
@@ -838,7 +874,9 @@ export default function SubstrateOS() {
               </motion.main>
             )}
 
-            {activeTab === 'engines' && hasAccessToCurrentTab && <EnginesTab enabled={isOperator} />}
+            {activeTab === 'engines' && hasAccessToCurrentTab && (
+              <Suspense fallback={<TabLoadingFallback />}><EnginesTab enabled={isOperator} /></Suspense>
+            )}
 
             {activeTab === 'agency' && hasAccessToCurrentTab && userAgency && (
               <motion.main key="agency" className="container mx-auto px-4 py-6 max-w-6xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -900,32 +938,32 @@ export default function SubstrateOS() {
             )}
 
             {/* ═══ ARCHITECT TIER ═══ */}
-            {activeTab === 'mesh' && hasAccessToCurrentTab && <MeshActivityTab />}
-            {activeTab === 'nexus' && hasAccessToCurrentTab && <NexusTab />}
-            {activeTab === 'codeagent' && hasAccessToCurrentTab && <CodeAgentTab enabled={isOperator} />}
+            {activeTab === 'mesh' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><MeshActivityTab /></Suspense>}
+            {activeTab === 'nexus' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><NexusTab /></Suspense>}
+            {activeTab === 'codeagent' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><CodeAgentTab enabled={isOperator} /></Suspense>}
             {activeTab === 'modules' && hasAccessToCurrentTab && <MergedModulesTab enabled={isOperator} />}
-            {activeTab === 'cortex' && hasAccessToCurrentTab && <CortexTab enabled={isOperator} />}
+            {activeTab === 'cortex' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><CortexTab enabled={isOperator} /></Suspense>}
             {activeTab === 'atlas' && hasAccessToCurrentTab && (
               <motion.main key="atlas" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <AtlasTab />
+                <Suspense fallback={<TabLoadingFallback />}><AtlasTab /></Suspense>
               </motion.main>
             )}
-            {activeTab === 'modernizer' && hasAccessToCurrentTab && <ModernizerTab enabled={isOperator} />}
-            {activeTab === 'inclusive' && hasAccessToCurrentTab && <InclusiveTab enabled={isOperator} />}
+            {activeTab === 'modernizer' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><ModernizerTab enabled={isOperator} /></Suspense>}
+            {activeTab === 'inclusive' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><InclusiveTab enabled={isOperator} /></Suspense>}
             {activeTab === 'backups' && hasAccessToCurrentTab && (
               <motion.main key="backups" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <BackupRestorePanel enabled={isOperator} />
+                <Suspense fallback={<TabLoadingFallback />}><BackupRestorePanel enabled={isOperator} /></Suspense>
               </motion.main>
             )}
 
             {/* ═══ CMPSBL TIER ═══ */}
             {activeTab === 'evolution' && hasAccessToCurrentTab && (
               <motion.main key="evolution" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <EvolutionTab />
+                <Suspense fallback={<TabLoadingFallback />}><EvolutionTab /></Suspense>
               </motion.main>
             )}
-            {activeTab === 'metrics' && hasAccessToCurrentTab && <PublicMetricsTab />}
-            {activeTab === 'patches' && hasAccessToCurrentTab && <PatchAuthoringTab />}
+            {activeTab === 'metrics' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><PublicMetricsTab /></Suspense>}
+            {activeTab === 'patches' && hasAccessToCurrentTab && <Suspense fallback={<TabLoadingFallback />}><PatchAuthoringTab /></Suspense>}
             
             {activeTab === 'mint' && hasAccessToCurrentTab && (
               <motion.main key="mint" className="container mx-auto px-4 py-6 max-w-6xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -946,56 +984,60 @@ export default function SubstrateOS() {
                     <Bot className="w-4 h-4" />Cognitive Forge<ArrowUpRight className="w-3 h-3" />
                   </a>
                 </div>
-                {mintSubTab === 'agency' && (
-                  <Tabs defaultValue="create" className="space-y-4">
-                    <TabsList className="bg-muted/30 border border-border/30">
-                      <TabsTrigger value="create" className="gap-2 data-[state=active]:bg-fuchsia-500/20 data-[state=active]:text-fuchsia-400">
-                        <Sparkles className="w-4 h-4" />Create Agency
-                      </TabsTrigger>
-                      <TabsTrigger value="gallery" className="gap-2 data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
-                        <Users className="w-4 h-4" />Gallery
-                      </TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="create"><AgencyMintWizard onComplete={() => {}} /></TabsContent>
-                    <TabsContent value="gallery"><AgencyGallery /></TabsContent>
-                  </Tabs>
-                )}
+                <Suspense fallback={<TabLoadingFallback />}>
+                  {mintSubTab === 'agency' && (
+                    <Tabs defaultValue="create" className="space-y-4">
+                      <TabsList className="bg-muted/30 border border-border/30">
+                        <TabsTrigger value="create" className="gap-2 data-[state=active]:bg-fuchsia-500/20 data-[state=active]:text-fuchsia-400">
+                          <Sparkles className="w-4 h-4" />Create Agency
+                        </TabsTrigger>
+                        <TabsTrigger value="gallery" className="gap-2 data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
+                          <Users className="w-4 h-4" />Gallery
+                        </TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="create"><AgencyMintWizard onComplete={() => {}} /></TabsContent>
+                      <TabsContent value="gallery"><AgencyGallery /></TabsContent>
+                    </Tabs>
+                  )}
+                </Suspense>
               </motion.main>
             )}
 
             {activeTab === 'sounding' && hasAccessToCurrentTab && (
               <motion.main key="sounding" className="container mx-auto px-4 py-6 max-w-5xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <SoundingBoard />
+                <Suspense fallback={<TabLoadingFallback />}><SoundingBoard /></Suspense>
               </motion.main>
             )}
 
             {activeTab === 'governor' && hasAccessToCurrentTab && (
               <motion.main key="governor" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <GovernorSection enabled={isGovernor} />
+                <Suspense fallback={<TabLoadingFallback />}><GovernorSection enabled={isGovernor} /></Suspense>
               </motion.main>
             )}
 
             {activeTab === 'shadow-mesh' && hasAccessToCurrentTab && (
               <motion.main key="shadow-mesh" className="container mx-auto px-4 py-6 max-w-4xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <div className="space-y-6">
-                  <div>
-                    <h1 className="text-2xl font-bold flex items-center gap-2">
-                      <Shield className="w-6 h-6 text-primary" />
-                      Shadow Mesh Control
-                    </h1>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Immune wrapper and adversarial probing for pilot executors.
-                    </p>
+                <Suspense fallback={<TabLoadingFallback />}>
+                  <div className="space-y-6">
+                    <div>
+                      <h1 className="text-2xl font-bold flex items-center gap-2">
+                        <Shield className="w-6 h-6 text-primary" />
+                        Shadow Mesh Control
+                      </h1>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Immune wrapper and adversarial probing for pilot executors.
+                      </p>
+                    </div>
+                    <ShadowMeshToggle />
+                    <ShadowMeshAnalytics />
                   </div>
-                  <ShadowMeshToggle />
-                  <ShadowMeshAnalytics />
-                </div>
+                </Suspense>
               </motion.main>
             )}
 
             {activeTab === 'audit' && hasAccessToCurrentTab && (
               <motion.main key="audit" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <AuditTab />
+                <Suspense fallback={<TabLoadingFallback />}><AuditTab /></Suspense>
               </motion.main>
             )}
           </AnimatePresence>
@@ -1011,7 +1053,7 @@ export default function SubstrateOS() {
               <span>CMPSBL® cognitive reality</span>
             </div>
             <span>•</span>
-            <span>v10.5.0</span>
+            <span>v10.9.0</span>
             <span>•</span>
             <TierBadge tier={userTier} size="xs" />
           </div>
