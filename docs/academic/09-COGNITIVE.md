@@ -22,7 +22,7 @@
 <div class="page">
 
 <h1>Cognitive Systems</h1>
-<p><strong>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</strong></p>
+<p><strong>CMPSBL OS Substrate v10.9.0 — ARCHITECT Epoch</strong></p>
 <p>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
 Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a>)<br />
 OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></p>
@@ -31,16 +31,17 @@ OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></p>
 <h2>9. Cognitive Systems</h2>
 <p>The substrate implements three cognitive subsystems: persistent memory (BRAIN), autonomous learning (DREAM), and self-observation (VISION). Together, they create a continuous cognitive loop.</p>
 
-<h3>9.1 Persistent Memory</h3>
-<p>BRAIN implements a structured memory system with four memory types:</p>
+<h3>9.1 Persistent Memory (v10.9.0)</h3>
+<p>BRAIN implements a 15-feature cognitive memory system with per-user isolation, adaptive tiering, and full audit provenance. Memory types include episodic, semantic, procedural, user_fact, preference, and meta-cognitive, each with distinct confidence decay curves (fast→slow).</p>
 <table>
-<tr><th>Type</th><th>Content</th><th>Example</th></tr>
-<tr><td>Episodic</td><td>Events and interactions</td><td>User conversations, system events</td></tr>
-<tr><td>Semantic</td><td>Facts and knowledge</td><td>Configuration data, learned patterns</td></tr>
-<tr><td>Procedural</td><td>How-to knowledge</td><td>Operational procedures, routing strategies</td></tr>
-<tr><td>Meta-cognitive</td><td>Self-knowledge</td><td>Performance observations, capability assessments</td></tr>
+<tr><th>Type</th><th>Content</th><th>Decay</th><th>Example</th></tr>
+<tr><td>Episodic</td><td>Events and interactions</td><td>Fast (0.05/day)</td><td>User conversations, system events</td></tr>
+<tr><td>Semantic</td><td>Facts and knowledge</td><td>Slow (0.005/day)</td><td>Configuration data, learned patterns</td></tr>
+<tr><td>Procedural</td><td>How-to knowledge</td><td>Very slow (0.002/day)</td><td>Operational procedures, routing strategies</td></tr>
+<tr><td>User Fact</td><td>Personal information</td><td>Slow (0.005/day)</td><td>User's name, preferences, identity</td></tr>
+<tr><td>Meta-cognitive</td><td>Self-knowledge</td><td>Medium (0.01/day)</td><td>Performance observations, capability assessments</td></tr>
 </table>
-<p>Each memory is associated with a confidence score (0.0–1.0) that evolves over time through reinforcement, temporal decay, and contradiction.</p>
+<p>Each memory carries a confidence score (0.0–1.0) with per-type decay curves, SM-2 spaced repetition reinforcement, contradiction detection, and full provenance lineage. Vector similarity search (HNSW) enables meaning-aware retrieval across all tiers.</p>
 <p>BRAIN constructs knowledge graphs from stored memories, connecting related concepts with typed edges (supports, contradicts, derives_from, temporal).</p>
 
 <h3>9.2 Autonomous Learning</h3>
@@ -63,7 +64,7 @@ OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></p>
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation</em><br />
+<p><em>CMPSBL OS Substrate v10.9.0 — Academic Documentation</em><br />
 <em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
 <em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
