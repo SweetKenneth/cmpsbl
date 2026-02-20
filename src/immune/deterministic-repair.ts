@@ -20,6 +20,12 @@ const MAX_STRING_LEN = 5000;
 const MAX_ARRAY_LEN = 1000;
 
 /**
+ * Minimum expected keys for pilot executor inputs.
+ * If an input is missing ALL of these, DEFAULT_SHAPE fills them in.
+ */
+const EXPECTED_KEYS = ['content', 'url', 'domain', 'userId', 'wcagLevel', 'ariaLabel'] as const;
+
+/**
  * Attempt deterministic repairs on an input object.
  * Returns repaired=false if nothing changed.
  */
@@ -79,6 +85,31 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
       copy[key] = '[REDACTED]';
       if (!applied.includes('SANITIZE')) applied.push('SANITIZE');
     }
+  }
+
+  // 5) COERCE_TYPE — cast booleans and numbers to strings for string-expected fields
+  for (const key of Object.keys(copy)) {
+    const val = copy[key];
+    if (typeof val === 'boolean' || typeof val === 'number') {
+      copy[key] = String(val);
+      if (!applied.includes('COERCE_TYPE')) applied.push('COERCE_TYPE');
+    }
+  }
+
+  // 6) STRIP_EMPTY_OBJECTS — replace empty object values {} with empty string
+  for (const key of Object.keys(copy)) {
+    const val = copy[key];
+    if (val && typeof val === 'object' && !Array.isArray(val) && Object.keys(val).length === 0) {
+      copy[key] = '';
+      if (!applied.includes('STRIP_EMPTY_OBJECTS')) applied.push('STRIP_EMPTY_OBJECTS');
+    }
+  }
+
+  // 7) DEFAULT_SHAPE — if input has no recognized keys, inject minimum shape
+  const hasExpectedKey = EXPECTED_KEYS.some(k => k in copy);
+  if (!hasExpectedKey && Object.keys(copy).length > 0) {
+    copy.content = copy[Object.keys(copy)[0]] ?? '';
+    if (!applied.includes('DEFAULT_SHAPE')) applied.push('DEFAULT_SHAPE');
   }
 
   if (applied.length === 0) {
