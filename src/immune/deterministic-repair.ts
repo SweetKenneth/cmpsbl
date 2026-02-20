@@ -322,6 +322,164 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
+  // 25) OBJECT_VALUE_STRINGIFY — any remaining non-primitive values get stringified as last resort
+  for (const key of Object.keys(copy)) {
+    const val = copy[key];
+    if (val !== null && typeof val === 'object') {
+      try { copy[key] = JSON.stringify(val); } catch { copy[key] = ''; }
+      if (!applied.includes('OBJECT_VALUE_STRINGIFY')) applied.push('OBJECT_VALUE_STRINGIFY');
+    }
+  }
+
+  // 26) URL_NORMALIZE — ensure url/domain fields have valid protocol or get stripped
+  for (const urlKey of ['url', 'domain', 'target']) {
+    if (urlKey in copy && typeof copy[urlKey] === 'string' && copy[urlKey].length > 0) {
+      let u = copy[urlKey].trim();
+      // Strip javascript: and data: protocols
+      if (/^(javascript|data|vbscript):/i.test(u)) {
+        copy[urlKey] = '';
+        if (!applied.includes('URL_NORMALIZE')) applied.push('URL_NORMALIZE');
+      } else if (u.length > 0 && !u.startsWith('http') && !u.startsWith('/') && u !== 'self') {
+        copy[urlKey] = 'https://' + u;
+        if (!applied.includes('URL_NORMALIZE')) applied.push('URL_NORMALIZE');
+      }
+    }
+  }
+
+  // 27) NAN_INFINITY_GUARD — replace NaN/Infinity string literals with safe defaults
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      const lower = copy[key].trim().toLowerCase();
+      if (lower === 'nan' || lower === 'infinity' || lower === '-infinity' || lower === 'undefined') {
+        copy[key] = '';
+        if (!applied.includes('NAN_INFINITY_GUARD')) applied.push('NAN_INFINITY_GUARD');
+      }
+    }
+  }
+
+  // 28) PATH_TRAVERSAL_STRIP — remove ../ sequences and absolute path patterns
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && (copy[key].includes('../') || copy[key].includes('..\\'))) {
+      copy[key] = copy[key].replace(/\.\.[\\/]+/g, '');
+      if (!applied.includes('PATH_TRAVERSAL_STRIP')) applied.push('PATH_TRAVERSAL_STRIP');
+    }
+  }
+
+  // 29) ZERO_WIDTH_STRIP — remove zero-width characters (U+200B, U+200C, U+200D, U+FEFF, U+00AD)
+  const ZERO_WIDTH_RE = /[\u200B\u200C\u200D\uFEFF\u00AD\u2060\u180E]/g;
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && ZERO_WIDTH_RE.test(copy[key])) {
+      copy[key] = copy[key].replace(ZERO_WIDTH_RE, '');
+      ZERO_WIDTH_RE.lastIndex = 0;
+      if (!applied.includes('ZERO_WIDTH_STRIP')) applied.push('ZERO_WIDTH_STRIP');
+    }
+    ZERO_WIDTH_RE.lastIndex = 0;
+  }
+
+  // 30) DOUBLE_ENCODE_FIX — decode double-encoded HTML entities (&amp;lt; → &lt; → <, then re-encode)
+  const DOUBLE_ENCODE_RE = /&amp;(lt|gt|amp|quot|apos);/gi;
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && DOUBLE_ENCODE_RE.test(copy[key])) {
+      copy[key] = copy[key].replace(DOUBLE_ENCODE_RE, '&$1;');
+      DOUBLE_ENCODE_RE.lastIndex = 0;
+      if (!applied.includes('DOUBLE_ENCODE_FIX')) applied.push('DOUBLE_ENCODE_FIX');
+    }
+    DOUBLE_ENCODE_RE.lastIndex = 0;
+  }
+
+  // 31) FUNCTION_VALUE_GUARD — detect stringified function values and replace
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && (copy[key].startsWith('function') || copy[key].startsWith('() =>') || copy[key].startsWith('async '))) {
+      copy[key] = '[removed:function]';
+      if (!applied.includes('FUNCTION_VALUE_GUARD')) applied.push('FUNCTION_VALUE_GUARD');
+    }
+  }
+
+  // 32) UNICODE_SURROGATE_FIX — remove broken lone surrogates (U+D800–U+DFFF range in strings)
+  const LONE_SURROGATE_RE = /[\uD800-\uDFFF]/g;
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && LONE_SURROGATE_RE.test(copy[key])) {
+      copy[key] = copy[key].replace(LONE_SURROGATE_RE, '\uFFFD');
+      LONE_SURROGATE_RE.lastIndex = 0;
+      if (!applied.includes('UNICODE_SURROGATE_FIX')) applied.push('UNICODE_SURROGATE_FIX');
+    }
+    LONE_SURROGATE_RE.lastIndex = 0;
+  }
+
+  // 33) REGEX_PATTERN_STRIP — strip potential ReDoS patterns (nested quantifiers)
+  const REDOS_RE = /(\(.+\)[\*\+\?]\{?\d*,?\d*\}?){2,}/;
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && REDOS_RE.test(copy[key])) {
+      copy[key] = copy[key].replace(/[.*+?^${}()|[\]\\]{5,}/g, '[pattern-stripped]');
+      if (!applied.includes('REGEX_PATTERN_STRIP')) applied.push('REGEX_PATTERN_STRIP');
+    }
+  }
+
+  // 34) EXCESS_KEY_PRUNE — if input has >50 keys, keep only expected keys + first 20 others
+  const allKeys = Object.keys(copy);
+  if (allKeys.length > 50) {
+    const keepSet = new Set<string>(EXPECTED_KEYS as unknown as string[]);
+    let extras = 0;
+    for (const k of allKeys) {
+      if (!keepSet.has(k)) {
+        if (extras < 20) { extras++; keepSet.add(k); }
+        else { delete copy[k]; }
+      }
+    }
+    if (!applied.includes('EXCESS_KEY_PRUNE')) applied.push('EXCESS_KEY_PRUNE');
+  }
+
+  // 35) NEGATIVE_TO_ZERO — convert negative numeric strings to "0" for count-like fields
+  const NUMERIC_FIELDS = new Set(['count', 'limit', 'offset', 'page', 'size', 'maxItems', 'depth']);
+  for (const key of Object.keys(copy)) {
+    if (NUMERIC_FIELDS.has(key) && typeof copy[key] === 'string') {
+      const n = Number(copy[key]);
+      if (!isNaN(n) && n < 0) {
+        copy[key] = '0';
+        if (!applied.includes('NEGATIVE_TO_ZERO')) applied.push('NEGATIVE_TO_ZERO');
+      }
+    }
+  }
+
+  // 36) MULTILINE_COLLAPSE — if a string field has >100 lines, collapse to first 50 + last 10
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      const lines = copy[key].split('\n');
+      if (lines.length > 100) {
+        copy[key] = [...lines.slice(0, 50), '...', ...lines.slice(-10)].join('\n');
+        if (!applied.includes('MULTILINE_COLLAPSE')) applied.push('MULTILINE_COLLAPSE');
+      }
+    }
+  }
+
+  // 37) EVENT_HANDLER_STRIP — remove on* event handler patterns from string values
+  const EVENT_HANDLER_RE = /\bon\w+\s*=\s*["'][^"']*["']/gi;
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && EVENT_HANDLER_RE.test(copy[key])) {
+      copy[key] = copy[key].replace(EVENT_HANDLER_RE, '');
+      EVENT_HANDLER_RE.lastIndex = 0;
+      if (!applied.includes('EVENT_HANDLER_STRIP')) applied.push('EVENT_HANDLER_STRIP');
+    }
+    EVENT_HANDLER_RE.lastIndex = 0;
+  }
+
+  // 38) TRIM_ALL_STRINGS — final pass: trim leading/trailing whitespace from all string values
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      const trimmed = copy[key].trim();
+      if (trimmed !== copy[key]) {
+        copy[key] = trimmed;
+        if (!applied.includes('TRIM_ALL_STRINGS')) applied.push('TRIM_ALL_STRINGS');
+      }
+    }
+  }
+
+  // 39) USERID_SHAPE_FIX — ensure userId is always a plain string (not object/array remnant)
+  if ('userId' in copy && (copy.userId === '{}' || copy.userId === '[]' || copy.userId === 'null' || copy.userId === 'undefined')) {
+    copy.userId = '[anonymous]';
+    if (!applied.includes('USERID_SHAPE_FIX')) applied.push('USERID_SHAPE_FIX');
+  }
+
   if (applied.length === 0) {
     return { repaired: false, repaired_input: input };
   }
