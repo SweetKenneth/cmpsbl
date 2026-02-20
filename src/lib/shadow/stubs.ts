@@ -10,6 +10,7 @@
 import type { SynergyExecutionContext, SynergyResult, SynergyStepResult } from '@/lib/capabilities/synergies/types';
 import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
 import { registerSynergyExecutor } from '@/lib/capabilities/synergies/registry';
+import { wrapExecutor } from '@/immune/wrapExecutor';
 import { log } from '@/lib/system/log';
 
 /** Marker so callers can detect stubs */
@@ -98,8 +99,11 @@ export function registerShadowStubs(): void {
 
   for (const name of PILOT_EXECUTORS) {
     try {
-      registerSynergyExecutor(name, createStubExecutor(name));
-      log.info('shadow', `Stub executor registered: ${name}`);
+      const rawStub = createStubExecutor(name);
+      // Wrap with immune wrapper so deterministic repair + retry fires during probes
+      const wrappedStub = wrapExecutor(rawStub, name, { module: 'INCLUSIVE', scope: 'shadow-probe' });
+      registerSynergyExecutor(name, wrappedStub);
+      log.info('shadow', `Stub executor registered (immune-wrapped): ${name}`);
     } catch (err) {
       // If the synergy definition doesn't exist, skip gracefully
       log.warn('shadow', `Failed to register stub for "${name}": ${(err as Error).message}`);
