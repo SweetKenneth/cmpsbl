@@ -6,7 +6,7 @@
  */
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
-import { useState, lazy, Suspense, memo, useCallback } from 'react';
+import { useState, lazy, Suspense, memo, useCallback, useEffect } from 'react';
 import {
   Loader2, Lock, Terminal, AlertTriangle, RefreshCw, FileText,
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
@@ -73,10 +73,16 @@ function TabLoadingFallback() {
   return (
     <div className="flex items-center justify-center py-20">
       <div className="text-center space-y-4">
-        <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
-          <Loader2 className="w-6 h-6 text-primary animate-spin" />
+        <div className="relative">
+          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
+            <Loader2 className="w-6 h-6 text-primary animate-spin" />
+          </div>
+          <div className="absolute inset-0 w-12 h-12 mx-auto rounded-xl bg-primary/20 blur-xl -z-10 animate-pulse" />
         </div>
-        <p className="text-xs text-muted-foreground font-mono animate-pulse">Loading module...</p>
+        <div className="space-y-1">
+          <p className="text-xs text-muted-foreground font-mono animate-pulse">Loading module...</p>
+          <p className="text-[9px] text-muted-foreground/40 font-mono">Lazy-loaded for performance</p>
+        </div>
       </div>
     </div>
   );
@@ -205,6 +211,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
         { id: 'cognitives', label: 'Cognitives', icon: Bot, color: 'fuchsia', description: 'Bot registry & management', tier: 'cmpsbl' },
         { id: 'mint', label: 'Mint', icon: Sparkles, color: 'purple', description: 'Forge cognitives & agencies', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'cmpsbl' as SubstrateTier }] : []),
+        { id: 'defense', label: 'Defense', icon: Shield, color: 'amber', description: 'Site-Guard threat analytics', tier: 'cmpsbl' },
         { id: 'sounding', label: 'Sounding Board', icon: MessageSquare, color: 'indigo', description: 'Module advisory feed', tier: 'cmpsbl' },
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Administrative controls', tier: 'cmpsbl' },
         { id: 'shadow-mesh', label: 'Shadow Mesh', icon: Shield, color: 'red', description: 'Immune wrapper & probing', tier: 'cmpsbl' },
@@ -364,7 +371,10 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
                         )} />
                         {!collapsed && (
                           <>
-                            <span className="flex-1 text-left">{tab.label}</span>
+                            <div className="flex-1 text-left">
+                              <span className="block">{tab.label}</span>
+                              <span className="block text-[10px] font-normal text-muted-foreground/60 leading-tight">{tab.description}</span>
+                            </div>
                             {!tabAccessible && <Lock className="w-3 h-3 opacity-40" />}
                             {isActive && tabAccessible && <ChevronRight className="w-3 h-3 opacity-60" />}
                           </>
@@ -410,10 +420,10 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
           </Button>
         </div>
         {!collapsed && (
-          <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
+           <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span>CMPSBL v10.9.0</span>
+              <span>CMPSBL v10.9.1</span>
             </div>
             <TierBadge tier={userTier} size="xs" />
           </div>
@@ -586,7 +596,7 @@ const DashboardContent = memo(function DashboardContent({
               { label: 'Modules', value: '21' },
               { label: 'Providers', value: '7' },
               { label: 'Uptime', value: '99.9%' },
-              { label: 'Epoch', value: 'v10.9' },
+              { label: 'Epoch', value: 'v10.9.1' },
             ].map(s => (
               <div key={s.label} className="rounded-lg bg-muted/30 border border-border/20 px-3 py-2 text-center">
                 <div className="text-sm font-bold font-mono text-foreground">{s.value}</div>
@@ -660,6 +670,25 @@ export default function SubstrateOS() {
 
   const handleOpenTerminal = useCallback(() => setActiveTab('terminal'), []);
 
+  // Keyboard shortcuts: Ctrl+1..9 for quick tab access, Ctrl+K for command palette feel
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.ctrlKey || e.metaKey) {
+        const num = parseInt(e.key);
+        if (num >= 1 && num <= 9) {
+          const accessibleTabs = allTabs.filter(t => canAccessTier(userTier, t.tier));
+          const target = accessibleTabs[num - 1];
+          if (target) {
+            e.preventDefault();
+            setActiveTab(target.id);
+          }
+        }
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [allTabs, userTier]);
+
   if (!authLoading && !user) {
     return <Navigate to="/auth" replace />;
   }
@@ -717,30 +746,45 @@ export default function SubstrateOS() {
           />
         </div>
 
-        {/* Mobile Bottom Nav */}
+        {/* Mobile Bottom Nav — shows most important accessible tabs */}
         <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
           <div className="grid grid-cols-5 px-2 py-2">
-            {allTabs.slice(0, 4).map((tab) => {
-              const isActive = activeTab === tab.id;
-              const accessible = canAccessTier(userTier, tab.tier);
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={cn(
-                    "flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all",
-                    isActive 
-                      ? "text-primary bg-primary/10" 
-                      : accessible
-                        ? "text-muted-foreground active:bg-muted/50"
-                        : "text-muted-foreground/30"
-                  )}
-                >
-                  <tab.icon className="w-5 h-5" />
-                  <span className="text-[10px] font-medium">{tab.label}</span>
-                </button>
-              );
-            })}
+            {(() => {
+              // Prioritize: dashboard, analytics, terminal, health — only accessible ones
+              const priority = ['dashboard', 'analytics', 'terminal', 'health', 'events', 'engines', 'nexus', 'codeagent'];
+              const accessibleTabs = allTabs.filter(t => canAccessTier(userTier, t.tier));
+              const mobileTabs = priority
+                .map(id => accessibleTabs.find(t => t.id === id))
+                .filter(Boolean)
+                .slice(0, 4) as TabConfig[];
+              // Fallback if fewer than 4
+              while (mobileTabs.length < 4 && accessibleTabs.length > mobileTabs.length) {
+                const next = accessibleTabs.find(t => !mobileTabs.some(m => m.id === t.id));
+                if (next) mobileTabs.push(next);
+                else break;
+              }
+              return mobileTabs.map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={cn(
+                      "relative flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all",
+                      isActive 
+                        ? "text-primary bg-primary/10" 
+                        : "text-muted-foreground active:bg-muted/50"
+                    )}
+                  >
+                    {isActive && (
+                      <span className="absolute top-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
+                    )}
+                    <tab.icon className="w-5 h-5" />
+                    <span className="text-[10px] font-medium">{tab.label}</span>
+                  </button>
+                );
+              });
+            })()}
             <button
               onClick={() => setSidebarOpen(true)}
               className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
@@ -1003,6 +1047,12 @@ export default function SubstrateOS() {
               </motion.main>
             )}
 
+            {activeTab === 'defense' && hasAccessToCurrentTab && (
+              <motion.main key="defense" className="container mx-auto px-4 py-6 max-w-7xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <Suspense fallback={<TabLoadingFallback />}><DefenseAnalytics /></Suspense>
+              </motion.main>
+            )}
+
             {activeTab === 'sounding' && hasAccessToCurrentTab && (
               <motion.main key="sounding" className="container mx-auto px-4 py-6 max-w-5xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <Suspense fallback={<TabLoadingFallback />}><SoundingBoard /></Suspense>
@@ -1053,7 +1103,7 @@ export default function SubstrateOS() {
               <span>CMPSBL® cognitive reality</span>
             </div>
             <span>•</span>
-            <span>v10.9.0</span>
+            <span>v10.9.1</span>
             <span>•</span>
             <TierBadge tier={userTier} size="xs" />
           </div>

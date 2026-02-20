@@ -151,10 +151,11 @@ export function AnalyticsTab() {
         immuneSafeFailures += row.safe_failures ?? 0;
       }
       // HONEST: repairs / (repairs + escalations + safe_failures)
+      // When no failure events exist yet, show 0 (not 100%) — nothing to measure
       const repairDenom = immuneRepairs + immuneEscalations + immuneSafeFailures;
       const immuneRepairRate = repairDenom > 0
         ? Math.round((immuneRepairs / repairDenom) * 1000) / 10
-        : (immuneRuns > 0 ? 100 : 0);
+        : 0;
 
       // === ENCODE RESOLUTION ===
       const encodeClaimed = escalationRows.filter((d: any) => d.claimed_by === 'ENCODE').length;
@@ -237,8 +238,13 @@ export function AnalyticsTab() {
           </div>
           <Button variant="outline" size="sm" onClick={fetchTelemetry} className="gap-1.5 h-8">
             <RefreshCw className={cn("w-3.5 h-3.5", loading && "animate-spin")} />
-            <span className="text-xs">Refresh</span>
+            <span className="text-xs hidden sm:inline">Refresh</span>
           </Button>
+          {data && !loading && (
+            <span className="text-[9px] text-muted-foreground/50 font-mono hidden sm:inline">
+              Updated {new Date().toLocaleTimeString('en-US', { hour12: false })}
+            </span>
+          )}
         </div>
       </div>
 
@@ -401,7 +407,7 @@ export function AnalyticsTab() {
               </Badge>
             </div>
             <div className="flex items-end gap-1 h-32">
-              {data.series.slice(-14).map((day, idx) => {
+              {data.series.slice(dateRange === '7d' ? -7 : dateRange === '30d' ? -30 : -30).map((day, idx) => {
                 const maxVal = Math.max(...data.series.map(d => d.ops), 1);
                 const height = (day.ops / maxVal) * 100;
                 return (
