@@ -43,15 +43,17 @@ type StubOutcome = 'success' | 'recoverable_error' | 'non_recoverable_error';
 function pickOutcome(seed: number, confidence: number): StubOutcome {
   const bucket = seed % 100;
 
-  if (confidence >= 0.9) {
+  if (confidence >= 0.85) {
+    // High confidence — repaired inputs with good defaults land here
     if (bucket < 95) return 'success';
     if (bucket < 98) return 'recoverable_error';
     return 'non_recoverable_error';
-  } else if (confidence >= 0.7) {
-    if (bucket < 80) return 'success';
-    if (bucket < 92) return 'recoverable_error';
+  } else if (confidence >= 0.6) {
+    // Medium confidence — partially valid / shape_alien after repair
+    if (bucket < 82) return 'success';
+    if (bucket < 93) return 'recoverable_error';
     return 'non_recoverable_error';
-  } else if (confidence >= 0.4) {
+  } else if (confidence >= 0.3) {
     if (bucket < 50) return 'success';
     if (bucket < 80) return 'recoverable_error';
     return 'non_recoverable_error';

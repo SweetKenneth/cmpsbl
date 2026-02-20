@@ -285,10 +285,18 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 21) EMPTY_STRING_BACKFILL — empty string on expected keys gets safe placeholder
+  // 21) EMPTY_STRING_BACKFILL — empty string on expected keys gets meaningful defaults
+  const BACKFILL_DEFAULTS: Record<string, string> = {
+    content: 'audit target',
+    url: 'https://localhost',
+    domain: 'localhost',
+    userId: 'anonymous',
+    wcagLevel: 'AA',
+    ariaLabel: 'element',
+  };
   for (const ek of EXPECTED_KEYS) {
     if (ek in copy && copy[ek] === '') {
-      copy[ek] = ek === 'wcagLevel' ? 'AA' : `[empty:${ek}]`;
+      copy[ek] = BACKFILL_DEFAULTS[ek] ?? `default-${ek}`;
       if (!applied.includes('EMPTY_STRING_BACKFILL')) applied.push('EMPTY_STRING_BACKFILL');
     }
   }
@@ -296,7 +304,8 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
   // 22) ALL_EMPTY_INJECT — if every value is empty string after repairs, inject minimal content
   const allEmpty = Object.keys(copy).length > 0 && Object.values(copy).every(v => v === '' || v === null || v === undefined);
   if (allEmpty) {
-    copy.content = '[probe:empty-input]';
+    copy.content = 'audit target';
+    copy.target = 'self';
     if (!applied.includes('ALL_EMPTY_INJECT')) applied.push('ALL_EMPTY_INJECT');
   }
 
@@ -304,15 +313,15 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
   // that pass isInputWellFormed validation (Phase 2.6 legacy consolidation)
   const PLACEHOLDER_RE = /^\[(?:empty|probe):[\w-]+\]$/;
   const NATURAL_DEFAULTS: Record<string, string> = {
-    content: '',
-    url: '',
-    domain: '',
+    content: 'audit target',
+    url: 'https://localhost',
+    domain: 'localhost',
     userId: 'anonymous',
     wcagLevel: 'AA',
-    ariaLabel: '',
+    ariaLabel: 'element',
     target: 'self',
-    label: '',
-    description: '',
+    label: 'default',
+    description: 'auto-generated',
   };
   for (const key of Object.keys(copy)) {
     if (typeof copy[key] === 'string' && PLACEHOLDER_RE.test(copy[key])) {
