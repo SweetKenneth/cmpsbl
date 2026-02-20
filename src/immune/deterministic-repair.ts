@@ -161,10 +161,14 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
   }
 
   // 10) DEFAULT_SHAPE — if input has no recognized keys OR is empty, inject minimum shape
-  const hasExpectedKey = EXPECTED_KEYS.some(k => k in copy);
+  //     Now injects ALL expected keys with meaningful defaults for executor compatibility
+  const hasExpectedKey = EXPECTED_KEYS.some(k => k in copy && copy[k] !== '' && copy[k] !== null && copy[k] !== undefined);
   if (!hasExpectedKey) {
     const firstVal = Object.keys(copy).length > 0 ? copy[Object.keys(copy)[0]] : '';
-    copy.content = typeof firstVal === 'string' ? firstVal : '';
+    copy.content = typeof firstVal === 'string' && firstVal.length > 0 ? firstVal : 'audit target';
+    copy.target = 'self';
+    copy.userId = 'anonymous';
+    copy.url = 'https://localhost';
     if (!applied.includes('DEFAULT_SHAPE')) applied.push('DEFAULT_SHAPE');
   }
 
@@ -394,12 +398,12 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 27) NAN_INFINITY_GUARD — replace NaN/Infinity string literals with safe defaults
+  // 27) NAN_INFINITY_GUARD — replace NaN/Infinity string literals with meaningful defaults
   for (const key of Object.keys(copy)) {
     if (typeof copy[key] === 'string') {
       const lower = copy[key].trim().toLowerCase();
       if (lower === 'nan' || lower === 'infinity' || lower === '-infinity' || lower === 'undefined') {
-        copy[key] = '';
+        copy[key] = BACKFILL_DEFAULTS[key] ?? 'default';
         if (!applied.includes('NAN_INFINITY_GUARD')) applied.push('NAN_INFINITY_GUARD');
       }
     }
@@ -523,9 +527,28 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
   }
 
   // 39) USERID_SHAPE_FIX — ensure userId is always a plain string (not object/array remnant)
-  if ('userId' in copy && (copy.userId === '{}' || copy.userId === '[]' || copy.userId === 'null' || copy.userId === 'undefined')) {
-    copy.userId = '[anonymous]';
+  if ('userId' in copy && (copy.userId === '{}' || copy.userId === '[]' || copy.userId === 'null' || copy.userId === 'undefined' || copy.userId === '')) {
+    copy.userId = 'anonymous';
     if (!applied.includes('USERID_SHAPE_FIX')) applied.push('USERID_SHAPE_FIX');
+  }
+
+  // 42) EXECUTOR_REQUIRED_INJECT — ensure critical required fields exist with defaults
+  //     This catches cases where repair created content but missed userId, url, etc.
+  if (!('userId' in copy) || copy.userId === '' || copy.userId === null || copy.userId === undefined) {
+    copy.userId = 'anonymous';
+    if (!applied.includes('EXECUTOR_REQUIRED_INJECT')) applied.push('EXECUTOR_REQUIRED_INJECT');
+  }
+  if (!('target' in copy) || copy.target === '' || copy.target === null || copy.target === undefined) {
+    if (!('url' in copy && typeof copy.url === 'string' && copy.url.length > 0) &&
+        !('domain' in copy && typeof copy.domain === 'string' && copy.domain.length > 0) &&
+        !('resource_id' in copy && typeof copy.resource_id === 'string' && (copy.resource_id as string).length > 0)) {
+      copy.target = 'self';
+      if (!applied.includes('EXECUTOR_REQUIRED_INJECT')) applied.push('EXECUTOR_REQUIRED_INJECT');
+    }
+  }
+  if (!('content' in copy) || copy.content === '' || copy.content === null || copy.content === undefined) {
+    copy.content = 'audit target';
+    if (!applied.includes('EXECUTOR_REQUIRED_INJECT')) applied.push('EXECUTOR_REQUIRED_INJECT');
   }
 
   if (applied.length === 0) {
