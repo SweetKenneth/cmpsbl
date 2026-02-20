@@ -243,7 +243,7 @@ export const MemoryRiver = memo(function MemoryRiver() {
 
       {/* River */}
       <motion.div
-        className="relative w-full h-32 sm:h-40 md:h-48 lg:h-52 rounded-xl sm:rounded-2xl overflow-hidden border border-border/20 bg-background/30"
+        className="relative w-full h-36 sm:h-40 md:h-48 lg:h-52 rounded-xl sm:rounded-2xl overflow-hidden border border-border/20 bg-background/30"
         initial={{ opacity: 0, scaleY: 0.7 }}
         animate={{ opacity: 1, scaleY: 1 }}
         transition={{ delay: 0.6, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
