@@ -95,7 +95,7 @@ export function ShadowMeshAnalytics() {
               const repairDenom = m.repairs + m.escalations + m.safe_fails;
               const honestRepairRate = repairDenom > 0
                 ? Math.round((m.repairs / repairDenom) * 100)
-                : (m.total_runs > 0 ? 100 : 0); // 100% only if all runs succeeded cleanly
+                : 0; // 0% when no failure events recorded yet
               const execRepairAttemptRate = m.total_runs > 0 ? m.repair_attempts / m.total_runs : 0;
               const execRepairSuccessRate = m.repair_attempts > 0 ? m.repair_successes / m.repair_attempts : 0;
               const isHealthy = honestRepairRate >= 60 && m.escalations <= 2;

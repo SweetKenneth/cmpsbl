@@ -46,8 +46,9 @@ export function AnalyticsTab() {
     try {
       const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90;
       const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
-      const [brainEventsRes, brainMetricsRes, usageRes, accessRes, auditRes] = await Promise.all([
+      const [brainEventsRes, brainMetricsRes, usageRes, accessRes, auditRes, immuneRes, escalationsRes] = await Promise.all([
         supabase
           .from('brain_events')
           .select('id, event_type, module, outcome, created_at')
@@ -74,6 +75,14 @@ export function AnalyticsTab() {
           .select('id, action, entity_type, created_at')
           .gte('created_at', startDate)
           .limit(200),
+        supabase
+          .from('immune_metrics')
+          .select('executor, total_runs, repair_successes, escalations, safe_failures')
+          .gte('run_at', sixHoursAgo),
+        supabase
+          .from('immune_escalations')
+          .select('status, claimed_by')
+          .limit(500),
       ]);
 
       const brainEvents = brainEventsRes.data || [];
@@ -81,6 +90,8 @@ export function AnalyticsTab() {
       const usage = usageRes.data || [];
       const access = accessRes.data || [];
       const audit = auditRes.data || [];
+      const immuneRows = (immuneRes.data || []) as any[];
+      const escalationRows = (escalationsRes.data || []) as any[];
 
       // Build daily time series
       const dayCounts = new Map<string, number>();
@@ -131,6 +142,27 @@ export function AnalyticsTab() {
       const successCount = usage.filter(u => u.success === true).length;
       const successRate = usage.length > 0 ? Math.round((successCount / usage.length) * 1000) / 10 : 100;
 
+      // === IMMUNE TELEMETRY (HONEST) ===
+      let immuneRuns = 0, immuneRepairs = 0, immuneEscalations = 0, immuneSafeFailures = 0;
+      for (const row of immuneRows) {
+        immuneRuns += row.total_runs ?? 0;
+        immuneRepairs += row.repair_successes ?? 0;
+        immuneEscalations += row.escalations ?? 0;
+        immuneSafeFailures += row.safe_failures ?? 0;
+      }
+      // HONEST: repairs / (repairs + escalations + safe_failures)
+      const repairDenom = immuneRepairs + immuneEscalations + immuneSafeFailures;
+      const immuneRepairRate = repairDenom > 0
+        ? Math.round((immuneRepairs / repairDenom) * 1000) / 10
+        : (immuneRuns > 0 ? 100 : 0);
+
+      // === ENCODE RESOLUTION ===
+      const encodeClaimed = escalationRows.filter((d: any) => d.claimed_by === 'ENCODE').length;
+      const encodeResolved = escalationRows.filter((d: any) => d.claimed_by === 'ENCODE' && d.status === 'resolved').length;
+      const encodeResolutionRate = encodeClaimed > 0
+        ? Math.round((encodeResolved / encodeClaimed) * 1000) / 10
+        : 0;
+
       setData({
         brainEvents: brainEvents.length,
         brainMetrics: brainMetrics.length,
@@ -142,14 +174,14 @@ export function AnalyticsTab() {
         topModules,
         eventBreakdown,
         successRate,
-        immuneRuns: 0,
-        immuneRepairs: 0,
-        immuneEscalations: 0,
-        immuneSafeFailures: 0,
-        immuneRepairRate: 0,
-        encodeClaimed: 0,
-        encodeResolved: 0,
-        encodeResolutionRate: 0,
+        immuneRuns,
+        immuneRepairs,
+        immuneEscalations,
+        immuneSafeFailures,
+        immuneRepairRate,
+        encodeClaimed,
+        encodeResolved,
+        encodeResolutionRate,
       });
     } catch (error) {
       console.error('Telemetry fetch error:', error);
@@ -270,7 +302,92 @@ export function AnalyticsTab() {
             })}
           </div>
 
-          {/* Chart */}
+          {/* Immune & ENCODE Telemetry */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <motion.div
+              className="p-5 rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-500/10 to-red-500/5 backdrop-blur-xl"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center border bg-red-500/20 border-red-500/40">
+                  <Shield className="w-4 h-4 text-red-400" />
+                </div>
+                <span className="text-[10px] text-muted-foreground font-mono uppercase">Immune Runs</span>
+              </div>
+              <p className="text-2xl font-bold font-mono text-foreground">{fmt(data.immuneRuns)}</p>
+              <p className="text-[10px] text-muted-foreground mt-1">Last 6h probes</p>
+            </motion.div>
+
+            <motion.div
+              className="p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 backdrop-blur-xl"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center border bg-emerald-500/20 border-emerald-500/40">
+                  <Activity className="w-4 h-4 text-emerald-400" />
+                </div>
+                <span className="text-[10px] text-muted-foreground font-mono uppercase">Repair Rate</span>
+              </div>
+              <p className={cn(
+                "text-2xl font-bold font-mono",
+                data.immuneRepairRate >= 80 ? "text-emerald-400" :
+                data.immuneRepairRate >= 50 ? "text-amber-400" : "text-red-400"
+              )}>
+                {data.immuneRepairRate}%
+              </p>
+              <p className="text-[10px] text-muted-foreground mt-1">
+                {data.immuneRepairs} repaired / {data.immuneEscalations} escalated
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="p-5 rounded-2xl border border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-orange-500/5 backdrop-blur-xl"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center border bg-orange-500/20 border-orange-500/40">
+                  <Cpu className="w-4 h-4 text-orange-400" />
+                </div>
+                <span className="text-[10px] text-muted-foreground font-mono uppercase">Escalations</span>
+              </div>
+              <p className={cn(
+                "text-2xl font-bold font-mono",
+                data.immuneEscalations === 0 ? "text-foreground" : "text-orange-400"
+              )}>
+                {data.immuneEscalations}
+              </p>
+              <p className="text-[10px] text-muted-foreground mt-1">
+                {data.immuneSafeFailures} safe failures
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="p-5 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 backdrop-blur-xl"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center border bg-indigo-500/20 border-indigo-500/40">
+                  <Zap className="w-4 h-4 text-indigo-400" />
+                </div>
+                <span className="text-[10px] text-muted-foreground font-mono uppercase">ENCODE</span>
+              </div>
+              <p className="text-2xl font-bold font-mono text-foreground">
+                {data.encodeResolved}/{data.encodeClaimed}
+              </p>
+              <p className="text-[10px] text-muted-foreground mt-1">
+                {data.encodeResolutionRate}% resolution rate
+              </p>
+            </motion.div>
+          </div>
+
           <motion.div
             className="p-6 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent backdrop-blur-xl"
             initial={{ opacity: 0 }}
@@ -388,8 +505,8 @@ export function AnalyticsTab() {
                 })}
               </div>
 
-              {/* Success Rate */}
-              <div className="mt-4 pt-4 border-t border-border/30">
+              {/* Rates */}
+              <div className="mt-4 pt-4 border-t border-border/30 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">AI Call Success Rate</span>
                   <span className={cn(
@@ -398,6 +515,26 @@ export function AnalyticsTab() {
                     data.successRate >= 80 ? "text-amber-400" : "text-red-400"
                   )}>
                     {data.successRate}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Immune Repair Rate (6h)</span>
+                  <span className={cn(
+                    "text-sm font-bold font-mono",
+                    data.immuneRepairRate >= 80 ? "text-emerald-400" :
+                    data.immuneRepairRate >= 50 ? "text-amber-400" : "text-red-400"
+                  )}>
+                    {data.immuneRepairRate}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">ENCODE Resolution Rate</span>
+                  <span className={cn(
+                    "text-sm font-bold font-mono",
+                    data.encodeResolutionRate >= 80 ? "text-indigo-400" :
+                    data.encodeResolutionRate >= 50 ? "text-amber-400" : "text-muted-foreground"
+                  )}>
+                    {data.encodeResolutionRate}%
                   </span>
                 </div>
               </div>
