@@ -163,7 +163,7 @@ export function ShadowMeshAnalytics() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="text-center p-3 rounded-md border border-border/50 bg-muted/30">
               <div className="text-2xl font-bold text-foreground">{openEscalations}</div>
               <div className="text-xs text-muted-foreground mt-1">Open</div>
