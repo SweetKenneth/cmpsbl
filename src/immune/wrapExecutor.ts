@@ -29,6 +29,8 @@ import { incrementMetric, recordOutcome } from './metrics';
 import { recordImmuneMetrics } from '@/lib/immune/recordMetrics';
 import { intelligentRepair, recordRepairOutcome, preNormalize, mineEscalationPattern } from './repair-intelligence';
 import { trackOutcome, type OutcomeRecord } from './outcome-tracker';
+import { captureEscalation, runLearningCycle } from './escalation-learning';
+import { validateInput } from './schema-validator';
 
 /** Simple hash for input tracing (not cryptographic) */
 function hashInput(input: Record<string, unknown>): string {
@@ -332,7 +334,7 @@ export function wrapExecutor(
   };
 }
 
-/** Escalate to the immune queue */
+/** Escalate to the immune queue with learning loop integration */
 async function escalate(
   executor: string,
   scope: string,
@@ -345,6 +347,21 @@ async function escalate(
 
   const event = createEvent(executor, scope, module, 'escalate', 'escalated', input, errorSummary);
   logImmuneEvent(event);
+
+  // Phase 3: Capture escalation signal for learning loop
+  const report = validateInput(executor, input);
+  captureEscalation({
+    executor,
+    inputShape: Object.keys(input).sort().join(','),
+    failureReason: errorSummary,
+    archetype: report.archetype,
+    deterministicApplied: null,
+    legacyApplied: false,
+    timestamp: Date.now(),
+  });
+
+  // Run learning cycle periodically (lightweight — only processes eligible patterns)
+  runLearningCycle();
 
   const payload: EscalationPayload = {
     eventId: event.id,

@@ -91,3 +91,19 @@ export {
   printEncodeWorkQueue,
   type EncodeWorkItem,
 } from './claimEscalations';
+
+// ENCODE Escalation Learning Loop (Phase 3)
+export {
+  captureEscalation,
+  runLearningCycle,
+  getLearningStats,
+  getPatternClusters,
+  getCandidateRules,
+  resetLearningState,
+  shadowValidateRule,
+  promoteRule,
+  rollbackRule,
+  type EscalationSignal,
+  type PatternCluster,
+  type CandidateRule,
+} from './escalation-learning';
