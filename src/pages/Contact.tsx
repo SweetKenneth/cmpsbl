@@ -85,6 +85,7 @@ export default function Contact() {
           src={heroImage}
           alt="Collaborative team working together in modern tech workspace"
           className="absolute inset-0 w-full h-[50vh] object-cover"
+          loading="eager"
         />
         <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
@@ -202,7 +203,7 @@ export default function Contact() {
 
       {/* Earth Window */}
       <section className="relative w-full h-[40vh] overflow-hidden">
-        <img src={accessibilityImage} alt="Accessibility technology interface" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={accessibilityImage} alt="Accessibility technology interface" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-60" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
