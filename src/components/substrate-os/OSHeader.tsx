@@ -3,7 +3,7 @@
  * Glassmorphic design with live telemetry, gradient accents, and audio controls
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Activity, Wifi, WifiOff, Cpu, HardDrive, Clock, Terminal, Sparkles, Shield, Crown, Palette } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { DashboardAudio } from './audio';
 import type { SubstrateRole } from '@/hooks/useUserRole';
 
-function LiveClock() {
+const LiveClock = memo(function LiveClock() {
   const [time, setTime] = useState(new Date());
   
   useEffect(() => {
@@ -26,7 +26,7 @@ function LiveClock() {
       {time.toLocaleTimeString('en-US', { hour12: false })}
     </span>
   );
-}
+});
 
 function PulsingDot({ active, color }: { active: boolean; color: string }) {
   return (

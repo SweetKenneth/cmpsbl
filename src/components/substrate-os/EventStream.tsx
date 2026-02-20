@@ -199,9 +199,9 @@ export function EventStream() {
                   className={cn(
                     "flex items-center gap-3 p-2 rounded-lg text-sm w-full text-left",
                     "hover:bg-muted/30 transition-colors touch-manipulation",
-                    "animate-in slide-in-from-right-2 duration-200"
+                    idx < 10 && "animate-in slide-in-from-right-2 duration-200"
                   )}
-                  style={{ animationDelay: `${idx * 20}ms` }}
+                  style={idx < 10 ? { animationDelay: `${idx * 20}ms` } : undefined}
                   onClick={(e) => {
                     e.preventDefault();
                     // Could open event details modal here

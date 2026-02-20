@@ -39,7 +39,7 @@ export default function Documentation() {
             backgroundImage: `url(${heroImage})`,
           }}
         />
-        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/90 via-background/60 to-background" />
+        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/95 via-background/75 to-background dark:from-background/90 dark:via-background/60" />
         
         <div className="relative container mx-auto px-4 pt-32 pb-16">
           <nav className="mb-12">
@@ -70,8 +70,9 @@ export default function Documentation() {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <Tabs defaultValue="overview" className="space-y-8">
-            {/* Mobile-optimized horizontal scrolling tabs */}
-            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+            {/* Mobile-optimized horizontal scrolling tabs with fade hints */}
+            <div className="relative -mx-4 px-4 md:mx-0 md:px-0">
+              <div className="overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <TabsList className="inline-flex w-max md:grid md:w-full md:grid-cols-7 bg-muted/50 p-1 gap-1">
                 <TabsTrigger value="overview" className="min-w-[100px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">Overview</TabsTrigger>
                 <TabsTrigger value="byok" className="min-w-[80px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">BYOK</TabsTrigger>
@@ -81,6 +82,9 @@ export default function Documentation() {
                 <TabsTrigger value="agents" className="min-w-[80px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">Agents</TabsTrigger>
                 <TabsTrigger value="api" className="min-w-[60px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">API</TabsTrigger>
               </TabsList>
+              </div>
+              {/* Fade hints for mobile scroll */}
+              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none md:hidden" />
             </div>
 
             <TabsContent value="overview" className="space-y-6">

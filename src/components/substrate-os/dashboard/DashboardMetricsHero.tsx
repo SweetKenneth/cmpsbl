@@ -44,8 +44,14 @@ export function DashboardMetricsHero() {
   const activeCount = healthScore.activeCount;
   const totalModules = healthScore.totalModules;
 
-  const statusColor = healthScore.isHealthy ? 'emerald' : healthScore.isDegraded ? 'amber' : 'red';
   const statusLabel = healthScore.isHealthy ? 'OPTIMAL' : healthScore.isDegraded ? 'DEGRADED' : 'CRITICAL';
+  
+  // Explicit color mappings — dynamic Tailwind classes don't work with JIT
+  const statusStyles = healthScore.isHealthy 
+    ? { text: 'text-emerald-400', bg: 'bg-emerald-500', border: 'border-emerald-500/20', borderHover: 'hover:border-emerald-500/40', from: 'from-emerald-500', labelText: 'text-emerald-400/80' }
+    : healthScore.isDegraded
+    ? { text: 'text-amber-400', bg: 'bg-amber-500', border: 'border-amber-500/20', borderHover: 'hover:border-amber-500/40', from: 'from-amber-500', labelText: 'text-amber-400/80' }
+    : { text: 'text-red-400', bg: 'bg-red-500', border: 'border-red-500/20', borderHover: 'hover:border-red-500/40', from: 'from-red-500', labelText: 'text-red-400/80' };
 
   return (
     <motion.div 
@@ -58,22 +64,10 @@ export function DashboardMetricsHero() {
       <div className="absolute inset-0 bg-gradient-to-br from-card/95 via-card/60 to-card/30 backdrop-blur-2xl" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px]" />
       
-      {/* Animated ambient orbs */}
-      <motion.div 
-        className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-cyan-500/8 blur-[120px]"
-        animate={{ x: [0, 40, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div 
-        className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-fuchsia-500/8 blur-[120px]"
-        animate={{ x: [0, -30, 0], y: [0, 40, 0], scale: [1.1, 0.9, 1.1] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-primary/5 blur-[100px]"
-        animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* Ambient orbs — CSS animations for GPU performance */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-cyan-500/[0.08] blur-[120px] animate-pulse" style={{ animationDuration: '12s' }} />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-fuchsia-500/[0.08] blur-[120px] animate-pulse" style={{ animationDuration: '15s', animationDelay: '3s' }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-primary/5 blur-[100px] animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
 
       {/* Animated border glow */}
       <div className="absolute inset-0 rounded-3xl border border-transparent" 
@@ -85,16 +79,14 @@ export function DashboardMetricsHero() {
           
           {/* === Orbital Health Ring === */}
           <div className="relative flex-shrink-0 group">
-            {/* Outer orbital ring decoration */}
-            <motion.div
-              className="absolute -inset-4 rounded-full border border-dashed border-border/20"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+            {/* Outer orbital ring decoration — CSS for GPU performance */}
+            <div 
+              className="absolute -inset-4 rounded-full border border-dashed border-border/20 animate-spin"
+              style={{ animationDuration: '120s' }}
             />
-            <motion.div
-              className="absolute -inset-8 rounded-full border border-dotted border-border/10"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 180, repeat: Infinity, ease: "linear" }}
+            <div 
+              className="absolute -inset-8 rounded-full border border-dotted border-border/10 animate-spin"
+              style={{ animationDuration: '180s', animationDirection: 'reverse' }}
             />
 
             <svg className="w-40 h-40 sm:w-56 sm:h-56 -rotate-90" viewBox="0 0 200 200">
@@ -130,7 +122,7 @@ export function DashboardMetricsHero() {
               <motion.span 
                 className={cn(
                   "text-4xl sm:text-6xl font-black font-mono tracking-tighter",
-                  `text-${statusColor}-400`
+                  statusStyles.text
                 )}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -147,7 +139,7 @@ export function DashboardMetricsHero() {
             <motion.div 
               className={cn(
                 "absolute inset-4 rounded-full blur-3xl -z-10 opacity-30",
-                `bg-${statusColor}-500`
+                statusStyles.bg
               )}
               animate={{ opacity: [0.15, 0.35, 0.15], scale: [0.95, 1.05, 0.95] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -160,24 +152,24 @@ export function DashboardMetricsHero() {
             {/* Stat Cards Row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {[
-                { label: 'MODULES', value: `${activeCount}`, suffix: `/${totalModules}`, color: 'cyan' },
-                { label: 'STATUS', value: statusLabel, color: statusColor },
-                { label: 'VERSION', value: `v${version}`, color: 'amber' },
+                { label: 'MODULES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-cyan-400/80', border: 'border-cyan-500/20 hover:border-cyan-500/40', from: 'from-cyan-500' } },
+                { label: 'STATUS', value: statusLabel, styles: { text: statusStyles.labelText, border: `${statusStyles.border} ${statusStyles.borderHover}`, from: statusStyles.from } },
+                { label: 'VERSION', value: `v${version}`, styles: { text: 'text-amber-400/80', border: 'border-amber-500/20 hover:border-amber-500/40', from: 'from-amber-500' } },
               ].map((stat, idx) => (
                 <motion.div 
                   key={stat.label}
                   className={cn(
                     "relative p-2.5 sm:p-4 rounded-2xl border overflow-hidden group cursor-default",
-                    `border-${stat.color}-500/20 hover:border-${stat.color}-500/40`
+                    stat.styles.border
                   )}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + idx * 0.1, duration: 0.5 }}
                   whileHover={{ y: -3, transition: { duration: 0.2 } }}
                 >
-                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-[0.06]", `from-${stat.color}-500 to-transparent`)} />
-                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-[0.1] transition-opacity duration-300", `from-${stat.color}-500 to-transparent`)} />
-                  <span className={cn("text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.1em] sm:tracking-[0.2em] block mb-1 sm:mb-1.5", `text-${stat.color}-400/80`)}>
+                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-[0.06]", stat.styles.from, "to-transparent")} />
+                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-[0.1] transition-opacity duration-300", stat.styles.from, "to-transparent")} />
+                  <span className={cn("text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.1em] sm:tracking-[0.2em] block mb-1 sm:mb-1.5", stat.styles.text)}>
                     {stat.label}
                   </span>
                   <div className="flex items-baseline gap-0.5 sm:gap-1">

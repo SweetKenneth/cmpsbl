@@ -219,6 +219,15 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     },
     // Orchestrator Layer
     {
+      id: 'atlas', name: 'ATLAS', layer: 'orchestrator' as const, icon: Globe,
+      description: 'Control plane & capabilities',
+      gradient: 'bg-gradient-to-r from-sky-500 to-blue-600', accentColor: 'bg-sky-500',
+      status: systemStatusQuery,
+      metrics: [{ label: 'Plane', value: systemStatusQuery.data?.success ? 'Active' : 'Checking' }],
+      actions: [{ id: 'status', label: 'Status', icon: Activity }],
+      onAction: async () => { toast.info('Atlas: Control plane active'); },
+    },
+    {
       id: 'cortex', name: 'CORTEX', layer: 'orchestrator' as const, icon: GitBranch,
       description: 'Agency-class orchestrator',
       gradient: 'bg-gradient-to-r from-indigo-500 to-violet-600', accentColor: 'bg-indigo-500',
@@ -316,7 +325,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
             onRefresh={() => module.status.refetch()}
             gradient={module.gradient}
             accentColor={module.accentColor}
-            delay={0.05 + idx * 0.02}
+            delay={0.05 + Math.min(idx, 8) * 0.02}
           />
         ))}
       </div>
