@@ -199,11 +199,16 @@ function EngineCard({ engine, isShowcase = false, isMeta = false }: { engine: Pu
             </div>
           </div>
           {!isShowcase && (
-            <Button size="sm" variant={engine.visibility === 'free' ? 'outline' : 'default'} className="gap-1 h-7 text-xs">
+            <Button
+              size="sm"
+              variant={engine.visibility === 'free' ? 'outline' : 'default'}
+              className="gap-1 h-7 text-xs"
+              asChild
+            >
               {engine.visibility === 'free' ? (
-                <><Play className="w-3 h-3" /> Run</>
+                <a href="/os"><Play className="w-3 h-3" /> Run</a>
               ) : (
-                <>Subscribe <ChevronRight className="w-3 h-3" /></>
+                <a href="/pricing">Subscribe <ChevronRight className="w-3 h-3" /></a>
               )}
             </Button>
           )}
@@ -288,8 +293,17 @@ function GridEngineCard({ engine, isShowcase = false, isMeta = false, index }: {
             {isShowcase ? 'Platform' : tierConfig.priceLabel}
           </div>
           {!isShowcase && (
-            <Button size="sm" variant={engine.visibility === 'free' ? 'outline' : 'default'} className="gap-1 h-7 text-xs">
-              {engine.visibility === 'free' ? <><Play className="w-3 h-3" /> Run</> : <>Subscribe <ChevronRight className="w-3 h-3" /></>}
+            <Button
+              size="sm"
+              variant={engine.visibility === 'free' ? 'outline' : 'default'}
+              className="gap-1 h-7 text-xs"
+              asChild
+            >
+              {engine.visibility === 'free' ? (
+                <a href="/os"><Play className="w-3 h-3" /> Run</a>
+              ) : (
+                <a href="/pricing">Subscribe <ChevronRight className="w-3 h-3" /></a>
+              )}
             </Button>
           )}
         </div>
