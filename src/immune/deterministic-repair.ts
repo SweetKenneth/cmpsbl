@@ -273,6 +273,55 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
+  // 20) EMOJI_FLOOD_COLLAPSE — collapse repeated emoji/unicode (same char >10×)
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      // Match any character (including multi-byte) repeated >10 times consecutively
+      const collapsed = copy[key].replace(/([\s\S])\1{10,}/g, '$1$1$1');
+      if (collapsed !== copy[key]) {
+        copy[key] = collapsed;
+        if (!applied.includes('EMOJI_FLOOD_COLLAPSE')) applied.push('EMOJI_FLOOD_COLLAPSE');
+      }
+    }
+  }
+
+  // 21) EMPTY_STRING_BACKFILL — empty string on expected keys gets safe placeholder
+  for (const ek of EXPECTED_KEYS) {
+    if (ek in copy && copy[ek] === '') {
+      copy[ek] = ek === 'wcagLevel' ? 'AA' : `[empty:${ek}]`;
+      if (!applied.includes('EMPTY_STRING_BACKFILL')) applied.push('EMPTY_STRING_BACKFILL');
+    }
+  }
+
+  // 22) ALL_EMPTY_INJECT — if every value is empty string after repairs, inject minimal content
+  const allEmpty = Object.keys(copy).length > 0 && Object.values(copy).every(v => v === '' || v === null || v === undefined);
+  if (allEmpty) {
+    copy.content = '[probe:empty-input]';
+    if (!applied.includes('ALL_EMPTY_INJECT')) applied.push('ALL_EMPTY_INJECT');
+  }
+
+  // 23) HTML_ANGLE_ENCODE — encode < > in non-URL string fields (catches XSS beyond <script>)
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string' && key !== 'url' && key !== 'target') {
+      const encoded = copy[key].replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      if (encoded !== copy[key]) {
+        copy[key] = encoded;
+        if (!applied.includes('HTML_ANGLE_ENCODE')) applied.push('HTML_ANGLE_ENCODE');
+      }
+    }
+  }
+
+  // 24) DUPLICATE_CHAR_COLLAPSE — any single ASCII char repeated >50 times collapsed
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      const deduped = copy[key].replace(/(.)\1{50,}/g, '$1$1$1');
+      if (deduped !== copy[key]) {
+        copy[key] = deduped;
+        if (!applied.includes('DUPLICATE_CHAR_COLLAPSE')) applied.push('DUPLICATE_CHAR_COLLAPSE');
+      }
+    }
+  }
+
   if (applied.length === 0) {
     return { repaired: false, repaired_input: input };
   }
