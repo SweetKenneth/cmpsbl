@@ -1,6 +1,7 @@
 /**
  * useEncode Hook
- * v10.5.4 ARCHITECT — Dedicated hook for ENCODE module operations
+ * v10.9.1 ARCHITECT — Dedicated hook for ENCODE module operations
+ * Now includes escalation processing capability.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -20,17 +21,21 @@ import {
   completeAndWriteback,
 } from '@/lib/substrate/encode-module/pipeline';
 import { runEncodeCLMCycle } from '@/lib/substrate/encode-module/clm';
+import { processEscalations } from '@/lib/substrate/encode-module/escalation-processor';
+import { getEscalationTelemetry, type EscalationTelemetrySnapshot } from '@/lib/substrate/encode-module/escalation-telemetry';
 
 export interface UseEncodeReturn {
   state: ReturnType<typeof useQuery>;
   health: number;
   queue: EncodeTaskPacket[];
   receipts: EncodeTaskResult[];
+  escalationTelemetry: EscalationTelemetrySnapshot | null;
   
   init: ReturnType<typeof useMutation>;
   routeIntent: ReturnType<typeof useMutation>;
   complete: ReturnType<typeof useMutation>;
   runCLM: ReturnType<typeof useMutation>;
+  processEscalationQueue: ReturnType<typeof useMutation>;
 }
 
 export function useEncode(): UseEncodeReturn {
@@ -53,6 +58,12 @@ export function useEncode(): UseEncodeReturn {
   const health = encodeState ? getEncodeHealth() : 0;
   const queue = encodeState?.taskQueue || [];
   const receipts = encodeState?.receipts || [];
+
+  // Escalation telemetry snapshot
+  let escalationTelemetry: EscalationTelemetrySnapshot | null = null;
+  try {
+    escalationTelemetry = getEscalationTelemetry();
+  } catch { /* not loaded */ }
 
   const init = useMutation({
     mutationFn: () => Promise.resolve(initEncode()),
@@ -79,15 +90,22 @@ export function useEncode(): UseEncodeReturn {
     onSuccess: invalidate,
   });
 
+  const processEscalationQueue = useMutation({
+    mutationFn: (params?: { limit?: number }) => processEscalations(params?.limit ?? 10),
+    onSuccess: invalidate,
+  });
+
   return {
     state,
     health,
     queue,
     receipts,
+    escalationTelemetry,
     init,
     routeIntent,
     complete,
     runCLM,
+    processEscalationQueue,
   };
 }
 

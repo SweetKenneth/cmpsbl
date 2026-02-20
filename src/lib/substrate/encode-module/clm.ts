@@ -135,6 +135,15 @@ export async function runEncodeCLMCycle(): Promise<CLMReport> {
   const successRate = state.totalTasksCompleted / Math.max(1, state.totalTasksCompleted + state.totalTasksFailed);
   const recentReceipts = state.receipts.slice(-20);
   const failedTasks = recentReceipts.filter(r => !r.success);
+
+  // ── NEW: Process open escalations as part of CLM cycle ──
+  let escalationResult: { resolved: number; processed: number; failed: number } = { resolved: 0, processed: 0, failed: 0 };
+  try {
+    const { processEscalations } = await import('./escalation-processor');
+    escalationResult = await processEscalations(10);
+  } catch (err) {
+    // Escalation processor not available — log and continue
+  }
   
   // Internal codebase study results
   const codebaseInsights: CodebaseInsight[] = [];
@@ -246,7 +255,21 @@ export async function runEncodeCLMCycle(): Promise<CLMReport> {
     }
   } catch { /* escalation-telemetry not loaded */ }
 
-  // Study 6: Propose internal improvements
+  // Study 6: Escalation processing results
+  if (escalationResult.processed > 0) {
+    learnings.push(`Escalation processing: ${escalationResult.resolved}/${escalationResult.processed} resolved, ${escalationResult.failed} failed`);
+    if (escalationResult.failed > 0) {
+      risks.push(`${escalationResult.failed} escalations could not be auto-resolved — may need manual review`);
+    }
+    codebaseInsights.push({
+      area: 'escalation-processing',
+      finding: `ENCODE resolved ${escalationResult.resolved} escalations this cycle`,
+      actionable: escalationResult.failed > 0,
+      priority: 94,
+    });
+  }
+
+  // Study 7: Propose internal improvements
   proposedUpgrades.push('Deepen file-level knowledge of substrate modules for precise edits');
   proposedUpgrades.push('Map all export/import chains to prevent broken references');
   proposedUpgrades.push('Catalog all RLS policies and edge function auth patterns');
