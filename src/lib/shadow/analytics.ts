@@ -1,10 +1,12 @@
 /**
- * Shadow Mesh — Analytics Aggregator
- * Queries immune_metrics and immune_escalations for admin dashboard
- * Phase 2: includes repair telemetry aggregation
+ * Shadow Mesh — Analytics Aggregator (v2.0)
+ * Queries immune_metrics and immune_escalations for admin dashboard.
+ * Now includes repair intelligence stats and outcome tracking.
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { getRepairIntelligenceStats, getEscalationPatterns } from '@/immune/repair-intelligence';
+import { getOutcomeStats, produceDreamDigest } from '@/immune/outcome-tracker';
 
 export interface MetricRow {
   executor: string;
@@ -12,7 +14,6 @@ export interface MetricRow {
   repairs: number;
   escalations: number;
   safe_fails: number;
-  /** Phase 2 repair telemetry */
   repair_attempts: number;
   repair_successes: number;
   retries: number;
@@ -27,27 +28,37 @@ export interface EscalationRow {
 }
 
 export interface RepairKPIs {
-  repair_attempt_rate: number;  // repair_attempted / total_runs
-  repair_success_rate: number;  // repair_success / repair_attempted
-  retry_rate: number;           // retry_attempted / total_runs
+  repair_attempt_rate: number;
+  repair_success_rate: number;
+  retry_rate: number;
 }
 
 export interface ShadowMeshAnalyticsData {
   metrics: MetricRow[];
   recentEscalations: EscalationRow[];
   repairKPIs: RepairKPIs;
+  /** v2.0: Repair intelligence stats */
+  intelligenceStats: Record<string, Record<string, { attempts: number; successes: number }>>;
+  /** v2.0: Escalation pattern mining results */
+  escalationPatterns: Array<{ executor: string; errorSignature: string; count: number; lastSeen: number }>;
+  /** v2.0: Outcome tracking stats */
+  outcomeStats: Record<string, any>;
+  /** v2.0: Dream cycle digest */
+  dreamDigest: {
+    lowConfidencePatterns: Array<{ executor: string; archetype: string; avgConfidence: number; count: number }>;
+    highFailureRepairs: Array<{ repairType: string; executor: string; failRate: number; count: number }>;
+    suggestions: string[];
+  };
 }
 
 export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData> {
   const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
-  // Fetch raw metrics from last 6h (including Phase 2 columns)
   const { data: rawMetrics } = await supabase
     .from('immune_metrics')
     .select('executor, total_runs, repair_successes, escalations, safe_failures, repair_attempted, repair_success, retry_attempted')
     .gte('run_at', sixHoursAgo);
 
-  // Aggregate by executor client-side
   const byExecutor = new Map<string, MetricRow>();
   let totalRunsAll = 0;
   let totalRepairAttempts = 0;
@@ -83,7 +94,6 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     }
   }
 
-  // Fetch recent escalations
   const { data: recentEscalations } = await supabase
     .from('immune_escalations')
     .select('executor, severity, scope, created_at, status')
@@ -100,5 +110,9 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     metrics: Array.from(byExecutor.values()),
     recentEscalations: (recentEscalations ?? []) as EscalationRow[],
     repairKPIs,
+    intelligenceStats: getRepairIntelligenceStats(),
+    escalationPatterns: getEscalationPatterns(),
+    outcomeStats: getOutcomeStats(),
+    dreamDigest: produceDreamDigest(),
   };
 }

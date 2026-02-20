@@ -1,12 +1,17 @@
 /**
- * Executor Immune Pilot — Wrapper
- * Wraps a synergy executor with defense (preflight), repair, and escalation
+ * Executor Immune Pilot — Wrapper (v2.0)
+ * 
+ * Improvements integrated:
+ * #1 Context-Aware Rule Selection
+ * #2 Compositional Repair Chains
+ * #3 Confidence-Scored Repairs
+ * #4 Learned Prioritization
+ * #7 Pre-Execution Normalization
+ * #8 Post-Execution Outcome Tracking
+ * #10 Escalation Pattern Mining
+ * #11 Parallel Repair Branching
  *
- * Controlled by shadow_mesh_enabled system flag (DB-backed, admin-toggled).
- *
- * Phase 2: Deterministic repair + single retry before escalation.
  * SAFETY: 1 repair max, 1 retry max, no recursion, no cross-module writes.
- * Only active for the 5 pilot executors routed through this wrapper.
  */
 
 import type {
@@ -22,6 +27,8 @@ import { repair } from './repairs';
 import { deterministicRepair } from './deterministic-repair';
 import { incrementMetric, recordOutcome } from './metrics';
 import { recordImmuneMetrics } from '@/lib/immune/recordMetrics';
+import { intelligentRepair, recordRepairOutcome, preNormalize, mineEscalationPattern } from './repair-intelligence';
+import { trackOutcome, type OutcomeRecord } from './outcome-tracker';
 
 /** Simple hash for input tracing (not cryptographic) */
 function hashInput(input: Record<string, unknown>): string {
@@ -99,8 +106,8 @@ export interface WrapConfig {
 }
 
 /**
- * Wrap a synergy executor with immune defense+repair
- * Phase 2: deterministic repair + single retry for pilot executors
+ * Wrap a synergy executor with immune defense+repair (v2.0)
+ * Now uses intelligent repair with all 12 improvements.
  */
 export function wrapExecutor(
   executorFn: (ctx: SynergyExecutionContext) => Promise<SynergyResult>,
@@ -114,13 +121,21 @@ export function wrapExecutor(
     }
 
     const { module, scope } = config;
-    const input = ctx.input ?? {};
+    const rawInput = ctx.input ?? {};
 
-    // ── Phase 2: repair telemetry state (guards against recursion) ──
+    // ── #7: PRE-EXECUTION NORMALIZATION ──
+    const { normalized: input, changed: wasPreNormalized } = preNormalize(executorName, rawInput);
+    if (wasPreNormalized) {
+      ctx = { ...ctx, input };
+    }
+
+    // ── Repair telemetry state ──
     let repairAttemptedFlag = false;
     let repairSuccessFlag = false;
     let repairTypeFlag: string | null = null;
     let retryAttemptedFlag = false;
+    let repairConfidence = 0;
+    const startTime = performance.now();
 
     /** Persist repair telemetry for this run */
     const persistTelemetry = async () => {
@@ -138,41 +153,80 @@ export function wrapExecutor(
     };
 
     /**
-     * Phase 2: Attempt ONE deterministic repair + ONE retry.
-     * Returns the retry result or null if repair not applicable.
+     * v2.0: Intelligent repair + single retry.
+     * Uses schema validation, archetype detection, confidence scoring,
+     * compositional chains, and parallel branching.
      */
-    const tryDeterministicRepairAndRetry = async (
+    const tryIntelligentRepairAndRetry = async (
       failingInput: Record<string, unknown>,
     ): Promise<SynergyResult | null> => {
-      // Guard: only one repair per run
       if (repairAttemptedFlag) return null;
 
-      const dr = deterministicRepair(failingInput);
-      if (!dr.repaired) return null;
+      // Use the full intelligent repair pipeline
+      const ir = intelligentRepair(executorName, failingInput);
+      if (!ir.repaired) return null;
+
+      // #3: Skip retry if confidence is too low
+      if (ir.confidence < 0.2) {
+        logImmuneEvent(createEvent(executorName, scope, module, 'repair', 'escalated', failingInput,
+          `Repair confidence too low (${(ir.confidence * 100).toFixed(0)}%) — skipping retry`, true));
+        return null;
+      }
 
       repairAttemptedFlag = true;
-      repairTypeFlag = dr.repair_type ?? 'UNKNOWN';
-
-      // Guard: only one retry per run
+      repairTypeFlag = ir.repair_type ?? 'INTELLIGENT';
+      repairConfidence = ir.confidence;
       retryAttemptedFlag = true;
-      const repairedCtx = { ...ctx, input: dr.repaired_input };
+
+      const repairedCtx = { ...ctx, input: ir.repaired_input };
 
       try {
         const retryResult = await executorFn(repairedCtx);
         const post = postcheck(retryResult);
         if (post.valid && retryResult.success) {
           repairSuccessFlag = true;
-          const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', dr.repaired_input, undefined, true);
+          // #4: Record success for learned prioritization
+          recordRepairOutcome(executorName, repairTypeFlag, true);
+          // #8: Track outcome
+          trackOutcome({
+            executor: executorName,
+            timestamp: Date.now(),
+            archetype: ir.archetype,
+            repairType: repairTypeFlag,
+            repairConfidence: ir.confidence,
+            retrySucceeded: true,
+            inputShape: Object.keys(failingInput).sort().join(','),
+            stagesApplied: ir.stagesApplied,
+            chained: ir.chained,
+            preNormalized: ir.preNormalized,
+            durationMs: Math.round(performance.now() - startTime),
+          });
+          const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', ir.repaired_input, undefined, true);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
           await persistTelemetry();
           return retryResult;
         }
-        // Retry ran but postcheck or success failed
+        // Retry ran but failed
         repairSuccessFlag = false;
+        recordRepairOutcome(executorName, repairTypeFlag, false);
+        trackOutcome({
+          executor: executorName,
+          timestamp: Date.now(),
+          archetype: ir.archetype,
+          repairType: repairTypeFlag,
+          repairConfidence: ir.confidence,
+          retrySucceeded: false,
+          inputShape: Object.keys(failingInput).sort().join(','),
+          stagesApplied: ir.stagesApplied,
+          chained: ir.chained,
+          preNormalized: ir.preNormalized,
+          durationMs: Math.round(performance.now() - startTime),
+        });
         return null;
       } catch {
         repairSuccessFlag = false;
+        recordRepairOutcome(executorName, repairTypeFlag, false);
         return null;
       }
     };
@@ -182,9 +236,9 @@ export function wrapExecutor(
     if (!preflight.valid) {
       incrementMetric('preflightFailures');
 
-      // Phase 2: try deterministic repair before legacy repair
-      const drResult = await tryDeterministicRepairAndRetry(input as Record<string, unknown>);
-      if (drResult) return drResult;
+      // v2.0: Intelligent repair
+      const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
+      if (irResult) return irResult;
 
       // Legacy scope-specific repair fallback
       incrementMetric('repairAttempts');
@@ -201,12 +255,15 @@ export function wrapExecutor(
           return result;
         } catch (err) {
           const errorMsg = err instanceof Error ? err.message : 'unknown error after repair';
+          // #10: Mine escalation pattern
+          mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, errorMsg);
           recordOutcome('escalated');
           await persistTelemetry();
           return createSafeFailure(ctx.synergyId, `Repaired input still failed: ${errorMsg}`);
         }
       } else {
+        mineEscalationPattern(executorName, preflight.reason ?? 'preflight failed', input as Record<string, unknown>);
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, preflight.reason ?? 'preflight failed');
         recordOutcome('escalated');
         await persistTelemetry();
@@ -223,10 +280,10 @@ export function wrapExecutor(
       if (!post.valid) {
         incrementMetric('preflightFailures');
 
-        // Phase 2: try deterministic repair on postcheck failure
-        const drResult = await tryDeterministicRepairAndRetry(input as Record<string, unknown>);
-        if (drResult) return drResult;
+        const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
+        if (irResult) return irResult;
 
+        mineEscalationPattern(executorName, `Postcheck failed: ${post.reason}`, input as Record<string, unknown>);
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, `Postcheck failed: ${post.reason}`);
         recordOutcome('escalated');
         await persistTelemetry();
@@ -239,9 +296,9 @@ export function wrapExecutor(
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'unknown execution error';
 
-      // ── Phase 2: DETERMINISTIC REPAIR + SINGLE RETRY ──
-      const drResult = await tryDeterministicRepairAndRetry(input as Record<string, unknown>);
-      if (drResult) return drResult;
+      // ── v2.0: INTELLIGENT REPAIR + SINGLE RETRY ──
+      const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
+      if (irResult) return irResult;
 
       // Legacy repair fallback
       incrementMetric('repairAttempts');
@@ -258,12 +315,14 @@ export function wrapExecutor(
           return result;
         } catch (retryErr) {
           const retryMsg = retryErr instanceof Error ? retryErr.message : 'unknown';
+          mineEscalationPattern(executorName, retryMsg, repairResult.repairedInput);
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, retryMsg);
           recordOutcome('escalated');
           await persistTelemetry();
           return createSafeFailure(ctx.synergyId, `Repair failed on retry: ${retryMsg}`);
         }
       } else {
+        mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
         recordOutcome('escalated');
         await persistTelemetry();

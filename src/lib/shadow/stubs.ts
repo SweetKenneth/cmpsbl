@@ -1,12 +1,10 @@
 /**
- * Shadow Mesh — Stub Executors
- * Lightweight mock executors for the 5 pilot synergies.
- * Shadow-only, never exposed publicly.
- *
- * v2: Input-quality-aware — stubs succeed when the input is well-formed
- * (e.g. after deterministic repair), so repair success rates accurately
- * reflect pipeline effectiveness. Only a small % of runs simulate
- * truly non-recoverable infrastructure failures.
+ * Shadow Mesh — Stub Executors (v3: Graduated Fidelity)
+ * 
+ * Improvement #12: Graduated Stub Fidelity
+ * Stubs now use schema validation to provide a more realistic success signal.
+ * Instead of binary well-formed/malformed, stubs use the validation confidence
+ * score to graduate their success probability.
  *
  * Marked __shadow_stub__ = true so they can be identified and swapped later.
  */
@@ -16,40 +14,10 @@ import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
 import { registerSynergyExecutor } from '@/lib/capabilities/synergies/registry';
 import { wrapExecutor } from '@/immune/wrapExecutor';
 import { log } from '@/lib/system/log';
+import { validateInput } from '@/immune/schema-validator';
 
 /** Marker so callers can detect stubs */
 export const __shadow_stub__ = true;
-
-/**
- * Expected keys that indicate a well-formed pilot executor input.
- * If at least one is present AND is a non-empty string, the input is "valid".
- */
-const QUALITY_KEYS = ['content', 'url', 'domain', 'userId', 'wcagLevel', 'ariaLabel', 'target'] as const;
-
-/**
- * Check if an input is well-formed enough for a pilot executor to succeed.
- * This is the key change: stubs now respect input quality so that the
- * deterministic repair pipeline's work is reflected in outcomes.
- */
-function isInputWellFormed(input: Record<string, unknown>): boolean {
-  if (!input || typeof input !== 'object') return false;
-  const keys = Object.keys(input);
-  if (keys.length === 0) return false;
-
-  // Must have at least one recognized key with a non-empty string value
-  const hasQualityKey = QUALITY_KEYS.some(k => {
-    const v = input[k];
-    return typeof v === 'string' && v.length > 0 && v !== '' && !v.startsWith('[empty:');
-  });
-
-  // All values must be primitives or stringified (no raw objects/arrays)
-  const allPrimitive = keys.every(k => {
-    const v = input[k];
-    return v === null || v === undefined || typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
-  });
-
-  return hasQualityKey && allPrimitive;
-}
 
 /** Seeded PRNG for deterministic-ish but varied results per input */
 function hashSeed(input: Record<string, unknown>, executor: string): number {
@@ -64,24 +32,32 @@ function hashSeed(input: Record<string, unknown>, executor: string): number {
 type StubOutcome = 'success' | 'recoverable_error' | 'non_recoverable_error';
 
 /**
- * v2 outcome logic:
- * - Well-formed input → 90% success, 5% recoverable, 5% non-recoverable (infra sim)
- * - Malformed input   → 15% success, 55% recoverable, 30% non-recoverable
- *
- * This means when the 39-rule deterministic repair fixes malformed inputs
- * into well-formed ones, the retry will succeed ~90% of the time.
+ * v3 Graduated Fidelity outcome logic (#12):
+ * Uses the schema validation confidence score (0-1) to graduate success probability.
+ * 
+ * confidence >= 0.9  → 95% success, 3% recoverable, 2% non-recoverable
+ * confidence >= 0.7  → 80% success, 12% recoverable, 8% non-recoverable
+ * confidence >= 0.4  → 50% success, 30% recoverable, 20% non-recoverable
+ * confidence <  0.4  → 10% success, 55% recoverable, 35% non-recoverable
  */
-function pickOutcome(seed: number, wellFormed: boolean): StubOutcome {
-  const bucket = seed % 20;
-  if (wellFormed) {
-    // Well-formed: 18/20 success, 1/20 recoverable, 1/20 non-recoverable
-    if (bucket < 18) return 'success';
-    if (bucket < 19) return 'recoverable_error';
+function pickOutcome(seed: number, confidence: number): StubOutcome {
+  const bucket = seed % 100;
+
+  if (confidence >= 0.9) {
+    if (bucket < 95) return 'success';
+    if (bucket < 98) return 'recoverable_error';
+    return 'non_recoverable_error';
+  } else if (confidence >= 0.7) {
+    if (bucket < 80) return 'success';
+    if (bucket < 92) return 'recoverable_error';
+    return 'non_recoverable_error';
+  } else if (confidence >= 0.4) {
+    if (bucket < 50) return 'success';
+    if (bucket < 80) return 'recoverable_error';
     return 'non_recoverable_error';
   } else {
-    // Malformed: 3/20 success, 11/20 recoverable, 6/20 non-recoverable
-    if (bucket < 3) return 'success';
-    if (bucket < 14) return 'recoverable_error';
+    if (bucket < 10) return 'success';
+    if (bucket < 65) return 'recoverable_error';
     return 'non_recoverable_error';
   }
 }
@@ -104,17 +80,20 @@ function createSuccessResult(ctx: SynergyExecutionContext, durationMs: number): 
 }
 
 /**
- * Factory: creates a shadow stub executor for a given pilot name.
+ * Factory: creates a graduated-fidelity shadow stub executor.
  */
 function createStubExecutor(executorName: string) {
   const fn = async (ctx: SynergyExecutionContext): Promise<SynergyResult> => {
     const input = ctx.input ?? {};
-    const wellFormed = isInputWellFormed(input);
+    
+    // #12: Use schema validation for graduated fidelity
+    const report = validateInput(executorName, input);
+    const confidence = report.confidence;
+    
     const seed = hashSeed(input, executorName);
-    const outcome = pickOutcome(seed, wellFormed);
-    const latency = 5 + (seed % 50); // 5-54 ms simulated
+    const outcome = pickOutcome(seed, confidence);
+    const latency = 5 + (seed % 50);
 
-    // Small async delay to simulate real work
     await new Promise((r) => setTimeout(r, latency));
 
     switch (outcome) {
@@ -122,20 +101,17 @@ function createStubExecutor(executorName: string) {
         return createSuccessResult(ctx, latency);
 
       case 'recoverable_error':
-        // Throw an error the immune wrapper can attempt to repair
         throw new Error(
-          `[stub:${executorName}] Recoverable validation failure — input shape mismatch`,
+          `[stub:${executorName}] Recoverable: validation confidence ${(confidence * 100).toFixed(0)}% — ${report.archetype} input`,
         );
 
       case 'non_recoverable_error':
-        // Throw a hard error that should escalate
         throw new Error(
-          `[stub:${executorName}] Non-recoverable: service unavailable simulation`,
+          `[stub:${executorName}] Non-recoverable: service unavailable (archetype: ${report.archetype})`,
         );
     }
   };
 
-  // Tag the function so it's identifiable
   (fn as any).__shadow_stub__ = true;
   return fn;
 }
@@ -152,16 +128,14 @@ export function registerShadowStubs(): void {
   for (const name of PILOT_EXECUTORS) {
     try {
       const rawStub = createStubExecutor(name);
-      // Wrap with immune wrapper so deterministic repair + retry fires during probes
       const wrappedStub = wrapExecutor(rawStub, name, { module: 'INCLUSIVE', scope: 'shadow-probe' });
       registerSynergyExecutor(name, wrappedStub);
-      log.info('shadow', `Stub executor registered (immune-wrapped): ${name}`);
+      log.info('shadow', `Stub executor registered (v3 graduated fidelity): ${name}`);
     } catch (err) {
-      // If the synergy definition doesn't exist, skip gracefully
       log.warn('shadow', `Failed to register stub for "${name}": ${(err as Error).message}`);
     }
   }
 
   stubsRegistered = true;
-  log.info('shadow', `All shadow stubs registered (${PILOT_EXECUTORS.length} executors)`);
+  log.info('shadow', `All shadow stubs registered (${PILOT_EXECUTORS.length} executors, graduated fidelity)`);
 }

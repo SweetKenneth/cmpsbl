@@ -1,0 +1,250 @@
+/**
+ * Improvement #5: Schema-Driven Validation
+ * Improvement #6: Input Archetypes (malformed input clustering)
+ * 
+ * Per-executor input schemas replace the generic isInputWellFormed check.
+ * Each pilot executor declares its expected shape, and validation produces
+ * a structured report of what's wrong — enabling smarter repair selection.
+ */
+
+export interface FieldSchema {
+  type: 'string' | 'number' | 'boolean' | 'object' | 'array';
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  enum?: string[];
+  default?: unknown;
+}
+
+export interface ExecutorSchema {
+  executor: string;
+  fields: Record<string, FieldSchema>;
+  /** At least one of these fields must be present */
+  requiredOneOf?: string[];
+}
+
+export interface ValidationIssue {
+  field: string;
+  issue: 'missing' | 'wrong_type' | 'too_short' | 'too_long' | 'invalid_enum' | 'unknown_field';
+  expected?: string;
+  got?: string;
+}
+
+export interface ValidationReport {
+  valid: boolean;
+  issues: ValidationIssue[];
+  archetype: InputArchetype;
+  confidence: number; // 0-1, how well-formed the input is
+}
+
+/**
+ * Input Archetype (#6) — clusters malformed inputs into categories
+ * so the repair pipeline can apply targeted strategies.
+ */
+export type InputArchetype =
+  | 'well_formed'       // passes schema
+  | 'empty_shell'       // {} or all nulls
+  | 'type_mismatch'     // right keys, wrong types
+  | 'missing_required'  // missing critical fields
+  | 'oversized'         // values too large
+  | 'injection_attempt' // XSS/SQL patterns detected
+  | 'shape_alien'       // no recognized keys at all
+  | 'partial_valid';    // some fields valid, some not
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PILOT EXECUTOR SCHEMAS
+// ═══════════════════════════════════════════════════════════════════════════
+
+const SCHEMAS: Record<string, ExecutorSchema> = {
+  'adaptive-ui': {
+    executor: 'adaptive-ui',
+    fields: {
+      target: { type: 'string', default: 'self', maxLength: 2000 },
+      url: { type: 'string', maxLength: 2000 },
+      resource_id: { type: 'string', maxLength: 500 },
+      content: { type: 'string', maxLength: 10000 },
+    },
+    requiredOneOf: ['target', 'url', 'resource_id'],
+  },
+  'cognitive-load-optimization': {
+    executor: 'cognitive-load-optimization',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      target: { type: 'string', maxLength: 2000 },
+    },
+  },
+  'comprehensive-accessibility-audit': {
+    executor: 'comprehensive-accessibility-audit',
+    fields: {
+      wcagLevel: { type: 'string', enum: ['A', 'AA', 'AAA'], default: 'AA' },
+      url: { type: 'string', maxLength: 2000 },
+      target: { type: 'string', maxLength: 2000 },
+      domain: { type: 'string', maxLength: 500 },
+    },
+    requiredOneOf: ['url', 'target', 'domain'],
+  },
+  'personalized-accessibility-engine': {
+    executor: 'personalized-accessibility-engine',
+    fields: {
+      userId: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      preferences: { type: 'object' },
+      content: { type: 'string', maxLength: 10000 },
+    },
+  },
+  'inclusive-content': {
+    executor: 'inclusive-content',
+    fields: {
+      content: { type: 'string', required: true, maxLength: 10000 },
+      ariaLabel: { type: 'string', maxLength: 1000 },
+      target: { type: 'string', maxLength: 2000 },
+    },
+  },
+};
+
+const SQL_INJECT_RE = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|UNION|CREATE|EXEC)\b\s)/i;
+const XSS_RE = /<script[\s\S]*?<\/script>/gi;
+
+/**
+ * Validate input against an executor's schema.
+ * Returns a detailed report with archetype classification.
+ */
+export function validateInput(
+  executorName: string,
+  input: Record<string, unknown>,
+): ValidationReport {
+  const schema = SCHEMAS[executorName];
+  if (!schema) {
+    // No schema = fall back to basic check
+    const keys = Object.keys(input);
+    return {
+      valid: keys.length > 0,
+      issues: [],
+      archetype: keys.length === 0 ? 'empty_shell' : 'well_formed',
+      confidence: keys.length > 0 ? 0.5 : 0,
+    };
+  }
+
+  const issues: ValidationIssue[] = [];
+  const inputKeys = new Set(Object.keys(input));
+
+  // Check for empty shell
+  if (inputKeys.size === 0 || Object.values(input).every(v => v === null || v === undefined || v === '')) {
+    return { valid: false, issues: [{ field: '*', issue: 'missing' }], archetype: 'empty_shell', confidence: 0 };
+  }
+
+  // Check required fields
+  for (const [field, spec] of Object.entries(schema.fields)) {
+    const val = input[field];
+
+    if (spec.required && (val === null || val === undefined || val === '')) {
+      issues.push({ field, issue: 'missing', expected: spec.type });
+      continue;
+    }
+
+    if (val === null || val === undefined) continue;
+
+    // Type check
+    if (spec.type === 'string' && typeof val !== 'string') {
+      issues.push({ field, issue: 'wrong_type', expected: 'string', got: typeof val });
+    } else if (spec.type === 'object' && (typeof val !== 'object' || Array.isArray(val))) {
+      issues.push({ field, issue: 'wrong_type', expected: 'object', got: Array.isArray(val) ? 'array' : typeof val });
+    } else if (spec.type === 'array' && !Array.isArray(val)) {
+      issues.push({ field, issue: 'wrong_type', expected: 'array', got: typeof val });
+    }
+
+    // String-specific checks
+    if (typeof val === 'string') {
+      if (spec.minLength && val.length < spec.minLength) {
+        issues.push({ field, issue: 'too_short', expected: `>=${spec.minLength}` });
+      }
+      if (spec.maxLength && val.length > spec.maxLength) {
+        issues.push({ field, issue: 'too_long', expected: `<=${spec.maxLength}` });
+      }
+      if (spec.enum && !spec.enum.includes(val.toUpperCase())) {
+        issues.push({ field, issue: 'invalid_enum', expected: spec.enum.join('|'), got: val });
+      }
+    }
+  }
+
+  // requiredOneOf check
+  if (schema.requiredOneOf) {
+    const hasOne = schema.requiredOneOf.some(f => {
+      const v = input[f];
+      return v !== null && v !== undefined && v !== '';
+    });
+    if (!hasOne) {
+      issues.push({ field: schema.requiredOneOf.join('|'), issue: 'missing', expected: 'at least one' });
+    }
+  }
+
+  // Check for injection patterns
+  let hasInjection = false;
+  for (const val of Object.values(input)) {
+    if (typeof val === 'string') {
+      if (SQL_INJECT_RE.test(val) || XSS_RE.test(val)) {
+        hasInjection = true;
+        break;
+      }
+      SQL_INJECT_RE.lastIndex = 0;
+      XSS_RE.lastIndex = 0;
+    }
+  }
+
+  // Check for unknown fields
+  const schemaKeys = new Set(Object.keys(schema.fields));
+  for (const k of inputKeys) {
+    if (!schemaKeys.has(k)) {
+      issues.push({ field: k, issue: 'unknown_field' });
+    }
+  }
+
+  // Classify archetype
+  const archetype = classifyArchetype(issues, hasInjection, inputKeys, schemaKeys);
+  const confidence = issues.length === 0 ? 1.0 : Math.max(0, 1 - (issues.length * 0.15));
+
+  return {
+    valid: issues.filter(i => i.issue !== 'unknown_field').length === 0,
+    issues,
+    archetype,
+    confidence,
+  };
+}
+
+function classifyArchetype(
+  issues: ValidationIssue[],
+  hasInjection: boolean,
+  inputKeys: Set<string>,
+  schemaKeys: Set<string>,
+): InputArchetype {
+  if (issues.length === 0) return 'well_formed';
+  if (hasInjection) return 'injection_attempt';
+
+  const typeMismatches = issues.filter(i => i.issue === 'wrong_type').length;
+  const missing = issues.filter(i => i.issue === 'missing').length;
+  const oversized = issues.filter(i => i.issue === 'too_long').length;
+  const unknowns = issues.filter(i => i.issue === 'unknown_field').length;
+
+  // If ALL keys are unknown, it's an alien shape
+  const knownCount = [...inputKeys].filter(k => schemaKeys.has(k)).length;
+  if (knownCount === 0 && inputKeys.size > 0) return 'shape_alien';
+
+  if (oversized > 0) return 'oversized';
+  if (typeMismatches > missing) return 'type_mismatch';
+  if (missing > 0 && typeMismatches === 0) return 'missing_required';
+
+  return 'partial_valid';
+}
+
+/**
+ * Get the schema for an executor (for repair pipeline context)
+ */
+export function getExecutorSchema(executorName: string): ExecutorSchema | undefined {
+  return SCHEMAS[executorName];
+}
+
+/**
+ * Get all registered schemas
+ */
+export function getAllSchemas(): Record<string, ExecutorSchema> {
+  return { ...SCHEMAS };
+}
