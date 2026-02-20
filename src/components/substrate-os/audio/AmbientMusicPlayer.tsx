@@ -14,6 +14,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import composableDreamin from '@/assets/audio/Composable_Dreamin.mp3';
 import composableDreamin2 from '@/assets/audio/Composable_Dreamin_2.mp3';
 import clockless from '@/assets/audio/Clockless.mp3';
+import clockless4 from '@/assets/audio/Clockless-4.mp3';
+import composable2 from '@/assets/audio/Composable-2.mp3';
+import composableCompounding2 from '@/assets/audio/Composable_Compounding-2.mp3';
 
 // ============================================================================
 // AMBIENT TRACKS
@@ -36,6 +39,24 @@ const AMBIENT_TRACKS = [
     name: 'Clockless',
     description: 'Cognitive Reality anthem',
     url: clockless,
+  },
+  {
+    id: 'clockless-4',
+    name: 'Clockless IV',
+    description: 'Deep clockless immersion',
+    url: clockless4,
+  },
+  {
+    id: 'composable-2',
+    name: 'Composable II',
+    description: 'Composable continuation',
+    url: composable2,
+  },
+  {
+    id: 'composable-compounding-2',
+    name: 'Composable Compounding II',
+    description: 'Compounding resonance',
+    url: composableCompounding2,
   },
 ];
 
@@ -209,32 +230,35 @@ export function AmbientMusicPlayer({ className }: { className?: string }) {
                   </div>
                 </div>
                 
-                {/* Current Track */}
-                <div className="p-3 rounded-lg bg-muted/30 border border-border/30 mb-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium">{currentTrack.name}</span>
-                    <span className="text-[10px] text-muted-foreground">
-                      {currentTrack.description}
-                    </span>
-                  </div>
-                  
-                  {/* Visualizer bars */}
-                  <div className="flex items-end justify-center gap-0.5 h-6">
-                    {Array.from({ length: 20 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className={cn(
-                          "w-1 bg-gradient-to-t from-fuchsia-500 to-purple-400 rounded-full transition-all",
-                          settings.enabled ? "opacity-100" : "opacity-30"
+                {/* Track List */}
+                <div className="space-y-1 mb-4 max-h-[180px] overflow-y-auto pr-1">
+                  {AMBIENT_TRACKS.map((track, idx) => (
+                    <button
+                      key={track.id}
+                      onClick={() => updateSettings({ trackIndex: idx })}
+                      className={cn(
+                        "w-full flex items-center gap-2.5 p-2 rounded-lg text-left transition-all",
+                        idx === settings.trackIndex
+                          ? "bg-fuchsia-500/15 border border-fuchsia-500/30"
+                          : "hover:bg-muted/40 border border-transparent"
+                      )}
+                    >
+                      <div className={cn(
+                        "w-7 h-7 rounded-md flex items-center justify-center shrink-0",
+                        idx === settings.trackIndex ? "bg-fuchsia-500/20" : "bg-muted/30"
+                      )}>
+                        {idx === settings.trackIndex && settings.enabled ? (
+                          <Pause className="w-3 h-3 text-fuchsia-400" />
+                        ) : (
+                          <Play className="w-3 h-3 text-muted-foreground" />
                         )}
-                        style={{
-                          height: settings.enabled ? `${Math.random() * 100}%` : '20%',
-                          animation: settings.enabled ? `visualizer 0.3s ease infinite` : 'none',
-                          animationDelay: `${i * 0.05}s`,
-                        }}
-                      />
-                    ))}
-                  </div>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={cn("text-xs font-medium truncate", idx === settings.trackIndex && "text-fuchsia-400")}>{track.name}</p>
+                        <p className="text-[9px] text-muted-foreground truncate">{track.description}</p>
+                      </div>
+                    </button>
+                  ))}
                 </div>
                 
                 {/* Controls */}
