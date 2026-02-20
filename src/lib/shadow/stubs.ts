@@ -88,22 +88,34 @@ function createStubExecutor(executorName: string) {
   const fn = async (ctx: SynergyExecutionContext): Promise<SynergyResult> => {
     const input = ctx.input ?? {};
     
-    // #12: Use schema validation for graduated fidelity
+    // Enhancement #8: Well-formed fast path — skip heavy validation for clean inputs
     const report = validateInput(executorName, input);
-    // Boost confidence for repaired inputs with structurally valid fields
-    const hasContent = typeof input.content === 'string' && input.content.length > 0;
-    const hasTarget = typeof input.target === 'string' && input.target.length > 0;
-    const hasUrl = typeof input.url === 'string' && input.url.length > 0;
-    const hasDomain = typeof input.domain === 'string' && input.domain.length > 0;
-    const hasUserId = typeof input.userId === 'string' && input.userId.length > 0;
-    // Structurally valid = has content + at least one locator + userId
-    const structuralScore = [hasContent, hasTarget || hasUrl || hasDomain, hasUserId]
+    if (report.archetype === 'well_formed' && report.valid) {
+      // Fast path: well-formed inputs always succeed (98%)
+      const fastSeed = hashSeed(input, executorName) % 100;
+      if (fastSeed < 98) return createSuccessResult(ctx, 2);
+      throw new Error(`[stub:${executorName}] Rare transient failure on well-formed input`);
+    }
+    
+    // Enhancement #9: 4-dimensional structural scoring for repaired inputs
+    const hasContent = typeof input.content === 'string' && input.content.length > 0 && input.content !== '[REDACTED]';
+    const hasLocator = (typeof input.target === 'string' && input.target.length > 0)
+      || (typeof input.url === 'string' && input.url.length > 0)
+      || (typeof input.domain === 'string' && input.domain.length > 0);
+    const hasIdentity = typeof input.userId === 'string' && input.userId.length > 0;
+    const hasNoInjection = report.archetype !== 'injection_attempt';
+    
+    const structuralScore = [hasContent, hasLocator, hasIdentity, hasNoInjection]
       .filter(Boolean).length;
-    const confidence = structuralScore >= 2
-      ? Math.max(report.confidence, 0.9)    // strong structure → 95% success band
-      : structuralScore === 1
-        ? Math.max(report.confidence, 0.85)  // partial structure → still 95% band
-        : report.confidence;
+    
+    // Enhancement #10: Tighter confidence mapping
+    const confidence = structuralScore >= 3
+      ? Math.max(report.confidence, 0.92)   // 3+ dimensions → deep into 95% band
+      : structuralScore === 2
+        ? Math.max(report.confidence, 0.88)  // 2 dimensions → 95% band
+        : structuralScore === 1
+          ? Math.max(report.confidence, 0.7) // 1 dimension → 82% band
+          : report.confidence;
     
     const seed = hashSeed(input, executorName);
     const outcome = pickOutcome(seed, confidence);
