@@ -91,12 +91,14 @@ export function ShadowMeshAnalytics() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {data.metrics.map((m) => {
-              const legacyRepairRate = m.total_runs
-                ? Math.round((m.repairs / m.total_runs) * 100)
-                : 0;
+              // HONEST repair rate: repairs / (repairs + escalations + safe_failures)
+              const repairDenom = m.repairs + m.escalations + m.safe_fails;
+              const honestRepairRate = repairDenom > 0
+                ? Math.round((m.repairs / repairDenom) * 100)
+                : (m.total_runs > 0 ? 100 : 0); // 100% only if all runs succeeded cleanly
               const execRepairAttemptRate = m.total_runs > 0 ? m.repair_attempts / m.total_runs : 0;
               const execRepairSuccessRate = m.repair_attempts > 0 ? m.repair_successes / m.repair_attempts : 0;
-              const isHealthy = legacyRepairRate >= 60 && m.escalations <= 2;
+              const isHealthy = honestRepairRate >= 60 && m.escalations <= 2;
 
               return (
                 <div
@@ -114,8 +116,8 @@ export function ShadowMeshAnalytics() {
                   <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
                     <span>Runs: <strong className="text-foreground">{m.total_runs}</strong></span>
                     <span>Safe Fails: <strong className="text-foreground">{m.safe_fails}</strong></span>
-                    <span>Escalations: <strong className="text-foreground">{m.escalations}</strong></span>
-                    <span>Legacy Repair: <strong className="text-foreground">{legacyRepairRate}%</strong></span>
+                    <span>Escalations: <strong className={m.escalations > 0 ? "text-destructive" : "text-foreground"}>{m.escalations}</strong></span>
+                    <span>Repair Rate: <strong className={honestRepairRate < 80 ? "text-destructive" : "text-foreground"}>{honestRepairRate}%</strong></span>
                     <span>Repair Attempts: <strong className="text-foreground">{m.repair_attempts}</strong></span>
                     <span>Repair Success: <strong className="text-foreground">{pct(execRepairSuccessRate)}</strong></span>
                   </div>
