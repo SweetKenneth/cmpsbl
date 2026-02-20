@@ -658,6 +658,57 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     if (!applied.includes('PREFERENCES_EMPTY_OBJ')) applied.push('PREFERENCES_EMPTY_OBJ');
   }
 
+  // ── Executor-Specific Repair Rules ──
+
+  // 55) ADAPTIVE_UI_SHAPE — adaptive-ui requires 'viewport', 'colorScheme', 'motionPreference'
+  //     These are commonly missing from adversarial probes. Inject sensible defaults.
+  if ('content' in copy || 'target' in copy) {
+    if (!('viewport' in copy) || !copy.viewport) {
+      copy.viewport = 'desktop';
+      if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
+    }
+    if (!('colorScheme' in copy) || !copy.colorScheme) {
+      copy.colorScheme = 'light';
+      if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
+    }
+    if (!('motionPreference' in copy) || !copy.motionPreference) {
+      copy.motionPreference = 'no-preference';
+      if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
+    }
+    if (!('fontSize' in copy) || !copy.fontSize) {
+      copy.fontSize = 'medium';
+      if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
+    }
+    if (!('contrastLevel' in copy) || !copy.contrastLevel) {
+      copy.contrastLevel = 'normal';
+      if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
+    }
+  }
+
+  // 56) COGNITIVE_LOAD_SHAPE — cognitive-load-optimization requires 'complexity', 'taskType', 'userExperience'
+  if ('content' in copy || 'target' in copy) {
+    if (!('complexity' in copy) || !copy.complexity) {
+      copy.complexity = 'medium';
+      if (!applied.includes('COGNITIVE_LOAD_SHAPE')) applied.push('COGNITIVE_LOAD_SHAPE');
+    }
+    if (!('taskType' in copy) || !copy.taskType) {
+      copy.taskType = 'navigation';
+      if (!applied.includes('COGNITIVE_LOAD_SHAPE')) applied.push('COGNITIVE_LOAD_SHAPE');
+    }
+    if (!('userExperience' in copy) || !copy.userExperience) {
+      copy.userExperience = 'intermediate';
+      if (!applied.includes('COGNITIVE_LOAD_SHAPE')) applied.push('COGNITIVE_LOAD_SHAPE');
+    }
+    if (!('maxCognitiveLoad' in copy)) {
+      copy.maxCognitiveLoad = '7';
+      if (!applied.includes('COGNITIVE_LOAD_SHAPE')) applied.push('COGNITIVE_LOAD_SHAPE');
+    }
+    if (!('informationDensity' in copy) || !copy.informationDensity) {
+      copy.informationDensity = 'balanced';
+      if (!applied.includes('COGNITIVE_LOAD_SHAPE')) applied.push('COGNITIVE_LOAD_SHAPE');
+    }
+  }
+
   if (applied.length === 0) {
     return { repaired: false, repaired_input: input };
   }

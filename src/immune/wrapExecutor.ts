@@ -1,6 +1,9 @@
 /**
- * Executor Immune Pilot — Wrapper (v2.0)
+ * Executor Immune Pilot — Wrapper (v2.1)
  * 
+ * v2.1 Fix: Escalation and safe-failure flags now correctly propagated
+ * to persisted telemetry, fixing the false 100% repair rate reporting.
+ *
  * Improvements integrated:
  * #1 Context-Aware Rule Selection
  * #2 Compositional Repair Chains
@@ -108,8 +111,9 @@ export interface WrapConfig {
 }
 
 /**
- * Wrap a synergy executor with immune defense+repair (v2.0)
+ * Wrap a synergy executor with immune defense+repair (v2.1)
  * Now uses intelligent repair with all 12 improvements.
+ * v2.1: Fixes escalation/safeFail telemetry propagation.
  */
 export function wrapExecutor(
   executorFn: (ctx: SynergyExecutionContext) => Promise<SynergyResult>,
@@ -137,6 +141,9 @@ export function wrapExecutor(
     let repairTypeFlag: string | null = null;
     let retryAttemptedFlag = false;
     let repairConfidence = 0;
+    // v2.1: Track escalation and safe-failure correctly
+    let escalatedFlag = false;
+    let safeFailFlag = false;
     const startTime = performance.now();
 
     /** Persist repair telemetry for this run */
@@ -145,8 +152,8 @@ export function wrapExecutor(
         executor: executorName,
         total: 1,
         repaired: repairSuccessFlag ? 1 : 0,
-        escalated: 0,
-        safeFail: 0,
+        escalated: escalatedFlag ? 1 : 0,
+        safeFail: safeFailFlag ? 1 : 0,
         repair_attempted: repairAttemptedFlag,
         repair_success: repairSuccessFlag,
         repair_type: repairTypeFlag,
@@ -156,19 +163,15 @@ export function wrapExecutor(
 
     /**
      * v2.0: Intelligent repair + single retry.
-     * Uses schema validation, archetype detection, confidence scoring,
-     * compositional chains, and parallel branching.
      */
     const tryIntelligentRepairAndRetry = async (
       failingInput: Record<string, unknown>,
     ): Promise<SynergyResult | null> => {
       if (repairAttemptedFlag) return null;
 
-      // Use the full intelligent repair pipeline
       const ir = intelligentRepair(executorName, failingInput);
       if (!ir.repaired) return null;
 
-      // #3: Skip retry if confidence is too low
       if (ir.confidence < 0.2) {
         logImmuneEvent(createEvent(executorName, scope, module, 'repair', 'escalated', failingInput,
           `Repair confidence too low (${(ir.confidence * 100).toFixed(0)}%) — skipping retry`, true));
@@ -187,9 +190,7 @@ export function wrapExecutor(
         const post = postcheck(retryResult);
         if (post.valid && retryResult.success) {
           repairSuccessFlag = true;
-          // #4: Record success for learned prioritization
           recordRepairOutcome(executorName, repairTypeFlag, true);
-          // #8: Track outcome
           trackOutcome({
             executor: executorName,
             timestamp: Date.now(),
@@ -209,7 +210,6 @@ export function wrapExecutor(
           await persistTelemetry();
           return retryResult;
         }
-        // Retry ran but failed
         repairSuccessFlag = false;
         recordRepairOutcome(executorName, repairTypeFlag, false);
         trackOutcome({
@@ -238,11 +238,9 @@ export function wrapExecutor(
     if (!preflight.valid) {
       incrementMetric('preflightFailures');
 
-      // v2.0: Intelligent repair
       const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
       if (irResult) return irResult;
 
-      // Legacy scope-specific repair fallback
       incrementMetric('repairAttempts');
       const repairResult = repair(scope, input as Record<string, unknown>, { traceId: ctx.traceId });
 
@@ -257,8 +255,8 @@ export function wrapExecutor(
           return result;
         } catch (err) {
           const errorMsg = err instanceof Error ? err.message : 'unknown error after repair';
-          // #10: Mine escalation pattern
           mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
+          escalatedFlag = true;
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, errorMsg);
           recordOutcome('escalated');
           await persistTelemetry();
@@ -266,6 +264,7 @@ export function wrapExecutor(
         }
       } else {
         mineEscalationPattern(executorName, preflight.reason ?? 'preflight failed', input as Record<string, unknown>);
+        escalatedFlag = true;
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, preflight.reason ?? 'preflight failed');
         recordOutcome('escalated');
         await persistTelemetry();
@@ -286,6 +285,7 @@ export function wrapExecutor(
         if (irResult) return irResult;
 
         mineEscalationPattern(executorName, `Postcheck failed: ${post.reason}`, input as Record<string, unknown>);
+        escalatedFlag = true;
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, `Postcheck failed: ${post.reason}`);
         recordOutcome('escalated');
         await persistTelemetry();
@@ -318,6 +318,7 @@ export function wrapExecutor(
         } catch (retryErr) {
           const retryMsg = retryErr instanceof Error ? retryErr.message : 'unknown';
           mineEscalationPattern(executorName, retryMsg, repairResult.repairedInput);
+          escalatedFlag = true;
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, retryMsg);
           recordOutcome('escalated');
           await persistTelemetry();
@@ -325,6 +326,7 @@ export function wrapExecutor(
         }
       } else {
         mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
+        escalatedFlag = true;
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
         recordOutcome('escalated');
         await persistTelemetry();
