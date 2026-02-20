@@ -8,6 +8,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { log } from '@/lib/system/log';
 import type { EscalationPayload } from './types';
+import { recordClaim, recordResolution } from '@/lib/substrate/encode-module/escalation-telemetry';
 
 export interface EncodeWorkItem {
   escalationId: string;
@@ -65,6 +66,8 @@ export async function claimEscalation(escalationId: string, claimedBy = 'ENCODE'
     log.error('encode', `Failed to claim escalation ${escalationId}: ${error.message}`);
     return false;
   }
+  // Telemetry: record claim
+  recordClaim(escalationId, claimedBy);
   return true;
 }
 
@@ -83,8 +86,11 @@ export async function resolveEscalation(escalationId: string, note: string): Pro
 
   if (error) {
     log.error('encode', `Failed to resolve escalation ${escalationId}: ${error.message}`);
+    recordResolution(escalationId, false, 'manual', undefined, error.message);
     return false;
   }
+  // Telemetry: record successful resolution
+  recordResolution(escalationId, true, 'manual', undefined, note);
   return true;
 }
 

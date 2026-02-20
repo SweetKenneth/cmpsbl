@@ -7,6 +7,7 @@ import type { EscalationPayload } from './types';
 import { supabase } from '@/integrations/supabase/client';
 import { redactContext } from './logger';
 import { log } from '@/lib/system/log';
+import { recordEscalationInflow } from '@/lib/substrate/encode-module/escalation-telemetry';
 
 /**
  * Enqueue an escalation to the immune_escalations table
@@ -37,6 +38,7 @@ export async function enqueueEscalation(payload: EscalationPayload): Promise<voi
       console.error('[IMMUNE:ESCALATION]', JSON.stringify(safePayload));
     } else {
       log.info('immune', `Escalation enqueued for ${payload.executor}`, { eventId: payload.eventId });
+      recordEscalationInflow();
     }
   } catch (err) {
     log.error('immune', `Escalation queue error: ${err instanceof Error ? err.message : 'unknown'}`, { payload: safePayload });

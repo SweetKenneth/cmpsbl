@@ -107,3 +107,15 @@ export {
   type PatternCluster,
   type CandidateRule,
 } from './escalation-learning';
+
+// ENCODE Escalation Resolution Telemetry
+export {
+  recordClaim,
+  recordResolution,
+  recordEscalationInflow,
+  getEscalationTelemetry,
+  formatEscalationTelemetry,
+  resetEscalationTelemetry,
+  type ResolutionEvent,
+  type EscalationTelemetrySnapshot,
+} from '@/lib/substrate/encode-module/escalation-telemetry';
