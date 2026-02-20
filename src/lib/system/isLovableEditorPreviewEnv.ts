@@ -12,18 +12,12 @@ export function isEditorPreviewEnv(): boolean {
     const qs = new URLSearchParams(window.location.search);
     const host = window.location.hostname;
 
-    let isEmbedded = false;
-    try {
-      isEmbedded = window.self !== window.top;
-    } catch {
-      isEmbedded = true;
-    }
-
+    // Only detect Lovable editor preview via URL signals — never use iframe detection,
+    // as that falsely triggers on production embeds and some mobile browsers.
     return (
       qs.has('__lovable_token') || qs.has('__preview_token') ||
       host.includes('lovableproject.com') || host.includes('preview.') ||
-      host.startsWith('id-preview--') ||
-      isEmbedded
+      host.startsWith('id-preview--')
     );
   } catch {
     return false;
