@@ -65,6 +65,67 @@ const TOPIC_TEMPLATES = [
     topic: 'Observability in Autonomous Systems: Watching the Watcher',
     hook: 'If an AI makes a decision and no one monitors it, did it really decide?',
   },
+  // Wave 2 — fresh topics
+  {
+    category: 'cognitiveArchitecture',
+    topic: 'Circuit Breakers in Cognitive Systems: Graceful Degradation by Design',
+    hook: 'The best systems know when to stop trying.',
+  },
+  {
+    category: 'evolutionPatterns',
+    topic: 'Confidence Scoring: How AI Measures Its Own Certainty',
+    hook: 'An AI that doesn\'t know what it doesn\'t know is a dangerous AI.',
+  },
+  {
+    category: 'practicalInsights',
+    topic: 'The Cost of Intelligence: Token Economics in Production AI',
+    hook: 'Every API call has a price. Here\'s how we optimize for value, not volume.',
+  },
+  {
+    category: 'researchFrontiers',
+    topic: 'Multi-Agent Coordination: When AI Systems Collaborate',
+    hook: 'One agent is powerful. A coordinated team of agents is transformative.',
+  },
+  {
+    category: 'developerGuides',
+    topic: 'Terminal-First Architecture: Why CLI Beats GUI for System Control',
+    hook: 'Point-and-click is intuitive. Command-line is powerful.',
+  },
+  {
+    category: 'cognitiveArchitecture',
+    topic: 'Dream Cycles: Offline Learning in Autonomous Systems',
+    hook: 'Your brain consolidates memories while you sleep. AI systems can do the same.',
+  },
+  {
+    category: 'evolutionPatterns',
+    topic: 'Rollback Authority: The Safety Net for Autonomous Change',
+    hook: 'Every autonomous system needs an undo button.',
+  },
+  {
+    category: 'practicalInsights',
+    topic: 'Defense in Depth: Layered Security for AI Platforms',
+    hook: 'No single security measure is sufficient. Layers win.',
+  },
+  {
+    category: 'researchFrontiers',
+    topic: 'Composable Intelligence: Building Complex Behaviors from Simple Primitives',
+    hook: 'The most sophisticated behaviors emerge from the simplest building blocks.',
+  },
+  {
+    category: 'developerGuides',
+    topic: 'Event-Driven AI: Reactive Architectures for Real-Time Systems',
+    hook: 'Polling is dead. Events are the nervous system of modern AI.',
+  },
+  {
+    category: 'cognitiveArchitecture',
+    topic: 'Attention Mechanisms in Production: Focusing AI on What Matters',
+    hook: 'The hardest problem isn\'t processing information—it\'s deciding what to ignore.',
+  },
+  {
+    category: 'practicalInsights',
+    topic: 'Audit Trails for Autonomous Decisions: Accountability at Machine Speed',
+    hook: 'If you can\'t explain why a decision was made, you can\'t trust the system that made it.',
+  },
 ];
 
 serve(async (req) => {
