@@ -23,8 +23,14 @@ export function ShadowMeshToggle() {
         .select("enabled")
         .eq("key", "shadow_mesh_enabled")
         .maybeSingle();
-      setEnabled(data?.enabled ?? false);
+      const isEnabled = data?.enabled ?? false;
+      setEnabled(isEnabled);
       setLoading(false);
+
+      // Auto-start scheduler if flag is already on (resumes after page refresh)
+      if (isEnabled) {
+        startShadowScheduler();
+      }
     })();
   }, []);
 

@@ -2,10 +2,8 @@ import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "next-themes";
 import App from "./App.tsx";
 import "./index.css";
-import { startShadowScheduler } from "@/lib/shadow/scheduler";
-
-// Start shadow mesh scheduler (guarded: no-op when flag is off, idempotent)
-startShadowScheduler();
+// Shadow scheduler is started only via the admin toggle (ShadowMeshToggle.tsx)
+// to avoid firing 20+ DB writes on every page load.
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider
