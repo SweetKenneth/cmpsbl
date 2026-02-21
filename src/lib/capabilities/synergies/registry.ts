@@ -2114,6 +2114,18 @@ export function registerSynergyExecutor(
 }
 
 /**
+ * Force-register an executor even if no synergy definition exists.
+ * Used by shadow mesh stubs for pilot executors that span modules
+ * without formal synergy definitions (COGNITIVE, OPERATIONAL, ORCHESTRATOR).
+ */
+export function forceRegisterExecutor(
+  synergyId: string,
+  executor: SynergyExecutor
+): void {
+  registry.executors.set(synergyId, executor);
+}
+
+/**
  * Get a synergy definition by ID
  */
 export function getSynergy(id: string): SynergyDefinition | undefined {
