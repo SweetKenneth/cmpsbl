@@ -115,10 +115,10 @@ export function CapacityMonitor() {
   const sc = statusConfig[metrics.status];
 
   const cards = [
-    { icon: Users, iconColor: 'text-blue-400', label: 'Developers', value: metrics.activeDevelopers.last24h, suffix: '/ 24h', sub: `${metrics.activeDevelopers.last7d} / 7d • ${metrics.activeDevelopers.total} total`, color: 'blue' },
-    { icon: TrendingUp, iconColor: 'text-green-400', label: 'Requests/min', value: metrics.requestsPerMinute.current, suffix: 'RPM', sub: `Limit: ${formatNumber(metrics.requestsPerMinute.limit)}`, color: 'green' },
-    { icon: Brain, iconColor: 'text-purple-400', label: 'Tokens', value: formatNumber(metrics.tokenConsumption.today), suffix: 'today', sub: `${formatNumber(metrics.tokenConsumption.thisHour)} / hour`, color: 'purple' },
-    { icon: DollarSign, iconColor: 'text-yellow-400', label: 'Cost', value: `$${metrics.costBurnRate.daily.toFixed(2)}`, suffix: 'today', sub: `~$${metrics.costBurnRate.projected.toFixed(2)} projected`, color: 'yellow' },
+    { icon: Users, iconColor: 'text-blue-400', label: 'Developers', value: metrics.activeDevelopers.last24h, suffix: '/ 24h', sub: `${metrics.activeDevelopers.last7d} / 7d • ${metrics.activeDevelopers.total} total`, borderClass: 'border-blue-500/15 hover:border-blue-500/30', bgFrom: 'from-blue-500', iconBg: 'bg-blue-500/10 border-blue-500/25' },
+    { icon: TrendingUp, iconColor: 'text-green-400', label: 'Requests/min', value: metrics.requestsPerMinute.current, suffix: 'RPM', sub: `Limit: ${formatNumber(metrics.requestsPerMinute.limit)}`, borderClass: 'border-green-500/15 hover:border-green-500/30', bgFrom: 'from-green-500', iconBg: 'bg-green-500/10 border-green-500/25' },
+    { icon: Brain, iconColor: 'text-purple-400', label: 'Tokens', value: formatNumber(metrics.tokenConsumption.today), suffix: 'today', sub: `${formatNumber(metrics.tokenConsumption.thisHour)} / hour`, borderClass: 'border-purple-500/15 hover:border-purple-500/30', bgFrom: 'from-purple-500', iconBg: 'bg-purple-500/10 border-purple-500/25' },
+    { icon: DollarSign, iconColor: 'text-yellow-400', label: 'Cost', value: `$${metrics.costBurnRate.daily.toFixed(2)}`, suffix: 'today', sub: `~$${metrics.costBurnRate.projected.toFixed(2)} projected`, borderClass: 'border-yellow-500/15 hover:border-yellow-500/30', bgFrom: 'from-yellow-500', iconBg: 'bg-yellow-500/10 border-yellow-500/25' },
   ];
 
   return (
@@ -172,19 +172,15 @@ export function CapacityMonitor() {
             return (
               <motion.div
                 key={card.label}
-                className={cn("p-4 rounded-xl border transition-all duration-200",
-                  `border-${card.color}-500/15 hover:border-${card.color}-500/30`
-                )}
+                className={cn("p-4 rounded-xl border transition-all duration-200", card.borderClass)}
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + idx * 0.05 }}
                 whileHover={{ y: -2, transition: { duration: 0.15 } }}
               >
-                <div className={cn("absolute inset-0 bg-gradient-to-br rounded-xl opacity-[0.04]", `from-${card.color}-500 to-transparent`)} />
+                <div className={cn("absolute inset-0 bg-gradient-to-br rounded-xl opacity-[0.04]", card.bgFrom, "to-transparent")} />
                 <div className="relative">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center border",
-                      `bg-${card.color}-500/10 border-${card.color}-500/25`
-                    )}>
+                    <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center border", card.iconBg)}>
                       <CardIcon className={cn("w-3.5 h-3.5", card.iconColor)} />
                     </div>
                     <span className="text-[10px] text-muted-foreground/60 font-mono uppercase">{card.label}</span>

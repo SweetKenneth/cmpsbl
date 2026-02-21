@@ -1,5 +1,5 @@
 /**
- * CMPSBL® substrate — OS Surface v10.9.5 ARCHITECT Epoch
+ * CMPSBL® substrate — OS Surface v10.9.7 ARCHITECT Epoch
  * TIER-GATED EDITION — FREE / CREATOR / ARCHITECT / CMPSBL
  * 
  * Performance-optimized with lazy-loaded tabs and memoized dashboard.
@@ -8,27 +8,26 @@
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { useState, lazy, Suspense, memo, useCallback, useEffect } from 'react';
 import {
-  Loader2, Lock, Terminal, AlertTriangle, RefreshCw, FileText,
+  Loader2, Lock, Terminal, AlertTriangle, FileText,
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
   Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna,
-  ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight, Eye,
+  Menu, Shield, Layers, Gauge, ArrowUpRight, Eye,
   LogOut, Home, Network, Crown, Star, Rocket, MessageSquare,
-  Wrench, GitBranch, X
+  Wrench, X
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useUserAgency } from '@/hooks/useUserAgency';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
+import { useMetric } from '@/stores/publicMetricsStore';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { EventStream } from '@/components/substrate-os/EventStream';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
@@ -68,7 +67,7 @@ const ShadowMeshAnalytics = lazy(() => import('@/components/admin/ShadowMeshAnal
 const DefenseAnalytics = lazy(() => import('@/components/substrate-os/DefenseAnalytics').then(m => ({ default: m.DefenseAnalytics })));
 
 // ============================================
-// Tab Loading Fallback — refined
+// Tab Loading Fallback
 // ============================================
 function TabLoadingFallback() {
   return (
@@ -93,7 +92,7 @@ function TabLoadingFallback() {
 }
 
 // ============================================
-// Tab Content Wrapper — consistent container
+// Tab Content Wrapper
 // ============================================
 function TabPane({ children, id }: { children: React.ReactNode; id: string }) {
   return (
@@ -228,8 +227,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Shield,
       tier: 'cmpsbl',
       tabs: [
-        { id: 'security', label: 'Security', icon: Shield, color: 'amber', description: 'Defense · Audit · Backups', tier: 'cmpsbl' },
-        { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'LNCHBL patches', tier: 'cmpsbl' },
+        { id: 'security', label: 'Security', icon: Shield, color: 'amber', description: 'Defense · Audit · Patches · Backups', tier: 'cmpsbl' },
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Admin & advisory', tier: 'cmpsbl' },
       ],
     },
@@ -266,7 +264,7 @@ function TierBadge({ tier, size = 'sm' }: { tier: SubstrateTier; size?: 'sm' | '
 }
 
 // ============================================
-// Upgrade Prompt Component — refined
+// Upgrade Prompt Component
 // ============================================
 function UpgradePrompt({ requiredTier }: { requiredTier: SubstrateTier }) {
   const config = TIER_CONFIG[requiredTier];
@@ -311,7 +309,7 @@ function UpgradePrompt({ requiredTier }: { requiredTier: SubstrateTier }) {
 }
 
 // ============================================
-// Sidebar Navigation — v10.9.5 refined
+// Sidebar Navigation — v10.9.7
 // ============================================
 interface SidebarNavProps {
   groups: TabGroup[];
@@ -325,6 +323,8 @@ interface SidebarNavProps {
 }
 
 function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose, onLogout, userTier, healthScore }: SidebarNavProps) {
+  const version = useMetric('version');
+  
   return (
     <div className={cn(
       "flex flex-col h-full bg-gradient-to-b from-background to-background/95 backdrop-blur-xl border-r border-border/30",
@@ -339,7 +339,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
             </div>
             <div className="min-w-0">
               <div className="text-xs font-bold text-foreground tracking-tight">Substrate</div>
-              <div className="text-[9px] text-muted-foreground/60 font-mono">v10.9.5</div>
+              <div className="text-[9px] text-muted-foreground/60 font-mono">v{version}</div>
             </div>
           </div>
         </div>
@@ -446,7 +446,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
 }
 
 // ============================================
-// Tab Header — refined with breadcrumb
+// Tab Header
 // ============================================
 interface TabHeaderProps {
   icon: React.ElementType;
@@ -498,7 +498,7 @@ function TabHeader({ icon: Icon, title, subtitle, color, tier, badge, action }: 
 }
 
 // ============================================
-// Sub-tab selector component — pill style
+// Sub-tab selector component
 // ============================================
 function SubTabBar({ 
   tabs, active, onChange, accentColor 
@@ -514,11 +514,12 @@ function SubTabBar({
     orange: { active: 'bg-orange-500/15 text-orange-400 border-orange-500/30', dot: 'bg-orange-400' },
     red: { active: 'bg-red-500/15 text-red-400 border-red-500/30', dot: 'bg-red-400' },
     purple: { active: 'bg-purple-500/15 text-purple-400 border-purple-500/30', dot: 'bg-purple-400' },
+    blue: { active: 'bg-blue-500/15 text-blue-400 border-blue-500/30', dot: 'bg-blue-400' },
   };
   const colors = colorMap[accentColor] || colorMap.amber;
 
   return (
-    <div className="flex gap-1 p-1 rounded-xl bg-muted/15 border border-border/15 w-fit mb-6">
+    <div className="flex gap-1 p-1 rounded-xl bg-muted/15 border border-border/15 w-fit mb-6 overflow-x-auto">
       {tabs.map(tab => {
         const isActive = active === tab.id;
         return (
@@ -526,7 +527,7 @@ function SubTabBar({
             key={tab.id}
             onClick={() => onChange(tab.id)}
             className={cn(
-              "relative px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 flex items-center gap-1.5",
+              "relative px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap",
               isActive
                 ? cn(colors.active, "border shadow-sm")
                 : "text-muted-foreground/60 hover:text-foreground hover:bg-muted/30"
@@ -661,19 +662,20 @@ function MergedInfraTab({ enabled }: { enabled: boolean }) {
 }
 
 // ============================================
-// Merged Security Tab
+// Merged Security Tab — now includes Patches & Backups
 // ============================================
 function MergedSecurityTab({ isGovernor, isOperator }: { isGovernor: boolean; isOperator: boolean }) {
-  const [activeSec, setActiveSec] = useState<'defense' | 'immune' | 'audit' | 'backups'>('defense');
+  const [activeSec, setActiveSec] = useState<'defense' | 'immune' | 'audit' | 'patches' | 'backups'>('defense');
 
   return (
     <TabPane id="security">
-      <TabHeader icon={Shield} title="Security Center" subtitle="defense · immune · audit · backups" color="amber" tier="cmpsbl" />
+      <TabHeader icon={Shield} title="Security Center" subtitle="defense · immune · audit · patches · backups" color="amber" tier="cmpsbl" />
       <SubTabBar
         tabs={[
           { id: 'defense', label: 'Defense', icon: Shield },
           { id: 'immune', label: 'Shadow Mesh', icon: Network },
           { id: 'audit', label: 'Audit Gate', icon: FileText },
+          { id: 'patches', label: 'Patches', icon: Shield },
           { id: 'backups', label: 'Backups', icon: HardDrive },
         ]}
         active={activeSec}
@@ -690,6 +692,7 @@ function MergedSecurityTab({ isGovernor, isOperator }: { isGovernor: boolean; is
             </div>
           )}
           {activeSec === 'audit' && <AuditTab key="audit" />}
+          {activeSec === 'patches' && <PatchAuthoringTab key="patches" />}
           {activeSec === 'backups' && <BackupRestorePanel key="backups" enabled={isOperator} />}
         </AnimatePresence>
       </Suspense>
@@ -734,6 +737,9 @@ const DashboardContent = memo(function DashboardContent({
 }: { 
   userTier: SubstrateTier; isOperator: boolean; isCritical: boolean; onOpenTerminal: () => void;
 }) {
+  const healthScore = useSubstrateHealthScore();
+  const version = useMetric('version');
+  
   return (
     <div className="flex flex-col xl:flex-row gap-6 items-start">
       {/* Main column */}
@@ -772,14 +778,14 @@ const DashboardContent = memo(function DashboardContent({
             <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Runtime</span>
           </div>
           <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-            21 autonomous modules composing, healing, and learning in real-time.
+            {healthScore.totalModules} autonomous modules composing, healing, and learning in real-time.
           </p>
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { label: 'Modules', value: '21' },
-              { label: 'Providers', value: '7' },
-              { label: 'Uptime', value: '99.9%' },
-              { label: 'Epoch', value: 'v10.9' },
+              { label: 'Modules', value: `${healthScore.activeCount}/${healthScore.totalModules}` },
+              { label: 'Health', value: `${healthScore.healthScore}%` },
+              { label: 'Status', value: healthScore.isHealthy ? 'Optimal' : healthScore.isDegraded ? 'Degraded' : 'Critical' },
+              { label: 'Epoch', value: `v${version}` },
             ].map(s => (
               <div key={s.label} className="rounded-lg bg-muted/15 border border-border/15 px-2.5 py-2 text-center">
                 <div className="text-sm font-bold font-mono text-foreground">{s.value}</div>
@@ -829,6 +835,7 @@ export default function SubstrateOS() {
   const { role, isOperator, isGovernor, loading: roleLoading } = useUserRole();
   const { data: userAgency, isLoading: agencyLoading } = useUserAgency();
   const healthScore = useSubstrateHealthScore();
+  const version = useMetric('version');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
@@ -898,21 +905,14 @@ export default function SubstrateOS() {
           <div className="space-y-1.5">
             <p className="text-sm font-semibold font-mono text-cyan-400 tracking-wide">Cognitive Substrate</p>
             <div className="flex items-center justify-center gap-1.5">
-              <motion.div 
-                className="w-1 h-1 rounded-full bg-cyan-400"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 1.2, repeat: Infinity, delay: 0 }}
-              />
-              <motion.div 
-                className="w-1 h-1 rounded-full bg-cyan-400"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 1.2, repeat: Infinity, delay: 0.2 }}
-              />
-              <motion.div 
-                className="w-1 h-1 rounded-full bg-cyan-400"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 1.2, repeat: Infinity, delay: 0.4 }}
-              />
+              {[0, 0.2, 0.4].map((delay) => (
+                <motion.div 
+                  key={delay}
+                  className="w-1 h-1 rounded-full bg-cyan-400"
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1.2, repeat: Infinity, delay }}
+                />
+              ))}
             </div>
           </div>
         </motion.div>
@@ -929,7 +929,7 @@ export default function SubstrateOS() {
         keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'AI runtime', 'cognitive orchestration']}
       />
 
-      {/* Ambient background — very subtle */}
+      {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/[0.015] rounded-full blur-[150px]" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-fuchsia-500/[0.015] rounded-full blur-[130px]" />
@@ -1143,27 +1143,17 @@ export default function SubstrateOS() {
 
             {activeTab === 'agency' && hasAccessToCurrentTab && userAgency && (
               <TabPane id="agency">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
-                      <Building2 className="w-5 h-5 text-blue-400" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h2 className="text-lg font-bold tracking-tight">{userAgency.name}</h2>
-                        <TierBadge tier="cmpsbl" size="xs" />
-                      </div>
-                      <p className="text-[10px] text-muted-foreground/60 font-mono">{userAgency.status === 'deployed' ? 'deployed • active' : userAgency.status || 'pending'}</p>
-                    </div>
-                  </div>
-                  <Link
-                    to={userAgency.slug ? `/a/${userAgency.slug}` : `/agency/${userAgency.id}`}
-                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 hover:bg-blue-500/25 transition-all text-sm font-medium"
-                  >
-                    Open Portal
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
+                <TabHeader icon={Building2} title={userAgency.name} subtitle={userAgency.status === 'deployed' ? 'deployed • active' : userAgency.status || 'pending'} color="blue" tier="cmpsbl"
+                  action={
+                    <Link
+                      to={userAgency.slug ? `/a/${userAgency.slug}` : `/agency/${userAgency.id}`}
+                      className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 hover:bg-blue-500/25 transition-all text-sm font-medium"
+                    >
+                      Open Portal
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </Link>
+                  }
+                />
                 <Card className="border border-blue-500/15 bg-muted/5 backdrop-blur-xl">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -1204,13 +1194,6 @@ export default function SubstrateOS() {
               <MergedSecurityTab isGovernor={isGovernor} isOperator={isOperator} />
             )}
 
-            {activeTab === 'patches' && hasAccessToCurrentTab && (
-              <TabPane id="patches">
-                <TabHeader icon={Shield} title="Patch Distribution" subtitle="author & distribute LNCHBL patches" color="blue" tier="cmpsbl" />
-                <Suspense fallback={<TabLoadingFallback />}><PatchAuthoringTab /></Suspense>
-              </TabPane>
-            )}
-
             {activeTab === 'governor' && hasAccessToCurrentTab && (
               <MergedGovernorTab isGovernor={isGovernor} />
             )}
@@ -1230,7 +1213,7 @@ export default function SubstrateOS() {
               <span>CMPSBL®</span>
             </div>
             <span className="text-muted-foreground/20">·</span>
-            <span>v10.9.5</span>
+            <span>v{version}</span>
             <span className="text-muted-foreground/20">·</span>
             <span>{healthScore.activeCount}/{healthScore.totalModules} modules</span>
             <span className="text-muted-foreground/20">·</span>
