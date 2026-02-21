@@ -18,6 +18,11 @@ import {
   getInferredQualifier,
   type TruthMode,
 } from '@/lib/substrate/health-registry';
+import {
+  queryMetricsForDecode,
+  formatDecodeResponse,
+  getDecodeMode,
+} from '@/core/goal';
 
 interface UseDecodeOptions {
   /** Whether to invoke substrate modules on each query */
@@ -140,11 +145,17 @@ export function useDecodeChat(sessionId?: string) {
         const rawReply = data?.reply || 'I received your thought.';
         const sanitized = sanitizeClocklessTerminology(rawReply);
 
+        // GOAL: Query metrics for telemetry-backed responses
+        const metricsResponse = await queryMetricsForDecode();
+
         // Truth Boundary: tag infrastructure references with provenance
         const boundary = attachTruthBoundary(sanitized, 'decode');
-        const reply = boundary.truth_mode === 'inferred_context'
+        let reply = boundary.truth_mode === 'inferred_context'
           ? `${getInferredQualifier()} ${sanitized}`
           : sanitized;
+
+        // Apply GOAL formatting (snapshot citation in STRICT mode, mismatch warnings)
+        reply = formatDecodeResponse(reply, metricsResponse);
 
         setMessages(prev => [...prev, {
           role: 'assistant',
@@ -156,6 +167,9 @@ export function useDecodeChat(sessionId?: string) {
             module: 'decode',
             truth_mode: boundary.truth_mode,
             attribution: boundary.attribution,
+            decodeMode: getDecodeMode(),
+            snapshotId: metricsResponse.snapshot?.snapshotId ?? null,
+            integrityValid: metricsResponse.integrity?.valid ?? null,
           }
         }]);
         return response;
