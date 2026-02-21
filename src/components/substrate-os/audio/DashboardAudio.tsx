@@ -83,6 +83,7 @@ import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { AmbientMusicPlayer } from './AmbientMusicPlayer';
+import { RadioPlayer } from '@/components/RadioPlayer';
 
 function DesktopAudioControls({ className }: { className?: string }) {
   const { settings, toggleEnabled, updateSettings } = useSoundSettings();
@@ -113,6 +114,9 @@ function DesktopAudioControls({ className }: { className?: string }) {
       
       {/* Ambient Music */}
       <AmbientMusicPlayer />
+      
+      {/* CMPSBL Radio Broadcast */}
+      <RadioPlayer />
       
       {/* Audio Settings */}
       <div className="relative">
