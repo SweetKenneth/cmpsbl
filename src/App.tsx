@@ -109,6 +109,7 @@ const CognitivesSuccess = lazy(() => import("./pages/CognitivesSuccess"));
 const CognitivesDownload = lazy(() => import("./pages/CognitivesDownload"));
 const AdminCognitiveUploads = lazy(() => import("./pages/AdminCognitiveUploads"));
 const STierDemos = lazy(() => import("./pages/STierDemos"));
+const OwnerReports = lazy(() => import("./pages/admin/OwnerReports"));
 
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
@@ -441,6 +442,7 @@ const App = () => {
                         {/* Admin routes */}
                         <Route path="/admin/patches" element={<AdminPatches />} />
                         <Route path="/admin/shadow-mesh" element={<ShadowMeshPage />} />
+                        <Route path="/admin/owner-reports" element={<OwnerReports />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         
