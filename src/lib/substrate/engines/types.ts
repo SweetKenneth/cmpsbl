@@ -1,6 +1,6 @@
 /**
  * Cognitive Engine Types
- * v10.5.4 ARCHITECT Epoch — 76 Engines + 24 Meta-Engines
+ * v10.9.0 ARCHITECT Epoch — 80 Engines + 26 Meta-Engines
  * 
  * Engines consolidate related capabilities into compound execution units.
  * This architecture provides:
@@ -9,7 +9,7 @@
  * - Simplified API surface for consumers
  * - IP protection through orchestration complexity
  * 
- * v10.5.4 covers 400 capabilities across 76 engines + 24 meta-engines
+ * v10.9.0 covers 400+ capabilities across 80 engines + 26 meta-engines
  */
 
 import type { CapabilityId, ModuleLayer } from '../capabilities';
@@ -173,7 +173,16 @@ export type EngineId =
   | 'compliance_audit_engine'      // AUDIT: immutable logs, hash chains, data lineage, compliance reporting
   | 'zero_trust_engine'            // IDENTITY: SSO federation, tenant isolation, token lifecycle, device trust
   | 'finops_engine'                // ECONOMY: usage metering, billing aggregation, cost anomaly, budget governance
-  | 'resilience_lab';              // SANDBOX: ephemeral envs, chaos injection, load gen, regression detection
+  | 'resilience_lab'               // SANDBOX: ephemeral envs, chaos injection, load gen, regression detection
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // v10.9.0 ENGINES — 4 Discovered High-Value Engines
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  | 'governor_engine'              // GOVERNOR: policy enforcement, rate governance, capability gating, tier enforcement
+  | 'immune_engine'                // ENCODE: immune system, repair cascades, graduated autonomy, rule propagation
+  | 'salience_engine'              // BRAIN+MEMORY: unified salience scoring, cross-module consensus, reinforcement decay
+  | 'temporal_engine';             // BRAIN+DREAM: time-series reasoning, temporal causal chains, chronological synthesis
 
 export interface EngineDefinition {
   id: EngineId;

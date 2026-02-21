@@ -1699,11 +1699,79 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     cacheable: false,
     capabilityCount: 9,
   },
-};
 
-// ============================================================================
-// REGISTRY ACCESS FUNCTIONS
-// ============================================================================
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DISCOVERED HIGH-VALUE ENGINES (4) — v10.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  governor_engine: {
+    id: 'governor_engine',
+    name: 'Governor Engine',
+    description: 'GOVERNOR module: policy enforcement, capability gating, tier-based access control, rate governance, and escalation routing. The substrate\'s constitutional enforcement layer.',
+    category: 'governance',
+    capabilities: ['policy_enforcer', 'capability_gate', 'tier_enforcement', 'rate_governor', 'escalation_router', 'consent_validator', 'governance_audit_trail'],
+    primaryModules: ['GOVERNOR', 'CORTEX', 'ACCESS'],
+    layer: 'Orchestrator',
+    synergyMultiplier: 3.2,
+    complexityScore: 10,
+    autonomyLevel: 'autonomous',
+    executionMode: 'adaptive',
+    averageLatencyMs: 35,
+    cacheable: false,
+    capabilityCount: 7,
+  },
+
+  immune_engine: {
+    id: 'immune_engine',
+    name: 'Immune Engine',
+    description: 'ENCODE module: graduated autonomy repair cascades, deterministic repair strategies, shared rule registry, auto-rollback, adversarial mutation testing, and escalation learning loops.',
+    category: 'autonomy',
+    capabilities: ['repair_cascade', 'deterministic_repair', 'shared_rule_registry', 'auto_rollback', 'adversarial_mutation_tester', 'escalation_learning_loop', 'structural_score_mapper'],
+    primaryModules: ['ENCODE', 'SYSTEM', 'DEFENSE'],
+    layer: 'infrastructure',
+    synergyMultiplier: 3.5,
+    complexityScore: 10,
+    autonomyLevel: 'autonomous',
+    executionMode: 'adaptive',
+    averageLatencyMs: 45,
+    cacheable: false,
+    capabilityCount: 7,
+  },
+
+  salience_engine: {
+    id: 'salience_engine',
+    name: 'Salience Engine',
+    description: 'Unified salience scoring across BRAIN and MEMORY: confidence weighting, recency decay, user reinforcement (SM-2), cross-module consensus, frequency analysis, and type-based importance.',
+    category: 'cognitive',
+    capabilities: ['confidence_scorer', 'recency_decay_calculator', 'reinforcement_tracker', 'cross_module_consensus', 'frequency_analyzer', 'type_weight_resolver', 'attention_relevance_scorer'],
+    primaryModules: ['BRAIN', 'MEMORY', 'DREAM'],
+    layer: 'Cognitive',
+    synergyMultiplier: 3.0,
+    complexityScore: 9,
+    autonomyLevel: 'autonomous',
+    executionMode: 'parallel',
+    averageLatencyMs: 30,
+    cacheable: true,
+    capabilityCount: 7,
+  },
+
+  temporal_engine: {
+    id: 'temporal_engine',
+    name: 'Temporal Engine',
+    description: 'Time-series reasoning across BRAIN and DREAM: temporal causal chains, chronological event synthesis, time-aware pattern detection, lifecycle state prediction, and temporal memory indexing.',
+    category: 'intelligence',
+    capabilities: ['temporal_causal_chain', 'chronological_synthesis', 'time_aware_pattern_detector', 'lifecycle_predictor', 'temporal_memory_indexer', 'decay_curve_optimizer'],
+    primaryModules: ['BRAIN', 'DREAM', 'VISION'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.8,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'sequential',
+    averageLatencyMs: 140,
+    cacheable: true,
+    capabilityCount: 6,
+  },
+};
 
 export function getEngine(id: EngineId): EngineDefinition | undefined {
   return ENGINE_REGISTRY[id];
@@ -1785,10 +1853,10 @@ export function getEngineSummary() {
 export const ENGINE_IDS: EngineId[] = Object.keys(ENGINE_REGISTRY) as EngineId[];
 
 export const ENGINES_BY_CATEGORY: Record<EngineCategory, EngineId[]> = {
-  cognitive: ['reasoning_engine', 'learning_engine', 'memory_engine', 'foresight_engine', 'metacognition_engine', 'hypothesis_engine', 'deep_cognition_engine'],
+  cognitive: ['reasoning_engine', 'learning_engine', 'memory_engine', 'foresight_engine', 'metacognition_engine', 'hypothesis_engine', 'deep_cognition_engine', 'salience_engine'],
   operational: ['resilience_engine', 'optimization_engine', 'orchestration_engine', 'scheduling_engine', 'sandbox_engine', 'resilience_lab'],
-  intelligence: ['synthesis_engine', 'adaptation_engine', 'insight_engine', 'prediction_engine'],
-  governance: ['compliance_engine', 'quality_engine', 'audit_engine', 'compliance_audit_engine'],
+  intelligence: ['synthesis_engine', 'adaptation_engine', 'insight_engine', 'prediction_engine', 'temporal_engine'],
+  governance: ['compliance_engine', 'quality_engine', 'audit_engine', 'compliance_audit_engine', 'governor_engine'],
   security: ['threat_engine', 'defense_engine', 'trust_engine', 'attack_surface_engine', 'incident_engine', 'prompt_safety_engine', 'policy_access_engine', 'zero_trust_engine'],
   evolution: ['evolution_engine', 'modernization_engine', 'technical_debt_engine'],
   communication: ['broadcast_engine', 'event_engine', 'saga_engine', 'delivery_orchestrator'],
@@ -1796,7 +1864,7 @@ export const ENGINES_BY_CATEGORY: Record<EngineCategory, EngineId[]> = {
   analytics: ['monitoring_engine', 'capacity_engine', 'observability_engine'],
   experience: ['accessibility_engine', 'personalization_engine'],
   knowledge: ['graph_engine', 'context_engine', 'knowledge_retrieval_engine'],
-  autonomy: ['self_healing_engine', 'self_documentation_engine'],
+  autonomy: ['self_healing_engine', 'self_documentation_engine', 'immune_engine'],
   creativity: ['imagination_engine', 'innovation_engine', 'dream_engine'],
   perception: ['intent_engine', 'emotion_engine', 'multimodal_engine', 'dialogue_engine'],
   resource: ['budget_engine', 'quota_engine', 'entitlement_engine', 'finops_engine'],

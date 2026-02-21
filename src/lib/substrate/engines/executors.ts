@@ -302,7 +302,11 @@ export const executeZeroTrustEngine: EngineExecutor = (ctx) => executeEngine(ctx
 export const executeFinopsEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeResilienceLab: EngineExecutor = (ctx) => executeEngine(ctx);
 
-// ============================================================================
+// v10.9.0 Discovered High-Value Engines (4)
+export const executeGovernorEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeImmuneEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeSalienceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeTemporalEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 // EXECUTOR REGISTRY
 // ============================================================================
 
@@ -432,6 +436,12 @@ export const ENGINE_EXECUTORS: Record<EngineId, EngineExecutor> = {
   zero_trust_engine: executeZeroTrustEngine,
   finops_engine: executeFinopsEngine,
   resilience_lab: executeResilienceLab,
+
+  // v10.9.0 Discovered High-Value Engines (4)
+  governor_engine: executeGovernorEngine,
+  immune_engine: executeImmuneEngine,
+  salience_engine: executeSalienceEngine,
+  temporal_engine: executeTemporalEngine,
 };
 
 // ============================================================================

@@ -228,6 +228,10 @@ export const executeDeepCognitionNexus: MetaEngineExecutor = (ctx) => executeMet
 export const executeEnterpriseTrustFabric: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executePlatformEconomicsEngine: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
+// v10.9.0 additions — Discovered High-Value Meta-Engines
+export const executeMemoryIntelligenceFabric: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeImmuneAutonomyMesh: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -262,6 +266,9 @@ export const META_ENGINE_EXECUTORS: Record<MetaEngineId, MetaEngineExecutor> = {
   // v9.0.0 additions — Infrastructure Cross-Module Meta-Engines
   enterprise_trust_fabric: executeEnterpriseTrustFabric,
   platform_economics_engine: executePlatformEconomicsEngine,
+  // v10.9.0 additions — Discovered High-Value Meta-Engines
+  memory_intelligence_fabric: executeMemoryIntelligenceFabric,
+  immune_autonomy_mesh: executeImmuneAutonomyMesh,
 };
 
 // ============================================================================

@@ -135,7 +135,7 @@ export function getCatalogSummary() {
     publicMetaEngines: publicMetaEngines.length,
     internalMetaEngines: allMetaEngines.length - publicMetaEngines.length,
     categories: getEngineCategories().length,
-    totalCapabilities: 269,
+    totalCapabilities: 379,
     freeEngines: publicEngines.filter(e => e.visibility === 'free').length,
     freeMetaEngines: publicMetaEngines.filter(m => m.visibility === 'free').length,
     standardEngines: publicEngines.filter(e => e.visibility === 'standard').length,
