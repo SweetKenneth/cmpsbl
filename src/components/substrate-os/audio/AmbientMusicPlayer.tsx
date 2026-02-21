@@ -15,8 +15,11 @@ import composableDreamin from '@/assets/audio/Composable_Dreamin.mp3';
 import composableDreamin2 from '@/assets/audio/Composable_Dreamin_2.mp3';
 import clockless from '@/assets/audio/Clockless.mp3';
 import clockless4 from '@/assets/audio/Clockless-4.mp3';
+import clockless5 from '@/assets/audio/Clockless-5.mp3';
 import composable2 from '@/assets/audio/Composable-2.mp3';
+import composable3 from '@/assets/audio/Composable-3.mp3';
 import composableCompounding2 from '@/assets/audio/Composable_Compounding-2.mp3';
+import composableCompounding3 from '@/assets/audio/Composable_Compounding-3.mp3';
 
 // ============================================================================
 // AMBIENT TRACKS
@@ -47,16 +50,34 @@ const AMBIENT_TRACKS = [
     url: clockless4,
   },
   {
+    id: 'clockless-5',
+    name: 'Clockless V',
+    description: 'Evolved clockless resonance',
+    url: clockless5,
+  },
+  {
     id: 'composable-2',
     name: 'Composable II',
     description: 'Composable continuation',
     url: composable2,
   },
   {
+    id: 'composable-3',
+    name: 'Composable III',
+    description: 'Third composable movement',
+    url: composable3,
+  },
+  {
     id: 'composable-compounding-2',
     name: 'Composable Compounding II',
     description: 'Compounding resonance',
     url: composableCompounding2,
+  },
+  {
+    id: 'composable-compounding-3',
+    name: 'Composable Compounding III',
+    description: 'Deep compounding synthesis',
+    url: composableCompounding3,
   },
 ];
 

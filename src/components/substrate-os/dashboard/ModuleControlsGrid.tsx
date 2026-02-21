@@ -27,7 +27,7 @@ import {
 } from '@/hooks/useSubstrateOSEnhanced';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision, cortex, inclusive } from '@/lib/substrate';
+import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
 
 interface ModuleControlsGridProps {
   enabled: boolean;
@@ -178,7 +178,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: encodeStatus,
       metrics: [{ label: 'Engine', value: encodeStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Encode: Engine ready'); },
+      onAction: async () => { const r = await encodeMod.status(); toast.info(`Encode: ${r.success ? 'Engine ready' : 'Check failed'}`); },
     },
     // Administrative Layer
     {
@@ -225,7 +225,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: systemStatusQuery,
       metrics: [{ label: 'Plane', value: systemStatusQuery.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Atlas: Control plane active'); },
+      onAction: async () => { const r = await system.status(); toast.info(`Atlas: ${r.success ? 'Control plane active' : 'Check failed'}`); },
     },
     {
       id: 'cortex', name: 'CORTEX', layer: 'orchestrator' as const, icon: GitBranch,
@@ -250,7 +250,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: memoryStatus,
       metrics: [{ label: 'Module', value: memoryStatus.data?.success ? 'Online' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Memory: Module online'); },
+      onAction: async () => { const r = await memoryMod.status(); toast.info(`Memory: ${r.success ? 'Module online' : 'Check failed'}`); },
     },
     {
       id: 'relay', name: 'RELAY', layer: 'infrastructure' as const, icon: Send,
@@ -259,7 +259,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: relayStatus,
       metrics: [{ label: 'Router', value: relayStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Relay: Router active'); },
+      onAction: async () => { const r = await relayMod.status(); toast.info(`Relay: ${r.success ? 'Router active' : 'Check failed'}`); },
     },
     {
       id: 'audit', name: 'AUDIT', layer: 'infrastructure' as const, icon: ClipboardCheck,
@@ -268,7 +268,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: auditStatus,
       metrics: [{ label: 'Logger', value: auditStatus.data?.success ? 'Recording' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Audit: Logger recording'); },
+      onAction: async () => { const r = await auditMod.status(); toast.info(`Audit: ${r.success ? 'Logger recording' : 'Check failed'}`); },
     },
     {
       id: 'identity', name: 'IDENTITY', layer: 'infrastructure' as const, icon: Fingerprint,
@@ -277,7 +277,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: identityStatus,
       metrics: [{ label: 'Auth', value: identityStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Identity: Auth active'); },
+      onAction: async () => { const r = await identityMod.status(); toast.info(`Identity: ${r.success ? 'Auth active' : 'Check failed'}`); },
     },
     {
       id: 'economy', name: 'ECONOMY', layer: 'infrastructure' as const, icon: DollarSign,
@@ -286,7 +286,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: economyStatus,
       metrics: [{ label: 'Budget', value: economyStatus.data?.success ? 'Tracking' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Economy: Budget tracking'); },
+      onAction: async () => { const r = await economyMod.status(); toast.info(`Economy: ${r.success ? 'Budget tracking' : 'Check failed'}`); },
     },
     {
       id: 'sandbox', name: 'SANDBOX', layer: 'infrastructure' as const, icon: Box,
@@ -295,7 +295,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: sandboxStatus,
       metrics: [{ label: 'Environment', value: sandboxStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Sandbox: Environment ready'); },
+      onAction: async () => { const r = await sandboxMod.status(); toast.info(`Sandbox: ${r.success ? 'Environment ready' : 'Check failed'}`); },
     },
   ];
 
