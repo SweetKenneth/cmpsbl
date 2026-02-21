@@ -1,5 +1,5 @@
 /**
- * CMPSBL® substrate — OS Surface v10.9.7 ARCHITECT Epoch
+ * Clockless Cognitive Reality — CMPSBL Substrate Dashboard
  * TIER-GATED EDITION — FREE / CREATOR / ARCHITECT / CMPSBL
  * 
  * Performance-optimized with lazy-loaded tabs and memoized dashboard.
@@ -338,8 +338,8 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
               <Terminal className="w-3.5 h-3.5 text-cyan-400" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-foreground tracking-tight">Substrate</div>
-              <div className="text-[9px] text-muted-foreground/60 font-mono">v{version}</div>
+              <div className="text-xs font-bold text-foreground tracking-tight">Clockless</div>
+              <div className="text-[9px] text-muted-foreground/60 font-mono">substrate v{version}</div>
             </div>
           </div>
         </div>
@@ -558,7 +558,7 @@ function MergedModulesTab({ enabled }: { enabled: boolean }) {
   
   return (
     <TabPane id="modules">
-      <TabHeader icon={Cpu} title="Substrate Modules" subtitle="core kernel · ripple bus · access identity" color="orange" tier="architect" />
+      <TabHeader icon={Cpu} title="Substrate Modules" subtitle="core · ripple · access" color="orange" tier="architect" />
       <SubTabBar
         tabs={[
           { id: 'core', label: 'Core Kernel', icon: Cpu },
@@ -776,10 +776,10 @@ const DashboardContent = memo(function DashboardContent({
             <div className="w-6 h-6 rounded-md bg-primary/10 border border-primary/15 flex items-center justify-center">
               <Activity className="w-3 h-3 text-primary" />
             </div>
-            <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Runtime</span>
+            <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Substrate</span>
           </div>
           <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-            {healthScore.totalModules} autonomous modules composing, healing, and learning in real-time.
+            {healthScore.totalModules} substrate modules persisting, healing, and evolving autonomously.
           </p>
           <div className="grid grid-cols-2 gap-1.5">
             {[
@@ -816,7 +816,7 @@ const DashboardContent = memo(function DashboardContent({
             <Rocket className="w-5 h-5 text-cyan-400 mx-auto" />
             <h3 className="text-sm font-semibold text-foreground">Unlock Live Stream</h3>
             <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-              Upgrade to Creator for real-time substrate events.
+              Upgrade to Creator for real-time cognitive events.
             </p>
             <Button size="sm" variant="outline" className="border-cyan-500/30 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 w-full text-xs" asChild>
               <Link to="/pricing">View Plans</Link>
@@ -904,7 +904,7 @@ export default function SubstrateOS() {
             />
           </div>
           <div className="space-y-1.5">
-            <p className="text-sm font-semibold font-mono text-cyan-400 tracking-wide">Cognitive Substrate</p>
+            <p className="text-sm font-semibold font-mono text-cyan-400 tracking-wide">Clockless Reality</p>
             <div className="flex items-center justify-center gap-1.5">
               {[0, 0.2, 0.4].map((delay) => (
                 <motion.div 
@@ -924,10 +924,10 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Clockless Cognitive Reality — CMPSBL Substrate | CMPSBL®"
-        description="Explore the CMPSBL Substrate: 21 runtime modules, real-time telemetry, and autonomous orchestration powering cognitive workloads."
+        title="Clockless Cognitive Reality — CMPSBL Substrate Dashboard | CMPSBL®"
+        description="The Clockless Cognitive Reality dashboard: 21 autonomous modules persisting, evolving, and orchestrating intelligence in real-time via the CMPSBL Substrate."
         canonical="https://cmpsbl.com/os"
-        keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'AI runtime', 'cognitive orchestration']}
+        keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'persistent intelligence', 'cognitive orchestration']}
       />
 
       {/* Ambient background */}
@@ -1055,9 +1055,9 @@ export default function SubstrateOS() {
                       <span className="text-muted-foreground/30">•</span>
                       <TierBadge tier="architect" />
                     </div>
-                    <h3 className="text-base font-bold text-foreground">Unlock the full substrate</h3>
+                    <h3 className="text-base font-bold text-foreground">Unlock the full Cognitive Reality</h3>
                     <p className="text-sm text-muted-foreground/70 max-w-md mx-auto leading-relaxed">
-                      Terminal, cognitives, engines, Intent Mesh, Cortex, and full module control.
+                      Terminal, cognitives, engines, Intent Mesh, Cortex, and full substrate control.
                     </p>
                     <Button variant="outline" className="border-cyan-500/30 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20" asChild>
                       <Link to="/pricing">
@@ -1073,7 +1073,7 @@ export default function SubstrateOS() {
             {activeTab === 'terminal' && hasAccessToCurrentTab && (
               <motion.div key="terminal" className="container mx-auto px-3 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <TabHeader 
-                  icon={Terminal} title="Substrate Terminal" subtitle="cognitive command interface" color="emerald" tier="creator"
+                  icon={Terminal} title="Terminal" subtitle="cognitive command interface" color="emerald" tier="creator"
                   badge={
                     <Badge variant="outline" className={cn(
                       isOperator ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10" : "border-amber-500/40 text-amber-400 bg-amber-500/10"
@@ -1211,7 +1211,7 @@ export default function SubstrateOS() {
                 "w-1.5 h-1.5 rounded-full animate-pulse",
                 healthScore.healthScore >= 80 ? "bg-emerald-500" : healthScore.healthScore >= 50 ? "bg-amber-500" : "bg-red-500"
               )} />
-              <span>CMPSBL®</span>
+              <span>Clockless®</span>
             </div>
             <span className="text-muted-foreground/20">·</span>
             <span>v{version}</span>
