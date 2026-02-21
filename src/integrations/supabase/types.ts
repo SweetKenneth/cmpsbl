@@ -10057,6 +10057,54 @@ export type Database = {
         }
         Relationships: []
       }
+      radio_broadcasts: {
+        Row: {
+          audio_url: string | null
+          broadcast_date: string
+          created_at: string
+          duration_seconds: number | null
+          error_message: string | null
+          generation_cost_estimate: number | null
+          id: string
+          regeneration_attempts: number | null
+          script_json: Json
+          status: string
+          tts_duration_ms: number | null
+          updated_at: string
+          voice_mapping: Json | null
+        }
+        Insert: {
+          audio_url?: string | null
+          broadcast_date?: string
+          created_at?: string
+          duration_seconds?: number | null
+          error_message?: string | null
+          generation_cost_estimate?: number | null
+          id?: string
+          regeneration_attempts?: number | null
+          script_json?: Json
+          status?: string
+          tts_duration_ms?: number | null
+          updated_at?: string
+          voice_mapping?: Json | null
+        }
+        Update: {
+          audio_url?: string | null
+          broadcast_date?: string
+          created_at?: string
+          duration_seconds?: number | null
+          error_message?: string | null
+          generation_cost_estimate?: number | null
+          id?: string
+          regeneration_attempts?: number | null
+          script_json?: Json
+          status?: string
+          tts_duration_ms?: number | null
+          updated_at?: string
+          voice_mapping?: Json | null
+        }
+        Relationships: []
+      }
       resilience_ledger: {
         Row: {
           auto_fix_applied: boolean | null
