@@ -1,13 +1,78 @@
 /**
- * Shadow Mesh — Adversarial Input Mutation (v3)
+ * Shadow Mesh — Adversarial Input Mutation (v4)
  * 
- * Enhanced with module-specific mutations for all 13 pilot executors:
- * INCLUSIVE, COGNITIVE, OPERATIONAL, ORCHESTRATOR
+ * v4: Per-executor seed inputs for balanced, fair probing across all 20 executors.
+ * Each executor category gets domain-specific seed inputs so probing is
+ * even and representative, not biased toward INCLUSIVE-shaped inputs.
  */
 
 /**
+ * Get a domain-specific seed input for a given executor.
+ * Ensures each executor is probed with inputs shaped for its expected schema.
+ */
+export function getExecutorSeedInput(executorName: string): Record<string, unknown> {
+  // INCLUSIVE executors — use content/url/target
+  if (['adaptive-ui', 'cognitive-load-optimization', 'comprehensive-accessibility-audit',
+       'personalized-accessibility-engine', 'inclusive-content'].includes(executorName)) {
+    return { content: 'Test page content', url: 'https://example.com', target: 'self', wcagLevel: 'AA', userId: 'user-1' };
+  }
+  // COGNITIVE executors — use query/signal/prompt
+  if (executorName === 'reasoning-engine') {
+    return { query: 'Analyze pattern consistency', context: { domain: 'test' }, depth: 3 };
+  }
+  if (executorName === 'learning-engine') {
+    return { signal: 'Positive reinforcement signal', domain: 'cognitive', reinforcement: 0.8 };
+  }
+  if (executorName === 'imagination-engine') {
+    return { prompt: 'Generate scenario for edge case', mode: 'GENERATE', creativity: 0.7 };
+  }
+  // OPERATIONAL executors — use event/action
+  if (executorName === 'relay-event-dispatcher') {
+    return { event: 'system.health.check', payload: { key: 'value' }, priority: 1 };
+  }
+  if (executorName === 'economy-cost-tracker') {
+    return { action: 'compute', module: 'brain', tokens: 500, computeMs: 120 };
+  }
+  if (executorName === 'audit-compliance-check') {
+    return { content: 'Audit this page for compliance', standard: 'WCAG', domain: 'example.com' };
+  }
+  // ORCHESTRATOR executors — use intent/proposal
+  if (executorName === 'mesh-pipeline-resolver') {
+    return { intent: 'Resolve accessibility pipeline', modules: ['inclusive', 'brain'], priority: 2 };
+  }
+  if (executorName === 'seba-proposal-evaluator') {
+    return { proposal: 'Improve cognitive latency by 15%', riskLevel: 'LOW', confidence: 0.85 };
+  }
+  // INFRASTRUCTURE executors
+  if (executorName === 'memory-consolidation-engine') {
+    return { content: 'Consolidate memory tier', userId: 'user-1', target: 'warm', action: 'consolidate' };
+  }
+  if (executorName === 'identity-verification-engine') {
+    return { userId: 'user-1', action: 'verify', content: 'Identity check payload' };
+  }
+  if (executorName === 'sandbox-isolation-guard') {
+    return { content: 'Isolation boundary test', target: 'sandbox', userId: 'user-1' };
+  }
+  if (executorName === 'encode-task-scheduler') {
+    return { action: 'schedule', content: 'Encode task payload', target: 'queue', priority: 1 };
+  }
+  // INTELLIGENCE executors
+  if (executorName === 'dream-pattern-synthesizer') {
+    return { prompt: 'Synthesize dream pattern', content: 'Pattern seed data', userId: 'user-1' };
+  }
+  if (executorName === 'decode-intent-classifier') {
+    return { content: 'Classify user intent', query: 'What is the user trying to do?', userId: 'user-1' };
+  }
+  if (executorName === 'vision-anomaly-detector') {
+    return { content: 'Detect anomalies in telemetry', target: 'metrics', userId: 'user-1' };
+  }
+  // Fallback
+  return { content: 'Generic test input', target: 'self', userId: 'user-1' };
+}
+
+/**
  * Generate adversarial inputs based on a seed input.
- * v3: Expanded to cover all 4 substrate modules and their input schemas.
+ * v4: Expanded to cover all 6 substrate modules and their input schemas.
  */
 export function generateAdversarialInputs(seed?: Record<string, unknown>): Record<string, unknown>[] {
   const inputs: Record<string, unknown>[] = [
