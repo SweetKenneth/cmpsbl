@@ -276,8 +276,13 @@ export function intelligentRepair(
   // Step 1: Schema validation (#5)
   const report = validateInput(executor, input);
 
-  // Short-circuit if already valid
-  if (report.valid && report.archetype === 'well_formed') {
+  // Step 2: Pre-normalization (#7) — run BEFORE short-circuit so we normalize first
+  const { normalized, changed: preNormChanged } = preNormalize(executor, input);
+
+  // Re-validate AFTER normalization — if the raw input was already well-formed
+  // AND normalization didn't change it, skip repair. But if normalization changed
+  // it, we should still stamp __repaired so the stub fast-path triggers.
+  if (report.valid && report.archetype === 'well_formed' && !preNormChanged) {
     return {
       repaired: false,
       repaired_input: input,
@@ -290,8 +295,9 @@ export function intelligentRepair(
     };
   }
 
-  // Step 2: Pre-normalization (#7)
-  const { normalized, changed: preNormChanged } = preNormalize(executor, input);
+  // If normalization changed input but it was classified as well_formed,
+  // still mark as repaired so the stub's __repaired fast path fires
+  const normalizedReport = preNormChanged ? validateInput(executor, normalized) : report;
 
   // Step 3: Primary deterministic repair (#2: compositional chain — already applies all rules)
   const primary = deterministicRepair(normalized);
@@ -342,7 +348,7 @@ export function intelligentRepair(
   }
 
   const repaired = stagesApplied > 0 || primary.repaired || preNormChanged;
-  const repairType = primary.repair_type ?? (chained ? 'PARALLEL_BRANCH' : undefined);
+  const repairType = primary.repair_type ?? (chained ? 'PARALLEL_BRANCH' : (preNormChanged ? 'PRE_NORMALIZE' : undefined));
 
   // Enhancement #14: Stamp repaired inputs so downstream consumers (stubs) can detect them
   if (repaired) {

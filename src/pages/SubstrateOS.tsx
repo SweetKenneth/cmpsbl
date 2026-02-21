@@ -161,8 +161,8 @@ interface TabGroup {
 function getTabGroups(hasAgency: boolean): TabGroup[] {
   return [
     {
-      id: 'free',
-      label: 'Free',
+      id: 'core',
+      label: 'Core',
       icon: Eye,
       tier: 'free',
       tabs: [
@@ -170,8 +170,8 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       ],
     },
     {
-      id: 'creator',
-      label: 'Creator',
+      id: 'operate',
+      label: 'Operate',
       icon: Star,
       tier: 'creator',
       tabs: [
@@ -181,33 +181,41 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       ],
     },
     {
-      id: 'architect',
-      label: 'Architect',
+      id: 'orchestrate',
+      label: 'Orchestrate',
       icon: Rocket,
       tier: 'architect',
       tabs: [
         { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & orchestration', tier: 'architect' },
+        { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Autonomous capability mesh', tier: 'architect' },
         { id: 'codeagent', label: 'ENCODE', icon: Bot, color: 'fuchsia', description: 'DECODE → ENCODE pipeline', tier: 'architect' },
-        { id: 'modules', label: 'Modules', icon: Cpu, color: 'orange', description: 'Core · Ripple · Access', tier: 'architect' },
         { id: 'cortex', label: 'Cortex', icon: Wand2, color: 'violet', description: 'Cognitive orchestrator', tier: 'architect' },
+        { id: 'modules', label: 'Modules', icon: Cpu, color: 'orange', description: 'Core · Ripple · Access', tier: 'architect' },
         { id: 'atlas', label: 'Atlas', icon: Gauge, color: 'cyan', description: 'Control plane', tier: 'architect' },
-        { id: 'modernizer', label: 'Modernizer', icon: Wand2, color: 'fuchsia', description: 'Self-upgrade engine', tier: 'architect' },
-        { id: 'inclusive', label: 'Inclusive', icon: Users, color: 'teal', description: 'Accessibility engine', tier: 'architect' },
-        { id: 'backups', label: 'Backups', icon: HardDrive, color: 'blue', description: 'Backup & restore', tier: 'architect' },
       ],
     },
     {
-      id: 'cmpsbl',
-      label: 'CMPSBL',
+      id: 'extend',
+      label: 'Extend',
       icon: Crown,
       tier: 'cmpsbl',
       tabs: [
-        { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Autonomous capability mesh', tier: 'cmpsbl' },
-        { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'Architecture mutation', tier: 'cmpsbl' },
-        { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'Author LNCHBL patches', tier: 'cmpsbl' },
         { id: 'forge', label: 'Forge', icon: Sparkles, color: 'fuchsia', description: 'Cognitives & agency mint', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Agency command center', tier: 'cmpsbl' as SubstrateTier }] : []),
+        { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'Architecture mutation', tier: 'cmpsbl' },
+        { id: 'modernizer', label: 'Modernizer', icon: Wand2, color: 'fuchsia', description: 'Self-upgrade engine', tier: 'cmpsbl' },
+        { id: 'inclusive', label: 'Inclusive', icon: Users, color: 'teal', description: 'Accessibility engine', tier: 'cmpsbl' },
+      ],
+    },
+    {
+      id: 'govern',
+      label: 'Govern',
+      icon: Shield,
+      tier: 'cmpsbl',
+      tabs: [
         { id: 'security', label: 'Security', icon: Shield, color: 'amber', description: 'Defense · Immune · Audit', tier: 'cmpsbl' },
+        { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'Author LNCHBL patches', tier: 'cmpsbl' },
+        { id: 'backups', label: 'Backups', icon: HardDrive, color: 'blue', description: 'Backup & restore', tier: 'cmpsbl' },
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Admin controls & advisory', tier: 'cmpsbl' },
       ],
     },
