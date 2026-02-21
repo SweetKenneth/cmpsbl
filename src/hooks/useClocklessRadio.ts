@@ -1,10 +1,13 @@
 /**
  * useClocklessRadio — React hook for the Clockless Radio Engine
- * Manages engine lifecycle, DJ interjections, and reactive state
+ * Manages engine lifecycle, DJ interjections with TTS audio, and reactive state
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { ClocklessRadioEngine, RadioDJ, type RadioTrack, type RadioState, type DJContent } from '@/lib/clockless-radio';
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 export interface ClocklessRadioState {
   isPlaying: boolean;
@@ -13,6 +16,50 @@ export interface ClocklessRadioState {
   volume: number;
   djContent: DJContent | null;
   isDJSpeaking: boolean;
+}
+
+/**
+ * Fetches TTS audio from the radio-dj-tts edge function and decodes it
+ * into an AudioBuffer for playback through the Web Audio API.
+ */
+async function fetchDJAudio(
+  content: DJContent,
+  audioCtx: AudioContext
+): Promise<AudioBuffer | null> {
+  try {
+    console.log(`[RadioDJ] Fetching TTS for: "${content.text.slice(0, 50)}..."`);
+    
+    const response = await fetch(
+      `${SUPABASE_URL}/functions/v1/radio-dj-tts`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+        },
+        body: JSON.stringify({
+          text: content.text,
+          contentType: content.type,
+          caller: content.caller,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.error('[RadioDJ] TTS fetch failed:', response.status);
+      return null;
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    console.log(`[RadioDJ] Got ${arrayBuffer.byteLength} bytes, decoding...`);
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    console.log(`[RadioDJ] Decoded DJ audio: ${audioBuffer.duration.toFixed(1)}s`);
+    return audioBuffer;
+  } catch (err) {
+    console.error('[RadioDJ] Failed to fetch/decode TTS:', err);
+    return null;
+  }
 }
 
 export function useClocklessRadio() {
@@ -27,7 +74,7 @@ export function useClocklessRadio() {
   
   const engineRef = useRef<ClocklessRadioEngine | null>(null);
   const djRef = useRef<RadioDJ>(new RadioDJ());
-  const djTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const djSourceRef = useRef<AudioBufferSourceNode | null>(null);
   
   // Initialize engine lazily
   const getEngine = useCallback(() => {
@@ -40,17 +87,64 @@ export function useClocklessRadio() {
           const djContent = djRef.current.onTrackChange();
           if (djContent && engineRef.current) {
             // Small delay before DJ speaks
-            setTimeout(() => {
-              if (!engineRef.current) return;
-              engineRef.current.duckForDJ();
+            setTimeout(async () => {
+              const engine = engineRef.current;
+              if (!engine) return;
+
+              // Show the DJ content text as a visual indicator too
               setRadioState(prev => ({ ...prev, djContent, isDJSpeaking: true }));
-              
-              // End DJ after content duration
-              djTimeoutRef.current = setTimeout(() => {
-                if (!engineRef.current) return;
-                engineRef.current.unduckFromDJ();
+
+              // Duck the music
+              engine.duckForDJ();
+
+              // Fetch TTS audio
+              const ctx = (engine as any).ctx as AudioContext | null;
+              if (!ctx) {
+                // No audio context — can't play DJ, restore
+                engine.unduckFromDJ();
                 setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-              }, djContent.duration);
+                return;
+              }
+
+              const audioBuffer = await fetchDJAudio(djContent, ctx);
+
+              if (!audioBuffer) {
+                // TTS failed — unduck after a brief pause
+                setTimeout(() => {
+                  engine.unduckFromDJ();
+                  setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
+                }, 2000);
+                return;
+              }
+
+              // Play DJ audio through the engine's audio context
+              const masterGain = (engine as any).masterGain as GainNode | null;
+              if (!masterGain || !ctx) {
+                engine.unduckFromDJ();
+                setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
+                return;
+              }
+
+              // Create a separate gain node for DJ voice at full volume
+              const djGain = ctx.createGain();
+              djGain.gain.value = 1.0;
+              djGain.connect(ctx.destination); // direct to output, bypasses music duck
+
+              const source = ctx.createBufferSource();
+              source.buffer = audioBuffer;
+              source.connect(djGain);
+
+              // When DJ audio ends, restore music
+              source.onended = () => {
+                engine.unduckFromDJ();
+                setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
+                try { djGain.disconnect(); } catch {}
+                djSourceRef.current = null;
+              };
+
+              djSourceRef.current = source;
+              source.start(0);
+              console.log('[RadioDJ] 🎙️ DJ is speaking!');
             }, 1500);
           }
         },
@@ -70,6 +164,9 @@ export function useClocklessRadio() {
   }, [getEngine]);
   
   const stop = useCallback(() => {
+    // Stop any playing DJ audio
+    try { djSourceRef.current?.stop(); } catch {}
+    djSourceRef.current = null;
     engineRef.current?.stop();
   }, []);
   
@@ -93,7 +190,8 @@ export function useClocklessRadio() {
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (djTimeoutRef.current) clearTimeout(djTimeoutRef.current);
+      try { djSourceRef.current?.stop(); } catch {}
+      djSourceRef.current = null;
       engineRef.current?.destroy();
       engineRef.current = null;
     };
