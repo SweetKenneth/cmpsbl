@@ -193,11 +193,25 @@ export {
   executeDataHighway,
   executeKnowledgeNexus,
   executeSelfGovernance,
+  // Expansion additions
+  executeCreativeForge,
+  executePerceptionMatrix,
+  executeResourceGovernor,
+  executeWorkflowOrchestrator,
   // v8.1.0 additions
   executeWorldFirstCognitive,
   executeWorldFirstOperational,
   executeWorldFirstIntelligence,
   executeWorldFirstGovernance,
+  // High-Value Expansion
+  executeResilienceShield,
+  executeDeepCognitionNexus,
+  // v9.0.0 Infrastructure
+  executeEnterpriseTrustFabric,
+  executePlatformEconomicsEngine,
+  // v10.9.0 Discovered
+  executeMemoryIntelligenceFabric,
+  executeImmuneAutonomyMesh,
 } from './meta';
 
 // Meta-Engine Hook

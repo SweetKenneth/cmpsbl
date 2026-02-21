@@ -591,11 +591,57 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
       'Capacity planning with cost modeling',
     ],
   },
-};
 
-// ============================================================================
-// REGISTRY ACCESS FUNCTIONS
-// ============================================================================
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MEMORY INTELLIGENCE FABRIC — v10.9.0 Discovered
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  memory_intelligence_fabric: {
+    id: 'memory_intelligence_fabric',
+    name: 'Memory Intelligence Fabric',
+    description: 'Deep memory intelligence combining tiered memory management, deep cognition, knowledge retrieval, attention allocation, and unified salience scoring into a complete memory-aware reasoning pipeline.',
+    category: 'cognitive',
+    engines: ['memory_engine', 'deep_cognition_engine', 'knowledge_retrieval_engine', 'attention_memory_engine', 'salience_engine'],
+    totalCapabilities: 31,
+    compoundSynergyMultiplier: 8.4,
+    complexityScore: 10,
+    orchestrationMode: 'adaptive',
+    estimatedLatencyMs: 320,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Salience-driven memory retrieval',
+      'Cross-tier memory intelligence',
+      'Attention-weighted context assembly',
+      'Deep associative reasoning with recall',
+      'SM-2 reinforcement-aware memory management',
+    ],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // IMMUNE AUTONOMY MESH — v10.9.0 Discovered
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  immune_autonomy_mesh: {
+    id: 'immune_autonomy_mesh',
+    name: 'Immune Autonomy Mesh',
+    description: 'Autonomous immune defense combining ENCODE graduated repair, self-healing infrastructure, system resilience profiling, and fault isolation into a self-repairing defense grid.',
+    category: 'autonomous',
+    engines: ['immune_engine', 'self_healing_engine', 'system_resilience_engine', 'resilience_engine'],
+    totalCapabilities: 24,
+    compoundSynergyMultiplier: 8.0,
+    complexityScore: 10,
+    orchestrationMode: 'parallel',
+    estimatedLatencyMs: 90,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Graduated autonomy repair cascades',
+      'Cross-executor rule propagation',
+      'Zero-downtime immune recovery',
+      'Adversarial mutation resilience testing',
+      'Self-healing with structural scoring',
+    ],
+  },
+};
 
 export function getMetaEngine(id: MetaEngineId): MetaEngineDefinition | undefined {
   return META_ENGINE_REGISTRY[id];
@@ -662,11 +708,11 @@ export function getMetaEngineSummary() {
 export const META_ENGINE_IDS: MetaEngineId[] = Object.keys(META_ENGINE_REGISTRY) as MetaEngineId[];
 
 export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]> = {
-  cognitive: ['cognitive_mesh', 'world_first_cognitive'],
-  protection: ['system_guardian', 'security_fortress'],
-  autonomous: ['autonomous_operator', 'world_first_operational'],
+  cognitive: ['cognitive_mesh', 'world_first_cognitive', 'memory_intelligence_fabric'],
+  protection: ['system_guardian', 'security_fortress', 'resilience_shield'],
+  autonomous: ['autonomous_operator', 'world_first_operational', 'immune_autonomy_mesh'],
   governance: ['quality_fabric', 'world_first_governance', 'enterprise_trust_fabric'],
-  intelligence: ['intelligence_pipeline', 'world_first_intelligence'],
+  intelligence: ['intelligence_pipeline', 'world_first_intelligence', 'deep_cognition_nexus'],
   experience: ['adaptation_suite'],
   performance: ['performance_optimizer'],
   communication: ['event_fabric'],
@@ -678,7 +724,3 @@ export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]
   resource: ['resource_governor', 'platform_economics_engine'],
   workflow: ['workflow_orchestrator'],
 };
-
-// Update protection and intelligence categories with v8.5.0 additions
-META_ENGINES_BY_CATEGORY.protection.push('resilience_shield');
-META_ENGINES_BY_CATEGORY.intelligence.push('deep_cognition_nexus');

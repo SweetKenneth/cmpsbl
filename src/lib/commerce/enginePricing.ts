@@ -1,11 +1,11 @@
 /**
  * Engine Subscription Pricing Configuration
- * v10.5.4 — Unified tier naming (Free/Creator/Architect/Enterprise)
+ * v10.9.0 — Unified tier naming (Free/Creator/Architect/Enterprise)
  * 
  * Free: 30 engines + 1 meta-engine
- * Creator: All 76 engines + 8 meta-engines
- * Architect: All 76 engines + 16 meta-engines
- * Enterprise: All 76 engines + all 24 meta-engines
+ * Creator: All 80 engines + 8 meta-engines
+ * Architect: All 80 engines + 18 meta-engines
+ * Enterprise: All 80 engines + all 26 meta-engines
  * 
  * Self-improvement/evolution engines are INTERNAL (not purchasable)
  */
@@ -54,10 +54,10 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
     name: 'Creator',
     monthlyPrice: 9,
     yearlyPrice: 108,
-    description: 'Everything in Free, plus all 76 engines + 8 meta-engines',
+    description: 'Everything in Free, plus all 80 engines + 8 meta-engines',
     features: [
       'Everything in Free, plus:',
-      'All 76 engines (up from 30)',
+      'All 80 engines (up from 30)',
       '8 meta-engines (up from 1)',
       '2,000 executions/month',
       'Priority queue',
@@ -73,10 +73,10 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
     name: 'Architect',
     monthlyPrice: 19,
     yearlyPrice: 228,
-    description: 'Everything in Creator, plus 16 meta-engines',
+    description: 'Everything in Creator, plus 18 meta-engines',
     features: [
       'Everything in Creator, plus:',
-      'All 76 engines + 16 meta-engines (up from 8)',
+      'All 80 engines + 18 meta-engines (up from 8)',
       '10,000 executions/month',
       'Priority execution',
       'Slack support',
@@ -92,10 +92,10 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
     name: 'Enterprise',
     monthlyPrice: 99,
     yearlyPrice: 1188,
-    description: 'Everything in Architect, plus all 24 meta-engines',
+    description: 'Everything in Architect, plus all 26 meta-engines',
     features: [
       'Everything in Architect, plus:',
-      'All 76 engines + all 24 meta-engines (up from 16)',
+      'All 80 engines + all 26 meta-engines (up from 18)',
       'Custom execution limits',
       'SLA guarantee (99.9%)',
       'Dedicated support',
@@ -131,6 +131,8 @@ const INTERNAL_ENGINE_IDS: string[] = [
   'metacognition_engine',
   'self_healing_engine',
   'self_documentation_engine',
+  'governor_engine',   // Platform governance — internal only
+  'immune_engine',     // ENCODE immune system — internal only
 ];
 
 // Internal meta-engines
@@ -141,6 +143,8 @@ const INTERNAL_META_ENGINE_IDS: string[] = [
   'world_first_operational',
   'world_first_intelligence',
   'world_first_governance',
+  'immune_autonomy_mesh',      // ENCODE immune mesh — internal only
+  'memory_intelligence_fabric', // Deep memory fabric — internal showcase
 ];
 
 // Free tier engines (30 core engines — generous foundation)
@@ -175,9 +179,8 @@ const FREE_ENGINE_IDS: string[] = [
   'intent_engine',
   'pipeline_engine',
   'coordination_engine',
+  'salience_engine',   // Unified salience — free to drive adoption
 ];
-
-// Free meta-engine (1 generous inclusion)
 const FREE_META_ENGINE_IDS: string[] = [
   'cognitive_mesh',
 ];
@@ -195,6 +198,7 @@ const ADVANCED_ENGINE_IDS: string[] = [
   'quota_engine',
   'entitlement_engine',
   'delegation_engine',
+  'temporal_engine',    // Time-series reasoning — Architect tier
 ];
 
 /**

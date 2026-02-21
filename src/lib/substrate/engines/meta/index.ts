@@ -65,6 +65,12 @@ export {
   // High-Value Expansion Meta-Engines
   executeResilienceShield,
   executeDeepCognitionNexus,
+  // v9.0.0 additions — Infrastructure Cross-Module Meta-Engines
+  executeEnterpriseTrustFabric,
+  executePlatformEconomicsEngine,
+  // v10.9.0 additions — Discovered High-Value Meta-Engines
+  executeMemoryIntelligenceFabric,
+  executeImmuneAutonomyMesh,
 } from './executors';
 
 // Hook

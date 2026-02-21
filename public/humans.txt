@@ -63,7 +63,8 @@ Cortex: Policy orchestration
 
 Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
 21 Modules • 400+ Terminal Commands
-200 Synergy Pipelines • 400+ Depot Capabilities
+200 Synergy Pipelines • 525+ Depot Capabilities
+80 Engines • 26 Meta-Engines
 CLM Engine v2.0 • Universal Brain Transfer Pipeline
 Nexus Fleet v5.0 • Infrastructure Hardening
 WCAG 2.2 Accessibility via INCLUSIVE Module
