@@ -112,16 +112,19 @@ export class RadioDJ {
   }
   
   private randomInterval(): number {
-    return 2 + Math.floor(Math.random() * 3); // 2–4 songs
+    return 1 + Math.floor(Math.random() * 2); // 1–2 songs between DJ breaks
   }
   
   /** Call after each track change. Returns DJ content if it's time for an interjection. */
   onTrackChange(): DJContent | null {
     this.songCount++;
+    console.log(`[RadioDJ] Song ${this.songCount}/${this.songsUntilDJ} until next DJ break`);
     if (this.songCount >= this.songsUntilDJ) {
       this.songCount = 0;
       this.songsUntilDJ = this.randomInterval();
-      return generateDJContent();
+      const content = generateDJContent();
+      console.log(`[RadioDJ] 🎙️ DJ interjection: ${content.type} — "${content.text.slice(0, 60)}..."`);
+      return content;
     }
     return null;
   }
