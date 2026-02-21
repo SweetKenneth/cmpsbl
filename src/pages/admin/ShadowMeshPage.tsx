@@ -1,9 +1,10 @@
 /**
  * Shadow Mesh Admin Page
  * Toggle and observe shadow mesh + immune executor status
+ * v3.0 — Dynamic executor discovery + expanded fleet
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ShadowMeshToggle } from "@/components/admin/ShadowMeshToggle";
 import { ShadowMeshAnalytics } from "@/components/admin/ShadowMeshAnalytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,18 +13,27 @@ import { Shield, Zap, AlertTriangle, RotateCcw } from "lucide-react";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-
-const PILOT_EXECUTORS = [
-  { id: "adaptive-ui", module: "INCLUSIVE", role: "primary" },
-  { id: "cognitive-load-optimization", module: "INCLUSIVE", role: "primary" },
-  { id: "comprehensive-accessibility-audit", module: "INCLUSIVE", role: "primary" },
-  { id: "personalized-accessibility-engine", module: "INCLUSIVE", role: "primary" },
-  { id: "inclusive-content", module: "INCLUSIVE", role: "validator" },
-];
+import { PILOT_EXECUTORS, EXECUTOR_MODULE_META, type PilotExecutorId } from "@/immune/pilotExecutors";
 
 export default function ShadowMeshPage() {
   const [resetting, setResetting] = useState(false);
   const [analyticsKey, setAnalyticsKey] = useState(0);
+
+  const executorList = useMemo(() => {
+    return PILOT_EXECUTORS.map((id) => ({
+      id,
+      module: EXECUTOR_MODULE_META[id as PilotExecutorId]?.module ?? 'UNKNOWN',
+      category: EXECUTOR_MODULE_META[id as PilotExecutorId]?.category ?? 'unknown',
+    }));
+  }, []);
+
+  const moduleGroups = useMemo(() => {
+    const groups: Record<string, typeof executorList> = {};
+    for (const exec of executorList) {
+      (groups[exec.module] ??= []).push(exec);
+    }
+    return groups;
+  }, [executorList]);
 
   const handleResetTelemetry = async () => {
     setResetting(true);
@@ -49,7 +59,7 @@ export default function ShadowMeshPage() {
             Shadow Mesh Control
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Admin-controlled immune wrapper and adversarial probing for pilot executors.
+            Dynamic immune wrapper and adversarial probing — executors are discovered automatically as they register.
           </p>
         </div>
         <ActionButton
@@ -79,37 +89,42 @@ export default function ShadowMeshPage() {
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground space-y-1">
           <p>• <strong>OFF</strong> → identical behavior to current production (zero overhead)</p>
-          <p>• <strong>ON</strong> → immune wrapper + shadow mesh active for pilot executors only</p>
+          <p>• <strong>ON</strong> → immune wrapper + shadow mesh active for all registered executors</p>
+          <p>• Dynamic discovery — new executors are probed automatically on registration</p>
           <p>• No intent mesh impact • No public exposure • No silent failure paths</p>
         </CardContent>
       </Card>
 
-      {/* Pilot Executors */}
+      {/* Pilot Executors — Dynamic */}
       <Card>
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" />
-            Pilot Executors (5)
+            Probed Executors ({executorList.length})
           </CardTitle>
           <CardDescription>
-            Only these executors are wrapped by the immune layer
+            All executors wrapped by the immune layer — grouped by module
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2">
-            {PILOT_EXECUTORS.map((exec) => (
-              <div
-                key={exec.id}
-                className="flex items-center justify-between p-3 rounded-md border border-border/50 bg-muted/30"
-              >
-                <div className="flex items-center gap-2">
-                  <code className="text-xs font-mono bg-background px-2 py-0.5 rounded">
-                    {exec.id}
-                  </code>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs">{exec.module}</Badge>
-                  <Badge variant="secondary" className="text-xs">{exec.role}</Badge>
+          <div className="space-y-4">
+            {Object.entries(moduleGroups).map(([module, executors]) => (
+              <div key={module}>
+                <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  {module} ({executors.length})
+                </h4>
+                <div className="space-y-1.5">
+                  {executors.map((exec) => (
+                    <div
+                      key={exec.id}
+                      className="flex items-center justify-between p-2.5 rounded-md border border-border/50 bg-muted/30"
+                    >
+                      <code className="text-xs font-mono bg-background px-2 py-0.5 rounded">
+                        {exec.id}
+                      </code>
+                      <Badge variant="secondary" className="text-xs">{exec.category}</Badge>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}

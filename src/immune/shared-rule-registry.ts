@@ -65,10 +65,12 @@ const CATEGORY_COMPAT: Record<ExecutorModuleMeta['category'], ExecutorModuleMeta
   ui_adaptation:       ['ui_adaptation', 'content_analysis'],
   content_analysis:    ['content_analysis', 'content_validation', 'ui_adaptation'],
   content_validation:  ['content_validation', 'content_analysis', 'governance'],
-  cognitive_processing:['cognitive_processing'],
+  cognitive_processing:['cognitive_processing', 'intelligence'],
   event_routing:       ['event_routing', 'orchestration'],
   governance:          ['governance', 'content_validation'],
   orchestration:       ['orchestration', 'event_routing', 'governance'],
+  infrastructure:      ['infrastructure', 'governance', 'event_routing'],
+  intelligence:        ['intelligence', 'cognitive_processing', 'content_analysis'],
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
