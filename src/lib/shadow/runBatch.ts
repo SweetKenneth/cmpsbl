@@ -1,7 +1,8 @@
 /**
- * Shadow Mesh — Batch Runner
+ * Shadow Mesh — Batch Runner (v2.0)
  * Runs shadow probes across all pilot executors, records metrics,
- * triggers ENCODE to auto-resolve escalations, and runs learning cycle.
+ * triggers ENCODE to auto-resolve escalations, runs learning cycle,
+ * and auto-propagates shared rules.
  */
 
 import { runShadowProbe } from './probe';
@@ -15,6 +16,14 @@ export async function runShadowBatch() {
 
   // Ensure stub executors are registered before probing
   registerShadowStubs();
+
+  // Warm-start shared rule registry from DB on first run
+  try {
+    const { warmStartFromDB } = await import('@/immune/escalation-learning');
+    await warmStartFromDB();
+  } catch (err) {
+    console.warn('[shadow-batch] Warm-start failed:', err);
+  }
 
   for (const executor of PILOT_EXECUTORS) {
     const report = await runShadowProbe(executor);
@@ -43,10 +52,21 @@ export async function runShadowBatch() {
   try {
     const { runLearningCycle } = await import('@/immune/escalation-learning');
     const learning = runLearningCycle();
-    if (learning.promoted > 0 || learning.crossExecutorTransfers > 0) {
-      console.info(`[shadow-batch] Learning cycle: ${learning.promoted} rules promoted, ${learning.crossExecutorTransfers} cross-executor transfers`);
+    if (learning.promoted > 0 || learning.crossExecutorTransfers > 0 || learning.sharedRulesPropagated > 0) {
+      console.info(`[shadow-batch] Learning cycle: ${learning.promoted} rules promoted, ${learning.crossExecutorTransfers} cross-executor transfers, ${learning.sharedRulesPropagated} shared rules propagated`);
     }
   } catch (err) {
     console.warn('[shadow-batch] Learning cycle failed:', err);
+  }
+
+  // Auto-propagate shared rules to compatible executors
+  try {
+    const { autoPropagateRules } = await import('@/immune/shared-rule-registry');
+    const propagation = autoPropagateRules();
+    if (propagation.adopted > 0) {
+      console.info(`[shadow-batch] Auto-propagated ${propagation.adopted} shared rules to [${propagation.executors.join(', ')}]`);
+    }
+  } catch (err) {
+    console.warn('[shadow-batch] Shared rule propagation failed:', err);
   }
 }

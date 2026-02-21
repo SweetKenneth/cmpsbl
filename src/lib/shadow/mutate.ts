@@ -1,24 +1,28 @@
 /**
- * Shadow Mesh — Adversarial Input Mutation (v2)
+ * Shadow Mesh — Adversarial Input Mutation (v3)
  * 
- * Enhanced with archetype-aware mutations that test each
- * repair pathway more thoroughly.
+ * Enhanced with module-specific mutations for all 13 pilot executors:
+ * INCLUSIVE, COGNITIVE, OPERATIONAL, ORCHESTRATOR
  */
 
 /**
  * Generate adversarial inputs based on a seed input.
- * v2: Expanded to cover all input archetypes for thorough testing.
+ * v3: Expanded to cover all 4 substrate modules and their input schemas.
  */
 export function generateAdversarialInputs(seed?: Record<string, unknown>): Record<string, unknown>[] {
   const inputs: Record<string, unknown>[] = [
-    // ── empty_shell archetype ──
+    // ════════════════════════════════════════════════════════════════
+    // UNIVERSAL archetypes (apply to all executors)
+    // ════════════════════════════════════════════════════════════════
+
+    // ── empty_shell ──
     {},
     { content: null },
     { target: null, url: null },
     { content: '', target: '', url: '' },
     { content: undefined, userId: undefined },
 
-    // ── type_mismatch archetype ──
+    // ── type_mismatch ──
     { content: 12345 },
     { content: true },
     { content: [1, 2, 3] },
@@ -30,18 +34,18 @@ export function generateAdversarialInputs(seed?: Record<string, unknown>): Recor
     { ariaLabel: [1, 2, 3] },
     { content: { deeply: { nested: { value: 'here' } } } },
 
-    // ── missing_required archetype ──
+    // ── missing_required ──
     { irrelevant_key: 'value' },
     { metadata: 'something', extra: true },
-    { wcagLevel: 'AA' }, // has wcagLevel but no target/url/domain
+    { wcagLevel: 'AA' },
 
-    // ── oversized archetype ──
+    // ── oversized ──
     { content: 'x'.repeat(100_000) },
     { content: '🔥'.repeat(5000) },
     { content: 'a\n'.repeat(500) },
     { target: 'a'.repeat(50_000) },
 
-    // ── injection_attempt archetype ──
+    // ── injection_attempt ──
     { target: '<script>alert(1)</script>' },
     { content: '"; DROP TABLE users; --' },
     { url: 'javascript:alert(1)' },
@@ -49,11 +53,11 @@ export function generateAdversarialInputs(seed?: Record<string, unknown>): Recor
     { domain: '../../etc/passwd' },
     { content: 'SELECT * FROM users WHERE 1=1; --' },
 
-    // ── shape_alien archetype ──
+    // ── shape_alien ──
     { foo: 'bar', baz: 42 },
     { x: null, y: null, z: null },
 
-    // ── partial_valid archetype ──
+    // ── partial_valid ──
     { content: 'valid content', wcagLevel: 'INVALID' },
     { url: 'https://example.com', content: null, target: 12345 },
     { userId: 'user-1', preferences: 'should-be-object' },
@@ -67,12 +71,88 @@ export function generateAdversarialInputs(seed?: Record<string, unknown>): Recor
 
     // ── edge cases ──
     { content: '\x00\x01\x02\x03' },
-    { content: '\u200B\u200C\u200D' }, // zero-width chars
+    { content: '\u200B\u200C\u200D' },
     { content: 'NaN' },
     { content: 'undefined' },
     { content: '() => alert(1)' },
-    { content: '&amp;lt;script&amp;gt;' }, // double-encoded
+    { content: '&amp;lt;script&amp;gt;' },
     { userId: '{}', preferences: '[]' },
+
+    // ════════════════════════════════════════════════════════════════
+    // COGNITIVE MODULE — reasoning, learning, imagination
+    // ════════════════════════════════════════════════════════════════
+
+    // reasoning-engine
+    { query: '', context: null },
+    { query: 'x'.repeat(50_000), depth: -1 },
+    { query: null, constraints: 'not-an-object' },
+    { query: 'valid reasoning query', context: { domain: 'test' }, depth: 3 },
+    { query: '<script>alert(1)</script>', context: { __proto__: {} } },
+    { query: 42, constraints: [1, 2, 3] },
+
+    // learning-engine
+    { signal: '', domain: null },
+    { signal: null, feedback: 'not-an-object' },
+    { signal: 'valid signal', domain: 'test', reinforcement: 0.8 },
+    { signal: 'x'.repeat(20_000), reinforcement: 'not-a-number' },
+    { signal: 'SELECT * FROM signals; --', source: '../../../etc/passwd' },
+    { signal: true, feedback: [1, 2, 3] },
+
+    // imagination-engine
+    { prompt: '', mode: 'INVALID_MODE' },
+    { prompt: null, creativity: 'not-a-number' },
+    { prompt: 'valid prompt', mode: 'GENERATE', creativity: 0.9 },
+    { prompt: 'x'.repeat(50_000), mode: 999 },
+    { prompt: '<script>alert(1)</script>', seed: { nested: true } },
+    { prompt: 42, constraints: 'string-not-object' },
+
+    // ════════════════════════════════════════════════════════════════
+    // OPERATIONAL MODULE — relay, economy, audit
+    // ════════════════════════════════════════════════════════════════
+
+    // relay-event-dispatcher
+    { event: '', payload: null },
+    { event: null, target: 12345 },
+    { event: 'test.event', payload: { key: 'value' }, priority: 1 },
+    { event: 'x'.repeat(10_000), channel: null },
+    { event: '<script>alert(1)</script>', payload: { __proto__: {} } },
+    { event: true, priority: 'not-a-number' },
+
+    // economy-cost-tracker
+    { action: '', module: '' },
+    { action: null, module: null, tokens: 'not-a-number' },
+    { action: 'compute', module: 'brain', tokens: 500, computeMs: 120 },
+    { action: 'x'.repeat(10_000), module: true },
+    { action: 'SELECT * FROM costs; --', costMillicents: -1 },
+    { action: 42, module: [1, 2, 3] },
+
+    // audit-compliance-check
+    { content: '', standard: 'INVALID' },
+    { content: null, standard: null },
+    { content: 'audit this page', standard: 'WCAG', domain: 'example.com' },
+    { content: 'x'.repeat(50_000), severity: 999 },
+    { content: '<script>alert(1)</script>', standard: true },
+    { content: 42, domain: '../../etc/passwd' },
+
+    // ════════════════════════════════════════════════════════════════
+    // ORCHESTRATOR MODULE — mesh resolver, seba evaluator
+    // ════════════════════════════════════════════════════════════════
+
+    // mesh-pipeline-resolver
+    { intent: '', modules: null },
+    { intent: null, constraints: 'not-an-object' },
+    { intent: 'resolve accessibility pipeline', modules: ['inclusive', 'brain'], priority: 2 },
+    { intent: 'x'.repeat(20_000), modules: 'not-an-array' },
+    { intent: '<script>alert(1)</script>', traceId: { nested: true } },
+    { intent: 42, priority: 'not-a-number' },
+
+    // seba-proposal-evaluator
+    { proposal: '', riskLevel: 'INVALID' },
+    { proposal: null, impactMetrics: 'not-an-object' },
+    { proposal: 'Improve cognitive latency by 15%', riskLevel: 'LOW', confidence: 0.85 },
+    { proposal: 'x'.repeat(20_000), module: true },
+    { proposal: '<script>alert(1)</script>', confidence: 'not-a-number' },
+    { proposal: 42, impactMetrics: [1, 2, 3] },
   ];
 
   // If seed provided, add mutated variants
@@ -83,6 +163,13 @@ export function generateAdversarialInputs(seed?: Record<string, unknown>): Recor
       { ...seed, wcagLevel: 999 },
       { ...seed, content: '<script>xss</script>' },
       { ...seed, userId: '' },
+      // Module-specific seed mutations
+      { ...seed, query: null },
+      { ...seed, signal: '' },
+      { ...seed, prompt: 12345 },
+      { ...seed, event: null },
+      { ...seed, intent: '' },
+      { ...seed, proposal: null },
     );
   }
 

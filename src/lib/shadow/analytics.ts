@@ -1,13 +1,15 @@
 /**
- * Shadow Mesh — Analytics Aggregator (v2.0)
+ * Shadow Mesh — Analytics Aggregator (v3.0)
  * Queries immune_metrics and immune_escalations for admin dashboard.
- * Now includes repair intelligence stats and outcome tracking.
+ * Now includes repair intelligence stats, outcome tracking, and shared rule registry.
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import { getRepairIntelligenceStats, getEscalationPatterns } from '@/immune/repair-intelligence';
 import { getOutcomeStats, produceDreamDigest } from '@/immune/outcome-tracker';
 import { getEscalationTelemetry, type EscalationTelemetrySnapshot } from '@/lib/substrate/encode-module/escalation-telemetry';
+import { getLearningStats } from '@/immune/escalation-learning';
+import { getSharedRuleStats, type SharedRuleRegistryStats } from '@/immune/shared-rule-registry';
 
 export interface MetricRow {
   executor: string;
@@ -52,6 +54,10 @@ export interface ShadowMeshAnalyticsData {
   };
   /** v3.0: ENCODE escalation resolution telemetry */
   escalationResolution: EscalationTelemetrySnapshot;
+  /** v3.0: Escalation learning loop stats */
+  learningStats: ReturnType<typeof getLearningStats>;
+  /** v3.0: Central shared rule registry stats */
+  sharedRuleRegistry: SharedRuleRegistryStats;
 }
 
 export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData> {
@@ -125,5 +131,7 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     outcomeStats: getOutcomeStats(),
     dreamDigest: produceDreamDigest(),
     escalationResolution: getEscalationTelemetry(),
+    learningStats: getLearningStats(),
+    sharedRuleRegistry: getSharedRuleStats(),
   };
 }
