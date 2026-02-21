@@ -34,6 +34,7 @@ import { intelligentRepair, recordRepairOutcome, preNormalize, mineEscalationPat
 import { trackOutcome, type OutcomeRecord } from './outcome-tracker';
 import { captureEscalation, runLearningCycle } from './escalation-learning';
 import { validateInput } from './schema-validator';
+import { contributeRule, findApplicableRules, recordSharedRuleOutcome } from './shared-rule-registry';
 
 /** Simple hash for input tracing (not cryptographic) */
 function hashInput(input: Record<string, unknown>): string {
@@ -191,6 +192,13 @@ export function wrapExecutor(
         if (post.valid && retryResult.success) {
           repairSuccessFlag = true;
           recordRepairOutcome(executorName, repairTypeFlag, true);
+          // Contribute successful repair to shared registry for cross-executor learning
+          if (repairConfidence >= 0.6) {
+            try {
+              contributeRule(executorName, repairTypeFlag, ir.archetype, repairConfidence,
+                `Auto-contributed from ${executorName} repair success (${repairTypeFlag})`);
+            } catch { /* non-critical */ }
+          }
           trackOutcome({
             executor: executorName,
             timestamp: Date.now(),

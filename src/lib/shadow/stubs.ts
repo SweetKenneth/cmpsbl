@@ -10,7 +10,7 @@
  */
 
 import type { SynergyExecutionContext, SynergyResult, SynergyStepResult } from '@/lib/capabilities/synergies/types';
-import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
+import { PILOT_EXECUTORS, EXECUTOR_MODULE_META, type PilotExecutorId } from '@/immune/pilotExecutors';
 import { registerSynergyExecutor } from '@/lib/capabilities/synergies/registry';
 import { wrapExecutor } from '@/immune/wrapExecutor';
 import { log } from '@/lib/system/log';
@@ -174,10 +174,11 @@ export function registerShadowStubs(): void {
 
   for (const name of PILOT_EXECUTORS) {
     try {
+      const meta = EXECUTOR_MODULE_META[name as PilotExecutorId] ?? { module: 'INCLUSIVE', scope: 'shadow-probe' };
       const rawStub = createStubExecutor(name);
-      const wrappedStub = wrapExecutor(rawStub, name, { module: 'INCLUSIVE', scope: 'shadow-probe' });
+      const wrappedStub = wrapExecutor(rawStub, name, { module: meta.module, scope: meta.scope });
       registerSynergyExecutor(name, wrappedStub);
-      log.info('shadow', `Stub executor registered (v3 graduated fidelity): ${name}`);
+      log.info('shadow', `Stub executor registered (v3 graduated fidelity): ${name} [${meta.module}]`);
     } catch (err) {
       log.warn('shadow', `Failed to register stub for "${name}": ${(err as Error).message}`);
     }
