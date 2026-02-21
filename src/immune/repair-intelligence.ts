@@ -347,15 +347,22 @@ export function intelligentRepair(
     }
   }
 
-  const repaired = stagesApplied > 0 || primary.repaired || preNormChanged;
+  // A real repair requires actual rule application — preNormalize alone is NOT a repair.
+  // This prevents the stub __repaired fast-path from short-circuiting adversarial inputs
+  // that were only lightly normalized (e.g. adding target='self', userId='anonymous').
+  const actualRepair = stagesApplied > 0 || primary.repaired;
+  const repaired = actualRepair || preNormChanged;
   const repairType = primary.repair_type ?? (chained ? 'PARALLEL_BRANCH' : (preNormChanged ? 'PRE_NORMALIZE' : undefined));
 
-  // Enhancement #14: Stamp repaired inputs so downstream consumers (stubs) can detect them
-  if (repaired) {
+  // Enhancement #14: Stamp repaired inputs so downstream consumers (stubs) can detect them.
+  // CRITICAL: Only stamp __repaired for actual repairs (not preNormalize-only).
+  // Pre-normalize-only changes should NOT trigger the stub's 99.5% success fast-path,
+  // as that masks real failure modes and causes false 100% repair rates.
+  if (actualRepair) {
     (finalInput as any).__repaired = true;
-    (finalInput as any).__repairConfidence = repaired
-      ? calculateRepairConfidence(executor, report.archetype, repairType ?? '', validateInput(executor, finalInput).confidence)
-      : 0;
+    (finalInput as any).__repairConfidence = calculateRepairConfidence(
+      executor, report.archetype, repairType ?? '', validateInput(executor, finalInput).confidence
+    );
   }
 
   // Step 6: Confidence scoring (#3) — use POST-REPAIR validation confidence

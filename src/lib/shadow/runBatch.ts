@@ -10,6 +10,7 @@ import { recordImmuneMetrics } from '@/lib/immune/recordMetrics';
 import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
 import { isShadowMeshEnabled } from '@/lib/system/flags';
 import { registerShadowStubs } from './stubs';
+import { getExecutorSeedInput } from './mutate';
 
 export async function runShadowBatch() {
   if (!(await isShadowMeshEnabled())) return;
@@ -26,10 +27,14 @@ export async function runShadowBatch() {
   }
 
   for (const executor of PILOT_EXECUTORS) {
-    const report = await runShadowProbe(executor);
+    // Use executor-specific seed input for balanced, fair probing
+    const seedInput = getExecutorSeedInput(executor);
+    const report = await runShadowProbe(executor, seedInput);
 
+    // Derive telemetry flags from actual probe outcomes
     const hadRepairs = report.summary.repaired > 0;
-    const hadFailures = report.summary.escalated > 0 || report.summary.failedSafe > 0;
+    const hadEscalations = report.summary.escalated > 0;
+    const hadSafeFailures = report.summary.failedSafe > 0;
 
     await recordImmuneMetrics({
       executor,
@@ -37,8 +42,8 @@ export async function runShadowBatch() {
       repaired: report.summary.repaired,
       escalated: report.summary.escalated,
       safeFail: report.summary.failedSafe,
-      repair_attempted: hadRepairs || hadFailures,
-      repair_success: hadRepairs,
+      repair_attempted: hadRepairs || hadEscalations || hadSafeFailures,
+      repair_success: hadRepairs && !hadEscalations,
       retry_attempted: hadRepairs,
     });
   }
