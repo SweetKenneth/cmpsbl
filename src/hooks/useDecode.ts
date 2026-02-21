@@ -1,6 +1,7 @@
 /**
  * promptfluid® useDecode Hook
- * v2026.01 — React hook for Decode interpreter primitive
+ * vX.IDENTITY.3 — React hook for Decode interpreter primitive
+ * Voice-profile locked. Depth-escalation aware.
  */
 
 import { useState, useCallback, useMemo } from 'react';
@@ -23,6 +24,8 @@ import {
   formatDecodeResponse,
   getDecodeMode,
 } from '@/core/goal';
+import { validateTone, enforceTone } from '@/core/decode/voiceProfile';
+import { resolveDepth, type UserTier } from '@/core/decode/depthResolver';
 
 interface UseDecodeOptions {
   /** Whether to invoke substrate modules on each query */
@@ -154,6 +157,16 @@ export function useDecodeChat(sessionId?: string) {
           ? `${getInferredQualifier()} ${sanitized}`
           : sanitized;
 
+        // Voice Profile enforcement — strip assistant tone drift
+        const toneCheck = validateTone(reply);
+        if (!toneCheck.valid) {
+          reply = enforceTone(reply);
+        }
+
+        // Resolve depth based on user tier (default CREATOR for now)
+        const userTier: UserTier = (data?.userTier as UserTier) || 'CREATOR';
+        const depth = resolveDepth(userTier, getDecodeMode());
+
         // Apply GOAL formatting (snapshot citation in STRICT mode, mismatch warnings)
         reply = formatDecodeResponse(reply, metricsResponse);
 
@@ -170,6 +183,9 @@ export function useDecodeChat(sessionId?: string) {
             decodeMode: getDecodeMode(),
             snapshotId: metricsResponse.snapshot?.snapshotId ?? null,
             integrityValid: metricsResponse.integrity?.valid ?? null,
+            depthLevel: depth.level,
+            userTier: depth.tier,
+            toneValid: toneCheck.valid,
           }
         }]);
         return response;

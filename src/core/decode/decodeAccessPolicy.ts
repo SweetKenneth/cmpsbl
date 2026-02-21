@@ -155,22 +155,41 @@ export async function queryMetricsForDecode(
 /**
  * Format a DECODE response with proper telemetry citation.
  * In STRICT_TELEMETRY mode, all responses must cite snapshotId + timestamp.
+ * Voice profile enforcement is applied before returning.
  */
 export function formatDecodeResponse(
   narrative: string,
   metricsResponse: DecodeMetricsResponse
 ): string {
+  // Import inline to avoid circular deps at module level
+  const { validateTone, enforceTone } = require('./voiceProfile');
+
   if (!metricsResponse.allowed) {
     return metricsResponse.blockReason ?? 'No telemetry available.';
   }
 
+  // Enforce immutable voice profile — strip assistant tone drift
+  let output = narrative;
+  const toneCheck = validateTone(output);
+  if (!toneCheck.valid) {
+    output = enforceTone(output);
+  }
+
   if (currentMode === 'STRICT_TELEMETRY' && metricsResponse.snapshot) {
-    return `${narrative}\n\n[Snapshot: ${metricsResponse.snapshot.snapshotId} | ${metricsResponse.snapshot.timestamp}]`;
+    const snapshot = metricsResponse.snapshot;
+    const integrity = metricsResponse.integrity;
+    return [
+      output,
+      '',
+      `[Snapshot: ${snapshot.timestamp}]`,
+      `[Scope: GLOBAL]`,
+      `[Integrity: ${integrity?.valid ? 'VALID' : 'MISMATCH DETECTED'}]`,
+    ].join('\n');
   }
 
   if (metricsResponse.mismatchWarning) {
-    return `${narrative}\n\n⚠ ${metricsResponse.mismatchWarning}`;
+    return `${output}\n\n⚠ ${metricsResponse.mismatchWarning}`;
   }
 
-  return narrative;
+  return output;
 }
