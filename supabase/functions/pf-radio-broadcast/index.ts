@@ -331,7 +331,7 @@ serve(async (req) => {
     // Upload to storage
     const storagePath = `latest.mp3`;
     const { error: uploadErr } = await supabase.storage
-      .from("radio-broadcasts")
+      .from("radio")
       .upload(storagePath, finalAudio.buffer, {
         contentType: "audio/mpeg",
         upsert: true,
@@ -339,13 +339,13 @@ serve(async (req) => {
     if (uploadErr) throw new Error(`Storage upload failed: ${uploadErr.message}`);
 
     const { data: publicUrl } = supabase.storage
-      .from("radio-broadcasts")
+      .from("radio")
       .getPublicUrl(storagePath);
 
     // Also save dated copy
     const datedPath = `archive/${today}.mp3`;
     await supabase.storage
-      .from("radio-broadcasts")
+      .from("radio")
       .upload(datedPath, finalAudio.buffer, {
         contentType: "audio/mpeg",
         upsert: true,
