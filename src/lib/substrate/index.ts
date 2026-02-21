@@ -698,3 +698,14 @@ export {
   formatChangelogDate,
   type AutoChangelogEntry,
 } from './changelog-generator';
+
+// ═══ Brain Auto-Tiering (v10.9.2) ═══
+export {
+  enforceAutoTiering,
+  emergencyBulkDemotion,
+  getTieringHealth,
+  configureAutoTiering,
+  getEnforcementHistory,
+  type AutoTieringConfig,
+  type TieringReport,
+} from './brain-auto-tiering';

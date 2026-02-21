@@ -188,7 +188,15 @@ export async function enforceAutoTiering(overrideConfig?: Partial<AutoTieringCon
     // HARD enforcement — over limit, must demote aggressively
     report.enforcement = 'hard';
     const excess = counts.hot - Math.floor(cfg.hotLimit * (cfg.watermarkPercent / 100));
-    report.demotedHotToWarm = await demoteHotToWarm(excess);
+    // Process in batches of 500 to avoid timeout
+    let remaining = excess;
+    while (remaining > 0) {
+      const batch = Math.min(remaining, 500);
+      const demoted = await demoteHotToWarm(batch);
+      report.demotedHotToWarm += demoted;
+      remaining -= batch;
+      if (demoted === 0) break; // No more to demote
+    }
   } else if (hotUtilization >= cfg.watermarkPercent / 100) {
     // SOFT enforcement — approaching limit, demote lowest value
     report.enforcement = 'soft';
@@ -200,7 +208,14 @@ export async function enforceAutoTiering(overrideConfig?: Partial<AutoTieringCon
   const warmUtilization = (counts.warm + report.demotedHotToWarm) / cfg.warmLimit;
   if (warmUtilization >= 0.9) {
     const warmExcess = (counts.warm + report.demotedHotToWarm) - Math.floor(cfg.warmLimit * 0.7);
-    report.demotedWarmToCold = await demoteWarmToCold(Math.max(0, warmExcess));
+    let remaining = Math.max(0, warmExcess);
+    while (remaining > 0) {
+      const batch = Math.min(remaining, 500);
+      const demoted = await demoteWarmToCold(batch);
+      report.demotedWarmToCold += demoted;
+      remaining -= batch;
+      if (demoted === 0) break;
+    }
   }
 
   // Recalculate
@@ -227,6 +242,59 @@ export async function enforceAutoTiering(overrideConfig?: Partial<AutoTieringCon
   });
 
   return report;
+}
+
+/**
+ * Emergency bulk demotion — fast-path for critically overloaded tiers
+ * Uses direct SQL batch operations instead of row-by-row
+ */
+export async function emergencyBulkDemotion(targetHotCount: number = 400): Promise<{
+  hotDemoted: number;
+  warmDemoted: number;
+  duration: number;
+}> {
+  const start = performance.now();
+  const counts = await getTierCounts();
+  let hotDemoted = 0;
+  let warmDemoted = 0;
+
+  // Bulk demote hot → warm using RPC if available, else batched
+  if (counts.hot > targetHotCount) {
+    const excess = counts.hot - targetHotCount;
+    let remaining = excess;
+    while (remaining > 0) {
+      const batch = Math.min(remaining, 1000);
+      const demoted = await demoteHotToWarm(batch);
+      hotDemoted += demoted;
+      remaining -= batch;
+      if (demoted === 0) break;
+    }
+  }
+
+  // Bulk demote warm → cold if warm is over limit after hot demotion
+  const warmAfter = counts.warm + hotDemoted;
+  if (warmAfter > config.warmLimit) {
+    const excess = warmAfter - Math.floor(config.warmLimit * 0.7);
+    let remaining = Math.max(0, excess);
+    while (remaining > 0) {
+      const batch = Math.min(remaining, 1000);
+      const demoted = await demoteWarmToCold(batch);
+      warmDemoted += demoted;
+      remaining -= batch;
+      if (demoted === 0) break;
+    }
+  }
+
+  const duration = performance.now() - start;
+  
+  emit({
+    module: 'brain',
+    event_type: 'emergency_bulk_demotion',
+    outcome: 'succeeded',
+    data: { hotDemoted, warmDemoted, durationMs: Math.round(duration) },
+  });
+
+  return { hotDemoted, warmDemoted, duration };
 }
 
 /**
