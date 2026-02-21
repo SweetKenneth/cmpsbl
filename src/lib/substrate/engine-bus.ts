@@ -140,6 +140,80 @@ for (const [engine, commands] of Object.entries(ENGINE_ROUTING_MAP)) {
 // ENGINE BUS CLIENT
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// COGNITIVE LOAD BALANCER — Prevents brain overload from concurrent dispatches
+// ═══════════════════════════════════════════════════════════════════════════════
+
+interface LoadBalancerConfig {
+  maxConcurrentDispatches: number;
+  maxQueueDepth: number;
+  shedThreshold: number;       // Active dispatch count where we start shedding
+  cooldownMs: number;          // Minimum gap between dispatches to same engine
+  backpressureEnabled: boolean;
+}
+
+const DEFAULT_LOAD_CONFIG: LoadBalancerConfig = {
+  maxConcurrentDispatches: 8,
+  maxQueueDepth: 20,
+  shedThreshold: 6,
+  cooldownMs: 200,
+  backpressureEnabled: true,
+};
+
+class CognitiveLoadBalancer {
+  private config: LoadBalancerConfig;
+  private lastDispatchByEngine = new Map<EngineName, number>();
+  private queuedCount = 0;
+  private shedCount = 0;
+
+  constructor(config: LoadBalancerConfig = DEFAULT_LOAD_CONFIG) {
+    this.config = config;
+  }
+
+  /** Check if a dispatch should be allowed, shed, or queued */
+  shouldAllow(engine: EngineName, activeDispatches: number): 'allow' | 'shed' | 'backpressure' {
+    // Hard limit — shed immediately
+    if (activeDispatches >= this.config.maxConcurrentDispatches) {
+      this.shedCount++;
+      return 'shed';
+    }
+
+    // Soft limit — apply backpressure (delay)
+    if (this.config.backpressureEnabled && activeDispatches >= this.config.shedThreshold) {
+      const lastDispatch = this.lastDispatchByEngine.get(engine) ?? 0;
+      const elapsed = Date.now() - lastDispatch;
+      if (elapsed < this.config.cooldownMs) {
+        return 'backpressure';
+      }
+    }
+
+    return 'allow';
+  }
+
+  recordDispatch(engine: EngineName): void {
+    this.lastDispatchByEngine.set(engine, Date.now());
+  }
+
+  getBackpressureDelay(engine: EngineName): number {
+    const lastDispatch = this.lastDispatchByEngine.get(engine) ?? 0;
+    const elapsed = Date.now() - lastDispatch;
+    return Math.max(0, this.config.cooldownMs - elapsed);
+  }
+
+  getStats() {
+    return {
+      shedCount: this.shedCount,
+      queuedCount: this.queuedCount,
+      cooldownMs: this.config.cooldownMs,
+      maxConcurrent: this.config.maxConcurrentDispatches,
+    };
+  }
+
+  configure(updates: Partial<LoadBalancerConfig>): void {
+    this.config = { ...this.config, ...updates };
+  }
+}
+
 class EngineBusClient {
   private static instance: EngineBusClient;
   private state: BusState = {
@@ -153,6 +227,7 @@ class EngineBusClient {
   };
   private eventLog: ExecutionEvent[] = [];
   private readonly MAX_EVENT_LOG = 100;
+  private loadBalancer = new CognitiveLoadBalancer();
 
   private constructor() {
     this.state.initialized = true;
@@ -163,6 +238,16 @@ class EngineBusClient {
       EngineBusClient.instance = new EngineBusClient();
     }
     return EngineBusClient.instance;
+  }
+
+  /** Get cognitive load balancer stats */
+  getLoadStats() {
+    return this.loadBalancer.getStats();
+  }
+
+  /** Configure load balancer */
+  configureLoadBalancer(updates: Partial<LoadBalancerConfig>): void {
+    this.loadBalancer.configure(updates);
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -194,6 +279,33 @@ class EngineBusClient {
     if (!engine) {
       return this.createErrorResult<T>(command, 'memory_core', startTime, 'COMMAND_NOT_FOUND');
     }
+
+    // ── Cognitive Load Balancer Gate ──
+    const loadDecision = this.loadBalancer.shouldAllow(engine, this.state.activeDispatches);
+    
+    if (loadDecision === 'shed') {
+      const endTime = new Date();
+      this.logEvent(engine, command, false, endTime.getTime() - startTime.getTime(), 'EXECUTION_FAILED');
+      return {
+        success: false,
+        engine,
+        command,
+        error: `Load shed: ${this.state.activeDispatches} concurrent dispatches exceeds limit. Brain is overloaded — retry after cooldown.`,
+        errorCode: 'EXECUTION_FAILED',
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        durationMs: endTime.getTime() - startTime.getTime(),
+        retryCount: 0,
+        stage: 'failed',
+      };
+    }
+
+    if (loadDecision === 'backpressure') {
+      const delay = this.loadBalancer.getBackpressureDelay(engine);
+      if (delay > 0) await this.sleep(delay);
+    }
+
+    this.loadBalancer.recordDispatch(engine);
 
     // Emit telemetry start (lazy import to avoid circular dep)
     this.emitTelemetryStart(engine, command, correlationId);
