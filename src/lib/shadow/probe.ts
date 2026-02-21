@@ -1,6 +1,8 @@
 /**
- * Shadow Mesh — Probe Runner
- * Runs adversarial inputs through pilot executors when shadow mesh is enabled
+ * Shadow Mesh — Probe Runner (v3.0 — Dynamic Discovery)
+ * 
+ * Probes ALL registered executors dynamically rather than a hardcoded list.
+ * New executors are automatically discovered and probed as they register.
  * 
  * Admin-only. Zero impact when disabled.
  */
@@ -34,7 +36,36 @@ export interface ShadowProbeReport {
 }
 
 /**
- * Run a shadow probe against a specific pilot executor
+ * Get ALL registered executor IDs dynamically.
+ * Merges the pilot list with any additional executors found in the registry,
+ * so new executors are probed automatically as they are added.
+ */
+export function getProbeableExecutors(): string[] {
+  // Start with all known pilot executors
+  const executorSet = new Set<string>(PILOT_EXECUTORS);
+
+  // Dynamically discover any additional executors that have been registered
+  // by scanning the registry for executors not in the pilot list
+  // (The registry.executors map is the source of truth)
+  try {
+    // Import the registry's internal executor map via the public API
+    const { listRegisteredExecutorIds } = require('@/lib/capabilities/synergies/registry');
+    if (typeof listRegisteredExecutorIds === 'function') {
+      const allIds: string[] = listRegisteredExecutorIds();
+      for (const id of allIds) {
+        executorSet.add(id);
+      }
+    }
+  } catch {
+    // Fallback: only probe pilot executors if dynamic discovery unavailable
+    log.warn('shadow', 'Dynamic executor discovery unavailable, using pilot list only');
+  }
+
+  return Array.from(executorSet);
+}
+
+/**
+ * Run a shadow probe against a specific executor
  */
 export async function runShadowProbe(
   executorName: string,
@@ -137,13 +168,15 @@ export async function runShadowProbe(
 }
 
 /**
- * Run shadow probes against all pilot executors.
- * Uses the canonical PILOT_EXECUTORS list from @/immune/pilotExecutors
- * rather than a local copy so additions/removals propagate automatically.
+ * Run shadow probes against ALL registered executors dynamically.
+ * Automatically discovers new executors as they are added to the mesh.
  */
 export async function runAllShadowProbes(): Promise<ShadowProbeReport[]> {
+  const executors = getProbeableExecutors();
+  log.info('shadow', `Dynamic probe sweep: ${executors.length} executors discovered`);
+  
   const reports: ShadowProbeReport[] = [];
-  for (const name of PILOT_EXECUTORS) {
+  for (const name of executors) {
     reports.push(await runShadowProbe(name));
   }
   return reports;

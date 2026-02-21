@@ -1,7 +1,7 @@
 /**
- * Executor Immune Pilot — Pilot Executor List & Registration (v2.0)
+ * Executor Immune Pilot — Pilot Executor List & Registration (v3.0)
  * 
- * Expanded from 5 INCLUSIVE-only executors to 13 across 4 substrate modules:
+ * Expanded from 13 to 20 executors across 6 substrate categories:
  * 
  * INCLUSIVE (5):
  *   1. adaptive-ui
@@ -23,6 +23,17 @@
  * ORCHESTRATOR (2):
  *  12. mesh-pipeline-resolver
  *  13. seba-proposal-evaluator
+ * 
+ * INFRASTRUCTURE (4):
+ *  14. memory-consolidation-engine
+ *  15. identity-verification-engine
+ *  16. sandbox-isolation-guard
+ *  17. encode-task-scheduler
+ * 
+ * INTELLIGENCE (3):
+ *  18. dream-pattern-synthesizer
+ *  19. decode-intent-classifier
+ *  20. vision-anomaly-detector
  */
 
 import type { SynergyExecutor } from '@/lib/capabilities/synergies/types';
@@ -35,11 +46,11 @@ export interface ExecutorModuleMeta {
   module: string;
   scope: string;
   /** Functional category for cross-executor learning grouping */
-  category: 'ui_adaptation' | 'content_analysis' | 'content_validation' | 'cognitive_processing' | 'event_routing' | 'governance' | 'orchestration';
+  category: 'ui_adaptation' | 'content_analysis' | 'content_validation' | 'cognitive_processing' | 'event_routing' | 'governance' | 'orchestration' | 'infrastructure' | 'intelligence';
 }
 
 /**
- * The 13 pilot executor IDs across 4 substrate modules
+ * The 20 pilot executor IDs across 6 substrate categories
  */
 export const PILOT_EXECUTORS = [
   // INCLUSIVE
@@ -59,6 +70,15 @@ export const PILOT_EXECUTORS = [
   // ORCHESTRATOR
   'mesh-pipeline-resolver',
   'seba-proposal-evaluator',
+  // INFRASTRUCTURE
+  'memory-consolidation-engine',
+  'identity-verification-engine',
+  'sandbox-isolation-guard',
+  'encode-task-scheduler',
+  // INTELLIGENCE
+  'dream-pattern-synthesizer',
+  'decode-intent-classifier',
+  'vision-anomaly-detector',
 ] as const;
 
 export type PilotExecutorId = typeof PILOT_EXECUTORS[number];
@@ -67,19 +87,28 @@ export type PilotExecutorId = typeof PILOT_EXECUTORS[number];
  * Module metadata registry — maps executor → module + scope + category
  */
 export const EXECUTOR_MODULE_META: Record<PilotExecutorId, ExecutorModuleMeta> = {
-  'adaptive-ui':                       { module: 'INCLUSIVE',     scope: 'adaptive-ui',                    category: 'ui_adaptation' },
-  'cognitive-load-optimization':       { module: 'INCLUSIVE',     scope: 'cognitive-load-optimization',    category: 'content_analysis' },
-  'comprehensive-accessibility-audit': { module: 'INCLUSIVE',     scope: 'comprehensive-accessibility-audit', category: 'content_validation' },
-  'personalized-accessibility-engine': { module: 'INCLUSIVE',     scope: 'personalized-accessibility-engine', category: 'ui_adaptation' },
-  'inclusive-content':                 { module: 'INCLUSIVE',     scope: 'inclusive-content',              category: 'content_validation' },
-  'reasoning-engine':                  { module: 'COGNITIVE',    scope: 'reasoning-engine',               category: 'cognitive_processing' },
-  'learning-engine':                   { module: 'COGNITIVE',    scope: 'learning-engine',                category: 'cognitive_processing' },
-  'imagination-engine':                { module: 'COGNITIVE',    scope: 'imagination-engine',             category: 'cognitive_processing' },
-  'relay-event-dispatcher':            { module: 'OPERATIONAL',  scope: 'relay-event-dispatcher',         category: 'event_routing' },
-  'economy-cost-tracker':              { module: 'OPERATIONAL',  scope: 'economy-cost-tracker',           category: 'governance' },
-  'audit-compliance-check':            { module: 'OPERATIONAL',  scope: 'audit-compliance-check',         category: 'content_validation' },
-  'mesh-pipeline-resolver':            { module: 'ORCHESTRATOR', scope: 'mesh-pipeline-resolver',         category: 'orchestration' },
-  'seba-proposal-evaluator':           { module: 'ORCHESTRATOR', scope: 'seba-proposal-evaluator',        category: 'governance' },
+  'adaptive-ui':                       { module: 'INCLUSIVE',       scope: 'adaptive-ui',                    category: 'ui_adaptation' },
+  'cognitive-load-optimization':       { module: 'INCLUSIVE',       scope: 'cognitive-load-optimization',    category: 'content_analysis' },
+  'comprehensive-accessibility-audit': { module: 'INCLUSIVE',       scope: 'comprehensive-accessibility-audit', category: 'content_validation' },
+  'personalized-accessibility-engine': { module: 'INCLUSIVE',       scope: 'personalized-accessibility-engine', category: 'ui_adaptation' },
+  'inclusive-content':                 { module: 'INCLUSIVE',       scope: 'inclusive-content',              category: 'content_validation' },
+  'reasoning-engine':                  { module: 'COGNITIVE',      scope: 'reasoning-engine',               category: 'cognitive_processing' },
+  'learning-engine':                   { module: 'COGNITIVE',      scope: 'learning-engine',                category: 'cognitive_processing' },
+  'imagination-engine':                { module: 'COGNITIVE',      scope: 'imagination-engine',             category: 'cognitive_processing' },
+  'relay-event-dispatcher':            { module: 'OPERATIONAL',    scope: 'relay-event-dispatcher',         category: 'event_routing' },
+  'economy-cost-tracker':              { module: 'OPERATIONAL',    scope: 'economy-cost-tracker',           category: 'governance' },
+  'audit-compliance-check':            { module: 'OPERATIONAL',    scope: 'audit-compliance-check',         category: 'content_validation' },
+  'mesh-pipeline-resolver':            { module: 'ORCHESTRATOR',   scope: 'mesh-pipeline-resolver',         category: 'orchestration' },
+  'seba-proposal-evaluator':           { module: 'ORCHESTRATOR',   scope: 'seba-proposal-evaluator',        category: 'governance' },
+  // INFRASTRUCTURE
+  'memory-consolidation-engine':       { module: 'INFRASTRUCTURE', scope: 'memory-consolidation-engine',    category: 'infrastructure' },
+  'identity-verification-engine':      { module: 'INFRASTRUCTURE', scope: 'identity-verification-engine',   category: 'infrastructure' },
+  'sandbox-isolation-guard':           { module: 'INFRASTRUCTURE', scope: 'sandbox-isolation-guard',        category: 'infrastructure' },
+  'encode-task-scheduler':             { module: 'INFRASTRUCTURE', scope: 'encode-task-scheduler',          category: 'infrastructure' },
+  // INTELLIGENCE
+  'dream-pattern-synthesizer':         { module: 'INTELLIGENCE',   scope: 'dream-pattern-synthesizer',      category: 'intelligence' },
+  'decode-intent-classifier':          { module: 'INTELLIGENCE',   scope: 'decode-intent-classifier',       category: 'intelligence' },
+  'vision-anomaly-detector':           { module: 'INTELLIGENCE',   scope: 'vision-anomaly-detector',        category: 'intelligence' },
 };
 
 /** Check if an executor is in the pilot set */

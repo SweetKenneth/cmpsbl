@@ -2170,5 +2170,12 @@ export function getSynergyCategories(): { category: string; count: number }[] {
   return Array.from(counts.entries()).map(([category, count]) => ({ category, count }));
 }
 
+/**
+ * List all registered executor IDs (for dynamic discovery by shadow probes)
+ */
+export function listRegisteredExecutorIds(): string[] {
+  return Array.from(registry.executors.keys());
+}
+
 // Auto-initialize on module load
 initSynergyRegistry();
