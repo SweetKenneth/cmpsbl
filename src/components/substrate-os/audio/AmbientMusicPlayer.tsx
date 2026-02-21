@@ -127,21 +127,39 @@ export function AmbientMusicPlayer({ className }: { className?: string }) {
     });
   }, []);
   
+  // Pick a random track index that isn't the current one
+  const pickRandomNext = useCallback((currentIdx: number) => {
+    if (AMBIENT_TRACKS.length <= 1) return 0;
+    let next: number;
+    do {
+      next = Math.floor(Math.random() * AMBIENT_TRACKS.length);
+    } while (next === currentIdx);
+    return next;
+  }, []);
+
   // Initialize audio
   useEffect(() => {
     if (!audioRef.current) {
       audioRef.current = new Audio();
-      audioRef.current.loop = true;
+      audioRef.current.loop = false;
       audioRef.current.volume = settings.volume;
     }
+
+    const audio = audioRef.current;
+    const handleEnded = () => {
+      const nextIdx = pickRandomNext(settings.trackIndex);
+      updateSettings({ trackIndex: nextIdx });
+    };
+    audio.addEventListener('ended', handleEnded);
     
     return () => {
+      audio.removeEventListener('ended', handleEnded);
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
       }
     };
-  }, []);
+  }, [settings.trackIndex, pickRandomNext, updateSettings]);
   
   // Handle track changes
   useEffect(() => {
@@ -252,7 +270,7 @@ export function AmbientMusicPlayer({ className }: { className?: string }) {
                 </div>
                 
                 {/* Track List */}
-                <div className="space-y-1 mb-4 max-h-[180px] overflow-y-auto pr-1">
+                <div className="space-y-1 mb-4 max-h-[320px] overflow-y-auto pr-1">
                   {AMBIENT_TRACKS.map((track, idx) => (
                     <button
                       key={track.id}
