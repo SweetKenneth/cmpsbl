@@ -29,7 +29,7 @@ import { enqueueEscalation } from './queue';
 import { repair } from './repairs';
 import { deterministicRepair } from './deterministic-repair';
 import { incrementMetric, recordOutcome } from './metrics';
-import { recordImmuneMetrics } from '@/lib/immune/recordMetrics';
+// Metrics recording moved to batch level (runBatch.ts) to prevent per-execution DB spam
 import { intelligentRepair, recordRepairOutcome, preNormalize, mineEscalationPattern } from './repair-intelligence';
 import { trackOutcome, type OutcomeRecord } from './outcome-tracker';
 import { captureEscalation, runLearningCycle } from './escalation-learning';
@@ -147,20 +147,7 @@ export function wrapExecutor(
     let safeFailFlag = false;
     const startTime = performance.now();
 
-    /** Persist repair telemetry for this run */
-    const persistTelemetry = async () => {
-      await recordImmuneMetrics({
-        executor: executorName,
-        total: 1,
-        repaired: repairSuccessFlag ? 1 : 0,
-        escalated: escalatedFlag ? 1 : 0,
-        safeFail: safeFailFlag ? 1 : 0,
-        repair_attempted: repairAttemptedFlag,
-        repair_success: repairSuccessFlag,
-        repair_type: repairTypeFlag,
-        retry_attempted: retryAttemptedFlag,
-      });
-    };
+    // Telemetry is now recorded at batch level (runBatch.ts) — no per-execution DB writes
 
     /**
      * v2.0: Intelligent repair + single retry.
@@ -215,7 +202,7 @@ export function wrapExecutor(
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', ir.repaired_input, undefined, true);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
-          await persistTelemetry();
+          // metrics recorded at batch level
           return retryResult;
         }
         repairSuccessFlag = false;
@@ -259,7 +246,7 @@ export function wrapExecutor(
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', repairResult.repairedInput);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
-          await persistTelemetry();
+          // metrics recorded at batch level
           return result;
         } catch (err) {
           const errorMsg = err instanceof Error ? err.message : 'unknown error after repair';
@@ -267,7 +254,7 @@ export function wrapExecutor(
           escalatedFlag = true;
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, errorMsg);
           recordOutcome('escalated');
-          await persistTelemetry();
+          // metrics recorded at batch level
           return createSafeFailure(ctx.synergyId, `Repaired input still failed: ${errorMsg}`);
         }
       } else {
@@ -275,7 +262,7 @@ export function wrapExecutor(
         escalatedFlag = true;
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, preflight.reason ?? 'preflight failed');
         recordOutcome('escalated');
-        await persistTelemetry();
+        // metrics recorded at batch level
         return createSafeFailure(ctx.synergyId, `Preflight failed: ${preflight.reason}`);
       }
     }
@@ -296,12 +283,12 @@ export function wrapExecutor(
         escalatedFlag = true;
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, `Postcheck failed: ${post.reason}`);
         recordOutcome('escalated');
-        await persistTelemetry();
+        // metrics recorded at batch level
         return createSafeFailure(ctx.synergyId, `Postcheck failed: ${post.reason}`);
       }
 
       recordOutcome('success');
-      await persistTelemetry();
+      // metrics recorded at batch level
       return result;
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'unknown execution error';
@@ -321,7 +308,7 @@ export function wrapExecutor(
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', repairResult.repairedInput);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
-          await persistTelemetry();
+          // metrics recorded at batch level
           return result;
         } catch (retryErr) {
           const retryMsg = retryErr instanceof Error ? retryErr.message : 'unknown';
@@ -329,7 +316,7 @@ export function wrapExecutor(
           escalatedFlag = true;
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, retryMsg);
           recordOutcome('escalated');
-          await persistTelemetry();
+          // metrics recorded at batch level
           return createSafeFailure(ctx.synergyId, `Repair failed on retry: ${retryMsg}`);
         }
       } else {
@@ -337,7 +324,7 @@ export function wrapExecutor(
         escalatedFlag = true;
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
         recordOutcome('escalated');
-        await persistTelemetry();
+        // metrics recorded at batch level
         return createSafeFailure(ctx.synergyId, `Executor failed: ${errorMsg}`);
       }
     }
