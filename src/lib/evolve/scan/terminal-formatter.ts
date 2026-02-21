@@ -57,7 +57,7 @@ const ATOMIC_PATTERNS = [
   // Timestamps
   /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/g,
   // Module names
-  /(?:BRAIN|DECODE|DREAM|VISION|NEXUS|DEFENSE|CORE|RIPPLE|ACCESS|SYSTEM|MODERNIZER|INTEGRATION|CORTEX|INCLUSIVE)/g,
+  /(?:BRAIN|DECODE|DREAM|VISION|NEXUS|DEFENSE|CORE|RIPPLE|ACCESS|SYSTEM|MODERNIZER|INTEGRATION|CORTEX|INCLUSIVE|MEMORY|RELAY|AUDIT|IDENTITY|ECONOMY|SANDBOX|ENCODE|ATLAS)/g,
   // Status labels
   /(?:OK|HEALTHY|BLOCKED|READY|PENDING|FAILED|VERIFIED|ABORTED)/g,
   // Command names
@@ -188,9 +188,10 @@ function formatCompactScan(result: ScanResultExtended, options: ScanOptions): st
   lines.push(`Risks: ${result.edge_analysis.risk_flags.length}`);
   lines.push('');
   
-  // System state
+  // System state + module health
   lines.push('── STATE ──');
   lines.push(`Circuit: ${result.system_state.circuit_states.evolution_circuit}`);
+  lines.push(`Modules: ${result.system_state.modules_healthy}/${result.system_state.modules_scanned} healthy`);
   lines.push(`Anomalies: ${result.system_state.detected_anomalies.length}`);
   lines.push('');
   
@@ -325,7 +326,19 @@ function formatFullScan(result: ScanResultExtended, options: ScanOptions): strin
   lines.push('╠' + '═'.repeat(W) + '╣');
   lines.push('║  ⚙️  SYSTEM STATE' + ' '.repeat(W - 19) + '║');
   lines.push(`║    Circuit: ${result.system_state.circuit_states.evolution_circuit.padEnd(8)} | Anomalies: ${result.system_state.detected_anomalies.length}` + ' '.repeat(W - 42) + '║');
-  lines.push(`║    Orchestration: ${result.system_state.orchestration_phase.padEnd(12)}` + ' '.repeat(W - 34) + '║');
+  lines.push(`║    Modules: ${result.system_state.modules_healthy}/${result.system_state.modules_scanned} healthy | Phase: ${result.system_state.orchestration_phase.padEnd(8)}` + ' '.repeat(W - 48) + '║');
+  
+  // Module issues (if any)
+  const unhealthy = result.system_state.module_health_map.filter(m => !m.reachable || !m.table_accessible || m.anomalies.length > 0);
+  if (unhealthy.length > 0) {
+    for (const m of unhealthy.slice(0, 4)) {
+      const issue = m.anomalies[0] || (m.reachable ? 'table issue' : 'unreachable');
+      lines.push(`║    ⚠ ${m.module.toUpperCase().padEnd(12)} ${truncateAtWord(issue, W - 24).padEnd(W - 22)}║`);
+    }
+    if (unhealthy.length > 4) {
+      lines.push(`║    ... +${unhealthy.length - 4} more module issues` + ' '.repeat(W - 32) + '║');
+    }
+  }
   
   // Code Health
   lines.push('╠' + '═'.repeat(W) + '╣');

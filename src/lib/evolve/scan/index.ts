@@ -215,6 +215,9 @@ function createErrorResult(scanId: string, errorMessage: string, duration: numbe
       },
       orchestration_phase: 'unknown',
       detected_anomalies: [],
+      module_health_map: [],
+      modules_scanned: 0,
+      modules_healthy: 0,
       scan_timestamp: new Date().toISOString(),
     },
     code_health: {
