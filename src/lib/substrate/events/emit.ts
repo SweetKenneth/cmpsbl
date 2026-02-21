@@ -39,6 +39,14 @@ const FLUSH_BACKOFF_BASE_MS = 2000;
 async function flushEvents(): Promise<void> {
   if (eventQueue.length === 0) return;
 
+  // Don't attempt to flush if user is not authenticated
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    // Silently drain the queue — unauthenticated writes will always fail
+    eventQueue.length = 0;
+    return;
+  }
+
   // Circuit breaker: if too many consecutive failures, skip flush and drain queue slowly
   if (consecutiveFlushFailures >= MAX_FLUSH_FAILURES) {
     const backoff = FLUSH_BACKOFF_BASE_MS * Math.pow(2, Math.min(consecutiveFlushFailures - MAX_FLUSH_FAILURES, 5));
@@ -70,9 +78,12 @@ async function flushEvents(): Promise<void> {
     if (error) {
       consecutiveFlushFailures++;
       log.error('events', 'Failed to flush events', { error: error.message, count: events.length, failures: consecutiveFlushFailures });
-      // Re-queue failed events (up to limit)
-      const requeue = events.slice(0, Math.max(0, MAX_QUEUE_SIZE - eventQueue.length));
-      eventQueue.unshift(...requeue);
+      // Do NOT re-queue on permission/RLS errors — they will never succeed
+      const isPermissionError = error.message?.includes('row-level security') || error.message?.includes('permission denied');
+      if (!isPermissionError) {
+        const requeue = events.slice(0, Math.max(0, MAX_QUEUE_SIZE - eventQueue.length));
+        eventQueue.unshift(...requeue);
+      }
     } else {
       consecutiveFlushFailures = 0;
       log.debug('events', `Flushed ${events.length} events`);
@@ -107,6 +118,10 @@ export async function emit(
 
   if (options.immediate) {
     try {
+      // Skip immediate writes if not authenticated
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return trace_id;
+
       const { error } = await supabase.from('brain_events').insert({
         module: fullEvent.module,
         event_type: fullEvent.event_type,
@@ -152,15 +167,11 @@ export const emitFailed = (module: string, action: string, error: string, data?:
     trace_id: traceId 
   }, { immediate: true });
 
-// Flush on page unload
+// Clean up queue on page unload (no beacon — endpoint doesn't exist)
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', () => {
-    if (eventQueue.length > 0) {
-      // Use sendBeacon for reliability
-      const events = eventQueue.splice(0, eventQueue.length);
-      const payload = JSON.stringify(events);
-      navigator.sendBeacon?.('/api/events-flush', payload);
-    }
+    // Simply drain the queue — events are best-effort
+    eventQueue.length = 0;
   });
 }
 

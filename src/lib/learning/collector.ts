@@ -188,14 +188,18 @@ export class LearningCollector {
 
       if (error) {
         console.error('Failed to flush learning events:', error);
-        // Put back in queue on failure
-        this.queue.unshift(...batch);
+        // Only re-queue on transient errors, not permission/RLS failures
+        const isPermissionError = typeof error === 'object' && error !== null && 
+          String(error).includes('row-level security');
+        if (!isPermissionError) {
+          this.queue.unshift(...batch);
+        }
       } else {
         console.log(`✅ Flushed ${batch.length} learning events`);
       }
     } catch (error) {
       console.error('Learning collector flush error:', error);
-      // Put back in queue on failure
+      // Don't re-queue on hard errors to prevent infinite loops
       this.queue.unshift(...batch);
     } finally {
       this.isProcessing = false;
