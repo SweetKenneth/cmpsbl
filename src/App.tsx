@@ -264,7 +264,11 @@ const App = () => {
     (window.location.pathname === '/pf-clear-cache' || window.location.pathname === '/clear-cache');
 
   if (isCacheClearRoute) {
-    return <ClearCache />;
+    return (
+      <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0a0a0a' }} />}>
+        <ClearCache />
+      </Suspense>
+    );
   }
 
   return (

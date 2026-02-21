@@ -242,7 +242,7 @@ export function wrapExecutor(
       if (irResult) return irResult;
 
       incrementMetric('repairAttempts');
-      const repairResult = repair(scope, input as Record<string, unknown>, { traceId: ctx.traceId });
+      const repairResult = repair(executorName, input as Record<string, unknown>, { traceId: ctx.traceId });
 
       if (repairResult) {
         const repairedCtx = { ...ctx, input: repairResult.repairedInput };
@@ -302,9 +302,9 @@ export function wrapExecutor(
       const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
       if (irResult) return irResult;
 
-      // Legacy repair fallback
+      // Legacy repair fallback — use executorName (not scope) to match registered repairs
       incrementMetric('repairAttempts');
-      const repairResult = repair(scope, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
+      const repairResult = repair(executorName, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
 
       if (repairResult) {
         const repairedCtx = { ...ctx, input: repairResult.repairedInput };
