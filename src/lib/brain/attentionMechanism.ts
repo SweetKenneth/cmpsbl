@@ -1,89 +1,78 @@
 /**
  * BRAIN Attention Mechanism v9.1.0 ARCHITECT
  * Priority-weighted memory retrieval with decay and salience scoring
+ * Now delegates salience calculation to the unified calculateSalience() in memory-core.
  */
  
- import { supabase } from '@/integrations/supabase/client';
- 
+import { supabase } from '@/integrations/supabase/client';
+import { calculateSalience as coreCalculateSalience, type SalienceResult } from '@/lib/substrate/memory-core';
  export interface AttentionFocus {
    context: string;
    weight: number;
    decay_rate: number;
    created_at: string;
    expires_at: string;
- }
+  }
  
- export interface SalienceScore {
-   memory_id: string;
-   relevance: number;
-   recency: number;
-   importance: number;
-   access_frequency: number;
-   combined_score: number;
- }
- 
- export interface AttentionWindow {
-   focuses: AttentionFocus[];
-   active_memories: number;
-   avg_salience: number;
-   peak_attention: string | null;
- }
- 
- // In-memory attention state
- let attentionFocuses: AttentionFocus[] = [];
- const ATTENTION_WEIGHTS = {
-   relevance: 0.35,
-   recency: 0.25,
-   importance: 0.25,
-   frequency: 0.15,
- };
- 
- /**
-  * Calculate salience score for a memory
-  */
- export function calculateSalience(
-   memory: {
-     id: string;
-     content: string;
-     value_score?: number;
-     access_count?: number;
-     created_at: string;
-   },
-   context: string
- ): SalienceScore {
-   // Calculate relevance using keyword overlap
-   const contextWords = new Set(context.toLowerCase().split(/\s+/));
-   const contentWords = memory.content.toLowerCase().split(/\s+/);
-   const overlap = contentWords.filter(w => contextWords.has(w)).length;
-   const relevance = Math.min(1, overlap / Math.max(1, contextWords.size));
- 
-   // Calculate recency (exponential decay over 30 days)
-   const ageMs = Date.now() - new Date(memory.created_at).getTime();
-   const ageDays = ageMs / (1000 * 60 * 60 * 24);
-   const recency = Math.exp(-ageDays / 30);
- 
-   // Importance from value score
-   const importance = memory.value_score ?? 0.5;
- 
-   // Access frequency normalized
-   const frequency = Math.min(1, (memory.access_count ?? 1) / 100);
- 
-   // Combined weighted score
-   const combined_score =
-     relevance * ATTENTION_WEIGHTS.relevance +
-     recency * ATTENTION_WEIGHTS.recency +
-     importance * ATTENTION_WEIGHTS.importance +
-     frequency * ATTENTION_WEIGHTS.frequency;
- 
-   return {
-     memory_id: memory.id,
-     relevance,
-     recency,
-     importance,
-     access_frequency: frequency,
-     combined_score,
-   };
- }
+export interface AttentionWindow {
+  focuses: AttentionFocus[];
+  active_memories: number;
+  avg_salience: number;
+  peak_attention: string | null;
+}
+
+// In-memory attention state
+let attentionFocuses: AttentionFocus[] = [];
+
+export interface SalienceScore {
+  memory_id: string;
+  relevance: number;
+  recency: number;
+  importance: number;
+  access_frequency: number;
+  reinforcement: number;
+  cross_module: number;
+  combined_score: number;
+}
+
+/**
+ * Calculate salience score for a memory — delegates to the unified calculator.
+ */
+export function calculateSalience(
+  memory: {
+    id: string;
+    content: string;
+    value_score?: number;
+    access_count?: number;
+    created_at: string;
+    memory_type?: string;
+    reinforcement_count?: number;
+    cross_module_refs?: number;
+  },
+  context: string
+): SalienceScore {
+  const result = coreCalculateSalience({
+    confidence: memory.value_score ?? 0.5,
+    access_count: memory.access_count ?? 0,
+    created_at: memory.created_at,
+    memory_type: (memory.memory_type as any) ?? 'general',
+    reinforcement_count: memory.reinforcement_count ?? 0,
+    cross_module_refs: memory.cross_module_refs ?? 0,
+    query_context: context,
+    content: memory.content,
+  });
+
+  return {
+    memory_id: memory.id,
+    relevance: result.factors.relevance,
+    recency: result.factors.recency,
+    importance: result.factors.confidence,
+    access_frequency: result.factors.frequency,
+    reinforcement: result.factors.reinforcement,
+    cross_module: result.factors.cross_module,
+    combined_score: result.score,
+  };
+}
  
  /**
   * Add a focus context to the attention window

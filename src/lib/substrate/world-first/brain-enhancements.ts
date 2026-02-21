@@ -3,6 +3,8 @@
  * AttentionMechanism, MemoryConsolidator, SemanticIndexer, EmotionalResonance
  */
 
+import { calculateSalience, type SalienceInput, type SalienceResult } from '@/lib/substrate/memory-core';
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // ATTENTION MECHANISM — Dynamic focus allocation (Miller's Law: 7±2)
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -73,12 +75,24 @@ export class AttentionMechanism {
     }));
   }
 
-  /** Calculate salience score for memory retrieval */
-  calculateSalience(memoryId: string, recency: number, frequency: number): number {
+  calculateSalienceScore(memoryId: string, recency: number, frequency: number, extra?: Partial<SalienceInput>): SalienceResult {
     const focusWeight = this.state.weights.get(memoryId) || 0;
-    const recencyScore = Math.exp(-recency / 86400000); // Decay over 24h
-    const frequencyScore = Math.log(frequency + 1) / Math.log(10);
-    return (focusWeight * 0.4) + (recencyScore * 0.35) + (frequencyScore * 0.25);
+    return calculateSalience({
+      confidence: extra?.confidence ?? 0.5,
+      access_count: frequency,
+      created_at: new Date(Date.now() - recency).toISOString(),
+      memory_type: extra?.memory_type ?? 'general',
+      attention_weight: focusWeight,
+      reinforcement_count: extra?.reinforcement_count,
+      cross_module_refs: extra?.cross_module_refs,
+      query_context: extra?.query_context,
+      content: extra?.content,
+    });
+  }
+
+  /** @deprecated Use calculateSalienceScore() — kept for backward compat */
+  calculateSalience(memoryId: string, recency: number, frequency: number): number {
+    return this.calculateSalienceScore(memoryId, recency, frequency).score;
   }
 }
 

@@ -88,6 +88,139 @@ export interface LifecycleResult {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// UNIFIED SALIENCE SCORER
+// Single authoritative salience calculation used by all retrieval paths.
+// Covers: confidence, frequency, user reinforcement, cross-module consensus,
+//         recency decay, type weighting, attention focus — as a weighted composite.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export interface SalienceInput {
+  /** Memory confidence score (0-1) */
+  confidence: number;
+  /** How many times this memory has been accessed */
+  access_count: number;
+  /** ISO timestamp of memory creation */
+  created_at: string;
+  /** ISO timestamp of last access/use (null = never re-accessed) */
+  last_accessed?: string | null;
+  /** Memory type for type-weighting */
+  memory_type: MemoryType;
+  /** Number of times user/system explicitly reinforced this memory (SM-2 repetitions) */
+  reinforcement_count?: number;
+  /** How many distinct modules have referenced this memory (BRAIN, DREAM, CLM, VISION, etc.) */
+  cross_module_refs?: number;
+  /** Current attention focus weight (0 = not focused, 1 = primary focus) */
+  attention_weight?: number;
+  /** Optional context string for keyword-relevance scoring */
+  query_context?: string;
+  /** The memory content (for keyword matching against query_context) */
+  content?: string;
+}
+
+export interface SalienceResult {
+  /** Final composite score 0-1 */
+  score: number;
+  /** Individual factor contributions (for debugging/telemetry) */
+  factors: {
+    confidence: number;
+    recency: number;
+    frequency: number;
+    reinforcement: number;
+    cross_module: number;
+    type_weight: number;
+    attention: number;
+    relevance: number;
+  };
+}
+
+/** Salience factor weights — tuned to balance recall vs precision */
+const SALIENCE_WEIGHTS = {
+  confidence:    0.20,  // How reliable is this memory?
+  recency:       0.18,  // How recent? (exponential decay)
+  frequency:     0.12,  // How often accessed?
+  reinforcement: 0.15,  // User/system reinforcement (SM-2 signal)
+  cross_module:  0.10,  // Cross-module consensus (DREAM, VISION, CLM agree)
+  type_weight:   0.10,  // Intrinsic type importance
+  attention:     0.08,  // Current attention focus boost
+  relevance:     0.07,  // Keyword relevance to active query
+};
+
+/** Type-based intrinsic importance — how critical is this category of knowledge? */
+const TYPE_IMPORTANCE: Record<MemoryType, number> = {
+  doctrine: 0.95,
+  doctrine_integrated: 1.0,
+  template: 0.75,
+  heuristic: 0.70,
+  error_pattern: 0.65,
+  preference: 0.60,
+  reflection: 0.50,
+  insight: 0.50,
+  conversation: 0.40,
+  dream: 0.35,
+  general: 0.30,
+};
+
+/**
+ * Unified salience calculation — the ONLY salience function in the substrate.
+ * All retrieval paths (attention mechanism, brain enhancements, memory core)
+ * MUST use this function instead of rolling their own.
+ */
+export function calculateSalience(input: SalienceInput): SalienceResult {
+  // 1. Confidence (direct pass-through, clamped)
+  const confidence = Math.min(1, Math.max(0, input.confidence));
+
+  // 2. Recency decay — exponential decay with 30-day half-life
+  const ageMs = Date.now() - new Date(input.created_at).getTime();
+  const ageDays = ageMs / (1000 * 60 * 60 * 24);
+  const recency = Math.exp(-ageDays / 30);
+
+  // 3. Frequency — logarithmic (diminishing returns past ~50 accesses)
+  const frequency = Math.min(1, Math.log(Math.max(1, input.access_count) + 1) / Math.log(51));
+
+  // 4. User reinforcement — SM-2 repetition signal with diminishing returns
+  const reps = input.reinforcement_count ?? 0;
+  const reinforcement = Math.min(1, reps > 0 ? 0.3 + 0.7 * (1 - Math.exp(-reps / 5)) : 0);
+
+  // 5. Cross-module consensus — how many modules have independently referenced this?
+  //    2+ modules agreeing is a strong signal; 4+ is near-certainty
+  const refs = input.cross_module_refs ?? 0;
+  const cross_module = Math.min(1, refs / 4);
+
+  // 6. Type weighting
+  const type_weight = TYPE_IMPORTANCE[input.memory_type] ?? 0.4;
+
+  // 7. Attention focus boost
+  const attention = Math.min(1, input.attention_weight ?? 0);
+
+  // 8. Query relevance — keyword overlap if context provided
+  let relevance = 0;
+  if (input.query_context && input.content) {
+    const queryWords = new Set(input.query_context.toLowerCase().split(/\s+/).filter(w => w.length > 2));
+    if (queryWords.size > 0) {
+      const contentWords = input.content.toLowerCase().split(/\s+/);
+      const overlap = contentWords.filter(w => queryWords.has(w)).length;
+      relevance = Math.min(1, overlap / queryWords.size);
+    }
+  }
+
+  // Weighted composite
+  const score =
+    confidence    * SALIENCE_WEIGHTS.confidence +
+    recency       * SALIENCE_WEIGHTS.recency +
+    frequency     * SALIENCE_WEIGHTS.frequency +
+    reinforcement * SALIENCE_WEIGHTS.reinforcement +
+    cross_module  * SALIENCE_WEIGHTS.cross_module +
+    type_weight   * SALIENCE_WEIGHTS.type_weight +
+    attention     * SALIENCE_WEIGHTS.attention +
+    relevance     * SALIENCE_WEIGHTS.relevance;
+
+  return {
+    score: Math.min(1, Math.max(0, score)),
+    factors: { confidence, recency, frequency, reinforcement, cross_module, type_weight, attention, relevance },
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // MEMORY CORE CLASS
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -644,34 +777,19 @@ class MemoryCoreClient {
   // ═══════════════════════════════════════════════════════════════════════════
 
   private calculateImportance(content: string, type: MemoryType, confidence: number): number {
-    let score = confidence * 0.4;
-
-    // Type-based scoring — CLM-generated types score lower to bias toward warm/cold
-    const typeScores: Record<MemoryType, number> = {
-      doctrine: 0.9,
-      doctrine_integrated: 0.95,
-      reflection: 0.55,        // ← was 0.8; CLM reflections are high-volume, low-urgency
-      preference: 0.6,
-      conversation: 0.4,
-      dream: 0.45,             // ← was 0.7; dream hypotheses are speculative
-      general: 0.4,            // ← was 0.5; general CLM noise
-      insight: 0.5,            // ← was 0.75; CLM insights are frequent, not always critical
-      template: 0.7,
-      heuristic: 0.65,
-      error_pattern: 0.6,
-    };
-    score += (typeScores[type] || 0.5) * 0.3;
-
-    // Content length factor (longer = potentially more important, with cap)
-    const lengthFactor = Math.min(1, content.length / 1000);
-    score += lengthFactor * 0.15;
-
-    // Keyword detection (simple heuristic)
-    const importantKeywords = ['critical', 'important', 'must', 'always', 'never', 'error', 'security'];
-    const hasKeywords = importantKeywords.some(k => content.toLowerCase().includes(k));
-    if (hasKeywords) score += 0.15;
-
-    return Math.min(1, Math.max(0, score));
+    // Delegate to the unified salience calculator for consistency.
+    // At ingestion time we don't have access_count, reinforcement, or cross-module refs yet,
+    // so those default to 0 — the score is driven by confidence + type + content signals.
+    const result = calculateSalience({
+      confidence,
+      access_count: 0,
+      created_at: new Date().toISOString(),  // brand new memory
+      memory_type: type,
+      reinforcement_count: 0,
+      cross_module_refs: 0,
+      content,
+    });
+    return result.score;
   }
 
   private determineTier(importance: number): MemoryTier {
