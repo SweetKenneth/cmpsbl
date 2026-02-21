@@ -1,12 +1,7 @@
 /**
  * Shadow Mesh — Batch Runner
- * Runs shadow probes across all pilot executors and records metrics
- */
-
-/**
- * Shadow Mesh — Batch Runner
  * Runs shadow probes across all pilot executors, records metrics,
- * then triggers ENCODE to auto-resolve any new escalations.
+ * triggers ENCODE to auto-resolve escalations, and runs learning cycle.
  */
 
 import { runShadowProbe } from './probe';
@@ -38,9 +33,20 @@ export async function runShadowBatch() {
     const { processEscalations } = await import('@/lib/substrate/encode-module/escalation-processor');
     const result = await processEscalations(50);
     if (result.resolved > 0) {
-      console.info(`[shadow-batch] ENCODE auto-resolved ${result.resolved}/${result.processed} escalations`);
+      console.info(`[shadow-batch] ENCODE auto-resolved ${result.resolved}/${result.processed} escalations (quality: ${(result.qualityScore * 100).toFixed(0)}%)`);
     }
   } catch (err) {
     console.warn('[shadow-batch] ENCODE auto-resolve failed:', err);
+  }
+
+  // Run learning cycle to synthesize new rules from patterns
+  try {
+    const { runLearningCycle } = await import('@/immune/escalation-learning');
+    const learning = runLearningCycle();
+    if (learning.promoted > 0 || learning.crossExecutorTransfers > 0) {
+      console.info(`[shadow-batch] Learning cycle: ${learning.promoted} rules promoted, ${learning.crossExecutorTransfers} cross-executor transfers`);
+    }
+  } catch (err) {
+    console.warn('[shadow-batch] Learning cycle failed:', err);
   }
 }

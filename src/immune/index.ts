@@ -92,7 +92,7 @@ export {
   type EncodeWorkItem,
 } from './claimEscalations';
 
-// ENCODE Escalation Learning Loop (Phase 3)
+// ENCODE Escalation Learning Loop (Phase 3 v3.0)
 export {
   captureEscalation,
   runLearningCycle,
@@ -103,9 +103,15 @@ export {
   shadowValidateRule,
   promoteRule,
   rollbackRule,
+  findBestRuleForEscalation,
+  recordResolutionFeedback,
+  learnFromResolution,
+  warmStartFromDB,
+  getSimilarExecutors,
   type EscalationSignal,
   type PatternCluster,
   type CandidateRule,
+  type RepairStrategy,
 } from './escalation-learning';
 
 // ENCODE Escalation Resolution Telemetry
