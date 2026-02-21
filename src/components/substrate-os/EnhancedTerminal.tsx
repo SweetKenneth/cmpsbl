@@ -14,7 +14,7 @@
  */
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { Terminal, ChevronRight, Loader2, CheckCircle2, XCircle, Download, Maximize2, Minimize2, X, Sparkles, Dna, Zap, Activity, Brain, Copy, Check } from 'lucide-react';
+import { Terminal, ChevronRight, Loader2, CheckCircle2, XCircle, Download, Maximize2, Minimize2, X, Sparkles, Dna, Zap, Activity, Brain, Copy, Check, Pin, ArrowDownToLine, Search as SearchIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -46,11 +46,28 @@ interface EnhancedTerminalProps {
   fullHeight?: boolean;
 }
 
+// Persistent command history helpers
+const HISTORY_STORAGE_KEY = 'substrate-terminal-history';
+const MAX_PERSISTED_HISTORY = 200;
+
+function loadPersistedHistory(): string[] {
+  try {
+    const stored = localStorage.getItem(HISTORY_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch { return []; }
+}
+
+function persistHistory(history: string[]) {
+  try {
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history.slice(-MAX_PERSISTED_HISTORY)));
+  } catch { /* quota exceeded — silent */ }
+}
+
 export function EnhancedTerminal({ enabled, className, fullHeight = false }: EnhancedTerminalProps) {
   const { role: userTier } = useUserRole();
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<CommandResult[]>([]);
-  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [commandHistory, setCommandHistory] = useState<string[]>(() => loadPersistedHistory());
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [bootComplete, setBootComplete] = useState(false);
   const [bootLines, setBootLines] = useState<string[]>([]);
@@ -63,6 +80,12 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
   const [smartSuggestions, setSmartSuggestions] = useState<SmartSuggestion[]>([]);
   const [showSmartSuggestions, setShowSmartSuggestions] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [reverseSearchMode, setReverseSearchMode] = useState(false);
+  const [reverseSearchQuery, setReverseSearchQuery] = useState('');
+  const [reverseSearchMatch, setReverseSearchMatch] = useState<string | null>(null);
+  const [sessionStartTime] = useState(() => Date.now());
+  const [pinnedResults, setPinnedResults] = useState<Set<string>>(() => new Set());
+  const [autoScroll, setAutoScroll] = useState(true);
   
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -93,12 +116,46 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     });
   }, []);
 
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom (respects toggle)
   useEffect(() => {
-    if (scrollRef.current) {
+    if (autoScroll && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [history, bootLines]);
+  }, [history, bootLines, autoScroll]);
+
+  // Session timer display
+  const getSessionDuration = useCallback(() => {
+    const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+    const m = Math.floor(elapsed / 60);
+    const s = elapsed % 60;
+    return m > 0 ? `${m}m${s.toString().padStart(2, '0')}s` : `${s}s`;
+  }, [sessionStartTime]);
+  const [sessionDuration, setSessionDuration] = useState('0s');
+  useEffect(() => {
+    const timer = setInterval(() => setSessionDuration(getSessionDuration()), 1000);
+    return () => clearInterval(timer);
+  }, [getSessionDuration]);
+
+  // Reverse search through history
+  useEffect(() => {
+    if (reverseSearchMode && reverseSearchQuery) {
+      const match = [...commandHistory].reverse().find(cmd => 
+        cmd.toLowerCase().includes(reverseSearchQuery.toLowerCase())
+      );
+      setReverseSearchMatch(match || null);
+    } else {
+      setReverseSearchMatch(null);
+    }
+  }, [reverseSearchQuery, reverseSearchMode, commandHistory]);
+
+  // Pin/unpin result
+  const togglePin = useCallback((id: string) => {
+    setPinnedResults(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }, []);
 
   // Update suggestions on input change
   useEffect(() => {
@@ -129,8 +186,49 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
   const { startWatch, stopWatch, stopAllWatches, getActiveSessions } = useTerminalWatch();
 
   const handleExecute = async (cmd: string) => {
-    const trimmed = cmd.trim();
+    let trimmed = cmd.trim();
     if (!trimmed) return;
+
+    // ── BASH-LIKE SHORTCUTS ──
+    // !! — repeat last command
+    if (trimmed === '!!') {
+      if (commandHistory.length === 0) {
+        addResult('!!', 'error', '▓ No command history');
+        return;
+      }
+      trimmed = commandHistory[commandHistory.length - 1];
+    }
+    // !n — repeat nth command from history (1-indexed)
+    const bangMatch = trimmed.match(/^!(\d+)$/);
+    if (bangMatch) {
+      const idx = parseInt(bangMatch[1]) - 1;
+      if (idx >= 0 && idx < commandHistory.length) {
+        trimmed = commandHistory[idx];
+      } else {
+        addResult(trimmed, 'error', `▓ History index out of range (1-${commandHistory.length})`);
+        return;
+      }
+    }
+    // !prefix — repeat last command starting with prefix
+    const bangPrefixMatch = trimmed.match(/^!([a-zA-Z].*)$/);
+    if (bangPrefixMatch && !trimmed.startsWith('!!')) {
+      const prefix = bangPrefixMatch[1].toLowerCase();
+      const match = [...commandHistory].reverse().find(c => c.toLowerCase().startsWith(prefix));
+      if (match) {
+        trimmed = match;
+      } else {
+        addResult(trimmed, 'error', `▓ No command starting with '${bangPrefixMatch[1]}' in history`);
+        return;
+      }
+    }
+
+    // ── GREP PIPE FILTER ──
+    let grepFilter: string | null = null;
+    const grepMatch = trimmed.match(/^(.+?)\s*\|\s*grep\s+(.+)$/i);
+    if (grepMatch) {
+      trimmed = grepMatch[1].trim();
+      grepFilter = grepMatch[2].trim().replace(/^["']|["']$/g, '');
+    }
 
     // Handle @macro shorthand syntax (e.g., @upgrade_prepare -> macro run upgrade_prepare)
     const macroShorthand = trimmed.startsWith('@') ? `macro run ${trimmed.slice(1)}` : trimmed;
@@ -138,15 +236,17 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     // Resolve alias before execution
     const resolvedCmd = resolveAlias(macroShorthand);
 
-    // Add to command history
-    setCommandHistory(prev => [...prev.filter(c => c !== trimmed), trimmed].slice(-50));
+    // Add to command history (original input, not resolved)
+    const newHistory = [...commandHistory.filter(c => c !== cmd.trim()), cmd.trim()].slice(-MAX_PERSISTED_HISTORY);
+    setCommandHistory(newHistory);
+    persistHistory(newHistory);
     setHistoryIndex(-1);
 
     // Update session stats
     setSessionStats(prev => ({ ...prev, commands: prev.commands + 1 }));
 
     const startTime = Date.now();
-    const resultId = addResult(resolvedCmd, 'pending', getRandomItem(PERSONALITY_RESPONSES.thinking));
+    const resultId = addResult(resolvedCmd + (grepFilter ? ` | grep ${grepFilter}` : ''), 'pending', getRandomItem(PERSONALITY_RESPONSES.thinking));
 
     const result = await executeCommand(resolvedCmd, enabled, userTier);
     const duration = Date.now() - startTime;
@@ -298,8 +398,16 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
       return;
     }
 
-    // Normal result
-    updateResult(resultId, result.success ? 'success' : 'error', result.output, duration);
+    // Normal result — apply grep filter if present
+    let output = result.output;
+    if (grepFilter && output) {
+      const lines = output.split('\n');
+      const filtered = lines.filter(line => line.toLowerCase().includes(grepFilter.toLowerCase()));
+      output = filtered.length > 0
+        ? `[grep: ${grepFilter}] ${filtered.length} matches\n${filtered.join('\n')}`
+        : `[grep: ${grepFilter}] No matches found`;
+    }
+    updateResult(resultId, result.success ? 'success' : 'error', output, duration);
     setSessionStats(prev => ({
       ...prev,
       success: result.success ? prev.success + 1 : prev.success,
@@ -318,6 +426,16 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Reverse search: accept match and execute
+    if (reverseSearchMode) {
+      setReverseSearchMode(false);
+      if (reverseSearchMatch) {
+        setInput('');
+        handleExecute(reverseSearchMatch);
+      }
+      setReverseSearchQuery('');
+      return;
+    }
     if (showSuggestions && suggestions[selectedSuggestion]) {
       setInput(suggestions[selectedSuggestion].command);
       setShowSuggestions(false);
@@ -338,6 +456,46 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
   }, [smartSuggestions]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // ── REVERSE SEARCH MODE ──
+    if (reverseSearchMode) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setReverseSearchMode(false);
+        setReverseSearchQuery('');
+        return;
+      }
+      if (e.key === 'Enter') {
+        // Submit handled by handleSubmit
+        return;
+      }
+      if (e.key === 'Backspace') {
+        setReverseSearchQuery(prev => prev.slice(0, -1));
+        return;
+      }
+      if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+        setReverseSearchQuery(prev => prev + e.key);
+        return;
+      }
+      return;
+    }
+
+    // ── Ctrl+R: Enter reverse search ──
+    if (e.ctrlKey && e.key === 'r') {
+      e.preventDefault();
+      setReverseSearchMode(true);
+      setReverseSearchQuery('');
+      setShowSuggestions(false);
+      setShowSmartSuggestions(false);
+      return;
+    }
+
+    // ── F11: Toggle fullscreen ──
+    if (e.key === 'F11') {
+      e.preventDefault();
+      setIsExpanded(prev => !prev);
+      return;
+    }
+
     // Smart suggestions: number keys 1-4 when visible and input is empty
     if (showSmartSuggestions && !input.trim() && ['1', '2', '3', '4'].includes(e.key)) {
       e.preventDefault();
@@ -525,7 +683,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           )}
         </div>
 
-        {/* Stats */}
+        {/* Stats + Session Timer */}
         <div className={cn(
           "hidden sm:flex items-center gap-3 text-[10px]",
           isBiohack ? "" : "text-muted-foreground"
@@ -539,6 +697,14 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           <span className={isBiohack ? "biohack-stat biohack-stat-error" : "text-red-400"}>
             {sessionStats.errors} ✗
           </span>
+          <span className={isBiohack ? "text-[hsl(200_60%_50%)]" : "text-muted-foreground/60"}>
+            {sessionDuration}
+          </span>
+          {getActiveSessions().length > 0 && (
+            <span className={isBiohack ? "text-[hsl(280_100%_70%)]" : "text-amber-400"} title="Active watch sessions">
+              ⟳ {getActiveSessions().length}
+            </span>
+          )}
         </div>
 
         <Badge 
@@ -567,6 +733,15 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           <Button 
             variant="ghost" 
             size="icon" 
+            className={cn("h-6 w-6", autoScroll ? "text-foreground" : "text-muted-foreground/40")}
+            onClick={() => setAutoScroll(prev => !prev)}
+            title={autoScroll ? 'Auto-scroll ON' : 'Auto-scroll OFF'}
+          >
+            <ArrowDownToLine className="h-3 w-3" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
             className="h-6 w-6 text-muted-foreground hover:text-foreground"
             onClick={() => {
               const exportData = history.map(h => ({
@@ -589,6 +764,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             size="icon" 
             className="h-6 w-6 text-muted-foreground hover:text-foreground"
             onClick={() => setIsExpanded(!isExpanded)}
+            title="F11"
           >
             {isExpanded ? <Minimize2 className="h-3 w-3" /> : <Maximize2 className="h-3 w-3" />}
           </Button>
@@ -681,6 +857,17 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                   ) : (
                     <Copy className="w-3 h-3 text-muted-foreground" />
                   )}
+                </button>
+                {/* Pin button */}
+                <button
+                  onClick={() => togglePin(result.id)}
+                  className={cn(
+                    "transition-opacity p-1 rounded hover:bg-white/10",
+                    pinnedResults.has(result.id) ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                  )}
+                  title={pinnedResults.has(result.id) ? "Unpin result" : "Pin result"}
+                >
+                  <Pin className={cn("w-3 h-3", pinnedResults.has(result.id) ? "text-amber-400" : "text-muted-foreground")} />
                 </button>
                 
                 <span className={cn(
@@ -878,6 +1065,30 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         </div>
       )}
 
+      {/* Reverse Search Bar */}
+      {reverseSearchMode && (
+        <div className={cn(
+          "border-t px-4 py-2",
+          currentTheme.border,
+          isBiohack ? "biohack-suggestions" : isLight ? "bg-amber-50" : "bg-amber-500/5"
+        )}>
+          <div className="flex items-center gap-2">
+            <SearchIcon className={cn("w-3 h-3", isBiohack ? "text-[hsl(180_100%_60%)]" : "text-amber-400")} />
+            <span className={cn("text-xs", isBiohack ? "text-[hsl(200_60%_50%)]" : "text-amber-600")}>
+              reverse-i-search: {reverseSearchQuery}
+            </span>
+            {reverseSearchMatch && (
+              <code className={cn("text-xs ml-2", isBiohack ? "text-[hsl(180_100%_70%)]" : "text-foreground")}>
+                {reverseSearchMatch}
+              </code>
+            )}
+            <span className={cn("text-[10px] ml-auto", isBiohack ? "text-[hsl(280_100%_60%)]" : "text-muted-foreground")}>
+              Enter to execute • Esc to cancel
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Input Line */}
       <form onSubmit={handleSubmit} className={cn(
         "border-t relative z-10",
@@ -940,6 +1151,10 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             )}
             <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-gray-200 text-gray-700" : "px-1 py-0.5 rounded bg-muted/30"}>↑↓</kbd>
             <span className={isBiohack ? "text-[hsl(180_100%_60%)]" : isLight ? "text-gray-600" : ""}>history</span>
+            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-blue-200 text-blue-700" : "px-1 py-0.5 rounded bg-cyan-500/20 text-cyan-400"}>Ctrl+R</kbd>
+            <span>search</span>
+            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-purple-200 text-purple-700" : "px-1 py-0.5 rounded bg-purple-500/20 text-purple-400"}>F11</kbd>
+            <span>fullscreen</span>
           </div>
         </div>
       </form>
