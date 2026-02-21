@@ -127,9 +127,49 @@ class MemoryCoreClient {
     } = options;
 
     try {
+      // ── Dedup Guard ──────────────────────────────────────────────────────
+      // Check for similar content already in hot tier (trigram or prefix match)
+      const contentPrefix = content.slice(0, 120);
+      const { data: existing } = await supabase
+        .from('brain_memory_hot')
+        .select('id')
+        .ilike('content', `${contentPrefix.replace(/[%_]/g, '')}%`)
+        .limit(1);
+
+      if (existing && existing.length > 0) {
+        // Duplicate found — boost existing instead of inserting
+        await supabase
+          .from('brain_memory_hot')
+          .update({ access_count: (existing[0] as any).access_count + 1 || 1 })
+          .eq('id', existing[0].id);
+
+        return {
+          stage: 'ingest',
+          success: true,
+          memory_id: existing[0].id,
+          metadata: { deduplicated: true, existing_id: existing[0].id },
+        };
+      }
+
+      // ── Capacity Guard ───────────────────────────────────────────────────
       // Calculate initial importance based on content characteristics
       const importance = this.calculateImportance(content, type, confidence);
-      const tier = this.determineTier(importance);
+      let tier = this.determineTier(importance);
+
+      // If targeting hot, check capacity first
+      if (tier === 'hot') {
+        const { count } = await supabase
+          .from('brain_memory_hot')
+          .select('id', { count: 'exact', head: true });
+
+        const HOT_CAPACITY = 500;
+        if ((count ?? 0) >= HOT_CAPACITY * 0.9) {
+          // Hot tier at/near capacity — downgrade to warm
+          tier = 'warm';
+          console.warn(`[MemoryCore] Hot tier at ${count}/${HOT_CAPACITY} — routing to warm`);
+        }
+      }
+
       const state = this.determineState(tier);
 
       const entry: Partial<MemoryEntry> = {
@@ -427,6 +467,38 @@ class MemoryCoreClient {
       // Limit results
       const finalResults = filtered.slice(0, limit);
 
+      // ── Recall Feedback Bridge ─────────────────────────────────────────
+      // Track recall hit/miss in brain_memory_meta for metacognitive tuning
+      const hit = finalResults.length > 0;
+      try {
+        await supabase.rpc('track_memory_recall', {
+          p_user_id: null,  // System-level recall
+          p_agent_id: 'substrate',
+          p_hit: hit,
+        });
+      } catch {
+        // Metacognition tracking is non-critical
+      }
+
+      // Bump access_count on retrieved memories for value score reinforcement
+      if (finalResults.length > 0) {
+        const hotIds = finalResults.filter(m => m.tier === 'hot').map(m => m.id).filter(Boolean);
+        const warmIds = finalResults.filter(m => m.tier === 'warm').map(m => m.id).filter(Boolean);
+        
+        if (hotIds.length > 0) {
+          supabase.from('brain_memory_hot')
+            .update({ last_used: new Date().toISOString() } as any)
+            .in('id', hotIds)
+            .then(() => {});
+        }
+        if (warmIds.length > 0) {
+          supabase.from('brain_memory_warm')
+            .update({ last_accessed: new Date().toISOString() } as any)
+            .in('id', warmIds)
+            .then(() => {});
+        }
+      }
+
       return {
         stage: 'retrieve',
         success: true,
@@ -435,7 +507,8 @@ class MemoryCoreClient {
           total_found: results.length, 
           returned: finalResults.length, 
           strategy,
-          threshold 
+          threshold,
+          recall_hit: hit,
         },
       };
     } catch (error) {
@@ -573,16 +646,16 @@ class MemoryCoreClient {
   private calculateImportance(content: string, type: MemoryType, confidence: number): number {
     let score = confidence * 0.4;
 
-    // Type-based scoring
+    // Type-based scoring — CLM-generated types score lower to bias toward warm/cold
     const typeScores: Record<MemoryType, number> = {
       doctrine: 0.9,
       doctrine_integrated: 0.95,
-      reflection: 0.8,
+      reflection: 0.55,        // ← was 0.8; CLM reflections are high-volume, low-urgency
       preference: 0.6,
       conversation: 0.4,
-      dream: 0.7,
-      general: 0.5,
-      insight: 0.75,
+      dream: 0.45,             // ← was 0.7; dream hypotheses are speculative
+      general: 0.4,            // ← was 0.5; general CLM noise
+      insight: 0.5,            // ← was 0.75; CLM insights are frequent, not always critical
       template: 0.7,
       heuristic: 0.65,
       error_pattern: 0.6,
@@ -602,7 +675,8 @@ class MemoryCoreClient {
   }
 
   private determineTier(importance: number): MemoryTier {
-    if (importance > 0.6) return 'hot';
+    // Tighter hot threshold — only truly critical memories go to hot
+    if (importance > 0.72) return 'hot';    // ← was 0.6; prevents CLM flood
     if (importance > 0.35) return 'warm';
     return 'cold';
   }
