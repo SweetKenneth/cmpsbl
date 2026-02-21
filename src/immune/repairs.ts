@@ -73,13 +73,60 @@ registerRepair('adaptive-ui', (input) => {
   const repaired = { ...input };
   let notes: string[] = [];
 
+  // Default missing locator fields
   if (!input.target && !input.url && !input.resource_id) {
     repaired.target = 'self';
     notes.push('defaulted target to self');
   }
+
+  // Sanitize target if present but wrong type or dirty
   if (input.target !== undefined) {
-    repaired.target = sanitizeString(input.target, 'self');
-    if (repaired.target !== input.target) notes.push('sanitized target');
+    if (typeof input.target !== 'string') {
+      repaired.target = 'self';
+      notes.push('coerced non-string target to self');
+    } else {
+      repaired.target = sanitizeString(input.target, 'self');
+      if (repaired.target === '') { repaired.target = 'self'; notes.push('empty target defaulted to self'); }
+      else if (repaired.target !== input.target) notes.push('sanitized target');
+    }
+  }
+
+  // Sanitize url if present
+  if (input.url !== undefined) {
+    if (typeof input.url !== 'string') {
+      delete repaired.url;
+      notes.push('removed non-string url');
+    } else {
+      repaired.url = sanitizeString(input.url);
+      if (repaired.url !== input.url) notes.push('sanitized url');
+    }
+  }
+
+  // Sanitize resource_id
+  if (input.resource_id !== undefined) {
+    if (typeof input.resource_id !== 'string') {
+      delete repaired.resource_id;
+      notes.push('removed non-string resource_id');
+    } else {
+      repaired.resource_id = sanitizeString(input.resource_id);
+      if (repaired.resource_id !== input.resource_id) notes.push('sanitized resource_id');
+    }
+  }
+
+  // Sanitize content if present
+  if (input.content !== undefined) {
+    if (typeof input.content !== 'string') {
+      repaired.content = typeof input.content === 'object' ? JSON.stringify(input.content).slice(0, 10_000) : String(input.content).slice(0, 10_000);
+      notes.push('coerced non-string content');
+    } else {
+      repaired.content = sanitizeString(input.content);
+      if (repaired.content !== input.content) notes.push('sanitized content');
+    }
+  }
+
+  // Mark as repaired for fast-path
+  if (notes.length > 0) {
+    repaired.__repaired = true;
   }
 
   return notes.length > 0
@@ -92,12 +139,48 @@ registerRepair('cognitive-load-optimization', (input) => {
   const repaired = { ...input };
   let notes: string[] = [];
 
+  // Handle missing / null / empty content
   if (input.content === undefined || input.content === null || input.content === '') {
     repaired.content = '[empty content]';
     notes.push('filled empty content');
+  } else if (typeof input.content !== 'string') {
+    // Coerce non-string content (numbers, booleans, arrays, objects)
+    if (Array.isArray(input.content)) {
+      repaired.content = input.content.map(String).join(', ').slice(0, 10_000);
+      notes.push('coerced array content to string');
+    } else if (typeof input.content === 'object') {
+      repaired.content = JSON.stringify(input.content).slice(0, 10_000);
+      notes.push('coerced object content to string');
+    } else {
+      repaired.content = String(input.content).slice(0, 10_000);
+      notes.push('coerced non-string content');
+    }
   } else {
     repaired.content = sanitizeString(input.content);
     if (repaired.content !== input.content) notes.push('sanitized content string');
+  }
+
+  // Default missing target/url
+  if (!input.target && !input.url && !input.resource_id) {
+    repaired.target = 'self';
+    notes.push('defaulted target to self');
+  }
+
+  // Sanitize target if wrong type
+  if (input.target !== undefined && typeof input.target !== 'string') {
+    repaired.target = 'self';
+    notes.push('coerced non-string target');
+  }
+
+  // Clamp priority if present
+  if (input.priority !== undefined) {
+    repaired.priority = clampNumber(input.priority, 0, 100, 50);
+    if (repaired.priority !== input.priority) notes.push('clamped priority');
+  }
+
+  // Mark as repaired for fast-path
+  if (notes.length > 0) {
+    repaired.__repaired = true;
   }
 
   return notes.length > 0
