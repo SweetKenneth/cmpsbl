@@ -21,6 +21,8 @@ export const RADIO_TRACKS: RadioTrack[] = [
   { id: 'bottom-layer', title: 'Bottom Layer', url: '/radio/Bottom_Layer.mp3', orderIndex: 7 },
   { id: 'snap-it-together', title: 'Snap It Together', url: '/radio/Snap_It_Together.mp3', orderIndex: 8 },
   { id: 'composable-dreaming', title: 'Composable Dreaming', url: '/radio/Composable_Dreaming.mp3', orderIndex: 9 },
+  { id: 'spacewalk-through-it', title: 'Spacewalk Through It', url: '/radio/Spacewalk_Through_It.mp3', orderIndex: 10 },
+  { id: 'executable-space-x3', title: 'Executable Space X3', url: '/radio/Executable_Space_X3.mp3', orderIndex: 11 },
 ];
 
 /** Get shuffled playlist */

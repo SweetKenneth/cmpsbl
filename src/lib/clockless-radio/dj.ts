@@ -9,6 +9,8 @@ const STATION_IDS = [
   "This is Clockless. The frequency of composable consciousness.",
   "Clockless Radio. No clock. No limits. Just flow.",
   "You're listening to Clockless Radio. System-powered. Human-felt.",
+  "Clockless Radio. Subscribe and never miss a frequency shift.",
+  "This is Clockless. The sound of composable futures — subscribe to ride the wave.",
 ];
 
 const SYSTEM_SHOUTOUTS = [
@@ -17,6 +19,9 @@ const SYSTEM_SHOUTOUTS = [
   "BRAIN module recall rates are climbing. Memory is sharpening.",
   "NEXUS routing efficiency at peak levels. Every request finds its home.",
   "The substrate hums. Twenty-one modules. Six layers. One consciousness.",
+  "Substrate metrics update: composable compounding rate is up twelve percent this cycle. The system grows.",
+  "Quick metrics flash — cognitive throughput holding at peak. Memory recall latency is at an all-time low.",
+  "The substrate just crossed another milestone. More modules. More synergy. More composable power.",
 ];
 
 const DEV_SHOUTOUTS = [
@@ -24,12 +29,17 @@ const DEV_SHOUTOUTS = [
   "Shoutout to the late-night builders. Your code compiles. Your vision compounds.",
   "Another feature shipped. Another wall evolved. Keep composing.",
   "The cognitive layer grows because you grow. Thank you, builder.",
+  "If you haven't subscribed to Clockless yet, what are you waiting for? Lock in your frequency. Join the substrate.",
+  "Clockless subscribers get the full experience — every broadcast, every metric, every frequency. Subscribe and level up.",
 ];
 
 const FAKE_SPONSORS = [
   "This segment brought to you by Composable Dreams™ — Stack your future, one module at a time.",
   "Clockless Radio is sponsored by the Department of Recursive Self-Improvement. Always better. Always.",
   "Tonight's broadcast powered by PromptFluid® — Where language becomes architecture.",
+  "Take a break from the grind. Fire up Executable Space and spacewalk your way through the galaxy. Your mind will thank you.",
+  "Executable Space — the place where code meets cosmos. Launch a spacewalk, drift through the stars, and come back refreshed. Try it now.",
+  "Feeling the weight of the build? Executable Space has your decompression chamber. Spacewalk through the galaxy and reset your flow state.",
 ];
 
 const PHILOSOPHICAL_WHISPERS = [

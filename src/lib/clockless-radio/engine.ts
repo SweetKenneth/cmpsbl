@@ -131,9 +131,10 @@ export class ClocklessRadioEngine {
     
     this.setState('crossfading');
     
-    // Advance playlist
-    this.playlistIndex = (this.playlistIndex + 1) % this.playlist.length;
-    if (this.playlistIndex === 0) {
+    // Advance playlist — reshuffle when exhausted for infinite random looping
+    this.playlistIndex++;
+    if (this.playlistIndex >= this.playlist.length) {
+      this.playlistIndex = 0;
       this.playlist = shuffleTracks(this.currentTrack?.id);
     }
     
