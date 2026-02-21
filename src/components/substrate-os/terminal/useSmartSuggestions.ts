@@ -146,6 +146,35 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'file.formats': ['file.status', 'file.history', 'decode.learn', 'brain.query'],
   'nl.parse': ['nl.intents', 'nl.history', 'help', 'system.status'],
   'nl.intents': ['nl.parse', 'nl.history', 'help', 'decode.intent'],
+
+  // CLM workflows
+  'clm.status': ['clm.budget', 'clm.cycle', 'clm.review_queue', 'clm.topics'],
+  'clm.budget': ['clm.status', 'clm.topics', 'clm.run_all', 'clm.cycle'],
+  'clm.topics': ['clm.add_topic', 'clm.status', 'clm.review_queue', 'brain.learn'],
+  'clm.cycle': ['clm.status', 'brain.reflect', 'clm.review_queue', 'vision.metrics'],
+  'clm.review_queue': ['clm.next_review', 'clm.topics', 'clm.status', 'brain.query'],
+
+  // SEBA workflows
+  'seba.status': ['seba.cycle', 'seba.review', 'seba.mode', 'seba.propose'],
+  'seba.cycle': ['seba.review', 'seba.status', 'seba.propose', 'vision.pulse'],
+  'seba.propose': ['seba.review', 'seba.approve', 'seba.status', 'seba.history'],
+  'seba.review': ['seba.approve', 'seba.reject', 'seba.execute', 'seba.status'],
+  'seba.approve': ['seba.execute', 'seba.review', 'seba.status', 'system.health'],
+
+  // Cortex workflows
+  'cortex.status': ['cortex.intent', 'cortex.policy', 'cortex.active', 'cortex.dispatch'],
+  'cortex.intent': ['cortex.dispatch', 'cortex.active', 'cortex.status', 'cortex.policy'],
+  'cortex.dispatch': ['cortex.active', 'cortex.status', 'vision.trace', 'cortex.history'],
+
+  // Inclusive workflows
+  'inclusive.status': ['inclusive.scan', 'inclusive.violations', 'inclusive.fix', 'inclusive.score'],
+  'inclusive.scan': ['inclusive.violations', 'inclusive.fix', 'inclusive.score', 'inclusive.status'],
+  'inclusive.violations': ['inclusive.fix', 'inclusive.scan', 'inclusive.status', 'vision.logs'],
+
+  // Encode workflows
+  'encode.status': ['encode.queue', 'encode.receipts', 'encode.health', 'modernizer.status'],
+  'encode.queue': ['encode.status', 'encode.receipts', 'modernizer.jobs', 'vision.logs'],
+  'encode.receipts': ['encode.queue', 'encode.status', 'brain.query', 'modernizer.history'],
 };
 
 // Module-level defaults when specific command not found
