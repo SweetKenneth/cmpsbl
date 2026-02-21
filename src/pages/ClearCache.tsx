@@ -3,13 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 export default function ClearCache() {
   const [status, setStatus] = useState<'clearing' | 'done'>('clearing');
   const ran = useRef(false);
+  const redirecting = useRef(false);
 
   useEffect(() => {
     if (ran.current) return;
     ran.current = true;
 
-    // Defer clearing to next tick so the component renders first
-    const timer = setTimeout(async () => {
+    (async () => {
       // Clear localStorage
       try { localStorage.clear(); } catch {}
       // Clear sessionStorage  
@@ -33,13 +33,27 @@ export default function ClearCache() {
 
       setStatus('done');
 
-      // Hard navigate after brief pause
-      setTimeout(() => {
-        window.location.replace('/');
-      }, 1000);
-    }, 100);
+      // Redirect — guard against double-fire
+      if (!redirecting.current) {
+        redirecting.current = true;
+        // Use assign instead of replace so the browser actually navigates
+        // Use a short delay so the user sees the "done" state
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 600);
+      }
+    })();
+  }, []);
 
-    return () => clearTimeout(timer);
+  // Fallback: if we're still here after 4 seconds, force redirect
+  useEffect(() => {
+    const fallback = setTimeout(() => {
+      if (!redirecting.current) {
+        redirecting.current = true;
+      }
+      window.location.href = '/';
+    }, 4000);
+    return () => clearTimeout(fallback);
   }, []);
 
   return (
