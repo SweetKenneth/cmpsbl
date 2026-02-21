@@ -275,14 +275,19 @@ const App = () => {
                   <DecodeFloat />
                   <BrowserRouter>
                   <ScrollToTop />
-                   <AuthProvider>
-                    <Suspense fallback={null}>
-                      <RegisterPasskeyPrompt />
-                    </Suspense>
-                    <Suspense fallback={<PageLoader />}>
-                      <Routes>
-                        {/* Core Public Pages */}
-                        <Route path="/" element={<Explore />} />
+                  <Routes>
+                    {/* Cache clear route — outside AuthProvider to avoid auth loop */}
+                    <Route path="/pf-clear-cache" element={<Suspense fallback={null}><ClearCache /></Suspense>} />
+                    <Route path="/clear-cache" element={<Suspense fallback={null}><ClearCache /></Suspense>} />
+                    <Route path="/*" element={
+                     <AuthProvider>
+                      <Suspense fallback={null}>
+                        <RegisterPasskeyPrompt />
+                      </Suspense>
+                      <Suspense fallback={<PageLoader />}>
+                        <Routes>
+                          {/* Core Public Pages */}
+                          <Route path="/" element={<Explore />} />
                         <Route path="/decode" element={<Decode />} />
                         <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
                         <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />
@@ -326,8 +331,6 @@ const App = () => {
                         <Route path="/artifacts" element={<SubstrateStore />} />
                         <Route path="/engines" element={<EngineMarketplace />} />
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
-                        <Route path="/clear-cache" element={<ClearCache />} />
-                        <Route path="/pf-clear-cache" element={<ClearCache />} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
                         <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
@@ -515,6 +518,8 @@ const App = () => {
                       </Routes>
                     </Suspense>
                   </AuthProvider>
+                    } />
+                  </Routes>
                 </BrowserRouter>
               </TooltipProvider>
             </SubstrateProvider>
