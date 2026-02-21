@@ -132,15 +132,15 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
       <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
       
       {/* Top Bar - System Status */}
-      <div className="h-9 bg-gradient-to-r from-muted/40 via-muted/20 to-muted/40 border-b border-border/30 px-4 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-6">
+      <div className="h-8 sm:h-9 bg-gradient-to-r from-muted/40 via-muted/20 to-muted/40 border-b border-border/30 px-3 sm:px-4 flex items-center justify-between text-xs overflow-x-auto scrollbar-hide">
+        <div className="flex items-center gap-3 sm:gap-6 shrink-0">
           {/* Connection Status */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <motion.div animate={{ scale: isOnline ? [1, 1.2, 1] : 1 }} transition={{ duration: 2, repeat: Infinity }}>
               {isOnline ? <PulsingDot active color="bg-emerald-500" /> : <PulsingDot active={false} color="bg-destructive" />}
             </motion.div>
-            {isOnline ? <Wifi className="w-3.5 h-3.5 text-emerald-400" /> : <WifiOff className="w-3.5 h-3.5 text-destructive" />}
-            <span className="font-mono text-muted-foreground uppercase tracking-wider text-[10px]">
+            {isOnline ? <Wifi className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400" /> : <WifiOff className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-destructive" />}
+            <span className="hidden sm:inline font-mono text-muted-foreground uppercase tracking-wider text-[10px]">
               {isOnline ? 'CONNECTED' : 'OFFLINE'}
             </span>
           </div>
@@ -175,24 +175,24 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
           </div>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           {/* Audio Controls */}
           <DashboardAudio />
           {/* Role Badge */}
-          <motion.div className="flex items-center gap-2" whileHover={{ scale: 1.02 }}>
+          <div className="flex items-center gap-2">
             <div className={cn(
-              "flex items-center gap-1.5 px-2.5 py-1 rounded-md border",
+              "flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md border",
               currentRole.border, "bg-background/50 backdrop-blur-sm"
             )}>
               <RoleIcon className={cn("w-3 h-3", currentRole.text)} />
-              <span className={cn("text-[10px] font-bold font-mono", currentRole.text)}>
+              <span className={cn("text-[9px] sm:text-[10px] font-bold font-mono", currentRole.text)}>
                 {currentRole.label}
               </span>
             </div>
-          </motion.div>
+          </div>
           
           {/* Clock */}
-          <div className="flex items-center gap-1.5 text-muted-foreground">
+          <div className="hidden sm:flex items-center gap-1.5 text-muted-foreground">
             <Clock className="w-3 h-3" />
             <LiveClock />
           </div>
@@ -200,32 +200,33 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
       </div>
       
       {/* Main Header */}
-      <div className="px-4 py-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-4">
+        <div className="flex items-center justify-between gap-3">
           {/* Logo + Title */}
-          <div className="flex items-center gap-4">
-            <motion.div className="relative" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400 }}>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 via-cyan-500/10 to-fuchsia-500/10 border border-cyan-500/40 flex items-center justify-center backdrop-blur-sm overflow-hidden">
-                <Terminal className="w-5 h-5 text-cyan-400 relative z-10" />
+          <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
+            <motion.div className="relative shrink-0" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400 }}>
+              <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 via-cyan-500/10 to-fuchsia-500/10 border border-cyan-500/40 flex items-center justify-center backdrop-blur-sm overflow-hidden">
+                <Terminal className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 relative z-10" />
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-fuchsia-500/10 animate-pulse" />
               </div>
               <div className="absolute inset-0 rounded-xl bg-cyan-500/30 blur-xl -z-10 opacity-60" />
             </motion.div>
             
-            <div>
-              <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-xl font-bold tracking-tight flex items-center gap-1.5 sm:gap-2">
                 <span className="text-foreground">CMPSBL</span>
                 <span className="relative">
                   <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 bg-clip-text text-transparent">OS</span>
-                  <Sparkles className="absolute -top-1 -right-4 w-3 h-3 text-cyan-400 animate-pulse" />
+                  <Sparkles className="absolute -top-1 -right-3 sm:-right-4 w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-400 animate-pulse" />
                 </span>
               </h1>
-              <div className="flex items-center gap-2 mt-0.5">
-                <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                  architect epoch • cognitive orchestration
+              <div className="flex items-center gap-1.5 sm:gap-2 mt-0.5">
+                <p className="text-[8px] sm:text-[10px] text-muted-foreground font-mono uppercase tracking-widest truncate">
+                  <span className="hidden sm:inline">architect epoch • cognitive orchestration</span>
+                  <span className="sm:hidden">architect epoch</span>
                 </p>
-                <span className="text-muted-foreground/30">|</span>
-                <span className="text-[10px] font-mono text-cyan-400/80">
+                <span className="text-muted-foreground/30 hidden sm:inline">|</span>
+                <span className="text-[8px] sm:text-[10px] font-mono text-cyan-400/80 shrink-0">
                   v{versionData?.version || '10.9.1'}
                 </span>
               </div>
@@ -233,15 +234,13 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
           </div>
           
           {/* User Info */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-xs">
-              <span className="text-muted-foreground font-mono text-[10px] uppercase">SESSION</span>
-              <div className="relative">
-                <code className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-muted/50 to-muted/30 border border-border/50 font-mono text-sm text-foreground backdrop-blur-sm flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  {userEmail?.split('@')[0] || 'anonymous'}
-                </code>
-              </div>
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs">
+              <span className="hidden sm:inline text-muted-foreground font-mono text-[10px] uppercase">SESSION</span>
+              <code className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-gradient-to-r from-muted/50 to-muted/30 border border-border/50 font-mono text-[11px] sm:text-sm text-foreground backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 max-w-[120px] sm:max-w-none">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                <span className="truncate">{userEmail?.split('@')[0] || 'anonymous'}</span>
+              </code>
             </div>
           </div>
         </div>
