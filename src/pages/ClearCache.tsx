@@ -1,45 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ClearCache() {
-  const [status, setStatus] = useState<'clearing' | 'done' | 'error'>('clearing');
+  const [status, setStatus] = useState<'clearing' | 'done'>('clearing');
+  const ran = useRef(false);
 
   useEffect(() => {
-    const clearAll = async () => {
+    if (ran.current) return;
+    ran.current = true;
+
+    // Defer clearing to next tick so the component renders first
+    const timer = setTimeout(async () => {
+      // Clear localStorage
+      try { localStorage.clear(); } catch {}
+      // Clear sessionStorage  
+      try { sessionStorage.clear(); } catch {}
+
+      // Clear service worker caches
       try {
-        // Clear all localStorage (except nothing — wipe it all)
-        try { localStorage.clear(); } catch {}
-        
-        // Clear sessionStorage
-        try { sessionStorage.clear(); } catch {}
-
-        // Clear service worker caches
         if ('caches' in window) {
-          try {
-            const names = await caches.keys();
-            await Promise.all(names.map(name => caches.delete(name)));
-          } catch {}
+          const names = await caches.keys();
+          await Promise.all(names.map(name => caches.delete(name)));
         }
+      } catch {}
 
-        // Unregister service workers
+      // Unregister service workers
+      try {
         if ('serviceWorker' in navigator) {
-          try {
-            const registrations = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(registrations.map(reg => reg.unregister()));
-          } catch {}
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(r => r.unregister()));
         }
+      } catch {}
 
-        setStatus('done');
-      } catch {
-        setStatus('done');
-      }
+      setStatus('done');
 
-      // Hard redirect after short delay (bypasses React router)
+      // Hard navigate after brief pause
       setTimeout(() => {
         window.location.replace('/');
-      }, 1200);
-    };
+      }, 1000);
+    }, 100);
 
-    clearAll();
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -47,7 +47,7 @@ export default function ClearCache() {
       <div style={{ textAlign: 'center' }}>
         {status === 'clearing' ? (
           <>
-            <div style={{ width: 32, height: 32, border: '3px solid #555', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+            <div style={{ width: 32, height: 32, border: '3px solid #555', borderTopColor: '#fff', borderRadius: '50%', animation: 'cc-spin 0.8s linear infinite', margin: '0 auto 16px' }} />
             <p style={{ color: '#999' }}>Clearing cache...</p>
           </>
         ) : (
@@ -57,7 +57,7 @@ export default function ClearCache() {
             <p style={{ color: '#999', fontSize: 14, marginTop: 8 }}>Redirecting...</p>
           </>
         )}
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <style>{`@keyframes cc-spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     </div>
   );
