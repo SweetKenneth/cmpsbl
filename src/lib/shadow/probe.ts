@@ -14,6 +14,7 @@ import { getSynergyExecutor } from '@/lib/capabilities/synergies/registry';
 import { log } from '@/lib/system/log';
 import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
 import { updateHealthRegistry, updateShadowMeshState, getShadowMeshState } from '@/lib/substrate/health-registry';
+import { appendEvent } from '@/core/events/eventStore';
 
 export interface ShadowProbeResult {
   input: Record<string, unknown>;
@@ -104,7 +105,7 @@ export async function runShadowProbe(
       synergyId: executorName,
       input,
       caller: 'shadow.probe',
-      traceId: `shadow_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      traceId: crypto.randomUUID(),
       dryRun: true, // Shadow probes are always dry-run
     };
 
@@ -141,6 +142,18 @@ export async function runShadowProbe(
   }
 
   log.info('shadow', `Probe complete: ${executorName} — ${inputs.length} runs`, summary);
+
+  // Event-sourced logging for each outcome category
+  const correlationId = crypto.randomUUID();
+  if (summary.repaired > 0) {
+    appendEvent('PROBE_REPAIRED', `shadow:${executorName}`, executorName, 'probing', 'repaired', correlationId);
+  }
+  if (summary.escalated > 0) {
+    appendEvent('PROBE_ESCALATED', `shadow:${executorName}`, executorName, 'probing', 'escalated', correlationId);
+  }
+  if (summary.failedSafe > 0) {
+    appendEvent('PROBE_FAILED_SAFE', `shadow:${executorName}`, executorName, 'probing', 'failed_safe', correlationId);
+  }
 
   // Push shadow mesh state to CHR
   const totalFails = summary.escalated + summary.failedSafe;

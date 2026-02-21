@@ -71,6 +71,13 @@ export async function initializeSubstrate(): Promise<void> {
       initSubsystemHealth();
     } catch { /* graceful — subsystem health is additive */ }
     
+    // Initialize GOAL (Global Observability Access Layer)
+    try {
+      const { initializeGOAL } = await import('@/core/goal');
+      initializeGOAL();
+      console.log('🔭 GOAL initialized — Global Observability Access Layer active');
+    } catch { /* graceful — GOAL is additive */ }
+    
     // Start automatic circuit recovery engine
     try {
       const { startAutoRecovery } = await import('./substrate/core-circuit-recovery');
