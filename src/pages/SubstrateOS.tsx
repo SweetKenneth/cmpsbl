@@ -98,7 +98,7 @@ function TabPane({ children, id }: { children: React.ReactNode; id: string }) {
   return (
     <motion.main
       key={id}
-      className="container mx-auto px-3 sm:px-6 py-4 sm:py-6 max-w-7xl"
+      className="container mx-auto px-2.5 sm:px-6 py-3 sm:py-6 max-w-7xl"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -6 }}
@@ -474,22 +474,22 @@ function TabHeader({ icon: Icon, title, subtitle, color, tier, badge, action }: 
   
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-      <div className="flex items-center gap-3 min-w-0">
+    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
         <div className={cn(
-          "w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 transition-transform hover:scale-105",
+          "w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl border flex items-center justify-center shrink-0 transition-transform hover:scale-105",
           colorMap[color] || colorMap.cyan
         )}>
-          <Icon className="w-5 h-5" />
+          <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
         </div>
         <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <h2 className="text-lg font-bold text-foreground tracking-tight truncate">{title}</h2>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-foreground tracking-tight truncate">{title}</h2>
             <TierBadge tier={tier} size="xs" />
           </div>
-          <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wide truncate">{subtitle}</p>
+          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wide truncate">{subtitle}</p>
         </div>
       </div>
-      <div className="flex items-center gap-2 shrink-0">
+      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
         {badge}
         {action}
       </div>
@@ -519,7 +519,7 @@ function SubTabBar({
   const colors = colorMap[accentColor] || colorMap.amber;
 
   return (
-    <div className="flex gap-1 p-1 rounded-xl bg-muted/15 border border-border/15 mb-6 overflow-x-auto scrollbar-hide max-w-full">
+    <div className="flex gap-0.5 sm:gap-1 p-0.5 sm:p-1 rounded-lg sm:rounded-xl bg-muted/15 border border-border/15 mb-4 sm:mb-6 overflow-x-auto scrollbar-hide max-w-full -mx-1 px-1">
       {tabs.map(tab => {
         const isActive = active === tab.id;
         return (
@@ -527,15 +527,15 @@ function SubTabBar({
             key={tab.id}
             onClick={() => onChange(tab.id)}
             className={cn(
-              "relative px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap shrink-0",
+              "relative px-2 sm:px-3 py-1.5 sm:py-2 rounded-md sm:rounded-lg text-[11px] sm:text-xs font-medium transition-all duration-200 flex items-center gap-1 sm:gap-1.5 whitespace-nowrap shrink-0 min-h-[36px] touch-manipulation",
               isActive
                 ? cn(colors.active, "border shadow-sm")
-                : "text-muted-foreground/60 hover:text-foreground hover:bg-muted/30"
+                : "text-muted-foreground/60 hover:text-foreground hover:bg-muted/30 active:bg-muted/40"
             )}
           >
-            <tab.icon className="w-3.5 h-3.5" />
+            <tab.icon className="w-3.5 h-3.5 shrink-0" />
             <span className="hidden sm:inline">{tab.label}</span>
-            <span className="sm:hidden">{tab.label.length > 8 ? tab.label.slice(0, 6) + '…' : tab.label}</span>
+            <span className="sm:hidden">{tab.label.length > 7 ? tab.label.slice(0, 5) + '…' : tab.label}</span>
             {isActive && (
               <motion.div 
                 className={cn("absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full", colors.dot)}
@@ -742,9 +742,9 @@ const DashboardContent = memo(function DashboardContent({
   const version = useMetric('version');
   
   return (
-    <div className="flex flex-col xl:flex-row gap-6 items-start">
+    <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 items-start">
       {/* Main column */}
-      <div className="flex-1 min-w-0 space-y-5">
+      <div className="flex-1 min-w-0 space-y-4 sm:space-y-5 w-full">
         {canAccessTier(userTier, 'architect') && (
           <Suspense fallback={null}>
             <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />
@@ -952,8 +952,8 @@ export default function SubstrateOS() {
         </div>
 
         {/* Mobile Bottom Nav */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/30 pb-[env(safe-area-inset-bottom)]">
-          <div className="grid grid-cols-5 px-1 py-1.5">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/30 safe-area-pb">
+          <div className="grid grid-cols-5 px-0.5 py-1" style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}>
             {(() => {
               const priority = ['dashboard', 'analytics', 'terminal', 'engines', 'nexus', 'codeagent', 'security', 'forge'];
               const accessibleTabs = allTabs.filter(t => canAccessTier(userTier, t.tier));
@@ -973,15 +973,15 @@ export default function SubstrateOS() {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={cn(
-                      "relative flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] rounded-lg transition-all",
-                      isActive ? "text-primary" : "text-muted-foreground/60 active:bg-muted/40"
+                      "relative flex flex-col items-center justify-center gap-0.5 py-1.5 min-h-[44px] rounded-lg transition-all touch-manipulation",
+                      isActive ? "text-primary" : "text-muted-foreground/50 active:bg-muted/30"
                     )}
                   >
-                    <tab.icon className="w-5 h-5" />
-                    <span className="text-[9px] font-medium truncate max-w-[56px]">{tab.label}</span>
+                    <tab.icon className={cn("w-[18px] h-[18px] transition-transform", isActive && "scale-110")} />
+                    <span className="text-[9px] font-medium leading-none truncate max-w-[52px]">{tab.label}</span>
                     {isActive && (
                       <motion.div 
-                        className="absolute top-1 w-4 h-0.5 rounded-full bg-primary"
+                        className="absolute top-0.5 w-5 h-[2px] rounded-full bg-primary"
                         layoutId="mobile-tab-indicator"
                         transition={{ type: "spring", stiffness: 500, damping: 35 }}
                       />
@@ -992,17 +992,17 @@ export default function SubstrateOS() {
             })()}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] rounded-lg text-muted-foreground/60 active:bg-muted/40"
+              className="flex flex-col items-center justify-center gap-0.5 py-1.5 min-h-[44px] rounded-lg text-muted-foreground/50 active:bg-muted/30 touch-manipulation"
             >
-              <Menu className="w-5 h-5" />
-              <span className="text-[9px] font-medium">More</span>
+              <Menu className="w-[18px] h-[18px]" />
+              <span className="text-[9px] font-medium leading-none">More</span>
             </button>
           </div>
         </div>
 
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-          <SheetContent side="left" className="p-0 w-72 bg-background">
-            <div className="flex items-center justify-between p-4 border-b border-border/30">
+          <SheetContent side="left" className="p-0 w-[280px] sm:w-72 bg-background">
+            <div className="flex items-center justify-between px-3 py-3 border-b border-border/30">
               <h3 className="font-semibold text-sm text-foreground">Navigation</h3>
               <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => setSidebarOpen(false)}>
                 <X className="w-4 h-4" />
@@ -1021,7 +1021,7 @@ export default function SubstrateOS() {
         </Sheet>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto pb-24 lg:pb-0">
+        <div className="flex-1 overflow-auto pb-20 lg:pb-0">
           <AnimatePresence mode="wait">
             {!hasAccessToCurrentTab && currentTabConfig && (
               <UpgradePrompt key="upgrade" requiredTier={currentTabConfig.tier} />
