@@ -139,10 +139,22 @@ let warmStartComplete = false;
 
 function initExecutorSimilarity() {
   // Group executors by functional similarity for pattern transfer
+  // v2: Expanded to cover all 13 pilot executors across 4 modules
   const groups: string[][] = [
-    ['adaptive-ui', 'personalized-accessibility-engine'],  // Both handle user preferences + UI
-    ['cognitive-load-optimization', 'comprehensive-accessibility-audit'],  // Both analyze content quality
-    ['inclusive-content', 'comprehensive-accessibility-audit'],  // Both validate content
+    // UI adaptation cluster
+    ['adaptive-ui', 'personalized-accessibility-engine'],
+    // Content analysis/validation cluster
+    ['cognitive-load-optimization', 'comprehensive-accessibility-audit', 'inclusive-content', 'audit-compliance-check'],
+    // Cognitive processing cluster
+    ['reasoning-engine', 'learning-engine', 'imagination-engine'],
+    // Governance cluster
+    ['economy-cost-tracker', 'seba-proposal-evaluator', 'audit-compliance-check'],
+    // Routing/orchestration cluster
+    ['relay-event-dispatcher', 'mesh-pipeline-resolver'],
+    // Cross-module: content analysis ↔ cognitive
+    ['cognitive-load-optimization', 'reasoning-engine'],
+    // Cross-module: orchestration ↔ governance
+    ['mesh-pipeline-resolver', 'seba-proposal-evaluator'],
   ];
   for (const group of groups) {
     for (const exec of group) {
@@ -670,6 +682,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
   promoted: number;
   rejected: number;
   crossExecutorTransfers: number;
+  sharedRulesPropagated: number;
 } {
   const eligible = getEligiblePatterns();
   let candidatesSynthesized = 0;
@@ -677,6 +690,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
   let promoted = 0;
   let rejected = 0;
   let crossExecutorTransfers = 0;
+  let sharedRulesPropagated = 0;
 
   for (const cluster of eligible) {
     const candidate = synthesizeCandidateRule(cluster);
@@ -703,6 +717,18 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
             }
           }
         }
+
+        // v4: Contribute to shared rule registry for central learning
+        try {
+          const { contributeRule } = require('./shared-rule-registry');
+          contributeRule(
+            candidate.executor,
+            candidate.repairStrategy,
+            candidate.targetArchetype,
+            candidate.feedbackConfidence,
+            candidate.description,
+          );
+        } catch { /* shared registry not available */ }
       }
     } else {
       rejected++;
@@ -728,8 +754,15 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
     }
   }
 
-  if (candidatesSynthesized > 0) {
-    log.info('encode', `Learning cycle: ${eligible.length}+${highConfidence.length} patterns → ${candidatesSynthesized} candidates → ${validated} validated → ${promoted} promoted, ${rejected} rejected, ${crossExecutorTransfers} transfers`);
+  // v4: Auto-propagate shared rules to compatible executors
+  try {
+    const { autoPropagateRules } = require('./shared-rule-registry');
+    const propagation = autoPropagateRules();
+    sharedRulesPropagated = propagation.adopted;
+  } catch { /* shared registry not available */ }
+
+  if (candidatesSynthesized > 0 || sharedRulesPropagated > 0) {
+    log.info('encode', `Learning cycle: ${eligible.length}+${highConfidence.length} patterns → ${candidatesSynthesized} candidates → ${validated} validated → ${promoted} promoted, ${rejected} rejected, ${crossExecutorTransfers} transfers, ${sharedRulesPropagated} shared rules propagated`);
   }
 
   return {
@@ -739,6 +772,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
     promoted,
     rejected,
     crossExecutorTransfers,
+    sharedRulesPropagated,
   };
 }
 

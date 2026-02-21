@@ -75,10 +75,29 @@ export {
 // Pilot executor list & registration
 export {
   PILOT_EXECUTORS,
+  EXECUTOR_MODULE_META,
   isPilotExecutor,
+  getExecutorMeta,
+  getExecutorsByCategory,
   createImmuneAwareRegister,
   getWrappedExecutor,
+  type PilotExecutorId,
+  type ExecutorModuleMeta,
 } from './pilotExecutors';
+
+// Central Shared Rule Registry
+export {
+  contributeRule,
+  findApplicableRules,
+  adoptRule,
+  recordSharedRuleOutcome,
+  autoPropagateRules,
+  getSharedRuleStats,
+  getSharedRules,
+  type SharedRule,
+  type AdoptionRecord,
+  type SharedRuleRegistryStats,
+} from './shared-rule-registry';
 
 // Probe mini
 export { runProbeMini, type ProbeResult } from './probeMini';
