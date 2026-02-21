@@ -1091,13 +1091,17 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'analytics' && hasAccessToCurrentTab && (
-              <motion.main key="analytics" className="flex-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <TabPane id="analytics">
+                <TabHeader icon={Activity} title="Analytics" subtitle="traffic · usage · performance" color="cyan" tier="creator" />
                 <Suspense fallback={<TabLoadingFallback />}><AnalyticsTab /></Suspense>
-              </motion.main>
+              </TabPane>
             )}
 
             {activeTab === 'engines' && hasAccessToCurrentTab && (
-              <Suspense fallback={<TabLoadingFallback />}><EnginesTab enabled={isOperator} /></Suspense>
+              <TabPane id="engines">
+                <TabHeader icon={Layers} title="Engines" subtitle="execute · manage · monitor" color="fuchsia" tier="creator" />
+                <Suspense fallback={<TabLoadingFallback />}><EnginesTab enabled={isOperator} /></Suspense>
+              </TabPane>
             )}
 
             {/* ═══ ARCHITECT TIER ═══ */}
@@ -1221,9 +1225,9 @@ export default function SubstrateOS() {
             <TierBadge tier={userTier} size="xs" />
           </div>
           <div className="flex items-center gap-4">
-            <a href="/changelog" className="hover:text-foreground/60 transition-colors">changelog</a>
-            <a href="/documentation" className="hover:text-foreground/60 transition-colors">docs</a>
-            <a href="/pricing" className="hover:text-foreground/60 transition-colors">upgrade</a>
+            <Link to="/" className="hover:text-foreground/60 transition-colors">home</Link>
+            <Link to="/explore" className="hover:text-foreground/60 transition-colors">explore</Link>
+            <Link to="/pricing" className="hover:text-foreground/60 transition-colors">upgrade</Link>
           </div>
         </div>
       </footer>

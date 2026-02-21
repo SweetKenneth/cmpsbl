@@ -33,6 +33,7 @@ const MODULES_CONFIG = [
   { id: 'audit', label: 'Audit', icon: ClipboardCheck, color: 'text-slate-400', hsl: '215, 16%, 47%' },
   { id: 'identity', label: 'Identity', icon: Fingerprint, color: 'text-emerald-300', hsl: '160, 84%, 60%' },
   { id: 'economy', label: 'Economy', icon: DollarSign, color: 'text-yellow-400', hsl: '48, 96%, 53%' },
+  { id: 'sandbox', label: 'Sandbox', icon: Box, color: 'text-violet-300', hsl: '258, 90%, 72%' },
 ];
 
 export function DashboardMetricsHero() {
