@@ -28,12 +28,18 @@ export async function runShadowBatch() {
   for (const executor of PILOT_EXECUTORS) {
     const report = await runShadowProbe(executor);
 
+    const hadRepairs = report.summary.repaired > 0;
+    const hadFailures = report.summary.escalated > 0 || report.summary.failedSafe > 0;
+
     await recordImmuneMetrics({
       executor,
       total: report.totalRuns,
       repaired: report.summary.repaired,
       escalated: report.summary.escalated,
       safeFail: report.summary.failedSafe,
+      repair_attempted: hadRepairs || hadFailures,
+      repair_success: hadRepairs,
+      retry_attempted: hadRepairs,
     });
   }
 
