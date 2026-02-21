@@ -7800,6 +7800,51 @@ export type Database = {
         }
         Relationships: []
       }
+      owner_reports: {
+        Row: {
+          created_at: string
+          full_html: string
+          full_plaintext: string
+          generation_time_ms: number | null
+          id: string
+          metrics: Json
+          report_window_end: string
+          report_window_start: string
+          status: string
+          subject: string
+          system_status: string
+          version: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_html: string
+          full_plaintext: string
+          generation_time_ms?: number | null
+          id?: string
+          metrics?: Json
+          report_window_end: string
+          report_window_start: string
+          status?: string
+          subject: string
+          system_status?: string
+          version?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_html?: string
+          full_plaintext?: string
+          generation_time_ms?: number | null
+          id?: string
+          metrics?: Json
+          report_window_end?: string
+          report_window_start?: string
+          status?: string
+          subject?: string
+          system_status?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
       passkey_challenges: {
         Row: {
           challenge: string
