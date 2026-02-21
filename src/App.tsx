@@ -258,6 +258,15 @@ const App = () => {
   // Track render rate of the App root (diag mode only)
   useRenderLoopDetector("App");
 
+  // Short-circuit: render ClearCache completely outside all providers
+  // to prevent storage-dependent providers from looping on clear
+  const isCacheClearRoute = typeof window !== 'undefined' && 
+    (window.location.pathname === '/pf-clear-cache' || window.location.pathname === '/clear-cache');
+
+  if (isCacheClearRoute) {
+    return <ClearCache />;
+  }
+
   return (
     <DiagErrorBoundary>
       {mobilePreviewSafeMode ? (
@@ -276,9 +285,6 @@ const App = () => {
                   <BrowserRouter>
                   <ScrollToTop />
                   <Routes>
-                    {/* Cache clear route — outside AuthProvider to avoid auth loop */}
-                    <Route path="/pf-clear-cache" element={<Suspense fallback={null}><ClearCache /></Suspense>} />
-                    <Route path="/clear-cache" element={<Suspense fallback={null}><ClearCache /></Suspense>} />
                     <Route path="/*" element={
                      <AuthProvider>
                       <Suspense fallback={null}>
