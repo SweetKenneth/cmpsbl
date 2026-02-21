@@ -1,42 +1,214 @@
 /**
  * Phase B — System State Scan
- * v0.7.7 — Reality Check
+ * v10.9.2 — Full 21-Module Sweep
  * 
  * Performs required system calls to detect state mismatches,
- * stuck phases, cognitive starvation, and resilience gaps.
+ * stuck phases, cognitive starvation, resilience gaps,
+ * and per-module health across all 6 layers.
  */
 
-import type { SystemState, EvolutionStateSnapshot, CircuitStateSnapshot, DetectedAnomaly } from './types';
+import type { SystemState, EvolutionStateSnapshot, CircuitStateSnapshot, DetectedAnomaly, ModuleHealthEntry } from './types';
 import { evolutionRuns } from '../evolution-runs';
 import { circuitBreaker } from '../circuit-breaker';
 import { supabase } from '@/integrations/supabase/client';
+
+// ═══════════════════════════════════════════════════════════════
+// FULL 21-MODULE ARCHITECTURE MAP
+// ═══════════════════════════════════════════════════════════════
+
+const MODULE_TABLE_MAP: Record<string, { layer: string; tables: string[]; eventPrefix?: string }> = {
+  // Kernel Layer
+  core:        { layer: 'Kernel',         tables: ['substrate_health_log'],                  eventPrefix: 'core' },
+  ripple:      { layer: 'Kernel',         tables: ['brain_events'],                          eventPrefix: 'ripple' },
+  access:      { layer: 'Kernel',         tables: ['access_api_keys', 'access_developers', 'access_subscriptions', 'access_usage'], eventPrefix: 'access' },
+  // Cognitive Layer
+  brain:       { layer: 'Cognitive',      tables: ['brain_memories', 'brain_memory_hot', 'brain_events'], eventPrefix: 'brain' },
+  decode:      { layer: 'Cognitive',      tables: ['ai_usage_log', 'ai_learning_data'],      eventPrefix: 'decode' },
+  dream:       { layer: 'Cognitive',      tables: ['agency_dream_memory', 'agency_dream_pool'], eventPrefix: 'dream' },
+  // Operational Layer
+  defense:     { layer: 'Operational',    tables: ['edge_rate_limits'],                       eventPrefix: 'defense' },
+  nexus:       { layer: 'Operational',    tables: ['ai_usage_log', 'ai_daily_quota'],         eventPrefix: 'nexus' },
+  vision:      { layer: 'Operational',    tables: ['substrate_health_log'],                   eventPrefix: 'vision' },
+  encode:      { layer: 'Operational',    tables: ['sandbox_sessions'],                       eventPrefix: 'encode' },
+  // Administrative Layer
+  system:      { layer: 'Administrative', tables: ['substrate_health_log'],                   eventPrefix: 'system' },
+  modernizer:  { layer: 'Administrative', tables: ['evolution_runs', 'evolution_receipts', 'evolution_circuit'], eventPrefix: 'modernizer' },
+  integration: { layer: 'Administrative', tables: ['mcp_connections'],                        eventPrefix: 'integration' },
+  inclusive:   { layer: 'Administrative', tables: ['accessibility_scans'],                    eventPrefix: 'inclusive' },
+  // Orchestrator Layer
+  cortex:      { layer: 'Orchestrator',   tables: ['atlas_capabilities'],                     eventPrefix: 'cortex' },
+  atlas:       { layer: 'Orchestrator',   tables: ['atlas_capabilities'],                     eventPrefix: 'atlas' },
+  // Infrastructure Layer
+  memory:      { layer: 'Infrastructure', tables: ['brain_memories', 'brain_memory_hot'],     eventPrefix: 'memory' },
+  relay:       { layer: 'Infrastructure', tables: ['brain_events'],                           eventPrefix: 'relay' },
+  audit:       { layer: 'Infrastructure', tables: ['audit_logs'],                             eventPrefix: 'audit' },
+  identity:    { layer: 'Infrastructure', tables: ['evolution_receipts'],                     eventPrefix: 'identity' },
+  economy:     { layer: 'Infrastructure', tables: ['access_usage', 'access_quotas'],          eventPrefix: 'economy' },
+  sandbox:     { layer: 'Infrastructure', tables: ['sandbox_sessions'],                       eventPrefix: 'sandbox' },
+};
 
 // ═══════════════════════════════════════════════════════════════
 // SYSTEM STATE SCAN
 // ═══════════════════════════════════════════════════════════════
 
 /**
- * Perform comprehensive system state scan
+ * Perform comprehensive system state scan across all 21 modules
  */
 export async function scanSystemState(): Promise<SystemState> {
   // Run all checks in parallel
-  const [evolutionState, circuitState, anomalies] = await Promise.all([
+  const [evolutionState, circuitState, anomalies, moduleHealth] = await Promise.all([
     checkEvolutionState(),
     checkCircuitState(),
     detectAnomalies(),
+    scanAllModules(),
   ]);
   
   // Determine orchestration phase from cortex
   const orchestrationPhase = await getOrchestrationPhase();
   
+  // Add module-level anomalies
+  const moduleAnomalies = deriveModuleAnomalies(moduleHealth);
+  const allAnomalies = [...anomalies, ...moduleAnomalies];
+  
+  const modulesHealthy = moduleHealth.filter(m => m.reachable && m.table_accessible && m.anomalies.length === 0).length;
+  
   return {
     evolution_state: evolutionState,
     circuit_states: circuitState,
     orchestration_phase: orchestrationPhase,
-    detected_anomalies: anomalies,
+    detected_anomalies: allAnomalies,
+    module_health_map: moduleHealth,
+    modules_scanned: moduleHealth.length,
+    modules_healthy: modulesHealthy,
     scan_timestamp: new Date().toISOString(),
   };
 }
+
+// ═══════════════════════════════════════════════════════════════
+// 21-MODULE HEALTH SWEEP
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * Scan all 21 modules for table accessibility and recent activity
+ */
+async function scanAllModules(): Promise<ModuleHealthEntry[]> {
+  const entries = Object.entries(MODULE_TABLE_MAP);
+  
+  const results = await Promise.all(
+    entries.map(async ([moduleName, config]) => {
+      const entry: ModuleHealthEntry = {
+        module: moduleName,
+        layer: config.layer,
+        reachable: true,
+        table_accessible: true,
+        anomalies: [],
+      };
+      
+      // Check primary table accessibility
+      const primaryTable = config.tables[0];
+      try {
+        const { error } = await supabase
+          .from(primaryTable as any)
+          .select('id')
+          .limit(1);
+        
+        if (error) {
+          entry.table_accessible = false;
+          entry.anomalies.push(`Primary table ${primaryTable} inaccessible: ${error.message}`);
+        }
+      } catch {
+        entry.reachable = false;
+        entry.table_accessible = false;
+        entry.anomalies.push(`Module ${moduleName} unreachable`);
+      }
+      
+      // Check for recent activity via brain_events
+      if (config.eventPrefix) {
+        try {
+          const { data: events } = await supabase
+            .from('brain_events')
+            .select('created_at')
+            .ilike('event_type', `%${config.eventPrefix}%`)
+            .order('created_at', { ascending: false })
+            .limit(1);
+          
+          if (events && events.length > 0) {
+            entry.last_activity = events[0].created_at;
+            
+            // Flag stale modules (no activity in 7 days)
+            const lastActive = new Date(events[0].created_at);
+            const daysSince = (Date.now() - lastActive.getTime()) / (1000 * 60 * 60 * 24);
+            if (daysSince > 7) {
+              entry.anomalies.push(`No activity in ${Math.floor(daysSince)} days`);
+            }
+          }
+        } catch {
+          // Non-critical — event check failure doesn't mean module is down
+        }
+      }
+      
+      return entry;
+    })
+  );
+  
+  return results;
+}
+
+/**
+ * Derive anomalies from module health map
+ */
+function deriveModuleAnomalies(moduleHealth: ModuleHealthEntry[]): DetectedAnomaly[] {
+  const anomalies: DetectedAnomaly[] = [];
+  
+  // Check for unreachable modules
+  const unreachable = moduleHealth.filter(m => !m.reachable);
+  if (unreachable.length > 0) {
+    anomalies.push({
+      anomaly_type: 'module_unreachable',
+      severity: unreachable.length >= 3 ? 'critical' : 'high',
+      description: `${unreachable.length} module(s) unreachable: ${unreachable.map(m => m.module).join(', ')}`,
+      affected_components: unreachable.map(m => m.module),
+      evidence: { unreachable_modules: unreachable.map(m => m.module) },
+    });
+  }
+  
+  // Check for layer degradation (>50% of layer modules have issues)
+  const layerGroups: Record<string, ModuleHealthEntry[]> = {};
+  for (const m of moduleHealth) {
+    (layerGroups[m.layer] ??= []).push(m);
+  }
+  
+  for (const [layer, modules] of Object.entries(layerGroups)) {
+    const degraded = modules.filter(m => !m.reachable || !m.table_accessible || m.anomalies.length > 0);
+    if (degraded.length > modules.length / 2) {
+      anomalies.push({
+        anomaly_type: 'layer_degraded',
+        severity: layer === 'Kernel' ? 'critical' : 'high',
+        description: `${layer} layer degraded: ${degraded.length}/${modules.length} modules have issues`,
+        affected_components: degraded.map(m => m.module),
+        evidence: { layer, degraded_count: degraded.length, total: modules.length },
+      });
+    }
+  }
+  
+  // Check for stale modules
+  const stale = moduleHealth.filter(m => m.anomalies.some(a => a.includes('No activity')));
+  if (stale.length >= 5) {
+    anomalies.push({
+      anomaly_type: 'stale_module',
+      severity: 'medium',
+      description: `${stale.length} modules show no recent activity`,
+      affected_components: stale.map(m => m.module),
+      evidence: { stale_modules: stale.map(m => m.module) },
+    });
+  }
+  
+  return anomalies;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ORIGINAL CHECKS (retained)
+// ═══════════════════════════════════════════════════════════════
 
 /**
  * Check evolution state for issues
@@ -45,7 +217,6 @@ async function checkEvolutionState(): Promise<EvolutionStateSnapshot> {
   const activeRun = await evolutionRuns.getActiveRun();
   const allRuns = await evolutionRuns.getAllRuns(50);
   
-  // Calculate failed runs in last 24 hours
   const now = new Date();
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
   const failedRuns24h = allRuns.filter(r => 
@@ -53,15 +224,13 @@ async function checkEvolutionState(): Promise<EvolutionStateSnapshot> {
     new Date(r.created_at) > twentyFourHoursAgo
   ).length;
   
-  // Check for stuck in shadow
   let stuckInShadow = false;
   if (activeRun && activeRun.phase === 'shadow_applied') {
     const shadowTime = new Date(activeRun.updated_at);
     const hoursSinceApply = (now.getTime() - shadowTime.getTime()) / (1000 * 60 * 60);
-    stuckInShadow = hoursSinceApply > 4; // Stuck if in shadow for >4 hours
+    stuckInShadow = hoursSinceApply > 4;
   }
   
-  // Find last successful run
   const lastSuccess = allRuns.find(r => r.phase === 'verified');
   
   return {
@@ -91,7 +260,6 @@ async function checkCircuitState(): Promise<CircuitStateSnapshot> {
  * Get current orchestration phase from cortex
  */
 async function getOrchestrationPhase(): Promise<string> {
-  // Return default - complex query causes type issues
   return 'manual';
 }
 
@@ -101,24 +269,18 @@ async function getOrchestrationPhase(): Promise<string> {
 async function detectAnomalies(): Promise<DetectedAnomaly[]> {
   const anomalies: DetectedAnomaly[] = [];
   
-  // Check for state mismatches
-  const stateMismatch = await checkStateMismatch();
+  const [stateMismatch, shadowLoop, starvation, quotaMisuse, resilienceGap] = await Promise.all([
+    checkStateMismatch(),
+    checkShadowLoops(),
+    checkCognitiveStarvation(),
+    checkQuotaMisuse(),
+    checkResilienceGaps(),
+  ]);
+  
   if (stateMismatch) anomalies.push(stateMismatch);
-  
-  // Check for shadow loops
-  const shadowLoop = await checkShadowLoops();
   if (shadowLoop) anomalies.push(shadowLoop);
-  
-  // Check for cognitive starvation
-  const starvation = await checkCognitiveStarvation();
   if (starvation) anomalies.push(starvation);
-  
-  // Check for quota misuse
-  const quotaMisuse = await checkQuotaMisuse();
   if (quotaMisuse) anomalies.push(quotaMisuse);
-  
-  // Check for resilience gaps
-  const resilienceGap = await checkResilienceGaps();
   if (resilienceGap) anomalies.push(resilienceGap);
   
   return anomalies;
@@ -126,11 +288,9 @@ async function detectAnomalies(): Promise<DetectedAnomaly[]> {
 
 async function checkStateMismatch(): Promise<DetectedAnomaly | null> {
   try {
-    // Check if evolution runs table state matches application state
     const activeRun = await evolutionRuns.getActiveRun();
     const circuitStatus = await circuitBreaker.getStatus();
     
-    // Mismatch: circuit closed but active run in failed state
     if (circuitStatus.state === 'closed' && activeRun?.phase === 'failed') {
       return {
         anomaly_type: 'state_mismatch',
@@ -151,7 +311,6 @@ async function checkShadowLoops(): Promise<DetectedAnomaly | null> {
   try {
     const allRuns = await evolutionRuns.getAllRuns(10);
     
-    // Count consecutive shadow_applied without promotion
     let consecutiveShadow = 0;
     for (const run of allRuns) {
       if (run.phase === 'shadow_applied' || run.phase === 'aborted') {
@@ -179,13 +338,11 @@ async function checkShadowLoops(): Promise<DetectedAnomaly | null> {
 
 async function checkCognitiveStarvation(): Promise<DetectedAnomaly | null> {
   try {
-    // Check for low memory activity (cognitive starvation)
     const { data: memories } = await supabase
       .from('brain_memories')
       .select('id')
       .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
     
-    // If less than 5 memories in 24h, might be starved
     if (memories && memories.length < 5) {
       return {
         anomaly_type: 'cognitive_starvation',
@@ -204,16 +361,14 @@ async function checkCognitiveStarvation(): Promise<DetectedAnomaly | null> {
 
 async function checkQuotaMisuse(): Promise<DetectedAnomaly | null> {
   try {
-    // Check AI usage for unusual patterns
     const { data: usage } = await supabase
       .from('ai_usage_log')
       .select('tokens_used, cost')
-      .gte('created_at', new Date(Date.now() - 60 * 60 * 1000).toISOString()); // Last hour
+      .gte('created_at', new Date(Date.now() - 60 * 60 * 1000).toISOString());
     
     if (usage && usage.length > 0) {
       const totalTokens = usage.reduce((sum, u) => sum + (u.tokens_used || 0), 0);
       
-      // Flag if >100k tokens in an hour
       if (totalTokens > 100000) {
         return {
           anomaly_type: 'quota_misuse',
@@ -233,29 +388,41 @@ async function checkQuotaMisuse(): Promise<DetectedAnomaly | null> {
 
 async function checkResilienceGaps(): Promise<DetectedAnomaly | null> {
   try {
-    // Check for missing critical components using known table types
-    const criticalChecks = [
-      { table: 'evolution_runs' as const, name: 'evolution_runs' },
-      { table: 'evolution_receipts' as const, name: 'evolution_receipts' },
-      { table: 'evolution_circuit' as const, name: 'evolution_circuit' },
-      { table: 'brain_memories' as const, name: 'brain_memories' },
+    // Expanded critical tables check across all layers
+    const criticalTables = [
+      'evolution_runs',
+      'evolution_receipts',
+      'evolution_circuit',
+      'brain_memories',
+      'brain_events',
+      'audit_logs',
+      'ai_usage_log',
+      'access_api_keys',
+      'atlas_capabilities',
+      'substrate_health_log',
     ];
     
-    for (const check of criticalChecks) {
-      try {
-        const { error } = await supabase.from(check.table).select('id').limit(1);
-        if (error) {
-          return {
-            anomaly_type: 'resilience_gap',
-            severity: 'critical',
-            description: `Critical table ${check.name} inaccessible`,
-            affected_components: [check.name],
-            evidence: { table: check.name, error: error.message },
-          };
+    const inaccessible: string[] = [];
+    
+    await Promise.all(
+      criticalTables.map(async (tableName) => {
+        try {
+          const { error } = await supabase.from(tableName as any).select('id').limit(1);
+          if (error) inaccessible.push(tableName);
+        } catch {
+          inaccessible.push(tableName);
         }
-      } catch {
-        // Continue checking
-      }
+      })
+    );
+    
+    if (inaccessible.length > 0) {
+      return {
+        anomaly_type: 'resilience_gap',
+        severity: inaccessible.length >= 3 ? 'critical' : 'high',
+        description: `${inaccessible.length} critical table(s) inaccessible: ${inaccessible.join(', ')}`,
+        affected_components: inaccessible,
+        evidence: { inaccessible_tables: inaccessible, checked: criticalTables.length },
+      };
     }
     
     return null;

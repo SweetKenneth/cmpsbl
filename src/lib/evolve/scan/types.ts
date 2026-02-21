@@ -39,11 +39,23 @@ export interface RiskFlag {
 // SYSTEM STATE (Phase B)
 // ═══════════════════════════════════════════════════════════════
 
+export interface ModuleHealthEntry {
+  module: string;
+  layer: string;
+  reachable: boolean;
+  table_accessible: boolean;
+  last_activity?: string;
+  anomalies: string[];
+}
+
 export interface SystemState {
   evolution_state: EvolutionStateSnapshot;
   circuit_states: CircuitStateSnapshot;
   orchestration_phase: string;
   detected_anomalies: DetectedAnomaly[];
+  module_health_map: ModuleHealthEntry[];
+  modules_scanned: number;
+  modules_healthy: number;
   scan_timestamp: string;
 }
 
@@ -63,7 +75,7 @@ export interface CircuitStateSnapshot {
 }
 
 export interface DetectedAnomaly {
-  anomaly_type: 'state_mismatch' | 'shadow_loop' | 'cognitive_starvation' | 'quota_misuse' | 'resilience_gap';
+  anomaly_type: 'state_mismatch' | 'shadow_loop' | 'cognitive_starvation' | 'quota_misuse' | 'resilience_gap' | 'module_unreachable' | 'layer_degraded' | 'stale_module';
   severity: 'low' | 'medium' | 'high' | 'critical';
   description: string;
   affected_components: string[];
