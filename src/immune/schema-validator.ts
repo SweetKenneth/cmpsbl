@@ -56,6 +56,7 @@ export type InputArchetype =
 // ═══════════════════════════════════════════════════════════════════════════
 
 const SCHEMAS: Record<string, ExecutorSchema> = {
+  // ── INCLUSIVE MODULE ──
   'adaptive-ui': {
     executor: 'adaptive-ui',
     fields: {
@@ -97,6 +98,91 @@ const SCHEMAS: Record<string, ExecutorSchema> = {
       content: { type: 'string', required: true, maxLength: 10000 },
       ariaLabel: { type: 'string', maxLength: 1000 },
       target: { type: 'string', maxLength: 2000 },
+    },
+  },
+
+  // ── COGNITIVE MODULE ──
+  'reasoning-engine': {
+    executor: 'reasoning-engine',
+    fields: {
+      query: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      context: { type: 'object' },
+      constraints: { type: 'object' },
+      depth: { type: 'number' },
+      traceId: { type: 'string', maxLength: 200 },
+    },
+  },
+  'learning-engine': {
+    executor: 'learning-engine',
+    fields: {
+      signal: { type: 'string', required: true, minLength: 1, maxLength: 5000 },
+      domain: { type: 'string', maxLength: 500 },
+      feedback: { type: 'object' },
+      reinforcement: { type: 'number' },
+      source: { type: 'string', maxLength: 200 },
+    },
+  },
+  'imagination-engine': {
+    executor: 'imagination-engine',
+    fields: {
+      prompt: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      mode: { type: 'string', enum: ['GENERATE', 'SYNTHESIZE', 'EXPLORE', 'COMPOSE'] },
+      constraints: { type: 'object' },
+      creativity: { type: 'number' },
+      seed: { type: 'string', maxLength: 200 },
+    },
+  },
+
+  // ── OPERATIONAL MODULE ──
+  'relay-event-dispatcher': {
+    executor: 'relay-event-dispatcher',
+    fields: {
+      event: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      payload: { type: 'object' },
+      target: { type: 'string', maxLength: 500 },
+      priority: { type: 'number' },
+      channel: { type: 'string', maxLength: 200 },
+    },
+  },
+  'economy-cost-tracker': {
+    executor: 'economy-cost-tracker',
+    fields: {
+      action: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      module: { type: 'string', required: true, minLength: 1, maxLength: 200 },
+      tokens: { type: 'number' },
+      computeMs: { type: 'number' },
+      costMillicents: { type: 'number' },
+    },
+  },
+  'audit-compliance-check': {
+    executor: 'audit-compliance-check',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      standard: { type: 'string', enum: ['WCAG', 'ADA', 'GDPR', 'SOC2', 'GENERAL'], default: 'GENERAL' },
+      domain: { type: 'string', maxLength: 500 },
+      severity: { type: 'string', enum: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'] },
+    },
+  },
+
+  // ── ORCHESTRATOR MODULE ──
+  'mesh-pipeline-resolver': {
+    executor: 'mesh-pipeline-resolver',
+    fields: {
+      intent: { type: 'string', required: true, minLength: 1, maxLength: 2000 },
+      modules: { type: 'array' },
+      constraints: { type: 'object' },
+      priority: { type: 'number' },
+      traceId: { type: 'string', maxLength: 200 },
+    },
+  },
+  'seba-proposal-evaluator': {
+    executor: 'seba-proposal-evaluator',
+    fields: {
+      proposal: { type: 'string', required: true, minLength: 1, maxLength: 5000 },
+      impactMetrics: { type: 'object' },
+      riskLevel: { type: 'string', enum: ['LOW', 'MEDIUM', 'HIGH'] },
+      module: { type: 'string', maxLength: 200 },
+      confidence: { type: 'number' },
     },
   },
 };

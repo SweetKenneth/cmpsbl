@@ -23,11 +23,25 @@ const MAX_ARRAY_LEN = 1000;
 /**
  * Minimum expected keys for pilot executor inputs.
  * If an input is missing ALL of these, DEFAULT_SHAPE fills them in.
+ * v2: Expanded to cover all 13 pilot executors across 4 modules.
  */
-const EXPECTED_KEYS = ['content', 'url', 'domain', 'userId', 'wcagLevel', 'ariaLabel'] as const;
+const EXPECTED_KEYS = [
+  // INCLUSIVE
+  'content', 'url', 'domain', 'userId', 'wcagLevel', 'ariaLabel',
+  // COGNITIVE
+  'query', 'signal', 'prompt',
+  // OPERATIONAL
+  'event', 'action', 'module',
+  // ORCHESTRATOR
+  'intent', 'proposal',
+] as const;
 
 /** Known string-expected fields (arrays should be flattened) */
-const STRING_FIELDS = new Set(['content', 'url', 'domain', 'userId', 'ariaLabel', 'target', 'label', 'description']);
+const STRING_FIELDS = new Set([
+  'content', 'url', 'domain', 'userId', 'ariaLabel', 'target', 'label', 'description',
+  'query', 'signal', 'prompt', 'event', 'action', 'module', 'intent', 'proposal',
+  'channel', 'source', 'seed', 'traceId', 'standard', 'riskLevel', 'severity',
+]);
 
 /** Valid wcagLevel values */
 const VALID_WCAG_LEVELS = new Set(['A', 'AA', 'AAA']);
