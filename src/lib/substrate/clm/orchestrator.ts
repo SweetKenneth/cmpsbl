@@ -302,12 +302,13 @@ Be concise, precise, and focused on practical utility. This learning will be sto
       const content = data?.content || data?.response || '';
       const confidence = this.assessConfidence(content);
 
-      // Store the learning as a memory
+      // Store the learning via Memory module's salience-gated pipeline
+      // (learningEngine.input() now routes through memoryCore.ingest() with CLM confidence cap)
       await learningEngine.input({
         content: `[CLM Learning: ${job.topic.name}]\n\n${content}`,
         source: 'clm_orchestrator',
         topic: job.topic.id,
-        confidence,
+        confidence: Math.min(confidence, 0.55), // Cap to prevent hot tier flooding
         metadata: {
           job_id: job.id,
           topic_category: job.topic.category,
@@ -350,13 +351,13 @@ Be concise, precise, and focused on practical utility. This learning will be sto
       });
 
       if (reflection.success && reflection.insights && reflection.insights.length > 0) {
-        // Store reflection insights
+        // Store reflection insights — capped confidence to route to warm tier
         await memoryCore.ingest(
           `[CLM Reflection: ${job.topic.name}]\n\n${reflection.insights.join('\n')}`,
           {
             type: 'reflection',
             source: 'clm_deep_reflection',
-            confidence: 0.8,
+            confidence: 0.5, // ← capped; reflections are supplementary, not critical
             tags: ['clm', 'reflection', job.topic.id],
             metadata: {
               job_id: job.id,

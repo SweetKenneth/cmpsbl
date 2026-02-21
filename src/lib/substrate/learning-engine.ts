@@ -96,26 +96,26 @@ class LearningEngineClient {
         data: { source, topic, confidence, content_length: content.length },
       } as any);
 
-      const { data: memory, error } = await supabase
-        .from('brain_memory_hot')
-        .insert({
-          content,
-          memory_type: 'insight',
-          importance_score: confidence,
-          source,
-          metadata: { ...metadata, topic, learning_stage: 'input' },
-        } as any)
-        .select('id')
-        .single();
-
-      if (error) throw error;
+      // Route through Memory module's salience-gated ingestion instead of direct hot insert.
+      // This ensures CLM learnings are tiered by importance, deduplicated, and capacity-checked.
+      const { memoryCore } = await import('./memory-core');
+      
+      const isCLMSource = source.startsWith('clm') || source === 'learning_engine';
+      
+      const result = await memoryCore.ingest(content, {
+        type: 'insight',
+        source,
+        confidence: isCLMSource ? Math.min(confidence, 0.55) : confidence, // Cap CLM confidence to bias toward warm
+        tags: ['learning', ...(topic ? [topic] : [])],
+        metadata: { ...metadata, topic, learning_stage: 'input', clm_routed: isCLMSource },
+      });
 
       this.state.active_sessions++;
 
       return {
         stage: 'input',
-        success: true,
-        data: { memory_id: memory?.id },
+        success: result.success,
+        data: { memory_id: result.memory_id, tier: result.metadata?.tier },
         metrics: { gain: 0, memories_affected: 1, confidence_delta: 0 },
       };
     } catch (error) {
