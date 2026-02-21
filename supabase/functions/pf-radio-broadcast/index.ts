@@ -52,8 +52,17 @@ function validateScript(script: Record<string, string>): { valid: boolean; error
   return { valid: errors.length === 0, errors };
 }
 
-async function generateScript(lovableApiKey: string, metricsContext: string): Promise<Record<string, string>> {
-  const systemPrompt = `You are CMPSBL Radio's script generator. Output ONLY valid JSON with exactly these 8 keys: opening, system_health, clm_update, substrate_update, engine_spotlight, capability_drop, promo, closing.
+// Nexus provider fleet — health-weighted fallback chain
+const NEXUS_PROVIDERS = [
+  { name: "groq", url: "https://api.groq.com/openai/v1/chat/completions", model: "llama-3.3-70b-versatile", keyEnv: "GROQ_API_KEY" },
+  { name: "cerebras", url: "https://api.cerebras.ai/v1/chat/completions", model: "llama-3.3-70b", keyEnv: "CEREBRAS_API_KEY" },
+  { name: "sambanova", url: "https://api.sambanova.ai/v1/chat/completions", model: "Meta-Llama-3.3-70B-Instruct", keyEnv: "SAMBANOVA_API_KEY" },
+  { name: "together", url: "https://api.together.xyz/v1/chat/completions", model: "meta-llama/Llama-3.3-70B-Instruct-Turbo", keyEnv: "TOGETHER_API_KEY" },
+  { name: "deepseek", url: "https://api.deepseek.com/v1/chat/completions", model: "deepseek-chat", keyEnv: "DEEPSEEK_API_KEY" },
+  { name: "openrouter", url: "https://openrouter.ai/api/v1/chat/completions", model: "meta-llama/llama-3.3-70b-instruct", keyEnv: "OPENROUTER_API_KEY" },
+];
+
+const RADIO_SYSTEM_PROMPT = `You are CMPSBL Radio's script generator. Output ONLY valid JSON with exactly these 8 keys: opening, system_health, clm_update, substrate_update, engine_spotlight, capability_drop, promo, closing.
 
 Rules:
 - Each segment: 40-120 words. Max 150.
@@ -63,30 +72,48 @@ Rules:
 - "closing" segment: sign off with "This has been CMPSBL Radio."
 - Output raw JSON only. No markdown, no code fences.`;
 
-  const userPrompt = `Generate today's CMPSBL Radio broadcast script using these system metrics:\n\n${metricsContext}\n\nOutput the 8-segment JSON now.`;
+async function callNexusProvider(provider: typeof NEXUS_PROVIDERS[0], messages: Array<{role: string; content: string}>): Promise<string> {
+  const apiKey = Deno.env.get(provider.keyEnv);
+  if (!apiKey) throw new Error(`${provider.name}: key not configured`);
 
-  const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const resp = await fetch(provider.url, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${lovableApiKey}`,
+      Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "google/gemini-3-flash-preview",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
+      model: provider.model,
+      messages,
+      max_tokens: 2000,
+      temperature: 0.4,
     }),
   });
 
-  if (!resp.ok) throw new Error(`LLM request failed: ${resp.status}`);
+  if (!resp.ok) throw new Error(`${provider.name}: ${resp.status}`);
   const data = await resp.json();
-  const raw = data.choices?.[0]?.message?.content ?? "";
-  
-  // Strip markdown fences if present
-  const cleaned = raw.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
-  return JSON.parse(cleaned);
+  return data.choices?.[0]?.message?.content ?? "";
+}
+
+async function generateScript(metricsContext: string): Promise<{ script: Record<string, string>; provider: string }> {
+  const messages = [
+    { role: "system", content: RADIO_SYSTEM_PROMPT },
+    { role: "user", content: `Generate today's CMPSBL Radio broadcast script using these system metrics:\n\n${metricsContext}\n\nOutput the 8-segment JSON now.` },
+  ];
+
+  for (const provider of NEXUS_PROVIDERS) {
+    try {
+      console.log(`Nexus: trying ${provider.name}...`);
+      const raw = await callNexusProvider(provider, messages);
+      const cleaned = raw.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
+      const parsed = JSON.parse(cleaned);
+      console.log(`Nexus: ${provider.name} succeeded`);
+      return { script: parsed, provider: provider.name };
+    } catch (e) {
+      console.warn(`Nexus: ${provider.name} failed:`, e instanceof Error ? e.message : e);
+    }
+  }
+  throw new Error("All Nexus providers failed");
 }
 
 async function generateTTS(text: string, voiceId: string, elevenLabsKey: string): Promise<ArrayBuffer> {
@@ -198,12 +225,10 @@ serve(async (req) => {
   const startTime = Date.now();
   
   try {
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const ELEVEN_LABS_API_KEY = Deno.env.get("ELEVEN_LABS_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
     if (!ELEVEN_LABS_API_KEY) throw new Error("ELEVEN_LABS_API_KEY not configured");
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("Supabase credentials missing");
 
@@ -255,12 +280,13 @@ serve(async (req) => {
     // Generate script (with 1 retry on validation failure)
     let script: Record<string, string> | null = null;
     let attempts = 0;
+    let usedProvider = "unknown";
     for (let i = 0; i < 2; i++) {
       attempts++;
       try {
-        const candidate = await generateScript(LOVABLE_API_KEY, metricsContext);
-        const validation = validateScript(candidate);
-        if (validation.valid) { script = candidate; break; }
+        const result = await generateScript(metricsContext);
+        const validation = validateScript(result.script);
+        if (validation.valid) { script = result.script; usedProvider = result.provider; break; }
         console.warn(`Validation failed (attempt ${i + 1}):`, validation.errors);
       } catch (e) {
         console.error(`Script generation attempt ${i + 1} failed:`, e);
@@ -341,7 +367,7 @@ serve(async (req) => {
       voice_mapping: voiceMapping,
     }).eq("id", broadcastId);
 
-    console.log(`Broadcast generated in ${totalDuration}ms, TTS: ${ttsDuration}ms, cost: ~$${costEstimate.toFixed(4)}`);
+    console.log(`Broadcast generated via Nexus/${usedProvider} in ${totalDuration}ms, TTS: ${ttsDuration}ms, cost: ~$${costEstimate.toFixed(4)}`);
 
     return new Response(JSON.stringify({
       ok: true,
@@ -351,6 +377,7 @@ serve(async (req) => {
       tts_duration_ms: ttsDuration,
       cost_estimate: costEstimate,
       segments: SEGMENT_KEYS.length,
+      nexus_provider: usedProvider,
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
