@@ -16,6 +16,12 @@ import { useSoundSettings } from '@/components/agency/features/SoundEffects';
 import composableDreamin from '@/assets/audio/Composable_Dreamin.mp3';
 import composableDreamin2 from '@/assets/audio/Composable_Dreamin_2.mp3';
 import clockless from '@/assets/audio/Clockless.mp3';
+import clockless4 from '@/assets/audio/Clockless-4.mp3';
+import clockless5 from '@/assets/audio/Clockless-5.mp3';
+import composable2 from '@/assets/audio/Composable-2.mp3';
+import composable3 from '@/assets/audio/Composable-3.mp3';
+import composableCompounding2 from '@/assets/audio/Composable_Compounding-2.mp3';
+import composableCompounding3 from '@/assets/audio/Composable_Compounding-3.mp3';
 
 // ============================================================================
 // AMBIENT TRACKS
@@ -38,6 +44,42 @@ const AMBIENT_TRACKS = [
     name: 'Clockless',
     description: 'Cognitive Reality anthem',
     url: clockless,
+  },
+  {
+    id: 'clockless-4',
+    name: 'Clockless IV',
+    description: 'Deep clockless immersion',
+    url: clockless4,
+  },
+  {
+    id: 'clockless-5',
+    name: 'Clockless V',
+    description: 'Evolved clockless resonance',
+    url: clockless5,
+  },
+  {
+    id: 'composable-2',
+    name: 'Composable II',
+    description: 'Composable continuation',
+    url: composable2,
+  },
+  {
+    id: 'composable-3',
+    name: 'Composable III',
+    description: 'Third composable movement',
+    url: composable3,
+  },
+  {
+    id: 'composable-compounding-2',
+    name: 'Composable Compounding II',
+    description: 'Compounding resonance',
+    url: composableCompounding2,
+  },
+  {
+    id: 'composable-compounding-3',
+    name: 'Composable Compounding III',
+    description: 'Deep compounding synthesis',
+    url: composableCompounding3,
   },
 ];
 
@@ -91,21 +133,39 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
     });
   }, []);
   
+  // Pick a random track index that isn't the current one
+  const pickRandomNext = useCallback((currentIdx: number) => {
+    if (AMBIENT_TRACKS.length <= 1) return 0;
+    let next: number;
+    do {
+      next = Math.floor(Math.random() * AMBIENT_TRACKS.length);
+    } while (next === currentIdx);
+    return next;
+  }, []);
+
   // Initialize audio
   useEffect(() => {
     if (!audioRef.current) {
       audioRef.current = new Audio();
-      audioRef.current.loop = true;
+      audioRef.current.loop = false;
       audioRef.current.volume = ambientSettings.volume;
     }
+
+    const audio = audioRef.current;
+    const handleEnded = () => {
+      const nextIdx = pickRandomNext(ambientSettings.trackIndex);
+      updateAmbientSettings({ trackIndex: nextIdx });
+    };
+    audio.addEventListener('ended', handleEnded);
     
     return () => {
+      audio.removeEventListener('ended', handleEnded);
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
       }
     };
-  }, []);
+  }, [ambientSettings.trackIndex, pickRandomNext, updateAmbientSettings]);
   
   // Handle track changes
   useEffect(() => {
@@ -152,9 +212,34 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
   };
   
   const nextTrack = () => {
-    const nextIndex = (ambientSettings.trackIndex + 1) % AMBIENT_TRACKS.length;
-    updateAmbientSettings({ trackIndex: nextIndex });
+    const nextIdx = pickRandomNext(ambientSettings.trackIndex);
+    updateAmbientSettings({ trackIndex: nextIdx });
   };
+
+  // Media Session API — shows "Clockless" in Dynamic Island / lock screen
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+    
+    const track = AMBIENT_TRACKS[ambientSettings.trackIndex];
+    if (!track) return;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.name,
+      artist: 'Clockless',
+      album: 'Cognitive Reality',
+    });
+
+    navigator.mediaSession.setActionHandler('play', () => {
+      updateAmbientSettings({ enabled: true });
+    });
+    navigator.mediaSession.setActionHandler('pause', () => {
+      updateAmbientSettings({ enabled: false });
+    });
+    navigator.mediaSession.setActionHandler('nexttrack', () => {
+      const nextIdx = pickRandomNext(ambientSettings.trackIndex);
+      updateAmbientSettings({ trackIndex: nextIdx });
+    });
+  }, [ambientSettings.trackIndex, ambientSettings.enabled, pickRandomNext, updateAmbientSettings]);
 
   return createPortal(
     <AnimatePresence>
@@ -290,6 +375,37 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                   >
                     <SkipForward className="w-5 h-5" />
                   </Button>
+                </div>
+
+                {/* Track List */}
+                <div className="space-y-1 max-h-[200px] overflow-y-auto">
+                  {AMBIENT_TRACKS.map((track, idx) => (
+                    <button
+                      key={track.id}
+                      onClick={() => updateAmbientSettings({ trackIndex: idx })}
+                      className={cn(
+                        "w-full flex items-center gap-2.5 p-2 rounded-lg text-left transition-all",
+                        idx === ambientSettings.trackIndex
+                          ? "bg-fuchsia-500/15 border border-fuchsia-500/30"
+                          : "hover:bg-muted/40 border border-transparent"
+                      )}
+                    >
+                      <div className={cn(
+                        "w-7 h-7 rounded-md flex items-center justify-center shrink-0",
+                        idx === ambientSettings.trackIndex ? "bg-fuchsia-500/20" : "bg-muted/30"
+                      )}>
+                        {idx === ambientSettings.trackIndex && ambientSettings.enabled ? (
+                          <Pause className="w-3 h-3 text-fuchsia-400" />
+                        ) : (
+                          <Play className="w-3 h-3 text-muted-foreground" />
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={cn("text-xs font-medium truncate", idx === ambientSettings.trackIndex && "text-fuchsia-400")}>{track.name}</p>
+                        <p className="text-[9px] text-muted-foreground truncate">{track.description}</p>
+                      </div>
+                    </button>
+                  ))}
                 </div>
                 
                 {/* Volume */}

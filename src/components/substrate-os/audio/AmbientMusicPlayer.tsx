@@ -206,9 +206,34 @@ export function AmbientMusicPlayer({ className }: { className?: string }) {
   };
   
   const nextTrack = () => {
-    const nextIndex = (settings.trackIndex + 1) % AMBIENT_TRACKS.length;
-    updateSettings({ trackIndex: nextIndex });
+    const nextIdx = pickRandomNext(settings.trackIndex);
+    updateSettings({ trackIndex: nextIdx });
   };
+
+  // Media Session API — shows "Clockless" in Dynamic Island / lock screen
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+    
+    const track = AMBIENT_TRACKS[settings.trackIndex];
+    if (!track) return;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.name,
+      artist: 'Clockless',
+      album: 'Cognitive Reality',
+    });
+
+    navigator.mediaSession.setActionHandler('play', () => {
+      updateSettings({ enabled: true });
+    });
+    navigator.mediaSession.setActionHandler('pause', () => {
+      updateSettings({ enabled: false });
+    });
+    navigator.mediaSession.setActionHandler('nexttrack', () => {
+      const nextIdx = pickRandomNext(settings.trackIndex);
+      updateSettings({ trackIndex: nextIdx });
+    });
+  }, [settings.trackIndex, settings.enabled, pickRandomNext, updateSettings]);
   
   return (
     <div className={cn("relative", className)}>
