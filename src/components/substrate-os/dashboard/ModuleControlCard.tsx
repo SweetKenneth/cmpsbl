@@ -47,6 +47,7 @@ const layerBadges: Record<string, { label: string; color: string }> = {
   admin: { label: 'ADMIN', color: 'border-emerald-500/50 text-emerald-400 bg-emerald-500/10' },
   orchestrator: { label: 'ORCHESTRATOR', color: 'border-fuchsia-500/50 text-fuchsia-400 bg-fuchsia-500/10' },
   infrastructure: { label: 'INFRA', color: 'border-cyan-500/50 text-cyan-400 bg-cyan-500/10' },
+  infra: { label: 'INFRA', color: 'border-cyan-500/50 text-cyan-400 bg-cyan-500/10' },
 };
 
 export function ModuleControlCard({

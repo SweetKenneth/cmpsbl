@@ -244,7 +244,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     },
     // Infrastructure Layer
     {
-      id: 'memory', name: 'MEMORY', layer: 'admin' as const, icon: Database,
+      id: 'memory', name: 'MEMORY', layer: 'infrastructure' as const, icon: Database,
       description: 'Vector/RAG recall & tiering',
       gradient: 'bg-gradient-to-r from-cyan-400 to-blue-500', accentColor: 'bg-cyan-400',
       status: memoryStatus,
@@ -253,7 +253,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => { toast.info('Memory: Module online'); },
     },
     {
-      id: 'relay', name: 'RELAY', layer: 'admin' as const, icon: Send,
+      id: 'relay', name: 'RELAY', layer: 'infrastructure' as const, icon: Send,
       description: 'Outbound routing engine',
       gradient: 'bg-gradient-to-r from-amber-400 to-orange-500', accentColor: 'bg-amber-400',
       status: relayStatus,
@@ -262,7 +262,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => { toast.info('Relay: Router active'); },
     },
     {
-      id: 'audit', name: 'AUDIT', layer: 'admin' as const, icon: ClipboardCheck,
+      id: 'audit', name: 'AUDIT', layer: 'infrastructure' as const, icon: ClipboardCheck,
       description: 'Immutable compliance logging',
       gradient: 'bg-gradient-to-r from-slate-500 to-gray-600', accentColor: 'bg-slate-500',
       status: auditStatus,
@@ -271,7 +271,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => { toast.info('Audit: Logger recording'); },
     },
     {
-      id: 'identity', name: 'IDENTITY', layer: 'admin' as const, icon: Fingerprint,
+      id: 'identity', name: 'IDENTITY', layer: 'infrastructure' as const, icon: Fingerprint,
       description: 'Actor attribution & WebAuthn',
       gradient: 'bg-gradient-to-r from-emerald-400 to-green-500', accentColor: 'bg-emerald-400',
       status: identityStatus,
@@ -280,13 +280,22 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => { toast.info('Identity: Auth active'); },
     },
     {
-      id: 'economy', name: 'ECONOMY', layer: 'admin' as const, icon: DollarSign,
+      id: 'economy', name: 'ECONOMY', layer: 'infrastructure' as const, icon: DollarSign,
       description: 'Budget enforcement & costing',
       gradient: 'bg-gradient-to-r from-yellow-400 to-amber-500', accentColor: 'bg-yellow-400',
       status: economyStatus,
       metrics: [{ label: 'Budget', value: economyStatus.data?.success ? 'Tracking' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
       onAction: async () => { toast.info('Economy: Budget tracking'); },
+    },
+    {
+      id: 'sandbox', name: 'SANDBOX', layer: 'infrastructure' as const, icon: Box,
+      description: 'Isolated execution environment',
+      gradient: 'bg-gradient-to-r from-violet-400 to-purple-500', accentColor: 'bg-violet-400',
+      status: sandboxStatus,
+      metrics: [{ label: 'Environment', value: sandboxStatus.data?.success ? 'Ready' : 'Checking' }],
+      actions: [{ id: 'status', label: 'Status', icon: Activity }],
+      onAction: async () => { toast.info('Sandbox: Environment ready'); },
     },
   ];
 
