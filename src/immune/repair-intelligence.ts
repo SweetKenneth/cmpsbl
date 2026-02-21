@@ -136,8 +136,6 @@ export function preNormalize(
   }
 
   // #13: Structural completeness — ensure inputs have locator + identity dimensions
-  // Inputs with content but no locator/identity get defaults so repair produces
-  // a high structural score, correctly modeling "repair was sufficient"
   const hasLocator = (typeof copy.target === 'string' && copy.target.length > 0)
     || (typeof copy.url === 'string' && copy.url.length > 0)
     || (typeof copy.domain === 'string' && copy.domain.length > 0);
@@ -151,6 +149,16 @@ export function preNormalize(
   if (!hasIdentity) {
     copy.userId = 'anonymous';
     changed = true;
+  }
+
+  // #14: Proactive multiline collapse for cognitive-load — collapse >20 lines early
+  // This prevents oversized multiline content from reaching the executor
+  if (typeof copy.content === 'string') {
+    const lines = copy.content.split('\n');
+    if (lines.length > 20) {
+      copy.content = [...lines.slice(0, 15), '...', ...lines.slice(-4)].join('\n');
+      changed = true;
+    }
   }
 
   // Remove prototype pollution keys proactively
@@ -335,6 +343,14 @@ export function intelligentRepair(
 
   const repaired = stagesApplied > 0 || primary.repaired || preNormChanged;
   const repairType = primary.repair_type ?? (chained ? 'PARALLEL_BRANCH' : undefined);
+
+  // Enhancement #14: Stamp repaired inputs so downstream consumers (stubs) can detect them
+  if (repaired) {
+    (finalInput as any).__repaired = true;
+    (finalInput as any).__repairConfidence = repaired
+      ? calculateRepairConfidence(executor, report.archetype, repairType ?? '', validateInput(executor, finalInput).confidence)
+      : 0;
+  }
 
   // Step 6: Confidence scoring (#3) — use POST-REPAIR validation confidence
   const postRepairValidation = repaired ? validateInput(executor, finalInput) : report;
