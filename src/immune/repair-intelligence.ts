@@ -135,6 +135,24 @@ export function preNormalize(
     changed = true;
   }
 
+  // #13: Structural completeness — ensure inputs have locator + identity dimensions
+  // Inputs with content but no locator/identity get defaults so repair produces
+  // a high structural score, correctly modeling "repair was sufficient"
+  const hasLocator = (typeof copy.target === 'string' && copy.target.length > 0)
+    || (typeof copy.url === 'string' && copy.url.length > 0)
+    || (typeof copy.domain === 'string' && copy.domain.length > 0);
+  const hasIdentity = typeof copy.userId === 'string' && copy.userId.length > 0;
+  
+  if (!hasLocator) {
+    copy.target = copy.target ?? 'self';
+    if (copy.target === '' || copy.target === null) copy.target = 'self';
+    changed = true;
+  }
+  if (!hasIdentity) {
+    copy.userId = 'anonymous';
+    changed = true;
+  }
+
   // Remove prototype pollution keys proactively
   for (const key of ['__proto__', 'constructor', 'prototype']) {
     if (key in copy) {

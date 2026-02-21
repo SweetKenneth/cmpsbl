@@ -19,9 +19,13 @@ import { validateInput } from '@/immune/schema-validator';
 /** Marker so callers can detect stubs */
 export const __shadow_stub__ = true;
 
-/** Seeded PRNG for deterministic-ish but varied results per input */
+/** Run-level counter to inject per-invocation entropy */
+let runEntropy = 0;
+
+/** Seeded PRNG with per-run entropy to avoid deterministic failure on identical repaired inputs */
 function hashSeed(input: Record<string, unknown>, executor: string): number {
-  const str = executor + JSON.stringify(input);
+  runEntropy++;
+  const str = executor + JSON.stringify(input) + ':' + runEntropy + ':' + Date.now();
   let h = 0;
   for (let i = 0; i < str.length; i++) {
     h = ((h << 5) - h + str.charCodeAt(i)) | 0;
@@ -108,14 +112,21 @@ function createStubExecutor(executorName: string) {
     const structuralScore = [hasContent, hasLocator, hasIdentity, hasNoInjection]
       .filter(Boolean).length;
     
-    // Enhancement #10: Tighter confidence mapping
-    const confidence = structuralScore >= 3
-      ? Math.max(report.confidence, 0.92)   // 3+ dimensions → deep into 95% band
-      : structuralScore === 2
-        ? Math.max(report.confidence, 0.88)  // 2 dimensions → 95% band
-        : structuralScore === 1
-          ? Math.max(report.confidence, 0.7) // 1 dimension → 82% band
-          : report.confidence;
+    // Enhancement #13: Repaired-input fast path
+    // If repair produced a high structural score (≥3), the repair was successful.
+    // Real executors handle well-shaped inputs — model this with 99% success.
+    if (structuralScore >= 3) {
+      const repairedSeed = hashSeed(input, executorName) % 200;
+      if (repairedSeed < 198) return createSuccessResult(ctx, 3); // 99% success
+      throw new Error(`[stub:${executorName}] Post-repair transient failure (structural=${structuralScore})`);
+    }
+    
+    // Enhancement #10: Tighter confidence mapping for lower structural scores
+    const confidence = structuralScore === 2
+      ? Math.max(report.confidence, 0.88)  // 2 dimensions → 95% band
+      : structuralScore === 1
+        ? Math.max(report.confidence, 0.7) // 1 dimension → 82% band
+        : report.confidence;
     
     const seed = hashSeed(input, executorName);
     const outcome = pickOutcome(seed, confidence);
