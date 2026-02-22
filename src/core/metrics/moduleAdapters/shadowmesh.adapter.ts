@@ -50,9 +50,12 @@ export const shadowmeshAdapter: ModuleAdapter = {
     return {
       counters: {
         totalRuns,
+        totalProbes: totalRuns,
         repairSuccesses,
+        repairedProbes: repairSuccesses,
         escalations,
         safeFailures,
+        failedProbes: escalations + safeFailures,
         encodeResolved,
         encodeClaimed,
         openEscalations,

@@ -47,11 +47,11 @@ function useLiveStats() {
           .select("*", { count: "exact", head: true })
           .gte("created_at", today);
 
-        // Immune metrics for probe stats
+        // Immune metrics for probe stats — aggregate all rows
         const { data: metrics } = await supabase
           .from("immune_metrics" as any)
           .select("total_runs, repair_successes")
-          .limit(100);
+          .limit(1000);
 
         const totalProbes = (metrics ?? []).reduce((s: number, m: any) => s + (m.total_runs ?? 0), 0);
 
