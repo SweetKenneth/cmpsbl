@@ -2115,8 +2115,10 @@ export function registerSynergyExecutor(
 
 /**
  * Force-register an executor even if no synergy definition exists.
- * Used by shadow mesh stubs for pilot executors that span modules
- * without formal synergy definitions (COGNITIVE, OPERATIONAL, ORCHESTRATOR).
+ * Used by shadow mesh stubs for executors that span modules
+ * without formal synergy definitions.
+ * NOTE: Stubs are already immune-wrapped before calling this —
+ * this function intentionally does NOT re-wrap to avoid double wrapping.
  */
 export function forceRegisterExecutor(
   synergyId: string,
