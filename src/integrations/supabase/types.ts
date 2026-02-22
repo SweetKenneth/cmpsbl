@@ -6199,6 +6199,51 @@ export type Database = {
         }
         Relationships: []
       }
+      immune_intelligence_events: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          escalation_severity: string | null
+          executor_id: string
+          failure_signature_hash: string | null
+          id: string
+          is_shadow_mesh: boolean
+          meta: Json | null
+          mode: string
+          outcome: string
+          repair_type: string | null
+          rule_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          escalation_severity?: string | null
+          executor_id: string
+          failure_signature_hash?: string | null
+          id?: string
+          is_shadow_mesh?: boolean
+          meta?: Json | null
+          mode?: string
+          outcome: string
+          repair_type?: string | null
+          rule_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          escalation_severity?: string | null
+          executor_id?: string
+          failure_signature_hash?: string | null
+          id?: string
+          is_shadow_mesh?: boolean
+          meta?: Json | null
+          mode?: string
+          outcome?: string
+          repair_type?: string | null
+          rule_id?: string | null
+        }
+        Relationships: []
+      }
       immune_metrics: {
         Row: {
           escalations: number

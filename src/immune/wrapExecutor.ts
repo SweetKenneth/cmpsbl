@@ -40,6 +40,8 @@ import { trackOutcome, type OutcomeRecord } from './outcome-tracker';
 import { captureEscalation, runLearningCycle } from './escalation-learning';
 import { validateInput, type InputArchetype } from './schema-validator';
 import { contributeRule, findApplicableRules, recordSharedRuleOutcome } from './shared-rule-registry';
+import { emitIntelligenceEvent, hashSignature } from './metrics/emitIntelligenceEvent';
+import type { IntelOutcome, IntelRepairType } from './metrics/intelligenceTypes';
 
 /** Simple hash for input tracing (not cryptographic) */
 function hashInput(input: Record<string, unknown>): string {
@@ -166,6 +168,24 @@ export function wrapExecutor(
     let escalatedFlag = false;
     let safeFailFlag = false;
     const startTime = performance.now();
+
+    // Intelligence event emitter — fires once at end, non-blocking
+    const emitIntel = (outcome: IntelOutcome, errorMsg?: string, ruleId?: string | null, escSeverity?: string | null) => {
+      try {
+        emitIntelligenceEvent({
+          executor_id: executorName,
+          is_shadow_mesh: (ctx as any).isShadowProbe ?? false,
+          mode: (ctx as any).isShadowProbe ? 'shadow_probe' : 'normal',
+          outcome,
+          repair_type: (repairTypeFlag as IntelRepairType) ?? null,
+          rule_id: ruleId ?? null,
+          failure_signature_hash: errorMsg ? hashSignature(executorName, errorMsg) : null,
+          escalation_severity: escSeverity ?? null,
+          duration_ms: Math.round(performance.now() - startTime),
+          meta: { module, scope, preNormalized: wasPreNormalized },
+        });
+      } catch { /* never block */ }
+    };
 
     // Telemetry is now recorded at batch level (runBatch.ts) — no per-execution DB writes
 
@@ -306,6 +326,7 @@ export function wrapExecutor(
         preNormalized: wasPreNormalized,
         durationMs: Math.round(performance.now() - startTime),
       });
+      emitIntel('safe_fail', preflight.reason);
       return createSafeFailure(ctx.synergyId, `Preflight rejected (${report.archetype}): ${preflight.reason}`);
       }
 
@@ -323,6 +344,7 @@ export function wrapExecutor(
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', repairResult.repairedInput);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
+          emitIntel('repaired_success');
           return { ...result, error: '[immune] Repair succeeded' };
         } catch (err) {
           // v3.2: Failed preflight repair+retry → safe-fail instead of escalate
@@ -330,12 +352,14 @@ export function wrapExecutor(
           mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
           safeFailFlag = true;
           recordOutcome('failed_safe');
+          emitIntel('safe_fail', errorMsg);
           return createSafeFailure(ctx.synergyId, `[immune] Safe-fail after preflight repair: ${errorMsg}`);
         }
       } else {
         // Repairable archetype but no repair strategy found — safe-fail (not escalate)
         safeFailFlag = true;
         recordOutcome('failed_safe');
+        emitIntel('safe_fail', preflight.reason);
         return createSafeFailure(ctx.synergyId, `No repair strategy for ${report.archetype}: ${preflight.reason}`);
       }
     }
@@ -357,6 +381,7 @@ export function wrapExecutor(
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, `Postcheck failed: ${post.reason}`);
         recordOutcome('escalated');
         // metrics recorded at batch level
+        emitIntel('escalation', `Postcheck failed: ${post.reason}`, null, 'high');
         return createSafeFailure(ctx.synergyId, `Postcheck failed: ${post.reason}`);
       }
 
@@ -375,6 +400,7 @@ export function wrapExecutor(
         durationMs: Math.round(performance.now() - startTime),
       });
       // metrics recorded at batch level
+      emitIntel('success');
       return result;
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'unknown execution error';
@@ -402,6 +428,7 @@ export function wrapExecutor(
           preNormalized: wasPreNormalized,
           durationMs: Math.round(performance.now() - startTime),
         });
+        emitIntel('safe_fail', errorMsg);
         return createSafeFailure(ctx.synergyId, `Safe-fail (${report.archetype}): ${errorMsg}`);
       }
 
@@ -420,6 +447,7 @@ export function wrapExecutor(
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', repairResult.repairedInput);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
+          emitIntel('repaired_success');
           return { ...result, error: '[immune] Repair succeeded' };
         } catch (retryErr) {
           // v3.2: Failed repair+retry → safe-fail instead of escalate.
@@ -442,6 +470,7 @@ export function wrapExecutor(
             preNormalized: wasPreNormalized,
             durationMs: Math.round(performance.now() - startTime),
           });
+          emitIntel('safe_fail', retryMsg);
           return createSafeFailure(ctx.synergyId, `[immune] Safe-fail after repair retry: ${retryMsg}`);
         }
       } else {
@@ -463,6 +492,7 @@ export function wrapExecutor(
           preNormalized: wasPreNormalized,
           durationMs: Math.round(performance.now() - startTime),
         });
+        emitIntel('safe_fail', errorMsg);
         return createSafeFailure(ctx.synergyId, `[immune] No repair strategy for ${report.archetype}: ${errorMsg}`);
       }
     }
