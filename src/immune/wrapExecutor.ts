@@ -203,7 +203,8 @@ export function wrapExecutor(
           logImmuneEvent(event);
           recordOutcome('repaired_success');
           // metrics recorded at batch level
-          return retryResult;
+          // Annotate result so probe.ts can distinguish repaired success from natural success
+          return { ...retryResult, error: '[immune] Repair succeeded' };
         }
         repairSuccessFlag = false;
         recordRepairOutcome(executorName, repairTypeFlag, false);
@@ -246,8 +247,7 @@ export function wrapExecutor(
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', repairResult.repairedInput);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
-          // metrics recorded at batch level
-          return result;
+          return { ...result, error: '[immune] Repair succeeded' };
         } catch (err) {
           const errorMsg = err instanceof Error ? err.message : 'unknown error after repair';
           mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
@@ -308,8 +308,7 @@ export function wrapExecutor(
           const event = createEvent(executorName, scope, module, 'repair', 'repaired_success', repairResult.repairedInput);
           logImmuneEvent(event);
           recordOutcome('repaired_success');
-          // metrics recorded at batch level
-          return result;
+          return { ...result, error: '[immune] Repair succeeded' };
         } catch (retryErr) {
           const retryMsg = retryErr instanceof Error ? retryErr.message : 'unknown';
           mineEscalationPattern(executorName, retryMsg, repairResult.repairedInput);

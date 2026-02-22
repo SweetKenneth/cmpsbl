@@ -114,10 +114,13 @@ export async function runShadowProbe(
       const result: SynergyResult = await executor(ctx);
       const durationMs = Math.round(performance.now() - start);
 
-      if (result.success) {
-        results.push({ input, outcome: 'success', durationMs });
-        summary.success++;
-      } else if (result.error?.includes('[immune]')) {
+      // Classification priority:
+      // 1. Check for [immune] marker first — this covers both repair-success AND escalation
+      // 2. A result with success:true but error:'[immune] Repair succeeded' = repaired
+      // 3. A result with success:false and [immune] error = escalated
+      // 4. A result with success:true and no [immune] marker = natural success
+      // 5. Everything else = failed_safe
+      if (result.error?.includes('[immune]')) {
         if (result.error.includes('Repair')) {
           results.push({ input, outcome: 'repaired', error: result.error, durationMs });
           summary.repaired++;
@@ -125,6 +128,9 @@ export async function runShadowProbe(
           results.push({ input, outcome: 'escalated', error: result.error, durationMs });
           summary.escalated++;
         }
+      } else if (result.success) {
+        results.push({ input, outcome: 'success', durationMs });
+        summary.success++;
       } else {
         results.push({ input, outcome: 'failed_safe', error: result.error, durationMs });
         summary.failedSafe++;
