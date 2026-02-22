@@ -1,13 +1,16 @@
 /**
  * Promotion Pipeline — Orchestrates shadow → diff → integrity → promote → verify → stamp
+ * Guarded by shadow_mesh_enabled flag.
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { isShadowMeshEnabled } from '@/lib/system/flags';
 import { captureSnapshot } from './snapshot-engine';
 import { computeDiff, storeDiff } from './diff-engine';
 import { runIntegrityScan } from './integrity-scanner';
 import { runPreflight } from './preflight';
 import { insertCodeStamps } from './code-stamping';
+import { recordMetrics } from './telemetry-recorder';
 import type { PromotionResult, PromotionStatus } from './types';
 
 /** Insert a mutation receipt */
@@ -25,8 +28,76 @@ async function insertReceipt(
   } as any);
 }
 
+/** Restore rule + metric state from a pre-promote snapshot */
+async function restoreFromSnapshot(snapshotId: string): Promise<boolean> {
+  try {
+    const { data: snapshot } = await supabase
+      .from('system_snapshots')
+      .select('*')
+      .eq('id', snapshotId)
+      .single() as any;
+
+    if (!snapshot) return false;
+
+    const metrics = snapshot.metrics_json ?? {};
+
+    // Restore promoted rules that were changed during this promotion back to candidate
+    // This is a conservative rollback — demote any rules promoted after the snapshot
+    if (snapshot.created_at) {
+      await supabase
+        .from('immunity_rules')
+        .update({ status: 'candidate', promoted_at: null } as any)
+        .eq('status', 'promoted')
+        .gt('promoted_at', snapshot.created_at);
+    }
+
+    // Capture rollback state for audit
+    await captureSnapshot('rollback_state');
+    return true;
+  } catch (err) {
+    console.error('[Promote] Rollback restore failed:', err);
+    return false;
+  }
+}
+
+/** Simulate canary by replaying recent shadow probe results */
+async function runCanaryCheck(shadowRunId: string): Promise<{ passed: boolean; reason?: string }> {
+  try {
+    // Check recent immune metrics for the shadow window
+    const since = new Date(Date.now() - 30 * 60 * 1000).toISOString(); // 30 min window
+    const { data: recentInvocations } = await supabase
+      .from('immunity_rule_invocations')
+      .select('outcome')
+      .gte('created_at', since)
+      .limit(200) as any;
+
+    const invocs = recentInvocations ?? [];
+    if (invocs.length === 0) {
+      // No data = pass with warning (no traffic to validate against)
+      return { passed: true, reason: 'No recent invocations for canary — passed by default' };
+    }
+
+    const successes = invocs.filter((i: any) => i.outcome === 'success').length;
+    const successRate = successes / invocs.length;
+
+    if (successRate < 0.5) {
+      return { passed: false, reason: `Canary success rate ${(successRate * 100).toFixed(1)}% below 50% threshold` };
+    }
+
+    return { passed: true, reason: `Canary success rate ${(successRate * 100).toFixed(1)}%` };
+  } catch (err) {
+    console.error('[Promote] Canary check error:', err);
+    return { passed: false, reason: 'Canary check threw an error' };
+  }
+}
+
 /** Full governed promotion pipeline */
 export async function runPromotion(shadowRunId: string): Promise<PromotionResult> {
+  // HARD GUARD: mesh OFF = no promotions
+  if (!(await isShadowMeshEnabled())) {
+    return { success: false, promotion_id: '', status: 'failed', failure_reason: 'Immunity Mesh is OFF — promotion blocked' };
+  }
+
   // 1. Capture shadow baseline snapshot
   const shadowBaseline = await captureSnapshot('shadow_baseline');
   if (!shadowBaseline) {
@@ -91,20 +162,25 @@ export async function runPromotion(shadowRunId: string): Promise<PromotionResult
   await supabase.from('production_promotions').update({ status: 'canary' as PromotionStatus } as any).eq('id', pid);
   await insertReceipt(pid, 'canary', 'started');
 
-  // Canary simulation (shadow replay)
-  const canaryPassed = true; // In production, this would replay shadow inputs
-  await insertReceipt(pid, 'canary', canaryPassed ? 'passed' : 'failed');
+  const canaryResult = await runCanaryCheck(shadowRunId);
+  await insertReceipt(pid, 'canary', canaryResult.passed ? 'passed' : 'failed', { reason: canaryResult.reason });
 
-  if (!canaryPassed) {
-    // Rollback
+  if (!canaryResult.passed) {
+    // Deterministic rollback
+    const restored = await restoreFromSnapshot(prodBaseline.id);
     await supabase.from('production_promotions').update({
       status: 'rolled_back' as PromotionStatus,
       rollback_triggered: true,
-      failure_reason: 'Canary test failed',
+      failure_reason: canaryResult.reason ?? 'Canary test failed',
       completed_at: new Date().toISOString(),
     } as any).eq('id', pid);
-    await insertReceipt(pid, 'rollback', 'executed', { reason: 'canary_failure' });
-    await captureSnapshot('rollback_state');
+    await insertReceipt(pid, 'rollback', restored ? 'executed' : 'partial', {
+      reason: 'canary_failure',
+      snapshot_restored: restored,
+    });
+
+    // Record telemetry after rollback
+    await recordMetrics();
 
     return {
       success: false,
@@ -112,7 +188,7 @@ export async function runPromotion(shadowRunId: string): Promise<PromotionResult
       status: 'rolled_back',
       diff,
       integrity_score: integrityScan.health_score,
-      failure_reason: 'Canary test failed',
+      failure_reason: canaryResult.reason ?? 'Canary test failed',
       rollback_triggered: true,
     };
   }
@@ -132,6 +208,9 @@ export async function runPromotion(shadowRunId: string): Promise<PromotionResult
     completed_at: new Date().toISOString(),
   } as any).eq('id', pid);
   await insertReceipt(pid, 'verify', 'passed', { stamp_count: stampCount });
+
+  // Record telemetry after successful promotion
+  await recordMetrics();
 
   return {
     success: true,

@@ -68,4 +68,20 @@ describe('preflight', () => {
     const failedCount = result.checks.filter(c => !c.passed).length;
     expect(failedCount).toBeGreaterThanOrEqual(4);
   });
+
+  it('blocks on low executor health', () => {
+    const result = runPreflight(makeDiff(), makeScan(), 0.85, 0.3);
+    expect(result.passed).toBe(false);
+    expect(result.checks.find(c => c.name === 'Executor Health')?.passed).toBe(false);
+  });
+
+  it('passes executor health when above threshold', () => {
+    const result = runPreflight(makeDiff(), makeScan(), 0.85, 0.75);
+    expect(result.passed).toBe(true);
+  });
+
+  it('skips executor health check when not provided', () => {
+    const result = runPreflight(makeDiff(), makeScan(), 0.85);
+    expect(result.checks.find(c => c.name === 'Executor Health')).toBeUndefined();
+  });
 });
