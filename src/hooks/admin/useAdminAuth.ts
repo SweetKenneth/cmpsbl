@@ -10,26 +10,23 @@ export function useAdminAuth() {
     queryFn: async () => {
       if (!user?.id) return false;
 
-      // Direct table query (most reliable)
-      const { data, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .eq("role", "admin")
-        .maybeSingle();
+      // Use security-definer RPC to bypass RLS
+      const { data, error } = await supabase.rpc('has_role_text', {
+        _user_id: user.id,
+        _role: 'admin'
+      });
 
       if (error) {
         console.error("Admin check error:", error);
         return false;
       }
 
-      return !!data;
+      return data === true;
     },
     enabled: !!user?.id,
-    staleTime: 30 * 60 * 1000, // 30 minutes (increased for better persistence)
-    gcTime: 60 * 60 * 1000, // 1 hour (keeps cached longer)
-    refetchOnWindowFocus: false, // Don't refetch on window focus
-    refetchOnMount: false, // Don't refetch on component mount if data exists
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
   });
 
   return { isAdmin, isLoading, user };
