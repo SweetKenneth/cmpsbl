@@ -1,9 +1,9 @@
 /**
  * Changelog Auto-Generation Utility
- * Generates changelog entries from applied evolution patches.
+ * v10.5.4 ARCHITECT — Generates changelog entries from applied evolution patches
  *
- * Queries evolution_runs to auto-generate structured entries
- * for the /changelog page. Never exposes internal mechanisms.
+ * Queries evolution_runs and substrate_upgrade_plans to auto-generate
+ * structured changelog entries for the /changelog page.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -19,8 +19,7 @@ export interface AutoChangelogEntry {
 }
 
 /**
- * Fetch recent evolution runs and format as changelog entries.
- * All entries are sanitized — no internal details exposed.
+ * Fetch recent evolution runs and format as changelog entries
  */
 export async function fetchAutoChangelog(limit = 20): Promise<AutoChangelogEntry[]> {
   try {
@@ -35,14 +34,18 @@ export async function fetchAutoChangelog(limit = 20): Promise<AutoChangelogEntry
 
     return (runs as any[]).map((run: any) => {
       const summary = run.result_summary || {};
+      const diff = run.diff_summary || {};
 
       return {
         id: run.run_id,
         date: run.completed_at || run.created_at,
-        version: '',
-        pressures: summary.pressures || ['System stability milestone reached'],
-        responses: summary.responses || ['Substrate integrity improved'],
-        capabilities: summary.capabilities || ['System resilience enhanced'],
+        version: `v${summary.version || '10.5.4'}`,
+        pressures: summary.pressures || ['Evolution cycle triggered by SEBA analysis'],
+        responses: summary.responses || [
+          diff.files_changed ? `Modified ${diff.files_changed} files` : 'Applied substrate patch',
+          diff.lines_added ? `+${diff.lines_added} lines` : null,
+        ].filter(Boolean) as string[],
+        capabilities: summary.capabilities || ['Substrate integrity improved'],
         source: 'evolution_run' as const,
       };
     });
@@ -52,7 +55,7 @@ export async function fetchAutoChangelog(limit = 20): Promise<AutoChangelogEntry
 }
 
 /**
- * Format a changelog entry date for display
+ * Format a changelog entry for display
  */
 export function formatChangelogDate(dateStr: string): string {
   const d = new Date(dateStr);

@@ -311,15 +311,15 @@ export const seoMap: Record<string, PageSEO> = {
     primaryKeyword: 'AI substrate developer tools',
   },
   '/changelog': {
-    title: 'Evolution Log — Substrate Milestones | CMPSBL',
-    description: 'A living record of what the CMPSBL substrate has become. Each entry marks a stability milestone — what changed, never how.',
-    ogTitle: 'Evolution Log — Substrate Milestones',
-    ogDescription: 'A living record of substrate stability milestones and emergent capabilities.',
+    title: 'Changelog — Substrate Update History | CMPSBL',
+    description: 'Track every update to the CMPSBL substrate: new modules, capabilities, patches, and cognitive architecture changes over time.',
+    ogTitle: 'Changelog — What\'s New in CMPSBL',
+    ogDescription: 'Complete update history for the cognitive substrate.',
     ogImage: OG_DOCS,
-    keywords: ['CMPSBL evolution log', 'substrate milestones', 'AI platform updates', 'cognitive architecture milestones'],
+    keywords: ['CMPSBL changelog', 'substrate updates', 'AI platform changelog', 'cognitive architecture updates'],
     schema: 'docs',
     intent: 'Docs/Developer',
-    primaryKeyword: 'CMPSBL substrate evolution log',
+    primaryKeyword: 'CMPSBL substrate changelog',
   },
 
   // ═══════════════════════════════════════════════════
