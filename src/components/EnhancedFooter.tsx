@@ -36,20 +36,34 @@ export function EnhancedFooter() {
       title: "Substrate",
       links: [
         { name: "All Modules", href: "/modules", highlight: true },
-        { name: "Documentation", href: "/documentation" },
+        { name: "Substrate Overview", href: "/substrate" },
         { name: "System Status", href: "/status", highlight: true },
+        { name: "Documentation", href: "/documentation" },
         { name: "System Feed", href: "/system-feed" },
         { name: "Decode Engine", href: "/decode" },
         { name: "Proof Mode", href: "/proof" },
       ]
     },
     {
-      title: "Learn",
+      title: "Build",
       links: [
+        { name: "Start Here", href: "/start-here", highlight: true },
         { name: "Developer Academy", href: "/academy" },
-        { name: "Cognitive Reality", href: "/clockless-world-engine" },
+        { name: "Cognitive Forge", href: "/forge" },
+        { name: "CodeLab", href: "/codelab" },
+        { name: "Experimentation Lab", href: "/lab" },
+        { name: "DevTools", href: "/devtools" },
+        { name: "Gaming AI", href: "/gaming" },
+      ]
+    },
+    {
+      title: "Explore",
+      links: [
+        { name: "Blog", href: "/blog" },
+        { name: "Insights", href: "/insights" },
         { name: "Publication", href: "/publication" },
         { name: "Library", href: "/library" },
+        { name: "Cognitive Reality", href: "/clockless-world-engine" },
         { name: "Use Cases", href: "/use-cases" },
         { name: "Demo", href: "/demo" },
       ]
@@ -66,14 +80,16 @@ export function EnhancedFooter() {
       ]
     },
     {
-      title: "Contact",
+      title: "Company",
       links: [
+        { name: "About", href: "/about" },
         { name: "Support", href: "/support" },
         { name: "Contact", href: "/contact" },
         { name: "Investors", href: "/investors" },
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
         { name: "llms.txt", href: "/llms-txt" },
+        { name: "humans.txt", href: "/humans-txt" },
       ]
     },
   ];
@@ -92,7 +108,7 @@ export function EnhancedFooter() {
         
         {/* Main Footer Content */}
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
-          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-5 lg:gap-12">
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-3 lg:grid-cols-6 lg:gap-10">
             {/* Brand Column - Full width on mobile */}
             <div className="col-span-2 md:col-span-1 mb-6 md:mb-0">
               <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3 sm:mb-4">

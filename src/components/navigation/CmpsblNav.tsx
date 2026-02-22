@@ -110,6 +110,7 @@ export function CmpsblNav() {
       items: [
         { name: "AI Operating System", href: "/ai-operating-system", description: "The definitive AI OS — what it is and why it matters", icon: Globe, badge: "AIDO" },
         { name: "All Modules", href: "/modules", description: "21 core substrate modules across 6 layers", icon: Layers },
+        { name: "Substrate Overview", href: "/substrate", description: "Live substrate dashboard & architecture", icon: Cpu },
         { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap },
         { name: "Intent Mesh", href: "/intent-mesh", description: "Autonomous inter-module communication layer", icon: Brain, badge: "NEW" },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
@@ -127,6 +128,7 @@ export function CmpsblNav() {
         { name: "Documentation", href: "/documentation", description: "Complete API reference & guides", icon: FileText },
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
         { name: "Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
+        { name: "Cognitive Forge", href: "/forge", description: "Build, customize & deploy cognitives", icon: Sparkles },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
         { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
@@ -138,6 +140,8 @@ export function CmpsblNav() {
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry applications & examples", icon: Sparkles },
         { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
+        { name: "AI Agencies", href: "/agency", description: "Deploy autonomous agent teams", icon: Users },
+        { name: "Audit", href: "/audit", description: "Security & compliance assessment", icon: Shield },
         { name: "Pricing", href: "/pricing", description: "Build on our master substrate", icon: Layers },
         { name: "Licensing", href: "/licensing", description: "Deploy on your own infrastructure", icon: FileText },
         { name: "Intelligence", href: "/intelligence", description: "Technology proof & acquisition info", icon: Shield },
@@ -148,9 +152,11 @@ export function CmpsblNav() {
       icon: Users,
       items: [
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
-        { name: "System Status", href: "/status", description: "Live module health, uptime & incidents", icon: Shield, badge: "LIVE" },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
-        { name: "Library", href: "/library", description: "Technical documentation library", icon: BookOpen },
+        { name: "Insights", href: "/insights", description: "Industry analysis & thought leadership", icon: BookOpen },
+        { name: "Investors", href: "/investors", description: "Performance, metrics & growth", icon: Building2 },
+        { name: "Contact", href: "/contact", description: "Get in touch with our team", icon: Mail },
+        { name: "System Status", href: "/status", description: "Live module health, uptime & incidents", icon: Shield, badge: "LIVE" },
         { name: "PromptFluid", href: "/promptfluid", description: "Our parent company & portfolio", icon: Building2 },
       ]
     },
