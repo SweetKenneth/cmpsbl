@@ -3,7 +3,7 @@
  * v10.1 — Live realtime feed, replay integration, pipeline crystallization
  */
 
-import { VersionBadge } from './VersionBadge';
+
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -190,7 +190,7 @@ export function MeshActivityTab() {
               )}>
                 {enabled ? 'ACTIVE' : 'DISABLED'}
               </Badge>
-              <VersionBadge className="border-amber-500/50 text-amber-400 bg-amber-500/10" />
+              
               {/* Live indicator */}
               {enabled && (
                 <span className="flex items-center gap-1 text-[10px] text-emerald-400">

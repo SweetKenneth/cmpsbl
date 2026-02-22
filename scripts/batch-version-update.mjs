@@ -9,7 +9,7 @@
 import { readdir, readFile, writeFile } from 'fs/promises';
 import { join, extname } from 'path';
 
-const NEW_VERSION = '10.5.4';
+const NEW_VERSION = '11.0.0';
 const TARGET_DIR = 'src';
 const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 

@@ -714,8 +714,6 @@ export function CmpsblNav() {
                 className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground"
               >
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span className="font-mono">v10.5.4</span>
-                <span>•</span>
                 <span>All Systems Operational</span>
               </motion.div>
             </motion.div>

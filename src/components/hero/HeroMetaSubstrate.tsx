@@ -1,7 +1,7 @@
 /**
  * META HERO: Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate
  * Studio-grade hero with cinematic typography and fluid motion
- * v10.6.0 ARCHITECT Epoch
+ * SPARTA Epoch
  */
 
 import React, { useEffect, useState, useRef, useMemo } from "react";
@@ -194,6 +194,9 @@ export function HeroMetaSubstrate() {
             >
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-xs font-semibold text-muted-foreground tracking-wide">A Cognitive Reality System · powered by the CMPSBL Substrate</span>
+              <span className="flex items-center gap-1 pl-2 border-l border-border/50">
+                <span className="text-[10px] font-mono font-bold text-muted-foreground/70">v11.0.0</span>
+              </span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/50">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>

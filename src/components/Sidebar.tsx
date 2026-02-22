@@ -297,7 +297,7 @@ export function Sidebar({ isOpen, onToggle }: { isOpen?: boolean; onToggle?: () 
         {/* Footer */}
         <div className="p-4 border-t border-border/50">
           <p className="text-xs text-muted-foreground text-center">
-            CMPSBL® · v10.5.4 ARCHITECT
+            CMPSBL®
           </p>
         </div>
       </aside>

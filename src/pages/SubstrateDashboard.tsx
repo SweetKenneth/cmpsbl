@@ -329,7 +329,7 @@ export default function SubstrateDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Dashboard — CMPSBL v10.5.4"
+        title="Substrate Dashboard — CMPSBL"
         description="Cognitive orchestration substrate control center. Monitor all 21 modules across 6 layers including brain, decode, encode, defense, nexus, vision, dream, memory, relay, audit, identity, economy, sandbox, and more."
         canonical="https://cmpsbl.com/substrate"
         keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "21 modules", "cortex"]}

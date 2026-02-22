@@ -1,10 +1,9 @@
 /**
  * CMPSBL Substrate Status Widget
- * v10.5.4 — ARCHITECT Epoch compact status indicator
+ * SPARTA Epoch compact status indicator
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { useSubstrateContext } from './SubstrateProvider';
 
 interface SubstrateStatusProps {
@@ -15,18 +14,15 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
   const { initialized, overallHealth, modules } = useSubstrateContext();
 
   const activeCount = Object.values(modules).filter(m => m.active).length;
-  const totalModules = 21; // v10.5.4: All 21 modules
+  const totalModules = 21;
   const isHealthy = overallHealth >= 80;
 
   if (compact) {
     return (
-      <Badge 
-        variant="outline" 
-        className={`gap-1.5 ${isHealthy ? 'border-primary/50 text-primary' : 'border-destructive/50 text-destructive'}`}
-      >
+      <span className={`inline-flex items-center gap-1.5 text-xs ${isHealthy ? 'text-primary' : 'text-destructive'}`}>
         <Activity className="h-3 w-3" />
         {activeCount}/{totalModules}
-      </Badge>
+      </span>
     );
   }
 
@@ -40,9 +36,6 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
       <span className="text-muted-foreground">
         CMPSBL Substrate: {activeCount}/{totalModules} modules
       </span>
-      <Badge variant="outline" className="text-xs">
-        v10.5.4
-      </Badge>
     </div>
   );
 }

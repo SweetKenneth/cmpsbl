@@ -48,7 +48,7 @@ const milestones = [
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
   { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 21 modules, 6 layers, powered by the CMPSBL Substrate." },
   { year: "2025", title: "175k+ Lines of Code", description: "Grew to 400+ capabilities, 200 synergy pipelines, and 7-provider AI routing." },
-  { year: "2026", title: "ARCHITECT Epoch v10.5.4", description: "Self-evolving codebase with autonomous learning, dream cycles, and composable cognitives." },
+  { year: "2026", title: "SPARTA Epoch", description: "Self-evolving codebase with autonomous learning, dream cycles, and composable cognitives." },
 ];
 
 const capabilities = [
