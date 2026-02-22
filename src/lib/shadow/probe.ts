@@ -115,15 +115,19 @@ export async function runShadowProbe(
       const durationMs = Math.round(performance.now() - start);
 
       // Classification priority:
-      // 1. Check for [immune] marker first — this covers both repair-success AND escalation
-      // 2. A result with success:true but error:'[immune] Repair succeeded' = repaired
-      // 3. A result with success:false and [immune] error = escalated
-      // 4. A result with success:true and no [immune] marker = natural success
-      // 5. Everything else = failed_safe
+      // 1. Check for [immune] marker — covers repair-success, escalation, and safe-fail
+      // 2. '[immune] Repair succeeded' = repaired
+      // 3. '[immune] Safe-fail' or other non-repair [immune] = safe fail (expected rejection)
+      // 4. '[immune] Escalated' or '[immune] Executor failed' = escalated (needs attention)
+      // 5. success:true with no [immune] marker = natural success
       if (result.error?.includes('[immune]')) {
-        if (result.error.includes('Repair')) {
+        if (result.error.includes('Repair succeeded')) {
           results.push({ input, outcome: 'repaired', error: result.error, durationMs });
           summary.repaired++;
+        } else if (result.error.includes('Safe-fail') || result.error.includes('Preflight rejected') || result.error.includes('No repair strategy')) {
+          // v3.0: Archetype-gated safe-fails — expected rejections of garbage inputs
+          results.push({ input, outcome: 'failed_safe', error: result.error, durationMs });
+          summary.failedSafe++;
         } else {
           results.push({ input, outcome: 'escalated', error: result.error, durationMs });
           summary.escalated++;
