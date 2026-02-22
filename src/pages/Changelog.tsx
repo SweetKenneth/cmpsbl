@@ -29,6 +29,24 @@ interface EvolutionEntry {
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogSPARTA: EvolutionEntry[] = [
   {
+    id: "sparta-evolution-002",
+    date: "2026-02-22",
+    pressures: [
+      "Shadow-tested upgrades had no governed path to production — users could skip validation and apply directly",
+      "Apply button bypassed shadow test results, allowing untested changes to reach production",
+    ],
+    responses: [
+      "Added governed 'Promote to Production' pipeline: Validate → Shadow Test → Apply with all three gates enforced sequentially",
+      "Replaced direct apply buttons with promotion flow requiring 'PROMOTE' confirmation keyword",
+      "Pipeline blocks promotion if any validation check or shadow test fails",
+    ],
+    capabilities: [
+      "Shadow-proven changes can now be safely promoted to production through a 3-gate governed pipeline",
+      "No upgrade can reach production without passing both validation and shadow tests",
+      "Instant rollback safety net preserved — backup snapshot taken before every apply",
+    ],
+  },
+  {
     id: "sparta-evolution-001",
     date: "2026-02-22",
     pressures: [
