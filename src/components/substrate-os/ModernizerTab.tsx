@@ -180,6 +180,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
   const [validationDialog, setValidationDialog] = useState<{ open: boolean; planId: string | null }>({ open: false, planId: null });
   const [testDialog, setTestDialog] = useState<{ open: boolean; planId: string | null }>({ open: false, planId: null });
   const [diffDialog, setDiffDialog] = useState<{ open: boolean; planId: string | null }>({ open: false, planId: null });
+  const [promoteDialog, setPromoteDialog] = useState<{ open: boolean; planId: string | null }>({ open: false, planId: null });
   const [confirmValue, setConfirmValue] = useState('');
 
   // Fetch system status
@@ -426,6 +427,55 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     onError: (error) => {
       toast.error('Rollback failed', {
         description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    },
+  });
+
+  // Promote from shadow to production mutation (governed pipeline)
+  const promoteMutation = useMutation({
+    mutationFn: async (planId: string) => {
+      // Step 1: Run validation first
+      const { data: valData, error: valError } = await supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'validate_plan', plan_id: planId }
+      });
+      if (valError) throw valError;
+      if (!valData?.ready_to_apply) {
+        throw new Error(`Pre-promotion validation failed: ${valData?.summary?.failed || 0} checks failed. Fix issues before promoting.`);
+      }
+
+      // Step 2: Run shadow tests
+      const { data: testData, error: testError } = await supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'test_shadow', plan_id: planId }
+      });
+      if (testError) throw testError;
+      if (!testData?.ready_for_production) {
+        throw new Error(`Shadow tests failed: ${testData?.summary?.failed || 0}/${testData?.summary?.total_tests || 0} tests failed. Cannot promote.`);
+      }
+
+      // Step 3: Apply to production (all gates passed)
+      const { data, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'apply_plan', plan_id: planId }
+      });
+      if (error) throw error;
+      if (!data.success) throw new Error(data.error || data.message);
+      return {
+        ...data,
+        validation: valData,
+        shadow_tests: testData,
+      };
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['upgrade-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['modernizer-status'] });
+      toast.success('Shadow → Production promotion complete', {
+        description: `Validation ✓ | Shadow Tests ✓ | Health: ${data.pre_health}% → ${data.post_health}%`,
+      });
+      setPromoteDialog({ open: false, planId: null });
+      setConfirmValue('');
+    },
+    onError: (error) => {
+      toast.error('Promotion blocked', {
+        description: error instanceof Error ? error.message : 'Safety gate prevented promotion',
       });
     },
   });
@@ -935,8 +985,9 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-7 px-2"
-                            onClick={() => setApplyDialog({ open: true, planId: plan.id })}
+                            className="h-7 px-2 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
+                            onClick={() => setPromoteDialog({ open: true, planId: plan.id })}
+                            title="Promote to Production (governed pipeline)"
                           >
                             <Rocket className="w-3 h-3" />
                           </Button>
@@ -1376,13 +1427,13 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                   onClick={() => {
                     setValidationDialog({ open: false, planId: null });
                     if (validationDialog.planId) {
-                      setApplyDialog({ open: true, planId: validationDialog.planId });
+                      setPromoteDialog({ open: true, planId: validationDialog.planId });
                     }
                   }}
                   className="w-full bg-emerald-600 hover:bg-emerald-700"
                 >
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Ready to Apply
+                  <Rocket className="w-4 h-4 mr-2" />
+                  Promote to Production
                 </Button>
               )}
             </div>
@@ -1463,13 +1514,13 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                   onClick={() => {
                     setTestDialog({ open: false, planId: null });
                     if (testDialog.planId) {
-                      setApplyDialog({ open: true, planId: testDialog.planId });
+                      setPromoteDialog({ open: true, planId: testDialog.planId });
                     }
                   }}
                   className="w-full bg-emerald-600 hover:bg-emerald-700"
                 >
                   <Rocket className="w-4 h-4 mr-2" />
-                  Deploy to Production
+                  Promote to Production
                 </Button>
               )}
             </div>
@@ -1675,6 +1726,114 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                 <>
                   <RotateCcw className="w-4 h-4 mr-2" />
                   Rollback
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Promote to Production Dialog */}
+      <Dialog open={promoteDialog.open} onOpenChange={(open) => {
+        if (!open) {
+          setPromoteDialog({ open: false, planId: null });
+          setConfirmValue('');
+        }
+      }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Rocket className="w-5 h-5 text-emerald-400" />
+              Promote Shadow → Production
+            </DialogTitle>
+            <DialogDescription>
+              This will run the full governed promotion pipeline: Validate → Shadow Test → Apply.
+              All gates must pass before changes reach production.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-4 space-y-4">
+            {/* Pipeline Steps */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+                <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                  <span className="text-xs font-bold text-cyan-400">1</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs font-medium">Validation Gate</p>
+                  <p className="text-[10px] text-muted-foreground">Health, backup, and module checks</p>
+                </div>
+                {promoteMutation.isPending && (
+                  <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                )}
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+                <div className="w-6 h-6 rounded-full bg-fuchsia-500/20 flex items-center justify-center">
+                  <span className="text-xs font-bold text-fuchsia-400">2</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs font-medium">Shadow Test Gate</p>
+                  <p className="text-[10px] text-muted-foreground">All module tests must pass in shadow</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                  <span className="text-xs font-bold text-emerald-400">3</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs font-medium">Production Apply</p>
+                  <p className="text-[10px] text-muted-foreground">Apply with auto-rollback safety net</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Safety Notice */}
+            <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+              <div className="flex items-start gap-2">
+                <Shield className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <p className="text-[10px] text-amber-400/90">
+                  Promotion will be blocked if any gate fails. A backup snapshot is taken before applying, 
+                  enabling instant rollback if degradation is detected.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">
+                Type <code className="bg-muted px-1 rounded font-mono">PROMOTE</code> to proceed:
+              </p>
+              <Input
+                value={confirmValue}
+                onChange={(e) => setConfirmValue(e.target.value)}
+                placeholder="Type PROMOTE"
+                className="font-mono"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setPromoteDialog({ open: false, planId: null });
+                setConfirmValue('');
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={confirmValue !== 'PROMOTE' || promoteMutation.isPending || !promoteDialog.planId}
+              onClick={() => promoteDialog.planId && promoteMutation.mutate(promoteDialog.planId)}
+              className="bg-emerald-600 hover:bg-emerald-700"
+            >
+              {promoteMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Running Pipeline...
+                </>
+              ) : (
+                <>
+                  <Rocket className="w-4 h-4 mr-2" />
+                  Promote to Production
                 </>
               )}
             </Button>
