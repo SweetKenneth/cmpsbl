@@ -838,6 +838,8 @@ function RepairSkillsPanel() {
 
 function ShadowBuildPanel() {
   const [stats, setStats] = useState<ReturnType<typeof getSkillStats> | null>(null);
+  const [running, setRunning] = useState<'replay' | 'synthetic' | 'encode' | 'all' | null>(null);
+  const [lastReport, setLastReport] = useState<{ source: string; success: number; total: number; skills: number } | null>(null);
   const voice = useSubstrateVoice();
 
   useEffect(() => {
@@ -845,6 +847,46 @@ function ShadowBuildPanel() {
     const interval = setInterval(() => setStats(getSkillStats()), 10_000);
     return () => clearInterval(interval);
   }, []);
+
+  const handleRunAll = async () => {
+    setRunning('all');
+    try {
+      const { runAllShadowBuilds } = await import('@/lib/shadow/shadowBuild');
+      const reports = await runAllShadowBuilds();
+      const totals = reports.reduce((acc, r) => ({
+        success: acc.success + r.summary.success,
+        total: acc.total + r.totalTasks,
+        skills: acc.skills + r.summary.skillsGained,
+      }), { success: 0, total: 0, skills: 0 });
+      setLastReport({ source: 'All Modes', ...totals });
+      setStats(getSkillStats());
+      voice.success?.('Shadow build complete');
+      toast.success(`Shadow build complete: ${totals.success}/${totals.total} tasks passed, ${totals.skills} skills gained`);
+    } catch (err: any) {
+      toast.error(`Shadow build failed: ${err.message}`);
+    } finally {
+      setRunning(null);
+    }
+  };
+
+  const handleRunMode = async (source: 'replay' | 'synthetic' | 'encode') => {
+    setRunning(source);
+    try {
+      const { runAllShadowBuilds } = await import('@/lib/shadow/shadowBuild');
+      // runAllShadowBuilds runs all sources; we run it and filter display by source
+      const reports = await runAllShadowBuilds();
+      const filtered = reports.flatMap(r => r.results.filter(res => res.task.source === source));
+      const success = filtered.filter(r => r.outcome === 'success' || r.outcome === 'partial_success').length;
+      setLastReport({ source, success, total: filtered.length, skills: filtered.reduce((s, r) => s + r.skillsLearned.length, 0) });
+      setStats(getSkillStats());
+      voice.success?.(`${source} build complete`);
+      toast.success(`${source} build: ${success}/${filtered.length} tasks passed`);
+    } catch (err: any) {
+      toast.error(`${source} build failed: ${err.message}`);
+    } finally {
+      setRunning(null);
+    }
+  };
 
   return (
     <div className="space-y-5">
@@ -863,19 +905,65 @@ function ShadowBuildPanel() {
                   and executing ENCODE practice tasks. All results are scored and discarded, but skills and 
                   repair rules are retained and auto-propagated across the mesh.
                 </p>
-                <div className="flex gap-3 mt-3">
-                  <Badge variant="outline" className="text-[10px]">
-                    <Play className="w-3 h-3 mr-1" />Replay
-                  </Badge>
-                  <Badge variant="outline" className="text-[10px]">
-                    <Sparkles className="w-3 h-3 mr-1" />Synthetic
-                  </Badge>
-                  <Badge variant="outline" className="text-[10px]">
-                    <GraduationCap className="w-3 h-3 mr-1" />ENCODE
-                  </Badge>
-                </div>
               </div>
             </div>
+
+            {/* ── Action Buttons ── */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
+              <ActionButton
+                icon={Play}
+                variant="primary"
+                loading={running === 'replay'}
+                disabled={running !== null}
+                onClick={() => handleRunMode('replay')}
+                className="w-full text-xs"
+              >
+                Replay Tasks
+              </ActionButton>
+              <ActionButton
+                icon={Sparkles}
+                variant="secondary"
+                loading={running === 'synthetic'}
+                disabled={running !== null}
+                onClick={() => handleRunMode('synthetic')}
+                className="w-full text-xs"
+              >
+                Synthetic
+              </ActionButton>
+              <ActionButton
+                icon={GraduationCap}
+                variant="success"
+                loading={running === 'encode'}
+                disabled={running !== null}
+                onClick={() => handleRunMode('encode')}
+                className="w-full text-xs"
+              >
+                ENCODE Practice
+              </ActionButton>
+              <ActionButton
+                icon={Zap}
+                variant="warning"
+                loading={running === 'all'}
+                disabled={running !== null}
+                onClick={handleRunAll}
+                className="w-full text-xs"
+              >
+                Run All
+              </ActionButton>
+            </div>
+
+            {/* ── Last Run Summary ── */}
+            {lastReport && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-3 p-2.5 rounded-lg bg-muted/40 border border-border/50">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Last run: <span className="font-medium text-foreground capitalize">{lastReport.source}</span></span>
+                  <div className="flex gap-3">
+                    <span><strong>{lastReport.success}</strong>/{lastReport.total} passed</span>
+                    <span><strong>{lastReport.skills}</strong> skills</span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </CardContent>
         </Card>
       </motion.div>
