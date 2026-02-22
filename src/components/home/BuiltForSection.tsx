@@ -48,7 +48,7 @@ const audiences = [
     badge: "For Developers",
     title: "Apps That Think",
     tagline: "Intelligence as infrastructure",
-    description: "Add persistent memory, intelligent routing, and self-improvement to any application. 200+ templates. Full SDK. Production-ready from day one.",
+    description: "Add persistent memory, intelligent routing, and self-improvement to any application. Full SDK. Production-ready from day one.",
     features: [
       { icon: Zap, text: "Multi-provider routing" },
       { icon: Brain, text: "Memory persistence" },

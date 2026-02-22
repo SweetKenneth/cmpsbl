@@ -1,7 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, Sparkles, Home, BookOpen, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { SEO } from "@/components/SEO";
 
 const NotFound = () => {
   const location = useLocation();
@@ -13,6 +15,8 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
+      <SEO title="Page Not Found — CMPSBL" description="This page doesn't exist in the substrate." />
+      
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-primary/5 blur-[80px]" />
@@ -31,14 +35,28 @@ const NotFound = () => {
           This path dissolves into the void.
         </p>
 
-        <Button
-          onClick={() => navigate('/')}
-          variant="outline"
-          className="gap-2"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Return to origin
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Button
+            onClick={() => navigate('/')}
+            variant="outline"
+            className="gap-2"
+          >
+            <Home className="w-4 h-4" />
+            Home
+          </Button>
+          <Button asChild variant="outline" className="gap-2">
+            <Link to="/documentation">
+              <BookOpen className="w-4 h-4" />
+              Docs
+            </Link>
+          </Button>
+          <Button asChild variant="outline" className="gap-2">
+            <Link to="/status">
+              <Terminal className="w-4 h-4" />
+              System Status
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );
