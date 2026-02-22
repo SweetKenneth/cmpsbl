@@ -180,13 +180,11 @@ const ARCHETYPE_STRATEGIES: Record<InputArchetype, string[]> = {
   well_formed: [],
   empty_shell: [],  // safe-fail — not repairable
   type_mismatch: [], // safe-fail — intentional garbage in probes
-  missing_required: ['DEFAULT_SHAPE', 'EMPTY_STRING_BACKFILL', 'PLACEHOLDER_NATURALIZE'],
+  missing_required: ['DEFAULT_SHAPE', 'EMPTY_STRING_BACKFILL', 'PLACEHOLDER_NATURALIZE', 'NORMALIZE_NULLS'],
   oversized: [],     // safe-fail — not repairable
   injection_attempt: [], // safe-fail — not repairable
   shape_alien: [],   // safe-fail — not repairable
-  // partial_valid: only genuine structural issues (wrong_type + missing combo)
-  // NOT triggered for unknown-field-only inputs (those are now well_formed)
-  partial_valid: ['NORMALIZE_NULLS', 'COERCE_TYPE', 'EMPTY_STRING_BACKFILL', 'ENUM_CLAMP'],
+  partial_valid: [], // safe-fail — mixed structural issues are adversarial garbage
 };
 
 /**
@@ -208,11 +206,11 @@ function calculateRepairConfidence(
     well_formed: 0.95,
     empty_shell: 0,       // not repairable — safe-fail
     type_mismatch: 0,     // not repairable — safe-fail
-    missing_required: 0.88, // backfill rules are reliable
+    missing_required: 0.92, // backfill rules are highly reliable
     oversized: 0,         // not repairable — safe-fail
     injection_attempt: 0, // not repairable — safe-fail
     shape_alien: 0,       // not repairable — safe-fail
-    partial_valid: 0.85,
+    partial_valid: 0,     // not repairable — safe-fail
   };
 
   let confidence = archetypeBase[archetype] ?? 0.5;
