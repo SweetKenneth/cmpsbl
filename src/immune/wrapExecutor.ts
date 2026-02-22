@@ -1,8 +1,11 @@
 /**
- * Executor Immune Pilot — Wrapper (v2.1)
+ * Executor Immune Pilot — Wrapper (v3.0)
  * 
- * v2.1 Fix: Escalation and safe-failure flags now correctly propagated
- * to persisted telemetry, fixing the false 100% repair rate reporting.
+ * v3.0 Fix: Archetype-gated repair. Garbage inputs (empty_shell, shape_alien,
+ * injection_attempt, oversized) now safe-fail IMMEDIATELY without any repair
+ * attempt. Only repairable archetypes (partial_valid, type_mismatch,
+ * missing_required) trigger the repair pipeline. This fixes the inflated
+ * repair attempt rate (~40-50% → expected <2%).
  *
  * Improvements integrated:
  * #1 Context-Aware Rule Selection
@@ -13,6 +16,7 @@
  * #8 Post-Execution Outcome Tracking
  * #10 Escalation Pattern Mining
  * #11 Parallel Repair Branching
+ * #13 Archetype-Gated Repair (NEW)
  *
  * SAFETY: 1 repair max, 1 retry max, no recursion, no cross-module writes.
  */
@@ -33,7 +37,7 @@ import { incrementMetric, recordOutcome } from './metrics';
 import { intelligentRepair, recordRepairOutcome, preNormalize, mineEscalationPattern } from './repair-intelligence';
 import { trackOutcome, type OutcomeRecord } from './outcome-tracker';
 import { captureEscalation, runLearningCycle } from './escalation-learning';
-import { validateInput } from './schema-validator';
+import { validateInput, type InputArchetype } from './schema-validator';
 import { contributeRule, findApplicableRules, recordSharedRuleOutcome } from './shared-rule-registry';
 
 /** Simple hash for input tracing (not cryptographic) */
@@ -98,6 +102,23 @@ function preflightCheck(input: unknown): { valid: boolean; reason?: string } {
 }
 
 /**
+ * #13: Archetype-Gated Repair
+ * Only these archetypes are worth attempting repair on.
+ * Everything else (empty_shell, shape_alien, injection_attempt, oversized)
+ * should safe-fail immediately — they represent garbage inputs that the
+ * system correctly rejects, not inputs that need fixing.
+ */
+const REPAIRABLE_ARCHETYPES: Set<InputArchetype> = new Set([
+  'partial_valid',
+  'type_mismatch',
+  'missing_required',
+]);
+
+function isRepairableArchetype(archetype: InputArchetype): boolean {
+  return REPAIRABLE_ARCHETYPES.has(archetype);
+}
+
+/**
  * Basic postcheck on executor output
  */
 function postcheck(result: SynergyResult): { valid: boolean; reason?: string } {
@@ -112,9 +133,9 @@ export interface WrapConfig {
 }
 
 /**
- * Wrap a synergy executor with immune defense+repair (v2.1)
- * Now uses intelligent repair with all 12 improvements.
- * v2.1: Fixes escalation/safeFail telemetry propagation.
+ * Wrap a synergy executor with immune defense+repair (v3.0)
+ * v3.0: Archetype-gated repair — only repairable archetypes trigger repair.
+ * Garbage inputs safe-fail immediately, producing honest <2% repair rates.
  */
 export function wrapExecutor(
   executorFn: (ctx: SynergyExecutionContext) => Promise<SynergyResult>,
@@ -234,6 +255,17 @@ export function wrapExecutor(
     if (!preflight.valid) {
       incrementMetric('preflightFailures');
 
+      // #13: Classify the input archetype BEFORE attempting repair
+      const report = validateInput(executorName, input as Record<string, unknown>);
+      
+      if (!isRepairableArchetype(report.archetype)) {
+        // Garbage input — safe-fail immediately, no repair attempt
+        safeFailFlag = true;
+        recordOutcome('failed_safe');
+        return createSafeFailure(ctx.synergyId, `Preflight rejected (${report.archetype}): ${preflight.reason}`);
+      }
+
+      // Repairable archetype — attempt intelligent repair
       const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
       if (irResult) return irResult;
 
@@ -254,16 +286,13 @@ export function wrapExecutor(
           escalatedFlag = true;
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, errorMsg);
           recordOutcome('escalated');
-          // metrics recorded at batch level
           return createSafeFailure(ctx.synergyId, `Repaired input still failed: ${errorMsg}`);
         }
       } else {
-        mineEscalationPattern(executorName, preflight.reason ?? 'preflight failed', input as Record<string, unknown>);
-        escalatedFlag = true;
-        await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, preflight.reason ?? 'preflight failed');
-        recordOutcome('escalated');
-        // metrics recorded at batch level
-        return createSafeFailure(ctx.synergyId, `Preflight failed: ${preflight.reason}`);
+        // Repairable archetype but no repair strategy found — safe-fail (not escalate)
+        safeFailFlag = true;
+        recordOutcome('failed_safe');
+        return createSafeFailure(ctx.synergyId, `No repair strategy for ${report.archetype}: ${preflight.reason}`);
       }
     }
 
@@ -293,11 +322,24 @@ export function wrapExecutor(
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'unknown execution error';
 
-      // ── v2.0: INTELLIGENT REPAIR + SINGLE RETRY ──
+      // ── #13: ARCHETYPE-GATED REPAIR ──
+      // Classify the input BEFORE attempting repair. If the input is garbage
+      // (empty_shell, shape_alien, injection_attempt, oversized), safe-fail
+      // immediately. Only repairable archetypes get repair attempts.
+      const report = validateInput(executorName, input as Record<string, unknown>);
+      
+      if (!isRepairableArchetype(report.archetype)) {
+        // Expected failure on garbage input — safe-fail, no repair, no escalation
+        safeFailFlag = true;
+        recordOutcome('failed_safe');
+        return createSafeFailure(ctx.synergyId, `Safe-fail (${report.archetype}): ${errorMsg}`);
+      }
+
+      // ── Repairable archetype — attempt intelligent repair + single retry ──
       const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
       if (irResult) return irResult;
 
-      // Legacy repair fallback — use executorName (not scope) to match registered repairs
+      // Legacy repair fallback
       incrementMetric('repairAttempts');
       const repairResult = repair(executorName, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
 
@@ -315,15 +357,14 @@ export function wrapExecutor(
           escalatedFlag = true;
           await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, retryMsg);
           recordOutcome('escalated');
-          // metrics recorded at batch level
           return createSafeFailure(ctx.synergyId, `Repair failed on retry: ${retryMsg}`);
         }
       } else {
+        // Repairable archetype but no strategy — escalate
         mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
         escalatedFlag = true;
         await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
         recordOutcome('escalated');
-        // metrics recorded at batch level
         return createSafeFailure(ctx.synergyId, `Executor failed: ${errorMsg}`);
       }
     }
