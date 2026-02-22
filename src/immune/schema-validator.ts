@@ -185,6 +185,74 @@ const SCHEMAS: Record<string, ExecutorSchema> = {
       confidence: { type: 'number' },
     },
   },
+
+  // ── INFRASTRUCTURE MODULE ──
+  'memory-consolidation-engine': {
+    executor: 'memory-consolidation-engine',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      userId: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      target: { type: 'string', maxLength: 500 },
+      action: { type: 'string', enum: ['CONSOLIDATE', 'PROMOTE', 'DEMOTE', 'ARCHIVE'], default: 'CONSOLIDATE' },
+    },
+  },
+  'identity-verification-engine': {
+    executor: 'identity-verification-engine',
+    fields: {
+      userId: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      action: { type: 'string', required: true, minLength: 1, maxLength: 200 },
+      content: { type: 'string', maxLength: 10000 },
+      token: { type: 'string', maxLength: 2000 },
+    },
+  },
+  'sandbox-isolation-guard': {
+    executor: 'sandbox-isolation-guard',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      target: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      userId: { type: 'string', maxLength: 500 },
+      boundary: { type: 'string', enum: ['STRICT', 'PERMISSIVE', 'SANDBOX'], default: 'STRICT' },
+    },
+  },
+  'encode-task-scheduler': {
+    executor: 'encode-task-scheduler',
+    fields: {
+      action: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      content: { type: 'string', maxLength: 10000 },
+      target: { type: 'string', maxLength: 500 },
+      priority: { type: 'number' },
+      scheduledAt: { type: 'string', maxLength: 100 },
+    },
+  },
+
+  // ── INTELLIGENCE MODULE ──
+  'dream-pattern-synthesizer': {
+    executor: 'dream-pattern-synthesizer',
+    fields: {
+      prompt: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      content: { type: 'string', maxLength: 10000 },
+      userId: { type: 'string', maxLength: 500 },
+      mode: { type: 'string', enum: ['SYNTHESIZE', 'EXPLORE', 'COMPOSE'] },
+    },
+  },
+  'decode-intent-classifier': {
+    executor: 'decode-intent-classifier',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      query: { type: 'string', maxLength: 5000 },
+      userId: { type: 'string', maxLength: 500 },
+      context: { type: 'object' },
+    },
+  },
+  'vision-anomaly-detector': {
+    executor: 'vision-anomaly-detector',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      target: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      userId: { type: 'string', maxLength: 500 },
+      threshold: { type: 'number' },
+    },
+  },
 };
 
 const SQL_INJECT_RE = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|UNION|CREATE|EXEC)\b\s)/i;
