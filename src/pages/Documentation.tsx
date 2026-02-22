@@ -313,6 +313,7 @@ X-App-ID: your-app-uuid
 Authorization: Bearer <supabase-jwt>`}
                     </code>
                   </div>
+
                   <div>
                     <h3 className="font-semibold mb-2 text-foreground">Base Endpoints</h3>
                     <div className="space-y-2 text-sm">
@@ -321,6 +322,101 @@ Authorization: Bearer <supabase-jwt>`}
                       <code className="block bg-muted/30 p-3 rounded-lg border border-border">POST /functions/v1/extension-registry — Extensions</code>
                       <code className="block bg-muted/30 p-3 rounded-lg border border-border">POST /functions/v1/integration-bus — Integrations</code>
                       <code className="block bg-muted/30 p-3 rounded-lg border border-border">POST /functions/v1/agent-mesh — Agents</code>
+                    </div>
+                  </div>
+
+                  {/* Substrate Core Actions */}
+                  <div>
+                    <h3 className="font-semibold mb-3 text-foreground">Core Substrate Actions</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      All actions are sent via POST to <code className="text-primary">/functions/v1/pf-substrate</code> with an <code className="text-primary">action</code> field in the JSON body.
+                    </p>
+                    <div className="space-y-3">
+                      {[
+                        { action: "brain.store", method: "POST", desc: "Store a memory with optional tags and tier", body: '{ "action": "brain.store", "content": "...", "tags": ["tag1"], "tier": "hot" }' },
+                        { action: "brain.query", method: "POST", desc: "Semantic search across stored memories", body: '{ "action": "brain.query", "query": "search terms", "limit": 10, "tier": "all" }' },
+                        { action: "brain.events", method: "POST", desc: "Retrieve recent brain events", body: '{ "action": "brain.events", "limit": 50 }' },
+                        { action: "nexus.route", method: "POST", desc: "Route an AI request to the optimal provider", body: '{ "action": "nexus.route", "messages": [...], "task_type": "chat", "constraints": { "max_latency_ms": 3000 } }' },
+                        { action: "defense.scan", method: "POST", desc: "Run a security scan on a domain or input", body: '{ "action": "defense.scan", "target": "example.com", "scan_type": "full" }' },
+                        { action: "vision.metrics", method: "POST", desc: "Retrieve system health and latency metrics", body: '{ "action": "vision.metrics", "module": "brain", "period": "24h" }' },
+                        { action: "dream.trigger", method: "POST", desc: "Trigger an off-cycle dream consolidation", body: '{ "action": "dream.trigger", "mode": "simnap" }' },
+                        { action: "audit.query", method: "POST", desc: "Search the immutable audit ledger", body: '{ "action": "audit.query", "entity_type": "brain", "limit": 100 }' },
+                      ].map((endpoint) => (
+                        <div key={endpoint.action} className="p-4 bg-muted/30 rounded-lg border border-border">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge className="bg-emerald-500/15 text-emerald-500 border-emerald-500/30 text-[10px] font-mono">{endpoint.method}</Badge>
+                            <code className="text-sm font-semibold text-foreground">{endpoint.action}</code>
+                          </div>
+                          <p className="text-xs text-muted-foreground mb-2">{endpoint.desc}</p>
+                          <code className="text-xs block bg-background p-3 rounded border border-border overflow-x-auto">
+                            {endpoint.body}
+                          </code>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* BYOK Proxy */}
+                  <div>
+                    <h3 className="font-semibold mb-3 text-foreground">BYOK Proxy</h3>
+                    <div className="p-4 bg-muted/30 rounded-lg border border-border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge className="bg-emerald-500/15 text-emerald-500 border-emerald-500/30 text-[10px] font-mono">POST</Badge>
+                        <code className="text-sm font-semibold text-foreground">/functions/v1/byok-proxy</code>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-2">Route AI requests through your own API keys with automatic provider selection.</p>
+                      <code className="text-xs block bg-background p-3 rounded border border-border overflow-x-auto">
+                        {`{
+  "messages": [{ "role": "user", "content": "Hello" }],
+  "provider": "openai",         // optional — auto-selects if omitted
+  "model": "gpt-4o",            // optional — uses best available
+  "temperature": 0.7,
+  "max_tokens": 2048
+}
+
+// Response
+{
+  "content": "Hi! How can I help?",
+  "provider": "openai",
+  "model": "gpt-4o",
+  "tokens_used": 42,
+  "latency_ms": 820,
+  "cost_millicents": 15
+}`}
+                      </code>
+                    </div>
+                  </div>
+
+                  {/* Response Format */}
+                  <div>
+                    <h3 className="font-semibold mb-3 text-foreground">Response Format</h3>
+                    <div className="p-4 bg-muted/30 rounded-lg border border-border">
+                      <p className="text-xs text-muted-foreground mb-2">All endpoints return a consistent envelope:</p>
+                      <code className="text-xs block bg-background p-3 rounded border border-border overflow-x-auto">
+                        {`// Success
+{ "success": true, "data": { ... }, "meta": { "latency_ms": 42 } }
+
+// Error
+{ "success": false, "error": "Descriptive message", "code": "RATE_LIMITED" }`}
+                      </code>
+                    </div>
+                  </div>
+
+                  {/* Rate Limits */}
+                  <div>
+                    <h3 className="font-semibold mb-3 text-foreground">Rate Limits</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {[
+                        { tier: "Free", rpm: "60 req/min", rpd: "1,000 req/day" },
+                        { tier: "Pro", rpm: "600 req/min", rpd: "50,000 req/day" },
+                        { tier: "Enterprise", rpm: "Unlimited", rpd: "Unlimited" },
+                      ].map((limit) => (
+                        <div key={limit.tier} className="p-4 bg-muted/30 rounded-lg border border-border text-center">
+                          <div className="text-sm font-semibold text-foreground mb-1">{limit.tier}</div>
+                          <div className="text-xs text-muted-foreground">{limit.rpm}</div>
+                          <div className="text-xs text-muted-foreground">{limit.rpd}</div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>

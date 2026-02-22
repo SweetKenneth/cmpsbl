@@ -36,11 +36,11 @@ export function EnhancedFooter() {
       title: "Substrate",
       links: [
         { name: "All Modules", href: "/modules", highlight: true },
+        { name: "Documentation", href: "/documentation" },
+        { name: "System Status", href: "/status", highlight: true },
         { name: "System Feed", href: "/system-feed" },
         { name: "Decode Engine", href: "/decode" },
-        { name: "Dream Feeder", href: "/feed-dream-eater" },
         { name: "Proof Mode", href: "/proof" },
-        { name: "Experimental Lab", href: "/lab" },
       ]
     },
     {
@@ -57,10 +57,10 @@ export function EnhancedFooter() {
     {
       title: "Standards",
       links: [
+        { name: "Pricing", href: "/pricing" },
+        { name: "Licensing", href: "/licensing" },
         { name: "Namespace", href: "/namespace" },
         { name: "Foundations", href: "/foundations" },
-        { name: "llms.txt", href: "/llms-txt" },
-        { name: "humans.txt", href: "/humans-txt" },
         { name: "Evolution Log", href: "/changelog" },
         { name: "Roadmap", href: "/roadmap" },
       ]
@@ -70,10 +70,10 @@ export function EnhancedFooter() {
       links: [
         { name: "Support", href: "/support" },
         { name: "Contact", href: "/contact" },
-        { name: "Substrate", href: "/substrate" },
+        { name: "Investors", href: "/investors" },
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
-        { name: "Investors", href: "/investors" },
+        { name: "llms.txt", href: "/llms-txt" },
       ]
     },
   ];
