@@ -29,6 +29,7 @@ import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
 import { SynergyDepotCTA } from "@/components/explore/SynergyDepotCTA";
 import { LnchblCTA } from "@/components/LnchblCTA";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
+import { useMetric } from "@/stores/publicMetricsStore";
 
 // Section divider with animated gradient
 function SectionDivider() {
@@ -47,6 +48,11 @@ function SectionDivider() {
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
   const hostname = window.location.hostname;
+  const modulesCount = useMetric('modulesCount');
+  const enginesCount = useMetric('enginesCount');
+  const metaEnginesCount = useMetric('metaEnginesCount');
+  const providersCount = useMetric('providersCount');
+  const linesOfCodeDisplay = useMetric('linesOfCodeDisplay');
 
   // Show PromptFluid business page when entering through promptfluid.com
   const isPromptFluid = hostname === "promptfluid.com" || hostname === "www.promptfluid.com";
@@ -221,16 +227,16 @@ export default function Explore() {
                 <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">Remembers</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                Persistent memory, self-evolving architecture, and a 7-provider AI fallback chain —
-                running on 175k+ lines of production code. Start free today.
+                Persistent memory, self-evolving architecture, and a {providersCount}-provider AI fallback chain —
+                running on {linesOfCodeDisplay} lines of production code. Start free today.
               </p>
               
               {/* Mini stats row */}
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
                 {[
-                  { value: "21", label: "Modules" },
-                  { value: "100", label: "Engines" },
-                  { value: "7", label: "AI Providers" },
+                  { value: String(modulesCount), label: "Modules" },
+                  { value: String(enginesCount + metaEnginesCount), label: "Engines" },
+                  { value: String(providersCount), label: "AI Providers" },
                   { value: "99.9%", label: "Uptime" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">

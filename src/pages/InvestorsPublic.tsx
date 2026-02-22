@@ -4,6 +4,7 @@
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Eye, Server, Sparkles, Zap, Globe, Code, Layers, CheckCircle2 } from "lucide-react";
+import { useMetric } from "@/stores/publicMetricsStore";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,6 +37,9 @@ export default function InvestorsPublic() {
   const navigate = useNavigate();
   const [downloading, setDownloading] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const modulesCount = useMetric('modulesCount');
+  const layersCount = useMetric('layersCount');
+  const stierPipelinesCount = useMetric('stierPipelinesCount');
 
   useEffect(() => {
     const timer = setTimeout(() => setShowContent(true), 300);
@@ -58,10 +62,10 @@ export default function InvestorsPublic() {
   };
 
   const metrics = [
-    { icon: Layers, label: "Integrated Modules", value: "21", color: "text-primary" },
-    { icon: Zap, label: "Crystallized Pipelines", value: "50", color: "text-emerald-500" },
+    { icon: Layers, label: "Integrated Modules", value: String(modulesCount), color: "text-primary" },
+    { icon: Zap, label: "Crystallized Pipelines", value: String(stierPipelinesCount), color: "text-emerald-500" },
     { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
-    { icon: Globe, label: "Architecture Layers", value: "6", color: "text-violet-400" }
+    { icon: Globe, label: "Architecture Layers", value: String(layersCount), color: "text-violet-400" }
   ];
 
   const products = [
@@ -111,7 +115,7 @@ export default function InvestorsPublic() {
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building the cognitive operating system for AI applications. 21 modules, 14 documented world firsts, 
+            Building the cognitive operating system for AI applications. {modulesCount} modules, 14 documented world firsts, 
             and a self-evolving architecture that compounds daily.
           </p>
 
@@ -213,7 +217,7 @@ export default function InvestorsPublic() {
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-400 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <h2 className="text-3xl font-semibold mb-4 text-foreground">The Substrate</h2>
         <p className="text-muted-foreground mb-10 text-lg max-w-2xl">
-          21 integrated modules across 6 architectural layers. Production-ready cognitive infrastructure.
+          {modulesCount} integrated modules across {layersCount} architectural layers. Production-ready cognitive infrastructure.
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
