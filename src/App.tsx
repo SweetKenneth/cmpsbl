@@ -114,6 +114,7 @@ const AdminCognitiveUploads = lazy(() => import("./pages/AdminCognitiveUploads")
 const STierDemos = lazy(() => import("./pages/STierDemos"));
 const OwnerReports = lazy(() => import("./pages/admin/OwnerReports"));
 const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDashboard"));
+const EvolutionMeshLanding = lazy(() => import("./pages/EvolutionMeshLanding"));
 const Habitat = lazy(() => import("./pages/Habitat"));
 const Status = lazy(() => import("./pages/Status"));
 // Module pages (de-shrouded)
@@ -454,6 +455,7 @@ const App = () => {
                         <Route path="/admin/evolution" element={<AdminRoute><EvolutionMeshDashboard /></AdminRoute>} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
+                        <Route path="/evolution-mesh" element={<EvolutionMeshLanding />} />
                         
                         {/* Legacy brain/cascade routes */}
                         <Route path="/brain" element={<Navigate to="/decode" replace />} />
