@@ -1,7 +1,6 @@
 /**
  * Immunity Mesh — Mutation Storm Simulator (shadow-only)
  * Generates adversarial payloads and runs them against executors.
- * Records per-rule invocations for telemetry.
  * NEVER touches production data.
  */
 
@@ -75,10 +74,8 @@ export async function runMutationStorm(
   for (const executor of targetExecutors) {
     const payloads = generateStormPayloads(mutationsPerExecutor);
     for (const payload of payloads) {
-      const startMs = Date.now();
       try {
         const report = await runShadowProbe(executor, payload.input);
-        const durationMs = Date.now() - startMs;
         totalEvents += report.totalRuns;
         safeFails += report.summary.failedSafe;
         repaired += report.summary.repaired;
@@ -88,21 +85,6 @@ export async function runMutationStorm(
         catBreak[payload.category].total += report.totalRuns;
         catBreak[payload.category].safe += report.summary.failedSafe;
         catBreak[payload.category].repaired += report.summary.repaired;
-
-        // Record per-rule invocation for this storm event
-        const ruleKey = `STORM_${payload.category}_${executor}`;
-        const rule = await upsertRule({
-          rule_key: ruleKey,
-          source_executor: executor,
-          category: payload.category,
-          status: 'learned',
-          confidence: 0.5,
-          success_rate: report.summary.repaired > 0 ? 1.0 : 0.0,
-        });
-        if (rule) {
-          const outcome = report.summary.escalated > 0 ? 'fail' : report.summary.repaired > 0 ? 'success' : 'skipped';
-          await recordInvocation(rule.id, executor, outcome, durationMs, durationMs * 0.001);
-        }
       } catch (err) {
         console.error(`[storm] ${executor}:`, err);
         totalEvents++;

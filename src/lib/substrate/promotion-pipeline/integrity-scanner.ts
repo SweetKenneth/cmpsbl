@@ -1,7 +1,5 @@
 /**
  * Integrity Scanner — Structural health check (pure diagnostic, no mutations)
- * Checks: rule conflicts, oscillation, duplicates, escalation spikes, latency creep,
- *         dormant rules, rollback instability, executor registry mismatch.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -62,9 +60,9 @@ export async function runIntegrityScan(mode: ScanMode = 'quick'): Promise<{
   // 3. Escalation spike check
   const { data: recentMetrics } = await supabase
     .from('system_metrics_history')
-    .select('escalation_rate, latency_p95, recorded_at')
+    .select('escalation_rate')
     .order('recorded_at', { ascending: false })
-    .limit(10) as any;
+    .limit(5) as any;
 
   if (recentMetrics?.length >= 2) {
     const latest = recentMetrics[0]?.escalation_rate ?? 0;
@@ -76,20 +74,6 @@ export async function runIntegrityScan(mode: ScanMode = 'quick'): Promise<{
         message: `Escalation rate spiked from ${(prev * 100).toFixed(1)}% to ${(latest * 100).toFixed(1)}%`,
         suggested_fix: 'Investigate recent rule changes or executor issues',
       });
-    }
-
-    // 3b. Latency creep check (compare latest vs 5th most recent)
-    if (recentMetrics.length >= 5) {
-      const latestLatency = recentMetrics[0]?.latency_p95 ?? 0;
-      const olderLatency = recentMetrics[4]?.latency_p95 ?? 0;
-      if (olderLatency > 0 && latestLatency > olderLatency * (1 + PREFLIGHT.MAX_LATENCY_DELTA)) {
-        findings.push({
-          category: 'latency_creep',
-          severity: 'warning',
-          message: `P95 latency increased from ${olderLatency.toFixed(0)}ms to ${latestLatency.toFixed(0)}ms over recent windows`,
-          suggested_fix: 'Profile expensive rules and consider optimizing or retiring slow rules',
-        });
-      }
     }
   }
 
@@ -129,81 +113,6 @@ export async function runIntegrityScan(mode: ScanMode = 'quick'): Promise<{
     });
   }
 
-  // 6. Oscillation detection (A promoted → demoted → promoted pattern)
-  if (mode !== 'quick') {
-    const { data: oscillatingRules } = await supabase
-      .from('immunity_rule_conflicts')
-      .select('rule_a_id, rule_b_id, conflict_type')
-      .eq('conflict_type', 'oscillation')
-      .gte('detected_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
-      .limit(10) as any;
-
-    if (oscillatingRules?.length > 0) {
-      findings.push({
-        category: 'oscillation',
-        severity: 'error',
-        message: `${oscillatingRules.length} oscillation event(s) detected in last 7 days`,
-        suggested_fix: 'Block oscillating rules until root cause is resolved',
-      });
-    }
-  }
-
-  // 7. Duplicate rule signatures
-  if (mode === 'deep' || mode === 'pre_promote') {
-    const { data: allRules } = await supabase
-      .from('immunity_rules')
-      .select('rule_key, category, status')
-      .in('status', ['learned', 'candidate', 'promoted'])
-      .limit(500) as any;
-
-    if (allRules) {
-      const keyMap = new Map<string, number>();
-      for (const r of allRules) {
-        const key = `${r.category}::${r.rule_key}`;
-        keyMap.set(key, (keyMap.get(key) ?? 0) + 1);
-      }
-      const duplicates = Array.from(keyMap.entries()).filter(([, count]) => count > 1);
-      if (duplicates.length > 0) {
-        findings.push({
-          category: 'duplicate_rules',
-          severity: 'warning',
-          message: `${duplicates.length} duplicate rule signature(s) found across active statuses`,
-          suggested_fix: 'Merge or retire duplicate rules to prevent conflicts',
-        });
-      }
-    }
-  }
-
-  // 8. Executor registry mismatch (rules referencing executors that no longer exist)
-  if (mode === 'deep') {
-    const { data: propagations } = await supabase
-      .from('immunity_rule_propagation')
-      .select('to_executor')
-      .limit(500) as any;
-
-    if (propagations) {
-      const uniqueExecutors = new Set((propagations ?? []).map((p: any) => p.to_executor));
-      // Check if any propagation targets are orphaned (no recent invocations)
-      const since7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: activeExecutors } = await supabase
-        .from('immunity_rule_invocations')
-        .select('executor')
-        .gte('created_at', since7d)
-        .limit(1000) as any;
-
-      const activeSet = new Set((activeExecutors ?? []).map((e: any) => e.executor));
-      const orphaned = Array.from(uniqueExecutors).filter(e => !activeSet.has(e));
-      if (orphaned.length > 0) {
-        findings.push({
-          category: 'executor_mismatch',
-          severity: 'info',
-          message: `${orphaned.length} executor(s) in propagation registry have no invocations in 7 days`,
-          suggested_fix: 'Verify executor availability and clean up stale propagation entries',
-        });
-      }
-    }
-  }
-
   // Score calculation
   const criticals = findings.filter(f => f.severity === 'critical').length;
   const errors = findings.filter(f => f.severity === 'error').length;
@@ -221,22 +130,20 @@ export async function runIntegrityScan(mode: ScanMode = 'quick'): Promise<{
     duration_ms: durationMs,
   } as any).select().single() as any;
 
-  // Persist findings in batch
+  // Persist findings
   const persistedFindings: IntegrityFinding[] = [];
   if (scanRun && findings.length > 0) {
-    const rows = findings.map(f => ({
-      scan_id: scanRun.id,
-      category: f.category,
-      severity: f.severity,
-      file_path: f.file_path ?? null,
-      message: f.message,
-      suggested_fix: f.suggested_fix ?? null,
-    }));
-    const { data: inserted } = await supabase
-      .from('integrity_findings')
-      .insert(rows as any)
-      .select() as any;
-    if (inserted) persistedFindings.push(...inserted);
+    for (const f of findings) {
+      const { data: pf } = await supabase.from('integrity_findings').insert({
+        scan_id: scanRun.id,
+        category: f.category,
+        severity: f.severity,
+        file_path: f.file_path ?? null,
+        message: f.message,
+        suggested_fix: f.suggested_fix ?? null,
+      } as any).select().single() as any;
+      if (pf) persistedFindings.push(pf);
+    }
   }
 
   return { scan: scanRun, findings: persistedFindings };

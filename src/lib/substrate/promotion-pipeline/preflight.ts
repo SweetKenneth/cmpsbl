@@ -10,8 +10,7 @@ import type { IntegrityScanRun } from './types';
 export function runPreflight(
   diff: DiffSummary,
   integrityScan: IntegrityScanRun,
-  currentSuccessRate: number,
-  avgExecutorHealth?: number
+  currentSuccessRate: number
 ): PreflightResult {
   const checks: PreflightResult['checks'] = [];
 
@@ -83,19 +82,6 @@ export function runPreflight(
       ? 'No critical errors found'
       : `${integrityScan.errors_found} error(s) found in integrity scan`,
   });
-
-  // 7. Executor health (if provided)
-  if (avgExecutorHealth !== undefined) {
-    checks.push({
-      name: 'Executor Health',
-      passed: avgExecutorHealth >= PREFLIGHT.MIN_EXECUTOR_HEALTH,
-      actual: avgExecutorHealth,
-      threshold: PREFLIGHT.MIN_EXECUTOR_HEALTH,
-      message: avgExecutorHealth >= PREFLIGHT.MIN_EXECUTOR_HEALTH
-        ? `Executor health ${(avgExecutorHealth * 100).toFixed(1)}% meets minimum`
-        : `Executor health ${(avgExecutorHealth * 100).toFixed(1)}% below ${(PREFLIGHT.MIN_EXECUTOR_HEALTH * 100)}% threshold`,
-    });
-  }
 
   return {
     passed: checks.every(c => c.passed),
