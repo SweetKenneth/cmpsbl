@@ -103,6 +103,9 @@ const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 const ShadowMeshPage = lazy(() => import("./pages/admin/ShadowMeshPage"));
 const StartHere = lazy(() => import("./pages/StartHere"));
 const ComposableCognitives = lazy(() => import("./pages/ComposableCognitives"));
+const Enterprise = lazy(() => import("./pages/Enterprise"));
+const ApiAccess = lazy(() => import("./pages/ApiAccess"));
+const Careers = lazy(() => import("./pages/Careers"));
 const CognitivesSuccess = lazy(() => import("./pages/CognitivesSuccess"));
 const CognitivesDownload = lazy(() => import("./pages/CognitivesDownload"));
 const AdminCognitiveUploads = lazy(() => import("./pages/AdminCognitiveUploads"));
@@ -510,7 +513,9 @@ const App = () => {
                         <Route path="/pricing" element={<SubstrateLicensing />} />
                         <Route path="/start-here" element={<StartHere />} />
                         <Route path="/checkout" element={<Navigate to="/" replace />} />
-                        <Route path="/enterprise" element={<Navigate to="/" replace />} />
+                        <Route path="/enterprise" element={<Enterprise />} />
+                        <Route path="/api-access" element={<ApiAccess />} />
+                        <Route path="/careers" element={<Careers />} />
                         <Route path="/sandbox" element={<Navigate to="/" replace />} />
                         <Route path="/system" element={<Navigate to="/" replace />} />
                         <Route path="/system-map" element={<Navigate to="/" replace />} />
