@@ -49,6 +49,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { IntegrityScanPanel } from './IntegrityScanPanel';
+import { TelemetryPanel } from './TelemetryPanel';
 
 interface UpgradePlan {
   id: string;
@@ -640,7 +642,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="w-full grid grid-cols-3 sm:grid-cols-4 bg-white/5 border border-white/10">
+        <TabsList className="w-full grid grid-cols-3 sm:grid-cols-6 bg-white/5 border border-white/10">
           <TabsTrigger value="proposals" className="gap-1.5 text-xs">
             <Clock className="w-3 h-3" />
             <span className="hidden sm:inline">Proposals</span>
@@ -652,6 +654,14 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
           <TabsTrigger value="deploy" className="gap-1.5 text-xs">
             <Rocket className="w-3 h-3" />
             <span className="hidden sm:inline">Deploy</span>
+          </TabsTrigger>
+          <TabsTrigger value="integrity" className="gap-1.5 text-xs">
+            <Shield className="w-3 h-3" />
+            <span className="hidden sm:inline">Integrity</span>
+          </TabsTrigger>
+          <TabsTrigger value="telemetry" className="gap-1.5 text-xs">
+            <Activity className="w-3 h-3" />
+            <span className="hidden sm:inline">Telemetry</span>
           </TabsTrigger>
           <TabsTrigger value="generate" className="gap-1.5 text-xs">
             <Zap className="w-3 h-3" />
@@ -1146,6 +1156,16 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Integrity Tab */}
+        <TabsContent value="integrity" className="space-y-4">
+          <IntegrityScanPanel />
+        </TabsContent>
+
+        {/* Telemetry Tab */}
+        <TabsContent value="telemetry" className="space-y-4">
+          <TelemetryPanel />
         </TabsContent>
 
         {/* Generate Tab */}
