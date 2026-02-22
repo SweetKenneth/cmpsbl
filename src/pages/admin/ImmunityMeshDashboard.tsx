@@ -81,7 +81,7 @@ function MetricCard({
         {/* Subtle gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
-        <CardContent className="pt-4 pb-3 px-4 relative">
+        <CardContent className="pt-3 sm:pt-4 pb-3 px-3 sm:px-4 relative">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5">
               {Icon && <Icon className="w-3.5 h-3.5 text-muted-foreground" />}
@@ -89,7 +89,7 @@ function MetricCard({
             </div>
             {statusIcon(status)}
           </div>
-          <p className="text-2xl font-bold tracking-tight">{value}</p>
+          <p className="text-xl sm:text-2xl font-bold tracking-tight">{value}</p>
           {sub && <p className="text-[11px] text-muted-foreground mt-1 font-mono">{sub}</p>}
         </CardContent>
       </Card>
@@ -121,7 +121,7 @@ function MRIGauge({ score, status, factors }: {
       <Card className={`border-2 ${status === 'ready' ? 'border-emerald-500/30' : status === 'caution' ? 'border-amber-500/30' : 'border-red-500/30'} bg-gradient-to-br ${bgColor} relative overflow-hidden`}>
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-primary/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/4" />
         
-        <CardContent className="py-8 px-6 flex items-center justify-between gap-8">
+        <CardContent className="py-5 sm:py-8 px-4 sm:px-6 flex flex-col sm:flex-row items-center sm:justify-between gap-5 sm:gap-8">
           {/* Gauge */}
           <div className="relative flex-shrink-0">
             <svg width="120" height="120" className="transform -rotate-90">
@@ -165,7 +165,7 @@ function MRIGauge({ score, status, factors }: {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 text-xs">
               <FactorBar label="Domain Knowledge" value={factors.dkd} weight="35%" />
               <FactorBar label="Novelty Resistance" value={factors.fnrInverse} weight="20%" />
               <FactorBar label="Escalation Control" value={factors.escalationRateInverse} weight="20%" />
@@ -260,7 +260,7 @@ export default function ImmunityMeshDashboard() {
   const repairSuccessRate = totalWithRepairType > 0 ? (data?.iil.repairedSuccess ?? 0) / totalWithRepairType : null;
 
   return (
-    <div className="space-y-6 max-w-[1400px]">
+    <div className="space-y-4 sm:space-y-6 max-w-[1400px] px-3 sm:px-0">
       {/* ── HEADER ── */}
       <motion.div 
         className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
@@ -273,7 +273,7 @@ export default function ImmunityMeshDashboard() {
             <Shield className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Immunity Mesh</h1>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Immunity Mesh</h1>
             <p className="text-sm text-muted-foreground">
               Intelligence metrics & readiness scoring
             </p>
@@ -307,22 +307,22 @@ export default function ImmunityMeshDashboard() {
         </div>
       </motion.div>
 
-      <Tabs defaultValue="overview" className="space-y-5">
-        <TabsList className="grid grid-cols-5 w-full max-w-2xl bg-muted/50 p-1">
-          <TabsTrigger value="overview" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
-            <BarChart3 className="w-3.5 h-3.5" />Overview
+      <Tabs defaultValue="overview" className="space-y-4 sm:space-y-5">
+        <TabsList className="w-full max-w-2xl bg-muted/50 p-1 flex overflow-x-auto gap-0.5">
+          <TabsTrigger value="overview" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+            <BarChart3 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Overview</span>
           </TabsTrigger>
-          <TabsTrigger value="build" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
-            <Hammer className="w-3.5 h-3.5" />Shadow Build
+          <TabsTrigger value="build" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+            <Hammer className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Shadow Build</span>
           </TabsTrigger>
-          <TabsTrigger value="executors" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
-            <Table2 className="w-3.5 h-3.5" />Executors
+          <TabsTrigger value="executors" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+            <Table2 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Executors</span>
           </TabsTrigger>
-          <TabsTrigger value="rules" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
-            <BookOpen className="w-3.5 h-3.5" />Rules
+          <TabsTrigger value="rules" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+            <BookOpen className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Rules</span>
           </TabsTrigger>
-          <TabsTrigger value="controls" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
-            <Zap className="w-3.5 h-3.5" />Controls
+          <TabsTrigger value="controls" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+            <Zap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Controls</span>
           </TabsTrigger>
         </TabsList>
 
@@ -334,7 +334,7 @@ export default function ImmunityMeshDashboard() {
           )}
 
           {/* Primary Metric Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
             <MetricCard 
               label="Success Rate" 
               value={fmt(successRate)} 
@@ -404,7 +404,7 @@ export default function ImmunityMeshDashboard() {
                 ) : !data ? (
                   <p className="text-sm text-muted-foreground py-4">No intelligence events recorded yet</p>
                 ) : (
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
                     <IILStat label="Total Events" value={data.iil.totalEvents} />
                     <IILStat label="Safe Fails" value={data.iil.safeFails} color="text-amber-500" />
                     <IILStat label="Repaired" value={data.iil.repairedSuccess} color="text-emerald-500" />
@@ -464,10 +464,10 @@ export default function ImmunityMeshDashboard() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b-2 border-border/30">
-                          <th className="text-left py-2.5 px-3 text-[11px] text-muted-foreground uppercase tracking-wider">Executor</th>
-                          <th className="text-right py-2.5 px-3 text-[11px] text-muted-foreground uppercase tracking-wider">DKD</th>
-                          <th className="text-right py-2.5 px-3 text-[11px] text-muted-foreground uppercase tracking-wider">FNR</th>
-                          <th className="text-right py-2.5 px-3 text-[11px] text-muted-foreground uppercase tracking-wider">Status</th>
+                          <th className="text-left py-2.5 px-2 sm:px-3 text-[10px] sm:text-[11px] text-muted-foreground uppercase tracking-wider">Executor</th>
+                          <th className="text-right py-2.5 px-2 sm:px-3 text-[10px] sm:text-[11px] text-muted-foreground uppercase tracking-wider">DKD</th>
+                          <th className="text-right py-2.5 px-2 sm:px-3 text-[10px] sm:text-[11px] text-muted-foreground uppercase tracking-wider">FNR</th>
+                          <th className="text-right py-2.5 px-2 sm:px-3 text-[10px] sm:text-[11px] text-muted-foreground uppercase tracking-wider hidden sm:table-cell">Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -483,18 +483,18 @@ export default function ImmunityMeshDashboard() {
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: i * 0.03 }}
                             >
-                              <td className="py-2 px-3 font-mono text-xs">{eid}</td>
-                              <td className="py-2 px-3 text-right font-mono">
+                              <td className="py-2 px-2 sm:px-3 font-mono text-[10px] sm:text-xs break-all">{eid}</td>
+                              <td className="py-2 px-2 sm:px-3 text-right font-mono text-xs">
                                 <span className={dkd > 0.7 ? 'text-emerald-500' : dkd > 0.4 ? 'text-amber-500' : 'text-red-400'}>
                                   {fmt(dkd)}
                                 </span>
                               </td>
-                              <td className="py-2 px-3 text-right font-mono">
+                              <td className="py-2 px-2 sm:px-3 text-right font-mono text-xs">
                                 <span className={fnr < 0.3 ? 'text-emerald-500' : fnr < 0.6 ? 'text-amber-500' : 'text-red-400'}>
                                   {fmt(fnr)}
                                 </span>
                               </td>
-                              <td className="py-2 px-3 text-right">
+                              <td className="py-2 px-2 sm:px-3 text-right hidden sm:table-cell">
                                 {healthy 
                                   ? <Badge variant="outline" className="text-[10px] text-emerald-500 border-emerald-500/30">Healthy</Badge>
                                   : <Badge variant="outline" className="text-[10px] text-amber-500 border-amber-500/30">Watch</Badge>
@@ -519,7 +519,7 @@ export default function ImmunityMeshDashboard() {
 
         {/* ══════════════════ RULES ══════════════════ */}
         <TabsContent value="rules" className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid gap-4">
             <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}>
               <Card className="h-full">
                 <CardHeader>
@@ -542,7 +542,7 @@ export default function ImmunityMeshDashboard() {
                           animate={{ opacity: 1 }}
                           transition={{ delay: i * 0.05 }}
                         >
-                          <code className="text-xs font-mono truncate max-w-[180px]">{r.ruleId}</code>
+                          <code className="text-xs font-mono truncate max-w-[120px] sm:max-w-[180px]">{r.ruleId}</code>
                           <div className="flex items-center gap-2 text-xs flex-shrink-0">
                             <span className="text-muted-foreground">{r.invocations}</span>
                             <Badge variant={r.successRate >= 0.8 ? 'default' : 'secondary'}>
@@ -577,7 +577,7 @@ export default function ImmunityMeshDashboard() {
                     <div className="space-y-2">
                       {data.rmi.riskyRules.map((r, i) => (
                         <div key={r.ruleId} className="flex items-center justify-between p-3 rounded-lg border border-destructive/20 bg-destructive/5">
-                          <code className="text-xs font-mono truncate max-w-[180px]">{r.ruleId}</code>
+                          <code className="text-xs font-mono truncate max-w-[120px] sm:max-w-[180px]">{r.ruleId}</code>
                           <div className="flex items-center gap-2 text-xs">
                             <span className="text-muted-foreground">{r.invocations}</span>
                             <Badge variant="destructive">{(r.successRate * 100).toFixed(0)}%</Badge>
@@ -610,7 +610,7 @@ export default function ImmunityMeshDashboard() {
                   <div className="space-y-2">
                     {data.ckp.topPropagated.map(r => (
                       <div key={r.ruleId} className="flex items-center justify-between p-3 rounded-lg border border-border/30 bg-card">
-                        <code className="text-xs font-mono truncate max-w-[200px]">{r.ruleId}</code>
+                        <code className="text-xs font-mono truncate max-w-[120px] sm:max-w-[200px]">{r.ruleId}</code>
                         <Badge variant="secondary" className="font-mono">{r.executorCount} executors</Badge>
                       </div>
                     ))}
@@ -688,20 +688,20 @@ function RepairSkillsPanel() {
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
       <Card className="border-border/50 overflow-hidden">
         <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-base flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <CardTitle className="text-sm sm:text-base flex items-center gap-2">
               <Brain className="w-4 h-4 text-primary" />
               Repair Skills & Learned Knowledge
               <Badge variant="outline" className="text-[10px] font-mono ml-1">
                 {stats.activeRules} active
               </Badge>
             </CardTitle>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-muted-foreground flex-wrap">
               <Badge variant="secondary" className="text-[10px]">
                 {totalAdoptedExecutors} adoptions
               </Badge>
               <Badge variant="secondary" className="text-[10px]">
-                {(stats.avgConfidence * 100).toFixed(0)}% avg confidence
+                {(stats.avgConfidence * 100).toFixed(0)}% avg conf
               </Badge>
               {stats.rollbackRate > 0 && (
                 <Badge variant="destructive" className="text-[10px]">
@@ -764,9 +764,9 @@ function RepairSkillsPanel() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.03 }}
                   >
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-3">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-1.5 sm:gap-2 mb-1 flex-wrap">
                           <code className="text-[11px] font-mono text-primary font-medium">
                             {rule.repairStrategy}
                           </code>
@@ -792,15 +792,15 @@ function RepairSkillsPanel() {
                         </p>
                       </div>
                       <div className="flex items-center gap-3 flex-shrink-0 text-xs">
-                        <div className="text-right">
+                        <div className="text-left sm:text-right">
                           <p className="font-mono font-medium">{(rule.sourceConfidence * 100).toFixed(0)}%</p>
                           <p className="text-[9px] text-muted-foreground">confidence</p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-left sm:text-right">
                           <p className="font-mono font-medium">{adoptionCount}</p>
                           <p className="text-[9px] text-muted-foreground">executors</p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-left sm:text-right">
                           <p className={`font-mono font-medium ${overallSuccessRate >= 0.8 ? 'text-emerald-500' : overallSuccessRate >= 0.5 ? 'text-amber-500' : 'text-red-400'}`}>
                             {(overallSuccessRate * 100).toFixed(0)}%
                           </p>
@@ -969,7 +969,7 @@ function ShadowBuildPanel() {
       </motion.div>
 
       {/* Skill Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
         <MetricCard
           label="Total Skills"
           value={String(stats?.totalSkills ?? 0)}
@@ -1013,7 +1013,7 @@ function ShadowBuildPanel() {
       </div>
 
       {/* Top Skills & New Skills */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid gap-4">
         <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}>
           <Card className="h-full">
             <CardHeader className="pb-3">
