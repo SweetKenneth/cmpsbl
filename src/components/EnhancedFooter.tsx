@@ -81,6 +81,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Pricing", href: "/pricing" },
         { name: "Licensing", href: "/licensing" },
+        { name: "Evolution Mesh", href: "/evolution-mesh", highlight: true },
         { name: "Namespace", href: "/namespace" },
         { name: "Foundations", href: "/foundations" },
         { name: "Roadmap", href: "/roadmap" },

@@ -1099,6 +1099,17 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Blog/Changelog/Updates',
     primaryKeyword: 'AI business operations cognitive workflows',
   },
+  '/evolution-mesh': {
+    title: 'Evolution Mesh — Self-Learning Immune System for Software',
+    description: 'Black-boxed resilience SDK that wraps functions with immune defense, auto-repair, and self-learning rules. Works with React, Vue, Node, Python, Go, and more.',
+    ogTitle: 'Evolution Mesh — Your Code\'s Immune System',
+    ogDescription: 'Drop-in resilience for any framework. 29+ repair strategies. Self-learning rules. Black-box protected.',
+    ogImage: `${OG_BASE}/og/evolution-mesh.jpg`,
+    keywords: ['evolution mesh', 'software resilience', 'input validation SDK', 'auto-repair', 'self-learning rules', 'API protection', 'runtime defense', 'black-box SDK'],
+    schema: 'product',
+    intent: 'Product/Purchase',
+    primaryKeyword: 'self-learning software immune system SDK',
+  },
 };
 
 /**

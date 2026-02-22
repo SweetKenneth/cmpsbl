@@ -116,6 +116,7 @@ export function CmpsblNav() {
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
         { name: "Engines", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
         { name: "Composable Artifacts", href: "/store", description: "Capabilities, templates & synergy pipelines", icon: Sparkles },
+        { name: "Evolution Mesh", href: "/evolution-mesh", description: "Self-learning immune system for any software", icon: Shield, badge: "NEW" },
         { name: "Cognitive Showcase", href: "/showcase", description: "Live proof-of-capability demonstrations", icon: Rocket },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
