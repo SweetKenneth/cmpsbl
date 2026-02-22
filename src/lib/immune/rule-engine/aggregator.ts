@@ -2,12 +2,13 @@
  * Immunity Mesh — Rule Engine Aggregator
  * Computes dashboard-ready stats from DB data.
  * Guarded by shadow_mesh_enabled flag.
+ * Includes error isolation for resilient aggregation.
  */
 
 import { isShadowMeshEnabled } from '@/lib/system/flags';
 import { fetchRules, fetchAllInvocationsSince, fetchPropagation, fetchConflicts, fetchMeshRuns } from './db';
-import { buildRuleHealth, computeDominantScore, computeRiskScore, computeSpreadVelocity } from './scoring';
-import type { RuleHealth, PropagationStats, CostStats, ImmunityRule, RuleConflict, MeshRun } from './types';
+import { buildRuleHealth } from './scoring';
+import type { RuleHealth, PropagationStats, CostStats, RuleConflict, MeshRun } from './types';
 import { RISKY_RULE_SUCCESS_RATE, RISKY_RULE_MIN_INVOCATIONS } from './constants';
 
 export interface RuleEngineDashboard {
@@ -21,31 +22,42 @@ export interface RuleEngineDashboard {
   rulesByStatus: Record<string, number>;
 }
 
+const EMPTY: RuleEngineDashboard = {
+  dominantRules: [], riskyRules: [],
+  propagation: { avg_breadth: 0, most_spread_rule: null, fastest_spreading: null },
+  conflicts: [], costStats: { per_rule: [], per_executor: [], top_expensive: [] },
+  recentRuns: [], totalRules: 0, rulesByStatus: {},
+};
+
+/** Safe fetch wrapper — returns fallback on error instead of crashing */
+async function safeFetch<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn();
+  } catch (err) {
+    console.error('[Aggregator] Partial fetch failed:', err);
+    return fallback;
+  }
+}
+
 /**
  * Aggregate full dashboard data. Returns empty shell if mesh is OFF.
  */
 export async function aggregateRuleEngineDashboard(): Promise<RuleEngineDashboard> {
-  const empty: RuleEngineDashboard = {
-    dominantRules: [], riskyRules: [],
-    propagation: { avg_breadth: 0, most_spread_rule: null, fastest_spreading: null },
-    conflicts: [], costStats: { per_rule: [], per_executor: [], top_expensive: [] },
-    recentRuns: [], totalRules: 0, rulesByStatus: {},
-  };
-
   // HARD GUARD: mesh OFF = zero overhead
-  if (!(await isShadowMeshEnabled())) return empty;
+  if (!(await isShadowMeshEnabled())) return EMPTY;
 
   const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
+  // Parallel fetch with error isolation
   const [rules, invocations, propagations, conflicts, runs] = await Promise.all([
-    fetchRules(),
-    fetchAllInvocationsSince(since24h),
-    fetchPropagation(),
-    fetchConflicts(10),
-    fetchMeshRuns(10),
+    safeFetch(() => fetchRules(), []),
+    safeFetch(() => fetchAllInvocationsSince(since24h), []),
+    safeFetch(() => fetchPropagation(), []),
+    safeFetch(() => fetchConflicts(10), []),
+    safeFetch(() => fetchMeshRuns(10), []),
   ]);
 
-  if (rules.length === 0) return { ...empty, recentRuns: runs };
+  if (rules.length === 0) return { ...EMPTY, recentRuns: runs };
 
   // Group invocations by rule
   const invocByRule = new Map<string, typeof invocations>();
