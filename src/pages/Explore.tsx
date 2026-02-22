@@ -28,6 +28,7 @@ import { BuiltForSection } from "@/components/home/BuiltForSection";
 import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
 import { SynergyDepotCTA } from "@/components/explore/SynergyDepotCTA";
 import { LnchblCTA } from "@/components/LnchblCTA";
+import { LiveStatsBar } from "@/components/home/LiveStatsBar";
 
 // Section divider with animated gradient
 function SectionDivider() {
@@ -83,6 +84,9 @@ export default function Explore() {
 
       {/* Hero Section */}
       <HeroMetaSubstrate />
+
+      {/* Live System Metrics Bar */}
+      <LiveStatsBar />
 
       {/* Composable Cognitives CTA */}
       <section className="relative z-10 py-12 sm:py-20 px-4">

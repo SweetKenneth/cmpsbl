@@ -12,6 +12,7 @@ import { useSystemVersion, useSubstrateHealthScore } from '@/hooks/useSubstrateO
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DashboardAudio } from './audio';
+import { NotificationCenter } from './NotificationCenter';
 import type { SubstrateRole } from '@/hooks/useUserRole';
 
 const LiveClock = memo(function LiveClock() {
@@ -177,6 +178,8 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
         </div>
         
         <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          {/* Notification Center */}
+          <NotificationCenter />
           {/* Audio Controls */}
           <DashboardAudio />
           {/* Role Badge */}
