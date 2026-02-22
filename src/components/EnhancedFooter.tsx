@@ -40,6 +40,7 @@ export function EnhancedFooter() {
         { name: "Proof Mode", href: "/proof" },
         { name: "Decode Engine", href: "/decode" },
         { name: "System Feed", href: "/system-feed" },
+        { name: "Documentation", href: "/docs" },
       ]
     },
     {
@@ -50,6 +51,7 @@ export function EnhancedFooter() {
         { name: "CodeLab", href: "/codelab" },
         { name: "Sandbox", href: "/lab" },
         { name: "DevTools", href: "/devtools" },
+        { name: "API Access", href: "/api-access" },
       ]
     },
     {
@@ -60,6 +62,7 @@ export function EnhancedFooter() {
         { name: "Publication", href: "/publication" },
         { name: "Library", href: "/library" },
         { name: "Use Cases", href: "/use-cases" },
+        { name: "Composable Cognitives", href: "/composable-cognitives" },
       ]
     },
     {
@@ -70,6 +73,7 @@ export function EnhancedFooter() {
         { name: "Gaming AI", href: "/gaming" },
         { name: "Showcase", href: "/showcase" },
         { name: "Uptime", href: "/status", highlight: true },
+        { name: "Enterprise", href: "/enterprise" },
       ]
     },
     {
@@ -80,6 +84,7 @@ export function EnhancedFooter() {
         { name: "Namespace", href: "/namespace" },
         { name: "Foundations", href: "/foundations" },
         { name: "Roadmap", href: "/roadmap" },
+        { name: "Changelog", href: "/changelog" },
       ]
     },
     {
@@ -90,6 +95,7 @@ export function EnhancedFooter() {
         { name: "Investors", href: "/investors" },
         { name: "Support", href: "/support" },
         { name: "Legal", href: "/privacy" },
+        { name: "Careers", href: "/careers" },
       ]
     },
   ];
@@ -148,8 +154,8 @@ export function EnhancedFooter() {
                   {section.title}
                 </h3>
                 <ul className="space-y-2.5">
-                  {/* Add Evolution button to Substrate section */}
-                  {section.title === "Substrate" && (
+                  {/* Add Evolution button to The Substrate section */}
+                  {section.title === "The Substrate" && (
                     <li>
                       <button
                         onClick={() => setEvolutionOpen(true)}
@@ -160,8 +166,8 @@ export function EnhancedFooter() {
                       </button>
                     </li>
                   )}
-                  {/* Add XCTBL button to Learn section */}
-                  {section.title === "Learn" && (
+                  {/* Add XCTBL button to Ecosystem section */}
+                  {section.title === "Ecosystem" && (
                     <li>
                       <button
                         onClick={() => setXctblOpen(true)}
