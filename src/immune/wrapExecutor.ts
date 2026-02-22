@@ -325,12 +325,12 @@ export function wrapExecutor(
           recordOutcome('repaired_success');
           return { ...result, error: '[immune] Repair succeeded' };
         } catch (err) {
+          // v3.2: Failed preflight repair+retry → safe-fail instead of escalate
           const errorMsg = err instanceof Error ? err.message : 'unknown error after repair';
           mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
-          escalatedFlag = true;
-          await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, errorMsg);
-          recordOutcome('escalated');
-          return createSafeFailure(ctx.synergyId, `Repaired input still failed: ${errorMsg}`);
+          safeFailFlag = true;
+          recordOutcome('failed_safe');
+          return createSafeFailure(ctx.synergyId, `[immune] Safe-fail after preflight repair: ${errorMsg}`);
         }
       } else {
         // Repairable archetype but no repair strategy found — safe-fail (not escalate)
@@ -422,20 +422,48 @@ export function wrapExecutor(
           recordOutcome('repaired_success');
           return { ...result, error: '[immune] Repair succeeded' };
         } catch (retryErr) {
+          // v3.2: Failed repair+retry → safe-fail instead of escalate.
+          // The repair was attempted and failed — escalating just creates noise.
+          // Only mine the pattern for future learning, don't flood the escalation queue.
           const retryMsg = retryErr instanceof Error ? retryErr.message : 'unknown';
           mineEscalationPattern(executorName, retryMsg, repairResult.repairedInput);
-          escalatedFlag = true;
-          await escalate(executorName, scope, module, repairResult.repairedInput, { traceId: ctx.traceId }, retryMsg);
-          recordOutcome('escalated');
-          return createSafeFailure(ctx.synergyId, `Repair failed on retry: ${retryMsg}`);
+          safeFailFlag = true;
+          recordOutcome('failed_safe');
+          trackOutcome({
+            executor: executorName,
+            timestamp: Date.now(),
+            archetype: report.archetype,
+            repairType: 'LEGACY_REPAIR',
+            repairConfidence: 0,
+            retrySucceeded: false,
+            inputShape: Object.keys(input as Record<string, unknown>).sort().join(','),
+            stagesApplied: 1,
+            chained: false,
+            preNormalized: wasPreNormalized,
+            durationMs: Math.round(performance.now() - startTime),
+          });
+          return createSafeFailure(ctx.synergyId, `[immune] Safe-fail after repair retry: ${retryMsg}`);
         }
       } else {
-        // Repairable archetype but no strategy — escalate
-        mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
-        escalatedFlag = true;
-        await escalate(executorName, scope, module, input as Record<string, unknown>, { traceId: ctx.traceId }, errorMsg);
-        recordOutcome('escalated');
-        return createSafeFailure(ctx.synergyId, `Executor failed: ${errorMsg}`);
+        // Repairable archetype but no strategy — safe-fail (not escalate)
+        // v3.2: No repair strategy found is NOT worth escalating — it's expected
+        // for adversarial inputs that happen to have a repairable archetype.
+        safeFailFlag = true;
+        recordOutcome('failed_safe');
+        trackOutcome({
+          executor: executorName,
+          timestamp: Date.now(),
+          archetype: report.archetype,
+          repairType: null,
+          repairConfidence: 0,
+          retrySucceeded: false,
+          inputShape: Object.keys(input as Record<string, unknown>).sort().join(','),
+          stagesApplied: 0,
+          chained: false,
+          preNormalized: wasPreNormalized,
+          durationMs: Math.round(performance.now() - startTime),
+        });
+        return createSafeFailure(ctx.synergyId, `[immune] No repair strategy for ${report.archetype}: ${errorMsg}`);
       }
     }
   };

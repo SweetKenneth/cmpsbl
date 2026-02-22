@@ -441,9 +441,13 @@ export function validateInput(
 
     if (val === null || val === undefined) continue;
 
-    // Type check
+    // Type check — covers ALL schema types including number and boolean
     if (spec.type === 'string' && typeof val !== 'string') {
       issues.push({ field, issue: 'wrong_type', expected: 'string', got: typeof val });
+    } else if (spec.type === 'number' && typeof val !== 'number') {
+      issues.push({ field, issue: 'wrong_type', expected: 'number', got: typeof val });
+    } else if (spec.type === 'boolean' && typeof val !== 'boolean') {
+      issues.push({ field, issue: 'wrong_type', expected: 'boolean', got: typeof val });
     } else if (spec.type === 'object' && (typeof val !== 'object' || Array.isArray(val))) {
       issues.push({ field, issue: 'wrong_type', expected: 'object', got: Array.isArray(val) ? 'array' : typeof val });
     } else if (spec.type === 'array' && !Array.isArray(val)) {
@@ -476,10 +480,16 @@ export function validateInput(
   }
 
   // Check for injection patterns
+  // CRITICAL: Reset lastIndex BEFORE testing — XSS_RE has global flag,
+  // stale lastIndex causes intermittent detection failures (root cause of
+  // injection_attempt inputs leaking through to escalation queue).
   let hasInjection = false;
+  const EVENT_HANDLER_INJECT_RE = /\bon\w+\s*=/i;
   for (const val of Object.values(input)) {
     if (typeof val === 'string') {
-      if (SQL_INJECT_RE.test(val) || XSS_RE.test(val)) {
+      SQL_INJECT_RE.lastIndex = 0;
+      XSS_RE.lastIndex = 0;
+      if (SQL_INJECT_RE.test(val) || XSS_RE.test(val) || EVENT_HANDLER_INJECT_RE.test(val)) {
         hasInjection = true;
         break;
       }
