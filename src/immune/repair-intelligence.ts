@@ -184,7 +184,9 @@ const ARCHETYPE_STRATEGIES: Record<InputArchetype, string[]> = {
   oversized: [],     // safe-fail — not repairable
   injection_attempt: [], // safe-fail — not repairable
   shape_alien: [],   // safe-fail — not repairable
-  partial_valid: ['NORMALIZE_NULLS', 'COERCE_TYPE', 'EMPTY_STRING_BACKFILL'],
+  // partial_valid: only genuine structural issues (wrong_type + missing combo)
+  // NOT triggered for unknown-field-only inputs (those are now well_formed)
+  partial_valid: ['NORMALIZE_NULLS', 'COERCE_TYPE', 'EMPTY_STRING_BACKFILL', 'ENUM_CLAMP'],
 };
 
 /**
