@@ -47,7 +47,6 @@ const OG_MEMORY = `${OG_BASE}/og/persistent-memory.jpg`;
 const OG_DECODE = `${OG_BASE}/og/decode.jpg`;
 const OG_DREAM = `${OG_BASE}/og/dream-feeder.jpg`;
 const OG_PROOF = `${OG_BASE}/og/proof.jpg`;
-const OG_FORGE = `${OG_BASE}/og/forge.jpg`;
 const OG_GAMING = `${OG_BASE}/og/gaming.jpg`;
 
 export const seoMap: Record<string, PageSEO> = {
@@ -218,28 +217,6 @@ export const seoMap: Record<string, PageSEO> = {
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'AI live coding environment',
-  },
-  '/forge': {
-    title: 'Cognitive Forge — Build Custom AI Agents',
-    description: 'Design, compose, and deploy custom cognitive agents. Drag-and-drop skill composition with automatic competency tracking built in.',
-    ogTitle: 'Cognitive Forge — Build Your AI Agent',
-    ogDescription: 'Drag-and-drop agent builder with skill composition and tracking.',
-    ogImage: OG_FORGE,
-    keywords: ['cognitive forge', 'AI agent builder', 'custom AI agents', 'composable AI', 'agent composition', 'self-improving software'],
-    schema: 'feature',
-    intent: 'Feature/Capability',
-    primaryKeyword: 'custom AI agent builder',
-  },
-  '/agency': {
-    title: 'Agency Mint — Deploy Multi-Agent AI Teams',
-    description: 'Mint multi-agent AI teams from templates. Each agency includes coordinated roles, shared memory, and economic tracking built in.',
-    ogTitle: 'Agency Mint — Launch AI Teams',
-    ogDescription: 'Deploy coordinated multi-agent teams with shared memory.',
-    ogImage: OG_FEATURE,
-    keywords: ['multi-agent AI teams', 'AI agency mint', 'agent coordination', 'shared AI memory', 'AI orchestration', 'modular AI systems'],
-    schema: 'product',
-    intent: 'Feature/Capability',
-    primaryKeyword: 'multi-agent AI team deployment',
   },
   '/gaming': {
     title: 'Gaming AI — Cognitive NPC & Game Logic',
@@ -708,18 +685,6 @@ export const seoMap: Record<string, PageSEO> = {
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'AI substrate command center dashboard',
-    noindex: true,
-  },
-  '/audit': {
-    title: 'Audit Trail — Substrate Operations Log',
-    description: 'Complete audit trail of all substrate operations with cryptographic integrity verification and compliance filtering built in.',
-    ogTitle: 'Audit Trail — CMPSBL',
-    ogDescription: 'Cryptographic audit log for all substrate operations.',
-    ogImage: OG_FEATURE,
-    keywords: ['AI audit trail', 'substrate operations log', 'governed AI'],
-    schema: 'feature',
-    intent: 'Feature/Capability',
-    primaryKeyword: 'AI substrate audit trail',
     noindex: true,
   },
 

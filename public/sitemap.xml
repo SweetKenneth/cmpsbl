@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate -->
-<!-- Last Updated: 2026-02-17 -->
+<!-- Last Updated: 2026-02-22 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -8,7 +8,7 @@
   <!-- HOMEPAGE - Highest Priority -->
   <url>
     <loc>https://cmpsbl.com/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/" />
@@ -18,21 +18,21 @@
   <!-- CMPSBL SUBSTRATE CORE - HIGH PRIORITY -->
   <url>
     <loc>https://cmpsbl.com/os</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.98</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/substrate</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/intelligence</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/intelligence" />
@@ -40,36 +40,36 @@
   
   <url>
     <loc>https://cmpsbl.com/demo</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
-  <!-- STANDARDS SECTION - v9.1.0 Core -->
+  <!-- STANDARDS SECTION -->
   <url>
     <loc>https://cmpsbl.com/foundations</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/namespace</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.92</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/llms-txt</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/library</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.92</priority>
   </url>
@@ -77,7 +77,7 @@
   <!-- ENGINE MARKETPLACE - HIGH PRIORITY -->
   <url>
     <loc>https://cmpsbl.com/engines</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/engines" />
@@ -85,15 +85,15 @@
   
   <url>
     <loc>https://cmpsbl.com/marketplace</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.92</priority>
   </url>
   
-  <!-- CAPABILITIES DEPOT - Cognitive Artifacts -->
+  <!-- CAPABILITIES DEPOT -->
   <url>
     <loc>https://cmpsbl.com/capabilities</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -101,73 +101,87 @@
   <!-- DECODE - AI Conversation Interface -->
   <url>
     <loc>https://cmpsbl.com/decode</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.92</priority>
   </url>
   
-  <!-- COGNITIVE FORGE -->
+  <!-- MODULES -->
   <url>
-    <loc>https://cmpsbl.com/forge</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://cmpsbl.com/modules</loc>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  
-  <url>
-    <loc>https://cmpsbl.com/forge/catalog</loc>
-    <lastmod>2026-02-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.92</priority>
   </url>
   
   <!-- DEVELOPER RESOURCES -->
   <url>
     <loc>https://cmpsbl.com/documentation</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/dev-portal</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/devtools</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/academy</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/changelog</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.82</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/codelab</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   
+  <url>
+    <loc>https://cmpsbl.com/start-here</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  
   <!-- LICENSING & PRICING -->
   <url>
+    <loc>https://cmpsbl.com/pricing</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/licensing</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  
+  <url>
     <loc>https://cmpsbl.com/substrate/licensing</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -175,50 +189,57 @@
   <!-- ABOUT & COMPANY INFO -->
   <url>
     <loc>https://cmpsbl.com/about</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/investors</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/contact</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/roadmap</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/solutions</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/support</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
   
   <!-- USE CASES & VERTICALS -->
   <url>
     <loc>https://cmpsbl.com/use-cases</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/gaming</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.78</priority>
   </url>
@@ -226,21 +247,21 @@
   <!-- MODULE CLUSTERS -->
   <url>
     <loc>https://cmpsbl.com/cluster/inclusive-module-accessibility</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/cluster/studio</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/cluster/verify</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.78</priority>
   </url>
@@ -248,14 +269,14 @@
   <!-- BLOG -->
   <url>
     <loc>https://cmpsbl.com/blog</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/publication</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -263,58 +284,113 @@
   <!-- INTERACTIVE FEATURES -->
   <url>
     <loc>https://cmpsbl.com/feed-dream-eater</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/proof</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.78</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/lab</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/insights</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.78</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/system-feed</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
   </url>
   
   <!-- PERSISTENT MEMORY DOCS -->
   <url>
     <loc>https://cmpsbl.com/persistent-memory</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/docs/persistent-memory</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- COMPOSABLE COGNITIVES -->
+  <url>
+    <loc>https://cmpsbl.com/composable-cognitives</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  
+  <!-- AI OPERATING SYSTEM -->
+  <url>
+    <loc>https://cmpsbl.com/ai-operating-system</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  
+  <!-- STORE -->
+  <url>
+    <loc>https://cmpsbl.com/store</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  
+  <!-- CLOCKLESS WORLD ENGINE -->
+  <url>
+    <loc>https://cmpsbl.com/clockless-world-engine</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
+  
+  <!-- SHOWCASE -->
+  <url>
+    <loc>https://cmpsbl.com/showcase</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  
+  <!-- STATUS -->
+  <url>
+    <loc>https://cmpsbl.com/status</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   
   <!-- LEGAL PAGES -->
   <url>
     <loc>https://cmpsbl.com/privacy</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cmpsbl.com/terms</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -322,17 +398,9 @@
   <!-- MACHINE-READABLE FILES -->
   <url>
     <loc>https://cmpsbl.com/humans-txt</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
-  
-  <!-- AGENCY & ENTERPRISE -->
-  <url>
-    <loc>https://cmpsbl.com/agency</loc>
-    <lastmod>2026-02-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.78</priority>
   </url>
 
 </urlset>
