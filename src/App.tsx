@@ -111,7 +111,7 @@ const AdminCognitiveUploads = lazy(() => import("./pages/AdminCognitiveUploads")
 const STierDemos = lazy(() => import("./pages/STierDemos"));
 const OwnerReports = lazy(() => import("./pages/admin/OwnerReports"));
 const Habitat = lazy(() => import("./pages/Habitat"));
-
+const Status = lazy(() => import("./pages/Status"));
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
 const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
@@ -344,6 +344,7 @@ const App = () => {
                         <Route path="/engines" element={<EngineMarketplace />} />
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                         <Route path="/habitat" element={<Habitat />} />
+                        <Route path="/status" element={<Status />} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
                         <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
