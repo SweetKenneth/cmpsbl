@@ -214,10 +214,13 @@ const CATEGORY_COMPAT: Record<ExecutorModuleMeta['category'], ExecutorModuleMeta
   content_validation:  ['content_validation', 'content_analysis', 'governance'],
   cognitive_processing:['cognitive_processing', 'intelligence'],
   event_routing:       ['event_routing', 'orchestration'],
-  governance:          ['governance', 'content_validation'],
+  governance:          ['governance', 'content_validation', 'security'],
   orchestration:       ['orchestration', 'event_routing', 'governance'],
   infrastructure:      ['infrastructure', 'governance', 'event_routing'],
   intelligence:        ['intelligence', 'cognitive_processing', 'content_analysis'],
+  security:            ['security', 'governance', 'infrastructure'],
+  optimization:        ['optimization', 'governance', 'infrastructure'],
+  autonomy:            ['autonomy', 'orchestration', 'intelligence'],
 };
 
 // ═══════════════════════════════════════════════════════════════════════════

@@ -149,4 +149,5 @@ import { createImmuneAwareRegister } from '@/immune/pilotExecutors';
 
 const immuneRegister = createImmuneAwareRegister(registerSynergyExecutor);
 registerAllExecutors(immuneRegister);
-registerSTierExecutors(registerSynergyExecutor);
+// GAP FIX: S-tier executors were bypassing immune wrapping — now wrapped like all others
+registerSTierExecutors(immuneRegister);

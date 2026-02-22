@@ -1,54 +1,13 @@
 /**
- * Executor Immune Pilot — Pilot Executor List & Registration (v4.0)
+ * Executor Immune Pilot — Full Fleet Registration (v5.0)
  * 
- * Phase 1 Shadow Scale: Expanded from 20 to 35 executors across 6 substrate categories:
+ * Phase 2: Full Shadow Wrapping — ALL executors are immune-wrapped.
+ * Scaled from 35 pilot → 157 executors across all substrate modules.
  * 
- * INCLUSIVE (7):
- *   1. adaptive-ui
- *   2. cognitive-load-optimization
- *   3. comprehensive-accessibility-audit
- *   4. personalized-accessibility-engine
- *   5. inclusive-content
- *   6. contrast-ratio-analyzer
- *   7. focus-management-engine
+ * Auto-inference for module metadata ensures new executors added to
+ * the registry are automatically categorized without manual mapping.
  * 
- * COGNITIVE (5):
- *   8. reasoning-engine
- *   9. learning-engine
- *  10. imagination-engine
- *  11. semantic-analysis-engine
- *  12. context-window-manager
- * 
- * OPERATIONAL (5):
- *  13. relay-event-dispatcher
- *  14. economy-cost-tracker
- *  15. audit-compliance-check
- *  16. rate-limiter-engine
- *  17. telemetry-aggregator
- * 
- * ORCHESTRATOR (4):
- *  18. mesh-pipeline-resolver
- *  19. seba-proposal-evaluator
- *  20. workflow-orchestrator
- *  21. dependency-resolver
- * 
- * INFRASTRUCTURE (7):
- *  22. memory-consolidation-engine
- *  23. identity-verification-engine
- *  24. sandbox-isolation-guard
- *  25. encode-task-scheduler
- *  26. cache-invalidation-engine
- *  27. config-propagation-engine
- *  28. health-check-coordinator
- * 
- * INTELLIGENCE (7):
- *  29. dream-pattern-synthesizer
- *  30. decode-intent-classifier
- *  31. vision-anomaly-detector
- *  32. sentiment-drift-analyzer
- *  33. temporal-pattern-engine
- *  34. correlation-discovery-engine
- *  35. signal-noise-separator
+ * S-tier executors are now wrapped through immuneRegister (gap fixed).
  */
 
 import type { SynergyExecutor } from '@/lib/capabilities/synergies/types';
@@ -61,13 +20,20 @@ export interface ExecutorModuleMeta {
   module: string;
   scope: string;
   /** Functional category for cross-executor learning grouping */
-  category: 'ui_adaptation' | 'content_analysis' | 'content_validation' | 'cognitive_processing' | 'event_routing' | 'governance' | 'orchestration' | 'infrastructure' | 'intelligence';
+  category: 'ui_adaptation' | 'content_analysis' | 'content_validation' | 'cognitive_processing' | 'event_routing' | 'governance' | 'orchestration' | 'infrastructure' | 'intelligence' | 'security' | 'optimization' | 'autonomy';
 }
 
 /**
- * The 35 pilot executor IDs across 6 substrate categories (Phase 1 Shadow Scale)
+ * Full executor fleet — ALL executors are now shadow-wrapped.
+ * Phase 2: Scaled from 35 pilot → full fleet coverage.
+ * 
+ * Categories:
+ *   INCLUSIVE (7), COGNITIVE (5), OPERATIONAL (5), ORCHESTRATOR (4),
+ *   INFRASTRUCTURE (7), INTELLIGENCE (7) — original 35 pilot
+ *   + ALL registered synergy executors (v7.0–v7.5.3) + S-tier (22)
  */
 export const PILOT_EXECUTORS = [
+  // ═══ ORIGINAL 35 PILOT ═══
   // INCLUSIVE (7)
   'adaptive-ui',
   'cognitive-load-optimization',
@@ -109,14 +75,155 @@ export const PILOT_EXECUTORS = [
   'temporal-pattern-engine',
   'correlation-discovery-engine',
   'signal-noise-separator',
+
+  // ═══ v7.0 EXECUTORS (5) ═══
+  'external-api-intelligence',
+  'entitlement-aware-routing',
+  'autonomous-evolution',
+  'end-to-end-reasoning',
+  'bounded-autonomy-guard',
+
+  // ═══ v7.1 EXECUTORS (8 — cognitive-load-optimization already above) ═══
+  'contextual-preload',
+  'semantic-deduplication',
+  'behavioral-fingerprinting',
+  'zero-trust-validation',
+  'workflow-synthesis',
+  'multi-agent-coordination',
+  'hypothesis-testing',
+  'knowledge-distillation',
+
+  // ═══ v7.2 EXECUTORS (10) ═══
+  'capacity-forecasting',
+  'cost-optimization-engine',
+  'causal-inference',
+  'emergent-pattern-detection',
+  'threat-prediction',
+  'compliance-automation',
+  'predictive-healing',
+  'chaos-resilience',
+  'sla-guardian',
+  'resource-contention-resolver',
+
+  // ═══ v7.3 EXECUTORS (22) ═══
+  'recursive-self-improvement',
+  'temporal-reasoning',
+  'counterfactual-analysis',
+  'semantic-bridge',
+  'goal-decomposition',
+  'autonomous-repair',
+  'proactive-scaling',
+  'cross-modal-synthesis',
+  'consensus-reasoning',
+  'attack-surface-mapping',
+  'privilege-escalation-detection',
+  'data-exfiltration-guard',
+  'token-budget-optimizer',
+  'response-quality-calibration',
+  'cache-coherence',
+  'blast-radius-containment',
+  'state-checkpoint-recovery',
+  'dependency-health-cascade',
+  'cross-team-coordination',
+  'pipeline-orchestration',
+  'universal-design-synthesis',
+  'adaptive-personalization',
+
+  // ═══ v7.4 EXECUTORS (21 — comprehensive-accessibility-audit already above) ═══
+  'holistic-system-insight',
+  'meta-cognitive-reflection',
+  'neural-symbolic-fusion',
+  'cognitive-load-balancer',
+  'intent-evolution-chain',
+  'zero-day-defense',
+  'comprehensive-audit-trail',
+  'adaptive-threat-response',
+  'distributed-recovery-orchestration',
+  'intelligent-failover-chain',
+  'cognitive-state-preservation',
+  'full-stack-evolution',
+  'multi-modal-task-routing',
+  'adaptive-workflow-engine',
+  'predictive-resource-allocation',
+  'intelligent-batch-processing',
+  'cost-aware-routing',
+  'adaptive-content-transformation',
+  'self-documenting-evolution',
+  'intelligent-deprecation-manager',
+  'autonomous-optimization-loop',
+
+  // ═══ v7.5.2 EXECUTORS (15) ═══
+  'external-data-enrichment',
+  'api-intelligence-layer',
+  'creative-threat-modeling',
+  'accessibility-event-stream',
+  'config-optimization-learning',
+  'entitlement-evolution',
+  'proactive-maintenance-engine',
+  'resource-demand-imagination',
+  'accessible-ai-generation',
+  'security-posture-evolution',
+  'semantic-event-enrichment',
+  'distributed-config-sync',
+  'predictive-evolution-engine',
+  'api-entitlement-fortress',
+  'cognitive-accessibility-profiler',
+
+  // ═══ v7.5.3 EXECUTORS (12) ═══
+  'meta-learning-orchestrator',
+  'intent-accessibility-synthesis',
+  'threat-intelligence-mesh',
+  'resource-governance-engine',
+  'reasoning-quality-amplifier',
+  'secure-evolution-pipeline',
+  'external-api-guardian',
+  'creative-problem-solver',
+  'usage-pattern-intelligence',
+  'adaptive-configuration-intelligence',
+  'event-driven-orchestration',
+
+  // ═══ ORIGINAL 8 SYNERGIES ═══
+  'smart-recall',
+  'adaptive-routing',
+  'graceful-degradation',
+  'learning-acceleration',
+  'cascade-prevention',
+  'anomaly-correlation',
+  'cognitive-fusion',
+  'intent-amplification',
+
+  // ═══ S-TIER EXECUTORS (22) ═══
+  'strategic-foresight-engine',
+  'decision-confidence-governor',
+  'explainable-intelligence-compiler',
+  'autonomous-ops-steward',
+  'autonomy-budget-manager',
+  'autonomy-rollback-authority',
+  'intelligence-containment-engine',
+  'emergent-threat-anticipator',
+  'behavioral-trust-scoring',
+  'autonomous-cost-arbitrage-engine',
+  'value-weighted-reasoning-router',
+  'waste-detection-intelligence',
+  'intent-drift-tracker',
+  'adaptive-product-brain',
+  'friction-auto-removal-engine',
+  'cross-pipeline-arbitration-engine',
+  'capability-impact-forecaster',
+  'self-scaling-intelligence-fabric',
+  'regulatory-mode-switcher',
+  'audit-grade-decision-ledger',
+  'policy-aware-intelligence-gate',
+  'intelligence-governance-kernel',
 ] as const;
 
 export type PilotExecutorId = typeof PILOT_EXECUTORS[number];
 
 /**
- * Module metadata registry — maps executor → module + scope + category
+ * Explicit module metadata for original 35 pilot executors.
+ * All other executors get auto-inferred metadata via inferExecutorMeta().
  */
-export const EXECUTOR_MODULE_META: Record<PilotExecutorId, ExecutorModuleMeta> = {
+const EXPLICIT_META: Partial<Record<PilotExecutorId, ExecutorModuleMeta>> = {
   // INCLUSIVE
   'adaptive-ui':                       { module: 'INCLUSIVE',       scope: 'adaptive-ui',                    category: 'ui_adaptation' },
   'cognitive-load-optimization':       { module: 'INCLUSIVE',       scope: 'cognitive-load-optimization',    category: 'content_analysis' },
@@ -159,6 +266,69 @@ export const EXECUTOR_MODULE_META: Record<PilotExecutorId, ExecutorModuleMeta> =
   'correlation-discovery-engine':      { module: 'INTELLIGENCE',   scope: 'correlation-discovery-engine',   category: 'intelligence' },
   'signal-noise-separator':            { module: 'INTELLIGENCE',   scope: 'signal-noise-separator',         category: 'intelligence' },
 };
+
+/**
+ * Auto-infer module metadata from executor name when not explicitly mapped.
+ * Uses keyword heuristics to assign module + category.
+ */
+function inferExecutorMeta(id: string): ExecutorModuleMeta {
+  const lower = id.toLowerCase();
+
+  // Security / Trust / Defense
+  if (/threat|security|trust|defense|zero-day|attack|exfiltration|containment|privilege|fortress/.test(lower))
+    return { module: 'SECURITY', scope: id, category: 'security' };
+
+  // Autonomy / Evolution / Self-improvement
+  if (/autonom|evolution|self-|recursive|rollback-authority/.test(lower))
+    return { module: 'AUTONOMY', scope: id, category: 'autonomy' };
+
+  // Cost / Optimization / Budget / Efficiency
+  if (/cost|budget|waste|optimization|resource-(?:contention|demand|governance)/.test(lower))
+    return { module: 'OPTIMIZATION', scope: id, category: 'optimization' };
+
+  // Orchestration / Pipeline / Workflow / Coordination
+  if (/orchestr|pipeline|workflow|coordination|arbitration|routing|failover|batch/.test(lower))
+    return { module: 'ORCHESTRATOR', scope: id, category: 'orchestration' };
+
+  // Intelligence / Reasoning / Cognitive / Learning / Inference
+  if (/reasoning|cognitive|learning|inference|intelligence|foresight|insight|reflection|neural|fusion|hypothesis|knowledge|meta-learning|quality-amplifier/.test(lower))
+    return { module: 'COGNITIVE', scope: id, category: 'cognitive_processing' };
+
+  // Governance / Compliance / Audit / Policy / Regulatory
+  if (/compliance|audit|governance|policy|regulatory|ledger|deprecation|documenting/.test(lower))
+    return { module: 'GOVERNANCE', scope: id, category: 'governance' };
+
+  // Inclusive / Accessibility / Content / UX / Personalization
+  if (/accessibility|inclusive|adaptive-ui|content|personali|design|friction|product-brain|drift-tracker/.test(lower))
+    return { module: 'INCLUSIVE', scope: id, category: 'ui_adaptation' };
+
+  // Infrastructure / Cache / Config / Recovery / Scaling / Health / State
+  if (/cache|config|recovery|scaling|health|state|checkpoint|maintenance|preload|dedup|fingerprint|resilience|capacity|healing|sla|guardian|forecaster|fabric/.test(lower))
+    return { module: 'INFRASTRUCTURE', scope: id, category: 'infrastructure' };
+
+  // Event / Telemetry / Monitoring / Enrichment / Stream
+  if (/event|telemetry|monitoring|enrichment|stream|relay|dispatch|semantic-event/.test(lower))
+    return { module: 'OPERATIONAL', scope: id, category: 'event_routing' };
+
+  // Intelligence / Pattern / Anomaly / Signal / Correlation / Prediction
+  if (/pattern|anomaly|signal|correlation|prediction|prediction|vision|sentiment|temporal|dream|decode|bridge|counterfactual|causal|emergent|creative/.test(lower))
+    return { module: 'INTELLIGENCE', scope: id, category: 'intelligence' };
+
+  // Fallback: generic operational
+  return { module: 'OPERATIONAL', scope: id, category: 'infrastructure' };
+}
+
+/**
+ * Full metadata registry — explicit for pilot executors, auto-inferred for the rest.
+ * This is built once at module load time.
+ */
+export const EXECUTOR_MODULE_META: Record<PilotExecutorId, ExecutorModuleMeta> = (() => {
+  const meta = {} as Record<PilotExecutorId, ExecutorModuleMeta>;
+  for (const id of PILOT_EXECUTORS) {
+    meta[id] = EXPLICIT_META[id] ?? inferExecutorMeta(id);
+  }
+  return meta;
+})();
 
 /** Check if an executor is in the pilot set */
 export function isPilotExecutor(id: string): id is PilotExecutorId {
