@@ -218,7 +218,8 @@ async function aggregateImmuneMetrics(): Promise<ImmuneTelemetry> {
     executorCounts[row.executor] = (executorCounts[row.executor] || 0) + (row.total_runs ?? 0);
   }
 
-  const denom = repairSuccesses + escalations + safeFailures;
+  // LOCKED formula: repair attempts = successes + escalations (NOT safe_failures)
+  const repairAttempts = repairSuccesses + escalations;
   const topExecutor = Object.entries(executorCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 
   return {
@@ -226,7 +227,7 @@ async function aggregateImmuneMetrics(): Promise<ImmuneTelemetry> {
     repairSuccesses,
     escalations,
     safeFailures,
-    honestRepairRate: denom > 0 ? repairSuccesses / denom : 0,
+    honestRepairRate: repairAttempts > 0 ? repairSuccesses / repairAttempts : 0,
     topExecutor,
   };
 }

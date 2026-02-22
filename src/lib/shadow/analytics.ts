@@ -31,9 +31,12 @@ export interface EscalationRow {
 }
 
 export interface RepairKPIs {
-  repair_attempt_rate: number;
-  repair_success_rate: number;
-  retry_rate: number;
+  /** (repair_attempts / total_runs) — null when no runs */
+  repair_attempt_rate: number | null;
+  /** (repair_successes / repair_attempts) — null when no attempts */
+  repair_success_rate: number | null;
+  /** (retries / total_runs) — null when no runs */
+  retry_rate: number | null;
 }
 
 export interface ShadowMeshAnalyticsData {
@@ -85,9 +88,9 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     totalEscalationsAll += escalations;
     totalSafeFailsAll += safeFailures;
 
-    // Repair attempts = probes that needed repair = successes + escalations + safe failures
-    // (anything that wasn't a clean pass on first try)
-    const rowRepairAttempts = repairSuccesses + escalations + safeFailures;
+    // CRITICAL: safe_failures are NOT repair attempts — they are correctly rejected garbage inputs.
+    // Repair attempts = repair_successes + escalations ONLY.
+    const rowRepairAttempts = repairSuccesses + escalations;
 
     const existing = byExecutor.get(row.executor);
     if (existing) {
@@ -97,7 +100,7 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
       existing.safe_fails += safeFailures;
       existing.repair_attempts += rowRepairAttempts;
       existing.repair_successes += repairSuccesses;
-      existing.retries += repairSuccesses; // retried = successfully repaired
+      existing.retries += repairSuccesses;
     } else {
       byExecutor.set(row.executor, {
         executor: row.executor,
@@ -118,15 +121,15 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     .order('created_at', { ascending: false })
     .limit(20);
 
-  // HONEST repair KPIs derived from actual numeric columns:
-  // repair_attempt_rate = probes needing repair / total probes
-  // repair_success_rate = successful repairs / total repair attempts
-  // retry_rate = retried probes / total probes
-  const totalRepairAttempts = totalRepairSuccessesAll + totalEscalationsAll + totalSafeFailsAll;
+  // HONEST repair KPIs — LOCKED formulas (see src/lib/telemetry/contract.ts):
+  // repair_attempt_rate = (repairs + escalations) / total_runs
+  // repair_success_rate = repairs / (repairs + escalations)  (NOT / total_runs)
+  // retry_rate = repairs / total_runs
+  const totalRepairAttempts = totalRepairSuccessesAll + totalEscalationsAll;
   const repairKPIs: RepairKPIs = {
-    repair_attempt_rate: totalRunsAll > 0 ? totalRepairAttempts / totalRunsAll : 0,
-    repair_success_rate: totalRepairAttempts > 0 ? totalRepairSuccessesAll / totalRepairAttempts : 0,
-    retry_rate: totalRunsAll > 0 ? totalRepairSuccessesAll / totalRunsAll : 0,
+    repair_attempt_rate: totalRunsAll > 0 ? totalRepairAttempts / totalRunsAll : null,
+    repair_success_rate: totalRepairAttempts > 0 ? totalRepairSuccessesAll / totalRepairAttempts : null,
+    retry_rate: totalRunsAll > 0 ? totalRepairSuccessesAll / totalRunsAll : null,
   };
 
   return {
