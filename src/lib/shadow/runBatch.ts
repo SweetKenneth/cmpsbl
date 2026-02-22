@@ -52,7 +52,7 @@ export async function runShadowBatch() {
   // After all probes complete, trigger ENCODE to resolve any new escalations
   try {
     const { processEscalations } = await import('@/lib/substrate/encode-module/escalation-processor');
-    const result = await processEscalations(50);
+    const result = await processEscalations(100);
     if (result.resolved > 0) {
       console.info(`[shadow-batch] ENCODE auto-resolved ${result.resolved}/${result.processed} escalations (quality: ${(result.qualityScore * 100).toFixed(0)}%)`);
     }

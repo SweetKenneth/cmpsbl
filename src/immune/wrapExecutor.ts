@@ -111,7 +111,6 @@ function preflightCheck(input: unknown): { valid: boolean; reason?: string } {
  */
 const REPAIRABLE_ARCHETYPES: Set<InputArchetype> = new Set([
   'partial_valid',
-  'type_mismatch',
   'missing_required',
 ]);
 
@@ -192,7 +191,7 @@ export function wrapExecutor(
         return null;
       }
 
-      if (ir.confidence < 0.4) {
+      if (ir.confidence < 0.55) {
         logImmuneEvent(createEvent(executorName, scope, module, 'repair', 'escalated', failingInput,
           `Repair confidence too low (${(ir.confidence * 100).toFixed(0)}%) — escalating instead of retrying`, true));
         // Record failure against any applicable shared rules so they degrade
