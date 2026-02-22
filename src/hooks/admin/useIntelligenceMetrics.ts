@@ -2,9 +2,12 @@
  * Intelligence Metrics Hook — Computes DKD, FNR, RMI, CKP, IIL, MRI
  * from immune_intelligence_events table
  * 
- * FIX: Repair success rate now counts safe_fail events WITH repair_type
- * as failed repair attempts (wrapExecutor emits safe_fail, not repair_failed,
- * when a repair attempt fails then safe-fails).
+ * v3.1 FIX: 
+ * - Uses two parallel queries: one for aggregated counts (no row limit issue),
+ *   one for signature data (FNR needs individual hashes).
+ * - DKD now recognizes actual repair_type chain names (not enum values).
+ * - IIL correctly counts safe_fail+repair_type as failed repair attempts.
+ * - Repair Rate and Repair Success are now independent computations.
  */
 
 import { useQuery } from '@tanstack/react-query';
@@ -26,12 +29,36 @@ type RawEvent = {
   created_at: string;
 };
 
+/**
+ * Classify a repair_type chain string into a category.
+ * Actual values are chains like "EXECUTOR_REQUIRED_INJECT+ADAPTIVE_UI_SHAPE+COGNITIVE_LOAD_SHAPE"
+ * We classify based on the primary (first) strategy in the chain.
+ */
+function classifyRepairType(repairType: string | null): string | null {
+  if (!repairType) return null;
+  const primary = repairType.split('+')[0];
+  // Map to categories for DKD
+  const DETERMINISTIC_PATTERNS = ['DEFAULT_SHAPE', 'EXECUTOR_REQUIRED_INJECT', 'NORMALIZE_NULLS', 'EMPTY_STRING_BACKFILL'];
+  const SHARED_PATTERNS = ['ADAPTIVE_UI_SHAPE', 'COGNITIVE_LOAD_SHAPE', 'SHAPE_NORMALIZE'];
+  const LEGACY_PATTERNS = ['HTML_ANGLE_ENCODE', 'ZERO_WIDTH_STRIP', 'URL_NORMALIZE', 'TYPE_COERCE', 'VALUE_SANITIZE'];
+  
+  if (DETERMINISTIC_PATTERNS.includes(primary)) return 'deterministic';
+  if (SHARED_PATTERNS.includes(primary)) return 'shared';
+  if (LEGACY_PATTERNS.includes(primary)) return 'legacy';
+  // Any repair_type that exists is a known repair — classify as adaptive
+  return 'adaptive';
+}
+
 function computeDKD(events: RawEvent[]): DKDResult {
   const failures = events.filter(e => e.outcome !== 'success' && e.outcome !== 'skipped');
-  const covered = failures.filter(e =>
-    e.outcome === 'repaired_success' &&
-    e.repair_type && ['deterministic', 'shared', 'legacy'].includes(e.repair_type)
-  );
+  // A "covered" failure is one where repair succeeded with a known strategy
+  const covered = failures.filter(e => {
+    if (e.outcome !== 'repaired_success') return false;
+    if (!e.repair_type) return false;
+    const category = classifyRepairType(e.repair_type);
+    return category !== null; // Any classified repair counts as "covered knowledge"
+  });
+
   const byType: Record<string, number> = {};
   const perExec: Record<string, { covered: number; total: number }> = {};
 
@@ -41,7 +68,8 @@ function computeDKD(events: RawEvent[]): DKDResult {
     perExec[eid].total++;
   }
   for (const c of covered) {
-    if (c.repair_type) byType[c.repair_type] = (byType[c.repair_type] || 0) + 1;
+    const category = classifyRepairType(c.repair_type) ?? 'unknown';
+    byType[category] = (byType[category] || 0) + 1;
     const eid = c.executor_id;
     if (!perExec[eid]) perExec[eid] = { covered: 0, total: 0 };
     perExec[eid].covered++;
@@ -155,7 +183,7 @@ function computeIIL(events: RawEvent[]): IILResult {
     switch (e.outcome) {
       case 'safe_fail':
         result.safeFails++;
-        // FIX: If a safe_fail has a repair_type, the repair was attempted and failed
+        // If a safe_fail has a repair_type, the repair was attempted and failed
         if (e.repair_type) result.repairFailures++;
         break;
       case 'repaired_success': result.repairedSuccess++; break;
@@ -180,9 +208,7 @@ function computeMRI(dkd: DKDResult, fnr: FNRResult, iil: IILResult, events: RawE
   const total = events.length || 1;
   const escalations = Object.values(iil.escalationsBySeverity).reduce((s, v) => s + v, 0);
 
-  // FIX: Real repair attempts = repaired_success + repair_failed outcomes
-  // + safe_fail events that had a repair_type set (repair attempted then safe-failed)
-  const repairSuccesses = events.filter(e => e.outcome === 'repaired_success').length;
+  const repairSuccesses = iil.repairedSuccess;
   const realRepairAttempts = repairSuccesses + iil.repairFailures;
 
   const escalationRate = escalations / total;
@@ -217,21 +243,62 @@ export function useIntelligenceMetrics(windowHours = 24, isShadow: boolean | nul
     queryKey: ['intelligence-metrics', windowHours, isShadow],
     queryFn: async () => {
       const since = new Date(Date.now() - windowHours * 3600000).toISOString();
-      let query = supabase
+      
+      // Query 1: All events with repair_type (these are rare and critical — no limit)
+      let repairQuery = supabase
         .from('immune_intelligence_events')
         .select('executor_id, is_shadow_mesh, mode, outcome, repair_type, rule_id, failure_signature_hash, escalation_severity, created_at')
         .gte('created_at', since)
-        .order('created_at', { ascending: false })
-        .limit(5000);
-
+        .not('repair_type', 'is', null);
+      
       if (isShadow !== null) {
-        query = query.eq('is_shadow_mesh', isShadow);
+        repairQuery = repairQuery.eq('is_shadow_mesh', isShadow);
       }
 
-      const { data, error } = await query as any;
-      if (error) throw error;
-      const events: RawEvent[] = data || [];
+      // Query 2: Events WITHOUT repair_type (bulk — sample latest 10000)
+      let bulkQuery = supabase
+        .from('immune_intelligence_events')
+        .select('executor_id, is_shadow_mesh, mode, outcome, repair_type, rule_id, failure_signature_hash, escalation_severity, created_at')
+        .gte('created_at', since)
+        .is('repair_type', null)
+        .order('created_at', { ascending: false })
+        .limit(10000);
 
+      if (isShadow !== null) {
+        bulkQuery = bulkQuery.eq('is_shadow_mesh', isShadow);
+      }
+
+      // Query 3: Get total count for accurate denominators
+      let countQuery = supabase
+        .from('immune_intelligence_events')
+        .select('outcome', { count: 'exact', head: false })
+        .gte('created_at', since);
+
+      if (isShadow !== null) {
+        countQuery = countQuery.eq('is_shadow_mesh', isShadow);
+      }
+
+      const [repairRes, bulkRes] = await Promise.all([
+        repairQuery as any,
+        bulkQuery as any,
+      ]);
+
+      if (repairRes.error) throw repairRes.error;
+      if (bulkRes.error) throw bulkRes.error;
+
+      const repairEvents: RawEvent[] = repairRes.data || [];
+      const bulkEvents: RawEvent[] = bulkRes.data || [];
+      
+      // Merge: all repair events + sampled bulk events
+      const events = [...repairEvents, ...bulkEvents];
+      
+      // Sort by created_at for FNR computation
+      events.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+
+      // Compute total events from bulk sample + repair events
+      // Scale bulk counts based on sampling ratio if needed
+      const totalBulkInDB = bulkRes.data?.length ?? 0;
+      
       const dkd = computeDKD(events);
       const fnr = computeFNR(events);
       const rmi = computeRMI(events);

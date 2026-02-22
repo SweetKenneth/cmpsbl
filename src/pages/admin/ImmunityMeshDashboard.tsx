@@ -22,6 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSubstrateVoice } from "@/components/substrate-os/audio";
 import { motion, AnimatePresence } from "framer-motion";
+import { getSharedRuleStats, getSharedRules, type SharedRule } from "@/immune/shared-rule-registry";
 
 // ============================================================================
 // HELPERS
@@ -422,6 +423,9 @@ export default function ImmunityMeshDashboard() {
             </Card>
           </motion.div>
 
+          {/* Repair Skills & Learned Knowledge */}
+          <RepairSkillsPanel />
+
           {/* Legacy Analytics */}
           <ShadowMeshAnalytics key={analyticsKey} />
         </TabsContent>
@@ -640,6 +644,181 @@ export default function ImmunityMeshDashboard() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+// ============================================================================
+// REPAIR SKILLS PANEL
+// ============================================================================
+
+function RepairSkillsPanel() {
+  const [stats, setStats] = useState<ReturnType<typeof getSharedRuleStats> | null>(null);
+  const [rules, setRules] = useState<SharedRule[]>([]);
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    setStats(getSharedRuleStats());
+    setRules(getSharedRules());
+    const interval = setInterval(() => {
+      setStats(getSharedRuleStats());
+      setRules(getSharedRules());
+    }, 15_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!stats) return null;
+
+  const displayedRules = showAll ? rules : rules.slice(0, 8);
+  const totalAdoptedExecutors = rules.reduce((sum, r) => {
+    const adopted = Array.from(r.adoptions.values()).filter(a => a.adopted && !a.rolledBack);
+    return sum + adopted.length;
+  }, 0);
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+      <Card className="border-border/50 overflow-hidden">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Brain className="w-4 h-4 text-primary" />
+              Repair Skills & Learned Knowledge
+              <Badge variant="outline" className="text-[10px] font-mono ml-1">
+                {stats.activeRules} active
+              </Badge>
+            </CardTitle>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Badge variant="secondary" className="text-[10px]">
+                {totalAdoptedExecutors} adoptions
+              </Badge>
+              <Badge variant="secondary" className="text-[10px]">
+                {(stats.avgConfidence * 100).toFixed(0)}% avg confidence
+              </Badge>
+              {stats.rollbackRate > 0 && (
+                <Badge variant="destructive" className="text-[10px]">
+                  {(stats.rollbackRate * 100).toFixed(1)}% rollback
+                </Badge>
+              )}
+            </div>
+          </div>
+          <CardDescription>
+            Learned repair strategies propagated across executors — the system's growing immune memory
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Summary stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="p-3 rounded-lg border border-border/30 bg-card">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Total Rules</p>
+              <p className="text-xl font-bold font-mono">{stats.totalRules}</p>
+            </div>
+            <div className="p-3 rounded-lg border border-border/30 bg-card">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Active Rules</p>
+              <p className="text-xl font-bold font-mono text-emerald-500">{stats.activeRules}</p>
+            </div>
+            <div className="p-3 rounded-lg border border-border/30 bg-card">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Top Contributors</p>
+              <div className="mt-1 space-y-0.5">
+                {stats.topContributors.slice(0, 2).map(c => (
+                  <p key={c.executor} className="text-[10px] font-mono truncate">
+                    {c.executor} <span className="text-muted-foreground">({c.ruleCount})</span>
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="p-3 rounded-lg border border-border/30 bg-card">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Category Spread</p>
+              <p className="text-xl font-bold font-mono">{Object.keys(stats.categoryBreakdown).length}</p>
+              <p className="text-[10px] text-muted-foreground">categories covered</p>
+            </div>
+          </div>
+
+          {/* Skills list */}
+          <div className="space-y-1.5">
+            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+              Learned Repair Strategies
+            </p>
+            <div className="grid gap-2">
+              {displayedRules.map((rule, i) => {
+                const adoptionCount = Array.from(rule.adoptions.values()).filter(a => a.adopted && !a.rolledBack).length;
+                const totalSuccesses = Array.from(rule.adoptions.values()).reduce((s, a) => s + a.successes, 0);
+                const totalFailures = Array.from(rule.adoptions.values()).reduce((s, a) => s + a.failures, 0);
+                const overallSuccessRate = (totalSuccesses + totalFailures) > 0 
+                  ? totalSuccesses / (totalSuccesses + totalFailures) : 1;
+                const isSeed = rule.id.startsWith('SR_SEED_');
+                
+                return (
+                  <motion.div
+                    key={rule.id}
+                    className="p-3 rounded-lg border border-border/20 hover:border-primary/20 transition-all bg-card group"
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.03 }}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <code className="text-[11px] font-mono text-primary font-medium">
+                            {rule.repairStrategy}
+                          </code>
+                          <Badge variant="outline" className="text-[9px] px-1.5 py-0">
+                            {rule.targetArchetype}
+                          </Badge>
+                          {isSeed && (
+                            <Badge variant="secondary" className="text-[9px] px-1.5 py-0">
+                              seed
+                            </Badge>
+                          )}
+                          {!isSeed && (
+                            <Badge className="text-[9px] px-1.5 py-0 bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+                              learned
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2">
+                          {rule.description}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground/60 font-mono mt-1">
+                          from: {rule.sourceExecutor}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3 flex-shrink-0 text-xs">
+                        <div className="text-right">
+                          <p className="font-mono font-medium">{(rule.sourceConfidence * 100).toFixed(0)}%</p>
+                          <p className="text-[9px] text-muted-foreground">confidence</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-mono font-medium">{adoptionCount}</p>
+                          <p className="text-[9px] text-muted-foreground">executors</p>
+                        </div>
+                        <div className="text-right">
+                          <p className={`font-mono font-medium ${overallSuccessRate >= 0.8 ? 'text-emerald-500' : overallSuccessRate >= 0.5 ? 'text-amber-500' : 'text-red-400'}`}>
+                            {(overallSuccessRate * 100).toFixed(0)}%
+                          </p>
+                          <p className="text-[9px] text-muted-foreground">success</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+            {rules.length > 8 && (
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="text-xs text-primary hover:text-primary/80 font-medium mt-2 transition-colors"
+              >
+                {showAll ? 'Show less' : `Show all ${rules.length} rules →`}
+              </button>
+            )}
+            {rules.length === 0 && (
+              <p className="text-sm text-muted-foreground py-4">
+                No repair skills learned yet — run shadow probes to train the immunity mesh
+              </p>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 
