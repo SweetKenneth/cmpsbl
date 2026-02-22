@@ -1,6 +1,6 @@
 # Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate — robots.txt
 # https://cmpsbl.com/robots.txt
-# Last updated: 2026-02-08
+# Last updated: 2026-02-22
 
 # =============================================================
 # DEFAULT: Allow all crawlers - instant crawlability
@@ -22,7 +22,7 @@ Allow: /.well-known/ai-plugin.json
 Allow: /.well-known/security.txt
 
 # =============================================================
-# v9.1.0 SUBSTRATE CORE PAGES: Highest Priority
+# SUBSTRATE CORE PAGES: Highest Priority
 # =============================================================
 Allow: /os
 Allow: /substrate
@@ -36,10 +36,11 @@ Allow: /marketplace
 Allow: /marketplace/*
 Allow: /capabilities
 Allow: /capabilities/*
-Allow: /forge
-Allow: /forge/*
 Allow: /decode
-Allow: /agency
+Allow: /system-feed
+Allow: /proof
+Allow: /composable-cognitives
+Allow: /persistent-memory
 
 # =============================================================
 # STANDARDS SECTION: High Priority
@@ -61,6 +62,7 @@ Allow: /changelog
 Allow: /use-cases
 Allow: /academy
 Allow: /codelab
+Allow: /start-here
 Allow: /persistent-memory
 
 # =============================================================

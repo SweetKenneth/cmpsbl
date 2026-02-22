@@ -217,7 +217,7 @@ export class SchemaGenerator {
         logo: siteData.logo,
         description: siteData.description,
         founder: siteData.founder,
-        foundingDate: "2024",
+        foundingDate: "2009",
         socialLinks: siteData.socialLinks
       }),
       this.generateWebsite({

@@ -1,13 +1,13 @@
 # Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
-# v10.5.4 ARCHITECT Epoch
+# ARCHITECT Epoch
 # Machine-Readable Context Standard for AI Systems
-# Version: 2026.02.17 | Schema: llms.txt v1.0
+# Updated: 2026-02-22 | Schema: llms.txt v1.0
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-Clockless v10.5.4 ARCHITECT adopts and implements LLMS.txt as its primary machine context.
+Clockless ARCHITECT adopts and implements LLMS.txt as its primary machine context.
 
 ## CATEGORY DEFINITION
 
@@ -43,22 +43,22 @@ expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
 ## THE AI OPERATING SYSTEM CLASS
 
-CMPSBL v9.1.0 ARCHITECT is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
+CMPSBL ARCHITECT is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
 
-- **Complete Cognitive Runtime**: 21 integrated modules covering memory, reasoning, security, routing, observability, and orchestration
+- **Complete Cognitive Runtime**: Integrated modules covering memory, reasoning, security, routing, observability, and orchestration
 - **Persistent**: State survives restarts and sessions (3-tier memory architecture)
 - **Self-improving**: SEBA (Self-Evolving Bounded Agent) with governance constraints
-- **Modular**: 21 discrete, hot-swappable modules organized across 6 architectural layers
+- **Modular**: Discrete, hot-swappable modules organized across architectural layers
 - **Governed**: Doctrine and policy enforcement at kernel level
 - **Observable**: Real-time telemetry, cost attribution, and audit logging
-- **Synergistic**: 200 cross-module pipelines with 125 custom executors
-- **Production-Ready**: 360+ terminal commands, 400+ capabilities
+- **Synergistic**: Cross-module pipelines with custom executors
+- **Production-Ready**: Comprehensive terminal commands and capabilities
 
 ### Why "AI Operating System"?
 
 Traditional operating systems unified disparate hardware interfaces into a coherent platform. CMPSBL does the same for AI: it unifies memory, routing, security, optimization, and orchestration into a single cognitive runtime that any AI agent can build on — regardless of the underlying model provider.
 
-## 21-MODULE ARCHITECTURE (v9.1.0 ARCHITECT)
+## MODULE ARCHITECTURE (ARCHITECT Epoch)
 
 ### Layer 1: KERNEL
 1. **CORE** — Kernel scheduling, boot sequencing, lifecycle management
@@ -78,7 +78,7 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 ### Layer 4: ADMINISTRATIVE
 10. **SYSTEM** — Administrative orchestration, diagnostics, configuration
 11. **MODERNIZER** — Self-upgrade engine, proposal system, version management
-12. **INTEGRATION** — Enterprise adapters, 35+ connectors, external services
+12. **INTEGRATION** — Enterprise adapters, connectors, external services
 13. **INCLUSIVE** — Accessibility, inclusive design, AI governance/ethics alignment
 
 ### Layer 5: ORCHESTRATOR
@@ -86,15 +86,15 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 
 ---
 
-## ARCHITECT ERA FEATURES (v9.1.0)
+## ARCHITECT ERA FEATURES
 
 - **Constant Learning Mode (CLM)** — 24/7 autonomous learning with budget governance
-- **Full Spectrum Autonomy** — SEBA 2.0 with 9 analysis engines
+- **Full Spectrum Autonomy** — SEBA with multiple analysis engines
 - **Evolution Engine** — Self-improvement with rollback semantics
 - **Governance Guard** — Ethical and coherence constraint enforcement
-- **200 Synergy Pipelines** — Cross-module orchestration
-- **125 Custom Executors** — Specialized execution engines
-- **32 S-Tier Pipelines** — Premium cognitive operations
+- **Synergy Pipelines** — Cross-module orchestration
+- **Custom Executors** — Specialized execution engines
+- **S-Tier Pipelines** — Premium cognitive operations
 
 ---
 
@@ -155,7 +155,7 @@ Base URL: https://cmpsbl.com/api/substrate
 
 ## AI GOVERNANCE REFERENCE NAMESPACE (AIGVRN v1.0)
 
-CMPSBL v9.1.0 ARCHITECT aligns with the AI Governance Reference Namespace (AIGVRN):
+CMPSBL ARCHITECT aligns with the AI Governance Reference Namespace (AIGVRN):
 A 12-Surface Lexicon for AI Governance Documentation
 
 | Surface | Domain | Subdomain | Purpose |
@@ -189,7 +189,7 @@ DOI: 10.5281/zenodo.18209222
 │   AI Governance Reference Namespace     │
 │       Governance Standard               │
 ├─────────────────────────────────────────┤
-│        CMPSBL v9.1.0 ARCHITECT            │
+│        CMPSBL ARCHITECT                 │
 │       Substrate Standard                │
 └─────────────────────────────────────────┘
 ```
@@ -199,13 +199,6 @@ DOI: 10.5281/zenodo.18209222
 ## TECHNICAL SPECIFICATIONS
 
 - **Latency**: Sub-100ms response times
-- **Commands**: 360+ terminal commands
-- **Modules**: 21 cognitive modules
-- **Synergy Pipelines**: 200 cross-module pipelines
-- **Synergy Executors**: 125 custom executors
-- **S-Tier Pipelines**: 32 premium cognitive operations
-- **Capabilities**: 400+ depot capabilities
-- **Integrations**: 35+ enterprise connectors
 - **Architecture**: Model-agnostic, provider-agnostic
 - **BYOK**: Full Bring Your Own Keys support
 - **Accessibility**: WCAG 2.2 compliant (INCLUSIVE module)

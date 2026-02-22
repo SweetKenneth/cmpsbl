@@ -5,7 +5,7 @@
 Creator & Lead Architect: Kenneth E. Sweet Jr.
 ORCID: https://orcid.org/0009-0001-4237-1243
 Role: Founder, Architect, Chief Cognitive Engineer
-Location: Abilene, Texas, USA
+Location: Dallas, Texas, USA
 Contact: Dev@CMPSBL.com
 Phone: (760) FLUID-AI
 Twitter: @cmpsbl
@@ -18,11 +18,11 @@ To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/02/15
+Last update: 2026/02/22
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
-Backend: Supabase (Lovable Cloud)
+Backend: Lovable Cloud
 AI: Multi-provider orchestration via Nexus
 
 Standards: HTML5, CSS3, ES2024
@@ -62,11 +62,8 @@ Cortex: Policy orchestration
 /* COLOPHON */
 
 Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
-21 Modules • 400+ Terminal Commands
-200 Synergy Pipelines • 525+ Depot Capabilities
-80 Engines • 26 Meta-Engines
-CLM Engine v2.0 • Universal Brain Transfer Pipeline
-Nexus Fleet v5.0 • Infrastructure Hardening
+ARCHITECT Epoch — Composable Cognitive Infrastructure
+Modular AI substrate with persistent memory, governed evolution, and adaptive intelligence.
 WCAG 2.2 Accessibility via INCLUSIVE Module
 
 CMPSBL® — Cognitive Infrastructure for AI.
