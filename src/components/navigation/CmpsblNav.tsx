@@ -128,7 +128,6 @@ export function CmpsblNav() {
         { name: "Documentation", href: "/documentation", description: "Complete API reference & guides", icon: FileText },
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
         { name: "Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
-        { name: "Cognitive Forge", href: "/forge", description: "Build, customize & deploy cognitives", icon: Sparkles },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
         { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
@@ -140,7 +139,7 @@ export function CmpsblNav() {
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry applications & examples", icon: Sparkles },
         { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
-        { name: "AI Agencies", href: "/agency", description: "Deploy autonomous agent teams", icon: Users },
+        { name: "Audit", href: "/audit", description: "Security & compliance assessment", icon: Shield },
         { name: "Audit", href: "/audit", description: "Security & compliance assessment", icon: Shield },
         { name: "Pricing", href: "/pricing", description: "Build on our master substrate", icon: Layers },
         { name: "Licensing", href: "/licensing", description: "Deploy on your own infrastructure", icon: FileText },
