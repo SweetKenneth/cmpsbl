@@ -60,6 +60,153 @@ export interface AdoptionRecord {
 const sharedRules = new Map<string, SharedRule>();
 const MAX_SHARED_RULES = 200;
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Seed Rules — Pre-loaded from observed escalation patterns (12h analysis)
+// These give every executor a head start so they don't repeat known mistakes.
+// ═══════════════════════════════════════════════════════════════════════════
+
+let seedComplete = false;
+
+function seedRulesFromEscalationData() {
+  if (seedComplete) return;
+  seedComplete = true;
+
+  const seeds: Array<{
+    source: string;
+    strategy: string;
+    archetype: string;
+    confidence: number;
+    desc: string;
+    categories: ExecutorModuleMeta['category'][];
+  }> = [
+    // 1. SQL injection in cost/governance fields — economy-cost-tracker had 55 escalations
+    {
+      source: 'economy-cost-tracker',
+      strategy: 'value_sanitization',
+      archetype: 'injection_attempt',
+      confidence: 0.92,
+      desc: 'Strip SQL keywords (SELECT/DROP/INSERT/UNION) from action and cost fields before execution. Observed in economy-cost-tracker with inputs like "SELECT * FROM costs; --".',
+      categories: ['governance', 'content_validation', 'orchestration'],
+    },
+    // 2. XSS script tags in prompt/content fields — imagination-engine had 38 escalations
+    {
+      source: 'imagination-engine',
+      strategy: 'value_sanitization',
+      archetype: 'injection_attempt',
+      confidence: 0.95,
+      desc: 'HTML-encode angle brackets and strip <script> tags from prompt/content fields. Seen across cognitive executors with "<script>alert(1)</script>" payloads.',
+      categories: ['cognitive_processing', 'content_analysis', 'intelligence'],
+    },
+    // 3. Oversized string inputs — multiple executors with 1000+ char prompts
+    {
+      source: 'reasoning-engine',
+      strategy: 'value_sanitization',
+      archetype: 'oversized',
+      confidence: 0.90,
+      desc: 'Truncate string values exceeding 5000 chars to prevent memory pressure. Observed with repeated-char flood inputs (e.g., "xxxx...x" >1000 chars).',
+      categories: ['cognitive_processing', 'content_analysis', 'intelligence', 'ui_adaptation'],
+    },
+    // 4. Type mismatch: number where string expected — relay-event-dispatcher had 37 escalations
+    {
+      source: 'relay-event-dispatcher',
+      strategy: 'type_coercion',
+      archetype: 'type_mismatch',
+      confidence: 0.88,
+      desc: 'Coerce numeric values to strings for event/action/module fields. Seen with inputs like {intent: 42, priority: "not-a-number"}.',
+      categories: ['event_routing', 'orchestration', 'governance'],
+    },
+    // 5. Null/undefined in required fields — vision-anomaly-detector had null events
+    {
+      source: 'vision-anomaly-detector',
+      strategy: 'default_injection',
+      archetype: 'missing_required',
+      confidence: 0.85,
+      desc: 'Inject meaningful defaults for null/undefined required fields (event, target, action). Observed with {event: null, target: 12345}.',
+      categories: ['intelligence', 'cognitive_processing', 'content_analysis'],
+    },
+    // 6. Nested objects in string-expected fields — seed:{nested:true} pattern
+    {
+      source: 'learning-engine',
+      strategy: 'shape_normalization',
+      archetype: 'type_mismatch',
+      confidence: 0.82,
+      desc: 'JSON.stringify nested objects found in string-expected fields (seed, prompt, query). Seen with {seed: {nested: true}} inputs.',
+      categories: ['cognitive_processing', 'intelligence', 'content_analysis'],
+    },
+    // 7. Negative numbers in cost/metric fields
+    {
+      source: 'economy-cost-tracker',
+      strategy: 'value_sanitization',
+      archetype: 'partial_valid',
+      confidence: 0.87,
+      desc: 'Clamp negative numeric values to 0 for cost/metric fields (costMillicents, score, priority). Observed with {costMillicents: -1}.',
+      categories: ['governance', 'infrastructure', 'orchestration'],
+    },
+    // 8. Empty shell inputs with only garbage keys — mesh-pipeline-resolver had 37 escalations
+    {
+      source: 'mesh-pipeline-resolver',
+      strategy: 'input_reconstruction',
+      archetype: 'empty_shell',
+      confidence: 0.80,
+      desc: 'Reconstruct minimum viable input shape when no recognized keys present. Inject content/target/userId defaults for orchestration executors.',
+      categories: ['orchestration', 'event_routing', 'governance'],
+    },
+    // 9. Boolean/number coercion for audit fields — audit-compliance-check had 27 escalations
+    {
+      source: 'audit-compliance-check',
+      strategy: 'type_coercion',
+      archetype: 'type_mismatch',
+      confidence: 0.84,
+      desc: 'Cast boolean/number values to strings for wcagLevel, standard, riskLevel fields. Observed with {wcagLevel: 999, mode: true}.',
+      categories: ['content_validation', 'content_analysis', 'ui_adaptation'],
+    },
+    // 10. Prototype pollution / dangerous key injection
+    {
+      source: 'seba-proposal-evaluator',
+      strategy: 'value_sanitization',
+      archetype: 'injection_attempt',
+      confidence: 0.93,
+      desc: 'Strip __proto__, constructor, prototype keys from input objects. Prevents prototype pollution attacks across all executor categories.',
+      categories: ['governance', 'orchestration', 'cognitive_processing', 'content_validation', 'event_routing', 'intelligence', 'infrastructure', 'ui_adaptation', 'content_analysis'],
+    },
+  ];
+
+  for (const seed of seeds) {
+    const ruleId = `SR_SEED_${seed.source}_${seed.strategy}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+    const rule: SharedRule = {
+      id: ruleId,
+      sourceExecutor: seed.source,
+      repairStrategy: seed.strategy,
+      description: seed.desc,
+      targetArchetype: seed.archetype,
+      sourceConfidence: seed.confidence,
+      adoptions: new Map(),
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      active: true,
+      compatibleCategories: seed.categories,
+    };
+
+    // Auto-adopt for source executor with pre-seeded success count
+    rule.adoptions.set(seed.source, {
+      executor: seed.source,
+      adopted: true,
+      confidence: seed.confidence,
+      successes: 5, // Pre-seed with history so auto-propagation triggers (needs 3+)
+      failures: 0,
+      lastUsed: Date.now(),
+      rolledBack: false,
+    });
+
+    sharedRules.set(ruleId, rule);
+  }
+
+  log.info('immune', `Seeded ${seeds.length} learning rules from escalation analysis into shared registry`);
+}
+
+// Auto-seed on module load
+seedRulesFromEscalationData();
+
 /** Category compatibility matrix — which categories can learn from each other */
 const CATEGORY_COMPAT: Record<ExecutorModuleMeta['category'], ExecutorModuleMeta['category'][]> = {
   ui_adaptation:       ['ui_adaptation', 'content_analysis'],
