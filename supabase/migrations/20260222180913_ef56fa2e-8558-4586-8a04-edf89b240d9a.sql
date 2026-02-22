@@ -1,0 +1,1 @@
+INSERT INTO system_flags (key, enabled) VALUES ('auto_training_enabled', false) ON CONFLICT (key) DO NOTHING;
