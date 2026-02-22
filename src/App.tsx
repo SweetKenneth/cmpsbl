@@ -28,6 +28,7 @@ import { MobilePreviewSafeMode } from "@/components/system/MobilePreviewSafeMode
 
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
+import { AdminRoute } from "@/components/admin/AdminRoute";
 const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
 const RegisterPasskeyPrompt = lazy(() => import("@/components/auth/RegisterPasskey").then(m => ({ default: m.RegisterPasskeyPrompt })));
 
@@ -444,11 +445,11 @@ const App = () => {
                         {/* These pages exist but are not accessible via nav/footer/CTAs */}
                         {/* Redirecting to home to prevent outdated content access */}
                         
-                        {/* Admin routes */}
-                        <Route path="/admin/patches" element={<AdminPatches />} />
-                        <Route path="/admin/shadow-mesh" element={<ShadowMeshPage />} />
-                        <Route path="/admin/immunity-mesh" element={<ImmunityMeshDashboard />} />
-                        <Route path="/admin/owner-reports" element={<OwnerReports />} />
+                        {/* Admin routes — Governor-only */}
+                        <Route path="/admin/patches" element={<AdminRoute><AdminPatches /></AdminRoute>} />
+                        <Route path="/admin/shadow-mesh" element={<AdminRoute><ShadowMeshPage /></AdminRoute>} />
+                        <Route path="/admin/immunity-mesh" element={<AdminRoute><ImmunityMeshDashboard /></AdminRoute>} />
+                        <Route path="/admin/owner-reports" element={<AdminRoute><OwnerReports /></AdminRoute>} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         
