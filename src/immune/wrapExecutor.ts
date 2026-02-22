@@ -160,9 +160,9 @@ export function wrapExecutor(
       const ir = intelligentRepair(executorName, failingInput);
       if (!ir.repaired) return null;
 
-      if (ir.confidence < 0.2) {
+      if (ir.confidence < 0.4) {
         logImmuneEvent(createEvent(executorName, scope, module, 'repair', 'escalated', failingInput,
-          `Repair confidence too low (${(ir.confidence * 100).toFixed(0)}%) — skipping retry`, true));
+          `Repair confidence too low (${(ir.confidence * 100).toFixed(0)}%) — escalating instead of retrying`, true));
         return null;
       }
 
