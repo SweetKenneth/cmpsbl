@@ -101,6 +101,7 @@ const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDoc
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 const ShadowMeshPage = lazy(() => import("./pages/admin/ShadowMeshPage"));
+const ImmunityMeshDashboard = lazy(() => import("./pages/admin/ImmunityMeshDashboard"));
 const StartHere = lazy(() => import("./pages/StartHere"));
 const ComposableCognitives = lazy(() => import("./pages/ComposableCognitives"));
 const Enterprise = lazy(() => import("./pages/Enterprise"));
@@ -446,6 +447,7 @@ const App = () => {
                         {/* Admin routes */}
                         <Route path="/admin/patches" element={<AdminPatches />} />
                         <Route path="/admin/shadow-mesh" element={<ShadowMeshPage />} />
+                        <Route path="/admin/immunity-mesh" element={<ImmunityMeshDashboard />} />
                         <Route path="/admin/owner-reports" element={<OwnerReports />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
