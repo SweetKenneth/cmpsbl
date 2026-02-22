@@ -8,9 +8,10 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const EVOLUTION_MESH_PRICES: Record<string, string> = {
-  pro: "price_1T3kFQQ7FtTiAL4ayKv1251c",
-  team: "price_1T3kFRQ7FtTiAL4aJ11S85t2",
+const PRICES: Record<string, { price_id: string; mode: string }> = {
+  pro: { price_id: "price_1T3kFQQ7FtTiAL4ayKv1251c", mode: "subscription" },
+  team: { price_id: "price_1T3kFRQ7FtTiAL4aJ11S85t2", mode: "subscription" },
+  standalone: { price_id: "price_1T3kMBQ7FtTiAL4a4f2LZKXv", mode: "payment" },
 };
 
 const logStep = (step: string, details?: unknown) => {
@@ -31,17 +32,17 @@ serve(async (req) => {
   try {
     logStep("Function started");
 
-    const { tier } = await req.json();
-    if (!tier || !EVOLUTION_MESH_PRICES[tier]) {
-      throw new Error(`Invalid tier: ${tier}. Must be 'pro' or 'team'.`);
+    const { tier, framework } = await req.json();
+    if (!tier || !PRICES[tier]) {
+      throw new Error(`Invalid tier: ${tier}. Must be 'pro', 'team', or 'standalone'.`);
     }
-    logStep("Tier selected", { tier });
+    logStep("Tier selected", { tier, framework });
 
     const authHeader = req.headers.get("Authorization");
     let userEmail: string | undefined;
     let customerId: string | undefined;
 
-    if (authHeader) {
+    if (authHeader && authHeader !== "Bearer null") {
       const token = authHeader.replace("Bearer ", "");
       const { data } = await supabaseClient.auth.getUser(token);
       userEmail = data.user?.email ?? undefined;
@@ -61,22 +62,24 @@ serve(async (req) => {
     }
 
     const origin = req.headers.get("origin") || "https://cmpsbl.lovable.app";
+    const priceConfig = PRICES[tier];
 
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
       customer: customerId,
       customer_email: customerId ? undefined : userEmail,
-      line_items: [
-        {
-          price: EVOLUTION_MESH_PRICES[tier],
-          quantity: 1,
-        },
-      ],
-      mode: "subscription",
-      success_url: `${origin}/evolution-mesh?checkout=success`,
+      line_items: [{ price: priceConfig.price_id, quantity: 1 }],
+      mode: priceConfig.mode as Stripe.Checkout.SessionCreateParams.Mode,
+      success_url: `${origin}/evolution-mesh?checkout=success&tier=${tier}`,
       cancel_url: `${origin}/evolution-mesh?checkout=canceled`,
-    });
+      metadata: {
+        product: "evolution-mesh",
+        tier,
+        framework: framework || "universal",
+      },
+    };
 
-    logStep("Checkout session created", { sessionId: session.id });
+    const session = await stripe.checkout.sessions.create(sessionParams);
+    logStep("Checkout session created", { sessionId: session.id, mode: priceConfig.mode });
 
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
