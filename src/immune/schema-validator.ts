@@ -396,9 +396,10 @@ function classifyArchetype(
   if (knownCount > 0 && unknowns > knownCount * 2 && structuralIssues <= 1) return 'shape_alien';
 
   if (oversized > 0) return 'oversized';
-  if (typeMismatches > missing) return 'type_mismatch';
+  if (typeMismatches > 0 && missing === 0) return 'type_mismatch';
   if (missing > 0 && typeMismatches === 0) return 'missing_required';
 
+  // Mixed issues (type_mismatch + missing) = partial_valid → safe-fail
   return 'partial_valid';
 }
 

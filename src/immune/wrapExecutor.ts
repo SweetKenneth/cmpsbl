@@ -110,7 +110,6 @@ function preflightCheck(input: unknown): { valid: boolean; reason?: string } {
  * system correctly rejects, not inputs that need fixing.
  */
 const REPAIRABLE_ARCHETYPES: Set<InputArchetype> = new Set([
-  'partial_valid',
   'missing_required',
 ]);
 
