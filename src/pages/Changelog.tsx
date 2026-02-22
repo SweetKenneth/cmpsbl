@@ -1,5 +1,5 @@
 /**
- * CMPSBL v10.5.4 ARCHITECT Epoch — Living Evolution Log
+ * CMPSBL SPARTA Epoch — Living Evolution Log
  * A continuous record of why the system evolved across all epochs.
  * 
  * This is not a changelog. This is a living document that records
@@ -25,8 +25,35 @@ interface EvolutionEntry {
   source?: 'manual' | 'evolution_run';
 }
 
-// Living Evolution Log — v10.x.x Series (ARCHITECT Epoch — Infrastructure Hardening)
+// Living Evolution Log — SPARTA Epoch
 // Each entry documents WHY the system changed, never HOW
+const evolutionLogSPARTA: EvolutionEntry[] = [
+  {
+    id: "sparta-evolution-001",
+    date: "2026-02-22",
+    pressures: [
+      "Version numbers were scattered across 15+ UI surfaces — every update required a full sweep",
+      "Admin immunity mesh page was inaccessible due to auth redirect loop even for authenticated admins",
+      "SEO assets contained version-specific claims creating maintenance burden",
+      "Internal documentation lacked training mode reference material"
+    ],
+    responses: [
+      "Purged version numbers from nav, sidebar, tabs, and all non-essential surfaces — retained only in homepage hero and dashboard",
+      "Fixed admin auth to use security-definer RPC (has_role_text) bypassing RLS restrictions",
+      "Added Immunity Mesh quick link in Governor section for direct access without route protection issues",
+      "Created comprehensive Training Modes documentation (doc #22) covering all shadow build modes",
+      "Set immunity mesh page to noindex for search engines"
+    ],
+    capabilities: [
+      "Version updates now require exactly 2 changes instead of 15+ — single source of truth achieved",
+      "Admin pages accessible via Governor quick links — no more auth redirect loops",
+      "Training documentation covers Auto Training, Replay, Synthetic, ENCODE Practice, and Run All modes",
+      "SEO is version-number-free across all indexed pages"
+    ],
+  },
+];
+
+// Living Evolution Log — v10.x.x Series (ARCHITECT Epoch — Infrastructure Hardening)
 const evolutionLogV10: EvolutionEntry[] = [
   {
     id: "v10-evolution-013",
@@ -345,7 +372,8 @@ export default function Changelog() {
     staleTime: 60000,
   });
 
-  const mergedV10 = [
+  const mergedEntries = [
+    ...evolutionLogSPARTA,
     ...(autoEntries || []).map((entry): EvolutionEntry => ({
       id: entry.id,
       date: entry.date,
@@ -368,7 +396,7 @@ export default function Changelog() {
       <main className="container mx-auto px-4 py-24 max-w-5xl">
         <div className="text-center mb-16 space-y-4">
           <Badge variant="outline" className="px-4 py-1 border-primary/20 bg-primary/5 text-primary">
-            v10.5.4 ARCHITECT EPOCH
+            SPARTA EPOCH
           </Badge>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight">
             Evolution Log
@@ -383,7 +411,7 @@ export default function Changelog() {
         </div>
 
         <div className="relative border-l border-border/50 ml-4 md:ml-0 md:pl-8 space-y-12">
-          {mergedV10.map((entry, i) => (
+          {mergedEntries.map((entry, i) => (
             <motion.div
               key={entry.id}
               initial={{ opacity: 0, x: -20 }}
