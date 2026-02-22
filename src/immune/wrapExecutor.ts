@@ -292,10 +292,23 @@ export function wrapExecutor(
       const report = validateInput(executorName, input as Record<string, unknown>);
       
       if (!isRepairableArchetype(report.archetype)) {
-        // Garbage input — safe-fail immediately, no repair attempt
-        safeFailFlag = true;
-        recordOutcome('failed_safe');
-        return createSafeFailure(ctx.synergyId, `Preflight rejected (${report.archetype}): ${preflight.reason}`);
+      // Garbage input — safe-fail immediately, no repair attempt
+      safeFailFlag = true;
+      recordOutcome('failed_safe');
+      trackOutcome({
+        executor: executorName,
+        timestamp: Date.now(),
+        archetype: report.archetype,
+        repairType: null,
+        repairConfidence: 0,
+        retrySucceeded: false,
+        inputShape: Object.keys(input as Record<string, unknown>).sort().join(','),
+        stagesApplied: 0,
+        chained: false,
+        preNormalized: wasPreNormalized,
+        durationMs: Math.round(performance.now() - startTime),
+      });
+      return createSafeFailure(ctx.synergyId, `Preflight rejected (${report.archetype}): ${preflight.reason}`);
       }
 
       // Repairable archetype — attempt intelligent repair
@@ -350,6 +363,19 @@ export function wrapExecutor(
       }
 
       recordOutcome('success');
+      trackOutcome({
+        executor: executorName,
+        timestamp: Date.now(),
+        archetype: 'well_formed',
+        repairType: null,
+        repairConfidence: 1,
+        retrySucceeded: true,
+        inputShape: Object.keys(input as Record<string, unknown>).sort().join(','),
+        stagesApplied: 0,
+        chained: false,
+        preNormalized: wasPreNormalized,
+        durationMs: Math.round(performance.now() - startTime),
+      });
       // metrics recorded at batch level
       return result;
     } catch (err) {
@@ -365,6 +391,19 @@ export function wrapExecutor(
         // Expected failure on garbage input — safe-fail, no repair, no escalation
         safeFailFlag = true;
         recordOutcome('failed_safe');
+        trackOutcome({
+          executor: executorName,
+          timestamp: Date.now(),
+          archetype: report.archetype,
+          repairType: null,
+          repairConfidence: 0,
+          retrySucceeded: false,
+          inputShape: Object.keys(input as Record<string, unknown>).sort().join(','),
+          stagesApplied: 0,
+          chained: false,
+          preNormalized: wasPreNormalized,
+          durationMs: Math.round(performance.now() - startTime),
+        });
         return createSafeFailure(ctx.synergyId, `Safe-fail (${report.archetype}): ${errorMsg}`);
       }
 
@@ -428,6 +467,7 @@ async function escalate(
     deterministicApplied: null,
     legacyApplied: false,
     timestamp: Date.now(),
+    failingInput: input,
   });
 
   // Run learning cycle periodically (lightweight — only processes eligible patterns)

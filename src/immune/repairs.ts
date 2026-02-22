@@ -258,3 +258,206 @@ registerRepair('inclusive-content', (input) => {
     ? { repairedInput: repaired, note: notes.join('; ') }
     : null;
 });
+
+// ═══════════════════════════════════════════════════════════════════════════
+// COGNITIVE MODULE REPAIRS
+// ═══════════════════════════════════════════════════════════════════════════
+
+registerRepair('reasoning-engine', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.query || typeof input.query !== 'string') {
+    repaired.query = typeof input.query === 'number' ? String(input.query) : 'default query';
+    notes.push('defaulted/coerced query');
+  } else { repaired.query = sanitizeString(input.query); if (repaired.query !== input.query) notes.push('sanitized query'); }
+  if (input.constraints !== undefined && typeof input.constraints !== 'object') { repaired.constraints = {}; notes.push('reset invalid constraints'); }
+  if (input.depth !== undefined) { repaired.depth = clampNumber(input.depth, 1, 10, 3); if (repaired.depth !== input.depth) notes.push('clamped depth'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('learning-engine', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.signal || typeof input.signal !== 'string') {
+    repaired.signal = typeof input.signal === 'number' ? String(input.signal) : 'default signal';
+    notes.push('defaulted/coerced signal');
+  } else { repaired.signal = sanitizeString(input.signal); if (repaired.signal !== input.signal) notes.push('sanitized signal'); }
+  if (input.feedback !== undefined && typeof input.feedback !== 'object') { repaired.feedback = {}; notes.push('reset invalid feedback'); }
+  if (input.reinforcement !== undefined) { repaired.reinforcement = clampNumber(input.reinforcement, 0, 1, 0.5); if (repaired.reinforcement !== input.reinforcement) notes.push('clamped reinforcement'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('imagination-engine', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.prompt || typeof input.prompt !== 'string') {
+    repaired.prompt = typeof input.prompt === 'number' ? String(input.prompt) : 'default prompt';
+    notes.push('defaulted/coerced prompt');
+  } else { repaired.prompt = sanitizeString(input.prompt); if (repaired.prompt !== input.prompt) notes.push('sanitized prompt'); }
+  if (input.mode !== undefined && typeof input.mode !== 'string') { repaired.mode = 'GENERATE'; notes.push('defaulted mode'); }
+  if (input.creativity !== undefined) { repaired.creativity = clampNumber(input.creativity, 0, 1, 0.7); if (repaired.creativity !== input.creativity) notes.push('clamped creativity'); }
+  if (input.constraints !== undefined && typeof input.constraints !== 'object') { repaired.constraints = {}; notes.push('reset invalid constraints'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// OPERATIONAL MODULE REPAIRS
+// ═══════════════════════════════════════════════════════════════════════════
+
+registerRepair('relay-event-dispatcher', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.event || typeof input.event !== 'string') {
+    repaired.event = typeof input.event === 'number' ? String(input.event) : 'system.default';
+    notes.push('defaulted/coerced event');
+  } else { repaired.event = sanitizeString(input.event); if (repaired.event !== input.event) notes.push('sanitized event'); }
+  if (input.payload !== undefined && typeof input.payload !== 'object') { repaired.payload = {}; notes.push('reset invalid payload'); }
+  if (input.priority !== undefined) { repaired.priority = clampNumber(input.priority, 0, 10, 1); if (repaired.priority !== input.priority) notes.push('clamped priority'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('economy-cost-tracker', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.action || typeof input.action !== 'string') {
+    repaired.action = typeof input.action === 'number' ? String(input.action) : 'compute';
+    notes.push('defaulted/coerced action');
+  } else { repaired.action = sanitizeString(input.action); if (repaired.action !== input.action) notes.push('sanitized action'); }
+  if (!input.module || typeof input.module !== 'string') {
+    repaired.module = typeof input.module === 'number' ? String(input.module) : 'unknown';
+    notes.push('defaulted/coerced module');
+  } else { repaired.module = sanitizeString(input.module); if (repaired.module !== input.module) notes.push('sanitized module'); }
+  if (input.tokens !== undefined) { repaired.tokens = clampNumber(input.tokens, 0, 1000000, 0); if (repaired.tokens !== input.tokens) notes.push('clamped tokens'); }
+  if (input.costMillicents !== undefined) { repaired.costMillicents = clampNumber(input.costMillicents, 0, 10000000, 0); if (repaired.costMillicents !== input.costMillicents) notes.push('clamped costMillicents'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('audit-compliance-check', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.content || typeof input.content !== 'string') {
+    repaired.content = typeof input.content === 'number' ? String(input.content) : 'audit target';
+    notes.push('defaulted/coerced content');
+  } else { repaired.content = sanitizeString(input.content); if (repaired.content !== input.content) notes.push('sanitized content'); }
+  if (input.standard !== undefined) {
+    const std = sanitizeString(input.standard).toUpperCase();
+    if (!['WCAG', 'ADA', 'GDPR', 'SOC2', 'GENERAL'].includes(std)) { repaired.standard = 'GENERAL'; notes.push('defaulted standard'); }
+    else repaired.standard = std;
+  }
+  if (input.severity !== undefined && typeof input.severity !== 'string') { repaired.severity = 'MEDIUM'; notes.push('defaulted severity'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ORCHESTRATOR MODULE REPAIRS
+// ═══════════════════════════════════════════════════════════════════════════
+
+registerRepair('mesh-pipeline-resolver', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.intent || typeof input.intent !== 'string') {
+    repaired.intent = typeof input.intent === 'number' ? String(input.intent) : 'resolve pipeline';
+    notes.push('defaulted/coerced intent');
+  } else { repaired.intent = sanitizeString(input.intent); if (repaired.intent !== input.intent) notes.push('sanitized intent'); }
+  if (input.modules !== undefined && !Array.isArray(input.modules)) { repaired.modules = []; notes.push('reset invalid modules'); }
+  if (input.constraints !== undefined && typeof input.constraints !== 'object') { repaired.constraints = {}; notes.push('reset invalid constraints'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('seba-proposal-evaluator', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.proposal || typeof input.proposal !== 'string') {
+    repaired.proposal = typeof input.proposal === 'number' ? String(input.proposal) : 'default proposal';
+    notes.push('defaulted/coerced proposal');
+  } else { repaired.proposal = sanitizeString(input.proposal); if (repaired.proposal !== input.proposal) notes.push('sanitized proposal'); }
+  if (input.riskLevel !== undefined) {
+    const rl = sanitizeString(input.riskLevel).toUpperCase();
+    if (!['LOW', 'MEDIUM', 'HIGH'].includes(rl)) { repaired.riskLevel = 'MEDIUM'; notes.push('defaulted riskLevel'); }
+    else repaired.riskLevel = rl;
+  }
+  if (input.impactMetrics !== undefined && typeof input.impactMetrics !== 'object') { repaired.impactMetrics = {}; notes.push('reset invalid impactMetrics'); }
+  if (input.confidence !== undefined) { repaired.confidence = clampNumber(input.confidence, 0, 1, 0.5); if (repaired.confidence !== input.confidence) notes.push('clamped confidence'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// INFRASTRUCTURE MODULE REPAIRS
+// ═══════════════════════════════════════════════════════════════════════════
+
+registerRepair('memory-consolidation-engine', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.content || typeof input.content !== 'string') { repaired.content = 'consolidation target'; notes.push('defaulted content'); }
+  if (!input.userId || typeof input.userId !== 'string') { repaired.userId = 'anonymous'; notes.push('defaulted userId'); }
+  if (input.action !== undefined && typeof input.action !== 'string') { repaired.action = 'CONSOLIDATE'; notes.push('defaulted action'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('identity-verification-engine', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.userId || typeof input.userId !== 'string') { repaired.userId = 'anonymous'; notes.push('defaulted userId'); }
+  if (!input.action || typeof input.action !== 'string') { repaired.action = 'verify'; notes.push('defaulted action'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('sandbox-isolation-guard', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.content || typeof input.content !== 'string') { repaired.content = 'isolation test'; notes.push('defaulted content'); }
+  if (!input.target || typeof input.target !== 'string') { repaired.target = 'sandbox'; notes.push('defaulted target'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('encode-task-scheduler', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.action || typeof input.action !== 'string') { repaired.action = 'schedule'; notes.push('defaulted action'); }
+  if (input.priority !== undefined) { repaired.priority = clampNumber(input.priority, 0, 10, 1); if (repaired.priority !== input.priority) notes.push('clamped priority'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// INTELLIGENCE MODULE REPAIRS
+// ═══════════════════════════════════════════════════════════════════════════
+
+registerRepair('dream-pattern-synthesizer', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.prompt || typeof input.prompt !== 'string') { repaired.prompt = 'synthesize pattern'; notes.push('defaulted prompt'); }
+  if (input.mode !== undefined && typeof input.mode !== 'string') { repaired.mode = 'SYNTHESIZE'; notes.push('defaulted mode'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('decode-intent-classifier', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.content || typeof input.content !== 'string') { repaired.content = 'classify intent'; notes.push('defaulted content'); }
+  if (input.context !== undefined && typeof input.context !== 'object') { repaired.context = {}; notes.push('reset invalid context'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
+
+registerRepair('vision-anomaly-detector', (input) => {
+  const repaired = { ...input };
+  const notes: string[] = [];
+  if (!input.content || typeof input.content !== 'string') { repaired.content = 'detect anomalies'; notes.push('defaulted content'); }
+  if (!input.target || typeof input.target !== 'string') { repaired.target = 'metrics'; notes.push('defaulted target'); }
+  if (input.threshold !== undefined) { repaired.threshold = clampNumber(input.threshold, 0, 1, 0.5); if (repaired.threshold !== input.threshold) notes.push('clamped threshold'); }
+  if (notes.length > 0) repaired.__repaired = true;
+  return notes.length > 0 ? { repairedInput: repaired, note: notes.join('; ') } : null;
+});
