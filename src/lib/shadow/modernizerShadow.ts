@@ -22,7 +22,7 @@
 import { modernizerScan, type ScanResultExtended } from '@/lib/evolve/scan';
 import type { ScanProposal, DetectedAnomaly, MissingCapability } from '@/lib/evolve/scan/types';
 import { getSynergyExecutor } from '@/lib/capabilities/synergies/registry';
-import { PILOT_EXECUTORS, EXECUTOR_MODULE_META, type PilotExecutorId } from '@/immune/pilotExecutors';
+import { PILOT_EXECUTORS, EXECUTOR_MODULE_META, type PilotExecutorId, type ExecutorModuleMeta, getExecutorsByCategory } from '@/immune/pilotExecutors';
 import { contributeRule, findApplicableRules } from '@/immune/shared-rule-registry';
 import { updateHealthRegistry } from '@/lib/substrate/health-registry';
 import { appendEvent } from '@/core/events/eventStore';
@@ -296,7 +296,7 @@ function extractGapTasks(scanResult: ScanResultExtended): GapTask[] {
 // ═══════════════════════════════════════════════════════════════
 
 function findBestExecutor(task: GapTask): string {
-  // Match by affected module
+  // 1) Match by affected module — find executors whose module matches
   for (const mod of task.affectedModules) {
     const modLower = mod.toLowerCase();
     for (const executor of PILOT_EXECUTORS) {
@@ -305,30 +305,52 @@ function findBestExecutor(task: GapTask): string {
     }
   }
   
-  // Match by gap category → module specialization
-  const categoryExecutorMap: Record<GapCategory, string[]> = {
-    security: ['comprehensive-accessibility-audit', 'adaptive-ui', 'bot-sniper'],
-    resilience: ['cognitive-load-optimization', 'atlas-evolution-engine'],
-    performance: ['performance-optimization', 'cognitive-load-optimization'],
-    config: ['inclusive-content', 'atlas-evolution-engine'],
-    cleanup: ['inclusive-content', 'adaptive-ui'],
-    observability: ['agency-telemetry', 'cognitive-load-optimization'],
+  // 2) Match by gap category → executor category using real metadata
+  const gapToCategoryMap: Record<GapCategory, ExecutorModuleMeta['category'][]> = {
+    security: ['security', 'governance', 'content_validation'],
+    resilience: ['infrastructure', 'orchestration', 'autonomy'],
+    performance: ['optimization', 'infrastructure', 'cognitive_processing'],
+    config: ['infrastructure', 'governance', 'event_routing'],
+    cleanup: ['infrastructure', 'optimization', 'content_validation'],
+    observability: ['event_routing', 'intelligence', 'infrastructure'],
   };
   
-  const candidates = categoryExecutorMap[task.gapType] ?? [];
-  for (const c of candidates) {
-    if ((PILOT_EXECUTORS as readonly string[]).includes(c)) return c;
+  const targetCategories = gapToCategoryMap[task.gapType] ?? [];
+  for (const cat of targetCategories) {
+    const categoryExecutors = getExecutorsByCategory(cat);
+    if (categoryExecutors.length > 0) {
+      // Pick the executor with the LEAST practice on this gap type (needs training most)
+      // but exclude any with very low success rates (< 10%) to avoid wasting cycles
+      const scored = categoryExecutors.map(ex => {
+        const key = `${ex}::${task.gapType}`;
+        const perf = performanceLog.get(key);
+        return { executor: ex, attempts: perf?.attempts ?? 0, successRate: perf?.successRate ?? 0.5 };
+      });
+      
+      // Prefer executors that haven't been tried yet or have moderate success
+      scored.sort((a, b) => {
+        // Untried executors first
+        if (a.attempts === 0 && b.attempts > 0) return -1;
+        if (b.attempts === 0 && a.attempts > 0) return 1;
+        // Then by least attempts (spread the training)
+        return a.attempts - b.attempts;
+      });
+      
+      return scored[0].executor;
+    }
   }
   
-  // Fallback: pick executor with lowest performance on this gap type (needs practice most)
-  const needsPractice = Array.from(performanceLog.values())
-    .filter(e => e.gapType === task.gapType)
-    .sort((a, b) => a.successRate - b.successRate);
+  // 3) Fallback: pick executor with lowest attempt count across ALL executors for this gap type
+  const allExecutorScores = PILOT_EXECUTORS.map(ex => {
+    const key = `${ex}::${task.gapType}`;
+    const perf = performanceLog.get(key);
+    return { executor: ex, attempts: perf?.attempts ?? 0 };
+  });
+  allExecutorScores.sort((a, b) => a.attempts - b.attempts);
   
-  if (needsPractice.length > 0) return needsPractice[0].executor;
-  
-  // Last resort: random pilot
-  return PILOT_EXECUTORS[Math.floor(Math.random() * Math.min(35, PILOT_EXECUTORS.length))];
+  // Pick from the least-used quartile randomly (prevents always picking the same one)
+  const leastUsedQuartile = allExecutorScores.slice(0, Math.max(10, Math.floor(allExecutorScores.length / 4)));
+  return leastUsedQuartile[Math.floor(Math.random() * leastUsedQuartile.length)].executor;
 }
 
 // ═══════════════════════════════════════════════════════════════
