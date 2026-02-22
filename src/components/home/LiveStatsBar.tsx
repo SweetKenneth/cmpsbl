@@ -30,33 +30,14 @@ function useLiveStats() {
   useEffect(() => {
     async function fetchLiveStats() {
       try {
-        // Brain events count
-        const { count: brainCount } = await supabase
-          .from("brain_events" as any)
-          .select("id", { count: "exact", head: true });
+        const { data, error } = await supabase.rpc("get_public_live_stats");
 
-        // Memory count (all tiers)
-        const [hotRes, warmRes, coldRes] = await Promise.all([
-          supabase.from("brain_memory_hot" as any).select("id", { count: "exact", head: true }),
-          supabase.from("brain_memory_warm" as any).select("id", { count: "exact", head: true }),
-          supabase.from("brain_memory_cold" as any).select("id", { count: "exact", head: true }),
-        ]);
-        const memoryCount = (hotRes.count ?? 0) + (warmRes.count ?? 0) + (coldRes.count ?? 0);
+        if (error || !data) {
+          console.warn("[LiveStats] RPC failed:", error?.message);
+          return;
+        }
 
-        // Today's API calls
-        const today = new Date().toISOString().split("T")[0];
-        const { count: apiCalls } = await supabase
-          .from("ai_usage_log")
-          .select("id", { count: "exact", head: true })
-          .gte("created_at", today);
-
-        // Immune metrics for probe stats — aggregate all rows
-        const { data: metrics } = await supabase
-          .from("immune_metrics" as any)
-          .select("total_runs, repair_successes")
-          .limit(1000);
-
-        const totalProbes = (metrics ?? []).reduce((s: number, m: any) => s + (m.total_runs ?? 0), 0);
+        const stats = data as { brain_events: number; memories: number; api_calls: number; total_probes: number };
 
         const formatNum = (n: number | null): string => {
           if (!n) return "0";
@@ -66,12 +47,12 @@ function useLiveStats() {
         };
 
         setStats([
-          { icon: Activity, value: formatNum(brainCount), label: "Brain Events", color: "text-cyan-400" },
+          { icon: Activity, value: formatNum(stats.brain_events), label: "Brain Events", color: "text-cyan-400" },
           { icon: Shield, value: "99.9%", label: "Uptime", color: "text-emerald-400" },
           { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Modules", color: "text-amber-400" },
-          { icon: Brain, value: formatNum(memoryCount), label: "Memories Stored", color: "text-violet-400" },
-          { icon: Users, value: formatNum(apiCalls), label: "API Calls Today", color: "text-cyan-400" },
-          { icon: CheckCircle2, value: formatNum(totalProbes), label: "Probes Run", color: "text-emerald-400" },
+          { icon: Brain, value: formatNum(stats.memories), label: "Memories Stored", color: "text-violet-400" },
+          { icon: Users, value: formatNum(stats.api_calls), label: "API Calls Today", color: "text-cyan-400" },
+          { icon: CheckCircle2, value: formatNum(stats.total_probes), label: "Probes Run", color: "text-emerald-400" },
         ]);
       } catch {
         // Silent — show defaults
@@ -79,7 +60,7 @@ function useLiveStats() {
     }
 
     fetchLiveStats();
-    const interval = setInterval(fetchLiveStats, 60000); // Refresh every 60s
+    const interval = setInterval(fetchLiveStats, 60000);
     return () => clearInterval(interval);
   }, []);
 

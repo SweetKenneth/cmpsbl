@@ -12155,6 +12155,7 @@ export type Database = {
           warm_limit: number
         }[]
       }
+      get_public_live_stats: { Args: never; Returns: Json }
       has_role:
         | {
             Args: {
