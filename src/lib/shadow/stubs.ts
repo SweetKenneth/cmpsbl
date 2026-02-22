@@ -48,22 +48,24 @@ function pickOutcome(seed: number, confidence: number): StubOutcome {
   const bucket = seed % 100;
 
   if (confidence >= 0.85) {
-    // High confidence — repaired inputs with good defaults land here
-    if (bucket < 95) return 'success';
-    if (bucket < 98) return 'recoverable_error';
+    // High confidence — well-formed natural inputs
+    if (bucket < 80) return 'success';
+    if (bucket < 92) return 'recoverable_error';
     return 'non_recoverable_error';
   } else if (confidence >= 0.6) {
-    // Medium confidence — partially valid / shape_alien after repair
-    if (bucket < 82) return 'success';
-    if (bucket < 93) return 'recoverable_error';
-    return 'non_recoverable_error';
-  } else if (confidence >= 0.3) {
-    if (bucket < 50) return 'success';
+    // Medium confidence — repaired or partially valid
+    if (bucket < 55) return 'success';
     if (bucket < 80) return 'recoverable_error';
     return 'non_recoverable_error';
+  } else if (confidence >= 0.3) {
+    // Low confidence — poorly repaired or shape_alien
+    if (bucket < 25) return 'success';
+    if (bucket < 60) return 'recoverable_error';
+    return 'non_recoverable_error';
   } else {
-    if (bucket < 10) return 'success';
-    if (bucket < 65) return 'recoverable_error';
+    // Very low confidence — nearly unrepairable
+    if (bucket < 5) return 'success';
+    if (bucket < 35) return 'recoverable_error';
     return 'non_recoverable_error';
   }
 }
@@ -92,50 +94,26 @@ function createStubExecutor(executorName: string) {
   const fn = async (ctx: SynergyExecutionContext): Promise<SynergyResult> => {
     const input = ctx.input ?? {};
     
-    // Enhancement #14: Repair-marker fast path — repaired inputs are pre-validated
-    // The repair pipeline stamps __repaired=true on successfully repaired inputs.
-    // Real executors handle well-repaired inputs correctly — model with 99.5% success.
-    if ((input as any).__repaired === true) {
-      const repairedSeed = hashSeed(input, executorName) % 1000;
-      if (repairedSeed < 995) return createSuccessResult(ctx, 2); // 99.5% success
-      throw new Error(`[stub:${executorName}] Post-repair transient failure (repaired marker)`);
-    }
-    
-    // Enhancement #8: Well-formed fast path — skip heavy validation for clean inputs
+    // Validate input — this is the SOLE basis for outcome determination.
+    // NO fast-paths for __repaired or structural score — those were causing
+    // 100% repair rates by short-circuiting the graduated fidelity logic.
     const report = validateInput(executorName, input);
-    if (report.archetype === 'well_formed' && report.valid) {
-      // Fast path: well-formed inputs always succeed (98%)
+    
+    // Strip __repaired marker so it doesn't influence structural scoring
+    const cleanInput = { ...input };
+    delete (cleanInput as any).__repaired;
+    delete (cleanInput as any).__repairConfidence;
+    
+    // Well-formed inputs that were NOT repaired succeed at high rate
+    if (report.archetype === 'well_formed' && report.valid && !(input as any).__repaired) {
       const fastSeed = hashSeed(input, executorName) % 100;
-      if (fastSeed < 98) return createSuccessResult(ctx, 2);
-      throw new Error(`[stub:${executorName}] Rare transient failure on well-formed input`);
+      if (fastSeed < 90) return createSuccessResult(ctx, 2); // 90% natural success
+      throw new Error(`[stub:${executorName}] Transient failure on well-formed input`);
     }
-    
-    // Enhancement #9: Executor-aware 4-dimensional structural scoring
-    // adaptive-ui uses target/url/resource_id as primary fields, not just content
-    const hasContent = (typeof input.content === 'string' && input.content.length > 0 && input.content !== '[REDACTED]')
-      || (typeof input.resource_id === 'string' && (input.resource_id as string).length > 0);
-    const hasLocator = (typeof input.target === 'string' && input.target.length > 0)
-      || (typeof input.url === 'string' && input.url.length > 0)
-      || (typeof input.domain === 'string' && input.domain.length > 0);
-    const hasIdentity = typeof input.userId === 'string' && input.userId.length > 0;
-    const hasNoInjection = report.archetype !== 'injection_attempt';
-    
-    const structuralScore = [hasContent, hasLocator, hasIdentity, hasNoInjection]
-      .filter(Boolean).length;
-    
-    // Enhancement #13: Structural fast path — score ≥2 now qualifies (lowered from 3)
-    // With repair pipeline improvements, score-2 inputs are sufficiently repaired.
-    if (structuralScore >= 2) {
-      const successRate = structuralScore >= 3 ? 198 : 190; // 99% for ≥3, 95% for 2
-      const repairedSeed = hashSeed(input, executorName) % 200;
-      if (repairedSeed < successRate) return createSuccessResult(ctx, 3);
-      throw new Error(`[stub:${executorName}] Post-repair transient failure (structural=${structuralScore})`);
-    }
-    
-    // Enhancement #10: Tighter confidence mapping for structural score <2
-    const confidence = structuralScore === 1
-      ? Math.max(report.confidence, 0.7) // 1 dimension → 82% band
-      : report.confidence;
+
+    // Use the validation confidence directly — no artificial boosting.
+    // Repaired inputs will have moderate confidence (0.4-0.8), not 0.99.
+    const confidence = report.confidence;
     
     const seed = hashSeed(input, executorName);
     const outcome = pickOutcome(seed, confidence);
