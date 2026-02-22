@@ -29,6 +29,66 @@ interface EvolutionEntry {
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogV10: EvolutionEntry[] = [
   {
+    id: "v10-evolution-013",
+    date: "2026-02-22",
+    pressures: [
+      "Footer menu sections were unbalanced — some had 5 links, others lacked high-value entry points",
+      "Video modals (Evolution Video, XCTBL) were silently dropped from footer due to section title mismatch after reorganization",
+      "Footer section ordering didn't reflect user journey priority — Ecosystem buried below Create"
+    ],
+    responses: [
+      "Restored Evolution Video and XCTBL modal triggers in footer by fixing section title matching logic",
+      "Added 6 high-value links across all footer sections: Documentation, API Access, Composable Cognitives, Enterprise, Changelog, Careers",
+      "Reordered footer sections to prioritize discovery: The Substrate → Ecosystem → Discover → Create → Framework → Connect"
+    ],
+    capabilities: [
+      "All footer sections now have 6 links plus video triggers — fully balanced across mobile breakpoints",
+      "Footer section ordering reflects natural user exploration path from substrate core to ecosystem to creation tools",
+      "Video experiences are permanently anchored in footer with resilient title matching"
+    ],
+  },
+  {
+    id: "v10-evolution-012",
+    date: "2026-02-22",
+    pressures: [
+      "SEO assets (sitemap, robots.txt, llms.txt, humans.txt) referenced deleted pages (/forge, /agency, /audit)",
+      "Schema generator had incorrect founding date (2024 instead of 2009)",
+      "Version-specific claims in llms.txt and humans.txt created maintenance burden and stale content risk",
+      "Multiple new pages were missing from sitemap and robots.txt Allow rules"
+    ],
+    responses: [
+      "Purged all references to /forge, /agency, and /audit from sitemap.xml, robots.txt, and seoMap.ts",
+      "Added missing pages to sitemap: /modules, /status, /composable-cognitives, and others",
+      "Rewrote llms.txt and humans.txt with evergreen authority strategy — no version numbers or specific counts",
+      "Corrected foundingDate in schema-generator.ts from 2024 to 2009"
+    ],
+    capabilities: [
+      "All SEO assets reflect current site architecture — zero broken or phantom page references",
+      "Evergreen content strategy eliminates stale claims across SEO-facing documents",
+      "Schema.org markup now carries accurate corporate history"
+    ],
+  },
+  {
+    id: "v10-evolution-011",
+    date: "2026-02-22",
+    pressures: [
+      "Audit Trail page appeared twice in navigation — duplicate menu entries caused confusion",
+      "The audit trail page was redundant with OS Dashboard observability capabilities",
+      "Footer had 5 unbalanced sections with inconsistent link counts across mobile viewports"
+    ],
+    responses: [
+      "Removed both duplicate Audit Trail entries from navigation menu",
+      "Redirected /audit route to home page — page remains in codebase but is no longer routable",
+      "Reorganized footer into 6 balanced sections with creative naming: The Substrate, Create, Discover, Ecosystem, Framework, Connect",
+      "Updated grid layout to grid-cols-2 mobile, grid-cols-3 tablet, lg:grid-cols-7 desktop"
+    ],
+    capabilities: [
+      "Navigation is free of duplicate entries — every menu item is unique",
+      "Footer is mobile-optimized with 6 balanced columns and consistent link density",
+      "Audit observability is consolidated into OS Dashboard — single source of truth"
+    ],
+  },
+  {
     id: "v10-evolution-010",
     date: "2026-02-17",
     pressures: [
