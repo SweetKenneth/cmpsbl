@@ -14,7 +14,8 @@ import {
   Shield, Brain, Zap, Activity, RotateCcw, AlertTriangle, BarChart3, 
   Table2, BookOpen, Fingerprint, Radar, HeartPulse, Layers, 
   ArrowUpRight, ArrowDownRight, CheckCircle2, XCircle, Minus,
-  Hammer, GraduationCap, TrendingUp, Sparkles, Play, Search, ArrowUp, ArrowDown, Target
+  Hammer, GraduationCap, TrendingUp, Sparkles, Play, Search, ArrowUp, ArrowDown, Target,
+  Rocket
 } from "lucide-react";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
 import { supabase } from "@/integrations/supabase/client";
@@ -29,6 +30,12 @@ import { getSkillStats, type SkillRecord } from "@/lib/shadow/shadowBuild";
 import { getPerformanceSummary, getPerformanceStats, type PerformanceEntry, type GapCategory, type ModernizerShadowReport } from "@/lib/shadow/modernizerShadow";
 import { useRuleEngineDashboard } from "@/hooks/admin/useRuleEngineDashboard";
 import { runMutationStorm, type StormResult } from "@/lib/immune/rule-engine/storm";
+import { usePromotionDashboard } from "@/hooks/admin/usePromotionDashboard";
+import { IntegrityScanPanel } from "@/components/admin/IntegrityScanPanel";
+import { LongitudinalTelemetry } from "@/components/admin/LongitudinalTelemetry";
+import { PromotionControls } from "@/components/admin/PromotionControls";
+import { UpgradeSplash } from "@/components/admin/UpgradeSplash";
+import type { PromotionResult, DiffSummary } from "@/lib/substrate/promotion-pipeline/types";
 
 // ============================================================================
 // HELPERS
@@ -213,8 +220,12 @@ export default function ImmunityMeshDashboard() {
   const [windowHours, setWindowHours] = useState(24);
   const [analyticsKey, setAnalyticsKey] = useState(0);
   const [resetting, setResetting] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
+  const [lastPromotionResult, setLastPromotionResult] = useState<PromotionResult | null>(null);
   const voice = useSubstrateVoice();
   const prevEventsRef = useRef(0);
+
+  const { data: promoData, refetch: refetchPromo } = usePromotionDashboard();
 
   const isShadow = viewMode === 'all' ? null : viewMode === 'shadow';
   const { data, isLoading } = useIntelligenceMetrics(windowHours, isShadow);
@@ -330,6 +341,9 @@ export default function ImmunityMeshDashboard() {
           </TabsTrigger>
           <TabsTrigger value="controls" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
             <Zap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Controls</span>
+          </TabsTrigger>
+          <TabsTrigger value="promote" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+            <Rocket className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Promote</span>
           </TabsTrigger>
         </TabsList>
 
@@ -568,7 +582,48 @@ export default function ImmunityMeshDashboard() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* ══════════════════ PROMOTE ══════════════════ */}
+        <TabsContent value="promote" className="space-y-5">
+          <IntegrityScanPanel
+            latestScan={promoData?.latestScan ?? null}
+            latestFindings={promoData?.latestFindings ?? []}
+            onScanComplete={() => refetchPromo()}
+          />
+          <PromotionControls
+            promotions={promoData?.promotions ?? []}
+            onPromotionComplete={(result) => {
+              setLastPromotionResult(result);
+              if (result.success) setShowSplash(true);
+              refetchPromo();
+            }}
+            onRefresh={() => refetchPromo()}
+          />
+          <LongitudinalTelemetry
+            data24h={promoData?.metricsHistory24h ?? []}
+            data7d={promoData?.metricsHistory7d ?? []}
+            data30d={promoData?.metricsHistory30d ?? []}
+          />
+        </TabsContent>
       </Tabs>
+
+      {/* Cinematic Success Splash */}
+      <UpgradeSplash
+        visible={showSplash}
+        onDismiss={() => setShowSplash(false)}
+        diff={lastPromotionResult?.diff}
+        integrityScore={lastPromotionResult?.integrity_score}
+        promotionId={lastPromotionResult?.promotion_id}
+        stabilityStats={promoData ? {
+          attempted: promoData.promotions.length,
+          succeeded: promoData.promotions.filter(p => p.status === 'success').length,
+          rollbacks: promoData.promotions.filter(p => p.status === 'rolled_back').length,
+          destructiveFailures: 0,
+          verificationPassRate: promoData.promotions.length > 0
+            ? promoData.promotions.filter(p => p.verification_passed).length / promoData.promotions.length
+            : 1,
+        } : undefined}
+      />
     </div>
   );
 }
