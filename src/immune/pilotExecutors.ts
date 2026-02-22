@@ -1,13 +1,13 @@
 /**
- * Executor Immune Pilot — Full Fleet Registration (v5.0)
+ * Executor Immune Pilot — Universal Immunity Mesh (v6.0)
  * 
- * Phase 2: Full Shadow Wrapping — ALL executors are immune-wrapped.
- * Scaled from 35 pilot → 157 executors across all substrate modules.
+ * v6.0: Universal wrapping — ALL executors are immune-wrapped, not just pilots.
+ * The createImmuneAwareRegister now wraps every executor that passes through it,
+ * using explicit metadata for known executors and inferExecutorMeta() for new ones.
+ * This eliminates the "pilot" concept — every executor is protected by default.
  * 
  * Auto-inference for module metadata ensures new executors added to
  * the registry are automatically categorized without manual mapping.
- * 
- * S-tier executors are now wrapped through immuneRegister (gap fixed).
  */
 
 import type { SynergyExecutor } from '@/lib/capabilities/synergies/types';
@@ -351,24 +351,26 @@ export function getExecutorsByCategory(category: ExecutorModuleMeta['category'])
 const wrappedCache = new Map<string, SynergyExecutor>();
 
 /**
- * Intercept registration: if executor is a pilot, wrap it with immune layer.
- * Uses module-specific metadata for proper scoping.
+ * Intercept registration: wrap ALL executors with immune layer.
+ * v6.0: Universal wrapping — no executor bypasses the Immunity Mesh.
+ * Known executors use explicit metadata, unknown ones use inferExecutorMeta().
+ * This ensures future executors are automatically protected without manual mapping.
  */
 export function createImmuneAwareRegister(
   originalRegisterFn: (id: string, executor: SynergyExecutor) => void,
 ): (id: string, executor: SynergyExecutor) => void {
   return (id: string, executor: SynergyExecutor) => {
-    if (isPilotExecutor(id)) {
-      const meta = EXECUTOR_MODULE_META[id];
-      const wrapped = wrapExecutor(executor, id, {
-        module: meta.module,
-        scope: meta.scope,
-      });
-      wrappedCache.set(id, wrapped);
-      originalRegisterFn(id, wrapped);
-    } else {
-      originalRegisterFn(id, executor);
-    }
+    // Resolve metadata: explicit for known executors, inferred for new ones
+    const meta = isPilotExecutor(id)
+      ? EXECUTOR_MODULE_META[id]
+      : inferExecutorMeta(id);
+
+    const wrapped = wrapExecutor(executor, id, {
+      module: meta.module,
+      scope: meta.scope,
+    });
+    wrappedCache.set(id, wrapped);
+    originalRegisterFn(id, wrapped);
   };
 }
 

@@ -141,7 +141,7 @@ export * from './stier';
 // Operations integration
 export * from './operations';
 
-// Auto-register executors (immune wrapper intercepts pilot executors)
+// Auto-register executors — ALL executors are immune-wrapped via universal Immunity Mesh
 import { registerSynergyExecutor } from './registry';
 import { registerAllExecutors } from './executors';
 import { registerSTierExecutors } from './stier';
@@ -149,5 +149,4 @@ import { createImmuneAwareRegister } from '@/immune/pilotExecutors';
 
 const immuneRegister = createImmuneAwareRegister(registerSynergyExecutor);
 registerAllExecutors(immuneRegister);
-// GAP FIX: S-tier executors were bypassing immune wrapping — now wrapped like all others
 registerSTierExecutors(immuneRegister);
