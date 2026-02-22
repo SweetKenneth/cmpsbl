@@ -13,7 +13,7 @@ import {
   Shield, Brain, Zap, Activity, RotateCcw, AlertTriangle, BarChart3, 
   Table2, BookOpen, Fingerprint, Radar, HeartPulse, Layers, 
   ArrowUpRight, ArrowDownRight, CheckCircle2, XCircle, Minus,
-  Hammer, GraduationCap, TrendingUp, Sparkles, Play
+  Hammer, GraduationCap, TrendingUp, Sparkles, Play, Search, ArrowUp, ArrowDown, Target
 } from "lucide-react";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
 import { supabase } from "@/integrations/supabase/client";
@@ -25,6 +25,7 @@ import { useSubstrateVoice } from "@/components/substrate-os/audio";
 import { motion, AnimatePresence } from "framer-motion";
 import { getSharedRuleStats, getSharedRules, type SharedRule } from "@/immune/shared-rule-registry";
 import { getSkillStats, type SkillRecord } from "@/lib/shadow/shadowBuild";
+import { getPerformanceSummary, getPerformanceStats, type PerformanceEntry, type GapCategory, type ModernizerShadowReport } from "@/lib/shadow/modernizerShadow";
 
 // ============================================================================
 // HELPERS
@@ -315,6 +316,9 @@ export default function ImmunityMeshDashboard() {
           <TabsTrigger value="build" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
             <Hammer className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Shadow Build</span>
           </TabsTrigger>
+          <TabsTrigger value="modernizer" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+            <Target className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Modernizer</span>
+          </TabsTrigger>
           <TabsTrigger value="executors" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
             <Table2 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Executors</span>
           </TabsTrigger>
@@ -438,6 +442,11 @@ export default function ImmunityMeshDashboard() {
         {/* ══════════════════ SHADOW BUILD ══════════════════ */}
         <TabsContent value="build" className="space-y-5">
           <ShadowBuildPanel />
+        </TabsContent>
+
+        {/* ══════════════════ MODERNIZER SHADOW ══════════════════ */}
+        <TabsContent value="modernizer" className="space-y-5">
+          <ModernizerShadowPanel />
         </TabsContent>
 
         {/* ══════════════════ EXECUTORS ══════════════════ */}
@@ -1147,6 +1156,408 @@ function ShadowBuildPanel() {
           ))}
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+// ============================================================================
+// MODERNIZER SHADOW PANEL
+// ============================================================================
+
+function ModernizerShadowPanel() {
+  const [running, setRunning] = useState(false);
+  const [lastReport, setLastReport] = useState<ModernizerShadowReport | null>(null);
+  const [perfStats, setPerfStats] = useState(() => getPerformanceSummary());
+  const [perfEntries, setPerfEntries] = useState<PerformanceEntry[]>(() => getPerformanceStats());
+  const voice = useSubstrateVoice();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPerfStats(getPerformanceSummary());
+      setPerfEntries(getPerformanceStats());
+    }, 10_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleRunScan = async () => {
+    setRunning(true);
+    try {
+      const { runModernizerShadow } = await import('@/lib/shadow/modernizerShadow');
+      const report = await runModernizerShadow();
+      setLastReport(report);
+      setPerfStats(getPerformanceSummary());
+      setPerfEntries(getPerformanceStats());
+      voice.success?.('Modernizer shadow complete');
+      toast.success(`Modernizer Shadow: ${report.summary.executorFixed} fixed, ${report.summary.encodeEscalated} escalated, ${report.summary.rulesGenerated} rules generated`);
+    } catch (err: any) {
+      toast.error(`Modernizer shadow failed: ${err.message}`);
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  const gapCategoryColors: Record<string, string> = {
+    security: 'text-red-400 border-red-400/30 bg-red-400/5',
+    resilience: 'text-amber-400 border-amber-400/30 bg-amber-400/5',
+    performance: 'text-blue-400 border-blue-400/30 bg-blue-400/5',
+    config: 'text-violet-400 border-violet-400/30 bg-violet-400/5',
+    cleanup: 'text-gray-400 border-gray-400/30 bg-gray-400/5',
+    observability: 'text-cyan-400 border-cyan-400/30 bg-cyan-400/5',
+  };
+
+  return (
+    <div className="space-y-5">
+      {/* Header / Scan Button */}
+      <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+        <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/5 to-transparent">
+          <CardContent className="pt-5 pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 flex-shrink-0">
+                <Target className="w-5 h-5 text-amber-500" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-base mb-1">Modernizer Shadow Mode</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Runs a real Modernizer scan to find system gaps, then tasks executors with fixing them in shadow mode.
+                  Failures escalate to ENCODE — its fixes become learning rules the executors absorb.
+                  Watch performance improve over time as they learn from real-world scenarios.
+                </p>
+              </div>
+              <ActionButton
+                icon={Search}
+                variant="warning"
+                loading={running}
+                onClick={handleRunScan}
+                className="text-xs flex-shrink-0 w-full sm:w-auto"
+              >
+                {running ? 'Scanning…' : 'Run Scan'}
+              </ActionButton>
+            </div>
+
+            {/* Last Run Summary */}
+            {lastReport && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 p-3 rounded-lg bg-muted/40 border border-border/50">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                  <span className="text-muted-foreground">
+                    Scan <code className="font-mono text-foreground">{lastReport.scanId.slice(0, 12)}</code> — {lastReport.totalGaps} gaps found, {lastReport.gapsAttempted} attempted
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="outline" className="text-[10px]">
+                      ✅ {lastReport.summary.executorFixed} fixed
+                    </Badge>
+                    <Badge variant="outline" className="text-[10px]">
+                      ⬆️ {lastReport.summary.encodeEscalated} escalated
+                    </Badge>
+                    <Badge variant="outline" className="text-[10px]">
+                      🧠 {lastReport.summary.encodeFixed} ENCODE-fixed
+                    </Badge>
+                    <Badge variant="outline" className="text-[10px]">
+                      📝 {lastReport.summary.rulesGenerated} rules
+                    </Badge>
+                  </div>
+                </div>
+                <div className="text-[10px] text-muted-foreground mt-1.5 font-mono">
+                  Duration: {(lastReport.scanDurationMs / 1000).toFixed(1)}s
+                </div>
+              </motion.div>
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Performance Summary Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3">
+        <MetricCard
+          label="Success Rate"
+          value={`${(perfStats.overallSuccessRate * 100).toFixed(0)}%`}
+          sub={`${perfStats.totalAttempts} attempts`}
+          icon={HeartPulse}
+          status={perfStats.overallSuccessRate >= 0.7 ? 'good' : perfStats.overallSuccessRate >= 0.4 ? 'warn' : perfStats.totalAttempts > 0 ? 'bad' : 'neutral'}
+          delay={0}
+        />
+        <MetricCard
+          label="ENCODE Assists"
+          value={`${(perfStats.encodeAssistRate * 100).toFixed(0)}%`}
+          sub="of failures"
+          icon={GraduationCap}
+          status={perfStats.encodeAssistRate > 0 ? 'warn' : 'good'}
+          delay={1}
+        />
+        <MetricCard
+          label="Improving"
+          value={String(perfStats.improving)}
+          sub="executor-gap pairs"
+          icon={ArrowUpRight}
+          status={perfStats.improving > 0 ? 'good' : 'neutral'}
+          delay={2}
+        />
+        <MetricCard
+          label="Declining"
+          value={String(perfStats.declining)}
+          sub="need attention"
+          icon={ArrowDownRight}
+          status={perfStats.declining > 0 ? 'bad' : 'good'}
+          delay={3}
+        />
+        <MetricCard
+          label="Gap Types"
+          value={String(perfStats.totalGapTypes)}
+          sub="categories trained"
+          icon={Layers}
+          status={perfStats.totalGapTypes >= 3 ? 'good' : 'neutral'}
+          delay={4}
+        />
+        <MetricCard
+          label="Executors"
+          value={String(perfStats.totalExecutors)}
+          sub="actively training"
+          icon={Shield}
+          status={perfStats.totalExecutors > 0 ? 'good' : 'neutral'}
+          delay={5}
+        />
+      </div>
+
+      {/* Gap Type Breakdown */}
+      {lastReport && Object.keys(lastReport.gapBreakdown).length > 0 && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-primary" />
+                Gap Resolution by Category
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {Object.entries(lastReport.gapBreakdown).map(([cat, data]) => (
+                  <div key={cat} className={`p-3 rounded-lg border ${gapCategoryColors[cat] ?? 'border-border/30 bg-card'}`}>
+                    <p className="text-[10px] uppercase tracking-wider font-medium mb-1">{cat}</p>
+                    <p className="text-lg font-bold font-mono">{data.fixed}/{data.total}</p>
+                    <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden mt-1.5">
+                      <motion.div
+                        className={`h-full rounded-full ${data.rate >= 0.7 ? 'bg-emerald-500' : data.rate >= 0.4 ? 'bg-amber-500' : 'bg-red-400'}`}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${data.rate * 100}%` }}
+                        transition={{ duration: 0.6 }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
+      {/* Performance Timeline — Skill Growth */}
+      {perfEntries.length > 0 && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                Performance Timeline
+                <Badge variant="outline" className="text-[10px] ml-1">skill growth</Badge>
+              </CardTitle>
+              <CardDescription>Track how executors improve on real-world gap types over time</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {perfEntries.slice(0, 15).map((entry, i) => {
+                  const trendIcon = entry.trend > 0.05 ? <ArrowUp className="w-3 h-3 text-emerald-500" /> 
+                    : entry.trend < -0.05 ? <ArrowDown className="w-3 h-3 text-red-400" /> 
+                    : <Minus className="w-3 h-3 text-muted-foreground" />;
+                  
+                  return (
+                    <motion.div
+                      key={`${entry.executor}-${entry.gapType}`}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border border-border/20 bg-card hover:border-primary/20 transition-colors gap-2"
+                      initial={{ opacity: 0, x: -6 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.03 }}
+                    >
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <code className="text-[10px] sm:text-[11px] font-mono text-primary truncate max-w-[140px] sm:max-w-[200px]">{entry.executor}</code>
+                        <Badge variant="outline" className={`text-[9px] px-1.5 py-0 flex-shrink-0 ${gapCategoryColors[entry.gapType] ?? ''}`}>
+                          {entry.gapType}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-3 flex-shrink-0 text-xs">
+                        <div className="w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
+                          <motion.div
+                            className={`h-full rounded-full ${entry.successRate >= 0.7 ? 'bg-emerald-500' : entry.successRate >= 0.4 ? 'bg-amber-500' : 'bg-red-400'}`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${entry.successRate * 100}%` }}
+                            transition={{ duration: 0.6 }}
+                          />
+                        </div>
+                        <span className="font-mono font-medium w-10 text-right">
+                          {(entry.successRate * 100).toFixed(0)}%
+                        </span>
+                        <div className="flex items-center gap-1 w-14">
+                          {trendIcon}
+                          <span className={`font-mono text-[10px] ${entry.trend > 0 ? 'text-emerald-500' : entry.trend < 0 ? 'text-red-400' : 'text-muted-foreground'}`}>
+                            {entry.trend > 0 ? '+' : ''}{(entry.trend * 100).toFixed(0)}%
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-muted-foreground font-mono w-8 text-right">
+                          ×{entry.attempts}
+                        </span>
+                        {entry.encodeAssists > 0 && (
+                          <Badge variant="secondary" className="text-[9px] px-1 py-0">
+                            🧠{entry.encodeAssists}
+                          </Badge>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
+      {/* Top Improvers & Needs Work */}
+      {(perfStats.topImprovers.length > 0 || perfStats.needsWork.length > 0) && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {perfStats.topImprovers.length > 0 && (
+            <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}>
+              <Card className="h-full border-emerald-500/20">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <ArrowUpRight className="w-4 h-4 text-emerald-500" />
+                    Top Improvers
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {perfStats.topImprovers.map((e, i) => (
+                      <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-emerald-500/10 bg-emerald-500/5">
+                        <code className="font-mono truncate max-w-[120px]">{e.executor}</code>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-[9px]">{e.gapType}</Badge>
+                          <span className="text-emerald-500 font-mono font-medium">+{(e.trend * 100).toFixed(0)}%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+
+          {perfStats.needsWork.length > 0 && (
+            <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
+              <Card className="h-full border-amber-500/20">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-amber-500" />
+                    Needs Work
+                  </CardTitle>
+                  <CardDescription className="text-xs">&lt;50% success with 3+ attempts</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {perfStats.needsWork.map((e, i) => (
+                      <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-amber-500/10 bg-amber-500/5">
+                        <code className="font-mono truncate max-w-[120px]">{e.executor}</code>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-[9px]">{e.gapType}</Badge>
+                          <span className="text-amber-500 font-mono font-medium">{(e.successRate * 100).toFixed(0)}%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {/* Flow Explanation */}
+      <Card className="border-border/50">
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Brain className="w-4 h-4 text-primary" />
+            How It Works
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {[
+            { icon: '🔍', text: 'Modernizer scans for real system gaps — missing capabilities, anomalies, risk flags, stale modules' },
+            { icon: '🎯', text: 'Each gap becomes a shadow training task assigned to the best-matched executor' },
+            { icon: '⚡', text: 'Executor attempts the fix in shadow mode — no real changes, just scored performance' },
+            { icon: '⬆️', text: 'Failures escalate to ENCODE\'s 7-strategy cascade — deterministic repair, learning rules, pattern matching' },
+            { icon: '🧠', text: 'ENCODE\'s fixes become new learning rules that the executor absorbs for next time' },
+            { icon: '📈', text: 'Performance tracked per executor per gap-type — watch skill growth curves over repeated runs' },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              className="flex items-start gap-3 text-sm text-muted-foreground"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.08 }}
+            >
+              <span className="text-lg mt-[-2px]">{item.icon}</span>
+              <span>{item.text}</span>
+            </motion.div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Last Scan Results Detail */}
+      {lastReport && lastReport.results.length > 0 && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Activity className="w-4 h-4 text-primary" />
+                Last Scan Results
+                <Badge variant="outline" className="text-[10px] ml-1">{lastReport.results.length} gaps</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 max-h-[400px] overflow-y-auto">
+                {lastReport.results.map((r, i) => (
+                  <motion.div
+                    key={r.task.id}
+                    className={`p-3 rounded-lg border text-xs ${
+                      r.outcome === 'fixed' ? 'border-emerald-500/20 bg-emerald-500/5'
+                      : r.outcome === 'partial' ? 'border-amber-500/20 bg-amber-500/5'
+                      : r.encodeOutcome === 'fixed' ? 'border-blue-500/20 bg-blue-500/5'
+                      : 'border-red-500/20 bg-red-500/5'
+                    }`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: i * 0.02 }}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span>{r.outcome === 'fixed' ? '✅' : r.outcome === 'partial' ? '⚠️' : r.encodeOutcome === 'fixed' ? '🧠' : '❌'}</span>
+                        <span className="font-medium truncate">{r.task.title}</span>
+                        <Badge variant="outline" className={`text-[9px] px-1 py-0 ${gapCategoryColors[r.task.gapType] ?? ''}`}>
+                          {r.task.gapType}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <code className="text-[10px] font-mono text-muted-foreground truncate max-w-[100px]">{r.executor}</code>
+                        <span className="text-muted-foreground">{r.durationMs}ms</span>
+                      </div>
+                    </div>
+                    {r.learningDelta && (
+                      <p className="mt-1.5 text-[10px] text-muted-foreground italic leading-relaxed">
+                        💡 {r.learningDelta}
+                      </p>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
     </div>
   );
 }
