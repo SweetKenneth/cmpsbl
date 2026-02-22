@@ -1,6 +1,6 @@
 /**
  * Changelog Auto-Generation Utility
- * v10.5.4 ARCHITECT — Generates changelog entries from applied evolution patches
+ * SPARTA Epoch — Generates changelog entries from applied evolution patches
  *
  * Queries evolution_runs and substrate_upgrade_plans to auto-generate
  * structured changelog entries for the /changelog page.
