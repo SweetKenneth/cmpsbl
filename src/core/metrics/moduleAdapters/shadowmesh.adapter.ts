@@ -39,8 +39,8 @@ export const shadowmeshAdapter: ModuleAdapter = {
     const encodeClaimed = escalationData.filter(d => d.claimed_by === 'ENCODE').length;
     const openEscalations = escalationData.filter(d => d.status === 'open').length;
 
-    const denom = repairSuccesses + escalations + safeFailures;
-    const repairRate = denom > 0 ? repairSuccesses / denom : 0;
+    const repairAttempts = repairSuccesses + escalations + safeFailures;
+    const repairRate = repairAttempts > 0 ? repairSuccesses / repairAttempts : 0;
     const encodeResolutionRate = encodeClaimed > 0 ? encodeResolved / encodeClaimed : 0;
 
     const healthScore = Math.round(

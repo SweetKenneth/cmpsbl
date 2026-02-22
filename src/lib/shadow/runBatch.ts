@@ -31,10 +31,9 @@ export async function runShadowBatch() {
     const seedInput = getExecutorSeedInput(executor);
     const report = await runShadowProbe(executor, seedInput);
 
-    // Derive telemetry flags from actual probe outcomes
-    const hadRepairs = report.summary.repaired > 0;
-    const hadEscalations = report.summary.escalated > 0;
-    const hadSafeFailures = report.summary.failedSafe > 0;
+    // Derive telemetry flags from actual probe outcome counts
+    const repairAttempts = report.summary.repaired + report.summary.escalated + report.summary.failedSafe;
+    const hadSuccessfulRepairs = report.summary.repaired > 0;
 
     await recordImmuneMetrics({
       executor,
@@ -42,9 +41,9 @@ export async function runShadowBatch() {
       repaired: report.summary.repaired,
       escalated: report.summary.escalated,
       safeFail: report.summary.failedSafe,
-      repair_attempted: hadRepairs || hadEscalations || hadSafeFailures,
-      repair_success: hadRepairs && !hadEscalations,
-      retry_attempted: hadRepairs,
+      repair_attempted: repairAttempts > 0,
+      repair_success: hadSuccessfulRepairs && report.summary.escalated === 0 && report.summary.failedSafe === 0,
+      retry_attempted: hadSuccessfulRepairs,
     });
   }
 
