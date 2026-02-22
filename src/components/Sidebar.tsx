@@ -129,7 +129,7 @@ const navSections: NavSection[] = [
   {
     title: "System Operations",
     items: [
-      { name: "Shadow Mesh", href: "/admin/shadow-mesh", icon: Shield },
+      { name: "Immunity Mesh", href: "/admin/shadow-mesh", icon: Shield },
       { name: "System Health", href: "/system-health", icon: HeartPulse },
       { name: "Health Monitor", href: "/health", icon: Activity },
       { name: "Diagnostics", href: "/diagnostics", icon: Microscope },

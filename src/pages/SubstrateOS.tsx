@@ -681,7 +681,7 @@ function MergedSecurityTab({ isGovernor, isOperator }: { isGovernor: boolean; is
       <SubTabBar
         tabs={[
           { id: 'defense', label: 'Defense', icon: Shield },
-          { id: 'immune', label: 'Shadow Mesh', icon: Network },
+          { id: 'immune', label: 'Immunity Mesh', icon: Network },
           { id: 'audit', label: 'Audit Gate', icon: FileText },
           { id: 'patches', label: 'Patches', icon: Shield },
           { id: 'backups', label: 'Backups', icon: HardDrive },

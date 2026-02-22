@@ -1,6 +1,6 @@
 /**
- * Shadow Mesh Admin Page
- * Toggle and observe shadow mesh + immune executor status
+ * Immunity Mesh Admin Page
+ * Toggle and observe immunity mesh + executor status
  * v3.0 — Dynamic executor discovery + expanded fleet
  */
 
@@ -56,10 +56,10 @@ export default function ShadowMeshPage() {
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <Shield className="w-6 h-6 text-primary" />
-            Shadow Mesh Control
+            Immunity Mesh Control
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Dynamic immune wrapper and adversarial probing — executors are discovered automatically as they register.
+            Universal immunity wrapping + shadow probe training — executors are discovered automatically as they register.
           </p>
         </div>
         <ActionButton
@@ -89,7 +89,7 @@ export default function ShadowMeshPage() {
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground space-y-1">
           <p>• <strong>OFF</strong> → identical behavior to current production (zero overhead)</p>
-          <p>• <strong>ON</strong> → immune wrapper + shadow mesh active for all registered executors</p>
+          <p>• <strong>ON</strong> → immunity mesh + shadow probe training active for all registered executors</p>
           <p>• Dynamic discovery — new executors are probed automatically on registration</p>
           <p>• No intent mesh impact • No public exposure • No silent failure paths</p>
         </CardContent>

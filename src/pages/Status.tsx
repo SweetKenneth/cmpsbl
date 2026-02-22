@@ -344,7 +344,7 @@ export default function Status() {
 
         {/* Footer note */}
         <div className="mt-8 text-center text-xs text-muted-foreground/50">
-          <p>Last updated: {lastUpdated.toLocaleTimeString()} · Monitored by Shadow Mesh + ENCODE</p>
+          <p>Last updated: {lastUpdated.toLocaleTimeString()} · Monitored by Immunity Mesh + ENCODE</p>
         </div>
       </main>
 

@@ -128,7 +128,7 @@ export function ShadowMeshAnalytics() {
       <Card>
         <CardContent className="flex items-center justify-between py-6">
           <p className="text-sm text-muted-foreground">
-            No shadow mesh data yet. Enable the toggle and wait for the first batch cycle (~15 min).
+            No immunity mesh data yet. Enable the toggle and wait for the first shadow probe cycle (~15 min).
           </p>
           {resetButton}
         </CardContent>

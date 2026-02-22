@@ -57,7 +57,7 @@ export function NotificationCenter() {
           message: `${esc.severity} severity · ${esc.status === "resolved" ? "Resolved" : "Open"}`,
           timestamp: new Date(esc.created_at),
           read: esc.status === "resolved",
-          source: "Shadow Mesh",
+          source: "Immunity Mesh",
         });
       }
 

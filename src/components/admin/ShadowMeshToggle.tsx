@@ -1,6 +1,6 @@
 /**
- * Shadow Mesh Toggle — Admin-only runtime control
- * Reads/writes the shadow_mesh_enabled system flag
+ * Immunity Mesh Toggle — Admin-only runtime control
+ * Reads/writes the shadow_mesh_enabled system flag (controls shadow probe training)
  */
 
 import { useState, useEffect } from "react";
@@ -45,7 +45,7 @@ export function ShadowMeshToggle() {
 
     if (error) {
       setEnabled(!next); // revert
-      toast.error("Failed to toggle Shadow Mesh", { description: error.message });
+      toast.error("Failed to toggle Immunity Mesh", { description: error.message });
       return;
     }
 
@@ -59,8 +59,8 @@ export function ShadowMeshToggle() {
       stopShadowScheduler();
     }
 
-    toast.success(`Shadow Mesh ${next ? "activated" : "deactivated"}`, {
-      description: next ? "Scheduler started — probes will run every 15 min." : "Scheduler stopped.",
+    toast.success(`Immunity Mesh ${next ? "activated" : "deactivated"}`, {
+      description: next ? "Shadow probe training started — probes run every 15 min." : "Shadow probes stopped.",
     });
   }
 
@@ -79,13 +79,13 @@ export function ShadowMeshToggle() {
         <Shield className={`w-5 h-5 ${enabled ? "text-destructive" : "text-muted-foreground"}`} />
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">Shadow Mesh</span>
+            <span className="text-sm font-medium">Immunity Mesh</span>
             <Badge variant={enabled ? "destructive" : "secondary"} className="text-xs">
               {enabled ? "ACTIVE" : "OFF"}
             </Badge>
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Immune wrapper + adversarial probing for pilot executors
+            Universal immune wrapping + shadow probe training for all executors
           </p>
         </div>
       </div>
