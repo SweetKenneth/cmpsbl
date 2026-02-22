@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ShadowMeshToggle } from "@/components/admin/ShadowMeshToggle";
+import { AutoTrainingToggle } from "@/components/admin/AutoTrainingToggle";
 import { ShadowMeshAnalytics } from "@/components/admin/ShadowMeshAnalytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -633,6 +634,7 @@ export default function ImmunityMeshDashboard() {
         {/* ══════════════════ CONTROLS ══════════════════ */}
         <TabsContent value="controls" className="space-y-4">
           <ShadowMeshToggle />
+          <AutoTrainingToggle />
           <Card className="border-border/50">
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
