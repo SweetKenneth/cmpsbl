@@ -44,14 +44,14 @@ export function EnhancedFooter() {
       ]
     },
     {
-      title: "Create",
+      title: "Ecosystem",
       links: [
-        { name: "Start Here", href: "/start-here", highlight: true },
-        { name: "Academy", href: "/academy" },
-        { name: "CodeLab", href: "/codelab" },
-        { name: "Sandbox", href: "/lab" },
-        { name: "DevTools", href: "/devtools" },
-        { name: "API Access", href: "/api-access" },
+        { name: "Cognitive Reality", href: "/clockless-world-engine" },
+        { name: "Live Demo", href: "/demo" },
+        { name: "Gaming AI", href: "/gaming" },
+        { name: "Showcase", href: "/showcase" },
+        { name: "Uptime", href: "/status", highlight: true },
+        { name: "Enterprise", href: "/enterprise" },
       ]
     },
     {
@@ -66,14 +66,14 @@ export function EnhancedFooter() {
       ]
     },
     {
-      title: "Ecosystem",
+      title: "Create",
       links: [
-        { name: "Cognitive Reality", href: "/clockless-world-engine" },
-        { name: "Live Demo", href: "/demo" },
-        { name: "Gaming AI", href: "/gaming" },
-        { name: "Showcase", href: "/showcase" },
-        { name: "Uptime", href: "/status", highlight: true },
-        { name: "Enterprise", href: "/enterprise" },
+        { name: "Start Here", href: "/start-here", highlight: true },
+        { name: "Academy", href: "/academy" },
+        { name: "CodeLab", href: "/codelab" },
+        { name: "Sandbox", href: "/lab" },
+        { name: "DevTools", href: "/devtools" },
+        { name: "API Access", href: "/api-access" },
       ]
     },
     {
