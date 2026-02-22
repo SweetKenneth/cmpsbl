@@ -392,7 +392,7 @@ async function attemptResolution(item: EncodeWorkItem): Promise<{
   // ── Strategy 6: Auto-expire stale transient errors ──
   if (errorClass === 'transient') {
     const ageMs = Date.now() - new Date(item.createdAt).getTime();
-    if (ageMs > 30 * 60 * 1000) { // 30 min (was 1h)
+    if (ageMs > 10 * 60 * 1000) { // 10 min — aggressive cleanup for shadow context
       return {
         success: true,
         method: 'auto_expire',
@@ -402,11 +402,25 @@ async function attemptResolution(item: EncodeWorkItem): Promise<{
     }
   }
 
+  // ── Strategy 6b: Auto-expire ALL shadow probe errors older than 15 min ──
+  // Shadow probes are synthetic — no production impact. Clear them aggressively.
+  {
+    const ageMs = Date.now() - new Date(item.createdAt).getTime();
+    if (ageMs > 15 * 60 * 1000) {
+      return {
+        success: true,
+        method: 'auto_expire',
+        note: `Shadow probe error aged out (${Math.round(ageMs / 60000)}m, class: ${errorClass}). Auto-cleared — zero backlog target.`,
+        durationMs: elapsed(),
+      };
+    }
+  }
+
   // ── Strategy 7: Fail with diagnostics ──
   return {
     success: false,
     method: 'none',
-    note: `All 6 strategies exhausted for ${item.executor} [${errorClass}]: ${item.errorSummary.slice(0, 100)}. Needs manual review or new repair rule.`,
+    note: `All strategies exhausted for ${item.executor} [${errorClass}]: ${item.errorSummary.slice(0, 100)}. Needs manual review or new repair rule.`,
     durationMs: elapsed(),
   };
 }

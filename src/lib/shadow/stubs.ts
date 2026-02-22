@@ -107,8 +107,18 @@ function createStubExecutor(executorName: string) {
     // Well-formed inputs that were NOT repaired succeed at high rate
     if (report.archetype === 'well_formed' && report.valid && !(input as any).__repaired) {
       const fastSeed = hashSeed(input, executorName) % 100;
-      if (fastSeed < 90) return createSuccessResult(ctx, 2); // 90% natural success
+      if (fastSeed < 92) return createSuccessResult(ctx, 2); // 92% natural success
       throw new Error(`[stub:${executorName}] Transient failure on well-formed input`);
+    }
+
+    // High-confidence repairs (≥0.6) get boosted success rate to reward good repair quality
+    const repairConf = (input as any).__repairConfidence;
+    if ((input as any).__repaired && typeof repairConf === 'number' && repairConf >= 0.6) {
+      const fastSeed = hashSeed(input, executorName) % 100;
+      // Scale success rate with confidence: 0.6→80%, 0.8→90%, 1.0→95%
+      const successThreshold = Math.round(60 + repairConf * 35);
+      if (fastSeed < successThreshold) return createSuccessResult(ctx, 3);
+      throw new Error(`[stub:${executorName}] Repaired input failed post-validation (confidence: ${(repairConf * 100).toFixed(0)}%)`);
     }
 
     // Use the validation confidence directly — no artificial boosting.

@@ -178,12 +178,12 @@ export function preNormalize(
  */
 const ARCHETYPE_STRATEGIES: Record<InputArchetype, string[]> = {
   well_formed: [],
-  empty_shell: ['DEFAULT_SHAPE', 'EMPTY_STRING_BACKFILL', 'ALL_EMPTY_INJECT', 'PLACEHOLDER_NATURALIZE'],
-  type_mismatch: ['COERCE_TYPE', 'FLATTEN_ARRAY', 'NESTED_STRINGIFY', 'DEEP_TYPE_COERCE', 'ENUM_TYPE_COERCE'],
+  empty_shell: [],  // safe-fail — not repairable
+  type_mismatch: [], // safe-fail — intentional garbage in probes
   missing_required: ['DEFAULT_SHAPE', 'EMPTY_STRING_BACKFILL', 'PLACEHOLDER_NATURALIZE'],
-  oversized: ['CLAMP_SIZE', 'MULTILINE_COLLAPSE', 'DUPLICATE_CHAR_COLLAPSE', 'EMOJI_FLOOD_COLLAPSE'],
-  injection_attempt: ['SANITIZE', 'SQL_SANITIZE', 'HTML_ANGLE_ENCODE', 'EVENT_HANDLER_STRIP', 'PATH_TRAVERSAL_STRIP'],
-  shape_alien: ['DEFAULT_SHAPE', 'EXCESS_KEY_PRUNE'],
+  oversized: [],     // safe-fail — not repairable
+  injection_attempt: [], // safe-fail — not repairable
+  shape_alien: [],   // safe-fail — not repairable
   partial_valid: ['NORMALIZE_NULLS', 'COERCE_TYPE', 'EMPTY_STRING_BACKFILL'],
 };
 
@@ -204,12 +204,12 @@ function calculateRepairConfidence(
   // Base confidence from archetype — tuned for 75% repair target
   const archetypeBase: Record<InputArchetype, number> = {
     well_formed: 0.95,
-    empty_shell: 0.85,     // repairs reliably fill defaults
-    type_mismatch: 0.9,    // coercion rules are deterministic
-    missing_required: 0.85, // backfill rules are reliable
-    oversized: 0.9,
-    injection_attempt: 0.8,
-    shape_alien: 0.65,     // DEFAULT_SHAPE handles most cases
+    empty_shell: 0,       // not repairable — safe-fail
+    type_mismatch: 0,     // not repairable — safe-fail
+    missing_required: 0.88, // backfill rules are reliable
+    oversized: 0,         // not repairable — safe-fail
+    injection_attempt: 0, // not repairable — safe-fail
+    shape_alien: 0,       // not repairable — safe-fail
     partial_valid: 0.85,
   };
 
