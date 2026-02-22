@@ -27,6 +27,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getSharedRuleStats, getSharedRules, type SharedRule } from "@/immune/shared-rule-registry";
 import { getSkillStats, type SkillRecord } from "@/lib/shadow/shadowBuild";
 import { getPerformanceSummary, getPerformanceStats, type PerformanceEntry, type GapCategory, type ModernizerShadowReport } from "@/lib/shadow/modernizerShadow";
+import { useRuleEngineDashboard } from "@/hooks/admin/useRuleEngineDashboard";
+import { runMutationStorm, type StormResult } from "@/lib/immune/rule-engine/storm";
 
 // ============================================================================
 // HELPERS
@@ -529,112 +531,14 @@ export default function ImmunityMeshDashboard() {
 
         {/* ══════════════════ RULES ══════════════════ */}
         <TabsContent value="rules" className="space-y-4">
-          <div className="grid gap-4">
-            <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}>
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-primary" />
-                    Dominant Rules
-                    <Badge variant="outline" className="text-[10px]">Top 5</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {!data?.rmi.dominantRules.length ? (
-                    <p className="text-sm text-muted-foreground py-4">No rule data yet</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {data.rmi.dominantRules.map((r, i) => (
-                        <motion.div 
-                          key={r.ruleId} 
-                          className="flex items-center justify-between p-3 rounded-lg border border-border/30 hover:border-primary/20 transition-colors bg-card"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: i * 0.05 }}
-                        >
-                          <code className="text-xs font-mono truncate max-w-[120px] sm:max-w-[180px]">{r.ruleId}</code>
-                          <div className="flex items-center gap-2 text-xs flex-shrink-0">
-                            <span className="text-muted-foreground">{r.invocations}</span>
-                            <Badge variant={r.successRate >= 0.8 ? 'default' : 'secondary'}>
-                              {(r.successRate * 100).toFixed(0)}%
-                            </Badge>
-                            <span className="text-muted-foreground font-mono">{r.executorCount}×</span>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 text-destructive" />
-                    Risky Rules
-                  </CardTitle>
-                  <CardDescription>Success &lt;60% with ≥20 invocations</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {!data?.rmi.riskyRules.length ? (
-                    <div className="flex items-center gap-2 py-4 text-sm text-emerald-500">
-                      <CheckCircle2 className="w-4 h-4" />
-                      No risky rules — all rules healthy
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {data.rmi.riskyRules.map((r, i) => (
-                        <div key={r.ruleId} className="flex items-center justify-between p-3 rounded-lg border border-destructive/20 bg-destructive/5">
-                          <code className="text-xs font-mono truncate max-w-[120px] sm:max-w-[180px]">{r.ruleId}</code>
-                          <div className="flex items-center gap-2 text-xs">
-                            <span className="text-muted-foreground">{r.invocations}</span>
-                            <Badge variant="destructive">{(r.successRate * 100).toFixed(0)}%</Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-
-          {/* CKP */}
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Brain className="w-4 h-4 text-primary" />
-                  Cross-Executor Knowledge Propagation
-                </CardTitle>
-                <CardDescription>
-                  Average rule breadth: <strong>{data?.ckp.globalAvg?.toFixed(1) ?? '—'}</strong> executors
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {!data?.ckp.topPropagated.length ? (
-                  <p className="text-sm text-muted-foreground">No propagation data</p>
-                ) : (
-                  <div className="space-y-2">
-                    {data.ckp.topPropagated.map(r => (
-                      <div key={r.ruleId} className="flex items-center justify-between p-3 rounded-lg border border-border/30 bg-card">
-                        <code className="text-xs font-mono truncate max-w-[120px] sm:max-w-[200px]">{r.ruleId}</code>
-                        <Badge variant="secondary" className="font-mono">{r.executorCount} executors</Badge>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
+          <GovernedRulesTab />
         </TabsContent>
 
         {/* ══════════════════ CONTROLS ══════════════════ */}
         <TabsContent value="controls" className="space-y-4">
           <ShadowMeshToggle />
           <AutoTrainingToggle />
+          <StormControl />
           <Card className="border-border/50">
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
@@ -648,6 +552,7 @@ export default function ImmunityMeshDashboard() {
                 { icon: '●', text: 'ON → immunity mesh + shadow probe training for all registered executors' },
                 { icon: '◎', text: 'Dynamic discovery — new executors probed automatically on registration' },
                 { icon: '◌', text: 'No intent mesh impact • No public exposure • No silent failure paths' },
+                { icon: '⚡', text: 'Mutation Storm — adversarial stress test across all categories (shadow-only)' },
               ].map((item, i) => (
                 <motion.div 
                   key={i} 
@@ -665,6 +570,290 @@ export default function ImmunityMeshDashboard() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+// ============================================================================
+// GOVERNED RULES TAB
+// ============================================================================
+
+function GovernedRulesTab() {
+  const { data: reDash, isLoading } = useRuleEngineDashboard();
+
+  return (
+    <div className="space-y-4">
+      {/* Status summary */}
+      {reDash && reDash.totalRules > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {Object.entries(reDash.rulesByStatus).map(([status, count]) => (
+            <div key={status} className="p-3 rounded-lg border border-border/30 bg-card text-center">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{status}</p>
+              <p className="text-xl font-bold font-mono">{count}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Dominant Rules */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Zap className="w-4 h-4 text-primary" />
+            Dominant Rules <Badge variant="outline" className="text-[10px]">Top 5</Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {!reDash?.dominantRules.length ? (
+            <p className="text-sm text-muted-foreground py-4">No rule data yet — run shadow builds or storms to generate learning</p>
+          ) : (
+            <div className="space-y-2">
+              {reDash.dominantRules.map((h, i) => (
+                <div key={h.rule.id} className="flex items-center justify-between p-3 rounded-lg border border-border/30 bg-card">
+                  <div className="min-w-0">
+                    <code className="text-xs font-mono truncate block max-w-[200px]">{h.rule.rule_key}</code>
+                    <span className="text-[10px] text-muted-foreground">{h.rule.category}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs flex-shrink-0">
+                    <span className="font-mono">{h.rule.invocations_24h}×</span>
+                    <Badge variant={h.rule.success_rate >= 0.8 ? 'default' : 'secondary'}>
+                      {(h.rule.success_rate * 100).toFixed(0)}%
+                    </Badge>
+                    <span className="text-muted-foreground font-mono">{h.propagation_breadth} exec</span>
+                    <span className="text-[10px] text-muted-foreground">D:{h.dominant_score.toFixed(1)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Risky Rules */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-destructive" />
+            Risky Rules
+          </CardTitle>
+          <CardDescription>Success &lt;60% with ≥20 invocations</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!reDash?.riskyRules.length ? (
+            <div className="flex items-center gap-2 py-4 text-sm text-emerald-500">
+              <CheckCircle2 className="w-4 h-4" /> No risky rules — all rules healthy
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {reDash.riskyRules.map((h) => (
+                <div key={h.rule.id} className="flex items-center justify-between p-3 rounded-lg border border-destructive/20 bg-destructive/5">
+                  <code className="text-xs font-mono truncate max-w-[180px]">{h.rule.rule_key}</code>
+                  <div className="flex items-center gap-2 text-xs">
+                    <span>{h.rule.invocations_24h}×</span>
+                    <Badge variant="destructive">{(h.rule.success_rate * 100).toFixed(0)}%</Badge>
+                    <span className="text-[10px] text-muted-foreground">R:{h.risk_score.toFixed(1)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Propagation */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Brain className="w-4 h-4 text-primary" />
+            Cross-Executor Knowledge Propagation
+          </CardTitle>
+          <CardDescription>
+            Avg breadth: <strong>{reDash?.propagation.avg_breadth?.toFixed(1) ?? '—'}</strong> executors
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-3 rounded-lg border border-border/30 bg-card">
+              <p className="text-[10px] text-muted-foreground uppercase">Most Spread</p>
+              <p className="text-sm font-mono font-medium mt-1 truncate">
+                {reDash?.propagation.most_spread_rule?.rule_key ?? '—'}
+              </p>
+              {reDash?.propagation.most_spread_rule && (
+                <p className="text-[10px] text-muted-foreground">{reDash.propagation.most_spread_rule.breadth} executors</p>
+              )}
+            </div>
+            <div className="p-3 rounded-lg border border-border/30 bg-card">
+              <p className="text-[10px] text-muted-foreground uppercase">Fastest Spreading</p>
+              <p className="text-sm font-mono font-medium mt-1 truncate">
+                {reDash?.propagation.fastest_spreading?.rule_key ?? '—'}
+              </p>
+              {reDash?.propagation.fastest_spreading && (
+                <p className="text-[10px] text-muted-foreground">{reDash.propagation.fastest_spreading.velocity.toFixed(2)}/day</p>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Conflicts */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-amber-500" />
+            Rule Conflicts
+            {reDash?.conflicts.length ? <Badge variant="destructive" className="text-[10px]">{reDash.conflicts.length}</Badge> : null}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {!reDash?.conflicts.length ? (
+            <div className="flex items-center gap-2 py-4 text-sm text-emerald-500">
+              <CheckCircle2 className="w-4 h-4" /> No conflicts detected
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {reDash.conflicts.map((c) => (
+                <div key={c.id} className="p-3 rounded-lg border border-amber-500/20 bg-amber-500/5 text-xs">
+                  <div className="flex items-center justify-between">
+                    <Badge variant="outline" className="text-[9px]">{c.conflict_type}</Badge>
+                    <Badge variant={c.resolution === 'unresolved' ? 'destructive' : 'secondary'} className="text-[9px]">
+                      {c.resolution}
+                    </Badge>
+                  </div>
+                  {c.notes && <p className="text-muted-foreground mt-1">{c.notes}</p>}
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Cost & Latency */}
+      {reDash && reDash.costStats.top_expensive.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <Activity className="w-4 h-4 text-primary" />
+              Cost & Latency Impact
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Top Expensive Rules (24h)</p>
+              {reDash.costStats.per_rule.slice(0, 5).map((r) => (
+                <div key={r.rule_key} className="flex items-center justify-between p-2.5 rounded border border-border/30 text-xs">
+                  <code className="font-mono truncate max-w-[150px]">{r.rule_key}</code>
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    <span className="text-muted-foreground">avg {r.avg_ms}ms</span>
+                    <span className="text-muted-foreground">p95 {r.p95_ms}ms</span>
+                    <span className="font-mono font-medium">{r.avg_cost.toFixed(2)} cost</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Recent Runs */}
+      {reDash && reDash.recentRuns.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <Layers className="w-4 h-4 text-primary" />
+              Recent Runs
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {reDash.recentRuns.slice(0, 5).map((run) => (
+                <div key={run.id} className="flex items-center justify-between p-2.5 rounded border border-border/30 text-xs">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-[9px]">{run.mode}</Badge>
+                    <span className="text-muted-foreground">{new Date(run.started_at).toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center gap-2 font-mono">
+                    <span>{run.total_events} events</span>
+                    <span className="text-emerald-500">{run.repaired} repaired</span>
+                    {run.escalations > 0 && <span className="text-red-400">{run.escalations} esc</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// STORM CONTROL
+// ============================================================================
+
+function StormControl() {
+  const [running, setRunning] = useState(false);
+  const [lastResult, setLastResult] = useState<StormResult | null>(null);
+
+  const handleRunStorm = async () => {
+    setRunning(true);
+    try {
+      const result = await runMutationStorm();
+      if (result) {
+        setLastResult(result);
+        toast.success(`Storm complete: ${result.totalEvents} events, ${result.repaired} repaired, ${result.escalations} escalated`);
+      } else {
+        toast.error('Storm skipped — Immunity Mesh is OFF');
+      }
+    } catch (err: any) {
+      toast.error(`Storm failed: ${err.message}`);
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  return (
+    <Card className="border-amber-500/20">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base flex items-center gap-2">
+          <Zap className="w-4 h-4 text-amber-500" />
+          Mutation Storm
+          <Badge variant="outline" className="text-[10px]">shadow-only</Badge>
+        </CardTitle>
+        <CardDescription>
+          Adversarial stress test — fires schema mismatches, unicode surrogates, injection attempts, overflow, and more against executors
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <ActionButton
+          icon={Zap}
+          variant="warning"
+          loading={running}
+          onClick={handleRunStorm}
+          className="w-full"
+        >
+          {running ? 'Running Storm…' : 'Run Mutation Storm'}
+        </ActionButton>
+        {lastResult && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <div className="p-2 rounded border border-border/30 text-center">
+              <p className="text-muted-foreground">Events</p>
+              <p className="font-mono font-bold">{lastResult.totalEvents}</p>
+            </div>
+            <div className="p-2 rounded border border-border/30 text-center">
+              <p className="text-muted-foreground">Safe Fails</p>
+              <p className="font-mono font-bold text-emerald-500">{lastResult.safeFails}</p>
+            </div>
+            <div className="p-2 rounded border border-border/30 text-center">
+              <p className="text-muted-foreground">Repaired</p>
+              <p className="font-mono font-bold">{lastResult.repaired}</p>
+            </div>
+            <div className="p-2 rounded border border-border/30 text-center">
+              <p className="text-muted-foreground">Escalated</p>
+              <p className="font-mono font-bold text-red-400">{lastResult.escalations}</p>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

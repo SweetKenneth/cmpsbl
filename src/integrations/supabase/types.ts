@@ -6286,6 +6286,253 @@ export type Database = {
         }
         Relationships: []
       }
+      immunity_mesh_runs: {
+        Row: {
+          ended_at: string | null
+          escalations: number
+          id: string
+          mode: string
+          notes: string | null
+          repair_failures: number
+          repaired: number
+          run_window: string
+          safe_fails: number
+          started_at: string
+          total_events: number
+        }
+        Insert: {
+          ended_at?: string | null
+          escalations?: number
+          id?: string
+          mode?: string
+          notes?: string | null
+          repair_failures?: number
+          repaired?: number
+          run_window?: string
+          safe_fails?: number
+          started_at?: string
+          total_events?: number
+        }
+        Update: {
+          ended_at?: string | null
+          escalations?: number
+          id?: string
+          mode?: string
+          notes?: string | null
+          repair_failures?: number
+          repaired?: number
+          run_window?: string
+          safe_fails?: number
+          started_at?: string
+          total_events?: number
+        }
+        Relationships: []
+      }
+      immunity_rule_conflicts: {
+        Row: {
+          conflict_type: string
+          detected_at: string
+          id: string
+          notes: string | null
+          resolution: string
+          rule_a_id: string
+          rule_b_id: string
+        }
+        Insert: {
+          conflict_type?: string
+          detected_at?: string
+          id?: string
+          notes?: string | null
+          resolution?: string
+          rule_a_id: string
+          rule_b_id: string
+        }
+        Update: {
+          conflict_type?: string
+          detected_at?: string
+          id?: string
+          notes?: string | null
+          resolution?: string
+          rule_a_id?: string
+          rule_b_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "immunity_rule_conflicts_rule_a_id_fkey"
+            columns: ["rule_a_id"]
+            isOneToOne: false
+            referencedRelation: "immunity_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "immunity_rule_conflicts_rule_b_id_fkey"
+            columns: ["rule_b_id"]
+            isOneToOne: false
+            referencedRelation: "immunity_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      immunity_rule_invocations: {
+        Row: {
+          cost_units: number
+          created_at: string
+          duration_ms: number
+          executor: string
+          id: string
+          outcome: string
+          rule_id: string
+        }
+        Insert: {
+          cost_units?: number
+          created_at?: string
+          duration_ms?: number
+          executor: string
+          id?: string
+          outcome?: string
+          rule_id: string
+        }
+        Update: {
+          cost_units?: number
+          created_at?: string
+          duration_ms?: number
+          executor?: string
+          id?: string
+          outcome?: string
+          rule_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "immunity_rule_invocations_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "immunity_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      immunity_rule_lineage: {
+        Row: {
+          child_rule_id: string
+          created_at: string
+          id: string
+          parent_rule_id: string
+          relation: string
+        }
+        Insert: {
+          child_rule_id: string
+          created_at?: string
+          id?: string
+          parent_rule_id: string
+          relation?: string
+        }
+        Update: {
+          child_rule_id?: string
+          created_at?: string
+          id?: string
+          parent_rule_id?: string
+          relation?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "immunity_rule_lineage_child_rule_id_fkey"
+            columns: ["child_rule_id"]
+            isOneToOne: false
+            referencedRelation: "immunity_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "immunity_rule_lineage_parent_rule_id_fkey"
+            columns: ["parent_rule_id"]
+            isOneToOne: false
+            referencedRelation: "immunity_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      immunity_rule_propagation: {
+        Row: {
+          adopted_at: string
+          adoption_confidence: number
+          from_executor: string
+          id: string
+          rule_id: string
+          to_executor: string
+        }
+        Insert: {
+          adopted_at?: string
+          adoption_confidence?: number
+          from_executor: string
+          id?: string
+          rule_id: string
+          to_executor: string
+        }
+        Update: {
+          adopted_at?: string
+          adoption_confidence?: number
+          from_executor?: string
+          id?: string
+          rule_id?: string
+          to_executor?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "immunity_rule_propagation_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "immunity_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      immunity_rules: {
+        Row: {
+          category: string
+          confidence: number
+          created_at: string
+          id: string
+          invocations_24h: number
+          invocations_7d: number
+          last_seen_at: string | null
+          promoted_at: string | null
+          retired_at: string | null
+          rule_key: string
+          source_executor: string
+          status: string
+          success_rate: number
+        }
+        Insert: {
+          category?: string
+          confidence?: number
+          created_at?: string
+          id?: string
+          invocations_24h?: number
+          invocations_7d?: number
+          last_seen_at?: string | null
+          promoted_at?: string | null
+          retired_at?: string | null
+          rule_key: string
+          source_executor: string
+          status?: string
+          success_rate?: number
+        }
+        Update: {
+          category?: string
+          confidence?: number
+          created_at?: string
+          id?: string
+          invocations_24h?: number
+          invocations_7d?: number
+          last_seen_at?: string | null
+          promoted_at?: string | null
+          retired_at?: string | null
+          rule_key?: string
+          source_executor?: string
+          status?: string
+          success_rate?: number
+        }
+        Relationships: []
+      }
       integration_audit_log: {
         Row: {
           adapter_id: string | null
