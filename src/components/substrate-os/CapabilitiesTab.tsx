@@ -405,7 +405,7 @@ export function CapabilitiesTab() {
       
       {/* Footer note */}
       <div className="text-[10px] text-muted-foreground/60 text-center">
-        Capabilities v10.5.4 — 400+ Registered Capabilities • ARCHITECT Epoch
+        400+ Registered Capabilities • SPARTA Epoch
       </div>
     </div>
   );

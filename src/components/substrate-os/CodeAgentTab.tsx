@@ -5,7 +5,7 @@
  * Part of the 21-module cognitive architecture
  */
 
-import { VersionBadge } from './VersionBadge';
+
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Code, Send, Loader2, CheckCircle2, XCircle, AlertTriangle, 
@@ -811,7 +811,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               <Badge variant="outline" className="text-[10px] border-cyan-500/40 text-cyan-400 bg-cyan-500/10">
                 via DECODE
               </Badge>
-              <VersionBadge className="border-fuchsia-500/40 text-fuchsia-400 bg-fuchsia-500/10" />
+              
               {lastGuardResult && (
                 <Badge 
                   variant="outline" 

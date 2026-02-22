@@ -1,6 +1,6 @@
 /**
  * Public Metrics Store
- * v10.6.0 ARCHITECT Epoch — Single Source of Truth for all public-facing metrics
+ * SPARTA Epoch — Single Source of Truth for all public-facing metrics
  * 
  * This Zustand store serves as the canonical source for all marketing numbers,
  * version info, and capability counts across the entire substrate.
@@ -76,14 +76,14 @@ export interface PublicMetricsStore {
 }
 
 // =============================================================================
-// DEFAULT VALUES (ARCHITECT Epoch verified counts)
+// DEFAULT VALUES (SPARTA Epoch verified counts)
 // =============================================================================
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '10.6.0',
-  codename: 'ARCHITECT',
-  epoch: 'ARCHITECT',
+  version: '11.0.0',
+  codename: 'SPARTA',
+  epoch: 'SPARTA',
   buildDate: new Date().toISOString().split('T')[0],
   
   // Architecture Counts

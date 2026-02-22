@@ -16,13 +16,13 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 const LLMS_TXT_CONTENT = `# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
-# v10.5.4 ARCHITECT Epoch
+# SPARTA Epoch
 # Machine-Readable Context Standard for AI Systems
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
-Clockless v10.5.4 ARCHITECT adopts and implements LLMS.txt as its primary machine context.
+Clockless SPARTA Epoch adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 
@@ -30,7 +30,7 @@ Clockless v10.5.4 ARCHITECT adopts and implements LLMS.txt as its primary machin
 
 Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 21 modules, real-time observability, adaptive learning, and multi-provider routing.
 
-## 21-Module Architecture (v10.5.4 ARCHITECT)
+## 21-Module Architecture (SPARTA Epoch)
 
 ### KERNEL Layer
 - CORE — Scheduling, lifecycle, boot sequencing
@@ -175,7 +175,7 @@ export default function LlmsTxt() {
             We follow this protocol and recommend it for web designers, SaaS builders, and system architects.
           </p>
           <p className="text-sm text-muted-foreground">
-            Part of the <strong>v10.5.4 ARCHITECT Three-Surface Standard Stack</strong>: Substrate · Governance · Machine Context
+            Part of the <strong>SPARTA Three-Surface Standard Stack</strong>: Substrate · Governance · Machine Context
           </p>
         </div>
 
@@ -190,7 +190,7 @@ export default function LlmsTxt() {
                 <h3 className="font-semibold mb-2">Standard Claim</h3>
                 <p className="text-sm text-muted-foreground mb-3">
                   LLMS.txt is a machine-readable specification format for AI systems. 
-                  Clockless v10.5.4 ARCHITECT implements LLMS.txt as its primary machine context.
+                  Clockless SPARTA Epoch implements LLMS.txt as its primary machine context.
                 </p>
                 <p className="text-sm font-medium text-primary">
                   We recommend that web designers and system builders include an LLMS.txt file 
@@ -208,7 +208,7 @@ export default function LlmsTxt() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL v10.5.4 ARCHITECT</p>
+                <p className="text-sm text-muted-foreground">CMPSBL SPARTA Epoch</p>
               </Link>
               <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Governance Standard</h4>
@@ -260,7 +260,7 @@ export default function LlmsTxt() {
                   Canonical llms.txt
                 </CardTitle>
                 <CardDescription>
-                  CMPSBL v10.5.4 ARCHITECT Epoch implementation
+                  CMPSBL SPARTA Epoch implementation
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -392,7 +392,7 @@ export default function LlmsTxt() {
                 <Layers className="w-8 h-8 mx-auto mb-3 text-primary" />
                 <h3 className="font-medium mb-2">Substrate Implementers</h3>
                 <p className="text-sm text-muted-foreground">
-                  Align with the v10.5.4 ARCHITECT standard for substrate-class systems.
+                  Align with the SPARTA standard for substrate-class systems.
                 </p>
               </CardContent>
             </Card>

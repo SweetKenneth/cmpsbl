@@ -133,7 +133,7 @@ function ProofModeContent() {
   const [executionMeta, setExecutionMeta] = useState<ExecutionMeta | null>(null);
   const [totalExecutions, setTotalExecutions] = useState(0);
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'live' | 'degraded' | 'offline'>('checking');
-  const [substrateVersion, setSubstrateVersion] = useState<string>(SUBSTRATE_VERSION);
+  const [substrateVersion, setSubstrateVersion] = useState<string>('SPARTA');
 
   // Check substrate connection on mount
   useEffect(() => {
@@ -371,7 +371,7 @@ function ProofModeContent() {
             <div className="flex flex-wrap justify-center gap-4 text-xs font-mono text-muted-foreground/70">
               <span className="flex items-center gap-1">
                 <GitBranch className="w-3 h-3" />
-                v{SUBSTRATE_VERSION}
+                SPARTA
               </span>
               <span className="flex items-center gap-1">
                 <Server className="w-3 h-3" />
@@ -615,9 +615,9 @@ function ProofModeContent() {
                     {selectedScenario === "health" && (
                       <>
                         <p>✓ The substrate is deployed and responding to HTTP requests</p>
-                        <p>✓ All 21 modules are reachable (v{SUBSTRATE_VERSION} architecture)</p>
+                        <p>✓ All 21 modules are reachable (SPARTA architecture)</p>
                         <p>✓ Edge functions are executing on Deno runtime in {EDGE_REGION}</p>
-                        <p>✓ Version {SUBSTRATE_VERSION} is the active deployment</p>
+                        <p>✓ SPARTA Epoch is the active deployment</p>
                       </>
                     )}
                     {selectedScenario === "decode" && (

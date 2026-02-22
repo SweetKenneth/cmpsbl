@@ -1,6 +1,6 @@
 /**
  * seoMap.ts — Centralized SEO Metadata Registry
- * ARCHITECT Epoch — Evergreen Authority Edition
+ * SPARTA Epoch — Evergreen Authority Edition
  *
  * Single source of truth for every PUBLIC indexed page.
  * Each entry has a UNIQUE primary keyword — no cannibalization.
@@ -685,6 +685,18 @@ export const seoMap: Record<string, PageSEO> = {
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'AI substrate command center dashboard',
+    noindex: true,
+  },
+  '/admin/immunity-mesh': {
+    title: 'Immunity Mesh — Admin',
+    description: 'Admin dashboard for immunity mesh controls, shadow probes, and auto training.',
+    ogTitle: 'Immunity Mesh — Admin',
+    ogDescription: 'Immunity mesh admin controls.',
+    ogImage: OG_HOME,
+    keywords: ['immunity mesh'],
+    schema: 'feature',
+    intent: 'Admin',
+    primaryKeyword: 'immunity mesh admin',
     noindex: true,
   },
 
