@@ -380,10 +380,20 @@ function classifyArchetype(
   const missing = issues.filter(i => i.issue === 'missing').length;
   const oversized = issues.filter(i => i.issue === 'too_long').length;
   const unknowns = issues.filter(i => i.issue === 'unknown_field').length;
+  const structuralIssues = typeMismatches + missing + oversized;
+
+  // If the ONLY issues are unknown fields, the input is effectively well-formed.
+  // Unknown fields don't affect executor functionality — they're just extra keys.
+  // This prevents inflated repair rates from adversarial inputs that have valid
+  // required fields but also carry extra unknown keys.
+  if (structuralIssues === 0 && unknowns > 0) return 'well_formed';
 
   // If ALL keys are unknown, it's an alien shape
   const knownCount = [...inputKeys].filter(k => schemaKeys.has(k)).length;
   if (knownCount === 0 && inputKeys.size > 0) return 'shape_alien';
+
+  // If mostly unknown fields with minimal structural issues, still shape_alien
+  if (knownCount > 0 && unknowns > knownCount * 2 && structuralIssues <= 1) return 'shape_alien';
 
   if (oversized > 0) return 'oversized';
   if (typeMismatches > missing) return 'type_mismatch';
