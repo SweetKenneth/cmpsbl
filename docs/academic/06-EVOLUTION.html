@@ -19,7 +19,7 @@
 <div class="page">
 
 <h1>Evolution Mechanics</h1>
-<p><strong>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</strong></p>
+<p><strong>CMPSBL OS Substrate — SPARTA Epoch</strong></p>
 <p>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
 Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a>)</p>
 <hr />
@@ -27,26 +27,20 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-124
 <h2>6. Evolution Mechanics</h2>
 <p>The substrate's evolution engine enables verifiable self-modification — the system can propose, validate, apply, and roll back improvements to its own behavior. This is the world's first implementation of cryptographically verifiable, bounded self-evolution in a production AI system.</p>
 
-<h3>6.1 Evolution Lifecycle (SEBA Framework)</h3>
-<p>Self-modification follows a seven-stage lifecycle governed by the Structured Evolution with Bounded Autonomy (SEBA) framework:</p>
-<ol>
-<li><strong>Observe.</strong> VISION monitors system performance and identifies improvement opportunities through anomaly detection and trend analysis.</li>
-<li><strong>Propose.</strong> MODERNIZER generates a formal evolution proposal specifying the change, expected impact, risk assessment, and rollback plan.</li>
-<li><strong>Validate.</strong> The proposal is tested against regression criteria: functional correctness, performance impact, governance compliance, and safety constraints.</li>
-<li><strong>Approve.</strong> Authorization is granted according to the current autonomy tier (Manual/Supervised/Autonomous).</li>
-<li><strong>Apply.</strong> The validated change is applied to the live system.</li>
-<li><strong>Stamp.</strong> A cryptographic evolution stamp is generated containing: timestamp, proposer identity, approver identity, change description, diff hash, pre-state hash, post-state hash, regression results, and rollback availability.</li>
-<li><strong>Monitor.</strong> SYSTEM monitors for regression. If degradation exceeds thresholds, automatic rollback is triggered.</li>
-</ol>
+<h3>6.1 What the System Does</h3>
+<p>The evolution engine continuously observes system performance, identifies opportunities for improvement, and proposes formally structured changes. Each proposal passes through multiple validation stages — including safety, performance, and governance criteria — before it can be applied. Every successful change is cryptographically stamped, creating a tamper-evident audit trail. If any degradation is detected post-application, the system rolls back atomically.</p>
 
-<h3>6.2 Evolution Scope</h3>
+<h3>6.2 Governed Mutation Runtime</h3>
+<p>In the SPARTA Epoch, the substrate introduced a governed mutation runtime. Behavioral rules progress through a formal lifecycle — observation, candidacy, promotion — with multi-gate validation at every stage. The promotion pipeline includes structural integrity scanning, preflight guardrails, canary verification, and deterministic rollback. No partial state transitions are permitted.</p>
+
+<h3>6.3 Evolution Scope</h3>
 <table>
-<tr><th>Modifiable</th><th>Examples</th></tr>
+<tr><th>Modifiable</th><th>Description</th></tr>
 <tr><td>System prompts</td><td>Response templates, intent classifiers</td></tr>
-<tr><td>Routing logic</td><td>Provider weights, failover priorities</td></tr>
-<tr><td>Memory strategies</td><td>Decay rates, reinforcement weights</td></tr>
-<tr><td>Defense rules</td><td>Threat thresholds, behavioral signatures</td></tr>
-<tr><td>Pipeline configurations</td><td>Step ordering, error handling</td></tr>
+<tr><td>Routing logic</td><td>Provider selection, failover priorities</td></tr>
+<tr><td>Memory strategies</td><td>Consolidation patterns, reinforcement behavior</td></tr>
+<tr><td>Defense rules</td><td>Threat signatures, behavioral patterns</td></tr>
+<tr><td>Pipeline configurations</td><td>Workflow ordering, error handling</td></tr>
 </table>
 <table>
 <tr><th>Immutable</th><th>Reason</th></tr>
@@ -57,10 +51,10 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-124
 <tr><td>Its own evolution rules</td><td>Meta-stability requirement</td></tr>
 </table>
 
-<h3>6.3 Verifiability</h3>
-<p>Evolution stamps enable post-hoc verification. Given a stamp, any authorized party can confirm: the change was formally proposed, regression tests passed, the appropriate authority approved it, pre- and post-state hashes match, and rollback remains available.</p>
+<h3>6.4 Verifiability</h3>
+<p>Evolution stamps enable post-hoc verification. Given a stamp, any authorized party can confirm: the change was formally proposed, validation criteria were satisfied, the appropriate authority approved it, pre- and post-state hashes match, and rollback remains available.</p>
 
-<h3>6.4 Rollback Semantics</h3>
+<h3>6.5 Rollback Semantics</h3>
 <ul>
 <li><strong>State capture.</strong> Full system state is captured before evolution application.</li>
 <li><strong>Rollback trigger.</strong> Can be triggered manually, by automated regression detection, or by governance override.</li>
@@ -68,9 +62,12 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-124
 <li><strong>Stamp preservation.</strong> Even rolled-back evolutions retain their stamps, creating a complete history including failed experiments.</li>
 </ul>
 
+<h3>6.6 Longitudinal Telemetry</h3>
+<p>System health is tracked longitudinally across 24-hour, 7-day, and 30-day windows. Key metrics include success rates, escalation patterns, integrity health scores, rule growth, and cost indices. This data supports investor-grade audit reporting and enables proactive stability monitoring.</p>
+
 <hr />
 
-<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation</em><br />
+<p><em>CMPSBL OS Substrate — Academic Documentation</em><br />
 <em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
 <em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>

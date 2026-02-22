@@ -2,15 +2,16 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>CEO Reconstruction — SEBA Evolution</title>
+<title>CEO Reconstruction — SEBA Evolution + Immunity Mesh Promotion</title>
 <style>
   body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
   .page{max-width:8.5in;margin:0 auto;padding:0.8in}
-  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}
+  h1{font-size:20pt;margin-bottom:0.3in}h2{font-size:14pt;margin-top:0.4in}h3{font-size:12pt;margin-top:0.25in}h4{font-size:11pt;margin-top:0.2in}
   p{margin-bottom:0.14in}ul,ol{margin-left:0.25in}
   table{width:100%;border-collapse:collapse;margin:0.2in 0}th,td{border:1px solid #ccc;padding:6px 8px}th{background:#f3f3f3;text-align:left}
-  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:10pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
+  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:9pt;overflow-x:auto;white-space:pre;margin:0.15in 0}
   .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
+  .danger{border-color:#e74c3c;background:#fdf2f2}
   hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
   @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
 </style>
@@ -18,9 +19,17 @@
 <body>
 <div class="page">
 
-<h1>🔐 06 — SEBA (Self-Evolving Bounded Agent)</h1>
-<p><strong>v2.1.0 — Full Spectrum Autonomy Pipeline</strong></p>
+<h1>🔐 06 — SEBA + Immunity Mesh Promotion Pipeline</h1>
+<p><strong>Full Spectrum Autonomy + Governed Mutation Runtime</strong></p>
+<p><strong>Classification: 🔴 CEO RECONSTRUCTION — ULTRA-CRITICAL</strong></p>
 <hr />
+
+<div class="card danger">
+<p>⚠️ This document contains the complete reconstruction blueprint for both the SEBA evolution pipeline AND the Immunity Mesh governed promotion runtime. Together they form the substrate's self-improvement infrastructure.</p>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<h1>PART I — SEBA (Self-Evolving Bounded Agent)</h1>
 
 <h2>Architecture</h2>
 <div class="card">
@@ -80,14 +89,14 @@ Phase 5: VERIFYING
 <h2>Safety Controls</h2>
 <div class="card">
 <pre>SEBA_SAFETY_CONTROLS = {
-  AUTO_APPROVE_ENABLED: false,       // ALL proposals go to pending
+  AUTO_APPROVE_ENABLED: false,
   MAX_CYCLES_PER_DAY: 12,
   MAX_PROPOSALS_PER_DAY: 20,
   COOLDOWN_HOURS: 2,
-  NEXUS_BUDGET_THRESHOLD: 0.5,      // Halt if AI budget > 50%
+  NEXUS_BUDGET_THRESHOLD: 0.5,
   FREE_TIER_DAILY_CALLS: 50,
   FREE_TIER_MONTHLY_CALLS: 1000,
-  CALLS_PER_CYCLE: 2.5,             // ~2-3 LLM calls per cycle
+  CALLS_PER_CYCLE: 2.5,
 }</pre>
 </div>
 
@@ -143,9 +152,9 @@ Phase 5: VERIFYING
 </ol>
 <p>Partial rollback deliberately NOT supported to prevent inconsistent state.</p>
 
-<h2>Key Source Files</h2>
+<h2>Key Source Files (SEBA)</h2>
 <ul>
-<li><code>src/lib/substrate/seba/seba-agent.ts</code> — Main agent (1021 lines)</li>
+<li><code>src/lib/substrate/seba/seba-agent.ts</code> — Main agent</li>
 <li><code>src/lib/substrate/seba/types.ts</code> — All type definitions</li>
 <li><code>src/lib/substrate/seba/cognitive-analyzer.ts</code> — 9-engine analysis</li>
 <li><code>src/lib/substrate/seba/proposal-generator.ts</code> — Proposal creation</li>
@@ -154,11 +163,232 @@ Phase 5: VERIFYING
 <li><code>src/lib/substrate/seba/proposal-store.ts</code> — Database persistence</li>
 <li><code>src/lib/substrate/seba/evolution-stamp.ts</code> — Traceability</li>
 <li><code>src/lib/substrate/seba/llm-analyzer.ts</code> — AI-enhanced analysis</li>
-<li><code>src/lib/substrate/seba/cross-validator.ts</code> — Execution validation + proposal chaining</li>
+<li><code>src/lib/substrate/seba/cross-validator.ts</code> — Execution validation</li>
 </ul>
 
 <hr />
-<p><em>CMPSBL OS Substrate v10.9.7 — CEO RECONSTRUCTION GUIDE</em><br />
+
+<!-- ══════════════════════════════════════════ -->
+<h1>PART II — IMMUNITY MESH PROMOTION PIPELINE (SPARTA Epoch)</h1>
+<p>The promotion pipeline adds a governed mutation runtime on top of SEBA. Behavioral immune rules progress through a lifecycle with multi-gate validation at every stage.</p>
+
+<h2>1. Database Tables (8 tables)</h2>
+<p>All tables have RLS enabled with admin-only policies. See <code>docs/internal/16-DATABASE-SCHEMA.html</code> for full DDL.</p>
+
+<table>
+<tr><th>Table</th><th>Purpose</th></tr>
+<tr><td><code>system_snapshots</code></td><td>Full system state captures (shadow, pre/post promote, rollback)</td></tr>
+<tr><td><code>system_diffs</code></td><td>Structured diffs between snapshots</td></tr>
+<tr><td><code>production_promotions</code></td><td>Promotion lifecycle records</td></tr>
+<tr><td><code>mutation_receipts</code></td><td>Per-stage audit receipts</td></tr>
+<tr><td><code>code_stamps</code></td><td>Cryptographic code stamps on promoted files</td></tr>
+<tr><td><code>integrity_scan_runs</code></td><td>Integrity scan results</td></tr>
+<tr><td><code>integrity_findings</code></td><td>Individual findings per scan</td></tr>
+<tr><td><code>system_metrics_history</code></td><td>Longitudinal telemetry (30-day retention)</td></tr>
+</table>
+
+<h2>2. Promotion Flow (12 Steps)</h2>
+<div class="card">
+<pre> 1. Guard: isShadowMeshEnabled() must return true
+ 2. Capture shadow baseline snapshot
+ 3. Run shadow storm simulation (executeShadowStorm)
+ 4. Capture post-shadow snapshot
+ 5. Generate full diff (rules, metrics, executors, files)
+ 6. Run pre_promote integrity scan
+ 7. Execute preflight guardrails (6 checks)
+ 8. Create production_promotions record (status: pending)
+ 9. Canary stage: verify recent invocation success rate ≥ 0.7
+10. Verification stage: confirm metrics stability
+11. Success path: code stamp files + mark promotion success
+12. Failure path: atomic rollback to pre_promote snapshot</pre>
+</div>
+
+<h2>3. Preflight Guardrails</h2>
+<table>
+<tr><th>Check</th><th>Threshold</th><th>Source</th></tr>
+<tr><td>Rule success rate</td><td>&lt; 60%</td><td>From shadow storm results</td></tr>
+<tr><td>Escalation delta</td><td>&gt; 10% increase</td><td>Pre vs post shadow</td></tr>
+<tr><td>Latency delta</td><td>&gt; 20% increase</td><td>Pre vs post shadow</td></tr>
+<tr><td>Cost delta</td><td>&gt; 25% increase</td><td>Pre vs post shadow</td></tr>
+<tr><td>Executor health</td><td>Below threshold</td><td>Executor registry query</td></tr>
+<tr><td>Integrity scan</td><td>Critical errors OR health &lt; 70</td><td>Integrity scanner</td></tr>
+</table>
+
+<h2>4. Integrity Scanner</h2>
+<div class="card">
+<pre>CHECKS PERFORMED:
+  1. Rule conflict detection (overlapping triggers)
+  2. Dormant rule detection (>30 days idle)
+  3. Rollback instability (>3 recent rollbacks)
+  4. Escalation spike (>15% of invocations)
+  5. Latency creep (p95 above threshold)
+  6. Oscillation detection (rules toggling states)
+  7. Duplicate rule signatures
+  8. Executor registry mismatch
+
+SCORING:
+  health_score = 100 - (criticals × 15) - (warnings × 5)
+  Clamped to 0–100
+  
+  Critical findings: rule conflicts, executor mismatches
+  Warning findings: dormant rules, escalation spikes, latency creep</pre>
+</div>
+
+<h2>5. Lifecycle Sweep (Automated Rule Transitions)</h2>
+<div class="card">
+<pre>sweepRuleLifecycle() runs automatically and transitions rules:
+
+  learned → candidate:
+    Condition: invocations >= 5 AND success_rate >= 0.6
+
+  candidate → promoted:
+    Condition: invocations >= 20 AND success_rate >= 0.8
+
+  promoted → candidate (demotion):
+    Condition: success_rate drops below 0.5
+
+  any → retired:
+    Condition: no invocations in 30+ days AND success_rate < 0.3
+
+  conflict → blocked:
+    Condition: integrity scan detects active conflicts
+
+Source: src/lib/immune/rule-engine/lifecycle-sweep.ts</pre>
+</div>
+
+<h2>6. Code Stamping</h2>
+<div class="card">
+<pre>On successful promotion, append to modified files:
+
+// CMPSBL IMMUNITY PROMOTION
+// promotion_id: {uuid}
+// shadow_run: {uuid}
+// timestamp: {ISO8601}
+// rules_applied: {count}
+// diff_hash: {sha256}
+// integrity_score: {0-100}
+// verified: true
+
+Rules:
+  - Never overwrite previous stamps
+  - Append chronologically
+  - Stamps stored in code_stamps table
+  - Target files:
+    src/lib/immune/rule-engine/index.ts
+    src/lib/substrate/promotion-pipeline/index.ts</pre>
+</div>
+
+<h2>7. Canary Verification</h2>
+<div class="card">
+<pre>Query: last 50 rule invocations
+Calculate: success_rate = successful / total
+Threshold: success_rate >= 0.7
+If data < 5 invocations: auto-pass (insufficient data)
+Failure: immediate rollback + mutation_receipt logged</pre>
+</div>
+
+<h2>8. Rollback</h2>
+<div class="card">
+<pre>Deterministic rollback restores from pre_promote snapshot:
+  - All immune rules (status, invocations, scores)
+  - All executor health records
+  - Metrics baseline
+  - No partial state transitions
+
+Triggers:
+  - Canary failure
+  - Verification failure
+  - Integrity scan critical during promotion
+  - Manual operator override
+
+Post-rollback:
+  - mutation_receipt logged with stage='rollback'
+  - production_promotions marked as rolled_back
+  - system_metrics_history updated</pre>
+</div>
+
+<h2>9. Telemetry</h2>
+<div class="card">
+<pre>system_metrics_history records:
+
+  success_rate:         successful_invocations / total_invocations
+  escalation_rate:      escalated_invocations / total_invocations
+  encode_assist_rate:   computed from escalation data
+  latency_p95:          95th percentile of invocation durations (ms)
+  cost_index:           avg cost per invocation (millicents)
+  integrity_health_score: from most recent integrity scan
+  rule_count:           total active rules
+  promoted_rule_count:  rules in 'promoted' status
+  retired_rule_count:   rules in 'retired' status
+  rollback_count:       total rollbacks recorded
+  avg_executor_health:  average across all executors
+
+Recording: on promote, on rollback, on demand
+Retention: 30 days minimum
+Dashboard views: 24h, 7d, 30d
+Export: JSON, CSV</pre>
+</div>
+
+<h2>10. Scoring Algorithms</h2>
+<div class="card">
+<pre>Dominant Score:
+  dominantScore = (successRate × 40) + (invocations × 0.5) + (1 - escalationRate) × 20
+  Clamped 0–100
+
+Risk Score:
+  riskScore = (escalationRate × 30) + ((1 - successRate) × 40) + (conflictCount × 10)
+  Clamped 0–100
+
+Spread Velocity:
+  spreadVelocity = (crossExecutorHits × 2) + (sharedRuleContributions × 3)
+  Clamped 0–100
+
+Rule Health:
+  ruleHealth = (successRate × 50) + ((1 - escalationRate) × 30) + (invocations > 0 ? 20 : 0)
+  Clamped 0–100</pre>
+</div>
+
+<h2>11. Key Source Files (Promotion Pipeline)</h2>
+<ul>
+<li><code>src/lib/substrate/promotion-pipeline/promote.ts</code> — Main orchestrator</li>
+<li><code>src/lib/substrate/promotion-pipeline/preflight.ts</code> — Preflight guardrails</li>
+<li><code>src/lib/substrate/promotion-pipeline/integrity-scanner.ts</code> — Integrity engine</li>
+<li><code>src/lib/substrate/promotion-pipeline/snapshot-engine.ts</code> — Snapshot capture/restore</li>
+<li><code>src/lib/substrate/promotion-pipeline/diff-engine.ts</code> — Diff generation</li>
+<li><code>src/lib/substrate/promotion-pipeline/code-stamping.ts</code> — Code stamps</li>
+<li><code>src/lib/substrate/promotion-pipeline/telemetry-recorder.ts</code> — Metrics recording</li>
+<li><code>src/lib/substrate/promotion-pipeline/constants.ts</code> — All thresholds and constants</li>
+<li><code>src/lib/substrate/promotion-pipeline/types.ts</code> — Type definitions</li>
+<li><code>src/lib/immune/rule-engine/lifecycle-sweep.ts</code> — Automated lifecycle</li>
+<li><code>src/lib/immune/rule-engine/storm.ts</code> — Shadow storm simulator</li>
+<li><code>src/lib/immune/rule-engine/aggregator.ts</code> — Aggregation with error isolation</li>
+<li><code>src/lib/immune/rule-engine/scoring.ts</code> — All scoring formulas</li>
+<li><code>src/lib/immune/rule-engine/lifecycle.ts</code> — Rule lifecycle logic</li>
+</ul>
+
+<hr />
+
+<!-- ══════════════════════════════════════════ -->
+<h2>Reconstruction Sequence</h2>
+<p>To rebuild evolution + promotion from scratch:</p>
+<ol>
+<li><strong>Database</strong> — Run migrations for all 8 promotion pipeline tables + existing SEBA tables</li>
+<li><strong>Rule Engine</strong> — Implement scoring.ts, lifecycle.ts, lifecycle-sweep.ts</li>
+<li><strong>Storm Simulator</strong> — Implement storm.ts with per-rule invocation recording</li>
+<li><strong>Aggregator</strong> — Implement aggregator.ts with safeFetch error isolation</li>
+<li><strong>Snapshot Engine</strong> — Implement capture/restore for system state</li>
+<li><strong>Diff Engine</strong> — Implement structured diff generation</li>
+<li><strong>Integrity Scanner</strong> — Implement all 8 checks + scoring</li>
+<li><strong>Preflight</strong> — Implement 6 guardrail checks</li>
+<li><strong>Promotion Pipeline</strong> — Wire promote.ts (12-step flow)</li>
+<li><strong>Code Stamping</strong> — Implement stamp generation and file insertion</li>
+<li><strong>Telemetry</strong> — Implement metrics recording and history queries</li>
+<li><strong>SEBA Agent</strong> — Implement 5-phase cognitive cycle</li>
+<li><strong>UI</strong> — Build ImmunityMeshDashboard with Promote tab, integrity panel, telemetry charts</li>
+</ol>
+
+<hr />
+<p><em>CMPSBL OS Substrate — CEO RECONSTRUCTION GUIDE</em><br />
 <em>Kenneth E Sweet Jr · PromptFluid®</em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
