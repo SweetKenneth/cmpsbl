@@ -4,7 +4,7 @@
  * and accurate metrics. Observability only — zero runtime changes.
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ShadowMeshToggle } from "@/components/admin/ShadowMeshToggle";
 import { ShadowMeshAnalytics } from "@/components/admin/ShadowMeshAnalytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Shield, Brain, Zap, Activity, RotateCcw, AlertTriangle, BarChart3, 
   Table2, BookOpen, Fingerprint, Radar, HeartPulse, Layers, 
-  ArrowUpRight, ArrowDownRight, CheckCircle2, XCircle, Minus
+  ArrowUpRight, ArrowDownRight, CheckCircle2, XCircle, Minus,
+  Hammer, GraduationCap, TrendingUp, Sparkles, Play
 } from "lucide-react";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +24,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useSubstrateVoice } from "@/components/substrate-os/audio";
 import { motion, AnimatePresence } from "framer-motion";
 import { getSharedRuleStats, getSharedRules, type SharedRule } from "@/immune/shared-rule-registry";
+import { getSkillStats, type SkillRecord } from "@/lib/shadow/shadowBuild";
 
 // ============================================================================
 // HELPERS
@@ -306,9 +308,12 @@ export default function ImmunityMeshDashboard() {
       </motion.div>
 
       <Tabs defaultValue="overview" className="space-y-5">
-        <TabsList className="grid grid-cols-4 w-full max-w-lg bg-muted/50 p-1">
+        <TabsList className="grid grid-cols-5 w-full max-w-2xl bg-muted/50 p-1">
           <TabsTrigger value="overview" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
             <BarChart3 className="w-3.5 h-3.5" />Overview
+          </TabsTrigger>
+          <TabsTrigger value="build" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
+            <Hammer className="w-3.5 h-3.5" />Shadow Build
           </TabsTrigger>
           <TabsTrigger value="executors" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
             <Table2 className="w-3.5 h-3.5" />Executors
@@ -428,6 +433,11 @@ export default function ImmunityMeshDashboard() {
 
           {/* Legacy Analytics */}
           <ShadowMeshAnalytics key={analyticsKey} />
+        </TabsContent>
+
+        {/* ══════════════════ SHADOW BUILD ══════════════════ */}
+        <TabsContent value="build" className="space-y-5">
+          <ShadowBuildPanel />
         </TabsContent>
 
         {/* ══════════════════ EXECUTORS ══════════════════ */}
@@ -819,6 +829,237 @@ function RepairSkillsPanel() {
         </CardContent>
       </Card>
     </motion.div>
+  );
+}
+
+// ============================================================================
+// SHADOW BUILD PANEL
+// ============================================================================
+
+function ShadowBuildPanel() {
+  const [stats, setStats] = useState<ReturnType<typeof getSkillStats> | null>(null);
+  const voice = useSubstrateVoice();
+
+  useEffect(() => {
+    setStats(getSkillStats());
+    const interval = setInterval(() => setStats(getSkillStats()), 10_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="space-y-5">
+      {/* Mode Explanation */}
+      <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+          <CardContent className="pt-5 pb-4">
+            <div className="flex items-start gap-4">
+              <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 flex-shrink-0">
+                <Hammer className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-1">Shadow Build Mode</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Executors practice on realistic tasks — replaying real invocations, running synthetic scenarios, 
+                  and executing ENCODE practice tasks. All results are scored and discarded, but skills and 
+                  repair rules are retained and auto-propagated across the mesh.
+                </p>
+                <div className="flex gap-3 mt-3">
+                  <Badge variant="outline" className="text-[10px]">
+                    <Play className="w-3 h-3 mr-1" />Replay
+                  </Badge>
+                  <Badge variant="outline" className="text-[10px]">
+                    <Sparkles className="w-3 h-3 mr-1" />Synthetic
+                  </Badge>
+                  <Badge variant="outline" className="text-[10px]">
+                    <GraduationCap className="w-3 h-3 mr-1" />ENCODE
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Skill Stats Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <MetricCard
+          label="Total Skills"
+          value={String(stats?.totalSkills ?? 0)}
+          sub="across all executors"
+          icon={GraduationCap}
+          status={(stats?.totalSkills ?? 0) > 0 ? 'good' : 'neutral'}
+          delay={0}
+        />
+        <MetricCard
+          label="Avg Proficiency"
+          value={`${((stats?.avgProficiency ?? 0) * 100).toFixed(0)}%`}
+          sub="skill confidence"
+          icon={TrendingUp}
+          status={(stats?.avgProficiency ?? 0) >= 0.7 ? 'good' : (stats?.avgProficiency ?? 0) >= 0.4 ? 'warn' : 'neutral'}
+          delay={1}
+        />
+        <MetricCard
+          label="High Proficiency"
+          value={String(stats?.highProficiency ?? 0)}
+          sub="≥80% confidence"
+          icon={CheckCircle2}
+          status={(stats?.highProficiency ?? 0) > 0 ? 'good' : 'neutral'}
+          delay={2}
+        />
+        <MetricCard
+          label="Recently Learned"
+          value={String(stats?.recentlyLearned ?? 0)}
+          sub="last hour"
+          icon={Sparkles}
+          status={(stats?.recentlyLearned ?? 0) > 0 ? 'good' : 'neutral'}
+          delay={3}
+        />
+        <MetricCard
+          label="Categories"
+          value={String(stats?.categoriesCovered ?? 0)}
+          sub="skill domains"
+          icon={Layers}
+          status={(stats?.categoriesCovered ?? 0) >= 3 ? 'good' : 'neutral'}
+          delay={4}
+        />
+      </div>
+
+      {/* Top Skills & New Skills */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}>
+          <Card className="h-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                Top Skills
+                <Badge variant="outline" className="text-[10px] ml-1">by proficiency</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!stats?.topSkills.length ? (
+                <p className="text-sm text-muted-foreground py-4">
+                  No skills developed yet — run shadow builds to train executors
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {stats.topSkills.map((skill, i) => (
+                    <motion.div
+                      key={`${skill.name}-${skill.category}`}
+                      className="flex items-center justify-between p-3 rounded-lg border border-border/20 bg-card hover:border-primary/20 transition-colors"
+                      initial={{ opacity: 0, x: -6 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.04 }}
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <code className="text-[11px] font-mono text-primary truncate">{skill.name}</code>
+                        <Badge variant="outline" className="text-[9px] px-1.5 py-0 flex-shrink-0">{skill.category}</Badge>
+                      </div>
+                      <div className="flex items-center gap-3 flex-shrink-0">
+                        <div className="w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
+                          <motion.div
+                            className={`h-full rounded-full ${skill.proficiency >= 0.8 ? 'bg-emerald-500' : skill.proficiency >= 0.5 ? 'bg-amber-500' : 'bg-red-400'}`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${skill.proficiency * 100}%` }}
+                            transition={{ duration: 0.6 }}
+                          />
+                        </div>
+                        <span className="text-xs font-mono font-medium w-10 text-right">
+                          {(skill.proficiency * 100).toFixed(0)}%
+                        </span>
+                        <span className="text-[10px] text-muted-foreground font-mono w-6 text-right">
+                          ×{skill.practiceCount}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
+          <Card className="h-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" />
+                Recently Learned
+                <Badge variant="outline" className="text-[10px] ml-1">newest first</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!stats?.newSkills.length ? (
+                <p className="text-sm text-muted-foreground py-4">
+                  No new skills yet — shadow builds generate learning data
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {stats.newSkills.map((skill, i) => {
+                    const age = Date.now() - skill.learnedAt;
+                    const ageStr = age < 60000 ? 'just now' 
+                      : age < 3600000 ? `${Math.round(age / 60000)}m ago`
+                      : `${Math.round(age / 3600000)}h ago`;
+                    const isNew = age < 300000; // < 5 min
+                    
+                    return (
+                      <motion.div
+                        key={`${skill.name}-${skill.learnedAt}`}
+                        className={`flex items-center justify-between p-3 rounded-lg border ${isNew ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-border/20 bg-card'} transition-colors`}
+                        initial={{ opacity: 0, x: 6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          {isNew && <Sparkles className="w-3 h-3 text-emerald-500 flex-shrink-0" />}
+                          <code className="text-[11px] font-mono truncate">{skill.name}</code>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <Badge variant={isNew ? 'default' : 'secondary'} className="text-[9px]">
+                            {ageStr}
+                          </Badge>
+                          <span className={`text-xs font-mono ${skill.proficiency >= 0.6 ? 'text-emerald-500' : 'text-muted-foreground'}`}>
+                            {(skill.proficiency * 100).toFixed(0)}%
+                          </span>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* Dual-mode explanation */}
+      <Card className="border-border/50">
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Brain className="w-4 h-4 text-primary" />
+            Training Architecture
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {[
+            { icon: '🔍', text: 'Probe Mode — adversarial testing: fire garbage inputs, measure defense strength' },
+            { icon: '🔨', text: 'Build Mode — skill training: practice on realistic tasks, develop proficiency' },
+            { icon: '🧠', text: 'Auto-Learning — successful repairs become shared rules, cross-executor propagation' },
+            { icon: '📈', text: 'Dual-mode — both modes run together, building defense AND capability simultaneously' },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              className="flex items-start gap-3 text-sm text-muted-foreground"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.08 }}
+            >
+              <span className="text-lg mt--0.5">{item.icon}</span>
+              <span>{item.text}</span>
+            </motion.div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 

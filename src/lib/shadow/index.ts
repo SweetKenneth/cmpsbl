@@ -9,3 +9,4 @@ export { runShadowProbe, runAllShadowProbes, type ShadowProbeResult, type Shadow
 export { runShadowBatch } from './runBatch';
 export { startShadowScheduler, stopShadowScheduler } from './scheduler';
 export { getShadowMeshAnalytics, type ShadowMeshAnalyticsData } from './analytics';
+export { runShadowBuild, runAllShadowBuilds, getSkillStats, getAllSkills, type ShadowBuildReport, type ShadowBuildResult, type SkillRecord } from './shadowBuild';
