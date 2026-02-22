@@ -33,62 +33,63 @@ export function EnhancedFooter() {
   // Footer has: Substrate internals, Learning, Standards, Contact & Legal
   const footerSections: FooterSection[] = [
     {
-      title: "Substrate",
+      title: "The Substrate",
       links: [
-        { name: "All Modules", href: "/modules", highlight: true },
-        { name: "Substrate Overview", href: "/substrate" },
-        { name: "System Status", href: "/status", highlight: true },
-        { name: "Documentation", href: "/documentation" },
-        { name: "System Feed", href: "/system-feed" },
-        { name: "Decode Engine", href: "/decode" },
+        { name: "Module Atlas", href: "/modules", highlight: true },
+        { name: "Architecture", href: "/substrate" },
         { name: "Proof Mode", href: "/proof" },
+        { name: "Decode Engine", href: "/decode" },
+        { name: "System Feed", href: "/system-feed" },
       ]
     },
     {
-      title: "Build",
+      title: "Create",
       links: [
         { name: "Start Here", href: "/start-here", highlight: true },
-        { name: "Developer Academy", href: "/academy" },
+        { name: "Academy", href: "/academy" },
         { name: "CodeLab", href: "/codelab" },
-        { name: "Experimentation Lab", href: "/lab" },
+        { name: "Sandbox", href: "/lab" },
         { name: "DevTools", href: "/devtools" },
-        { name: "Gaming AI", href: "/gaming" },
       ]
     },
     {
-      title: "Explore",
+      title: "Discover",
       links: [
         { name: "Blog", href: "/blog" },
         { name: "Insights", href: "/insights" },
         { name: "Publication", href: "/publication" },
         { name: "Library", href: "/library" },
-        { name: "Cognitive Reality", href: "/clockless-world-engine" },
         { name: "Use Cases", href: "/use-cases" },
-        { name: "Demo", href: "/demo" },
       ]
     },
     {
-      title: "Standards",
+      title: "Ecosystem",
+      links: [
+        { name: "Cognitive Reality", href: "/clockless-world-engine" },
+        { name: "Live Demo", href: "/demo" },
+        { name: "Gaming AI", href: "/gaming" },
+        { name: "Showcase", href: "/showcase" },
+        { name: "Uptime", href: "/status", highlight: true },
+      ]
+    },
+    {
+      title: "Framework",
       links: [
         { name: "Pricing", href: "/pricing" },
         { name: "Licensing", href: "/licensing" },
         { name: "Namespace", href: "/namespace" },
         { name: "Foundations", href: "/foundations" },
-        { name: "Evolution Log", href: "/changelog" },
         { name: "Roadmap", href: "/roadmap" },
       ]
     },
     {
-      title: "Company",
+      title: "Connect",
       links: [
         { name: "About", href: "/about" },
-        { name: "Support", href: "/support" },
         { name: "Contact", href: "/contact" },
         { name: "Investors", href: "/investors" },
-        { name: "Privacy", href: "/privacy" },
-        { name: "Terms", href: "/terms" },
-        { name: "llms.txt", href: "/llms-txt" },
-        { name: "humans.txt", href: "/humans-txt" },
+        { name: "Support", href: "/support" },
+        { name: "Legal", href: "/privacy" },
       ]
     },
   ];
@@ -107,7 +108,7 @@ export function EnhancedFooter() {
         
         {/* Main Footer Content */}
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
-          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-3 lg:grid-cols-6 lg:gap-10">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-7 lg:gap-8">
             {/* Brand Column - Full width on mobile */}
             <div className="col-span-2 md:col-span-1 mb-6 md:mb-0">
               <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3 sm:mb-4">
