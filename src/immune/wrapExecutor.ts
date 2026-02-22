@@ -28,6 +28,7 @@ import type {
 } from './types';
 import type { SynergyExecutionContext, SynergyResult } from '@/lib/capabilities/synergies/types';
 import { isShadowMeshEnabled } from '@/lib/system/flags';
+import { log } from '@/lib/system/log';
 import { logImmuneEvent, redactContext } from './logger';
 import { enqueueEscalation } from './queue';
 import { repair } from './repairs';
@@ -178,13 +179,33 @@ export function wrapExecutor(
     ): Promise<SynergyResult | null> => {
       if (repairAttemptedFlag) return null;
 
+      // v3.1: Check shared rules FIRST — learned fixes from other executors
+      const applicableRules = findApplicableRules(executorName);
+      let sharedRuleUsed: string | null = null;
+
       const ir = intelligentRepair(executorName, failingInput);
-      if (!ir.repaired) return null;
+      if (!ir.repaired) {
+        // If intelligent repair fails, check if a shared rule might help
+        if (applicableRules.length > 0) {
+          log.info('immune', `${executorName}: No local repair, but ${applicableRules.length} shared rules available`);
+        }
+        return null;
+      }
 
       if (ir.confidence < 0.4) {
         logImmuneEvent(createEvent(executorName, scope, module, 'repair', 'escalated', failingInput,
           `Repair confidence too low (${(ir.confidence * 100).toFixed(0)}%) — escalating instead of retrying`, true));
+        // Record failure against any applicable shared rules so they degrade
+        for (const rule of applicableRules.slice(0, 3)) {
+          recordSharedRuleOutcome(rule.id, executorName, false);
+        }
         return null;
+      }
+
+      // Track which shared rule strategy matched this repair
+      if (applicableRules.length > 0) {
+        const matchingRule = applicableRules.find(r => r.repairStrategy === ir.repair_type);
+        if (matchingRule) sharedRuleUsed = matchingRule.id;
       }
 
       repairAttemptedFlag = true;
@@ -200,6 +221,10 @@ export function wrapExecutor(
         if (post.valid && retryResult.success) {
           repairSuccessFlag = true;
           recordRepairOutcome(executorName, repairTypeFlag, true);
+          // v3.1: Record success against shared rule (reinforces the rule for this executor)
+          if (sharedRuleUsed) {
+            recordSharedRuleOutcome(sharedRuleUsed, executorName, true);
+          }
           // Contribute successful repair to shared registry for cross-executor learning
           if (repairConfidence >= 0.6) {
             try {
@@ -229,6 +254,10 @@ export function wrapExecutor(
         }
         repairSuccessFlag = false;
         recordRepairOutcome(executorName, repairTypeFlag, false);
+        // v3.1: Record failure against shared rule (degrades confidence, may trigger rollback)
+        if (sharedRuleUsed) {
+          recordSharedRuleOutcome(sharedRuleUsed, executorName, false);
+        }
         trackOutcome({
           executor: executorName,
           timestamp: Date.now(),
@@ -246,6 +275,10 @@ export function wrapExecutor(
       } catch {
         repairSuccessFlag = false;
         recordRepairOutcome(executorName, repairTypeFlag, false);
+        // v3.1: Record failure against shared rule
+        if (sharedRuleUsed) {
+          recordSharedRuleOutcome(sharedRuleUsed, executorName, false);
+        }
         return null;
       }
     };
