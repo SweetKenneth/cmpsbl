@@ -70,35 +70,44 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
 
   const byExecutor = new Map<string, MetricRow>();
   let totalRunsAll = 0;
-  let totalRepairAttempts = 0;
-  let totalRepairSuccesses = 0;
-  let totalRetries = 0;
+  let totalRepairSuccessesAll = 0;
+  let totalEscalationsAll = 0;
+  let totalSafeFailsAll = 0;
 
   for (const row of (rawMetrics ?? []) as any[]) {
-    totalRunsAll += row.total_runs ?? 0;
-    if (row.repair_attempted) totalRepairAttempts += row.total_runs ?? 0;
-    if (row.repair_success) totalRepairSuccesses += row.total_runs ?? 0;
-    if (row.retry_attempted) totalRetries += row.total_runs ?? 0;
+    const runs = row.total_runs ?? 0;
+    const repairSuccesses = row.repair_successes ?? 0;
+    const escalations = row.escalations ?? 0;
+    const safeFailures = row.safe_failures ?? 0;
+
+    totalRunsAll += runs;
+    totalRepairSuccessesAll += repairSuccesses;
+    totalEscalationsAll += escalations;
+    totalSafeFailsAll += safeFailures;
+
+    // Repair attempts = probes that needed repair = successes + escalations + safe failures
+    // (anything that wasn't a clean pass on first try)
+    const rowRepairAttempts = repairSuccesses + escalations + safeFailures;
 
     const existing = byExecutor.get(row.executor);
     if (existing) {
-      existing.total_runs += row.total_runs;
-      existing.repairs += row.repair_successes;
-      existing.escalations += row.escalations;
-      existing.safe_fails += row.safe_failures;
-      existing.repair_attempts += row.repair_attempted ? (row.total_runs ?? 0) : 0;
-      existing.repair_successes += row.repair_success ? (row.total_runs ?? 0) : 0;
-      existing.retries += row.retry_attempted ? (row.total_runs ?? 0) : 0;
+      existing.total_runs += runs;
+      existing.repairs += repairSuccesses;
+      existing.escalations += escalations;
+      existing.safe_fails += safeFailures;
+      existing.repair_attempts += rowRepairAttempts;
+      existing.repair_successes += repairSuccesses;
+      existing.retries += repairSuccesses; // retried = successfully repaired
     } else {
       byExecutor.set(row.executor, {
         executor: row.executor,
-        total_runs: row.total_runs,
-        repairs: row.repair_successes,
-        escalations: row.escalations,
-        safe_fails: row.safe_failures,
-        repair_attempts: row.repair_attempted ? (row.total_runs ?? 0) : 0,
-        repair_successes: row.repair_success ? (row.total_runs ?? 0) : 0,
-        retries: row.retry_attempted ? (row.total_runs ?? 0) : 0,
+        total_runs: runs,
+        repairs: repairSuccesses,
+        escalations,
+        safe_fails: safeFailures,
+        repair_attempts: rowRepairAttempts,
+        repair_successes: repairSuccesses,
+        retries: repairSuccesses,
       });
     }
   }
@@ -109,14 +118,15 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
     .order('created_at', { ascending: false })
     .limit(20);
 
-  // HONEST repair KPIs:
-  // repair_attempt_rate = how many runs attempted a repair / total runs
-  // repair_success_rate = successful repairs / total repair attempts (not total runs!)
-  // retry_rate = how many runs retried / total runs
+  // HONEST repair KPIs derived from actual numeric columns:
+  // repair_attempt_rate = probes needing repair / total probes
+  // repair_success_rate = successful repairs / total repair attempts
+  // retry_rate = retried probes / total probes
+  const totalRepairAttempts = totalRepairSuccessesAll + totalEscalationsAll + totalSafeFailsAll;
   const repairKPIs: RepairKPIs = {
     repair_attempt_rate: totalRunsAll > 0 ? totalRepairAttempts / totalRunsAll : 0,
-    repair_success_rate: totalRepairAttempts > 0 ? totalRepairSuccesses / totalRepairAttempts : 0,
-    retry_rate: totalRunsAll > 0 ? totalRetries / totalRunsAll : 0,
+    repair_success_rate: totalRepairAttempts > 0 ? totalRepairSuccessesAll / totalRepairAttempts : 0,
+    retry_rate: totalRunsAll > 0 ? totalRepairSuccessesAll / totalRunsAll : 0,
   };
 
   return {
