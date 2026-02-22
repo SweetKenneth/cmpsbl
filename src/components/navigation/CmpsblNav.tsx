@@ -139,8 +139,6 @@ export function CmpsblNav() {
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry applications & examples", icon: Sparkles },
         { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
-        { name: "Audit", href: "/audit", description: "Security & compliance assessment", icon: Shield },
-        { name: "Audit", href: "/audit", description: "Security & compliance assessment", icon: Shield },
         { name: "Pricing", href: "/pricing", description: "Build on our master substrate", icon: Layers },
         { name: "Licensing", href: "/licensing", description: "Deploy on your own infrastructure", icon: FileText },
         { name: "Intelligence", href: "/intelligence", description: "Technology proof & acquisition info", icon: Shield },
