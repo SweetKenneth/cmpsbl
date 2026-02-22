@@ -1,8 +1,8 @@
 /**
- * Shadow Mesh — Batch Runner (v2.0)
- * Runs shadow probes across all pilot executors, records metrics,
+ * Shadow Mesh — Batch Runner (v3.0 — Phase 1 Shadow Scale)
+ * Runs shadow probes across all 35 pilot executors, records metrics,
  * triggers ENCODE to auto-resolve escalations, runs learning cycle,
- * and auto-propagates shared rules.
+ * auto-propagates shared rules, and feeds rolling window telemetry.
  */
 
 import { runShadowProbe } from './probe';
@@ -11,6 +11,7 @@ import { PILOT_EXECUTORS } from '@/immune/pilotExecutors';
 import { isShadowMeshEnabled } from '@/lib/system/flags';
 import { registerShadowStubs } from './stubs';
 import { getExecutorSeedInput } from './mutate';
+import { recordWindowProbeResult, forceFlushWindow } from './windowTelemetry';
 
 export async function runShadowBatch() {
   if (!(await isShadowMeshEnabled())) return;
@@ -31,9 +32,18 @@ export async function runShadowBatch() {
     const seedInput = getExecutorSeedInput(executor);
     const report = await runShadowProbe(executor, seedInput);
 
+    // Feed rolling window telemetry for each probe result
+    for (const result of report.results) {
+      recordWindowProbeResult(
+        executor,
+        result.outcome,
+        result.outcome === 'repaired' ? 'INTELLIGENT' : null,
+        result.error,
+      );
+    }
+
     // Derive telemetry flags from actual probe outcome counts
     // CRITICAL: safe-fails are NOT repair attempts — they are correctly rejected garbage inputs.
-    // Only repaired + escalated count as repair attempts (escalations = failed repair attempts).
     const actualRepairAttempts = report.summary.repaired + report.summary.escalated;
     const hadSuccessfulRepairs = report.summary.repaired > 0;
 
@@ -80,5 +90,16 @@ export async function runShadowBatch() {
     }
   } catch (err) {
     console.warn('[shadow-batch] Shared rule propagation failed:', err);
+  }
+
+  // Flush rolling window if mature
+  try {
+    const { validatePhase1Targets, getWindowLogs } = await import('./windowTelemetry');
+    const targets = validatePhase1Targets();
+    if (!targets.repairRateOk || !targets.escalationOk || !targets.cascadeOk) {
+      console.warn(`[shadow-batch] Phase 1 target violation: ${targets.details}`);
+    }
+  } catch (err) {
+    console.warn('[shadow-batch] Window telemetry check failed:', err);
   }
 }
