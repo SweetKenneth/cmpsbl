@@ -40,7 +40,7 @@ export function EnhancedFooter() {
         { name: "Proof Mode", href: "/proof" },
         { name: "Decode Engine", href: "/decode" },
         { name: "System Feed", href: "/system-feed" },
-        { name: "Documentation", href: "/docs" },
+        { name: "Documentation", href: "/documentation" },
       ]
     },
     {
