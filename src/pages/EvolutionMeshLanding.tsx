@@ -3,15 +3,16 @@
  * Standalone product page for the Evolution Mesh SDK.
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Shield, Zap, Brain, GitCompare, Lock, Activity, ArrowRight, Check, Terminal } from 'lucide-react';
+import { Shield, Zap, Brain, GitCompare, Lock, Activity, ArrowRight, Check, Terminal, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useSearchParams } from 'react-router-dom';
 
 const FEATURES = [
   {
@@ -54,22 +55,25 @@ const TIERS = [
     features: ['5 wrapped functions', 'Local telemetry only', 'CLI dashboard', 'Community support'],
     cta: 'Get Started',
     highlighted: false,
+    tier: null as string | null,
   },
   {
     name: 'Pro',
     price: '$29',
     period: '/month',
     features: ['50 wrapped functions', '30-day telemetry retention', 'Full SaaS dashboard', 'Email support', 'Cross-function learning'],
-    cta: 'Start Free Trial',
+    cta: 'Start Pro',
     highlighted: true,
+    tier: 'pro',
   },
   {
     name: 'Team',
     price: '$99',
     period: '/month',
     features: ['250 wrapped functions', '90-day retention', 'SSO + team access', 'Priority support', 'Custom repair strategies'],
-    cta: 'Contact Sales',
+    cta: 'Start Team',
     highlighted: false,
+    tier: 'team',
   },
 ];
 
@@ -77,6 +81,17 @@ export default function EvolutionMeshLanding() {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const checkout = searchParams.get('checkout');
+    if (checkout === 'success') {
+      toast.success('Subscription activated! Check your email for setup instructions.');
+    } else if (checkout === 'canceled') {
+      toast.info('Checkout canceled. No charges were made.');
+    }
+  }, [searchParams]);
 
   const handleWaitlist = async () => {
     if (!email || !email.includes('@')) {
@@ -85,7 +100,6 @@ export default function EvolutionMeshLanding() {
     }
     setSubmitting(true);
     try {
-      // Store in brain_events as a lightweight waitlist tracker
       const { error } = await supabase.from('brain_events').insert({
         event_type: 'evolution_mesh_waitlist',
         source_operation: 'waitlist_signup',
@@ -99,6 +113,24 @@ export default function EvolutionMeshLanding() {
       toast.error('Failed to join waitlist. Try again.');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleCheckout = async (tier: string) => {
+    setCheckoutLoading(tier);
+    try {
+      const { data, error } = await supabase.functions.invoke('evolution-mesh-checkout', {
+        body: { tier },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (err) {
+      toast.error('Failed to start checkout. Please try again.');
+      console.error('Checkout error:', err);
+    } finally {
+      setCheckoutLoading(null);
     }
   };
 
@@ -241,14 +273,25 @@ export default function EvolutionMeshLanding() {
                 </ul>
                 <Button
                   variant={tier.highlighted ? 'default' : 'outline'}
-                  className="w-full"
+                  className="w-full gap-2"
+                  disabled={checkoutLoading !== null}
                   onClick={() => {
-                    if (!submitted) {
+                    if (tier.tier) {
+                      handleCheckout(tier.tier);
+                    } else {
+                      // Open Source — scroll to code snippet / npm install
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                   }}
                 >
-                  {tier.cta}
+                  {checkoutLoading === tier.tier ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    tier.cta
+                  )}
                 </Button>
               </Card>
             ))}
