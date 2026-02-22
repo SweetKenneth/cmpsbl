@@ -3915,6 +3915,44 @@ export type Database = {
         }
         Relationships: []
       }
+      code_stamps: {
+        Row: {
+          commit_hash: string | null
+          created_at: string
+          file_path: string
+          id: string
+          promotion_id: string | null
+          shadow_run_id: string | null
+          stamp_text: string
+        }
+        Insert: {
+          commit_hash?: string | null
+          created_at?: string
+          file_path: string
+          id?: string
+          promotion_id?: string | null
+          shadow_run_id?: string | null
+          stamp_text: string
+        }
+        Update: {
+          commit_hash?: string | null
+          created_at?: string
+          file_path?: string
+          id?: string
+          promotion_id?: string | null
+          shadow_run_id?: string | null
+          stamp_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "code_stamps_promotion_id_fkey"
+            columns: ["promotion_id"]
+            isOneToOne: false
+            referencedRelation: "production_promotions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cognitive_orders: {
         Row: {
           chosen_name: string | null
@@ -6746,6 +6784,77 @@ export type Database = {
           },
         ]
       }
+      integrity_findings: {
+        Row: {
+          category: string
+          created_at: string
+          file_path: string | null
+          id: string
+          message: string
+          scan_id: string
+          severity: string
+          suggested_fix: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          file_path?: string | null
+          id?: string
+          message: string
+          scan_id: string
+          severity: string
+          suggested_fix?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          file_path?: string | null
+          id?: string
+          message?: string
+          scan_id?: string
+          severity?: string
+          suggested_fix?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integrity_findings_scan_id_fkey"
+            columns: ["scan_id"]
+            isOneToOne: false
+            referencedRelation: "integrity_scan_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integrity_scan_runs: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          errors_found: number
+          health_score: number
+          id: string
+          mode: string
+          warnings_found: number
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          errors_found?: number
+          health_score?: number
+          id?: string
+          mode?: string
+          warnings_found?: number
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          errors_found?: number
+          health_score?: number
+          id?: string
+          mode?: string
+          warnings_found?: number
+        }
+        Relationships: []
+      }
       ip_reputation: {
         Row: {
           blocked_count: number | null
@@ -8058,6 +8167,41 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      mutation_receipts: {
+        Row: {
+          created_at: string
+          details_json: Json | null
+          id: string
+          outcome: string
+          promotion_id: string | null
+          stage: string
+        }
+        Insert: {
+          created_at?: string
+          details_json?: Json | null
+          id?: string
+          outcome: string
+          promotion_id?: string | null
+          stage: string
+        }
+        Update: {
+          created_at?: string
+          details_json?: Json | null
+          id?: string
+          outcome?: string
+          promotion_id?: string | null
+          stage?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mutation_receipts_promotion_id_fkey"
+            columns: ["promotion_id"]
+            isOneToOne: false
+            referencedRelation: "production_promotions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       nexus_logs: {
         Row: {
@@ -10244,6 +10388,63 @@ export type Database = {
         }
         Relationships: []
       }
+      production_promotions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          failure_reason: string | null
+          id: string
+          integrity_scan_id: string | null
+          post_snapshot_id: string | null
+          pre_snapshot_id: string | null
+          rollback_triggered: boolean | null
+          shadow_run_id: string | null
+          status: string
+          verification_passed: boolean | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          failure_reason?: string | null
+          id?: string
+          integrity_scan_id?: string | null
+          post_snapshot_id?: string | null
+          pre_snapshot_id?: string | null
+          rollback_triggered?: boolean | null
+          shadow_run_id?: string | null
+          status?: string
+          verification_passed?: boolean | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          failure_reason?: string | null
+          id?: string
+          integrity_scan_id?: string | null
+          post_snapshot_id?: string | null
+          pre_snapshot_id?: string | null
+          rollback_triggered?: boolean | null
+          shadow_run_id?: string | null
+          status?: string
+          verification_passed?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_promotions_post_snapshot_id_fkey"
+            columns: ["post_snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "system_snapshots"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_promotions_pre_snapshot_id_fkey"
+            columns: ["pre_snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "system_snapshots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -12063,6 +12264,51 @@ export type Database = {
         }
         Relationships: []
       }
+      system_diffs: {
+        Row: {
+          created_at: string
+          diff_patch_text: string | null
+          diff_summary_json: Json | null
+          from_snapshot_id: string | null
+          id: string
+          shadow_run_id: string | null
+          to_snapshot_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          diff_patch_text?: string | null
+          diff_summary_json?: Json | null
+          from_snapshot_id?: string | null
+          id?: string
+          shadow_run_id?: string | null
+          to_snapshot_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          diff_patch_text?: string | null
+          diff_summary_json?: Json | null
+          from_snapshot_id?: string | null
+          id?: string
+          shadow_run_id?: string | null
+          to_snapshot_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "system_diffs_from_snapshot_id_fkey"
+            columns: ["from_snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "system_snapshots"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "system_diffs_to_snapshot_id_fkey"
+            columns: ["to_snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "system_snapshots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       system_flags: {
         Row: {
           enabled: boolean
@@ -12081,6 +12327,87 @@ export type Database = {
           key?: string
           updated_at?: string
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      system_metrics_history: {
+        Row: {
+          avg_executor_health: number | null
+          cost_index: number | null
+          encode_assist_rate: number | null
+          escalation_rate: number | null
+          id: string
+          integrity_health_score: number | null
+          latency_p95: number | null
+          promoted_rule_count: number | null
+          recorded_at: string
+          retired_rule_count: number | null
+          rollback_count: number | null
+          rule_count: number | null
+          success_rate: number | null
+        }
+        Insert: {
+          avg_executor_health?: number | null
+          cost_index?: number | null
+          encode_assist_rate?: number | null
+          escalation_rate?: number | null
+          id?: string
+          integrity_health_score?: number | null
+          latency_p95?: number | null
+          promoted_rule_count?: number | null
+          recorded_at?: string
+          retired_rule_count?: number | null
+          rollback_count?: number | null
+          rule_count?: number | null
+          success_rate?: number | null
+        }
+        Update: {
+          avg_executor_health?: number | null
+          cost_index?: number | null
+          encode_assist_rate?: number | null
+          escalation_rate?: number | null
+          id?: string
+          integrity_health_score?: number | null
+          latency_p95?: number | null
+          promoted_rule_count?: number | null
+          recorded_at?: string
+          retired_rule_count?: number | null
+          rollback_count?: number | null
+          rule_count?: number | null
+          success_rate?: number | null
+        }
+        Relationships: []
+      }
+      system_snapshots: {
+        Row: {
+          commit_hash: string | null
+          created_at: string
+          executor_hash: string | null
+          file_manifest_hash: string | null
+          id: string
+          metrics_json: Json | null
+          rule_hash: string | null
+          type: string
+        }
+        Insert: {
+          commit_hash?: string | null
+          created_at?: string
+          executor_hash?: string | null
+          file_manifest_hash?: string | null
+          id?: string
+          metrics_json?: Json | null
+          rule_hash?: string | null
+          type: string
+        }
+        Update: {
+          commit_hash?: string | null
+          created_at?: string
+          executor_hash?: string | null
+          file_manifest_hash?: string | null
+          id?: string
+          metrics_json?: Json | null
+          rule_hash?: string | null
+          type?: string
         }
         Relationships: []
       }
