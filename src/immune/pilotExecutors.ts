@@ -1,39 +1,54 @@
 /**
- * Executor Immune Pilot — Pilot Executor List & Registration (v3.0)
+ * Executor Immune Pilot — Pilot Executor List & Registration (v4.0)
  * 
- * Expanded from 13 to 20 executors across 6 substrate categories:
+ * Phase 1 Shadow Scale: Expanded from 20 to 35 executors across 6 substrate categories:
  * 
- * INCLUSIVE (5):
+ * INCLUSIVE (7):
  *   1. adaptive-ui
  *   2. cognitive-load-optimization
  *   3. comprehensive-accessibility-audit
  *   4. personalized-accessibility-engine
  *   5. inclusive-content
+ *   6. contrast-ratio-analyzer
+ *   7. focus-management-engine
  * 
- * COGNITIVE (3):
- *   6. reasoning-engine
- *   7. learning-engine
- *   8. imagination-engine
+ * COGNITIVE (5):
+ *   8. reasoning-engine
+ *   9. learning-engine
+ *  10. imagination-engine
+ *  11. semantic-analysis-engine
+ *  12. context-window-manager
  * 
- * OPERATIONAL (3):
- *   9. relay-event-dispatcher
- *  10. economy-cost-tracker
- *  11. audit-compliance-check
+ * OPERATIONAL (5):
+ *  13. relay-event-dispatcher
+ *  14. economy-cost-tracker
+ *  15. audit-compliance-check
+ *  16. rate-limiter-engine
+ *  17. telemetry-aggregator
  * 
- * ORCHESTRATOR (2):
- *  12. mesh-pipeline-resolver
- *  13. seba-proposal-evaluator
+ * ORCHESTRATOR (4):
+ *  18. mesh-pipeline-resolver
+ *  19. seba-proposal-evaluator
+ *  20. workflow-orchestrator
+ *  21. dependency-resolver
  * 
- * INFRASTRUCTURE (4):
- *  14. memory-consolidation-engine
- *  15. identity-verification-engine
- *  16. sandbox-isolation-guard
- *  17. encode-task-scheduler
+ * INFRASTRUCTURE (7):
+ *  22. memory-consolidation-engine
+ *  23. identity-verification-engine
+ *  24. sandbox-isolation-guard
+ *  25. encode-task-scheduler
+ *  26. cache-invalidation-engine
+ *  27. config-propagation-engine
+ *  28. health-check-coordinator
  * 
- * INTELLIGENCE (3):
- *  18. dream-pattern-synthesizer
- *  19. decode-intent-classifier
- *  20. vision-anomaly-detector
+ * INTELLIGENCE (7):
+ *  29. dream-pattern-synthesizer
+ *  30. decode-intent-classifier
+ *  31. vision-anomaly-detector
+ *  32. sentiment-drift-analyzer
+ *  33. temporal-pattern-engine
+ *  34. correlation-discovery-engine
+ *  35. signal-noise-separator
  */
 
 import type { SynergyExecutor } from '@/lib/capabilities/synergies/types';
@@ -50,35 +65,50 @@ export interface ExecutorModuleMeta {
 }
 
 /**
- * The 20 pilot executor IDs across 6 substrate categories
+ * The 35 pilot executor IDs across 6 substrate categories (Phase 1 Shadow Scale)
  */
 export const PILOT_EXECUTORS = [
-  // INCLUSIVE
+  // INCLUSIVE (7)
   'adaptive-ui',
   'cognitive-load-optimization',
   'comprehensive-accessibility-audit',
   'personalized-accessibility-engine',
   'inclusive-content',
-  // COGNITIVE
+  'contrast-ratio-analyzer',
+  'focus-management-engine',
+  // COGNITIVE (5)
   'reasoning-engine',
   'learning-engine',
   'imagination-engine',
-  // OPERATIONAL
+  'semantic-analysis-engine',
+  'context-window-manager',
+  // OPERATIONAL (5)
   'relay-event-dispatcher',
   'economy-cost-tracker',
   'audit-compliance-check',
-  // ORCHESTRATOR
+  'rate-limiter-engine',
+  'telemetry-aggregator',
+  // ORCHESTRATOR (4)
   'mesh-pipeline-resolver',
   'seba-proposal-evaluator',
-  // INFRASTRUCTURE
+  'workflow-orchestrator',
+  'dependency-resolver',
+  // INFRASTRUCTURE (7)
   'memory-consolidation-engine',
   'identity-verification-engine',
   'sandbox-isolation-guard',
   'encode-task-scheduler',
-  // INTELLIGENCE
+  'cache-invalidation-engine',
+  'config-propagation-engine',
+  'health-check-coordinator',
+  // INTELLIGENCE (7)
   'dream-pattern-synthesizer',
   'decode-intent-classifier',
   'vision-anomaly-detector',
+  'sentiment-drift-analyzer',
+  'temporal-pattern-engine',
+  'correlation-discovery-engine',
+  'signal-noise-separator',
 ] as const;
 
 export type PilotExecutorId = typeof PILOT_EXECUTORS[number];
@@ -87,28 +117,47 @@ export type PilotExecutorId = typeof PILOT_EXECUTORS[number];
  * Module metadata registry — maps executor → module + scope + category
  */
 export const EXECUTOR_MODULE_META: Record<PilotExecutorId, ExecutorModuleMeta> = {
+  // INCLUSIVE
   'adaptive-ui':                       { module: 'INCLUSIVE',       scope: 'adaptive-ui',                    category: 'ui_adaptation' },
   'cognitive-load-optimization':       { module: 'INCLUSIVE',       scope: 'cognitive-load-optimization',    category: 'content_analysis' },
   'comprehensive-accessibility-audit': { module: 'INCLUSIVE',       scope: 'comprehensive-accessibility-audit', category: 'content_validation' },
   'personalized-accessibility-engine': { module: 'INCLUSIVE',       scope: 'personalized-accessibility-engine', category: 'ui_adaptation' },
   'inclusive-content':                 { module: 'INCLUSIVE',       scope: 'inclusive-content',              category: 'content_validation' },
+  'contrast-ratio-analyzer':           { module: 'INCLUSIVE',       scope: 'contrast-ratio-analyzer',        category: 'content_analysis' },
+  'focus-management-engine':           { module: 'INCLUSIVE',       scope: 'focus-management-engine',        category: 'ui_adaptation' },
+  // COGNITIVE
   'reasoning-engine':                  { module: 'COGNITIVE',      scope: 'reasoning-engine',               category: 'cognitive_processing' },
   'learning-engine':                   { module: 'COGNITIVE',      scope: 'learning-engine',                category: 'cognitive_processing' },
   'imagination-engine':                { module: 'COGNITIVE',      scope: 'imagination-engine',             category: 'cognitive_processing' },
+  'semantic-analysis-engine':          { module: 'COGNITIVE',      scope: 'semantic-analysis-engine',       category: 'cognitive_processing' },
+  'context-window-manager':            { module: 'COGNITIVE',      scope: 'context-window-manager',         category: 'cognitive_processing' },
+  // OPERATIONAL
   'relay-event-dispatcher':            { module: 'OPERATIONAL',    scope: 'relay-event-dispatcher',         category: 'event_routing' },
   'economy-cost-tracker':              { module: 'OPERATIONAL',    scope: 'economy-cost-tracker',           category: 'governance' },
   'audit-compliance-check':            { module: 'OPERATIONAL',    scope: 'audit-compliance-check',         category: 'content_validation' },
+  'rate-limiter-engine':               { module: 'OPERATIONAL',    scope: 'rate-limiter-engine',            category: 'governance' },
+  'telemetry-aggregator':              { module: 'OPERATIONAL',    scope: 'telemetry-aggregator',           category: 'event_routing' },
+  // ORCHESTRATOR
   'mesh-pipeline-resolver':            { module: 'ORCHESTRATOR',   scope: 'mesh-pipeline-resolver',         category: 'orchestration' },
   'seba-proposal-evaluator':           { module: 'ORCHESTRATOR',   scope: 'seba-proposal-evaluator',        category: 'governance' },
+  'workflow-orchestrator':             { module: 'ORCHESTRATOR',   scope: 'workflow-orchestrator',          category: 'orchestration' },
+  'dependency-resolver':               { module: 'ORCHESTRATOR',   scope: 'dependency-resolver',            category: 'orchestration' },
   // INFRASTRUCTURE
   'memory-consolidation-engine':       { module: 'INFRASTRUCTURE', scope: 'memory-consolidation-engine',    category: 'infrastructure' },
   'identity-verification-engine':      { module: 'INFRASTRUCTURE', scope: 'identity-verification-engine',   category: 'infrastructure' },
   'sandbox-isolation-guard':           { module: 'INFRASTRUCTURE', scope: 'sandbox-isolation-guard',        category: 'infrastructure' },
   'encode-task-scheduler':             { module: 'INFRASTRUCTURE', scope: 'encode-task-scheduler',          category: 'infrastructure' },
+  'cache-invalidation-engine':         { module: 'INFRASTRUCTURE', scope: 'cache-invalidation-engine',      category: 'infrastructure' },
+  'config-propagation-engine':         { module: 'INFRASTRUCTURE', scope: 'config-propagation-engine',      category: 'infrastructure' },
+  'health-check-coordinator':          { module: 'INFRASTRUCTURE', scope: 'health-check-coordinator',       category: 'infrastructure' },
   // INTELLIGENCE
   'dream-pattern-synthesizer':         { module: 'INTELLIGENCE',   scope: 'dream-pattern-synthesizer',      category: 'intelligence' },
   'decode-intent-classifier':          { module: 'INTELLIGENCE',   scope: 'decode-intent-classifier',       category: 'intelligence' },
   'vision-anomaly-detector':           { module: 'INTELLIGENCE',   scope: 'vision-anomaly-detector',        category: 'intelligence' },
+  'sentiment-drift-analyzer':          { module: 'INTELLIGENCE',   scope: 'sentiment-drift-analyzer',       category: 'intelligence' },
+  'temporal-pattern-engine':           { module: 'INTELLIGENCE',   scope: 'temporal-pattern-engine',        category: 'intelligence' },
+  'correlation-discovery-engine':      { module: 'INTELLIGENCE',   scope: 'correlation-discovery-engine',   category: 'intelligence' },
+  'signal-noise-separator':            { module: 'INTELLIGENCE',   scope: 'signal-noise-separator',         category: 'intelligence' },
 };
 
 /** Check if an executor is in the pilot set */

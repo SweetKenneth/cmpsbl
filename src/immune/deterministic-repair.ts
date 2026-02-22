@@ -27,13 +27,17 @@ const MAX_ARRAY_LEN = 1000;
  */
 const EXPECTED_KEYS = [
   // INCLUSIVE
-  'content', 'url', 'domain', 'userId', 'wcagLevel', 'ariaLabel',
+  'content', 'url', 'domain', 'userId', 'wcagLevel', 'ariaLabel', 'foreground', 'background',
   // COGNITIVE
-  'query', 'signal', 'prompt',
+  'query', 'signal', 'prompt', 'depth', 'windowSize',
   // OPERATIONAL
-  'event', 'action', 'module',
+  'event', 'action', 'module', 'limit', 'windowMs', 'timestamp',
   // ORCHESTRATOR
-  'intent', 'proposal',
+  'intent', 'proposal', 'steps', 'dependencies',
+  // INFRASTRUCTURE
+  'target', 'pattern', 'version', 'boundary', 'threshold',
+  // INTELLIGENCE
+  'baseline', 'timeRange', 'granularity', 'minCorrelation', 'mode',
 ] as const;
 
 /** Known string-expected fields (arrays should be flattened) */

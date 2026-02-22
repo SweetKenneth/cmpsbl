@@ -56,6 +56,15 @@ export function getExecutorSeedInput(executorName: string): Record<string, unkno
   if (executorName === 'encode-task-scheduler') {
     return { action: 'schedule', content: 'Encode task payload', target: 'queue', priority: 1 };
   }
+  if (executorName === 'cache-invalidation-engine') {
+    return { target: 'user-cache', action: 'INVALIDATE', pattern: 'user:*', userId: 'user-1' };
+  }
+  if (executorName === 'config-propagation-engine') {
+    return { content: 'Config payload v2', target: 'all-modules', action: 'PUSH', version: '1.0.0' };
+  }
+  if (executorName === 'health-check-coordinator') {
+    return { target: 'brain-module', action: 'CHECK', module: 'brain', threshold: 80 };
+  }
   // INTELLIGENCE executors
   if (executorName === 'dream-pattern-synthesizer') {
     return { prompt: 'Synthesize dream pattern', content: 'Pattern seed data', userId: 'user-1' };
@@ -65,6 +74,46 @@ export function getExecutorSeedInput(executorName: string): Record<string, unkno
   }
   if (executorName === 'vision-anomaly-detector') {
     return { content: 'Detect anomalies in telemetry', target: 'metrics', userId: 'user-1' };
+  }
+  if (executorName === 'sentiment-drift-analyzer') {
+    return { content: 'Analyze sentiment trend data', baseline: 0.65, window: 24, userId: 'user-1' };
+  }
+  if (executorName === 'temporal-pattern-engine') {
+    return { content: 'Find temporal patterns in events', query: 'spike detection', timeRange: '24h', granularity: 'HOUR' };
+  }
+  if (executorName === 'correlation-discovery-engine') {
+    return { content: 'Find correlations across metrics', target: 'latency-errors', minCorrelation: 0.7 };
+  }
+  if (executorName === 'signal-noise-separator') {
+    return { content: 'Separate signal from noise in telemetry', threshold: 0.5, mode: 'FILTER', userId: 'user-1' };
+  }
+  // NEW INCLUSIVE executors
+  if (executorName === 'contrast-ratio-analyzer') {
+    return { content: 'Analyze contrast ratios', foreground: '#333', background: '#fff', target: 'self' };
+  }
+  if (executorName === 'focus-management-engine') {
+    return { content: 'Manage focus trap', target: 'modal-dialog', action: 'TRAP', userId: 'user-1' };
+  }
+  // NEW COGNITIVE executors
+  if (executorName === 'semantic-analysis-engine') {
+    return { content: 'Analyze semantic structure of text', query: 'Extract key entities', depth: 2 };
+  }
+  if (executorName === 'context-window-manager') {
+    return { content: 'Manage context window for LLM call', action: 'SLIDE', windowSize: 4096, userId: 'user-1' };
+  }
+  // NEW OPERATIONAL executors
+  if (executorName === 'rate-limiter-engine') {
+    return { action: 'check', target: 'api-endpoint', limit: 100, windowMs: 60000, userId: 'user-1' };
+  }
+  if (executorName === 'telemetry-aggregator') {
+    return { event: 'metric.collected', module: 'brain', payload: { value: 42 }, timestamp: new Date().toISOString() };
+  }
+  // NEW ORCHESTRATOR executors
+  if (executorName === 'workflow-orchestrator') {
+    return { intent: 'Execute multi-step pipeline', steps: ['validate', 'process', 'emit'], priority: 1 };
+  }
+  if (executorName === 'dependency-resolver') {
+    return { module: 'inclusive', action: 'resolve', dependencies: ['brain', 'cortex'] };
   }
   // Fallback
   return { content: 'Generic test input', target: 'self', userId: 'user-1' };

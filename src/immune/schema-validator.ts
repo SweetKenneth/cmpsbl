@@ -253,6 +253,150 @@ const SCHEMAS: Record<string, ExecutorSchema> = {
       threshold: { type: 'number' },
     },
   },
+
+  // ── INCLUSIVE MODULE (new Phase 1) ──
+  'contrast-ratio-analyzer': {
+    executor: 'contrast-ratio-analyzer',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      foreground: { type: 'string', maxLength: 50 },
+      background: { type: 'string', maxLength: 50 },
+      target: { type: 'string', maxLength: 2000 },
+    },
+  },
+  'focus-management-engine': {
+    executor: 'focus-management-engine',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      target: { type: 'string', required: true, minLength: 1, maxLength: 2000 },
+      action: { type: 'string', enum: ['TRAP', 'RELEASE', 'MOVE', 'RESTORE'] },
+      userId: { type: 'string', maxLength: 500 },
+    },
+  },
+  // ── COGNITIVE MODULE (new Phase 1) ──
+  'semantic-analysis-engine': {
+    executor: 'semantic-analysis-engine',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      query: { type: 'string', maxLength: 5000 },
+      depth: { type: 'number' },
+      context: { type: 'object' },
+    },
+  },
+  'context-window-manager': {
+    executor: 'context-window-manager',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 50000 },
+      action: { type: 'string', enum: ['EXPAND', 'SHRINK', 'SLIDE', 'RESET'] },
+      windowSize: { type: 'number' },
+      userId: { type: 'string', maxLength: 500 },
+    },
+  },
+  // ── OPERATIONAL MODULE (new Phase 1) ──
+  'rate-limiter-engine': {
+    executor: 'rate-limiter-engine',
+    fields: {
+      action: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      target: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      limit: { type: 'number' },
+      windowMs: { type: 'number' },
+      userId: { type: 'string', maxLength: 500 },
+    },
+  },
+  'telemetry-aggregator': {
+    executor: 'telemetry-aggregator',
+    fields: {
+      event: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      module: { type: 'string', required: true, minLength: 1, maxLength: 200 },
+      payload: { type: 'object' },
+      timestamp: { type: 'string', maxLength: 100 },
+    },
+  },
+  // ── ORCHESTRATOR MODULE (new Phase 1) ──
+  'workflow-orchestrator': {
+    executor: 'workflow-orchestrator',
+    fields: {
+      intent: { type: 'string', required: true, minLength: 1, maxLength: 2000 },
+      steps: { type: 'array' },
+      constraints: { type: 'object' },
+      priority: { type: 'number' },
+      traceId: { type: 'string', maxLength: 200 },
+    },
+  },
+  'dependency-resolver': {
+    executor: 'dependency-resolver',
+    fields: {
+      module: { type: 'string', required: true, minLength: 1, maxLength: 200 },
+      action: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      dependencies: { type: 'array' },
+      context: { type: 'object' },
+    },
+  },
+  // ── INFRASTRUCTURE MODULE (new Phase 1) ──
+  'cache-invalidation-engine': {
+    executor: 'cache-invalidation-engine',
+    fields: {
+      target: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      action: { type: 'string', enum: ['INVALIDATE', 'REFRESH', 'PURGE', 'WARM'] },
+      pattern: { type: 'string', maxLength: 1000 },
+      userId: { type: 'string', maxLength: 500 },
+    },
+  },
+  'config-propagation-engine': {
+    executor: 'config-propagation-engine',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      target: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      action: { type: 'string', enum: ['PUSH', 'PULL', 'SYNC', 'VALIDATE'] },
+      version: { type: 'string', maxLength: 50 },
+    },
+  },
+  'health-check-coordinator': {
+    executor: 'health-check-coordinator',
+    fields: {
+      target: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      action: { type: 'string', enum: ['CHECK', 'REPORT', 'HEAL', 'ESCALATE'] },
+      module: { type: 'string', maxLength: 200 },
+      threshold: { type: 'number' },
+    },
+  },
+  // ── INTELLIGENCE MODULE (new Phase 1) ──
+  'sentiment-drift-analyzer': {
+    executor: 'sentiment-drift-analyzer',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      baseline: { type: 'number' },
+      window: { type: 'number' },
+      userId: { type: 'string', maxLength: 500 },
+    },
+  },
+  'temporal-pattern-engine': {
+    executor: 'temporal-pattern-engine',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      query: { type: 'string', maxLength: 5000 },
+      timeRange: { type: 'string', maxLength: 100 },
+      granularity: { type: 'string', enum: ['MINUTE', 'HOUR', 'DAY', 'WEEK'] },
+    },
+  },
+  'correlation-discovery-engine': {
+    executor: 'correlation-discovery-engine',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      target: { type: 'string', required: true, minLength: 1, maxLength: 500 },
+      minCorrelation: { type: 'number' },
+      context: { type: 'object' },
+    },
+  },
+  'signal-noise-separator': {
+    executor: 'signal-noise-separator',
+    fields: {
+      content: { type: 'string', required: true, minLength: 1, maxLength: 10000 },
+      threshold: { type: 'number' },
+      mode: { type: 'string', enum: ['FILTER', 'CLASSIFY', 'EXTRACT'] },
+      userId: { type: 'string', maxLength: 500 },
+    },
+  },
 };
 
 const SQL_INJECT_RE = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|UNION|CREATE|EXEC)\b\s)/i;
