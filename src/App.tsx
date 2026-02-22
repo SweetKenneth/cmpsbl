@@ -72,9 +72,7 @@ const Publication = lazy(() => import("./pages/Publication"));
 const DevPortal = lazy(() => import("./pages/DevPortal"));
 const Changelog = lazy(() => import("./pages/Changelog"));
 const CodeLab = lazy(() => import("./pages/CodeLab"));
-const CognitiveForge = lazy(() => import("./pages/CognitiveForge"));
 const ForgeCatalog = lazy(() => import("./pages/ForgeCatalog"));
-const AgencyMint = lazy(() => import("./pages/AgencyMint"));
 const DevTools = lazy(() => import("./pages/DevTools"));
 const DeveloperAcademy = lazy(() => import("./pages/DeveloperAcademy"));
 const Audit = lazy(() => import("./pages/Audit"));
@@ -316,9 +314,9 @@ const App = () => {
                         <Route path="/intent-mesh" element={<IntentMeshPublic />} />
                         <Route path="/changelog" element={<Changelog />} />
                         <Route path="/codelab" element={<CodeLab />} />
-                        <Route path="/forge" element={<CognitiveForge />} />
+                        <Route path="/forge" element={<Navigate to="/" replace />} />
                         <Route path="/forge/catalog" element={<ForgeCatalog />} />
-                        <Route path="/agency" element={<AgencyMint />} />
+                        <Route path="/agency" element={<Navigate to="/" replace />} />
                         <Route path="/a/:slug" element={<AgencyPortal />} />
                         <Route path="/devtools" element={<DevTools />} />
                         <Route path="/academy" element={<DeveloperAcademy />} />

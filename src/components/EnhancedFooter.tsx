@@ -49,7 +49,6 @@ export function EnhancedFooter() {
       links: [
         { name: "Start Here", href: "/start-here", highlight: true },
         { name: "Developer Academy", href: "/academy" },
-        { name: "Cognitive Forge", href: "/forge" },
         { name: "CodeLab", href: "/codelab" },
         { name: "Experimentation Lab", href: "/lab" },
         { name: "DevTools", href: "/devtools" },
