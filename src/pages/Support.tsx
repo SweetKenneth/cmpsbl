@@ -3,7 +3,7 @@
  * v1.0.0 — Memory-backed, governed support system
  */
 
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SupportBotPanel } from "@/components/substrate/SupportBotPanel";
@@ -14,13 +14,12 @@ import { Brain, Shield, Sparkles, MessageCircle } from "lucide-react";
 export default function Support() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Helmet>
-        <title>Support — Evolving AI Assistant | CMPSBL</title>
-        <meta 
-          name="description" 
-          content="Get help from the CMPSBL evolving AI support system. Memory-backed, governed assistance that learns from verified resolutions." 
-        />
-      </Helmet>
+      <SEO 
+        title="Support — Evolving AI Assistant | CMPSBL"
+        description="Get help from the CMPSBL evolving AI support system. Memory-backed, governed assistance that learns from verified resolutions."
+        canonical="https://cmpsbl.com/support"
+        keywords={['CMPSBL support', 'AI support assistant', 'cognitive support']}
+      />
 
       <PublicNav />
 

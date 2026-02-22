@@ -41,14 +41,18 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Build mailto link with form data
+    const subject = encodeURIComponent(`[CMPSBL Contact] from ${formData.name}${formData.company ? ` (${formData.company})` : ''}`);
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || 'N/A'}\n\n${formData.message}`);
+    window.location.href = `mailto:Dev@CMPSBL.com?subject=${subject}&body=${body}`;
+
     setTimeout(() => {
       toast({
-        title: "Message Sent!",
-        description: "We'll get back to you within 24 hours.",
+        title: "Opening email client",
+        description: "Your default email app should open with the message pre-filled.",
       });
-      setFormData({ name: '', email: '', company: '', message: '' });
       setIsSubmitting(false);
-    }, 1500);
+    }, 500);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
