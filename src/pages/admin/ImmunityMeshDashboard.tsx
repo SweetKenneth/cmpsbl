@@ -1,47 +1,231 @@
 /**
- * Immunity Mesh Intelligence Dashboard
- * Dedicated admin page — observability only, zero runtime changes
+ * Immunity Mesh Intelligence Dashboard — Premium Edition
+ * Dedicated admin page with demo-ready aesthetics, sound effects,
+ * and accurate metrics. Observability only — zero runtime changes.
  */
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ShadowMeshToggle } from "@/components/admin/ShadowMeshToggle";
 import { ShadowMeshAnalytics } from "@/components/admin/ShadowMeshAnalytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Brain, Zap, Activity, RotateCcw, AlertTriangle, BarChart3, Table2, BookOpen } from "lucide-react";
+import { 
+  Shield, Brain, Zap, Activity, RotateCcw, AlertTriangle, BarChart3, 
+  Table2, BookOpen, Fingerprint, Radar, HeartPulse, Layers, 
+  ArrowUpRight, ArrowDownRight, CheckCircle2, XCircle, Minus
+} from "lucide-react";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useIntelligenceMetrics } from "@/hooks/admin/useIntelligenceMetrics";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useSubstrateVoice } from "@/components/substrate-os/audio";
+import { motion, AnimatePresence } from "framer-motion";
+
+// ============================================================================
+// HELPERS
+// ============================================================================
 
 function fmt(val: number | null | undefined, suffix = '%'): string {
   if (val === null || val === undefined) return '—';
   return `${(val * 100).toFixed(1)}${suffix}`;
 }
 
-function MetricCard({ label, value, sub, status }: { label: string; value: string; sub?: string; status?: 'good' | 'warn' | 'bad' }) {
-  const ring = status === 'good' ? 'border-green-500/30' : status === 'warn' ? 'border-yellow-500/30' : status === 'bad' ? 'border-red-500/30' : 'border-border/50';
+function statusIcon(status?: 'good' | 'warn' | 'bad' | 'neutral') {
+  switch (status) {
+    case 'good': return <CheckCircle2 className="w-4 h-4 text-emerald-500" />;
+    case 'warn': return <Minus className="w-4 h-4 text-amber-500" />;
+    case 'bad': return <XCircle className="w-4 h-4 text-red-500" />;
+    default: return null;
+  }
+}
+
+// ============================================================================
+// PREMIUM METRIC CARD
+// ============================================================================
+
+function MetricCard({ 
+  label, value, sub, status, icon: Icon, delay = 0 
+}: { 
+  label: string; value: string; sub?: string; 
+  status?: 'good' | 'warn' | 'bad' | 'neutral';
+  icon?: typeof Shield; delay?: number;
+}) {
+  const borderColor = status === 'good' 
+    ? 'border-emerald-500/20 hover:border-emerald-500/40' 
+    : status === 'warn' 
+    ? 'border-amber-500/20 hover:border-amber-500/40' 
+    : status === 'bad' 
+    ? 'border-red-500/20 hover:border-red-500/40' 
+    : 'border-border/50 hover:border-primary/30';
+  
+  const glowColor = status === 'good' 
+    ? 'shadow-emerald-500/5' 
+    : status === 'warn' 
+    ? 'shadow-amber-500/5' 
+    : status === 'bad' 
+    ? 'shadow-red-500/5' 
+    : 'shadow-primary/5';
+
   return (
-    <Card className={`border ${ring}`}>
-      <CardContent className="pt-4 pb-3 px-4">
-        <p className="text-xs text-muted-foreground uppercase tracking-wider">{label}</p>
-        <p className="text-2xl font-bold mt-1">{value}</p>
-        {sub && <p className="text-xs text-muted-foreground mt-0.5">{sub}</p>}
-      </CardContent>
-    </Card>
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: delay * 0.08, duration: 0.4 }}
+    >
+      <Card className={`border ${borderColor} ${glowColor} shadow-lg transition-all duration-300 hover:shadow-xl group relative overflow-hidden`}>
+        {/* Subtle gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        <CardContent className="pt-4 pb-3 px-4 relative">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5">
+              {Icon && <Icon className="w-3.5 h-3.5 text-muted-foreground" />}
+              <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-medium">{label}</p>
+            </div>
+            {statusIcon(status)}
+          </div>
+          <p className="text-2xl font-bold tracking-tight">{value}</p>
+          {sub && <p className="text-[11px] text-muted-foreground mt-1 font-mono">{sub}</p>}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
+
+// ============================================================================
+// MRI HERO GAUGE
+// ============================================================================
+
+function MRIGauge({ score, status, factors }: { 
+  score: number; status: string; 
+  factors: Record<string, number>;
+}) {
+  const circumference = 2 * Math.PI * 45;
+  const offset = circumference - (score / 100) * circumference;
+  const color = status === 'ready' ? '#10b981' : status === 'caution' ? '#f59e0b' : '#ef4444';
+  const bgColor = status === 'ready' ? 'from-emerald-500/10 to-emerald-500/5' 
+    : status === 'caution' ? 'from-amber-500/10 to-amber-500/5' 
+    : 'from-red-500/10 to-red-500/5';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className={`border-2 ${status === 'ready' ? 'border-emerald-500/30' : status === 'caution' ? 'border-amber-500/30' : 'border-red-500/30'} bg-gradient-to-br ${bgColor} relative overflow-hidden`}>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-primary/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/4" />
+        
+        <CardContent className="py-8 px-6 flex items-center justify-between gap-8">
+          {/* Gauge */}
+          <div className="relative flex-shrink-0">
+            <svg width="120" height="120" className="transform -rotate-90">
+              <circle cx="60" cy="60" r="45" fill="none" stroke="hsl(var(--muted))" strokeWidth="8" opacity="0.3" />
+              <motion.circle
+                cx="60" cy="60" r="45" fill="none"
+                stroke={color}
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                initial={{ strokeDashoffset: circumference }}
+                animate={{ strokeDashoffset: offset }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <motion.span 
+                className="text-3xl font-bold"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                {score}
+              </motion.span>
+              <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">MRI</span>
+            </div>
+          </div>
+
+          {/* Details */}
+          <div className="flex-1 space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <Fingerprint className="w-5 h-5" style={{ color }} />
+              <div>
+                <h3 className="font-semibold text-lg">Mutation Readiness</h3>
+                <Badge 
+                  className="mt-0.5 text-[10px] uppercase tracking-wider"
+                  variant={status === 'ready' ? 'default' : status === 'caution' ? 'secondary' : 'destructive'}
+                >
+                  {status}
+                </Badge>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-xs">
+              <FactorBar label="Domain Knowledge" value={factors.dkd} weight="35%" />
+              <FactorBar label="Novelty Resistance" value={factors.fnrInverse} weight="20%" />
+              <FactorBar label="Escalation Control" value={factors.escalationRateInverse} weight="20%" />
+              <FactorBar label="Repair Accuracy" value={factors.repairSuccessRate} weight="20%" />
+              <FactorBar label="Cascade Control" value={factors.cascadeRateInverse} weight="5%" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+function FactorBar({ label, value, weight }: { label: string; value: number; weight: string }) {
+  const pct = Math.round(value * 100);
+  const color = pct >= 80 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
+  return (
+    <div className="space-y-0.5">
+      <div className="flex justify-between">
+        <span className="text-muted-foreground">{label}</span>
+        <span className="font-mono font-medium">{pct}% <span className="text-muted-foreground/60">({weight})</span></span>
+      </div>
+      <div className="h-1 bg-muted/40 rounded-full overflow-hidden">
+        <motion.div 
+          className={`h-full ${color} rounded-full`}
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// MAIN DASHBOARD
+// ============================================================================
 
 export default function ImmunityMeshDashboard() {
   const [viewMode, setViewMode] = useState<'baseline' | 'shadow' | 'all'>('all');
   const [windowHours, setWindowHours] = useState(24);
   const [analyticsKey, setAnalyticsKey] = useState(0);
   const [resetting, setResetting] = useState(false);
+  const voice = useSubstrateVoice();
+  const prevEventsRef = useRef(0);
 
   const isShadow = viewMode === 'all' ? null : viewMode === 'shadow';
   const { data, isLoading } = useIntelligenceMetrics(windowHours, isShadow);
+
+  // Sound effect when new repairs happen
+  useEffect(() => {
+    if (!data) return;
+    const currentRepairs = data.iil.repairedSuccess;
+    if (prevEventsRef.current > 0 && currentRepairs > prevEventsRef.current) {
+      const newRepairs = currentRepairs - prevEventsRef.current;
+      voice.success(
+        `${newRepairs} repair${newRepairs > 1 ? 's' : ''} completed`,
+        `Immunity mesh auto-healed ${newRepairs} failure${newRepairs > 1 ? 's' : ''}`,
+        'IMMUNE'
+      );
+    }
+    prevEventsRef.current = currentRepairs;
+  }, [data?.iil.repairedSuccess]);
 
   const handleReset = async () => {
     setResetting(true);
@@ -50,33 +234,51 @@ export default function ImmunityMeshDashboard() {
       const { error: e2 } = await supabase.from('immune_escalations').delete().neq('executor', '__never__') as any;
       const { error: e3 } = await supabase.from('immune_intelligence_events').delete().neq('executor_id', '__never__') as any;
       if (e1 || e2 || e3) throw new Error(e1?.message || e2?.message || e3?.message);
-      toast.success('Telemetry reset');
+      voice.system('Telemetry cleared', 'All immunity mesh intelligence data has been reset', 'IMMUNE');
       setAnalyticsKey(k => k + 1);
+      prevEventsRef.current = 0;
     } catch (err: any) {
-      toast.error(`Reset failed: ${err.message}`);
+      voice.error('Reset failed', err.message, 'IMMUNE');
     } finally {
       setResetting(false);
     }
   };
 
-  const mriColor = data?.mri.status === 'ready' ? 'good' : data?.mri.status === 'caution' ? 'warn' : 'bad';
+  // Computed metrics
+  const escalationCount = data ? Object.values(data.iil.escalationsBySeverity).reduce((s, v) => s + v, 0) : 0;
+  const escalationRate = data ? escalationCount / Math.max(1, data.iil.totalEvents) : null;
+  const successCount = data ? data.totalEvents - data.iil.safeFails - data.iil.repairedSuccess - data.iil.repairFailures - escalationCount : 0;
+  const successRate = data ? successCount / Math.max(1, data.totalEvents) : null;
+  
+  // Repair attempt rate = events with repair_type / total non-success events
+  const totalWithRepairType = data ? data.iil.repairedSuccess + data.iil.repairFailures : 0;
+  const totalFailureEvents = data ? data.iil.safeFails + data.iil.repairedSuccess + data.iil.repairFailures + escalationCount : 0;
+  const repairAttemptRate = totalFailureEvents > 0 ? totalWithRepairType / totalFailureEvents : null;
+  const repairSuccessRate = totalWithRepairType > 0 ? (data?.iil.repairedSuccess ?? 0) / totalWithRepairType : null;
 
   return (
-    <div className="space-y-6 p-6 max-w-6xl">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
+    <div className="space-y-6 max-w-[1400px]">
+      {/* ── HEADER ── */}
+      <motion.div 
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20">
             <Shield className="w-6 h-6 text-primary" />
-            Immunity Mesh Intelligence
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Observability, training metrics, and readiness scoring
-          </p>
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Immunity Mesh</h1>
+            <p className="text-sm text-muted-foreground">
+              Intelligence metrics & readiness scoring
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <Select value={viewMode} onValueChange={(v) => setViewMode(v as any)}>
-            <SelectTrigger className="w-[130px] h-8 text-xs">
+            <SelectTrigger className="w-[130px] h-8 text-xs bg-card">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -86,7 +288,7 @@ export default function ImmunityMeshDashboard() {
             </SelectContent>
           </Select>
           <Select value={String(windowHours)} onValueChange={(v) => setWindowHours(Number(v))}>
-            <SelectTrigger className="w-[100px] h-8 text-xs">
+            <SelectTrigger className="w-[90px] h-8 text-xs bg-card">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -100,213 +302,356 @@ export default function ImmunityMeshDashboard() {
             Reset
           </ActionButton>
         </div>
-      </div>
+      </motion.div>
 
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid grid-cols-4 w-full max-w-lg">
-          <TabsTrigger value="overview" className="text-xs"><BarChart3 className="w-3 h-3 mr-1" />Overview</TabsTrigger>
-          <TabsTrigger value="executors" className="text-xs"><Table2 className="w-3 h-3 mr-1" />Executors</TabsTrigger>
-          <TabsTrigger value="rules" className="text-xs"><BookOpen className="w-3 h-3 mr-1" />Rules</TabsTrigger>
-          <TabsTrigger value="controls" className="text-xs"><Zap className="w-3 h-3 mr-1" />Controls</TabsTrigger>
+      <Tabs defaultValue="overview" className="space-y-5">
+        <TabsList className="grid grid-cols-4 w-full max-w-lg bg-muted/50 p-1">
+          <TabsTrigger value="overview" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
+            <BarChart3 className="w-3.5 h-3.5" />Overview
+          </TabsTrigger>
+          <TabsTrigger value="executors" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
+            <Table2 className="w-3.5 h-3.5" />Executors
+          </TabsTrigger>
+          <TabsTrigger value="rules" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
+            <BookOpen className="w-3.5 h-3.5" />Rules
+          </TabsTrigger>
+          <TabsTrigger value="controls" className="text-xs gap-1.5 data-[state=active]:shadow-sm">
+            <Zap className="w-3.5 h-3.5" />Controls
+          </TabsTrigger>
         </TabsList>
 
-        {/* ── OVERVIEW ── */}
-        <TabsContent value="overview" className="space-y-4">
+        {/* ══════════════════ OVERVIEW ══════════════════ */}
+        <TabsContent value="overview" className="space-y-5">
           {/* MRI Hero */}
-          <Card className={`border-2 ${mriColor === 'good' ? 'border-green-500/40' : mriColor === 'warn' ? 'border-yellow-500/40' : 'border-red-500/40'}`}>
-            <CardContent className="py-6 flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Mutation Readiness Index</p>
-                <p className="text-4xl font-bold mt-1">{data?.mri.score ?? '—'}<span className="text-lg text-muted-foreground">/100</span></p>
-                <Badge variant={mriColor === 'good' ? 'default' : mriColor === 'warn' ? 'secondary' : 'destructive'} className="mt-2">
-                  {data?.mri.status?.toUpperCase() ?? 'LOADING'}
-                </Badge>
-              </div>
-              <div className="text-right space-y-1 text-xs text-muted-foreground">
-                <p>DKD: {fmt(data?.mri.factors.dkd)} (35%)</p>
-                <p>1−FNR: {fmt(data?.mri.factors.fnrInverse)} (20%)</p>
-                <p>1−Esc: {fmt(data?.mri.factors.escalationRateInverse)} (20%)</p>
-                <p>Repair: {fmt(data?.mri.factors.repairSuccessRate)} (20%)</p>
-                <p>1−Cascade: {fmt(data?.mri.factors.cascadeRateInverse)} (5%)</p>
-              </div>
-            </CardContent>
-          </Card>
+          {data?.mri && (
+            <MRIGauge score={data.mri.score} status={data.mri.status} factors={data.mri.factors} />
+          )}
 
-          {/* Metric Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            <MetricCard label="DKD" value={fmt(data?.dkd.global)} sub={`${data?.dkd.coveredFailures ?? 0}/${data?.dkd.totalFailures ?? 0}`} status={(data?.dkd.global ?? 0) > 0.7 ? 'good' : 'warn'} />
-            <MetricCard label="FNR" value={fmt(data?.fnr.global)} sub={`${data?.fnr.novelSignatures ?? 0} novel`} status={(data?.fnr.global ?? 1) < 0.3 ? 'good' : 'warn'} />
-            <MetricCard label="Det. Coverage" value={fmt(data?.dkd.byRepairType?.deterministic ? data.dkd.byRepairType.deterministic / Math.max(1, data.dkd.totalFailures) : null)} />
-            <MetricCard label="Escalation Rate" value={fmt(data ? Object.values(data.iil.escalationsBySeverity).reduce((s, v) => s + v, 0) / Math.max(1, data.iil.totalEvents) : null)} status={data && Object.values(data.iil.escalationsBySeverity).reduce((s, v) => s + v, 0) / Math.max(1, data.iil.totalEvents) < 0.05 ? 'good' : 'bad'} />
-            <MetricCard label="Events" value={String(data?.totalEvents ?? 0)} sub={`${windowHours}h window`} />
+          {/* Primary Metric Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            <MetricCard 
+              label="Success Rate" 
+              value={fmt(successRate)} 
+              sub={`${successCount.toLocaleString()} / ${data?.totalEvents.toLocaleString() ?? 0}`}
+              status={(successRate ?? 0) > 0.9 ? 'good' : (successRate ?? 0) > 0.7 ? 'warn' : 'bad'}
+              icon={HeartPulse}
+              delay={0}
+            />
+            <MetricCard 
+              label="DKD" 
+              value={fmt(data?.dkd.global)} 
+              sub={`${data?.dkd.coveredFailures ?? 0} / ${data?.dkd.totalFailures ?? 0} covered`}
+              status={(data?.dkd.global ?? 0) > 0.7 ? 'good' : 'warn'}
+              icon={Layers}
+              delay={1}
+            />
+            <MetricCard 
+              label="FNR" 
+              value={fmt(data?.fnr.global)} 
+              sub={`${data?.fnr.novelSignatures ?? 0} novel sigs`}
+              status={(data?.fnr.global ?? 1) < 0.3 ? 'good' : 'warn'}
+              icon={Radar}
+              delay={2}
+            />
+            <MetricCard 
+              label="Repair Rate" 
+              value={fmt(repairAttemptRate)} 
+              sub={`${totalWithRepairType} attempts`}
+              status={(repairAttemptRate ?? 0) < 0.02 ? 'good' : (repairAttemptRate ?? 0) < 0.05 ? 'warn' : 'bad'}
+              icon={Zap}
+              delay={3}
+            />
+            <MetricCard 
+              label="Repair Success" 
+              value={fmt(repairSuccessRate)} 
+              sub={`${data?.iil.repairedSuccess ?? 0} / ${totalWithRepairType} fixed`}
+              status={(repairSuccessRate ?? 0) > 0.85 ? 'good' : (repairSuccessRate ?? 0) > 0.6 ? 'warn' : 'bad'}
+              icon={CheckCircle2}
+              delay={4}
+            />
+            <MetricCard 
+              label="Escalation" 
+              value={fmt(escalationRate)} 
+              sub={`${escalationCount} total`}
+              status={(escalationRate ?? 0) < 0.01 ? 'good' : (escalationRate ?? 0) < 0.05 ? 'warn' : 'bad'}
+              icon={AlertTriangle}
+              delay={5}
+            />
           </div>
 
           {/* IIL Summary */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <Activity className="w-4 h-4 text-primary" />
-                Immunity Intervention Log
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? <p className="text-sm text-muted-foreground">Loading…</p> : !data ? <p className="text-sm text-muted-foreground">No data</p> : (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-                  <div><span className="text-muted-foreground">Safe Fails:</span> <strong>{data.iil.safeFails}</strong> / {data.iil.totalEvents}</div>
-                  <div><span className="text-muted-foreground">Repaired:</span> <strong>{data.iil.repairedSuccess}</strong> / {data.iil.totalEvents}</div>
-                  <div><span className="text-muted-foreground">Repair Failures:</span> <strong>{data.iil.repairFailures}</strong></div>
-                  <div><span className="text-muted-foreground">Preflight Blocks:</span> <strong>{data.iil.preflightBlocks}</strong></div>
-                  <div><span className="text-muted-foreground">Postcheck Blocks:</span> <strong>{data.iil.postcheckBlocks}</strong></div>
-                  <div>
-                    <span className="text-muted-foreground">Escalations:</span>{' '}
-                    {Object.entries(data.iil.escalationsBySeverity).length > 0
-                      ? Object.entries(data.iil.escalationsBySeverity).map(([sev, count]) => (
-                          <Badge key={sev} variant="secondary" className="mr-1 text-xs">{sev}: {count}</Badge>
-                        ))
-                      : <span className="text-muted-foreground">0</span>}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+            <Card className="border-border/50 overflow-hidden">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-primary" />
+                  Immunity Intervention Log
+                  <Badge variant="outline" className="ml-2 text-[10px] font-mono">{windowHours}h window</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isLoading ? (
+                  <div className="flex items-center gap-2 py-4">
+                    <div className="w-4 h-4 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+                    <span className="text-sm text-muted-foreground">Computing metrics…</span>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                ) : !data ? (
+                  <p className="text-sm text-muted-foreground py-4">No intelligence events recorded yet</p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <IILStat label="Total Events" value={data.iil.totalEvents} />
+                    <IILStat label="Safe Fails" value={data.iil.safeFails} color="text-amber-500" />
+                    <IILStat label="Repaired" value={data.iil.repairedSuccess} color="text-emerald-500" />
+                    <IILStat label="Repair Failures" value={data.iil.repairFailures} color="text-red-400" />
+                    <IILStat label="Preflight Blocks" value={data.iil.preflightBlocks} />
+                    <div>
+                      <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Escalations</p>
+                      {Object.entries(data.iil.escalationsBySeverity).length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {Object.entries(data.iil.escalationsBySeverity).map(([sev, count]) => (
+                            <Badge key={sev} variant="destructive" className="text-[10px] font-mono">{sev}: {count}</Badge>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-lg font-bold text-emerald-500">0</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Legacy Analytics */}
           <ShadowMeshAnalytics key={analyticsKey} />
         </TabsContent>
 
-        {/* ── EXECUTORS ── */}
+        {/* ══════════════════ EXECUTORS ══════════════════ */}
         <TabsContent value="executors" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Executor Intelligence Table</CardTitle>
-              <CardDescription>Per-executor metrics for the selected window</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? <p className="text-sm text-muted-foreground">Loading…</p> : !data ? <p className="text-sm text-muted-foreground">No data</p> : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-border/50 text-xs text-muted-foreground">
-                        <th className="text-left py-2 px-2">Executor</th>
-                        <th className="text-right py-2 px-2">DKD</th>
-                        <th className="text-right py-2 px-2">FNR</th>
-                        <th className="text-right py-2 px-2">Events</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Object.keys({ ...data.dkd.perExecutor, ...data.fnr.perExecutor }).sort().map(eid => (
-                        <tr key={eid} className="border-b border-border/30 hover:bg-muted/30">
-                          <td className="py-1.5 px-2 font-mono text-xs">{eid}</td>
-                          <td className="py-1.5 px-2 text-right">{fmt(data.dkd.perExecutor[eid])}</td>
-                          <td className="py-1.5 px-2 text-right">{fmt(data.fnr.perExecutor[eid])}</td>
-                          <td className="py-1.5 px-2 text-right text-muted-foreground">—</td>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Table2 className="w-4 h-4 text-primary" />
+                  Executor Intelligence Matrix
+                </CardTitle>
+                <CardDescription>Per-executor DKD & FNR for {windowHours}h window — {viewMode} mode</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {isLoading ? (
+                  <div className="flex items-center gap-2 py-8 justify-center">
+                    <div className="w-4 h-4 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+                    <span className="text-sm text-muted-foreground">Loading executor data…</span>
+                  </div>
+                ) : !data ? (
+                  <p className="text-sm text-muted-foreground py-4 text-center">No data</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b-2 border-border/30">
+                          <th className="text-left py-2.5 px-3 text-[11px] text-muted-foreground uppercase tracking-wider">Executor</th>
+                          <th className="text-right py-2.5 px-3 text-[11px] text-muted-foreground uppercase tracking-wider">DKD</th>
+                          <th className="text-right py-2.5 px-3 text-[11px] text-muted-foreground uppercase tracking-wider">FNR</th>
+                          <th className="text-right py-2.5 px-3 text-[11px] text-muted-foreground uppercase tracking-wider">Status</th>
                         </tr>
-                      ))}
-                      {Object.keys({ ...data.dkd.perExecutor, ...data.fnr.perExecutor }).length === 0 && (
-                        <tr><td colSpan={4} className="py-4 text-center text-muted-foreground">No executor data yet</td></tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                      </thead>
+                      <tbody>
+                        {Object.keys({ ...data.dkd.perExecutor, ...data.fnr.perExecutor }).sort().map((eid, i) => {
+                          const dkd = data.dkd.perExecutor[eid] ?? 0;
+                          const fnr = data.fnr.perExecutor[eid] ?? 0;
+                          const healthy = dkd > 0.5 && fnr < 0.5;
+                          return (
+                            <motion.tr 
+                              key={eid} 
+                              className="border-b border-border/20 hover:bg-muted/30 transition-colors"
+                              initial={{ opacity: 0, x: -8 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: i * 0.03 }}
+                            >
+                              <td className="py-2 px-3 font-mono text-xs">{eid}</td>
+                              <td className="py-2 px-3 text-right font-mono">
+                                <span className={dkd > 0.7 ? 'text-emerald-500' : dkd > 0.4 ? 'text-amber-500' : 'text-red-400'}>
+                                  {fmt(dkd)}
+                                </span>
+                              </td>
+                              <td className="py-2 px-3 text-right font-mono">
+                                <span className={fnr < 0.3 ? 'text-emerald-500' : fnr < 0.6 ? 'text-amber-500' : 'text-red-400'}>
+                                  {fmt(fnr)}
+                                </span>
+                              </td>
+                              <td className="py-2 px-3 text-right">
+                                {healthy 
+                                  ? <Badge variant="outline" className="text-[10px] text-emerald-500 border-emerald-500/30">Healthy</Badge>
+                                  : <Badge variant="outline" className="text-[10px] text-amber-500 border-amber-500/30">Watch</Badge>
+                                }
+                              </td>
+                            </motion.tr>
+                          );
+                        })}
+                        {Object.keys({ ...data.dkd.perExecutor, ...data.fnr.perExecutor }).length === 0 && (
+                          <tr><td colSpan={4} className="py-8 text-center text-muted-foreground text-sm">
+                            No executor data yet — run shadow probes to populate
+                          </td></tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
         </TabsContent>
 
-        {/* ── RULES ── */}
+        {/* ══════════════════ RULES ══════════════════ */}
         <TabsContent value="rules" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-primary" />
-                  Dominant Rules (Top 5)
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {!data?.rmi.dominantRules.length ? <p className="text-sm text-muted-foreground">No rule data</p> : (
-                  <div className="space-y-2">
-                    {data.rmi.dominantRules.map(r => (
-                      <div key={r.ruleId} className="flex items-center justify-between p-2 rounded border border-border/30">
-                        <code className="text-xs font-mono">{r.ruleId}</code>
-                        <div className="flex items-center gap-2 text-xs">
-                          <span>{r.invocations} inv</span>
-                          <Badge variant={r.successRate >= 0.8 ? 'default' : 'secondary'}>{(r.successRate * 100).toFixed(0)}%</Badge>
-                          <span className="text-muted-foreground">{r.executorCount} exec</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-primary" />
+                    Dominant Rules
+                    <Badge variant="outline" className="text-[10px]">Top 5</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {!data?.rmi.dominantRules.length ? (
+                    <p className="text-sm text-muted-foreground py-4">No rule data yet</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {data.rmi.dominantRules.map((r, i) => (
+                        <motion.div 
+                          key={r.ruleId} 
+                          className="flex items-center justify-between p-3 rounded-lg border border-border/30 hover:border-primary/20 transition-colors bg-card"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: i * 0.05 }}
+                        >
+                          <code className="text-xs font-mono truncate max-w-[180px]">{r.ruleId}</code>
+                          <div className="flex items-center gap-2 text-xs flex-shrink-0">
+                            <span className="text-muted-foreground">{r.invocations}</span>
+                            <Badge variant={r.successRate >= 0.8 ? 'default' : 'secondary'}>
+                              {(r.successRate * 100).toFixed(0)}%
+                            </Badge>
+                            <span className="text-muted-foreground font-mono">{r.executorCount}×</span>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-destructive" />
-                  Risky Rules
-                </CardTitle>
-                <CardDescription>Success rate &lt;60% with ≥20 invocations</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {!data?.rmi.riskyRules.length ? <p className="text-sm text-muted-foreground">No risky rules — healthy</p> : (
-                  <div className="space-y-2">
-                    {data.rmi.riskyRules.map(r => (
-                      <div key={r.ruleId} className="flex items-center justify-between p-2 rounded border border-destructive/30">
-                        <code className="text-xs font-mono">{r.ruleId}</code>
-                        <div className="flex items-center gap-2 text-xs">
-                          <span>{r.invocations} inv</span>
-                          <Badge variant="destructive">{(r.successRate * 100).toFixed(0)}%</Badge>
+            <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-destructive" />
+                    Risky Rules
+                  </CardTitle>
+                  <CardDescription>Success &lt;60% with ≥20 invocations</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {!data?.rmi.riskyRules.length ? (
+                    <div className="flex items-center gap-2 py-4 text-sm text-emerald-500">
+                      <CheckCircle2 className="w-4 h-4" />
+                      No risky rules — all rules healthy
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {data.rmi.riskyRules.map((r, i) => (
+                        <div key={r.ruleId} className="flex items-center justify-between p-3 rounded-lg border border-destructive/20 bg-destructive/5">
+                          <code className="text-xs font-mono truncate max-w-[180px]">{r.ruleId}</code>
+                          <div className="flex items-center gap-2 text-xs">
+                            <span className="text-muted-foreground">{r.invocations}</span>
+                            <Badge variant="destructive">{(r.successRate * 100).toFixed(0)}%</Badge>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
 
           {/* CKP */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <Brain className="w-4 h-4 text-primary" />
-                Cross-Executor Knowledge Propagation
-              </CardTitle>
-              <CardDescription>Average rule propagation breadth: {data?.ckp.globalAvg?.toFixed(1) ?? '—'} executors</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {!data?.ckp.topPropagated.length ? <p className="text-sm text-muted-foreground">No propagation data</p> : (
-                <div className="space-y-1.5">
-                  {data.ckp.topPropagated.map(r => (
-                    <div key={r.ruleId} className="flex items-center justify-between p-2 rounded border border-border/30">
-                      <code className="text-xs font-mono">{r.ruleId}</code>
-                      <Badge variant="secondary">{r.executorCount} executors</Badge>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Brain className="w-4 h-4 text-primary" />
+                  Cross-Executor Knowledge Propagation
+                </CardTitle>
+                <CardDescription>
+                  Average rule breadth: <strong>{data?.ckp.globalAvg?.toFixed(1) ?? '—'}</strong> executors
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {!data?.ckp.topPropagated.length ? (
+                  <p className="text-sm text-muted-foreground">No propagation data</p>
+                ) : (
+                  <div className="space-y-2">
+                    {data.ckp.topPropagated.map(r => (
+                      <div key={r.ruleId} className="flex items-center justify-between p-3 rounded-lg border border-border/30 bg-card">
+                        <code className="text-xs font-mono truncate max-w-[200px]">{r.ruleId}</code>
+                        <Badge variant="secondary" className="font-mono">{r.executorCount} executors</Badge>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
         </TabsContent>
 
-        {/* ── CONTROLS ── */}
+        {/* ══════════════════ CONTROLS ══════════════════ */}
         <TabsContent value="controls" className="space-y-4">
           <ShadowMeshToggle />
-          <Card>
+          <Card className="border-border/50">
             <CardHeader>
-              <CardTitle className="text-base">Operational Guarantees</CardTitle>
+              <CardTitle className="text-base flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" />
+                Operational Guarantees
+              </CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-muted-foreground space-y-1">
-              <p>• <strong>OFF</strong> → identical behavior to current production (zero overhead)</p>
-              <p>• <strong>ON</strong> → immunity mesh + shadow probe training active for all registered executors</p>
-              <p>• Dynamic discovery — new executors probed automatically on registration</p>
-              <p>• No intent mesh impact • No public exposure • No silent failure paths</p>
+            <CardContent className="space-y-3">
+              {[
+                { icon: '○', text: 'OFF → zero overhead, identical to production behavior' },
+                { icon: '●', text: 'ON → immunity mesh + shadow probe training for all registered executors' },
+                { icon: '◎', text: 'Dynamic discovery — new executors probed automatically on registration' },
+                { icon: '◌', text: 'No intent mesh impact • No public exposure • No silent failure paths' },
+              ].map((item, i) => (
+                <motion.div 
+                  key={i} 
+                  className="flex items-start gap-3 text-sm text-muted-foreground"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                >
+                  <span className="text-primary font-mono mt-0.5">{item.icon}</span>
+                  <span>{item.text}</span>
+                </motion.div>
+              ))}
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+// ============================================================================
+// SUB-COMPONENTS
+// ============================================================================
+
+function IILStat({ label, value, color }: { label: string; value: number; color?: string }) {
+  return (
+    <div>
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">{label}</p>
+      <p className={`text-lg font-bold font-mono ${color ?? ''}`}>{value.toLocaleString()}</p>
     </div>
   );
 }

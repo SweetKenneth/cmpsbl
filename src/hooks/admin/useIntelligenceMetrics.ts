@@ -1,6 +1,10 @@
 /**
  * Intelligence Metrics Hook — Computes DKD, FNR, RMI, CKP, IIL, MRI
  * from immune_intelligence_events table
+ * 
+ * FIX: Repair success rate now counts safe_fail events WITH repair_type
+ * as failed repair attempts (wrapExecutor emits safe_fail, not repair_failed,
+ * when a repair attempt fails then safe-fails).
  */
 
 import { useQuery } from '@tanstack/react-query';
@@ -149,7 +153,11 @@ function computeIIL(events: RawEvent[]): IILResult {
 
   for (const e of events) {
     switch (e.outcome) {
-      case 'safe_fail': result.safeFails++; break;
+      case 'safe_fail':
+        result.safeFails++;
+        // FIX: If a safe_fail has a repair_type, the repair was attempted and failed
+        if (e.repair_type) result.repairFailures++;
+        break;
       case 'repaired_success': result.repairedSuccess++; break;
       case 'repair_failed': result.repairFailures++; break;
       case 'escalation':
@@ -159,7 +167,6 @@ function computeIIL(events: RawEvent[]): IILResult {
     }
   }
 
-  // Approximate preflight/postcheck from meta if available
   for (const e of events) {
     const meta = e as any;
     if (meta.meta?.stage === 'preflight' && e.outcome !== 'success') result.preflightBlocks++;
@@ -169,14 +176,17 @@ function computeIIL(events: RawEvent[]): IILResult {
   return result;
 }
 
-function computeMRI(dkd: DKDResult, fnr: FNRResult, events: RawEvent[]): MRIResult {
+function computeMRI(dkd: DKDResult, fnr: FNRResult, iil: IILResult, events: RawEvent[]): MRIResult {
   const total = events.length || 1;
-  const escalations = events.filter(e => e.outcome === 'escalation').length;
-  const repairAttempts = events.filter(e => e.outcome === 'repaired_success' || e.outcome === 'repair_failed').length;
+  const escalations = Object.values(iil.escalationsBySeverity).reduce((s, v) => s + v, 0);
+
+  // FIX: Real repair attempts = repaired_success + repair_failed outcomes
+  // + safe_fail events that had a repair_type set (repair attempted then safe-failed)
   const repairSuccesses = events.filter(e => e.outcome === 'repaired_success').length;
+  const realRepairAttempts = repairSuccesses + iil.repairFailures;
 
   const escalationRate = escalations / total;
-  const repairSuccessRate = repairAttempts > 0 ? repairSuccesses / repairAttempts : 1;
+  const repairSuccessRate = realRepairAttempts > 0 ? repairSuccesses / realRepairAttempts : 1;
   const dkdVal = dkd.global ?? 0;
   const fnrVal = fnr.global ?? 0;
 
@@ -185,7 +195,7 @@ function computeMRI(dkd: DKDResult, fnr: FNRResult, events: RawEvent[]): MRIResu
     fnrInverse: 1 - fnrVal,
     escalationRateInverse: 1 - escalationRate,
     repairSuccessRate,
-    cascadeRateInverse: 1, // placeholder
+    cascadeRateInverse: 1,
   };
 
   const score = Math.round(
@@ -227,7 +237,7 @@ export function useIntelligenceMetrics(windowHours = 24, isShadow: boolean | nul
       const rmi = computeRMI(events);
       const ckp = computeCKP(events);
       const iil = computeIIL(events);
-      const mri = computeMRI(dkd, fnr, events);
+      const mri = computeMRI(dkd, fnr, iil, events);
 
       return { dkd, fnr, rmi, ckp, iil, mri, totalEvents: events.length, windowHours };
     },
