@@ -32,7 +32,9 @@ export async function runShadowBatch() {
     const report = await runShadowProbe(executor, seedInput);
 
     // Derive telemetry flags from actual probe outcome counts
-    const repairAttempts = report.summary.repaired + report.summary.escalated + report.summary.failedSafe;
+    // CRITICAL: safe-fails are NOT repair attempts — they are correctly rejected garbage inputs.
+    // Only repaired + escalated count as repair attempts (escalations = failed repair attempts).
+    const actualRepairAttempts = report.summary.repaired + report.summary.escalated;
     const hadSuccessfulRepairs = report.summary.repaired > 0;
 
     await recordImmuneMetrics({
@@ -41,8 +43,8 @@ export async function runShadowBatch() {
       repaired: report.summary.repaired,
       escalated: report.summary.escalated,
       safeFail: report.summary.failedSafe,
-      repair_attempted: repairAttempts > 0,
-      repair_success: hadSuccessfulRepairs && report.summary.escalated === 0 && report.summary.failedSafe === 0,
+      repair_attempted: actualRepairAttempts > 0,
+      repair_success: hadSuccessfulRepairs && report.summary.escalated === 0,
       retry_attempted: hadSuccessfulRepairs,
     });
   }
