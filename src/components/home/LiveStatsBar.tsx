@@ -33,18 +33,21 @@ function useLiveStats() {
         // Brain events count
         const { count: brainCount } = await supabase
           .from("brain_events" as any)
-          .select("*", { count: "exact", head: true });
+          .select("id", { count: "exact", head: true });
 
-        // Memory count (hot tier)
-        const { count: memoryCount } = await supabase
-          .from("brain_memory_hot" as any)
-          .select("*", { count: "exact", head: true });
+        // Memory count (all tiers)
+        const [hotRes, warmRes, coldRes] = await Promise.all([
+          supabase.from("brain_memory_hot" as any).select("id", { count: "exact", head: true }),
+          supabase.from("brain_memory_warm" as any).select("id", { count: "exact", head: true }),
+          supabase.from("brain_memory_cold" as any).select("id", { count: "exact", head: true }),
+        ]);
+        const memoryCount = (hotRes.count ?? 0) + (warmRes.count ?? 0) + (coldRes.count ?? 0);
 
         // Today's API calls
         const today = new Date().toISOString().split("T")[0];
         const { count: apiCalls } = await supabase
           .from("ai_usage_log")
-          .select("*", { count: "exact", head: true })
+          .select("id", { count: "exact", head: true })
           .gte("created_at", today);
 
         // Immune metrics for probe stats — aggregate all rows
