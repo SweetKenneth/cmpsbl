@@ -76,14 +76,14 @@ export default function EvolutionMeshDashboard() {
     <AdminLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Evolution Mesh</h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Evolution Mesh</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
               Governed promotion pipeline — Shadow → Integrity → Promote
             </p>
           </div>
-          <Badge variant="outline" className="text-xs">
+          <Badge variant="outline" className="text-xs shrink-0">
             SPARTA Epoch
           </Badge>
         </div>
