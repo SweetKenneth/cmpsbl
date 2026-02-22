@@ -4,7 +4,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock, Power, BarChart3, Zap, Eye, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock, Power, BarChart3, Zap, Eye, Shield, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -94,6 +95,7 @@ function ConfirmActionDialog({
 }
 
 export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
+  const navigate = useNavigate();
   const systemAudit = useSystemAudit();
   const systemConfig = useSystemConfig('rate_limits');
   const systemVersion = useSystemVersion();
@@ -337,6 +339,48 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                 disabled={killSwitchesLoading}
               />
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Quick Links */}
+      <Card className="border-border/30">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Shield className="w-4 h-4 text-primary" />
+            Quick Links
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <Button
+              variant="outline"
+              className="justify-between h-auto p-4 border-primary/20 hover:bg-primary/5"
+              onClick={() => navigate('/admin/immunity-mesh')}
+            >
+              <div className="flex items-center gap-3 text-left">
+                <Shield className="w-5 h-5 text-primary shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Immunity Mesh</p>
+                  <p className="text-[10px] text-muted-foreground">Training · Probes · Analytics</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            </Button>
+            <Button
+              variant="outline"
+              className="justify-between h-auto p-4 border-border/30 hover:bg-muted/50"
+              onClick={() => navigate('/admin/patches')}
+            >
+              <div className="flex items-center gap-3 text-left">
+                <Zap className="w-5 h-5 text-amber-400 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Patch Distribution</p>
+                  <p className="text-[10px] text-muted-foreground">Deploy & manage patches</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            </Button>
           </div>
         </CardContent>
       </Card>
