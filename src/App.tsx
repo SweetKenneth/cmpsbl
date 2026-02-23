@@ -16,6 +16,7 @@ const SonnerToaster = lazy(() => import("@/components/ui/sonner").then(m => ({ d
 const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
 import { installLastInteractionTracking } from "@/lib/ui/lastInteraction";
 import { installSiteGuard } from "@/lib/defense/site-guard";
+import { initSiteAnalytics } from "@/lib/analytics/site-tracker";
 import { isEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
 // Mobile crash diagnostics (opt-in via ?diag=1)
@@ -232,6 +233,7 @@ const App = () => {
     const cleanup = installMobileWatchdog();
     const cleanupTracking = installLastInteractionTracking();
     const cleanupSiteGuard = installSiteGuard();
+    initSiteAnalytics();
 
     if (diagEnabled()) {
       diagLog("log", "App mounted", {

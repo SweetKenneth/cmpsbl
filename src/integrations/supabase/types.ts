@@ -10942,6 +10942,210 @@ export type Database = {
         }
         Relationships: []
       }
+      site_analytics_exclusions: {
+        Row: {
+          created_at: string
+          exclusion_type: string
+          id: string
+          reason: string | null
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          exclusion_type: string
+          id?: string
+          reason?: string | null
+          value: string
+        }
+        Update: {
+          created_at?: string
+          exclusion_type?: string
+          id?: string
+          reason?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
+      site_page_views: {
+        Row: {
+          browser: string | null
+          browser_version: string | null
+          city: string | null
+          connection_type: string | null
+          country: string | null
+          created_at: string
+          device_type: string | null
+          entry_page: boolean | null
+          exit_page: boolean | null
+          fingerprint_hash: string | null
+          id: string
+          is_bounce: boolean | null
+          language: string | null
+          os: string | null
+          os_version: string | null
+          page_path: string
+          page_title: string | null
+          referrer: string | null
+          referrer_domain: string | null
+          screen_height: number | null
+          screen_width: number | null
+          scroll_depth_pct: number | null
+          session_id: string
+          time_on_page_ms: number | null
+          timezone: string | null
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          viewport_height: number | null
+          viewport_width: number | null
+        }
+        Insert: {
+          browser?: string | null
+          browser_version?: string | null
+          city?: string | null
+          connection_type?: string | null
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          entry_page?: boolean | null
+          exit_page?: boolean | null
+          fingerprint_hash?: string | null
+          id?: string
+          is_bounce?: boolean | null
+          language?: string | null
+          os?: string | null
+          os_version?: string | null
+          page_path: string
+          page_title?: string | null
+          referrer?: string | null
+          referrer_domain?: string | null
+          screen_height?: number | null
+          screen_width?: number | null
+          scroll_depth_pct?: number | null
+          session_id: string
+          time_on_page_ms?: number | null
+          timezone?: string | null
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          viewport_height?: number | null
+          viewport_width?: number | null
+        }
+        Update: {
+          browser?: string | null
+          browser_version?: string | null
+          city?: string | null
+          connection_type?: string | null
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          entry_page?: boolean | null
+          exit_page?: boolean | null
+          fingerprint_hash?: string | null
+          id?: string
+          is_bounce?: boolean | null
+          language?: string | null
+          os?: string | null
+          os_version?: string | null
+          page_path?: string
+          page_title?: string | null
+          referrer?: string | null
+          referrer_domain?: string | null
+          screen_height?: number | null
+          screen_width?: number | null
+          scroll_depth_pct?: number | null
+          session_id?: string
+          time_on_page_ms?: number | null
+          timezone?: string | null
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          viewport_height?: number | null
+          viewport_width?: number | null
+        }
+        Relationships: []
+      }
+      site_sessions: {
+        Row: {
+          browser: string | null
+          city: string | null
+          country: string | null
+          device_type: string | null
+          ended_at: string
+          fingerprint_hash: string | null
+          first_page: string | null
+          id: string
+          is_bounce: boolean | null
+          language: string | null
+          last_page: string | null
+          os: string | null
+          page_count: number | null
+          referrer: string | null
+          referrer_domain: string | null
+          screen_height: number | null
+          screen_width: number | null
+          started_at: string
+          timezone: string | null
+          total_duration_ms: number | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          browser?: string | null
+          city?: string | null
+          country?: string | null
+          device_type?: string | null
+          ended_at?: string
+          fingerprint_hash?: string | null
+          first_page?: string | null
+          id: string
+          is_bounce?: boolean | null
+          language?: string | null
+          last_page?: string | null
+          os?: string | null
+          page_count?: number | null
+          referrer?: string | null
+          referrer_domain?: string | null
+          screen_height?: number | null
+          screen_width?: number | null
+          started_at?: string
+          timezone?: string | null
+          total_duration_ms?: number | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          browser?: string | null
+          city?: string | null
+          country?: string | null
+          device_type?: string | null
+          ended_at?: string
+          fingerprint_hash?: string | null
+          first_page?: string | null
+          id?: string
+          is_bounce?: boolean | null
+          language?: string | null
+          last_page?: string | null
+          os?: string | null
+          page_count?: number | null
+          referrer?: string | null
+          referrer_domain?: string | null
+          screen_height?: number | null
+          screen_width?: number | null
+          started_at?: string
+          timezone?: string | null
+          total_duration_ms?: number | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
       studio_applies: {
         Row: {
           artifact_url: string | null

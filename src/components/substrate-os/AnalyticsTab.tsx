@@ -1,17 +1,18 @@
 /**
- * Analytics Tab v11.0.0 — Substrate Telemetry Dashboard
- * Single source of truth for all system metrics. No third-party analytics.
- * Shows real substrate operations, API usage, and system activity.
+ * Analytics Tab v12.0.0 — Substrate Telemetry + Human Traffic Intelligence
+ * Single source of truth for all system metrics AND real visitor analytics.
+ * No third-party analytics. Bots excluded. Owner excluded.
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { BarChart3, Activity, Cpu, Database, RefreshCw, Zap, Brain, Shield, Network } from 'lucide-react';
+import { BarChart3, Activity, Cpu, Database, RefreshCw, Zap, Brain, Shield, Network, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
+import { SiteAnalyticsSection } from './SiteAnalyticsSection';
 
 interface TelemetryData {
   brainEvents: number;
@@ -40,6 +41,7 @@ export function AnalyticsTab() {
   const [data, setData] = useState<TelemetryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d'>('7d');
+  const [activeSection, setActiveSection] = useState<'traffic' | 'substrate'>('traffic');
 
   const fetchTelemetry = useCallback(async () => {
     setLoading(true);
@@ -207,6 +209,36 @@ export function AnalyticsTab() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
+      {/* Section Toggle */}
+      <div className="flex gap-2 p-1 rounded-xl bg-muted/30 border border-border/30 w-fit">
+        <button
+          onClick={() => setActiveSection('traffic')}
+          className={cn(
+            "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+            activeSection === 'traffic'
+              ? "bg-green-500/20 text-green-400 border border-green-500/40"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <Users className="w-4 h-4" /> Site Traffic
+        </button>
+        <button
+          onClick={() => setActiveSection('substrate')}
+          className={cn(
+            "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+            activeSection === 'substrate'
+              ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <BarChart3 className="w-4 h-4" /> Substrate Telemetry
+        </button>
+      </div>
+
+      {activeSection === 'traffic' ? (
+        <SiteAnalyticsSection />
+      ) : (
+        <>
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
@@ -552,6 +584,8 @@ export function AnalyticsTab() {
           <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-30" />
           <p className="text-sm">No telemetry data available</p>
         </div>
+      )}
+        </>
       )}
     </motion.div>
   );
