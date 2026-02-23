@@ -333,7 +333,7 @@ export default function ImmunityMeshDashboard() {
             <GraduationCap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">ENCODE</span>
           </TabsTrigger>
           <TabsTrigger value="verify" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
-            <FileCheck className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Verify</span>
+            <FileCheck className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">TSAC</span>
           </TabsTrigger>
           <TabsTrigger value="executors" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Table2 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Executors</span>
@@ -473,9 +473,9 @@ export default function ImmunityMeshDashboard() {
           <EncodeTrainingPanel />
         </TabsContent>
 
-        {/* ══════════════════ CODE VERIFICATION ══════════════════ */}
+        {/* ══════════════════ TSAC VERIFICATION ══════════════════ */}
         <TabsContent value="verify" className="space-y-5">
-          <CodeVerificationPanel />
+          <TSACVerificationPanel />
         </TabsContent>
 
         {/* ══════════════════ EXECUTORS ══════════════════ */}
@@ -1826,33 +1826,62 @@ function PromoteToProductionPanel() {
 // CODE VERIFICATION PANEL
 // ============================================================================
 
-function CodeVerificationPanel() {
-  const [codeInput, setCodeInput] = useState('');
-  const [result, setResult] = useState<CodeVerificationResult | null>(null);
-  const [source, setSource] = useState<'encode' | 'executor' | 'manual'>('manual');
+function TSACVerificationPanel() {
+  const [taskDesc, setTaskDesc] = useState('');
+  const [codeDiff, setCodeDiff] = useState('');
+  const [executorId, setExecutorId] = useState('');
+  const [source, setSource] = useState<'encode' | 'executor' | 'manual'>('executor');
+  const [verifying, setVerifying] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  const [stats, setStats] = useState<any[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
+  const [loadingStats, setLoadingStats] = useState(false);
 
-  const handleVerify = () => {
-    if (!codeInput.trim()) {
-      toast.error('Paste code to verify');
+  // Load stats on mount
+  useEffect(() => {
+    loadStats();
+  }, []);
+
+  const loadStats = async () => {
+    setLoadingStats(true);
+    try {
+      const { fullVerify, getTSACStats, getTSACHistory } = await import('@/lib/substrate/tsac-engine');
+      const [s, h] = await Promise.all([getTSACStats(), getTSACHistory()]);
+      setStats(s);
+      setHistory(h);
+    } catch { /* silent */ }
+    setLoadingStats(false);
+  };
+
+  const handleVerify = async () => {
+    if (!taskDesc.trim() || !codeDiff.trim()) {
+      toast.error('Both task description and code diff are required');
       return;
     }
-    const res = verifyCode(codeInput, source);
-    setResult(res);
-    toast.success(`Code verified: Grade ${res.grade} (${res.score}/100)`);
+    setVerifying(true);
+    try {
+      const { fullVerify } = await import('@/lib/substrate/tsac-engine');
+      const res = await fullVerify({
+        taskDescription: taskDesc,
+        codeDiff,
+        executorId: executorId || 'manual',
+        source,
+      });
+      setResult(res);
+      toast.success(`TSAC Verdict: ${res.verdict.toUpperCase()} (Intent: ${res.intent_score}/100)`);
+      loadStats();
+    } catch (err: any) {
+      toast.error(`Verification failed: ${err.message}`);
+    }
+    setVerifying(false);
   };
 
-  const gradeColor = (grade: string) => {
-    switch (grade) {
-      case 'A': return 'text-emerald-500';
-      case 'B': return 'text-blue-400';
-      case 'C': return 'text-amber-400';
-      case 'D': return 'text-orange-400';
-      default: return 'text-red-400';
-    }
-  };
+  const verdictColor = (v: string) => v === 'pass' ? 'text-emerald-400' : v === 'fail' ? 'text-red-400' : 'text-amber-400';
+  const verdictEmoji = (v: string) => v === 'pass' ? '✅' : v === 'fail' ? '❌' : '⚠️';
 
   return (
     <div className="space-y-4">
+      {/* Header */}
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
         <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
           <CardContent className="pt-5 pb-4">
@@ -1860,11 +1889,12 @@ function CodeVerificationPanel() {
               <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 flex-shrink-0">
                 <FileCheck className="w-5 h-5 text-primary" />
               </div>
-              <div>
-                <h3 className="font-semibold text-base mb-1">Code Verification</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Validate code output from ENCODE or Executors against security, resilience, and quality standards.
-                  Paste any code block to get an instant quality grade and actionable feedback.
+              <div className="min-w-0">
+                <h3 className="font-semibold text-base mb-1">TSAC — Task-Specific Acceptance Criteria</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed break-words">
+                  Verifies ENCODE and Executors write the <strong>right code</strong> — not just good code.
+                  AI generates acceptance criteria before judging if the diff solves the stated task.
+                  Based on Sol-Ver self-play + SWE-bench methodology.
                 </p>
               </div>
             </div>
@@ -1872,10 +1902,21 @@ function CodeVerificationPanel() {
         </Card>
       </motion.div>
 
-      <Card className="p-4 space-y-4">
-        <div className="flex items-center gap-2">
+      {/* Executor Stats Summary */}
+      {stats.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <MetricCard label="Total Verified" value={String(stats.reduce((s: number, r: any) => s + r.total_verifications, 0))} icon={FileCheck} status="neutral" />
+          <MetricCard label="Pass Rate" value={`${Math.round(stats.reduce((s: number, r: any) => s + (r.pass_rate || 0), 0) / Math.max(1, stats.length))}%`} icon={CheckCircle2} status="good" delay={1} />
+          <MetricCard label="Avg Intent" value={`${Math.round(stats.reduce((s: number, r: any) => s + (r.avg_intent_score || 0), 0) / Math.max(1, stats.length))}`} icon={Target} status="neutral" delay={2} />
+          <MetricCard label="Executors" value={String(stats.length)} icon={Layers} status="neutral" delay={3} />
+        </div>
+      )}
+
+      {/* Input Form */}
+      <Card className="p-4 space-y-3">
+        <div className="flex items-center gap-2 flex-wrap">
           <Select value={source} onValueChange={(v) => setSource(v as any)}>
-            <SelectTrigger className="w-[130px] h-8 text-xs">
+            <SelectTrigger className="w-[120px] h-8 text-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -1884,64 +1925,129 @@ function CodeVerificationPanel() {
               <SelectItem value="manual">Manual</SelectItem>
             </SelectContent>
           </Select>
-          <Button size="sm" onClick={handleVerify} className="text-xs gap-1">
-            <FileCheck className="w-3 h-3" /> Verify Code
+          <input
+            type="text"
+            placeholder="Executor ID (optional)"
+            value={executorId}
+            onChange={(e) => setExecutorId(e.target.value)}
+            className="h-8 px-2 text-xs bg-background border rounded-md flex-1 min-w-[120px]"
+          />
+          <Button size="sm" onClick={handleVerify} disabled={verifying} className="text-xs gap-1">
+            {verifying ? <RotateCcw className="w-3 h-3 animate-spin" /> : <FileCheck className="w-3 h-3" />}
+            {verifying ? 'Verifying…' : 'Run TSAC'}
           </Button>
         </div>
         <Textarea
-          placeholder="Paste code here to verify…"
-          value={codeInput}
-          onChange={(e) => setCodeInput(e.target.value)}
-          className="min-h-[150px] font-mono text-xs resize-y"
+          placeholder="Task description — What should this code accomplish?"
+          value={taskDesc}
+          onChange={(e) => setTaskDesc(e.target.value)}
+          className="min-h-[80px] text-xs resize-y"
+        />
+        <Textarea
+          placeholder="Code diff or full code to verify…"
+          value={codeDiff}
+          onChange={(e) => setCodeDiff(e.target.value)}
+          className="min-h-[120px] font-mono text-xs resize-y"
         />
       </Card>
 
+      {/* Result */}
       {result && (
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-          {/* Score Summary */}
-          <Card className="p-4 space-y-4">
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+          {/* Verdict Banner */}
+          <Card className={`p-4 border-2 ${
+            result.verdict === 'pass' ? 'border-emerald-500/30 bg-emerald-500/5' :
+            result.verdict === 'fail' ? 'border-red-500/30 bg-red-500/5' :
+            'border-amber-500/30 bg-amber-500/5'
+          }`}>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className={`text-4xl font-bold ${gradeColor(result.grade)}`}>{result.grade}</div>
+                <span className="text-3xl">{verdictEmoji(result.verdict)}</span>
                 <div>
-                  <p className="text-lg font-bold">{result.score}/100</p>
-                  <p className="text-xs text-muted-foreground">{result.summary.passed}/{result.summary.total} checks passed</p>
+                  <p className={`text-xl font-bold ${verdictColor(result.verdict)}`}>{result.verdict.toUpperCase()}</p>
+                  <p className="text-xs text-muted-foreground">Intent Match: {result.intent_score}/100 · Quality: {result.quality_score}/100</p>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {result.summary.errors > 0 && <Badge variant="destructive" className="text-[10px]">{result.summary.errors} errors</Badge>}
-                {result.summary.warnings > 0 && <Badge variant="secondary" className="text-[10px]">{result.summary.warnings} warnings</Badge>}
-                {result.summary.info > 0 && <Badge variant="outline" className="text-[10px]">{result.summary.info} info</Badge>}
+              <div className="flex gap-2">
+                <Progress value={result.intent_score} className="h-2 w-24" />
               </div>
             </div>
-            <Progress value={result.score} className="h-2" />
+            <p className="text-sm text-muted-foreground mt-3 break-words">{result.reasoning}</p>
+          </Card>
 
-            {/* Individual Checks */}
+          {/* Criteria Results */}
+          <Card className="p-4 space-y-3">
+            <h4 className="text-sm font-semibold flex items-center gap-2">
+              <Target className="w-4 h-4 text-primary" /> Acceptance Criteria ({result.criteria_results?.length || 0})
+            </h4>
             <div className="space-y-2">
-              {result.checks.map((check) => (
-                <div key={check.id} className={`flex items-start gap-2 p-3 rounded-lg border text-xs ${
-                  check.passed ? 'border-emerald-500/20 bg-emerald-500/5' : 
-                  check.severity === 'error' ? 'border-red-500/20 bg-red-500/5' :
-                  check.severity === 'warning' ? 'border-amber-500/20 bg-amber-500/5' :
-                  'border-border/20 bg-muted/20'
-                }`}>
-                  <div className="flex-shrink-0 mt-0.5">
-                    {check.passed ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : 
-                     check.severity === 'error' ? <XCircle className="w-4 h-4 text-red-400" /> :
-                     <AlertTriangle className="w-4 h-4 text-amber-400" />}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-medium">{check.name}</span>
-                      <Badge variant="outline" className="text-[8px]">{check.category}</Badge>
+              {result.criteria_results?.map((cr: any, i: number) => {
+                const criterion = result.criteria?.find((c: any) => c.id === cr.criterion_id);
+                return (
+                  <div key={i} className={`p-3 rounded-lg border text-xs ${
+                    cr.passed ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-red-500/20 bg-red-500/5'
+                  }`}>
+                    <div className="flex items-start gap-2">
+                      <div className="flex-shrink-0 mt-0.5">
+                        {cr.passed ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <XCircle className="w-4 h-4 text-red-400" />}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-medium">{cr.criterion_id}</span>
+                          {criterion && <Badge variant="outline" className="text-[8px]">{criterion.type}</Badge>}
+                          {criterion && <Badge variant={criterion.priority === 'critical' ? 'destructive' : 'secondary'} className="text-[8px]">{criterion.priority}</Badge>}
+                        </div>
+                        {criterion && <p className="text-muted-foreground mt-0.5 break-words">{criterion.description}</p>}
+                        <p className="mt-1 break-words">{cr.explanation}</p>
+                      </div>
                     </div>
-                    <p className="text-muted-foreground mt-0.5 break-words">{check.message}</p>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Card>
+
+          {/* Quality Checks */}
+          {result.quality_checks && (
+            <Card className="p-4 space-y-2">
+              <h4 className="text-sm font-semibold flex items-center gap-2">
+                <Code2 className="w-4 h-4 text-primary" /> Static Quality Checks
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {result.quality_checks.map((qc: any, i: number) => (
+                  <div key={i} className={`p-2 rounded text-xs flex items-center gap-1.5 ${qc.passed ? 'text-emerald-400' : 'text-red-400'}`}>
+                    {qc.passed ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                    <span className="truncate">{qc.name}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
         </motion.div>
+      )}
+
+      {/* Verification History */}
+      {history.length > 0 && (
+        <Card className="p-4 space-y-3">
+          <h4 className="text-sm font-semibold flex items-center gap-2">
+            <Activity className="w-4 h-4 text-primary" /> Recent Verifications
+          </h4>
+          <div className="space-y-2 max-h-[300px] overflow-y-auto">
+            {history.slice(0, 15).map((h: any) => (
+              <div key={h.id} className="flex items-center justify-between p-2 rounded-lg border border-border/20 text-xs gap-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <span>{verdictEmoji(h.overall_verdict)}</span>
+                  <span className="truncate font-medium">{h.executor_id}</span>
+                  <Badge variant="outline" className="text-[8px] flex-shrink-0">{h.source}</Badge>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <span className="font-mono">{h.intent_match_score ?? '—'}</span>
+                  <span className="text-muted-foreground">{new Date(h.created_at).toLocaleDateString()}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
       )}
     </div>
   );

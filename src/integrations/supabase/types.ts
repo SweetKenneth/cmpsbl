@@ -12931,6 +12931,54 @@ export type Database = {
         }
         Relationships: []
       }
+      tsac_verifications: {
+        Row: {
+          acceptance_criteria: Json
+          code_quality_score: number | null
+          created_at: string
+          criteria_results: Json
+          executor_id: string
+          id: string
+          intent_match_reasoning: string | null
+          intent_match_score: number | null
+          metadata: Json | null
+          overall_verdict: string
+          source: string
+          task_description: string
+          task_id: string
+        }
+        Insert: {
+          acceptance_criteria?: Json
+          code_quality_score?: number | null
+          created_at?: string
+          criteria_results?: Json
+          executor_id: string
+          id?: string
+          intent_match_reasoning?: string | null
+          intent_match_score?: number | null
+          metadata?: Json | null
+          overall_verdict?: string
+          source?: string
+          task_description: string
+          task_id: string
+        }
+        Update: {
+          acceptance_criteria?: Json
+          code_quality_score?: number | null
+          created_at?: string
+          criteria_results?: Json
+          executor_id?: string
+          id?: string
+          intent_match_reasoning?: string | null
+          intent_match_score?: number | null
+          metadata?: Json | null
+          overall_verdict?: string
+          source?: string
+          task_description?: string
+          task_id?: string
+        }
+        Relationships: []
+      }
       usage_metrics: {
         Row: {
           calls: number
@@ -13145,7 +13193,21 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      tsac_executor_stats: {
+        Row: {
+          avg_intent_score: number | null
+          avg_quality_score: number | null
+          executor_id: string | null
+          fail_count: number | null
+          last_verified: string | null
+          partial_count: number | null
+          pass_count: number | null
+          pass_rate: number | null
+          source: string | null
+          total_verifications: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       apply_confidence_decay: {
