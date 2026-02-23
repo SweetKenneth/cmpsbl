@@ -1463,7 +1463,7 @@ function ModernizerShadowPanel() {
                   <div className="space-y-2">
                     {perfStats.needsWork.map((e, i) => (
                       <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-amber-500/10 bg-amber-500/5">
-                        <code className="font-mono truncate max-w-[120px]">{e.executor}</code>
+                        <code className="font-mono truncate max-w-[80px] sm:max-w-[120px] text-[10px] sm:text-xs">{e.executor}</code>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-[9px]">{e.gapType}</Badge>
                           <span className="text-amber-500 font-mono font-medium">{(e.successRate * 100).toFixed(0)}%</span>
