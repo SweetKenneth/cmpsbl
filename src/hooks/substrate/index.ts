@@ -1,8 +1,9 @@
 /**
  * Substrate Module Hooks - Barrel Export
- * v10.5.4 ARCHITECT Epoch — Dedicated React hooks for all 21 substrate modules + SEBA
+ * CCR Epoch — Dedicated React hooks for 16 public modules + CCR facades + SEBA
  * 
- * Unified caching, loading/error states, and automatic cache invalidation
+ * CCR absorbs: CORE+SYSTEM+BRAIN+MEMORY+DREAM (hooks still exported for backcompat)
+ * IDENTITY merged into ACCESS (hook still exported as facade)
  */
 
 // Kernel Layer
