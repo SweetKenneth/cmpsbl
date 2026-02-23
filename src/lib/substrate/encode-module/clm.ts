@@ -10,6 +10,7 @@
 import { emit } from '../events';
 import { memoryCore } from '../memory-core';
 import { getEncodeState } from './index';
+import { distillFromCLMReport } from '@/immune/knowledge-distillery';
 
 export interface CodebaseKnowledge {
   filePath: string;
@@ -288,11 +289,20 @@ export async function runEncodeCLMCycle(): Promise<CLMReport> {
   };
 
   await memoryCore.remember(JSON.stringify(report), 'insight', 0.8, { source: 'clm-encode-internal' });
+
+  // ── Knowledge Distillery: push learnings to executor swarm ──
+  try {
+    const packs = distillFromCLMReport(report);
+    learnings.push(`Knowledge Distillery: distilled ${packs.size} specialty packs for executor swarm`);
+  } catch (err) {
+    risks.push(`Knowledge Distillery failed: ${err instanceof Error ? err.message : 'unknown'}`);
+  }
+
   emit({
     module: 'encode',
     event_type: 'clm_cycle',
     outcome: 'succeeded',
-    data: { cycleId, learnings: learnings.length, insights: codebaseInsights.length },
+    data: { cycleId, learnings: learnings.length, insights: codebaseInsights.length, distilled: true },
   });
 
   return report;
