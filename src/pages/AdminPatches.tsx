@@ -283,10 +283,10 @@ function PatchCard({ patch }: { patch: PatchRow }) {
   return (
     <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Package className="w-5 h-5 text-primary" />
-            <CardTitle className="text-lg">v{patch.version}</CardTitle>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Package className="w-5 h-5 text-primary shrink-0" />
+            <CardTitle className="text-base sm:text-lg">v{patch.version}</CardTitle>
             <StatusBadge status={patch.status} />
             <TierBadge tier={patch.required_tier} />
           </div>
@@ -313,7 +313,7 @@ function PatchCard({ patch }: { patch: PatchRow }) {
         )}
 
         {/* Actions */}
-        <div className="flex items-center gap-2 pt-2 border-t border-border/30">
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/30">
           {patch.status === 'draft' && (
             <Button size="sm" onClick={() => publishMutation.mutate()} disabled={publishMutation.isPending} className="gap-1">
               <Send className="w-3 h-3" /> Publish
@@ -329,7 +329,7 @@ function PatchCard({ patch }: { patch: PatchRow }) {
               </Button>
             </>
           )}
-          <Button size="sm" variant="ghost" onClick={() => setShowManifest(!showManifest)} className="gap-1 ml-auto">
+          <Button size="sm" variant="ghost" onClick={() => setShowManifest(!showManifest)} className="gap-1 sm:ml-auto">
             <FileJson className="w-3 h-3" /> {showManifest ? 'Hide' : 'View'} Manifest
           </Button>
         </div>
@@ -342,7 +342,7 @@ function PatchCard({ patch }: { patch: PatchRow }) {
         )}
 
         {/* Metadata */}
-        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-muted-foreground">
           <span>Created: {new Date(patch.created_at).toLocaleDateString()}</span>
           {patch.published_at && <span>Published: {new Date(patch.published_at).toLocaleDateString()}</span>}
           <span className="font-mono text-[10px]">{patch.id.slice(0, 8)}</span>
@@ -417,14 +417,14 @@ export default function AdminPatches() {
       <AdminLayout>
         <div className="space-y-6">
           {/* Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-                <Shield className="w-6 h-6 text-primary" />
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2">
+                <Shield className="w-5 sm:w-6 h-5 sm:h-6 text-primary" />
                 Patch Distribution
               </h1>
-              <p className="text-muted-foreground mt-1">
-                Author and manage patches for downstream distributions. CMPSBL → LNCHBL only.
+              <p className="text-sm text-muted-foreground mt-1">
+                Author and manage patches for downstream distributions.
               </p>
             </div>
             <CreatePatchDialog />
@@ -432,12 +432,12 @@ export default function AdminPatches() {
 
           {/* Canon Identity Banner */}
           <Card className="border-primary/30 bg-primary/5">
-            <CardContent className="py-3 flex items-center gap-4">
-              <Shield className="w-5 h-5 text-primary" />
-              <div className="text-sm">
+            <CardContent className="py-3 px-3 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+              <Shield className="w-5 h-5 text-primary shrink-0" />
+              <div className="text-xs sm:text-sm">
                 <span className="font-semibold text-foreground">Canon Lock Active</span>
-                <span className="text-muted-foreground ml-2">
-                  Distribution: {DISTRIBUTION_ID} · Authority: TRUE · Federation: ENABLED · Patch Authoring: ENABLED
+                <span className="text-muted-foreground block sm:inline sm:ml-2">
+                  Distribution: {DISTRIBUTION_ID} · Authority: TRUE
                 </span>
               </div>
             </CardContent>
@@ -445,12 +445,12 @@ export default function AdminPatches() {
 
           {/* Tabs */}
           <Tabs defaultValue="all">
-            <TabsList>
-              <TabsTrigger value="all">All ({patches.length})</TabsTrigger>
-              <TabsTrigger value="draft">Drafts ({draftPatches.length})</TabsTrigger>
-              <TabsTrigger value="published">Published ({publishedPatches.length})</TabsTrigger>
-              <TabsTrigger value="revoked">Revoked ({revokedPatches.length})</TabsTrigger>
-              <TabsTrigger value="analytics">
+            <TabsList className="flex-wrap h-auto gap-1">
+              <TabsTrigger value="all" className="text-xs sm:text-sm">All ({patches.length})</TabsTrigger>
+              <TabsTrigger value="draft" className="text-xs sm:text-sm">Drafts ({draftPatches.length})</TabsTrigger>
+              <TabsTrigger value="published" className="text-xs sm:text-sm">Published ({publishedPatches.length})</TabsTrigger>
+              <TabsTrigger value="revoked" className="text-xs sm:text-sm">Revoked ({revokedPatches.length})</TabsTrigger>
+              <TabsTrigger value="analytics" className="text-xs sm:text-sm">
                 <Eye className="w-3 h-3 mr-1" /> Analytics
               </TabsTrigger>
             </TabsList>
