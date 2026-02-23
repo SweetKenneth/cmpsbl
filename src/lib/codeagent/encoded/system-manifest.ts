@@ -1,11 +1,11 @@
 /**
  * ENCODE System Manifest — Architecture Awareness Registry
- * v10.5.4 ARCHITECT — Gives ENCODE a canonical map of the living system
+ * CCR Epoch — Gives ENCODE a canonical map of the living system
  *
  * This manifest solves ENCODE's "blind agent" problem: without it, ENCODE
  * has no idea that a footer exists, where BRAIN lives, or that it is itself
- * part of a 21-module substrate. With it, ENCODE can locate, understand, and
- * safely modify any part of the system.
+ * part of a 16-module substrate (powered by CCR Layer 0). With it, ENCODE
+ * can locate, understand, and safely modify any part of the system.
  *
  * Usage:
  *   import { systemManifest, resolveComponent, resolveModule } from './system-manifest';
