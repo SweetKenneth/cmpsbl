@@ -2,8 +2,8 @@
  * NEXUS Router v5.1.0 — Direct Provider API Routing
  * Routes to free-tier AI providers directly (NO Lovable AI gateway)
  * 
- * Supported providers: Groq, Cerebras, SambaNova, Google AI Studio,
- * DeepSeek, Together, OpenRouter (free models), Grok (xAI), Mistral, Cohere
+  * Supported providers: Groq, Cerebras, SambaNova, Google AI Studio,
+  * DeepSeek, Together, OpenRouter (free models), Mistral, Cohere
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -156,14 +156,14 @@ const PROVIDERS: ProviderConfig[] = [
     }),
     extractContent: (data) => data.choices?.[0]?.message?.content || "",
   },
-  // ── NEW: OpenRouter free models ──
+  // ── OpenRouter free models ──
   {
     id: "openrouter-free",
     name: "OpenRouter (Free)",
     baseUrl: "https://openrouter.ai/api/v1/chat/completions",
     model: "meta-llama/llama-3.3-70b-instruct:free",
     envKey: "OPENROUTER_API_KEY",
-    rpm: 20, rpd: 200, priority: 7,
+    rpm: 16, rpd: 160, priority: 7,
     affinities: ["reasoning", "generation", "research"],
     freeTier: true,
     formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
@@ -183,7 +183,7 @@ const PROVIDERS: ProviderConfig[] = [
     baseUrl: "https://openrouter.ai/api/v1/chat/completions",
     model: "qwen/qwen3-235b-a22b:free",
     envKey: "OPENROUTER_API_KEY",
-    rpm: 20, rpd: 200, priority: 8,
+    rpm: 16, rpd: 160, priority: 8,
     affinities: ["reasoning", "code", "analysis"],
     freeTier: true,
     formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
@@ -203,7 +203,7 @@ const PROVIDERS: ProviderConfig[] = [
     baseUrl: "https://openrouter.ai/api/v1/chat/completions",
     model: "deepseek/deepseek-r1:free",
     envKey: "OPENROUTER_API_KEY",
-    rpm: 20, rpd: 200, priority: 9,
+    rpm: 16, rpd: 160, priority: 9,
     affinities: ["reasoning", "research", "code"],
     freeTier: true,
     formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
@@ -217,35 +217,14 @@ const PROVIDERS: ProviderConfig[] = [
     }),
     extractContent: (data) => data.choices?.[0]?.message?.content || "",
   },
-  // ── Grok (xAI) ──
-  {
-    id: "grok",
-    name: "Grok (xAI)",
-    baseUrl: "https://api.x.ai/v1/chat/completions",
-    model: "grok-3-mini-fast",
-    envKey: "XAI_API_KEY",
-    rpm: 15, rpd: 150, priority: 10,
-    affinities: ["reasoning", "generation", "research"],
-    freeTier: true,
-    formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
-      model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: prompt },
-      ],
-      max_tokens: maxTokens,
-      temperature,
-    }),
-    extractContent: (data) => data.choices?.[0]?.message?.content || "",
-  },
-  // ── Mistral (La Plateforme) ──
+  // ── Mistral Studio (La Plateforme free tier ~1M tokens/month) ──
   {
     id: "mistral",
-    name: "Mistral",
+    name: "Mistral Studio",
     baseUrl: "https://api.mistral.ai/v1/chat/completions",
     model: "mistral-small-latest",
     envKey: "MISTRAL_API_KEY",
-    rpm: 30, rpd: 1000, priority: 11,
+    rpm: 24, rpd: 530, priority: 10,
     affinities: ["reasoning", "code", "refinement"],
     freeTier: true,
     formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
@@ -259,14 +238,14 @@ const PROVIDERS: ProviderConfig[] = [
     }),
     extractContent: (data) => data.choices?.[0]?.message?.content || "",
   },
-  // ── Cohere ──
+  // ── Cohere (Trial key — ~1k calls/month = ~33/day, 80% = 26) ──
   {
     id: "cohere",
-    name: "Cohere",
+    name: "Cohere (Trial)",
     baseUrl: "https://api.cohere.com/v2/chat",
     model: "command-r-plus",
     envKey: "COHERE_API_KEY",
-    rpm: 20, rpd: 1000, priority: 12,
+    rpm: 10, rpd: 26, priority: 11,
     affinities: ["research", "generation", "analysis"],
     freeTier: true,
     formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
@@ -287,7 +266,7 @@ const PROVIDERS: ProviderConfig[] = [
     baseUrl: "https://api.hyperbolic.xyz/v1/chat/completions",
     model: "meta-llama/Llama-3.1-70B-Instruct",
     envKey: "HYPERBOLIC_API_KEY",
-    rpm: 48, rpd: 99999, priority: 13,
+    rpm: 38, rpd: 79999, priority: 12,
     affinities: ["generation", "reasoning"],
     freeTier: true,
     formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
