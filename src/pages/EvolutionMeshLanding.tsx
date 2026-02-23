@@ -302,7 +302,7 @@ export default function EvolutionMeshLanding() {
 
   const handleGetKey = async () => {
     if (!email || !email.includes('@')) {
-      toast.error('Please enter a valid email');
+      toast.error('Enter a valid email address');
       return;
     }
     setSubmitting(true);
@@ -311,10 +311,12 @@ export default function EvolutionMeshLanding() {
         body: {
           module: 'access',
           action: 'create_key',
-          name: `EVLVBL Free — ${email}`,
-          scopes: ['evlvbl.wrap', 'evlvbl.shadow', 'evlvbl.status'],
-          email,
-          framework: selectedFramework,
+          data: {
+            name: `EVLVBL Free — ${email}`,
+            scopes: ['evlvbl.wrap', 'evlvbl.shadow', 'evlvbl.status'],
+            email,
+            framework: selectedFramework,
+          },
         },
       });
 
@@ -361,9 +363,7 @@ export default function EvolutionMeshLanding() {
   };
 
   const handleGetApiKey = () => {
-    // Scroll to enterprise/waitlist for now
-    document.getElementById('enterprise')?.scrollIntoView({ behavior: 'smooth' });
-    toast.info('Enter your email to get your free API key.');
+    document.getElementById('get-api-key')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   // Run a shadow probe demo
@@ -965,57 +965,88 @@ export default function EvolutionMeshLanding() {
           </div>
         </section>
 
-        {/* ═══ ENTERPRISE CONTACT ═══ */}
-        <section id="enterprise" className="bg-muted/30 py-16 sm:py-24">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        {/* ═══ GET YOUR API KEY ═══ */}
+        <section id="get-api-key" className="bg-muted/30 py-16 sm:py-24">
+          <div className="max-w-xl mx-auto px-4 sm:px-6">
             <div className="text-center space-y-6">
-              <h2 className="text-2xl sm:text-3xl font-bold">Get Started or Go Enterprise</h2>
-              <p className="text-muted-foreground max-w-lg mx-auto">
-                Enter your email for a free API key (1,000 calls/month) or to discuss Enterprise plans.
+              <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto">
+                <Key className="w-8 h-8 text-emerald-600" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold">Get Your Free API Key</h2>
+              <p className="text-muted-foreground">
+                Enter your email. We'll create your developer account and generate an API key instantly. No credit card. No setup.
               </p>
               {!submitted ? (
-                <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                  <Input
-                    type="email"
-                    placeholder="you@company.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1"
-                    onKeyDown={(e) => e.key === 'Enter' && handleGetKey()}
-                  />
-                  <Button onClick={handleGetKey} disabled={submitting} className="gap-2">
-                    {submitting ? 'Generating...' : 'Get API Key'}
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Input
+                      type="email"
+                      placeholder="you@company.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="flex-1 h-12 text-base"
+                      onKeyDown={(e) => e.key === 'Enter' && handleGetKey()}
+                    />
+                    <Button onClick={handleGetKey} disabled={submitting} size="lg" className="gap-2 bg-emerald-600 hover:bg-emerald-700 h-12">
+                      {submitting ? (
+                        <><Loader2 className="w-4 h-4 animate-spin" /> Creating...</>
+                      ) : (
+                        <><Key className="w-4 h-4" /> Get API Key</>
+                      )}
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    1,000 free API calls per month · No credit card required
+                  </p>
                 </div>
               ) : (
-                <div className="space-y-4 max-w-md mx-auto">
-                  <div className="flex items-center justify-center gap-2 text-primary">
+                <div className="space-y-5">
+                  <div className="flex items-center justify-center gap-2 text-emerald-600">
                     <Check className="w-5 h-5" />
-                    <span className="font-medium">Your API key is ready!</span>
+                    <span className="font-semibold text-lg">Your API key is ready!</span>
                   </div>
                   {generatedKey && (
-                    <div className="relative">
-                      <code className="block bg-background border rounded-lg p-3 text-xs break-all font-mono select-all">
-                        {generatedKey}
-                      </code>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="absolute top-1 right-1 h-7 gap-1"
-                        onClick={() => {
-                          navigator.clipboard.writeText(generatedKey);
-                          toast.success('Copied!');
-                        }}
-                      >
-                        <Copy className="w-3 h-3" /> Copy
-                      </Button>
+                    <div className="space-y-3">
+                      <div className="relative">
+                        <code className="block bg-background border-2 border-emerald-500/30 rounded-lg p-4 text-sm break-all font-mono select-all text-foreground">
+                          {generatedKey}
+                        </code>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="absolute top-2 right-2 h-8 gap-1.5"
+                          onClick={() => {
+                            navigator.clipboard.writeText(generatedKey);
+                            toast.success('Copied to clipboard!');
+                          }}
+                        >
+                          <Copy className="w-3.5 h-3.5" /> Copy
+                        </Button>
+                      </div>
+                      <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 text-sm text-amber-700 dark:text-amber-400">
+                        ⚠️ Save this key now — it won't be shown again.
+                      </div>
                     </div>
                   )}
-                  <p className="text-xs text-muted-foreground">Save this key now — it won't be shown again.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Use this key in the <code className="text-xs bg-muted px-1.5 py-0.5 rounded">Authorization: Bearer YOUR_KEY</code> header when calling the API.
+                  </p>
+                  <Button variant="outline" onClick={() => { setSubmitted(false); setGeneratedKey(null); setEmail(''); }} className="gap-2">
+                    <Key className="w-4 h-4" /> Generate Another Key
+                  </Button>
                 </div>
               )}
             </div>
+          </div>
+        </section>
+
+        {/* ═══ ENTERPRISE CONTACT ═══ */}
+        <section id="enterprise" className="py-12 sm:py-16">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center space-y-4">
+            <h3 className="text-lg font-semibold text-muted-foreground">Need unlimited calls or on-premise deployment?</h3>
+            <p className="text-sm text-muted-foreground">
+              Contact <a href="mailto:promptfluid@gmail.com" className="text-primary underline">promptfluid@gmail.com</a> for Enterprise plans.
+            </p>
           </div>
         </section>
 
