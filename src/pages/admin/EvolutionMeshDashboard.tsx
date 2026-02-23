@@ -302,11 +302,44 @@ export default function EvolutionMeshDashboard() {
     onSuccess: (result) => {
       if (result.success) {
         setScanResults(result.findings ?? []);
-        toast.success('Integrity scan completed');
+        toast.success(`Scan complete: ${result.summary?.total ?? 0} findings (${result.summary?.errors ?? 0} errors, ${result.summary?.warnings ?? 0} warnings)`);
         invalidateAll();
       } else {
         toast.error(`Scan failed: ${result.error}`);
       }
+    },
+  });
+
+  const generateProposalsMutation = useMutation({
+    mutationFn: async (findings: any[]) => {
+      const actionable = findings.filter((f: any) => f.severity !== 'info' || (f.priority ?? 0) >= 5);
+      const top = actionable.slice(0, 5);
+      const results: string[] = [];
+      for (const finding of top) {
+        const artifactResult = await mutationEngine.createArtifact({
+          actorType: 'integrity_scan',
+          category: finding.evolutionType ?? finding.category ?? 'resilience',
+          intentSummary: finding.message,
+          diffData: { suggested_fix: finding.suggestedFix, severity: finding.severity, priority: finding.priority },
+        });
+        if (artifactResult.success && artifactResult.artifact) {
+          const proposalResult = await mutationEngine.createProposal({
+            artifactId: artifactResult.artifact.id,
+            hypothesis: finding.suggestedFix ?? finding.message,
+            riskScore: finding.severity === 'error' ? 0.7 : finding.severity === 'warning' ? 0.4 : 0.2,
+            category: finding.evolutionType ?? 'resilience',
+          });
+          if (proposalResult.success) results.push(finding.message.slice(0, 50));
+        }
+      }
+      return results;
+    },
+    onSuccess: (results) => {
+      toast.success(`Generated ${results.length} mutation proposals from scan findings`);
+      invalidateAll();
+    },
+    onError: () => {
+      toast.error('Failed to generate proposals');
     },
   });
 
@@ -950,19 +983,55 @@ export default function EvolutionMeshDashboard() {
                   </div>
                   <Badge variant="outline" className="text-xs">{scanResults.length} findings</Badge>
                 </div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex gap-2 text-[10px] text-muted-foreground">
+                    {['security', 'performance', 'stability', 'feature', 'cleanup', 'resilience'].map(type => {
+                      const count = scanResults.filter((f: any) => f.evolutionType === type).length;
+                      if (count === 0) return null;
+                      return (
+                        <Badge key={type} variant="outline" className="text-[10px] capitalize">
+                          {type}: {count}
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() => generateProposalsMutation.mutate(scanResults)}
+                    disabled={generateProposalsMutation.isPending}
+                    className="gap-1"
+                  >
+                    {generateProposalsMutation.isPending ? (
+                      <><Loader2 className="w-3 h-3 animate-spin" /> Generating...</>
+                    ) : (
+                      <><Rocket className="w-3 h-3" /> Generate Proposals</>
+                    )}
+                  </Button>
+                </div>
                 <div className="space-y-1.5">
-                  {scanResults.map((finding, i) => (
+                  {scanResults.map((finding: any, i: number) => (
                     <div key={i} className="flex items-start gap-2 text-sm p-2.5 rounded-lg bg-muted/30 border border-border/20">
                       {finding.severity === 'error' ? (
                         <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
                       ) : finding.severity === 'warning' ? (
                         <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                       ) : (
-                        <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                       )}
-                      <div>
-                        <span className="font-medium text-xs">[{finding.category}]</span>{' '}
-                        <span className="text-xs text-muted-foreground">{finding.message}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-medium text-xs">[{finding.category}]</span>
+                          {finding.evolutionType && (
+                            <Badge variant="outline" className="text-[9px] capitalize">{finding.evolutionType}</Badge>
+                          )}
+                          {finding.priority && finding.priority >= 7 && (
+                            <Badge variant="destructive" className="text-[9px]">P{finding.priority}</Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5">{finding.message}</p>
+                        {finding.suggestedFix && (
+                          <p className="text-[10px] text-primary/80 mt-1">💡 {finding.suggestedFix}</p>
+                        )}
                       </div>
                     </div>
                   ))}
