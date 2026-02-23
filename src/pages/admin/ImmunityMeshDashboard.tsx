@@ -14,7 +14,8 @@ import {
   Shield, Brain, Zap, Activity, RotateCcw, AlertTriangle, BarChart3, 
   Table2, BookOpen, Fingerprint, Radar, HeartPulse, Layers, 
   ArrowUpRight, ArrowDownRight, CheckCircle2, XCircle, Minus,
-  Hammer, GraduationCap, TrendingUp, Sparkles, Play, Search, ArrowUp, ArrowDown, Target
+  Hammer, GraduationCap, TrendingUp, Sparkles, Play, Search, ArrowUp, ArrowDown, Target,
+  Rocket, Code2, FileCheck,
 } from "lucide-react";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +28,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getSharedRuleStats, getSharedRules, type SharedRule } from "@/immune/shared-rule-registry";
 import { getSkillStats, type SkillRecord } from "@/lib/shadow/shadowBuild";
 import { getPerformanceSummary, getPerformanceStats, type PerformanceEntry, type GapCategory, type ModernizerShadowReport } from "@/lib/shadow/modernizerShadow";
+import { getSkillTier, getTierProgress, type SkillTierInfo } from "@/lib/substrate/skill-tiers";
+import { verifyCode, type CodeVerificationResult } from "@/lib/substrate/code-verification";
+import { promotionService } from "@/lib/evolution-mesh/promotion-service";
+import { diffService } from "@/lib/evolution-mesh/diff-service";
+import { snapshotService } from "@/lib/evolution-mesh/snapshot-service";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
 
 // ============================================================================
 // HELPERS
