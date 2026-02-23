@@ -1152,7 +1152,7 @@ function ShadowBuildPanel() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.08 }}
             >
-              <span className="text-lg mt--0.5">{item.icon}</span>
+              <span className="text-lg flex-shrink-0">{item.icon}</span>
               <span>{item.text}</span>
             </motion.div>
           ))}
