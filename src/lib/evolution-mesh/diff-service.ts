@@ -1,19 +1,30 @@
 /**
  * Diff Service — Generates and retrieves system diffs
  * NO side effects on import. All functions explicitly invoked.
+ *
+ * Actual system_diffs columns:
+ *   id (uuid, PK, auto), shadow_run_id (text, nullable),
+ *   from_snapshot_id (uuid, nullable), to_snapshot_id (uuid, nullable),
+ *   diff_summary_json (jsonb, default '{}'), diff_patch_text (text, nullable),
+ *   created_at (timestamptz)
  */
 
 import { supabase } from '@/integrations/supabase/client';
 
-async function generateDiff(baseSnapshotId: string, targetSnapshotId: string) {
+async function generateDiff(
+  fromSnapshotId: string,
+  toSnapshotId: string,
+  options?: { shadowRunId?: string; patchText?: string; summary?: Record<string, unknown> },
+) {
   try {
     const { data, error } = await supabase
       .from('system_diffs')
       .insert({
-        base_snapshot_id: baseSnapshotId,
-        target_snapshot_id: targetSnapshotId,
-        diff_data: {},
-        status: 'generated',
+        from_snapshot_id: fromSnapshotId,
+        to_snapshot_id: toSnapshotId,
+        shadow_run_id: options?.shadowRunId ?? null,
+        diff_summary_json: options?.summary ?? {},
+        diff_patch_text: options?.patchText ?? null,
       } as never)
       .select()
       .single();
