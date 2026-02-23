@@ -1,3 +1,9 @@
+/**
+ * NEXUS Image Generation — Direct Google AI Studio API
+ * NO Lovable AI gateway — calls Gemini directly via GOOGLE_AI_STUDIO_KEY
+ * Daily limit: 25 images/day (tracked in ai_usage_log)
+ */
+
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -15,16 +21,16 @@ serve(async (req: Request) => {
   }
 
   const startMs = Date.now();
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
 
   try {
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY not configured");
+    const GOOGLE_KEY = Deno.env.get("GOOGLE_AI_STUDIO_KEY");
+    if (!GOOGLE_KEY) {
+      throw new Error("GOOGLE_AI_STUDIO_KEY not configured");
     }
-
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     const { prompt, style } = await req.json();
 
@@ -48,58 +54,62 @@ serve(async (req: Request) => {
           error: `Daily image limit reached (${DAILY_LIMIT}/day). Resets at midnight UTC.`,
           remainingToday: 0,
         }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
     // Build enhanced prompt
     const fullPrompt = style
-      ? `${prompt.trim()}. Style: ${style.trim()}. High quality, detailed.`
-      : `${prompt.trim()}. High quality, detailed.`;
+      ? `Generate an image: ${prompt.trim()}. Style: ${style.trim()}. High quality, detailed.`
+      : `Generate an image: ${prompt.trim()}. High quality, detailed.`;
 
-    // Generate image via Lovable AI gateway (Gemini Flash Image)
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    // Call Google AI Studio (Gemini) directly for image generation
+    const model = "gemini-2.0-flash-exp-image-generation";
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GOOGLE_KEY}`;
+
+    const response = await fetch(url, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash-image",
-        messages: [
-          {
-            role: "user",
-            content: fullPrompt,
-          },
-        ],
-        modalities: ["image", "text"],
+        contents: [{ parts: [{ text: fullPrompt }] }],
+        generationConfig: {
+          responseModalities: ["TEXT", "IMAGE"],
+        },
       }),
     });
 
     if (!response.ok) {
       const errBody = await response.text();
-      throw new Error(`AI gateway error [${response.status}]: ${errBody}`);
+      throw new Error(`Google AI Studio error [${response.status}]: ${errBody.slice(0, 500)}`);
     }
 
     const aiData = await response.json();
-    const choice = aiData.choices?.[0]?.message;
-    const imageUrl = choice?.images?.[0]?.image_url?.url;
+    
+    // Extract image from response parts
+    const parts = aiData.candidates?.[0]?.content?.parts || [];
+    let imageData = "";
+    let mimeType = "image/png";
+    let textContent = "";
 
-    if (!imageUrl) {
-      throw new Error("No image returned from AI gateway");
+    for (const part of parts) {
+      if (part.inlineData) {
+        imageData = part.inlineData.data;
+        mimeType = part.inlineData.mimeType || "image/png";
+      } else if (part.text) {
+        textContent = part.text;
+      }
     }
 
-    // Extract base64 data (strip data:image/...;base64, prefix)
-    const base64Match = imageUrl.match(/^data:([^;]+);base64,(.+)$/);
-    const mimeType = base64Match?.[1] || "image/png";
-    const imageData = base64Match?.[2] || imageUrl;
+    if (!imageData) {
+      throw new Error("No image returned from Google AI Studio. Response: " + textContent.slice(0, 200));
+    }
 
     const latencyMs = Date.now() - startMs;
 
-    // Log to ai_usage_log for tracking
+    // Log to ai_usage_log
     await supabase.from("ai_usage_log").insert({
-      provider: "google",
-      model: "gemini-2.5-flash-image",
+      provider: "google-aistudio",
+      model: model,
       category: "image_generation",
       success: true,
       tokens_used: 0,
@@ -108,30 +118,25 @@ serve(async (req: Request) => {
       metadata: { prompt: prompt.slice(0, 200), style: style || null },
     });
 
-    const remaining = DAILY_LIMIT - used - 1;
-
     return new Response(
       JSON.stringify({
         success: true,
         imageData,
         mimeType,
-        remainingToday: remaining,
+        remainingToday: DAILY_LIMIT - used - 1,
         latencyMs,
-        provider: "google/gemini-2.5-flash-image",
+        provider: "google-aistudio/" + model,
       }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (error: any) {
     const latencyMs = Date.now() - startMs;
 
     // Log failure
     try {
-      const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-      const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
       await supabase.from("ai_usage_log").insert({
-        provider: "google",
-        model: "gemini-2.5-flash-image",
+        provider: "google-aistudio",
+        model: "gemini-2.0-flash-exp-image-generation",
         category: "image_generation",
         success: false,
         tokens_used: 0,
@@ -144,7 +149,7 @@ serve(async (req: Request) => {
     console.error("Image generation error:", error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
 });
