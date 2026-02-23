@@ -728,25 +728,18 @@ function recordNexusCall(provider: string, success: boolean, tokens: number, cos
   // ═══ PERSIST to ai_daily_quota — fixes report showing 0 calls ═══
   if (success && provider !== 'local') {
     const today = new Date().toISOString().split('T')[0];
-    const sb = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-    );
-    sb.from('ai_daily_quota')
-      .upsert({
-        provider,
-        date: today,
-        calls_used: 1,
-        tokens_used: tokens,
-        calls_budget: provider === 'hyperbolic' ? 86400 : provider === 'deepseek' ? 5000 : provider === 'google' ? 50 : 14400,
-      }, { onConflict: 'provider,date', ignoreDuplicates: false })
-      .then(({ error }) => {
-        if (!error) {
-          // Increment calls_used by 1 (upsert sets to 1, so we need raw SQL increment)
-          sb.rpc('increment_lovable_ai_usage', { p_calls: 1, p_tokens: tokens, p_category: provider }).then(() => {});
-        }
-      })
-      .catch(() => { /* telemetry must never block */ });
+    const budgetMap: Record<string, number> = { hyperbolic: 86400, deepseek: 5000, google: 50 };
+    const budget = budgetMap[provider] || 14400;
+    try {
+      const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+      // Check if row exists, then update or insert
+      const { data: existing } = await sb.from('ai_daily_quota').select('id, calls_used, tokens_used').eq('provider', provider).eq('date', today).maybeSingle();
+      if (existing) {
+        sb.from('ai_daily_quota').update({ calls_used: (existing.calls_used || 0) + 1, tokens_used: (existing.tokens_used || 0) + tokens }).eq('id', existing.id).then(() => {});
+      } else {
+        sb.from('ai_daily_quota').insert({ provider, date: today, calls_used: 1, tokens_used: tokens, calls_budget: budget }).then(() => {});
+      }
+    } catch { /* telemetry must never block execution */ }
   }
 }
 
