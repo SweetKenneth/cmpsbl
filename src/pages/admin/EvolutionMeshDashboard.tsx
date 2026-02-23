@@ -264,6 +264,9 @@ export default function EvolutionMeshDashboard() {
     staleTime: 30_000,
   });
 
+  const executorSummary = mutationEngine.getExecutorCategorySummary();
+  const totalExecutors = mutationEngine.getExecutorCount();
+
   const { data: latestScan } = useQuery({
     queryKey: ['evolution-mesh', 'latest-scan'],
     queryFn: () => integrityService.getLatestScan(),
