@@ -8,6 +8,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { telemetryService } from './telemetry-service';
 import { snapshotService } from './snapshot-service';
 import { integrityService } from './integrity-service';
+import {
+  PILOT_EXECUTORS,
+  EXECUTOR_MODULE_META,
+  getExecutorsByCategory,
+  type PilotExecutorId,
+  type ExecutorModuleMeta,
+} from '@/immune/pilotExecutors';
 
 // ── Types ──────────────────────────────────────────────────
 
@@ -76,6 +83,64 @@ const GATE_CONFIG = {
   MAX_LATENCY_INCREASE_MS: 50,
   CANARY_STAGES: [5, 25, 50, 100],
 };
+
+// ── Executor Specialty Selection ───────────────────────────
+
+/**
+ * Maps artifact/mutation categories to executor categories.
+ * These are the SAME executors trained in the Immunity Mesh training section.
+ */
+const CATEGORY_TO_EXECUTOR_CATEGORIES: Record<string, ExecutorModuleMeta['category'][]> = {
+  resilience:   ['infrastructure', 'orchestration', 'autonomy'],
+  performance:  ['optimization', 'infrastructure', 'orchestration'],
+  security:     ['security', 'governance'],
+  cleanup:      ['infrastructure', 'optimization', 'event_routing'],
+  feature:      ['cognitive_processing', 'intelligence', 'ui_adaptation'],
+};
+
+/**
+ * Select the best executors for a given mutation category.
+ * Uses the same EXECUTOR_MODULE_META that powers the training section,
+ * so executors you train are the same ones selected for evolution cycles.
+ */
+export function selectExecutorsForCategory(
+  category: string,
+  maxExecutors = 10,
+): { id: PilotExecutorId; meta: ExecutorModuleMeta }[] {
+  const executorCategories = CATEGORY_TO_EXECUTOR_CATEGORIES[category] ?? ['infrastructure'];
+  const selected: { id: PilotExecutorId; meta: ExecutorModuleMeta }[] = [];
+  const seen = new Set<string>();
+
+  for (const execCategory of executorCategories) {
+    const executors = getExecutorsByCategory(execCategory);
+    for (const id of executors) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      selected.push({ id, meta: EXECUTOR_MODULE_META[id] });
+      if (selected.length >= maxExecutors) return selected;
+    }
+  }
+
+  return selected;
+}
+
+/**
+ * Get all executor categories and their counts for display.
+ */
+export function getExecutorCategorySummary(): Record<string, number> {
+  const summary: Record<string, number> = {};
+  for (const meta of Object.values(EXECUTOR_MODULE_META)) {
+    summary[meta.category] = (summary[meta.category] || 0) + 1;
+  }
+  return summary;
+}
+
+/**
+ * Total executor count (same fleet used in training).
+ */
+export function getExecutorCount(): number {
+  return PILOT_EXECUTORS.length;
+}
 
 // ── Secret Redaction ───────────────────────────────────────
 
@@ -208,8 +273,13 @@ export async function createProposal(params: {
   hypothesis: string;
   expectedDelta?: Record<string, unknown>;
   riskScore?: number;
+  category?: string;
 }): Promise<{ success: boolean; proposal?: MutationProposal; error?: string }> {
   try {
+    // Select executors based on category — same fleet used in Immunity Mesh training
+    const category = params.category ?? 'resilience';
+    const selectedExecutors = selectExecutorsForCategory(category);
+
     const { data, error } = await supabase
       .from('mutation_proposals')
       .insert({
@@ -220,6 +290,15 @@ export async function createProposal(params: {
         risk_score: params.riskScore ?? 0.5,
         gate_state: 'pending',
         auto_promote: false,
+        metadata: {
+          category,
+          selected_executors: selectedExecutors.map(e => ({
+            id: e.id,
+            module: e.meta.module,
+            category: e.meta.category,
+          })),
+          executor_count: selectedExecutors.length,
+        },
       } as never)
       .select()
       .single();
@@ -229,12 +308,14 @@ export async function createProposal(params: {
     await telemetryService.recordMetric('mutation_proposed', {
       mutation_id: (data as any).id,
       artifact_id: params.artifactId,
+      category,
+      executors_selected: selectedExecutors.length,
+      executor_ids: selectedExecutors.map(e => e.id),
     });
 
     // Auto-shadow if enabled
     const autoShadow = await getFlag('mpe_auto_shadow');
     if (autoShadow) {
-      // Fire and forget — shadow will update gate_state
       runShadowEvaluation((data as any).id).catch(() => {});
     }
 
@@ -640,4 +721,8 @@ export const mutationEngine = {
   setMPEFlag,
   // Stats
   getPipelineStats,
+  // Executor selection
+  selectExecutorsForCategory,
+  getExecutorCategorySummary,
+  getExecutorCount,
 };

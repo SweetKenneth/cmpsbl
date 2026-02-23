@@ -15,6 +15,7 @@ import {
   Shield, Play, GitCompare, Rocket, Activity, AlertTriangle, CheckCircle,
   Loader2, RotateCcw, ChevronRight, FlaskConical, Eye, Zap, ArrowRight,
   RefreshCw, Info, Package, Gauge, TrendingUp, TrendingDown, Clock,
+  Users, Cpu,
 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { integrityService } from '@/lib/evolution-mesh/integrity-service';
@@ -263,6 +264,9 @@ export default function EvolutionMeshDashboard() {
     staleTime: 30_000,
   });
 
+  const executorSummary = mutationEngine.getExecutorCategorySummary();
+  const totalExecutors = mutationEngine.getExecutorCount();
+
   const { data: latestScan } = useQuery({
     queryKey: ['evolution-mesh', 'latest-scan'],
     queryFn: () => integrityService.getLatestScan(),
@@ -489,11 +493,22 @@ export default function EvolutionMeshDashboard() {
                     <PipelineStages proposal={p} />
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <AlertTriangle className="w-3 h-3" />
                       Risk: {((p.risk_score ?? 0) * 100).toFixed(0)}%
                     </span>
+                    {(p.metadata as any)?.executor_count && (
+                      <span className="flex items-center gap-1">
+                        <Users className="w-3 h-3 text-primary" />
+                        {(p.metadata as any).executor_count} executors
+                      </span>
+                    )}
+                    {(p.metadata as any)?.category && (
+                      <Badge variant="outline" className="text-[10px] capitalize">
+                        {(p.metadata as any).category}
+                      </Badge>
+                    )}
                     {p.gate_state === 'canary' && (
                       <span className="flex items-center gap-1">
                         <Activity className="w-3 h-3" />
@@ -519,6 +534,26 @@ export default function EvolutionMeshDashboard() {
                         <span>Rollout: {p.canary_pct}%</span>
                         <span>Next: {p.canary_pct < 100 ? [5, 25, 50, 100].find(s => s > p.canary_pct) ?? 100 : 'Fully deployed'}%</span>
                       </div>
+                    </div>
+                  )}
+
+                  {/* Selected Executors */}
+                  {selectedMutation === p.id && (p.metadata as any)?.selected_executors?.length > 0 && (
+                    <div className="pt-2 space-y-1.5">
+                      <h4 className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
+                        <Cpu className="w-3 h-3" /> Assigned Executors ({(p.metadata as any).selected_executors.length})
+                      </h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {((p.metadata as any).selected_executors as Array<{ id: string; module: string; category: string }>).map((ex) => (
+                          <Badge key={ex.id} variant="outline" className="text-[10px] font-mono gap-1">
+                            <span className="text-primary">{ex.module}</span>
+                            <span className="text-muted-foreground">/ {ex.id.slice(0, 20)}</span>
+                          </Badge>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-muted-foreground">
+                        Same executor fleet used in Immunity Mesh training — skills transfer to evolution cycles.
+                      </p>
                     </div>
                   )}
 
@@ -884,15 +919,24 @@ export default function EvolutionMeshDashboard() {
 
               <Card className="p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <Info className="w-5 h-5 text-primary" />
-                  <h3 className="font-semibold text-sm">Quick Info</h3>
+                  <Cpu className="w-5 h-5 text-primary" />
+                  <h3 className="font-semibold text-sm">Executor Fleet</h3>
                 </div>
                 <div className="space-y-1.5 text-xs">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Artifacts</span><span className="font-mono">{pipelineStats?.totalArtifacts ?? 0}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Proposals</span><span className="font-mono">{pipelineStats?.totalProposals ?? 0}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Verifications</span><span className="font-mono">{pipelineStats?.totalScans ?? 0}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Snapshots</span><span className="font-mono">{snapshots.length}</span></div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Total Executors</span>
+                    <span className="font-mono font-semibold">{totalExecutors}</span>
+                  </div>
+                  {Object.entries(executorSummary).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([cat, count]) => (
+                    <div key={cat} className="flex justify-between">
+                      <span className="text-muted-foreground capitalize">{cat.replace(/_/g, ' ')}</span>
+                      <span className="font-mono">{count}</span>
+                    </div>
+                  ))}
                 </div>
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Same fleet trained in Immunity Mesh — specialties drive executor selection per evolution category.
+                </p>
               </Card>
             </div>
 
