@@ -23,10 +23,10 @@ interface ConnectionState {
 }
 
 const quickActions = [
-  { icon: "🎨", title: "Generate Image", prompt: "Generate a futuristic visual for the substrate" },
-  { icon: "✍️", title: "Write Content", prompt: "Write marketing copy for the substrate platform" },
-  { icon: "🧠", title: "Brain Analytics", prompt: "Show me analytics about Brain's recent activity" },
-  { icon: "🎯", title: "See Products", prompt: "Tell me about RCKBL, PTCHBL, RNDRBL, SPLCBL, and XCTBL" },
+  { icon: "💡", title: "Remember a Fact", prompt: "I want to teach you something about me. Remember this fact:" },
+  { icon: "🧠", title: "What Do You Know?", prompt: "What do you know about me? Show me everything you've learned." },
+  { icon: "🛡️", title: "Defense Update", prompt: "Give me a defense status update. Any threats detected recently?" },
+  { icon: "🚀", title: "Getting Started", prompt: "How do I start using the substrate? Walk me through the key features and modules." },
 ];
 
 export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props) {
