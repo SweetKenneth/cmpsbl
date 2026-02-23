@@ -1152,7 +1152,7 @@ function ShadowBuildPanel() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.08 }}
             >
-              <span className="text-lg mt--0.5">{item.icon}</span>
+              <span className="text-lg flex-shrink-0">{item.icon}</span>
               <span>{item.text}</span>
             </motion.div>
           ))}
@@ -1378,14 +1378,14 @@ function ModernizerShadowPanel() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.03 }}
                     >
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <code className="text-[10px] sm:text-[11px] font-mono text-primary truncate max-w-[140px] sm:max-w-[200px]">{entry.executor}</code>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <code className="text-[10px] font-mono text-primary truncate max-w-[100px] sm:max-w-[200px]">{entry.executor}</code>
                         <Badge variant="outline" className={`text-[9px] px-1.5 py-0 flex-shrink-0 ${gapCategoryColors[entry.gapType] ?? ''}`}>
                           {entry.gapType}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-3 flex-shrink-0 text-xs">
-                        <div className="w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
+                      <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end text-xs">
+                        <div className="w-12 sm:w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
                           <motion.div
                             className={`h-full rounded-full ${entry.successRate >= 0.7 ? 'bg-emerald-500' : entry.successRate >= 0.4 ? 'bg-amber-500' : 'bg-red-400'}`}
                             initial={{ width: 0 }}
@@ -1393,16 +1393,16 @@ function ModernizerShadowPanel() {
                             transition={{ duration: 0.6 }}
                           />
                         </div>
-                        <span className="font-mono font-medium w-10 text-right">
+                        <span className="font-mono font-medium text-right">
                           {(entry.successRate * 100).toFixed(0)}%
                         </span>
-                        <div className="flex items-center gap-1 w-14">
+                        <div className="flex items-center gap-1">
                           {trendIcon}
                           <span className={`font-mono text-[10px] ${entry.trend > 0 ? 'text-emerald-500' : entry.trend < 0 ? 'text-red-400' : 'text-muted-foreground'}`}>
                             {entry.trend > 0 ? '+' : ''}{(entry.trend * 100).toFixed(0)}%
                           </span>
                         </div>
-                        <span className="text-[10px] text-muted-foreground font-mono w-8 text-right">
+                        <span className="text-[10px] text-muted-foreground font-mono">
                           ×{entry.attempts}
                         </span>
                         {entry.encodeAssists > 0 && (
@@ -1436,7 +1436,7 @@ function ModernizerShadowPanel() {
                   <div className="space-y-2">
                     {perfStats.topImprovers.map((e, i) => (
                       <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-emerald-500/10 bg-emerald-500/5">
-                        <code className="font-mono truncate max-w-[120px]">{e.executor}</code>
+                        <code className="font-mono truncate max-w-[80px] sm:max-w-[120px] text-[10px] sm:text-xs">{e.executor}</code>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-[9px]">{e.gapType}</Badge>
                           <span className="text-emerald-500 font-mono font-medium">+{(e.trend * 100).toFixed(0)}%</span>
@@ -1457,13 +1457,13 @@ function ModernizerShadowPanel() {
                     <AlertTriangle className="w-4 h-4 text-amber-500" />
                     Needs Work
                   </CardTitle>
-                  <CardDescription className="text-xs">&lt;50% success with 3+ attempts</CardDescription>
+                  <CardDescription className="text-xs">Under 50% success with 3+ attempts</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     {perfStats.needsWork.map((e, i) => (
                       <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-amber-500/10 bg-amber-500/5">
-                        <code className="font-mono truncate max-w-[120px]">{e.executor}</code>
+                        <code className="font-mono truncate max-w-[80px] sm:max-w-[120px] text-[10px] sm:text-xs">{e.executor}</code>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-[9px]">{e.gapType}</Badge>
                           <span className="text-amber-500 font-mono font-medium">{(e.successRate * 100).toFixed(0)}%</span>

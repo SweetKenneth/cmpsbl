@@ -68,7 +68,7 @@ const MPE_FLAG_CONFIG = [
 
 function GateStateBadge({ state }: { state: string }) {
   return (
-    <Badge className={`text-xs ${GATE_COLORS[state] ?? 'bg-muted text-muted-foreground'}`}>
+    <Badge className={`text-xs whitespace-nowrap ${GATE_COLORS[state] ?? 'bg-muted text-muted-foreground'}`}>
       {state.replace(/_/g, ' ')}
     </Badge>
   );
@@ -104,7 +104,7 @@ function EmptyState({ icon: Icon, title, description }: {
   description: string;
 }) {
   return (
-    <Card className="p-8 text-center space-y-3">
+    <Card className="p-6 sm:p-8 text-center space-y-3">
       <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center mx-auto">
         <Icon className="w-6 h-6 text-muted-foreground" />
       </div>
@@ -123,12 +123,12 @@ function PipelineStages({ proposal }: { proposal: MutationProposal }) {
   const failed = proposal.gate_state === 'failed' || proposal.gate_state === 'rolled_back';
 
   return (
-    <div className="flex items-center gap-1 text-[10px]">
+    <div className="flex items-center gap-1 text-[10px] flex-shrink-0">
       {stages.map((stage, i) => (
         <div key={stage} className="flex items-center gap-1">
           <div className="flex flex-col items-center gap-0.5">
             <div
-              className={`w-2.5 h-2.5 rounded-full transition-colors ${
+              className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-colors ${
                 failed
                   ? i <= currentIdx ? 'bg-destructive/60' : 'bg-muted-foreground/20'
                   : i < currentIdx
@@ -141,7 +141,7 @@ function PipelineStages({ proposal }: { proposal: MutationProposal }) {
             <span className="text-muted-foreground hidden sm:block">{stageLabels[i]}</span>
           </div>
           {i < stages.length - 1 && (
-            <div className={`w-4 h-px ${i < currentIdx ? 'bg-primary' : 'bg-muted-foreground/20'}`} />
+            <div className={`w-2 sm:w-4 h-px ${i < currentIdx ? 'bg-primary' : 'bg-muted-foreground/20'}`} />
           )}
         </div>
       ))}
@@ -152,17 +152,16 @@ function PipelineStages({ proposal }: { proposal: MutationProposal }) {
 // ── Metric Delta Display ───────────────────────────────────
 
 function MetricDelta({ label, value, inverse }: { label: string; value: number; inverse?: boolean }) {
-  // inverse: for metrics where lower = better (error_rate, latency)
   const improved = inverse ? value < 0 : value > 0;
   const degraded = inverse ? value > 0 : value < 0;
   return (
-    <div className="flex items-center gap-1.5">
-      <span className="text-muted-foreground">{label}:</span>
-      <span className={`font-mono font-medium ${degraded ? 'text-destructive' : improved ? 'text-emerald-400' : 'text-muted-foreground'}`}>
+    <div className="flex items-center gap-1 min-w-0">
+      <span className="text-muted-foreground truncate">{label}:</span>
+      <span className={`font-mono font-medium whitespace-nowrap ${degraded ? 'text-destructive' : improved ? 'text-emerald-400' : 'text-muted-foreground'}`}>
         {value > 0 ? '+' : ''}{typeof value === 'number' ? value.toFixed(3) : value}
       </span>
-      {degraded && <TrendingDown className="w-3 h-3 text-destructive" />}
-      {improved && <TrendingUp className="w-3 h-3 text-emerald-400" />}
+      {degraded && <TrendingDown className="w-3 h-3 text-destructive flex-shrink-0" />}
+      {improved && <TrendingUp className="w-3 h-3 text-emerald-400 flex-shrink-0" />}
     </div>
   );
 }
@@ -200,7 +199,7 @@ function PipelineStatsBar({ proposals }: { proposals: MutationProposal[] }) {
           );
         })}
       </div>
-      <div className="flex flex-wrap gap-3 text-[10px]">
+      <div className="flex flex-wrap gap-2 sm:gap-3 text-[10px]">
         {segments.map(s => {
           const count = counts[s.key] || 0;
           if (count === 0) return null;
@@ -422,59 +421,100 @@ export default function EvolutionMeshDashboard() {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Evolution Mesh</h1>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Mutation Promotion Engine — Artifacts → Shadow → Gate → Canary → Verify
-            </p>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">Evolution Mesh</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Mutation Promotion Engine — Artifacts → Shadow → Gate → Canary → Verify
+              </p>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={invalidateAll}
+                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <RefreshCw className="w-3.5 h-3.5" /> Refresh
+              </Button>
+              <Badge variant="outline" className="text-[10px]">
+                {pipelineStats?.totalArtifacts ?? 0} artifacts
+              </Badge>
+              <Badge variant="outline" className="text-[10px]">
+                {pipelineStats?.totalProposals ?? 0} proposals
+              </Badge>
+              <Badge variant="outline" className="text-[10px]">
+                {pipelineStats?.totalScans ?? 0} scans
+              </Badge>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={invalidateAll}
-              className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
-            >
-              <RefreshCw className="w-3.5 h-3.5" /> Refresh
-            </Button>
-            <Badge variant="outline" className="text-xs">
-              {pipelineStats?.totalArtifacts ?? 0} artifacts
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              {pipelineStats?.totalProposals ?? 0} proposals
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              {pipelineStats?.totalScans ?? 0} scans
-            </Badge>
-          </div>
+
+          {/* Top-level Abort Evolution Button */}
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={abortEvolveMutation.isPending}
+                className="border-destructive/40 text-destructive hover:bg-destructive/10 w-full sm:w-auto self-start gap-1.5"
+              >
+                {abortEvolveMutation.isPending ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <XOctagon className="w-3.5 h-3.5" />
+                )}
+                Abort Evolution
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Abort all active evolution?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This terminates any active evolution run, including stuck cycles from the terminal
+                  that may not appear in the proposals section. All in-progress shadow or canary
+                  stages will be halted.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => abortEvolveMutation.mutate()}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 w-full sm:w-auto"
+                >
+                  {abortEvolveMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <XOctagon className="w-3 h-3 mr-1" />}
+                  Confirm Abort
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         {/* Pipeline Stats Bar */}
         {proposals.length > 0 && <PipelineStatsBar proposals={proposals} />}
 
         {/* Feature Flags */}
-        <Card className="p-4">
+        <Card className="p-3 sm:p-4">
           <h3 className="font-semibold text-sm mb-3 flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" /> MPE Controls
           </h3>
           {flagsLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="h-14 rounded bg-muted/30 animate-pulse" />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {MPE_FLAG_CONFIG.map((flag) => (
                 <div key={flag.key} className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-muted/30 border border-border/30">
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-xs font-medium flex items-center gap-1.5">
-                      {flag.label}
+                      <span className="truncate">{flag.label}</span>
                       {flag.danger && (
-                        <AlertTriangle className="w-3 h-3 text-destructive/60" />
+                        <AlertTriangle className="w-3 h-3 text-destructive/60 flex-shrink-0" />
                       )}
                     </div>
                     <div className="text-[10px] text-muted-foreground mt-0.5">{flag.desc}</div>
@@ -482,7 +522,7 @@ export default function EvolutionMeshDashboard() {
                   <Switch
                     checked={flags?.[flag.flagKey] ?? false}
                     onCheckedChange={(v) => flagMutation.mutate({ key: flag.key, enabled: v })}
-                    className={flag.danger ? 'data-[state=checked]:bg-destructive' : ''}
+                    className={`flex-shrink-0 ${flag.danger ? 'data-[state=checked]:bg-destructive' : ''}`}
                   />
                 </div>
               ))}
@@ -492,21 +532,21 @@ export default function EvolutionMeshDashboard() {
 
         {/* Tabbed Views */}
         <Tabs defaultValue="pipeline" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="pipeline" className="text-xs gap-1">
-              <Rocket className="w-3 h-3" /> Pipeline
+          <TabsList className="w-full flex overflow-x-auto gap-0.5 p-1">
+            <TabsTrigger value="pipeline" className="text-xs gap-1 flex-1 min-w-0 px-2 sm:px-3">
+              <Rocket className="w-3 h-3 flex-shrink-0" /> <span className="hidden sm:inline">Pipeline</span>
             </TabsTrigger>
-            <TabsTrigger value="artifacts" className="text-xs gap-1">
-              <Package className="w-3 h-3" /> Artifacts
+            <TabsTrigger value="artifacts" className="text-xs gap-1 flex-1 min-w-0 px-2 sm:px-3">
+              <Package className="w-3 h-3 flex-shrink-0" /> <span className="hidden sm:inline">Artifacts</span>
             </TabsTrigger>
-            <TabsTrigger value="shadow" className="text-xs gap-1">
-              <FlaskConical className="w-3 h-3" /> Shadow A/B
+            <TabsTrigger value="shadow" className="text-xs gap-1 flex-1 min-w-0 px-2 sm:px-3">
+              <FlaskConical className="w-3 h-3 flex-shrink-0" /> <span className="hidden sm:inline">Shadow A/B</span>
             </TabsTrigger>
-            <TabsTrigger value="verification" className="text-xs gap-1">
-              <Shield className="w-3 h-3" /> Verify
+            <TabsTrigger value="verification" className="text-xs gap-1 flex-1 min-w-0 px-2 sm:px-3">
+              <Shield className="w-3 h-3 flex-shrink-0" /> <span className="hidden sm:inline">Verify</span>
             </TabsTrigger>
-            <TabsTrigger value="ops" className="text-xs gap-1">
-              <Gauge className="w-3 h-3" /> Ops
+            <TabsTrigger value="ops" className="text-xs gap-1 flex-1 min-w-0 px-2 sm:px-3">
+              <Gauge className="w-3 h-3 flex-shrink-0" /> <span className="hidden sm:inline">Ops</span>
             </TabsTrigger>
           </TabsList>
 
@@ -524,49 +564,51 @@ export default function EvolutionMeshDashboard() {
               proposals.map((p) => (
                 <Card
                   key={p.id}
-                  className={`p-4 space-y-2 cursor-pointer transition-all hover:bg-muted/20 ${
+                  className={`p-3 sm:p-4 space-y-2 cursor-pointer transition-all hover:bg-muted/20 ${
                     selectedMutation === p.id ? 'ring-1 ring-primary/50 bg-muted/10' : ''
                   }`}
                   onClick={() => setSelectedMutation(p.id === selectedMutation ? null : p.id)}
                 >
-                  <div className="flex items-center justify-between gap-2">
+                  {/* Title row — stack on mobile */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0">
                       <GateStateBadge state={p.gate_state} />
-                      <span className="text-sm font-medium truncate">
+                      <span className="text-xs sm:text-sm font-medium break-words line-clamp-2 sm:line-clamp-1">
                         {p.hypothesis ?? 'Unnamed mutation'}
                       </span>
                     </div>
                     <PipelineStages proposal={p} />
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                  {/* Meta row */}
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      <AlertTriangle className="w-3 h-3" />
+                      <AlertTriangle className="w-3 h-3 flex-shrink-0" />
                       Risk: {((p.risk_score ?? 0) * 100).toFixed(0)}%
                     </span>
                     {(p.metadata as any)?.executor_count && (
                       <span className="flex items-center gap-1">
-                        <Users className="w-3 h-3 text-primary" />
+                        <Users className="w-3 h-3 text-primary flex-shrink-0" />
                         {(p.metadata as any).executor_count} executors
                       </span>
                     )}
                     {(p.metadata as any)?.category && (
-                      <Badge variant="outline" className="text-[10px] capitalize">
+                      <Badge variant="outline" className="text-[9px] sm:text-[10px] capitalize">
                         {(p.metadata as any).category}
                       </Badge>
                     )}
                     {p.gate_state === 'canary' && (
                       <span className="flex items-center gap-1">
-                        <Activity className="w-3 h-3" />
+                        <Activity className="w-3 h-3 flex-shrink-0" />
                         Canary: {p.canary_pct}%
                       </span>
                     )}
                     <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
+                      <Clock className="w-3 h-3 flex-shrink-0" />
                       {new Date(p.created_at).toLocaleDateString()}
                     </span>
                     {p.promoted_at && (
-                      <Badge variant="outline" className="text-[10px] bg-primary/5">
+                      <Badge variant="outline" className="text-[9px] sm:text-[10px] bg-primary/5">
                         Promoted {new Date(p.promoted_at).toLocaleDateString()}
                       </Badge>
                     )}
@@ -587,13 +629,13 @@ export default function EvolutionMeshDashboard() {
                   {selectedMutation === p.id && (p.metadata as any)?.selected_executors?.length > 0 && (
                     <div className="pt-2 space-y-1.5">
                       <h4 className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
-                        <Cpu className="w-3 h-3" /> Assigned Executors ({(p.metadata as any).selected_executors.length})
+                        <Cpu className="w-3 h-3 flex-shrink-0" /> Assigned Executors ({(p.metadata as any).selected_executors.length})
                       </h4>
                       <div className="flex flex-wrap gap-1.5">
                         {((p.metadata as any).selected_executors as Array<{ id: string; module: string; category: string }>).map((ex) => (
-                          <Badge key={ex.id} variant="outline" className="text-[10px] font-mono gap-1">
-                            <span className="text-primary">{ex.module}</span>
-                            <span className="text-muted-foreground">/ {ex.id.slice(0, 20)}</span>
+                          <Badge key={ex.id} variant="outline" className="text-[9px] sm:text-[10px] font-mono gap-1 max-w-full">
+                            <span className="text-primary truncate">{ex.module}</span>
+                            <span className="text-muted-foreground truncate">/ {ex.id.slice(0, 12)}</span>
                           </Badge>
                         ))}
                       </div>
@@ -605,32 +647,35 @@ export default function EvolutionMeshDashboard() {
 
                   {/* Actions */}
                   {selectedMutation === p.id && (
-                    <div className="flex flex-wrap gap-2 pt-3 border-t border-border/30">
+                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 pt-3 border-t border-border/30">
                       <Button
                         size="sm"
                         variant="outline"
+                        className="text-xs"
                         onClick={(e) => { e.stopPropagation(); shadowMutation.mutate(p.id); }}
                         disabled={shadowMutation.isPending || p.gate_state === 'promoted'}
                       >
-                        {shadowMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <FlaskConical className="w-3 h-3 mr-1" />}
-                        Run Shadow
+                        {shadowMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <FlaskConical className="w-3 h-3 mr-1 flex-shrink-0" />}
+                        <span className="truncate">Shadow</span>
                       </Button>
                       <Button
                         size="sm"
                         variant="outline"
+                        className="text-xs"
                         onClick={(e) => { e.stopPropagation(); gateMutation.mutate(p.id); }}
                         disabled={gateMutation.isPending || p.gate_state === 'promoted'}
                       >
-                        {gateMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Shield className="w-3 h-3 mr-1" />}
-                        Evaluate Gate
+                        {gateMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Shield className="w-3 h-3 mr-1 flex-shrink-0" />}
+                        <span className="truncate">Gate</span>
                       </Button>
                       <Button
                         size="sm"
+                        className="text-xs"
                         onClick={(e) => { e.stopPropagation(); canaryMutation.mutate(p.id); }}
                         disabled={canaryMutation.isPending || !['passed', 'canary'].includes(p.gate_state)}
                       >
-                        {canaryMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <ChevronRight className="w-3 h-3 mr-1" />}
-                        Advance Canary
+                        {canaryMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <ChevronRight className="w-3 h-3 mr-1 flex-shrink-0" />}
+                        <span className="truncate">Canary</span>
                       </Button>
 
                       {/* Rollback with confirmation */}
@@ -639,13 +684,14 @@ export default function EvolutionMeshDashboard() {
                           <Button
                             size="sm"
                             variant="destructive"
+                            className="text-xs"
                             onClick={(e) => e.stopPropagation()}
                             disabled={rollbackMutation.isPending || p.gate_state === 'rolled_back'}
                           >
-                            <RotateCcw className="w-3 h-3 mr-1" /> Rollback
+                            <RotateCcw className="w-3 h-3 mr-1 flex-shrink-0" /> <span className="truncate">Rollback</span>
                           </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+                        <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg" onClick={(e) => e.stopPropagation()}>
                           <AlertDialogHeader>
                             <AlertDialogTitle>Rollback this mutation?</AlertDialogTitle>
                             <AlertDialogDescription>
@@ -653,11 +699,11 @@ export default function EvolutionMeshDashboard() {
                               This action is logged in the audit trail.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                            <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
                             <AlertDialogAction
                               onClick={() => rollbackMutation.mutate(p.id)}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 w-full sm:w-auto"
                             >
                               {rollbackMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : null}
                               Confirm Rollback
@@ -672,14 +718,14 @@ export default function EvolutionMeshDashboard() {
                           <Button
                             size="sm"
                             variant="outline"
+                            className="text-xs border-destructive/40 text-destructive hover:bg-destructive/10 col-span-2 sm:col-span-1"
                             onClick={(e) => e.stopPropagation()}
                             disabled={abortEvolveMutation.isPending || p.gate_state === 'promoted'}
-                            className="border-destructive/40 text-destructive hover:bg-destructive/10"
                           >
-                            <XOctagon className="w-3 h-3 mr-1" /> Abort Evolution
+                            <XOctagon className="w-3 h-3 mr-1 flex-shrink-0" /> <span className="truncate">Abort</span>
                           </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+                        <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg" onClick={(e) => e.stopPropagation()}>
                           <AlertDialogHeader>
                             <AlertDialogTitle>Abort this evolution?</AlertDialogTitle>
                             <AlertDialogDescription>
@@ -687,11 +733,11 @@ export default function EvolutionMeshDashboard() {
                               Any in-progress shadow or canary stages will be halted.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                            <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
                             <AlertDialogAction
                               onClick={() => abortEvolveMutation.mutate()}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 w-full sm:w-auto"
                             >
                               {abortEvolveMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <XOctagon className="w-3 h-3 mr-1" />}
                               Confirm Abort
@@ -706,21 +752,21 @@ export default function EvolutionMeshDashboard() {
                   {selectedMutation === p.id && selectedRuns.length > 0 && (
                     <div className="pt-3 space-y-2">
                       <h4 className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
-                        <FlaskConical className="w-3 h-3" /> Shadow Runs ({selectedRuns.length})
+                        <FlaskConical className="w-3 h-3 flex-shrink-0" /> Shadow Runs ({selectedRuns.length})
                       </h4>
                       {selectedRuns.map((run) => (
-                        <div key={run.id} className="p-3 rounded-lg bg-muted/20 border border-border/20 text-xs space-y-2">
-                          <div className="flex items-center justify-between">
+                        <div key={run.id} className="p-2.5 sm:p-3 rounded-lg bg-muted/20 border border-border/20 text-xs space-y-2 overflow-hidden">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                             <span className="font-medium">
                               Confidence: <strong className={run.confidence_score >= 0.75 ? 'text-emerald-400' : 'text-amber-400'}>
                                 {((run.confidence_score ?? 0) * 100).toFixed(0)}%
                               </strong>
                             </span>
-                            <span className="text-muted-foreground flex items-center gap-1">
-                              <Clock className="w-3 h-3" /> {run.run_duration_ms}ms
+                            <span className="text-muted-foreground flex items-center gap-1 text-[10px] sm:text-xs">
+                              <Clock className="w-3 h-3 flex-shrink-0" /> {run.run_duration_ms}ms
                             </span>
                           </div>
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2">
                             {Object.entries(run.metrics_delta as Record<string, number>).map(([k, v]) => (
                               <MetricDelta
                                 key={k}
@@ -731,9 +777,9 @@ export default function EvolutionMeshDashboard() {
                             ))}
                           </div>
                           {(run.regressions as any[])?.length > 0 && (
-                            <div className="flex items-center gap-1.5 text-destructive bg-destructive/10 rounded px-2 py-1">
-                              <AlertTriangle className="w-3 h-3" />
-                              Regressions: {(run.regressions as any[]).map((r: any) => r.metric.replace(/_/g, ' ')).join(', ')}
+                            <div className="flex items-start gap-1.5 text-destructive bg-destructive/10 rounded px-2 py-1 text-[10px] break-words">
+                              <AlertTriangle className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                              <span className="break-words">Regressions: {(run.regressions as any[]).map((r: any) => r.metric.replace(/_/g, ' ')).join(', ')}</span>
                             </div>
                           )}
                         </div>
@@ -757,24 +803,24 @@ export default function EvolutionMeshDashboard() {
               />
             ) : (
               artifacts.map((a) => (
-                <Card key={a.id} className="p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">{CATEGORY_ICONS[a.category] ?? '📦'}</span>
-                      <span className="text-sm font-medium">{a.intent_summary ?? 'No summary'}</span>
+                <Card key={a.id} className="p-3 sm:p-4 space-y-2 overflow-hidden">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-lg flex-shrink-0">{CATEGORY_ICONS[a.category] ?? '📦'}</span>
+                      <span className="text-xs sm:text-sm font-medium break-words line-clamp-2">{a.intent_summary ?? 'No summary'}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-[10px] capitalize">{a.category}</Badge>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <Badge variant="outline" className="text-[9px] sm:text-[10px] capitalize">{a.category}</Badge>
                       <GateStateBadge state={a.status} />
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-[10px] sm:text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      <Eye className="w-3 h-3" /> {a.actor_type}
+                      <Eye className="w-3 h-3 flex-shrink-0" /> {a.actor_type}
                       {a.actor_id ? `/${a.actor_id.slice(0, 8)}` : ''}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" /> {new Date(a.created_at).toLocaleString()}
+                      <Clock className="w-3 h-3 flex-shrink-0" /> {new Date(a.created_at).toLocaleString()}
                     </span>
                   </div>
                   {a.diff_data && Object.keys(a.diff_data).length > 0 && (
@@ -782,7 +828,7 @@ export default function EvolutionMeshDashboard() {
                       <summary className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors py-1">
                         <GitCompare className="w-3 h-3 inline mr-1" /> View Diff
                       </summary>
-                      <pre className="mt-2 p-3 rounded-lg bg-muted/30 border border-border/20 overflow-auto max-h-48 text-xs font-mono">
+                      <pre className="mt-2 p-2 sm:p-3 rounded-lg bg-muted/30 border border-border/20 overflow-x-auto max-h-48 text-[10px] sm:text-xs font-mono whitespace-pre-wrap break-all">
                         {JSON.stringify(a.diff_data, null, 2)}
                       </pre>
                     </details>
@@ -795,46 +841,46 @@ export default function EvolutionMeshDashboard() {
           {/* ── Shadow A/B Tab ── */}
           <TabsContent value="shadow" className="space-y-4 mt-4">
             {/* Configuration */}
-            <Card className="p-4">
+            <Card className="p-3 sm:p-4">
               <h3 className="font-semibold text-sm mb-3 flex items-center gap-2">
                 <FlaskConical className="w-4 h-4 text-primary" /> Gate Configuration
               </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 text-xs">
                 {[
                   { label: 'Min Shadow Runs', value: '2', desc: 'Before gate evaluation' },
                   { label: 'Min Confidence', value: '75%', desc: 'Average across runs' },
                   { label: 'Max Error Δ', value: '2%', desc: 'Blocks on increase' },
                   { label: 'Max Latency Δ', value: '50ms', desc: 'Blocks on increase' },
                 ].map(c => (
-                  <div key={c.label} className="p-2.5 rounded-lg bg-muted/30 border border-border/20">
-                    <div className="text-muted-foreground text-[10px]">{c.label}</div>
+                  <div key={c.label} className="p-2 sm:p-2.5 rounded-lg bg-muted/30 border border-border/20">
+                    <div className="text-muted-foreground text-[9px] sm:text-[10px]">{c.label}</div>
                     <div className="font-mono font-semibold text-sm">{c.value}</div>
-                    <div className="text-muted-foreground/60 text-[9px] mt-0.5">{c.desc}</div>
+                    <div className="text-muted-foreground/60 text-[8px] sm:text-[9px] mt-0.5">{c.desc}</div>
                   </div>
                 ))}
               </div>
             </Card>
 
             {/* Canary Stages */}
-            <Card className="p-4">
+            <Card className="p-3 sm:p-4">
               <h3 className="font-semibold text-sm mb-3">Canary Rollout Stages</h3>
-              <div className="flex items-center gap-2 text-xs">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-xs flex-wrap">
                 {[5, 25, 50, 100].map((pct, i) => (
-                  <div key={pct} className="flex items-center gap-2">
-                    <div className="px-3 py-1.5 rounded-lg bg-muted/30 border border-border/20 font-mono font-semibold">
+                  <div key={pct} className="flex items-center gap-1.5 sm:gap-2">
+                    <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-muted/30 border border-border/20 font-mono font-semibold text-xs sm:text-sm">
                       {pct}%
                     </div>
-                    {i < 3 && <ArrowRight className="w-3 h-3 text-muted-foreground/40" />}
+                    {i < 3 && <ArrowRight className="w-3 h-3 text-muted-foreground/40 flex-shrink-0" />}
                   </div>
                 ))}
               </div>
-              <p className="text-[10px] text-muted-foreground mt-2">
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-2">
                 Each stage requires manual advancement unless auto-promotion is enabled. Auto-rollback triggers on error rate spikes.
               </p>
             </Card>
 
             {/* All Shadow Runs */}
-            <Card className="p-4 space-y-3">
+            <Card className="p-3 sm:p-4 space-y-3">
               <h3 className="font-semibold text-sm flex items-center gap-2">
                 <Activity className="w-4 h-4 text-primary" /> Shadow Run History
               </h3>
@@ -847,24 +893,24 @@ export default function EvolutionMeshDashboard() {
               ) : (
                 <div className="space-y-2">
                   {allRuns.map((run) => (
-                    <div key={run.id} className="p-3 rounded-lg bg-muted/20 border border-border/20 text-xs space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] font-mono">
+                    <div key={run.id} className="p-2.5 sm:p-3 rounded-lg bg-muted/20 border border-border/20 text-xs space-y-2 overflow-hidden">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge variant="outline" className="text-[9px] sm:text-[10px] font-mono">
                             {run.mutation_id.slice(0, 8)}
                           </Badge>
-                          <span className="font-medium">
+                          <span className="font-medium text-[11px] sm:text-xs">
                             Confidence: <strong className={run.confidence_score >= 0.75 ? 'text-emerald-400' : 'text-amber-400'}>
                               {((run.confidence_score ?? 0) * 100).toFixed(0)}%
                             </strong>
                           </span>
                         </div>
-                        <span className="text-muted-foreground flex items-center gap-1">
-                          <Clock className="w-3 h-3" /> {run.run_duration_ms}ms
-                          <span className="ml-2">{new Date(run.created_at).toLocaleDateString()}</span>
+                        <span className="text-muted-foreground flex items-center gap-1 text-[10px] sm:text-xs">
+                          <Clock className="w-3 h-3 flex-shrink-0" /> {run.run_duration_ms}ms
+                          <span className="ml-1 sm:ml-2">{new Date(run.created_at).toLocaleDateString()}</span>
                         </span>
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2">
                         {Object.entries(run.metrics_delta as Record<string, number>).map(([k, v]) => (
                           <MetricDelta
                             key={k}
@@ -875,9 +921,9 @@ export default function EvolutionMeshDashboard() {
                         ))}
                       </div>
                       {(run.regressions as any[])?.length > 0 && (
-                        <div className="flex items-center gap-1.5 text-destructive text-[10px]">
-                          <AlertTriangle className="w-3 h-3" />
-                          {(run.regressions as any[]).map((r: any) => r.metric.replace(/_/g, ' ')).join(', ')}
+                        <div className="flex items-start gap-1.5 text-destructive text-[10px] break-words">
+                          <AlertTriangle className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                          <span className="break-words">{(run.regressions as any[]).map((r: any) => r.metric.replace(/_/g, ' ')).join(', ')}</span>
                         </div>
                       )}
                     </div>
@@ -899,26 +945,26 @@ export default function EvolutionMeshDashboard() {
               />
             ) : (
               verifications.map((v) => (
-                <Card key={v.id} className="p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                <Card key={v.id} className="p-3 sm:p-4 space-y-2 overflow-hidden">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
                       {v.status === 'clean' ? (
-                        <CheckCircle className="w-4 h-4 text-emerald-400" />
+                        <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                       ) : (
-                        <AlertTriangle className="w-4 h-4 text-amber-400" />
+                        <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
                       )}
-                      <span className="text-sm font-medium">
+                      <span className="text-xs sm:text-sm font-medium break-words">
                         {v.status === 'clean' ? 'Clean — No gaps detected' : `${v.gaps_found} structural gap${v.gaps_found !== 1 ? 's' : ''} detected`}
                       </span>
                     </div>
-                    <Badge variant={v.status === 'clean' ? 'default' : 'outline'} className="text-xs">
+                    <Badge variant={v.status === 'clean' ? 'default' : 'outline'} className="text-[10px] flex-shrink-0 self-start sm:self-auto">
                       {v.status === 'clean' ? '✓ Clean' : '⚠ Gaps'}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-[10px] sm:text-xs text-muted-foreground">
                     <span>Mutation: {v.mutation_id.slice(0, 8)}</span>
                     <span>Gaps: {v.gaps_found}</span>
-                    <span>Tasks Created: {v.tasks_created}</span>
+                    <span>Tasks: {v.tasks_created}</span>
                     <span>{v.completed_at ? new Date(v.completed_at).toLocaleString() : 'Running...'}</span>
                   </div>
                   {v.scan_results && Object.keys(v.scan_results).length > 0 && (
@@ -926,7 +972,7 @@ export default function EvolutionMeshDashboard() {
                       <summary className="cursor-pointer text-muted-foreground hover:text-foreground py-1">
                         View scan details
                       </summary>
-                      <pre className="mt-2 p-3 rounded-lg bg-muted/30 border border-border/20 overflow-auto max-h-48 text-xs font-mono">
+                      <pre className="mt-2 p-2 sm:p-3 rounded-lg bg-muted/30 border border-border/20 overflow-x-auto max-h-48 text-[10px] sm:text-xs font-mono whitespace-pre-wrap break-all">
                         {JSON.stringify(v.scan_results, null, 2)}
                       </pre>
                     </details>
@@ -938,16 +984,16 @@ export default function EvolutionMeshDashboard() {
 
           {/* ── Ops Tab ── */}
           <TabsContent value="ops" className="space-y-4 mt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="p-4 space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <Card className="p-3 sm:p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary" />
+                  <Shield className="w-5 h-5 text-primary flex-shrink-0" />
                   <h3 className="font-semibold text-sm">Integrity Scan</h3>
                 </div>
-                <p className="text-xs text-muted-foreground">Run structural integrity checks across the system.</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">Run structural integrity checks across the system.</p>
                 <Button
                   size="sm"
-                  className="w-full"
+                  className="w-full text-xs"
                   onClick={() => integrityScanMutation.mutate()}
                   disabled={integrityScanMutation.isPending}
                 >
@@ -958,22 +1004,22 @@ export default function EvolutionMeshDashboard() {
                   )}
                 </Button>
                 {latestScan && (
-                  <div className="text-[10px] text-muted-foreground">
+                  <div className="text-[9px] sm:text-[10px] text-muted-foreground">
                     Last: {new Date(latestScan.created_at).toLocaleString()}
                   </div>
                 )}
               </Card>
 
-              <Card className="p-4 space-y-3">
+              <Card className="p-3 sm:p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <Play className="w-5 h-5 text-primary" />
+                  <Play className="w-5 h-5 text-primary flex-shrink-0" />
                   <h3 className="font-semibold text-sm">Snapshot</h3>
                 </div>
-                <p className="text-xs text-muted-foreground">Capture current system state for diff comparison.</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">Capture current system state for diff comparison.</p>
                 <Button
                   size="sm"
                   variant="outline"
-                  className="w-full"
+                  className="w-full text-xs"
                   onClick={() => snapshotMutation.mutate()}
                   disabled={snapshotMutation.isPending}
                 >
@@ -985,21 +1031,21 @@ export default function EvolutionMeshDashboard() {
                 </Button>
               </Card>
 
-              <Card className="p-4 space-y-3">
+              <Card className="p-3 sm:p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <GitCompare className="w-5 h-5 text-muted-foreground" />
+                  <GitCompare className="w-5 h-5 text-muted-foreground flex-shrink-0" />
                   <h3 className="font-semibold text-sm">Generate Diff</h3>
                 </div>
-                <p className="text-xs text-muted-foreground">Compare two snapshots to see structural changes.</p>
-                <Button size="sm" variant="outline" className="w-full" disabled={snapshots.length < 2}>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">Compare two snapshots to see structural changes.</p>
+                <Button size="sm" variant="outline" className="w-full text-xs" disabled={snapshots.length < 2}>
                   <GitCompare className="w-3 h-3 mr-1" />
-                  {snapshots.length < 2 ? `Need ${2 - snapshots.length} more snapshot${snapshots.length === 1 ? '' : 's'}` : 'Generate Diff'}
+                  {snapshots.length < 2 ? `Need ${2 - snapshots.length} more` : 'Generate Diff'}
                 </Button>
               </Card>
 
-              <Card className="p-4 space-y-3">
+              <Card className="p-3 sm:p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <Cpu className="w-5 h-5 text-primary" />
+                  <Cpu className="w-5 h-5 text-primary flex-shrink-0" />
                   <h3 className="font-semibold text-sm">Executor Fleet</h3>
                 </div>
                 <div className="space-y-1.5 text-xs">
@@ -1009,12 +1055,12 @@ export default function EvolutionMeshDashboard() {
                   </div>
                   {Object.entries(executorSummary).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([cat, count]) => (
                     <div key={cat} className="flex justify-between">
-                      <span className="text-muted-foreground capitalize">{cat.replace(/_/g, ' ')}</span>
-                      <span className="font-mono">{count}</span>
+                      <span className="text-muted-foreground capitalize truncate mr-2">{cat.replace(/_/g, ' ')}</span>
+                      <span className="font-mono flex-shrink-0">{count}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-[10px] text-muted-foreground mt-1">
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1">
                   Same fleet trained in Immunity Mesh — specialties drive executor selection per evolution category.
                 </p>
               </Card>
@@ -1022,21 +1068,21 @@ export default function EvolutionMeshDashboard() {
 
             {/* Scan Results */}
             {scanResults.length > 0 && (
-              <Card className="p-4 space-y-3">
-                <div className="flex items-center justify-between">
+              <Card className="p-3 sm:p-4 space-y-3 overflow-hidden">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-foreground" />
+                    <Activity className="w-5 h-5 text-foreground flex-shrink-0" />
                     <h3 className="font-semibold text-sm">Scan Results</h3>
                   </div>
-                  <Badge variant="outline" className="text-xs">{scanResults.length} findings</Badge>
+                  <Badge variant="outline" className="text-xs self-start sm:self-auto">{scanResults.length} findings</Badge>
                 </div>
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex gap-2 text-[10px] text-muted-foreground">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                  <div className="flex flex-wrap gap-1.5 text-[10px] text-muted-foreground">
                     {['security', 'performance', 'stability', 'feature', 'cleanup', 'resilience'].map(type => {
                       const count = scanResults.filter((f: any) => f.evolutionType === type).length;
                       if (count === 0) return null;
                       return (
-                        <Badge key={type} variant="outline" className="text-[10px] capitalize">
+                        <Badge key={type} variant="outline" className="text-[9px] sm:text-[10px] capitalize">
                           {type}: {count}
                         </Badge>
                       );
@@ -1046,7 +1092,7 @@ export default function EvolutionMeshDashboard() {
                     size="sm"
                     onClick={() => generateProposalsMutation.mutate(scanResults)}
                     disabled={generateProposalsMutation.isPending}
-                    className="gap-1"
+                    className="gap-1 text-xs w-full sm:w-auto"
                   >
                     {generateProposalsMutation.isPending ? (
                       <><Loader2 className="w-3 h-3 animate-spin" /> Generating...</>
@@ -1057,7 +1103,7 @@ export default function EvolutionMeshDashboard() {
                 </div>
                 <div className="space-y-1.5">
                   {scanResults.map((finding: any, i: number) => (
-                    <div key={i} className="flex items-start gap-2 text-sm p-2.5 rounded-lg bg-muted/30 border border-border/20">
+                    <div key={i} className="flex items-start gap-2 text-xs sm:text-sm p-2 sm:p-2.5 rounded-lg bg-muted/30 border border-border/20">
                       {finding.severity === 'error' ? (
                         <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
                       ) : finding.severity === 'warning' ? (
@@ -1067,17 +1113,17 @@ export default function EvolutionMeshDashboard() {
                       )}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="font-medium text-xs">[{finding.category}]</span>
+                          <span className="font-medium text-[10px] sm:text-xs">[{finding.category}]</span>
                           {finding.evolutionType && (
-                            <Badge variant="outline" className="text-[9px] capitalize">{finding.evolutionType}</Badge>
+                            <Badge variant="outline" className="text-[8px] sm:text-[9px] capitalize">{finding.evolutionType}</Badge>
                           )}
                           {finding.priority && finding.priority >= 7 && (
-                            <Badge variant="destructive" className="text-[9px]">P{finding.priority}</Badge>
+                            <Badge variant="destructive" className="text-[8px] sm:text-[9px]">P{finding.priority}</Badge>
                           )}
                         </div>
-                        <p className="text-xs text-muted-foreground mt-0.5">{finding.message}</p>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 break-words">{finding.message}</p>
                         {finding.suggestedFix && (
-                          <p className="text-[10px] text-primary/80 mt-1">💡 {finding.suggestedFix}</p>
+                          <p className="text-[9px] sm:text-[10px] text-primary/80 mt-1 break-words">💡 {finding.suggestedFix}</p>
                         )}
                       </div>
                     </div>
@@ -1087,16 +1133,16 @@ export default function EvolutionMeshDashboard() {
             )}
 
             {/* Snapshots */}
-            <Card className="p-4 space-y-3">
+            <Card className="p-3 sm:p-4 space-y-3">
               <h3 className="font-semibold text-sm">Recent Snapshots</h3>
               {snapshots.length === 0 ? (
                 <p className="text-xs text-muted-foreground py-2">No snapshots yet. Create one above to start tracking state.</p>
               ) : (
                 <div className="space-y-1">
                   {snapshots.slice(0, 5).map((s: any) => (
-                    <div key={s.id} className="flex items-center justify-between text-xs p-2.5 rounded-lg bg-muted/20 border border-border/20">
-                      <span className="font-mono">{s.label ?? s.id?.slice(0, 8)}</span>
-                      <span className="text-muted-foreground">
+                    <div key={s.id} className="flex items-center justify-between text-xs p-2 sm:p-2.5 rounded-lg bg-muted/20 border border-border/20 gap-2">
+                      <span className="font-mono truncate">{s.label ?? s.id?.slice(0, 8)}</span>
+                      <span className="text-muted-foreground text-[10px] sm:text-xs whitespace-nowrap">
                         {s.created_at ? new Date(s.created_at).toLocaleString() : '—'}
                       </span>
                     </div>
@@ -1106,16 +1152,16 @@ export default function EvolutionMeshDashboard() {
             </Card>
 
             {/* Telemetry */}
-            <Card className="p-4 space-y-3">
+            <Card className="p-3 sm:p-4 space-y-3">
               <h3 className="font-semibold text-sm">Telemetry Log</h3>
               {metrics.length === 0 ? (
                 <p className="text-xs text-muted-foreground py-2">No metrics recorded yet. Actions in the pipeline generate telemetry automatically.</p>
               ) : (
                 <div className="space-y-1">
                   {metrics.slice(0, 10).map((m: any) => (
-                    <div key={m.id} className="flex items-center justify-between text-xs p-2 rounded-lg bg-muted/20">
-                      <Badge variant="secondary" className="text-[10px]">{m.event_type}</Badge>
-                      <span className="text-muted-foreground">
+                    <div key={m.id} className="flex items-center justify-between text-xs p-2 rounded-lg bg-muted/20 gap-2">
+                      <Badge variant="secondary" className="text-[9px] sm:text-[10px] truncate max-w-[50%]">{m.event_type}</Badge>
+                      <span className="text-muted-foreground text-[10px] sm:text-xs whitespace-nowrap">
                         {m.created_at ? new Date(m.created_at).toLocaleString() : '—'}
                       </span>
                     </div>
