@@ -7,10 +7,10 @@ export interface ApiKey {
   id: string;
   key_prefix: string;
   name: string;
-  permissions: Record<string, boolean>;
+  scopes: string[];
+  is_active: boolean;
   created_at: string;
   last_used_at?: string;
-  expires_at?: string;
 }
 
 export function useApiKeys() {
@@ -19,30 +19,53 @@ export function useApiKeys() {
   const { data: keys = [], isLoading } = useQuery({
     queryKey: ["admin-api-keys"],
     queryFn: async () => {
-      return [] as ApiKey[];
+      const { data, error } = await supabase.functions.invoke("pf-substrate", {
+        body: { module: "access", action: "list_keys" },
+      });
+
+      if (error) throw error;
+      return (data?.keys ?? []) as ApiKey[];
     },
     refetchInterval: 30000,
   });
 
   const generateKey = useMutation({
     mutationFn: async ({ name, permissions }: { name: string; permissions: Record<string, boolean> }) => {
-      const { data, error } = await supabase.functions.invoke("pf-core-keys", {
-        body: { action: "generate", key_name: name },
+      const scopes = Object.entries(permissions)
+        .filter(([, v]) => v)
+        .map(([k]) => k);
+
+      const { data, error } = await supabase.functions.invoke("pf-substrate", {
+        body: { module: "access", action: "create_key", name, scopes },
       });
 
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || "Key generation failed");
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["admin-api-keys"] });
-      toast.success("API key generated");
+      if (data?.api_key) {
+        toast.success("API key generated — copy it now, it won't be shown again", {
+          description: data.api_key,
+          duration: 15000,
+        });
+      } else {
+        toast.success("API key generated");
+      }
     },
-    onError: () => toast.error("Failed to generate key"),
+    onError: (e: Error) => toast.error(e.message || "Failed to generate key"),
   });
 
   const revokeKey = useMutation({
     mutationFn: async (keyId: string) => {
-      return Promise.resolve();
+      const { data, error } = await supabase.functions.invoke("pf-substrate", {
+        body: { module: "access", action: "revoke_key", key_id: keyId },
+      });
+
+      if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || "Revoke failed");
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-api-keys"] });
@@ -60,7 +83,7 @@ export function useApiKeys() {
         {
           event: "*",
           schema: "public",
-          table: "bot_detection_api_keys",
+          table: "access_api_keys",
         },
         () => {
           queryClient.invalidateQueries({ queryKey: ["admin-api-keys"] });

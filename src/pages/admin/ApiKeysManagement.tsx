@@ -51,11 +51,11 @@ export default function ApiKeysManagement() {
       render: (val: string) => new Date(val).toLocaleDateString(),
     },
     {
-      key: "expires_at",
+      key: "is_active",
       label: "Status",
-      render: (val: string | null) =>
-        val && new Date(val) < new Date() ? (
-          <Badge className="bg-red-500/20 text-red-500">Expired</Badge>
+      render: (val: boolean) =>
+        val === false ? (
+          <Badge className="bg-red-500/20 text-red-500">Revoked</Badge>
         ) : (
           <Badge className="bg-green-500/20 text-green-500">Active</Badge>
         ),
