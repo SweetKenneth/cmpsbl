@@ -14900,6 +14900,36 @@ async function handleAccess(
         }
         developerId = developer.id;
       }
+
+      // Email-based developer creation for public EVLVBL signups
+      if (!developerId && data.email) {
+        const emailAddr = String(data.email).trim().toLowerCase();
+        // Check existing developer by email
+        const { data: existingDev } = await supabase
+          .from('access_developers')
+          .select('id')
+          .eq('email', emailAddr)
+          .maybeSingle();
+        
+        if (existingDev) {
+          developerId = existingDev.id;
+        } else {
+          const { data: newDev, error: devErr } = await supabase
+            .from('access_developers')
+            .insert({
+              display_name: emailAddr.split('@')[0],
+              email: emailAddr,
+              status: 'active',
+              metadata: { source: 'evlvbl_signup', framework: data.framework || 'unknown' },
+            })
+            .select('id')
+            .single();
+          if (devErr || !newDev) {
+            return jsonResponse({ success: false, error: 'Failed to create developer profile' }, headers);
+          }
+          developerId = newDev.id;
+        }
+      }
       
       if (!developerId) {
         return jsonResponse({ success: false, error: 'Developer ID required (authenticate or provide developer_id)' }, headers);
