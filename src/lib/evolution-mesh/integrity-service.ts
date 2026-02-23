@@ -457,10 +457,10 @@ async function checkVerificationGaps(): Promise<ScanFinding[]> {
       .limit(20);
 
     if (promoted && promoted.length > 0) {
-      // Check if verification scans exist for these
+      // Check if verification runs exist for these
       for (const p of promoted) {
         const { count } = await supabase
-          .from('mutation_verification_scans')
+          .from('mutation_runs')
           .select('*', { count: 'exact', head: true })
           .eq('mutation_id', (p as any).id);
 
@@ -468,7 +468,7 @@ async function checkVerificationGaps(): Promise<ScanFinding[]> {
           findings.push({
             category: 'verification',
             severity: 'warning',
-            message: `Promoted mutation ${(p as any).id.slice(0, 8)} has no post-promotion verification scan`,
+            message: `Promoted mutation ${(p as any).id.slice(0, 8)} has no post-promotion verification`,
             suggestedFix: 'Run verification scan to ensure promoted changes are stable in production',
             evolutionType: 'stability',
             priority: 7,
