@@ -1,11 +1,12 @@
 /**
  * promptfluid® Substrate Provider
- * v10.5.4 — Cognitive Orchestration Substrate (21-Module Architecture)
+ * CCR Epoch — Cognitive Orchestration Substrate (16-Module Architecture)
  * 
+ * CCR (Layer 0) absorbs CORE+SYSTEM+BRAIN+MEMORY+DREAM as hidden meta-engine.
+ * IDENTITY merged into ACCESS.
  * Performance: Lazy-loads substrate module, uses requestIdleCallback.
  * Stability: Single initialization, no polling loops during idle, 
  *            proper cleanup on unmount.
- * Full-system audit completed: 2026-01-27
  * Wraps the application with substrate context and auto-initialization
  */
 
