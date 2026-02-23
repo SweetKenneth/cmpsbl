@@ -10,6 +10,7 @@
 import { emit } from '../events';
 import { memoryCore } from '../memory-core';
 import { getEncodeState } from './index';
+import { distillFromCLMReport } from '@/immune/knowledge-distillery';
 
 export interface CodebaseKnowledge {
   filePath: string;
