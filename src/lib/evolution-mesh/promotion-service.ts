@@ -61,7 +61,7 @@ async function promoteToProduction(planId: string) {
     }
 
     // Gate 5: Post-promote snapshot + mark success
-    await snapshotService.createSnapshot(`post-promote-${planId}`);
+    await snapshotService.createSnapshot('post_promote', { metrics: { planId } });
     await supabase
       .from('production_promotions')
       .update({ status: 'completed' } as never)

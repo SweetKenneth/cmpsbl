@@ -10,7 +10,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-type SnapshotType = 'shadow_baseline' | 'production_baseline' | 'pre_promote' | 'post_promote' | 'rollback_state';
+export type SnapshotType = 'shadow_baseline' | 'production_baseline' | 'pre_promote' | 'post_promote' | 'rollback_state';
 
 async function createSnapshot(
   type: SnapshotType,
