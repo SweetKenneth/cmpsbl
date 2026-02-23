@@ -35,7 +35,7 @@ export { useEncode, type UseEncodeReturn } from './useEncode';
 export { useMemoryModule, type UseMemoryModuleReturn } from './useMemoryModule';
 export { useRelay, type UseRelayReturn } from './useRelay';
 export { useAuditModule, type UseAuditModuleReturn } from './useAuditModule';
-export { useIdentity, type UseIdentityReturn } from './useIdentity';
+export { useIdentity, type UseIdentityReturn } from './useIdentity'; // Facade → ACCESS
 export { useEconomy, type UseEconomyReturn } from './useEconomy';
 export { useSandbox, type UseSandboxReturn } from './useSandbox';
 
