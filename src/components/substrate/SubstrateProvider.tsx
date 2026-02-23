@@ -135,8 +135,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     // Don't refresh if unmounted
     if (!mountedRef.current) return;
 
-    // Check all 21 substrate modules across 6 layers
-    const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'modernizer', 'integration', 'cortex'];
+    // Check 16 public modules (CCR facades handled internally)
+    const moduleList: SubstrateModule[] = ['decode', 'encode', 'defense', 'nexus', 'vision', 'ripple', 'access', 'modernizer', 'integration', 'inclusive', 'cortex', 'relay', 'audit', 'economy', 'sandbox', 'cortex'];
     const results = await Promise.all(moduleList.map(checkModule));
 
     const newModules = moduleList.reduce((acc, module, index) => {
