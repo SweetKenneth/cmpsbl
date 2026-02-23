@@ -25,7 +25,7 @@ import {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const STORAGE_KEY = 'clm_budget_state';
-const DAILY_NEXUS_LIMIT = 12352; // From nexus-routing.md total daily capacity
+const DAILY_NEXUS_LIMIT = 236164; // Fleet v5.1.0: 13 providers, governed at 80%
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // BUDGET GOVERNOR CLASS

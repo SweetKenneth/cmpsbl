@@ -21,11 +21,13 @@ interface UsageStats {
   thisMonth: { calls: number; tokens: number };
 }
 
-// Nexus fleet daily capacity (sum of all free-tier RPDs at 80%)
+// Nexus fleet daily capacity (sum of all free-tier RPDs at 80% safety margin)
+// 13 providers: Groq(640) + Cerebras(9216) + SambaNova(26) + Google(1200) +
+// DeepSeek(79999) + Together(79999) + OR×4(640) + Mistral(424) + Cohere(21) + Hyperbolic(63999)
 const FLEET_LIMITS = {
-  daily: 12352,     // Total RPD across all providers
-  weekly: 86464,
-  monthly: 370560,
+  daily: 236164,     // Total governed RPD across 13 providers
+  weekly: 1653148,
+  monthly: 7084920,
 };
 
 // Each SEBA evolution cycle uses ~2-3 LLM calls
@@ -221,7 +223,7 @@ export function NexusUsageCard() {
           )}
 
           <p className="text-[10px] text-muted-foreground/70 text-center pt-1">
-            Nexus fleet: 7 free-tier providers, ~{FLEET_LIMITS.daily.toLocaleString()} calls/day
+            Nexus fleet: 13 free-tier providers, ~{FLEET_LIMITS.daily.toLocaleString()} calls/day
           </p>
           <p className="text-[10px] text-muted-foreground/60 text-center">
             ≈ {DAILY_CYCLE_LIMIT.toLocaleString()} cycles/day, {MONTHLY_CYCLE_LIMIT.toLocaleString()} cycles/month — zero cost

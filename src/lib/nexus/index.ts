@@ -3,7 +3,7 @@
  * ARCHITECT Epoch — Free-Tier Multi-Provider AI Routing & Fleet Governance
  * 
  * The nervous system for all AI provider interactions:
- * - Fleet-managed routing across 7 free-tier providers
+ * - Fleet-managed routing across 13 free-tier providers
  * - Health-weighted selection with exponential decay scoring
  * - RPM/RPD governance at 80% safety margin
  * - Task-type → model affinity mapping

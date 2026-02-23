@@ -66,7 +66,7 @@ const TIERS: Record<string, TierInfo> = {
   standard: {
     name: 'standard',
     level: 1,
-    dailyNexusLimit: 12352,
+    dailyNexusLimit: 236164,
     clmBudgetPct: 0.70,
     spacingMultiplier: 1.0,
     maxTokensPerJob: 1200,

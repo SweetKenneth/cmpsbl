@@ -154,12 +154,19 @@ export const MEMORY_TIERS = {
 // =============================================================================
 
 export const SUPPORTED_PROVIDERS = [
-  'OpenAI',
-  'Anthropic',
-  'Google AI',
-  'Mistral',
   'Groq',
-  'Open Source (Ollama)',
+  'Cerebras',
+  'SambaNova',
+  'Google AI Studio',
+  'DeepSeek',
+  'Together',
+  'OpenRouter (Llama)',
+  'OpenRouter (Qwen)',
+  'OpenRouter (DeepSeek R1)',
+  'OpenRouter (Grok)',
+  'Mistral Studio',
+  'Cohere',
+  'Hyperbolic',
 ] as const;
 
 export const BYOK_SUPPORTED = true;

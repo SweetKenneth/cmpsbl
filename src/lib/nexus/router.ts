@@ -2,9 +2,9 @@
  * PromptFluid Nexus Router v5.0.0
  * ARCHITECT Epoch — Production-grade multi-provider AI routing
  * 
- * Fleet-managed routing across 7 free-tier providers with:
+ * Fleet-managed routing across 13 free-tier providers with:
  * - Health-weighted selection with exponential decay
- * - SambaNova + Google AI Studio integration
+ * - Grok via OpenRouter free tier
  * - Fleet-level RPM/RPD governance at 80% safety margin
  * - Task-type → model affinity mapping
  * - Automatic provider rotation on quota exhaustion
@@ -155,12 +155,39 @@ export const FLEET_REGISTRY: FleetProvider[] = [
     costPerMToken: 0,
   },
   {
+    id: 'openrouter-grok',
+    model: 'openrouter/grok-3-mini-beta:free',
+    rpm: 16, rpd: 160, tpm: 15000,
+    latencyClass: 'standard',
+    affinities: ['reasoning', 'generation', 'research'],
+    priority: 11,
+    costPerMToken: 0,
+  },
+  {
+    id: 'mistral',
+    model: 'mistral/mistral-small-latest',
+    rpm: 24, rpd: 424, tpm: 25000,
+    latencyClass: 'fast',
+    affinities: ['reasoning', 'code', 'refinement'],
+    priority: 12,
+    costPerMToken: 0,
+  },
+  {
+    id: 'cohere',
+    model: 'cohere/command-r-plus',
+    rpm: 10, rpd: 21, tpm: 10000,
+    latencyClass: 'standard',
+    affinities: ['research', 'generation', 'analysis'],
+    priority: 13,
+    costPerMToken: 0,
+  },
+  {
     id: 'hyperbolic',
     model: 'hyperbolic/llama-3.1-70b',
-    rpm: 38, rpd: 79999, tpm: 15000,
+    rpm: 38, rpd: 63999, tpm: 15000,
     latencyClass: 'standard',
     affinities: ['generation', 'reasoning'],
-    priority: 13,
+    priority: 14,
     costPerMToken: 0,
   },
 ];
