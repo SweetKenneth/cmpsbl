@@ -66,6 +66,7 @@ serve(async (req: Request) => {
       clmCyclesRes24h,
       clmLearningRes3h,
       dailyQuotaRes,
+      decodeSearchSettled,
     ] = await Promise.allSettled([
       supabase.from("audit_logs").select("action, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("audit_logs").select("action", { count: "exact" }).gte("created_at", iso24h),
@@ -84,6 +85,8 @@ serve(async (req: Request) => {
       supabase.from("brain_events").select("id", { count: "exact", head: true }).eq("event_type", "clm_server_cycle").gte("created_at", iso24h),
       supabase.from("brain_events").select("id, data", { count: "exact" }).eq("event_type", "technical_learning_cycle").gte("created_at", iso3h),
       supabase.from("ai_daily_quota").select("provider, calls_budget, calls_used, tokens_used").eq("date", now.toISOString().split("T")[0]),
+      // DECODE brand monitor results (last 3h)
+      supabase.from("decode_search_results").select("topic, title, source_url, snippet, created_at").gte("created_at", iso3h).order("created_at", { ascending: false }).limit(30),
     ]);
 
     const extract = (r: PromiseSettledResult<any>) =>
@@ -105,6 +108,17 @@ serve(async (req: Request) => {
     const clmCycles24h = extract(clmCyclesRes24h);
     const clmLearning3h = extract(clmLearningRes3h);
     const dailyQuota = extract(dailyQuotaRes);
+    const decodeSearchData = extract(decodeSearchSettled);
+
+    // DECODE search results grouped by topic
+    const decodeResults = (decodeSearchData?.data || []) as Array<{ topic: string; title: string; source_url: string; snippet: string; created_at: string }>;
+    const decodeByTopic: Record<string, Array<{ title: string; url: string; snippet: string }>> = {};
+    decodeResults.forEach((r: any) => {
+      if (!decodeByTopic[r.topic]) decodeByTopic[r.topic] = [];
+      if (decodeByTopic[r.topic].length < 3) {
+        decodeByTopic[r.topic].push({ title: r.title, url: r.source_url, snippet: r.snippet });
+      }
+    });
 
     // ═══ COMPUTE METRICS ═══
     const aiCalls3h = aiUsage3h.data?.length || 0;
@@ -377,7 +391,28 @@ ${dreamCount > 0 ? `
   <p style="color:#374151;font-size:13px;" class="email-text">${dreamCount} dream cycle(s). Moods: ${dreamMoods.join(", ") || "none recorded"}.</p>
 </div>` : ''}
 
-<!-- RECOMMENDATIONS -->
+<!-- DECODE BRAND MONITOR -->
+${Object.keys(decodeByTopic).length > 0 ? `
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">🔍 DECODE Brand Monitor</h2>
+  <p style="margin:0 0 14px;font-size:12px;color:#6b7280;" class="email-text-secondary">New mentions & articles discovered this window</p>
+  ${Object.entries(decodeByTopic).map(([topic, items]) => `
+    <div style="margin-bottom:16px;">
+      <strong style="color:#4f46e5;font-size:13px;display:block;margin-bottom:8px;" class="email-learning-module">${topic}</strong>
+      ${items.map(item => `
+        <div style="margin-bottom:10px;padding:8px 12px;background:#f9fafb;border-radius:8px;border-left:3px solid #4f46e5;" class="email-stat-card">
+          <a href="${item.url}" style="color:#4f46e5;font-size:13px;font-weight:600;text-decoration:none;display:block;margin-bottom:3px;" class="email-link">${item.title || 'Untitled'}</a>
+          <p style="margin:0;font-size:12px;color:#6b7280;line-height:1.4;" class="email-text-secondary">${item.snippet?.slice(0, 150) || 'No preview available'}${item.snippet?.length > 150 ? '...' : ''}</p>
+          <p style="margin:4px 0 0;font-size:11px;"><a href="${item.url}" style="color:#6366f1;text-decoration:none;" class="email-link">View source →</a></p>
+        </div>`).join('')}
+    </div>`).join('')}
+</div>` : `
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 10px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">🔍 DECODE Brand Monitor</h2>
+  <p style="color:#9ca3af;font-size:13px;">No new mentions found this window. Topics monitored: Kenneth E. Sweet Jr., CMPSBL, XCTBL, PromptFluid, LNCHBL, EVLVBL</p>
+</div>`}
+
+
 <div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
   <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">💡 Recommendations</h2>
   <div style="font-size:13px;">
@@ -451,6 +486,11 @@ ${Object.entries(moduleCounts).map(([m, d]) => `  ${m.toUpperCase()}: ${d.events
 
 WHAT I LEARNED
 ${Object.entries(learningBullets).map(([m, bs]) => `  ${m.toUpperCase()}:\n${bs.map(b => `    • ${b}`).join("\n")}`).join("\n\n") || "No learning events."}
+
+DECODE BRAND MONITOR
+${Object.entries(decodeByTopic).length > 0
+  ? Object.entries(decodeByTopic).map(([topic, items]) => `  ${topic}:\n${items.map(i => `    • ${i.title}\n      ${i.url}`).join("\n")}`).join("\n\n")
+  : "No new mentions this window."}
 
 FLAGS
 ${Object.entries(flags).map(([k, v]) => `  ${v ? '●' : '○'} ${k}`).join("\n")}
