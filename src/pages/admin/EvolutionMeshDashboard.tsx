@@ -311,7 +311,7 @@ export default function EvolutionMeshDashboard() {
   });
 
   const snapshotMutation = useMutation({
-    mutationFn: () => snapshotService.createSnapshot('manual-snapshot'),
+    mutationFn: () => snapshotService.createSnapshot('production_baseline'),
     onSuccess: (result) => {
       if (result.success) {
         toast.success('Snapshot created');

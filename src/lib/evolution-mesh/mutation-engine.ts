@@ -619,7 +619,7 @@ export async function runVerificationScan(mutationId: string): Promise<{
 }> {
   try {
     // Take a post-promotion snapshot
-    const postSnap = await snapshotService.createSnapshot(`post-promote-verify-${mutationId}`);
+    const postSnap = await snapshotService.createSnapshot('post_promote', { metrics: { mutationId } });
 
     // Run integrity scan
     const scanResult = await integrityService.runIntegrityScan();
