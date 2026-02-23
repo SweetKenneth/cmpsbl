@@ -282,6 +282,30 @@ export async function createProposal(params: {
     const category = params.category ?? 'resilience';
     const selectedExecutors = selectExecutorsForCategory(category);
 
+    // ── Hardening Layer: Pre-shadow checks ──
+    const hardeningCtx: HardeningContext = {
+      runId: `proposal-${Date.now()}`,
+      phase: 'pre-shadow',
+      executorId: params.proposerExecutorId,
+      executorCategory: selectedExecutors[0]?.meta.category,
+      proposalCategory: category,
+      affectedModules: selectedExecutors.map(e => e.meta.module),
+    };
+
+    // Attach knowledge pack info if available
+    if (params.proposerExecutorId) {
+      const pack = getKnowledgeForExecutor(params.proposerExecutorId);
+      if (pack) {
+        hardeningCtx.executorCategory = pack.category;
+      }
+    }
+
+    const hardening = runHardeningChecks('pre-shadow', hardeningCtx);
+    if (!hardening.passed) {
+      const blockerReasons = hardening.blockers.map(b => `[${b.layerId}] ${b.reason}`).join('; ');
+      return { success: false, error: `Pre-shadow hardening BLOCKED: ${blockerReasons}` };
+    }
+
     const { data, error } = await supabase
       .from('mutation_proposals')
       .insert({
