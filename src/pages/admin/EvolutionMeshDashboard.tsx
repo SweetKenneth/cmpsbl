@@ -919,15 +919,24 @@ export default function EvolutionMeshDashboard() {
 
               <Card className="p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <Info className="w-5 h-5 text-primary" />
-                  <h3 className="font-semibold text-sm">Quick Info</h3>
+                  <Cpu className="w-5 h-5 text-primary" />
+                  <h3 className="font-semibold text-sm">Executor Fleet</h3>
                 </div>
                 <div className="space-y-1.5 text-xs">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Artifacts</span><span className="font-mono">{pipelineStats?.totalArtifacts ?? 0}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Proposals</span><span className="font-mono">{pipelineStats?.totalProposals ?? 0}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Verifications</span><span className="font-mono">{pipelineStats?.totalScans ?? 0}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Snapshots</span><span className="font-mono">{snapshots.length}</span></div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Total Executors</span>
+                    <span className="font-mono font-semibold">{totalExecutors}</span>
+                  </div>
+                  {Object.entries(executorSummary).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([cat, count]) => (
+                    <div key={cat} className="flex justify-between">
+                      <span className="text-muted-foreground capitalize">{cat.replace(/_/g, ' ')}</span>
+                      <span className="font-mono">{count}</span>
+                    </div>
+                  ))}
                 </div>
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Same fleet trained in Immunity Mesh — specialties drive executor selection per evolution category.
+                </p>
               </Card>
             </div>
 
