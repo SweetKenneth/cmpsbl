@@ -1,7 +1,7 @@
 /**
- * Evolution Mesh — Production Landing Page
- * Self-learning immune system for any software.
- * Black-boxed SDK with install wizard, framework variants, vibe coder zone.
+ * EVLVBL — Production Landing Page
+ * Self-evolving immune system for any software.
+ * Black-boxed SDK with install wizard, probes, learning tests, VOLVER agent.
  */
 
 import { useState, useEffect } from 'react';
@@ -15,6 +15,7 @@ import {
   Shield, Zap, Brain, GitCompare, Lock, Activity, ArrowRight, Check, Terminal,
   Loader2, Download, Copy, Package, Globe, Server, Smartphone, Database,
   Code, Layers, Cpu, Eye, EyeOff, Sparkles, FileCode, Rocket, Bot, Crown,
+  FlaskConical, GraduationCap, Play, BarChart3,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -22,6 +23,8 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { shadow, type ShadowResult } from '@/packages/evolution-mesh/shadow/probe';
+import { VOLVER_SKILLS, runVolverTask, getVolverSkillsSummary, type VolverSkillCategory } from '@/packages/evolution-mesh/agent/stubbed-encode';
 
 // ─── Framework Configurations ───────────────────────────────────────
 const FRAMEWORKS = [
@@ -40,74 +43,74 @@ const FRAMEWORKS = [
 ] as const;
 
 const FRAMEWORK_SNIPPETS: Record<string, string> = {
-  react: `import { EvolutionMesh } from '@cmpsbl/evolution-mesh/react';
+  react: `import { wrap } from '@evlvbl/sdk/react';
 
 // Wrap your API routes automatically
-export default EvolutionMesh.protect(MyComponent, {
+export default wrap(MyComponent, {
   schema: { email: 'string', name: 'string' }
 });`,
-  vue: `import { useEvolutionMesh } from '@cmpsbl/evolution-mesh/vue';
+  vue: `import { useEvlvbl } from '@evlvbl/sdk/vue';
 
-const { protect, health } = useEvolutionMesh();
+const { protect, health } = useEvlvbl();
 const safeFetch = protect(fetchUsers, {
   schema: { page: 'number', limit: 'number' }
 });`,
-  angular: `import { EvolutionMeshModule } from '@cmpsbl/evolution-mesh/angular';
+  angular: `import { EvlvblModule } from '@evlvbl/sdk/angular';
 
-@NgModule({ imports: [EvolutionMeshModule.forRoot()] })
+@NgModule({ imports: [EvlvblModule.forRoot()] })
 // All HTTP interceptors auto-protected`,
-  svelte: `import { mesh } from '@cmpsbl/evolution-mesh/svelte';
+  svelte: `import { mesh } from '@evlvbl/sdk/svelte';
 
 const safeFetch = mesh(fetchData, {
   schema: { id: 'string', filters: 'object' }
 });`,
-  node: `import { wrap } from '@cmpsbl/evolution-mesh';
+  node: `import { wrap } from '@evlvbl/sdk';
 
 const safeHandler = wrap(myHandler, {
   schema: { email: { type: 'string', required: true } }
 });
 
 app.post('/api/users', safeHandler);`,
-  deno: `import { wrap } from '@cmpsbl/evolution-mesh';
+  deno: `import { wrap } from '@evlvbl/sdk';
 
 Deno.serve(wrap(handler, {
   schema: { token: 'string', payload: 'object' }
 }));`,
-  python: `from evolution_mesh import protect
+  python: `from evlvbl import protect
 
 @protect(schema={"email": "str", "age": "int"})
 async def create_user(request):
     return {"status": "safe"}`,
-  go: `import mesh "github.com/cmpsbl/evolution-mesh-go"
+  go: `import mesh "github.com/evlvbl/sdk-go"
 
 handler := mesh.Wrap(createUser, mesh.Schema{
     "email": mesh.String().Required(),
     "age":   mesh.Number().Min(0),
 })`,
-  ruby: `require 'evolution_mesh'
+  ruby: `require 'evlvbl'
 
 class UsersController < ApplicationController
-  include EvolutionMesh::Protection
+  include Evlvbl::Protection
 
   protect :create, schema: {
     email: { type: :string, required: true }
   }
 end`,
-  php: `use CMPSBL\\EvolutionMesh\\Protect;
+  php: `use Evlvbl\\SDK\\Protect;
 
 #[Protect(schema: ['email' => 'string', 'name' => 'string'])]
 public function store(Request $request) {
     // Auto-validated, auto-repaired
 }`,
-  java: `import com.cmpsbl.evolutionmesh.Protect;
+  java: `import com.evlvbl.sdk.Protect;
 
 @Protect(schema = @Schema(fields = {
     @Field(name = "email", type = "string", required = true)
 }))
 public ResponseEntity<?> createUser(@RequestBody UserDTO dto) {}`,
-  mobile: `import { useEvolutionMesh } from '@cmpsbl/evolution-mesh/react-native';
+  mobile: `import { useEvlvbl } from '@evlvbl/sdk/react-native';
 
-const { protect } = useEvolutionMesh();
+const { protect } = useEvlvbl();
 const safeApiCall = protect(apiClient.post, {
   schema: { userId: 'string', data: 'object' }
 });`,
@@ -118,12 +121,12 @@ const FEATURES = [
   { icon: Shield, title: 'Immune Wrapping', description: 'Wrap any function. Inputs validated, sanitized, and repaired automatically before execution.' },
   { icon: Zap, title: '29+ Repair Strategies', description: 'Deterministic, non-AI repairs: XSS stripping, SQL sanitization, type coercion, prototype pollution guard.' },
   { icon: Brain, title: 'Self-Learning Rules', description: 'Successful repairs become rules that propagate across functions. Your system learns from every failure.' },
-  { icon: GitCompare, title: 'Shadow Mode', description: 'Test changes against real traffic without risk. Compare baseline vs candidate. Promote only what passes.' },
+  { icon: GitCompare, title: 'Shadow Probes', description: 'Test changes against real traffic without risk. Compare baseline vs candidate. Promote only what passes.' },
   { icon: Lock, title: 'Black-Box Architecture', description: 'Compiled and minified. Source maps excluded. Your competitive advantage stays protected.' },
   { icon: Activity, title: 'Real-Time Dashboard', description: 'Health metrics, repair analytics, learning curves, and alert feeds — all via encrypted telemetry.' },
   { icon: Eye, title: 'Archetype Classification', description: 'Inputs classified as injection attempts, empty shells, type mismatches — each handled differently.' },
   { icon: Layers, title: 'Cross-Function Learning', description: 'Rules learned in one function automatically propagate to compatible functions across your codebase.' },
-  { icon: Package, title: 'Install Wizard', description: 'No npm required. Run the wizard, select your framework, and your codebase is wrapped in under 60 seconds.' },
+  { icon: Bot, title: 'VOLVER Agent', description: 'Built-in coding agent with 8 core skills. Analyzes, suggests, and repairs code — included with Standalone.' },
 ];
 
 // ─── Tiers ──────────────────────────────────────────────────────────
@@ -143,7 +146,7 @@ const TIERS = [
     name: 'Pro',
     price: '$29',
     period: '/month',
-    features: ['50 wrapped functions', '30-day telemetry retention', 'Full SaaS dashboard', 'Email support', 'Cross-function learning', 'Install wizard included', 'All 12 frameworks'],
+    features: ['50 wrapped functions', '30-day telemetry retention', 'Full SaaS dashboard', 'Shadow probes included', 'Cross-function learning', 'Learning tests (5/day)', 'All 12 frameworks'],
     cta: 'Start Pro',
     highlighted: true,
     tier: 'pro',
@@ -154,7 +157,7 @@ const TIERS = [
     name: 'Team',
     price: '$99',
     period: '/month',
-    features: ['250 wrapped functions', '90-day retention', 'SSO + team access', 'Priority support', 'Custom repair strategies', 'Install wizard included', 'All 12 frameworks'],
+    features: ['250 wrapped functions', '90-day retention', 'SSO + team access', 'Unlimited shadow probes', 'Unlimited learning tests', 'Priority support', 'All 12 frameworks'],
     cta: 'Start Team',
     highlighted: false,
     tier: 'team',
@@ -165,7 +168,7 @@ const TIERS = [
     name: 'Standalone',
     price: '$399',
     period: 'one-time',
-    features: ['Unlimited wrapped functions', 'Lifetime license — yours forever', 'Not tied to any platform', 'Self-hosted dashboard', 'All future updates included', 'ENCODE agent slot included', 'Install wizard included', 'All 12 frameworks', 'Black-box protected'],
+    features: ['Unlimited wrapped functions', 'Lifetime license — yours forever', 'VOLVER coding agent included', 'Self-hosted dashboard', 'All future updates included', 'Unlimited probes & tests', 'All 12 frameworks', 'Black-box protected'],
     cta: 'Buy Standalone License',
     highlighted: false,
     tier: 'standalone',
@@ -176,7 +179,7 @@ const TIERS = [
 ];
 
 // ─── Vibe Coder Instructions (FREE version) ─────────────────────────
-const VIBE_CODER_INSTRUCTION = `# Evolution Mesh — FREE Version Install Instructions
+const VIBE_CODER_INSTRUCTION = `# EVLVBL — FREE Version Install Instructions
 # Drop this file into your AI coding agent and tell it to install.
 
 ## IMPORTANT: This is the FREE Open Source version.
@@ -186,32 +189,32 @@ const VIBE_CODER_INSTRUCTION = `# Evolution Mesh — FREE Version Install Instru
 
 ## What your AI agent should do:
 1. Scan your project for async functions and API routes
-2. Wrap up to 5 functions with the Evolution Mesh immune layer
+2. Wrap up to 5 functions with the EVLVBL immune layer
 3. Add schema validation based on your existing types
 4. Enable 29+ deterministic repair strategies
 5. Activate local telemetry tracking
 
 ## Quick Start:
 \`\`\`
-npx @cmpsbl/evolution-mesh init --framework=auto --tier=free
+npx @evlvbl/sdk init --framework=auto --tier=free
 \`\`\`
 
 ## Or manual wrap:
 \`\`\`typescript
-import { wrap } from '@cmpsbl/evolution-mesh';
+import { wrap } from '@evlvbl/sdk';
 const safe = wrap(myHandler, { schema: { email: 'string' } });
 \`\`\`
 
 ## Upgrade anytime:
 \`\`\`
-npx @cmpsbl/evolution-mesh upgrade --tier=pro
+npx @evlvbl/sdk upgrade --tier=pro
 \`\`\`
 
 ## Black-Box Protected
 This software is compiled and obfuscated. Source maps are not included.
-Reverse engineering is prohibited under the CMPSBL Software License.
+Reverse engineering is prohibited under the EVLVBL Software License.
 
-© CMPSBL — Evolution Mesh (Free Tier)
+© CMPSBL — EVLVBL (Free Tier)
 https://cmpsbl.com/evolution-mesh
 `;
 
@@ -223,6 +226,16 @@ export default function EvolutionMeshLanding() {
   const [selectedFramework, setSelectedFramework] = useState('node');
   const [vibeCodeCopied, setVibeCodeCopied] = useState(false);
   const [searchParams] = useSearchParams();
+
+  // Probe state
+  const [probeInput, setProbeInput] = useState('{ "email": "test@example.com", "age": 25 }');
+  const [probeResult, setProbeResult] = useState<ShadowResult | null>(null);
+  const [probeRunning, setProbeRunning] = useState(false);
+
+  // Learning test state
+  const [learningTask, setLearningTask] = useState('Create a debounce hook');
+  const [learningCategory, setLearningCategory] = useState<VolverSkillCategory>('react');
+  const [learningResult, setLearningResult] = useState<ReturnType<typeof runVolverTask> | null>(null);
 
   useEffect(() => {
     const checkout = searchParams.get('checkout');
@@ -241,9 +254,9 @@ export default function EvolutionMeshLanding() {
     setSubmitting(true);
     try {
       const { error } = await supabase.from('brain_events').insert({
-        event_type: 'evolution_mesh_waitlist',
+        event_type: 'evlvbl_waitlist',
         source_operation: 'waitlist_signup',
-        module: 'evolution-mesh',
+        module: 'evlvbl',
         data: { email, framework: selectedFramework },
       });
       if (error) throw error;
@@ -281,53 +294,95 @@ export default function EvolutionMeshLanding() {
   };
 
   const downloadVibeFile = () => {
-    const blob = new Blob([VIBE_CODER_INSTRUCTION], { type: 'text-markdown' });
+    const blob = new Blob([VIBE_CODER_INSTRUCTION], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'evolution-mesh-install.md';
+    a.download = 'evlvbl-install.md';
     a.click();
     URL.revokeObjectURL(url);
     toast.success('Free version downloaded! Drop it into your AI coding agent.');
   };
 
   const downloadFreeVersion = () => {
-    // Download the free version install package
     const blob = new Blob([VIBE_CODER_INSTRUCTION], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'evolution-mesh-free.md';
+    a.download = 'evlvbl-free.md';
     a.click();
     URL.revokeObjectURL(url);
     toast.success('Free version downloaded! Follow the install instructions inside.');
   };
 
+  // Run a shadow probe demo
+  const runProbe = async () => {
+    setProbeRunning(true);
+    try {
+      let parsed: Record<string, unknown>;
+      try {
+        parsed = JSON.parse(probeInput);
+      } catch {
+        toast.error('Invalid JSON input');
+        setProbeRunning(false);
+        return;
+      }
+
+      const result = await shadow(
+        async (input) => ({ status: 'ok', processed: Object.keys(input).length, validated: true }),
+        async (input) => {
+          // Simulated candidate with slight delay
+          await new Promise(r => setTimeout(r, Math.random() * 200 + 50));
+          return { status: 'ok', processed: Object.keys(input).length, validated: true, enhanced: true };
+        },
+        parsed,
+      );
+      setProbeResult(result);
+      toast.success('Probe complete!');
+    } catch {
+      toast.error('Probe failed');
+    } finally {
+      setProbeRunning(false);
+    }
+  };
+
+  // Run a learning test
+  const runLearningTest = () => {
+    const result = runVolverTask({
+      description: learningTask,
+      category: learningCategory,
+    });
+    setLearningResult(result);
+    toast.success('Learning test complete!');
+  };
+
+  const volverSummary = getVolverSkillsSummary();
+
   return (
     <>
       <Helmet>
-        <title>Evolution Mesh — Self-Learning Immune System for Any Software | CMPSBL</title>
-        <meta name="description" content="Category-defining resilience SDK that wraps your functions with immune defense, auto-repair, and self-learning rules. Free download available. Works with React, Vue, Node.js, Python, Go, Ruby, PHP, Java, and 12+ frameworks. Install in 60 seconds." />
-        <meta name="keywords" content="software resilience, input validation, auto-repair, self-learning, immune system, API protection, XSS prevention, SQL injection, shadow testing, code defense, runtime protection, black box SDK, vibe coding" />
+        <title>EVLVBL — Self-Evolving Immune System for Any Software | CMPSBL</title>
+        <meta name="description" content="Category-defining resilience SDK that wraps your functions with immune defense, auto-repair, and self-learning rules. Built-in coding agent. Free download available. Works with 12+ frameworks." />
+        <meta name="keywords" content="EVLVBL, software resilience, input validation, auto-repair, self-learning, immune system, API protection, shadow probes, learning tests, coding agent, black box SDK" />
         <link rel="canonical" href="https://cmpsbl.com/evolution-mesh" />
-        <meta property="og:title" content="Evolution Mesh — Your Code's Immune System" />
-        <meta property="og:description" content="Drop-in resilience for any framework. 29+ repair strategies. Self-learning rules. Black-box protected. Free tier available." />
+        <meta property="og:title" content="EVLVBL — Your Code Evolves Its Own Defenses" />
+        <meta property="og:description" content="Drop-in resilience for any framework. 29+ repair strategies. Self-learning rules. Built-in coding agent. Black-box protected." />
         <meta property="og:type" content="product" />
         <meta property="og:url" content="https://cmpsbl.com/evolution-mesh" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Evolution Mesh — Self-Learning Software Immune System" />
-        <meta name="twitter:description" content="Wrap your functions. Your software evolves its own defenses. Works with every framework. Free download." />
+        <meta name="twitter:title" content="EVLVBL — Self-Evolving Software Immune System" />
+        <meta name="twitter:description" content="Wrap your functions. Your software evolves its own defenses. Built-in coding agent. Free download." />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
-          "name": "Evolution Mesh",
-          "description": "Self-learning immune system for software. Wraps functions with input validation, auto-repair, and cross-function learning. Free tier available.",
+          "name": "EVLVBL",
+          "description": "Self-evolving immune system for software. Wraps functions with input validation, auto-repair, and cross-function learning. Built-in VOLVER coding agent. Free tier available.",
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Cross-platform",
           "offers": [
             { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Open Source — Free Forever" },
-            { "@type": "Offer", "price": "29", "priceCurrency": "USD", "name": "Pro", "billingIncrement": "P1M" },
-            { "@type": "Offer", "price": "99", "priceCurrency": "USD", "name": "Team", "billingIncrement": "P1M" },
+            { "@type": "Offer", "price": "29", "priceCurrency": "USD", "name": "Pro" },
+            { "@type": "Offer", "price": "99", "priceCurrency": "USD", "name": "Team" },
             { "@type": "Offer", "price": "399", "priceCurrency": "USD", "name": "Standalone Lifetime License" },
           ],
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
@@ -339,8 +394,9 @@ export default function EvolutionMeshLanding() {
       <div className="min-h-screen bg-background text-foreground">
         {/* ═══ HERO ═══ */}
         <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,hsl(var(--primary)/0.06),transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.15),transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,hsl(180_80%_50%/0.08),transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,hsl(280_60%_50%/0.06),transparent_40%)]" />
           <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16 sm:pt-32 sm:pb-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -350,23 +406,28 @@ export default function EvolutionMeshLanding() {
             >
               <div className="flex items-center justify-center gap-3 flex-wrap">
                 <Badge variant="outline" className="text-xs tracking-wider border-emerald-500/30 text-emerald-600">
-                  <Download className="w-3 h-3 mr-1" /> FREE DOWNLOAD AVAILABLE
+                  <Download className="w-3 h-3 mr-1" /> FREE DOWNLOAD
                 </Badge>
                 <Badge variant="outline" className="text-xs tracking-wider border-primary/30 text-primary">
-                  WORKS WITH EVERY FRAMEWORK
+                  12 FRAMEWORKS
                 </Badge>
-                <Badge variant="outline" className="text-xs tracking-wider border-muted-foreground/30 text-muted-foreground">
-                  <Lock className="w-3 h-3 mr-1" /> BLACK-BOX PROTECTED
+                <Badge variant="outline" className="text-xs tracking-wider border-cyan-500/30 text-cyan-600">
+                  <Bot className="w-3 h-3 mr-1" /> CODING AGENT BUILT IN
                 </Badge>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
-                Your code's<br />
-                <span className="text-primary">immune system.</span>
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95]">
+                <span className="bg-gradient-to-r from-primary via-cyan-500 to-primary bg-clip-text text-transparent">
+                  EVLVBL
+                </span>
               </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Drop it in. Wrap your functions. Your software evolves its own defenses.<br className="hidden sm:block" />
-                29+ repair strategies. Self-learning rules. Zero AI dependency.
+              <p className="text-xl sm:text-2xl font-semibold text-foreground/90 -mt-2">
+                Your code evolves its own defenses.
+              </p>
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Drop it in. Wrap your functions. Run probes. Test learnings.
+                <br className="hidden sm:block" />
+                29+ repair strategies. Self-learning rules. Built-in coding agent.
               </p>
 
               {/* Framework selector chips */}
@@ -386,7 +447,7 @@ export default function EvolutionMeshLanding() {
                 ))}
               </div>
 
-              {/* Code snippet for selected framework */}
+              {/* Code snippet */}
               <motion.div
                 key={selectedFramework}
                 initial={{ opacity: 0, y: 10 }}
@@ -420,31 +481,139 @@ export default function EvolutionMeshLanding() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
                 <Button size="lg" onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
                   <Download className="w-4 h-4" />
-                  Download Free Version
+                  Download Free
                 </Button>
                 <Button size="lg" variant="outline" onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2">
                   {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Crown className="w-4 h-4" />}
-                  Standalone License — $399
+                  Standalone — $399
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Free version includes 5 wrapped functions, local telemetry, and all 12 frameworks. No credit card required.
+                Free: 5 wrapped functions · All frameworks · No credit card
               </p>
             </motion.div>
           </div>
         </section>
 
+        {/* ═══ LIVE PLAYGROUND: PROBES & LEARNING TESTS ═══ */}
+        <section className="border-y border-primary/10 bg-primary/[0.02]">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+            <div className="text-center mb-12">
+              <Badge className="text-xs mb-4 bg-cyan-500/10 text-cyan-600 border-cyan-500/20">TRY IT LIVE</Badge>
+              <h2 className="text-2xl sm:text-4xl font-bold">Shadow Probes & Learning Tests</h2>
+              <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
+                Run probes against your functions and test the VOLVER coding agent — right here.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Shadow Probe */}
+              <Card className="p-6 space-y-4 border-cyan-500/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
+                    <FlaskConical className="w-5 h-5 text-cyan-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">Shadow Probe</h3>
+                    <p className="text-xs text-muted-foreground">Test inputs against baseline & candidate</p>
+                  </div>
+                </div>
+                <Textarea
+                  value={probeInput}
+                  onChange={(e) => setProbeInput(e.target.value)}
+                  className="font-mono text-xs h-24 resize-none"
+                  placeholder='{ "email": "test@example.com" }'
+                />
+                <Button onClick={runProbe} disabled={probeRunning} className="w-full gap-2 bg-cyan-600 hover:bg-cyan-700">
+                  {probeRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
+                  Run Probe
+                </Button>
+                {probeResult && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-2 text-xs">
+                    <div className="flex items-center gap-2">
+                      <Badge variant={probeResult.match ? 'default' : 'outline'} className="text-[10px]">
+                        {probeResult.match ? '✓ Match' : '✗ Diverged'}
+                      </Badge>
+                      <span className="text-muted-foreground">
+                        Baseline: {probeResult.durationMs.baseline}ms · Candidate: {probeResult.durationMs.candidate}ms
+                      </span>
+                    </div>
+                    <pre className="bg-muted/50 p-2 rounded text-[10px] overflow-x-auto">
+                      {JSON.stringify({ baseline: probeResult.baseline, candidate: probeResult.candidate }, null, 2)}
+                    </pre>
+                  </motion.div>
+                )}
+              </Card>
+
+              {/* Learning Test */}
+              <Card className="p-6 space-y-4 border-primary/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <GraduationCap className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">Learning Test</h3>
+                    <p className="text-xs text-muted-foreground">Test VOLVER's coding skills (dry-run)</p>
+                  </div>
+                </div>
+                <Input
+                  value={learningTask}
+                  onChange={(e) => setLearningTask(e.target.value)}
+                  placeholder="Describe a coding task..."
+                  className="text-sm"
+                />
+                <div className="flex flex-wrap gap-2">
+                  {(['typescript', 'react', 'api', 'database', 'refactoring'] as VolverSkillCategory[]).map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setLearningCategory(cat)}
+                      className={`px-3 py-1 text-xs rounded-full border transition-all capitalize ${
+                        learningCategory === cat
+                          ? 'border-primary bg-primary/10 text-primary font-medium'
+                          : 'border-border/50 text-muted-foreground hover:border-primary/30'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+                <Button onClick={runLearningTest} className="w-full gap-2">
+                  <BarChart3 className="w-4 h-4" />
+                  Run Learning Test
+                </Button>
+                {learningResult && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-2 text-xs">
+                    <div className="flex items-center gap-2">
+                      <Badge className="text-[10px]">
+                        Confidence: {Math.round(learningResult.confidence * 100)}%
+                      </Badge>
+                      <Badge variant="outline" className="text-[10px]">
+                        {learningResult.skillsUsed.length} skills used
+                      </Badge>
+                      <Badge variant="outline" className="text-[10px] border-amber-500/30 text-amber-600">
+                        DRY RUN
+                      </Badge>
+                    </div>
+                    <p className="text-muted-foreground">{learningResult.suggestion}</p>
+                  </motion.div>
+                )}
+              </Card>
+            </div>
+            <p className="text-center text-xs text-muted-foreground mt-6">
+              Pro users get 5 probes/day · Team & Standalone get unlimited · <button onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className="text-primary hover:underline">See plans</button>
+            </p>
+          </div>
+        </section>
+
         {/* ═══ FREE DOWNLOAD BANNER ═══ */}
-        <section className="border-y border-emerald-500/20 bg-emerald-500/[0.03]">
+        <section className="border-b border-emerald-500/20 bg-emerald-500/[0.03]">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
             <div className="grid sm:grid-cols-2 gap-8 items-center">
               <div>
                 <Badge className="text-xs mb-3 bg-emerald-500/10 text-emerald-600 border-emerald-500/20">FREE FOR EVERYONE</Badge>
                 <h2 className="text-2xl sm:text-3xl font-bold mb-3">Try it. No strings attached.</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  The free Open Source version includes 5 wrapped functions, all 12 framework adapters, 
-                  the install wizard, and the full deterministic repair engine. Same black-box protection. 
-                  Same code quality. Just fewer functions.
+                  The free Open Source version includes 5 wrapped functions, all 12 framework adapters,
+                  the install wizard, and the full deterministic repair engine. Same black-box protection.
                 </p>
                 <ul className="space-y-2 mb-6">
                   {['5 wrapped functions', 'All 12 frameworks supported', 'Install wizard included', '29+ repair strategies', 'Local telemetry dashboard', 'Black-box protected'].map(f => (
@@ -482,7 +651,7 @@ export default function EvolutionMeshLanding() {
                       <p className="text-[10px] text-muted-foreground">Standalone</p>
                     </div>
                   </div>
-                  <p className="text-[10px] text-muted-foreground mt-3">Upgrade in-place with one command. No data loss.</p>
+                  <p className="text-[10px] text-muted-foreground mt-3">Upgrade in-place with one command.</p>
                 </div>
               </div>
             </div>
@@ -499,9 +668,8 @@ export default function EvolutionMeshLanding() {
               <div>
                 <h2 className="text-lg font-bold mb-1">Black-Box Protected Architecture</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                  Evolution Mesh ships compiled and minified — across all tiers, including the free version. Source maps are excluded.
+                  EVLVBL ships compiled and minified — across all tiers, including the free version. Source maps are excluded.
                   Internal repair strategies, learning algorithms, and telemetry protocols are trade secrets.
-                  Your competitive advantage — and ours — stays protected.
                 </p>
               </div>
             </div>
@@ -544,7 +712,7 @@ export default function EvolutionMeshLanding() {
                 { step: '01', title: 'Download', desc: 'Grab the free version or buy a license. Works with all 12 frameworks instantly.' },
                 { step: '02', title: 'Install', desc: 'Run the wizard or drop the install file into your AI coding agent. Auto-detects your stack.' },
                 { step: '03', title: 'Learn', desc: 'Successful repairs become rules. Rules propagate across your entire codebase automatically.' },
-                { step: '04', title: 'Evolve', desc: 'Shadow test changes safely. Promote only what passes every gate. Your code gets stronger.' },
+                { step: '04', title: 'Evolve', desc: 'Run probes. Test learnings. Promote only what passes every gate. Your code gets stronger.' },
               ].map((s) => (
                 <div key={s.step} className="text-center space-y-3">
                   <div className="w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-lg flex items-center justify-center mx-auto">
@@ -563,7 +731,7 @@ export default function EvolutionMeshLanding() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-4xl font-bold">Works With Every Stack</h2>
             <p className="text-muted-foreground mt-3">
-              One install wizard. Automatic framework detection. Zero config required. All tiers — including free.
+              One install wizard. Automatic framework detection. Zero config required.
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -593,16 +761,13 @@ export default function EvolutionMeshLanding() {
                 Using Cursor, Copilot, Windsurf, or any AI coding agent? Download this file, drop it in, and say
                 <span className="text-primary font-medium"> "install this"</span>. Done.
               </p>
-              <p className="text-sm text-emerald-600 font-medium mt-2">
-                ✓ This downloads the FREE version. Upgrade to Pro, Team, or Standalone anytime.
-              </p>
             </div>
 
             <Card className="p-6 space-y-4 border-primary/20">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <FileCode className="w-4 h-4 text-primary" />
-                  evolution-mesh-install.md
+                  evlvbl-install.md
                   <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-600">FREE</Badge>
                 </div>
                 <div className="flex items-center gap-2">
@@ -622,14 +787,13 @@ export default function EvolutionMeshLanding() {
                 className="font-mono text-xs h-48 resize-none bg-background/50"
               />
               <p className="text-xs text-muted-foreground text-center">
-                Works with Cursor, GitHub Copilot, Windsurf, Cline, Aider, and any AI-powered IDE.<br />
-                <span className="text-emerald-600 font-medium">Free version — upgrade anytime with one command.</span>
+                Works with Cursor, GitHub Copilot, Windsurf, Cline, Aider, and any AI-powered IDE.
               </p>
             </Card>
           </div>
         </section>
 
-        {/* ═══ ENCODE AGENT + STANDALONE UPSELL ═══ */}
+        {/* ═══ VOLVER AGENT + STANDALONE UPSELL ═══ */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="p-8 border-amber-500/20 bg-amber-500/[0.02] space-y-4">
@@ -638,12 +802,11 @@ export default function EvolutionMeshLanding() {
               </div>
               <h3 className="text-xl font-bold">Standalone License — Yours Forever</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                The <strong>$399 Standalone</strong> license is not tied to any subscription, platform, or substrate.
-                You own it outright. Self-host the dashboard. Get every future update. 
-                Run unlimited wrapped functions across your entire organization.
+                The <strong>$399 Standalone</strong> license is not tied to any subscription or platform.
+                You own it outright. Self-host the dashboard. Get every future update.
               </p>
               <ul className="space-y-2">
-                {['Lifetime license — no recurring fees', 'Unlimited wrapped functions', 'Self-hosted telemetry dashboard', 'ENCODE agent slot included', 'Not tied to CMPSBL in any way'].map(f => (
+                {['Lifetime license — no recurring fees', 'Unlimited wrapped functions', 'Self-hosted telemetry dashboard', 'VOLVER coding agent included', 'Unlimited probes & learning tests'].map(f => (
                   <li key={f} className="flex items-center gap-2 text-sm"><Check className="w-4 h-4 text-amber-600 shrink-0" /><span>{f}</span></li>
                 ))}
               </ul>
@@ -657,17 +820,22 @@ export default function EvolutionMeshLanding() {
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Bot className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="text-xl font-bold">ENCODE Agent — Autonomous Code Execution</h3>
+              <h3 className="text-xl font-bold">VOLVER — Built-In Coding Agent</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                The Standalone license includes an <strong>ENCODE agent slot</strong> — our governed autonomous 
-                code execution engine. ENCODE can analyze, repair, and evolve your codebase autonomously with 
-                a 3-tier graduated autonomy framework. It's the coding agent that runs inside Evolution Mesh.
+                VOLVER is EVLVBL's built-in coding agent with <strong>{volverSummary.total} core skills</strong> across
+                {' '}{volverSummary.categories.length} categories (avg proficiency: {volverSummary.avgProficiency}%).
+                It analyzes, suggests, and repairs code — included with the Standalone license.
               </p>
-              <ul className="space-y-2">
-                {['Governed code execution', '3-tier autonomy (Manual → Supervised → Autonomous)', 'Nexus Guard prevents self-modification', 'Continuous Learning Machine built in', 'Available separately as a Composable Cognitive'].map(f => (
-                  <li key={f} className="flex items-center gap-2 text-sm"><Check className="w-4 h-4 text-primary shrink-0" /><span>{f}</span></li>
+              <div className="grid grid-cols-2 gap-2">
+                {VOLVER_SKILLS.slice(0, 6).map(skill => (
+                  <div key={skill.id} className="flex items-center gap-2 text-xs">
+                    <div className="w-16 h-1.5 rounded-full bg-muted overflow-hidden">
+                      <div className="h-full bg-primary/60 rounded-full" style={{ width: `${skill.proficiency}%` }} />
+                    </div>
+                    <span className="text-muted-foreground truncate">{skill.name}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
               <Button variant="outline" asChild className="gap-2 w-full">
                 <Link to="/composable-cognitives">
                   <Bot className="w-4 h-4" /> Browse Coding Agents
@@ -754,7 +922,7 @@ export default function EvolutionMeshLanding() {
                 <thead>
                   <tr className="border-b border-border">
                     <th className="text-left py-3 px-4 font-medium text-muted-foreground">Feature</th>
-                    <th className="py-3 px-4 font-bold text-primary">Evolution Mesh</th>
+                    <th className="py-3 px-4 font-bold text-primary">EVLVBL</th>
                     <th className="py-3 px-4 font-medium text-muted-foreground">Zod</th>
                     <th className="py-3 px-4 font-medium text-muted-foreground">Istio</th>
                     <th className="py-3 px-4 font-medium text-muted-foreground">Chaos Monkey</th>
@@ -764,14 +932,14 @@ export default function EvolutionMeshLanding() {
                   {[
                     ['Input validation', true, true, false, false],
                     ['Auto-repair', true, false, false, false],
-                    ['Shadow testing', true, false, true, true],
+                    ['Shadow probes', true, false, true, true],
                     ['Self-learning', true, false, false, false],
-                    ['Governed promotion', true, false, false, false],
+                    ['Learning tests', true, false, false, false],
+                    ['Built-in coding agent', true, false, false, false],
                     ['Framework-agnostic', true, true, false, false],
                     ['Zero config start', true, true, false, false],
                     ['Black-box protected', true, false, false, false],
                     ['Free tier available', true, true, false, false],
-                    ['ENCODE agent slot', true, false, false, false],
                   ].map(([feature, ...vals]) => (
                     <tr key={feature as string} className="border-b border-border/50">
                       <td className="py-3 px-4 text-foreground">{feature as string}</td>
@@ -824,14 +992,14 @@ export default function EvolutionMeshLanding() {
         {/* ═══ FOOTER CTA ═══ */}
         <section className="bg-primary/5 py-16">
           <div className="max-w-2xl mx-auto px-4 text-center space-y-4">
-            <h2 className="text-2xl font-bold">Software that defends itself.</h2>
+            <h2 className="text-2xl font-bold">Software that evolves itself.</h2>
             <p className="text-muted-foreground">
               Stop bolting resilience on after things break. Start with an immune system.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button size="lg" onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
                 <Download className="w-4 h-4" />
-                Download Free Version
+                Download Free
               </Button>
               <Button size="lg" variant="outline" onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2">
                 {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Crown className="w-4 h-4" />}
@@ -839,7 +1007,7 @@ export default function EvolutionMeshLanding() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Free version · 5 wrapped functions · All frameworks · Install wizard · Black-box protected
+              Free · 5 wrapped functions · All frameworks · VOLVER agent · Black-box protected
             </p>
           </div>
         </section>
