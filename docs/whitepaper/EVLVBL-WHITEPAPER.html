@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EVLVBL — Autonomous Code Evolution Platform</title>
+<title>EVLVBL — API-First Autonomous Code Evolution Platform</title>
 <style>
   @media print {
     body { font-size: 11pt; }
@@ -34,7 +34,7 @@
   .kpi-card { background: #f8f8f5; border: 1px solid #ddd; border-radius: 6px; padding: 0.75rem 1rem; }
   .kpi-card strong { display: block; font-size: 1.3rem; color: #1a1a1a; }
   .kpi-card span { font-size: 0.8rem; color: #666; }
-  .callout { background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 1rem; margin: 1rem 0; }
+  .callout { background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 6px; padding: 1rem; margin: 1rem 0; }
   .callout-title { font-weight: 700; margin-bottom: 0.3rem; }
   ul, ol { margin: 0.5rem 0; padding-left: 1.5rem; }
   li { margin-bottom: 0.35rem; }
@@ -43,15 +43,15 @@
 <body>
 
 <h1>EVLVBL</h1>
-<p class="subtitle">Autonomous Code Evolution Platform — Your Code Evolves Its Own Defenses</p>
+<p class="subtitle">API-First Autonomous Code Evolution — Your Code Evolves Its Own Defenses</p>
 <p class="meta">
   CMPSBL Substrate · Technical Whitepaper WP-003<br>
   Classification: Public / Investor<br>
-  Version 1.0 · February 2026
+  February 2026
 </p>
 
 <div class="abstract">
-  <strong>Abstract.</strong> EVLVBL is a standalone, framework-agnostic code evolution platform extracted from the CMPSBL cognitive substrate. It enables any application to wrap its critical functions with autonomous self-healing, shadow testing, and deterministic repair — without rewriting existing code. The platform includes VOLVER, a built-in coding agent with 8 core skill domains, providing dry-run analysis and code suggestions out of the box. EVLVBL represents the commercialization of battle-tested self-evolution technology that has maintained 95%+ uptime across 157 production executors.
+  <strong>Abstract.</strong> EVLVBL is an API-first, autonomous code evolution platform. Unlike downloadable SDKs, the entire self-evolution engine runs server-side on CMPSBL infrastructure — developers interact via simple HTTP API calls. This API-first model ensures zero source code exposure, zero IP leakage, and instant kill-switch capability via API key revocation. The platform includes 29+ deterministic repair strategies, self-learning rules, shadow probes, and the VOLVER coding agent — all accessible via API.
 </div>
 
 <h2>1. The Problem</h2>
@@ -65,160 +65,125 @@
   <li><strong>Regression loops:</strong> Fixes introduce new failures at a 12–18% rate</li>
 </ul>
 
-<p>Current solutions — monitoring, alerting, circuit breakers — detect problems but don't fix them. Teams still need humans to diagnose, patch, test, and deploy. EVLVBL eliminates this gap.</p>
+<p>Current solutions detect problems but don't fix them. EVLVBL eliminates this gap — via a simple API call.</p>
 
-<h2>2. The Solution</h2>
+<h2>2. The Solution: API-First</h2>
 
-<p>EVLVBL wraps your existing functions with an intelligent evolution layer that detects failures, generates repair candidates, validates them in shadow mode, and applies fixes — all without human intervention.</p>
+<p>EVLVBL operates as a hosted API. Developers send inputs and schemas; the engine validates, repairs, and returns clean results. No packages to install, no source code to distribute, no algorithms to reverse-engineer.</p>
 
 <pre>
-import { wrap } from '@evlvbl/sdk';
+// Any language, any framework — just an HTTP call
+POST https://api.cmpsbl.com/v1/wrap
+Authorization: Bearer YOUR_API_KEY
 
-// Your existing function — unchanged
-async function processPayment(order: Order): Promise&lt;Receipt&gt; {
-  // ... existing logic
+{
+  "input": { "email": "user@example.com", "age": -5 },
+  "schema": { "email": "string", "age": "number" },
+  "repair": "deterministic"
 }
 
-// Now it self-heals
-const resilientPayment = wrap(processPayment, {
-  repair: 'deterministic',    // 12+ repair strategies
-  shadow: true,               // A/B test candidates
-  rollback: 'automatic',      // Instant revert on failure
-});
+→ Response:
+{
+  "success": true,
+  "result": { "email": "user@example.com", "age": 0 },
+  "repaired": true,
+  "repair_type": "range_clamp",
+  "stamp": "evl_stamp_abc123..."
+}
 </pre>
 
-<h2>3. Core Capabilities</h2>
+<div class="callout">
+  <div class="callout-title">🔒 Why API-First Protects Your IP</div>
+  <p>Unlike open-source SDKs, the evolution engine never leaves CMPSBL infrastructure. Competitors cannot reverse-engineer algorithms they never receive. API keys provide instant access control — revoke a key, access stops immediately.</p>
+</div>
+
+<h2>3. Core API Endpoints</h2>
 
 <table>
-  <tr><th>Capability</th><th>Description</th><th>Benefit</th></tr>
-  <tr><td><strong>wrap()</strong></td><td>Single-function wrapper that adds self-healing to any async function</td><td>Zero-rewrite integration</td></tr>
-  <tr><td><strong>shadow()</strong></td><td>A/B testing mode that runs baseline vs. candidate in parallel</td><td>Risk-free validation</td></tr>
-  <tr><td><strong>deterministicRepair</strong></td><td>12+ repair strategies including retry, fallback, circuit-break, and semantic repair</td><td>Autonomous recovery</td></tr>
-  <tr><td><strong>VOLVER Agent</strong></td><td>Built-in coding agent with 8 skill domains for dry-run analysis</td><td>Intelligent code suggestions</td></tr>
-  <tr><td><strong>Evolution Stamps</strong></td><td>Cryptographic proof of every mutation with full audit trail</td><td>Compliance + trust</td></tr>
+  <tr><th>Endpoint</th><th>Description</th><th>Method</th></tr>
+  <tr><td><code>/v1/wrap</code></td><td>Validate, repair, and return healed input</td><td>POST</td></tr>
+  <tr><td><code>/v1/shadow</code></td><td>A/B test baseline vs candidate function</td><td>POST</td></tr>
+  <tr><td><code>/v1/probe</code></td><td>Run shadow probes with timing analysis</td><td>POST</td></tr>
+  <tr><td><code>/v1/rules</code></td><td>View learned repair rules for your project</td><td>GET</td></tr>
+  <tr><td><code>/v1/metrics</code></td><td>Dashboard health, repair analytics</td><td>GET</td></tr>
+  <tr><td><code>/v1/volver</code></td><td>VOLVER coding agent analysis (Enterprise)</td><td>POST</td></tr>
 </table>
 
 <h2>4. Architecture</h2>
 
 <pre>
 ┌─────────────────────────────────────────────────────┐
-│                   YOUR APPLICATION                  │
-├─────────────────────────────────────────────────────┤
-│                   EVLVBL SDK LAYER                  │
-│  ┌──────────┐  ┌──────────┐  ┌───────────────────┐ │
-│  │  wrap()   │  │ shadow() │  │ deterministicRepair│ │
-│  └────┬─────┘  └────┬─────┘  └────────┬──────────┘ │
-│       │              │                 │            │
-│  ┌────▼──────────────▼─────────────────▼──────────┐ │
-│  │              EVOLUTION ENGINE                   │ │
-│  │  observe → propose → validate → apply → stamp  │ │
-│  └────────────────────┬───────────────────────────┘ │
-│                       │                             │
-│  ┌────────────────────▼───────────────────────────┐ │
-│  │              VOLVER AGENT                       │ │
-│  │  8 skills · dry-run analysis · code suggestions │ │
-│  └────────────────────────────────────────────────┘ │
-├─────────────────────────────────────────────────────┤
-│              EVLVBL DASHBOARD (SaaS)                │
-│  health · probes · learning tests · audit trail     │
-└─────────────────────────────────────────────────────┘
+│               YOUR APPLICATION (Any Language)        │
+│    fetch('https://api.cmpsbl.com/v1/wrap', {...})    │
+└──────────────────────┬──────────────────────────────┘
+                       │ HTTPS
+┌──────────────────────▼──────────────────────────────┐
+│              CMPSBL INFRASTRUCTURE (Private)         │
+│  ┌──────────┐  ┌──────────┐  ┌───────────────────┐  │
+│  │  wrap()   │  │ shadow() │  │ deterministicRepair│  │
+│  └────┬─────┘  └────┬─────┘  └────────┬──────────┘  │
+│       │              │                 │             │
+│  ┌────▼──────────────▼─────────────────▼──────────┐  │
+│  │              EVOLUTION ENGINE                   │  │
+│  │  observe → propose → validate → apply → stamp   │  │
+│  └────────────────────┬───────────────────────────┘  │
+│                       │                              │
+│  ┌────────────────────▼───────────────────────────┐  │
+│  │              VOLVER AGENT (Enterprise)          │  │
+│  │  8 skills · code analysis · repair suggestions  │  │
+│  └────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────┘
 </pre>
 
 <h2>5. VOLVER — The Built-In Coding Agent</h2>
 
-<p>VOLVER is a renamed, customer-facing version of the substrate's internal ENCODE agent. It ships with 8 core skills across 5 categories:</p>
+<p>VOLVER ships with 8 core skills across 5 categories, available via the <code>/v1/volver</code> endpoint on Enterprise plans:</p>
 
 <table>
-  <tr><th>Skill</th><th>Category</th><th>Proficiency</th></tr>
-  <tr><td>TypeScript Strict Mode</td><td>TypeScript</td><td>72%</td></tr>
-  <tr><td>Design Patterns</td><td>TypeScript</td><td>65%</td></tr>
-  <tr><td>React Hooks</td><td>React</td><td>70%</td></tr>
-  <tr><td>React Components</td><td>React</td><td>68%</td></tr>
-  <tr><td>API Endpoints</td><td>API</td><td>71%</td></tr>
-  <tr><td>Authentication Patterns</td><td>API</td><td>62%</td></tr>
-  <tr><td>Database Queries</td><td>Database</td><td>64%</td></tr>
-  <tr><td>Extract & Simplify</td><td>Refactoring</td><td>69%</td></tr>
+  <tr><th>Skill</th><th>Category</th><th>Capability</th></tr>
+  <tr><td>TypeScript Strict Mode</td><td>TypeScript</td><td>Type analysis & strict compliance</td></tr>
+  <tr><td>Design Patterns</td><td>TypeScript</td><td>Pattern recognition & suggestion</td></tr>
+  <tr><td>React Hooks</td><td>React</td><td>Hook optimization & safety</td></tr>
+  <tr><td>React Components</td><td>React</td><td>Component architecture analysis</td></tr>
+  <tr><td>API Endpoints</td><td>API</td><td>Endpoint validation & hardening</td></tr>
+  <tr><td>Authentication Patterns</td><td>API</td><td>Auth flow analysis</td></tr>
+  <tr><td>Database Queries</td><td>Database</td><td>Query optimization & safety</td></tr>
+  <tr><td>Extract & Simplify</td><td>Refactoring</td><td>Complexity reduction</td></tr>
 </table>
 
-<div class="callout">
-  <div class="callout-title">💡 Upgrade Path</div>
-  VOLVER operates in dry-run mode on Free and Pro tiers. Standalone License ($399 lifetime) unlocks autonomous code-writing and resolution capabilities.
-</div>
-
-<h2>6. Shadow Probes & Learning Tests</h2>
-
-<p>EVLVBL includes two customer-facing simulation tools:</p>
-
-<h3>6.1 Shadow Probes</h3>
-<p>Shadow probes run a baseline function and a candidate function against the same input, comparing outputs and timing without affecting production traffic. Users can validate proposed changes before committing them.</p>
-
-<h3>6.2 Learning Tests</h3>
-<p>Learning tests submit task descriptions to the VOLVER agent, which returns skill analysis, confidence scoring, and code suggestions. This enables teams to evaluate EVLVBL's repair capabilities against their specific codebase patterns.</p>
-
-<h2>7. Pricing</h2>
+<h2>6. Pricing</h2>
 
 <table>
-  <tr><th>Tier</th><th>Price</th><th>Includes</th></tr>
-  <tr><td>Free / Open Source</td><td>$0</td><td>SDK core, wrap(), shadow(), community support</td></tr>
-  <tr><td>Pro</td><td>$29/mo</td><td>Dashboard, probes, learning tests, priority support</td></tr>
-  <tr><td>Team</td><td>$99/mo</td><td>Multi-repo, shared evolution rules, team analytics</td></tr>
-  <tr><td>Standalone Lifetime</td><td>$399</td><td>Full VOLVER agent, autonomous execution, self-hosted</td></tr>
+  <tr><th>Tier</th><th>Price</th><th>API Calls/Month</th><th>Includes</th></tr>
+  <tr><td>Free</td><td>$0</td><td>1,000</td><td>All repair strategies, all frameworks</td></tr>
+  <tr><td>Pro</td><td>$29/mo</td><td>25,000</td><td>Dashboard, probes, learning tests</td></tr>
+  <tr><td>Team</td><td>$99/mo</td><td>250,000</td><td>SSO, shared rules, team analytics</td></tr>
+  <tr><td>Enterprise</td><td>Custom</td><td>Unlimited</td><td>VOLVER agent, dedicated infra, SLA</td></tr>
 </table>
 
-<h2>8. Performance Metrics</h2>
+<h2>7. Performance Metrics</h2>
 
 <div class="kpi-grid">
-  <div class="kpi-card">
-    <strong>85%+</strong>
-    <span>Autonomous repair success rate</span>
-  </div>
-  <div class="kpi-card">
-    <strong>&lt;0.5%</strong>
-    <span>Escalation rate</span>
-  </div>
-  <div class="kpi-card">
-    <strong>12+</strong>
-    <span>Repair strategies</span>
-  </div>
-  <div class="kpi-card">
-    <strong>8</strong>
-    <span>VOLVER skill domains</span>
-  </div>
-  <div class="kpi-card">
-    <strong>0ms</strong>
-    <span>Overhead on healthy paths</span>
-  </div>
-  <div class="kpi-card">
-    <strong>100%</strong>
-    <span>Audit trail coverage</span>
-  </div>
+  <div class="kpi-card"><strong>85%+</strong><span>Autonomous repair success rate</span></div>
+  <div class="kpi-card"><strong>&lt;0.5%</strong><span>Escalation rate</span></div>
+  <div class="kpi-card"><strong>29+</strong><span>Repair strategies</span></div>
+  <div class="kpi-card"><strong>8</strong><span>VOLVER skill domains</span></div>
+  <div class="kpi-card"><strong>&lt;50ms</strong><span>API response latency (p95)</span></div>
+  <div class="kpi-card"><strong>100%</strong><span>Audit trail coverage</span></div>
 </div>
 
-<h2>9. Competitive Landscape</h2>
-
-<table>
-  <tr><th>Feature</th><th>EVLVBL</th><th>Sentry</th><th>PagerDuty</th><th>LaunchDarkly</th></tr>
-  <tr><td>Detects failures</td><td>✅</td><td>✅</td><td>✅</td><td>—</td></tr>
-  <tr><td>Repairs autonomously</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
-  <tr><td>Shadow testing</td><td>✅</td><td>—</td><td>—</td><td>✅</td></tr>
-  <tr><td>Built-in coding agent</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
-  <tr><td>Cryptographic audit</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
-  <tr><td>Self-improving rules</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
-</table>
-
-<h2>10. Defensibility</h2>
+<h2>8. Defensibility</h2>
 
 <ul>
-  <li><strong>Compounding repair rules:</strong> Every failure the system survives makes it stronger. This learning cannot be replicated from scratch.</li>
-  <li><strong>Evolution stamps:</strong> Cryptographic proof creates an immutable record of system intelligence growth.</li>
-  <li><strong>VOLVER skill ceiling:</strong> Customer-facing agent has capped proficiencies; the full ENCODE engine remains internal IP.</li>
+  <li><strong>API-first = zero IP leakage:</strong> The evolution engine never leaves CMPSBL infrastructure. No source code is distributed to customers.</li>
+  <li><strong>Compounding repair rules:</strong> Every failure the system survives makes it stronger. This learned intelligence cannot be replicated from scratch.</li>
+  <li><strong>Instant access control:</strong> API key revocation stops access immediately. Usage metering provides full visibility.</li>
+  <li><strong>VOLVER skill ceiling:</strong> Customer-facing agent capabilities are bounded; the full ENCODE engine remains internal IP.</li>
 </ul>
 
-<h2>11. Conclusion</h2>
+<h2>9. Conclusion</h2>
 
-<p>EVLVBL transforms code from static artifact into living, self-defending infrastructure. By wrapping existing functions rather than requiring rewrites, it offers the fastest path from "monitoring failures" to "autonomously preventing them."</p>
-
-<p>The platform ships complete — SDK, dashboard, coding agent, simulation tools — ready to evolve your codebase from day one.</p>
+<p>EVLVBL transforms code from static artifact into living, self-defending infrastructure — via a simple API call. The API-first model ensures that the proprietary self-evolution engine is never distributed, never reverse-engineered, and always under CMPSBL's control. Developers get results; CMPSBL keeps the algorithms.</p>
 
 <hr>
 <p style="font-size: 0.85rem; color: #777; text-align: center;">

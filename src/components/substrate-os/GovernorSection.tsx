@@ -343,41 +343,25 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
         </CardContent>
       </Card>
 
-      {/* EVLVBL Download Card */}
-      <Card className="border-emerald-500/30 bg-emerald-500/[0.03]">
+      {/* EVLVBL API Card */}
+      <Card className="border-cyan-500/30 bg-cyan-500/[0.03]">
         <CardContent className="p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-              <Download className="w-6 h-6 text-emerald-600" />
+            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center shrink-0">
+              <Zap className="w-6 h-6 text-cyan-600" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-base font-bold">EVLVBL v2 SDK</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Open-source immune system · Full source code · MIT licensed</p>
+              <h3 className="text-base font-bold">EVLVBL API</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">API-first self-evolving code defense · Zero source exposure</p>
             </div>
             <div className="flex gap-2 w-full sm:w-auto">
-              <Button
-                size="sm"
-                className="flex-1 sm:flex-initial gap-1.5 bg-emerald-600 hover:bg-emerald-700"
-                onClick={() => {
-                  const blob = new Blob([`# EVLVBL v2 — Open Source SDK\n# https://cmpsbl.com/evolution-mesh\n# License: MIT | Source: Fully readable TypeScript\n\n## Install\n\`\`\`bash\nnpm install @evlvbl/sdk@latest\n\`\`\`\n\n## Quick Start\n\`\`\`typescript\nimport { wrap, defineSchema } from '@evlvbl/sdk';\n\nconst schema = defineSchema({\n  email: { type: 'string', required: true },\n  age: { type: 'number' },\n});\n\nconst safeHandler = wrap(myApiHandler, { schema, name: 'create-user' });\nconst result = await safeHandler({ email: 'user@example.com', age: 25 });\n\`\`\`\n\n## Security\n- MIT Licensed — full source code, no obfuscation\n- Zero runtime dependencies\n- No eval(), no remote code loading\n- Verify: npm audit after install\n\n## Free Tier: 5 wrapped functions, all frameworks, all 29+ repair strategies\n## Upgrade: Pro ($29/mo) | Team ($99/mo) | Standalone ($399 lifetime)\n\n© ${new Date().getFullYear()} CMPSBL — https://cmpsbl.com`], { type: 'text/markdown' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'evlvbl-v2-install.md';
-                  a.click();
-                  URL.revokeObjectURL(url);
-                  toast.success('EVLVBL v2 downloaded');
-                }}
-              >
-                <Download className="w-3.5 h-3.5" /> Download v2
-              </Button>
               <Button
                 size="sm"
                 variant="outline"
                 className="flex-1 sm:flex-initial gap-1.5"
                 onClick={() => navigate('/evolution-mesh')}
               >
-                <ArrowRight className="w-3.5 h-3.5" /> View Page
+                <ArrowRight className="w-3.5 h-3.5" /> API Docs
               </Button>
             </div>
           </div>
