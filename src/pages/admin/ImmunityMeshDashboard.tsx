@@ -468,6 +468,16 @@ export default function ImmunityMeshDashboard() {
           <ModernizerShadowPanel />
         </TabsContent>
 
+        {/* ══════════════════ ENCODE TRAINING ══════════════════ */}
+        <TabsContent value="encode-training" className="space-y-5">
+          <EncodeTrainingPanel />
+        </TabsContent>
+
+        {/* ══════════════════ CODE VERIFICATION ══════════════════ */}
+        <TabsContent value="verify" className="space-y-5">
+          <CodeVerificationPanel />
+        </TabsContent>
+
         {/* ══════════════════ EXECUTORS ══════════════════ */}
         <TabsContent value="executors" className="space-y-4">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
