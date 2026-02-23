@@ -21,17 +21,17 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-// ── AI Helper ──────────────────────────────────────────────
+// ── AI Helper — Routes through NEXUS (Groq free-tier) ─────
 
 async function callAI(messages: Array<{ role: string; content: string }>, tools?: any[], toolChoice?: any): Promise<any> {
-  if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+  if (!GROQ_API_KEY) throw new Error("GROQ_API_KEY not configured — NEXUS router requires at least one provider key");
 
   const body: any = {
-    model: "google/gemini-3-flash-preview",
+    model: "llama-3.3-70b-versatile",
     messages,
     temperature: 0.2,
   };
@@ -41,10 +41,10 @@ async function callAI(messages: Array<{ role: string; content: string }>, tools?
     if (toolChoice) body.tool_choice = toolChoice;
   }
 
-  const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
+      Authorization: `Bearer ${GROQ_API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
@@ -52,8 +52,8 @@ async function callAI(messages: Array<{ role: string; content: string }>, tools?
 
   if (!resp.ok) {
     const errText = await resp.text();
-    console.error("AI gateway error:", resp.status, errText);
-    throw new Error(`AI gateway returned ${resp.status}`);
+    console.error("NEXUS/Groq error:", resp.status, errText);
+    throw new Error(`NEXUS router returned ${resp.status}`);
   }
 
   return resp.json();

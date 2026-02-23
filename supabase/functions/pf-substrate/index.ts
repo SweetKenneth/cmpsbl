@@ -544,18 +544,7 @@ interface ProviderAdapter {
 
 // Provider configurations for Nexus routing
 const PROVIDERS: Record<string, ProviderAdapter> = {
-  lovable: {
-    id: 'lovable',
-    name: 'Lovable AI Gateway',
-    type: 'openai-compatible',
-    url: "https://ai.gateway.lovable.dev/v1/chat/completions",
-    model: "google/gemini-3-flash-preview",
-    keyEnv: "LOVABLE_API_KEY",
-    capabilities: { text: true, image: false, embedding: false, streaming: true },
-    pricing: { inputPerMTok: 0, outputPerMTok: 0 },
-    limits: { maxTokens: 8192, rpm: 60, rpd: 10000 },
-    metadata: { tier: 'managed', priority: 0 }
-  },
+  // Lovable AI Gateway removed — all AI routes through NEXUS providers (Groq, Cerebras, etc.)
   groq: {
     id: 'groq',
     name: 'Groq (8b Fast)',
