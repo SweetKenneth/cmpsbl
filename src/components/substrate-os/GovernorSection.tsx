@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock, Power, BarChart3, Zap, Eye, Shield, ArrowRight, Download } from 'lucide-react';
+import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock, Power, BarChart3, Zap, Eye, Shield, ArrowRight, Download, Brain } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -107,6 +107,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
     seba_enabled: false,
     autoblog_enabled: false,
     defense_enabled: true,
+    clm_enabled: true,
   });
   const [killSwitchesLoading, setKillSwitchesLoading] = useState(true);
 
@@ -115,7 +116,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
     supabase
       .from('system_flags')
       .select('key, enabled')
-      .in('key', ['seba_enabled', 'autoblog_enabled', 'defense_enabled'])
+      .in('key', ['seba_enabled', 'autoblog_enabled', 'defense_enabled', 'clm_enabled'])
       .then(({ data }) => {
         if (data) {
           const flags: Record<string, boolean> = {};
@@ -336,6 +337,20 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
               <Switch 
                 checked={killSwitches.autoblog_enabled} 
                 onCheckedChange={() => toggleKillSwitch('autoblog_enabled')}
+                disabled={killSwitchesLoading}
+              />
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-emerald-500/20">
+              <div className="flex items-center gap-2">
+                <Brain className="w-4 h-4 text-emerald-400" />
+                <div>
+                  <p className="text-sm font-medium">CLM Engine</p>
+                  <p className="text-[10px] text-muted-foreground">24/7 continuous learning</p>
+                </div>
+              </div>
+              <Switch 
+                checked={killSwitches.clm_enabled} 
+                onCheckedChange={() => toggleKillSwitch('clm_enabled')}
                 disabled={killSwitchesLoading}
               />
             </div>
