@@ -721,4 +721,8 @@ export const mutationEngine = {
   setMPEFlag,
   // Stats
   getPipelineStats,
+  // Executor selection
+  selectExecutorsForCategory,
+  getExecutorCategorySummary,
+  getExecutorCount,
 };
