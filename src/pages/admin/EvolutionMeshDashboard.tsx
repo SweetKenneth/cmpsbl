@@ -665,6 +665,40 @@ export default function EvolutionMeshDashboard() {
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
+
+                      {/* Abort Evolution for stale proposals */}
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={(e) => e.stopPropagation()}
+                            disabled={abortEvolveMutation.isPending || p.gate_state === 'promoted'}
+                            className="border-destructive/40 text-destructive hover:bg-destructive/10"
+                          >
+                            <XOctagon className="w-3 h-3 mr-1" /> Abort Evolution
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Abort this evolution?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This calls modernizer.evolve abort to terminate the active evolution run associated with this proposal.
+                              Any in-progress shadow or canary stages will be halted.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => abortEvolveMutation.mutate()}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              {abortEvolveMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <XOctagon className="w-3 h-3 mr-1" />}
+                              Confirm Abort
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   )}
 
