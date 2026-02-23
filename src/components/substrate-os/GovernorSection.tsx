@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock, Power, BarChart3, Zap, Eye, Shield, ArrowRight } from 'lucide-react';
+import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock, Power, BarChart3, Zap, Eye, Shield, ArrowRight, Download } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -343,6 +343,47 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
         </CardContent>
       </Card>
 
+      {/* EVLVBL Download Card */}
+      <Card className="border-emerald-500/30 bg-emerald-500/[0.03]">
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+              <Download className="w-6 h-6 text-emerald-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base font-bold">EVLVBL SDK</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Open-source immune system · Full source code · MIT licensed</p>
+            </div>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button
+                size="sm"
+                className="flex-1 sm:flex-initial gap-1.5 bg-emerald-600 hover:bg-emerald-700"
+                onClick={() => {
+                  const blob = new Blob([`# EVLVBL — FREE Install\nnpx @evlvbl/sdk init --framework=auto --tier=free`], { type: 'text/markdown' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'evlvbl-install.md';
+                  a.click();
+                  URL.revokeObjectURL(url);
+                  toast.success('EVLVBL SDK downloaded');
+                }}
+              >
+                <Download className="w-3.5 h-3.5" /> Download Free
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="flex-1 sm:flex-initial gap-1.5"
+                onClick={() => navigate('/evolution-mesh')}
+              >
+                <ArrowRight className="w-3.5 h-3.5" /> View Page
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Quick Links */}
       <Card className="border-border/30">
         <CardHeader className="pb-3">
@@ -352,10 +393,10 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Button
               variant="outline"
-              className="justify-between h-auto p-4 border-primary/20 hover:bg-primary/5"
+              className="justify-between h-auto p-3 sm:p-4 border-primary/20 hover:bg-primary/5"
               onClick={() => navigate('/admin/immunity-mesh')}
             >
               <div className="flex items-center gap-3 text-left">
@@ -365,11 +406,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                   <p className="text-[10px] text-muted-foreground">Training · Probes · Analytics</p>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+              <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
             </Button>
             <Button
               variant="outline"
-              className="justify-between h-auto p-4 border-border/30 hover:bg-muted/50"
+              className="justify-between h-auto p-3 sm:p-4 border-border/30 hover:bg-muted/50"
               onClick={() => navigate('/admin/patches')}
             >
               <div className="flex items-center gap-3 text-left">
@@ -379,25 +420,25 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                   <p className="text-[10px] text-muted-foreground">Deploy & manage patches</p>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+              <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
             </Button>
             <Button
               variant="outline"
-              className="justify-between h-auto p-4 border-emerald-500/20 hover:bg-emerald-500/5"
+              className="justify-between h-auto p-3 sm:p-4 border-emerald-500/20 hover:bg-emerald-500/5"
               onClick={() => navigate('/evolution-mesh')}
             >
               <div className="flex items-center gap-3 text-left">
                 <Shield className="w-5 h-5 text-emerald-500 shrink-0" />
                 <div>
-                  <p className="text-sm font-medium">Evolution Mesh</p>
+                  <p className="text-sm font-medium">EVLVBL SDK</p>
                   <p className="text-[10px] text-muted-foreground">Test SDK · Download · Manage</p>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+              <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
             </Button>
             <Button
               variant="outline"
-              className="justify-between h-auto p-4 border-border/30 hover:bg-muted/50"
+              className="justify-between h-auto p-3 sm:p-4 border-border/30 hover:bg-muted/50"
               onClick={() => navigate('/composable-cognitives')}
             >
               <div className="flex items-center gap-3 text-left">
@@ -407,7 +448,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                   <p className="text-[10px] text-muted-foreground">Coding agent · Cognitive store</p>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+              <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
             </Button>
           </div>
         </CardContent>

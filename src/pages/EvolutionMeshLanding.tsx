@@ -122,7 +122,7 @@ const FEATURES = [
   { icon: Zap, title: '29+ Repair Strategies', description: 'Deterministic, non-AI repairs: XSS stripping, SQL sanitization, type coercion, prototype pollution guard.' },
   { icon: Brain, title: 'Self-Learning Rules', description: 'Successful repairs become rules that propagate across functions. Your system learns from every failure.' },
   { icon: GitCompare, title: 'Shadow Probes', description: 'Test changes against real traffic without risk. Compare baseline vs candidate. Promote only what passes.' },
-  { icon: Lock, title: 'Black-Box Architecture', description: 'Compiled and minified. Source maps excluded. Your competitive advantage stays protected.' },
+  { icon: Lock, title: 'Auditable Architecture', description: 'Fully readable source code. MIT-licensed core. Verify every line before deploying to production.' },
   { icon: Activity, title: 'Real-Time Dashboard', description: 'Health metrics, repair analytics, learning curves, and alert feeds — all via encrypted telemetry.' },
   { icon: Eye, title: 'Archetype Classification', description: 'Inputs classified as injection attempts, empty shells, type mismatches — each handled differently.' },
   { icon: Layers, title: 'Cross-Function Learning', description: 'Rules learned in one function automatically propagate to compatible functions across your codebase.' },
@@ -135,7 +135,7 @@ const TIERS = [
     name: 'Open Source',
     price: '$0',
     period: 'forever',
-    features: ['5 wrapped functions', 'Local telemetry only', 'CLI dashboard', 'Community support', 'All 12 frameworks', 'Install wizard included', 'Black-box protected'],
+    features: ['5 wrapped functions', 'Local telemetry only', 'CLI dashboard', 'Community support', 'All 12 frameworks', 'Install wizard included', 'Full source code included'],
     cta: 'Download Free',
     highlighted: false,
     tier: null as string | null,
@@ -168,7 +168,7 @@ const TIERS = [
     name: 'Standalone',
     price: '$399',
     period: 'one-time',
-    features: ['Unlimited wrapped functions', 'Lifetime license — yours forever', 'VOLVER coding agent included', 'Self-hosted dashboard', 'All future updates included', 'Unlimited probes & tests', 'All 12 frameworks', 'Black-box protected'],
+    features: ['Unlimited wrapped functions', 'Lifetime license — yours forever', 'VOLVER coding agent included', 'Self-hosted dashboard', 'All future updates included', 'Unlimited probes & tests', 'All 12 frameworks', 'Full source code included'],
     cta: 'Buy Standalone License',
     highlighted: false,
     tier: 'standalone',
@@ -210,9 +210,9 @@ const safe = wrap(myHandler, { schema: { email: 'string' } });
 npx @evlvbl/sdk upgrade --tier=pro
 \`\`\`
 
-## Black-Box Protected
-This software is compiled and obfuscated. Source maps are not included.
-Reverse engineering is prohibited under the EVLVBL Software License.
+## Open Source — MIT Licensed
+Full source code included. Inspect, audit, and verify every line.
+No obfuscation. No hidden dependencies. Production-safe by design.
 
 © CMPSBL — EVLVBL (Free Tier)
 https://cmpsbl.com/evolution-mesh
@@ -362,21 +362,21 @@ export default function EvolutionMeshLanding() {
     <>
       <Helmet>
         <title>EVLVBL — Self-Evolving Immune System for Any Software | CMPSBL</title>
-        <meta name="description" content="Category-defining resilience SDK that wraps your functions with immune defense, auto-repair, and self-learning rules. Built-in coding agent. Free download available. Works with 12+ frameworks." />
-        <meta name="keywords" content="EVLVBL, software resilience, input validation, auto-repair, self-learning, immune system, API protection, shadow probes, learning tests, coding agent, black box SDK" />
+        <meta name="description" content="Open-source resilience SDK that wraps your functions with immune defense, auto-repair, and self-learning rules. Full source code included. Free download available. Works with 12+ frameworks." />
+        <meta name="keywords" content="EVLVBL, software resilience, input validation, auto-repair, self-learning, immune system, API protection, shadow probes, learning tests, coding agent, open source SDK" />
         <link rel="canonical" href="https://cmpsbl.com/evolution-mesh" />
         <meta property="og:title" content="EVLVBL — Your Code Evolves Its Own Defenses" />
-        <meta property="og:description" content="Drop-in resilience for any framework. 29+ repair strategies. Self-learning rules. Built-in coding agent. Black-box protected." />
+        <meta property="og:description" content="Drop-in resilience for any framework. 29+ repair strategies. Self-learning rules. Built-in coding agent. Open source & auditable." />
         <meta property="og:type" content="product" />
         <meta property="og:url" content="https://cmpsbl.com/evolution-mesh" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="EVLVBL — Self-Evolving Software Immune System" />
-        <meta name="twitter:description" content="Wrap your functions. Your software evolves its own defenses. Built-in coding agent. Free download." />
+        <meta name="twitter:description" content="Wrap your functions. Your software evolves its own defenses. Open source. Full source code included. Free download." />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
           "name": "EVLVBL",
-          "description": "Self-evolving immune system for software. Wraps functions with input validation, auto-repair, and cross-function learning. Built-in VOLVER coding agent. Free tier available.",
+          "description": "Open-source, fully auditable immune system for software. Wraps functions with input validation, auto-repair, and cross-function learning. Built-in VOLVER coding agent. Free tier available.",
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Cross-platform",
           "offers": [
@@ -613,10 +613,10 @@ export default function EvolutionMeshLanding() {
                 <h2 className="text-2xl sm:text-3xl font-bold mb-3">Try it. No strings attached.</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                   The free Open Source version includes 5 wrapped functions, all 12 framework adapters,
-                  the install wizard, and the full deterministic repair engine. Same black-box protection.
+                  the install wizard, and the full deterministic repair engine. Full source code included.
                 </p>
                 <ul className="space-y-2 mb-6">
-                  {['5 wrapped functions', 'All 12 frameworks supported', 'Install wizard included', '29+ repair strategies', 'Local telemetry dashboard', 'Black-box protected'].map(f => (
+                  {['5 wrapped functions', 'All 12 frameworks supported', 'Install wizard included', '29+ repair strategies', 'Local telemetry dashboard', 'Full source code — audit everything'].map(f => (
                     <li key={f} className="flex items-center gap-2 text-sm">
                       <Check className="w-4 h-4 text-emerald-600 shrink-0" />
                       <span>{f}</span>
@@ -658,18 +658,19 @@ export default function EvolutionMeshLanding() {
           </div>
         </section>
 
-        {/* ═══ BLACK-BOX NOTICE ═══ */}
+        {/* ═══ OPEN SOURCE TRUST ═══ */}
         <section className="border-b border-border/50 bg-muted/20">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
             <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
-                <EyeOff className="w-8 h-8 text-primary" />
+              <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+                <Eye className="w-8 h-8 text-emerald-600" />
               </div>
               <div>
-                <h2 className="text-lg font-bold mb-1">Black-Box Protected Architecture</h2>
+                <h2 className="text-lg font-bold mb-1">Open Source — Fully Auditable</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                  EVLVBL ships compiled and minified — across all tiers, including the free version. Source maps are excluded.
-                  Internal repair strategies, learning algorithms, and telemetry protocols are trade secrets.
+                  EVLVBL ships with full readable source code across all tiers. No obfuscation, no hidden payloads, no black boxes.
+                  Inspect every repair strategy, every learning algorithm, every telemetry call before you deploy.
+                  MIT-licensed core — fork it, audit it, trust it.
                 </p>
               </div>
             </div>
@@ -938,7 +939,7 @@ export default function EvolutionMeshLanding() {
                     ['Built-in coding agent', true, false, false, false],
                     ['Framework-agnostic', true, true, false, false],
                     ['Zero config start', true, true, false, false],
-                    ['Black-box protected', true, false, false, false],
+                    ['Open source & auditable', true, true, false, false],
                     ['Free tier available', true, true, false, false],
                   ].map(([feature, ...vals]) => (
                     <tr key={feature as string} className="border-b border-border/50">
@@ -1007,7 +1008,7 @@ export default function EvolutionMeshLanding() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Free · 5 wrapped functions · All frameworks · VOLVER agent · Black-box protected
+              Free · 5 wrapped functions · All frameworks · VOLVER agent · Open source
             </p>
           </div>
         </section>
