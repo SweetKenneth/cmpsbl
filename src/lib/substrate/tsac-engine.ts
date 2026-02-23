@@ -125,6 +125,7 @@ export async function fullVerify(params: {
   executorId?: string;
   source?: 'executor' | 'encode' | 'shadow' | 'manual';
   context?: string;
+  evolutionRunId?: string;
 }): Promise<TSACVerification> {
   const data = await callTSAC({
     action: 'full_verify',
@@ -135,8 +136,108 @@ export async function fullVerify(params: {
     executor_id: params.executorId,
     source: params.source ?? 'executor',
     context: params.context,
+    evolution_run_id: params.evolutionRunId,
   });
   return data.verification;
+}
+
+// ── Evolution Pipeline TSAC Actions ───────────────────────
+
+/**
+ * Layer 1: Generate acceptance criteria BEFORE code execution.
+ * Called when an evolution proposal is created.
+ */
+export async function evolutionPreVerify(
+  taskDescription: string,
+  evolutionRunId: string,
+  context?: string,
+): Promise<{ criteria: AcceptanceCriterion[]; criteriaCount: number }> {
+  const data = await callTSAC({
+    action: 'evolution_pre_verify',
+    task_description: taskDescription,
+    evolution_run_id: evolutionRunId,
+    context,
+  });
+  return { criteria: data.criteria, criteriaCount: data.criteria_count };
+}
+
+/**
+ * Layer 2: Verify shadow-applied code against pre-generated criteria.
+ * Called after shadow-apply, gates production promotion.
+ */
+export async function evolutionShadowVerify(params: {
+  taskDescription: string;
+  codeDiff: string;
+  evolutionRunId: string;
+  executorId?: string;
+}): Promise<{
+  verdict: string;
+  intentScore: number;
+  qualityScore: number;
+  reasoning: string;
+  blocked: boolean;
+  criteriaResults: CriterionResult[];
+}> {
+  const data = await callTSAC({
+    action: 'evolution_shadow_verify',
+    task_description: params.taskDescription,
+    code_diff: params.codeDiff,
+    evolution_run_id: params.evolutionRunId,
+    executor_id: params.executorId,
+  });
+  return {
+    verdict: data.verdict,
+    intentScore: data.intent_score,
+    qualityScore: data.quality_score,
+    reasoning: data.reasoning,
+    blocked: data.blocked,
+    criteriaResults: data.criteria_results,
+  };
+}
+
+/**
+ * Layer 3: Re-verify in production with drift detection.
+ * Called after production-apply, triggers rollback if critical drift detected.
+ */
+export async function evolutionProductionVerify(params: {
+  taskDescription: string;
+  codeDiff: string;
+  evolutionRunId: string;
+  executorId?: string;
+  productionContext?: string;
+}): Promise<{
+  verdict: string;
+  intentScore: number;
+  drift: { detected: boolean; severity: string; details: string; recommendedAction: string };
+  shouldRollback: boolean;
+  shadowComparison: { shadowScore: number; productionScore: number; scoreDelta: number };
+}> {
+  const data = await callTSAC({
+    action: 'evolution_production_verify',
+    task_description: params.taskDescription,
+    code_diff: params.codeDiff,
+    evolution_run_id: params.evolutionRunId,
+    executor_id: params.executorId,
+    production_context: params.productionContext,
+  });
+  return {
+    verdict: data.verdict,
+    intentScore: data.intent_score,
+    drift: data.drift,
+    shouldRollback: data.should_rollback,
+    shadowComparison: data.shadow_comparison,
+  };
+}
+
+/**
+ * Get TSAC training feedback for executor learning pipeline.
+ */
+export async function getTSACTrainingFeedback(executorId?: string): Promise<any[]> {
+  const data = await callTSAC({
+    action: 'get_training_feedback',
+    executor_id: executorId,
+  });
+  return data.feedback ?? [];
 }
 
 /**
@@ -148,12 +249,13 @@ export async function getTSACStats(): Promise<TSACExecutorStats[]> {
 }
 
 /**
- * Get verification history (optionally filtered by executor).
+ * Get verification history (optionally filtered by executor or evolution run).
  */
-export async function getTSACHistory(executorId?: string): Promise<TSACHistoryRecord[]> {
+export async function getTSACHistory(executorId?: string, evolutionRunId?: string): Promise<TSACHistoryRecord[]> {
   const data = await callTSAC({
     action: 'get_history',
     executor_id: executorId,
+    evolution_run_id: evolutionRunId,
   });
   return data.verifications ?? [];
 }
