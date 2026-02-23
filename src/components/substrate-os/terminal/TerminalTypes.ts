@@ -73,7 +73,7 @@ export const BOOT_MESSAGES = [
   '  │                                       │',
   '  └───────────────────────────────────────┘',
   '',
-  '  ◉ 21 modules operational',
+  '  ◉ 16 modules operational (CCR Layer 0 active)',
   '  ◉ 360+ commands available',
   '  ◉ 200 synergy pipelines | 100 engines',
   '  ◉ 400+ capabilities | 76 + 24 meta-engines',

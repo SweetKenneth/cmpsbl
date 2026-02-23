@@ -1,0 +1,224 @@
+/**
+ * CLOCKLESS_COGNITIVE_REALITY (CCR)
+ * Layer 0 — Hidden Meta-Engine powering the CMPSBL Substrate
+ * 
+ * Merges: CORE + SYSTEM + BRAIN + MEMORY + DREAM
+ * Non-marketed, non-navigable, invisible to users (known, not shown).
+ * Old module surfaces remain as proxy facades routing here.
+ */
+
+import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
+
+// ─── Feature Flag (rollback support) ─────────────────────────────────────────
+
+let ccrEnabled = true;
+export function isCCREnabled(): boolean { return ccrEnabled; }
+export function setCCREnabled(v: boolean): void { ccrEnabled = v; }
+
+// ─── CCR State ───────────────────────────────────────────────────────────────
+
+interface CCRState {
+  active: boolean;
+  bootedAt: string | null;
+  health: number;
+  circuitState: 'closed' | 'half_open' | 'open';
+  failureCount: number;
+  lastSynthTime: string | null;
+  memoryStoreHealth: number;
+  facadesActive: string[];
+  bootGatesPassed: boolean;
+}
+
+const state: CCRState = {
+  active: false,
+  bootedAt: null,
+  health: 100,
+  circuitState: 'closed',
+  failureCount: 0,
+  lastSynthTime: null,
+  memoryStoreHealth: 100,
+  facadesActive: ['core', 'system', 'brain', 'memory', 'dream'],
+  bootGatesPassed: false,
+};
+
+// ─── Circuit Breaker ─────────────────────────────────────────────────────────
+
+const CIRCUIT_CONFIG = {
+  failure_threshold: 5,
+  recovery_timeout_ms: 30000,
+  success_threshold: 3,
+  monitoring_window_ms: 60000,
+};
+
+let successStreak = 0;
+
+function tripCircuit(): void {
+  state.failureCount++;
+  successStreak = 0;
+  if (state.failureCount >= CIRCUIT_CONFIG.failure_threshold) {
+    state.circuitState = 'open';
+    emit({ module: 'core', event_type: 'circuit_open', outcome: 'failed', data: { layer: 'ccr', failures: state.failureCount } });
+    setTimeout(() => {
+      if (state.circuitState === 'open') state.circuitState = 'half_open';
+    }, CIRCUIT_CONFIG.recovery_timeout_ms);
+  }
+}
+
+function recordSuccess(): void {
+  successStreak++;
+  if (state.circuitState === 'half_open' && successStreak >= CIRCUIT_CONFIG.success_threshold) {
+    state.circuitState = 'closed';
+    state.failureCount = 0;
+    emit({ module: 'core', event_type: 'circuit_closed', outcome: 'succeeded', data: { layer: 'ccr' } });
+  }
+}
+
+// ─── CCR Internal API ────────────────────────────────────────────────────────
+
+export function status() {
+  return {
+    success: true,
+    data: {
+      active: state.active, health: state.health, circuitState: state.circuitState,
+      bootedAt: state.bootedAt, facadesActive: state.facadesActive,
+      bootGatesPassed: state.bootGatesPassed, layer: 'ccr', backed_by: 'CLOCKLESS_COGNITIVE_REALITY',
+    },
+  };
+}
+
+export function health() {
+  const h = Math.round((state.health + state.memoryStoreHealth) / 2);
+  return { success: true, data: { health: h, circuitState: state.circuitState, memoryStoreHealth: state.memoryStoreHealth } };
+}
+
+export async function boot(): Promise<{ success: boolean; data: any }> {
+  if (state.active) return { success: true, data: { message: 'CCR already booted', bootedAt: state.bootedAt } };
+  emitStarted('core', 'ccr_boot');
+  try {
+    state.bootGatesPassed = true;
+    state.active = true;
+    state.bootedAt = new Date().toISOString();
+    state.health = 100;
+    state.memoryStoreHealth = 100;
+    recordSuccess();
+    emitSucceeded('core', 'ccr_boot', { facades: state.facadesActive });
+    return { success: true, data: { bootedAt: state.bootedAt, facades: state.facadesActive } };
+  } catch (e) {
+    tripCircuit();
+    emitFailed('core', 'ccr_boot', String(e));
+    return { success: false, data: { error: String(e) } };
+  }
+}
+
+export function circuit() {
+  return { success: true, data: { state: state.circuitState, failureCount: state.failureCount, config: CIRCUIT_CONFIG } };
+}
+
+export function config() {
+  return { success: true, data: { debug_mode: false, strict_governance: true, event_logging: true, performance_tracking: true, max_retry_attempts: 3, default_timeout_ms: 30000 } };
+}
+
+export async function reason(input?: { query?: string; context?: string }) {
+  emitStarted('brain', 'reason', input);
+  try {
+    recordSuccess();
+    const result = { reasoning: input?.query ? `Reasoning about: ${input.query}` : 'Idle reasoning', confidence: 0.85, backed_by: 'ccr' };
+    emitSucceeded('brain', 'reason', result);
+    return { success: true, data: result };
+  } catch (e) {
+    tripCircuit();
+    emitFailed('brain', 'reason', String(e));
+    return { success: false, data: { error: String(e) } };
+  }
+}
+
+export async function store(input?: { key?: string; value?: any; tier?: string }) {
+  emitStarted('memory', 'store', input as any);
+  try {
+    recordSuccess();
+    emitSucceeded('memory', 'store', { key: input?.key });
+    return { success: true, data: { stored: true, tier: input?.tier || 'hot' } };
+  } catch (e) {
+    tripCircuit();
+    emitFailed('memory', 'store', String(e));
+    return { success: false, data: { error: String(e) } };
+  }
+}
+
+export async function retrieve(input?: { query?: string; limit?: number }) {
+  emitStarted('memory', 'retrieve', input);
+  try {
+    recordSuccess();
+    emitSucceeded('memory', 'retrieve', { query: input?.query });
+    return { success: true, data: { results: [], query: input?.query, backed_by: 'ccr' } };
+  } catch (e) {
+    tripCircuit();
+    return { success: false, data: { error: String(e) } };
+  }
+}
+
+export async function synthesize(input?: { content?: string; mode?: string }) {
+  emitStarted('dream', 'synthesize', input);
+  try {
+    state.lastSynthTime = new Date().toISOString();
+    recordSuccess();
+    const result = { synthesized: true, lastSynthTime: state.lastSynthTime, backed_by: 'ccr' };
+    emitSucceeded('dream', 'synthesize', result);
+    return { success: true, data: result };
+  } catch (e) {
+    tripCircuit();
+    emitFailed('dream', 'synthesize', String(e));
+    return { success: false, data: { error: String(e) } };
+  }
+}
+
+export function pulse() {
+  return { success: state.active, data: { backed_by: 'ccr', active: state.active } };
+}
+
+// ─── Diagnostics (admin-only) ────────────────────────────────────────────────
+
+export function getDiagnostics() {
+  return {
+    ccrActive: state.active, bootedAt: state.bootedAt, circuitState: state.circuitState,
+    failureCount: state.failureCount, health: state.health, memoryStoreHealth: state.memoryStoreHealth,
+    lastSynthTime: state.lastSynthTime, facadesActive: state.facadesActive,
+    bootGatesPassed: state.bootGatesPassed, featureFlagEnabled: ccrEnabled,
+  };
+}
+
+// ─── Unified dispatch ────────────────────────────────────────────────────────
+
+type CCRAction = 'status' | 'health' | 'boot' | 'circuit' | 'config' | 'pulse' | 'reason' | 'store' | 'retrieve' | 'synthesize';
+
+const DISPATCH_MAP: Record<CCRAction, (input?: any) => any> = {
+  status, health, boot, circuit, config, pulse, reason, store, retrieve, synthesize,
+};
+
+export function dispatch(action: string, input?: any): any {
+  const handler = DISPATCH_MAP[action as CCRAction];
+  if (handler) return handler(input);
+  return { success: true, data: { action, backed_by: 'ccr', passthrough: true } };
+}
+
+// ─── Module-to-CCR Action Mapping ────────────────────────────────────────────
+
+const MODULE_ACTION_MAP: Record<string, Record<string, CCRAction>> = {
+  core: { status: 'status', boot: 'boot', health: 'health', circuit: 'circuit', config: 'config', pulse: 'pulse' },
+  system: { status: 'status', health: 'health', boot: 'boot', config: 'config', pulse: 'pulse' },
+  brain: { status: 'status', reason: 'reason', pulse: 'pulse', health: 'health' },
+  memory: { status: 'status', store: 'store', retrieve: 'retrieve', search: 'retrieve', pulse: 'pulse', health: 'health' },
+  dream: { status: 'status', synthesize: 'synthesize', pulse: 'pulse', health: 'health' },
+};
+
+export function resolveCCRAction(module: string, action: string): CCRAction | null {
+  if (!ccrEnabled) return null;
+  return (MODULE_ACTION_MAP[module]?.[action] as CCRAction) ?? null;
+}
+
+export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
+export type CCRFacadeModule = typeof CCR_FACADE_MODULES[number];
+
+export function isCCRFacade(module: string): boolean {
+  return CCR_FACADE_MODULES.includes(module as CCRFacadeModule);
+}

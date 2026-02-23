@@ -1,11 +1,11 @@
 /**
  * ENCODE System Manifest — Architecture Awareness Registry
- * v10.5.4 ARCHITECT — Gives ENCODE a canonical map of the living system
+ * CCR Epoch — Gives ENCODE a canonical map of the living system
  *
  * This manifest solves ENCODE's "blind agent" problem: without it, ENCODE
  * has no idea that a footer exists, where BRAIN lives, or that it is itself
- * part of a 21-module substrate. With it, ENCODE can locate, understand, and
- * safely modify any part of the system.
+ * part of a 16-module substrate (powered by CCR Layer 0). With it, ENCODE
+ * can locate, understand, and safely modify any part of the system.
  *
  * Usage:
  *   import { systemManifest, resolveComponent, resolveModule } from './system-manifest';
@@ -52,49 +52,42 @@ export interface RouteEntry {
 
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
+/**
+ * 16-Module Architecture (CCR Epoch)
+ * 
+ * CCR (CLOCKLESS_COGNITIVE_REALITY) is Layer 0 — hidden meta-engine.
+ * It absorbs: CORE, SYSTEM, BRAIN, MEMORY, DREAM (5 modules → 1 hidden layer).
+ * IDENTITY merged into ACCESS.
+ * Result: 21 - 5 (CCR absorbed) + 0 (CCR is hidden) - 1 (IDENTITY merged) + 1 (ACCESS absorbs IDENTITY) = 16 public modules.
+ * 
+ * Facade shims preserve backward compatibility for all old module commands.
+ */
 export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
-  core: {
-    id: 'core',
-    name: 'CORE',
-    layer: 'cognitive',
-    description: 'Central substrate orchestration and engine bus routing.',
-    corePath: 'src/lib/substrate/index.ts',
-    hookPath: 'src/lib/substrate/hooks.ts',
-    dashboardPath: 'src/pages/SubstrateDashboard.tsx',
-    dependencies: [],
-    dependents: ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration', 'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'],
-  },
-  brain: {
-    id: 'brain',
-    name: 'BRAIN',
-    layer: 'cognitive',
-    description: 'Adaptive learning core with 6 engines: Learning, Imagination, Reasoning, Governance Guard, Telemetry, State. Manages memory tiers, heuristics, and reinforcement loops.',
-    corePath: 'src/lib/substrate/engines/',
-    hookPath: 'src/lib/substrate/hooks.ts',
-    dashboardPath: 'src/pages/SubstrateDashboard.tsx',
-    dependencies: ['core', 'memory'],
-    dependents: ['decode', 'encode', 'modernizer', 'dream'],
-  },
+  // ─── CCR Facades (backed by CLOCKLESS_COGNITIVE_REALITY, hidden from public registry) ───
+  // These are NOT counted in the 16-module total. They exist for backward compat.
+  // core, system, brain, memory, dream → all route to CCR internally.
+
+  // ─── 16 Public Modules ─────────────────────────────────────────────────────
   decode: {
     id: 'decode',
     name: 'DECODE',
     layer: 'cognitive',
-    description: 'Intent router and system voice. Parses human ambiguity into structured task packets for ENCODE. Features entity recognition for all 21 modules.',
+    description: 'Intent router and system voice. Parses human ambiguity into structured task packets for ENCODE.',
     corePath: 'src/lib/substrate/decode/',
     hookPath: 'src/hooks/substrate/useDecode.ts',
     dashboardPath: 'src/pages/SubstrateOS.tsx',
-    dependencies: ['core', 'brain'],
+    dependencies: ['ccr'],
     dependents: ['encode'],
   },
   encode: {
     id: 'encode',
     name: 'ENCODE',
     layer: 'orchestration',
-    description: 'Code generation and transformation engine. Accepts structured task packets from DECODE, generates code, scores confidence, and previews changes. THIS IS YOU — the hands that touch, polish, and modify the substrate.',
+    description: 'Code generation and transformation engine. Accepts structured task packets from DECODE, generates code, scores confidence, and previews changes.',
     corePath: 'src/lib/substrate/encode-module/',
     hookPath: 'src/hooks/substrate/useEncode.ts',
     dashboardPath: 'src/pages/SubstrateOS.tsx',
-    dependencies: ['core', 'decode', 'brain', 'sandbox'],
+    dependencies: ['ccr', 'decode', 'sandbox'],
     dependents: ['modernizer'],
   },
   defense: {
@@ -103,17 +96,17 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'operational',
     description: 'AI-powered security: bot detection, rate limiting, threat analysis, stealth mode.',
     corePath: 'src/lib/defense/',
-    dependencies: ['core', 'brain'],
+    dependencies: ['ccr'],
     dependents: ['access'],
   },
   nexus: {
     id: 'nexus',
     name: 'NEXUS',
     layer: 'orchestration',
-    description: 'Multi-provider AI gateway. Intelligently routes requests across AI providers based on task requirements, cost, and availability.',
+    description: 'Multi-provider AI gateway. Intelligently routes requests across AI providers.',
     corePath: 'src/lib/nexus/',
-    dependencies: ['core'],
-    dependents: ['decode', 'encode', 'dream'],
+    dependencies: ['ccr'],
+    dependents: ['decode', 'encode'],
   },
   vision: {
     id: 'vision',
@@ -121,16 +114,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'operational',
     description: 'Unified analytics dashboard with real-time metrics, telemetry, and observability.',
     corePath: 'src/lib/substrate/telemetry-engine.ts',
-    dependencies: ['core'],
-    dependents: [],
-  },
-  dream: {
-    id: 'dream',
-    name: 'DREAM',
-    layer: 'cognitive',
-    description: 'Dream Pool system for off-cycle creative synthesis, pattern fusion, and insight generation.',
-    corePath: 'src/lib/substrate/imagination-engine.ts',
-    dependencies: ['core', 'brain', 'nexus'],
+    dependencies: ['ccr'],
     dependents: [],
   },
   ripple: {
@@ -139,36 +123,27 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'orchestration',
     description: 'Network integration layer for webhooks, external API orchestration, and event propagation.',
     corePath: 'src/lib/ripple/',
-    dependencies: ['core'],
+    dependencies: ['ccr'],
     dependents: ['relay'],
   },
   access: {
     id: 'access',
     name: 'ACCESS',
     layer: 'operational',
-    description: 'Identity, billing, API key management, and developer portal.',
+    description: 'Identity, auth, billing, API key management, entitlements, and developer portal. Absorbs former IDENTITY module.',
     corePath: 'src/lib/access/',
-    dependencies: ['core', 'defense'],
-    dependents: ['identity'],
-  },
-  system: {
-    id: 'system',
-    name: 'SYSTEM',
-    layer: 'operational',
-    description: 'System-level operations: health checks, diagnostics, configuration, and boot gates.',
-    corePath: 'src/lib/substrate/boot-gates/',
-    dependencies: ['core'],
+    dependencies: ['ccr', 'defense'],
     dependents: [],
   },
   modernizer: {
     id: 'modernizer',
     name: 'MODERNIZER',
     layer: 'evolution',
-    description: 'The Executor/Omega Observer. Manages upgrade plans, file-level diffs, and shadow-to-production deployment. Handles the safe "how" of code-level execution.',
+    description: 'The Executor/Omega Observer. Manages upgrade plans, file-level diffs, and shadow-to-production deployment.',
     corePath: 'src/lib/substrate/evolution-cycle.ts',
     hookPath: 'src/hooks/substrate/useModernizer.ts',
     dashboardPath: 'src/pages/Modernizer.tsx',
-    dependencies: ['core', 'encode', 'brain'],
+    dependencies: ['ccr', 'encode'],
     dependents: [],
   },
   integration: {
@@ -177,7 +152,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'operational',
     description: 'External service connections, OAuth flows, and third-party API management.',
     corePath: 'src/lib/integrations/',
-    dependencies: ['core'],
+    dependencies: ['ccr'],
     dependents: [],
   },
   inclusive: {
@@ -186,7 +161,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'governance',
     description: 'Accessibility scanning, WCAG compliance, and inclusive design enforcement.',
     corePath: 'src/lib/inclusive/',
-    dependencies: ['core'],
+    dependencies: ['ccr'],
     dependents: [],
   },
   cortex: {
@@ -196,57 +171,37 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     description: 'Pipeline orchestrator. Manages multi-stage cognitive workflows and engine composition.',
     corePath: 'src/lib/substrate/orchestrator-engine.ts',
     hookPath: 'src/hooks/substrate/useCortex.ts',
-    dependencies: ['core', 'brain'],
+    dependencies: ['ccr'],
     dependents: ['encode'],
-  },
-  memory: {
-    id: 'memory',
-    name: 'MEMORY',
-    layer: 'infrastructure',
-    description: 'Vector/RAG orchestration, semantic recall, and persistent memory lifecycle.',
-    corePath: 'src/lib/substrate/memory-module/',
-    hookPath: 'src/hooks/substrate/useMemoryModule.ts',
-    dependencies: ['core'],
-    dependents: ['brain', 'encode'],
   },
   relay: {
     id: 'relay',
     name: 'RELAY',
     layer: 'infrastructure',
-    description: 'Centralized outbound webhooks and side-effect delivery. Manages event propagation to external systems.',
+    description: 'Centralized outbound webhooks and side-effect delivery.',
     corePath: 'src/lib/substrate/relay-module/',
     hookPath: 'src/hooks/substrate/useRelayModule.ts',
-    dependencies: ['core', 'ripple'],
+    dependencies: ['ccr', 'ripple'],
     dependents: [],
   },
   audit: {
     id: 'audit',
     name: 'AUDIT',
     layer: 'infrastructure',
-    description: 'Immutable, cryptographically-chained compliance logging. Every action is recorded with tamper-proof provenance.',
+    description: 'Immutable, cryptographically-chained compliance logging.',
     corePath: 'src/lib/substrate/audit-module/',
     hookPath: 'src/hooks/substrate/useAuditModule.ts',
-    dependencies: ['core'],
+    dependencies: ['ccr'],
     dependents: [],
-  },
-  identity: {
-    id: 'identity',
-    name: 'IDENTITY',
-    layer: 'infrastructure',
-    description: 'Universal human/agent actor attribution. Hardware-bound identity continuity.',
-    corePath: 'src/lib/substrate/identity-module/',
-    hookPath: 'src/hooks/substrate/useIdentityModule.ts',
-    dependencies: ['core', 'access'],
-    dependents: ['decode'],
   },
   economy: {
     id: 'economy',
     name: 'ECONOMY',
     layer: 'infrastructure',
-    description: 'Real-time cost attribution, budgeting, and marketplace signaling across all module operations.',
+    description: 'Real-time cost attribution, budgeting, and marketplace signaling.',
     corePath: 'src/lib/substrate/economy-module/',
     hookPath: 'src/hooks/substrate/useEconomyModule.ts',
-    dependencies: ['core'],
+    dependencies: ['ccr'],
     dependents: [],
   },
   sandbox: {
@@ -256,7 +211,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     description: 'Isolated execution environments for safe code execution, speculative runs, and evolution testing.',
     corePath: 'src/lib/substrate/sandbox-module/',
     hookPath: 'src/hooks/substrate/useSandboxModule.ts',
-    dependencies: ['core'],
+    dependencies: ['ccr'],
     dependents: ['encode', 'modernizer'],
   },
 };
@@ -430,5 +385,5 @@ export function getSystemSummary(): string {
   const moduleCount = Object.keys(SYSTEM_MODULES).length;
   const layers = [...new Set(Object.values(SYSTEM_MODULES).map(m => m.layer))];
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate: ${moduleCount} modules across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. ENCODE is Module #${Object.keys(SYSTEM_MODULES).indexOf('encode') + 1}.`;
+  return `CMPSBL Substrate (CCR Epoch): ${moduleCount} public modules + CCR Layer 0 across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR absorbs CORE+SYSTEM+BRAIN+MEMORY+DREAM. IDENTITY merged into ACCESS.`;
 }

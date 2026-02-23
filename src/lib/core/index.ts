@@ -17,30 +17,21 @@ export const SUBSTRATE_CODENAME = 'ARCHITECT';
 export const CORE_VERSION = '10.1.0';
 export const CORE_CODENAME = 'Foundation';
 
-// All 21 substrate modules in canonical boot order
+// All substrate modules — public (16) + CCR facades (5) + identity facade (1) = 22 entries for backward compat
+// Public registry reports 16. CCR facades route to hidden Layer 0.
 export const SUBSTRATE_MODULES = [
-  'core',
-  'ripple',
-  'access',
-  'brain',
-  'vision',
-  'cortex',
-  'modernizer',
-  'decode',
-  'defense',
-  'nexus',
-  'dream',
-  'integration',
-  'inclusive',
-  'system',
-  'memory',
-  'relay',
-  'audit',
-  'identity',
-  'economy',
-  'sandbox',
-  'encode',
+  'core', 'system', 'brain', 'memory', 'dream', // CCR facades (backward compat)
+  'identity', // ACCESS facade (backward compat)
+  'decode', 'encode', 'defense', 'nexus', 'vision', 'ripple', 'access',
+  'modernizer', 'integration', 'inclusive', 'cortex', 'relay', 'audit', 'economy', 'sandbox',
 ] as const;
+
+// Public-facing module count
+export const PUBLIC_MODULE_COUNT = 16;
+
+// CCR facade modules (backed by CLOCKLESS_COGNITIVE_REALITY)
+export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
+export const IDENTITY_FACADE = 'identity' as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
@@ -48,27 +39,29 @@ export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure';
 
 export const MODULE_LAYERS: Record<SubstrateModuleName, ModuleLayer> = {
+  // CCR facades
   core: 'kernel',
-  ripple: 'kernel',
-  access: 'kernel',
+  system: 'administrative',
   brain: 'cognitive',
-  vision: 'cognitive',
-  cortex: 'orchestrator',
-  modernizer: 'administrative',
+  memory: 'infrastructure',
+  dream: 'cognitive',
+  identity: 'infrastructure',
+  // 16 public modules
   decode: 'cognitive',
+  encode: 'orchestrator',
   defense: 'operational',
   nexus: 'cognitive',
-  dream: 'cognitive',
+  vision: 'cognitive',
+  ripple: 'kernel',
+  access: 'kernel',
+  modernizer: 'administrative',
   integration: 'operational',
   inclusive: 'administrative',
-  system: 'administrative',
-  memory: 'infrastructure',
+  cortex: 'orchestrator',
   relay: 'infrastructure',
   audit: 'infrastructure',
-  identity: 'infrastructure',
   economy: 'infrastructure',
   sandbox: 'infrastructure',
-  encode: 'orchestrator',
 };
 
 // ============ Types ============
