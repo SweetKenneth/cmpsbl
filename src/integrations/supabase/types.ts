@@ -3769,6 +3769,48 @@ export type Database = {
         }
         Relationships: []
       }
+      change_artifacts: {
+        Row: {
+          actor_id: string | null
+          actor_type: string
+          after_snapshot: Json | null
+          before_snapshot: Json | null
+          category: string
+          created_at: string
+          diff_data: Json | null
+          id: string
+          intent_summary: string | null
+          metadata: Json | null
+          status: string
+        }
+        Insert: {
+          actor_id?: string | null
+          actor_type?: string
+          after_snapshot?: Json | null
+          before_snapshot?: Json | null
+          category?: string
+          created_at?: string
+          diff_data?: Json | null
+          id?: string
+          intent_summary?: string | null
+          metadata?: Json | null
+          status?: string
+        }
+        Update: {
+          actor_id?: string | null
+          actor_type?: string
+          after_snapshot?: Json | null
+          before_snapshot?: Json | null
+          category?: string
+          created_at?: string
+          diff_data?: Json | null
+          id?: string
+          intent_summary?: string | null
+          metadata?: Json | null
+          status?: string
+        }
+        Relationships: []
+      }
       change_ledger: {
         Row: {
           artifacts_touched: string[] | null
@@ -8207,6 +8249,68 @@ export type Database = {
         }
         Relationships: []
       }
+      mutation_proposals: {
+        Row: {
+          artifact_id: string
+          auto_promote: boolean
+          canary_pct: number | null
+          created_at: string
+          decided_at: string | null
+          expected_delta: Json | null
+          gate_state: string
+          hypothesis: string | null
+          id: string
+          metadata: Json | null
+          promoted_at: string | null
+          proposer_executor_id: string | null
+          risk_score: number | null
+          rolled_back_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          artifact_id: string
+          auto_promote?: boolean
+          canary_pct?: number | null
+          created_at?: string
+          decided_at?: string | null
+          expected_delta?: Json | null
+          gate_state?: string
+          hypothesis?: string | null
+          id?: string
+          metadata?: Json | null
+          promoted_at?: string | null
+          proposer_executor_id?: string | null
+          risk_score?: number | null
+          rolled_back_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          artifact_id?: string
+          auto_promote?: boolean
+          canary_pct?: number | null
+          created_at?: string
+          decided_at?: string | null
+          expected_delta?: Json | null
+          gate_state?: string
+          hypothesis?: string | null
+          id?: string
+          metadata?: Json | null
+          promoted_at?: string | null
+          proposer_executor_id?: string | null
+          risk_score?: number | null
+          rolled_back_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mutation_proposals_artifact_id_fkey"
+            columns: ["artifact_id"]
+            isOneToOne: false
+            referencedRelation: "change_artifacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mutation_receipts: {
         Row: {
           created_at: string
@@ -8238,6 +8342,53 @@ export type Database = {
             columns: ["promotion_id"]
             isOneToOne: false
             referencedRelation: "production_promotions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mutation_runs: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          id: string
+          metrics_baseline: Json | null
+          metrics_candidate: Json | null
+          metrics_delta: Json | null
+          mutation_id: string
+          regressions: Json | null
+          run_duration_ms: number | null
+          shadow_run_id: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          metrics_baseline?: Json | null
+          metrics_candidate?: Json | null
+          metrics_delta?: Json | null
+          mutation_id: string
+          regressions?: Json | null
+          run_duration_ms?: number | null
+          shadow_run_id?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          metrics_baseline?: Json | null
+          metrics_candidate?: Json | null
+          metrics_delta?: Json | null
+          mutation_id?: string
+          regressions?: Json | null
+          run_duration_ms?: number | null
+          shadow_run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mutation_runs_mutation_id_fkey"
+            columns: ["mutation_id"]
+            isOneToOne: false
+            referencedRelation: "mutation_proposals"
             referencedColumns: ["id"]
           },
         ]
@@ -12890,6 +13041,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      verification_scans: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          gaps_found: number | null
+          id: string
+          mutation_id: string
+          new_gaps: Json | null
+          post_baseline: Json | null
+          pre_baseline: Json | null
+          scan_results: Json | null
+          status: string
+          tasks_created: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          gaps_found?: number | null
+          id?: string
+          mutation_id: string
+          new_gaps?: Json | null
+          post_baseline?: Json | null
+          pre_baseline?: Json | null
+          scan_results?: Json | null
+          status?: string
+          tasks_created?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          gaps_found?: number | null
+          id?: string
+          mutation_id?: string
+          new_gaps?: Json | null
+          post_baseline?: Json | null
+          pre_baseline?: Json | null
+          scan_results?: Json | null
+          status?: string
+          tasks_created?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_scans_mutation_id_fkey"
+            columns: ["mutation_id"]
+            isOneToOne: false
+            referencedRelation: "mutation_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vision_anomalies: {
         Row: {
