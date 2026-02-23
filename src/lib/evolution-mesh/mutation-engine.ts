@@ -273,8 +273,13 @@ export async function createProposal(params: {
   hypothesis: string;
   expectedDelta?: Record<string, unknown>;
   riskScore?: number;
+  category?: string;
 }): Promise<{ success: boolean; proposal?: MutationProposal; error?: string }> {
   try {
+    // Select executors based on category — same fleet used in Immunity Mesh training
+    const category = params.category ?? 'resilience';
+    const selectedExecutors = selectExecutorsForCategory(category);
+
     const { data, error } = await supabase
       .from('mutation_proposals')
       .insert({
@@ -285,6 +290,15 @@ export async function createProposal(params: {
         risk_score: params.riskScore ?? 0.5,
         gate_state: 'pending',
         auto_promote: false,
+        metadata: {
+          category,
+          selected_executors: selectedExecutors.map(e => ({
+            id: e.id,
+            module: e.meta.module,
+            category: e.meta.category,
+          })),
+          executor_count: selectedExecutors.length,
+        },
       } as never)
       .select()
       .single();
@@ -294,12 +308,14 @@ export async function createProposal(params: {
     await telemetryService.recordMetric('mutation_proposed', {
       mutation_id: (data as any).id,
       artifact_id: params.artifactId,
+      category,
+      executors_selected: selectedExecutors.length,
+      executor_ids: selectedExecutors.map(e => e.id),
     });
 
     // Auto-shadow if enabled
     const autoShadow = await getFlag('mpe_auto_shadow');
     if (autoShadow) {
-      // Fire and forget — shadow will update gate_state
       runShadowEvaluation((data as any).id).catch(() => {});
     }
 
