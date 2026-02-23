@@ -77,44 +77,100 @@ export function NexusTab() {
   const fetchNexusData = async () => {
     setIsLoading(true);
     try {
-      // Fetch router status
-      const { data: routerData } = await supabase.functions.invoke('pf-nexus-router', {
-        body: { action: 'status' }
+      const today = new Date().toISOString().split('T')[0];
+
+      // Fetch real API call data from ai_usage_log
+      const [todayLogsRes, imageCountRes] = await Promise.all([
+        supabase
+          .from('ai_usage_log')
+          .select('provider, success, tokens_used, cost, response_time_ms, category, created_at, model')
+          .gte('created_at', `${today}T00:00:00Z`)
+          .order('created_at', { ascending: false })
+          .limit(500),
+        supabase
+          .from('ai_usage_log')
+          .select('id', { count: 'exact', head: true })
+          .eq('category', 'image_generation')
+          .gte('created_at', `${today}T00:00:00Z`),
+      ]);
+
+      const todayLogs = todayLogsRes.data || [];
+      const imagesUsed = imageCountRes.count || 0;
+      const remaining = Math.max(0, 25 - imagesUsed);
+      setImageRemaining(remaining);
+
+      // Aggregate per-provider stats from real data
+      const providerMap: Record<string, { calls: number; successes: number; totalLatency: number; tokens: number }> = {};
+      todayLogs.forEach((log: any) => {
+        const p = log.provider || 'unknown';
+        if (!providerMap[p]) providerMap[p] = { calls: 0, successes: 0, totalLatency: 0, tokens: 0 };
+        providerMap[p].calls++;
+        if (log.success) providerMap[p].successes++;
+        providerMap[p].totalLatency += log.response_time_ms || 0;
+        providerMap[p].tokens += log.tokens_used || 0;
       });
 
-      // Fetch recent nexus logs for cost tracking
-      const { data: logs } = await supabase
-        .from('nexus_logs')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(50);
+      // Provider registry with real limits
+      const providerRegistry: Record<string, { perMinLimit: number; perDayLimit: number }> = {
+        groq: { perMinLimit: 24, perDayLimit: 800 },
+        cerebras: { perMinLimit: 24, perDayLimit: 11520 },
+        google: { perMinLimit: 14, perDayLimit: 1425 },
+        openrouter: { perMinLimit: 9, perDayLimit: 190 },
+        novita: { perMinLimit: 19, perDayLimit: 950 },
+        sambanova: { perMinLimit: 32, perDayLimit: 32 },
+        hyperbolic: { perMinLimit: 48, perDayLimit: 100000 },
+        deepseek: { perMinLimit: 16, perDayLimit: 100000 },
+        together: { perMinLimit: 480, perDayLimit: 100000 },
+      };
 
-      // Build provider health from router data or defaults
-      const providers: ProviderHealth[] = [
-        { provider: 'Groq', healthScore: 95, circuitState: 'closed', requestsThisMinute: 12, requestsToday: 245, avgLatencyMs: 85, perMinLimit: 28, perDayLimit: 950 },
-        { provider: 'Cerebras', healthScore: 100, circuitState: 'closed', requestsThisMinute: 8, requestsToday: 178, avgLatencyMs: 42, perMinLimit: 28, perDayLimit: 13680 },
-        { provider: 'Google AI', healthScore: 98, circuitState: 'closed', requestsThisMinute: 3, requestsToday: 89, avgLatencyMs: 120, perMinLimit: 14, perDayLimit: 1425 },
-        { provider: 'OpenRouter', healthScore: 88, circuitState: 'closed', requestsThisMinute: 5, requestsToday: 56, avgLatencyMs: 150, perMinLimit: 9, perDayLimit: 190 },
-        { provider: 'Novita', healthScore: 92, circuitState: 'closed', requestsThisMinute: 2, requestsToday: 34, avgLatencyMs: 180, perMinLimit: 19, perDayLimit: 950 },
-        { provider: 'SambaNova', healthScore: 75, circuitState: 'half-open', requestsThisMinute: 0, requestsToday: 12, avgLatencyMs: 95, perMinLimit: 38, perDayLimit: 38 },
-        { provider: 'Hyperbolic', healthScore: 85, circuitState: 'closed', requestsThisMinute: 1, requestsToday: 28, avgLatencyMs: 200, perMinLimit: 57, perDayLimit: 100000 },
-        { provider: 'DeepSeek', healthScore: 90, circuitState: 'closed', requestsThisMinute: 4, requestsToday: 67, avgLatencyMs: 250, perMinLimit: 19, perDayLimit: 100000 },
-        { provider: 'Together', healthScore: 95, circuitState: 'closed', requestsThisMinute: 6, requestsToday: 145, avgLatencyMs: 110, perMinLimit: 570, perDayLimit: 100000 },
-      ];
+      const providers: ProviderHealth[] = Object.entries(providerRegistry).map(([key, limits]) => {
+        const stats = providerMap[key] || { calls: 0, successes: 0, totalLatency: 0, tokens: 0 };
+        const successRate = stats.calls > 0 ? stats.successes / stats.calls : 1;
+        const avgLatency = stats.calls > 0 ? Math.round(stats.totalLatency / stats.calls) : 0;
+        const healthScore = Math.round(successRate * 100);
+        const circuitState: 'closed' | 'open' | 'half-open' = 
+          healthScore >= 80 ? 'closed' : healthScore >= 50 ? 'half-open' : 'open';
+
+        const displayName: Record<string, string> = {
+          groq: 'Groq', cerebras: 'Cerebras', google: 'Google AI', openrouter: 'OpenRouter',
+          novita: 'Novita', sambanova: 'SambaNova', hyperbolic: 'Hyperbolic',
+          deepseek: 'DeepSeek', together: 'Together',
+        };
+
+        return {
+          provider: displayName[key] || key,
+          healthScore,
+          circuitState,
+          requestsThisMinute: 0,
+          requestsToday: stats.calls,
+          avgLatencyMs: avgLatency,
+          perMinLimit: limits.perMinLimit,
+          perDayLimit: limits.perDayLimit,
+        };
+      });
 
       setNexusStatus({
-        version: routerData?.routerVersion || '5.0.0',
-        totalRequestsToday: logs?.length || 0,
+        version: '5.0.0',
+        totalRequestsToday: todayLogs.length,
         providers,
         imageGeneration: {
-          usedToday: 25 - imageRemaining,
-          remainingToday: imageRemaining,
+          usedToday: imagesUsed,
+          remainingToday: remaining,
           dailyLimit: 25,
-          status: imageRemaining > 5 ? 'available' : imageRemaining > 0 ? 'limited' : 'exhausted'
+          status: remaining > 5 ? 'available' : remaining > 0 ? 'limited' : 'exhausted'
         }
       });
 
-      setCostLogs((logs || []).slice(0, 20));
+      // Build cost log display from real data
+      setCostLogs(todayLogs.slice(0, 20).map((log: any) => ({
+        id: log.created_at + log.provider,
+        provider: log.provider || 'unknown',
+        latency_ms: log.response_time_ms || 0,
+        token_count: log.tokens_used || 0,
+        cost_usd_est: log.cost || 0,
+        status: log.success ? 'success' : 'failure',
+        created_at: log.created_at,
+      })));
     } catch (error) {
       console.error('Failed to fetch nexus data:', error);
     } finally {

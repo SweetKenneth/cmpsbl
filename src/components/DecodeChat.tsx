@@ -197,28 +197,28 @@ export function DecodeChat() {
 
   const quickActions = [
     {
-      icon: "🎨",
-      title: "Generate Image",
-      description: "Create AI-powered visuals",
-      prompt: "Generate a futuristic PromptFluid logo with fluid, flowing elements"
-    },
-    {
-      icon: "✍️",
-      title: "Write Content",
-      description: "Create marketing copy",
-      prompt: "Write compelling marketing copy for CMPSBL's cognitive infrastructure platform"
+      icon: "💡",
+      title: "Remember a Fact",
+      description: "Teach me about you",
+      prompt: "I want to teach you something about me. Remember this fact:"
     },
     {
       icon: "🧠",
-      title: "Brain Analytics",
-      description: "View learning patterns",
-      prompt: "Show me analytics about the Brain's recent learning activity"
+      title: "What Do You Know?",
+      description: "Recall your memories",
+      prompt: "What do you know about me? Show me everything you've learned."
     },
     {
-      icon: "🎯",
-      title: "See Products",
-      description: "Explore what we ship",
-      prompt: "Tell me about RCKBL, PTCHBL, RNDRBL, SPLCBL, and XCTBL Space"
+      icon: "🛡️",
+      title: "Defense Update",
+      description: "Security status check",
+      prompt: "Give me a defense status update. Any threats detected recently?"
+    },
+    {
+      icon: "🚀",
+      title: "Getting Started",
+      description: "Learn the substrate",
+      prompt: "How do I start using the substrate? Walk me through the key features and modules."
     }
   ];
 
