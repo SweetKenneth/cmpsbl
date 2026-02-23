@@ -365,6 +365,19 @@ export async function listRuns(mutationId: string) {
   }
 }
 
+export async function listAllRuns(limit = 50) {
+  try {
+    const { data } = await supabase
+      .from('mutation_runs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    return (data ?? []) as unknown as MutationRun[];
+  } catch {
+    return [];
+  }
+}
+
 // ── 4. Deterministic Promotion Gate ────────────────────────
 
 export async function evaluateGate(mutationId: string): Promise<{
