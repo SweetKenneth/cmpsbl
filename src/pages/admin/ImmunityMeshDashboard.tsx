@@ -1378,14 +1378,14 @@ function ModernizerShadowPanel() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.03 }}
                     >
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <code className="text-[10px] sm:text-[11px] font-mono text-primary truncate max-w-[140px] sm:max-w-[200px]">{entry.executor}</code>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <code className="text-[10px] font-mono text-primary truncate max-w-[100px] sm:max-w-[200px]">{entry.executor}</code>
                         <Badge variant="outline" className={`text-[9px] px-1.5 py-0 flex-shrink-0 ${gapCategoryColors[entry.gapType] ?? ''}`}>
                           {entry.gapType}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-3 flex-shrink-0 text-xs">
-                        <div className="w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
+                      <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end text-xs">
+                        <div className="w-12 sm:w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
                           <motion.div
                             className={`h-full rounded-full ${entry.successRate >= 0.7 ? 'bg-emerald-500' : entry.successRate >= 0.4 ? 'bg-amber-500' : 'bg-red-400'}`}
                             initial={{ width: 0 }}
@@ -1393,16 +1393,16 @@ function ModernizerShadowPanel() {
                             transition={{ duration: 0.6 }}
                           />
                         </div>
-                        <span className="font-mono font-medium w-10 text-right">
+                        <span className="font-mono font-medium text-right">
                           {(entry.successRate * 100).toFixed(0)}%
                         </span>
-                        <div className="flex items-center gap-1 w-14">
+                        <div className="flex items-center gap-1">
                           {trendIcon}
                           <span className={`font-mono text-[10px] ${entry.trend > 0 ? 'text-emerald-500' : entry.trend < 0 ? 'text-red-400' : 'text-muted-foreground'}`}>
                             {entry.trend > 0 ? '+' : ''}{(entry.trend * 100).toFixed(0)}%
                           </span>
                         </div>
-                        <span className="text-[10px] text-muted-foreground font-mono w-8 text-right">
+                        <span className="text-[10px] text-muted-foreground font-mono">
                           ×{entry.attempts}
                         </span>
                         {entry.encodeAssists > 0 && (
