@@ -3961,7 +3961,7 @@ export type Database = {
           payment_status: string
           sku: string
           stripe_session_id: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           chosen_name?: string | null
@@ -3970,7 +3970,7 @@ export type Database = {
           payment_status?: string
           sku: string
           stripe_session_id?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           chosen_name?: string | null
@@ -3979,7 +3979,7 @@ export type Database = {
           payment_status?: string
           sku?: string
           stripe_session_id?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
