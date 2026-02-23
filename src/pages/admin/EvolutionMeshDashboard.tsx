@@ -15,13 +15,14 @@ import {
   Shield, Play, GitCompare, Rocket, Activity, AlertTriangle, CheckCircle,
   Loader2, RotateCcw, ChevronRight, FlaskConical, Eye, Zap, ArrowRight,
   RefreshCw, Info, Package, Gauge, TrendingUp, TrendingDown, Clock,
-  Users, Cpu,
+  Users, Cpu, XOctagon,
 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { integrityService } from '@/lib/evolution-mesh/integrity-service';
 import { snapshotService } from '@/lib/evolution-mesh/snapshot-service';
 import { telemetryService } from '@/lib/evolution-mesh/telemetry-service';
 import { mutationEngine } from '@/lib/evolution-mesh/mutation-engine';
+import { useModernizer } from '@/hooks/substrate/useModernizer';
 import type { MutationProposal, MutationRun, ChangeArtifact, VerificationScan } from '@/lib/evolution-mesh/mutation-engine';
 import { toast } from 'sonner';
 import {
@@ -407,6 +408,18 @@ export default function EvolutionMeshDashboard() {
     },
   });
 
+  const modernizerHook = useModernizer();
+  const abortEvolveMutation = useMutation({
+    mutationFn: () => modernizerHook.evolve.mutateAsync({ target: 'abort' }),
+    onSuccess: () => {
+      toast.success('Evolution aborted — old proposals cleared');
+      invalidateAll();
+    },
+    onError: (err: any) => {
+      toast.error(`Abort failed: ${err?.message ?? 'Unknown error'}`);
+    },
+  });
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -648,6 +661,40 @@ export default function EvolutionMeshDashboard() {
                             >
                               {rollbackMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : null}
                               Confirm Rollback
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+
+                      {/* Abort Evolution for stale proposals */}
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={(e) => e.stopPropagation()}
+                            disabled={abortEvolveMutation.isPending || p.gate_state === 'promoted'}
+                            className="border-destructive/40 text-destructive hover:bg-destructive/10"
+                          >
+                            <XOctagon className="w-3 h-3 mr-1" /> Abort Evolution
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Abort this evolution?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This calls modernizer.evolve abort to terminate the active evolution run associated with this proposal.
+                              Any in-progress shadow or canary stages will be halted.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => abortEvolveMutation.mutate()}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              {abortEvolveMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <XOctagon className="w-3 h-3 mr-1" />}
+                              Confirm Abort
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
