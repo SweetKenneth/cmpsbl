@@ -1,6 +1,12 @@
 /**
- * Adaptive Budget Allocation v1.0.0
+ * Adaptive Budget Allocation v1.1.0
  * Dynamically shifts token/cost budgets based on module activity and value
+ * 
+ * Fleet capacity (80% of raw free-tier RPD):
+ *   Groq: 640 | Cerebras: 9,216 | SambaNova: 26 | Google AI Studio: 1,200
+ *   DeepSeek: 79,999 | Together: 79,999 | OpenRouter×3: 384 
+ *   Mistral Studio: 424 | Cohere Trial: 21 | Hyperbolic: 63,999
+ *   Total governed RPD: ~235,908 → token pool scaled accordingly
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -14,7 +20,9 @@ export interface ModuleBudget {
   adjustedLimit: number;  // After rebalancing
 }
 
-const BASE_DAILY_BUDGET = 100000; // Total daily token pool
+// 80% of estimated daily token capacity across all free-tier providers
+// (~235k RPD × ~1500 avg tokens × 0.8 safety = ~282M, capped conservatively)
+const BASE_DAILY_BUDGET = 250000; // Total daily token pool (governed at 80%)
 const MODULE_LIST = [
   // Kernel
   'core', 'ripple', 'access',
