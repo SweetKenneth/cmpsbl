@@ -659,6 +659,11 @@ export default function ImmunityMeshDashboard() {
           </motion.div>
         </TabsContent>
 
+        {/* ══════════════════ PROMOTE TO PRODUCTION ══════════════════ */}
+        <TabsContent value="promote" className="space-y-4">
+          <PromoteToProductionPanel />
+        </TabsContent>
+
         {/* ══════════════════ CONTROLS ══════════════════ */}
         <TabsContent value="controls" className="space-y-4">
           <ShadowMeshToggle />
