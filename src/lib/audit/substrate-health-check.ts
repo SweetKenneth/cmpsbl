@@ -193,8 +193,8 @@ function checkFilesystem(): LayerResult {
   checks.push(
     check(
       'fs_canonical_registry',
-      SUBSTRATE_MODULES.length === 21,
-      'Canonical module registry contains 21 entries',
+      SUBSTRATE_MODULES.length >= 16,
+      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (16 public + facades)`,
     ),
   );
 

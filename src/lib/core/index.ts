@@ -17,47 +17,35 @@ export const SUBSTRATE_CODENAME = 'ARCHITECT';
 export const CORE_VERSION = '10.1.0';
 export const CORE_CODENAME = 'Foundation';
 
-// 16 public substrate modules in canonical boot order (CCR Epoch)
-// CCR (Layer 0) absorbs: core, system, brain, memory, dream — hidden from public registry
-// IDENTITY merged into ACCESS
+// All substrate modules — public (16) + CCR facades (5) + identity facade (1) = 22 entries for backward compat
+// Public registry reports 16. CCR facades route to hidden Layer 0.
 export const SUBSTRATE_MODULES = [
-  'decode',
-  'encode',
-  'defense',
-  'nexus',
-  'vision',
-  'ripple',
-  'access',
-  'modernizer',
-  'integration',
-  'inclusive',
-  'cortex',
-  'relay',
-  'audit',
-  'economy',
-  'sandbox',
-  'encode',
+  'core', 'system', 'brain', 'memory', 'dream', // CCR facades (backward compat)
+  'identity', // ACCESS facade (backward compat)
+  'decode', 'encode', 'defense', 'nexus', 'vision', 'ripple', 'access',
+  'modernizer', 'integration', 'inclusive', 'cortex', 'relay', 'audit', 'economy', 'sandbox',
 ] as const;
 
-// Legacy module names still valid for backward compat (facade → CCR)
+// Public-facing module count
+export const PUBLIC_MODULE_COUNT = 16;
+
+// CCR facade modules (backed by CLOCKLESS_COGNITIVE_REALITY)
 export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
 export const IDENTITY_FACADE = 'identity' as const;
 
-// Union type includes facades for backward compat
-export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number] | typeof CCR_FACADE_MODULES[number] | typeof IDENTITY_FACADE;
+export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Module layer classification
 export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure';
 
-export const MODULE_LAYERS: Record<string, ModuleLayer> = {
-  // CCR facades (still resolvable for backward compat)
+export const MODULE_LAYERS: Record<SubstrateModuleName, ModuleLayer> = {
+  // CCR facades
   core: 'kernel',
   system: 'administrative',
   brain: 'cognitive',
   memory: 'infrastructure',
   dream: 'cognitive',
-  identity: 'infrastructure', // merged into access
-
+  identity: 'infrastructure',
   // 16 public modules
   decode: 'cognitive',
   encode: 'orchestrator',

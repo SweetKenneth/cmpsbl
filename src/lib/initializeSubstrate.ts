@@ -43,11 +43,11 @@ export async function initializeSubstrate(): Promise<void> {
     // Boot CCR (Layer 0) first, then 16 public modules
     // CCR absorbs: CORE + SYSTEM + BRAIN + MEMORY + DREAM
     // IDENTITY merged into ACCESS
-    const bootOrder: string[] = [
+    const bootOrder = [
       'core', // → CCR facade
       'decode', 'encode', 'defense', 'nexus', 'vision', 'ripple', 'access',
       'modernizer', 'integration', 'inclusive', 'cortex', 'relay', 'audit', 'economy', 'sandbox'
-    ];
+    ] as const;
     
     // Boot CCR foundation first via core.boot facade
     const bootResult = await substrate.invoke({ module: 'core', action: 'boot' });
