@@ -9,3 +9,4 @@ export { diffService } from './diff-service';
 export { integrityService } from './integrity-service';
 export { promotionService } from './promotion-service';
 export { telemetryService } from './telemetry-service';
+export { mutationEngine } from './mutation-engine';
