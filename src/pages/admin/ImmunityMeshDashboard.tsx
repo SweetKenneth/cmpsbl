@@ -14,7 +14,8 @@ import {
   Shield, Brain, Zap, Activity, RotateCcw, AlertTriangle, BarChart3, 
   Table2, BookOpen, Fingerprint, Radar, HeartPulse, Layers, 
   ArrowUpRight, ArrowDownRight, CheckCircle2, XCircle, Minus,
-  Hammer, GraduationCap, TrendingUp, Sparkles, Play, Search, ArrowUp, ArrowDown, Target
+  Hammer, GraduationCap, TrendingUp, Sparkles, Play, Search, ArrowUp, ArrowDown, Target,
+  Rocket, Code2, FileCheck,
 } from "lucide-react";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +28,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getSharedRuleStats, getSharedRules, type SharedRule } from "@/immune/shared-rule-registry";
 import { getSkillStats, type SkillRecord } from "@/lib/shadow/shadowBuild";
 import { getPerformanceSummary, getPerformanceStats, type PerformanceEntry, type GapCategory, type ModernizerShadowReport } from "@/lib/shadow/modernizerShadow";
+import { getSkillTier, getTierProgress, type SkillTierInfo } from "@/lib/substrate/skill-tiers";
+import { verifyCode, type CodeVerificationResult } from "@/lib/substrate/code-verification";
+import { promotionService } from "@/lib/evolution-mesh/promotion-service";
+import { diffService } from "@/lib/evolution-mesh/diff-service";
+import { snapshotService } from "@/lib/evolution-mesh/snapshot-service";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
 
 // ============================================================================
 // HELPERS
@@ -310,23 +319,32 @@ export default function ImmunityMeshDashboard() {
       </motion.div>
 
       <Tabs defaultValue="overview" className="space-y-4 sm:space-y-5">
-        <TabsList className="w-full max-w-2xl bg-muted/50 p-1 flex overflow-x-auto gap-0.5">
-          <TabsTrigger value="overview" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+        <TabsList className="w-full max-w-3xl bg-muted/50 p-1 flex overflow-x-auto gap-0.5 no-scrollbar">
+          <TabsTrigger value="overview" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <BarChart3 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Overview</span>
           </TabsTrigger>
-          <TabsTrigger value="build" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="build" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Hammer className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Shadow Build</span>
           </TabsTrigger>
-          <TabsTrigger value="modernizer" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="modernizer" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Target className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Modernizer</span>
           </TabsTrigger>
-          <TabsTrigger value="executors" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="encode-training" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
+            <GraduationCap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">ENCODE</span>
+          </TabsTrigger>
+          <TabsTrigger value="verify" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
+            <FileCheck className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Verify</span>
+          </TabsTrigger>
+          <TabsTrigger value="executors" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Table2 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Executors</span>
           </TabsTrigger>
-          <TabsTrigger value="rules" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="rules" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <BookOpen className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Rules</span>
           </TabsTrigger>
-          <TabsTrigger value="controls" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="promote" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
+            <Rocket className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Promote</span>
+          </TabsTrigger>
+          <TabsTrigger value="controls" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Zap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Controls</span>
           </TabsTrigger>
         </TabsList>
@@ -448,6 +466,16 @@ export default function ImmunityMeshDashboard() {
         {/* ══════════════════ MODERNIZER SHADOW ══════════════════ */}
         <TabsContent value="modernizer" className="space-y-5">
           <ModernizerShadowPanel />
+        </TabsContent>
+
+        {/* ══════════════════ ENCODE TRAINING ══════════════════ */}
+        <TabsContent value="encode-training" className="space-y-5">
+          <EncodeTrainingPanel />
+        </TabsContent>
+
+        {/* ══════════════════ CODE VERIFICATION ══════════════════ */}
+        <TabsContent value="verify" className="space-y-5">
+          <CodeVerificationPanel />
         </TabsContent>
 
         {/* ══════════════════ EXECUTORS ══════════════════ */}
@@ -629,6 +657,11 @@ export default function ImmunityMeshDashboard() {
               </CardContent>
             </Card>
           </motion.div>
+        </TabsContent>
+
+        {/* ══════════════════ PROMOTE TO PRODUCTION ══════════════════ */}
+        <TabsContent value="promote" className="space-y-4">
+          <PromoteToProductionPanel />
         </TabsContent>
 
         {/* ══════════════════ CONTROLS ══════════════════ */}
@@ -1050,24 +1083,32 @@ function ShadowBuildPanel() {
                       transition={{ delay: i * 0.04 }}
                     >
                       <div className="flex items-center gap-2 min-w-0">
-                        <code className="text-[11px] font-mono text-primary truncate">{skill.name}</code>
+                        <code className="text-[11px] font-mono text-primary truncate max-w-[100px] sm:max-w-none">{skill.name}</code>
                         <Badge variant="outline" className="text-[9px] px-1.5 py-0 flex-shrink-0">{skill.category}</Badge>
                       </div>
-                      <div className="flex items-center gap-3 flex-shrink-0">
-                        <div className="w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
-                          <motion.div
-                            className={`h-full rounded-full ${skill.proficiency >= 0.8 ? 'bg-emerald-500' : skill.proficiency >= 0.5 ? 'bg-amber-500' : 'bg-red-400'}`}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${skill.proficiency * 100}%` }}
-                            transition={{ duration: 0.6 }}
-                          />
-                        </div>
-                        <span className="text-xs font-mono font-medium w-10 text-right">
-                          {(skill.proficiency * 100).toFixed(0)}%
-                        </span>
-                        <span className="text-[10px] text-muted-foreground font-mono w-6 text-right">
-                          ×{skill.practiceCount}
-                        </span>
+                      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                        {(() => {
+                          const tier = getSkillTier(skill.proficiency);
+                          const progress = getTierProgress(skill.proficiency);
+                          return (
+                            <>
+                              <Badge className={`text-[9px] px-1.5 py-0 ${tier.bgColor} ${tier.color} ${tier.borderColor} border`}>
+                                {tier.emoji} {tier.label}
+                              </Badge>
+                              <div className="w-12 sm:w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
+                                <motion.div
+                                  className={`h-full rounded-full ${skill.proficiency >= 0.8 ? 'bg-emerald-500' : skill.proficiency >= 0.5 ? 'bg-amber-500' : 'bg-red-400'}`}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${skill.proficiency * 100}%` }}
+                                  transition={{ duration: 0.6 }}
+                                />
+                              </div>
+                              <span className="text-[10px] text-muted-foreground font-mono w-6 text-right">
+                                ×{skill.practiceCount}
+                              </span>
+                            </>
+                          );
+                        })()}
                       </div>
                     </motion.div>
                   ))}
@@ -1573,6 +1614,457 @@ function IILStat({ label, value, color }: { label: string; value: number; color?
     <div>
       <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">{label}</p>
       <p className={`text-lg font-bold font-mono ${color ?? ''}`}>{value.toLocaleString()}</p>
+    </div>
+  );
+}
+
+// ============================================================================
+// PROMOTE TO PRODUCTION PANEL
+// ============================================================================
+
+function PromoteToProductionPanel() {
+  const [promoting, setPromoting] = useState(false);
+  const [snapshotting, setSnapshotting] = useState(false);
+  const [diffing, setDiffing] = useState(false);
+  const [promotions, setPromotions] = useState<any[]>([]);
+  const [snapshots, setSnapshots] = useState<any[]>([]);
+  const [diffs, setDiffs] = useState<any[]>([]);
+  const [selectedDiff, setSelectedDiff] = useState<any>(null);
+  const voice = useSubstrateVoice();
+
+  useEffect(() => {
+    promotionService.listPromotions(10).then(setPromotions);
+    snapshotService.listSnapshots(10).then(setSnapshots);
+    diffService.listDiffs(10).then(setDiffs);
+  }, []);
+
+  const handlePromote = async () => {
+    setPromoting(true);
+    try {
+      // Use most recent plan or a manual trigger
+      const result = await promotionService.promoteToProduction('manual-promote');
+      if (result.success) {
+        voice.success?.('Promotion complete');
+        toast.success('Successfully promoted to production');
+        promotionService.listPromotions(10).then(setPromotions);
+        snapshotService.listSnapshots(10).then(setSnapshots);
+      } else {
+        toast.error(`Promotion failed: ${result.error}`);
+      }
+    } catch (err: any) {
+      toast.error(`Promotion error: ${err.message}`);
+    } finally {
+      setPromoting(false);
+    }
+  };
+
+  const handleSnapshot = async () => {
+    setSnapshotting(true);
+    try {
+      const result = await snapshotService.createSnapshot('production_baseline');
+      if (result.success) {
+        toast.success('Snapshot captured');
+        snapshotService.listSnapshots(10).then(setSnapshots);
+      } else {
+        toast.error(`Snapshot failed: ${result.error}`);
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setSnapshotting(false);
+    }
+  };
+
+  const handleDiff = async () => {
+    if (snapshots.length < 2) {
+      toast.error('Need at least 2 snapshots to compare');
+      return;
+    }
+    setDiffing(true);
+    try {
+      const from = snapshots[1];
+      const to = snapshots[0];
+      const result = await diffService.generateDiff(from.id, to.id, {
+        summary: {
+          from_type: from.type,
+          to_type: to.type,
+          from_created: from.created_at,
+          to_created: to.created_at,
+        },
+      });
+      if (result.success) {
+        toast.success('Diff generated');
+        setSelectedDiff(result.data);
+        diffService.listDiffs(10).then(setDiffs);
+      } else {
+        toast.error(`Diff failed: ${result.error}`);
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setDiffing(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Action Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <Card className="p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <Rocket className="w-5 h-5 text-primary flex-shrink-0" />
+            <h3 className="font-semibold text-sm">Push to Production</h3>
+          </div>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">Promote validated mutations to production with snapshot + integrity gate.</p>
+          <Button size="sm" className="w-full text-xs" onClick={handlePromote} disabled={promoting}>
+            {promoting ? 'Promoting…' : '🚀 Promote Now'}
+          </Button>
+        </Card>
+
+        <Card className="p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <Play className="w-5 h-5 text-primary flex-shrink-0" />
+            <h3 className="font-semibold text-sm">Capture Snapshot</h3>
+          </div>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">Freeze current system state for comparison and rollback.</p>
+          <Button size="sm" variant="outline" className="w-full text-xs" onClick={handleSnapshot} disabled={snapshotting}>
+            {snapshotting ? 'Capturing…' : '📸 Snapshot'}
+          </Button>
+        </Card>
+
+        <Card className="p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <Code2 className="w-5 h-5 text-primary flex-shrink-0" />
+            <h3 className="font-semibold text-sm">Compare Snapshots</h3>
+          </div>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">Generate a diff between the two most recent snapshots.</p>
+          <Button size="sm" variant="outline" className="w-full text-xs" onClick={handleDiff} disabled={diffing || snapshots.length < 2}>
+            {diffing ? 'Diffing…' : snapshots.length < 2 ? `Need ${2 - snapshots.length} more snapshots` : '📊 Generate Diff'}
+          </Button>
+        </Card>
+      </div>
+
+      {/* Diff Results */}
+      {selectedDiff && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+          <Card className="p-4 space-y-3 overflow-hidden">
+            <h3 className="font-semibold text-sm flex items-center gap-2">
+              <Code2 className="w-4 h-4 text-primary" /> Diff Result
+            </h3>
+            <pre className="p-3 rounded-lg bg-muted/30 border border-border/20 overflow-x-auto max-h-60 text-[10px] sm:text-xs font-mono whitespace-pre-wrap break-all">
+              {JSON.stringify(selectedDiff, null, 2)}
+            </pre>
+          </Card>
+        </motion.div>
+      )}
+
+      {/* Recent Snapshots */}
+      {snapshots.length > 0 && (
+        <Card className="p-4 space-y-3">
+          <h3 className="font-semibold text-sm">Recent Snapshots</h3>
+          <div className="space-y-1.5">
+            {snapshots.slice(0, 5).map((s: any) => (
+              <div key={s.id} className="flex items-center justify-between text-xs p-2.5 rounded-lg bg-muted/20 border border-border/20 gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Badge variant="outline" className="text-[9px] flex-shrink-0">{s.type}</Badge>
+                  <span className="font-mono truncate text-[10px]">{s.id?.slice(0, 12)}</span>
+                </div>
+                <span className="text-muted-foreground text-[10px] whitespace-nowrap">
+                  {s.created_at ? new Date(s.created_at).toLocaleString() : '—'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Recent Diffs */}
+      {diffs.length > 0 && (
+        <Card className="p-4 space-y-3 overflow-hidden">
+          <h3 className="font-semibold text-sm">Recent Diffs</h3>
+          <div className="space-y-1.5">
+            {diffs.slice(0, 5).map((d: any) => (
+              <div key={d.id} className="text-xs p-2.5 rounded-lg bg-muted/20 border border-border/20 cursor-pointer hover:border-primary/30 transition-colors" onClick={() => setSelectedDiff(d)}>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono truncate text-[10px]">{d.from_snapshot_id?.slice(0, 8)} → {d.to_snapshot_id?.slice(0, 8)}</span>
+                  <span className="text-muted-foreground text-[10px] whitespace-nowrap">
+                    {d.created_at ? new Date(d.created_at).toLocaleString() : '—'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Promotion History */}
+      {promotions.length > 0 && (
+        <Card className="p-4 space-y-3 overflow-hidden">
+          <h3 className="font-semibold text-sm">Promotion History</h3>
+          <div className="space-y-1.5">
+            {promotions.map((p: any) => (
+              <div key={p.id} className="flex items-center justify-between text-xs p-2.5 rounded-lg bg-muted/20 border border-border/20 gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Badge variant={p.status === 'completed' ? 'default' : p.status === 'rolled_back' ? 'destructive' : 'secondary'} className="text-[9px] flex-shrink-0">
+                    {p.status}
+                  </Badge>
+                  <span className="font-mono truncate text-[10px]">{p.plan_id?.slice(0, 12)}</span>
+                </div>
+                <span className="text-muted-foreground text-[10px] whitespace-nowrap">
+                  {p.created_at ? new Date(p.created_at).toLocaleString() : '—'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// CODE VERIFICATION PANEL
+// ============================================================================
+
+function CodeVerificationPanel() {
+  const [codeInput, setCodeInput] = useState('');
+  const [result, setResult] = useState<CodeVerificationResult | null>(null);
+  const [source, setSource] = useState<'encode' | 'executor' | 'manual'>('manual');
+
+  const handleVerify = () => {
+    if (!codeInput.trim()) {
+      toast.error('Paste code to verify');
+      return;
+    }
+    const res = verifyCode(codeInput, source);
+    setResult(res);
+    toast.success(`Code verified: Grade ${res.grade} (${res.score}/100)`);
+  };
+
+  const gradeColor = (grade: string) => {
+    switch (grade) {
+      case 'A': return 'text-emerald-500';
+      case 'B': return 'text-blue-400';
+      case 'C': return 'text-amber-400';
+      case 'D': return 'text-orange-400';
+      default: return 'text-red-400';
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+          <CardContent className="pt-5 pb-4">
+            <div className="flex items-start gap-4">
+              <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 flex-shrink-0">
+                <FileCheck className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-1">Code Verification</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Validate code output from ENCODE or Executors against security, resilience, and quality standards.
+                  Paste any code block to get an instant quality grade and actionable feedback.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      <Card className="p-4 space-y-4">
+        <div className="flex items-center gap-2">
+          <Select value={source} onValueChange={(v) => setSource(v as any)}>
+            <SelectTrigger className="w-[130px] h-8 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="encode">ENCODE</SelectItem>
+              <SelectItem value="executor">Executor</SelectItem>
+              <SelectItem value="manual">Manual</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button size="sm" onClick={handleVerify} className="text-xs gap-1">
+            <FileCheck className="w-3 h-3" /> Verify Code
+          </Button>
+        </div>
+        <Textarea
+          placeholder="Paste code here to verify…"
+          value={codeInput}
+          onChange={(e) => setCodeInput(e.target.value)}
+          className="min-h-[150px] font-mono text-xs resize-y"
+        />
+      </Card>
+
+      {result && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+          {/* Score Summary */}
+          <Card className="p-4 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className={`text-4xl font-bold ${gradeColor(result.grade)}`}>{result.grade}</div>
+                <div>
+                  <p className="text-lg font-bold">{result.score}/100</p>
+                  <p className="text-xs text-muted-foreground">{result.summary.passed}/{result.summary.total} checks passed</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {result.summary.errors > 0 && <Badge variant="destructive" className="text-[10px]">{result.summary.errors} errors</Badge>}
+                {result.summary.warnings > 0 && <Badge variant="secondary" className="text-[10px]">{result.summary.warnings} warnings</Badge>}
+                {result.summary.info > 0 && <Badge variant="outline" className="text-[10px]">{result.summary.info} info</Badge>}
+              </div>
+            </div>
+            <Progress value={result.score} className="h-2" />
+
+            {/* Individual Checks */}
+            <div className="space-y-2">
+              {result.checks.map((check) => (
+                <div key={check.id} className={`flex items-start gap-2 p-3 rounded-lg border text-xs ${
+                  check.passed ? 'border-emerald-500/20 bg-emerald-500/5' : 
+                  check.severity === 'error' ? 'border-red-500/20 bg-red-500/5' :
+                  check.severity === 'warning' ? 'border-amber-500/20 bg-amber-500/5' :
+                  'border-border/20 bg-muted/20'
+                }`}>
+                  <div className="flex-shrink-0 mt-0.5">
+                    {check.passed ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : 
+                     check.severity === 'error' ? <XCircle className="w-4 h-4 text-red-400" /> :
+                     <AlertTriangle className="w-4 h-4 text-amber-400" />}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-medium">{check.name}</span>
+                      <Badge variant="outline" className="text-[8px]">{check.category}</Badge>
+                    </div>
+                    <p className="text-muted-foreground mt-0.5 break-words">{check.message}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// ENCODE TRAINING PANEL
+// ============================================================================
+
+function EncodeTrainingPanel() {
+  const [running, setRunning] = useState<string | null>(null);
+  const [lastResult, setLastResult] = useState<{ mode: string; success: number; total: number } | null>(null);
+  const voice = useSubstrateVoice();
+
+  const trainingModules = [
+    { id: 'modules', label: 'Module Refactoring', icon: '🧩', desc: 'Practice refactoring and improving substrate modules' },
+    { id: 'brain', label: 'Brain Operations', icon: '🧠', desc: 'Train on memory tiering, recall, and event processing' },
+    { id: 'resilience', label: 'Resilience Patterns', icon: '🛡️', desc: 'Error handling, retry logic, circuit breakers' },
+    { id: 'security', label: 'Security Hardening', icon: '🔒', desc: 'RLS policies, input validation, secret management' },
+    { id: 'performance', label: 'Performance Optimization', icon: '⚡', desc: 'Query optimization, caching, batch processing' },
+    { id: 'website', label: 'Website & UI', icon: '🎨', desc: 'Component architecture, accessibility, responsive design' },
+  ];
+
+  const handleTrain = async (moduleId: string) => {
+    setRunning(moduleId);
+    try {
+      // Run shadow build focused on ENCODE practice tasks
+      const { runAllShadowBuilds } = await import('@/lib/shadow/shadowBuild');
+      const reports = await runAllShadowBuilds();
+      const encodeResults = reports.flatMap(r => r.results.filter(res => res.task.source === 'encode'));
+      const success = encodeResults.filter(r => r.outcome === 'success' || r.outcome === 'partial_success').length;
+      setLastResult({ mode: moduleId, success, total: encodeResults.length });
+      voice.success?.(`ENCODE training complete: ${success}/${encodeResults.length}`);
+      toast.success(`ENCODE ${moduleId} training: ${success}/${encodeResults.length} passed`);
+    } catch (err: any) {
+      toast.error(`Training failed: ${err.message}`);
+    } finally {
+      setRunning(null);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+          <CardContent className="pt-5 pb-4">
+            <div className="flex items-start gap-4">
+              <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 flex-shrink-0">
+                <GraduationCap className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-1">ENCODE Training Lab</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Dedicated training environment for ENCODE. Practice real shadow work on modules,
+                  brain operations, and website components. All work is scored and discarded but
+                  skills and repair rules are retained permanently.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {lastResult && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <Card className="p-3 border-emerald-500/20 bg-emerald-500/5">
+            <div className="flex items-center justify-between text-xs">
+              <span>Last training: <strong className="capitalize">{lastResult.mode}</strong></span>
+              <span><strong>{lastResult.success}</strong>/{lastResult.total} passed</span>
+            </div>
+          </Card>
+        </motion.div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {trainingModules.map((mod) => (
+          <motion.div key={mod.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+            <Card className="p-4 space-y-3 h-full flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{mod.icon}</span>
+                <h4 className="font-semibold text-sm">{mod.label}</h4>
+              </div>
+              <p className="text-[10px] sm:text-xs text-muted-foreground flex-1">{mod.desc}</p>
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full text-xs"
+                onClick={() => handleTrain(mod.id)}
+                disabled={running !== null}
+              >
+                {running === mod.id ? 'Training…' : 'Train'}
+              </Button>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* ENCODE Skill Tiers Explanation */}
+      <Card className="p-4 space-y-3">
+        <h3 className="font-semibold text-sm flex items-center gap-2">
+          <GraduationCap className="w-4 h-4 text-primary" /> Skill Progression Tiers
+        </h3>
+        <p className="text-xs text-muted-foreground">Each tier represents real capability differences — not just a percentage.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          {[
+            { emoji: '🌱', name: 'Novice', range: '0-19%', desc: 'Handles basic inputs; fails on edge cases' },
+            { emoji: '📘', name: 'Apprentice', range: '20-39%', desc: 'Recognizes failure patterns; basic repairs' },
+            { emoji: '⚒️', name: 'Journeyman', range: '40-59%', desc: 'Reliable on standard work; contributes rules' },
+            { emoji: '🎯', name: 'Specialist', range: '60-79%', desc: 'Deep domain knowledge; self-repairs' },
+            { emoji: '⭐', name: 'Expert', range: '80-94%', desc: 'Near-zero failure rate; generates strategies' },
+            { emoji: '👑', name: 'Master', range: '95-100%', desc: 'Fully autonomous; zero escalations' },
+          ].map((tier) => (
+            <div key={tier.name} className="p-2.5 rounded-lg border border-border/20 bg-card text-xs">
+              <div className="flex items-center gap-1.5 mb-1">
+                <span>{tier.emoji}</span>
+                <span className="font-medium">{tier.name}</span>
+                <span className="text-muted-foreground font-mono text-[9px]">{tier.range}</span>
+              </div>
+              <p className="text-muted-foreground text-[10px] leading-relaxed">{tier.desc}</p>
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
   );
 }
