@@ -115,7 +115,7 @@ export {
 export * from './circuitBreaker';
 
 // Version info
-export const NEXUS_VERSION = '5.0.0';
+export const NEXUS_VERSION = '5.1.0';
 export const NEXUS_CODENAME = 'ARCHITECT Fleet Router';
 
 // Provider registry — free-tier only, zero paid dependencies
@@ -127,6 +127,10 @@ export const SUPPORTED_PROVIDERS = [
   'deepseek',
   'together',
   'openrouter',
+  'grok',
+  'mistral',
+  'cohere',
+  'hyperbolic',
   'stability',
   'fal',
 ] as const;
@@ -146,7 +150,11 @@ export const PROVIDER_CAPABILITIES: Record<SupportedProvider, {
   google: { types: ['text', 'image', 'multimodal', 'code'], freeTier: true, latency: 'medium', quality: 'premium' },
   deepseek: { types: ['text', 'reasoning', 'code'], freeTier: true, latency: 'medium', quality: 'high' },
   together: { types: ['text', 'research'], freeTier: true, latency: 'medium', quality: 'high' },
-  openrouter: { types: ['text', 'research'], freeTier: false, latency: 'medium', quality: 'premium' },
+  openrouter: { types: ['text', 'research', 'reasoning'], freeTier: true, latency: 'medium', quality: 'high' },
+  grok: { types: ['text', 'reasoning', 'research'], freeTier: true, latency: 'medium', quality: 'high' },
+  mistral: { types: ['text', 'reasoning', 'code'], freeTier: true, latency: 'medium', quality: 'high' },
+  cohere: { types: ['text', 'research', 'generation'], freeTier: true, latency: 'medium', quality: 'high' },
+  hyperbolic: { types: ['text', 'reasoning'], freeTier: true, latency: 'medium', quality: 'high' },
   stability: { types: ['image'], freeTier: false, latency: 'medium', quality: 'premium' },
   fal: { types: ['image', 'video'], freeTier: false, latency: 'medium', quality: 'high' },
 };

@@ -104,3 +104,12 @@ verify_jwt = false
 
 [functions.pf-radio-broadcast]
 verify_jwt = false
+
+[functions.pf-nexus-router]
+verify_jwt = false
+
+[functions.pf-nexus-image-gen]
+verify_jwt = false
+
+[functions.pf-owner-report]
+verify_jwt = false
