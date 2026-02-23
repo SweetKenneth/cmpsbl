@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>EVLVBL — Autonomous Code Evolution — CMPSBL OS Substrate</title>
+<title>EVLVBL — API-First Autonomous Code Defense — CMPSBL OS Substrate</title>
 <style>
   body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
   .page{max-width:8.5in;margin:0 auto;padding:0.8in}
@@ -23,7 +23,7 @@
 <div class="page">
 
 <h1>EVLVBL</h1>
-<p><strong>Autonomous Code Evolution — Your Code Evolves Its Own Defenses</strong></p>
+<p><strong>API-First Autonomous Code Defense — Your Code Evolves Its Own Defenses</strong></p>
 <table>
 <tr><td><strong>Document</strong></td><td>18 — EVLVBL</td></tr>
 <tr><td><strong>Classification</strong></td><td>Library — No Trade Secrets</td></tr>
@@ -33,46 +33,70 @@
 
 <h2>What Is EVLVBL?</h2>
 
-<p>EVLVBL (pronounced "evolvable") is a standalone code evolution platform that wraps your existing functions with self-healing, shadow testing, and deterministic repair capabilities. It is the commercial product derived from the CMPSBL substrate's internal Immunity Mesh.</p>
+<p>EVLVBL (pronounced "evolvable") is an API-first code evolution platform. Unlike downloadable SDKs, the entire self-evolution engine runs on CMPSBL's servers — developers interact via simple HTTP API calls from any language or framework.</p>
 
-<p>Unlike monitoring tools that tell you something broke, EVLVBL fixes it — automatically, safely, and with a full audit trail.</p>
+<p>Unlike monitoring tools that tell you something broke, EVLVBL fixes it — automatically, safely, and with a full audit trail. And unlike open-source SDKs, the proprietary algorithms never leave our infrastructure.</p>
 
 <hr />
 
 <h2>How It Works</h2>
 
 <div class="card">
-<h3>1. Wrap</h3>
-<p>Use <code>wrap()</code> to add self-healing to any async function. No rewrites required — your existing code stays exactly as it is.</p>
-<pre>import { wrap } from '@evlvbl/sdk';
-
-const resilientFn = wrap(myFunction, {
-  repair: 'deterministic',
-  shadow: true,
-  rollback: 'automatic',
-});</pre>
+<h3>1. Get Your API Key</h3>
+<p>Sign up at <code>cmpsbl.com/evolution-mesh</code> to get your free API key. Free tier includes 1,000 calls/month.</p>
 </div>
 
 <div class="card">
-<h3>2. Shadow</h3>
+<h3>2. Call the API</h3>
+<p>Send your inputs and schema via a simple HTTP POST. The engine validates, repairs, and returns clean results.</p>
+<pre>POST https://api.cmpsbl.com/v1/wrap
+Authorization: Bearer YOUR_API_KEY
+
+{
+  "input": { "email": "test@test.com", "age": -5 },
+  "schema": { "email": "string", "age": "number" },
+  "repair": "deterministic"
+}
+
+→ { "result": { "email": "test@test.com", "age": 0 }, "repaired": true }</pre>
+</div>
+
+<div class="card">
+<h3>3. Shadow Test</h3>
 <p>Test changes before they go live. Shadow mode runs your baseline and candidate functions against the same input, comparing outputs and timing without affecting production.</p>
+<pre>POST https://api.cmpsbl.com/v1/shadow
+
+{
+  "baseline_result": { ... },
+  "candidate_result": { ... },
+  "input": { ... }
+}</pre>
 </div>
 
 <div class="card">
-<h3>3. Repair</h3>
-<p>When failures occur, EVLVBL applies repair strategies from a registry of 12+ deterministic approaches — retry, fallback, circuit-break, graceful degradation, and more.</p>
-</div>
-
-<div class="card">
-<h3>4. Stamp</h3>
+<h3>4. Evolve</h3>
 <p>Every mutation is recorded with a cryptographic evolution stamp — a verifiable proof that the system changed, why it changed, and what the outcome was.</p>
 </div>
 
 <hr />
 
+<h2>API Endpoints</h2>
+
+<table>
+<tr><th>Endpoint</th><th>Method</th><th>Description</th></tr>
+<tr><td><code>/v1/wrap</code></td><td>POST</td><td>Validate, repair, and return healed input</td></tr>
+<tr><td><code>/v1/shadow</code></td><td>POST</td><td>A/B test baseline vs candidate</td></tr>
+<tr><td><code>/v1/probe</code></td><td>POST</td><td>Shadow probe with timing analysis</td></tr>
+<tr><td><code>/v1/rules</code></td><td>GET</td><td>View learned repair rules</td></tr>
+<tr><td><code>/v1/metrics</code></td><td>GET</td><td>Health dashboard metrics</td></tr>
+<tr><td><code>/v1/volver</code></td><td>POST</td><td>VOLVER coding agent (Enterprise)</td></tr>
+</table>
+
+<hr />
+
 <h2>The VOLVER Coding Agent</h2>
 
-<p>EVLVBL ships with VOLVER, a built-in coding agent that analyzes your code and suggests improvements. VOLVER operates in dry-run mode — it tells you what it would do, without doing it.</p>
+<p>EVLVBL includes VOLVER, a built-in coding agent available via the <code>/v1/volver</code> API endpoint. VOLVER operates in analysis mode — it tells you what it would do, without doing it.</p>
 
 <table>
 <tr><th>Skill Domain</th><th>Capabilities</th></tr>
@@ -83,44 +107,13 @@ const resilientFn = wrap(myFunction, {
 <tr><td>Refactoring</td><td>Function extraction, complexity reduction, dead code removal</td></tr>
 </table>
 
-<p>VOLVER's skill proficiencies are intentionally bounded. For autonomous code execution, upgrade to the Standalone License.</p>
-
-<hr />
-
-<h2>Shadow Probes</h2>
-
-<p>Shadow probes are an interactive simulation tool available in the EVLVBL Dashboard. They allow you to:</p>
-
-<ol>
-<li>Define a JSON input payload</li>
-<li>Run it against a baseline function and a candidate function</li>
-<li>Compare execution timing (baseline vs. candidate latency)</li>
-<li>See whether outputs match or diverge</li>
-<li>Make informed decisions about deploying changes</li>
-</ol>
-
-<p>Shadow probes never affect production traffic. They run in an isolated context with no side effects.</p>
-
-<hr />
-
-<h2>Learning Tests</h2>
-
-<p>Learning tests let you evaluate VOLVER's capabilities against your specific use cases:</p>
-
-<ol>
-<li>Describe a coding task in plain English</li>
-<li>Select a skill category (TypeScript, React, API, Database, Refactoring)</li>
-<li>VOLVER analyzes the task using its skill registry</li>
-<li>Review the confidence score, matched skills, and suggestion</li>
-</ol>
-
-<p>Learning tests are designed to help you understand what EVLVBL can automate for your codebase before you commit to a tier.</p>
+<p>VOLVER is available on Enterprise plans. Free and Pro tiers can test VOLVER's capabilities via Learning Tests on the dashboard.</p>
 
 <hr />
 
 <h2>Repair Strategy Registry</h2>
 
-<p>EVLVBL includes 12 deterministic repair strategies:</p>
+<p>EVLVBL includes 29+ deterministic repair strategies, all running server-side:</p>
 
 <table>
 <tr><th>#</th><th>Strategy</th><th>When Used</th></tr>
@@ -138,32 +131,32 @@ const resilientFn = wrap(myFunction, {
 <tr><td>12</td><td>Idempotency guard</td><td>Prevent duplicate side effects</td></tr>
 </table>
 
+<p>Additional strategies (13–29+) are proprietary and run exclusively on CMPSBL infrastructure.</p>
+
 <hr />
 
 <h2>Pricing Tiers</h2>
 
 <table>
-<tr><th>Tier</th><th>Price</th><th>SDK</th><th>Dashboard</th><th>VOLVER</th></tr>
-<tr><td>Free / OSS</td><td>$0</td><td>✅ Core</td><td>—</td><td>—</td></tr>
-<tr><td>Pro</td><td>$29/mo</td><td>✅ Full</td><td>✅</td><td>Dry-run</td></tr>
-<tr><td>Team</td><td>$99/mo</td><td>✅ Full</td><td>✅ Multi-repo</td><td>Dry-run</td></tr>
-<tr><td>Standalone</td><td>$399 lifetime</td><td>✅ Full</td><td>✅ Self-hosted</td><td>✅ Write mode</td></tr>
+<tr><th>Tier</th><th>Price</th><th>API Calls/mo</th><th>Dashboard</th><th>VOLVER</th></tr>
+<tr><td>Free</td><td>$0</td><td>1,000</td><td>—</td><td>—</td></tr>
+<tr><td>Pro</td><td>$29/mo</td><td>25,000</td><td>✅</td><td>Learning tests</td></tr>
+<tr><td>Team</td><td>$99/mo</td><td>250,000</td><td>✅ Multi-project</td><td>Learning tests</td></tr>
+<tr><td>Enterprise</td><td>Custom</td><td>Unlimited</td><td>✅ Dedicated</td><td>✅ Full access</td></tr>
 </table>
 
 <hr />
 
 <h2>Getting Started</h2>
 
-<pre>npm install @evlvbl/sdk</pre>
+<p>No packages to install. Just get your API key and make an HTTP call:</p>
 
-<p>Then wrap your first function:</p>
+<pre>curl -X POST https://api.cmpsbl.com/v1/wrap \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"input": {"email": "test@test.com"}, "schema": {"email": "string"}, "repair": "deterministic"}'</pre>
 
-<pre>import { wrap } from '@evlvbl/sdk';
-
-const safe = wrap(myFunction, { repair: 'deterministic' });
-const result = await safe(input);</pre>
-
-<p>That's it. Your function now self-heals.</p>
+<p>That's it. Your input is now self-healing.</p>
 
 <hr />
 <p style="font-size:0.85rem;color:#777;text-align:center;">
