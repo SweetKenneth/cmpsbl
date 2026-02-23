@@ -379,7 +379,8 @@ async function callProvider(
   });
 
   if (!response.ok) {
-    const errText = await response.text().catch(() => "unknown");
+    let errText = "unknown";
+    try { errText = await response.text(); } catch { /* */ }
     throw new Error(`${provider.name} API error [${response.status}]: ${errText.slice(0, 300)}`);
   }
 
@@ -459,22 +460,24 @@ serve(async (req: Request) => {
         const h = getHealth(provider.id);
         h.score = Math.min(100, h.score * 0.9 + 10);
 
-        // Log success to ai_usage_log
-        await supabase.from("ai_usage_log").insert({
-          provider: provider.id,
-          model: provider.model,
-          category: metadata?.routeKey || "nexus_route",
-          response_time_ms: latencyMs,
-          success: true,
-          tokens_used: result.tokensUsed,
-          cost: 0,
-          metadata: {
-            task_type: taskType,
-            prompt_length: prompt.length,
-            response_length: result.content.length,
-            router_version: "5.1.0",
-          },
-        }).catch(() => {});
+        // Log success to ai_usage_log (non-blocking)
+        try {
+          await supabase.from("ai_usage_log").insert({
+            provider: provider.id,
+            model: provider.model,
+            category: metadata?.routeKey || "nexus_route",
+            response_time_ms: latencyMs,
+            success: true,
+            tokens_used: result.tokensUsed,
+            cost: 0,
+            metadata: {
+              task_type: taskType,
+              prompt_length: prompt.length,
+              response_length: result.content.length,
+              router_version: "5.1.0",
+            },
+          });
+        } catch { /* non-critical */ }
 
         return new Response(
           JSON.stringify({
@@ -494,16 +497,18 @@ serve(async (req: Request) => {
         h.score = Math.max(0, h.score * 0.6);
         h.lastFail = Date.now();
 
-        // Log failure
-        await supabase.from("ai_usage_log").insert({
-          provider: provider.id,
-          model: provider.model,
-          category: metadata?.routeKey || "nexus_route",
-          response_time_ms: Date.now() - startMs,
-          success: false,
-          cost: 0,
-          metadata: { error: err.message, router_version: "5.1.0" },
-        }).catch(() => {});
+        // Log failure (non-blocking)
+        try {
+          await supabase.from("ai_usage_log").insert({
+            provider: provider.id,
+            model: provider.model,
+            category: metadata?.routeKey || "nexus_route",
+            response_time_ms: Date.now() - startMs,
+            success: false,
+            cost: 0,
+            metadata: { error: err.message, router_version: "5.1.0" },
+          });
+        } catch { /* non-critical */ }
       }
     }
 
