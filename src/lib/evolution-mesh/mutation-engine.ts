@@ -8,6 +8,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { telemetryService } from './telemetry-service';
 import { snapshotService } from './snapshot-service';
 import { integrityService } from './integrity-service';
+import {
+  PILOT_EXECUTORS,
+  EXECUTOR_MODULE_META,
+  getExecutorsByCategory,
+  type PilotExecutorId,
+  type ExecutorModuleMeta,
+} from '@/immune/pilotExecutors';
 
 // ── Types ──────────────────────────────────────────────────
 
