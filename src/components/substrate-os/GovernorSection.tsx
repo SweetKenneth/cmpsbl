@@ -381,6 +381,34 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
               </div>
               <ArrowRight className="w-4 h-4 text-muted-foreground" />
             </Button>
+            <Button
+              variant="outline"
+              className="justify-between h-auto p-4 border-emerald-500/20 hover:bg-emerald-500/5"
+              onClick={() => navigate('/evolution-mesh')}
+            >
+              <div className="flex items-center gap-3 text-left">
+                <Shield className="w-5 h-5 text-emerald-500 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Evolution Mesh</p>
+                  <p className="text-[10px] text-muted-foreground">Test SDK · Download · Manage</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            </Button>
+            <Button
+              variant="outline"
+              className="justify-between h-auto p-4 border-border/30 hover:bg-muted/50"
+              onClick={() => navigate('/composable-cognitives')}
+            >
+              <div className="flex items-center gap-3 text-left">
+                <Activity className="w-5 h-5 text-purple-400 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">ENCODE Agent</p>
+                  <p className="text-[10px] text-muted-foreground">Coding agent · Cognitive store</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            </Button>
           </div>
         </CardContent>
       </Card>

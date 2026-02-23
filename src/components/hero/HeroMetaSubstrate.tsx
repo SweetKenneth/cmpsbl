@@ -16,6 +16,7 @@ import {
   ChevronDown,
   Layers,
   Brain,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MemoryRiver } from "./MemoryRiver";
@@ -291,6 +292,28 @@ export function HeroMetaSubstrate() {
                   Browse the Store
                 </Link>
               </Button>
+            </motion.div>
+
+            {/* Evolution Mesh CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="mt-4 sm:mt-6"
+            >
+              <Link 
+                to="/evolution-mesh"
+                className="inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-emerald-500/30 bg-emerald-500/[0.05] hover:bg-emerald-500/10 hover:border-emerald-500/50 transition-all duration-300 group"
+              >
+                <div className="p-1.5 rounded-lg bg-emerald-500/10 group-hover:bg-emerald-500/15 transition-colors">
+                  <Shield className="w-4 h-4 text-emerald-500" />
+                </div>
+                <div className="text-left">
+                  <span className="block text-xs font-bold text-foreground group-hover:text-emerald-500 transition-colors">Evolution Mesh — Free Download</span>
+                  <span className="block text-[10px] text-muted-foreground">Self-learning immune system for any software</span>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all" />
+              </Link>
             </motion.div>
             
             {/* Research link */}

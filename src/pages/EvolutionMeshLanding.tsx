@@ -11,16 +11,17 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Shield, Zap, Brain, GitCompare, Lock, Activity, ArrowRight, Check, Terminal,
   Loader2, Download, Copy, Package, Globe, Server, Smartphone, Database,
-  Code, Layers, Cpu, Eye, EyeOff, Sparkles, FileCode, Rocket,
+  Code, Layers, Cpu, Eye, EyeOff, Sparkles, FileCode, Rocket, Bot, Crown,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 
 // ─── Framework Configurations ───────────────────────────────────────
 const FRAMEWORKS = [
@@ -131,59 +132,68 @@ const TIERS = [
     name: 'Open Source',
     price: '$0',
     period: 'forever',
-    features: ['5 wrapped functions', 'Local telemetry only', 'CLI dashboard', 'Community support', 'All frameworks'],
+    features: ['5 wrapped functions', 'Local telemetry only', 'CLI dashboard', 'Community support', 'All 12 frameworks', 'Install wizard included', 'Black-box protected'],
     cta: 'Download Free',
     highlighted: false,
     tier: null as string | null,
+    badge: 'FREE FOREVER',
+    badgeColor: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20',
   },
   {
     name: 'Pro',
     price: '$29',
     period: '/month',
-    features: ['50 wrapped functions', '30-day telemetry retention', 'Full SaaS dashboard', 'Email support', 'Cross-function learning', 'Install wizard', 'All frameworks'],
+    features: ['50 wrapped functions', '30-day telemetry retention', 'Full SaaS dashboard', 'Email support', 'Cross-function learning', 'Install wizard included', 'All 12 frameworks'],
     cta: 'Start Pro',
     highlighted: true,
     tier: 'pro',
+    badge: 'MOST POPULAR',
+    badgeColor: 'bg-primary/10 text-primary border-primary/20',
   },
   {
     name: 'Team',
     price: '$99',
     period: '/month',
-    features: ['250 wrapped functions', '90-day retention', 'SSO + team access', 'Priority support', 'Custom repair strategies', 'Install wizard', 'All frameworks'],
+    features: ['250 wrapped functions', '90-day retention', 'SSO + team access', 'Priority support', 'Custom repair strategies', 'Install wizard included', 'All 12 frameworks'],
     cta: 'Start Team',
     highlighted: false,
     tier: 'team',
+    badge: null,
+    badgeColor: '',
   },
   {
     name: 'Standalone',
     price: '$399',
     period: 'one-time',
-    features: ['Unlimited wrapped functions', 'Lifetime license', 'Not tied to any substrate', 'Self-hosted dashboard', 'All updates included', 'Install wizard', 'All frameworks', 'Black-box protected'],
-    cta: 'Buy Standalone',
+    features: ['Unlimited wrapped functions', 'Lifetime license — yours forever', 'Not tied to any platform', 'Self-hosted dashboard', 'All future updates included', 'ENCODE agent slot included', 'Install wizard included', 'All 12 frameworks', 'Black-box protected'],
+    cta: 'Buy Standalone License',
     highlighted: false,
     tier: 'standalone',
+    badge: 'LIFETIME LICENSE',
+    badgeColor: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
     special: true,
   },
 ];
 
-// ─── Vibe Coder Instructions ────────────────────────────────────────
-const VIBE_CODER_INSTRUCTION = `# Evolution Mesh — Install Instructions
+// ─── Vibe Coder Instructions (FREE version) ─────────────────────────
+const VIBE_CODER_INSTRUCTION = `# Evolution Mesh — FREE Version Install Instructions
+# Drop this file into your AI coding agent and tell it to install.
 
-Drop this file into your AI coding agent (Cursor, Copilot, Lovable, etc.) and tell it:
+## IMPORTANT: This is the FREE Open Source version.
+## Includes 5 wrapped functions, local telemetry, CLI dashboard.
+## Upgrade to Pro ($29/mo), Team ($99/mo), or Standalone ($399 lifetime)
+## at https://cmpsbl.com/evolution-mesh for more functions and features.
 
-"Install Evolution Mesh in my project. Wrap all API endpoints and async functions with immune defense."
-
-## What it does:
-1. Scans your project for all async functions and API routes
-2. Wraps each one with the Evolution Mesh immune layer
-3. Adds schema validation based on your existing types
-4. Enables 29+ deterministic repair strategies
-5. Activates cross-function self-learning rules
-6. Starts encrypted telemetry reporting
+## What your AI agent should do:
+1. Scan your project for async functions and API routes
+2. Wrap up to 5 functions with the Evolution Mesh immune layer
+3. Add schema validation based on your existing types
+4. Enable 29+ deterministic repair strategies
+5. Activate local telemetry tracking
 
 ## Quick Start:
 \`\`\`
-evolution-mesh init --framework=auto --wrap=all
+npx @cmpsbl/evolution-mesh init --framework=auto --tier=free
 \`\`\`
 
 ## Or manual wrap:
@@ -192,11 +202,16 @@ import { wrap } from '@cmpsbl/evolution-mesh';
 const safe = wrap(myHandler, { schema: { email: 'string' } });
 \`\`\`
 
+## Upgrade anytime:
+\`\`\`
+npx @cmpsbl/evolution-mesh upgrade --tier=pro
+\`\`\`
+
 ## Black-Box Protected
 This software is compiled and obfuscated. Source maps are not included.
 Reverse engineering is prohibited under the CMPSBL Software License.
 
-© CMPSBL — Evolution Mesh
+© CMPSBL — Evolution Mesh (Free Tier)
 https://cmpsbl.com/evolution-mesh
 `;
 
@@ -266,53 +281,67 @@ export default function EvolutionMeshLanding() {
   };
 
   const downloadVibeFile = () => {
-    const blob = new Blob([VIBE_CODER_INSTRUCTION], { type: 'text/markdown' });
+    const blob = new Blob([VIBE_CODER_INSTRUCTION], { type: 'text-markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'evolution-mesh-install.md';
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('File downloaded! Drop it into your AI coding agent.');
+    toast.success('Free version downloaded! Drop it into your AI coding agent.');
+  };
+
+  const downloadFreeVersion = () => {
+    // Download the free version install package
+    const blob = new Blob([VIBE_CODER_INSTRUCTION], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'evolution-mesh-free.md';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Free version downloaded! Follow the install instructions inside.');
   };
 
   return (
     <>
       <Helmet>
-        <title>Evolution Mesh — Self-Learning Immune System for Any Software</title>
-        <meta name="description" content="Black-boxed resilience SDK that wraps your functions with immune defense, auto-repair, and self-learning rules. Works with React, Vue, Node.js, Python, Go, Ruby, PHP, Java, and more. Install in 60 seconds." />
-        <meta name="keywords" content="software resilience, input validation, auto-repair, self-learning, immune system, API protection, XSS prevention, SQL injection, shadow testing, code defense, runtime protection" />
+        <title>Evolution Mesh — Self-Learning Immune System for Any Software | CMPSBL</title>
+        <meta name="description" content="Category-defining resilience SDK that wraps your functions with immune defense, auto-repair, and self-learning rules. Free download available. Works with React, Vue, Node.js, Python, Go, Ruby, PHP, Java, and 12+ frameworks. Install in 60 seconds." />
+        <meta name="keywords" content="software resilience, input validation, auto-repair, self-learning, immune system, API protection, XSS prevention, SQL injection, shadow testing, code defense, runtime protection, black box SDK, vibe coding" />
         <link rel="canonical" href="https://cmpsbl.com/evolution-mesh" />
         <meta property="og:title" content="Evolution Mesh — Your Code's Immune System" />
-        <meta property="og:description" content="Drop-in resilience for any framework. 29+ repair strategies. Self-learning rules. Black-box protected." />
+        <meta property="og:description" content="Drop-in resilience for any framework. 29+ repair strategies. Self-learning rules. Black-box protected. Free tier available." />
         <meta property="og:type" content="product" />
         <meta property="og:url" content="https://cmpsbl.com/evolution-mesh" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Evolution Mesh — Self-Learning Software Immune System" />
-        <meta name="twitter:description" content="Wrap your functions. Your software evolves its own defenses. Works with every framework." />
+        <meta name="twitter:description" content="Wrap your functions. Your software evolves its own defenses. Works with every framework. Free download." />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
           "name": "Evolution Mesh",
-          "description": "Self-learning immune system for software. Wraps functions with input validation, auto-repair, and cross-function learning.",
+          "description": "Self-learning immune system for software. Wraps functions with input validation, auto-repair, and cross-function learning. Free tier available.",
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Cross-platform",
           "offers": [
-            { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Open Source" },
+            { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Open Source — Free Forever" },
             { "@type": "Offer", "price": "29", "priceCurrency": "USD", "name": "Pro", "billingIncrement": "P1M" },
             { "@type": "Offer", "price": "99", "priceCurrency": "USD", "name": "Team", "billingIncrement": "P1M" },
-            { "@type": "Offer", "price": "399", "priceCurrency": "USD", "name": "Standalone Lifetime" },
+            { "@type": "Offer", "price": "399", "priceCurrency": "USD", "name": "Standalone Lifetime License" },
           ],
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
         })}</script>
       </Helmet>
+
+      <PublicNav />
 
       <div className="min-h-screen bg-background text-foreground">
         {/* ═══ HERO ═══ */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,hsl(var(--primary)/0.06),transparent_40%)]" />
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-16 sm:pt-28 sm:pb-20">
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16 sm:pt-32 sm:pb-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -320,6 +349,9 @@ export default function EvolutionMeshLanding() {
               className="text-center space-y-6"
             >
               <div className="flex items-center justify-center gap-3 flex-wrap">
+                <Badge variant="outline" className="text-xs tracking-wider border-emerald-500/30 text-emerald-600">
+                  <Download className="w-3 h-3 mr-1" /> FREE DOWNLOAD AVAILABLE
+                </Badge>
                 <Badge variant="outline" className="text-xs tracking-wider border-primary/30 text-primary">
                   WORKS WITH EVERY FRAMEWORK
                 </Badge>
@@ -327,6 +359,7 @@ export default function EvolutionMeshLanding() {
                   <Lock className="w-3 h-3 mr-1" /> BLACK-BOX PROTECTED
                 </Badge>
               </div>
+
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
                 Your code's<br />
                 <span className="text-primary">immune system.</span>
@@ -385,21 +418,79 @@ export default function EvolutionMeshLanding() {
 
               {/* CTA buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-                <Button size="lg" onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2">
-                  {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                  Get Standalone — $399
+                <Button size="lg" onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+                  <Download className="w-4 h-4" />
+                  Download Free Version
                 </Button>
-                <Button size="lg" variant="outline" onClick={() => document.getElementById('vibe-zone')?.scrollIntoView({ behavior: 'smooth' })} className="gap-2">
-                  <Rocket className="w-4 h-4" />
-                  Vibe Coder? Instant Install
+                <Button size="lg" variant="outline" onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2">
+                  {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Crown className="w-4 h-4" />}
+                  Standalone License — $399
                 </Button>
               </div>
+              <p className="text-xs text-muted-foreground">
+                Free version includes 5 wrapped functions, local telemetry, and all 12 frameworks. No credit card required.
+              </p>
             </motion.div>
           </div>
         </section>
 
+        {/* ═══ FREE DOWNLOAD BANNER ═══ */}
+        <section className="border-y border-emerald-500/20 bg-emerald-500/[0.03]">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
+            <div className="grid sm:grid-cols-2 gap-8 items-center">
+              <div>
+                <Badge className="text-xs mb-3 bg-emerald-500/10 text-emerald-600 border-emerald-500/20">FREE FOR EVERYONE</Badge>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-3">Try it. No strings attached.</h2>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                  The free Open Source version includes 5 wrapped functions, all 12 framework adapters, 
+                  the install wizard, and the full deterministic repair engine. Same black-box protection. 
+                  Same code quality. Just fewer functions.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['5 wrapped functions', 'All 12 frameworks supported', 'Install wizard included', '29+ repair strategies', 'Local telemetry dashboard', 'Black-box protected'].map(f => (
+                    <li key={f} className="flex items-center gap-2 text-sm">
+                      <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex gap-3">
+                  <Button onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+                    <Download className="w-4 h-4" /> Download Free
+                  </Button>
+                  <Button variant="outline" onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className="gap-2">
+                    <ArrowRight className="w-4 h-4" /> Compare Plans
+                  </Button>
+                </div>
+              </div>
+              <div className="text-center space-y-4">
+                <div className="inline-block p-6 rounded-2xl bg-background border border-border/50">
+                  <p className="text-xs text-muted-foreground mb-2 font-medium">UPGRADE ANYTIME</p>
+                  <div className="flex items-center gap-3">
+                    <div className="text-center px-4">
+                      <p className="text-2xl font-black text-emerald-600">Free</p>
+                      <p className="text-[10px] text-muted-foreground">5 functions</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                    <div className="text-center px-4">
+                      <p className="text-2xl font-black text-primary">Pro</p>
+                      <p className="text-[10px] text-muted-foreground">50 functions</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                    <div className="text-center px-4">
+                      <p className="text-2xl font-black text-amber-600">∞</p>
+                      <p className="text-[10px] text-muted-foreground">Standalone</p>
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-3">Upgrade in-place with one command. No data loss.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ═══ BLACK-BOX NOTICE ═══ */}
-        <section className="border-y border-border/50 bg-muted/20">
+        <section className="border-b border-border/50 bg-muted/20">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
             <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -408,7 +499,7 @@ export default function EvolutionMeshLanding() {
               <div>
                 <h2 className="text-lg font-bold mb-1">Black-Box Protected Architecture</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                  Evolution Mesh ships compiled and minified. Source maps are excluded from distribution.
+                  Evolution Mesh ships compiled and minified — across all tiers, including the free version. Source maps are excluded.
                   Internal repair strategies, learning algorithms, and telemetry protocols are trade secrets.
                   Your competitive advantage — and ours — stays protected.
                 </p>
@@ -450,10 +541,10 @@ export default function EvolutionMeshLanding() {
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12">How It Works</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { step: '01', title: 'Install', desc: 'Run the wizard or drop a file into your AI agent. Auto-detects your framework.' },
-                { step: '02', title: 'Wrap', desc: 'Every async function, API route, and endpoint gets immune defense automatically.' },
-                { step: '03', title: 'Learn', desc: 'Successful repairs become rules. Rules propagate across your entire codebase.' },
-                { step: '04', title: 'Evolve', desc: 'Shadow test changes safely. Promote only what passes every gate.' },
+                { step: '01', title: 'Download', desc: 'Grab the free version or buy a license. Works with all 12 frameworks instantly.' },
+                { step: '02', title: 'Install', desc: 'Run the wizard or drop the install file into your AI coding agent. Auto-detects your stack.' },
+                { step: '03', title: 'Learn', desc: 'Successful repairs become rules. Rules propagate across your entire codebase automatically.' },
+                { step: '04', title: 'Evolve', desc: 'Shadow test changes safely. Promote only what passes every gate. Your code gets stronger.' },
               ].map((s) => (
                 <div key={s.step} className="text-center space-y-3">
                   <div className="w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-lg flex items-center justify-center mx-auto">
@@ -472,7 +563,7 @@ export default function EvolutionMeshLanding() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-4xl font-bold">Works With Every Stack</h2>
             <p className="text-muted-foreground mt-3">
-              One install wizard. Automatic framework detection. Zero config required.
+              One install wizard. Automatic framework detection. Zero config required. All tiers — including free.
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -502,6 +593,9 @@ export default function EvolutionMeshLanding() {
                 Using Cursor, Copilot, Windsurf, or any AI coding agent? Download this file, drop it in, and say
                 <span className="text-primary font-medium"> "install this"</span>. Done.
               </p>
+              <p className="text-sm text-emerald-600 font-medium mt-2">
+                ✓ This downloads the FREE version. Upgrade to Pro, Team, or Standalone anytime.
+              </p>
             </div>
 
             <Card className="p-6 space-y-4 border-primary/20">
@@ -509,15 +603,16 @@ export default function EvolutionMeshLanding() {
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <FileCode className="w-4 h-4 text-primary" />
                   evolution-mesh-install.md
+                  <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-600">FREE</Badge>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="ghost" onClick={copyVibeCode} className="gap-1.5 text-xs">
                     {vibeCodeCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                     {vibeCodeCopied ? 'Copied' : 'Copy'}
                   </Button>
-                  <Button size="sm" onClick={downloadVibeFile} className="gap-1.5 text-xs">
+                  <Button size="sm" onClick={downloadVibeFile} className="gap-1.5 text-xs bg-emerald-600 hover:bg-emerald-700">
                     <Download className="w-3.5 h-3.5" />
-                    Download File
+                    Download Free
                   </Button>
                 </div>
               </div>
@@ -527,74 +622,131 @@ export default function EvolutionMeshLanding() {
                 className="font-mono text-xs h-48 resize-none bg-background/50"
               />
               <p className="text-xs text-muted-foreground text-center">
-                Works with Cursor, GitHub Copilot, Windsurf, Cline, Aider, and any AI-powered IDE.
+                Works with Cursor, GitHub Copilot, Windsurf, Cline, Aider, and any AI-powered IDE.<br />
+                <span className="text-emerald-600 font-medium">Free version — upgrade anytime with one command.</span>
               </p>
             </Card>
           </div>
         </section>
 
-        {/* ═══ PRICING ═══ */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-4xl font-bold">Simple Pricing</h2>
-            <p className="text-muted-foreground mt-3">
-              Every tier includes the install wizard, all frameworks, and black-box protection.
-            </p>
+        {/* ═══ ENCODE AGENT + STANDALONE UPSELL ═══ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="p-8 border-amber-500/20 bg-amber-500/[0.02] space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                <Crown className="w-6 h-6 text-amber-600" />
+              </div>
+              <h3 className="text-xl font-bold">Standalone License — Yours Forever</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                The <strong>$399 Standalone</strong> license is not tied to any subscription, platform, or substrate.
+                You own it outright. Self-host the dashboard. Get every future update. 
+                Run unlimited wrapped functions across your entire organization.
+              </p>
+              <ul className="space-y-2">
+                {['Lifetime license — no recurring fees', 'Unlimited wrapped functions', 'Self-hosted telemetry dashboard', 'ENCODE agent slot included', 'Not tied to CMPSBL in any way'].map(f => (
+                  <li key={f} className="flex items-center gap-2 text-sm"><Check className="w-4 h-4 text-amber-600 shrink-0" /><span>{f}</span></li>
+                ))}
+              </ul>
+              <Button onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2 w-full">
+                {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Crown className="w-4 h-4" />}
+                Buy Standalone — $399
+              </Button>
+            </Card>
+
+            <Card className="p-8 border-primary/20 bg-primary/[0.02] space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Bot className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold">ENCODE Agent — Autonomous Code Execution</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                The Standalone license includes an <strong>ENCODE agent slot</strong> — our governed autonomous 
+                code execution engine. ENCODE can analyze, repair, and evolve your codebase autonomously with 
+                a 3-tier graduated autonomy framework. It's the coding agent that runs inside Evolution Mesh.
+              </p>
+              <ul className="space-y-2">
+                {['Governed code execution', '3-tier autonomy (Manual → Supervised → Autonomous)', 'Nexus Guard prevents self-modification', 'Continuous Learning Machine built in', 'Available separately as a Composable Cognitive'].map(f => (
+                  <li key={f} className="flex items-center gap-2 text-sm"><Check className="w-4 h-4 text-primary shrink-0" /><span>{f}</span></li>
+                ))}
+              </ul>
+              <Button variant="outline" asChild className="gap-2 w-full">
+                <Link to="/composable-cognitives">
+                  <Bot className="w-4 h-4" /> Browse Coding Agents
+                </Link>
+              </Button>
+            </Card>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TIERS.map((tier) => (
-              <Card
-                key={tier.name}
-                className={`p-6 space-y-4 flex flex-col ${
-                  tier.highlighted
-                    ? 'border-primary ring-1 ring-primary/20'
-                    : tier.special
-                    ? 'border-primary/40 bg-primary/[0.02]'
-                    : 'border-border/50'
-                }`}
-              >
-                {tier.highlighted && <Badge className="text-xs w-fit">Most Popular</Badge>}
-                {tier.special && <Badge variant="outline" className="text-xs w-fit border-primary/40 text-primary">Lifetime License</Badge>}
-                <div>
-                  <h3 className="text-xl font-bold">{tier.name}</h3>
-                  <div className="flex items-baseline gap-1 mt-2">
-                    <span className="text-3xl font-black">{tier.price}</span>
-                    <span className="text-muted-foreground text-sm">{tier.period}</span>
-                  </div>
-                </div>
-                <ul className="space-y-2 flex-1">
-                  {tier.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm">
-                      <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  variant={tier.highlighted || tier.special ? 'default' : 'outline'}
-                  className="w-full gap-2"
-                  disabled={checkoutLoading !== null}
-                  onClick={() => {
-                    if (tier.tier) {
-                      handleCheckout(tier.tier);
-                    } else {
-                      document.getElementById('vibe-zone')?.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
+        </section>
+
+        {/* ═══ PRICING ═══ */}
+        <section id="pricing" className="bg-muted/30 py-16 sm:py-24">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl sm:text-4xl font-bold">Simple, Transparent Pricing</h2>
+              <p className="text-muted-foreground mt-3">
+                Every tier includes the install wizard, all 12 frameworks, and black-box protection.<br />
+                <span className="text-emerald-600 font-medium">Start free. Upgrade when you're ready.</span>
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {TIERS.map((tier) => (
+                <Card
+                  key={tier.name}
+                  className={`p-6 space-y-4 flex flex-col ${
+                    tier.highlighted
+                      ? 'border-primary ring-1 ring-primary/20'
+                      : tier.special
+                      ? 'border-amber-500/40 bg-amber-500/[0.02]'
+                      : 'border-border/50'
+                  }`}
                 >
-                  {checkoutLoading === tier.tier ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" /> Loading...</>
-                  ) : (
-                    tier.cta
+                  {tier.badge && (
+                    <Badge variant="outline" className={`text-xs w-fit ${tier.badgeColor}`}>
+                      {tier.badge}
+                    </Badge>
                   )}
-                </Button>
-              </Card>
-            ))}
+                  <div>
+                    <h3 className="text-xl font-bold">{tier.name}</h3>
+                    <div className="flex items-baseline gap-1 mt-2">
+                      <span className="text-3xl font-black">{tier.price}</span>
+                      <span className="text-muted-foreground text-sm">{tier.period}</span>
+                    </div>
+                  </div>
+                  <ul className="space-y-2 flex-1">
+                    {tier.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm">
+                        <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    variant={tier.highlighted || tier.special ? 'default' : 'outline'}
+                    className={`w-full gap-2 ${!tier.tier ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : ''}`}
+                    disabled={checkoutLoading !== null}
+                    onClick={() => {
+                      if (tier.tier) {
+                        handleCheckout(tier.tier);
+                      } else {
+                        downloadFreeVersion();
+                      }
+                    }}
+                  >
+                    {checkoutLoading === tier.tier ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Loading...</>
+                    ) : tier.tier ? (
+                      tier.cta
+                    ) : (
+                      <><Download className="w-4 h-4" /> {tier.cta}</>
+                    )}
+                  </Button>
+                </Card>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* ═══ COMPETITIVE TABLE ═══ */}
-        <section className="bg-muted/30 py-16 sm:py-24">
+        <section className="py-16 sm:py-24">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10">How It Compares</h2>
             <div className="overflow-x-auto">
@@ -618,6 +770,8 @@ export default function EvolutionMeshLanding() {
                     ['Framework-agnostic', true, true, false, false],
                     ['Zero config start', true, true, false, false],
                     ['Black-box protected', true, false, false, false],
+                    ['Free tier available', true, true, false, false],
+                    ['ENCODE agent slot', true, false, false, false],
                   ].map(([feature, ...vals]) => (
                     <tr key={feature as string} className="border-b border-border/50">
                       <td className="py-3 px-4 text-foreground">{feature as string}</td>
@@ -635,33 +789,35 @@ export default function EvolutionMeshLanding() {
         </section>
 
         {/* ═══ WAITLIST + ENTERPRISE ═══ */}
-        <section className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
-          <div className="text-center space-y-6">
-            <h2 className="text-2xl sm:text-3xl font-bold">Enterprise & Custom Deployments</h2>
-            <p className="text-muted-foreground max-w-lg mx-auto">
-              Need unlimited functions, self-hosted telemetry, or a custom integration? Let's talk.
-            </p>
-            {!submitted ? (
-              <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <Input
-                  type="email"
-                  placeholder="you@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1"
-                  onKeyDown={(e) => e.key === 'Enter' && handleWaitlist()}
-                />
-                <Button onClick={handleWaitlist} disabled={submitting} className="gap-2">
-                  {submitting ? 'Joining...' : 'Get in Touch'}
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center gap-2 text-primary">
-                <Check className="w-5 h-5" />
-                <span className="font-medium">We'll be in touch shortly.</span>
-              </div>
-            )}
+        <section className="bg-muted/30 py-16 sm:py-24">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+            <div className="text-center space-y-6">
+              <h2 className="text-2xl sm:text-3xl font-bold">Enterprise & Custom Deployments</h2>
+              <p className="text-muted-foreground max-w-lg mx-auto">
+                Need unlimited functions, self-hosted telemetry, or a custom integration? Let's talk.
+              </p>
+              {!submitted ? (
+                <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                  <Input
+                    type="email"
+                    placeholder="you@company.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1"
+                    onKeyDown={(e) => e.key === 'Enter' && handleWaitlist()}
+                  />
+                  <Button onClick={handleWaitlist} disabled={submitting} className="gap-2">
+                    {submitting ? 'Joining...' : 'Get in Touch'}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center gap-2 text-primary">
+                  <Check className="w-5 h-5" />
+                  <span className="font-medium">We'll be in touch shortly.</span>
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
@@ -673,17 +829,23 @@ export default function EvolutionMeshLanding() {
               Stop bolting resilience on after things break. Start with an immune system.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button size="lg" onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2">
-                {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              <Button size="lg" onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+                <Download className="w-4 h-4" />
+                Download Free Version
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2">
+                {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Crown className="w-4 h-4" />}
                 Buy Standalone — $399
               </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link to="/contact">Contact Sales</Link>
-              </Button>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Free version · 5 wrapped functions · All frameworks · Install wizard · Black-box protected
+            </p>
           </div>
         </section>
       </div>
+
+      <EnhancedFooter />
     </>
   );
 }
