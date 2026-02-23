@@ -6056,6 +6056,15 @@ export type Database = {
           receipt_id: string | null
           risk_level: Database["public"]["Enums"]["evolution_risk_level"] | null
           run_id: string
+          tsac_drift_detected: boolean | null
+          tsac_pre_criteria: Json | null
+          tsac_pre_score: number | null
+          tsac_pre_verdict: string | null
+          tsac_production_score: number | null
+          tsac_production_verdict: string | null
+          tsac_shadow_score: number | null
+          tsac_shadow_verdict: string | null
+          tsac_verification_ids: string[] | null
           updated_at: string
         }
         Insert: {
@@ -6072,6 +6081,15 @@ export type Database = {
             | Database["public"]["Enums"]["evolution_risk_level"]
             | null
           run_id?: string
+          tsac_drift_detected?: boolean | null
+          tsac_pre_criteria?: Json | null
+          tsac_pre_score?: number | null
+          tsac_pre_verdict?: string | null
+          tsac_production_score?: number | null
+          tsac_production_verdict?: string | null
+          tsac_shadow_score?: number | null
+          tsac_shadow_verdict?: string | null
+          tsac_verification_ids?: string[] | null
           updated_at?: string
         }
         Update: {
@@ -6088,6 +6106,15 @@ export type Database = {
             | Database["public"]["Enums"]["evolution_risk_level"]
             | null
           run_id?: string
+          tsac_drift_detected?: boolean | null
+          tsac_pre_criteria?: Json | null
+          tsac_pre_score?: number | null
+          tsac_pre_verdict?: string | null
+          tsac_production_score?: number | null
+          tsac_production_verdict?: string | null
+          tsac_shadow_score?: number | null
+          tsac_shadow_verdict?: string | null
+          tsac_verification_ids?: string[] | null
           updated_at?: string
         }
         Relationships: []
@@ -12931,12 +12958,73 @@ export type Database = {
         }
         Relationships: []
       }
+      tsac_training_feedback: {
+        Row: {
+          created_at: string
+          criteria_snapshot: Json
+          drift_details: string | null
+          drift_detected: boolean | null
+          evolution_run_id: string | null
+          executor_id: string
+          failure_patterns: Json | null
+          id: string
+          learning_rule_generated: boolean | null
+          learning_rule_id: string | null
+          pre_score: number | null
+          pre_verdict: string | null
+          production_score: number | null
+          production_verdict: string | null
+          shadow_score: number | null
+          shadow_verdict: string | null
+          task_description: string
+        }
+        Insert: {
+          created_at?: string
+          criteria_snapshot?: Json
+          drift_details?: string | null
+          drift_detected?: boolean | null
+          evolution_run_id?: string | null
+          executor_id: string
+          failure_patterns?: Json | null
+          id?: string
+          learning_rule_generated?: boolean | null
+          learning_rule_id?: string | null
+          pre_score?: number | null
+          pre_verdict?: string | null
+          production_score?: number | null
+          production_verdict?: string | null
+          shadow_score?: number | null
+          shadow_verdict?: string | null
+          task_description: string
+        }
+        Update: {
+          created_at?: string
+          criteria_snapshot?: Json
+          drift_details?: string | null
+          drift_detected?: boolean | null
+          evolution_run_id?: string | null
+          executor_id?: string
+          failure_patterns?: Json | null
+          id?: string
+          learning_rule_generated?: boolean | null
+          learning_rule_id?: string | null
+          pre_score?: number | null
+          pre_verdict?: string | null
+          production_score?: number | null
+          production_verdict?: string | null
+          shadow_score?: number | null
+          shadow_verdict?: string | null
+          task_description?: string
+        }
+        Relationships: []
+      }
       tsac_verifications: {
         Row: {
           acceptance_criteria: Json
           code_quality_score: number | null
           created_at: string
           criteria_results: Json
+          evolution_run_id: string | null
           executor_id: string
           id: string
           intent_match_reasoning: string | null
@@ -12946,12 +13034,14 @@ export type Database = {
           source: string
           task_description: string
           task_id: string
+          verification_stage: string | null
         }
         Insert: {
           acceptance_criteria?: Json
           code_quality_score?: number | null
           created_at?: string
           criteria_results?: Json
+          evolution_run_id?: string | null
           executor_id: string
           id?: string
           intent_match_reasoning?: string | null
@@ -12961,12 +13051,14 @@ export type Database = {
           source?: string
           task_description: string
           task_id: string
+          verification_stage?: string | null
         }
         Update: {
           acceptance_criteria?: Json
           code_quality_score?: number | null
           created_at?: string
           criteria_results?: Json
+          evolution_run_id?: string | null
           executor_id?: string
           id?: string
           intent_match_reasoning?: string | null
@@ -12976,6 +13068,7 @@ export type Database = {
           source?: string
           task_description?: string
           task_id?: string
+          verification_stage?: string | null
         }
         Relationships: []
       }
