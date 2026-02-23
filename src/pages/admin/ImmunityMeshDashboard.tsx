@@ -473,9 +473,9 @@ export default function ImmunityMeshDashboard() {
           <EncodeTrainingPanel />
         </TabsContent>
 
-        {/* ══════════════════ CODE VERIFICATION ══════════════════ */}
+        {/* ══════════════════ TSAC VERIFICATION ══════════════════ */}
         <TabsContent value="verify" className="space-y-5">
-          <CodeVerificationPanel />
+          <TSACVerificationPanel />
         </TabsContent>
 
         {/* ══════════════════ EXECUTORS ══════════════════ */}
