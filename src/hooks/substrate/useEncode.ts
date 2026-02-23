@@ -1,7 +1,7 @@
 /**
  * useEncode Hook
- * v10.9.1 ARCHITECT — Dedicated hook for ENCODE module operations
- * Now includes escalation processing capability.
+ * v11.0.0 — Dedicated hook for ENCODE module operations
+ * Includes escalation processing + orchestration layer integration.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -108,5 +108,8 @@ export function useEncode(): UseEncodeReturn {
     processEscalationQueue,
   };
 }
+
+// Re-export orchestration hook for convenience
+export { useEncodeOrchestration } from './useEncodeOrchestration';
 
 export default useEncode;
