@@ -537,6 +537,26 @@ export default function EvolutionMeshDashboard() {
                     </div>
                   )}
 
+                  {/* Selected Executors */}
+                  {selectedMutation === p.id && (p.metadata as any)?.selected_executors?.length > 0 && (
+                    <div className="pt-2 space-y-1.5">
+                      <h4 className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
+                        <Cpu className="w-3 h-3" /> Assigned Executors ({(p.metadata as any).selected_executors.length})
+                      </h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {((p.metadata as any).selected_executors as Array<{ id: string; module: string; category: string }>).map((ex) => (
+                          <Badge key={ex.id} variant="outline" className="text-[10px] font-mono gap-1">
+                            <span className="text-primary">{ex.module}</span>
+                            <span className="text-muted-foreground">/ {ex.id.slice(0, 20)}</span>
+                          </Badge>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-muted-foreground">
+                        Same executor fleet used in Immunity Mesh training — skills transfer to evolution cycles.
+                      </p>
+                    </div>
+                  )}
+
                   {/* Actions */}
                   {selectedMutation === p.id && (
                     <div className="flex flex-wrap gap-2 pt-3 border-t border-border/30">
