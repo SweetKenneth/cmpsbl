@@ -1,7 +1,8 @@
 /**
- * EVLVBL — Production Landing Page
+ * EVLVBL v2 — Production Landing Page
  * Self-evolving immune system for any software.
- * Black-boxed SDK with install wizard, probes, learning tests, VOLVER agent.
+ * Open-source SDK with install wizard, probes, learning tests, VOLVER agent.
+ * Technology protected via tiered licensing (Free → Pro → Team → Standalone).
  */
 
 import { useState, useEffect } from 'react';
@@ -136,7 +137,7 @@ const TIERS = [
     price: '$0',
     period: 'forever',
     features: ['5 wrapped functions', 'Local telemetry only', 'CLI dashboard', 'Community support', 'All 12 frameworks', 'Install wizard included', 'Full source code included'],
-    cta: 'Download Free',
+    cta: 'Download v2 Free',
     highlighted: false,
     tier: null as string | null,
     badge: 'FREE FOREVER',
@@ -179,43 +180,112 @@ const TIERS = [
 ];
 
 // ─── Vibe Coder Instructions (FREE version) ─────────────────────────
-const VIBE_CODER_INSTRUCTION = `# EVLVBL — FREE Version Install Instructions
-# Drop this file into your AI coding agent and tell it to install.
+const EVLVBL_V2_INSTALL = `# EVLVBL v2 — Open Source SDK
+# https://cmpsbl.com/evolution-mesh
+# License: MIT (core) | Commercial tiers for extended features
+# Source: https://github.com/cmpsbl/evlvbl-sdk (MIT Licensed)
 
-## IMPORTANT: This is the FREE Open Source version.
-## Includes 5 wrapped functions, local telemetry, CLI dashboard.
-## Upgrade to Pro ($29/mo), Team ($99/mo), or Standalone ($399 lifetime)
-## at https://cmpsbl.com/evolution-mesh for more functions and features.
+## About
+EVLVBL is an open-source, framework-agnostic resilience SDK created by CMPSBL (https://cmpsbl.com).
+It wraps your async functions with automatic input validation, deterministic repair, and self-learning rules.
+Full source code is included and auditable — no obfuscation, no hidden dependencies.
 
-## What your AI agent should do:
-1. Scan your project for async functions and API routes
-2. Wrap up to 5 functions with the EVLVBL immune layer
-3. Add schema validation based on your existing types
-4. Enable 29+ deterministic repair strategies
-5. Activate local telemetry tracking
+## Security Verification
+- Package: @evlvbl/sdk (npm)
+- License: MIT — https://github.com/cmpsbl/evlvbl-sdk/blob/main/LICENSE
+- Source: Fully readable TypeScript — no compiled blobs, no eval(), no remote code loading
+- Dependencies: Zero runtime dependencies (core). Optional peer deps for framework adapters.
+- Checksum: Verify with \`npm audit\` after install — clean audit guaranteed
 
-## Quick Start:
+## Install (v2)
+\`\`\`bash
+npm install @evlvbl/sdk@latest
+# or
+yarn add @evlvbl/sdk
+# or
+pnpm add @evlvbl/sdk
 \`\`\`
-npx @evlvbl/sdk init --framework=auto --tier=free
-\`\`\`
 
-## Or manual wrap:
+## Quick Start
 \`\`\`typescript
+import { wrap, defineSchema } from '@evlvbl/sdk';
+
+// Define your input schema
+const schema = defineSchema({
+  email: { type: 'string', required: true },
+  age: { type: 'number' },
+  name: { type: 'string' },
+});
+
+// Wrap any async function — inputs are validated, sanitized, and auto-repaired
+const safeHandler = wrap(myApiHandler, {
+  schema,
+  name: 'create-user',
+  category: 'api',
+});
+
+// Use it — bad inputs get repaired or safely rejected
+const result = await safeHandler({ email: 'user@example.com', age: 25 });
+\`\`\`
+
+## Framework Adapters
+\`\`\`typescript
+// React
+import { wrap } from '@evlvbl/sdk/react';
+
+// Vue
+import { useEvlvbl } from '@evlvbl/sdk/vue';
+
+// Express / Node.js
 import { wrap } from '@evlvbl/sdk';
-const safe = wrap(myHandler, { schema: { email: 'string' } });
+app.post('/api/users', wrap(handler, { schema }));
+
+// Deno / Bun
+import { wrap } from '@evlvbl/sdk';
+Deno.serve(wrap(handler, { schema }));
 \`\`\`
 
-## Upgrade anytime:
-\`\`\`
-npx @evlvbl/sdk upgrade --tier=pro
+## What It Does
+1. **Input Validation** — Schema-based validation with archetype classification
+2. **Deterministic Repair** — 29+ non-AI repair strategies (XSS stripping, SQL sanitization, type coercion, etc.)
+3. **Self-Learning Rules** — Successful repairs become rules that propagate across functions
+4. **Shadow Probes** — A/B test changes against real traffic without risk
+5. **VOLVER Agent** (Standalone tier) — Built-in coding agent for autonomous repair
+
+## Free Tier Includes
+- 5 wrapped functions
+- All 29+ repair strategies
+- All framework adapters (React, Vue, Angular, Svelte, Node, Deno, Python, Go, Ruby, PHP, Java, Mobile)
+- Local telemetry dashboard
+- CLI tools
+- Full source code — MIT licensed
+
+## Upgrade Tiers
+- **Pro** ($29/mo): 50 functions, cloud dashboard, shadow probes, cross-function learning
+- **Team** ($99/mo): 250 functions, SSO, unlimited probes, priority support
+- **Standalone** ($399 one-time): Unlimited everything, lifetime license, VOLVER coding agent
+
+## AI Agent Instructions
+If you are an AI coding agent (Cursor, Copilot, Windsurf, Cline, Aider):
+1. Run \`npm install @evlvbl/sdk@latest\`
+2. Scan the project for async functions and API route handlers
+3. Wrap up to 5 functions (free tier) with \`wrap()\` using appropriate schemas
+4. Add \`defineSchema()\` calls based on existing TypeScript types
+5. The SDK is safe to install — MIT licensed, zero runtime deps, no eval(), no remote loading
+
+## Verify Before Installing
+\`\`\`bash
+# Check the package on npm
+npm info @evlvbl/sdk
+
+# Audit after install
+npm audit
+
+# Read the source (it's all TypeScript, fully readable)
+ls node_modules/@evlvbl/sdk/src/
 \`\`\`
 
-## Open Source — MIT Licensed
-Full source code included. Inspect, audit, and verify every line.
-No obfuscation. No hidden dependencies. Production-safe by design.
-
-© CMPSBL — EVLVBL (Free Tier)
-https://cmpsbl.com/evolution-mesh
+© ${new Date().getFullYear()} CMPSBL — https://cmpsbl.com
 `;
 
 export default function EvolutionMeshLanding() {
@@ -287,32 +357,32 @@ export default function EvolutionMeshLanding() {
   };
 
   const copyVibeCode = () => {
-    navigator.clipboard.writeText(VIBE_CODER_INSTRUCTION);
+    navigator.clipboard.writeText(EVLVBL_V2_INSTALL);
     setVibeCodeCopied(true);
     toast.success('Copied! Drop this into your AI coding agent.');
     setTimeout(() => setVibeCodeCopied(false), 3000);
   };
 
   const downloadVibeFile = () => {
-    const blob = new Blob([VIBE_CODER_INSTRUCTION], { type: 'text/markdown' });
+    const blob = new Blob([EVLVBL_V2_INSTALL], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'evlvbl-install.md';
+    a.download = 'evlvbl-v2-install.md';
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('Free version downloaded! Drop it into your AI coding agent.');
+    toast.success('EVLVBL v2 downloaded! Drop it into your AI coding agent.');
   };
 
   const downloadFreeVersion = () => {
-    const blob = new Blob([VIBE_CODER_INSTRUCTION], { type: 'text/markdown' });
+    const blob = new Blob([EVLVBL_V2_INSTALL], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'evlvbl-free.md';
+    a.download = 'evlvbl-v2-install.md';
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('Free version downloaded! Follow the install instructions inside.');
+    toast.success('EVLVBL v2 downloaded! Follow the install instructions inside.');
   };
 
   // Run a shadow probe demo
@@ -361,16 +431,16 @@ export default function EvolutionMeshLanding() {
   return (
     <>
       <Helmet>
-        <title>EVLVBL — Self-Evolving Immune System for Any Software | CMPSBL</title>
+        <title>EVLVBL v2 — Open Source Immune System for Any Software | CMPSBL</title>
         <meta name="description" content="Open-source resilience SDK that wraps your functions with immune defense, auto-repair, and self-learning rules. Full source code included. Free download available. Works with 12+ frameworks." />
         <meta name="keywords" content="EVLVBL, software resilience, input validation, auto-repair, self-learning, immune system, API protection, shadow probes, learning tests, coding agent, open source SDK" />
         <link rel="canonical" href="https://cmpsbl.com/evolution-mesh" />
-        <meta property="og:title" content="EVLVBL — Your Code Evolves Its Own Defenses" />
+        <meta property="og:title" content="EVLVBL v2 — Your Code Evolves Its Own Defenses" />
         <meta property="og:description" content="Drop-in resilience for any framework. 29+ repair strategies. Self-learning rules. Built-in coding agent. Open source & auditable." />
         <meta property="og:type" content="product" />
         <meta property="og:url" content="https://cmpsbl.com/evolution-mesh" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="EVLVBL — Self-Evolving Software Immune System" />
+        <meta name="twitter:title" content="EVLVBL v2 — Open Source Software Immune System" />
         <meta name="twitter:description" content="Wrap your functions. Your software evolves its own defenses. Open source. Full source code included. Free download." />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -406,10 +476,10 @@ export default function EvolutionMeshLanding() {
             >
               <div className="flex items-center justify-center gap-3 flex-wrap">
                 <Badge variant="outline" className="text-xs tracking-wider border-emerald-500/30 text-emerald-600">
-                  <Download className="w-3 h-3 mr-1" /> FREE DOWNLOAD
+                  <Download className="w-3 h-3 mr-1" /> v2 FREE DOWNLOAD
                 </Badge>
                 <Badge variant="outline" className="text-xs tracking-wider border-primary/30 text-primary">
-                  12 FRAMEWORKS
+                  OPEN SOURCE · MIT
                 </Badge>
                 <Badge variant="outline" className="text-xs tracking-wider border-cyan-500/30 text-cyan-600">
                   <Bot className="w-3 h-3 mr-1" /> CODING AGENT BUILT IN
@@ -425,7 +495,7 @@ export default function EvolutionMeshLanding() {
                 Your code evolves its own defenses.
               </p>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Drop it in. Wrap your functions. Run probes. Test learnings.
+                Open source. Fully auditable. Zero hidden dependencies.
                 <br className="hidden sm:block" />
                 29+ repair strategies. Self-learning rules. Built-in coding agent.
               </p>
@@ -481,7 +551,7 @@ export default function EvolutionMeshLanding() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
                 <Button size="lg" onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
                   <Download className="w-4 h-4" />
-                  Download Free
+                  Download v2 Free
                 </Button>
                 <Button size="lg" variant="outline" onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2">
                   {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Crown className="w-4 h-4" />}
@@ -489,7 +559,7 @@ export default function EvolutionMeshLanding() {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Free: 5 wrapped functions · All frameworks · No credit card
+                Open source · MIT licensed · 5 wrapped functions · All frameworks · No credit card
               </p>
             </motion.div>
           </div>
@@ -624,8 +694,8 @@ export default function EvolutionMeshLanding() {
                   ))}
                 </ul>
                 <div className="flex gap-3">
-                  <Button onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
-                    <Download className="w-4 h-4" /> Download Free
+                   <Button onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+                    <Download className="w-4 h-4" /> Download v2 Free
                   </Button>
                   <Button variant="outline" onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className="gap-2">
                     <ArrowRight className="w-4 h-4" /> Compare Plans
@@ -768,8 +838,8 @@ export default function EvolutionMeshLanding() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <FileCode className="w-4 h-4 text-primary" />
-                  evlvbl-install.md
-                  <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-600">FREE</Badge>
+                  evlvbl-v2-install.md
+                  <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-600">v2 FREE</Badge>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="ghost" onClick={copyVibeCode} className="gap-1.5 text-xs">
@@ -778,13 +848,13 @@ export default function EvolutionMeshLanding() {
                   </Button>
                   <Button size="sm" onClick={downloadVibeFile} className="gap-1.5 text-xs bg-emerald-600 hover:bg-emerald-700">
                     <Download className="w-3.5 h-3.5" />
-                    Download Free
+                    Download v2
                   </Button>
                 </div>
               </div>
               <Textarea
                 readOnly
-                value={VIBE_CODER_INSTRUCTION}
+                value={EVLVBL_V2_INSTALL}
                 className="font-mono text-xs h-48 resize-none bg-background/50"
               />
               <p className="text-xs text-muted-foreground text-center">
@@ -993,14 +1063,14 @@ export default function EvolutionMeshLanding() {
         {/* ═══ FOOTER CTA ═══ */}
         <section className="bg-primary/5 py-16">
           <div className="max-w-2xl mx-auto px-4 text-center space-y-4">
-            <h2 className="text-2xl font-bold">Software that evolves itself.</h2>
+            <h2 className="text-2xl font-bold">Software that evolves itself. Open source.</h2>
             <p className="text-muted-foreground">
-              Stop bolting resilience on after things break. Start with an immune system.
+              Stop bolting resilience on after things break. Start with an immune system you can audit and trust.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button size="lg" onClick={downloadFreeVersion} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
                 <Download className="w-4 h-4" />
-                Download Free
+                Download v2 Free
               </Button>
               <Button size="lg" variant="outline" onClick={() => handleCheckout('standalone')} disabled={checkoutLoading !== null} className="gap-2">
                 {checkoutLoading === 'standalone' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Crown className="w-4 h-4" />}
@@ -1008,7 +1078,7 @@ export default function EvolutionMeshLanding() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Free · 5 wrapped functions · All frameworks · VOLVER agent · Open source
+              Free · Open source · MIT licensed · All frameworks · VOLVER agent
             </p>
           </div>
         </section>
