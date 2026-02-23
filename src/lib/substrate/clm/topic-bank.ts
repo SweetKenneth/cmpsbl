@@ -220,6 +220,146 @@ const CORE_CURRICULUM: Omit<Topic, 'lastStudiedAt' | 'studyCount'>[] = [
     kpis: ['webhook_success_rate', 'sync_latency_ms', 'integration_uptime'],
     confidenceLevel: 0,
   },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DECODE — Input Normalization & Contract Enforcement
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'decode-contract-enforcement',
+    name: 'Input normalization, schema validation, decode contracts, shape repair',
+    category: 'core_curriculum',
+    weight: 0.75,
+    priority: 14,
+    domainAnchors: ['input-validation', 'schema', 'normalization', 'contracts'],
+    moduleRefs: ['DECODE'],
+    kpis: ['contract_pass_rate', 'shape_repair_success', 'invalid_input_rejection'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ENCODE — Code Generation & Output Quality
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'encode-code-generation',
+    name: 'Code generation quality, template evolution, output validation',
+    category: 'core_curriculum',
+    weight: 0.74,
+    priority: 15,
+    domainAnchors: ['codegen', 'templates', 'output-quality', 'ast'],
+    moduleRefs: ['ENCODE'],
+    kpis: ['generation_accuracy', 'template_reuse_rate', 'output_validation_pass'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DREAM — Speculative Hypothesis & Consolidation
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'dream-consolidation',
+    name: 'Dream cycle orchestration, memory consolidation, speculative hypothesis generation',
+    category: 'core_curriculum',
+    weight: 0.73,
+    priority: 16,
+    domainAnchors: ['consolidation', 'hypothesis', 'dream-cycles', 'synthesis'],
+    moduleRefs: ['DREAM'],
+    kpis: ['consolidation_quality', 'hypothesis_validation_rate', 'dream_insight_count'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MODERNIZER — Safe Code Evolution & Shadow Apply
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'modernizer-evolution',
+    name: 'Shadow-mode code apply, diff validation, regression prevention, safe evolution',
+    category: 'core_curriculum',
+    weight: 0.72,
+    priority: 17,
+    domainAnchors: ['shadow-apply', 'code-evolution', 'regression', 'migration'],
+    moduleRefs: ['MODERNIZER'],
+    kpis: ['shadow_apply_success', 'regression_catch_rate', 'evolution_safety_score'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MEMORY — Tiered Storage & Retrieval Precision
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'memory-tiering-retrieval',
+    name: 'Memory tiering strategy, staleness detection, noise filtering, retrieval precision',
+    category: 'core_curriculum',
+    weight: 0.71,
+    priority: 18,
+    domainAnchors: ['memory-tiers', 'staleness', 'retrieval', 'noise-filtering'],
+    moduleRefs: ['MEMORY'],
+    kpis: ['retrieval_precision', 'hot_tier_utilization', 'staleness_pct', 'dedup_rate'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AUDIT — Compliance & Chain Integrity
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'audit-compliance',
+    name: 'Audit chain integrity, compliance reporting, SOC2/GDPR/HIPAA patterns',
+    category: 'core_curriculum',
+    weight: 0.70,
+    priority: 19,
+    domainAnchors: ['audit', 'compliance', 'chain-integrity', 'soc2', 'gdpr'],
+    moduleRefs: ['AUDIT'],
+    kpis: ['chain_valid', 'compliance_coverage', 'audit_entry_count'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // IDENTITY — User Fingerprinting & Session Security
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'identity-fingerprinting',
+    name: 'User identity fingerprinting, session management, context binding',
+    category: 'core_curriculum',
+    weight: 0.69,
+    priority: 20,
+    domainAnchors: ['identity', 'fingerprinting', 'sessions', 'context-binding'],
+    moduleRefs: ['IDENTITY'],
+    kpis: ['fingerprint_accuracy', 'session_security_score', 'context_continuity'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ECONOMY — Cost Attribution & Resource Governance
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'economy-cost-governance',
+    name: 'Cost attribution, resource governance, budget forecasting, ROI tracking',
+    category: 'core_curriculum',
+    weight: 0.68,
+    priority: 21,
+    domainAnchors: ['cost-attribution', 'budgets', 'forecasting', 'roi'],
+    moduleRefs: ['ECONOMY'],
+    kpis: ['cost_accuracy', 'budget_adherence', 'roi_per_module'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RELAY — Message Routing & Event Bus Reliability
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'relay-event-routing',
+    name: 'Event bus reliability, message routing, dead-letter queue management',
+    category: 'core_curriculum',
+    weight: 0.67,
+    priority: 22,
+    domainAnchors: ['event-bus', 'routing', 'dlq', 'message-delivery'],
+    moduleRefs: ['RELAY'],
+    kpis: ['delivery_success_rate', 'dlq_depth', 'routing_latency_ms'],
+    confidenceLevel: 0,
+  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SANDBOX — Isolated Execution & Safe Testing
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'sandbox-isolation',
+    name: 'Sandboxed execution, isolated testing, safe code evaluation',
+    category: 'core_curriculum',
+    weight: 0.66,
+    priority: 23,
+    domainAnchors: ['sandbox', 'isolation', 'safe-eval', 'testing'],
+    moduleRefs: ['SANDBOX'],
+    kpis: ['isolation_integrity', 'escape_prevention_rate', 'test_reliability'],
+    confidenceLevel: 0,
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -475,21 +615,42 @@ class TopicBankClient {
   }
 
   private async selectDeepDive(): Promise<TopicSelection | null> {
-    // Deep dives explore adjacent or advanced topics
-    const curriculum = this.getCoreCurriculum();
-    
-    // Pick random from lower half of priority list
-    const lowerHalf = curriculum.filter(t => t.priority > 5);
-    if (lowerHalf.length === 0) {
-      return this.selectFromCoreCurriculum();
+    // Deep dives fetch real external knowledge from curated URL sources
+    const { selectDeepDiveSource } = await import('./deep-dive-urls');
+    const source = selectDeepDiveSource();
+
+    if (source) {
+      const topic: Topic = {
+        id: `deep-dive-${source.module.toLowerCase()}-${Date.now()}`,
+        name: `Deep dive: ${source.label} (${source.module})`,
+        category: 'deep_dive',
+        weight: 0.8,
+        priority: 50, // Low priority, high value
+        domainAnchors: [source.module.toLowerCase(), source.category],
+        moduleRefs: [source.module],
+        kpis: ['knowledge_breadth', 'external_coverage'],
+        confidenceLevel: 0,
+        studyCount: 0,
+      };
+
+      return {
+        topic,
+        source: 'deep_dive',
+        reason: `External knowledge: ${source.label} → ${source.url}`,
+        estimatedUnits: 15,
+      };
     }
 
+    // Fallback to curriculum
+    const curriculum = this.getCoreCurriculum();
+    const lowerHalf = curriculum.filter(t => t.priority > 5);
+    if (lowerHalf.length === 0) return this.selectFromCoreCurriculum();
     const random = lowerHalf[Math.floor(Math.random() * lowerHalf.length)];
     return {
       topic: { ...random, lastStudiedAt: undefined, studyCount: 0 },
       source: 'deep_dive',
       reason: 'Opportunistic deep exploration',
-      estimatedUnits: Math.ceil(random.weight * 15), // Deep dives use more budget
+      estimatedUnits: Math.ceil(random.weight * 15),
     };
   }
 

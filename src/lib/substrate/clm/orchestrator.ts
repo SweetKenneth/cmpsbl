@@ -445,7 +445,13 @@ Be concise, precise, and focused on practical utility. This learning will be sto
 
   private async runPruneAndDream(): Promise<void> {
     try {
-      // Run prune first
+      // Run auto-degradation first (warm → cold for stale memories)
+      const degradation = await memoryCore.autoDegradeStaleMemories(14);
+      if (degradation.demoted > 0) {
+        console.log(`[CLM] Auto-degraded ${degradation.demoted} stale warm→cold memories`);
+      }
+
+      // Run prune
       const { data: pruneResult } = await supabase.functions.invoke('pf-brain-memory-prune', {
         body: { tier: 'all', aggressive: false },
       });
