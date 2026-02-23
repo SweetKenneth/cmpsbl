@@ -493,11 +493,22 @@ export default function EvolutionMeshDashboard() {
                     <PipelineStages proposal={p} />
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <AlertTriangle className="w-3 h-3" />
                       Risk: {((p.risk_score ?? 0) * 100).toFixed(0)}%
                     </span>
+                    {(p.metadata as any)?.executor_count && (
+                      <span className="flex items-center gap-1">
+                        <Users className="w-3 h-3 text-primary" />
+                        {(p.metadata as any).executor_count} executors
+                      </span>
+                    )}
+                    {(p.metadata as any)?.category && (
+                      <Badge variant="outline" className="text-[10px] capitalize">
+                        {(p.metadata as any).category}
+                      </Badge>
+                    )}
                     {p.gate_state === 'canary' && (
                       <span className="flex items-center gap-1">
                         <Activity className="w-3 h-3" />
