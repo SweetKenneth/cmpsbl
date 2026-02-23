@@ -449,6 +449,20 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
               </div>
               <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
             </Button>
+            <Button
+              variant="outline"
+              className="justify-between h-auto p-3 sm:p-4 border-cyan-500/20 hover:bg-cyan-500/5"
+              onClick={() => navigate('/admin/evolution')}
+            >
+              <div className="flex items-center gap-3 text-left">
+                <Zap className="w-5 h-5 text-cyan-500 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Evolution Dashboard</p>
+                  <p className="text-[10px] text-muted-foreground">MPE · Shadow A/B · Canary</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+            </Button>
           </div>
         </CardContent>
       </Card>

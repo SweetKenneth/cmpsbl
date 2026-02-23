@@ -78,6 +78,7 @@ export const adminNavConfig: NavGroup[] = [
     title: "System",
     items: [
       { id: "immunity-mesh", label: "Immunity Mesh", path: "/admin/immunity-mesh", icon: Shield, isNew: true },
+      { id: "evolution", label: "Evolution Dashboard", path: "/admin/evolution", icon: Zap, isNew: true },
       { id: "proof", label: "Proof Mode", path: "/proof", icon: Shield },
       { id: "demo", label: "Demo", path: "/demo", icon: Activity },
       { id: "audit", label: "Audit Trail", path: "/audit", icon: ScrollText },
