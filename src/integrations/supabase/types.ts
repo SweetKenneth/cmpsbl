@@ -4588,6 +4588,45 @@ export type Database = {
         }
         Relationships: []
       }
+      decode_search_results: {
+        Row: {
+          created_at: string
+          id: string
+          is_new: boolean | null
+          query: string
+          relevance_score: number | null
+          search_provider: string | null
+          snippet: string | null
+          source_url: string | null
+          title: string | null
+          topic: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_new?: boolean | null
+          query: string
+          relevance_score?: number | null
+          search_provider?: string | null
+          snippet?: string | null
+          source_url?: string | null
+          title?: string | null
+          topic: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_new?: boolean | null
+          query?: string
+          relevance_score?: number | null
+          search_provider?: string | null
+          snippet?: string | null
+          source_url?: string | null
+          title?: string | null
+          topic?: string
+        }
+        Relationships: []
+      }
       defense_config: {
         Row: {
           config_key: string
