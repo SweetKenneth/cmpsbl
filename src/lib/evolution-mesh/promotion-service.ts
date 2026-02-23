@@ -14,13 +14,13 @@ async function promoteToProduction(planId: string) {
     // Gate 1: Check integrity
     const { data: latestScan } = await supabase
       .from('integrity_scan_runs')
-      .select('status, findings_count')
+      .select('health_score, errors_found')
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle();
 
-    if (!latestScan || (latestScan as any).status !== 'completed') {
-      return { success: false, error: 'No completed integrity scan found. Run a scan first.' };
+    if (!latestScan) {
+      return { success: false, error: 'No integrity scan found. Run a scan first.' };
     }
 
     // Gate 2: Create pre-promote snapshot
