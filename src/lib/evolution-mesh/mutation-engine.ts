@@ -425,10 +425,16 @@ export async function evaluateGate(mutationId: string): Promise<{
   await updateGateState(mutationId, 'passed');
   await telemetryService.recordMetric('gate_passed', { mutationId, avgConfidence });
 
+  // Auto-promote if enabled
+  const autoPromote = await getFlag('mpe_auto_promotion');
+  if (autoPromote) {
+    advanceCanary(mutationId).catch(() => {});
+  }
+
   return {
     passed: true,
-    reason: `All gates passed. Confidence: ${(avgConfidence * 100).toFixed(0)}%`,
-    details: { avgConfidence, shadowRuns: runs.length },
+    reason: `All gates passed. Confidence: ${(avgConfidence * 100).toFixed(0)}%${autoPromote ? ' — auto-promoting' : ''}`,
+    details: { avgConfidence, shadowRuns: runs.length, autoPromote },
   };
 }
 
