@@ -17,58 +17,63 @@ export const SUBSTRATE_CODENAME = 'ARCHITECT';
 export const CORE_VERSION = '10.1.0';
 export const CORE_CODENAME = 'Foundation';
 
-// All 21 substrate modules in canonical boot order
+// 16 public substrate modules in canonical boot order (CCR Epoch)
+// CCR (Layer 0) absorbs: core, system, brain, memory, dream — hidden from public registry
+// IDENTITY merged into ACCESS
 export const SUBSTRATE_MODULES = [
-  'core',
-  'ripple',
-  'access',
-  'brain',
-  'vision',
-  'cortex',
-  'modernizer',
   'decode',
+  'encode',
   'defense',
   'nexus',
-  'dream',
+  'vision',
+  'ripple',
+  'access',
+  'modernizer',
   'integration',
   'inclusive',
-  'system',
-  'memory',
+  'cortex',
   'relay',
   'audit',
-  'identity',
   'economy',
   'sandbox',
   'encode',
 ] as const;
 
-export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
+// Legacy module names still valid for backward compat (facade → CCR)
+export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
+export const IDENTITY_FACADE = 'identity' as const;
+
+// Union type includes facades for backward compat
+export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number] | typeof CCR_FACADE_MODULES[number] | typeof IDENTITY_FACADE;
 
 // Module layer classification
 export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure';
 
-export const MODULE_LAYERS: Record<SubstrateModuleName, ModuleLayer> = {
+export const MODULE_LAYERS: Record<string, ModuleLayer> = {
+  // CCR facades (still resolvable for backward compat)
   core: 'kernel',
-  ripple: 'kernel',
-  access: 'kernel',
+  system: 'administrative',
   brain: 'cognitive',
-  vision: 'cognitive',
-  cortex: 'orchestrator',
-  modernizer: 'administrative',
+  memory: 'infrastructure',
+  dream: 'cognitive',
+  identity: 'infrastructure', // merged into access
+
+  // 16 public modules
   decode: 'cognitive',
+  encode: 'orchestrator',
   defense: 'operational',
   nexus: 'cognitive',
-  dream: 'cognitive',
+  vision: 'cognitive',
+  ripple: 'kernel',
+  access: 'kernel',
+  modernizer: 'administrative',
   integration: 'operational',
   inclusive: 'administrative',
-  system: 'administrative',
-  memory: 'infrastructure',
+  cortex: 'orchestrator',
   relay: 'infrastructure',
   audit: 'infrastructure',
-  identity: 'infrastructure',
   economy: 'infrastructure',
   sandbox: 'infrastructure',
-  encode: 'orchestrator',
 };
 
 // ============ Types ============

@@ -37,25 +37,28 @@ export async function initializeSubstrate(): Promise<void> {
     // Yield before heavy work
     await yieldToMain();
     
-    console.log('⚡ Booting promptfluid® Substrate v10.5.4 (ARCHITECT Epoch)...');
+    console.log('⚡ Booting promptfluid® Substrate (CCR Epoch)...');
     console.log('─────────────────────────────────────────');
     
-    // Boot sequence - CORE first, then other modules (21-module architecture)
-    // ENCODE boots after BRAIN + DECODE; Infrastructure Six boot last
-    const bootOrder: ('core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'inclusive' | 'modernizer' | 'integration' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox')[] = [
-      'core', 'brain', 'decode', 'encode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'modernizer', 'integration', 'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'
+    // Boot CCR (Layer 0) first, then 16 public modules
+    // CCR absorbs: CORE + SYSTEM + BRAIN + MEMORY + DREAM
+    // IDENTITY merged into ACCESS
+    const bootOrder: string[] = [
+      'core', // → CCR facade
+      'decode', 'encode', 'defense', 'nexus', 'vision', 'ripple', 'access',
+      'modernizer', 'integration', 'inclusive', 'cortex', 'relay', 'audit', 'economy', 'sandbox'
     ];
     
-    // First, call core.boot to initialize everything
+    // Boot CCR foundation first via core.boot facade
     const bootResult = await substrate.invoke({ module: 'core', action: 'boot' });
     
     if (bootResult.success) {
-      console.log('✅ Substrate boot complete: 21 modules loaded | Health: 100%');
+      console.log('✅ CCR Layer 0 active → 16 modules loaded | Health: 100%');
     } else {
-      // Fallback to individual pings with yielding between each
+      // Fallback to individual pings
       let activeModules = 0;
       for (const module of bootOrder) {
-        await yieldToMain(); // Yield between each module ping
+        await yieldToMain();
         const result = await substrate.invoke({ module, action: 'pulse' });
         if (result.success) activeModules++;
       }

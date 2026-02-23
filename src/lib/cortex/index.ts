@@ -270,7 +270,7 @@ export function getWorldModelSummary(): {
   return {
     version: cortexState.worldModelVersion,
     layers,
-    totalModules: 21,
+    totalModules: 16,
     governanceMode: cortexState.governanceMode,
   };
 }
