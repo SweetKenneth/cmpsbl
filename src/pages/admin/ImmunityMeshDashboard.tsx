@@ -1457,7 +1457,7 @@ function ModernizerShadowPanel() {
                     <AlertTriangle className="w-4 h-4 text-amber-500" />
                     Needs Work
                   </CardTitle>
-                  <CardDescription className="text-xs">&lt;50% success with 3+ attempts</CardDescription>
+                  <CardDescription className="text-xs">Under 50% success with 3+ attempts</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
