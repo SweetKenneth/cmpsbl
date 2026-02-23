@@ -459,8 +459,8 @@ DECODE Mode B — Evolving Consciousness · CMPSBL® Substrate
             Authorization: `Bearer ${RESEND_API_KEY}`,
           },
           body: JSON.stringify({
-            from: "Decode <decode@clockless.system>",
-            to: ["kenneth@promptfluid.com"],
+            from: "Substrate Decode <cascade@promptfluid.com>",
+            to: ["kennethsweet214@gmail.com"],
             subject,
             html: fullHtml,
             text: fullPlaintext,
