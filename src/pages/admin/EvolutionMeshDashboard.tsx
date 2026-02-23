@@ -408,6 +408,18 @@ export default function EvolutionMeshDashboard() {
     },
   });
 
+  const modernizerHook = useModernizer();
+  const abortEvolveMutation = useMutation({
+    mutationFn: () => modernizerHook.evolve.mutateAsync({ target: 'abort' }),
+    onSuccess: () => {
+      toast.success('Evolution aborted — old proposals cleared');
+      invalidateAll();
+    },
+    onError: (err: any) => {
+      toast.error(`Abort failed: ${err?.message ?? 'Unknown error'}`);
+    },
+  });
+
   return (
     <AdminLayout>
       <div className="space-y-6">
