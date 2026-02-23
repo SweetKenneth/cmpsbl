@@ -84,6 +84,64 @@ const GATE_CONFIG = {
   CANARY_STAGES: [5, 25, 50, 100],
 };
 
+// ── Executor Specialty Selection ───────────────────────────
+
+/**
+ * Maps artifact/mutation categories to executor categories.
+ * These are the SAME executors trained in the Immunity Mesh training section.
+ */
+const CATEGORY_TO_EXECUTOR_CATEGORIES: Record<string, ExecutorModuleMeta['category'][]> = {
+  resilience:   ['infrastructure', 'orchestration', 'autonomy'],
+  performance:  ['optimization', 'infrastructure', 'orchestration'],
+  security:     ['security', 'governance'],
+  cleanup:      ['infrastructure', 'optimization', 'event_routing'],
+  feature:      ['cognitive_processing', 'intelligence', 'ui_adaptation'],
+};
+
+/**
+ * Select the best executors for a given mutation category.
+ * Uses the same EXECUTOR_MODULE_META that powers the training section,
+ * so executors you train are the same ones selected for evolution cycles.
+ */
+export function selectExecutorsForCategory(
+  category: string,
+  maxExecutors = 10,
+): { id: PilotExecutorId; meta: ExecutorModuleMeta }[] {
+  const executorCategories = CATEGORY_TO_EXECUTOR_CATEGORIES[category] ?? ['infrastructure'];
+  const selected: { id: PilotExecutorId; meta: ExecutorModuleMeta }[] = [];
+  const seen = new Set<string>();
+
+  for (const execCategory of executorCategories) {
+    const executors = getExecutorsByCategory(execCategory);
+    for (const id of executors) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      selected.push({ id, meta: EXECUTOR_MODULE_META[id] });
+      if (selected.length >= maxExecutors) return selected;
+    }
+  }
+
+  return selected;
+}
+
+/**
+ * Get all executor categories and their counts for display.
+ */
+export function getExecutorCategorySummary(): Record<string, number> {
+  const summary: Record<string, number> = {};
+  for (const meta of Object.values(EXECUTOR_MODULE_META)) {
+    summary[meta.category] = (summary[meta.category] || 0) + 1;
+  }
+  return summary;
+}
+
+/**
+ * Total executor count (same fleet used in training).
+ */
+export function getExecutorCount(): number {
+  return PILOT_EXECUTORS.length;
+}
+
 // ── Secret Redaction ───────────────────────────────────────
 
 const SECRET_PATTERNS = [
