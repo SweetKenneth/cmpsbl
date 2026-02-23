@@ -18,7 +18,9 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-async function runIntegrityScan(mode: 'quick' | 'full' = 'full') {
+type ScanMode = 'quick' | 'deep' | 'pre_promote' | 'scheduled';
+
+async function runIntegrityScan(mode: ScanMode = 'quick') {
   const startTime = performance.now();
 
   try {
