@@ -333,7 +333,7 @@ export default function ImmunityMeshDashboard() {
             <GraduationCap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">ENCODE</span>
           </TabsTrigger>
           <TabsTrigger value="verify" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
-            <FileCheck className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Verify</span>
+            <FileCheck className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">TSAC</span>
           </TabsTrigger>
           <TabsTrigger value="executors" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Table2 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Executors</span>
