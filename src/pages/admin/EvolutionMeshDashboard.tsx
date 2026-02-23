@@ -1037,7 +1037,22 @@ export default function EvolutionMeshDashboard() {
                   <h3 className="font-semibold text-sm">Generate Diff</h3>
                 </div>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">Compare two snapshots to see structural changes.</p>
-                <Button size="sm" variant="outline" className="w-full text-xs" disabled={snapshots.length < 2}>
+                <Button size="sm" variant="outline" className="w-full text-xs" disabled={snapshots.length < 2}
+                  onClick={async () => {
+                    if (snapshots.length < 2) return;
+                    const { diffService } = await import('@/lib/evolution-mesh/diff-service');
+                    const from = snapshots[1] as any;
+                    const to = snapshots[0] as any;
+                    const result = await diffService.generateDiff(from.id, to.id, {
+                      summary: { from_type: from.type, to_type: to.type },
+                    });
+                    if (result.success) {
+                      toast.success('Diff generated — check Ops tab for results');
+                    } else {
+                      toast.error(`Diff failed: ${result.error}`);
+                    }
+                  }}
+                >
                   <GitCompare className="w-3 h-3 mr-1" />
                   {snapshots.length < 2 ? `Need ${2 - snapshots.length} more` : 'Generate Diff'}
                 </Button>
