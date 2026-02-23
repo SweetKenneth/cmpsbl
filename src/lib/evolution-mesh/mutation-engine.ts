@@ -365,6 +365,19 @@ export async function listRuns(mutationId: string) {
   }
 }
 
+export async function listAllRuns(limit = 50) {
+  try {
+    const { data } = await supabase
+      .from('mutation_runs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    return (data ?? []) as unknown as MutationRun[];
+  } catch {
+    return [];
+  }
+}
+
 // ── 4. Deterministic Promotion Gate ────────────────────────
 
 export async function evaluateGate(mutationId: string): Promise<{
@@ -412,10 +425,16 @@ export async function evaluateGate(mutationId: string): Promise<{
   await updateGateState(mutationId, 'passed');
   await telemetryService.recordMetric('gate_passed', { mutationId, avgConfidence });
 
+  // Auto-promote if enabled
+  const autoPromote = await getFlag('mpe_auto_promotion');
+  if (autoPromote) {
+    advanceCanary(mutationId).catch(() => {});
+  }
+
   return {
     passed: true,
-    reason: `All gates passed. Confidence: ${(avgConfidence * 100).toFixed(0)}%`,
-    details: { avgConfidence, shadowRuns: runs.length },
+    reason: `All gates passed. Confidence: ${(avgConfidence * 100).toFixed(0)}%${autoPromote ? ' — auto-promoting' : ''}`,
+    details: { avgConfidence, shadowRuns: runs.length, autoPromote },
   };
 }
 
@@ -606,6 +625,7 @@ export const mutationEngine = {
   // Shadow
   runShadowEvaluation,
   listRuns,
+  listAllRuns,
   // Gates
   evaluateGate,
   // Canary
