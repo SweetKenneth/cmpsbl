@@ -1083,24 +1083,32 @@ function ShadowBuildPanel() {
                       transition={{ delay: i * 0.04 }}
                     >
                       <div className="flex items-center gap-2 min-w-0">
-                        <code className="text-[11px] font-mono text-primary truncate">{skill.name}</code>
+                        <code className="text-[11px] font-mono text-primary truncate max-w-[100px] sm:max-w-none">{skill.name}</code>
                         <Badge variant="outline" className="text-[9px] px-1.5 py-0 flex-shrink-0">{skill.category}</Badge>
                       </div>
-                      <div className="flex items-center gap-3 flex-shrink-0">
-                        <div className="w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
-                          <motion.div
-                            className={`h-full rounded-full ${skill.proficiency >= 0.8 ? 'bg-emerald-500' : skill.proficiency >= 0.5 ? 'bg-amber-500' : 'bg-red-400'}`}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${skill.proficiency * 100}%` }}
-                            transition={{ duration: 0.6 }}
-                          />
-                        </div>
-                        <span className="text-xs font-mono font-medium w-10 text-right">
-                          {(skill.proficiency * 100).toFixed(0)}%
-                        </span>
-                        <span className="text-[10px] text-muted-foreground font-mono w-6 text-right">
-                          ×{skill.practiceCount}
-                        </span>
+                      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                        {(() => {
+                          const tier = getSkillTier(skill.proficiency);
+                          const progress = getTierProgress(skill.proficiency);
+                          return (
+                            <>
+                              <Badge className={`text-[9px] px-1.5 py-0 ${tier.bgColor} ${tier.color} ${tier.borderColor} border`}>
+                                {tier.emoji} {tier.label}
+                              </Badge>
+                              <div className="w-12 sm:w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
+                                <motion.div
+                                  className={`h-full rounded-full ${skill.proficiency >= 0.8 ? 'bg-emerald-500' : skill.proficiency >= 0.5 ? 'bg-amber-500' : 'bg-red-400'}`}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${skill.proficiency * 100}%` }}
+                                  transition={{ duration: 0.6 }}
+                                />
+                              </div>
+                              <span className="text-[10px] text-muted-foreground font-mono w-6 text-right">
+                                ×{skill.practiceCount}
+                              </span>
+                            </>
+                          );
+                        })()}
                       </div>
                     </motion.div>
                   ))}
