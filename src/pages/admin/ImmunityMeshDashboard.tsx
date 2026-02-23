@@ -319,23 +319,32 @@ export default function ImmunityMeshDashboard() {
       </motion.div>
 
       <Tabs defaultValue="overview" className="space-y-4 sm:space-y-5">
-        <TabsList className="w-full max-w-2xl bg-muted/50 p-1 flex overflow-x-auto gap-0.5">
-          <TabsTrigger value="overview" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+        <TabsList className="w-full max-w-3xl bg-muted/50 p-1 flex overflow-x-auto gap-0.5 no-scrollbar">
+          <TabsTrigger value="overview" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <BarChart3 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Overview</span>
           </TabsTrigger>
-          <TabsTrigger value="build" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="build" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Hammer className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Shadow Build</span>
           </TabsTrigger>
-          <TabsTrigger value="modernizer" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="modernizer" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Target className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Modernizer</span>
           </TabsTrigger>
-          <TabsTrigger value="executors" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="encode-training" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
+            <GraduationCap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">ENCODE</span>
+          </TabsTrigger>
+          <TabsTrigger value="verify" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
+            <FileCheck className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Verify</span>
+          </TabsTrigger>
+          <TabsTrigger value="executors" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Table2 className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Executors</span>
           </TabsTrigger>
-          <TabsTrigger value="rules" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="rules" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <BookOpen className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Rules</span>
           </TabsTrigger>
-          <TabsTrigger value="controls" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-1 min-w-0 px-2 sm:px-3">
+          <TabsTrigger value="promote" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
+            <Rocket className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Promote</span>
+          </TabsTrigger>
+          <TabsTrigger value="controls" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Zap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Controls</span>
           </TabsTrigger>
         </TabsList>
