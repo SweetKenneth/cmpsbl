@@ -124,7 +124,7 @@ export const DEFAULT_METRICS: PublicMetrics = {
   wcagLevel: 'WCAG 2.2 AA',
   
   // Providers
-  providersCount: 7,
+  providersCount: 13,
   byokSupported: true,
 };
 

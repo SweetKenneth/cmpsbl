@@ -280,6 +280,27 @@ const PROVIDERS: ProviderConfig[] = [
     }),
     extractContent: (data) => data.choices?.[0]?.message?.content || "",
   },
+  // ── Grok via OpenRouter (free tier) ──
+  {
+    id: "openrouter-grok",
+    name: "OpenRouter Grok (Free)",
+    baseUrl: "https://openrouter.ai/api/v1/chat/completions",
+    model: "x-ai/grok-3-mini-beta:free",
+    envKey: "OPENROUTER_API_KEY",
+    rpm: 16, rpd: 160, priority: 13,
+    affinities: ["reasoning", "generation", "research"],
+    freeTier: true,
+    formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
+      model,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt },
+      ],
+      max_tokens: maxTokens,
+      temperature,
+    }),
+    extractContent: (data) => data.choices?.[0]?.message?.content || "",
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════
