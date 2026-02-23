@@ -724,6 +724,30 @@ function recordNexusCall(provider: string, success: boolean, tokens: number, cos
   pc.tokens += tokens;
   pc.costUsd += costUsd;
   pc.avgLatencyMs = (pc.avgLatencyMs * (pc.calls - 1) + latencyMs) / pc.calls;
+
+  // ═══ PERSIST to ai_daily_quota — fixes report showing 0 calls ═══
+  if (success && provider !== 'local') {
+    const today = new Date().toISOString().split('T')[0];
+    const sb = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+    sb.from('ai_daily_quota')
+      .upsert({
+        provider,
+        date: today,
+        calls_used: 1,
+        tokens_used: tokens,
+        calls_budget: provider === 'hyperbolic' ? 86400 : provider === 'deepseek' ? 5000 : provider === 'google' ? 50 : 14400,
+      }, { onConflict: 'provider,date', ignoreDuplicates: false })
+      .then(({ error }) => {
+        if (!error) {
+          // Increment calls_used by 1 (upsert sets to 1, so we need raw SQL increment)
+          sb.rpc('increment_lovable_ai_usage', { p_calls: 1, p_tokens: tokens, p_category: provider }).then(() => {});
+        }
+      })
+      .catch(() => { /* telemetry must never block */ });
+  }
 }
 
 function getNexusAnalytics(): NexusAnalytics & { successRate: number; activeProviders: number } {
