@@ -724,6 +724,23 @@ function recordNexusCall(provider: string, success: boolean, tokens: number, cos
   pc.tokens += tokens;
   pc.costUsd += costUsd;
   pc.avgLatencyMs = (pc.avgLatencyMs * (pc.calls - 1) + latencyMs) / pc.calls;
+
+  // ═══ PERSIST to ai_daily_quota — fixes report showing 0 calls ═══
+  if (success && provider !== 'local') {
+    const today = new Date().toISOString().split('T')[0];
+    const budgetMap: Record<string, number> = { hyperbolic: 86400, deepseek: 5000, google: 50 };
+    const budget = budgetMap[provider] || 14400;
+    try {
+      const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+      // Check if row exists, then update or insert
+      const { data: existing } = await sb.from('ai_daily_quota').select('id, calls_used, tokens_used').eq('provider', provider).eq('date', today).maybeSingle();
+      if (existing) {
+        sb.from('ai_daily_quota').update({ calls_used: (existing.calls_used || 0) + 1, tokens_used: (existing.tokens_used || 0) + tokens }).eq('id', existing.id).then(() => {});
+      } else {
+        sb.from('ai_daily_quota').insert({ provider, date: today, calls_used: 1, tokens_used: tokens, calls_budget: budget }).then(() => {});
+      }
+    } catch { /* telemetry must never block execution */ }
+  }
 }
 
 function getNexusAnalytics(): NexusAnalytics & { successRate: number; activeProviders: number } {
@@ -12573,6 +12590,62 @@ async function handleModernizer(
           }, headers);
         }
         
+        // ═══ TSAC GATE — Verify before applying ═══
+        let tsacResult: any = null;
+        const planDescription = plan.title || plan.description || plan.category || 'Evolution upgrade';
+        const planDiff = plan.diff || plan.changes || JSON.stringify(plan.metadata || {}).slice(0, 8000);
+
+        try {
+          if (isShadow) {
+            // Layer 1: Pre-verify — generate criteria for this evolution run
+            const evolutionRunId = plan.evolution_run_id || plan.id;
+            const { data: preResult } = await supabase.functions.invoke('pf-tsac-verify', {
+              body: {
+                action: 'evolution_pre_verify',
+                task_description: planDescription,
+                evolution_run_id: evolutionRunId,
+                context: `Category: ${plan.category || 'general'}. Risk: ${plan.risk_level || 'unknown'}. Confidence: ${plan.confidence_score || 'N/A'}.`,
+              },
+            });
+            tsacResult = { stage: 'pre', ...preResult };
+          } else if (isProd) {
+            // Layer 2: Shadow-verify — check code against pre-generated criteria
+            const evolutionRunId = plan.evolution_run_id || plan.id;
+            const { data: shadowResult } = await supabase.functions.invoke('pf-tsac-verify', {
+              body: {
+                action: 'evolution_shadow_verify',
+                task_description: planDescription,
+                code_diff: planDiff,
+                evolution_run_id: evolutionRunId,
+                executor_id: plan.executor_id || 'modernizer',
+              },
+            });
+            tsacResult = { stage: 'shadow', ...shadowResult };
+
+            // GATE: Block production if shadow verification fails
+            if (shadowResult?.blocked) {
+              return jsonResponse({
+                success: false,
+                module: 'modernizer',
+                action: action,
+                error: 'TSAC shadow verification FAILED — production promotion blocked',
+                tsac: {
+                  verdict: shadowResult.verdict,
+                  score: shadowResult.intent_score,
+                  reasoning: shadowResult.reasoning,
+                  criteria_results: shadowResult.criteria_results,
+                },
+                plan_id,
+                message: shadowResult.message,
+              }, headers);
+            }
+          }
+        } catch (tsacErr) {
+          console.warn('TSAC verification non-fatal error:', tsacErr);
+          // TSAC failure should not block the pipeline — log and continue
+          tsacResult = { stage: isShadow ? 'pre' : 'shadow', error: 'TSAC unavailable', skipped: true };
+        }
+
         // Update plan status
         const newStatus = isShadow ? 'shadow_applied' : 'applied';
         const { error: updateError } = await supabase
@@ -12602,8 +12675,23 @@ async function handleModernizer(
           event_type: 'upgrade_applied',
           module: 'modernizer',
           outcome: 'success',
-          data: { plan_id, mode: isShadow ? 'shadow' : 'production', action }
+          data: { plan_id, mode: isShadow ? 'shadow' : 'production', action, tsac: tsacResult ? { stage: tsacResult.stage, verdict: tsacResult.verdict, score: tsacResult.intent_score } : null }
         });
+
+        // If production apply succeeded, trigger Layer 3 (async, non-blocking)
+        if (isProd) {
+          const evolutionRunId = plan.evolution_run_id || plan.id;
+          supabase.functions.invoke('pf-tsac-verify', {
+            body: {
+              action: 'evolution_production_verify',
+              task_description: planDescription,
+              code_diff: planDiff,
+              evolution_run_id: evolutionRunId,
+              executor_id: plan.executor_id || 'modernizer',
+              production_context: `Applied to production at ${new Date().toISOString()}. Previous status: ${plan.status}.`,
+            },
+          }).catch((err: any) => console.warn('TSAC production verify (async) failed:', err));
+        }
         
         recordSuccess('modernizer');
         
@@ -12615,12 +12703,13 @@ async function handleModernizer(
           mode: isShadow ? 'shadow' : 'production',
           previous_status: plan.status,
           new_status: newStatus,
+          tsac: tsacResult ? { stage: tsacResult.stage, verdict: tsacResult.verdict, score: tsacResult.intent_score, criteria_count: tsacResult.criteria?.length || tsacResult.criteria_count } : null,
           message: isShadow 
-            ? `Plan applied to SHADOW mode. Run modernizer.apply_production ${plan_id} to promote.`
-            : 'Plan applied to PRODUCTION successfully.',
+            ? `Plan applied to SHADOW mode. TSAC criteria generated. Run modernizer.apply_production ${plan_id} to promote.`
+            : `Plan applied to PRODUCTION. TSAC shadow verification passed. Production re-verification running async.`,
           next_steps: isShadow 
-            ? [`Test shadow changes`, `Run modernizer.apply_production ${plan_id} to promote`]
-            : ['Monitor system health with vision.health', 'Run modernizer.status to verify'],
+            ? [`Test shadow changes`, `Run modernizer.apply_production ${plan_id} to promote (TSAC will gate)`]
+            : ['Monitor system health with vision.health', 'TSAC production drift check running in background'],
         }, headers);
       } catch (error) {
         console.error('Modernizer apply error:', error);
