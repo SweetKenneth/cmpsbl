@@ -4,14 +4,7 @@
  * 
  * Merges: CORE + SYSTEM + BRAIN + MEMORY + DREAM
  * Non-marketed, non-navigable, invisible to users (known, not shown).
- * 
  * Old module surfaces remain as proxy facades routing here.
- * CCR is the single source of truth for:
- *   - Registry, circuit breaker state, config (ex-CORE)
- *   - Lifecycle & boot sequencing (ex-SYSTEM)
- *   - Reasoning & memory retrieval (ex-BRAIN)
- *   - Storage, salience, persistence (ex-MEMORY)
- *   - Synthesis & post-turn consolidation (ex-DREAM)
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
@@ -19,7 +12,6 @@ import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 // ─── Feature Flag (rollback support) ─────────────────────────────────────────
 
 let ccrEnabled = true;
-
 export function isCCREnabled(): boolean { return ccrEnabled; }
 export function setCCREnabled(v: boolean): void { ccrEnabled = v; }
 
@@ -49,7 +41,7 @@ const state: CCRState = {
   bootGatesPassed: false,
 };
 
-// ─── Circuit Breaker (inherited from CORE) ───────────────────────────────────
+// ─── Circuit Breaker ─────────────────────────────────────────────────────────
 
 const CIRCUIT_CONFIG = {
   failure_threshold: 5,
@@ -59,20 +51,15 @@ const CIRCUIT_CONFIG = {
 };
 
 let successStreak = 0;
-let lastFailure = 0;
 
 function tripCircuit(): void {
   state.failureCount++;
-  lastFailure = Date.now();
   successStreak = 0;
   if (state.failureCount >= CIRCUIT_CONFIG.failure_threshold) {
     state.circuitState = 'open';
-    emit({ module: 'core', action: 'circuit_open', data: { layer: 'ccr', failures: state.failureCount } });
-    // Schedule half-open check
+    emit({ module: 'core', event_type: 'circuit_open', outcome: 'failed', data: { layer: 'ccr', failures: state.failureCount } });
     setTimeout(() => {
-      if (state.circuitState === 'open') {
-        state.circuitState = 'half_open';
-      }
+      if (state.circuitState === 'open') state.circuitState = 'half_open';
     }, CIRCUIT_CONFIG.recovery_timeout_ms);
   }
 }
@@ -82,40 +69,31 @@ function recordSuccess(): void {
   if (state.circuitState === 'half_open' && successStreak >= CIRCUIT_CONFIG.success_threshold) {
     state.circuitState = 'closed';
     state.failureCount = 0;
-    emit({ module: 'core', action: 'circuit_closed', data: { layer: 'ccr' } });
+    emit({ module: 'core', event_type: 'circuit_closed', outcome: 'succeeded', data: { layer: 'ccr' } });
   }
 }
 
 // ─── CCR Internal API ────────────────────────────────────────────────────────
 
-/** CCR status — replaces core.status */
 export function status() {
   return {
     success: true,
     data: {
-      active: state.active,
-      health: state.health,
-      circuitState: state.circuitState,
-      bootedAt: state.bootedAt,
-      facadesActive: state.facadesActive,
-      bootGatesPassed: state.bootGatesPassed,
-      layer: 'ccr',
-      backed_by: 'CLOCKLESS_COGNITIVE_REALITY',
+      active: state.active, health: state.health, circuitState: state.circuitState,
+      bootedAt: state.bootedAt, facadesActive: state.facadesActive,
+      bootGatesPassed: state.bootGatesPassed, layer: 'ccr', backed_by: 'CLOCKLESS_COGNITIVE_REALITY',
     },
   };
 }
 
-/** CCR health — replaces system.health */
 export function health() {
   const h = Math.round((state.health + state.memoryStoreHealth) / 2);
   return { success: true, data: { health: h, circuitState: state.circuitState, memoryStoreHealth: state.memoryStoreHealth } };
 }
 
-/** CCR boot — replaces core.boot + system lifecycle */
 export async function boot(): Promise<{ success: boolean; data: any }> {
   if (state.active) return { success: true, data: { message: 'CCR already booted', bootedAt: state.bootedAt } };
-
-  emitStarted({ module: 'core', action: 'ccr_boot' });
+  emitStarted('core', 'ccr_boot');
   try {
     state.bootGatesPassed = true;
     state.active = true;
@@ -123,81 +101,55 @@ export async function boot(): Promise<{ success: boolean; data: any }> {
     state.health = 100;
     state.memoryStoreHealth = 100;
     recordSuccess();
-    emitSucceeded({ module: 'core', action: 'ccr_boot', data: { facades: state.facadesActive } });
+    emitSucceeded('core', 'ccr_boot', { facades: state.facadesActive });
     return { success: true, data: { bootedAt: state.bootedAt, facades: state.facadesActive } };
   } catch (e) {
     tripCircuit();
-    emitFailed({ module: 'core', action: 'ccr_boot', data: { error: String(e) } });
+    emitFailed('core', 'ccr_boot', String(e));
     return { success: false, data: { error: String(e) } };
   }
 }
 
-/** CCR circuit — replaces core circuit breaker surface */
 export function circuit() {
-  return {
-    success: true,
-    data: {
-      state: state.circuitState,
-      failureCount: state.failureCount,
-      config: CIRCUIT_CONFIG,
-    },
-  };
+  return { success: true, data: { state: state.circuitState, failureCount: state.failureCount, config: CIRCUIT_CONFIG } };
 }
 
-/** CCR config — replaces core.config */
 export function config() {
-  return {
-    success: true,
-    data: {
-      debug_mode: false,
-      strict_governance: true,
-      event_logging: true,
-      performance_tracking: true,
-      max_retry_attempts: 3,
-      default_timeout_ms: 30000,
-    },
-  };
+  return { success: true, data: { debug_mode: false, strict_governance: true, event_logging: true, performance_tracking: true, max_retry_attempts: 3, default_timeout_ms: 30000 } };
 }
 
-/** CCR reason — replaces brain.reason / brain.status */
 export async function reason(input?: { query?: string; context?: string }) {
-  emitStarted({ module: 'brain', action: 'reason', data: input });
+  emitStarted('brain', 'reason', input);
   try {
     recordSuccess();
-    const result = {
-      reasoning: input?.query ? `Reasoning about: ${input.query}` : 'Idle reasoning',
-      confidence: 0.85,
-      backed_by: 'ccr',
-    };
-    emitSucceeded({ module: 'brain', action: 'reason', data: result });
+    const result = { reasoning: input?.query ? `Reasoning about: ${input.query}` : 'Idle reasoning', confidence: 0.85, backed_by: 'ccr' };
+    emitSucceeded('brain', 'reason', result);
     return { success: true, data: result };
   } catch (e) {
     tripCircuit();
-    emitFailed({ module: 'brain', action: 'reason', data: { error: String(e) } });
+    emitFailed('brain', 'reason', String(e));
     return { success: false, data: { error: String(e) } };
   }
 }
 
-/** CCR store — replaces memory.store */
 export async function store(input?: { key?: string; value?: any; tier?: string }) {
-  emitStarted({ module: 'memory', action: 'store', data: input });
+  emitStarted('memory', 'store', input as any);
   try {
     recordSuccess();
-    emitSucceeded({ module: 'memory', action: 'store', data: { key: input?.key } });
+    emitSucceeded('memory', 'store', { key: input?.key });
     return { success: true, data: { stored: true, tier: input?.tier || 'hot' } };
   } catch (e) {
     tripCircuit();
-    emitFailed({ module: 'memory', action: 'store', data: { error: String(e) } });
+    emitFailed('memory', 'store', String(e));
     return { success: false, data: { error: String(e) } };
   }
 }
 
-/** CCR retrieve — replaces memory.retrieve / memory.search */
 export async function retrieve(input?: { query?: string; limit?: number }) {
-  emitStarted({ module: 'memory', action: 'retrieve', data: input });
+  emitStarted('memory', 'retrieve', input);
   try {
     recordSuccess();
-    emitSucceeded({ module: 'memory', action: 'retrieve', data: { query: input?.query } });
+    emitSucceeded('memory', 'retrieve', { query: input?.query });
     return { success: true, data: { results: [], query: input?.query, backed_by: 'ccr' } };
   } catch (e) {
     tripCircuit();
@@ -205,23 +157,20 @@ export async function retrieve(input?: { query?: string; limit?: number }) {
   }
 }
 
-/** CCR synthesize — replaces dream.synthesize / dream.status */
 export async function synthesize(input?: { content?: string; mode?: string }) {
-  emitStarted({ module: 'dream', action: 'synthesize', data: input });
+  emitStarted('dream', 'synthesize', input);
   try {
     state.lastSynthTime = new Date().toISOString();
     recordSuccess();
     const result = { synthesized: true, lastSynthTime: state.lastSynthTime, backed_by: 'ccr' };
-    emitSucceeded({ module: 'dream', action: 'synthesize', data: result });
+    emitSucceeded('dream', 'synthesize', result);
     return { success: true, data: result };
   } catch (e) {
     tripCircuit();
-    emitFailed({ module: 'dream', action: 'synthesize', data: { error: String(e) } });
+    emitFailed('dream', 'synthesize', String(e));
     return { success: false, data: { error: String(e) } };
   }
 }
-
-// ─── Pulse handler (for boot pings) ──────────────────────────────────────────
 
 export function pulse() {
   return { success: state.active, data: { backed_by: 'ccr', active: state.active } };
@@ -231,37 +180,24 @@ export function pulse() {
 
 export function getDiagnostics() {
   return {
-    ccrActive: state.active,
-    bootedAt: state.bootedAt,
-    circuitState: state.circuitState,
-    failureCount: state.failureCount,
-    health: state.health,
-    memoryStoreHealth: state.memoryStoreHealth,
-    lastSynthTime: state.lastSynthTime,
-    facadesActive: state.facadesActive,
-    bootGatesPassed: state.bootGatesPassed,
-    featureFlagEnabled: ccrEnabled,
+    ccrActive: state.active, bootedAt: state.bootedAt, circuitState: state.circuitState,
+    failureCount: state.failureCount, health: state.health, memoryStoreHealth: state.memoryStoreHealth,
+    lastSynthTime: state.lastSynthTime, facadesActive: state.facadesActive,
+    bootGatesPassed: state.bootGatesPassed, featureFlagEnabled: ccrEnabled,
   };
 }
 
-// ─── Unified dispatch (proxy entry point) ────────────────────────────────────
+// ─── Unified dispatch ────────────────────────────────────────────────────────
 
-type CCRAction = 'status' | 'health' | 'boot' | 'circuit' | 'config' | 'pulse' |
-  'reason' | 'store' | 'retrieve' | 'synthesize';
+type CCRAction = 'status' | 'health' | 'boot' | 'circuit' | 'config' | 'pulse' | 'reason' | 'store' | 'retrieve' | 'synthesize';
 
 const DISPATCH_MAP: Record<CCRAction, (input?: any) => any> = {
-  status, health, boot, circuit, config, pulse,
-  reason, store, retrieve, synthesize,
+  status, health, boot, circuit, config, pulse, reason, store, retrieve, synthesize,
 };
 
-/**
- * Route a facade module action into CCR.
- * Maps old module actions to CCR internals.
- */
 export function dispatch(action: string, input?: any): any {
   const handler = DISPATCH_MAP[action as CCRAction];
   if (handler) return handler(input);
-  // Fallback — unknown action, return success with pass-through
   return { success: true, data: { action, backed_by: 'ccr', passthrough: true } };
 }
 
@@ -275,18 +211,11 @@ const MODULE_ACTION_MAP: Record<string, Record<string, CCRAction>> = {
   dream: { status: 'status', synthesize: 'synthesize', pulse: 'pulse', health: 'health' },
 };
 
-/** 
- * Check if a module+action should be routed through CCR.
- * Returns the CCR action name or null if not handled.
- */
 export function resolveCCRAction(module: string, action: string): CCRAction | null {
   if (!ccrEnabled) return null;
-  const moduleMap = MODULE_ACTION_MAP[module];
-  if (!moduleMap) return null;
-  return (moduleMap[action] as CCRAction) ?? null;
+  return (MODULE_ACTION_MAP[module]?.[action] as CCRAction) ?? null;
 }
 
-/** Modules absorbed into CCR */
 export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
 export type CCRFacadeModule = typeof CCR_FACADE_MODULES[number];
 
