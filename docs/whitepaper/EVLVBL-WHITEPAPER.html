@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVLVBL — Autonomous Code Evolution Platform</title>
+<style>
+  @media print {
+    body { font-size: 11pt; }
+    .page-break { page-break-before: always; }
+  }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #fff;
+  }
+  h1 { font-size: 2rem; margin-bottom: 0.25rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; margin-top: 2.5rem; border-bottom: 2px solid #1a1a1a; padding-bottom: 0.3rem; }
+  h3 { font-size: 1.15rem; margin-top: 1.8rem; }
+  .subtitle { font-size: 1.1rem; color: #555; margin-bottom: 0.5rem; }
+  .meta { font-size: 0.85rem; color: #777; margin-bottom: 2rem; }
+  .abstract { background: #f8f8f5; border-left: 4px solid #1a1a1a; padding: 1rem 1.25rem; margin: 1.5rem 0; font-style: italic; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.92rem; }
+  th, td { border: 1px solid #ccc; padding: 0.5rem 0.75rem; text-align: left; }
+  th { background: #f0f0ed; font-weight: 600; }
+  code { background: #f4f4f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.88em; }
+  pre { background: #f8f8f5; border: 1px solid #ddd; padding: 1rem; font-family: 'Courier New', monospace; font-size: 0.88rem; overflow-x: auto; margin: 1rem 0; border-radius: 4px; }
+  .formula { text-align: center; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.95rem; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .kpi-card { background: #f8f8f5; border: 1px solid #ddd; border-radius: 6px; padding: 0.75rem 1rem; }
+  .kpi-card strong { display: block; font-size: 1.3rem; color: #1a1a1a; }
+  .kpi-card span { font-size: 0.8rem; color: #666; }
+  .callout { background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 1rem; margin: 1rem 0; }
+  .callout-title { font-weight: 700; margin-bottom: 0.3rem; }
+  ul, ol { margin: 0.5rem 0; padding-left: 1.5rem; }
+  li { margin-bottom: 0.35rem; }
+</style>
+</head>
+<body>
+
+<h1>EVLVBL</h1>
+<p class="subtitle">Autonomous Code Evolution Platform — Your Code Evolves Its Own Defenses</p>
+<p class="meta">
+  CMPSBL Substrate · Technical Whitepaper WP-003<br>
+  Classification: Public / Investor<br>
+  Version 1.0 · February 2026
+</p>
+
+<div class="abstract">
+  <strong>Abstract.</strong> EVLVBL is a standalone, framework-agnostic code evolution platform extracted from the CMPSBL cognitive substrate. It enables any application to wrap its critical functions with autonomous self-healing, shadow testing, and deterministic repair — without rewriting existing code. The platform includes VOLVER, a built-in coding agent with 8 core skill domains, providing dry-run analysis and code suggestions out of the box. EVLVBL represents the commercialization of battle-tested self-evolution technology that has maintained 95%+ uptime across 157 production executors.
+</div>
+
+<h2>1. The Problem</h2>
+
+<p>Production software breaks. When it does, teams face a cascade of consequences:</p>
+
+<ul>
+  <li><strong>Mean Time to Detect (MTTD):</strong> 15–45 minutes for most organizations</li>
+  <li><strong>Mean Time to Repair (MTTR):</strong> 1–4 hours for non-trivial failures</li>
+  <li><strong>Cascading failures:</strong> One broken function triggers downstream outages</li>
+  <li><strong>Regression loops:</strong> Fixes introduce new failures at a 12–18% rate</li>
+</ul>
+
+<p>Current solutions — monitoring, alerting, circuit breakers — detect problems but don't fix them. Teams still need humans to diagnose, patch, test, and deploy. EVLVBL eliminates this gap.</p>
+
+<h2>2. The Solution</h2>
+
+<p>EVLVBL wraps your existing functions with an intelligent evolution layer that detects failures, generates repair candidates, validates them in shadow mode, and applies fixes — all without human intervention.</p>
+
+<pre>
+import { wrap } from '@evlvbl/sdk';
+
+// Your existing function — unchanged
+async function processPayment(order: Order): Promise&lt;Receipt&gt; {
+  // ... existing logic
+}
+
+// Now it self-heals
+const resilientPayment = wrap(processPayment, {
+  repair: 'deterministic',    // 12+ repair strategies
+  shadow: true,               // A/B test candidates
+  rollback: 'automatic',      // Instant revert on failure
+});
+</pre>
+
+<h2>3. Core Capabilities</h2>
+
+<table>
+  <tr><th>Capability</th><th>Description</th><th>Benefit</th></tr>
+  <tr><td><strong>wrap()</strong></td><td>Single-function wrapper that adds self-healing to any async function</td><td>Zero-rewrite integration</td></tr>
+  <tr><td><strong>shadow()</strong></td><td>A/B testing mode that runs baseline vs. candidate in parallel</td><td>Risk-free validation</td></tr>
+  <tr><td><strong>deterministicRepair</strong></td><td>12+ repair strategies including retry, fallback, circuit-break, and semantic repair</td><td>Autonomous recovery</td></tr>
+  <tr><td><strong>VOLVER Agent</strong></td><td>Built-in coding agent with 8 skill domains for dry-run analysis</td><td>Intelligent code suggestions</td></tr>
+  <tr><td><strong>Evolution Stamps</strong></td><td>Cryptographic proof of every mutation with full audit trail</td><td>Compliance + trust</td></tr>
+</table>
+
+<h2>4. Architecture</h2>
+
+<pre>
+┌─────────────────────────────────────────────────────┐
+│                   YOUR APPLICATION                  │
+├─────────────────────────────────────────────────────┤
+│                   EVLVBL SDK LAYER                  │
+│  ┌──────────┐  ┌──────────┐  ┌───────────────────┐ │
+│  │  wrap()   │  │ shadow() │  │ deterministicRepair│ │
+│  └────┬─────┘  └────┬─────┘  └────────┬──────────┘ │
+│       │              │                 │            │
+│  ┌────▼──────────────▼─────────────────▼──────────┐ │
+│  │              EVOLUTION ENGINE                   │ │
+│  │  observe → propose → validate → apply → stamp  │ │
+│  └────────────────────┬───────────────────────────┘ │
+│                       │                             │
+│  ┌────────────────────▼───────────────────────────┐ │
+│  │              VOLVER AGENT                       │ │
+│  │  8 skills · dry-run analysis · code suggestions │ │
+│  └────────────────────────────────────────────────┘ │
+├─────────────────────────────────────────────────────┤
+│              EVLVBL DASHBOARD (SaaS)                │
+│  health · probes · learning tests · audit trail     │
+└─────────────────────────────────────────────────────┘
+</pre>
+
+<h2>5. VOLVER — The Built-In Coding Agent</h2>
+
+<p>VOLVER is a renamed, customer-facing version of the substrate's internal ENCODE agent. It ships with 8 core skills across 5 categories:</p>
+
+<table>
+  <tr><th>Skill</th><th>Category</th><th>Proficiency</th></tr>
+  <tr><td>TypeScript Strict Mode</td><td>TypeScript</td><td>72%</td></tr>
+  <tr><td>Design Patterns</td><td>TypeScript</td><td>65%</td></tr>
+  <tr><td>React Hooks</td><td>React</td><td>70%</td></tr>
+  <tr><td>React Components</td><td>React</td><td>68%</td></tr>
+  <tr><td>API Endpoints</td><td>API</td><td>71%</td></tr>
+  <tr><td>Authentication Patterns</td><td>API</td><td>62%</td></tr>
+  <tr><td>Database Queries</td><td>Database</td><td>64%</td></tr>
+  <tr><td>Extract & Simplify</td><td>Refactoring</td><td>69%</td></tr>
+</table>
+
+<div class="callout">
+  <div class="callout-title">💡 Upgrade Path</div>
+  VOLVER operates in dry-run mode on Free and Pro tiers. Standalone License ($399 lifetime) unlocks autonomous code-writing and resolution capabilities.
+</div>
+
+<h2>6. Shadow Probes & Learning Tests</h2>
+
+<p>EVLVBL includes two customer-facing simulation tools:</p>
+
+<h3>6.1 Shadow Probes</h3>
+<p>Shadow probes run a baseline function and a candidate function against the same input, comparing outputs and timing without affecting production traffic. Users can validate proposed changes before committing them.</p>
+
+<h3>6.2 Learning Tests</h3>
+<p>Learning tests submit task descriptions to the VOLVER agent, which returns skill analysis, confidence scoring, and code suggestions. This enables teams to evaluate EVLVBL's repair capabilities against their specific codebase patterns.</p>
+
+<h2>7. Pricing</h2>
+
+<table>
+  <tr><th>Tier</th><th>Price</th><th>Includes</th></tr>
+  <tr><td>Free / Open Source</td><td>$0</td><td>SDK core, wrap(), shadow(), community support</td></tr>
+  <tr><td>Pro</td><td>$29/mo</td><td>Dashboard, probes, learning tests, priority support</td></tr>
+  <tr><td>Team</td><td>$99/mo</td><td>Multi-repo, shared evolution rules, team analytics</td></tr>
+  <tr><td>Standalone Lifetime</td><td>$399</td><td>Full VOLVER agent, autonomous execution, self-hosted</td></tr>
+</table>
+
+<h2>8. Performance Metrics</h2>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <strong>85%+</strong>
+    <span>Autonomous repair success rate</span>
+  </div>
+  <div class="kpi-card">
+    <strong>&lt;0.5%</strong>
+    <span>Escalation rate</span>
+  </div>
+  <div class="kpi-card">
+    <strong>12+</strong>
+    <span>Repair strategies</span>
+  </div>
+  <div class="kpi-card">
+    <strong>8</strong>
+    <span>VOLVER skill domains</span>
+  </div>
+  <div class="kpi-card">
+    <strong>0ms</strong>
+    <span>Overhead on healthy paths</span>
+  </div>
+  <div class="kpi-card">
+    <strong>100%</strong>
+    <span>Audit trail coverage</span>
+  </div>
+</div>
+
+<h2>9. Competitive Landscape</h2>
+
+<table>
+  <tr><th>Feature</th><th>EVLVBL</th><th>Sentry</th><th>PagerDuty</th><th>LaunchDarkly</th></tr>
+  <tr><td>Detects failures</td><td>✅</td><td>✅</td><td>✅</td><td>—</td></tr>
+  <tr><td>Repairs autonomously</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
+  <tr><td>Shadow testing</td><td>✅</td><td>—</td><td>—</td><td>✅</td></tr>
+  <tr><td>Built-in coding agent</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
+  <tr><td>Cryptographic audit</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
+  <tr><td>Self-improving rules</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
+</table>
+
+<h2>10. Defensibility</h2>
+
+<ul>
+  <li><strong>Compounding repair rules:</strong> Every failure the system survives makes it stronger. This learning cannot be replicated from scratch.</li>
+  <li><strong>Evolution stamps:</strong> Cryptographic proof creates an immutable record of system intelligence growth.</li>
+  <li><strong>VOLVER skill ceiling:</strong> Customer-facing agent has capped proficiencies; the full ENCODE engine remains internal IP.</li>
+</ul>
+
+<h2>11. Conclusion</h2>
+
+<p>EVLVBL transforms code from static artifact into living, self-defending infrastructure. By wrapping existing functions rather than requiring rewrites, it offers the fastest path from "monitoring failures" to "autonomously preventing them."</p>
+
+<p>The platform ships complete — SDK, dashboard, coding agent, simulation tools — ready to evolve your codebase from day one.</p>
+
+<hr>
+<p style="font-size: 0.85rem; color: #777; text-align: center;">
+  © 2026 CMPSBL® · EVLVBL Whitepaper WP-003 · Confidential — For Investor Evaluation<br>
+  Contact: PromptFluid@gmail.com · https://cmpsbl.com
+</p>
+
+</body>
+</html>
