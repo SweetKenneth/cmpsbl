@@ -15,7 +15,7 @@ import {
   Shield, Play, GitCompare, Rocket, Activity, AlertTriangle, CheckCircle,
   Loader2, RotateCcw, ChevronRight, FlaskConical, Eye, Zap, ArrowRight,
   RefreshCw, Info, Package, Gauge, TrendingUp, TrendingDown, Clock,
-  Users, Cpu,
+  Users, Cpu, XOctagon,
 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { integrityService } from '@/lib/evolution-mesh/integrity-service';
