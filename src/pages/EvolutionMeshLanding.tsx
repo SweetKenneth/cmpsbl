@@ -275,6 +275,7 @@ export default function EvolutionMeshLanding() {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [generatedKey, setGeneratedKey] = useState<string | null>(null);
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
   const [selectedFramework, setSelectedFramework] = useState('node');
   const [vibeCodeCopied, setVibeCodeCopied] = useState(false);
@@ -299,24 +300,32 @@ export default function EvolutionMeshLanding() {
     }
   }, [searchParams]);
 
-  const handleWaitlist = async () => {
+  const handleGetKey = async () => {
     if (!email || !email.includes('@')) {
       toast.error('Please enter a valid email');
       return;
     }
     setSubmitting(true);
     try {
-      const { error } = await supabase.from('brain_events').insert({
-        event_type: 'evlvbl_waitlist',
-        source_operation: 'waitlist_signup',
-        module: 'evlvbl',
-        data: { email, framework: selectedFramework },
+      const { data, error } = await supabase.functions.invoke('pf-substrate', {
+        body: {
+          module: 'access',
+          action: 'create_key',
+          name: `EVLVBL Free — ${email}`,
+          scopes: ['evlvbl.wrap', 'evlvbl.shadow', 'evlvbl.status'],
+          email,
+          framework: selectedFramework,
+        },
       });
+
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || 'Key generation failed');
+
+      setGeneratedKey(data.api_key);
       setSubmitted(true);
-      toast.success("You're on the list!");
-    } catch {
-      toast.error('Failed to join. Try again.');
+      toast.success('Your API key is ready — copy it now!');
+    } catch (err: any) {
+      toast.error(err?.message || 'Failed to generate key. Try again.');
     } finally {
       setSubmitting(false);
     }
@@ -972,17 +981,38 @@ export default function EvolutionMeshLanding() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="flex-1"
-                    onKeyDown={(e) => e.key === 'Enter' && handleWaitlist()}
+                    onKeyDown={(e) => e.key === 'Enter' && handleGetKey()}
                   />
-                  <Button onClick={handleWaitlist} disabled={submitting} className="gap-2">
-                    {submitting ? 'Joining...' : 'Get API Key'}
+                  <Button onClick={handleGetKey} disabled={submitting} className="gap-2">
+                    {submitting ? 'Generating...' : 'Get API Key'}
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
               ) : (
-                <div className="flex items-center justify-center gap-2 text-primary">
-                  <Check className="w-5 h-5" />
-                  <span className="font-medium">We'll send your API key shortly.</span>
+                <div className="space-y-4 max-w-md mx-auto">
+                  <div className="flex items-center justify-center gap-2 text-primary">
+                    <Check className="w-5 h-5" />
+                    <span className="font-medium">Your API key is ready!</span>
+                  </div>
+                  {generatedKey && (
+                    <div className="relative">
+                      <code className="block bg-background border rounded-lg p-3 text-xs break-all font-mono select-all">
+                        {generatedKey}
+                      </code>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="absolute top-1 right-1 h-7 gap-1"
+                        onClick={() => {
+                          navigator.clipboard.writeText(generatedKey);
+                          toast.success('Copied!');
+                        }}
+                      >
+                        <Copy className="w-3 h-3" /> Copy
+                      </Button>
+                    </div>
+                  )}
+                  <p className="text-xs text-muted-foreground">Save this key now — it won't be shown again.</p>
                 </div>
               )}
             </div>
