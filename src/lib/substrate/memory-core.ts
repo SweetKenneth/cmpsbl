@@ -260,6 +260,26 @@ class MemoryCoreClient {
     } = options;
 
     try {
+      // ── Noise Gate ────────────────────────────────────────────────────────
+      // Reject content that is too short, empty, or low-signal
+      const trimmed = content.trim();
+      if (trimmed.length < 20) {
+        return { stage: 'ingest', success: false, error: 'Content too short (min 20 chars)' };
+      }
+      // Reject if content is mostly punctuation/whitespace (noise ratio > 60%)
+      const alphaCount = (trimmed.match(/[a-zA-Z0-9]/g) || []).length;
+      if (alphaCount / trimmed.length < 0.4) {
+        return { stage: 'ingest', success: false, error: 'Content is mostly noise (low alpha ratio)' };
+      }
+      // Reject repetitive content (same 4-char chunk repeated > 5 times)
+      const chunks = new Set<string>();
+      for (let i = 0; i < Math.min(trimmed.length - 3, 200); i += 4) {
+        chunks.add(trimmed.slice(i, i + 4).toLowerCase());
+      }
+      if (trimmed.length > 80 && chunks.size < 5) {
+        return { stage: 'ingest', success: false, error: 'Content is repetitive' };
+      }
+
       // ── Dedup Guard ──────────────────────────────────────────────────────
       // Check for similar content already in hot tier (trigram or prefix match)
       const contentPrefix = content.slice(0, 120);
@@ -737,6 +757,70 @@ class MemoryCoreClient {
   /** @deprecated Use reflect() instead */
   async reflectLegacy(): Promise<LifecycleResult> {
     return this.reflect({ scope: 'daily', depth: 'standard' });
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AUTO-DEGRADATION: Warm → Cold demotion for stale memories
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Demote warm memories that haven't been accessed in `staleDays` to cold tier.
+   * Should be called periodically (e.g., during prune/dream cycles).
+   */
+  async autoDegradeStaleMemories(staleDays: number = 14): Promise<{ demoted: number; errors: number }> {
+    const cutoff = new Date(Date.now() - staleDays * 24 * 60 * 60 * 1000).toISOString();
+    let demoted = 0;
+    let errors = 0;
+
+    try {
+      // Find warm memories not accessed since cutoff
+      // brain_memory_warm uses salience_score/value_score (not confidence/importance_score)
+      const { data: stale } = await supabase
+        .from('brain_memory_warm')
+        .select('id, content, memory_type, salience_score, value_score, tags, metadata, context')
+        .or(`last_accessed.is.null,last_accessed.lt.${cutoff}`)
+        .lt('created_at', cutoff)
+        .limit(50) as any; // Type assertion needed for dynamic column access
+
+      if (!stale || stale.length === 0) return { demoted: 0, errors: 0 };
+
+      for (const mem of stale as any[]) {
+        try {
+          // Insert into cold with decayed scores
+          await supabase.from('brain_memory_cold').insert({
+            content: mem.content,
+            memory_type: mem.memory_type || 'general',
+            confidence: Math.max(0.1, ((mem.salience_score as number) || 0.5) * 0.8),
+            importance_score: Math.max(0.1, ((mem.value_score as number) || 0.3) * 0.7),
+            tags: [...((mem.tags as string[]) || []), 'auto_demoted'],
+            metadata: { ...((mem.metadata as any) || {}), demoted_from: 'warm', demoted_at: new Date().toISOString() },
+            source: 'auto_degradation',
+          } as any);
+
+          // Delete from warm
+          await supabase.from('brain_memory_warm').delete().eq('id', mem.id);
+          demoted++;
+        } catch {
+          errors++;
+        }
+      }
+
+      // Log demotion event
+      if (demoted > 0) {
+        try {
+          await supabase.from('brain_events').insert({
+            event_type: 'memory_auto_degradation',
+            module: 'memory',
+            outcome: 'success',
+            data: { demoted, errors, staleDays, cutoff } as any,
+          } as any);
+        } catch { /* non-critical */ }
+      }
+    } catch (err) {
+      console.error('[MemoryCore] Auto-degradation failed:', err);
+    }
+
+    return { demoted, errors };
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

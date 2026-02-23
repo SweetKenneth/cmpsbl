@@ -59,6 +59,16 @@ export {
   type ReviewResult,
 } from './spaced-repetition';
 
+// Deep Dive URL Registry
+export {
+  DEEP_DIVE_SOURCES,
+  selectDeepDiveSource,
+  getSourcesForModule,
+  getCoveredModules,
+  getSourceStats,
+  type DeepDiveSource,
+} from './deep-dive-urls';
+
 // Orchestrator
 export {
   learningOrchestrator,
