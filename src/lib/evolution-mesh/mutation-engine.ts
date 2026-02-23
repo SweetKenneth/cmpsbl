@@ -625,6 +625,7 @@ export const mutationEngine = {
   // Shadow
   runShadowEvaluation,
   listRuns,
+  listAllRuns,
   // Gates
   evaluateGate,
   // Canary
