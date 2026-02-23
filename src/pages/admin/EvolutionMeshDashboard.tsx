@@ -302,11 +302,44 @@ export default function EvolutionMeshDashboard() {
     onSuccess: (result) => {
       if (result.success) {
         setScanResults(result.findings ?? []);
-        toast.success('Integrity scan completed');
+        toast.success(`Scan complete: ${result.summary?.total ?? 0} findings (${result.summary?.errors ?? 0} errors, ${result.summary?.warnings ?? 0} warnings)`);
         invalidateAll();
       } else {
         toast.error(`Scan failed: ${result.error}`);
       }
+    },
+  });
+
+  const generateProposalsMutation = useMutation({
+    mutationFn: async (findings: any[]) => {
+      const actionable = findings.filter((f: any) => f.severity !== 'info' || (f.priority ?? 0) >= 5);
+      const top = actionable.slice(0, 5);
+      const results: string[] = [];
+      for (const finding of top) {
+        const artifactResult = await mutationEngine.createArtifact({
+          actorType: 'integrity_scan',
+          category: finding.evolutionType ?? finding.category ?? 'resilience',
+          intentSummary: finding.message,
+          diffData: { suggested_fix: finding.suggestedFix, severity: finding.severity, priority: finding.priority },
+        });
+        if (artifactResult.success && artifactResult.artifact) {
+          const proposalResult = await mutationEngine.createProposal({
+            artifactId: artifactResult.artifact.id,
+            hypothesis: finding.suggestedFix ?? finding.message,
+            riskScore: finding.severity === 'error' ? 0.7 : finding.severity === 'warning' ? 0.4 : 0.2,
+            category: finding.evolutionType ?? 'resilience',
+          });
+          if (proposalResult.success) results.push(finding.message.slice(0, 50));
+        }
+      }
+      return results;
+    },
+    onSuccess: (results) => {
+      toast.success(`Generated ${results.length} mutation proposals from scan findings`);
+      invalidateAll();
+    },
+    onError: () => {
+      toast.error('Failed to generate proposals');
     },
   });
 
