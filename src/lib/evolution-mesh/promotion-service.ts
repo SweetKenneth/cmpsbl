@@ -24,7 +24,7 @@ async function promoteToProduction(planId: string) {
     }
 
     // Gate 2: Create pre-promote snapshot
-    const preSnapshot = await snapshotService.createSnapshot(`pre-promote-${planId}`);
+    const preSnapshot = await snapshotService.createSnapshot('pre_promote', { metrics: { planId } });
     if (!preSnapshot.success) {
       return { success: false, error: 'Failed to create pre-promote snapshot' };
     }
