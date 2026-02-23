@@ -15,6 +15,8 @@ import {
   type PilotExecutorId,
   type ExecutorModuleMeta,
 } from '@/immune/pilotExecutors';
+import { runHardeningChecks, type HardeningContext } from './hardening-registry';
+import { getKnowledgeForExecutor, validateAgainstConstraints } from '@/immune/knowledge-distillery';
 
 // ── Types ──────────────────────────────────────────────────
 
