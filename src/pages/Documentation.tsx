@@ -59,7 +59,7 @@ export default function Documentation() {
             </h1>
             
             <p className="text-xl text-muted-foreground">
-              Complete guide to the CMPSBL Substrate. {modulesCount} integrated modules, {capabilitiesCount}+ capabilities, and everything you need to build cognitive AI systems.
+              Complete guide to the CMPSBL Substrate. Integrated execution surfaces, {capabilitiesCount}+ capabilities, and everything you need to build cognitive AI systems.
               <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for Substrate operators.</span>
             </p>
           </div>

@@ -71,7 +71,7 @@ export function EnhancedFooter() {
         { name: "Start Here", href: "/start-here", highlight: true },
         { name: "Academy", href: "/academy" },
         { name: "CodeLab", href: "/codelab" },
-        { name: "Sandbox", href: "/lab" },
+        { name: "Experimental Lab", href: "/lab" },
         { name: "DevTools", href: "/devtools" },
         { name: "API Access", href: "/api-access" },
       ]
@@ -85,7 +85,7 @@ export function EnhancedFooter() {
         { name: "Namespace", href: "/namespace" },
         { name: "Foundations", href: "/foundations" },
         { name: "Roadmap", href: "/roadmap" },
-        { name: "Changelog", href: "/changelog" },
+        { name: "Evolution Log", href: "/changelog" },
       ]
     },
     {
@@ -97,6 +97,7 @@ export function EnhancedFooter() {
         { name: "Support", href: "/support" },
         { name: "Legal", href: "/privacy" },
         { name: "Careers", href: "/careers" },
+        { name: "Architecture", href: "/architecture" },
       ]
     },
   ];
