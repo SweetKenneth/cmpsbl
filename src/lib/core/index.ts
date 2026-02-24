@@ -1,8 +1,10 @@
 /**
- * CORE Module — Substrate Foundation Layer
- * v10.5.4 — ARCHITECT Epoch Kernel Bootstrap & Base Utilities
- * 
- * The foundational module that provides:
+ * CORE Module — Substrate Kernel (Standalone)
+ * Separated from CCR — CORE is the first-class kernel that boots before all layers.
+ *
+ * Boot order: CORE → CCR → CCL → Modules → Meshes → INTEGRATION
+ *
+ * CORE provides:
  * - Substrate boot sequence management
  * - Base configuration and constants
  * - Cross-module type definitions
@@ -17,53 +19,84 @@ export const SUBSTRATE_CODENAME = 'ARCHITECT';
 export const CORE_VERSION = '10.1.0';
 export const CORE_CODENAME = 'Foundation';
 
-// All substrate modules — public (12) + CCR facades (5) + CCL facades (4) = 21 entries for backward compat
-// Public registry reports 12. CCR facades route to Layer 0, CCL facades route to Layer 1.
+/**
+ * All substrate entries — 15 public + CCR facades (4) + CCL facades (5) + absorbed (1) = 25
+ *
+ * Public (15):
+ *   CORE (1) + Modules (8) + Meshes (5) + INTEGRATION (1)
+ *
+ * Hidden:
+ *   CCR facades: system, brain, memory, dream
+ *   CCL facades: ripple, access, identity, relay, audit
+ *   Absorbed:    modernizer → EVOLUTION mesh
+ */
 export const SUBSTRATE_MODULES = [
-  'core', 'system', 'brain', 'memory', 'dream', // CCR facades (backward compat)
-  'ripple', 'access', 'identity', 'relay',       // CCL facades (backward compat)
-  'decode', 'encode', 'defense', 'nexus', 'vision',
-  'modernizer', 'integration', 'inclusive', 'cortex', 'audit', 'economy', 'sandbox',
+  // Kernel (standalone)
+  'core',
+  // CCR facades (backward compat — route to Layer 0)
+  'system', 'brain', 'memory', 'dream',
+  // CCL facades (backward compat — route to Layer 1)
+  'ripple', 'access', 'identity', 'relay', 'audit',
+  // Absorbed facade (routes to evolution mesh)
+  'modernizer',
+  // 8 Public Modules
+  'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
+  // 5 Meshes
+  'defense', 'immunity', 'evolution', 'intent', 'governance',
+  // Standalone
+  'integration',
 ] as const;
 
-// Public-facing module count
-export const PUBLIC_MODULE_COUNT = 12;
+// Public-facing entity count
+export const PUBLIC_MODULE_COUNT = 15;
 
-// CCR facade modules (backed by CLOCKLESS_COGNITIVE_REALITY)
-export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
+// CCR facade modules (backed by CLOCKLESS_COGNITIVE_REALITY) — CORE is NOT a facade
+export const CCR_FACADE_MODULES = ['system', 'brain', 'memory', 'dream'] as const;
 
-// CCL facade modules (backed by CLOCKLESS_COGNITIVE_LUCIDITY)
-export const CCL_FACADE_MODULES = ['ripple', 'access', 'identity', 'relay'] as const;
+// CCL facade modules (backed by CLOCKLESS_COGNITIVE_LUCIDITY) — now includes AUDIT
+export const CCL_FACADE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
+
+// Absorbed facades (route to a mesh)
+export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution mesh
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Module layer classification
-export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure';
+export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure' | 'mesh';
 
 export const MODULE_LAYERS: Record<SubstrateModuleName, ModuleLayer> = {
-  // CCR facades
+  // Kernel (standalone)
   core: 'kernel',
+  // CCR facades
   system: 'administrative',
   brain: 'cognitive',
   memory: 'infrastructure',
   dream: 'cognitive',
+  // CCL facades
+  ripple: 'infrastructure',
+  access: 'infrastructure',
   identity: 'infrastructure',
-  // 16 public modules
-  decode: 'cognitive',
-  encode: 'orchestrator',
-  defense: 'operational',
-  nexus: 'cognitive',
-  vision: 'cognitive',
-  ripple: 'kernel',
-  access: 'kernel',
-  modernizer: 'administrative',
-  integration: 'operational',
-  inclusive: 'administrative',
-  cortex: 'orchestrator',
   relay: 'infrastructure',
   audit: 'infrastructure',
+  // Absorbed
+  modernizer: 'mesh', // → evolution
+  // 8 Public Modules
+  decode: 'cognitive',
+  encode: 'orchestrator',
+  vision: 'operational',
+  cortex: 'orchestrator',
+  nexus: 'orchestrator',
   economy: 'infrastructure',
   sandbox: 'infrastructure',
+  inclusive: 'operational',
+  // 5 Meshes
+  defense: 'mesh',
+  immunity: 'mesh',
+  evolution: 'mesh',
+  intent: 'mesh',
+  governance: 'mesh',
+  // Standalone
+  integration: 'operational',
 };
 
 // ============ Types ============
@@ -111,9 +144,6 @@ const moduleStatuses: Map<SubstrateModuleName, ModuleStatus> = new Map();
 
 // ============ Boot Management ============
 
-/**
- * Initialize the substrate boot sequence
- */
 export function initializeBootSequence(): BootSequence {
   bootSequence = {
     started_at: new Date().toISOString(),
@@ -126,9 +156,6 @@ export function initializeBootSequence(): BootSequence {
   return bootSequence;
 }
 
-/**
- * Mark a module as booted
- */
 export function markModuleBooted(module: SubstrateModuleName): void {
   if (!bootSequence) {
     initializeBootSequence();
@@ -137,14 +164,12 @@ export function markModuleBooted(module: SubstrateModuleName): void {
   if (bootSequence && !bootSequence.modules_booted.includes(module)) {
     bootSequence.modules_booted.push(module);
     
-    // Update phase
     const layer = MODULE_LAYERS[module];
     if (layer === 'administrative' && bootSequence.current_phase !== 'complete') {
       bootSequence.current_phase = 'administrative';
     }
   }
   
-  // Update module status
   moduleStatuses.set(module, {
     module,
     version: SUBSTRATE_VERSION,
@@ -155,9 +180,6 @@ export function markModuleBooted(module: SubstrateModuleName): void {
   });
 }
 
-/**
- * Mark a module as failed
- */
 export function markModuleFailed(module: SubstrateModuleName, reason?: string): void {
   if (!bootSequence) {
     initializeBootSequence();
@@ -179,9 +201,6 @@ export function markModuleFailed(module: SubstrateModuleName, reason?: string): 
   console.error(`[CORE] Module ${module} failed to boot: ${reason || 'Unknown error'}`);
 }
 
-/**
- * Complete the boot sequence
- */
 export function completeBootSequence(): BootSequence | null {
   if (!bootSequence) return null;
   
@@ -192,49 +211,50 @@ export function completeBootSequence(): BootSequence | null {
   return bootSequence;
 }
 
-/**
- * Get current boot sequence status
- */
 export function getBootSequence(): BootSequence | null {
   return bootSequence ? { ...bootSequence } : null;
 }
 
 // ============ Module Registry ============
 
-/**
- * Get module dependencies
- */
 export function getModuleDependencies(module: SubstrateModuleName): SubstrateModuleName[] {
   const deps: Record<SubstrateModuleName, SubstrateModuleName[]> = {
     core: [],
+    // CCR facades
+    system: ['core'],
+    brain: ['core'],
+    memory: ['core'],
+    dream: ['core'],
+    // CCL facades
     ripple: ['core'],
-    access: ['core', 'ripple'],
-    brain: ['core', 'ripple', 'access'],
-    vision: ['brain'],
-    cortex: ['brain', 'vision'],
-    modernizer: ['cortex'],
-    decode: ['brain'],
-    defense: ['access'],
-    nexus: ['defense'],
-    dream: ['nexus'],
-    integration: ['defense'],
-    inclusive: ['integration'],
-    system: ['vision'],
-    memory: ['core', 'brain'],
-    relay: ['core', 'ripple'],
-    audit: ['core', 'access'],
-    identity: ['core', 'access'],
-    economy: ['core', 'nexus'],
-    sandbox: ['core', 'defense'],
-    encode: ['cortex', 'brain'],
+    access: ['core'],
+    identity: ['core'],
+    relay: ['core'],
+    audit: ['core'],
+    // Absorbed
+    modernizer: ['core'],
+    // 8 Modules
+    decode: ['core'],
+    encode: ['core', 'decode'],
+    vision: ['core'],
+    cortex: ['core'],
+    nexus: ['core'],
+    economy: ['core'],
+    sandbox: ['core'],
+    inclusive: ['core'],
+    // 5 Meshes
+    defense: ['core'],
+    immunity: ['core', 'defense'],
+    evolution: ['core'],
+    intent: ['core'],
+    governance: ['core'],
+    // Standalone
+    integration: ['core'],
   };
   
   return deps[module] || [];
 }
 
-/**
- * Check if a module can boot (all dependencies are online)
- */
 export function canModuleBoot(module: SubstrateModuleName): boolean {
   const deps = getModuleDependencies(module);
   return deps.every(dep => {
@@ -243,23 +263,14 @@ export function canModuleBoot(module: SubstrateModuleName): boolean {
   });
 }
 
-/**
- * Get all module statuses
- */
 export function getModuleStatuses(): ModuleStatus[] {
   return Array.from(moduleStatuses.values());
 }
 
-/**
- * Get status for a specific module
- */
 export function getModuleStatus(module: SubstrateModuleName): ModuleStatus | null {
   return moduleStatuses.get(module) || null;
 }
 
-/**
- * Update module health
- */
 export function updateModuleHealth(module: SubstrateModuleName, health: number): void {
   const status = moduleStatuses.get(module);
   if (status) {
@@ -272,16 +283,10 @@ export function updateModuleHealth(module: SubstrateModuleName, health: number):
 
 // ============ Configuration ============
 
-/**
- * Get core configuration
- */
 export function getCoreConfig(): CoreConfig {
   return { ...coreConfig };
 }
 
-/**
- * Update core configuration
- */
 export function updateCoreConfig(updates: Partial<CoreConfig>): CoreConfig {
   coreConfig = { ...coreConfig, ...updates };
   return getCoreConfig();
@@ -289,16 +294,10 @@ export function updateCoreConfig(updates: Partial<CoreConfig>): CoreConfig {
 
 // ============ Utilities ============
 
-/**
- * Check if substrate is fully booted
- */
 export function isSubstrateReady(): boolean {
   return bootSequence?.success === true && bootSequence?.current_phase === 'complete';
 }
 
-/**
- * Get substrate health score (0-100)
- */
 export function getSubstrateHealth(): number {
   const statuses = getModuleStatuses();
   if (statuses.length === 0) return 0;
@@ -307,25 +306,16 @@ export function getSubstrateHealth(): number {
   return Math.round(totalHealth / statuses.length);
 }
 
-/**
- * Get modules by layer
- */
 export function getModulesByLayer(layer: ModuleLayer): SubstrateModuleName[] {
   return SUBSTRATE_MODULES.filter(m => MODULE_LAYERS[m] === layer);
 }
 
-/**
- * Get boot order index for a module
- */
 export function getBootOrder(module: SubstrateModuleName): number {
   return SUBSTRATE_MODULES.indexOf(module);
 }
 
 // ============ Error Boundaries ============
 
-/**
- * Safe module execution wrapper
- */
 export async function safeExecute<T>(
   module: SubstrateModuleName,
   operation: string,
@@ -347,9 +337,6 @@ export async function safeExecute<T>(
   }
 }
 
-/**
- * Module initialization helper
- */
 export function initModule(module: SubstrateModuleName): void {
   if (!canModuleBoot(module)) {
     const deps = getModuleDependencies(module);

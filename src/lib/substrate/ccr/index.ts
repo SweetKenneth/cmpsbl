@@ -219,7 +219,7 @@ export function resolveCCRAction(module: string, action: string): CCRAction | nu
   return (MODULE_ACTION_MAP[module]?.[action] as CCRAction) ?? null;
 }
 
-export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
+export const CCR_FACADE_MODULES = ['system', 'brain', 'memory', 'dream'] as const;
 export type CCRFacadeModule = typeof CCR_FACADE_MODULES[number];
 
 export function isCCRFacade(module: string): boolean {

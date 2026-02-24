@@ -1,17 +1,15 @@
 /**
  * promptfluid® Substrate Initialization
- * CCL Epoch — Complete AI Operating System with 12 public modules + CCR + CCL
- * 
+ * CORE Epoch — Complete AI Operating System
+ *
+ * Architecture: CORE → CCR → CCL → 8 Modules → 5 Meshes → INTEGRATION
+ *
  * Performance: Triple-deferred initialization for zero main-thread blocking
- * - Waits for document idle state
- * - Uses requestIdleCallback with low priority
- * - Yields to main thread between module pings
  */
 
 let initialized = false;
 let substrateModule: typeof import('./substrate') | null = null;
 
-// Lazy load substrate module only when needed
 async function getSubstrate() {
   if (!substrateModule) {
     substrateModule = await import('./substrate');
@@ -19,7 +17,6 @@ async function getSubstrate() {
   return substrateModule.substrate;
 }
 
-// Yield to main thread to prevent long tasks
 const yieldToMain = () => new Promise<void>(resolve => {
   if ('scheduler' in window && 'yield' in (window as any).scheduler) {
     (window as any).scheduler.yield().then(resolve);
@@ -34,65 +31,80 @@ export async function initializeSubstrate(): Promise<void> {
   try {
     const substrate = await getSubstrate();
     
-    // Yield before heavy work
     await yieldToMain();
     
-    console.log('⚡ Booting promptfluid® Substrate (CCL Epoch)...');
+    console.log('⚡ Booting promptfluid® Substrate...');
     console.log('─────────────────────────────────────────');
     
-    // Boot order: CORE(CCR) → CCL → 12 public modules
-    // CCR absorbs: CORE + SYSTEM + BRAIN + MEMORY + DREAM
-    // CCL absorbs: RIPPLE + ACCESS + IDENTITY + RELAY
+    // Boot order: CORE → CCR → CCL → Modules → Meshes → INTEGRATION
     const publicModules = [
-      'decode', 'encode', 'defense', 'nexus', 'vision',
-      'modernizer', 'integration', 'inclusive', 'cortex', 'audit', 'economy', 'sandbox'
+      'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
+    ] as const;
+    const meshes = [
+      'defense', 'immunity', 'evolution', 'intent', 'governance',
     ] as const;
     
-    // Boot CCR foundation (Layer 0) via core.boot facade
-    const ccrResult = await substrate.invoke({ module: 'core', action: 'boot' });
+    // 1. Boot CORE (standalone kernel)
+    const coreResult = await substrate.invoke({ module: 'core', action: 'boot' });
     
-    // Boot CCL infrastructure (Layer 1)
+    // 2. Boot CCR (Layer 0)
+    let ccrBooted = false;
+    try {
+      const { boot } = await import('@/lib/substrate/ccr');
+      const ccrResult = await boot();
+      ccrBooted = ccrResult.success;
+    } catch { /* graceful */ }
+    
+    // 3. Boot CCL (Layer 1)
     let cclBooted = false;
     try {
       const { initializeCCL } = await import('@/layers/ccl');
       const cclResult = await initializeCCL();
       cclBooted = cclResult.success;
-    } catch { /* graceful — CCL init is additive */ }
+    } catch { /* graceful */ }
     
-    if (ccrResult.success && cclBooted) {
-      console.log('✅ CCR Layer 0 + CCL Layer 1 active → 12 modules loaded | Health: 100%');
+    if (coreResult.success && ccrBooted && cclBooted) {
+      console.log('✅ CORE + CCR Layer 0 + CCL Layer 1 active → 15 entities loaded | Health: 100%');
     } else {
-      // Fallback to individual pings
-      let activeModules = 0;
+      // Fallback: ping individual modules
+      let activeCount = 0;
       for (const module of publicModules) {
         await yieldToMain();
         const result = await substrate.invoke({ module, action: 'pulse' });
-        if (result.success) activeModules++;
+        if (result.success) activeCount++;
       }
+      for (const mesh of meshes) {
+        await yieldToMain();
+        const result = await substrate.invoke({ module: mesh, action: 'pulse' });
+        if (result.success) activeCount++;
+      }
+      // Integration
+      const intResult = await substrate.invoke({ module: 'integration', action: 'pulse' });
+      if (intResult.success) activeCount++;
       
-      console.log(`✅ Substrate initialized: ${activeModules}/${publicModules.length} modules active`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/15 entities active`);
     }
     
     console.log('─────────────────────────────────────────');
     
-    // Initialize subsystem health registry (Intent Mesh, AutoBlog, SEBA, Shadow Mesh)
+    // Initialize subsystem health registry
     try {
       const { initSubsystemHealth } = await import('./substrate/subsystem-health');
       initSubsystemHealth();
-    } catch { /* graceful — subsystem health is additive */ }
+    } catch { /* graceful */ }
     
-    // Initialize GOAL (Global Observability Access Layer)
+    // Initialize GOAL
     try {
       const { initializeGOAL } = await import('@/core/goal');
       initializeGOAL();
       console.log('🔭 GOAL initialized — Global Observability Access Layer active');
-    } catch { /* graceful — GOAL is additive */ }
+    } catch { /* graceful */ }
     
     // Start automatic circuit recovery engine
     try {
       const { startAutoRecovery } = await import('./substrate/core-circuit-recovery');
       startAutoRecovery();
-    } catch { /* graceful — recovery is additive */ }
+    } catch { /* graceful */ }
     
     initialized = true;
   } catch (error) {
@@ -102,19 +114,16 @@ export async function initializeSubstrate(): Promise<void> {
 
 // Auto-initialize on import in browser environment - heavily deferred
 if (typeof window !== 'undefined') {
-  // Use triple-deferred initialization: wait for idle, then delay further
   const scheduleInit = () => {
     if ('requestIdleCallback' in window) {
       (window as any).requestIdleCallback(() => {
-        // Use setTimeout to break up the task
         setTimeout(() => initializeSubstrate(), 100);
-      }, { timeout: 10000 }); // 10s timeout, very low priority
+      }, { timeout: 10000 });
     } else {
       setTimeout(() => initializeSubstrate(), 5000);
     }
   };
   
-  // Wait for load event first, then schedule idle init
   if (document.readyState === 'complete') {
     scheduleInit();
   } else {

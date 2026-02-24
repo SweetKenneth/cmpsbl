@@ -45,8 +45,8 @@ export function checkModuleHealth(): AuditFinding[] {
     id: 'module_health_surface',
     category: 'modules',
     severity: 'info',
-    title: `Module health: ${moduleCount}/12`,
-    detail: `${moduleCount} modules registered. Dependency graph validated. CCR (Layer 0) + CCL (Layer 1) hidden.`,
+    title: `Module health: ${moduleCount}/15`,
+    detail: `${moduleCount} entities registered. CORE + 8 Modules + 5 Meshes + INTEGRATION. CCR (Layer 0) + CCL (Layer 1) hidden.`,
   });
 
   return findings;
