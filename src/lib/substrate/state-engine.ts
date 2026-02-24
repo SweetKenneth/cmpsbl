@@ -134,7 +134,7 @@ const SCHEMAS: Record<StateSchemaName, StateSchema> = {
   modernizer_state: {
     name: 'modernizer_state',
     version: '1.0.0',
-    description: 'Modernizer evolution cycle state',
+    description: 'Evolution cycle state',
     fields: [
       { name: 'phase', type: 'string', required: true, default: 'idle' },
       { name: 'activePlanId', type: 'string', required: false, default: null },
