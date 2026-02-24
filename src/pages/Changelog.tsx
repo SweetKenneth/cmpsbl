@@ -49,8 +49,8 @@ const evolutionLogSPARTA: EvolutionEntry[] = [
       "Each Zone can be surgically hot-swapped without affecting its parent convergence layer or sibling zones",
       "Circuit breaker trips now identify the exact Zone at fault (e.g., 'RIPPLE Zone circuit open') rather than blaming the entire CCL",
       "All backward compatibility preserved — legacy commands route through Zone dispatchers transparently",
-      "Architecture is now correctly represented as 15 public entities + 9 internal zones across 5 distinct layers",
-      "MODERNIZER fully absorbed by EVOLUTION mesh — no more phantom module references",
+      "Architecture is now correctly represented as 10 public entities + 5 mesh overlays + 9 internal zones",
+      "Mesh overlays wrap modules in order: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)",
     ],
   },
   {

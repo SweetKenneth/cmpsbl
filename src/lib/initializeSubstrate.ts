@@ -74,16 +74,14 @@ export async function initializeSubstrate(): Promise<void> {
         const result = await substrate.invoke({ module, action: 'pulse' });
         if (result.success) activeCount++;
       }
-      for (const mesh of meshes) {
+      // Activate mesh overlays
+      for (const mesh of meshOverlays) {
         await yieldToMain();
         const result = await substrate.invoke({ module: mesh, action: 'pulse' });
         if (result.success) activeCount++;
       }
-      // Integration
-      const intResult = await substrate.invoke({ module: 'integration', action: 'pulse' });
-      if (intResult.success) activeCount++;
       
-      console.log(`✅ Substrate initialized: ${activeCount + 1}/15 entities active`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/10 entities + mesh overlays active`);
     }
     
     console.log('─────────────────────────────────────────');
