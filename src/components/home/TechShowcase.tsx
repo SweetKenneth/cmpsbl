@@ -495,7 +495,7 @@ const result = await env.execute({
 });
 console.log(result.output, result.metrics);`,
   },
-  // ENCODE (Module #21)
+  // ENCODE
   {
     id: "encode",
     icon: Layers,
