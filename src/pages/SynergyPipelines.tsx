@@ -305,7 +305,7 @@ function ConceptSection() {
     {
       icon: Combine,
       title: "Modular Fusion",
-      description: "Each of our 21 modules operates as an independent cognitive unit. When combined, they create capabilities that emerge from their interaction — not just the sum of their parts."
+      description: "Each of our execution surfaces operates as an independent cognitive unit. When combined, they create capabilities that emerge from their interaction — not just the sum of their parts."
     },
     {
       icon: GitMerge,
