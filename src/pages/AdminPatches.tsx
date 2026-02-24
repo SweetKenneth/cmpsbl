@@ -406,6 +406,238 @@ function DownloadAnalytics() {
   );
 }
 
+// ─── Governance Stream ───────────────────────────────────────────────────────
+
+function GovernanceStatusBadge({ status }: { status: string }) {
+  const variants: Record<string, string> = {
+    pending: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+    approved: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    declined: 'bg-red-500/20 text-red-400 border-red-500/30',
+    dispatched: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  };
+  const icons: Record<string, React.ReactNode> = {
+    pending: <Clock className="w-3 h-3 mr-1" />,
+    approved: <Check className="w-3 h-3 mr-1" />,
+    declined: <X className="w-3 h-3 mr-1" />,
+    dispatched: <Rocket className="w-3 h-3 mr-1" />,
+  };
+  return (
+    <Badge className={`${variants[status] || variants.pending} border`}>
+      {icons[status]}{status.toUpperCase()}
+    </Badge>
+  );
+}
+
+function ChangeCard({ change, onApprove, onDecline }: { 
+  change: SubstrateChange; 
+  onApprove: (id: string) => void;
+  onDecline: (id: string, reason?: string) => void;
+}) {
+  const isPending = change.lnchbl_status === 'pending';
+  
+  return (
+    <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+      <CardContent className="py-4 space-y-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3 min-w-0">
+            <GitCommit className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+            <div className="min-w-0">
+              <h3 className="font-semibold text-foreground text-sm truncate">{change.title}</h3>
+              {change.description && (
+                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{change.description}</p>
+              )}
+            </div>
+          </div>
+          <GovernanceStatusBadge status={change.lnchbl_status} />
+        </div>
+
+        {/* File changes */}
+        {change.files_changed?.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {change.files_changed.slice(0, 5).map(f => (
+              <Badge key={f} variant="outline" className="text-[10px] font-mono">
+                {f.split('/').pop()}
+              </Badge>
+            ))}
+            {change.files_changed.length > 5 && (
+              <Badge variant="outline" className="text-[10px]">
+                +{change.files_changed.length - 5} more
+              </Badge>
+            )}
+          </div>
+        )}
+
+        {/* Meta row */}
+        <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+          {change.commit_hash && (
+            <span className="font-mono">{change.commit_hash.slice(0, 8)}</span>
+          )}
+          {change.author && <span>{change.author}</span>}
+          <span>{new Date(change.created_at).toLocaleString()}</span>
+          {change.source !== 'substrate' && <Badge variant="outline" className="text-[10px]">{change.source}</Badge>}
+        </div>
+
+        {/* Decline reason */}
+        {change.declined_reason && (
+          <div className="text-xs text-red-400/80 bg-red-500/10 rounded px-2 py-1">
+            Declined: {change.declined_reason}
+          </div>
+        )}
+
+        {/* Actions */}
+        {isPending && (
+          <div className="flex items-center gap-2 pt-2 border-t border-border/30">
+            <Button 
+              size="sm" 
+              onClick={() => onApprove(change.id)} 
+              className="gap-1 bg-emerald-600 hover:bg-emerald-700"
+            >
+              <Check className="w-3 h-3" /> Approve for LNCHBL
+            </Button>
+            <Button 
+              size="sm" 
+              variant="destructive"
+              onClick={() => onDecline(change.id, 'CMPSBL-only change')} 
+              className="gap-1"
+            >
+              <X className="w-3 h-3" /> Decline
+            </Button>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function GovernanceStream() {
+  const [filter, setFilter] = useState<string>('all');
+  const { changes, isLoading, approve, decline, batchDispatch } = useSubstrateChanges(filter);
+
+  const approvedChanges = changes.filter(c => c.lnchbl_status === 'approved');
+  const pendingCount = changes.filter(c => c.lnchbl_status === 'pending').length;
+
+  const handleDispatchApproved = async () => {
+    if (approvedChanges.length === 0) {
+      toast.error('No approved changes to dispatch');
+      return;
+    }
+
+    try {
+      // Build changelog from approved changes
+      const changelog = approvedChanges
+        .map(c => `• ${c.title}`)
+        .join('\n');
+
+      // Dispatch via the patch pipeline
+      const result = await sendPatchToLnchbl({
+        target_distribution: 'LNCHBL',
+        patch_version: new Date().toISOString().slice(0, 10).replace(/-/g, '.'),
+        capabilities: approvedChanges.flatMap(c => 
+          (c.metadata as any)?.capabilities || []
+        ),
+        engines: [],
+        changelog,
+        config_overrides: {},
+      });
+
+      if (result.success) {
+        // Mark all as dispatched
+        await batchDispatch.mutateAsync(approvedChanges.map(c => c.id));
+        toast.success(`Dispatched ${approvedChanges.length} changes to LNCHBL`);
+      } else {
+        toast.error(result.error || 'Dispatch failed');
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'Dispatch error');
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Controls bar */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Filter className="w-4 h-4 text-muted-foreground" />
+          <Select value={filter} onValueChange={setFilter}>
+            <SelectTrigger className="w-[160px] h-8 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Changes</SelectItem>
+              <SelectItem value="pending">Pending ({pendingCount})</SelectItem>
+              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="declined">Declined</SelectItem>
+              <SelectItem value="dispatched">Dispatched</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {approvedChanges.length > 0 && (
+          <Button 
+            onClick={handleDispatchApproved}
+            disabled={batchDispatch.isPending}
+            className="gap-2"
+          >
+            <Rocket className="w-4 h-4" />
+            Push {approvedChanges.length} to LNCHBL
+          </Button>
+        )}
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { label: 'Pending', count: changes.filter(c => c.lnchbl_status === 'pending').length, color: 'text-amber-400' },
+          { label: 'Approved', count: changes.filter(c => c.lnchbl_status === 'approved').length, color: 'text-emerald-400' },
+          { label: 'Declined', count: changes.filter(c => c.lnchbl_status === 'declined').length, color: 'text-red-400' },
+          { label: 'Dispatched', count: changes.filter(c => c.lnchbl_status === 'dispatched').length, color: 'text-blue-400' },
+        ].map(s => (
+          <Card key={s.label} className="border-border/50 bg-card/50">
+            <CardContent className="py-3 text-center">
+              <div className={`text-xl font-bold ${s.color}`}>{s.count}</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Stream */}
+      {isLoading ? (
+        <p className="text-muted-foreground">Loading substrate changes...</p>
+      ) : changes.length === 0 ? (
+        <Card className="border-dashed border-border/50 bg-card/30">
+          <CardContent className="py-12 text-center">
+            <GitCommit className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+            <p className="text-muted-foreground">No substrate changes recorded yet.</p>
+            <p className="text-xs text-muted-foreground/60 mt-1">Changes will appear here as the substrate evolves.</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="space-y-3">
+          {changes.map(c => (
+            <ChangeCard 
+              key={c.id} 
+              change={c}
+              onApprove={(id) => {
+                approve.mutate(id, {
+                  onSuccess: () => toast.success('Change approved for LNCHBL'),
+                  onError: (err: any) => toast.error(err.message),
+                });
+              }}
+              onDecline={(id, reason) => {
+                decline.mutate({ changeId: id, reason }, {
+                  onSuccess: () => toast.info('Change declined — CMPSBL only'),
+                  onError: (err: any) => toast.error(err.message),
+                });
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function AdminPatches() {
