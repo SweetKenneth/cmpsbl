@@ -1,5 +1,5 @@
 /**
- * Module Controls Grid v11.1 SPARTA — All execution surfaces with real-time status
+ * Module Controls Grid — SPARTA Epoch — All execution surfaces with real-time status
  */
 
 import { 
