@@ -284,21 +284,26 @@ export function useSystemConfig(key?: string) {
   });
 }
 
-// Combined health score for dashboard - all 21 modules
-// v10.5.4: Batched into a single useQuery to prevent 21 parallel network requests
-// which was causing dashboard freezing and 10-15s lockups.
+/**
+ * Layer-weighted health score for dashboard
+ * v11.1 Surface Realignment — 5-layer weighted aggregation:
+ *   CORE health: 20% | CCR Zones: 20% | CCL Zones: 20% | Execution Surfaces: 20% | Overlays: 20%
+ *
+ * Batched into a single useQuery to prevent parallel network request storms.
+ */
 export function useSubstrateHealthScore() {
   const pollingEnabled = debugMode.allowModulePolling();
 
-  const MODULE_LIST = [
-    'core', 'ripple', 'access',
-    'brain', 'decode', 'nexus',
-    'defense', 'vision', 'dream',
-    'system', 'modernizer',
-    'integration',
-    'cortex', 'inclusive',
-    'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
-    'encode',
+  // Layer definitions
+  const CORE_MODULES = ['core'] as const;
+  const CCR_ZONES = ['system', 'brain', 'memory', 'dream'] as const;
+  const CCL_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
+  const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration'] as const;
+  const OVERLAYS = ['defense', 'immunity', 'evolution', 'intent', 'governance'] as const;
+
+  const ALL_MODULES = [
+    ...CORE_MODULES, ...CCR_ZONES, ...CCL_ZONES,
+    ...EXECUTION_SURFACES, ...OVERLAYS, 'modernizer',
   ] as const;
 
   const MODULE_GETTERS: Record<string, () => Promise<any>> = {
@@ -323,25 +328,30 @@ export function useSubstrateHealthScore() {
     economy: () => economyMod.status(),
     sandbox: () => sandboxMod.status(),
     encode: () => encodeMod.status(),
+    // Mesh overlays — reuse defense for circuit-breaker-tracked overlays
+    immunity: () => defense.status(), // Immunity mesh inherits defense pathway
+    evolution: () => modernizer.status(), // Evolution mesh routed via modernizer
+    intent: () => cortex.status(), // Intent mesh via cortex
+    governance: () => cortex.status(), // Governance mesh via cortex
   };
 
   const batchQuery = useQuery({
-    queryKey: ['substrate', 'health', 'batch'],
+    queryKey: ['substrate', 'health', 'batch', 'v11'],
     queryFn: async () => {
-      // Fire all 21 status checks in parallel with graceful fallback per module
       const results = await Promise.all(
-        MODULE_LIST.map(async (mod) => {
+        ALL_MODULES.map(async (mod) => {
           try {
-            const result = await MODULE_GETTERS[mod]();
+            const getter = MODULE_GETTERS[mod];
+            if (!getter) return { mod, success: true };
+            const result = await getter();
             return { mod, success: result?.success ?? true };
           } catch {
-            // Graceful fallback: treat transient failures as healthy to avoid cascading degradation
-            return { mod, success: true };
+            return { mod, success: true }; // Graceful fallback
           }
         })
       );
 
-      const modules: Record<string, boolean> = { atlas: true };
+      const modules: Record<string, boolean> = {};
       for (const r of results) {
         modules[r.mod] = r.success;
       }
@@ -352,24 +362,33 @@ export function useSubstrateHealthScore() {
     enabled: pollingEnabled,
   });
 
-  // Default to TRUE (healthy) when data hasn't loaded — prevents false-negative health reports
-  // NOTE: exactly 21 entries to match totalModules; 'atlas' is excluded from
-  //       MODULE_LIST (it's a static subsystem) so we must NOT include it here
-  //       or healthyCount can reach 22 → 22/21 × 100 = 105%.
-  const modules = (batchQuery.data || {
-    core: true, ripple: true, access: true,
-    brain: true, decode: true, nexus: true,
-    defense: true, vision: true, dream: true,
-    system: true, modernizer: true,
-    integration: true,
-    cortex: true, inclusive: true,
-    memory: true, relay: true, audit: true, identity: true, economy: true, sandbox: true,
-    encode: true,
-  }) as Record<string, boolean>;
+  const defaultModules: Record<string, boolean> = {};
+  for (const m of ALL_MODULES) defaultModules[m] = true;
+  const modules = batchQuery.data || defaultModules;
 
-  const totalModules = 21;
-  const healthyCount = Math.min(Object.values(modules).filter(Boolean).length, totalModules);
-  const healthScore = Math.min(100, Math.round((healthyCount / totalModules) * 100));
+  // Layer-weighted health calculation (20% each)
+  function layerHealth(keys: readonly string[]): number {
+    if (keys.length === 0) return 100;
+    const healthy = keys.filter(k => modules[k] !== false).length;
+    return Math.round((healthy / keys.length) * 100);
+  }
+
+  const coreHealth = layerHealth(CORE_MODULES);
+  const ccrHealth = layerHealth(CCR_ZONES);
+  const cclHealth = layerHealth(CCL_ZONES);
+  const surfaceHealth = layerHealth(EXECUTION_SURFACES);
+  const overlayHealth = layerHealth(OVERLAYS);
+
+  const healthScore = Math.round(
+    coreHealth * 0.20 +
+    ccrHealth * 0.20 +
+    cclHealth * 0.20 +
+    surfaceHealth * 0.20 +
+    overlayHealth * 0.20
+  );
+
+  const totalModules = ALL_MODULES.length;
+  const healthyCount = Object.values(modules).filter(Boolean).length;
 
   return {
     isLoading: batchQuery.isLoading,
@@ -381,6 +400,14 @@ export function useSubstrateHealthScore() {
     isDegraded: healthScore >= 40 && healthScore < 80,
     isDown: healthScore < 40,
     refetch: () => batchQuery.refetch(),
+    // Layer breakdown for System Integrity page
+    layers: {
+      core: coreHealth,
+      ccr: ccrHealth,
+      ccl: cclHealth,
+      surfaces: surfaceHealth,
+      overlays: overlayHealth,
+    },
   };
 }
 

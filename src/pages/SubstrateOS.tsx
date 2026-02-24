@@ -209,11 +209,11 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Zap,
       tier: 'architect',
       tabs: [
-        { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing', tier: 'architect' },
+        { id: 'nexus', label: 'NEXUS', icon: Zap, color: 'cyan', description: 'AI routing', tier: 'architect' },
         { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Capability mesh', tier: 'architect' },
         { id: 'codeagent', label: 'ENCODE', icon: Bot, color: 'fuchsia', description: 'Code pipeline', tier: 'architect' },
-        { id: 'cortex', label: 'Cortex', icon: Wand2, color: 'violet', description: 'Orchestrator', tier: 'architect' },
-        { id: 'modules', label: 'Modules', icon: Cpu, color: 'orange', description: 'Core · Ripple · Access', tier: 'architect' },
+        { id: 'cortex', label: 'CORTEX', icon: Wand2, color: 'violet', description: 'Orchestrator', tier: 'architect' },
+        { id: 'modules', label: 'Zones', icon: Cpu, color: 'orange', description: 'CCR · CCL zones', tier: 'architect' },
         { id: 'atlas', label: 'Atlas', icon: Gauge, color: 'cyan', description: 'Control plane', tier: 'architect' },
       ],
     },
@@ -225,7 +225,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       tabs: [
         { id: 'forge', label: 'Forge', icon: Sparkles, color: 'fuchsia', description: 'Cognitives & mint', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Command center', tier: 'cmpsbl' as SubstrateTier }] : []),
-        { id: 'infra', label: 'Infrastructure', icon: Wrench, color: 'purple', description: 'Evolution · Modernizer · Inclusive', tier: 'cmpsbl' },
+        { id: 'infra', label: 'Infrastructure', icon: Wrench, color: 'purple', description: 'Evolution · Modernizer · INCLUSIVE', tier: 'cmpsbl' },
       ],
     },
     {
@@ -234,7 +234,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Shield,
       tier: 'cmpsbl',
       tabs: [
-        { id: 'security', label: 'Security', icon: Shield, color: 'amber', description: 'Defense · Audit · Patches · Backups', tier: 'cmpsbl' },
+        { id: 'security', label: 'Security', icon: Shield, color: 'amber', description: 'DEFENSE · AUDIT · Patches · Backups', tier: 'cmpsbl' },
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Admin & advisory', tier: 'cmpsbl' },
       ],
     },
@@ -565,12 +565,12 @@ function MergedModulesTab({ enabled }: { enabled: boolean }) {
   
   return (
     <TabPane id="modules">
-      <TabHeader icon={Cpu} title="Substrate Modules" subtitle="core · ripple · access" color="orange" tier="architect" />
+      <TabHeader icon={Cpu} title="Kernel & Zones" subtitle="CORE · CCR zones · CCL zones" color="orange" tier="architect" />
       <SubTabBar
         tabs={[
-          { id: 'core', label: 'Core Kernel', icon: Cpu },
-          { id: 'ripple', label: 'Ripple Bus', icon: Radio },
-          { id: 'access', label: 'Access Identity', icon: Key },
+          { id: 'core', label: 'CORE Kernel', icon: Cpu },
+          { id: 'ripple', label: 'RIPPLE (CCL)', icon: Radio },
+          { id: 'access', label: 'ACCESS (CCL)', icon: Key },
         ]}
         active={activeModule}
         onChange={(id) => setActiveModule(id as typeof activeModule)}
@@ -647,12 +647,12 @@ function MergedInfraTab({ enabled }: { enabled: boolean }) {
 
   return (
     <TabPane id="infra">
-      <TabHeader icon={Wrench} title="Infrastructure" subtitle="evolution · modernizer · inclusive" color="purple" tier="cmpsbl" />
+      <TabHeader icon={Wrench} title="Infrastructure" subtitle="Evolution Lifecycle · Modernizer · INCLUSIVE" color="purple" tier="cmpsbl" />
       <SubTabBar
         tabs={[
-          { id: 'evolution', label: 'Evolution', icon: Dna },
-          { id: 'modernizer', label: 'Modernizer', icon: Wand2 },
-          { id: 'inclusive', label: 'Inclusive', icon: Users },
+          { id: 'evolution', label: 'Evolution Lifecycle', icon: Dna },
+          { id: 'modernizer', label: 'Evolution Lifecycle (Shadow Mode)', icon: Wand2 },
+          { id: 'inclusive', label: 'INCLUSIVE', icon: Users },
         ]}
         active={activeInfra}
         onChange={(id) => setActiveInfra(id as typeof activeInfra)}
@@ -786,11 +786,11 @@ const DashboardContent = memo(function DashboardContent({
             <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Substrate</span>
           </div>
           <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-            {healthScore.totalModules} substrate modules persisting, healing, and evolving autonomously.
+            {healthScore.totalModules} execution surfaces, zones, and overlays persisting, healing, and evolving autonomously.
           </p>
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { label: 'Modules', value: `${healthScore.activeCount}/${healthScore.totalModules}` },
+              { label: 'Surfaces', value: `${healthScore.activeCount}/${healthScore.totalModules}` },
               { label: 'Health', value: `${healthScore.healthScore}%` },
               { label: 'Status', value: healthScore.isHealthy ? 'Optimal' : healthScore.isDegraded ? 'Degraded' : 'Critical' },
               { label: 'Epoch', value: `v${version}` },
@@ -970,7 +970,7 @@ export default function SubstrateOS() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Clockless Cognitive Reality — CMPSBL Substrate Dashboard | CMPSBL®"
-        description="The Clockless Cognitive Reality dashboard: 21 autonomous modules persisting, evolving, and orchestrating intelligence in real-time via the CMPSBL Substrate."
+        description="The Clockless Cognitive Reality dashboard: autonomous execution surfaces, zones, and overlays persisting, evolving, and orchestrating intelligence in real-time."
         canonical="https://cmpsbl.com/os"
         keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'persistent intelligence', 'cognitive orchestration']}
       />
@@ -1316,7 +1316,7 @@ export default function SubstrateOS() {
             <span className="text-muted-foreground/20">·</span>
             <span>v{version}</span>
             <span className="text-muted-foreground/20">·</span>
-            <span>{healthScore.activeCount}/{healthScore.totalModules} modules</span>
+            <span>{healthScore.activeCount}/{healthScore.totalModules} surfaces</span>
             <span className="text-muted-foreground/20">·</span>
             <TierBadge tier={userTier} size="xs" />
           </div>
