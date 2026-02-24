@@ -647,12 +647,12 @@ function MergedInfraTab({ enabled }: { enabled: boolean }) {
 
   return (
     <TabPane id="infra">
-      <TabHeader icon={Wrench} title="Infrastructure" subtitle="evolution · modernizer · inclusive" color="purple" tier="cmpsbl" />
+      <TabHeader icon={Wrench} title="Infrastructure" subtitle="Evolution Lifecycle · Modernizer · INCLUSIVE" color="purple" tier="cmpsbl" />
       <SubTabBar
         tabs={[
-          { id: 'evolution', label: 'Evolution', icon: Dna },
-          { id: 'modernizer', label: 'Modernizer', icon: Wand2 },
-          { id: 'inclusive', label: 'Inclusive', icon: Users },
+          { id: 'evolution', label: 'Evolution Lifecycle', icon: Dna },
+          { id: 'modernizer', label: 'Evolution Lifecycle (Shadow Mode)', icon: Wand2 },
+          { id: 'inclusive', label: 'INCLUSIVE', icon: Users },
         ]}
         active={activeInfra}
         onChange={(id) => setActiveInfra(id as typeof activeInfra)}
