@@ -42,5 +42,6 @@ export {
   ACCEPTABLE_TERMS,
   DEPRECATED_TERMS,
   TERM_REPLACEMENTS,
+  ARCHITECTURE,
   sanitizeClocklessTerminology,
 } from './clockless-identity';

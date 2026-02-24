@@ -954,6 +954,33 @@ class MemoryCoreClient {
 
     return insights;
   }
+
+  /**
+   * Purge all memories ingested from a specific source.
+   * Used to force a clean slate so the system relearns from fresh knowledge banks.
+   */
+  async purgeBySource(source: string): Promise<{ success: boolean; purged: number }> {
+    try {
+      let totalPurged = 0;
+
+      for (const tier of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold']) {
+        // Use type assertion to avoid TS2589 with deeply nested Supabase types
+        const { count } = await (supabase as any)
+          .from(tier)
+          .select('id', { count: 'exact', head: true })
+          .eq('source', source);
+
+        await (supabase as any).from(tier).delete().eq('source', source);
+        totalPurged += count ?? 0;
+      }
+
+      console.log(`[MemoryCore] Purged ${totalPurged} memories from source: ${source}`);
+      return { success: true, purged: totalPurged };
+    } catch (err) {
+      console.error('[MemoryCore] Purge failed:', err);
+      return { success: false, purged: 0 };
+    }
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

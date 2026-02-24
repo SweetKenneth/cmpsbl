@@ -572,23 +572,26 @@ For urgent issues, phone is recommended. For complex technical questions, email 
   {
     id: 'general_002',
     question_pattern: 'What is CMPSBL?',
-    answer: `CMPSBL (Composable) is the operating system substrate powering this platform. Key characteristics:
+    answer: `CMPSBL (Composable) is the cognitive infrastructure substrate powering the Clockless Cognitive Reality System. It is NOT an operating system — it is a substrate.
 
-• **Cognitive Infrastructure** — Memory, learning, and reasoning primitives
-• **Module Architecture** — BRAIN, DECODE, DEFENSE, VISION, and more
-• **140,000+ LOC** — Production-ready codebase
-• **Provider Agnostic** — Works with multiple AI backends
+**Architecture (v11.1 SPARTA Epoch):**
+• 24 total Execution Surfaces across 6 layers
+• 1 CORE Kernel — the standalone boot authority
+• 9 Public Modules — DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION
+• 5 Mesh Overlays — DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
+• 9 Hidden Zones — CCR (SYSTEM, BRAIN, MEMORY, DREAM) + CCL (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)
 
-CMPSBL provides the foundation for:
-• Persistent memory systems
-• Intent interpretation
+**Key characteristics:**
+• Persistent memory systems (no resets)
+• Intent interpretation via DECODE
 • Autonomous learning cycles
-• Security and governance
+• Governed evolution with audit trails
+• Self-defense and resilience
 
 It's designed as infrastructure, not a product — a substrate for building cognitive applications.`,
     category: 'question',
-    keywords: ['cmpsbl', 'composable', 'what is', 'platform', 'substrate'],
-    confidence: 0.94,
+    keywords: ['cmpsbl', 'composable', 'what is', 'platform', 'substrate', 'architecture', 'modules'],
+    confidence: 0.95,
     verified: true,
     priority: 'critical',
   },
@@ -628,7 +631,7 @@ For account security, we recommend using a strong, unique password.`,
 • No plain-text storage of sensitive data
 • Regular security audits
 
-**DEFENSE Module:**
+**DEFENSE Mesh Overlay:**
 • Behavioral analysis for threat detection
 • IP reputation tracking
 • Rate limiting and abuse prevention
@@ -674,6 +677,76 @@ For best experience, use the latest version of Chrome or Firefox. Some features 
     confidence: 0.88,
     verified: true,
     priority: 'medium',
+  },
+  {
+    id: 'general_006',
+    question_pattern: 'How many modules does the substrate have?',
+    answer: `The CMPSBL Substrate (v11.1 SPARTA Epoch) has exactly **9 public modules**:
+
+1. DECODE — Interpreter (human-machine interface)
+2. ENCODE — Code execution & generation
+3. VISION — Observability & monitoring
+4. CORTEX — Analytics & intelligence
+5. NEXUS — Multi-provider AI routing
+6. ECONOMY — Cost & value tracking
+7. SANDBOX — Safe execution environment
+8. INCLUSIVE — Accessibility compliance
+9. INTEGRATION — External service connections
+
+**Important distinctions:**
+• There is also 1 CORE Kernel (boot authority) — totaling 10 public entities
+• 5 Mesh Overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are NOT modules — they are cross-cutting behavioral layers
+• 9 Hidden Zones (SYSTEM, BRAIN, MEMORY, DREAM, RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) are internal infrastructure
+• Grand total: 24 Execution Surfaces across 6 layers
+
+Do NOT confuse overlays or zones with modules.`,
+    category: 'question',
+    keywords: ['modules', 'how many', 'entities', 'architecture', 'count', 'number'],
+    confidence: 0.95,
+    verified: true,
+    priority: 'critical',
+  },
+  {
+    id: 'general_007',
+    question_pattern: 'What are mesh overlays?',
+    answer: `Mesh Overlays are cross-cutting behavioral layers that span all entities in the substrate. They are NOT modules.
+
+The 5 Mesh Overlays:
+1. **DEFENSE** — Security posture, threat detection, IP reputation
+2. **IMMUNITY** — Self-healing, repair attempts, fault isolation
+3. **EVOLUTION** — Governed mutations, A/B testing, versioned upgrades
+4. **INTENT** — Goal alignment, priority resolution
+5. **GOVERNANCE** — Safety checks, policy enforcement, audit compliance
+
+**Key difference from modules:**
+• Modules are discrete functional units (DECODE, ENCODE, etc.)
+• Overlays span across ALL modules and zones simultaneously
+• You interact with modules directly; overlays operate autonomously in the background`,
+    category: 'question',
+    keywords: ['mesh', 'overlay', 'defense', 'immunity', 'evolution', 'intent', 'governance'],
+    confidence: 0.93,
+    verified: true,
+    priority: 'high',
+  },
+  {
+    id: 'general_008',
+    question_pattern: 'What is CORE?',
+    answer: `CORE is the kernel of the CMPSBL Substrate — the standalone boot authority.
+
+**Responsibilities:**
+• Initializes all downstream layers
+• Maintains the canonical registry of all entities, zones, and overlays
+• Manages boot graph and dependency resolution
+• Has no upstream dependencies — it IS the root
+
+**CORE is not a module.** It is a kernel. The 10 public entities are: 1 CORE Kernel + 9 Modules.
+
+CORE boots the system, then the 9 modules, 5 mesh overlays, and 9 hidden zones all operate under its authority.`,
+    category: 'question',
+    keywords: ['core', 'kernel', 'boot', 'authority', 'root'],
+    confidence: 0.93,
+    verified: true,
+    priority: 'high',
   },
 ];
 
