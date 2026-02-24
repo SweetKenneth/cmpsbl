@@ -110,7 +110,7 @@ export function generateMobileBootScreen(): string[] {
     '  │    defense  nexus  vision      │',
     '  │                                │',
     '  │  ◇ ADMIN                       │',
-    '  │    system  modernizer          │',
+    '  │    system  evolution            │',
     '  │    inclusive                   │',
     '  │                                │',
     '  │  ★ ORCHESTRATOR                │',
