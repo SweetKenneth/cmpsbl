@@ -53,7 +53,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
       { title: "Sub-10ms Event Bus", description: "The built-in publish/subscribe event bus delivers inter-module messages in under 10 milliseconds, enabling real-time coordination across memory, security, routing, and orchestration layers." },
     ],
     codeSnippet: `import { useCore } from '@cmpsbl/substrate';\n\nconst { status, modules, reboot } = useCore();\n// status: 'booting' | 'ready' | 'degraded'\n// modules: Map<string, ModuleStatus>`,
-    integrations: ["All 21 modules depend on CORE", "Atlas Control Plane", "SEBA Evolution Agent"],
+    integrations: ["All entities depend on CORE", "Atlas Control Plane", "SEBA Evolution Agent"],
     useCases: ["Enterprise AI platforms needing reliable orchestration", "Multi-agent systems requiring coordinated boot", "Mission-critical deployments with zero-downtime updates"],
   },
   {
