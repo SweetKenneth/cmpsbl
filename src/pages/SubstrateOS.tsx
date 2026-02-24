@@ -565,12 +565,12 @@ function MergedModulesTab({ enabled }: { enabled: boolean }) {
   
   return (
     <TabPane id="modules">
-      <TabHeader icon={Cpu} title="Substrate Modules" subtitle="core · ripple · access" color="orange" tier="architect" />
+      <TabHeader icon={Cpu} title="Kernel & Zones" subtitle="CORE · CCR zones · CCL zones" color="orange" tier="architect" />
       <SubTabBar
         tabs={[
-          { id: 'core', label: 'Core Kernel', icon: Cpu },
-          { id: 'ripple', label: 'Ripple Bus', icon: Radio },
-          { id: 'access', label: 'Access Identity', icon: Key },
+          { id: 'core', label: 'CORE Kernel', icon: Cpu },
+          { id: 'ripple', label: 'RIPPLE (CCL)', icon: Radio },
+          { id: 'access', label: 'ACCESS (CCL)', icon: Key },
         ]}
         active={activeModule}
         onChange={(id) => setActiveModule(id as typeof activeModule)}
