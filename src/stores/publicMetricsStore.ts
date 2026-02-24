@@ -177,7 +177,7 @@ export function useMetric<K extends keyof PublicMetrics>(key: K): PublicMetrics[
   return usePublicMetricsStore((state) => state.metrics[key]);
 }
 
-/** Get the full version string (e.g., "9.1.0 ARCHITECT") */
+/** Get the full version string (e.g., "11.1.0 SPARTA") */
 export function useVersionString(): string {
   return usePublicMetricsStore((state) => 
     `${state.metrics.version} ${state.metrics.codename}`

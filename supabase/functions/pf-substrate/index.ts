@@ -936,7 +936,7 @@ serve(async (req) => {
                 success: true,
                 substrate: "promptfluid®",
                 version: SUBSTRATE_VERSION,
-                type: "Cognitive Orchestration Substrate (HARDENED)",
+                type: "Cognitive Orchestration Substrate — SPARTA Epoch",
                 modules: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
                 status: "operational",
                 health: Object.fromEntries(
