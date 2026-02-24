@@ -28,42 +28,43 @@ Clockless SPARTA Epoch adopts and implements LLMS.txt as its primary machine con
 
 ## About
 
-Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 21 modules, real-time observability, adaptive learning, and multi-provider routing.
+Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 10 public entities, 5 mesh overlays, 9 hidden zones, real-time observability, adaptive learning, and multi-provider routing.
 
-## 21-Module Architecture (SPARTA Epoch)
+## SPARTA Epoch Architecture (10 + 5 + 9)
 
-### KERNEL Layer
-- CORE — Scheduling, lifecycle, boot sequencing
-- RIPPLE — Event bus, pub/sub, webhooks
-- ACCESS — Identity, API keys, permissions
+### CORE (Standalone Kernel)
+- CORE — Boot sequencing, circuit breakers, config, job scheduling
 
-### Cognitive Layer
-- BRAIN — 3-tier persistent memory, learning cycles
+### CCR Zones (Layer 0 — Hidden Meta-Engine)
+- SYSTEM — Lifecycle administration
+- BRAIN — Reasoning, reflection
+- MEMORY — Persistent storage, vector/RAG
+- DREAM — Synthesis, pattern consolidation
+
+### CCL Zones (Layer 1 — Hidden Infrastructure)
+- RIPPLE — Event bus, signal propagation
+- ACCESS — Entitlements, API keys
+- IDENTITY — Session, actor attribution
+- RELAY — Webhook delivery, outbound routing
+- AUDIT — Compliance logging, integrity ledger
+
+### Execution Surfaces (9 Modules)
 - DECODE — Intent parsing, entity extraction
-- DREAM — Memory consolidation, pattern synthesis
-
-### Operational Layer
-- DEFENSE — Threat detection, cognitive firewall
-- NEXUS — Multi-provider AI routing
+- ENCODE — Code generation, transformation
 - VISION — Observability, metrics, alerting
+- CORTEX — Pipeline orchestration, multi-stage workflows
+- NEXUS — Multi-provider AI routing
+- ECONOMY — Cost attribution, budgeting
+- SANDBOX — Isolated execution environments
+- INCLUSIVE — Accessibility, WCAG compliance
+- INTEGRATION — Enterprise connectors (boots last)
 
-### Administrative Layer
-- SYSTEM — Orchestration, diagnostics, configuration
-- MODERNIZER — Self-upgrade engine
-- INTEGRATION — Enterprise connectors (35+)
-- INCLUSIVE — Accessibility, AI governance/ethics
-
-### Orchestrator Layer
-- CORTEX — Policy intent, agency orchestration
-- ENCODE — Code execution engine, BRAIN-integrated
-
-### Infrastructure Layer
-- MEMORY — Vector/RAG orchestration
-- RELAY — Webhook delivery
-- AUDIT — Compliance logging
-- IDENTITY — Actor attribution
-- ECONOMY — Cost tracking
-- SANDBOX — Isolated execution
+### Mesh Overlays (5 — outermost → innermost)
+- DEFENSE — AI-powered security perimeter
+- IMMUNITY — Adaptive resilience, self-healing
+- EVOLUTION — Self-improvement lifecycle (shadow mode)
+- INTENT — Cross-module intent routing
+- GOVERNANCE — Ethical constraints, coherence
 
 ## AI Governance Reference Namespace
 

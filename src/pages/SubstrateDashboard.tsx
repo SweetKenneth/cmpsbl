@@ -167,8 +167,8 @@ const modulesByLayer = {
     },
     {
       id: "modernizer",
-      name: "Modernizer",
-      description: "Website modernization",
+      name: "Evolution",
+      description: "Self-improvement lifecycle",
       icon: Sparkles,
       color: "text-fuchsia-500",
       bg: "bg-fuchsia-500/10",

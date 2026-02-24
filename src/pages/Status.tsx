@@ -39,33 +39,33 @@ const STATUS_CONFIG: Record<ModuleStatus, { label: string; color: string; icon: 
 };
 
 const MODULE_DEFINITIONS: { name: string; layer: string; icon: React.ElementType }[] = [
-  // Kernel
+  // CORE Kernel
   { name: "Core", layer: "Kernel", icon: Cpu },
-  { name: "Brain", layer: "Kernel", icon: Brain },
-  { name: "Dream", layer: "Kernel", icon: Moon },
-  // Cognitive
-  { name: "Cortex", layer: "Cognitive", icon: Sparkles },
-  { name: "Decode", layer: "Cognitive", icon: MessageSquare },
-  { name: "Vision", layer: "Cognitive", icon: Eye },
-  // Operational
-  { name: "Nexus", layer: "Operational", icon: Zap },
-  { name: "Ripple", layer: "Operational", icon: Radio },
-  { name: "Defense", layer: "Operational", icon: Shield },
-  // Administrative
-  { name: "Access", layer: "Administrative", icon: Key },
-  { name: "Inclusive", layer: "Administrative", icon: Accessibility },
-  { name: "Modernizer", layer: "Administrative", icon: RefreshCw },
-  // Orchestrator
-  { name: "Atlas", layer: "Orchestrator", icon: Layers },
-  { name: "SEBA", layer: "Orchestrator", icon: Code2 },
-  { name: "Intent Mesh", layer: "Orchestrator", icon: Send },
-  // Infrastructure
-  { name: "Memory", layer: "Infrastructure", icon: Database },
-  { name: "Relay", layer: "Infrastructure", icon: Radio },
-  { name: "Audit", layer: "Infrastructure", icon: FileCheck },
-  { name: "Identity", layer: "Infrastructure", icon: Fingerprint },
-  { name: "Economy", layer: "Infrastructure", icon: Coins },
-  { name: "Encode", layer: "Infrastructure", icon: FlaskConical },
+  // CCR Zones
+  { name: "Brain", layer: "CCR Zone", icon: Brain },
+  { name: "Dream", layer: "CCR Zone", icon: Moon },
+  { name: "System", layer: "CCR Zone", icon: Settings },
+  { name: "Memory", layer: "CCR Zone", icon: Database },
+  // CCL Zones
+  { name: "Ripple", layer: "CCL Zone", icon: Radio },
+  { name: "Access", layer: "CCL Zone", icon: Key },
+  { name: "Identity", layer: "CCL Zone", icon: Fingerprint },
+  { name: "Relay", layer: "CCL Zone", icon: Radio },
+  { name: "Audit", layer: "CCL Zone", icon: FileCheck },
+  // Execution Surfaces
+  { name: "Decode", layer: "Surface", icon: MessageSquare },
+  { name: "Encode", layer: "Surface", icon: FlaskConical },
+  { name: "Vision", layer: "Surface", icon: Eye },
+  { name: "Cortex", layer: "Surface", icon: Sparkles },
+  { name: "Nexus", layer: "Surface", icon: Zap },
+  { name: "Economy", layer: "Surface", icon: Coins },
+  { name: "Sandbox", layer: "Surface", icon: Code2 },
+  { name: "Inclusive", layer: "Surface", icon: Accessibility },
+  { name: "Integration", layer: "Surface", icon: Layers },
+  // Overlays
+  { name: "Defense", layer: "Overlay", icon: Shield },
+  { name: "Immunity", layer: "Overlay", icon: RefreshCw },
+  { name: "Evolution", layer: "Overlay", icon: Send },
 ];
 
 function useSystemStatus() {
@@ -218,13 +218,13 @@ export default function Status() {
     return groups;
   }, [modules]);
 
-  const layerOrder = ["Kernel", "Cognitive", "Operational", "Administrative", "Orchestrator", "Infrastructure"];
+  const layerOrder = ["Kernel", "CCR Zone", "CCL Zone", "Surface", "Overlay"];
 
   return (
     <div className="min-h-screen bg-background">
       <SEO
         title="System Status | Clockless Substrate"
-        description="Real-time operational status of the CMPSBL Cognitive Substrate — 21 modules across 6 architectural layers."
+        description="Real-time operational status of the CMPSBL Cognitive Substrate — 10 execution surfaces, 5 mesh overlays, 9 convergence zones."
         canonical="https://cmpsbl.com/status"
         keywords={["system status", "uptime", "CMPSBL status", "substrate health"]}
       />
