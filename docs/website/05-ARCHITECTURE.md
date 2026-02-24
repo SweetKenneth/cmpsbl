@@ -1,6 +1,6 @@
 # Architecture Overview
 
-**CMPSBL® Cognitive Infrastructure — v10.5.0 ARCHITECT Epoch**
+**CMPSBL® Cognitive Infrastructure — CCL Epoch**
 
 ---
 
