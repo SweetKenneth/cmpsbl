@@ -791,17 +791,17 @@ const DashboardContent = memo(function DashboardContent({
             <div className="w-6 h-6 rounded-md bg-primary/10 border border-primary/15 flex items-center justify-center">
               <Activity className="w-3 h-3 text-primary" />
             </div>
-            <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Substrate</span>
+            <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Matrix Nodes</span>
           </div>
           <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-            {healthScore.totalModules} execution surfaces, zones, and overlays persisting, healing, and evolving autonomously.
+            {integrityReport.nodeCount} Matrix Nodes across 5 sectors. Integrity: {integrityReport.operational}%
           </p>
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { label: 'Surfaces', value: `${healthScore.activeCount}/${healthScore.totalModules}` },
-              { label: 'Health', value: `${healthScore.healthScore}%` },
-              { label: 'Status', value: healthScore.isHealthy ? 'Optimal' : healthScore.isDegraded ? 'Degraded' : 'Critical' },
-              { label: 'Epoch', value: `v${version}` },
+              { label: 'Nodes', value: `${healthScore.activeCount}/${integrityReport.nodeCount}` },
+              { label: 'Integrity', value: `${integrityReport.operational}%` },
+              { label: 'Status', value: integrityReport.status.replace('MATRIX ', '') },
+              { label: 'Structural', value: `${integrityReport.structural}%` },
             ].map(s => (
               <div key={s.label} className="rounded-lg bg-muted/15 border border-border/15 px-2.5 py-2 text-center">
                 <div className="text-sm font-bold font-mono text-foreground">{s.value}</div>

@@ -161,7 +161,7 @@ export function DashboardMetricsHero() {
             {/* Stat Cards Row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {[
-                { label: 'SURFACES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-cyan-400/80', border: 'border-cyan-500/20 hover:border-cyan-500/40', from: 'from-cyan-500' } },
+                { label: 'MATRIX NODES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-cyan-400/80', border: 'border-cyan-500/20 hover:border-cyan-500/40', from: 'from-cyan-500' } },
                 { label: 'STATUS', value: statusLabel, styles: { text: statusStyles.labelText, border: `${statusStyles.border} ${statusStyles.borderHover}`, from: statusStyles.from } },
                 { label: 'VERSION', value: `v${version}`, styles: { text: 'text-amber-400/80', border: 'border-amber-500/20 hover:border-amber-500/40', from: 'from-amber-500' } },
               ].map((stat, idx) => (
@@ -194,7 +194,7 @@ export function DashboardMetricsHero() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Surface Constellation</span>
+                  <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Matrix Node Constellation</span>
                 </div>
                 <Button 
                   variant="ghost" 
