@@ -156,11 +156,11 @@ export default function Foundations() {
           </CardContent>
         </Card>
 
-        {/* 21-Module Architecture */}
+        {/* 10-Entity + 5-Mesh Architecture */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
             <Layers className="w-6 h-6 text-primary" />
-            21-Module Architecture
+            10-Entity + 5-Mesh Architecture
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
             {MODULES.map((mod) => (

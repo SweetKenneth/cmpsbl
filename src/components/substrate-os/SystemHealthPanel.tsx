@@ -80,7 +80,7 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-foreground">System Health</h3>
-              <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">21-MODULE DIAGNOSTICS</p>
+              <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">ENTITY + MESH DIAGNOSTICS</p>
             </div>
           </div>
           <Badge 
