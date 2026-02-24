@@ -202,9 +202,9 @@ export default function AIOperatingSystem() {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
               {[
-                { value: "21", label: "Integrated Modules" },
-                { value: "6", label: "Architectural Layers" },
-                { value: "200+", label: "Synergy Pipelines" },
+                { value: "24", label: "Integrated Modules" },
+                { value: "3", label: "Architectural Layers" },
+                { value: "300+", label: "Synergy Pipelines" },
                 { value: "360+", label: "Terminal Commands" },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-4 rounded-xl border border-border bg-card">

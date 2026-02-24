@@ -468,8 +468,8 @@ export function HeroMetaSubstrate() {
             {/* Top edge highlight */}
             <div className="absolute top-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
             
-            <AnimatedStat value={21} label="Modules" delay={0} />
-            <AnimatedStat value={200} label="Synergies" delay={1} />
+            <AnimatedStat value={24} label="Modules" delay={0} />
+            <AnimatedStat value={300} label="Synergies" delay={1} />
             <AnimatedStat value={175} suffix="k+" label="Lines of Code" delay={2} />
             <AnimatedStat value={360} label="Commands" delay={3} />
           </div>

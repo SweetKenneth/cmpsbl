@@ -401,8 +401,8 @@ const evolutionLogV9: EvolutionEntry[] = [
       "Complete codebase sweep replaced 200+ legacy version references"
     ],
     capabilities: [
-      "The substrate operates as a 21-module, 6-layer cognitive architecture",
-      "400+ capabilities, 200 synergy pipelines, 100 engines",
+      "The substrate operates as a 24-module cognitive architecture (10 entities + 5 mesh + 9 zones)",
+      "525+ capabilities, 300 synergy pipelines, 100 engines",
       "Single source of truth for all version information via versions.ts"
     ]
   },
