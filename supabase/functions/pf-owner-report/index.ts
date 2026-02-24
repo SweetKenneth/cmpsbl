@@ -43,8 +43,11 @@ serve(async (req: Request) => {
       clmLearningRes3h,
       dailyQuotaRes,
       decodeSearchSettled,
-      // Provider failure tracking (24h)
       providerFailuresRes,
+      // NEW: Substrate audit scan data
+      auditScanErrorsRes,
+      enhancementEventsRes,
+      moduleHealthEventsRes,
     ] = await Promise.allSettled([
       supabase.from("audit_logs").select("action, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("audit_logs").select("action", { count: "exact" }).gte("created_at", iso24h),
@@ -63,8 +66,13 @@ serve(async (req: Request) => {
       supabase.from("brain_events").select("id, data", { count: "exact" }).eq("event_type", "technical_learning_cycle").gte("created_at", iso3h),
       supabase.from("ai_daily_quota").select("provider, calls_budget, calls_used, tokens_used").eq("date", now.toISOString().split("T")[0]),
       supabase.from("decode_search_results").select("topic, title, source_url, snippet, created_at").gte("created_at", iso3h).order("created_at", { ascending: false }).limit(30),
-      // Full provider performance data (24h) for health reporting
       supabase.from("ai_usage_log").select("provider, success, response_time_ms").gte("created_at", iso24h).limit(2000),
+      // Substrate audit: errors from brain_events (failures, errors, anomalies in 24h)
+      supabase.from("brain_events").select("module, event_type, data, outcome, created_at").in("outcome", ["error", "failure"]).gte("created_at", iso24h).order("created_at", { ascending: false }).limit(100),
+      // Enhancement grants
+      supabase.from("brain_events").select("module, data, created_at").eq("event_type", "enhancement_granted").gte("created_at", iso24h).order("created_at", { ascending: false }).limit(50),
+      // Module health: all module events for health scoring
+      supabase.from("brain_events").select("module, outcome", { count: "exact" }).gte("created_at", iso24h),
     ]);
 
     const extract = (r: PromiseSettledResult<any>) =>
