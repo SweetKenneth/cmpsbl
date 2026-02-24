@@ -470,6 +470,66 @@ serve(async (req: Request) => {
     </div>`).join("")}
 </div>
 
+<!-- 🔴 SUBSTRATE AUDIT SCAN — ALWAYS FIRST -->
+${auditIssues.length > 0 ? `
+<div class="email-card" style="background:#fff;border:2px solid #ef4444;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#dc2626;" class="email-text-heading">🚨 Substrate Audit Scan — ${auditIssues.length} Issue${auditIssues.length > 1 ? 's' : ''} Found</h2>
+  <p style="margin:0 0 12px;font-size:12px;color:#6b7280;" class="email-text-secondary">Automated scan of database + codebase errors, anomalies, and optimization targets (24h)</p>
+  <table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <tr class="email-table-header" style="background:#fef2f2;">
+      <th style="padding:8px 10px;text-align:left;color:#991b1b;font-weight:600;font-size:11px;text-transform:uppercase;">Severity</th>
+      <th style="padding:8px 10px;text-align:left;color:#991b1b;font-weight:600;font-size:11px;text-transform:uppercase;">Module</th>
+      <th style="padding:8px 10px;text-align:left;color:#991b1b;font-weight:600;font-size:11px;text-transform:uppercase;">Issue</th>
+      <th style="padding:8px 10px;text-align:center;color:#991b1b;font-weight:600;font-size:11px;text-transform:uppercase;">Count</th>
+    </tr>
+    ${auditIssues.slice(0, 15).map(issue => {
+      const sevColor = issue.severity === 'critical' ? '#dc2626' : issue.severity === 'error' ? '#ea580c' : '#ca8a04';
+      const sevBg = issue.severity === 'critical' ? '#fef2f2' : issue.severity === 'error' ? '#fff7ed' : '#fefce8';
+      return `<tr class="email-table-row">
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;">
+          <span style="display:inline-block;background:${sevBg};color:${sevColor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;text-transform:uppercase;">${issue.severity}</span>
+        </td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111827;">${issue.module}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#374151;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${String(issue.message).slice(0, 80)}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:700;color:${sevColor};">${issue.count}</td>
+      </tr>`;
+    }).join('')}
+  </table>
+</div>` : `
+<div class="email-card" style="background:#fff;border:2px solid #10b981;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 8px;font-size:15px;font-weight:700;color:#059669;" class="email-text-heading">✅ Substrate Audit Scan — Clean</h2>
+  <p style="margin:0;font-size:13px;color:#6b7280;" class="email-text-secondary">No errors, failures, or anomalies detected in the last 24 hours.</p>
+</div>`}
+
+<!-- 📋 COMPONENT ENHANCEMENT REQUESTS (Ranked by Importance) -->
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 4px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">📋 Component Enhancement Requests</h2>
+  <p style="margin:0 0 14px;font-size:12px;color:#6b7280;" class="email-text-secondary">What each module is requesting to improve · Ranked by importance</p>
+  <table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <tr class="email-table-header" style="background:#f9fafb;">
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Score</th>
+      <th style="padding:8px 10px;text-align:left;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Module</th>
+      <th style="padding:8px 10px;text-align:left;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Top Request</th>
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Type</th>
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Status</th>
+    </tr>
+    ${enhRequests.map(r => {
+      const scoreColor = r.importanceScore > 75 ? '#dc2626' : r.importanceScore > 50 ? '#ea580c' : r.importanceScore > 30 ? '#ca8a04' : '#6b7280';
+      const statusBadge = r.granted
+        ? '<span style="display:inline-block;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;">✓ Granted</span>'
+        : '<span style="display:inline-block;background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;">Pending</span>';
+      const catColor = r.category === 'security' ? '#7c3aed' : r.category === 'resilience' ? '#2563eb' : r.category === 'performance' ? '#059669' : '#6b7280';
+      return `<tr class="email-table-row">
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:800;color:${scoreColor};font-size:13px;">${r.importanceScore}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111827;">${r.module}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#374151;font-style:italic;">${r.title}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;"><span style="color:${catColor};font-size:11px;font-weight:600;text-transform:uppercase;">${r.category}</span></td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;">${statusBadge}</td>
+      </tr>`;
+    }).join('')}
+  </table>
+</div>
+
 <!-- DYNAMIC ALLOCATION (NEW) -->
 <div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
   <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">⚡ NEXUS Dynamic Allocation</h2>
