@@ -44,9 +44,9 @@
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
-const SUBSTRATE_VERSION = "10.1.0"; // v10.1.0 ARCHITECT — 21-Module Full Architecture, Intent Mesh Crystallization
+const SUBSTRATE_VERSION = "11.1.0"; // v11.1.0 SPARTA — 10-Entity + 5-Mesh + 9-Zone Architecture
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
@@ -924,7 +924,7 @@ serve(async (req) => {
           case "integration":
             return await handleIntegration(supabase, action, params, corsHeaders);
           
-        case "cortex":
+          case "cortex":
             return await handleCortex(supabase, action, params, corsHeaders, state);
           
           case "inclusive":
@@ -936,8 +936,8 @@ serve(async (req) => {
                 success: true,
                 substrate: "promptfluid®",
                 version: SUBSTRATE_VERSION,
-                type: "Cognitive Orchestration Substrate (HARDENED)",
-                modules: ["core", "brain", "decode", "defense", "nexus", "vision", "dream", "ripple", "access", "system", "modernizer", "integration", "cortex", "inclusive", "memory", "relay", "audit", "identity", "economy", "sandbox", "encode"],
+                type: "Cognitive Orchestration Substrate — SPARTA Epoch",
+                modules: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
                 status: "operational",
                 health: Object.fromEntries(
                   Object.entries(state.modules).map(([k, v]) => [k, { score: v.healthScore, status: v.status }])
@@ -5375,14 +5375,13 @@ async function handleDecode(
           const token = authHeader.replace('Bearer ', '');
           const anonKey = Deno.env.get('SUPABASE_ANON_KEY') || '';
           const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
-          const { createClient: createUserClient } = await import('https://esm.sh/@supabase/supabase-js@2');
-          const userSupabase = createUserClient(supabaseUrl, anonKey, {
+          const userSupabase = createClient(supabaseUrl, anonKey, {
             global: { headers: { Authorization: authHeader } }
           });
-          const { data: claimsData } = await userSupabase.auth.getClaims(token);
-          if (claimsData?.claims?.sub) {
+          const { data: { user } } = await userSupabase.auth.getUser();
+          if (user?.id) {
             isAuthenticated = true;
-            const userId = claimsData.claims.sub;
+            const userId = user.id;
             // Check if user is admin/governor
             const { data: adminCheck } = await supabase.rpc('has_role_text', {
               _user_id: userId,
