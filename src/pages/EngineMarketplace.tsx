@@ -390,8 +390,8 @@ export default function EngineMarketplace() {
   return (
     <>
       <SEO
-        title={`Clockless Cognitive Engines | ${summary.totalEngines}+ Production AI Engines | CMPSBL®`}
-        description="Subscribe to production-ready cognitive engines. 76+ engines, 24 meta-engines, tiered pricing. Multi-provider routing, persistent memory, self-improvement."
+        title={`Clockless Cognitive Engines | Production AI Engines | CMPSBL®`}
+        description="Subscribe to production-ready cognitive engines. Tiered pricing with multi-provider routing, persistent memory, and self-improvement."
         canonical="https://cmpsbl.com/engines"
         keywords={["cognitive engines", "AI orchestration", "subscription AI", "enterprise AI engines", "multi-provider routing", "composable artifacts", "production AI", "CMPSBL engines"]}
         type="product"

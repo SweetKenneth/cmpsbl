@@ -5593,7 +5593,7 @@ export default function DevPortal() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Substrate Modules — CMPSBL® Cognitive SDK"
-        description="Compose cognition as software with CMPSBL's substrate SDK. 21 modular primitives for memory, routing, governance, security, and execution."
+        description="Compose cognition as software with CMPSBL's substrate SDK. Modular primitives for memory, routing, governance, security, and execution."
         keywords={['cognitive substrate SDK', 'AI modules', 'CMPSBL SDK', 'cognition as software', 'substrate composition']}
       />
       <PublicNav />

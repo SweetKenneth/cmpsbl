@@ -682,7 +682,7 @@ export default function Blog() {
     <>
       <SEO
         title="Blog — AI Infrastructure Research & Insights"
-        description="Research, deep-dives, and engineering insights on cognitive infrastructure, AI memory, governance, and the ARCHITECT Epoch."
+        description="Research, deep-dives, and engineering insights on cognitive infrastructure, AI memory, governance, and the SPARTA Epoch."
         canonical="https://cmpsbl.com/blog"
         keywords={['CMPSBL blog', 'AI infrastructure blog', 'cognitive AI research', 'AI memory insights', 'substrate engineering blog']}
       />

@@ -40,8 +40,8 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="About CMPSBL — Founded 2009, Dallas TX"
-        description="CMPSBL was founded in 2009 by Kenneth E Sweet Jr. From Dallas, TX to a 21-module cognitive infrastructure powering the future of AI."
+        title="About CMPSBL — Dallas TX"
+        description="CMPSBL was founded by Kenneth E Sweet Jr. From Dallas, TX to a layered cognitive infrastructure powering the future of AI."
         canonical="https://cmpsbl.com/about"
         keywords={['about CMPSBL', 'Kenneth Sweet', 'CMPSBL founder', 'Dallas AI company', 'cognitive infrastructure story', 'AI startup Texas']}
       />
