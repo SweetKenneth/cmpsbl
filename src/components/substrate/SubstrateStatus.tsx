@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate Status Widget
- * SPARTA Epoch compact status indicator
+ * SPARTA Epoch — 5-layer health indicator
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -11,17 +11,17 @@ interface SubstrateStatusProps {
 }
 
 export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
-  const { initialized, overallHealth, modules } = useSubstrateContext();
+  const { overallHealth, modules } = useSubstrateContext();
 
   const activeCount = Object.values(modules).filter(m => m.active).length;
-  const totalModules = 10;
+  const totalEntities = Object.keys(modules).length;
   const isHealthy = overallHealth >= 80;
 
   if (compact) {
     return (
       <span className={`inline-flex items-center gap-1.5 text-xs ${isHealthy ? 'text-primary' : 'text-destructive'}`}>
         <Activity className="h-3 w-3" />
-        {activeCount}/{totalModules}
+        {Math.round(overallHealth)}%
       </span>
     );
   }
@@ -34,7 +34,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         <AlertCircle className="h-4 w-4 text-destructive" />
       )}
       <span className="text-muted-foreground">
-        CMPSBL Substrate: {activeCount}/{totalModules} modules
+        Substrate: {activeCount}/{totalEntities} surfaces · {Math.round(overallHealth)}%
       </span>
     </div>
   );

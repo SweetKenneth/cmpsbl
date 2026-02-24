@@ -3,7 +3,7 @@
  * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  *
  * CORE (standalone) → CCR (Layer 0) → CCL (Layer 1)
- * → 8 Modules → 5 Meshes → INTEGRATION
+ * → 8 Execution Surfaces → 5 Overlays → INTEGRATION
  */
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
@@ -16,10 +16,20 @@ interface ModuleStatus {
   health: number;
 }
 
+/** Layer-weighted health breakdown */
+export interface LayerHealth {
+  core: number;
+  ccr: number;
+  ccl: number;
+  surfaces: number;
+  overlays: number;
+}
+
 interface SubstrateContextType {
   initialized: boolean;
   modules: Record<SubstrateModule, ModuleStatus>;
   overallHealth: number;
+  layers: LayerHealth;
   refresh: () => Promise<void>;
 }
 
@@ -42,10 +52,13 @@ const defaultModules = ALL_MODULES.reduce((acc, m) => {
   return acc;
 }, {} as Record<SubstrateModule, ModuleStatus>);
 
+const DEFAULT_LAYERS: LayerHealth = { core: 0, ccr: 0, ccl: 0, surfaces: 0, overlays: 0 };
+
 const SubstrateContext = createContext<SubstrateContextType>({
   initialized: false,
   modules: defaultModules,
   overallHealth: 0,
+  layers: DEFAULT_LAYERS,
   refresh: async () => {},
 });
 
@@ -181,13 +194,35 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     };
   }, [autoInit, refresh]);
 
-  const activeModules = Object.values(modules).filter(m => m.health > 0);
-  const overallHealth = Math.min(100, activeModules.length > 0
-    ? activeModules.reduce((sum, m) => sum + m.health, 0) / activeModules.length
-    : 0);
+  // 5-layer weighted health aggregation (20% each)
+  const CCR_ZONES: SubstrateModule[] = ['system', 'brain', 'memory', 'dream'];
+  const CCL_ZONES: SubstrateModule[] = ['ripple', 'access', 'identity', 'relay', 'audit'];
+  const EXEC_SURFACES: SubstrateModule[] = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration'];
+  const OVERLAYS: SubstrateModule[] = ['defense', 'immunity', 'evolution', 'intent', 'governance'];
+
+  const avgHealth = (keys: SubstrateModule[]) => {
+    const vals = keys.map(k => modules[k]?.health ?? 0);
+    return vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+  };
+
+  const layers: LayerHealth = {
+    core: modules.core?.health ?? 0,
+    ccr: avgHealth(CCR_ZONES),
+    ccl: avgHealth(CCL_ZONES),
+    surfaces: avgHealth(EXEC_SURFACES),
+    overlays: avgHealth(OVERLAYS),
+  };
+
+  const overallHealth = Math.min(100, Math.round(
+    layers.core * 0.20 +
+    layers.ccr * 0.20 +
+    layers.ccl * 0.20 +
+    layers.surfaces * 0.20 +
+    layers.overlays * 0.20
+  ));
 
   return (
-    <SubstrateContext.Provider value={{ initialized, modules, overallHealth, refresh }}>
+    <SubstrateContext.Provider value={{ initialized, modules, overallHealth, layers, refresh }}>
       {children}
     </SubstrateContext.Provider>
   );

@@ -1,6 +1,6 @@
 /**
- * Terminal Module Exports
- * v10.5.4 ARCHITECT — Command execution, validation, governance, synergy, SEBA, encoded commands, infrastructure, and all 21 modules (360+ commands)
+ * Terminal Exports
+ * SPARTA Epoch — Command execution, validation, governance, synergy, SEBA, encoded commands, infrastructure
  */
 
 // Command execution with governance
