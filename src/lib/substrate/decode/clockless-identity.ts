@@ -107,6 +107,7 @@ export const DEPRECATED_TERMS = [
   '14 modules',
   '21 modules',
   '24 modules',
+  '10 modules',
 ] as const;
 
 export const TERM_REPLACEMENTS: Record<string, string> = {
