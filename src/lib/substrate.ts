@@ -1704,7 +1704,7 @@ class SubstrateClient {
 
 export const substrate = SubstrateClient.getInstance();
 
-// Quick access functions for all 21 modules + SEBA
+// Quick access — 10 entities + zones + meshes + SEBA
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;
