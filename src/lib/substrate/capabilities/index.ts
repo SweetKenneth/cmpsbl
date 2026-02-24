@@ -176,7 +176,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'predictive_issue_prevention',
     name: 'Predictive Issue Prevention',
     description: 'Detects patterns before failures occur and auto-suggests fixes',
-    modules: ['VISION', 'BRAIN', 'MODERNIZER'],
+    modules: ['VISION', 'BRAIN', 'EVOLUTION'],
     layer: 'Operational',
     userBenefit: 'Proactive problem detection before user impact',
     status: 'active',
