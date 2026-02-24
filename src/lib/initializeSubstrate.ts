@@ -36,12 +36,13 @@ export async function initializeSubstrate(): Promise<void> {
     console.log('⚡ Booting promptfluid® Substrate...');
     console.log('─────────────────────────────────────────');
     
-    // Boot order: CORE → CCR → CCL → Modules → Meshes → INTEGRATION
+    // Boot order: CORE → CCR → CCL → Modules → INTEGRATION (last) → Mesh Overlays activate
     const publicModules = [
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
+      'integration', // boots last among modules
     ] as const;
-    const meshes = [
-      'defense', 'immunity', 'evolution', 'intent', 'governance',
+    const meshOverlays = [
+      'governance', 'intent', 'evolution', 'immunity', 'defense', // innermost → outermost
     ] as const;
     
     // 1. Boot CORE (standalone kernel)
