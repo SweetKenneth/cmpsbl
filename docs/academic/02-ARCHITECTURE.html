@@ -24,7 +24,7 @@
 <div class="page">
 
 <h1>System Architecture</h1>
-<p><strong>CMPSBL OS Substrate v10.8.0 — ARCHITECT Epoch</strong></p>
+<p><strong>CMPSBL OS Substrate — SPARTA Epoch</strong></p>
 <p>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br />
 Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a>)<br />
 Affiliation: PromptFluid® · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></p>
@@ -32,7 +32,7 @@ Affiliation: PromptFluid® · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx<
 
 <h2>2. System Architecture</h2>
 
-<p>The CMPSBL Substrate employs a layered modular architecture consisting of 21 modules organized into 6 functional layers. The design prioritizes failure isolation, event-driven communication, and verifiable state transitions.</p>
+<p>The CMPSBL Substrate employs a layered cognitive kernel architecture consisting of 10 public entities, 5 mesh overlays, and 9 hidden zones organized into a 24 execution surface hierarchy. The design prioritizes failure isolation, event-driven communication, and verifiable state transitions.</p>
 
 <h3>2.1 Architectural Principles</h3>
 
@@ -74,7 +74,7 @@ Affiliation: PromptFluid® · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx<
 ├─────────────────────────────────────────────────────────────────────┤
 │                    LAYER 3 — OPERATIONAL                           │
 │  ┌───────────┐ ┌────────┐ ┌─────────┐ ┌───────┐ ┌──────────────┐  │
-│  │MODERNIZER │ │ DECODE │ │ DEFENSE │ │ NEXUS │ │    DREAM     │  │
+│  │EVOLUTION  │ │ DECODE │ │ DEFENSE │ │ NEXUS │ │    DREAM     │  │
 │  │ SEBA      │ │ NLP    │ │ Threat  │ │ Multi │ │ Autonomous   │  │
 │  │ Evolution │ │ Intent │ │ Detect  │ │ Prov. │ │ Learning     │  │
 │  │ Stamps    │ │ Epist. │ │ Bot/IP  │ │ Route │ │ Dream State  │  │
@@ -99,8 +99,8 @@ Affiliation: PromptFluid® · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx<
         │                      │                      │
    ┌────┴────┐          ┌──────┴──────┐        ┌──────┴──────┐
    │ Client  │          │  Edge Func  │        │ PostgreSQL  │
-   │ Browser │◄────────►│  (Deno)     │◄──────►│  + pgvector │
-   │ React   │  HTTPS   │  21 modules │  SQL   │  RLS, RT    │
+    │ Browser │◄────────►│  (Deno)     │◄──────►│  + pgvector │
+    │ React   │  HTTPS   │  24 surfaces│  SQL   │  RLS, RT    │
    └─────────┘          └─────────────┘        └─────────────┘
                                ▲
                                │ HTTPS (BYOK)
@@ -114,15 +114,15 @@ Affiliation: PromptFluid® · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx<
 </pre>
 </div>
 
-<p><em>Figure 1. CMPSBL OS Substrate — 6-layer, 21-module architecture with deployment topology. All inter-module communication flows through RIPPLE (Layer 1). External AI providers are accessed via NEXUS (Layer 3) using user-supplied API keys (BYOK model).</em></p>
+<p><em>Figure 1. CMPSBL OS Substrate — Layered cognitive kernel architecture with deployment topology. All inter-module communication flows through RIPPLE (CCL). External AI providers are accessed via NEXUS using user-supplied API keys (BYOK model).</em></p>
 
 <h3>2.3 Layer Descriptions</h3>
 
 <p><strong>Layer 1 — Kernel (3 modules).</strong> Provides system configuration (CORE), event-driven communication (RIPPLE), and access control (ACCESS). All other layers depend on the kernel. CORE boots first and initializes the constant registry; RIPPLE provides typed pub/sub messaging; ACCESS enforces hierarchical RBAC with scoped API keys.</p>
 
-<p><strong>Layer 2 — Cognitive (3 modules).</strong> Implements persistent memory with confidence scoring (BRAIN), system observability with anomaly detection (VISION), and multi-module orchestration with agency coordination (CORTEX). BRAIN maintains a four-tier memory hierarchy (episodic, semantic, procedural, meta-cognitive) with proprietary decay curves. VISION tracks 21-module health scores. CORTEX executes multi-step pipelines with dependency resolution.</p>
+<p><strong>Layer 2 — Cognitive (3 modules).</strong> Implements persistent memory with confidence scoring (BRAIN), system observability with anomaly detection (VISION), and multi-module orchestration with agency coordination (CORTEX). BRAIN maintains a four-tier memory hierarchy (episodic, semantic, procedural, meta-cognitive) with proprietary decay curves. VISION tracks health across all execution surfaces. CORTEX executes multi-step pipelines with dependency resolution.</p>
 
-<p><strong>Layer 3 — Operational (5 modules).</strong> Provides self-evolution with cryptographic stamps (MODERNIZER/SEBA), epistemic natural language processing (DECODE), behavioral threat detection (DEFENSE), multi-provider AI routing with cost optimization (NEXUS), and autonomous offline learning (DREAM). DREAM implements the world's first autonomous AI dream state — an offline consolidation cycle analogous to biological sleep.</p>
+<p><strong>Layer 3 — Operational (5 modules).</strong> Provides self-evolution with cryptographic stamps (EVOLUTION/SEBA), epistemic natural language processing (DECODE), behavioral threat detection (DEFENSE), multi-provider AI routing with cost optimization (NEXUS), and autonomous offline learning (DREAM). DREAM implements the world's first autonomous AI dream state — an offline consolidation cycle analogous to biological sleep.</p>
 
 <p><strong>Layer 4 — Administrative (3 modules).</strong> Handles external API integrations and webhook management (INTEGRATION), WCAG 2.2 accessibility scanning across 86 criteria (INCLUSIVE), and autonomous self-healing with health monitoring (SYSTEM).</p>
 
@@ -160,7 +160,7 @@ Affiliation: PromptFluid® · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx<
 <p>Modules boot in a fixed, dependency-ordered sequence:</p>
 
 <div class="card">
-<pre>CORE → RIPPLE → ACCESS → BRAIN → VISION → CORTEX → MODERNIZER
+<pre>CORE → RIPPLE → ACCESS → BRAIN → VISION → CORTEX → EVOLUTION
 → DECODE → DEFENSE → NEXUS → DREAM → INTEGRATION → INCLUSIVE
 → SYSTEM → MEMORY → RELAY → AUDIT → IDENTITY → ECONOMY
 → SANDBOX → ENCODE</pre>
@@ -216,7 +216,7 @@ Affiliation: PromptFluid® · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx<
 
 <hr />
 
-<p><em>CMPSBL OS Substrate v10.8.0 — Academic Documentation</em><br />
+<p><em>CMPSBL OS Substrate — SPARTA Epoch — Academic Documentation</em><br />
 <em>Kenneth E Sweet Jr · ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></em><br />
 <em>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a> · OSF: <a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>

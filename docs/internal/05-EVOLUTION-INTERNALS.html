@@ -30,7 +30,7 @@
 <div class="card">
 <pre> 1. VISION detects opportunity (anomaly or trend)
  2. VISION scores opportunity (impact × confidence × feasibility)
- 3. MODERNIZER generates proposal with diff
+ 3. EVOLUTION generates proposal with diff
  4. CORTEX checks governance bounds
  5. SANDBOX creates isolated test environment
  6. SANDBOX applies proposal in isolation
@@ -38,8 +38,8 @@
  8. SANDBOX runs performance benchmark (no >10% degradation)
  9. CORTEX evaluates risk score
 10. APPROVAL (per autonomy tier)
-11. MODERNIZER applies to production
-12. MODERNIZER generates evolution stamp</pre>
+11. EVOLUTION applies to production
+12. EVOLUTION generates evolution stamp</pre>
 </div>
 
 <h3>Internal Step Details</h3>
@@ -78,7 +78,7 @@ Threshold: opportunity_score >= 0.25 to proceed</pre>
              reversibility_cost × 0.1
 
 Where:
-  scope_breadth = number_of_modules_affected / 21
+  scope_breadth = number_of_modules_affected / 24
   reversibility_cost = 0.0 (fully reversible) to 1.0 (irreversible)</pre>
 </div>
 <p>Evolutions with <code>risk_score > 0.6</code> are automatically rejected.</p>
@@ -115,7 +115,7 @@ Where:
 </table>
 
 <hr />
-<p><em>CMPSBL OS Substrate v10.8.0 — INTERNAL USE ONLY</em><br />
+<p><em>CMPSBL OS Substrate — SPARTA Epoch — INTERNAL USE ONLY</em><br />
 <em>Kenneth E Sweet Jr · PromptFluid®</em><br />
 <em>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a> · DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></em></p>
 

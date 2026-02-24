@@ -53,7 +53,7 @@
 <h3>Core Commands</h3>
 <table>
 <tr><th>Command</th><th>Description</th></tr>
-<tr><td>system.boot</td><td>Initialize all 21 modules</td></tr>
+<tr><td>system.boot</td><td>Initialize all execution surfaces</td></tr>
 <tr><td>system.health</td><td>Display substrate health dashboard</td></tr>
 <tr><td>system.heal [module]</td><td>Trigger auto-heal for a specific module</td></tr>
 <tr><td>system.backup</td><td>Create a full substrate backup</td></tr>
@@ -86,10 +86,10 @@
 <h3>Evolution Commands</h3>
 <table>
 <tr><th>Command</th><th>Description</th></tr>
-<tr><td>modernizer.scan</td><td>Scan for optimization opportunities</td></tr>
-<tr><td>modernizer.propose</td><td>Generate an evolution proposal</td></tr>
-<tr><td>modernizer.history</td><td>View evolution history</td></tr>
-<tr><td>modernizer.rollback [stamp_id]</td><td>Revert an applied evolution</td></tr>
+<tr><td>evolution.scan</td><td>Scan for optimization opportunities</td></tr>
+<tr><td>evolution.propose</td><td>Generate an evolution proposal</td></tr>
+<tr><td>evolution.history</td><td>View evolution history</td></tr>
+<tr><td>evolution.rollback [stamp_id]</td><td>Revert an applied evolution</td></tr>
 </table>
 </div>
 
@@ -227,11 +227,11 @@ brain.config consolidation_threshold 0.6</pre>
 <div class="card">
 <h3>Evolution Stuck</h3>
 <ol>
-<li>Check <code>modernizer.history</code> for pending proposals</li>
+<li>Check <code>evolution.history</code> for pending proposals</li>
 <li>Verify CORTEX is healthy (required for proposal evaluation)</li>
 <li>Check if another evolution is already in progress (only one at a time)</li>
 <li>Review AUDIT for approval/rejection details</li>
-<li>Run <code>modernizer.rollback</code> if a previous evolution caused issues</li>
+<li>Run <code>evolution.rollback</code> if a previous evolution caused issues</li>
 </ol>
 </div>
 

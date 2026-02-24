@@ -75,7 +75,7 @@ score = Σ(factor × weight) → clamped to [0, 1]</pre>
 </table>
 
 <h2>2. Value Score Formula</h2>
-<p><strong>Used by:</strong> BRAIN, DREAM, MODERNIZER, CORTEX, NEXUS</p>
+<p><strong>Used by:</strong> BRAIN, DREAM, EVOLUTION, CORTEX, NEXUS</p>
 <div class="card">
 <pre>value_score = (
   confidence × 0.35 +
@@ -117,7 +117,7 @@ value = importance_score × 0.4 + recency_factor × 0.35 + access_factor × 0.25
 <pre> 1. VISION detects opportunity (anomaly or trend)
  2. VISION scores: opportunity = impact × confidence × feasibility
     Threshold: >= 0.25 to proceed
- 3. MODERNIZER generates proposal with diff
+ 3. EVOLUTION generates proposal with diff
  4. CORTEX checks governance bounds
  5. SANDBOX creates isolated test environment
  6. SANDBOX applies proposal in isolation
@@ -125,8 +125,8 @@ value = importance_score × 0.4 + recency_factor × 0.35 + access_factor × 0.25
  8. SANDBOX runs perf benchmark (no >10% degradation)
  9. CORTEX evaluates risk score
 10. APPROVAL (per autonomy tier)
-11. MODERNIZER applies to production
-12. MODERNIZER generates evolution stamp</pre>
+11. EVOLUTION applies to production
+12. EVOLUTION generates evolution stamp</pre>
 </div>
 
 <h2>6. Risk Score Formula</h2>
@@ -137,7 +137,7 @@ value = importance_score × 0.4 + recency_factor × 0.35 + access_factor × 0.25
              reversibility_cost × 0.1
 
 Where:
-  scope_breadth = modules_affected / 21
+  scope_breadth = modules_affected / 24
   reversibility_cost = 0.0 (fully reversible) to 1.0 (irreversible)
 
 AUTO-REJECT if risk_score > 0.6</pre>
@@ -220,7 +220,7 @@ MTTR target: < 1 minute</pre>
 </div>
 
 <hr />
-<p><em>CMPSBL OS Substrate v10.9.7 — CEO RECONSTRUCTION GUIDE</em><br />
+<p><em>CMPSBL OS Substrate — SPARTA Epoch — CEO RECONSTRUCTION GUIDE</em><br />
 <em>Kenneth E Sweet Jr · PromptFluid®</em><br />
 <em>© 2025–2026 PromptFluid®. All rights reserved.</em></p>
 
