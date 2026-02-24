@@ -61,6 +61,7 @@ import buildingAgentsLearnImg from "@/assets/blog/building-agents-that-learn.jpg
 import protocolStandardsImg from "@/assets/blog/ai-protocol-standards-v9.jpg";
 import governanceComplianceImg from "@/assets/blog/ai-governance-compliance-v9.jpg";
 import threatIntelAdversarialImg from "@/assets/blog/ai-threat-intel-adversarial-v9.jpg";
+import spartaRebuildImg from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
 
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
