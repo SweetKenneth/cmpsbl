@@ -456,7 +456,7 @@ export {
   isVersionCompatible,
 } from './versions';
 
-// Cognitive Engines v8.0.0 SYNERGY+ — 62 Engines + 20 Meta-Engines orchestrating 269 capabilities
+// Cognitive Engines — 76 Engines + 24 Meta-Engines orchestrating 525+ capabilities
 export {
   // Types
   type EngineCategory,
