@@ -28,7 +28,7 @@ interface CCRState {
   failureCount: number;
   lastSynthTime: string | null;
   memoryStoreHealth: number;
-  facadesActive: string[];
+  facadesActive: string[];  // now called "zones"
   bootGatesPassed: boolean;
 }
 

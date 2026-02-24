@@ -1,10 +1,10 @@
 /**
  * Clockless Cognitive Lucidity (CCL)
- * Infrastructure Convergence Layer — absorbs RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
+ * Infrastructure Convergence Layer — contains 5 Zones:
+ *   RIPPLE Zone + ACCESS Zone + IDENTITY Zone + RELAY Zone + AUDIT Zone
  *
- * Non-marketed, non-navigable. All former module surfaces remain as proxy
- * shims routing through CCL internals. Substrate Health Check binds here
- * as a read-only integrity surface.
+ * Each Zone is surgically hot-swappable with its own circuit breaker.
+ * If a Zone's circuit trips, the fault is isolated (e.g., "RIPPLE Zone fault").
  *
  * Boot order: CORE → CCR → CCL → Modules → Meshes → INTEGRATION
  */
