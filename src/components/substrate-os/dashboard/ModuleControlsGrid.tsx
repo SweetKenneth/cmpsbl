@@ -218,16 +218,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => { const r = await inclusive.selfScan(); toast.info(`Inclusive: ${r.success ? 'Done' : 'Failed'}`); },
     },
     // Orchestrator Layer
-    {
-      id: 'atlas', name: 'ATLAS', layer: 'orchestrator' as const, icon: Globe,
-      description: 'Control plane & capabilities',
-      gradient: 'bg-gradient-to-r from-sky-500 to-blue-600', accentColor: 'bg-sky-500',
-      status: systemStatusQuery,
-      metrics: [{ label: 'Plane', value: systemStatusQuery.data?.success ? 'Active' : 'Checking' }],
-      actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { const r = await system.status(); toast.info(`Atlas: ${r.success ? 'Control plane active' : 'Check failed'}`); },
-    },
-    {
+    // Note: ATLAS removed — not a SPARTA entity. Use CORTEX for orchestration.
       id: 'cortex', name: 'CORTEX', layer: 'orchestrator' as const, icon: GitBranch,
       description: 'Agency-class orchestrator',
       gradient: 'bg-gradient-to-r from-indigo-500 to-violet-600', accentColor: 'bg-indigo-500',

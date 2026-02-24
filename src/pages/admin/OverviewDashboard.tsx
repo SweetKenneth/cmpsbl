@@ -2,7 +2,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { StatCard } from "@/components/admin/ui/StatCard";
 import { useSystemMetrics } from "@/hooks/admin/useSystemMetrics";
 import { useInsights } from "@/hooks/admin/useInsights";
-import { Users, DollarSign, Shield, Eye, Brain, Moon, ArrowRight } from "lucide-react";
+import { Users, DollarSign, Shield, Brain, Moon, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { DecodeActivityFeed } from "@/components/admin/DecodeActivityFeed";
 import { DecodeOperativeControls } from "@/components/admin/DecodeOperativeControls";
@@ -15,7 +15,7 @@ export default function OverviewDashboard() {
 
   const quickLinks = [
     { 
-      label: "Defense", 
+      label: "DEFENSE Mesh", 
       path: "/admin/defense", 
       icon: Shield, 
       color: "text-red-500",
@@ -23,15 +23,15 @@ export default function OverviewDashboard() {
       description: "Monitor threats & security"
     },
     { 
-      label: "Clarity", 
-      path: "/clarity/dashboard", 
-      icon: Eye, 
-      color: "text-blue-500",
-      bg: "bg-blue-500/10",
-      description: "Accessibility scanning"
+      label: "EVOLUTION Mesh", 
+      path: "/admin/evolution", 
+      icon: Brain, 
+      color: "text-rose-500",
+      bg: "bg-rose-500/10",
+      description: "Self-evolution engine"
     },
     { 
-      label: "Dream Eater", 
+      label: "DREAM Eater", 
       path: "/feed-dream-eater", 
       icon: Moon, 
       color: "text-violet-500",
