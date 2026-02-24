@@ -316,7 +316,7 @@ function UpgradePrompt({ requiredTier }: { requiredTier: SubstrateTier }) {
 }
 
 // ============================================
-// Sidebar Navigation — v10.9.7
+// Sidebar Navigation
 // ============================================
 interface SidebarNavProps {
   groups: TabGroup[];
