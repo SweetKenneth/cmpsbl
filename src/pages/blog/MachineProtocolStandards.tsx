@@ -9,7 +9,7 @@ import heroImg from "@/assets/blog/ai-protocol-standards-v9.jpg";
 export default function MachineProtocolStandards() {
   return (
     <>
-      <SEO title="Machine-to-Machine Protocol Standards | CMPSBL® ARCHITECT Epoch" description="How CMPSBL's RELAY and IDENTITY modules establish authenticated, auditable protocol standards for autonomous multi-agent communication." keywords={['machine protocol', 'agent communication', 'AI relay', 'multi-agent systems', 'ARCHITECT epoch']} />
+      <SEO title="Machine-to-Machine Protocol Standards | CMPSBL® SPARTA Epoch" description="How CMPSBL's RELAY and IDENTITY modules establish authenticated, auditable protocol standards for autonomous multi-agent communication." keywords={['machine protocol', 'agent communication', 'AI relay', 'multi-agent systems', 'SPARTA epoch']} />
       <PublicNav />
       <main className="min-h-screen bg-background">
         <article className="container max-w-3xl mx-auto px-4 py-16">
