@@ -385,5 +385,5 @@ export function getSystemSummary(): string {
   const moduleCount = Object.keys(SYSTEM_MODULES).length;
   const layers = [...new Set(Object.values(SYSTEM_MODULES).map(m => m.layer))];
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate (CCR Epoch): ${moduleCount} public modules + CCR Layer 0 across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR absorbs CORE+SYSTEM+BRAIN+MEMORY+DREAM. IDENTITY merged into ACCESS.`;
+  return `CMPSBL Substrate (CCL Epoch): ${moduleCount} public modules + CCR Layer 0 + CCL Layer 1 across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR absorbs CORE+SYSTEM+BRAIN+MEMORY+DREAM. CCL absorbs RIPPLE+ACCESS+IDENTITY+RELAY.`;
 }

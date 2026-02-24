@@ -179,13 +179,12 @@ function layerResult(layer: LayerId, label: string, checks: CheckResult[]): Laye
 function checkFilesystem(): LayerResult {
   const checks: CheckResult[] = [];
 
-  // Verify 21 module constants are defined
+  // Verify module constants include public + facade entries
   checks.push(
     check(
       'fs_module_count',
-      EXPECTED_MODULE_DIRS.length === 21,
-      `${EXPECTED_MODULE_DIRS.length} module directories declared`,
-      `Expected 21, got ${EXPECTED_MODULE_DIRS.length}`,
+      EXPECTED_MODULE_DIRS.length >= 12,
+      `${EXPECTED_MODULE_DIRS.length} module entries declared (12 public + CCR/CCL facades)`,
     ),
   );
 
@@ -193,8 +192,8 @@ function checkFilesystem(): LayerResult {
   checks.push(
     check(
       'fs_canonical_registry',
-      SUBSTRATE_MODULES.length >= 16,
-      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (16 public + facades)`,
+      SUBSTRATE_MODULES.length >= 12,
+      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (12 public + facades)`,
     ),
   );
 
