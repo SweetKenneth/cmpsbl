@@ -1,6 +1,6 @@
 /**
  * Debug Mode Kill-Switch
- * v10.5.4 ARCHITECT — Granular control over background activity
+ * SPARTA Epoch — Granular control over background activity
  * 
  * Usage:
  *   debugMode.enable();           // Disable ALL background activity
