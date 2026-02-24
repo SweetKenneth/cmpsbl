@@ -325,9 +325,10 @@ const LAYER_CONFIG = {
   Kernel: { color: 'text-orange-400', count: 3 },
   Cognitive: { color: 'text-purple-400', count: 4 },
   Operational: { color: 'text-blue-400', count: 3 },
-  Admin: { color: 'text-emerald-400', count: 4 },
+  Admin: { color: 'text-emerald-400', count: 3 },
   Infrastructure: { color: 'text-sky-400', count: 6 },
   Orchestrator: { color: 'text-fuchsia-400', count: 1 },
+  Overlay: { color: 'text-rose-400', count: 1 },
 };
 
 // 3D tilt effect hook for cards

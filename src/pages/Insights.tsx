@@ -112,11 +112,11 @@ export default function Insights() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              The <strong>Observer</strong> tier provides read-only access to CMPSBL documentation, 
-              architecture references, and standards materials. Observers can review the full 
-              FNDTN v8 library, understand the 21-module kernel architecture, and access 
-              governance namespace documentation.
-            </p>
+               The <strong>Observer</strong> tier provides read-only access to CMPSBL documentation, 
+               architecture references, and standards materials. Observers can review the full 
+               documentation library, understand the 9-module + 5-mesh + 9-zone kernel architecture, and access 
+               governance namespace documentation.
+             </p>
             <p>
               This tier is designed for researchers, evaluators, and those seeking to understand 
               the substrate class before deeper engagement. All materials are citation-ready 

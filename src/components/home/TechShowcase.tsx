@@ -549,6 +549,7 @@ const LAYER_CONFIG = {
   Admin: { color: 'text-emerald-400', bgGlow: 'from-emerald-500/20' },
   Infrastructure: { color: 'text-sky-400', bgGlow: 'from-sky-500/20' },
   Orchestrator: { color: 'text-violet-400', bgGlow: 'from-violet-500/20' },
+  Overlay: { color: 'text-rose-400', bgGlow: 'from-rose-500/20' },
 } as const;
 
 export function TechShowcase() {

@@ -1,17 +1,17 @@
 /**
  * CMPSBL® DECODE Personality Engine
- * v10.5.4 ARCHITECT — Dynamic Personality Profiles (Server-Synced)
+ * SPARTA Epoch — Dynamic Personality Profiles (Server-Synced)
  *
  * Personality profiles now sync with the backend edge function.
  * Changes made via terminal commands persist to the database.
  * 
  * Integrates with 9-module architecture for personality-aware responses.
  * 
- * v10.5.4 Changes:
- *   - New direct/professional baseline (no more poetry/metaphors)
+ * Features:
+ *   - Direct/professional baseline (no poetry/metaphors)
  *   - Server-side personality storage in brain_config
  *   - Terminal commands sync with backend
- *   - New profiles: neutral, technical, concise, friendly, admin, exploratory
+ *   - Profiles: neutral, technical, concise, friendly, admin, exploratory
  */
 
 import { supabase } from '@/integrations/supabase/client';

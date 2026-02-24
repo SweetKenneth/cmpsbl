@@ -1,6 +1,6 @@
 /**
- * promptfluid® Decode — The Interpreter Primitive
- * v10.5.4 ARCHITECT — Human-Compatible Cognitive Interface
+ * CMPSBL® DECODE — The Interpreter Primitive
+ * SPARTA Epoch — Human-Compatible Cognitive Interface
  * 
  * Mobile-first conversation interface
  */
