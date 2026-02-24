@@ -3216,11 +3216,11 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       try {
         const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
         const statesObj: Record<string, any> = {};
-        for (const mod of ALL_21_MODULES) {
+        for (const mod of ALL_EXECUTION_SURFACES) {
           statesObj[mod.key] = moduleCLM.getModuleState?.(mod.key as any) || {};
         }
-        let output = `╔══════════════════════════════════════════════════════════════╗\n║  MODULE CLM STATUS — All 21 Modules                           ║\n╠══════════════════════════════════════════════════════════════╣\n`;
-        for (const mod of ALL_21_MODULES) {
+        let output = `╔══════════════════════════════════════════════════════════════╗\n║  MODULE CLM STATUS — 9 Modules + Zones                        ║\n╠══════════════════════════════════════════════════════════════╣\n`;
+        for (const mod of ALL_EXECUTION_SURFACES) {
           const s = statesObj[mod.key] || {};
           const icon = s.enabled ? '🟢' : '⚫';
           output += `║  ${icon} ${mod.label.padEnd(14)} [${mod.layer.substring(0, 5).padEnd(5)}]  cycles: ${String(s.cycles || 0).padEnd(3)} ║\n`;
