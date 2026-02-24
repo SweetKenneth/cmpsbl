@@ -60,7 +60,7 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 ### What We Have That Others Don't
 
 1. **Self-Improvement Engine** — The system upgrades its own code. This compounds daily.
-2. **Integrated Architecture** — 21 modules across 6 layers designed together, not bolted on.
+2. **Integrated Architecture** — 24 execution surfaces across entities, mesh overlays, and zones — designed together, not bolted on.
 3. **Model Agnosticism** — Works with ANY AI provider. Zero lock-in.
 4. **Autonomous Learning** — Gets smarter without human intervention.
 5. **Defense-First** — Security built into the core, not added later.
