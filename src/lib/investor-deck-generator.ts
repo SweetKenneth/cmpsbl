@@ -291,7 +291,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="card-grid">
     <div class="info-card">
       <h3>Integrated Architecture</h3>
-      <p>21 modules across 6 layers designed as a unified substrate — extremely hard to replicate.</p>
+      <p>10 entities + 5 mesh overlays + 9 zones designed as a unified substrate — extremely hard to replicate.</p>
     </div>
     <div class="info-card">
       <h3>Self-Evolution (SEBA)</h3>
