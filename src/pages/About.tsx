@@ -174,7 +174,7 @@ export default function About() {
         <div className="container mx-auto max-w-6xl">
           <motion.h2 {...fadeUp} className="text-3xl font-bold mb-4 text-foreground">The Substrate</motion.h2>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-muted-foreground mb-10 text-lg">
-            21 integrated modules. 300 synergy pipelines. 100 crystallized Crown Jewel pipelines. Production-ready cognitive infrastructure.
+            9 modules. 5 mesh overlays. 9 zones. 300 synergy pipelines. 100 crystallized Crown Jewel pipelines. Production-ready cognitive infrastructure.
           </motion.p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
