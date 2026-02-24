@@ -1,5 +1,5 @@
 /**
- * BRAIN Module Enhancements — v10.5.4 ARCHITECT Epoch
+ * BRAIN Module Enhancements — SPARTA Epoch
  * AttentionMechanism, MemoryConsolidator, SemanticIndexer, EmotionalResonance
  */
 

@@ -1,5 +1,5 @@
 /**
- * VISION Module Enhancements — v10.5.4 ARCHITECT Epoch
+ * VISION Module Enhancements — SPARTA Epoch
  * PredictiveSLA, AnomalyForecaster, PerformanceInsight, CapacityPlanner
  */
 
