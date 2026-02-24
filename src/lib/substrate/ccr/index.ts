@@ -40,7 +40,7 @@ const state: CCRState = {
   failureCount: 0,
   lastSynthTime: null,
   memoryStoreHealth: 100,
-  facadesActive: ['core', 'system', 'brain', 'memory', 'dream'],
+  facadesActive: ['system', 'brain', 'memory', 'dream'],
   bootGatesPassed: false,
 };
 
