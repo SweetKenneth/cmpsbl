@@ -13,7 +13,7 @@
 | **Module** | DECODE |
 | **Layer** | Cognitive |
 | **Version** | v10.5.0 |
-| **Architecture** | 21 modules across 6 layers |
+| **Architecture** | 10 entities + 5 mesh overlays + 9 zones |
 
 | Field | Value |
 |-------|-------|
