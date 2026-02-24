@@ -487,7 +487,7 @@ const response = await substrate.nexus.text(
                 </div>
                 <h3 className="font-semibold mb-2 group-hover:text-violet-500 transition-colors">Module Explorer</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Interactive API explorer for all 21 substrate modules. Execute calls, see responses, copy code.
+                  Interactive API explorer for all substrate execution surfaces. Execute calls, see responses, copy code.
                 </p>
                 <Button variant="ghost" size="sm" className="gap-2 p-0" onClick={() => setActiveTab("explorer")}>
                   Explore Modules <ArrowRight className="w-4 h-4" />

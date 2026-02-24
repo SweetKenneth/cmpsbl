@@ -5717,7 +5717,7 @@ export default function DevPortal() {
               {/* Quick Stats - 2x2 grid on mobile */}
               <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                 {[
-                  { label: 'Modules', value: '12', icon: Layers },
+                  { label: 'Entities', value: '10', icon: Layers },
                   { label: 'Actions', value: '80+', icon: Zap },
                   { label: 'Templates', value: '72', icon: FileCode },
                   { label: 'Providers', value: '10+', icon: Server },
