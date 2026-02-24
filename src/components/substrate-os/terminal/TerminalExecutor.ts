@@ -3251,7 +3251,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       try {
         const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
         const results = await moduleCLM.runAllModuleLearning();
-        return { success: true, output: `◉ MCLM run all complete — ${results.length} insights generated across 21 modules`, data: results };
+        return { success: true, output: `◉ MCLM run all complete — ${results.length} insights generated across 9 modules`, data: results };
       } catch (err) {
         return { success: false, output: `▓ MCLM run all error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
