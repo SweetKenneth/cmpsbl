@@ -67,7 +67,7 @@ export function registerEncodeModuleHandlers(): void {
     };
   });
 
-  // decode.inbox — CLM reports from ALL 21 modules
+  // decode.inbox — CLM reports from all entities + zones
   registerHandler('decode.inbox', async () => {
     const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
     const feed = await moduleCLM.getFeed(50);
