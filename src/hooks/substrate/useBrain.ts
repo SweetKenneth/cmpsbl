@@ -1,6 +1,6 @@
 /**
- * useBrain Hook
- * v10.5.4 ARCHITECT — Dedicated hook for BRAIN (Cognitive Memory) module operations
+ * useBrain Hook — BRAIN zone (Cognitive Memory) operations
+ * SPARTA Epoch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

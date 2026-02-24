@@ -1,6 +1,6 @@
 /**
- * useMemoryModule Hook — MEMORY module operations
- * v10.5.4 ARCHITECT Epoch
+ * useMemoryModule Hook — MEMORY zone operations
+ * SPARTA Epoch
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';

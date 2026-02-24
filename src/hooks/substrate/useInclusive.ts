@@ -1,6 +1,6 @@
 /**
- * useInclusive Hook
- * v10.5.4 ARCHITECT — Dedicated hook for INCLUSIVE (Human Compatibility) module operations
+ * useInclusive Hook — INCLUSIVE (Human Compatibility) module operations
+ * SPARTA Epoch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

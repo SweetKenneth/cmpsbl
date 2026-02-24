@@ -1,6 +1,6 @@
 /**
- * useModernizer Hook
- * v10.5.4 ARCHITECT — Dedicated hook for MODERNIZER (Self-Upgrade) module operations
+ * useModernizer Hook — MODERNIZER → EVOLUTION mesh proxy
+ * SPARTA Epoch
  * 
  * Respects debug mode kill-switch and shadow-to-production execution pipeline.
  * Part of the 6-layer, 21-module Cognitive Architecture.
