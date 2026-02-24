@@ -239,6 +239,7 @@ const App = () => {
     const cleanupTracking = installLastInteractionTracking();
     const cleanupSiteGuard = installSiteGuard();
     initSiteAnalytics();
+    loadDeferredCSS();
 
     if (diagEnabled()) {
       diagLog("log", "App mounted", {
