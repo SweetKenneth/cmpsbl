@@ -1259,9 +1259,9 @@ function ModernizerShadowPanel() {
                 <Target className="w-5 h-5 text-amber-500" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-base mb-1">Modernizer Shadow Mode</h3>
+                <h3 className="font-semibold text-base mb-1">EVOLUTION Shadow Mode</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Runs a real Modernizer scan to find system gaps, then tasks executors with fixing them in shadow mode.
+                  Runs a real EVOLUTION scan to find system gaps, then tasks executors with fixing them in shadow mode.
                   Failures escalate to ENCODE — its fixes become learning rules the executors absorb.
                   Watch performance improve over time as they learn from real-world scenarios.
                 </p>
