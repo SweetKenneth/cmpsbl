@@ -1,16 +1,18 @@
 /**
  * ENCODE System Manifest — Architecture Awareness Registry
- * CCR Epoch — Gives ENCODE a canonical map of the living system
+ * CORE Epoch — Gives ENCODE a canonical map of the living system
  *
- * This manifest solves ENCODE's "blind agent" problem: without it, ENCODE
- * has no idea that a footer exists, where BRAIN lives, or that it is itself
- * part of a 16-module substrate (powered by CCR Layer 0). With it, ENCODE
- * can locate, understand, and safely modify any part of the system.
+ * Architecture:
+ *   CORE (standalone kernel)
+ *   → CCR (Layer 0): SYSTEM + BRAIN + MEMORY + DREAM
+ *   → CCL (Layer 1): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
+ *   → 8 Modules: VISION, SANDBOX, DECODE, CORTEX, ECONOMY, NEXUS, ENCODE, INCLUSIVE
+ *   → 5 Meshes: DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
+ *   → INTEGRATION (standalone)
+ *   = 15 public entities
  *
- * Usage:
- *   import { systemManifest, resolveComponent, resolveModule } from './system-manifest';
- *   const footer = resolveComponent('footer');
- *   // → { id: 'footer', filePath: 'src/components/layout/Footer.tsx', ... }
+ * MODERNIZER absorbed by EVOLUTION mesh.
+ * AUDIT absorbed by CCL.
  */
 
 // ─── Module Registry ─────────────────────────────────────────────────────────
@@ -18,14 +20,12 @@
 export interface ModuleEntry {
   id: string;
   name: string;
-  layer: 'cognitive' | 'orchestration' | 'infrastructure' | 'operational' | 'governance' | 'evolution';
+  layer: 'kernel' | 'cognitive' | 'orchestration' | 'infrastructure' | 'operational' | 'mesh' | 'standalone';
   description: string;
   corePath: string;
   hookPath?: string;
   dashboardPath?: string;
-  /** Modules this module depends on */
   dependencies: string[];
-  /** Modules that depend on this module */
   dependents: string[];
 }
 
@@ -53,22 +53,32 @@ export interface RouteEntry {
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
 /**
- * 12-Module Architecture (CCL Epoch)
- * 
- * CCR (CLOCKLESS_COGNITIVE_REALITY) is Layer 0 — hidden cognitive meta-engine.
- *   Absorbs: CORE, SYSTEM, BRAIN, MEMORY, DREAM
- * CCL (CLOCKLESS_COGNITIVE_LUCIDITY) is Layer 1 — infrastructure convergence.
- *   Absorbs: RIPPLE, ACCESS, IDENTITY, RELAY
- * 
- * Result: 21 - 5 (CCR) - 4 (CCL) = 12 public modules.
- * Facade shims preserve backward compatibility for all old module commands.
+ * 15-Entity Architecture
+ *
+ * CORE (1) — standalone kernel
+ * Modules (8): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
+ * Meshes (5): DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
+ * INTEGRATION (1) — standalone
+ *
+ * Hidden layers:
+ *   CCR (Layer 0) facades: system, brain, memory, dream
+ *   CCL (Layer 1) facades: ripple, access, identity, relay, audit
+ *   Absorbed: modernizer → EVOLUTION mesh
  */
 export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
-  // ─── Hidden Layers (not counted in public module total) ────────────────────
-  // CCR facades: core, system, brain, memory, dream → route to CCR
-  // CCL facades: ripple, access, identity, relay → route to CCL
+  // ─── Kernel ────────────────────────────────────────────────────────────────
+  core: {
+    id: 'core',
+    name: 'CORE',
+    layer: 'kernel',
+    description: 'Standalone kernel. Boot sequencing, circuit breakers, configuration, job scheduling, module registry.',
+    corePath: 'src/lib/core/',
+    hookPath: 'src/hooks/substrate/useCore.ts',
+    dependencies: [],
+    dependents: ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration'],
+  },
 
-  // ─── 12 Public Modules ─────────────────────────────────────────────────────
+  // ─── 8 Public Modules ──────────────────────────────────────────────────────
   decode: {
     id: 'decode',
     name: 'DECODE',
@@ -77,7 +87,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     corePath: 'src/lib/substrate/decode/',
     hookPath: 'src/hooks/substrate/useDecode.ts',
     dashboardPath: 'src/pages/SubstrateOS.tsx',
-    dependencies: ['ccr'],
+    dependencies: ['core'],
     dependents: ['encode'],
   },
   encode: {
@@ -88,26 +98,8 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     corePath: 'src/lib/substrate/encode-module/',
     hookPath: 'src/hooks/substrate/useEncode.ts',
     dashboardPath: 'src/pages/SubstrateOS.tsx',
-    dependencies: ['ccr', 'decode', 'sandbox'],
-    dependents: ['modernizer'],
-  },
-  defense: {
-    id: 'defense',
-    name: 'DEFENSE',
-    layer: 'operational',
-    description: 'AI-powered security: bot detection, rate limiting, threat analysis, stealth mode.',
-    corePath: 'src/lib/defense/',
-    dependencies: ['ccr', 'ccl'],
+    dependencies: ['core', 'decode', 'sandbox'],
     dependents: [],
-  },
-  nexus: {
-    id: 'nexus',
-    name: 'NEXUS',
-    layer: 'orchestration',
-    description: 'Multi-provider AI gateway. Intelligently routes requests across AI providers.',
-    corePath: 'src/lib/nexus/',
-    dependencies: ['ccr'],
-    dependents: ['decode', 'encode'],
   },
   vision: {
     id: 'vision',
@@ -115,36 +107,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'operational',
     description: 'Unified analytics dashboard with real-time metrics, telemetry, and observability.',
     corePath: 'src/lib/substrate/telemetry-engine.ts',
-    dependencies: ['ccr'],
-    dependents: [],
-  },
-  modernizer: {
-    id: 'modernizer',
-    name: 'MODERNIZER',
-    layer: 'evolution',
-    description: 'The Executor/Omega Observer. Manages upgrade plans, file-level diffs, and shadow-to-production deployment.',
-    corePath: 'src/lib/substrate/evolution-cycle.ts',
-    hookPath: 'src/hooks/substrate/useModernizer.ts',
-    dashboardPath: 'src/pages/Modernizer.tsx',
-    dependencies: ['ccr', 'encode'],
-    dependents: [],
-  },
-  integration: {
-    id: 'integration',
-    name: 'INTEGRATION',
-    layer: 'operational',
-    description: 'External service connections, OAuth flows, and third-party API management.',
-    corePath: 'src/lib/integrations/',
-    dependencies: ['ccr', 'ccl'],
-    dependents: [],
-  },
-  inclusive: {
-    id: 'inclusive',
-    name: 'INCLUSIVE',
-    layer: 'governance',
-    description: 'Accessibility scanning, WCAG compliance, and inclusive design enforcement.',
-    corePath: 'src/lib/inclusive/',
-    dependencies: ['ccr'],
+    dependencies: ['core'],
     dependents: [],
   },
   cortex: {
@@ -154,18 +117,17 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     description: 'Pipeline orchestrator. Manages multi-stage cognitive workflows and engine composition.',
     corePath: 'src/lib/substrate/orchestrator-engine.ts',
     hookPath: 'src/hooks/substrate/useCortex.ts',
-    dependencies: ['ccr'],
+    dependencies: ['core'],
     dependents: ['encode'],
   },
-  audit: {
-    id: 'audit',
-    name: 'AUDIT',
-    layer: 'infrastructure',
-    description: 'Immutable, cryptographically-chained compliance logging.',
-    corePath: 'src/lib/substrate/audit-module/',
-    hookPath: 'src/hooks/substrate/useAuditModule.ts',
-    dependencies: ['ccr', 'ccl'],
-    dependents: [],
+  nexus: {
+    id: 'nexus',
+    name: 'NEXUS',
+    layer: 'orchestration',
+    description: 'Multi-provider AI gateway. Intelligently routes requests across AI providers.',
+    corePath: 'src/lib/nexus/',
+    dependencies: ['core'],
+    dependents: ['decode', 'encode'],
   },
   economy: {
     id: 'economy',
@@ -174,7 +136,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     description: 'Real-time cost attribution, budgeting, and marketplace signaling.',
     corePath: 'src/lib/substrate/economy-module/',
     hookPath: 'src/hooks/substrate/useEconomyModule.ts',
-    dependencies: ['ccr'],
+    dependencies: ['core'],
     dependents: [],
   },
   sandbox: {
@@ -184,8 +146,77 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     description: 'Isolated execution environments for safe code execution, speculative runs, and evolution testing.',
     corePath: 'src/lib/substrate/sandbox-module/',
     hookPath: 'src/hooks/substrate/useSandboxModule.ts',
-    dependencies: ['ccr'],
-    dependents: ['encode', 'modernizer'],
+    dependencies: ['core'],
+    dependents: ['encode', 'evolution'],
+  },
+  inclusive: {
+    id: 'inclusive',
+    name: 'INCLUSIVE',
+    layer: 'operational',
+    description: 'Accessibility scanning, WCAG compliance, and inclusive design enforcement.',
+    corePath: 'src/lib/inclusive/',
+    dependencies: ['core'],
+    dependents: [],
+  },
+
+  // ─── 5 Meshes ──────────────────────────────────────────────────────────────
+  defense: {
+    id: 'defense',
+    name: 'DEFENSE',
+    layer: 'mesh',
+    description: 'AI-powered security mesh: bot detection, rate limiting, threat analysis, stealth mode.',
+    corePath: 'src/lib/defense/',
+    dependencies: ['core'],
+    dependents: ['immunity'],
+  },
+  immunity: {
+    id: 'immunity',
+    name: 'IMMUNITY',
+    layer: 'mesh',
+    description: 'Adaptive resilience mesh. Executor shadow training, gap classification, self-healing patterns.',
+    corePath: 'src/lib/substrate/modernizer-shadow-resolver/',
+    dependencies: ['core', 'defense'],
+    dependents: [],
+  },
+  evolution: {
+    id: 'evolution',
+    name: 'EVOLUTION',
+    layer: 'mesh',
+    description: 'Self-improvement mesh. Mutation proposals, shadow A/B testing, canary deployment, promotion gates. Absorbs MODERNIZER.',
+    corePath: 'src/lib/evolution-mesh/',
+    hookPath: 'src/hooks/substrate/useModernizer.ts',
+    dashboardPath: 'src/pages/Modernizer.tsx',
+    dependencies: ['core', 'sandbox'],
+    dependents: [],
+  },
+  intent: {
+    id: 'intent',
+    name: 'INTENT',
+    layer: 'mesh',
+    description: 'Intent resolution mesh. Cross-module intent routing, goal decomposition, task orchestration.',
+    corePath: 'src/lib/substrate/intent-mesh/',
+    dependencies: ['core'],
+    dependents: [],
+  },
+  governance: {
+    id: 'governance',
+    name: 'GOVERNANCE',
+    layer: 'mesh',
+    description: 'Ethical constraints, veto authority, epistemic discipline, signal arbitration, coherence enforcement.',
+    corePath: 'src/lib/substrate/governance/',
+    dependencies: ['core'],
+    dependents: [],
+  },
+
+  // ─── Standalone ────────────────────────────────────────────────────────────
+  integration: {
+    id: 'integration',
+    name: 'INTEGRATION',
+    layer: 'standalone',
+    description: 'External service connections, OAuth flows, and third-party API management.',
+    corePath: 'src/lib/integrations/',
+    dependencies: ['core'],
+    dependents: [],
   },
 };
 
@@ -221,7 +252,7 @@ export const SYSTEM_COMPONENTS: Record<string, ComponentEntry> = {
     name: 'SubstrateStatus',
     filePath: 'src/components/substrate/SubstrateStatus.tsx',
     type: 'widget',
-    description: 'Compact substrate health indicator showing active module count.',
+    description: 'Compact substrate health indicator showing active entity count.',
     module: 'core',
   },
   substrate_provider: {
@@ -276,7 +307,7 @@ export const ENCODE_IDENTITY = {
     'Must read files before writing — never assume file contents.',
     'Must preserve exports, handlers, and entrypoints (File Anchors).',
     'Destructive changes (>15% file change or anchor removal) require human approval.',
-    'Cannot self-apply evolution proposals — SEBA/Modernizer handle governance.',
+    'Cannot self-apply evolution proposals — EVOLUTION mesh handles governance.',
     'Accepts task packets ONLY from DECODE — no direct interaction.',
   ],
   capabilities: [
@@ -290,9 +321,6 @@ export const ENCODE_IDENTITY = {
 
 // ─── Resolution Functions ────────────────────────────────────────────────────
 
-/**
- * Find a module by ID or name (case-insensitive).
- */
 export function resolveModule(query: string): ModuleEntry | undefined {
   const q = query.toLowerCase().trim();
   return SYSTEM_MODULES[q] ??
@@ -301,19 +329,13 @@ export function resolveModule(query: string): ModuleEntry | undefined {
     );
 }
 
-/**
- * Find a component by ID, name, or fuzzy keyword match.
- */
 export function resolveComponent(query: string): ComponentEntry | undefined {
   const q = query.toLowerCase().trim();
-  // Exact match
   if (SYSTEM_COMPONENTS[q]) return SYSTEM_COMPONENTS[q];
-  // Name match
   const byName = Object.values(SYSTEM_COMPONENTS).find(c =>
     c.name.toLowerCase() === q || c.id === q
   );
   if (byName) return byName;
-  // Fuzzy: check if query appears in name, id, or description
   return Object.values(SYSTEM_COMPONENTS).find(c =>
     c.name.toLowerCase().includes(q) ||
     c.id.includes(q) ||
@@ -321,9 +343,6 @@ export function resolveComponent(query: string): ComponentEntry | undefined {
   );
 }
 
-/**
- * Find which module owns a given file path.
- */
 export function resolveModuleByPath(filePath: string): ModuleEntry | undefined {
   return Object.values(SYSTEM_MODULES).find(m =>
     filePath.startsWith(m.corePath) ||
@@ -332,16 +351,10 @@ export function resolveModuleByPath(filePath: string): ModuleEntry | undefined {
   );
 }
 
-/**
- * Get all modules in a given layer.
- */
 export function getModulesByLayer(layer: ModuleEntry['layer']): ModuleEntry[] {
   return Object.values(SYSTEM_MODULES).filter(m => m.layer === layer);
 }
 
-/**
- * Get the full dependency chain for a module.
- */
 export function getDependencyChain(moduleId: string, visited = new Set<string>()): string[] {
   if (visited.has(moduleId)) return [];
   visited.add(moduleId);
@@ -351,12 +364,9 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
   return [...deps, moduleId];
 }
 
-/**
- * Summary for ENCODE to understand the system at a glance.
- */
 export function getSystemSummary(): string {
   const moduleCount = Object.keys(SYSTEM_MODULES).length;
   const layers = [...new Set(Object.values(SYSTEM_MODULES).map(m => m.layer))];
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate (CCL Epoch): ${moduleCount} public modules + CCR Layer 0 + CCL Layer 1 across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR absorbs CORE+SYSTEM+BRAIN+MEMORY+DREAM. CCL absorbs RIPPLE+ACCESS+IDENTITY+RELAY.`;
+  return `CMPSBL Substrate: ${moduleCount} public entities (CORE + 8 Modules + 5 Meshes + INTEGRATION) + CCR Layer 0 + CCL Layer 1 across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR absorbs SYSTEM+BRAIN+MEMORY+DREAM. CCL absorbs RIPPLE+ACCESS+IDENTITY+RELAY+AUDIT. MODERNIZER absorbed by EVOLUTION mesh.`;
 }

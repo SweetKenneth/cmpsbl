@@ -1,12 +1,12 @@
 /**
  * Clockless Cognitive Lucidity (CCL)
- * Infrastructure Convergence Layer — absorbs RIPPLE + ACCESS + IDENTITY + RELAY
+ * Infrastructure Convergence Layer — absorbs RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
  *
  * Non-marketed, non-navigable. All former module surfaces remain as proxy
  * shims routing through CCL internals. Substrate Health Check binds here
  * as a read-only integrity surface.
  *
- * Boot order: CORE → CCL → CCR → …
+ * Boot order: CORE → CCR → CCL → Modules → Meshes → INTEGRATION
  */
 
 import { emit } from '@/lib/substrate/events';
@@ -35,6 +35,7 @@ const state: CCLState = {
     access: { active: false, health: 0 },
     signal: { active: false, health: 0 },   // formerly RIPPLE
     relay: { active: false, health: 0 },
+    audit: { active: false, health: 0 },     // compliance logging
     integrity: { active: false, health: 0 }, // health check bindings
   },
 };
@@ -42,31 +43,32 @@ const state: CCLState = {
 // ─── Subsystem Initializers ──────────────────────────────────────────────────
 
 function initializeIdentity(): void {
-  // Session management, actor resolution, trust scoring, cross-agency portability
   state.subsystems.identity = { active: true, health: 100 };
   emit({ module: 'access', event_type: 'identity_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
 }
 
 function initializeAccess(): void {
-  // API key management, rate limiting, entitlements, usage metering, product catalog
   state.subsystems.access = { active: true, health: 100 };
   emit({ module: 'access', event_type: 'access_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
 }
 
 function initializeSignal(): void {
-  // Event bus, module event emission, subscription routing (formerly RIPPLE)
   state.subsystems.signal = { active: true, health: 100 };
   emit({ module: 'ripple', event_type: 'signal_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
 }
 
 function initializeRelay(): void {
-  // Webhook delivery, HMAC signing, retry logic, outbound routing, delivery analytics
   state.subsystems.relay = { active: true, health: 100 };
   emit({ module: 'relay', event_type: 'relay_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
 }
 
+function initializeAudit(): void {
+  // Immutable compliance logging, cryptographic chaining, audit trail
+  state.subsystems.audit = { active: true, health: 100 };
+  emit({ module: 'audit', event_type: 'audit_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
+}
+
 function bindHealthCheckSurface(): void {
-  // Substrate Health Check binding — read-only integrity surface
   state.subsystems.integrity = { active: true, health: 100 };
 }
 
@@ -80,6 +82,7 @@ export async function initializeCCL(): Promise<{ success: boolean; data: any }> 
     initializeAccess();
     initializeSignal();
     initializeRelay();
+    initializeAudit();
     bindHealthCheckSurface();
 
     state.active = true;
@@ -119,7 +122,7 @@ export function getDiagnostics() {
     health: state.health,
     subsystems: state.subsystems,
     featureFlagEnabled: cclEnabled,
-    absorbedModules: ['ripple', 'access', 'identity', 'relay'],
+    absorbedModules: ['ripple', 'access', 'identity', 'relay', 'audit'],
   };
 }
 
@@ -136,7 +139,6 @@ const DISPATCH_MAP: Record<CCLAction, (input?: any) => any> = {
 export function dispatch(action: string, input?: any): any {
   const handler = DISPATCH_MAP[action as CCLAction];
   if (handler) return handler(input);
-  // Passthrough for subsystem-specific actions
   return { success: true, data: { action, backed_by: 'ccl', passthrough: true } };
 }
 
@@ -147,6 +149,7 @@ const MODULE_ACTION_MAP: Record<string, Record<string, CCLAction>> = {
   access: { status: 'status', health: 'health', pulse: 'pulse' },
   identity: { status: 'status', health: 'health', pulse: 'pulse' },
   relay: { status: 'status', health: 'health', pulse: 'pulse' },
+  audit: { status: 'status', health: 'health', pulse: 'pulse' },
 };
 
 export function resolveCCLAction(module: string, action: string): CCLAction | null {
@@ -154,7 +157,7 @@ export function resolveCCLAction(module: string, action: string): CCLAction | nu
   return (MODULE_ACTION_MAP[module]?.[action] as CCLAction) ?? null;
 }
 
-export const CCL_FACADE_MODULES = ['ripple', 'access', 'identity', 'relay'] as const;
+export const CCL_FACADE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
 export type CCLFacadeModule = typeof CCL_FACADE_MODULES[number];
 
 export function isCCLFacade(module: string): boolean {

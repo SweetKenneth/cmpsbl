@@ -1,9 +1,11 @@
 /**
  * Substrate Module Hooks - Barrel Export
- * CCL Epoch — Dedicated React hooks for 12 public modules + CCR/CCL facades + SEBA
- * 
- * CCR absorbs: CORE+SYSTEM+BRAIN+MEMORY+DREAM (hooks still exported for backcompat)
- * CCL absorbs: RIPPLE+ACCESS+IDENTITY+RELAY (hooks still exported as facades)
+ * CORE Epoch — 15-entity architecture hooks + CCR/CCL facades + SEBA
+ *
+ * CORE (standalone kernel)
+ * CCR absorbs: SYSTEM+BRAIN+MEMORY+DREAM (hooks exported for backcompat)
+ * CCL absorbs: RIPPLE+ACCESS+IDENTITY+RELAY+AUDIT (hooks exported as facades)
+ * MODERNIZER → routed to EVOLUTION mesh (hook exported for backcompat)
  */
 
 // Kernel Layer

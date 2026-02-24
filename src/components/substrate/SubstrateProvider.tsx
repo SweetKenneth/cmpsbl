@@ -1,13 +1,9 @@
 /**
  * promptfluid® Substrate Provider
- * CCL Epoch — Cognitive Orchestration Substrate (12-Module Architecture)
- * 
- * CCR (Layer 0) absorbs CORE+SYSTEM+BRAIN+MEMORY+DREAM as hidden meta-engine.
- * CCL (Layer 1) absorbs RIPPLE+ACCESS+IDENTITY+RELAY as infrastructure convergence.
- * Performance: Lazy-loads substrate module, uses requestIdleCallback.
- * Stability: Single initialization, no polling loops during idle, 
- *            proper cleanup on unmount.
- * Wraps the application with substrate context and auto-initialization
+ * CORE Epoch — 15-Entity Architecture
+ *
+ * CORE (standalone) → CCR (Layer 0) → CCL (Layer 1)
+ * → 8 Modules → 5 Meshes → INTEGRATION
  */
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
@@ -33,31 +29,22 @@ const defaultModuleStatus: ModuleStatus = {
   health: 0,
 };
 
+// All entries including facades for backward compat
+const ALL_MODULES: SubstrateModule[] = [
+  'core', 'brain', 'decode', 'encode', 'defense', 'nexus', 'vision', 'dream',
+  'ripple', 'access', 'system', 'modernizer', 'integration', 'inclusive',
+  'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
+  'immunity', 'evolution', 'intent', 'governance',
+];
+
+const defaultModules = ALL_MODULES.reduce((acc, m) => {
+  acc[m] = defaultModuleStatus;
+  return acc;
+}, {} as Record<SubstrateModule, ModuleStatus>);
+
 const SubstrateContext = createContext<SubstrateContextType>({
   initialized: false,
-  modules: {
-    core: defaultModuleStatus,
-    brain: defaultModuleStatus,
-    decode: defaultModuleStatus,
-    defense: defaultModuleStatus,
-    nexus: defaultModuleStatus,
-    vision: defaultModuleStatus,
-    dream: defaultModuleStatus,
-    ripple: defaultModuleStatus,
-    access: defaultModuleStatus,
-    system: defaultModuleStatus,
-    modernizer: defaultModuleStatus,
-    integration: defaultModuleStatus,
-    inclusive: defaultModuleStatus,
-    cortex: defaultModuleStatus,
-    encode: defaultModuleStatus,
-    memory: defaultModuleStatus,
-    relay: defaultModuleStatus,
-    audit: defaultModuleStatus,
-    identity: defaultModuleStatus,
-    economy: defaultModuleStatus,
-    sandbox: defaultModuleStatus,
-  },
+  modules: defaultModules,
   overallHealth: 0,
   refresh: async () => {},
 });
@@ -73,29 +60,7 @@ interface SubstrateProviderProps {
 
 export function SubstrateProvider({ children, autoInit = true }: SubstrateProviderProps) {
   const [initialized, setInitialized] = useState(false);
-  const [modules, setModules] = useState<Record<SubstrateModule, ModuleStatus>>({
-    core: defaultModuleStatus,
-    brain: defaultModuleStatus,
-    decode: defaultModuleStatus,
-    defense: defaultModuleStatus,
-    nexus: defaultModuleStatus,
-    vision: defaultModuleStatus,
-    dream: defaultModuleStatus,
-    ripple: defaultModuleStatus,
-    access: defaultModuleStatus,
-    system: defaultModuleStatus,
-    modernizer: defaultModuleStatus,
-    integration: defaultModuleStatus,
-    inclusive: defaultModuleStatus,
-    cortex: defaultModuleStatus,
-    encode: defaultModuleStatus,
-    memory: defaultModuleStatus,
-    relay: defaultModuleStatus,
-    audit: defaultModuleStatus,
-    identity: defaultModuleStatus,
-    economy: defaultModuleStatus,
-    sandbox: defaultModuleStatus,
-  });
+  const [modules, setModules] = useState<Record<SubstrateModule, ModuleStatus>>(defaultModules);
   
   const substrateRef = useRef<typeof import('@/lib/substrate').substrate | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -129,22 +94,27 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   }, [getSubstrate]);
 
   const refresh = useCallback(async () => {
-    // Respect debug mode kill-switch
     if (!debugMode.allowModulePolling()) return;
-
-    // Don't refresh if unmounted
     if (!mountedRef.current) return;
 
-    // Check 12 public modules (CCR + CCL facades handled internally)
-    const moduleList: SubstrateModule[] = ['decode', 'encode', 'defense', 'nexus', 'vision', 'modernizer', 'integration', 'inclusive', 'cortex', 'audit', 'economy', 'sandbox'];
-    const results = await Promise.all(moduleList.map(checkModule));
+    // Check 15 public entities (CCR + CCL facades handled internally)
+    const publicEntities: SubstrateModule[] = [
+      // CORE
+      'core',
+      // 8 Modules
+      'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
+      // 5 Meshes
+      'defense', 'immunity', 'evolution', 'intent', 'governance',
+      // Standalone
+      'integration',
+    ];
+    const results = await Promise.all(publicEntities.map(checkModule));
 
-    const newModules = moduleList.reduce((acc, module, index) => {
+    const newModules = publicEntities.reduce((acc, module, index) => {
       acc[module] = results[index];
       return acc;
     }, {} as Record<SubstrateModule, ModuleStatus>);
 
-    // Only update state if still mounted
     if (mountedRef.current) {
       setModules(prev => ({ ...prev, ...newModules }));
       setInitialized(true);
@@ -153,35 +123,25 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
 
   useEffect(() => {
     if (!autoInit) return;
-
-    // Respect debug mode kill-switch
     if (!debugMode.allowModulePolling()) return;
-
-    // Prevent double-initialization in strict mode
     if (initializedRef.current) return;
     initializedRef.current = true;
     mountedRef.current = true;
 
-    // Defer initialization to avoid blocking main thread during initial render
-    // Increased interval to 5 minutes to reduce polling overhead and improve stability
     const startRefreshInterval = () => {
       if (!mountedRef.current) return;
       if (!debugMode.allowModulePolling()) return;
 
       refresh();
-      // Only set up interval if tab is visible
       if (document.visibilityState === 'visible') {
         intervalRef.current = setInterval(() => {
           if (!debugMode.allowModulePolling()) return;
-          // Skip refresh if tab is hidden
           if (document.visibilityState !== 'visible') return;
           refresh();
-        }, 300000); // Refresh every 5 minutes
+        }, 300000);
       }
     };
     
-    // Use requestIdleCallback if available, otherwise use setTimeout
-    // Wait for page load first to minimize main-thread work during critical render
     const scheduleInit = () => {
       if ('requestIdleCallback' in window) {
         const handle = (window as Window & { requestIdleCallback: (cb: () => void, options?: { timeout: number }) => number }).requestIdleCallback(startRefreshInterval, { timeout: 5000 });
@@ -200,7 +160,6 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
       }
     };
     
-    // Wait for document to be fully loaded before scheduling
     if (document.readyState === 'complete') {
       return scheduleInit();
     } else {
@@ -215,7 +174,6 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
       };
     }
     
-    // Cleanup function
     return () => {
       mountedRef.current = false;
       if (intervalRef.current) {
@@ -225,7 +183,6 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     };
   }, [autoInit, refresh]);
 
-  // Calculate overall health from all initialized modules — clamped to 0-100
   const activeModules = Object.values(modules).filter(m => m.health > 0);
   const overallHealth = Math.min(100, activeModules.length > 0
     ? activeModules.reduce((sum, m) => sum + m.health, 0) / activeModules.length

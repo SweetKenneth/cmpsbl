@@ -2,7 +2,7 @@
  * CLOCKLESS_COGNITIVE_REALITY (CCR)
  * Layer 0 — Hidden Meta-Engine powering the CMPSBL Substrate
  * 
- * Merges: CORE + SYSTEM + BRAIN + MEMORY + DREAM
+ * Merges: SYSTEM + BRAIN + MEMORY + DREAM (CORE is standalone)
  * Non-marketed, non-navigable, invisible to users (known, not shown).
  * Old module surfaces remain as proxy facades routing here.
  * 
@@ -40,7 +40,7 @@ const state: CCRState = {
   failureCount: 0,
   lastSynthTime: null,
   memoryStoreHealth: 100,
-  facadesActive: ['core', 'system', 'brain', 'memory', 'dream'],
+  facadesActive: ['system', 'brain', 'memory', 'dream'],
   bootGatesPassed: false,
 };
 
@@ -207,7 +207,7 @@ export function dispatch(action: string, input?: any): any {
 // ─── Module-to-CCR Action Mapping ────────────────────────────────────────────
 
 const MODULE_ACTION_MAP: Record<string, Record<string, CCRAction>> = {
-  core: { status: 'status', boot: 'boot', health: 'health', circuit: 'circuit', config: 'config', pulse: 'pulse' },
+  // CORE is standalone — no longer routed through CCR
   system: { status: 'status', health: 'health', boot: 'boot', config: 'config', pulse: 'pulse' },
   brain: { status: 'status', reason: 'reason', pulse: 'pulse', health: 'health' },
   memory: { status: 'status', store: 'store', retrieve: 'retrieve', search: 'retrieve', pulse: 'pulse', health: 'health' },
@@ -219,7 +219,7 @@ export function resolveCCRAction(module: string, action: string): CCRAction | nu
   return (MODULE_ACTION_MAP[module]?.[action] as CCRAction) ?? null;
 }
 
-export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
+export const CCR_FACADE_MODULES = ['system', 'brain', 'memory', 'dream'] as const;
 export type CCRFacadeModule = typeof CCR_FACADE_MODULES[number];
 
 export function isCCRFacade(module: string): boolean {
