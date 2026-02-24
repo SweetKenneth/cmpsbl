@@ -37,7 +37,7 @@ const context = await agent.getContext(userMessage);
 | **Orchestration** | Policy-driven autonomous decision-making |
 | **Accessibility** | WCAG scanning, auto-repair, and compliance reporting |
 | **Intent Mesh** | Distributed resolution engine for cross-module collaboration |
-| **Cross-Module Synergies** | **200+ pipelines, 400+ capabilities across 21 modules** |
+| **Cross-Module Synergies** | **300+ pipelines, 525+ capabilities across 24 execution surfaces** |
 
 ---
 
