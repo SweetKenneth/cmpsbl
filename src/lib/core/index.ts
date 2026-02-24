@@ -17,21 +17,23 @@ export const SUBSTRATE_CODENAME = 'ARCHITECT';
 export const CORE_VERSION = '10.1.0';
 export const CORE_CODENAME = 'Foundation';
 
-// All substrate modules — public (16) + CCR facades (5) + identity facade (1) = 22 entries for backward compat
-// Public registry reports 16. CCR facades route to hidden Layer 0.
+// All substrate modules — public (12) + CCR facades (5) + CCL facades (4) = 21 entries for backward compat
+// Public registry reports 12. CCR facades route to Layer 0, CCL facades route to Layer 1.
 export const SUBSTRATE_MODULES = [
   'core', 'system', 'brain', 'memory', 'dream', // CCR facades (backward compat)
-  'identity', // ACCESS facade (backward compat)
-  'decode', 'encode', 'defense', 'nexus', 'vision', 'ripple', 'access',
-  'modernizer', 'integration', 'inclusive', 'cortex', 'relay', 'audit', 'economy', 'sandbox',
+  'ripple', 'access', 'identity', 'relay',       // CCL facades (backward compat)
+  'decode', 'encode', 'defense', 'nexus', 'vision',
+  'modernizer', 'integration', 'inclusive', 'cortex', 'audit', 'economy', 'sandbox',
 ] as const;
 
 // Public-facing module count
-export const PUBLIC_MODULE_COUNT = 16;
+export const PUBLIC_MODULE_COUNT = 12;
 
 // CCR facade modules (backed by CLOCKLESS_COGNITIVE_REALITY)
 export const CCR_FACADE_MODULES = ['core', 'system', 'brain', 'memory', 'dream'] as const;
-export const IDENTITY_FACADE = 'identity' as const;
+
+// CCL facade modules (backed by CLOCKLESS_COGNITIVE_LUCIDITY)
+export const CCL_FACADE_MODULES = ['ripple', 'access', 'identity', 'relay'] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 

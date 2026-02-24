@@ -1,9 +1,9 @@
 /**
  * promptfluid® Substrate Provider
- * CCR Epoch — Cognitive Orchestration Substrate (16-Module Architecture)
+ * CCL Epoch — Cognitive Orchestration Substrate (12-Module Architecture)
  * 
  * CCR (Layer 0) absorbs CORE+SYSTEM+BRAIN+MEMORY+DREAM as hidden meta-engine.
- * IDENTITY merged into ACCESS.
+ * CCL (Layer 1) absorbs RIPPLE+ACCESS+IDENTITY+RELAY as infrastructure convergence.
  * Performance: Lazy-loads substrate module, uses requestIdleCallback.
  * Stability: Single initialization, no polling loops during idle, 
  *            proper cleanup on unmount.
@@ -135,8 +135,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     // Don't refresh if unmounted
     if (!mountedRef.current) return;
 
-    // Check 16 public modules (CCR facades handled internally)
-    const moduleList: SubstrateModule[] = ['decode', 'encode', 'defense', 'nexus', 'vision', 'ripple', 'access', 'modernizer', 'integration', 'inclusive', 'cortex', 'relay', 'audit', 'economy', 'sandbox', 'cortex'];
+    // Check 12 public modules (CCR + CCL facades handled internally)
+    const moduleList: SubstrateModule[] = ['decode', 'encode', 'defense', 'nexus', 'vision', 'modernizer', 'integration', 'inclusive', 'cortex', 'audit', 'economy', 'sandbox'];
     const results = await Promise.all(moduleList.map(checkModule));
 
     const newModules = moduleList.reduce((acc, module, index) => {

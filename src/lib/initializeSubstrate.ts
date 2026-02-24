@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v10.5.4 — ARCHITECT Epoch — Complete AI Operating System with 21 modules + SEBA
+ * CCL Epoch — Complete AI Operating System with 12 public modules + CCR + CCL
  * 
  * Performance: Triple-deferred initialization for zero main-thread blocking
  * - Waits for document idle state
@@ -37,33 +37,40 @@ export async function initializeSubstrate(): Promise<void> {
     // Yield before heavy work
     await yieldToMain();
     
-    console.log('⚡ Booting promptfluid® Substrate (CCR Epoch)...');
+    console.log('⚡ Booting promptfluid® Substrate (CCL Epoch)...');
     console.log('─────────────────────────────────────────');
     
-    // Boot CCR (Layer 0) first, then 16 public modules
+    // Boot order: CORE(CCR) → CCL → 12 public modules
     // CCR absorbs: CORE + SYSTEM + BRAIN + MEMORY + DREAM
-    // IDENTITY merged into ACCESS
-    const bootOrder = [
-      'core', // → CCR facade
-      'decode', 'encode', 'defense', 'nexus', 'vision', 'ripple', 'access',
-      'modernizer', 'integration', 'inclusive', 'cortex', 'relay', 'audit', 'economy', 'sandbox'
+    // CCL absorbs: RIPPLE + ACCESS + IDENTITY + RELAY
+    const publicModules = [
+      'decode', 'encode', 'defense', 'nexus', 'vision',
+      'modernizer', 'integration', 'inclusive', 'cortex', 'audit', 'economy', 'sandbox'
     ] as const;
     
-    // Boot CCR foundation first via core.boot facade
-    const bootResult = await substrate.invoke({ module: 'core', action: 'boot' });
+    // Boot CCR foundation (Layer 0) via core.boot facade
+    const ccrResult = await substrate.invoke({ module: 'core', action: 'boot' });
     
-    if (bootResult.success) {
-      console.log('✅ CCR Layer 0 active → 16 modules loaded | Health: 100%');
+    // Boot CCL infrastructure (Layer 1)
+    let cclBooted = false;
+    try {
+      const { initializeCCL } = await import('@/layers/ccl');
+      const cclResult = await initializeCCL();
+      cclBooted = cclResult.success;
+    } catch { /* graceful — CCL init is additive */ }
+    
+    if (ccrResult.success && cclBooted) {
+      console.log('✅ CCR Layer 0 + CCL Layer 1 active → 12 modules loaded | Health: 100%');
     } else {
       // Fallback to individual pings
       let activeModules = 0;
-      for (const module of bootOrder) {
+      for (const module of publicModules) {
         await yieldToMain();
         const result = await substrate.invoke({ module, action: 'pulse' });
         if (result.success) activeModules++;
       }
       
-      console.log(`✅ Substrate initialized: ${activeModules}/${bootOrder.length} modules active`);
+      console.log(`✅ Substrate initialized: ${activeModules}/${publicModules.length} modules active`);
     }
     
     console.log('─────────────────────────────────────────');

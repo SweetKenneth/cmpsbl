@@ -5,6 +5,9 @@
  * Merges: CORE + SYSTEM + BRAIN + MEMORY + DREAM
  * Non-marketed, non-navigable, invisible to users (known, not shown).
  * Old module surfaces remain as proxy facades routing here.
+ * 
+ * CCL (Layer 1) absorbs: RIPPLE + ACCESS + IDENTITY + RELAY
+ * CCR + CCL together reduce the public module count to 12.
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
