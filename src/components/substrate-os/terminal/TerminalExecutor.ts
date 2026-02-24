@@ -1462,7 +1462,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         return { success: false, output: `▓ Doctor error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'system.verify') {
-      // Non-destructive verification of all 24 modules
+      // Non-destructive verification of all 24 execution surfaces
       const verbose = args.includes('--verbose');
       try {
         const moduleChecks = ALL_21_MODULES.map(async (mod) => {
