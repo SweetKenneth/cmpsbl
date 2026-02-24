@@ -35,23 +35,26 @@ CMPSBL organizes intelligence across **12 public modules** and **2 hidden conver
 
 ## What Each Layer Does
 
-### Kernel Layer
-The foundation everything else depends on. Manages configuration, cross-module messaging, and access entitlements.
+### CCR — Clockless Cognitive Reality (Layer 0, Hidden)
+The invisible foundation. Owns boot sequencing, circuit breakers, configuration, reasoning, memory persistence, and dream synthesis. Everything depends on CCR but nothing references it publicly.
+
+### CCL — Clockless Cognitive Lucidity (Layer 1, Hidden)
+Infrastructure convergence. Owns event bus (signal), identity/auth, API key management, rate limiting, entitlements, webhook delivery, and outbound routing. Services are accessed through the unified CCL surface.
 
 ### Cognitive Layer
-The intelligence core. Persistent multi-tier memory that remembers across sessions, and natural language interpretation that understands user intent.
+The intelligence core. Intent parsing via DECODE and natural language interpretation that understands user goals.
 
-### Operations Layer
-Runtime services that keep things running, learning, and secure. Autonomous learning cycles, multi-provider AI routing, enterprise security, and real-time observability.
+### Orchestration Layer
+Multi-provider AI routing (NEXUS), pipeline orchestration (CORTEX), and code generation (ENCODE).
 
-### Admin Layer
-System management and self-improvement. Health diagnostics, autonomous code evolution, accessibility compliance, and enterprise adapter frameworks.
+### Operational Layer
+Runtime services: DEFENSE for security, VISION for observability, INTEGRATION for external service connections.
+
+### Governance & Evolution
+INCLUSIVE for accessibility compliance. MODERNIZER for autonomous code evolution with shadow-to-production deployment.
 
 ### Infrastructure Layer
-Foundational trust services. Semantic recall, outbound delivery, immutable compliance logging, universal identity attribution, real-time cost management, and isolated execution environments.
-
-### Orchestrator Layer
-High-level coordination. Policy-driven decision-making and intelligent code generation with preview scoring.
+AUDIT for immutable compliance logging, ECONOMY for cost attribution, SANDBOX for isolated execution.
 
 ---
 
