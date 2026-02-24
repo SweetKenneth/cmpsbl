@@ -325,7 +325,7 @@ const evolutionLogV10: EvolutionEntry[] = [
     id: "v10-evolution-003",
     date: "2026-02-16",
     pressures: [
-      "CLM reports showed all 21 modules requesting high-value capability upgrades",
+      "CLM reports showed all execution surfaces requesting high-value capability upgrades",
       "SEBA proposals consistently flagged hot memory tier overflow (1,671 entries vs 500 limit)",
       "Infrastructure modules lacked domain-specific intelligence (staleness, signatures, compliance, forecasting)"
     ],
