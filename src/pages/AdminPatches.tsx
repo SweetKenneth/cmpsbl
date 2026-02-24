@@ -726,6 +726,10 @@ export default function AdminPatches() {
             <TabsContent value="analytics" className="mt-4">
               <DownloadAnalytics />
             </TabsContent>
+
+            <TabsContent value="governance" className="mt-4">
+              <GovernanceStream />
+            </TabsContent>
           </Tabs>
         </div>
       </AdminLayout>
