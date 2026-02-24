@@ -269,47 +269,7 @@ export default function SubstrateDemo() {
                   <div className="grid lg:grid-cols-[1fr,280px] gap-6">
                     {/* Module Visualization - Stacked Layers */}
                     <div className="space-y-3">
-                      {/* Layer: Orchestrator */}
-                      <LayerRow 
-                        label="Orchestrator" 
-                        modules={groupedModules.orchestrator} 
-                        layerKey="orchestrator"
-                        isRunning={isRunning}
-                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
-                        currentStep={currentStep}
-                      />
-                      
-                      {/* Layer: Admin */}
-                      <LayerRow 
-                        label="Admin" 
-                        modules={groupedModules.admin} 
-                        layerKey="admin"
-                        isRunning={isRunning}
-                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
-                        currentStep={currentStep}
-                      />
-                      
-                      {/* Layer: Operational */}
-                      <LayerRow 
-                        label="Operational" 
-                        modules={groupedModules.operational} 
-                        layerKey="operational"
-                        isRunning={isRunning}
-                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
-                        currentStep={currentStep}
-                      />
-                      
-                      {/* Layer: Cognitive */}
-                      <LayerRow 
-                        label="Cognitive" 
-                        modules={groupedModules.cognitive} 
-                        layerKey="cognitive"
-                        isRunning={isRunning}
-                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
-                        currentStep={currentStep}
-                      />
-                      
-                      {/* Layer: Kernel */}
+                      {/* CORE Kernel */}
                       <LayerRow 
                         label="Kernel" 
                         modules={groupedModules.kernel} 
@@ -318,12 +278,52 @@ export default function SubstrateDemo() {
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}
                       />
-
-                      {/* Layer: Infrastructure */}
+                      
+                      {/* 8 Public Modules */}
                       <LayerRow 
-                        label="Infra" 
-                        modules={groupedModules.infrastructure} 
-                        layerKey="infrastructure"
+                        label="Modules" 
+                        modules={groupedModules.module} 
+                        layerKey="module"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+                      
+                      {/* 5 Meshes */}
+                      <LayerRow 
+                        label="Meshes" 
+                        modules={groupedModules.mesh} 
+                        layerKey="mesh"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+
+                      {/* INTEGRATION */}
+                      <LayerRow 
+                        label="Standalone" 
+                        modules={groupedModules.standalone} 
+                        layerKey="standalone"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+
+                      {/* CCR Zones */}
+                      <LayerRow 
+                        label="CCR Zones" 
+                        modules={groupedModules['zone-ccr']} 
+                        layerKey="zone-ccr"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+
+                      {/* CCL Zones */}
+                      <LayerRow 
+                        label="CCL Zones" 
+                        modules={groupedModules['zone-ccl']} 
+                        layerKey="zone-ccl"
                         isRunning={isRunning}
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}

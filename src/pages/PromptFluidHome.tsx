@@ -46,17 +46,17 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "PromptFluid Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 21 modules, 6 layers, powered by the CMPSBL Substrate." },
-  { year: "2025", title: "175k+ Lines of Code", description: "Grew to 400+ capabilities, 200 synergy pipelines, and 13-provider AI routing." },
-  { year: "2026", title: "SPARTA Epoch", description: "Self-evolving codebase with autonomous learning, dream cycles, and composable cognitives." },
+  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 15 entities + 9 zones, powered by the CMPSBL Substrate." },
+  { year: "2025", title: "175k+ Lines of Code", description: "Grew to 525+ capabilities, 300 synergy pipelines, and 13-provider AI routing." },
+  { year: "2026", title: "SPARTA Epoch", description: "Zone Architecture — surgically hot-swappable subsystems with circuit-breaker isolation and autonomous evolution." },
 ];
 
 const capabilities = [
   { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and tiered memory architecture." },
-  { icon: Cpu, title: "Multi-Provider Routing", description: "13-provider AI fallback chain with health-weighted selection and 236k+ daily calls. Never locked into a single vendor." },
-  { icon: Layers, title: "21-Module Architecture", description: "Six specialized layers — Kernel, Cognitive, Operational, Administrative, Orchestrator, Infrastructure." },
-  { icon: Shield, title: "Self-Evolving Codebase", description: "SEBA + Modernizer modules continuously scan, propose, and apply patches autonomously." },
-  { icon: Zap, title: "400+ Capabilities", description: "Production-ready engines, synergy pipelines, and a capabilities depot — all orchestrated through a unified terminal." },
+  { icon: Cpu, title: "Multi-Provider Routing", description: "13-provider AI fallback chain with health-weighted selection. Never locked into a single vendor." },
+  { icon: Layers, title: "Zone Architecture", description: "15 entities + 9 surgically hot-swappable zones across Kernel, Modules, Meshes, and hidden convergence layers." },
+  { icon: Shield, title: "Self-Evolving Codebase", description: "SEBA + EVOLUTION mesh continuously scan, propose, and apply patches autonomously." },
+  { icon: Zap, title: "525+ Capabilities", description: "Production-ready engines, synergy pipelines, and a capabilities depot — all orchestrated through a unified terminal." },
   { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, LangChain, and more — route to the best model for every task." },
 ];
 
