@@ -43,8 +43,7 @@ interface LogEntry {
 const LAYER_COLORS = {
   kernel: { bg: 'bg-orange-500/20', border: 'border-orange-500/50', text: 'text-orange-400' },
   module: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
-  mesh: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
-  standalone: { bg: 'bg-sky-500/20', border: 'border-sky-500/50', text: 'text-sky-400' },
+  'mesh-overlay': { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
   'zone-ccr': { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
   'zone-ccl': { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
 };
