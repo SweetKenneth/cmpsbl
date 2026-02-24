@@ -10,60 +10,59 @@
 
 import JSZip from 'jszip';
 
-// ─── Build-time file embedding ──────────────────────────────────────────────
+// ─── Build-time file listing (lazy raw imports) ──────────────────────────────
+//
+// IMPORTANT:
+// We intentionally keep these globs **non-eager** so production builds do not
+// inline the entire repository as giant raw strings (which can break publish).
+// The contents are only loaded when the user clicks “Export ZIP”.
+
+type RawGlob = Record<string, () => Promise<string>>;
 
 // Edge functions (exclude _archived)
-const edgeFunctionFiles = import.meta.glob(
-  '/supabase/functions/**/index.ts',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const edgeFunctionFiles = import.meta.glob('/supabase/functions/**/index.ts', {
+  as: 'raw',
+}) as RawGlob;
 
-// Shared edge function utils
-const edgeSharedFiles = import.meta.glob(
-  '/supabase/functions/_shared/**/*.ts',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+// Shared backend-function utils
+const edgeSharedFiles = import.meta.glob('/supabase/functions/_shared/**/*.ts', {
+  as: 'raw',
+}) as RawGlob;
 
 // Schema migrations
-const migrationFiles = import.meta.glob(
-  '/supabase/migrations/**/*.sql',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const migrationFiles = import.meta.glob('/supabase/migrations/**/*.sql', {
+  as: 'raw',
+}) as RawGlob;
 
 // Substrate core libs
-const coreLibFiles = import.meta.glob(
-  '/src/lib/**/*.{ts,tsx}',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const coreLibFiles = import.meta.glob('/src/lib/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
 
 // Shared components
-const componentFiles = import.meta.glob(
-  '/src/components/**/*.{ts,tsx}',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const componentFiles = import.meta.glob('/src/components/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
 
 // Config files
-const configFiles = import.meta.glob(
-  '/supabase/config.toml',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const configFiles = import.meta.glob('/supabase/config.toml', {
+  as: 'raw',
+}) as RawGlob;
 
 // Theme files
-const indexCss = import.meta.glob(
-  '/src/index.css',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const indexCss = import.meta.glob('/src/index.css', {
+  as: 'raw',
+}) as RawGlob;
 
-const tailwindConfig = import.meta.glob(
-  '/tailwind.config.ts',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const tailwindConfig = import.meta.glob('/tailwind.config.ts', {
+  as: 'raw',
+}) as RawGlob;
 
-// UI components (shadcn)
-const uiComponentFiles = import.meta.glob(
-  '/src/components/ui/**/*.{ts,tsx}',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+// UI components (shadcn) — kept for future category splitting
+// (note: coreLibFiles/componentFiles already cover these)
+const uiComponentFiles = import.meta.glob('/src/components/ui/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -179,58 +178,66 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
   };
 
   // Edge functions (skip archived)
-  for (const [path, content] of Object.entries(edgeFunctionFiles)) {
+  for (const [path, load] of Object.entries(edgeFunctionFiles)) {
     if (isArchived(path)) continue;
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.edgeFunctions++;
     totalFiles++;
   }
 
-  // Edge shared
-  for (const [path, content] of Object.entries(edgeSharedFiles)) {
+  // Shared backend-function utils
+  for (const [path, load] of Object.entries(edgeSharedFiles)) {
     if (isArchived(path)) continue;
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.edgeShared++;
     totalFiles++;
   }
 
   // Migrations
-  for (const [path, content] of Object.entries(migrationFiles)) {
+  for (const [path, load] of Object.entries(migrationFiles)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.migrations++;
     totalFiles++;
   }
 
   // Core libs
-  for (const [path, content] of Object.entries(coreLibFiles)) {
+  for (const [path, load] of Object.entries(coreLibFiles)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.coreLibs++;
     totalFiles++;
   }
 
   // Components
-  for (const [path, content] of Object.entries(componentFiles)) {
+  for (const [path, load] of Object.entries(componentFiles)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.components++;
     totalFiles++;
   }
 
   // Config
-  for (const [path, content] of Object.entries(configFiles)) {
+  for (const [path, load] of Object.entries(configFiles)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.config++;
     totalFiles++;
   }
 
   // Theme: index.css
-  for (const [path, content] of Object.entries(indexCss)) {
+  for (const [path, load] of Object.entries(indexCss)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.theme++;
     totalFiles++;
   }
 
   // Theme: tailwind.config.ts
-  for (const [path, content] of Object.entries(tailwindConfig)) {
+  for (const [path, load] of Object.entries(tailwindConfig)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.theme++;
     totalFiles++;
