@@ -159,7 +159,7 @@ Track evolution with:
 \`\`\`
 evolve.status       # Current evolution state
 evolve.receipts     # Audit trail
-modernizer.omega    # Deep analysis
+evolution.omega     # Deep analysis
 \`\`\`
 
 *This is an automated update from the Substrate's evolution engine.*

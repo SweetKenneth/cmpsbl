@@ -60,7 +60,7 @@ export const BOOT_MESSAGES = [
   '  │    ◉ defense  ◉ nexus     ◉ vision    │',
   '  │                                       │',
   '  │  ◇ ADMIN                              │',
-  '  │    ◉ system   ◉ modernizer            │',
+  '  │    ◉ system   ◉ evolution             │',
   '  │    ◉ inclusive                        │',
   '  │                                       │',
   '  │  ★ ORCHESTRATOR                       │',

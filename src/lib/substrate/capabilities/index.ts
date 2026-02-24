@@ -284,7 +284,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'evolution_confidence_scoring',
     name: 'Evolution Confidence Scoring',
     description: 'Quantifies risk/reward of proposed changes before execution',
-    modules: ['MODERNIZER', 'BRAIN', 'CORTEX'],
+    modules: ['EVOLUTION', 'BRAIN', 'CORTEX'],
     layer: 'Orchestrator',
     userBenefit: 'Safe evolution with transparent risk assessment',
     status: 'active',

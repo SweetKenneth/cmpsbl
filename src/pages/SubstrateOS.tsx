@@ -647,11 +647,11 @@ function MergedInfraTab({ enabled }: { enabled: boolean }) {
 
   return (
     <TabPane id="infra">
-      <TabHeader icon={Wrench} title="Infrastructure" subtitle="Evolution Lifecycle · Modernizer · INCLUSIVE" color="purple" tier="cmpsbl" />
+      <TabHeader icon={Wrench} title="Infrastructure" subtitle="EVOLUTION Lifecycle · Shadow Mode · INCLUSIVE" color="purple" tier="cmpsbl" />
       <SubTabBar
         tabs={[
-          { id: 'evolution', label: 'Evolution Lifecycle', icon: Dna },
-          { id: 'modernizer', label: 'Evolution Lifecycle (Shadow Mode)', icon: Wand2 },
+          { id: 'evolution', label: 'EVOLUTION Lifecycle', icon: Dna },
+          { id: 'modernizer', label: 'EVOLUTION Shadow Mode', icon: Wand2 },
           { id: 'inclusive', label: 'INCLUSIVE', icon: Users },
         ]}
         active={activeInfra}
