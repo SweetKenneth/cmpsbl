@@ -961,30 +961,28 @@ class MemoryCoreClient {
    */
   async purgeBySource(source: string): Promise<{ success: boolean; purged: number }> {
     try {
-      let totalPurged = 0;
-
-      // Delete from each tier individually to avoid TS2589 with union types
-      const { data: d1 } = await supabase
+      // Count before delete for each tier
+      const { count: c1 } = await supabase
         .from('brain_memory_hot')
-        .delete()
-        .eq('source', source)
-        .select('id');
-      if (d1) totalPurged += d1.length;
+        .select('id', { count: 'exact', head: true })
+        .eq('source', source);
 
-      const { data: d2 } = await supabase
+      const { count: c2 } = await supabase
         .from('brain_memory_warm')
-        .delete()
-        .eq('source', source)
-        .select('id');
-      if (d2) totalPurged += d2.length;
+        .select('id', { count: 'exact', head: true })
+        .eq('source', source);
 
-      const { data: d3 } = await supabase
+      const { count: c3 } = await supabase
         .from('brain_memory_cold')
-        .delete()
-        .eq('source', source)
-        .select('id');
-      if (d3) totalPurged += d3.length;
+        .select('id', { count: 'exact', head: true })
+        .eq('source', source);
 
+      // Now delete
+      await supabase.from('brain_memory_hot').delete().eq('source', source);
+      await supabase.from('brain_memory_warm').delete().eq('source', source);
+      await supabase.from('brain_memory_cold').delete().eq('source', source);
+
+      const totalPurged = (c1 ?? 0) + (c2 ?? 0) + (c3 ?? 0);
       console.log(`[MemoryCore] Purged ${totalPurged} memories from source: ${source}`);
       return { success: true, purged: totalPurged };
     } catch (err) {
