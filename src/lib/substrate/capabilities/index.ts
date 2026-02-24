@@ -236,7 +236,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'autonomous_documentation',
     name: 'Autonomous Documentation',
     description: 'Self-documents changes as they happen, keeps docs synced',
-    modules: ['MODERNIZER', 'DECODE', 'SYSTEM'],
+    modules: ['EVOLUTION', 'DECODE', 'SYSTEM'],
     layer: 'Admin',
     userBenefit: 'Documentation that writes itself',
     status: 'active',
