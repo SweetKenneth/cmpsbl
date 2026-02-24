@@ -420,7 +420,7 @@ function generateIntroduction(topic: { topic: string; hook: string; keyPoints: s
     developerGuides: `Want to build on these ideas? We've open-sourced our thinking (if not our code) to help others learn from our experience.`,
     securityAndGovernance: `AI security isn't optional—it's foundational. Here's how the CMPSBL substrate approaches security and governance as runtime properties, not afterthoughts.`,
     industryAnalysis: `The AI landscape shifts weekly. Here's our perspective from inside the infrastructure layer, building the plumbing that other AI products depend on.`,
-    moduleDeepDives: `Each of the 21 modules in the CMPSBL substrate solves a specific problem. Here's a deep dive into one of them.`,
+    moduleDeepDives: `Each entity in the CMPSBL substrate solves a specific problem. Here's a deep dive into one of them.`,
   };
   return intros[category] || intros.practicalInsights;
 }

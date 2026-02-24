@@ -330,7 +330,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="info-card" style="margin-top:16px;">
     <h3 style="color:var(--text);">Kenneth E. Sweet Jr.</h3>
     <p><strong>Founder & Chief Cognitive Engineer</strong></p>
-    <p style="margin-top:8px;">Creator and architect of the 21-module substrate. Deep expertise in cognitive systems and AI infrastructure.</p>
+    <p style="margin-top:8px;">Creator and architect of the 10-entity + 5-mesh substrate. Deep expertise in cognitive systems and AI infrastructure.</p>
     <p style="margin-top:8px;">ORCID: 0009-0001-4237-1243</p>
   </div>
 
