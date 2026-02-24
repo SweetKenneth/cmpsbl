@@ -1,17 +1,16 @@
 /**
  * CMPSBL® Substrate Client
- * v10.5.4 — ARCHITECT Epoch — Cognitive Orchestration Substrate (21-Module Architecture)
- * 
- * Full 21-module integration with Infrastructure Six:
- * - Kernel (3): Core, Ripple, Access
- * - Cognitive (2): Brain, Decode
- * - Operational (5): Defense, Nexus, Vision, Dream, Integration
- * - Administrative (3): System, Modernizer, Inclusive
- * - Orchestrator (2): Cortex, Encode
- * - Infrastructure (6): Memory, Relay, Audit, Identity, Economy, Sandbox
- * 
- * All modules expose: status(), pulse(), and domain-specific methods
- * All modules wired into: terminal, CLM, parity, events, health, BRAIN writeback
+ * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
+ *
+ * CORE (standalone kernel)
+ *   → CCR Layer 0 (zones: SYSTEM, BRAIN, MEMORY, DREAM)
+ *   → CCL Layer 1 (zones: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)
+ *   → 8 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
+ *   → INTEGRATION (module, boots last)
+ *   ← 5 Mesh Overlays: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
+ *
+ * All entities expose: status(), pulse(), and domain-specific methods
+ * All entities wired into: terminal, CLM, parity, events, health, BRAIN writeback
  */
 
 import { supabase } from '@/integrations/supabase/client';
