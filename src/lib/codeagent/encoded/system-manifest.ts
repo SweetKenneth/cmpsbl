@@ -3,13 +3,12 @@
  * SPARTA Epoch v11.1.0 — Zone Architecture
  *
  * Architecture:
- *   CORE (standalone kernel)
+ *   CORE (kernel, boots first)
  *   → CCR (Layer 0) — 4 Zones: SYSTEM Zone + BRAIN Zone + MEMORY Zone + DREAM Zone
  *   → CCL (Layer 1) — 5 Zones: RIPPLE Zone + ACCESS Zone + IDENTITY Zone + RELAY Zone + AUDIT Zone
- *   → 8 Modules: VISION, SANDBOX, DECODE, CORTEX, ECONOMY, NEXUS, ENCODE, INCLUSIVE
- *   → 5 Meshes: DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
- *   → INTEGRATION (standalone)
- *   = 15 public entities + 9 surgically hot-swappable zones
+ *   → 9 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION (boots last)
+ *   → 5 Mesh Overlays (wrap modules, order matters): DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
+ *   = 10 public entities + 5 mesh overlays + 9 zones
  *
  * MODERNIZER absorbed by EVOLUTION mesh.
  * AUDIT Zone belongs to CCL.
