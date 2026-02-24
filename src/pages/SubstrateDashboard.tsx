@@ -342,7 +342,7 @@ export default function SubstrateDashboard() {
         <div className="max-w-6xl mx-auto mb-8 md:mb-12">
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <Layers className="w-3 h-3 mr-2" />
-            Live Infrastructure — 21 Modules
+            Live Infrastructure — 10 Entities + 5 Meshes + 9 Zones
           </Badge>
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
