@@ -210,9 +210,9 @@ export default function SubstrateDemo() {
                 className="text-3xl md:text-5xl font-bold mb-4"
               >
                 <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                  21 Modules
+                  10 Entities
                 </span>
-                <span className="text-foreground"> · 6 Layers · 1 Substrate</span>
+                <span className="text-foreground"> · 5 Mesh Overlays · 9 Zones</span>
               </motion.h1>
 
               <motion.p 
