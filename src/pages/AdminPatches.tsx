@@ -22,8 +22,9 @@ import { toast } from 'sonner';
 import { 
   Plus, Package, Shield, Download, Eye, Send, Ban, 
   ChevronRight, Clock, CheckCircle2, XCircle, FileJson,
-  GitCommit, Check, X, Rocket, Filter
+  GitCommit, Check, X, Rocket, Filter, Archive
 } from 'lucide-react';
+import { buildSubstrateZip, downloadBlob } from '@/lib/substrate-export';
 import { useSubstrateChanges, type SubstrateChange } from '@/hooks/admin/useSubstrateChanges';
 import { sendPatchToLnchbl } from '@/lib/patches/dispatch';
 import type { PatchTier, PatchStatus } from '@/lib/patches/author';
