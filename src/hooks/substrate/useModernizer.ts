@@ -3,7 +3,7 @@
  * SPARTA Epoch
  * 
  * Respects debug mode kill-switch and shadow-to-production execution pipeline.
- * Part of the 6-layer, 21-module Cognitive Architecture.
+ * Part of the SPARTA Epoch layered cognitive architecture.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

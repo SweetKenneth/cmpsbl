@@ -433,7 +433,7 @@ const DECODE_PATTERNS = [
   { title: 'Domain-Specific Vocabulary', content: 'Maintain per-user vocabulary preferences. Mirror their terminology. Store preferences in metadata.', priority: 82 },
   { title: 'Error Recovery Responses', content: 'When a previous response was incorrect, acknowledge it directly and provide the accurate answer. This builds trust.', priority: 93 },
   { title: 'Proactive Module Insights', content: 'After answering, offer 1-2 related suggestions based on what modules are currently learning or upgrading. Example: "ENCODE just finished a codebase study cycle — want to hear what it found?"', priority: 85 },
-  { title: 'Version & Architecture Accuracy', content: 'The substrate is SPARTA Epoch with 10 entities (CORE + 8 modules + INTEGRATION), 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost), and 9 hot-swappable zones (4 CCR + 5 CCL). 300 synergy pipelines, 100 crystallized Crown Jewel pipelines, 525+ capabilities. Never reference 21 or 14 modules — those were legacy counts.', priority: 98 },
+  { title: 'Version & Architecture Accuracy', content: 'The substrate is SPARTA Epoch with a layered cognitive kernel: CORE kernel, modules (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION), mesh overlays (DEFENSE outermost → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE innermost), and hidden convergence zones (CCR: SYSTEM, BRAIN, MEMORY, DREAM; CCL: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT). Synergy pipelines, crystallized Crown Jewel pipelines, and extensive capabilities. Never reference specific module counts in marketing or SEO.', priority: 98 },
 ];
 
 const DEFENSE_PATTERNS = [

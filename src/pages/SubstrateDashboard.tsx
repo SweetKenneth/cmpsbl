@@ -342,7 +342,7 @@ export default function SubstrateDashboard() {
         <div className="max-w-6xl mx-auto mb-8 md:mb-12">
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <Layers className="w-3 h-3 mr-2" />
-            Live Infrastructure — 10 Entities + 5 Meshes + 9 Zones
+            Live Infrastructure — Entities + Meshes + Zones
           </Badge>
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -355,7 +355,7 @@ export default function SubstrateDashboard() {
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            Unified control center for the AI orchestration substrate. 10 entities wrapped by 5 mesh overlays, 9 hot-swappable zones, 300+ synergy pipelines, 360+ terminal commands.
+            Unified control center for the AI orchestration substrate. Entities wrapped by mesh overlays, hot-swappable zones, synergy pipelines, and terminal commands.
           </p>
           
           <div className="flex gap-3">

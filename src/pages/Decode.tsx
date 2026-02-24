@@ -91,7 +91,7 @@ export default function Decode() {
   const initializeFresh = () => {
     setMessages([{
       role: 'system',
-      content: "DECODE ready. I parse natural language into structured intents and route them to the appropriate substrate modules. What would you like to do?",
+      content: "DECODE ready. I parse natural language into structured intents and route them to the appropriate substrate execution surfaces. What would you like to do?",
       timestamp: new Date()
     }]);
   };

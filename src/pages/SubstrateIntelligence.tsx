@@ -132,7 +132,7 @@ export default function SubstrateIntelligence() {
               </h1>
               
               <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">14 specialized modules with full documentation.</strong> Research published on Zenodo.
+                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">Specialized execution surfaces with full documentation.</strong> Research published on Zenodo.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -236,25 +236,21 @@ export default function SubstrateIntelligence() {
                 </CardHeader>
                 <CardContent>
                   <pre className="bg-muted/50 p-4 rounded-lg text-xs md:text-sm overflow-x-auto font-mono">
-{`CMPSBL OS Substrate v6.0.0
+{`CMPSBL Substrate — SPARTA Epoch
 ─────────────────────────────────
 [CORE]       ████████████ READY      12ms
-[RIPPLE]     ████████████ READY       3ms
-[ACCESS]     ████████████ READY       9ms
-[BRAIN]      ████████████ READY       8ms
 [DECODE]     ████████████ READY       5ms
-[DREAM]      ████████████ READY       6ms
-[DEFENSE]    ████████████ READY       7ms
-[NEXUS]      ████████████ READY      15ms
+[ENCODE]     ████████████ READY       6ms
 [VISION]     ████████████ READY       4ms
-[INTEGRATION]████████████ READY      10ms
-[SYSTEM]     ████████████ READY       5ms
-[EVOLUTION]  ████████████ READY      11ms
 [CORTEX]     ████████████ READY      14ms
+[NEXUS]      ████████████ READY      15ms
+[ECONOMY]    ████████████ READY       7ms
+[SANDBOX]    ████████████ READY       8ms
 [INCLUSIVE]  ████████████ READY       8ms
+[INTEGRATION]████████████ READY      10ms
 ─────────────────────────────────
-24 surfaces loaded | Health: 100%
-Boot complete in 117ms`}
++ 5 Mesh Overlays | + 9 Zones
+Boot complete in 109ms`}
                   </pre>
                 </CardContent>
               </Card>
@@ -268,7 +264,7 @@ Boot complete in 117ms`}
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold mb-4">Layered Cognitive Kernel</h2>
-                <p className="text-muted-foreground">10 execution surfaces, 5 mesh overlays, 9 convergence zones</p>
+                <p className="text-muted-foreground">Execution surfaces, mesh overlays, and convergence zones</p>
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
