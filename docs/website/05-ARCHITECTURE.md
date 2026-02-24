@@ -58,7 +58,7 @@ Protective layers that wrap all modules. Order matters:
 | **CCR** (Layer 0) | Hidden Meta-Engine | SYSTEM + BRAIN + MEMORY + DREAM |
 | **CCL** (Layer 1) | Hidden Infrastructure | RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT |
 
-MODERNIZER is absorbed by the **EVOLUTION** mesh.
+MODERNIZER is absorbed by the **EVOLUTION** mesh overlay.
 
 ---
 

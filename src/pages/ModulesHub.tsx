@@ -1,7 +1,6 @@
 /**
  * Modules Hub — Central index of all substrate execution surfaces
- * 9 modules + 1 kernel + 5 meshes + 9 zones = 24 execution surfaces
- * SEO: /modules — captures "CMPSBL modules", "AI substrate components"
+ * SPARTA Epoch: 1 Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones
  */
 
 import { Link } from "react-router-dom";
@@ -10,8 +9,13 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { MODULE_REGISTRY, LAYERS, LAYER_COLORS, getModulesByLayer } from "@/lib/modules/module-registry";
+import { MODULE_REGISTRY, LAYER_COLORS, LAYER_LABELS, getPublicModules, getMeshOverlays } from "@/lib/modules/module-registry";
 import { cn } from "@/lib/utils";
+
+const DISPLAY_SECTIONS = [
+  { key: 'public', label: 'Kernel & Modules', desc: 'The public execution surfaces — boot, cognition, orchestration, and connectivity', getter: getPublicModules },
+  { key: 'mesh', label: 'Mesh Overlays', desc: 'Protective layers wrapping all modules: DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE', getter: getMeshOverlays },
+] as const;
 
 export default function ModulesHub() {
   return (
@@ -27,7 +31,7 @@ export default function ModulesHub() {
           "description": "CMPSBL Substrate — Modules, mesh overlays, and convergence zones",
           "url": "https://cmpsbl.com/modules",
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
-          "hasPart": MODULE_REGISTRY.map(m => ({
+          "hasPart": MODULE_REGISTRY.filter(m => m.visibility !== 'hidden').map(m => ({
             "@type": "SoftwareApplication",
             "name": `CMPSBL ${m.name}`,
             "description": m.description,
@@ -60,44 +64,38 @@ export default function ModulesHub() {
                 </span>
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Each module is a specialized AI subsystem. Together, they form a cognitive operating system 
+                Each surface is a specialized AI subsystem. Together, they form a cognitive operating system 
                 that learns, adapts, and evolves — autonomously.
               </p>
             </motion.div>
           </div>
         </section>
 
-        {/* Modules by Layer */}
-        {LAYERS.map((layer, layerIdx) => {
-          const modules = getModulesByLayer(layer);
+        {/* Sections */}
+        {DISPLAY_SECTIONS.map((section, sectionIdx) => {
+          const items = section.getter();
+          const colorKey = section.key === 'public' ? 'Module' : 'Mesh';
           return (
-            <section key={layer} className="py-8 sm:py-12">
+            <section key={section.key} className="py-8 sm:py-12">
               <div className="container mx-auto max-w-6xl px-4">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.4, delay: layerIdx * 0.05 }}
+                  transition={{ duration: 0.4, delay: sectionIdx * 0.05 }}
                 >
-                  {/* Layer Header */}
+                  {/* Section Header */}
                   <div className="flex items-center gap-3 mb-8">
-                    <div className={cn("h-8 w-1 rounded-full bg-gradient-to-b", LAYER_COLORS[layer])} />
+                    <div className={cn("h-8 w-1 rounded-full bg-gradient-to-b", LAYER_COLORS[colorKey])} />
                     <div>
-                      <h2 className="text-2xl font-bold">{layer} Layer</h2>
-                      <p className="text-sm text-muted-foreground">
-                        {layer === 'Kernel' && 'Boot, events, and identity — the foundation everything runs on'}
-                        {layer === 'Cognitive' && 'Memory and personality — how the substrate thinks and speaks'}
-                        {layer === 'Operational' && 'Security, routing, monitoring, optimization, and connectivity'}
-                        {layer === 'Administrative' && 'Deployment, accessibility, and architecture evolution'}
-                        {layer === 'Orchestrator' && 'Cross-module coordination and emergent intelligence'}
-                        {layer === 'Infrastructure' && 'Knowledge, effects, compliance, identity, economics, and containment'}
-                      </p>
+                      <h2 className="text-2xl font-bold">{section.label}</h2>
+                      <p className="text-sm text-muted-foreground">{section.desc}</p>
                     </div>
                   </div>
 
-                  {/* Module Cards */}
+                  {/* Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {modules.map((mod, idx) => (
+                    {items.map((mod) => (
                       <Link
                         key={mod.slug}
                         to={`/modules/${mod.slug}`}
@@ -117,7 +115,7 @@ export default function ModulesHub() {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 mt-4 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                          Explore module <ArrowRight className="w-3 h-3" />
+                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'module'} <ArrowRight className="w-3 h-3" />
                         </div>
                       </Link>
                     ))}
