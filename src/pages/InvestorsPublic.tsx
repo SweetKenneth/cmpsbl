@@ -69,12 +69,12 @@ export default function InvestorsPublic() {
   ];
 
   const products = [
-    { icon: Brain, name: "BRAIN Module", subtitle: "Persistent Memory", description: "3-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
-    { icon: Eye, name: "VISION Module", subtitle: "Full Observability", description: "Real-time introspection, metrics collection, and system-wide transparency layer." },
-    { icon: Shield, name: "DEFENSE Module", subtitle: "Enterprise Security", description: "Bot protection, threat detection, and governance guardrails for production AI." },
-    { icon: Server, name: "NEXUS Gateway", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
-    { icon: Code, name: "ENCODE Engine", subtitle: "Governed Code Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "Intent Mesh", subtitle: "Emergent Orchestration", description: "Modules advertise, compose, and crystallize cross-module pipelines autonomously. 50 Crown Jewel pipelines." },
+    { icon: Brain, name: "BRAIN Zone", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
+    { icon: Eye, name: "VISION", subtitle: "Full Observability", description: "Real-time introspection, metrics collection, and system-wide transparency layer." },
+    { icon: Shield, name: "DEFENSE Mesh", subtitle: "Outermost Security", description: "Bot protection, threat detection, and governance guardrails — outermost mesh overlay." },
+    { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
+    { icon: Code, name: "ENCODE", subtitle: "Governed Code Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
+    { icon: Sparkles, name: "INTENT Mesh", subtitle: "Emergent Orchestration", description: "Modules advertise, compose, and crystallize cross-module pipelines autonomously." },
   ];
 
   const highlights = [
