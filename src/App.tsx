@@ -186,6 +186,7 @@ const BuildingAgentsThatLearn = lazy(() => import("./pages/blog/BuildingAgentsTh
 
 // ARCHITECT Epoch blog posts
 const MachineProtocolStandards = lazy(() => import("./pages/blog/MachineProtocolStandards"));
+const SpartaEpochRebuild = lazy(() => import("./pages/blog/SpartaEpochRebuild"));
 const AutonomousAIGovernance = lazy(() => import("./pages/blog/AutonomousAIGovernance"));
 const AdversarialAIDefense = lazy(() => import("./pages/blog/AdversarialAIDefense"));
 
