@@ -10,9 +10,9 @@ const HowPromptFluidWorks = () => {
         <title>How the CMPSBL Cognitive Substrate Works | Architecture Deep Dive</title>
         <meta 
           name="description" 
-          content="Deep dive into CMPSBL's cognitive substrate architecture. Dream cycles, neural orchestration, 21-module kernel, and how autonomous AI systems learn and evolve." 
+           content="Deep dive into CMPSBL's cognitive substrate architecture. Dream cycles, neural orchestration, 10-entity kernel, and how autonomous AI systems learn and evolve." 
         />
-        <meta name="keywords" content="CMPSBL architecture, cognitive substrate, AI orchestration, dream cycles, autonomous learning, 21-module kernel" />
+        <meta name="keywords" content="CMPSBL architecture, cognitive substrate, AI orchestration, dream cycles, autonomous learning, cognitive kernel" />
         <link rel="canonical" href="https://cmpsbl.com/blog/how-promptfluid-works-cascade-ai-ecosystem" />
         <meta property="og:title" content="How the CMPSBL Cognitive Substrate Works | Architecture Deep Dive" />
         <meta property="og:description" content="Deep dive into CMPSBL's cognitive substrate architecture and autonomous AI orchestration." />
