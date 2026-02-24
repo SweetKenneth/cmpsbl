@@ -11932,6 +11932,69 @@ export type Database = {
         }
         Relationships: []
       }
+      substrate_changes: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          author: string | null
+          change_type: string
+          commit_hash: string | null
+          created_at: string
+          declined_reason: string | null
+          description: string | null
+          diff_summary: Json | null
+          dispatched_at: string | null
+          files_changed: string[] | null
+          id: string
+          lnchbl_status: string
+          metadata: Json | null
+          patch_id: string | null
+          source: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          author?: string | null
+          change_type?: string
+          commit_hash?: string | null
+          created_at?: string
+          declined_reason?: string | null
+          description?: string | null
+          diff_summary?: Json | null
+          dispatched_at?: string | null
+          files_changed?: string[] | null
+          id?: string
+          lnchbl_status?: string
+          metadata?: Json | null
+          patch_id?: string | null
+          source?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          author?: string | null
+          change_type?: string
+          commit_hash?: string | null
+          created_at?: string
+          declined_reason?: string | null
+          description?: string | null
+          diff_summary?: Json | null
+          dispatched_at?: string | null
+          files_changed?: string[] | null
+          id?: string
+          lnchbl_status?: string
+          metadata?: Json | null
+          patch_id?: string | null
+          source?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       substrate_developer_keys: {
         Row: {
           app_id: string
