@@ -188,7 +188,7 @@ export function SynergyDepotCTA() {
                 {/* Feature highlights */}
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {[
-                    { icon: Layers, text: "Production Modules" },
+                    { icon: Layers, text: "Production Entities" },
                     { icon: Shield, text: "Security Suite" },
                     { icon: Sparkles, text: "Intelligence Pack" },
                     { icon: Workflow, text: "Automation Kit" },
