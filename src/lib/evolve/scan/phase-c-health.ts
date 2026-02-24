@@ -100,7 +100,7 @@ async function calculateStabilityScore(): Promise<number> {
 }
 
 /**
- * Calculate upgrade pressure based on all 21 modules
+ * Calculate upgrade pressure based on all execution surfaces
  */
 async function calculateUpgradePressure(): Promise<'low' | 'medium' | 'high'> {
   try {
