@@ -57,16 +57,16 @@ export const ABSORBED_VERSIONS = {
 
 // Control plane versions
 export const CONTROL_PLANE_VERSIONS = {
-  atlas: { version: '11.0.0', codename: 'Prometheus', description: 'Centralized Control Plane' },
-  seba: { version: '2.0.0', codename: 'Full Spectrum Autonomy', description: 'Self-Evolving Bounded Agent' },
-  encode: { version: '11.0.0', codename: 'Genesis', description: 'Code Execution Intelligence' },
-  clm: { version: '11.0.0', codename: 'Perpetual', description: 'Constant Learning Mode' },
+  atlas: { version: '11.1.0', codename: 'Prometheus', description: 'Centralized Control Plane' },
+  seba: { version: '2.1.0', codename: 'Full Spectrum Autonomy', description: 'Self-Evolving Bounded Agent' },
+  encode: { version: '11.1.0', codename: 'Genesis', description: 'Code Execution Intelligence' },
+  clm: { version: '11.1.0', codename: 'Perpetual', description: 'Constant Learning Mode' },
 } as const;
 
 // Synergy Engine version
 export const SYNERGY_VERSION = {
-  version: '11.0.0',
-  pipelines: 200,
+  version: '11.1.0',
+  pipelines: 300,
   executors: 125,
   stierPipelines: 32,
 } as const;
