@@ -1,5 +1,5 @@
 /**
- * Module Controls Grid v10.5.0 ARCHITECT — All 21 modules with real-time status
+ * Module Controls Grid v11.1 SPARTA — All execution surfaces with real-time status
  */
 
 import { 
