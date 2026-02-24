@@ -141,11 +141,11 @@ export default function Foundations() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              CMPSBL v10.5.0 ARCHITECT presents a unified cognitive infrastructure platform 
-              implementing a six-layer, 21-module kernel architecture with 200+ synergy pipelines
-              and 400+ capabilities. The system provides persistent runtime with tiered memory,
+              CMPSBL SPARTA Epoch presents a unified cognitive infrastructure platform 
+              implementing a 10-entity + 5-mesh + 9-zone architecture with 300+ synergy pipelines
+              and 525+ capabilities. The system provides persistent runtime with tiered memory,
               adaptive learning cycles, multi-provider AI routing, real-time observability,
-              autonomous inter-module communication via the Intent Mesh, and self-improvement pipelines.
+              autonomous inter-module communication via the INTENT mesh, and self-improvement pipelines.
             </p>
             <p>
               This release establishes three interconnected standards: <strong>ARCHITECT</strong> as the 
