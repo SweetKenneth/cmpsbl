@@ -171,7 +171,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   immunity: {
     id: 'immunity',
     name: 'IMMUNITY',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'Adaptive resilience mesh. Executor shadow training, gap classification, self-healing patterns.',
     corePath: 'src/lib/substrate/modernizer-shadow-resolver/',
     dependencies: ['core', 'defense'],
