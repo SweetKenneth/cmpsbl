@@ -1,5 +1,5 @@
 /**
- * Enhanced Terminal v10.5.4 ARCHITECT - BIOHACK EDITION
+ * Enhanced Terminal — SPARTA EPOCH
  * Space Age Bio-Hacking Neural Interface Terminal
  * Full-featured terminal with comprehensive commands, autocomplete,
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions

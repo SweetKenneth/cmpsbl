@@ -326,7 +326,7 @@ const HUMAN_POSTS: BlogPost[] = [
     source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
-    id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the ARCHITECT Epoch",
+    id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the SPARTA Epoch",
     excerpt: "How the RELAY and IDENTITY modules establish a unified protocol layer for autonomous agent communication.",
     href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",
     date: "2026-02-10", readTime: "16 min", image: protocolStandardsImg,

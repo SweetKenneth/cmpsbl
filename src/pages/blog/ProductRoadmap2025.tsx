@@ -220,7 +220,7 @@ const ProductRoadmap2025 = () => {
 
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-foreground">
-              2026: ARCHITECT Epoch — Now
+              2026: SPARTA Epoch — Now
             </h2>
             
             <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">

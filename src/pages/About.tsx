@@ -29,7 +29,7 @@ export default function About() {
   const version = useMetric('version');
   const codename = useMetric('codename');
   const products = [
-    { icon: Brain, name: "CMPSBL Substrate", description: "21-module cognitive orchestration substrate with persistent memory" },
+    { icon: Brain, name: "CMPSBL Substrate", description: "9-module cognitive orchestration substrate with persistent memory, 5 mesh overlays, and 9 hot-swappable zones" },
     { icon: Shield, name: "DEFENSE Module", description: "Enterprise-grade threat detection and bot protection" },
     { icon: Eye, name: "VISION Module", description: "Full observability and system introspection layer" },
     { icon: Server, name: "NEXUS Gateway", description: "Multi-provider AI routing with BYOK architecture" },
@@ -174,7 +174,7 @@ export default function About() {
         <div className="container mx-auto max-w-6xl">
           <motion.h2 {...fadeUp} className="text-3xl font-bold mb-4 text-foreground">The Substrate</motion.h2>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-muted-foreground mb-10 text-lg">
-            21 integrated modules. 300 synergy pipelines. 100 crystallized Crown Jewel pipelines. Production-ready cognitive infrastructure.
+            9 modules. 5 mesh overlays. 9 zones. 300 synergy pipelines. 100 crystallized Crown Jewel pipelines. Production-ready cognitive infrastructure.
           </motion.p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -195,7 +195,7 @@ export default function About() {
 
           <motion.div {...fadeUp} className="mt-12 bg-card border border-border rounded-xl p-6 md:p-8 shadow-sm">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">v{version} {codename} Epoch</span> — 175,000+ lines of production code. 400+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
+              <span className="font-semibold">{codename} Epoch</span> — 175,000+ lines of production code. 525+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
             </p>
           </motion.div>
         </div>
@@ -250,7 +250,7 @@ export default function About() {
             {[
               { year: "2009", event: "Started building software—sites, apps, and tools for clients" },
               { year: "2024", event: "CMPSBL® founded. Substrate development begins." },
-              { year: "2025", event: `${codename} Epoch — 9 modules, 5 meshes, 9 zones, 300 pipelines, Composable Artifacts Store` },
+              { year: "2025–26", event: `SPARTA Epoch — 9 modules, 5 meshes, 9 zones, 300 pipelines, zone architecture with circuit-breaker isolation` },
               { year: "Now", event: "Production infrastructure serving developers and enterprises" }
             ].map((milestone, index) => (
               <motion.div

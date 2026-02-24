@@ -255,7 +255,7 @@ Learning feedback → improved future routing`}</pre>
         <section className="border-y border-border bg-muted/30">
           <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-4">21-Module Resolver Registry</h2>
+              <h2 className="text-3xl font-bold mb-4">Execution Surface Resolver Registry</h2>
               <p className="text-muted-foreground mb-10 max-w-2xl">
                 Every module in the substrate participates in the mesh, advertising capabilities that other modules can discover and compose dynamically.
               </p>
@@ -312,7 +312,7 @@ Learning feedback → improved future routing`}</pre>
           <div className="max-w-4xl mx-auto px-6 py-16 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
             <p className="text-muted-foreground mb-8">
-              The Intent Mesh is one layer of the CMPSBL OS Substrate — a 21-module cognitive orchestration system.
+              The Intent Mesh is one layer of the CMPSBL OS Substrate — a cognitive orchestration system with 9 modules, 5 mesh overlays, and 9 zones.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link

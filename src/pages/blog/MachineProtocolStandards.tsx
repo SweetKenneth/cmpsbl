@@ -9,15 +9,15 @@ import heroImg from "@/assets/blog/ai-protocol-standards-v9.jpg";
 export default function MachineProtocolStandards() {
   return (
     <>
-      <SEO title="Machine-to-Machine Protocol Standards | CMPSBL® ARCHITECT Epoch" description="How CMPSBL's RELAY and IDENTITY modules establish authenticated, auditable protocol standards for autonomous multi-agent communication." keywords={['machine protocol', 'agent communication', 'AI relay', 'multi-agent systems', 'ARCHITECT epoch']} />
+      <SEO title="Machine-to-Machine Protocol Standards | CMPSBL® SPARTA Epoch" description="How CMPSBL's RELAY and IDENTITY modules establish authenticated, auditable protocol standards for autonomous multi-agent communication." keywords={['machine protocol', 'agent communication', 'AI relay', 'multi-agent systems', 'SPARTA epoch']} />
       <PublicNav />
       <main className="min-h-screen bg-background">
         <article className="container max-w-3xl mx-auto px-4 py-16">
           <img src={heroImg} alt="AI protocol standards" className="w-full rounded-xl mb-8 aspect-video object-cover" />
-          <h1 className="text-4xl font-black mb-4">Machine-to-Machine Protocol Standards in the ARCHITECT Epoch</h1>
+          <h1 className="text-4xl font-black mb-4">Machine-to-Machine Protocol Standards in the SPARTA Epoch</h1>
           <p className="text-muted-foreground mb-8">February 10, 2026 · 16 min read · Kenneth E Sweet Jr</p>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
-            <p className="text-lg leading-relaxed">The ARCHITECT Epoch introduces a fundamental shift in how autonomous systems communicate. With the RELAY and IDENTITY modules now part of the 21-module substrate, machine-to-machine protocol standards are no longer aspirational — they're enforced at runtime.</p>
+            <p className="text-lg leading-relaxed">The SPARTA Epoch introduces a fundamental shift in how autonomous systems communicate. With the RELAY and IDENTITY zones now part of the substrate's CCL layer, machine-to-machine protocol standards are no longer aspirational — they're enforced at runtime.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">The Problem: Unstructured Agent Communication</h2>
             <p>Most AI agent frameworks treat inter-agent communication as an afterthought. Messages are passed as untyped JSON blobs, authentication is bolted on, and there's no standard for declaring intent, capability, or trust level. The result: fragile integrations that break silently.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">RELAY: Centralized Outbound Delivery</h2>

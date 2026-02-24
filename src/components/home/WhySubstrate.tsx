@@ -45,8 +45,8 @@ const differentiators = [
     layer: "Kernel",
     description: "CORE module handles task scheduling, cron jobs, and kernel-level coordination across all cognitive functions.",
     highlight: "Central Brain",
-    stat: "21",
-    statLabel: "Modules",
+    stat: "24",
+    statLabel: "Surfaces",
     color: "from-orange-500 to-amber-600",
     iconBg: "bg-gradient-to-br from-orange-500/20 to-amber-500/20",
     iconColor: "text-orange-500",
@@ -175,8 +175,8 @@ const differentiators = [
   {
     icon: Sparkles,
     title: "Self-Improving",
-    layer: "Admin",
-    description: "MODERNIZER module continuously scans code, proposes upgrades, and applies patches autonomously.",
+    layer: "Overlay",
+    description: "EVOLUTION mesh overlay continuously scans code, proposes upgrades, and applies patches autonomously.",
     highlight: "Autonomous Updates",
     stat: "Auto",
     statLabel: "Evolution",
@@ -305,7 +305,7 @@ const differentiators = [
     iconColor: "text-cyan-600",
     glowColor: "cyan",
   },
-  // ENCODE (Module #21)
+  // ENCODE
   {
     icon: Code2,
     title: "Code Intelligence",
@@ -325,9 +325,10 @@ const LAYER_CONFIG = {
   Kernel: { color: 'text-orange-400', count: 3 },
   Cognitive: { color: 'text-purple-400', count: 4 },
   Operational: { color: 'text-blue-400', count: 3 },
-  Admin: { color: 'text-emerald-400', count: 4 },
+  Admin: { color: 'text-emerald-400', count: 3 },
   Infrastructure: { color: 'text-sky-400', count: 6 },
   Orchestrator: { color: 'text-fuchsia-400', count: 1 },
+  Overlay: { color: 'text-rose-400', count: 1 },
 };
 
 // 3D tilt effect hook for cards
@@ -556,8 +557,8 @@ export function WhySubstrate() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">21</Badge>
+            All Surfaces
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">{differentiators.length}</Badge>
           </motion.button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
             <motion.button

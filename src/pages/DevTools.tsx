@@ -74,7 +74,7 @@ const MODULES = [
   { id: 'vision', name: 'Vision', icon: Eye, color: 'text-blue-400', desc: 'Observability & monitoring' },
   { id: 'dream', name: 'Dream', icon: Moon, color: 'text-purple-400', desc: 'Cognitive synthesis & evolution' },
   { id: 'system', name: 'System', icon: Settings, color: 'text-slate-400', desc: 'Configuration & backups' },
-  { id: 'modernizer', name: 'Modernizer', icon: Sparkles, color: 'text-pink-400', desc: 'Self-improvement engine' },
+  { id: 'evolution', name: 'Evolution', icon: Sparkles, color: 'text-pink-400', desc: 'Self-improvement engine' },
   { id: 'inclusive', name: 'Inclusive', icon: Eye, color: 'text-indigo-400', desc: 'Accessibility scanning & WCAG enforcement' },
 ];
 

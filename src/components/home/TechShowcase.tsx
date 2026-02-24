@@ -1,7 +1,7 @@
 /**
- * Tech Showcase — Interactive demonstration of all 21 CMPSBL modules
+ * Tech Showcase — Interactive demonstration of all CMPSBL execution surfaces
  * Premium terminal-style code display with syntax highlighting
- * v10.5.4: Full module coverage for the 6-layer kernel architecture + SEBA
+ * SPARTA Epoch: 9 modules + 5 meshes + 9 zones = 24 execution surfaces
  */
 
 import { useState, useEffect, useMemo } from "react";
@@ -253,7 +253,7 @@ await cmpsbl.system.restore({
 });`,
   },
   {
-    id: "modernizer",
+    id: "evolution",
     icon: Sparkles,
     layer: "Overlay",
     title: "EVOLUTION Lifecycle",
@@ -261,13 +261,13 @@ await cmpsbl.system.restore({
     color: "text-rose-500",
     gradient: "from-rose-500 to-pink-600",
     code: `// Scan for improvement opportunities
-const proposals = await cmpsbl.modernizer.scan({
+const proposals = await cmpsbl.evolution.scan({
   scope: ["brain", "nexus"],
   types: ["performance", "security"]
 });
 
 // Review and apply a proposal
-await cmpsbl.modernizer.apply({
+await cmpsbl.evolution.apply({
   proposal_id: proposals[0].id,
   shadow_test: true, // Test before production
   auto_rollback: true
@@ -495,7 +495,7 @@ const result = await env.execute({
 });
 console.log(result.output, result.metrics);`,
   },
-  // ENCODE (Module #21)
+  // ENCODE
   {
     id: "encode",
     icon: Layers,
@@ -534,7 +534,7 @@ function highlightCode(code: string): string {
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
     .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
     .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
-    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration|\.inclusive|\.cortex|\.memory|\.relay|\.audit|\.identity|\.economy|\.sandbox|\.encode)/g, '<span class="text-blue-400">$1</span>')
+    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.evolution|\.integration|\.inclusive|\.cortex|\.memory|\.relay|\.audit|\.identity|\.economy|\.sandbox|\.encode)/g, '<span class="text-blue-400">$1</span>')
     .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory|\.repair|\.selfScan|\.embed|\.search|\.register|\.notify|\.export|\.verify|\.provenance|\.budget|\.breakdown|\.create|\.generate)/g, '<span class="text-green-400">$1</span>')
     .replace(/(&quot;.*?&quot;|".*?")/g, '<span class="text-amber-300">$1</span>')
     .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
@@ -549,6 +549,7 @@ const LAYER_CONFIG = {
   Admin: { color: 'text-emerald-400', bgGlow: 'from-emerald-500/20' },
   Infrastructure: { color: 'text-sky-400', bgGlow: 'from-sky-500/20' },
   Orchestrator: { color: 'text-violet-400', bgGlow: 'from-violet-500/20' },
+  Overlay: { color: 'text-rose-400', bgGlow: 'from-rose-500/20' },
 } as const;
 
 export function TechShowcase() {
@@ -671,8 +672,8 @@ export function TechShowcase() {
             onClick={() => setActiveLayer(null)}
             className="h-8 px-4 text-xs font-medium"
           >
-            All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">14</Badge>
+            All Surfaces
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">{codeExamples.length}</Badge>
           </Button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => {
             const count = codeExamples.filter(e => e.layer === layer).length;
