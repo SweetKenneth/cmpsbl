@@ -1,6 +1,6 @@
 /**
- * Module Status Bar — Execution Surfaces, Zones, Overlays
- * v11.1 Surface Realignment — Layer-grouped status indicators
+ * Module Status Bar — Matrix Nodes, Zones, Overlays
+ * v11.1 Node Realignment — Layer-grouped status indicators
  */
 
 import { useState, useEffect } from 'react';
@@ -37,7 +37,7 @@ const MODULES: ModuleConfig[] = [
   { id: 'identity', name: 'IDENTITY', shortName: 'IDN', layer: 'ccl-zone', icon: Fingerprint, description: 'Session & role management', color: 'text-emerald-300', glowColor: 'bg-emerald-500' },
   { id: 'relay', name: 'RELAY', shortName: 'RLY', layer: 'ccl-zone', icon: Send, description: 'Webhook dispatch', color: 'text-amber-300', glowColor: 'bg-amber-500' },
   { id: 'audit', name: 'AUDIT', shortName: 'AUD', layer: 'ccl-zone', icon: ClipboardCheck, description: 'Integrity ledger', color: 'text-slate-400', glowColor: 'bg-slate-500' },
-  // Execution Surfaces
+  // Matrix Nodes
   { id: 'decode', name: 'DECODE', shortName: 'DEC', layer: 'surface', icon: MessageSquare, description: 'Epistemic interpreter', color: 'text-fuchsia-400', glowColor: 'bg-fuchsia-500' },
   { id: 'encode', name: 'ENCODE', shortName: 'ENC', layer: 'surface', icon: Code, description: 'Code generation pipeline', color: 'text-lime-400', glowColor: 'bg-lime-500' },
   { id: 'vision', name: 'VISION', shortName: 'VIS', layer: 'surface', icon: Eye, description: 'Observability & telemetry', color: 'text-blue-400', glowColor: 'bg-blue-500' },
@@ -59,7 +59,7 @@ const LAYER_CONFIG = {
   'kernel': { label: 'Kernel', color: 'text-orange-400', border: 'border-orange-500/30' },
   'ccr-zone': { label: 'CCR Zone', color: 'text-purple-400', border: 'border-purple-500/30' },
   'ccl-zone': { label: 'CCL Zone', color: 'text-cyan-400', border: 'border-cyan-500/30' },
-  'surface': { label: 'Execution Surface', color: 'text-blue-400', border: 'border-blue-500/30' },
+  'surface': { label: 'Matrix Node', color: 'text-blue-400', border: 'border-blue-500/30' },
   'overlay': { label: 'Overlay', color: 'text-red-400', border: 'border-red-500/30' },
 };
 
@@ -199,8 +199,8 @@ export function ModuleStatusBar() {
             <Layers className="w-4 h-4 text-cyan-400" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Surface Status</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">1 kernel / 4 CCR / 5 CCL / 9 surfaces / 5 overlays</p>
+            <h3 className="text-sm font-semibold text-foreground">Matrix Node Status</h3>
+            <p className="text-[10px] text-muted-foreground font-mono">1 kernel / 4 CCR / 5 CCL / 9 nodes / 5 overlays</p>
           </div>
         </div>
         

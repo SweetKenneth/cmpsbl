@@ -11,11 +11,11 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
-/** SPARTA Epoch — 1 Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones = 24 Surfaces */
+/** SPARTA Epoch — 1 Kernel + 9 Matrix Nodes + 5 Mesh Overlays + 9 Hidden Zones = 24 Surfaces */
 const MODULES_CONFIG = [
   // CORE Kernel
   { id: 'core', label: 'CORE', icon: Cpu, color: 'text-orange-400', hsl: '25, 95%, 53%' },
-  // 9 Execution Surfaces (Modules)
+  // 9 Matrix Nodes
   { id: 'decode', label: 'DECODE', icon: Activity, color: 'text-fuchsia-400', hsl: '292, 84%, 61%' },
   { id: 'encode', label: 'ENCODE', icon: Code, color: 'text-lime-400', hsl: '84, 81%, 44%' },
   { id: 'vision', label: 'VISION', icon: Eye, color: 'text-blue-400', hsl: '217, 91%, 60%' },

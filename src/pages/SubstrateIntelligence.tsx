@@ -90,7 +90,7 @@ const faqItems = [
   },
   {
     question: "What's included in a license?",
-    answer: "Developer License ($2,999/yr) includes: complete layered cognitive kernel (10 execution surfaces, 5 mesh overlays, 9 convergence zones), persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 360+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
+    answer: "Developer License ($2,999/yr) includes: complete layered cognitive kernel (10 Matrix Nodes, 5 mesh overlays, 9 convergence zones), persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 360+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
   },
   {
     question: "Can the entire IP be acquired?",
@@ -132,7 +132,7 @@ export default function SubstrateIntelligence() {
               </h1>
               
               <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">Specialized execution surfaces with full documentation.</strong> Research published on Zenodo.
+                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">Specialized Matrix Nodes with full documentation.</strong> Research published on Zenodo.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -153,7 +153,7 @@ export default function SubstrateIntelligence() {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  24 Execution Surfaces - Fully Documented
+                  24 Matrix Nodes — Fully Documented
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
@@ -264,7 +264,7 @@ Boot complete in 109ms`}
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold mb-4">Layered Cognitive Kernel</h2>
-                <p className="text-muted-foreground">Execution surfaces, mesh overlays, and convergence zones</p>
+                <p className="text-muted-foreground">Matrix Nodes, mesh overlays, and convergence zones</p>
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

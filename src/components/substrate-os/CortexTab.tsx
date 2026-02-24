@@ -1,7 +1,7 @@
 /**
- * CORTEX Surface Tab — Agency-class Orchestrator Dashboard
+ * CORTEX Matrix Node — Agency-class Orchestrator Dashboard
  * SPARTA Epoch — Policy Intent Layer + Evolution Sequencing
- * Orchestrates all execution surfaces across the layered kernel
+ * Orchestrates all Matrix Nodes across the layered kernel
  */
 
 import { useState } from 'react';

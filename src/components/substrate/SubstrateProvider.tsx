@@ -3,7 +3,7 @@
  * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  *
  * CORE (standalone) → CCR (Layer 0) → CCL (Layer 1)
- * → 8 Execution Surfaces → 5 Overlays → INTEGRATION
+ * → 8 Matrix Nodes → 5 Overlays → INTEGRATION
  */
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
@@ -110,11 +110,11 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     if (!debugMode.allowModulePolling()) return;
     if (!mountedRef.current) return;
 
-    // Check 10 public entities + 5 mesh overlays
+    // Check 10 Matrix Nodes + 5 mesh overlays
     const publicEntities: SubstrateModule[] = [
       // CORE
       'core',
-      // 9 Modules (INTEGRATION boots last)
+      // 9 Matrix Nodes (INTEGRATION boots last)
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration',
       // 5 Mesh Overlays (DEFENSE outermost → GOVERNANCE innermost)
       'defense', 'immunity', 'evolution', 'intent', 'governance',

@@ -19,8 +19,8 @@ Internal architecture reference for the CMPSBL Substrate.
 CORE (Standalone Kernel)
   → CCR (Layer 0): SYSTEM + BRAIN + MEMORY + DREAM
   → CCL (Layer 1): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
-  → 8 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
-  → INTEGRATION (Module, boots last)
+  → 8 Matrix Nodes: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
+  → INTEGRATION (boots last)
   ← 5 Mesh Overlays: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
 = 10 Public Entities + 5 Mesh Overlays + 9 Zones = 24 Execution Surfaces
 ```

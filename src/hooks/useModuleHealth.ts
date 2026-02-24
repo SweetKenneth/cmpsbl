@@ -1,6 +1,6 @@
 /**
- * Module Health Monitor Hook
- * Tracks health status of all 12 PromptFluid modules via substrate
+ * Matrix Node Health Monitor Hook
+ * Tracks health status of all Matrix Nodes via substrate
  * Respects debugMode — when enabled, auto-check is disabled
  */
 

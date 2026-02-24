@@ -83,7 +83,7 @@ export const TOTAL_ENGINE_ECOSYSTEM = ENGINES_COUNT + META_ENGINES_COUNT;
 
 /**
  * Registered capabilities (edge-adapted + native + archived + high-value + infra + apex + SPARTA expansion)
- * 525+ total capabilities across 24 execution surfaces
+ * 525+ total capabilities across 24 Matrix Nodes
  */
 export const CAPABILITIES_COUNT = 525;
 

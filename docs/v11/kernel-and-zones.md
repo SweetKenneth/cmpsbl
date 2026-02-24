@@ -29,7 +29,7 @@ The **Clockless Cognitive Lucidity** layer provides high-performance infrastruct
 | **RELAY** | Webhook dispatch, external integrations |
 | **AUDIT** | Integrity ledger, compliance logging |
 
-CCL zones remain invisible in the public entity registry but are fully monitored via the System Integrity dashboard.
+CCL zones remain invisible in the public Matrix Node registry but are fully monitored via the System Integrity dashboard.
 
 ## Zone Isolation
 
