@@ -45,7 +45,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     icon: Cpu,
     color: "blue-500",
     useCaseH1: "Self-Bootstrapping AI Runtime for Autonomous Systems",
-    heroDescription: "CORE is the heartbeat of the substrate — a self-initializing runtime that boots 21 modules in dependency order, manages health checks, and provides the event bus that connects everything.",
+    heroDescription: "CORE is the heartbeat of the substrate — a self-initializing runtime that boots all entities in dependency order, manages health checks, and provides the event bus that connects everything.",
     features: ["Dependency-ordered boot sequence", "Health monitoring & auto-recovery", "Event bus (pub/sub) for inter-module messaging", "Hot-reload without downtime", "Module lifecycle management"],
     highlights: [
       { title: "Zero-Downtime Hot Reload", description: "Swap module versions in production without dropping a single request. CORE manages graceful handoffs across all 21 modules simultaneously, keeping your AI stack online 24/7." },
