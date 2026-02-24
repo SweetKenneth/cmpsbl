@@ -39,11 +39,31 @@ export interface ReflectionResult {
   timestamp: string;
 }
 
+export interface EnhancementRequest {
+  module: SubstrateModule;
+  id: string;
+  title: string;           // Short blurb like "upgrade api calls"
+  description: string;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  status: 'pending' | 'approved' | 'granted' | 'rejected';
+  grantedAt?: string;
+  category: 'capability' | 'performance' | 'resilience' | 'security' | 'integration';
+}
+
+export interface ModuleEnhancementReport {
+  module: SubstrateModule;
+  topRequest: string;       // Short blurb for email
+  requests: EnhancementRequest[];
+  importanceScore: number;  // 0-100 for dynamic ranking
+}
+
 export interface ModuleLearningHook {
   module: SubstrateModule;
   getKPIs: () => Promise<ModuleKPIs>;
   reflect: (context?: string) => Promise<ReflectionResult>;
   ingestLearning: (insight: string, confidence: number) => Promise<boolean>;
+  getEnhancementRequests: () => Promise<EnhancementRequest[]>;
+  acknowledgeEnhancement: (enhancementId: string) => Promise<boolean>;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
