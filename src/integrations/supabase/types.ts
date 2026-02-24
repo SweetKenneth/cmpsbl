@@ -13407,6 +13407,18 @@ export type Database = {
         Args: { p_calls?: number; p_category?: string; p_tokens?: number }
         Returns: undefined
       }
+      is_clarity_team_admin: {
+        Args: { _team_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_clarity_team_member: {
+        Args: { _team_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_clarity_team_owner: {
+        Args: { _team_id: string; _user_id: string }
+        Returns: boolean
+      }
       reset_daily_quotas: { Args: never; Returns: undefined }
       resolve_evolution_run: {
         Args: { p_ref: string }
