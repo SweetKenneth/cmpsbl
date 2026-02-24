@@ -253,7 +253,7 @@ await cmpsbl.system.restore({
 });`,
   },
   {
-    id: "modernizer",
+    id: "evolution",
     icon: Sparkles,
     layer: "Overlay",
     title: "EVOLUTION Lifecycle",
@@ -261,7 +261,7 @@ await cmpsbl.system.restore({
     color: "text-rose-500",
     gradient: "from-rose-500 to-pink-600",
     code: `// Scan for improvement opportunities
-const proposals = await cmpsbl.modernizer.scan({
+const proposals = await cmpsbl.evolution.scan({
   scope: ["brain", "nexus"],
   types: ["performance", "security"]
 });
