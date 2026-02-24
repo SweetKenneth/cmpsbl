@@ -3275,7 +3275,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // CLM.RUN_ALL — Run CLM for ALL 21 modules
+    // CLM.RUN_ALL — Run CLM for ALL 9 modules
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'clm.run_all') {
       try {
