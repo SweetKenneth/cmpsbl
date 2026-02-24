@@ -19,7 +19,7 @@
 export interface ModuleEntry {
   id: string;
   name: string;
-  layer: 'kernel' | 'cognitive' | 'orchestration' | 'infrastructure' | 'operational' | 'mesh' | 'standalone';
+  layer: 'kernel' | 'cognitive' | 'orchestration' | 'infrastructure' | 'operational' | 'mesh-overlay';
   description: string;
   corePath: string;
   hookPath?: string;
