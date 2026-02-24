@@ -200,7 +200,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   governance: {
     id: 'governance',
     name: 'GOVERNANCE',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'Ethical constraints, veto authority, epistemic discipline, signal arbitration, coherence enforcement.',
     corePath: 'src/lib/substrate/governance/',
     dependencies: ['core'],
