@@ -162,7 +162,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   defense: {
     id: 'defense',
     name: 'DEFENSE',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'AI-powered security mesh: bot detection, rate limiting, threat analysis, stealth mode.',
     corePath: 'src/lib/defense/',
     dependencies: ['core'],
