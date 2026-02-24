@@ -90,7 +90,7 @@ const faqItems = [
   },
   {
     question: "What's included in a license?",
-    answer: "Developer License ($2,999/yr) includes: complete 21-module kernel across 6 layers, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 360+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
+    answer: "Developer License ($2,999/yr) includes: complete layered cognitive kernel (10 execution surfaces, 5 mesh overlays, 9 convergence zones), persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 360+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
   },
   {
     question: "Can the entire IP be acquired?",
