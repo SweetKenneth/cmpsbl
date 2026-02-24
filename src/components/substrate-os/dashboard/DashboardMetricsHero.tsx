@@ -23,7 +23,7 @@ const MODULES_CONFIG = [
   { id: 'vision', label: 'Vision', icon: Eye, color: 'text-blue-400', hsl: '217, 91%, 60%' },
   { id: 'encode', label: 'Encode', icon: Code, color: 'text-lime-400', hsl: '84, 81%, 44%' },
   { id: 'system', label: 'System', icon: Settings, color: 'text-emerald-400', hsl: '160, 84%, 39%' },
-  { id: 'modernizer', label: 'Modernizer', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
+  { id: 'modernizer', label: 'Evolution', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
   { id: 'integration', label: 'Integration', icon: Plug, color: 'text-teal-400', hsl: '173, 80%, 40%' },
   { id: 'inclusive', label: 'Inclusive', icon: Accessibility, color: 'text-pink-400', hsl: '330, 81%, 60%' },
   { id: 'cortex', label: 'Cortex', icon: GitBranch, color: 'text-indigo-400', hsl: '239, 84%, 67%' },
