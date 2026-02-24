@@ -385,7 +385,7 @@ const evolutionLogV10: EvolutionEntry[] = [
   },
 ];
 
-// Living Evolution Log — v9.x.x Series (ARCHITECT Epoch)
+// Living Evolution Log — v9.x.x Series (Pre-SPARTA)
 const evolutionLogV9: EvolutionEntry[] = [
   {
     id: "v9-evolution-003",
