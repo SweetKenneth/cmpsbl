@@ -1,4 +1,4 @@
-// PromptFluid SEO Intelligence - Schema Generator
+// CMPSBL Substrate — Schema Generator
 // Automatic JSON-LD structured data generation
 
 export interface SchemaConfig {
