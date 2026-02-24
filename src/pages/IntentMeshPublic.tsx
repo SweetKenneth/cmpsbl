@@ -1,7 +1,7 @@
 /**
  * Intent Mesh — Public Website Documentation Page
  * /intent-mesh — SEO-optimized public doc about the mesh architecture
- * v10.5.4 — Now includes interactive force-directed mesh visualization
+ * SPARTA Epoch — Interactive force-directed mesh visualization
  */
 
 import { Helmet } from "react-helmet-async";

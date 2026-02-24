@@ -82,10 +82,10 @@ export const TOTAL_ENGINE_ECOSYSTEM = ENGINES_COUNT + META_ENGINES_COUNT;
 // =============================================================================
 
 /**
- * Registered capabilities (edge-adapted + native + archived + high-value v8.5.0 + infra v9.0.0 + apex)
- * 269 original + 56 high-value + 54 infrastructure + 21 apex = 400
+ * Registered capabilities (edge-adapted + native + archived + high-value + infra + apex + SPARTA expansion)
+ * 525+ total capabilities across 24 modules
  */
-export const CAPABILITIES_COUNT = 400;
+export const CAPABILITIES_COUNT = 525;
 
 /**
  * Archived/legacy capabilities available for adaptation
