@@ -27,7 +27,7 @@ interface ModuleState {
   id: string;
   name: string;
   icon: React.ElementType;
-  layer: 'kernel' | 'module' | 'mesh' | 'standalone' | 'zone-ccr' | 'zone-ccl';
+  layer: 'kernel' | 'module' | 'mesh-overlay' | 'zone-ccr' | 'zone-ccl';
   status: 'idle' | 'active' | 'processing' | 'complete';
   color: string;
   description: string;
