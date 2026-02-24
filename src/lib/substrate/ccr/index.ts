@@ -2,7 +2,7 @@
  * CLOCKLESS_COGNITIVE_REALITY (CCR)
  * Layer 0 — Hidden Meta-Engine powering the CMPSBL Substrate
  * 
- * Merges: CORE + SYSTEM + BRAIN + MEMORY + DREAM
+ * Merges: SYSTEM + BRAIN + MEMORY + DREAM (CORE is standalone)
  * Non-marketed, non-navigable, invisible to users (known, not shown).
  * Old module surfaces remain as proxy facades routing here.
  * 
