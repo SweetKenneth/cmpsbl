@@ -29,11 +29,11 @@ export default function About() {
   const version = useMetric('version');
   const codename = useMetric('codename');
   const products = [
-    { icon: Brain, name: "CMPSBL Substrate", description: "9-module cognitive orchestration substrate with persistent memory, 5 mesh overlays, and 9 hot-swappable zones" },
-    { icon: Shield, name: "DEFENSE Module", description: "Enterprise-grade threat detection and bot protection" },
-    { icon: Eye, name: "VISION Module", description: "Full observability and system introspection layer" },
-    { icon: Server, name: "NEXUS Gateway", description: "Multi-provider AI routing with BYOK architecture" },
-    { icon: Accessibility, name: "INCLUSIVE Module", description: "Human compatibility pipeline with WCAG scanning & AI remediation" },
+    { icon: Brain, name: "CMPSBL Substrate", description: "Layered cognitive orchestration substrate with persistent memory, mesh overlays, and hot-swappable convergence zones" },
+    { icon: Shield, name: "DEFENSE Mesh", description: "Enterprise-grade threat detection and bot protection overlay" },
+    { icon: Eye, name: "VISION", description: "Full observability and system introspection module" },
+    { icon: Server, name: "NEXUS", description: "Multi-provider AI routing module with BYOK architecture" },
+    { icon: Accessibility, name: "INCLUSIVE", description: "Human compatibility module with WCAG scanning & AI remediation" },
     { icon: Zap, name: "Engines", description: "Production-ready cognitive orchestrations" },
   ];
 
@@ -174,7 +174,7 @@ export default function About() {
         <div className="container mx-auto max-w-6xl">
           <motion.h2 {...fadeUp} className="text-3xl font-bold mb-4 text-foreground">The Substrate</motion.h2>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-muted-foreground mb-10 text-lg">
-            9 modules. 5 mesh overlays. 9 zones. 300 synergy pipelines. 100 crystallized Crown Jewel pipelines. Production-ready cognitive infrastructure.
+            Modules. Mesh overlays. Convergence zones. Synergy pipelines. Crystallized Crown Jewel pipelines. Production-ready cognitive infrastructure.
           </motion.p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

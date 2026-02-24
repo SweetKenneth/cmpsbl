@@ -41,34 +41,24 @@ const LIBRARY_DOCS = [
 ];
 
 const MODULES = [
-  // Kernel Layer
-  { name: "CORE", icon: Cpu, desc: "Scheduling & lifecycle", layer: "Kernel" },
-  { name: "RIPPLE", icon: Radio, desc: "Event bus & propagation", layer: "Kernel" },
-  { name: "ACCESS", icon: Key, desc: "Identity & permissions", layer: "Kernel" },
-  // Cognitive Layer
-  { name: "BRAIN", icon: Brain, desc: "3-tier memory engine", layer: "Cognitive" },
-  { name: "DECODE", icon: Terminal, desc: "Intent parsing & voice", layer: "Cognitive" },
-  { name: "DREAM", icon: Moon, desc: "Pattern synthesis", layer: "Cognitive" },
-  // Operational Layer
-  { name: "DEFENSE", icon: Shield, desc: "Threat intelligence", layer: "Operational" },
-  { name: "NEXUS", icon: Zap, desc: "AI provider routing", layer: "Operational" },
-  { name: "VISION", icon: Eye, desc: "Observability & traces", layer: "Operational" },
-  { name: "ENCODE", icon: Code, desc: "Autonomous code engine", layer: "Operational" },
-  // Administrative Layer
-  { name: "SYSTEM", icon: Settings, desc: "Orchestration & config", layer: "Administrative" },
-  { name: "EVOLUTION", icon: Landmark, desc: "Bounded self-evolution", layer: "Administrative" },
-  { name: "INTEGRATION", icon: Globe, desc: "External connectors", layer: "Administrative" },
-  { name: "INCLUSIVE", icon: Users, desc: "Accessibility engine", layer: "Administrative" },
-  // Orchestrator Layer
-  { name: "CORTEX", icon: Layers, desc: "Policy orchestration", layer: "Orchestrator" },
-  { name: "ATLAS", icon: Globe, desc: "Capability registry", layer: "Orchestrator" },
-  // Infrastructure Layer
-  { name: "MEMORY", icon: Box, desc: "Vector/RAG recall", layer: "Infrastructure" },
-  { name: "RELAY", icon: Send, desc: "Outbound delivery", layer: "Infrastructure" },
-  { name: "AUDIT", icon: ScrollText, desc: "Compliance logging", layer: "Infrastructure" },
-  { name: "IDENTITY", icon: Fingerprint, desc: "Actor attribution", layer: "Infrastructure" },
-  { name: "ECONOMY", icon: DollarSign, desc: "Cost & budget tracking", layer: "Infrastructure" },
-  { name: "SANDBOX", icon: Lock, desc: "Safe execution env", layer: "Infrastructure" },
+  // Kernel
+  { name: "CORE", icon: Cpu, desc: "Boot authority & lifecycle", layer: "Kernel" },
+  // Modules (9)
+  { name: "DECODE", icon: Terminal, desc: "Intent parsing & voice", layer: "Module" },
+  { name: "ENCODE", icon: Code, desc: "Code generation engine", layer: "Module" },
+  { name: "VISION", icon: Eye, desc: "Observability & traces", layer: "Module" },
+  { name: "CORTEX", icon: Layers, desc: "Multi-surface orchestration", layer: "Module" },
+  { name: "NEXUS", icon: Zap, desc: "AI provider routing", layer: "Module" },
+  { name: "ECONOMY", icon: DollarSign, desc: "Cost & budget tracking", layer: "Module" },
+  { name: "SANDBOX", icon: Lock, desc: "Isolated execution", layer: "Module" },
+  { name: "INCLUSIVE", icon: Users, desc: "Accessibility engine", layer: "Module" },
+  { name: "INTEGRATION", icon: Globe, desc: "External connectors", layer: "Module" },
+  // Mesh Overlays (5)
+  { name: "DEFENSE", icon: Shield, desc: "Security perimeter", layer: "Mesh" },
+  { name: "IMMUNITY", icon: Shield, desc: "Adaptive resilience", layer: "Mesh" },
+  { name: "EVOLUTION", icon: Landmark, desc: "Self-improvement", layer: "Mesh" },
+  { name: "INTENT", icon: Network, desc: "Goal decomposition", layer: "Mesh" },
+  { name: "GOVERNANCE", icon: ScrollText, desc: "Ethical constraints", layer: "Mesh" },
 ];
 
 export default function Foundations() {
@@ -103,7 +93,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="Clockless SPARTA Epoch — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the 10-entity + 5-mesh architecture and access archival records." />
+        <meta name="description" content="Clockless SPARTA Epoch — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the layered architecture and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -124,10 +114,10 @@ export default function Foundations() {
             governance, and self-improvement.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">10 Entities</Badge>
-            <Badge variant="outline">5 Mesh Overlays</Badge>
-            <Badge variant="outline">400+ Capabilities</Badge>
-            <Badge variant="outline">250+ Synergy Pipelines</Badge>
+            <Badge variant="outline">Layered Architecture</Badge>
+            <Badge variant="outline">Mesh Overlays</Badge>
+            <Badge variant="outline">Capabilities</Badge>
+            <Badge variant="outline">Synergy Pipelines</Badge>
           </div>
         </div>
 
@@ -142,8 +132,8 @@ export default function Foundations() {
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
               CMPSBL SPARTA Epoch presents a unified cognitive infrastructure platform 
-              implementing a 10-entity + 5-mesh + 9-zone architecture with 300+ synergy pipelines
-              and 525+ capabilities. The system provides persistent runtime with tiered memory,
+              implementing a layered kernel architecture with modules, mesh overlays, convergence zones,
+              synergy pipelines, and extensive capabilities. The system provides persistent runtime with tiered memory,
               adaptive learning cycles, multi-provider AI routing, real-time observability,
               autonomous inter-module communication via the INTENT mesh, and self-improvement pipelines.
             </p>
@@ -160,7 +150,7 @@ export default function Foundations() {
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
             <Layers className="w-6 h-6 text-primary" />
-            10-Entity + 5-Mesh Architecture
+            Layered Architecture
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
             {MODULES.map((mod) => (
