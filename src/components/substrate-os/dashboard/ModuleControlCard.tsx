@@ -69,7 +69,7 @@ export function ModuleControlCard({
   const [pendingAction, setPendingAction] = useState<string | null>(null);
   const [recentSuccess, setRecentSuccess] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const layerBadge = layerBadges[layer];
+  const layerBadge = layerBadges[layer] ?? { label: layer?.toUpperCase() ?? 'UNKNOWN', color: 'border-border/50 text-muted-foreground bg-muted/10' };
   const voice = useSubstrateVoice();
   const { play } = useSoundEffects();
 

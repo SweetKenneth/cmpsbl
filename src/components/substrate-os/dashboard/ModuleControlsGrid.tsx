@@ -219,6 +219,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     },
     // Orchestrator Layer
     {
+      id: 'cortex', name: 'CORTEX', layer: 'orchestrator' as const, icon: GitBranch,
       description: 'Agency-class orchestrator',
       gradient: 'bg-gradient-to-r from-indigo-500 to-violet-600', accentColor: 'bg-indigo-500',
       status: cortexStatus,
