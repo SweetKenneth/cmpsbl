@@ -924,7 +924,7 @@ serve(async (req) => {
           case "integration":
             return await handleIntegration(supabase, action, params, corsHeaders);
           
-        case "cortex":
+          case "cortex":
             return await handleCortex(supabase, action, params, corsHeaders, state);
           
           case "inclusive":
