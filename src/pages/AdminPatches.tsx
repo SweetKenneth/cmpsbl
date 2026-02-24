@@ -479,7 +479,7 @@ function ChangeCard({ change, onApprove, onDecline }: {
 
         {/* Decline reason */}
         {change.declined_reason && (
-          <div className="text-xs text-red-400/80 bg-red-500/10 rounded px-2 py-1">
+          <div className="text-xs text-destructive/80 bg-destructive/10 rounded px-2 py-1">
             Declined: {change.declined_reason}
           </div>
         )}
@@ -490,7 +490,7 @@ function ChangeCard({ change, onApprove, onDecline }: {
             <Button 
               size="sm" 
               onClick={() => onApprove(change.id)} 
-              className="gap-1 bg-emerald-600 hover:bg-emerald-700"
+              className="gap-1"
             >
               <Check className="w-3 h-3" /> Approve for LNCHBL
             </Button>
