@@ -55,7 +55,7 @@ const DEFAULT_CONFIG: CircuitConfig = {
   monitorWindowMs: 300000, // 5 minutes
 };
 
-// All 21 substrate modules
+// All substrate execution surfaces
 const SUBSTRATE_MODULES = [
   'core', 'ripple', 'access', 'brain', 'vision', 'cortex',
   'modernizer', 'decode', 'defense', 'nexus', 'dream',

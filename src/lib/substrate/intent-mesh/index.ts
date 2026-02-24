@@ -7,7 +7,7 @@
  * resolvers, and every interaction produces an auditable receipt.
  * 
  * v10.2 additions:
- * - Per-module self-discovery (21 modules discover their own capabilities)
+ * - Per-module self-discovery (9 modules discover their own capabilities)
  * - Intent quality scoring (modules learn which intents get best responses)
  * - Auto-expansion scheduler (periodic self-improvement cycles)
  * 
