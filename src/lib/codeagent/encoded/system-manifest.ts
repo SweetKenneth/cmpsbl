@@ -207,12 +207,12 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     dependents: [],
   },
 
-  // ─── Standalone ────────────────────────────────────────────────────────────
+  // ─── INTEGRATION (Module — boots last) ──────────────────────────────────
   integration: {
     id: 'integration',
     name: 'INTEGRATION',
-    layer: 'standalone',
-    description: 'External service connections, OAuth flows, and third-party API management.',
+    layer: 'operational',
+    description: 'External service connections, OAuth flows, adapters, and third-party API management. Boots last.',
     corePath: 'src/lib/integrations/',
     dependencies: ['core'],
     dependents: [],
