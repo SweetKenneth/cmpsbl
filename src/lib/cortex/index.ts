@@ -17,7 +17,7 @@ export const CORTEX_VERSION = '7.0.0';
 export const CORTEX_CODENAME = 'Orchestrator';
 
 // Module layers
-export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure';
+export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure' | 'mesh';
 
 // Module registry
 export interface ModuleRegistryEntry {
