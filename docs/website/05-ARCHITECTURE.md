@@ -1,6 +1,6 @@
 # Architecture Overview
 
-**CMPSBL® Cognitive Infrastructure — CCL Epoch**
+**CMPSBL® Cognitive Infrastructure — CORE Epoch**
 
 ---
 
@@ -14,47 +14,75 @@ CMPSBL® is built on three core principles:
 
 ---
 
-## The 12-Module + 2-Layer Architecture
+## The 15-Entity Architecture
 
-CMPSBL organizes intelligence across **12 public modules** and **2 hidden convergence layers** (CCR + CCL). Together they produce **200+ synergy pipelines** and **400+ capabilities**.
+CMPSBL organizes intelligence across **15 public entities** and **2 hidden convergence layers** (CCR + CCL). Together they produce **200+ synergy pipelines** and **400+ capabilities**.
 
-### Layer Overview
+### Boot Order
 
-| Layer | Type | Purpose |
+```
+CORE → CCR (Layer 0) → CCL (Layer 1) → Modules → Meshes → INTEGRATION
+```
+
+### Entity Map
+
+| Entity | Type | Purpose |
+|--------|------|---------|
+| **CORE** | Kernel | Standalone kernel — boot, circuit breakers, config, job scheduling |
+| **DECODE** | Module | Intent router — parses human ambiguity into structured task packets |
+| **ENCODE** | Module | Code generation and transformation engine |
+| **VISION** | Module | Unified analytics, telemetry, observability |
+| **CORTEX** | Module | Pipeline orchestrator, multi-stage cognitive workflows |
+| **NEXUS** | Module | Multi-provider AI gateway |
+| **ECONOMY** | Module | Cost attribution, budgeting, marketplace signaling |
+| **SANDBOX** | Module | Isolated execution environments |
+| **INCLUSIVE** | Module | Accessibility scanning, WCAG compliance |
+| **DEFENSE** | Mesh | AI-powered security, bot detection, threat analysis |
+| **IMMUNITY** | Mesh | Adaptive resilience, executor shadow training, self-healing |
+| **EVOLUTION** | Mesh | Self-improvement — mutation proposals, shadow A/B, canary deployment |
+| **INTENT** | Mesh | Cross-module intent routing, goal decomposition |
+| **GOVERNANCE** | Mesh | Ethical constraints, veto authority, coherence enforcement |
+| **INTEGRATION** | Standalone | External service connections, OAuth, third-party APIs |
+
+### Hidden Layers
+
+| Layer | Type | Absorbs |
 |-------|------|---------|
-| **CCR** (Layer 0) | Hidden Meta-Engine | CORE + SYSTEM + BRAIN + MEMORY + DREAM — foundation cognitive reality |
-| **CCL** (Layer 1) | Hidden Infrastructure | RIPPLE + ACCESS + IDENTITY + RELAY — infrastructure convergence (lucidity) |
-| **Cognitive** | Public (2) | Intelligence — intent parsing, natural language understanding |
-| **Orchestration** | Public (3) | Routing — AI gateway, pipeline orchestration, code generation |
-| **Operational** | Public (3) | Runtime — security, analytics, integrations |
-| **Governance** | Public (1) | Compliance — accessibility, WCAG enforcement |
-| **Evolution** | Public (1) | Self-improvement — shadow-to-production deployment |
-| **Infrastructure** | Public (2) | Trust — compliance logging, cost management, sandboxing |
+| **CCR** (Layer 0) | Hidden Meta-Engine | SYSTEM + BRAIN + MEMORY + DREAM |
+| **CCL** (Layer 1) | Hidden Infrastructure | RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT |
+
+MODERNIZER is absorbed by the **EVOLUTION** mesh.
 
 ---
 
 ## What Each Layer Does
 
+### CORE — Standalone Kernel
+The first thing that boots. Owns boot sequencing, circuit breakers, configuration, job scheduling, and the module registry. Everything depends on CORE.
+
 ### CCR — Clockless Cognitive Reality (Layer 0, Hidden)
-The invisible foundation. Owns boot sequencing, circuit breakers, configuration, reasoning, memory persistence, and dream synthesis. Everything depends on CCR but nothing references it publicly.
+The invisible cognitive foundation. Owns reasoning, memory persistence, dream synthesis, and system administration. Legacy commands (brain.*, system.*, memory.*, dream.*) route through CCR.
 
 ### CCL — Clockless Cognitive Lucidity (Layer 1, Hidden)
-Infrastructure convergence. Owns event bus (signal), identity/auth, API key management, rate limiting, entitlements, webhook delivery, and outbound routing. Services are accessed through the unified CCL surface.
+Infrastructure convergence. Owns event bus (signal), identity/auth, API key management, rate limiting, entitlements, webhook delivery, outbound routing, and compliance logging (AUDIT). Legacy commands route through CCL.
 
-### Cognitive Layer
-The intelligence core. Intent parsing via DECODE and natural language interpretation that understands user goals.
+### Modules (8)
+The public capability surface:
+- **Cognitive**: DECODE (intent parsing)
+- **Orchestration**: ENCODE (code gen), CORTEX (pipelines), NEXUS (AI routing)
+- **Operational**: VISION (observability), INCLUSIVE (accessibility)
+- **Infrastructure**: ECONOMY (cost), SANDBOX (isolation)
 
-### Orchestration Layer
-Multi-provider AI routing (NEXUS), pipeline orchestration (CORTEX), and code generation (ENCODE).
+### Meshes (5)
+Cross-cutting concerns that operate across all modules:
+- **DEFENSE** — Security perimeter
+- **IMMUNITY** — Adaptive resilience and self-healing
+- **EVOLUTION** — Self-improvement lifecycle (absorbs MODERNIZER)
+- **INTENT** — Goal decomposition and intent routing
+- **GOVERNANCE** — Ethical constraints and coherence
 
-### Operational Layer
-Runtime services: DEFENSE for security, VISION for observability, INTEGRATION for external service connections.
-
-### Governance & Evolution
-INCLUSIVE for accessibility compliance. MODERNIZER for autonomous code evolution with shadow-to-production deployment.
-
-### Infrastructure Layer
-AUDIT for immutable compliance logging, ECONOMY for cost attribution, SANDBOX for isolated execution.
+### INTEGRATION (Standalone)
+External service connections, OAuth flows, and third-party API management.
 
 ---
 
@@ -66,8 +94,6 @@ CMPSBL features a **multi-tier memory architecture** that automatically manages 
 - **Intermediate memories** are retained for recurring access patterns
 - **Archived memories** are compressed but never lost
 - **Protected memories** (identity, principles, safety) are immutable
-
-The system automatically scores, compresses, and promotes/demotes memories based on usage patterns — no manual management required.
 
 ---
 
@@ -83,7 +109,7 @@ All modules communicate through a unified event system that provides:
 
 ## Self-Evolution
 
-The substrate continuously improves itself through a governed lifecycle:
+The substrate continuously improves itself through the EVOLUTION mesh:
 
 1. **Observe** — Identify improvement opportunities
 2. **Propose** — Generate change candidates
@@ -91,18 +117,16 @@ The substrate continuously improves itself through a governed lifecycle:
 4. **Gate** — Human approval for significant changes
 5. **Deploy** — Apply with automatic rollback on failure
 
-All changes are confidence-gated, shadow-tested, and fully auditable.
-
 ---
 
 ## Security
 
-Defense-in-depth security built into the core:
+Defense-in-depth security built into the DEFENSE + IMMUNITY meshes:
 
 - **Zero Trust** — Every request is verified
 - **Adaptive Protection** — Security learns from attack patterns
 - **Compliance Ready** — SOC 2, GDPR patterns built in
-- **Complete Audit Trail** — Every action is logged immutably
+- **Complete Audit Trail** — Every action is logged immutably (via CCL)
 
 ---
 
@@ -116,12 +140,4 @@ Defense-in-depth security built into the core:
 
 ---
 
-## Next Steps
-
-- [Getting Started](./06-GETTING-STARTED.md) — Start building
-- [Licensing](./07-LICENSING.md) — Self-hosted licensing
-- [Pricing](/pricing) — Build on the master substrate
-
----
-
-*CMPSBL® CCL Epoch — Cognitive Infrastructure for Production AI*
+*CMPSBL® CORE Epoch — Cognitive Infrastructure for Production AI*

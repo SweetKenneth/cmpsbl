@@ -207,7 +207,7 @@ export function dispatch(action: string, input?: any): any {
 // ─── Module-to-CCR Action Mapping ────────────────────────────────────────────
 
 const MODULE_ACTION_MAP: Record<string, Record<string, CCRAction>> = {
-  core: { status: 'status', boot: 'boot', health: 'health', circuit: 'circuit', config: 'config', pulse: 'pulse' },
+  // CORE is standalone — no longer routed through CCR
   system: { status: 'status', health: 'health', boot: 'boot', config: 'config', pulse: 'pulse' },
   brain: { status: 'status', reason: 'reason', pulse: 'pulse', health: 'health' },
   memory: { status: 'status', store: 'store', retrieve: 'retrieve', search: 'retrieve', pulse: 'pulse', health: 'health' },
