@@ -125,7 +125,7 @@
 
 ### Architecture
 
-- **21-Module Architecture** — Six-layer architecture: Kernel (CORE, RIPPLE, ACCESS), Cognitive (BRAIN, DECODE, DREAM), Operational (DEFENSE, NEXUS, VISION, INTEGRATION), Administrative (SYSTEM, MODERNIZER, INCLUSIVE), Orchestrator (CORTEX, ENCODE), Infrastructure (MEMORY, RELAY, AUDIT, IDENTITY, ECONOMY, SANDBOX).
+- **Zone Architecture** — CORE kernel + 8 public modules + INTEGRATION (boots last), wrapped by 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost), with 9 hot-swappable zones across CCR (4) and CCL (5).
 - **INCLUSIVE Module** — First-class human compatibility pipeline with WCAG 2.2 scanning, auto-repair, validation, and accessibility profiles.
 - **CORTEX Module** — Agency-class orchestrator operating in manual mode (no auto-apply without human approval).
 - **360+ Terminal Commands** — Full command registry across all 21 modules.
