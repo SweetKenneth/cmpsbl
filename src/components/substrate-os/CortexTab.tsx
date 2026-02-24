@@ -1,7 +1,7 @@
 /**
- * CORTEX Module Tab — Agency-class Orchestrator Dashboard
- * v10.5.4 ARCHITECT Epoch — Policy Intent Layer + Evolution Sequencing
- * Orchestrates all 21 modules across 6 architectural layers
+ * CORTEX Surface Tab — Agency-class Orchestrator Dashboard
+ * SPARTA Epoch — Policy Intent Layer + Evolution Sequencing
+ * Orchestrates all execution surfaces across the layered kernel
  */
 
 import { useState } from 'react';
