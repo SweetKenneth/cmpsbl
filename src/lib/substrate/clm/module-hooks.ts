@@ -17,7 +17,8 @@ export type SubstrateModule =
   | 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'encode' | 'system'
   | 'inclusive' | 'defense' | 'nexus' | 'vision' | 'dream'
   | 'modernizer' | 'integration' | 'cortex'
-  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox';
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
+  | 'immunity' | 'evolution' | 'intent' | 'governance';
 
 export interface ModuleKPIs {
   module: SubstrateModule;
