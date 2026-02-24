@@ -2,7 +2,7 @@
  * CMPSBL® Substrate Export
  * 
  * Builds a ZIP archive of the substrate backend + core libs + shared components
- * for deployment to downstream distributions (e.g. LNCHBL).
+ * + theme for deployment to downstream distributions (e.g. LNCHBL).
  * 
  * Uses Vite's import.meta.glob to embed file contents at build time.
  * JSZip creates the downloadable archive at runtime.
@@ -48,10 +48,26 @@ const configFiles = import.meta.glob(
   { query: '?raw', import: 'default', eager: true }
 ) as Record<string, string>;
 
+// Theme files
+const indexCss = import.meta.glob(
+  '/src/index.css',
+  { query: '?raw', import: 'default', eager: true }
+) as Record<string, string>;
+
+const tailwindConfig = import.meta.glob(
+  '/tailwind.config.ts',
+  { query: '?raw', import: 'default', eager: true }
+) as Record<string, string>;
+
+// UI components (shadcn)
+const uiComponentFiles = import.meta.glob(
+  '/src/components/ui/**/*.{ts,tsx}',
+  { query: '?raw', import: 'default', eager: true }
+) as Record<string, string>;
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function cleanPath(rawPath: string): string {
-  // Remove leading slash
   return rawPath.startsWith('/') ? rawPath.slice(1) : rawPath;
 }
 
@@ -59,12 +75,83 @@ function isArchived(path: string): boolean {
   return path.includes('/_archived/') || path.includes('_archived/');
 }
 
+// ─── Cleanup Manifest ───────────────────────────────────────────────────────
+
+/**
+ * Files and directories that LNCHBL should DELETE before extracting the ZIP.
+ * These are legacy artifacts from pre-SPARTA / pre-v11 architecture that
+ * would conflict with the current 9-module system.
+ */
+const CLEANUP_MANIFEST = {
+  version: '11.1',
+  description: 'Delete these files/directories in the LNCHBL project BEFORE extracting the substrate ZIP. This ensures no legacy pre-SPARTA artifacts remain.',
+  instructions: [
+    '1. Back up your LNCHBL landing page files (e.g. src/pages/Index.tsx, src/pages/Landing.tsx) — these are NOT included in the ZIP',
+    '2. Delete all directories listed in "directories_to_delete"',
+    '3. Delete all files listed in "files_to_delete"',
+    '4. Extract the ZIP into the project root',
+    '5. Restore your LNCHBL landing page files',
+    '6. Run migrations in order against the LNCHBL database',
+  ],
+  directories_to_delete: [
+    // Full replacement targets
+    'src/lib/',
+    'src/components/',
+    'supabase/functions/',
+    'supabase/migrations/',
+
+    // Legacy module directories (pre-SPARTA, pre-9-module)
+    'src/lib/modules/',
+    'src/lib/entities/',
+    'src/lib/workers/',
+
+    // Legacy 21-module system artifacts
+    'src/components/modules/',
+    'src/components/entities/',
+
+    // Old documentation
+    'docs/archive/',
+  ],
+  files_to_delete: [
+    // Legacy config / manifests
+    'src/lib/moduleManifest.ts',
+    'src/lib/entityManifest.ts',
+    'src/lib/workerRegistry.ts',
+    'src/lib/legacyModules.ts',
+
+    // Old distribution configs
+    'src/lib/distribution-legacy.ts',
+
+    // Pre-SPARTA boot files
+    'src/lib/initializeModules.ts',
+    'src/lib/initializeEntities.ts',
+
+    // Legacy theme files (will be replaced)
+    'src/index.css',
+    'tailwind.config.ts',
+    'tailwind.config.js',
+  ],
+  preserve: [
+    'src/pages/',
+    'src/App.tsx',
+    'src/main.tsx',
+    'src/integrations/',
+    'public/',
+    '.env',
+    'package.json',
+    'vite.config.ts',
+    'tsconfig.json',
+    'README.md',
+  ],
+};
+
 // ─── Export Categories ──────────────────────────────────────────────────────
 
 export interface ExportManifest {
   exportedAt: string;
   distribution: string;
   targetDistribution: string;
+  architectureEpoch: string;
   categories: {
     edgeFunctions: number;
     edgeShared: number;
@@ -72,6 +159,7 @@ export interface ExportManifest {
     coreLibs: number;
     components: number;
     config: number;
+    theme: number;
   };
   totalFiles: number;
 }
@@ -87,6 +175,7 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
     coreLibs: 0,
     components: 0,
     config: 0,
+    theme: 0,
   };
 
   // Edge functions (skip archived)
@@ -133,17 +222,33 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
     totalFiles++;
   }
 
+  // Theme: index.css
+  for (const [path, content] of Object.entries(indexCss)) {
+    zip.file(cleanPath(path), content);
+    counts.theme++;
+    totalFiles++;
+  }
+
+  // Theme: tailwind.config.ts
+  for (const [path, content] of Object.entries(tailwindConfig)) {
+    zip.file(cleanPath(path), content);
+    counts.theme++;
+    totalFiles++;
+  }
+
   // Build manifest
   const manifest: ExportManifest = {
     exportedAt: new Date().toISOString(),
     distribution: 'CMPSBL',
     targetDistribution: 'LNCHBL',
+    architectureEpoch: 'SPARTA v11.1',
     categories: counts,
     totalFiles,
   };
 
-  // Add manifest to ZIP
+  // Add manifests to ZIP
   zip.file('SUBSTRATE_MANIFEST.json', JSON.stringify(manifest, null, 2));
+  zip.file('CLEANUP_MANIFEST.json', JSON.stringify(CLEANUP_MANIFEST, null, 2));
 
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
   return { blob, manifest };
