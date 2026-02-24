@@ -391,7 +391,7 @@ const evolutionLogV9: EvolutionEntry[] = [
     id: "v9-evolution-003",
     date: "2026-02-13",
     pressures: [
-      "21-module architecture required a dedicated Infrastructure layer",
+      "Architecture required a dedicated Infrastructure layer",
       "Version references were fragmented across v7/v8 epoch markers",
       "Evolution observability needed unified stamp and receipt systems"
     ],
