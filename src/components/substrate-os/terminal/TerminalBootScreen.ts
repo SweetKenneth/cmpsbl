@@ -77,7 +77,7 @@ const MODULE_GRID_DESKTOP = `
   ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                   ║
   ║          ╲                         ╱                       ║
   ║    ┏━━━━━━━━━━ ADMIN LAYER ━━━━━━━━━━━━┓                   ║
-  ║    ┃ ◇ SYSTEM  ◇ MODERNIZER ◇ INCLUSIVE┃                   ║
+  ║    ┃ ◇ SYSTEM  ◇ EVOLUTION  ◇ INCLUSIVE┃                   ║
   ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                   ║
   ║                    ╲   ╱                                   ║
   ║    ┏━━━━━━━━━ ORCHESTRATOR LAYER ━━━━━━━┓                  ║
