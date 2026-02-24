@@ -18,13 +18,13 @@ export default function ModulesHub() {
     <>
       <Helmet>
         <title>Substrate Modules — AI Architecture | CMPSBL</title>
-        <meta name="description" content="Browse all substrate entities: 10 modules wrapped by 5 mesh overlays, powered by 9 hot-swappable zones." />
+        <meta name="description" content="Browse all substrate execution surfaces: 9 modules, 5 mesh overlays, 9 hot-swappable zones, powered by CORE kernel." />
         <link rel="canonical" href="https://cmpsbl.com/modules" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          "name": "CMPSBL Substrate Modules",
-          "description": "CMPSBL Substrate — 10 entities + 5 mesh overlays + 9 zones",
+          "name": "CMPSBL Substrate — Execution Surfaces",
+          "description": "CMPSBL Substrate — 9 modules + 5 mesh overlays + 9 zones",
           "url": "https://cmpsbl.com/modules",
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
           "hasPart": MODULE_REGISTRY.map(m => ({
