@@ -1,9 +1,9 @@
 /**
  * promptfluid® Substrate Provider
- * CCR Epoch — Cognitive Orchestration Substrate (16-Module Architecture)
+ * CCL Epoch — Cognitive Orchestration Substrate (12-Module Architecture)
  * 
  * CCR (Layer 0) absorbs CORE+SYSTEM+BRAIN+MEMORY+DREAM as hidden meta-engine.
- * IDENTITY merged into ACCESS.
+ * CCL (Layer 1) absorbs RIPPLE+ACCESS+IDENTITY+RELAY as infrastructure convergence.
  * Performance: Lazy-loads substrate module, uses requestIdleCallback.
  * Stability: Single initialization, no polling loops during idle, 
  *            proper cleanup on unmount.
