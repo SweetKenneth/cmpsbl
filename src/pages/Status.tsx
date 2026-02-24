@@ -224,7 +224,7 @@ export default function Status() {
     <div className="min-h-screen bg-background">
       <SEO
         title="System Status | Clockless Substrate"
-        description="Real-time operational status of the CMPSBL Cognitive Substrate — 21 modules across 6 architectural layers."
+        description="Real-time operational status of the CMPSBL Cognitive Substrate — 10 execution surfaces, 5 mesh overlays, 9 convergence zones."
         canonical="https://cmpsbl.com/status"
         keywords={["system status", "uptime", "CMPSBL status", "substrate health"]}
       />

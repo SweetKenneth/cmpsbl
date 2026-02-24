@@ -68,7 +68,7 @@ const modules = [
 
 const metrics = [
   { label: "Lines of Code", value: "175,000+", detail: "Production codebase" },
-  { label: "Modules", value: "21", detail: "Complete 6-layer architecture" },
+  { label: "Entities", value: "24", detail: "10 + 5 + 9 layered architecture" },
   { label: "Commands", value: "360+", detail: "Terminal-accessible operations" },
   { label: "AI Providers", value: "8+", detail: "With auto-failover" },
   { label: "Memory Tiers", value: "3", detail: "Hot, Warm, Cold architecture" },
