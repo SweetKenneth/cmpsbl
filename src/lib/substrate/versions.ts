@@ -110,9 +110,16 @@ export function isVersionCompatible(required: string, actual: string): boolean {
   return actMajor > reqMajor || (actMajor === reqMajor && actMinor >= reqMinor);
 }
 
-// Get layer modules
-export function getModulesByLayer(layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Administrative' | 'Orchestrator' | 'Infrastructure'): string[] {
+// Get entities by layer
+export function getModulesByLayer(layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Orchestration' | 'Infrastructure' | 'Mesh' | 'Standalone'): string[] {
   return Object.entries(MODULE_VERSIONS)
     .filter(([_, info]) => info.layer === layer)
+    .map(([name]) => name);
+}
+
+// Get zones by parent layer
+export function getZonesByParent(parent: 'CCR' | 'CCL'): string[] {
+  return Object.entries(ZONE_VERSIONS)
+    .filter(([_, info]) => info.parent === parent)
     .map(([name]) => name);
 }
