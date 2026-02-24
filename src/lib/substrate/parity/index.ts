@@ -1,8 +1,8 @@
 /**
  * Module Parity Exports
- * v10.5.4 ARCHITECT Epoch — Cross-module standards enforcement
+ * SPARTA Epoch — Cross-entity standards enforcement
  * 
- * Ensures all 21 modules adhere to the Module Parity Standard
+ * Ensures all entities + zones adhere to the Parity Standard
  */
 
 export {

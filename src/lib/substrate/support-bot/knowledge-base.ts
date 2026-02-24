@@ -390,7 +390,7 @@ Contact Dev@CMPSBL.com for quotes and custom arrangements.`,
 5. Receive instant access and download links
 
 **Included:**
-• Full API access (all 21 modules via hosted API)
+• Full API access (all 10 entities + 5 mesh overlays via hosted API)
 • Unlimited API calls (fair use)
 • Documentation library
 • 12 months of updates
