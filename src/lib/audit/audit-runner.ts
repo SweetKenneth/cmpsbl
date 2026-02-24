@@ -1,5 +1,5 @@
 /**
- * Audit Runner — v10.5.0 ARCHITECT
+ * Audit Runner — v11.1 SPARTA Epoch
  * Orchestrates all audit checks and produces a unified report
  */
 
@@ -42,7 +42,7 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
 
   return {
     run_id: uid(),
-    version: opts?.version ?? '10.5.0',
+    version: opts?.version ?? '11.1.0',
     created_at: new Date().toISOString(),
     duration_ms,
     summary: {

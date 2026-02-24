@@ -1,5 +1,5 @@
 /**
- * Audit Engine — v10.5.0 ARCHITECT Epoch
+ * Audit Engine — v11.1 SPARTA Epoch
  * Production readiness validation framework
  */
 

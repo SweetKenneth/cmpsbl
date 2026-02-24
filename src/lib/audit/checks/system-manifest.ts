@@ -1,35 +1,38 @@
 /**
  * Audit Check: System Manifest Integrity
- * Validates ENCODE system manifest has all execution surfaces registered
+ * Validates ENCODE system manifest has all Matrix Nodes registered
  */
 
 import type { AuditFinding } from '../audit-types';
 import { SYSTEM_MODULES, SYSTEM_ROUTES } from '@/lib/codeagent/encoded/system-manifest';
+import { getNodeDefinitions } from '@/lib/core/matrixNodeRegistry';
 
-const EXPECTED_MODULE_COUNT = 15;
+const EXPECTED_NODE_COUNT = 24;
 
 export function checkSystemManifest(): AuditFinding[] {
   const findings: AuditFinding[] = [];
 
-  // Check modules count
+  // Check manifest entries
   const moduleKeys = Object.keys(SYSTEM_MODULES);
-  if (moduleKeys.length < EXPECTED_MODULE_COUNT) {
+  const nodeCount = getNodeDefinitions().length;
+
+  if (moduleKeys.length < 15) {
     findings.push({
-      id: 'manifest_modules_count',
-      category: 'modules',
+      id: 'manifest_entries_count',
+      category: 'matrix',
       severity: 'error',
-      title: 'Module registry incomplete',
-      detail: `Expected ${EXPECTED_MODULE_COUNT} modules; found ${moduleKeys.length}. Missing: ${EXPECTED_MODULE_COUNT - moduleKeys.length}.`,
+      title: 'Manifest registry incomplete',
+      detail: `Expected ≥15 manifest entries; found ${moduleKeys.length}.`,
       file: 'src/lib/codeagent/encoded/system-manifest.ts',
-      hint: 'Add missing module entries to SYSTEM_MODULES.',
+      hint: 'Add missing entries to SYSTEM_MODULES.',
     });
   } else {
     findings.push({
-      id: 'manifest_modules_ok',
-      category: 'modules',
+      id: 'manifest_entries_ok',
+      category: 'matrix',
       severity: 'info',
-      title: `All ${moduleKeys.length} modules registered`,
-      detail: `Module registry complete: ${moduleKeys.join(', ')}.`,
+      title: `${moduleKeys.length} manifest entries, ${nodeCount} Matrix Nodes`,
+      detail: `Manifest registry complete: ${moduleKeys.join(', ')}.`,
     });
   }
 

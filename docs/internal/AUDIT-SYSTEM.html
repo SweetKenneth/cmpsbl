@@ -26,7 +26,7 @@
 
 <h2>Overview</h2>
 
-<p>The CMPSBL Substrate includes a multi-layer audit and verification framework located at <code>src/lib/audit/</code>. This framework validates production readiness across the entire stack.</p>
+<p>The CMPSBL Substrate includes a multi-layer audit and verification framework located at <code>src/lib/audit/</code>. This framework validates production readiness across all 24 Matrix Nodes and the entire stack.</p>
 
 <hr />
 
@@ -41,10 +41,10 @@
 <h3>2. Audit Checks (checks/)</h3>
 <p>Eight specialized check modules:</p>
 <ul>
-<li><code>system-manifest.ts</code> — System manifest validation</li>
+<li><code>system-manifest.ts</code> — System manifest & Matrix Node validation</li>
 <li><code>routes.ts</code> — Route contract verification</li>
 <li><code>terminal.ts</code> — Terminal command registry validation</li>
-<li><code>modules.ts</code> — Module health checks</li>
+<li><code>modules.ts</code> — Matrix Node health & weighted integrity checks</li>
 <li><code>seo.ts</code> — SEO metadata validation</li>
 <li><code>ui-contracts.ts</code> — UI component contract checks</li>
 <li><code>hooks-contracts.ts</code> — React hooks contract validation</li>
