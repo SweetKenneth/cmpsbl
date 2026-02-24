@@ -904,6 +904,69 @@ serve(async (req) => {
           
           case "inclusive":
             return await handleInclusive(supabase, action, params, corsHeaders);
+
+          // SPARTA Epoch — ECONOMY & SANDBOX modules
+          case "economy":
+          case "sandbox":
+          case "encode": {
+            const moduleState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                action,
+                status: moduleState.status,
+                health: moduleState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // SPARTA Epoch — 5 Mesh Overlays (DEFENSE handled above, add remaining 4)
+          case "immunity":
+          case "evolution":
+          case "intent":
+          case "governance": {
+            const meshOrder = { immunity: 2, evolution: 3, intent: 4, governance: 5 };
+            const meshState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "mesh_overlay",
+                order: meshOrder[module as keyof typeof meshOrder],
+                action,
+                status: meshState.status,
+                health: meshState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // CCR/CCL Zones (BRAIN, SYSTEM, DREAM handled above — add remaining zone facades)
+          case "memory":
+          case "relay":
+          case "audit":
+          case "identity": {
+            const zoneState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "zone",
+                action,
+                status: zoneState.status,
+                health: zoneState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
           
           case "status":
             return new Response(
@@ -912,6 +975,12 @@ serve(async (req) => {
                 substrate: "promptfluid®",
                 version: SUBSTRATE_VERSION,
                 type: "Cognitive Orchestration Substrate — SPARTA Epoch",
+                architecture: {
+                  entities: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
+                  mesh: ["defense", "immunity", "evolution", "intent", "governance"],
+                  zones_ccr: ["system", "brain", "memory", "dream"],
+                  zones_ccl: ["ripple", "access", "identity", "relay", "audit"],
+                },
                 modules: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
                 status: "operational",
                 health: Object.fromEntries(

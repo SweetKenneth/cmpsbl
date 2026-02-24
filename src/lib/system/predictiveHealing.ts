@@ -39,9 +39,11 @@ export interface PredictiveAnalysis {
 }
 
 const MODULES: SubstrateModule[] = [
-  'core', 'brain', 'decode', 'defense', 'nexus', 
-  'vision', 'dream', 'ripple', 'access', 'system',
-  'modernizer', 'integration'
+  'core', 'decode', 'encode', 'vision', 'cortex', 'nexus',
+  'economy', 'sandbox', 'inclusive', 'integration',
+  'defense', 'immunity', 'evolution', 'intent', 'governance',
+  'brain', 'system', 'memory', 'dream',
+  'ripple', 'access', 'identity', 'relay', 'audit',
 ];
 
 /**
