@@ -17,18 +17,12 @@ const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
 
 // Defer non-critical CSS (substrate voice, decode orb, clockless river animations)
 const loadDeferredCSS = () => import("@/styles/deferred.css");
-import { installLastInteractionTracking } from "@/lib/ui/lastInteraction";
-import { installSiteGuard } from "@/lib/defense/site-guard";
-import { initSiteAnalytics } from "@/lib/analytics/site-tracker";
+// Deferred utility imports — loaded dynamically to reduce initial JS
 import { isEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
-// Mobile crash diagnostics (opt-in via ?diag=1)
-import { installMobileWatchdog } from "@/lib/client/mobile-watchdog";
-import { useRenderLoopDetector } from "@/lib/client/render-loop-detector";
-import { diagLog, diagEnabled } from "@/lib/client/diag";
-import { DiagPanel } from "@/components/system/DiagPanel";
-import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";
-import { MobilePreviewSafeMode } from "@/components/system/MobilePreviewSafeMode";
+// Mobile crash diagnostics (opt-in via ?diag=1) — lazy loaded
+const DiagErrorBoundary = lazy(() => import("@/components/system/DiagErrorBoundary").then(m => ({ default: m.DiagErrorBoundary })));
+const MobilePreviewSafeMode = lazy(() => import("@/components/system/MobilePreviewSafeMode").then(m => ({ default: m.MobilePreviewSafeMode })));
 
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
