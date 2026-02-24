@@ -22,7 +22,7 @@ CORE (Standalone Kernel)
   → 8 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
   → INTEGRATION (Module, boots last)
   ← 5 Mesh Overlays: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
-= 10 Public Entities + 5 Mesh Overlays + 9 Zones
+= 10 Public Entities + 5 Mesh Overlays + 9 Zones = 24 Execution Surfaces
 ```
 
 © 2025–2026 PromptFluid®. All rights reserved.
