@@ -353,6 +353,7 @@ const App = () => {
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                         <Route path="/habitat" element={<Habitat />} />
                         <Route path="/status" element={<Status />} />
+                        <Route path="/system-integrity" element={<SystemIntegrity />} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
                         <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
