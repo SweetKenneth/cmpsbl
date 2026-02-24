@@ -1,6 +1,6 @@
 /**
- * Dashboard Metrics Hero v10.5.1 ARCHITECT — Cinematic system overview
- * Orbital health ring, floating module constellation, real-time telemetry
+ * Dashboard Metrics Hero — Cinematic system overview
+ * SPARTA Epoch — Orbital health ring, floating surface constellation, real-time telemetry
  */
 
 import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility, RefreshCw, Database, Send, ClipboardCheck, Fingerprint, DollarSign, Box, Code, Globe } from 'lucide-react';
@@ -23,7 +23,7 @@ const MODULES_CONFIG = [
   { id: 'vision', label: 'Vision', icon: Eye, color: 'text-blue-400', hsl: '217, 91%, 60%' },
   { id: 'encode', label: 'Encode', icon: Code, color: 'text-lime-400', hsl: '84, 81%, 44%' },
   { id: 'system', label: 'System', icon: Settings, color: 'text-emerald-400', hsl: '160, 84%, 39%' },
-  { id: 'modernizer', label: 'Modernizer', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
+  { id: 'modernizer', label: 'Evolution', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
   { id: 'integration', label: 'Integration', icon: Plug, color: 'text-teal-400', hsl: '173, 80%, 40%' },
   { id: 'inclusive', label: 'Inclusive', icon: Accessibility, color: 'text-pink-400', hsl: '330, 81%, 60%' },
   { id: 'cortex', label: 'Cortex', icon: GitBranch, color: 'text-indigo-400', hsl: '239, 84%, 67%' },
@@ -153,7 +153,7 @@ export function DashboardMetricsHero() {
             {/* Stat Cards Row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {[
-                { label: 'MODULES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-cyan-400/80', border: 'border-cyan-500/20 hover:border-cyan-500/40', from: 'from-cyan-500' } },
+                { label: 'SURFACES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-cyan-400/80', border: 'border-cyan-500/20 hover:border-cyan-500/40', from: 'from-cyan-500' } },
                 { label: 'STATUS', value: statusLabel, styles: { text: statusStyles.labelText, border: `${statusStyles.border} ${statusStyles.borderHover}`, from: statusStyles.from } },
                 { label: 'VERSION', value: `v${version}`, styles: { text: 'text-amber-400/80', border: 'border-amber-500/20 hover:border-amber-500/40', from: 'from-amber-500' } },
               ].map((stat, idx) => (
@@ -186,7 +186,7 @@ export function DashboardMetricsHero() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Module Constellation</span>
+                  <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Surface Constellation</span>
                 </div>
                 <Button 
                   variant="ghost" 
@@ -264,7 +264,7 @@ export function DashboardMetricsHero() {
                 {new Date().toLocaleTimeString('en-US', { hour12: false })}
               </span>
               <div className="h-3 w-px bg-border/30" />
-              <span className="text-[9px] text-muted-foreground/40 font-mono">ARCHITECT EPOCH</span>
+              <span className="text-[9px] text-muted-foreground/40 font-mono">SPARTA EPOCH</span>
             </div>
           </div>
         </div>
