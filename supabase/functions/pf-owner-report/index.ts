@@ -43,8 +43,11 @@ serve(async (req: Request) => {
       clmLearningRes3h,
       dailyQuotaRes,
       decodeSearchSettled,
-      // Provider failure tracking (24h)
       providerFailuresRes,
+      // NEW: Substrate audit scan data
+      auditScanErrorsRes,
+      enhancementEventsRes,
+      moduleHealthEventsRes,
     ] = await Promise.allSettled([
       supabase.from("audit_logs").select("action, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("audit_logs").select("action", { count: "exact" }).gte("created_at", iso24h),
@@ -63,8 +66,13 @@ serve(async (req: Request) => {
       supabase.from("brain_events").select("id, data", { count: "exact" }).eq("event_type", "technical_learning_cycle").gte("created_at", iso3h),
       supabase.from("ai_daily_quota").select("provider, calls_budget, calls_used, tokens_used").eq("date", now.toISOString().split("T")[0]),
       supabase.from("decode_search_results").select("topic, title, source_url, snippet, created_at").gte("created_at", iso3h).order("created_at", { ascending: false }).limit(30),
-      // Full provider performance data (24h) for health reporting
       supabase.from("ai_usage_log").select("provider, success, response_time_ms").gte("created_at", iso24h).limit(2000),
+      // Substrate audit: errors from brain_events (failures, errors, anomalies in 24h)
+      supabase.from("brain_events").select("module, event_type, data, outcome, created_at").in("outcome", ["error", "failure"]).gte("created_at", iso24h).order("created_at", { ascending: false }).limit(100),
+      // Enhancement grants
+      supabase.from("brain_events").select("module, data, created_at").eq("event_type", "enhancement_granted").gte("created_at", iso24h).order("created_at", { ascending: false }).limit(50),
+      // Module health: all module events for health scoring
+      supabase.from("brain_events").select("module, outcome", { count: "exact" }).gte("created_at", iso24h),
     ]);
 
     const extract = (r: PromiseSettledResult<any>) =>
@@ -88,6 +96,107 @@ serve(async (req: Request) => {
     const dailyQuota = extract(dailyQuotaRes);
     const decodeSearchData = extract(decodeSearchSettled);
     const providerFailures = extract(providerFailuresRes);
+    const auditScanErrors = extract(auditScanErrorsRes);
+    const enhancementEvents = extract(enhancementEventsRes);
+    const moduleHealthEvents = extract(moduleHealthEventsRes);
+
+    // ═══ SUBSTRATE AUDIT SCAN ═══
+    // Analyze errors, failures, and anomalies across all modules
+    interface AuditIssue {
+      severity: 'critical' | 'error' | 'warning' | 'info';
+      module: string;
+      message: string;
+      count: number;
+      lastSeen: string;
+    }
+
+    const auditIssueMap: Record<string, AuditIssue> = {};
+    for (const evt of (auditScanErrors.data || [])) {
+      const key = `${evt.module}:${evt.event_type}`;
+      if (!auditIssueMap[key]) {
+        const isCritical = evt.outcome === 'failure' || (evt.data as any)?.severity === 'critical';
+        auditIssueMap[key] = {
+          severity: isCritical ? 'critical' : 'error',
+          module: (evt.module || 'unknown').toUpperCase(),
+          message: (evt.data as any)?.error || (evt.data as any)?.message || evt.event_type || 'Unknown error',
+          count: 0,
+          lastSeen: evt.created_at,
+        };
+      }
+      auditIssueMap[key].count++;
+    }
+
+    // Sort by severity then count
+    const severityOrder = { critical: 0, error: 1, warning: 2, info: 3 };
+    const auditIssues: AuditIssue[] = Object.values(auditIssueMap)
+      .sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity] || b.count - a.count);
+
+    // ═══ MODULE ENHANCEMENT REQUESTS (Dynamic Ranking) ═══
+    // Build per-module health scores and enhancement catalog
+    const moduleHealthMap: Record<string, { total: number; errors: number }> = {};
+    for (const evt of (moduleHealthEvents.data || [])) {
+      const m = evt.module || 'unknown';
+      if (!moduleHealthMap[m]) moduleHealthMap[m] = { total: 0, errors: 0 };
+      moduleHealthMap[m].total++;
+      if (evt.outcome === 'error' || evt.outcome === 'failure') moduleHealthMap[m].errors++;
+    }
+
+    // Enhancement catalog — each module's top request with dynamic priority
+    const ENHANCEMENT_CATALOG: Record<string, { title: string; category: string }> = {
+      core: { title: 'add circuit recovery telemetry', category: 'resilience' },
+      brain: { title: 'add memory dedup scoring', category: 'performance' },
+      decode: { title: 'add source credibility scoring', category: 'capability' },
+      defense: { title: 'add behavioral fingerprinting', category: 'security' },
+      nexus: { title: 'add provider auto-rotation', category: 'resilience' },
+      vision: { title: 'add trend velocity detection', category: 'capability' },
+      encode: { title: 'add patch verification hooks', category: 'resilience' },
+      dream: { title: 'add dream chain correlation', category: 'capability' },
+      memory: { title: 'add cross-tier search indexing', category: 'performance' },
+      immunity: { title: 'add cascade failure prediction', category: 'resilience' },
+      evolution: { title: 'add rollback safety scoring', category: 'resilience' },
+      governance: { title: 'add policy conflict detection', category: 'security' },
+      integration: { title: 'add webhook retry backoff', category: 'resilience' },
+      access: { title: 'add key rotation reminders', category: 'security' },
+      audit: { title: 'add real-time chain verification', category: 'security' },
+      cortex: { title: 'add reasoning trace logging', category: 'capability' },
+      economy: { title: 'add cost anomaly alerts', category: 'capability' },
+      sandbox: { title: 'add execution isolation metrics', category: 'security' },
+      inclusive: { title: 'add accessibility scan scheduling', category: 'capability' },
+      system: { title: 'add system flag audit trail', category: 'security' },
+      relay: { title: 'add message delivery guarantees', category: 'resilience' },
+      identity: { title: 'add session anomaly detection', category: 'security' },
+      ripple: { title: 'add event replay filtering', category: 'capability' },
+      intent: { title: 'add intent confidence scoring', category: 'capability' },
+    };
+
+    // Track which enhancements were already granted
+    const grantedSet = new Set<string>();
+    for (const evt of (enhancementEvents.data || [])) {
+      const d = evt.data as any;
+      if (d?.enhancementId) grantedSet.add(d.enhancementId);
+    }
+
+    interface ModuleEnhRequest {
+      module: string;
+      title: string;
+      category: string;
+      importanceScore: number;
+      healthPct: number;
+      errors24h: number;
+      granted: boolean;
+    }
+
+    const enhRequests: ModuleEnhRequest[] = Object.entries(ENHANCEMENT_CATALOG).map(([mod, info]) => {
+      const health = moduleHealthMap[mod] || { total: 0, errors: 0 };
+      const healthPct = health.total > 0 ? Math.round((1 - health.errors / health.total) * 100) : 100;
+      const errorBoost = Math.min(50, health.errors * 5);
+      const healthPenalty = Math.max(0, 50 - healthPct) * 1.5;
+      const categoryWeight = info.category === 'security' ? 15 : info.category === 'resilience' ? 10 : 5;
+      const importanceScore = Math.min(100, Math.round(40 + errorBoost + healthPenalty + categoryWeight));
+      const granted = grantedSet.has(`${mod}-enh-0`);
+
+      return { module: mod.toUpperCase(), title: info.title, category: info.category, importanceScore, healthPct, errors24h: health.errors, granted };
+    }).sort((a, b) => b.importanceScore - a.importanceScore);
 
     // DECODE search results grouped by topic
     const decodeResults = (decodeSearchData?.data || []) as Array<{ topic: string; title: string; source_url: string; snippet: string; created_at: string }>;
@@ -359,6 +468,66 @@ serve(async (req: Request) => {
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;color:#6b7280;margin-bottom:6px;" class="email-text-secondary">${s.label}</div>
       <div style="font-size:24px;font-weight:800;color:${s.color};">${s.value}</div>
     </div>`).join("")}
+</div>
+
+<!-- 🔴 SUBSTRATE AUDIT SCAN — ALWAYS FIRST -->
+${auditIssues.length > 0 ? `
+<div class="email-card" style="background:#fff;border:2px solid #ef4444;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#dc2626;" class="email-text-heading">🚨 Substrate Audit Scan — ${auditIssues.length} Issue${auditIssues.length > 1 ? 's' : ''} Found</h2>
+  <p style="margin:0 0 12px;font-size:12px;color:#6b7280;" class="email-text-secondary">Automated scan of database + codebase errors, anomalies, and optimization targets (24h)</p>
+  <table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <tr class="email-table-header" style="background:#fef2f2;">
+      <th style="padding:8px 10px;text-align:left;color:#991b1b;font-weight:600;font-size:11px;text-transform:uppercase;">Severity</th>
+      <th style="padding:8px 10px;text-align:left;color:#991b1b;font-weight:600;font-size:11px;text-transform:uppercase;">Module</th>
+      <th style="padding:8px 10px;text-align:left;color:#991b1b;font-weight:600;font-size:11px;text-transform:uppercase;">Issue</th>
+      <th style="padding:8px 10px;text-align:center;color:#991b1b;font-weight:600;font-size:11px;text-transform:uppercase;">Count</th>
+    </tr>
+    ${auditIssues.slice(0, 15).map(issue => {
+      const sevColor = issue.severity === 'critical' ? '#dc2626' : issue.severity === 'error' ? '#ea580c' : '#ca8a04';
+      const sevBg = issue.severity === 'critical' ? '#fef2f2' : issue.severity === 'error' ? '#fff7ed' : '#fefce8';
+      return `<tr class="email-table-row">
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;">
+          <span style="display:inline-block;background:${sevBg};color:${sevColor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;text-transform:uppercase;">${issue.severity}</span>
+        </td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111827;">${issue.module}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#374151;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${String(issue.message).slice(0, 80)}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:700;color:${sevColor};">${issue.count}</td>
+      </tr>`;
+    }).join('')}
+  </table>
+</div>` : `
+<div class="email-card" style="background:#fff;border:2px solid #10b981;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 8px;font-size:15px;font-weight:700;color:#059669;" class="email-text-heading">✅ Substrate Audit Scan — Clean</h2>
+  <p style="margin:0;font-size:13px;color:#6b7280;" class="email-text-secondary">No errors, failures, or anomalies detected in the last 24 hours.</p>
+</div>`}
+
+<!-- 📋 COMPONENT ENHANCEMENT REQUESTS (Ranked by Importance) -->
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 4px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">📋 Component Enhancement Requests</h2>
+  <p style="margin:0 0 14px;font-size:12px;color:#6b7280;" class="email-text-secondary">What each module is requesting to improve · Ranked by importance</p>
+  <table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <tr class="email-table-header" style="background:#f9fafb;">
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Score</th>
+      <th style="padding:8px 10px;text-align:left;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Module</th>
+      <th style="padding:8px 10px;text-align:left;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Top Request</th>
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Type</th>
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Status</th>
+    </tr>
+    ${enhRequests.map(r => {
+      const scoreColor = r.importanceScore > 75 ? '#dc2626' : r.importanceScore > 50 ? '#ea580c' : r.importanceScore > 30 ? '#ca8a04' : '#6b7280';
+      const statusBadge = r.granted
+        ? '<span style="display:inline-block;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;">✓ Granted</span>'
+        : '<span style="display:inline-block;background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;">Pending</span>';
+      const catColor = r.category === 'security' ? '#7c3aed' : r.category === 'resilience' ? '#2563eb' : r.category === 'performance' ? '#059669' : '#6b7280';
+      return `<tr class="email-table-row">
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:800;color:${scoreColor};font-size:13px;">${r.importanceScore}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111827;">${r.module}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#374151;font-style:italic;">${r.title}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;"><span style="color:${catColor};font-size:11px;font-weight:600;text-transform:uppercase;">${r.category}</span></td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;">${statusBadge}</td>
+      </tr>`;
+    }).join('')}
+  </table>
 </div>
 
 <!-- DYNAMIC ALLOCATION (NEW) -->
