@@ -107,7 +107,7 @@ export default function InvestorsPublic() {
         <div className="max-w-4xl">
           <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
             <TrendingUp className="w-3 h-3 mr-2" />
-            v10.5.1 ARCHITECT Epoch
+            SPARTA Epoch
           </Badge>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6">
