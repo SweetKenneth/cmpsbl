@@ -21,8 +21,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { 
   Plus, Package, Shield, Download, Eye, Send, Ban, 
-  ChevronRight, Clock, CheckCircle2, XCircle, FileJson 
+  ChevronRight, Clock, CheckCircle2, XCircle, FileJson,
+  GitCommit, Check, X, Rocket, Filter
 } from 'lucide-react';
+import { useSubstrateChanges, type SubstrateChange } from '@/hooks/admin/useSubstrateChanges';
+import { sendPatchToLnchbl } from '@/lib/patches/dispatch';
 import type { PatchTier, PatchStatus } from '@/lib/patches/author';
 import { validatePatch } from '@/lib/patches/author';
 import { DISTRIBUTION_ID } from '@/lib/distribution';
