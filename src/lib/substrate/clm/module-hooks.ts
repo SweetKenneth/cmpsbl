@@ -1,9 +1,10 @@
 /**
  * CLM Module Integration Hooks
- * v10.5.4 ARCHITECT — Per-module learning hooks for CLM autonomous operation
+ * SPARTA Epoch — Per-module learning hooks for CLM autonomous operation
  * 
  * Each substrate module registers its own learning KPIs and reflection methods.
- * CLM calls these hooks during autonomous learning cycles within the 21-module architecture.
+ * CLM calls these hooks during autonomous learning cycles within the
+ * 10-Entity + 5-Mesh + 9-Zone (24-module) architecture.
  */
 
 import { supabase } from '@/integrations/supabase/client';

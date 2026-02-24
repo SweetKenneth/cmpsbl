@@ -3188,7 +3188,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         let output = `╔══════════════════════════════════════════════════════════════╗
-║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from 21 Modules               ║
+║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from 24 Modules               ║
 ╠══════════════════════════════════════════════════════════════╣\n`;
         
         for (const r of feed.slice(0, 20)) {

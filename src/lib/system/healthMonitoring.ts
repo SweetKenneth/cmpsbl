@@ -66,6 +66,11 @@ const DEFAULT_ALERT_CONFIGS: AlertConfig[] = [
   { module: 'identity', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 10 },
   { module: 'economy', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
   { module: 'sandbox', criticalThreshold: 35, warningThreshold: 55, enabled: true, cooldownMinutes: 20 },
+  // Mesh Overlays
+  { module: 'immunity', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 10 },
+  { module: 'evolution', criticalThreshold: 25, warningThreshold: 45, enabled: true, cooldownMinutes: 15 },
+  { module: 'intent', criticalThreshold: 25, warningThreshold: 45, enabled: true, cooldownMinutes: 15 },
+  { module: 'governance', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 10 },
 ];
 
 // In-memory alert state

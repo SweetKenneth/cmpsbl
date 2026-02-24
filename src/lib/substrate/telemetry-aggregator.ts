@@ -106,7 +106,7 @@ export async function aggregateTelemetry(): Promise<TelemetrySnapshot> {
     encode: encodeData,
     overall: {
       healthScore,
-      activeModules: 21,
+      activeModules: 24,
       errorRate,
       lastActivity: brainData.totalEvents > 0 ? new Date().toISOString() : null,
     },
