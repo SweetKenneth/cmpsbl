@@ -1465,7 +1465,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       // Non-destructive verification of all 24 execution surfaces
       const verbose = args.includes('--verbose');
       try {
-        const moduleChecks = ALL_21_MODULES.map(async (mod) => {
+        const moduleChecks = ALL_EXECUTION_SURFACES.map(async (mod) => {
           try {
             const r = await substrate.invoke({ module: mod.key as any, action: 'pulse' });
             return { key: mod.key, label: mod.label, layer: mod.layer, ok: r?.success !== false };
