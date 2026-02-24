@@ -20,10 +20,13 @@ export const CORE_VERSION = '11.1.0';
 export const CORE_CODENAME = 'Foundation';
 
 /**
- * All substrate entries — 15 public + 9 Zones + 1 absorbed = 25 total
+ * All substrate entries — 10 public entities + 5 mesh overlays + 9 Zones + 1 absorbed
  *
- * Public (15):
- *   CORE (1) + Modules (8) + Meshes (5) + INTEGRATION (1)
+ * Public Entities (10):
+ *   CORE (1 kernel) + 8 Modules + INTEGRATION (1 module, boots last)
+ *
+ * Mesh Overlays (5) — protective layers wrapping modules, order matters:
+ *   DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
  *
  * Zones (9) — surgically hot-swappable, circuit-breaker isolated:
  *   CCR Zones (4): system, brain, memory, dream
@@ -33,7 +36,7 @@ export const CORE_CODENAME = 'Foundation';
  *   modernizer → EVOLUTION mesh
  */
 export const SUBSTRATE_MODULES = [
-  // Kernel (standalone)
+  // Kernel (boots first)
   'core',
   // CCR Zones (backward compat — route to Layer 0, hot-swappable)
   'system', 'brain', 'memory', 'dream',
@@ -43,15 +46,17 @@ export const SUBSTRATE_MODULES = [
   'modernizer',
   // 8 Public Modules
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
-  // 5 Meshes
-  'defense', 'immunity', 'evolution', 'intent', 'governance',
-  // Standalone
+  // 5 Mesh Overlays (order: innermost → outermost)
+  'governance', 'intent', 'evolution', 'immunity', 'defense',
+  // Module (boots last)
   'integration',
 ] as const;
 
-// Public-facing entity count
-export const PUBLIC_MODULE_COUNT = 15;
-// Zone count
+// Public-facing entity count (CORE + 8 Modules + INTEGRATION)
+export const PUBLIC_MODULE_COUNT = 10;
+// Mesh overlay count (protective layers, not counted as entities)
+export const MESH_OVERLAY_COUNT = 5;
+// Zone count (hidden, hot-swappable)
 export const ZONE_COUNT = 9;
 
 // CCR Zone modules (backed by CLOCKLESS_COGNITIVE_REALITY)
@@ -66,10 +71,10 @@ export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution mesh
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Entity classification
-export type EntityType = 'kernel' | 'module' | 'mesh' | 'standalone' | 'zone-ccr' | 'zone-ccl' | 'absorbed';
+export type EntityType = 'kernel' | 'module' | 'mesh-overlay' | 'zone-ccr' | 'zone-ccl' | 'absorbed';
 
 export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
-  // Kernel
+  // Kernel (boots first)
   core: 'kernel',
   // CCR Zones
   system: 'zone-ccr',
@@ -93,15 +98,21 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   economy: 'module',
   sandbox: 'module',
   inclusive: 'module',
-  // 5 Meshes
-  defense: 'mesh',
-  immunity: 'mesh',
-  evolution: 'mesh',
-  intent: 'mesh',
-  governance: 'mesh',
-  // Standalone
-  integration: 'standalone',
+  // 5 Mesh Overlays (wrapping layers — outermost listed first)
+  defense: 'mesh-overlay',
+  immunity: 'mesh-overlay',
+  evolution: 'mesh-overlay',
+  intent: 'mesh-overlay',
+  governance: 'mesh-overlay',
+  // Module (boots last)
+  integration: 'module',
 };
+
+/**
+ * Mesh overlay order — outermost to innermost.
+ * DEFENSE wraps everything. GOVERNANCE is closest to the modules.
+ */
+export const MESH_ORDER = ['defense', 'immunity', 'evolution', 'intent', 'governance'] as const;
 
 // Legacy compat alias
 export type ModuleLayer = EntityType;

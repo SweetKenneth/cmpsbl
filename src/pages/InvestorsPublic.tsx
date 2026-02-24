@@ -19,7 +19,7 @@ import { downloadInvestorDeck } from "@/lib/investor-deck-generator";
 const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "Zone Architecture Cognitive OS", desc: "First cognitive OS with 15 entities + 9 surgically hot-swappable zones across 5 architectural layers", badge: "Production" },
+  { title: "Zone Architecture Cognitive OS", desc: "First cognitive OS with 10 entities + 5 mesh overlays + 9 surgically hot-swappable zones", badge: "Production" },
   { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-module crystallization", badge: "50 Crystallized" },
   { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
@@ -62,23 +62,23 @@ export default function InvestorsPublic() {
   };
 
   const metrics = [
-    { icon: Layers, label: "Integrated Modules", value: String(modulesCount), color: "text-primary" },
+    { icon: Layers, label: "Modules", value: String(modulesCount), color: "text-primary" },
     { icon: Zap, label: "Crystallized Pipelines", value: String(stierPipelinesCount), color: "text-emerald-500" },
     { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
     { icon: Globe, label: "Architecture Layers", value: String(layersCount), color: "text-violet-400" }
   ];
 
   const products = [
-    { icon: Brain, name: "BRAIN Module", subtitle: "Persistent Memory", description: "3-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
-    { icon: Eye, name: "VISION Module", subtitle: "Full Observability", description: "Real-time introspection, metrics collection, and system-wide transparency layer." },
-    { icon: Shield, name: "DEFENSE Module", subtitle: "Enterprise Security", description: "Bot protection, threat detection, and governance guardrails for production AI." },
-    { icon: Server, name: "NEXUS Gateway", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
-    { icon: Code, name: "ENCODE Engine", subtitle: "Governed Code Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "Intent Mesh", subtitle: "Emergent Orchestration", description: "Modules advertise, compose, and crystallize cross-module pipelines autonomously. 50 Crown Jewel pipelines." },
+    { icon: Brain, name: "BRAIN Zone", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
+    { icon: Eye, name: "VISION", subtitle: "Full Observability", description: "Real-time introspection, metrics collection, and system-wide transparency layer." },
+    { icon: Shield, name: "DEFENSE Mesh", subtitle: "Outermost Security", description: "Bot protection, threat detection, and governance guardrails — outermost mesh overlay." },
+    { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
+    { icon: Code, name: "ENCODE", subtitle: "Governed Code Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
+    { icon: Sparkles, name: "INTENT Mesh", subtitle: "Emergent Orchestration", description: "Modules advertise, compose, and crystallize cross-module pipelines autonomously." },
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Production Infrastructure", description: `${modulesCount} entities + 9 zones across 5 layers, self-evolving architecture (SEBA) with cryptographic stamps.` },
+    { icon: Rocket, title: "Production Infrastructure", description: `${modulesCount} entities + 5 mesh overlays + 9 zones, self-evolving architecture (SEBA) with cryptographic stamps.` },
     { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $149/mo) + infrastructure licensing via LNCHBL.com + marketplace revenue share. 90%+ gross margins." },
     { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated learning + zone architecture = a technical gap that widens daily. Can't be replicated quickly." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
@@ -107,7 +107,7 @@ export default function InvestorsPublic() {
         <div className="max-w-4xl">
           <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
             <TrendingUp className="w-3 h-3 mr-2" />
-            v10.5.1 ARCHITECT Epoch
+            SPARTA Epoch
           </Badge>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6">
@@ -115,7 +115,7 @@ export default function InvestorsPublic() {
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building the cognitive operating system for AI applications. {modulesCount} modules, 14 documented world firsts, 
+            Building the cognitive operating system for AI applications. {modulesCount} modules + 5 mesh overlays, 14 documented world firsts, 
             and a self-evolving architecture that compounds daily.
           </p>
 
@@ -217,7 +217,7 @@ export default function InvestorsPublic() {
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-400 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <h2 className="text-3xl font-semibold mb-4 text-foreground">The Substrate</h2>
         <p className="text-muted-foreground mb-10 text-lg max-w-2xl">
-          {modulesCount} integrated modules across {layersCount} architectural layers. Production-ready cognitive infrastructure.
+          {modulesCount} modules wrapped by 5 mesh overlays across a zone-based architecture. Production-ready cognitive infrastructure.
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

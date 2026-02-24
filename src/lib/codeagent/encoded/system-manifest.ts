@@ -3,13 +3,12 @@
  * SPARTA Epoch v11.1.0 — Zone Architecture
  *
  * Architecture:
- *   CORE (standalone kernel)
+ *   CORE (kernel, boots first)
  *   → CCR (Layer 0) — 4 Zones: SYSTEM Zone + BRAIN Zone + MEMORY Zone + DREAM Zone
  *   → CCL (Layer 1) — 5 Zones: RIPPLE Zone + ACCESS Zone + IDENTITY Zone + RELAY Zone + AUDIT Zone
- *   → 8 Modules: VISION, SANDBOX, DECODE, CORTEX, ECONOMY, NEXUS, ENCODE, INCLUSIVE
- *   → 5 Meshes: DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
- *   → INTEGRATION (standalone)
- *   = 15 public entities + 9 surgically hot-swappable zones
+ *   → 9 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION (boots last)
+ *   → 5 Mesh Overlays (wrap modules, order matters): DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
+ *   = 10 public entities + 5 mesh overlays + 9 zones
  *
  * MODERNIZER absorbed by EVOLUTION mesh.
  * AUDIT Zone belongs to CCL.
@@ -20,7 +19,7 @@
 export interface ModuleEntry {
   id: string;
   name: string;
-  layer: 'kernel' | 'cognitive' | 'orchestration' | 'infrastructure' | 'operational' | 'mesh' | 'standalone';
+  layer: 'kernel' | 'cognitive' | 'orchestration' | 'infrastructure' | 'operational' | 'mesh-overlay';
   description: string;
   corePath: string;
   hookPath?: string;
@@ -53,12 +52,12 @@ export interface RouteEntry {
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
 /**
- * 15-Entity + 9-Zone Architecture
+ * 10-Entity + 5-Mesh-Overlay + 9-Zone Architecture
  *
- * CORE (1) — standalone kernel
- * Modules (8): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
- * Meshes (5): DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
- * INTEGRATION (1) — standalone
+ * CORE (kernel, boots first)
+ * 8 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
+ * INTEGRATION (module, boots last)
+ * 5 Mesh Overlays (wrap modules): DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
  *
  * Hidden layers with surgically hot-swappable Zones:
  *   CCR (Layer 0) — 4 Zones: SYSTEM, BRAIN, MEMORY, DREAM
@@ -163,7 +162,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   defense: {
     id: 'defense',
     name: 'DEFENSE',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'AI-powered security mesh: bot detection, rate limiting, threat analysis, stealth mode.',
     corePath: 'src/lib/defense/',
     dependencies: ['core'],
@@ -172,7 +171,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   immunity: {
     id: 'immunity',
     name: 'IMMUNITY',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'Adaptive resilience mesh. Executor shadow training, gap classification, self-healing patterns.',
     corePath: 'src/lib/substrate/modernizer-shadow-resolver/',
     dependencies: ['core', 'defense'],
@@ -181,7 +180,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   evolution: {
     id: 'evolution',
     name: 'EVOLUTION',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'Self-improvement mesh. Mutation proposals, shadow A/B testing, canary deployment, promotion gates. Absorbs MODERNIZER.',
     corePath: 'src/lib/evolution-mesh/',
     hookPath: 'src/hooks/substrate/useModernizer.ts',
@@ -192,7 +191,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   intent: {
     id: 'intent',
     name: 'INTENT',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'Intent resolution mesh. Cross-module intent routing, goal decomposition, task orchestration.',
     corePath: 'src/lib/substrate/intent-mesh/',
     dependencies: ['core'],
@@ -201,19 +200,19 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   governance: {
     id: 'governance',
     name: 'GOVERNANCE',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'Ethical constraints, veto authority, epistemic discipline, signal arbitration, coherence enforcement.',
     corePath: 'src/lib/substrate/governance/',
     dependencies: ['core'],
     dependents: [],
   },
 
-  // ─── Standalone ────────────────────────────────────────────────────────────
+  // ─── INTEGRATION (Module — boots last) ──────────────────────────────────
   integration: {
     id: 'integration',
     name: 'INTEGRATION',
-    layer: 'standalone',
-    description: 'External service connections, OAuth flows, and third-party API management.',
+    layer: 'operational',
+    description: 'External service connections, OAuth flows, adapters, and third-party API management. Boots last.',
     corePath: 'src/lib/integrations/',
     dependencies: ['core'],
     dependents: [],
@@ -365,8 +364,6 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
 }
 
 export function getSystemSummary(): string {
-  const moduleCount = Object.keys(SYSTEM_MODULES).length;
-  const layers = [...new Set(Object.values(SYSTEM_MODULES).map(m => m.layer))];
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate v11.1.0: ${moduleCount} public entities (CORE + 8 Modules + 5 Meshes + INTEGRATION) + 9 Zones (4 CCR + 5 CCL) across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR Zones: SYSTEM+BRAIN+MEMORY+DREAM. CCL Zones: RIPPLE+ACCESS+IDENTITY+RELAY+AUDIT. MODERNIZER absorbed by EVOLUTION mesh.`;
+  return `CMPSBL Substrate v11.1.0: 10 entities (CORE + 8 Modules + INTEGRATION) + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 Zones (4 CCR + 5 CCL), ${componentCount} registered UI components. Meshes wrap modules as protective layers. MODERNIZER absorbed by EVOLUTION mesh.`;
 }

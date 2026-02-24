@@ -97,16 +97,14 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     if (!debugMode.allowModulePolling()) return;
     if (!mountedRef.current) return;
 
-    // Check 15 public entities (CCR + CCL facades handled internally)
+    // Check 10 public entities + 5 mesh overlays
     const publicEntities: SubstrateModule[] = [
       // CORE
       'core',
-      // 8 Modules
-      'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
-      // 5 Meshes
+      // 9 Modules (INTEGRATION boots last)
+      'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration',
+      // 5 Mesh Overlays (DEFENSE outermost → GOVERNANCE innermost)
       'defense', 'immunity', 'evolution', 'intent', 'governance',
-      // Standalone
-      'integration',
     ];
     const results = await Promise.all(publicEntities.map(checkModule));
 

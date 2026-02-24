@@ -27,7 +27,7 @@ interface ModuleState {
   id: string;
   name: string;
   icon: React.ElementType;
-  layer: 'kernel' | 'module' | 'mesh' | 'standalone' | 'zone-ccr' | 'zone-ccl';
+  layer: 'kernel' | 'module' | 'mesh-overlay' | 'zone-ccr' | 'zone-ccl';
   status: 'idle' | 'active' | 'processing' | 'complete';
   color: string;
   description: string;
@@ -43,15 +43,14 @@ interface LogEntry {
 const LAYER_COLORS = {
   kernel: { bg: 'bg-orange-500/20', border: 'border-orange-500/50', text: 'text-orange-400' },
   module: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
-  mesh: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
-  standalone: { bg: 'bg-sky-500/20', border: 'border-sky-500/50', text: 'text-sky-400' },
+  'mesh-overlay': { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
   'zone-ccr': { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
   'zone-ccl': { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
 };
 
 const INITIAL_MODULES: ModuleState[] = [
-  // KERNEL (1)
-  { id: 'core', name: 'CORE', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Standalone Kernel' },
+  // KERNEL (boots first)
+  { id: 'core', name: 'CORE', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Kernel — Boots First' },
   // 8 PUBLIC MODULES
   { id: 'decode', name: 'DECODE', icon: MessageSquare, layer: 'module', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
   { id: 'encode', name: 'ENCODE', icon: Code2, layer: 'module', status: 'idle', color: 'lime', description: 'Code Intelligence' },
@@ -61,14 +60,14 @@ const INITIAL_MODULES: ModuleState[] = [
   { id: 'economy', name: 'ECONOMY', icon: Coins, layer: 'module', status: 'idle', color: 'amber', description: 'Cost Control' },
   { id: 'sandbox', name: 'SANDBOX', icon: FlaskConical, layer: 'module', status: 'idle', color: 'cyan', description: 'Isolation' },
   { id: 'inclusive', name: 'INCLUSIVE', icon: Accessibility, layer: 'module', status: 'idle', color: 'rose', description: 'Accessibility' },
-  // 5 MESHES
-  { id: 'defense', name: 'DEFENSE', icon: Shield, layer: 'mesh', status: 'idle', color: 'emerald', description: 'Security Mesh' },
-  { id: 'immunity', name: 'IMMUNITY', icon: Activity, layer: 'mesh', status: 'idle', color: 'emerald', description: 'Resilience Mesh' },
-  { id: 'evolution', name: 'EVOLUTION', icon: Sparkles, layer: 'mesh', status: 'idle', color: 'pink', description: 'Self-Improvement' },
-  { id: 'intent', name: 'INTENT', icon: Brain, layer: 'mesh', status: 'idle', color: 'violet', description: 'Goal Routing' },
-  { id: 'governance', name: 'GOVERNANCE', icon: Lock, layer: 'mesh', status: 'idle', color: 'slate', description: 'Ethical Gates' },
-  // STANDALONE (1)
-  { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'standalone', status: 'idle', color: 'indigo', description: 'External APIs' },
+  // INTEGRATION (module — boots last)
+  { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'module', status: 'idle', color: 'indigo', description: 'External APIs — Boots Last' },
+  // 5 MESH OVERLAYS (protective layers wrapping modules — outermost to innermost)
+  { id: 'defense', name: 'DEFENSE', icon: Shield, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Outermost — Security Shield' },
+  { id: 'immunity', name: 'IMMUNITY', icon: Activity, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Resilience Layer' },
+  { id: 'evolution', name: 'EVOLUTION', icon: Sparkles, layer: 'mesh-overlay', status: 'idle', color: 'pink', description: 'Self-Improvement Layer' },
+  { id: 'intent', name: 'INTENT', icon: Brain, layer: 'mesh-overlay', status: 'idle', color: 'violet', description: 'Goal Routing Layer' },
+  { id: 'governance', name: 'GOVERNANCE', icon: Lock, layer: 'mesh-overlay', status: 'idle', color: 'slate', description: 'Innermost — Ethical Gates' },
   // CCR ZONES (4) — surgically hot-swappable
   { id: 'brain', name: 'BRAIN Zone', icon: Brain, layer: 'zone-ccr', status: 'idle', color: 'violet', description: 'CCR: Memory & Learning' },
   { id: 'system', name: 'SYSTEM Zone', icon: Server, layer: 'zone-ccr', status: 'idle', color: 'slate', description: 'CCR: Administration' },
@@ -103,8 +102,8 @@ const DEMO_SCENARIOS = [
   },
   {
     name: 'Full Orchestration',
-    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration'],
-    description: '15 entities + 9 zones — full substrate orchestration',
+    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration', 'governance', 'intent', 'evolution', 'immunity', 'defense'],
+    description: '10 entities + 5 mesh overlays + 9 zones — full substrate orchestration',
     icon: Sparkles,
   },
 ];
@@ -167,8 +166,7 @@ export default function SubstrateDemo() {
   const groupedModules = {
     kernel: modules.filter(m => m.layer === 'kernel'),
     module: modules.filter(m => m.layer === 'module'),
-    mesh: modules.filter(m => m.layer === 'mesh'),
-    standalone: modules.filter(m => m.layer === 'standalone'),
+    'mesh-overlay': modules.filter(m => m.layer === 'mesh-overlay'),
     'zone-ccr': modules.filter(m => m.layer === 'zone-ccr'),
     'zone-ccl': modules.filter(m => m.layer === 'zone-ccl'),
   };
@@ -176,8 +174,8 @@ export default function SubstrateDemo() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Interactive Demo — 15-Entity + 9-Zone AI Architecture | CMPSBL®"
-        description="Experience CMPSBL's cognitive substrate live. Watch 15 entities and 9 surgically hot-swappable zones orchestrate across the Zone Architecture in real-time."
+        title="Interactive Demo — AI Cognitive Substrate | CMPSBL®"
+        description="Experience CMPSBL's cognitive substrate live. Watch 10 entities, 5 mesh overlays, and 9 hot-swappable zones orchestrate in real-time."
         keywords={['AI demo', 'cognitive substrate demo', 'AI operating system demo', 'CMPSBL interactive', 'zone architecture']}
       />
       <PublicNav />
@@ -212,9 +210,9 @@ export default function SubstrateDemo() {
                 className="text-3xl md:text-5xl font-bold mb-4"
               >
                 <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                  21 Modules
+                  10 Entities
                 </span>
-                <span className="text-foreground"> · 6 Layers · 1 Substrate</span>
+                <span className="text-foreground"> · 5 Mesh Overlays · 9 Zones</span>
               </motion.h1>
 
               <motion.p 
@@ -289,21 +287,11 @@ export default function SubstrateDemo() {
                         currentStep={currentStep}
                       />
                       
-                      {/* 5 Meshes */}
+                      {/* 5 Mesh Overlays (outermost → innermost) */}
                       <LayerRow 
-                        label="Meshes" 
-                        modules={groupedModules.mesh} 
-                        layerKey="mesh"
-                        isRunning={isRunning}
-                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
-                        currentStep={currentStep}
-                      />
-
-                      {/* INTEGRATION */}
-                      <LayerRow 
-                        label="Standalone" 
-                        modules={groupedModules.standalone} 
-                        layerKey="standalone"
+                        label="Mesh Overlays" 
+                        modules={groupedModules['mesh-overlay']} 
+                        layerKey="mesh-overlay"
                         isRunning={isRunning}
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}

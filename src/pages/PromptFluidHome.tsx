@@ -46,15 +46,15 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "PromptFluid Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 15 entities + 9 zones, powered by the CMPSBL Substrate." },
+  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 10 entities + 5 mesh overlays + 9 zones, powered by the CMPSBL Substrate." },
   { year: "2025", title: "175k+ Lines of Code", description: "Grew to 525+ capabilities, 300 synergy pipelines, and 13-provider AI routing." },
-  { year: "2026", title: "SPARTA Epoch", description: "Zone Architecture — surgically hot-swappable subsystems with circuit-breaker isolation and autonomous evolution." },
+  { year: "2026", title: "SPARTA Epoch", description: "Zone Architecture — surgically hot-swappable subsystems with circuit-breaker isolation, mesh overlays, and autonomous evolution." },
 ];
 
 const capabilities = [
   { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and tiered memory architecture." },
   { icon: Cpu, title: "Multi-Provider Routing", description: "13-provider AI fallback chain with health-weighted selection. Never locked into a single vendor." },
-  { icon: Layers, title: "Zone Architecture", description: "15 entities + 9 surgically hot-swappable zones across Kernel, Modules, Meshes, and hidden convergence layers." },
+  { icon: Layers, title: "Zone Architecture", description: "10 entities + 5 mesh overlays (DEFENSE outermost) + 9 hot-swappable zones across Kernel, Modules, and hidden convergence layers." },
   { icon: Shield, title: "Self-Evolving Codebase", description: "SEBA + EVOLUTION mesh continuously scan, propose, and apply patches autonomously." },
   { icon: Zap, title: "525+ Capabilities", description: "Production-ready engines, synergy pipelines, and a capabilities depot — all orchestrated through a unified terminal." },
   { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, LangChain, and more — route to the best model for every task." },
@@ -174,7 +174,7 @@ export default function PromptFluidHome() {
                   <p className="text-primary font-semibold">Founder & Governor — PromptFluid</p>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
-                  Kenneth is the architect behind CMPSBL® — a 21-module cognitive operating system spanning 175,000+ lines of production code. 
+                  Kenneth is the architect behind CMPSBL® — a cognitive operating system with 10 modules, 5 mesh overlays, and 9 zones spanning 175,000+ lines of production code. 
                   His work focuses on persistent memory architectures, autonomous self-evolution, and model-agnostic AI routing. 
                   He serves as the canonical Governor, primary author, and technical expert for all substrate content.
                 </p>

@@ -2,7 +2,7 @@
  * promptfluid® Substrate Initialization
  * CORE Epoch — Complete AI Operating System
  *
- * Architecture: CORE → CCR → CCL → 8 Modules → 5 Meshes → INTEGRATION
+ * Architecture: CORE → CCR → CCL → 9 Modules (INTEGRATION boots last) ← 5 Mesh Overlays (DEFENSE outermost)
  *
  * Performance: Triple-deferred initialization for zero main-thread blocking
  */
@@ -36,12 +36,13 @@ export async function initializeSubstrate(): Promise<void> {
     console.log('⚡ Booting promptfluid® Substrate...');
     console.log('─────────────────────────────────────────');
     
-    // Boot order: CORE → CCR → CCL → Modules → Meshes → INTEGRATION
+    // Boot order: CORE → CCR → CCL → Modules → INTEGRATION (last) → Mesh Overlays activate
     const publicModules = [
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
+      'integration', // boots last among modules
     ] as const;
-    const meshes = [
-      'defense', 'immunity', 'evolution', 'intent', 'governance',
+    const meshOverlays = [
+      'governance', 'intent', 'evolution', 'immunity', 'defense', // innermost → outermost
     ] as const;
     
     // 1. Boot CORE (standalone kernel)
@@ -64,7 +65,7 @@ export async function initializeSubstrate(): Promise<void> {
     } catch { /* graceful */ }
     
     if (coreResult.success && ccrBooted && cclBooted) {
-      console.log('✅ CORE + CCR Layer 0 + CCL Layer 1 active → 15 entities loaded | Health: 100%');
+      console.log('✅ CORE + CCR Layer 0 + CCL Layer 1 active → 10 entities + 5 mesh overlays | Health: 100%');
     } else {
       // Fallback: ping individual modules
       let activeCount = 0;
@@ -73,16 +74,14 @@ export async function initializeSubstrate(): Promise<void> {
         const result = await substrate.invoke({ module, action: 'pulse' });
         if (result.success) activeCount++;
       }
-      for (const mesh of meshes) {
+      // Activate mesh overlays
+      for (const mesh of meshOverlays) {
         await yieldToMain();
         const result = await substrate.invoke({ module: mesh, action: 'pulse' });
         if (result.success) activeCount++;
       }
-      // Integration
-      const intResult = await substrate.invoke({ module: 'integration', action: 'pulse' });
-      if (intResult.success) activeCount++;
       
-      console.log(`✅ Substrate initialized: ${activeCount + 1}/15 entities active`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/10 entities + mesh overlays active`);
     }
     
     console.log('─────────────────────────────────────────');
