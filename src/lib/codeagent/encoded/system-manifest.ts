@@ -191,7 +191,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   intent: {
     id: 'intent',
     name: 'INTENT',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'Intent resolution mesh. Cross-module intent routing, goal decomposition, task orchestration.',
     corePath: 'src/lib/substrate/intent-mesh/',
     dependencies: ['core'],
