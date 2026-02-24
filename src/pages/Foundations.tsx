@@ -124,8 +124,8 @@ export default function Foundations() {
             governance, and self-improvement.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">21 Modules</Badge>
-            <Badge variant="outline">6 Layers</Badge>
+            <Badge variant="outline">10 Entities</Badge>
+            <Badge variant="outline">5 Mesh Overlays</Badge>
             <Badge variant="outline">400+ Capabilities</Badge>
             <Badge variant="outline">250+ Synergy Pipelines</Badge>
           </div>

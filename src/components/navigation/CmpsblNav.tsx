@@ -109,7 +109,7 @@ export function CmpsblNav() {
       icon: Layers,
       items: [
         { name: "AI Operating System", href: "/ai-operating-system", description: "The definitive AI OS — what it is and why it matters", icon: Globe, badge: "AIDO" },
-        { name: "All Modules", href: "/modules", description: "21 core substrate modules across 6 layers", icon: Layers },
+        { name: "All Modules", href: "/modules", description: "10 entities + 5 mesh overlays + 9 zones", icon: Layers },
         { name: "Substrate Overview", href: "/substrate", description: "Live substrate dashboard & architecture", icon: Cpu },
         { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap },
         { name: "Intent Mesh", href: "/intent-mesh", description: "Autonomous inter-module communication layer", icon: Brain, badge: "NEW" },

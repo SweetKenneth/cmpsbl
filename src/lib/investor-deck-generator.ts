@@ -312,7 +312,7 @@ export function generateInvestorDeckHTML(): string {
 <div class="page">
   <h2>Technical Milestones</h2>
   <ul class="checklist">
-    <li>Complete 21-module architecture across 6 layers</li>
+    <li>Zone architecture: 10 entities + 5 mesh overlays + 9 hot-swappable zones</li>
     <li>Self-evolution engine operational (SEBA)</li>
     <li>Multi-provider AI routing (Nexus Fleet v5.0)</li>
     <li>Enterprise security layer</li>
