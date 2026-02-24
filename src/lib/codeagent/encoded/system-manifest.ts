@@ -180,7 +180,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   evolution: {
     id: 'evolution',
     name: 'EVOLUTION',
-    layer: 'mesh',
+    layer: 'mesh-overlay',
     description: 'Self-improvement mesh. Mutation proposals, shadow A/B testing, canary deployment, promotion gates. Absorbs MODERNIZER.',
     corePath: 'src/lib/evolution-mesh/',
     hookPath: 'src/hooks/substrate/useModernizer.ts',
