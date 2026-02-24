@@ -383,7 +383,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
       { title: "Compliance-Ready Reports", description: "Generate SOC2, GDPR, and HIPAA-aligned audit reports with a single command. Filter by time range, actor, module, or action type with full chain-of-custody documentation." },
     ],
     codeSnippet: `import { useAuditModule } from '@cmpsbl/substrate';\n\nconst { log, verify, report } = useAuditModule();\nconst integrity = await verify();\n// integrity.valid: true\nconst compliance = await report({ standard: 'SOC2' });`,
-    integrations: ["All 21 modules (event capture)", "RELAY (compliance alerts)", "IDENTITY (actor attribution)"],
+    integrations: ["All modules and zones (event capture)", "RELAY (compliance alerts)", "IDENTITY (actor attribution)"],
     useCases: ["SOC2/GDPR compliance programs", "Enterprise audit trail requirements", "Legal defensibility for AI decisions"],
   },
   {

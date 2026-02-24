@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Provider
- * CORE Epoch — 15-Entity Architecture
+ * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  *
  * CORE (standalone) → CCR (Layer 0) → CCL (Layer 1)
  * → 8 Modules → 5 Meshes → INTEGRATION
