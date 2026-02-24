@@ -153,7 +153,7 @@ export default function SubstrateIntelligence() {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  21 Modules - Fully Documented
+                  24 Execution Surfaces - Fully Documented
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
