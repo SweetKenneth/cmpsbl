@@ -94,8 +94,8 @@ export function generateMobileBootScreen(): string[] {
   return [
     '',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓     CMPSBL® OS v9.3.0          ▓',
-  '  ▓     ARCHITECT Epoch            ▓',
+  '  ▓     CMPSBL® OS                  ▓',
+  '  ▓     SPARTA Epoch               ▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
     '  ┌─ BOOTSTRAP ────────────────────┐',
