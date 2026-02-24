@@ -341,7 +341,7 @@ function formatSystemHealth(data: any): string {
 ║  MODULE HEALTH REPORT                                        ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
-  for (const mod of ALL_21_MODULES) {
+  for (const mod of ALL_EXECUTION_SURFACES) {
     const modData = modules[mod.key] || modules[mod.label.toLowerCase()] || {};
     const health = typeof modData?.health === 'number' ? modData.health : (typeof modData?.score === 'number' ? modData.score : 1.0);
     const pct = health <= 1 ? (health * 100).toFixed(0) : health.toFixed(0);
