@@ -114,7 +114,7 @@ export type CapabilityId =
   | 'config_drift_detector'
   | 'audit_compliance_reporter'
   
-  // MODERNIZER Module (4)
+  // EVOLUTION Mesh (4)
   | 'proposal_impact_analyzer'
   | 'migration_risk_scorer'
   | 'deprecation_path_finder'
