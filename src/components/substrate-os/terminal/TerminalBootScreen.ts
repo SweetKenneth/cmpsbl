@@ -1,15 +1,15 @@
 /**
  * Terminal Boot Screen — SPARTA Epoch
- * Unique neural-organic visualization of the 24-module architecture
+ * Unique neural-organic visualization of the 24 execution surfaces
  * Mobile-friendly with no mid-word line breaks
  * 
  * SPARTA Epoch:
  * - 300 synergy pipelines, 125 executors, 32 S-tier discoveries
- * - 24-module architecture: 10 entities + 5 mesh overlays + 9 zones
+ * - 24 execution surfaces: 1 kernel + 9 modules + 5 mesh overlays + 9 zones
  * - 525+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 360+ commands across 24 modules + infrastructure
- * - CLM across all 24 modules
+ * - 360+ commands across all execution surfaces + infrastructure
+ * - CLM across all 9 modules
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
  */
