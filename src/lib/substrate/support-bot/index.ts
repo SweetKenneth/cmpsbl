@@ -5,14 +5,19 @@
  * A proof-of-concept for evolving software: learns from verified resolutions,
  * escalates uncertainty, and produces audit-safe responses.
  * 
- * Integrations with 10-entity + 5-mesh architecture:
+ * Integrations with v11.1 SPARTA Epoch architecture:
+ * - 1 CORE Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones = 24 Execution Surfaces
  * - BRAIN (CCR zone): Read-only recall + reinforcement for verified resolutions
  * - DECODE: Intent classification + sentiment detection
- * - VISION: Pain pattern detection across support history
+ * - VISION: Observability & monitoring
  * - SYSTEM (CCR zone): Ticket state + escalation hooks
- * - GOVERNANCE mesh: Safety checks on responses
+ * - GOVERNANCE mesh overlay: Safety checks on responses
  * - KNOWLEDGE BASE: Pre-trained FAQ data for immediate utility
  * - NEXUS: Multi-provider AI routing for response generation
+ *
+ * MEMORY POLICY: On initialization, purge all previously learned support memories
+ * so the bot relearns exclusively from the current knowledge base. This prevents
+ * stale or incorrect architecture numbers from persisting in memory.
  */
 
 import { memoryCore, MemoryEntry } from '../memory-core';
