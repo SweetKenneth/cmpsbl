@@ -335,9 +335,41 @@
   <!-- COMPOSABLE COGNITIVES -->
   <url>
     <loc>https://cmpsbl.com/composable-cognitives</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
+  </url>
+
+  <!-- ARCHITECTURE -->
+  <url>
+    <loc>https://cmpsbl.com/architecture</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.92</priority>
+  </url>
+
+  <!-- EVOLUTION MESH -->
+  <url>
+    <loc>https://cmpsbl.com/evolution-mesh</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- EVOLUTION LOG -->
+  <url>
+    <loc>https://cmpsbl.com/evolution-log</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.82</priority>
+  </url>
+
+  <!-- INTENT MESH -->
+  <url>
+    <loc>https://cmpsbl.com/intent-mesh</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
   
   <!-- AI OPERATING SYSTEM -->

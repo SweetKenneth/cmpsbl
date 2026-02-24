@@ -41,6 +41,9 @@ Allow: /system-feed
 Allow: /proof
 Allow: /composable-cognitives
 Allow: /persistent-memory
+Allow: /architecture
+Allow: /evolution-mesh
+Allow: /evolution-log
 
 # =============================================================
 # STANDARDS SECTION: High Priority
