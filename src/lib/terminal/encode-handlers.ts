@@ -87,16 +87,16 @@ export function registerEncodeModuleHandlers(): void {
     };
   });
 
-  // clm.run_all — Trigger CLM for ALL 21 modules
+  // clm.run_all — Trigger CLM for all entities + zones
   registerHandler('clm.run_all', async () => {
     const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
     const results = await moduleCLM.runAllModuleLearning();
     return {
       success: true,
-      message: `CLM completed for ${results.length} of 21 modules`,
+      message: `CLM completed for ${results.length} entities`,
       data: {
         cyclesRun: results.length,
-        totalModules: 21,
+        totalEntities: results.length,
         modules: results.map(r => ({
           module: r.moduleId.toUpperCase(),
           title: r.title,
