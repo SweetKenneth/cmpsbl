@@ -302,7 +302,7 @@ const evolutionLogV10: EvolutionEntry[] = [
     date: "2026-02-16",
     pressures: [
       "BRAIN CLM flagged hot memory tier at 1,671 entries (334% over 500 limit) — system memory performance degrading",
-      "MODERNIZER CLM reported 3 consecutive evolution runs stuck in shadow_applied phase — shadow loop detected",
+      "EVOLUTION CLM reported 3 consecutive evolution runs stuck in shadow_applied phase — shadow loop detected",
       "CORE CLM requested autonomous circuit recovery — manual resets were required after breaker trips",
       "ENCODE CLM requested error-pattern library — failed task chains were being repeated without learning"
     ],
