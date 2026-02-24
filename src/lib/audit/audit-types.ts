@@ -1,5 +1,5 @@
 /**
- * Audit Engine Types — v10.5.0 ARCHITECT
+ * Audit Engine Types — v11.1 SPARTA Epoch
  * Production readiness validation framework
  */
 
@@ -11,7 +11,8 @@ export type AuditCategory =
   | 'routes'
   | 'imports'
   | 'hooks'
-  | 'modules'
+  | 'modules' // legacy compat — maps to Matrix Nodes
+  | 'matrix'
   | 'terminal'
   | 'supabase'
   | 'ui'

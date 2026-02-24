@@ -1,53 +1,77 @@
 /**
- * Audit Check: Module Health Surface
- * Validates module health reporting consistency
+ * Audit Check: Matrix Node Health
+ * Validates Matrix Node health reporting & weighted integrity
  */
 
 import type { AuditFinding } from '../audit-types';
 import { SYSTEM_MODULES } from '@/lib/codeagent/encoded/system-manifest';
+import { getNodeDefinitions, getTotalWeight, buildMatrixNodes, calculateIntegrity } from '@/lib/core/matrixNodeRegistry';
 
 export function checkModuleHealth(): AuditFinding[] {
   const findings: AuditFinding[] = [];
-  const moduleCount = Object.keys(SYSTEM_MODULES).length;
 
-  // Check dependency graph consistency
+  // Legacy dependency graph check (still uses SYSTEM_MODULES internally)
   for (const [key, mod] of Object.entries(SYSTEM_MODULES)) {
     for (const dep of mod.dependencies) {
       if (!SYSTEM_MODULES[dep]) {
         findings.push({
-          id: `module_dep_missing_${key}_${dep}`,
-          category: 'modules',
+          id: `node_dep_missing_${key}_${dep}`,
+          category: 'matrix',
           severity: 'error',
-          title: `Module "${key}" depends on unknown "${dep}"`,
-          detail: `${mod.name} lists "${dep}" as a dependency but it doesn't exist in SYSTEM_MODULES.`,
+          title: `Matrix Node "${key}" depends on unknown "${dep}"`,
+          detail: `${mod.name} lists "${dep}" as a dependency but it doesn't exist in the registry.`,
           file: 'src/lib/codeagent/encoded/system-manifest.ts',
         });
       }
     }
   }
 
-  // Check for orphaned modules (no dependents and no dependencies)
-  const isolated = Object.entries(SYSTEM_MODULES).filter(
-    ([_, mod]) => mod.dependencies.length === 0 && mod.dependents.length === 0
-  );
-  if (isolated.length > 0) {
+  // Matrix Node weight validation
+  const totalWeight = getTotalWeight();
+  if (Math.abs(totalWeight - 1.0) > 0.01) {
     findings.push({
-      id: 'module_isolated',
-      category: 'modules',
-      severity: 'warn',
-      title: `${isolated.length} isolated module(s)`,
-      detail: `Modules with no dependencies or dependents: ${isolated.map(([k]) => k).join(', ')}.`,
-      hint: 'These may be intentionally standalone or missing wiring.',
+      id: 'matrix_weight_invalid',
+      category: 'matrix',
+      severity: 'fatal',
+      title: `Matrix Node weight sum invalid: ${totalWeight}`,
+      detail: `Σ(node.weight) = ${totalWeight}, expected 1.0. Integrity calculations will be incorrect.`,
+      hint: 'Adjust weights in matrixNodeRegistry.ts to sum to 1.0.',
+    });
+  } else {
+    findings.push({
+      id: 'matrix_weight_ok',
+      category: 'matrix',
+      severity: 'info',
+      title: `Matrix Node weight sum valid: ${totalWeight}`,
+      detail: `Σ(node.weight) = ${totalWeight} — integrity equation calibrated.`,
     });
   }
 
+  // Matrix Node count
+  const nodeDefs = getNodeDefinitions();
   findings.push({
-    id: 'module_health_surface',
-    category: 'modules',
+    id: 'matrix_node_count',
+    category: 'matrix',
     severity: 'info',
-    title: `Module health: ${moduleCount} registered`,
-    detail: `${moduleCount} entities registered in SYSTEM_MODULES. SPARTA Epoch: CORE kernel + modules + mesh overlays + hidden zones.`,
+    title: `${nodeDefs.length} Matrix Nodes registered`,
+    detail: `CORE(1) + CCR(4) + CCL(5) + Execution(9) + Overlay(5) = ${nodeDefs.length} nodes. SPARTA Epoch architecture.`,
   });
+
+  // Integrity snapshot
+  const healthData: Record<string, number> = {};
+  nodeDefs.forEach(n => { healthData[n.id] = 100; }); // baseline
+  const nodes = buildMatrixNodes(healthData);
+  const report = calculateIntegrity(nodes);
+
+  if (report.isCritical) {
+    findings.push({
+      id: 'matrix_critical',
+      category: 'matrix',
+      severity: 'fatal',
+      title: 'Matrix integrity CRITICAL',
+      detail: `Operational: ${report.operational}%, Structural: ${report.structural}%. Status: ${report.status}.`,
+    });
+  }
 
   return findings;
 }

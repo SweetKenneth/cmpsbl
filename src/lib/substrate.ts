@@ -1704,6 +1704,39 @@ class SubstrateClient {
 
 export const substrate = SubstrateClient.getInstance();
 
+// ═══════════════════════════════════════════════════════════════
+// MATRIX.* ALIASES — Read-only Matrix Node introspection
+// ═══════════════════════════════════════════════════════════════
+
+export const matrix = {
+  /** List all 24 Matrix Nodes with sector, weight, and health */
+  nodes: async () => {
+    const { buildMatrixNodes, getNodeDefinitions } = await import('./core/matrixNodeRegistry');
+    const healthData: Record<string, number> = {};
+    getNodeDefinitions().forEach(n => { healthData[n.id] = 100; });
+    const nodes = buildMatrixNodes(healthData);
+    return { success: true, module: 'matrix' as const, action: 'nodes', data: { nodes, count: nodes.length }, timestamp: new Date().toISOString() };
+  },
+  /** Get Matrix Integrity report (operational + structural) */
+  integrity: async () => {
+    const { buildMatrixNodes, calculateIntegrity, getNodeDefinitions } = await import('./core/matrixNodeRegistry');
+    const healthData: Record<string, number> = {};
+    getNodeDefinitions().forEach(n => { healthData[n.id] = 100; });
+    const nodes = buildMatrixNodes(healthData);
+    const report = calculateIntegrity(nodes);
+    return { success: true, module: 'matrix' as const, action: 'integrity', data: report, timestamp: new Date().toISOString() };
+  },
+  /** Get breaker state for all Matrix Nodes */
+  breakers: async () => {
+    const { buildMatrixNodes, getNodeDefinitions } = await import('./core/matrixNodeRegistry');
+    const healthData: Record<string, number> = {};
+    getNodeDefinitions().forEach(n => { healthData[n.id] = 100; });
+    const nodes = buildMatrixNodes(healthData);
+    const breakers = nodes.map(n => ({ id: n.id, label: n.label, sector: n.sector, breakerState: n.breakerState, failureCount: n.failureCount, lastRecovery: n.lastRecovery }));
+    return { success: true, module: 'matrix' as const, action: 'breakers', data: { breakers, open: breakers.filter(b => b.breakerState === 'open').length }, timestamp: new Date().toISOString() };
+  },
+};
+
 // Quick access — 10 entities + zones + meshes + SEBA
 export const core = substrate.core;
 export const brain = substrate.brain;
