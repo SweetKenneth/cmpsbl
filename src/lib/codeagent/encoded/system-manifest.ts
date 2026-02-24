@@ -53,21 +53,22 @@ export interface RouteEntry {
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
 /**
- * 16-Module Architecture (CCR Epoch)
+ * 12-Module Architecture (CCL Epoch)
  * 
- * CCR (CLOCKLESS_COGNITIVE_REALITY) is Layer 0 — hidden meta-engine.
- * It absorbs: CORE, SYSTEM, BRAIN, MEMORY, DREAM (5 modules → 1 hidden layer).
- * IDENTITY merged into ACCESS.
- * Result: 21 - 5 (CCR absorbed) + 0 (CCR is hidden) - 1 (IDENTITY merged) + 1 (ACCESS absorbs IDENTITY) = 16 public modules.
+ * CCR (CLOCKLESS_COGNITIVE_REALITY) is Layer 0 — hidden cognitive meta-engine.
+ *   Absorbs: CORE, SYSTEM, BRAIN, MEMORY, DREAM
+ * CCL (CLOCKLESS_COGNITIVE_LUCIDITY) is Layer 1 — infrastructure convergence.
+ *   Absorbs: RIPPLE, ACCESS, IDENTITY, RELAY
  * 
+ * Result: 21 - 5 (CCR) - 4 (CCL) = 12 public modules.
  * Facade shims preserve backward compatibility for all old module commands.
  */
 export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
-  // ─── CCR Facades (backed by CLOCKLESS_COGNITIVE_REALITY, hidden from public registry) ───
-  // These are NOT counted in the 16-module total. They exist for backward compat.
-  // core, system, brain, memory, dream → all route to CCR internally.
+  // ─── Hidden Layers (not counted in public module total) ────────────────────
+  // CCR facades: core, system, brain, memory, dream → route to CCR
+  // CCL facades: ripple, access, identity, relay → route to CCL
 
-  // ─── 16 Public Modules ─────────────────────────────────────────────────────
+  // ─── 12 Public Modules ─────────────────────────────────────────────────────
   decode: {
     id: 'decode',
     name: 'DECODE',
@@ -83,7 +84,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     id: 'encode',
     name: 'ENCODE',
     layer: 'orchestration',
-    description: 'Code generation and transformation engine. Accepts structured task packets from DECODE, generates code, scores confidence, and previews changes.',
+    description: 'Code generation and transformation engine. Accepts structured task packets from DECODE.',
     corePath: 'src/lib/substrate/encode-module/',
     hookPath: 'src/hooks/substrate/useEncode.ts',
     dashboardPath: 'src/pages/SubstrateOS.tsx',
@@ -96,8 +97,8 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'operational',
     description: 'AI-powered security: bot detection, rate limiting, threat analysis, stealth mode.',
     corePath: 'src/lib/defense/',
-    dependencies: ['ccr'],
-    dependents: ['access'],
+    dependencies: ['ccr', 'ccl'],
+    dependents: [],
   },
   nexus: {
     id: 'nexus',
@@ -117,24 +118,6 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     dependencies: ['ccr'],
     dependents: [],
   },
-  ripple: {
-    id: 'ripple',
-    name: 'RIPPLE',
-    layer: 'orchestration',
-    description: 'Network integration layer for webhooks, external API orchestration, and event propagation.',
-    corePath: 'src/lib/ripple/',
-    dependencies: ['ccr'],
-    dependents: ['relay'],
-  },
-  access: {
-    id: 'access',
-    name: 'ACCESS',
-    layer: 'operational',
-    description: 'Identity, auth, billing, API key management, entitlements, and developer portal. Absorbs former IDENTITY module.',
-    corePath: 'src/lib/access/',
-    dependencies: ['ccr', 'defense'],
-    dependents: [],
-  },
   modernizer: {
     id: 'modernizer',
     name: 'MODERNIZER',
@@ -152,7 +135,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'operational',
     description: 'External service connections, OAuth flows, and third-party API management.',
     corePath: 'src/lib/integrations/',
-    dependencies: ['ccr'],
+    dependencies: ['ccr', 'ccl'],
     dependents: [],
   },
   inclusive: {
@@ -174,16 +157,6 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     dependencies: ['ccr'],
     dependents: ['encode'],
   },
-  relay: {
-    id: 'relay',
-    name: 'RELAY',
-    layer: 'infrastructure',
-    description: 'Centralized outbound webhooks and side-effect delivery.',
-    corePath: 'src/lib/substrate/relay-module/',
-    hookPath: 'src/hooks/substrate/useRelayModule.ts',
-    dependencies: ['ccr', 'ripple'],
-    dependents: [],
-  },
   audit: {
     id: 'audit',
     name: 'AUDIT',
@@ -191,7 +164,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     description: 'Immutable, cryptographically-chained compliance logging.',
     corePath: 'src/lib/substrate/audit-module/',
     hookPath: 'src/hooks/substrate/useAuditModule.ts',
-    dependencies: ['ccr'],
+    dependencies: ['ccr', 'ccl'],
     dependents: [],
   },
   economy: {
