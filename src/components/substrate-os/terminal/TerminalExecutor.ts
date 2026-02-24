@@ -869,9 +869,9 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal v10.5.0: aliases, macros, NLP, watch mode, audit
-│  21 modules | 360+ commands | 200 synergy pipelines | health: 100%
-│  400+ capabilities | 100 engines (76 base + 24 meta)
+│  Terminal — SPARTA Epoch: aliases, macros, NLP, watch mode, audit
+│  24 modules | 360+ commands | 300 synergy pipelines | health: 100%
+│  525+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
 └──────────────────────────────────────────────────────────────`;
