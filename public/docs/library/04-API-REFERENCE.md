@@ -240,7 +240,7 @@ Returns module registry information.
         "eligible_for_upgrade": true,
         "capabilities": ["scheduling", "routing", "lifecycle"]
       }
-      // ... all 21 modules
+      // ... all modules and zones
     ]
   }
 }

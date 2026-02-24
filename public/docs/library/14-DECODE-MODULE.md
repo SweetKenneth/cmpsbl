@@ -30,7 +30,7 @@
 ├─────────────────────────────────────────────────────────────────┤
 │  Created By:        Kenneth E Sweet Jr                          │
 │  Organization:      PromptFluid®                                │
-│  Infrastructure:    CMPSBL Substrate (21 modules, 6 layers)     │
+│  Infrastructure:    CMPSBL Substrate (10 entities, 5 meshes, 9 zones) │
 ├─────────────────────────────────────────────────────────────────┤
 │  For licensing or acquisition inquiries:                        │
 │  Email: Dev@CMPSBL.com | Phone: (760) FLUID-AI           │
