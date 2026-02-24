@@ -182,18 +182,18 @@ const evolutionLogV10: EvolutionEntry[] = [
     id: "v10-evolution-009",
     date: "2026-02-17",
     pressures: [
-      "Only 15 crown jewels governed — 21 modules lacked full coverage for tiered licensing",
+      "Only 15 crown jewels governed — execution surfaces lacked full coverage for tiered licensing",
       "Pricing page led with price cards instead of capability value — poor conversion signal",
       "Stripe checkout flow needed validation after tier restructuring"
     ],
     responses: [
-      "Discovered and installed 21 new crown jewel capabilities — one per module across Creator, Architect, Enterprise, and CMPSBL tiers",
+      "Discovered and installed 21 new crown jewel capabilities — one per execution surface across Creator, Architect, Enterprise, and CMPSBL tiers",
       "Redesigned pricing page to benefits-first layout showcasing capabilities, pipelines, and templates before price cards",
       "Validated Stripe tier-checkout edge function flow for seamless subscription upgrades",
-      "Added Stats Bar highlighting 50+ capabilities, 60 crystallized pipelines, and 21 modules"
+      "Added Stats Bar highlighting 525+ capabilities, 300 crystallized pipelines, and 24 execution surfaces"
     ],
     capabilities: [
-      "Every module now has a designated crown jewel capability — full 21-module coverage",
+      "Every execution surface now has a designated crown jewel capability — full coverage",
       "Benefits-first pricing conversion funnel with horizontal mobile scroll",
       "Stripe checkout verified end-to-end for all tiers"
     ],
