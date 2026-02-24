@@ -58,7 +58,7 @@ export function LnchblCTA() {
             </h2>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-              Get your own copy of the full CMPSBL Substrate — the same 21-module, self-evolving cognitive runtime 
+              Get your own copy of the full CMPSBL Substrate — the same self-evolving cognitive runtime 
               you see here — completely free from our companion site.
             </p>
 
