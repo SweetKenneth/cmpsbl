@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * v10.5.4 — ARCHITECT Epoch — All 21 modules at full parity
+ * SPARTA Epoch — All 24 modules at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */
