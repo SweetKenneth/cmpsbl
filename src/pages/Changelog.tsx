@@ -308,10 +308,10 @@ const evolutionLogV10: EvolutionEntry[] = [
     ],
     responses: [
       "BRAIN Auto-Tiering Engine deployed with watermark-based soft/hard enforcement and demotion cascades",
-      "MODERNIZER Shadow Loop Resolver auto-detects stale shadow runs, enforces timeouts, and escalates on loops",
+      "EVOLUTION Shadow Loop Resolver auto-detects stale shadow runs, enforces timeouts, and escalates on loops",
       "CORE Circuit Recovery Engine provides graduated health probing with exponential backoff and auto-reset",
       "ENCODE Error-Pattern Library fingerprints failures, clusters by category, and prevents repeat errors",
-      "All 21 modules received formal CLM acknowledgment events confirming their requests were heard and resolved"
+      "All execution surfaces received formal CLM acknowledgment events confirming their requests were heard and resolved"
     ],
     capabilities: [
       "Hot memory tier will never exceed configured limits — autonomous demotion cascades are now governed",
