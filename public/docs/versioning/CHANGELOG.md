@@ -48,7 +48,7 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 - All 21 modules synchronized to v9.1.0 ARCHITECT standard
 
 **Resulting Capabilities**
-- The substrate operates as a 21-module, 6-layer cognitive architecture
+- The substrate operates as a 21-module, 6-layer cognitive architecture with Matrix Nodes
 - 400+ capabilities, 200 synergy pipelines, 100 engines
 - Single source of truth for all version information
 
