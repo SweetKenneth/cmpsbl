@@ -143,7 +143,6 @@ class TierCommandClient {
 
     // Update budget governor with new tier settings
     budgetGovernor.setConfig({
-      dailyBudgetPct: tier.clmBudgetPct,
       minSpacingMinutes: Math.round(15 * tier.spacingMultiplier),
     });
 
@@ -165,9 +164,9 @@ class TierCommandClient {
     const limits: TierLimits = {
       tier: { ...this.currentTier },
       nexus: {
-        dailyLimit: tierLimits.dailyNexusLimit,
-        usedToday: Math.round(tierLimits.usedToday / config.dailyBudgetPct),
-        remainingToday: Math.round(tierLimits.remainingToday / config.dailyBudgetPct),
+        dailyLimit: tierLimits.clmBudgetUnits || tierLimits.dailyNexusLimit,
+        usedToday: tierLimits.usedToday,
+        remainingToday: tierLimits.remainingToday,
         remainingPct: tierLimits.remainingPct,
       },
       clm: {
