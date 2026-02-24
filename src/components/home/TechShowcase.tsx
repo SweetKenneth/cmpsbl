@@ -255,9 +255,9 @@ await cmpsbl.system.restore({
   {
     id: "modernizer",
     icon: Sparkles,
-    layer: "Admin",
-    title: "MODERNIZER Upgrade",
-    description: "Self-improvement & code evolution",
+    layer: "Overlay",
+    title: "EVOLUTION Lifecycle",
+    description: "Self-improvement & shadow mode",
     color: "text-rose-500",
     gradient: "from-rose-500 to-pink-600",
     code: `// Scan for improvement opportunities
