@@ -316,7 +316,7 @@ export default function SubstrateCapabilitiesDocs() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Substrate Capabilities — SDK Reference | CMPSBL"
-        description="Complete reference for 48+ cognitive capabilities in CMPSBL templates. Memory, analysis, learning, security, and more with code examples."
+        description="Complete reference for cognitive capabilities in CMPSBL templates. Memory, analysis, learning, security, and more with code examples."
         keywords={["substrate capabilities", "SDK reference", "cognitive AI", "template features", "CMPSBL documentation"]}
       />
       

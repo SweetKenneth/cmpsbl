@@ -10,7 +10,7 @@ const PromptFluidRipple = () => {
     <div className="min-h-screen bg-background">
       <SEO 
         title="RIPPLE Module: Network Integration & API Routing | CMPSBL®"
-        description="CMPSBL's RIPPLE module orchestrates inter-service communication with intelligent routing, load balancing, and failover across the 21-module substrate."
+        description="CMPSBL's RIPPLE zone orchestrates inter-service communication with intelligent routing, load balancing, and failover across the cognitive substrate."
         keywords={['API routing', 'network orchestration', 'service mesh AI', 'CMPSBL Ripple', 'intelligent load balancing']}
       />
       

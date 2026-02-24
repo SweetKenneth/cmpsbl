@@ -330,7 +330,7 @@ export default function SubstrateDashboard() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Substrate Dashboard — CMPSBL"
-        description="Cognitive orchestration substrate control center. 10 entities + 5 mesh overlays + 9 zones including brain, decode, encode, defense, nexus, vision, dream, memory, relay, audit, identity, economy, sandbox, and more."
+        description="Cognitive orchestration substrate control center. Execution surfaces, mesh overlays, and convergence zones including DECODE, ENCODE, DEFENSE, NEXUS, VISION, CORTEX, and more."
         canonical="https://cmpsbl.com/substrate"
         keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "zone architecture", "cortex"]}
       />

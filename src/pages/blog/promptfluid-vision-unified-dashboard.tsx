@@ -10,7 +10,7 @@ const VisionModuleGuide = () => {
     <div className="min-h-screen bg-background">
       <SEO 
         title="VISION Module: AI System Dashboard & Analytics | CMPSBL®"
-        description="CMPSBL's VISION module provides centralized monitoring for all 21 substrate modules. Real-time AI performance analytics, system health, and operational intelligence."
+        description="CMPSBL's VISION surface provides centralized monitoring for all substrate execution surfaces. Real-time AI performance analytics, system health, and operational intelligence."
         keywords={['AI dashboard', 'system monitoring', 'AI analytics', 'CMPSBL Vision', 'cognitive substrate monitoring']}
         type="article"
         publishedTime="2025-09-20"

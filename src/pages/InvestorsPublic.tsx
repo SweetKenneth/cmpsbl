@@ -88,7 +88,7 @@ export default function InvestorsPublic() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Investor Relations — CMPSBL® Cognitive Infrastructure"
-        description="CMPSBL: 10-entity cognitive OS with 5 mesh overlays and 9 hot-swappable zones. 14 documented world firsts, 50 crystallized Crown Jewel pipelines. Seeking seed investment."
+        description="CMPSBL: layered cognitive OS with mesh overlays and hot-swappable zones. Documented world firsts, crystallized Crown Jewel pipelines. Seeking seed investment."
         canonical="https://cmpsbl.com/investors"
         keywords={['CMPSBL investment', 'AI startup investment', 'cognitive infrastructure', 'AI IP portfolio', 'seed investment AI', 'zone architecture']}
       />

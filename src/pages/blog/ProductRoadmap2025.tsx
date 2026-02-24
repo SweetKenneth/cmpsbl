@@ -11,7 +11,7 @@ const ProductRoadmap2025 = () => {
     <div className="min-h-screen bg-background">
       <SEO
         title="CMPSBL Product Roadmap 2025–2026 | AI Substrate Evolution"
-        description="Upcoming features and milestones for CMPSBL's cognitive substrate. From 21-module ARCHITECT Epoch to autonomous evolution and enterprise integrations."
+        description="Upcoming features and milestones for CMPSBL's cognitive substrate. From the SPARTA Epoch to autonomous evolution and enterprise integrations."
         canonical="https://cmpsbl.com/blog/product-roadmap-2025"
         keywords={['AI roadmap 2026', 'CMPSBL features', 'cognitive substrate roadmap', 'AI platform evolution']}
       />
