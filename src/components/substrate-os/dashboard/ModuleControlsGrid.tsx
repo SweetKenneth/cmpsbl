@@ -218,8 +218,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => { const r = await inclusive.selfScan(); toast.info(`Inclusive: ${r.success ? 'Done' : 'Failed'}`); },
     },
     // Orchestrator Layer
-    // Note: ATLAS removed — not a SPARTA entity. Use CORTEX for orchestration.
-      id: 'cortex', name: 'CORTEX', layer: 'orchestrator' as const, icon: GitBranch,
+    {
       description: 'Agency-class orchestrator',
       gradient: 'bg-gradient-to-r from-indigo-500 to-violet-600', accentColor: 'bg-indigo-500',
       status: cortexStatus,
