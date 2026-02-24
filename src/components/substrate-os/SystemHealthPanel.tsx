@@ -1,6 +1,6 @@
 /**
- * System Health Panel v10.5.1 ARCHITECT — Live health diagnostics
- * Premium glassmorphic design with 21-module status grid
+ * System Health Panel — Live health diagnostics
+ * SPARTA Epoch — 10-entity + 5-mesh status grid
  */
 
 import { useState } from 'react';
