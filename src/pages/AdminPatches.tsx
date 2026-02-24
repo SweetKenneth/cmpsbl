@@ -688,6 +688,9 @@ export default function AdminPatches() {
               <TabsTrigger value="analytics" className="text-xs sm:text-sm">
                 <Eye className="w-3 h-3 mr-1" /> Analytics
               </TabsTrigger>
+              <TabsTrigger value="governance" className="text-xs sm:text-sm">
+                <GitCommit className="w-3 h-3 mr-1" /> Governance
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="all" className="space-y-4 mt-4">
