@@ -174,7 +174,7 @@ export default function PromptFluidHome() {
                   <p className="text-primary font-semibold">Founder & Governor — PromptFluid</p>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
-                  Kenneth is the architect behind CMPSBL® — a cognitive operating system with 10 modules, 5 mesh overlays, and 9 zones spanning 175,000+ lines of production code. 
+                  Kenneth is the architect behind CMPSBL® — a cognitive operating system with 10 entities, 5 mesh overlays, and 9 zones spanning 175,000+ lines of production code. 
                   His work focuses on persistent memory architectures, autonomous self-evolution, and model-agnostic AI routing. 
                   He serves as the canonical Governor, primary author, and technical expert for all substrate content.
                 </p>
