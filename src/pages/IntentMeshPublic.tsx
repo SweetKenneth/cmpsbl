@@ -20,7 +20,6 @@ const fadeUp = {
 
 const RESOLVER_STATS = {
   totalResolvers: 34,
-  totalModules: 21,
   discoveryMethods: 7,
   dashboardViews: 6,
   terminalCommands: 26,
@@ -94,7 +93,7 @@ const SELF_IMPROVEMENT_FEATURES = [
   {
     icon: Target,
     title: "Module Self-Discovery",
-    desc: "All 9 modules autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
+    desc: "All execution surfaces autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
   },
   {
     icon: BarChart3,
@@ -135,7 +134,7 @@ export default function IntentMeshPublic() {
         <title>Intent Mesh — Emergent Module Intelligence | CMPSBL</title>
         <meta
           name="description"
-          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across 9 modules with 34+ resolvers. Self-learning, self-improving AI substrate intelligence."
+          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across execution surfaces with resolvers. Self-learning, self-improving AI substrate intelligence."
         />
         <meta property="og:title" content="Intent Mesh — Emergent Module Intelligence | CMPSBL" />
         <meta property="og:description" content="Autonomous cross-module capability discovery with self-learning, pipeline crystallization, and intent quality scoring." />
@@ -159,14 +158,14 @@ export default function IntentMeshPublic() {
                 Intent Mesh
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
-                Emergent cross-module intelligence. 9 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
+                Emergent cross-module intelligence. Execution surfaces broadcast intents, discover capabilities autonomously, and learn from every interaction.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {Object.entries(RESOLVER_STATS).map(([key, value]) => (
                   <div key={key} className="bg-card border border-border rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-primary">{value}</div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {key === "totalResolvers" ? "Resolvers" : key === "totalModules" ? "Modules" : key === "discoveryMethods" ? "Discovery Methods" : key === "dashboardViews" ? "Dashboard Views" : key === "terminalCommands" ? "Terminal Commands" : key}
+                  <div className="text-xs text-muted-foreground mt-1">
+                      {key === "totalResolvers" ? "Resolvers" : key === "discoveryMethods" ? "Discovery Methods" : key === "dashboardViews" ? "Dashboard Views" : key === "terminalCommands" ? "Terminal Commands" : key}
                     </div>
                   </div>
                 ))}
@@ -312,14 +311,14 @@ Learning feedback → improved future routing`}</pre>
           <div className="max-w-4xl mx-auto px-6 py-16 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
             <p className="text-muted-foreground mb-8">
-              The Intent Mesh is one layer of the CMPSBL OS Substrate — a cognitive orchestration system with 9 modules, 5 mesh overlays, and 9 zones.
+              The Intent Mesh is one layer of the CMPSBL Substrate — a cognitive orchestration system with modules, mesh overlays, and convergence zones.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 to="/modules"
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
               >
-                All 9 Modules <ArrowRight className="w-4 h-4" />
+                All Modules <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/documentation"
@@ -341,7 +340,7 @@ Learning feedback → improved future routing`}</pre>
               name: "Intent Mesh",
               applicationCategory: "DeveloperApplication",
               operatingSystem: "Cloud",
-              description: "Emergent cross-module intelligence layer for autonomous capability discovery across 21 AI substrate modules.",
+              description: "Emergent cross-module intelligence layer for autonomous capability discovery across AI substrate execution surfaces.",
               author: {
                 "@type": "Person",
                 name: "Kenneth E Sweet Jr",
@@ -350,7 +349,7 @@ Learning feedback → improved future routing`}</pre>
                 "@type": "Organization",
                 name: "PromptFluid",
               },
-              softwareVersion: "10.5.0",
+              softwareVersion: "SPARTA",
             }),
           }}
         />

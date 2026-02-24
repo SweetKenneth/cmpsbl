@@ -18,13 +18,13 @@ export default function ModulesHub() {
     <>
       <Helmet>
         <title>Substrate Modules — AI Architecture | CMPSBL</title>
-        <meta name="description" content="Browse all substrate execution surfaces: 9 modules, 5 mesh overlays, 9 hot-swappable zones, powered by CORE kernel." />
+        <meta name="description" content="Browse all substrate execution surfaces — modules, mesh overlays, and hot-swappable zones powered by CORE kernel." />
         <link rel="canonical" href="https://cmpsbl.com/modules" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           "name": "CMPSBL Substrate — Execution Surfaces",
-          "description": "CMPSBL Substrate — 9 modules + 5 mesh overlays + 9 zones",
+          "description": "CMPSBL Substrate — Modules, mesh overlays, and convergence zones",
           "url": "https://cmpsbl.com/modules",
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
           "hasPart": MODULE_REGISTRY.map(m => ({
@@ -54,7 +54,7 @@ export default function ModulesHub() {
                 Substrate Architecture
               </span>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                9 Modules. 5 Meshes.{" "}
+                Execution Surfaces.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>

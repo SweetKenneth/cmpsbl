@@ -67,7 +67,7 @@ export default function Publication() {
             </Badge>
 
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight text-foreground mb-4">
-              promptfluid substrate — <span className="font-medium text-primary">DOI Publication</span>
+              CMPSBL Substrate — <span className="font-medium text-primary">DOI Publication</span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl">
@@ -125,7 +125,7 @@ export default function Publication() {
             {/* Description */}
             <div className="prose prose-lg prose-invert max-w-none">
               <p className="text-muted-foreground leading-relaxed">
-                promptfluid substrate is a cognitive orchestration substrate that provides persistent memory, 
+                The CMPSBL Substrate is a cognitive orchestration substrate that provides persistent memory, 
                 unified routing, defense intelligence, autonomous learning cycles, and multi-provider execution 
                 across heterogeneous AI models and cloud services. The substrate is model-agnostic, provider-agnostic, 
                 and deployable on commodity Supabase + Postgres infrastructure. The DOI artifact includes the core 
