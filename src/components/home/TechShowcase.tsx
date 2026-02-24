@@ -267,7 +267,7 @@ const proposals = await cmpsbl.evolution.scan({
 });
 
 // Review and apply a proposal
-await cmpsbl.modernizer.apply({
+await cmpsbl.evolution.apply({
   proposal_id: proposals[0].id,
   shadow_test: true, // Test before production
   auto_rollback: true
