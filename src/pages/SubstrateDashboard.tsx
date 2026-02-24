@@ -494,7 +494,7 @@ export default function SubstrateDashboard() {
             <DefenseAnalytics />
           </TabsContent>
 
-          {/* Overview - All 21 modules */}
+          {/* Overview — All entities + meshes + zones */}
           <TabsContent value="overview" className="mt-6">
             <div className="space-y-8">
               {Object.entries(modulesByLayer).map(([layer, modules]) => (

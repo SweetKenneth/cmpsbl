@@ -194,7 +194,10 @@ export const WCAG_LEVEL = 'WCAG 2.2 AA';
  */
 export function getAllMarketingFacts() {
   return {
-    modules: MODULES_COUNT,
+    entities: ENTITIES_COUNT,
+    meshOverlays: MESH_OVERLAY_COUNT,
+    zones: ZONE_COUNT,
+    modules: MODULES_COUNT, // backward compat alias
     layers: LAYERS_COUNT,
     synergyPipelines: SYNERGY_PIPELINES_COUNT,
     synergyExecutors: SYNERGY_EXECUTORS_COUNT,

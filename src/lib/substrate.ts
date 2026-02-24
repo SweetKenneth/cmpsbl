@@ -1720,7 +1720,7 @@ export const integration = substrate.integration;
 export const inclusive = substrate.inclusive;
 export const cortex = substrate.cortex;
 export const seba = substrate.seba;
-// Infrastructure Six + Encode (v9.2.0)
+// Zone + module aliases
 export const memoryMod = substrate.memory;
 export const relayMod = substrate.relay;
 export const auditMod = substrate.audit;

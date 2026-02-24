@@ -1,16 +1,16 @@
 /**
  * Support Bot Engine
- * v10.5.4 ARCHITECT Epoch — Governed Evolving Support System
+ * SPARTA Epoch — Governed Evolving Support System
  * 
  * A proof-of-concept for evolving software: learns from verified resolutions,
  * escalates uncertainty, and produces audit-safe responses.
  * 
- * Integrations with 21-module architecture:
- * - BRAIN: Read-only recall + reinforcement for verified resolutions
+ * Integrations with 10-entity + 5-mesh architecture:
+ * - BRAIN (CCR zone): Read-only recall + reinforcement for verified resolutions
  * - DECODE: Intent classification + sentiment detection
  * - VISION: Pain pattern detection across support history
- * - SYSTEM: Ticket state + escalation hooks
- * - GOVERNANCE: Safety checks on responses
+ * - SYSTEM (CCR zone): Ticket state + escalation hooks
+ * - GOVERNANCE mesh: Safety checks on responses
  * - KNOWLEDGE BASE: Pre-trained FAQ data for immediate utility
  * - NEXUS: Multi-provider AI routing for response generation
  */

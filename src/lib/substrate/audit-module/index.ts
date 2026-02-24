@@ -205,7 +205,7 @@ const COMPLIANCE_TEMPLATES: Record<ComplianceFramework, ComplianceSection[]> = {
   SOC2: [
     { title: 'Access Controls', controlId: 'CC6.1', status: 'compliant', evidence: [], notes: 'Identity module enforces actor attribution and WebAuthn' },
     { title: 'Change Management', controlId: 'CC8.1', status: 'compliant', evidence: [], notes: 'All changes tracked via audit chain with hash verification' },
-    { title: 'System Operations', controlId: 'CC7.1', status: 'compliant', evidence: [], notes: 'Circuit breakers and health monitoring across 21 modules' },
+    { title: 'System Operations', controlId: 'CC7.1', status: 'compliant', evidence: [], notes: 'Circuit breakers and health monitoring across 10 entities + 5 mesh overlays' },
     { title: 'Risk Assessment', controlId: 'CC3.1', status: 'compliant', evidence: [], notes: 'Defense module performs anomaly correlation' },
     { title: 'Monitoring', controlId: 'CC7.2', status: 'compliant', evidence: [], notes: 'Telemetry engine provides real-time observability' },
   ],
