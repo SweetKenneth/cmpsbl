@@ -1,6 +1,8 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * v10.5.4 ARCHITECT Epoch — 21-module, 6-layer visualization
+ * v11.1.0 SPARTA Epoch — 15-Entity + 9-Zone Architecture
+ *
+ * CORE → CCR/CCL → 8 Modules → 5 Meshes → INTEGRATION
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -25,7 +27,7 @@ interface ModuleState {
   id: string;
   name: string;
   icon: React.ElementType;
-  layer: 'kernel' | 'cognitive' | 'operational' | 'admin' | 'orchestrator' | 'infrastructure';
+  layer: 'kernel' | 'module' | 'mesh' | 'standalone' | 'zone-ccr' | 'zone-ccl';
   status: 'idle' | 'active' | 'processing' | 'complete';
   color: string;
   description: string;
@@ -40,66 +42,69 @@ interface LogEntry {
 
 const LAYER_COLORS = {
   kernel: { bg: 'bg-orange-500/20', border: 'border-orange-500/50', text: 'text-orange-400' },
-  cognitive: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
-  operational: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
-  admin: { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
-  infrastructure: { bg: 'bg-sky-500/20', border: 'border-sky-500/50', text: 'text-sky-400' },
-  orchestrator: { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
+  module: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
+  mesh: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
+  standalone: { bg: 'bg-sky-500/20', border: 'border-sky-500/50', text: 'text-sky-400' },
+  'zone-ccr': { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
+  'zone-ccl': { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
 };
 
 const INITIAL_MODULES: ModuleState[] = [
-  // KERNEL LAYER (3)
-  { id: 'core', name: 'Core', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Kernel Scheduling' },
-  { id: 'ripple', name: 'Ripple', icon: Network, layer: 'kernel', status: 'idle', color: 'teal', description: 'Message Bus' },
-  { id: 'access', name: 'Access', icon: Lock, layer: 'kernel', status: 'idle', color: 'yellow', description: 'Identity & Auth' },
-  // COGNITIVE LAYER (4)
-  { id: 'brain', name: 'Brain', icon: Brain, layer: 'cognitive', status: 'idle', color: 'violet', description: 'Memory & Learning' },
-  { id: 'decode', name: 'Decode', icon: MessageSquare, layer: 'cognitive', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
-  { id: 'nexus', name: 'Nexus', icon: Layers, layer: 'cognitive', status: 'idle', color: 'amber', description: 'AI Routing' },
-  { id: 'encode', name: 'Encode', icon: Code2, layer: 'cognitive', status: 'idle', color: 'lime', description: 'Code Intelligence' },
-  // OPERATIONAL LAYER (3)
-  { id: 'defense', name: 'Defense', icon: Shield, layer: 'operational', status: 'idle', color: 'emerald', description: 'Threat Detection' },
-  { id: 'vision', name: 'Vision', icon: Eye, layer: 'operational', status: 'idle', color: 'rose', description: 'Observability' },
-  { id: 'dream', name: 'Dream', icon: Moon, layer: 'operational', status: 'idle', color: 'purple', description: 'Evolution' },
-  // ADMIN LAYER (4)
-  { id: 'system', name: 'System', icon: Server, layer: 'admin', status: 'idle', color: 'slate', description: 'Administration' },
-  { id: 'modernizer', name: 'Modernizer', icon: Sparkles, layer: 'admin', status: 'idle', color: 'pink', description: 'Self-Upgrade' },
-  { id: 'integration', name: 'Integration', icon: Code, layer: 'admin', status: 'idle', color: 'indigo', description: 'Enterprise' },
-  { id: 'inclusive', name: 'Inclusive', icon: Accessibility, layer: 'admin', status: 'idle', color: 'rose', description: 'Human Compatibility' },
-  // INFRASTRUCTURE LAYER (6)
-  { id: 'memory', name: 'Memory', icon: Database, layer: 'infrastructure', status: 'idle', color: 'sky', description: 'Vector Storage' },
-  { id: 'relay', name: 'Relay', icon: Send, layer: 'infrastructure', status: 'idle', color: 'lime', description: 'Webhooks' },
-  { id: 'audit', name: 'Audit', icon: FileCheck, layer: 'infrastructure', status: 'idle', color: 'stone', description: 'Compliance' },
-  { id: 'identity', name: 'Identity', icon: Fingerprint, layer: 'infrastructure', status: 'idle', color: 'rose', description: 'Attribution' },
-  { id: 'economy', name: 'Economy', icon: Coins, layer: 'infrastructure', status: 'idle', color: 'amber', description: 'Cost Control' },
-  { id: 'sandbox', name: 'Sandbox', icon: FlaskConical, layer: 'infrastructure', status: 'idle', color: 'cyan', description: 'Isolation' },
-  // ORCHESTRATOR LAYER (1)
-  { id: 'cortex', name: 'Cortex', icon: Workflow, layer: 'orchestrator', status: 'idle', color: 'fuchsia', description: 'Orchestrator' },
+  // KERNEL (1)
+  { id: 'core', name: 'CORE', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Standalone Kernel' },
+  // 8 PUBLIC MODULES
+  { id: 'decode', name: 'DECODE', icon: MessageSquare, layer: 'module', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
+  { id: 'encode', name: 'ENCODE', icon: Code2, layer: 'module', status: 'idle', color: 'lime', description: 'Code Intelligence' },
+  { id: 'vision', name: 'VISION', icon: Eye, layer: 'module', status: 'idle', color: 'rose', description: 'Observability' },
+  { id: 'cortex', name: 'CORTEX', icon: Workflow, layer: 'module', status: 'idle', color: 'fuchsia', description: 'Orchestrator' },
+  { id: 'nexus', name: 'NEXUS', icon: Layers, layer: 'module', status: 'idle', color: 'amber', description: 'AI Routing' },
+  { id: 'economy', name: 'ECONOMY', icon: Coins, layer: 'module', status: 'idle', color: 'amber', description: 'Cost Control' },
+  { id: 'sandbox', name: 'SANDBOX', icon: FlaskConical, layer: 'module', status: 'idle', color: 'cyan', description: 'Isolation' },
+  { id: 'inclusive', name: 'INCLUSIVE', icon: Accessibility, layer: 'module', status: 'idle', color: 'rose', description: 'Accessibility' },
+  // 5 MESHES
+  { id: 'defense', name: 'DEFENSE', icon: Shield, layer: 'mesh', status: 'idle', color: 'emerald', description: 'Security Mesh' },
+  { id: 'immunity', name: 'IMMUNITY', icon: Activity, layer: 'mesh', status: 'idle', color: 'emerald', description: 'Resilience Mesh' },
+  { id: 'evolution', name: 'EVOLUTION', icon: Sparkles, layer: 'mesh', status: 'idle', color: 'pink', description: 'Self-Improvement' },
+  { id: 'intent', name: 'INTENT', icon: Brain, layer: 'mesh', status: 'idle', color: 'violet', description: 'Goal Routing' },
+  { id: 'governance', name: 'GOVERNANCE', icon: Lock, layer: 'mesh', status: 'idle', color: 'slate', description: 'Ethical Gates' },
+  // STANDALONE (1)
+  { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'standalone', status: 'idle', color: 'indigo', description: 'External APIs' },
+  // CCR ZONES (4) — surgically hot-swappable
+  { id: 'brain', name: 'BRAIN Zone', icon: Brain, layer: 'zone-ccr', status: 'idle', color: 'violet', description: 'CCR: Memory & Learning' },
+  { id: 'system', name: 'SYSTEM Zone', icon: Server, layer: 'zone-ccr', status: 'idle', color: 'slate', description: 'CCR: Administration' },
+  { id: 'memory', name: 'MEMORY Zone', icon: Database, layer: 'zone-ccr', status: 'idle', color: 'sky', description: 'CCR: Vector Storage' },
+  { id: 'dream', name: 'DREAM Zone', icon: Moon, layer: 'zone-ccr', status: 'idle', color: 'purple', description: 'CCR: Synthesis' },
+  // CCL ZONES (5) — surgically hot-swappable
+  { id: 'ripple', name: 'RIPPLE Zone', icon: Network, layer: 'zone-ccl', status: 'idle', color: 'teal', description: 'CCL: Event Bus' },
+  { id: 'access', name: 'ACCESS Zone', icon: Lock, layer: 'zone-ccl', status: 'idle', color: 'yellow', description: 'CCL: API Keys' },
+  { id: 'identity', name: 'IDENTITY Zone', icon: Fingerprint, layer: 'zone-ccl', status: 'idle', color: 'rose', description: 'CCL: Attribution' },
+  { id: 'relay', name: 'RELAY Zone', icon: Send, layer: 'zone-ccl', status: 'idle', color: 'lime', description: 'CCL: Webhooks' },
+  { id: 'audit', name: 'AUDIT Zone', icon: FileCheck, layer: 'zone-ccl', status: 'idle', color: 'stone', description: 'CCL: Compliance' },
 ];
 
 const DEMO_SCENARIOS = [
   {
     name: 'User Request Flow',
-    sequence: ['access', 'decode', 'brain', 'nexus', 'ripple'],
-    description: 'Authenticate → Parse intent → Recall memory → Route AI → Broadcast result',
+    sequence: ['core', 'access', 'decode', 'brain', 'nexus', 'ripple'],
+    description: 'Boot kernel → Authenticate → Parse intent → Recall memory → Route AI → Broadcast',
     icon: Zap,
   },
   {
     name: 'Security Pipeline',
-    sequence: ['defense', 'vision', 'brain', 'system'],
-    description: 'Detect threats → Observe patterns → Store intel → Report status',
+    sequence: ['defense', 'vision', 'brain', 'governance'],
+    description: 'Detect threats → Observe patterns → Store intel → Enforce ethics',
     icon: Shield,
   },
   {
     name: 'Dream Cycle',
-    sequence: ['brain', 'dream', 'modernizer', 'vision'],
-    description: 'Consolidate memories → Synthesize insights → Apply upgrades → Monitor',
+    sequence: ['brain', 'dream', 'evolution', 'vision'],
+    description: 'Consolidate memories → Synthesize insights → Self-improve → Monitor',
     icon: Moon,
   },
   {
     name: 'Full Orchestration',
-    sequence: ['cortex', 'access', 'core', 'decode', 'encode', 'defense', 'nexus', 'brain', 'memory', 'dream', 'vision', 'modernizer', 'inclusive', 'system', 'integration', 'relay', 'audit', 'identity', 'economy', 'sandbox', 'ripple'],
-    description: 'Complete 21-module orchestration across all 6 architectural layers',
+    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration'],
+    description: '15 entities + 9 zones — full substrate orchestration',
     icon: Sparkles,
   },
 ];
