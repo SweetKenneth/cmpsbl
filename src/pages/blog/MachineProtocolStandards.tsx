@@ -14,7 +14,7 @@ export default function MachineProtocolStandards() {
       <main className="min-h-screen bg-background">
         <article className="container max-w-3xl mx-auto px-4 py-16">
           <img src={heroImg} alt="AI protocol standards" className="w-full rounded-xl mb-8 aspect-video object-cover" />
-          <h1 className="text-4xl font-black mb-4">Machine-to-Machine Protocol Standards in the ARCHITECT Epoch</h1>
+          <h1 className="text-4xl font-black mb-4">Machine-to-Machine Protocol Standards in the SPARTA Epoch</h1>
           <p className="text-muted-foreground mb-8">February 10, 2026 · 16 min read · Kenneth E Sweet Jr</p>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
             <p className="text-lg leading-relaxed">The ARCHITECT Epoch introduces a fundamental shift in how autonomous systems communicate. With the RELAY and IDENTITY modules now part of the 21-module substrate, machine-to-machine protocol standards are no longer aspirational — they're enforced at runtime.</p>
