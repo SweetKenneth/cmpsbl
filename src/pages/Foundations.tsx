@@ -103,7 +103,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="Clockless ARCHITECT Epoch — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
+        <meta name="description" content="Clockless SPARTA Epoch — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the 10-entity + 5-mesh architecture and access archival records." />
       </Helmet>
 
       <PublicNav />
