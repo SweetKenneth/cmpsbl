@@ -65,7 +65,7 @@ export function MatrixBreakerMap({ nodes }: MatrixBreakerMapProps) {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {sectorNodes.map((node, idx) => {
-                const style = BREAKER_STYLES[node.breakerState];
+                const style = BREAKER_STYLES[node.breakerState] ?? BREAKER_STYLES.closed;
                 const Icon = style.icon;
                 return (
                   <motion.div
