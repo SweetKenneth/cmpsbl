@@ -166,8 +166,7 @@ export default function SubstrateDemo() {
   const groupedModules = {
     kernel: modules.filter(m => m.layer === 'kernel'),
     module: modules.filter(m => m.layer === 'module'),
-    mesh: modules.filter(m => m.layer === 'mesh'),
-    standalone: modules.filter(m => m.layer === 'standalone'),
+    'mesh-overlay': modules.filter(m => m.layer === 'mesh-overlay'),
     'zone-ccr': modules.filter(m => m.layer === 'zone-ccr'),
     'zone-ccl': modules.filter(m => m.layer === 'zone-ccl'),
   };
