@@ -61,7 +61,7 @@ const MODULE_STATUS = [
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
   ║                CMPSBL® OS v9.3.0                     ║
-  ║               ARCHITECT Epoch Cognitive OS                  ║
+  ║               SPARTA Epoch Cognitive OS                     ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
   ║    ┏━━━━━━━━━━ KERNEL LAYER ━━━━━━━━━━┓                   ║
