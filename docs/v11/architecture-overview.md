@@ -11,10 +11,10 @@ CMPSBL operates as a **layered cognitive kernel** — a production-ready AI oper
 | **CORE** | 1 kernel | Standalone boot authority; initializes all layers |
 | **CCR Zones** | 4 zones (SYSTEM, BRAIN, MEMORY, DREAM) | Hidden meta-engine — reasoning, synthesis, persistence |
 | **CCL Zones** | 5 zones (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) | Infrastructure convergence — events, auth, integrity |
-| **Execution Surfaces** | 9 modules (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION) | Public-facing cognitive capabilities |
+| **Matrix Nodes** | 9 modules (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION) | Public-facing cognitive capabilities |
 | **Overlays** | 5 meshes (DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE) | Protective behavioral mesh hierarchy |
 
-**Total: 10 public entities + 5 mesh overlays + 9 hidden zones = 24 execution surfaces**
+**Total: 10 public entities + 5 mesh overlays + 9 hidden zones = 24 Matrix Nodes**
 
 ### Boot Sequence
 
@@ -22,7 +22,7 @@ CMPSBL operates as a **layered cognitive kernel** — a production-ready AI oper
 CORE (Standalone Kernel)
   → CCR (Layer 0): SYSTEM + BRAIN + MEMORY + DREAM
   → CCL (Layer 1): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
-  → 8 Execution Surfaces: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
+  → 8 Matrix Nodes: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
   → INTEGRATION (boots last — dependency resolver)
   ← 5 Overlays wrap all layers: DEFENSE (outermost) → GOVERNANCE (innermost)
 ```
@@ -34,7 +34,7 @@ Health is calculated using a **5-layer weighted aggregation** (20% each):
 - **CORE health** — kernel availability
 - **CCR aggregate** — zone cluster health
 - **CCL aggregate** — infrastructure zone health
-- **Execution Surfaces** — public module health
+- **Matrix Nodes** — public module health
 - **Overlays** — mesh integrity
 
 A degraded zone reduces only its own layer score. Circuit breakers isolate failures per-zone, preventing cascading degradation.

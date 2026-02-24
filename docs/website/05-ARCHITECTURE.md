@@ -16,12 +16,12 @@ CMPSBL® is built on three core principles:
 
 ## The 10-Entity + 5-Mesh + 9-Zone Architecture
 
-CMPSBL organizes intelligence across **10 public entities**, **5 mesh overlays**, and **2 hidden convergence layers** containing **9 internal zones**. Together they produce **300+ synergy pipelines** and **525+ capabilities**.
+CMPSBL organizes intelligence across **10 public Matrix Nodes**, **5 mesh overlays**, and **2 hidden convergence layers** containing **9 internal zones**. Together they produce **300+ synergy pipelines** and **525+ capabilities**.
 
 ### Boot Order
 
 ```
-CORE → CCR (Layer 0) → CCL (Layer 1) → 8 Modules → INTEGRATION (last) ← 5 Mesh Overlays
+CORE → CCR (Layer 0) → CCL (Layer 1) → 8 Matrix Nodes → INTEGRATION (last) ← 5 Mesh Overlays
 ```
 
 ### Entity Map
@@ -73,7 +73,7 @@ The invisible cognitive foundation. Owns reasoning, memory persistence, dream sy
 ### CCL — Clockless Cognitive Lucidity (Layer 1, Hidden)
 Infrastructure convergence. Owns event bus (signal), identity/auth, API key management, rate limiting, entitlements, webhook delivery, outbound routing, and compliance logging (AUDIT). Legacy commands route through CCL.
 
-### Modules (9)
+### Matrix Nodes (9)
 The public capability surface:
 - **Cognitive**: DECODE (intent parsing)
 - **Orchestration**: ENCODE (code gen), CORTEX (pipelines), NEXUS (AI routing)
