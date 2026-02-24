@@ -46,9 +46,9 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "PromptFluid Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 15 entities + 9 zones, powered by the CMPSBL Substrate." },
+  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 10 entities + 5 mesh overlays + 9 zones, powered by the CMPSBL Substrate." },
   { year: "2025", title: "175k+ Lines of Code", description: "Grew to 525+ capabilities, 300 synergy pipelines, and 13-provider AI routing." },
-  { year: "2026", title: "SPARTA Epoch", description: "Zone Architecture — surgically hot-swappable subsystems with circuit-breaker isolation and autonomous evolution." },
+  { year: "2026", title: "SPARTA Epoch", description: "Zone Architecture — surgically hot-swappable subsystems with circuit-breaker isolation, mesh overlays, and autonomous evolution." },
 ];
 
 const capabilities = [
