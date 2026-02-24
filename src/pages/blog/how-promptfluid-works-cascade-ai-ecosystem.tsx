@@ -396,10 +396,10 @@ const HowPromptFluidWorks = () => {
 
           {/* Section 3: The PromptFluid Ecosystem */}
           <section className="mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">The CMPSBL Ecosystem: 21 Modules That Work as One</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">The CMPSBL Ecosystem: 10 Entities Wrapped by 5 Mesh Overlays</h2>
             
             <p className="text-lg leading-relaxed mb-8">
-              The cognitive engine doesn't operate in isolation—it powers an integrated ecosystem of 21 modules designed to work 
+              The cognitive engine doesn't operate in isolation—it powers an integrated ecosystem of 10 entities wrapped by 5 protective mesh overlays, designed to work 
               seamlessly together. Each component serves a specific purpose while contributing to the collective 
               intelligence of the entire substrate. Here are the core modules:
             </p>

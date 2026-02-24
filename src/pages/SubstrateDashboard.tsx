@@ -330,9 +330,9 @@ export default function SubstrateDashboard() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Substrate Dashboard — CMPSBL"
-        description="Cognitive orchestration substrate control center. Monitor all 21 modules across 6 layers including brain, decode, encode, defense, nexus, vision, dream, memory, relay, audit, identity, economy, sandbox, and more."
+        description="Cognitive orchestration substrate control center. 10 entities + 5 mesh overlays + 9 zones including brain, decode, encode, defense, nexus, vision, dream, memory, relay, audit, identity, economy, sandbox, and more."
         canonical="https://cmpsbl.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "21 modules", "cortex"]}
+        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "zone architecture", "cortex"]}
       />
 
       <PublicNav />
@@ -342,7 +342,7 @@ export default function SubstrateDashboard() {
         <div className="max-w-6xl mx-auto mb-8 md:mb-12">
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <Layers className="w-3 h-3 mr-2" />
-            Live Infrastructure — 21 Modules
+            Live Infrastructure — 10 Entities + 5 Meshes + 9 Zones
           </Badge>
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -350,12 +350,12 @@ export default function SubstrateDashboard() {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">Clockless Cognitive Reality — 21-Module Architecture</p>
+              <p className="text-sm md:text-base text-muted-foreground">Clockless Cognitive Reality — Zone Architecture</p>
             </div>
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            Unified control center for the AI orchestration substrate. All 21 modules organized in 6 layers, 200+ synergy pipelines, 360+ terminal commands.
+            Unified control center for the AI orchestration substrate. 10 entities wrapped by 5 mesh overlays, 9 hot-swappable zones, 200+ synergy pipelines, 360+ terminal commands.
           </p>
           
           <div className="flex gap-3">

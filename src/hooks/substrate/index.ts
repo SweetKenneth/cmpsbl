@@ -1,6 +1,6 @@
 /**
  * Substrate Module Hooks - Barrel Export
- * CORE Epoch — 15-entity architecture hooks + CCR/CCL facades + SEBA
+ * SPARTA Epoch — 10-entity + 5-mesh + 9-zone architecture hooks + CCR/CCL facades + SEBA
  *
  * CORE (standalone kernel)
  * CCR absorbs: SYSTEM+BRAIN+MEMORY+DREAM (hooks exported for backcompat)

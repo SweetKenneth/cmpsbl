@@ -202,7 +202,7 @@ export function registerInfraModuleHandlers(): void {
         '  audit.health    Chain validity score',
         '',
         '  AUDIT provides immutable, cryptographically',
-        '  chained compliance logging for ALL 21 modules.',
+        '  chained compliance logging for all modules and zones.',
         '',
       ],
     };

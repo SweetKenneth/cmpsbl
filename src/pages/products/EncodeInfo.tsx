@@ -59,7 +59,7 @@ export default function EncodeInfo() {
               Open Substrate <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <Button size="lg" variant="outline" onClick={() => navigate('/modules')}>
-              All 21 Modules
+              All Modules
             </Button>
           </div>
         </div>

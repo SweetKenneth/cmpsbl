@@ -33,8 +33,8 @@ const faqItems = [
     answer: "Yes. CMPSBL is model-agnostic and provider-agnostic. The NEXUS module intelligently routes to OpenAI, Google Gemini, Anthropic Claude, or local models based on task requirements. Bring your own keys (BYOK) and your existing AI stack — CMPSBL orchestrates everything underneath."
   },
   {
-    question: "What are the 21 modules in CMPSBL's AI Operating System?",
-    answer: "The 21 modules span 6 layers: Kernel (CORE runtime, RIPPLE event bus, ACCESS identity), Cognitive (BRAIN memory, DECODE personality), Operational (DEFENSE security, NEXUS routing, VISION observability, DREAM optimization, INTEGRATION adapters), Administrative (SYSTEM ops, INCLUSIVE accessibility, MODERNIZER evolution), Orchestrator (CORTEX meta-orchestration, ENCODE code execution), and Infrastructure (MEMORY vector/RAG, RELAY webhooks, AUDIT compliance, IDENTITY attribution, ECONOMY cost tracking, SANDBOX isolation)."
+    question: "What is CMPSBL's architecture?",
+    answer: "The substrate consists of 10 entities (CORE kernel + 8 modules + INTEGRATION), wrapped by 5 mesh overlays (DEFENSE outermost → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE innermost), with 9 hot-swappable zones across CCR (SYSTEM, BRAIN, MEMORY, DREAM) and CCL (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)."
   },
 ];
 
@@ -89,10 +89,10 @@ export default function AIOperatingSystem() {
     <>
       <Helmet>
         <title>What is an AI Operating System? | CMPSBL — The First AI OS</title>
-        <meta name="description" content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the world's first — 21 modules, 6 layers, one intelligence." />
+        <meta name="description" content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the world's first — 10 entities, 5 mesh overlays, 9 zones." />
         <link rel="canonical" href="https://cmpsbl.com/ai-operating-system" />
         <meta property="og:title" content="What is an AI Operating System? | CMPSBL" />
-        <meta property="og:description" content="The world's first AI Operating System — 21 integrated modules for persistent memory, intelligent routing, AI security, and autonomous optimization." />
+        <meta property="og:description" content="The world's first AI Operating System — 10 entities wrapped by 5 mesh overlays for persistent memory, intelligent routing, AI security, and autonomous optimization." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/ai-operating-system" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
