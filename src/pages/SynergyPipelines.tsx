@@ -1,6 +1,6 @@
 /**
  * Synergy Pipelines Discovery Page
- * v10.5.4 ARCHITECT Epoch — FREE exploration layer with runnable code examples
+ * SPARTA Epoch — FREE exploration layer with runnable code examples
  */
 
 import { useState, useMemo } from "react";

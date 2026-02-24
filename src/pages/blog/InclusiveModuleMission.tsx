@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module Mission — Human Compatibility Pipeline
- * v10.5.4 ARCHITECT — PromptFluid®
+ * SPARTA Epoch — PromptFluid®
  */
 
 import { SEO } from "@/components/SEO";
