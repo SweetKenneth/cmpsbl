@@ -262,13 +262,13 @@ Boot complete in 117ms`}
           </div>
         </section>
 
-        {/* 21-Module Architecture */}
+        {/* Layered Architecture */}
         <section className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4">21-Module Kernel Architecture</h2>
-                <p className="text-muted-foreground">Six-layer design for cognitive orchestration</p>
+                <h2 className="text-3xl font-bold mb-4">Layered Cognitive Kernel</h2>
+                <p className="text-muted-foreground">10 execution surfaces, 5 mesh overlays, 9 convergence zones</p>
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
