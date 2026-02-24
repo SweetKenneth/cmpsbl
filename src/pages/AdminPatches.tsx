@@ -574,16 +574,39 @@ function GovernanceStream() {
           </Select>
         </div>
 
-        {approvedChanges.length > 0 && (
-          <Button 
-            onClick={handleDispatchApproved}
-            disabled={batchDispatch.isPending}
+        <div className="flex items-center gap-2 flex-wrap">
+          {approvedChanges.length > 0 && (
+            <Button 
+              onClick={handleDispatchApproved}
+              disabled={batchDispatch.isPending}
+              className="gap-2"
+            >
+              <Rocket className="w-4 h-4" />
+              Push {approvedChanges.length} to LNCHBL
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            onClick={async () => {
+              setExporting(true);
+              try {
+                const { blob, manifest } = await buildSubstrateZip();
+                const dateStr = new Date().toISOString().slice(0, 10);
+                downloadBlob(blob, `cmpsbl-substrate-${dateStr}.zip`);
+                toast.success(`Exported ${manifest.totalFiles} files (${manifest.categories.edgeFunctions} edge fns, ${manifest.categories.migrations} migrations, ${manifest.categories.coreLibs} libs, ${manifest.categories.components} components)`);
+              } catch (err: any) {
+                toast.error(err.message || 'Export failed');
+              } finally {
+                setExporting(false);
+              }
+            }}
+            disabled={exporting}
             className="gap-2"
           >
-            <Rocket className="w-4 h-4" />
-            Push {approvedChanges.length} to LNCHBL
+            <Archive className="w-4 h-4" />
+            {exporting ? 'Building ZIP...' : 'Export Substrate ZIP'}
           </Button>
-        )}
+        </div>
       </div>
 
       {/* Stats */}
