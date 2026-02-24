@@ -534,7 +534,7 @@ function highlightCode(code: string): string {
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
     .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
     .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
-    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration|\.inclusive|\.cortex|\.memory|\.relay|\.audit|\.identity|\.economy|\.sandbox|\.encode)/g, '<span class="text-blue-400">$1</span>')
+    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.evolution|\.integration|\.inclusive|\.cortex|\.memory|\.relay|\.audit|\.identity|\.economy|\.sandbox|\.encode)/g, '<span class="text-blue-400">$1</span>')
     .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory|\.repair|\.selfScan|\.embed|\.search|\.register|\.notify|\.export|\.verify|\.provenance|\.budget|\.breakdown|\.create|\.generate)/g, '<span class="text-green-400">$1</span>')
     .replace(/(&quot;.*?&quot;|".*?")/g, '<span class="text-amber-300">$1</span>')
     .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
