@@ -822,13 +822,13 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     CMPSBL® OS v10.5.0 ARCHITECT
+│  ██╔═══╝ ██╔════╝     CMPSBL® OS — SPARTA Epoch
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: CMPSBL Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  21-Module / 6-Layer Architecture — Full AI Operating System
+│  10-Entity + 5-Mesh + 9-Zone Architecture — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
