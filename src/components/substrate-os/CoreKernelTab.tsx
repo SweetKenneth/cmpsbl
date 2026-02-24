@@ -1,6 +1,6 @@
 /**
  * CORE Kernel Tab — Job Scheduler, System State, Lifecycle
- * v10.5.4 ARCHITECT Epoch — Part of the 6-layer, 21-module architecture
+ * SPARTA Epoch — 10 entities + 5 mesh overlays + 9 zones (24-module architecture)
  */
 
 import { useState } from 'react';

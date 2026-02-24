@@ -68,9 +68,9 @@ Dream: Memory consolidation engine
 
 /* COLOPHON */
 
-Clockless ARCHITECT Epoch — A Cognitive Reality System · powered by the CMPSBL Substrate
-21 Core Modules • 400+ Terminal Commands
-200 Synergy Pipelines • 400+ Capabilities
+Clockless SPARTA Epoch — A Cognitive Reality System · powered by the CMPSBL Substrate
+24 Core Modules • 400+ Terminal Commands
+300 Synergy Pipelines • 525+ Capabilities
 WCAG 2.2 Accessibility via INCLUSIVE Module
 
 promptfluid® — AI That Flows.

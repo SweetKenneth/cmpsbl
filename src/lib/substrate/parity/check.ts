@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * v10.5.4 — ARCHITECT Epoch — All 21 modules at full parity
+ * SPARTA Epoch — All 24 modules at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */
@@ -34,29 +34,17 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 21 substrate modules in boot order
+// All 24 substrate modules in boot order (10 entities + 5 mesh + 9 zones)
 const SUBSTRATE_MODULES = [
+  // Kernel
   'core',
-  'ripple',
-  'access',
-  'brain',
-  'vision',
-  'cortex',
-  'modernizer',
-  'decode',
-  'encode',
-  'defense',
-  'nexus',
-  'dream',
-  'integration',
-  'inclusive',
-  'system',
-  'memory',
-  'relay',
-  'audit',
-  'identity',
-  'economy',
-  'sandbox',
+  // Execution surface entities
+  'ripple', 'access', 'brain', 'vision', 'cortex',
+  'decode', 'encode', 'nexus', 'dream', 'integration', 'inclusive',
+  // Mesh overlays
+  'defense', 'immunity', 'evolution', 'intent', 'governance',
+  // Zones
+  'system', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
 ] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
@@ -130,7 +118,7 @@ const PARITY_REQUIREMENTS: ParityRequirement[] = [
   {
     name: 'index.ts exports exist',
     check: (module) => {
-      // All 21 modules have index exports in their respective directories
+      // All 24 modules have index exports in their respective directories
       return SUBSTRATE_MODULES.includes(module as SubstrateModuleName);
     },
     severity: 'error',

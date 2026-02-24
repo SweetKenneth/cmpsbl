@@ -134,7 +134,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
     }
     
     if (trimmed === 'version') {
-      addResult('version', 'success', 'Clockless — CMPSBL Substrate\nA Cognitive Reality System — 21 modules, 50 crystallized Crown Jewel pipelines, 250 synergy pipelines\nWhere machines learn to persist, evolve, coordinate, compound, and dream. | 360+ commands');
+      addResult('version', 'success', 'Clockless — CMPSBL Substrate\nA Cognitive Reality System — 24 modules, 50 crystallized Crown Jewel pipelines, 300 synergy pipelines\nWhere machines learn to persist, evolve, coordinate, compound, and dream. | 360+ commands');
       return;
     }
     

@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 
 const tools = [
   { icon: Package, label: "Templates", count: "200+", href: "/marketplace", color: "from-cyan-500 to-blue-500" },
-  { icon: Zap, label: "Capabilities", count: "400+", href: "/capabilities", color: "from-violet-500 to-purple-500" },
-  { icon: Layers, label: "Pipelines", count: "200", href: "/synergies", color: "from-amber-500 to-orange-500" },
+  { icon: Zap, label: "Capabilities", count: "525+", href: "/capabilities", color: "from-violet-500 to-purple-500" },
+  { icon: Layers, label: "Pipelines", count: "300", href: "/synergies", color: "from-amber-500 to-orange-500" },
   { icon: Brain, label: "Memory", count: "∞", href: "/persistent-memory", color: "from-primary to-primary-variant" },
 ];
 

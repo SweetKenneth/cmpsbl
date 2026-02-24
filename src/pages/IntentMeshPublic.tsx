@@ -1,7 +1,7 @@
 /**
  * Intent Mesh — Public Website Documentation Page
  * /intent-mesh — SEO-optimized public doc about the mesh architecture
- * v10.5.4 — Now includes interactive force-directed mesh visualization
+ * SPARTA Epoch — Interactive force-directed mesh visualization
  */
 
 import { Helmet } from "react-helmet-async";
@@ -94,7 +94,7 @@ const SELF_IMPROVEMENT_FEATURES = [
   {
     icon: Target,
     title: "Module Self-Discovery",
-    desc: "All 21 modules autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
+    desc: "All 24 modules autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
   },
   {
     icon: BarChart3,
@@ -135,7 +135,7 @@ export default function IntentMeshPublic() {
         <title>Intent Mesh — Emergent Module Intelligence | CMPSBL</title>
         <meta
           name="description"
-          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across 21 modules with 34+ resolvers. Self-learning, self-improving AI substrate intelligence."
+          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across 24 modules with 34+ resolvers. Self-learning, self-improving AI substrate intelligence."
         />
         <meta property="og:title" content="Intent Mesh — Emergent Module Intelligence | CMPSBL" />
         <meta property="og:description" content="Autonomous cross-module capability discovery with self-learning, pipeline crystallization, and intent quality scoring." />
@@ -152,14 +152,14 @@ export default function IntentMeshPublic() {
               <div className="flex items-center gap-2 mb-4">
                 <Network className="w-5 h-5 text-primary" />
                 <span className="text-sm font-mono text-muted-foreground tracking-wider uppercase">
-                  CMPSBL OS Substrate v10.4
+                  CMPSBL OS Substrate — SPARTA Epoch
                 </span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
                 Intent Mesh
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
-                Emergent cross-module intelligence. 21 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
+                Emergent cross-module intelligence. 24 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {Object.entries(RESOLVER_STATS).map(([key, value]) => (

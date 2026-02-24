@@ -1,15 +1,15 @@
 /**
- * Terminal Boot Screen v10.5.4
- * Unique neural-organic visualization of the 21-module architecture
+ * Terminal Boot Screen — SPARTA Epoch
+ * Unique neural-organic visualization of the 24-module architecture
  * Mobile-friendly with no mid-word line breaks
  * 
- * v10.5.4 ARCHITECT Epoch:
- * - 200 synergy pipelines, 125 executors, 32 S-tier discoveries
- * - 21-module architecture across 6 layers
- * - 400+ capabilities, 100 engines (76 base + 24 meta)
+ * SPARTA Epoch:
+ * - 300 synergy pipelines, 125 executors, 32 S-tier discoveries
+ * - 24-module architecture: 10 entities + 5 mesh overlays + 9 zones
+ * - 525+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 360+ commands across 21 modules + infrastructure
- * - CLM across all 21 modules
+ * - 360+ commands across 24 modules + infrastructure
+ * - CLM across all 24 modules
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
  */

@@ -1,10 +1,10 @@
 /**
  * Atlas Control Plane
- * v10.5.4 ARCHITECT Epoch — Single-source-of-truth substrate interface
+ * SPARTA Epoch — Single-source-of-truth substrate interface
  * 
  * The Atlas provides:
- * - Unified module registry for all 21 modules across 6 layers
- * - Orchestration of 400+ capabilities, 100 engines, 25 meta-engines
+ * - Unified module registry for all 24 modules (10 entities + 5 mesh + 9 zones)
+ * - Orchestration of 525+ capabilities, 100 engines, 25 meta-engines
  * - SEBA, Autoblog, and Test adapters
  * - Capability toggles with persistence
  * - Full audit trail with secret redaction

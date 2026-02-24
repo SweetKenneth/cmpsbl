@@ -68,7 +68,7 @@ const LIBRARY_DOCS = [
     name: "KEY-CAPABILITIES", 
     title: "Key Capabilities",
     category: "technical",
-    description: "Deep dive into the 21-module architecture and synergies",
+    description: "Deep dive into the 24-module architecture and synergies",
     featured: true,
     readTime: "8 min"
   },
@@ -131,7 +131,7 @@ const LIBRARY_DOCS = [
     name: "SYNERGY-CAPABILITIES", 
     title: "Synergy Capabilities",
     category: "technical",
-    description: "200 cross-module pipelines that multiply intelligence",
+    description: "300 cross-module pipelines that multiply intelligence",
     featured: true,
     readTime: "12 min"
   },
