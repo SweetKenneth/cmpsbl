@@ -3,7 +3,7 @@
  * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  *
  * CORE (standalone) → CCR (Layer 0) → CCL (Layer 1)
- * → 8 Modules → 5 Meshes → INTEGRATION
+ * → 8 Execution Surfaces → 5 Overlays → INTEGRATION
  */
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
@@ -16,10 +16,20 @@ interface ModuleStatus {
   health: number;
 }
 
+/** Layer-weighted health breakdown */
+export interface LayerHealth {
+  core: number;
+  ccr: number;
+  ccl: number;
+  surfaces: number;
+  overlays: number;
+}
+
 interface SubstrateContextType {
   initialized: boolean;
   modules: Record<SubstrateModule, ModuleStatus>;
   overallHealth: number;
+  layers: LayerHealth;
   refresh: () => Promise<void>;
 }
 
