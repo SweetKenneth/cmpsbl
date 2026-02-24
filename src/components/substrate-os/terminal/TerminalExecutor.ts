@@ -249,31 +249,41 @@ function formatPersonalityInterpret(result: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SYSTEM-WIDE 21-MODULE RESPONSE FORMATTERS (v10.5.0)
+// SYSTEM-WIDE 24-MODULE RESPONSE FORMATTERS — SPARTA Epoch
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_21_MODULES = [
+  // CORE kernel
   { key: 'core', label: 'CORE', layer: 'Kernel' },
-  { key: 'ripple', label: 'RIPPLE', layer: 'Kernel' },
-  { key: 'access', label: 'ACCESS', layer: 'Kernel' },
-  { key: 'brain', label: 'BRAIN', layer: 'Cognitive' },
+  // Execution Surfaces (9 modules)
   { key: 'decode', label: 'DECODE', layer: 'Cognitive' },
-  { key: 'dream', label: 'DREAM', layer: 'Cognitive' },
-  { key: 'defense', label: 'DEFENSE', layer: 'Operations' },
-  { key: 'nexus', label: 'NEXUS', layer: 'Operations' },
-  { key: 'vision', label: 'VISION', layer: 'Operations' },
-  { key: 'system', label: 'SYSTEM', layer: 'Admin' },
-  { key: 'modernizer', label: 'MODERNIZER', layer: 'Admin' },
-  { key: 'inclusive', label: 'INCLUSIVE', layer: 'Admin' },
-  { key: 'cortex', label: 'CORTEX', layer: 'Orchestrator' },
-  { key: 'integration', label: 'INTEGRATION', layer: 'Orchestrator' },
   { key: 'encode', label: 'ENCODE', layer: 'Orchestrator' },
-  { key: 'memory', label: 'MEMORY', layer: 'Infrastructure' },
-  { key: 'relay', label: 'RELAY', layer: 'Infrastructure' },
-  { key: 'audit', label: 'AUDIT', layer: 'Infrastructure' },
-  { key: 'identity', label: 'IDENTITY', layer: 'Infrastructure' },
+  { key: 'vision', label: 'VISION', layer: 'Operations' },
+  { key: 'cortex', label: 'CORTEX', layer: 'Orchestrator' },
+  { key: 'nexus', label: 'NEXUS', layer: 'Operations' },
   { key: 'economy', label: 'ECONOMY', layer: 'Infrastructure' },
   { key: 'sandbox', label: 'SANDBOX', layer: 'Infrastructure' },
+  { key: 'inclusive', label: 'INCLUSIVE', layer: 'Admin' },
+  { key: 'integration', label: 'INTEGRATION', layer: 'Orchestrator' },
+  // Mesh Overlays (5)
+  { key: 'defense', label: 'DEFENSE', layer: 'Mesh Overlay' },
+  { key: 'immunity', label: 'IMMUNITY', layer: 'Mesh Overlay' },
+  { key: 'evolution', label: 'EVOLUTION', layer: 'Mesh Overlay' },
+  { key: 'intent', label: 'INTENT', layer: 'Mesh Overlay' },
+  { key: 'governance', label: 'GOVERNANCE', layer: 'Mesh Overlay' },
+  // CCR Zones (4)
+  { key: 'system', label: 'SYSTEM', layer: 'CCR Zone' },
+  { key: 'brain', label: 'BRAIN', layer: 'CCR Zone' },
+  { key: 'memory', label: 'MEMORY', layer: 'CCR Zone' },
+  { key: 'dream', label: 'DREAM', layer: 'CCR Zone' },
+  // CCL Zones (5)
+  { key: 'ripple', label: 'RIPPLE', layer: 'CCL Zone' },
+  { key: 'access', label: 'ACCESS', layer: 'CCL Zone' },
+  { key: 'identity', label: 'IDENTITY', layer: 'CCL Zone' },
+  { key: 'relay', label: 'RELAY', layer: 'CCL Zone' },
+  { key: 'audit', label: 'AUDIT', layer: 'CCL Zone' },
+  // Absorbed
+  { key: 'modernizer', label: 'MODERNIZER', layer: 'Absorbed → EVOLUTION' },
 ];
 
 function formatSystemStatus(data: any): string {
