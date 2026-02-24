@@ -318,6 +318,14 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
 // ─── Static human posts ───
 const HUMAN_POSTS: BlogPost[] = [
   {
+    id: 'sparta-rebuild', title: "Burning It Down to Build It Right: The SPARTA Epoch Rebuild",
+    excerpt: "How we refactored, consolidated, and rebuilt the entire CMPSBL cognitive substrate from the ground up — deleting thousands of lines of dead code and emerging with a production-grade layered kernel.",
+    href: "/blog/sparta-epoch-rebuild-from-scratch", category: "Technology",
+    date: "2026-02-24", readTime: "22 min", image: spartaRebuildImg,
+    imageAlt: "Architectural blueprint showing old structures crumbling and new layered architecture rising",
+    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+  },
+  {
     id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the ARCHITECT Epoch",
     excerpt: "How the RELAY and IDENTITY modules establish a unified protocol layer for autonomous agent communication.",
     href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",

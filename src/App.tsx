@@ -440,6 +440,10 @@ const App = () => {
                         <Route path="/blog/machine-protocol-standards-architect-epoch" element={<MachineProtocolStandards />} />
                         <Route path="/blog/autonomous-ai-governance-runtime-enforcement" element={<AutonomousAIGovernance />} />
                         <Route path="/blog/adversarial-ai-defense-module-response-2026" element={<AdversarialAIDefense />} />
+                        
+                        {/* SPARTA Epoch Posts */}
+                        <Route path="/blog/sparta-epoch-rebuild-from-scratch" element={<SpartaEpochRebuild />} />
+                        
                         {/* Legacy v9 slug redirects */}
                         <Route path="/blog/machine-protocol-standards-v9" element={<Navigate to="/blog/machine-protocol-standards-architect-epoch" replace />} />
                         <Route path="/blog/autonomous-ai-governance-v9" element={<Navigate to="/blog/autonomous-ai-governance-runtime-enforcement" replace />} />
