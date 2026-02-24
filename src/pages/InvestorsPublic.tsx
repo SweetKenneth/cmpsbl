@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * v10.5.1 ARCHITECT Epoch
+ * SPARTA Epoch — Zone Architecture
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Eye, Server, Sparkles, Zap, Globe, Code, Layers, CheckCircle2 } from "lucide-react";
@@ -78,7 +78,7 @@ export default function InvestorsPublic() {
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Production Infrastructure", description: `${modulesCount} entities + 5 mesh overlays + 9 zones, self-evolving architecture (SEBA) with cryptographic stamps.` },
+    { icon: Rocket, title: "Production Infrastructure", description: `${modulesCount} entities wrapped by 5 mesh overlays across 9 zones. Self-evolving architecture (SEBA) with cryptographic stamps.` },
     { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $149/mo) + infrastructure licensing via LNCHBL.com + marketplace revenue share. 90%+ gross margins." },
     { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated learning + zone architecture = a technical gap that widens daily. Can't be replicated quickly." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
@@ -88,7 +88,7 @@ export default function InvestorsPublic() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Investor Relations — CMPSBL® Cognitive Infrastructure"
-        description="CMPSBL: 15-entity cognitive OS with 9 hot-swappable zones, 14 documented world firsts, 50 crystallized Crown Jewel pipelines. Seeking seed investment for AI infrastructure."
+        description="CMPSBL: 10-entity cognitive OS with 5 mesh overlays and 9 hot-swappable zones. 14 documented world firsts, 50 crystallized Crown Jewel pipelines. Seeking seed investment."
         canonical="https://cmpsbl.com/investors"
         keywords={['CMPSBL investment', 'AI startup investment', 'cognitive infrastructure', 'AI IP portfolio', 'seed investment AI', 'zone architecture']}
       />
@@ -115,7 +115,7 @@ export default function InvestorsPublic() {
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building the cognitive operating system for AI applications. {modulesCount} modules + 5 mesh overlays, 14 documented world firsts, 
+            Building the cognitive operating system for AI applications. {modulesCount} entities wrapped by 5 mesh overlays across 9 zones — 14 documented world firsts 
             and a self-evolving architecture that compounds daily.
           </p>
 
@@ -217,7 +217,7 @@ export default function InvestorsPublic() {
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-400 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <h2 className="text-3xl font-semibold mb-4 text-foreground">The Substrate</h2>
         <p className="text-muted-foreground mb-10 text-lg max-w-2xl">
-          {modulesCount} modules wrapped by 5 mesh overlays across a zone-based architecture. Production-ready cognitive infrastructure.
+          {modulesCount} entities wrapped by 5 mesh overlays across 9 hot-swappable zones. Production-ready cognitive infrastructure.
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
