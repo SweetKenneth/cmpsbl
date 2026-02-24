@@ -1529,7 +1529,7 @@ function ModernizerShadowPanel() {
         </CardHeader>
         <CardContent className="space-y-3">
           {[
-            { icon: '🔍', text: 'Modernizer scans for real system gaps — missing capabilities, anomalies, risk flags, stale modules' },
+            { icon: '🔍', text: 'EVOLUTION scans for real system gaps — missing capabilities, anomalies, risk flags, stale modules' },
             { icon: '🎯', text: 'Each gap becomes a shadow training task assigned to the best-matched executor' },
             { icon: '⚡', text: 'Executor attempts the fix in shadow mode — no real changes, just scored performance' },
             { icon: '⬆️', text: 'Failures escalate to ENCODE\'s 7-strategy cascade — deterministic repair, learning rules, pattern matching' },
