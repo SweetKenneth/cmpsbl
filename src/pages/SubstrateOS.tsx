@@ -31,6 +31,9 @@ import { useMetric } from '@/stores/publicMetricsStore';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { EventStream } from '@/components/substrate-os/EventStream';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
+import { MatrixIntegrityPanel } from '@/components/substrate-os/dashboard/MatrixIntegrityPanel';
+import { MatrixBreakerMap } from '@/components/substrate-os/dashboard/MatrixBreakerMap';
+import { buildMatrixNodes, calculateIntegrity } from '@/lib/core/matrixNodeRegistry';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -748,16 +751,21 @@ const DashboardContent = memo(function DashboardContent({
   const healthScore = useSubstrateHealthScore();
   const version = useMetric('version');
   
+  // Build Matrix Node integrity from health data
+  const matrixNodes = useMemo(() => buildMatrixNodes(healthScore.modules), [healthScore.modules]);
+  const integrityReport = useMemo(() => calculateIntegrity(matrixNodes), [matrixNodes]);
+  
   return (
     <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 items-start">
       {/* Main column */}
       <div className="flex-1 min-w-0 space-y-4 sm:space-y-5 w-full">
         {canAccessTier(userTier, 'architect') && (
           <Suspense fallback={null}>
-            <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />
+            <EmergencyRecoveryPanel showAlways={false} isCritical={integrityReport.isCritical} />
           </Suspense>
         )}
         <DashboardMetricsHero />
+        <MatrixIntegrityPanel report={integrityReport} />
         {canAccessTier(userTier, 'creator') && <CapacityMonitor />}
         {canAccessTier(userTier, 'creator') && <QuickActionsPanel enabled={isOperator} onOpenTerminal={onOpenTerminal} />}
         {canAccessTier(userTier, 'creator') && <ModuleControlsGrid enabled={isOperator} />}
