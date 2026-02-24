@@ -31,7 +31,7 @@
 
 ## 1. API Overview
 
-The CMPSBL OS Substrate exposes a unified API for all 21 modules. This document provides the public interface specification for integration and development.
+The CMPSBL OS Substrate exposes a unified API for all modules, mesh overlays, and zones. This document provides the public interface specification for integration and development.
 
 ### 1.1 Base Endpoint
 
