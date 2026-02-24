@@ -65,7 +65,7 @@ export async function initializeSubstrate(): Promise<void> {
     } catch { /* graceful */ }
     
     if (coreResult.success && ccrBooted && cclBooted) {
-      console.log('✅ CORE + CCR Layer 0 + CCL Layer 1 active → 15 entities loaded | Health: 100%');
+      console.log('✅ CORE + CCR Layer 0 + CCL Layer 1 active → 10 entities + 5 mesh overlays | Health: 100%');
     } else {
       // Fallback: ping individual modules
       let activeCount = 0;
