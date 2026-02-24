@@ -71,10 +71,10 @@ export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution mesh
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Entity classification
-export type EntityType = 'kernel' | 'module' | 'mesh' | 'standalone' | 'zone-ccr' | 'zone-ccl' | 'absorbed';
+export type EntityType = 'kernel' | 'module' | 'mesh-overlay' | 'zone-ccr' | 'zone-ccl' | 'absorbed';
 
 export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
-  // Kernel
+  // Kernel (boots first)
   core: 'kernel',
   // CCR Zones
   system: 'zone-ccr',
@@ -98,15 +98,21 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   economy: 'module',
   sandbox: 'module',
   inclusive: 'module',
-  // 5 Meshes
-  defense: 'mesh',
-  immunity: 'mesh',
-  evolution: 'mesh',
-  intent: 'mesh',
-  governance: 'mesh',
-  // Standalone
-  integration: 'standalone',
+  // 5 Mesh Overlays (wrapping layers — outermost listed first)
+  defense: 'mesh-overlay',
+  immunity: 'mesh-overlay',
+  evolution: 'mesh-overlay',
+  intent: 'mesh-overlay',
+  governance: 'mesh-overlay',
+  // Module (boots last)
+  integration: 'module',
 };
+
+/**
+ * Mesh overlay order — outermost to innermost.
+ * DEFENSE wraps everything. GOVERNANCE is closest to the modules.
+ */
+export const MESH_ORDER = ['defense', 'immunity', 'evolution', 'intent', 'governance'] as const;
 
 // Legacy compat alias
 export type ModuleLayer = EntityType;

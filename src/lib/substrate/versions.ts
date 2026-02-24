@@ -117,9 +117,16 @@ export function isVersionCompatible(required: string, actual: string): boolean {
 }
 
 // Get entities by layer
-export function getModulesByLayer(layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Orchestration' | 'Infrastructure' | 'Mesh' | 'Standalone'): string[] {
+export function getModulesByLayer(layer: 'Kernel' | 'Cognitive' | 'Operational' | 'Orchestration' | 'Infrastructure'): string[] {
   return Object.entries(MODULE_VERSIONS)
     .filter(([_, info]) => info.layer === layer)
+    .map(([name]) => name);
+}
+
+// Get mesh overlays in order (outermost to innermost)
+export function getMeshOrder(): string[] {
+  return Object.entries(MESH_VERSIONS)
+    .sort(([, a], [, b]) => a.order - b.order)
     .map(([name]) => name);
 }
 

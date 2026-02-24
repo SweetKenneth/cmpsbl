@@ -287,21 +287,11 @@ export default function SubstrateDemo() {
                         currentStep={currentStep}
                       />
                       
-                      {/* 5 Meshes */}
+                      {/* 5 Mesh Overlays (outermost → innermost) */}
                       <LayerRow 
-                        label="Meshes" 
-                        modules={groupedModules.mesh} 
-                        layerKey="mesh"
-                        isRunning={isRunning}
-                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
-                        currentStep={currentStep}
-                      />
-
-                      {/* INTEGRATION */}
-                      <LayerRow 
-                        label="Standalone" 
-                        modules={groupedModules.standalone} 
-                        layerKey="standalone"
+                        label="Mesh Overlays" 
+                        modules={groupedModules['mesh-overlay']} 
+                        layerKey="mesh-overlay"
                         isRunning={isRunning}
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}
