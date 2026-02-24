@@ -167,7 +167,7 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
               <HardDrive className="w-3 h-3 text-blue-400" />
             </div>
             <div className="flex flex-col">
-              <span className="text-[9px] text-muted-foreground font-mono uppercase tracking-wider">MODULES</span>
+              <span className="text-[9px] text-muted-foreground font-mono uppercase tracking-wider">SURFACES</span>
               <div className="flex items-center gap-1">
                 <span className="text-[10px] font-bold font-mono text-foreground">{healthScore.activeCount}</span>
                 <span className="text-[10px] text-muted-foreground">/</span>

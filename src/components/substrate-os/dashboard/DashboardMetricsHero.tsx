@@ -264,7 +264,7 @@ export function DashboardMetricsHero() {
                 {new Date().toLocaleTimeString('en-US', { hour12: false })}
               </span>
               <div className="h-3 w-px bg-border/30" />
-              <span className="text-[9px] text-muted-foreground/40 font-mono">ARCHITECT EPOCH</span>
+              <span className="text-[9px] text-muted-foreground/40 font-mono">SPARTA EPOCH</span>
             </div>
           </div>
         </div>

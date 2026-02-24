@@ -1,9 +1,8 @@
 /**
  * useIntegration Hook
- * v10.5.4 ARCHITECT Epoch — Dedicated hook for INTEGRATION module operations
+ * SPARTA Epoch — Dedicated hook for INTEGRATION surface operations
  * 
  * Respects debug mode kill-switch for connection polling.
- * Part of the 6-layer, 21-module Cognitive Architecture.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
