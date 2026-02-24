@@ -81,14 +81,14 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '11.0.0',
+  version: '11.1.0',
   codename: 'SPARTA',
   epoch: 'SPARTA',
   buildDate: new Date().toISOString().split('T')[0],
   
-  // Architecture Counts
-  modulesCount: 21,
-  layersCount: 6,
+  // Architecture Counts — 15 public entities (CORE + 8 Modules + 5 Meshes + INTEGRATION) + 9 Zones
+  modulesCount: 15,
+  layersCount: 5,
   
   // Synergy Metrics (88 core + 27 discovery + 32 S-tier + 53 infrastructure = 200 + 100 crystallized = 300)
   synergyPipelinesCount: 300,

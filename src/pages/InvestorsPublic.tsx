@@ -19,18 +19,18 @@ import { downloadInvestorDeck } from "@/lib/investor-deck-generator";
 const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "21-Module Cognitive OS", desc: "First complete cognitive OS with 21 modules across 6 architectural layers", badge: "Production" },
+  { title: "Zone Architecture Cognitive OS", desc: "First cognitive OS with 15 entities + 9 surgically hot-swappable zones across 5 architectural layers", badge: "Production" },
   { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-module crystallization", badge: "50 Crystallized" },
-  { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "v10.5.3" },
+  { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
-  { title: "Cognitive Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM v2.0" },
-  { title: "Universal Brain Transfer", desc: "First automatic memory routing from BRAIN to all 21 modules via relevance scoring", badge: "CLM v2.0" },
-  { title: "Memory Tiering + Staleness", desc: "First hot/warm/cold memory tiering with embedding staleness detection", badge: "MEMORY" },
-  { title: "Actor Reputation Scoring", desc: "First AI identity system with 5-tier trust scores and cross-agency portability", badge: "IDENTITY" },
-  { title: "Multi-Provider Fleet Affinity", desc: "First health-weighted routing with task-type-to-provider affinity mapping", badge: "Nexus v5.0" },
+  { title: "Cognitive Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM" },
+  { title: "Universal Brain Transfer", desc: "First automatic memory routing from BRAIN Zone to all modules via relevance scoring", badge: "CLM" },
+  { title: "Memory Tiering + Staleness", desc: "First hot/warm/cold memory tiering with embedding staleness detection", badge: "MEMORY Zone" },
+  { title: "Actor Reputation Scoring", desc: "First AI identity system with 5-tier trust scores and cross-agency portability", badge: "IDENTITY Zone" },
+  { title: "Multi-Provider Fleet Affinity", desc: "First health-weighted routing with task-type-to-provider affinity mapping", badge: "NEXUS" },
   { title: "AI Governance Namespace", desc: "First published namespace standard (AIGVRN v1.0) for AI governance terminology", badge: "Zenodo" },
   { title: "Predictive Cost Forecasting", desc: "First linear regression cost forecasting with per-capability attribution for AI ops", badge: "ECONOMY" },
-  { title: "Cascade Failure Prevention", desc: "First proactive cascade failure detection across module dependency graphs", badge: "RIPPLE" },
+  { title: "Cascade Failure Prevention", desc: "First proactive cascade failure detection across module dependency graphs", badge: "RIPPLE Zone" },
 ];
 
 export default function InvestorsPublic() {
@@ -78,9 +78,9 @@ export default function InvestorsPublic() {
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Production Infrastructure", description: "21 integrated modules across 6 layers, self-evolving architecture (SEBA) that improves its own code with cryptographic stamps." },
+    { icon: Rocket, title: "Production Infrastructure", description: `${modulesCount} entities + 9 zones across 5 layers, self-evolving architecture (SEBA) with cryptographic stamps.` },
     { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $149/mo) + infrastructure licensing via LNCHBL.com + marketplace revenue share. 90%+ gross margins." },
-    { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated learning + 21-module integration = a technical gap that widens daily. Can't be replicated quickly." },
+    { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated learning + zone architecture = a technical gap that widens daily. Can't be replicated quickly." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
   ];
 
@@ -88,9 +88,9 @@ export default function InvestorsPublic() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Investor Relations — CMPSBL® Cognitive Infrastructure"
-        description="CMPSBL: 21-module cognitive OS, 14 documented world firsts, 50 crystallized Crown Jewel pipelines. Seeking seed investment for AI infrastructure."
+        description="CMPSBL: 15-entity cognitive OS with 9 hot-swappable zones, 14 documented world firsts, 50 crystallized Crown Jewel pipelines. Seeking seed investment for AI infrastructure."
         canonical="https://cmpsbl.com/investors"
-        keywords={['CMPSBL investment', 'AI startup investment', 'cognitive infrastructure', 'AI IP portfolio', 'seed investment AI']}
+        keywords={['CMPSBL investment', 'AI startup investment', 'cognitive infrastructure', 'AI IP portfolio', 'seed investment AI', 'zone architecture']}
       />
       
       <PublicNav />

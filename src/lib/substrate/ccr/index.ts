@@ -2,12 +2,12 @@
  * CLOCKLESS_COGNITIVE_REALITY (CCR)
  * Layer 0 — Hidden Meta-Engine powering the CMPSBL Substrate
  * 
- * Merges: SYSTEM + BRAIN + MEMORY + DREAM (CORE is standalone)
- * Non-marketed, non-navigable, invisible to users (known, not shown).
- * Old module surfaces remain as proxy facades routing here.
- * 
- * CCL (Layer 1) absorbs: RIPPLE + ACCESS + IDENTITY + RELAY
- * CCR + CCL together reduce the public module count to 12.
+ * Contains 4 Zones: SYSTEM Zone + BRAIN Zone + MEMORY Zone + DREAM Zone
+ * Each Zone is surgically hot-swappable with its own circuit breaker.
+ * If a Zone's circuit breaker trips, the fault is isolated to that Zone.
+ *
+ * CORE is standalone (not a Zone).
+ * CCL (Layer 1) contains 5 Zones: RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
@@ -28,7 +28,7 @@ interface CCRState {
   failureCount: number;
   lastSynthTime: string | null;
   memoryStoreHealth: number;
-  facadesActive: string[];
+  facadesActive: string[];  // now called "zones"
   bootGatesPassed: boolean;
 }
 

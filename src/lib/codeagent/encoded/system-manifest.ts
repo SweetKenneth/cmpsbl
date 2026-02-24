@@ -1,18 +1,18 @@
 /**
  * ENCODE System Manifest — Architecture Awareness Registry
- * CORE Epoch — Gives ENCODE a canonical map of the living system
+ * SPARTA Epoch v11.1.0 — Zone Architecture
  *
  * Architecture:
  *   CORE (standalone kernel)
- *   → CCR (Layer 0): SYSTEM + BRAIN + MEMORY + DREAM
- *   → CCL (Layer 1): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
+ *   → CCR (Layer 0) — 4 Zones: SYSTEM Zone + BRAIN Zone + MEMORY Zone + DREAM Zone
+ *   → CCL (Layer 1) — 5 Zones: RIPPLE Zone + ACCESS Zone + IDENTITY Zone + RELAY Zone + AUDIT Zone
  *   → 8 Modules: VISION, SANDBOX, DECODE, CORTEX, ECONOMY, NEXUS, ENCODE, INCLUSIVE
  *   → 5 Meshes: DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
  *   → INTEGRATION (standalone)
- *   = 15 public entities
+ *   = 15 public entities + 9 surgically hot-swappable zones
  *
  * MODERNIZER absorbed by EVOLUTION mesh.
- * AUDIT absorbed by CCL.
+ * AUDIT Zone belongs to CCL.
  */
 
 // ─── Module Registry ─────────────────────────────────────────────────────────
@@ -53,17 +53,17 @@ export interface RouteEntry {
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
 /**
- * 15-Entity Architecture
+ * 15-Entity + 9-Zone Architecture
  *
  * CORE (1) — standalone kernel
  * Modules (8): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
  * Meshes (5): DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
  * INTEGRATION (1) — standalone
  *
- * Hidden layers:
- *   CCR (Layer 0) facades: system, brain, memory, dream
- *   CCL (Layer 1) facades: ripple, access, identity, relay, audit
- *   Absorbed: modernizer → EVOLUTION mesh
+ * Hidden layers with surgically hot-swappable Zones:
+ *   CCR (Layer 0) — 4 Zones: SYSTEM, BRAIN, MEMORY, DREAM
+ *   CCL (Layer 1) — 5 Zones: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
+ *   Absorbed: MODERNIZER → EVOLUTION mesh
  */
 export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   // ─── Kernel ────────────────────────────────────────────────────────────────
@@ -368,5 +368,5 @@ export function getSystemSummary(): string {
   const moduleCount = Object.keys(SYSTEM_MODULES).length;
   const layers = [...new Set(Object.values(SYSTEM_MODULES).map(m => m.layer))];
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate: ${moduleCount} public entities (CORE + 8 Modules + 5 Meshes + INTEGRATION) + CCR Layer 0 + CCL Layer 1 across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR absorbs SYSTEM+BRAIN+MEMORY+DREAM. CCL absorbs RIPPLE+ACCESS+IDENTITY+RELAY+AUDIT. MODERNIZER absorbed by EVOLUTION mesh.`;
+  return `CMPSBL Substrate v11.1.0: ${moduleCount} public entities (CORE + 8 Modules + 5 Meshes + INTEGRATION) + 9 Zones (4 CCR + 5 CCL) across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR Zones: SYSTEM+BRAIN+MEMORY+DREAM. CCL Zones: RIPPLE+ACCESS+IDENTITY+RELAY+AUDIT. MODERNIZER absorbed by EVOLUTION mesh.`;
 }

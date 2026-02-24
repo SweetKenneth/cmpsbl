@@ -14,30 +14,32 @@
 
 // ============ Constants ============
 
-export const SUBSTRATE_VERSION = '10.1.0';
-export const SUBSTRATE_CODENAME = 'ARCHITECT';
-export const CORE_VERSION = '10.1.0';
+export const SUBSTRATE_VERSION = '11.1.0';
+export const SUBSTRATE_CODENAME = 'SPARTA';
+export const CORE_VERSION = '11.1.0';
 export const CORE_CODENAME = 'Foundation';
 
 /**
- * All substrate entries — 15 public + CCR facades (4) + CCL facades (5) + absorbed (1) = 25
+ * All substrate entries — 15 public + 9 Zones + 1 absorbed = 25 total
  *
  * Public (15):
  *   CORE (1) + Modules (8) + Meshes (5) + INTEGRATION (1)
  *
- * Hidden:
- *   CCR facades: system, brain, memory, dream
- *   CCL facades: ripple, access, identity, relay, audit
- *   Absorbed:    modernizer → EVOLUTION mesh
+ * Zones (9) — surgically hot-swappable, circuit-breaker isolated:
+ *   CCR Zones (4): system, brain, memory, dream
+ *   CCL Zones (5): ripple, access, identity, relay, audit
+ *
+ * Absorbed:
+ *   modernizer → EVOLUTION mesh
  */
 export const SUBSTRATE_MODULES = [
   // Kernel (standalone)
   'core',
-  // CCR facades (backward compat — route to Layer 0)
+  // CCR Zones (backward compat — route to Layer 0, hot-swappable)
   'system', 'brain', 'memory', 'dream',
-  // CCL facades (backward compat — route to Layer 1)
+  // CCL Zones (backward compat — route to Layer 1, hot-swappable)
   'ripple', 'access', 'identity', 'relay', 'audit',
-  // Absorbed facade (routes to evolution mesh)
+  // Absorbed (routes to evolution mesh)
   'modernizer',
   // 8 Public Modules
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
@@ -49,46 +51,48 @@ export const SUBSTRATE_MODULES = [
 
 // Public-facing entity count
 export const PUBLIC_MODULE_COUNT = 15;
+// Zone count
+export const ZONE_COUNT = 9;
 
-// CCR facade modules (backed by CLOCKLESS_COGNITIVE_REALITY) — CORE is NOT a facade
-export const CCR_FACADE_MODULES = ['system', 'brain', 'memory', 'dream'] as const;
+// CCR Zone modules (backed by CLOCKLESS_COGNITIVE_REALITY)
+export const CCR_ZONE_MODULES = ['system', 'brain', 'memory', 'dream'] as const;
 
-// CCL facade modules (backed by CLOCKLESS_COGNITIVE_LUCIDITY) — now includes AUDIT
-export const CCL_FACADE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
+// CCL Zone modules (backed by CLOCKLESS_COGNITIVE_LUCIDITY)
+export const CCL_ZONE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
 
-// Absorbed facades (route to a mesh)
+// Absorbed (route to a mesh)
 export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution mesh
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
-// Module layer classification
-export type ModuleLayer = 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'orchestrator' | 'infrastructure' | 'mesh';
+// Entity classification
+export type EntityType = 'kernel' | 'module' | 'mesh' | 'standalone' | 'zone-ccr' | 'zone-ccl' | 'absorbed';
 
-export const MODULE_LAYERS: Record<SubstrateModuleName, ModuleLayer> = {
-  // Kernel (standalone)
+export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
+  // Kernel
   core: 'kernel',
-  // CCR facades
-  system: 'administrative',
-  brain: 'cognitive',
-  memory: 'infrastructure',
-  dream: 'cognitive',
-  // CCL facades
-  ripple: 'infrastructure',
-  access: 'infrastructure',
-  identity: 'infrastructure',
-  relay: 'infrastructure',
-  audit: 'infrastructure',
+  // CCR Zones
+  system: 'zone-ccr',
+  brain: 'zone-ccr',
+  memory: 'zone-ccr',
+  dream: 'zone-ccr',
+  // CCL Zones
+  ripple: 'zone-ccl',
+  access: 'zone-ccl',
+  identity: 'zone-ccl',
+  relay: 'zone-ccl',
+  audit: 'zone-ccl',
   // Absorbed
-  modernizer: 'mesh', // → evolution
+  modernizer: 'absorbed',
   // 8 Public Modules
-  decode: 'cognitive',
-  encode: 'orchestrator',
-  vision: 'operational',
-  cortex: 'orchestrator',
-  nexus: 'orchestrator',
-  economy: 'infrastructure',
-  sandbox: 'infrastructure',
-  inclusive: 'operational',
+  decode: 'module',
+  encode: 'module',
+  vision: 'module',
+  cortex: 'module',
+  nexus: 'module',
+  economy: 'module',
+  sandbox: 'module',
+  inclusive: 'module',
   // 5 Meshes
   defense: 'mesh',
   immunity: 'mesh',
@@ -96,8 +100,12 @@ export const MODULE_LAYERS: Record<SubstrateModuleName, ModuleLayer> = {
   intent: 'mesh',
   governance: 'mesh',
   // Standalone
-  integration: 'operational',
+  integration: 'standalone',
 };
+
+// Legacy compat alias
+export type ModuleLayer = EntityType;
+export const MODULE_LAYERS = MODULE_ENTITY_TYPES;
 
 // ============ Types ============
 
@@ -164,8 +172,8 @@ export function markModuleBooted(module: SubstrateModuleName): void {
   if (bootSequence && !bootSequence.modules_booted.includes(module)) {
     bootSequence.modules_booted.push(module);
     
-    const layer = MODULE_LAYERS[module];
-    if (layer === 'administrative' && bootSequence.current_phase !== 'complete') {
+    const entityType = MODULE_LAYERS[module];
+    if ((entityType === 'zone-ccr' || entityType === 'zone-ccl') && bootSequence.current_phase !== 'complete') {
       bootSequence.current_phase = 'administrative';
     }
   }
