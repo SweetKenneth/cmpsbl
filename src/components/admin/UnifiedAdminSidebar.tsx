@@ -103,7 +103,7 @@ export function UnifiedAdminSidebar() {
         {!collapsed && (
           <div className="p-4 border-t border-border/50">
             <p className="text-xs text-muted-foreground text-center">
-              PromptFluid Admin v2.0
+              PromptFluid Admin — SPARTA Epoch
             </p>
           </div>
         )}

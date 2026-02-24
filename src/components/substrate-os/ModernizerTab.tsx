@@ -570,8 +570,8 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
             <Sparkles className="w-5 h-5 text-fuchsia-400" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-foreground">Modernizer</h2>
-            <p className="text-xs text-muted-foreground font-mono">self-improvement engine • shadow mode</p>
+            <h2 className="text-lg font-semibold text-foreground">EVOLUTION</h2>
+            <p className="text-xs text-muted-foreground font-mono">bounded self-evolution • shadow mode</p>
           </div>
         </div>
         <div className="flex items-center gap-2 flex-wrap">

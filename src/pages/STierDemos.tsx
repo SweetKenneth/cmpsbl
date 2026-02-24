@@ -156,7 +156,7 @@ function SelfHealingDemo() {
     addLog(`[SANDBOX] Testing patch in isolated environment...`, 'info');
     await delay(800);
     addLog(`[SANDBOX] ✓ Patch validated — all assertions pass`, 'success');
-    addLog(`[MODERNIZER] Applying repair to production...`, 'info');
+    addLog(`[EVOLUTION] Applying repair to production...`, 'info');
     await delay(600);
     addLog(`[${faultModule}] Health restored to 98%`, 'success');
     addLog(`[AUDIT] Repair logged: SHA-256 hash sealed to provenance chain`, 'success');

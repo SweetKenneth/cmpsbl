@@ -27,7 +27,7 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-124
 
 <h2>3. Module Taxonomy</h2>
 
-<p>The substrate comprises 21 modules organized into 6 functional layers. Each module exposes a set of actions through a unified API endpoint and communicates with other modules exclusively through the RIPPLE event bus.</p>
+<p>The substrate comprises 24 execution surfaces organized into entities, mesh overlays, and convergence zones. Each surface exposes actions through a unified API endpoint and communicates via the RIPPLE event bus.</p>
 
 <div class="card">
 <h3>3.1 Kernel Layer</h3>
@@ -39,13 +39,13 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-124
 <div class="card">
 <h3>3.2 Cognitive Layer</h3>
 <p><strong>BRAIN.</strong> Persistent memory with confidence scoring. Stores memories with confidence values (0.0–1.0) that increase with reinforcement and decay over time. Supports four memory types: episodic (events), semantic (facts), procedural (how-to), and meta-cognitive (self-reflection). Includes knowledge graph construction and session-level reflection.</p>
-<p><strong>VISION.</strong> Observability and telemetry. Monitors all 21 modules for health, performance, and SLA compliance. Detects anomalies and triggers alerts for the SYSTEM module.</p>
+<p><strong>VISION.</strong> Observability and telemetry. Monitors all execution surfaces for health, performance, and SLA compliance. Detects anomalies and triggers alerts for the SYSTEM zone.</p>
 <p><strong>CORTEX.</strong> Multi-module orchestration. Coordinates complex workflows that span multiple modules, manages agency task assignment, evaluates evolution proposals, and executes multi-step pipelines with dependency resolution.</p>
 </div>
 
 <div class="card">
 <h3>3.3 Operational Layer</h3>
-<p><strong>MODERNIZER.</strong> The evolution engine. Proposes self-improvements, validates them against regression criteria, applies them with cryptographic stamps, and maintains rollback capability. Central to the substrate's ability to self-improve.</p>
+<p><strong>EVOLUTION.</strong> The bounded self-evolution engine. Proposes self-improvements, validates them against regression criteria, applies them with cryptographic stamps, and maintains rollback capability. Central to the substrate's ability to self-improve.</p>
 <p><strong>DECODE.</strong> Natural language processing. Classifies user intent, manages multi-turn conversation state, generates responses, and supports configurable communication personalities.</p>
 <p><strong>DEFENSE.</strong> Security and threat management. Implements threat detection, bot filtering, behavioral analysis, IP reputation scoring, and incident response.</p>
 <p><strong>NEXUS.</strong> Multi-provider AI routing. Abstracts AI providers behind a unified interface. Selects optimal providers based on cost, latency, capability, and availability with automatic failover.</p>
@@ -84,7 +84,7 @@ Author: Kenneth E Sweet Jr (ORCID: <a href="https://orcid.org/0009-0001-4237-124
   ├─────────────────────────────────────────────────────────┤
   │         INTEGRATION · INCLUSIVE · SYSTEM                │
   ├─────────────────────────────────────────────────────────┤
-  │   MODERNIZER · DECODE · DEFENSE · NEXUS · DREAM        │
+  │   EVOLUTION · DECODE · DEFENSE · NEXUS · DREAM        │
   ├─────────────────────────────────────────────────────────┤
   │            BRAIN · VISION · CORTEX                      │
   ├─────────────────────────────────────────────────────────┤

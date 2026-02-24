@@ -203,7 +203,7 @@ const modules: ModuleConfig[] = [
     color: "text-emerald-500",
     bgColor: "bg-emerald-500/10",
     actions: [
-      { name: "status", description: "Get modernizer status" },
+      { name: "status", description: "Get evolution status" },
       { name: "scan", description: "Scan for improvements", params: [{ name: "module", type: "string", placeholder: "brain|defense|nexus" }] },
       { name: "jobs", description: "List recent scan jobs" },
       { name: "quota", description: "Check scan quota" },

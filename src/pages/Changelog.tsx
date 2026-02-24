@@ -34,7 +34,7 @@ const evolutionLogSPARTA: EvolutionEntry[] = [
     pressures: [
       "Consumed modules (SYSTEM, BRAIN, MEMORY, DREAM, RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) lost surgical identity — faults were ambiguous within CCR/CCL",
       "No ability to hot-swap individual consumed modules without affecting the entire convergence layer",
-      "Architecture documentation still referenced '21 modules' and '6 layers' — misleading for new developers and investors",
+      "Architecture documentation still referenced legacy module counts — misleading for new developers and investors",
       "MODERNIZER was still referenced as a standalone module despite being absorbed by the EVOLUTION mesh",
     ],
     responses: [
@@ -96,7 +96,7 @@ const evolutionLogSPARTA: EvolutionEntry[] = [
   },
 ];
 
-// Living Evolution Log — v10.x.x Series (ARCHITECT Epoch — Infrastructure Hardening)
+// Living Evolution Log — v10.x.x Series (Pre-SPARTA — Infrastructure Hardening)
 const evolutionLogV10: EvolutionEntry[] = [
   {
     id: "v10-evolution-013",
@@ -182,18 +182,18 @@ const evolutionLogV10: EvolutionEntry[] = [
     id: "v10-evolution-009",
     date: "2026-02-17",
     pressures: [
-      "Only 15 crown jewels governed — 21 modules lacked full coverage for tiered licensing",
+      "Only 15 crown jewels governed — execution surfaces lacked full coverage for tiered licensing",
       "Pricing page led with price cards instead of capability value — poor conversion signal",
       "Stripe checkout flow needed validation after tier restructuring"
     ],
     responses: [
-      "Discovered and installed 21 new crown jewel capabilities — one per module across Creator, Architect, Enterprise, and CMPSBL tiers",
+      "Discovered and installed 21 new crown jewel capabilities — one per execution surface across Creator, Architect, Enterprise, and CMPSBL tiers",
       "Redesigned pricing page to benefits-first layout showcasing capabilities, pipelines, and templates before price cards",
       "Validated Stripe tier-checkout edge function flow for seamless subscription upgrades",
-      "Added Stats Bar highlighting 50+ capabilities, 60 crystallized pipelines, and 21 modules"
+      "Added Stats Bar highlighting 525+ capabilities, 300 crystallized pipelines, and 24 execution surfaces"
     ],
     capabilities: [
-      "Every module now has a designated crown jewel capability — full 21-module coverage",
+      "Every execution surface now has a designated crown jewel capability — full coverage",
       "Benefits-first pricing conversion funnel with horizontal mobile scroll",
       "Stripe checkout verified end-to-end for all tiers"
     ],
@@ -275,7 +275,7 @@ const evolutionLogV10: EvolutionEntry[] = [
     id: "v10-evolution-005",
     date: "2026-02-16",
     pressures: [
-      "Module self-discovery revealed 100+ latent capabilities across 21 modules — most ungoverned and untiered",
+      "Module self-discovery revealed 100+ latent capabilities across all execution surfaces — most ungoverned and untiered",
       "Intent Mesh pipeline approval flow was silently failing — approved proposals never crystallized into permanent pipelines",
       "Crown jewel capabilities were sitting undiscovered in discovery profiles, available for external users to find first",
       "Competitive moat analysis showed 15 high-value capabilities that needed governance before public substrate access"
@@ -302,16 +302,16 @@ const evolutionLogV10: EvolutionEntry[] = [
     date: "2026-02-16",
     pressures: [
       "BRAIN CLM flagged hot memory tier at 1,671 entries (334% over 500 limit) — system memory performance degrading",
-      "MODERNIZER CLM reported 3 consecutive evolution runs stuck in shadow_applied phase — shadow loop detected",
+      "EVOLUTION CLM reported 3 consecutive evolution runs stuck in shadow_applied phase — shadow loop detected",
       "CORE CLM requested autonomous circuit recovery — manual resets were required after breaker trips",
       "ENCODE CLM requested error-pattern library — failed task chains were being repeated without learning"
     ],
     responses: [
       "BRAIN Auto-Tiering Engine deployed with watermark-based soft/hard enforcement and demotion cascades",
-      "MODERNIZER Shadow Loop Resolver auto-detects stale shadow runs, enforces timeouts, and escalates on loops",
+      "EVOLUTION Shadow Loop Resolver auto-detects stale shadow runs, enforces timeouts, and escalates on loops",
       "CORE Circuit Recovery Engine provides graduated health probing with exponential backoff and auto-reset",
       "ENCODE Error-Pattern Library fingerprints failures, clusters by category, and prevents repeat errors",
-      "All 21 modules received formal CLM acknowledgment events confirming their requests were heard and resolved"
+      "All execution surfaces received formal CLM acknowledgment events confirming their requests were heard and resolved"
     ],
     capabilities: [
       "Hot memory tier will never exceed configured limits — autonomous demotion cascades are now governed",
@@ -325,7 +325,7 @@ const evolutionLogV10: EvolutionEntry[] = [
     id: "v10-evolution-003",
     date: "2026-02-16",
     pressures: [
-      "CLM reports showed all 21 modules requesting high-value capability upgrades",
+      "CLM reports showed all execution surfaces requesting high-value capability upgrades",
       "SEBA proposals consistently flagged hot memory tier overflow (1,671 entries vs 500 limit)",
       "Infrastructure modules lacked domain-specific intelligence (staleness, signatures, compliance, forecasting)"
     ],
@@ -355,7 +355,7 @@ const evolutionLogV10: EvolutionEntry[] = [
     ],
     responses: [
       "CLM Engine v2.0 deployed as autonomous server-side edge function running 24/7 via cron",
-      "Universal Brain Transfer Pipeline routes top-50 memories to all 21 modules by tag affinity",
+      "Universal Brain Transfer Pipeline routes top-50 memories to all modules by tag affinity",
       "Memory Consolidation Engine automates promotion, demotion, and pruning of memory tiers"
     ],
     capabilities: [
@@ -385,13 +385,13 @@ const evolutionLogV10: EvolutionEntry[] = [
   },
 ];
 
-// Living Evolution Log — v9.x.x Series (ARCHITECT Epoch)
+// Living Evolution Log — v9.x.x Series (Pre-SPARTA)
 const evolutionLogV9: EvolutionEntry[] = [
   {
     id: "v9-evolution-003",
     date: "2026-02-13",
     pressures: [
-      "21-module architecture required a dedicated Infrastructure layer",
+      "Architecture required a dedicated Infrastructure layer",
       "Version references were fragmented across v7/v8 epoch markers",
       "Evolution observability needed unified stamp and receipt systems"
     ],

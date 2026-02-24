@@ -21,7 +21,7 @@
  * 
  * ADMINISTRATIVE LAYER:
  * - System: Administration, configuration
- * - Modernizer: Website modernization
+ * - Evolution: Bounded self-evolution, governed upgrades
  * - Integration: Enterprise adapters, LLM governance
  * - Inclusive: Human compatibility, WCAG, a11y
  * 

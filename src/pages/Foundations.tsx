@@ -56,7 +56,7 @@ const MODULES = [
   { name: "ENCODE", icon: Code, desc: "Autonomous code engine", layer: "Operational" },
   // Administrative Layer
   { name: "SYSTEM", icon: Settings, desc: "Orchestration & config", layer: "Administrative" },
-  { name: "MODERNIZER", icon: Landmark, desc: "Self-upgrade engine", layer: "Administrative" },
+  { name: "EVOLUTION", icon: Landmark, desc: "Bounded self-evolution", layer: "Administrative" },
   { name: "INTEGRATION", icon: Globe, desc: "External connectors", layer: "Administrative" },
   { name: "INCLUSIVE", icon: Users, desc: "Accessibility engine", layer: "Administrative" },
   // Orchestrator Layer
@@ -113,7 +113,7 @@ export default function Foundations() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Layers className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">v10.5.0 ARCHITECT Epoch</span>
+            <span className="text-sm font-mono text-primary">SPARTA Epoch</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             Foundations

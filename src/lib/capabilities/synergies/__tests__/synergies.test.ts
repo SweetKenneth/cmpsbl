@@ -335,7 +335,7 @@ describe('Synergy Executors', () => {
 
 describe('Module Coverage', () => {
   const allModules = [
-    'BRAIN', 'NEXUS', 'VISION', 'DECODE', 'MODERNIZER',
+    'BRAIN', 'NEXUS', 'VISION', 'DECODE', 'EVOLUTION',
     'CORTEX', 'DEFENSE', 'SYSTEM', 'RIPPLE', 'CORE',
     'DREAM', 'INCLUSIVE', 'ACCESS', 'INTEGRATION',
     'MEMORY', 'RELAY', 'AUDIT', 'IDENTITY', 'ECONOMY', 'SANDBOX',
