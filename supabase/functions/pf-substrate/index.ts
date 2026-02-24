@@ -725,20 +725,23 @@ function recordNexusCall(provider: string, success: boolean, tokens: number, cos
   pc.costUsd += costUsd;
   pc.avgLatencyMs = (pc.avgLatencyMs * (pc.calls - 1) + latencyMs) / pc.calls;
 
-  // ═══ PERSIST to ai_daily_quota — fixes report showing 0 calls ═══
+  // ═══ PERSIST to ai_daily_quota — fire-and-forget (no await in sync fn) ═══
   if (success && provider !== 'local') {
     const today = new Date().toISOString().split('T')[0];
     const budgetMap: Record<string, number> = { hyperbolic: 86400, deepseek: 5000, google: 50 };
     const budget = budgetMap[provider] || 14400;
     try {
       const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-      // Check if row exists, then update or insert
-      const { data: existing } = await sb.from('ai_daily_quota').select('id, calls_used, tokens_used').eq('provider', provider).eq('date', today).maybeSingle();
-      if (existing) {
-        sb.from('ai_daily_quota').update({ calls_used: (existing.calls_used || 0) + 1, tokens_used: (existing.tokens_used || 0) + tokens }).eq('id', existing.id).then(() => {});
-      } else {
-        sb.from('ai_daily_quota').insert({ provider, date: today, calls_used: 1, tokens_used: tokens, calls_budget: budget }).then(() => {});
-      }
+      // Fire-and-forget: upsert without await to avoid blocking and syntax error
+      sb.from('ai_daily_quota').select('id, calls_used, tokens_used').eq('provider', provider).eq('date', today).maybeSingle()
+        .then(({ data: existing }) => {
+          if (existing) {
+            sb.from('ai_daily_quota').update({ calls_used: (existing.calls_used || 0) + 1, tokens_used: (existing.tokens_used || 0) + tokens }).eq('id', existing.id).then(() => {});
+          } else {
+            sb.from('ai_daily_quota').insert({ provider, date: today, calls_used: 1, tokens_used: tokens, calls_budget: budget }).then(() => {});
+          }
+        })
+        .catch(() => { /* telemetry must never block execution */ });
     } catch { /* telemetry must never block execution */ }
   }
 }
