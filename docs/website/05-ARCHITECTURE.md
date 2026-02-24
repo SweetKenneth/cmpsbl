@@ -14,20 +14,22 @@ CMPSBL® is built on three core principles:
 
 ---
 
-## The 21-Module Architecture
+## The 12-Module + 2-Layer Architecture
 
-CMPSBL organizes intelligence across **6 layers** with **21 specialized modules**, each responsible for a distinct cognitive function. Together they produce **200+ synergy pipelines** and **400+ capabilities**.
+CMPSBL organizes intelligence across **12 public modules** and **2 hidden convergence layers** (CCR + CCL). Together they produce **200+ synergy pipelines** and **400+ capabilities**.
 
 ### Layer Overview
 
-| Layer | Modules | Purpose |
-|-------|---------|---------|
-| **Kernel** | 3 | Foundation services — configuration, events, access control |
-| **Cognitive** | 2 | Intelligence — memory, natural language understanding |
-| **Operations** | 4 | Runtime — learning, security, AI routing, observability |
-| **Admin** | 4 | Management — health, evolution, accessibility, integrations |
-| **Infrastructure** | 6 | Trust — orchestration, compliance, identity, cost management |
-| **Orchestrator** | 2 | Coordination — policy intent, code generation |
+| Layer | Type | Purpose |
+|-------|------|---------|
+| **CCR** (Layer 0) | Hidden Meta-Engine | CORE + SYSTEM + BRAIN + MEMORY + DREAM — foundation cognitive reality |
+| **CCL** (Layer 1) | Hidden Infrastructure | RIPPLE + ACCESS + IDENTITY + RELAY — infrastructure convergence (lucidity) |
+| **Cognitive** | Public (2) | Intelligence — intent parsing, natural language understanding |
+| **Orchestration** | Public (3) | Routing — AI gateway, pipeline orchestration, code generation |
+| **Operational** | Public (3) | Runtime — security, analytics, integrations |
+| **Governance** | Public (1) | Compliance — accessibility, WCAG enforcement |
+| **Evolution** | Public (1) | Self-improvement — shadow-to-production deployment |
+| **Infrastructure** | Public (2) | Trust — compliance logging, cost management, sandboxing |
 
 ---
 
