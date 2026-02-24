@@ -182,7 +182,7 @@ export function generateDesktopBootScreen(): string[] {
     '  │      ║                                       ║       │',
     '  │      ◇ ═══════════════════════════════════════ ◇      │',
     '  │     ╱ ╲           ADMIN LAYER               ╱ ╲     │',
-    '  │  SYSTEM        MODERNIZER            INCLUSIVE       │',
+    '  │  SYSTEM        EVOLUTION             INCLUSIVE       │',
     '  │     ╲ ╱                                     ╲ ╱     │',
     '  │      ║                                       ║       │',
   '  │      ★ ═══════════════════════════════════════ ★      │',
