@@ -36,27 +36,15 @@ export interface ParityReport {
 
 // All 24 substrate modules in boot order (10 entities + 5 mesh + 9 zones)
 const SUBSTRATE_MODULES = [
+  // Kernel
   'core',
-  'ripple',
-  'access',
-  'brain',
-  'vision',
-  'cortex',
-  'modernizer',
-  'decode',
-  'encode',
-  'defense',
-  'nexus',
-  'dream',
-  'integration',
-  'inclusive',
-  'system',
-  'memory',
-  'relay',
-  'audit',
-  'identity',
-  'economy',
-  'sandbox',
+  // Execution surface entities
+  'ripple', 'access', 'brain', 'vision', 'cortex',
+  'decode', 'encode', 'nexus', 'dream', 'integration', 'inclusive',
+  // Mesh overlays
+  'defense', 'immunity', 'evolution', 'intent', 'governance',
+  // Zones
+  'system', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
 ] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
