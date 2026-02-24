@@ -21,7 +21,7 @@ const DEFAULT_AUTHOR = {
   name: 'CMPSBL Research Team',
   role: 'AI Systems Architecture',
   url: 'https://cmpsbl.com/about',
-  description: 'The CMPSBL Research Team designs and maintains the cognitive orchestration substrate — a 21-module AI operating system powering persistent memory, multi-provider routing, and autonomous self-improvement for enterprise AI applications.',
+  description: 'The CMPSBL Research Team designs and maintains the cognitive orchestration substrate — a 10-entity AI operating system with 5 mesh overlays, powering persistent memory, multi-provider routing, and autonomous self-improvement for enterprise AI applications.',
   expertise: ['AI Operating Systems', 'Cognitive Infrastructure', 'Multi-Agent Orchestration', 'Enterprise AI Security'],
 };
 

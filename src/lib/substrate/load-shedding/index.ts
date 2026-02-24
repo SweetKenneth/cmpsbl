@@ -25,7 +25,7 @@ export interface SheddingConfig {
   checkInterval: number;
 }
 
-// Module priority classifications — all 21 modules
+// Module priority classifications — all entities + zones
 const MODULE_PRIORITIES: Record<string, ModulePriority> = {
   CORE: 'essential',
   BRAIN: 'essential',

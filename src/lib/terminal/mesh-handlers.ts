@@ -402,7 +402,7 @@ export function registerMeshHandlers() {
     return { success: true, data: { message: 'Gap detection buffer flushed to discovery engine' } };
   });
 
-  // ═══ mesh.discover.all — Run self-discovery for all 21 modules ═══
+  // ═══ mesh.discover.all — Run self-discovery for all entities ═══
   registerHandler('mesh.discover.all', async () => {
     const { runAllModuleDiscovery, persistProposals } = await import('@/lib/substrate/intent-mesh');
     const result = await runAllModuleDiscovery();

@@ -10,9 +10,9 @@ const HowPromptFluidWorks = () => {
         <title>How the CMPSBL Cognitive Substrate Works | Architecture Deep Dive</title>
         <meta 
           name="description" 
-          content="Deep dive into CMPSBL's cognitive substrate architecture. Dream cycles, neural orchestration, 21-module kernel, and how autonomous AI systems learn and evolve." 
+           content="Deep dive into CMPSBL's cognitive substrate architecture. Dream cycles, neural orchestration, 10-entity kernel, and how autonomous AI systems learn and evolve." 
         />
-        <meta name="keywords" content="CMPSBL architecture, cognitive substrate, AI orchestration, dream cycles, autonomous learning, 21-module kernel" />
+        <meta name="keywords" content="CMPSBL architecture, cognitive substrate, AI orchestration, dream cycles, autonomous learning, cognitive kernel" />
         <link rel="canonical" href="https://cmpsbl.com/blog/how-promptfluid-works-cascade-ai-ecosystem" />
         <meta property="og:title" content="How the CMPSBL Cognitive Substrate Works | Architecture Deep Dive" />
         <meta property="og:description" content="Deep dive into CMPSBL's cognitive substrate architecture and autonomous AI orchestration." />
@@ -95,7 +95,7 @@ const HowPromptFluidWorks = () => {
 
             <p className="text-lg leading-relaxed">
               This comprehensive guide reveals how the CMPSBL substrate works under the hood, why its cognitive engine represents a 
-              paradigm shift in intelligent automation, and how the unified 21-module architecture delivers capabilities that 
+              paradigm shift in intelligent automation, and how the unified 10-entity architecture delivers capabilities that 
               isolated AI tools simply cannot match.
             </p>
           </section>

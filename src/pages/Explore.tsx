@@ -158,7 +158,7 @@ export default function Explore() {
 
       <SectionDivider />
 
-      {/* Why Substrate - 21 Module Differentiators */}
+      {/* Why Substrate — 10-Entity + 5-Mesh Differentiators */}
       <WhySubstrate />
 
       <SectionDivider />

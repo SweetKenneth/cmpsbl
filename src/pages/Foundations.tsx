@@ -27,7 +27,7 @@ const LIBRARY_DOCS = [
   { id: "00", name: "INDEX", title: "Documentation Overview", description: "Complete guide to CMPSBL documentation" },
   { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary", description: "High-level overview for investors" },
   { id: "02", name: "WHAT-IS-CMPSBL", title: "What is CMPSBL?", description: "Introduction to cognitive infrastructure" },
-  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "21-module architecture deep dive" },
+  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "10-entity + 5-mesh architecture deep dive" },
   { id: "04", name: "USE-CASES", title: "Use Cases", description: "Real-world applications" },
   { id: "05", name: "ARCHITECTURE", title: "Architecture Overview", description: "Technical foundation" },
   { id: "06", name: "GETTING-STARTED", title: "Getting Started", description: "Quick start guide" },
@@ -103,7 +103,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="Clockless ARCHITECT Epoch — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Download documentation, browse the 21-module architecture, and access archival records." />
+        <meta name="description" content="Clockless SPARTA Epoch — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the 10-entity + 5-mesh architecture and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -141,11 +141,11 @@ export default function Foundations() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              CMPSBL v10.5.0 ARCHITECT presents a unified cognitive infrastructure platform 
-              implementing a six-layer, 21-module kernel architecture with 200+ synergy pipelines
-              and 400+ capabilities. The system provides persistent runtime with tiered memory,
+              CMPSBL SPARTA Epoch presents a unified cognitive infrastructure platform 
+              implementing a 10-entity + 5-mesh + 9-zone architecture with 300+ synergy pipelines
+              and 525+ capabilities. The system provides persistent runtime with tiered memory,
               adaptive learning cycles, multi-provider AI routing, real-time observability,
-              autonomous inter-module communication via the Intent Mesh, and self-improvement pipelines.
+              autonomous inter-module communication via the INTENT mesh, and self-improvement pipelines.
             </p>
             <p>
               This release establishes three interconnected standards: <strong>ARCHITECT</strong> as the 
@@ -156,11 +156,11 @@ export default function Foundations() {
           </CardContent>
         </Card>
 
-        {/* 21-Module Architecture */}
+        {/* 10-Entity + 5-Mesh Architecture */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
             <Layers className="w-6 h-6 text-primary" />
-            21-Module Architecture
+            10-Entity + 5-Mesh Architecture
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
             {MODULES.map((mod) => (

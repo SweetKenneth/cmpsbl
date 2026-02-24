@@ -1,7 +1,7 @@
 /**
  * Terminal Command Registry
- * v10.5.0 ARCHITECT Epoch — 360+ commands across 21 modules
- * Complete list of all substrate commands organized by module
+ * SPARTA Epoch — 360+ commands across 10 entities + 5 meshes + 9 zones
+ * Complete list of all substrate commands organized by entity
  * 
  * Tier Gating: free | creator | architect | governor
  *   free      = Status, pulse, read-only queries
@@ -196,15 +196,15 @@ export const DREAM_COMMANDS: CommandDefinition[] = [
 ];
 
 export const SYSTEM_COMMANDS: CommandDefinition[] = [
-  { command: 'system.status', description: 'Global system status (all 21 modules)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
-  { command: 'system.health', description: 'Full system health (all 21 modules)', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.status', description: 'Global system status (all entities + meshes)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.health', description: 'Full system health (all entities + meshes)', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.doctor', description: 'Quick diagnostics (env, DB, routing, providers)', category: 'system', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.verify', description: 'Non-destructive checks with pass/fail results', category: 'system', icon: CheckCircle, requiresOperator: false, requiredTier: 'free', args: '[--verbose]' },
   { command: 'system.resilience', description: 'Resilience snapshot (circuits, health, heals)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free', args: '[role]', example: 'system.resilience operator' },
   { command: 'system.version', description: 'Substrate version', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.config', description: 'View configuration', category: 'system', icon: Settings, requiresOperator: false, requiredTier: 'free', args: '[key]' },
   { command: 'system.audit', description: 'Query health incidents & audit log', category: 'system', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '[since] [type]', example: 'system.audit 24h heal' },
-  { command: 'system.diagnostics', description: 'Full diagnostics (all 21 modules)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free', args: '[--full]' },
+  { command: 'system.diagnostics', description: 'Full diagnostics (all entities + meshes)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free', args: '[--full]' },
   { command: 'system.heal', description: 'Self-healing trigger', category: 'system', icon: Shield, requiresOperator: true, requiredTier: 'architect', args: '[target] [force]' },
   { command: 'system.restart', description: 'Restart service', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'architect', args: '[service]' },
   { command: 'system.backup', description: 'Create backup snapshot', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'architect', args: '[include_data]' },

@@ -151,7 +151,7 @@ class MeshAutoScheduler {
   }
 
   /**
-   * Run module self-discovery for all 21 modules
+   * Run module self-discovery for all entities + zones
    */
   async runModuleDiscoveryCycle(): Promise<{ totalProposals: number; endpointHealth: number }> {
     try {

@@ -38,8 +38,8 @@ export const MARKETPLACE_PRODUCTS = {
     price_id: 'price_1SteXGQ7FtTiAL4aFfqLPytS',
     amount: 29900, // $299
     name: 'CMPSBL World Engine License',
-    description: 'Full CMPSBL World Engine with BYOK support. 21 modules, single-install license with domain binding.',
-    includes: ['World Engine', '21 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
+    description: 'Full CMPSBL World Engine with BYOK support. 10 entities + 5 mesh overlays, single-install license with domain binding.',
+    includes: ['World Engine', '10 Entities', '5 Mesh Overlays', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
   },
   
   // World Engine - $299

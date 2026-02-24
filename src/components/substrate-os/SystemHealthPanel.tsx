@@ -1,6 +1,6 @@
 /**
- * System Health Panel v10.5.1 ARCHITECT — Live health diagnostics
- * Premium glassmorphic design with 21-module status grid
+ * System Health Panel — Live health diagnostics
+ * SPARTA Epoch — 10-entity + 5-mesh status grid
  */
 
 import { useState } from 'react';
@@ -80,7 +80,7 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-foreground">System Health</h3>
-              <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">21-MODULE DIAGNOSTICS</p>
+              <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">ENTITY + MESH DIAGNOSTICS</p>
             </div>
           </div>
           <Badge 

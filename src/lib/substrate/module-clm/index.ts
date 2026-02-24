@@ -315,7 +315,7 @@ Provide specific reliability and operational improvements.`,
       'Slang and colloquial interpretation: modern language patterns, tone matching',
       'Memory-assisted responses: recalling user facts, project context, past conversations',
       'Proactive intelligence: anticipating needs, offering relevant module insights',
-      'Cross-module awareness: understanding and explaining all 21 module statuses',
+      'Cross-module awareness: understanding and explaining all entity + mesh statuses',
     ],
     kpis: ['intent_accuracy', 'user_satisfaction', 'fact_recall_precision', 'module_awareness_score'],
     selfReflectionPrompt: `As the DECODE conversational engine and voice of the system, how can I become better?

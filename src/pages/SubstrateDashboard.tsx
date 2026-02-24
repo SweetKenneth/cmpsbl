@@ -1,8 +1,8 @@
 /**
  * Clockless — CMPSBL Substrate Dashboard
- * v10.5.4 — Cognitive Orchestration (21-Module Architecture)
+ * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  *
- * Unified control center for all 21 substrate modules:
+ * Unified control center for all entities, mesh overlays, and zones:
  * 
  * KERNEL LAYER:
  * - Core: Kernel scheduler, lifecycle, orchestration
@@ -66,7 +66,7 @@ interface SubstrateMetrics {
   decode_conversations: number;
 }
 
-// 21-module architecture organized by layer
+// 10-entity + 5-mesh + 9-zone architecture organized by layer
 const modulesByLayer = {
   kernel: [
     {
@@ -494,7 +494,7 @@ export default function SubstrateDashboard() {
             <DefenseAnalytics />
           </TabsContent>
 
-          {/* Overview - All 21 modules */}
+          {/* Overview — All entities + meshes + zones */}
           <TabsContent value="overview" className="mt-6">
             <div className="space-y-8">
               {Object.entries(modulesByLayer).map(([layer, modules]) => (

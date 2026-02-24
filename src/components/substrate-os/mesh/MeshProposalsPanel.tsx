@@ -152,7 +152,7 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
               <div>
                 <p className="text-sm font-medium">Module Self-Discovery</p>
                 <p className="text-xs text-muted-foreground">
-                  All 21 modules introspect their data assets and propose new capabilities
+                  All entities introspect their data assets and propose new capabilities
                 </p>
               </div>
             </div>

@@ -1,10 +1,10 @@
 /**
  * Phase B — System State Scan
- * v10.9.2 — Full 21-Module Sweep
+ * SPARTA Epoch — Full Entity + Mesh + Zone Sweep
  * 
  * Performs required system calls to detect state mismatches,
  * stuck phases, cognitive starvation, resilience gaps,
- * and per-module health across all 6 layers.
+ * and per-entity health across all layers.
  */
 
 import type { SystemState, EvolutionStateSnapshot, CircuitStateSnapshot, DetectedAnomaly, ModuleHealthEntry } from './types';
@@ -13,7 +13,7 @@ import { circuitBreaker } from '../circuit-breaker';
 import { supabase } from '@/integrations/supabase/client';
 
 // ═══════════════════════════════════════════════════════════════
-// FULL 21-MODULE ARCHITECTURE MAP
+// FULL ENTITY + MESH + ZONE ARCHITECTURE MAP
 // ═══════════════════════════════════════════════════════════════
 
 const MODULE_TABLE_MAP: Record<string, { layer: string; tables: string[]; eventPrefix?: string }> = {

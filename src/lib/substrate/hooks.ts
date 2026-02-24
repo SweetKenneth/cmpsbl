@@ -1,9 +1,9 @@
 /**
  * Substrate React Hooks
- * v10.5.4 — ARCHITECT Epoch React Integration Layer
+ * SPARTA Epoch — React Integration Layer
  * 
- * Provides React hooks for all substrate engines across the 21-module architecture.
- * Enables seamless integration of cognitive capabilities (325) into React components.
+ * Provides React hooks for all substrate engines across the 10-entity + 5-mesh architecture.
+ * Enables seamless integration of cognitive capabilities (525+) into React components.
  * 
  * Respects debugMode — when enabled, auto-refresh intervals are skipped
  */

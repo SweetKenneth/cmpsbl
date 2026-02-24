@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * v10.5.4 ARCHITECT Epoch
+ * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
@@ -11,18 +11,26 @@
  * - Library docs
  * 
  * Counts are derived from actual registries where possible.
- * Claims marked as "estimated" should be periodically verified.
  */
 
 // =============================================================================
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 21 modules in 6-layer architecture */
-export const MODULES_COUNT = 21;
+/** 10 public entities: CORE + 8 modules + INTEGRATION */
+export const ENTITIES_COUNT = 10;
 
-/** 6 architectural layers: Kernel, Cognitive, Operational, Administrative, Orchestrator, Infrastructure */
-export const LAYERS_COUNT = 6;
+/** @deprecated Use ENTITIES_COUNT — kept for backward compatibility */
+export const MODULES_COUNT = ENTITIES_COUNT;
+
+/** 5 mesh overlays: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost) */
+export const MESH_OVERLAY_COUNT = 5;
+
+/** 9 internal zones: CCR (4) + CCL (5) */
+export const ZONE_COUNT = 9;
+
+/** @deprecated Use ENTITIES_COUNT — legacy 6-layer model no longer applies */
+export const LAYERS_COUNT = 3; // Kernel + Modules + Meshes
 
 /**
  * Synergy pipelines defined in capabilities/synergies/registry.ts
@@ -186,7 +194,10 @@ export const WCAG_LEVEL = 'WCAG 2.2 AA';
  */
 export function getAllMarketingFacts() {
   return {
-    modules: MODULES_COUNT,
+    entities: ENTITIES_COUNT,
+    meshOverlays: MESH_OVERLAY_COUNT,
+    zones: ZONE_COUNT,
+    modules: MODULES_COUNT, // backward compat alias
     layers: LAYERS_COUNT,
     synergyPipelines: SYNERGY_PIPELINES_COUNT,
     synergyExecutors: SYNERGY_EXECUTORS_COUNT,

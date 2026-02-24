@@ -1,11 +1,11 @@
 /**
  * Atlas Module Registry
- * v10.5.4 — ARCHITECT Epoch Single source of truth for substrate modules and actions
+ * SPARTA Epoch — Single source of truth for substrate entities, meshes, and zones
  */
 
 import type { ModuleRegistryEntry, ModuleAction } from './types';
 
-// The canonical 21-module registry
+// The canonical entity + mesh + zone registry
 export const MODULE_REGISTRY: ModuleRegistryEntry[] = [
   // Kernel Layer
   {

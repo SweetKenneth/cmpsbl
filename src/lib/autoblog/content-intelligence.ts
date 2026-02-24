@@ -108,7 +108,7 @@ export const DEEP_TOPICS = {
     },
     {
       topic: 'Cost Engineering: Running Enterprise AI on a Bootstrap Budget',
-      hook: 'We run 21 modules, 400+ capabilities, and zero-cost AI routing. Here\'s how.',
+      hook: 'We run 10 entities, 5 mesh overlays, 525+ capabilities, and zero-cost AI routing. Here\'s how.',
       keyPoints: ['Free-tier provider mesh architecture', 'Intelligent caching eliminating 68% of API calls', 'Compute optimization through task batching', 'The $0 AI bill: a monthly reality, not a marketing claim'],
       seoKeywords: ['AI cost optimization', 'free-tier AI routing', 'enterprise AI on a budget'],
     },
@@ -420,7 +420,7 @@ function generateIntroduction(topic: { topic: string; hook: string; keyPoints: s
     developerGuides: `Want to build on these ideas? We've open-sourced our thinking (if not our code) to help others learn from our experience.`,
     securityAndGovernance: `AI security isn't optional—it's foundational. Here's how the CMPSBL substrate approaches security and governance as runtime properties, not afterthoughts.`,
     industryAnalysis: `The AI landscape shifts weekly. Here's our perspective from inside the infrastructure layer, building the plumbing that other AI products depend on.`,
-    moduleDeepDives: `Each of the 21 modules in the CMPSBL substrate solves a specific problem. Here's a deep dive into one of them.`,
+    moduleDeepDives: `Each entity in the CMPSBL substrate solves a specific problem. Here's a deep dive into one of them.`,
   };
   return intros[category] || intros.practicalInsights;
 }
