@@ -961,20 +961,29 @@ class MemoryCoreClient {
    */
   async purgeBySource(source: string): Promise<{ success: boolean; purged: number }> {
     try {
-      const tiers = ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'] as const;
       let totalPurged = 0;
 
-      for (const tier of tiers) {
-        const { data, error } = await supabase
-          .from(tier)
-          .delete()
-          .eq('source', source)
-          .select('id');
+      // Delete from each tier individually to avoid TS2589 with union types
+      const { data: d1 } = await supabase
+        .from('brain_memory_hot')
+        .delete()
+        .eq('source', source)
+        .select('id');
+      if (d1) totalPurged += d1.length;
 
-        if (!error && data) {
-          totalPurged += data.length;
-        }
-      }
+      const { data: d2 } = await supabase
+        .from('brain_memory_warm')
+        .delete()
+        .eq('source', source)
+        .select('id');
+      if (d2) totalPurged += d2.length;
+
+      const { data: d3 } = await supabase
+        .from('brain_memory_cold')
+        .delete()
+        .eq('source', source)
+        .select('id');
+      if (d3) totalPurged += d3.length;
 
       console.log(`[MemoryCore] Purged ${totalPurged} memories from source: ${source}`);
       return { success: true, purged: totalPurged };
