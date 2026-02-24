@@ -275,7 +275,7 @@ const evolutionLogV10: EvolutionEntry[] = [
     id: "v10-evolution-005",
     date: "2026-02-16",
     pressures: [
-      "Module self-discovery revealed 100+ latent capabilities across 21 modules — most ungoverned and untiered",
+      "Module self-discovery revealed 100+ latent capabilities across all execution surfaces — most ungoverned and untiered",
       "Intent Mesh pipeline approval flow was silently failing — approved proposals never crystallized into permanent pipelines",
       "Crown jewel capabilities were sitting undiscovered in discovery profiles, available for external users to find first",
       "Competitive moat analysis showed 15 high-value capabilities that needed governance before public substrate access"
