@@ -10,60 +10,68 @@
 
 import JSZip from 'jszip';
 
-// ─── Build-time file embedding ──────────────────────────────────────────────
+// ─── Build-time file listing (lazy raw imports) ──────────────────────────────
+//
+// IMPORTANT:
+// We intentionally keep these globs **non-eager** so production builds do not
+// inline the entire repository as giant raw strings (which can break publish).
+// The contents are only loaded when the user clicks “Export ZIP”.
+
+type RawGlob = Record<string, () => Promise<string>>;
 
 // Edge functions (exclude _archived)
-const edgeFunctionFiles = import.meta.glob(
-  '/supabase/functions/**/index.ts',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const edgeFunctionFiles: RawGlob = import.meta.glob('/supabase/functions/**/index.ts', {
+  query: '?raw',
+  import: 'default',
+});
 
-// Shared edge function utils
-const edgeSharedFiles = import.meta.glob(
-  '/supabase/functions/_shared/**/*.ts',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+// Shared backend-function utils
+const edgeSharedFiles: RawGlob = import.meta.glob('/supabase/functions/_shared/**/*.ts', {
+  query: '?raw',
+  import: 'default',
+});
 
 // Schema migrations
-const migrationFiles = import.meta.glob(
-  '/supabase/migrations/**/*.sql',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const migrationFiles: RawGlob = import.meta.glob('/supabase/migrations/**/*.sql', {
+  query: '?raw',
+  import: 'default',
+});
 
 // Substrate core libs
-const coreLibFiles = import.meta.glob(
-  '/src/lib/**/*.{ts,tsx}',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const coreLibFiles: RawGlob = import.meta.glob('/src/lib/**/*.{ts,tsx}', {
+  query: '?raw',
+  import: 'default',
+});
 
 // Shared components
-const componentFiles = import.meta.glob(
-  '/src/components/**/*.{ts,tsx}',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const componentFiles: RawGlob = import.meta.glob('/src/components/**/*.{ts,tsx}', {
+  query: '?raw',
+  import: 'default',
+});
 
 // Config files
-const configFiles = import.meta.glob(
-  '/supabase/config.toml',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const configFiles: RawGlob = import.meta.glob('/supabase/config.toml', {
+  query: '?raw',
+  import: 'default',
+});
 
 // Theme files
-const indexCss = import.meta.glob(
-  '/src/index.css',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const indexCss: RawGlob = import.meta.glob('/src/index.css', {
+  query: '?raw',
+  import: 'default',
+});
 
-const tailwindConfig = import.meta.glob(
-  '/tailwind.config.ts',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+const tailwindConfig: RawGlob = import.meta.glob('/tailwind.config.ts', {
+  query: '?raw',
+  import: 'default',
+});
 
-// UI components (shadcn)
-const uiComponentFiles = import.meta.glob(
-  '/src/components/ui/**/*.{ts,tsx}',
-  { query: '?raw', import: 'default', eager: true }
-) as Record<string, string>;
+// UI components (shadcn) — kept for future category splitting
+// (note: coreLibFiles/componentFiles already cover these)
+const uiComponentFiles: RawGlob = import.meta.glob('/src/components/ui/**/*.{ts,tsx}', {
+  query: '?raw',
+  import: 'default',
+});
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
