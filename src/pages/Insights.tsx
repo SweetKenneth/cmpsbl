@@ -74,8 +74,8 @@ export default function Insights() {
             Explore documentation, architecture, and standards with read-only visibility.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">v10.5.4</Badge>
-            <Badge variant="outline">21 Modules</Badge>
+            <Badge variant="outline">SPARTA Epoch</Badge>
+            <Badge variant="outline">9 Modules</Badge>
             <Badge variant="outline">Read-Only</Badge>
           </div>
         </div>
