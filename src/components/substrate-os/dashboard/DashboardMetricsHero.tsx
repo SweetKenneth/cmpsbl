@@ -186,7 +186,7 @@ export function DashboardMetricsHero() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Module Constellation</span>
+                  <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Surface Constellation</span>
                 </div>
                 <Button 
                   variant="ghost" 
