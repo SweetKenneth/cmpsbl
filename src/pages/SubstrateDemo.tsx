@@ -49,8 +49,8 @@ const LAYER_COLORS = {
 };
 
 const INITIAL_MODULES: ModuleState[] = [
-  // KERNEL (1)
-  { id: 'core', name: 'CORE', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Standalone Kernel' },
+  // KERNEL (boots first)
+  { id: 'core', name: 'CORE', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Kernel — Boots First' },
   // 8 PUBLIC MODULES
   { id: 'decode', name: 'DECODE', icon: MessageSquare, layer: 'module', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
   { id: 'encode', name: 'ENCODE', icon: Code2, layer: 'module', status: 'idle', color: 'lime', description: 'Code Intelligence' },
@@ -60,14 +60,14 @@ const INITIAL_MODULES: ModuleState[] = [
   { id: 'economy', name: 'ECONOMY', icon: Coins, layer: 'module', status: 'idle', color: 'amber', description: 'Cost Control' },
   { id: 'sandbox', name: 'SANDBOX', icon: FlaskConical, layer: 'module', status: 'idle', color: 'cyan', description: 'Isolation' },
   { id: 'inclusive', name: 'INCLUSIVE', icon: Accessibility, layer: 'module', status: 'idle', color: 'rose', description: 'Accessibility' },
-  // 5 MESHES
-  { id: 'defense', name: 'DEFENSE', icon: Shield, layer: 'mesh', status: 'idle', color: 'emerald', description: 'Security Mesh' },
-  { id: 'immunity', name: 'IMMUNITY', icon: Activity, layer: 'mesh', status: 'idle', color: 'emerald', description: 'Resilience Mesh' },
-  { id: 'evolution', name: 'EVOLUTION', icon: Sparkles, layer: 'mesh', status: 'idle', color: 'pink', description: 'Self-Improvement' },
-  { id: 'intent', name: 'INTENT', icon: Brain, layer: 'mesh', status: 'idle', color: 'violet', description: 'Goal Routing' },
-  { id: 'governance', name: 'GOVERNANCE', icon: Lock, layer: 'mesh', status: 'idle', color: 'slate', description: 'Ethical Gates' },
-  // STANDALONE (1)
-  { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'standalone', status: 'idle', color: 'indigo', description: 'External APIs' },
+  // INTEGRATION (module — boots last)
+  { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'module', status: 'idle', color: 'indigo', description: 'External APIs — Boots Last' },
+  // 5 MESH OVERLAYS (protective layers wrapping modules — outermost to innermost)
+  { id: 'defense', name: 'DEFENSE', icon: Shield, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Outermost — Security Shield' },
+  { id: 'immunity', name: 'IMMUNITY', icon: Activity, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Resilience Layer' },
+  { id: 'evolution', name: 'EVOLUTION', icon: Sparkles, layer: 'mesh-overlay', status: 'idle', color: 'pink', description: 'Self-Improvement Layer' },
+  { id: 'intent', name: 'INTENT', icon: Brain, layer: 'mesh-overlay', status: 'idle', color: 'violet', description: 'Goal Routing Layer' },
+  { id: 'governance', name: 'GOVERNANCE', icon: Lock, layer: 'mesh-overlay', status: 'idle', color: 'slate', description: 'Innermost — Ethical Gates' },
   // CCR ZONES (4) — surgically hot-swappable
   { id: 'brain', name: 'BRAIN Zone', icon: Brain, layer: 'zone-ccr', status: 'idle', color: 'violet', description: 'CCR: Memory & Learning' },
   { id: 'system', name: 'SYSTEM Zone', icon: Server, layer: 'zone-ccr', status: 'idle', color: 'slate', description: 'CCR: Administration' },
