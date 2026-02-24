@@ -34,7 +34,7 @@ const evolutionLogSPARTA: EvolutionEntry[] = [
     pressures: [
       "Consumed modules (SYSTEM, BRAIN, MEMORY, DREAM, RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) lost surgical identity — faults were ambiguous within CCR/CCL",
       "No ability to hot-swap individual consumed modules without affecting the entire convergence layer",
-      "Architecture documentation still referenced '21 modules' and '6 layers' — misleading for new developers and investors",
+      "Architecture documentation still referenced legacy module counts — misleading for new developers and investors",
       "MODERNIZER was still referenced as a standalone module despite being absorbed by the EVOLUTION mesh",
     ],
     responses: [
