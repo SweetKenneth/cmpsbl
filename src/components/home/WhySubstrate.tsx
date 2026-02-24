@@ -556,8 +556,8 @@ export function WhySubstrate() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">21</Badge>
+            All Surfaces
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">{differentiators.length}</Badge>
           </motion.button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
             <motion.button
