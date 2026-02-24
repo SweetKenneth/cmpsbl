@@ -2,8 +2,11 @@
  * Substrate Module Version Registry
  * SPARTA Epoch v11.1.0 — Zone Architecture
  *
- * 15 Public Entities:
- *   CORE (1) + 8 Modules + 5 Meshes + INTEGRATION (1)
+ * 10 Public Entities:
+ *   CORE (1 kernel) + 8 Modules + INTEGRATION (1 module, boots last)
+ *
+ * 5 Mesh Overlays (protective layers wrapping modules, order matters):
+ *   DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
  *
  * 9 Zones (surgically hot-swappable, circuit-breaker isolated):
  *   CCR Zones (4): SYSTEM Zone, BRAIN Zone, MEMORY Zone, DREAM Zone
@@ -12,9 +15,9 @@
  * Absorbed: MODERNIZER → EVOLUTION mesh
  */
 
-// 15 public entities
+// 10 public entities
 export const MODULE_VERSIONS = {
-  // Kernel (standalone)
+  // Kernel (boots first)
   core: { version: '11.1.0', codename: 'Foundation', layer: 'Kernel', type: 'kernel' as const },
   // 8 Public Modules
   decode: { version: '11.1.0', codename: 'Interpreter', layer: 'Cognitive', type: 'module' as const },
@@ -25,14 +28,17 @@ export const MODULE_VERSIONS = {
   economy: { version: '11.1.0', codename: 'Treasury', layer: 'Infrastructure', type: 'module' as const },
   sandbox: { version: '11.1.0', codename: 'Crucible', layer: 'Infrastructure', type: 'module' as const },
   inclusive: { version: '11.1.0', codename: 'Clarity', layer: 'Operational', type: 'module' as const },
-  // 5 Meshes
-  defense: { version: '11.1.0', codename: 'Guardian', layer: 'Mesh', type: 'mesh' as const },
-  immunity: { version: '11.1.0', codename: 'Sentinel', layer: 'Mesh', type: 'mesh' as const },
-  evolution: { version: '11.1.0', codename: 'Phoenix', layer: 'Mesh', type: 'mesh' as const },
-  intent: { version: '11.1.0', codename: 'Compass', layer: 'Mesh', type: 'mesh' as const },
-  governance: { version: '11.1.0', codename: 'Arbiter', layer: 'Mesh', type: 'mesh' as const },
-  // Standalone
-  integration: { version: '11.1.0', codename: 'Bridge', layer: 'Standalone', type: 'standalone' as const },
+  // Module (boots last)
+  integration: { version: '11.1.0', codename: 'Bridge', layer: 'Operational', type: 'module' as const },
+} as const;
+
+// 5 Mesh Overlays (protective layers — outermost to innermost)
+export const MESH_VERSIONS = {
+  defense: { version: '11.1.0', codename: 'Guardian', order: 1, position: 'outermost' as const },
+  immunity: { version: '11.1.0', codename: 'Sentinel', order: 2, position: 'outer' as const },
+  evolution: { version: '11.1.0', codename: 'Phoenix', order: 3, position: 'middle' as const },
+  intent: { version: '11.1.0', codename: 'Compass', order: 4, position: 'inner' as const },
+  governance: { version: '11.1.0', codename: 'Arbiter', order: 5, position: 'innermost' as const },
 } as const;
 
 // 9 Zone versions (surgically hot-swappable subsystems within CCR/CCL)
