@@ -368,5 +368,5 @@ export function getSystemSummary(): string {
   const moduleCount = Object.keys(SYSTEM_MODULES).length;
   const layers = [...new Set(Object.values(SYSTEM_MODULES).map(m => m.layer))];
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate: ${moduleCount} public entities (CORE + 8 Modules + 5 Meshes + INTEGRATION) + CCR Layer 0 + CCL Layer 1 across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR absorbs SYSTEM+BRAIN+MEMORY+DREAM. CCL absorbs RIPPLE+ACCESS+IDENTITY+RELAY+AUDIT. MODERNIZER absorbed by EVOLUTION mesh.`;
+  return `CMPSBL Substrate v11.1.0: ${moduleCount} public entities (CORE + 8 Modules + 5 Meshes + INTEGRATION) + 9 Zones (4 CCR + 5 CCL) across ${layers.length} layers (${layers.join(', ')}), ${componentCount} registered UI components. CCR Zones: SYSTEM+BRAIN+MEMORY+DREAM. CCL Zones: RIPPLE+ACCESS+IDENTITY+RELAY+AUDIT. MODERNIZER absorbed by EVOLUTION mesh.`;
 }
