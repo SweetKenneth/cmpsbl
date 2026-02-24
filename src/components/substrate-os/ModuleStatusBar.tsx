@@ -1,6 +1,6 @@
 /**
- * Module Status Bar v10.5.4 — Premium 21-module indicators with animated states
- * Visual representation of all 21 substrate modules (ARCHITECT Epoch architecture)
+ * Module Status Bar — Entity + mesh indicators with animated states
+ * SPARTA Epoch — 10 entities + 5 mesh overlays
  */
 
 import { useState, useEffect } from 'react';
