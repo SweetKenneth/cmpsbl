@@ -1,5 +1,6 @@
 /**
  * CMPSBL® Distribution Identity
+ * Canonical constants for the CMPSBL substrate distribution.
  * 
  * Canonical identity constants for the CMPSBL distribution.
  * Downstream distributions (e.g. LNCHBL) consume patches from here.
