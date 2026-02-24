@@ -215,7 +215,7 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.upgrade.list', description: 'List upgrade plans', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.upgrade.apply', description: 'Apply upgrade plan', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'governor', args: '<plan_id>' },
   { command: 'system.upgrade.rollback', description: 'Rollback upgrade', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'governor', args: '<plan_id>' },
-  { command: 'system.modules', description: 'List all 21 registered modules', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '[--full|--health|--dag|--roles|--boot|--inventory]' },
+  { command: 'system.modules', description: 'List all registered execution surfaces', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '[--full|--health|--dag|--roles|--boot|--inventory]' },
   { command: 'system.module', description: 'Get specific module details', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '<module_name>' },
   { command: 'system.changelog', description: 'View living evolution log', category: 'system', icon: FileText, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.evolution', description: 'View living evolution log (alias)', category: 'system', icon: FileText, requiresOperator: false, requiredTier: 'free' },
