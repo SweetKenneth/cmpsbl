@@ -559,7 +559,7 @@ function generateFullHelp(): string {
 │  clm.disable         Disable autonomous learning            │
 │  clm.cycle           Run a manual CLM cycle                 │
 │  clm.run <module>    Run CLM for a single module            │
-│  clm.run_all         Run CLM for ALL 24 modules             │
+│  clm.run_all         Run CLM for ALL 9 modules              │
 │  clm.budget          View daily budget allocation           │
 │  clm.kill_switch     Activate/deactivate kill switch        │
 │  clm.topics          View topic bank with mastery           │
