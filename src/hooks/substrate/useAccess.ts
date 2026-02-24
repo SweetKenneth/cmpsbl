@@ -1,6 +1,6 @@
 /**
- * useAccess Hook
- * v10.5.4 ARCHITECT — Dedicated hook for ACCESS (Identity & Billing) module operations
+ * useAccess Hook — ACCESS zone (Entitlements & Billing) operations
+ * SPARTA Epoch
  * 
  * Respects debug mode kill-switch for quota polling.
  * Part of the 6-layer, 21-module Cognitive Architecture.

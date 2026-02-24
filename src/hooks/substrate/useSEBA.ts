@@ -1,7 +1,6 @@
 /**
- * useSEBA Hook
- * v10.5.4 ARCHITECT — Dedicated hook for SEBA (Self-Evolving Bounded Agent) operations
- * Respects debug mode kill-switch
+ * useSEBA Hook — SEBA (Self-Evolving Bounded Agent) operations
+ * SPARTA Epoch — Respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

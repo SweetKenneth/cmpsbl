@@ -1,7 +1,6 @@
 /**
- * useCortex Hook
- * v10.5.4 ARCHITECT — Dedicated hook for CORTEX (Orchestrator) module operations
- * Respects debug mode kill-switch
+ * useCortex Hook — CORTEX (Orchestrator) module operations
+ * SPARTA Epoch — Respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

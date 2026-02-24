@@ -1,6 +1,6 @@
 /**
  * Unified Telemetry Aggregation Layer
- * v10.5.4 ARCHITECT — Feeds CHR from ai_usage_log, access_usage, brain_events
+ * SPARTA Epoch — Feeds CHR from ai_usage_log, access_usage, brain_events
  *
  * Aggregates honest substrate data into a single observable interface
  * consumed by the OS Dashboard, Terminal, and Health Attribution Engine.

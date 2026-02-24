@@ -85,11 +85,11 @@ export async function scanSystemState(): Promise<SystemState> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 21-MODULE HEALTH SWEEP
+// MODULE HEALTH SWEEP
 // ═══════════════════════════════════════════════════════════════
 
 /**
- * Scan all 21 modules for table accessibility and recent activity
+ * Scan all modules for table accessibility and recent activity
  */
 async function scanAllModules(): Promise<ModuleHealthEntry[]> {
   const entries = Object.entries(MODULE_TABLE_MAP);

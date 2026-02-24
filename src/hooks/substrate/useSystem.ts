@@ -1,8 +1,8 @@
 /**
- * useSystem Hook
- * v10.5.4 ARCHITECT Epoch — Dedicated hook for SYSTEM (Administration) module operations
+ * useSystem Hook — SYSTEM zone (Administration) operations
+ * SPARTA Epoch
  * 
- * Part of the 6-layer, 21-module Cognitive Architecture
+ * Part of the 10-Entity + 5-Mesh + 9-Zone Cognitive Architecture
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

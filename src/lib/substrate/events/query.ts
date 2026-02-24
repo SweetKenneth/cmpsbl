@@ -1,6 +1,6 @@
 /**
  * Event Query System
- * v10.5.4 ARCHITECT — Query and subscribe to substrate events
+ * SPARTA Epoch — Query and subscribe to substrate events
  * 
  * Respects debugMode — when enabled, realtime subscriptions are skipped
  */

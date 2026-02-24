@@ -1,6 +1,6 @@
 /**
- * useAuditModule Hook — AUDIT module operations
- * v10.5.4 ARCHITECT Epoch
+ * useAuditModule Hook — AUDIT zone operations
+ * SPARTA Epoch
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
