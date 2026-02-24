@@ -1,7 +1,7 @@
 /**
  * System Intelligence Feed — Observer Mode
- * v10.5.4 ARCHITECT Epoch — Immersive Observer Mode experience
- * 
+ * SPARTA Epoch — Immersive Observer Mode experience
+ *
  * A unique, cinematic view into the substrate's autonomous learning.
  * Observers witness CLM in action without any interaction.
  */
