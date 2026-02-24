@@ -44,9 +44,9 @@
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
-const SUBSTRATE_VERSION = "10.1.0"; // v10.1.0 ARCHITECT — 21-Module Full Architecture, Intent Mesh Crystallization
+const SUBSTRATE_VERSION = "11.1.0"; // v11.1.0 SPARTA — 10-Entity + 5-Mesh + 9-Zone Architecture
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
