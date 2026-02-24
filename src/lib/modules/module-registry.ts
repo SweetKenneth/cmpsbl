@@ -197,7 +197,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
       { title: "Predictive Health Alerts", description: "VISION doesn't wait for failures — it detects degradation trends and alerts you before a module hits critical status, giving you time to intervene proactively." },
     ],
     codeSnippet: `import { useVision } from '@cmpsbl/substrate';\n\nconst { metrics, health, alerts } = useVision();\n// metrics.totalRequests, metrics.avgLatency\n// health: Record<ModuleName, HealthStatus>`,
-    integrations: ["All 21 modules", "External APM tools", "Webhook alerts"],
+    integrations: ["All modules and zones", "External APM tools", "Webhook alerts"],
     useCases: ["DevOps teams monitoring AI infrastructure", "Executive dashboards for AI ROI", "Debugging complex multi-module interactions"],
   },
   {
