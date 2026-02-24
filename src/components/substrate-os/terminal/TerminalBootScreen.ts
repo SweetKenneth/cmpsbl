@@ -49,7 +49,7 @@ const MODULE_STATUS = [
   '  ├─ OPERATIONS ────────────────────────',
   '  │  ◉ defense   ◉ nexus      ◉ vision',
   '  ├─ ADMIN ─────────────────────────────',
-  '  │  ◉ system    ◉ modernizer ◉ inclusive',
+  '  │  ◉ system    ◉ evolution  ◉ inclusive',
   '  ├─ ORCHESTRATOR ──────────────────────',
   '  │  ◉ cortex    ◉ integration',
   '  └─────────────────────────────────────',
