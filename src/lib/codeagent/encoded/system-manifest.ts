@@ -1,18 +1,18 @@
 /**
  * ENCODE System Manifest — Architecture Awareness Registry
- * CORE Epoch — Gives ENCODE a canonical map of the living system
+ * SPARTA Epoch v11.1.0 — Zone Architecture
  *
  * Architecture:
  *   CORE (standalone kernel)
- *   → CCR (Layer 0): SYSTEM + BRAIN + MEMORY + DREAM
- *   → CCL (Layer 1): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
+ *   → CCR (Layer 0) — 4 Zones: SYSTEM Zone + BRAIN Zone + MEMORY Zone + DREAM Zone
+ *   → CCL (Layer 1) — 5 Zones: RIPPLE Zone + ACCESS Zone + IDENTITY Zone + RELAY Zone + AUDIT Zone
  *   → 8 Modules: VISION, SANDBOX, DECODE, CORTEX, ECONOMY, NEXUS, ENCODE, INCLUSIVE
  *   → 5 Meshes: DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
  *   → INTEGRATION (standalone)
- *   = 15 public entities
+ *   = 15 public entities + 9 surgically hot-swappable zones
  *
  * MODERNIZER absorbed by EVOLUTION mesh.
- * AUDIT absorbed by CCL.
+ * AUDIT Zone belongs to CCL.
  */
 
 // ─── Module Registry ─────────────────────────────────────────────────────────
