@@ -1,8 +1,8 @@
 /**
  * Clockless — CMPSBL Substrate Dashboard
- * v10.5.4 — Cognitive Orchestration (21-Module Architecture)
+ * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  *
- * Unified control center for all 21 substrate modules:
+ * Unified control center for all entities, mesh overlays, and zones:
  * 
  * KERNEL LAYER:
  * - Core: Kernel scheduler, lifecycle, orchestration
