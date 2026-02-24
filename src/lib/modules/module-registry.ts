@@ -321,7 +321,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
       { title: "Adaptive Resource Allocation", description: "CORTEX dynamically shifts compute resources between modules based on real-time demand. During high-traffic periods, routing gets priority; during off-peak, DREAM gets more cycles for optimization." },
     ],
     codeSnippet: `import { useCortex } from '@cmpsbl/substrate';\n\nconst { orchestrate, synergies } = useCortex();\nconst result = await orchestrate({\n  goal: 'Analyze and secure new deployment',\n  modules: ['defense', 'system', 'vision']\n});`,
-    integrations: ["All 21 modules", "SEBA (self-evolution)", "Atlas Control Plane"],
+    integrations: ["All modules and zones", "SEBA (self-evolution)", "Atlas Control Plane"],
     useCases: ["Complex multi-step AI workflows", "Autonomous AI operations", "Enterprise AI requiring coordinated intelligence"],
   },
 
