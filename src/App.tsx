@@ -5,9 +5,8 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect, lazy, Suspense, useState } from "react";
+import { useEffect, lazy, Suspense, useState, useRef } from "react";
 import { SEOProvider } from "@/contexts/SEOContext";
-import { debugMode } from "@/lib/debug-mode";
 
 // Lazy-load non-critical UI components to reduce initial JS
 const MotionConfigWrapper = lazy(() => import("framer-motion").then(m => ({ default: m.MotionConfig })));
@@ -227,45 +226,47 @@ const App = () => {
   // Always allow substrate init — no gates, all systems operational
   const substrateAutoInit = true;
 
-  // Install mobile watchdog + interaction tracking once on mount
+  // Install mobile watchdog + interaction tracking once on mount (dynamic imports)
+  const cleanupRef = useRef<(() => void)[]>([]);
   useEffect(() => {
-    const cleanup = installMobileWatchdog();
-    const cleanupTracking = installLastInteractionTracking();
-    const cleanupSiteGuard = installSiteGuard();
-    initSiteAnalytics();
     loadDeferredCSS();
 
-    if (diagEnabled()) {
-      diagLog("log", "App mounted", {
-        timestamp: new Date().toISOString(),
-        url: window.location.href.slice(0, 100),
-      });
-    }
+    // Dynamic import all non-critical utilities
+    Promise.all([
+      import("@/lib/client/mobile-watchdog"),
+      import("@/lib/ui/lastInteraction"),
+      import("@/lib/defense/site-guard"),
+      import("@/lib/analytics/site-tracker"),
+      import("@/lib/client/diag"),
+    ]).then(([watchdog, tracking, guard, analytics, diag]) => {
+      const c1 = watchdog.installMobileWatchdog();
+      const c2 = tracking.installLastInteractionTracking();
+      const c3 = guard.installSiteGuard();
+      analytics.initSiteAnalytics();
+      cleanupRef.current = [c1, c2, c3].filter(Boolean) as (() => void)[];
+
+      if (diag.diagEnabled()) {
+        diag.diagLog("log", "App mounted", {
+          timestamp: new Date().toISOString(),
+          url: window.location.href.slice(0, 100),
+        });
+      }
+    });
 
     return () => {
-      cleanup?.();
-      cleanupTracking?.();
-      cleanupSiteGuard?.();
+      cleanupRef.current.forEach(fn => fn());
     };
   }, []);
 
-  // Force debug mode OFF on startup — all systems should run normally
-  // Debug mode is only user-controlled via terminal/console after this
+  // Force debug mode OFF on startup
   useEffect(() => {
-    if (mobilePreviewSafeMode) {
-      // Even in safe mode, don't enable debug — just reduce rendering
-    } else if (debugMode.isEnabled()) {
-      debugMode.disable();
-    }
-    // Clear any persisted debug state on every mount
-    if (debugMode.isEnabled() && !mobilePreviewSafeMode) {
-      debugMode.disable();
-    }
+    import("@/lib/debug-mode").then(({ debugMode }) => {
+      if (!mobilePreviewSafeMode && debugMode.isEnabled()) {
+        debugMode.disable();
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Track render rate of the App root (diag mode only)
-  useRenderLoopDetector("App");
 
   // Short-circuit: render ClearCache completely outside all providers
   // to prevent storage-dependent providers from looping on clear
@@ -563,7 +564,9 @@ const App = () => {
       )}
 
       {/* Diagnostic panel - only renders when ?diag=1 is present */}
-      <DiagPanel />
+      <Suspense fallback={null}>
+        <DiagPanelLazy />
+      </Suspense>
     </DiagErrorBoundary>
   );
 };
