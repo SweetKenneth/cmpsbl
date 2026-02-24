@@ -59,11 +59,11 @@ const modules = [
   { name: "NEXUS", desc: "Multi-provider AI routing (8+)", icon: Network, layer: "Operational" },
   { name: "VISION", desc: "Observability, telemetry, alerting", icon: Eye, layer: "Operational" },
   { name: "INTEGRATION", desc: "Enterprise adapter framework", icon: Building2, layer: "Operational" },
-  { name: "SYSTEM", desc: "Admin operations, backup/restore", icon: Settings, layer: "Admin" },
-  { name: "MODERNIZER", desc: "Self-improvement engine", icon: TrendingUp, layer: "Admin" },
-  { name: "INCLUSIVE", desc: "Human compatibility, WCAG pipeline", icon: BadgeCheck, layer: "Admin" },
-  { name: "CORTEX", desc: "Agency-class autonomous orchestration", icon: Sparkles, layer: "Orchestrator" },
-  { name: "ENCODE", desc: "Code execution & generation intelligence", icon: Code2, layer: "Orchestrator" },
+  { name: "SYSTEM", desc: "Admin operations, backup/restore", icon: Settings, layer: "CCR Zone" },
+  { name: "EVOLUTION", desc: "Self-improvement lifecycle", icon: TrendingUp, layer: "Overlay" },
+  { name: "INCLUSIVE", desc: "Human compatibility, WCAG pipeline", icon: BadgeCheck, layer: "Surface" },
+  { name: "CORTEX", desc: "Agency-class autonomous orchestration", icon: Sparkles, layer: "Surface" },
+  { name: "ENCODE", desc: "Code execution & generation intelligence", icon: Code2, layer: "Surface" },
 ];
 
 const metrics = [
