@@ -121,6 +121,29 @@ export class SupportBotEngine {
         kb_matches_used: 0,
       },
     };
+
+    // MEMORY WIPE: Purge all previously learned support memories on init.
+    // The bot will relearn exclusively from the fresh knowledge base.
+    this.purgeLearnedMemories();
+  }
+
+  /**
+   * Wipe all support_learning memories from the brain.
+   * Forces the bot to rely only on the current knowledge base.
+   */
+  private async purgeLearnedMemories(): Promise<void> {
+    try {
+      const result = await memoryCore.purgeBySource('support_learning');
+      if (result.purged > 0) {
+        console.log(`[SupportBot] Wiped ${result.purged} stale learned memories. Starting fresh from KB.`);
+      }
+      // Reset learning counters
+      this.state.learning.total_memories = 0;
+      this.state.learning.verified_memories = 0;
+      this.state.learning.pending_verifications = 0;
+    } catch (err) {
+      console.warn('[SupportBot] Memory purge failed (non-fatal):', err);
+    }
   }
 
   // ==========================================================================
