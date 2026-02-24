@@ -225,7 +225,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       tabs: [
         { id: 'forge', label: 'Forge', icon: Sparkles, color: 'fuchsia', description: 'Cognitives & mint', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Command center', tier: 'cmpsbl' as SubstrateTier }] : []),
-        { id: 'infra', label: 'Infrastructure', icon: Wrench, color: 'purple', description: 'Evolution · Modernizer · INCLUSIVE', tier: 'cmpsbl' },
+        { id: 'infra', label: 'Infrastructure', icon: Wrench, color: 'purple', description: 'EVOLUTION · Shadow Mode · INCLUSIVE', tier: 'cmpsbl' },
       ],
     },
     {
