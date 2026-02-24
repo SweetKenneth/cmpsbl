@@ -1,6 +1,6 @@
 /**
- * Dashboard Metrics Hero v10.5.1 ARCHITECT — Cinematic system overview
- * Orbital health ring, floating module constellation, real-time telemetry
+ * Dashboard Metrics Hero — Cinematic system overview
+ * SPARTA Epoch — Orbital health ring, floating surface constellation, real-time telemetry
  */
 
 import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility, RefreshCw, Database, Send, ClipboardCheck, Fingerprint, DollarSign, Box, Code, Globe } from 'lucide-react';
