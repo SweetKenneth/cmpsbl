@@ -124,4 +124,4 @@ Defense-in-depth security built into the core:
 
 ---
 
-*CMPSBL® v10.5.0 ARCHITECT Epoch — Cognitive Infrastructure for Production AI*
+*CMPSBL® CCL Epoch — Cognitive Infrastructure for Production AI*

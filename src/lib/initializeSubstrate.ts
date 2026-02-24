@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v10.5.4 — ARCHITECT Epoch — Complete AI Operating System with 21 modules + SEBA
+ * CCL Epoch — Complete AI Operating System with 12 public modules + CCR + CCL
  * 
  * Performance: Triple-deferred initialization for zero main-thread blocking
  * - Waits for document idle state
