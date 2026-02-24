@@ -13,7 +13,7 @@ interface ExperienceMarkersProps {
 const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; href: string; description: string }[]> = {
   insight: [
     { icon: Brain, label: 'Persistent Memory', href: '/persistent-memory', description: 'Built from our production memory architecture' },
-    { icon: Layers, label: 'Module Architecture', href: '/modules', description: 'Explore the 21-module substrate' },
+    { icon: Layers, label: 'Module Architecture', href: '/modules', description: 'Explore the 10-entity substrate' },
   ],
   research: [
     { icon: Brain, label: 'SEBA Architecture', href: '/modules/seba', description: 'Our self-evolving bounded agent framework' },
