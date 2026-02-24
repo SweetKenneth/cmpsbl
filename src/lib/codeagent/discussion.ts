@@ -130,7 +130,7 @@ export function generateClarifyingQuestions(analysis: RequestAnalysis): Clarifyi
       id: 'q_module',
       question: 'Which module should this change target?',
       type: 'choice',
-      options: ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'decode', 'modernizer'],
+      options: ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'decode', 'evolution'],
       required: true,
       answered: false,
     });
