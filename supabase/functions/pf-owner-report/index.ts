@@ -96,6 +96,107 @@ serve(async (req: Request) => {
     const dailyQuota = extract(dailyQuotaRes);
     const decodeSearchData = extract(decodeSearchSettled);
     const providerFailures = extract(providerFailuresRes);
+    const auditScanErrors = extract(auditScanErrorsRes);
+    const enhancementEvents = extract(enhancementEventsRes);
+    const moduleHealthEvents = extract(moduleHealthEventsRes);
+
+    // ═══ SUBSTRATE AUDIT SCAN ═══
+    // Analyze errors, failures, and anomalies across all modules
+    interface AuditIssue {
+      severity: 'critical' | 'error' | 'warning' | 'info';
+      module: string;
+      message: string;
+      count: number;
+      lastSeen: string;
+    }
+
+    const auditIssueMap: Record<string, AuditIssue> = {};
+    for (const evt of (auditScanErrors.data || [])) {
+      const key = `${evt.module}:${evt.event_type}`;
+      if (!auditIssueMap[key]) {
+        const isCritical = evt.outcome === 'failure' || (evt.data as any)?.severity === 'critical';
+        auditIssueMap[key] = {
+          severity: isCritical ? 'critical' : 'error',
+          module: (evt.module || 'unknown').toUpperCase(),
+          message: (evt.data as any)?.error || (evt.data as any)?.message || evt.event_type || 'Unknown error',
+          count: 0,
+          lastSeen: evt.created_at,
+        };
+      }
+      auditIssueMap[key].count++;
+    }
+
+    // Sort by severity then count
+    const severityOrder = { critical: 0, error: 1, warning: 2, info: 3 };
+    const auditIssues: AuditIssue[] = Object.values(auditIssueMap)
+      .sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity] || b.count - a.count);
+
+    // ═══ MODULE ENHANCEMENT REQUESTS (Dynamic Ranking) ═══
+    // Build per-module health scores and enhancement catalog
+    const moduleHealthMap: Record<string, { total: number; errors: number }> = {};
+    for (const evt of (moduleHealthEvents.data || [])) {
+      const m = evt.module || 'unknown';
+      if (!moduleHealthMap[m]) moduleHealthMap[m] = { total: 0, errors: 0 };
+      moduleHealthMap[m].total++;
+      if (evt.outcome === 'error' || evt.outcome === 'failure') moduleHealthMap[m].errors++;
+    }
+
+    // Enhancement catalog — each module's top request with dynamic priority
+    const ENHANCEMENT_CATALOG: Record<string, { title: string; category: string }> = {
+      core: { title: 'add circuit recovery telemetry', category: 'resilience' },
+      brain: { title: 'add memory dedup scoring', category: 'performance' },
+      decode: { title: 'add source credibility scoring', category: 'capability' },
+      defense: { title: 'add behavioral fingerprinting', category: 'security' },
+      nexus: { title: 'add provider auto-rotation', category: 'resilience' },
+      vision: { title: 'add trend velocity detection', category: 'capability' },
+      encode: { title: 'add patch verification hooks', category: 'resilience' },
+      dream: { title: 'add dream chain correlation', category: 'capability' },
+      memory: { title: 'add cross-tier search indexing', category: 'performance' },
+      immunity: { title: 'add cascade failure prediction', category: 'resilience' },
+      evolution: { title: 'add rollback safety scoring', category: 'resilience' },
+      governance: { title: 'add policy conflict detection', category: 'security' },
+      integration: { title: 'add webhook retry backoff', category: 'resilience' },
+      access: { title: 'add key rotation reminders', category: 'security' },
+      audit: { title: 'add real-time chain verification', category: 'security' },
+      cortex: { title: 'add reasoning trace logging', category: 'capability' },
+      economy: { title: 'add cost anomaly alerts', category: 'capability' },
+      sandbox: { title: 'add execution isolation metrics', category: 'security' },
+      inclusive: { title: 'add accessibility scan scheduling', category: 'capability' },
+      system: { title: 'add system flag audit trail', category: 'security' },
+      relay: { title: 'add message delivery guarantees', category: 'resilience' },
+      identity: { title: 'add session anomaly detection', category: 'security' },
+      ripple: { title: 'add event replay filtering', category: 'capability' },
+      intent: { title: 'add intent confidence scoring', category: 'capability' },
+    };
+
+    // Track which enhancements were already granted
+    const grantedSet = new Set<string>();
+    for (const evt of (enhancementEvents.data || [])) {
+      const d = evt.data as any;
+      if (d?.enhancementId) grantedSet.add(d.enhancementId);
+    }
+
+    interface ModuleEnhRequest {
+      module: string;
+      title: string;
+      category: string;
+      importanceScore: number;
+      healthPct: number;
+      errors24h: number;
+      granted: boolean;
+    }
+
+    const enhRequests: ModuleEnhRequest[] = Object.entries(ENHANCEMENT_CATALOG).map(([mod, info]) => {
+      const health = moduleHealthMap[mod] || { total: 0, errors: 0 };
+      const healthPct = health.total > 0 ? Math.round((1 - health.errors / health.total) * 100) : 100;
+      const errorBoost = Math.min(50, health.errors * 5);
+      const healthPenalty = Math.max(0, 50 - healthPct) * 1.5;
+      const categoryWeight = info.category === 'security' ? 15 : info.category === 'resilience' ? 10 : 5;
+      const importanceScore = Math.min(100, Math.round(40 + errorBoost + healthPenalty + categoryWeight));
+      const granted = grantedSet.has(`${mod}-enh-0`);
+
+      return { module: mod.toUpperCase(), title: info.title, category: info.category, importanceScore, healthPct, errors24h: health.errors, granted };
+    }).sort((a, b) => b.importanceScore - a.importanceScore);
 
     // DECODE search results grouped by topic
     const decodeResults = (decodeSearchData?.data || []) as Array<{ topic: string; title: string; source_url: string; snippet: string; created_at: string }>;
