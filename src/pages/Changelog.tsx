@@ -43,7 +43,7 @@ const evolutionLogSPARTA: EvolutionEntry[] = [
       "CCL contains 5 Zones: RIPPLE Zone, ACCESS Zone, IDENTITY Zone, RELAY Zone, AUDIT Zone",
       "Bumped substrate to v11.1.0 with updated public metrics: 10 entities + 5 mesh overlays + 9 zones",
       "Rewrote all public-facing documentation as mobile-first HTML with Zone terminology",
-      "Updated SubstrateDemo to visualize the new 15-entity + 9-zone hierarchy",
+      "Updated SubstrateDemo to visualize 10 entities + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 zones",
     ],
     capabilities: [
       "Each Zone can be surgically hot-swapped without affecting its parent convergence layer or sibling zones",
