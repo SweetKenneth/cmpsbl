@@ -15,8 +15,8 @@ export default function Roadmap() {
       items: [
         {
           icon: Brain,
-          title: "CMPSBL v10.5.4 — ARCHITECT Epoch",
-          description: "Production-ready cognitive OS with layered kernel architecture: CORE kernel, CCR zones (SYSTEM, BRAIN, MEMORY, DREAM), CCL zones (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT), 9 execution surfaces, 5 mesh overlays. 400+ capabilities, 200 synergy pipelines.",
+          title: "CMPSBL — SPARTA Epoch",
+          description: "Production-ready cognitive OS with 10-entity + 5-mesh + 9-zone architecture: CORE kernel, CCR zones (SYSTEM, BRAIN, MEMORY, DREAM), CCL zones (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT), 9 execution surfaces, 5 mesh overlays. 525+ capabilities, 300 synergy pipelines.",
           status: "Live",
           technologies: ["Supabase", "Edge Functions", "TypeScript", "React"]
         },
