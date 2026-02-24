@@ -355,7 +355,7 @@ const evolutionLogV10: EvolutionEntry[] = [
     ],
     responses: [
       "CLM Engine v2.0 deployed as autonomous server-side edge function running 24/7 via cron",
-      "Universal Brain Transfer Pipeline routes top-50 memories to all 21 modules by tag affinity",
+      "Universal Brain Transfer Pipeline routes top-50 memories to all modules by tag affinity",
       "Memory Consolidation Engine automates promotion, demotion, and pruning of memory tiers"
     ],
     capabilities: [
