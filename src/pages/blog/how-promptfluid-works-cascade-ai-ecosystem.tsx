@@ -95,7 +95,7 @@ const HowPromptFluidWorks = () => {
 
             <p className="text-lg leading-relaxed">
               This comprehensive guide reveals how the CMPSBL substrate works under the hood, why its cognitive engine represents a 
-              paradigm shift in intelligent automation, and how the unified 21-module architecture delivers capabilities that 
+              paradigm shift in intelligent automation, and how the unified 10-entity architecture delivers capabilities that 
               isolated AI tools simply cannot match.
             </p>
           </section>

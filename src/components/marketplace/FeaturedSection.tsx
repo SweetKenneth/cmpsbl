@@ -1,7 +1,7 @@
 /**
  * FeaturedSection — Premium hero products with compelling visuals
  * Mobile-first design, high conversion focus
- * v10.5.4 — ARCHITECT Epoch 21-module architecture + SEBA
+ * SPARTA Epoch — 10-entity + 5-mesh architecture + SEBA
  * OS License now redirects to licensing page (tiered pricing)
  */
 
