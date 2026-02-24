@@ -21,7 +21,7 @@ function useLiveStats() {
   const [stats, setStats] = useState<LiveStat[]>([
     { icon: Activity, value: "—", label: "Brain Events", color: "text-cyan-400" },
     { icon: Shield, value: "99.9%", label: "Uptime", color: "text-emerald-400" },
-    { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Modules", color: "text-amber-400" },
+    { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Entities", color: "text-amber-400" },
     { icon: Brain, value: "—", label: "Memories Stored", color: "text-violet-400" },
     { icon: Users, value: "—", label: "API Calls Today", color: "text-cyan-400" },
     { icon: CheckCircle2, value: "—", label: "Probes Passed", color: "text-emerald-400" },
