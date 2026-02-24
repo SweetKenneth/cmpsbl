@@ -296,10 +296,10 @@ function formatSystemStatus(data: any): string {
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall:   ${overall === 'operational' ? '🟢 OPERATIONAL' : overall === 'degraded' ? '🟡 DEGRADED' : '🔴 DOWN'}                                     ║
 ║  Uptime:    ${String(uptime).padEnd(20)}                          ║
-║  Modules:   21/21                                            ║
+║  Surfaces:  24/24 (1 kernel + 9 modules + 5 meshes + 9 zones) ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
-  const layers = ['Kernel', 'Cognitive', 'Operations', 'Admin', 'Orchestrator', 'Infrastructure'];
+  const layers = ['Kernel', 'Cognitive', 'Operations', 'Admin', 'Orchestrator', 'Infrastructure', 'Mesh Overlay', 'CCR Zone', 'CCL Zone'];
   for (const layer of layers) {
     const layerModules = ALL_EXECUTION_SURFACES.filter(m => m.layer === layer);
     output += `\n║  ┌─ ${layer.toUpperCase()} LAYER ──────────────────────────────────────`;
