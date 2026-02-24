@@ -305,7 +305,7 @@ function ConceptSection() {
     {
       icon: Combine,
       title: "Modular Fusion",
-      description: "Each of our 21 modules operates as an independent cognitive unit. When combined, they create capabilities that emerge from their interaction — not just the sum of their parts."
+      description: "Each of our execution surfaces operates as an independent cognitive unit. When combined, they create capabilities that emerge from their interaction — not just the sum of their parts."
     },
     {
       icon: GitMerge,
@@ -418,7 +418,7 @@ function SynergyExplorer() {
             Pipeline Explorer
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Browse all 200 synergy pipelines across 21 modules, filter by category, and discover how modules combine
+            Browse all 200 synergy pipelines across execution surfaces, filter by category, and discover how surfaces combine
           </p>
         </div>
         

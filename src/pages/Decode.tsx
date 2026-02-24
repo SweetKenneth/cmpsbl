@@ -208,7 +208,7 @@ export default function Decode() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Decode — AI Interpreter & Structured Cognition | CMPSBL®"
-        description="Decode translates natural language into substrate-structured cognition. The interpreter primitive powering CMPSBL's 21-module AI operating system."
+        description="Decode translates natural language into substrate-structured cognition. The interpreter primitive powering CMPSBL's layered AI operating system."
         keywords={['AI interpreter', 'natural language processing', 'structured cognition', 'CMPSBL Decode', 'prompt interpretation']}
       />
       

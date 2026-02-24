@@ -1,5 +1,5 @@
 /**
- * Module Controls Grid v10.5.0 ARCHITECT — All 21 modules with real-time status
+ * Module Controls Grid v11.1 SPARTA — All execution surfaces with real-time status
  */
 
 import { 
@@ -311,8 +311,8 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
           <Layers className="w-4 h-4 text-fuchsia-400" />
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-foreground">Module Control Panels</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">21 MODULES • 6 LAYERS</p>
+          <h3 className="text-sm font-semibold text-foreground">Surface Control Panels</h3>
+          <p className="text-[10px] text-muted-foreground font-mono">24 SURFACES • 5 LAYERS</p>
         </div>
       </div>
 

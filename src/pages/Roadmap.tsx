@@ -16,7 +16,7 @@ export default function Roadmap() {
         {
           icon: Brain,
           title: "CMPSBL v10.5.4 — ARCHITECT Epoch",
-          description: "Production-ready cognitive OS with complete 21-module architecture: Core, Ripple, Access, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, System, Modernizer, Integration, Cortex orchestrator, Inclusive, Memory, Relay, Audit, Identity, Economy, Sandbox. 400+ capabilities, 200 synergy pipelines.",
+          description: "Production-ready cognitive OS with layered kernel architecture: CORE kernel, CCR zones (SYSTEM, BRAIN, MEMORY, DREAM), CCL zones (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT), 9 execution surfaces, 5 mesh overlays. 400+ capabilities, 200 synergy pipelines.",
           status: "Live",
           technologies: ["Supabase", "Edge Functions", "TypeScript", "React"]
         },
@@ -107,7 +107,7 @@ export default function Roadmap() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="2026-2027 Roadmap | CMPSBL — The Future of AI Governance"
-        description="Explore CMPSBL's roadmap: 21-module cognitive OS, Composable Artifacts, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
+        description="Explore CMPSBL's roadmap: layered cognitive OS, Composable Artifacts, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
         canonical="https://cmpsbl.com/roadmap"
         keywords={[
           'CMPSBL roadmap',
@@ -152,7 +152,7 @@ export default function Roadmap() {
             </h1>
 
             <p className="text-xl text-foreground/90 mb-8 leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
-              CMPSBL is the world's first production-ready AI governance OS. Here's where we're headed—from 21-module kernel to self-evolving cognitive cloud.
+              CMPSBL is the world's first production-ready AI governance OS. Here's where we're headed—from layered cognitive kernel to self-evolving cognitive cloud.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">

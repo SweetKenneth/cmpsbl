@@ -118,6 +118,7 @@ const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDas
 const EvolutionMeshLanding = lazy(() => import("./pages/EvolutionMeshLanding"));
 const Habitat = lazy(() => import("./pages/Habitat"));
 const Status = lazy(() => import("./pages/Status"));
+const SystemIntegrity = lazy(() => import("./pages/SystemIntegrity"));
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
 const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
@@ -352,6 +353,7 @@ const App = () => {
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                         <Route path="/habitat" element={<Habitat />} />
                         <Route path="/status" element={<Status />} />
+                        <Route path="/system-integrity" element={<SystemIntegrity />} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
                         <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />

@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — Full 21-module capability showcase
+ * Why CMPSBL — Full execution surface capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v10.5.4 ARCHITECT Epoch: Complete representation of the 6-layer kernel architecture
+ * v11.1 SPARTA Epoch: Complete representation of the layered kernel architecture
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -36,7 +36,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Hexagon } from "lucide-react";
 
-// All capabilities mapped to the 21 modules in 6-layer architecture
+// All capabilities mapped to execution surfaces in layered kernel architecture
 const differentiators = [
   // KERNEL LAYER - Core infrastructure
   {
@@ -517,7 +517,7 @@ export function WhySubstrate() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">21 Modules • 6 Layers</span>
+            <span className="text-xs">24 Execution Surfaces • 5 Layers</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             The Total{" "}
