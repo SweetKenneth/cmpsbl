@@ -3165,7 +3165,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // DECODE INBOX — CLM reports from ALL 24 modules
+    // DECODE INBOX — CLM reports from ALL 9 modules
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'decode.inbox') {
       try {
