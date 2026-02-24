@@ -18,7 +18,7 @@ export default function EncodeInfo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="ENCODE Module — Substrate Execution & Generation Engine | CMPSBL"
-        description="ENCODE is the execution spine of CMPSBL's 21-module substrate. Structured task packets from DECODE, BRAIN recall/writeback, CLM self-improvement, and governed output."
+        description="ENCODE is the execution spine of the CMPSBL cognitive substrate. Structured task packets from DECODE, BRAIN recall/writeback, CLM self-improvement, and governed output."
         canonical="https://cmpsbl.com/products/encode"
         keywords={[
           'AI code execution',
