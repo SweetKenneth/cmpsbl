@@ -131,7 +131,7 @@ export const ARCHIVED_CAPABILITIES: ArchivedCapabilityDef[] = [
     id: 'improvement-engine',
     name: 'Continuous Improvement Engine',
     edgeFunction: 'pf-cascade-improvement-engine',
-    modules: ['MODERNIZER', 'CORTEX'],
+    modules: ['EVOLUTION', 'CORTEX'],
     risk: 'medium',
     reversible: true,
     description: 'Generates and prioritizes upgrade proposals',
