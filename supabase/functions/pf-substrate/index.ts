@@ -5375,14 +5375,13 @@ async function handleDecode(
           const token = authHeader.replace('Bearer ', '');
           const anonKey = Deno.env.get('SUPABASE_ANON_KEY') || '';
           const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
-          const { createClient: createUserClient } = await import('https://esm.sh/@supabase/supabase-js@2');
-          const userSupabase = createUserClient(supabaseUrl, anonKey, {
+          const userSupabase = createClient(supabaseUrl, anonKey, {
             global: { headers: { Authorization: authHeader } }
           });
-          const { data: claimsData } = await userSupabase.auth.getClaims(token);
-          if (claimsData?.claims?.sub) {
+          const { data: { user } } = await userSupabase.auth.getUser();
+          if (user?.id) {
             isAuthenticated = true;
-            const userId = claimsData.claims.sub;
+            const userId = user.id;
             // Check if user is admin/governor
             const { data: adminCheck } = await supabase.rpc('has_role_text', {
               _user_id: userId,
