@@ -16,8 +16,8 @@ export default function ModulesHub() {
   return (
     <>
       <Helmet>
-        <title>21 Substrate Modules — AI Architecture | CMPSBL</title>
-        <meta name="description" content="Browse all 21 core modules across 6 layers: Kernel, Cognitive, Operational, Administrative, Orchestrator, and Infrastructure." />
+        <title>Substrate Modules — AI Architecture | CMPSBL</title>
+        <meta name="description" content="Browse all substrate entities: 10 modules wrapped by 5 mesh overlays, powered by 9 hot-swappable zones." />
         <link rel="canonical" href="https://cmpsbl.com/modules" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
