@@ -94,7 +94,7 @@ interface RequestAnalysis {
 }
 
 export function analyzeRequest(input: string): RequestAnalysis {
-  const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'ripple', 'access', 'decode', 'modernizer'];
+  const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'ripple', 'access', 'decode', 'evolution'];
   const changeTypes = ['edge_function', 'config_update', 'prompt_refinement', 'rate_limit', 'rls_policy', 'react_component', 'react_hook', 'api_client', 'database_migration', 'test_suite'];
   
   const lowerInput = input.toLowerCase();
