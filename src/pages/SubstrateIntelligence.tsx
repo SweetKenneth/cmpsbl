@@ -249,11 +249,11 @@ export default function SubstrateIntelligence() {
 [VISION]     ████████████ READY       4ms
 [INTEGRATION]████████████ READY      10ms
 [SYSTEM]     ████████████ READY       5ms
-[MODERNIZER] ████████████ READY      11ms
+[EVOLUTION]  ████████████ READY      11ms
 [CORTEX]     ████████████ READY      14ms
 [INCLUSIVE]  ████████████ READY       8ms
 ─────────────────────────────────
-21 modules loaded | Health: 100%
+24 surfaces loaded | Health: 100%
 Boot complete in 117ms`}
                   </pre>
                 </CardContent>
