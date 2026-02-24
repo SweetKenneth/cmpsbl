@@ -252,7 +252,7 @@ function formatPersonalityInterpret(result: {
 // SYSTEM-WIDE 24-MODULE RESPONSE FORMATTERS — SPARTA Epoch
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const ALL_21_MODULES = [
+const ALL_EXECUTION_SURFACES = [
   // CORE kernel
   { key: 'core', label: 'CORE', layer: 'Kernel' },
   // Execution Surfaces (9 modules)
@@ -282,8 +282,6 @@ const ALL_21_MODULES = [
   { key: 'identity', label: 'IDENTITY', layer: 'CCL Zone' },
   { key: 'relay', label: 'RELAY', layer: 'CCL Zone' },
   { key: 'audit', label: 'AUDIT', layer: 'CCL Zone' },
-  // Absorbed
-  { key: 'modernizer', label: 'MODERNIZER', layer: 'Absorbed → EVOLUTION' },
 ];
 
 function formatSystemStatus(data: any): string {
