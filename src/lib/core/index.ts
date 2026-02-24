@@ -376,3 +376,6 @@ export function initModule(module: SubstrateModuleName): void {
  
  // Health aggregator
  export * from './healthAggregator';
+ 
+ // Matrix Node Registry — read-only weighted integrity abstraction
+ export * from './matrixNodeRegistry';

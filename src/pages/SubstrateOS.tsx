@@ -31,6 +31,9 @@ import { useMetric } from '@/stores/publicMetricsStore';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { EventStream } from '@/components/substrate-os/EventStream';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
+import { MatrixIntegrityPanel } from '@/components/substrate-os/dashboard/MatrixIntegrityPanel';
+import { MatrixBreakerMap } from '@/components/substrate-os/dashboard/MatrixBreakerMap';
+import { buildMatrixNodes, calculateIntegrity } from '@/lib/core/matrixNodeRegistry';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -748,16 +751,21 @@ const DashboardContent = memo(function DashboardContent({
   const healthScore = useSubstrateHealthScore();
   const version = useMetric('version');
   
+  // Build Matrix Node integrity from health data
+  const matrixNodes = useMemo(() => buildMatrixNodes(healthScore.modules), [healthScore.modules]);
+  const integrityReport = useMemo(() => calculateIntegrity(matrixNodes), [matrixNodes]);
+  
   return (
     <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 items-start">
       {/* Main column */}
       <div className="flex-1 min-w-0 space-y-4 sm:space-y-5 w-full">
         {canAccessTier(userTier, 'architect') && (
           <Suspense fallback={null}>
-            <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />
+            <EmergencyRecoveryPanel showAlways={false} isCritical={integrityReport.isCritical} />
           </Suspense>
         )}
         <DashboardMetricsHero />
+        <MatrixIntegrityPanel report={integrityReport} />
         {canAccessTier(userTier, 'creator') && <CapacityMonitor />}
         {canAccessTier(userTier, 'creator') && <QuickActionsPanel enabled={isOperator} onOpenTerminal={onOpenTerminal} />}
         {canAccessTier(userTier, 'creator') && <ModuleControlsGrid enabled={isOperator} />}
@@ -783,17 +791,17 @@ const DashboardContent = memo(function DashboardContent({
             <div className="w-6 h-6 rounded-md bg-primary/10 border border-primary/15 flex items-center justify-center">
               <Activity className="w-3 h-3 text-primary" />
             </div>
-            <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Substrate</span>
+            <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Matrix Nodes</span>
           </div>
           <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-            {healthScore.totalModules} execution surfaces, zones, and overlays persisting, healing, and evolving autonomously.
+            {integrityReport.nodeCount} Matrix Nodes across 5 sectors. Integrity: {integrityReport.operational}%
           </p>
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { label: 'Surfaces', value: `${healthScore.activeCount}/${healthScore.totalModules}` },
-              { label: 'Health', value: `${healthScore.healthScore}%` },
-              { label: 'Status', value: healthScore.isHealthy ? 'Optimal' : healthScore.isDegraded ? 'Degraded' : 'Critical' },
-              { label: 'Epoch', value: `v${version}` },
+              { label: 'Nodes', value: `${healthScore.activeCount}/${integrityReport.nodeCount}` },
+              { label: 'Integrity', value: `${integrityReport.operational}%` },
+              { label: 'Status', value: integrityReport.status.replace('MATRIX ', '') },
+              { label: 'Structural', value: `${integrityReport.structural}%` },
             ].map(s => (
               <div key={s.label} className="rounded-lg bg-muted/15 border border-border/15 px-2.5 py-2 text-center">
                 <div className="text-sm font-bold font-mono text-foreground">{s.value}</div>
