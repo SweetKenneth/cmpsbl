@@ -2,7 +2,7 @@
  * promptfluid® Substrate Initialization
  * CORE Epoch — Complete AI Operating System
  *
- * Architecture: CORE → CCR → CCL → 8 Modules → 5 Meshes → INTEGRATION
+ * Architecture: CORE → CCR → CCL → 9 Modules (INTEGRATION boots last) ← 5 Mesh Overlays (DEFENSE outermost)
  *
  * Performance: Triple-deferred initialization for zero main-thread blocking
  */
