@@ -107,7 +107,7 @@ export default function Roadmap() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="2026-2027 Roadmap | CMPSBL — The Future of AI Governance"
-        description="Explore CMPSBL's roadmap: 21-module cognitive OS, Composable Artifacts, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
+        description="Explore CMPSBL's roadmap: layered cognitive OS, Composable Artifacts, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
         canonical="https://cmpsbl.com/roadmap"
         keywords={[
           'CMPSBL roadmap',
