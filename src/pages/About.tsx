@@ -195,7 +195,7 @@ export default function About() {
 
           <motion.div {...fadeUp} className="mt-12 bg-card border border-border rounded-xl p-6 md:p-8 shadow-sm">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">v{version} {codename} Epoch</span> — 175,000+ lines of production code. 400+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
+              <span className="font-semibold">{codename} Epoch</span> — 175,000+ lines of production code. 525+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
             </p>
           </motion.div>
         </div>
