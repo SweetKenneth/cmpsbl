@@ -133,10 +133,10 @@ export function SoundingBoard() {
         <div>
           <h2 className="text-xl font-bold flex items-center gap-2">
             <Shield className="w-5 h-5 text-primary" />
-            Module Sounding Board
+            Signal Feed
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Advisory posts from modules — non-executing, non-mutating
+            Live module signals — non-executing, non-mutating
           </p>
         </div>
         {openCount > 0 && (
