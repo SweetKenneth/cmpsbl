@@ -96,7 +96,7 @@ const evolutionLogSPARTA: EvolutionEntry[] = [
   },
 ];
 
-// Living Evolution Log — v10.x.x Series (ARCHITECT Epoch — Infrastructure Hardening)
+// Living Evolution Log — v10.x.x Series (Pre-SPARTA — Infrastructure Hardening)
 const evolutionLogV10: EvolutionEntry[] = [
   {
     id: "v10-evolution-013",
