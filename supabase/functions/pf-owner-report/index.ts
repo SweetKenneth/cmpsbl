@@ -6,30 +6,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const MODULE_VOICE: Record<string, string> = {
-  defense: "Concise. Minimal words.",
-  brain: "Analytical. Explains tradeoffs.",
-  dream: "Structured but abstract.",
-  nexus: "System connector.",
-  encode: "Engineer tone.",
-  system: "Operational.",
-  decode: "Observational. Slightly aware.",
-  core: "Foundational.",
-  relay: "Network-aware.",
-  audit: "Precise.",
-  identity: "Trust-oriented.",
-  economy: "Value-conscious.",
-  sandbox: "Experimental.",
-  atlas: "Geographic.",
-  cortex: "Intelligence layer.",
-  signal: "Event-driven.",
-  mesh: "Topology-aware.",
-  seba: "Evolutionary.",
-  vision: "Observability.",
-  access: "Gatekeeper.",
-  memory: "Recall-focused.",
-};
-
 const CLM_DISTRIBUTION = { job: 50, resilience: 20, teamwork: 15, market: 10, variant: 5 };
 
 serve(async (req: Request) => {
@@ -67,11 +43,13 @@ serve(async (req: Request) => {
       clmLearningRes3h,
       dailyQuotaRes,
       decodeSearchSettled,
+      // Provider failure tracking (24h)
+      providerFailuresRes,
     ] = await Promise.allSettled([
       supabase.from("audit_logs").select("action, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("audit_logs").select("action", { count: "exact" }).gte("created_at", iso24h),
-      supabase.from("ai_usage_log").select("provider, success, tokens_used, cost, category", { count: "exact" }).gte("created_at", iso3h),
-      supabase.from("ai_usage_log").select("provider, success", { count: "exact" }).gte("created_at", iso24h),
+      supabase.from("ai_usage_log").select("provider, success, tokens_used, cost, category, response_time_ms", { count: "exact" }).gte("created_at", iso3h),
+      supabase.from("ai_usage_log").select("provider, success, response_time_ms", { count: "exact" }).gte("created_at", iso24h),
       supabase.from("brain_events").select("event_type, module, details, data", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("defense_events").select("event_type, risk_score, source_type, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("defense_events").select("event_type", { count: "exact" }).gte("created_at", iso24h),
@@ -80,13 +58,13 @@ serve(async (req: Request) => {
       supabase.from("evolution_runs").select("phase, plan_id", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("access_usage").select("module, action", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("system_flags").select("key, enabled"),
-      // CLM-specific: count actual server cycles
       supabase.from("brain_events").select("id", { count: "exact", head: true }).eq("event_type", "clm_server_cycle").gte("created_at", iso3h),
       supabase.from("brain_events").select("id", { count: "exact", head: true }).eq("event_type", "clm_server_cycle").gte("created_at", iso24h),
       supabase.from("brain_events").select("id, data", { count: "exact" }).eq("event_type", "technical_learning_cycle").gte("created_at", iso3h),
       supabase.from("ai_daily_quota").select("provider, calls_budget, calls_used, tokens_used").eq("date", now.toISOString().split("T")[0]),
-      // DECODE brand monitor results (last 3h)
       supabase.from("decode_search_results").select("topic, title, source_url, snippet, created_at").gte("created_at", iso3h).order("created_at", { ascending: false }).limit(30),
+      // Full provider performance data (24h) for health reporting
+      supabase.from("ai_usage_log").select("provider, success, response_time_ms").gte("created_at", iso24h).limit(2000),
     ]);
 
     const extract = (r: PromiseSettledResult<any>) =>
@@ -109,6 +87,7 @@ serve(async (req: Request) => {
     const clmLearning3h = extract(clmLearningRes3h);
     const dailyQuota = extract(dailyQuotaRes);
     const decodeSearchData = extract(decodeSearchSettled);
+    const providerFailures = extract(providerFailuresRes);
 
     // DECODE search results grouped by topic
     const decodeResults = (decodeSearchData?.data || []) as Array<{ topic: string; title: string; source_url: string; snippet: string; created_at: string }>;
@@ -121,9 +100,12 @@ serve(async (req: Request) => {
     });
 
     // ═══ COMPUTE METRICS ═══
-    const aiCalls3h = aiUsage3h.data?.length || 0;
+    // FIX: Use count from query, not data.length (which may be truncated)
+    const aiCalls3h = aiUsage3h.count || aiUsage3h.data?.length || 0;
     const aiSuccess3h = aiUsage3h.data?.filter((r: any) => r.success).length || 0;
     const apiSuccessRate = aiCalls3h > 0 ? Math.round((aiSuccess3h / aiCalls3h) * 100) : 100;
+
+    const aiCalls24h = aiUsage24h.count || aiUsage24h.data?.length || 0;
 
     const defenseEvents3h = defense3h.data || [];
     const blocked = defenseEvents3h.filter((e: any) => e.event_type === "block").length;
@@ -145,7 +127,7 @@ serve(async (req: Request) => {
       if (!moduleCounts[m]) moduleCounts[m] = { events: 0, anomalies: 0, learning: 0 };
       moduleCounts[m].events++;
       if (e.event_type === "anomaly") moduleCounts[m].anomalies++;
-      if (e.event_type === "learning" || e.event_type === "clm" || e.event_type === "technical_learning_cycle" || e.event_type === "module_learning_insight") moduleCounts[m].learning++;
+      if (["learning", "clm", "technical_learning_cycle", "module_learning_insight"].includes(e.event_type)) moduleCounts[m].learning++;
     });
 
     // Learning bullets
@@ -176,6 +158,63 @@ serve(async (req: Request) => {
     const totalUsed = quotaData.reduce((s: number, q: any) => s + (q.calls_used || 0), 0);
     const quotaUtilization = totalBudget > 0 ? Math.round((totalUsed / totalBudget) * 100) : 0;
 
+    // ═══ PROVIDER HEALTH ANALYSIS ═══
+    const providerPerf: Record<string, { total: number; failures: number; latencies: number[] }> = {};
+    for (const log of providerFailures.data || []) {
+      if (!providerPerf[log.provider]) providerPerf[log.provider] = { total: 0, failures: 0, latencies: [] };
+      providerPerf[log.provider].total++;
+      if (!log.success) providerPerf[log.provider].failures++;
+      if (log.response_time_ms) providerPerf[log.provider].latencies.push(log.response_time_ms);
+    }
+
+    interface ProviderReport {
+      name: string;
+      total: number;
+      failures: number;
+      failureRate: number;
+      avgLatency: number;
+      status: string;
+      note: string;
+    }
+
+    const providerReports: ProviderReport[] = Object.entries(providerPerf)
+      .map(([name, stats]) => {
+        const failureRate = stats.total > 0 ? stats.failures / stats.total : 0;
+        const avgLatency = stats.latencies.length > 0
+          ? Math.round(stats.latencies.reduce((a, b) => a + b, 0) / stats.latencies.length) : 0;
+        
+        let status = '✅ Healthy';
+        let note = '';
+        if (stats.total === 0) {
+          status = '🆕 New';
+          note = 'No usage data — monitoring';
+        } else if (failureRate > 0.3) {
+          status = '🔴 Unreliable';
+          note = `${Math.round(failureRate * 100)}% failure rate — consider removal`;
+        } else if (failureRate > 0.1) {
+          status = '🟡 Degraded';
+          note = `Elevated failures (${Math.round(failureRate * 100)}%)`;
+        } else if (avgLatency > 5000) {
+          status = '🟡 Slow';
+          note = `High latency (${avgLatency}ms avg)`;
+        } else if (stats.total > 50 && failureRate < 0.02) {
+          note = `Excellent — ${(100 - failureRate * 100).toFixed(1)}% success`;
+        }
+
+        return { name, total: stats.total, failures: stats.failures, failureRate, avgLatency, status, note };
+      })
+      .sort((a, b) => b.total - a.total);
+
+    // Dynamic allocation calculation
+    const hoursRemaining = Math.max(1, 24 - now.getHours());
+    const hoursElapsed = Math.max(1, now.getHours() || 1);
+    const opsCallsPerHour = Math.ceil(totalUsed / hoursElapsed * 0.3);
+    const estimatedSubstrateNeeds = opsCallsPerHour * hoursRemaining;
+    const safetyBuffer = Math.ceil((totalBudget - totalUsed) * 0.1);
+    const availableForLearning = Math.max(0, (totalBudget - totalUsed) - estimatedSubstrateNeeds - safetyBuffer);
+    const entityCount = 10; // Learning entities
+    const perEntityAllocation = Math.floor(availableForLearning / entityCount);
+
     const dreamCount = dreams3h.data?.length || 0;
     const dreamMoods = (dreams3h.data || []).map((d: any) => d.mood).filter(Boolean);
     const evolutionCount = evolution3h.data?.length || 0;
@@ -183,22 +222,24 @@ serve(async (req: Request) => {
     // System flags
     const flags: Record<string, any> = {};
     (systemFlags.data || []).forEach((f: any) => { flags[f.key] = f.enabled; });
-    const clmEnabled = flags.clm_enabled !== false; // default true
+    const clmEnabled = flags.clm_enabled !== false;
     const latestBrainMetrics = brainMetrics.data?.[0] || {};
     const systemStatus = apiSuccessRate >= 95 ? "ONLINE" : apiSuccessRate >= 80 ? "DEGRADED" : "CRITICAL";
 
     const metrics = {
-      system: { status: systemStatus, health_pct: apiSuccessRate, api_success_rate: apiSuccessRate, ai_calls_3h: aiCalls3h, ai_calls_24h: aiUsage24h.data?.length || 0, audit_events_3h: audit3h.count || audit3h.data?.length || 0, audit_events_24h: audit24h.count || audit24h.data?.length || 0, evolution_runs_3h: evolutionCount },
+      system: { status: systemStatus, health_pct: apiSuccessRate, api_success_rate: apiSuccessRate, ai_calls_3h: aiCalls3h, ai_calls_24h: aiCalls24h, audit_events_3h: audit3h.count || audit3h.data?.length || 0, audit_events_24h: audit24h.count || audit24h.data?.length || 0, evolution_runs_3h: evolutionCount },
       security: { risk_level: riskLevel, avg_risk_score: avgRiskScore, events_3h: defenseEvents3h.length, events_24h: defense24h.count || defense24h.data?.length || 0, blocked, challenged, monitored, top_signals: topSignals },
       modules: moduleCounts,
       learning: { total_events_3h: totalLearningEvents, per_module: learningBullets, clm_distribution: CLM_DISTRIBUTION, clm_cycles_3h: clmCycleCount3h, clm_cycles_24h: clmCycleCount24h, clm_topics: clmTopics, clm_enabled: clmEnabled },
       dreams: { count_3h: dreamCount, moods: dreamMoods },
       brain: latestBrainMetrics,
       quota: { total_budget: totalBudget, total_used: totalUsed, utilization_pct: quotaUtilization, providers: quotaData },
+      allocation: { estimated_substrate_needs: estimatedSubstrateNeeds, available_for_learning: availableForLearning, per_entity: perEntityAllocation, entity_count: entityCount },
+      provider_health: providerReports,
       flags,
     };
 
-    // ═══ BUILD EMAIL HTML — Light/Dark responsive ═══
+    // ═══ BUILD EMAIL HTML ═══
     const timestamp = now.toISOString().replace("T", " ").slice(0, 19) + " UTC";
     const subject = `🧠 Substrate Report — ${systemStatus} — ${timestamp}`;
 
@@ -215,8 +256,8 @@ serve(async (req: Request) => {
       .sort((a, b) => b[1].events - a[1].events)
       .slice(0, 10)
       .map(([mod, data]) => `
-        <tr>
-          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111827;">${mod.toUpperCase()}</td>
+        <tr class="email-table-row">
+          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111827;" class="email-module-name">${mod.toUpperCase()}</td>
           <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:#374151;">${data.events}</td>
           <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:${data.anomalies > 0 ? '#ef4444' : '#6b7280'};">${data.anomalies}</td>
           <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:${data.learning > 0 ? '#10b981' : '#6b7280'};">${data.learning}</td>
@@ -226,25 +267,35 @@ serve(async (req: Request) => {
     const learningSection = Object.entries(learningBullets)
       .map(([mod, bullets]) => `
         <div style="margin-bottom:14px;">
-          <strong style="color:#4f46e5;font-size:13px;">${mod.toUpperCase()}</strong>
-          <ul style="margin:6px 0 0 18px;padding:0;">${bullets.map(b => `<li style="margin-bottom:5px;color:#374151;font-size:13px;line-height:1.5;">${b}</li>`).join("")}</ul>
+          <strong style="color:#4f46e5;font-size:13px;" class="email-learning-module">${mod.toUpperCase()}</strong>
+          <ul style="margin:6px 0 0 18px;padding:0;">${bullets.map(b => `<li style="margin-bottom:5px;color:#374151;font-size:13px;line-height:1.5;" class="email-learning-text">${b}</li>`).join("")}</ul>
         </div>`).join("");
 
     // Quota provider rows
     const quotaRows = quotaData.map((q: any) => {
       const pct = q.calls_budget > 0 ? Math.round((q.calls_used / q.calls_budget) * 100) : 0;
-      return `<tr>
+      return `<tr class="email-table-row">
         <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;font-weight:500;color:#111827;">${q.provider}</td>
-        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:#374151;">${q.calls_used.toLocaleString()} / ${q.calls_budget.toLocaleString()}</td>
+        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:#374151;">${(q.calls_used || 0).toLocaleString()} / ${(q.calls_budget || 0).toLocaleString()}</td>
         <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;">
           <span style="display:inline-block;background:${pct > 50 ? '#dcfce7' : pct > 10 ? '#fef9c3' : '#fee2e2'};color:${pct > 50 ? '#166534' : pct > 10 ? '#854d0e' : '#991b1b'};padding:2px 8px;border-radius:12px;font-size:12px;font-weight:600;">${pct}%</span>
         </td>
       </tr>`;
     }).join("");
 
+    // Provider health rows
+    const providerHealthRows = providerReports.map(p => `
+      <tr class="email-table-row">
+        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;font-weight:500;color:#111827;">${p.name}</td>
+        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:#374151;">${p.total}</td>
+        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:${p.failures > 0 ? '#ef4444' : '#6b7280'};">${p.failures}</td>
+        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:#374151;">${p.avgLatency}ms</td>
+        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;font-size:12px;">${p.status}${p.note ? ` — ${p.note}` : ''}</td>
+      </tr>`).join("");
+
     // CLM topics studied
     const clmTopicTags = clmTopics.length > 0
-      ? clmTopics.map((t: string) => `<span style="display:inline-block;background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500;margin:3px 4px 3px 0;">${t}</span>`).join("")
+      ? clmTopics.map((t: string) => `<span class="email-topic-tag" style="display:inline-block;background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500;margin:3px 4px 3px 0;">${t}</span>`).join("")
       : '<span style="color:#9ca3af;font-size:13px;">No topics studied this window</span>';
 
     const fullHtml = `<!DOCTYPE html>
@@ -299,7 +350,7 @@ serve(async (req: Request) => {
 <!-- EXECUTIVE DASHBOARD -->
 <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
   ${[
-    { label: "System Health", value: `${apiSuccessRate}%`, color: statusColor },
+    { label: "API Calls (3h)", value: String(aiCalls3h), color: aiCalls3h > 0 ? "#10b981" : "#ef4444" },
     { label: "Security", value: riskLevel, color: riskColor },
     { label: "CLM Cycles (3h)", value: String(clmCycleCount3h), color: clmColor },
     { label: "Quota Used", value: `${quotaUtilization}%`, color: quotaColor },
@@ -310,27 +361,55 @@ serve(async (req: Request) => {
     </div>`).join("")}
 </div>
 
-<!-- CLM STATUS (Priority section) -->
+<!-- DYNAMIC ALLOCATION (NEW) -->
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">⚡ NEXUS Dynamic Allocation</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:13px;">
+    <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">Daily Capacity</td><td style="padding:6px 0;color:#111827;" class="email-text">${totalBudget.toLocaleString()} calls</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">Used Today</td><td style="padding:6px 0;color:#111827;" class="email-text">${totalUsed.toLocaleString()} calls (${quotaUtilization}%)</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">Est. Substrate Needs (remaining)</td><td style="padding:6px 0;color:#111827;" class="email-text">${estimatedSubstrateNeeds.toLocaleString()} calls</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">Available for Learning</td><td style="padding:6px 0;font-weight:600;color:${availableForLearning > 0 ? '#10b981' : '#ef4444'};">${availableForLearning.toLocaleString()} calls</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">Per-Entity Allocation</td><td style="padding:6px 0;font-weight:600;color:#4f46e5;">${perEntityAllocation.toLocaleString()} calls × ${entityCount} entities</td></tr>
+  </table>
+</div>
+
+<!-- CLM STATUS -->
 <div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
   <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;display:flex;align-items:center;gap:8px;" class="email-text-heading">
-    ⚡ Continuous Learning Engine
+    🧠 Continuous Learning Engine
   </h2>
   <table style="width:100%;border-collapse:collapse;font-size:13px;">
     <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">Status</td><td style="padding:6px 0;font-weight:600;color:${clmColor};">${clmStatusText}</td></tr>
     <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">Topics Studied (3h)</td><td style="padding:6px 0;color:#111827;" class="email-text">${clmTopicsStudied3h}</td></tr>
     <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">Learning Events (3h)</td><td style="padding:6px 0;color:#111827;" class="email-text">${totalLearningEvents}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;" class="email-text-secondary">API Calls (3h / 24h)</td><td style="padding:6px 0;color:#111827;" class="email-text">${aiCalls3h} / ${aiCalls24h}</td></tr>
   </table>
-  <div style="margin-top:12px;">${clmTopicTags.replace(/class=""/g, 'class="email-topic-tag"')}</div>
+  <div style="margin-top:12px;">${clmTopicTags}</div>
 </div>
+
+<!-- PROVIDER HEALTH (NEW) -->
+${providerReports.length > 0 ? `
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">🔌 LLM Provider Health (24h)</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <tr class="email-table-header" style="background:#f9fafb;">
+      <th style="padding:8px 10px;text-align:left;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Provider</th>
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Calls</th>
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Fails</th>
+      <th style="padding:8px 10px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Latency</th>
+      <th style="padding:8px 10px;text-align:left;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Status</th>
+    </tr>
+    ${providerHealthRows}
+  </table>
+</div>` : ''}
 
 <!-- API QUOTA BUDGET -->
 <div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
   <h2 style="margin:0 0 4px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">📊 API Quota Budget</h2>
   <p style="margin:0 0 14px;font-size:12px;color:#6b7280;" class="email-text-secondary">Free intelligence utilization · ${totalUsed.toLocaleString()} / ${totalBudget.toLocaleString()} calls used today</p>
   
-  <!-- Utilization bar -->
   <div style="background:#e5e7eb;border-radius:8px;height:10px;margin-bottom:16px;overflow:hidden;">
-    <div style="background:${quotaColor};height:100%;width:${Math.min(100, quotaUtilization)}%;border-radius:8px;transition:width 0.3s;"></div>
+    <div style="background:${quotaColor};height:100%;width:${Math.min(100, quotaUtilization)}%;border-radius:8px;"></div>
   </div>
 
   ${quotaData.length > 0 ? `
@@ -342,14 +421,6 @@ serve(async (req: Request) => {
     </tr>
     ${quotaRows}
   </table>` : '<p style="color:#9ca3af;font-size:13px;">No quota data available.</p>'}
-  
-  ${quotaUtilization < 10 ? `
-  <div class="email-callout" style="margin-top:14px;padding:12px 16px;background:#fef2f2;border-left:4px solid #ef4444;border-radius:0 8px 8px 0;">
-    <p class="email-callout-text" style="margin:0;color:#991b1b;font-size:13px;font-weight:500;">⚠️ Low utilization — ${totalBudget.toLocaleString()} free API calls available daily. CLM should be consuming these for substrate intelligence.</p>
-  </div>` : quotaUtilization > 50 ? `
-  <div class="email-callout" style="margin-top:14px;padding:12px 16px;background:#ecfdf5;border-left:4px solid #10b981;border-radius:0 8px 8px 0;">
-    <p class="email-callout-text" style="margin:0;color:#065f46;font-size:13px;font-weight:500;">✓ Good utilization — CLM is actively consuming free intelligence.</p>
-  </div>` : ''}
 </div>
 
 <!-- SECURITY -->
@@ -369,7 +440,7 @@ ${Object.keys(moduleCounts).length > 0 ? `
   <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">🔧 Module Activity</h2>
   <table style="width:100%;border-collapse:collapse;font-size:13px;">
     <tr class="email-table-header" style="background:#f9fafb;">
-      <th style="padding:8px 14px;text-align:left;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Module</th>
+      <th style="padding:8px 14px;text-align:left;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Module</th>
       <th style="padding:8px 14px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Events</th>
       <th style="padding:8px 14px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">Anomalies</th>
       <th style="padding:8px 14px;text-align:center;color:#6b7280;font-weight:600;font-size:11px;text-transform:uppercase;">CLM</th>
@@ -395,10 +466,10 @@ ${dreamCount > 0 ? `
 ${Object.keys(decodeByTopic).length > 0 ? `
 <div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
   <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">🔍 DECODE Brand Monitor</h2>
-  <p style="margin:0 0 14px;font-size:12px;color:#6b7280;" class="email-text-secondary">New mentions & articles discovered this window</p>
+  <p style="margin:0 0 14px;font-size:12px;color:#6b7280;" class="email-text-secondary">Exact-match mentions discovered this window</p>
   ${Object.entries(decodeByTopic).map(([topic, items]) => `
     <div style="margin-bottom:16px;">
-      <strong style="color:#4f46e5;font-size:13px;display:block;margin-bottom:8px;" class="email-learning-module">${topic}</strong>
+      <strong style="color:#4f46e5;font-size:13px;display:block;margin-bottom:8px;" class="email-learning-module">"${topic}"</strong>
       ${items.map(item => `
         <div style="margin-bottom:10px;padding:8px 12px;background:#f9fafb;border-radius:8px;border-left:3px solid #4f46e5;" class="email-stat-card">
           <a href="${item.url}" style="color:#4f46e5;font-size:13px;font-weight:600;text-decoration:none;display:block;margin-bottom:3px;" class="email-link">${item.title || 'Untitled'}</a>
@@ -409,10 +480,10 @@ ${Object.keys(decodeByTopic).length > 0 ? `
 </div>` : `
 <div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
   <h2 style="margin:0 0 10px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">🔍 DECODE Brand Monitor</h2>
-  <p style="color:#9ca3af;font-size:13px;">No new mentions found this window. Topics monitored: Kenneth E. Sweet Jr., CMPSBL, XCTBL, PromptFluid, LNCHBL, EVLVBL</p>
+  <p style="color:#9ca3af;font-size:13px;">No exact-match mentions found this window. Monitoring: "Kenneth E. Sweet Jr.", "CMPSBL", "XCTBL", "PromptFluid", "LNCHBL", "EVLVBL"</p>
 </div>`}
 
-
+<!-- RECOMMENDATIONS -->
 <div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
   <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">💡 Recommendations</h2>
   <div style="font-size:13px;">
@@ -420,9 +491,10 @@ ${Object.keys(decodeByTopic).length > 0 ? `
     ${riskLevel === "HIGH" ? `<p style="color:#dc2626;margin:0 0 8px;"><strong>P0</strong> — Security risk HIGH. Avg score: ${avgRiskScore}.</p>` : ""}
     ${!clmEnabled ? `<p style="color:#dc2626;margin:0 0 8px;"><strong>P0</strong> — CLM is DISABLED. Enable via Governor to resume learning.</p>` : ""}
     ${clmEnabled && clmCycleCount3h === 0 ? `<p style="color:#f59e0b;margin:0 0 8px;"><strong>P1</strong> — CLM enabled but no cycles ran. Check cron job.</p>` : ""}
-    ${quotaUtilization < 5 ? `<p style="color:#f59e0b;margin:0 0 8px;"><strong>P1</strong> — ${totalBudget.toLocaleString()} free API calls available but only ${quotaUtilization}% used. Increase CLM cycle frequency.</p>` : ""}
+    ${providerReports.filter(p => p.status.includes('Unreliable')).length > 0 ? `<p style="color:#f59e0b;margin:0 0 8px;"><strong>P1</strong> — Unreliable providers detected: ${providerReports.filter(p => p.status.includes('Unreliable')).map(p => p.name).join(', ')}. Consider removal.</p>` : ""}
+    ${quotaUtilization < 5 ? `<p style="color:#f59e0b;margin:0 0 8px;"><strong>P1</strong> — ${totalBudget.toLocaleString()} free API calls available but only ${quotaUtilization}% used.</p>` : ""}
     ${blocked > 3 ? `<p style="color:#f59e0b;margin:0 0 8px;"><strong>P1</strong> — ${blocked} blocked events in 3h. Review defense config.</p>` : ""}
-    ${systemStatus === "ONLINE" && riskLevel !== "HIGH" && clmEnabled && clmCycleCount3h > 0 && quotaUtilization >= 5
+    ${systemStatus === "ONLINE" && riskLevel !== "HIGH" && clmEnabled && providerReports.filter(p => p.status.includes('Unreliable')).length === 0
       ? `<p style="color:#10b981;margin:0 0 8px;">✓ All systems nominal. No immediate actions needed.</p>` : ""}
   </div>
 </div>
@@ -444,7 +516,7 @@ ${Object.keys(decodeByTopic).length > 0 ? `
     Window: ${threeHoursAgo.toISOString().slice(0, 16)} → ${now.toISOString().slice(0, 16)} UTC · Generated in ${generationTimeMs}ms
   </p>
   <p class="email-footer-text" style="margin:4px 0 0;font-size:11px;color:#9ca3af;">
-    CMPSBL® Substrate · DECODE · ARCHITECT Epoch
+    CMPSBL® Substrate · DECODE · SPARTA Epoch
   </p>
   <p style="margin:10px 0 0;">
     <a class="email-link" href="https://cmpsbl.lovable.app/admin/owner-reports" style="color:#4f46e5;font-size:12px;font-weight:500;text-decoration:none;">View full report →</a>
@@ -462,19 +534,29 @@ ${timestamp} · ${systemStatus}
 ${"═".repeat(50)}
 
 EXECUTIVE SUMMARY
-System Health: ${apiSuccessRate}%
+API Calls (3h / 24h): ${aiCalls3h} / ${aiCalls24h}
 Security Risk: ${riskLevel}
 CLM Status: ${clmStatusText}
 Quota Used: ${quotaUtilization}% (${totalUsed}/${totalBudget})
 Learning Events (3h): ${totalLearningEvents}
 Dream Cycles (3h): ${dreamCount}
 
+NEXUS DYNAMIC ALLOCATION
+Daily Capacity: ${totalBudget.toLocaleString()} calls
+Used Today: ${totalUsed.toLocaleString()} (${quotaUtilization}%)
+Est. Substrate Needs: ${estimatedSubstrateNeeds.toLocaleString()}
+Available for Learning: ${availableForLearning.toLocaleString()}
+Per-Entity Allocation: ${perEntityAllocation.toLocaleString()} × ${entityCount} entities
+
 CLM ENGINE
 Cycles (3h / 24h): ${clmCycleCount3h} / ${clmCycleCount24h}
 Topics studied: ${clmTopics.join(", ") || "none"}
 
+PROVIDER HEALTH (24h)
+${providerReports.map(p => `  ${p.name}: ${p.total} calls, ${p.failures} fails, ${p.avgLatency}ms avg — ${p.status}${p.note ? ` (${p.note})` : ''}`).join("\n") || "No provider data"}
+
 API QUOTA
-${quotaData.map((q: any) => `  ${q.provider}: ${q.calls_used}/${q.calls_budget}`).join("\n") || "No quota data"}
+${quotaData.map((q: any) => `  ${q.provider}: ${q.calls_used || 0}/${q.calls_budget || 0}`).join("\n") || "No quota data"}
 
 SECURITY
 Risk: ${riskLevel} (score: ${avgRiskScore})
@@ -487,17 +569,17 @@ ${Object.entries(moduleCounts).map(([m, d]) => `  ${m.toUpperCase()}: ${d.events
 WHAT I LEARNED
 ${Object.entries(learningBullets).map(([m, bs]) => `  ${m.toUpperCase()}:\n${bs.map(b => `    • ${b}`).join("\n")}`).join("\n\n") || "No learning events."}
 
-DECODE BRAND MONITOR
+DECODE BRAND MONITOR (exact-match)
 ${Object.entries(decodeByTopic).length > 0
-  ? Object.entries(decodeByTopic).map(([topic, items]) => `  ${topic}:\n${items.map(i => `    • ${i.title}\n      ${i.url}`).join("\n")}`).join("\n\n")
-  : "No new mentions this window."}
+  ? Object.entries(decodeByTopic).map(([topic, items]) => `  "${topic}":\n${items.map(i => `    • ${i.title}\n      ${i.url}`).join("\n")}`).join("\n\n")
+  : "No exact-match mentions this window."}
 
 FLAGS
 ${Object.entries(flags).map(([k, v]) => `  ${v ? '●' : '○'} ${k}`).join("\n")}
 
 ${"═".repeat(50)}
 Window: ${threeHoursAgo.toISOString().slice(0, 16)} → ${now.toISOString().slice(0, 16)} UTC
-Generated in ${generationTimeMs}ms · CMPSBL® Substrate
+Generated in ${generationTimeMs}ms · CMPSBL® Substrate · SPARTA Epoch
 `;
 
     // ═══ STORE REPORT ═══
@@ -513,7 +595,7 @@ Generated in ${generationTimeMs}ms · CMPSBL® Substrate
         report_window_end: now.toISOString(),
         generation_time_ms: generationTimeMs,
         system_status: systemStatus,
-        version: "v10.5.4",
+        version: "sparta",
       })
       .select("id")
       .single();
