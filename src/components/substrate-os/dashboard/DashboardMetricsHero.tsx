@@ -153,7 +153,7 @@ export function DashboardMetricsHero() {
             {/* Stat Cards Row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {[
-                { label: 'MODULES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-cyan-400/80', border: 'border-cyan-500/20 hover:border-cyan-500/40', from: 'from-cyan-500' } },
+                { label: 'SURFACES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-cyan-400/80', border: 'border-cyan-500/20 hover:border-cyan-500/40', from: 'from-cyan-500' } },
                 { label: 'STATUS', value: statusLabel, styles: { text: statusStyles.labelText, border: `${statusStyles.border} ${statusStyles.borderHover}`, from: statusStyles.from } },
                 { label: 'VERSION', value: `v${version}`, styles: { text: 'text-amber-400/80', border: 'border-amber-500/20 hover:border-amber-500/40', from: 'from-amber-500' } },
               ].map((stat, idx) => (
