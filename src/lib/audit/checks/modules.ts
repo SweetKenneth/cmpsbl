@@ -45,8 +45,8 @@ export function checkModuleHealth(): AuditFinding[] {
     id: 'module_health_surface',
     category: 'modules',
     severity: 'info',
-    title: `Module health: ${moduleCount}/15`,
-    detail: `${moduleCount} entities registered. CORE + 8 Modules + 5 Meshes + INTEGRATION. CCR (Layer 0) + CCL (Layer 1) hidden.`,
+    title: `Module health: ${moduleCount} registered`,
+    detail: `${moduleCount} entities registered in SYSTEM_MODULES. SPARTA Epoch: CORE kernel + modules + mesh overlays + hidden zones.`,
   });
 
   return findings;

@@ -1,9 +1,9 @@
 /**
  * CMPSBL® DECODE Module
- * v10.5.4 ARCHITECT Epoch — Interpreter Primitive with Personality Profiles
+ * SPARTA Epoch — Interpreter Primitive with Personality Profiles
  * + Cryptographic Identity Context
  * 
- * Part of the 6-layer, 21-module Cognitive Architecture
+ * Part of the SPARTA Epoch layered cognitive architecture
  */
 
 export {
