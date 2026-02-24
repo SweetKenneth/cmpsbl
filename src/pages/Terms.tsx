@@ -14,7 +14,7 @@ export default function Terms() {
       
       <main className="container mx-auto px-4 py-16 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
-        <p className="text-muted-foreground mb-8">Last updated: December 21, 2025</p>
+        <p className="text-muted-foreground mb-8">Last updated: February 24, 2026</p>
         
         <div className="prose prose-lg dark:prose-invert max-w-none space-y-8">
           <section>
@@ -27,15 +27,20 @@ export default function Terms() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">2. Description of Services</h2>
             <p className="text-muted-foreground leading-relaxed">
-              PromptFluid provides AI infrastructure services including but not limited to:
+              CMPSBL® provides cognitive orchestration infrastructure including but not limited to:
             </p>
             <ul className="list-disc list-inside text-muted-foreground space-y-2 mt-4">
-              <li>RCKBL Security - Bot detection and security analytics</li>
-              <li>PTCHBL Accessibility - Website accessibility scanning and compliance</li>
-              <li>Cascade AI - Intelligent assistant and automation platform</li>
-              <li>RNDRBL Browser - Enhanced browsing experiences</li>
-              <li>SPLCBL - WordPress optimization tools</li>
-              <li>XCTBL Space - SaaS infrastructure solutions</li>
+              <li>CMPSBL Substrate — Layered cognitive orchestration with persistent memory and convergence zones</li>
+              <li>Composable Cognitives — Downloadable superpowered AI agents</li>
+              <li>Composable Artifacts — Capabilities, templates, and synergy pipelines via the unified store</li>
+              <li>NEXUS — Multi-provider AI routing with BYOK architecture</li>
+              <li>DEFENSE — Enterprise-grade threat detection and bot protection overlay</li>
+              <li>DECODE — Conversational AI interface with memory-backed context</li>
+              <li>VISION — Full observability and system introspection module</li>
+              <li>INCLUSIVE — Human compatibility module with WCAG scanning and AI remediation</li>
+              <li>Persistent Memory — Drop-in memory layer for any AI agent</li>
+              <li>Evolution Mesh — Self-learning immune system for software</li>
+              <li>Engine Marketplace — Production-ready cognitive orchestrations</li>
             </ul>
           </section>
 
@@ -64,72 +69,87 @@ export default function Terms() {
               <li>Attempt to gain unauthorized access to systems</li>
               <li>Engage in fraudulent or deceptive activities</li>
               <li>Harass, abuse, or harm others</li>
+              <li>Reverse-engineer, decompile, or attempt to extract source code from any engine or cognitive</li>
+              <li>Redistribute, sublicense, or resell purchased cognitives or engines without written permission</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">5. Intellectual Property</h2>
             <p className="text-muted-foreground leading-relaxed">
-              All content, features, and functionality of our services are owned by PromptFluid and protected by intellectual property laws. You may not copy, modify, distribute, or create derivative works without our express written permission.
+              All content, features, and functionality of our services — including but not limited to the CMPSBL Substrate architecture, engine orchestrations, synergy pipelines, Crown Jewel pipelines, and cognitive agents — are owned by PromptFluid and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">6. Payment Terms</h2>
+            <h2 className="text-2xl font-semibold mb-4">6. Composable Cognitives & Engine Purchases</h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Composable Cognitives and engines are delivered as downloadable artifacts. Upon purchase:
+            </p>
+            <ul className="list-disc list-inside text-muted-foreground space-y-2">
+              <li>You receive a perpetual, non-transferable license for personal or organizational use</li>
+              <li>You may not redistribute, sublicense, or resell purchased artifacts</li>
+              <li>Refunds are handled according to our refund policy</li>
+              <li>PromptFluid retains all intellectual property rights in the underlying technology</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">7. Subscription & Payment Terms</h2>
             <p className="text-muted-foreground leading-relaxed">
-              For paid services, you agree to pay all applicable fees. We reserve the right to modify pricing with reasonable notice. Refunds are handled according to our refund policy.
+              For paid subscription tiers (Creator, Architect, Enterprise), you agree to pay all applicable fees at the published rate. We reserve the right to modify pricing with 30 days written notice. One-time purchases (Template Generator, Composable Cognitives) are non-recurring and governed by the license terms at time of purchase.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">7. Service Availability</h2>
+            <h2 className="text-2xl font-semibold mb-4">8. Service Availability</h2>
             <p className="text-muted-foreground leading-relaxed">
-              We strive to maintain high availability but do not guarantee uninterrupted access. We may modify, suspend, or discontinue services with reasonable notice when possible.
+              We strive to maintain high availability but do not guarantee uninterrupted access. We may modify, suspend, or discontinue services with reasonable notice when possible. System health and uptime are available on our <a href="/status" className="text-primary hover:underline">Status page</a>.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">8. Limitation of Liability</h2>
+            <h2 className="text-2xl font-semibold mb-4">9. Limitation of Liability</h2>
             <p className="text-muted-foreground leading-relaxed">
               To the maximum extent permitted by law, PromptFluid shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">9. Indemnification</h2>
+            <h2 className="text-2xl font-semibold mb-4">10. Indemnification</h2>
             <p className="text-muted-foreground leading-relaxed">
               You agree to indemnify and hold harmless PromptFluid and its affiliates from any claims, losses, or damages arising from your use of our services or violation of these terms.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">10. Termination</h2>
+            <h2 className="text-2xl font-semibold mb-4">11. Termination</h2>
             <p className="text-muted-foreground leading-relaxed">
               We may terminate or suspend your access to our services at our sole discretion, without notice, for conduct that we believe violates these terms or is harmful to other users.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">11. Governing Law</h2>
+            <h2 className="text-2xl font-semibold mb-4">12. Governing Law</h2>
             <p className="text-muted-foreground leading-relaxed">
-              These terms shall be governed by the laws of the State of California, United States, without regard to conflict of law principles.
+              These terms shall be governed by the laws of the State of Texas, United States, without regard to conflict of law principles. Any disputes arising under these terms shall be resolved in the courts located in Dallas County, Texas.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">12. Changes to Terms</h2>
+            <h2 className="text-2xl font-semibold mb-4">13. Changes to Terms</h2>
             <p className="text-muted-foreground leading-relaxed">
               We reserve the right to modify these terms at any time. We will provide notice of material changes. Continued use of our services after changes constitutes acceptance of the modified terms.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">13. Contact Information</h2>
+            <h2 className="text-2xl font-semibold mb-4">14. Contact Information</h2>
             <p className="text-muted-foreground leading-relaxed">
               For questions about these Terms of Service, please contact us at:
             </p>
             <p className="text-muted-foreground mt-4">
-              <strong>Email:</strong> legal@promptfluid.com<br />
+              <strong>Email:</strong> Dev@CMPSBL.com<br />
               <strong>Phone:</strong> (760) FLUID-AI
             </p>
           </section>

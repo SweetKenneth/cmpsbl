@@ -28,6 +28,7 @@ const stagger = (delay: number) => ({
 export default function About() {
   const version = useMetric('version');
   const codename = useMetric('codename');
+  const linesOfCodeDisplay = useMetric('linesOfCodeDisplay');
   const products = [
     { icon: Brain, name: "CMPSBL Substrate", description: "Layered cognitive orchestration substrate with persistent memory, mesh overlays, and hot-swappable convergence zones" },
     { icon: Shield, name: "DEFENSE Mesh", description: "Enterprise-grade threat detection and bot protection overlay" },
@@ -195,7 +196,7 @@ export default function About() {
 
           <motion.div {...fadeUp} className="mt-12 bg-card border border-border rounded-xl p-6 md:p-8 shadow-sm">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">{codename} Epoch</span> — 175,000+ lines of production code. 525+ capabilities, 76 engines, 24 meta-engines, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
+              <span className="font-semibold">{codename} Epoch</span> — {linesOfCodeDisplay} lines of production code. Execution surfaces, mesh overlays, convergence zones, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
             </p>
           </motion.div>
         </div>
