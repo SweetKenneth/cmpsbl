@@ -364,9 +364,9 @@ export default function PromptFluidHome() {
 
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
                 {[
-                  { value: "21", label: "Modules" },
-                  { value: "400+", label: "Capabilities" },
-                  { value: "200", label: "Pipelines" },
+                  { value: "24", label: "Modules" },
+                  { value: "525+", label: "Capabilities" },
+                  { value: "300", label: "Pipelines" },
                   { value: "100", label: "Engines" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">

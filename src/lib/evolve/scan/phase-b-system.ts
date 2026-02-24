@@ -52,7 +52,7 @@ const MODULE_TABLE_MAP: Record<string, { layer: string; tables: string[]; eventP
 // ═══════════════════════════════════════════════════════════════
 
 /**
- * Perform comprehensive system state scan across all 21 modules
+ * Perform comprehensive system state scan across all 24 modules
  */
 export async function scanSystemState(): Promise<SystemState> {
   // Run all checks in parallel

@@ -200,7 +200,7 @@ export default function Register() {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                <span>21-module architecture reference materials</span>
+                <span>24-module architecture reference materials</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
