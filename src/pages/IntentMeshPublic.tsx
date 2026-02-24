@@ -159,7 +159,7 @@ export default function IntentMeshPublic() {
                 Intent Mesh
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
-                Emergent cross-module intelligence. 21 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
+                Emergent cross-module intelligence. 24 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {Object.entries(RESOLVER_STATS).map(([key, value]) => (
