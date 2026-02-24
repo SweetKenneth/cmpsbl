@@ -1,5 +1,6 @@
 /**
- * Module Registry — Single source of truth for all 21 substrate modules
+ * Execution Surface Registry — Single source of truth for all substrate components
+ * 9 modules + 1 kernel + zones + meshes = 24 execution surfaces
  * Used by: hub page, detail pages, mega-menu, footer, SEO
  */
 

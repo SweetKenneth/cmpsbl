@@ -30,7 +30,7 @@ const OBSERVER_FEATURES = [
   {
     icon: FileText,
     title: "Documentation Access",
-    description: "Full access to the 26-document FNDTN v6 library covering all 21 modules."
+    description: "Full access to the architecture library covering all 9 modules, 5 meshes, and 9 zones."
   },
   {
     icon: BookOpen,
@@ -45,7 +45,7 @@ const OBSERVER_FEATURES = [
   {
     icon: Layers,
     title: "Architecture Overview",
-    description: "Understand the six-layer, 21-module kernel architecture of CMPSBL v10.5.4."
+    description: "Understand the layered kernel architecture — 9 modules, 5 meshes, 9 zones."
   }
 ];
 
@@ -74,8 +74,8 @@ export default function Insights() {
             Explore documentation, architecture, and standards with read-only visibility.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">v10.5.4</Badge>
-            <Badge variant="outline">21 Modules</Badge>
+            <Badge variant="outline">SPARTA Epoch</Badge>
+            <Badge variant="outline">9 Modules</Badge>
             <Badge variant="outline">Read-Only</Badge>
           </div>
         </div>

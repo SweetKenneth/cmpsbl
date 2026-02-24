@@ -51,7 +51,7 @@ export interface ModuleDiscoveryResult {
   durationMs: number;
 }
 
-// ─── All 21 Module Discovery Profiles ───
+// ─── Module Discovery Profiles ───
 // Extended domain knowledge for self-discovery (beyond manifest entries)
 
 const MODULE_DISCOVERY_PROFILES: Record<string, {
@@ -321,7 +321,7 @@ export async function runModuleDiscovery(moduleName: string): Promise<ModuleDisc
 }
 
 /**
- * Run self-discovery for ALL 21 modules
+ * Run self-discovery for all modules
  */
 export async function runAllModuleDiscovery(): Promise<{
   totalProposals: number;

@@ -252,7 +252,7 @@ function formatPersonalityInterpret(result: {
 // SYSTEM-WIDE 24-MODULE RESPONSE FORMATTERS — SPARTA Epoch
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const ALL_21_MODULES = [
+const ALL_EXECUTION_SURFACES = [
   // CORE kernel
   { key: 'core', label: 'CORE', layer: 'Kernel' },
   // Execution Surfaces (9 modules)
@@ -282,8 +282,6 @@ const ALL_21_MODULES = [
   { key: 'identity', label: 'IDENTITY', layer: 'CCL Zone' },
   { key: 'relay', label: 'RELAY', layer: 'CCL Zone' },
   { key: 'audit', label: 'AUDIT', layer: 'CCL Zone' },
-  // Absorbed
-  { key: 'modernizer', label: 'MODERNIZER', layer: 'Absorbed → EVOLUTION' },
 ];
 
 function formatSystemStatus(data: any): string {
@@ -298,12 +296,12 @@ function formatSystemStatus(data: any): string {
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall:   ${overall === 'operational' ? '🟢 OPERATIONAL' : overall === 'degraded' ? '🟡 DEGRADED' : '🔴 DOWN'}                                     ║
 ║  Uptime:    ${String(uptime).padEnd(20)}                          ║
-║  Modules:   21/21                                            ║
+║  Surfaces:  24/24 (1 kernel + 9 modules + 5 meshes + 9 zones) ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
-  const layers = ['Kernel', 'Cognitive', 'Operations', 'Admin', 'Orchestrator', 'Infrastructure'];
+  const layers = ['Kernel', 'Cognitive', 'Operations', 'Admin', 'Orchestrator', 'Infrastructure', 'Mesh Overlay', 'CCR Zone', 'CCL Zone'];
   for (const layer of layers) {
-    const layerModules = ALL_21_MODULES.filter(m => m.layer === layer);
+    const layerModules = ALL_EXECUTION_SURFACES.filter(m => m.layer === layer);
     output += `\n║  ┌─ ${layer.toUpperCase()} LAYER ──────────────────────────────────────`;
     for (const mod of layerModules) {
       const modData = modules[mod.key] || modules[mod.label.toLowerCase()] || {};
@@ -343,7 +341,7 @@ function formatSystemHealth(data: any): string {
 ║  MODULE HEALTH REPORT                                        ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
-  for (const mod of ALL_21_MODULES) {
+  for (const mod of ALL_EXECUTION_SURFACES) {
     const modData = modules[mod.key] || modules[mod.label.toLowerCase()] || {};
     const health = typeof modData?.health === 'number' ? modData.health : (typeof modData?.score === 'number' ? modData.score : 1.0);
     const pct = health <= 1 ? (health * 100).toFixed(0) : health.toFixed(0);
@@ -561,14 +559,14 @@ function generateFullHelp(): string {
 │  clm.disable         Disable autonomous learning            │
 │  clm.cycle           Run a manual CLM cycle                 │
 │  clm.run <module>    Run CLM for a single module            │
-│  clm.run_all         Run CLM for ALL 24 modules             │
+│  clm.run_all         Run CLM for ALL 9 modules              │
 │  clm.budget          View daily budget allocation           │
 │  clm.kill_switch     Activate/deactivate kill switch        │
 │  clm.topics          View topic bank with mastery           │
 │  clm.add_topic       Add custom topic to bank               │
 │  clm.review_queue    View spaced repetition queue           │
 │  clm.next_review     Get next review item                   │
-│  decode.inbox        CLM reports from ALL 24 modules        │
+│  decode.inbox        CLM reports from ALL 9 modules         │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
@@ -870,7 +868,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  └────────────────────────────────────────────────────────────
 │  
 │  Terminal — SPARTA Epoch: aliases, macros, NLP, watch mode, audit
-│  24 modules | 360+ commands | 300 synergy pipelines | health: 100%
+│  24 execution surfaces | 360+ commands | 300 synergy pipelines | health: 100%
 │  525+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
@@ -1464,10 +1462,10 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         return { success: false, output: `▓ Doctor error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'system.verify') {
-      // Non-destructive verification of all 24 modules
+      // Non-destructive verification of all 24 execution surfaces
       const verbose = args.includes('--verbose');
       try {
-        const moduleChecks = ALL_21_MODULES.map(async (mod) => {
+        const moduleChecks = ALL_EXECUTION_SURFACES.map(async (mod) => {
           try {
             const r = await substrate.invoke({ module: mod.key as any, action: 'pulse' });
             return { key: mod.key, label: mod.label, layer: mod.layer, ok: r?.success !== false };
@@ -1629,7 +1627,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 ║                                                              ║
 ║  Batches (cumulative — each adds to previous):               ║
 ║    1: polling-intervals (basic poll loops)                   ║
-║    2: + module-status-polling (24 module status calls)       ║
+║    2: + module-status-polling (24 surface status calls)       ║
 ║    3: + auto-refresh (dashboard auto-update)                 ║
 ║    4: + realtime-subscriptions (Supabase channels)           ║
 ║                                                              ║
@@ -3167,7 +3165,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // DECODE INBOX — CLM reports from ALL 24 modules
+    // DECODE INBOX — CLM reports from ALL 9 modules
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'decode.inbox') {
       try {
@@ -3188,7 +3186,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         let output = `╔══════════════════════════════════════════════════════════════╗
-║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from 24 Modules               ║
+║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from 9 Modules                ║
 ╠══════════════════════════════════════════════════════════════╣\n`;
         
         for (const r of feed.slice(0, 20)) {
@@ -3218,11 +3216,11 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       try {
         const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
         const statesObj: Record<string, any> = {};
-        for (const mod of ALL_21_MODULES) {
+        for (const mod of ALL_EXECUTION_SURFACES) {
           statesObj[mod.key] = moduleCLM.getModuleState?.(mod.key as any) || {};
         }
-        let output = `╔══════════════════════════════════════════════════════════════╗\n║  MODULE CLM STATUS — All 21 Modules                           ║\n╠══════════════════════════════════════════════════════════════╣\n`;
-        for (const mod of ALL_21_MODULES) {
+        let output = `╔══════════════════════════════════════════════════════════════╗\n║  MODULE CLM STATUS — 9 Modules + Zones                        ║\n╠══════════════════════════════════════════════════════════════╣\n`;
+        for (const mod of ALL_EXECUTION_SURFACES) {
           const s = statesObj[mod.key] || {};
           const icon = s.enabled ? '🟢' : '⚫';
           output += `║  ${icon} ${mod.label.padEnd(14)} [${mod.layer.substring(0, 5).padEnd(5)}]  cycles: ${String(s.cycles || 0).padEnd(3)} ║\n`;
@@ -3253,7 +3251,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       try {
         const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
         const results = await moduleCLM.runAllModuleLearning();
-        return { success: true, output: `◉ MCLM run all complete — ${results.length} insights generated across 21 modules`, data: results };
+        return { success: true, output: `◉ MCLM run all complete — ${results.length} insights generated across 9 modules`, data: results };
       } catch (err) {
         return { success: false, output: `▓ MCLM run all error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
@@ -3277,7 +3275,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // CLM.RUN_ALL — Run CLM for ALL 21 modules
+    // CLM.RUN_ALL — Run CLM for ALL 9 modules
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'clm.run_all') {
       try {
@@ -4577,7 +4575,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  COGNITIVE ENGINE SYSTEM v10.5.4 — ARCHITECT Epoch             ║
+║  COGNITIVE ENGINE SYSTEM — SPARTA Epoch                        ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Architecture: Capabilities (400+) → Engines (76) → Meta (24) ║
 ╠══════════════════════════════════════════════════════════════╣
@@ -4821,7 +4819,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         output += `│\n│  These engines orchestrate the substrate's 56 unique world-first\n`;
-        output += `│  enhancements across all 21 modules.\n`;
+        output += `│  enhancements across all 9 modules.\n`;
         output += `│\n└───────────────────────────────────────────────────────────────\n`;
         
         return { success: true, output, data: worldFirst };

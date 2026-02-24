@@ -1,15 +1,15 @@
 /**
  * Terminal Boot Screen — SPARTA Epoch
- * Unique neural-organic visualization of the 24-module architecture
+ * Unique neural-organic visualization of the 24 execution surfaces
  * Mobile-friendly with no mid-word line breaks
  * 
  * SPARTA Epoch:
  * - 300 synergy pipelines, 125 executors, 32 S-tier discoveries
- * - 24-module architecture: 10 entities + 5 mesh overlays + 9 zones
+ * - 24 execution surfaces: 1 kernel + 9 modules + 5 mesh overlays + 9 zones
  * - 525+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 360+ commands across 24 modules + infrastructure
- * - CLM across all 24 modules
+ * - 360+ commands across all execution surfaces + infrastructure
+ * - CLM across all 9 modules
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
  */
@@ -49,7 +49,7 @@ const MODULE_STATUS = [
   '  ├─ OPERATIONS ────────────────────────',
   '  │  ◉ defense   ◉ nexus      ◉ vision',
   '  ├─ ADMIN ─────────────────────────────',
-  '  │  ◉ system    ◉ modernizer ◉ inclusive',
+  '  │  ◉ system    ◉ evolution  ◉ inclusive',
   '  ├─ ORCHESTRATOR ──────────────────────',
   '  │  ◉ cortex    ◉ integration',
   '  └─────────────────────────────────────',
@@ -60,8 +60,8 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║                CMPSBL® OS v9.3.0                     ║
-  ║               ARCHITECT Epoch Cognitive OS                  ║
+  ║                CMPSBL® OS — SPARTA                    ║
+  ║               SPARTA Epoch Cognitive OS                     ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
   ║    ┏━━━━━━━━━━ KERNEL LAYER ━━━━━━━━━━┓                   ║
@@ -77,7 +77,7 @@ const MODULE_GRID_DESKTOP = `
   ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                   ║
   ║          ╲                         ╱                       ║
   ║    ┏━━━━━━━━━━ ADMIN LAYER ━━━━━━━━━━━━┓                   ║
-  ║    ┃ ◇ SYSTEM  ◇ MODERNIZER ◇ INCLUSIVE┃                   ║
+  ║    ┃ ◇ SYSTEM  ◇ EVOLUTION  ◇ INCLUSIVE┃                   ║
   ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                   ║
   ║                    ╲   ╱                                   ║
   ║    ┏━━━━━━━━━ ORCHESTRATOR LAYER ━━━━━━━┓                  ║
@@ -94,8 +94,8 @@ export function generateMobileBootScreen(): string[] {
   return [
     '',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓     CMPSBL® OS v9.3.0          ▓',
-  '  ▓     ARCHITECT Epoch            ▓',
+  '  ▓     CMPSBL® OS                  ▓',
+  '  ▓     SPARTA Epoch               ▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
     '  ┌─ BOOTSTRAP ────────────────────┐',
@@ -110,7 +110,7 @@ export function generateMobileBootScreen(): string[] {
     '  │    defense  nexus  vision      │',
     '  │                                │',
     '  │  ◇ ADMIN                       │',
-    '  │    system  modernizer          │',
+    '  │    system  evolution            │',
     '  │    inclusive                   │',
     '  │                                │',
     '  │  ★ ORCHESTRATOR                │',
@@ -157,8 +157,8 @@ export function generateDesktopBootScreen(): string[] {
     '  ░   ██║     ███████╗╚██████╔╝██║██████╔╝                ░',
     '  ░   ╚═╝     ╚══════╝ ╚═════╝ ╚═╝╚═════╝                 ░',
     '  ░                                                       ░',
-    '  ░   CMPSBL® OS v9.3.0 ARCHITECT                        ░',
-    '  ░   Cognitive Operating System                          ░',
+  '  ░   CMPSBL® OS — SPARTA Epoch                           ░',
+  '  ░   Cognitive Operating System                          ░',
     '  ░   "Where Dreams Come To Adapt"                        ░',
     '  ░                                                       ░',
     '  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░',
@@ -182,7 +182,7 @@ export function generateDesktopBootScreen(): string[] {
     '  │      ║                                       ║       │',
     '  │      ◇ ═══════════════════════════════════════ ◇      │',
     '  │     ╱ ╲           ADMIN LAYER               ╱ ╲     │',
-    '  │  SYSTEM        MODERNIZER            INCLUSIVE       │',
+    '  │  SYSTEM        EVOLUTION             INCLUSIVE       │',
     '  │     ╲ ╱                                     ╲ ╱     │',
     '  │      ║                                       ║       │',
   '  │      ★ ═══════════════════════════════════════ ★      │',
@@ -210,7 +210,7 @@ export function generateDesktopBootScreen(): string[] {
     '  │  ◉ nexus ─────────── AI routing                 [OK]  │',
     '  │  ◉ vision ────────── observability              [OK]  │',
     '  │  ◉ system ────────── orchestration              [OK]  │',
-    '  │  ◉ modernizer ────── evolution engine           [OK]  │',
+    '  │  ◉ evolution ─────── evolution engine            [OK]  │',
     '  │  ◉ inclusive ─────── accessibility              [OK]  │',
     '  │  ◉ integration ───── enterprise adapters        [OK]  │',
   '  │  ◉ cortex ────────── policy intent (manual)     [OK]  │',

@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * SPARTA Epoch — All 24 modules at full parity
+ * SPARTA Epoch — All 24 execution surfaces at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */
@@ -118,7 +118,7 @@ const PARITY_REQUIREMENTS: ParityRequirement[] = [
   {
     name: 'index.ts exports exist',
     check: (module) => {
-      // All 24 modules have index exports in their respective directories
+      // All 24 execution surfaces have index exports in their respective directories
       return SUBSTRATE_MODULES.includes(module as SubstrateModuleName);
     },
     severity: 'error',

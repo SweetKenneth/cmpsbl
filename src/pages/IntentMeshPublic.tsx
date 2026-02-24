@@ -94,7 +94,7 @@ const SELF_IMPROVEMENT_FEATURES = [
   {
     icon: Target,
     title: "Module Self-Discovery",
-    desc: "All 24 modules autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
+    desc: "All 9 modules autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
   },
   {
     icon: BarChart3,
@@ -135,7 +135,7 @@ export default function IntentMeshPublic() {
         <title>Intent Mesh — Emergent Module Intelligence | CMPSBL</title>
         <meta
           name="description"
-          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across 24 modules with 34+ resolvers. Self-learning, self-improving AI substrate intelligence."
+          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across 9 modules with 34+ resolvers. Self-learning, self-improving AI substrate intelligence."
         />
         <meta property="og:title" content="Intent Mesh — Emergent Module Intelligence | CMPSBL" />
         <meta property="og:description" content="Autonomous cross-module capability discovery with self-learning, pipeline crystallization, and intent quality scoring." />
@@ -159,7 +159,7 @@ export default function IntentMeshPublic() {
                 Intent Mesh
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
-                Emergent cross-module intelligence. 24 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
+                Emergent cross-module intelligence. 9 modules broadcast intents, discover capabilities autonomously, and learn from every interaction.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {Object.entries(RESOLVER_STATS).map(([key, value]) => (
@@ -319,7 +319,7 @@ Learning feedback → improved future routing`}</pre>
                 to="/modules"
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
               >
-                All 21 Modules <ArrowRight className="w-4 h-4" />
+                All 9 Modules <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/documentation"

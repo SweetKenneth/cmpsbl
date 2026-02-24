@@ -209,9 +209,9 @@ export function generateInvestorDeckHTML(): string {
   <div class="cover-badge"><div class="dot"></div> CONFIDENTIAL — Investor Materials</div>
   <h1><span>CMPSBL®</span></h1>
   <h1 style="font-size:36px;margin-bottom:8px;">Cognitive Infrastructure for AI Systems</h1>
-  <p class="subtitle">Building the operating system that makes AI applications smarter, safer, and self-improving. 21 integrated modules. 14 documented industry firsts. Production-ready.</p>
+  <p class="subtitle">Building the operating system that makes AI applications smarter, safer, and self-improving. 9 modules + 5 meshes + 9 zones. 14 documented industry firsts. Production-ready.</p>
   <p class="meta-line">
-    v10.5.1 ARCHITECT Epoch · Generated ${date}<br/>
+    SPARTA Epoch · Generated ${date}<br/>
     <a href="https://cmpsbl.com">cmpsbl.com</a> · Kenneth E. Sweet Jr., Founder
   </p>
 </div>
@@ -343,7 +343,7 @@ export function generateInvestorDeckHTML(): string {
 </div>
 
 <div class="footer">
-  <p>CMPSBL® v10.5.1 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era</p>
+  <p>CMPSBL® SPARTA Epoch — Cognitive Infrastructure for the AI Era</p>
   <p style="margin-top:4px;">Confidential — For Investor Evaluation · © 2025–2026 PromptFluid®</p>
 </div>
 

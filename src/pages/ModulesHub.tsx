@@ -1,5 +1,6 @@
 /**
- * Modules Hub — Central index of all 21 substrate modules
+ * Modules Hub — Central index of all substrate execution surfaces
+ * 9 modules + 1 kernel + 5 meshes + 9 zones = 24 execution surfaces
  * SEO: /modules — captures "CMPSBL modules", "AI substrate components"
  */
 
@@ -17,13 +18,13 @@ export default function ModulesHub() {
     <>
       <Helmet>
         <title>Substrate Modules — AI Architecture | CMPSBL</title>
-        <meta name="description" content="Browse all substrate entities: 10 modules wrapped by 5 mesh overlays, powered by 9 hot-swappable zones." />
+        <meta name="description" content="Browse all substrate execution surfaces: 9 modules, 5 mesh overlays, 9 hot-swappable zones, powered by CORE kernel." />
         <link rel="canonical" href="https://cmpsbl.com/modules" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          "name": "CMPSBL Substrate Modules",
-          "description": "CMPSBL Substrate — 10 entities + 5 mesh overlays + 9 zones",
+          "name": "CMPSBL Substrate — Execution Surfaces",
+          "description": "CMPSBL Substrate — 9 modules + 5 mesh overlays + 9 zones",
           "url": "https://cmpsbl.com/modules",
           "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
           "hasPart": MODULE_REGISTRY.map(m => ({
@@ -53,7 +54,7 @@ export default function ModulesHub() {
                 Substrate Architecture
               </span>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                10 Entities. 5 Meshes.{" "}
+                9 Modules. 5 Meshes.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>

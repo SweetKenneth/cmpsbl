@@ -13,9 +13,9 @@ export default function Solutions() {
       icon: Brain,
       name: "CMPSBL Substrate",
       tagline: "Cognitive Infrastructure OS",
-      description: "The 21-module cognitive operating system. Persistent memory, self-learning, multi-provider routing, and self-evolution — all in one platform.",
-      features: ["21 integrated modules", "Persistent memory system", "Self-learning Dream Cycles", "Multi-provider AI routing", "Self-evolution capabilities", "175,000+ lines production code"],
-      metrics: ["v10.5.4 ARCHITECT", "Live", "Enterprise Ready"],
+      description: "The cognitive operating system. 9 modules, 5 protective meshes, 9 zones — persistent memory, self-learning, multi-provider routing, and self-evolution.",
+      features: ["9 integrated modules", "5 mesh overlays", "Persistent memory system", "Self-learning Dream Cycles", "Multi-provider AI routing", "175,000+ lines production code"],
+      metrics: ["SPARTA Epoch", "Live", "Enterprise Ready"],
       link: "/substrate"
     },
     {

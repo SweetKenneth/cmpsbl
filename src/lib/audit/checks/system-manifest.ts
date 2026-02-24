@@ -1,6 +1,6 @@
 /**
  * Audit Check: System Manifest Integrity
- * Validates ENCODE system manifest has all 21 modules registered
+ * Validates ENCODE system manifest has all execution surfaces registered
  */
 
 import type { AuditFinding } from '../audit-types';
