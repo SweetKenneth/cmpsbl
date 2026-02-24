@@ -41,7 +41,7 @@ const evolutionLogSPARTA: EvolutionEntry[] = [
       "Introduced 'Zone Architecture' — consumed modules are now Zones with individual circuit breakers and hot-swap capability",
       "CCR contains 4 Zones: SYSTEM Zone, BRAIN Zone, MEMORY Zone, DREAM Zone",
       "CCL contains 5 Zones: RIPPLE Zone, ACCESS Zone, IDENTITY Zone, RELAY Zone, AUDIT Zone",
-      "Bumped substrate to v11.1.0 with updated public metrics: 15 entities + 9 zones across 5 layers",
+      "Bumped substrate to v11.1.0 with updated public metrics: 10 entities + 5 mesh overlays + 9 zones",
       "Rewrote all public-facing documentation as mobile-first HTML with Zone terminology",
       "Updated SubstrateDemo to visualize the new 15-entity + 9-zone hierarchy",
     ],
