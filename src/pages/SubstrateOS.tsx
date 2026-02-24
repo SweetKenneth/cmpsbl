@@ -786,11 +786,11 @@ const DashboardContent = memo(function DashboardContent({
             <span className="text-[10px] font-semibold text-foreground/70 font-mono uppercase tracking-widest">Substrate</span>
           </div>
           <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-            {healthScore.totalModules} substrate modules persisting, healing, and evolving autonomously.
+            {healthScore.totalModules} execution surfaces, zones, and overlays persisting, healing, and evolving autonomously.
           </p>
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { label: 'Modules', value: `${healthScore.activeCount}/${healthScore.totalModules}` },
+              { label: 'Surfaces', value: `${healthScore.activeCount}/${healthScore.totalModules}` },
               { label: 'Health', value: `${healthScore.healthScore}%` },
               { label: 'Status', value: healthScore.isHealthy ? 'Optimal' : healthScore.isDegraded ? 'Degraded' : 'Critical' },
               { label: 'Epoch', value: `v${version}` },
