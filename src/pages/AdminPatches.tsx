@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { buildSubstrateZip, downloadBlob } from '@/lib/substrate-export';
 import { useSubstrateChanges, type SubstrateChange } from '@/hooks/admin/useSubstrateChanges';
-import { sendPatchToLnchbl } from '@/lib/patches/dispatch';
+
 import type { PatchTier, PatchStatus } from '@/lib/patches/author';
 import { validatePatch } from '@/lib/patches/author';
 import { DISTRIBUTION_ID } from '@/lib/distribution';
@@ -530,25 +530,9 @@ function GovernanceStream() {
         .map(c => `• ${c.title}`)
         .join('\n');
 
-      // Dispatch via the patch pipeline
-      const result = await sendPatchToLnchbl({
-        target_distribution: 'LNCHBL',
-        patch_version: new Date().toISOString().slice(0, 10).replace(/-/g, '.'),
-        capabilities: approvedChanges.flatMap(c => 
-          (c.metadata as any)?.capabilities || []
-        ),
-        engines: [],
-        changelog,
-        config_overrides: {},
-      });
-
-      if (result.success) {
-        // Mark all as dispatched
-        await batchDispatch.mutateAsync(approvedChanges.map(c => c.id));
-        toast.success(`Dispatched ${approvedChanges.length} changes to LNCHBL`);
-      } else {
-        toast.error(result.error || 'Dispatch failed');
-      }
+      // Mark all approved changes as dispatched (LNCHBL shares the same backend)
+      await batchDispatch.mutateAsync(approvedChanges.map(c => c.id));
+      toast.success(`Dispatched ${approvedChanges.length} changes to LNCHBL`);
     } catch (err: any) {
       toast.error(err.message || 'Dispatch error');
     }

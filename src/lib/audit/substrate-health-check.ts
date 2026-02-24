@@ -93,7 +93,7 @@ const EXPECTED_EDGE_FUNCTIONS = [
   'cascade-dream-generator',
   'cascade-reflection-email',
   'check-engine-subscription',
-  'cmpsbl-patch-dispatch',
+  
   'cmpsbl-patch-download',
   'cmpsbl-patch-manifest',
   'cognitives-admin-upload',
