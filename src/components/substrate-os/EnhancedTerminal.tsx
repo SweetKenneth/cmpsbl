@@ -5,7 +5,7 @@
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
  * 
  * SPARTA Epoch Features:
- * - 360+ terminal commands across 24 modules
+ * - 360+ terminal commands across 24 execution surfaces
  * - 300 synergy pipelines with 125 executors
  * - Improved visual feedback for command execution
  * - Better animation states for results

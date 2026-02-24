@@ -2,7 +2,7 @@
  * INCLUSIVE Module Tab — Human Compatibility Pipeline
  * SPARTA Epoch — WCAG Scanning, Repair, Validation, Profiling, Reporting
  * 
- * Full glue layer integration across 24 modules:
+ * Full glue layer integration across 24 execution surfaces:
  * - SYSTEM: self_scan → system.audit
  * - VISION: score → vision.health metrics  
  * - DEFENSE: severity → defense risk pipeline

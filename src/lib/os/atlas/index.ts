@@ -3,7 +3,7 @@
  * SPARTA Epoch — Single-source-of-truth substrate interface
  * 
  * The Atlas provides:
- * - Unified module registry for all 24 modules (10 entities + 5 mesh + 9 zones)
+ * - Unified registry for all 24 execution surfaces (1 kernel + 9 modules + 5 meshes + 9 zones)
  * - Orchestration of 525+ capabilities, 100 engines, 25 meta-engines
  * - SEBA, Autoblog, and Test adapters
  * - Capability toggles with persistence

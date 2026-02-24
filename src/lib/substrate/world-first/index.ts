@@ -1,6 +1,6 @@
 /**
  * World-First Enhancements — SPARTA Epoch
- * Central export for all 56 high-value autonomous functions across 24 modules
+ * Central export for all 56 high-value autonomous functions across 24 execution surfaces
  */
 
 // BRAIN — Cognitive memory and attention

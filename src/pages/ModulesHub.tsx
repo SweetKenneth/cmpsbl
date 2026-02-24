@@ -1,5 +1,6 @@
 /**
- * Modules Hub — Central index of all 21 substrate modules
+ * Modules Hub — Central index of all substrate execution surfaces
+ * 9 modules + 1 kernel + 5 meshes + 9 zones = 24 execution surfaces
  * SEO: /modules — captures "CMPSBL modules", "AI substrate components"
  */
 

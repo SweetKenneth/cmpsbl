@@ -60,7 +60,7 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║                CMPSBL® OS v9.3.0                     ║
+  ║                CMPSBL® OS — SPARTA                    ║
   ║               SPARTA Epoch Cognitive OS                     ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
