@@ -512,6 +512,7 @@ function ChangeCard({ change, onApprove, onDecline }: {
 
 function GovernanceStream() {
   const [filter, setFilter] = useState<string>('all');
+  const [exporting, setExporting] = useState(false);
   const { changes, isLoading, approve, decline, batchDispatch } = useSubstrateChanges(filter);
 
   const approvedChanges = changes.filter(c => c.lnchbl_status === 'approved');
