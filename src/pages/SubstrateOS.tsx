@@ -209,11 +209,11 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Zap,
       tier: 'architect',
       tabs: [
-        { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing', tier: 'architect' },
+        { id: 'nexus', label: 'NEXUS', icon: Zap, color: 'cyan', description: 'AI routing', tier: 'architect' },
         { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Capability mesh', tier: 'architect' },
         { id: 'codeagent', label: 'ENCODE', icon: Bot, color: 'fuchsia', description: 'Code pipeline', tier: 'architect' },
-        { id: 'cortex', label: 'Cortex', icon: Wand2, color: 'violet', description: 'Orchestrator', tier: 'architect' },
-        { id: 'modules', label: 'Modules', icon: Cpu, color: 'orange', description: 'Core · Ripple · Access', tier: 'architect' },
+        { id: 'cortex', label: 'CORTEX', icon: Wand2, color: 'violet', description: 'Orchestrator', tier: 'architect' },
+        { id: 'modules', label: 'Zones', icon: Cpu, color: 'orange', description: 'CCR · CCL zones', tier: 'architect' },
         { id: 'atlas', label: 'Atlas', icon: Gauge, color: 'cyan', description: 'Control plane', tier: 'architect' },
       ],
     },
@@ -225,7 +225,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       tabs: [
         { id: 'forge', label: 'Forge', icon: Sparkles, color: 'fuchsia', description: 'Cognitives & mint', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Command center', tier: 'cmpsbl' as SubstrateTier }] : []),
-        { id: 'infra', label: 'Infrastructure', icon: Wrench, color: 'purple', description: 'Evolution · Modernizer · Inclusive', tier: 'cmpsbl' },
+        { id: 'infra', label: 'Infrastructure', icon: Wrench, color: 'purple', description: 'Evolution · Modernizer · INCLUSIVE', tier: 'cmpsbl' },
       ],
     },
     {
@@ -234,7 +234,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       icon: Shield,
       tier: 'cmpsbl',
       tabs: [
-        { id: 'security', label: 'Security', icon: Shield, color: 'amber', description: 'Defense · Audit · Patches · Backups', tier: 'cmpsbl' },
+        { id: 'security', label: 'Security', icon: Shield, color: 'amber', description: 'DEFENSE · AUDIT · Patches · Backups', tier: 'cmpsbl' },
         { id: 'governor', label: 'Governor', icon: AlertTriangle, color: 'red', description: 'Admin & advisory', tier: 'cmpsbl' },
       ],
     },
