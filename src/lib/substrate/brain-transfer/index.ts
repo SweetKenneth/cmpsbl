@@ -754,7 +754,7 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
 
   const AUDIT_PATTERNS = [
     { title: 'Hash Chain Integrity', content: 'Every audit entry includes SHA-256 hash of previous entry. Chain verification runs every 6 hours. Any break triggers DEFENSE alert and freezes writes until investigated.', priority: 98 },
-    { title: 'Module Coverage Enforcement', content: 'AUDIT monitors ALL 21 modules. Each module must emit started/succeeded/failed events. Missing event coverage triggers parity warning. Coverage target: 100% of state-changing operations.', priority: 96 },
+    { title: 'Module Coverage Enforcement', content: 'AUDIT monitors all 9 modules and CORE kernel. Each module must emit started/succeeded/failed events. Missing event coverage triggers parity warning. Coverage target: 100% of state-changing operations.', priority: 96 },
     { title: 'Retention Policy Enforcement', content: 'Hot audit data: 90 days full detail. Warm: 1 year summarized. Cold: 7 years compressed archives. GDPR deletion requests must cascade through all tiers within 72 hours.', priority: 93 },
     { title: 'Actor Attribution Chain', content: 'Every audit entry must have actor attribution from IDENTITY module. System actions attributed to service accounts. Human actions require authenticated session. Anonymous actions tagged as "system:anonymous".', priority: 97 },
     { title: 'Compliance Report Generation', content: 'SOC2 reports aggregate audit data by control objective. GDPR reports filter by data subject. Both formats auto-generated monthly. Gap analysis highlights missing controls.', priority: 90 },

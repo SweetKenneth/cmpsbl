@@ -193,7 +193,7 @@ export async function processDecodeInput(input: DecodeInput): Promise<DecodeResp
   
   // Optionally invoke substrate modules
   if (input.invokeSubstrate) {
-    // Query all 21 modules (20 non-DECODE) in parallel for full substrate awareness
+    // Query all modules in parallel for full substrate awareness
     const moduleRoutes = Object.entries(authority) as [string, (i: string) => Promise<unknown>][];
     const results = await Promise.allSettled(
       moduleRoutes.map(async ([key, fn]) => ({ key: key.replace('to', '').toLowerCase(), data: await fn(raw) }))
