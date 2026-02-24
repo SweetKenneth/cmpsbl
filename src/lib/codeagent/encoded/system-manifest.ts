@@ -53,17 +53,17 @@ export interface RouteEntry {
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
 /**
- * 15-Entity Architecture
+ * 15-Entity + 9-Zone Architecture
  *
  * CORE (1) — standalone kernel
  * Modules (8): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
  * Meshes (5): DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
  * INTEGRATION (1) — standalone
  *
- * Hidden layers:
- *   CCR (Layer 0) facades: system, brain, memory, dream
- *   CCL (Layer 1) facades: ripple, access, identity, relay, audit
- *   Absorbed: modernizer → EVOLUTION mesh
+ * Hidden layers with surgically hot-swappable Zones:
+ *   CCR (Layer 0) — 4 Zones: SYSTEM, BRAIN, MEMORY, DREAM
+ *   CCL (Layer 1) — 5 Zones: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
+ *   Absorbed: MODERNIZER → EVOLUTION mesh
  */
 export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
   // ─── Kernel ────────────────────────────────────────────────────────────────
