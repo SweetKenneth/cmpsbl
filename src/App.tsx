@@ -14,6 +14,9 @@ const MotionConfigWrapper = lazy(() => import("framer-motion").then(m => ({ defa
 const SmartToastRenderer = lazy(() => import("@/components/toast/SmartToastRenderer"));
 const SonnerToaster = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
 const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
+
+// Defer non-critical CSS (substrate voice, decode orb, clockless river animations)
+const loadDeferredCSS = () => import("@/styles/deferred.css");
 import { installLastInteractionTracking } from "@/lib/ui/lastInteraction";
 import { installSiteGuard } from "@/lib/defense/site-guard";
 import { initSiteAnalytics } from "@/lib/analytics/site-tracker";
