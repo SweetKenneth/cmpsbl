@@ -165,7 +165,7 @@ Returns detailed health metrics for all modules.
     "modules": {
       "core": { "health": 100, "status": "healthy", "circuit_state": "closed" },
       "brain": { "health": 100, "status": "healthy", "circuit_state": "closed" }
-      // ... all 21 modules
+      // ... all modules and zones
     }
   }
 }
