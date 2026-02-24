@@ -56,3 +56,6 @@ export { useCapabilities, type UseCapabilitiesReturn } from '@/lib/substrate/cap
 export { useArchivedCapabilities, type UseArchivedCapabilitiesReturn } from '@/lib/substrate/capabilities/useArchivedCapabilities';
 export { useSupportBot, type UseSupportBotReturn } from '@/lib/substrate/support-bot/useSupportBot';
 export { useDecodePersonality, type UseDecodePersonalityReturn } from '@/lib/substrate/decode/useDecodePersonality';
+
+// Matrix Resilience (SPARTA Epoch — 10 resilience engines)
+export { useMatrixResilience, type UseMatrixResilienceReturn } from './useMatrixResilience';

@@ -5156,6 +5156,49 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     }
 
+    // ═══ MATRIX RESILIENCE COMMANDS ═══
+    else if (base === 'matrix.canary') {
+      const { getActiveCanaries, getAllCanaries } = await import('@/lib/substrate/node-canary');
+      return { success: true, output: `◉ Node Canaries\n\n${JSON.stringify({ active: getActiveCanaries(), all: getAllCanaries().slice(-10) }, null, 2)}` };
+    } else if (base === 'matrix.killswitch') {
+      const { getAllKillStates } = await import('@/lib/substrate/sector-killswitch');
+      return { success: true, output: `◉ Sector Kill Switch States\n\n${JSON.stringify(getAllKillStates(), null, 2)}` };
+    } else if (base === 'matrix.killswitch.kill') {
+      const { killSector } = await import('@/lib/substrate/sector-killswitch');
+      const sector = args[0] as any; const reason = args.slice(1).join(' ') || 'Manual kill';
+      return { success: true, output: `◉ Sector Killed\n\n${JSON.stringify(killSector(sector, reason), null, 2)}` };
+    } else if (base === 'matrix.killswitch.revive') {
+      const { reviveSector } = await import('@/lib/substrate/sector-killswitch');
+      return { success: true, output: `◉ Sector Revived\n\n${JSON.stringify(reviveSector(args[0] as any), null, 2)}` };
+    } else if (base === 'matrix.redundant') {
+      const { getAllPairs } = await import('@/lib/substrate/redundant-nodes');
+      return { success: true, output: `◉ Redundant Node Pairs\n\n${JSON.stringify(getAllPairs(), null, 2)}` };
+    } else if (base === 'matrix.chaos') {
+      const { getChaosStats, getExperiments } = await import('@/lib/substrate/chaos-testing');
+      return { success: true, output: `◉ Chaos Testing\n\n${JSON.stringify({ stats: getChaosStats(), recent: getExperiments(5) }, null, 2)}` };
+    } else if (base === 'matrix.chaos.inject') {
+      const { injectChaos } = await import('@/lib/substrate/chaos-testing');
+      return { success: true, output: `◉ Chaos Injected\n\n${JSON.stringify(injectChaos((args[0] || 'breaker_trip') as any, args[1] || 'decode'), null, 2)}` };
+    } else if (base === 'matrix.correlation') {
+      const { getCorrelationSummary } = await import('@/lib/substrate/cross-sector-correlation');
+      return { success: true, output: `◉ Cross-Sector Correlation\n\n${JSON.stringify(getCorrelationSummary(), null, 2)}` };
+    } else if (base === 'matrix.heatmap') {
+      const { getHeatmapSummary } = await import('@/lib/substrate/health-heatmap');
+      return { success: true, output: `◉ Health Heatmap\n\n${JSON.stringify(getHeatmapSummary(), null, 2)}` };
+    } else if (base === 'matrix.forecast') {
+      const { getForecastSummary, getActiveForecasts } = await import('@/lib/substrate/anomaly-forecasting');
+      return { success: true, output: `◉ Anomaly Forecasting\n\n${JSON.stringify({ summary: getForecastSummary(), active: getActiveForecasts().slice(-5) }, null, 2)}` };
+    } else if (base === 'matrix.quorum') {
+      const { getQuorumSummary, getQuorumConfig } = await import('@/lib/substrate/quorum-healing');
+      return { success: true, output: `◉ Quorum Healing\n\n${JSON.stringify({ summary: getQuorumSummary(), config: getQuorumConfig() }, null, 2)}` };
+    } else if (base === 'matrix.incidents') {
+      const { getIncidentSummary, getOpenIncidents } = await import('@/lib/substrate/immutable-incidents');
+      return { success: true, output: `◉ Immutable Incidents\n\n${JSON.stringify({ summary: getIncidentSummary(), open: getOpenIncidents().slice(-5) }, null, 2)}` };
+    } else if (base === 'matrix.queue') {
+      const { getQueueState } = await import('@/lib/substrate/priority-queue');
+      return { success: true, output: `◉ Priority Queue\n\n${JSON.stringify(getQueueState(), null, 2)}` };
+    }
+
     // Unknown command
     else {
       return {
