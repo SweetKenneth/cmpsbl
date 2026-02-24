@@ -9,6 +9,7 @@ import { Activity, Wifi, WifiOff, Cpu, HardDrive, Clock, Terminal, Sparkles, Shi
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useSystemVersion, useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
+import { useMetric } from '@/stores/publicMetricsStore';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DashboardAudio } from './audio';
@@ -84,9 +85,9 @@ interface OSHeaderProps {
 export function OSHeader({ userEmail, role }: OSHeaderProps) {
   const systemVersion = useSystemVersion();
   const healthScore = useSubstrateHealthScore();
+  const version = useMetric('version');
   const [showDetails, setShowDetails] = useState(false);
   
-  const versionData = systemVersion.data?.data as { version?: string } | undefined;
   const isOnline = !systemVersion.isError;
   
   const roleConfig: Record<SubstrateRole, { label: string; color: string; border: string; text: string; icon: typeof Terminal }> = {
@@ -230,7 +231,7 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
                 </p>
                 <span className="text-muted-foreground/30 hidden sm:inline">|</span>
                 <span className="text-[8px] sm:text-[10px] font-mono text-cyan-400/80 shrink-0">
-                  v{versionData?.version || '10.9.1'}
+                  v{version}
                 </span>
               </div>
             </div>
