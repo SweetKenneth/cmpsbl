@@ -234,7 +234,7 @@ export default function Explore() {
               {/* Mini stats row */}
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
                 {[
-                  { value: String(modulesCount), label: "Modules" },
+                  { value: String(modulesCount), label: "Entities" },
                   { value: String(enginesCount + metaEnginesCount), label: "Engines" },
                   { value: String(providersCount), label: "AI Providers" },
                   { value: "99.9%", label: "Uptime" },

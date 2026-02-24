@@ -1887,8 +1887,8 @@ export async function executeIntelligenceGovernanceKernel(
   // Step 3: VISION - Global monitoring
   const visionStart = performance.now();
   const globalMonitoring = {
-    activeModules: 24,
-    healthyModules: 24,
+    activeModules: 10,
+    healthyModules: 10,
     activePipelines: 300,
     decisionsPerMinute: 45,
     governanceOverhead: '2.3%',

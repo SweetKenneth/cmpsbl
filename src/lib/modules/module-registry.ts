@@ -440,7 +440,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     features: ["Isolated execution environments", "Speculative run support", "Untrusted code containment", "Evolution testing zones", "User experimentation sandboxes"],
     highlights: [
       { title: "Zero Blast Radius Isolation", description: "Every sandbox is a hermetically sealed environment. Memory, state, and side-effects are fully contained — a runaway experiment cannot affect production, other sandboxes, or the substrate core." },
-      { title: "Evolution Testing Zones", description: "MODERNIZER and SEBA use SANDBOX to test architectural proposals before production application. Run shadow deployments, measure impact, and validate changes with zero production risk." },
+      { title: "Evolution Testing Zones", description: "EVOLUTION and SEBA use SANDBOX to test architectural proposals before production application. Run shadow deployments, measure impact, and validate changes with zero production risk." },
       { title: "User Experimentation Containment", description: "Let users experiment with dangerous configurations, custom code, and novel workflows in a safe sandbox. If it breaks, only the sandbox is affected — reset and try again." },
     ],
     codeSnippet: `import { useSandbox } from '@cmpsbl/substrate';\n\nconst { create, execute, teardown } = useSandbox();\nconst env = await create({ ttl: '30m' });\nconst result = await execute(env.id, untrustedCode);\nawait teardown(env.id);`,

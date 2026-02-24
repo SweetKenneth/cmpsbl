@@ -86,9 +86,9 @@ export const DEFAULT_METRICS: PublicMetrics = {
   epoch: 'SPARTA',
   buildDate: new Date().toISOString().split('T')[0],
   
-  // Architecture Counts — 10 public entities (CORE + 8 Modules + INTEGRATION) + 5 mesh overlays + 9 Zones
+  // Architecture Counts — 10 public entities (CORE + 9 Modules)
   modulesCount: 10,
-  layersCount: 5,
+  layersCount: 6,
   
   // Synergy Metrics (88 core + 27 discovery + 32 S-tier + 53 infrastructure = 200 + 100 crystallized = 300)
   synergyPipelinesCount: 300,
