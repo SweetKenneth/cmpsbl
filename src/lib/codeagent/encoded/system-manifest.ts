@@ -52,12 +52,12 @@ export interface RouteEntry {
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
 /**
- * 15-Entity + 9-Zone Architecture
+ * 10-Entity + 5-Mesh-Overlay + 9-Zone Architecture
  *
- * CORE (1) — standalone kernel
- * Modules (8): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
- * Meshes (5): DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
- * INTEGRATION (1) — standalone
+ * CORE (kernel, boots first)
+ * 8 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
+ * INTEGRATION (module, boots last)
+ * 5 Mesh Overlays (wrap modules): DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
  *
  * Hidden layers with surgically hot-swappable Zones:
  *   CCR (Layer 0) — 4 Zones: SYSTEM, BRAIN, MEMORY, DREAM
