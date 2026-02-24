@@ -379,7 +379,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     features: ["Append-only event logging", "Cryptographic hash chaining", "Cross-module event capture", "Compliance reporting", "Legal defensibility layer"],
     highlights: [
       { title: "Cryptographic Hash Chaining", description: "Every audit entry is linked to its predecessor via SHA-256 hashing, creating a tamper-evident chain. Any modification to historical records is instantly detectable." },
-      { title: "Cross-Module Event Capture", description: "AUDIT listens to all 21 modules via RIPPLE, automatically capturing governance decisions, security events, evolution proposals, and administrative actions without module-level instrumentation." },
+      { title: "Cross-Module Event Capture", description: "AUDIT listens to all modules and zones via RIPPLE, automatically capturing governance decisions, security events, evolution proposals, and administrative actions without module-level instrumentation." },
       { title: "Compliance-Ready Reports", description: "Generate SOC2, GDPR, and HIPAA-aligned audit reports with a single command. Filter by time range, actor, module, or action type with full chain-of-custody documentation." },
     ],
     codeSnippet: `import { useAuditModule } from '@cmpsbl/substrate';\n\nconst { log, verify, report } = useAuditModule();\nconst integrity = await verify();\n// integrity.valid: true\nconst compliance = await report({ standard: 'SOC2' });`,
