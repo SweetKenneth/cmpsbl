@@ -210,7 +210,7 @@ export function generateDesktopBootScreen(): string[] {
     '  │  ◉ nexus ─────────── AI routing                 [OK]  │',
     '  │  ◉ vision ────────── observability              [OK]  │',
     '  │  ◉ system ────────── orchestration              [OK]  │',
-    '  │  ◉ modernizer ────── evolution engine           [OK]  │',
+    '  │  ◉ evolution ─────── evolution engine            [OK]  │',
     '  │  ◉ inclusive ─────── accessibility              [OK]  │',
     '  │  ◉ integration ───── enterprise adapters        [OK]  │',
   '  │  ◉ cortex ────────── policy intent (manual)     [OK]  │',
