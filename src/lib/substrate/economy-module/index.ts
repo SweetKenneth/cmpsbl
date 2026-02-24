@@ -1,6 +1,6 @@
 /**
  * ECONOMY Module — Cost Attribution & Budget Engine
- * v10.5.1 ARCHITECT Epoch — Real-time cost tracking, budget enforcement, pricing signals
+ * SPARTA Epoch — Real-time cost tracking, budget enforcement, pricing signals
  * Circuit Breaker + Hot-Swap + Graceful Fallback
  * 
  * CLM-Requested Upgrades Implemented:

@@ -1,8 +1,8 @@
 /**
  * INCLUSIVE Module Tab — Human Compatibility Pipeline
- * v10.5.4 ARCHITECT Epoch — WCAG Scanning, Repair, Validation, Profiling, Reporting
+ * SPARTA Epoch — WCAG Scanning, Repair, Validation, Profiling, Reporting
  * 
- * Full glue layer integration across 21 modules:
+ * Full glue layer integration across 24 modules:
  * - SYSTEM: self_scan → system.audit
  * - VISION: score → vision.health metrics  
  * - DEFENSE: severity → defense risk pipeline

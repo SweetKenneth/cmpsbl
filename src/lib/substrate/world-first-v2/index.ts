@@ -1,5 +1,5 @@
 /**
- * World-First Enhancements v2 — v9.1.0 ARCHITECT Epoch
+ * World-First Enhancements v2 — SPARTA Epoch
  * 56 additional high-value autonomous functions across 4 domains
  */
 

@@ -1,6 +1,6 @@
 /**
  * Meta-Engine Registry
- * v10.5.4 ARCHITECT Epoch — 24 Meta-Engines Orchestrating 76 Engines → 400 Capabilities
+ * SPARTA Epoch — 24 Meta-Engines Orchestrating 76 Engines → 525+ Capabilities
  * 
  * Meta-Engines provide the highest level of abstraction,
  * combining multiple engines into unified execution pipelines.
