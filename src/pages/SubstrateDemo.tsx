@@ -102,8 +102,8 @@ const DEMO_SCENARIOS = [
   },
   {
     name: 'Full Orchestration',
-    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration'],
-    description: '15 entities + 9 zones — full substrate orchestration',
+    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration', 'governance', 'intent', 'evolution', 'immunity', 'defense'],
+    description: '10 entities + 5 mesh overlays + 9 zones — full substrate orchestration',
     icon: Sparkles,
   },
 ];
