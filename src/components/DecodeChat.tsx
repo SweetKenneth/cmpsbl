@@ -32,7 +32,7 @@ export function DecodeChat() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'DECODE online. I interpret natural language into structured intents and route them to the appropriate substrate execution surfaces.\n\nHow can I help you?' }
+    { role: 'assistant', content: 'DECODE online. I interpret natural language into structured intents and route them to the appropriate substrate Matrix Nodes.\n\nHow can I help you?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
