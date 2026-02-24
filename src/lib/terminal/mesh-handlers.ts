@@ -639,7 +639,7 @@ export function registerMeshHandlers() {
           'mesh.chain.run <keys>': 'Execute optimal chain',
           'mesh.flush': 'Force-flush pending gap signals',
           'mesh.discover': 'Run discovery cycle (gaps → recommendations)',
-          'mesh.discover.all': 'Run self-discovery for all 21 modules',
+          'mesh.discover.all': 'Run self-discovery for all 9 modules',
           'mesh.discover.module <name>': 'Run self-discovery for one module',
           'mesh.discover.advanced': '🆕 Run all v10.4 discovery phases',
           'mesh.scores': 'Intent quality leaderboard',

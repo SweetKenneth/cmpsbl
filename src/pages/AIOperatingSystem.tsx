@@ -251,7 +251,7 @@ export default function AIOperatingSystem() {
                 <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl">
-                <Link to="/modules">Explore All 21 Modules</Link>
+                <Link to="/modules">Explore All 9 Modules</Link>
               </Button>
             </div>
           </div>

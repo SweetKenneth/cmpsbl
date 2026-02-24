@@ -29,7 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// All 21 modules organized by 6-layer architecture
+// All execution surfaces organized by architecture layer
 const codeExamples = [
   // KERNEL LAYER
   {

@@ -4819,7 +4819,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         output += `│\n│  These engines orchestrate the substrate's 56 unique world-first\n`;
-        output += `│  enhancements across all 21 modules.\n`;
+        output += `│  enhancements across all 9 modules.\n`;
         output += `│\n└───────────────────────────────────────────────────────────────\n`;
         
         return { success: true, output, data: worldFirst };

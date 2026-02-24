@@ -321,7 +321,7 @@ export async function runModuleDiscovery(moduleName: string): Promise<ModuleDisc
 }
 
 /**
- * Run self-discovery for ALL 21 modules
+ * Run self-discovery for all modules
  */
 export async function runAllModuleDiscovery(): Promise<{
   totalProposals: number;

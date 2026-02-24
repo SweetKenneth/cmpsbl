@@ -215,7 +215,7 @@ async function assessSecurityPosture(): Promise<'weak' | 'moderate' | 'strong'> 
 }
 
 /**
- * Detect missing capabilities across all 21 modules
+ * Detect missing capabilities across all execution surfaces
  */
 async function detectMissingCapabilities(): Promise<MissingCapability[]> {
   const missing: MissingCapability[] = [];
