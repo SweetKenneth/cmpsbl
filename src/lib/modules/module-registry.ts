@@ -312,7 +312,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     layer: "Orchestrator",
     icon: Workflow,
     color: "fuchsia-500",
-    useCaseH1: "AI Meta-Orchestration: Coordinate 21 Modules as One Intelligence",
+    useCaseH1: "AI Meta-Orchestration: Coordinate All Entities as One Intelligence",
     heroDescription: "CORTEX is the conductor of the substrate symphony. It doesn't just manage modules — it discovers emergent capabilities from their interactions, creating intelligence greater than the sum of its parts.",
     features: ["Cross-module workflow orchestration", "Synergy pipeline discovery", "Emergent capability detection", "Adaptive resource allocation", "147 pre-built synergy pipelines"],
     highlights: [
