@@ -62,7 +62,7 @@ export default function InvestorsPublic() {
   };
 
   const metrics = [
-    { icon: Layers, label: "Integrated Modules", value: String(modulesCount), color: "text-primary" },
+    { icon: Layers, label: "Modules", value: String(modulesCount), color: "text-primary" },
     { icon: Zap, label: "Crystallized Pipelines", value: String(stierPipelinesCount), color: "text-emerald-500" },
     { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
     { icon: Globe, label: "Architecture Layers", value: String(layersCount), color: "text-violet-400" }
