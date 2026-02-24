@@ -547,7 +547,7 @@ export {
 // Re-export substrate client from lib
 export { 
   substrate, 
-  // Quick access module aliases (all 21 modules + SEBA + Infrastructure Six)
+  // Quick access module aliases (10 entities + 5 overlays + 9 zones + SEBA)
   core,
   brain,
   decode,
