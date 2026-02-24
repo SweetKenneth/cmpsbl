@@ -1230,10 +1230,10 @@ function ModernizerShadowPanel() {
       setLastReport(report);
       setPerfStats(getPerformanceSummary());
       setPerfEntries(getPerformanceStats());
-      voice.success?.('Modernizer shadow complete');
-      toast.success(`Modernizer Shadow: ${report.summary.executorFixed} fixed, ${report.summary.encodeEscalated} escalated, ${report.summary.rulesGenerated} rules generated`);
+      voice.success?.('EVOLUTION shadow complete');
+      toast.success(`EVOLUTION Shadow: ${report.summary.executorFixed} fixed, ${report.summary.encodeEscalated} escalated, ${report.summary.rulesGenerated} rules generated`);
     } catch (err: any) {
-      toast.error(`Modernizer shadow failed: ${err.message}`);
+      toast.error(`EVOLUTION shadow failed: ${err.message}`);
     } finally {
       setRunning(false);
     }
@@ -1259,9 +1259,9 @@ function ModernizerShadowPanel() {
                 <Target className="w-5 h-5 text-amber-500" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-base mb-1">Modernizer Shadow Mode</h3>
+                <h3 className="font-semibold text-base mb-1">EVOLUTION Shadow Mode</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Runs a real Modernizer scan to find system gaps, then tasks executors with fixing them in shadow mode.
+                  Runs a real EVOLUTION scan to find system gaps, then tasks executors with fixing them in shadow mode.
                   Failures escalate to ENCODE — its fixes become learning rules the executors absorb.
                   Watch performance improve over time as they learn from real-world scenarios.
                 </p>
@@ -1529,7 +1529,7 @@ function ModernizerShadowPanel() {
         </CardHeader>
         <CardContent className="space-y-3">
           {[
-            { icon: '🔍', text: 'Modernizer scans for real system gaps — missing capabilities, anomalies, risk flags, stale modules' },
+            { icon: '🔍', text: 'EVOLUTION scans for real system gaps — missing capabilities, anomalies, risk flags, stale modules' },
             { icon: '🎯', text: 'Each gap becomes a shadow training task assigned to the best-matched executor' },
             { icon: '⚡', text: 'Executor attempts the fix in shadow mode — no real changes, just scored performance' },
             { icon: '⬆️', text: 'Failures escalate to ENCODE\'s 7-strategy cascade — deterministic repair, learning rules, pattern matching' },

@@ -94,7 +94,7 @@ interface RequestAnalysis {
 }
 
 export function analyzeRequest(input: string): RequestAnalysis {
-  const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'ripple', 'access', 'decode', 'modernizer'];
+  const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'ripple', 'access', 'decode', 'evolution'];
   const changeTypes = ['edge_function', 'config_update', 'prompt_refinement', 'rate_limit', 'rls_policy', 'react_component', 'react_hook', 'api_client', 'database_migration', 'test_suite'];
   
   const lowerInput = input.toLowerCase();
@@ -130,7 +130,7 @@ export function generateClarifyingQuestions(analysis: RequestAnalysis): Clarifyi
       id: 'q_module',
       question: 'Which module should this change target?',
       type: 'choice',
-      options: ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'decode', 'modernizer'],
+      options: ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'decode', 'evolution'],
       required: true,
       answered: false,
     });

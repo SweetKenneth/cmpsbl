@@ -304,13 +304,13 @@ export function MetricsGrid() {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Live Telemetry</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">architect epoch • real-time substrate metrics</p>
+            <p className="text-[10px] text-muted-foreground font-mono">sparta epoch • real-time substrate metrics</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="text-[9px] h-5 border-indigo-500/30 text-indigo-400">
             <GitBranch className="w-3 h-3 mr-1" />
-            v10.5.0
+            SPARTA
           </Badge>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
             <span className="relative flex h-2 w-2">

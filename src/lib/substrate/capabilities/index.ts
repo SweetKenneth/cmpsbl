@@ -114,7 +114,7 @@ export type CapabilityId =
   | 'config_drift_detector'
   | 'audit_compliance_reporter'
   
-  // MODERNIZER Module (4)
+  // EVOLUTION Mesh (4)
   | 'proposal_impact_analyzer'
   | 'migration_risk_scorer'
   | 'deprecation_path_finder'
@@ -176,7 +176,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'predictive_issue_prevention',
     name: 'Predictive Issue Prevention',
     description: 'Detects patterns before failures occur and auto-suggests fixes',
-    modules: ['VISION', 'BRAIN', 'MODERNIZER'],
+    modules: ['VISION', 'BRAIN', 'EVOLUTION'],
     layer: 'Operational',
     userBenefit: 'Proactive problem detection before user impact',
     status: 'active',
@@ -236,7 +236,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'autonomous_documentation',
     name: 'Autonomous Documentation',
     description: 'Self-documents changes as they happen, keeps docs synced',
-    modules: ['MODERNIZER', 'DECODE', 'SYSTEM'],
+    modules: ['EVOLUTION', 'DECODE', 'SYSTEM'],
     layer: 'Admin',
     userBenefit: 'Documentation that writes itself',
     status: 'active',
@@ -284,7 +284,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'evolution_confidence_scoring',
     name: 'Evolution Confidence Scoring',
     description: 'Quantifies risk/reward of proposed changes before execution',
-    modules: ['MODERNIZER', 'BRAIN', 'CORTEX'],
+    modules: ['EVOLUTION', 'BRAIN', 'CORTEX'],
     layer: 'Orchestrator',
     userBenefit: 'Safe evolution with transparent risk assessment',
     status: 'active',

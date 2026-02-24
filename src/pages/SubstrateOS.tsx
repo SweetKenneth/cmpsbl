@@ -225,7 +225,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
       tabs: [
         { id: 'forge', label: 'Forge', icon: Sparkles, color: 'fuchsia', description: 'Cognitives & mint', tier: 'cmpsbl' },
         ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, color: 'blue', description: 'Command center', tier: 'cmpsbl' as SubstrateTier }] : []),
-        { id: 'infra', label: 'Infrastructure', icon: Wrench, color: 'purple', description: 'Evolution · Modernizer · INCLUSIVE', tier: 'cmpsbl' },
+        { id: 'infra', label: 'Infrastructure', icon: Wrench, color: 'purple', description: 'EVOLUTION · Shadow Mode · INCLUSIVE', tier: 'cmpsbl' },
       ],
     },
     {
@@ -647,11 +647,11 @@ function MergedInfraTab({ enabled }: { enabled: boolean }) {
 
   return (
     <TabPane id="infra">
-      <TabHeader icon={Wrench} title="Infrastructure" subtitle="Evolution Lifecycle · Modernizer · INCLUSIVE" color="purple" tier="cmpsbl" />
+      <TabHeader icon={Wrench} title="Infrastructure" subtitle="EVOLUTION Lifecycle · Shadow Mode · INCLUSIVE" color="purple" tier="cmpsbl" />
       <SubTabBar
         tabs={[
-          { id: 'evolution', label: 'Evolution Lifecycle', icon: Dna },
-          { id: 'modernizer', label: 'Evolution Lifecycle (Shadow Mode)', icon: Wand2 },
+          { id: 'evolution', label: 'EVOLUTION Lifecycle', icon: Dna },
+          { id: 'modernizer', label: 'EVOLUTION Shadow Mode', icon: Wand2 },
           { id: 'inclusive', label: 'INCLUSIVE', icon: Users },
         ]}
         active={activeInfra}

@@ -181,7 +181,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     id: 'evolution',
     name: 'EVOLUTION',
     layer: 'mesh-overlay',
-    description: 'Self-improvement mesh. Mutation proposals, shadow A/B testing, canary deployment, promotion gates. Absorbs MODERNIZER.',
+    description: 'Self-improvement mesh. Mutation proposals, shadow A/B testing, canary deployment, promotion gates.',
     corePath: 'src/lib/evolution-mesh/',
     hookPath: 'src/hooks/substrate/useModernizer.ts',
     dashboardPath: 'src/pages/Modernizer.tsx',
@@ -365,5 +365,5 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
 
 export function getSystemSummary(): string {
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate v11.1.0: 10 entities (CORE + 8 Modules + INTEGRATION) + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 Zones (4 CCR + 5 CCL), ${componentCount} registered UI components. Meshes wrap modules as protective layers. MODERNIZER absorbed by EVOLUTION mesh.`;
+  return `CMPSBL Substrate v11.1.0: 10 entities (CORE + 8 Modules + INTEGRATION) + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 Zones (4 CCR + 5 CCL), ${componentCount} registered UI components. Meshes wrap modules as protective layers.`;
 }
