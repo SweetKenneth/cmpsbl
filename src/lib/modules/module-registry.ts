@@ -288,7 +288,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     name: "EVOLUTION",
     tagline: "Bounded Self-Evolution Engine",
     description: "Identifies optimization opportunities, generates evolution proposals, evaluates them for safety, and applies approved changes under strict governance.",
-    layer: "Mesh Overlay",
+    layer: "Administrative",
     icon: Wrench,
     color: "teal-500",
     useCaseH1: "AI-Driven System Evolution: Detect, Propose, and Evolve",
