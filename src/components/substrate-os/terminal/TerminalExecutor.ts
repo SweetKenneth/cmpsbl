@@ -449,10 +449,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│          CMPSBL® OS v10.5.0 — COMMAND REFERENCE             │
+│          CMPSBL® OS — SPARTA Epoch COMMAND REFERENCE        │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 21 + Synergies          │
-│  Architecture: 21-module / 6-layer + 200 Synergy Pipelines  │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Entities: 10 + 5 Mesh + 9 Zones  │
+│  Architecture: 24-module / 5-layer + 300 Synergy Pipelines  │
 │                                                             │
 │  Access Tiers:                                              │
 │    ○ FREE        Read-only, status, pulse                   │
