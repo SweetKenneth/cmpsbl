@@ -48,7 +48,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     heroDescription: "CORE is the heartbeat of the substrate — a self-initializing runtime that boots all entities in dependency order, manages health checks, and provides the event bus that connects everything.",
     features: ["Dependency-ordered boot sequence", "Health monitoring & auto-recovery", "Event bus (pub/sub) for inter-module messaging", "Hot-reload without downtime", "Module lifecycle management"],
     highlights: [
-      { title: "Zero-Downtime Hot Reload", description: "Swap module versions in production without dropping a single request. CORE manages graceful handoffs across all 21 modules simultaneously, keeping your AI stack online 24/7." },
+      { title: "Zero-Downtime Hot Reload", description: "Swap module versions in production without dropping a single request. CORE manages graceful handoffs across all entities simultaneously, keeping your AI stack online 24/7." },
       { title: "Self-Healing Boot Sequence", description: "If a module fails during startup, CORE automatically retries with exponential backoff, re-orders dependencies, and boots degraded-mode alternatives — no human intervention required." },
       { title: "Sub-10ms Event Bus", description: "The built-in publish/subscribe event bus delivers inter-module messages in under 10 milliseconds, enabling real-time coordination across memory, security, routing, and orchestration layers." },
     ],
