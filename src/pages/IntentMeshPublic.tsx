@@ -94,7 +94,7 @@ const SELF_IMPROVEMENT_FEATURES = [
   {
     icon: Target,
     title: "Module Self-Discovery",
-    desc: "All 24 modules autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
+    desc: "All 9 modules autonomously detect capability gaps and propose new features for human approval — the mesh grows smarter over time.",
   },
   {
     icon: BarChart3,
