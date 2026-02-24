@@ -34,7 +34,7 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 21 substrate modules in boot order
+// All 24 substrate modules in boot order (10 entities + 5 mesh + 9 zones)
 const SUBSTRATE_MODULES = [
   'core',
   'ripple',
