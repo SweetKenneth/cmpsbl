@@ -92,11 +92,11 @@ export {
 
 /**
  * World-First Enhancement Registry v2
- * Complete catalog of v9.1.0 ARCHITECT Epoch enhancements
+ * Complete catalog of SPARTA Epoch enhancements
  */
 export const worldFirstEnhancementsV2 = {
-  version: '9.1.0',
-  codename: 'ARCHITECT Epoch',
+  version: '11.1.0',
+  codename: 'SPARTA Epoch',
   totalFunctions: 56,
   domains: {
     synergy: [
