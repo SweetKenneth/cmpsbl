@@ -200,18 +200,18 @@ export const worldFirstEnhancementsV2 = {
 };
 
 /**
- * Combined Enhancement Registry (v9.1.0 consolidated)
+ * Combined Enhancement Registry (SPARTA Epoch consolidated)
  */
 export const combinedEnhancementRegistry = {
   v1: {
-    version: '9.1.0',
-    codename: 'ARCHITECT Epoch Core',
+    version: '11.1.0',
+    codename: 'SPARTA Epoch Core',
     totalFunctions: 56,
     location: 'src/lib/substrate/world-first/',
   },
   v2: {
-    version: '9.1.0',
-    codename: 'ARCHITECT Epoch Advanced',
+    version: '11.1.0',
+    codename: 'SPARTA Epoch Advanced',
     totalFunctions: 56,
     location: 'src/lib/substrate/world-first-v2/',
   },
