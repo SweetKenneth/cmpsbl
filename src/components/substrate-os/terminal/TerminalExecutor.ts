@@ -301,7 +301,7 @@ function formatSystemStatus(data: any): string {
 
   const layers = ['Kernel', 'Cognitive', 'Operations', 'Admin', 'Orchestrator', 'Infrastructure'];
   for (const layer of layers) {
-    const layerModules = ALL_21_MODULES.filter(m => m.layer === layer);
+    const layerModules = ALL_EXECUTION_SURFACES.filter(m => m.layer === layer);
     output += `\n║  ┌─ ${layer.toUpperCase()} LAYER ──────────────────────────────────────`;
     for (const mod of layerModules) {
       const modData = modules[mod.key] || modules[mod.label.toLowerCase()] || {};
