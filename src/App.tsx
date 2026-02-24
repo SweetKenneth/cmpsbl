@@ -118,6 +118,7 @@ const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDas
 const EvolutionMeshLanding = lazy(() => import("./pages/EvolutionMeshLanding"));
 const Habitat = lazy(() => import("./pages/Habitat"));
 const Status = lazy(() => import("./pages/Status"));
+const SystemIntegrity = lazy(() => import("./pages/SystemIntegrity"));
 // Module pages (de-shrouded)
 const ModulesHub = lazy(() => import("./pages/ModulesHub"));
 const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
