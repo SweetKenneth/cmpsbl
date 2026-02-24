@@ -961,28 +961,19 @@ class MemoryCoreClient {
    */
   async purgeBySource(source: string): Promise<{ success: boolean; purged: number }> {
     try {
-      // Count before delete for each tier
-      const { count: c1 } = await supabase
-        .from('brain_memory_hot')
-        .select('id', { count: 'exact', head: true })
-        .eq('source', source);
+      let totalPurged = 0;
 
-      const { count: c2 } = await supabase
-        .from('brain_memory_warm')
-        .select('id', { count: 'exact', head: true })
-        .eq('source', source);
+      for (const tier of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold']) {
+        // Use type assertion to avoid TS2589 with deeply nested Supabase types
+        const { count } = await (supabase as any)
+          .from(tier)
+          .select('id', { count: 'exact', head: true })
+          .eq('source', source);
 
-      const { count: c3 } = await supabase
-        .from('brain_memory_cold')
-        .select('id', { count: 'exact', head: true })
-        .eq('source', source);
+        await (supabase as any).from(tier).delete().eq('source', source);
+        totalPurged += count ?? 0;
+      }
 
-      // Now delete
-      await supabase.from('brain_memory_hot').delete().eq('source', source);
-      await supabase.from('brain_memory_warm').delete().eq('source', source);
-      await supabase.from('brain_memory_cold').delete().eq('source', source);
-
-      const totalPurged = (c1 ?? 0) + (c2 ?? 0) + (c3 ?? 0);
       console.log(`[MemoryCore] Purged ${totalPurged} memories from source: ${source}`);
       return { success: true, purged: totalPurged };
     } catch (err) {
