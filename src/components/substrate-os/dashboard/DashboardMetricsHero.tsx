@@ -11,29 +11,37 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
+/** SPARTA Epoch — 1 Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones = 24 Surfaces */
 const MODULES_CONFIG = [
-  { id: 'core', label: 'Core', icon: Cpu, color: 'text-orange-400', hsl: '25, 95%, 53%' },
-  { id: 'ripple', label: 'Ripple', icon: Radio, color: 'text-cyan-400', hsl: '188, 86%, 53%' },
-  { id: 'access', label: 'Access', icon: Key, color: 'text-amber-400', hsl: '38, 92%, 50%' },
-  { id: 'brain', label: 'Brain', icon: Brain, color: 'text-purple-400', hsl: '270, 67%, 58%' },
-  { id: 'decode', label: 'Decode', icon: Activity, color: 'text-fuchsia-400', hsl: '292, 84%, 61%' },
-  { id: 'dream', label: 'Dream', icon: Moon, color: 'text-violet-400', hsl: '258, 90%, 66%' },
-  { id: 'defense', label: 'Defense', icon: Shield, color: 'text-red-400', hsl: '0, 84%, 60%' },
-  { id: 'nexus', label: 'Nexus', icon: Zap, color: 'text-green-400', hsl: '142, 76%, 42%' },
-  { id: 'vision', label: 'Vision', icon: Eye, color: 'text-blue-400', hsl: '217, 91%, 60%' },
-  { id: 'encode', label: 'Encode', icon: Code, color: 'text-lime-400', hsl: '84, 81%, 44%' },
-  { id: 'system', label: 'System', icon: Settings, color: 'text-emerald-400', hsl: '160, 84%, 39%' },
-  { id: 'modernizer', label: 'Evolution', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
-  { id: 'integration', label: 'Integration', icon: Plug, color: 'text-teal-400', hsl: '173, 80%, 40%' },
-  { id: 'inclusive', label: 'Inclusive', icon: Accessibility, color: 'text-pink-400', hsl: '330, 81%, 60%' },
-  { id: 'cortex', label: 'Cortex', icon: GitBranch, color: 'text-indigo-400', hsl: '239, 84%, 67%' },
-  { id: 'atlas', label: 'Atlas', icon: Globe, color: 'text-sky-400', hsl: '199, 89%, 48%' },
-  { id: 'memory', label: 'Memory', icon: Database, color: 'text-cyan-300', hsl: '187, 92%, 69%' },
-  { id: 'relay', label: 'Relay', icon: Send, color: 'text-amber-300', hsl: '45, 93%, 58%' },
-  { id: 'audit', label: 'Audit', icon: ClipboardCheck, color: 'text-slate-400', hsl: '215, 16%, 47%' },
-  { id: 'identity', label: 'Identity', icon: Fingerprint, color: 'text-emerald-300', hsl: '160, 84%, 60%' },
-  { id: 'economy', label: 'Economy', icon: DollarSign, color: 'text-yellow-400', hsl: '48, 96%, 53%' },
-  { id: 'sandbox', label: 'Sandbox', icon: Box, color: 'text-violet-300', hsl: '258, 90%, 72%' },
+  // CORE Kernel
+  { id: 'core', label: 'CORE', icon: Cpu, color: 'text-orange-400', hsl: '25, 95%, 53%' },
+  // 9 Execution Surfaces (Modules)
+  { id: 'decode', label: 'DECODE', icon: Activity, color: 'text-fuchsia-400', hsl: '292, 84%, 61%' },
+  { id: 'encode', label: 'ENCODE', icon: Code, color: 'text-lime-400', hsl: '84, 81%, 44%' },
+  { id: 'vision', label: 'VISION', icon: Eye, color: 'text-blue-400', hsl: '217, 91%, 60%' },
+  { id: 'cortex', label: 'CORTEX', icon: GitBranch, color: 'text-indigo-400', hsl: '239, 84%, 67%' },
+  { id: 'nexus', label: 'NEXUS', icon: Zap, color: 'text-green-400', hsl: '142, 76%, 42%' },
+  { id: 'economy', label: 'ECONOMY', icon: DollarSign, color: 'text-yellow-400', hsl: '48, 96%, 53%' },
+  { id: 'sandbox', label: 'SANDBOX', icon: Box, color: 'text-violet-300', hsl: '258, 90%, 72%' },
+  { id: 'inclusive', label: 'INCLUSIVE', icon: Accessibility, color: 'text-pink-400', hsl: '330, 81%, 60%' },
+  { id: 'integration', label: 'INTEGRATION', icon: Plug, color: 'text-teal-400', hsl: '173, 80%, 40%' },
+  // 5 Mesh Overlays (DEFENSE → GOVERNANCE)
+  { id: 'defense', label: 'DEFENSE', icon: Shield, color: 'text-red-400', hsl: '0, 84%, 60%' },
+  { id: 'immunity', label: 'IMMUNITY', icon: Shield, color: 'text-rose-300', hsl: '350, 80%, 70%' },
+  { id: 'modernizer', label: 'EVOLUTION', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
+  { id: 'intent', label: 'INTENT', icon: Brain, color: 'text-amber-400', hsl: '38, 92%, 50%' },
+  { id: 'governance', label: 'GOVERNANCE', icon: Globe, color: 'text-sky-400', hsl: '199, 89%, 48%' },
+  // CCR Hidden Zones
+  { id: 'system', label: 'SYSTEM', icon: Settings, color: 'text-emerald-400', hsl: '160, 84%, 39%' },
+  { id: 'brain', label: 'BRAIN', icon: Brain, color: 'text-purple-400', hsl: '270, 67%, 58%' },
+  { id: 'memory', label: 'MEMORY', icon: Database, color: 'text-cyan-300', hsl: '187, 92%, 69%' },
+  { id: 'dream', label: 'DREAM', icon: Moon, color: 'text-violet-400', hsl: '258, 90%, 66%' },
+  // CCL Hidden Zones
+  { id: 'ripple', label: 'RIPPLE', icon: Radio, color: 'text-cyan-400', hsl: '188, 86%, 53%' },
+  { id: 'access', label: 'ACCESS', icon: Key, color: 'text-amber-400', hsl: '38, 92%, 50%' },
+  { id: 'identity', label: 'IDENTITY', icon: Fingerprint, color: 'text-emerald-300', hsl: '160, 84%, 60%' },
+  { id: 'relay', label: 'RELAY', icon: Send, color: 'text-amber-300', hsl: '45, 93%, 58%' },
+  { id: 'audit', label: 'AUDIT', icon: ClipboardCheck, color: 'text-slate-400', hsl: '215, 16%, 47%' },
 ];
 
 export function DashboardMetricsHero() {

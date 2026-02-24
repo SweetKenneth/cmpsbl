@@ -1,5 +1,5 @@
 /**
- * Quick Actions Panel v10.5.1 — Cinematic system controls
+ * Quick Actions Panel — SPARTA Epoch
  * Premium glassmorphic action cards with animated feedback
  */
 

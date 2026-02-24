@@ -271,6 +271,26 @@ If you are an AI coding agent (Cursor, Copilot, Windsurf, Cline, Aider):
 © ${new Date().getFullYear()} CMPSBL — https://cmpsbl.com
 `;
 
+// WIP Banner component
+function WIPBanner() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="sticky top-0 z-50 bg-amber-500/10 border-b border-amber-500/30 backdrop-blur-xl"
+    >
+      <div className="container mx-auto px-4 py-3 flex items-center justify-center gap-3">
+        <Badge variant="outline" className="border-amber-500/40 text-amber-400 bg-amber-500/10 font-mono text-[10px] tracking-wider">
+          WORK IN PROGRESS
+        </Badge>
+        <span className="text-sm text-amber-300/80">
+          The EVOLUTION Mesh is under active development. Features shown may change.
+        </span>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function EvolutionMeshLanding() {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -410,6 +430,7 @@ export default function EvolutionMeshLanding() {
 
   return (
     <>
+      <WIPBanner />
       <Helmet>
         <title>EVLVBL — API-First Self-Evolving Code Defense | CMPSBL</title>
         <meta name="description" content="API-first self-evolving code defense. Your functions heal themselves. 29+ repair strategies run server-side — zero source code exposure. Works with any language. Free API key available." />

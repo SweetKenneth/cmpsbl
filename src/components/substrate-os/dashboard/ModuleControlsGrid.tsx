@@ -1,12 +1,12 @@
 /**
- * Module Controls Grid v11.1 SPARTA — All execution surfaces with real-time status
+ * Module Controls Grid — SPARTA Epoch — All execution surfaces with real-time status
  */
 
 import { 
   Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, 
   Radio, Key, Settings, Layers, Plug, Activity, Network, 
   RefreshCw, Wrench, GitBranch, Accessibility, Code, Database,
-  Send, ClipboardCheck, Fingerprint, DollarSign, Box, Globe
+  Send, ClipboardCheck, Fingerprint, DollarSign, Box
 } from 'lucide-react';
 import { ModuleControlCard } from './ModuleControlCard';
 import { 
@@ -219,16 +219,6 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     },
     // Orchestrator Layer
     {
-      id: 'atlas', name: 'ATLAS', layer: 'orchestrator' as const, icon: Globe,
-      description: 'Control plane & capabilities',
-      gradient: 'bg-gradient-to-r from-sky-500 to-blue-600', accentColor: 'bg-sky-500',
-      status: systemStatusQuery,
-      metrics: [{ label: 'Plane', value: systemStatusQuery.data?.success ? 'Active' : 'Checking' }],
-      actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { const r = await system.status(); toast.info(`Atlas: ${r.success ? 'Control plane active' : 'Check failed'}`); },
-    },
-    {
-      id: 'cortex', name: 'CORTEX', layer: 'orchestrator' as const, icon: GitBranch,
       description: 'Agency-class orchestrator',
       gradient: 'bg-gradient-to-r from-indigo-500 to-violet-600', accentColor: 'bg-indigo-500',
       status: cortexStatus,
@@ -312,7 +302,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
         </div>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Surface Control Panels</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">24 SURFACES • 5 LAYERS</p>
+          <p className="text-[10px] text-muted-foreground font-mono">EXECUTION SURFACES • SPARTA EPOCH</p>
         </div>
       </div>
 
