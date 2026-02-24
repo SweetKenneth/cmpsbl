@@ -27,7 +27,7 @@ const LIBRARY_DOCS = [
   { id: "00", name: "INDEX", title: "Documentation Overview", description: "Complete guide to CMPSBL documentation" },
   { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary", description: "High-level overview for investors" },
   { id: "02", name: "WHAT-IS-CMPSBL", title: "What is CMPSBL?", description: "Introduction to cognitive infrastructure" },
-  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "21-module architecture deep dive" },
+  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "10-entity + 5-mesh architecture deep dive" },
   { id: "04", name: "USE-CASES", title: "Use Cases", description: "Real-world applications" },
   { id: "05", name: "ARCHITECTURE", title: "Architecture Overview", description: "Technical foundation" },
   { id: "06", name: "GETTING-STARTED", title: "Getting Started", description: "Quick start guide" },
