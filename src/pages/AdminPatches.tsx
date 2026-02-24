@@ -22,8 +22,9 @@ import { toast } from 'sonner';
 import { 
   Plus, Package, Shield, Download, Eye, Send, Ban, 
   ChevronRight, Clock, CheckCircle2, XCircle, FileJson,
-  GitCommit, Check, X, Rocket, Filter
+  GitCommit, Check, X, Rocket, Filter, Archive
 } from 'lucide-react';
+import { buildSubstrateZip, downloadBlob } from '@/lib/substrate-export';
 import { useSubstrateChanges, type SubstrateChange } from '@/hooks/admin/useSubstrateChanges';
 import { sendPatchToLnchbl } from '@/lib/patches/dispatch';
 import type { PatchTier, PatchStatus } from '@/lib/patches/author';
@@ -511,6 +512,7 @@ function ChangeCard({ change, onApprove, onDecline }: {
 
 function GovernanceStream() {
   const [filter, setFilter] = useState<string>('all');
+  const [exporting, setExporting] = useState(false);
   const { changes, isLoading, approve, decline, batchDispatch } = useSubstrateChanges(filter);
 
   const approvedChanges = changes.filter(c => c.lnchbl_status === 'approved');
@@ -572,16 +574,39 @@ function GovernanceStream() {
           </Select>
         </div>
 
-        {approvedChanges.length > 0 && (
-          <Button 
-            onClick={handleDispatchApproved}
-            disabled={batchDispatch.isPending}
+        <div className="flex items-center gap-2 flex-wrap">
+          {approvedChanges.length > 0 && (
+            <Button 
+              onClick={handleDispatchApproved}
+              disabled={batchDispatch.isPending}
+              className="gap-2"
+            >
+              <Rocket className="w-4 h-4" />
+              Push {approvedChanges.length} to LNCHBL
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            onClick={async () => {
+              setExporting(true);
+              try {
+                const { blob, manifest } = await buildSubstrateZip();
+                const dateStr = new Date().toISOString().slice(0, 10);
+                downloadBlob(blob, `cmpsbl-substrate-${dateStr}.zip`);
+                toast.success(`Exported ${manifest.totalFiles} files (${manifest.categories.edgeFunctions} edge fns, ${manifest.categories.migrations} migrations, ${manifest.categories.coreLibs} libs, ${manifest.categories.components} components)`);
+              } catch (err: any) {
+                toast.error(err.message || 'Export failed');
+              } finally {
+                setExporting(false);
+              }
+            }}
+            disabled={exporting}
             className="gap-2"
           >
-            <Rocket className="w-4 h-4" />
-            Push {approvedChanges.length} to LNCHBL
+            <Archive className="w-4 h-4" />
+            {exporting ? 'Building ZIP...' : 'Export Substrate ZIP'}
           </Button>
-        )}
+        </div>
       </div>
 
       {/* Stats */}
