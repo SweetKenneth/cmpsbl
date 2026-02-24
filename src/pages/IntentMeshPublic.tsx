@@ -135,7 +135,7 @@ export default function IntentMeshPublic() {
         <title>Intent Mesh — Emergent Module Intelligence | CMPSBL</title>
         <meta
           name="description"
-          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across 24 modules with 34+ resolvers. Self-learning, self-improving AI substrate intelligence."
+          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across 9 modules with 34+ resolvers. Self-learning, self-improving AI substrate intelligence."
         />
         <meta property="og:title" content="Intent Mesh — Emergent Module Intelligence | CMPSBL" />
         <meta property="og:description" content="Autonomous cross-module capability discovery with self-learning, pipeline crystallization, and intent quality scoring." />
