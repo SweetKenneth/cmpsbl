@@ -172,8 +172,8 @@ export function markModuleBooted(module: SubstrateModuleName): void {
   if (bootSequence && !bootSequence.modules_booted.includes(module)) {
     bootSequence.modules_booted.push(module);
     
-    const layer = MODULE_LAYERS[module];
-    if (layer === 'administrative' && bootSequence.current_phase !== 'complete') {
+    const entityType = MODULE_LAYERS[module];
+    if ((entityType === 'zone-ccr' || entityType === 'zone-ccl') && bootSequence.current_phase !== 'complete') {
       bootSequence.current_phase = 'administrative';
     }
   }
