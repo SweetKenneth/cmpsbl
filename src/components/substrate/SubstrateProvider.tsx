@@ -52,10 +52,13 @@ const defaultModules = ALL_MODULES.reduce((acc, m) => {
   return acc;
 }, {} as Record<SubstrateModule, ModuleStatus>);
 
+const DEFAULT_LAYERS: LayerHealth = { core: 0, ccr: 0, ccl: 0, surfaces: 0, overlays: 0 };
+
 const SubstrateContext = createContext<SubstrateContextType>({
   initialized: false,
   modules: defaultModules,
   overallHealth: 0,
+  layers: DEFAULT_LAYERS,
   refresh: async () => {},
 });
 
