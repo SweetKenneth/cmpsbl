@@ -937,7 +937,7 @@ serve(async (req) => {
                 substrate: "promptfluid®",
                 version: SUBSTRATE_VERSION,
                 type: "Cognitive Orchestration Substrate (HARDENED)",
-                modules: ["core", "brain", "decode", "defense", "nexus", "vision", "dream", "ripple", "access", "system", "modernizer", "integration", "cortex", "inclusive", "memory", "relay", "audit", "identity", "economy", "sandbox", "encode"],
+                modules: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
                 status: "operational",
                 health: Object.fromEntries(
                   Object.entries(state.modules).map(([k, v]) => [k, { score: v.healthScore, status: v.status }])
