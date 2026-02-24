@@ -20,58 +20,49 @@ import JSZip from 'jszip';
 type RawGlob = Record<string, () => Promise<string>>;
 
 // Edge functions (exclude _archived)
-const edgeFunctionFiles: RawGlob = import.meta.glob('/supabase/functions/**/index.ts', {
-  query: '?raw',
-  import: 'default',
-});
+const edgeFunctionFiles = import.meta.glob('/supabase/functions/**/index.ts', {
+  as: 'raw',
+}) as RawGlob;
 
 // Shared backend-function utils
-const edgeSharedFiles: RawGlob = import.meta.glob('/supabase/functions/_shared/**/*.ts', {
-  query: '?raw',
-  import: 'default',
-});
+const edgeSharedFiles = import.meta.glob('/supabase/functions/_shared/**/*.ts', {
+  as: 'raw',
+}) as RawGlob;
 
 // Schema migrations
-const migrationFiles: RawGlob = import.meta.glob('/supabase/migrations/**/*.sql', {
-  query: '?raw',
-  import: 'default',
-});
+const migrationFiles = import.meta.glob('/supabase/migrations/**/*.sql', {
+  as: 'raw',
+}) as RawGlob;
 
 // Substrate core libs
-const coreLibFiles: RawGlob = import.meta.glob('/src/lib/**/*.{ts,tsx}', {
-  query: '?raw',
-  import: 'default',
-});
+const coreLibFiles = import.meta.glob('/src/lib/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
 
 // Shared components
-const componentFiles: RawGlob = import.meta.glob('/src/components/**/*.{ts,tsx}', {
-  query: '?raw',
-  import: 'default',
-});
+const componentFiles = import.meta.glob('/src/components/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
 
 // Config files
-const configFiles: RawGlob = import.meta.glob('/supabase/config.toml', {
-  query: '?raw',
-  import: 'default',
-});
+const configFiles = import.meta.glob('/supabase/config.toml', {
+  as: 'raw',
+}) as RawGlob;
 
 // Theme files
-const indexCss: RawGlob = import.meta.glob('/src/index.css', {
-  query: '?raw',
-  import: 'default',
-});
+const indexCss = import.meta.glob('/src/index.css', {
+  as: 'raw',
+}) as RawGlob;
 
-const tailwindConfig: RawGlob = import.meta.glob('/tailwind.config.ts', {
-  query: '?raw',
-  import: 'default',
-});
+const tailwindConfig = import.meta.glob('/tailwind.config.ts', {
+  as: 'raw',
+}) as RawGlob;
 
 // UI components (shadcn) — kept for future category splitting
 // (note: coreLibFiles/componentFiles already cover these)
-const uiComponentFiles: RawGlob = import.meta.glob('/src/components/ui/**/*.{ts,tsx}', {
-  query: '?raw',
-  import: 'default',
-});
+const uiComponentFiles = import.meta.glob('/src/components/ui/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
