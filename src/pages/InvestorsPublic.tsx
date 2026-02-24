@@ -78,7 +78,7 @@ export default function InvestorsPublic() {
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Production Infrastructure", description: `${modulesCount} entities + 9 zones across 5 layers, self-evolving architecture (SEBA) with cryptographic stamps.` },
+    { icon: Rocket, title: "Production Infrastructure", description: `${modulesCount} entities + 5 mesh overlays + 9 zones, self-evolving architecture (SEBA) with cryptographic stamps.` },
     { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $149/mo) + infrastructure licensing via LNCHBL.com + marketplace revenue share. 90%+ gross margins." },
     { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated learning + zone architecture = a technical gap that widens daily. Can't be replicated quickly." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
