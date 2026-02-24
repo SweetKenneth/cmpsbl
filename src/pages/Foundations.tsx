@@ -56,7 +56,7 @@ const MODULES = [
   { name: "ENCODE", icon: Code, desc: "Autonomous code engine", layer: "Operational" },
   // Administrative Layer
   { name: "SYSTEM", icon: Settings, desc: "Orchestration & config", layer: "Administrative" },
-  { name: "MODERNIZER", icon: Landmark, desc: "Self-upgrade engine", layer: "Administrative" },
+  { name: "EVOLUTION", icon: Landmark, desc: "Bounded self-evolution", layer: "Administrative" },
   { name: "INTEGRATION", icon: Globe, desc: "External connectors", layer: "Administrative" },
   { name: "INCLUSIVE", icon: Users, desc: "Accessibility engine", layer: "Administrative" },
   // Orchestrator Layer

@@ -82,7 +82,7 @@ const MODULE_GROUPS = [
     layer: "Infrastructure",
     modules: [
       { name: "SYSTEM", resolvers: 2, desc: "Health checks, incident analysis" },
-      { name: "MODERNIZER", resolvers: 2, desc: "Evolution status, upgrade readiness" },
+      { name: "EVOLUTION", resolvers: 2, desc: "Evolution status, upgrade readiness" },
       { name: "INCLUSIVE", resolvers: 2, desc: "Accessibility scoring, usability assessment" },
       { name: "RIPPLE", resolvers: 2, desc: "Webhook health, event propagation" },
       { name: "INTEGRATION", resolvers: 2, desc: "Connector status, schema mapping" },

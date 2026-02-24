@@ -54,7 +54,7 @@ export const ModernizerAnalytics = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Modernizer Analytics</h2>
+      <h2 className="text-2xl font-bold">Evolution Analytics</h2>
 
       <div className="grid md:grid-cols-4 gap-4">
         <Card className="p-6">

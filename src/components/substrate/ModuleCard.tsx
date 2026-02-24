@@ -68,8 +68,8 @@ const moduleConfig: Record<SubstrateModule, {
   },
   modernizer: {
     icon: Sparkles,
-    label: 'Modernizer',
-    description: 'Website modernization',
+    label: 'Evolution',
+    description: 'Bounded self-evolution',
     color: 'text-fuchsia-500',
   },
   core: {

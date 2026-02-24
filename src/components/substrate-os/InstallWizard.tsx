@@ -111,7 +111,7 @@ const MODULES = [
   { key: 'vision', name: 'Vision', required: false, icon: '👁️', description: 'Analytics dashboard' },
   { key: 'dream', name: 'Dream', required: false, icon: '✨', description: 'Offline learning cycles' },
   { key: 'system', name: 'System', required: true, icon: '⚙️', description: 'Operations & backup' },
-  { key: 'modernizer', name: 'Modernizer', required: false, icon: '🔄', description: 'Self-upgrade system' },
+  { key: 'modernizer', name: 'Evolution', required: false, icon: '🔄', description: 'Bounded self-evolution engine' },
   { key: 'integration', name: 'Integration', required: false, icon: '🔌', description: 'Enterprise adapters & LLM governance' },
 ];
 
