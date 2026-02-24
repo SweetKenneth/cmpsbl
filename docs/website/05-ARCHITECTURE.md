@@ -1,6 +1,6 @@
 # Architecture Overview
 
-**CMPSBL® Cognitive Infrastructure — CORE Epoch**
+**CMPSBL® Cognitive Infrastructure — SPARTA Epoch**
 
 ---
 
@@ -8,20 +8,20 @@
 
 CMPSBL® is built on three core principles:
 
-1. **Composability** — Discrete modules that assemble in any configuration
+1. **Composability** — Discrete entities that assemble in any configuration
 2. **Observability** — Complete visibility into system behavior
 3. **Autonomy** — Systems that learn, adapt, and self-optimize
 
 ---
 
-## The 15-Entity Architecture
+## The 10-Entity + 5-Mesh + 9-Zone Architecture
 
-CMPSBL organizes intelligence across **15 public entities** and **2 hidden convergence layers** (CCR + CCL). Together they produce **200+ synergy pipelines** and **400+ capabilities**.
+CMPSBL organizes intelligence across **10 public entities**, **5 mesh overlays**, and **2 hidden convergence layers** containing **9 internal zones**. Together they produce **300+ synergy pipelines** and **525+ capabilities**.
 
 ### Boot Order
 
 ```
-CORE → CCR (Layer 0) → CCL (Layer 1) → Modules → Meshes → INTEGRATION
+CORE → CCR (Layer 0) → CCL (Layer 1) → 8 Modules → INTEGRATION (last) ← 5 Mesh Overlays
 ```
 
 ### Entity Map
@@ -37,14 +37,21 @@ CORE → CCR (Layer 0) → CCL (Layer 1) → Modules → Meshes → INTEGRATION
 | **ECONOMY** | Module | Cost attribution, budgeting, marketplace signaling |
 | **SANDBOX** | Module | Isolated execution environments |
 | **INCLUSIVE** | Module | Accessibility scanning, WCAG compliance |
-| **DEFENSE** | Mesh | AI-powered security, bot detection, threat analysis |
-| **IMMUNITY** | Mesh | Adaptive resilience, executor shadow training, self-healing |
-| **EVOLUTION** | Mesh | Self-improvement — mutation proposals, shadow A/B, canary deployment |
-| **INTENT** | Mesh | Cross-module intent routing, goal decomposition |
-| **GOVERNANCE** | Mesh | Ethical constraints, veto authority, coherence enforcement |
-| **INTEGRATION** | Standalone | External service connections, OAuth, third-party APIs |
+| **INTEGRATION** | Module | External service connections, OAuth, third-party APIs (boots last) |
 
-### Hidden Layers
+### Mesh Overlays (5)
+
+Protective layers that wrap all modules. Order matters:
+
+| Mesh | Position | Purpose |
+|------|----------|---------|
+| **DEFENSE** | Outermost | AI-powered security, bot detection, threat analysis |
+| **IMMUNITY** | Outer | Adaptive resilience, executor shadow training, self-healing |
+| **EVOLUTION** | Middle | Self-improvement — mutation proposals, shadow A/B, canary deployment |
+| **INTENT** | Inner | Cross-module intent routing, goal decomposition |
+| **GOVERNANCE** | Innermost | Ethical constraints, veto authority, coherence enforcement |
+
+### Hidden Convergence Layers (9 Zones)
 
 | Layer | Type | Absorbs |
 |-------|------|---------|
@@ -66,23 +73,21 @@ The invisible cognitive foundation. Owns reasoning, memory persistence, dream sy
 ### CCL — Clockless Cognitive Lucidity (Layer 1, Hidden)
 Infrastructure convergence. Owns event bus (signal), identity/auth, API key management, rate limiting, entitlements, webhook delivery, outbound routing, and compliance logging (AUDIT). Legacy commands route through CCL.
 
-### Modules (8)
+### Modules (9)
 The public capability surface:
 - **Cognitive**: DECODE (intent parsing)
 - **Orchestration**: ENCODE (code gen), CORTEX (pipelines), NEXUS (AI routing)
 - **Operational**: VISION (observability), INCLUSIVE (accessibility)
 - **Infrastructure**: ECONOMY (cost), SANDBOX (isolation)
+- **Standalone**: INTEGRATION (boots last — external service connections)
 
-### Meshes (5)
-Cross-cutting concerns that operate across all modules:
-- **DEFENSE** — Security perimeter
+### Mesh Overlays (5)
+Cross-cutting protective layers wrapping all modules (outermost → innermost):
+- **DEFENSE** — Security perimeter (outermost)
 - **IMMUNITY** — Adaptive resilience and self-healing
 - **EVOLUTION** — Self-improvement lifecycle (absorbs MODERNIZER)
 - **INTENT** — Goal decomposition and intent routing
-- **GOVERNANCE** — Ethical constraints and coherence
-
-### INTEGRATION (Standalone)
-External service connections, OAuth flows, and third-party API management.
+- **GOVERNANCE** — Ethical constraints and coherence (innermost)
 
 ---
 
@@ -99,9 +104,9 @@ CMPSBL features a **multi-tier memory architecture** that automatically manages 
 
 ## Event-Driven Communication
 
-All modules communicate through a unified event system that provides:
+All entities communicate through a unified event system that provides:
 
-- **Loose Coupling** — Modules operate independently
+- **Loose Coupling** — Entities operate independently
 - **Extensibility** — Add capabilities without changing existing ones
 - **Full Traceability** — Every interaction is observable
 
@@ -140,4 +145,4 @@ Defense-in-depth security built into the DEFENSE + IMMUNITY meshes:
 
 ---
 
-*CMPSBL® CORE Epoch — Cognitive Infrastructure for Production AI*
+*CMPSBL® SPARTA Epoch — Cognitive Infrastructure for Production AI*
