@@ -217,7 +217,7 @@ export default function InvestorsPublic() {
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-400 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <h2 className="text-3xl font-semibold mb-4 text-foreground">The Substrate</h2>
         <p className="text-muted-foreground mb-10 text-lg max-w-2xl">
-          {modulesCount} modules wrapped by 5 mesh overlays across a zone-based architecture. Production-ready cognitive infrastructure.
+          {modulesCount} entities wrapped by 5 mesh overlays across 9 hot-swappable zones. Production-ready cognitive infrastructure.
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
