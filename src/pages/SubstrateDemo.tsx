@@ -163,14 +163,14 @@ export default function SubstrateDemo() {
     setCurrentStep(-1);
   };
 
-  // Group modules by layer for display
+  // Group by new architecture layers
   const groupedModules = {
-    orchestrator: modules.filter(m => m.layer === 'orchestrator'),
-    admin: modules.filter(m => m.layer === 'admin'),
-    operational: modules.filter(m => m.layer === 'operational'),
-    cognitive: modules.filter(m => m.layer === 'cognitive'),
-    infrastructure: modules.filter(m => m.layer === 'infrastructure'),
     kernel: modules.filter(m => m.layer === 'kernel'),
+    module: modules.filter(m => m.layer === 'module'),
+    mesh: modules.filter(m => m.layer === 'mesh'),
+    standalone: modules.filter(m => m.layer === 'standalone'),
+    'zone-ccr': modules.filter(m => m.layer === 'zone-ccr'),
+    'zone-ccl': modules.filter(m => m.layer === 'zone-ccl'),
   };
 
   return (
