@@ -115,7 +115,7 @@ export default function InvestorsPublic() {
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building the cognitive operating system for AI applications. {modulesCount} modules, 14 documented world firsts, 
+            Building the cognitive operating system for AI applications. {modulesCount} modules + 5 mesh overlays, 14 documented world firsts, 
             and a self-evolving architecture that compounds daily.
           </p>
 
