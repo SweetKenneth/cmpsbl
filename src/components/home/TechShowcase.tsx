@@ -1,7 +1,7 @@
 /**
- * Tech Showcase — Interactive demonstration of all 21 CMPSBL modules
+ * Tech Showcase — Interactive demonstration of all CMPSBL execution surfaces
  * Premium terminal-style code display with syntax highlighting
- * v10.5.4: Full module coverage for the 6-layer kernel architecture + SEBA
+ * SPARTA Epoch: 9 modules + 5 meshes + 9 zones = 24 execution surfaces
  */
 
 import { useState, useEffect, useMemo } from "react";
