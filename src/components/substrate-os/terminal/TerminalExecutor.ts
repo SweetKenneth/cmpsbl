@@ -566,7 +566,7 @@ function generateFullHelp(): string {
 │  clm.add_topic       Add custom topic to bank               │
 │  clm.review_queue    View spaced repetition queue           │
 │  clm.next_review     Get next review item                   │
-│  decode.inbox        CLM reports from ALL 24 modules        │
+│  decode.inbox        CLM reports from ALL 9 modules         │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
