@@ -1,6 +1,6 @@
 /**
  * promptfluid® State Engine
- * v10.5.4 — ARCHITECT Epoch: Canonical State Contract Layer
+ * SPARTA Epoch — Canonical State Contract Layer
  * 
  * The State Engine enforces shared state schemas and contracts across all engines.
  * All state reads and writes must route through state_engine.get() and state_engine.set().

@@ -1,6 +1,6 @@
 /**
  * Infrastructure Resilience Layer
- * v10.5.4 ARCHITECT Epoch
+ * SPARTA Epoch
  * 
  * Shared circuit breaker, hot-swap, and graceful fallback utilities
  * for all Infrastructure-layer modules (Memory, Relay, Audit, Identity, Economy, Sandbox).
