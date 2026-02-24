@@ -150,6 +150,30 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Code execution & generation intelligence',
     color: 'text-yellow-500',
   },
+  immunity: {
+    icon: HeartPulse,
+    label: 'Immunity',
+    description: 'Adaptive resilience, self-healing patterns',
+    color: 'text-teal-500',
+  },
+  evolution: {
+    icon: Dna,
+    label: 'Evolution',
+    description: 'Mutation proposals, shadow A/B, promotion',
+    color: 'text-fuchsia-600',
+  },
+  intent: {
+    icon: Target,
+    label: 'Intent',
+    description: 'Cross-module intent routing, goal decomposition',
+    color: 'text-orange-600',
+  },
+  governance: {
+    icon: Scale,
+    label: 'Governance',
+    description: 'Ethical constraints, veto authority, coherence',
+    color: 'text-slate-500',
+  },
 };
 
 export function ModuleCard({ module, status, onClick }: ModuleCardProps) {
