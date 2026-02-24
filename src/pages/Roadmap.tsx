@@ -152,7 +152,7 @@ export default function Roadmap() {
             </h1>
 
             <p className="text-xl text-foreground/90 mb-8 leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
-              CMPSBL is the world's first production-ready AI governance OS. Here's where we're headed—from 21-module kernel to self-evolving cognitive cloud.
+              CMPSBL is the world's first production-ready AI governance OS. Here's where we're headed—from layered cognitive kernel to self-evolving cognitive cloud.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">

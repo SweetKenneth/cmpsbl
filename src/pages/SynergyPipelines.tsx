@@ -418,7 +418,7 @@ function SynergyExplorer() {
             Pipeline Explorer
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Browse all 200 synergy pipelines across 21 modules, filter by category, and discover how modules combine
+            Browse all 200 synergy pipelines across execution surfaces, filter by category, and discover how surfaces combine
           </p>
         </div>
         
