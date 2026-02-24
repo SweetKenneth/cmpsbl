@@ -100,7 +100,7 @@ export function getActivePairs(): RedundantPair[] {
 }
 
 export function isStandbyActive(primaryId: SubstrateModuleName): boolean {
-  return pairs.get(primaryId)?.status === 'active' ?? false;
+  return (pairs.get(primaryId)?.status === 'active') || false;
 }
 
 export function getCriticalNodes(): SubstrateModuleName[] {
