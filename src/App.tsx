@@ -113,6 +113,7 @@ const STierDemos = lazy(() => import("./pages/STierDemos"));
 const OwnerReports = lazy(() => import("./pages/admin/OwnerReports"));
 const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDashboard"));
 const EvolutionMeshLanding = lazy(() => import("./pages/EvolutionMeshLanding"));
+const Architecture = lazy(() => import("./pages/Architecture"));
 const Habitat = lazy(() => import("./pages/Habitat"));
 const Status = lazy(() => import("./pages/Status"));
 const SystemIntegrity = lazy(() => import("./pages/SystemIntegrity"));
@@ -465,6 +466,7 @@ const App = () => {
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         <Route path="/evolution-mesh" element={<EvolutionMeshLanding />} />
+                        <Route path="/architecture" element={<Architecture />} />
                         
                         {/* Legacy brain/cascade routes */}
                         <Route path="/brain" element={<Navigate to="/decode" replace />} />

@@ -312,7 +312,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
         </div>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Surface Control Panels</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">24 SURFACES • 5 LAYERS</p>
+          <p className="text-[10px] text-muted-foreground font-mono">EXECUTION SURFACES • SPARTA EPOCH</p>
         </div>
       </div>
 
