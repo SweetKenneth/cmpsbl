@@ -8,7 +8,8 @@ const corsHeaders = {
 
 /**
  * DECODE Brand Monitor — 3x daily ego/brand search
- * Searches DuckDuckGo for 6 monitored topics, stores new results
+ * Searches via Gemini grounded search for monitored topics
+ * Uses exact-match quoted queries for precision
  */
 
 const MONITORED_TOPICS = [
@@ -22,18 +23,17 @@ const MONITORED_TOPICS = [
 
 async function searchWeb(query: string): Promise<Array<{ title: string; url: string; snippet: string }>> {
   try {
-    // Use Google Gemini with grounded search (skip Firecrawl — 402)
-
-    // Fallback: Use Google Gemini with grounding/search
     const googleKey = Deno.env.get("GOOGLE_AI_STUDIO_KEY");
     if (googleKey) {
+      // Use exact-match quoted query for precision
+      const exactQuery = `"${query}"`;
       const geminiRes = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${googleKey}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: `Search the web for recent news, articles, or mentions about "${query}". Return ONLY a JSON array of objects with fields: title, url, snippet. Return up to 5 results. If nothing found, return an empty array []. Only return the JSON, nothing else.` }] }],
+            contents: [{ parts: [{ text: `Search the web for recent news, articles, or mentions about ${exactQuery}. The search term must appear EXACTLY as written — do not return results for similar or related terms. Return ONLY a JSON array of objects with fields: title, url, snippet. Return up to 5 results. If nothing found, return an empty array []. Only return the JSON, nothing else.` }] }],
             generationConfig: { temperature: 0.1 },
             tools: [{ googleSearch: {} }],
           }),
@@ -43,12 +43,10 @@ async function searchWeb(query: string): Promise<Array<{ title: string; url: str
         const geminiData = await geminiRes.json();
         const text = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
         
-        // Also check grounding metadata for search results
         const groundingMeta = geminiData.candidates?.[0]?.groundingMetadata;
         const groundingChunks = groundingMeta?.groundingChunks || [];
         const searchResults: Array<{ title: string; url: string; snippet: string }> = [];
         
-        // Extract from grounding chunks (actual search results)
         for (const chunk of groundingChunks) {
           if (chunk.web?.uri) {
             searchResults.push({
@@ -59,7 +57,6 @@ async function searchWeb(query: string): Promise<Array<{ title: string; url: str
           }
         }
         
-        // Also try to parse LLM response as JSON
         if (searchResults.length === 0) {
           try {
             const jsonMatch = text.match(/\[[\s\S]*\]/);
@@ -74,7 +71,7 @@ async function searchWeb(query: string): Promise<Array<{ title: string; url: str
           } catch { /* ignore parse errors */ }
         }
         
-        console.log(`  → Gemini grounded search: ${searchResults.length} results for "${query}"`);
+        console.log(`  → Gemini grounded search: ${searchResults.length} results for "${exactQuery}"`);
         return searchResults.slice(0, 5);
       }
     }
@@ -97,9 +94,8 @@ serve(async (req: Request) => {
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    console.log("🔍 DECODE Brand Monitor — starting search cycle (Gemini grounded)");
+    console.log("🔍 DECODE Brand Monitor — starting search cycle (exact-match mode)");
 
-    // Check if we already ran today (max 3x/day)
     const today = new Date().toISOString().split("T")[0];
     const { count: todayCount } = await supabase
       .from("decode_search_results")
@@ -117,11 +113,10 @@ serve(async (req: Request) => {
     const allResults: Array<{ topic: string; title: string; url: string; snippet: string }> = [];
 
     for (const topic of MONITORED_TOPICS) {
-      console.log(`  🔎 Searching: "${topic}"`);
+      console.log(`  🔎 Searching: "${topic}" (exact match)`);
       const results = await searchWeb(topic);
 
       for (const r of results) {
-        // Check for duplicates (same URL already stored)
         const { count: existing } = await supabase
           .from("decode_search_results")
           .select("id", { count: "exact", head: true })
@@ -133,15 +128,13 @@ serve(async (req: Request) => {
         }
       }
 
-      // Rate limit between searches
       await new Promise(resolve => setTimeout(resolve, 500));
     }
 
-    // Insert new results
     if (allResults.length > 0) {
       const rows = allResults.map(r => ({
         topic: r.topic,
-        query: r.topic,
+        query: `"${r.topic}"`,
         source_url: r.url,
         title: r.title,
         snippet: r.snippet,
@@ -154,7 +147,6 @@ serve(async (req: Request) => {
       if (error) console.error("Insert error:", error);
     }
 
-    // Log brain event
     await supabase.from("brain_events").insert({
       module: "decode",
       event_type: "brand_monitor_search",
@@ -162,6 +154,7 @@ serve(async (req: Request) => {
       data: {
         topics_searched: MONITORED_TOPICS.length,
         new_results: allResults.length,
+        search_mode: "exact_match",
         timestamp: new Date().toISOString(),
       },
     });
