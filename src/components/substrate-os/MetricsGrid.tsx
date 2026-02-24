@@ -304,7 +304,7 @@ export function MetricsGrid() {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Live Telemetry</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">architect epoch • real-time substrate metrics</p>
+            <p className="text-[10px] text-muted-foreground font-mono">sparta epoch • real-time substrate metrics</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
