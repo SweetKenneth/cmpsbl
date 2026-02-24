@@ -66,6 +66,8 @@ const MODULE_DEFINITIONS: { name: string; layer: string; icon: React.ElementType
   { name: "Defense", layer: "Overlay", icon: Shield },
   { name: "Immunity", layer: "Overlay", icon: RefreshCw },
   { name: "Evolution", layer: "Overlay", icon: Send },
+  { name: "Intent", layer: "Overlay", icon: Sparkles },
+  { name: "Governance", layer: "Overlay", icon: FileCheck },
 ];
 
 function useSystemStatus() {

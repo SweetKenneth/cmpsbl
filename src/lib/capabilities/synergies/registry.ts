@@ -17,7 +17,7 @@ const registry: SynergyRegistry = {
 
 /**
  * All 300 cross-module synergies
- * Each combines 2-5 modules for enhanced capability within the 24-module architecture
+ * Each combines 2-5 modules for enhanced capability within the substrate architecture
  */
 export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   // === INTELLIGENCE SYNERGIES ===
