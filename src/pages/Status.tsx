@@ -218,7 +218,7 @@ export default function Status() {
     return groups;
   }, [modules]);
 
-  const layerOrder = ["Kernel", "Cognitive", "Operational", "Administrative", "Orchestrator", "Infrastructure"];
+  const layerOrder = ["Kernel", "CCR Zone", "CCL Zone", "Surface", "Overlay"];
 
   return (
     <div className="min-h-screen bg-background">

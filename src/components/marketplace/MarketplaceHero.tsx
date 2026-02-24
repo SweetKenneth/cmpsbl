@@ -28,7 +28,7 @@ const MODULES = [
   { icon: Moon, name: "Dream", color: "text-purple-400", description: "Evolution" },
   // Admin Layer
   { icon: Settings, name: "System", color: "text-slate-400", description: "Administration" },
-  { icon: Crown, name: "Modernizer", color: "text-pink-400", description: "Self-upgrade" },
+  { icon: Crown, name: "Evolution", color: "text-pink-400", description: "Self-improvement" },
   { icon: Globe, name: "Integration", color: "text-emerald-400", description: "Enterprise" },
   // Orchestrator Layer
   { icon: Sparkles, name: "Cortex", color: "text-fuchsia-400", description: "Orchestrator" },
