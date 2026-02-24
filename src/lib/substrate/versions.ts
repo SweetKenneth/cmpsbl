@@ -1,32 +1,58 @@
 /**
  * Substrate Module Version Registry
- * SPARTA Epoch — Single source of truth for all module versions
+ * SPARTA Epoch v11.1.0 — Zone Architecture
+ *
+ * 15 Public Entities:
+ *   CORE (1) + 8 Modules + 5 Meshes + INTEGRATION (1)
+ *
+ * 9 Zones (surgically hot-swappable, circuit-breaker isolated):
+ *   CCR Zones (4): SYSTEM Zone, BRAIN Zone, MEMORY Zone, DREAM Zone
+ *   CCL Zones (5): RIPPLE Zone, ACCESS Zone, IDENTITY Zone, RELAY Zone, AUDIT Zone
+ *
+ * Absorbed: MODERNIZER → EVOLUTION mesh
  */
 
-// Core module versions (all 21 modules)
+// 15 public entities
 export const MODULE_VERSIONS = {
-  // Kernel Layer
-  core: { version: '11.0.0', codename: 'Foundation', layer: 'Kernel' },
-  ripple: { version: '11.0.0', codename: 'Cascade', layer: 'Kernel' },
-  access: { version: '11.0.0', codename: 'Gatekeeper', layer: 'Kernel' },
-  brain: { version: '11.0.0', codename: 'Memoria', layer: 'Cognitive' },
-  decode: { version: '11.0.0', codename: 'Interpreter', layer: 'Cognitive' },
-  nexus: { version: '11.0.0', codename: 'Router', layer: 'Operational' },
-  dream: { version: '11.0.0', codename: 'Nocturne', layer: 'Operational' },
-  defense: { version: '11.0.0', codename: 'Guardian', layer: 'Operational' },
-  vision: { version: '11.0.0', codename: 'Vee', layer: 'Operational' },
-  integration: { version: '11.0.0', codename: 'Bridge', layer: 'Operational' },
-  system: { version: '11.0.0', codename: 'Production', layer: 'Administrative' },
-  modernizer: { version: '11.0.0', codename: 'Architect', layer: 'Administrative' },
-  inclusive: { version: '11.0.0', codename: 'Clarity', layer: 'Administrative' },
-  cortex: { version: '11.0.0', codename: 'Orchestrator', layer: 'Orchestrator' },
-  encode: { version: '11.0.0', codename: 'Genesis', layer: 'Orchestrator' },
-  memory: { version: '11.0.0', codename: 'Vault', layer: 'Infrastructure' },
-  relay: { version: '11.0.0', codename: 'Dispatch', layer: 'Infrastructure' },
-  audit: { version: '11.0.0', codename: 'Ledger', layer: 'Infrastructure' },
-  identity: { version: '11.0.0', codename: 'Provenance', layer: 'Infrastructure' },
-  economy: { version: '11.0.0', codename: 'Treasury', layer: 'Infrastructure' },
-  sandbox: { version: '11.0.0', codename: 'Crucible', layer: 'Infrastructure' },
+  // Kernel (standalone)
+  core: { version: '11.1.0', codename: 'Foundation', layer: 'Kernel', type: 'kernel' as const },
+  // 8 Public Modules
+  decode: { version: '11.1.0', codename: 'Interpreter', layer: 'Cognitive', type: 'module' as const },
+  encode: { version: '11.1.0', codename: 'Genesis', layer: 'Orchestration', type: 'module' as const },
+  vision: { version: '11.1.0', codename: 'Vee', layer: 'Operational', type: 'module' as const },
+  cortex: { version: '11.1.0', codename: 'Orchestrator', layer: 'Orchestration', type: 'module' as const },
+  nexus: { version: '11.1.0', codename: 'Router', layer: 'Orchestration', type: 'module' as const },
+  economy: { version: '11.1.0', codename: 'Treasury', layer: 'Infrastructure', type: 'module' as const },
+  sandbox: { version: '11.1.0', codename: 'Crucible', layer: 'Infrastructure', type: 'module' as const },
+  inclusive: { version: '11.1.0', codename: 'Clarity', layer: 'Operational', type: 'module' as const },
+  // 5 Meshes
+  defense: { version: '11.1.0', codename: 'Guardian', layer: 'Mesh', type: 'mesh' as const },
+  immunity: { version: '11.1.0', codename: 'Sentinel', layer: 'Mesh', type: 'mesh' as const },
+  evolution: { version: '11.1.0', codename: 'Phoenix', layer: 'Mesh', type: 'mesh' as const },
+  intent: { version: '11.1.0', codename: 'Compass', layer: 'Mesh', type: 'mesh' as const },
+  governance: { version: '11.1.0', codename: 'Arbiter', layer: 'Mesh', type: 'mesh' as const },
+  // Standalone
+  integration: { version: '11.1.0', codename: 'Bridge', layer: 'Standalone', type: 'standalone' as const },
+} as const;
+
+// 9 Zone versions (surgically hot-swappable subsystems within CCR/CCL)
+export const ZONE_VERSIONS = {
+  // CCR Zones (Layer 0)
+  system: { version: '11.1.0', codename: 'Production', parent: 'CCR', description: 'Administration & config' },
+  brain: { version: '11.1.0', codename: 'Memoria', parent: 'CCR', description: 'Reasoning & learning' },
+  memory: { version: '11.1.0', codename: 'Vault', parent: 'CCR', description: 'Persistent storage & retrieval' },
+  dream: { version: '11.1.0', codename: 'Nocturne', parent: 'CCR', description: 'Offline synthesis & evolution' },
+  // CCL Zones (Layer 1)
+  ripple: { version: '11.1.0', codename: 'Cascade', parent: 'CCL', description: 'Event bus & signal propagation' },
+  access: { version: '11.1.0', codename: 'Gatekeeper', parent: 'CCL', description: 'API keys & rate limiting' },
+  identity: { version: '11.1.0', codename: 'Provenance', parent: 'CCL', description: 'Actor identity & trust' },
+  relay: { version: '11.1.0', codename: 'Dispatch', parent: 'CCL', description: 'Webhook & outbound routing' },
+  audit: { version: '11.1.0', codename: 'Ledger', parent: 'CCL', description: 'Immutable compliance logging' },
+} as const;
+
+// Absorbed module (routes to EVOLUTION mesh)
+export const ABSORBED_VERSIONS = {
+  modernizer: { version: '11.1.0', codename: 'Architect', absorbedBy: 'evolution', description: 'Self-upgrade → EVOLUTION mesh' },
 } as const;
 
 // Control plane versions
