@@ -241,7 +241,7 @@ export default function Status() {
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">System Status</h1>
           <p className="text-muted-foreground">
-            Real-time health of all 21 substrate modules · Auto-refreshes every 30 seconds
+            Real-time health of all substrate execution surfaces · Auto-refreshes every 30 seconds
           </p>
         </motion.div>
 

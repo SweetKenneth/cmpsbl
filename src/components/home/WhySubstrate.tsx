@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — Full execution surface capability showcase
+ * Why CMPSBL — 9 Module Showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v11.1 SPARTA Epoch: Complete representation of the layered kernel architecture
+ * SPARTA Epoch: Only the 9 public-facing modules
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -11,79 +11,25 @@ import {
   Moon, 
   Zap, 
   Shield, 
-  RefreshCw, 
-  Lock,
   Sparkles,
   ArrowRight,
   Eye,
   MessageSquare,
-  Cpu,
-  Radio,
-  Key,
-  Settings,
-  Layers,
   Plug,
-  Database,
-  Send,
-  FileCheck,
-  Fingerprint,
-  Coins,
-  FlaskConical,
   Code2,
   Accessibility,
+  Layers,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Hexagon } from "lucide-react";
 
-// All capabilities mapped to execution surfaces in layered kernel architecture
-const differentiators = [
-  // KERNEL LAYER - Core infrastructure
-  {
-    icon: Cpu,
-    title: "Kernel Orchestration",
-    layer: "Kernel",
-    description: "CORE module handles task scheduling, cron jobs, and kernel-level coordination across all cognitive functions.",
-    highlight: "Central Brain",
-    stat: "24",
-    statLabel: "Surfaces",
-    color: "from-orange-500 to-amber-600",
-    iconBg: "bg-gradient-to-br from-orange-500/20 to-amber-500/20",
-    iconColor: "text-orange-500",
-    glowColor: "orange",
-  },
-  {
-    icon: Radio,
-    title: "Event Streaming",
-    layer: "Kernel",
-    description: "RIPPLE module provides pub/sub messaging, cross-module communication, and event-sourced architecture.",
-    highlight: "Real-Time Bus",
-    stat: "∞",
-    statLabel: "Events/sec",
-    color: "from-cyan-500 to-teal-600",
-    iconBg: "bg-gradient-to-br from-cyan-500/20 to-teal-500/20",
-    iconColor: "text-cyan-500",
-    glowColor: "cyan",
-  },
-  {
-    icon: Key,
-    title: "Identity & Access",
-    layer: "Kernel",
-    description: "ACCESS module manages API keys, usage metering, rate limiting, and multi-tenant access control.",
-    highlight: "Zero Trust",
-    stat: "BYOK",
-    statLabel: "Architecture",
-    color: "from-amber-500 to-yellow-600",
-    iconBg: "bg-gradient-to-br from-amber-500/20 to-yellow-500/20",
-    iconColor: "text-amber-500",
-    glowColor: "amber",
-  },
-  // COGNITIVE LAYER - Intelligence
+// 9 public-facing modules only — no kernel, zones, overlays, or infrastructure
+const modules = [
   {
     icon: Brain,
     title: "Persistent Memory",
-    layer: "Cognitive",
-    description: "BRAIN module provides 3-tier memory (hot/warm/cold) that survives sessions. Your AI never forgets.",
+    module: "BRAIN",
+    description: "3-tier memory (hot/warm/cold) that survives sessions. Your AI never forgets.",
     highlight: "Never Forgets",
     stat: "∞",
     statLabel: "Memory Depth",
@@ -95,8 +41,8 @@ const differentiators = [
   {
     icon: MessageSquare,
     title: "Epistemic Chat",
-    layer: "Cognitive",
-    description: "DECODE module powers memory-aware conversations with context injection and session persistence.",
+    module: "DECODE",
+    description: "Memory-aware conversations with context injection and session persistence.",
     highlight: "Context-Aware",
     stat: "∞",
     statLabel: "Context",
@@ -106,24 +52,10 @@ const differentiators = [
     glowColor: "pink",
   },
   {
-    icon: Zap,
-    title: "Smart Routing",
-    layer: "Cognitive",
-    description: "NEXUS module routes every request to the optimal AI provider based on task, cost, and latency constraints.",
-    highlight: "Auto-Optimized",
-    stat: "<100ms",
-    statLabel: "Latency",
-    color: "from-green-500 to-emerald-600",
-    iconBg: "bg-gradient-to-br from-green-500/20 to-emerald-500/20",
-    iconColor: "text-green-500",
-    glowColor: "green",
-  },
-  // OPERATIONAL LAYER - Runtime
-  {
     icon: Shield,
     title: "Defense-First",
-    layer: "Operational",
-    description: "DEFENSE module provides behavioral analysis, threat detection, rate limiting, and governance rules.",
+    module: "DEFENSE",
+    description: "Behavioral analysis, threat detection, rate limiting, and governance rules.",
     highlight: "Enterprise Security",
     stat: "100%",
     statLabel: "Coverage",
@@ -133,10 +65,23 @@ const differentiators = [
     glowColor: "red",
   },
   {
+    icon: Zap,
+    title: "Smart Routing",
+    module: "NEXUS",
+    description: "Routes every request to the optimal AI provider based on task, cost, and latency.",
+    highlight: "Auto-Optimized",
+    stat: "<100ms",
+    statLabel: "Latency",
+    color: "from-green-500 to-emerald-600",
+    iconBg: "bg-gradient-to-br from-green-500/20 to-emerald-500/20",
+    iconColor: "text-green-500",
+    glowColor: "green",
+  },
+  {
     icon: Eye,
     title: "Full Observability",
-    layer: "Operational",
-    description: "VISION module tracks health metrics, latency, costs, and provides real-time dashboards and alerts.",
+    module: "VISION",
+    description: "Health metrics, latency, costs, and real-time dashboards and alerts.",
     highlight: "See Everything",
     stat: "24/7",
     statLabel: "Monitoring",
@@ -148,8 +93,8 @@ const differentiators = [
   {
     icon: Moon,
     title: "Dream Cycles",
-    layer: "Operational",
-    description: "DREAM module runs offline processing to consolidate memories, extract patterns, and evolve understanding.",
+    module: "DREAM",
+    description: "Offline processing to consolidate memories, extract patterns, and evolve understanding.",
     highlight: "Learns While Idle",
     stat: "24/7",
     statLabel: "Processing",
@@ -158,159 +103,11 @@ const differentiators = [
     iconColor: "text-violet-500",
     glowColor: "violet",
   },
-  // ADMIN LAYER - Control plane
-  {
-    icon: Settings,
-    title: "System Control",
-    layer: "Admin",
-    description: "SYSTEM module handles backups, restore points, configuration, and administrative operations.",
-    highlight: "Full Control",
-    stat: "1-Click",
-    statLabel: "Recovery",
-    color: "from-emerald-500 to-green-600",
-    iconBg: "bg-gradient-to-br from-emerald-500/20 to-green-500/20",
-    iconColor: "text-emerald-500",
-    glowColor: "emerald",
-  },
-  {
-    icon: Sparkles,
-    title: "Self-Improving",
-    layer: "Overlay",
-    description: "EVOLUTION mesh overlay continuously scans code, proposes upgrades, and applies patches autonomously.",
-    highlight: "Autonomous Updates",
-    stat: "Auto",
-    statLabel: "Evolution",
-    color: "from-rose-500 to-pink-600",
-    iconBg: "bg-gradient-to-br from-rose-500/20 to-pink-500/20",
-    iconColor: "text-rose-500",
-    glowColor: "rose",
-  },
-  {
-    icon: Plug,
-    title: "Enterprise Integration",
-    layer: "Admin",
-    description: "INTEGRATION module connects to enterprise systems (SAP, Oracle, Workday) and governs LLM access to real business operations.",
-    highlight: "LLM Governance",
-    stat: "35+",
-    statLabel: "Adapters",
-    color: "from-emerald-500 to-teal-600",
-    iconBg: "bg-gradient-to-br from-emerald-500/20 to-teal-500/20",
-    iconColor: "text-emerald-500",
-    glowColor: "emerald",
-  },
-  // ORCHESTRATOR LAYER - Autonomous control
-  {
-    icon: Hexagon,
-    title: "Cortex Orchestrator",
-    layer: "Orchestrator",
-    description: "CORTEX module provides autonomous multi-agent coordination, evolution sequencing, and system-wide governance decisions.",
-    highlight: "Agency Control",
-    stat: "AI",
-    statLabel: "Orchestration",
-    color: "from-fuchsia-500 to-violet-600",
-    iconBg: "bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20",
-    iconColor: "text-fuchsia-500",
-    glowColor: "violet",
-  },
-  // HUMAN COMPATIBILITY
-  {
-    icon: Accessibility,
-    title: "Inclusive A11y",
-    layer: "Admin",
-    description: "INCLUSIVE module provides human-compatibility pipeline with WCAG 2.2 scanning, accessibility repairs, and AI ethics governance.",
-    highlight: "Human Compatibility",
-    stat: "WCAG",
-    statLabel: "2.2 AA",
-    color: "from-pink-500 to-rose-600",
-    iconBg: "bg-gradient-to-br from-pink-500/20 to-rose-500/20",
-    iconColor: "text-pink-500",
-    glowColor: "rose",
-  },
-  // INFRASTRUCTURE LAYER (6 modules)
-  {
-    icon: Database,
-    title: "Vector Memory",
-    layer: "Infrastructure",
-    description: "MEMORY module provides vector embeddings, RAG orchestration, and semantic search across all knowledge stores.",
-    highlight: "RAG Pipeline",
-    stat: "∞",
-    statLabel: "Vectors",
-    color: "from-sky-500 to-blue-600",
-    iconBg: "bg-gradient-to-br from-sky-500/20 to-blue-500/20",
-    iconColor: "text-sky-500",
-    glowColor: "blue",
-  },
-  {
-    icon: Send,
-    title: "Outbound Relay",
-    layer: "Infrastructure",
-    description: "RELAY module handles outbound webhooks, email notifications, and cross-system event delivery.",
-    highlight: "Event Delivery",
-    stat: "<50ms",
-    statLabel: "Latency",
-    color: "from-lime-500 to-green-600",
-    iconBg: "bg-gradient-to-br from-lime-500/20 to-green-500/20",
-    iconColor: "text-lime-500",
-    glowColor: "green",
-  },
-  {
-    icon: FileCheck,
-    title: "Compliance Ledger",
-    layer: "Infrastructure",
-    description: "AUDIT module maintains an immutable compliance ledger for every action, decision, and data access across the substrate.",
-    highlight: "Immutable Trail",
-    stat: "100%",
-    statLabel: "Coverage",
-    color: "from-stone-500 to-gray-600",
-    iconBg: "bg-gradient-to-br from-stone-500/20 to-gray-500/20",
-    iconColor: "text-stone-500",
-    glowColor: "amber",
-  },
-  {
-    icon: Fingerprint,
-    title: "Actor Identity",
-    layer: "Infrastructure",
-    description: "IDENTITY module provides actor attribution, cryptographic signatures, and provenance tracking for every operation.",
-    highlight: "Zero-Trust Identity",
-    stat: "PKI",
-    statLabel: "Signatures",
-    color: "from-rose-500 to-red-600",
-    iconBg: "bg-gradient-to-br from-rose-500/20 to-red-500/20",
-    iconColor: "text-rose-500",
-    glowColor: "rose",
-  },
-  {
-    icon: Coins,
-    title: "Cost Attribution",
-    layer: "Infrastructure",
-    description: "ECONOMY module tracks cost attribution, budget enforcement, and economic optimization across all AI operations.",
-    highlight: "Budget Control",
-    stat: "$0.00",
-    statLabel: "Waste",
-    color: "from-amber-500 to-orange-600",
-    iconBg: "bg-gradient-to-br from-amber-500/20 to-orange-500/20",
-    iconColor: "text-amber-600",
-    glowColor: "amber",
-  },
-  {
-    icon: FlaskConical,
-    title: "Sandboxed Execution",
-    layer: "Infrastructure",
-    description: "SANDBOX module provides isolated execution environments for untrusted code, experiments, and safe AI tool-use.",
-    highlight: "Isolated Envs",
-    stat: "0",
-    statLabel: "Blast Radius",
-    color: "from-cyan-500 to-teal-600",
-    iconBg: "bg-gradient-to-br from-cyan-500/20 to-teal-500/20",
-    iconColor: "text-cyan-600",
-    glowColor: "cyan",
-  },
-  // ENCODE
   {
     icon: Code2,
     title: "Code Intelligence",
-    layer: "Cognitive",
-    description: "ENCODE module powers code execution, generation intelligence, and the DECODE → ENCODE execution pipeline.",
+    module: "ENCODE",
+    description: "Code execution, generation intelligence, and the DECODE → ENCODE pipeline.",
     highlight: "Code Execution",
     stat: "AI",
     statLabel: "Codegen",
@@ -319,17 +116,33 @@ const differentiators = [
     iconColor: "text-yellow-500",
     glowColor: "amber",
   },
+  {
+    icon: Plug,
+    title: "Enterprise Integration",
+    module: "INTEGRATION",
+    description: "Connect to enterprise systems (SAP, Oracle, Workday) with LLM governance.",
+    highlight: "LLM Governance",
+    stat: "35+",
+    statLabel: "Adapters",
+    color: "from-emerald-500 to-teal-600",
+    iconBg: "bg-gradient-to-br from-emerald-500/20 to-teal-500/20",
+    iconColor: "text-emerald-500",
+    glowColor: "emerald",
+  },
+  {
+    icon: Accessibility,
+    title: "Inclusive A11y",
+    module: "INCLUSIVE",
+    description: "Human-compatibility pipeline with WCAG 2.2 scanning and AI ethics governance.",
+    highlight: "Human Compatibility",
+    stat: "WCAG",
+    statLabel: "2.2 AA",
+    color: "from-pink-500 to-rose-600",
+    iconBg: "bg-gradient-to-br from-pink-500/20 to-rose-500/20",
+    iconColor: "text-pink-500",
+    glowColor: "rose",
+  },
 ];
-
-const LAYER_CONFIG = {
-  Kernel: { color: 'text-orange-400', count: 3 },
-  Cognitive: { color: 'text-purple-400', count: 4 },
-  Operational: { color: 'text-blue-400', count: 3 },
-  Admin: { color: 'text-emerald-400', count: 3 },
-  Infrastructure: { color: 'text-sky-400', count: 6 },
-  Orchestrator: { color: 'text-fuchsia-400', count: 1 },
-  Overlay: { color: 'text-rose-400', count: 1 },
-};
 
 // 3D tilt effect hook for cards
 function useTilt() {
@@ -358,7 +171,7 @@ function useTilt() {
 }
 
 // Individual feature card with tilt effect
-function FeatureCard({ item, idx }: { item: typeof differentiators[0]; idx: number }) {
+function FeatureCard({ item, idx }: { item: typeof modules[0]; idx: number }) {
   const { ref, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt();
   const [isHovered, setIsHovered] = useState(false);
   
@@ -431,18 +244,8 @@ function FeatureCard({ item, idx }: { item: typeof differentiators[0]; idx: numb
           </div>
         </div>
         
-        {/* Layer + Highlight pills */}
+        {/* Module name pill */}
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <Badge 
-            variant="outline" 
-            className={cn(
-              "text-[9px] h-5 px-2",
-              LAYER_CONFIG[item.layer as keyof typeof LAYER_CONFIG]?.color,
-              "border-current/30"
-            )}
-          >
-            {item.layer}
-          </Badge>
           <div className={cn(
             "inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-semibold",
             "bg-gradient-to-r text-white shadow-sm",
@@ -450,6 +253,7 @@ function FeatureCard({ item, idx }: { item: typeof differentiators[0]; idx: numb
           )}>
             {item.highlight}
           </div>
+          <span className="text-[10px] font-mono text-muted-foreground/60">{item.module}</span>
         </div>
         
         {/* Content */}
@@ -474,12 +278,6 @@ function FeatureCard({ item, idx }: { item: typeof differentiators[0]; idx: numb
 }
 
 export function WhySubstrate() {
-  const [selectedLayer, setSelectedLayer] = useState<string | null>(null);
-  
-  const filteredItems = selectedLayer 
-    ? differentiators.filter(d => d.layer === selectedLayer)
-    : differentiators;
-  
   return (
     <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
       {/* Enhanced background decoration */}
@@ -508,7 +306,7 @@ export function WhySubstrate() {
       </div>
       
       <div className="relative max-w-7xl mx-auto">
-        {/* Header with enhanced animation */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -518,7 +316,7 @@ export function WhySubstrate() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">9 Modules • 5 Meshes • 9 Zones</span>
+            <span className="text-xs">9 Modules</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             The Total{" "}
@@ -536,55 +334,20 @@ export function WhySubstrate() {
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            A full cognitive operating system with 
-            <span className="text-foreground font-medium"> kernel orchestration</span>, 
+            Nine specialized modules forming a cognitive operating system with 
             <span className="text-foreground font-medium"> intelligent routing</span>, 
-            <span className="text-foreground font-medium"> persistent memory</span>, and 
-            <span className="text-foreground font-medium"> self-evolution</span>.
+            <span className="text-foreground font-medium"> persistent memory</span>, 
+            <span className="text-foreground font-medium"> self-evolution</span>, and 
+            <span className="text-foreground font-medium"> enterprise security</span>.
           </p>
         </motion.div>
         
-        {/* Layer Filter */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8">
-          <motion.button
-            onClick={() => setSelectedLayer(null)}
-            className={cn(
-              "px-4 py-2 rounded-full text-xs font-semibold transition-all",
-              selectedLayer === null
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted/50 text-muted-foreground hover:bg-muted"
-            )}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            All Surfaces
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">{differentiators.length}</Badge>
-          </motion.button>
-          {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
-            <motion.button
-              key={layer}
-              onClick={() => setSelectedLayer(layer)}
-              className={cn(
-                "px-4 py-2 rounded-full text-xs font-semibold transition-all",
-                selectedLayer === layer
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted/50 text-muted-foreground hover:bg-muted"
-              )}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className={selectedLayer !== layer ? config.color : ""}>{layer}</span>
-              <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">{config.count}</Badge>
-            </motion.button>
-          ))}
-        </div>
-        
-        {/* Features Grid - Enhanced Bento style with 3D tilt */}
+        {/* Module Grid — 3 columns on desktop, 9 cards */}
         <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
           layout
         >
-          {filteredItems.map((item, idx) => (
+          {modules.map((item, idx) => (
             <FeatureCard key={item.title} item={item} idx={idx} />
           ))}
         </motion.div>

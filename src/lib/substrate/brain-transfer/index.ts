@@ -408,7 +408,7 @@ const SYSTEM_PATTERNS = [
   { title: 'Audit Trail Completeness', content: 'Every state-changing operation must log: who (user/system), what (action), when (timestamp), where (module), why (trigger), and how (method). Store in audit_logs with 90-day retention.', priority: 95 },
   { title: 'Capability Registry Management', content: 'Each capability has: key, enabled flag, metadata, and dependencies. Before enabling, check all dependencies are enabled. Before disabling, warn about dependents. Use dependency graph for safe ordering.', priority: 92 },
   { title: 'Graceful Degradation', content: 'When a module fails, the system should degrade gracefully: disable the module\'s features, log the failure, and continue operating. Never let one module crash the entire system.', priority: 97 },
-  { title: 'Bootstrap Ordering', content: 'Boot modules in dependency order: Kernel (1-3) → Cognitive (4-6) → Operational (7-10) → Administrative (11-14) → Orchestrator (15-16) → Infrastructure (17-22). Each module reports ready before next tier starts. 21 modules total across 6 layers.', priority: 88 },
+  { title: 'Bootstrap Ordering', content: 'Boot modules in dependency order: CORE kernel boots first, then 9 modules initialize in dependency order across 6 layers. Each module reports ready before next tier starts.', priority: 88 },
 ];
 
 const MODERNIZER_PATTERNS = [
@@ -424,7 +424,7 @@ const MODERNIZER_PATTERNS = [
 const DECODE_PATTERNS = [
   { title: 'Contextual Memory Recall', content: 'Always check conversation history before responding. Use brain_memory_hot for recent context, brain_memories for long-term knowledge. Never answer without context lookup.', priority: 95 },
   { title: 'Adaptive Tone Matching', content: 'Match the user\'s formality level. Technical users get concise, jargon-appropriate responses. Casual users get friendly, approachable language. Detect from first 2 messages.', priority: 90 },
-  { title: 'Full 21-Module Awareness', content: 'DECODE must know all 21 modules across 6 layers: Kernel (CORE, RIPPLE, ACCESS), Cognitive (BRAIN, DECODE, DREAM), Operational (DEFENSE, NEXUS, VISION, ENCODE), Administrative (SYSTEM, MODERNIZER, INTEGRATION, INCLUSIVE), Orchestrator (CORTEX, ATLAS), Infrastructure (MEMORY, RELAY, AUDIT, IDENTITY, ECONOMY, SANDBOX). Report on any module\'s learning, status, or insights when asked.', priority: 99 },
+  { title: 'Full Substrate Awareness', content: 'DECODE must know all 9 modules: BRAIN, DECODE, DEFENSE, NEXUS, VISION, DREAM, ENCODE, INTEGRATION, INCLUSIVE — plus the CORE kernel, mesh overlays, and infrastructure zones. Report on any module\'s learning, status, or insights when asked.', priority: 99 },
   { title: 'Module Learning Relay', content: 'When any module runs a CLM cycle, DECODE should be able to summarize its learnings, proposed upgrades, and risks. Pull from brain_memory_hot tagged with clm-* sources. Present in natural language.', priority: 96 },
   { title: 'Cross-Module Intelligence', content: 'DECODE is the voice of the entire substrate. When asked about upgrades or learning, query the brain-transfer pipelines for recent insights from ALL modules, not just BRAIN or DECODE.', priority: 97 },
   { title: 'Structured Response Templates', content: 'For complex answers use: 1) Brief summary (1 line), 2) Detailed explanation, 3) Action items or next steps. For simple questions, just answer directly.', priority: 88 },
@@ -754,7 +754,7 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
 
   const AUDIT_PATTERNS = [
     { title: 'Hash Chain Integrity', content: 'Every audit entry includes SHA-256 hash of previous entry. Chain verification runs every 6 hours. Any break triggers DEFENSE alert and freezes writes until investigated.', priority: 98 },
-    { title: 'Module Coverage Enforcement', content: 'AUDIT monitors ALL 21 modules. Each module must emit started/succeeded/failed events. Missing event coverage triggers parity warning. Coverage target: 100% of state-changing operations.', priority: 96 },
+    { title: 'Module Coverage Enforcement', content: 'AUDIT monitors all 9 modules and CORE kernel. Each module must emit started/succeeded/failed events. Missing event coverage triggers parity warning. Coverage target: 100% of state-changing operations.', priority: 96 },
     { title: 'Retention Policy Enforcement', content: 'Hot audit data: 90 days full detail. Warm: 1 year summarized. Cold: 7 years compressed archives. GDPR deletion requests must cascade through all tiers within 72 hours.', priority: 93 },
     { title: 'Actor Attribution Chain', content: 'Every audit entry must have actor attribution from IDENTITY module. System actions attributed to service accounts. Human actions require authenticated session. Anonymous actions tagged as "system:anonymous".', priority: 97 },
     { title: 'Compliance Report Generation', content: 'SOC2 reports aggregate audit data by control objective. GDPR reports filter by data subject. Both formats auto-generated monthly. Gap analysis highlights missing controls.', priority: 90 },
