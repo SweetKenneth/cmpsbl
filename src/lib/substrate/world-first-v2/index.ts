@@ -1,5 +1,5 @@
 /**
- * World-First Enhancements v2 — v9.1.0 ARCHITECT Epoch
+ * World-First Enhancements v2 — SPARTA Epoch
  * 56 additional high-value autonomous functions across 4 domains
  */
 
@@ -92,11 +92,11 @@ export {
 
 /**
  * World-First Enhancement Registry v2
- * Complete catalog of v9.1.0 ARCHITECT Epoch enhancements
+ * Complete catalog of SPARTA Epoch enhancements
  */
 export const worldFirstEnhancementsV2 = {
-  version: '9.1.0',
-  codename: 'ARCHITECT Epoch',
+  version: '11.1.0',
+  codename: 'SPARTA Epoch',
   totalFunctions: 56,
   domains: {
     synergy: [
@@ -200,18 +200,18 @@ export const worldFirstEnhancementsV2 = {
 };
 
 /**
- * Combined Enhancement Registry (v9.1.0 consolidated)
+ * Combined Enhancement Registry (SPARTA Epoch consolidated)
  */
 export const combinedEnhancementRegistry = {
   v1: {
-    version: '9.1.0',
-    codename: 'ARCHITECT Epoch Core',
+    version: '11.1.0',
+    codename: 'SPARTA Epoch Core',
     totalFunctions: 56,
     location: 'src/lib/substrate/world-first/',
   },
   v2: {
-    version: '9.1.0',
-    codename: 'ARCHITECT Epoch Advanced',
+    version: '11.1.0',
+    codename: 'SPARTA Epoch Advanced',
     totalFunctions: 56,
     location: 'src/lib/substrate/world-first-v2/',
   },

@@ -1,6 +1,6 @@
 /**
  * MEMORY Module CLM — Constant Learning Mode
- * v10.9.0 ARCHITECT Epoch — Circuit Breaker + Hot-Swap Aware
+ * SPARTA Epoch — Circuit Breaker + Hot-Swap Aware
  */
 
 import { emit } from '../events';

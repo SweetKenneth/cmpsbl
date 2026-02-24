@@ -1,6 +1,6 @@
 /**
  * MEMORY Module — Vector & RAG Orchestration
- * v10.9.0 ARCHITECT Epoch — Full Cognitive Upgrade
+ * SPARTA Epoch — Full Cognitive Upgrade
  * Circuit Breaker + Hot-Swap + Graceful Fallback
  * 
  * v10.9.0 Upgrades:

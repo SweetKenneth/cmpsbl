@@ -249,31 +249,41 @@ function formatPersonalityInterpret(result: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SYSTEM-WIDE 21-MODULE RESPONSE FORMATTERS (v10.5.0)
+// SYSTEM-WIDE 24-MODULE RESPONSE FORMATTERS — SPARTA Epoch
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_21_MODULES = [
+  // CORE kernel
   { key: 'core', label: 'CORE', layer: 'Kernel' },
-  { key: 'ripple', label: 'RIPPLE', layer: 'Kernel' },
-  { key: 'access', label: 'ACCESS', layer: 'Kernel' },
-  { key: 'brain', label: 'BRAIN', layer: 'Cognitive' },
+  // Execution Surfaces (9 modules)
   { key: 'decode', label: 'DECODE', layer: 'Cognitive' },
-  { key: 'dream', label: 'DREAM', layer: 'Cognitive' },
-  { key: 'defense', label: 'DEFENSE', layer: 'Operations' },
-  { key: 'nexus', label: 'NEXUS', layer: 'Operations' },
-  { key: 'vision', label: 'VISION', layer: 'Operations' },
-  { key: 'system', label: 'SYSTEM', layer: 'Admin' },
-  { key: 'modernizer', label: 'MODERNIZER', layer: 'Admin' },
-  { key: 'inclusive', label: 'INCLUSIVE', layer: 'Admin' },
-  { key: 'cortex', label: 'CORTEX', layer: 'Orchestrator' },
-  { key: 'integration', label: 'INTEGRATION', layer: 'Orchestrator' },
   { key: 'encode', label: 'ENCODE', layer: 'Orchestrator' },
-  { key: 'memory', label: 'MEMORY', layer: 'Infrastructure' },
-  { key: 'relay', label: 'RELAY', layer: 'Infrastructure' },
-  { key: 'audit', label: 'AUDIT', layer: 'Infrastructure' },
-  { key: 'identity', label: 'IDENTITY', layer: 'Infrastructure' },
+  { key: 'vision', label: 'VISION', layer: 'Operations' },
+  { key: 'cortex', label: 'CORTEX', layer: 'Orchestrator' },
+  { key: 'nexus', label: 'NEXUS', layer: 'Operations' },
   { key: 'economy', label: 'ECONOMY', layer: 'Infrastructure' },
   { key: 'sandbox', label: 'SANDBOX', layer: 'Infrastructure' },
+  { key: 'inclusive', label: 'INCLUSIVE', layer: 'Admin' },
+  { key: 'integration', label: 'INTEGRATION', layer: 'Orchestrator' },
+  // Mesh Overlays (5)
+  { key: 'defense', label: 'DEFENSE', layer: 'Mesh Overlay' },
+  { key: 'immunity', label: 'IMMUNITY', layer: 'Mesh Overlay' },
+  { key: 'evolution', label: 'EVOLUTION', layer: 'Mesh Overlay' },
+  { key: 'intent', label: 'INTENT', layer: 'Mesh Overlay' },
+  { key: 'governance', label: 'GOVERNANCE', layer: 'Mesh Overlay' },
+  // CCR Zones (4)
+  { key: 'system', label: 'SYSTEM', layer: 'CCR Zone' },
+  { key: 'brain', label: 'BRAIN', layer: 'CCR Zone' },
+  { key: 'memory', label: 'MEMORY', layer: 'CCR Zone' },
+  { key: 'dream', label: 'DREAM', layer: 'CCR Zone' },
+  // CCL Zones (5)
+  { key: 'ripple', label: 'RIPPLE', layer: 'CCL Zone' },
+  { key: 'access', label: 'ACCESS', layer: 'CCL Zone' },
+  { key: 'identity', label: 'IDENTITY', layer: 'CCL Zone' },
+  { key: 'relay', label: 'RELAY', layer: 'CCL Zone' },
+  { key: 'audit', label: 'AUDIT', layer: 'CCL Zone' },
+  // Absorbed
+  { key: 'modernizer', label: 'MODERNIZER', layer: 'Absorbed → EVOLUTION' },
 ];
 
 function formatSystemStatus(data: any): string {
@@ -439,10 +449,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│          CMPSBL® OS v10.5.0 — COMMAND REFERENCE             │
+│          CMPSBL® OS — SPARTA Epoch COMMAND REFERENCE        │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 21 + Synergies          │
-│  Architecture: 21-module / 6-layer + 200 Synergy Pipelines  │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Entities: 10 + 5 Mesh + 9 Zones  │
+│  Architecture: 24-module / 5-layer + 300 Synergy Pipelines  │
 │                                                             │
 │  Access Tiers:                                              │
 │    ○ FREE        Read-only, status, pulse                   │
@@ -551,14 +561,14 @@ function generateFullHelp(): string {
 │  clm.disable         Disable autonomous learning            │
 │  clm.cycle           Run a manual CLM cycle                 │
 │  clm.run <module>    Run CLM for a single module            │
-│  clm.run_all         Run CLM for ALL 21 modules             │
+│  clm.run_all         Run CLM for ALL 24 modules             │
 │  clm.budget          View daily budget allocation           │
 │  clm.kill_switch     Activate/deactivate kill switch        │
 │  clm.topics          View topic bank with mastery           │
 │  clm.add_topic       Add custom topic to bank               │
 │  clm.review_queue    View spaced repetition queue           │
 │  clm.next_review     Get next review item                   │
-│  decode.inbox        CLM reports from ALL 21 modules        │
+│  decode.inbox        CLM reports from ALL 24 modules        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
@@ -812,13 +822,13 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     CMPSBL® OS v10.5.0 ARCHITECT
+│  ██╔═══╝ ██╔════╝     CMPSBL® OS — SPARTA Epoch
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: CMPSBL Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  21-Module / 6-Layer Architecture — Full AI Operating System
+│  10-Entity + 5-Mesh + 9-Zone Architecture — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
@@ -859,9 +869,9 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal v10.5.0: aliases, macros, NLP, watch mode, audit
-│  21 modules | 360+ commands | 200 synergy pipelines | health: 100%
-│  400+ capabilities | 100 engines (76 base + 24 meta)
+│  Terminal — SPARTA Epoch: aliases, macros, NLP, watch mode, audit
+│  24 modules | 360+ commands | 300 synergy pipelines | health: 100%
+│  525+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
 └──────────────────────────────────────────────────────────────`;
@@ -1454,7 +1464,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         return { success: false, output: `▓ Doctor error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'system.verify') {
-      // Non-destructive verification of all 21 modules
+      // Non-destructive verification of all 24 modules
       const verbose = args.includes('--verbose');
       try {
         const moduleChecks = ALL_21_MODULES.map(async (mod) => {
@@ -1619,7 +1629,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 ║                                                              ║
 ║  Batches (cumulative — each adds to previous):               ║
 ║    1: polling-intervals (basic poll loops)                   ║
-║    2: + module-status-polling (21 module status calls)       ║
+║    2: + module-status-polling (24 module status calls)       ║
 ║    3: + auto-refresh (dashboard auto-update)                 ║
 ║    4: + realtime-subscriptions (Supabase channels)           ║
 ║                                                              ║
@@ -3157,7 +3167,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // DECODE INBOX — CLM reports from ALL 21 modules
+    // DECODE INBOX — CLM reports from ALL 24 modules
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'decode.inbox') {
       try {
@@ -3178,7 +3188,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         let output = `╔══════════════════════════════════════════════════════════════╗
-║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from 21 Modules               ║
+║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from 24 Modules               ║
 ╠══════════════════════════════════════════════════════════════╣\n`;
         
         for (const r of feed.slice(0, 20)) {

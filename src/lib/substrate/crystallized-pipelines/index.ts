@@ -1,6 +1,6 @@
 /**
  * Crystallized Pipelines — Module Index
- * v10.8.0 ARCHITECT Epoch
+ * SPARTA Epoch
  */
 export {
   CRYSTALLIZED_PIPELINES,
