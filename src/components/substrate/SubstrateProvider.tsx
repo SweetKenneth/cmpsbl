@@ -194,13 +194,35 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     };
   }, [autoInit, refresh]);
 
-  const activeModules = Object.values(modules).filter(m => m.health > 0);
-  const overallHealth = Math.min(100, activeModules.length > 0
-    ? activeModules.reduce((sum, m) => sum + m.health, 0) / activeModules.length
-    : 0);
+  // 5-layer weighted health aggregation (20% each)
+  const CCR_ZONES: SubstrateModule[] = ['system', 'brain', 'memory', 'dream'];
+  const CCL_ZONES: SubstrateModule[] = ['ripple', 'access', 'identity', 'relay', 'audit'];
+  const EXEC_SURFACES: SubstrateModule[] = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration'];
+  const OVERLAYS: SubstrateModule[] = ['defense', 'immunity', 'evolution', 'intent', 'governance'];
+
+  const avgHealth = (keys: SubstrateModule[]) => {
+    const vals = keys.map(k => modules[k]?.health ?? 0);
+    return vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+  };
+
+  const layers: LayerHealth = {
+    core: modules.core?.health ?? 0,
+    ccr: avgHealth(CCR_ZONES),
+    ccl: avgHealth(CCL_ZONES),
+    surfaces: avgHealth(EXEC_SURFACES),
+    overlays: avgHealth(OVERLAYS),
+  };
+
+  const overallHealth = Math.min(100, Math.round(
+    layers.core * 0.20 +
+    layers.ccr * 0.20 +
+    layers.ccl * 0.20 +
+    layers.surfaces * 0.20 +
+    layers.overlays * 0.20
+  ));
 
   return (
-    <SubstrateContext.Provider value={{ initialized, modules, overallHealth, refresh }}>
+    <SubstrateContext.Provider value={{ initialized, modules, overallHealth, layers, refresh }}>
       {children}
     </SubstrateContext.Provider>
   );
