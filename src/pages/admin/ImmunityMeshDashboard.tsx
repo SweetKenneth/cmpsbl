@@ -327,7 +327,7 @@ export default function ImmunityMeshDashboard() {
             <Hammer className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Shadow Build</span>
           </TabsTrigger>
           <TabsTrigger value="modernizer" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
-            <Target className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Modernizer</span>
+            <Target className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Evolution</span>
           </TabsTrigger>
           <TabsTrigger value="encode-training" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <GraduationCap className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">ENCODE</span>

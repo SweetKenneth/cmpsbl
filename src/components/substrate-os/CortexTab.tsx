@@ -1,7 +1,7 @@
 /**
- * CORTEX Module Tab — Agency-class Orchestrator Dashboard
- * v10.5.4 ARCHITECT Epoch — Policy Intent Layer + Evolution Sequencing
- * Orchestrates all 21 modules across 6 architectural layers
+ * CORTEX Surface Tab — Agency-class Orchestrator Dashboard
+ * SPARTA Epoch — Policy Intent Layer + Evolution Sequencing
+ * Orchestrates all execution surfaces across the layered kernel
  */
 
 import { useState } from 'react';
@@ -280,9 +280,9 @@ export function CortexTab({ enabled }: CortexTabProps) {
         <CardHeader>
           <CardTitle className="text-sm font-medium flex items-center gap-2">
             <Globe className="w-4 h-4 text-violet-400" />
-            World Model — 21-Module Registry
+            World Model — Surface Registry
           </CardTitle>
-          <CardDescription className="text-xs">CORTEX maintains a complete model of all substrate modules</CardDescription>
+          <CardDescription className="text-xs">CORTEX maintains a complete model of all substrate surfaces</CardDescription>
         </CardHeader>
         <CardContent>
           {worldLoading ? (

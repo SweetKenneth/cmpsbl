@@ -18,7 +18,7 @@ export default function EncodeInfo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="ENCODE Module — Substrate Execution & Generation Engine | CMPSBL"
-        description="ENCODE is the execution spine of CMPSBL's 21-module substrate. Structured task packets from DECODE, BRAIN recall/writeback, CLM self-improvement, and governed output."
+        description="ENCODE is the execution spine of the CMPSBL cognitive substrate. Structured task packets from DECODE, BRAIN recall/writeback, CLM self-improvement, and governed output."
         canonical="https://cmpsbl.com/products/encode"
         keywords={[
           'AI code execution',
@@ -133,7 +133,7 @@ export default function EncodeInfo() {
       {/* CTA */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Part of the 21-Module Substrate</h2>
+          <h2 className="text-3xl font-bold mb-4">Part of the Cognitive Substrate</h2>
           <p className="text-muted-foreground mb-8">
             ENCODE sits in the Orchestrator layer alongside CORTEX, powered by DECODE's intent routing and BRAIN's memory pipeline.
           </p>

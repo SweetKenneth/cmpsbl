@@ -39,7 +39,7 @@ const jsonLd = {
     "description": "Developer License - Annual"
   },
   "featureList": [
-    "21-module kernel architecture",
+    "Layered cognitive kernel architecture",
     "Persistent memory (3-tier system)",
     "Self-improvement engine",
     "Autonomous dream cycles",
@@ -90,7 +90,7 @@ const faqItems = [
   },
   {
     question: "What's included in a license?",
-    answer: "Developer License ($2,999/yr) includes: complete 21-module kernel across 6 layers, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 360+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
+    answer: "Developer License ($2,999/yr) includes: complete layered cognitive kernel (10 execution surfaces, 5 mesh overlays, 9 convergence zones), persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 360+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
   },
   {
     question: "Can the entire IP be acquired?",
@@ -107,7 +107,7 @@ export default function SubstrateIntelligence() {
     <>
       <SEO 
         title="Substrate Intelligence | CMPSBL - AI Drift Prevention Technology"
-        description="The world's first cognitive orchestration substrate. 21-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $2,999/yr or acquire the IP."
+        description="The world's first cognitive orchestration substrate. Layered kernel architecture solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $2,999/yr or acquire the IP."
         keywords={['AI behavioral drift', 'chatbot consistency', 'persistent memory AI', 'self-improving AI', 'cognitive orchestration', 'AI substrate', 'CMPSBL', 'autonomous AI', 'enterprise AI']}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -153,7 +153,7 @@ export default function SubstrateIntelligence() {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  21 Modules - Fully Documented
+                  24 Execution Surfaces - Fully Documented
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
@@ -249,11 +249,11 @@ export default function SubstrateIntelligence() {
 [VISION]     ████████████ READY       4ms
 [INTEGRATION]████████████ READY      10ms
 [SYSTEM]     ████████████ READY       5ms
-[MODERNIZER] ████████████ READY      11ms
+[EVOLUTION]  ████████████ READY      11ms
 [CORTEX]     ████████████ READY      14ms
 [INCLUSIVE]  ████████████ READY       8ms
 ─────────────────────────────────
-21 modules loaded | Health: 100%
+24 surfaces loaded | Health: 100%
 Boot complete in 117ms`}
                   </pre>
                 </CardContent>
@@ -262,13 +262,13 @@ Boot complete in 117ms`}
           </div>
         </section>
 
-        {/* 21-Module Architecture */}
+        {/* Layered Architecture */}
         <section className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4">21-Module Kernel Architecture</h2>
-                <p className="text-muted-foreground">Six-layer design for cognitive orchestration</p>
+                <h2 className="text-3xl font-bold mb-4">Layered Cognitive Kernel</h2>
+                <p className="text-muted-foreground">10 execution surfaces, 5 mesh overlays, 9 convergence zones</p>
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -327,7 +327,7 @@ Boot complete in 117ms`}
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="text-3xl font-bold text-primary">$2,999<span className="text-lg font-normal text-muted-foreground">/year</span></div>
-                    <p className="text-sm text-muted-foreground">Complete 21-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Team, Research, Enterprise, and Strategic licenses also available.</p>
+                    <p className="text-sm text-muted-foreground">Complete layered cognitive kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Team, Research, Enterprise, and Strategic licenses also available.</p>
                     <div className="flex items-center gap-2 text-xs text-primary">
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Instant checkout • Developer access in minutes</span>
