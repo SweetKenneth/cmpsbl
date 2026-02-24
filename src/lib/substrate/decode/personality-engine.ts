@@ -5,7 +5,7 @@
  * Personality profiles now sync with the backend edge function.
  * Changes made via terminal commands persist to the database.
  * 
- * Integrates with 21-module architecture for personality-aware responses.
+ * Integrates with 9-module architecture for personality-aware responses.
  * 
  * v10.5.4 Changes:
  *   - New direct/professional baseline (no more poetry/metaphors)

@@ -343,7 +343,7 @@ export function generateInvestorDeckHTML(): string {
 </div>
 
 <div class="footer">
-  <p>CMPSBL® v10.5.1 ARCHITECT Epoch — Cognitive Infrastructure for the AI Era</p>
+  <p>CMPSBL® SPARTA Epoch — Cognitive Infrastructure for the AI Era</p>
   <p style="margin-top:4px;">Confidential — For Investor Evaluation · © 2025–2026 PromptFluid®</p>
 </div>
 

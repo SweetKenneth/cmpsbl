@@ -45,7 +45,7 @@ const OBSERVER_FEATURES = [
   {
     icon: Layers,
     title: "Architecture Overview",
-    description: "Understand the six-layer, 21-module kernel architecture of CMPSBL v10.5.4."
+    description: "Understand the layered kernel architecture — 9 modules, 5 meshes, 9 zones."
   }
 ];
 

@@ -4575,7 +4575,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  COGNITIVE ENGINE SYSTEM v10.5.4 — ARCHITECT Epoch             ║
+║  COGNITIVE ENGINE SYSTEM — SPARTA Epoch                        ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Architecture: Capabilities (400+) → Engines (76) → Meta (24) ║
 ╠══════════════════════════════════════════════════════════════╣

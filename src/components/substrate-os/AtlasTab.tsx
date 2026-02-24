@@ -150,7 +150,7 @@ export function AtlasTab() {
                 </Badge>
               )}
             </h2>
-            <p className="text-xs text-muted-foreground font-mono">v10.5.4 • autonomous operation control</p>
+            <p className="text-xs text-muted-foreground font-mono">SPARTA • autonomous operation control</p>
           </div>
         </div>
         <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
