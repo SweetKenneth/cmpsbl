@@ -196,8 +196,8 @@ export const DREAM_COMMANDS: CommandDefinition[] = [
 ];
 
 export const SYSTEM_COMMANDS: CommandDefinition[] = [
-  { command: 'system.status', description: 'Global system status (all 21 modules)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
-  { command: 'system.health', description: 'Full system health (all 21 modules)', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.status', description: 'Global system status (all entities + meshes)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'system.health', description: 'Full system health (all entities + meshes)', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.doctor', description: 'Quick diagnostics (env, DB, routing, providers)', category: 'system', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.verify', description: 'Non-destructive checks with pass/fail results', category: 'system', icon: CheckCircle, requiresOperator: false, requiredTier: 'free', args: '[--verbose]' },
   { command: 'system.resilience', description: 'Resilience snapshot (circuits, health, heals)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free', args: '[role]', example: 'system.resilience operator' },
