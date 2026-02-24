@@ -171,8 +171,20 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
       }
     };
     
+    const cleanupMount = () => {
+      mountedRef.current = false;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+
     if (document.readyState === 'complete') {
-      return scheduleInit();
+      const cleanupSchedule = scheduleInit();
+      return () => {
+        cleanupMount();
+        cleanupSchedule?.();
+      };
     } else {
       const cleanup = { fn: () => {} };
       const onLoad = () => {
@@ -180,18 +192,11 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
       };
       window.addEventListener('load', onLoad, { once: true });
       return () => {
+        cleanupMount();
         window.removeEventListener('load', onLoad);
         cleanup.fn();
       };
     }
-    
-    return () => {
-      mountedRef.current = false;
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
   }, [autoInit, refresh]);
 
   // 5-layer weighted health aggregation (20% each)
