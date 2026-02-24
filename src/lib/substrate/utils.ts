@@ -1,8 +1,8 @@
 /**
  * Substrate Utilities
- * v10.5.4 — ARCHITECT Epoch Helper Functions & Common Patterns
+ * SPARTA Epoch — Helper Functions & Common Patterns
  * 
- * Provides utility functions for common substrate operations across the 21-module architecture.
+ * Provides utility functions for common substrate operations across the 10-entity + 5-mesh + 9-zone architecture.
  */
 
 import { substrate, type SubstrateModule, type SubstrateResponse } from '../substrate';

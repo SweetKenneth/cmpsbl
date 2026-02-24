@@ -1,42 +1,14 @@
 /**
- * promptfluid® substrate — Unified Cognitive Orchestration v3.3.0
- * HARDENED EDITION — Circuit breakers, auto-heal, graceful degradation
+ * promptfluid® substrate — SPARTA Epoch Cognitive Orchestration
+ * 10-Entity + 5-Mesh + 9-Zone Architecture
  * 
- * Modules:
- * - brain: Memory, learning cycles, reflection
- * - decode: Intent decoding, cognitive interface
- * - defense: Bot detection, threat analysis
- * - nexus: Multi-provider AI routing
- * - vision: Observability, metrics, health, tracing, monitoring, resilience
- * - dream: Dream-Eater operations
- * - system: Administration, diagnostics, healing, backup/restore
+ * Public Entities (10):
+ *   CORE, DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION
  * 
- * v3.3.0 Improvements (2026-01-16):
- * - vision/monitor: Ecosystem health monitoring (from pf-brain-monitor)
- * - vision/resilience: Resilience framework with auto-fix proposals
- * - vision/analytics: Real-time threat analytics with 24h rollup
+ * Mesh Overlays (5): DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE
  * 
- * v3.2.0 Improvements (2026-01-16):
- * - vision/trace: Distributed tracing across modules
- * - system/backup: Full validated snapshots with data export
- * - system/restore: Real restore from backup_id
- * - decode/intent: Structured intent extraction
- * - Backup validation and integrity checks
- * 
- * v3.1.0 Improvements (2026-01-15):
- * - Full health restoration on heal (not incremental)
- * - Real-time orchestrator sync
- * - Enhanced vision/dashboard with live metrics
- * - Defense anomaly detection (real implementation)
- * - System diagnostics endpoint
- * 
- * v3.0.0 Resilience Features:
- * - Circuit breaker pattern per module
- * - Auto-heal on degraded health
- * - Graceful fallback responses
- * - Health scoring (0-100)
- * - Request timeout protection
- * - Rate limit awareness
+ * CCR Zones (4): SYSTEM, BRAIN, MEMORY, DREAM
+ * CCL Zones (5): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
  * 
  * @author Kenneth E Sweet Jr
  * @license Apache-2.0 (core) / GPL-2.0 (WordPress plugins)
@@ -932,6 +904,69 @@ serve(async (req) => {
           
           case "inclusive":
             return await handleInclusive(supabase, action, params, corsHeaders);
+
+          // SPARTA Epoch — ECONOMY & SANDBOX modules
+          case "economy":
+          case "sandbox":
+          case "encode": {
+            const moduleState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                action,
+                status: moduleState.status,
+                health: moduleState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // SPARTA Epoch — 5 Mesh Overlays (DEFENSE handled above, add remaining 4)
+          case "immunity":
+          case "evolution":
+          case "intent":
+          case "governance": {
+            const meshOrder = { immunity: 2, evolution: 3, intent: 4, governance: 5 };
+            const meshState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "mesh_overlay",
+                order: meshOrder[module as keyof typeof meshOrder],
+                action,
+                status: meshState.status,
+                health: meshState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // CCR/CCL Zones (BRAIN, SYSTEM, DREAM handled above — add remaining zone facades)
+          case "memory":
+          case "relay":
+          case "audit":
+          case "identity": {
+            const zoneState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "zone",
+                action,
+                status: zoneState.status,
+                health: zoneState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
           
           case "status":
             return new Response(
@@ -940,6 +975,12 @@ serve(async (req) => {
                 substrate: "promptfluid®",
                 version: SUBSTRATE_VERSION,
                 type: "Cognitive Orchestration Substrate — SPARTA Epoch",
+                architecture: {
+                  entities: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
+                  mesh: ["defense", "immunity", "evolution", "intent", "governance"],
+                  zones_ccr: ["system", "brain", "memory", "dream"],
+                  zones_ccl: ["ripple", "access", "identity", "relay", "audit"],
+                },
                 modules: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
                 status: "operational",
                 health: Object.fromEntries(
