@@ -1,10 +1,10 @@
 /**
- * System Health Panel — Live health diagnostics
- * SPARTA Epoch — 10-entity + 5-mesh status grid
+ * System Health Panel — Layer-weighted diagnostics
+ * v11.1 Surface Realignment — Execution Surfaces, Zones, Overlays
  */
 
 import { useState } from 'react';
-import { Heart, Activity, RefreshCw, Loader2, Wrench, Server, Cpu, Brain, Shield, Zap, Moon, Eye, MessageSquare, Plug, Accessibility, GitBranch, Code, Database, Send, ClipboardCheck, Fingerprint, DollarSign, Radio, Key, Settings, Sparkles, Globe } from 'lucide-react';
+import { Heart, Activity, RefreshCw, Loader2, Wrench, Server, Cpu, Brain, Shield, Zap, Moon, Eye, MessageSquare, Plug, Accessibility, GitBranch, Code, Database, Send, ClipboardCheck, Fingerprint, DollarSign, Radio, Key, Settings, Sparkles, Globe, Network, Dna, Scale, Target } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -38,31 +38,74 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
     }
   };
 
-  const moduleStatus = [
-    { name: 'Core', key: 'core', healthy: healthScore.modules.core, icon: Cpu, color: 'text-orange-400', layer: 'Kernel' },
-    { name: 'Ripple', key: 'ripple', healthy: healthScore.modules.ripple, icon: Radio, color: 'text-cyan-400', layer: 'Kernel' },
-    { name: 'Access', key: 'access', healthy: healthScore.modules.access, icon: Key, color: 'text-amber-400', layer: 'Kernel' },
-    { name: 'Brain', key: 'brain', healthy: healthScore.modules.brain, icon: Brain, color: 'text-purple-400', layer: 'Cognitive' },
-    { name: 'Decode', key: 'decode', healthy: healthScore.modules.decode, icon: MessageSquare, color: 'text-fuchsia-400', layer: 'Cognitive' },
-    { name: 'Nexus', key: 'nexus', healthy: healthScore.modules.nexus, icon: Zap, color: 'text-green-400', layer: 'Cognitive' },
-    { name: 'Defense', key: 'defense', healthy: healthScore.modules.defense, icon: Shield, color: 'text-red-400', layer: 'Operational' },
-    { name: 'Vision', key: 'vision', healthy: healthScore.modules.vision, icon: Eye, color: 'text-blue-400', layer: 'Operational' },
-    { name: 'Dream', key: 'dream', healthy: healthScore.modules.dream, icon: Moon, color: 'text-violet-400', layer: 'Operational' },
-    { name: 'Encode', key: 'encode', healthy: healthScore.modules.encode, icon: Code, color: 'text-lime-400', layer: 'Operational' },
-    { name: 'System', key: 'system', healthy: healthScore.modules.system, icon: Settings, color: 'text-emerald-400', layer: 'Admin' },
-    { name: 'Modernizer', key: 'modernizer', healthy: healthScore.modules.modernizer, icon: Sparkles, color: 'text-rose-400', layer: 'Admin' },
-    { name: 'Integration', key: 'integration', healthy: healthScore.modules.integration, icon: Plug, color: 'text-teal-400', layer: 'Admin' },
-    { name: 'Inclusive', key: 'inclusive', healthy: healthScore.modules.inclusive, icon: Accessibility, color: 'text-pink-400', layer: 'Admin' },
-    { name: 'Cortex', key: 'cortex', healthy: healthScore.modules.cortex, icon: GitBranch, color: 'text-indigo-400', layer: 'Orchestrator' },
-    { name: 'Atlas', key: 'atlas', healthy: (healthScore.modules as any).atlas ?? true, icon: Globe, color: 'text-sky-400', layer: 'Orchestrator' },
-    { name: 'Memory', key: 'memory', healthy: healthScore.modules.memory, icon: Database, color: 'text-cyan-300', layer: 'Infra' },
-    { name: 'Relay', key: 'relay', healthy: healthScore.modules.relay, icon: Send, color: 'text-amber-300', layer: 'Infra' },
-    { name: 'Audit', key: 'audit', healthy: healthScore.modules.audit, icon: ClipboardCheck, color: 'text-slate-400', layer: 'Infra' },
-    { name: 'Identity', key: 'identity', healthy: healthScore.modules.identity, icon: Fingerprint, color: 'text-emerald-300', layer: 'Infra' },
-    { name: 'Economy', key: 'economy', healthy: healthScore.modules.economy, icon: DollarSign, color: 'text-yellow-400', layer: 'Infra' },
+  const layers = [
+    {
+      label: 'CORE',
+      items: [
+        { name: 'CORE', key: 'core', icon: Cpu, color: 'text-orange-400' },
+      ],
+    },
+    {
+      label: 'CCR ZONES',
+      items: [
+        { name: 'SYSTEM', key: 'system', icon: Settings, color: 'text-emerald-400' },
+        { name: 'BRAIN', key: 'brain', icon: Brain, color: 'text-purple-400' },
+        { name: 'MEMORY', key: 'memory', icon: Database, color: 'text-cyan-300' },
+        { name: 'DREAM', key: 'dream', icon: Moon, color: 'text-violet-400' },
+      ],
+    },
+    {
+      label: 'CCL ZONES',
+      items: [
+        { name: 'RIPPLE', key: 'ripple', icon: Radio, color: 'text-cyan-400' },
+        { name: 'ACCESS', key: 'access', icon: Key, color: 'text-amber-400' },
+        { name: 'IDENTITY', key: 'identity', icon: Fingerprint, color: 'text-emerald-300' },
+        { name: 'RELAY', key: 'relay', icon: Send, color: 'text-amber-300' },
+        { name: 'AUDIT', key: 'audit', icon: ClipboardCheck, color: 'text-slate-400' },
+      ],
+    },
+    {
+      label: 'EXECUTION SURFACES',
+      items: [
+        { name: 'DECODE', key: 'decode', icon: MessageSquare, color: 'text-fuchsia-400' },
+        { name: 'ENCODE', key: 'encode', icon: Code, color: 'text-lime-400' },
+        { name: 'VISION', key: 'vision', icon: Eye, color: 'text-blue-400' },
+        { name: 'CORTEX', key: 'cortex', icon: GitBranch, color: 'text-indigo-400' },
+        { name: 'NEXUS', key: 'nexus', icon: Zap, color: 'text-green-400' },
+        { name: 'ECONOMY', key: 'economy', icon: DollarSign, color: 'text-yellow-400' },
+        { name: 'SANDBOX', key: 'sandbox', icon: Globe, color: 'text-sky-400' },
+        { name: 'INCLUSIVE', key: 'inclusive', icon: Accessibility, color: 'text-pink-400' },
+        { name: 'INTEGRATION', key: 'integration', icon: Plug, color: 'text-teal-400' },
+      ],
+    },
+    {
+      label: 'OVERLAYS',
+      items: [
+        { name: 'DEFENSE', key: 'defense', icon: Shield, color: 'text-red-400' },
+        { name: 'IMMUNITY', key: 'immunity', icon: Network, color: 'text-rose-400' },
+        { name: 'EVOLUTION', key: 'evolution', icon: Dna, color: 'text-emerald-400' },
+        { name: 'INTENT', key: 'intent', icon: Target, color: 'text-amber-400' },
+        { name: 'GOVERNANCE', key: 'governance', icon: Scale, color: 'text-indigo-400' },
+      ],
+    },
   ];
 
-  const healthyCount = moduleStatus.filter(m => m.healthy).length;
+  const allItems = layers.flatMap(l => l.items);
+  const healthyCount = allItems.filter(m => healthScore.modules[m.key] !== false).length;
+  const totalCount = allItems.length;
+
+  // Layer health from the hook
+  const layerHealthValues = healthScore.layers || { core: 100, ccr: 100, ccl: 100, surfaces: 100, overlays: 100 };
+  const layerHealthMap: Record<string, number> = {
+    'CORE': layerHealthValues.core,
+    'CCR ZONES': layerHealthValues.ccr,
+    'CCL ZONES': layerHealthValues.ccl,
+    'EXECUTION SURFACES': layerHealthValues.surfaces,
+    'OVERLAYS': layerHealthValues.overlays,
+  };
+
+  // Show CRITICAL only when CORE breaker open OR CCR/CCL < 40
+  const showCritical = layerHealthValues.core < 40 || layerHealthValues.ccr < 40 || layerHealthValues.ccl < 40;
 
   return (
     <motion.div 
@@ -80,7 +123,7 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-foreground">System Health</h3>
-              <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">ENTITY + MESH DIAGNOSTICS</p>
+              <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">LAYER-WEIGHTED DIAGNOSTICS</p>
             </div>
           </div>
           <Badge 
@@ -97,9 +140,17 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
               animate={{ opacity: [1, 0.4, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
-            {healthScore.healthScore}% • {healthyCount}/21
+            {healthScore.healthScore}% • {healthyCount}/{totalCount}
           </Badge>
         </div>
+
+        {/* Critical Banner — only when kernel or zone clusters critically degraded */}
+        {showCritical && (
+          <div className="p-3 rounded-xl border border-red-500/30 bg-red-500/5 text-xs text-red-400 flex items-center gap-2">
+            <Shield className="w-4 h-4 shrink-0" />
+            <span>CRITICAL: Core kernel or zone cluster health below threshold.</span>
+          </div>
+        )}
 
         {/* Health Bar */}
         <Progress 
@@ -112,43 +163,68 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
           )}
         />
 
-        {/* Module Grid */}
+        {/* Layer Health Breakdown */}
+        <div className="grid grid-cols-5 gap-2">
+          {layers.map(layer => {
+            const lh = layerHealthMap[layer.label] ?? 100;
+            return (
+              <div key={layer.label} className="text-center p-2 rounded-lg border border-border/20 bg-card/40">
+                <div className={cn("text-lg font-bold font-mono", lh >= 80 ? "text-emerald-400" : lh >= 40 ? "text-amber-400" : "text-red-400")}>
+                  {lh}%
+                </div>
+                <div className="text-[8px] text-muted-foreground/60 font-mono uppercase tracking-wider mt-0.5">{layer.label}</div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Entity Grid by Layer */}
         <TooltipProvider delayDuration={50}>
-          <div className="grid grid-cols-7 sm:grid-cols-11 lg:grid-cols-21 gap-1.5">
-            {moduleStatus.map((mod, idx) => (
-              <Tooltip key={mod.key}>
-                <TooltipTrigger asChild>
-                  <motion.div
-                    className={cn(
-                      "relative aspect-square rounded-lg flex items-center justify-center border cursor-pointer transition-all duration-200",
-                      mod.healthy 
-                        ? "border-border/30 bg-card/60 hover:border-border/60 hover:bg-card/80" 
-                        : "border-red-500/20 bg-red-500/5"
-                    )}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.02 * idx, type: "spring", stiffness: 400, damping: 20 }}
-                    whileHover={{ scale: 1.2, y: -2, transition: { duration: 0.15 } }}
-                  >
-                    <mod.icon className={cn("w-3.5 h-3.5", mod.healthy ? mod.color : "text-red-400/50")} />
-                    <motion.span 
-                      className={cn(
-                        "absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full border border-background",
-                        mod.healthy ? "bg-emerald-500" : "bg-red-500"
-                      )}
-                      animate={mod.healthy ? { scale: [1, 1.4, 1] } : {}}
-                      transition={{ duration: 2.5, repeat: Infinity }}
-                    />
-                  </motion.div>
-                </TooltipTrigger>
-                <TooltipContent side="bottom" className="text-xs border-border/50 bg-popover/95 backdrop-blur-xl">
-                  <p className="font-semibold">{mod.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{mod.layer}</p>
-                  <p className={cn("text-[10px]", mod.healthy ? "text-emerald-400" : "text-red-400")}>
-                    {mod.healthy ? "● Online" : "○ Offline"}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
+          <div className="space-y-3">
+            {layers.map(layer => (
+              <div key={layer.label}>
+                <div className="text-[9px] font-mono text-muted-foreground/50 uppercase tracking-widest mb-1.5">{layer.label}</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {layer.items.map((mod, idx) => {
+                    const healthy = healthScore.modules[mod.key] !== false;
+                    return (
+                      <Tooltip key={mod.key}>
+                        <TooltipTrigger asChild>
+                          <motion.div
+                            className={cn(
+                              "relative w-9 h-9 rounded-lg flex items-center justify-center border cursor-pointer transition-all duration-200",
+                              healthy 
+                                ? "border-border/30 bg-card/60 hover:border-border/60 hover:bg-card/80" 
+                                : "border-red-500/20 bg-red-500/5"
+                            )}
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.02 * idx, type: "spring", stiffness: 400, damping: 20 }}
+                            whileHover={{ scale: 1.15, y: -2, transition: { duration: 0.15 } }}
+                          >
+                            <mod.icon className={cn("w-3.5 h-3.5", healthy ? mod.color : "text-red-400/50")} />
+                            <motion.span 
+                              className={cn(
+                                "absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full border border-background",
+                                healthy ? "bg-emerald-500" : "bg-red-500"
+                              )}
+                              animate={healthy ? { scale: [1, 1.4, 1] } : {}}
+                              transition={{ duration: 2.5, repeat: Infinity }}
+                            />
+                          </motion.div>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom" className="text-xs border-border/50 bg-popover/95 backdrop-blur-xl">
+                          <p className="font-semibold">{mod.name}</p>
+                          <p className="text-[10px] text-muted-foreground">{layer.label}</p>
+                          <p className={cn("text-[10px]", healthy ? "text-emerald-400" : "text-red-400")}>
+                            {healthy ? "● Online" : "○ Offline"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    );
+                  })}
+                </div>
+              </div>
             ))}
           </div>
         </TooltipProvider>
