@@ -178,58 +178,66 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
   };
 
   // Edge functions (skip archived)
-  for (const [path, content] of Object.entries(edgeFunctionFiles)) {
+  for (const [path, load] of Object.entries(edgeFunctionFiles)) {
     if (isArchived(path)) continue;
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.edgeFunctions++;
     totalFiles++;
   }
 
-  // Edge shared
-  for (const [path, content] of Object.entries(edgeSharedFiles)) {
+  // Shared backend-function utils
+  for (const [path, load] of Object.entries(edgeSharedFiles)) {
     if (isArchived(path)) continue;
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.edgeShared++;
     totalFiles++;
   }
 
   // Migrations
-  for (const [path, content] of Object.entries(migrationFiles)) {
+  for (const [path, load] of Object.entries(migrationFiles)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.migrations++;
     totalFiles++;
   }
 
   // Core libs
-  for (const [path, content] of Object.entries(coreLibFiles)) {
+  for (const [path, load] of Object.entries(coreLibFiles)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.coreLibs++;
     totalFiles++;
   }
 
   // Components
-  for (const [path, content] of Object.entries(componentFiles)) {
+  for (const [path, load] of Object.entries(componentFiles)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.components++;
     totalFiles++;
   }
 
   // Config
-  for (const [path, content] of Object.entries(configFiles)) {
+  for (const [path, load] of Object.entries(configFiles)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.config++;
     totalFiles++;
   }
 
   // Theme: index.css
-  for (const [path, content] of Object.entries(indexCss)) {
+  for (const [path, load] of Object.entries(indexCss)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.theme++;
     totalFiles++;
   }
 
   // Theme: tailwind.config.ts
-  for (const [path, content] of Object.entries(tailwindConfig)) {
+  for (const [path, load] of Object.entries(tailwindConfig)) {
+    const content = await load();
     zip.file(cleanPath(path), content);
     counts.theme++;
     totalFiles++;
