@@ -720,7 +720,7 @@ function MergedGovernorTab({ isGovernor }: { isGovernor: boolean }) {
       <SubTabBar
         tabs={[
           { id: 'controls', label: 'Admin Controls', icon: Settings },
-          { id: 'advisory', label: 'Sounding Board', icon: MessageSquare },
+          { id: 'advisory', label: 'Signal Feed', icon: MessageSquare },
         ]}
         active={activeGov}
         onChange={(id) => setActiveGov(id as typeof activeGov)}

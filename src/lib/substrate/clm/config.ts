@@ -1,12 +1,12 @@
 /**
  * Constant Learning Mode (CLM) Configuration
- * v6.7.0 — Always-on, rate-limited, spaced, reflective learning
+ * SPARTA Epoch — Dynamic allocation via NEXUS 4-hour cycles
  * 
- * Controls the Brain's autonomous learning behavior with:
- * - 70% daily Nexus budget allocation
- * - Spaced repetition scheduling
- * - Kill switch and safety backoff
- * - Quiet hours and jitter
+ * CLM no longer uses a hardcoded budget percentage. Instead:
+ *   - NEXUS computes available calls every 4 hours
+ *   - Subtracts estimated substrate operational needs
+ *   - Divides surplus equally among learning entities
+ *   - Entities rapid-fire until allocation exhausted or next cycle
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -16,8 +16,6 @@
 export interface CLMConfig {
   /** Master enable flag */
   enabled: boolean;
-  /** Percentage of daily Nexus limits to use (0.0 - 1.0) */
-  dailyBudgetPct: number;
   /** Minimum minutes between learning jobs */
   minSpacingMinutes: number;
   /** Maximum concurrent learning jobs */
@@ -87,14 +85,13 @@ export interface LearningJobResult {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const DEFAULT_CLM_CONFIG: CLMConfig = {
-  enabled: true, // Always-on by operator directive
-  dailyBudgetPct: 0.80, // 80% of daily Nexus budget for learning
-  minSpacingMinutes: 10, // Tighter spacing for maximum velocity
-  maxConcurrent: 4, // 4 concurrent module cycles
+  enabled: true,
+  minSpacingMinutes: 5,        // Rapid-fire during allocation window
+  maxConcurrent: 4,
   errorBackoffMultiplier: 1.5,
   maxBackoffMinutes: 60,
-  quietHours: null, // No quiet hours — learn 24/7
-  jitterMinutes: 3,
+  quietHours: null,            // No quiet hours — learn 24/7
+  jitterMinutes: 2,
   killSwitch: false,
   maxConsecutiveFailures: 8,
   spacedRepetitionBudgetPct: 0.20,
@@ -107,61 +104,37 @@ export const DEFAULT_CLM_CONFIG: CLMConfig = {
 // ENVIRONMENT VARIABLE LOADER
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Load CLM config from environment variables with fallbacks
- */
 export function loadCLMConfigFromEnv(): CLMConfig {
   const config = { ...DEFAULT_CLM_CONFIG };
 
-  // Check environment (these would be set in edge functions)
   if (typeof window !== 'undefined') {
-    // Client-side: use defaults, config comes from backend
     return config;
   }
 
-  // Server-side environment loading (Deno/Edge)
   try {
     const env = (globalThis as any).Deno?.env;
     if (env) {
       const enabled = env.get('SUBSTRATE_CLM_ENABLED');
-      if (enabled !== undefined) {
-        config.enabled = enabled === 'true';
-      }
-
-      const budgetPct = env.get('SUBSTRATE_CLM_DAILY_BUDGET_PCT');
-      if (budgetPct) {
-        config.dailyBudgetPct = Math.min(1.0, Math.max(0.1, parseFloat(budgetPct)));
-      }
+      if (enabled !== undefined) config.enabled = enabled === 'true';
 
       const quietHours = env.get('SUBSTRATE_CLM_QUIET_HOURS');
-      if (quietHours) {
-        config.quietHours = quietHours;
-      }
+      if (quietHours) config.quietHours = quietHours;
 
       const maxConcurrent = env.get('SUBSTRATE_CLM_MAX_CONCURRENT');
-      if (maxConcurrent) {
-        config.maxConcurrent = Math.max(1, parseInt(maxConcurrent, 10));
-      }
+      if (maxConcurrent) config.maxConcurrent = Math.max(1, parseInt(maxConcurrent, 10));
 
       const killSwitch = env.get('SUBSTRATE_CLM_KILL_SWITCH');
-      if (killSwitch !== undefined) {
-        config.killSwitch = killSwitch === 'true';
-      }
+      if (killSwitch !== undefined) config.killSwitch = killSwitch === 'true';
     }
-  } catch {
-    // Fallback to defaults
-  }
+  } catch { /* Fallback to defaults */ }
 
   return config;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// QUIET HOURS PARSER
+// HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Parse quiet hours string (e.g., "02:00-05:00") and check if current time is within
- */
 export function isInQuietHours(quietHours: string | null): boolean {
   if (!quietHours) return false;
 
@@ -175,25 +148,17 @@ export function isInQuietHours(quietHours: string | null): boolean {
   const endMinutes = endHour * 60 + endMin;
 
   if (startMinutes < endMinutes) {
-    // Normal range (e.g., 02:00-05:00)
     return currentMinutes >= startMinutes && currentMinutes < endMinutes;
   } else {
-    // Overnight range (e.g., 23:00-06:00)
     return currentMinutes >= startMinutes || currentMinutes < endMinutes;
   }
 }
 
-/**
- * Calculate jittered delay
- */
 export function calculateJitteredDelay(baseMinutes: number, jitterMinutes: number): number {
   const jitter = (Math.random() - 0.5) * 2 * jitterMinutes;
   return Math.max(1, baseMinutes + jitter);
 }
 
-/**
- * Calculate backoff delay
- */
 export function calculateBackoffDelay(
   baseMinutes: number,
   backoffLevel: number,
