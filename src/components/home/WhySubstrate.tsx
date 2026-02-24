@@ -175,8 +175,8 @@ const differentiators = [
   {
     icon: Sparkles,
     title: "Self-Improving",
-    layer: "Admin",
-    description: "MODERNIZER module continuously scans code, proposes upgrades, and applies patches autonomously.",
+    layer: "Overlay",
+    description: "EVOLUTION mesh overlay continuously scans code, proposes upgrades, and applies patches autonomously.",
     highlight: "Autonomous Updates",
     stat: "Auto",
     statLabel: "Evolution",
