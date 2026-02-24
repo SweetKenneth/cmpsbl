@@ -135,8 +135,8 @@ export default function Insights() {
               <Card className="h-full hover:border-primary/30 transition-colors">
                 <CardContent className="p-5">
                   <Layers className="w-8 h-8 text-primary mb-3" />
-                  <h3 className="font-semibold mb-1">FNDTN v8 Library</h3>
-                  <p className="text-sm text-muted-foreground">26 documents covering architecture, modules, and evidence</p>
+                   <h3 className="font-semibold mb-1">Architecture Library</h3>
+                   <p className="text-sm text-muted-foreground">Documents covering architecture, modules, meshes, and zones</p>
                 </CardContent>
               </Card>
             </Link>

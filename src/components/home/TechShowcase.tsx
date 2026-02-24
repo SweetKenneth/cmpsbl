@@ -671,8 +671,8 @@ export function TechShowcase() {
             onClick={() => setActiveLayer(null)}
             className="h-8 px-4 text-xs font-medium"
           >
-            All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">14</Badge>
+            All Surfaces
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">{codeExamples.length}</Badge>
           </Button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => {
             const count = codeExamples.filter(e => e.layer === layer).length;

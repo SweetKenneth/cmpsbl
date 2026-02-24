@@ -305,7 +305,7 @@ const differentiators = [
     iconColor: "text-cyan-600",
     glowColor: "cyan",
   },
-  // ENCODE (Module #21)
+  // ENCODE
   {
     icon: Code2,
     title: "Code Intelligence",

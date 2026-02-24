@@ -250,7 +250,7 @@ export default function About() {
             {[
               { year: "2009", event: "Started building software—sites, apps, and tools for clients" },
               { year: "2024", event: "CMPSBL® founded. Substrate development begins." },
-              { year: "2025", event: `${codename} Epoch — 9 modules, 5 meshes, 9 zones, 300 pipelines, Composable Artifacts Store` },
+              { year: "2025–26", event: `SPARTA Epoch — 9 modules, 5 meshes, 9 zones, 300 pipelines, zone architecture with circuit-breaker isolation` },
               { year: "Now", event: "Production infrastructure serving developers and enterprises" }
             ].map((milestone, index) => (
               <motion.div

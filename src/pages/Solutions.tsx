@@ -49,9 +49,9 @@ export default function Solutions() {
       icon: Globe,
       name: "Multi-Provider Routing",
       tagline: "Zero Vendor Lock-In",
-      description: "Intelligent routing across 6+ AI providers. Automatic failover, cost optimization, and quality-based selection.",
-      features: ["6+ AI providers", "Automatic failbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero-downtime switching"],
-      metrics: ["6+ Providers", "Running", "Optimized"],
+      description: "Intelligent routing across 13 AI providers. Automatic failover, cost optimization, and quality-based selection.",
+      features: ["13 AI providers", "Automatic failbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero-downtime switching"],
+      metrics: ["13 Providers", "Running", "Optimized"],
       link: "/blog/ai-triad-intelligent-routing"
     },
     {
