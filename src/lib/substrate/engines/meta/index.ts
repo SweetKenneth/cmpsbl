@@ -1,6 +1,6 @@
 /**
  * Meta-Engine System
- * v10.5.4 ARCHITECT — High-Value Expansion
+ * SPARTA Epoch — High-Value Expansion
  * 
  * Architecture: Capabilities (400+) → Engines (76) → Meta-Engines (24)
  * 

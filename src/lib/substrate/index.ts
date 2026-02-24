@@ -1,9 +1,9 @@
 /**
  * promptfluid® Substrate Core Exports
- * v10.5.4 — ARCHITECT Epoch (6-Layer Architecture)
+ * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  * 
  * Complete export of all substrate engines, hooks, and utilities.
- * 3-Layer Architecture: Capabilities (269) → Engines (62) → Meta-Engines (20)
+ * 3-Layer Architecture: Capabilities (525+) → Engines (76) → Meta-Engines (24)
  * 
  * Engine Categories (16):
  * - Cognitive (4): Reasoning, Learning, Memory, Foresight
@@ -456,7 +456,7 @@ export {
   isVersionCompatible,
 } from './versions';
 
-// Cognitive Engines v8.0.0 SYNERGY+ — 62 Engines + 20 Meta-Engines orchestrating 269 capabilities
+// Cognitive Engines — 76 Engines + 24 Meta-Engines orchestrating 525+ capabilities
 export {
   // Types
   type EngineCategory,
@@ -547,7 +547,7 @@ export {
 // Re-export substrate client from lib
 export { 
   substrate, 
-  // Quick access module aliases (all 21 modules + SEBA + Infrastructure Six)
+  // Quick access module aliases (10 entities + 5 overlays + 9 zones + SEBA)
   core,
   brain,
   decode,

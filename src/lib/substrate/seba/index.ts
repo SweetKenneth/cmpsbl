@@ -1,7 +1,7 @@
 /**
  * SEBA Module Exports
  * v2.1.0 — Self-Evolving Bounded Agent (Full Spectrum Autonomy)
- * v10.5.4 ARCHITECT Epoch Integration
+ * SPARTA Epoch Integration
  * 
  * SEBA runs continuously in the background, scanning for improvements,
  * generating proposals, and (when approved) applying changes with full
