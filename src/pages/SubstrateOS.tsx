@@ -970,7 +970,7 @@ export default function SubstrateOS() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Clockless Cognitive Reality — CMPSBL Substrate Dashboard | CMPSBL®"
-        description="The Clockless Cognitive Reality dashboard: 21 autonomous modules persisting, evolving, and orchestrating intelligence in real-time via the CMPSBL Substrate."
+        description="The Clockless Cognitive Reality dashboard: autonomous execution surfaces, zones, and overlays persisting, evolving, and orchestrating intelligence in real-time."
         canonical="https://cmpsbl.com/os"
         keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'persistent intelligence', 'cognitive orchestration']}
       />
