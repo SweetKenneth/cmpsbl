@@ -1316,7 +1316,7 @@ export default function SubstrateOS() {
             <span className="text-muted-foreground/20">·</span>
             <span>v{version}</span>
             <span className="text-muted-foreground/20">·</span>
-            <span>{healthScore.activeCount}/{healthScore.totalModules} modules</span>
+            <span>{healthScore.activeCount}/{healthScore.totalModules} surfaces</span>
             <span className="text-muted-foreground/20">·</span>
             <TierBadge tier={userTier} size="xs" />
           </div>
