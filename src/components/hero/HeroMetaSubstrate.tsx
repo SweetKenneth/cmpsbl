@@ -255,12 +255,11 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.4 }}
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              Clockless is a governed cognitive reality where intelligence{' '}
-              <span className="text-foreground font-semibold">persists</span>,{' '}
-              <span className="text-foreground font-semibold">evolves autonomously</span>,{' '}
-              <span className="text-foreground font-semibold">coordinates systems</span>, and{' '}
-              <span className="text-foreground font-semibold">compounds value</span>{' '}
-              — without resets.
+              Drop-in cognitive infrastructure that gives your AI applications{' '}
+              <span className="text-foreground font-semibold">persistent memory</span>,{' '}
+              <span className="text-foreground font-semibold">self-improving pipelines</span>, and{' '}
+              <span className="text-foreground font-semibold">governed orchestration</span>{' '}
+              — so nothing resets, and everything compounds.
             </motion.p>
             
             {/* CTAs */}
