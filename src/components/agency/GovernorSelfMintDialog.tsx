@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Shield, Lock, Eye, EyeOff, Loader2, Check, Users, Mail, Link as LinkIcon, Copy } from 'lucide-react';
+import { Shield, Lock, Loader2, Check, Users, Mail, Link as LinkIcon, Copy } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -55,8 +55,6 @@ export function GovernorSelfMintDialog({
   
   // Credentials
   const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   
   // Deployment
   const [deploymentType, setDeploymentType] = useState<DeploymentType>('hosted');
@@ -74,7 +72,6 @@ export function GovernorSelfMintDialog({
 
   const resetForm = () => {
     setUserEmail('');
-    setUserPassword('');
     setCompanyName('');
     setBusinessDomain('');
     setDeployedUrl(null);
@@ -91,10 +88,6 @@ export function GovernorSelfMintDialog({
       return;
     }
     
-    if (userPassword.length < 8) {
-      toast.error('Password must be at least 8 characters');
-      return;
-    }
     
     setLoading(true);
     
@@ -146,7 +139,6 @@ export function GovernorSelfMintDialog({
           },
           metadata: {
             target_owner_email: userEmail,
-            target_owner_password_set: true,
             created_by_governor: governorId,
           },
         })
@@ -343,30 +335,9 @@ export function GovernorSelfMintDialog({
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password *</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      value={userPassword}
-                      onChange={(e) => setUserPassword(e.target.value)}
-                      placeholder="Min 8 characters"
-                      className="pl-10 pr-10 bg-black/30"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                  <p className="text-[10px] text-muted-foreground">
-                    Owner will use these credentials to access the agency.
-                  </p>
-                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  Owner will receive access instructions via this email.
+                </p>
               </div>
 
               {/* Deployment Type */}
@@ -436,7 +407,7 @@ export function GovernorSelfMintDialog({
               </Button>
               <Button
                 onClick={handleSelfMint}
-                disabled={loading || !agencyName.trim() || !userEmail || userPassword.length < 8}
+                disabled={loading || !agencyName.trim() || !userEmail}
                 className="gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500"
               >
                 {loading ? (

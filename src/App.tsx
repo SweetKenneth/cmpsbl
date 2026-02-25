@@ -4,6 +4,10 @@
  */
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { installProductionLogGuard } from "@/lib/system/productionLogGuard";
+
+// Install production log guard before anything else logs
+installProductionLogGuard();
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState, useRef } from "react";
 import { SEOProvider } from "@/contexts/SEOContext";
