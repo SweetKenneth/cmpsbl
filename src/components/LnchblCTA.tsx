@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Download, Clock, Sparkles, ArrowRight, Rocket } from "lucide-react";
+import { Clock, Sparkles, ArrowRight, Rocket, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export function LnchblCTA() {
@@ -35,15 +36,14 @@ export function LnchblCTA() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/15 border border-primary/25 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/25 mb-6"
             >
-              <Rocket className="w-4 h-4 text-primary" />
-              <span className="text-sm font-bold tracking-wide text-primary">100% FREE</span>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/25">v1.4.0 • Memory Fix Live</span>
+              <Lock className="w-4 h-4 text-amber-500" />
+              <span className="text-sm font-bold tracking-wide text-amber-500">Coming Soon</span>
             </motion.div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">
-              <span className="text-foreground">Download the World's First </span>
+              <span className="text-foreground">The World's First </span>
               <span 
                 style={{
                   background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)), hsl(var(--primary)))",
@@ -58,14 +58,14 @@ export function LnchblCTA() {
             </h2>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-              Get your own copy of the full CMPSBL Substrate — the same self-evolving cognitive runtime 
-              you see here — completely free from our companion site.
+              Your own copy of the full CMPSBL Substrate — the same self-evolving cognitive runtime 
+              you see here. Public download launching soon.
             </p>
 
             {/* Feature pills */}
             <div className="flex flex-wrap gap-3 mb-8">
               {[
-                { icon: Download, text: "Free Download", color: "text-primary" },
+                { icon: Rocket, text: "Full Substrate", color: "text-primary" },
                 { icon: Clock, text: "Memory in 10 Minutes", color: "text-emerald-500" },
                 { icon: Sparkles, text: "Persistent Memory Guide", color: "text-violet-500" },
               ].map((pill) => (
@@ -76,28 +76,23 @@ export function LnchblCTA() {
               ))}
             </div>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons — disabled with Coming Soon */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
-                asChild
-                className="group text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+                disabled
+                className="group text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 opacity-60 cursor-not-allowed"
               >
-                <a href="https://LNCHBL.com" target="_blank" rel="noopener noreferrer">
-                  <Download className="w-5 h-5 mr-2" />
-                  Get Your Free Copy
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </a>
+                <Lock className="w-5 h-5 mr-2" />
+                Download Coming Soon
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                asChild
-                className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14"
+                disabled
+                className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 opacity-60 cursor-not-allowed"
               >
-                <a href="https://LNCHBL.com" target="_blank" rel="noopener noreferrer">
-                  View Setup Guide
-                </a>
+                Setup Guide Coming Soon
               </Button>
             </div>
 
