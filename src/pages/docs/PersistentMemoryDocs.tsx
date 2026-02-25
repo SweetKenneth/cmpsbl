@@ -369,9 +369,9 @@ function ChatComponent() {
                   </li>
                 </ul>
                 <div className="mt-6">
-                  <Link to="/engines">
+                  <Link to="/pricing">
                     <Button variant="outline">
-                      Explore Memory Engines
+                      View Pricing
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
@@ -449,9 +449,9 @@ interface MemoryContext {
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
-                  <Link to="/engines">
+                  <Link to="/pricing">
                     <Button variant="outline" size="lg">
-                      View Memory Engines
+                      View Pricing
                     </Button>
                   </Link>
                 </div>

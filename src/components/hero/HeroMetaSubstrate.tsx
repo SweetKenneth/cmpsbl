@@ -287,9 +287,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 active:scale-[0.98]"
               >
-                <Link to="/store">
+                <Link to="/pricing">
                   <Sparkles className="w-4 h-4" />
-                  Browse the Store
+                  See Pricing
                 </Link>
               </Button>
             </motion.div>
@@ -433,9 +433,9 @@ export function HeroMetaSubstrate() {
         >
           {[
             { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory" },
-            { icon: Sparkles, label: "Composable Artifacts", href: "/store" },
             { icon: Code, label: "Composable Cognitives", href: "/composable-cognitives" },
-            { icon: Layers, label: "Engines", href: "/engines" },
+            { icon: Sparkles, label: "Cognitive Showcase", href: "/showcase" },
+            { icon: Layers, label: "Documentation", href: "/documentation" },
           ].map((item, index) => (
             <motion.div
               key={item.label}
