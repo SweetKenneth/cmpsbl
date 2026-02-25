@@ -6,7 +6,7 @@
  * 
  * SPARTA Epoch Features:
  * - 360+ terminal commands across 24 Matrix Nodes
- * - 300 synergy pipelines with 125 executors
+ * - 525+ capabilities across 24 modules
  * - Improved visual feedback for command execution
  * - Better animation states for results
  * - Enhanced mobile responsiveness with word-wrap fixes

@@ -43,7 +43,7 @@ const TIERS = [
       'Limited persistent memory',
       'Basic pipelines & missions',
       'Dashboard + Terminal (Free mode)',
-      '300+ synergy pipelines',
+      'Composable orchestration pipelines',
     ],
     doesNotInclude: [
       'High-power automation',
