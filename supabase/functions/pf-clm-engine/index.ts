@@ -22,9 +22,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "2.1.0";
-const MAX_CYCLES_PER_HOUR = 14;  // 5-min cadence = 12/hr + 2 buffer for retries
-const MAX_CYCLES_PER_DAY = 300;  // 288 possible + headroom — never starve the engine
+const CLM_VERSION = "3.0.0";
+const MAX_CYCLES_PER_HOUR = 30;  // Aggressive learning — up from 14
+const MAX_CYCLES_PER_DAY = 600;  // Double capacity — nodes need to learn FAST
 
 // All 20 modules that participate in CLM
 const CLM_MODULES = [
@@ -160,7 +160,7 @@ serve(async (req) => {
     // ═══════════════════════════════════════════════════════════
     // PHASE 2: Module Self-Analysis (rotating)
     // ═══════════════════════════════════════════════════════════
-    const modulesPerCycle = isQuietHours ? 1 : 3;
+    const modulesPerCycle = isQuietHours ? 2 : 6; // Analyze 6 modules per cycle (was 3)
     const cycleIndex = (todayCycles || 0) % CLM_MODULES.length;
     const selectedModules = [];
     for (let i = 0; i < modulesPerCycle; i++) {
@@ -209,24 +209,21 @@ serve(async (req) => {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // PHASE 3: Learning Topic Study (multi-topic per cycle)
-    // Study 3 topics per cycle to maximize API utilization
+    // PHASE 3: Learning Topic Study — FULL BLAST MODE
+    // Study ALL 10 topics per cycle in parallel for maximum learning velocity
+    // v3.0.0: Fire all topics concurrently, don't wait sequentially
     // ═══════════════════════════════════════════════════════════
     if (!isQuietHours) {
-      const topicsPerCycle = 3;
       const studiedTopics: Array<{ domain: string; success: boolean }> = [];
 
-      for (let t = 0; t < topicsPerCycle; t++) {
-        const topicIndex = (cycleNumber * topicsPerCycle + t) % LEARNING_TOPICS.length;
-        const topic = LEARNING_TOPICS[topicIndex];
-
+      // Fire ALL topics in parallel — maximum throughput
+      const topicPromises = LEARNING_TOPICS.map(async (topic, idx) => {
         try {
           const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
             body: { module: 'brain', action: 'deep_think', data: { question: topic.prompt, depth: 'medium' } },
           });
 
           if (!studyError && studyResult?.success) {
-            // Store learning as both brain_event AND as a hot memory for cross-module recall
             await Promise.allSettled([
               supabase.from('brain_events').insert({
                 event_type: 'technical_learning_cycle',
@@ -238,24 +235,30 @@ serve(async (req) => {
                   prompt: topic.prompt,
                   result: studyResult?.analysis?.substring?.(0, 1000) || 'completed',
                   source: 'clm_server_engine',
+                  version: CLM_VERSION,
                 },
               }),
               supabase.from('brain_memory_hot').insert({
                 content: `[CLM Learning: ${topic.domain}] ${studyResult?.analysis?.substring?.(0, 500) || topic.prompt}`,
                 context: `clm_study:${topic.domain}`,
-                priority: 7,
+                priority: 8, // Higher priority for faster recall
                 access_count: 0,
                 metadata: { domain: topic.domain, source: 'clm_server_engine', cycle: cycleNumber },
               }),
             ]);
-
-            studiedTopics.push({ domain: topic.domain, success: true });
-            console.log(`📚 Studied: ${topic.domain}`);
-          } else {
-            studiedTopics.push({ domain: topic.domain, success: false });
+            return { domain: topic.domain, success: true };
           }
-        } catch (err) {
-          studiedTopics.push({ domain: topic.domain, success: false });
+          return { domain: topic.domain, success: false };
+        } catch {
+          return { domain: topic.domain, success: false };
+        }
+      });
+
+      const topicResults = await Promise.allSettled(topicPromises);
+      for (const result of topicResults) {
+        if (result.status === 'fulfilled') {
+          studiedTopics.push(result.value);
+          if (result.value.success) console.log(`📚 Studied: ${result.value.domain}`);
         }
       }
 
@@ -266,17 +269,17 @@ serve(async (req) => {
     // PHASE 4: Brain Transfer Pipeline (every 3rd cycle)
     // Distributes recent learnings from brain → all module hot caches
     // ═══════════════════════════════════════════════════════════
-    if (cycleNumber % 3 === 0 && !isQuietHours) {
+    if (!isQuietHours) { // v3.0.0: Transfer EVERY cycle, not every 3rd
       try {
         const transferStartTime = Date.now();
         let transferred = 0;
         let enriched = 0;
 
-        // Pick 2 modules to transfer knowledge to this cycle
-        const transferModules = [
-          CLM_MODULES[(cycleNumber / 3) % CLM_MODULES.length],
-          CLM_MODULES[((cycleNumber / 3) + 1) % CLM_MODULES.length],
-        ];
+        // Transfer to 4 modules per cycle (was 2) — faster knowledge distribution
+        const transferModules = [];
+        for (let i = 0; i < 4; i++) {
+          transferModules.push(CLM_MODULES[(cycleNumber + i) % CLM_MODULES.length]);
+        }
 
         for (const targetModule of transferModules) {
           const signals = MODULE_RELEVANCE[targetModule] || [];
@@ -346,7 +349,7 @@ serve(async (req) => {
     // PHASE 5: Memory Consolidation (every 6th cycle)
     // Dedup, tier promotion, stale memory demotion, pruning
     // ═══════════════════════════════════════════════════════════
-    if (cycleNumber % 6 === 0) {
+    if (cycleNumber % 3 === 0) { // v3.0.0: Consolidate every 3rd cycle (was 6th)
       try {
         const consolidationStart = Date.now();
         let promoted = 0;
