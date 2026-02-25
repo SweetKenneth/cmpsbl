@@ -34,8 +34,9 @@ const PersistentMemoryLanding = () => {
     <>
       <SEO 
         title="Persistent Memory for AI Agents | CMPSBL"
-        description="Add persistent memory to your agent in under an hour. No rewrites. No new framework. Your agent just stops forgetting."
-        keywords={['AI memory', 'agent memory', 'persistent memory', 'LLM memory', 'AI continuity']}
+        description="Add persistent memory to any AI agent in under an hour. Works with LangChain, CrewAI, and custom frameworks. Free tier available."
+        image="https://cmpsbl.com/og/persistent-memory.jpg"
+        keywords={['persistent memory AI', 'agent memory API', 'AI memory system', 'LangChain memory', 'episodic memory AI', 'context engineering']}
         howTo={{
           name: 'Add Persistent Memory to Your AI Agent',
           description: 'Three steps to give your agent persistent memory that survives across sessions.',

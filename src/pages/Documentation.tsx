@@ -23,10 +23,11 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Documentation — CMPSBL Developer Guide"
-        description="Complete technical documentation for the CMPSBL Substrate: module reference, API specs, configuration, and deployment guides."
+        title="Documentation — Developer Guide | CMPSBL"
+        description="Complete technical documentation: module reference, API specs, configuration guides, and deployment patterns for production systems."
         canonical="https://cmpsbl.com/documentation"
-        keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'module documentation', 'technical guide AI']}
+        image="https://cmpsbl.com/og/documentation.jpg"
+        keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'module documentation', 'agentic AI docs']}
       />
 
       <PublicNav />

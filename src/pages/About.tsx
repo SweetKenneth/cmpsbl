@@ -41,10 +41,11 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="About CMPSBL — Dallas TX"
-        description="CMPSBL was founded by Kenneth E Sweet Jr. From Dallas, TX to a layered cognitive infrastructure powering the future of AI."
+        title="About CMPSBL — Founder & Mission"
+        description="Founded by Kenneth E Sweet Jr in Dallas TX. CMPSBL builds governed cognitive infrastructure where AI persists, learns, and compounds intelligence."
         canonical="https://cmpsbl.com/about"
-        keywords={['about CMPSBL', 'Kenneth Sweet', 'CMPSBL founder', 'Dallas AI company', 'cognitive infrastructure story', 'AI startup Texas']}
+        image="https://cmpsbl.com/og/about.jpg"
+        keywords={['about CMPSBL', 'Kenneth Sweet Jr', 'CMPSBL founder', 'Dallas AI company', 'cognitive infrastructure', 'AI startup Texas']}
       />
       
       <script type="application/ld+json">
@@ -57,7 +58,7 @@ export default function About() {
           "mainEntity": {
             "@type": "Organization",
             "name": "CMPSBL",
-            "alternateName": "PromptFluid",
+            "alternateName": "Composable",
             "foundingDate": "2009",
             "founder": { "@type": "Person", "name": "Kenneth E Sweet Jr", "jobTitle": "Founder" }
           }

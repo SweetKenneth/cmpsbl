@@ -107,9 +107,10 @@ export default function TemplateAlley() {
   return (
     <>
       <SEO
-        title={`Template Alley | ${ALL_TEMPLATES.length}+ Templates | CMPSBL`}
-        description={`Explore ${ALL_TEMPLATES.length}+ templates across Free, Creator, Architect, and Enterprise tiers.`}
-        keywords={["AI templates", "cognitive templates", "code templates", "tiered templates"]}
+        title="Template Marketplace | CMPSBL"
+        description="Browse production-ready AI templates across Free, Creator, Architect, and Enterprise tiers. Pre-built cognitive workflows ready to deploy."
+        keywords={["AI templates", "cognitive templates", "agentic AI templates", "composable AI marketplace"]}
+        image="https://cmpsbl.com/og/modules.jpg"
       />
       
       <div className="min-h-screen bg-background flex flex-col">

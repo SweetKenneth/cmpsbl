@@ -277,9 +277,10 @@ export default function DeveloperShowcase() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="For Developers — Build Intelligent Apps | CMPSBL"
-        description="CMPSBL for software developers. Add persistent memory, dream cycles, and intelligent reasoning to any application."
+        title="Developer Hub — SDKs & APIs | CMPSBL"
+        description="Everything developers need: SDKs, REST APIs, webhooks, and integration guides for building on the composable AI substrate."
         canonical="https://cmpsbl.com/developers"
+        image="https://cmpsbl.com/og/developers.jpg"
         keywords={[
           "AI development",
           "cognitive architecture",

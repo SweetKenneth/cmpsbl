@@ -63,10 +63,11 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
-        title="Clockless — A Cognitive Reality System | CMPSBL"
-        description="Clockless is a governed cognitive reality where intelligence persists, evolves autonomously, coordinates systems, and compounds value without resets. Powered by the CMPSBL Substrate."
+        title="Composable AI Infrastructure | CMPSBL"
+        description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Modular AI substrate for agentic systems that learn."
         canonical="https://cmpsbl.com"
-        keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'cognitive infrastructure', 'persistent memory AI', 'self-learning AI', 'AI memory layer', 'multi-provider routing']}
+        image="https://cmpsbl.com/og/home.jpg"
+        keywords={['composable AI', 'cognitive infrastructure', 'AI substrate', 'agentic AI platform', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software']}
       />
 
       <PublicNav />
