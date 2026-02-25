@@ -40,7 +40,7 @@ export default function Terms() {
               <li>INCLUSIVE — Human compatibility module with WCAG scanning and AI remediation</li>
               <li>Persistent Memory — Drop-in memory layer for any AI agent</li>
               <li>Evolution Mesh — Self-learning immune system for software</li>
-              <li>Engine Marketplace — Production-ready cognitive orchestrations</li>
+              <li>Composable Cognitive Infrastructure — Templates, capabilities, and orchestration pipelines</li>
             </ul>
           </section>
 

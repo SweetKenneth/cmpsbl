@@ -22,8 +22,8 @@ export default function Roadmap() {
         },
         {
           icon: Store,
-          title: "Composable Artifacts Store",
-          description: "200+ free templates, 525+ capabilities, and 300 synergy pipelines in a unified storefront. Browse, remix, and build.",
+          title: "Composable Artifacts",
+          description: "200+ free templates, 525+ capabilities, and composable building blocks. Browse, remix, and build.",
           status: "Live",
           technologies: ["Templates", "SDK", "Developer Tools", "Artifacts"]
         }
