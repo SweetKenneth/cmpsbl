@@ -29,12 +29,12 @@ export default function Solutions() {
     },
     {
       icon: Zap,
-      name: "Engines",
-      tagline: "Production-Ready Orchestrations",
-      description: "76 engines and 24 meta-engines. Governed, versioned, enterprise-grade cognitive orchestrations via Creator and Architect tiers.",
-      features: ["76 production engines", "24 meta-engines", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees"],
-      metrics: ["100 Total Engines", "OEM Licensed", "Production Ready"],
-      link: "/engines"
+      name: "Orchestration",
+      tagline: "Production-Ready Cognitive Infrastructure",
+      description: "Governed, versioned, enterprise-grade cognitive orchestrations via Creator and Architect tiers.",
+      features: ["Production orchestrations", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees", "Composable architecture"],
+      metrics: ["Enterprise Grade", "OEM Licensed", "Production Ready"],
+      link: "/pricing"
     },
     {
       icon: Brain,
