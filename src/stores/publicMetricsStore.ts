@@ -81,7 +81,7 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '11.2.1',
+  version: '11.3.0',
   codename: 'SPARTA',
   epoch: 'SPARTA',
   buildDate: new Date().toISOString().split('T')[0],
