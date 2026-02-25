@@ -245,19 +245,32 @@ export class GovernanceGuardClient {
   async ethicalConstraintCheck(input: GovernanceInput): Promise<GovernanceResult> {
     const startTime = Date.now();
 
-    try {
-      const ethical = this.checkEthicalConstraints(input.content);
+    // Input validation
+    const content = validateStringInput(input.content, { maxLength: 100_000, minLength: 1, label: 'governance.ethical.content' });
+    if (!content) {
+      return {
+        success: false,
+        stage: 'ethical_constraint_check',
+        blocked: false,
+        error: 'Invalid content for ethical check',
+        processing_time_ms: Date.now() - startTime,
+      };
+    }
 
-      await supabase.from('brain_events').insert({
+    try {
+      const ethical = this.checkEthicalConstraints(content);
+
+      // Fire-and-forget audit event (non-blocking, with truncated content length)
+      supabase.from('brain_events').insert({
         module: 'governance_guard',
         event_type: 'ethical_checked',
         data: { 
-          content_length: input.content.length,
+          content_length: content.length,
           risk_level: ethical.risk_level,
           violations: ethical.constraints_violated.length,
         },
         outcome: ethical.is_safe ? 'success' : 'violation',
-      });
+      }).then(() => {}, () => {});
 
       return {
         success: true,
@@ -322,11 +335,14 @@ export class GovernanceGuardClient {
   ): Promise<GovernanceResult> {
     const startTime = Date.now();
 
+    // Validate inputs
+    const safeReason = validateStringInput(reason, { maxLength: 2048, minLength: 1 }) || 'unspecified';
+
     try {
       const signal: GovernanceSignal = {
         id: crypto.randomUUID(),
         type,
-        reason,
+        reason: safeReason,
         metadata: metadata || {},
         timestamp: new Date().toISOString(),
       };

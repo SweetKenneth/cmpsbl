@@ -193,7 +193,7 @@ export const FLEET_REGISTRY: FleetProvider[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// USAGE TRACKING — Per-provider RPM/RPD counters
+// USAGE TRACKING — Per-provider RPM/RPD counters (bounded)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 interface UsageWindow {
@@ -203,12 +203,18 @@ interface UsageWindow {
   dayReset: number;
 }
 
+const MAX_TRACKED_PROVIDERS = 100;
 const usageWindows = new Map<string, UsageWindow>();
 
 function getUsageWindow(providerId: string): UsageWindow {
   const now = Date.now();
   let w = usageWindows.get(providerId);
   if (!w) {
+    // Bound map size
+    if (usageWindows.size >= MAX_TRACKED_PROVIDERS) {
+      const oldest = usageWindows.keys().next().value;
+      if (oldest) usageWindows.delete(oldest);
+    }
     w = { minuteCalls: 0, minuteReset: now + 60000, dayCalls: 0, dayReset: now + 86400000 };
     usageWindows.set(providerId, w);
     return w;
@@ -237,7 +243,7 @@ function recordUsage(providerId: string): void {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// HEALTH SCORING — Exponential decay with recency weighting
+// HEALTH SCORING — Exponential decay with recency weighting (bounded)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 interface ProviderHealthState {
@@ -248,10 +254,16 @@ interface ProviderHealthState {
   score: number; // 0-100
 }
 
+const MAX_HEALTH_STATES = 100;
 const healthStates = new Map<string, ProviderHealthState>();
 
 function getHealthState(providerId: string): ProviderHealthState {
   if (!healthStates.has(providerId)) {
+    // Bound map size
+    if (healthStates.size >= MAX_HEALTH_STATES) {
+      const oldest = healthStates.keys().next().value;
+      if (oldest) healthStates.delete(oldest);
+    }
     healthStates.set(providerId, {
       successCount: 0,
       failureCount: 0,
