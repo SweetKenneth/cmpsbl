@@ -124,6 +124,14 @@ const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
 const AIOperatingSystem = lazy(() => import("./pages/AIOperatingSystem"));
 const EncodeInfo = lazy(() => import("./pages/products/EncodeInfo"));
 
+// Solutions vertical pages
+const DefenseLegalServices = lazy(() => import("./pages/solutions/DefenseLegalServices"));
+const DefenseMedicalServices = lazy(() => import("./pages/solutions/DefenseMedicalServices"));
+const DefenseFinancialServices = lazy(() => import("./pages/solutions/DefenseFinancialServices"));
+
+// Resources pages
+const FreeAIResources = lazy(() => import("./pages/resources/FreeAIResources"));
+
 
 // PromptFluid portfolio page (accessible via menu + promptfluid.com domain)
 const PromptFluidHome = lazy(() => import("./pages/PromptFluidHome"));
@@ -366,7 +374,12 @@ const App = () => {
                         {/* Marketing / Info */}
                         <Route path="/about" element={<About />} />
                         <Route path="/solutions" element={<Solutions />} />
+                        <Route path="/solutions/defense-legal" element={<DefenseLegalServices />} />
+                        <Route path="/solutions/defense-medical" element={<DefenseMedicalServices />} />
+                        <Route path="/solutions/defense-financial" element={<DefenseFinancialServices />} />
                         <Route path="/projects" element={<CurrentProjects />} />
+                        <Route path="/projects/defense" element={<CurrentProjects />} />
+                        <Route path="/resources/free-ai" element={<FreeAIResources />} />
                         <Route path="/roadmap" element={<Roadmap />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/llms-txt" element={<LlmsTxt />} />
