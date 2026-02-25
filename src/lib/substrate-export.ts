@@ -82,7 +82,7 @@ function isArchived(path: string): boolean {
  * would conflict with the current 9-module system.
  */
 const CLEANUP_MANIFEST = {
-  version: '11.1',
+  version: '11.2',
   description: 'Delete these files/directories in the LNCHBL project BEFORE extracting the substrate ZIP. This ensures no legacy pre-SPARTA artifacts remain.',
   instructions: [
     '1. Back up your LNCHBL landing page files (e.g. src/pages/Index.tsx, src/pages/Landing.tsx) — these are NOT included in the ZIP',
