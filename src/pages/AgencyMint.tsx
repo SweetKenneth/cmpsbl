@@ -118,7 +118,7 @@ export default function AgencyMint() {
             <div className="flex items-center gap-3">
               <MintForgeToggle />
               <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400 bg-fuchsia-500/10">
-                v1.0.0
+                GOVERNOR
               </Badge>
             </div>
           </div>

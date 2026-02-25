@@ -731,9 +731,9 @@ function CTASection() {
               </Link>
             </Button>
             <Button variant="outline" size="lg" className="gap-2" asChild>
-              <Link to="/capabilities">
+              <Link to="/explore">
                 <Layers className="w-5 h-5" />
-                Capabilities Depot
+                Explore
               </Link>
             </Button>
           </div>
@@ -769,7 +769,7 @@ export default function SynergyPipelines() {
         keywords={['synergy pipelines', 'cognitive fusion', 'multi-module AI', 'emergent intelligence', 'AI orchestration pipelines']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
-          { name: 'Store', url: 'https://cmpsbl.com/store' },
+          { name: 'Explore', url: 'https://cmpsbl.com/explore' },
           { name: 'Synergy Pipelines', url: 'https://cmpsbl.com/synergy-pipelines' },
         ]}
       />
@@ -783,8 +783,8 @@ export default function SynergyPipelines() {
               <span className="font-bold text-lg">Synergy Pipelines</span>
             </Link>
             <nav className="hidden md:flex items-center gap-6">
-              <Link to="/capabilities" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Capabilities
+              <Link to="/explore" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Explore
               </Link>
               <Link to="/substrate" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Substrate
