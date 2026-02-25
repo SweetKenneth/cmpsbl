@@ -660,7 +660,7 @@ const response = await substrate.nexus.text(
               <h3 className="font-semibold mb-2">Need Premium Templates?</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 Advanced patterns like Drift Prevention Engine, Self-Healing Chatbots, 
-                and the AI Template Generator are available in the Composable Artifacts Store.
+                and the AI Template Generator are available in the Explore section.
               </p>
               <Button asChild>
                 <Link to="/explore">
