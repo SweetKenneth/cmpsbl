@@ -23,6 +23,7 @@
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilience, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
+import { validateStringInput, clampNumber, boundArray } from '@/lib/system/hardening';
 
 export interface VectorEntry {
   id: string;
@@ -94,7 +95,9 @@ export interface MemoryModuleState {
 }
 
 const vectors = new Map<string, VectorEntry>();
-const feedbackLog: RelevanceFeedback[] = [];
+let feedbackLog: RelevanceFeedback[] = [];
+const MAX_VECTORS = 10_000;
+const MAX_FEEDBACK_LOG = 1000;
 
 const state: MemoryModuleState = {
   initialized: false,
@@ -129,7 +132,17 @@ export function initMemoryModule(): void {
 }
 
 export async function ingestKnowledge(source: string, format: string, options?: { chunkSize?: number }): Promise<{ ingested: number; source: string }> {
-  emitStarted('memory', 'ingest', { source, format });
+  const validSource = validateStringInput(source, { maxLength: 2048, minLength: 1 });
+  const validFormat = validateStringInput(format, { maxLength: 64, minLength: 1 });
+  if (!validSource || !validFormat) {
+    emitFailed('memory', 'ingest', 'Invalid source or format input');
+    return { ingested: 0, source: String(source).slice(0, 100) };
+  }
+  if (vectors.size >= MAX_VECTORS) {
+    emitFailed('memory', 'ingest', `Vector store full (${MAX_VECTORS})`);
+    return { ingested: 0, source: validSource };
+  }
+  emitStarted('memory', 'ingest', { source: validSource, format: validFormat });
   const { result } = await withResilience(
     'memory',
     () => {
@@ -158,14 +171,21 @@ export async function ingestKnowledge(source: string, format: string, options?: 
 }
 
 export async function semanticSearch(query: string, options?: { limit?: number; threshold?: number }): Promise<VectorEntry[]> {
-  emitStarted('memory', 'search', { query });
+  const validQuery = validateStringInput(query, { maxLength: 10_000, minLength: 1 });
+  if (!validQuery) {
+    emitFailed('memory', 'search', 'Invalid query input');
+    return [];
+  }
+  const limit = clampNumber(options?.limit, 1, 100, 10);
+  const threshold = clampNumber(options?.threshold, 0, 1, 0);
+  emitStarted('memory', 'search', { query: validQuery.slice(0, 100) });
   const { result } = await withResilience<VectorEntry[]>(
     'memory',
     () => {
       const results = Array.from(vectors.values())
-        .filter(v => v.relevanceScore >= (options?.threshold ?? 0))
+        .filter(v => v.relevanceScore >= threshold)
         .sort((a, b) => b.relevanceScore - a.relevanceScore)
-        .slice(0, options?.limit ?? 10);
+        .slice(0, limit);
 
       for (const entry of results) {
         entry.accessCount++;
@@ -243,11 +263,13 @@ export function recordRelevanceFeedback(queryId: string, resultId: string, wasUs
     queryId,
     resultId,
     wasUseful,
-    relevanceScore: Math.max(0, Math.min(1, relevanceScore)),
+    relevanceScore: clampNumber(relevanceScore, 0, 1, wasUseful ? 0.8 : 0.2),
     timestamp: Date.now(),
   };
 
   feedbackLog.push(feedback);
+  // Bound feedback log
+  feedbackLog = boundArray(feedbackLog, MAX_FEEDBACK_LOG);
 
   const entry = vectors.get(resultId);
   if (entry) {

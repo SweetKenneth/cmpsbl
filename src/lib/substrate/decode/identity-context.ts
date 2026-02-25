@@ -36,6 +36,7 @@ export interface DecodeIdentityContext {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const identityContexts = new Map<string, DecodeIdentityContext>();
+const MAX_IDENTITY_CONTEXTS = 500;
 
 /**
  * Build identity context for Decode from current IDENTITY module state
@@ -70,7 +71,11 @@ export function buildIdentityContext(sessionId?: string): DecodeIdentityContext 
     recognitionConfidence: existing ? Math.min(1, 0.5 + (existing.authCount * 0.1)) : 0.5,
   };
 
-  // Persist for future recognition
+  // Persist for future recognition — evict oldest if over limit
+  if (identityContexts.size >= MAX_IDENTITY_CONTEXTS && !identityContexts.has(actor.id)) {
+    const oldestKey = identityContexts.keys().next().value;
+    if (oldestKey) identityContexts.delete(oldestKey);
+  }
   identityContexts.set(actor.id, context);
 
   return context;

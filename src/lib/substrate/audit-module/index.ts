@@ -10,6 +10,7 @@
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
+import { validateStringInput, boundArray } from '@/lib/system/hardening';
 
 export interface AuditEntry {
   id: string;
@@ -86,7 +87,8 @@ export interface AuditModuleState {
   reportsGenerated: number;
 }
 
-const auditLog: AuditEntry[] = [];
+let auditLog: AuditEntry[] = [];
+const MAX_AUDIT_ENTRIES = 5000;
 let lastHash = '0000000000000000';
 
 function computeHash(entry: Omit<AuditEntry, 'hash'>): string {
@@ -147,9 +149,27 @@ export function recordAuditEntry(
   previousState: unknown = null, newState: unknown = null,
   metadata: Record<string, string> = {}
 ): AuditEntry {
+  // Input validation
+  const validModule = validateStringInput(module, { maxLength: 64, minLength: 1 }) ?? 'unknown';
+  const validAction = validateStringInput(action, { maxLength: 128, minLength: 1 }) ?? 'unknown';
+  const validResource = validateStringInput(resource, { maxLength: 256 }) ?? 'unknown';
+  const validResourceId = validateStringInput(resourceId, { maxLength: 256 }) ?? '';
+  const validActorId = validateStringInput(actor?.id, { maxLength: 128, minLength: 1 });
+  if (!validActorId) {
+    return {
+      id: `audit-rejected-${Date.now()}`, timestamp: Date.now(),
+      actor: { id: 'unknown', type: 'system' }, module: validModule, action: validAction,
+      resource: validResource, resourceId: validResourceId,
+      previousState: null, newState: null, metadata: {},
+      hash: 'rejected', previousHash: lastHash,
+    };
+  }
+
+  const safeActor = { id: validActorId, type: actor.type };
+
   const fallbackEntry: AuditEntry = {
-    id: `audit-fallback-${Date.now()}`, timestamp: Date.now(), actor, module, action,
-    resource, resourceId, previousState, newState, metadata,
+    id: `audit-fallback-${Date.now()}`, timestamp: Date.now(), actor: safeActor, module: validModule, action: validAction,
+    resource: validResource, resourceId: validResourceId, previousState, newState, metadata,
     hash: 'fallback', previousHash: lastHash,
   };
 
@@ -158,12 +178,18 @@ export function recordAuditEntry(
     () => {
       const partial = {
         id: `audit-${Date.now()}-${auditLog.length}`,
-        timestamp: Date.now(), actor, module, action, resource, resourceId,
+        timestamp: Date.now(), actor: safeActor, module: validModule, action: validAction, resource: validResource, resourceId: validResourceId,
         previousState, newState, metadata, previousHash: lastHash,
       };
       const hash = computeHash(partial);
       const entry: AuditEntry = { ...partial, hash };
       auditLog.push(entry);
+      // Bound audit log to prevent unbounded memory growth
+      if (auditLog.length > MAX_AUDIT_ENTRIES) {
+        // Compress before trimming to preserve chain metadata
+        compressAuditEntries(0);
+        auditLog = boundArray(auditLog, MAX_AUDIT_ENTRIES);
+      }
       lastHash = hash;
       state.totalEntries = auditLog.length;
       state.lastEntry = entry.id;
@@ -172,7 +198,7 @@ export function recordAuditEntry(
       const entrySize = JSON.stringify(entry).length;
       compressionStats.totalEntries++;
       compressionStats.originalSizeBytes += entrySize;
-      compressionStats.compressedSizeBytes += entrySize; // Will decrease after compression
+      compressionStats.compressedSizeBytes += entrySize;
 
       return entry;
     },
