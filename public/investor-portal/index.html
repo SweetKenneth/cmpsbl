@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CMPSBL / Clockless — Investor Brief</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.72;
+  color: #1a1a1a;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 920px; margin: 0 auto; padding: 60px 32px 80px; }
+header { padding: 48px 0 40px; border-bottom: 1px solid #e4e4e4; margin-bottom: 64px; }
+header h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.15; color: #0a0a0a; }
+header p.subtitle { font-size: 17px; color: #666; margin-top: 12px; font-weight: 400; }
+h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: #888;
+  margin-top: 72px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+h3 { font-size: 22px; font-weight: 600; margin-top: 36px; margin-bottom: 12px; color: #111; }
+p { margin-bottom: 18px; color: #333; }
+ul { margin: 0 0 24px 20px; }
+li { margin-bottom: 8px; color: #333; }
+li strong { color: #111; }
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.divider { border: none; border-top: 1px solid #e8e8e8; margin: 64px 0; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 16px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #eee; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; color: #888; font-weight: 600; border-bottom: 2px solid #ddd; }
+td { color: #333; }
+.nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+.nav-card {
+  display: block;
+  padding: 24px;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.nav-card:hover { border-color: #bbb; box-shadow: 0 2px 12px rgba(0,0,0,0.04); text-decoration: none; }
+.nav-card .card-title { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+.nav-card .card-desc { font-size: 14px; color: #666; line-height: 1.5; }
+footer { margin-top: 80px; padding-top: 32px; border-top: 1px solid #e4e4e4; font-size: 13px; color: #999; }
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+  margin-bottom: 16px;
+}
+@media (max-width: 640px) {
+  .container { padding: 32px 20px 48px; }
+  header h1 { font-size: 28px; }
+  h2 { margin-top: 48px; }
+  .nav-grid { grid-template-columns: 1fr; }
+  body { font-size: 16px; }
+}
+@media print {
+  .container { max-width: 100%; padding: 0; }
+  .nav-grid, .nav-card { display: none; }
+  header { padding: 24px 0 16px; margin-bottom: 32px; }
+  h2 { margin-top: 36px; }
+  body { font-size: 11pt; line-height: 1.5; }
+  a { color: #111; text-decoration: none; }
+  footer { margin-top: 40px; }
+  @page { margin: 0.75in; }
+  h2, h3 { break-after: avoid; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="badge">Confidential — For Investor Evaluation</div>
+  <h1>CMPSBL / Clockless</h1>
+  <p class="subtitle">Cognitive Infrastructure for Autonomous Systems · SPARTA Epoch</p>
+</header>
+
+<h2>Executive Summary</h2>
+<p>CMPSBL is building the infrastructure layer for AI systems that persist, heal, and improve themselves — without requiring human intervention for routine operation. The platform operates as a layered cognitive kernel: a deterministic, auditable runtime that manages memory, reasoning, governance, and evolution as first-class system concerns.</p>
+<p>Unlike application-layer AI toolkits, CMPSBL provides the operating system beneath them — handling state management, failure isolation, trust scoring, and autonomous learning with the same rigor applied to production database engines and distributed operating systems.</p>
+
+<h2>Why This Exists</h2>
+<p>Current AI infrastructure treats intelligence as stateless API calls. Every interaction starts from zero. There is no memory persistence, no self-correction, no governance layer, and no mechanism for the system to improve its own behavior over time.</p>
+<p>This architectural gap means that every AI application built today must reinvent the same foundational capabilities: session memory, safety guardrails, failure recovery, and operational monitoring. The result is fragile, expensive, and non-composable.</p>
+<p>CMPSBL addresses this by providing a shared cognitive substrate — a persistent, self-healing runtime that any AI application can build on top of. The system remembers, learns from failures, and evolves its own operational patterns within strict governance boundaries.</p>
+
+<h2>Architecture Overview</h2>
+<p>The substrate is organized as 24 Matrix Nodes across five sectors, each with independent health tracking and circuit breaker isolation:</p>
+<table>
+  <tr><th>Sector</th><th>Nodes</th><th>Role</th></tr>
+  <tr><td><strong>CORE</strong></td><td>1</td><td>Standalone kernel boot authority</td></tr>
+  <tr><td><strong>CCR</strong></td><td>4</td><td>Reasoning, synthesis, persistence</td></tr>
+  <tr><td><strong>CCL</strong></td><td>5</td><td>Events, authentication, integrity</td></tr>
+  <tr><td><strong>Execution</strong></td><td>9</td><td>Public cognitive capabilities</td></tr>
+  <tr><td><strong>Overlay</strong></td><td>5</td><td>Protective behavioral mesh hierarchy</td></tr>
+</table>
+<p>Health is calculated using a weighted aggregation model. A degraded node reduces only its own sector score. Circuit breakers isolate failures per-node, preventing cascading degradation across the system.</p>
+
+<h2>Governance Model</h2>
+<p>The system implements a governance-first control plane with four operational modes:</p>
+<ul>
+  <li><strong>ACTIVE</strong> — Standard operation. All subsystems running.</li>
+  <li><strong>OBSERVE</strong> — Quiet mode. Learning and mutation pipelines paused. Telemetry continues.</li>
+  <li><strong>LOCKDOWN</strong> — Incident response. Non-essential processes halted. Core services preserved.</li>
+  <li><strong>EVOLVE</strong> — Directed acceleration with canary rollouts and automatic rollback.</li>
+</ul>
+<p>Mode changes are audited, time-bounded with automatic reversion, and restricted to system administrators. The system defaults to ACTIVE and cannot be locked into a degraded state permanently.</p>
+
+<h2>System Resilience</h2>
+<p>Every node operates with independent circuit breaker tracking. The system supports hot-swappable zones — infrastructure components can be cycled without full restart. The EVOLUTION overlay continuously scans for optimization opportunities, proposes improvements through the GOVERNANCE overlay, tests them in shadow mode against real system gaps, and promotes successful changes automatically.</p>
+<p>Memory operates across three tiers (hot, warm, cold) with automated staleness detection and re-embedding. This ensures the system's knowledge base remains current without manual maintenance.</p>
+
+<h2>Monetization Model</h2>
+<table>
+  <tr><th>Stream</th><th>Model</th><th>Margin Profile</th></tr>
+  <tr><td>Substrate SaaS</td><td>Tiered subscriptions (Creator → Enterprise)</td><td>High</td></tr>
+  <tr><td>Infrastructure Licensing</td><td>Per-deployment licensing</td><td>High</td></tr>
+  <tr><td>Module Marketplace</td><td>Revenue share on third-party modules</td><td>High</td></tr>
+  <tr><td>Professional Services</td><td>Implementation and integration support</td><td>Moderate</td></tr>
+</table>
+
+<hr class="divider" />
+
+<h2>Continue Reading</h2>
+<div class="nav-grid">
+  <a href="./architecture-brief.html" class="nav-card">
+    <div class="card-title">Architecture Brief</div>
+    <div class="card-desc">Layered kernel design, memory tiers, evolution loop, and deterministic controls.</div>
+  </a>
+  <a href="./governance-control-plane.html" class="nav-card">
+    <div class="card-title">Governance Control Plane</div>
+    <div class="card-desc">Operational modes, audit logging, TTL auto-revert, and safety architecture.</div>
+  </a>
+  <a href="./platform-differentiators.html" class="nav-card">
+    <div class="card-title">Platform Differentiators</div>
+    <div class="card-desc">Infrastructure positioning, bounded autonomy, and long-horizon defensibility.</div>
+  </a>
+  <a href="./execution-model.html" class="nav-card">
+    <div class="card-title">Execution Model</div>
+    <div class="card-desc">Productization strategy, licensing tiers, and distribution plan.</div>
+  </a>
+</div>
+
+<footer>
+  <p>CMPSBL® · PromptFluid® · Confidential — For Investor Evaluation</p>
+  <p>Kenneth E. Sweet Jr., Founder &amp; Chief Cognitive Engineer · ORCID: 0009-0001-4237-1243</p>
+  <p>Contact: PromptFluid@gmail.com · cmpsbl.com</p>
+</footer>
+
+</div>
+</body>
+</html>

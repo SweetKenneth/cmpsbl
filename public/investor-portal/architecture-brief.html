@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Architecture Brief — CMPSBL / Clockless</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.72;
+  color: #1a1a1a;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 920px; margin: 0 auto; padding: 60px 32px 80px; }
+header { padding: 48px 0 40px; border-bottom: 1px solid #e4e4e4; margin-bottom: 64px; }
+header h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.15; color: #0a0a0a; }
+header p.subtitle { font-size: 17px; color: #666; margin-top: 12px; font-weight: 400; }
+h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: #888;
+  margin-top: 72px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+h3 { font-size: 22px; font-weight: 600; margin-top: 36px; margin-bottom: 12px; color: #111; }
+p { margin-bottom: 18px; color: #333; }
+ul { margin: 0 0 24px 20px; }
+li { margin-bottom: 8px; color: #333; }
+li strong { color: #111; }
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.divider { border: none; border-top: 1px solid #e8e8e8; margin: 64px 0; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 16px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #eee; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; color: #888; font-weight: 600; border-bottom: 2px solid #ddd; }
+td { color: #333; }
+.back-link { display: inline-block; font-size: 14px; color: #888; margin-bottom: 8px; }
+.back-link:hover { color: #555; }
+footer { margin-top: 80px; padding-top: 32px; border-top: 1px solid #e4e4e4; font-size: 13px; color: #999; }
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+  margin-bottom: 16px;
+}
+pre {
+  background: #f8f8f8;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  padding: 20px 24px;
+  font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin: 16px 0 28px;
+  color: #333;
+}
+@media (max-width: 640px) {
+  .container { padding: 32px 20px 48px; }
+  header h1 { font-size: 28px; }
+  h2 { margin-top: 48px; }
+  body { font-size: 16px; }
+}
+@media print {
+  .container { max-width: 100%; padding: 0; }
+  .back-link { display: none; }
+  header { padding: 24px 0 16px; margin-bottom: 32px; }
+  h2 { margin-top: 36px; }
+  body { font-size: 11pt; line-height: 1.5; }
+  a { color: #111; text-decoration: none; }
+  footer { margin-top: 40px; }
+  @page { margin: 0.75in; }
+  h2, h3 { break-after: avoid; }
+  p { orphans: 3; widows: 3; }
+  pre { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="./index.html" class="back-link">← Investor Brief</a>
+
+<header>
+  <div class="badge">Architecture</div>
+  <h1>Architecture Brief</h1>
+  <p class="subtitle">Layered Cognitive Kernel · Deterministic Infrastructure</p>
+</header>
+
+<h2>Design Philosophy</h2>
+<p>CMPSBL is not an AI application. It is the operating system that AI applications run on. The architecture is designed around a single principle: cognitive capabilities should be infrastructure-grade — persistent, observable, governable, and independently recoverable.</p>
+<p>The system draws from established patterns in distributed systems engineering — circuit breakers, weighted health aggregation, append-only audit logs — and applies them to the problem of managing autonomous cognitive processes at production scale.</p>
+
+<h2>Layered Architecture</h2>
+<p>The substrate is organized into five distinct sectors. Each sector has independent health tracking, and failures are isolated at the node level through per-node circuit breakers.</p>
+
+<table>
+  <tr><th>Sector</th><th>Nodes</th><th>Weight</th><th>Responsibility</th></tr>
+  <tr><td><strong>CORE</strong></td><td>1 (Kernel)</td><td>20%</td><td>Boot authority. Initializes all layers. Standalone recovery capable.</td></tr>
+  <tr><td><strong>CCR</strong></td><td>4 (SYSTEM, BRAIN, MEMORY, DREAM)</td><td>20%</td><td>Hidden reasoning engine. Synthesis, persistence, offline consolidation.</td></tr>
+  <tr><td><strong>CCL</strong></td><td>5 (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)</td><td>20%</td><td>Infrastructure convergence. Events, auth, integrity, message routing.</td></tr>
+  <tr><td><strong>Execution</strong></td><td>9 modules</td><td>25%</td><td>Public cognitive capabilities. DECODE, ENCODE, NEXUS, CORTEX, and more.</td></tr>
+  <tr><td><strong>Overlay</strong></td><td>5 meshes</td><td>15%</td><td>Behavioral protection. DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE.</td></tr>
+</table>
+
+<p>Total system health is the weighted sum across all sectors. This model ensures that a single degraded node does not disproportionately affect the overall health score.</p>
+
+<h2>Boot Sequence</h2>
+<p>The system follows a strict initialization order. Each layer must report healthy before the next layer begins boot.</p>
+<pre>CORE (Kernel)
+  → CCR Layer: SYSTEM + BRAIN + MEMORY + DREAM
+  → CCL Layer: RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
+  → Execution: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
+  → INTEGRATION (boots last — dependency resolver)
+  ← Overlays wrap all layers: DEFENSE (outermost) → GOVERNANCE (innermost)</pre>
+
+<h2>Substrate vs. Overlays</h2>
+<p>The substrate comprises all concrete processing nodes — the kernel, zones, and execution modules. These handle data persistence, request processing, memory management, and capability execution.</p>
+<p>Overlays are behavioral meshes that wrap the substrate. They do not process data directly. Instead, they observe, govern, protect, and evolve the substrate's behavior. The overlay hierarchy is strict: DEFENSE is the outermost layer (threat detection), and GOVERNANCE is the innermost (policy enforcement). Every operation passes through all five overlays before reaching the substrate.</p>
+
+<h2>Cognitive Runtime Model</h2>
+<p>The runtime manages three concurrent concerns:</p>
+<ul>
+  <li><strong>Synchronous Processing</strong> — Request handling, capability execution, and response generation through the execution nodes.</li>
+  <li><strong>Asynchronous Learning</strong> — Continuous learning cycles that run on 5-minute intervals, scanning for optimization opportunities and updating operational patterns.</li>
+  <li><strong>Offline Consolidation</strong> — Dream-state processing where the system performs memory synthesis, pattern recombination, and knowledge consolidation outside of active request handling.</li>
+</ul>
+
+<h2>Memory Tiers</h2>
+<p>The MEMORY zone manages a three-tier storage model with automated lifecycle management:</p>
+<table>
+  <tr><th>Tier</th><th>Characteristics</th><th>Access Pattern</th></tr>
+  <tr><td><strong>Hot</strong></td><td>Recently accessed, high relevance score</td><td>In-memory, sub-millisecond retrieval</td></tr>
+  <tr><td><strong>Warm</strong></td><td>Moderate recency, periodic access</td><td>Indexed storage, fast retrieval</td></tr>
+  <tr><td><strong>Cold</strong></td><td>Archival, low access frequency</td><td>Compressed storage, retrieval on demand</td></tr>
+</table>
+<p>Staleness detection runs continuously. Memories that become stale are automatically re-embedded to maintain semantic accuracy. Tier promotion and demotion are governed by access frequency, relevance scoring, and recency.</p>
+
+<h2>Evolution Loop</h2>
+<p>The EVOLUTION overlay operates a five-phase lifecycle:</p>
+<ul>
+  <li><strong>Scan</strong> — Inspect all nodes for optimization opportunities.</li>
+  <li><strong>Propose</strong> — Generate improvement proposals with risk assessment.</li>
+  <li><strong>Govern</strong> — Route proposals through GOVERNANCE and INTENT overlays for approval.</li>
+  <li><strong>Execute</strong> — Apply changes in shadow mode first. No production impact.</li>
+  <li><strong>Verify</strong> — Post-execution validation confirms improvement before promotion.</li>
+</ul>
+<p>Failed proposals are rolled back automatically. The system maintains a complete history of all evolution attempts, successes, and reversions.</p>
+
+<h2>Deterministic Controls</h2>
+<p>Health reporting is deterministic. Circuit breaker states enforce fixed health ceilings:</p>
+<table>
+  <tr><th>Breaker State</th><th>Health Cap</th><th>Behavior</th></tr>
+  <tr><td>Closed</td><td>100%</td><td>Fully healthy. Normal operation.</td></tr>
+  <tr><td>Half-Open</td><td>80%</td><td>Controlled recovery. Limited request acceptance.</td></tr>
+  <tr><td>Open</td><td>60%</td><td>Hard degradation. Traffic rejected.</td></tr>
+  <tr><td>Rerouting</td><td>85%</td><td>Migration in progress.</td></tr>
+</table>
+<p>These caps ensure that health scores are never speculative. A node reporting 95% health with an open circuit breaker is impossible — the breaker state is authoritative.</p>
+
+<hr class="divider" />
+<p><a href="./index.html">← Back to Investor Brief</a> · <a href="./governance-control-plane.html">Governance Control Plane →</a></p>
+
+<footer>
+  <p>CMPSBL® · PromptFluid® · Confidential — For Investor Evaluation</p>
+  <p>Kenneth E. Sweet Jr. · ORCID: 0009-0001-4237-1243</p>
+</footer>
+
+</div>
+</body>
+</html>
