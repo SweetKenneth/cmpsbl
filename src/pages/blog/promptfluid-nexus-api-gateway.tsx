@@ -9,9 +9,11 @@ const PromptFluidNexus = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="NEXUS Module: AI Gateway & Multi-Model Routing | CMPSBL®"
-        description="CMPSBL's NEXUS module intelligently routes AI tasks to optimal model providers with caching, fallback logic, and cost optimization across the substrate."
-        keywords={['AI gateway', 'multi-model routing', 'CMPSBL Nexus', 'AI orchestration mesh', 'provider management']}
+        title="NEXUS: AI Gateway & Multi-Model Routing"
+        description="Intelligently route AI tasks to optimal model providers with caching, fallback logic, and cost optimization across the substrate."
+        type="article"
+        publishedTime="2025-09-25"
+        keywords={['AI gateway', 'multi-model routing', 'NEXUS module', 'AI orchestration mesh', 'provider management']}
       />
       
       <PublicNav />

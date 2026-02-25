@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module Mission — Human Compatibility Pipeline
- * SPARTA Epoch — PromptFluid®
+ * SPARTA Epoch — CMPSBL®
  */
 
 import { SEO } from "@/components/SEO";
@@ -15,21 +15,18 @@ const InclusiveModuleMission = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="INCLUSIVE Module: Making the Digital World Accessible for Everyone | CMPSBL"
-        description="Discover the INCLUSIVE module's mission to eliminate digital barriers through AI-powered accessibility. Learn how CMPSBL is revolutionizing WCAG compliance and creating inclusive web experiences."
-        canonical="https://cmpsbl.com/blog/inclusive-module-accessibility-mission"
-        keywords={[
-          "web accessibility",
-          "WCAG compliance",
-          "AI accessibility tools",
-          "digital inclusion",
-          "accessible web design",
-          "INCLUSIVE module",
-          "ADA compliance software",
-          "automated accessibility testing"
-        ]}
+        title="INCLUSIVE Module: Accessibility at Scale"
+        description="Our commitment to web accessibility through AI-powered WCAG automation — the INCLUSIVE module architecture and mission."
         type="article"
-        publishedTime="2025-01-31"
+        publishedTime="2025-11-20"
+        keywords={[
+          "INCLUSIVE module",
+          "AI accessibility mission",
+          "WCAG automation",
+          "web accessibility AI",
+          "digital inclusion",
+          "ADA compliance software"
+        ]}
       />
 
       <article className="container mx-auto px-4 py-12 max-w-4xl">

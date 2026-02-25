@@ -13,19 +13,16 @@ export default function LLMsTxtProtocolAIContext() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="LLMs.txt: The Protocol for Machine-Readable AI Context Sharing | CMPSBL"
-        description="How CMPSBL uses LLMs.txt to provide structured context to AI systems, and why we believe this should become a standard protocol for AI-human interaction across the web."
-        canonical="https://cmpsbl.com/blog/llms-txt-protocol-ai-context"
+        title="LLMs.txt Protocol: AI Context Standard"
+        description="How we implement the llmstxt.org protocol standard and why every AI platform should adopt machine-readable context files."
+        type="article"
+        publishedTime="2026-01-30"
         keywords={[
-          'LLMs.txt', 'AI context protocol', 'machine-readable context', 'AI interaction standard',
+          'llms.txt protocol', 'AI context standard', 'machine-readable context', 'AI discoverability',
           'large language models', 'AI governance', 'context sharing protocol', 'AI communication',
           'structured AI data', 'LLM context files'
         ]}
-        type="article"
         image={llmsTxtImg}
-        publishedTime={publishDate}
-        modifiedTime={publishDate}
-        author="CMPSBL Research"
       />
       
       <PublicNav />

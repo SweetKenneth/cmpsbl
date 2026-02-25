@@ -10,9 +10,11 @@ const AICybersecurityEvolution2025 = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="How AI is Transforming Cybersecurity in 2025 | CMPSBL®"
-        description="From signature-based detection to behavioral AI. Why traditional security methods fail against modern bot attacks and how adaptive analysis changes the game."
-        keywords={['AI cybersecurity 2025', 'behavioral analysis security', 'machine learning threat detection', 'adaptive AI protection']}
+        title="AI Cybersecurity: Behavioral Defense Shift"
+        description="From signature-based detection to behavioral AI — why traditional security fails modern threats and how adaptive analysis wins."
+        type="article"
+        publishedTime="2025-10-15"
+        keywords={['AI cybersecurity evolution', 'behavioral security AI', 'adaptive threat detection', 'AI security trends']}
       />
       
       <PublicNav />

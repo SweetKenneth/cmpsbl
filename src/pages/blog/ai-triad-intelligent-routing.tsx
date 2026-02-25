@@ -10,9 +10,11 @@ const AITriadExplained = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Free-Tier Provider Network: Intelligent Routing System"
-        description="How Cascade AI routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio for optimal results at zero cost."
-        keywords={["AI routing", "intelligent orchestration", "Groq", "Together AI", "Cascade AI", "free-tier AI"]}
+        title="Free-Tier AI Routing: Triad Architecture"
+        description="Multi-provider AI gateway optimized for cost and performance — intelligent routing across free-tier models with minimal API spend."
+        type="article"
+        publishedTime="2025-10-05"
+        keywords={['AI triad routing', 'free-tier AI gateway', 'multi-provider routing', 'AI cost optimization', 'AI model routing']}
       />
       
       <PublicNav />

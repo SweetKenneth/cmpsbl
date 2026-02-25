@@ -10,9 +10,11 @@ const CascadeAIDeepDive = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="BRAIN Module: The Heart of Adaptive Intelligence | CMPSBL®"
-        description="Deep dive into the BRAIN module's learning mechanisms, memory systems, and autonomous capabilities that power CMPSBL's adaptive intelligence substrate."
-        keywords={["BRAIN module", "adaptive intelligence", "machine learning", "AI orchestration", "CMPSBL BRAIN", "cognitive substrate"]}
+        title="Cascade AI: Adaptive Intelligence Patterns"
+        description="How autonomous dream cycles enable continuous learning, reflection, and adaptive intelligence in the cognitive substrate runtime."
+        type="article"
+        publishedTime="2025-10-15"
+        keywords={['Cascade adaptive intelligence', 'autonomous dream learning', 'adaptive intelligence patterns', 'recursive improvement']}
       />
       
       <PublicNav />

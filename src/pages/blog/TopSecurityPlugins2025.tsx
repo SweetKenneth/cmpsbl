@@ -10,9 +10,11 @@ const TopSecurityPlugins2025 = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Top WordPress Security Plugins 2025: Overview & Comparison"
-        description="Overview of leading WordPress security plugins in 2025 including Wordfence, Sucuri, and upcoming AI-powered solutions. Learn about bot detection, performance impact, and choosing the right plugin for your site."
-        keywords={["wordpress security plugins 2025", "best wordpress firewall plugin", "wordfence vs sucuri 2025", "wordpress bot protection plugin", "security plugin comparison"]}
+        title="Top WordPress Security Plugins Compared"
+        description="Comprehensive comparison of WordPress security plugins: AI-powered defense, firewall strength, and malware detection capabilities."
+        type="article"
+        publishedTime="2025-10-20"
+        keywords={["WordPress security plugins", "best security plugins", "WordPress firewall comparison", "WordPress malware protection", "Wordfence vs Sucuri"]}
       />
       
       <PublicNav />

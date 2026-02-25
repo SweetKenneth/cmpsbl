@@ -9,7 +9,7 @@ import heroImg from "@/assets/blog/ai-threat-intel-adversarial-v9.jpg";
 export default function AdversarialAIDefense() {
   return (
     <>
-      <SEO title="Adversarial AI in 2026: DEFENSE Module Response | CMPSBL®" description="How CMPSBL's DEFENSE mesh counters prompt injection, behavioral fingerprinting attacks, and zero-trust mesh threats in the SPARTA Epoch." keywords={['adversarial AI', 'prompt injection defense', 'AI security 2026', 'zero-trust AI', 'behavioral fingerprinting']} />
+      <SEO title="Adversarial AI Defense: Modern Threat Response" description="How the DEFENSE module counters prompt injection, behavioral fingerprinting, and zero-trust mesh threats in production AI systems." type="article" publishedTime="2026-02-06" keywords={['adversarial AI defense', 'prompt injection defense', 'behavioral fingerprinting', 'AI security', 'zero-trust AI']} />
       <PublicNav />
       <main className="min-h-screen bg-background">
         <article className="container max-w-3xl mx-auto px-4 py-16">

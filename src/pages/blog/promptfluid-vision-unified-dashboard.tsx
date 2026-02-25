@@ -9,12 +9,11 @@ const VisionModuleGuide = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="VISION Module: AI System Dashboard & Analytics | CMPSBL®"
-        description="CMPSBL's VISION surface provides centralized monitoring for all substrate execution surfaces. Real-time AI performance analytics, system health, and operational intelligence."
-        keywords={['AI dashboard', 'system monitoring', 'AI analytics', 'CMPSBL Vision', 'cognitive substrate monitoring']}
+        title="VISION: AI System Dashboard & Analytics"
+        description="Centralized monitoring for all substrate execution surfaces — real-time AI performance analytics, system health, and operations."
         type="article"
         publishedTime="2025-09-20"
-        author="Kenneth E Sweet Jr"
+        keywords={['AI dashboard', 'system monitoring', 'AI analytics', 'VISION module', 'cognitive substrate monitoring']}
       />
       
       <PublicNav />

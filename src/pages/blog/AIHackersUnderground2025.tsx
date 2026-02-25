@@ -10,9 +10,11 @@ const AIHackersUnderground2025 = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="AI Hackers: The New Underground Threat | CMPSBL®"
-        description="Inside AI-powered attack tools, bot-as-a-service platforms, and automated hacking infrastructure. Why legacy security is obsolete and what actually works."
-        keywords={['AI hackers', 'bot-as-a-service', 'automated attacks 2025', 'AI security threats', 'behavioral fingerprinting defense']}
+        title="AI Hackers Underground: Weaponized AI"
+        description="Inside look at how malicious actors weaponize AI for attacks — and how cognitive defense systems respond in production environments."
+        type="article"
+        publishedTime="2025-11-01"
+        keywords={['AI hackers underground', 'weaponized AI attacks', 'AI threat actors', 'AI security defense']}
       />
       
       <PublicNav />

@@ -9,7 +9,7 @@ import heroImg from "@/assets/blog/ai-governance-compliance-v9.jpg";
 export default function AutonomousAIGovernance() {
   return (
     <>
-      <SEO title="Autonomous AI Governance: Runtime Enforcement | CMPSBL®" description="CMPSBL's AUDIT and IDENTITY modules deliver cryptographic compliance logging and universal actor attribution for enterprise AI governance." keywords={['AI governance', 'runtime compliance', 'audit logging', 'AI identity attribution', 'SOC 2 AI', 'HIPAA AI compliance']} />
+      <SEO title="AI Governance: Runtime Enforcement Patterns" description="AUDIT and IDENTITY modules deliver cryptographic compliance logging and universal actor attribution for governed AI systems." type="article" publishedTime="2026-02-08" keywords={['AI governance runtime', 'compliance logging AI', 'governed AI', 'actor attribution', 'AI regulatory compliance']} />
       <PublicNav />
       <main className="min-h-screen bg-background">
         <article className="container max-w-3xl mx-auto px-4 py-16">

@@ -16,9 +16,11 @@ export default function RAGWithoutInfrastructure() {
   return (
     <>
       <SEO 
-        title="RAG Without the Infrastructure Pain | CMPSBL Blog"
-        description="How to implement retrieval-augmented generation without managing vector databases, embeddings pipelines, or complex infrastructure."
-        keywords={['RAG', 'retrieval augmented generation', 'vector database', 'AI infrastructure', 'LLM memory']}
+        title="RAG Without Infrastructure Overhead"
+        description="Ship retrieval-augmented generation without managing vector databases or embeddings. One API call for composable, production-ready RAG."
+        type="article"
+        publishedTime="2026-02-04"
+        keywords={['RAG without infrastructure', 'managed RAG API', 'vector search API', 'composable RAG', 'retrieval augmented generation']}
       />
       <PublicNav />
       

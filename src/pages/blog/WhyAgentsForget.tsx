@@ -16,9 +16,11 @@ export default function WhyAgentsForget() {
   return (
     <>
       <SEO 
-        title="Why Your AI Agent Forgets Everything (And How to Fix It) | CMPSBL Blog"
-        description="Understanding the memory problem in AI agents and practical solutions for building agents that learn and remember."
-        keywords={['AI memory', 'agent forgetfulness', 'LLM context', 'persistent memory', 'AI continuity']}
+        title="Why AI Agents Forget: Technical Deep Dive"
+        description="The technical reasons behind context loss and memory degradation — from token limits to serialization bugs in AI agent systems."
+        type="article"
+        publishedTime="2026-02-01"
+        keywords={['why agents forget', 'AI memory loss causes', 'context window limits', 'persistent memory AI', 'episodic memory AI']}
       />
       <PublicNav />
       

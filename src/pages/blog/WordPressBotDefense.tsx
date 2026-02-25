@@ -11,9 +11,11 @@ const WordPressBotDefense = () => {
   return (
     <>
       <SEO 
-        title="WordPress Bot Protection Guide 2025: AI-Powered Defense Against Automated Attacks"
-        description="Learn how AI-powered behavioral analysis stops WordPress bot attacks in 2025. Comprehensive guide covering credential stuffing, DDoS protection, and why traditional firewalls fail. Expert comparison of WordPress security plugins and best practices."
-        keywords={["wordpress bot protection 2025", "AI wordpress security", "bot detection wordpress", "wordpress anti-bot plugin", "credential stuffing prevention", "wordpress firewall 2025", "behavioral analysis security", "wordpress malware protection", "stop bots wordpress", "wordpress security best practices"]}
+        title="WordPress Bot Defense: AI Behavioral Analysis"
+        description="Protect WordPress from sophisticated bot attacks using AI-powered behavioral analysis and session fingerprinting techniques."
+        type="article"
+        publishedTime="2025-11-15"
+        keywords={["WordPress bot defense", "AI bot detection", "behavioral analysis security", "WordPress security AI", "credential stuffing prevention", "session fingerprinting"]}
       />
       
       <script type="application/ld+json">

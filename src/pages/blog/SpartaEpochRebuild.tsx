@@ -10,9 +10,10 @@ const SpartaEpochRebuild = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Rebuilding the Substrate from Scratch — The SPARTA Epoch Story"
-        description="How and why we refactored, consolidated, and rebuilt the entire CMPSBL cognitive substrate from the ground up — and what we learned along the way."
-        canonical="https://cmpsbl.com/blog/sparta-epoch-rebuild-from-scratch"
+        title="SPARTA Epoch: Full Substrate Rebuild Story"
+        description="How we refactored and rebuilt the entire CMPSBL cognitive substrate — deleting dead code, unifying architecture, and emerging production-grade."
+        type="article"
+        publishedTime="2026-02-24"
         keywords={['CMPSBL refactor', 'cognitive substrate rebuild', 'SPARTA Epoch', 'AI architecture', 'software consolidation', 'technical debt']}
       />
 

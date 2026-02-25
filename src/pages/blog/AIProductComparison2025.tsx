@@ -10,10 +10,11 @@ const AIProductComparison2025 = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="AI Platform Comparison 2025: Cost Optimization | CMPSBL®"
-        description="How CMPSBL's NEXUS module eliminates AI costs through intelligent multi-model routing across Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic."
-        canonical="https://cmpsbl.com/blog/ai-platform-comparison-2025"
-        keywords={['AI platform comparison', 'free tier AI', 'multi-model routing', 'AI cost optimization', 'CMPSBL Nexus']}
+        title="AI Platform Comparison: Cost Optimization Guide"
+        description="Multi-provider AI gateway optimized for cost and performance — intelligent routing across free-tier models with minimal API spend."
+        type="article"
+        publishedTime="2025-12-01"
+        keywords={['AI platform comparison', 'free tier AI', 'multi-model routing', 'AI cost optimization', 'intelligent AI routing']}
       />
 
       <PublicNav />

@@ -10,15 +10,11 @@ export default function AutomatedAccessibilityFixes() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Automated Accessibility Fixes for WordPress: How AI Solves 80% of Issues"
-        description="Discover how AI-powered automated accessibility fixes transform WordPress WCAG compliance. Learn what can be automated and why one-click remediation changes everything."
-        canonical="https://cmpsbl.com/blog/automated-accessibility-fixes-wordpress"
-        keywords={[
-          "automated accessibility fixes",
-          "ai accessibility wordpress",
-          "automatic wcag compliance",
-          "wordpress accessibility automation"
-        ]}
+        title="Automated Accessibility Fixes for WordPress"
+        description="AI-powered remediation for common WordPress accessibility issues — from missing alt text to color contrast and focus management."
+        type="article"
+        publishedTime="2025-12-10"
+        keywords={["automated accessibility fixes", "WordPress accessibility AI", "alt text automation", "WCAG remediation"]}
       />
       
       <PublicNav />
