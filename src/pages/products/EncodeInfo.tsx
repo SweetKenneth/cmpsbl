@@ -141,8 +141,8 @@ export default function EncodeInfo() {
             <Button size="lg" onClick={() => navigate('/modules')}>
               <Workflow className="w-4 h-4 mr-2" /> Explore All Modules
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/store')}>
-              Composable Artifacts
+            <Button size="lg" variant="outline" onClick={() => navigate('/explore')}>
+              Explore Artifacts
             </Button>
           </div>
         </div>
