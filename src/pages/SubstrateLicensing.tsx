@@ -22,7 +22,7 @@ import { UNIFIED_TIERS, CONTACT_EMAIL, CONTACT_PHONE } from "@/config/licensing-
 import {
   Brain, Shield, Zap, CheckCircle2, ArrowRight, Mail, Phone,
   Building2, Sparkles, Crown, Layers, Star, Workflow, FileText,
-  ChevronLeft, ChevronRight, Lock, Gem, XCircle,
+  ChevronLeft, ChevronRight, Lock, Gem, XCircle, Bell,
 } from "lucide-react";
 
 // ── Tier visual config ──
@@ -56,7 +56,7 @@ const TIERS = [
     icon: Sparkles,
     gradient: 'from-blue-500 to-cyan-500',
     bgGlow: 'bg-blue-500/5',
-    cta: 'Subscribe — $9/mo',
+    cta: 'Join Waitlist',
     popular: true,
     headline: 'Everything in Free + Real Power',
     benefitSummary: 'Expanded catalog, executable capabilities, private memory, multi-module synergy, and light automation. A real upgrade you can feel.',
@@ -81,7 +81,7 @@ const TIERS = [
     icon: Crown,
     gradient: 'from-violet-500 to-purple-500',
     bgGlow: 'bg-violet-500/5',
-    cta: 'Subscribe — $19/mo',
+    cta: 'Join Waitlist',
     popular: false,
     headline: 'Everything in Creator + Depth',
     benefitSummary: 'Premium artifacts, cross-module orchestration, larger memory domains, batch execution, audit views, reasoning summaries, and priority routing.',
@@ -105,7 +105,7 @@ const TIERS = [
     icon: Building2,
     gradient: 'from-amber-500 to-orange-500',
     bgGlow: 'bg-amber-500/5',
-    cta: 'Subscribe — $99/mo',
+    cta: 'Join Waitlist',
     popular: false,
     headline: 'Everything in Architect + Governance',
     benefitSummary: 'Organization workspaces, compliance exports, advanced governance policies, dedicated memory partitions, and SLA-aware routing controls.',
@@ -230,20 +230,34 @@ function TierBenefitCard({ tier }: { tier: typeof TIERS[number] }) {
 
 export default function SubstrateLicensing() {
   const [checkingOut, setCheckingOut] = useState<string | null>(null);
+  const [waitlistEmail, setWaitlistEmail] = useState('');
+  const [waitlistTier, setWaitlistTier] = useState<string | null>(null);
+  const [waitlistSubmitted, setWaitlistSubmitted] = useState<Set<string>>(new Set());
 
-  const handleCheckout = async (tier: 'creator' | 'architect' | 'enterprise') => {
+  // Phase 1: Subscriptions are "Coming Soon" — only standalone products are purchasable
+  const handleWaitlist = async (tier: string) => {
+    if (!waitlistEmail) {
+      setWaitlistTier(tier);
+      return;
+    }
+    
     setCheckingOut(tier);
     try {
-      const { data, error } = await supabase.functions.invoke('tier-checkout', {
-        body: { tier },
+      await supabase.from('brain_events').insert({
+        event_type: 'tier_waitlist',
+        module: 'pricing',
+        data: { email: waitlistEmail, tier },
+        source_operation: 'pricing_waitlist',
       });
-      if (error) throw error;
-      if (!data?.url) throw new Error('No checkout URL returned');
-      window.location.assign(data.url);
-    } catch (err) {
-      toast.error('Checkout failed', {
-        description: err instanceof Error ? err.message : 'Please try again',
+      setWaitlistSubmitted(prev => new Set(prev).add(tier));
+      toast.success(`You're on the ${tier} waitlist!`, {
+        description: 'We\'ll notify you when subscriptions launch.',
       });
+      setWaitlistTier(null);
+      setWaitlistEmail('');
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
       setCheckingOut(null);
     }
   };
@@ -251,10 +265,8 @@ export default function SubstrateLicensing() {
   const handleCta = (key: string) => {
     if (key === 'free') {
       window.location.href = '/start-here';
-    } else if (key === 'creator' || key === 'architect' || key === 'enterprise') {
-      handleCheckout(key as 'creator' | 'architect' | 'enterprise');
     } else {
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=Enterprise%20Inquiry`;
+      handleWaitlist(key);
     }
   };
 
@@ -268,19 +280,17 @@ export default function SubstrateLicensing() {
     <>
       <SEO
         title="Pricing | CMPSBL — Cognitive Infrastructure"
-        description="Adoptable pricing for the CMPSBL Substrate. Free to build, $9/mo Creator, $19/mo Architect, $99/mo Enterprise. Compose intelligence — don't control the substrate."
-        keywords={["CMPSBL pricing", "cognitive infrastructure", "AI substrate", "Creator tier", "Architect tier"]}
+        description="Standalone AI products available now. Platform tiers coming soon. Composable Cognitives, Persistent Memory, and more — powered by the CMPSBL Substrate."
+        keywords={["CMPSBL pricing", "cognitive infrastructure", "AI agents", "composable cognitives", "persistent memory"]}
         faq={[
+          { question: 'What can I buy today?', answer: 'Composable Cognitives (downloadable AI agents) and Persistent Memory (free SDK) are available now. Platform subscription tiers launch soon.' },
           { question: 'Is the free tier actually useful?', answer: 'Yes. Free users can build projects, run capabilities, use templates, and save outputs. It\'s not a trial — it\'s a permanent tier.' },
-          { question: 'What are Crown Jewels?', answer: 'Our highest-value sealed capabilities. Some are available at paid tiers. Others remain internal to preserve system integrity.' },
-          { question: 'What\'s the difference between Creator and Architect?', answer: 'Creator ($9/mo) adds executable capabilities, private memory, and light automation. Architect ($19/mo) adds cross-module orchestration, batch execution, audit views, and priority routing.' },
-          { question: 'Can I upgrade or downgrade anytime?', answer: 'Yes. Changes take effect at the next billing cycle.' },
-          { question: 'What does Builder Isolation mean?', answer: 'Your projects run ON the Substrate through templates, capabilities, and pipelines. You never have direct access to internal systems.' },
-          { question: 'Is Enterprise self-serve?', answer: 'Yes, $99/mo Enterprise is self-serve. For dedicated instances or SOC2, contact us for custom pricing.' },
+          { question: 'When do platform subscriptions launch?', answer: 'Soon. Join the waitlist on any tier to be notified the moment we go live.' },
+          { question: 'What are Crown Jewels?', answer: 'Our highest-value sealed capabilities. Some will be available at paid tiers. Others remain internal to preserve system integrity.' },
         ]}
         product={{
-          name: 'CMPSBL Substrate Subscription',
-          price: '9',
+          name: 'Composable Cognitives',
+          price: '39',
           currency: 'USD',
           availability: 'InStock',
         }}
@@ -295,38 +305,106 @@ export default function SubstrateLicensing() {
           <div className="container mx-auto px-4 relative">
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="outline" className="mb-4 sm:mb-6 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm border-primary/30">
-                <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 inline text-amber-500" />
-                Adoptable Pricing · Build Real Things for Free
+                <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 inline text-primary" />
+                Standalone Products Available Now · Platform Tiers Coming Soon
               </Badge>
 
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-4 sm:mb-6">
                 <span className="bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-                  Compose Intelligence.
+                  Look What We Built.
                 </span>
                 <br />
                 <span className="text-muted-foreground text-2xl sm:text-3xl md:text-4xl">
-                  Don't Control the Engine.
+                  Then Imagine Building With It.
                 </span>
               </h1>
 
               <p className="text-base sm:text-xl text-muted-foreground mb-2 sm:mb-3">
-                Build on the CMPSBL Substrate — <strong className="text-foreground">not as it</strong>.
-                Free users build real things. Paid tiers unlock more power.
+                Today: standalone products powered by the CMPSBL Substrate.
+                Soon: the platform itself opens for builders.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground">
-                No gimmicks. No crippled free tier. Upgrade when you need more.
+                Start free. Explore what's possible. Join the waitlist for platform access.
               </p>
             </div>
           </div>
         </section>
 
-        {/* ═══ Benefits Showcase — What You Unlock ═══ */}
+        {/* ═══ Available Now — Standalone Products ═══ */}
         <section className="py-10 sm:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-6 sm:mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">What You Get at Each Tier</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Available Now</h2>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Every tier is cumulative. Free is real. Paid tiers add more power, not permissions you should've had.
+                Standalone products powered by the CMPSBL Substrate. Buy once, own forever.
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto">
+              {[
+                { 
+                  title: 'Composable Cognitives',
+                  desc: 'Download superpowered AI agents. Own them. Run them anywhere.',
+                  price: 'From $39',
+                  href: '/composable-cognitives',
+                  icon: Zap,
+                  badge: 'SHIPPING',
+                },
+                {
+                  title: 'Persistent Memory',
+                  desc: 'Add memory to any agent in under an hour. Free SDK.',
+                  price: 'Free',
+                  href: '/persistent-memory',
+                  icon: Brain,
+                  badge: 'FREE',
+                },
+                {
+                  title: 'Cognitive Showcase',
+                  desc: 'Live proof-of-capability demonstrations. See the substrate in action.',
+                  price: 'Free',
+                  href: '/showcase',
+                  icon: Sparkles,
+                  badge: 'LIVE',
+                },
+              ].map((product, i) => {
+                const ProductIcon = product.icon;
+                return (
+                  <Card key={i} className="bg-card hover:shadow-lg transition-shadow">
+                    <CardContent className="p-5 sm:p-6 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <ProductIcon className="w-5 h-5 text-primary" />
+                        </div>
+                        <Badge variant="outline" className="text-[10px]">{product.badge}</Badge>
+                      </div>
+                      <h3 className="font-bold text-base">{product.title}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{product.desc}</p>
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="font-semibold text-sm">{product.price}</span>
+                        <Button asChild size="sm" variant="outline" className="gap-1.5">
+                          <a href={product.href}>
+                            Explore <ArrowRight className="w-3.5 h-3.5" />
+                          </a>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ Coming Soon — Platform Tiers ═══ */}
+        <section className="py-10 sm:py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center mb-6 sm:mb-10">
+              <Badge variant="outline" className="mb-4 text-xs border-primary/20">
+                <Lock className="w-3 h-3 mr-1.5 inline" />
+                Coming Soon
+              </Badge>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Platform Tiers — Launching Soon</h2>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Build ON the substrate. Free tier is permanent — not a trial. Paid tiers unlock depth, not basics.
               </p>
             </div>
 
@@ -520,6 +598,9 @@ function PricingCard({
             {tier.amount !== null && tier.amount > 0 && (
               <span className="text-muted-foreground text-xs sm:text-sm">/mo</span>
             )}
+            {meta.key !== 'free' && (
+              <Badge variant="outline" className="ml-2 text-[10px]">Coming Soon</Badge>
+            )}
           </div>
 
           <ul className="space-y-1.5 sm:space-y-2">
@@ -533,12 +614,12 @@ function PricingCard({
 
           <Button
             className="w-full gap-2 text-sm"
-            variant={meta.popular ? 'default' : 'outline'}
+            variant={meta.key === 'free' ? 'default' : 'outline'}
             onClick={() => onCta(meta.key)}
             disabled={isLoading}
           >
-            {isLoading ? 'Redirecting…' : meta.cta}
-            <ArrowRight className="w-4 h-4" />
+            {isLoading ? 'Submitting…' : meta.cta}
+            {meta.key === 'free' ? <ArrowRight className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
           </Button>
         </CardContent>
       </Card>

@@ -39,19 +39,17 @@ export function EnhancedFooter() {
         { name: "Architecture", href: "/substrate" },
         { name: "Proof Mode", href: "/proof" },
         { name: "Decode Engine", href: "/decode" },
-        { name: "System Feed", href: "/system-feed" },
         { name: "Documentation", href: "/documentation" },
       ]
     },
     {
-      title: "Ecosystem",
+      title: "Products",
       links: [
-        { name: "Cognitive Reality", href: "/clockless-world-engine" },
+        { name: "Composable Cognitives", href: "/composable-cognitives", highlight: true },
+        { name: "Persistent Memory", href: "/persistent-memory" },
+        { name: "Cognitive Showcase", href: "/showcase" },
         { name: "Live Demo", href: "/demo" },
         { name: "Gaming AI", href: "/gaming" },
-        { name: "Showcase", href: "/showcase" },
-        { name: "Uptime", href: "/status", highlight: true },
-        { name: "Enterprise", href: "/enterprise" },
       ]
     },
     {
@@ -62,7 +60,6 @@ export function EnhancedFooter() {
         { name: "Publication", href: "/publication" },
         { name: "Library", href: "/library" },
         { name: "Use Cases", href: "/use-cases" },
-        { name: "Composable Cognitives", href: "/composable-cognitives" },
       ]
     },
     {
@@ -71,9 +68,7 @@ export function EnhancedFooter() {
         { name: "Start Here", href: "/start-here", highlight: true },
         { name: "Academy", href: "/academy" },
         { name: "CodeLab", href: "/codelab" },
-        { name: "Experimental Lab", href: "/lab" },
         { name: "DevTools", href: "/devtools" },
-        { name: "API Access", href: "/api-access" },
       ]
     },
     {
@@ -81,7 +76,6 @@ export function EnhancedFooter() {
       links: [
         { name: "Pricing", href: "/pricing" },
         { name: "Licensing", href: "/licensing" },
-        { name: "Evolution Mesh", href: "/evolution-mesh", highlight: true },
         { name: "Namespace", href: "/namespace" },
         { name: "Foundations", href: "/foundations" },
         { name: "Roadmap", href: "/roadmap" },
@@ -96,7 +90,6 @@ export function EnhancedFooter() {
         { name: "Investors", href: "/investors" },
         { name: "Support", href: "/support" },
         { name: "Legal", href: "/privacy" },
-        { name: "Careers", href: "/careers" },
         { name: "Architecture", href: "/architecture" },
       ]
     },

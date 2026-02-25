@@ -102,7 +102,7 @@ export function CmpsblNav() {
     navigate('/');
   };
 
-  // Nav menu — Product-first architecture, optimized for discovery
+  // Nav menu — Phase 1 posture: standalone products + proof, platform features hidden
   const navSections: NavSection[] = [
     {
       name: "Product",
@@ -112,11 +112,7 @@ export function CmpsblNav() {
         { name: "All Modules", href: "/modules", description: "10 entities + 5 mesh overlays + 9 zones", icon: Layers },
         { name: "Substrate Overview", href: "/substrate", description: "Live substrate dashboard & architecture", icon: Cpu },
         { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap },
-        { name: "Intent Mesh", href: "/intent-mesh", description: "Autonomous inter-module communication layer", icon: Brain, badge: "NEW" },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
-        { name: "Engines", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
-        { name: "Composable Artifacts", href: "/store", description: "Capabilities, templates & synergy pipelines", icon: Sparkles },
-        { name: "Evolution Mesh", href: "/evolution-mesh", description: "Self-learning immune system for any software", icon: Shield, badge: "NEW" },
         { name: "Cognitive Showcase", href: "/showcase", description: "Live proof-of-capability demonstrations", icon: Rocket },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
@@ -140,9 +136,8 @@ export function CmpsblNav() {
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry applications & examples", icon: Sparkles },
         { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
-        { name: "Pricing", href: "/pricing", description: "Build on our master substrate", icon: Layers },
+        { name: "Pricing", href: "/pricing", description: "Plans & standalone products", icon: Layers },
         { name: "Licensing", href: "/licensing", description: "Deploy on your own infrastructure", icon: FileText },
-        { name: "Intelligence", href: "/intelligence", description: "Technology proof & acquisition info", icon: Shield },
       ]
     },
     {
