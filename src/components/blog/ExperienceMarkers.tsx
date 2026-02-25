@@ -20,8 +20,8 @@ const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; h
     { icon: BookOpen, label: 'Developer Academy', href: '/academy', description: 'Learn the patterns behind this research' },
   ],
   changelog: [
-    { icon: Zap, label: 'Synergy Pipelines', href: '/synergies', description: '200 orchestration patterns in production' },
-    { icon: Layers, label: 'Capability Depot', href: '/capabilities', description: 'Atomic building blocks powering these updates' },
+    { icon: Zap, label: 'Explore', href: '/explore', description: 'Browse templates and artifacts' },
+    { icon: Layers, label: 'Modules', href: '/modules', description: 'Full substrate architecture' },
   ],
   release: [
     { icon: Layers, label: 'All Modules', href: '/modules', description: 'See the full substrate architecture' },

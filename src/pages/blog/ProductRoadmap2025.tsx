@@ -225,7 +225,7 @@ const ProductRoadmap2025 = () => {
             
             <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
               <p>
-                SPARTA Epoch is live — 24 integrated modules, 300 synergy pipelines, 100 engines (76 base + 24 meta), unified pricing (Free / Creator / Architect), and the Composable Artifacts Store. Dream cycles, cross-project learning, and autonomous improvement are shipping now.
+                SPARTA Epoch is live — 24 integrated modules, unified pricing (Free / Creator / Architect), and composable cognitive artifacts. Dream cycles, cross-project learning, and autonomous improvement are shipping now.
               </p>
               
               <p>

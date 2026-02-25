@@ -360,8 +360,8 @@ export default function DevTools() {
                       { title: "Persistent Memory Guide", href: "/docs/persistent-memory", desc: "Complete memory SDK docs", badge: "Popular" },
                       { title: "Getting Started", href: "/documentation", desc: "Setup and configuration" },
                       { title: "API Reference", href: "/documentation#api", desc: "Full SDK API docs" },
-                      { title: "Synergy Pipelines", href: "/synergies", desc: "Pre-built workflows" },
-                      { title: "Templates", href: "/marketplace", desc: "Pre-built starters" },
+                      { title: "Explore", href: "/explore", desc: "Browse artifacts and templates" },
+                      { title: "CodeLab", href: "/codelab", desc: "Live API playground" },
                       { title: "Changelog", href: "/changelog", desc: "System evolution" },
                     ].map((link) => (
                       <Link
