@@ -22,9 +22,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "2.0.0";
-const MAX_CYCLES_PER_HOUR = 12;
-const MAX_CYCLES_PER_DAY = 200;
+const CLM_VERSION = "2.1.0";
+const MAX_CYCLES_PER_HOUR = 14;  // 5-min cadence = 12/hr + 2 buffer for retries
+const MAX_CYCLES_PER_DAY = 300;  // 288 possible + headroom — never starve the engine
 
 // All 20 modules that participate in CLM
 const CLM_MODULES = [
@@ -130,8 +130,8 @@ serve(async (req) => {
         { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const isQuietHours = currentHour >= 2 && currentHour <= 6;
-    const cycleIntensity = isQuietHours ? 'low' : 'full';
+    const isQuietHours = false; // v2.1.0: Quiet hours DISABLED — CLM runs at full intensity 24/7
+    const cycleIntensity = 'full';
     const cycleNumber = (todayCycles || 0) + 1;
 
     const cycleResults: Record<string, any> = {
