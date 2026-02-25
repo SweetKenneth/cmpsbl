@@ -13,6 +13,8 @@ import {
   Zap, CheckCircle, Mail, Phone, ChevronDown, ChevronUp,
   Lock, EyeOff, Box, Cpu, X, Server, CloudOff,
   ChevronLeft, ChevronRight, Brain, ArrowRight, ExternalLink,
+  Search, Workflow, FileText, RotateCcw, Layers, Gauge,
+  Activity, Target, Mic, BookOpen, GraduationCap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -75,9 +77,52 @@ const COMPARISON_ROWS = [
   { label: "Persistent memory across sessions", us: true, them: false },
   { label: "Own your agent forever (MIT)", us: true, them: false },
   { label: "No monthly subscription", us: true, them: false },
+  { label: "Scoped research per domain", us: true, them: false },
+  { label: "Deterministic failure recovery", us: true, them: false },
+  { label: "Confidence-scored outputs", us: true, them: false },
   { label: "Multi-framework adapters (LangChain, CrewAI)", us: true, them: false },
   { label: "Black-box protected runtime", us: true, them: false },
   { label: "Requires internet to function", us: false, them: true },
+];
+
+/* ───── Intelligence Layer capabilities ───── */
+const INTELLIGENCE_FEATURES = [
+  {
+    icon: Search,
+    title: "Scoped Research",
+    description: "Domain-specific whitelists enforce research boundaries. Each Mind only accesses verified, relevant sources.",
+    status: "ACTIVE",
+  },
+  {
+    icon: Workflow,
+    title: "Tool Chain Composition",
+    description: "Deterministic multi-step workflows — research → summarize → draft → format — configurable per Mind.",
+    status: "ACTIVE",
+  },
+  {
+    icon: FileText,
+    title: "Prompt Scaffolding",
+    description: "Hardened, role-specific system prompts with embedded reasoning patterns. No generic fallback.",
+    status: "ACTIVE",
+  },
+  {
+    icon: RotateCcw,
+    title: "Failure Recovery",
+    description: "Structured retry and repair playbooks for tool failures. No generic apology — deterministic recovery.",
+    status: "ACTIVE",
+  },
+  {
+    icon: Layers,
+    title: "Context Windowing",
+    description: "Signal-weighted memory prioritization. Recent + high-relevance beats chronological. Prevents runaway growth.",
+    status: "ACTIVE",
+  },
+  {
+    icon: Gauge,
+    title: "Confidence Signaling",
+    description: "Every output includes a confidence score. Internal rubric stays sealed — you see the signal, not the math.",
+    status: "ACTIVE",
+  },
 ];
 
 /* ───── Horizontal Mind Card ───── */
@@ -307,7 +352,7 @@ export default function ComposableCognitives() {
 
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               These are <span className="text-foreground font-semibold">compiled cognitive runtimes</span> — 
-              agents with persistent memory, versioned stability, and zero cloud dependency. 
+              agents with persistent memory, a 6-layer intelligence engine, versioned stability, and zero cloud dependency. 
               Download once. Run forever. <span className="text-foreground font-semibold">No subscription.</span>
             </p>
 
@@ -320,7 +365,7 @@ export default function ComposableCognitives() {
             >
               {[
                 { icon: Brain, label: "3 Minds", sub: "2 free + 1 paid" },
-                { icon: CloudOff, label: "Zero Cloud", sub: "100% local" },
+                { icon: Activity, label: "6 Active", sub: "intelligence layers" },
                 { icon: Lock, label: "Black-Box", sub: "Protected IP" },
                 { icon: Cpu, label: "Own Forever", sub: "MIT licensed" },
               ].map(({ icon: Icon, label, sub }, i) => (
@@ -436,6 +481,80 @@ export default function ComposableCognitives() {
         </div>
       </section>
 
+      {/* ═══ INTELLIGENCE LAYER ═══ */}
+      <section className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-muted/20" />
+        <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+          backgroundSize: '32px 32px',
+        }} />
+
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center space-y-4 mb-16"
+            >
+              <Badge variant="outline" className="font-mono text-[10px] tracking-[0.15em] border-primary/20 bg-primary/5">
+                INTELLIGENCE LAYER
+              </Badge>
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight">
+                Not just memory. <span className="glow-text">Intelligence.</span>
+              </h2>
+              <p className="text-muted-foreground max-w-xl mx-auto text-sm leading-relaxed">
+                Every Mind ships with 6 production-active intelligence capabilities. 
+                These aren't features — they're how the Mind thinks.
+              </p>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {INTELLIGENCE_FEATURES.map((feature, i) => {
+                const FeatureIcon = feature.icon;
+                return (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                  >
+                    <Card className="border-border/40 bg-background/60 backdrop-blur-sm h-full hover:border-primary/30 transition-all duration-300 group">
+                      <CardContent className="p-5 sm:p-6 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20 group-hover:bg-primary/15 transition-colors">
+                            <FeatureIcon className="w-4 h-4 text-primary" />
+                          </div>
+                          <Badge variant="outline" className="text-[8px] font-mono tracking-wider border-emerald-500/30 text-emerald-400 bg-emerald-500/5">
+                            {feature.status}
+                          </Badge>
+                        </div>
+                        <h3 className="font-bold text-sm tracking-tight">{feature.title}</h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{feature.description}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Gated features teaser */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="mt-10 text-center"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/30 bg-muted/30 text-xs text-muted-foreground">
+                <Lock className="w-3 h-3" />
+                <span>5 more intelligence layers training internally — memory consolidation, quality scoring, adaptive tone, vocabulary growth, proficiency gating</span>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ FREE vs PAID TIER ═══ */}
       <section className="container mx-auto px-4 pb-24">
         <div className="max-w-4xl mx-auto">
@@ -465,10 +584,14 @@ export default function ComposableCognitives() {
               {[
                 { label: "Persistent memory", free: true, paid: true },
                 { label: "Black-box runtime", free: true, paid: true },
-                { label: "Deep memory depth", free: false, paid: true },
-                { label: "Full tool expansion", free: false, paid: true },
+                { label: "Intelligence Layer (6 capabilities)", free: true, paid: true },
+                { label: "Scoped research domains", free: true, paid: true },
+                { label: "Confidence-scored outputs", free: true, paid: true },
+                { label: "Deep memory depth (256MB)", free: false, paid: true },
+                { label: "Full tool chain expansion (24 tools)", free: false, paid: true },
+                { label: "Domain-specific prompt scaffolding", free: false, paid: true },
+                { label: "Failure recovery playbooks", free: false, paid: true },
                 { label: "Version upgrade priority", free: false, paid: true },
-                { label: "Advanced analytics", free: false, paid: true },
                 { label: "MIT license", free: true, paid: true },
               ].map((row, i) => (
                 <div key={i} className={cn(
