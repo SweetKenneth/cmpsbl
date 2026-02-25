@@ -161,7 +161,7 @@ export default function CodeLab() {
               </Link>
               
               <Link 
-                to="/synergies" 
+                to="/explore" 
                 className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-amber-500/30 transition-all"
               >
                 <Layers className="w-8 h-8 text-amber-500 mx-auto mb-2" />
@@ -201,9 +201,9 @@ export default function CodeLab() {
                 Try Live API
               </Button>
               <Button asChild size="lg" variant="ghost" className="gap-2">
-                <Link to="/engines">
+                <Link to="/pricing">
                   <Code className="w-5 h-5" />
-                  Engines
+                  View Plans
                 </Link>
               </Button>
             </div>
@@ -536,7 +536,7 @@ const response = await substrate.nexus.text(
                   </p>
                 </div>
                 <Button asChild size="lg" className="gap-2 shrink-0">
-                  <Link to="/store">
+                  <Link to="/explore">
                     Browse Artifacts
                     <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -663,7 +663,7 @@ const response = await substrate.nexus.text(
                 and the AI Template Generator are available in the Composable Artifacts Store.
               </p>
               <Button asChild>
-                <Link to="/store">
+                <Link to="/explore">
                   Browse Artifacts <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
