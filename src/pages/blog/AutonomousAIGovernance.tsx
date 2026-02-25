@@ -1,6 +1,7 @@
 /**
  * Blog Post: Autonomous AI Governance — Runtime Enforcement
  */
+import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
@@ -26,6 +27,14 @@ export default function AutonomousAIGovernance() {
             <p>The existing Governance Guard capability (Pro tier) now integrates directly with AUDIT and IDENTITY. Ethical constraints and coherence checks are logged with full attribution, so compliance teams can verify that guardrails were active during any operation.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">Enterprise Compliance Patterns</h2>
             <p>For regulated industries, this architecture supports SOC 2, HIPAA, and GDPR audit requirements out of the box. The substrate doesn't just help you build AI systems — it helps you prove they're operating within bounds.</p>
+            
+            <h2 className="text-2xl font-bold text-foreground mt-8">References</h2>
+            <ul className="space-y-2 text-sm">
+              <li><a href="https://www.nist.gov/artificial-intelligence/executive-order-safe-secure-and-trustworthy-artificial-intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">NIST AI Risk Management Framework</a> — Federal standards for trustworthy AI</li>
+              <li><a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">EU AI Act</a> — European regulatory framework for artificial intelligence</li>
+              <li><Link to="/namespace" className="text-primary hover:underline">AI Governance Reference Namespace</Link> — CMPSBL's governance domain architecture</li>
+              <li><Link to="/blog/machine-protocol-standards" className="text-primary hover:underline">Machine Protocol Standards</Link> — How AI systems should self-describe</li>
+            </ul>
           </div>
         </article>
       </main>

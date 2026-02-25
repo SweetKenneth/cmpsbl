@@ -198,7 +198,7 @@ const AIBusinessOperations2025 = () => {
           <section className="bg-card border border-border rounded-lg p-8 text-center">
             <h3 className="text-xl font-bold mb-4 text-foreground">Start Your Implementation</h3>
             <p className="text-muted-foreground mb-6">
-              Explore CMPSBL's approach to operational AI — built by PromptFluid.
+              Explore CMPSBL's approach to operational AI.
             </p>
             <Link 
               to="/solutions" 

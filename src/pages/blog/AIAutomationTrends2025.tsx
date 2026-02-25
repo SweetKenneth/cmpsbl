@@ -145,7 +145,7 @@ const AIAutomationTrends2025 = () => {
               </p>
               
               <p>
-                PromptFluid achieves 100% cost elimination on AI operations by routing exclusively through free-tier providers while maintaining output quality through intelligent orchestration.
+                CMPSBL achieves cost elimination on AI operations by routing exclusively through free-tier providers while maintaining output quality through intelligent orchestration.
               </p>
             </div>
           </section>
@@ -170,7 +170,7 @@ const AIAutomationTrends2025 = () => {
           <section className="bg-card border border-border rounded-lg p-8 text-center">
             <h3 className="text-xl font-bold mb-4 text-foreground">Explore Our Approach</h3>
             <p className="text-muted-foreground mb-6">
-              See how PromptFluid implements adaptive automation.
+              See how CMPSBL implements adaptive automation.
             </p>
             <Link 
               to="/solutions" 

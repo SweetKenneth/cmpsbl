@@ -229,7 +229,7 @@ export function EnhancedFooter() {
               
               {/* Brand Line - Stack on very small screens */}
               <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-4 text-[11px] sm:text-xs text-muted-foreground text-center">
-                <span>Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate · By PromptFluid</span>
+                <span>Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate</span>
                 <span className="hidden sm:inline text-border">•</span>
                 <span className="inline-flex items-center gap-1">
                   Made with <Heart className="w-3 h-3 text-destructive fill-destructive animate-pulse" /> by humans who care
