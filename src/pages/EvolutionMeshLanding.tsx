@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { SEO } from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -431,33 +431,23 @@ export default function EvolutionMeshLanding() {
   return (
     <>
       <WIPBanner />
-      <Helmet>
-        <title>EVLVBL — API-First Self-Evolving Code Defense | CMPSBL</title>
-        <meta name="description" content="API-first self-evolving code defense. Your functions heal themselves. 29+ repair strategies run server-side — zero source code exposure. Works with any language. Free API key available." />
-        <meta name="keywords" content="EVLVBL, API, self-healing code, auto-repair, self-evolving software, API protection, shadow probes, coding agent, code defense" />
-        <link rel="canonical" href="https://cmpsbl.com/evolution-mesh" />
-        <meta property="og:title" content="EVLVBL — Your Code Evolves Its Own Defenses" />
-        <meta property="og:description" content="API-first code defense. 29+ repair strategies. Self-learning rules. Zero source code to steal. Just an API key." />
-        <meta property="og:type" content="product" />
-        <meta property="og:url" content="https://cmpsbl.com/evolution-mesh" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="EVLVBL — API-First Self-Evolving Code Defense" />
-        <meta name="twitter:description" content="Your code evolves its own defenses. API-first. Zero source code exposure. Free tier available." />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "EVLVBL",
-          "description": "API-first self-evolving code defense platform. Wraps functions with input validation, auto-repair, and cross-function learning. Zero source code distribution.",
-          "applicationCategory": "DeveloperApplication",
-          "operatingSystem": "Cross-platform",
-          "offers": [
-            { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Free — 1,000 API calls/month" },
-            { "@type": "Offer", "price": "29", "priceCurrency": "USD", "name": "Pro" },
-            { "@type": "Offer", "price": "99", "priceCurrency": "USD", "name": "Team" },
-          ],
-          "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
-        })}</script>
-      </Helmet>
+      <SEO
+        title="EVLVBL — Self-Evolving Code Defense | CMPSBL"
+        description="API-first self-evolving code defense. Functions heal themselves with deterministic repair strategies server-side. Zero source code exposure."
+        image="https://cmpsbl.com/og/evolution-mesh.jpg"
+        keywords={['EVLVBL', 'self-healing code', 'auto-repair API', 'self-evolving software', 'API code defense', 'shadow probes']}
+        product={{
+          name: 'EVLVBL — Self-Evolving Code Defense',
+          price: '0',
+          currency: 'USD',
+          availability: 'InStock',
+        }}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'Modules', url: 'https://cmpsbl.com/modules' },
+          { name: 'Evolution Mesh', url: 'https://cmpsbl.com/evolution-mesh' },
+        ]}
+      />
 
       <PublicNav />
 

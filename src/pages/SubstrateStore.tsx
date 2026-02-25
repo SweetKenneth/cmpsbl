@@ -8,7 +8,7 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { useMetric } from '@/stores/publicMetricsStore';
@@ -756,10 +756,12 @@ export default function SubstrateStore() {
 
   return (
     <>
-      <Helmet>
-        <title>{`Composable Artifacts | Tier-Scoped Resources | CMPSBL`}</title>
-        <meta name="description" content="Build self-improving software — even on the free tier. Hundreds of composable artifacts with real memory, real execution, and real composition." />
-      </Helmet>
+      <SEO
+        title="AI Artifact Store — Capabilities | CMPSBL"
+        description="Build self-improving software — even on the free tier. Composable artifacts with real memory, real execution, and real composition for any workload."
+        image="https://cmpsbl.com/og/store.jpg"
+        keywords={['composable AI artifacts', 'AI capabilities store', 'AI templates', 'composable AI marketplace']}
+      />
       
       <div className="min-h-screen bg-background flex flex-col">
         <PublicNav />

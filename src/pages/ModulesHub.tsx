@@ -4,7 +4,7 @@
  */
 
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
@@ -20,26 +20,16 @@ const DISPLAY_SECTIONS = [
 export default function ModulesHub() {
   return (
     <>
-      <Helmet>
-        <title>Substrate Modules — AI Architecture | CMPSBL</title>
-        <meta name="description" content="Browse all substrate execution surfaces — modules, mesh overlays, and hot-swappable zones powered by CORE kernel." />
-        <link rel="canonical" href="https://cmpsbl.com/modules" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          "name": "CMPSBL Substrate — Execution Surfaces",
-          "description": "CMPSBL Substrate — Modules, mesh overlays, and convergence zones",
-          "url": "https://cmpsbl.com/modules",
-          "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
-          "hasPart": MODULE_REGISTRY.filter(m => m.visibility !== 'hidden').map(m => ({
-            "@type": "SoftwareApplication",
-            "name": `CMPSBL ${m.name}`,
-            "description": m.description,
-            "url": `https://cmpsbl.com/modules/${m.slug}`,
-            "applicationCategory": "AI Infrastructure",
-          }))
-        })}</script>
-      </Helmet>
+      <SEO
+        title="Substrate Modules — AI Architecture | CMPSBL"
+        description="Browse all substrate execution surfaces — modules, mesh overlays, and hot-swappable zones powered by CORE kernel. Composable AI building blocks."
+        image="https://cmpsbl.com/og/modules.jpg"
+        keywords={['substrate modules', 'modular AI architecture', 'AI architecture layers', 'cognitive modules', 'composable AI']}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'Modules', url: 'https://cmpsbl.com/modules' },
+        ]}
+      />
 
       <PublicNav />
 

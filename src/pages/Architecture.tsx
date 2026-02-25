@@ -3,7 +3,7 @@
  * /architecture — linked from footer "Connect" section
  */
 
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";
 import { Layers, Cpu, Shield, Brain, Zap, Eye, Moon, ArrowRight, Network, Settings, Plug, Accessibility, Code2, Wand2, Target, Scale, HeartPulse, Dna, Radio, Key, Fingerprint, Send, FileCheck, Coins, FlaskConical } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -60,23 +60,21 @@ const CCL_ZONES = [
 export default function Architecture() {
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>Architecture — Layered Cognitive Kernel | CMPSBL</title>
-        <meta name="description" content="CMPSBL's layered cognitive kernel architecture: CORE kernel, execution surface modules, protective mesh overlays, and hidden convergence zones. Hot-swappable, circuit-breaker isolated, autonomously evolving." />
-        <link rel="canonical" href="https://cmpsbl.com/architecture" />
-        <meta property="og:title" content="CMPSBL Architecture — Layered Cognitive Kernel" />
-        <meta property="og:description" content="A production-ready AI operating system that persists, heals, and evolves autonomously. Modules, mesh overlays, and convergence zones." />
-        <meta property="og:url" content="https://cmpsbl.com/architecture" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "TechArticle",
-          "name": "CMPSBL Architecture — Layered Cognitive Kernel",
-          "description": "Technical architecture of the CMPSBL Substrate: layered cognitive kernel with modules, mesh overlays, and convergence zones.",
-          "url": "https://cmpsbl.com/architecture",
-          "author": { "@type": "Person", "name": "Kenneth E Sweet Jr" },
-          "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
-        })}</script>
-      </Helmet>
+      <SEO
+        title="Cognitive Kernel Architecture | CMPSBL"
+        description="Layered cognitive kernel: CORE boot authority, execution surface modules, protective mesh overlays, and convergence zones. Hot-swappable, autonomously evolving."
+        image="https://cmpsbl.com/og/architecture.jpg"
+        keywords={['cognitive kernel architecture', 'AI substrate layers', 'mesh overlays', 'composable AI architecture', 'modular AI kernel']}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
+        ]}
+        faq={[
+          { question: 'What is a cognitive kernel?', answer: 'A cognitive kernel is the boot authority that initializes all substrate layers, maintains the canonical module registry, and orchestrates lifecycle events across execution surfaces.' },
+          { question: 'How many execution surfaces does CMPSBL have?', answer: 'CMPSBL has 24 execution surfaces: 10 public entities, 5 mesh overlays, and 9 convergence zones — all orchestrated by the CORE kernel.' },
+          { question: 'What are mesh overlays?', answer: 'Mesh overlays are protective layers that wrap all modules: DEFENSE (outermost), IMMUNITY, EVOLUTION, INTENT, and GOVERNANCE (innermost). They provide security, resilience, and governed evolution.' },
+        ]}
+      />
 
       <PublicNav />
 
