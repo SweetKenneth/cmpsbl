@@ -75,7 +75,6 @@ export function EnhancedFooter() {
       title: "Framework",
       links: [
         { name: "Pricing", href: "/pricing" },
-        { name: "Licensing", href: "/licensing" },
         { name: "Namespace", href: "/namespace" },
         { name: "Foundations", href: "/foundations" },
         { name: "Roadmap", href: "/roadmap" },
@@ -90,7 +89,6 @@ export function EnhancedFooter() {
         { name: "Investors", href: "/investors" },
         { name: "Support", href: "/support" },
         { name: "Legal", href: "/privacy" },
-        { name: "Architecture", href: "/architecture" },
       ]
     },
   ];

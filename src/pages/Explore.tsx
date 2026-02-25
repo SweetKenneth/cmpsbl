@@ -263,9 +263,9 @@ export default function Explore() {
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
-                  <Link to="/store">
+                  <Link to="/composable-cognitives">
                     <Terminal className="w-5 h-5 mr-2" />
-                    Browse the Store
+                    Browse Cognitives
                   </Link>
                 </Button>
               </div>
