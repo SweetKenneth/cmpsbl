@@ -25,7 +25,7 @@ export default function Solutions() {
       description: "AI-powered threat detection and bot defense. Behavioral analysis, real-time blocking, and adaptive protection for web applications.",
       features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "WordPress integration", "Adaptive CAPTCHA system", "Device reputation scoring"],
       metrics: ["Live", "WordPress Ready", "Enterprise Grade"],
-      link: "/projects/defense"
+      link: "/projects"
     },
     {
       icon: Zap,
