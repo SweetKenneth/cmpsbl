@@ -390,10 +390,11 @@ export default function EngineMarketplace() {
   return (
     <>
       <SEO
-        title={`Clockless Cognitive Engines | Production AI Engines | CMPSBL®`}
-        description="Subscribe to production-ready cognitive engines. Tiered pricing with multi-provider routing, persistent memory, and self-improvement."
+        title="AI Orchestration Engines | CMPSBL"
+        description="Pre-validated orchestration engines for enterprise AI workloads. Canonized workflows built, tested, and maintained by CMPSBL engineering."
         canonical="https://cmpsbl.com/engines"
-        keywords={["cognitive engines", "AI orchestration", "subscription AI", "enterprise AI engines", "multi-provider routing", "composable artifacts", "production AI", "CMPSBL engines"]}
+        image="https://cmpsbl.com/og/engines.jpg"
+        keywords={["AI orchestration engines", "canonized workflows", "enterprise AI engines", "multi-provider routing", "agentic AI workflows"]}
         type="product"
         product={{ name: "CMPSBL Engine Subscription", price: "9", currency: "USD", availability: "InStock" }}
       />

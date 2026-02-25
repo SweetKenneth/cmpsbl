@@ -77,10 +77,11 @@ export default function Solutions() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Enterprise AI Solutions — Industry Applications"
-        description="Enterprise-ready cognitive infrastructure for healthcare, finance, legal, and manufacturing. SOC 2 compliant, on-prem available."
+        title="Enterprise AI Solutions | CMPSBL"
+        description="Governed cognitive infrastructure for healthcare, finance, legal, and manufacturing. SOC 2 compliant with on-premises deployment options."
         canonical="https://cmpsbl.com/solutions"
-        keywords={['cognitive infrastructure', 'AI memory', 'enterprise AI', 'composable artifacts', 'persistent memory', 'CMPSBL']}
+        image="https://cmpsbl.com/og/solutions.jpg"
+        keywords={['enterprise AI solutions', 'cognitive infrastructure', 'AI for healthcare', 'AI compliance', 'governed AI', 'on-premises AI']}
       />
       
       <PublicNav />

@@ -1,7 +1,7 @@
 {
-  "name": "PromptFluid — Applied AI Infrastructure",
-  "short_name": "PromptFluid",
-  "description": "Applied AI company building autonomous systems, infrastructure tooling, and enterprise security. 6 live AI products.",
+  "name": "CMPSBL — Composable AI Infrastructure",
+  "short_name": "CMPSBL",
+  "description": "Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Modular AI substrate for agentic systems.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
@@ -9,7 +9,7 @@
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en-US",
-  "categories": ["business", "productivity", "utilities"],
+  "categories": ["business", "productivity", "developer tools"],
   "icons": [
     {
       "src": "/favicon.png",
@@ -40,21 +40,21 @@
       "sizes": "1200x630",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "PromptFluid AI Infrastructure Dashboard"
+      "label": "CMPSBL Cognitive Substrate Dashboard"
     }
   ],
   "shortcuts": [
     {
-      "name": "Dashboard",
-      "short_name": "Dashboard",
-      "description": "Open PromptFluid Dashboard",
-      "url": "/dashboard",
+      "name": "Substrate OS",
+      "short_name": "OS",
+      "description": "Open CMPSBL Substrate Runtime",
+      "url": "/os",
       "icons": [{ "src": "/favicon.png", "sizes": "32x32" }]
     },
     {
       "name": "Blog",
       "short_name": "Blog",
-      "description": "Read PromptFluid Blog",
+      "description": "Read CMPSBL Blog",
       "url": "/blog",
       "icons": [{ "src": "/favicon.png", "sizes": "32x32" }]
     }
