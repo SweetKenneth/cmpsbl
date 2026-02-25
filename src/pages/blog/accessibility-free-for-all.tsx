@@ -9,9 +9,10 @@ export default function AccessibilityFreeForAll() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="We Made Accessibility Free For All | CMPSBL®"
-        description="Accessibility should never be locked behind a paywall. CMPSBL's INCLUSIVE module makes WCAG scanning and fixing 100% free forever."
-        canonical="https://cmpsbl.com/blog/accessibility-free-for-all"
+        title="Accessibility for Everyone: A Free Mandate"
+        description="Why web accessibility matters at planetary scale and how AI-powered automation makes compliance achievable for every website owner."
+        type="article"
+        publishedTime="2025-12-15"
         keywords={[
           "free accessibility scanner",
           "free WCAG compliance",

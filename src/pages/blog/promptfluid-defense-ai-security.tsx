@@ -10,9 +10,11 @@ const PromptFluidDefense = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="DEFENSE Module: AI Bot Protection & Threat Intelligence | CMPSBL®"
-        description="CMPSBL's DEFENSE module delivers adaptive bot protection, behavioral fingerprinting, and real-time threat intelligence for enterprise AI systems."
-        keywords={['AI bot protection', 'threat intelligence', 'behavioral analysis security', 'CMPSBL Defense', 'AI fraud prevention']}
+        title="DEFENSE Module: Adaptive Bot Protection"
+        description="Adaptive bot protection, behavioral fingerprinting, and real-time threat intelligence for enterprise AI systems at production scale."
+        type="article"
+        publishedTime="2025-09-20"
+        keywords={['AI bot protection', 'threat intelligence', 'behavioral analysis security', 'DEFENSE module', 'AI fraud prevention']}
       />
       
       <PublicNav />

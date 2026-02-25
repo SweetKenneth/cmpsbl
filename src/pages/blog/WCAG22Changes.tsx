@@ -9,20 +9,11 @@ export default function WCAG22WordPressChanges() {
   return (
     <>
       <SEO
-        title="WCAG 2.2 Changes: What WordPress Site Owners Need to Know (2025 Guide)"
-        description="Complete breakdown of WCAG 2.2's nine new success criteria and their impact on WordPress accessibility. Learn what changed, why it matters, and how to achieve compliance for your WordPress site."
-        canonical="https://cmpsbl.com/blog/wcag-2-2-wordpress-changes"
-        keywords={[
-          'wcag 2.2 changes',
-          'wcag 2.2 wordpress',
-          'wordpress accessibility 2025',
-          'wcag 2.2 compliance',
-          'wcag 2.2 success criteria',
-          'wordpress wcag updates',
-          'web accessibility standards',
-          'wcag 2.2 requirements',
-          'accessibility compliance wordpress'
-        ]}
+        title="WCAG 2.2 Changes for WordPress Developers"
+        description="What WCAG 2.2 updates mean for WordPress developers — new success criteria, deprecated patterns, and implementation guidance."
+        type="article"
+        publishedTime="2025-12-05"
+        keywords={['WCAG 2.2 changes', 'WordPress WCAG 2.2', 'new accessibility criteria', 'WordPress developer accessibility']}
       />
       <div className="min-h-screen bg-background">
         <PublicNav />

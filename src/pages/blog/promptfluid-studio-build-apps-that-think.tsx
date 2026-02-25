@@ -10,9 +10,11 @@ const PromptFluidStudioGuide = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="STUDIO Module: AI-Powered App Generation | CMPSBL®"
-        description="CMPSBL Studio generates production-ready applications from natural language. Autonomous architecture decisions, code generation, and deployment in one cognitive workflow."
-        keywords={['AI app builder', 'code generation', 'autonomous development', 'CMPSBL Studio', 'AI-powered development']}
+        title="STUDIO: Build Apps That Think"
+        description="AI-assisted development generating production-ready code with cognitive pipelines, design intelligence, and real-time deployment."
+        type="article"
+        publishedTime="2025-10-10"
+        keywords={['STUDIO module', 'AI app development', 'cognitive code generation', 'composable AI', 'agentic development']}
       />
       
       <PublicNav />

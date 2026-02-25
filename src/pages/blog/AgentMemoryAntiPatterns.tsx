@@ -16,9 +16,11 @@ export default function AgentMemoryAntiPatterns() {
   return (
     <>
       <SEO 
-        title="5 Agent Memory Anti-Patterns (And How to Fix Them) | CMPSBL Blog"
-        description="Common mistakes developers make when implementing agent memory, and proven solutions to fix them."
-        keywords={['agent memory', 'AI patterns', 'LLM context', 'memory management', 'AI best practices']}
+        title="Agent Memory Anti-Patterns to Avoid"
+        description="Common mistakes that cause AI agents to lose context — and battle-tested patterns to fix memory degradation in production systems."
+        type="article"
+        publishedTime="2026-02-03"
+        keywords={['agent memory anti-patterns', 'AI context loss', 'memory degradation', 'persistent memory AI', 'context engineering']}
       />
       <PublicNav />
       

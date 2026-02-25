@@ -16,9 +16,11 @@ export default function LangChainMemoryIntegration() {
   return (
     <>
       <SEO 
-        title="Adding Persistent Memory to LangChain in 10 Minutes | CMPSBL Blog"
-        description="Step-by-step tutorial: add cross-session persistent memory to your LangChain agents without changing your existing code."
-        keywords={['LangChain', 'persistent memory', 'AI memory', 'agent memory', 'LangChain tutorial']}
+        title="LangChain Persistent Memory Integration"
+        description="Add persistent, cross-session memory to LangChain agents with a drop-in replacement for ConversationBufferMemory. Quick setup guide."
+        type="article"
+        publishedTime="2026-02-02"
+        keywords={['LangChain persistent memory', 'LangChain memory replacement', 'cross-session agent memory', 'context engineering']}
       />
       <PublicNav />
       

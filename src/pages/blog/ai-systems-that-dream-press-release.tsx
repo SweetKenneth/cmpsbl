@@ -10,9 +10,11 @@ export default function AISystemsThatDreamPressRelease() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="AI Systems That Dream: Experimental Dream Cycles | CMPSBL®"
-        description="Exploring structured dream cycles, self-reflection loops, and autonomous learning in CMPSBL's cognitive substrate. How AI systems consolidate knowledge offline."
-        keywords={['AI dream cycles', 'autonomous learning', 'self-reflection AI', 'cognitive consolidation', 'CMPSBL Dream Eater']}
+        title="AI Systems That Dream: Research Insights"
+        description="Exploring autonomous dreaming, reflection, and self-improvement in experimental cognitive AI systems with recursive improvement."
+        type="article"
+        publishedTime="2026-01-15"
+        keywords={['AI dreaming systems', 'autonomous AI dreaming', 'cognitive dream cycles', 'recursive improvement', 'self-improving AI']}
       />
       
       <PublicNav />

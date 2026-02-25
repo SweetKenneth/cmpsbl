@@ -9,15 +9,15 @@ export default function WordPressAccessibilityGuide() {
   return (
     <>
       <SEO
-        title="Complete Guide to WordPress Accessibility: WCAG 2.2 Compliance with AI Automation"
-        description="Master WordPress accessibility with this comprehensive 2025 guide. Learn WCAG 2.2 compliance, automated fixes, testing tools, and how AI-powered solutions revolutionize accessibility automation for WordPress sites."
-        canonical="https://cmpsbl.com/blog/wordpress-accessibility-guide"
+        title="WordPress Accessibility: WCAG Compliance"
+        description="Complete guide to making your WordPress site WCAG 2.2 compliant — semantic HTML, ARIA roles, and automated testing patterns."
+        type="article"
+        publishedTime="2025-11-25"
         keywords={[
-          'wordpress accessibility',
-          'wcag 2.2 compliance',
-          'wordpress wcag',
-          'accessibility automation',
-          'wordpress accessibility plugin',
+          'WordPress accessibility guide',
+          'WCAG WordPress',
+          'WordPress ARIA roles',
+          'accessible WordPress theme',
           'automated accessibility fixes',
           'wcag compliance checklist',
           'wordpress ada compliance',

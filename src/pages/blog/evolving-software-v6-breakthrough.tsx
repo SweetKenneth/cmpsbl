@@ -13,19 +13,16 @@ export default function EvolvingSoftwareV6Breakthrough() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Evolving Software v6.x.x: The Breakthrough in Self-Improving AI Systems | CMPSBL"
-        description="CMPSBL v6.x.x represents a paradigm shift in software development—systems that learn, adapt, and evolve autonomously. Explore the hardened infrastructure now available via API for building truly adaptive applications."
-        canonical="https://cmpsbl.com/blog/evolving-software-v6-breakthrough"
+        title="Evolving Software: The Autonomous Breakthrough"
+        description="Systems that learn, adapt, and evolve autonomously via API-first cognitive architecture — a paradigm shift in self-improving software."
+        type="article"
+        publishedTime="2026-01-30"
         keywords={[
-          'evolving software', 'self-improving AI', 'adaptive systems', 'CMPSBL v6',
+          'evolving software', 'self-improving software', 'autonomous evolution', 'adaptive AI',
           'cognitive infrastructure', 'autonomous software evolution', 'AI development platform',
           'machine learning infrastructure', 'adaptive AI API', 'living software systems'
         ]}
-        type="article"
         image={evolvingImg}
-        publishedTime={publishDate}
-        modifiedTime={publishDate}
-        author="CMPSBL Research"
       />
       
       <PublicNav />

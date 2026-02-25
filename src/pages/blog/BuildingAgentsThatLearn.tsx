@@ -16,9 +16,11 @@ export default function BuildingAgentsThatLearn() {
   return (
     <>
       <SEO 
-        title="Building Agents That Learn: A Practical Guide | CMPSBL Blog"
-        description="How to build AI agents that improve over time through persistent memory, feedback loops, and continuous learning patterns."
-        keywords={['learning agents', 'AI improvement', 'agent feedback', 'continuous learning', 'AI memory']}
+        title="Building Agents That Learn from Experience"
+        description="Architectural patterns for AI agents that improve through experience — from competency scoring to heuristic extraction at runtime."
+        type="article"
+        publishedTime="2026-02-05"
+        keywords={['building learning agents', 'self-improving AI agents', 'competency scoring', 'agentic AI patterns', 'adaptive intelligence']}
       />
       <PublicNav />
       
