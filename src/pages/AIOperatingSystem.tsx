@@ -43,7 +43,7 @@ const pillars = [
   { icon: Network, title: "Intelligent Routing", description: "Multi-provider model routing that automatically selects the optimal AI model based on task complexity, cost, and latency.", link: "/modules/nexus" },
   { icon: Shield, title: "AI-Native Security", description: "Purpose-built threat detection for AI systems — prompt injection defense, adversarial filtering, and automated incident response.", link: "/modules/defense" },
   { icon: Moon, title: "Autonomous Optimization", description: "Off-peak self-improvement cycles that analyze patterns, consolidate memory, and tune performance — your AI gets smarter overnight.", link: "/modules/dream" },
-  { icon: Workflow, title: "Meta-Orchestration", description: "300+ synergy pipelines coordinate execution surfaces as a unified intelligence, discovering emergent capabilities no single module possesses.", link: "/modules/cortex" },
+  { icon: Workflow, title: "Meta-Orchestration", description: "Cross-module orchestration coordinates execution surfaces as a unified intelligence, discovering emergent capabilities no single module possesses.", link: "/modules/cortex" },
   { icon: Cpu, title: "Self-Healing Runtime", description: "Dependency-ordered boot, health monitoring, auto-recovery, and zero-downtime hot reload — production-grade reliability built in.", link: "/modules/core" },
 ];
 
@@ -204,7 +204,7 @@ export default function AIOperatingSystem() {
               {[
                 { value: "10", label: "Entities" },
                 { value: "6", label: "Architectural Layers" },
-                { value: "300+", label: "Synergy Pipelines" },
+                { value: "24", label: "Modules" },
                 { value: "360+", label: "Terminal Commands" },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-4 rounded-xl border border-border bg-card">

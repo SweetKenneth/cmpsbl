@@ -523,7 +523,7 @@ export function CmpsblNav() {
                 className="grid grid-cols-2 gap-2 mb-6"
               >
               {[
-                  { name: "Composable Artifacts", href: "/store", icon: Sparkles },
+                  { name: "Composable Artifacts", href: "/explore", icon: Sparkles },
                   { name: "Composable Cognitives", href: "/composable-cognitives", icon: Zap },
                   { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
                   { name: "Cognitive Showcase", href: "/showcase", icon: Rocket, badge: "PROOF" },

@@ -11,9 +11,9 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const tools = [
-  { icon: Package, label: "Templates", count: "200+", href: "/marketplace", color: "from-cyan-500 to-blue-500" },
-  { icon: Zap, label: "Capabilities", count: "525+", href: "/capabilities", color: "from-violet-500 to-purple-500" },
-  { icon: Layers, label: "Pipelines", count: "300", href: "/synergies", color: "from-amber-500 to-orange-500" },
+  { icon: Package, label: "Templates", count: "200+", href: "/explore", color: "from-cyan-500 to-blue-500" },
+  { icon: Zap, label: "Capabilities", count: "525+", href: "/explore", color: "from-violet-500 to-purple-500" },
+  { icon: Layers, label: "Documentation", count: "SDK", href: "/documentation", color: "from-amber-500 to-orange-500" },
   { icon: Brain, label: "Memory", count: "∞", href: "/persistent-memory", color: "from-primary to-primary-variant" },
 ];
 
