@@ -134,7 +134,7 @@ export default function TemplateAlley() {
                 <Check className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
                 <div className="text-sm text-muted-foreground">
                   <strong className="text-foreground">Templates are free starting points.</strong> Copy the code, remix it, make it yours.
-                  For production-ready orchestration, explore our <Link to="/engines" className="text-primary hover:underline">Engines</Link>.
+                  For production-ready orchestration, explore our <Link to="/pricing" className="text-primary hover:underline">subscription plans</Link>.
                 </div>
               </div>
             </div>
@@ -147,7 +147,7 @@ export default function TemplateAlley() {
                   Open CodeLab
                 </Button>
               </Link>
-              <Link to="/capabilities">
+              <Link to="/explore">
                 <Button variant="outline" className="gap-2">
                   <Package className="w-4 h-4" />
                   Free Capabilities
@@ -378,18 +378,18 @@ export default function TemplateAlley() {
         <section className="border-t border-border/50 bg-card/50">
           <div className="container mx-auto px-4 py-12 text-center">
             <h2 className="text-2xl font-bold mb-4">Ready for Production?</h2>
-            <p className="text-muted-foreground mb-6">Templates are starting points. Engines are production-ready orchestrations.</p>
+            <p className="text-muted-foreground mb-6">Templates are starting points. Upgrade your plan for governed orchestration.</p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg">
-                <Link to="/engines">
+                <Link to="/pricing">
                   <Code className="w-4 h-4 mr-2" />
-                  View Engines
+                  View Plans
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/synergies">
+                <Link to="/explore">
                   <Layers className="w-4 h-4 mr-2" />
-                  Explore Pipelines
+                  Explore
                 </Link>
               </Button>
             </div>

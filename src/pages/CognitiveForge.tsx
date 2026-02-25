@@ -192,7 +192,7 @@ export default function CognitiveForge() {
             <span>promptfluid® cognitive forge</span>
           </div>
           <div className="flex items-center gap-4">
-            <span>v3.0.0 D-Mode</span>
+            <span>D-Mode</span>
             <Link to="/forge/catalog" className="hover:text-amber-400 transition-colors">catalog</Link>
             <Link to="/os" className="hover:text-cyan-400 transition-colors">world engine</Link>
           </div>
