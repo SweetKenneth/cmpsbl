@@ -30,10 +30,10 @@ export default function StartHere() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Start Here | Clockless — Build Self-Improving Software"
-        description="New to CMPSBL? Start here. Learn how to build with composable artifacts, persistent memory, and self-improving pipelines — all on the free tier."
+        title="Start Here | Clockless — Cognitive Infrastructure for AI"
+        description="New to Clockless? Start here. Add persistent memory and self-improving pipelines to any AI application — standalone products, no platform lock-in."
         canonical="https://cmpsbl.com/start-here"
-        keywords={['CMPSBL getting started', 'start here', 'onboarding', 'composable artifacts', 'persistent memory']}
+        keywords={['CMPSBL getting started', 'start here', 'persistent memory', 'AI infrastructure', 'composable cognitives']}
       />
       <PublicNav />
 
@@ -77,10 +77,10 @@ export default function StartHere() {
           {/* Body */}
           <div className="space-y-8">
             <motion.p {...stagger(0.15)} className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-              CMPSBL is a composable software substrate for building systems that learn, evolve, and improve while running.
+              Clockless gives your AI applications persistent memory, self-improving pipelines, and governed orchestration — drop-in infrastructure that compounds over time.
             </motion.p>
             <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              If you're new, this page helps you get oriented and build something real quickly — no demos, no lockout.
+              Pick a product, build something real, and see the difference. No demos, no lock-in.
             </motion.p>
 
             {/* What you can do */}
@@ -93,11 +93,11 @@ export default function StartHere() {
                 <h2 className="text-xl sm:text-2xl font-bold text-foreground">What you can do immediately</h2>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {[
-                    { icon: Sparkles, text: "Browse the Composable Artifacts store" },
-                    { icon: Code, text: "Build with real templates and capabilities" },
-                    { icon: Brain, text: "Use persistent memory in live systems" },
-                    { icon: Zap, text: "Compose and run pipelines" },
-                    { icon: BookOpen, text: "Explore documentation and research artifacts" },
+                    { icon: Brain, text: "Add persistent memory to any AI agent" },
+                    { icon: Zap, text: "Download a Composable Cognitive — your own AI agent" },
+                    { icon: Code, text: "Integrate the EVLVBL SDK for self-improving pipelines" },
+                    { icon: Sparkles, text: "Try the accessibility scanner on any website" },
+                    { icon: BookOpen, text: "Read the research documentation on Zenodo" },
                   ].map((item, idx) => (
                     <motion.div
                       key={item.text}
@@ -125,16 +125,16 @@ export default function StartHere() {
             {/* Next Steps */}
             <motion.div {...stagger(0.4)} className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button asChild size="lg" className="rounded-xl font-bold gap-2 px-8 h-13 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all">
-                <Link to="/store">
-                  <Sparkles className="w-4 h-4" />
-                  Explore the Artifact Store
+                <Link to="/persistent-memory">
+                  <Brain className="w-4 h-4" />
+                  Try Persistent Memory
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-8 h-13">
-                <Link to="/pricing">
-                  <Layers className="w-4 h-4" />
-                  View Pricing & Tiers
+                <Link to="/composable-cognitives">
+                  <Zap className="w-4 h-4" />
+                  Browse Cognitives
                 </Link>
               </Button>
             </motion.div>
@@ -146,7 +146,7 @@ export default function StartHere() {
             className="mt-16 pt-8 border-t border-border/30"
           >
             <p className="text-sm text-muted-foreground italic">
-              Self-improving software works in CMPSBL because of the architecture, not a single feature.
+              The infrastructure compounds because of the architecture, not a single feature.
             </p>
           </motion.div>
         </div>
