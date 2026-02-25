@@ -112,6 +112,7 @@ const AdminCognitiveUploads = lazy(() => import("./pages/AdminCognitiveUploads")
 const STierDemos = lazy(() => import("./pages/STierDemos"));
 const OwnerReports = lazy(() => import("./pages/admin/OwnerReports"));
 const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDashboard"));
+const GovernanceControlPlane = lazy(() => import("./pages/admin/GovernanceControlPlane"));
 const EvolutionMeshLanding = lazy(() => import("./pages/EvolutionMeshLanding"));
 const Architecture = lazy(() => import("./pages/Architecture"));
 const Habitat = lazy(() => import("./pages/Habitat"));
@@ -463,6 +464,7 @@ const App = () => {
                         <Route path="/admin/immunity-mesh" element={<AdminRoute><ImmunityMeshDashboard /></AdminRoute>} />
                         <Route path="/admin/owner-reports" element={<AdminRoute><OwnerReports /></AdminRoute>} />
                         <Route path="/admin/evolution" element={<AdminRoute><EvolutionMeshDashboard /></AdminRoute>} />
+                        <Route path="/admin/governance" element={<AdminRoute><GovernanceControlPlane /></AdminRoute>} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         <Route path="/evolution-mesh" element={<EvolutionMeshLanding />} />

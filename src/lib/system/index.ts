@@ -161,3 +161,21 @@ export {
 
 // Performance profiler
 export * from './performanceProfiler';
+
+// Governance control plane
+export {
+  getSubsystemState,
+  getAffectedSubsystems,
+  GOVERNANCE_MODE_META,
+  type GovernanceMode,
+  type GovernanceModeRecord,
+  type GovernanceAuditEntry,
+  type SubsystemState,
+} from './governance';
+
+// Governance gate (subsystem flag wrapper)
+export {
+  isSubsystemAllowed,
+  isSubsystemEnabled,
+  invalidateGovernanceCache,
+} from './governanceGate';

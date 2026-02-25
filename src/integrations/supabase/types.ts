@@ -6303,6 +6303,78 @@ export type Database = {
         }
         Relationships: []
       }
+      governance_audit_log: {
+        Row: {
+          affected_subsystems: Json
+          auto_reverted: boolean
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_mode: string
+          previous_mode: string
+          reason: string
+          ttl_minutes: number | null
+        }
+        Insert: {
+          affected_subsystems?: Json
+          auto_reverted?: boolean
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_mode: string
+          previous_mode: string
+          reason: string
+          ttl_minutes?: number | null
+        }
+        Update: {
+          affected_subsystems?: Json
+          auto_reverted?: boolean
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_mode?: string
+          previous_mode?: string
+          reason?: string
+          ttl_minutes?: number | null
+        }
+        Relationships: []
+      }
+      governance_mode: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          mode: string
+          reason: string
+          ttl_minutes: number | null
+          updated_at: string
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          mode?: string
+          reason?: string
+          ttl_minutes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          mode?: string
+          reason?: string
+          ttl_minutes?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       immune_escalations: {
         Row: {
           claimed_by: string | null
@@ -13437,6 +13509,7 @@ export type Database = {
         }[]
       }
       get_public_live_stats: { Args: never; Returns: Json }
+      governance_auto_revert: { Args: never; Returns: undefined }
       has_role:
         | {
             Args: {
