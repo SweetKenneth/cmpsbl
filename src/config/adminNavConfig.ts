@@ -57,8 +57,8 @@ export const adminNavConfig: NavGroup[] = [
       { id: "cognitive-forge", label: "Cognitive Forge", path: "/forge", icon: Hammer, isNew: true },
       { id: "codelab", label: "CodeLab", path: "/codelab", icon: Terminal },
       { id: "devtools", label: "DevTools", path: "/devtools", icon: Terminal },
-      { id: "capabilities", label: "Capabilities", path: "/capabilities", icon: Sparkles, badge: "86+" },
-      { id: "synergies", label: "Synergies", path: "/synergies", icon: Network, badge: "120" },
+      { id: "capabilities", label: "Capabilities", path: "/docs/substrate/capabilities", icon: Sparkles, badge: "525+" },
+      { id: "explore", label: "Explore", path: "/explore", icon: Network },
     ],
   },
   {
@@ -66,7 +66,7 @@ export const adminNavConfig: NavGroup[] = [
     title: "Enterprise",
     items: [
       { id: "intelligence", label: "Intelligence", path: "/intelligence", icon: Zap },
-      { id: "marketplace", label: "Marketplace", path: "/marketplace", icon: Gauge },
+      { id: "pricing", label: "Pricing", path: "/pricing", icon: Gauge },
       { id: "licensing", label: "Licensing", path: "/substrate/licensing", icon: FileText },
       { id: "patches", label: "Patch Distribution", path: "/admin/patches", icon: Shield, isNew: true },
       { id: "cognitive-uploads", label: "Cognitive Uploads", path: "/admin/cognitive-uploads", icon: Cpu, isNew: true },

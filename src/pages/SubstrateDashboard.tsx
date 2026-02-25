@@ -355,7 +355,7 @@ export default function SubstrateDashboard() {
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            Unified control center for the AI orchestration substrate. Entities wrapped by mesh overlays, hot-swappable zones, synergy pipelines, and terminal commands.
+            Unified control center for the AI orchestration substrate. Entities wrapped by mesh overlays, hot-swappable zones, composable pipelines, and terminal commands.
           </p>
           
           <div className="flex gap-3">
