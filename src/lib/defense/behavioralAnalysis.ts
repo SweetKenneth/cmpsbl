@@ -55,7 +55,8 @@
    metadata?: Record<string, unknown>;
  }
  
- // In-memory state
+ // In-memory state — bounded
+ const MAX_PROFILES = 5000;
  const behaviorProfiles = new Map<string, BehaviorProfile>();
  const recentEvents = new Map<string, BehaviorEvent[]>();
  const anomalies: BehavioralAnomaly[] = [];
@@ -113,6 +114,11 @@
    };
    
    behaviorProfiles.set(key, profile);
+   // Bound profiles map
+   if (behaviorProfiles.size > MAX_PROFILES) {
+     const oldest = behaviorProfiles.keys().next().value;
+     if (oldest) behaviorProfiles.delete(oldest);
+   }
  }
  
  /**

@@ -48,7 +48,9 @@
    signal_ttl_minutes: 60,
  };
  
- // In-memory signal storage
+ // In-memory signal storage — bounded to prevent memory exhaustion
+ const MAX_ACTIVE_SIGNALS = 2000;
+ const MAX_BASELINES = 5000;
  const activeSignals = new Map<string, AnomalySignal>();
  
  // Baseline metrics per source
@@ -97,6 +99,11 @@
      };
  
      activeSignals.set(signal.id, signal);
+     // Evict oldest if over limit
+     if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
+       const oldest = activeSignals.keys().next().value;
+       if (oldest) activeSignals.delete(oldest);
+     }
      return signal;
    }
  
@@ -128,6 +135,10 @@
      };
  
      activeSignals.set(signal.id, signal);
+     if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
+       const oldest = activeSignals.keys().next().value;
+       if (oldest) activeSignals.delete(oldest);
+     }
      return signal;
    }
  
@@ -162,6 +173,10 @@
      };
  
      activeSignals.set(signal.id, signal);
+     if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
+       const oldest = activeSignals.keys().next().value;
+       if (oldest) activeSignals.delete(oldest);
+     }
      return signal;
    }
  
@@ -289,6 +304,11 @@
    }
  
    baselines.set(source, existing);
+   // Bound baselines map
+   if (baselines.size > MAX_BASELINES) {
+     const oldest = baselines.keys().next().value;
+     if (oldest) baselines.delete(oldest);
+   }
  }
  
  /**

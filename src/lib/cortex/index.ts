@@ -1,16 +1,12 @@
 /**
  * promptfluid® CORTEX Module v7.0.0
  * Agency-Class Orchestrator & Cross-Module Governance
- * 
- * The orchestrator layer for:
- * - Cross-module coordination and governance
- * - Agency-class task orchestration
- * - World model maintenance
- * - Evolution cycle coordination
+ * SPARTA Epoch — Hardened with input validation, bounded orchestrations, and timeout guards
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import type { SubstrateModule } from '../substrate';
+import { validateStringInput, clampNumber, withTimeout } from '@/lib/system/hardening';
 
 // Version info
 export const CORTEX_VERSION = '7.0.0';
@@ -155,6 +151,8 @@ export function canModuleBoot(module: SubstrateModule, onlineModules: Set<Substr
  * Set governance mode
  */
 export function setGovernanceMode(mode: CortexState['governanceMode']): void {
+  const validModes: CortexState['governanceMode'][] = ['autonomous', 'advisory', 'manual'];
+  if (!validModes.includes(mode)) return;
   cortexState = { ...cortexState, governanceMode: mode };
 }
 
@@ -189,26 +187,51 @@ export async function orchestrate(config: {
   results: Array<{ module: SubstrateModule; success: boolean; data?: unknown; error?: string }>;
   duration: number;
 }> {
+  // Validate inputs
+  const safeAction = validateStringInput(config.action, { maxLength: 256, minLength: 1 });
+  if (!safeAction) {
+    return { success: false, results: [], duration: 0 };
+  }
+
+  // Guard: limit concurrent orchestrations
+  const MAX_CONCURRENT = 10;
+  if (cortexState.activeOrchestrations >= MAX_CONCURRENT) {
+    return {
+      success: false,
+      results: [{ module: 'cortex' as SubstrateModule, success: false, error: `Max concurrent orchestrations (${MAX_CONCURRENT}) reached` }],
+      duration: 0,
+    };
+  }
+
+  // Guard: limit modules per call
+  const MAX_MODULES_PER_CALL = 25;
+  const safeModules = config.modules.slice(0, MAX_MODULES_PER_CALL);
+  const timeoutMs = clampNumber(config.timeout, 5000, 120_000, 30_000);
+
   const start = Date.now();
   cortexState = { ...cortexState, activeOrchestrations: cortexState.activeOrchestrations + 1 };
   
   try {
-    const results = await Promise.all(
-      config.modules.map(async (module) => {
-        try {
-          const { data, error } = await supabase.functions.invoke('pf-substrate', {
-            body: { module, action: config.action, payload: config.payload },
-          });
-          
-          if (error) {
-            return { module, success: false, error: error.message };
+    const results = await withTimeout(
+      () => Promise.all(
+        safeModules.map(async (module) => {
+          try {
+            const { data, error } = await supabase.functions.invoke('pf-substrate', {
+              body: { module, action: safeAction, payload: config.payload },
+            });
+            
+            if (error) {
+              return { module, success: false, error: error.message };
+            }
+            
+            return { module, success: true, data };
+          } catch (err) {
+            return { module, success: false, error: err instanceof Error ? err.message : 'Unknown error' };
           }
-          
-          return { module, success: true, data };
-        } catch (err) {
-          return { module, success: false, error: err instanceof Error ? err.message : 'Unknown error' };
-        }
-      })
+        })
+      ),
+      timeoutMs,
+      'cortex.orchestrate'
     );
     
     return {
@@ -216,8 +239,14 @@ export async function orchestrate(config: {
       results,
       duration: Date.now() - start,
     };
+  } catch (err) {
+    return {
+      success: false,
+      results: [{ module: 'cortex' as SubstrateModule, success: false, error: err instanceof Error ? err.message : 'Orchestration failed' }],
+      duration: Date.now() - start,
+    };
   } finally {
-    cortexState = { ...cortexState, activeOrchestrations: cortexState.activeOrchestrations - 1 };
+    cortexState = { ...cortexState, activeOrchestrations: Math.max(0, cortexState.activeOrchestrations - 1) };
   }
 }
 
@@ -233,10 +262,16 @@ export async function broadcastEvent(event: {
   delivered: number;
   failed: number;
 }> {
+  // Validate event type
+  const safeType = validateStringInput(event.type, { maxLength: 256, minLength: 1 });
+  if (!safeType) {
+    return { success: false, delivered: 0, failed: 0 };
+  }
+
   try {
     const { error } = await supabase.from('brain_events').insert([{
       module: event.source,
-      event_type: event.type,
+      event_type: safeType,
       data: (event.payload ?? {}) as Record<string, unknown>,
       outcome: 'broadcasted',
     }] as any);

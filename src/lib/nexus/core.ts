@@ -1,14 +1,13 @@
 /**
  * PromptFluid Nexus Brain Core
- * v10.5.4 ARCHITECT Epoch — Central AI orchestration and intelligence processing
- * 
- * Integrates with 76 Engines and 24 Meta-Engines for cognitive operations
+ * SPARTA Epoch — Central AI orchestration with hardened input validation
  */
 
 import { routeToBestModel } from './router';
 import { cacheResponse, getCachedResponse } from './cache';
 import { learnFromResult } from './learning';
 import { recordMetric } from './metrics';
+import { validateStringInput, safeParse } from '@/lib/system/hardening';
 
 export interface AIRequest {
   prompt: string;
@@ -28,12 +27,18 @@ export interface AIResponse {
 }
 
 export async function processAIRequest(request: AIRequest): Promise<AIResponse> {
+  // Validate prompt input — reject empty or oversized prompts
+  const safePrompt = validateStringInput(request.prompt, { maxLength: 100_000, minLength: 1, label: 'nexus.prompt' });
+  if (!safePrompt) {
+    throw new Error('[NEXUS] Invalid prompt: must be 1-100,000 characters');
+  }
+
   const startTime = Date.now();
   
   try {
     // Check cache first if enabled
     if (request.useCache !== false) {
-      const cached = await getCachedResponse(request.prompt);
+      const cached = await getCachedResponse(safePrompt);
       if (cached) {
         await recordMetric('cache_hit', { type: request.type });
         return {
@@ -46,16 +51,17 @@ export async function processAIRequest(request: AIRequest): Promise<AIResponse> 
     }
 
     // Route to best model based on request type
-    const { model, execute } = await routeToBestModel(request);
+    const hardenedRequest = { ...request, prompt: safePrompt };
+    const { model, execute } = await routeToBestModel(hardenedRequest);
     
     // Execute AI request
-    const result = await execute(request.prompt, request.context);
+    const result = await execute(safePrompt, request.context);
     
     const latency = Date.now() - startTime;
     
     // Cache successful response
     if (result.success) {
-      await cacheResponse(request.prompt, {
+      await cacheResponse(safePrompt, {
         content: result.content,
         model,
         timestamp: Date.now(),
@@ -112,20 +118,23 @@ export async function getNexusStatus() {
 async function getCachedResponseCount(): Promise<number> {
   const stored = localStorage.getItem('nexus_metrics');
   if (!stored) return 0;
-  const metrics: any[] = JSON.parse(stored);
+  const metrics = safeParse<any[]>(stored, 500_000);
+  if (!Array.isArray(metrics)) return 0;
   return metrics.filter(m => m.name === 'cache_hit').length;
 }
 
 async function getTotalRequests(): Promise<number> {
   const stored = localStorage.getItem('nexus_metrics');
   if (!stored) return 0;
-  const metrics: any[] = JSON.parse(stored);
+  const metrics = safeParse<any[]>(stored, 500_000);
+  if (!Array.isArray(metrics)) return 0;
   return metrics.filter(m => m.name === 'ai_request_completed').length;
 }
 
 async function getFailedRequests(): Promise<number> {
   const stored = localStorage.getItem('nexus_metrics');
   if (!stored) return 0;
-  const metrics: any[] = JSON.parse(stored);
+  const metrics = safeParse<any[]>(stored, 500_000);
+  if (!Array.isArray(metrics)) return 0;
   return metrics.filter(m => m.name === 'ai_request_failed').length;
 }

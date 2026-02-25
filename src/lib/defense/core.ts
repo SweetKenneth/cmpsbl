@@ -1,9 +1,11 @@
 /**
  * PromptFluid Defense Core Engine
  * Real-time threat detection and risk scoring
+ * SPARTA Epoch — Hardened with input validation and bounded collections
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { validateStringInput, clampNumber } from '@/lib/system/hardening';
 
 export interface DefenseEvent {
   ip: string;
@@ -24,6 +26,8 @@ export interface RiskAnalysis {
   reason: string;
 }
 
+const MAX_FACTORS = 20;
+
 /**
  * Analyze request and calculate risk score
  */
@@ -33,6 +37,10 @@ export async function analyzeRequest(
   endpoint: string,
   metadata?: Record<string, any>
 ): Promise<RiskAnalysis> {
+  // Input validation
+  const safeIp = validateStringInput(ip, { maxLength: 45, minLength: 1 }) || '0.0.0.0';
+  const safeAgent = validateStringInput(userAgent, { maxLength: 1024 }) || '';
+  const safeEndpoint = validateStringInput(endpoint, { maxLength: 2048, minLength: 1 }) || '/unknown';
   const factors: string[] = [];
   let score = 0;
 
@@ -41,7 +49,7 @@ export async function analyzeRequest(
     const { data: ipRep } = await supabase
       .from('ip_reputation')
       .select('score')
-      .eq('ip', ip)
+      .eq('ip', safeIp)
       .maybeSingle();
 
     if (ipRep && ipRep.score < 30) {
@@ -59,16 +67,16 @@ export async function analyzeRequest(
   }
 
   // Check user agent
-  if (!userAgent || userAgent.length < 10) {
+  if (!safeAgent || safeAgent.length < 10) {
     score += 30;
     factors.push('Missing or suspicious user agent');
-  } else if (/bot|crawler|spider|scraper/i.test(userAgent)) {
+  } else if (/bot|crawler|spider|scraper/i.test(safeAgent)) {
     score += 25;
     factors.push('Bot-like user agent');
   }
 
   // Check endpoint patterns
-  if (/admin|config|\.env|backup|sql/i.test(endpoint)) {
+  if (/admin|config|\.env|backup|sql/i.test(safeEndpoint)) {
     score += 35;
     factors.push('Suspicious endpoint access');
   }
@@ -97,25 +105,35 @@ export async function analyzeRequest(
     reason = 'Request appears safe';
   }
 
-  return { score, factors, action, reason };
+  // Clamp score and bound factors
+  return {
+    score: clampNumber(score, 0, 100, 0),
+    factors: factors.slice(0, MAX_FACTORS),
+    action,
+    reason: reason.substring(0, 2048),
+  };
 }
 
 /**
  * Log defense event
  */
 export async function logDefenseEvent(event: DefenseEvent): Promise<void> {
+  // Validate critical fields before DB write
+  const safeIp = validateStringInput(event.ip, { maxLength: 45, minLength: 1 });
+  if (!safeIp) return; // Reject malformed events silently
+
   try {
     const { error } = await supabase
       .from('defense_events')
       .insert({
-        ip: event.ip,
+        ip: safeIp,
         action: event.action,
-        risk_score: event.risk_score,
-        endpoint: event.endpoint,
-        user_agent: event.user_agent,
-        reason: event.reason,
-        session_id: event.session_id,
-        fingerprint_hash: event.fingerprint_hash,
+        risk_score: clampNumber(event.risk_score, 0, 100, 0),
+        endpoint: (event.endpoint || '').substring(0, 2048),
+        user_agent: (event.user_agent || '').substring(0, 1024),
+        reason: (event.reason || '').substring(0, 2048),
+        session_id: event.session_id ? event.session_id.substring(0, 128) : undefined,
+        fingerprint_hash: event.fingerprint_hash ? event.fingerprint_hash.substring(0, 128) : undefined,
         metadata: event.metadata || {}
       });
 
@@ -192,11 +210,13 @@ export async function getDefenseStats(range: '1h' | '24h' | '7d' | '30d' = '24h'
  * Get recent defense events
  */
 export async function getRecentEvents(limit: number = 50) {
+  // Clamp limit to prevent excessive data retrieval
+  const safeLimit = clampNumber(limit, 1, 500, 50);
   const { data, error } = await supabase
     .from('defense_events')
     .select('*')
     .order('detected_at', { ascending: false })
-    .limit(limit);
+    .limit(safeLimit);
 
   if (error) {
     if (import.meta.env.DEV) {
