@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>GTM Execution Plan — CMPSBL®</title>
 <style>
-  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.6;color:#111;background:#fff;margin:0}
+  html,body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.6;color:#111 !important;background:#fff !important;margin:0;color-scheme:light}
   .page{max-width:8.5in;margin:0 auto;padding:0.8in}
   h1{font-size:22pt;margin-bottom:0.1in;letter-spacing:-0.5px}
   h2{font-size:15pt;margin-top:0.5in;border-bottom:2px solid #111;padding-bottom:4px}
@@ -512,6 +512,72 @@ Ship standalone products that run ON the substrate. Don't sell the substrate. Cr
 <li>✦ LNCHBL distribution platform alpha</li>
 <li>✦ Phase 2 gate unlock decision point</li>
 </ul>
+</div>
+
+<hr />
+
+<!-- ============================================ -->
+<h2>14. Phase 1 UI Change Log (Revert Reference)</h2>
+
+<p>All UI/UX changes applied during Phase 1 GTM hardening. Use this section to revert any change quickly.</p>
+
+<div class="card">
+<h3>Pricing Page Changes</h3>
+<table>
+<tr><th>Change</th><th>File</th><th>What Was Done</th><th>Revert Instructions</th></tr>
+<tr><td>Removed pricing numbers from Coming Soon tiers</td><td><code>src/components/pricing/TierUnlockSection.tsx</code></td><td>Replaced price labels ($9/mo, $19/mo, $99/mo) with "Check Back Soon" badge</td><td>Restore <code>{td.price}</code> span and remove Badge import</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Homepage Changes</h3>
+<table>
+<tr><th>Change</th><th>File</th><th>What Was Done</th><th>Revert Instructions</th></tr>
+<tr><td>Download Cognitive Substrate CTA — gated as "Coming Soon"</td><td><code>src/components/LnchblCTA.tsx</code></td><td>Added Coming Soon badge + Lock icon. Disabled Download and Setup Guide buttons (opacity-60, cursor-not-allowed). Updated copy to "launching soon."</td><td>Remove Lock icon, Badge, restore button functionality (remove disabled classes), revert CTA copy.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Licensing Page Changes</h3>
+<table>
+<tr><th>Change</th><th>File</th><th>What Was Done</th><th>Revert Instructions</th></tr>
+<tr><td>License tiers gated as "Coming Soon"</td><td><code>src/pages/SubstrateLicensingDownload.tsx</code></td><td>Added <code>comingSoon: boolean</code> to LICENSE_TIERS. Set Free/Creator/Architect to <code>price: "Coming Soon"</code> + <code>comingSoon: true</code>. Render disabled button with Lock icon when comingSoon is true. Updated hero text + badge.</td><td>Set <code>comingSoon: false</code> on all tiers, restore original prices, revert hero copy, remove conditional button rendering.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Navigation &amp; Footer Sanitization</h3>
+<table>
+<tr><th>Change</th><th>File(s)</th><th>What Was Done</th><th>Revert Instructions</th></tr>
+<tr><td>Removed gated route links from nav/footer</td><td>Navigation + Footer components</td><td>All Phase 2+ route links stripped from public nav, footer, command palette, and terminal boot output</td><td>Re-add links for /marketplace, /store, /capabilities, /synergies, /engines, /artifacts, /habitat, /licensing, /evolution-mesh, /intent-mesh, /lab, /clockless-world-engine</td></tr>
+<tr><td>Version numbers removed from public surfaces</td><td>SEO/meta/OG components</td><td>Version identifiers stripped from meta tags, OG cards, and site-wide headings</td><td>Re-add version strings to meta description, OG title, etc.</td></tr>
+<tr><td>Legacy metrics replaced</td><td>Various marketing components</td><td>"300 synergy pipelines" → "525+ capabilities"</td><td>Revert capability count strings</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Phase Gate System</h3>
+<table>
+<tr><th>Change</th><th>File</th><th>What Was Done</th><th>Revert Instructions</th></tr>
+<tr><td>PhaseGateRoute component active</td><td><code>src/config/gtm-phase.ts</code></td><td>16+ routes intercepted by PhaseGateRoute. CURRENT_PHASE set to 1.</td><td>Change <code>CURRENT_PHASE</code> to 2/3/4 to progressively unlock routes.</td></tr>
+<tr><td>Phase gate password</td><td><code>src/config/gtm-phase.ts</code></td><td>Internal bypass: <code>cmpsbl-internal-2026</code></td><td>Remove or rotate password.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Intelligence Layer Gating</h3>
+<table>
+<tr><th>Change</th><th>File</th><th>What Was Done</th><th>Revert Instructions</th></tr>
+<tr><td>Feature flag matrix — 6 ACTIVE / 7 gated</td><td><code>src/lib/minds/intelligence/featureFlags.ts</code></td><td>Phase 1 features set to ACTIVE. Consolidation, Quality Scoring, Vocabulary Growth set to INTERNAL_ONLY. Adaptive Tone set to OFF. Proficiency Gating set to DISABLED.</td><td>Set desired features to ACTIVE or use <code>overrideFeatureStatus()</code> for runtime activation.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Substrate Feature Flags</h3>
+<table>
+<tr><th>Change</th><th>File</th><th>What Was Done</th><th>Revert Instructions</th></tr>
+<tr><td>Runtime feature flag manager</td><td><code>src/lib/substrate/feature-flags/index.ts</code></td><td>Percentage-based rollout, tier targeting, and kill-switch infrastructure deployed.</td><td>No revert needed — additive system. Use <code>killFlag()</code> or <code>updateFlag()</code> to disable.</td></tr>
+</table>
 </div>
 
 <hr />
