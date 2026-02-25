@@ -101,7 +101,7 @@ export function TierUnlockSection() {
                       </div>
                       <div>
                         <h3 className="font-bold text-lg">{td.label}</h3>
-                        <span className="text-xs text-muted-foreground">{td.price}</span>
+                        <Badge variant="secondary" className="text-[10px] px-2 py-0.5">Check Back Soon</Badge>
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground">{td.tagline}</p>
