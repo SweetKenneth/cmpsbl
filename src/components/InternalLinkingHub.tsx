@@ -15,7 +15,7 @@ interface InternalLinkProps {
 
 const LINK_SETS = {
   security: [
-    { href: "/projects/defense", icon: Shield, label: "DEFENSE WordPress Plugin", description: "AI-powered bot protection for WordPress", priority: "high" as const },
+    { href: "/projects", icon: Shield, label: "DEFENSE WordPress Plugin", description: "AI-powered bot protection for WordPress", priority: "high" as const },
     { href: "/blog/wordpress-bot-defense", icon: BookOpen, label: "Bot Defense Guide", description: "Complete WordPress security guide", priority: "high" as const },
     { href: "/blog/top-security-plugins-2025", icon: Target, label: "Plugin Comparison", description: "Compare top security plugins", priority: "medium" as const },
     { href: "/blog/ai-cybersecurity-evolution", icon: Shield, label: "AI Cybersecurity Evolution", description: "How AI is reshaping threat detection", priority: "medium" as const },
@@ -33,7 +33,7 @@ const LINK_SETS = {
     { href: "/solutions", icon: Zap, label: "All Solutions", description: "Explore the CMPSBL ecosystem", priority: "medium" as const },
   ],
   general: [
-    { href: "/projects/defense", icon: Shield, label: "DEFENSE WordPress Plugin", description: "AI-powered bot protection for WordPress", priority: "high" as const },
+    { href: "/projects", icon: Shield, label: "DEFENSE WordPress Plugin", description: "AI-powered bot protection for WordPress", priority: "high" as const },
     { href: "/substrate", icon: Layers, label: "Substrate Architecture", description: "Composable cognitive infrastructure", priority: "high" as const },
     { href: "/solutions", icon: Zap, label: "All Solutions", description: "Explore the CMPSBL ecosystem", priority: "medium" as const },
     { href: "/blog", icon: BookOpen, label: "Research & Insights", description: "Technical deep dives and guides", priority: "medium" as const },

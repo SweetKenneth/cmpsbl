@@ -21,7 +21,7 @@ export default function CurrentProjects() {
       status: "Live",
       statusColor: "bg-[hsl(var(--system-green))]",
       features: ["AI bot detection", "Behavioral fingerprinting", "Real-time blocking", "WordPress plugin", "Adaptive CAPTCHA", "Device scoring"],
-      href: "https://cmpsbl.com/projects/defense",
+      href: "/projects",
       external: true
     },
     {
