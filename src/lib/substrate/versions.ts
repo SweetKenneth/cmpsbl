@@ -1,6 +1,6 @@
 /**
  * Substrate Module Version Registry
- * SPARTA Epoch v11.2.1 — Zone Architecture + Mass Enhancement Grant
+ * SPARTA Epoch v11.3.0 — Accelerated Learning + LNCHBL Brain Sync
  *
  * 10 Public Entities:
  *   CORE (1 kernel) + 8 Modules + INTEGRATION (1 module, boots last)
@@ -18,60 +18,60 @@
 // 10 public entities
 export const MODULE_VERSIONS = {
   // Kernel (boots first)
-  core: { version: '11.2.1', codename: 'Foundation', layer: 'Kernel', type: 'kernel' as const },
+  core: { version: '11.3.0', codename: 'Foundation', layer: 'Kernel', type: 'kernel' as const },
   // 8 Public Modules
-  decode: { version: '11.2.1', codename: 'Interpreter', layer: 'Cognitive', type: 'module' as const },
-  encode: { version: '11.2.1', codename: 'Genesis', layer: 'Orchestration', type: 'module' as const },
-  vision: { version: '11.2.1', codename: 'Vee', layer: 'Operational', type: 'module' as const },
-  cortex: { version: '11.2.1', codename: 'Orchestrator', layer: 'Orchestration', type: 'module' as const },
-  nexus: { version: '11.2.1', codename: 'Router', layer: 'Orchestration', type: 'module' as const },
-  economy: { version: '11.2.1', codename: 'Treasury', layer: 'Infrastructure', type: 'module' as const },
-  sandbox: { version: '11.2.1', codename: 'Crucible', layer: 'Infrastructure', type: 'module' as const },
-  inclusive: { version: '11.2.1', codename: 'Clarity', layer: 'Operational', type: 'module' as const },
+  decode: { version: '11.3.0', codename: 'Interpreter', layer: 'Cognitive', type: 'module' as const },
+  encode: { version: '11.3.0', codename: 'Genesis', layer: 'Orchestration', type: 'module' as const },
+  vision: { version: '11.3.0', codename: 'Vee', layer: 'Operational', type: 'module' as const },
+  cortex: { version: '11.3.0', codename: 'Orchestrator', layer: 'Orchestration', type: 'module' as const },
+  nexus: { version: '11.3.0', codename: 'Router', layer: 'Orchestration', type: 'module' as const },
+  economy: { version: '11.3.0', codename: 'Treasury', layer: 'Infrastructure', type: 'module' as const },
+  sandbox: { version: '11.3.0', codename: 'Crucible', layer: 'Infrastructure', type: 'module' as const },
+  inclusive: { version: '11.3.0', codename: 'Clarity', layer: 'Operational', type: 'module' as const },
   // Module (boots last)
-  integration: { version: '11.2.1', codename: 'Bridge', layer: 'Operational', type: 'module' as const },
+  integration: { version: '11.3.0', codename: 'Bridge', layer: 'Operational', type: 'module' as const },
 } as const;
 
 // 5 Mesh Overlays (protective layers — outermost to innermost)
 export const MESH_VERSIONS = {
-  defense: { version: '11.2.1', codename: 'Guardian', order: 1, position: 'outermost' as const },
-  immunity: { version: '11.2.1', codename: 'Sentinel', order: 2, position: 'outer' as const },
-  evolution: { version: '11.2.1', codename: 'Phoenix', order: 3, position: 'middle' as const },
-  intent: { version: '11.2.1', codename: 'Compass', order: 4, position: 'inner' as const },
-  governance: { version: '11.2.1', codename: 'Arbiter', order: 5, position: 'innermost' as const },
+  defense: { version: '11.3.0', codename: 'Guardian', order: 1, position: 'outermost' as const },
+  immunity: { version: '11.3.0', codename: 'Sentinel', order: 2, position: 'outer' as const },
+  evolution: { version: '11.3.0', codename: 'Phoenix', order: 3, position: 'middle' as const },
+  intent: { version: '11.3.0', codename: 'Compass', order: 4, position: 'inner' as const },
+  governance: { version: '11.3.0', codename: 'Arbiter', order: 5, position: 'innermost' as const },
 } as const;
 
 // 9 Zone versions (surgically hot-swappable subsystems within CCR/CCL)
 export const ZONE_VERSIONS = {
   // CCR Zones (Layer 0)
-  system: { version: '11.2.1', codename: 'Production', parent: 'CCR', description: 'Administration & config' },
-  brain: { version: '11.2.1', codename: 'Memoria', parent: 'CCR', description: 'Reasoning & learning' },
-  memory: { version: '11.2.1', codename: 'Vault', parent: 'CCR', description: 'Persistent storage & retrieval' },
-  dream: { version: '11.2.1', codename: 'Nocturne', parent: 'CCR', description: 'Offline synthesis & evolution' },
+  system: { version: '11.3.0', codename: 'Production', parent: 'CCR', description: 'Administration & config' },
+  brain: { version: '11.3.0', codename: 'Memoria', parent: 'CCR', description: 'Reasoning & learning' },
+  memory: { version: '11.3.0', codename: 'Vault', parent: 'CCR', description: 'Persistent storage & retrieval' },
+  dream: { version: '11.3.0', codename: 'Nocturne', parent: 'CCR', description: 'Offline synthesis & evolution' },
   // CCL Zones (Layer 1)
-  ripple: { version: '11.2.1', codename: 'Cascade', parent: 'CCL', description: 'Event bus & signal propagation' },
-  access: { version: '11.2.1', codename: 'Gatekeeper', parent: 'CCL', description: 'API keys & rate limiting' },
-  identity: { version: '11.2.1', codename: 'Provenance', parent: 'CCL', description: 'Actor identity & trust' },
-  relay: { version: '11.2.1', codename: 'Dispatch', parent: 'CCL', description: 'Webhook & outbound routing' },
-  audit: { version: '11.2.1', codename: 'Ledger', parent: 'CCL', description: 'Immutable compliance logging' },
+  ripple: { version: '11.3.0', codename: 'Cascade', parent: 'CCL', description: 'Event bus & signal propagation' },
+  access: { version: '11.3.0', codename: 'Gatekeeper', parent: 'CCL', description: 'API keys & rate limiting' },
+  identity: { version: '11.3.0', codename: 'Provenance', parent: 'CCL', description: 'Actor identity & trust' },
+  relay: { version: '11.3.0', codename: 'Dispatch', parent: 'CCL', description: 'Webhook & outbound routing' },
+  audit: { version: '11.3.0', codename: 'Ledger', parent: 'CCL', description: 'Immutable compliance logging' },
 } as const;
 
 // Absorbed module (routes to EVOLUTION mesh)
 export const ABSORBED_VERSIONS = {
-  modernizer: { version: '11.2.1', codename: 'Architect', absorbedBy: 'evolution', description: 'Self-upgrade → EVOLUTION mesh' },
+  modernizer: { version: '11.3.0', codename: 'Architect', absorbedBy: 'evolution', description: 'Self-upgrade → EVOLUTION mesh' },
 } as const;
 
 // Control plane versions
 export const CONTROL_PLANE_VERSIONS = {
-  atlas: { version: '11.2.1', codename: 'Prometheus', description: 'Centralized Control Plane' },
+  atlas: { version: '11.3.0', codename: 'Prometheus', description: 'Centralized Control Plane' },
   seba: { version: '2.1.0', codename: 'Full Spectrum Autonomy', description: 'Self-Evolving Bounded Agent' },
-  encode: { version: '11.2.1', codename: 'Genesis', description: 'Code Execution Intelligence' },
-  clm: { version: '11.2.1', codename: 'Perpetual', description: 'Constant Learning Mode' },
+  encode: { version: '11.3.0', codename: 'Genesis', description: 'Code Execution Intelligence' },
+  clm: { version: '11.3.0', codename: 'Perpetual', description: 'Constant Learning Mode' },
 } as const;
 
 // Synergy Engine version
 export const SYNERGY_VERSION = {
-  version: '11.2.1',
+  version: '11.3.0',
   pipelines: 300,
   executors: 125,
   stierPipelines: 32,

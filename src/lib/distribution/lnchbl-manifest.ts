@@ -10,8 +10,11 @@
  * field in the patch payload, which lnchbl-patch-receive writes to the
  * distribution_edge_functions table.
  * 
+ * v11.3.0: Added brain_sync patch type — CMPSBL CLM learnings are now
+ * packaged and dispatched to LNCHBL via pf-brain-sync-dispatch every 30min.
+ * 
  * @module distribution/lnchbl-manifest
- * @version 8.5.0
+ * @version 11.3.0
  */
 
 // ─── LNCHBL Edge Function Registry ──────────────────────────────────────────
@@ -22,6 +25,7 @@ export const LNCHBL_EDGE_FUNCTIONS = Object.freeze([
   'lnchbl-download',
   'lnchbl-phone-home',
   'lnchbl-verify',
+  'lnchbl-brain-ingest',  // v11.3.0: Receives brain sync payloads from CMPSBL
 ] as const);
 
 export type LnchblEdgeFunction = typeof LNCHBL_EDGE_FUNCTIONS[number];

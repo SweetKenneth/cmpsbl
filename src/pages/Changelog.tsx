@@ -29,6 +29,29 @@ interface EvolutionEntry {
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogSPARTA: EvolutionEntry[] = [
   {
+    id: "sparta-evolution-006",
+    date: "2026-02-25",
+    pressures: [
+      "LNCHBL distribution lacked access to CMPSBL's accelerated CLM learning — nodes were learning in isolation without shared brain activity",
+      "CLM v3.0.0 was generating 180+ AI calls/hour with parallel topic study, but learnings were trapped in CMPSBL's brain tables",
+      "Version drift between CMPSBL and LNCHBL distributions needed synchronization after multiple rapid CLM and NEXUS upgrades",
+    ],
+    responses: [
+      "Bumped full substrate to v11.3.0 — all 10 entities, 5 mesh overlays, 9 zones, and control planes synchronized",
+      "Created pf-brain-sync-dispatch edge function — packages brain memories (hot + warm) and learning events every 30 minutes",
+      "Brain sync harvests up to 100 hot memories, 50 warm memories, and 200 learning events per cycle for LNCHBL consumption",
+      "Added lnchbl-brain-ingest to LNCHBL edge function manifest — downstream nodes can now receive and inject CMPSBL learnings",
+      "Knowledge digest includes per-module categorization, learning insights, and pre-formatted injectable memories with capped priority",
+      "Sync state tracked via distribution_state table with full audit of items synced per window",
+    ],
+    capabilities: [
+      "LNCHBL nodes now receive CMPSBL brain learnings every 30 minutes — no CLM required downstream",
+      "Knowledge transfer pipeline: CMPSBL CLM → brain tables → pf-brain-sync-dispatch → distribution_patches → LNCHBL brain-ingest",
+      "Full substrate aligned at v11.3.0 with brain sync architecture",
+      "Force-sync capability allows on-demand 24h knowledge dumps for initial LNCHBL bootstrapping",
+    ],
+  },
+  {
     id: "sparta-evolution-005",
     date: "2026-02-25",
     pressures: [
