@@ -179,3 +179,13 @@ export {
   isSubsystemEnabled,
   invalidateGovernanceCache,
 } from './governanceGate';
+
+// Hardening utilities
+export {
+  withTimeout,
+  clampNumber,
+  validateStringInput,
+  safeParse,
+  boundArray,
+  safeExecute,
+} from './hardening';

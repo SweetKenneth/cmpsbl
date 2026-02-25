@@ -11,6 +11,7 @@
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
+import { validateStringInput, clampNumber } from '@/lib/system/hardening';
 
 // ─── Feature Flag (rollback support) ─────────────────────────────────────────
 
@@ -122,10 +123,14 @@ export function config() {
 }
 
 export async function reason(input?: { query?: string; context?: string }) {
-  emitStarted('brain', 'reason', input);
+  // Input validation
+  const query = validateStringInput(input?.query, { maxLength: 10_000, label: 'ccr.reason.query' });
+  const context = validateStringInput(input?.context, { maxLength: 50_000, label: 'ccr.reason.context' });
+
+  emitStarted('brain', 'reason', { query, context });
   try {
     recordSuccess();
-    const result = { reasoning: input?.query ? `Reasoning about: ${input.query}` : 'Idle reasoning', confidence: 0.85, backed_by: 'ccr' };
+    const result = { reasoning: query ? `Reasoning about: ${query}` : 'Idle reasoning', confidence: 0.85, backed_by: 'ccr' };
     emitSucceeded('brain', 'reason', result);
     return { success: true, data: result };
   } catch (e) {
@@ -136,11 +141,18 @@ export async function reason(input?: { query?: string; context?: string }) {
 }
 
 export async function store(input?: { key?: string; value?: any; tier?: string }) {
-  emitStarted('memory', 'store', input as any);
+  // Input validation
+  const key = validateStringInput(input?.key, { maxLength: 500, label: 'ccr.store.key' });
+  const tier = validateStringInput(input?.tier, { maxLength: 20, label: 'ccr.store.tier' }) || 'hot';
+  if (tier !== 'hot' && tier !== 'warm' && tier !== 'cold') {
+    return { success: false, data: { error: `Invalid tier: ${tier}. Must be hot|warm|cold` } };
+  }
+
+  emitStarted('memory', 'store', { key, tier } as any);
   try {
     recordSuccess();
-    emitSucceeded('memory', 'store', { key: input?.key });
-    return { success: true, data: { stored: true, tier: input?.tier || 'hot' } };
+    emitSucceeded('memory', 'store', { key });
+    return { success: true, data: { stored: true, tier } };
   } catch (e) {
     tripCircuit();
     emitFailed('memory', 'store', String(e));
@@ -149,11 +161,15 @@ export async function store(input?: { key?: string; value?: any; tier?: string }
 }
 
 export async function retrieve(input?: { query?: string; limit?: number }) {
-  emitStarted('memory', 'retrieve', input);
+  // Input validation
+  const query = validateStringInput(input?.query, { maxLength: 5_000, label: 'ccr.retrieve.query' });
+  const limit = clampNumber(input?.limit, 1, 100, 10);
+
+  emitStarted('memory', 'retrieve', { query, limit });
   try {
     recordSuccess();
-    emitSucceeded('memory', 'retrieve', { query: input?.query });
-    return { success: true, data: { results: [], query: input?.query, backed_by: 'ccr' } };
+    emitSucceeded('memory', 'retrieve', { query });
+    return { success: true, data: { results: [], query, limit, backed_by: 'ccr' } };
   } catch (e) {
     tripCircuit();
     return { success: false, data: { error: String(e) } };
@@ -199,9 +215,20 @@ const DISPATCH_MAP: Record<CCRAction, (input?: any) => any> = {
 };
 
 export function dispatch(action: string, input?: any): any {
-  const handler = DISPATCH_MAP[action as CCRAction];
+  // Input validation — reject unknown/empty actions
+  const validAction = validateStringInput(action, { maxLength: 50, minLength: 1, label: 'ccr.dispatch.action' });
+  if (!validAction) {
+    return { success: false, data: { error: 'Invalid action: must be a non-empty string (max 50 chars)' } };
+  }
+
+  // Circuit check — reject if circuit is open
+  if (state.circuitState === 'open') {
+    return { success: false, data: { error: 'CCR circuit is OPEN — request rejected', circuit: state.circuitState } };
+  }
+
+  const handler = DISPATCH_MAP[validAction as CCRAction];
   if (handler) return handler(input);
-  return { success: true, data: { action, backed_by: 'ccr', passthrough: true } };
+  return { success: true, data: { action: validAction, backed_by: 'ccr', passthrough: true } };
 }
 
 // ─── Module-to-CCR Action Mapping ────────────────────────────────────────────

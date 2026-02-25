@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { type SubstrateModuleName } from './index';
+import { safeParse, withTimeout, validateStringInput } from '@/lib/system/hardening';
 
 // ============ Types ============\
 
@@ -284,14 +285,17 @@ export function getSnapshots(): ConfigSnapshot[] {
  */
 export async function loadConfigsFromDatabase(): Promise<number> {
   try {
-    const { data } = await supabase
-      .from('atlas_capabilities')
-      .select('key, enabled, metadata')
-      .limit(100);
+    const result = await withTimeout(async () => {
+      const { data } = await supabase
+        .from('atlas_capabilities')
+        .select('key, enabled, metadata')
+        .limit(100);
+      return data;
+    }, 15_000, 'loadConfigsFromDatabase');
     
-    if (!data) return 0;
+    if (!result) return 0;
     
-    data.forEach(row => {
+    result.forEach(row => {
       if (row.metadata && typeof row.metadata === 'object') {
         const meta = row.metadata as Record<string, unknown>;
         if ('configValue' in meta) {
@@ -300,9 +304,9 @@ export async function loadConfigsFromDatabase(): Promise<number> {
       }
     });
     
-    return data.length;
+    return result.length;
   } catch (error) {
-    console.error('Failed to load configs from database:', error);
+    console.error('[ConfigManagement] Failed to load configs from database:', error);
     return 0;
   }
 }
@@ -325,33 +329,52 @@ export function exportConfigs(): string {
 export function importConfigs(json: string): { imported: number; errors: string[] } {
   let imported = 0;
   const errors: string[] = [];
+
+  // Size guard — reject payloads > 500KB
+  if (typeof json !== 'string' || json.length > 500_000) {
+    errors.push('Import payload too large (max 500KB)');
+    return { imported, errors };
+  }
   
   try {
-    const data = JSON.parse(json);
-    
-    if (data.configs) {
-      Object.entries(data.configs).forEach(([key, value]) => {
-        try {
-          configs.set(key, value as ConfigValue);
-          imported++;
-        } catch (e) {
-          errors.push(`Config ${key}: ${e}`);
-        }
-      });
+    const data = safeParse(json, 500_000);
+    if (!data || typeof data !== 'object') {
+      errors.push('Invalid JSON payload');
+      return { imported, errors };
     }
     
-    if (data.flags) {
-      Object.entries(data.flags).forEach(([key, value]) => {
+    const typedData = data as Record<string, unknown>;
+
+    if (typedData.configs && typeof typedData.configs === 'object') {
+      const configEntries = Object.entries(typedData.configs as Record<string, unknown>);
+      // Cap at 500 configs to prevent DoS
+      for (const [key, value] of configEntries.slice(0, 500)) {
+        const validKey = validateStringInput(key, { maxLength: 200 });
+        if (!validKey) { errors.push(`Invalid config key: ${key}`); continue; }
         try {
-          featureFlags.set(key, value as FeatureFlag);
+          configs.set(validKey, value as ConfigValue);
           imported++;
         } catch (e) {
-          errors.push(`Flag ${key}: ${e}`);
+          errors.push(`Config ${validKey}: ${e}`);
         }
-      });
+      }
+    }
+    
+    if (typedData.flags && typeof typedData.flags === 'object') {
+      const flagEntries = Object.entries(typedData.flags as Record<string, unknown>);
+      for (const [key, value] of flagEntries.slice(0, 200)) {
+        const validKey = validateStringInput(key, { maxLength: 200 });
+        if (!validKey) { errors.push(`Invalid flag key: ${key}`); continue; }
+        try {
+          featureFlags.set(validKey, value as FeatureFlag);
+          imported++;
+        } catch (e) {
+          errors.push(`Flag ${validKey}: ${e}`);
+        }
+      }
     }
   } catch (e) {
-    errors.push(`Parse error: ${e}`);
+    errors.push(`Import error: ${e}`);
   }
   
   return { imported, errors };

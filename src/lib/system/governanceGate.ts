@@ -6,6 +6,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { GovernanceMode, getSubsystemState } from './governance';
+import { withTimeout } from './hardening';
 
 /** In-memory cache of governance mode (short TTL) */
 let cachedMode: { mode: GovernanceMode; expiresAt: number } | null = null;
@@ -23,25 +24,26 @@ async function fetchGovernanceMode(): Promise<GovernanceMode> {
   }
 
   try {
-    // Also trigger auto-revert check
-    try { await supabase.rpc('governance_auto_revert'); } catch { /* ignore */ }
+    const result = await withTimeout(async () => {
+      // Also trigger auto-revert check
+      try { await supabase.rpc('governance_auto_revert'); } catch { /* ignore */ }
 
-    const { data, error } = await supabase
-      .from('governance_mode')
-      .select('mode')
-      .limit(1)
-      .maybeSingle();
+      const { data, error } = await supabase
+        .from('governance_mode')
+        .select('mode')
+        .limit(1)
+        .maybeSingle();
 
-    if (error || !data) {
-      cachedMode = { mode: 'ACTIVE', expiresAt: Date.now() + CACHE_TTL };
-      return 'ACTIVE';
-    }
+      if (error || !data) return 'ACTIVE' as GovernanceMode;
+      return data.mode as GovernanceMode;
+    }, 10_000, 'fetchGovernanceMode');
 
-    const mode = data.mode as GovernanceMode;
-    cachedMode = { mode, expiresAt: Date.now() + CACHE_TTL };
-    return mode;
+    cachedMode = { mode: result, expiresAt: Date.now() + CACHE_TTL };
+    return result;
   } catch {
-    return 'ACTIVE'; // failsafe
+    // Timeout or network failure — failsafe to ACTIVE
+    cachedMode = { mode: 'ACTIVE', expiresAt: Date.now() + CACHE_TTL };
+    return 'ACTIVE';
   }
 }
 

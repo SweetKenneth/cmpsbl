@@ -4,6 +4,7 @@
  */
 
 import { SUBSTRATE_MODULES, type SubstrateModuleName, getModuleDependencies, markModuleBooted, markModuleFailed } from './index';
+import { withTimeout, boundArray } from '@/lib/system/hardening';
 
 // ============ Types ============
 
@@ -68,18 +69,22 @@ export async function loadModule(module: SubstrateModuleName): Promise<{ success
   recordEvent(module, 'load');
   
   try {
-    // Simulate loading (in production, would load actual module code)
-    await new Promise(resolve => setTimeout(resolve, 50));
+    // Simulate loading with timeout guard (30s max)
+    await withTimeout(
+      () => new Promise(resolve => setTimeout(resolve, 50)),
+      30_000,
+      `loadModule(${module})`
+    );
     
     lifecycle.load_time_ms = Date.now() - startTime;
     lifecycle.phase = 'initializing';
     lifecycles.set(module, lifecycle);
     
-    // Run initializer if registered
+    // Run initializer if registered (with 60s timeout)
     const initializer = moduleInitializers.get(module);
     if (initializer) {
       const initStart = Date.now();
-      await initializer();
+      await withTimeout(initializer, 60_000, `init(${module})`);
       lifecycle.init_time_ms = Date.now() - initStart;
     }
     
@@ -222,7 +227,9 @@ export function resolveLoadOrder(modules: SubstrateModuleName[]): SubstrateModul
   const resolved: SubstrateModuleName[] = [];
   const pending = new Set(modules);
   
-  while (pending.size > 0) {
+  let maxIterations = modules.length * modules.length; // O(n²) safety bound
+  while (pending.size > 0 && maxIterations-- > 0) {
+    const prevSize = resolved.length;
     for (const module of pending) {
       const deps = getModuleDependencies(module);
       const depsResolved = deps.every(d => !pending.has(d) || resolved.includes(d));
@@ -233,9 +240,13 @@ export function resolveLoadOrder(modules: SubstrateModuleName[]): SubstrateModul
       }
     }
     
-    // Prevent infinite loop
-    if (resolved.length === 0 && pending.size > 0) {
-      console.warn('Circular dependency detected');
+    // Detect stall — no progress this iteration
+    if (resolved.length === prevSize) {
+      console.warn(`[moduleLifecycle] Circular dependency detected in: ${Array.from(pending).join(', ')}`);
+      // Append remaining in original order to avoid dropping modules
+      for (const m of modules) {
+        if (pending.has(m)) resolved.push(m);
+      }
       break;
     }
   }
@@ -405,8 +416,8 @@ function recordEvent(
     details,
   });
   
-  // Keep last 1000 events
-  if (lifecycleEvents.length > 1000) {
-    lifecycleEvents.shift();
-  }
+  // Bound event history to prevent unbounded memory growth
+  const bounded = boundArray(lifecycleEvents, 1000);
+  lifecycleEvents.length = 0;
+  lifecycleEvents.push(...bounded);
 }
