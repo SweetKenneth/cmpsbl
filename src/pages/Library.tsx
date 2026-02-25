@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -299,10 +299,12 @@ export default function Library() {
   if (!currentDoc) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        <Helmet>
-          <title>Documentation Library | CMPSBL®</title>
-          <meta name="description" content="Complete documentation for CMPSBL cognitive infrastructure. Executive summaries, technical guides, case studies, and investor materials." />
-        </Helmet>
+        <SEO
+          title="Documentation Library | CMPSBL"
+          description="Complete documentation for CMPSBL cognitive infrastructure. Executive summaries, technical guides, case studies, and investor materials."
+          image="https://cmpsbl.com/og/documentation.jpg"
+          keywords={['CMPSBL documentation', 'AI infrastructure docs', 'substrate knowledge base', 'cognitive architecture reference']}
+        />
 
         <PublicNav />
 
@@ -589,10 +591,11 @@ export default function Library() {
   // Document Reader View
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Helmet>
-        <title>{currentDoc.title} — Documentation | CMPSBL®</title>
-        <meta name="description" content={currentDoc.description} />
-      </Helmet>
+      <SEO
+        title={`${currentDoc.title} — Documentation | CMPSBL`}
+        description={currentDoc.description}
+        keywords={['CMPSBL documentation', currentDoc.title.toLowerCase(), 'substrate docs']}
+      />
 
       <PublicNav />
 

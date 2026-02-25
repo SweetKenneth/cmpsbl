@@ -3,7 +3,7 @@
  * humanstxt.org specification
  */
 
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -133,10 +133,12 @@ export default function HumansTxt() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Helmet>
-        <title>Humans.txt — CMPSBL®</title>
-        <meta name="description" content="The people, philosophy, and technology behind CMPSBL's cognitive orchestration substrate." />
-      </Helmet>
+      <SEO
+        title="Humans.txt — Team & Philosophy | CMPSBL"
+        description="The people, philosophy, and technology behind CMPSBL cognitive orchestration substrate. Founded by Kenneth E Sweet Jr in Dallas, TX."
+        keywords={['CMPSBL team', 'humans.txt', 'Kenneth Sweet', 'cognitive AI team']}
+        noindex={true}
+      />
 
       <PublicNav />
 

@@ -68,6 +68,13 @@ export default function Explore() {
         canonical="https://cmpsbl.com"
         image="https://cmpsbl.com/og/home.jpg"
         keywords={['composable AI', 'cognitive infrastructure', 'AI substrate', 'agentic AI platform', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software']}
+        faq={[
+          { question: 'What is CMPSBL?', answer: 'CMPSBL is composable cognitive infrastructure — a modular AI substrate where intelligence persists across sessions, adapts through governed evolution, and compounds over time through autonomous learning cycles.' },
+          { question: 'How does persistent memory work?', answer: 'CMPSBL provides multi-tier persistent memory (working, episodic, semantic) that gives AI agents permanent recall across sessions. Add it to any agent in under an hour with the free tier.' },
+          { question: 'What makes CMPSBL different from LangChain or Mem0?', answer: 'CMPSBL is complete cognitive infrastructure — not a library or single feature. It combines persistent memory, autonomous dream-cycle learning, governed evolution, security mesh overlays, and multi-provider routing in one composable substrate.' },
+          { question: 'Is there a free tier?', answer: 'Yes. CMPSBL offers a free tier with persistent memory, basic module access, and composable artifacts. Scale to Creator, Architect, or Enterprise tiers as your workloads grow.' },
+          { question: 'What AI providers does CMPSBL support?', answer: 'CMPSBL routes across multiple providers including OpenAI, Anthropic, Google, and open-source models through the NEXUS module. Bring your own keys or use managed routing.' },
+        ]}
       />
 
       <PublicNav />

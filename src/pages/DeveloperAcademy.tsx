@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import { SEO } from '@/components/SEO';
 import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,10 +26,17 @@ const fadeUp = {
 const DeveloperAcademy = () => {
   return (
     <>
-      <Helmet>
-        <title>Developer Academy | CMPSBL Substrate</title>
-        <meta name="description" content="Master the CMPSBL Substrate SDK with interactive tutorials, skill progression, and AI-powered learning tools." />
-      </Helmet>
+      <SEO
+        title="Developer Academy — AI Tutorials | CMPSBL"
+        description="Master the CMPSBL Substrate SDK with interactive tutorials, skill progression paths, sandbox environments, and AI-powered learning tools."
+        image="https://cmpsbl.com/og/academy.jpg"
+        keywords={['AI developer academy', 'substrate SDK tutorials', 'interactive AI training', 'agentic AI course']}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'Developers', url: 'https://cmpsbl.com/developers' },
+          { name: 'Academy', url: 'https://cmpsbl.com/academy' },
+        ]}
+      />
       
       <div className="min-h-screen flex flex-col bg-background">
         <CmpsblNav />

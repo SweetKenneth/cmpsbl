@@ -4,7 +4,7 @@
  * SPARTA Epoch — Interactive force-directed mesh visualization
  */
 
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { ArrowRight, Brain, Network, Shield, Zap, Eye, BarChart3, Layers, RefreshCw, GitBranch, Target, Lightbulb, Activity, Radar, Route } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -130,16 +130,17 @@ const SELF_IMPROVEMENT_FEATURES = [
 export default function IntentMeshPublic() {
   return (
     <>
-      <Helmet>
-        <title>Intent Mesh — Emergent Module Intelligence | CMPSBL</title>
-        <meta
-          name="description"
-          content="The Intent Mesh enables autonomous cross-module capability discovery and composition across execution surfaces with resolvers. Self-learning, self-improving AI substrate intelligence."
-        />
-        <meta property="og:title" content="Intent Mesh — Emergent Module Intelligence | CMPSBL" />
-        <meta property="og:description" content="Autonomous cross-module capability discovery with self-learning, pipeline crystallization, and intent quality scoring." />
-        <link rel="canonical" href="https://cmpsbl.com/intent-mesh" />
-      </Helmet>
+      <SEO
+        title="Intent Mesh — Module Intelligence | CMPSBL"
+        description="Autonomous cross-module capability discovery and composition across execution surfaces. Self-learning resolvers with pipeline crystallization."
+        image="https://cmpsbl.com/og/intent-mesh.jpg"
+        keywords={['intent mesh', 'cross-module discovery', 'AI capability composition', 'autonomous AI routing', 'emergent intelligence']}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'Modules', url: 'https://cmpsbl.com/modules' },
+          { name: 'Intent Mesh', url: 'https://cmpsbl.com/intent-mesh' },
+        ]}
+      />
 
       <PublicNav />
       <div className="min-h-screen bg-background text-foreground">

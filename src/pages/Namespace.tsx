@@ -4,7 +4,7 @@
  * Based on: https://aigvrn.com and https://zenodo.org/records/18209222
  */
 
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -116,11 +116,15 @@ const REFERENCE_FRAMEWORKS = [
 export default function Namespace() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Helmet>
-        <title>AI Governance Reference Namespace — AIGVRN v1.0 | CMPSBL®</title>
-        <meta name="description" content="AI Governance Reference Namespace (AIGVRN): A 12-Surface Lexicon for AI Governance Documentation. The first comprehensive AI governance domain portfolio and unified namespace solution." />
-        <meta name="keywords" content="AIGVRN, AI governance, AI Governance Lexicon, AISTNDRD, AICRTFY, AIVRFY, AIPLCY, AICMPLY, AISCRTY, AISFTY, AIRGLTN, AISVRGN, AIPRVCY, AICNTRL, AI governance namespace, CMPSBL" />
-      </Helmet>
+      <SEO
+        title="AI Governance Namespace — AIGVRN | CMPSBL"
+        description="AI Governance Reference Namespace: a 12-surface lexicon for AI governance documentation. Comprehensive domain portfolio for policy interoperability."
+        keywords={['AIGVRN', 'AI governance namespace', 'AI governance lexicon', 'AI policy framework', 'AI compliance standards']}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'Namespace', url: 'https://cmpsbl.com/namespace' },
+        ]}
+      />
 
       <PublicNav />
 

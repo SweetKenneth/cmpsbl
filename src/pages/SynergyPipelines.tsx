@@ -5,7 +5,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
@@ -763,14 +763,16 @@ function CTASection() {
 export default function SynergyPipelines() {
   return (
     <>
-      <Helmet>
-        <title>Synergy Pipelines | Multi-Module Cognitive Fusion | CMPSBL®</title>
-        <meta 
-          name="description" 
-          content="Discover 300 synergy pipelines including S-tier premium offerings that combine cognitive execution surfaces for emergent AI capabilities. Explore how BRAIN, CORTEX, DECODE, and more create intelligence beyond their individual functions." 
-        />
-        <meta name="keywords" content="synergy pipelines, cognitive fusion, multi-module AI, emergent intelligence, promptfluid, substrate, S-tier pipelines" />
-      </Helmet>
+      <SEO
+        title="Synergy Pipelines — Cognitive Fusion | CMPSBL"
+        description="Multi-module cognitive fusion pipelines combining execution surfaces for emergent AI capabilities. BRAIN, CORTEX, DECODE, and more in orchestrated composition."
+        keywords={['synergy pipelines', 'cognitive fusion', 'multi-module AI', 'emergent intelligence', 'AI orchestration pipelines']}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'Store', url: 'https://cmpsbl.com/store' },
+          { name: 'Synergy Pipelines', url: 'https://cmpsbl.com/synergy-pipelines' },
+        ]}
+      />
       
       <div className="min-h-screen bg-background">
         {/* Simple header */}

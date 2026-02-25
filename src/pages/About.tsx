@@ -46,6 +46,11 @@ export default function About() {
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
         keywords={['about CMPSBL', 'Kenneth Sweet Jr', 'CMPSBL founder', 'Dallas AI company', 'cognitive infrastructure', 'AI startup Texas']}
+        faq={[
+          { question: 'Who founded CMPSBL?', answer: 'CMPSBL was founded in 2009 by Kenneth E Sweet Jr in Dallas, Texas. He serves as Chief Cognitive Engineer and has spent over 17 years building AI infrastructure systems.' },
+          { question: 'What does CMPSBL stand for?', answer: 'CMPSBL stands for Composable — reflecting the modular, composable nature of the cognitive infrastructure substrate. Every module can be independently deployed, swapped, and evolved.' },
+          { question: 'Where is CMPSBL based?', answer: 'CMPSBL is headquartered in Dallas, Texas, USA, serving teams and enterprises worldwide with composable cognitive infrastructure.' },
+        ]}
       />
       
       <script type="application/ld+json">

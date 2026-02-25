@@ -3,7 +3,7 @@
  * Public page explaining observer-level access to CMPSBL substrate
  */
 
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -52,10 +52,11 @@ const OBSERVER_FEATURES = [
 export default function Insights() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Helmet>
-        <title>Substrate Insights — Observer Tier | CMPSBL</title>
-        <meta name="description" content="Observer-level access to the Clockless Cognitive Reality. Read-only visibility into architecture, documentation, and system standards." />
-      </Helmet>
+      <SEO
+        title="Substrate Insights — Observer Tier | CMPSBL"
+        description="Observer-level access to the cognitive substrate. Read-only visibility into architecture, documentation, module specifications, and system standards."
+        keywords={['AI substrate insights', 'observer access', 'cognitive architecture visibility', 'AI documentation access']}
+      />
 
       <PublicNav />
 
