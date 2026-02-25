@@ -28,6 +28,8 @@ export interface GatedRoute {
 
 export const GATED_ROUTES: GatedRoute[] = [
   // Phase 2 — Platform Whisper
+  { path: '/licensing', unlocksAt: 2, label: 'Infrastructure Licensing', teaser: 'Download and deploy the CMPSBL Substrate within your own infrastructure. Self-hosted SDK access coming soon.', waitlist: true },
+  { path: '/substrate/licensing/success', unlocksAt: 2, label: 'Licensing Success', teaser: 'Licensing checkout confirmation.', waitlist: false },
   { path: '/marketplace', unlocksAt: 2, label: 'Artifact Marketplace', teaser: 'Browse, purchase, and deploy capabilities, templates, and synergy pipelines.', waitlist: true },
   { path: '/store', unlocksAt: 2, label: 'Composable Artifacts Store', teaser: 'A curated marketplace of substrate-powered building blocks.', waitlist: true },
   { path: '/capabilities', unlocksAt: 2, label: 'Capability Depot', teaser: 'Atomic, stateless building blocks for any workflow.', waitlist: true },
@@ -91,7 +93,7 @@ export const PHASE_1_LIVE_ROUTES = [
   '/insights',
   '/investors',
   '/library',
-  '/licensing',
+  // '/licensing', — GATED: moved to Phase 2 (LNCHBL distribution)
   '/llms-txt',
   '/humans-txt',
   '/modules',
