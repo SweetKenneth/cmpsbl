@@ -568,7 +568,7 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
               </p>
               {isBlackBoxed && (
                 <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-500">
-                  <Link to="/engines">
+                  <Link to="/pricing">
                     <Zap className="w-3.5 h-3.5 mr-1.5" />
                     Unlock with {upgradeLabel}
                   </Link>
@@ -1156,9 +1156,9 @@ export default function SubstrateStore() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild size="lg" className="gap-2">
-                  <Link to="/engines">
+                  <Link to="/pricing">
                     <Zap className="w-4 h-4" />
-                    Engines
+                    View Plans
                   </Link>
                 </Button>
                 <Button variant="outline" size="lg" className="gap-2" asChild>

@@ -476,7 +476,7 @@ const prompt = userMessage + context.contextString;`,
                       </Link>
                     </Button>
                     <Button asChild variant="outline" size="lg" className="text-lg px-8 h-14">
-                      <Link to="/capabilities">
+                      <Link to="/explore">
                         Explore All Capabilities
                       </Link>
                     </Button>

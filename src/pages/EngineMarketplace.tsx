@@ -805,10 +805,10 @@ export default function EngineMarketplace() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button variant="outline" size="lg" asChild className="gap-2">
-                  <Link to="/store"><Package className="w-4 h-4" /> Composable Artifacts</Link>
+                  <Link to="/explore"><Package className="w-4 h-4" /> Composable Artifacts</Link>
                 </Button>
                 <Button variant="outline" size="lg" asChild className="gap-2">
-                  <Link to="/synergies"><Layers className="w-4 h-4" /> Pipelines</Link>
+                  <Link to="/explore"><Layers className="w-4 h-4" /> Explore Pipelines</Link>
                 </Button>
                 <Button size="lg" asChild className="gap-2">
                   <Link to="/docs/persistent-memory"><Brain className="w-4 h-4" /> Add Persistent Memory <ArrowRight className="w-4 h-4" /></Link>
