@@ -307,13 +307,13 @@ const WordPressBotDefense = () => {
             <div className="container mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold mb-6">Protect Your WordPress Site Today</h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-                PromptFluid Defense uses AI-powered behavioral analysis to stop bot attacks before they cause damage.
+                CMPSBL DEFENSE uses AI-powered behavioral analysis to stop bot attacks before they cause damage.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link to="/solutions">
                   <Button size="lg" className="gap-2">
                     <Shield className="w-5 h-5" />
-                    Explore PromptFluid Defense
+                    Explore CMPSBL DEFENSE
                   </Button>
                 </Link>
                 <Link to="/blog">
@@ -321,6 +321,33 @@ const WordPressBotDefense = () => {
                     More Security Resources
                   </Button>
                 </Link>
+              </div>
+
+              {/* External Authority References */}
+              <div className="mt-10 pt-6 border-t border-border text-left max-w-2xl mx-auto">
+                <h3 className="text-lg font-semibold mb-4 text-foreground">References & Further Reading</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>
+                    <a href="https://owasp.org/www-project-automated-threats-to-web-applications/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      OWASP Automated Threats to Web Applications
+                    </a> — Industry standard threat taxonomy for bot attacks
+                  </li>
+                  <li>
+                    <a href="https://www.cloudflare.com/learning/bots/what-is-bot-management/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Cloudflare: What is Bot Management?
+                    </a> — Overview of modern bot detection approaches
+                  </li>
+                  <li>
+                    <Link to="/blog/top-security-plugins-2025" className="text-primary hover:underline">
+                      Top WordPress Security Plugins Compared
+                    </Link> — Our comparison of leading security solutions
+                  </li>
+                  <li>
+                    <Link to="/blog/ai-cybersecurity-evolution" className="text-primary hover:underline">
+                      AI Cybersecurity Evolution
+                    </Link> — How AI is reshaping threat detection
+                  </li>
+                </ul>
               </div>
             </div>
           </div>

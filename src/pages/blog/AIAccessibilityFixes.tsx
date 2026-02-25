@@ -199,7 +199,7 @@ export default function AutomatedAccessibilityFixes() {
               </p>
               
               <p>
-                <strong className="text-foreground">Cost Comparison:</strong> Professional accessibility audits typically cost $3,000-$15,000 for a medium-sized WordPress site. With PromptFluid's commitment to making accessibility free for all, PTCHBL tools are now 100% free.
+                <strong className="text-foreground">Cost Comparison:</strong> Professional accessibility audits typically cost $3,000-$15,000 for a medium-sized WordPress site. With CMPSBL's commitment to making accessibility free for all, PTCHBL tools are now 100% free.
               </p>
             </div>
           </section>

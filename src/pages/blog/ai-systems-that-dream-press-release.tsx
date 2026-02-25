@@ -69,11 +69,11 @@ export default function AISystemsThatDreamPressRelease() {
           <section className="mb-16">
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p className="text-xl">
-                PromptFluid announces <strong className="text-foreground">Cascade</strong> and <strong className="text-foreground">SimNap (Dream Eater)</strong>, experimental AI systems exploring structured dream cycles, self-reflection, and internal autonomous learning—all without ongoing compute expenses.
+                CMPSBL announces <strong className="text-foreground">Cascade</strong> and <strong className="text-foreground">SimNap (Dream Eater)</strong>, experimental AI systems exploring structured dream cycles, self-reflection, and internal autonomous learning—all without ongoing compute expenses.
               </p>
 
               <p>
-                This represents PromptFluid's exploration of scheduled autonomous intelligence: systems that run on internal schedules, reorganize knowledge during simulated dream states, and experiment with improving their capabilities over time.
+                This represents CMPSBL's exploration of scheduled autonomous intelligence: systems that run on internal schedules, reorganize knowledge during simulated dream states, and experiment with improving their capabilities over time.
               </p>
             </div>
           </section>
@@ -131,7 +131,7 @@ export default function AISystemsThatDreamPressRelease() {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Both agents run entirely on PromptFluid's free-tier routing engine, which dynamically selects the best zero-cost model based on latency, reasoning depth, prior success rate, and task complexity.
+                Both agents run entirely on CMPSBL's free-tier routing engine, which dynamically selects the best zero-cost model based on latency, reasoning depth, prior success rate, and task complexity.
               </p>
               
               <p>
@@ -147,7 +147,7 @@ export default function AISystemsThatDreamPressRelease() {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                The PromptFluid intelligence stack was built with extreme capital efficiency: free-tier AI providers, open-source tools, efficient architecture, and solo founder bootstrapping.
+                The CMPSBL intelligence stack was built with extreme capital efficiency: free-tier AI providers, open-source tools, efficient architecture, and solo founder bootstrapping.
               </p>
               
               <p className="font-medium text-foreground">
@@ -170,7 +170,7 @@ export default function AISystemsThatDreamPressRelease() {
           <section className="bg-muted/30 border border-border rounded-lg p-8">
             <h3 className="text-xl font-bold mb-4 text-foreground">Contact</h3>
             <div className="space-y-2 text-muted-foreground">
-              <p>Kenneth E Sweet Jr — Founder, PromptFluid</p>
+              <p>Kenneth E Sweet Jr — Founder, CMPSBL</p>
               <p>
                 <a href="mailto:Dev@CMPSBL.com" className="text-primary hover:underline">
                   Dev@CMPSBL.com

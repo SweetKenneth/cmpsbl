@@ -241,6 +241,33 @@ const agent = withPersistentMemory({
                 </Link>
               </Button>
             </div>
+
+            {/* External Authority References */}
+            <div className="mt-12 pt-8 border-t border-border">
+              <h3 className="text-lg font-semibold mb-4 text-foreground">Further Reading</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <a href="https://arxiv.org/abs/2304.03442" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                    Generative Agents: Interactive Simulacra of Human Behavior
+                  </a> — Stanford/Google research on memory architecture for autonomous agents
+                </li>
+                <li>
+                  <a href="https://arxiv.org/abs/2305.14325" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                    MemGPT: Towards LLMs as Operating Systems
+                  </a> — Hierarchical memory management for unbounded context
+                </li>
+                <li>
+                  <Link to="/blog/building-agents-that-learn" className="text-primary hover:underline">
+                    Building Agents That Learn
+                  </Link> — Our guide to autonomous learning loop patterns
+                </li>
+                <li>
+                  <Link to="/blog/agent-memory-anti-patterns" className="text-primary hover:underline">
+                    Agent Memory Anti-Patterns
+                  </Link> — Common pitfalls in agent memory design
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
       </main>

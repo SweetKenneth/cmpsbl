@@ -28,7 +28,7 @@ const DefenseMedicalServices = () => {
               </h1>
               
               <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                Patient privacy isn't negotiable. PromptFluid Defense stops automated attacks on patient portals, telemedicine platforms, and medical records—while maintaining full HIPAA compliance and zero patient friction.
+                Patient privacy isn't negotiable. CMPSBL DEFENSE stops automated attacks on patient portals, telemedicine platforms, and medical records—while maintaining full HIPAA compliance and zero patient friction.
               </p>
               
               <div className="flex flex-wrap gap-4 justify-center pt-4">
@@ -95,9 +95,9 @@ const DefenseMedicalServices = () => {
             </div>
           </section>
 
-          {/* How PromptFluid Defense Protects Healthcare */}
+          {/* How CMPSBL DEFENSE Protects Healthcare */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-6">How PromptFluid Defense Protects Your Practice</h2>
+            <h2 className="text-3xl font-bold mb-6">How CMPSBL DEFENSE Protects Your Practice</h2>
 
             <div className="space-y-8">
               <Card className="p-6 bg-primary/5">
@@ -190,7 +190,7 @@ const DefenseMedicalServices = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6">Protection Scenarios</h2>
             <p className="text-muted-foreground mb-6">
-              These scenarios illustrate the types of threats healthcare organizations face and how PromptFluid Defense is designed to address them.
+              These scenarios illustrate the types of threats healthcare organizations face and how CMPSBL DEFENSE is designed to address them.
             </p>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -252,7 +252,7 @@ const DefenseMedicalServices = () => {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-primary mb-2">$19/mo</div>
-                  <p className="text-sm text-muted-foreground">Starting cost for PromptFluid Defense</p>
+                  <p className="text-sm text-muted-foreground">Starting cost for CMPSBL DEFENSE</p>
                 </div>
               </div>
               
@@ -273,7 +273,7 @@ const DefenseMedicalServices = () => {
           <section className="text-center py-12 px-6 bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg">
             <h2 className="text-3xl font-bold mb-4">Protect Your Patients and Your Practice</h2>
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-              PromptFluid Defense stops AI bot attacks while maintaining HIPAA compliance and patient accessibility. Coming soon to WordPress.org.
+              CMPSBL DEFENSE stops AI bot attacks while maintaining HIPAA compliance and patient accessibility. Coming soon to WordPress.org.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/contact">

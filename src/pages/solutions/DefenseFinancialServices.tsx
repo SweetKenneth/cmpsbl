@@ -28,7 +28,7 @@ const DefenseFinancialServices = () => {
               </h1>
               
               <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                Every second counts in financial security. PromptFluid Defense stops account takeover attacks, payment fraud, and credential stuffing before unauthorized transactions clear—protecting your customers and your reputation.
+                Every second counts in financial security. CMPSBL DEFENSE stops account takeover attacks, payment fraud, and credential stuffing before unauthorized transactions clear—protecting your customers and your reputation.
               </p>
               
               <div className="flex flex-wrap gap-4 justify-center pt-4">
@@ -95,9 +95,9 @@ const DefenseFinancialServices = () => {
             </div>
           </section>
 
-          {/* How PromptFluid Defense Protects Finance */}
+          {/* How CMPSBL DEFENSE Protects Finance */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-6">How PromptFluid Defense Protects Your Institution</h2>
+            <h2 className="text-3xl font-bold mb-6">How CMPSBL DEFENSE Protects Your Institution</h2>
 
             <div className="space-y-8">
               <Card className="p-6 bg-primary/5">
@@ -190,7 +190,7 @@ const DefenseFinancialServices = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6">Protection Scenarios</h2>
             <p className="text-muted-foreground mb-6">
-              These scenarios illustrate the types of threats financial institutions face and how PromptFluid Defense is designed to address them.
+              These scenarios illustrate the types of threats financial institutions face and how CMPSBL DEFENSE is designed to address them.
             </p>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -252,7 +252,7 @@ const DefenseFinancialServices = () => {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-primary mb-2">$49/mo</div>
-                  <p className="text-sm text-muted-foreground">Pro tier pricing for PromptFluid Defense</p>
+                  <p className="text-sm text-muted-foreground">Pro tier pricing for CMPSBL DEFENSE</p>
                 </div>
               </div>
               
@@ -273,7 +273,7 @@ const DefenseFinancialServices = () => {
           <section className="text-center py-12 px-6 bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg">
             <h2 className="text-3xl font-bold mb-4">Secure Your Institution and Your Customers</h2>
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-              PromptFluid Defense stops AI-powered bot attacks while maintaining seamless customer experiences. Coming soon to WordPress.org.
+              CMPSBL DEFENSE stops AI-powered bot attacks while maintaining seamless customer experiences. Coming soon to WordPress.org.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/contact">

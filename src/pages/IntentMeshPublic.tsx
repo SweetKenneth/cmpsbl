@@ -347,9 +347,8 @@ Learning feedback → improved future routing`}</pre>
               },
               publisher: {
                 "@type": "Organization",
-                name: "PromptFluid",
+                name: "CMPSBL",
               },
-              softwareVersion: "SPARTA",
             }),
           }}
         />

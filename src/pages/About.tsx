@@ -95,7 +95,7 @@ export default function About() {
           </nav>
           
           <motion.h1 {...fadeUp} className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
-            CMPSBL<sup className="text-lg">®</sup> by PromptFluid
+            CMPSBL<sup className="text-lg">®</sup>
           </motion.h1>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }} className="text-xl text-foreground/90 max-w-3xl leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
             A cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
@@ -110,7 +110,7 @@ export default function About() {
             <div className="flex flex-col md:flex-row gap-8 items-start">
               <motion.img 
                 src={founderPhoto}
-                alt="Kenneth E. Sweet Jr. - Founder of CMPSBL, created by PromptFluid"
+                alt="Kenneth E. Sweet Jr. - Founder of CMPSBL"
                 className="w-32 h-32 rounded-full object-cover ring-4 ring-primary/20 flex-shrink-0"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
