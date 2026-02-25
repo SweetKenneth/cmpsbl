@@ -347,8 +347,8 @@ const App = () => {
                         <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
                         <Route path="/intelligence" element={<SubstrateIntelligence />} />
                         <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
-                        <Route path="/licensing" element={<SubstrateLicensingDownload />} />
-                        <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
+                        <Route path="/licensing" element={<PhaseGateRoute><SubstrateLicensingDownload /></PhaseGateRoute>} />
+                        <Route path="/substrate/licensing/success" element={<PhaseGateRoute><SubstrateLicensingSuccess /></PhaseGateRoute>} />
                         <Route path="/lab" element={<PhaseGateRoute><ExperimentationLab /></PhaseGateRoute>} />
                         <Route path="/clockless-world-engine" element={<PhaseGateRoute><ClocklessWorldEngine /></PhaseGateRoute>} />
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
