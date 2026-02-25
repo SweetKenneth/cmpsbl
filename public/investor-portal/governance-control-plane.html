@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Governance Control Plane — CMPSBL / Clockless</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.72;
+  color: #1a1a1a;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 920px; margin: 0 auto; padding: 60px 32px 80px; }
+header { padding: 48px 0 40px; border-bottom: 1px solid #e4e4e4; margin-bottom: 64px; }
+header h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.15; color: #0a0a0a; }
+header p.subtitle { font-size: 17px; color: #666; margin-top: 12px; font-weight: 400; }
+h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: #888;
+  margin-top: 72px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+h3 { font-size: 22px; font-weight: 600; margin-top: 36px; margin-bottom: 12px; color: #111; }
+p { margin-bottom: 18px; color: #333; }
+ul { margin: 0 0 24px 20px; }
+li { margin-bottom: 8px; color: #333; }
+li strong { color: #111; }
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.divider { border: none; border-top: 1px solid #e8e8e8; margin: 64px 0; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 16px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #eee; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; color: #888; font-weight: 600; border-bottom: 2px solid #ddd; }
+td { color: #333; }
+.back-link { display: inline-block; font-size: 14px; color: #888; margin-bottom: 8px; }
+.back-link:hover { color: #555; }
+footer { margin-top: 80px; padding-top: 32px; border-top: 1px solid #e4e4e4; font-size: 13px; color: #999; }
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+  margin-bottom: 16px;
+}
+.mode-card {
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 16px 0;
+}
+.mode-card h3 { margin-top: 0; font-size: 20px; }
+.mode-card p:last-child { margin-bottom: 0; }
+blockquote {
+  border-left: 3px solid #ddd;
+  margin: 20px 0 28px 0;
+  padding: 16px 20px;
+  color: #555;
+  font-size: 17px;
+  background: #fafafa;
+  border-radius: 0 6px 6px 0;
+}
+@media (max-width: 640px) {
+  .container { padding: 32px 20px 48px; }
+  header h1 { font-size: 28px; }
+  h2 { margin-top: 48px; }
+  body { font-size: 16px; }
+}
+@media print {
+  .container { max-width: 100%; padding: 0; }
+  .back-link { display: none; }
+  header { padding: 24px 0 16px; margin-bottom: 32px; }
+  h2 { margin-top: 36px; }
+  body { font-size: 11pt; line-height: 1.5; }
+  a { color: #111; text-decoration: none; }
+  footer { margin-top: 40px; }
+  @page { margin: 0.75in; }
+  h2, h3 { break-after: avoid; }
+  p { orphans: 3; widows: 3; }
+  .mode-card { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="./index.html" class="back-link">← Investor Brief</a>
+
+<header>
+  <div class="badge">Governance</div>
+  <h1>Governance Control Plane</h1>
+  <p class="subtitle">Operational Mode Management · Audit Architecture · Safety Rails</p>
+</header>
+
+<h2>Why Governance-First</h2>
+<p>Most AI systems treat governance as an afterthought — a monitoring dashboard bolted on after deployment. CMPSBL inverts this. Governance is an architectural layer that wraps the entire substrate. No operation executes without passing through the governance surface.</p>
+<p>This is not a philosophical position. It is an engineering constraint. The GOVERNANCE overlay is the innermost mesh — the last gate before any mutation reaches the substrate. The system cannot bypass it.</p>
+
+<blockquote>Governance is not a feature. It is the innermost constraint surface of the runtime.</blockquote>
+
+<h2>Operational Modes</h2>
+<p>The control plane supports four distinct operational modes. The system defaults to ACTIVE and can only be changed by authenticated system administrators with explicit reason logging.</p>
+
+<div class="mode-card">
+  <h3>ACTIVE</h3>
+  <p>Standard operation. All subsystems running — continuous learning, dream consolidation, and evolution scanning are active. This is the default state and the state the system returns to after any time-bounded mode change expires.</p>
+</div>
+
+<div class="mode-card">
+  <h3>OBSERVE</h3>
+  <p>Quiet mode. All mutation pipelines are paused — continuous learning, dream processing, and evolution proposals stop. Read-only telemetry and basic health probes continue. Useful for controlled observation periods or pre-deployment assessment windows.</p>
+</div>
+
+<div class="mode-card">
+  <h3>LOCKDOWN</h3>
+  <p>Incident response mode. Non-essential background processes are halted. Aggressive rate limiting is applied. Only core services remain active: authentication, state continuity, the core API surface, audit logging, and basic health reporting. Designed for active incident management.</p>
+</div>
+
+<div class="mode-card">
+  <h3>EVOLVE</h3>
+  <p>Directed acceleration. All learning systems are active with additional safeguards: governance scoring thresholds are enforced, canary rollouts are required for all promotions, and automatic rollback is enabled for low-confidence changes. Used during controlled improvement windows.</p>
+</div>
+
+<h2>TTL Auto-Revert</h2>
+<p>Any non-ACTIVE mode can be assigned a time-to-live (TTL) in minutes. When the TTL expires, the system automatically reverts to ACTIVE mode. This prevents accidental lock-in to degraded operational states.</p>
+<p>The auto-revert is itself an audited event. If an administrator sets LOCKDOWN with a 60-minute TTL, the system will:</p>
+<ul>
+  <li>Enter LOCKDOWN immediately</li>
+  <li>Log the mode change with administrator identity, reason, and TTL</li>
+  <li>After 60 minutes, automatically revert to ACTIVE</li>
+  <li>Log the auto-revert as a distinct audit event</li>
+</ul>
+<p>Additionally, a one-click "panic revert" is available to immediately return to ACTIVE from any state, bypassing the TTL countdown.</p>
+
+<h2>Audit Logging</h2>
+<p>Every mode transition is recorded in an append-only audit log with the following fields:</p>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Previous Mode</td><td>The mode the system was in before the change</td></tr>
+  <tr><td>New Mode</td><td>The mode being transitioned to</td></tr>
+  <tr><td>Changed By</td><td>Authenticated administrator identity</td></tr>
+  <tr><td>Reason</td><td>Free-text rationale (required)</td></tr>
+  <tr><td>TTL</td><td>Auto-revert duration, if set</td></tr>
+  <tr><td>Timestamp</td><td>ISO 8601 with millisecond precision</td></tr>
+  <tr><td>Affected Subsystems</td><td>Summary of subsystem state changes</td></tr>
+</table>
+<p>The audit log is immutable. Entries cannot be modified or deleted after creation.</p>
+
+<h2>Safety Rails</h2>
+<ul>
+  <li><strong>Default-safe</strong> — The system defaults to ACTIVE. If governance state cannot be read, the system assumes ACTIVE.</li>
+  <li><strong>TTL-bounded</strong> — Non-ACTIVE modes must specify a TTL or be manually reverted. The system cannot be accidentally left in a degraded state.</li>
+  <li><strong>Admin-only access</strong> — Mode changes require authenticated owner/admin role. No tenant administrator or end-user can access the governance surface.</li>
+  <li><strong>Reason-required</strong> — Every mode change requires a written rationale. No silent transitions.</li>
+  <li><strong>Panic revert</strong> — One-click immediate return to ACTIVE from any state.</li>
+  <li><strong>No self-modification</strong> — The governance layer cannot modify its own constraints. Governance rules are kernel-enforced.</li>
+</ul>
+
+<h2>Implications for Investors</h2>
+<p>The governance control plane provides three properties that institutional evaluators typically look for:</p>
+<ul>
+  <li><strong>Auditability</strong> — Complete, immutable record of all operational state changes with attribution.</li>
+  <li><strong>Containment</strong> — The system cannot escalate its own permissions or modify governance constraints.</li>
+  <li><strong>Recoverability</strong> — Any state can be reverted to baseline operation instantly, with full audit trail.</li>
+</ul>
+
+<hr class="divider" />
+<p><a href="./architecture-brief.html">← Architecture Brief</a> · <a href="./platform-differentiators.html">Platform Differentiators →</a></p>
+
+<footer>
+  <p>CMPSBL® · PromptFluid® · Confidential — For Investor Evaluation</p>
+  <p>Kenneth E. Sweet Jr. · ORCID: 0009-0001-4237-1243</p>
+</footer>
+
+</div>
+</body>
+</html>

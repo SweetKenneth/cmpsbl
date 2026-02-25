@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Execution Model — CMPSBL / Clockless</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.72;
+  color: #1a1a1a;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 920px; margin: 0 auto; padding: 60px 32px 80px; }
+header { padding: 48px 0 40px; border-bottom: 1px solid #e4e4e4; margin-bottom: 64px; }
+header h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.15; color: #0a0a0a; }
+header p.subtitle { font-size: 17px; color: #666; margin-top: 12px; font-weight: 400; }
+h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: #888;
+  margin-top: 72px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+h3 { font-size: 22px; font-weight: 600; margin-top: 36px; margin-bottom: 12px; color: #111; }
+p { margin-bottom: 18px; color: #333; }
+ul { margin: 0 0 24px 20px; }
+li { margin-bottom: 8px; color: #333; }
+li strong { color: #111; }
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.divider { border: none; border-top: 1px solid #e8e8e8; margin: 64px 0; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 16px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #eee; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; color: #888; font-weight: 600; border-bottom: 2px solid #ddd; }
+td { color: #333; }
+.back-link { display: inline-block; font-size: 14px; color: #888; margin-bottom: 8px; }
+.back-link:hover { color: #555; }
+footer { margin-top: 80px; padding-top: 32px; border-top: 1px solid #e4e4e4; font-size: 13px; color: #999; }
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+  margin-bottom: 16px;
+}
+blockquote {
+  border-left: 3px solid #ddd;
+  margin: 20px 0 28px 0;
+  padding: 16px 20px;
+  color: #555;
+  font-size: 17px;
+  background: #fafafa;
+  border-radius: 0 6px 6px 0;
+}
+@media (max-width: 640px) {
+  .container { padding: 32px 20px 48px; }
+  header h1 { font-size: 28px; }
+  h2 { margin-top: 48px; }
+  body { font-size: 16px; }
+}
+@media print {
+  .container { max-width: 100%; padding: 0; }
+  .back-link { display: none; }
+  header { padding: 24px 0 16px; margin-bottom: 32px; }
+  h2 { margin-top: 36px; }
+  body { font-size: 11pt; line-height: 1.5; }
+  a { color: #111; text-decoration: none; }
+  footer { margin-top: 40px; }
+  @page { margin: 0.75in; }
+  h2, h3 { break-after: avoid; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="./index.html" class="back-link">← Investor Brief</a>
+
+<header>
+  <div class="badge">Execution</div>
+  <h1>Execution Model</h1>
+  <p class="subtitle">Productization Strategy · Licensing Tiers · Distribution</p>
+</header>
+
+<h2>Productization Strategy</h2>
+<p>CMPSBL productizes as infrastructure, not as an end-user application. The system is consumed by developers, technical teams, and organizations building AI-powered products — not by consumers directly.</p>
+<p>This positioning deliberately avoids the crowded consumer AI market and instead targets the persistent, high-retention infrastructure layer where customer relationships are measured in years, not sessions.</p>
+<p>Three product surfaces serve distinct buyer profiles:</p>
+<ul>
+  <li><strong>Master Substrate</strong> — The full cognitive runtime, deployed as a managed service. Subscription-based. Primary revenue driver.</li>
+  <li><strong>Module Marketplace</strong> — Third-party and first-party cognitive modules that extend the substrate's capabilities. Revenue-share model.</li>
+  <li><strong>Professional Services</strong> — Implementation support, custom module development, and architectural consulting for enterprise deployments.</li>
+</ul>
+
+<h2>Licensing Tiers</h2>
+<table>
+  <tr><th>Tier</th><th>Audience</th><th>Capabilities</th><th>Pricing</th></tr>
+  <tr>
+    <td><strong>Creator</strong></td>
+    <td>Individual developers, early-stage projects</td>
+    <td>Core substrate, basic modules, community support, single-tenant deployment</td>
+    <td>Free / Low-cost entry</td>
+  </tr>
+  <tr>
+    <td><strong>Architect</strong></td>
+    <td>Teams, mid-stage companies</td>
+    <td>Full module access, evolution capabilities, priority support, multi-tenant, API access</td>
+    <td>Monthly subscription</td>
+  </tr>
+  <tr>
+    <td><strong>Enterprise</strong></td>
+    <td>Organizations, regulated industries</td>
+    <td>Dedicated deployment, custom governance policies, SLA guarantees, audit exports, compliance tooling</td>
+    <td>Annual contract</td>
+  </tr>
+</table>
+
+<h2>Ecosystem Layering</h2>
+<p>The product strategy follows a deliberate layering model designed to build defensibility over time:</p>
+
+<h3>Layer 1 — Runtime</h3>
+<p>The substrate itself. Persistent cognitive runtime with governance, memory, and evolution. This is the core product and the primary source of recurring revenue.</p>
+
+<h3>Layer 2 — Modules</h3>
+<p>Composable cognitive capabilities that run on the substrate. First-party modules ship with the platform. Third-party modules are distributed through the marketplace. Revenue share creates ecosystem incentives.</p>
+
+<h3>Layer 3 — Templates</h3>
+<p>Pre-configured substrate deployments for specific use cases — customer support automation, research assistants, compliance monitoring. Templates accelerate adoption and reduce time-to-value for new customers.</p>
+
+<h3>Layer 4 — Data Network</h3>
+<p>Opt-in shared learning across deployments. Agencies that participate in dream pooling contribute to and benefit from collective pattern recognition. This layer creates compounding value — each new deployment makes the network more capable.</p>
+
+<h2>Distribution Strategy</h2>
+<p>Distribution is developer-first, enterprise-second:</p>
+<ul>
+  <li><strong>Developer adoption</strong> — Free tier with meaningful capability. Documentation-driven. No sales friction for initial adoption.</li>
+  <li><strong>Team expansion</strong> — Self-serve upgrade path to Architect tier. Usage-based triggers for upgrade conversations.</li>
+  <li><strong>Enterprise engagement</strong> — Direct sales for Enterprise tier. Driven by compliance requirements, SLA needs, and governance demands that naturally emerge at organizational scale.</li>
+</ul>
+<p>This model is designed to produce bottom-up adoption with top-down expansion — developers adopt the Creator tier, teams upgrade to Architect as projects mature, and enterprise procurement engages when governance and compliance requirements emerge.</p>
+
+<h2>Long-Term Defensibility</h2>
+<p>The system's defensibility compounds across four dimensions:</p>
+<table>
+  <tr><th>Dimension</th><th>Mechanism</th><th>Time to Replicate</th></tr>
+  <tr>
+    <td><strong>Architectural Complexity</strong></td>
+    <td>24-node layered kernel with 5 mesh overlays</td>
+    <td>18–24 months minimum</td>
+  </tr>
+  <tr>
+    <td><strong>Accumulated Learning</strong></td>
+    <td>Evolution history, pattern libraries, memory graphs</td>
+    <td>Cannot be replicated — requires operational history</td>
+  </tr>
+  <tr>
+    <td><strong>Ecosystem Network</strong></td>
+    <td>Module marketplace, template library, shared dream pool</td>
+    <td>Requires critical mass of deployments</td>
+  </tr>
+  <tr>
+    <td><strong>Governance Maturity</strong></td>
+    <td>Audit trail depth, compliance track record</td>
+    <td>Requires years of production operation</td>
+  </tr>
+</table>
+<p>Each dimension independently creates defensibility. Together, they produce a compounding advantage that increases with operational time and deployment scale.</p>
+
+<hr class="divider" />
+<p><a href="./platform-differentiators.html">← Platform Differentiators</a> · <a href="./index.html">Back to Investor Brief</a></p>
+
+<footer>
+  <p>CMPSBL® · PromptFluid® · Confidential — For Investor Evaluation</p>
+  <p>Kenneth E. Sweet Jr. · ORCID: 0009-0001-4237-1243</p>
+</footer>
+
+</div>
+</body>
+</html>
