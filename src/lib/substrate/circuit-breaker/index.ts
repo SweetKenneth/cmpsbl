@@ -120,17 +120,24 @@ export function canExecute(module: string): boolean {
   return true;
 }
 
-/** Execute with circuit breaker protection */
+/** Execute with circuit breaker protection + timeout guard */
 export async function withCircuitBreaker<T>(
   module: string,
-  fn: () => Promise<T>
+  fn: () => Promise<T>,
+  timeoutMs = 30_000
 ): Promise<T> {
   if (!canExecute(module)) {
     throw new Error(`[circuit-breaker] ${module} circuit is OPEN — request rejected`);
   }
 
   try {
-    const result = await fn();
+    // Race the operation against a timeout
+    let timer: ReturnType<typeof setTimeout>;
+    const timeout = new Promise<never>((_, reject) => {
+      timer = setTimeout(() => reject(new Error(`[circuit-breaker] ${module} operation timed out after ${timeoutMs}ms`)), timeoutMs);
+    });
+    
+    const result = await Promise.race([fn(), timeout]).finally(() => clearTimeout(timer!));
     recordSuccess(module);
     return result;
   } catch (err) {

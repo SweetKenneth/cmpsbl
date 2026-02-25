@@ -3,8 +3,9 @@
   * v7.5.0 — System-wide health monitoring and alerting
   */
  
- import { SUBSTRATE_MODULES, type SubstrateModuleName } from './index';
- 
+import { SUBSTRATE_MODULES, type SubstrateModuleName } from './index';
+import { clampNumber, boundArray } from '@/lib/system/hardening';
+
  // Health metric
  export interface HealthMetric {
    module: SubstrateModuleName;
@@ -78,21 +79,37 @@
  /**
   * Update module health metrics
   */
- export function updateModuleHealth(
-   module: SubstrateModuleName,
-   metrics: Partial<Omit<HealthMetric, 'module'>>
- ): HealthMetric {
-   const current = healthMetrics.get(module) || {
-     module,
-     health: 100,
-     status: 'healthy' as const,
-     latency: 0,
-     errorRate: 0,
-     lastCheck: new Date().toISOString(),
-   };
-   
-   const health = metrics.health ?? current.health;
-   let status: HealthMetric['status'] = 'healthy';
+export function updateModuleHealth(
+  module: SubstrateModuleName,
+  metrics: Partial<Omit<HealthMetric, 'module'>>
+): HealthMetric {
+  // Input validation — reject unknown modules
+  if (!SUBSTRATE_MODULES.includes(module)) {
+    console.warn(`[HealthAggregator] Unknown module: ${module}`);
+    return {
+      module,
+      health: 0,
+      status: 'offline',
+      latency: 0,
+      errorRate: 0,
+      lastCheck: new Date().toISOString(),
+    };
+  }
+
+  const current = healthMetrics.get(module) || {
+    module,
+    health: 100,
+    status: 'healthy' as const,
+    latency: 0,
+    errorRate: 0,
+    lastCheck: new Date().toISOString(),
+  };
+  
+  // Clamp health to [0, 100], latency to [0, 60000], errorRate to [0, 1]
+  const health = clampNumber(metrics.health ?? current.health, 0, 100, current.health);
+  const latency = clampNumber(metrics.latency ?? current.latency, 0, 60_000, current.latency);
+  const errorRate = clampNumber(metrics.errorRate ?? current.errorRate, 0, 1, current.errorRate);
+  let status: HealthMetric['status'] = 'healthy';
    
    if (health <= 0) {
      status = 'offline';
@@ -102,13 +119,15 @@
      status = 'degraded';
    }
    
-   const updated: HealthMetric = {
-     ...current,
-     ...metrics,
-     health,
-     status,
-     lastCheck: new Date().toISOString(),
-   };
+  const updated: HealthMetric = {
+    ...current,
+    ...metrics,
+    health,
+    latency,
+    errorRate,
+    status,
+    lastCheck: new Date().toISOString(),
+  };
    
    healthMetrics.set(module, updated);
    
@@ -199,12 +218,12 @@
      acknowledged: false,
    };
    
-   healthAlerts.push(alert);
-   
-   // Limit alert history
-   if (healthAlerts.length > 100) {
-     healthAlerts.shift();
-   }
+  healthAlerts.push(alert);
+    
+    // Bound alert history to prevent unbounded growth
+    const bounded = boundArray(healthAlerts, 200);
+    healthAlerts.length = 0;
+    healthAlerts.push(...bounded);
    
    return alert;
  }

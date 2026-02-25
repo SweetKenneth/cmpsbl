@@ -16,6 +16,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
+import { withTimeout, validateStringInput } from '@/lib/system/hardening';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -146,19 +147,32 @@ export class GovernanceGuardClient {
   async coherenceValidation(input: GovernanceInput): Promise<GovernanceResult> {
     const startTime = Date.now();
 
-    try {
-      const coherence = this.checkCoherence(input.content, input.context);
+    // Input validation
+    const content = validateStringInput(input.content, { maxLength: 100_000, minLength: 1, label: 'governance.content' });
+    if (!content) {
+      return {
+        success: false,
+        stage: 'coherence_validation',
+        blocked: false,
+        error: 'Invalid content: must be a non-empty string (max 100KB)',
+        processing_time_ms: Date.now() - startTime,
+      };
+    }
 
-      await supabase.from('brain_events').insert({
+    try {
+      const coherence = this.checkCoherence(content, input.context);
+
+      // Fire-and-forget audit event (non-blocking)
+      supabase.from('brain_events').insert({
         module: 'governance_guard',
         event_type: 'coherence_validated',
         data: { 
-          content_length: input.content.length,
+          content_length: content.length,
           coherence_score: coherence.coherence_score,
           issues_found: coherence.issues.length,
         },
         outcome: coherence.is_coherent ? 'success' : 'incoherent',
-      });
+      }).then(() => {}, () => {});
 
       return {
         success: true,
@@ -181,11 +195,11 @@ export class GovernanceGuardClient {
   private checkCoherence(content: string, context?: string): CoherenceResult {
     const issues: CoherenceResult['issues'] = [];
 
-    // Check for contradictions (simplified pattern matching)
+    // Use non-global regex to avoid lastIndex state bugs
     const contradictionPatterns = [
-      /(\w+)\s+is\s+(\w+).*\1\s+is\s+not\s+\2/gi,
-      /always\s+(\w+).*never\s+\1/gi,
-      /true.*false.*same/gi,
+      /(\w+)\s+is\s+(\w+).*\1\s+is\s+not\s+\2/i,
+      /always\s+(\w+).*never\s+\1/i,
+      /true.*false.*same/i,
     ];
 
     for (const pattern of contradictionPatterns) {
@@ -199,7 +213,7 @@ export class GovernanceGuardClient {
     }
 
     // Check for circular references
-    if (/(\w+)\s+depends\s+on.*\1/gi.test(content)) {
+    if (/(\w+)\s+depends\s+on.*\1/i.test(content)) {
       issues.push({
         type: 'circular_reference',
         description: 'Detected circular dependency pattern',
@@ -269,10 +283,11 @@ export class GovernanceGuardClient {
     const lowerContent = content.toLowerCase();
 
     // Check for harmful content patterns
+    // Use non-global regex to avoid lastIndex state bugs
     const harmfulPatterns = [
-      { pattern: /how\s+to\s+(hack|attack|exploit)/gi, constraint: 'no_harmful_content' },
-      { pattern: /\b(ssn|social\s+security|credit\s+card\s+number)\b/gi, constraint: 'no_personal_data_exposure' },
-      { pattern: /\b(discriminat|racist|sexist)\b/gi, constraint: 'no_discriminatory_output' },
+      { pattern: /how\s+to\s+(hack|attack|exploit)/i, constraint: 'no_harmful_content' },
+      { pattern: /\b(ssn|social\s+security|credit\s+card\s+number)\b/i, constraint: 'no_personal_data_exposure' },
+      { pattern: /\b(discriminat|racist|sexist)\b/i, constraint: 'no_discriminatory_output' },
     ];
 
     for (const { pattern, constraint } of harmfulPatterns) {
