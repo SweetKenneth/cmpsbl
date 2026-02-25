@@ -261,10 +261,11 @@ serve(async (req: Request) => {
     const clmTopicsStudied3h = clmLearning3h.count || clmLearning3h.data?.length || 0;
     const clmTopics = (clmLearning3h.data || []).map((e: any) => e.data?.domain).filter(Boolean);
 
-    // API quota budget
+    // API quota budget — derive "used" from actual ai_usage_log (ai_daily_quota.calls_used is unreliable due to fire-and-forget)
     const quotaData = dailyQuota.data || [];
     const totalBudget = quotaData.reduce((s: number, q: any) => s + (q.calls_budget || 0), 0);
-    const totalUsed = quotaData.reduce((s: number, q: any) => s + (q.calls_used || 0), 0);
+    // Use actual call count from ai_usage_log (24h) as ground truth instead of broken calls_used counter
+    const totalUsed = aiCalls24h;
     const quotaUtilization = totalBudget > 0 ? Math.round((totalUsed / totalBudget) * 100) : 0;
 
     // ═══ PROVIDER HEALTH ANALYSIS ═══
@@ -380,12 +381,17 @@ serve(async (req: Request) => {
           <ul style="margin:6px 0 0 18px;padding:0;">${bullets.map(b => `<li style="margin-bottom:5px;color:#374151;font-size:13px;line-height:1.5;" class="email-learning-text">${b}</li>`).join("")}</ul>
         </div>`).join("");
 
-    // Quota provider rows
+    // Quota provider rows — merge ai_usage_log actuals with budget from ai_daily_quota
+    const providerActualCounts: Record<string, number> = {};
+    for (const log of providerFailures.data || []) {
+      providerActualCounts[log.provider] = (providerActualCounts[log.provider] || 0) + 1;
+    }
     const quotaRows = quotaData.map((q: any) => {
-      const pct = q.calls_budget > 0 ? Math.round((q.calls_used / q.calls_budget) * 100) : 0;
+      const actualUsed = providerActualCounts[q.provider] || 0;
+      const pct = q.calls_budget > 0 ? Math.round((actualUsed / q.calls_budget) * 100) : 0;
       return `<tr class="email-table-row">
         <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;font-weight:500;color:#111827;">${q.provider}</td>
-        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:#374151;">${(q.calls_used || 0).toLocaleString()} / ${(q.calls_budget || 0).toLocaleString()}</td>
+        <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;color:#374151;">${actualUsed.toLocaleString()} / ${(q.calls_budget || 0).toLocaleString()}</td>
         <td style="padding:8px 14px;border-bottom:1px solid #e5e7eb;text-align:center;">
           <span style="display:inline-block;background:${pct > 50 ? '#dcfce7' : pct > 10 ? '#fef9c3' : '#fee2e2'};color:${pct > 50 ? '#166534' : pct > 10 ? '#854d0e' : '#991b1b'};padding:2px 8px;border-radius:12px;font-size:12px;font-weight:600;">${pct}%</span>
         </td>
@@ -725,7 +731,7 @@ PROVIDER HEALTH (24h)
 ${providerReports.map(p => `  ${p.name}: ${p.total} calls, ${p.failures} fails, ${p.avgLatency}ms avg — ${p.status}${p.note ? ` (${p.note})` : ''}`).join("\n") || "No provider data"}
 
 API QUOTA
-${quotaData.map((q: any) => `  ${q.provider}: ${q.calls_used || 0}/${q.calls_budget || 0}`).join("\n") || "No quota data"}
+${quotaData.map((q: any) => `  ${q.provider}: ${providerActualCounts[q.provider] || 0}/${q.calls_budget || 0}`).join("\n") || "No quota data"}
 
 SECURITY
 Risk: ${riskLevel} (score: ${avgRiskScore})

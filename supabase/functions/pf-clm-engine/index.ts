@@ -209,49 +209,57 @@ serve(async (req) => {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // PHASE 3: Learning Topic Study
+    // PHASE 3: Learning Topic Study (multi-topic per cycle)
+    // Study 3 topics per cycle to maximize API utilization
     // ═══════════════════════════════════════════════════════════
     if (!isQuietHours) {
-      const topicIndex = cycleNumber % LEARNING_TOPICS.length;
-      const topic = LEARNING_TOPICS[topicIndex];
+      const topicsPerCycle = 3;
+      const studiedTopics: Array<{ domain: string; success: boolean }> = [];
 
-      try {
-        const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
-          body: { module: 'brain', action: 'deep_think', data: { question: topic.prompt, depth: 'medium' } },
-        });
+      for (let t = 0; t < topicsPerCycle; t++) {
+        const topicIndex = (cycleNumber * topicsPerCycle + t) % LEARNING_TOPICS.length;
+        const topic = LEARNING_TOPICS[topicIndex];
 
-        if (!studyError && studyResult?.success) {
-          // Store learning as both brain_event AND as a hot memory for cross-module recall
-          await supabase.from('brain_events').insert({
-            event_type: 'technical_learning_cycle',
-            module: 'brain',
-            outcome: 'success',
-            data: {
-              title: `CLM Study: ${topic.domain}`,
-              domain: topic.domain,
-              prompt: topic.prompt,
-              result: studyResult?.analysis?.substring?.(0, 1000) || 'completed',
-              source: 'clm_server_engine',
-            },
+        try {
+          const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
+            body: { module: 'brain', action: 'deep_think', data: { question: topic.prompt, depth: 'medium' } },
           });
 
-          // Also persist as hot memory for immediate recall
-          await supabase.from('brain_memory_hot').insert({
-            content: `[CLM Learning: ${topic.domain}] ${studyResult?.analysis?.substring?.(0, 500) || topic.prompt}`,
-            context: `clm_study:${topic.domain}`,
-            priority: 7,
-            access_count: 0,
-            metadata: { domain: topic.domain, source: 'clm_server_engine', cycle: cycleNumber },
-          });
+          if (!studyError && studyResult?.success) {
+            // Store learning as both brain_event AND as a hot memory for cross-module recall
+            await Promise.allSettled([
+              supabase.from('brain_events').insert({
+                event_type: 'technical_learning_cycle',
+                module: 'brain',
+                outcome: 'success',
+                data: {
+                  title: `CLM Study: ${topic.domain}`,
+                  domain: topic.domain,
+                  prompt: topic.prompt,
+                  result: studyResult?.analysis?.substring?.(0, 1000) || 'completed',
+                  source: 'clm_server_engine',
+                },
+              }),
+              supabase.from('brain_memory_hot').insert({
+                content: `[CLM Learning: ${topic.domain}] ${studyResult?.analysis?.substring?.(0, 500) || topic.prompt}`,
+                context: `clm_study:${topic.domain}`,
+                priority: 7,
+                access_count: 0,
+                metadata: { domain: topic.domain, source: 'clm_server_engine', cycle: cycleNumber },
+              }),
+            ]);
 
-          cycleResults.learning_topic = { domain: topic.domain, success: true };
-          console.log(`📚 Studied: ${topic.domain}`);
-        } else {
-          cycleResults.learning_topic = { domain: topic.domain, success: false };
+            studiedTopics.push({ domain: topic.domain, success: true });
+            console.log(`📚 Studied: ${topic.domain}`);
+          } else {
+            studiedTopics.push({ domain: topic.domain, success: false });
+          }
+        } catch (err) {
+          studiedTopics.push({ domain: topic.domain, success: false });
         }
-      } catch (err) {
-        cycleResults.learning_topic = { domain: topic.domain, success: false };
       }
+
+      cycleResults.learning_topic = studiedTopics;
     }
 
     // ═══════════════════════════════════════════════════════════
