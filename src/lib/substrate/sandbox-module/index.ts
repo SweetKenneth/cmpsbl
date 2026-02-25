@@ -10,6 +10,7 @@
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
+import { validateStringInput, clampNumber } from '@/lib/system/hardening';
 
 export interface SandboxEnvironment {
   id: string;
@@ -162,7 +163,16 @@ export function createSandbox(options?: {
   return result;
 }
 
+const MAX_SNAPSHOTS_TOTAL = 50;
+
 export function execute(sandboxId: string, code: string): SandboxExecution {
+  const validCode = validateStringInput(code, { maxLength: DEFAULT_RESOURCE_LIMITS.maxCodeLengthBytes, minLength: 1 });
+  if (!validCode) {
+    return {
+      id: `exec-rejected-${Date.now()}`, sandboxId, code: '', result: null,
+      success: false, error: 'Invalid or empty code input', executionMs: 0, timestamp: Date.now(),
+    };
+  }
   const sandbox = sandboxes.get(sandboxId);
   if (!sandbox || sandbox.status === 'torn_down') {
     state.blockedExecutions++;
@@ -248,6 +258,14 @@ export function execute(sandboxId: string, code: string): SandboxExecution {
 export function createSnapshot(sandboxId: string): SandboxSnapshot | null {
   const sandbox = sandboxes.get(sandboxId);
   if (!sandbox) return null;
+
+  // Enforce total snapshot limit
+  let totalSnapshots = 0;
+  for (const snaps of snapshots.values()) totalSnapshots += snaps.length;
+  if (totalSnapshots >= MAX_SNAPSHOTS_TOTAL) {
+    emit({ module: 'sandbox', event_type: 'snapshot_limit_reached', outcome: 'failed', data: { limit: MAX_SNAPSHOTS_TOTAL } });
+    return null;
+  }
 
   const snapshot: SandboxSnapshot = {
     id: `snap-${Date.now()}-${state.snapshotCount}`,

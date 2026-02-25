@@ -10,6 +10,7 @@
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
+import { validateStringInput, clampNumber, boundArray } from '@/lib/system/hardening';
 
 export interface CostRecord {
   id: string;
@@ -93,10 +94,19 @@ export function initEconomy(): void {
   }
 }
 
+const MAX_COST_RECORDS = 2000;
+
 export function recordCost(module: string, action: string, tokenCount: number, computeMs: number, costMillicents: number, actorId: string = 'system', capability?: string): CostRecord {
+  // Input validation
+  const validModule = validateStringInput(module, { maxLength: 64, minLength: 1 }) ?? 'unknown';
+  const validAction = validateStringInput(action, { maxLength: 128, minLength: 1 }) ?? 'unknown';
+  const safeTokenCount = clampNumber(tokenCount, 0, 10_000_000, 0);
+  const safeComputeMs = clampNumber(computeMs, 0, 600_000, 0);
+  const safeCost = clampNumber(costMillicents, 0, 100_000_000, 0);
+
   const fallbackRecord: CostRecord = {
-    id: `cost-fallback-${Date.now()}`, module, action, capability, tokenCount, computeMs,
-    costMillicents, timestamp: Date.now(), actorId,
+    id: `cost-fallback-${Date.now()}`, module: validModule, action: validAction, capability, tokenCount: safeTokenCount, computeMs: safeComputeMs,
+    costMillicents: safeCost, timestamp: Date.now(), actorId,
   };
 
   const { result } = withResilienceSync(
@@ -104,9 +114,13 @@ export function recordCost(module: string, action: string, tokenCount: number, c
     () => {
       const record: CostRecord = {
         id: `cost-${Date.now()}-${state.costRecords.length}`,
-        module, action, capability, tokenCount, computeMs, costMillicents, timestamp: Date.now(), actorId,
+        module: validModule, action: validAction, capability, tokenCount: safeTokenCount, computeMs: safeComputeMs, costMillicents: safeCost, timestamp: Date.now(), actorId,
       };
       state.costRecords.push(record);
+      // Bound cost records to prevent unbounded memory growth
+      if (state.costRecords.length > MAX_COST_RECORDS) {
+        state.costRecords = boundArray(state.costRecords, MAX_COST_RECORDS);
+      }
       state.totalSpendMillicents += costMillicents;
       state.todaySpendMillicents += costMillicents;
 
@@ -140,10 +154,13 @@ export function recordCost(module: string, action: string, tokenCount: number, c
 }
 
 export function setBudget(module: string, dailyLimitMillicents: number, alertThresholds: number[] = [0.8, 0.9, 1.0]): void {
-  const existing = state.budgets.findIndex(b => b.module === module);
-  const config: BudgetConfig = { module, dailyLimitMillicents, alertThresholds };
+  const validModule = validateStringInput(module, { maxLength: 64, minLength: 1 });
+  if (!validModule) return;
+  const safeLimit = clampNumber(dailyLimitMillicents, 0, 1_000_000_000, 100_000);
+  const existing = state.budgets.findIndex(b => b.module === validModule);
+  const config: BudgetConfig = { module: validModule, dailyLimitMillicents: safeLimit, alertThresholds };
   if (existing >= 0) state.budgets[existing] = config;
-  else state.budgets.push(config);
+  else if (state.budgets.length < 100) state.budgets.push(config);
 }
 
 export function getCostsByModule(module: string): number {

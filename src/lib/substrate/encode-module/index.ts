@@ -8,6 +8,7 @@
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
+import { validateStringInput, clampNumber } from '@/lib/system/hardening';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -93,13 +94,29 @@ export function initEncode(): void {
 // TASK MANAGEMENT
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const VALID_SURFACES: TargetSurface[] = ['code', 'ui', 'docs', 'db', 'edge', 'tests'];
+const MAX_INTENT_LENGTH = 5000;
+const MAX_ACCEPTANCE_ITEMS = 20;
+
 // Enhancement #1: Priority-sorted queue insertion
 export function enqueueTask(packet: Omit<EncodeTaskPacket, 'id' | 'createdAt' | 'status'> & { priority?: number }): EncodeTaskPacket {
+  // Input validation
+  const validIntent = validateStringInput(packet.intentSummary, { maxLength: MAX_INTENT_LENGTH, minLength: 1 });
+  if (!validIntent) {
+    throw new Error('[ENCODE] Invalid intentSummary: must be 1-5000 characters');
+  }
+  if (!VALID_SURFACES.includes(packet.targetSurface)) {
+    throw new Error(`[ENCODE] Invalid targetSurface: ${packet.targetSurface}. Must be one of: ${VALID_SURFACES.join(', ')}`);
+  }
+  const safeAcceptance = (packet.acceptance || []).slice(0, MAX_ACCEPTANCE_ITEMS);
+
   // Enhancement #2: Auto-prune completed/failed tasks older than 50 entries
   pruneQueue();
 
   const task: EncodeTaskPacket = {
     ...packet,
+    intentSummary: validIntent,
+    acceptance: safeAcceptance,
     id: `enc-${Date.now()}-${state.totalTasksQueued}`,
     createdAt: new Date().toISOString(),
     status: 'queued',

@@ -104,16 +104,29 @@ function scheduleFlush(): void {
   }, FLUSH_INTERVAL_MS);
 }
 
+const MAX_EVENT_DATA_SIZE = 50_000; // 50KB per event data payload
+
 export async function emit(
   event: Omit<SubstrateEvent, 'trace_id'> & { trace_id?: string },
   options: EmitOptions = {}
 ): Promise<string> {
   const trace_id = event.trace_id || generateTraceId();
   
+  // Truncate oversized data payloads to prevent memory/DB bloat
+  let safeData = event.data || {};
+  try {
+    const serialized = JSON.stringify(safeData);
+    if (serialized.length > MAX_EVENT_DATA_SIZE) {
+      safeData = { _truncated: true, _originalSize: serialized.length, module: event.module, event_type: event.event_type };
+    }
+  } catch {
+    safeData = { _serializationError: true, module: event.module };
+  }
+
   const fullEvent: SubstrateEvent = {
     ...event,
     trace_id,
-    data: options.skipRedaction ? event.data : redactSecrets(event.data || {}),
+    data: options.skipRedaction ? safeData : redactSecrets(safeData),
   };
 
   if (options.immediate) {

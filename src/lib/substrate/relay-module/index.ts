@@ -10,6 +10,7 @@
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilience, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
+import { validateStringInput, clampNumber, boundArray } from '@/lib/system/hardening';
 
 export interface DeliveryRecord {
   id: string;
@@ -104,11 +105,29 @@ export function initRelay(): void {
   }
 }
 
+const MAX_DELIVERIES = 500;
+const MAX_TARGET_LENGTH = 2048;
+
 export async function dispatch(target: string, payload: unknown, options?: { retries?: number; timeout?: number }): Promise<DeliveryRecord> {
-  emitStarted('relay', 'dispatch', { target });
+  // Input validation
+  const validTarget = validateStringInput(target, { maxLength: MAX_TARGET_LENGTH, minLength: 1, label: 'relay.target' });
+  if (!validTarget) {
+    const rejected: DeliveryRecord = {
+      id: `dlv-rejected-${Date.now()}`, target: String(target).slice(0, 100), payload: null,
+      status: 'failed', attempts: 0, maxRetries: 0,
+      createdAt: Date.now(), deliveredAt: null,
+      lastError: `Invalid target (must be 1-${MAX_TARGET_LENGTH} chars)`, hash: 'rejected',
+    };
+    emitFailed('relay', 'dispatch', rejected.lastError!);
+    return rejected;
+  }
+
+  const retries = clampNumber(options?.retries, 0, 10, state.retryPolicy.maxRetries);
+
+  emitStarted('relay', 'dispatch', { target: validTarget });
 
   const fallbackRecord: DeliveryRecord = {
-    id: `dlv-fallback-${Date.now()}`, target, payload,
+    id: `dlv-fallback-${Date.now()}`, target: validTarget, payload,
     status: 'failed', attempts: 0, maxRetries: 0,
     createdAt: Date.now(), deliveredAt: null,
     lastError: 'Circuit breaker active — dispatch queued for retry',
@@ -119,14 +138,15 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
     'relay',
     () => {
       const record: DeliveryRecord = {
-        id: `dlv-${Date.now()}`, target, payload,
+        id: `dlv-${Date.now()}`, target: validTarget, payload,
         status: 'pending', attempts: 0,
-        maxRetries: options?.retries ?? state.retryPolicy.maxRetries,
+        maxRetries: retries,
         createdAt: Date.now(), deliveredAt: null,
         lastError: null,
         hash: Math.random().toString(36).slice(2),
       };
-      state.deliveries.push(record);
+      // Bound deliveries array to prevent memory leak
+      state.deliveries = boundArray([...state.deliveries, record], MAX_DELIVERIES);
       state.totalDispatched++;
       state.pendingQueue++;
       return record;

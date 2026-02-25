@@ -10,6 +10,7 @@
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
+import { validateStringInput, clampNumber } from '@/lib/system/hardening';
 
 export type ActorType = 'human' | 'agent' | 'system';
 
@@ -124,13 +125,31 @@ export function initIdentity(): void {
   }
 }
 
+const MAX_ACTORS = 1000;
+const MAX_PASSKEYS_PER_ACTOR = 20;
+
 export function registerActor(id: string, type: ActorType, displayName: string, metadata: Record<string, unknown> = {}): ActorIdentity {
+  // Input validation
+  const validId = validateStringInput(id, { maxLength: 128, minLength: 1, label: 'identity.actorId' });
+  const validName = validateStringInput(displayName, { maxLength: 256, minLength: 1 }) ?? 'Unknown Actor';
+  const validType: ActorType = (['human', 'agent', 'system'] as ActorType[]).includes(type) ? type : 'system';
+
+  if (!validId) {
+    throw new Error('[IDENTITY] Invalid actor ID: must be 1-128 characters');
+  }
+
+  // Enforce max actors limit
+  if (actors.size >= MAX_ACTORS && !actors.has(validId)) {
+    emit({ module: 'identity', event_type: 'actor_limit_reached', outcome: 'failed', data: { limit: MAX_ACTORS } });
+    throw new Error(`[IDENTITY] Max actors limit reached (${MAX_ACTORS})`);
+  }
+
   const { result } = withResilienceSync(
     'identity',
     () => {
-      const sig = generateSignature(id);
+      const sig = generateSignature(validId);
       const actor: ActorIdentity = {
-        id, type, displayName, signature: sig,
+        id: validId, type: validType, displayName: validName, signature: sig,
         createdAt: Date.now(), lastActiveAt: Date.now(), metadata,
         passkeys: [], passwordless: true,
         reputation: createDefaultReputation(),
@@ -180,10 +199,16 @@ export function signAction(actorId: string, action: string): { actorId: string; 
 export function addPasskeyToActor(actorId: string, credentialId: string): boolean {
   const actor = actors.get(actorId);
   if (!actor) return false;
-  if (!actor.passkeys.includes(credentialId)) {
-    actor.passkeys.push(credentialId);
+  const validCred = validateStringInput(credentialId, { maxLength: 512, minLength: 1 });
+  if (!validCred) return false;
+  if (actor.passkeys.length >= MAX_PASSKEYS_PER_ACTOR) {
+    emit({ module: 'identity', event_type: 'passkey_limit_reached', outcome: 'failed', data: { actorId, limit: MAX_PASSKEYS_PER_ACTOR } });
+    return false;
+  }
+  if (!actor.passkeys.includes(validCred)) {
+    actor.passkeys.push(validCred);
     state.passkeyCount++;
-    emit({ module: 'identity', event_type: 'passkey_bound', outcome: 'succeeded', data: { actorId, credentialId } });
+    emit({ module: 'identity', event_type: 'passkey_bound', outcome: 'succeeded', data: { actorId, credentialId: validCred } });
   }
   return true;
 }
