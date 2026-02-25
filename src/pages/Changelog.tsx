@@ -471,7 +471,7 @@ const evolutionLogV9: EvolutionEntry[] = [
     ],
     capabilities: [
       "The substrate operates as a 24-module cognitive architecture (10 entities + 5 mesh + 9 zones)",
-      "525+ capabilities, 300 synergy pipelines, 100 engines",
+      "525+ capabilities across 24 modules",
       "Single source of truth for all version information via versions.ts"
     ]
   },
