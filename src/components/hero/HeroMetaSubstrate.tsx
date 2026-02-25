@@ -17,6 +17,7 @@ import {
   Layers,
   Brain,
   Shield,
+  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MemoryRiver } from "./MemoryRiver";
@@ -194,9 +195,9 @@ export function HeroMetaSubstrate() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/50 backdrop-blur-md mb-8 sm:mb-10"
             >
               <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-semibold text-muted-foreground tracking-wide">A Cognitive Reality System · powered by the CMPSBL Substrate</span>
+              <span className="text-xs font-semibold text-muted-foreground tracking-wide">Cognitive Infrastructure for AI Applications</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/50">
-                <span className="text-[10px] font-mono font-bold text-muted-foreground/70">v11.0.0</span>
+                <span className="text-[10px] font-mono font-bold text-muted-foreground/70">v11.3.0</span>
               </span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/50">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -293,7 +294,7 @@ export function HeroMetaSubstrate() {
               </Button>
             </motion.div>
 
-            {/* Evolution Mesh CTA */}
+            {/* Composable Cognitives CTA */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -301,17 +302,17 @@ export function HeroMetaSubstrate() {
               className="mt-4 sm:mt-6"
             >
               <Link 
-                to="/evolution-mesh"
-                className="inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-emerald-500/30 bg-emerald-500/[0.05] hover:bg-emerald-500/10 hover:border-emerald-500/50 transition-all duration-300 group"
+                to="/composable-cognitives"
+                className="inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-primary/30 bg-primary/[0.05] hover:bg-primary/10 hover:border-primary/50 transition-all duration-300 group"
               >
-                <div className="p-1.5 rounded-lg bg-emerald-500/10 group-hover:bg-emerald-500/15 transition-colors">
-                  <Shield className="w-4 h-4 text-emerald-500" />
+                <div className="p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/15 transition-colors">
+                  <Zap className="w-4 h-4 text-primary" />
                 </div>
                 <div className="text-left">
-                  <span className="block text-xs font-bold text-foreground group-hover:text-emerald-500 transition-colors">Evolution Mesh — Free Download</span>
-                  <span className="block text-[10px] text-muted-foreground">Self-learning immune system for any software</span>
+                  <span className="block text-xs font-bold text-foreground group-hover:text-primary transition-colors">Composable Cognitives — Own Your AI Agent</span>
+                  <span className="block text-[10px] text-muted-foreground">Download once, run anywhere. No subscription required.</span>
                 </div>
-                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all" />
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
               </Link>
             </motion.div>
             
@@ -356,9 +357,9 @@ export function HeroMetaSubstrate() {
             >
               <h3 className="text-[10px] lg:text-xs font-bold text-foreground/70 uppercase tracking-widest mb-1.5 lg:mb-2">How Intelligence Flows</h3>
               <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">
-                Every interaction generates <span className="text-foreground font-medium">memory particles</span> that persist across sessions.{' '}
-                <span className="text-primary font-medium">Dream cycles</span> synthesize patterns overnight.{' '}
-                <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Defense layers</span> detect and reject drift in real-time.{' '}
+                Your AI stores <span className="text-foreground font-medium">persistent memories</span> that survive restarts and sessions.{' '}
+                <span className="text-primary font-medium">Self-improving pipelines</span> refine behavior autonomously.{' '}
+                <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Governed orchestration</span> keeps everything safe and auditable.{' '}
                 Nothing resets. Everything compounds.
               </p>
             </motion.div>
