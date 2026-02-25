@@ -31,6 +31,7 @@ const DiagPanelLazy = lazy(() => import("@/components/system/DiagPanel").then(m 
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
 import { AdminRoute } from "@/components/admin/AdminRoute";
+import { PhaseGateRoute } from "@/components/gates/PhaseGateRoute";
 const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
 const RegisterPasskeyPrompt = lazy(() => import("@/components/auth/RegisterPasskey").then(m => ({ default: m.RegisterPasskeyPrompt })));
 
@@ -329,7 +330,7 @@ const App = () => {
                         <Route path="/showcase" element={<STierDemos />} />
                         <Route path="/publication" element={<Publication />} />
                         <Route path="/documentation" element={<Documentation />} />
-                        <Route path="/intent-mesh" element={<IntentMeshPublic />} />
+                        <Route path="/intent-mesh" element={<PhaseGateRoute><IntentMeshPublic /></PhaseGateRoute>} />
                         <Route path="/changelog" element={<Changelog />} />
                         <Route path="/codelab" element={<CodeLab />} />
                         <Route path="/forge" element={<Navigate to="/" replace />} />
@@ -342,26 +343,26 @@ const App = () => {
                         <Route path="/gaming" element={<GamingSubstrate />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />
                         <Route path="/use-cases" element={<UseCases />} />
-                        <Route path="/marketplace" element={<SubstrateStore />} />
-                        <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
+                        <Route path="/marketplace" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
+                        <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
                         <Route path="/intelligence" element={<SubstrateIntelligence />} />
                         <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
                         <Route path="/licensing" element={<SubstrateLicensingDownload />} />
                         <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
-                        <Route path="/lab" element={<ExperimentationLab />} />
-                        <Route path="/clockless-world-engine" element={<ClocklessWorldEngine />} />
+                        <Route path="/lab" element={<PhaseGateRoute><ExperimentationLab /></PhaseGateRoute>} />
+                        <Route path="/clockless-world-engine" element={<PhaseGateRoute><ClocklessWorldEngine /></PhaseGateRoute>} />
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
-                        <Route path="/capabilities" element={<SubstrateStore />} />
-                        <Route path="/synergies" element={<SubstrateStore />} />
-                        <Route path="/store" element={<SubstrateStore />} />
-                        <Route path="/artifacts" element={<SubstrateStore />} />
-                        <Route path="/engines" element={<EngineMarketplace />} />
-                        <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
-                        <Route path="/habitat" element={<Habitat />} />
+                        <Route path="/capabilities" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
+                        <Route path="/synergies" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
+                        <Route path="/store" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
+                        <Route path="/artifacts" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
+                        <Route path="/engines" element={<PhaseGateRoute><EngineMarketplace /></PhaseGateRoute>} />
+                        <Route path="/system-feed" element={<PhaseGateRoute><SystemIntelligenceFeed /></PhaseGateRoute>} />
+                        <Route path="/habitat" element={<PhaseGateRoute><Habitat /></PhaseGateRoute>} />
                         <Route path="/status" element={<Status />} />
-                        <Route path="/system-integrity" element={<SystemIntegrity />} />
+                        <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
                         <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
@@ -472,7 +473,7 @@ const App = () => {
                         <Route path="/admin/governance" element={<AdminRoute><GovernanceControlPlane /></AdminRoute>} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
-                        <Route path="/evolution-mesh" element={<EvolutionMeshLanding />} />
+                        <Route path="/evolution-mesh" element={<PhaseGateRoute><EvolutionMeshLanding /></PhaseGateRoute>} />
                         <Route path="/architecture" element={<Architecture />} />
                         
                         {/* Legacy brain/cascade routes */}
