@@ -31,7 +31,7 @@ export function CmpsblLogo({ className, iconOnly = false, size = "md", priority 
       height={height}
       loading={priority ? "eager" : "lazy"}
       decoding={priority ? "sync" : "async"}
-      fetchPriority={priority ? "high" : "auto"}
+      {...(priority ? { fetchpriority: "high" } : {})}
       className={cn(
         sizeClass,
         "w-auto object-contain",
