@@ -159,8 +159,8 @@ export function EnhancedFooter() {
                       </button>
                     </li>
                   )}
-                  {/* Add XCTBL button to Ecosystem section */}
-                  {section.title === "Ecosystem" && (
+                  {/* Add XCTBL button to Products section */}
+                  {section.title === "Products" && (
                     <li>
                       <button
                         onClick={() => setXctblOpen(true)}
