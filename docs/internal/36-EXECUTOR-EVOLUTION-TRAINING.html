@@ -860,6 +860,38 @@ MUTATION ATTEMPT
 </div>
 
 <hr />
+<h2>11. Performance Optimizations (Installed)</h2>
+
+<p>The following 13 targeted optimizations were installed across the executor training infrastructure to enhance individual performance:</p>
+
+<h3>🟢 Training</h3>
+<table>
+<tr><th>#</th><th>Module</th><th>Optimization</th><th>What It Does</th></tr>
+<tr><td>4</td><td><code>replay-sandbox.ts</code></td><td>Replay Velocity</td><td>Tracks time-to-resolve, replays-to-resolve, p50/p90 percentiles, and acceleration trends across gap replays. Surfaces whether executors are getting faster at resolving gaps over time.</td></tr>
+</table>
+
+<h3>🔵 Diagnostics</h3>
+<table>
+<tr><th>#</th><th>Module</th><th>Optimization</th><th>What It Does</th></tr>
+<tr><td>9</td><td><code>skill-decay.ts</code></td><td>Skill-Weighted Decay</td><td>Assigns criticality weights per skill so high-value skills (e.g., DEFENSE operations) have lower decay tolerance than low-stakes ones. Configurable per-skill thresholds.</td></tr>
+<tr><td>10</td><td><code>skill-decay.ts</code></td><td>Recovery Tracking</td><td>Tracks recovery attempts after decay detection — measures duration, completeness (% back to peak), and overall recovery rate.</td></tr>
+<tr><td>11</td><td><code>micro-feedback.ts</code></td><td>Phase-Pair Correlation</td><td>Identifies brittle handoffs between sequential mutation phases by measuring failure propagation rates and latency impact when upstream phases fail.</td></tr>
+<tr><td>14</td><td><code>confidence-calibration.ts</code></td><td>Calibration Trend Line</td><td>Rolling 7-day ECE/bias windows with linear regression slope. Detects whether calibration is improving, stable, or degrading over time.</td></tr>
+<tr><td>16</td><td><code>stamina-metrics.ts</code></td><td>Recovery Rate Tracking</td><td>Measures post-cooldown recovery effectiveness, identifies optimal cooldown duration, and tracks whether recovery quality is trending up or down.</td></tr>
+<tr><td>19</td><td><code>mutation-complexity.ts</code></td><td>Executor-Relative Scoring</td><td>Adjusts mutation complexity scores based on each executor's proficiency profile. Outputs readiness level (ready/stretch/overreach) and proficiency gaps.</td></tr>
+<tr><td>20</td><td><code>failure-taxonomy.ts</code></td><td>Co-Occurrence Analysis</td><td>Detects failure category pairs that reliably co-occur within time windows. Enables predictive escalation before cascading failures develop.</td></tr>
+<tr><td>21</td><td><code>postmortem.ts</code></td><td>Lesson Effectiveness</td><td>Tracks whether post-mortem lessons actually reduced recurrence of their root cause category. Surfaces ineffective lessons for revision.</td></tr>
+<tr><td>23</td><td><code>repair-effectiveness.ts</code></td><td>Strategy Sequence Analysis</td><td>Analyzes the order strategies are attempted and identifies which sequences yield highest success. Outputs optimal strategy orderings per archetype.</td></tr>
+<tr><td>24</td><td><code>repair-effectiveness.ts</code></td><td>Diminishing Returns Detection</td><td>Compares first-third vs last-third success rates per strategy to detect strategies losing effectiveness. Recommends deprioritization or retirement.</td></tr>
+</table>
+
+<h3>🟣 Knowledge</h3>
+<table>
+<tr><th>#</th><th>Module</th><th>Optimization</th><th>What It Does</th></tr>
+<tr><td>26</td><td><code>domain-specialty.ts</code></td><td>Node-Level Mastery Decay</td><td>Per-node inactivity decay with configurable per-domain rates. Surfaces at-risk nodes within 5 days of decay onset and triggers refresher recommendations.</td></tr>
+</table>
+
+<hr />
 <p><em>CMPSBL OS Substrate — SPARTA Epoch — INTERNAL USE ONLY</em><br />
 <em>Kenneth E Sweet Jr · PromptFluid®</em><br />
 <em>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a> · DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></em></p>
