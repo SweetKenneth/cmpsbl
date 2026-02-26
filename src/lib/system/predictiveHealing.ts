@@ -242,13 +242,13 @@ export async function schedulePreventiveHealing(
     };
     
     // Queue the healing action
-    await supabase.from('brain_actions_queue').insert({
+    await supabase.from('brain_actions_queue').insert([{
       action_type: 'preventive_heal',
-      payload: action as unknown as Record<string, unknown>,
+      payload: action as unknown as import('@/integrations/supabase/types').Json,
       priority: 5,
       scheduled_at: action.scheduledFor,
       status: 'pending',
-    });
+    }]);
     
     return action;
   } catch (error) {
