@@ -1,16 +1,11 @@
 /**
  * Governance Drift Detector
- * SPARTA Epoch — Detects behavioral drift from governance intent
+ * SPARTA Epoch v11.5.2 — Fixed window init, proper wiring hooks
  * 
- * GAP: No mechanism existed to detect if the system's runtime behavior
- * has silently drifted from what the governance mode prescribes.
- * Unlike the compliance auditor (which checks flags), this detects
- * actual runtime behavioral drift through signal analysis.
- * 
- * Monitors:
+ * Monitors runtime behavioral drift from governance intent through:
  * - Mutation rate anomalies (mutations happening in OBSERVE mode)
  * - Signal severity escalation patterns
- * - Veto frequency spikes (system under stress but mode hasn't changed)
+ * - Veto frequency spikes
  * - Subsystem activation patterns inconsistent with mode
  */
 
@@ -38,71 +33,68 @@ export interface DriftReport {
 
 /** Rolling windows for drift detection */
 interface DriftWindow {
-  mutations: number[];     // mutation counts per interval
-  escalations: number[];   // signal escalation counts
-  vetoEvents: number[];    // veto submissions per interval
-  activations: Map<string, number[]>; // subsystem activation counts
+  mutations: number[];
+  escalations: number[];
+  vetoEvents: number[];
+  activations: Map<string, number[]>;
 }
 
-const window: DriftWindow = {
-  mutations: [],
-  escalations: [],
-  vetoEvents: [],
+const driftWindow: DriftWindow = {
+  mutations: [0],
+  escalations: [0],
+  vetoEvents: [0],
   activations: new Map(),
 };
 
-const WINDOW_SIZE = 30; // 30 intervals
+const WINDOW_SIZE = 30;
 
 /** Record a mutation event (call from mutation hooks) */
 export function recordMutation(): void {
-  ensureWindowEntry(window.mutations);
-  window.mutations[window.mutations.length - 1]++;
+  if (driftWindow.mutations.length === 0) driftWindow.mutations.push(0);
+  driftWindow.mutations[driftWindow.mutations.length - 1]++;
 }
 
 /** Record a signal escalation */
 export function recordEscalation(): void {
-  ensureWindowEntry(window.escalations);
-  window.escalations[window.escalations.length - 1]++;
+  if (driftWindow.escalations.length === 0) driftWindow.escalations.push(0);
+  driftWindow.escalations[driftWindow.escalations.length - 1]++;
 }
 
 /** Record a veto event */
 export function recordVetoEvent(): void {
-  ensureWindowEntry(window.vetoEvents);
-  window.vetoEvents[window.vetoEvents.length - 1]++;
+  if (driftWindow.vetoEvents.length === 0) driftWindow.vetoEvents.push(0);
+  driftWindow.vetoEvents[driftWindow.vetoEvents.length - 1]++;
 }
 
 /** Record a subsystem activation */
 export function recordActivation(subsystem: string): void {
-  if (!window.activations.has(subsystem)) {
-    window.activations.set(subsystem, []);
+  if (!driftWindow.activations.has(subsystem)) {
+    driftWindow.activations.set(subsystem, [0]);
   }
-  const arr = window.activations.get(subsystem)!;
-  ensureWindowEntry(arr);
+  const arr = driftWindow.activations.get(subsystem)!;
+  if (arr.length === 0) arr.push(0);
   arr[arr.length - 1]++;
-}
-
-function ensureWindowEntry(arr: number[]): void {
-  if (arr.length === 0 || arr.length < WINDOW_SIZE) {
-    arr.push(0);
-  }
-  while (arr.length > WINDOW_SIZE) arr.shift();
 }
 
 /** Advance the window (call on interval tick) */
 export function tickWindow(): void {
-  window.mutations.push(0);
-  window.escalations.push(0);
-  window.vetoEvents.push(0);
-  for (const [, arr] of window.activations) {
+  driftWindow.mutations.push(0);
+  driftWindow.escalations.push(0);
+  driftWindow.vetoEvents.push(0);
+  for (const [, arr] of driftWindow.activations) {
     arr.push(0);
   }
-  // Trim
-  while (window.mutations.length > WINDOW_SIZE) window.mutations.shift();
-  while (window.escalations.length > WINDOW_SIZE) window.escalations.shift();
-  while (window.vetoEvents.length > WINDOW_SIZE) window.vetoEvents.shift();
-  for (const [, arr] of window.activations) {
-    while (arr.length > WINDOW_SIZE) arr.shift();
+  // Trim all to WINDOW_SIZE
+  trimArray(driftWindow.mutations);
+  trimArray(driftWindow.escalations);
+  trimArray(driftWindow.vetoEvents);
+  for (const [, arr] of driftWindow.activations) {
+    trimArray(arr);
   }
+}
+
+function trimArray(arr: number[]): void {
+  while (arr.length > WINDOW_SIZE) arr.shift();
 }
 
 /**
@@ -114,7 +106,7 @@ export function analyzeDrift(currentMode: GovernanceMode): DriftReport {
 
   // 1. Mutation anomaly in OBSERVE/LOCKDOWN
   if (currentMode === 'OBSERVE' || currentMode === 'LOCKDOWN') {
-    const recentMutations = sum(window.mutations.slice(-5));
+    const recentMutations = sum(driftWindow.mutations.slice(-5));
     if (recentMutations > 0) {
       signals.push({
         type: 'mutation_anomaly',
@@ -128,8 +120,8 @@ export function analyzeDrift(currentMode: GovernanceMode): DriftReport {
   }
 
   // 2. Escalation frequency spike
-  const avgEscalations = avg(window.escalations);
-  const recentEscalations = sum(window.escalations.slice(-3));
+  const avgEscalations = avg(driftWindow.escalations);
+  const recentEscalations = sum(driftWindow.escalations.slice(-3));
   if (avgEscalations > 0 && recentEscalations > avgEscalations * 3) {
     signals.push({
       type: 'escalation_pattern',
@@ -142,8 +134,7 @@ export function analyzeDrift(currentMode: GovernanceMode): DriftReport {
   }
 
   // 3. Veto frequency spike (stress indicator)
-  const avgVetoes = avg(window.vetoEvents);
-  const recentVetoes = sum(window.vetoEvents.slice(-3));
+  const recentVetoes = sum(driftWindow.vetoEvents.slice(-3));
   if (recentVetoes > 3 && currentMode === 'ACTIVE') {
     signals.push({
       type: 'veto_spike',
@@ -159,7 +150,7 @@ export function analyzeDrift(currentMode: GovernanceMode): DriftReport {
   if (currentMode !== 'ACTIVE') {
     const suspectSubsystems = ['clm', 'dream', 'evolution'];
     for (const sub of suspectSubsystems) {
-      const activations = window.activations.get(sub);
+      const activations = driftWindow.activations.get(sub);
       if (activations) {
         const recent = sum(activations.slice(-5));
         if (recent > 0) {
@@ -223,8 +214,11 @@ function avg(arr: number[]): number {
 
 /** Reset drift state (for testing) */
 export function resetDriftState(): void {
-  window.mutations.length = 0;
-  window.escalations.length = 0;
-  window.vetoEvents.length = 0;
-  window.activations.clear();
+  driftWindow.mutations.length = 0;
+  driftWindow.mutations.push(0);
+  driftWindow.escalations.length = 0;
+  driftWindow.escalations.push(0);
+  driftWindow.vetoEvents.length = 0;
+  driftWindow.vetoEvents.push(0);
+  driftWindow.activations.clear();
 }
