@@ -12,6 +12,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
 import type { SubstrateModule } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
+import { initializeNeuralSubstrate, shutdownNeuralSubstrate } from '@/lib/substrate/neural';
 
 interface ModuleStatus {
   active: boolean;
