@@ -132,7 +132,7 @@ function getOrCreateSession(): { sessionId: string; isNew: boolean } {
         return { sessionId: id, isNew: false };
       }
     }
-  } catch {}
+  } catch { /* Expired or corrupt session — create new */ }
   const id = 'ses_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
   sessionStorage.setItem(SESSION_KEY, JSON.stringify({ id, ts: Date.now() }));
   return { sessionId: id, isNew: true };
@@ -184,7 +184,7 @@ async function sendTimeOnPage() {
         is_bounce: false,
       })
       .eq('id', sessionId);
-  } catch {}
+  } catch { /* Time-on-page telemetry — non-critical */ }
 }
 
 // ─── Main Track Function ────────────────────────────────────────────

@@ -4,6 +4,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureSet, secureGet } from '@/lib/system/secureStorage';
 
 export async function reconnectSupabase() {
   try {
@@ -15,7 +16,6 @@ export async function reconnectSupabase() {
       .single();
 
     if (error && error.code !== 'PGRST116') {
-      // PGRST116 is "no rows returned" which is fine - means connection works
       throw error;
     }
 
@@ -25,7 +25,7 @@ export async function reconnectSupabase() {
       timestamp: new Date().toISOString()
     };
 
-    localStorage.setItem('pf_supabase_status', JSON.stringify(status));
+    secureSet('pf_supabase_status', status);
     
     return status;
   } catch (error) {
@@ -35,13 +35,13 @@ export async function reconnectSupabase() {
       timestamp: new Date().toISOString()
     };
 
-    localStorage.setItem('pf_supabase_status', JSON.stringify(status));
+    secureSet('pf_supabase_status', status);
     
     throw error;
   }
 }
 
 export function getConnectionStatus() {
-  const stored = localStorage.getItem('pf_supabase_status');
-  return stored ? JSON.parse(stored) : { connected: false };
+  const stored = secureGet<{ connected: boolean; error?: string; timestamp?: string }>('pf_supabase_status');
+  return stored ?? { connected: false };
 }

@@ -267,21 +267,19 @@ class ConfidenceCalibrator {
   private ensureLoaded(): void {
     if (this.loaded) return;
     this.loaded = true;
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) this.records = JSON.parse(raw);
-      } catch { this.records = []; }
-    }
+    try {
+      const { secureGet } = await import('@/lib/system/secureStorage');
+      const data = secureGet<typeof this.records>(STORAGE_KEY);
+      if (data) this.records = data;
+    } catch { this.records = []; }
   }
 
   private persist(): void {
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const trimmed = this.records.slice(-500);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
-      } catch {}
-    }
+    try {
+      const { secureSet } = await import('@/lib/system/secureStorage');
+      const trimmed = this.records.slice(-500);
+      secureSet(STORAGE_KEY, trimmed);
+    } catch { /* Storage pressure — non-critical calibration data */ }
   }
 }
 

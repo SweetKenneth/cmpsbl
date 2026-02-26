@@ -253,21 +253,20 @@ class TierCommandClient {
 
   private loadTier(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        const stored = localStorage.getItem('clm_current_tier');
-        if (stored && TIERS[stored]) {
-          this.currentTier = TIERS[stored];
-        }
+      const { secureGet } = require('@/lib/system/secureStorage');
+      const stored = secureGet<string>('clm_current_tier');
+      if (stored && TIERS[stored]) {
+        this.currentTier = TIERS[stored];
       }
     } catch {
-      // Use default
+      // Use default tier
     }
   }
 
   private persistTier(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('clm_current_tier', this.currentTier.name);
+      const { secureSet } = require('@/lib/system/secureStorage');
+      secureSet('clm_current_tier', this.currentTier.name);
       }
     } catch {
       // Non-critical

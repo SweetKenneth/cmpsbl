@@ -734,9 +734,10 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
 
   private loadState(): ShadowPracticeState {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) return JSON.parse(stored);
-    } catch { /* ignore */ }
+      const { secureGet } = await import('@/lib/system/secureStorage');
+      const stored = secureGet<ShadowPracticeState>(STORAGE_KEY);
+      if (stored) return stored;
+    } catch { /* Storage unavailable — use defaults */ }
 
     return {
       enabled: false,
@@ -755,6 +756,7 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
 
   private persistState(): void {
     try {
+      const { secureSet } = await import('@/lib/system/secureStorage');
       // Don't persist generated code in results (shadow-only)
       const toSave = {
         ...this.state,
@@ -764,8 +766,8 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
           task: { ...r.task, original_code: '[redacted]', prompt: '[redacted]' },
         })),
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-    } catch { /* ignore */ }
+      secureSet(STORAGE_KEY, toSave);
+    } catch { /* Storage pressure — practice state is recoverable */ }
   }
 
   // ═══════════════════════════════════════════════════════════════

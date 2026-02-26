@@ -4,6 +4,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureSet, secureGet } from '@/lib/system/secureStorage';
 
 export async function listSupabaseTables() {
   try {
@@ -71,7 +72,7 @@ export async function listSupabaseTables() {
       timestamp: new Date().toISOString()
     };
 
-    localStorage.setItem('pf_table_list', JSON.stringify(status));
+    secureSet('pf_table_list', status);
     return status;
 
   } catch (error) {
@@ -81,12 +82,12 @@ export async function listSupabaseTables() {
       timestamp: new Date().toISOString()
     };
 
-    localStorage.setItem('pf_table_list', JSON.stringify(status));
+    secureSet('pf_table_list', status);
     throw error;
   }
 }
 
 export function getCachedTableList() {
-  const stored = localStorage.getItem('pf_table_list');
-  return stored ? JSON.parse(stored) : { accessible: false };
+  const stored = secureGet<{ accessible: boolean; table_count?: number; tables?: string[] }>('pf_table_list');
+  return stored ?? { accessible: false };
 }

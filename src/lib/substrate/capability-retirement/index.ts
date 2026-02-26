@@ -301,27 +301,24 @@ class RetirementEngine {
   private ensureLoaded(): void {
     if (this.loaded) return;
     this.loaded = true;
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const state = JSON.parse(raw);
-          this.candidates = state.candidates || [];
-          this.lastScanAt = state.lastScanAt || null;
-        }
-      } catch { this.candidates = []; }
-    }
+    try {
+      const { secureGet } = await import('@/lib/system/secureStorage');
+      const state = secureGet<{ candidates: typeof this.candidates; lastScanAt: string | null }>(STORAGE_KEY);
+      if (state) {
+        this.candidates = state.candidates || [];
+        this.lastScanAt = state.lastScanAt || null;
+      }
+    } catch { this.candidates = []; }
   }
 
   private persist(): void {
-    if (typeof localStorage !== 'undefined') {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          candidates: this.candidates.slice(-200),
-          lastScanAt: this.lastScanAt,
-        }));
-      } catch { /* Storage pressure — non-critical */ }
-    }
+    try {
+      const { secureSet } = await import('@/lib/system/secureStorage');
+      secureSet(STORAGE_KEY, {
+        candidates: this.candidates.slice(-200),
+        lastScanAt: this.lastScanAt,
+      });
+    } catch { /* Storage pressure — non-critical retirement data */ }
   }
 }
 
