@@ -35,9 +35,9 @@ export async function learnFromResult(data: LearningData): Promise<void> {
         success: data.success,
         input_data: {
           prompt: data.request.prompt,
-          type: data.request.type,
-          priority: data.request.priority,
-          context: data.request.context,
+          type: data.request.type || null,
+          priority: data.request.priority || null,
+          context: (data.request.context || null) as Record<string, string> | null,
         },
         output_data: {
           model: data.model,
