@@ -1,6 +1,7 @@
 /**
- * Upgrade — Artifact Capacity Model
- * Clean posture tiers · artifact slots · no feature-based pricing
+ * Upgrade — Equal-Slot Artifact Capacity Model
+ * Builder (3) · Operator (6) · Architect (12)
+ * All 24 packs visible. Capacity controls activation only.
  */
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -15,9 +16,9 @@ import { cn } from '@/lib/utils';
 import {
   Check, ArrowRight, Brain, Package, Shield, Zap,
   Server, Building2, Lock, Unlock, Layers, Eye,
-  MessageSquare, Sparkles
+  Sparkles, Compass
 } from 'lucide-react';
-import { ARTIFACT_PACKS, PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
+import { ARTIFACT_PACKS, PRODUCT_TIERS, STRATEGIC_DOMAINS, type ProductTier } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 import { motion } from 'framer-motion';
 
@@ -37,59 +38,58 @@ const TIERS: {
   features: string[];
 }[] = [
   {
-    key: 'base',
-    name: 'Base',
+    key: 'builder',
+    name: 'Builder',
     price: '$0',
     annualPrice: '$0',
     period: '/mo',
     tagline: 'Build real things. Not a trial.',
-    description: 'Full runtime access with baseline technology. Activate up to 3 artifact packs.',
+    description: 'Full runtime access with baseline technology. Activate any 3 artifact packs.',
     accent: 'from-emerald-500 to-emerald-600',
     icon: Unlock,
     features: [
       '3 Artifact Slots',
       'Full baseline runtime',
+      'All 24 packs visible',
       'Standard memory depth',
       'Core templates & engines',
-      'Dashboard access',
       'Community support',
     ],
   },
   {
-    key: 'professional',
-    name: 'Professional',
+    key: 'operator',
+    name: 'Operator',
     price: '$19',
     annualPrice: '$15',
     period: '/mo',
-    tagline: 'Deeper capacity for serious builders.',
-    description: 'Expanded artifact slots, deeper memory, and advanced governance scope.',
+    tagline: 'Deeper capacity for serious operators.',
+    description: 'Expanded slot capacity, deeper memory, and advanced governance scope.',
     accent: 'from-violet-500 to-purple-500',
     icon: Sparkles,
     popular: true,
     stripeTier: 'architect' as EngineSubscriptionTier,
     features: [
-      '8 Artifact Slots',
+      '6 Artifact Slots',
       'Expanded memory depth',
-      'Priority routing',
-      'Workflow automation',
-      'Cross-system orchestration',
+      'All 24 packs visible',
       'Advanced governance',
+      'Priority routing',
       'Priority support',
     ],
   },
   {
-    key: 'enterprise',
-    name: 'Enterprise',
+    key: 'architect',
+    name: 'Architect',
     price: '$99',
     annualPrice: '$79',
     period: '/mo',
     tagline: 'Full control. Your infrastructure.',
-    description: 'Unlimited artifact capacity, self-hosted deployment, and full governance authority.',
+    description: '12 artifact slots, self-hosted deployment, and full governance authority.',
     accent: 'from-amber-500 to-orange-500',
     icon: Building2,
     stripeTier: 'enterprise' as EngineSubscriptionTier,
     features: [
-      'Unlimited Artifact Slots',
+      '12 Artifact Slots',
       'Dedicated memory partitions',
       'Self-hosted deployment (LNCHBL)',
       'Full governance authority',
@@ -101,34 +101,46 @@ const TIERS: {
   },
 ];
 
-function getPacksForTier(tier: ProductTier): ArtifactPack[] {
-  const tierOrder: Record<ProductTier, number> = { base: 0, professional: 1, enterprise: 2 };
-  return ARTIFACT_PACKS.filter(p => tierOrder[p.tier] <= tierOrder[tier]);
-}
-
 /* ─── Value Pillars ─── */
 const PILLARS = [
   { icon: Brain, title: 'Persistent Memory', description: 'Your agents remember. Every session builds on the last.' },
   { icon: Layers, title: 'Unified Runtime', description: 'Every module runs for every user. No feature gating.' },
-  { icon: Package, title: 'Artifact Packs', description: 'Structured bundles that activate new capabilities within your slots.' },
-  { icon: Server, title: 'Deployment Flexibility', description: 'Cloud-first or self-hosted. Your infrastructure, your rules.' },
+  { icon: Package, title: 'Equal-Slot Packs', description: 'Every pack = 1 slot. Choose any combination that fits your work.' },
+  { icon: Server, title: 'Deployment Sovereignty', description: 'Cloud-first or self-hosted. Your infrastructure, your rules.' },
 ];
+
+/* ─── Domain icons ─── */
+const DOMAIN_ICONS: Record<string, React.ElementType> = {
+  'domain-memory': Brain,
+  'domain-coordination': Zap,
+  'domain-intelligence': Compass,
+  'domain-resilience': Shield,
+  'domain-sovereignty': Server,
+  'domain-perception': Eye,
+};
 
 export default function Upgrade() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
+  const [activeDomain, setActiveDomain] = useState<string | null>(null);
 
-  // Map current subscription tier to product tier
   const currentProductTier: ProductTier =
-    currentTier === 'enterprise' ? 'enterprise' :
-    ['architect', 'pro', 'creator', 'builder'].includes(currentTier) ? 'professional' :
-    'base';
+    currentTier === 'enterprise' ? 'architect' :
+    ['architect', 'pro', 'creator', 'builder'].includes(currentTier) ? 'operator' :
+    'builder';
+
+  const filteredPacks = activeDomain
+    ? ARTIFACT_PACKS.filter(p => {
+        const domain = STRATEGIC_DOMAINS.find(d => d.id === activeDomain);
+        return domain?.packIds.includes(p.id);
+      })
+    : ARTIFACT_PACKS;
 
   return (
     <div className="min-h-screen bg-background">
       <SEO
         title="Pricing — Clockless"
-        description="Unified runtime. Artifact capacity. Choose your depth with structured packs — no feature gating, no inflated counts."
+        description="Unified runtime. Equal-slot artifact packs. Choose your capacity — 3, 6, or 12 active packs from 24 available."
       />
       <PublicNav />
 
@@ -148,7 +160,7 @@ export default function Upgrade() {
               One Runtime. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Your Capacity.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Every plan runs the full system. Choose how many artifact packs you activate.
+              24 artifact packs. Every pack = 1 slot. Choose 3, 6, or 12.
             </p>
           </motion.div>
 
@@ -185,10 +197,9 @@ export default function Upgrade() {
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {TIERS.map((t, i) => {
               const isCurrent = currentProductTier === t.key;
-              const displayPrice = billingInterval === 'annual' && t.key !== 'base' ? t.annualPrice : t.price;
+              const displayPrice = billingInterval === 'annual' && t.key !== 'builder' ? t.annualPrice : t.price;
               const TierIcon = t.icon;
               const tierConfig = PRODUCT_TIERS[t.key];
-              const slotLabel = tierConfig.slots === 'unlimited' ? 'Unlimited' : `${tierConfig.slots}`;
 
               return (
                 <motion.div
@@ -205,10 +216,8 @@ export default function Upgrade() {
                       : "border-border/50 hover:border-border",
                   )}
                 >
-                  {/* Gradient accent bar */}
                   <div className={cn("h-1.5 bg-gradient-to-r", t.accent)} />
 
-                  {/* Badges */}
                   {isCurrent && (
                     <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground text-[10px]">Current</Badge>
                   )}
@@ -217,7 +226,6 @@ export default function Upgrade() {
                   )}
 
                   <div className="p-6 flex flex-col flex-1">
-                    {/* Header */}
                     <div className="flex items-center gap-3 mb-4">
                       <div className={cn("w-10 h-10 rounded-xl bg-gradient-to-r flex items-center justify-center", t.accent)}>
                         <TierIcon className="w-5 h-5 text-white" />
@@ -233,19 +241,17 @@ export default function Upgrade() {
 
                     <p className="text-sm text-muted-foreground mb-4">{t.tagline}</p>
 
-                    {/* Artifact Slot Capacity — key differentiator */}
                     <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5">
                       <div className="flex items-center gap-2 mb-2">
                         <Package className="w-4 h-4 text-primary" />
                         <span className="text-sm font-semibold">Artifact Capacity</span>
                       </div>
-                      <div className="text-2xl font-bold text-primary">{slotLabel} Slots</div>
+                      <div className="text-2xl font-bold text-primary">{tierConfig.slots} Slots</div>
                       <p className="text-xs text-muted-foreground mt-1">{t.description}</p>
                     </div>
 
                     <div className="h-px bg-border/50 mb-5" />
 
-                    {/* Features */}
                     <ul className="space-y-3 flex-1">
                       {t.features.map(f => (
                         <li key={f} className="flex items-start gap-2.5 text-sm">
@@ -255,9 +261,8 @@ export default function Upgrade() {
                       ))}
                     </ul>
 
-                    {/* CTA */}
                     <div className="mt-6">
-                      {t.key === 'base' ? (
+                      {t.key === 'builder' ? (
                         <Button variant="outline" className="w-full" asChild>
                           <Link to="/start-here">Get Started Free</Link>
                         </Button>
@@ -311,50 +316,50 @@ export default function Upgrade() {
           </div>
         </section>
 
-        {/* ═══ ARTIFACT PACKS ═══ */}
+        {/* ═══ STRATEGIC DOMAINS ═══ */}
         <section className="container mx-auto px-4 mt-24">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
-                <Package className="w-3 h-3 mr-1.5 inline" />
-                Structured Packs
+                <Compass className="w-3 h-3 mr-1.5 inline" />
+                Strategic Domains
               </Badge>
-              <h2 className="text-3xl font-bold">Artifact Packs</h2>
-              <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-                Each pack is a versioned bundle of composed components. Activate packs within your slot capacity.
+              <h2 className="text-3xl font-bold">Why the Substrate Is Category-Defining</h2>
+              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+                Not features assembled from APIs. Properties of a system that runs as one thing.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {ARTIFACT_PACKS.map((pack, i) => {
-                const tierLabel = pack.tier === 'base' ? 'Base' : pack.tier === 'professional' ? 'Professional' : 'Enterprise';
-                const tierColor = pack.tier === 'base' ? 'bg-emerald-500/10 text-emerald-600' :
-                  pack.tier === 'professional' ? 'bg-violet-500/10 text-violet-600' :
-                  'bg-amber-500/10 text-amber-600';
-
+              {STRATEGIC_DOMAINS.map((domain, i) => {
+                const DIcon = DOMAIN_ICONS[domain.id] || Package;
+                const isActive = activeDomain === domain.id;
                 return (
                   <motion.div
-                    key={pack.id}
+                    key={domain.id}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
+                    transition={{ delay: i * 0.06 }}
                   >
-                    <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
+                    <Card
+                      className={cn(
+                        "h-full cursor-pointer transition-all",
+                        isActive
+                          ? "border-primary ring-1 ring-primary/20"
+                          : "border-border/50 hover:border-primary/20"
+                      )}
+                      onClick={() => setActiveDomain(isActive ? null : domain.id)}
+                    >
                       <CardContent className="p-5 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-bold text-sm">{pack.name}</h3>
-                          <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-[10px] px-1.5">{pack.version}</Badge>
-                            <Badge className={cn("text-[10px] px-1.5", tierColor)}>{tierLabel}+</Badge>
-                          </div>
+                        <div className="flex items-center gap-2">
+                          <DIcon className="w-5 h-5 text-primary" />
+                          <h3 className="font-bold text-sm">{domain.name}</h3>
                         </div>
-                        <p className="text-sm text-muted-foreground">{pack.description}</p>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Package className="w-3 h-3" />
-                          <span>{pack.slotsRequired} slot{pack.slotsRequired > 1 ? 's' : ''} required</span>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{domain.thesis}</p>
+                        <div className="text-[10px] text-muted-foreground/60">
+                          {domain.packIds.length} packs
                         </div>
-                        <p className="text-xs text-muted-foreground/70 italic">{pack.useCase}</p>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -364,13 +369,65 @@ export default function Upgrade() {
           </div>
         </section>
 
+        {/* ═══ ARTIFACT PACKS ═══ */}
+        <section className="container mx-auto px-4 mt-16">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-8">
+              <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
+                <Package className="w-3 h-3 mr-1.5 inline" />
+                {activeDomain
+                  ? STRATEGIC_DOMAINS.find(d => d.id === activeDomain)?.name
+                  : 'All 24 Packs'}
+              </Badge>
+              <h2 className="text-3xl font-bold">Artifact Packs</h2>
+              <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+                Every pack = 1 slot. All visible to all plans. Capacity controls activation.
+              </p>
+              {activeDomain && (
+                <button
+                  onClick={() => setActiveDomain(null)}
+                  className="mt-3 text-xs text-primary hover:underline"
+                >
+                  Show all 24 packs
+                </button>
+              )}
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredPacks.map((pack, i) => (
+                <motion.div
+                  key={pack.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.04 }}
+                >
+                  <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
+                    <CardContent className="p-5 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-sm">{pack.name}</h3>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-[10px] px-1.5">{pack.version}</Badge>
+                          <Badge variant="outline" className="text-[10px] px-1.5 text-primary border-primary/30">1 slot</Badge>
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{pack.description}</p>
+                      <p className="text-xs text-muted-foreground/70 italic">{pack.useCase}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ═══ ENTERPRISE CTA ═══ */}
         <section className="container mx-auto px-4 mt-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Building2 className="w-10 h-10 text-amber-500 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold">Enterprise Custom</h3>
+            <h3 className="text-2xl font-bold">Architect Custom</h3>
             <p className="text-muted-foreground mt-2 max-w-lg mx-auto">
-              Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding. Unlimited artifact capacity with custom packs.
+              Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding. Custom slot capacity beyond 12 with dedicated support.
             </p>
             <Button variant="outline" className="mt-6" asChild>
               <a href="mailto:Dev@CMPSBL.com">Contact Sales <ArrowRight className="w-4 h-4 ml-1" /></a>
@@ -384,10 +441,11 @@ export default function Upgrade() {
             <h2 className="text-2xl font-bold text-center">Common Questions</h2>
             {[
               { q: 'What is the baseline runtime?', a: 'Every plan includes the full system runtime — all engines, pipelines, and core capabilities. There is no module gating. Plans differ in artifact capacity, not in what the system can do.' },
-              { q: 'What are artifact slots?', a: 'Artifact slots determine how many structured packs you can activate. Each pack adds composed functionality — like advanced memory, automation, or deployment rights.' },
-              { q: 'Can I start free and upgrade later?', a: 'Yes. The Base plan is fully functional. Upgrade when you need more artifact capacity or deeper memory.' },
-              { q: 'What happens when my subscription ends?', a: 'Your projects continue working on the baseline runtime. Activated packs beyond your slot capacity are paused until you resubscribe.' },
-              { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Enterprise plans include deployment rights to run the system on your own infrastructure.' },
+              { q: 'Why does every pack cost 1 slot?', a: 'Simplicity enables clarity. Every artifact pack is a composed capability of equal strategic weight. Choose any combination — no pack is locked behind a specific tier.' },
+              { q: 'Can I change my active packs?', a: 'Yes. You can activate and deactivate packs at any time within your slot capacity. No migration, no waiting.' },
+              { q: 'Can I start free and upgrade later?', a: 'Yes. The Builder plan is fully functional with 3 slots. Upgrade to Operator (6) or Architect (12) when you need more capacity.' },
+              { q: 'What happens when my subscription ends?', a: 'Your projects continue on the baseline runtime. Activated packs beyond your slot capacity are paused until you resubscribe.' },
+              { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Architect plans include deployment rights to run the system on your own infrastructure.' },
             ].map(faq => (
               <div key={faq.q} className="space-y-2">
                 <h3 className="font-semibold">{faq.q}</h3>
