@@ -237,9 +237,9 @@ export async function initializeLocalMode(): Promise<{
 
   // Set local mode flag
   secureSet('pf_local_mode', true);
-  localStorage.setItem('pf_skip_sync', 'true');
-  localStorage.setItem('pf_skip_diagnostics', 'true');
-  localStorage.setItem('pf_skip_telemetry', 'true');
+  secureSet('pf_skip_sync', true);
+  secureSet('pf_skip_diagnostics', true);
+  secureSet('pf_skip_telemetry', true);
 
   // Build dependency graph
   const graph = await buildDependencyGraph();
@@ -266,7 +266,7 @@ export function getLocalModeStatus(): {
   modules: string[];
   timestamp: number;
 } {
-  const isLocal = secureGet<boolean>('pf_local_mode') === true || localStorage.getItem('pf_local_mode') === 'true';
+  const isLocal = secureGet<boolean>('pf_local_mode') === true;
   const modules: string[] = [];
 
   const moduleNames = ['Brain', 'Cascade', 'PTCHBL', 'RCKBL', 'Defense', 'Nexus'];
