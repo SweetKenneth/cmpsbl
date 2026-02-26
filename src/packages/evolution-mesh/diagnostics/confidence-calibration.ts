@@ -139,3 +139,114 @@ export function getCalibrationReport(executorId: string): CalibrationReport {
 export function getCalibrationPoints(executorId: string): CalibrationPoint[] {
   return calibrationData.filter(p => p.executorId === executorId);
 }
+
+// ── #14 Calibration Trend Line ──
+
+export interface CalibrationTrendPoint {
+  windowStart: number;
+  windowEnd: number;
+  ece: number;
+  mce: number;
+  bias: number;
+  pointCount: number;
+}
+
+export interface CalibrationTrendReport {
+  executorId: string;
+  trendPoints: CalibrationTrendPoint[];
+  direction: 'improving' | 'stable' | 'degrading';
+  /** Rate of ECE change per window (negative = improving) */
+  eceSlope: number;
+  /** Recommended action based on trend */
+  recommendation: string;
+}
+
+const TREND_WINDOW_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+/**
+ * Generate a calibration trend line showing ECE/bias over rolling windows.
+ */
+export function getCalibrationTrend(executorId: string): CalibrationTrendReport {
+  const points = calibrationData
+    .filter(p => p.executorId === executorId)
+    .sort((a, b) => a.timestamp - b.timestamp);
+
+  if (points.length < 20) {
+    return {
+      executorId,
+      trendPoints: [],
+      direction: 'stable',
+      eceSlope: 0,
+      recommendation: 'Insufficient data for trend analysis. Continue recording calibration points.',
+    };
+  }
+
+  const firstTime = points[0].timestamp;
+  const now = Date.now();
+  const trendPoints: CalibrationTrendPoint[] = [];
+
+  let windowStart = firstTime;
+  while (windowStart < now) {
+    const windowEnd = windowStart + TREND_WINDOW_MS;
+    const windowPoints = points.filter(p => p.timestamp >= windowStart && p.timestamp < windowEnd);
+
+    if (windowPoints.length >= 5) {
+      // Compute ECE for this window
+      let eceSum = 0;
+      let mce = 0;
+      let biasSum = 0;
+      let count = 0;
+
+      for (const range of BUCKET_RANGES) {
+        const inBucket = windowPoints.filter(p => p.predictedConfidence >= range.min && p.predictedConfidence < range.max);
+        if (inBucket.length === 0) continue;
+        const avgPred = inBucket.reduce((s, p) => s + p.predictedConfidence, 0) / inBucket.length;
+        const actualRate = inBucket.filter(p => p.actualSuccess).length / inBucket.length;
+        const error = Math.abs(avgPred - actualRate);
+        eceSum += error * inBucket.length;
+        mce = Math.max(mce, error);
+        biasSum += (avgPred - actualRate) * inBucket.length;
+        count += inBucket.length;
+      }
+
+      trendPoints.push({
+        windowStart,
+        windowEnd,
+        ece: count > 0 ? Math.round((eceSum / count) * 1000) / 1000 : 1,
+        mce: Math.round(mce * 1000) / 1000,
+        bias: count > 0 ? Math.round((biasSum / count) * 1000) / 1000 : 0,
+        pointCount: windowPoints.length,
+      });
+    }
+
+    windowStart = windowEnd;
+  }
+
+  // Compute slope via simple linear regression on ECE values
+  let direction: CalibrationTrendReport['direction'] = 'stable';
+  let eceSlope = 0;
+
+  if (trendPoints.length >= 3) {
+    const n = trendPoints.length;
+    const xMean = (n - 1) / 2;
+    const yMean = trendPoints.reduce((s, p) => s + p.ece, 0) / n;
+    let num = 0, den = 0;
+    for (let i = 0; i < n; i++) {
+      num += (i - xMean) * (trendPoints[i].ece - yMean);
+      den += (i - xMean) ** 2;
+    }
+    eceSlope = den > 0 ? Math.round((num / den) * 10000) / 10000 : 0;
+
+    if (eceSlope < -0.005) direction = 'improving';
+    else if (eceSlope > 0.005) direction = 'degrading';
+  }
+
+  let recommendation: string;
+  switch (direction) {
+    case 'improving': recommendation = 'Calibration is improving. Maintain current feedback patterns.'; break;
+    case 'degrading': recommendation = 'Calibration is degrading. Consider recalibration drills or reducing confidence in unfamiliar domains.'; break;
+    default: recommendation = 'Calibration is stable. Monitor for drift in new mutation types.';
+  }
+
+  return { executorId, trendPoints, direction, eceSlope, recommendation };
+}

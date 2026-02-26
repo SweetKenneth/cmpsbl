@@ -203,3 +203,74 @@ export function getFailureTaxonomyReport(executorId?: string): FailureTaxonomyRe
     trendDirection,
   };
 }
+
+// ── #20 Co-Occurrence Analysis ──
+
+export interface FailureCoOccurrence {
+  categoryA: FailureCategory;
+  categoryB: FailureCategory;
+  coOccurrenceCount: number;
+  /** How often B follows A within the time window */
+  conditionalProbability: number;
+  avgTimeBetweenMs: number;
+  predictiveStrength: 'weak' | 'moderate' | 'strong';
+}
+
+/**
+ * Analyze failure co-occurrence patterns for predictive escalation.
+ * Identifies which failure types tend to occur together, enabling preemptive action.
+ */
+export function getFailureCoOccurrences(executorId?: string, windowMs: number = 2 * 60 * 60 * 1000): FailureCoOccurrence[] {
+  const failures = executorId
+    ? classifiedFailures.filter(f => f.executorId === executorId)
+    : classifiedFailures;
+
+  const sorted = [...failures].sort((a, b) => a.timestamp - b.timestamp);
+  const pairMap = new Map<string, { count: number; aCount: number; timeDiffs: number[] }>();
+
+  for (let i = 0; i < sorted.length; i++) {
+    const a = sorted[i];
+    // Look ahead for co-occurrences within window
+    for (let j = i + 1; j < sorted.length; j++) {
+      const b = sorted[j];
+      if (b.timestamp - a.timestamp > windowMs) break;
+      if (a.category === b.category) continue; // skip self-pairs
+
+      const key = `${a.category}|${b.category}`;
+      const data = pairMap.get(key) ?? { count: 0, aCount: 0, timeDiffs: [] };
+      data.count++;
+      data.timeDiffs.push(b.timestamp - a.timestamp);
+      pairMap.set(key, data);
+    }
+  }
+
+  // Count occurrences of each category for conditional probability
+  const categoryCounts = new Map<FailureCategory, number>();
+  for (const f of failures) {
+    categoryCounts.set(f.category, (categoryCounts.get(f.category) ?? 0) + 1);
+  }
+
+  const results: FailureCoOccurrence[] = [];
+  for (const [key, data] of pairMap.entries()) {
+    if (data.count < 2) continue;
+    const [catA, catB] = key.split('|') as [FailureCategory, FailureCategory];
+    const aCount = categoryCounts.get(catA) ?? 1;
+    const conditionalProbability = Math.round((data.count / aCount) * 1000) / 1000;
+    const avgTimeBetween = Math.round(data.timeDiffs.reduce((a, b) => a + b, 0) / data.timeDiffs.length);
+
+    let predictiveStrength: FailureCoOccurrence['predictiveStrength'] = 'weak';
+    if (conditionalProbability >= 0.5) predictiveStrength = 'strong';
+    else if (conditionalProbability >= 0.25) predictiveStrength = 'moderate';
+
+    results.push({
+      categoryA: catA,
+      categoryB: catB,
+      coOccurrenceCount: data.count,
+      conditionalProbability,
+      avgTimeBetweenMs: avgTimeBetween,
+      predictiveStrength,
+    });
+  }
+
+  return results.sort((a, b) => b.conditionalProbability - a.conditionalProbability);
+}

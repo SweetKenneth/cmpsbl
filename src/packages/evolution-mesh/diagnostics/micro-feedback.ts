@@ -181,3 +181,75 @@ export function getFeedbackMetrics(executorId?: string): {
     commonBottlenecks: bottlenecks,
   };
 }
+
+// ── #11 Phase-Pair Correlation ──
+
+export interface PhasePairCorrelation {
+  phaseA: string;
+  phaseB: string;
+  coOccurrenceCount: number;
+  /** When phaseA is negative, how often is phaseB also negative? */
+  failurePropagationRate: number;
+  /** Average latency increase in phaseB when phaseA is negative vs positive */
+  latencyImpactMs: number;
+  brittleness: 'low' | 'medium' | 'high';
+}
+
+/**
+ * Analyze phase-pair correlations to identify brittle handoffs.
+ * Finds sequential phase pairs where failure in one reliably causes failure in the next.
+ */
+export function getPhasePairCorrelations(executorId?: string): PhasePairCorrelation[] {
+  const sessions = feedbackSessions.filter(s => !executorId || s.executorId === executorId);
+  
+  const pairMap = new Map<string, {
+    total: number;
+    bothNeg: number;
+    aPos_bLatency: number[];
+    aNeg_bLatency: number[];
+  }>();
+
+  for (const session of sessions) {
+    for (let i = 0; i < session.steps.length - 1; i++) {
+      const a = session.steps[i];
+      const b = session.steps[i + 1];
+      const key = `${a.phase}→${b.phase}`;
+      const data = pairMap.get(key) ?? { total: 0, bothNeg: 0, aPos_bLatency: [], aNeg_bLatency: [] };
+      
+      data.total++;
+      if (a.signal === 'negative' && b.signal === 'negative') data.bothNeg++;
+      if (a.signal === 'negative') data.aNeg_bLatency.push(b.durationMs);
+      else if (a.signal === 'positive') data.aPos_bLatency.push(b.durationMs);
+      
+      pairMap.set(key, data);
+    }
+  }
+
+  const correlations: PhasePairCorrelation[] = [];
+  for (const [key, data] of pairMap.entries()) {
+    if (data.total < 3) continue;
+    const [phaseA, phaseB] = key.split('→');
+    const negTotal = data.aNeg_bLatency.length;
+    const propagationRate = negTotal > 0 ? data.bothNeg / negTotal : 0;
+    
+    const avgPosLatency = data.aPos_bLatency.length > 0
+      ? data.aPos_bLatency.reduce((a, b) => a + b, 0) / data.aPos_bLatency.length : 0;
+    const avgNegLatency = data.aNeg_bLatency.length > 0
+      ? data.aNeg_bLatency.reduce((a, b) => a + b, 0) / data.aNeg_bLatency.length : 0;
+    const latencyImpactMs = Math.round(avgNegLatency - avgPosLatency);
+
+    let brittleness: PhasePairCorrelation['brittleness'] = 'low';
+    if (propagationRate >= 0.7) brittleness = 'high';
+    else if (propagationRate >= 0.4) brittleness = 'medium';
+
+    correlations.push({
+      phaseA, phaseB,
+      coOccurrenceCount: data.total,
+      failurePropagationRate: Math.round(propagationRate * 1000) / 1000,
+      latencyImpactMs,
+      brittleness,
+    });
+  }
+
+  return correlations.sort((a, b) => b.failurePropagationRate - a.failurePropagationRate);
+}

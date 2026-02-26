@@ -211,3 +211,78 @@ function deriveTags(ctx: { error: string; phase: string; archetype?: string; mod
   if (ctx.modulesAffected.length > 5) tags.push('wide_scope');
   return tags;
 }
+
+// ── #21 Lesson Effectiveness Tracking ──
+
+export interface LessonEffectivenessRecord {
+  lessonText: string;
+  sourcePostMortemId: string;
+  rootCauseCategory: string;
+  /** How many times this lesson's root cause has recurred since the lesson was generated */
+  recurrenceCount: number;
+  /** Did the recurrence rate drop after the lesson was generated? */
+  effective: boolean | null;
+  firstSeen: number;
+  lastRecurrence?: number;
+}
+
+/**
+ * Evaluate effectiveness of post-mortem lessons.
+ * Checks whether the same root cause category recurred after a lesson was generated.
+ */
+export function evaluateLessonEffectiveness(): LessonEffectivenessRecord[] {
+  const results: LessonEffectivenessRecord[] = [];
+  const seen = new Set<string>();
+
+  for (const pm of postMortems) {
+    for (const lesson of pm.lessons) {
+      const key = `${pm.rootCause.category}:${lesson}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      // Count recurrences of same root cause category AFTER this post-mortem
+      const recurrences = postMortems.filter(
+        other => other.id !== pm.id
+          && other.rootCause.category === pm.rootCause.category
+          && other.createdAt > pm.createdAt,
+      );
+
+      // Count recurrences BEFORE for comparison
+      const priorCount = postMortems.filter(
+        other => other.id !== pm.id
+          && other.rootCause.category === pm.rootCause.category
+          && other.createdAt <= pm.createdAt,
+      ).length;
+
+      let effective: boolean | null = null;
+      if (priorCount >= 2 && recurrences.length < priorCount * 0.5) effective = true;
+      else if (recurrences.length >= priorCount) effective = false;
+
+      results.push({
+        lessonText: lesson,
+        sourcePostMortemId: pm.id,
+        rootCauseCategory: pm.rootCause.category,
+        recurrenceCount: recurrences.length,
+        effective,
+        firstSeen: pm.createdAt,
+        lastRecurrence: recurrences.length > 0 ? recurrences[recurrences.length - 1].createdAt : undefined,
+      });
+    }
+  }
+
+  return results.sort((a, b) => b.recurrenceCount - a.recurrenceCount);
+}
+
+/**
+ * Get lessons that are NOT working (root cause keeps recurring).
+ */
+export function getIneffectiveLessons(): LessonEffectivenessRecord[] {
+  return evaluateLessonEffectiveness().filter(l => l.effective === false);
+}
+
+/**
+ * Get lessons that ARE working (root cause stopped recurring).
+ */
+export function getEffectiveLessons(): LessonEffectivenessRecord[] {
+  return evaluateLessonEffectiveness().filter(l => l.effective === true);
+}

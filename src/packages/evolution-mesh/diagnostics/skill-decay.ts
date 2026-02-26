@@ -174,3 +174,156 @@ export function getExecutorSkillProfiles(executorId: string): SkillProfile[] {
   )];
   return skillKeys.map(sk => analyzeSkillDecay(executorId, sk));
 }
+
+// ── #9 Skill-Weighted Decay ──
+
+export interface SkillWeightConfig {
+  skillKey: string;
+  /** How critical this skill is (higher = more sensitive to decay). Default 1.0 */
+  criticalityWeight: number;
+  /** Custom decay threshold override (default uses global DECAY_THRESHOLD) */
+  customDecayThreshold?: number;
+  /** Custom inactivity threshold in days */
+  customInactivityDays?: number;
+}
+
+const skillWeights = new Map<string, SkillWeightConfig>();
+
+/**
+ * Set domain-weighted decay sensitivity for a skill.
+ * Higher criticality = lower tolerance for decay.
+ */
+export function setSkillWeight(config: SkillWeightConfig): void {
+  skillWeights.set(config.skillKey, config);
+}
+
+/**
+ * Get the effective decay threshold for a skill, factoring in its weight.
+ */
+export function getEffectiveDecayThreshold(skillKey: string): { decayThreshold: number; inactivityDays: number } {
+  const weight = skillWeights.get(skillKey);
+  if (!weight) return { decayThreshold: DECAY_THRESHOLD, inactivityDays: INACTIVITY_THRESHOLD_DAYS };
+
+  // Higher criticality → lower threshold (more sensitive)
+  const adjustedDecay = weight.customDecayThreshold ?? DECAY_THRESHOLD / weight.criticalityWeight;
+  const adjustedInactivity = weight.customInactivityDays ?? Math.round(INACTIVITY_THRESHOLD_DAYS / weight.criticalityWeight);
+
+  return {
+    decayThreshold: Math.max(0.03, Math.min(0.5, adjustedDecay)),
+    inactivityDays: Math.max(3, adjustedInactivity),
+  };
+}
+
+/**
+ * Analyze skill decay with domain-weighted thresholds.
+ */
+export function analyzeWeightedSkillDecay(executorId: string, skillKey: string): SkillProfile & { weightedSeverity: 'normal' | 'elevated' | 'critical' } {
+  const profile = analyzeSkillDecay(executorId, skillKey);
+  const effective = getEffectiveDecayThreshold(skillKey);
+  const weight = skillWeights.get(skillKey);
+
+  let weightedSeverity: 'normal' | 'elevated' | 'critical' = 'normal';
+  if (profile.decayMagnitude >= effective.decayThreshold * 2 || profile.inactivityDays >= effective.inactivityDays * 2) {
+    weightedSeverity = 'critical';
+  } else if (profile.decayMagnitude >= effective.decayThreshold || profile.inactivityDays >= effective.inactivityDays) {
+    weightedSeverity = 'elevated';
+  }
+
+  return { ...profile, weightedSeverity };
+}
+
+// ── #10 Recovery Tracking ──
+
+export interface RecoveryRecord {
+  executorId: string;
+  skillKey: string;
+  decayDetectedAt: number;
+  recoveryStartedAt: number;
+  recoveredAt?: number;
+  recoveryDurationMs?: number;
+  preDecayRate: number;
+  troughRate: number;
+  currentRate: number;
+  recovered: boolean;
+  /** How close to peak was the recovery (1.0 = full recovery) */
+  recoveryCompleteness: number;
+}
+
+const recoveryRecords: RecoveryRecord[] = [];
+const MAX_RECOVERY_RECORDS = 2000;
+
+/**
+ * Begin tracking a recovery attempt after decay is detected.
+ */
+export function startRecoveryTracking(executorId: string, skillKey: string, preDecayRate: number, troughRate: number): RecoveryRecord {
+  const record: RecoveryRecord = {
+    executorId,
+    skillKey,
+    decayDetectedAt: Date.now(),
+    recoveryStartedAt: Date.now(),
+    preDecayRate,
+    troughRate,
+    currentRate: troughRate,
+    recovered: false,
+    recoveryCompleteness: 0,
+  };
+  recoveryRecords.push(record);
+  if (recoveryRecords.length > MAX_RECOVERY_RECORDS) recoveryRecords.splice(0, recoveryRecords.length - MAX_RECOVERY_RECORDS);
+  return record;
+}
+
+/**
+ * Update recovery progress for an active recovery.
+ */
+export function updateRecoveryProgress(executorId: string, skillKey: string, currentRate: number): RecoveryRecord | null {
+  const record = recoveryRecords.find(r => r.executorId === executorId && r.skillKey === skillKey && !r.recovered);
+  if (!record) return null;
+
+  record.currentRate = currentRate;
+  const rangeDiff = record.preDecayRate - record.troughRate;
+  record.recoveryCompleteness = rangeDiff > 0
+    ? Math.min(1, (currentRate - record.troughRate) / rangeDiff)
+    : currentRate >= record.preDecayRate ? 1 : 0;
+
+  if (record.recoveryCompleteness >= 0.9) {
+    record.recovered = true;
+    record.recoveredAt = Date.now();
+    record.recoveryDurationMs = record.recoveredAt - record.recoveryStartedAt;
+  }
+
+  return record;
+}
+
+/**
+ * Get recovery records for an executor.
+ */
+export function getRecoveryRecords(executorId?: string): RecoveryRecord[] {
+  return recoveryRecords
+    .filter(r => !executorId || r.executorId === executorId)
+    .slice(-50);
+}
+
+/**
+ * Get aggregate recovery metrics.
+ */
+export function getRecoveryMetrics(executorId?: string): {
+  totalRecoveries: number;
+  successfulRecoveries: number;
+  avgRecoveryDurationMs: number;
+  avgRecoveryCompleteness: number;
+  recoveryRate: number;
+} {
+  const records = recoveryRecords.filter(r => !executorId || r.executorId === executorId);
+  const successful = records.filter(r => r.recovered);
+  const durations = successful.filter(r => r.recoveryDurationMs).map(r => r.recoveryDurationMs!);
+
+  return {
+    totalRecoveries: records.length,
+    successfulRecoveries: successful.length,
+    avgRecoveryDurationMs: durations.length > 0 ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length) : 0,
+    avgRecoveryCompleteness: records.length > 0
+      ? Math.round((records.reduce((a, r) => a + r.recoveryCompleteness, 0) / records.length) * 1000) / 1000
+      : 0,
+    recoveryRate: records.length > 0 ? successful.length / records.length : 0,
+  };
+}
