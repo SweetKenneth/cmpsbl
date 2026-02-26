@@ -345,7 +345,7 @@ const App = () => {
                         <Route path="/gaming" element={<GamingSubstrate />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />
                         <Route path="/use-cases" element={<UseCases />} />
-                        <Route path="/marketplace" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
+                        <Route path="/marketplace" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
                         <Route path="/intelligence" element={<SubstrateIntelligence />} />
                         <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
@@ -356,11 +356,11 @@ const App = () => {
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
-                        <Route path="/capabilities" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
-                        <Route path="/synergies" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
-                        <Route path="/store" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
-                        <Route path="/artifacts" element={<PhaseGateRoute><SubstrateStore /></PhaseGateRoute>} />
-                        <Route path="/engines" element={<PhaseGateRoute><EngineMarketplace /></PhaseGateRoute>} />
+                        <Route path="/capabilities" element={<Navigate to="/upgrade" replace />} />
+                        <Route path="/synergies" element={<Navigate to="/upgrade" replace />} />
+                        <Route path="/store" element={<Navigate to="/upgrade" replace />} />
+                        <Route path="/artifacts" element={<Navigate to="/upgrade" replace />} />
+                        <Route path="/engines" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/system-feed" element={<PhaseGateRoute><SystemIntelligenceFeed /></PhaseGateRoute>} />
                         <Route path="/habitat" element={<PhaseGateRoute><Habitat /></PhaseGateRoute>} />
                         <Route path="/status" element={<Status />} />

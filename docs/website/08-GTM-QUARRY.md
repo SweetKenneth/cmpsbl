@@ -6,9 +6,9 @@
 
 ## Architecture Summary
 
-The substrate now operates on a **Quarry-first distribution model**. All internal assets (capabilities, engines, meta-engines, pipelines, templates, agents, deployment rights, governance tools) are managed through a single internal registry — the **Quarry** — and dynamically assigned to tiers.
+The substrate operates on a **Quarry-first distribution model**. All internal assets (capabilities, engines, meta-engines, pipelines, templates, agents, deployment rights, governance tools) are managed through a single internal registry — the **Quarry** — and dynamically assigned to tiers.
 
-Public surfaces no longer reference asset counts, engine marketplaces, or fragmented monetization. The upgrade path is singular: `/upgrade`.
+Public surfaces reference **zero** asset counts, engine marketplaces, or fragmented monetization. The pricing path is singular: `/upgrade`. All legacy marketplace routes redirect to this page.
 
 ---
 
@@ -16,10 +16,11 @@ Public surfaces no longer reference asset counts, engine marketplaces, or fragme
 
 | Before | After |
 |--------|-------|
-| 525+ capabilities displayed publicly | 12 curated Core Capabilities public; rest Quarry-managed |
-| Engine Marketplace with individual pricing | Engines are tier-assigned execution units (no individual sale) |
+| /store, /engines, /marketplace as separate pages | All redirect to `/upgrade` |
+| 525+ capabilities displayed publicly | Curated Core Capabilities; rest Quarry-managed |
+| Engine Marketplace with individual pricing | Engines are tier-assigned; no individual sale |
 | Pipeline counts in hero sections | Pipeline counts removed from all public copy |
-| /pricing → complex multi-product page | /pricing + /upgrade → clean tier-based page |
+| Multiple pricing surfaces | Single `/upgrade` page with dynamic tier composition |
 | LNCHBL as separate product page | LNCHBL as Architect+ deployment right via Quarry |
 | Hardcoded tier contents | Dynamic tier composition from Quarry assignments |
 
@@ -30,7 +31,7 @@ Public surfaces no longer reference asset counts, engine marketplaces, or fragme
 | Tier | Price | Positioning |
 |------|-------|-------------|
 | **Free** | $0/mo | Build real things. Not a trial. |
-| **Creator** | $9/mo | More depth for shipping builders. |
+| **Creator** | $9/mo | Expanded depth for shipping builders. |
 | **Architect** | $19/mo | Advanced orchestration & self-hosted deployment. |
 | **Enterprise** | $99/mo | Governance, compliance, full control. |
 | **Internal** | — | CMPSBL-only. Never released. |
@@ -58,12 +59,30 @@ Each asset has:
 
 ---
 
+## Route Architecture
+
+| Route | Purpose | Status |
+|-------|---------|--------|
+| `/upgrade` | Single pricing & tier page | **Active** |
+| `/pricing` | Redirects to `/upgrade` | Redirect |
+| `/store` | Redirects to `/upgrade` | Redirect |
+| `/marketplace` | Redirects to `/upgrade` | Redirect |
+| `/engines` | Redirects to `/upgrade` | Redirect |
+| `/capabilities` | Redirects to `/upgrade` | Redirect |
+| `/synergies` | Redirects to `/upgrade` | Redirect |
+| `/artifacts` | Redirects to `/upgrade` | Redirect |
+| `/admin/quarry` | Asset registry management | Admin only |
+| `/licensing` | LNCHBL deployment (preserved) | Public |
+| `/composable-cognitives` | Minds marketplace (preserved) | Public |
+
+---
+
 ## Revenue Sequencing
 
 ### Phase 1 — Stabilization (Now)
-- Clean upgrade path live at `/upgrade`
-- Remove monetization sprawl from public surfaces
-- Seed Quarry with initial asset assignments
+- Single `/upgrade` page live
+- All legacy marketplace routes redirected
+- Quarry seeded with initial asset assignments
 - Focus marketing on: Persistent Memory, Composable Agents, System Depth, Deployment Flexibility
 - No asset counts in public copy
 
@@ -100,26 +119,12 @@ Each asset has:
 
 ---
 
-## Routes
-
-| Route | Purpose | Access |
-|-------|---------|--------|
-| `/upgrade` | Tier selection & checkout | Public |
-| `/pricing` | Redirects to `/upgrade` | Public |
-| `/admin/quarry` | Asset registry management | Admin only |
-| `/quarry` | Redirects to `/admin/quarry` | Admin only |
-| `/store` | Artifact browser (preserved) | Public |
-| `/engines` | Engine browser (preserved) | Public |
-| `/licensing` | LNCHBL download (preserved) | Public |
-
----
-
 ## Rollback
 
 If dynamic tier rendering fails:
 - Revert to static tier definitions in `/upgrade`
 - Quarry data persists independently
-- All original asset pages remain intact (no deletions)
+- All original asset pages remain intact as files (only routes redirect)
 
 ---
 
