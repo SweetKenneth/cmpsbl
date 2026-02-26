@@ -6,6 +6,8 @@
  * Identifies dead weight capabilities and promotes winners.
  */
 
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
+
 export interface CapabilityUsageRecord {
   capabilityId: string;
   module: string;
