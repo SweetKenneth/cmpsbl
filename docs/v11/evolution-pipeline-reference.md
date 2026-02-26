@@ -46,23 +46,39 @@ User/Agent Request
        │          └─────────────────┘
        │
        ├─── shadow mode ──────────────────┐
-       │                                   ▼
-       │                    ┌──────────────────────────┐
-       │                    │  CodeAgent Execution      │
-       │                    │  (plan → write → verify)  │
-       │                    └──────────┬───────────────┘
-       │                               │
-       │                               ▼
-       │                    ┌──────────────────────────┐
-       │                    │  Shadow Store             │
-       │                    │  (artifacts written)      │
-       │                    └──────────┬───────────────┘
-       │                               │
-       │                               ▼
-       │                    ┌──────────────────────────┐
-       │                    │  Verification             │
-       │                    │  (6 checks)               │
-       │                    └──────────────────────────┘
+        │                                   ▼
+        │                    ┌──────────────────────────┐
+        │                    │  Dual-Executor Pipeline   │
+        │                    │  (Writer + Validator)     │
+        │                    └──────────┬───────────────┘
+        │                               │
+        │                    ┌──────────┴───────────────┐
+        │                    │                          │
+        │                    ▼                          ▼
+        │          ┌─────────────────┐      ┌─────────────────┐
+        │          │  Writer Executor │      │ Validator Exec.  │
+        │          │  (plan → write)  │      │ (verify → fix)   │
+        │          └────────┬────────┘      └────────┬────────┘
+        │                   │                        │
+        │                   └──────────┬─────────────┘
+        │                              ▼
+        │                    ┌──────────────────────────┐
+        │                    │  Dual Signature Gate      │
+        │                    │  (both must approve)      │
+        │                    └──────────┬───────────────┘
+        │                              │
+        │                    ┌─── agree ┴── disagree ──┐
+        │                    │                          │
+        │                    ▼                          ▼
+        │          ┌─────────────────┐      ┌─────────────────┐
+        │          │  Shadow Store    │      │  Escalate to     │
+        │          │  (artifacts)     │      │  Manual Approval  │
+        │          └────────┬────────┘      └─────────────────┘
+        │                   │
+        │                   ▼
+        │          ┌──────────────────────────┐
+        │          │  Verification (6 checks)  │
+        │          └──────────────────────────┘
        │
        ▼
   ┌──────────────────┐
@@ -79,13 +95,13 @@ User/Agent Request
 | Stabilization Gates | `src/lib/evolve/stabilization-gates.ts` | 12 pre-flight checks for production |
 | Shadow Executor | `src/lib/evolve/shadow-executor.ts` | Idempotent shadow phase execution |
 | Production Executor | `src/lib/evolve/production-executor.ts` | Gated production apply with backup |
-| CodeAgent Controller | `src/lib/evolve/codeagent-controller.ts` | Plan → write → verify pipeline |
+| CodeAgent Controller | `src/lib/evolve/codeagent-controller.ts` | Plan → write → verify pipeline (single executor) |
+| **Dual-Executor** | `src/lib/evolve/dual-executor.ts` | **Writer + Validator pattern (default)** |
 | Circuit Breaker | `src/lib/evolve/circuit-breaker.ts` | Hard stop protection |
 | Autonomy | `src/lib/evolve/autonomy.ts` | off/advisory/governed modes |
 | Eligibility Gate | `src/lib/evolve/eligibility-gate.ts` | System readiness (locks, panic, deps) |
 | Telemetry | `src/lib/evolve/telemetry.ts` | Event emission to brain_events |
 | Verify | `src/lib/evolve/verify.ts` | 6-check shadow verification |
-| Governance Gate | `src/lib/system/governanceGate.ts` | Mode-based subsystem gating |
 
 ## Mutation Promotion Engine (MPE)
 
@@ -109,6 +125,8 @@ The MPE (`src/lib/evolution-mesh/mutation-engine.ts`) provides the database-back
 6. **Failsafe backup before every production apply** — Atomic rollback guaranteed
 7. **Manual approval for first 20 cycles** — No autonomous evolution until proven safe
 8. **Normalized plans only** — Unnormalized plans are rejected outright
+9. **Dual-executor by default** — Writer + Validator pattern; both must sign off
+10. **Dual training credit** — Both executors earn training progress per shadow run
 
 ## Telemetry Events
 

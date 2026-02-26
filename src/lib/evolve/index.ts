@@ -52,6 +52,9 @@ export * from './omega-observer';
 // v1.1.0 — Stabilization Gates (12 pre-flight checks)
 export * from './stabilization-gates';
 
+// v1.2.0 — Dual-Executor (Writer + Validator)
+export * from './dual-executor';
+
 // ═══════════════════════════════════════════════════════════════
 // RE-EXPORT MAIN EVOLVE FUNCTION
 // ═══════════════════════════════════════════════════════════════
@@ -72,6 +75,7 @@ import { applyProduction } from './apply';
 import { executeCodeAgent } from './codeagent-controller';
 import { emitEvolveEvent } from './telemetry';
 import { runStabilizationGates } from './stabilization-gates';
+import { executeDualExecutor, getDefaultDualConfig, type DualExecutorResult } from './dual-executor';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -81,6 +85,8 @@ export interface EvolveOptions {
   mode: EvolveMode;
   evolution_id?: string;
   invoked_from?: InvocationSource;
+  /** Enable dual-executor (Writer + Validator) pattern. Default: true */
+  dual_executor?: boolean;
   request?: {
     description: string;
     module: string;
@@ -189,7 +195,7 @@ export async function evolve(options: EvolveOptions): Promise<EvolveResult> {
 
   // Route based on mode
   if (isShadowMode(context)) {
-    return await executeShadow(context, options.request);
+    return await executeShadow(context, options.request, options.dual_executor);
   } else {
     return await executeProduction(context);
   }
@@ -201,7 +207,8 @@ export async function evolve(options: EvolveOptions): Promise<EvolveResult> {
 
 async function executeShadow(
   context: EvolveContext, 
-  request?: EvolveOptions['request']
+  request?: EvolveOptions['request'],
+  dualExecutorEnabled?: boolean
 ): Promise<EvolveResult> {
   const short_id = getShortId(context);
   
@@ -223,9 +230,14 @@ async function executeShadow(
     };
   }
 
+  // Determine if dual-executor mode is active (default: true)
+  const useDualExecutor = dualExecutorEnabled !== false;
+
   try {
-    // Execute CodeAgent with phase system
-    const result = await executeCodeAgent(context, request);
+    // Execute with Writer + Validator dual-executor pattern or single executor
+    const result = useDualExecutor
+      ? await executeDualExecutor(context, request, getDefaultDualConfig())
+      : await executeCodeAgent(context, request);
 
     if (!result.success) {
       return {
