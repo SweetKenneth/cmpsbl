@@ -191,7 +191,7 @@ export {
   type TransitionValidation,
   type VetoGovernanceEscalation,
   type ComplianceViolation,
-  type ComplianceReport,
+  type ComplianceReport as GovernanceComplianceReport,
   type DriftSignal,
   type DriftReport,
 } from './governance';
