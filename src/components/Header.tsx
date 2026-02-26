@@ -87,6 +87,10 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
         </Button>
 
+        {user && slotState.activeCount > 0 && (
+          <SlotCapacityIndicator slotState={slotState} variant="compact" className="hidden lg:flex" />
+        )}
+
         <div className="hidden lg:block w-px h-6 bg-border/50" />
 
         {user && (
