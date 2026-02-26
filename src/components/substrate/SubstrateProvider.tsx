@@ -149,6 +149,11 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     initializedRef.current = true;
     mountedRef.current = true;
 
+    // Initialize Neural Substrate Layer (fully automated maintenance)
+    initializeNeuralSubstrate().catch(err => 
+      console.warn('[SubstrateProvider] Neural substrate init deferred:', err)
+    );
+
     const startRefreshInterval = () => {
       if (!mountedRef.current) return;
       if (!debugMode.allowModulePolling()) return;
