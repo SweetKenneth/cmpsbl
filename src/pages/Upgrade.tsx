@@ -174,6 +174,12 @@ export default function Upgrade() {
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               24 artifact packs. Every pack = 1 slot. Choose 3, 6, or 12.
             </p>
+            {/* Slot capacity indicator in hero */}
+            {slotState.activeCount > 0 && (
+              <div className="flex justify-center mt-4">
+                <SlotCapacityIndicator slotState={slotState} variant="compact" />
+              </div>
+            )}
           </motion.div>
 
           {/* Billing toggle */}
@@ -405,36 +411,33 @@ export default function Upgrade() {
               )}
             </div>
 
+            {/* Slot capacity indicator above packs */}
+            <div className="flex justify-center mb-6">
+              <SlotCapacityIndicator slotState={slotState} variant="full" className="max-w-sm w-full" />
+            </div>
+
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredPacks.map((pack, i) => (
-                <motion.div
+              {filteredPacks.map((pack) => (
+                <PackActivationCard
                   key={pack.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.04 }}
-                >
-                  <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
-                    <CardContent className="p-5 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-bold text-sm">{pack.name}</h3>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] px-1.5">{pack.version}</Badge>
-                          <Badge variant="outline" className="text-[10px] px-1.5 text-primary border-primary/30">1 slot</Badge>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{pack.description}</p>
-                      <p className="text-xs text-muted-foreground/70 italic">{pack.useCase}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                  pack={pack}
+                  slotState={slotState}
+                  onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
+                  onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
+                  onSlotPressure={handleSlotPressure}
+                />
               ))}
             </div>
           </div>
         </section>
 
-        {/* ═══ ENTERPRISE CTA ═══ */}
-        <section className="container mx-auto px-4 mt-24">
+        {/* Slot Pressure Modal */}
+        <SlotPressureModal
+          open={pressureModal.open}
+          onOpenChange={(open) => setPressureModal({ ...pressureModal, open })}
+          currentTier={currentProductTier}
+          packName={pressureModal.packName}
+        />
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Building2 className="w-10 h-10 text-amber-500 mx-auto mb-4" />
             <h3 className="text-2xl font-bold">Architect Custom</h3>
