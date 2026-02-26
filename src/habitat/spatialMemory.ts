@@ -6,6 +6,8 @@
  * Restored on load with smooth fade-in. No abrupt camera movement.
  */
 
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
+
 // ═══ Types ═════════════════════════════════════════════════════════
 
 export interface SpatialState {
@@ -45,9 +47,9 @@ function throttledWrite(key: string, state: SpatialState): void {
   if (writeTimer) clearTimeout(writeTimer);
   writeTimer = setTimeout(() => {
     try {
-      localStorage.setItem(key, JSON.stringify(state));
+      secureSet(key, state);
     } catch {
-      // Storage full or unavailable — silent fail
+      // Storage full or unavailable — spatial memory is ephemeral
     }
   }, WRITE_THROTTLE_MS);
 }
@@ -56,9 +58,8 @@ function throttledWrite(key: string, state: SpatialState): void {
 
 export function loadSpatialMemory(namespaceId: string): SpatialState {
   try {
-    const raw = localStorage.getItem(storageKey(namespaceId));
-    if (!raw) return { ...DEFAULT_SPATIAL };
-    const parsed = JSON.parse(raw) as Partial<SpatialState>;
+    const parsed = secureGet<Partial<SpatialState>>(storageKey(namespaceId));
+    if (!parsed) return { ...DEFAULT_SPATIAL };
     return { ...DEFAULT_SPATIAL, ...parsed };
   } catch {
     return { ...DEFAULT_SPATIAL };
@@ -85,9 +86,9 @@ export function updateSpatialMemory(
 export function resetSpatialMemory(namespaceId: string): SpatialState {
   const fresh = { ...DEFAULT_SPATIAL, timestamp: new Date().toISOString() };
   try {
-    localStorage.removeItem(storageKey(namespaceId));
+    secureRemove(storageKey(namespaceId));
   } catch {
-    // silent
+    /* Non-critical: spatial memory is ephemeral */
   }
   return fresh;
 }

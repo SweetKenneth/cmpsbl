@@ -1,5 +1,20 @@
-// PromptFluid Defense Tracking System
+// DEFENSE Tracking System
 // Real-time defense event tracking and analytics
+
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
+
+// Event types
+export interface DefenseEvent {
+  id: string;
+  type:
+    | 'bot_detection'
+    | 'behavior_analysis'
+    | 'captcha'
+    | 'device_fingerprint'
+    | 'threat_intelligence';
+  timestamp: string;
+  details: Record<string, any>;
+}
 
 export interface BotDetectionEvent {
   id: string;
@@ -60,14 +75,13 @@ const STORAGE_KEYS = {
   THREAT_EVENTS: 'pf_threat_events',
 };
 
-// Helper functions
+// Helper functions — secure obfuscated storage
 const getStoredData = <T>(key: string): T[] => {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : [];
+  return secureGet<T[]>(key) || [];
 };
 
 const storeData = <T>(key: string, data: T[]): void => {
-  localStorage.setItem(key, JSON.stringify(data));
+  secureSet(key, data);
 };
 
 // Bot Detection
@@ -79,7 +93,7 @@ export const logBotDetection = (event: Omit<BotDetectionEvent, 'id' | 'timestamp
     timestamp: new Date().toISOString(),
   };
   events.unshift(newEvent);
-  storeData(STORAGE_KEYS.BOT_DETECTIONS, events.slice(0, 100)); // Keep last 100
+  storeData(STORAGE_KEYS.BOT_DETECTIONS, events.slice(0, 100));
 };
 
 export const getBotDetections = (): BotDetectionEvent[] => {
@@ -153,11 +167,9 @@ export const getCaptchaStats = () => {
 // Device Fingerprint
 export const logDeviceEvent = (event: Omit<DeviceEvent, 'id' | 'timestamp'>): void => {
   const events = getStoredData<DeviceEvent>(STORAGE_KEYS.DEVICE_EVENTS);
-  // Check if device already exists
   const existingIndex = events.findIndex(e => e.hash === event.hash);
   
   if (existingIndex !== -1) {
-    // Update existing device
     events[existingIndex] = {
       ...events[existingIndex],
       ...event,
@@ -166,7 +178,6 @@ export const logDeviceEvent = (event: Omit<DeviceEvent, 'id' | 'timestamp'>): vo
       timestamp: new Date().toISOString(),
     };
   } else {
-    // Add new device
     const newEvent: DeviceEvent = {
       ...event,
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
@@ -224,7 +235,6 @@ export const getThreatStats = () => {
 // Initialize demo data if empty
 export const initializeDemoData = (): void => {
   if (getBotDetections().length === 0) {
-    // Add some initial demo data
     logBotDetection({
       ip: '192.168.1.1',
       type: 'human',
@@ -237,5 +247,5 @@ export const initializeDemoData = (): void => {
 
 // Clear all data
 export const clearAllDefenseData = (): void => {
-  Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
+  Object.values(STORAGE_KEYS).forEach(key => secureRemove(key));
 };

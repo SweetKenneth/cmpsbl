@@ -7,6 +7,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import { budgetGovernor } from './budget-governor';
 import { ENCODED_CODE_CURRICULUM, getEncodedCurriculum, type Topic } from './encoded-curriculum';
 import { learningEngine } from '../learning-engine';
@@ -488,12 +489,10 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
 
   private loadState(): EncodedLearningState {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        return JSON.parse(stored);
-      }
+      const stored = secureGet<EncodedLearningState>(STORAGE_KEY);
+      if (stored) return stored;
     } catch {
-      // Ignore
+      /* Storage unavailable — use defaults */
     }
     
     return {
@@ -508,9 +507,9 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
 
   private persistState(): void {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      secureSet(STORAGE_KEY, this.state);
     } catch {
-      // Ignore
+      /* Non-critical: learning state rebuilt on next session */
     }
   }
 }

@@ -9,6 +9,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import type { Topic } from './topic-bank';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -284,11 +285,9 @@ class SpacedRepetitionClient {
 
   private loadQueue(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        const stored = localStorage.getItem(this.STORAGE_KEY);
-        if (stored) {
-          this.queue = JSON.parse(stored);
-        }
+      const stored = secureGet<typeof this.queue>(this.STORAGE_KEY);
+      if (stored) {
+        this.queue = stored;
       }
     } catch {
       this.queue = [];
@@ -297,11 +296,9 @@ class SpacedRepetitionClient {
 
   private persistQueue(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.queue));
-      }
+      secureSet(this.STORAGE_KEY, this.queue);
     } catch {
-      // Non-critical
+      /* Non-critical: queue will be rebuilt on next session */
     }
   }
 
