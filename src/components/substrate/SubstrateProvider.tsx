@@ -188,6 +188,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     
     const cleanupMount = () => {
       mountedRef.current = false;
+      shutdownNeuralSubstrate();
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
