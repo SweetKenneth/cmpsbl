@@ -1,14 +1,14 @@
-# CCL Deep Dive — Clockless Cognitive Lucidity (Layer 1)
+# OCG Deep Dive — Operational Compliance Grid
 
-## Classification: Technical Reference — CMPSBL v11.1
+## Classification: Technical Reference — CMPSBL v11.5
 
 ---
 
 ## Overview
 
-The **Clockless Cognitive Lucidity (CCL)** layer provides high-performance infrastructure services for the entire substrate. Operating at Layer 1, it boots after CCR and provides foundational services (event routing, entitlements, session management, webhooks, and integrity logging) consumed by all downstream Execution surfaces and Overlay meshes.
+The **Operational Compliance Grid (OCG)** provides high-performance infrastructure services for the entire substrate. Operating as a right-side Grid tapped off the Vertical Spine, it enforces boundary compliance (event routing, entitlements, session management, webhooks, and integrity logging) consumed by all downstream Execution surfaces and Fields.
 
-CCL zones are **invisible** in the public entity registry but fully monitored via System Integrity and GOAL telemetry.
+OCG zones are **invisible** in the public entity registry but fully monitored via System Integrity and GOAL telemetry.
 
 ---
 
@@ -16,7 +16,7 @@ CCL zones are **invisible** in the public entity registry but fully monitored vi
 
 ### RIPPLE Zone
 
-**Weight**: 0.040 | **Sector**: CCL | **Boot Order**: 1st in CCL
+**Weight**: 0.040 | **Sector**: OCG | **Boot Order**: 1st in OCG
 
 | Responsibility | Implementation |
 |---------------|----------------|
@@ -51,7 +51,7 @@ interface RippleEvent {
 
 ### ACCESS Zone
 
-**Weight**: 0.040 | **Sector**: CCL | **Boot Order**: 2nd in CCL
+**Weight**: 0.040 | **Sector**: OCG | **Boot Order**: 2nd in OCG
 
 | Responsibility | Implementation |
 |---------------|----------------|
@@ -83,7 +83,7 @@ interface RippleEvent {
 
 ### IDENTITY Zone
 
-**Weight**: 0.040 | **Sector**: CCL | **Boot Order**: 3rd in CCL
+**Weight**: 0.040 | **Sector**: OCG | **Boot Order**: 3rd in OCG
 
 | Responsibility | Implementation |
 |---------------|----------------|
@@ -107,7 +107,7 @@ interface RippleEvent {
 
 ### RELAY Zone
 
-**Weight**: 0.040 | **Sector**: CCL | **Boot Order**: 4th in CCL
+**Weight**: 0.040 | **Sector**: OCG | **Boot Order**: 4th in OCG
 
 | Responsibility | Implementation |
 |---------------|----------------|
@@ -131,7 +131,7 @@ interface RippleEvent {
 
 ### AUDIT Zone
 
-**Weight**: 0.040 | **Sector**: CCL | **Boot Order**: 5th in CCL (last)
+**Weight**: 0.040 | **Sector**: OCG | **Boot Order**: 5th in OCG (last)
 
 | Responsibility | Implementation |
 |---------------|----------------|
@@ -164,28 +164,28 @@ Record N:
 
 ---
 
-## CCL Health Aggregation
+## OCG Health Aggregation
 
-CCL sector health is the weighted average of its five zones:
+OCG health is the weighted average of its five zones:
 
 ```
-ccl_health = (RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT) / 5
+ocg_health = (RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT) / 5
 ```
 
-CCL contributes 20% to global Matrix Integrity.
+OCG contributes 20% to global Matrix Integrity.
 
 ---
 
-## Cross-Layer Dependencies
+## Cross-Spine Dependencies
 
 ```
-CCR ←→ CCL Communication:
+CCR ←→ OCG Communication:
   BRAIN → RIPPLE (event emission)
   DREAM → RELAY (external synthesis triggers)
   MEMORY → AUDIT (recall audit trails)
   SYSTEM → ACCESS (entitlement validation)
 
-CCL → Execution:
+OCG → Execution:
   RIPPLE → all surfaces (event delivery)
   ACCESS → NEXUS (API key validation before routing)
   IDENTITY → CORTEX (session context for orchestration)
@@ -195,5 +195,5 @@ CCL → Execution:
 
 ---
 
-*Technical Reference — CMPSBL v11.1 — SPARTA Epoch*
+*Technical Reference — CMPSBL v11.5 — SPARTA Epoch*
 *© 2025–2026 PromptFluid®. All rights reserved.*

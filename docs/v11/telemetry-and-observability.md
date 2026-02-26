@@ -34,7 +34,7 @@ interface GOALSnapshot {
   sectorHealth: {
     core: number;
     ccr: number;
-    ccl: number;
+    ocg: number;
     execution: number;
     overlay: number;
   };

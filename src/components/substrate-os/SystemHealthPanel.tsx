@@ -55,7 +55,7 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
       ],
     },
     {
-      label: 'CCL ZONES',
+      label: 'OCG ZONES',
       items: [
         { name: 'RIPPLE', key: 'ripple', icon: Radio, color: 'text-cyan-400' },
         { name: 'ACCESS', key: 'access', icon: Key, color: 'text-amber-400' },
@@ -95,17 +95,17 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
   const totalCount = allItems.length;
 
   // Layer health from the hook
-  const layerHealthValues = healthScore.layers || { core: 100, ccr: 100, ccl: 100, surfaces: 100, overlays: 100 };
+  const layerHealthValues = healthScore.layers || { core: 100, ccr: 100, ocg: 100, surfaces: 100, overlays: 100 };
   const layerHealthMap: Record<string, number> = {
     'CORE': layerHealthValues.core,
     'CCR ZONES': layerHealthValues.ccr,
-    'CCL ZONES': layerHealthValues.ccl,
+    'OCG ZONES': layerHealthValues.ocg,
     'EXECUTION SURFACES': layerHealthValues.surfaces,
     'OVERLAYS': layerHealthValues.overlays,
   };
 
-  // Show CRITICAL only when CORE breaker open OR CCR/CCL < 40
-  const showCritical = layerHealthValues.core < 40 || layerHealthValues.ccr < 40 || layerHealthValues.ccl < 40;
+  // Show CRITICAL only when CORE breaker open OR CCR/OCG < 40
+  const showCritical = layerHealthValues.core < 40 || layerHealthValues.ccr < 40 || layerHealthValues.ocg < 40;
 
   return (
     <motion.div 

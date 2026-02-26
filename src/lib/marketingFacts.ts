@@ -26,7 +26,7 @@ export const MODULES_COUNT = ENTITIES_COUNT;
 /** 5 mesh overlays: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost) */
 export const MESH_OVERLAY_COUNT = 5;
 
-/** 9 internal zones: CCR (4) + CCL (5) */
+/** 9 internal zones: CCR (4) + OCG (5) */
 export const ZONE_COUNT = 9;
 
 /** @deprecated Use ENTITIES_COUNT — legacy 6-layer model no longer applies */

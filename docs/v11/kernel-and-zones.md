@@ -1,25 +1,34 @@
-# Kernel & Zones — CMPSBL v11.1
+# Kernel & Zones — CMPSBL v11.5
 
 ## CORE Kernel
 
 The CORE kernel is the standalone boot authority. It initializes all downstream layers and maintains the canonical registry of all entities, zones, and overlays. CORE has no upstream dependencies — it is the root of the boot graph.
 
+## SYSTEM (Elevated Spine Layer)
+
+**SYSTEM** sits between CORE and CCR on the Vertical Spine. It was extracted from CCR to serve as an independent lifecycle management layer:
+
+| Responsibility |
+|---------------|
+| Lifecycle management & configuration |
+| Diagnostics & health reporting |
+| Boot sequencing (CORE → SYSTEM → CCR) |
+
 ## CCR — Cognitive Reality Zones (Layer 0)
 
-The **Clockless Cognitive Reality** layer is the hidden meta-engine powering reasoning, persistence, and synthesis. It contains four zones:
+The **Clockless Cognitive Reality** layer is the hidden meta-engine powering reasoning, persistence, and synthesis. It contains three zones (SYSTEM extracted):
 
 | Zone | Responsibility |
 |------|---------------|
-| **SYSTEM** | Lifecycle management, configuration, diagnostics |
 | **BRAIN** | Reasoning engine, reflection cycles, forecasting |
 | **MEMORY** | Persistent tiered storage (SM-2 integration), recall |
 | **DREAM** | Synthesis, creative combination, heuristic generation |
 
 CCR zones are surgically hot-swappable with independent circuit breakers for fault isolation. Legacy terminal commands (e.g., `brain.status`, `dream.cycle`) continue to function via internal proxy shims.
 
-## CCL — Cognitive Lucidity Zones (Layer 1)
+## OCG — Operational Compliance Grid
 
-The **Clockless Cognitive Lucidity** layer provides high-performance infrastructure services:
+The **Operational Compliance Grid (OCG)** provides high-performance infrastructure services, tapping off the right side of the Vertical Spine:
 
 | Zone | Responsibility |
 |------|---------------|
@@ -29,7 +38,7 @@ The **Clockless Cognitive Lucidity** layer provides high-performance infrastruct
 | **RELAY** | Webhook dispatch, external integrations |
 | **AUDIT** | Integrity ledger, compliance logging |
 
-CCL zones remain invisible in the public Matrix Node registry but are fully monitored via the System Integrity dashboard.
+OCG zones remain invisible in the public Matrix Node registry but are fully monitored via the System Integrity dashboard.
 
 ## Zone Isolation
 

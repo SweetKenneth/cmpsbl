@@ -1,7 +1,7 @@
 /**
- * CCL Signal Subsystem (formerly RIPPLE)
+ * OCG Signal Subsystem (RIPPLE)
  * Event bus, module event emission, subscription routing
- * Now part of Clockless Cognitive Lucidity
+ * Part of the Operational Compliance Grid (OCG)
  */
 
 export { emit, emitStarted, emitSucceeded, emitFailed } from '@/lib/substrate/events';

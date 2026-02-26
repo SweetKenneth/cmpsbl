@@ -286,8 +286,8 @@ export function useSystemConfig(key?: string) {
 
 /**
  * Layer-weighted health score for dashboard
- * v11.1 Surface Realignment — 5-layer weighted aggregation:
- *   CORE health: 20% | CCR Zones: 20% | CCL Zones: 20% | Execution Surfaces: 20% | Overlays: 20%
+ * v11.5 Field-Based Topology — 5-layer weighted aggregation:
+ *   CORE health: 20% | CCR Zones: 20% | OCG Zones: 20% | Execution Surfaces: 20% | Overlays: 20%
  *
  * Batched into a single useQuery to prevent parallel network request storms.
  */
@@ -297,12 +297,12 @@ export function useSubstrateHealthScore() {
   // Layer definitions
   const CORE_MODULES = ['core'] as const;
   const CCR_ZONES = ['system', 'brain', 'memory', 'dream'] as const;
-  const CCL_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
+  const OCG_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
   const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration'] as const;
   const OVERLAYS = ['defense', 'immunity', 'evolution', 'intent', 'governance'] as const;
 
   const ALL_MODULES = [
-    ...CORE_MODULES, ...CCR_ZONES, ...CCL_ZONES,
+    ...CORE_MODULES, ...CCR_ZONES, ...OCG_ZONES,
     ...EXECUTION_SURFACES, ...OVERLAYS, 'modernizer',
   ] as const;
 
@@ -375,14 +375,14 @@ export function useSubstrateHealthScore() {
 
   const coreHealth = layerHealth(CORE_MODULES);
   const ccrHealth = layerHealth(CCR_ZONES);
-  const cclHealth = layerHealth(CCL_ZONES);
+  const ocgHealth = layerHealth(OCG_ZONES);
   const surfaceHealth = layerHealth(EXECUTION_SURFACES);
   const overlayHealth = layerHealth(OVERLAYS);
 
   const healthScore = Math.round(
     coreHealth * 0.20 +
     ccrHealth * 0.20 +
-    cclHealth * 0.20 +
+    ocgHealth * 0.20 +
     surfaceHealth * 0.20 +
     overlayHealth * 0.20
   );
@@ -404,7 +404,7 @@ export function useSubstrateHealthScore() {
     layers: {
       core: coreHealth,
       ccr: ccrHealth,
-      ccl: cclHealth,
+      ocg: ocgHealth,
       surfaces: surfaceHealth,
       overlays: overlayHealth,
     },
