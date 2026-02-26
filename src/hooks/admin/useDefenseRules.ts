@@ -34,7 +34,7 @@ export function useDefenseRules() {
     mutationFn: async (rule: Partial<DefenseRule>) => {
       const { data, error } = await supabase
         .from('defense_rules')
-        .insert(rule)
+        .insert([rule as any])
         .select()
         .single();
       if (error) throw error;

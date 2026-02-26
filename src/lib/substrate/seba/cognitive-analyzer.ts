@@ -60,7 +60,8 @@ async function fetchBackendStats(): Promise<BackendStats> {
         warm: { current: warmCount || 0, max: 2000, health: 'ok' },
         cold: { current: coldCount || 0, max: 10000, health: 'ok' },
       },
-      metrics: { events_24h: 0 },
+      metrics: { events_24h: 0, total_memories: (hotCount || 0) + (warmCount || 0) + (coldCount || 0), learning_cycles_24h: 0, queued_actions: 0 },
+      tier_summary: { needs_tiering: false },
     }}};
     if (brainResponse.data?.success && brainResponse.data?.status) {
       const s = brainResponse.data.status;
