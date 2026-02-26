@@ -118,3 +118,156 @@ export function getBestStrategyForArchetype(archetype: string): {
 
   return best;
 }
+
+// ── #23 Strategy Sequence Analysis ──
+
+export interface StrategySequence {
+  sequence: string[];
+  occurrences: number;
+  successRate: number;
+  avgTotalDurationMs: number;
+}
+
+/**
+ * Analyze the order in which strategies are attempted and which sequences yield highest success.
+ * Enables reordering strategy chains based on historical effectiveness.
+ */
+export function analyzeStrategySequences(archetype?: string): StrategySequence[] {
+  // Group records by executor + close timestamps (within 30s = same repair attempt)
+  const groups: StrategyRecord[][] = [];
+  const sorted = [...strategyRecords]
+    .filter(r => !archetype || r.archetype === archetype)
+    .sort((a, b) => a.timestamp - b.timestamp);
+
+  let currentGroup: StrategyRecord[] = [];
+  for (const record of sorted) {
+    if (currentGroup.length === 0 || (
+      record.executorId === currentGroup[0].executorId &&
+      record.timestamp - currentGroup[currentGroup.length - 1].timestamp < 30_000
+    )) {
+      currentGroup.push(record);
+    } else {
+      if (currentGroup.length >= 2) groups.push(currentGroup);
+      currentGroup = [record];
+    }
+  }
+  if (currentGroup.length >= 2) groups.push(currentGroup);
+
+  // Extract sequences
+  const seqMap = new Map<string, { count: number; successes: number; totalDuration: number }>();
+  for (const group of groups) {
+    const seq = group.map(r => r.strategy);
+    const key = seq.join(' → ');
+    const data = seqMap.get(key) ?? { count: 0, successes: 0, totalDuration: 0 };
+    data.count++;
+    if (group.some(r => r.success)) data.successes++;
+    data.totalDuration += group.reduce((s, r) => s + r.durationMs, 0);
+    seqMap.set(key, data);
+  }
+
+  const results: StrategySequence[] = [];
+  for (const [key, data] of seqMap.entries()) {
+    if (data.count < 2) continue;
+    results.push({
+      sequence: key.split(' → '),
+      occurrences: data.count,
+      successRate: Math.round((data.successes / data.count) * 1000) / 1000,
+      avgTotalDurationMs: Math.round(data.totalDuration / data.count),
+    });
+  }
+
+  return results.sort((a, b) => b.successRate - a.successRate);
+}
+
+/**
+ * Get the optimal strategy ordering for a given archetype based on historical sequences.
+ */
+export function getOptimalStrategyOrder(archetype: string): string[] {
+  const sequences = analyzeStrategySequences(archetype);
+  if (sequences.length === 0) return [];
+
+  // Weight by success rate * occurrences
+  const strategyScores = new Map<string, { totalScore: number; totalWeight: number; avgPosition: number; posCount: number }>();
+
+  for (const seq of sequences) {
+    const weight = seq.successRate * seq.occurrences;
+    for (let i = 0; i < seq.sequence.length; i++) {
+      const s = seq.sequence[i];
+      const data = strategyScores.get(s) ?? { totalScore: 0, totalWeight: 0, avgPosition: 0, posCount: 0 };
+      data.totalScore += seq.successRate * weight;
+      data.totalWeight += weight;
+      data.avgPosition += i * weight;
+      data.posCount += weight;
+      strategyScores.set(s, data);
+    }
+  }
+
+  return Array.from(strategyScores.entries())
+    .map(([strategy, data]) => ({
+      strategy,
+      score: data.totalWeight > 0 ? data.totalScore / data.totalWeight : 0,
+      avgPos: data.posCount > 0 ? data.avgPosition / data.posCount : Infinity,
+    }))
+    .sort((a, b) => b.score - a.score || a.avgPos - b.avgPos)
+    .map(s => s.strategy);
+}
+
+// ── #24 Diminishing Returns Detection ──
+
+export interface DiminishingReturnsReport {
+  strategy: string;
+  /** Success rate in first N uses */
+  initialRate: number;
+  /** Success rate in most recent N uses */
+  recentRate: number;
+  /** Absolute drop */
+  dropMagnitude: number;
+  /** Whether this strategy shows diminishing returns */
+  diminishing: boolean;
+  /** Suggested action */
+  recommendation: string;
+  sampleSize: number;
+}
+
+/**
+ * Detect strategies that are losing effectiveness over time (diminishing returns).
+ * Helps identify when a strategy should be deprioritized or retired.
+ */
+export function detectDiminishingReturns(minSamples: number = 10): DiminishingReturnsReport[] {
+  const strategyNames = [...new Set(strategyRecords.map(r => r.strategy))];
+  const results: DiminishingReturnsReport[] = [];
+
+  for (const strategy of strategyNames) {
+    const records = strategyRecords
+      .filter(r => r.strategy === strategy)
+      .sort((a, b) => a.timestamp - b.timestamp);
+
+    if (records.length < minSamples * 2) continue;
+
+    const third = Math.floor(records.length / 3);
+    const firstThird = records.slice(0, third);
+    const lastThird = records.slice(-third);
+
+    const initialRate = firstThird.filter(r => r.success).length / firstThird.length;
+    const recentRate = lastThird.filter(r => r.success).length / lastThird.length;
+    const dropMagnitude = Math.round((initialRate - recentRate) * 1000) / 1000;
+    const diminishing = dropMagnitude >= 0.10;
+
+    let recommendation = 'Strategy performance is stable.';
+    if (dropMagnitude >= 0.25) recommendation = `Critical degradation (${Math.round(dropMagnitude * 100)}% drop). Consider retiring or completely reworking this strategy.`;
+    else if (dropMagnitude >= 0.15) recommendation = `Significant diminishing returns (${Math.round(dropMagnitude * 100)}% drop). Deprioritize and investigate root cause.`;
+    else if (diminishing) recommendation = `Mild diminishing returns (${Math.round(dropMagnitude * 100)}% drop). Monitor closely.`;
+
+    results.push({
+      strategy,
+      initialRate: Math.round(initialRate * 1000) / 1000,
+      recentRate: Math.round(recentRate * 1000) / 1000,
+      dropMagnitude,
+      diminishing,
+      recommendation,
+      sampleSize: records.length,
+    });
+  }
+
+  return results.sort((a, b) => b.dropMagnitude - a.dropMagnitude);
+}

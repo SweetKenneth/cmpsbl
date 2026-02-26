@@ -128,6 +128,7 @@ export function getReplayStats(): {
   unresolved: number;
   avgAttemptsToResolve: number;
   resolutionRate: number;
+  replayVelocity: ReplayVelocityReport;
 } {
   const all = Array.from(gapSnapshots.values());
   const resolved = all.filter(g => g.resolved);
@@ -141,5 +142,91 @@ export function getReplayStats(): {
     unresolved: all.length - resolved.length,
     avgAttemptsToResolve: Math.round(avgAttempts * 100) / 100,
     resolutionRate: all.length > 0 ? resolved.length / all.length : 0,
+    replayVelocity: getReplayVelocity(),
   };
+}
+
+// ── #4 Replay Velocity ──
+
+export interface ReplayVelocityPoint {
+  snapshotId: string;
+  replayIndex: number;
+  durationMs: number;
+  success: boolean;
+  timestamp: number;
+}
+
+export interface ReplayVelocityReport {
+  /** Average time-to-resolve across all resolved gaps (ms) */
+  avgTimeToResolveMs: number;
+  /** Average replays needed to resolve */
+  avgReplaysToResolve: number;
+  /** Velocity trend: are resolutions getting faster over time? */
+  trend: 'accelerating' | 'stable' | 'decelerating';
+  /** Per-gap velocity breakdown (most recent 50) */
+  perGap: Array<{
+    snapshotId: string;
+    replaysNeeded: number;
+    totalElapsedMs: number;
+    resolved: boolean;
+  }>;
+  /** Speed percentiles (p50, p90) in replays-to-resolve */
+  p50Replays: number;
+  p90Replays: number;
+}
+
+const velocityLog: ReplayVelocityPoint[] = [];
+const MAX_VELOCITY_LOG = 10_000;
+
+/**
+ * Record a replay velocity data point (called internally after each replay).
+ */
+export function recordReplayVelocity(snapshotId: string, replayIndex: number, durationMs: number, success: boolean): void {
+  velocityLog.push({ snapshotId, replayIndex, durationMs, success, timestamp: Date.now() });
+  if (velocityLog.length > MAX_VELOCITY_LOG) velocityLog.splice(0, velocityLog.length - MAX_VELOCITY_LOG);
+}
+
+/**
+ * Get replay velocity report — measures how quickly executors resolve gaps.
+ */
+export function getReplayVelocity(): ReplayVelocityReport {
+  const resolved = Array.from(gapSnapshots.values()).filter(g => g.resolved && g.resolution);
+  
+  const perGap = Array.from(gapSnapshots.values())
+    .sort((a, b) => b.capturedAt - a.capturedAt)
+    .slice(0, 50)
+    .map(g => ({
+      snapshotId: g.id,
+      replaysNeeded: g.replayCount,
+      totalElapsedMs: g.resolution ? g.resolution.resolvedAt - g.capturedAt : Date.now() - g.capturedAt,
+      resolved: g.resolved,
+    }));
+
+  const resolveTimes = resolved.map(g => g.resolution!.resolvedAt - g.capturedAt);
+  const replayCounts = resolved.map(g => g.resolution!.attemptsToResolve);
+
+  const avgTimeToResolveMs = resolveTimes.length > 0
+    ? Math.round(resolveTimes.reduce((a, b) => a + b, 0) / resolveTimes.length)
+    : 0;
+
+  const avgReplaysToResolve = replayCounts.length > 0
+    ? Math.round((replayCounts.reduce((a, b) => a + b, 0) / replayCounts.length) * 100) / 100
+    : 0;
+
+  // Percentiles
+  const sortedReplays = [...replayCounts].sort((a, b) => a - b);
+  const p50Replays = sortedReplays.length > 0 ? sortedReplays[Math.floor(sortedReplays.length * 0.5)] : 0;
+  const p90Replays = sortedReplays.length > 0 ? sortedReplays[Math.floor(sortedReplays.length * 0.9)] : 0;
+
+  // Trend: compare first half resolve times vs second half
+  let trend: ReplayVelocityReport['trend'] = 'stable';
+  if (resolveTimes.length >= 6) {
+    const half = Math.floor(resolveTimes.length / 2);
+    const firstAvg = resolveTimes.slice(0, half).reduce((a, b) => a + b, 0) / half;
+    const secondAvg = resolveTimes.slice(half).reduce((a, b) => a + b, 0) / (resolveTimes.length - half);
+    if (secondAvg < firstAvg * 0.85) trend = 'accelerating';
+    else if (secondAvg > firstAvg * 1.15) trend = 'decelerating';
+  }
+
+  return { avgTimeToResolveMs, avgReplaysToResolve, trend, perGap, p50Replays, p90Replays };
 }

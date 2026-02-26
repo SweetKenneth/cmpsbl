@@ -118,3 +118,85 @@ export function scoreMutationComplexity(
     warnings,
   };
 }
+
+// ── #19 Executor-Relative Mutation Scoring ──
+
+export interface ExecutorProfile {
+  executorId: string;
+  /** Per-dimension proficiency (0.0–1.0), higher = more proficient */
+  proficiency: Record<string, number>;
+  /** Overall historical success rate */
+  overallSuccessRate: number;
+  /** Number of mutations completed */
+  mutationsCompleted: number;
+}
+
+const executorProfiles = new Map<string, ExecutorProfile>();
+
+/**
+ * Register or update an executor's proficiency profile for relative scoring.
+ */
+export function setExecutorProfile(profile: ExecutorProfile): void {
+  executorProfiles.set(profile.executorId, profile);
+}
+
+/**
+ * Score mutation complexity relative to a specific executor's proficiency.
+ * An experienced executor sees lower relative scores; a novice sees higher.
+ */
+export function scoreRelativeComplexity(
+  executorId: string,
+  mutationId: string,
+  params: Parameters<typeof scoreMutationComplexity>[1],
+): ComplexityScore & {
+  relativeScore: number;
+  relativeGrade: ComplexityScore['grade'];
+  executorReadiness: 'ready' | 'stretch' | 'overreach';
+  proficiencyGaps: string[];
+} {
+  const base = scoreMutationComplexity(mutationId, params);
+  const profile = executorProfiles.get(executorId);
+
+  if (!profile || profile.mutationsCompleted < 5) {
+    return {
+      ...base,
+      relativeScore: base.overallScore,
+      relativeGrade: base.grade,
+      executorReadiness: base.overallScore > 0.5 ? 'overreach' : 'stretch',
+      proficiencyGaps: ['insufficient_history'],
+    };
+  }
+
+  // Adjust each dimension by executor proficiency
+  const proficiencyGaps: string[] = [];
+  let adjustedTotal = 0;
+  let weightTotal = 0;
+
+  for (const dim of base.dimensions) {
+    const prof = profile.proficiency[dim.name] ?? 0.5;
+    // If executor is highly proficient in a dimension, its effective complexity is reduced
+    const adjustmentFactor = 1 - (prof * 0.5); // max 50% reduction
+    const adjustedScore = dim.score * adjustmentFactor;
+    adjustedTotal += adjustedScore * dim.weight;
+    weightTotal += dim.weight;
+
+    if (dim.score > 0.5 && prof < 0.4) {
+      proficiencyGaps.push(dim.name);
+    }
+  }
+
+  const relativeScore = Math.round((adjustedTotal / (weightTotal || 1)) * 1000) / 1000;
+
+  let relativeGrade: ComplexityScore['grade'];
+  if (relativeScore < 0.15) relativeGrade = 'trivial';
+  else if (relativeScore < 0.30) relativeGrade = 'simple';
+  else if (relativeScore < 0.50) relativeGrade = 'moderate';
+  else if (relativeScore < 0.70) relativeGrade = 'complex';
+  else relativeGrade = 'critical';
+
+  let executorReadiness: 'ready' | 'stretch' | 'overreach' = 'ready';
+  if (relativeScore > 0.65 || proficiencyGaps.length >= 3) executorReadiness = 'overreach';
+  else if (relativeScore > 0.4 || proficiencyGaps.length >= 1) executorReadiness = 'stretch';
+
+  return { ...base, relativeScore, relativeGrade, executorReadiness, proficiencyGaps };
+}

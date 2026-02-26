@@ -218,3 +218,154 @@ export function getSpecialtySnapshot(executorId: string): SpecialtySnapshot {
 export function getSpecialtyTree(executorId: string): SpecialtyTree | undefined {
   return executorTrees.get(executorId);
 }
+
+// ── #26 Node-Level Mastery Decay ──
+
+export interface MasteryDecayConfig {
+  /** How many days of inactivity before mastery starts decaying */
+  inactivityThresholdDays: number;
+  /** Decay rate per day of inactivity (0.0–1.0) */
+  decayRatePerDay: number;
+  /** Minimum mastery floor (mastery won't decay below this) */
+  masteryFloor: number;
+}
+
+const DEFAULT_MASTERY_DECAY: MasteryDecayConfig = {
+  inactivityThresholdDays: 14,
+  decayRatePerDay: 0.02,
+  masteryFloor: 0.1,
+};
+
+const nodeLastActivity = new Map<string, number>(); // key: `${executorId}:${nodeId}` → timestamp
+const masteryDecayConfigs = new Map<string, MasteryDecayConfig>(); // per-domain overrides
+
+/**
+ * Set custom mastery decay config for a domain.
+ */
+export function setMasteryDecayConfig(domain: string, config: Partial<MasteryDecayConfig>): void {
+  masteryDecayConfigs.set(domain, { ...DEFAULT_MASTERY_DECAY, ...config });
+}
+
+/**
+ * Record activity on a specialty node (called when recordSpecialtyAttempt runs).
+ */
+export function recordNodeActivity(executorId: string, nodeId: string): void {
+  nodeLastActivity.set(`${executorId}:${nodeId}`, Date.now());
+}
+
+/**
+ * Apply mastery decay across all nodes for an executor based on inactivity.
+ * Returns nodes that decayed and may need refresher training.
+ */
+export function applyMasteryDecay(executorId: string): Array<{
+  nodeId: string;
+  nodeName: string;
+  domain: string;
+  previousMastery: number;
+  decayedMastery: number;
+  inactivityDays: number;
+  needsRefresher: boolean;
+}> {
+  const tree = executorTrees.get(executorId);
+  if (!tree) return [];
+
+  const now = Date.now();
+  const decayedNodes: Array<{
+    nodeId: string;
+    nodeName: string;
+    domain: string;
+    previousMastery: number;
+    decayedMastery: number;
+    inactivityDays: number;
+    needsRefresher: boolean;
+  }> = [];
+
+  for (const [nodeId, node] of tree.nodes.entries()) {
+    if (node.mastery <= 0) continue;
+
+    const lastActive = nodeLastActivity.get(`${executorId}:${nodeId}`) ?? (now - 30 * 24 * 60 * 60 * 1000); // default: 30 days ago
+    const inactivityMs = now - lastActive;
+    const inactivityDays = inactivityMs / (24 * 60 * 60 * 1000);
+
+    const config = masteryDecayConfigs.get(node.domain) ?? DEFAULT_MASTERY_DECAY;
+
+    if (inactivityDays <= config.inactivityThresholdDays) continue;
+
+    const daysOverThreshold = inactivityDays - config.inactivityThresholdDays;
+    const previousMastery = node.mastery;
+    const decayAmount = daysOverThreshold * config.decayRatePerDay;
+    const decayedMastery = Math.max(config.masteryFloor, node.mastery - decayAmount);
+
+    if (decayedMastery < previousMastery) {
+      node.mastery = Math.round(decayedMastery * 1000) / 1000;
+      const needsRefresher = previousMastery >= 0.6 && decayedMastery < 0.5;
+
+      decayedNodes.push({
+        nodeId,
+        nodeName: node.name,
+        domain: node.domain,
+        previousMastery: Math.round(previousMastery * 1000) / 1000,
+        decayedMastery: node.mastery,
+        inactivityDays: Math.round(inactivityDays * 10) / 10,
+        needsRefresher,
+      });
+    }
+  }
+
+  // Recalculate tree stats
+  if (decayedNodes.length > 0) {
+    const allNodes = Array.from(tree.nodes.values());
+    tree.totalMastery = allNodes.reduce((s, n) => s + n.mastery, 0) / allNodes.length;
+  }
+
+  return decayedNodes;
+}
+
+/**
+ * Get nodes at risk of mastery decay for an executor.
+ */
+export function getNodesAtDecayRisk(executorId: string): Array<{
+  nodeId: string;
+  nodeName: string;
+  domain: string;
+  mastery: number;
+  daysSinceActive: number;
+  daysUntilDecay: number;
+}> {
+  const tree = executorTrees.get(executorId);
+  if (!tree) return [];
+
+  const now = Date.now();
+  const atRisk: Array<{
+    nodeId: string;
+    nodeName: string;
+    domain: string;
+    mastery: number;
+    daysSinceActive: number;
+    daysUntilDecay: number;
+  }> = [];
+
+  for (const [nodeId, node] of tree.nodes.entries()) {
+    if (node.mastery <= 0.1) continue;
+
+    const lastActive = nodeLastActivity.get(`${executorId}:${nodeId}`);
+    if (!lastActive) continue;
+
+    const daysSinceActive = (now - lastActive) / (24 * 60 * 60 * 1000);
+    const config = masteryDecayConfigs.get(node.domain) ?? DEFAULT_MASTERY_DECAY;
+    const daysUntilDecay = Math.max(0, config.inactivityThresholdDays - daysSinceActive);
+
+    if (daysUntilDecay <= 5) { // within 5 days of decay onset
+      atRisk.push({
+        nodeId,
+        nodeName: node.name,
+        domain: node.domain,
+        mastery: node.mastery,
+        daysSinceActive: Math.round(daysSinceActive * 10) / 10,
+        daysUntilDecay: Math.round(daysUntilDecay * 10) / 10,
+      });
+    }
+  }
+
+  return atRisk.sort((a, b) => a.daysUntilDecay - b.daysUntilDecay);
+}
