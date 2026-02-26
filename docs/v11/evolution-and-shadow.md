@@ -24,6 +24,21 @@ The IMMUNITY overlay provides shadow training capabilities where:
 - Successful shadow runs promote to production through the deterministic gate
 - ≥ 2 real shadow runs required before any production apply
 
+## Dual-Executor Pattern (v1.2.0)
+
+Every shadow run uses the **Writer + Validator** dual-executor pattern by default:
+
+1. **Writer Executor** — Plans and generates code (standard CodeAgent PLAN → WRITE flow)
+2. **Validator Executor** — Independently verifies the output, applies fixes if TS errors found
+3. **Dual Signature** — Both executors must approve before the deterministic gate
+4. **Disagreement Escalation** — If the validator rejects the writer's output, the mutation escalates to manual approval
+5. **2× Training Velocity** — Both executors earn training credit from every shadow run, effectively doubling progression speed
+
+This pattern ensures:
+- **Blind-spot coverage** — The validator catches errors the writer is inherently blind to
+- **Faster tier progression** — Executors reach Tier 3 (graduation gate) in ~50% fewer cycles
+- **Composable** — Can upgrade to competitive writes (both write, best wins) for high-risk mutations later
+
 ## Stabilization Gates
 
 Before EVOLUTION can modify the live substrate, **12 stabilization gates** must pass:

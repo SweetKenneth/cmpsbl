@@ -57,6 +57,13 @@ export type EvolveEventType =
   | 'codeagent_ts_failed'
   | 'codeagent_finalized'
   | 'codeagent_failed'
+  // Dual-executor events (v1.2.0)
+  | 'dual_executor_started'
+  | 'dual_executor_writer_complete'
+  | 'dual_executor_validator_complete'
+  | 'dual_executor_disagreement'
+  | 'dual_executor_dual_signed'
+  | 'codeagent_failed'
   // Scan events (v0.7.7)
   | 'scan_started'
   | 'scan_completed'
