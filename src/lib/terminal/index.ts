@@ -65,3 +65,8 @@ export {
 export {
   registerMeshHandlers,
 } from './mesh-handlers';
+
+// Observability handlers (v11.5.0)
+export {
+  registerObservabilityHandlers,
+} from './observability-handlers';
