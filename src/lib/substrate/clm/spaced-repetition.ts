@@ -9,6 +9,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import type { Topic } from './topic-bank';
 
 // ═══════════════════════════════════════════════════════════════════════════════
