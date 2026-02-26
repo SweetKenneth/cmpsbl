@@ -291,20 +291,26 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
 }
 
 /**
- * Self-chain: dispatch the next burst via the substrate orchestrator
+ * Self-chain: dispatch the next burst immediately after this one completes.
+ * Uses fire-and-forget fetch to avoid blocking the response.
  */
-async function chainNextBurst(supabase: any, burstSize: number, budget: BudgetState): Promise<void> {
+function chainNextBurst(supabaseUrl: string, serviceKey: string, burstSize: number, budget: BudgetState): void {
   const remaining = Math.min(budget.remainingDaily - burstSize, budget.remainingHourly - burstSize);
   if (remaining <= 0) return;
 
-  try {
-    // Fire-and-forget — the orchestrator picks it up
-    await supabase.functions.invoke('pf-clm-engine', {
-      body: { action: 'burst', burst_size: Math.min(burstSize, MAX_BURST_SIZE) },
-    });
-  } catch {
-    // Non-fatal — cron will catch up
-  }
+  const nextSize = Math.min(burstSize, MAX_BURST_SIZE, remaining);
+  if (nextSize <= 0) return;
+
+  // Fire-and-forget via raw fetch — avoids supabase client overhead and recursive awaits
+  const url = `${supabaseUrl}/functions/v1/pf-clm-engine`;
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${serviceKey}`,
+    },
+    body: JSON.stringify({ action: 'burst', burst_size: nextSize, auto_chain: true }),
+  }).catch(() => { /* non-fatal — cron will catch up */ });
 }
 
 serve(async (req) => {
