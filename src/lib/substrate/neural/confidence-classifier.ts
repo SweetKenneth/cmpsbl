@@ -24,6 +24,7 @@ interface ClassifierState {
   accuracy: number;
   eceScore: number;
   lastTrainedAt: string | null;
+  error: string | null;
 }
 
 const ACTIVATION_THRESHOLD = 200; // min labeled traces

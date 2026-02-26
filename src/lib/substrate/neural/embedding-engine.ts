@@ -28,6 +28,7 @@ interface EmbeddingEngineState {
   totalEmbeddings: number;
   lastEncodedAt: string | null;
   activationMet: boolean;
+  error: string | null;
 }
 
 /**

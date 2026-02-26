@@ -26,6 +26,7 @@ interface DriftDetectorState {
   totalChecks: number;
   anomaliesDetected: number;
   lastCheckAt: string | null;
+  error: string | null;
 }
 
 const ACTIVATION_THRESHOLD = 500; // min embeddings before activating
