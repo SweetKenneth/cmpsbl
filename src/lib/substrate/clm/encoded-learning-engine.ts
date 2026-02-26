@@ -488,12 +488,13 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
 
   private loadState(): EncodedLearningState {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const { secureGet } = require('@/lib/system/secureStorage');
+      const stored = secureGet<EncodedLearningState>(STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        return stored;
       }
     } catch {
-      // Ignore
+      /* Storage unavailable — use defaults */
     }
     
     return {
@@ -508,9 +509,10 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
 
   private persistState(): void {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      const { secureSet } = require('@/lib/system/secureStorage');
+      secureSet(STORAGE_KEY, this.state);
     } catch {
-      // Ignore
+      /* Non-critical: learning state rebuilt on next session */
     }
   }
 }

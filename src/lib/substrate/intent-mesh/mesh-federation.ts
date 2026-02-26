@@ -76,9 +76,9 @@ export function getFederationConfig(): FederationConfig {
 
 export function updateFederationConfig(updates: Partial<FederationConfig>): FederationConfig {
   currentConfig = { ...currentConfig, ...updates };
-  // Persist to localStorage for client-side state
   try {
-    localStorage.setItem('mesh_federation_config', JSON.stringify(currentConfig));
+    const { secureSet } = require('@/lib/system/secureStorage');
+    secureSet('mesh_federation_config', currentConfig);
   } catch { /* non-blocking */ }
   return { ...currentConfig };
 }

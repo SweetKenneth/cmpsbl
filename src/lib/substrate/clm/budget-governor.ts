@@ -80,32 +80,33 @@ class BudgetGovernorClient {
   private loadPersistedState(): void {
     try {
       if (typeof localStorage !== 'undefined') {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          const parsed = JSON.parse(stored);
+        const { secureGet } = require('@/lib/system/secureStorage');
+        const parsed = secureGet<Record<string, unknown>>(STORAGE_KEY);
+        if (parsed) {
           const today = new Date().toISOString().split('T')[0];
           if (parsed.dateKey === today) {
             this.state = {
               ...this.state,
-              ...parsed,
-              nextAllowedAt: parsed.nextAllowedAt ? new Date(parsed.nextAllowedAt) : null,
+              ...(parsed as typeof this.state),
+              nextAllowedAt: parsed.nextAllowedAt ? new Date(parsed.nextAllowedAt as string) : null,
             };
             this.recalculateRemainingBudget();
           }
         }
       }
-    } catch { /* Use fresh state */ }
+    } catch { /* Use fresh state — non-critical */ }
   }
 
   private persistState(): void {
     try {
       if (typeof localStorage !== 'undefined') {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        const { secureSet } = require('@/lib/system/secureStorage');
+        secureSet(STORAGE_KEY, {
           ...this.state,
           nextAllowedAt: this.state.nextAllowedAt?.toISOString() || null,
-        }));
+        });
       }
-    } catch { /* Non-critical */ }
+    } catch { /* Non-critical: budget resets daily */ }
   }
 
   setConfig(config: Partial<CLMConfig>): void {

@@ -64,9 +64,9 @@ const PASSKEY_EMAIL_MAP_KEY = 'cmpsbl_passkey_email_map';
 
 function loadCredentialStore(): Map<string, PasskeyCredential[]> {
   try {
-    const raw = localStorage.getItem(PASSKEY_STORE_KEY);
-    if (!raw) return new Map();
-    const parsed = JSON.parse(raw) as Record<string, PasskeyCredential[]>;
+    const { secureGet } = require('@/lib/system/secureStorage');
+    const parsed = secureGet<Record<string, PasskeyCredential[]>>(PASSKEY_STORE_KEY);
+    if (!parsed) return new Map();
     return new Map(Object.entries(parsed));
   } catch {
     return new Map();
@@ -75,18 +75,20 @@ function loadCredentialStore(): Map<string, PasskeyCredential[]> {
 
 function saveCredentialStore(store: Map<string, PasskeyCredential[]>) {
   try {
+    const { secureSet } = require('@/lib/system/secureStorage');
     const obj: Record<string, PasskeyCredential[]> = {};
     for (const [k, v] of store) obj[k] = v;
-    localStorage.setItem(PASSKEY_STORE_KEY, JSON.stringify(obj));
-  } catch { /* storage full or unavailable */ }
+    secureSet(PASSKEY_STORE_KEY, obj);
+  } catch { /* Storage full or unavailable — passkeys still work via server */ }
 }
 
 /** Map credentialId → email for auto-login after Face ID */
 function loadEmailMap(): Map<string, string> {
   try {
-    const raw = localStorage.getItem(PASSKEY_EMAIL_MAP_KEY);
-    if (!raw) return new Map();
-    return new Map(Object.entries(JSON.parse(raw)));
+    const { secureGet } = require('@/lib/system/secureStorage');
+    const parsed = secureGet<Record<string, string>>(PASSKEY_EMAIL_MAP_KEY);
+    if (!parsed) return new Map();
+    return new Map(Object.entries(parsed));
   } catch {
     return new Map();
   }
@@ -94,10 +96,11 @@ function loadEmailMap(): Map<string, string> {
 
 function saveEmailMap(map: Map<string, string>) {
   try {
+    const { secureSet } = require('@/lib/system/secureStorage');
     const obj: Record<string, string> = {};
     for (const [k, v] of map) obj[k] = v;
-    localStorage.setItem(PASSKEY_EMAIL_MAP_KEY, JSON.stringify(obj));
-  } catch { /* storage full or unavailable */ }
+    secureSet(PASSKEY_EMAIL_MAP_KEY, obj);
+  } catch { /* Storage full or unavailable — email map is convenience only */ }
 }
 
 /** Register a passkey-to-email mapping so Face ID can auto-login */
