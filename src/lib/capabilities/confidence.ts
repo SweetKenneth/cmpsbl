@@ -3,7 +3,7 @@
  * v10.5.4 — ARCHITECT Epoch Feedback + Scoring System (400+ capabilities)
  */
 
-interface ConfidenceRecord {
+export interface ConfidenceRecord {
   capabilityId: string;
   scores: number[];
   errors: string[];
