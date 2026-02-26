@@ -496,8 +496,8 @@ Be concise, precise, and focused on practical utility. This learning will be sto
 
   private loadState(): void {
     try {
-      const { secureGet } = require('@/lib/system/secureStorage');
-      const parsed = secureGet<typeof this.state>('clm_orchestrator_state');
+      const { secureGet } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
+      const parsed = secureGet('clm_orchestrator_state') as typeof this.state | null;
       if (parsed) {
         const today = new Date().toISOString().split('T')[0];
         const lastJobDay = parsed.lastJobAt?.split('T')[0];
@@ -512,7 +512,7 @@ Be concise, precise, and focused on practical utility. This learning will be sto
 
   private persistState(): void {
     try {
-      const { secureSet } = require('@/lib/system/secureStorage');
+      const { secureSet } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
       secureSet('clm_orchestrator_state', this.state);
     } catch {
       /* Quota exceeded — non-critical */

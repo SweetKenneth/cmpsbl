@@ -39,6 +39,7 @@ import { useTerminalWatch, formatWatchListOutput } from './terminal/useTerminalW
 import { recordAuditEntry, exportAuditLog } from './terminal/useTerminalAudit';
 import { generateSmartSuggestions, getSuggestionDefinition, type SmartSuggestion } from './terminal/useSmartSuggestions';
 import { getBootMessages } from './terminal/TerminalBootScreen';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 interface EnhancedTerminalProps {
   enabled: boolean;
@@ -52,21 +53,14 @@ const MAX_PERSISTED_HISTORY = 200;
 
 function loadPersistedHistory(): string[] {
   try {
-    const { secureGet } = await_secureStorage();
     return secureGet<string[]>(HISTORY_STORAGE_KEY) || [];
   } catch { /* Storage unavailable — start fresh */ return []; }
 }
 
 function persistHistory(history: string[]) {
   try {
-    const { secureSet } = await_secureStorage();
     secureSet(HISTORY_STORAGE_KEY, history.slice(-MAX_PERSISTED_HISTORY));
   } catch { /* Quota exceeded — non-critical */ }
-}
-
-// Lazy import helper to avoid require() 
-function await_secureStorage() {
-  return { secureGet, secureSet };
 }
 
 export function EnhancedTerminal({ enabled, className, fullHeight = false }: EnhancedTerminalProps) {
