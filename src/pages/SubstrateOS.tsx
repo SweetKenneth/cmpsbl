@@ -7,6 +7,7 @@
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { useState, lazy, Suspense, memo, useCallback, useEffect, useMemo } from 'react';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import {
   Loader2, Lock, Terminal, AlertTriangle, FileText,
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
@@ -856,14 +857,14 @@ export default function SubstrateOS() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'classic' | 'hybrid'>(() => {
     if (typeof window === 'undefined') return 'classic';
-    return (localStorage.getItem('os_view_mode') as 'classic' | 'hybrid') || 'classic';
+    return secureGet<'classic' | 'hybrid'>('os_view_mode') || 'classic';
   });
   const navigate = useNavigate();
 
   // Persist view mode
   const handleSetViewMode = useCallback((mode: 'classic' | 'hybrid') => {
     setViewMode(mode);
-    localStorage.setItem('os_view_mode', mode);
+    secureSet('os_view_mode', mode);
   }, []);
 
   // Habitat state for hybrid mode

@@ -97,9 +97,10 @@
      }
    }
  
-   // Memory analysis
-   if (typeof performance !== 'undefined' && (performance as any).memory) {
-     const memory = (performance as any).memory;
+   // Memory analysis (Chrome-only non-standard API)
+   const perfWithMemory = performance as Performance & { memory?: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } };
+   if (typeof performance !== 'undefined' && perfWithMemory.memory) {
+     const memory = perfWithMemory.memory;
      metrics.memory_used_mb = Math.round(memory.usedJSHeapSize / 1024 / 1024);
  
      if (metrics.memory_used_mb > config.memory_threshold_mb) {

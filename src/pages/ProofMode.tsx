@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
+import { secureGet, secureSet } from "@/lib/system/secureStorage";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Activity, MessageSquare, Moon, Play, RotateCcw, AlertTriangle, 
@@ -161,17 +162,16 @@ function ProofModeContent() {
     checkConnection();
   }, []);
 
-  // Load rate limit data from localStorage
+  // Load rate limit data from secure storage
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(RATE_LIMIT_KEY);
-      if (stored) {
-        const data: RateLimitData = JSON.parse(stored);
+      const data = secureGet<RateLimitData>(RATE_LIMIT_KEY);
+      if (data) {
         const now = Date.now();
         const hourAgo = now - 60 * 60 * 1000;
         
         if (data.hourStart < hourAgo) {
-          localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ runs: 0, hourStart: now }));
+          secureSet(RATE_LIMIT_KEY, { runs: 0, hourStart: now });
           setRunsThisSession(0);
         } else {
           setRunsThisSession(data.runs);
@@ -179,12 +179,12 @@ function ProofModeContent() {
       }
       
       // Load total executions
-      const totalStored = localStorage.getItem("pf_proof_total");
-      if (totalStored) {
-        setTotalExecutions(parseInt(totalStored, 10));
+      const totalStored = secureGet<number>('pf_proof_total');
+      if (totalStored != null) {
+        setTotalExecutions(totalStored);
       }
     } catch {
-      // Ignore localStorage errors
+      /* Storage unavailable — start with defaults */
     }
   }, []);
 
@@ -298,22 +298,21 @@ function ProofModeContent() {
       setTotalExecutions(newTotal);
       
       try {
-        const stored = localStorage.getItem(RATE_LIMIT_KEY);
+        const existing = secureGet<RateLimitData>(RATE_LIMIT_KEY);
         const now = Date.now();
         let hourStart = now;
         
-        if (stored) {
-          const data: RateLimitData = JSON.parse(stored);
+        if (existing) {
           const hourAgo = now - 60 * 60 * 1000;
-          if (data.hourStart >= hourAgo) {
-            hourStart = data.hourStart;
+          if (existing.hourStart >= hourAgo) {
+            hourStart = existing.hourStart;
           }
         }
         
-        localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ runs: newRuns, hourStart }));
-        localStorage.setItem("pf_proof_total", newTotal.toString());
+        secureSet(RATE_LIMIT_KEY, { runs: newRuns, hourStart });
+        secureSet('pf_proof_total', newTotal);
       } catch {
-        // Ignore localStorage errors
+        /* Storage write failed — rate limit tracking in memory only */
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
