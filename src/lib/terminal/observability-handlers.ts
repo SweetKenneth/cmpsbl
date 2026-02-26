@@ -237,7 +237,7 @@ export function registerObservabilityHandlers(): void {
       const stats = rippleDLQ.getStats();
       const pending = rippleDLQ.getPending();
       dlqData = {
-        depth: stats.total,
+        depth: stats.totalEntries,
         oldest: pending.length > 0 ? pending[0].firstFailedAt : null,
         pending: stats.pendingRetry,
         exhausted: stats.exhausted,
