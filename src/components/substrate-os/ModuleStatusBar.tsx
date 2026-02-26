@@ -16,7 +16,7 @@ interface ModuleConfig {
   id: string;
   name: string;
   shortName: string;
-  layer: 'kernel' | 'ccr-zone' | 'ccl-zone' | 'surface' | 'overlay';
+  layer: 'spine' | 'grid' | 'field' | 'plane' | 'shell';
   icon: React.ElementType;
   description: string;
   color: string;
@@ -56,11 +56,11 @@ const MODULES: ModuleConfig[] = [
 ];
 
 const LAYER_CONFIG = {
-  'kernel': { label: 'Kernel', color: 'text-orange-400', border: 'border-orange-500/30' },
-  'ccr-zone': { label: 'CCR Zone', color: 'text-purple-400', border: 'border-purple-500/30' },
-  'ccl-zone': { label: 'CCL Zone', color: 'text-cyan-400', border: 'border-cyan-500/30' },
-  'surface': { label: 'Matrix Node', color: 'text-blue-400', border: 'border-blue-500/30' },
-  'overlay': { label: 'Overlay', color: 'text-red-400', border: 'border-red-500/30' },
+  'spine': { label: 'Spine', color: 'text-orange-400', border: 'border-orange-500/30' },
+  'grid': { label: 'Grid', color: 'text-purple-400', border: 'border-purple-500/30' },
+  'field': { label: 'Field', color: 'text-blue-400', border: 'border-blue-500/30' },
+  'plane': { label: 'Plane', color: 'text-indigo-400', border: 'border-indigo-500/30' },
+  'shell': { label: 'Shell', color: 'text-red-400', border: 'border-red-500/30' },
 };
 
 function ModuleIndicator({ module, isActive, isLoading, index }: { 

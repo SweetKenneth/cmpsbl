@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
-import { Clock, Sparkles, ArrowRight, Rocket, Lock } from "lucide-react";
+import { Sparkles, ArrowRight, Rocket, Download, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export function LnchblCTA() {
+  const navigate = useNavigate();
+
   return (
     <section className="relative z-10 px-4 py-8 sm:py-16">
       <motion.div
@@ -36,10 +38,10 @@ export function LnchblCTA() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/25 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 mb-6"
             >
-              <Lock className="w-4 h-4 text-amber-500" />
-              <span className="text-sm font-bold tracking-wide text-amber-500">Coming Soon</span>
+              <Zap className="w-4 h-4 text-emerald-500" />
+              <span className="text-sm font-bold tracking-wide text-emerald-500">Available Now</span>
             </motion.div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">
@@ -59,15 +61,15 @@ export function LnchblCTA() {
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
               Your own copy of the full CMPSBL Substrate — the same self-evolving cognitive runtime 
-              you see here. Public download launching soon.
+              you see here. Download the LNCHBL distribution and deploy in minutes.
             </p>
 
             {/* Feature pills */}
             <div className="flex flex-wrap gap-3 mb-8">
               {[
                 { icon: Rocket, text: "Full Substrate", color: "text-primary" },
-                { icon: Clock, text: "Memory in 10 Minutes", color: "text-emerald-500" },
-                { icon: Sparkles, text: "Persistent Memory Guide", color: "text-violet-500" },
+                { icon: Download, text: "Free Download", color: "text-emerald-500" },
+                { icon: Sparkles, text: "Neural Substrate Included", color: "text-violet-500" },
               ].map((pill) => (
                 <div key={pill.text} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-muted/40 border border-border/50">
                   <pill.icon className={cn("w-4 h-4", pill.color)} />
@@ -76,28 +78,29 @@ export function LnchblCTA() {
               ))}
             </div>
 
-            {/* CTA Buttons — disabled with Coming Soon */}
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
-                disabled
-                className="group text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 opacity-60 cursor-not-allowed"
+                onClick={() => navigate("/lnchbl")}
+                className="group text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14"
               >
-                <Lock className="w-5 h-5 mr-2" />
-                Download Coming Soon
+                <Download className="w-5 h-5 mr-2" />
+                Download LNCHBL
+                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                disabled
-                className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 opacity-60 cursor-not-allowed"
+                onClick={() => navigate("/docs/lnchbl-setup")}
+                className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14"
               >
-                Setup Guide Coming Soon
+                Setup Guide
               </Button>
             </div>
 
             <p className="text-sm text-muted-foreground mt-6">
-              No account required • Full substrate • Persistent memory in minutes • Powered by LNCHBL
+              No account required • Full substrate • Neural substrate + memory in minutes • Powered by LNCHBL
             </p>
           </div>
         </div>
