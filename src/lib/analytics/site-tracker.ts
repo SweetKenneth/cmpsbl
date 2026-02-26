@@ -204,7 +204,11 @@ async function trackPageView() {
   pageEnterTime = Date.now();
   maxScrollDepth = 0;
 
+  // Generate ID client-side to avoid needing SELECT permission for anon visitors
+  const pageViewId = crypto.randomUUID();
+  
   const pageData = {
+    id: pageViewId,
     session_id: sessionId,
     fingerprint_hash: fingerprint,
     page_path: window.location.pathname,
@@ -231,13 +235,11 @@ async function trackPageView() {
   };
 
   try {
-    const { data } = await supabase
+    await supabase
       .from('site_page_views')
-      .insert(pageData)
-      .select('id')
-      .single();
+      .insert(pageData);
     
-    currentPageViewId = data?.id || null;
+    currentPageViewId = pageViewId;
 
     // Upsert session
     if (isNew) {
