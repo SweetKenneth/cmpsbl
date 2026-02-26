@@ -163,12 +163,20 @@ export function getHealthSnapshot(): {
     last_updated: string;
   };
 } {
-  const criticalCount = metricsState.severity_distribution.critical;
-  
+  // Calculate trend from score history
+  const globalHistory = scoreHistory.get('global') || [];
+  let trend: 'up' | 'down' | 'stable' = 'stable';
+  if (globalHistory.length >= 2) {
+    const recent = globalHistory[globalHistory.length - 1];
+    const previous = globalHistory[globalHistory.length - 2];
+    if (recent > previous + 2) trend = 'up';
+    else if (recent < previous - 2) trend = 'down';
+  }
+
   return {
     inclusive: {
       score: metricsState.global_score,
-      trend: 'stable', // TODO: Calculate from history
+      trend,
       critical_count: criticalCount,
       last_updated: new Date().toISOString(),
     },
