@@ -81,14 +81,14 @@ export async function loadPersistedSnapshot(): Promise<MetricSnapshot | null> {
     .limit(1)
     .maybeSingle();
 
-  if (!data?.metadata) return null;
+  const record = data as any;
+  if (!record?.metadata) return null;
 
-  const meta = data.metadata as any;
   return {
-    snapshotId: meta.snapshot_id,
-    timestamp: meta.timestamp,
+    snapshotId: record.metadata.snapshot_id,
+    timestamp: record.metadata.timestamp,
     modules: {},
     flatMetrics: [],
-    systemHealth: meta.system_health || 0,
+    systemHealth: record.metadata.system_health || 0,
   };
 }
