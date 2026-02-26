@@ -12,6 +12,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
 import type { SubstrateModule } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
+import { initializeNeuralSubstrate, shutdownNeuralSubstrate } from '@/lib/substrate/neural';
 
 interface ModuleStatus {
   active: boolean;
@@ -148,6 +149,11 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     initializedRef.current = true;
     mountedRef.current = true;
 
+    // Initialize Neural Substrate Layer (fully automated maintenance)
+    initializeNeuralSubstrate().catch(err => 
+      console.warn('[SubstrateProvider] Neural substrate init deferred:', err)
+    );
+
     const startRefreshInterval = () => {
       if (!mountedRef.current) return;
       if (!debugMode.allowModulePolling()) return;
@@ -182,6 +188,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     
     const cleanupMount = () => {
       mountedRef.current = false;
+      shutdownNeuralSubstrate();
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;

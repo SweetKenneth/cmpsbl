@@ -35,6 +35,31 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 
 ## v11.x.x — SPARTA Epoch (Living)
 
+### Evolution 024 — 2026-02-26
+
+**Observed Pressures**
+- Memory retrieval relied on keyword/tag matching — semantically similar content was missed
+- The BRAIN had no way to predict success probability for autonomous actions
+- Distribution shifts in incoming patterns went undetected
+- Four critical BRAIN maintenance tasks (tiering, decay, compression, metacognition) required manual triggering
+
+**Learned Responses**
+- A Neural Substrate Layer emerged within BRAIN with four autonomous components
+- An Embedding Engine converts text artifacts into 384-dimensional vector representations
+- A Vector Similarity Index enables semantic nearest-neighbor recall
+- A Confidence Classifier predicts action success probability with go/no-go gating
+- A Drift Detector monitors for distribution shifts and alerts the Immunity Field
+- A Maintenance Manager automates all 10 BRAIN maintenance tasks on fixed intervals
+
+**Resulting Capabilities**
+- Semantic memory retrieval replaces keyword matching for context augmentation
+- The substrate predicts success probability before autonomous actions (proceed/cautious/escalate)
+- Distribution drift is detected and routed to Immunity for targeted repair
+- All BRAIN maintenance is fully autonomous — zero daily operator intervention
+- Neural components activate progressively as training data accumulates
+
+---
+
 ### Evolution 023 — 2026-02-26
 
 **Observed Pressures**
