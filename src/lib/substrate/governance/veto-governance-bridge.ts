@@ -124,20 +124,24 @@ export async function issueGovernanceVetoes(mode: GovernanceMode): Promise<void>
       severity: 'high',
     });
 
-    if (result.accepted && result.vetoId) {
+    if (result.accepted) {
+      // Find the veto we just created by matching authority + reason marker
+      const activeVetoes = vetoAuthority.getActiveVetoes();
+      const issued = activeVetoes.find(
+        v => v.authority === 'system' && v.scope === scope && v.reason?.includes('gov-bridge')
+      );
+      const vetoId = issued?.id || `gov-${scope}-${Date.now()}`;
+
       // Persist to DB for deterministic revocation
       try {
         await supabase.from('governance_issued_vetoes').insert({
-          veto_id: result.vetoId,
+          veto_id: vetoId,
           scope,
         });
       } catch (err) {
         log.warn('governance', `Failed to persist issued veto record: ${err}`);
       }
-      log.info('governance', `Governance veto issued: ${scope} (${result.vetoId})`);
-    } else if (result.accepted) {
-      // Fallback: track by scope marker if no ID returned
-      log.info('governance', `Governance veto issued: ${scope} (no ID returned)`);
+      log.info('governance', `Governance veto issued: ${scope} (${vetoId})`);
     }
   }
 
