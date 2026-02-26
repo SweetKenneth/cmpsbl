@@ -31,34 +31,54 @@
    recommendation: string;
  }
  
- // Defined dependencies between modules
- const MODULE_DEPENDENCIES: Record<SubstrateModuleName, SubstrateModuleName[]> = {
-   core: [],
-   ripple: ['core'],
-   access: ['core'],
-   brain: ['core'],
-   decode: ['core'],
-   defense: ['core'],
-   nexus: ['core'],
-   vision: ['core'],
-   dream: ['core'],
-   system: ['core'],
-   modernizer: ['core'],
-   integration: ['core'],
-   inclusive: ['core'],
-   cortex: ['core'],
-   memory: ['core'],
-   relay: ['core'],
-   audit: ['core'],
-   identity: ['core'],
-   economy: ['core'],
-   sandbox: ['core'],
-   encode: ['core', 'decode'],
-   immunity: ['core', 'defense'],
-   evolution: ['core'],
-   intent: ['core'],
-   governance: ['core'],
- };
+  /**
+   * Module dependency graph — aligned with SPARTA v11.5 Field-Based Topology
+   * 
+   * Spine:  CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM)
+   * Grid:   OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) — taps off CORE
+   * Exec:   Execution nodes depend on CCR + OCG upstream
+   * Fields: EVOLUTION, IMMUNITY, INTENT — permeate CCR + Execution
+   * Plane:  GOVERNANCE — supervisory blanket over all spine nodes
+   * Shell:  DEFENSE — outer containment, depends on GOVERNANCE + IDENTITY
+   */
+  const MODULE_DEPENDENCIES: Record<SubstrateModuleName, SubstrateModuleName[]> = {
+    // ── Spine ──
+    core: [],
+    system: ['core'],
+    brain: ['core', 'system'],
+    memory: ['core', 'system', 'brain'],
+    dream: ['core', 'system', 'brain', 'memory'],
+
+    // ── Grid: OCG ── (taps off CORE + SYSTEM)
+    ripple: ['core', 'system'],
+    access: ['core', 'system', 'identity'],
+    identity: ['core', 'system'],
+    relay: ['core', 'system', 'ripple'],
+    audit: ['core', 'system', 'ripple'],
+
+    // ── Execution Sector ── (depends on CCR + OCG upstream)
+    decode: ['core', 'brain', 'memory'],
+    encode: ['core', 'decode', 'brain', 'memory'],
+    vision: ['core', 'system', 'ripple'],
+    cortex: ['core', 'brain', 'decode', 'encode'],
+    nexus: ['core', 'system', 'economy'],
+    economy: ['core', 'system', 'access', 'audit'],
+    sandbox: ['core', 'system', 'identity'],
+    inclusive: ['core', 'vision'],
+    integration: ['core', 'system', 'ripple', 'audit'],
+    modernizer: ['core', 'encode', 'cortex'],
+
+    // ── Fields ── (permeate CCR + Execution)
+    evolution: ['core', 'brain', 'memory', 'vision'],
+    immunity: ['core', 'defense', 'audit', 'ripple'],
+    intent: ['core', 'brain', 'decode'],
+
+    // ── Plane ── (supervisory blanket)
+    governance: ['core', 'system', 'audit', 'identity'],
+
+    // ── Shell ── (outer containment)
+    defense: ['core', 'system', 'identity', 'ripple'],
+  };
  
  // Build and cache the graph
  let cachedGraph: DependencyGraph | null = null;
