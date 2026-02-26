@@ -3,6 +3,7 @@
  */
 
 import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 // ============================================================================
 // TYPES
