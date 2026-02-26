@@ -88,7 +88,7 @@ async function executeRollback(
     
     record.success = true;
     
-    await supabase.from('brain_events').insert({
+    await supabase.from('brain_events').insert([{
       module: 'modernizer',
       event_type: 'evolution_rollback',
       data: {
@@ -96,9 +96,9 @@ async function executeRollback(
         reason,
         pass_rate: passRate,
         restored: record.restoredState,
-      },
+      } as unknown as import('@/integrations/supabase/types').Json,
       outcome: 'success',
-    });
+    }]);
     
     publish('modernizer' as ModuleName, 'evolution.rolled_back', {
       evolutionId,

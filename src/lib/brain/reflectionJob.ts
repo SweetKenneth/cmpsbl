@@ -139,11 +139,11 @@ ${recommendations.map(r => `- ${r}`).join('\n')}
     // Store reflection
     const { error } = await supabase
       .from('brain_reflections')
-      .insert({
+      .insert([{
         reflection_date: today,
         summary,
-        lessons: insights.filter(i => i.lesson),
-      });
+        lessons: insights.filter(i => i.lesson) as unknown as import('@/integrations/supabase/types').Json,
+      }]);
     
     if (error) {
       console.error('Error storing reflection:', error);
