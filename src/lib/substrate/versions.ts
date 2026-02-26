@@ -9,8 +9,8 @@
  *   DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
  *
  * 9 Zones (surgically hot-swappable, circuit-breaker isolated):
- *   CCR Zones (4): SYSTEM Zone, BRAIN Zone, MEMORY Zone, DREAM Zone
- *   CCL Zones (5): RIPPLE Zone, ACCESS Zone, IDENTITY Zone, RELAY Zone, AUDIT Zone
+ *   CCR Zones (3): BRAIN Zone, MEMORY Zone, DREAM Zone + SYSTEM (elevated to Spine)
+ *   OCG Zones (5): RIPPLE Zone, ACCESS Zone, IDENTITY Zone, RELAY Zone, AUDIT Zone
  *
  * Absorbed: MODERNIZER → EVOLUTION mesh
  */
