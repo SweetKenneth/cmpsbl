@@ -54,6 +54,7 @@ const PageLoader = () => (
 
 // Core pages - only Explore eager loaded for LCP, rest lazy
 import Explore from "./pages/Explore";
+import DomainAwareHome from "./components/routing/DomainAwareHome";
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Lazy load all other pages to reduce initial bundle
@@ -315,7 +316,7 @@ const App = () => {
                       <Suspense fallback={<PageLoader />}>
                         <Routes>
                           {/* Core Public Pages */}
-                          <Route path="/" element={<Explore />} />
+                          <Route path="/" element={<DomainAwareHome />} />
                         <Route path="/decode" element={<Decode />} />
                         <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
                         <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />
