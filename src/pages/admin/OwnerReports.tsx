@@ -280,7 +280,7 @@ export default function OwnerReports() {
             {selectedReport && (
               <div
                 className="px-2"
-                dangerouslySetInnerHTML={{ __html: selectedReport.full_html }}
+                dangerouslySetInnerHTML={{ __html: sanitizeReportHtml(selectedReport.full_html) }}
               />
             )}
           </ScrollArea>
