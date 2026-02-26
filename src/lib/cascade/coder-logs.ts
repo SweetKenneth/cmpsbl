@@ -5,6 +5,8 @@
  * Prepares for future automation pipeline (job queue → auto-PR).
  */
 
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
+
 export interface CoderLogEntry {
   timestamp: string;
   projectId: string;

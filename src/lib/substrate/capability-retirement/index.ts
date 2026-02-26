@@ -10,6 +10,7 @@
 
 import { capabilityAnalytics, type CapabilityMetrics } from '../capability-analytics';
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES

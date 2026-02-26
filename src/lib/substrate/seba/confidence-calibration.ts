@@ -9,6 +9,8 @@
  * Calibration Curve: predicted probability vs observed frequency
  */
 
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
+
 export interface PredictionRecord {
   id: string;
   proposalId: string;

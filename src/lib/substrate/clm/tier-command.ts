@@ -10,6 +10,7 @@
 
 import { budgetGovernor } from './budget-governor';
 import type { CLMConfig, BudgetState } from './config';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES

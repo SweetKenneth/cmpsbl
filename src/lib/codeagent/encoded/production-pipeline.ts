@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { type PracticeResult, type ShadowPracticeState } from './shadow-practice';
 import { runEncodedGuard } from './guard';
 import { getOverallMastery } from './feedback-loop';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES

@@ -13,6 +13,7 @@ import { runEncodedGuard, computeDiffStats, classifyChange, type GuardResult } f
 import { extractAnchors } from './anchor';
 import { recordOutcome, getOverallMastery, type PatternOutcome } from './feedback-loop';
 import { EXPERT_PATTERNS, getRelevantPatterns, type ExpertPattern } from './expert-patterns';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import { ENCODED_SKILLS } from './skills';
 
 // ═══════════════════════════════════════════════════════════════
