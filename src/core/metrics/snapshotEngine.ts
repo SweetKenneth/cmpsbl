@@ -7,6 +7,7 @@
 
 import { getAllLiveMetrics, flattenAllMetrics } from './metricsRegistry';
 import type { ModuleLiveMetrics, NumericMetric } from './metricsSchema';
+import { persistLatestSnapshot } from './snapshotPersistence';
 
 // ═══ Types ════════════════════════════════════════════════════════
 
@@ -78,6 +79,11 @@ export async function capture(): Promise<MetricSnapshot> {
   while (snapshots.length > MAX_SNAPSHOTS) {
     snapshots.shift();
   }
+
+  // Persist to database for cross-session retention (fire-and-forget)
+  persistLatestSnapshot().catch(() => {
+    // Silent fail — persistence is best-effort
+  });
 
   return snapshot;
 }
