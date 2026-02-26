@@ -438,6 +438,9 @@ export default function Upgrade() {
           currentTier={currentProductTier}
           packName={pressureModal.packName}
         />
+
+        {/* ═══ ENTERPRISE CTA ═══ */}
+        <section className="container mx-auto px-4 mt-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Building2 className="w-10 h-10 text-amber-500 mx-auto mb-4" />
             <h3 className="text-2xl font-bold">Architect Custom</h3>
