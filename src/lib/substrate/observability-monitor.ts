@@ -1,7 +1,6 @@
 /**
- * Observability Monitor — v11.5.0
- * SPARTA Epoch — Fills the critical gap between bridge activity, telemetry queries,
- * cross-node latency tracking, and dead letter queue visibility.
+ * Observability Monitor — v11.5.1
+ * SPARTA Epoch — Hardened telemetry, accurate percentiles, DLQ-aware health
  * 
  * Gaps filled:
  * 1. Bridge Invocation Tracking — Every inter-node bridge call is metered
@@ -9,6 +8,13 @@
  * 3. DLQ Visibility — Surfaces dead letter queue depth and oldest entries
  * 4. Telemetry Summary — Aggregated view of engine health across the matrix
  * 5. Error Hotspot Detection — Identifies which nodes produce the most errors
+ * 
+ * v11.5.1 Hardening:
+ * - Sanitized telemetry payloads (no raw data leakage)
+ * - Edge-safe p95 indexing
+ * - True lastMeasured timestamps on latency entries
+ * - Hotspot computation cache (5s TTL)
+ * - DLQ depth wired into health score
  */
 
 import { telemetryEngine } from './telemetry-engine';
@@ -55,6 +61,12 @@ export interface ObservabilitySummary {
   healthScore: number; // 0-100
 }
 
+/** Structured latency entry with true last-measured timestamp */
+interface LatencyEntry {
+  samples: number[];
+  lastMeasured: string;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // OBSERVABILITY MONITOR
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -62,9 +74,11 @@ export interface ObservabilitySummary {
 class ObservabilityMonitor {
   private static instance: ObservabilityMonitor;
   private bridgeLog: BridgeInvocation[] = [];
-  private latencyMap: Map<string, number[]> = new Map();
+  private latencyMap: Map<string, LatencyEntry> = new Map();
+  private hotspotCache: { data: ErrorHotspot[]; ts: number } | null = null;
   private readonly MAX_BRIDGE_LOG = 500;
   private readonly MAX_LATENCY_SAMPLES = 100;
+  private readonly HOTSPOT_CACHE_TTL = 5000;
 
   private constructor() {}
 
@@ -103,12 +117,18 @@ class ObservabilityMonitor {
       this.bridgeLog = this.bridgeLog.slice(-this.MAX_BRIDGE_LOG);
     }
 
-    // Also emit to telemetry engine for unified observability
+    // Sanitize payload before emitting to telemetry — no raw data leakage
+    const sanitizedMetadata = {
+      direction,
+      payloadKeys: payload ? Object.keys(payload).slice(0, 10) : [],
+      payloadSize: payload ? JSON.stringify(payload).length : 0,
+    };
+
     telemetryEngine.emit(
       'custom',
       success ? 'info' : 'warn',
       { module: 'bridge', action: bridge },
-      { durationMs, success, metadata: { direction, ...payload } }
+      { durationMs, success, metadata: sanitizedMetadata }
     );
   }
 
@@ -152,13 +172,18 @@ class ObservabilityMonitor {
    */
   recordLatency(sourceNode: string, targetNode: string, latencyMs: number): void {
     const key = `${sourceNode}→${targetNode}`;
+    const now = new Date().toISOString();
+
     if (!this.latencyMap.has(key)) {
-      this.latencyMap.set(key, []);
+      this.latencyMap.set(key, { samples: [], lastMeasured: now });
     }
-    const samples = this.latencyMap.get(key)!;
-    samples.push(latencyMs);
-    if (samples.length > this.MAX_LATENCY_SAMPLES) {
-      samples.shift();
+
+    const entry = this.latencyMap.get(key)!;
+    entry.samples.push(latencyMs);
+    entry.lastMeasured = now;
+
+    if (entry.samples.length > this.MAX_LATENCY_SAMPLES) {
+      entry.samples.shift();
     }
   }
 
@@ -168,19 +193,30 @@ class ObservabilityMonitor {
   getLatencies(): CrossNodeLatency[] {
     const results: CrossNodeLatency[] = [];
 
-    for (const [key, samples] of this.latencyMap.entries()) {
+    for (const [key, entry] of this.latencyMap.entries()) {
       const [source, target] = key.split('→');
+      const { samples, lastMeasured } = entry;
+      if (samples.length === 0) continue;
+
       const sorted = [...samples].sort((a, b) => a - b);
       const avg = samples.reduce((s, v) => s + v, 0) / samples.length;
-      const p95Index = Math.floor(sorted.length * 0.95);
+
+      // Edge-safe p95 indexing — accurate for small sample sets
+      const p95Index = Math.max(
+        0,
+        Math.min(
+          sorted.length - 1,
+          Math.ceil(sorted.length * 0.95) - 1
+        )
+      );
 
       results.push({
         sourceNode: source,
         targetNode: target,
         avgLatencyMs: Math.round(avg * 100) / 100,
-        p95LatencyMs: sorted[p95Index] || sorted[sorted.length - 1],
+        p95LatencyMs: sorted[p95Index],
         sampleCount: samples.length,
-        lastMeasured: new Date().toISOString(),
+        lastMeasured,
       });
     }
 
@@ -192,9 +228,14 @@ class ObservabilityMonitor {
   // ═══════════════════════════════════════════════════════════════════════════
 
   /**
-   * Identify nodes generating the most errors
+   * Identify nodes generating the most errors (cached, 5s TTL)
    */
   getErrorHotspots(limit: number = 10): ErrorHotspot[] {
+    const now = Date.now();
+    if (this.hotspotCache && now - this.hotspotCache.ts < this.HOTSPOT_CACHE_TTL) {
+      return this.hotspotCache.data.slice(0, limit);
+    }
+
     const state = telemetryEngine.getState();
     const errors = telemetryEngine.getErrors(200);
 
@@ -215,7 +256,7 @@ class ObservabilityMonitor {
 
     const totalEvents = Math.max(1, state.totalEvents);
 
-    return Array.from(nodeErrors.entries())
+    const result = Array.from(nodeErrors.entries())
       .map(([node, data]) => ({
         node,
         errorCount: data.count,
@@ -225,6 +266,9 @@ class ObservabilityMonitor {
       }))
       .sort((a, b) => b.errorCount - a.errorCount)
       .slice(0, limit);
+
+    this.hotspotCache = { data: result, ts: now };
+    return result;
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -249,6 +293,18 @@ class ObservabilityMonitor {
       ? Math.round(this.bridgeLog.reduce((s, b) => s + b.durationMs, 0) / this.bridgeLog.length)
       : 0;
 
+    // Wire real DLQ depth
+    let dlqDepth = 0;
+    try {
+      // Dynamic import to avoid circular dependency
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const dlqModule = require('@/lib/substrate/ripple-dlq');
+      const stats = dlqModule.getDLQStats?.();
+      dlqDepth = stats?.total || 0;
+    } catch {
+      // DLQ module not available — safe fallback
+    }
+
     // Health score: 100 minus penalties
     let healthScore = 100;
     if (errorRate > 10) healthScore -= 30;
@@ -261,6 +317,11 @@ class ObservabilityMonitor {
     const slowLatencies = latencies.filter(l => l.p95LatencyMs > 500).length;
     healthScore -= slowLatencies * 5;
 
+    // DLQ depth penalty (capped at -20)
+    if (dlqDepth > 0) {
+      healthScore -= Math.min(20, dlqDepth * 2);
+    }
+
     return {
       totalTelemetryEvents: telState.totalEvents,
       errorRate,
@@ -269,7 +330,7 @@ class ObservabilityMonitor {
       activeBridges: Object.keys(bridgeActivity.summary),
       errorHotspots: hotspots,
       crossNodeLatencies: latencies,
-      dlqDepth: 0, // Will be populated by DLQ bridge
+      dlqDepth,
       healthScore: Math.max(0, Math.min(100, healthScore)),
     };
   }
@@ -280,6 +341,7 @@ class ObservabilityMonitor {
   reset(): void {
     this.bridgeLog = [];
     this.latencyMap.clear();
+    this.hotspotCache = null;
   }
 }
 
