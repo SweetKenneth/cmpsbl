@@ -1,6 +1,6 @@
 /**
- * System Integrity Overview — v11.1 Surface Realignment
- * Read-only dashboard: CORE, CCR Zones, CCL Zones, Execution Surfaces, Overlays
+ * System Integrity Overview — v11.5 Field-Based Topology
+ * Read-only dashboard: CORE, CCR Zones, OCG Zones, Execution Surfaces, Overlays
  * Shows health %, breaker state, last mutation time, zone isolation status
  */
 
@@ -53,9 +53,9 @@ const LAYERS: LayerDef[] = [
     ],
   },
   {
-    id: 'ccl',
-    label: 'CCL Zones',
-    description: 'Cognitive Lucidity — Layer 1 infrastructure',
+    id: 'ocg',
+    label: 'OCG Zones',
+    description: 'Operational Compliance Grid — boundary enforcement',
     icon: Layers,
     color: 'blue',
     members: [

@@ -49,7 +49,7 @@ const CCR_ZONES = [
   { name: "DREAM", icon: Moon, desc: "Synthesis, creative combination" },
 ];
 
-const CCL_ZONES = [
+const OCG_ZONES = [
   { name: "RIPPLE", icon: Radio, desc: "Signal/event bus, inter-zone communication" },
   { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting" },
   { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution" },
@@ -107,11 +107,14 @@ export default function Architecture() {
               <Card className="bg-card">
                 <CardContent className="p-6">
                   <pre className="text-sm font-mono text-muted-foreground leading-relaxed overflow-x-auto">{`CORE (Standalone Kernel)
-  → CCR (Layer 0): SYSTEM + BRAIN + MEMORY + DREAM
-  → CCL (Layer 1): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
+  → SYSTEM (Elevated Spine Layer)
+  → CCR (Cognitive Reality): BRAIN + MEMORY + DREAM
+  → OCG (Operational Compliance Grid): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
   → Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
   → INTEGRATION (boots last — dependency resolver)
-  ← Mesh Overlays wrap all layers: DEFENSE (outermost) → GOVERNANCE (innermost)`}</pre>
+  ← Fields wrap spine: EVOLUTION + IMMUNITY + INTENT
+  ← Overlay Plane: GOVERNANCE
+  ← Defense Shell: DEFENSE (outermost)`}</pre>
                 </CardContent>
               </Card>
             </motion.div>
@@ -203,9 +206,9 @@ export default function Architecture() {
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm text-primary tracking-wider uppercase mb-3">CCL — Layer 1 (Cognitive Lucidity)</h3>
+                  <h3 className="font-semibold text-sm text-primary tracking-wider uppercase mb-3">OCG — Operational Compliance Grid</h3>
                   <div className="space-y-2">
-                    {CCL_ZONES.map((z) => (
+                    {OCG_ZONES.map((z) => (
                       <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border">
                         <span className="font-mono text-xs font-bold w-16">{z.name}</span>
                         <span className="text-xs text-muted-foreground">{z.desc}</span>
@@ -225,7 +228,7 @@ export default function Architecture() {
               <h2 className="text-3xl font-bold mb-8">Key Properties</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
-                  { title: "Hot-Swappable Zones", desc: "CCR/CCL zones can be independently cycled without system restart" },
+                  { title: "Hot-Swappable Zones", desc: "CCR/OCG zones can be independently cycled without system restart" },
                   { title: "Circuit Breaker Isolation", desc: "Every zone has independent failure tracking — degradation never cascades" },
                   { title: "Autonomous Evolution", desc: "The EVOLUTION overlay continuously improves system behavior" },
                   { title: "Shadow Training", desc: "Executors practice on real system gaps in shadow mode before production" },
