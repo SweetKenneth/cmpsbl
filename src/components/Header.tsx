@@ -3,10 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMetric } from "@/stores/publicMetricsStore";
+import { useArtifactSlots } from "@/hooks/useArtifactSlots";
+import { useEngineSubscription } from "@/hooks/useEngineSubscription";
+import { SlotCapacityIndicator } from "@/components/slots/SlotCapacityIndicator";
 
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, signOut } = useAuth();
   const version = useMetric('version');
+  const { tier } = useEngineSubscription();
+  const slotState = useArtifactSlots(tier);
   
   return (
     <header className="h-14 lg:h-16 glass border-b border-border/50 px-4 lg:px-6 flex items-center justify-between">
