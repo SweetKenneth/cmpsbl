@@ -343,7 +343,7 @@ serve(async (req) => {
       // Default to burst for cron invocations (no body)
     }
 
-    console.log(`⚡ CLM Engine v${CLM_VERSION} | action=${action} burst_size=${burstSize}`);
+    console.log(`⚡ CLM Engine v${CLM_VERSION} | action=${action} burst_size=${burstSize} auto_chain=${autoChain}`);
 
     // ═══ STATUS ACTION ═══
     if (action === 'status') {
