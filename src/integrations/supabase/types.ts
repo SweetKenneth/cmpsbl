@@ -2195,6 +2195,42 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_classifier_models: {
+        Row: {
+          accuracy: number | null
+          created_at: string
+          ece_score: number | null
+          id: string
+          is_active: boolean
+          model_type: string
+          training_metadata: Json
+          training_samples: number
+          weights: Json
+        }
+        Insert: {
+          accuracy?: number | null
+          created_at?: string
+          ece_score?: number | null
+          id?: string
+          is_active?: boolean
+          model_type: string
+          training_metadata?: Json
+          training_samples?: number
+          weights?: Json
+        }
+        Update: {
+          accuracy?: number | null
+          created_at?: string
+          ece_score?: number | null
+          id?: string
+          is_active?: boolean
+          model_type?: string
+          training_metadata?: Json
+          training_samples?: number
+          weights?: Json
+        }
+        Relationships: []
+      }
       brain_cross_insights: {
         Row: {
           confidence: number | null
@@ -2396,6 +2432,78 @@ export type Database = {
           domain_name?: string
           id?: string
           metadata?: Json | null
+        }
+        Relationships: []
+      }
+      brain_drift_log: {
+        Row: {
+          action_taken: string | null
+          created_at: string
+          domain: string | null
+          id: string
+          is_anomaly: boolean
+          reconstruction_error: number
+          rolling_mean: number
+          rolling_stddev: number
+          sample_artifact_ids: string[] | null
+          sigma_deviation: number
+        }
+        Insert: {
+          action_taken?: string | null
+          created_at?: string
+          domain?: string | null
+          id?: string
+          is_anomaly?: boolean
+          reconstruction_error: number
+          rolling_mean: number
+          rolling_stddev: number
+          sample_artifact_ids?: string[] | null
+          sigma_deviation: number
+        }
+        Update: {
+          action_taken?: string | null
+          created_at?: string
+          domain?: string | null
+          id?: string
+          is_anomaly?: boolean
+          reconstruction_error?: number
+          rolling_mean?: number
+          rolling_stddev?: number
+          sample_artifact_ids?: string[] | null
+          sigma_deviation?: number
+        }
+        Relationships: []
+      }
+      brain_embeddings: {
+        Row: {
+          artifact_content: string
+          artifact_id: string
+          artifact_type: string
+          created_at: string
+          embedding: string | null
+          id: string
+          model_version: string
+          updated_at: string
+        }
+        Insert: {
+          artifact_content: string
+          artifact_id: string
+          artifact_type: string
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          model_version?: string
+          updated_at?: string
+        }
+        Update: {
+          artifact_content?: string
+          artifact_id?: string
+          artifact_type?: string
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          model_version?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -2714,6 +2822,42 @@ export type Database = {
           strength?: number | null
           target_memory_id?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      brain_maintenance_log: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          details: Json | null
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          started_at: string
+          status: string
+          task_type: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          details?: Json | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          started_at?: string
+          status?: string
+          task_type: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          details?: Json | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          started_at?: string
+          status?: string
+          task_type?: string
         }
         Relationships: []
       }
