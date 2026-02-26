@@ -46,7 +46,17 @@ export {
   type TelemetryQuery,
 } from './telemetry-engine';
 
-// State Engine - Canonical State Contract Layer (v6.5.0)
+// Observability Monitor — Bridge Activity, Latency, Error Hotspots (v11.5.0)
+export {
+  observabilityMonitor,
+  ObservabilityMonitor,
+  type BridgeInvocation,
+  type CrossNodeLatency,
+  type ErrorHotspot,
+  type ObservabilitySummary,
+} from './observability-monitor';
+
+
 export {
   stateEngine,
   StateEngineClient,
