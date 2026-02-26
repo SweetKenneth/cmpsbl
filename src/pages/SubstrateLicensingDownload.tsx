@@ -19,14 +19,14 @@ import { Link } from "react-router-dom";
 const LICENSE_TIERS = [
   {
     name: "Free",
-    price: "Coming Soon",
-    period: "",
+    price: "$0",
+    period: "/mo",
     icon: Layers,
     gradient: "from-slate-500 to-zinc-500",
-    cta: "Coming Soon",
-    ctaAction: "#",
+    cta: "Get Started",
+    ctaAction: "/start-here",
     popular: false,
-    comingSoon: true,
+    comingSoon: false,
     features: [
       "Full Artifact Store (800+ capabilities)",
       "Persistent Memory (project-scoped)",
@@ -38,14 +38,14 @@ const LICENSE_TIERS = [
   },
   {
     name: "Creator",
-    price: "Coming Soon",
-    period: "",
+    price: "$9",
+    period: "/mo",
     icon: Sparkles,
     gradient: "from-blue-500 to-cyan-500",
-    cta: "Coming Soon",
-    ctaAction: "#",
-    popular: false,
-    comingSoon: true,
+    cta: "Subscribe",
+    ctaAction: "/pricing",
+    popular: true,
+    comingSoon: false,
     features: [
       "Everything in Free",
       "7 Experience Crown Jewels",
@@ -59,14 +59,14 @@ const LICENSE_TIERS = [
   },
   {
     name: "Architect",
-    price: "Coming Soon",
-    period: "",
+    price: "$19",
+    period: "/mo",
     icon: Crown,
     gradient: "from-violet-500 to-purple-500",
-    cta: "Coming Soon",
-    ctaAction: "#",
+    cta: "Subscribe",
+    ctaAction: "/pricing",
     popular: false,
-    comingSoon: true,
+    comingSoon: false,
     features: [
       "Everything in Creator",
       "All 28 Experience Crown Jewels",
@@ -80,8 +80,8 @@ const LICENSE_TIERS = [
   },
   {
     name: "Enterprise",
-    price: "Custom",
-    period: "",
+    price: "$99",
+    period: "/mo",
     icon: Building2,
     gradient: "from-amber-500 to-orange-500",
     cta: "Contact Sales",
@@ -118,9 +118,9 @@ export default function SubstrateLicensingDownload() {
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="container mx-auto px-4 relative">
             <div className="max-w-3xl mx-auto text-center">
-              <Badge variant="outline" className="mb-6 px-4 py-2 text-sm border-amber-500/30">
-                <Lock className="w-4 h-4 mr-2 inline text-amber-500" />
-                Self-Hosted Substrate · Coming Soon
+              <Badge variant="outline" className="mb-6 px-4 py-2 text-sm border-primary/30">
+                <Server className="w-4 h-4 mr-2 inline text-primary" />
+                Self-Hosted Substrate
               </Badge>
 
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
@@ -130,11 +130,11 @@ export default function SubstrateLicensingDownload() {
               </h1>
 
               <p className="text-xl text-muted-foreground mb-4">
-                Self-hosted CMPSBL substrate deployment is coming soon.
-                Run cognitive infrastructure on your own servers — full details launching with the platform.
+                Run the full CMPSBL substrate on your own servers.
+                Download the LNCHBL distribution and deploy cognitive infrastructure in minutes.
               </p>
               <p className="text-lg text-muted-foreground">
-                Enterprise inquiries welcome now. All other tiers launching soon.
+                Free tier available. Upgrade for advanced cognitive capabilities.
               </p>
             </div>
           </div>

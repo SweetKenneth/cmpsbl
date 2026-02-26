@@ -234,7 +234,7 @@ export default function SubstrateLicensing() {
   const [waitlistTier, setWaitlistTier] = useState<string | null>(null);
   const [waitlistSubmitted, setWaitlistSubmitted] = useState<Set<string>>(new Set());
 
-  // Phase 1: Subscriptions are "Coming Soon" — only standalone products are purchasable
+  // Handle tier subscription
   const handleWaitlist = async (tier: string) => {
     if (!waitlistEmail) {
       setWaitlistTier(tier);
@@ -280,7 +280,7 @@ export default function SubstrateLicensing() {
     <>
       <SEO
         title="Pricing | CMPSBL — Cognitive Infrastructure"
-        description="Standalone AI products available now. Platform tiers coming soon. Composable Cognitives, Persistent Memory, and more — powered by the CMPSBL Substrate."
+        description="AI products and platform tiers available now. Composable Cognitives, Persistent Memory, and more — powered by the CMPSBL Substrate."
         keywords={["CMPSBL pricing", "cognitive infrastructure", "AI agents", "composable cognitives", "persistent memory"]}
         faq={[
           { question: 'What can I buy today?', answer: 'Composable Cognitives (downloadable AI agents) and Persistent Memory (free SDK) are available now. Platform subscription tiers launch soon.' },
@@ -306,7 +306,7 @@ export default function SubstrateLicensing() {
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="outline" className="mb-4 sm:mb-6 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm border-primary/30">
                 <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 inline text-primary" />
-                Standalone Products Available Now · Platform Tiers Coming Soon
+                Standalone Products & Platform Tiers Available Now
               </Badge>
 
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-4 sm:mb-6">
@@ -320,11 +320,10 @@ export default function SubstrateLicensing() {
               </h1>
 
               <p className="text-base sm:text-xl text-muted-foreground mb-2 sm:mb-3">
-                Today: standalone products powered by the CMPSBL Substrate.
-                Soon: the platform itself opens for builders.
+                Standalone products and platform tiers powered by the CMPSBL Substrate.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Start free. Explore what's possible. Join the waitlist for platform access.
+                Start free. Explore what's possible. Upgrade when you're ready.
               </p>
             </div>
           </div>
@@ -394,15 +393,15 @@ export default function SubstrateLicensing() {
           </div>
         </section>
 
-        {/* ═══ Coming Soon — Platform Tiers ═══ */}
+        {/* ═══ Platform Tiers ═══ */}
         <section className="py-10 sm:py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-6 sm:mb-10">
               <Badge variant="outline" className="mb-4 text-xs border-primary/20">
-                <Lock className="w-3 h-3 mr-1.5 inline" />
-                Coming Soon
+                <Sparkles className="w-3 h-3 mr-1.5 inline" />
+                Platform Tiers
               </Badge>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Platform Tiers — Launching Soon</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Platform Tiers</h2>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Build ON the substrate. Free tier is permanent — not a trial. Paid tiers unlock depth, not basics.
               </p>
@@ -597,9 +596,6 @@ function PricingCard({
             <span className="text-2xl sm:text-3xl font-bold">{price}</span>
             {tier.amount !== null && tier.amount > 0 && (
               <span className="text-muted-foreground text-xs sm:text-sm">/mo</span>
-            )}
-            {meta.key !== 'free' && (
-              <Badge variant="outline" className="ml-2 text-[10px]">Coming Soon</Badge>
             )}
           </div>
 
