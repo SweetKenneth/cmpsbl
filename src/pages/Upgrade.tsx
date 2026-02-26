@@ -1,144 +1,134 @@
 /**
- * Upgrade — The single pricing & tier page
- * Dynamic Quarry-driven content + static core features
+ * Upgrade — Artifact Capacity Model
+ * Clean posture tiers · artifact slots · no feature-based pricing
  */
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
-import { usePublicQuarryAssets } from '@/hooks/useQuarryAssets';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import {
-  Check, ArrowRight, Brain, Cpu, Bot, Layers, Shield, Zap,
-  Workflow, Package, Crown, Sparkles, Building2, Lock, Unlock,
-  MessageSquare, Eye, Server
+  Check, ArrowRight, Brain, Package, Shield, Zap,
+  Server, Building2, Lock, Unlock, Layers, Eye,
+  MessageSquare, Sparkles
 } from 'lucide-react';
-import { ASSET_TYPE_LABELS, type QuarryTier, type QuarryAssetType } from '@/lib/quarry/types';
-import {
-  PUBLIC_CAPABILITY_MANIFEST,
-  getCapabilitiesByTier,
-  CATEGORY_LABELS,
-} from '@/lib/capabilities/public-capability-manifest';
+import { ARTIFACT_PACKS, PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 import { motion } from 'framer-motion';
-import { TierUnlockSection } from '@/components/pricing/TierUnlockSection';
 
-/* ─── Tier definitions ─── */
+/* ─── Tier definitions (public-facing) ─── */
 const TIERS: {
-  key: QuarryTier;
+  key: ProductTier;
   name: string;
   price: string;
   annualPrice: string;
   period: string;
+  tagline: string;
   description: string;
   accent: string;
   icon: React.ElementType;
   popular?: boolean;
   stripeTier?: EngineSubscriptionTier;
+  features: string[];
 }[] = [
   {
-    key: 'free', name: 'Free', price: '$0', annualPrice: '$0', period: '/mo',
-    description: 'Build real things. Not a trial.',
-    accent: 'from-emerald-500 to-emerald-600', icon: Unlock,
+    key: 'base',
+    name: 'Base',
+    price: '$0',
+    annualPrice: '$0',
+    period: '/mo',
+    tagline: 'Build real things. Not a trial.',
+    description: 'Full runtime access with baseline technology. Activate up to 3 artifact packs.',
+    accent: 'from-emerald-500 to-emerald-600',
+    icon: Unlock,
+    features: [
+      '3 Artifact Slots',
+      'Full baseline runtime',
+      'Standard memory depth',
+      'Core templates & engines',
+      'Dashboard access',
+      'Community support',
+    ],
   },
   {
-    key: 'creator', name: 'Creator', price: '$9', annualPrice: '$7', period: '/mo',
-    description: 'Expanded depth for builders shipping products.',
-    accent: 'from-blue-500 to-cyan-500', icon: Sparkles,
-    stripeTier: 'creator' as EngineSubscriptionTier,
-  },
-  {
-    key: 'architect', name: 'Architect', price: '$19', annualPrice: '$15', period: '/mo',
-    description: 'Cross-module orchestration & self-hosted deployment.',
-    accent: 'from-violet-500 to-purple-500', icon: Crown, popular: true,
+    key: 'professional',
+    name: 'Professional',
+    price: '$19',
+    annualPrice: '$15',
+    period: '/mo',
+    tagline: 'Deeper capacity for serious builders.',
+    description: 'Expanded artifact slots, deeper memory, and advanced governance scope.',
+    accent: 'from-violet-500 to-purple-500',
+    icon: Sparkles,
+    popular: true,
     stripeTier: 'architect' as EngineSubscriptionTier,
+    features: [
+      '8 Artifact Slots',
+      'Expanded memory depth',
+      'Priority routing',
+      'Workflow automation',
+      'Cross-system orchestration',
+      'Advanced governance',
+      'Priority support',
+    ],
   },
   {
-    key: 'enterprise', name: 'Enterprise', price: '$99', annualPrice: '$79', period: '/mo',
-    description: 'Governance, compliance, SLA-aware controls for teams.',
-    accent: 'from-amber-500 to-orange-500', icon: Building2,
+    key: 'enterprise',
+    name: 'Enterprise',
+    price: '$99',
+    annualPrice: '$79',
+    period: '/mo',
+    tagline: 'Full control. Your infrastructure.',
+    description: 'Unlimited artifact capacity, self-hosted deployment, and full governance authority.',
+    accent: 'from-amber-500 to-orange-500',
+    icon: Building2,
     stripeTier: 'enterprise' as EngineSubscriptionTier,
+    features: [
+      'Unlimited Artifact Slots',
+      'Dedicated memory partitions',
+      'Self-hosted deployment (LNCHBL)',
+      'Full governance authority',
+      'Compliance & audit exports',
+      'Organization workspaces',
+      'SLA-aware controls',
+      'Dedicated support channel',
+    ],
   },
 ];
 
-const TYPE_ICONS: Record<QuarryAssetType, React.ElementType> = {
-  capability: Zap,
-  engine: Cpu,
-  meta_engine: Layers,
-  pipeline: Workflow,
-  template: Package,
-  agent: Bot,
-  deployment_right: Server,
-  governance_tool: Shield,
-};
+function getPacksForTier(tier: ProductTier): ArtifactPack[] {
+  const tierOrder: Record<ProductTier, number> = { base: 0, professional: 1, enterprise: 2 };
+  return ARTIFACT_PACKS.filter(p => tierOrder[p.tier] <= tierOrder[tier]);
+}
 
-const CORE_FEATURES: Record<QuarryTier, { text: string; icon: React.ElementType }[]> = {
-  free: [
-    { text: 'Persistent Memory (Basic)', icon: Brain },
-    { text: 'Core Templates', icon: Package },
-    { text: 'Dashboard Access', icon: Eye },
-    { text: 'Community Support', icon: MessageSquare },
-  ],
-  creator: [
-    { text: 'Expanded Memory Depth', icon: Brain },
-    { text: 'Multi-module Synergy Pipelines', icon: Workflow },
-    { text: 'Scheduled Automations', icon: Zap },
-    { text: 'Higher Nexus Quotas', icon: Cpu },
-    { text: 'Email Support', icon: MessageSquare },
-  ],
-  architect: [
-    { text: 'Cross-module Orchestration', icon: Layers },
-    { text: 'Self-hosted Deployment (LNCHBL)', icon: Server },
-    { text: 'Audit Views & Change Summaries', icon: Eye },
-    { text: 'Batch Execution', icon: Workflow },
-    { text: 'Priority Nexus Routing', icon: Zap },
-    { text: 'Priority Support', icon: MessageSquare },
-  ],
-  enterprise: [
-    { text: 'Organization Workspaces & Roles', icon: Building2 },
-    { text: 'Compliance & Audit Exports', icon: Shield },
-    { text: 'Dedicated Memory Partitions', icon: Brain },
-    { text: 'SLA-aware Nexus Controls', icon: Cpu },
-    { text: 'Provider Budget Pinning', icon: Zap },
-    { text: 'Dedicated Support Channel', icon: MessageSquare },
-  ],
-  internal: [],
-};
-
-/* ─── Messaging pillars ─── */
+/* ─── Value Pillars ─── */
 const PILLARS = [
   { icon: Brain, title: 'Persistent Memory', description: 'Your agents remember. Every session builds on the last.' },
-  { icon: Bot, title: 'Composable Agents', description: 'Assemble specialized minds. Own them. Run them anywhere.' },
-  { icon: Layers, title: 'Structured System Depth', description: '10 modules, 5 mesh overlays, 9 zones working in concert.' },
-  { icon: Server, title: 'Deployment Flexibility', description: 'Cloud-first or self-hosted via LNCHBL. Your infrastructure, your rules.' },
+  { icon: Layers, title: 'Unified Runtime', description: 'Every module runs for every user. No feature gating.' },
+  { icon: Package, title: 'Artifact Packs', description: 'Structured bundles that activate new capabilities within your slots.' },
+  { icon: Server, title: 'Deployment Flexibility', description: 'Cloud-first or self-hosted. Your infrastructure, your rules.' },
 ];
 
 export default function Upgrade() {
-  const { data: allAssets = [], isLoading } = usePublicQuarryAssets();
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
 
-  const assetsByTier = useMemo(() => {
-    const map: Record<QuarryTier, Record<QuarryAssetType, number>> = {
-      free: {} as any, creator: {} as any, architect: {} as any, enterprise: {} as any, internal: {} as any,
-    };
-    allAssets.forEach(a => {
-      if (!map[a.tier]) return;
-      map[a.tier][a.asset_type] = (map[a.tier][a.asset_type] ?? 0) + 1;
-    });
-    return map;
-  }, [allAssets]);
+  // Map current subscription tier to product tier
+  const currentProductTier: ProductTier =
+    currentTier === 'enterprise' ? 'enterprise' :
+    ['architect', 'pro', 'creator', 'builder'].includes(currentTier) ? 'professional' :
+    'base';
 
   return (
     <div className="min-h-screen bg-background">
       <SEO
         title="Pricing — Clockless"
-        description="Choose your depth. Persistent memory, composable agents, structured system depth, deployment flexibility. Plans from free to enterprise."
+        description="Unified runtime. Artifact capacity. Choose your depth with structured packs — no feature gating, no inflated counts."
       />
       <PublicNav />
 
@@ -151,14 +141,14 @@ export default function Upgrade() {
             className="space-y-4"
           >
             <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
-              <Lock className="w-3 h-3 mr-1.5 inline" />
-              Tiered Intelligence
+              <Package className="w-3 h-3 mr-1.5 inline" />
+              Artifact Capacity Model
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Choose Your <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Depth</span>
+              One Runtime. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Your Capacity.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Every tier adds capabilities that work behind the scenes — predicting, protecting, and optimizing.
+              Every plan runs the full system. Choose how many artifact packs you activate.
             </p>
           </motion.div>
 
@@ -192,20 +182,20 @@ export default function Upgrade() {
 
         {/* ═══ TIER CARDS ═══ */}
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {TIERS.map((t, i) => {
-              const isCurrent = currentTier === t.key;
-              const tierAssets = assetsByTier[t.key] ?? {};
-              const hasAssets = Object.keys(tierAssets).length > 0;
-              const displayPrice = billingInterval === 'annual' && t.key !== 'free' ? t.annualPrice : t.price;
+              const isCurrent = currentProductTier === t.key;
+              const displayPrice = billingInterval === 'annual' && t.key !== 'base' ? t.annualPrice : t.price;
               const TierIcon = t.icon;
+              const tierConfig = PRODUCT_TIERS[t.key];
+              const slotLabel = tierConfig.slots === 'unlimited' ? 'Unlimited' : `${tierConfig.slots}`;
 
               return (
                 <motion.div
                   key={t.key}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
+                  transition={{ delay: i * 0.1 }}
                   className={cn(
                     "relative rounded-2xl border flex flex-col overflow-hidden",
                     isCurrent
@@ -241,43 +231,33 @@ export default function Upgrade() {
                       </div>
                     </div>
 
-                    <p className="text-sm text-muted-foreground mb-6">{t.description}</p>
+                    <p className="text-sm text-muted-foreground mb-4">{t.tagline}</p>
+
+                    {/* Artifact Slot Capacity — key differentiator */}
+                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Package className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-semibold">Artifact Capacity</span>
+                      </div>
+                      <div className="text-2xl font-bold text-primary">{slotLabel} Slots</div>
+                      <p className="text-xs text-muted-foreground mt-1">{t.description}</p>
+                    </div>
 
                     <div className="h-px bg-border/50 mb-5" />
 
-                    {/* Core features */}
+                    {/* Features */}
                     <ul className="space-y-3 flex-1">
-                      {CORE_FEATURES[t.key].map(f => {
-                        const FIcon = f.icon;
-                        return (
-                          <li key={f.text} className="flex items-start gap-2.5 text-sm">
-                            <FIcon className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                            <span>{f.text}</span>
-                          </li>
-                        );
-                      })}
+                      {t.features.map(f => (
+                        <li key={f} className="flex items-start gap-2.5 text-sm">
+                          <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                          <span>{f}</span>
+                        </li>
+                      ))}
                     </ul>
-
-                    {/* Dynamic Quarry assets */}
-                    {hasAssets && (
-                      <div className="mt-5 pt-4 border-t border-border/30 space-y-2">
-                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Quarry Assets</span>
-                        {Object.entries(tierAssets).map(([type, count]) => {
-                          const Icon = TYPE_ICONS[type as QuarryAssetType] ?? Package;
-                          const c = count as number;
-                          return (
-                            <div key={type} className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <Icon className="w-3.5 h-3.5" />
-                              <span>{c} {ASSET_TYPE_LABELS[type as QuarryAssetType]}{c > 1 ? 's' : ''}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
 
                     {/* CTA */}
                     <div className="mt-6">
-                      {t.key === 'free' ? (
+                      {t.key === 'base' ? (
                         <Button variant="outline" className="w-full" asChild>
                           <Link to="/start-here">Get Started Free</Link>
                         </Button>
@@ -303,8 +283,8 @@ export default function Upgrade() {
         <section className="container mx-auto px-4 mt-24">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold">What Powers Every Tier</h2>
-              <p className="text-muted-foreground mt-2">The substrate runs behind the scenes — you experience the outcomes.</p>
+              <h2 className="text-3xl font-bold">What Powers Every Plan</h2>
+              <p className="text-muted-foreground mt-2">The full runtime runs for every user. Plans differ in capacity, not capability.</p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {PILLARS.map((p, i) => {
@@ -331,16 +311,66 @@ export default function Upgrade() {
           </div>
         </section>
 
-        {/* ═══ TIERED CAPABILITIES (existing component) ═══ */}
-        <TierUnlockSection />
+        {/* ═══ ARTIFACT PACKS ═══ */}
+        <section className="container mx-auto px-4 mt-24">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
+                <Package className="w-3 h-3 mr-1.5 inline" />
+                Structured Packs
+              </Badge>
+              <h2 className="text-3xl font-bold">Artifact Packs</h2>
+              <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+                Each pack is a versioned bundle of composed components. Activate packs within your slot capacity.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {ARTIFACT_PACKS.map((pack, i) => {
+                const tierLabel = pack.tier === 'base' ? 'Base' : pack.tier === 'professional' ? 'Professional' : 'Enterprise';
+                const tierColor = pack.tier === 'base' ? 'bg-emerald-500/10 text-emerald-600' :
+                  pack.tier === 'professional' ? 'bg-violet-500/10 text-violet-600' :
+                  'bg-amber-500/10 text-amber-600';
+
+                return (
+                  <motion.div
+                    key={pack.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
+                      <CardContent className="p-5 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-bold text-sm">{pack.name}</h3>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="text-[10px] px-1.5">{pack.version}</Badge>
+                            <Badge className={cn("text-[10px] px-1.5", tierColor)}>{tierLabel}+</Badge>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{pack.description}</p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Package className="w-3 h-3" />
+                          <span>{pack.slotsRequired} slot{pack.slotsRequired > 1 ? 's' : ''} required</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground/70 italic">{pack.useCase}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
         {/* ═══ ENTERPRISE CTA ═══ */}
-        <section className="container mx-auto px-4 mt-8">
+        <section className="container mx-auto px-4 mt-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Building2 className="w-10 h-10 text-amber-500 mx-auto mb-4" />
             <h3 className="text-2xl font-bold">Enterprise Custom</h3>
             <p className="text-muted-foreground mt-2 max-w-lg mx-auto">
-              Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding.
+              Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding. Unlimited artifact capacity with custom packs.
             </p>
             <Button variant="outline" className="mt-6" asChild>
               <a href="mailto:Dev@CMPSBL.com">Contact Sales <ArrowRight className="w-4 h-4 ml-1" /></a>
@@ -353,10 +383,11 @@ export default function Upgrade() {
           <div className="max-w-2xl mx-auto space-y-8">
             <h2 className="text-2xl font-bold text-center">Common Questions</h2>
             {[
-              { q: 'Is the free tier really free?', a: 'Yes. Build projects, run capabilities, use templates, save outputs. No credit card required.' },
-              { q: 'Can I start free and upgrade later?', a: 'Absolutely. Upgrade when you need more power. Your projects and data carry over.' },
-              { q: 'What happens when my subscription ends?', a: 'Your projects continue working. You lose access to paid-tier capabilities until you resubscribe.' },
-              { q: 'What is LNCHBL?', a: 'LNCHBL is our self-hosted deployment SDK. Architect and above tiers include deployment rights to run the substrate on your own infrastructure.' },
+              { q: 'What is the baseline runtime?', a: 'Every plan includes the full system runtime — all engines, pipelines, and core capabilities. There is no module gating. Plans differ in artifact capacity, not in what the system can do.' },
+              { q: 'What are artifact slots?', a: 'Artifact slots determine how many structured packs you can activate. Each pack adds composed functionality — like advanced memory, automation, or deployment rights.' },
+              { q: 'Can I start free and upgrade later?', a: 'Yes. The Base plan is fully functional. Upgrade when you need more artifact capacity or deeper memory.' },
+              { q: 'What happens when my subscription ends?', a: 'Your projects continue working on the baseline runtime. Activated packs beyond your slot capacity are paused until you resubscribe.' },
+              { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Enterprise plans include deployment rights to run the system on your own infrastructure.' },
             ].map(faq => (
               <div key={faq.q} className="space-y-2">
                 <h3 className="font-semibold">{faq.q}</h3>
