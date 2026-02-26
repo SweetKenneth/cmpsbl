@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — LNCHBL Tiers & Infrastructure
 
-**Version 10.1.0 (ARCHITECT Epoch) | Tier Map v5.0.0 | Internal Reference**
+**Version 11.3.0 (SPARTA Epoch) | Tier Map v6.0.0 | Internal Reference**
 
 ---
 
@@ -176,6 +176,25 @@ Everything in Builder, plus:
 
 ---
 
+## Matrix Node Optimizations (v11.3.0)
+
+**48 optimizations granted across 24 Matrix Nodes (2 per node).**
+
+All downstream LNCHBL distributions receive the full node-level performance and resilience grants.
+
+| Sector | Nodes | Grants | Key Capabilities |
+|--------|-------|--------|------------------|
+| CORE | 1 | 2 | Boot Checkpoint Journaling, Cascading Weight Redistribution |
+| CCR | 4 | 8 | Reasoning Chain Caching, Cognitive Load Shedding, Dream Confidence Gating, Memory Promotion Heuristics |
+| CCL | 5 | 10 | Event Batching, Dead Letter Quarantine, Tamper-Evident Chaining, Adaptive Retry Backoff |
+| Execution | 9 | 18 | DAG Optimization, Latency-Weighted Routing, Adaptive Sampling, Pool Pre-Warming |
+| Overlay | 5 | 10 | Threat Fingerprinting, Mutation Coalescing, Policy Hot-Reload, Capability Gap Surfacing |
+| **Total** | **24** | **48** | |
+
+Patch ID: `11.3.0-node-grants-48` | Status: **PUBLISHED** | Required Tier: FREE
+
+---
+
 ## Safety + Moat Protection
 
 ### REMOVE from public surfaces for Architecture Jewels:
@@ -203,5 +222,5 @@ Everything in Builder, plus:
 
 ---
 
-*CMPSBL OS Substrate v10.1.0 — Tier Map v5.0.0*
+*CMPSBL OS Substrate v11.3.0 — Tier Map v6.0.0*
 *© 2025-2026 PromptFluid®. All rights reserved.*
