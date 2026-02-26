@@ -163,6 +163,7 @@ export function getHealthSnapshot(): {
     last_updated: string;
   };
 } {
+  const criticalCount = metricsState.severity_distribution.critical;
   // Calculate trend from score history
   const globalHistory = scoreHistory.get('global') || [];
   let trend: 'up' | 'down' | 'stable' = 'stable';
