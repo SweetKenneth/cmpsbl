@@ -9,9 +9,13 @@ import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { SlotCapacityIndicator } from '@/components/slots/SlotCapacityIndicator';
+import { SlotPressureModal } from '@/components/slots/SlotPressureModal';
+import { PackActivationCard } from '@/components/slots/PackActivationCard';
 import { cn } from '@/lib/utils';
 import {
   Check, ArrowRight, Brain, Package, Shield, Zap,
