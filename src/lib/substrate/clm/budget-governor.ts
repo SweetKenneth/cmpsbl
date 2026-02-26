@@ -6,6 +6,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import { getCurrentAllocation } from '@/lib/substrate/adaptive-budget';
 import {
   type CLMConfig,
@@ -79,19 +80,16 @@ class BudgetGovernorClient {
 
   private loadPersistedState(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        const { secureGet } = require('@/lib/system/secureStorage');
-        const parsed = secureGet<Record<string, unknown>>(STORAGE_KEY);
-        if (parsed) {
-          const today = new Date().toISOString().split('T')[0];
-          if (parsed.dateKey === today) {
-            this.state = {
-              ...this.state,
-              ...(parsed as typeof this.state),
-              nextAllowedAt: parsed.nextAllowedAt ? new Date(parsed.nextAllowedAt as string) : null,
-            };
-            this.recalculateRemainingBudget();
-          }
+      const parsed = secureGet<Record<string, unknown>>(STORAGE_KEY);
+      if (parsed) {
+        const today = new Date().toISOString().split('T')[0];
+        if (parsed.dateKey === today) {
+          this.state = {
+            ...this.state,
+            ...(parsed as unknown as typeof this.state),
+            nextAllowedAt: parsed.nextAllowedAt ? new Date(parsed.nextAllowedAt as string) : null,
+          };
+          this.recalculateRemainingBudget();
         }
       }
     } catch { /* Use fresh state — non-critical */ }
@@ -99,13 +97,10 @@ class BudgetGovernorClient {
 
   private persistState(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        const { secureSet } = require('@/lib/system/secureStorage');
-        secureSet(STORAGE_KEY, {
-          ...this.state,
-          nextAllowedAt: this.state.nextAllowedAt?.toISOString() || null,
-        });
-      }
+      secureSet(STORAGE_KEY, {
+        ...this.state,
+        nextAllowedAt: this.state.nextAllowedAt?.toISOString() || null,
+      });
     } catch { /* Non-critical: budget resets daily */ }
   }
 

@@ -12,6 +12,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureSet, secureGet } from '@/lib/system/secureStorage';
 import { MESH_MANIFEST, getMeshModules } from './manifest';
 import type { MeshIntent, MeshResolution } from './types';
 
@@ -77,7 +78,6 @@ export function getFederationConfig(): FederationConfig {
 export function updateFederationConfig(updates: Partial<FederationConfig>): FederationConfig {
   currentConfig = { ...currentConfig, ...updates };
   try {
-    const { secureSet } = require('@/lib/system/secureStorage');
     secureSet('mesh_federation_config', currentConfig);
   } catch { /* non-blocking */ }
   return { ...currentConfig };

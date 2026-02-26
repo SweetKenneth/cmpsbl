@@ -7,6 +7,7 @@
  */
 
 import { emit } from '../events';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -64,7 +65,6 @@ const PASSKEY_EMAIL_MAP_KEY = 'cmpsbl_passkey_email_map';
 
 function loadCredentialStore(): Map<string, PasskeyCredential[]> {
   try {
-    const { secureGet } = require('@/lib/system/secureStorage');
     const parsed = secureGet<Record<string, PasskeyCredential[]>>(PASSKEY_STORE_KEY);
     if (!parsed) return new Map();
     return new Map(Object.entries(parsed));
@@ -75,7 +75,6 @@ function loadCredentialStore(): Map<string, PasskeyCredential[]> {
 
 function saveCredentialStore(store: Map<string, PasskeyCredential[]>) {
   try {
-    const { secureSet } = require('@/lib/system/secureStorage');
     const obj: Record<string, PasskeyCredential[]> = {};
     for (const [k, v] of store) obj[k] = v;
     secureSet(PASSKEY_STORE_KEY, obj);
@@ -85,7 +84,6 @@ function saveCredentialStore(store: Map<string, PasskeyCredential[]>) {
 /** Map credentialId → email for auto-login after Face ID */
 function loadEmailMap(): Map<string, string> {
   try {
-    const { secureGet } = require('@/lib/system/secureStorage');
     const parsed = secureGet<Record<string, string>>(PASSKEY_EMAIL_MAP_KEY);
     if (!parsed) return new Map();
     return new Map(Object.entries(parsed));
@@ -96,7 +94,6 @@ function loadEmailMap(): Map<string, string> {
 
 function saveEmailMap(map: Map<string, string>) {
   try {
-    const { secureSet } = require('@/lib/system/secureStorage');
     const obj: Record<string, string> = {};
     for (const [k, v] of map) obj[k] = v;
     secureSet(PASSKEY_EMAIL_MAP_KEY, obj);

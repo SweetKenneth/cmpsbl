@@ -7,6 +7,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import { budgetGovernor } from './budget-governor';
 import { ENCODED_CODE_CURRICULUM, getEncodedCurriculum, type Topic } from './encoded-curriculum';
 import { learningEngine } from '../learning-engine';
@@ -488,11 +489,8 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
 
   private loadState(): EncodedLearningState {
     try {
-      const { secureGet } = require('@/lib/system/secureStorage');
       const stored = secureGet<EncodedLearningState>(STORAGE_KEY);
-      if (stored) {
-        return stored;
-      }
+      if (stored) return stored;
     } catch {
       /* Storage unavailable — use defaults */
     }
@@ -509,7 +507,6 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
 
   private persistState(): void {
     try {
-      const { secureSet } = require('@/lib/system/secureStorage');
       secureSet(STORAGE_KEY, this.state);
     } catch {
       /* Non-critical: learning state rebuilt on next session */

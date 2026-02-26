@@ -284,25 +284,18 @@ class SpacedRepetitionClient {
 
   private loadQueue(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        const { secureGet } = require('@/lib/system/secureStorage');
-        const stored = secureGet<typeof this.queue>(this.STORAGE_KEY);
-        if (stored) {
-          this.queue = stored;
-        }
+      const stored = secureGet<typeof this.queue>(this.STORAGE_KEY);
+      if (stored) {
+        this.queue = stored;
       }
     } catch {
-      /* Storage unavailable — start with empty queue */
       this.queue = [];
     }
   }
 
   private persistQueue(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        const { secureSet } = require('@/lib/system/secureStorage');
-        secureSet(this.STORAGE_KEY, this.queue);
-      }
+      secureSet(this.STORAGE_KEY, this.queue);
     } catch {
       /* Non-critical: queue will be rebuilt on next session */
     }
