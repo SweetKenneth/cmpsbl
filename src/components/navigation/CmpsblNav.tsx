@@ -136,7 +136,7 @@ export function CmpsblNav() {
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry applications & examples", icon: Sparkles },
         { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
-        { name: "Pricing", href: "/upgrade", description: "Choose your depth — tier-based plans", icon: Layers },
+        { name: "Pricing", href: "/upgrade", description: "Artifact capacity plans — Base, Professional, Enterprise", icon: Layers },
         { name: "Licensing", href: "/licensing", description: "Self-hosted SDK deployment", icon: Shield },
       ]
     },
