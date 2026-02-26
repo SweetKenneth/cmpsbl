@@ -11,9 +11,9 @@ export default function ClearCache() {
 
     (async () => {
       // Clear localStorage
-      try { localStorage.clear(); } catch {}
+      try { localStorage.clear(); } catch { /* Storage API unavailable */ }
       // Clear sessionStorage  
-      try { sessionStorage.clear(); } catch {}
+      try { sessionStorage.clear(); } catch { /* Storage API unavailable */ }
 
       // Clear service worker caches
       try {
@@ -21,7 +21,7 @@ export default function ClearCache() {
           const names = await caches.keys();
           await Promise.all(names.map(name => caches.delete(name)));
         }
-      } catch {}
+      } catch { /* Cache API unavailable */ }
 
       // Unregister service workers
       try {
@@ -29,7 +29,7 @@ export default function ClearCache() {
           const regs = await navigator.serviceWorker.getRegistrations();
           await Promise.all(regs.map(r => r.unregister()));
         }
-      } catch {}
+      } catch { /* SW API unavailable */ }
 
       setStatus('done');
 

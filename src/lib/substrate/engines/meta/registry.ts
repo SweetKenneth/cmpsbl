@@ -656,7 +656,7 @@ export function getMetaEnginesByCategory(category: MetaEngineCategory): MetaEngi
 }
 
 export function getMetaEnginesByEngine(engineId: string): MetaEngineDefinition[] {
-  return listMetaEngines().filter(m => m.engines.includes(engineId as any));
+  return listMetaEngines().filter(m => (m.engines as readonly string[]).includes(engineId));
 }
 
 export function getTotalCapabilitiesReached(): number {

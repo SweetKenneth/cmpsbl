@@ -208,7 +208,7 @@ export async function convertDreamToProposal(
         category: classification.category,
         priority: classification.priority,
         confidence: insight.confidence,
-      } as any,
+      } as Record<string, unknown>,
       outcome: 'success',
     });
 
@@ -220,12 +220,12 @@ export async function convertDreamToProposal(
       proposal_title: title,
       predicted_impact: predictedImpact,
     };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return {
       dream_id: insight.id,
       proposal_id: null,
       converted: false,
-      reason: `DB error: ${e.message}`,
+      reason: `DB error: ${e instanceof Error ? e.message : String(e)}`,
     };
   }
 }
@@ -267,7 +267,8 @@ export async function runDreamPipeline(
 
   // Convert dream events to insights
   for (const event of dreamEvents || []) {
-    const data = event.data as any;
+    interface DreamEventData { insight?: string; content?: string; synthesis?: string; category?: string; type?: string; confidence?: number; source_memories?: string[]; [key: string]: unknown }
+    const data = event.data as DreamEventData;
     insights.push({
       id: event.id,
       content: data?.insight || data?.content || data?.synthesis || JSON.stringify(data).slice(0, 500),

@@ -142,7 +142,7 @@ ${recommendations.map(r => `- ${r}`).join('\n')}
       .insert({
         reflection_date: today,
         summary,
-        lessons: insights.filter(i => i.lesson) as any,
+        lessons: insights.filter(i => i.lesson) as unknown as Record<string, unknown>[],
       });
     
     if (error) {

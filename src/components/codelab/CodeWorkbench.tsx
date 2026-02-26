@@ -65,25 +65,21 @@ export function CodeWorkbench() {
   
   // Display dialect state
   const { enabled: obsEnabled, dialect } = useObsMode();
-  // Load history and scripts from localStorage
+  // Load history and scripts from secure storage
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setHistory(JSON.parse(saved));
-      } catch {}
-    }
-    const scripts = localStorage.getItem(SCRIPTS_KEY);
-    if (scripts) {
-      try {
-        setSavedScripts(JSON.parse(scripts));
-      } catch {}
-    }
+    try {
+      const saved = secureGet<HistoryItem[]>(STORAGE_KEY);
+      if (saved) setHistory(saved);
+    } catch { /* Storage unavailable — start fresh */ }
+    try {
+      const scripts = secureGet<SavedScript[]>(SCRIPTS_KEY);
+      if (scripts) setSavedScripts(scripts);
+    } catch { /* Storage unavailable — start fresh */ }
   }, []);
 
-  // Save history to localStorage
+  // Save history to secure storage
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, 50)));
+    secureSet(STORAGE_KEY, history.slice(0, 50));
   }, [history]);
 
   const log = (message: string) => {
@@ -177,7 +173,7 @@ export function CodeWorkbench() {
 
   const clearHistory = () => {
     setHistory([]);
-    localStorage.removeItem(STORAGE_KEY);
+    secureRemove(STORAGE_KEY);
     log("History cleared");
     toast.success("History cleared");
   };
@@ -209,7 +205,7 @@ export function CodeWorkbench() {
     if (name) {
       const newScripts = [...savedScripts, { name, request }];
       setSavedScripts(newScripts);
-      localStorage.setItem(SCRIPTS_KEY, JSON.stringify(newScripts));
+      secureSet(SCRIPTS_KEY, newScripts);
       toast.success("Script saved");
       log(`Script "${name}" saved`);
     }

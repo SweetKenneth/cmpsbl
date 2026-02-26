@@ -111,22 +111,23 @@ export const BUILTIN_MACROS: MacroDefinition[] = [
 
 const customMacros: Map<string, MacroDefinition> = new Map();
 
-// Load from localStorage
+// Load from secure storage
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
+
 try {
-  const saved = localStorage.getItem('substrate_macros');
+  const saved = secureGet<MacroDefinition[]>('substrate_macros');
   if (saved) {
-    const parsed = JSON.parse(saved) as MacroDefinition[];
-    parsed.forEach(m => customMacros.set(m.name, { ...m, createdAt: new Date(m.createdAt) }));
+    saved.forEach(m => customMacros.set(m.name, { ...m, createdAt: new Date(m.createdAt) }));
   }
-} catch (e) {
-  console.warn('Failed to load macros from localStorage');
+} catch {
+  /* Storage unavailable — start with empty custom macros */
 }
 
 function saveMacros() {
   try {
-    localStorage.setItem('substrate_macros', JSON.stringify(Array.from(customMacros.values())));
-  } catch (e) {
-    console.warn('Failed to save macros to localStorage');
+    secureSet('substrate_macros', Array.from(customMacros.values()));
+  } catch {
+    /* Storage write failed — macros remain in memory only */
   }
 }
 

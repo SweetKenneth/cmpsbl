@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Shuffle } from "lucide-react";
 import { generateCognitiveName, validateCognitiveName } from "@/lib/cognitives/nameGen";
+import { secureGet, secureSet } from "@/lib/system/secureStorage";
 
 interface NameChooserProps {
   value: string;
@@ -16,10 +17,10 @@ interface NameChooserProps {
 export function NameChooser({ value, onChange }: NameChooserProps) {
   const [error, setError] = useState<string>();
 
-  // Load from localStorage on mount
+  // Load from secure storage on mount
   useEffect(() => {
     if (!value) {
-      const saved = localStorage.getItem('cmpsbl_cognitive_name');
+      const saved = secureGet<string>('cmpsbl_cognitive_name');
       if (saved) onChange(saved);
       else onChange(generateCognitiveName());
     }
@@ -29,14 +30,14 @@ export function NameChooser({ value, onChange }: NameChooserProps) {
     const result = validateCognitiveName(val);
     setError(result.valid ? undefined : result.error);
     onChange(val);
-    if (result.valid) localStorage.setItem('cmpsbl_cognitive_name', val);
+    if (result.valid) secureSet('cmpsbl_cognitive_name', val);
   }, [onChange]);
 
   const randomize = useCallback(() => {
     const name = generateCognitiveName();
     setError(undefined);
     onChange(name);
-    localStorage.setItem('cmpsbl_cognitive_name', name);
+    secureSet('cmpsbl_cognitive_name', name);
   }, [onChange]);
 
   return (

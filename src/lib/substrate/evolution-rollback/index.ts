@@ -10,7 +10,7 @@ export interface RollbackRecord {
   evolutionId: string;
   reason: string;
   rolledBackAt: string;
-  restoredState: Record<string, any>;
+  restoredState: Record<string, unknown>;
   success: boolean;
 }
 
@@ -96,7 +96,7 @@ async function executeRollback(
         reason,
         pass_rate: passRate,
         restored: record.restoredState,
-      } as any,
+      } as Record<string, unknown>,
       outcome: 'success',
     });
     
@@ -111,7 +111,7 @@ async function executeRollback(
     await supabase.from('brain_events').insert({
       module: 'modernizer',
       event_type: 'evolution_rollback',
-      data: { evolution_id: evolutionId, error: String(err) } as any,
+      data: { evolution_id: evolutionId, error: String(err) } as Record<string, unknown>,
       outcome: 'failure',
     });
   }

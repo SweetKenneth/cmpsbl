@@ -19,9 +19,9 @@ function logCapability(capability: string, durationMs: number): void {
   supabase.from('brain_events').insert({
     module: 'capabilities',
     event_type: 'capability_invoked',
-    data: { capability, duration_ms: durationMs, source: 'substrate-native' },
+    data: { capability, duration_ms: durationMs, source: 'substrate-native' } as Record<string, unknown>,
     outcome: 'success',
-  } as any);
+  });
 }
 
 // ============================================================================
@@ -185,7 +185,8 @@ export async function invokePatternFusion(problem: string, domain1: string, doma
 export async function invokeAnomalyDetection(lookbackHours: number = 24): Promise<AnomalyDetectionResult> {
   const startTime = Date.now();
   const { data: events } = await supabase.from('security_audit_log').select('*').gte('created_at', new Date(Date.now() - lookbackHours * 3600000).toISOString()).limit(500);
-  const eventList = (events || []) as any[];
+  interface AuditEvent { id: string; created_at: string; risk_score?: number; event_type?: string; client_ip?: string; [key: string]: unknown }
+  const eventList = (events || []) as AuditEvent[];
   const riskScores = eventList.map(e => e.risk_score || 0);
   const avgRisk = riskScores.length > 0 ? riskScores.reduce((a, b) => a + b, 0) / riskScores.length : 0;
   const anomalies = eventList.filter(e => (e.risk_score || 0) > avgRisk * 1.5).slice(0, 10).map(e => ({

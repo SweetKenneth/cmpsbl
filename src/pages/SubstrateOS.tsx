@@ -856,14 +856,14 @@ export default function SubstrateOS() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'classic' | 'hybrid'>(() => {
     if (typeof window === 'undefined') return 'classic';
-    return (localStorage.getItem('os_view_mode') as 'classic' | 'hybrid') || 'classic';
+    return secureGet<'classic' | 'hybrid'>('os_view_mode') || 'classic';
   });
   const navigate = useNavigate();
 
   // Persist view mode
   const handleSetViewMode = useCallback((mode: 'classic' | 'hybrid') => {
     setViewMode(mode);
-    localStorage.setItem('os_view_mode', mode);
+    secureSet('os_view_mode', mode);
   }, []);
 
   // Habitat state for hybrid mode

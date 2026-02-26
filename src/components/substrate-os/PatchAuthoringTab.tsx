@@ -115,16 +115,18 @@ function TierBadge({ tier }: { tier: string }) {
 const PATCH_ENGINES_KEY = 'cmpsbl_patch_selected_engines';
 const PATCH_CAPS_KEY = 'cmpsbl_patch_selected_caps';
 
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
+
 function loadPersistedSet(key: string): Set<string> {
   try {
-    const stored = localStorage.getItem(key);
-    if (stored) return new Set(JSON.parse(stored));
-  } catch {}
+    const stored = secureGet<string[]>(key);
+    if (stored) return new Set(stored);
+  } catch { /* Storage unavailable — start fresh */ }
   return new Set();
 }
 
 function persistSet(key: string, set: Set<string>) {
-  localStorage.setItem(key, JSON.stringify(Array.from(set)));
+  secureSet(key, Array.from(set));
 }
 
 // ─── Create Patch Form ───────────────────────────────────────────────────────

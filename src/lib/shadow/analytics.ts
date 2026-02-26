@@ -77,7 +77,8 @@ export async function getShadowMeshAnalytics(): Promise<ShadowMeshAnalyticsData>
   let totalEscalationsAll = 0;
   let totalSafeFailsAll = 0;
 
-  for (const row of (rawMetrics ?? []) as any[]) {
+  interface RawMetricRow { executor: string; total_runs?: number; repair_successes?: number; escalations?: number; safe_failures?: number; repair_attempted?: boolean; repair_success?: boolean; retry_attempted?: boolean }
+  for (const row of (rawMetrics ?? []) as RawMetricRow[]) {
     const runs = row.total_runs ?? 0;
     const repairSuccesses = row.repair_successes ?? 0;
     const escalations = row.escalations ?? 0;

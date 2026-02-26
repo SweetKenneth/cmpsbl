@@ -65,11 +65,12 @@ async function getHealthHistory(
     
     if (!data) return [];
     
+    interface BrainEventData { health_score?: number; [key: string]: unknown }
     return data
-      .filter(e => (e.data as any)?.health_score !== undefined)
+      .filter(e => (e.data as BrainEventData)?.health_score !== undefined)
       .map(e => ({
         timestamp: e.created_at,
-        health: (e.data as any).health_score,
+        health: (e.data as BrainEventData).health_score!,
       }));
   } catch (error) {
     return [];
@@ -109,7 +110,7 @@ async function analyzeModuleTrend(module: SubstrateModule): Promise<HealthTrend>
     .order('created_at', { ascending: false })
     .limit(1);
   
-  const currentHealth = (recentEvents?.[0]?.data as any)?.health_score ?? 100;
+  const currentHealth = (recentEvents?.[0]?.data as BrainEventData)?.health_score ?? 100;
   
   if (history.length < 3) {
     return {
@@ -242,7 +243,7 @@ export async function schedulePreventiveHealing(
     // Queue the healing action
     await supabase.from('brain_actions_queue').insert({
       action_type: 'preventive_heal',
-      payload: action as any,
+      payload: action as unknown as Record<string, unknown>,
       priority: 5,
       scheduled_at: action.scheduledFor,
       status: 'pending',
@@ -347,8 +348,8 @@ export async function getPredictiveHealingStatus(): Promise<{
     return {
       enabled: true,
       lastAnalysis: new Date().toISOString(),
-      pendingActions: (pending as any).count || 0,
-      completedToday: (completed as any).count || 0,
+      pendingActions: (pending as { count: number | null }).count || 0,
+      completedToday: (completed as { count: number | null }).count || 0,
       healthForecast: analysis.trends.map(t => ({
         module: t.module,
         predicted: t.predictedHealth,
