@@ -230,13 +230,20 @@ export function registerObservabilityHandlers(): void {
 
   // ═══ OBS.DLQ — Dead Letter Queue ═══
   registerHandler('obs.dlq', async () => {
-    let dlqData = { depth: 0, oldest: null as string | null, items: [] as unknown[] };
+    let dlqData = { depth: 0, oldest: null as string | null, pending: 0, exhausted: 0 };
 
     try {
-      const { getDLQStats } = await import('@/lib/substrate/ripple-dlq');
-      dlqData = getDLQStats();
+      const { rippleDLQ } = await import('@/lib/substrate/ripple-dlq');
+      const stats = rippleDLQ.getStats();
+      const pending = rippleDLQ.getPending();
+      dlqData = {
+        depth: stats.total,
+        oldest: pending.length > 0 ? pending[0].firstFailedAt : null,
+        pending: stats.pendingRetry,
+        exhausted: stats.exhausted,
+      };
     } catch {
-      // DLQ module may not expose stats yet
+      // DLQ module may not be initialized
     }
 
     const lines = [
