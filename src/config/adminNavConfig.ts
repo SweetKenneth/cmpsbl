@@ -65,8 +65,9 @@ export const adminNavConfig: NavGroup[] = [
     id: "enterprise",
     title: "Enterprise",
     items: [
+      { id: "quarry", label: "Quarry", path: "/admin/quarry", icon: Cpu, isNew: true },
       { id: "intelligence", label: "Intelligence", path: "/intelligence", icon: Zap },
-      { id: "pricing", label: "Pricing", path: "/pricing", icon: Gauge },
+      { id: "pricing", label: "Upgrade", path: "/upgrade", icon: Gauge },
       { id: "licensing", label: "Licensing", path: "/substrate/licensing", icon: FileText },
       { id: "patches", label: "Patch Distribution", path: "/admin/patches", icon: Shield, isNew: true },
       { id: "cognitive-uploads", label: "Cognitive Uploads", path: "/admin/cognitive-uploads", icon: Cpu, isNew: true },

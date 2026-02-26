@@ -101,6 +101,8 @@ const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed
 const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
+const Upgrade = lazy(() => import("./pages/Upgrade"));
+const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
@@ -471,6 +473,8 @@ const App = () => {
                         <Route path="/admin/owner-reports" element={<AdminRoute><OwnerReports /></AdminRoute>} />
                         <Route path="/admin/evolution" element={<AdminRoute><EvolutionMeshDashboard /></AdminRoute>} />
                         <Route path="/admin/governance" element={<AdminRoute><GovernanceControlPlane /></AdminRoute>} />
+                        <Route path="/admin/quarry" element={<AdminRoute><QuarryDashboard /></AdminRoute>} />
+                        <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         <Route path="/evolution-mesh" element={<PhaseGateRoute><EvolutionMeshLanding /></PhaseGateRoute>} />
@@ -536,7 +540,8 @@ const App = () => {
                         
                         {/* Legacy/unused pages */}
                         <Route path="/index" element={<Navigate to="/" replace />} />
-                        <Route path="/pricing" element={<SubstrateLicensing />} />
+                        <Route path="/pricing" element={<Upgrade />} />
+                        <Route path="/upgrade" element={<Upgrade />} />
                         <Route path="/start-here" element={<StartHere />} />
                         <Route path="/checkout" element={<Navigate to="/" replace />} />
                         <Route path="/enterprise" element={<Enterprise />} />
