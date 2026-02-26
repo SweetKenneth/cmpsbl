@@ -361,7 +361,7 @@ class RippleDLQ {
           totalRetries: this.totalRetries,
           successfulRetries: this.successfulRetries,
         }));
-      } catch {}
+      } catch { /* Storage pressure — non-critical */ }
     }
   }
 }

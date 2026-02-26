@@ -1,6 +1,6 @@
 /**
  * BRAIN Auto-Tiering Enforcement Engine
- * v10.5.1 ARCHITECT Epoch — Crown Jewel Capability
+ * SPARTA Epoch — Crown Jewel Capability
  * 
  * CLM Request: BRAIN module flagged Hot Memory Tier overflow (1,671 entries vs 500 limit)
  * Resolution: Aggressive auto-tiering with scheduled enforcement, demotion cascades,
@@ -11,6 +11,8 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { emit } from '../events';
+
+// ─── Configuration ───────────────────────────────────────────────────────────
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
@@ -95,25 +97,22 @@ async function demoteHotToWarm(count: number): Promise<number> {
   let demoted = 0;
   for (const entry of entries) {
     try {
-      // Insert into warm
       await supabase.from('brain_memory_warm').insert({
-        content: (entry as any).content,
-        context: (entry as any).context,
-        priority: Math.max(1, ((entry as any).priority || 5) - 2),
-        access_count: (entry as any).access_count || 0,
-        memory_type: (entry as any).memory_type || 'general',
-        confidence: (entry as any).confidence || 0.5,
-        importance_score: (entry as any).importance_score || 0.3,
-        tags: (entry as any).tags || [],
-        metadata: { ...(entry as any).metadata, demoted_from: 'hot', demoted_at: new Date().toISOString() },
-        source: (entry as any).source || 'auto_tiering',
-      } as any);
+        content: entry.content,
+        context: entry.context,
+        priority: Math.max(1, (entry.priority || 5) - 2),
+        access_count: entry.access_count || 0,
+        memory_type: entry.memory_type || 'general',
+        value_score: entry.value_score ?? 0.3,
+        tags: entry.tags || [],
+        metadata: { ...(entry.metadata as Record<string, unknown> || {}), demoted_from: 'hot', demoted_at: new Date().toISOString() },
+        demoted_at: new Date().toISOString(),
+      });
 
-      // Remove from hot
-      await supabase.from('brain_memory_hot').delete().eq('id', (entry as any).id);
+      await supabase.from('brain_memory_hot').delete().eq('id', entry.id);
       demoted++;
-    } catch {
-      // Continue on individual failures
+    } catch (err) {
+      console.warn('[AutoTiering] Hot→Warm demotion failed for', entry.id, err);
     }
   }
 
@@ -139,22 +138,18 @@ async function demoteWarmToCold(count: number): Promise<number> {
   for (const entry of entries) {
     try {
       await supabase.from('brain_memory_cold').insert({
-        content: (entry as any).content,
-        context: (entry as any).context,
-        priority: 1,
-        access_count: (entry as any).access_count || 0,
-        memory_type: (entry as any).memory_type || 'general',
-        confidence: (entry as any).confidence || 0.3,
-        importance_score: (entry as any).importance_score || 0.1,
-        tags: (entry as any).tags || [],
-        metadata: { ...(entry as any).metadata, demoted_from: 'warm', demoted_at: new Date().toISOString() },
-        source: (entry as any).source || 'auto_tiering',
-      } as any);
+        summary: entry.content,
+        core_summary: entry.core_summary || entry.content.slice(0, 200),
+        access_count: entry.access_count || 0,
+        memory_type: entry.memory_type || 'general',
+        value_score: entry.value_score ?? 0.1,
+        tags: entry.tags || [],
+      });
 
-      await supabase.from('brain_memory_warm').delete().eq('id', (entry as any).id);
+      await supabase.from('brain_memory_warm').delete().eq('id', entry.id);
       demoted++;
-    } catch {
-      // Continue
+    } catch (err) {
+      console.warn('[AutoTiering] Warm→Cold demotion failed for', entry.id, err);
     }
   }
 
