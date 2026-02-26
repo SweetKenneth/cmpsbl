@@ -13,6 +13,7 @@ import { runEncodedGuard, computeDiffStats, classifyChange, type GuardResult } f
 import { extractAnchors } from './anchor';
 import { recordOutcome, getOverallMastery, type PatternOutcome } from './feedback-loop';
 import { EXPERT_PATTERNS, getRelevantPatterns, type ExpertPattern } from './expert-patterns';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import { ENCODED_SKILLS } from './skills';
 
 // ═══════════════════════════════════════════════════════════════
@@ -734,9 +735,9 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
 
   private loadState(): ShadowPracticeState {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) return JSON.parse(stored);
-    } catch { /* ignore */ }
+      const stored = secureGet<ShadowPracticeState>(STORAGE_KEY);
+      if (stored) return stored;
+    } catch { /* Storage unavailable — use defaults */ }
 
     return {
       enabled: false,
@@ -764,8 +765,8 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
           task: { ...r.task, original_code: '[redacted]', prompt: '[redacted]' },
         })),
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-    } catch { /* ignore */ }
+      secureSet(STORAGE_KEY, toSave);
+    } catch { /* Storage pressure — practice state is recoverable */ }
   }
 
   // ═══════════════════════════════════════════════════════════════

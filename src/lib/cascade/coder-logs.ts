@@ -5,6 +5,8 @@
  * Prepares for future automation pipeline (job queue → auto-PR).
  */
 
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
+
 export interface CoderLogEntry {
   timestamp: string;
   projectId: string;
@@ -38,24 +40,22 @@ export function logPatchGeneration(entry: Omit<CoderLogEntry, 'timestamp'>): voi
     });
   }
 
-  // Store in localStorage for debugging (last 50 entries)
+  // Store in secureStorage for debugging (last 50 entries)
   try {
-    const existing = localStorage.getItem('cascade-coder-logs');
-    const logs: CoderLogEntry[] = existing ? JSON.parse(existing) : [];
+    const logs: CoderLogEntry[] = secureGet<CoderLogEntry[]>('cascade-coder-logs') || [];
     logs.unshift(fullEntry);
-    localStorage.setItem('cascade-coder-logs', JSON.stringify(logs.slice(0, 50)));
-  } catch (e) {
-    // Silently fail if localStorage unavailable
+    secureSet('cascade-coder-logs', logs.slice(0, 50));
+  } catch {
+    // Storage unavailable — non-critical debug data
   }
 }
 
 /**
- * Get recent logs from localStorage
+ * Get recent logs from secure storage
  */
 export function getRecentLogs(): CoderLogEntry[] {
   try {
-    const existing = localStorage.getItem('cascade-coder-logs');
-    return existing ? JSON.parse(existing) : [];
+    return secureGet<CoderLogEntry[]>('cascade-coder-logs') || [];
   } catch {
     return [];
   }
@@ -66,8 +66,8 @@ export function getRecentLogs(): CoderLogEntry[] {
  */
 export function clearLogs(): void {
   try {
-    localStorage.removeItem('cascade-coder-logs');
+    secureRemove('cascade-coder-logs');
   } catch {
-    // Silently fail
+    // Storage unavailable — tolerable
   }
 }

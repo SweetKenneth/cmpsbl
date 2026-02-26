@@ -9,6 +9,8 @@
  * Calibration Curve: predicted probability vs observed frequency
  */
 
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
+
 export interface PredictionRecord {
   id: string;
   proposalId: string;
@@ -267,21 +269,17 @@ class ConfidenceCalibrator {
   private ensureLoaded(): void {
     if (this.loaded) return;
     this.loaded = true;
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) this.records = JSON.parse(raw);
-      } catch { this.records = []; }
-    }
+    try {
+      const data = secureGet<typeof this.records>(STORAGE_KEY);
+      if (data) this.records = data;
+    } catch { this.records = []; }
   }
 
   private persist(): void {
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const trimmed = this.records.slice(-500);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
-      } catch {}
-    }
+    try {
+      const trimmed = this.records.slice(-500);
+      secureSet(STORAGE_KEY, trimmed);
+    } catch { /* Storage pressure — non-critical calibration data */ }
   }
 }
 

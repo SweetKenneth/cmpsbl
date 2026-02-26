@@ -7,7 +7,9 @@
  * Flush all system caches without accessing backend
  */
 export async function flushSystemCache(): Promise<void> {
-  // Clear localStorage verification states
+  // Clear localStorage verification states — both legacy plain and obfuscated
+  const { secureRemove } = await import('@/lib/system/secureStorage');
+
   const keysToRemove = [
     'nexus_metrics',
     'system_verification_state',
@@ -25,29 +27,29 @@ export async function flushSystemCache(): Promise<void> {
 
   keysToRemove.forEach(key => {
     try {
-      localStorage.removeItem(key);
-    } catch (e) {
-      // Silent fail for unavailable storage
+      secureRemove(key); // Removes both _s_ prefixed and legacy plain keys
+    } catch {
+      // Storage unavailable — tolerate
     }
   });
 
-  // Clear all pf_* prefixed items
+  // Clear all pf_* prefixed items (legacy plain keys)
   try {
     const allKeys = Object.keys(localStorage);
     allKeys.forEach(key => {
-      if (key.startsWith('pf_') || key.startsWith('nexus_') || key.startsWith('brain_')) {
+      if (key.startsWith('pf_') || key.startsWith('nexus_') || key.startsWith('brain_') || key.startsWith('_s_')) {
         localStorage.removeItem(key);
       }
     });
-  } catch (e) {
-    // Silent fail
+  } catch {
+    // Storage unavailable — tolerate
   }
 
   // Clear session storage
   try {
     sessionStorage.clear();
-  } catch (e) {
-    // Silent fail
+  } catch {
+    // Session storage unavailable — tolerate
   }
 }
 
@@ -55,14 +57,14 @@ export async function flushSystemCache(): Promise<void> {
  * Cold reinitialization using environment variables only
  */
 export async function coldReinitialize(): Promise<void> {
-  // Reset timestamp markers
+  const { secureSet } = await import('@/lib/system/secureStorage');
   const initTimestamp = Date.now();
   
   try {
-    localStorage.setItem('pf_init_timestamp', initTimestamp.toString());
-    localStorage.setItem('pf_cache_flushed', 'true');
-  } catch (e) {
-    // Silent fail
+    secureSet('pf_init_timestamp', initTimestamp);
+    secureSet('pf_cache_flushed', true);
+  } catch {
+    // Storage unavailable — tolerate
   }
 }
 

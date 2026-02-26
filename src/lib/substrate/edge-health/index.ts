@@ -12,6 +12,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -309,23 +310,16 @@ class EdgeHealthMonitor {
   private ensureLoaded(): void {
     if (this.loaded) return;
     this.loaded = true;
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const entries = JSON.parse(raw) as [string, EdgeFunctionHealth][];
-          this.healthMap = new Map(entries);
-        }
-      } catch { this.healthMap = new Map(); }
-    }
+    try {
+      const entries = secureGet<[string, EdgeFunctionHealth][]>(STORAGE_KEY);
+      if (entries) this.healthMap = new Map(entries);
+    } catch { /* Storage unavailable — start fresh */ this.healthMap = new Map(); }
   }
 
   private persist(): void {
-    if (typeof localStorage !== 'undefined') {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(this.healthMap.entries())));
-      } catch {}
-    }
+    try {
+      secureSet(STORAGE_KEY, Array.from(this.healthMap.entries()));
+    } catch { /* Storage pressure — non-critical telemetry */ }
   }
 }
 

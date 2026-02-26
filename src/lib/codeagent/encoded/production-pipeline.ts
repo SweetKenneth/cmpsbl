@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { type PracticeResult, type ShadowPracticeState } from './shadow-practice';
 import { runEncodedGuard } from './guard';
 import { getOverallMastery } from './feedback-loop';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -303,22 +304,18 @@ class ProductionPipeline {
   private ensureLoaded(): void {
     if (this.loaded) return;
     this.loaded = true;
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) this.proposals = JSON.parse(raw);
-      } catch { this.proposals = []; }
-    }
+    try {
+      const data = secureGet<typeof this.proposals>(STORAGE_KEY);
+      if (data) this.proposals = data;
+    } catch { this.proposals = []; }
   }
 
   private persist(): void {
-    if (typeof localStorage !== 'undefined') {
-      try {
-        // Keep only last 100 proposals
-        const trimmed = this.proposals.slice(-100);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
-      } catch {}
-    }
+    try {
+      // Keep only last 100 proposals
+      const trimmed = this.proposals.slice(-100);
+      secureSet(STORAGE_KEY, trimmed);
+    } catch { /* Storage pressure — non-critical proposal history */ }
   }
 }
 

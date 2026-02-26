@@ -6,6 +6,8 @@
  * Identifies dead weight capabilities and promotes winners.
  */
 
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
+
 export interface CapabilityUsageRecord {
   capabilityId: string;
   module: string;
@@ -210,31 +212,27 @@ class CapabilityAnalytics {
   clear(): void {
     this.records = [];
     this.buffer = [];
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem(STORAGE_KEY);
-    }
+    try {
+      secureRemove(STORAGE_KEY);
+    } catch { /* non-critical */ }
   }
 
   private ensureLoaded(): void {
     if (this.loaded) return;
     this.loaded = true;
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) this.records = JSON.parse(raw);
-      } catch { this.records = []; }
-    }
+    try {
+      const data = secureGet<typeof this.records>(STORAGE_KEY);
+      if (data) this.records = data;
+    } catch { this.records = []; }
   }
 
   private persist(): void {
-    if (typeof localStorage !== 'undefined') {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.records));
-      } catch {
-        // Trim old records on storage pressure
-        this.records = this.records.slice(-2000);
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.records)); } catch {}
-      }
+    try {
+      secureSet(STORAGE_KEY, this.records);
+    } catch {
+      // Trim old records on storage pressure
+      this.records = this.records.slice(-2000);
+      try { secureSet(STORAGE_KEY, this.records); } catch { /* Storage exhausted — tolerate data loss */ }
     }
   }
 }
