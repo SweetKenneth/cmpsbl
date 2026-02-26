@@ -96,7 +96,7 @@ async function executeRollback(
         reason,
         pass_rate: passRate,
         restored: record.restoredState,
-      } as Record<string, unknown>,
+      },
       outcome: 'success',
     });
     
@@ -111,7 +111,7 @@ async function executeRollback(
     await supabase.from('brain_events').insert({
       module: 'modernizer',
       event_type: 'evolution_rollback',
-      data: { evolution_id: evolutionId, error: String(err) } as Record<string, unknown>,
+      data: { evolution_id: evolutionId, error: String(err) },
       outcome: 'failure',
     });
   }

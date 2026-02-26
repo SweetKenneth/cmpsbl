@@ -208,7 +208,7 @@ export async function convertDreamToProposal(
         category: classification.category,
         priority: classification.priority,
         confidence: insight.confidence,
-      } as Record<string, unknown>,
+      },
       outcome: 'success',
     });
 

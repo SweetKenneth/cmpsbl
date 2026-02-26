@@ -6,6 +6,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import { SubstrateModule } from '@/lib/substrate';
 
+interface BrainEventData { health_score?: number; [key: string]: unknown }
+
 export interface HealthTrend {
   module: SubstrateModule;
   currentHealth: number;
@@ -65,7 +67,6 @@ async function getHealthHistory(
     
     if (!data) return [];
     
-    interface BrainEventData { health_score?: number; [key: string]: unknown }
     return data
       .filter(e => (e.data as BrainEventData)?.health_score !== undefined)
       .map(e => ({

@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
+import { secureGet, secureSet } from "@/lib/system/secureStorage";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Activity, MessageSquare, Moon, Play, RotateCcw, AlertTriangle, 

@@ -19,7 +19,7 @@ function logCapability(capability: string, durationMs: number): void {
   supabase.from('brain_events').insert({
     module: 'capabilities',
     event_type: 'capability_invoked',
-    data: { capability, duration_ms: durationMs, source: 'substrate-native' } as Record<string, unknown>,
+    data: { capability, duration_ms: durationMs, source: 'substrate-native' },
     outcome: 'success',
   });
 }

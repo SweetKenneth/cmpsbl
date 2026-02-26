@@ -7,6 +7,7 @@
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { useState, lazy, Suspense, memo, useCallback, useEffect, useMemo } from 'react';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import {
   Loader2, Lock, Terminal, AlertTriangle, FileText,
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
