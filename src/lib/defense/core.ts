@@ -229,9 +229,34 @@ export async function getRecentEvents(limit: number = 50) {
 }
 
 /**
- * Get active defense rules
+ * Get active defense rules from the DEFENSE edge function
  */
-export async function getDefenseRules() {
-  // Placeholder for future defense_rules table
-  return [];
+export async function getDefenseRules(): Promise<Array<{
+  id: string;
+  rule_name: string;
+  pattern: string;
+  action: string;
+  threshold: number;
+  priority: number;
+  is_active: boolean;
+}>> {
+  try {
+    const { data, error } = await supabase.functions.invoke('pf-reflex-core', {
+      body: { action: 'get_rules' }
+    });
+
+    if (error) {
+      if (import.meta.env.DEV) {
+        console.error('Failed to fetch defense rules:', error);
+      }
+      return [];
+    }
+
+    return data?.rules || [];
+  } catch (err) {
+    if (import.meta.env.DEV) {
+      console.error('Defense rules fetch error:', err);
+    }
+    return [];
+  }
 }
