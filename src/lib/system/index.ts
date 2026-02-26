@@ -99,6 +99,14 @@ export { reconnectSupabase } from './supabaseReconnect';
 // Local/offline mode
 export { getLocalModeStatus } from './localMode';
 
+// Secure storage
+export {
+  secureSet,
+  secureGet,
+  secureRemove,
+  migrateLegacyKey,
+} from './secureStorage';
+
 // Version info
 import { getMetric } from '@/stores/publicMetricsStore';
 export const SYSTEM_VERSION = getMetric('version');
