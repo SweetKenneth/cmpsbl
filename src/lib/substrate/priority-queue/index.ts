@@ -33,10 +33,13 @@ const PRIORITY_WEIGHTS: Record<TaskPriority, number> = {
 
 const SECTOR_BOOST: Record<MatrixSector, number> = {
   core: 30,
+  system: 25,
   ccr: 20,
-  ccl: 10,
+  ocg: 10,
   execution: 0,
-  overlay: -5,
+  field: -5,
+  plane: -5,
+  shell: -5,
 };
 
 const queue: PriorityTask[] = [];
