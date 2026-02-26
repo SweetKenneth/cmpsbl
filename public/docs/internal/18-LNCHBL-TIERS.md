@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — LNCHBL Tiers & Infrastructure
 
-**Version 10.1.0 (ARCHITECT Epoch) | Tier Map v5.0.0 | Internal Reference**
+**Version 11.3.0 (SPARTA Epoch) | Tier Map v6.0.0 | Internal Reference**
 
 ---
 
