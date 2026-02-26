@@ -320,7 +320,7 @@ class RetirementEngine {
           candidates: this.candidates.slice(-200),
           lastScanAt: this.lastScanAt,
         }));
-      } catch {}
+      } catch { /* Storage pressure — non-critical */ }
     }
   }
 }

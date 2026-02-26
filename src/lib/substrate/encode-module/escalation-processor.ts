@@ -362,7 +362,7 @@ async function attemptResolution(item: EncodeWorkItem): Promise<{
         ruleId: rule.id,
       };
     }
-  } catch {}
+  } catch (err) { console.warn('[Escalation] Learning rule strategy failed:', err); }
 
   // ── Strategy 4: Cross-executor rule transfer ──
   try {
@@ -376,7 +376,7 @@ async function attemptResolution(item: EncodeWorkItem): Promise<{
         ruleId: rule.id,
       };
     }
-  } catch {}
+  } catch (err) { console.warn('[Escalation] Cross-executor strategy failed:', err); }
 
   // ── Strategy 5: Pattern-based auto-resolution ──
   const patternResolution = tryPatternResolve(item, errorClass);
