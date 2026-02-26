@@ -1,7 +1,7 @@
 # CMPSBL Substrate — Living Evolution Log
 
-**Version Lock:** Public versions are major-only (v6.x.x, v7.x.x, v8.x.x, v9.x.x)  
-**Status:** Living Document (v9.x.x)  
+**Version Lock:** Public versions are major-only (v6.x.x, v7.x.x, v8.x.x, v9.x.x, v11.x.x)  
+**Status:** Living Document (v11.x.x — SPARTA Epoch)  
 
 ---
 
@@ -27,13 +27,13 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 
 ## Versioning Rules
 
-- **Public versions:** Major only (v6.x.x, v7.x.x, v8.x.x)
+- **Public versions:** Major only (v6.x.x, v7.x.x, v8.x.x, v9.x.x, v11.x.x)
 - **Internal versions:** Continuous patch releases (abstracted from public)
 - **Rationale:** Clarity, stability, and narrative coherence
 
 ---
 
-## v9.x.x — ARCHITECT Epoch (Living)
+## v11.x.x — SPARTA Epoch (Living)
 
 ### Evolution 022 — 2026-02-26
 
