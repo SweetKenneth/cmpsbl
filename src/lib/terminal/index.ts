@@ -75,3 +75,8 @@ export {
 export {
   registerGovernanceHandlers,
 } from './governance-handlers';
+
+// Analytics handlers (v11.5.2)
+export {
+  registerAnalyticsHandlers,
+} from './analytics-handlers';

@@ -1610,6 +1610,78 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_events: {
+        Row: {
+          category: string
+          created_at: string
+          event_type: string
+          id: string
+          label: string | null
+          metadata: Json | null
+          page: string | null
+          session_id: string | null
+          user_id: string | null
+          value: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          event_type: string
+          id?: string
+          label?: string | null
+          metadata?: Json | null
+          page?: string | null
+          session_id?: string | null
+          user_id?: string | null
+          value?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          label?: string | null
+          metadata?: Json | null
+          page?: string | null
+          session_id?: string | null
+          user_id?: string | null
+          value?: number | null
+        }
+        Relationships: []
+      }
+      analytics_snapshots: {
+        Row: {
+          active_modules: number | null
+          created_at: string
+          data: Json
+          error_rate: number | null
+          health_score: number | null
+          id: string
+          snapshot_type: string
+          total_events: number | null
+        }
+        Insert: {
+          active_modules?: number | null
+          created_at?: string
+          data?: Json
+          error_rate?: number | null
+          health_score?: number | null
+          id?: string
+          snapshot_type?: string
+          total_events?: number | null
+        }
+        Update: {
+          active_modules?: number | null
+          created_at?: string
+          data?: Json
+          error_rate?: number | null
+          health_score?: number | null
+          id?: string
+          snapshot_type?: string
+          total_events?: number | null
+        }
+        Relationships: []
+      }
       atlas_capabilities: {
         Row: {
           created_at: string
@@ -13963,6 +14035,7 @@ export type Database = {
       check_modernizer_quota: { Args: { p_user_id: string }; Returns: boolean }
       cleanup_expired_cache: { Args: never; Returns: undefined }
       cleanup_expired_challenges: { Args: never; Returns: undefined }
+      cleanup_old_analytics: { Args: never; Returns: undefined }
       cleanup_old_daily_state: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       compress_warm_memories: {
