@@ -127,11 +127,14 @@ export default function Upgrade() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
   const [activeDomain, setActiveDomain] = useState<string | null>(null);
+  const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
     ['architect', 'pro', 'creator', 'builder'].includes(currentTier) ? 'operator' :
     'builder';
+
+  const slotState = useArtifactSlots(currentTier);
 
   const filteredPacks = activeDomain
     ? ARTIFACT_PACKS.filter(p => {
@@ -139,6 +142,11 @@ export default function Upgrade() {
         return domain?.packIds.includes(p.id);
       })
     : ARTIFACT_PACKS;
+
+  const handleSlotPressure = (packName: string) => {
+    setPressureModal({ open: true, packName });
+    // Audit log is handled by the hook
+  };
 
   return (
     <div className="min-h-screen bg-background">
