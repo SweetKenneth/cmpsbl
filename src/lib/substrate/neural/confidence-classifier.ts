@@ -45,6 +45,7 @@ class ConfidenceClassifier {
     accuracy: 0,
     eceScore: 0,
     lastTrainedAt: null,
+    error: null,
   };
 
   /**

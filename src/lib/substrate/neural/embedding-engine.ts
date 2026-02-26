@@ -44,6 +44,7 @@ class EmbeddingEngine {
     totalEmbeddings: 0,
     lastEncodedAt: null,
     activationMet: false,
+    error: null,
   };
 
   /**

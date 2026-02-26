@@ -51,6 +51,7 @@ class DriftDetector {
     totalChecks: 0,
     anomaliesDetected: 0,
     lastCheckAt: null,
+    error: null,
   };
 
   /**
