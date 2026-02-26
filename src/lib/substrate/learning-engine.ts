@@ -93,8 +93,8 @@ class LearningEngineClient {
       await supabase.from('brain_events').insert({
         event_type: 'learning_input',
         module: 'brain',
-        data: { source, topic, confidence, content_length: content.length },
-      } as any);
+        data: { source, topic, confidence, content_length: content.length } satisfies Record<string, unknown>,
+      });
 
       // Route through Memory module's salience-gated ingestion instead of direct hot insert.
       // This ensures CLM learnings are tiered by importance, deduplicated, and capacity-checked.
@@ -138,8 +138,8 @@ class LearningEngineClient {
       await supabase.from('brain_events').insert({
         event_type: 'learning_feedback',
         module: 'brain',
-        data: { memory_id, outcome, score, context },
-      } as any);
+        data: { memory_id, outcome, score, context } satisfies Record<string, unknown>,
+      });
 
       const gain = outcome === 'positive' ? score * 0.1 : outcome === 'negative' ? -score * 0.05 : 0;
       this.state.short_term_gain += gain;
@@ -179,7 +179,7 @@ class LearningEngineClient {
       let totalDelta = 0;
 
       for (const event of events || []) {
-        const meta = (event as any).data as Record<string, unknown> | undefined;
+        const meta = (event.data as Record<string, unknown>) || {};
         if (meta?.memory_id && Math.abs((meta?.score as number) || 0) >= minScore) {
           adjustments++;
           totalDelta += meta.outcome === 'positive' ? 0.05 : meta.outcome === 'negative' ? -0.05 : 0;
@@ -262,8 +262,8 @@ class LearningEngineClient {
       await supabase.from('brain_events').insert({
         event_type: 'learning_stabilization',
         module: 'brain',
-        data: { optimization: optResult, state: this.state },
-      } as any);
+        data: { optimization: optResult, state: this.state } satisfies Record<string, unknown>,
+      });
 
       return {
         stage: 'stabilization',
