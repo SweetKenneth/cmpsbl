@@ -111,25 +111,23 @@ async function demoteHotToWarm(count: number): Promise<number> {
 
   let demoted = 0;
   for (const entry of entries) {
-    const row = entry as unknown as MemoryTierRow;
     try {
       await supabase.from('brain_memory_warm').insert({
-        content: row.content,
-        context: row.context,
-        priority: Math.max(1, (row.priority || 5) - 2),
-        access_count: row.access_count || 0,
-        memory_type: row.memory_type || 'general',
-        confidence: row.confidence ?? 0.5,
-        importance_score: row.importance_score ?? 0.3,
-        tags: row.tags || [],
-        metadata: { ...row.metadata, demoted_from: 'hot', demoted_at: new Date().toISOString() },
-        source: row.source || 'auto_tiering',
+        content: entry.content,
+        context: entry.context,
+        priority: Math.max(1, (entry.priority || 5) - 2),
+        access_count: entry.access_count || 0,
+        memory_type: entry.memory_type || 'general',
+        value_score: entry.value_score ?? 0.3,
+        tags: entry.tags || [],
+        metadata: { ...(entry.metadata as Record<string, unknown> || {}), demoted_from: 'hot', demoted_at: new Date().toISOString() },
+        demoted_at: new Date().toISOString(),
       });
 
-      await supabase.from('brain_memory_hot').delete().eq('id', row.id);
+      await supabase.from('brain_memory_hot').delete().eq('id', entry.id);
       demoted++;
     } catch (err) {
-      console.warn('[AutoTiering] Hot→Warm demotion failed for', row.id, err);
+      console.warn('[AutoTiering] Hot→Warm demotion failed for', entry.id, err);
     }
   }
 
@@ -153,25 +151,20 @@ async function demoteWarmToCold(count: number): Promise<number> {
 
   let demoted = 0;
   for (const entry of entries) {
-    const row = entry as unknown as MemoryTierRow;
     try {
       await supabase.from('brain_memory_cold').insert({
-        content: row.content,
-        context: row.context,
-        priority: 1,
-        access_count: row.access_count || 0,
-        memory_type: row.memory_type || 'general',
-        confidence: row.confidence ?? 0.3,
-        importance_score: row.importance_score ?? 0.1,
-        tags: row.tags || [],
-        metadata: { ...row.metadata, demoted_from: 'warm', demoted_at: new Date().toISOString() },
-        source: row.source || 'auto_tiering',
+        summary: entry.content,
+        core_summary: entry.core_summary || entry.content.slice(0, 200),
+        access_count: entry.access_count || 0,
+        memory_type: entry.memory_type || 'general',
+        value_score: entry.value_score ?? 0.1,
+        tags: entry.tags || [],
       });
 
-      await supabase.from('brain_memory_warm').delete().eq('id', row.id);
+      await supabase.from('brain_memory_warm').delete().eq('id', entry.id);
       demoted++;
     } catch (err) {
-      console.warn('[AutoTiering] Warm→Cold demotion failed for', row.id, err);
+      console.warn('[AutoTiering] Warm→Cold demotion failed for', entry.id, err);
     }
   }
 
