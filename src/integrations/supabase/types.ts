@@ -14311,8 +14311,13 @@ export type Database = {
         | "agent"
         | "deployment_right"
         | "governance_tool"
+        | "artifact_pack"
       quarry_tier: "free" | "creator" | "architect" | "enterprise" | "internal"
-      quarry_visibility: "hidden" | "tier_exposed" | "public_curated"
+      quarry_visibility:
+        | "hidden"
+        | "tier_exposed"
+        | "public_curated"
+        | "baseline"
       upgrade_mode: "shadow" | "auto_safe" | "auto_full"
       upgrade_status:
         | "proposed"
@@ -14475,9 +14480,15 @@ export const Constants = {
         "agent",
         "deployment_right",
         "governance_tool",
+        "artifact_pack",
       ],
       quarry_tier: ["free", "creator", "architect", "enterprise", "internal"],
-      quarry_visibility: ["hidden", "tier_exposed", "public_curated"],
+      quarry_visibility: [
+        "hidden",
+        "tier_exposed",
+        "public_curated",
+        "baseline",
+      ],
       upgrade_mode: ["shadow", "auto_safe", "auto_full"],
       upgrade_status: [
         "proposed",
