@@ -38,6 +38,25 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 ### Evolution 025 — 2026-02-26
 
 **Observed Pressures**
+- LNCHBL distribution was missing the Neural Substrate Layer and field-based topology reclassification
+- Architecture changes from Evolutions 023-024 (Spine/Grid/Field/Plane/Shell, 24 Matrix Nodes) had not been dispatched downstream
+- LNCHBL manifest was stale — missing new edge functions, tables, and topology definitions
+
+**Learned Responses**
+- Dispatched patch v11.5.0 — Neural Substrate Layer (embedding engine, vector recall, confidence classifier, drift detector, maintenance automation)
+- Dispatched patch v11.5.1 — Field-Based Topology + 24 Matrix Node Architecture (Spine/Grid/Field/Plane/Shell, OCG rename, SYSTEM elevation, weighted governance)
+- LNCHBL manifest expanded to 8 edge functions and 7 patch-writable tables
+
+**Resulting Capabilities**
+- LNCHBL has full Neural Substrate parity with autonomous maintenance
+- LNCHBL topology aligned with CMPSBL field-based architecture (24 nodes, Σ weight = 1.000)
+- All BRAIN maintenance fully autonomous in both distributions
+
+---
+
+### Evolution 024 — 2026-02-26
+
+**Observed Pressures**
 - LNCHBL distribution was missing the Neural Substrate Layer — no local embedding, vector recall, confidence gating, or drift detection downstream
 - LNCHBL manifest was stale at v11.3.0 with only 6 edge functions and 3 patch-writable tables
 - All maintenance tasks across the substrate required manual operational intervention
