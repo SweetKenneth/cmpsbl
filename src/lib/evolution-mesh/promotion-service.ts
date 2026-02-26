@@ -38,14 +38,14 @@ async function getPromotionCandidates(): Promise<PromotionCandidate[]> {
 
     if (!runs?.length) return [];
 
-    // Enrich with plan titles
+    // Enrich with plan scope labels
     const planIds = [...new Set(runs.map(r => r.plan_id))];
     const { data: plans } = await supabase
       .from('substrate_upgrade_plans')
-      .select('id, title')
+      .select('id, scope, plan_type')
       .in('id', planIds);
 
-    const titleMap = new Map((plans ?? []).map(p => [p.id, p.title]));
+    const titleMap = new Map((plans ?? []).map(p => [p.id, `${p.plan_type ?? 'upgrade'}: ${p.scope}`]));
 
     return runs.map(r => ({
       ...r,
