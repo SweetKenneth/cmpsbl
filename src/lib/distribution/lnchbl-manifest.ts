@@ -13,8 +13,14 @@
  * v11.3.0: Added brain_sync patch type — CMPSBL CLM learnings are now
  * packaged and dispatched to LNCHBL via pf-brain-sync-dispatch every 30min.
  * 
+ * v11.5.0: Added Neural Substrate Layer — embedding engine, vector index,
+ * confidence classifier, drift detector, and 10 automated maintenance tasks.
+ * New edge functions: lnchbl-neural-bootstrap, lnchbl-maintenance-tick.
+ * New tables: brain_embeddings, brain_classifier_models, brain_drift_log,
+ * brain_maintenance_log.
+ * 
  * @module distribution/lnchbl-manifest
- * @version 11.3.0
+ * @version 11.5.0
  */
 
 // ─── LNCHBL Edge Function Registry ──────────────────────────────────────────
@@ -25,7 +31,9 @@ export const LNCHBL_EDGE_FUNCTIONS = Object.freeze([
   'lnchbl-download',
   'lnchbl-phone-home',
   'lnchbl-verify',
-  'lnchbl-brain-ingest',  // v11.3.0: Receives brain sync payloads from CMPSBL
+  'lnchbl-brain-ingest',       // v11.3.0: Receives brain sync payloads from CMPSBL
+  'lnchbl-neural-bootstrap',   // v11.5.0: Initializes neural substrate on first boot
+  'lnchbl-maintenance-tick',   // v11.5.0: Cron-driven maintenance automation heartbeat
 ] as const);
 
 export type LnchblEdgeFunction = typeof LNCHBL_EDGE_FUNCTIONS[number];
@@ -37,6 +45,10 @@ export const LNCHBL_PATCH_TABLES = Object.freeze([
   'distribution_patches',
   'distribution_state',
   'distribution_edge_functions',
+  'brain_embeddings',          // v11.5.0: Neural substrate vector storage
+  'brain_classifier_models',   // v11.5.0: Confidence classifier weights
+  'brain_drift_log',           // v11.5.0: Drift detection alerts
+  'brain_maintenance_log',     // v11.5.0: Automated maintenance audit trail
 ] as const);
 
 export type LnchblPatchTable = typeof LNCHBL_PATCH_TABLES[number];

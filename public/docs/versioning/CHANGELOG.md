@@ -35,6 +35,28 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 
 ## v11.x.x — SPARTA Epoch (Living)
 
+### Evolution 025 — 2026-02-26
+
+**Observed Pressures**
+- LNCHBL distribution was missing the Neural Substrate Layer — no local embedding, vector recall, confidence gating, or drift detection downstream
+- LNCHBL manifest was stale at v11.3.0 with only 6 edge functions and 3 patch-writable tables
+- All maintenance tasks across the substrate required manual operational intervention
+
+**Learned Responses**
+- Dispatched LNCHBL patch v11.5.0 — full Neural Substrate Layer with 5 engines and 15 capabilities unlocked
+- LNCHBL edge function manifest expanded to 8 functions (added lnchbl-neural-bootstrap, lnchbl-maintenance-tick)
+- LNCHBL patch-writable tables expanded to 7 (added brain_embeddings, brain_classifier_models, brain_drift_log, brain_maintenance_log)
+- 10 automated maintenance tasks now execute on CLM cron cycles with zero manual steps
+- Progressive activation gates ensure components self-activate only when data thresholds are met
+
+**Resulting Capabilities**
+- LNCHBL now has full Neural Substrate parity: embedding engine, HNSW vector recall, confidence classifier, drift detector
+- All BRAIN maintenance is fully autonomous in both CMPSBL and LNCHBL distributions
+- Patch published and live for downstream consumption at free tier
+- LNCHBL manifest updated to v11.5.0
+
+---
+
 ### Evolution 024 — 2026-02-26
 
 **Observed Pressures**
