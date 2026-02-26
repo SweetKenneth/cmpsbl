@@ -26,9 +26,9 @@ export function useQuarryAssets(options?: {
         .order('tier')
         .order('name');
 
-      if (options?.tierFilter) q = q.eq('tier', options.tierFilter as string);
-      if (options?.typeFilter) q = q.eq('asset_type', options.typeFilter as string);
-      if (options?.visibilityFilter) q = q.eq('visibility', options.visibilityFilter as string);
+      if (options?.tierFilter) q = q.eq('tier', options.tierFilter);
+      if (options?.typeFilter) q = q.eq('asset_type', options.typeFilter);
+      if (options?.visibilityFilter) q = q.eq('visibility', options.visibilityFilter);
       if (options?.publicOnly) q = q.in('visibility', ['tier_exposed', 'public_curated']);
 
       const { data, error } = await q;
