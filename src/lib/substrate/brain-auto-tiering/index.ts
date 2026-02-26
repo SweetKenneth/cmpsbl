@@ -12,22 +12,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { emit } from '../events';
 
-// ─── Typed row interfaces for memory tiers ───────────────────────────────────
-
-interface MemoryTierRow {
-  id: string;
-  content: string;
-  context: string | null;
-  priority?: number;
-  access_count: number;
-  memory_type: string;
-  confidence?: number;
-  importance_score?: number;
-  tags: string[] | null;
-  metadata: Record<string, unknown> | null;
-  source?: string;
-  created_at: string;
-}
+// ─── Configuration ───────────────────────────────────────────────────────────
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
