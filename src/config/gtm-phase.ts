@@ -13,7 +13,7 @@ export type GTMPhase = 1 | 2 | 3 | 4;
 // ═══════════════════════════════════════════════════════════
 // CURRENT PHASE — Change this single value to unlock features
 // ═══════════════════════════════════════════════════════════
-export const CURRENT_PHASE: GTMPhase = 1;
+export const CURRENT_PHASE: GTMPhase = 4;
 
 // ═══════════════════════════════════════════════════════════
 // Phase-gated route definitions
