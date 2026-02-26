@@ -2312,6 +2312,60 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_distillation_runs: {
+        Row: {
+          calls_used: number | null
+          completed_at: string | null
+          compression_ratio_avg: number | null
+          confidence_avg: number | null
+          created_at: string
+          crystals_created: number | null
+          duration_ms: number | null
+          error_message: string | null
+          heuristics_created: number | null
+          id: string
+          memories_processed: number | null
+          metadata: Json | null
+          run_type: string
+          status: string
+          traces_created: number | null
+        }
+        Insert: {
+          calls_used?: number | null
+          completed_at?: string | null
+          compression_ratio_avg?: number | null
+          confidence_avg?: number | null
+          created_at?: string
+          crystals_created?: number | null
+          duration_ms?: number | null
+          error_message?: string | null
+          heuristics_created?: number | null
+          id?: string
+          memories_processed?: number | null
+          metadata?: Json | null
+          run_type: string
+          status?: string
+          traces_created?: number | null
+        }
+        Update: {
+          calls_used?: number | null
+          completed_at?: string | null
+          compression_ratio_avg?: number | null
+          confidence_avg?: number | null
+          created_at?: string
+          crystals_created?: number | null
+          duration_ms?: number | null
+          error_message?: string | null
+          heuristics_created?: number | null
+          id?: string
+          memories_processed?: number | null
+          metadata?: Json | null
+          run_type?: string
+          status?: string
+          traces_created?: number | null
+        }
+        Relationships: []
+      }
       brain_domain_usage: {
         Row: {
           calls_today: number | null
@@ -2549,6 +2603,75 @@ export type Database = {
           source_id?: string | null
           updated_at?: string | null
           weight?: number | null
+        }
+        Relationships: []
+      }
+      brain_knowledge_crystals: {
+        Row: {
+          compression_ratio: number | null
+          confidence: number | null
+          created_at: string
+          crystal_type: string
+          distilled_content: string
+          domain: string | null
+          id: string
+          last_used_at: string | null
+          metadata: Json | null
+          reasoning_trace: string | null
+          source_count: number | null
+          source_memory_ids: string[] | null
+          source_module: string | null
+          source_tier: string | null
+          student_model: string | null
+          tags: string[] | null
+          teacher_model: string | null
+          title: string
+          updated_at: string
+          usage_count: number | null
+        }
+        Insert: {
+          compression_ratio?: number | null
+          confidence?: number | null
+          created_at?: string
+          crystal_type?: string
+          distilled_content: string
+          domain?: string | null
+          id?: string
+          last_used_at?: string | null
+          metadata?: Json | null
+          reasoning_trace?: string | null
+          source_count?: number | null
+          source_memory_ids?: string[] | null
+          source_module?: string | null
+          source_tier?: string | null
+          student_model?: string | null
+          tags?: string[] | null
+          teacher_model?: string | null
+          title: string
+          updated_at?: string
+          usage_count?: number | null
+        }
+        Update: {
+          compression_ratio?: number | null
+          confidence?: number | null
+          created_at?: string
+          crystal_type?: string
+          distilled_content?: string
+          domain?: string | null
+          id?: string
+          last_used_at?: string | null
+          metadata?: Json | null
+          reasoning_trace?: string | null
+          source_count?: number | null
+          source_memory_ids?: string[] | null
+          source_module?: string | null
+          source_tier?: string | null
+          student_model?: string | null
+          tags?: string[] | null
+          teacher_model?: string | null
+          title?: string
+          updated_at?: string
+          usage_count?: number | null
         }
         Relationships: []
       }
@@ -3443,6 +3566,60 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_reasoning_traces: {
+        Row: {
+          applied_count: number | null
+          created_at: string
+          distilled_pattern: string | null
+          domain: string | null
+          id: string
+          last_applied_at: string | null
+          metadata: Json | null
+          module: string | null
+          pattern_confidence: number | null
+          prompt: string
+          student_model: string
+          teacher_model: string
+          teacher_response: string
+          token_savings_pct: number | null
+          trace_type: string
+        }
+        Insert: {
+          applied_count?: number | null
+          created_at?: string
+          distilled_pattern?: string | null
+          domain?: string | null
+          id?: string
+          last_applied_at?: string | null
+          metadata?: Json | null
+          module?: string | null
+          pattern_confidence?: number | null
+          prompt: string
+          student_model?: string
+          teacher_model?: string
+          teacher_response: string
+          token_savings_pct?: number | null
+          trace_type?: string
+        }
+        Update: {
+          applied_count?: number | null
+          created_at?: string
+          distilled_pattern?: string | null
+          domain?: string | null
+          id?: string
+          last_applied_at?: string | null
+          metadata?: Json | null
+          module?: string | null
+          pattern_confidence?: number | null
+          prompt?: string
+          student_model?: string
+          teacher_model?: string
+          teacher_response?: string
+          token_savings_pct?: number | null
+          trace_type?: string
+        }
+        Relationships: []
+      }
       brain_reflection_log: {
         Row: {
           content: string | null
@@ -3613,6 +3790,60 @@ export type Database = {
           prune_threshold?: number | null
           tier_name?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      brain_transfer_heuristics: {
+        Row: {
+          applicability_domains: string[] | null
+          applied_count: number | null
+          confidence: number | null
+          created_at: string
+          generalization_score: number | null
+          heuristic_content: string
+          heuristic_name: string
+          id: string
+          last_applied_at: string | null
+          metadata: Json | null
+          source_module: string
+          success_rate: number | null
+          target_modules: string[] | null
+          teacher_model: string | null
+          updated_at: string
+        }
+        Insert: {
+          applicability_domains?: string[] | null
+          applied_count?: number | null
+          confidence?: number | null
+          created_at?: string
+          generalization_score?: number | null
+          heuristic_content: string
+          heuristic_name: string
+          id?: string
+          last_applied_at?: string | null
+          metadata?: Json | null
+          source_module: string
+          success_rate?: number | null
+          target_modules?: string[] | null
+          teacher_model?: string | null
+          updated_at?: string
+        }
+        Update: {
+          applicability_domains?: string[] | null
+          applied_count?: number | null
+          confidence?: number | null
+          created_at?: string
+          generalization_score?: number | null
+          heuristic_content?: string
+          heuristic_name?: string
+          id?: string
+          last_applied_at?: string | null
+          metadata?: Json | null
+          source_module?: string
+          success_rate?: number | null
+          target_modules?: string[] | null
+          teacher_model?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
