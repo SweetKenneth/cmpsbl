@@ -93,9 +93,24 @@ async function fetchSiteAnalytics(days: number): Promise<SiteAnalyticsData> {
     return true;
   });
 
-  // Unique visitors by fingerprint
-  const fingerprintSet = new Set(rawViews.map(v => v.fingerprint_hash).filter(Boolean));
-  const uniqueVisitors = fingerprintSet.size || new Set(rawViews.map(v => v.session_id)).size;
+  // Build visitor identity from both tables (session-first fallback if page views are missing)
+  const fingerprintSetFromSessions = new Set<string>(
+    rawSessions.map(s => s.fingerprint_hash).filter(Boolean)
+  );
+  const fingerprintSetFromViews = new Set<string>(
+    rawViews.map(v => v.fingerprint_hash).filter(Boolean)
+  );
+  const allFingerprintSet = new Set<string>([
+    ...Array.from(fingerprintSetFromSessions),
+    ...Array.from(fingerprintSetFromViews),
+  ]);
+
+  const fallbackVisitorIds = new Set<string>([
+    ...rawSessions.map(s => s.fingerprint_hash || `session:${s.id}`),
+    ...rawViews.map(v => v.fingerprint_hash || `session:${v.session_id}`),
+  ].filter(Boolean) as string[]);
+
+  const uniqueVisitors = allFingerprintSet.size > 0 ? allFingerprintSet.size : fallbackVisitorIds.size;
 
   // Session metrics
   const totalSessions = rawSessions.length;
@@ -111,6 +126,10 @@ async function fetchSiteAnalytics(days: number): Promise<SiteAnalyticsData> {
     ? Math.round(sessionDurations.reduce((a, b) => a + b, 0) / sessionDurations.length)
     : 0;
 
+  // Page views: prefer page-view table, fallback to session page_count when page-view rows are missing
+  const totalPageViewsFromSessions = rawSessions.reduce((sum, s) => sum + Math.max(1, s.page_count || 1), 0);
+  const totalPageViews = rawViews.length > 0 ? rawViews.length : totalPageViewsFromSessions;
+
   // Returning vs new
   const sessionFingerprints = new Map<string, number>();
   rawSessions.forEach(s => {
@@ -118,24 +137,40 @@ async function fetchSiteAnalytics(days: number): Promise<SiteAnalyticsData> {
     if (fp) sessionFingerprints.set(fp, (sessionFingerprints.get(fp) || 0) + 1);
   });
   const returningVisitors = Array.from(sessionFingerprints.values()).filter(c => c > 1).length;
-  const newVisitors = uniqueVisitors - returningVisitors;
+  const newVisitors = Math.max(0, uniqueVisitors - returningVisitors);
 
   // Top pages
   const pageCounts = new Map<string, { views: number; totalTime: number; totalScroll: number; timeCount: number; scrollCount: number }>();
-  rawViews.forEach(v => {
-    const path = v.page_path || '/';
-    const existing = pageCounts.get(path) || { views: 0, totalTime: 0, totalScroll: 0, timeCount: 0, scrollCount: 0 };
-    existing.views++;
-    if (v.time_on_page_ms && v.time_on_page_ms > 0) {
-      existing.totalTime += v.time_on_page_ms;
-      existing.timeCount++;
-    }
-    if (v.scroll_depth_pct != null) {
-      existing.totalScroll += v.scroll_depth_pct;
-      existing.scrollCount++;
-    }
-    pageCounts.set(path, existing);
-  });
+
+  if (rawViews.length > 0) {
+    rawViews.forEach(v => {
+      const path = v.page_path || '/';
+      const existing = pageCounts.get(path) || { views: 0, totalTime: 0, totalScroll: 0, timeCount: 0, scrollCount: 0 };
+      existing.views++;
+      if (v.time_on_page_ms && v.time_on_page_ms > 0) {
+        existing.totalTime += v.time_on_page_ms;
+        existing.timeCount++;
+      }
+      if (v.scroll_depth_pct != null) {
+        existing.totalScroll += v.scroll_depth_pct;
+        existing.scrollCount++;
+      }
+      pageCounts.set(path, existing);
+    });
+  } else {
+    // Fallback for historical rows created before page-view capture was fixed
+    rawSessions.forEach(s => {
+      const path = s.first_page || s.last_page || '/';
+      const existing = pageCounts.get(path) || { views: 0, totalTime: 0, totalScroll: 0, timeCount: 0, scrollCount: 0 };
+      existing.views += Math.max(1, s.page_count || 1);
+      if (s.total_duration_ms && s.total_duration_ms > 0) {
+        existing.totalTime += s.total_duration_ms;
+        existing.timeCount++;
+      }
+      pageCounts.set(path, existing);
+    });
+  }
+
   const topPages = Array.from(pageCounts.entries())
     .map(([path, d]) => ({
       path,
@@ -218,17 +253,31 @@ async function fetchSiteAnalytics(days: number): Promise<SiteAnalyticsData> {
     .sort((a, b) => b.count - a.count)
     .slice(0, 10);
 
-  // Daily time series
+  // Daily time series (page-view first, sessions fallback)
   const dailyMap = new Map<string, { views: number; sessions: Set<string>; visitors: Set<string> }>();
-  rawViews.forEach(v => {
-    const day = (v.created_at || '').split('T')[0];
-    if (!day) return;
-    const existing = dailyMap.get(day) || { views: 0, sessions: new Set(), visitors: new Set() };
-    existing.views++;
-    existing.sessions.add(v.session_id);
-    if (v.fingerprint_hash) existing.visitors.add(v.fingerprint_hash);
-    dailyMap.set(day, existing);
-  });
+
+  if (rawViews.length > 0) {
+    rawViews.forEach(v => {
+      const day = (v.created_at || '').split('T')[0];
+      if (!day) return;
+      const existing = dailyMap.get(day) || { views: 0, sessions: new Set(), visitors: new Set() };
+      existing.views++;
+      existing.sessions.add(v.session_id);
+      if (v.fingerprint_hash) existing.visitors.add(v.fingerprint_hash);
+      dailyMap.set(day, existing);
+    });
+  } else {
+    rawSessions.forEach(s => {
+      const day = (s.started_at || '').split('T')[0];
+      if (!day) return;
+      const existing = dailyMap.get(day) || { views: 0, sessions: new Set(), visitors: new Set() };
+      existing.views += Math.max(1, s.page_count || 1);
+      existing.sessions.add(s.id);
+      if (s.fingerprint_hash) existing.visitors.add(s.fingerprint_hash);
+      dailyMap.set(day, existing);
+    });
+  }
+
   const dailyViews: SiteAnalyticsData['dailyViews'] = [];
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
@@ -262,12 +311,12 @@ async function fetchSiteAnalytics(days: number): Promise<SiteAnalyticsData> {
 
   return {
     uniqueVisitors,
-    totalPageViews: rawViews.length,
+    totalPageViews,
     totalSessions,
     avgPagesPerSession,
     avgSessionDuration,
     bounceRate,
-    uniqueFingerprints: fingerprintSet.size,
+    uniqueFingerprints: allFingerprintSet.size,
     returningVisitors,
     newVisitors,
     topPages,
