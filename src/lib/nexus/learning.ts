@@ -29,7 +29,7 @@ export async function learnFromResult(data: LearningData): Promise<void> {
   try {
     const { error } = await supabase
       .from('ai_learning_data')
-      .insert({
+      .insert([{
         provider: 'nexus',
         model: data.model,
         success: data.success,
@@ -51,7 +51,7 @@ export async function learnFromResult(data: LearningData): Promise<void> {
           feedback_score: data.feedback_score,
           model_version: 'v1.0',
         }
-      });
+      }]);
 
     if (error) {
       console.error('Failed to store learning data:', error);
