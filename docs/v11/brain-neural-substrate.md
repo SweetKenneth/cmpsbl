@@ -29,7 +29,7 @@ The Neural Substrate Layer adds a lightweight neural network to the BRAIN module
 
 | Property | Value |
 |----------|-------|
-| Model | Deterministic hash embeddings (upgrade path: `all-MiniLM-L6-v2` via `onnxruntime-web`) |
+| Model | Deterministic hash embeddings (`hash-embed-v1`) |
 | Dimensions | 384 |
 | Execution | In-browser, main thread |
 | Latency | <5ms per embedding |
