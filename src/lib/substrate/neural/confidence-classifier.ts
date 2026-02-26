@@ -24,6 +24,7 @@ interface ClassifierState {
   accuracy: number;
   eceScore: number;
   lastTrainedAt: string | null;
+  error: string | null;
 }
 
 const ACTIVATION_THRESHOLD = 200; // min labeled traces
@@ -44,6 +45,7 @@ class ConfidenceClassifier {
     accuracy: 0,
     eceScore: 0,
     lastTrainedAt: null,
+    error: null,
   };
 
   /**
@@ -217,7 +219,9 @@ class ConfidenceClassifier {
 
       return { samples: traces.length, accuracy };
     } catch (err) {
-      console.error('[Neural] Classifier training error:', err);
+      const message = err instanceof Error ? err.message : 'Unknown training error';
+      console.warn('[Neural] Classifier training error:', message);
+      this.state.error = message;
       return null;
     }
   }

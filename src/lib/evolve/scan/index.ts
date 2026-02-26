@@ -1,6 +1,6 @@
 /**
  * Modernizer Scan — Cognitive Systems Scan
- * v10.5.4 — ARCHITECT Epoch Always Produces Valid Plans + Mobile-First Output
+ * SPARTA Epoch — Always Produces Valid Plans + Mobile-First Output
  * 
  * SCAN = 3-SOURCE SYNTHESIS → NORMALIZE → PLAN (always valid)
  * 

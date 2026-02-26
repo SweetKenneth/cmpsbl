@@ -28,6 +28,7 @@ interface EmbeddingEngineState {
   totalEmbeddings: number;
   lastEncodedAt: string | null;
   activationMet: boolean;
+  error: string | null;
 }
 
 /**
@@ -43,6 +44,7 @@ class EmbeddingEngine {
     totalEmbeddings: 0,
     lastEncodedAt: null,
     activationMet: false,
+    error: null,
   };
 
   /**
@@ -78,8 +80,9 @@ class EmbeddingEngine {
       console.log(`[Neural] Embedding engine active: ${this.state.totalEmbeddings} cached vectors`);
       return true;
     } catch (err) {
-      console.error('[Neural] Embedding engine init failed:', err);
+      console.warn('[Neural] Embedding engine init failed:', err);
       this.state.initialized = true;
+      this.state.error = err instanceof Error ? err.message : 'Unknown init error';
       return false;
     }
   }
@@ -156,8 +159,8 @@ class EmbeddingEngine {
           });
 
         if (insertError) {
-          console.error('[Neural] Failed to store embedding:', insertError);
-          return null;
+          console.warn('[Neural] Failed to store embedding:', insertError.message);
+          // Continue without persisting — vector is still usable in-memory
         }
       }
 
@@ -166,7 +169,9 @@ class EmbeddingEngine {
 
       return { artifact_id: artifactId, artifact_type: artifactType, vector };
     } catch (err) {
-      console.error('[Neural] Encode error:', err);
+      const message = err instanceof Error ? err.message : 'Unknown encode error';
+      console.warn('[Neural] Encode error:', message);
+      this.state.error = message;
       return null;
     }
   }

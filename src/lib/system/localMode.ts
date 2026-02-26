@@ -1,7 +1,9 @@
 /**
- * PromptFluid Local Mode Initialization
+ * CMPSBL Local Mode Initialization
  * Restores all modules using cached environment variables only
  */
+
+import { secureSet, secureGet, migrateLegacyKey } from './secureStorage';
 
 interface ModuleState {
   name: string;
@@ -18,23 +20,18 @@ interface DependencyGraph {
  * Load cached environment variables
  */
 function loadCachedEnv(): Record<string, string> {
-  const cached: Record<string, string> = {};
+  // Migrate legacy plaintext env if present
+  migrateLegacyKey('pf_cached_env');
   
-  try {
-    const stored = localStorage.getItem('pf_cached_env');
-    if (stored) {
-      return JSON.parse(stored);
-    }
-  } catch (e) {
-    // Silent fail
-  }
+  const cached = secureGet<Record<string, string>>('pf_cached_env');
+  if (cached) return cached;
 
   // Fallback to import.meta.env
-  cached.SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
-  cached.SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
-  cached.PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID || '';
-
-  return cached;
+  return {
+    SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || '',
+    SUPABASE_KEY: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '',
+    PROJECT_ID: import.meta.env.VITE_SUPABASE_PROJECT_ID || '',
+  };
 }
 
 /**
@@ -49,13 +46,9 @@ async function initBrain(): Promise<ModuleState> {
   };
 
   try {
-    // Load Brain memory from local cache
-    const hotMemory = localStorage.getItem('brain_memory_hot') || '[]';
-    const coldMemory = localStorage.getItem('brain_memory_cold') || '[]';
-    
-    // Initialize learning system
-    localStorage.setItem('brain_learning_active', 'true');
-    localStorage.setItem('brain_mode', 'local');
+    // Use secure storage for sensitive Brain memory references
+    secureSet('brain_learning_active', true);
+    secureSet('brain_mode', 'local');
 
     state.status = 'active';
     state.initialized = true;
@@ -240,10 +233,10 @@ export async function initializeLocalMode(): Promise<{
 }> {
   // Load cached environment
   const env = loadCachedEnv();
-  localStorage.setItem('pf_cached_env', JSON.stringify(env));
+  secureSet('pf_cached_env', env);
 
   // Set local mode flag
-  localStorage.setItem('pf_local_mode', 'true');
+  secureSet('pf_local_mode', true);
   localStorage.setItem('pf_skip_sync', 'true');
   localStorage.setItem('pf_skip_diagnostics', 'true');
   localStorage.setItem('pf_skip_telemetry', 'true');
@@ -273,7 +266,7 @@ export function getLocalModeStatus(): {
   modules: string[];
   timestamp: number;
 } {
-  const isLocal = localStorage.getItem('pf_local_mode') === 'true';
+  const isLocal = secureGet<boolean>('pf_local_mode') === true || localStorage.getItem('pf_local_mode') === 'true';
   const modules: string[] = [];
 
   const moduleNames = ['Brain', 'Cascade', 'PTCHBL', 'RCKBL', 'Defense', 'Nexus'];

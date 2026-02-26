@@ -1,6 +1,6 @@
 /**
  * MODERNIZER Module — Self-Evolution & Code Intelligence
- * v10.5.4 ARCHITECT — Substrate Evolution Engine
+ * SPARTA Epoch — Substrate Evolution Engine
  * 
  * Provides:
  * - Code scanning and analysis

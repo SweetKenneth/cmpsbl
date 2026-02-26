@@ -1,6 +1,6 @@
 /**
  * Central Health Registry (CHR) + Truth Boundary Protocol
- * v10.5.4 ARCHITECT — SYSTEM_TRUTH_BOUNDARY + HEALTH_ATTRIBUTION_ENGINE
+ * SPARTA Epoch — SYSTEM_TRUTH_BOUNDARY + HEALTH_ATTRIBUTION_ENGINE
  *
  * Single source of truth for all module/subsystem health state.
  * Every health mutation routes through updateHealthRegistry().

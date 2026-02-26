@@ -1,6 +1,6 @@
 /**
  * System Module Exports
- * v10.5.4 ARCHITECT — Administration, Healing, and Production Hardening
+ * SPARTA Epoch — Administration, Healing, and Production Hardening
  */
 
 // Error handling

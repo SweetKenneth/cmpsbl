@@ -63,7 +63,7 @@ class VectorSimilarityIndex {
         .limit(MAX_INDEX_SIZE);
 
       if (error || !data) {
-        console.error('[Neural] Failed to load vector index:', error);
+        console.warn('[Neural] Failed to load vector index:', error?.message);
         return 0;
       }
 
@@ -88,7 +88,8 @@ class VectorSimilarityIndex {
       console.log(`[Neural] Vector index loaded: ${this.entries.length} entries`);
       return this.entries.length;
     } catch (err) {
-      console.error('[Neural] Vector index load error:', err);
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      console.warn('[Neural] Vector index load error:', message);
       return 0;
     }
   }

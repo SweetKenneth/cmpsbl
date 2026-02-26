@@ -26,6 +26,7 @@ interface DriftDetectorState {
   totalChecks: number;
   anomaliesDetected: number;
   lastCheckAt: string | null;
+  error: string | null;
 }
 
 const ACTIVATION_THRESHOLD = 500; // min embeddings before activating
@@ -50,6 +51,7 @@ class DriftDetector {
     totalChecks: 0,
     anomaliesDetected: 0,
     lastCheckAt: null,
+    error: null,
   };
 
   /**
@@ -254,7 +256,9 @@ class DriftDetector {
       this.state.hasModel = true;
       return { samples: embeddings.length, avgError };
     } catch (err) {
-      console.error('[Neural] Drift detector training error:', err);
+      const message = err instanceof Error ? err.message : 'Unknown training error';
+      console.warn('[Neural] Drift detector training error:', message);
+      this.state.error = message;
       return null;
     }
   }

@@ -241,9 +241,11 @@ export async function getDefenseRules(): Promise<Array<{
   is_active: boolean;
 }>> {
   try {
-    const { data, error } = await supabase.functions.invoke('pf-reflex-core', {
-      body: { action: 'get_rules' }
-    });
+    const { data, error } = await supabase
+      .from('defense_rules')
+      .select('id, rule_name, pattern, action, threshold, priority, is_active')
+      .eq('is_active', true)
+      .order('priority', { ascending: false });
 
     if (error) {
       if (import.meta.env.DEV) {
@@ -252,7 +254,7 @@ export async function getDefenseRules(): Promise<Array<{
       return [];
     }
 
-    return data?.rules || [];
+    return data || [];
   } catch (err) {
     if (import.meta.env.DEV) {
       console.error('Defense rules fetch error:', err);

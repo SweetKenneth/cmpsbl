@@ -1,6 +1,6 @@
 /**
  * Module-Specific CLM (Constant Learning Mode)
- * v10.5.4 ARCHITECT Epoch — Specialized self-learning for each of the 21 substrate modules
+ * SPARTA Epoch — Specialized self-learning for each of the 21 substrate modules
  * 
  * Each module learns about:
  * - Its own performance metrics and 400+ capability integrations

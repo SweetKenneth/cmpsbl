@@ -1,6 +1,6 @@
 /**
  * Governance Module — Unified Exports
- * v10.5.3 ARCHITECT Epoch
+ * SPARTA Epoch
  * 
  * Epistemic discipline, veto authority, and signal arbitration
  */

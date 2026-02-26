@@ -1,6 +1,6 @@
 /**
  * RELAY Module — Outbound Effects Hub
- * v10.5.1 ARCHITECT Epoch — Webhooks, notifications, retry queues, delivery guarantees
+ * SPARTA Epoch — Webhooks, notifications, retry queues, delivery guarantees
  * Circuit Breaker + Hot-Swap + Graceful Fallback
  * 
  * CLM-Requested Upgrades Implemented:
