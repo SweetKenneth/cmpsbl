@@ -168,7 +168,7 @@ export default function SubstrateDemo() {
     module: modules.filter(m => m.layer === 'module'),
     'mesh-overlay': modules.filter(m => m.layer === 'mesh-overlay'),
     'zone-ccr': modules.filter(m => m.layer === 'zone-ccr'),
-    'zone-ccl': modules.filter(m => m.layer === 'zone-ccl'),
+    'zone-ocg': modules.filter(m => m.layer === 'zone-ocg'),
   };
 
   return (
@@ -307,11 +307,11 @@ export default function SubstrateDemo() {
                         currentStep={currentStep}
                       />
 
-                      {/* CCL Zones */}
+                      {/* OCG Zones */}
                       <LayerRow 
-                        label="CCL Zones" 
-                        modules={groupedModules['zone-ccl']} 
-                        layerKey="zone-ccl"
+                        label="OCG Zones" 
+                        modules={groupedModules['zone-ocg']} 
+                        layerKey="zone-ocg"
                         isRunning={isRunning}
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}

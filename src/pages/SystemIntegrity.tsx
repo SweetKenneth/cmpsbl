@@ -227,7 +227,7 @@ export default function SystemIntegrity() {
   const layerHealthMap: Record<string, number> = {
     core: health.layers?.core ?? 100,
     ccr: health.layers?.ccr ?? 100,
-    ccl: health.layers?.ccl ?? 100,
+    ocg: health.layers?.ocg ?? 100,
     surfaces: health.layers?.surfaces ?? 100,
     overlays: health.layers?.overlays ?? 100,
   };
