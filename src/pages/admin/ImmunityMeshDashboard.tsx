@@ -1630,31 +1630,61 @@ function PromoteToProductionPanel() {
   const [snapshots, setSnapshots] = useState<any[]>([]);
   const [diffs, setDiffs] = useState<any[]>([]);
   const [selectedDiff, setSelectedDiff] = useState<any>(null);
+  const [candidates, setCandidates] = useState<any[]>([]);
+  const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [loadingCandidates, setLoadingCandidates] = useState(true);
   const voice = useSubstrateVoice();
 
-  useEffect(() => {
-    promotionService.listPromotions(10).then(setPromotions);
-    snapshotService.listSnapshots(10).then(setSnapshots);
-    diffService.listDiffs(10).then(setDiffs);
+  const loadData = useCallback(async () => {
+    setLoadingCandidates(true);
+    const [proms, snaps, dfs, cands] = await Promise.all([
+      promotionService.listPromotions(10),
+      snapshotService.listSnapshots(10),
+      diffService.listDiffs(10),
+      promotionService.getPromotionCandidates(),
+    ]);
+    setPromotions(proms);
+    setSnapshots(snaps);
+    setDiffs(dfs);
+    setCandidates(cands);
+    setLoadingCandidates(false);
   }, []);
 
+  useEffect(() => { loadData(); }, [loadData]);
+
   const handlePromote = async () => {
+    if (!selectedRunId) return;
     setPromoting(true);
+    setConfirmOpen(false);
     try {
-      // Use most recent plan or a manual trigger
-      const result = await promotionService.promoteToProduction('manual-promote');
+      const result = await promotionService.promoteToProduction(selectedRunId);
       if (result.success) {
-        voice.success?.('Promotion complete');
-        toast.success('Successfully promoted to production');
-        promotionService.listPromotions(10).then(setPromotions);
-        snapshotService.listSnapshots(10).then(setSnapshots);
+        voice.success?.('Promotion complete', `Run ${selectedRunId.slice(0, 8)} → production | Health: ${result.healthScore}%`);
+        toast.success('Successfully promoted shadow run to production');
+        setSelectedRunId(null);
+        loadData();
       } else {
-        toast.error(`Promotion failed: ${result.error}`);
+        toast.error(`Promotion blocked: ${result.error}`);
       }
     } catch (err: any) {
       toast.error(`Promotion error: ${err.message}`);
     } finally {
       setPromoting(false);
+    }
+  };
+
+  const handleRollback = async (promotionId: string) => {
+    try {
+      const result = await promotionService.rollbackPromotion(promotionId);
+      if (result.success) {
+        toast.success('Promotion rolled back');
+        loadData();
+      } else {
+        toast.error(`Rollback failed: ${result.error}`);
+      }
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 
@@ -1664,7 +1694,7 @@ function PromoteToProductionPanel() {
       const result = await snapshotService.createSnapshot('production_baseline');
       if (result.success) {
         toast.success('Snapshot captured');
-        snapshotService.listSnapshots(10).then(setSnapshots);
+        loadData();
       } else {
         toast.error(`Snapshot failed: ${result.error}`);
       }
@@ -1695,7 +1725,7 @@ function PromoteToProductionPanel() {
       if (result.success) {
         toast.success('Diff generated');
         setSelectedDiff(result.data);
-        diffService.listDiffs(10).then(setDiffs);
+        loadData();
       } else {
         toast.error(`Diff failed: ${result.error}`);
       }
@@ -1706,43 +1736,145 @@ function PromoteToProductionPanel() {
     }
   };
 
+  const selectedCandidate = candidates.find(c => c.run_id === selectedRunId);
+
   return (
     <div className="space-y-4">
-      {/* Action Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Card className="p-4 space-y-3">
-          <div className="flex items-center gap-2">
-            <Rocket className="w-5 h-5 text-primary flex-shrink-0" />
-            <h3 className="font-semibold text-sm">Push to Production</h3>
-          </div>
-          <p className="text-[10px] sm:text-xs text-muted-foreground">Promote validated mutations to production with snapshot + integrity gate.</p>
-          <Button size="sm" className="w-full text-xs" onClick={handlePromote} disabled={promoting}>
-            {promoting ? 'Promoting…' : '🚀 Promote Now'}
-          </Button>
-        </Card>
+      {/* Shadow Run Candidates */}
+      <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+          <CardContent className="pt-5 pb-4">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 flex-shrink-0">
+                <Rocket className="w-5 h-5 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-base mb-1">Shadow → Production Promotion</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Select a validated shadow run to promote. Runs must pass TSAC verification and integrity gates before production apply.
+                </p>
+              </div>
+            </div>
 
-        <Card className="p-4 space-y-3">
-          <div className="flex items-center gap-2">
-            <Play className="w-5 h-5 text-primary flex-shrink-0" />
-            <h3 className="font-semibold text-sm">Capture Snapshot</h3>
-          </div>
-          <p className="text-[10px] sm:text-xs text-muted-foreground">Freeze current system state for comparison and rollback.</p>
-          <Button size="sm" variant="outline" className="w-full text-xs" onClick={handleSnapshot} disabled={snapshotting}>
-            {snapshotting ? 'Capturing…' : '📸 Snapshot'}
-          </Button>
-        </Card>
+            {loadingCandidates ? (
+              <div className="text-sm text-muted-foreground py-4 text-center">Loading shadow runs…</div>
+            ) : candidates.length === 0 ? (
+              <div className="text-sm text-muted-foreground py-6 text-center border border-dashed border-border/50 rounded-lg">
+                <Shield className="w-8 h-8 mx-auto mb-2 text-muted-foreground/40" />
+                <p className="font-medium">No shadow runs ready for promotion</p>
+                <p className="text-xs mt-1">Runs must be in <code className="text-primary">shadow_applied</code> phase</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {candidates.map((c: any) => {
+                  const isSelected = selectedRunId === c.run_id;
+                  const tsacOk = c.tsac_shadow_verdict === 'pass';
+                  const tsacWarn = c.tsac_shadow_verdict === 'warn';
+                  return (
+                    <div
+                      key={c.run_id}
+                      className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                        isSelected
+                          ? 'border-primary/50 bg-primary/5 ring-1 ring-primary/20'
+                          : 'border-border/30 bg-muted/10 hover:border-primary/20'
+                      }`}
+                      onClick={() => setSelectedRunId(isSelected ? null : c.run_id)}
+                    >
+                      <div className="flex items-center justify-between gap-2 flex-wrap">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${tsacOk ? 'bg-emerald-500' : tsacWarn ? 'bg-amber-500' : 'bg-red-500'}`} />
+                          <span className="font-mono text-xs truncate">{c.run_id.slice(0, 12)}</span>
+                          <Badge variant="outline" className="text-[9px]">{c.plan_title ?? c.plan_id.slice(0, 8)}</Badge>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {c.confidence_score != null && (
+                            <Badge variant="secondary" className="text-[9px]">
+                              {Math.round(c.confidence_score * 100)}% conf
+                            </Badge>
+                          )}
+                          {c.risk_level && (
+                            <Badge variant={c.risk_level === 'low' ? 'default' : c.risk_level === 'medium' ? 'secondary' : 'destructive'} className="text-[9px]">
+                              {c.risk_level}
+                            </Badge>
+                          )}
+                          <Badge variant={tsacOk ? 'default' : tsacWarn ? 'secondary' : 'destructive'} className="text-[9px]">
+                            TSAC: {c.tsac_shadow_verdict ?? 'n/a'}
+                          </Badge>
+                          <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                            {new Date(c.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
-        <Card className="p-4 space-y-3">
-          <div className="flex items-center gap-2">
-            <Code2 className="w-5 h-5 text-primary flex-shrink-0" />
-            <h3 className="font-semibold text-sm">Compare Snapshots</h3>
-          </div>
-          <p className="text-[10px] sm:text-xs text-muted-foreground">Generate a diff between the two most recent snapshots.</p>
-          <Button size="sm" variant="outline" className="w-full text-xs" onClick={handleDiff} disabled={diffing || snapshots.length < 2}>
-            {diffing ? 'Diffing…' : snapshots.length < 2 ? `Need ${2 - snapshots.length} more snapshots` : '📊 Generate Diff'}
-          </Button>
+            {/* Promote button */}
+            <div className="mt-4 flex items-center gap-3">
+              <Button
+                size="sm"
+                className="text-xs gap-2"
+                disabled={!selectedRunId || promoting}
+                onClick={() => setConfirmOpen(true)}
+              >
+                <Rocket className="w-3.5 h-3.5" />
+                {promoting ? 'Promoting…' : 'Promote Selected Run'}
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs" onClick={handleSnapshot} disabled={snapshotting}>
+                {snapshotting ? 'Capturing…' : '📸 Snapshot'}
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs" onClick={handleDiff} disabled={diffing || snapshots.length < 2}>
+                {diffing ? 'Diffing…' : '📊 Compare'}
+              </Button>
+            </div>
+          </CardContent>
         </Card>
-      </div>
+      </motion.div>
+
+      {/* Confirmation Dialog */}
+      {confirmOpen && selectedCandidate && (
+        <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}>
+          <Card className="border-amber-500/30 bg-amber-500/5">
+            <CardContent className="pt-4 pb-4">
+              <div className="flex items-start gap-3 mb-3">
+                <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-sm">Confirm Production Promotion</h4>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    This will advance shadow run <code className="text-primary">{selectedCandidate.run_id.slice(0, 12)}</code> to production.
+                    A pre-promote snapshot will be created for rollback safety.
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-3 mb-4 text-xs">
+                <div className="p-2 rounded bg-muted/20 border border-border/20">
+                  <span className="text-muted-foreground">Plan</span>
+                  <p className="font-mono font-medium truncate">{selectedCandidate.plan_title}</p>
+                </div>
+                <div className="p-2 rounded bg-muted/20 border border-border/20">
+                  <span className="text-muted-foreground">Risk</span>
+                  <p className="font-medium">{selectedCandidate.risk_level ?? 'unknown'}</p>
+                </div>
+                <div className="p-2 rounded bg-muted/20 border border-border/20">
+                  <span className="text-muted-foreground">TSAC</span>
+                  <p className="font-medium">{selectedCandidate.tsac_shadow_verdict ?? 'n/a'}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button size="sm" className="text-xs gap-1" onClick={handlePromote} disabled={promoting}>
+                  <Rocket className="w-3 h-3" />
+                  {promoting ? 'Promoting…' : 'Confirm & Promote'}
+                </Button>
+                <Button size="sm" variant="outline" className="text-xs" onClick={() => setConfirmOpen(false)}>
+                  Cancel
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Diff Results */}
       {selectedDiff && (
@@ -1778,6 +1910,41 @@ function PromoteToProductionPanel() {
         </Card>
       )}
 
+      {/* Promotion History */}
+      {promotions.length > 0 && (
+        <Card className="p-4 space-y-3 overflow-hidden">
+          <h3 className="font-semibold text-sm">Promotion History</h3>
+          <div className="space-y-1.5">
+            {promotions.map((p: any) => (
+              <div key={p.id} className="flex items-center justify-between text-xs p-2.5 rounded-lg bg-muted/20 border border-border/20 gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Badge variant={p.status === 'completed' ? 'default' : p.status === 'rolled_back' ? 'destructive' : 'secondary'} className="text-[9px] flex-shrink-0">
+                    {p.status}
+                  </Badge>
+                  <span className="font-mono truncate text-[10px]">{p.shadow_run_id?.slice(0, 12) ?? p.id?.slice(0, 12)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {p.status === 'completed' && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-6 px-2 text-[10px] text-red-400 hover:text-red-300"
+                      onClick={() => handleRollback(p.id)}
+                    >
+                      <RotateCcw className="w-3 h-3 mr-1" />
+                      Rollback
+                    </Button>
+                  )}
+                  <span className="text-muted-foreground text-[10px] whitespace-nowrap">
+                    {p.created_at ? new Date(p.created_at).toLocaleString() : '—'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
       {/* Recent Diffs */}
       {diffs.length > 0 && (
         <Card className="p-4 space-y-3 overflow-hidden">
@@ -1791,28 +1958,6 @@ function PromoteToProductionPanel() {
                     {d.created_at ? new Date(d.created_at).toLocaleString() : '—'}
                   </span>
                 </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
-
-      {/* Promotion History */}
-      {promotions.length > 0 && (
-        <Card className="p-4 space-y-3 overflow-hidden">
-          <h3 className="font-semibold text-sm">Promotion History</h3>
-          <div className="space-y-1.5">
-            {promotions.map((p: any) => (
-              <div key={p.id} className="flex items-center justify-between text-xs p-2.5 rounded-lg bg-muted/20 border border-border/20 gap-2">
-                <div className="flex items-center gap-2 min-w-0">
-                  <Badge variant={p.status === 'completed' ? 'default' : p.status === 'rolled_back' ? 'destructive' : 'secondary'} className="text-[9px] flex-shrink-0">
-                    {p.status}
-                  </Badge>
-                  <span className="font-mono truncate text-[10px]">{p.plan_id?.slice(0, 12)}</span>
-                </div>
-                <span className="text-muted-foreground text-[10px] whitespace-nowrap">
-                  {p.created_at ? new Date(p.created_at).toLocaleString() : '—'}
-                </span>
               </div>
             ))}
           </div>
