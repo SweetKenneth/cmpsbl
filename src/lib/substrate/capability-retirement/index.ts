@@ -302,7 +302,6 @@ class RetirementEngine {
     if (this.loaded) return;
     this.loaded = true;
     try {
-      const { secureGet } = await import('@/lib/system/secureStorage');
       const state = secureGet<{ candidates: typeof this.candidates; lastScanAt: string | null }>(STORAGE_KEY);
       if (state) {
         this.candidates = state.candidates || [];
@@ -313,7 +312,6 @@ class RetirementEngine {
 
   private persist(): void {
     try {
-      const { secureSet } = await import('@/lib/system/secureStorage');
       secureSet(STORAGE_KEY, {
         candidates: this.candidates.slice(-200),
         lastScanAt: this.lastScanAt,

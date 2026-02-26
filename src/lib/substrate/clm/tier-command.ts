@@ -253,7 +253,6 @@ class TierCommandClient {
 
   private loadTier(): void {
     try {
-      const { secureGet } = require('@/lib/system/secureStorage');
       const stored = secureGet<string>('clm_current_tier');
       if (stored && TIERS[stored]) {
         this.currentTier = TIERS[stored];
@@ -265,7 +264,6 @@ class TierCommandClient {
 
   private persistTier(): void {
     try {
-      const { secureSet } = require('@/lib/system/secureStorage');
       secureSet('clm_current_tier', this.currentTier.name);
     } catch {
       // Non-critical

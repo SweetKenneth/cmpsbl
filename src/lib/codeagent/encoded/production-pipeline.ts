@@ -304,7 +304,6 @@ class ProductionPipeline {
     if (this.loaded) return;
     this.loaded = true;
     try {
-      const { secureGet } = await import('@/lib/system/secureStorage');
       const data = secureGet<typeof this.proposals>(STORAGE_KEY);
       if (data) this.proposals = data;
     } catch { this.proposals = []; }
@@ -312,7 +311,6 @@ class ProductionPipeline {
 
   private persist(): void {
     try {
-      const { secureSet } = await import('@/lib/system/secureStorage');
       // Keep only last 100 proposals
       const trimmed = this.proposals.slice(-100);
       secureSet(STORAGE_KEY, trimmed);

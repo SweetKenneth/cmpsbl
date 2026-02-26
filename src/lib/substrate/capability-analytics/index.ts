@@ -211,7 +211,6 @@ class CapabilityAnalytics {
     this.records = [];
     this.buffer = [];
     try {
-      const { secureRemove } = await import('@/lib/system/secureStorage');
       secureRemove(STORAGE_KEY);
     } catch { /* non-critical */ }
   }
@@ -220,7 +219,6 @@ class CapabilityAnalytics {
     if (this.loaded) return;
     this.loaded = true;
     try {
-      const { secureGet } = await import('@/lib/system/secureStorage');
       const data = secureGet<typeof this.records>(STORAGE_KEY);
       if (data) this.records = data;
     } catch { this.records = []; }
@@ -228,15 +226,11 @@ class CapabilityAnalytics {
 
   private persist(): void {
     try {
-      const { secureSet } = await import('@/lib/system/secureStorage');
       secureSet(STORAGE_KEY, this.records);
     } catch {
       // Trim old records on storage pressure
       this.records = this.records.slice(-2000);
-      try {
-        const { secureSet } = await import('@/lib/system/secureStorage');
-        secureSet(STORAGE_KEY, this.records);
-      } catch { /* Storage exhausted — tolerate data loss */ }
+      try { secureSet(STORAGE_KEY, this.records); } catch { /* Storage exhausted — tolerate data loss */ }
     }
   }
 }

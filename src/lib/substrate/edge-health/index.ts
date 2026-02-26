@@ -310,7 +310,6 @@ class EdgeHealthMonitor {
     if (this.loaded) return;
     this.loaded = true;
     try {
-      const { secureGet } = await import('@/lib/system/secureStorage');
       const entries = secureGet<[string, EdgeFunctionHealth][]>(STORAGE_KEY);
       if (entries) this.healthMap = new Map(entries);
     } catch { /* Storage unavailable — start fresh */ this.healthMap = new Map(); }
@@ -318,7 +317,6 @@ class EdgeHealthMonitor {
 
   private persist(): void {
     try {
-      const { secureSet } = await import('@/lib/system/secureStorage');
       secureSet(STORAGE_KEY, Array.from(this.healthMap.entries()));
     } catch { /* Storage pressure — non-critical telemetry */ }
   }

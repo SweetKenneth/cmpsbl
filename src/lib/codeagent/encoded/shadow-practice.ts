@@ -734,7 +734,6 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
 
   private loadState(): ShadowPracticeState {
     try {
-      const { secureGet } = await import('@/lib/system/secureStorage');
       const stored = secureGet<ShadowPracticeState>(STORAGE_KEY);
       if (stored) return stored;
     } catch { /* Storage unavailable — use defaults */ }
@@ -756,7 +755,6 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
 
   private persistState(): void {
     try {
-      const { secureSet } = await import('@/lib/system/secureStorage');
       // Don't persist generated code in results (shadow-only)
       const toSave = {
         ...this.state,

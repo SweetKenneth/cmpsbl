@@ -268,7 +268,6 @@ class ConfidenceCalibrator {
     if (this.loaded) return;
     this.loaded = true;
     try {
-      const { secureGet } = await import('@/lib/system/secureStorage');
       const data = secureGet<typeof this.records>(STORAGE_KEY);
       if (data) this.records = data;
     } catch { this.records = []; }
@@ -276,7 +275,6 @@ class ConfidenceCalibrator {
 
   private persist(): void {
     try {
-      const { secureSet } = await import('@/lib/system/secureStorage');
       const trimmed = this.records.slice(-500);
       secureSet(STORAGE_KEY, trimmed);
     } catch { /* Storage pressure — non-critical calibration data */ }

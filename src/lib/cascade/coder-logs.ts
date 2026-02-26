@@ -40,7 +40,6 @@ export function logPatchGeneration(entry: Omit<CoderLogEntry, 'timestamp'>): voi
 
   // Store in secureStorage for debugging (last 50 entries)
   try {
-    const { secureGet, secureSet } = await import('@/lib/system/secureStorage');
     const logs: CoderLogEntry[] = secureGet<CoderLogEntry[]>('cascade-coder-logs') || [];
     logs.unshift(fullEntry);
     secureSet('cascade-coder-logs', logs.slice(0, 50));
@@ -54,7 +53,6 @@ export function logPatchGeneration(entry: Omit<CoderLogEntry, 'timestamp'>): voi
  */
 export function getRecentLogs(): CoderLogEntry[] {
   try {
-    const { secureGet } = require('@/lib/system/secureStorage');
     return secureGet<CoderLogEntry[]>('cascade-coder-logs') || [];
   } catch {
     return [];
@@ -66,7 +64,6 @@ export function getRecentLogs(): CoderLogEntry[] {
  */
 export function clearLogs(): void {
   try {
-    const { secureRemove } = require('@/lib/system/secureStorage');
     secureRemove('cascade-coder-logs');
   } catch {
     // Storage unavailable — tolerable
