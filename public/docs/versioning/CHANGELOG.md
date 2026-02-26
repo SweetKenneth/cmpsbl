@@ -35,6 +35,30 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 
 ## v11.x.x — SPARTA Epoch (Living)
 
+### Evolution 023 — 2026-02-26
+
+**Observed Pressures**
+- The stacked-layer model obscured the true topology of the substrate
+- CCL naming did not convey its boundary-enforcement role
+- SYSTEM was classified under CCR despite being a standalone lifecycle layer
+- DEFENSE, EVOLUTION, IMMUNITY, and GOVERNANCE were all classified as "mesh overlays" despite serving fundamentally different architectural roles
+
+**Learned Responses**
+- A field-based topology replaced the flat layer model: Spine / Grid / Field / Plane / Shell
+- CCL renamed to Operational Compliance Grid (OCG) — classified as a Grid
+- SYSTEM extracted from CCR and elevated to a standalone layer on the vertical spine
+- DEFENSE elevated to Shell (outer containment boundary)
+- GOVERNANCE reclassified as Overlay Plane (supervisory blanket)
+- EVOLUTION, IMMUNITY, and INTENT reclassified as Fields — system-wide transformation fabric that permeates the spine
+
+**Resulting Capabilities**
+- The substrate topology is now explicitly defined with five structural primitives
+- CLM operates as a lateral intelligence branch rather than a vertical layer
+- Cross-cutting concerns (Fields, Plane, Shell) are distinguished from the deterministic vertical spine
+- Architectural drift is prevented by formal taxonomy definitions
+
+---
+
 ### Evolution 022 — 2026-02-26
 
 **Observed Pressures**

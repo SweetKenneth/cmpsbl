@@ -1,32 +1,39 @@
 /**
- * Clockless Cognitive Lucidity (CCL)
- * Infrastructure Convergence Layer — contains 5 Zones:
+ * Operational Compliance Grid (OCG)
+ * Formerly: Clockless Cognitive Lucidity (CCL)
+ * 
+ * Boundary enforcement grid — contains 5 Zones:
  *   RIPPLE Zone + ACCESS Zone + IDENTITY Zone + RELAY Zone + AUDIT Zone
  *
  * Each Zone is surgically hot-swappable with its own circuit breaker.
  * If a Zone's circuit trips, the fault is isolated (e.g., "RIPPLE Zone fault").
  *
- * Boot order: CORE → CCR → CCL → Modules → Meshes → INTEGRATION
+ * Topology: OCG is a Grid — right-side tap off the vertical spine.
+ * Boot order: CORE → SYSTEM → CCR → OCG → Modules → Fields → Plane → Shell → INTEGRATION
  */
 
 import { emit } from '@/lib/substrate/events';
 
 // ─── Feature Flag ────────────────────────────────────────────────────────────
 
-let cclEnabled = true;
-export function isCCLEnabled(): boolean { return cclEnabled; }
-export function setCCLEnabled(v: boolean): void { cclEnabled = v; }
+let ocgEnabled = true;
+export function isOCGEnabled(): boolean { return ocgEnabled; }
+export function setOCGEnabled(v: boolean): void { ocgEnabled = v; }
 
-// ─── CCL State ───────────────────────────────────────────────────────────────
+// Legacy aliases
+export const isCCLEnabled = isOCGEnabled;
+export const setCCLEnabled = setOCGEnabled;
 
-interface CCLState {
+// ─── OCG State ───────────────────────────────────────────────────────────────
+
+interface OCGState {
   active: boolean;
   bootedAt: string | null;
   health: number;
   subsystems: Record<string, { active: boolean; health: number }>;
 }
 
-const state: CCLState = {
+const state: OCGState = {
   active: false,
   bootedAt: null,
   health: 100,
@@ -44,28 +51,27 @@ const state: CCLState = {
 
 function initializeIdentity(): void {
   state.subsystems.identity = { active: true, health: 100 };
-  emit({ module: 'access', event_type: 'identity_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
+  emit({ module: 'access', event_type: 'identity_init', outcome: 'succeeded', data: { backed_by: 'ocg' } });
 }
 
 function initializeAccess(): void {
   state.subsystems.access = { active: true, health: 100 };
-  emit({ module: 'access', event_type: 'access_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
+  emit({ module: 'access', event_type: 'access_init', outcome: 'succeeded', data: { backed_by: 'ocg' } });
 }
 
 function initializeSignal(): void {
   state.subsystems.signal = { active: true, health: 100 };
-  emit({ module: 'ripple', event_type: 'signal_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
+  emit({ module: 'ripple', event_type: 'signal_init', outcome: 'succeeded', data: { backed_by: 'ocg' } });
 }
 
 function initializeRelay(): void {
   state.subsystems.relay = { active: true, health: 100 };
-  emit({ module: 'relay', event_type: 'relay_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
+  emit({ module: 'relay', event_type: 'relay_init', outcome: 'succeeded', data: { backed_by: 'ocg' } });
 }
 
 function initializeAudit(): void {
-  // Immutable compliance logging, cryptographic chaining, audit trail
   state.subsystems.audit = { active: true, health: 100 };
-  emit({ module: 'audit', event_type: 'audit_init', outcome: 'succeeded', data: { backed_by: 'ccl' } });
+  emit({ module: 'audit', event_type: 'audit_init', outcome: 'succeeded', data: { backed_by: 'ocg' } });
 }
 
 function bindHealthCheckSurface(): void {
@@ -74,8 +80,8 @@ function bindHealthCheckSurface(): void {
 
 // ─── Public Boot ─────────────────────────────────────────────────────────────
 
-export async function initializeCCL(): Promise<{ success: boolean; data: any }> {
-  if (state.active) return { success: true, data: { message: 'CCL already booted', bootedAt: state.bootedAt } };
+export async function initializeOCG(): Promise<{ success: boolean; data: any }> {
+  if (state.active) return { success: true, data: { message: 'OCG already booted', bootedAt: state.bootedAt } };
 
   try {
     initializeIdentity();
@@ -89,18 +95,21 @@ export async function initializeCCL(): Promise<{ success: boolean; data: any }> 
     state.bootedAt = new Date().toISOString();
     state.health = 100;
 
-    emit({ module: 'core', event_type: 'ccl_boot', outcome: 'succeeded', data: { subsystems: Object.keys(state.subsystems) } });
+    emit({ module: 'core', event_type: 'ocg_boot', outcome: 'succeeded', data: { subsystems: Object.keys(state.subsystems) } });
     return { success: true, data: { bootedAt: state.bootedAt, subsystems: state.subsystems } };
   } catch (e) {
-    emit({ module: 'core', event_type: 'ccl_boot', outcome: 'failed', data: { error: String(e) } });
+    emit({ module: 'core', event_type: 'ocg_boot', outcome: 'failed', data: { error: String(e) } });
     return { success: false, data: { error: String(e) } };
   }
 }
 
-// ─── CCL Internal API ────────────────────────────────────────────────────────
+// Legacy alias
+export const initializeCCL = initializeOCG;
+
+// ─── OCG Internal API ────────────────────────────────────────────────────────
 
 export function status() {
-  return { success: true, data: { active: state.active, health: state.health, bootedAt: state.bootedAt, subsystems: state.subsystems, layer: 'ccl', backed_by: 'CLOCKLESS_COGNITIVE_LUCIDITY' } };
+  return { success: true, data: { active: state.active, health: state.health, bootedAt: state.bootedAt, subsystems: state.subsystems, layer: 'ocg', backed_by: 'OPERATIONAL_COMPLIANCE_GRID' } };
 }
 
 export function health() {
@@ -110,41 +119,41 @@ export function health() {
 }
 
 export function pulse() {
-  return { success: state.active, data: { backed_by: 'ccl', active: state.active } };
+  return { success: state.active, data: { backed_by: 'ocg', active: state.active } };
 }
 
 // ─── Diagnostics (admin-only) ────────────────────────────────────────────────
 
 export function getDiagnostics() {
   return {
-    cclActive: state.active,
+    ocgActive: state.active,
     bootedAt: state.bootedAt,
     health: state.health,
     subsystems: state.subsystems,
-    featureFlagEnabled: cclEnabled,
+    featureFlagEnabled: ocgEnabled,
     absorbedModules: ['ripple', 'access', 'identity', 'relay', 'audit'],
   };
 }
 
 // ─── Unified Dispatch ────────────────────────────────────────────────────────
 
-type CCLAction = 'status' | 'health' | 'pulse' | 'boot' | 'diagnostics';
+type OCGAction = 'status' | 'health' | 'pulse' | 'boot' | 'diagnostics';
 
-const DISPATCH_MAP: Record<CCLAction, (input?: any) => any> = {
+const DISPATCH_MAP: Record<OCGAction, (input?: any) => any> = {
   status, health, pulse,
-  boot: initializeCCL,
+  boot: initializeOCG,
   diagnostics: getDiagnostics,
 };
 
 export function dispatch(action: string, input?: any): any {
-  const handler = DISPATCH_MAP[action as CCLAction];
+  const handler = DISPATCH_MAP[action as OCGAction];
   if (handler) return handler(input);
-  return { success: true, data: { action, backed_by: 'ccl', passthrough: true } };
+  return { success: true, data: { action, backed_by: 'ocg', passthrough: true } };
 }
 
-// ─── Module-to-CCL Action Mapping (proxy shims) ─────────────────────────────
+// ─── Module-to-OCG Action Mapping (proxy shims) ─────────────────────────────
 
-const MODULE_ACTION_MAP: Record<string, Record<string, CCLAction>> = {
+const MODULE_ACTION_MAP: Record<string, Record<string, OCGAction>> = {
   ripple: { status: 'status', health: 'health', pulse: 'pulse' },
   access: { status: 'status', health: 'health', pulse: 'pulse' },
   identity: { status: 'status', health: 'health', pulse: 'pulse' },
@@ -152,14 +161,24 @@ const MODULE_ACTION_MAP: Record<string, Record<string, CCLAction>> = {
   audit: { status: 'status', health: 'health', pulse: 'pulse' },
 };
 
-export function resolveCCLAction(module: string, action: string): CCLAction | null {
-  if (!cclEnabled) return null;
-  return (MODULE_ACTION_MAP[module]?.[action] as CCLAction) ?? null;
+export function resolveOCGAction(module: string, action: string): OCGAction | null {
+  if (!ocgEnabled) return null;
+  return (MODULE_ACTION_MAP[module]?.[action] as OCGAction) ?? null;
 }
 
-export const CCL_FACADE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
-export type CCLFacadeModule = typeof CCL_FACADE_MODULES[number];
+// Legacy alias
+export const resolveCCLAction = resolveOCGAction;
 
-export function isCCLFacade(module: string): boolean {
-  return CCL_FACADE_MODULES.includes(module as CCLFacadeModule);
+export const OCG_FACADE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
+export type OCGFacadeModule = typeof OCG_FACADE_MODULES[number];
+
+// Legacy aliases
+export const CCL_FACADE_MODULES = OCG_FACADE_MODULES;
+export type CCLFacadeModule = OCGFacadeModule;
+
+export function isOCGFacade(module: string): boolean {
+  return OCG_FACADE_MODULES.includes(module as OCGFacadeModule);
 }
+
+// Legacy alias
+export const isCCLFacade = isOCGFacade;

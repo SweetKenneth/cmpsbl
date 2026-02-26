@@ -1,11 +1,14 @@
 /**
  * Matrix Node Registry — Read-Only Abstraction Layer
- * SPARTA Epoch v11.1 — Weighted integrity model over existing substrate
+ * SPARTA Epoch v11.5 — Field-Based Topology
  * 
- * This registry maps existing substrate entities into Matrix Nodes
- * WITHOUT mutating any core structures, workers, or godfather builds.
- * It assigns sector groupings and per-node weights for deterministic
- * integrity calculation.
+ * Topology:
+ *   Shell: DEFENSE (outer containment boundary)
+ *   Plane: GOVERNANCE (supervisory blanket)
+ *   Fields: EVOLUTION, IMMUNITY, INTENT (system-wide transformation fabric)
+ *   Spine: CORE → SYSTEM → CCR → MODULES → RESOLVERS
+ *   Grid: OCG (Operational Compliance Grid — boundary enforcement)
+ *   Branch: CLM (lateral intelligence)
  * 
  * Integrity Equation:
  *   matrixIntegrity = Σ(node.health × node.weight)
@@ -20,7 +23,7 @@ import type { SubstrateModuleName } from './index';
 
 // ============ Types ============
 
-export type MatrixSector = 'core' | 'ccr' | 'ccl' | 'execution' | 'overlay';
+export type MatrixSector = 'core' | 'system' | 'ccr' | 'ocg' | 'execution' | 'field' | 'plane' | 'shell';
 
 export type BreakerState = 'closed' | 'half-open' | 'open' | 'rerouting';
 
@@ -60,24 +63,35 @@ export interface MatrixIntegrityReport {
 
 /** 
  * Weight distribution across 24 Matrix Nodes, normalized to 1.0.
- * Sector weights: CORE=0.20, CCR=0.20, CCL=0.20, Execution=0.25, Overlay=0.15
+ * 
+ * Topology weights:
+ *   CORE (Kernel)     = 0.200 (20%)
+ *   SYSTEM (Standalone)= 0.050 (5%)
+ *   CCR (3 zones)     = 0.150 (15%)
+ *   OCG (5 zones)     = 0.200 (20%)
+ *   Execution (9 nodes)= 0.250 (25%)
+ *   Fields (3 nodes)  = 0.090 (9%)
+ *   Plane (1 node)    = 0.030 (3%)
+ *   Shell (1 node)    = 0.030 (3%)
  */
 const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState' | 'failureCount' | 'lastRecovery'>[] = [
-  // CORE Sector (1 node, 0.20 total)
+  // CORE — Kernel (Spine root)
   { id: 'core', label: 'CORE', sector: 'core', weight: 0.200, description: 'Kernel orchestration & boot authority' },
 
-  // CCR Sector (4 nodes, 0.20 total = 0.05 each)
-  { id: 'system', label: 'SYSTEM', sector: 'ccr', weight: 0.050, description: 'Lifecycle management zone' },
+  // SYSTEM — Standalone layer (extracted from CCR, sits between CORE and CCR on the Spine)
+  { id: 'system', label: 'SYSTEM', sector: 'system', weight: 0.050, description: 'Lifecycle management, configuration, diagnostics' },
+
+  // CCR Sector (3 zones, 0.15 total = 0.05 each) — SYSTEM extracted
   { id: 'brain', label: 'BRAIN', sector: 'ccr', weight: 0.050, description: 'Reasoning & cognition zone' },
   { id: 'memory', label: 'MEMORY', sector: 'ccr', weight: 0.050, description: 'Tiered memory storage zone' },
   { id: 'dream', label: 'DREAM', sector: 'ccr', weight: 0.050, description: 'Dream synthesis zone' },
 
-  // CCL Sector (5 nodes, 0.20 total = 0.04 each)
-  { id: 'ripple', label: 'RIPPLE', sector: 'ccl', weight: 0.040, description: 'Signal & event bus' },
-  { id: 'access', label: 'ACCESS', sector: 'ccl', weight: 0.040, description: 'Entitlements & API keys' },
-  { id: 'identity', label: 'IDENTITY', sector: 'ccl', weight: 0.040, description: 'Session & role management' },
-  { id: 'relay', label: 'RELAY', sector: 'ccl', weight: 0.040, description: 'Webhook dispatch' },
-  { id: 'audit', label: 'AUDIT', sector: 'ccl', weight: 0.040, description: 'Integrity ledger' },
+  // OCG — Operational Compliance Grid (5 nodes, 0.20 total = 0.04 each)
+  { id: 'ripple', label: 'RIPPLE', sector: 'ocg', weight: 0.040, description: 'Signal & event bus' },
+  { id: 'access', label: 'ACCESS', sector: 'ocg', weight: 0.040, description: 'Entitlements & API keys' },
+  { id: 'identity', label: 'IDENTITY', sector: 'ocg', weight: 0.040, description: 'Session & role management' },
+  { id: 'relay', label: 'RELAY', sector: 'ocg', weight: 0.040, description: 'Webhook dispatch' },
+  { id: 'audit', label: 'AUDIT', sector: 'ocg', weight: 0.040, description: 'Integrity ledger' },
 
   // Execution Sector (9 nodes, 0.25 total ≈ 0.0278 each)
   { id: 'decode', label: 'DECODE', sector: 'execution', weight: 0.028, description: 'Epistemic interpreter' },
@@ -90,12 +104,16 @@ const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState'
   { id: 'inclusive', label: 'INCLUSIVE', sector: 'execution', weight: 0.028, description: 'WCAG compatibility' },
   { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.028, description: 'Dependency resolver' },
 
-  // Overlay Sector (5 nodes, 0.15 total = 0.03 each)
-  { id: 'defense', label: 'DEFENSE', sector: 'overlay', weight: 0.030, description: 'Security perimeter (outermost)' },
-  { id: 'immunity', label: 'IMMUNITY', sector: 'overlay', weight: 0.030, description: 'Shadow training mesh' },
-  { id: 'evolution', label: 'EVOLUTION', sector: 'overlay', weight: 0.030, description: 'Evolution lifecycle' },
-  { id: 'intent', label: 'INTENT', sector: 'overlay', weight: 0.030, description: 'Capability discovery mesh' },
-  { id: 'governance', label: 'GOVERNANCE', sector: 'overlay', weight: 0.030, description: 'Policy enforcement (innermost)' },
+  // Fields — System-wide transformation fabric (permeate the spine)
+  { id: 'evolution', label: 'EVOLUTION', sector: 'field', weight: 0.030, description: 'Evolution lifecycle field' },
+  { id: 'immunity', label: 'IMMUNITY', sector: 'field', weight: 0.030, description: 'Resilience field' },
+  { id: 'intent', label: 'INTENT', sector: 'field', weight: 0.030, description: 'Capability discovery field' },
+
+  // Plane — Supervisory blanket (under Defense Shell)
+  { id: 'governance', label: 'GOVERNANCE', sector: 'plane', weight: 0.030, description: 'Policy enforcement overlay plane' },
+
+  // Shell — Outer containment boundary
+  { id: 'defense', label: 'DEFENSE', sector: 'shell', weight: 0.030, description: 'Outer containment shell' },
 ];
 
 // Validate total weight === 1.0
@@ -109,41 +127,29 @@ const breakerStates = new Map<SubstrateModuleName, { state: BreakerState; failur
 
 // ============ Public API ============
 
-/**
- * Get all Matrix Node definitions (static metadata)
- */
 export function getNodeDefinitions() {
   return NODE_DEFINITIONS;
 }
 
-/**
- * Get a single node definition
- */
 export function getNodeDefinition(id: SubstrateModuleName) {
   return NODE_DEFINITIONS.find(n => n.id === id) || null;
 }
 
-/**
- * Get nodes by sector
- */
 export function getNodesBySector(sector: MatrixSector) {
   return NODE_DEFINITIONS.filter(n => n.sector === sector);
 }
 
-/**
- * Get sector labels
- */
 export const SECTOR_LABELS: Record<MatrixSector, string> = {
-  core: 'CORE Sector',
-  ccr: 'CCR Sector',
-  ccl: 'CCL Sector',
+  core: 'CORE Kernel',
+  system: 'SYSTEM Layer',
+  ccr: 'CCR (Cognitive Reality)',
+  ocg: 'OCG (Operational Compliance Grid)',
   execution: 'Execution Sector',
-  overlay: 'Overlay Sector',
+  field: 'Fields (Transformation Fabric)',
+  plane: 'Overlay Plane (Supervision)',
+  shell: 'DEFENSE Shell (Containment)',
 };
 
-/**
- * Update breaker state for a node (called from health polling, read-only reflection)
- */
 export function updateBreakerState(
   id: SubstrateModuleName,
   state: BreakerState,
@@ -159,16 +165,10 @@ export function updateBreakerState(
   });
 }
 
-/**
- * Get breaker state for a node
- */
 export function getBreakerState(id: SubstrateModuleName): { state: BreakerState; failures: number; lastRecovery: string | null } {
   return breakerStates.get(id) || { state: 'closed', failures: 0, lastRecovery: null };
 }
 
-/**
- * Apply breaker adjustment to raw health
- */
 function applyBreakerAdjustment(rawHealth: number, breakerState: BreakerState): number {
   switch (breakerState) {
     case 'open': return 0;
@@ -179,9 +179,6 @@ function applyBreakerAdjustment(rawHealth: number, breakerState: BreakerState): 
   }
 }
 
-/**
- * Build full Matrix Node array from health data
- */
 export function buildMatrixNodes(healthData: Record<string, boolean | number>): MatrixNode[] {
   return NODE_DEFINITIONS.map(def => {
     const raw = healthData[def.id];
@@ -200,27 +197,17 @@ export function buildMatrixNodes(healthData: Record<string, boolean | number>): 
   });
 }
 
-/**
- * Calculate Matrix Integrity Report
- * 
- * Operational = Σ(node.health × node.weight)
- * Structural = breaker coherence + registry parity
- * CRITICAL if operational < 40 OR CORE breaker open
- */
 export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
-  // Operational integrity
   const operational = Math.round(
     nodes.reduce((sum, n) => sum + n.health * n.weight, 0)
   );
 
-  // Structural integrity: % of nodes with closed breakers + weight coherence
   const closedBreakers = nodes.filter(n => n.breakerState === 'closed').length;
   const breakerCoherence = Math.round((closedBreakers / nodes.length) * 100);
   const weightSum = nodes.reduce((s, n) => s + n.weight, 0);
   const weightCoherence = Math.abs(weightSum - 1.0) < 0.01 ? 100 : Math.max(0, 100 - Math.abs(weightSum - 1.0) * 1000);
   const structural = Math.round((breakerCoherence * 0.7 + weightCoherence * 0.3));
 
-  // CRITICAL trigger: operational < 40 OR CORE breaker open
   const coreNode = nodes.find(n => n.id === 'core');
   const isCritical = operational < 40 || coreNode?.breakerState === 'open';
 
@@ -230,9 +217,8 @@ export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
       ? 'MATRIX DEGRADED'
       : 'MATRIX STABLE';
 
-  // Sector breakdown
   const sectors = {} as Record<MatrixSector, { health: number; nodeCount: number; weight: number }>;
-  for (const sector of ['core', 'ccr', 'ccl', 'execution', 'overlay'] as MatrixSector[]) {
+  for (const sector of ['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell'] as MatrixSector[]) {
     const sectorNodes = nodes.filter(n => n.sector === sector);
     const sectorWeight = sectorNodes.reduce((s, n) => s + n.weight, 0);
     const sectorHealth = sectorNodes.length > 0
@@ -253,16 +239,10 @@ export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
   };
 }
 
-/**
- * Get the integrity equation as a display string
- */
 export function getIntegrityEquation(): string {
   return 'Matrix Integrity = Σ(node.health × node.weight) where Σ(weight) = 1.0';
 }
 
-/**
- * Get total weight (for validation display)
- */
 export function getTotalWeight(): number {
   return Math.round(TOTAL_WEIGHT * 1000) / 1000;
 }

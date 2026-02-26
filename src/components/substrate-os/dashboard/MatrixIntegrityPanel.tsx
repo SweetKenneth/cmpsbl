@@ -21,18 +21,24 @@ interface MatrixIntegrityPanelProps {
 
 const SECTOR_COLORS: Record<MatrixSector, string> = {
   core: 'text-orange-400',
+  system: 'text-yellow-400',
   ccr: 'text-purple-400',
-  ccl: 'text-cyan-400',
+  ocg: 'text-cyan-400',
   execution: 'text-blue-400',
-  overlay: 'text-red-400',
+  field: 'text-emerald-400',
+  plane: 'text-red-400',
+  shell: 'text-rose-400',
 };
 
 const SECTOR_BG: Record<MatrixSector, string> = {
   core: 'bg-orange-500/10 border-orange-500/20',
+  system: 'bg-yellow-500/10 border-yellow-500/20',
   ccr: 'bg-purple-500/10 border-purple-500/20',
-  ccl: 'bg-cyan-500/10 border-cyan-500/20',
+  ocg: 'bg-cyan-500/10 border-cyan-500/20',
   execution: 'bg-blue-500/10 border-blue-500/20',
-  overlay: 'bg-red-500/10 border-red-500/20',
+  field: 'bg-emerald-500/10 border-emerald-500/20',
+  plane: 'bg-red-500/10 border-red-500/20',
+  shell: 'bg-rose-500/10 border-rose-500/20',
 };
 
 export function MatrixIntegrityPanel({ report }: MatrixIntegrityPanelProps) {

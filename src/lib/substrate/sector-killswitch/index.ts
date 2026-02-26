@@ -2,7 +2,7 @@
  * Sector Kill Switch
  * SPARTA Epoch — Instant sector-wide isolation
  * 
- * Allows instant isolation of an entire sector (e.g., all CCL nodes)
+ * Allows instant isolation of an entire sector (e.g., all OCG nodes)
  * without touching individual breakers. Useful for emergency containment.
  */
 
@@ -20,7 +20,7 @@ export interface KillSwitchState {
 }
 
 const killStates = new Map<MatrixSector, KillSwitchState>();
-const ALL_SECTORS: MatrixSector[] = ['core', 'ccr', 'ccl', 'execution', 'overlay'];
+const ALL_SECTORS: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell'];
 
 function initState(sector: MatrixSector): KillSwitchState {
   return {
@@ -88,7 +88,7 @@ export function getKilledSectors(): MatrixSector[] {
 }
 
 export function killAllNonEssential(reason: string, by = 'auto'): KillSwitchState[] {
-  const nonEssential: MatrixSector[] = ['execution', 'overlay'];
+  const nonEssential: MatrixSector[] = ['execution', 'field'];
   return nonEssential.map(s => killSector(s, reason, by));
 }
 
