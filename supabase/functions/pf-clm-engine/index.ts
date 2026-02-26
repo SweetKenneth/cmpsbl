@@ -16,9 +16,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "5.0.0";
-const MAX_CYCLES_PER_HOUR = 250;
-const MAX_CYCLES_PER_DAY = 3000;
+const CLM_VERSION = "5.0.1";
+const MAX_CYCLES_PER_HOUR = 65;       // 650 AI calls/hour
+const MAX_CYCLES_PER_DAY = 1440;      // 14,400 AI calls/day target
 const DEFAULT_BURST_SIZE = 5;      // Cycles per burst (each ~10s, 5 fits in deadline)
 const MAX_BURST_SIZE = 8;          // Hard cap per invocation
 const CYCLE_TIMEOUT_MS = 45_000;
