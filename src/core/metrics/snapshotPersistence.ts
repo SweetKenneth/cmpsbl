@@ -2,8 +2,7 @@
  * GOAL Snapshot Persistence Layer
  * 
  * Persists GOAL snapshots to the database for cross-session retention
- * and LNCHBL distribution sync. Snapshots are stored in brain_maintenance_log
- * with task_type='goal_snapshot' for unified maintenance tracking.
+ * and LNCHBL distribution sync.
  * 
  * @version 1.0.0
  */
@@ -14,7 +13,6 @@ import { getLatestSnapshot, getAllSnapshots } from './snapshotEngine';
 
 /**
  * Persist the latest GOAL snapshot to the database.
- * Called by the maintenance tick or manually.
  */
 export async function persistLatestSnapshot(): Promise<{
   persisted: boolean;
@@ -27,7 +25,7 @@ export async function persistLatestSnapshot(): Promise<{
   }
 
   try {
-    const { error } = await supabase.from('brain_maintenance_log').insert({
+    const { error } = await supabase.from('brain_maintenance_log' as any).insert({
       task_type: 'goal_snapshot',
       status: 'completed',
       duration_ms: 0,
@@ -57,14 +55,13 @@ export async function persistLatestSnapshot(): Promise<{
 
 /**
  * Persist a batch of snapshots for LNCHBL sync packaging.
- * Returns the count persisted.
  */
 export async function persistSnapshotBatch(maxSnapshots = 6): Promise<number> {
   const all = getAllSnapshots();
   const recent = all.slice(-maxSnapshots);
   let persisted = 0;
 
-  for (const snapshot of recent) {
+  for (const _snapshot of recent) {
     const result = await persistLatestSnapshot();
     if (result.persisted) persisted++;
   }
@@ -77,7 +74,7 @@ export async function persistSnapshotBatch(maxSnapshots = 6): Promise<number> {
  */
 export async function loadPersistedSnapshot(): Promise<MetricSnapshot | null> {
   const { data } = await supabase
-    .from('brain_maintenance_log')
+    .from('brain_maintenance_log' as any)
     .select('metadata')
     .eq('task_type', 'goal_snapshot')
     .order('created_at', { ascending: false })

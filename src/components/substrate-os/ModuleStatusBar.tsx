@@ -24,35 +24,35 @@ interface ModuleConfig {
 }
 
 const MODULES: ModuleConfig[] = [
-  // Kernel
-  { id: 'core', name: 'CORE', shortName: 'COR', layer: 'kernel', icon: Cpu, description: 'Kernel orchestration & scheduling', color: 'text-orange-400', glowColor: 'bg-orange-500' },
-  // CCR Zones
-  { id: 'system', name: 'SYSTEM', shortName: 'SYS', layer: 'ccr-zone', icon: Settings, description: 'Lifecycle management', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
-  { id: 'brain', name: 'BRAIN', shortName: 'BRN', layer: 'ccr-zone', icon: Brain, description: 'Reasoning & cognition', color: 'text-purple-400', glowColor: 'bg-purple-500' },
-  { id: 'memory', name: 'MEMORY', shortName: 'MEM', layer: 'ccr-zone', icon: Database, description: 'Tiered memory storage', color: 'text-cyan-300', glowColor: 'bg-cyan-500' },
-  { id: 'dream', name: 'DREAM', shortName: 'DRM', layer: 'ccr-zone', icon: Moon, description: 'Dream synthesis engine', color: 'text-violet-400', glowColor: 'bg-violet-500' },
-  // CCL Zones
-  { id: 'ripple', name: 'RIPPLE', shortName: 'RIP', layer: 'ccl-zone', icon: Radio, description: 'Signal & event bus', color: 'text-cyan-400', glowColor: 'bg-cyan-500' },
-  { id: 'access', name: 'ACCESS', shortName: 'ACC', layer: 'ccl-zone', icon: Key, description: 'Entitlements & API keys', color: 'text-amber-400', glowColor: 'bg-amber-500' },
-  { id: 'identity', name: 'IDENTITY', shortName: 'IDN', layer: 'ccl-zone', icon: Fingerprint, description: 'Session & role management', color: 'text-emerald-300', glowColor: 'bg-emerald-500' },
-  { id: 'relay', name: 'RELAY', shortName: 'RLY', layer: 'ccl-zone', icon: Send, description: 'Webhook dispatch', color: 'text-amber-300', glowColor: 'bg-amber-500' },
-  { id: 'audit', name: 'AUDIT', shortName: 'AUD', layer: 'ccl-zone', icon: ClipboardCheck, description: 'Integrity ledger', color: 'text-slate-400', glowColor: 'bg-slate-500' },
-  // Matrix Nodes
-  { id: 'decode', name: 'DECODE', shortName: 'DEC', layer: 'surface', icon: MessageSquare, description: 'Epistemic interpreter', color: 'text-fuchsia-400', glowColor: 'bg-fuchsia-500' },
-  { id: 'encode', name: 'ENCODE', shortName: 'ENC', layer: 'surface', icon: Code, description: 'Code generation pipeline', color: 'text-lime-400', glowColor: 'bg-lime-500' },
-  { id: 'vision', name: 'VISION', shortName: 'VIS', layer: 'surface', icon: Eye, description: 'Observability & telemetry', color: 'text-blue-400', glowColor: 'bg-blue-500' },
-  { id: 'cortex', name: 'CORTEX', shortName: 'CTX', layer: 'surface', icon: GitBranch, description: 'Autonomous orchestrator', color: 'text-indigo-400', glowColor: 'bg-indigo-500' },
-  { id: 'nexus', name: 'NEXUS', shortName: 'NEX', layer: 'surface', icon: Zap, description: 'AI provider routing', color: 'text-green-400', glowColor: 'bg-green-500' },
-  { id: 'economy', name: 'ECONOMY', shortName: 'ECN', layer: 'surface', icon: DollarSign, description: 'Metering & billing', color: 'text-yellow-400', glowColor: 'bg-yellow-500' },
-  { id: 'sandbox', name: 'SANDBOX', shortName: 'SBX', layer: 'surface', icon: Globe, description: 'Isolated execution', color: 'text-sky-400', glowColor: 'bg-sky-500' },
-  { id: 'inclusive', name: 'INCLUSIVE', shortName: 'INC', layer: 'surface', icon: Accessibility, description: 'WCAG compatibility', color: 'text-pink-400', glowColor: 'bg-pink-500' },
-  { id: 'integration', name: 'INTEGRATION', shortName: 'INT', layer: 'surface', icon: Plug, description: 'Enterprise adapters', color: 'text-teal-400', glowColor: 'bg-teal-500' },
-  // Overlays
-  { id: 'defense', name: 'DEFENSE', shortName: 'DEF', layer: 'overlay', icon: Shield, description: 'Security perimeter (outermost)', color: 'text-red-400', glowColor: 'bg-red-500' },
-  { id: 'immunity', name: 'IMMUNITY', shortName: 'IMM', layer: 'overlay', icon: Network, description: 'Shadow training mesh', color: 'text-rose-400', glowColor: 'bg-rose-500' },
-  { id: 'evolution', name: 'EVOLUTION', shortName: 'EVO', layer: 'overlay', icon: Dna, description: 'Evolution lifecycle', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
-  { id: 'intent', name: 'INTENT', shortName: 'INT', layer: 'overlay', icon: Target, description: 'Capability discovery mesh', color: 'text-amber-400', glowColor: 'bg-amber-500' },
-  { id: 'governance', name: 'GOVERNANCE', shortName: 'GOV', layer: 'overlay', icon: Scale, description: 'Policy enforcement (innermost)', color: 'text-indigo-400', glowColor: 'bg-indigo-500' },
+  // Spine (Core kernel)
+  { id: 'core', name: 'CORE', shortName: 'COR', layer: 'spine', icon: Cpu, description: 'Spine — kernel orchestration & scheduling', color: 'text-orange-400', glowColor: 'bg-orange-500' },
+  // Grid (Cognitive engines)
+  { id: 'brain', name: 'BRAIN', shortName: 'BRN', layer: 'grid', icon: Brain, description: 'Grid — reasoning & cognition', color: 'text-purple-400', glowColor: 'bg-purple-500' },
+  { id: 'memory', name: 'MEMORY', shortName: 'MEM', layer: 'grid', icon: Database, description: 'Grid — tiered memory storage', color: 'text-cyan-300', glowColor: 'bg-cyan-500' },
+  { id: 'dream', name: 'DREAM', shortName: 'DRM', layer: 'grid', icon: Moon, description: 'Grid — dream synthesis engine', color: 'text-violet-400', glowColor: 'bg-violet-500' },
+  { id: 'cortex', name: 'CORTEX', shortName: 'CTX', layer: 'grid', icon: GitBranch, description: 'Grid — autonomous orchestrator', color: 'text-indigo-400', glowColor: 'bg-indigo-500' },
+  // Field (Execution surfaces / Matrix Nodes)
+  { id: 'decode', name: 'DECODE', shortName: 'DEC', layer: 'field', icon: MessageSquare, description: 'Field — epistemic interpreter', color: 'text-fuchsia-400', glowColor: 'bg-fuchsia-500' },
+  { id: 'encode', name: 'ENCODE', shortName: 'ENC', layer: 'field', icon: Code, description: 'Field — code generation pipeline', color: 'text-lime-400', glowColor: 'bg-lime-500' },
+  { id: 'vision', name: 'VISION', shortName: 'VIS', layer: 'field', icon: Eye, description: 'Field — observability & telemetry', color: 'text-blue-400', glowColor: 'bg-blue-500' },
+  { id: 'nexus', name: 'NEXUS', shortName: 'NEX', layer: 'field', icon: Zap, description: 'Field — AI provider routing', color: 'text-green-400', glowColor: 'bg-green-500' },
+  { id: 'economy', name: 'ECONOMY', shortName: 'ECN', layer: 'field', icon: DollarSign, description: 'Field — metering & billing', color: 'text-yellow-400', glowColor: 'bg-yellow-500' },
+  { id: 'sandbox', name: 'SANDBOX', shortName: 'SBX', layer: 'field', icon: Globe, description: 'Field — isolated execution', color: 'text-sky-400', glowColor: 'bg-sky-500' },
+  { id: 'inclusive', name: 'INCLUSIVE', shortName: 'INC', layer: 'field', icon: Accessibility, description: 'Field — WCAG compatibility', color: 'text-pink-400', glowColor: 'bg-pink-500' },
+  { id: 'integration', name: 'INTEGRATION', shortName: 'INT', layer: 'field', icon: Plug, description: 'Field — enterprise adapters', color: 'text-teal-400', glowColor: 'bg-teal-500' },
+  { id: 'ripple', name: 'RIPPLE', shortName: 'RIP', layer: 'field', icon: Radio, description: 'Field — signal & event bus', color: 'text-cyan-400', glowColor: 'bg-cyan-500' },
+  { id: 'access', name: 'ACCESS', shortName: 'ACC', layer: 'field', icon: Key, description: 'Field — entitlements & API keys', color: 'text-amber-400', glowColor: 'bg-amber-500' },
+  { id: 'identity', name: 'IDENTITY', shortName: 'IDN', layer: 'field', icon: Fingerprint, description: 'Field — session & role management', color: 'text-emerald-300', glowColor: 'bg-emerald-500' },
+  { id: 'relay', name: 'RELAY', shortName: 'RLY', layer: 'field', icon: Send, description: 'Field — webhook dispatch', color: 'text-amber-300', glowColor: 'bg-amber-500' },
+  { id: 'audit', name: 'AUDIT', shortName: 'AUD', layer: 'field', icon: ClipboardCheck, description: 'Field — integrity ledger', color: 'text-slate-400', glowColor: 'bg-slate-500' },
+  // Plane (Governance & orchestration)
+  { id: 'governance', name: 'GOVERNANCE', shortName: 'GOV', layer: 'plane', icon: Scale, description: 'Plane — policy enforcement', color: 'text-indigo-400', glowColor: 'bg-indigo-500' },
+  { id: 'immunity', name: 'IMMUNITY', shortName: 'IMM', layer: 'plane', icon: Network, description: 'Plane — shadow training mesh', color: 'text-rose-400', glowColor: 'bg-rose-500' },
+  { id: 'evolution', name: 'EVOLUTION', shortName: 'EVO', layer: 'plane', icon: Dna, description: 'Plane — evolution lifecycle', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
+  { id: 'intent', name: 'INTENT', shortName: 'INT', layer: 'plane', icon: Target, description: 'Plane — capability discovery', color: 'text-amber-400', glowColor: 'bg-amber-500' },
+  // Shell (Security perimeter)
+  { id: 'system', name: 'SYSTEM', shortName: 'SYS', layer: 'shell', icon: Settings, description: 'Shell — lifecycle management', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
+  { id: 'defense', name: 'DEFENSE', shortName: 'DEF', layer: 'shell', icon: Shield, description: 'Shell — security perimeter', color: 'text-red-400', glowColor: 'bg-red-500' },
 ];
 
 const LAYER_CONFIG = {
@@ -200,7 +200,7 @@ export function ModuleStatusBar() {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Matrix Node Status</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">1 kernel / 4 CCR / 5 CCL / 9 nodes / 5 overlays</p>
+            <p className="text-[10px] text-muted-foreground font-mono">1 spine / 4 grid / 13 field / 4 plane / 2 shell</p>
           </div>
         </div>
         
@@ -231,7 +231,7 @@ export function ModuleStatusBar() {
       
       {/* Layer Labels */}
       <div className="hidden lg:grid lg:grid-cols-5 gap-2 mb-2 px-1">
-        {(['kernel', 'ccr-zone', 'ccl-zone', 'surface', 'overlay'] as const).map(layer => (
+        {(['spine', 'grid', 'field', 'plane', 'shell'] as const).map(layer => (
           <div key={layer} className="flex items-center gap-1.5">
             <span className={cn("w-1.5 h-1.5 rounded-full", LAYER_CONFIG[layer].color.replace('text-', 'bg-'))} />
             <span className={cn("text-[9px] font-mono uppercase tracking-widest", LAYER_CONFIG[layer].color)}>
@@ -243,7 +243,7 @@ export function ModuleStatusBar() {
       
       {/* Modules Grid */}
       <div className="hidden lg:grid lg:grid-cols-5 gap-3">
-        {(['kernel', 'ccr-zone', 'ccl-zone', 'surface', 'overlay'] as const).map(layer => (
+        {(['spine', 'grid', 'field', 'plane', 'shell'] as const).map(layer => (
           <div key={layer} className={cn("flex flex-col gap-2 p-2 rounded-xl border", LAYER_CONFIG[layer].border, "bg-muted/5")}>
             {modulesByLayer[layer]?.map((module) => (
               <ModuleIndicator

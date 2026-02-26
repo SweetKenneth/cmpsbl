@@ -2,8 +2,7 @@
  * Brain Sync Delivery Confirmation
  * 
  * Tracks whether pf-brain-sync-dispatch payloads were successfully
- * received and ingested by LNCHBL. Polls distribution_state for
- * acknowledgment from lnchbl-brain-ingest.
+ * received and ingested by LNCHBL.
  * 
  * @module distribution/delivery-confirmation
  * @version 1.0.0
@@ -22,12 +21,11 @@ export interface DeliveryStatus {
 
 /**
  * Check delivery status for recent brain sync patches.
- * Queries distribution_patches and cross-references with LNCHBL ack state.
  */
 export async function checkBrainSyncDelivery(limit = 10): Promise<DeliveryStatus[]> {
   // Get recent brain_sync patches
   const { data: patches } = await supabase
-    .from('distribution_patches')
+    .from('distribution_patches' as any)
     .select('version, published_at, payload, status')
     .eq('target_distribution', 'LNCHBL')
     .eq('patch_type', 'brain_sync')
@@ -38,16 +36,16 @@ export async function checkBrainSyncDelivery(limit = 10): Promise<DeliveryStatus
 
   // Get LNCHBL acknowledgment state
   const { data: ackState } = await supabase
-    .from('distribution_state')
+    .from('distribution_state' as any)
     .select('state_value')
     .eq('distribution_id', 'LNCHBL')
     .eq('state_key', 'brain_sync_ack')
     .maybeSingle();
 
   const ackMap: Record<string, { acked_at: string; items: number }> =
-    ackState?.state_value?.acknowledged_versions || {};
+    (ackState as any)?.state_value?.acknowledged_versions || {};
 
-  return patches.map((p: any) => {
+  return (patches as any[]).map((p) => {
     const ack = ackMap[p.version];
     const dispatchedAt = new Date(p.published_at).getTime();
     const ackedAt = ack ? new Date(ack.acked_at).getTime() : null;
