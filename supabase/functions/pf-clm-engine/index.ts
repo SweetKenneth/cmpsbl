@@ -1,16 +1,11 @@
 /**
  * pf-clm-engine — High-Velocity Continuous Learning Engine
- * v4.0.0 SPARTA Epoch — Burst Orchestrator Pattern
+ * v5.0.0 SPARTA Epoch — Always-Burst Orchestrator
  * 
- * Supports burst mode: runs N cycles per invocation for maximum throughput.
- * Target: 25,000+ AI calls/day via 2,500 cycles × 10 topics each.
+ * ALWAYS runs in burst mode. Every cron/manual invocation fires a full burst.
+ * Target: 25,000+ AI calls/day via aggressive parallel cycling + self-chaining.
  * 
- * Actions:
- *   cycle       — Single cycle (backward compat, cron default)
- *   burst       — Run multiple cycles in one invocation (orchestrator pattern)
- *   status      — Return current budget/velocity stats
- * 
- * No new cron jobs needed — the substrate orchestrator dispatches bursts.
+ * Key change from v4: Default is BURST (not single cycle). Self-chains aggressively.
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -21,13 +16,13 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "4.0.0";
-const MAX_CYCLES_PER_HOUR = 200;
-const MAX_CYCLES_PER_DAY = 2500;
-const DEFAULT_BURST_SIZE = 10;     // Cycles per burst invocation
-const MAX_BURST_SIZE = 25;         // Hard cap per single invocation
-const CYCLE_TIMEOUT_MS = 45_000;   // Per-cycle timeout (edge fn has ~60s)
-const BURST_DEADLINE_MS = 50_000;  // Total burst deadline
+const CLM_VERSION = "5.0.0";
+const MAX_CYCLES_PER_HOUR = 250;
+const MAX_CYCLES_PER_DAY = 3000;
+const DEFAULT_BURST_SIZE = 5;      // Cycles per burst (each ~10s, 5 fits in deadline)
+const MAX_BURST_SIZE = 8;          // Hard cap per invocation
+const CYCLE_TIMEOUT_MS = 45_000;
+const BURST_DEADLINE_MS = 50_000;
 
 // All 20 modules that participate in CLM
 const CLM_MODULES = [
@@ -296,20 +291,26 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
 }
 
 /**
- * Self-chain: dispatch the next burst via the substrate orchestrator
+ * Self-chain: dispatch the next burst immediately after this one completes.
+ * Uses fire-and-forget fetch to avoid blocking the response.
  */
-async function chainNextBurst(supabase: any, burstSize: number, budget: BudgetState): Promise<void> {
+function chainNextBurst(supabaseUrl: string, serviceKey: string, burstSize: number, budget: BudgetState): void {
   const remaining = Math.min(budget.remainingDaily - burstSize, budget.remainingHourly - burstSize);
   if (remaining <= 0) return;
 
-  try {
-    // Fire-and-forget — the orchestrator picks it up
-    await supabase.functions.invoke('pf-clm-engine', {
-      body: { action: 'burst', burst_size: Math.min(burstSize, MAX_BURST_SIZE) },
-    });
-  } catch {
-    // Non-fatal — cron will catch up
-  }
+  const nextSize = Math.min(burstSize, MAX_BURST_SIZE, remaining);
+  if (nextSize <= 0) return;
+
+  // Fire-and-forget via raw fetch — avoids supabase client overhead and recursive awaits
+  const url = `${supabaseUrl}/functions/v1/pf-clm-engine`;
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${serviceKey}`,
+    },
+    body: JSON.stringify({ action: 'burst', burst_size: nextSize, auto_chain: true }),
+  }).catch(() => { /* non-fatal — cron will catch up */ });
 }
 
 serve(async (req) => {
@@ -329,20 +330,20 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    let action = 'cycle';
+    let action = 'burst';   // v5: ALWAYS burst by default
     let burstSize = DEFAULT_BURST_SIZE;
     let autoChain = true;
 
     try {
       const body = await req.json();
-      action = body.action || 'cycle';
+      action = body.action || 'burst';
       burstSize = Math.min(body.burst_size || DEFAULT_BURST_SIZE, MAX_BURST_SIZE);
       autoChain = body.auto_chain !== false;
     } catch {
-      // Default to cycle for cron invocations
+      // Default to burst for cron invocations (no body)
     }
 
-    console.log(`⚡ CLM Engine v${CLM_VERSION} | action=${action} burst_size=${burstSize}`);
+    console.log(`⚡ CLM Engine v${CLM_VERSION} | action=${action} burst_size=${burstSize} auto_chain=${autoChain}`);
 
     // ═══ STATUS ACTION ═══
     if (action === 'status') {
@@ -391,9 +392,8 @@ serve(async (req) => {
     }
 
     // ═══ BURST / CYCLE EXECUTION ═══
-    const effectiveBurstSize = action === 'burst'
-      ? Math.min(burstSize, budget.remainingDaily, budget.remainingHourly)
-      : 1;
+    // v5: Always burst — even 'cycle' action runs burst_size cycles
+    const effectiveBurstSize = Math.min(burstSize, budget.remainingDaily, budget.remainingHourly);
 
     const cycleResults: Array<{ cycle: number; aiCalls: number; durationMs: number }> = [];
     let totalAiCalls = 0;
@@ -417,12 +417,14 @@ serve(async (req) => {
       }
     }
 
-    // ═══ SELF-CHAIN: dispatch next burst ═══
-    if (autoChain && action === 'burst' && budget.remainingDaily > effectiveBurstSize) {
-      await chainNextBurst(supabase, burstSize, {
+    // ═══ SELF-CHAIN: dispatch next burst immediately ═══
+    if (autoChain && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize) {
+      chainNextBurst(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, burstSize, {
         ...budget,
-        remainingDaily: budget.remainingDaily - effectiveBurstSize,
-        remainingHourly: budget.remainingHourly - effectiveBurstSize,
+        todayCycles: budget.todayCycles + cycleResults.length,
+        hourCycles: budget.hourCycles + cycleResults.length,
+        remainingDaily: budget.remainingDaily - cycleResults.length,
+        remainingHourly: budget.remainingHourly - cycleResults.length,
       });
     }
 
