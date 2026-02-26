@@ -709,3 +709,14 @@ export {
   type AutoTieringConfig,
   type TieringReport,
 } from './brain-auto-tiering';
+
+// ═══ Knowledge Distillation (v11.4.0) ═══
+export {
+  DISTILLATION_BUDGET,
+  DISTILLATION_TECHNIQUES,
+  type KnowledgeCrystal,
+  type ReasoningTrace,
+  type TransferHeuristic,
+  type DistillationRun,
+  type DistillationStatus,
+} from './distillation';

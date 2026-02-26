@@ -85,7 +85,7 @@ const DeveloperShowcase = lazy(() => import("./pages/DeveloperShowcase"));
 const UseCases = lazy(() => import("./pages/UseCases"));
 const AgencyPortal = lazy(() => import("./pages/AgencyPortal"));
 
-const Marketplace = lazy(() => import("./pages/Marketplace"));
+// Marketplace page superseded by SubstrateStore — retained as dead code marker
 const MarketplaceSuccess = lazy(() => import("./pages/MarketplaceSuccess"));
 const SubstrateIntelligence = lazy(() => import("./pages/SubstrateIntelligence"));
 const SubstrateLicensing = lazy(() => import("./pages/SubstrateLicensing"));
@@ -94,8 +94,7 @@ const SubstrateLicensingDownload = lazy(() => import("./pages/SubstrateLicensing
 const ExperimentationLab = lazy(() => import("./pages/ExperimentationLab"));
 const ClocklessWorldEngine = lazy(() => import("./pages/ClocklessWorldEngine"));
 const SubstrateCapabilitiesDocs = lazy(() => import("./pages/SubstrateCapabilitiesDocs"));
-const CapabilitiesDepot = lazy(() => import("./pages/CapabilitiesDepot"));
-const SynergyPipelines = lazy(() => import("./pages/SynergyPipelines"));
+// CapabilitiesDepot and SynergyPipelines superseded by SubstrateStore routes
 const SubstrateStore = lazy(() => import("./pages/SubstrateStore"));
 const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed"));
 const ClearCache = lazy(() => import("./pages/ClearCache"));
