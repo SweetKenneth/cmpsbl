@@ -13,8 +13,14 @@
  * v11.3.0: Added brain_sync patch type — CMPSBL CLM learnings are now
  * packaged and dispatched to LNCHBL via pf-brain-sync-dispatch every 30min.
  * 
+ * v11.5.0: Added Neural Substrate Layer — embedding engine, vector index,
+ * confidence classifier, drift detector, and 10 automated maintenance tasks.
+ * New edge functions: lnchbl-neural-bootstrap, lnchbl-maintenance-tick.
+ * New tables: brain_embeddings, brain_classifier_models, brain_drift_log,
+ * brain_maintenance_log.
+ * 
  * @module distribution/lnchbl-manifest
- * @version 11.3.0
+ * @version 11.5.0
  */
 
 // ─── LNCHBL Edge Function Registry ──────────────────────────────────────────

@@ -29,6 +29,28 @@ interface EvolutionEntry {
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogSPARTA: EvolutionEntry[] = [
   {
+    id: "sparta-evolution-007",
+    date: "2026-02-26",
+    pressures: [
+      "LNCHBL distribution lacked the BRAIN Neural Substrate — no local embedding, vector recall, confidence gating, or drift detection",
+      "All maintenance tasks across the substrate required manual operational attention with no automated scheduling",
+      "LNCHBL manifest was stale at v11.3.0 — missing 4 new database tables and 2 new edge functions from the neural substrate rollout",
+    ],
+    responses: [
+      "Dispatched LNCHBL patch v11.5.0 — full Neural Substrate Layer with 5 engines and 15 capabilities unlocked at free tier",
+      "Added lnchbl-neural-bootstrap and lnchbl-maintenance-tick to the LNCHBL edge function manifest",
+      "Expanded LNCHBL patch-writable tables to include brain_embeddings, brain_classifier_models, brain_drift_log, brain_maintenance_log",
+      "10 automated maintenance tasks now run on CLM cron cycles — zero manual operations required",
+      "Progressive activation gates ensure components self-start only when data thresholds are met (50 crystals → embeddings, 200 traces → classifier)",
+    ],
+    capabilities: [
+      "LNCHBL now has full Neural Substrate: embedding engine (384-dim), HNSW vector recall, confidence classifier, drift detector",
+      "All maintenance fully automated — memory tiering, confidence decay, warm compression, stale cleanup, health audit",
+      "LNCHBL manifest updated to v11.5.0 with 8 edge functions and 7 patch-writable tables",
+      "Patch published and live in cmpsbl_patches for downstream consumption",
+    ],
+  },
+  {
     id: "sparta-evolution-006",
     date: "2026-02-25",
     pressures: [
