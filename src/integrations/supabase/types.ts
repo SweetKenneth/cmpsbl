@@ -6933,6 +6933,35 @@ export type Database = {
         }
         Relationships: []
       }
+      governance_transition_votes: {
+        Row: {
+          approved_at: string
+          approver: string
+          id: string
+          request_id: string
+        }
+        Insert: {
+          approved_at?: string
+          approver: string
+          id?: string
+          request_id: string
+        }
+        Update: {
+          approved_at?: string
+          approver?: string
+          id?: string
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_transition_votes_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "governance_transition_approvals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       immune_escalations: {
         Row: {
           claimed_by: string | null

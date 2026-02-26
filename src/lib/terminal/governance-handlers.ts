@@ -119,7 +119,7 @@ export function registerGovernanceHandlers(): void {
     const pending = await getPendingApprovals();
     const pendingLines = pending.length > 0
       ? `\n\nPending Approvals:\n` + pending.map(p =>
-          `  ${p.fromMode} → ${p.toMode} by ${p.requestedBy} (${(p.approvals as any[]).length}/${p.approvalsRequired} approvals, expires ${p.expiresAt})`
+          `  ${p.fromMode} → ${p.toMode} by ${p.requestedBy} (${p.voteCount ?? 0}/${p.approvalsRequired} votes, expires ${p.expiresAt})`
         ).join('\n')
       : '';
 

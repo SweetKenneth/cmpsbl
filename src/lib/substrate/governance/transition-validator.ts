@@ -29,8 +29,9 @@ export interface TransitionRequest {
   requiresQuorum: boolean;
   status: 'pending' | 'approved' | 'rejected' | 'expired';
   approvalsRequired: number;
-  approvals: Array<{ approver: string; at: string }>;
+  approvals: Array<{ approver: string; at: string }>; // Legacy — prefer voteCount
   expiresAt: string;
+  voteCount?: number; // Normalized vote count from governance_transition_votes
 }
 
 /** Transitions that are explicitly blocked */
@@ -233,6 +234,8 @@ export async function requestTransition(
 
 /**
  * Approve a pending transition request.
+ * Uses normalized governance_transition_votes table for concurrency safety.
+ * Duplicate votes are blocked by unique constraint (request_id, approver).
  */
 export async function approveTransition(
   requestId: string,
@@ -249,33 +252,51 @@ export async function approveTransition(
   }
 
   if (req.status !== 'pending') {
-    return { approved: false, totalApprovals: (req.approvals as any[]).length, required: req.approvals_required };
+    // Count existing votes for accurate reporting
+    const { count } = await supabase
+      .from('governance_transition_votes')
+      .select('*', { count: 'exact', head: true })
+      .eq('request_id', requestId);
+    return { approved: false, totalApprovals: count ?? 0, required: req.approvals_required };
   }
 
   // Check expiry
   if (new Date(req.expires_at) < new Date()) {
     await supabase.from('governance_transition_approvals').update({ status: 'expired' }).eq('id', requestId);
-    return { approved: false, totalApprovals: (req.approvals as any[]).length, required: req.approvals_required };
+    return { approved: false, totalApprovals: 0, required: req.approvals_required };
   }
 
-  // Add approval
-  const currentApprovals = (req.approvals as any[]) || [];
-  if (currentApprovals.some((a: any) => a.approver === approver)) {
-    return { approved: false, totalApprovals: currentApprovals.length, required: req.approvals_required };
+  // Insert vote — unique constraint prevents duplicates
+  const { error: voteError } = await supabase
+    .from('governance_transition_votes')
+    .insert({ request_id: requestId, approver });
+
+  if (voteError) {
+    // Duplicate vote or other error
+    const { count } = await supabase
+      .from('governance_transition_votes')
+      .select('*', { count: 'exact', head: true })
+      .eq('request_id', requestId);
+    return { approved: false, totalApprovals: count ?? 0, required: req.approvals_required };
   }
 
-  const newApprovals = [...currentApprovals, { approver, at: new Date().toISOString() }];
-  const met = newApprovals.length >= req.approvals_required;
+  // Count total votes
+  const { count: totalVotes } = await supabase
+    .from('governance_transition_votes')
+    .select('*', { count: 'exact', head: true })
+    .eq('request_id', requestId);
 
-  await supabase
-    .from('governance_transition_approvals')
-    .update({
-      approvals: newApprovals,
-      status: met ? 'approved' : 'pending',
-    })
-    .eq('id', requestId);
+  const voteCount = totalVotes ?? 0;
+  const met = voteCount >= req.approvals_required;
 
-  return { approved: met, totalApprovals: newApprovals.length, required: req.approvals_required };
+  if (met) {
+    await supabase
+      .from('governance_transition_approvals')
+      .update({ status: 'approved' })
+      .eq('id', requestId);
+  }
+
+  return { approved: met, totalApprovals: voteCount, required: req.approvals_required };
 }
 
 /**
@@ -303,11 +324,12 @@ export async function finalizeTransition(
     return { finalized: false, reason: 'Request expired' };
   }
 
-  // Re-validate the transition is still safe
+  // Re-validate the transition is still safe (rate limit applies here)
   const validation = await evaluateTransition(
     req.from_mode as GovernanceMode,
     req.to_mode as GovernanceMode,
-    req.requested_by
+    req.requested_by,
+    { skipRateLimit: false }
   );
 
   if (!validation.allowed) {
@@ -341,7 +363,7 @@ export async function getTransitionLog(limit = 20): Promise<Array<{ from_mode: s
 }
 
 /**
- * Get pending quorum requests.
+ * Get pending quorum requests with normalized vote counts.
  */
 export async function getPendingApprovals(): Promise<TransitionRequest[]> {
   try {
@@ -351,17 +373,28 @@ export async function getPendingApprovals(): Promise<TransitionRequest[]> {
       .eq('status', 'pending')
       .order('created_at', { ascending: false });
 
-    return ((data as any[]) || []).map(r => ({
-      id: r.id,
-      fromMode: r.from_mode,
-      toMode: r.to_mode,
-      requestedBy: r.requested_by,
-      requiresQuorum: true,
-      status: r.status,
-      approvalsRequired: r.approvals_required,
-      approvals: r.approvals || [],
-      expiresAt: r.expires_at,
-    }));
+    const results: TransitionRequest[] = [];
+    for (const r of (data as any[]) || []) {
+      // Get vote count from normalized table
+      const { count } = await supabase
+        .from('governance_transition_votes')
+        .select('*', { count: 'exact', head: true })
+        .eq('request_id', r.id);
+
+      results.push({
+        id: r.id,
+        fromMode: r.from_mode,
+        toMode: r.to_mode,
+        requestedBy: r.requested_by,
+        requiresQuorum: true,
+        status: r.status,
+        approvalsRequired: r.approvals_required,
+        approvals: [], // Legacy field — use voteCount instead
+        expiresAt: r.expires_at,
+        voteCount: count ?? 0,
+      });
+    }
+    return results;
   } catch {
     return [];
   }

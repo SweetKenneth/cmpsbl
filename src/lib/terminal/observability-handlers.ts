@@ -28,7 +28,7 @@ export function registerObservabilityHandlers(): void {
   // ═══ OBS.SUMMARY — Full overview ═══
   registerHandler('obs.summary', async () => {
     const { observabilityMonitor } = await import('@/lib/substrate/observability-monitor');
-    const summary = observabilityMonitor.getSummary();
+    const summary = await observabilityMonitor.getSummary();
     return {
       success: true,
       data: summary,
@@ -267,7 +267,7 @@ export function registerObservabilityHandlers(): void {
   // ═══ OBS.HEALTH — Composite health score ═══
   registerHandler('obs.health', async () => {
     const { observabilityMonitor } = await import('@/lib/substrate/observability-monitor');
-    const summary = observabilityMonitor.getSummary();
+    const summary = await observabilityMonitor.getSummary();
 
     const icon = summary.healthScore >= 90 ? '🟢' :
                  summary.healthScore >= 70 ? '🟡' :

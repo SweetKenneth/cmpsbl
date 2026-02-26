@@ -276,9 +276,9 @@ class ObservabilityMonitor {
   // ═══════════════════════════════════════════════════════════════════════════
 
   /**
-   * Get a full observability summary
+   * Get a full observability summary (async for ESM-safe DLQ import)
    */
-  getSummary(): ObservabilitySummary {
+  async getSummary(): Promise<ObservabilitySummary> {
     const telState = telemetryEngine.getState();
     const bridgeActivity = this.getBridgeActivity();
     const latencies = this.getLatencies();
@@ -293,13 +293,11 @@ class ObservabilityMonitor {
       ? Math.round(this.bridgeLog.reduce((s, b) => s + b.durationMs, 0) / this.bridgeLog.length)
       : 0;
 
-    // Wire real DLQ depth
+    // Wire real DLQ depth via ESM-safe dynamic import
     let dlqDepth = 0;
     try {
-      // Dynamic import to avoid circular dependency
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const dlqModule = require('@/lib/substrate/ripple-dlq');
-      const stats = dlqModule.getDLQStats?.();
+      const dlqModule = await import('@/lib/substrate/ripple-dlq');
+      const stats = (dlqModule as any).getDLQStats?.();
       dlqDepth = stats?.total || 0;
     } catch {
       // DLQ module not available — safe fallback
