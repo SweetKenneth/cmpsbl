@@ -11426,6 +11426,72 @@ export type Database = {
         }
         Relationships: []
       }
+      quarry_assets: {
+        Row: {
+          asset_key: string
+          asset_type: Database["public"]["Enums"]["quarry_asset_type"]
+          category: string | null
+          created_at: string
+          description: string | null
+          differentiation: number | null
+          future_release: boolean | null
+          id: string
+          maintenance_load: number | null
+          metadata: Json | null
+          name: string
+          revenue_impact: number | null
+          stability: number | null
+          strategic_weight: number | null
+          tags: string[] | null
+          tier: Database["public"]["Enums"]["quarry_tier"]
+          updated_at: string
+          value_density: number | null
+          visibility: Database["public"]["Enums"]["quarry_visibility"]
+        }
+        Insert: {
+          asset_key: string
+          asset_type: Database["public"]["Enums"]["quarry_asset_type"]
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          differentiation?: number | null
+          future_release?: boolean | null
+          id?: string
+          maintenance_load?: number | null
+          metadata?: Json | null
+          name: string
+          revenue_impact?: number | null
+          stability?: number | null
+          strategic_weight?: number | null
+          tags?: string[] | null
+          tier?: Database["public"]["Enums"]["quarry_tier"]
+          updated_at?: string
+          value_density?: number | null
+          visibility?: Database["public"]["Enums"]["quarry_visibility"]
+        }
+        Update: {
+          asset_key?: string
+          asset_type?: Database["public"]["Enums"]["quarry_asset_type"]
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          differentiation?: number | null
+          future_release?: boolean | null
+          id?: string
+          maintenance_load?: number | null
+          metadata?: Json | null
+          name?: string
+          revenue_impact?: number | null
+          stability?: number | null
+          strategic_weight?: number | null
+          tags?: string[] | null
+          tier?: Database["public"]["Enums"]["quarry_tier"]
+          updated_at?: string
+          value_density?: number | null
+          visibility?: Database["public"]["Enums"]["quarry_visibility"]
+        }
+        Relationships: []
+      }
       radio_broadcasts: {
         Row: {
           audio_url: string | null
@@ -14236,6 +14302,17 @@ export type Database = {
         | "aborted"
         | "failed"
       evolution_risk_level: "low" | "medium" | "high"
+      quarry_asset_type:
+        | "capability"
+        | "engine"
+        | "meta_engine"
+        | "pipeline"
+        | "template"
+        | "agent"
+        | "deployment_right"
+        | "governance_tool"
+      quarry_tier: "free" | "creator" | "architect" | "enterprise" | "internal"
+      quarry_visibility: "hidden" | "tier_exposed" | "public_curated"
       upgrade_mode: "shadow" | "auto_safe" | "auto_full"
       upgrade_status:
         | "proposed"
@@ -14389,6 +14466,18 @@ export const Constants = {
         "failed",
       ],
       evolution_risk_level: ["low", "medium", "high"],
+      quarry_asset_type: [
+        "capability",
+        "engine",
+        "meta_engine",
+        "pipeline",
+        "template",
+        "agent",
+        "deployment_right",
+        "governance_tool",
+      ],
+      quarry_tier: ["free", "creator", "architect", "enterprise", "internal"],
+      quarry_visibility: ["hidden", "tier_exposed", "public_curated"],
       upgrade_mode: ["shadow", "auto_safe", "auto_full"],
       upgrade_status: [
         "proposed",
