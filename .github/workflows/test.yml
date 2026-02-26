@@ -28,6 +28,21 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
         run: npm test -- --coverage
       
+      - name: Release Gate
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          CI: "true"
+        run: bun src/release/releaseGate.ts
+      
+      - name: Upload Release Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-gate-report
+          path: reports/release/
+          retention-days: 30
+      
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3
         with:

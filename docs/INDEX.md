@@ -68,13 +68,17 @@
 | Evolution Mesh Internals | `docs/internal/24-EVOLUTION-MESH-INTERNALS.html` | Full evolution lifecycle |
 | SEBA Internals | `docs/internal/23-EVLVBL-INTERNALS.html` | Self-evolving behavior agent |
 
-### 8. Operational Reference
+### 8. Release & Deployment
 | Document | Location | Focus |
 |----------|----------|-------|
+| Release Gate | `docs/RELEASE-GATE.md` | 10-pass pre-release validation framework |
+| Rollback Plan | `docs/ROLLBACK.md` | Deployment recovery procedures |
 | Operational Runbook | `docs/internal/14-OPERATIONAL-RUNBOOK.html` | Incident response, maintenance |
 | Database Schema | `docs/internal/16-DATABASE-SCHEMA.html` | Complete table reference |
 | Deployment Guide | `docs/internal/17-DEPLOYMENT.html` | CI/CD, environment configuration |
 | Defense Playbook | `docs/internal/08-DEFENSE-PLAYBOOK.html` | Threat detection, response |
+| Executor Evolution | `docs/internal/36-EXECUTOR-EVOLUTION-TRAINING.html` | 13 executor performance optimizations |
+| Matrix Node Optimizations | `docs/internal/37-MATRIX-NODE-OPTIMIZATIONS.html` | 48 substrate-level node optimizations |
 
 ---
 
