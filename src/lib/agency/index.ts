@@ -1,6 +1,6 @@
 /**
  * Agency Production — Unified exports for all production-ready agency features
- * v10.5.4 ARCHITECT Epoch — Cognitive Agent Infrastructure
+ * SPARTA Epoch — Cognitive Agent Infrastructure
  */
 
 // Core types
