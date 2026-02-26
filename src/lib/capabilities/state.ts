@@ -101,25 +101,37 @@ const useCapabilityStateStore = create<CapabilityStateStore>()(
       name: 'capability-state-v8',
       storage: {
         getItem: (name) => {
-          const str = localStorage.getItem(name);
-          if (!str) return null;
-          
-          const parsed = JSON.parse(str) as { state: PersistedState };
-          return {
-            state: {
-              capabilities: new Map(Object.entries(parsed.state.capabilities || {})),
-            },
-          };
+          try {
+            const { secureGet } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
+            const data = secureGet<{ state: PersistedState }>(name);
+            if (!data) return null;
+            return {
+              state: {
+                capabilities: new Map(Object.entries(data.state?.capabilities || {})),
+              },
+            };
+          } catch {
+            /* Storage unavailable — return null */
+            return null;
+          }
         },
         setItem: (name, value) => {
-          const obj = {
-            state: {
-              capabilities: Object.fromEntries(value.state.capabilities),
-            },
-          };
-          localStorage.setItem(name, JSON.stringify(obj));
+          try {
+            const { secureSet } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
+            const obj = {
+              state: {
+                capabilities: Object.fromEntries(value.state.capabilities),
+              },
+            };
+            secureSet(name, obj);
+          } catch { /* Quota exceeded — non-critical */ }
         },
-        removeItem: (name) => localStorage.removeItem(name),
+        removeItem: (name) => {
+          try {
+            const { secureRemove } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
+            secureRemove(name);
+          } catch { /* non-critical */ }
+        },
       },
     }
   )

@@ -9749,7 +9749,7 @@ class ComplianceAuditBrain {
           violations.push(policy);
           recommendations.push(\`Fix: \${result.reason}\`);
         }
-      } catch {}
+       } catch { /* Malformed compliance check response — skip */ }
     }
     
     const entry: AuditEntry = {
@@ -9831,7 +9831,7 @@ class CreativeWritingEngine {
       this.context.plotPoints = JSON.parse(
         outline.data?.text?.match(/\\[.*\\]/s)?.[0] || '[]'
       );
-    } catch {}
+     } catch { /* Malformed plot outline JSON — use empty array */ }
     
     await substrate.brain.remember(
       JSON.stringify(this.context),
@@ -10247,7 +10247,7 @@ class LegalDocumentAnalyzer {
         riskLevel: c.riskLevel || 'none',
         notes: c.concerns || ''
       }));
-    } catch {}
+    } catch { /* Malformed clause extraction response — use empty array */ }
     
     const highRiskClauses = clauses.filter(c => c.riskLevel === 'high');
     

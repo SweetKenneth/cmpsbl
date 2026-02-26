@@ -496,32 +496,26 @@ Be concise, precise, and focused on practical utility. This learning will be sto
 
   private loadState(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        const stored = localStorage.getItem('clm_orchestrator_state');
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          // Check if same day
-          const today = new Date().toISOString().split('T')[0];
-          const lastJobDay = parsed.lastJobAt?.split('T')[0];
-          
-          if (lastJobDay === today) {
-            this.state = { ...this.state, ...parsed };
-          }
-          // Different day = fresh state
+      const { secureGet } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
+      const parsed = secureGet('clm_orchestrator_state') as typeof this.state | null;
+      if (parsed) {
+        const today = new Date().toISOString().split('T')[0];
+        const lastJobDay = parsed.lastJobAt?.split('T')[0];
+        if (lastJobDay === today) {
+          this.state = { ...this.state, ...parsed };
         }
       }
     } catch {
-      // Use default state
+      /* Storage unavailable — use default state */
     }
   }
 
   private persistState(): void {
     try {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('clm_orchestrator_state', JSON.stringify(this.state));
-      }
+      const { secureSet } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
+      secureSet('clm_orchestrator_state', this.state);
     } catch {
-      // Non-critical
+      /* Quota exceeded — non-critical */
     }
   }
 }

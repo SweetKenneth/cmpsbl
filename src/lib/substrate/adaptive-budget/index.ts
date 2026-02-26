@@ -190,10 +190,9 @@ export async function computeCycleAllocation(): Promise<CycleAllocation> {
 
   // Persist allocation
   try {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(allocation));
-    }
-  } catch { /* non-critical */ }
+    const { secureSet } = await import('@/lib/system/secureStorage');
+    secureSet(STORAGE_KEY, allocation);
+  } catch { /* Quota exceeded — non-critical */ }
 
   return allocation;
 }
@@ -203,15 +202,13 @@ export async function computeCycleAllocation(): Promise<CycleAllocation> {
  */
 export async function getCurrentAllocation(): Promise<CycleAllocation> {
   try {
-    if (typeof localStorage !== 'undefined') {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored) as CycleAllocation;
-        const cycleEnd = new Date(parsed.cycleEndsAt);
-        if (new Date() < cycleEnd) return parsed; // Still valid
-      }
+    const { secureGet } = await import('@/lib/system/secureStorage');
+    const parsed = secureGet<CycleAllocation>(STORAGE_KEY);
+    if (parsed) {
+      const cycleEnd = new Date(parsed.cycleEndsAt);
+      if (new Date() < cycleEnd) return parsed; // Still valid
     }
-  } catch { /* recompute */ }
+  } catch { /* Storage unavailable — recompute */ }
 
   return computeCycleAllocation();
 }

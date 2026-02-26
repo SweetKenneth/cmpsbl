@@ -20,6 +20,7 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { isWebAuthnSupported, isPlatformAuthenticatorAvailable, authenticateWithPasskey } from '@/lib/substrate/identity-module';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { secureSet } from '@/lib/system/secureStorage';
 
 export default function Auth() {
   const { signInWithMagicLink, signUpWithMagicLink } = useAuth();
@@ -41,7 +42,7 @@ export default function Auth() {
     setLoading(true);
     try {
       // Set pending flag so Face ID prompt shows after magic link redirect
-      localStorage.setItem('cmpsbl_pending_passkey_email', loginEmail);
+      secureSet('cmpsbl_pending_passkey_email', loginEmail);
       await signInWithMagicLink(loginEmail);
       setMagicLinkSent('login');
     } catch {
@@ -56,7 +57,7 @@ export default function Auth() {
     setLoading(true);
     try {
       // Set pending flag so Face ID prompt shows after magic link redirect
-      localStorage.setItem('cmpsbl_pending_passkey_email', signupEmail);
+      secureSet('cmpsbl_pending_passkey_email', signupEmail);
       await signUpWithMagicLink(signupEmail, signupDisplayName);
       setMagicLinkSent('signup');
     } catch {

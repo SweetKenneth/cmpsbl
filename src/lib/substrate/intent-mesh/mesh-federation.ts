@@ -85,11 +85,11 @@ export function updateFederationConfig(updates: Partial<FederationConfig>): Fede
 
 export function loadFederationConfig(): FederationConfig {
   try {
-    const stored = localStorage.getItem('mesh_federation_config');
+    const stored = secureGet<FederationConfig>('mesh_federation_config');
     if (stored) {
-      currentConfig = { ...DEFAULT_CONFIG, ...JSON.parse(stored) };
+      currentConfig = { ...DEFAULT_CONFIG, ...stored };
     }
-  } catch { /* use defaults */ }
+  } catch { /* Storage unavailable — use defaults */ }
   return { ...currentConfig };
 }
 

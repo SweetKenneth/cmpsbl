@@ -4530,7 +4530,7 @@ class MultiAgentBus {
           // Mark as processed by decaying
           await substrate.brain.reinforce(mem.id, -0.5);
         }
-      } catch {}
+      } catch { /* Malformed message content — skip */ }
     }
     
     // Sort by priority and timestamp
