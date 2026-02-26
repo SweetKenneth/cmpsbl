@@ -837,11 +837,11 @@ export default function SubstrateStore() {
             <div className="flex items-center justify-between gap-3">
               <div className="flex gap-1.5 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
                 {([
-                  { id: 'all' as const, label: 'All', count: totalCount },
-                  { id: 'cognitives' as const, label: 'Agents', count: COGNITIVES_CATALOG.length },
-                  { id: 'capabilities' as const, label: 'Capabilities', count: capCount },
-                  { id: 'templates' as const, label: 'Templates', count: ALL_TEMPLATES.length },
-                  { id: 'pipelines' as const, label: 'Pipelines', count: pipeCount },
+                  { id: 'all' as const, label: 'All' },
+                  { id: 'cognitives' as const, label: 'Agents' },
+                  { id: 'capabilities' as const, label: 'Capabilities' },
+                  { id: 'templates' as const, label: 'Templates' },
+                  { id: 'pipelines' as const, label: 'Pipelines' },
                 ]).map(tab => (
                   <button
                     key={tab.id}
@@ -854,7 +854,6 @@ export default function SubstrateStore() {
                     )}
                   >
                     {tab.label}
-                    <span className="ml-1.5 text-xs opacity-70">{tab.count}</span>
                   </button>
                 ))}
               </div>
