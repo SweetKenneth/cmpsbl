@@ -71,9 +71,9 @@ async function initCascade(): Promise<ModuleState> {
   };
 
   try {
-    localStorage.setItem('cascade_workflows', '[]');
-    localStorage.setItem('cascade_queue', '[]');
-    localStorage.setItem('cascade_mode', 'local');
+    secureSet('cascade_workflows', []);
+    secureSet('cascade_queue', []);
+    secureSet('cascade_mode', 'local');
 
     state.status = 'active';
     state.initialized = true;
@@ -96,8 +96,8 @@ async function initPTCHBL(): Promise<ModuleState> {
   };
 
   try {
-    localStorage.setItem('ptchbl_scans', '[]');
-    localStorage.setItem('ptchbl_mode', 'local');
+    secureSet('ptchbl_scans', []);
+    secureSet('ptchbl_mode', 'local');
 
     state.status = 'active';
     state.initialized = true;
@@ -120,8 +120,8 @@ async function initRCKBL(): Promise<ModuleState> {
   };
 
   try {
-    localStorage.setItem('rckbl_sniper_active', 'true');
-    localStorage.setItem('rckbl_mode', 'local');
+    secureSet('rckbl_sniper_active', true);
+    secureSet('rckbl_mode', 'local');
 
     state.status = 'active';
     state.initialized = true;
@@ -144,9 +144,9 @@ async function initDefense(): Promise<ModuleState> {
   };
 
   try {
-    localStorage.setItem('defense_events', '[]');
-    localStorage.setItem('defense_ip_reputation', '{}');
-    localStorage.setItem('defense_mode', 'local');
+    secureSet('defense_events', []);
+    secureSet('defense_ip_reputation', {});
+    secureSet('defense_mode', 'local');
 
     state.status = 'active';
     state.initialized = true;
@@ -169,9 +169,9 @@ async function initNexus(): Promise<ModuleState> {
   };
 
   try {
-    localStorage.setItem('nexus_routes', '[]');
-    localStorage.setItem('nexus_cache', '{}');
-    localStorage.setItem('nexus_mode', 'local');
+    secureSet('nexus_routes', []);
+    secureSet('nexus_cache', {});
+    secureSet('nexus_mode', 'local');
 
     state.status = 'active';
     state.initialized = true;
@@ -217,7 +217,7 @@ async function verifyInterModuleCommunication(graph: DependencyGraph): Promise<b
   verifications.brain_cascade = graph.Brain.initialized && graph.Cascade.initialized;
 
   // Store verification results
-  localStorage.setItem('pf_module_verification', JSON.stringify(verifications));
+  secureSet('pf_module_verification', verifications);
 
   return Object.values(verifications).every(v => v === true);
 }
@@ -272,7 +272,7 @@ export function getLocalModeStatus(): {
   const moduleNames = ['Brain', 'Cascade', 'PTCHBL', 'RCKBL', 'Defense', 'Nexus'];
   moduleNames.forEach(name => {
     const key = `${name.toLowerCase()}_mode`;
-    if (localStorage.getItem(key) === 'local') {
+    if (secureGet<string>(key) === 'local') {
       modules.push(name);
     }
   });
