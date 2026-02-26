@@ -330,6 +330,39 @@ export type Database = {
         }
         Relationships: []
       }
+      activation_audit_log: {
+        Row: {
+          active_count: number
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          pack_id: string
+          slot_capacity: number
+          user_id: string
+        }
+        Insert: {
+          active_count: number
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          pack_id: string
+          slot_capacity: number
+          user_id: string
+        }
+        Update: {
+          active_count?: number
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          pack_id?: string
+          slot_capacity?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       agencies: {
         Row: {
           business_profile: Json | null
@@ -13917,6 +13950,39 @@ export type Database = {
           tier?: string
           updated_at?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_pack_activations: {
+        Row: {
+          activated_at: string
+          active: boolean
+          created_at: string
+          deactivated_at: string | null
+          id: string
+          pack_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string
+          active?: boolean
+          created_at?: string
+          deactivated_at?: string | null
+          id?: string
+          pack_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string
+          active?: boolean
+          created_at?: string
+          deactivated_at?: string | null
+          id?: string
+          pack_id?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

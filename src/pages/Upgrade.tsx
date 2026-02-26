@@ -9,9 +9,13 @@ import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { SlotCapacityIndicator } from '@/components/slots/SlotCapacityIndicator';
+import { SlotPressureModal } from '@/components/slots/SlotPressureModal';
+import { PackActivationCard } from '@/components/slots/PackActivationCard';
 import { cn } from '@/lib/utils';
 import {
   Check, ArrowRight, Brain, Package, Shield, Zap,
@@ -123,11 +127,14 @@ export default function Upgrade() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
   const [activeDomain, setActiveDomain] = useState<string | null>(null);
+  const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
     ['architect', 'pro', 'creator', 'builder'].includes(currentTier) ? 'operator' :
     'builder';
+
+  const slotState = useArtifactSlots(currentTier);
 
   const filteredPacks = activeDomain
     ? ARTIFACT_PACKS.filter(p => {
@@ -135,6 +142,11 @@ export default function Upgrade() {
         return domain?.packIds.includes(p.id);
       })
     : ARTIFACT_PACKS;
+
+  const handleSlotPressure = (packName: string) => {
+    setPressureModal({ open: true, packName });
+    // Audit log is handled by the hook
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -162,6 +174,12 @@ export default function Upgrade() {
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               24 artifact packs. Every pack = 1 slot. Choose 3, 6, or 12.
             </p>
+            {/* Slot capacity indicator in hero */}
+            {slotState.activeCount > 0 && (
+              <div className="flex justify-center mt-4">
+                <SlotCapacityIndicator slotState={slotState} variant="compact" />
+              </div>
+            )}
           </motion.div>
 
           {/* Billing toggle */}
@@ -393,33 +411,33 @@ export default function Upgrade() {
               )}
             </div>
 
+            {/* Slot capacity indicator above packs */}
+            <div className="flex justify-center mb-6">
+              <SlotCapacityIndicator slotState={slotState} variant="full" className="max-w-sm w-full" />
+            </div>
+
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredPacks.map((pack, i) => (
-                <motion.div
+              {filteredPacks.map((pack) => (
+                <PackActivationCard
                   key={pack.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.04 }}
-                >
-                  <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
-                    <CardContent className="p-5 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-bold text-sm">{pack.name}</h3>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] px-1.5">{pack.version}</Badge>
-                          <Badge variant="outline" className="text-[10px] px-1.5 text-primary border-primary/30">1 slot</Badge>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{pack.description}</p>
-                      <p className="text-xs text-muted-foreground/70 italic">{pack.useCase}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                  pack={pack}
+                  slotState={slotState}
+                  onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
+                  onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
+                  onSlotPressure={handleSlotPressure}
+                />
               ))}
             </div>
           </div>
         </section>
+
+        {/* Slot Pressure Modal */}
+        <SlotPressureModal
+          open={pressureModal.open}
+          onOpenChange={(open) => setPressureModal({ ...pressureModal, open })}
+          currentTier={currentProductTier}
+          packName={pressureModal.packName}
+        />
 
         {/* ═══ ENTERPRISE CTA ═══ */}
         <section className="container mx-auto px-4 mt-24">

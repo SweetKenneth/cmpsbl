@@ -3,10 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMetric } from "@/stores/publicMetricsStore";
+import { useArtifactSlots } from "@/hooks/useArtifactSlots";
+import { useEngineSubscription } from "@/hooks/useEngineSubscription";
+import { SlotCapacityIndicator } from "@/components/slots/SlotCapacityIndicator";
 
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, signOut } = useAuth();
   const version = useMetric('version');
+  const { tier } = useEngineSubscription();
+  const slotState = useArtifactSlots(tier);
   
   return (
     <header className="h-14 lg:h-16 glass border-b border-border/50 px-4 lg:px-6 flex items-center justify-between">
@@ -81,6 +86,10 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           <Bell className="w-5 h-5" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
         </Button>
+
+        {user && slotState.activeCount > 0 && (
+          <SlotCapacityIndicator slotState={slotState} variant="compact" className="hidden lg:flex" />
+        )}
 
         <div className="hidden lg:block w-px h-6 bg-border/50" />
 
