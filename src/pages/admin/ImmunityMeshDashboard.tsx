@@ -248,7 +248,7 @@ export default function ImmunityMeshDashboard() {
       const { error: e2 } = await supabase.from('immune_escalations').delete().neq('executor', '__never__') as any;
       const { error: e3 } = await supabase.from('immune_intelligence_events').delete().neq('executor_id', '__never__') as any;
       if (e1 || e2 || e3) throw new Error(e1?.message || e2?.message || e3?.message);
-      voice.system('Telemetry cleared', 'All immunity mesh intelligence data has been reset', 'IMMUNE');
+      voice.system('Telemetry reset to fresh state', 'Metrics and escalations cleared. Shared rules, skill data, and learnings preserved.', 'IMMUNE');
       setAnalyticsKey(k => k + 1);
       prevEventsRef.current = 0;
     } catch (err: any) {
