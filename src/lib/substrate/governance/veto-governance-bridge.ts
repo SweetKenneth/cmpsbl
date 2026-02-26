@@ -119,7 +119,7 @@ export async function issueGovernanceVetoes(mode: GovernanceMode): Promise<void>
     const result = await vetoAuthority.submitVeto({
       authority: 'system',
       scope,
-      reason: `Auto-issued by governance LOCKDOWN mode [gov-bridge]`,
+      reason: `Auto-issued by governance LOCKDOWN mode [gov-bridge-lockdown]`,
       target: '*',
       severity: 'high',
     });
@@ -128,7 +128,7 @@ export async function issueGovernanceVetoes(mode: GovernanceMode): Promise<void>
       // Find the veto we just created by matching authority + reason marker
       const activeVetoes = vetoAuthority.getActiveVetoes();
       const issued = activeVetoes.find(
-        v => v.authority === 'system' && v.scope === scope && v.reason?.includes('gov-bridge')
+        v => v.authority === 'system' && v.scope === scope && v.reason?.includes('[gov-bridge-lockdown]')
       );
       const vetoId = issued?.id || `gov-${scope}-${Date.now()}`;
 
@@ -210,7 +210,7 @@ export async function revokeGovernanceVetoes(): Promise<void> {
   if (revokedCount === 0) {
     const activeVetoes = vetoAuthority.getActiveVetoes();
     const governanceVetoes = activeVetoes.filter(
-      v => v.authority === 'system' && v.reason?.includes('gov-bridge')
+      v => v.authority === 'system' && v.reason?.includes('[gov-bridge-lockdown]')
     );
 
     for (const veto of governanceVetoes) {
