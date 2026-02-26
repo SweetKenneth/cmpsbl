@@ -453,7 +453,7 @@ function reconstructInputFromError(item: EncodeWorkItem): Record<string, unknown
     try {
       const parsed = JSON.parse(jsonMatch[0]);
       Object.assign(reconstructed, parsed);
-    } catch {}
+    } catch { /* Invalid JSON fragment — expected, non-critical */ }
   }
 
   // If we have failing input, merge it (repaired)
