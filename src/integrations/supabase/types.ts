@@ -6714,6 +6714,57 @@ export type Database = {
         }
         Relationships: []
       }
+      governance_compliance_reports: {
+        Row: {
+          checks_performed: number
+          compliant: boolean
+          created_at: string
+          id: string
+          mode: string
+          score: number
+          violations: Json
+        }
+        Insert: {
+          checks_performed?: number
+          compliant?: boolean
+          created_at?: string
+          id?: string
+          mode: string
+          score?: number
+          violations?: Json
+        }
+        Update: {
+          checks_performed?: number
+          compliant?: boolean
+          created_at?: string
+          id?: string
+          mode?: string
+          score?: number
+          violations?: Json
+        }
+        Relationships: []
+      }
+      governance_issued_vetoes: {
+        Row: {
+          created_at: string
+          id: string
+          scope: string
+          veto_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          scope: string
+          veto_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          scope?: string
+          veto_id?: string
+        }
+        Relationships: []
+      }
       governance_mode: {
         Row: {
           changed_at: string
@@ -6747,6 +6798,66 @@ export type Database = {
           reason?: string
           ttl_minutes?: number | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      governance_transition_approvals: {
+        Row: {
+          approvals: Json
+          approvals_required: number
+          created_at: string
+          expires_at: string
+          from_mode: string
+          id: string
+          requested_by: string
+          status: string
+          to_mode: string
+        }
+        Insert: {
+          approvals?: Json
+          approvals_required?: number
+          created_at?: string
+          expires_at?: string
+          from_mode: string
+          id?: string
+          requested_by: string
+          status?: string
+          to_mode: string
+        }
+        Update: {
+          approvals?: Json
+          approvals_required?: number
+          created_at?: string
+          expires_at?: string
+          from_mode?: string
+          id?: string
+          requested_by?: string
+          status?: string
+          to_mode?: string
+        }
+        Relationships: []
+      }
+      governance_transition_log: {
+        Row: {
+          actor: string
+          created_at: string
+          from_mode: string
+          id: string
+          to_mode: string
+        }
+        Insert: {
+          actor: string
+          created_at?: string
+          from_mode: string
+          id?: string
+          to_mode: string
+        }
+        Update: {
+          actor?: string
+          created_at?: string
+          from_mode?: string
+          id?: string
+          to_mode?: string
         }
         Relationships: []
       }
