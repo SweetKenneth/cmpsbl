@@ -309,7 +309,7 @@ class MaintenanceManager {
         p_user_id: '00000000-0000-0000-0000-000000000000',
         p_agent_id: 'substrate',
       });
-      return data ?? { skipped: true };
+      return (data as Record<string, any>) ?? { skipped: true };
     } catch {
       return { skipped: true, reason: 'rpc_unavailable' };
     }
@@ -321,7 +321,7 @@ class MaintenanceManager {
         p_user_id: '00000000-0000-0000-0000-000000000000',
         p_agent_id: 'substrate',
       });
-      return data ?? { skipped: true };
+      return (data as Record<string, any>) ?? { skipped: true };
     } catch {
       return { skipped: true, reason: 'rpc_unavailable' };
     }
@@ -333,7 +333,7 @@ class MaintenanceManager {
         p_user_id: '00000000-0000-0000-0000-000000000000',
         p_agent_id: 'substrate',
       });
-      return data ?? { skipped: true };
+      return (data as Record<string, any>) ?? { skipped: true };
     } catch {
       return { skipped: true, reason: 'rpc_unavailable' };
     }
@@ -345,7 +345,7 @@ class MaintenanceManager {
         p_user_id: '00000000-0000-0000-0000-000000000000',
         p_agent_id: 'substrate',
       });
-      return data ?? { skipped: true };
+      return (data as Record<string, any>) ?? { skipped: true };
     } catch {
       return { skipped: true, reason: 'rpc_unavailable' };
     }
