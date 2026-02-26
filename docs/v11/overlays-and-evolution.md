@@ -1,4 +1,4 @@
-# Overlays & Evolution — CMPSBL v11.1
+# Overlays & Evolution — CMPSBL SPARTA Epoch
 
 ## Mesh Overlay Hierarchy
 
