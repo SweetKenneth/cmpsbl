@@ -142,11 +142,10 @@ class ConfidenceClassifier {
    */
   async train(): Promise<{ samples: number; accuracy: number } | null> {
     try {
-      // Fetch labeled traces
+      // Fetch traces — use pattern_confidence as success signal
       const { data: traces, error } = await supabase
         .from('brain_reasoning_traces')
         .select('*')
-        .not('outcome_label', 'is', null)
         .order('created_at', { ascending: false })
         .limit(2000);
 
@@ -163,7 +162,8 @@ class ConfidenceClassifier {
       for (const trace of traces) {
         const content = typeof trace.prompt === 'string' ? trace.prompt : JSON.stringify(trace.prompt);
         const embedding = embeddingEngine.encode(content);
-        const label = trace.outcome_label === 'success' ? 1 : 0;
+        // Use pattern_confidence as label proxy (>0.7 = success)
+        const label = (trace.pattern_confidence ?? 0) > 0.7 ? 1 : 0;
 
         // Forward pass
         let logit = bias;

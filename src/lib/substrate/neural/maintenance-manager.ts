@@ -221,7 +221,7 @@ class MaintenanceManager {
     // Find crystals not yet embedded
     const { data: crystals } = await supabase
       .from('brain_knowledge_crystals')
-      .select('id, crystal_content')
+      .select('id, distilled_content')
       .order('created_at', { ascending: false })
       .limit(50);
 
@@ -230,24 +230,24 @@ class MaintenanceManager {
     }
 
     // Check which ones already have embeddings
-    const ids = crystals.map(c => c.id);
+    const ids = crystals.map((c: any) => c.id);
     const { data: existing } = await supabase
       .from('brain_embeddings')
       .select('artifact_id')
       .in('artifact_id', ids);
 
     const existingIds = new Set((existing ?? []).map(e => e.artifact_id));
-    const toEmbed = crystals.filter(c => !existingIds.has(c.id));
+    const toEmbed = crystals.filter((c: any) => !existingIds.has(c.id));
 
     if (toEmbed.length === 0) {
       return { new_artifacts: 0, already_embedded: crystals.length };
     }
 
     const encoded = await embeddingEngine.batchEncode(
-      toEmbed.map(c => ({
+      toEmbed.map((c: any) => ({
         id: c.id,
         type: 'crystal',
-        content: typeof c.crystal_content === 'string' ? c.crystal_content : JSON.stringify(c.crystal_content),
+        content: typeof c.distilled_content === 'string' ? c.distilled_content : JSON.stringify(c.distilled_content),
       }))
     );
 
@@ -271,7 +271,7 @@ class MaintenanceManager {
     // Get recent artifacts for drift check
     const { data } = await supabase
       .from('brain_knowledge_crystals')
-      .select('crystal_content')
+      .select('distilled_content')
       .order('created_at', { ascending: false })
       .limit(20);
 
@@ -279,8 +279,8 @@ class MaintenanceManager {
       return { skipped: true, reason: 'insufficient_recent_data' };
     }
 
-    const texts = data.map(d => 
-      typeof d.crystal_content === 'string' ? d.crystal_content : JSON.stringify(d.crystal_content)
+    const texts = (data as any[]).map((d: any) => 
+      typeof d.distilled_content === 'string' ? d.distilled_content : JSON.stringify(d.distilled_content)
     );
     const signal = await driftDetector.checkDrift(texts);
 
