@@ -3,7 +3,7 @@
  * SPARTA Epoch — Detect cascade patterns across sectors
  * 
  * Monitors health changes across sectors to detect patterns like
- * "CCL degradation always precedes CCR failures" and preemptively isolate upstream.
+ * "OCG degradation always precedes CCR failures" and preemptively isolate upstream.
  */
 
 import type { MatrixSector } from '@/lib/core/matrixNodeRegistry';
@@ -19,7 +19,7 @@ export interface CascadePattern {
   id: string;
   sourceSector: MatrixSector;
   targetSector: MatrixSector;
-  confidence: number; // 0-1
+  confidence: number;
   occurrences: number;
   avgLeadTimeMs: number;
   lastDetected: number;
@@ -36,19 +36,21 @@ export interface CorrelationAlert {
   acknowledged: boolean;
 }
 
-// Rolling window of sector health snapshots (last 2 hours)
 const healthHistory: SectorHealthSnapshot[] = [];
-const MAX_HISTORY = 720; // 2 hours at 10s intervals
+const MAX_HISTORY = 720;
 const patterns: CascadePattern[] = [];
 const alerts: CorrelationAlert[] = [];
 
-// Known sector dependency chains
+// Sector dependency chains — field-based topology
 const SECTOR_DEPENDENCIES: Record<MatrixSector, MatrixSector[]> = {
   core: [],
-  ccr: ['core'],
-  ccl: ['core'],
-  execution: ['ccr', 'ccl'],
-  overlay: ['execution', 'ccr'],
+  system: ['core'],
+  ccr: ['core', 'system'],
+  ocg: ['core'],
+  execution: ['ccr', 'ocg'],
+  field: ['execution', 'ccr'],
+  plane: ['core'],
+  shell: ['core'],
 };
 
 export function recordSectorHealth(sector: MatrixSector, health: number): void {
@@ -60,14 +62,13 @@ export function recordSectorHealth(sector: MatrixSector, health: number): void {
 
 export function detectCascadePatterns(): CascadePattern[] {
   const detectedPatterns: CascadePattern[] = [];
-  const sectors: MatrixSector[] = ['core', 'ccr', 'ccl', 'execution', 'overlay'];
-  const windowMs = 300_000; // 5 minute window
+  const sectors: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell'];
+  const windowMs = 300_000;
 
   for (const source of sectors) {
     for (const target of sectors) {
       if (source === target) continue;
 
-      // Look for drops in source that precede drops in target
       const sourceDrops = findHealthDrops(source);
       const targetDrops = findHealthDrops(target);
 
@@ -100,7 +101,6 @@ export function detectCascadePatterns(): CascadePattern[] {
     }
   }
 
-  // Update stored patterns
   for (const dp of detectedPatterns) {
     const existing = patterns.findIndex(p => p.id === dp.id);
     if (existing >= 0) patterns[existing] = dp;

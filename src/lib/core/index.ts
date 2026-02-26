@@ -1,8 +1,16 @@
 /**
  * CORE Module — Substrate Kernel (Standalone)
- * Separated from CCR — CORE is the first-class kernel that boots before all layers.
+ * CORE is the first-class kernel that boots before all layers.
  *
- * Boot order: CORE → CCR → CCL → Modules → Meshes → INTEGRATION
+ * Boot order (Vertical Spine):
+ *   CORE → SYSTEM → CCR → Modules → INTEGRATION
+ * 
+ * Cross-cutting:
+ *   OCG (Operational Compliance Grid) — right-side tap
+ *   CLM — lateral intelligence branch
+ *   Fields (EVOLUTION / IMMUNITY / INTENT) — permeate the spine
+ *   Overlay Plane (GOVERNANCE) — supervisory blanket
+ *   DEFENSE Shell — outer containment boundary
  *
  * CORE provides:
  * - Substrate boot sequence management
@@ -14,79 +22,96 @@
 
 // ============ Constants ============
 
-export const SUBSTRATE_VERSION = '11.1.0';
+export const SUBSTRATE_VERSION = '11.5.0';
 export const SUBSTRATE_CODENAME = 'SPARTA';
-export const CORE_VERSION = '11.1.0';
+export const CORE_VERSION = '11.5.0';
 export const CORE_CODENAME = 'Foundation';
 
 /**
- * All substrate entries — 10 public entities + 5 mesh overlays + 9 Zones + 1 absorbed
+ * All substrate entries — Field-Based Topology
  *
- * Public Entities (10):
- *   CORE (1 kernel) + 8 Modules + INTEGRATION (1 module, boots last)
+ * Spine (Vertical deterministic flow):
+ *   CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → Modules → INTEGRATION
  *
- * Mesh Overlays (5) — protective layers wrapping modules, order matters:
- *   DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
+ * Grid (Boundary enforcement):
+ *   OCG Zones (5): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
  *
- * Zones (9) — surgically hot-swappable, circuit-breaker isolated:
- *   CCR Zones (4): system, brain, memory, dream
- *   CCL Zones (5): ripple, access, identity, relay, audit
+ * Fields (System-wide transformation fabric):
+ *   EVOLUTION, IMMUNITY, INTENT — permeate the entire spine
+ *
+ * Plane (Supervisory blanket):
+ *   GOVERNANCE
+ *
+ * Shell (Outer containment boundary):
+ *   DEFENSE
+ *
+ * Branch (Lateral intelligence):
+ *   CLM
  *
  * Absorbed:
- *   modernizer → EVOLUTION mesh
+ *   modernizer → EVOLUTION field
  */
 export const SUBSTRATE_MODULES = [
   // Kernel (boots first)
   'core',
+  // SYSTEM (standalone layer, extracted from CCR)
+  'system',
   // CCR Zones (backward compat — route to Layer 0, hot-swappable)
-  'system', 'brain', 'memory', 'dream',
-  // CCL Zones (backward compat — route to Layer 1, hot-swappable)
+  'brain', 'memory', 'dream',
+  // OCG Zones (Operational Compliance Grid — formerly CCL)
   'ripple', 'access', 'identity', 'relay', 'audit',
-  // Absorbed (routes to evolution mesh)
+  // Absorbed (routes to evolution field)
   'modernizer',
   // 8 Public Modules
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
-  // 5 Mesh Overlays (order: innermost → outermost)
-  'governance', 'intent', 'evolution', 'immunity', 'defense',
+  // Fields (system-wide transformation fabric)
+  'evolution', 'immunity', 'intent',
+  // Overlay Plane (supervisory)
+  'governance',
+  // Shell (outer containment)
+  'defense',
   // Module (boots last)
   'integration',
 ] as const;
 
 // Public-facing entity count (CORE + 8 Modules + INTEGRATION)
 export const PUBLIC_MODULE_COUNT = 10;
-// Mesh overlay count (protective layers, not counted as entities)
-export const MESH_OVERLAY_COUNT = 5;
-// Zone count (hidden, hot-swappable)
-export const ZONE_COUNT = 9;
+// Field count (system-wide transformation fabric)
+export const FIELD_COUNT = 3;
+// OCG Zone count
+export const OCG_ZONE_COUNT = 5;
+// CCR Zone count (SYSTEM extracted)
+export const CCR_ZONE_COUNT = 3;
 
-// CCR Zone modules (backed by CLOCKLESS_COGNITIVE_REALITY)
-export const CCR_ZONE_MODULES = ['system', 'brain', 'memory', 'dream'] as const;
+// CCR Zone modules — SYSTEM extracted, now standalone
+export const CCR_ZONE_MODULES = ['brain', 'memory', 'dream'] as const;
 
-// CCL Zone modules (backed by CLOCKLESS_COGNITIVE_LUCIDITY)
-export const CCL_ZONE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
+// OCG Zone modules (Operational Compliance Grid — formerly CCL)
+export const OCG_ZONE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
 
-// Absorbed (route to a mesh)
-export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution mesh
+// Absorbed (route to a field)
+export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution field
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
-// Entity classification
-export type EntityType = 'kernel' | 'module' | 'mesh-overlay' | 'zone-ccr' | 'zone-ccl' | 'absorbed';
+// Entity classification — new taxonomy
+export type EntityType = 'kernel' | 'system-layer' | 'module' | 'field' | 'plane' | 'shell' | 'zone-ccr' | 'zone-ocg' | 'absorbed';
 
 export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   // Kernel (boots first)
   core: 'kernel',
-  // CCR Zones
-  system: 'zone-ccr',
+  // SYSTEM (standalone layer between CORE and CCR)
+  system: 'system-layer',
+  // CCR Zones (SYSTEM extracted)
   brain: 'zone-ccr',
   memory: 'zone-ccr',
   dream: 'zone-ccr',
-  // CCL Zones
-  ripple: 'zone-ccl',
-  access: 'zone-ccl',
-  identity: 'zone-ccl',
-  relay: 'zone-ccl',
-  audit: 'zone-ccl',
+  // OCG Zones (Operational Compliance Grid)
+  ripple: 'zone-ocg',
+  access: 'zone-ocg',
+  identity: 'zone-ocg',
+  relay: 'zone-ocg',
+  audit: 'zone-ocg',
   // Absorbed
   modernizer: 'absorbed',
   // 8 Public Modules
@@ -98,21 +123,22 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   economy: 'module',
   sandbox: 'module',
   inclusive: 'module',
-  // 5 Mesh Overlays (wrapping layers — outermost listed first)
-  defense: 'mesh-overlay',
-  immunity: 'mesh-overlay',
-  evolution: 'mesh-overlay',
-  intent: 'mesh-overlay',
-  governance: 'mesh-overlay',
+  // Fields (system-wide transformation fabric)
+  evolution: 'field',
+  immunity: 'field',
+  intent: 'field',
+  // Overlay Plane (supervisory blanket)
+  governance: 'plane',
+  // Shell (outer containment boundary)
+  defense: 'shell',
   // Module (boots last)
   integration: 'module',
 };
 
 /**
- * Mesh overlay order — outermost to innermost.
- * DEFENSE wraps everything. GOVERNANCE is closest to the modules.
+ * Field order — system-wide transformation fabric (no hierarchy, permeate the spine)
  */
-export const MESH_ORDER = ['defense', 'immunity', 'evolution', 'intent', 'governance'] as const;
+export const FIELD_ORDER = ['evolution', 'immunity', 'intent'] as const;
 
 // Legacy compat alias
 export type ModuleLayer = EntityType;
@@ -134,7 +160,7 @@ export interface BootSequence {
   completed_at: string | null;
   modules_booted: SubstrateModuleName[];
   modules_failed: SubstrateModuleName[];
-  current_phase: 'kernel' | 'cognitive' | 'operational' | 'administrative' | 'complete';
+  current_phase: 'kernel' | 'system' | 'cognitive' | 'operational' | 'administrative' | 'complete';
   success: boolean;
 }
 
@@ -184,7 +210,10 @@ export function markModuleBooted(module: SubstrateModuleName): void {
     bootSequence.modules_booted.push(module);
     
     const entityType = MODULE_LAYERS[module];
-    if ((entityType === 'zone-ccr' || entityType === 'zone-ccl') && bootSequence.current_phase !== 'complete') {
+    if (entityType === 'system-layer' && bootSequence.current_phase !== 'complete') {
+      bootSequence.current_phase = 'system';
+    }
+    if ((entityType === 'zone-ccr' || entityType === 'zone-ocg') && bootSequence.current_phase !== 'complete') {
       bootSequence.current_phase = 'administrative';
     }
   }
@@ -239,12 +268,13 @@ export function getBootSequence(): BootSequence | null {
 export function getModuleDependencies(module: SubstrateModuleName): SubstrateModuleName[] {
   const deps: Record<SubstrateModuleName, SubstrateModuleName[]> = {
     core: [],
-    // CCR facades
+    // SYSTEM depends on CORE only
     system: ['core'],
-    brain: ['core'],
-    memory: ['core'],
-    dream: ['core'],
-    // CCL facades
+    // CCR zones depend on CORE and SYSTEM
+    brain: ['core', 'system'],
+    memory: ['core', 'system'],
+    dream: ['core', 'system'],
+    // OCG zones depend on CORE
     ripple: ['core'],
     access: ['core'],
     identity: ['core'],
@@ -261,12 +291,14 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     economy: ['core'],
     sandbox: ['core'],
     inclusive: ['core'],
-    // 5 Meshes
-    defense: ['core'],
-    immunity: ['core', 'defense'],
+    // Fields
     evolution: ['core'],
+    immunity: ['core', 'defense'],
     intent: ['core'],
+    // Plane
     governance: ['core'],
+    // Shell
+    defense: ['core'],
     // Standalone
     integration: ['core'],
   };

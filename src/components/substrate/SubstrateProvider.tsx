@@ -1,9 +1,12 @@
 /**
  * promptfluid® Substrate Provider
- * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
+ * SPARTA Epoch — Field-Based Topology
  *
- * CORE (standalone) → CCR (Layer 0) → CCL (Layer 1)
- * → 8 Matrix Nodes → 5 Overlays → INTEGRATION
+ * Spine: CORE → SYSTEM → CCR → Modules → INTEGRATION
+ * Grid: OCG (Operational Compliance Grid)
+ * Fields: EVOLUTION / IMMUNITY / INTENT
+ * Plane: GOVERNANCE
+ * Shell: DEFENSE
  */
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
@@ -16,13 +19,16 @@ interface ModuleStatus {
   health: number;
 }
 
-/** Layer-weighted health breakdown */
+/** Topology-weighted health breakdown */
 export interface LayerHealth {
   core: number;
+  system: number;
   ccr: number;
-  ccl: number;
+  ocg: number;
   surfaces: number;
-  overlays: number;
+  fields: number;
+  plane: number;
+  shell: number;
 }
 
 interface SubstrateContextType {
@@ -52,7 +58,7 @@ const defaultModules = ALL_MODULES.reduce((acc, m) => {
   return acc;
 }, {} as Record<SubstrateModule, ModuleStatus>);
 
-const DEFAULT_LAYERS: LayerHealth = { core: 0, ccr: 0, ccl: 0, surfaces: 0, overlays: 0 };
+const DEFAULT_LAYERS: LayerHealth = { core: 0, system: 0, ccr: 0, ocg: 0, surfaces: 0, fields: 0, plane: 0, shell: 0 };
 
 const SubstrateContext = createContext<SubstrateContextType>({
   initialized: false,
@@ -110,14 +116,17 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     if (!debugMode.allowModulePolling()) return;
     if (!mountedRef.current) return;
 
-    // Check 10 Matrix Nodes + 5 mesh overlays
     const publicEntities: SubstrateModule[] = [
       // CORE
       'core',
       // 9 Matrix Nodes (INTEGRATION boots last)
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration',
-      // 5 Mesh Overlays (DEFENSE outermost → GOVERNANCE innermost)
-      'defense', 'immunity', 'evolution', 'intent', 'governance',
+      // Fields
+      'evolution', 'immunity', 'intent',
+      // Plane
+      'governance',
+      // Shell
+      'defense',
     ];
     const results = await Promise.all(publicEntities.map(checkModule));
 
@@ -199,11 +208,14 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     }
   }, [autoInit, refresh]);
 
-  // 5-layer weighted health aggregation (20% each)
-  const CCR_ZONES: SubstrateModule[] = ['system', 'brain', 'memory', 'dream'];
-  const CCL_ZONES: SubstrateModule[] = ['ripple', 'access', 'identity', 'relay', 'audit'];
+  // Topology-weighted health aggregation
+  const SYSTEM_LAYER: SubstrateModule[] = ['system'];
+  const CCR_ZONES: SubstrateModule[] = ['brain', 'memory', 'dream'];
+  const OCG_ZONES: SubstrateModule[] = ['ripple', 'access', 'identity', 'relay', 'audit'];
   const EXEC_SURFACES: SubstrateModule[] = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration'];
-  const OVERLAYS: SubstrateModule[] = ['defense', 'immunity', 'evolution', 'intent', 'governance'];
+  const FIELDS: SubstrateModule[] = ['evolution', 'immunity', 'intent'];
+  const PLANE: SubstrateModule[] = ['governance'];
+  const SHELL: SubstrateModule[] = ['defense'];
 
   const avgHealth = (keys: SubstrateModule[]) => {
     const vals = keys.map(k => modules[k]?.health ?? 0);
@@ -212,18 +224,25 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
 
   const layers: LayerHealth = {
     core: modules.core?.health ?? 0,
+    system: avgHealth(SYSTEM_LAYER),
     ccr: avgHealth(CCR_ZONES),
-    ccl: avgHealth(CCL_ZONES),
+    ocg: avgHealth(OCG_ZONES),
     surfaces: avgHealth(EXEC_SURFACES),
-    overlays: avgHealth(OVERLAYS),
+    fields: avgHealth(FIELDS),
+    plane: avgHealth(PLANE),
+    shell: avgHealth(SHELL),
   };
 
+  // Weighted health: CORE=20%, SYSTEM=5%, CCR=15%, OCG=20%, Execution=25%, Fields=9%, Plane=3%, Shell=3%
   const overallHealth = Math.min(100, Math.round(
     layers.core * 0.20 +
-    layers.ccr * 0.20 +
-    layers.ccl * 0.20 +
-    layers.surfaces * 0.20 +
-    layers.overlays * 0.20
+    layers.system * 0.05 +
+    layers.ccr * 0.15 +
+    layers.ocg * 0.20 +
+    layers.surfaces * 0.25 +
+    layers.fields * 0.09 +
+    layers.plane * 0.03 +
+    layers.shell * 0.03
   ));
 
   return (
