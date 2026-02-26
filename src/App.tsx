@@ -102,6 +102,7 @@ const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const Upgrade = lazy(() => import("./pages/Upgrade"));
+const Packs = lazy(() => import("./pages/Packs"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
@@ -542,6 +543,7 @@ const App = () => {
                         <Route path="/index" element={<Navigate to="/" replace />} />
                         <Route path="/pricing" element={<Upgrade />} />
                         <Route path="/upgrade" element={<Upgrade />} />
+                        <Route path="/packs" element={<Packs />} />
                         <Route path="/start-here" element={<StartHere />} />
                         <Route path="/checkout" element={<Navigate to="/" replace />} />
                         <Route path="/enterprise" element={<Enterprise />} />
