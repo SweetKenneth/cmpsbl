@@ -720,3 +720,29 @@ export {
   type DistillationRun,
   type DistillationStatus,
 } from './distillation';
+
+// ═══ Inter-Node Bridges (SPARTA v11.5) ═══
+export {
+  evaluateEscalation,
+  runEscalationBridge,
+  onGovernanceEscalation,
+  resetEscalation,
+  generateEvolutionSignals,
+  runConfidenceEvolutionBridge,
+  getEvolutionPriorities,
+  bridgeEventToAudit,
+  bridgeEventsToAudit,
+  resolveViaCapability,
+  hasCapabilityRoute,
+  getResolverGovernanceStatus,
+  recordSynergyOutcome,
+  getSynergyStats,
+  getTopSynergies,
+  getDegradingSynergies,
+  getSynergyMemorySummary,
+  type EscalationRule,
+  type EscalationCallback,
+  type EvolutionSignal,
+  type SynergyOutcome,
+  type SynergyStats,
+} from './inter-node-bridges';
