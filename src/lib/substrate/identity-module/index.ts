@@ -1,6 +1,6 @@
 /**
  * IDENTITY Module — Universal Actor Attribution
- * v10.5.1 ARCHITECT Epoch — Human/agent/system identity, signatures, provenance
+ * SPARTA Epoch — Human/agent/system identity, signatures, provenance
  * Circuit Breaker + Hot-Swap + Graceful Fallback + Passwordless WebAuthn
  * 
  * CLM-Requested Upgrades Implemented:
