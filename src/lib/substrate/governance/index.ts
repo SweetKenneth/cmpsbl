@@ -22,3 +22,15 @@ export { enforceResponsePolicy, validateEpistemicIntegrity, tagClaim, stripTags,
 
 // Decode Voice Guardrails
 export { applyVoiceGuardrails, needsGuardrails, voiceTaggedClaim, type VoiceGuardrailResult } from './decode-voice-guardrails';
+
+// Transition Validator (v11.5)
+export { validateTransition, getTransitionPath, resetTransitionHistory, type TransitionValidation } from './transition-validator';
+
+// Veto ↔ Governance Bridge (v11.5)
+export { evaluateVetoEscalation, issueGovernanceVetoes, revokeGovernanceVetoes, onGovernanceModeChange, type VetoGovernanceEscalation } from './veto-governance-bridge';
+
+// Compliance Auditor (v11.5)
+export { auditCompliance, runComplianceAudit, getComplianceTrend, getComplianceScoreAvg, type ComplianceViolation, type ComplianceReport } from './compliance-auditor';
+
+// Governance Drift Detector (v11.5)
+export { analyzeDrift, recordMutation, recordEscalation, recordVetoEvent, recordActivation, tickWindow, resetDriftState, type DriftSignal, type DriftReport } from './governance-drift-detector';
