@@ -97,6 +97,10 @@ export interface ArtifactPack {
   useCase: string;
   slotsRequired: 1; // All packs = 1 slot. Always.
   components: string[];
+  /** Internal: crystallized pipeline IDs this pack depends on (never exposed publicly) */
+  _crystallizedPipelines: string[];
+  /** Internal: why this pack cannot exist in a fragmented architecture */
+  _emergenceClause: string;
   docUrl?: string;
 }
 
