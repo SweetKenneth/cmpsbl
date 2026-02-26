@@ -25,6 +25,7 @@ import { mutationEngine } from '@/lib/evolution-mesh/mutation-engine';
 import { useModernizer } from '@/hooks/substrate/useModernizer';
 import type { MutationProposal, MutationRun, ChangeArtifact, VerificationScan } from '@/lib/evolution-mesh/mutation-engine';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -297,49 +298,83 @@ export default function EvolutionMeshDashboard() {
   });
 
   // ── Mutations ──
-  const integrityScanMutation = useMutation({
-    mutationFn: () => integrityService.runIntegrityScan(),
-    onSuccess: (result) => {
-      if (result.success) {
-        setScanResults(result.findings ?? []);
-        toast.success(`Scan complete: ${result.summary?.total ?? 0} findings (${result.summary?.errors ?? 0} errors, ${result.summary?.warnings ?? 0} warnings)`);
-        invalidateAll();
-      } else {
-        toast.error(`Scan failed: ${result.error}`);
+  const generateProposalsFromFindings = async (findings: any[]) => {
+    const actionable = findings.filter((f: any) => f.severity !== 'info' || (f.priority ?? 0) >= 5);
+    const top = actionable.slice(0, 5);
+    const results: string[] = [];
+    for (const finding of top) {
+      const artifactResult = await mutationEngine.createArtifact({
+        actorType: 'integrity_scan',
+        category: finding.evolutionType ?? finding.category ?? 'resilience',
+        intentSummary: finding.message,
+        diffData: { suggested_fix: finding.suggestedFix, severity: finding.severity, priority: finding.priority },
+      });
+      if (artifactResult.success && artifactResult.artifact) {
+        const proposalResult = await mutationEngine.createProposal({
+          artifactId: artifactResult.artifact.id,
+          hypothesis: finding.suggestedFix ?? finding.message,
+          riskScore: finding.severity === 'error' ? 0.7 : finding.severity === 'warning' ? 0.4 : 0.2,
+          category: finding.evolutionType ?? 'resilience',
+        });
+        if (proposalResult.success) results.push(finding.message.slice(0, 50));
       }
+    }
+    return results;
+  };
+
+  const integrityScanMutation = useMutation({
+    mutationFn: async () => {
+      const result = await integrityService.runIntegrityScan();
+      if (!result.success) throw new Error(result.error ?? 'Scan failed');
+      // Auto-generate proposals from actionable findings
+      const findings = result.findings ?? [];
+      const proposalResults = await generateProposalsFromFindings(findings);
+      return { ...result, proposalResults };
+    },
+    onSuccess: (result) => {
+      setScanResults(result.findings ?? []);
+      const proposalCount = result.proposalResults?.length ?? 0;
+      toast.success(
+        `Scan complete: ${result.summary?.total ?? 0} findings → ${proposalCount} proposals generated`
+      );
+      invalidateAll();
+    },
+    onError: (err: any) => {
+      toast.error(`Scan failed: ${err?.message ?? 'Unknown error'}`);
     },
   });
 
   const generateProposalsMutation = useMutation({
-    mutationFn: async (findings: any[]) => {
-      const actionable = findings.filter((f: any) => f.severity !== 'info' || (f.priority ?? 0) >= 5);
-      const top = actionable.slice(0, 5);
-      const results: string[] = [];
-      for (const finding of top) {
-        const artifactResult = await mutationEngine.createArtifact({
-          actorType: 'integrity_scan',
-          category: finding.evolutionType ?? finding.category ?? 'resilience',
-          intentSummary: finding.message,
-          diffData: { suggested_fix: finding.suggestedFix, severity: finding.severity, priority: finding.priority },
-        });
-        if (artifactResult.success && artifactResult.artifact) {
-          const proposalResult = await mutationEngine.createProposal({
-            artifactId: artifactResult.artifact.id,
-            hypothesis: finding.suggestedFix ?? finding.message,
-            riskScore: finding.severity === 'error' ? 0.7 : finding.severity === 'warning' ? 0.4 : 0.2,
-            category: finding.evolutionType ?? 'resilience',
-          });
-          if (proposalResult.success) results.push(finding.message.slice(0, 50));
-        }
-      }
-      return results;
-    },
+    mutationFn: (findings: any[]) => generateProposalsFromFindings(findings),
     onSuccess: (results) => {
       toast.success(`Generated ${results.length} mutation proposals from scan findings`);
       invalidateAll();
     },
     onError: () => {
       toast.error('Failed to generate proposals');
+    },
+  });
+
+  const resetPipelineMutation = useMutation({
+    mutationFn: async () => {
+      // Clear pipeline data but preserve learnings (shared rules, skill data, immune learnings)
+      const tables = ['mutation_runs', 'verification_scans', 'mutation_proposals', 'change_artifacts', 'integrity_findings', 'integrity_scan_runs'];
+      for (const table of tables) {
+        await (supabase.from(table as any).delete() as any).neq('id', '__never__');
+      }
+      // Clear evolution runs but keep evolution_circuit intact
+      await (supabase.from('evolution_runs' as any).delete() as any).neq('run_id', '__never__');
+      // Clear telemetry but NOT immune_metrics or shared rules
+      await (supabase.from('evolution_telemetry' as any).delete() as any).neq('id', '__never__');
+    },
+    onSuccess: () => {
+      setScanResults([]);
+      setSelectedMutation(null);
+      toast.success('Pipeline reset — proposals, artifacts, and runs cleared. Learnings preserved.');
+      invalidateAll();
+    },
+    onError: (err: any) => {
+      toast.error(`Reset failed: ${err?.message ?? 'Unknown error'}`);
     },
   });
 
@@ -452,44 +487,85 @@ export default function EvolutionMeshDashboard() {
             </div>
           </div>
 
-          {/* Top-level Abort Evolution Button */}
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={abortEvolveMutation.isPending}
-                className="border-destructive/40 text-destructive hover:bg-destructive/10 w-full sm:w-auto self-start gap-1.5"
-              >
-                {abortEvolveMutation.isPending ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <XOctagon className="w-3.5 h-3.5" />
-                )}
-                Abort Evolution
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Abort all active evolution?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This terminates any active evolution run, including stuck cycles from the terminal
-                  that may not appear in the proposals section. All in-progress shadow or canary
-                  stages will be halted.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter className="flex-col sm:flex-row gap-2">
-                <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => abortEvolveMutation.mutate()}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 w-full sm:w-auto"
+          {/* Top-level Controls */}
+          <div className="flex flex-wrap gap-2">
+            {/* Reset Pipeline — fresh state */}
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={resetPipelineMutation.isPending}
+                  className="border-amber-500/40 text-amber-500 hover:bg-amber-500/10 gap-1.5"
                 >
-                  {abortEvolveMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <XOctagon className="w-3 h-3 mr-1" />}
-                  Confirm Abort
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                  {resetPipelineMutation.isPending ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <RotateCcw className="w-3.5 h-3.5" />
+                  )}
+                  Reset Pipeline
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Reset evolution pipeline to fresh state?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This clears all proposals, artifacts, shadow runs, verifications, and scan results.
+                    <strong className="block mt-2 text-foreground">Preserved:</strong> Shared rules, immune learnings, skill data, executor training, and knowledge packs.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                  <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => resetPipelineMutation.mutate()}
+                    className="bg-amber-600 text-white hover:bg-amber-700 w-full sm:w-auto"
+                  >
+                    {resetPipelineMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <RotateCcw className="w-3 h-3 mr-1" />}
+                    Confirm Reset
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+            {/* Abort Evolution */}
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={abortEvolveMutation.isPending}
+                  className="border-destructive/40 text-destructive hover:bg-destructive/10 gap-1.5"
+                >
+                  {abortEvolveMutation.isPending ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <XOctagon className="w-3.5 h-3.5" />
+                  )}
+                  Abort Evolution
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Abort all active evolution?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This terminates any active evolution run, including stuck cycles from the terminal
+                    that may not appear in the proposals section. All in-progress shadow or canary
+                    stages will be halted.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                  <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => abortEvolveMutation.mutate()}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90 w-full sm:w-auto"
+                  >
+                    {abortEvolveMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <XOctagon className="w-3 h-3 mr-1" />}
+                    Confirm Abort
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
 
         {/* Pipeline Stats Bar */}
