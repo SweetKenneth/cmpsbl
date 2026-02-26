@@ -3129,6 +3129,60 @@ Respond in a structured format.`;
       }
     }
 
+    case "clm_burst": {
+      // v4.0.0: Dispatch a burst of CLM cycles via the orchestrator pattern
+      const burstSize = Math.min(data.burst_size || 10, 25);
+      const autoChain = data.auto_chain !== false;
+
+      try {
+        const { data: burstResult, error: burstError } = await supabase.functions.invoke('pf-clm-engine', {
+          body: { action: 'burst', burst_size: burstSize, auto_chain: autoChain },
+        });
+
+        if (burstError) throw burstError;
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'clm_burst',
+          burst_size: burstSize,
+          auto_chain: autoChain,
+          result: burstResult,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action: 'clm_burst',
+          error: error instanceof Error ? error.message : 'CLM burst dispatch failed',
+        }, headers);
+      }
+    }
+
+    case "clm_status": {
+      // v4.0.0: Get CLM velocity and budget status
+      try {
+        const { data: statusResult, error: statusError } = await supabase.functions.invoke('pf-clm-engine', {
+          body: { action: 'status' },
+        });
+
+        if (statusError) throw statusError;
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'clm_status',
+          ...statusResult,
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action: 'clm_status',
+          error: error instanceof Error ? error.message : 'CLM status check failed',
+        }, headers);
+      }
+    }
+
     case "forecast": {
       // Probabilistic forecasting (wired to pf-brain-forecast logic)
       const { metric = "general", window = "7d" } = data;
