@@ -1,16 +1,11 @@
 /**
  * pf-clm-engine — High-Velocity Continuous Learning Engine
- * v4.0.0 SPARTA Epoch — Burst Orchestrator Pattern
+ * v5.0.0 SPARTA Epoch — Always-Burst Orchestrator
  * 
- * Supports burst mode: runs N cycles per invocation for maximum throughput.
- * Target: 25,000+ AI calls/day via 2,500 cycles × 10 topics each.
+ * ALWAYS runs in burst mode. Every cron/manual invocation fires a full burst.
+ * Target: 25,000+ AI calls/day via aggressive parallel cycling + self-chaining.
  * 
- * Actions:
- *   cycle       — Single cycle (backward compat, cron default)
- *   burst       — Run multiple cycles in one invocation (orchestrator pattern)
- *   status      — Return current budget/velocity stats
- * 
- * No new cron jobs needed — the substrate orchestrator dispatches bursts.
+ * Key change from v4: Default is BURST (not single cycle). Self-chains aggressively.
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -21,13 +16,13 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "4.0.0";
-const MAX_CYCLES_PER_HOUR = 200;
-const MAX_CYCLES_PER_DAY = 2500;
-const DEFAULT_BURST_SIZE = 10;     // Cycles per burst invocation
-const MAX_BURST_SIZE = 25;         // Hard cap per single invocation
-const CYCLE_TIMEOUT_MS = 45_000;   // Per-cycle timeout (edge fn has ~60s)
-const BURST_DEADLINE_MS = 50_000;  // Total burst deadline
+const CLM_VERSION = "5.0.0";
+const MAX_CYCLES_PER_HOUR = 250;
+const MAX_CYCLES_PER_DAY = 3000;
+const DEFAULT_BURST_SIZE = 5;      // Cycles per burst (each ~10s, 5 fits in deadline)
+const MAX_BURST_SIZE = 8;          // Hard cap per invocation
+const CYCLE_TIMEOUT_MS = 45_000;
+const BURST_DEADLINE_MS = 50_000;
 
 // All 20 modules that participate in CLM
 const CLM_MODULES = [
