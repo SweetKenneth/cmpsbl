@@ -20,6 +20,7 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { isWebAuthnSupported, isPlatformAuthenticatorAvailable, authenticateWithPasskey } from '@/lib/substrate/identity-module';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { secureSet } from '@/lib/system/secureStorage';
 
 export default function Auth() {
   const { signInWithMagicLink, signUpWithMagicLink } = useAuth();

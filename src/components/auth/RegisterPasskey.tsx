@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { registerPasskey, isPlatformAuthenticatorAvailable } from '@/lib/substrate/identity-module';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { secureGet, secureRemove } from '@/lib/system/secureStorage';
 
 export function RegisterPasskeyPrompt() {
   const { user, session } = useAuth();
