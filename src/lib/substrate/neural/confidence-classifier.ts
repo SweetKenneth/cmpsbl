@@ -217,7 +217,9 @@ class ConfidenceClassifier {
 
       return { samples: traces.length, accuracy };
     } catch (err) {
-      console.error('[Neural] Classifier training error:', err);
+      const message = err instanceof Error ? err.message : 'Unknown training error';
+      console.warn('[Neural] Classifier training error:', message);
+      this.state.error = message;
       return null;
     }
   }

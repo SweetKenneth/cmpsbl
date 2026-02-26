@@ -254,7 +254,9 @@ class DriftDetector {
       this.state.hasModel = true;
       return { samples: embeddings.length, avgError };
     } catch (err) {
-      console.error('[Neural] Drift detector training error:', err);
+      const message = err instanceof Error ? err.message : 'Unknown training error';
+      console.warn('[Neural] Drift detector training error:', message);
+      this.state.error = message;
       return null;
     }
   }
