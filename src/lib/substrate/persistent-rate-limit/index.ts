@@ -6,6 +6,8 @@
  * Uses localStorage for persistence and BroadcastChannel for cross-tab sync.
  */
 
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
+
 export interface PersistentBucket {
   key: string;
   tokens: number;
@@ -117,9 +119,7 @@ class PersistentRateLimiter {
   /** Reset a specific bucket */
   reset(key: string): void {
     this.cache.delete(key);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem(STORAGE_PREFIX + key);
-    }
+    secureRemove(STORAGE_PREFIX + key);
   }
 
   /** Get all active buckets */
@@ -137,9 +137,7 @@ class PersistentRateLimiter {
     for (const [key, bucket] of this.cache) {
       if (now - bucket.lastRefillAt > staleThreshold) {
         this.cache.delete(key);
-        if (typeof localStorage !== 'undefined') {
-          localStorage.removeItem(STORAGE_PREFIX + key);
-        }
+        secureRemove(STORAGE_PREFIX + key);
         cleaned++;
       }
     }
@@ -204,11 +202,8 @@ class PersistentRateLimiter {
   }
 
   private loadFromStorage(key: string): PersistentBucket | null {
-    if (typeof localStorage === 'undefined') return null;
     try {
-      const raw = localStorage.getItem(STORAGE_PREFIX + key);
-      if (!raw) return null;
-      return JSON.parse(raw);
+      return secureGet<PersistentBucket>(STORAGE_PREFIX + key);
     } catch {
       return null;
     }
@@ -219,8 +214,10 @@ class PersistentRateLimiter {
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const storageKey = localStorage.key(i);
-        if (storageKey?.startsWith(STORAGE_PREFIX)) {
-          const key = storageKey.slice(STORAGE_PREFIX.length);
+        // Check both obfuscated (_s_) and legacy prefix
+        const prefix = storageKey?.startsWith('_s_') ? '_s_' + STORAGE_PREFIX : STORAGE_PREFIX;
+        if (storageKey?.startsWith(prefix)) {
+          const key = storageKey.slice(prefix.length);
           if (!this.cache.has(key)) {
             const bucket = this.loadFromStorage(key);
             if (bucket) this.cache.set(key, bucket);
@@ -228,20 +225,17 @@ class PersistentRateLimiter {
         }
       }
     } catch {
-      // Storage access may fail
+      // Storage access may fail in restricted contexts
     }
   }
 
   private saveBucket(bucket: PersistentBucket): void {
     this.cache.set(bucket.key, bucket);
-    
-    if (typeof localStorage !== 'undefined') {
-      try {
-        localStorage.setItem(STORAGE_PREFIX + bucket.key, JSON.stringify(bucket));
-      } catch {
-        // Storage full — cleanup old entries
-        this.cleanup();
-      }
+    try {
+      secureSet(STORAGE_PREFIX + bucket.key, bucket);
+    } catch {
+      // Storage full — cleanup old entries
+      this.cleanup();
     }
 
     // Sync across tabs

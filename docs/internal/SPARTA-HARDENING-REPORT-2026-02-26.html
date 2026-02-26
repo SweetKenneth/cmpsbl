@@ -361,6 +361,42 @@ CREATE POLICY "Authenticated can insert defense_events"
   <p><span class="badge badge-info">INFO</span> ~2,519 non-critical <code>as any</code> type assertions remain across 185 files. These are low-severity, non-blocking, and scheduled for incremental cleanup in future sprints. None affect security or structural integrity.</p>
 </div>
 
+<!-- ═══════════ PASS 2: FINAL SWEEP ═══════════ -->
+<h2>Pass 2 — Final Structural Sweep (Same Day)</h2>
+<div class="surface">
+  <p>A second full audit pass identified and resolved 5 additional gaps:</p>
+  <table>
+    <thead><tr><th>#</th><th>File</th><th>Issue</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>31</td><td><code>src/lib/nexus/metrics.ts</code></td><td>Raw localStorage for NEXUS metrics buffer</td><td>Migrated to <code>secureGet/secureSet/secureRemove</code></td></tr>
+      <tr><td>32</td><td><code>src/lib/debug-mode.ts</code></td><td>Debug kill-switch state in plaintext localStorage</td><td>Migrated to <code>secureStorage</code> + annotated catch block</td></tr>
+      <tr><td>33</td><td><code>src/lib/substrate/persistent-rate-limit/index.ts</code></td><td>Rate limit token buckets in plaintext localStorage</td><td>Full migration to obfuscated storage</td></tr>
+      <tr><td>34</td><td><code>src/lib/substrate/ripple-dlq/index.ts</code></td><td>Dead letter queue persistence in plaintext</td><td>Migrated to <code>secureStorage</code></td></tr>
+      <tr><td>35</td><td><code>src/components/agency/features/SoundEffects.tsx</code></td><td>Sound settings in plaintext localStorage</td><td>Migrated to <code>secureStorage</code></td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top: 0.8rem;"><strong>Additional hardening:</strong></p>
+  <ul>
+    <li>Annotated silent <code>catch {}</code> in <code>supabase-contracts.ts</code> audit check</li>
+    <li>Annotated silent <code>catch {}</code> in <code>debug-mode.ts</code> state save</li>
+    <li>Annotated silent <code>catch {}</code> in <code>nexus/metrics.ts</code> clear function</li>
+  </ul>
+  <p style="margin-top: 0.8rem;"><strong>Verified exceptions (no migration needed):</strong></p>
+  <ul>
+    <li><code>resourceMonitor.ts</code> — Reads total localStorage byte size (diagnostic, can't self-reference secureStorage)</li>
+    <li><code>forceReconnect.ts</code> — Clears connection state key (reconnect utility)</li>
+    <li><code>connectionDiagnostics.ts</code> — Tests storage read/write capability</li>
+    <li><code>cacheFlush.ts</code> — Bulk purge across all keys (must iterate raw)</li>
+    <li><code>diag.ts</code> — Plaintext crash-recovery logs (intentional per policy)</li>
+    <li><code>rollback-snapshots</code> — Raw state capture for rollback fidelity</li>
+    <li><code>clockless-radio</code> — Audio <code>catch {}</code> blocks are Web Audio API <code>.stop()</code> semantics</li>
+  </ul>
+</div>
+
+<div class="surface">
+  <p><strong>RLS Linter:</strong> 24 warnings — all 21 "RLS Policy Always True" findings are <code>Service role full access</code> policies. Service role bypasses RLS by design; these are intentional administrative access grants and are non-actionable. 3 "Extension in Public" warnings for pg_trgm/vector extensions — standard for this workload.</p>
+</div>
+
 <!-- ═══════════ VERIFICATION ═══════════ -->
 <h2>Verification</h2>
 <div class="surface">
@@ -370,13 +406,15 @@ CREATE POLICY "Authenticated can insert defense_events"
     <li><span class="badge badge-pass">PASS</span> No failing network requests</li>
     <li><span class="badge badge-pass">PASS</span> All secureStorage consumers verified via import audit</li>
     <li><span class="badge badge-pass">PASS</span> defense_events RLS migration applied</li>
+    <li><span class="badge badge-pass">PASS</span> All actionable localStorage migrated (7 verified exceptions documented)</li>
+    <li><span class="badge badge-pass">PASS</span> RLS linter: 0 critical, 0 actionable warnings</li>
   </ul>
 </div>
 
 <div class="footer">
   SPARTA Epoch — Substrate Hardening Report<br>
-  Generated 2026-02-26 &nbsp;|&nbsp; Classification: Internal<br>
-  Zero critical gaps remaining
+  Generated 2026-02-26 (Updated: Pass 2) &nbsp;|&nbsp; Classification: Internal<br>
+  Zero critical gaps remaining &nbsp;|&nbsp; 35 total remediations
 </div>
 
 </body>

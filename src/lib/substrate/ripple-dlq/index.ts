@@ -9,6 +9,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -340,9 +341,8 @@ class RippleDLQ {
     this.loaded = true;
     if (typeof localStorage !== 'undefined') {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const state = JSON.parse(raw);
+        const state = secureGet<{ queue: DeadLetterEntry[]; resolvedCount: number; totalRetries: number; successfulRetries: number }>(STORAGE_KEY);
+        if (state) {
           this.queue = state.queue || [];
           this.resolvedCount = state.resolvedCount || 0;
           this.totalRetries = state.totalRetries || 0;
@@ -355,12 +355,12 @@ class RippleDLQ {
   private persist(): void {
     if (typeof localStorage !== 'undefined') {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        secureSet(STORAGE_KEY, {
           queue: this.queue.slice(-this.config.maxQueueSize),
           resolvedCount: this.resolvedCount,
           totalRetries: this.totalRetries,
           successfulRetries: this.successfulRetries,
-        }));
+        });
       } catch { /* Storage pressure — non-critical */ }
     }
   }

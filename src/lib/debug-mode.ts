@@ -10,6 +10,8 @@
  *   debugMode.enableFeature('polling-intervals');  // Enable specific feature
  */
 
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
+
 type FeatureName = 
   | 'polling-intervals'
   | 'realtime-subscriptions'
@@ -50,14 +52,10 @@ let state: DebugModeState = {
 function loadState(): void {
   if (typeof window === 'undefined') return;
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      // Only restore debug mode if it was explicitly enabled by the user (not auto-enabled)
-      // By default, systems should run normally
+    const parsed = secureGet<DebugModeState>(STORAGE_KEY);
+    if (parsed) {
       if (parsed.enabled) {
-        // Clear stale debug state — system should start fresh
-        localStorage.removeItem(STORAGE_KEY);
+        secureRemove(STORAGE_KEY);
         console.log('[DebugMode] 🟢 Cleared stale debug state — all systems operational');
         return;
       }
@@ -71,9 +69,9 @@ function loadState(): void {
 function saveState(): void {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch {
-    // Silent fail
+    secureSet(STORAGE_KEY, state);
+  } catch (e) {
+    console.warn('[DebugMode] Failed to persist state:', e);
   }
 }
 

@@ -8,6 +8,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { debugMode } from '@/lib/debug-mode';
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
 
 interface Metric {
   name: string;
@@ -27,9 +28,9 @@ const MAX_BUFFER_SIZE = 100;
 export function clearMetrics(): void {
   metricsBuffer = [];
   try {
-    localStorage.removeItem('nexus_metrics');
+    secureRemove('nexus_metrics');
   } catch (error) {
-    // Silent fail
+    console.warn('[Metrics] Failed to clear stored metrics:', error);
   }
 }
 
@@ -75,11 +76,10 @@ export async function flushMetrics(): Promise<void> {
   metricsBuffer.length = 0;
 
   try {
-    const stored = localStorage.getItem('nexus_metrics') || '[]';
-    const existing = JSON.parse(stored);
-    localStorage.setItem('nexus_metrics', JSON.stringify([...existing, ...batch].slice(-1000)));
+    const existing = secureGet<Metric[]>('nexus_metrics') || [];
+    secureSet('nexus_metrics', [...existing, ...batch].slice(-1000));
   } catch (error) {
-    console.error('Failed to flush metrics:', error);
+    console.error('[Metrics] Failed to flush metrics:', error);
   }
 }
 
@@ -87,10 +87,8 @@ export async function flushMetrics(): Promise<void> {
  * Get system metrics summary
  */
 export async function getMetricsSummary(timeRange: number = 3600000) {
-  const stored = localStorage.getItem('nexus_metrics');
-  if (!stored) return null;
-
-  const metrics: Metric[] = JSON.parse(stored);
+  const metrics = secureGet<Metric[]>('nexus_metrics');
+  if (!metrics || metrics.length === 0) return null;
   const now = Date.now();
   const recent = metrics.filter(m => now - m.timestamp < timeRange);
 
