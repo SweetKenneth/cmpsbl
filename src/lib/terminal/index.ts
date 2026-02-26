@@ -70,3 +70,8 @@ export {
 export {
   registerObservabilityHandlers,
 } from './observability-handlers';
+
+// Governance handlers (v11.5.0)
+export {
+  registerGovernanceHandlers,
+} from './governance-handlers';
