@@ -52,15 +52,16 @@ const MAX_PERSISTED_HISTORY = 200;
 
 function loadPersistedHistory(): string[] {
   try {
-    const stored = localStorage.getItem(HISTORY_STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch { return []; }
+    const { secureGet } = require('@/lib/system/secureStorage');
+    return secureGet<string[]>(HISTORY_STORAGE_KEY) || [];
+  } catch { /* Storage unavailable — start fresh */ return []; }
 }
 
 function persistHistory(history: string[]) {
   try {
-    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history.slice(-MAX_PERSISTED_HISTORY)));
-  } catch { /* quota exceeded — silent */ }
+    const { secureSet } = require('@/lib/system/secureStorage');
+    secureSet(HISTORY_STORAGE_KEY, history.slice(-MAX_PERSISTED_HISTORY));
+  } catch { /* Quota exceeded — non-critical */ }
 }
 
 export function EnhancedTerminal({ enabled, className, fullHeight = false }: EnhancedTerminalProps) {

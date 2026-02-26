@@ -3,6 +3,7 @@
  */
 
 import { useState, useCallback, useMemo } from 'react';
+import { secureGet, secureSet, secureRemove } from '@/lib/system/secureStorage';
 
 export interface HistoryEntry {
   command: string;
@@ -16,22 +17,21 @@ const STORAGE_KEY = 'substrate_command_history';
 // Load persisted history
 function loadHistory(): HistoryEntry[] {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved) as HistoryEntry[];
+    const parsed = secureGet<HistoryEntry[]>(STORAGE_KEY);
+    if (parsed) {
       return parsed.map(e => ({ ...e, timestamp: new Date(e.timestamp) }));
     }
-  } catch (e) {
-    console.warn('Failed to load command history');
+  } catch {
+    /* Storage unavailable — start fresh */
   }
   return [];
 }
 
 function saveHistory(history: HistoryEntry[]) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-MAX_HISTORY_SIZE)));
-  } catch (e) {
-    console.warn('Failed to save command history');
+    secureSet(STORAGE_KEY, history.slice(-MAX_HISTORY_SIZE));
+  } catch {
+    /* Quota exceeded — non-critical */
   }
 }
 
@@ -97,7 +97,7 @@ export function useTerminalHistory() {
 
   const clearHistory = useCallback(() => {
     setHistory([]);
-    localStorage.removeItem(STORAGE_KEY);
+    secureRemove(STORAGE_KEY);
   }, []);
 
   // Format for terminal display

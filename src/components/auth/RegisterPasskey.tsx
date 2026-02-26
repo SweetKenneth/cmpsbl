@@ -24,7 +24,7 @@ export function RegisterPasskeyPrompt() {
     if (!user || !session) return;
     
     // Check if there's a pending passkey registration (set during login/signup)
-    const pendingEmail = localStorage.getItem('cmpsbl_pending_passkey_email');
+    const pendingEmail = secureGet<string>('cmpsbl_pending_passkey_email');
     
     // Show prompt if:
     // 1. There's a pending email that matches the logged-in user
@@ -39,7 +39,7 @@ export function RegisterPasskeyPrompt() {
             setShow(true);
           } else {
             // Clean up if device doesn't support it
-            localStorage.removeItem('cmpsbl_pending_passkey_email');
+            secureRemove('cmpsbl_pending_passkey_email');
           }
         });
       }, 1500);
@@ -73,7 +73,7 @@ export function RegisterPasskeyPrompt() {
         } else {
           toast.success('Face ID set up! Next time, just use Face ID to sign in.');
           setDone(true);
-          localStorage.removeItem('cmpsbl_pending_passkey_email');
+          secureRemove('cmpsbl_pending_passkey_email');
           
           // Auto-hide after 4 seconds
           setTimeout(() => setShow(false), 4000);
@@ -89,7 +89,7 @@ export function RegisterPasskeyPrompt() {
 
   const handleSkip = () => {
     setShow(false);
-    localStorage.removeItem('cmpsbl_pending_passkey_email');
+    secureRemove('cmpsbl_pending_passkey_email');
     toast.info('You can set up Face ID later from your settings.', { duration: 4000 });
   };
 
