@@ -147,10 +147,11 @@ export default function Upgrade() {
                       <span className="text-xs text-muted-foreground uppercase tracking-wider">Included Assets</span>
                       {Object.entries(tierAssets).map(([type, count]) => {
                         const Icon = TYPE_ICONS[type as QuarryAssetType] ?? Package;
+                        const c = count as number;
                         return (
                           <div key={type} className="flex items-center gap-2 text-sm">
                             <Icon className="w-3.5 h-3.5 text-muted-foreground" />
-                            <span>{count} {ASSET_TYPE_LABELS[type as QuarryAssetType]}{count > 1 ? 's' : ''}</span>
+                            <span>{c} {ASSET_TYPE_LABELS[type as QuarryAssetType]}{c > 1 ? 's' : ''}</span>
                           </div>
                         );
                       })}
