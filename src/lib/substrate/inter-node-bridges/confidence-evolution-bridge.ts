@@ -8,7 +8,15 @@
  * CAPABILITY SYSTEM → confidence tracker → [THIS BRIDGE] → evolution gates + CLM
  */
 
-import { getLowConfidenceCapabilities, getConfidenceSummary, type ConfidenceRecord } from '@/lib/capabilities/confidence';
+import { getLowConfidenceCapabilities, getConfidenceSummary } from '@/lib/capabilities/confidence';
+
+interface ConfidenceRecord {
+  capabilityId: string;
+  scores: number[];
+  errors: string[];
+  lastUpdated: string;
+  avgConfidence: number;
+}
 import { emit } from '@/lib/substrate/events';
 import { log } from '@/lib/system/log';
 

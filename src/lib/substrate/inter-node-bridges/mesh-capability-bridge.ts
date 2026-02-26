@@ -8,7 +8,8 @@
  * INTENT MESH → resolver match → [THIS BRIDGE] → capability adapter → edge function
  */
 
-import { invokeCapability, canInvoke, type CapabilityResult } from '@/lib/capabilities/adapter';
+import { invokeCapability, canInvoke } from '@/lib/capabilities/adapter';
+import type { CapabilityResult } from '@/lib/capabilities/types';
 import { getCapability } from '@/lib/capabilities/registry';
 import { emit } from '@/lib/substrate/events';
 import { log } from '@/lib/system/log';
