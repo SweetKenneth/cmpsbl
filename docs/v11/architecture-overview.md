@@ -1,51 +1,89 @@
-# Architecture Overview — SPARTA Epoch (v11.1)
+# Architecture Overview — SPARTA Epoch (v11.5)
 
-## The Layered Cognitive Kernel
+## Field-Based Topology
 
-CMPSBL operates as a **layered cognitive kernel** — a production-ready AI operating system that persists, heals, and evolves autonomously without human intervention.
+CMPSBL operates as a **layered cognitive kernel** organized into a field-based topology — replacing the legacy flat layer model with a Spine / Grid / Field / Plane / Shell structure.
 
-### Entity Hierarchy
+### Topology Diagram
 
-| Layer | Entities | Role |
-|-------|----------|------|
-| **CORE** | 1 kernel | Standalone boot authority; initializes all layers |
-| **CCR Zones** | 4 zones (SYSTEM, BRAIN, MEMORY, DREAM) | Hidden meta-engine — reasoning, synthesis, persistence |
-| **CCL Zones** | 5 zones (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) | Infrastructure convergence — events, auth, integrity |
-| **Matrix Nodes** | 9 modules (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION) | Public-facing cognitive capabilities |
-| **Overlays** | 5 meshes (DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE) | Protective behavioral mesh hierarchy |
+```
+                 ┌───────────────────────────────────┐
+                 │            DEFENSE SHELL          │
+                 │                                   │
+                 │   ┌───────────────────────────┐   │
+                 │   │        OVERLAY PLANE      │   │
+                 │   │  (Governance / Supervision)│   │
+                 │   └───────────────────────────┘   │
+                 │                                   │
+                 │   ╔═══════════════════════════╗   │
+                 │   ║   EVOLUTION / IMMUNITY    ║   │
+                 │   ║        MESH FIELD         ║   │
+                 │   ║                           ║   │
+                 │   ║        CORE               ║   │
+                 │   ║          │                ║   │
+                 │   ║        SYSTEM             ║   │
+                 │   ║          │                ║   │
+                 │   ║  CLM ─── CCR ─── AUTOBLOG║   │
+                 │   ║    │        │             ║   │
+                 │   ║ MINDS       │ ─── OCG     ║   │
+                 │   ║    │        │             ║   │
+                 │   ║ RESOLVERS  MODULES        ║   │
+                 │   ║                           ║   │
+                 │   ╚═══════════════════════════╝   │
+                 │                                   │
+                 └───────────────────────────────────┘
+```
 
-**Total: 10 public entities + 5 mesh overlays + 9 hidden zones = 24 Matrix Nodes**
+### Topology Taxonomy
 
-### Boot Sequence
+| Topology | Entity | Role |
+|----------|--------|------|
+| **Shell** | DEFENSE | Outer containment boundary — encloses entire substrate |
+| **Plane** | GOVERNANCE | Supervisory blanket under the Shell |
+| **Fields** | EVOLUTION, IMMUNITY, INTENT | System-wide transformation fabric — permeate the spine |
+| **Spine** | CORE → SYSTEM → CCR → MODULES → RESOLVERS | Vertical deterministic flow |
+| **Grid** | OCG (Operational Compliance Grid) | Boundary enforcement — right-side tap off spine |
+| **Branch** | CLM | Lateral intelligence — left-side branch off spine |
+
+### Vertical Spine (Boot Sequence)
 
 ```
 CORE (Standalone Kernel)
-  → CCR (Layer 0): SYSTEM + BRAIN + MEMORY + DREAM
-  → CCL (Layer 1): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
+  → SYSTEM (Standalone Layer — lifecycle, config, diagnostics)
+  → CCR (Layer 0): BRAIN + MEMORY + DREAM
+  → OCG (Grid): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
   → 8 Matrix Nodes: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
   → INTEGRATION (boots last — dependency resolver)
-  ← 5 Overlays wrap all layers: DEFENSE (outermost) → GOVERNANCE (innermost)
+  ← Fields permeate: EVOLUTION + IMMUNITY + INTENT
+  ← Plane: GOVERNANCE (supervisory blanket)
+  ← Shell: DEFENSE (outer containment)
 ```
+
+### Key Changes from v11.1
+
+- **SYSTEM extracted from CCR** — now a standalone layer between CORE and CCR
+- **CCL renamed to OCG** (Operational Compliance Grid) — classified as a Grid
+- **DEFENSE** elevated to Shell (outer containment boundary)
+- **GOVERNANCE** reclassified as Overlay Plane (supervisory blanket)
+- **EVOLUTION, IMMUNITY, INTENT** reclassified as Fields (system-wide transformation fabric)
+- **CLM** repositioned as lateral Intelligence Branch
 
 ### Health Model
 
-Health is calculated using a **5-layer weighted aggregation** (20% each):
+Health uses a **weighted topology aggregation**:
 
-- **CORE health** — kernel availability
-- **CCR aggregate** — zone cluster health
-- **CCL aggregate** — infrastructure zone health
-- **Matrix Nodes** — public module health
-- **Overlays** — mesh integrity
+| Topology | Weight | Components |
+|----------|--------|------------|
+| CORE | 20% | Kernel availability |
+| SYSTEM | 5% | Lifecycle management |
+| CCR | 15% | BRAIN, MEMORY, DREAM |
+| OCG | 20% | RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT |
+| Execution | 25% | 9 public modules |
+| Fields | 9% | EVOLUTION, IMMUNITY, INTENT |
+| Plane | 3% | GOVERNANCE |
+| Shell | 3% | DEFENSE |
 
-A degraded zone reduces only its own layer score. Circuit breakers isolate failures per-zone, preventing cascading degradation.
-
-### Key Properties
-
-- **Hot-swappable zones**: CCR/CCL zones can be independently cycled without system restart
-- **Circuit breaker isolation**: Every zone has independent failure tracking
-- **Autonomous evolution**: The EVOLUTION overlay continuously improves system behavior
-- **Shadow training**: Executors practice on real system gaps in shadow mode
-- **Integrity surface**: GOAL telemetry validates cross-zone consistency
+Fields, Plane, and Shell are cross-cutting — they permeate the spine rather than sit as stacked layers.
 
 ---
 
