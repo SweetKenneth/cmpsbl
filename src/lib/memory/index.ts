@@ -1,5 +1,5 @@
 /**
- * @cmpsbl/memory - Persistent Memory SDK v10.9.0
+ * @cmpsbl/memory - Persistent Memory SDK — SPARTA Epoch
  * 
  * Add persistent memory to any agent or React app in under an hour.
  * Now with: Vector search, spaced repetition, contradiction detection,

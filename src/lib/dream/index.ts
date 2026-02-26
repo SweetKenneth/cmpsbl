@@ -1,5 +1,5 @@
 /**
- * promptfluid® Dream Module v9.1.0 ARCHITECT
+ * DREAM Module — SPARTA Epoch
  * Nocturnal Processing & Autonomous Learning Synthesis
  * 
  * The unconscious layer for:

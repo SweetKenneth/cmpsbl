@@ -1,6 +1,6 @@
 /**
  * SANDBOX Module — Isolated Execution Environments
- * v10.5.1 ARCHITECT Epoch — Speculative runs, containment, evolution testing
+ * SPARTA Epoch — Speculative runs, containment, evolution testing
  * Circuit Breaker + Hot-Swap + Graceful Fallback
  * 
  * CLM-Requested Upgrades Implemented:
