@@ -267,7 +267,6 @@ class TierCommandClient {
     try {
       const { secureSet } = require('@/lib/system/secureStorage');
       secureSet('clm_current_tier', this.currentTier.name);
-      }
     } catch {
       // Non-critical
     }
