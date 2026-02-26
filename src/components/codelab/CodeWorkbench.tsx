@@ -223,7 +223,7 @@ export function CodeWorkbench() {
       const parsed = JSON.parse(request);
       parsed.module = module;
       setRequest(JSON.stringify(parsed, null, 2));
-    } catch {}
+    } catch { /* Invalid JSON in request field — ignore */ }
   };
 
   return (

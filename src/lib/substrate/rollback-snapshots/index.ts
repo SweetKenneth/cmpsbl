@@ -6,6 +6,8 @@
  * enabling confident rollback to known-good states.
  */
 
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
+
 export interface Snapshot {
   id: string;
   label: string;
@@ -153,6 +155,7 @@ class RollbackSnapshotStore {
     for (const [key, value] of Object.entries(snapshot.state)) {
       try {
         if (typeof localStorage !== 'undefined' && typeof value === 'string') {
+          // Rollback restores write raw keys back (they were captured raw)
           localStorage.setItem(key, value);
           restoredKeys.push(key);
         }
@@ -233,30 +236,27 @@ class RollbackSnapshotStore {
     if (this.loaded) return;
     this.loaded = true;
 
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          this.snapshots = JSON.parse(raw);
-        }
-      } catch {
-        this.snapshots = [];
+    try {
+      const data = secureGet<Snapshot[]>(STORAGE_KEY);
+      if (data) {
+        this.snapshots = data;
       }
+    } catch {
+      /* Storage unavailable — start with empty snapshots */
+      this.snapshots = [];
     }
   }
 
   private persist(): void {
-    if (typeof localStorage !== 'undefined') {
+    try {
+      secureSet(STORAGE_KEY, this.snapshots);
+    } catch {
+      // Storage full — prune old snapshots
+      this.prune(7 * 24 * 60 * 60 * 1000); // Keep last 7 days
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.snapshots));
+        secureSet(STORAGE_KEY, this.snapshots);
       } catch {
-        // Storage full — prune old snapshots
-        this.prune(7 * 24 * 60 * 60 * 1000); // Keep last 7 days
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(this.snapshots));
-        } catch {
-          // Still full — nothing we can do
-        }
+        /* Still full — nothing we can do */
       }
     }
   }

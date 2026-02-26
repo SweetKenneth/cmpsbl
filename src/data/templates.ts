@@ -9749,7 +9749,7 @@ class ComplianceAuditBrain {
           violations.push(policy);
           recommendations.push(\`Fix: \${result.reason}\`);
         }
-      } catch {}
+       } catch { /* Malformed compliance check response — skip */ }
     }
     
     const entry: AuditEntry = {
