@@ -1,6 +1,6 @@
 /**
  * useArtifactSlots — Runtime slot enforcement for equal-slot artifact capacity model
- * Manages pack activation/deactivation with capacity enforcement
+ * Uses atomic server-side RPCs (activate_pack / deactivate_pack) to prevent race conditions.
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -26,7 +26,7 @@ export interface SlotState {
   tier: ProductTier;
   remaining: number;
   atCapacity: boolean;
-  nearCapacity: boolean; // >= 80%
+  nearCapacity: boolean;
   isPackActive: (packId: string) => boolean;
 }
 
@@ -73,43 +73,28 @@ export function useArtifactSlots(subscriptionTier?: string) {
     isPackActive: (packId: string) => activePacks.some(p => p.pack_id === packId),
   };
 
-  const logAudit = async (packId: string, eventType: string, meta?: Record<string, unknown>) => {
-    if (!user?.id) return;
-    await supabase.from('activation_audit_log').insert({
-      user_id: user.id,
-      pack_id: packId,
-      event_type: eventType,
-      slot_capacity: capacity,
-      active_count: activeCount,
-      metadata: meta ?? {},
-    } as any);
-  };
-
   const activate = useMutation({
     mutationFn: async (packId: string) => {
       if (!user?.id) throw new Error('Not authenticated');
 
-      // Enforce slot limit — deterministic, no partial activation
-      if (activeCount >= capacity) {
-        await logAudit(packId, 'slot_limit_reached');
-        throw new Error('SLOT_LIMIT_REACHED');
-      }
-
-      const { data, error } = await supabase
-        .from('user_pack_activations')
-        .upsert({
-          user_id: user.id,
-          pack_id: packId,
-          active: true,
-          activated_at: new Date().toISOString(),
-          deactivated_at: null,
-        } as any, { onConflict: 'user_id,pack_id' })
-        .select()
-        .single();
+      // Atomic server-side enforcement via RPC
+      const { data, error } = await supabase.rpc('activate_pack', {
+        p_user_id: user.id,
+        p_pack_id: packId,
+        p_capacity: capacity,
+      });
 
       if (error) throw error;
-      await logAudit(packId, 'activated');
-      return data as PackActivation;
+
+      const result = data as { ok: boolean; reason: string | null; activeCount: number };
+      if (!result.ok) {
+        if (result.reason === 'SLOT_LIMIT_REACHED') {
+          throw new Error('SLOT_LIMIT_REACHED');
+        }
+        throw new Error(result.reason || 'Activation failed');
+      }
+
+      return result;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: SLOTS_KEY });
@@ -125,17 +110,13 @@ export function useArtifactSlots(subscriptionTier?: string) {
     mutationFn: async (packId: string) => {
       if (!user?.id) throw new Error('Not authenticated');
 
-      const { error } = await supabase
-        .from('user_pack_activations')
-        .update({
-          active: false,
-          deactivated_at: new Date().toISOString(),
-        } as any)
-        .eq('user_id', user.id)
-        .eq('pack_id', packId);
+      const { data, error } = await supabase.rpc('deactivate_pack', {
+        p_user_id: user.id,
+        p_pack_id: packId,
+      });
 
       if (error) throw error;
-      await logAudit(packId, 'deactivated');
+      return data as { ok: boolean; activeCount: number };
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: SLOTS_KEY });
