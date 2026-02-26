@@ -392,9 +392,8 @@ serve(async (req) => {
     }
 
     // ═══ BURST / CYCLE EXECUTION ═══
-    const effectiveBurstSize = action === 'burst'
-      ? Math.min(burstSize, budget.remainingDaily, budget.remainingHourly)
-      : 1;
+    // v5: Always burst — even 'cycle' action runs burst_size cycles
+    const effectiveBurstSize = Math.min(burstSize, budget.remainingDaily, budget.remainingHourly);
 
     const cycleResults: Array<{ cycle: number; aiCalls: number; durationMs: number }> = [];
     let totalAiCalls = 0;
@@ -418,12 +417,14 @@ serve(async (req) => {
       }
     }
 
-    // ═══ SELF-CHAIN: dispatch next burst ═══
-    if (autoChain && action === 'burst' && budget.remainingDaily > effectiveBurstSize) {
-      await chainNextBurst(supabase, burstSize, {
+    // ═══ SELF-CHAIN: dispatch next burst immediately ═══
+    if (autoChain && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize) {
+      chainNextBurst(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, burstSize, {
         ...budget,
-        remainingDaily: budget.remainingDaily - effectiveBurstSize,
-        remainingHourly: budget.remainingHourly - effectiveBurstSize,
+        todayCycles: budget.todayCycles + cycleResults.length,
+        hourCycles: budget.hourCycles + cycleResults.length,
+        remainingDaily: budget.remainingDaily - cycleResults.length,
+        remainingHourly: budget.remainingHourly - cycleResults.length,
       });
     }
 
