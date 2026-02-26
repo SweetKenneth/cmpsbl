@@ -2,7 +2,7 @@
 
 ## Classification: Technical Reference Library
 
-**Version:** SPARTA Epoch (v11.2.1)  
+**Version:** SPARTA Epoch  
 **Last Updated:** February 2026  
 **Audience:** Investors, Technical Reviewers, System Architects
 
@@ -65,8 +65,12 @@
 | Document | Location | Focus |
 |----------|----------|-------|
 | Evolution & Shadow | `docs/v11/evolution-and-shadow.md` | Shadow A/B testing, canary deployment |
+| Overlays & Evolution | `docs/v11/overlays-and-evolution.md` | SEBA framework, overlay hierarchy |
+| Evolution Stabilization Gates | `docs/v11/evolution-stabilization.md` | 12 pre-flight gates for live evolution |
+| Evolution Pipeline Reference | `docs/v11/evolution-pipeline-reference.md` | Complete flow diagram, module map |
 | Evolution Mesh Internals | `docs/internal/24-EVOLUTION-MESH-INTERNALS.html` | Full evolution lifecycle |
 | SEBA Internals | `docs/internal/23-EVLVBL-INTERNALS.html` | Self-evolving behavior agent |
+| Executor Evolution Training | `docs/internal/36-EXECUTOR-EVOLUTION-TRAINING.html` | 13 executor performance metrics |
 
 ### 8. Release & Deployment
 | Document | Location | Focus |
@@ -110,8 +114,13 @@
 ```
 docs/
 ├── INDEX.md              ← You are here
-├── v11/                  ← SPARTA Epoch technical library (18 files)
-├── internal/             ← Internal reference guides (38 files)
+├── RELEASE-GATE.md       ← 10-pass pre-release validation
+├── ROLLBACK.md           ← Deployment recovery procedures
+├── v11/                  ← SPARTA Epoch technical library (20 files)
+│   ├── evolution-stabilization.md    ← 12 pre-flight gates
+│   ├── evolution-pipeline-reference.md ← Complete flow diagram
+│   └── ...
+├── internal/             ← Internal reference guides (40+ files)
 ├── academic/             ← Research papers and theoretical foundations
 ├── advances/             ← R&D documentation
 ├── ceo/                  ← Executive communications
@@ -123,10 +132,10 @@ docs/
 ├── substrate/            ← Core substrate documentation
 ├── website/              ← Public website content
 ├── whitepaper/           ← Technical whitepaper
-└── archive/              ← Historical documentation (v10 and earlier)
+└── archive/              ← Historical documentation
 ```
 
 ---
 
-*CMPSBL Substrate — SPARTA Epoch v11.2.1*  
+*CMPSBL Substrate — SPARTA Epoch*  
 *© 2025–2026 PromptFluid®. All rights reserved.*

@@ -49,6 +49,9 @@ export * from './forward-analyzer';
 export * from './forensics';
 export * from './omega-observer';
 
+// v1.1.0 — Stabilization Gates (12 pre-flight checks)
+export * from './stabilization-gates';
+
 // ═══════════════════════════════════════════════════════════════
 // RE-EXPORT MAIN EVOLVE FUNCTION
 // ═══════════════════════════════════════════════════════════════
@@ -68,6 +71,7 @@ import { verifyShadowArtifacts, requireVerifiedShadow } from './verify';
 import { applyProduction } from './apply';
 import { executeCodeAgent } from './codeagent-controller';
 import { emitEvolveEvent } from './telemetry';
+import { runStabilizationGates } from './stabilization-gates';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -134,6 +138,32 @@ export async function evolve(options: EvolveOptions): Promise<EvolveResult> {
       message: `Invalid context: ${validation.errors.join(', ')}`,
       error: validation.errors.join(', '),
     };
+  }
+
+  // v1.1.0 STABILIZATION: Run all 12 pre-flight gates
+  if (isProductionMode(context)) {
+    const stabilization = await runStabilizationGates();
+    if (!stabilization.all_passed) {
+      const blockers = stabilization.gates
+        .filter(g => !g.passed && g.severity === 'blocker')
+        .map(g => `#${g.gate_id} ${g.name}`);
+      emitEvolveEvent('evolve_error', {
+        evolution_id: context.evolution_id,
+        error: 'Stabilization gates blocked evolution',
+        rejection_type: 'STABILIZATION_BLOCKED',
+        blockers,
+      });
+      return {
+        success: false,
+        mode: options.mode,
+        evolution_id: context.evolution_id,
+        short_id: getShortId(context),
+        phase: 'stabilization_gate',
+        message: `Evolution blocked by stabilization gates: ${blockers.join(', ')}`,
+        error: 'STABILIZATION_BLOCKED',
+        data: { stabilization },
+      };
+    }
   }
 
   // v0.7.8 SAFETY: Validate plan normalization for production mode
