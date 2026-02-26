@@ -40,8 +40,8 @@ export function LnchblCTA() {
               transition={{ delay: 0.2 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 mb-6"
             >
-              <Zap className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm font-bold tracking-wide text-emerald-500">Available Now</span>
+              <Zap className="w-4 h-4 text-primary" />
+              <span className="text-sm font-bold tracking-wide text-primary">Coming Soon</span>
             </motion.div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">
