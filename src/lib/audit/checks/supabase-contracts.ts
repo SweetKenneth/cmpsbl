@@ -59,8 +59,8 @@ export async function checkSupabaseContracts(): Promise<AuditFinding[]> {
         detail: 'Table query succeeded.',
       });
     }
-  } catch {
-    // ignore
+  } catch (e: any) {
+    console.warn('[Audit] audit_logs query error (non-critical):', e?.message);
   }
 
   return findings;

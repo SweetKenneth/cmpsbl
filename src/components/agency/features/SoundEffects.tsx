@@ -196,8 +196,8 @@ export function useSoundSettings() {
     if (typeof window === 'undefined') return DEFAULT_SETTINGS;
     
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? { ...DEFAULT_SETTINGS, ...JSON.parse(stored) } : DEFAULT_SETTINGS;
+      const stored = secureGet<SoundSettings>(STORAGE_KEY);
+      return stored ? { ...DEFAULT_SETTINGS, ...stored } : DEFAULT_SETTINGS;
     } catch {
       return DEFAULT_SETTINGS;
     }
@@ -206,7 +206,7 @@ export function useSoundSettings() {
   const updateSettings = useCallback((updates: Partial<SoundSettings>) => {
     setSettings(prev => {
       const next = { ...prev, ...updates };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      secureSet(STORAGE_KEY, next);
       return next;
     });
   }, []);
