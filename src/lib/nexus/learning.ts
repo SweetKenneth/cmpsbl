@@ -1,9 +1,10 @@
 /**
- * PromptFluid Nexus Learning
+ * NEXUS Learning
  * Adaptive learning and performance optimization
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import type { AIRequest } from './core';
 
 interface LearningData {
@@ -13,6 +14,12 @@ interface LearningData {
   latency: number;
   success: boolean;
   feedback_score?: number;
+}
+
+interface LocalMetrics {
+  total_calls: number;
+  avg_latency: number;
+  success_rate: number;
 }
 
 /**
@@ -65,8 +72,8 @@ export async function learnFromResult(data: LearningData): Promise<void> {
           success: data.success,
         }
       });
-    } catch (err) {
-      // Silent fail on logging
+    } catch {
+      /* Non-critical: logging edge function unavailable */
     }
 
     updateLocalMetrics(data);
@@ -76,13 +83,11 @@ export async function learnFromResult(data: LearningData): Promise<void> {
 }
 
 /**
- * Update local performance metrics for quick access
+ * Update local performance metrics for quick access — secure storage
  */
 function updateLocalMetrics(data: LearningData): void {
   const metricsKey = `nexus_metrics_${data.model}`;
-  const stored = localStorage.getItem(metricsKey);
-  
-  const metrics = stored ? JSON.parse(stored) : {
+  const metrics: LocalMetrics = secureGet<LocalMetrics>(metricsKey) || {
     total_calls: 0,
     avg_latency: 0,
     success_rate: 0,
@@ -92,7 +97,7 @@ function updateLocalMetrics(data: LearningData): void {
   metrics.avg_latency = (metrics.avg_latency * (metrics.total_calls - 1) + data.latency) / metrics.total_calls;
   metrics.success_rate = ((metrics.success_rate * (metrics.total_calls - 1)) + (data.success ? 1 : 0)) / metrics.total_calls;
 
-  localStorage.setItem(metricsKey, JSON.stringify(metrics));
+  secureSet(metricsKey, metrics);
 }
 
 /**
@@ -108,7 +113,6 @@ export async function getLearningInsights() {
 
     if (error) throw error;
 
-    // Analyze patterns
     const insights = {
       total_learning_cycles: data?.length || 0,
       model_performance: analyzeModelPerformance(data || []),
@@ -122,8 +126,13 @@ export async function getLearningInsights() {
   }
 }
 
-function analyzeModelPerformance(data: any[]) {
-  const performance: Record<string, any> = {};
+interface LearningEntry {
+  model_name: string;
+  prediction?: { latency?: number };
+}
+
+function analyzeModelPerformance(data: LearningEntry[]) {
+  const performance: Record<string, { calls: number; avg_latency: number }> = {};
   
   data.forEach((entry) => {
     const model = entry.model_name;
@@ -141,8 +150,7 @@ function analyzeModelPerformance(data: any[]) {
   return performance;
 }
 
-function generateOptimizations(data: any[]) {
-  // AI-driven optimization suggestions
+function generateOptimizations(_data: LearningEntry[]) {
   return [
     'Consider caching frequent queries',
     'Route heavy reasoning tasks to Groq',
