@@ -1,27 +1,29 @@
 /**
  * Governance Terminal Handlers — gov.* command namespace
- * SPARTA Epoch — Full governance observability & operations via terminal
+ * SPARTA Epoch v11.5.2 — Safe dynamic imports, full governance surface
  * 
- * GAP: No terminal surface existed for governance operations.
- * Operators had to use the dashboard — terminal should be first-class.
+ * Commands: gov.mode, gov.vetoes, gov.compliance, gov.drift,
+ *           gov.transitions, gov.signals, gov.lifecycle, gov.summary
  */
 
 import { registerHandler } from './validate-registry';
+
+/** Helper: read current governance mode from DB with ACTIVE fallback */
+async function readCurrentMode(): Promise<string> {
+  try {
+    const { supabase } = await import('@/integrations/supabase/client');
+    const { data } = await supabase.from('governance_mode').select('mode').limit(1).maybeSingle();
+    if (data?.mode) return data.mode;
+  } catch { /* fallback */ }
+  return 'ACTIVE';
+}
 
 export function registerGovernanceHandlers(): void {
   // ═══ gov.mode — Current governance mode and subsystem states ═══
   registerHandler('gov.mode', async () => {
     const { getSubsystemState, GOVERNANCE_MODE_META } = await import('@/lib/system/governance');
-    const { isSubsystemAllowed } = await import('@/lib/system/governanceGate');
 
-    // Fetch current mode
-    let currentMode = 'ACTIVE';
-    try {
-      const { supabase } = await import('@/integrations/supabase/client');
-      const { data } = await supabase.from('governance_mode').select('mode').limit(1).maybeSingle();
-      if (data?.mode) currentMode = data.mode;
-    } catch { /* fallback */ }
-
+    const currentMode = await readCurrentMode();
     const meta = GOVERNANCE_MODE_META[currentMode as keyof typeof GOVERNANCE_MODE_META];
     const state = getSubsystemState(currentMode as any);
 
@@ -58,13 +60,7 @@ export function registerGovernanceHandlers(): void {
   registerHandler('gov.compliance', async () => {
     const { runComplianceAudit, getComplianceScoreAvg } = await import('@/lib/substrate/governance/compliance-auditor');
 
-    let currentMode = 'ACTIVE';
-    try {
-      const { supabase } = await import('@/integrations/supabase/client');
-      const { data } = await supabase.from('governance_mode').select('mode').limit(1).maybeSingle();
-      if (data?.mode) currentMode = data.mode;
-    } catch { /* fallback */ }
-
+    const currentMode = await readCurrentMode();
     const report = await runComplianceAudit(currentMode as any);
     const avgScore = getComplianceScoreAvg();
 
@@ -86,13 +82,7 @@ export function registerGovernanceHandlers(): void {
   registerHandler('gov.drift', async () => {
     const { analyzeDrift } = await import('@/lib/substrate/governance/governance-drift-detector');
 
-    let currentMode = 'ACTIVE';
-    try {
-      const { supabase } = await import('@/integrations/supabase/client');
-      const { data } = await supabase.from('governance_mode').select('mode').limit(1).maybeSingle();
-      if (data?.mode) currentMode = data.mode;
-    } catch { /* fallback */ }
-
+    const currentMode = await readCurrentMode();
     const report = analyzeDrift(currentMode as any);
 
     const signalLines = report.signals.length > 0
@@ -108,28 +98,33 @@ export function registerGovernanceHandlers(): void {
     };
   });
 
-  // ═══ gov.transitions — Validate a mode transition ═══
+  // ═══ gov.transitions — Available paths + quorum info ═══
   registerHandler('gov.transitions', async () => {
-    const { getTransitionPath } = await import('@/lib/substrate/governance/transition-validator');
+    const { getTransitionPath, evaluateTransition, getPendingApprovals } = await import('@/lib/substrate/governance/transition-validator');
 
-    let currentMode = 'ACTIVE';
-    try {
-      const { supabase } = await import('@/integrations/supabase/client');
-      const { data } = await supabase.from('governance_mode').select('mode').limit(1).maybeSingle();
-      if (data?.mode) currentMode = data.mode;
-    } catch { /* fallback */ }
-
+    const currentMode = await readCurrentMode();
     const modes = ['ACTIVE', 'OBSERVE', 'LOCKDOWN', 'EVOLVE'] as const;
-    const pathLines = modes
-      .filter(m => m !== currentMode)
-      .map(m => {
-        const path = getTransitionPath(currentMode as any, m);
-        return `  ${currentMode} → ${m}: ${path.length > 0 ? path.join(' → ') : '✗ BLOCKED'}`;
-      })
-      .join('\n');
+
+    const pathEntries: string[] = [];
+    for (const m of modes) {
+      if (m === currentMode) continue;
+      const path = await getTransitionPath(currentMode as any, m);
+      const validation = await evaluateTransition(currentMode as any, m, 'terminal', { skipRateLimit: true });
+      const quorumTag = validation.requiresQuorum ? ' [QUORUM REQUIRED]' : '';
+      const blockedTag = !validation.allowed ? ` ✗ BLOCKED: ${validation.blockedReasons?.join(', ') || validation.reason}` : '';
+      pathEntries.push(`  ${currentMode} → ${m}: ${path.length > 0 ? path.join(' → ') : '✗ NO PATH'}${quorumTag}${blockedTag}`);
+    }
+
+    // Show pending approvals
+    const pending = await getPendingApprovals();
+    const pendingLines = pending.length > 0
+      ? `\n\nPending Approvals:\n` + pending.map(p =>
+          `  ${p.fromMode} → ${p.toMode} by ${p.requestedBy} (${(p.approvals as any[]).length}/${p.approvalsRequired} approvals, expires ${p.expiresAt})`
+        ).join('\n')
+      : '';
 
     return {
-      output: `Transition Paths from ${currentMode}:\n${pathLines}`,
+      output: `Transition Paths from ${currentMode}:\n${pathEntries.join('\n')}${pendingLines}`,
       status: 'success' as const,
     };
   });
@@ -177,28 +172,25 @@ export function registerGovernanceHandlers(): void {
     const { vetoAuthority, signalArbitration, vetoLifecycle } = await import('@/lib/substrate/governance');
     const { getComplianceScoreAvg } = await import('@/lib/substrate/governance/compliance-auditor');
     const { analyzeDrift } = await import('@/lib/substrate/governance/governance-drift-detector');
+    const { getPendingApprovals } = await import('@/lib/substrate/governance/transition-validator');
 
-    let currentMode = 'ACTIVE';
-    try {
-      const { supabase } = await import('@/integrations/supabase/client');
-      const { data } = await supabase.from('governance_mode').select('mode').limit(1).maybeSingle();
-      if (data?.mode) currentMode = data.mode;
-    } catch { /* fallback */ }
-
+    const currentMode = await readCurrentMode();
     const vetoes = vetoAuthority.getActiveVetoes();
     const signals = signalArbitration.getHistory(100);
     const lifecycles = vetoLifecycle.getAll();
     const complianceAvg = getComplianceScoreAvg();
     const drift = analyzeDrift(currentMode as any);
+    const pendingApprovals = await getPendingApprovals();
 
     return {
       output: `═══ GOVERNANCE POSTURE ═══\n` +
-        `Mode:         ${currentMode}\n` +
-        `Active Vetoes: ${vetoes.length}\n` +
-        `Signal Backlog: ${signals.length}\n` +
+        `Mode:            ${currentMode}\n` +
+        `Active Vetoes:   ${vetoes.length}\n` +
+        `Signal Backlog:  ${signals.length}\n` +
         `Veto Lifecycles: ${lifecycles.length}\n` +
-        `Compliance Avg: ${complianceAvg}/100\n` +
-        `Drift Score:   ${drift.driftScore}/100 ${drift.drifting ? '⚠ DRIFTING' : '✓ STABLE'}\n` +
+        `Compliance Avg:  ${complianceAvg}/100\n` +
+        `Drift Score:     ${drift.driftScore}/100 ${drift.drifting ? '⚠ DRIFTING' : '✓ STABLE'}\n` +
+        `Pending Quorum:  ${pendingApprovals.length}\n` +
         `═══════════════════════════`,
       status: drift.drifting || vetoes.length > 0 ? 'warning' as const : 'success' as const,
     };

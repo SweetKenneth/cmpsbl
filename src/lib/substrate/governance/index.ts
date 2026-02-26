@@ -1,8 +1,9 @@
 /**
  * Governance Module — Unified Exports
- * SPARTA Epoch
+ * SPARTA Epoch v11.5.2
  * 
- * Epistemic discipline, veto authority, and signal arbitration
+ * Epistemic discipline, veto authority, signal arbitration,
+ * transition validation, quorum, compliance, drift detection
  */
 
 // Veto Authority & Precedence
@@ -23,14 +24,27 @@ export { enforceResponsePolicy, validateEpistemicIntegrity, tagClaim, stripTags,
 // Decode Voice Guardrails
 export { applyVoiceGuardrails, needsGuardrails, voiceTaggedClaim, type VoiceGuardrailResult } from './decode-voice-guardrails';
 
-// Transition Validator (v11.5)
-export { validateTransition, getTransitionPath, resetTransitionHistory, type TransitionValidation } from './transition-validator';
+// Transition Validator (v11.5.2) — Pure evaluation + quorum
+export {
+  evaluateTransition,
+  commitTransition,
+  getTransitionPath,
+  requestTransition,
+  approveTransition,
+  finalizeTransition,
+  getTransitionLog,
+  getPendingApprovals,
+  validateTransition, // legacy compat alias
+  resetTransitionHistory,
+  type TransitionValidation,
+  type TransitionRequest,
+} from './transition-validator';
 
-// Veto ↔ Governance Bridge (v11.5)
+// Veto ↔ Governance Bridge (v11.5.2) — Deterministic, DB-tracked
 export { evaluateVetoEscalation, issueGovernanceVetoes, revokeGovernanceVetoes, onGovernanceModeChange, type VetoGovernanceEscalation } from './veto-governance-bridge';
 
-// Compliance Auditor (v11.5)
-export { auditCompliance, runComplianceAudit, getComplianceTrend, getComplianceScoreAvg, type ComplianceViolation, type ComplianceReport } from './compliance-auditor';
+// Compliance Auditor (v11.5.2) — No silent skips, DB-persisted
+export { auditCompliance, runComplianceAudit, getComplianceTrend, getLastComplianceReport, getComplianceScoreAvg, type ComplianceViolation, type ComplianceReport } from './compliance-auditor';
 
-// Governance Drift Detector (v11.5)
+// Governance Drift Detector (v11.5.2) — Fixed windows
 export { analyzeDrift, recordMutation, recordEscalation, recordVetoEvent, recordActivation, tickWindow, resetDriftState, type DriftSignal, type DriftReport } from './governance-drift-detector';

@@ -1,11 +1,9 @@
 /**
  * Governance Compliance Auditor
- * SPARTA Epoch — Periodic runtime compliance verification
+ * SPARTA Epoch v11.5.2 — No silent skips, DB-persisted reports
  * 
- * GAP: The PolicyEngine existed but nothing periodically verified
- * that the system's actual state matches governance expectations.
- * This auditor checks that subsystem states align with the declared
- * governance mode and flags any violations.
+ * Verifies runtime subsystem states match governance mode expectations.
+ * Unknown/undeterminable flags produce WARNING violations, never silent skips.
  */
 
 import { getSubsystemState, type GovernanceMode } from '@/lib/system/governance';
@@ -13,6 +11,7 @@ import { isSystemFlagEnabled } from '@/lib/system/flags';
 import { log } from '@/lib/system/log';
 import { recordAudit } from '@/lib/substrate/audit-trail';
 import { emit } from '@/lib/substrate/events';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface ComplianceViolation {
   subsystem: string;
@@ -83,7 +82,6 @@ export async function auditCompliance(currentMode: GovernanceMode): Promise<Comp
       }
 
       // Soft violation: subsystem off when governance says it could be on
-      // (less concerning — just informational)
       if (!actual && expected) {
         violations.push({
           subsystem,
@@ -95,8 +93,15 @@ export async function auditCompliance(currentMode: GovernanceMode): Promise<Comp
         });
       }
     } catch {
-      // Can't determine — skip
-      checksPerformed--;
+      // Cannot determine flag state — WARNING violation, NOT silent skip
+      violations.push({
+        subsystem,
+        expected,
+        actual: false,
+        severity: 'warning',
+        message: `Cannot verify ${flagKey}: flag state undeterminable for ${subsystem.toUpperCase()}`,
+        detectedAt: new Date().toISOString(),
+      });
     }
   }
 
@@ -143,27 +148,71 @@ export async function auditCompliance(currentMode: GovernanceMode): Promise<Comp
   return report;
 }
 
-/** Compliance history for trend analysis */
+/** Compliance history for trend analysis (in-memory cache) */
 const complianceHistory: ComplianceReport[] = [];
 const MAX_HISTORY = 100;
 
 /**
- * Run audit and store in history
+ * Run audit, store in history + persist to DB.
  */
 export async function runComplianceAudit(currentMode: GovernanceMode): Promise<ComplianceReport> {
   const report = await auditCompliance(currentMode);
+
+  // In-memory cache
   complianceHistory.push(report);
   if (complianceHistory.length > MAX_HISTORY) {
     complianceHistory.splice(0, complianceHistory.length - MAX_HISTORY);
   }
+
+  // Persist to DB
+  try {
+    await supabase.from('governance_compliance_reports').insert({
+      mode: report.mode,
+      score: report.score,
+      compliant: report.compliant,
+      violations: report.violations as any,
+      checks_performed: report.checksPerformed,
+    });
+  } catch {
+    log.warn('governance', 'Failed to persist compliance report to DB');
+  }
+
   return report;
 }
 
 /**
- * Get compliance trend (last N reports)
+ * Get compliance trend (last N reports), preferring DB.
  */
-export function getComplianceTrend(limit = 10): ComplianceReport[] {
+export async function getComplianceTrend(limit = 10): Promise<ComplianceReport[]> {
+  try {
+    const { data } = await supabase
+      .from('governance_compliance_reports')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (data && data.length > 0) {
+      return data.map((r: any) => ({
+        mode: r.mode as GovernanceMode,
+        timestamp: r.created_at,
+        compliant: r.compliant,
+        violations: r.violations || [],
+        checksPerformed: r.checks_performed,
+        score: r.score,
+      }));
+    }
+  } catch {
+    // Fallback to in-memory
+  }
   return complianceHistory.slice(-limit);
+}
+
+/**
+ * Get last compliance report.
+ */
+export async function getLastComplianceReport(): Promise<ComplianceReport | null> {
+  const trend = await getComplianceTrend(1);
+  return trend.length > 0 ? trend[0] : null;
 }
 
 /**

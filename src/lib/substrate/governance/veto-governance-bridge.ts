@@ -1,21 +1,18 @@
 /**
  * Veto → Governance Bridge
- * SPARTA Epoch — Connects the veto authority system to governance mode
- * 
- * GAP: Critical vetoes (especially from DEFENSE/AUDIT) had no mechanism
- * to influence governance mode. A defense veto should escalate to LOCKDOWN
- * and governance lockdowns should auto-issue scope-wide vetoes.
+ * SPARTA Epoch v11.5.2 — Deterministic, DB-tracked veto management
  * 
  * Bidirectional:
  * - Multiple defense vetoes → auto-escalate governance to LOCKDOWN
  * - Governance LOCKDOWN → auto-issue write_access + external_integrations vetoes
- * - Governance ACTIVE restore → auto-revoke system-issued vetoes
+ * - Governance ACTIVE restore → auto-revoke system-issued vetoes (DB-tracked)
  */
 
 import { vetoAuthority, type VetoRequest } from './veto-authority';
 import { recordAudit } from '@/lib/substrate/audit-trail';
 import { emit } from '@/lib/substrate/events';
 import { log } from '@/lib/system/log';
+import { supabase } from '@/integrations/supabase/client';
 import type { GovernanceMode } from '@/lib/system/governance';
 
 export interface VetoGovernanceEscalation {
@@ -25,12 +22,10 @@ export interface VetoGovernanceEscalation {
   triggeringVetoes: string[];
 }
 
-/** Governance-issued veto IDs for cleanup on de-escalation */
-const governanceIssuedVetoes: Set<string> = new Set();
-
 /**
  * Evaluate whether active vetoes should trigger governance escalation.
  * Call this after any veto is accepted.
+ * Emits telemetry + audit on escalation decisions.
  */
 export function evaluateVetoEscalation(currentMode: GovernanceMode): VetoGovernanceEscalation | null {
   if (currentMode === 'LOCKDOWN') return null; // Already at maximum
@@ -42,22 +37,60 @@ export function evaluateVetoEscalation(currentMode: GovernanceMode): VetoGoverna
 
   // Any audit veto → immediate LOCKDOWN
   if (auditVetoes.length > 0) {
-    return {
+    const escalation: VetoGovernanceEscalation = {
       shouldEscalate: true,
       targetMode: 'LOCKDOWN',
       reason: `Audit authority veto active — mandatory lockdown`,
       triggeringVetoes: auditVetoes.map(v => v.id),
     };
+
+    emit({
+      module: 'GOVERNANCE',
+      event_type: 'governance.veto_escalation',
+      outcome: 'succeeded',
+      data: { from: currentMode, to: 'LOCKDOWN', trigger: 'audit_veto', vetoCount: auditVetoes.length },
+    });
+
+    recordAudit(
+      'veto-governance-bridge',
+      'governance.escalation.audit_veto',
+      'governance_mode',
+      currentMode,
+      currentMode,
+      'LOCKDOWN',
+      { triggerCount: String(auditVetoes.length) }
+    );
+
+    return escalation;
   }
 
   // 2+ defense vetoes or any critical defense veto → LOCKDOWN
   if (defenseVetoes.length >= 2 || defenseVetoes.some(v => v.severity === 'critical')) {
-    return {
+    const escalation: VetoGovernanceEscalation = {
       shouldEscalate: true,
       targetMode: 'LOCKDOWN',
       reason: `${defenseVetoes.length} defense vetoes active (${criticalVetoes.length} critical) — escalating to lockdown`,
       triggeringVetoes: defenseVetoes.map(v => v.id),
     };
+
+    emit({
+      module: 'GOVERNANCE',
+      event_type: 'governance.veto_escalation',
+      outcome: 'succeeded',
+      data: { from: currentMode, to: 'LOCKDOWN', trigger: 'defense_veto', vetoCount: defenseVetoes.length },
+    });
+
+    recordAudit(
+      'veto-governance-bridge',
+      'governance.escalation.defense_veto',
+      'governance_mode',
+      currentMode,
+      currentMode,
+      'LOCKDOWN',
+      { defenseCount: String(defenseVetoes.length), criticalCount: String(criticalVetoes.length) }
+    );
+
+    return escalation;
   }
 
   // 1 defense veto → OBSERVE if currently ACTIVE or EVOLVE
@@ -75,7 +108,7 @@ export function evaluateVetoEscalation(currentMode: GovernanceMode): VetoGoverna
 
 /**
  * Issue governance-derived vetoes when entering LOCKDOWN.
- * These are auto-revoked when leaving LOCKDOWN.
+ * Tracks issued veto IDs in DB for deterministic revocation.
  */
 export async function issueGovernanceVetoes(mode: GovernanceMode): Promise<void> {
   if (mode !== 'LOCKDOWN') return;
@@ -86,14 +119,29 @@ export async function issueGovernanceVetoes(mode: GovernanceMode): Promise<void>
     const result = await vetoAuthority.submitVeto({
       authority: 'system',
       scope,
-      reason: `Auto-issued by governance LOCKDOWN mode`,
-      target: '*', // all targets
+      reason: `Auto-issued by governance LOCKDOWN mode [gov-bridge]`,
+      target: '*',
       severity: 'high',
     });
 
     if (result.accepted) {
-      // We don't have the veto ID from submitVeto result, but track the scope
-      log.info('governance', `Governance veto issued: ${scope}`);
+      // Find the veto we just created by matching authority + reason marker
+      const activeVetoes = vetoAuthority.getActiveVetoes();
+      const issued = activeVetoes.find(
+        v => v.authority === 'system' && v.scope === scope && v.reason?.includes('gov-bridge')
+      );
+      const vetoId = issued?.id || `gov-${scope}-${Date.now()}`;
+
+      // Persist to DB for deterministic revocation
+      try {
+        await supabase.from('governance_issued_vetoes').insert({
+          veto_id: vetoId,
+          scope,
+        });
+      } catch (err) {
+        log.warn('governance', `Failed to persist issued veto record: ${err}`);
+      }
+      log.info('governance', `Governance veto issued: ${scope} (${vetoId})`);
     }
   }
 
@@ -117,19 +165,76 @@ export async function issueGovernanceVetoes(mode: GovernanceMode): Promise<void>
 
 /**
  * Revoke governance-issued vetoes when leaving LOCKDOWN.
+ * Primary: lookup by governance_issued_vetoes table.
+ * Fallback: scan active vetoes by marker string.
  */
 export async function revokeGovernanceVetoes(): Promise<void> {
-  const activeVetoes = vetoAuthority.getActiveVetoes();
-  const governanceVetoes = activeVetoes.filter(
-    v => v.authority === 'system' && v.reason?.includes('governance LOCKDOWN')
-  );
+  let revokedCount = 0;
+  const failedRevocations: string[] = [];
 
-  for (const veto of governanceVetoes) {
-    await vetoAuthority.revokeVeto(veto.id, 'system');
-    log.info('governance', `Governance veto revoked: ${veto.scope} (${veto.id})`);
+  // Primary: DB lookup
+  try {
+    const { data: issuedRecords } = await supabase
+      .from('governance_issued_vetoes')
+      .select('veto_id, scope');
+
+    if (issuedRecords && issuedRecords.length > 0) {
+      for (const record of issuedRecords) {
+        try {
+          await vetoAuthority.revokeVeto(record.veto_id, 'system');
+          revokedCount++;
+          log.info('governance', `Governance veto revoked: ${record.scope} (${record.veto_id})`);
+        } catch (err) {
+          failedRevocations.push(record.veto_id);
+          log.warn('governance', `Failed to revoke veto ${record.veto_id}: ${err}`);
+        }
+      }
+
+      // Clean up DB records for successfully revoked vetoes
+      const successfulIds = (issuedRecords || [])
+        .filter(r => !failedRevocations.includes(r.veto_id))
+        .map(r => r.veto_id);
+
+      if (successfulIds.length > 0) {
+        await supabase
+          .from('governance_issued_vetoes')
+          .delete()
+          .in('veto_id', successfulIds);
+      }
+    }
+  } catch {
+    log.warn('governance', 'DB lookup for issued vetoes failed — falling back to scan');
   }
 
-  if (governanceVetoes.length > 0) {
+  // Fallback: scan active vetoes by marker
+  if (revokedCount === 0) {
+    const activeVetoes = vetoAuthority.getActiveVetoes();
+    const governanceVetoes = activeVetoes.filter(
+      v => v.authority === 'system' && v.reason?.includes('gov-bridge')
+    );
+
+    for (const veto of governanceVetoes) {
+      try {
+        await vetoAuthority.revokeVeto(veto.id, 'system');
+        revokedCount++;
+        log.info('governance', `Governance veto revoked (fallback): ${veto.scope} (${veto.id})`);
+      } catch (err) {
+        failedRevocations.push(veto.id);
+        log.warn('governance', `Failed to revoke veto ${veto.id}: ${err}`);
+      }
+    }
+  }
+
+  if (failedRevocations.length > 0) {
+    emit({
+      module: 'GOVERNANCE',
+      event_type: 'governance.veto_revocation_partial',
+      outcome: 'failed',
+      data: { failedCount: failedRevocations.length, failedIds: failedRevocations },
+    });
+  }
+
+  if (revokedCount > 0) {
     recordAudit(
       'veto-governance-bridge',
       'governance.vetoes_revoked',
@@ -137,7 +242,7 @@ export async function revokeGovernanceVetoes(): Promise<void> {
       'LOCKDOWN',
       'LOCKDOWN',
       'ACTIVE',
-      { revokedCount: String(governanceVetoes.length) }
+      { revokedCount: String(revokedCount), failedCount: String(failedRevocations.length) }
     );
   }
 }

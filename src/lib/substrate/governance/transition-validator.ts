@@ -1,20 +1,16 @@
 /**
  * Governance Mode Transition Validator
- * SPARTA Epoch — Prevents unsafe governance mode transitions
+ * SPARTA Epoch v11.5.2 — Pure evaluation + committed transitions
  * 
- * GAP: The governance control plane allowed arbitrary mode switching
- * without validating whether the transition is safe or requires quorum.
- * 
- * Rules:
- * - LOCKDOWN → EVOLVE is blocked (must pass through ACTIVE first)
- * - EVOLVE requires zero critical alerts
- * - Any → LOCKDOWN is always allowed (emergency path)
- * - Repeated rapid transitions trigger cooldown
+ * evaluateTransition() — PURE, no side effects
+ * commitTransition() — Records audit + persists history
+ * Quorum system via governance_transition_approvals table
  */
 
 import { getActiveAlerts } from '@/lib/system/healthMonitoring';
 import { recordAudit } from '@/lib/substrate/audit-trail';
 import { log } from '@/lib/system/log';
+import { supabase } from '@/integrations/supabase/client';
 import type { GovernanceMode } from '@/lib/system/governance';
 
 export interface TransitionValidation {
@@ -22,6 +18,19 @@ export interface TransitionValidation {
   reason: string;
   requiresQuorum: boolean;
   riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  blockedReasons?: string[];
+}
+
+export interface TransitionRequest {
+  id: string;
+  fromMode: string;
+  toMode: string;
+  requestedBy: string;
+  requiresQuorum: boolean;
+  status: 'pending' | 'approved' | 'rejected' | 'expired';
+  approvalsRequired: number;
+  approvals: Array<{ approver: string; at: string }>;
+  expiresAt: string;
 }
 
 /** Transitions that are explicitly blocked */
@@ -35,19 +44,20 @@ const QUORUM_TRANSITIONS: Array<{ from: GovernanceMode; to: GovernanceMode }> = 
   { from: 'LOCKDOWN', to: 'ACTIVE' },
 ];
 
-/** Rapid transition cooldown tracking */
-let transitionHistory: Array<{ from: GovernanceMode; to: GovernanceMode; at: number }> = [];
 const RAPID_TRANSITION_WINDOW = 300_000; // 5 minutes
 const MAX_TRANSITIONS_IN_WINDOW = 3;
+const DEFAULT_QUORUM_APPROVALS = 2;
+const QUORUM_EXPIRY_MINUTES = 15;
 
 /**
- * Validate whether a governance mode transition is safe.
+ * PURE evaluation — no side effects, no audit writes, no state mutation.
  */
-export function validateTransition(
+export async function evaluateTransition(
   from: GovernanceMode,
   to: GovernanceMode,
-  actor: string
-): TransitionValidation {
+  actor: string,
+  opts?: { skipRateLimit?: boolean }
+): Promise<TransitionValidation> {
   // Same-mode is a no-op
   if (from === to) {
     return { allowed: true, reason: 'No transition needed', requiresQuorum: false, riskLevel: 'low' };
@@ -61,20 +71,36 @@ export function validateTransition(
   // Check blocked transitions
   const blocked = BLOCKED_TRANSITIONS.find(b => b.from === from && b.to === to);
   if (blocked) {
-    log.warn('governance', `Blocked transition: ${from} → ${to}: ${blocked.reason}`);
-    return { allowed: false, reason: blocked.reason, requiresQuorum: false, riskLevel: 'critical' };
-  }
-
-  // Check rapid transition flood
-  const now = Date.now();
-  transitionHistory = transitionHistory.filter(t => now - t.at < RAPID_TRANSITION_WINDOW);
-  if (transitionHistory.length >= MAX_TRANSITIONS_IN_WINDOW) {
     return {
       allowed: false,
-      reason: `Rate limited: ${MAX_TRANSITIONS_IN_WINDOW} transitions in ${RAPID_TRANSITION_WINDOW / 1000}s window exceeded`,
+      reason: blocked.reason,
       requiresQuorum: false,
-      riskLevel: 'high',
+      riskLevel: 'critical',
+      blockedReasons: [blocked.reason],
     };
+  }
+
+  // DB-backed rate limiting
+  if (!opts?.skipRateLimit) {
+    try {
+      const windowStart = new Date(Date.now() - RAPID_TRANSITION_WINDOW).toISOString();
+      const { count } = await supabase
+        .from('governance_transition_log')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', windowStart);
+
+      if ((count ?? 0) >= MAX_TRANSITIONS_IN_WINDOW) {
+        return {
+          allowed: false,
+          reason: `Rate limited: ${MAX_TRANSITIONS_IN_WINDOW} transitions in ${RAPID_TRANSITION_WINDOW / 1000}s window exceeded`,
+          requiresQuorum: false,
+          riskLevel: 'high',
+          blockedReasons: ['Rate limit exceeded'],
+        };
+      }
+    } catch {
+      log.warn('governance', 'Rate limit check failed — proceeding with transition');
+    }
   }
 
   // EVOLVE requires zero critical alerts
@@ -87,25 +113,13 @@ export function validateTransition(
         reason: `Cannot enter EVOLVE with ${criticals.length} active critical alerts`,
         requiresQuorum: false,
         riskLevel: 'high',
+        blockedReasons: [`${criticals.length} critical alerts active`],
       };
     }
   }
 
   // Check quorum requirement
   const needsQuorum = QUORUM_TRANSITIONS.some(q => q.from === from && q.to === to);
-
-  // Record transition
-  transitionHistory.push({ from, to, at: now });
-
-  recordAudit(
-    actor,
-    'governance.transition.validated',
-    'governance_mode',
-    from,
-    from,
-    to,
-    { requiresQuorum: String(needsQuorum), actor }
-  );
 
   return {
     allowed: true,
@@ -116,30 +130,247 @@ export function validateTransition(
 }
 
 /**
- * Get the safe transition path between two modes
- * (e.g., LOCKDOWN → EVOLVE returns [LOCKDOWN, ACTIVE, EVOLVE])
+ * Commit a transition — writes audit log + persists to DB.
+ * Call ONLY after evaluateTransition() returns allowed: true.
  */
-export function getTransitionPath(from: GovernanceMode, to: GovernanceMode): GovernanceMode[] {
+export async function commitTransition(
+  from: GovernanceMode,
+  to: GovernanceMode,
+  actor: string
+): Promise<void> {
+  // Persist to DB
+  try {
+    await supabase.from('governance_transition_log').insert({
+      from_mode: from,
+      to_mode: to,
+      actor,
+    });
+  } catch (err) {
+    log.error('governance', `Failed to persist transition log: ${err}`);
+  }
+
+  recordAudit(
+    actor,
+    'governance.transition.committed',
+    'governance_mode',
+    from,
+    from,
+    to,
+    { actor }
+  );
+}
+
+/**
+ * Get the safe transition path between two modes.
+ * PURE — calls evaluateTransition only, never commitTransition.
+ */
+export async function getTransitionPath(from: GovernanceMode, to: GovernanceMode): Promise<GovernanceMode[]> {
   if (from === to) return [from];
 
   // Direct transitions
-  const direct = validateTransition(from, to, 'path-resolver');
+  const direct = await evaluateTransition(from, to, 'path-resolver', { skipRateLimit: true });
   if (direct.allowed) return [from, to];
 
   // Try via ACTIVE
-  const toActive = validateTransition(from, 'ACTIVE', 'path-resolver');
-  const fromActive = validateTransition('ACTIVE', to, 'path-resolver');
+  const toActive = await evaluateTransition(from, 'ACTIVE', 'path-resolver', { skipRateLimit: true });
+  const fromActive = await evaluateTransition('ACTIVE', to, 'path-resolver', { skipRateLimit: true });
   if (toActive.allowed && fromActive.allowed) return [from, 'ACTIVE', to];
 
   // Try via OBSERVE
-  const toObserve = validateTransition(from, 'OBSERVE', 'path-resolver');
-  const fromObserve = validateTransition('OBSERVE', to, 'path-resolver');
+  const toObserve = await evaluateTransition(from, 'OBSERVE', 'path-resolver', { skipRateLimit: true });
+  const fromObserve = await evaluateTransition('OBSERVE', to, 'path-resolver', { skipRateLimit: true });
   if (toObserve.allowed && fromObserve.allowed) return [from, 'OBSERVE', to];
 
   return []; // No safe path
 }
 
-/** Reset transition history (testing) */
+// ═══ QUORUM SYSTEM ═══
+
+/**
+ * Request a transition — if quorum required, creates approval request.
+ */
+export async function requestTransition(
+  from: GovernanceMode,
+  to: GovernanceMode,
+  actor: string
+): Promise<{ requestId: string | null; requiresQuorum: boolean; path: GovernanceMode[]; validation: TransitionValidation }> {
+  const validation = await evaluateTransition(from, to, actor);
+  const path = await getTransitionPath(from, to);
+
+  if (!validation.allowed) {
+    return { requestId: null, requiresQuorum: false, path, validation };
+  }
+
+  if (!validation.requiresQuorum) {
+    // No quorum needed — commit immediately
+    await commitTransition(from, to, actor);
+    return { requestId: null, requiresQuorum: false, path, validation };
+  }
+
+  // Create quorum request
+  const expiresAt = new Date(Date.now() + QUORUM_EXPIRY_MINUTES * 60_000).toISOString();
+  const { data, error } = await supabase
+    .from('governance_transition_approvals')
+    .insert({
+      from_mode: from,
+      to_mode: to,
+      requested_by: actor,
+      status: 'pending',
+      approvals_required: DEFAULT_QUORUM_APPROVALS,
+      approvals: [],
+      expires_at: expiresAt,
+    })
+    .select('id')
+    .single();
+
+  if (error || !data) {
+    log.error('governance', `Failed to create quorum request: ${error?.message}`);
+    return { requestId: null, requiresQuorum: true, path, validation };
+  }
+
+  return { requestId: data.id, requiresQuorum: true, path, validation };
+}
+
+/**
+ * Approve a pending transition request.
+ */
+export async function approveTransition(
+  requestId: string,
+  approver: string
+): Promise<{ approved: boolean; totalApprovals: number; required: number }> {
+  const { data: req, error } = await supabase
+    .from('governance_transition_approvals')
+    .select('*')
+    .eq('id', requestId)
+    .single();
+
+  if (error || !req) {
+    return { approved: false, totalApprovals: 0, required: 0 };
+  }
+
+  if (req.status !== 'pending') {
+    return { approved: false, totalApprovals: (req.approvals as any[]).length, required: req.approvals_required };
+  }
+
+  // Check expiry
+  if (new Date(req.expires_at) < new Date()) {
+    await supabase.from('governance_transition_approvals').update({ status: 'expired' }).eq('id', requestId);
+    return { approved: false, totalApprovals: (req.approvals as any[]).length, required: req.approvals_required };
+  }
+
+  // Add approval
+  const currentApprovals = (req.approvals as any[]) || [];
+  if (currentApprovals.some((a: any) => a.approver === approver)) {
+    return { approved: false, totalApprovals: currentApprovals.length, required: req.approvals_required };
+  }
+
+  const newApprovals = [...currentApprovals, { approver, at: new Date().toISOString() }];
+  const met = newApprovals.length >= req.approvals_required;
+
+  await supabase
+    .from('governance_transition_approvals')
+    .update({
+      approvals: newApprovals,
+      status: met ? 'approved' : 'pending',
+    })
+    .eq('id', requestId);
+
+  return { approved: met, totalApprovals: newApprovals.length, required: req.approvals_required };
+}
+
+/**
+ * Finalize a quorum-approved transition.
+ */
+export async function finalizeTransition(
+  requestId: string
+): Promise<{ finalized: boolean; reason: string }> {
+  const { data: req, error } = await supabase
+    .from('governance_transition_approvals')
+    .select('*')
+    .eq('id', requestId)
+    .single();
+
+  if (error || !req) {
+    return { finalized: false, reason: 'Request not found' };
+  }
+
+  if (req.status !== 'approved') {
+    return { finalized: false, reason: `Request status is ${req.status}, not approved` };
+  }
+
+  if (new Date(req.expires_at) < new Date()) {
+    await supabase.from('governance_transition_approvals').update({ status: 'expired' }).eq('id', requestId);
+    return { finalized: false, reason: 'Request expired' };
+  }
+
+  // Re-validate the transition is still safe
+  const validation = await evaluateTransition(
+    req.from_mode as GovernanceMode,
+    req.to_mode as GovernanceMode,
+    req.requested_by
+  );
+
+  if (!validation.allowed) {
+    await supabase.from('governance_transition_approvals').update({ status: 'rejected' }).eq('id', requestId);
+    return { finalized: false, reason: `Re-validation failed: ${validation.reason}` };
+  }
+
+  await commitTransition(
+    req.from_mode as GovernanceMode,
+    req.to_mode as GovernanceMode,
+    req.requested_by
+  );
+
+  return { finalized: true, reason: 'Transition committed' };
+}
+
+/**
+ * Get recent transition log from DB.
+ */
+export async function getTransitionLog(limit = 20): Promise<Array<{ from_mode: string; to_mode: string; actor: string; created_at: string }>> {
+  try {
+    const { data } = await supabase
+      .from('governance_transition_log')
+      .select('from_mode, to_mode, actor, created_at')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    return (data as any[]) || [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Get pending quorum requests.
+ */
+export async function getPendingApprovals(): Promise<TransitionRequest[]> {
+  try {
+    const { data } = await supabase
+      .from('governance_transition_approvals')
+      .select('*')
+      .eq('status', 'pending')
+      .order('created_at', { ascending: false });
+
+    return ((data as any[]) || []).map(r => ({
+      id: r.id,
+      fromMode: r.from_mode,
+      toMode: r.to_mode,
+      requestedBy: r.requested_by,
+      requiresQuorum: true,
+      status: r.status,
+      approvalsRequired: r.approvals_required,
+      approvals: r.approvals || [],
+      expiresAt: r.expires_at,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/** Legacy compat — deprecated, use evaluateTransition */
+export const validateTransition = evaluateTransition;
+
+/** Legacy compat */
 export function resetTransitionHistory(): void {
-  transitionHistory = [];
+  // No-op — history is DB-backed now
 }
