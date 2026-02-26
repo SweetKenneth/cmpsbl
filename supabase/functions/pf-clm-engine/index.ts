@@ -330,17 +330,17 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    let action = 'cycle';
+    let action = 'burst';   // v5: ALWAYS burst by default
     let burstSize = DEFAULT_BURST_SIZE;
     let autoChain = true;
 
     try {
       const body = await req.json();
-      action = body.action || 'cycle';
+      action = body.action || 'burst';
       burstSize = Math.min(body.burst_size || DEFAULT_BURST_SIZE, MAX_BURST_SIZE);
       autoChain = body.auto_chain !== false;
     } catch {
-      // Default to cycle for cron invocations
+      // Default to burst for cron invocations (no body)
     }
 
     console.log(`⚡ CLM Engine v${CLM_VERSION} | action=${action} burst_size=${burstSize}`);
