@@ -3,6 +3,15 @@
  * Governor/Admin access only
  */
 
+/** Sanitize report HTML — strip script tags and event handlers */
+function sanitizeReportHtml(html: string): string {
+  if (!html) return '';
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')
+    .replace(/javascript\s*:/gi, '');
+}
+
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -280,7 +289,7 @@ export default function OwnerReports() {
             {selectedReport && (
               <div
                 className="px-2"
-                dangerouslySetInnerHTML={{ __html: selectedReport.full_html }}
+                dangerouslySetInnerHTML={{ __html: sanitizeReportHtml(selectedReport.full_html) }}
               />
             )}
           </ScrollArea>

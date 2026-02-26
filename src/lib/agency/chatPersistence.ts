@@ -1,7 +1,9 @@
 /**
  * Agency Chat Persistence — Store and retrieve chat messages
- * Uses localStorage for now, can be migrated to Supabase later
+ * SPARTA Epoch — Uses secure storage for sensitive conversation data
  */
+
+import { secureSet, secureGet, secureRemove, migrateLegacyKey } from '@/lib/system/secureStorage';
 
 export interface ChatMessage {
   id: string;
@@ -19,9 +21,6 @@ export interface ChatMessage {
 const STORAGE_KEY_PREFIX = 'agency_chat_';
 const MAX_MESSAGES = 100;
 
-/**
- * Get storage key for an agency
- */
 function getStorageKey(agencyId: string): string {
   return `${STORAGE_KEY_PREFIX}${agencyId}`;
 }
@@ -31,10 +30,10 @@ function getStorageKey(agencyId: string): string {
  */
 export function loadChatMessages(agencyId: string): ChatMessage[] {
   try {
-    const stored = localStorage.getItem(getStorageKey(agencyId));
-    if (!stored) return [];
-    
-    const messages = JSON.parse(stored) as ChatMessage[];
+    const key = getStorageKey(agencyId);
+    migrateLegacyKey(key);
+    const messages = secureGet<ChatMessage[]>(key);
+    if (!messages) return [];
     return messages.slice(-MAX_MESSAGES);
   } catch (err) {
     console.error('Error loading chat messages:', err);
@@ -47,9 +46,8 @@ export function loadChatMessages(agencyId: string): ChatMessage[] {
  */
 export function saveChatMessages(agencyId: string, messages: ChatMessage[]): void {
   try {
-    // Keep only the last MAX_MESSAGES
     const toSave = messages.slice(-MAX_MESSAGES);
-    localStorage.setItem(getStorageKey(agencyId), JSON.stringify(toSave));
+    secureSet(getStorageKey(agencyId), toSave);
   } catch (err) {
     console.error('Error saving chat messages:', err);
   }
@@ -78,7 +76,7 @@ export function addChatMessage(agencyId: string, message: Omit<ChatMessage, 'id'
  */
 export function clearChatHistory(agencyId: string): void {
   try {
-    localStorage.removeItem(getStorageKey(agencyId));
+    secureRemove(getStorageKey(agencyId));
   } catch (err) {
     console.error('Error clearing chat history:', err);
   }

@@ -67,7 +67,7 @@ export function AdaptiveLearningDemo() {
     if (accuracy > 0.75 && newProfile.streak >= 2) newProfile.adaptedDifficulty = newProfile.adaptedDifficulty === 'easy' ? 'medium' : 'hard';
     else if (accuracy < 0.4) newProfile.adaptedDifficulty = newProfile.adaptedDifficulty === 'hard' ? 'medium' : 'easy';
     setProfile(newProfile);
-    try { await supabase.functions.invoke('pf-substrate', { body: { module: 'brain', action: 'learn', payload: { content: `Quiz: "${currentQuestion.question}" → ${isCorrect ? 'Correct' : 'Incorrect'}`, memory_type: 'learning', context: { type: 'adaptive_quiz', topic: currentQuestion.topic, correct: isCorrect } } } }); } catch (e) {}
+    try { await supabase.functions.invoke('pf-substrate', { body: { module: 'brain', action: 'learn', payload: { content: `Quiz: "${currentQuestion.question}" → ${isCorrect ? 'Correct' : 'Incorrect'}`, memory_type: 'learning', context: { type: 'adaptive_quiz', topic: currentQuestion.topic, correct: isCorrect } } } }); } catch (e) { console.warn('[AdaptiveLearning] Brain learn failed:', e); }
   };
 
   const nextQuestion = () => { if (profile.totalAnswered >= TOTAL_QUESTIONS) setQuizComplete(true); else selectNextQuestion(); };

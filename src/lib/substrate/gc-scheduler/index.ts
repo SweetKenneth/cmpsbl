@@ -22,6 +22,7 @@ const DEFAULT_CONFIG: GCSchedulerConfig = {
 };
 
 let schedulerTimer: ReturnType<typeof setInterval> | null = null;
+let cooldownTimer: ReturnType<typeof setTimeout> | null = null;
 let consecutiveRuns = 0;
 let lastRunAt: Date | null = null;
 
@@ -48,7 +49,7 @@ export function startGCScheduler(config: Partial<GCSchedulerConfig> = {}): void 
       console.log('[GC-Scheduler] Max consecutive runs reached, entering cooldown');
       consecutiveRuns = 0;
       stopGCScheduler();
-      setTimeout(() => startGCScheduler(cfg), cfg.cooldownAfterMaxMs);
+      cooldownTimer = setTimeout(() => startGCScheduler(cfg), cfg.cooldownAfterMaxMs);
       return;
     }
     
@@ -57,14 +58,18 @@ export function startGCScheduler(config: Partial<GCSchedulerConfig> = {}): void 
 }
 
 /**
- * Stop the scheduler
+ * Stop the scheduler — clears all timers to prevent leaks
  */
 export function stopGCScheduler(): void {
   if (schedulerTimer) {
     clearInterval(schedulerTimer);
     schedulerTimer = null;
-    console.log('[GC-Scheduler] Stopped');
   }
+  if (cooldownTimer) {
+    clearTimeout(cooldownTimer);
+    cooldownTimer = null;
+  }
+  console.log('[GC-Scheduler] Stopped');
 }
 
 /**
@@ -86,7 +91,7 @@ async function executeScheduledGC(): Promise<void> {
         ...result,
         duration_ms: Date.now() - startTime,
         consecutive_run: consecutiveRuns,
-      } as any,
+      },
       outcome: 'success',
     });
     
@@ -96,7 +101,7 @@ async function executeScheduledGC(): Promise<void> {
     await supabase.from('brain_events').insert({
       module: 'system',
       event_type: 'gc_scheduled_run',
-      data: { error: String(err), duration_ms: Date.now() - startTime } as any,
+      data: { error: String(err), duration_ms: Date.now() - startTime },
       outcome: 'failure',
     });
   }

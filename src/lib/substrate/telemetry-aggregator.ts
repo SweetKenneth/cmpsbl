@@ -210,12 +210,13 @@ async function aggregateImmuneMetrics(): Promise<ImmuneTelemetry> {
   let totalRuns = 0, repairSuccesses = 0, escalations = 0, safeFailures = 0;
   const executorCounts: Record<string, number> = {};
 
-  for (const row of data as any[]) {
-    totalRuns += row.total_runs ?? 0;
-    repairSuccesses += row.repair_successes ?? 0;
-    escalations += row.escalations ?? 0;
-    safeFailures += row.safe_failures ?? 0;
-    executorCounts[row.executor] = (executorCounts[row.executor] || 0) + (row.total_runs ?? 0);
+  for (const row of data) {
+    const r = row as { executor: string; total_runs?: number; repair_successes?: number; escalations?: number; safe_failures?: number };
+    totalRuns += r.total_runs ?? 0;
+    repairSuccesses += r.repair_successes ?? 0;
+    escalations += r.escalations ?? 0;
+    safeFailures += r.safe_failures ?? 0;
+    executorCounts[r.executor] = (executorCounts[r.executor] || 0) + (r.total_runs ?? 0);
   }
 
   // LOCKED formula: repair attempts = successes + escalations (NOT safe_failures)
@@ -242,9 +243,11 @@ async function aggregateEncodeEscalations(): Promise<EncodeTelemetry> {
 
   if (error || !data) return defaultEncode();
 
-  const claimed = (data as any[]).filter(d => d.claimed_by === 'ENCODE').length;
-  const resolved = (data as any[]).filter(d => d.claimed_by === 'ENCODE' && d.status === 'resolved').length;
-  const failed = (data as any[]).filter(d => d.claimed_by === 'ENCODE' && d.status !== 'resolved' && d.status !== 'open').length;
+  type EscalationRow = { status: string; claimed_by: string | null; resolved_at: string | null };
+  const rows = data as EscalationRow[];
+  const claimed = rows.filter(d => d.claimed_by === 'ENCODE').length;
+  const resolved = rows.filter(d => d.claimed_by === 'ENCODE' && d.status === 'resolved').length;
+  const failed = rows.filter(d => d.claimed_by === 'ENCODE' && d.status !== 'resolved' && d.status !== 'open').length;
 
   return {
     escalationsClaimed: claimed,

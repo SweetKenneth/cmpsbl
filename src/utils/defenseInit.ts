@@ -1,5 +1,8 @@
 // PromptFluid Defense System Initialization
 // Performance: Lazy-loads defenseTracking module
+// SPARTA Epoch — Uses secure storage for all state
+
+import { secureSet, secureGet, secureRemove, migrateLegacyKey } from '@/lib/system/secureStorage';
 
 let defenseTrackingModule: typeof import('./defenseTracking') | null = null;
 
@@ -12,51 +15,50 @@ async function getDefenseTracking() {
 }
 
 export const installDefenseSystem = (): void => {
-  console.log('🛡️ PromptFluid Defense System - Installing...');
+  console.log('🛡️ Defense System - Installing...');
   
-  // Check if already initialized
-  const isInitialized = localStorage.getItem('pf_defense_initialized');
+  // Migrate legacy plaintext keys
+  migrateLegacyKey('pf_defense_initialized');
+  migrateLegacyKey('pf_defense_installed_at');
+  migrateLegacyKey('pf_defense_version');
+  
+  const isInitialized = secureGet<boolean>('pf_defense_initialized');
   
   if (!isInitialized) {
     console.log('📦 First-time installation detected');
     console.log('🔧 Initializing defense modules...');
     
-    // Initialize with minimal demo data to show the system is working
     console.log('  ✓ Bot Detection Engine: Active');
     console.log('  ✓ Behavioral Analysis: Active');
     console.log('  ✓ CAPTCHA System: Active');
     console.log('  ✓ Device Fingerprinting: Active');
     console.log('  ✓ Threat Intelligence (AI): Active');
-    console.log('  ✓ PromptFluid Brain: Connected');
+    console.log('  ✓ Brain: Connected');
     
-    // Mark as initialized
-    localStorage.setItem('pf_defense_initialized', 'true');
-    localStorage.setItem('pf_defense_installed_at', new Date().toISOString());
-    localStorage.setItem('pf_defense_version', '1.0.0');
+    secureSet('pf_defense_initialized', true);
+    secureSet('pf_defense_installed_at', new Date().toISOString());
+    secureSet('pf_defense_version', '1.0.0');
     
-    console.log('✅ PromptFluid Defense System: OPERATIONAL');
+    console.log('✅ Defense System: OPERATIONAL');
     console.log('📊 All 29 functions ready (18 edge + 11 API utilities)');
   } else {
-    console.log('✅ PromptFluid Defense System: Already installed and operational');
+    console.log('✅ Defense System: Already installed and operational');
   }
   
-  // Display system info
-  const installedAt = localStorage.getItem('pf_defense_installed_at');
-  const version = localStorage.getItem('pf_defense_version');
+  const installedAt = secureGet<string>('pf_defense_installed_at');
+  const version = secureGet<string>('pf_defense_version');
   
   console.log(`\n📋 System Information:`);
   console.log(`   Version: ${version}`);
   console.log(`   Installed: ${installedAt ? new Date(installedAt).toLocaleString() : 'Unknown'}`);
-  console.log(`   Status: Monitoring Active`);
-  console.log(`\n🌐 PromptFluid Vision™ | AI That Flows\n`);
+  console.log(`   Status: Monitoring Active\n`);
 };
 
 export const getDefenseSystemInfo = async () => {
-  const isInitialized = localStorage.getItem('pf_defense_initialized') === 'true';
-  const installedAt = localStorage.getItem('pf_defense_installed_at');
-  const version = localStorage.getItem('pf_defense_version');
+  const isInitialized = secureGet<boolean>('pf_defense_initialized') === true;
+  const installedAt = secureGet<string>('pf_defense_installed_at');
+  const version = secureGet<string>('pf_defense_version');
   
-  // Lazy load for stats only when this function is called
   const tracking = await getDefenseTracking();
   const stats = {
     botDetections: tracking.getBotDetections().length,
@@ -80,7 +82,7 @@ export const getDefenseSystemInfo = async () => {
       'Remote Diagnostics',
       'Auto Repair',
       'Update Management',
-      'PromptFluid Brain',
+      'Brain',
       'API Key Generation',
       'Remote Heal',
       'Self-Heal',
@@ -93,11 +95,11 @@ export const getDefenseSystemInfo = async () => {
 
 // Reset entire defense system (use with caution)
 export const resetDefenseSystem = async (): Promise<void> => {
-  console.warn('⚠️ Resetting PromptFluid Defense System...');
+  console.warn('⚠️ Resetting Defense System...');
   const tracking = await getDefenseTracking();
   tracking.clearAllDefenseData();
-  localStorage.removeItem('pf_defense_initialized');
-  localStorage.removeItem('pf_defense_installed_at');
-  localStorage.removeItem('pf_defense_version');
+  secureRemove('pf_defense_initialized');
+  secureRemove('pf_defense_installed_at');
+  secureRemove('pf_defense_version');
   console.log('✅ Defense system reset complete. Reload to reinstall.');
 };
