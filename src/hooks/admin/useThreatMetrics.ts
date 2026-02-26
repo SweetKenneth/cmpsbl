@@ -33,20 +33,34 @@ export function useThreatMetrics() {
   const query = useQuery({
     queryKey: ["threat-metrics"],
     queryFn: async (): Promise<ThreatMetrics> => {
-      // Call the unified Reflex core for stats
-      const { data: statsData, error: statsError } = await supabase.functions.invoke('pf-reflex-core', {
-        body: { action: 'stats' }
-      });
+      // Query defense data directly from database (pf-reflex-core may not be deployed)
+      const now = new Date();
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
 
-      // Get recent events
-      const { data: eventsData } = await supabase.functions.invoke('pf-reflex-core', {
-        body: { action: 'recent_events', limit: 20 }
-      });
+      // Get today's security events
+      const { data: secEvents } = await supabase
+        .from('pf_security_events')
+        .select('*')
+        .gte('created_at', todayStart)
+        .order('created_at', { ascending: false })
+        .limit(100);
 
-      // Get top threats from recent events
-      const { data: threatFeed } = await supabase.functions.invoke('pf-reflex-core', {
-        body: { action: 'threat_feed', limit: 100 }
-      });
+      // Get active defense rules
+      const { data: rules } = await supabase
+        .from('defense_rules')
+        .select('id')
+        .eq('is_active', true);
+
+      // Get IP reputation stats
+      const { data: blockedIps } = await supabase
+        .from('ip_reputation')
+        .select('score')
+        .lt('score', 30);
+
+      const eventList = secEvents || [];
+      const statsData = { stats: {} };
+      const eventsData = { events: eventList.slice(0, 20) };
+      const threatFeed = { events: eventList };
 
       // Aggregate top threats by type
       const threatCounts: Record<string, { count: number; severity: string }> = {};
@@ -63,15 +77,16 @@ export function useThreatMetrics() {
         .sort((a, b) => b.count - a.count)
         .slice(0, 5);
 
-      const stats = statsData?.stats || {};
+      const blockedCount = eventList.filter((e: any) => e.action === 'block').length;
+      const threatLevel = blockedCount > 20 ? 'critical' : blockedCount > 10 ? 'high' : blockedCount > 3 ? 'medium' : 'low';
       
       return {
-        threatLevel: stats.threat_level || 'low',
-        eventsToday: stats.events_today || 0,
-        eventsBlocked: stats.blocked_today || 0,
-        activeRules: stats.active_rules || 0,
+        threatLevel: threatLevel as ThreatMetrics['threatLevel'],
+        eventsToday: eventList.length,
+        eventsBlocked: blockedCount,
+        activeRules: rules?.length || 0,
         topThreats,
-        ipReputation: stats.ip_reputation || { blocked: 0, suspicious: 0, trusted: 0 },
+        ipReputation: { blocked: blockedIps?.length || 0, suspicious: 0, trusted: 0 },
         recentEvents: (eventsData?.events || []).map((e: any) => ({
           id: e.id,
           timestamp: e.timestamp,

@@ -413,9 +413,10 @@ export function useSubstrateData(moduleId: string) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/api/substrate/' + moduleId)
-      .then(r => r.json())
-      .then(setData)
+    supabase.functions.invoke('pf-nexus-router', {
+      body: { action: 'substrate_query', moduleId }
+    })
+      .then(({ data: d }) => setData(d))
       .catch(setError)
       .finally(() => setLoading(false));
   }, [moduleId]);

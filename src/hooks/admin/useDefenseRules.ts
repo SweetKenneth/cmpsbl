@@ -20,22 +20,25 @@ export function useDefenseRules() {
   const query = useQuery({
     queryKey: ["defense-rules"],
     queryFn: async (): Promise<DefenseRule[]> => {
-      const { data, error } = await supabase.functions.invoke('pf-reflex-core', {
-        body: { action: 'get_rules' }
-      });
+      const { data, error } = await supabase
+        .from('defense_rules')
+        .select('*')
+        .order('priority', { ascending: false });
       
       if (error) throw error;
-      return data?.rules || [];
+      return (data || []) as DefenseRule[];
     },
   });
 
   const createRule = useMutation({
     mutationFn: async (rule: Partial<DefenseRule>) => {
-      const { data, error } = await supabase.functions.invoke('pf-reflex-core', {
-        body: { action: 'create_rule', ...rule }
-      });
+      const { data, error } = await supabase
+        .from('defense_rules')
+        .insert(rule)
+        .select()
+        .single();
       if (error) throw error;
-      return data?.rule;
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["defense-rules"] });
@@ -48,11 +51,14 @@ export function useDefenseRules() {
 
   const toggleRule = useMutation({
     mutationFn: async ({ rule_id, is_active }: { rule_id: string; is_active: boolean }) => {
-      const { data, error } = await supabase.functions.invoke('pf-reflex-core', {
-        body: { action: 'toggle_rule', rule_id, is_active }
-      });
+      const { data, error } = await supabase
+        .from('defense_rules')
+        .update({ is_active })
+        .eq('id', rule_id)
+        .select()
+        .single();
       if (error) throw error;
-      return data?.rule;
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["defense-rules"] });
@@ -62,11 +68,12 @@ export function useDefenseRules() {
 
   const blockIp = useMutation({
     mutationFn: async ({ ip, reason }: { ip: string; reason?: string }) => {
-      const { data, error } = await supabase.functions.invoke('pf-reflex-core', {
-        body: { action: 'block_ip', ip, reason }
+      const { error } = await supabase.rpc('update_ip_reputation', {
+        p_ip: ip,
+        p_action: 'block',
       });
       if (error) throw error;
-      return data;
+      return { blocked: true };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["threat-metrics"] });
@@ -76,11 +83,12 @@ export function useDefenseRules() {
 
   const unblockIp = useMutation({
     mutationFn: async ({ ip }: { ip: string }) => {
-      const { data, error } = await supabase.functions.invoke('pf-reflex-core', {
-        body: { action: 'unblock_ip', ip }
+      const { error } = await supabase.rpc('update_ip_reputation', {
+        p_ip: ip,
+        p_action: 'allow',
       });
       if (error) throw error;
-      return data;
+      return { unblocked: true };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["threat-metrics"] });

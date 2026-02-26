@@ -1,6 +1,6 @@
 /**
- * Defense Module Exports
- * v10.5.4 ARCHITECT — Security, Rate Limiting, Circuit Breakers, and Secret Redaction
+ * DEFENSE Module Exports
+ * SPARTA Epoch — Security, Rate Limiting, Circuit Breakers, and Secret Redaction
  */
 
 // Core threat detection and risk analysis
@@ -59,6 +59,9 @@ export * from './incidentResponse';
  
  // Behavioral analysis
  export * from './behavioralAnalysis';
+
+// Site guard (bot detection)
+export * from './site-guard';
 
 // Anomaly detection
 export {
