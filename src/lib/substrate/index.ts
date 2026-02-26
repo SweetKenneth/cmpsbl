@@ -173,6 +173,27 @@ export {
   type PolicyResult,
   type PolicyViolation,
   type VoiceGuardrailResult,
+  // v11.5 Governance Gap Fills
+  validateTransition,
+  getTransitionPath,
+  evaluateVetoEscalation,
+  onGovernanceModeChange,
+  auditCompliance,
+  runComplianceAudit,
+  getComplianceTrend,
+  getComplianceScoreAvg,
+  analyzeDrift,
+  recordMutation,
+  recordEscalation,
+  recordVetoEvent,
+  recordActivation,
+  tickWindow,
+  type TransitionValidation,
+  type VetoGovernanceEscalation,
+  type ComplianceViolation,
+  type ComplianceReport,
+  type DriftSignal,
+  type DriftReport,
 } from './governance';
 
 // Orchestrator Engine - Unified Cognitive Pipeline (v6.6.0)
