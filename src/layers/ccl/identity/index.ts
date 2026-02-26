@@ -1,7 +1,7 @@
 /**
- * CCL Identity Subsystem
+ * OCG Identity Subsystem
  * Session management, actor resolution, trust scoring, cross-agency portability
- * Formerly the IDENTITY module — now part of Clockless Cognitive Lucidity
+ * Part of the Operational Compliance Grid (OCG)
  */
 
 export { resolveIdentityAction, isIdentityAction, handleIdentityProxy, IDENTITY_MERGED, IDENTITY_TARGET_MODULE } from '@/lib/substrate/identity-access-merge';

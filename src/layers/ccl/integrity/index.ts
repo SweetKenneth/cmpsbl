@@ -1,5 +1,5 @@
 /**
- * CCL Integrity Subsystem
+ * OCG Integrity Subsystem
  * Read-only health check surface binding
  * Substrate Health Check continues verifying registry shape, route integrity,
  * pipeline crystallization, edge functions, and RLS behavior.

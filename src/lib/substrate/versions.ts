@@ -9,8 +9,8 @@
  *   DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
  *
  * 9 Zones (surgically hot-swappable, circuit-breaker isolated):
- *   CCR Zones (4): SYSTEM Zone, BRAIN Zone, MEMORY Zone, DREAM Zone
- *   CCL Zones (5): RIPPLE Zone, ACCESS Zone, IDENTITY Zone, RELAY Zone, AUDIT Zone
+ *   CCR Zones (3): BRAIN Zone, MEMORY Zone, DREAM Zone + SYSTEM (elevated to Spine)
+ *   OCG Zones (5): RIPPLE Zone, ACCESS Zone, IDENTITY Zone, RELAY Zone, AUDIT Zone
  *
  * Absorbed: MODERNIZER → EVOLUTION mesh
  */
@@ -41,19 +41,19 @@ export const MESH_VERSIONS = {
   governance: { version: '11.3.0', codename: 'Arbiter', order: 5, position: 'innermost' as const },
 } as const;
 
-// 9 Zone versions (surgically hot-swappable subsystems within CCR/CCL)
+// 9 Zone versions (surgically hot-swappable subsystems within CCR/OCG)
 export const ZONE_VERSIONS = {
   // CCR Zones (Layer 0)
   system: { version: '11.3.0', codename: 'Production', parent: 'CCR', description: 'Administration & config' },
   brain: { version: '11.3.0', codename: 'Memoria', parent: 'CCR', description: 'Reasoning & learning' },
   memory: { version: '11.3.0', codename: 'Vault', parent: 'CCR', description: 'Persistent storage & retrieval' },
   dream: { version: '11.3.0', codename: 'Nocturne', parent: 'CCR', description: 'Offline synthesis & evolution' },
-  // CCL Zones (Layer 1)
-  ripple: { version: '11.3.0', codename: 'Cascade', parent: 'CCL', description: 'Event bus & signal propagation' },
-  access: { version: '11.3.0', codename: 'Gatekeeper', parent: 'CCL', description: 'API keys & rate limiting' },
-  identity: { version: '11.3.0', codename: 'Provenance', parent: 'CCL', description: 'Actor identity & trust' },
-  relay: { version: '11.3.0', codename: 'Dispatch', parent: 'CCL', description: 'Webhook & outbound routing' },
-  audit: { version: '11.3.0', codename: 'Ledger', parent: 'CCL', description: 'Immutable compliance logging' },
+  // OCG Zones (Operational Compliance Grid)
+  ripple: { version: '11.3.0', codename: 'Cascade', parent: 'OCG', description: 'Event bus & signal propagation' },
+  access: { version: '11.3.0', codename: 'Gatekeeper', parent: 'OCG', description: 'API keys & rate limiting' },
+  identity: { version: '11.3.0', codename: 'Provenance', parent: 'OCG', description: 'Actor identity & trust' },
+  relay: { version: '11.3.0', codename: 'Dispatch', parent: 'OCG', description: 'Webhook & outbound routing' },
+  audit: { version: '11.3.0', codename: 'Ledger', parent: 'OCG', description: 'Immutable compliance logging' },
 } as const;
 
 // Absorbed module (routes to EVOLUTION mesh)
@@ -131,7 +131,7 @@ export function getMeshOrder(): string[] {
 }
 
 // Get zones by parent layer
-export function getZonesByParent(parent: 'CCR' | 'CCL'): string[] {
+export function getZonesByParent(parent: 'CCR' | 'OCG'): string[] {
   return Object.entries(ZONE_VERSIONS)
     .filter(([_, info]) => info.parent === parent)
     .map(([name]) => name);

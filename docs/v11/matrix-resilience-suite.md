@@ -28,7 +28,7 @@ The Matrix Resilience Suite is a collection of 10 purpose-built engines that pro
 
 **Purpose**: Weighted task scheduling with sector-aware preemption.
 
-- Weight mapping: CORE=1.0, CCR=0.8, CCL=0.6, Execution=0.4, Overlay=0.2
+- Weight mapping: CORE=1.0, CCR=0.8, OCG=0.6, Execution=0.4, Fields=0.2
 - CORE/CCR tasks can preempt running Execution/Overlay tasks
 - Queue depth limit: 1000 items (configurable)
 - Starvation prevention: lower-priority tasks get age-based boost after 30s

@@ -2,7 +2,7 @@
  * Substrate Demo — Interactive AI OS Showcase
  * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  *
- * CORE → CCR/CCL → 8 Modules → 5 Meshes → INTEGRATION
+ * CORE → SYSTEM → CCR → MODULES → OCG → Fields → Shell
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -27,7 +27,7 @@ interface ModuleState {
   id: string;
   name: string;
   icon: React.ElementType;
-  layer: 'kernel' | 'module' | 'mesh-overlay' | 'zone-ccr' | 'zone-ccl';
+  layer: 'kernel' | 'module' | 'mesh-overlay' | 'zone-ccr' | 'zone-ocg';
   status: 'idle' | 'active' | 'processing' | 'complete';
   color: string;
   description: string;
@@ -45,7 +45,7 @@ const LAYER_COLORS = {
   module: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
   'mesh-overlay': { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
   'zone-ccr': { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
-  'zone-ccl': { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
+  'zone-ocg': { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
 };
 
 const INITIAL_MODULES: ModuleState[] = [
@@ -73,12 +73,12 @@ const INITIAL_MODULES: ModuleState[] = [
   { id: 'system', name: 'SYSTEM Zone', icon: Server, layer: 'zone-ccr', status: 'idle', color: 'slate', description: 'CCR: Administration' },
   { id: 'memory', name: 'MEMORY Zone', icon: Database, layer: 'zone-ccr', status: 'idle', color: 'sky', description: 'CCR: Vector Storage' },
   { id: 'dream', name: 'DREAM Zone', icon: Moon, layer: 'zone-ccr', status: 'idle', color: 'purple', description: 'CCR: Synthesis' },
-  // CCL ZONES (5) — surgically hot-swappable
-  { id: 'ripple', name: 'RIPPLE Zone', icon: Network, layer: 'zone-ccl', status: 'idle', color: 'teal', description: 'CCL: Event Bus' },
-  { id: 'access', name: 'ACCESS Zone', icon: Lock, layer: 'zone-ccl', status: 'idle', color: 'yellow', description: 'CCL: API Keys' },
-  { id: 'identity', name: 'IDENTITY Zone', icon: Fingerprint, layer: 'zone-ccl', status: 'idle', color: 'rose', description: 'CCL: Attribution' },
-  { id: 'relay', name: 'RELAY Zone', icon: Send, layer: 'zone-ccl', status: 'idle', color: 'lime', description: 'CCL: Webhooks' },
-  { id: 'audit', name: 'AUDIT Zone', icon: FileCheck, layer: 'zone-ccl', status: 'idle', color: 'stone', description: 'CCL: Compliance' },
+  // OCG ZONES (5) — Operational Compliance Grid
+  { id: 'ripple', name: 'RIPPLE Zone', icon: Network, layer: 'zone-ocg', status: 'idle', color: 'teal', description: 'OCG: Event Bus' },
+  { id: 'access', name: 'ACCESS Zone', icon: Lock, layer: 'zone-ocg', status: 'idle', color: 'yellow', description: 'OCG: API Keys' },
+  { id: 'identity', name: 'IDENTITY Zone', icon: Fingerprint, layer: 'zone-ocg', status: 'idle', color: 'rose', description: 'OCG: Attribution' },
+  { id: 'relay', name: 'RELAY Zone', icon: Send, layer: 'zone-ocg', status: 'idle', color: 'lime', description: 'OCG: Webhooks' },
+  { id: 'audit', name: 'AUDIT Zone', icon: FileCheck, layer: 'zone-ocg', status: 'idle', color: 'stone', description: 'OCG: Compliance' },
 ];
 
 const DEMO_SCENARIOS = [
@@ -168,7 +168,7 @@ export default function SubstrateDemo() {
     module: modules.filter(m => m.layer === 'module'),
     'mesh-overlay': modules.filter(m => m.layer === 'mesh-overlay'),
     'zone-ccr': modules.filter(m => m.layer === 'zone-ccr'),
-    'zone-ccl': modules.filter(m => m.layer === 'zone-ccl'),
+    'zone-ocg': modules.filter(m => m.layer === 'zone-ocg'),
   };
 
   return (
@@ -307,11 +307,11 @@ export default function SubstrateDemo() {
                         currentStep={currentStep}
                       />
 
-                      {/* CCL Zones */}
+                      {/* OCG Zones */}
                       <LayerRow 
-                        label="CCL Zones" 
-                        modules={groupedModules['zone-ccl']} 
-                        layerKey="zone-ccl"
+                        label="OCG Zones" 
+                        modules={groupedModules['zone-ocg']} 
+                        layerKey="zone-ocg"
                         isRunning={isRunning}
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}

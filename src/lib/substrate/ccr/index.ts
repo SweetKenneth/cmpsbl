@@ -7,7 +7,7 @@
  * If a Zone's circuit breaker trips, the fault is isolated to that Zone.
  *
  * CORE is standalone (not a Zone).
- * CCL (Layer 1) contains 5 Zones: RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
+ * OCG (Operational Compliance Grid) contains 5 Zones: RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
