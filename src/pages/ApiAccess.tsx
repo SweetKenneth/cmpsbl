@@ -146,7 +146,7 @@ console.log(result.insights);`}
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/pricing">View Pricing</Link>
+                <Link to="/upgrade">View Pricing</Link>
               </Button>
             </div>
           </motion.div>

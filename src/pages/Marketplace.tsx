@@ -134,7 +134,7 @@ export default function TemplateAlley() {
                 <Check className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
                 <div className="text-sm text-muted-foreground">
                   <strong className="text-foreground">Templates are free starting points.</strong> Copy the code, remix it, make it yours.
-                  For production-ready orchestration, explore our <Link to="/pricing" className="text-primary hover:underline">subscription plans</Link>.
+                  For production-ready orchestration, explore our <Link to="/upgrade" className="text-primary hover:underline">subscription plans</Link>.
                 </div>
               </div>
             </div>
@@ -381,7 +381,7 @@ export default function TemplateAlley() {
             <p className="text-muted-foreground mb-6">Templates are starting points. Upgrade your plan for governed orchestration.</p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg">
-                <Link to="/pricing">
+                <Link to="/upgrade">
                   <Code className="w-4 h-4 mr-2" />
                   View Plans
                 </Link>

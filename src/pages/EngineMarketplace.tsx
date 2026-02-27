@@ -208,7 +208,7 @@ function EngineCard({ engine, isShowcase = false, isMeta = false }: { engine: Pu
               {engine.visibility === 'free' ? (
                 <a href="/os"><Play className="w-3 h-3" /> Run</a>
               ) : (
-                <a href="/pricing">Subscribe <ChevronRight className="w-3 h-3" /></a>
+                <a href="/upgrade">Subscribe <ChevronRight className="w-3 h-3" /></a>
               )}
             </Button>
           )}
@@ -302,7 +302,7 @@ function GridEngineCard({ engine, isShowcase = false, isMeta = false, index }: {
               {engine.visibility === 'free' ? (
                 <a href="/os"><Play className="w-3 h-3" /> Run</a>
               ) : (
-                <a href="/pricing">Subscribe <ChevronRight className="w-3 h-3" /></a>
+                <a href="/upgrade">Subscribe <ChevronRight className="w-3 h-3" /></a>
               )}
             </Button>
           )}

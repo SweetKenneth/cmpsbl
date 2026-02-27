@@ -309,7 +309,7 @@ function UpgradePrompt({ requiredTier }: { requiredTier: SubstrateTier }) {
           variant="outline"
           asChild
         >
-          <Link to="/pricing">
+          <Link to="/upgrade">
             <Rocket className="w-4 h-4" />
             View Plans
           </Link>
@@ -882,7 +882,7 @@ const DashboardContent = memo(function DashboardContent({
               Upgrade to Creator for real-time cognitive events.
             </p>
             <Button size="sm" variant="outline" className="border-cyan-500/30 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 w-full text-xs" asChild>
-              <Link to="/pricing">View Plans</Link>
+              <Link to="/upgrade">View Plans</Link>
             </Button>
           </motion.div>
         )}
@@ -1127,7 +1127,7 @@ export default function SubstrateOS() {
                       Terminal, cognitives, engines, Intent Mesh, Cortex, and full substrate control.
                     </p>
                     <Button variant="outline" className="border-cyan-500/30 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20" asChild>
-                      <Link to="/pricing">
+                      <Link to="/upgrade">
                         <Rocket className="w-4 h-4 mr-2" />View Plans
                       </Link>
                     </Button>

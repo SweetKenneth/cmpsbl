@@ -23,7 +23,7 @@ Role: Founder, Architect, Chief Cognitive Engineer
 Location: Abilene, Texas, USA
 Contact: Dev@CMPSBL.com
 Phone: (760) FLUID-AI
-Twitter: @promptfluid
+Twitter: @cmpsbl
 
 /* THANKS */
 

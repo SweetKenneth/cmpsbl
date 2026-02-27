@@ -1128,7 +1128,7 @@ export default function Blog() {
                 <Link to="/store" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Artifact Store</Link>
                 <Link to="/composable-cognitives" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Cognitives</Link>
                 <Link to="/developers" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Developer Hub</Link>
-                <Link to="/pricing" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Pricing</Link>
+                <Link to="/upgrade" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Pricing</Link>
               </nav>
             </div>
           </section>

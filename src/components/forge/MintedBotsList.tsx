@@ -1,5 +1,5 @@
 /**
- * Minted Bots List Component v2.0.0
+ * Minted Bots List Component
  * Display and manage previously minted bots with neon aesthetics
  * Mobile-first responsive design
  */

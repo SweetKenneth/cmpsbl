@@ -57,7 +57,7 @@ const HowPromptFluidWorks = () => {
             <div className="relative w-full h-[400px] rounded-xl overflow-hidden mb-8">
               <img 
                 src={heroImage} 
-                alt="PromptFluid AI ecosystem with interconnected brain, defense shield, studio workspace, and network modules flowing with intelligent data streams"
+                alt="CMPSBL AI ecosystem with interconnected brain, defense shield, studio workspace, and network modules flowing with intelligent data streams"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
@@ -67,7 +67,7 @@ const HowPromptFluidWorks = () => {
               How CMPSBL Works: The Cognitive Substrate That Makes AI Flow
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Discover how the CMPSBL substrate — created by PromptFluid — orchestrates adaptive intelligence through a unified ecosystem 
+              Discover how the CMPSBL substrate orchestrates adaptive intelligence through a unified ecosystem 
               where artificial intelligence learns, evolves, and operates without friction.
             </p>
             <div className="flex items-center gap-4 mt-6 text-sm text-muted-foreground">
@@ -87,7 +87,7 @@ const HowPromptFluidWorks = () => {
             </p>
             
             <p className="text-lg leading-relaxed">
-              At the heart of this ecosystem lives <strong>the cognitive engine</strong>, PromptFluid's internally-built orchestration 
+              At the heart of this ecosystem lives <strong>the cognitive engine</strong>, CMPSBL's internally-built orchestration 
               intelligence that makes the entire CMPSBL substrate adaptive, learning, and autonomous. It isn't 
               just another AI model—it's the living nervous system that connects every module, learns from every 
               interaction, and ensures intelligence flows exactly where it's needed, when it's needed.
@@ -100,7 +100,7 @@ const HowPromptFluidWorks = () => {
             </p>
           </section>
 
-          {/* Section 1: Understanding the PromptFluid Philosophy */}
+          {/* Section 1: Understanding the CMPSBL Philosophy */}
           <section className="mb-16">
             <h2 className="text-4xl font-bold mb-6 text-foreground">Understanding the CMPSBL Philosophy: AI That Flows</h2>
             
@@ -131,7 +131,7 @@ const HowPromptFluidWorks = () => {
                 <div>
                   <h4 className="text-xl font-semibold mb-2 text-primary">2. Seamless Orchestration</h4>
                   <p className="text-muted-foreground leading-relaxed">
-                    Instead of juggling multiple disconnected AI platforms, PromptFluid orchestrates intelligence across 
+                    Instead of juggling multiple disconnected AI platforms, CMPSBL orchestrates intelligence across 
 135:                     specialized providers. Cascade routes tasks through Groq's lightning-fast inference, Together AI for 
 136:                     complex reasoning, Hyperbolic for creative tasks, DeepSeek for technical analysis, and Cerebras for 
 137:                     high-throughput operations—all transparently and automatically. You interact with one system; Cascade handles the complexity.

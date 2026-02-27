@@ -201,7 +201,7 @@ export default function CodeLab() {
                 Try Live API
               </Button>
               <Button asChild size="lg" variant="ghost" className="gap-2">
-                <Link to="/pricing">
+                <Link to="/upgrade">
                   <Code className="w-5 h-5" />
                   View Plans
                 </Link>

@@ -82,7 +82,7 @@ export function CodeLabCTA() {
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="gap-2 h-13 text-base font-semibold">
-                    <Link to="/pricing">
+                    <Link to="/upgrade">
                       <Code className="w-4 h-4" />
                       View Pricing
                     </Link>
