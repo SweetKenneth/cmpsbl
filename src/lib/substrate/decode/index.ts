@@ -4,7 +4,7 @@
  * + Cryptographic Identity Context
  * 
  * Part of the layered cognitive architecture
-
+ */
 export {
   personalityEngine,
   PersonalityEngineClient,
