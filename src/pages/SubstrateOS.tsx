@@ -1273,7 +1273,7 @@ export default function SubstrateOS() {
           </AnimatePresence>
         </div>
       </div>
-      )}
+
 
       {/* Footer */}
       <footer className="hidden lg:block border-t border-border/20 bg-background/60 backdrop-blur-sm px-4 py-1.5">
