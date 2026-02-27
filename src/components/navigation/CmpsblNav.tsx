@@ -110,7 +110,8 @@ export function CmpsblNav() {
       items: [
         { name: "Start Here", href: "/start-here", description: "Get oriented fast", icon: Rocket },
         { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
-        { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap, badge: "NEW" },
+        { name: "Capability Manifest", href: "/docs/manifest", description: "Browse & download all capabilities", icon: Layers, badge: "NEW" },
+        { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "DevTools", href: "/devtools", description: "Diagnostics & utilities", icon: Terminal },
       ]
