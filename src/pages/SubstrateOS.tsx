@@ -1002,9 +1002,6 @@ export default function SubstrateOS() {
 
       <OSHeader userEmail={user?.email} role={role} />
 
-      {/* View Mode Toggle */}
-      <div className="flex items-center justify-end px-4 py-1.5 border-b border-border/20 bg-card/30 backdrop-blur-sm">
-
 
 
       {/* ═══ CLASSIC MODE ═══ */}
