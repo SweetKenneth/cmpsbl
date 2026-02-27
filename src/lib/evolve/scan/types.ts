@@ -1,8 +1,7 @@
 /**
  * Scan Types — Type definitions for cognitive systems scan
- * v6.3.1 FNDTN — Intelligent Multi-Source Analysis with Enriched Metadata
+ * Intelligent Multi-Source Analysis with Enriched Metadata
  * 
- * Changelog v6.3.1:
  * - Added affected_modules, reversible, metadata_version to ScanProposal
  * - All proposals now carry complete traceability metadata
  */
