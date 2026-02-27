@@ -123,6 +123,14 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
 
   const handleDownload = () => {
     if (!generatedTemplate) return;
+
+    // Evaluate pack policy for this template's category
+    const policy = evaluateTemplatePolicy(generatedTemplate.category, activePackIds);
+    const requirementsBlock = generateRequirementsBlock(policy);
+
+    // Log audit entry
+    const audit = buildAuditEntry(generatedTemplate.category, policy, generatedTemplate.id);
+    console.info('[TemplateGenerator] Audit:', audit);
     
     const content = `/**
  * ${generatedTemplate.name}
@@ -132,6 +140,7 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
  * Difficulty: ${generatedTemplate.difficulty}
  * Rarity: ${generatedTemplate.rarity}
  * Estimated Value: ${generatedTemplate.estimatedValue}
+ * Generation Mode: ${policy.mode === 'full' ? 'Full (all packs active)' : 'Degraded (missing packs)'}
  * 
  * Features:
 ${generatedTemplate.features.map(f => ` * - ${f}`).join('\n')}
@@ -139,7 +148,7 @@ ${generatedTemplate.features.map(f => ` * - ${f}`).join('\n')}
  * Use Case: ${generatedTemplate.useCase}
  */
 
-${generatedTemplate.code}
+${requirementsBlock}${generatedTemplate.code}
 `;
     
     const blob = new Blob([content], { type: 'text/typescript' });
@@ -152,7 +161,7 @@ ${generatedTemplate.code}
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    toast.success('Template downloaded!');
+    toast.success(policy.mode === 'full' ? 'Full template downloaded!' : 'Baseline template downloaded — activate packs for full version');
   };
 
   const handleCopyCode = () => {
