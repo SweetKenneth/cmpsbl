@@ -532,7 +532,7 @@ export default function Upgrade() {
               { q: 'What is the baseline runtime?', a: 'Every plan includes the full system runtime — all engines, pipelines, and core capabilities. There is no module gating. Plans differ in artifact capacity, not in what the system can do.' },
               { q: 'Why does every pack cost 1 slot?', a: 'Simplicity enables clarity. Every artifact pack is a composed capability of equal strategic weight. Choose any combination — no pack is locked behind a specific tier.' },
               { q: 'Can I change my active packs?', a: 'Yes. You can activate and deactivate packs at any time within your slot capacity. No migration, no waiting.' },
-              { q: 'Can I start free and upgrade later?', a: 'Yes. The Builder plan is fully functional with 3 slots. Upgrade to Operator (6) or Architect (12) when you need more capacity.' },
+              { q: 'Can I start free and upgrade later?', a: 'Yes. The Builder plan is fully functional with 3 slots. Upgrade to Creator (6) or Architect (12) when you need more capacity.' },
               { q: 'What happens when my subscription ends?', a: 'Your projects continue on the baseline runtime. Activated packs beyond your slot capacity are paused until you resubscribe.' },
               { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Architect plans include deployment rights to run the system on your own infrastructure.' },
             ].map(faq => (
