@@ -206,8 +206,9 @@ Engines are the governed, versioned, authoritative form of orchestration. When y
 
 | Tier | Price | Features |
 |------|-------|----------|
-| **Professional** | $99/mo | Core engines, standard support |
-| **Enterprise** | Custom | All engines, SLA, dedicated support |
+| **Creator** | $29/mo | Core engines, standard support |
+| **Architect** | $79/mo | All engines, priority support, advanced orchestration |
+| **Enterprise** | Custom | Dedicated infra, SLA, custom integrations |
 
 [Browse Engines →](/engines)
 

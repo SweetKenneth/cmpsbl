@@ -295,7 +295,7 @@ Ship standalone products that run ON the substrate. Don't sell the substrate. Cr
 <tr><th>Action</th><th>Detail</th></tr>
 <tr><td>Launch Artifact Store</td><td>Free catalog + tiered paid catalogs. Community ratings. One-click activation.</td></tr>
 <tr><td>Open Template Marketplace</td><td>70/30 revenue share (creator/platform). Seed with 50+ first-party templates.</td></tr>
-<tr><td>Substrate API (Beta)</td><td>Free: 1K calls/day. Creator: $9/mo. Architect: $19/mo. Enterprise: $99/mo.</td></tr>
+<tr><td>Substrate API (Beta)</td><td>Free: 1K calls/day. Creator: $29/mo. Architect: $79/mo. Enterprise: Custom.</td></tr>
 <tr><td>Persistent Memory (Tiered)</td><td>Free: limited memory slots. Paid: deeper persistence, cross-project memory.</td></tr>
 <tr><td>"Built on CMPSBL" badge program</td><td>Social proof + ecosystem tracking. Featured on marketing site.</td></tr>
 </table>
@@ -525,7 +525,7 @@ Ship standalone products that run ON the substrate. Don't sell the substrate. Cr
 <h3>Pricing Page Changes</h3>
 <table>
 <tr><th>Change</th><th>File</th><th>What Was Done</th><th>Revert Instructions</th></tr>
-<tr><td>Removed pricing numbers from Coming Soon tiers</td><td><code>src/components/pricing/TierUnlockSection.tsx</code></td><td>Replaced price labels ($9/mo, $19/mo, $99/mo) with "Check Back Soon" badge</td><td>Restore <code>{td.price}</code> span and remove Badge import</td></tr>
+<tr><td>Updated pricing to GTM v4</td><td><code>src/components/pricing/TierUnlockSection.tsx</code></td><td>Aligned tier pricing to Creator ($29/mo) and Architect ($79/mo)</td><td>Restore previous price labels and remove Badge import</td></tr>
 </table>
 </div>
 
