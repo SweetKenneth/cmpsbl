@@ -98,7 +98,7 @@ const VisionModuleGuide = () => {
                   <div>
                     <h3 className="text-xl font-semibold mb-2 text-foreground">Security & Threat Intelligence</h3>
                     <p className="text-muted-foreground">
-                      VISION integrates <Link to="/blog/promptfluid-defense-ai-security" className="text-primary hover:underline">DEFENSE</Link> telemetry to display blocked threats, suspicious pattern detections, and behavioral analysis results directly in the dashboard.
+                      VISION integrates <Link to="/blog/cmpsbl-defense-ai-security" className="text-primary hover:underline">DEFENSE</Link> telemetry to display blocked threats, suspicious pattern detections, and behavioral analysis results directly in the dashboard.
                     </p>
                   </div>
                 </div>
@@ -110,7 +110,7 @@ const VisionModuleGuide = () => {
                   <div>
                     <h3 className="text-xl font-semibold mb-2 text-foreground">BRAIN Console Integration</h3>
                     <p className="text-muted-foreground">
-                      Access <Link to="/blog/promptfluid-brain-adaptive-learning-core" className="text-primary hover:underline">BRAIN</Link> directly through VISION's integrated console. Upload knowledge files, review learning insights, and monitor the autonomy score.
+                      Access <Link to="/blog/cmpsbl-brain-adaptive-learning-core" className="text-primary hover:underline">BRAIN</Link> directly through VISION's integrated console. Upload knowledge files, review learning insights, and monitor the autonomy score.
                     </p>
                   </div>
                 </div>
@@ -143,11 +143,11 @@ const VisionModuleGuide = () => {
           <section className="mt-16 pt-8 border-t border-border">
             <h2 className="text-2xl font-bold mb-6 text-foreground">Related Articles</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              <Link to="/blog/how-promptfluid-works-cascade-ai-ecosystem" className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors">
+              <Link to="/blog/how-cmpsbl-works-substrate-ecosystem" className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors">
                 <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL World Engine Works</h3>
                 <p className="text-sm text-muted-foreground">Discover the complete architecture that VISION monitors and controls.</p>
               </Link>
-              <Link to="/blog/promptfluid-brain-adaptive-learning-core" className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors">
+              <Link to="/blog/cmpsbl-brain-adaptive-learning-core" className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors">
                 <h3 className="text-lg font-semibold mb-2 text-foreground">BRAIN: Adaptive Learning Core</h3>
                 <p className="text-sm text-muted-foreground">Explore the learning core that powers VISION's intelligent insights.</p>
               </Link>
