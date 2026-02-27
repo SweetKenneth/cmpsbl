@@ -3,7 +3,34 @@
  * Investor-grade test battery across terminal/governance command paths
  */
 
-import { executeCommand } from '@/lib/terminal/execute';
+import { executeCommand, type CommandResult } from '@/lib/terminal/execute';
+
+async function ensureHandlersRegistered(): Promise<void> {
+  const [
+    { registerSpineHandlers },
+    { registerOCGHandlers },
+    { registerExecutionHandlers },
+    { registerInfraHandlers },
+    { registerGovernanceHandlers },
+    { registerObservabilityHandlers },
+    { registerAnalyticsHandlers },
+  ] = await Promise.all([
+    import('@/lib/terminal/spine-handlers'),
+    import('@/lib/terminal/ocg-handlers'),
+    import('@/lib/terminal/execution-handlers'),
+    import('@/lib/terminal/infra-handlers'),
+    import('@/lib/terminal/governance-handlers'),
+    import('@/lib/terminal/observability-handlers'),
+    import('@/lib/terminal/analytics-handlers'),
+  ]);
+  registerSpineHandlers();
+  registerOCGHandlers();
+  registerExecutionHandlers();
+  registerInfraHandlers();
+  registerGovernanceHandlers();
+  registerObservabilityHandlers();
+  registerAnalyticsHandlers();
+}
 
 type Severity = 'PASS' | 'MINOR' | 'CRITICAL';
 
@@ -85,28 +112,25 @@ function shapeOk(res: unknown): { ok: boolean; note?: string } {
   return { ok: false, note: 'Unrecognized response type' };
 }
 
-function classify(res: unknown, expectedMode: 'surface' | 'failure' | 'unknown'): { success: boolean; severity: Severity; notes?: string } {
-  const shape = shapeOk(res);
-  if (!shape.ok) return { success: false, severity: 'CRITICAL', notes: shape.note };
-
-  const obj = res as unknown as Record<string, unknown>;
-  const success =
-    (typeof obj.success === 'boolean' ? obj.success : undefined) ??
-    (typeof obj.ok === 'boolean' ? obj.ok : undefined) ??
-    (typeof obj.output === 'string' ? true : false);
-
+function classifyResult(res: CommandResult, expectedMode: 'surface' | 'failure' | 'unknown'): { success: boolean; severity: Severity; notes?: string } {
+  // CommandResult always has { success, trace_id, output?, error?, ... }
   if (expectedMode === 'surface') {
-    if (!success) return { success: false, severity: 'CRITICAL', notes: (obj.error as string) || (obj.reason as string) || 'Surface command failed' };
+    if (!res.success) {
+      const errMsg = res.error?.safe_message || res.error?.message || 'Surface command failed';
+      return { success: false, severity: 'CRITICAL', notes: errMsg };
+    }
     return { success: true, severity: 'PASS' };
   }
 
   if (expectedMode === 'unknown') {
-    if (success) return { success: false, severity: 'MINOR', notes: 'Unknown command unexpectedly succeeded' };
-    return { success: true, severity: 'PASS' };
+    // We expect a clean NOT_FOUND failure
+    if (res.success) return { success: false, severity: 'MINOR', notes: 'Unknown command unexpectedly succeeded' };
+    if (res.error?.code === 'NOT_FOUND') return { success: true, severity: 'PASS' };
+    return { success: true, severity: 'PASS', notes: `Failed with code: ${res.error?.code}` };
   }
 
-  // failure discipline
-  if (!success) return { success: true, severity: 'PASS' };
+  // failure discipline: clean failure or guarded success both acceptable
+  if (!res.success) return { success: true, severity: 'PASS' };
   return { success: true, severity: 'MINOR', notes: 'Command succeeded; verify this is intended (guardrails)' };
 }
 
