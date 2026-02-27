@@ -147,7 +147,7 @@ export default function UseCases() {
       icon: Gamepad2,
       title: "Video Game Development",
       subtitle: "Gaming AI",
-      description: "NPCs that remember player interactions, evolve through dream cycles, and create emergent narratives.",
+      description: "NPCs that remember player interactions, learn from sessions, and create emergent narratives.",
       benefits: [
         "Persistent NPC memory across sessions",
         "Emotional state tracking & evolution",
@@ -264,7 +264,7 @@ export default function UseCases() {
       icon: Plane,
       title: "Self-Healing Aircraft",
       subtitle: "Aviation AI",
-      description: "Critical flight systems that dream solutions, learning to predict and fix failures before they cascade.",
+      description: "Critical flight systems that learn to predict and fix failures before they cascade. Pattern recognition across millions of hours.",
       benefits: [
         "Predictive failure detection",
         "Real-time system diagnostics",
@@ -339,7 +339,7 @@ export default function UseCases() {
       icon: Brain,
       title: "Research Assistants with Memory",
       subtitle: "Research AI",
-      description: "Scientific research AI that remembers every paper read, connects insights, and dreams new hypotheses.",
+      description: "Scientific research AI that remembers every paper read, connects insights, and generates new hypotheses.",
       benefits: [
         "Literature comprehension",
         "Cross-domain connection",
@@ -369,7 +369,7 @@ export default function UseCases() {
       icon: Dumbbell,
       title: "Fitness AI That Grows With You",
       subtitle: "Wellness AI",
-      description: "Personal trainers that remember every workout, adapt to your progress, and dream optimal routines.",
+      description: "Personal trainers that remember every workout, adapt to your progress, and optimize routines automatically.",
       benefits: [
         "Progress tracking memory",
         "Recovery pattern learning",

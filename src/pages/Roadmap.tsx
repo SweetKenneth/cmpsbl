@@ -106,8 +106,8 @@ export default function Roadmap() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="2026-2027 Roadmap | CMPSBL — The Future of AI Governance"
-        description="Explore CMPSBL's roadmap: layered cognitive OS, Composable Artifacts, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
+        title="Product Roadmap | CMPSBL — AI Infrastructure"
+        description="Explore CMPSBL's roadmap: persistent memory, artifact packs, enterprise governance, federation protocol, and managed cloud. See what's shipping next."
         canonical="https://cmpsbl.com/roadmap"
         keywords={[
           'CMPSBL roadmap',
