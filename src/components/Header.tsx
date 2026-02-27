@@ -2,14 +2,14 @@ import { Bell, Search, LogOut, Menu, Map, Home, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useMetric } from "@/stores/publicMetricsStore";
+import { useArtifactSlots } from "@/hooks/useArtifactSlots";
 import { useArtifactSlots } from "@/hooks/useArtifactSlots";
 import { useEngineSubscription } from "@/hooks/useEngineSubscription";
 import { SlotCapacityIndicator } from "@/components/slots/SlotCapacityIndicator";
 
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, signOut } = useAuth();
-  const version = useMetric('version');
+  const { tier } = useEngineSubscription();
   const { tier } = useEngineSubscription();
   const slotState = useArtifactSlots(tier);
   
