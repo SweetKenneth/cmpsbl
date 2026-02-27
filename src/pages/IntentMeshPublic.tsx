@@ -342,8 +342,8 @@ Learning feedback → improved future routing`}</pre>
               operatingSystem: "Cloud",
               description: "Emergent cross-module intelligence layer for autonomous capability discovery across AI substrate execution surfaces.",
               author: {
-                "@type": "Person",
-                name: "Kenneth E Sweet Jr",
+                "@type": "Organization",
+                name: "CMPSBL Research Team",
               },
               publisher: {
                 "@type": "Organization",
