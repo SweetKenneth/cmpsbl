@@ -10,13 +10,11 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
   BookOpen,
-  Code,
   Sparkles,
   ChevronDown,
   Layers,
   Brain,
   Shield,
-  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MemoryRiver } from "./MemoryRiver";

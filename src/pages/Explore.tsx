@@ -1,7 +1,6 @@
 /**
  * Explore — The CMPSBL Gateway
- * Premium homepage with cinematic flow and bold visual identity
- * When visitors arrive via promptfluid.com, renders PromptFluid business page instead.
+ * v12 homepage: Artifact pack focus, differentiation clarity, hero preserved
  */
 
 import { useRef } from "react";
@@ -11,24 +10,21 @@ import { motion } from "framer-motion";
 import { 
   ArrowRight, 
   Terminal, 
-  BookOpen,
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
-import { cn } from "@/lib/utils";
 
 // Components
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
-import { WhySubstrate } from "@/components/home/WhySubstrate";
-import { BuiltForSection } from "@/components/home/BuiltForSection";
-
-import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
-import { SynergyDepotCTA } from "@/components/explore/SynergyDepotCTA";
-import { LnchblCTA } from "@/components/LnchblCTA";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
+import { DifferentiationSection } from "@/components/home/DifferentiationSection";
+import { ArtifactPacksSection } from "@/components/home/ArtifactPacksSection";
+import { AgentsSection } from "@/components/home/AgentsSection";
+import { GovernanceSignal } from "@/components/home/GovernanceSignal";
+import { BuiltForSection } from "@/components/home/BuiltForSection";
 import { useMetric } from "@/stores/publicMetricsStore";
 
 // Section divider with animated gradient
@@ -48,9 +44,6 @@ function SectionDivider() {
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
   const hostname = window.location.hostname;
-  const modulesCount = useMetric('modulesCount');
-  const enginesCount = useMetric('enginesCount');
-  const metaEnginesCount = useMetric('metaEnginesCount');
   const providersCount = useMetric('providersCount');
   const linesOfCodeDisplay = useMetric('linesOfCodeDisplay');
 
@@ -64,15 +57,15 @@ export default function Explore() {
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
         title="Composable AI Infrastructure | CMPSBL"
-        description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Modular AI substrate for agentic systems that learn."
+        description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 artifact slots. Modular AI substrate for agentic systems that learn."
         canonical="https://cmpsbl.com"
         image="https://cmpsbl.com/og/home.jpg"
-        keywords={['composable AI', 'cognitive infrastructure', 'AI substrate', 'agentic AI platform', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software']}
+        keywords={['composable AI', 'cognitive infrastructure', 'AI substrate', 'agentic AI platform', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software', 'artifact packs']}
         faq={[
           { question: 'What is CMPSBL?', answer: 'CMPSBL is composable cognitive infrastructure — a modular AI substrate where intelligence persists across sessions, adapts through governed evolution, and compounds over time.' },
           { question: 'How does persistent memory work?', answer: 'CMPSBL provides multi-tier persistent memory that gives AI agents permanent recall across sessions. Add it to any agent in under an hour with the free tier.' },
-          { question: 'What makes CMPSBL different from LangChain or Mem0?', answer: 'CMPSBL is complete cognitive infrastructure — not a library or single feature. It combines persistent memory, autonomous learning, governed evolution, enterprise security, and multi-provider routing in one composable substrate.' },
-          { question: 'Is there a free tier?', answer: 'Yes. The Builder tier is completely free — 3 artifact slots, full runtime access, 30 templates, and persistent memory. Scale to Creator or Architect as your workloads grow.' },
+          { question: 'What are artifact packs?', answer: 'Artifact packs are bundles of capabilities you activate on demand. Each pack uses one slot. Your plan determines how many slots you have — not which packs you can access.' },
+          { question: 'Is there a free tier?', answer: 'Yes. The Builder tier is completely free — 3 artifact slots, full runtime access, persistent memory, and governed orchestration. No credit card required.' },
           { question: 'What AI providers does CMPSBL support?', answer: 'CMPSBL routes across multiple providers including OpenAI, Anthropic, Google, and open-source models through the NEXUS router. Bring your own keys or use managed routing.' },
         ]}
       />
@@ -96,132 +89,32 @@ export default function Explore() {
         />
       </div>
 
-      {/* Hero Section */}
+      {/* Hero Section — H1 rotation and diagram UNTOUCHED */}
       <HeroMetaSubstrate />
 
       {/* Live System Metrics Bar */}
       <LiveStatsBar />
 
-      {/* Free Templates CTA */}
-      <section className="relative z-10 py-12 sm:py-20 px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/[0.04] via-card/50 to-primary/[0.04] backdrop-blur-sm">
-            <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-primary to-emerald-500" />
-            <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-emerald-500/10 blur-[80px] pointer-events-none" />
-            
-            <div className="relative p-6 sm:p-10 md:p-12 text-center">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 mb-6"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
-                <span className="text-xs font-bold tracking-wide text-emerald-500 uppercase">Every Template is Free</span>
-              </motion.div>
-              
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
-                30 Templates.{" "}
-                <span className="bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">
-                  Zero Paywall.
-                </span>
-              </h2>
-              <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-                Production-ready starter code powered by the substrate's core capabilities.
-                Copy, remix, and ship — every template is completely free.
-              </p>
-              <Button asChild size="lg" className="px-8 h-13 text-base font-bold gap-2.5 bg-gradient-to-r from-emerald-500 to-primary text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:scale-[1.02] transition-all border-0">
-                <Link to="/templates">
-                  <Sparkles className="w-5 h-5" />
-                  Browse All Templates
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-      </section>
+      {/* Differentiation: Dream · Remember · Adapt · Self-Improve */}
+      <DifferentiationSection />
 
-      {/* Composable Minds CTA */}
-      <section className="relative z-10 py-6 sm:py-12 px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="relative overflow-hidden rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.04] via-card/50 to-orange-500/[0.04] backdrop-blur-sm">
-            <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500" />
-            <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-amber-500/10 blur-[80px] pointer-events-none" />
-            
-            <div className="relative p-6 sm:p-10 md:p-12 text-center">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/25 mb-6"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span className="text-xs font-bold tracking-wide text-amber-500 uppercase">Composable Minds</span>
-              </motion.div>
-              
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
-                Own Superpowered{" "}
-                <span 
-                  style={{
-                    background: "linear-gradient(135deg, hsl(var(--neon-amber, 45 93% 58%)), hsl(var(--primary)))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  AI Minds
-                </span>
-              </h2>
-              <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-                Download once. Run anywhere. No subscriptions, no vendor lock-in — 
-                specialized AI agents you own forever.
-              </p>
-              <Button asChild size="lg" className="px-8 h-13 text-base font-bold gap-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02] transition-all border-0">
-                <Link to="/composable-cognitives">
-                  <Sparkles className="w-5 h-5" />
-                  Browse Minds
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-      </section>
+      <SectionDivider />
 
-      {/* LNCHBL Free Download CTA */}
-      <LnchblCTA />
+      {/* Artifact Packs — How the activation model works */}
+      <ArtifactPacksSection />
+
+      <SectionDivider />
+
+      {/* Agents — Practical entry points */}
+      <AgentsSection />
+
+      {/* Governance Signal — Technical credibility */}
+      <GovernanceSignal />
+
+      <SectionDivider />
 
       {/* Built For Section - Who is this for */}
       <BuiltForSection />
-
-      <SectionDivider />
-
-      {/* Why Substrate — 10-Entity + 5-Mesh Differentiators */}
-      <WhySubstrate />
-
-      <SectionDivider />
-
-      {/* Synergy Pipelines & Capabilities Depot */}
-      <SynergyDepotCTA />
-
-      <SectionDivider />
-
-      {/* CodeLab CTA */}
-      <CodeLabCTA />
 
       {/* Final CTA — Cinematic closing */}
       <section className="relative z-10 px-4 py-14 sm:py-32">
@@ -279,8 +172,8 @@ export default function Explore() {
                 <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">Compounds</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                Persistent memory, intelligent routing, and governed orchestration —
-                running on {linesOfCodeDisplay} lines of production code. Start free with 30 templates.
+                Persistent memory, governed orchestration, and 24 artifact packs —
+                running on {linesOfCodeDisplay} lines of production code. Start free today.
               </p>
               
               {/* Mini stats row */}
@@ -300,16 +193,16 @@ export default function Explore() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
-                  <Link to="/templates">
+                  <Link to="/auth">
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Browse Free Templates
+                    Start Free — 3 Artifact Slots
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
-                  <Link to="/upgrade">
+                  <Link to="/packs">
                     <Terminal className="w-5 h-5 mr-2" />
-                    View Plans
+                    Explore Packs
                   </Link>
                 </Button>
               </div>
