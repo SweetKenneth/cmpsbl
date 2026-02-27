@@ -217,8 +217,8 @@ export function ReflexMonitor() {
         {/* Status Footer */}
         <div className="pt-4 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-            <span>PromptFluid Reflex v1.5.1 Active</span>
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+            <span>CMPSBL DEFENSE Reflex Active</span>
           </div>
           <div className="flex items-center gap-2">
             <Shield className="w-3 h-3" />

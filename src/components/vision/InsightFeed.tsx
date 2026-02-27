@@ -99,7 +99,7 @@ export default function InsightFeed() {
       )}
       
       <p className="text-xs text-muted-foreground mt-3">
-        Strategic insights synthesized from all PromptFluid modules
+        Strategic insights synthesized from all CMPSBL modules
       </p>
     </Card>
   );

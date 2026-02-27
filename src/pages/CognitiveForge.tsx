@@ -1,5 +1,5 @@
 /**
- * Cognitive Forge v3.0.0 — D-Mode Manufacturing
+ * Cognitive Forge — D-Mode Manufacturing
  * Multi-class cognitive minting with export, deploy, and registry
  * Neon-styled CMPSBL World Engine aesthetic
  */

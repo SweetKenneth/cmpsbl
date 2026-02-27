@@ -1,5 +1,5 @@
 /**
- * Analytics Tab v12.0.0 — Substrate Telemetry + Human Traffic Intelligence
+ * Analytics Tab — Substrate Telemetry + Human Traffic Intelligence
  * Single source of truth for all system metrics AND real visitor analytics.
  * No third-party analytics. Bots excluded. Owner excluded.
  */

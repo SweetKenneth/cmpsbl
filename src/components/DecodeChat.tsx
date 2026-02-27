@@ -1,6 +1,6 @@
 /**
- * promptfluid® Decode Chat
- * v2026.01 — User-facing cognitive interface to the substrate
+ * CMPSBL® DECODE Chat
+ * User-facing cognitive interface to the substrate
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -276,7 +276,7 @@ export function DecodeChat() {
             </div>
             <div className="flex items-center gap-2">
               <p className="text-xs text-muted-foreground">
-                promptfluid® cognitive interface
+                CMPSBL® cognitive interface
               </p>
               <ConnectionIndicator />
             </div>

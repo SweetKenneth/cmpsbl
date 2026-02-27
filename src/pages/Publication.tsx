@@ -1,6 +1,6 @@
 /**
- * promptfluid® — DOI Publication
- * v2026.01 — Research Artifact Publication
+ * CMPSBL® — DOI Publication
+ * Research Artifact Publication
  */
 
 import { Link } from "react-router-dom";
@@ -220,7 +220,7 @@ export default function Publication() {
 
             <Card className="p-6 bg-card/60 backdrop-blur border-border/50">
               <p className="text-lg font-medium text-foreground mb-1">CMPSBL Research Team</p>
-              <p className="text-muted-foreground mb-4">PromptFluid Studio</p>
+              <p className="text-muted-foreground mb-4">CMPSBL Studio</p>
               <div className="flex flex-wrap gap-3">
                 <Button variant="outline" size="sm" asChild>
                   <Link to="/investors">Investor Relations</Link>

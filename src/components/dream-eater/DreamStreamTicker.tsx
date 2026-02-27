@@ -1,5 +1,5 @@
 /**
- * Dream Stream Ticker v1.0.0
+ * Dream Stream Ticker
  * 
  * Live feed of anonymous dream/nightmare consumptions.
  * Shows mood transitions without content.

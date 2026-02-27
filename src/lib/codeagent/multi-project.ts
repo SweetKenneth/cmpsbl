@@ -30,7 +30,7 @@ export interface CrossProjectInsight {
 
 // Known projects in the workspace
 const KNOWN_PROJECTS: Record<string, { name: string; stack: string[] }> = {
-  'promptfluid': { name: 'PromptFluid Substrate', stack: ['react', 'supabase', 'typescript'] },
+  'cmpsbl': { name: 'CMPSBL Substrate', stack: ['react', 'supabase', 'typescript'] },
   'cascade': { name: 'Cascade AI Agency', stack: ['react', 'supabase', 'typescript'] },
   'simnap': { name: 'SimNap Sleep', stack: ['react', 'supabase', 'typescript'] },
   'botsniper': { name: 'BotSniper Defense', stack: ['react', 'supabase', 'typescript'] }

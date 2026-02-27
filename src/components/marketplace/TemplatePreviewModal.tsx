@@ -1,7 +1,7 @@
 /**
  * TemplatePreviewModal — Immersive full preview with protected code
  * Mobile-optimized, high-conversion design with proper close controls
- * v6.0.0 - Enhanced with better visual hierarchy and funnel surfaces
+ * Enhanced with better visual hierarchy and funnel surfaces
  */
 
 import { useState } from 'react';

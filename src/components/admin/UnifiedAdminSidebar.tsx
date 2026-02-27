@@ -37,8 +37,8 @@ export function UnifiedAdminSidebar() {
             </div>
             {!collapsed && (
               <div className="min-w-0">
-                <h2 className="font-bold text-sm gradient-text truncate">PromptFluid</h2>
-                <p className="text-xs text-muted-foreground truncate">Vision Admin</p>
+                <h2 className="font-bold text-sm gradient-text truncate">CMPSBL</h2>
+                <p className="text-xs text-muted-foreground truncate">Substrate Admin</p>
               </div>
             )}
           </NavLink>
@@ -103,7 +103,7 @@ export function UnifiedAdminSidebar() {
         {!collapsed && (
           <div className="p-4 border-t border-border/50">
             <p className="text-xs text-muted-foreground text-center">
-              PromptFluid Admin
+              CMPSBL Admin
             </p>
           </div>
         )}

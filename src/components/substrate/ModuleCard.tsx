@@ -1,5 +1,5 @@
 /**
- * promptfluid® Module Card Component
+ * CMPSBL® Module Card Component
  * Displays status for a single substrate module
  */
 

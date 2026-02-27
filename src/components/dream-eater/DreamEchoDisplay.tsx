@@ -1,5 +1,5 @@
 /**
- * Dream Echo Display v1.0.0
+ * Dream Echo Display
  * 
  * Shows cryptic echo response after dream submission.
  * Non-replayable, appears once.

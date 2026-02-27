@@ -190,7 +190,7 @@ export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading, isBlac
       {/* Watermark for non-purchased */}
       {!isPurchased && (
         <div className="absolute bottom-4 right-4 text-[10px] text-zinc-700 font-mono pointer-events-none">
-          © promptfluid® — Trade Secret
+          © CMPSBL® — Trade Secret
         </div>
       )}
     </div>

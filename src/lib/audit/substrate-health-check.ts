@@ -81,7 +81,7 @@ const CRITICAL_ROUTES = [
   '/auth',
   '/modules',
   '/about',
-  '/pricing',
+  '/upgrade',
 ];
 
 /** Active edge function directories (non-archived) */

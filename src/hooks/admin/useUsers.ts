@@ -29,7 +29,7 @@ export function useUsers() {
       // Transform to User format
       return (data || []).map(item => ({
         id: item.user_id,
-        email: `user-${item.user_id.substring(0, 8)}@promptfluid.com`,
+        email: `user-${item.user_id.substring(0, 8)}@cmpsbl.com`,
         display_name: `User ${item.user_id.substring(0, 8)}`,
         created_at: item.created_at,
         roles: [{ role: item.role }]

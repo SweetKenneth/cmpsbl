@@ -329,10 +329,10 @@ export default function EngineMarketplace() {
   const { tier: currentTier, subscribed, startCheckout, isLoading: subLoading } = useEngineSubscription();
 
   const handleSubscribe = useCallback(async (planId: SubscriptionPlan) => {
-    if (planId === 'free') { window.location.href = '/auth?redirect=/pricing'; return; }
+    if (planId === 'free') { window.location.href = '/auth?redirect=/upgrade'; return; }
     if (planId === 'enterprise') { window.location.href = 'mailto:Dev@CMPSBL.com?subject=Enterprise%20Subscription'; return; }
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { toast.info('Please sign in to subscribe'); window.location.href = `/auth?redirect=/pricing&plan=${planId}`; return; }
+    if (!user) { toast.info('Please sign in to subscribe'); window.location.href = `/auth?redirect=/upgrade&plan=${planId}`; return; }
     toast.info('Opening checkout...');
     const { data, error } = await supabase.functions.invoke('tier-checkout', { body: { tier: planId } });
     if (error) { toast.error('Checkout failed'); return; }

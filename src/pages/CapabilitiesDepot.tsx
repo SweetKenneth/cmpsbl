@@ -133,7 +133,7 @@ export default function CapabilitiesDepotPage() {
                 <Check className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
                 <div className="text-sm text-muted-foreground">
                   <strong className="text-foreground">Capabilities are primitives.</strong> Use them freely in your apps.
-                  For saved, governed orchestration with persistence and versioning, explore our <Link to="/pricing" className="text-primary hover:underline">subscription tiers</Link>.
+                  For saved, governed orchestration with persistence and versioning, explore our <Link to="/upgrade" className="text-primary hover:underline">subscription tiers</Link>.
                 </div>
               </div>
             </div>
@@ -313,7 +313,7 @@ export default function CapabilitiesDepotPage() {
               Capabilities are free primitives. Upgrade your plan for governed orchestration with persistence and versioning.
             </p>
             <Button asChild>
-              <Link to="/pricing">
+              <Link to="/upgrade">
                 <Layers className="w-4 h-4 mr-2" />
                 View Plans
               </Link>

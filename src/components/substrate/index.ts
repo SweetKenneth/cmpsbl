@@ -1,5 +1,5 @@
 /**
- * promptfluid® Substrate Components
+ * CMPSBL® Substrate Components
  * Export all substrate-related components
  */
 

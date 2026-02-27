@@ -1,5 +1,5 @@
 /**
- * Dream Artifacts Page v1.0.0
+ * Dream Artifacts Page
  * 
  * Displays daily immutable artifacts generated from dream compression.
  * Each artifact is a single sentence + mood + visual seed.

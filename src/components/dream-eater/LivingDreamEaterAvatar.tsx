@@ -1,5 +1,5 @@
 /**
- * Living Dream-Eater Avatar v2.0.0
+ * Living Dream-Eater Avatar
  * 
  * Enhanced avatar with:
  * - Mutation-based visual changes

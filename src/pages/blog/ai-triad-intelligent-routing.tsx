@@ -180,7 +180,7 @@ const AITriadExplained = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="block p-4 border border-border rounded-lg hover:border-primary/40 transition-colors"
               >
-                <h4 className="font-semibold text-foreground mb-1">How PromptFluid Works</h4>
+                <h4 className="font-semibold text-foreground mb-1">How CMPSBL Works</h4>
                 <p className="text-sm text-muted-foreground">The complete ecosystem leveraging the free-tier network.</p>
               </Link>
 
