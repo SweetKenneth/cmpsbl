@@ -2,11 +2,10 @@
 
 /* TEAM */
 
-Creator & Lead Architect: Kenneth E. Sweet Jr.
-ORCID: https://orcid.org/0009-0001-4237-1243
-Role: Founder, Architect, Chief Cognitive Engineer
+Organization: CMPSBL
+Role: Cognitive Infrastructure Lab
 Location: Dallas, Texas, USA
-Contact: Dev@CMPSBL.com
+Contact: hello@CMPSBL.com
 Phone: (760) FLUID-AI
 Twitter: @cmpsbl
 
@@ -18,7 +17,7 @@ To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/02/22
+Last update: 2026/02/27
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
@@ -44,20 +43,20 @@ We believe in:
 
 /* SUBSTRATE MODULES */
 
-Brain: Memory, learning, reflection cycles
-Decode: Epistemic conversation interpreter
-Defense: Security and threat detection
-Nexus: AI provider routing
-Vision: Observability and telemetry
-Dream: Memory consolidation engine
-Core: Scheduling & lifecycle management
-Ripple: Event bus & integration
-Access: Identity & permissions
-System: Orchestration & coordination
-Modernizer: Self-upgrade pipelines
-Integration: External connectors
-Inclusive: Accessibility compliance
-Cortex: Policy orchestration
+BRAIN: Memory, learning, reflection cycles
+DECODE: Epistemic conversation interpreter
+DEFENSE: Security and threat detection
+NEXUS: AI provider routing
+VISION: Observability and telemetry
+DREAM: Memory consolidation engine
+CORE: Scheduling & lifecycle management
+RIPPLE: Event bus & integration
+ACCESS: Identity & permissions
+SYSTEM: Orchestration & coordination
+MODERNIZER: Self-upgrade pipelines
+INTEGRATION: External connectors
+INCLUSIVE: Accessibility compliance
+CORTEX: Policy orchestration
 
 /* COLOPHON */
 
