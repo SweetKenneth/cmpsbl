@@ -103,6 +103,7 @@ const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const Upgrade = lazy(() => import("./pages/Upgrade"));
+const Diligence = lazy(() => import("./pages/Diligence"));
 const Templates = lazy(() => import("./pages/Templates"));
 const Packs = lazy(() => import("./pages/Packs"));
 const CapabilityMap = lazy(() => import("./pages/CapabilityMap"));
@@ -576,6 +577,9 @@ const App = () => {
                         <Route path="/resources/*" element={<Navigate to="/" replace />} />
                         <Route path="/solutions/*" element={<Navigate to="/solutions" replace />} />
                         
+                        {/* Diligence Harness */}
+                        <Route path="/diligence" element={<Diligence />} />
+
                         {/* 404 - catch all remaining */}
                         <Route path="*" element={<NotFound />} />
                       </Routes>

@@ -203,5 +203,22 @@ export function registerInfraHandlers(): void {
     return { success: results.every(r => r.ok), data: results };
   });
 
-  log.info('terminal', 'Infrastructure + subsystem handlers registered', { count: 36 });
+  // ═══ DILIGENCE HARNESS ═══
+  registerHandler('diligence.run', async () => {
+    const { runDiligence } = await import('@/lib/diligence/run-diligence');
+    const report = await runDiligence();
+    return {
+      success: true,
+      data: report,
+      formatted:
+        `Diligence Harness\n` +
+        `Total: ${report.summary.total}\n` +
+        `PASS: ${report.summary.passed}\n` +
+        `MINOR: ${report.summary.minor}\n` +
+        `CRITICAL: ${report.summary.critical}\n\n` +
+        `JSON:\n${JSON.stringify(report, null, 2)}`,
+    };
+  });
+
+  log.info('terminal', 'Infrastructure + subsystem + diligence handlers registered', { count: 37 });
 }
