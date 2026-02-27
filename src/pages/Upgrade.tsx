@@ -516,6 +516,17 @@ export default function Upgrade() {
           packName={pressureModal.packName}
         />
 
+        {/* Pack Detail Modal */}
+        <PackDetailModal
+          pack={detailPack}
+          open={!!detailPack}
+          onOpenChange={(open) => { if (!open) setDetailPack(null); }}
+          slotState={slotState}
+          onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
+          onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
+          onSlotPressure={handleSlotPressure}
+        />
+
         {/* ═══ ENTERPRISE CTA ═══ */}
         <section className="container mx-auto px-4 mt-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
