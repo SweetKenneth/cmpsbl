@@ -69,11 +69,11 @@ export default function Explore() {
         image="https://cmpsbl.com/og/home.jpg"
         keywords={['composable AI', 'cognitive infrastructure', 'AI substrate', 'agentic AI platform', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software']}
         faq={[
-          { question: 'What is CMPSBL?', answer: 'CMPSBL is composable cognitive infrastructure — a modular AI substrate where intelligence persists across sessions, adapts through governed evolution, and compounds over time through autonomous learning cycles.' },
-          { question: 'How does persistent memory work?', answer: 'CMPSBL provides multi-tier persistent memory (working, episodic, semantic) that gives AI agents permanent recall across sessions. Add it to any agent in under an hour with the free tier.' },
-          { question: 'What makes CMPSBL different from LangChain or Mem0?', answer: 'CMPSBL is complete cognitive infrastructure — not a library or single feature. It combines persistent memory, autonomous dream-cycle learning, governed evolution, security mesh overlays, and multi-provider routing in one composable substrate.' },
-          { question: 'Is there a free tier?', answer: 'Yes. CMPSBL offers a free tier with persistent memory, basic module access, and composable artifacts. Scale to Creator, Architect, or Enterprise tiers as your workloads grow.' },
-          { question: 'What AI providers does CMPSBL support?', answer: 'CMPSBL routes across multiple providers including OpenAI, Anthropic, Google, and open-source models through the NEXUS module. Bring your own keys or use managed routing.' },
+          { question: 'What is CMPSBL?', answer: 'CMPSBL is composable cognitive infrastructure — a modular AI substrate where intelligence persists across sessions, adapts through governed evolution, and compounds over time.' },
+          { question: 'How does persistent memory work?', answer: 'CMPSBL provides multi-tier persistent memory that gives AI agents permanent recall across sessions. Add it to any agent in under an hour with the free tier.' },
+          { question: 'What makes CMPSBL different from LangChain or Mem0?', answer: 'CMPSBL is complete cognitive infrastructure — not a library or single feature. It combines persistent memory, autonomous learning, governed evolution, enterprise security, and multi-provider routing in one composable substrate.' },
+          { question: 'Is there a free tier?', answer: 'Yes. The Builder tier is completely free — 3 artifact slots, full runtime access, 30 templates, and persistent memory. Scale to Creator or Architect as your workloads grow.' },
+          { question: 'What AI providers does CMPSBL support?', answer: 'CMPSBL routes across multiple providers including OpenAI, Anthropic, Google, and open-source models through the NEXUS router. Bring your own keys or use managed routing.' },
         ]}
       />
 
@@ -134,8 +134,8 @@ export default function Explore() {
                 </span>
               </h2>
               <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-                Each template is powered by a Crown Jewel capability from the substrate.
-                Mythic drops, production-ready code, and cognitive superpowers — all free.
+                Production-ready starter code powered by the substrate's core capabilities.
+                Copy, remix, and ship — every template is completely free.
               </p>
               <Button asChild size="lg" className="px-8 h-13 text-base font-bold gap-2.5 bg-gradient-to-r from-emerald-500 to-primary text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:scale-[1.02] transition-all border-0">
                 <Link to="/templates">
@@ -149,7 +149,7 @@ export default function Explore() {
         </motion.div>
       </section>
 
-      {/* Composable Cognitives CTA */}
+      {/* Composable Minds CTA */}
       <section className="relative z-10 py-6 sm:py-12 px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -171,7 +171,7 @@ export default function Explore() {
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/25 mb-6"
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span className="text-xs font-bold tracking-wide text-amber-500 uppercase">Composable Cognitives</span>
+                <span className="text-xs font-bold tracking-wide text-amber-500 uppercase">Composable Minds</span>
               </motion.div>
               
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
@@ -183,17 +183,17 @@ export default function Explore() {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  AI Agents
+                  AI Minds
                 </span>
               </h2>
               <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
                 Download once. Run anywhere. No subscriptions, no vendor lock-in — 
-                just superpowered cognitive agents you own forever.
+                specialized AI agents you own forever.
               </p>
               <Button asChild size="lg" className="px-8 h-13 text-base font-bold gap-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02] transition-all border-0">
                 <Link to="/composable-cognitives">
                   <Sparkles className="w-5 h-5" />
-                  Shop Cognitives
+                  Browse Minds
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
@@ -279,7 +279,7 @@ export default function Explore() {
                 <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">Compounds</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                Persistent memory, crystallized pipelines, and governed orchestration —
+                Persistent memory, intelligent routing, and governed orchestration —
                 running on {linesOfCodeDisplay} lines of production code. Start free with 30 templates.
               </p>
               
