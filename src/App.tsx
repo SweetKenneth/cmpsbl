@@ -366,7 +366,7 @@ const App = () => {
                         <Route path="/devtools" element={<DevTools />} />
                         <Route path="/academy" element={<DeveloperAcademy />} />
                         <Route path="/audit" element={<Navigate to="/" replace />} />
-                        <Route path="/gaming" element={<Navigate to="/" replace />} />
+                        <Route path="/gaming" element={<GamingSubstrate />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />
                         <Route path="/use-cases" element={<UseCases />} />
                         <Route path="/marketplace" element={<Navigate to="/upgrade" replace />} />
