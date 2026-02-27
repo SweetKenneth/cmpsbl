@@ -48,6 +48,7 @@ export function EnhancedFooter() {
         { name: "Persistent Memory", href: "/persistent-memory" },
         { name: "Artifact Packs", href: "/packs" },
         { name: "Dream Eater", href: "/feed-dream-eater" },
+        { name: "World Engine", href: "/gaming" },
         { name: "Enterprise", href: "/enterprise" },
         { name: "Pricing", href: "/upgrade" },
       ]

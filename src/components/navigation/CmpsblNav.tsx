@@ -412,7 +412,7 @@ export function CmpsblNav() {
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[9999] lg:hidden"
           >
-            <motion.div className="absolute inset-0 bg-background" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+            <motion.div className="absolute inset-0 bg-background pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
 
             <motion.div
               initial={{ opacity: 0 }}
