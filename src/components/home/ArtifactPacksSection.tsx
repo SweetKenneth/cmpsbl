@@ -52,8 +52,8 @@ const steps = [
 
 const tiers = [
   { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free", color: "from-emerald-500 to-emerald-600" },
-  { name: "Operator", slots: PRODUCT_TIERS.operator.slots, price: "$49/mo", color: "from-violet-500 to-purple-500" },
-  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$149/mo", color: "from-amber-500 to-orange-500" },
+  { name: "Creator", slots: PRODUCT_TIERS.operator.slots, price: "$29/mo", color: "from-violet-500 to-purple-500" },
+  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-amber-500 to-orange-500" },
 ];
 
 export function ArtifactPacksSection() {

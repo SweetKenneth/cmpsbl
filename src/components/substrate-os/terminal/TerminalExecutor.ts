@@ -473,8 +473,8 @@ function generateFullHelp(): string {
 │                                                             │
 │  Access Tiers:                                              │
 │    ○ FREE        Read-only, status, pulse                   │
-│    ◆ CREATOR     Actions, mutations ($49/mo)                │
-│    ★ ARCHITECT   Evolution, modernizer ($149/mo)            │
+│    ◆ CREATOR     Actions, mutations ($29/mo)                │
+│    ★ ARCHITECT   Evolution, modernizer ($79/mo)            │
 │    ◉ GOVERNOR    System restore, admin (CMPSBL only)        │
 │                                                             │
 │  Quick navigation:                                          │
