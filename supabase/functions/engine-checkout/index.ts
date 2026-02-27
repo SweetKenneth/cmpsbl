@@ -1,6 +1,7 @@
 /**
  * Engine Subscription Checkout
- * Creates Stripe checkout sessions for OEM subscription tiers
+ * Creates Stripe checkout sessions for subscription tiers
+ * Tiers: creator ($29/mo), architect ($79/mo)
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -12,19 +13,28 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-// Price IDs mapped by tier and interval
+// Current price IDs — Creator ($29/mo) and Architect ($79/mo)
 const PRICE_MAP: Record<string, Record<string, string>> = {
+  creator: {
+    monthly: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu',
+    annual: 'price_1T5VsgQ7FtTiAL4ahx89OgVH',
+  },
+  architect: {
+    monthly: 'price_1T5VsZQ7FtTiAL4aCNAQYuY3',
+    annual: 'price_1T5VshQ7FtTiAL4a2cWVOSVU',
+  },
+  // Legacy aliases — map to new tiers
   builder: {
-    monthly: 'price_1SyLZ9Q7FtTiAL4aDqPdcswv',
-    annual: 'price_1SyLZAQ7FtTiAL4aaG77BgYO',
+    monthly: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu',
+    annual: 'price_1T5VsgQ7FtTiAL4ahx89OgVH',
   },
   pro: {
-    monthly: 'price_1SyLZCQ7FtTiAL4a0k9cnn8H',
-    annual: 'price_1SyLZEQ7FtTiAL4aC0CmBb1w',
+    monthly: 'price_1T5VsZQ7FtTiAL4aCNAQYuY3',
+    annual: 'price_1T5VshQ7FtTiAL4a2cWVOSVU',
   },
   enterprise: {
-    monthly: 'price_1SyLZFQ7FtTiAL4aN0vumAsj',
-    annual: 'price_1SyLZGQ7FtTiAL4aT45BNfAA',
+    monthly: 'price_1T5VsZQ7FtTiAL4aCNAQYuY3',
+    annual: 'price_1T5VshQ7FtTiAL4a2cWVOSVU',
   },
 };
 
@@ -64,7 +74,7 @@ serve(async (req) => {
     const { tier, interval = 'monthly' } = await req.json();
     
     if (!tier || !PRICE_MAP[tier]) {
-      throw new Error(`Invalid tier: ${tier}. Valid tiers: builder, pro, enterprise`);
+      throw new Error(`Invalid tier: ${tier}. Valid tiers: creator, architect`);
     }
     
     const priceId = PRICE_MAP[tier][interval];
@@ -86,31 +96,35 @@ serve(async (req) => {
     }
 
     // Create checkout session
-    const origin = req.headers.get('origin') || 'https://promptfluid-substrate.lovable.app';
+    const origin = req.headers.get('origin') || 'https://cmpsbl.lovable.app';
     
+    // Resolve the display tier name for success page
+    const displayTier = tier === 'enterprise' || tier === 'pro' ? 'architect' : 
+                        tier === 'builder' ? 'creator' : tier;
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
       line_items: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
-      success_url: `${origin}/engines?session_id={CHECKOUT_SESSION_ID}&success=true`,
-      cancel_url: `${origin}/engines?canceled=true`,
+      success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${displayTier}&success=true`,
+      cancel_url: `${origin}/upgrade?canceled=true`,
       metadata: {
         user_id: user.id,
-        tier,
+        tier: displayTier,
         interval,
-        product_type: 'engine_subscription',
+        product_type: 'substrate_subscription',
       },
       subscription_data: {
         metadata: {
           user_id: user.id,
-          tier,
+          tier: displayTier,
           interval,
         },
       },
     });
 
-    logStep('Checkout session created', { sessionId: session.id, tier, interval });
+    logStep('Checkout session created', { sessionId: session.id, tier: displayTier, interval });
 
     return new Response(
       JSON.stringify({ url: session.url, sessionId: session.id }),
