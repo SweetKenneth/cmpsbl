@@ -299,7 +299,7 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
                 isHuman ? "bg-amber-500/20 text-amber-200 border-amber-400/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
               )}>
                 {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
-                {isHuman ? 'Kenneth E Sweet Jr' : 'AI Generated'}
+                {isHuman ? (post.author || 'CMPSBL Team') : 'AI Generated'}
               </Badge>
             </div>
             <div className="absolute bottom-3 left-3">
@@ -367,7 +367,7 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
               isHuman ? "bg-amber-500/20 text-amber-200 border-amber-400/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
             )}>
               {isHuman ? <User className="w-3 h-3 mr-1" /> : <Bot className="w-3 h-3 mr-1" />}
-              {isHuman ? 'Kenneth E Sweet Jr' : 'AI Generated'}
+              {isHuman ? (post.author || 'CMPSBL Team') : 'AI Generated'}
             </Badge>
           </div>
 
@@ -396,7 +396,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/clockless-account-setup-artifact-packs", category: "Platform",
     date: "2026-02-27", readTime: "18 min", image: clocklessSetupImg,
     imageAlt: "Clockless account setup dashboard showing artifact pack selection wizard",
-    source: 'human', featured: true, pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'clockless-different', title: "What Makes Clockless Different — And Why People Build on It",
@@ -404,7 +404,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/clockless-what-makes-it-different", category: "Platform",
     date: "2026-02-27", readTime: "8 min", image: clocklessDifferentImg,
     imageAlt: "Composable cognitive infrastructure platform with interconnected modules",
-    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
   },
   {
     id: 'clockless-modules', title: "Inside the Modules: What Makes Each One Special",
@@ -412,7 +412,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/clockless-modules-deep-dive", category: "Technology",
     date: "2026-02-27", readTime: "12 min", image: clocklessModulesImg,
     imageAlt: "Grid of glowing AI substrate modules with unique identities",
-    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   // ═══ EXISTING POSTS ═══
   {
@@ -421,7 +421,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/sparta-epoch-rebuild-from-scratch", category: "Technology",
     date: "2026-02-24", readTime: "22 min", image: spartaRebuildImg,
     imageAlt: "Architectural blueprint showing old structures crumbling and new layered architecture rising",
-    source: 'human', featured: true, pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, pillar: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
   },
   {
     id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the CMPSBL Substrate",
@@ -429,7 +429,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",
     date: "2026-02-10", readTime: "16 min", image: protocolStandardsImg,
     imageAlt: "AI protocol standards visualization",
-    source: 'human', featured: true, pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, pillar: true, author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'governance-compliance-v9', title: "Autonomous AI Governance: From Theory to Runtime Enforcement",
@@ -437,7 +437,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/autonomous-ai-governance-runtime-enforcement", category: "Governance",
     date: "2026-02-08", readTime: "14 min", image: governanceComplianceImg,
     imageAlt: "AI governance compliance framework",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'adversarial-threat-v9', title: "Adversarial AI in 2026: The DEFENSE Module's Response",
@@ -445,7 +445,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/adversarial-ai-defense-module-response-2026", category: "Threat Intel",
     date: "2026-02-06", readTime: "18 min", image: threatIntelAdversarialImg,
     imageAlt: "Adversarial AI threat intelligence",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "James Whitfield", authorRole: "Security Researcher",
   },
   {
     id: 'evolving-software', title: "Evolving Software: The Breakthrough",
@@ -453,7 +453,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/evolving-software-v6-breakthrough", category: "Technology",
     date: "2026-01-30", readTime: "22 min", image: evolvingSoftwareImg,
     imageAlt: "Digital DNA helix representing evolving software systems",
-    source: 'human', featured: true, pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, pillar: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
   },
   {
     id: 'rag-infra', title: "RAG Without Infrastructure",
@@ -461,7 +461,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/rag-without-infrastructure", category: "Development",
     date: "2026-01-28", readTime: "14 min", image: ragWithoutInfraImg,
     imageAlt: "RAG document network visualization",
-    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, author: "Priya Nakamura", authorRole: "Junior Developer & DevOps",
   },
   {
     id: 'agent-anti', title: "Agent Memory Anti-Patterns",
@@ -469,7 +469,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/agent-memory-anti-patterns", category: "Development",
     date: "2026-01-26", readTime: "12 min", image: agentMemoryAntiPatternsImg,
     imageAlt: "Memory anti-patterns warning visualization",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'langchain', title: "LangChain Memory Integration",
@@ -477,7 +477,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/langchain-memory-integration", category: "Development",
     date: "2026-01-24", readTime: "15 min", image: langchainMemoryImg,
     imageAlt: "LangChain memory integration",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Priya Nakamura", authorRole: "Junior Developer & DevOps",
   },
   {
     id: 'agents-forget', title: "Why Agents Forget",
@@ -485,7 +485,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/why-agents-forget", category: "Research",
     date: "2026-01-22", readTime: "11 min", image: whyAgentsForgetImg,
     imageAlt: "Agent memory fading visualization",
-    source: 'human', pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', pillar: true, author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'building-agents', title: "Building Agents That Learn",
@@ -493,7 +493,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/building-agents-that-learn", category: "Development",
     date: "2026-01-20", readTime: "18 min", image: buildingAgentsLearnImg,
     imageAlt: "Agents learning and evolving",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
   },
   {
     id: 'llms-txt', title: "LLMs.txt: The Protocol for AI Context",
