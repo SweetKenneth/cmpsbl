@@ -103,5 +103,48 @@ export function checkSEO(): AuditFinding[] {
     }
   });
 
+  // Check JSON-LD for version numbers
+  const jsonLdScripts = document.querySelectorAll('script[type="application/ld+json"]');
+  let jsonLdVersionCount = 0;
+  jsonLdScripts.forEach((script) => {
+    const content = script.textContent || '';
+    if (/v\d+[\.\d]*/i.test(content)) {
+      jsonLdVersionCount++;
+    }
+  });
+  if (jsonLdVersionCount > 0) {
+    findings.push({
+      id: 'seo_version_in_jsonld',
+      category: 'seo',
+      severity: 'warn',
+      title: `Version number in ${jsonLdVersionCount} JSON-LD block(s)`,
+      detail: 'Structured data schemas contain version numbers. Strip them.',
+    });
+  }
+
+  // Check for multiple title tags
+  const titleTags = document.querySelectorAll('title');
+  if (titleTags.length > 1) {
+    findings.push({
+      id: 'seo_duplicate_title',
+      category: 'seo',
+      severity: 'error',
+      title: `${titleTags.length} <title> tags found`,
+      detail: 'Multiple title tags cause SEO conflicts. Ensure only one is rendered.',
+    });
+  }
+
+  // Check robots meta
+  const robotsMeta = document.querySelector('meta[name="robots"]');
+  if (!robotsMeta) {
+    findings.push({
+      id: 'seo_missing_robots',
+      category: 'seo',
+      severity: 'warn',
+      title: 'Missing robots meta tag',
+      detail: 'No <meta name="robots"> found. Add for crawler directives.',
+    });
+  }
+
   return findings;
 }

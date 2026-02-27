@@ -124,6 +124,8 @@ export function MatrixIntegrityPanel({ report }: MatrixIntegrityPanelProps) {
         <button
           onClick={() => setExpanded(!expanded)}
           className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 hover:text-muted-foreground transition-colors font-mono"
+          aria-label={expanded ? 'Hide integrity equation' : 'Show integrity equation'}
+          aria-expanded={expanded}
         >
           <Info className="w-3 h-3" />
           Integrity Equation

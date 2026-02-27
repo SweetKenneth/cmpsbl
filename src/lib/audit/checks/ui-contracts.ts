@@ -109,5 +109,49 @@ export function checkUIContracts(): AuditFinding[] {
     });
   }
 
+  // Check for skip navigation link
+  const skipLink = document.querySelector('a[href="#main-content"], a[href="#main"], [data-skip-nav]');
+  if (!skipLink) {
+    findings.push({
+      id: 'a11y_missing_skip_link',
+      category: 'a11y',
+      severity: 'warn',
+      title: 'Missing skip navigation link',
+      detail: 'No skip-to-content link found. Screen reader users need this for keyboard navigation.',
+      hint: 'Add a visually hidden skip link at the top of the page.',
+    });
+  }
+
+  // Check for focus-visible styles
+  const focusableElements = document.querySelectorAll('a, button, input, select, textarea, [tabindex]');
+  let missingFocusVisible = 0;
+  focusableElements.forEach((el) => {
+    const style = window.getComputedStyle(el);
+    if (style.outlineStyle === 'none' && style.boxShadow === 'none') {
+      missingFocusVisible++;
+    }
+  });
+  if (missingFocusVisible > 20) {
+    findings.push({
+      id: 'a11y_focus_visible',
+      category: 'a11y',
+      severity: 'warn',
+      title: `${missingFocusVisible} elements may lack focus indicators`,
+      detail: 'Elements with outline:none and no box-shadow may be invisible to keyboard users.',
+    });
+  }
+
+  // Check for lang attribute
+  const htmlLang = document.documentElement.getAttribute('lang');
+  if (!htmlLang) {
+    findings.push({
+      id: 'a11y_missing_lang',
+      category: 'a11y',
+      severity: 'error',
+      title: 'Missing lang attribute on <html>',
+      detail: 'The <html> element must have a lang attribute for screen readers.',
+    });
+  }
+
   return findings;
 }

@@ -10,6 +10,9 @@ const FORBIDDEN_BRANDING = [
   'lovable.ai',
   'promptfluid',
   'ai.gateway.lovable',
+  'powered by lovable',
+  'built with lovable',
+  'lovableproject.com',
 ];
 
 const CANONICAL_PRICING = {

@@ -18,6 +18,8 @@ export type AuditCategory =
   | 'ui'
   | 'a11y'
   | 'seo'
+  | 'performance'
+  | 'security'
   | 'docs';
 
 export interface AuditFinding {
