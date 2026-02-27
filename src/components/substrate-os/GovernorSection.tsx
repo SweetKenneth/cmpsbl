@@ -465,6 +465,20 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </Button>
             <Button
               variant="outline"
+              className="justify-between h-auto p-3 sm:p-4 border-border/30 hover:bg-muted/50"
+              onClick={() => navigate('/diligence')}
+            >
+              <div className="flex items-center gap-3 text-left">
+                <FileText className="w-5 h-5 text-amber-500 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Diligence Harness</p>
+                  <p className="text-[10px] text-muted-foreground">Investor-grade test battery</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+            </Button>
+            <Button
+              variant="outline"
               className="justify-between h-auto p-3 sm:p-4 border-red-500/20 hover:bg-red-500/5"
               onClick={() => navigate('/admin/governance')}
             >

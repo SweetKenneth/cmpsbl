@@ -414,7 +414,7 @@ const App = () => {
                         <Route path="/register" element={<Navigate to="/auth" replace />} />
                         <Route path="/library" element={<Library />} />
                         <Route path="/support" element={<Support />} />
-                        <Route path="/explore" element={<Explore />} />
+                        <Route path="/explore" element={<Navigate to="/" replace />} />
                         <Route path="/promptfluid" element={<PromptFluidHome />} />
                         
                         {/* Module pages (de-shrouded SEO) */}
@@ -598,7 +598,7 @@ const App = () => {
                         <Route path="/solutions/*" element={<Navigate to="/solutions" replace />} />
                         
                         {/* Diligence Harness */}
-                        <Route path="/diligence" element={<Diligence />} />
+                        <Route path="/diligence" element={<AdminRoute><Diligence /></AdminRoute>} />
 
                         {/* 404 - catch all remaining */}
                         <Route path="*" element={<NotFound />} />
