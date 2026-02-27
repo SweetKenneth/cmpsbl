@@ -103,6 +103,7 @@ const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const Upgrade = lazy(() => import("./pages/Upgrade"));
+const Templates = lazy(() => import("./pages/Templates"));
 const Packs = lazy(() => import("./pages/Packs"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
@@ -339,6 +340,7 @@ const App = () => {
                         <Route path="/intent-mesh" element={<PhaseGateRoute><IntentMeshPublic /></PhaseGateRoute>} />
                         <Route path="/changelog" element={<Changelog />} />
                         <Route path="/codelab" element={<CodeLab />} />
+                        <Route path="/templates" element={<Templates />} />
                         <Route path="/forge" element={<Navigate to="/" replace />} />
                         <Route path="/forge/catalog" element={<ForgeCatalog />} />
                         <Route path="/agency" element={<Navigate to="/" replace />} />
