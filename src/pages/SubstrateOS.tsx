@@ -355,7 +355,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
               <Terminal className="w-3.5 h-3.5 text-cyan-400" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-foreground tracking-tight">Clockless</div>
+              <div className="text-xs font-bold text-foreground tracking-tight">CMPSBL</div>
               <div className="text-[9px] text-muted-foreground/60 font-mono">substrate v{version}</div>
             </div>
           </div>
@@ -1011,7 +1011,7 @@ export default function SubstrateOS() {
             />
           </div>
           <div className="space-y-1.5">
-            <p className="text-sm font-semibold font-mono text-cyan-400 tracking-wide">Clockless Reality</p>
+            <p className="text-sm font-semibold font-mono text-cyan-400 tracking-wide">CMPSBL Substrate</p>
             <div className="flex items-center justify-center gap-1.5">
               {[0, 0.2, 0.4].map((delay) => (
                 <motion.div 
@@ -1031,10 +1031,10 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Clockless Cognitive Reality — CMPSBL Substrate Dashboard | CMPSBL®"
-        description="The Clockless Cognitive Reality dashboard: autonomous execution surfaces, zones, and overlays persisting, evolving, and orchestrating intelligence in real-time."
+        title="CMPSBL Substrate Dashboard — Featuring Clockless Cognitive Reality"
+        description="The CMPSBL Substrate dashboard: autonomous execution surfaces, zones, and overlays persisting, evolving, and orchestrating intelligence in real-time."
         canonical="https://cmpsbl.com/os"
-        keywords={['Clockless', 'Cognitive Reality', 'CMPSBL Substrate', 'persistent intelligence', 'cognitive orchestration']}
+        keywords={['CMPSBL Substrate', 'Clockless Cognitive Reality', 'persistent intelligence', 'cognitive orchestration', 'AI dashboard']}
       />
 
       {/* Ambient background */}
@@ -1373,7 +1373,7 @@ export default function SubstrateOS() {
                 "w-1.5 h-1.5 rounded-full animate-pulse",
                 healthScore.healthScore >= 80 ? "bg-emerald-500" : healthScore.healthScore >= 50 ? "bg-amber-500" : "bg-red-500"
               )} />
-              <span>Clockless®</span>
+              <span>CMPSBL®</span>
             </div>
             <span className="text-muted-foreground/20">·</span>
             <span>v{version}</span>

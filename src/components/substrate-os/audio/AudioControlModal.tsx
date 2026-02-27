@@ -58,7 +58,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                     <div className="flex items-center justify-between p-4 border-b border-border/30 shrink-0">
                       <div className="flex items-center gap-2">
                         <Radio className="w-4 h-4 text-primary" />
-                        <h3 className="text-base font-bold tracking-wide">CLOCKLESS RADIO</h3>
+                        <h3 className="text-base font-bold tracking-wide">CMPSBL RADIO</h3>
                       </div>
                       <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8 rounded-full">
                         <X className="w-4 h-4" />
@@ -111,7 +111,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                               </div>
                               <div className="min-w-0">
                                 <p className="text-sm font-medium truncate">
-                                  {radio.currentTrack?.title || 'Clockless Radio'}
+                                  {radio.currentTrack?.title || 'CMPSBL Radio'}
                                 </p>
                                 <p className="text-[10px] text-muted-foreground">
                                   {radio.isDJSpeaking ? 'AI DJ Live' : radio.isPlaying ? 'Now Playing' : 'Press play to tune in'}

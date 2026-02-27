@@ -1,5 +1,5 @@
 /**
- * PILLAR POST: Getting Started with Clockless — Account Setup & Artifact Pack Guide
+ * PILLAR POST: Getting Started with CMPSBL — Account Setup & Artifact Pack Guide
  * 1600+ words, multiple images, heavy internal linking
  */
 
@@ -20,11 +20,11 @@ export default function ClocklessAccountSetupGuide() {
   return (
     <>
       <SEO
-        title="Getting Started with Clockless: Account Setup & Artifact Packs"
-        description="Complete guide to setting up your Clockless account and choosing the right artifact pack. Learn what makes composable cognitive infrastructure different from traditional AI platforms."
+        title="Getting Started with CMPSBL: Account Setup & Artifact Packs"
+        description="Complete guide to setting up your CMPSBL account and choosing the right artifact pack. Learn what makes composable cognitive infrastructure different from traditional AI platforms."
         type="article"
         publishedTime="2026-02-27"
-        keywords={['Clockless setup guide', 'artifact pack selection', 'composable AI infrastructure', 'cognitive substrate account', 'AI platform onboarding', 'CMPSBL getting started']}
+        keywords={['CMPSBL setup guide', 'artifact pack selection', 'composable AI infrastructure', 'cognitive substrate account', 'AI platform onboarding', 'Clockless Cognitive Reality']}
       />
       <PublicNav />
 
@@ -43,11 +43,11 @@ export default function ClocklessAccountSetupGuide() {
             </div>
 
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              Getting Started with Clockless: Your Complete Account Setup &amp; Artifact Pack Guide
+              Getting Started with CMPSBL: Your Complete Account Setup &amp; Artifact Pack Guide
             </h1>
 
             <p className="text-xl text-muted-foreground mb-6">
-              Everything you need to know about setting up your Clockless account, choosing the right artifact pack for your use case, and understanding what composable cognitive infrastructure gives you that no other platform can.
+              Everything you need to know about setting up your CMPSBL account, choosing the right artifact pack for your use case, and understanding what composable cognitive infrastructure gives you that no other platform can.
             </p>
 
             <div className="flex items-center gap-4 text-sm text-muted-foreground mb-8">
@@ -55,31 +55,30 @@ export default function ClocklessAccountSetupGuide() {
               <span className="flex items-center gap-1"><Clock className="w-4 h-4" />18 min read</span>
             </div>
 
-            <img src={heroImg} alt="Clockless account setup dashboard showing artifact pack selection wizard" className="w-full rounded-xl border border-border/50 shadow-xl" />
+            <img src={heroImg} alt="CMPSBL account setup dashboard showing artifact pack selection wizard" className="w-full rounded-xl border border-border/50 shadow-xl" />
           </div>
         </section>
 
         {/* Article Body */}
         <article className="container mx-auto px-4 max-w-4xl py-12 prose prose-invert prose-lg max-w-none">
           <p className="text-xl leading-relaxed">
-            When you sign up for <Link to="/" className="text-primary hover:underline">Clockless (CMPSBL)</Link>, you're not just creating another cloud account. You're provisioning a <strong>governed cognitive substrate</strong> — a living runtime where memory persists, intelligence compounds, and every module operates under auditable governance. This guide walks you through the entire setup process, from account creation to choosing your first artifact pack.
+            When you sign up for <Link to="/" className="text-primary hover:underline">CMPSBL</Link>, you're not just creating another cloud account. You're provisioning a <strong>governed cognitive substrate</strong> — a living runtime where memory persists, intelligence compounds, and every module operates under auditable governance. This guide walks you through the entire setup process, from account creation to choosing your first artifact pack.
           </p>
 
-          <h2 id="what-is-clockless" className="text-2xl font-bold mt-12 mb-4">What Is Clockless?</h2>
+          <h2 id="what-is-cmpsbl" className="text-2xl font-bold mt-12 mb-4">What Is CMPSBL?</h2>
           <p>
-            Clockless is the runtime brand of <Link to="/" className="text-primary hover:underline">CMPSBL</Link> — composable AI infrastructure where intelligence isn't just computed, it's <em>retained</em>. Unlike traditional AI platforms that treat every request as stateless, Clockless provides a unified substrate with{" "}
+            CMPSBL is composable AI infrastructure featuring the Clockless Cognitive Reality engine — where intelligence isn't just computed, it's <em>retained</em>. Unlike traditional AI platforms that treat every request as stateless, CMPSBL provides a unified substrate with{" "}
             <Link to="/persistent-memory" className="text-primary hover:underline">persistent memory</Link>, {" "}
             <Link to="/modules" className="text-primary hover:underline">modular architecture</Link>, and{" "}
             <Link to="/blog/autonomous-ai-governance-runtime-enforcement" className="text-primary hover:underline">runtime governance</Link> built in from the ground up.
           </p>
           <p>
-            If you're coming from platforms like <a href="https://openai.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">OpenAI <ExternalLink className="w-3 h-3 inline" /></a>, <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Anthropic <ExternalLink className="w-3 h-3 inline" /></a>, or <a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google Vertex AI <ExternalLink className="w-3 h-3 inline" /></a>, the biggest difference is that Clockless doesn't just route your prompts — it <strong>remembers, learns, and evolves</strong> across every interaction. Read more about this in our deep dive on{" "}
-            <Link to="/blog/clockless-what-makes-it-different" className="text-primary hover:underline">what makes Clockless different</Link>.
+            If you're coming from platforms like <a href="https://openai.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">OpenAI <ExternalLink className="w-3 h-3 inline" /></a>, <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Anthropic <ExternalLink className="w-3 h-3 inline" /></a>, or <a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google Vertex AI <ExternalLink className="w-3 h-3 inline" /></a>, the biggest difference is that CMPSBL doesn't just route your prompts — it <strong>remembers, learns, and evolves</strong> across every interaction through its Clockless Cognitive Reality engine.
           </p>
 
           <h2 id="account-creation" className="text-2xl font-bold mt-12 mb-4">Step 1: Creating Your Account</h2>
           <p>
-            Account creation takes under two minutes. Visit the <Link to="/explore" className="text-primary hover:underline">Clockless Explorer</Link> or go directly to the <Link to="/store" className="text-primary hover:underline">Artifact Store</Link> to get started. Here's what happens when you provision your substrate:
+            Account creation takes under two minutes. Visit the <Link to="/explore" className="text-primary hover:underline">CMPSBL Explorer</Link> or go directly to the <Link to="/store" className="text-primary hover:underline">Artifact Store</Link> to get started. Here's what happens when you provision your substrate:
           </p>
 
           <Card className="my-6 border-primary/20 bg-primary/5">
@@ -103,12 +102,12 @@ export default function ClocklessAccountSetupGuide() {
           <img src={artifactPackImg} alt="Artifact pack revealing layered cognitive capabilities" className="w-full rounded-xl border border-border/50 shadow-lg my-8" />
 
           <p>
-            This is where Clockless diverges from every other platform on the market. An <strong>artifact pack</strong> isn't a bundle of API credits or a list of models — it's a curated set of <em>substrate-native capabilities</em> that express emergent system behaviors. Each pack contains at least one crystallized pipeline or cross-domain orchestration that can only exist because of the unified runtime.
+            This is where CMPSBL diverges from every other platform on the market. An <strong>artifact pack</strong> isn't a bundle of API credits or a list of models — it's a curated set of <em>substrate-native capabilities</em> that express emergent system behaviors. Each pack contains at least one crystallized pipeline or cross-domain orchestration that can only exist because of the unified runtime.
           </p>
 
           <h3 className="text-xl font-bold mt-8 mb-3">What Makes Artifact Packs Unique</h3>
           <p>
-            Traditional AI platforms sell you model access. You get GPT-4, Claude, or Gemini — but they're isolated inference endpoints. Artifact packs on Clockless are different because they leverage the <Link to="/substrate" className="text-primary hover:underline">full substrate architecture</Link>:
+            Traditional AI platforms sell you model access. You get GPT-4, Claude, or Gemini — but they're isolated inference endpoints. Artifact packs on CMPSBL are different because they leverage the <Link to="/substrate" className="text-primary hover:underline">full substrate architecture</Link>:
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 my-6">
@@ -178,7 +177,7 @@ export default function ClocklessAccountSetupGuide() {
 
           <h3 className="text-xl font-bold mt-8 mb-3">1. Cross-Module Memory Persistence</h3>
           <p>
-            When you invoke a capability from your artifact pack, it has access to the same <Link to="/persistent-memory" className="text-primary hover:underline">three-tier memory architecture</Link> that every other module uses. A DEFENSE scan result can inform a BRAIN analysis, which feeds into a DREAM cycle, which produces a heuristic improvement — all sharing the same contextual memory. On platforms like <a href="https://www.langchain.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LangChain <ExternalLink className="w-3 h-3 inline" /></a>, you'd need to build this integration yourself. On Clockless, it's built in. Check out our <Link to="/blog/langchain-memory-integration" className="text-primary hover:underline">LangChain memory integration guide</Link> to see how we compare.
+            When you invoke a capability from your artifact pack, it has access to the same <Link to="/persistent-memory" className="text-primary hover:underline">three-tier memory architecture</Link> that every other module uses. A DEFENSE scan result can inform a BRAIN analysis, which feeds into a DREAM cycle, which produces a heuristic improvement — all sharing the same contextual memory. On platforms like <a href="https://www.langchain.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LangChain <ExternalLink className="w-3 h-3 inline" /></a>, you'd need to build this integration yourself. On CMPSBL, it's built in. Check out our <Link to="/blog/langchain-memory-integration" className="text-primary hover:underline">LangChain memory integration guide</Link> to see how we compare.
           </p>
 
           <h3 className="text-xl font-bold mt-8 mb-3">2. Emergent Capability Synergies</h3>
@@ -237,7 +236,7 @@ export default function ClocklessAccountSetupGuide() {
             </div>
             <div>
               <h4 className="font-bold mb-1">How does this compare to using OpenAI + Pinecone + LangChain separately?</h4>
-              <p className="text-muted-foreground">You'd be stitching together inference, memory, orchestration, and governance from different vendors. Clockless provides all of these as a unified runtime where they share context, memory, and governance natively. Read our <Link to="/blog/rag-without-infrastructure" className="text-primary hover:underline">RAG Without Infrastructure</Link> post for a direct comparison.</p>
+              <p className="text-muted-foreground">You'd be stitching together inference, memory, orchestration, and governance from different vendors. CMPSBL provides all of these as a unified runtime where they share context, memory, and governance natively. Read our <Link to="/blog/rag-without-infrastructure" className="text-primary hover:underline">RAG Without Infrastructure</Link> post for a direct comparison.</p>
             </div>
           </div>
 
@@ -247,7 +246,7 @@ export default function ClocklessAccountSetupGuide() {
             <div className="grid md:grid-cols-2 gap-4">
               <Link to="/blog/clockless-what-makes-it-different" className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all">
                 <Badge variant="outline" className="mb-2 text-xs">Cluster</Badge>
-                <h3 className="font-bold group-hover:text-primary transition-colors">What Makes Clockless Different</h3>
+                <h3 className="font-bold group-hover:text-primary transition-colors">What Makes CMPSBL Different</h3>
                 <p className="text-sm text-muted-foreground mt-1">Why developers and enterprises are choosing composable cognitive infrastructure over traditional AI platforms.</p>
               </Link>
               <Link to="/blog/clockless-modules-deep-dive" className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all">
@@ -263,7 +262,7 @@ export default function ClocklessAccountSetupGuide() {
               <Link to="/blog/why-agents-forget" className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all">
                 <Badge variant="outline" className="mb-2 text-xs">Research</Badge>
                 <h3 className="font-bold group-hover:text-primary transition-colors">Why AI Agents Forget Everything</h3>
-                <p className="text-sm text-muted-foreground mt-1">The fundamental memory problem in AI — and how Clockless solves it architecturally.</p>
+                <p className="text-sm text-muted-foreground mt-1">The fundamental memory problem in AI — and how CMPSBL solves it architecturally.</p>
               </Link>
             </div>
           </div>

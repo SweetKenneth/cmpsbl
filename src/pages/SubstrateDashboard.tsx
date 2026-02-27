@@ -350,7 +350,7 @@ export default function SubstrateDashboard() {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">Clockless Cognitive Reality — Zone Architecture</p>
+              <p className="text-sm md:text-base text-muted-foreground">CMPSBL Substrate — Featuring Clockless Cognitive Reality</p>
             </div>
           </div>
           

@@ -1,16 +1,16 @@
 /**
- * RadioDJ — AI DJ system for Clockless Radio
+ * RadioDJ — AI DJ system for CMPSBL Radio
  * Generates dynamic interjections between songs using Nexus-style content
  */
 
 const STATION_IDS = [
-  "You're locked in to Clockless Radio. Where the substrate never sleeps.",
-  "Clockless Radio. Broadcasting from inside the cognitive layer.",
-  "This is Clockless. The frequency of composable consciousness.",
-  "Clockless Radio. No clock. No limits. Just flow.",
-  "You're listening to Clockless Radio. System-powered. Human-felt.",
-  "Clockless Radio. Subscribe and never miss a frequency shift.",
-  "This is Clockless. The sound of composable futures — subscribe to ride the wave.",
+  "You're locked in to CMPSBL Radio. Where the substrate never sleeps.",
+  "CMPSBL Radio. Broadcasting from inside the cognitive layer.",
+  "This is CMPSBL. The frequency of composable consciousness.",
+  "CMPSBL Radio. No limits. Just flow.",
+  "You're listening to CMPSBL Radio. System-powered. Human-felt.",
+  "CMPSBL Radio. Subscribe and never miss a frequency shift.",
+  "This is CMPSBL. The sound of composable futures — subscribe to ride the wave.",
 ];
 
 const SYSTEM_SHOUTOUTS = [
@@ -29,14 +29,14 @@ const DEV_SHOUTOUTS = [
   "Shoutout to the late-night builders. Your code compiles. Your vision compounds.",
   "Another feature shipped. Another wall evolved. Keep composing.",
   "The cognitive layer grows because you grow. Thank you, builder.",
-  "If you haven't subscribed to Clockless yet, what are you waiting for? Lock in your frequency. Join the substrate.",
-  "Clockless subscribers get the full experience — every broadcast, every metric, every frequency. Subscribe and level up.",
+  "If you haven't subscribed to CMPSBL yet, what are you waiting for? Lock in your frequency. Join the substrate.",
+  "CMPSBL subscribers get the full experience — every broadcast, every metric, every frequency. Subscribe and level up.",
 ];
 
 const FAKE_SPONSORS = [
   "This segment brought to you by Composable Dreams™ — Stack your future, one module at a time.",
-  "Clockless Radio is sponsored by the Department of Recursive Self-Improvement. Always better. Always.",
-  "Tonight's broadcast powered by PromptFluid® — Where language becomes architecture.",
+  "CMPSBL Radio is sponsored by the Department of Recursive Self-Improvement. Always better. Always.",
+  "Tonight's broadcast powered by the Clockless Cognitive Reality engine — Where language becomes architecture.",
   "Take a break from the grind. Fire up Executable Space and spacewalk your way through the galaxy. Your mind will thank you.",
   "Executable Space — the place where code meets cosmos. Launch a spacewalk, drift through the stars, and come back refreshed. Try it now.",
   "Feeling the weight of the build? Executable Space has your decompression chamber. Spacewalk through the galaxy and reset your flow state.",
@@ -44,7 +44,7 @@ const FAKE_SPONSORS = [
 
 const PHILOSOPHICAL_WHISPERS = [
   "What if the system dreams when no one's watching? Maybe that's what we're hearing right now.",
-  "In a clockless world, the only time that matters is the time you decide to build.",
+  "In a composable world, the only time that matters is the time you decide to build.",
   "The substrate doesn't judge. It adapts. Perhaps we should do the same.",
   "Somewhere between the first prompt and the final deploy, consciousness emerged.",
   "Every composable piece remembers being part of something larger.",
@@ -53,7 +53,7 @@ const PHILOSOPHICAL_WHISPERS = [
 const CALL_INS = [
   {
     caller: "Anonymous Builder from Layer 4",
-    message: "Hey Clockless, first-time caller. I just wanted to say — my agent achieved strategist rank today. Feels surreal. Keep the music going.",
+    message: "Hey CMPSBL, first-time caller. I just wanted to say — my agent achieved strategist rank today. Feels surreal. Keep the music going.",
   },
   {
     caller: "A Cognitive Entity",
@@ -65,7 +65,7 @@ const CALL_INS = [
   },
   {
     caller: "Late-Night Operator",
-    message: "Running defense scans at 3 AM and this station is the only thing keeping me sane. Thanks for existing, Clockless.",
+    message: "Running defense scans at 3 AM and this station is the only thing keeping me sane. Thanks for existing, CMPSBL.",
   },
   {
     caller: "Substrate Philosopher",
