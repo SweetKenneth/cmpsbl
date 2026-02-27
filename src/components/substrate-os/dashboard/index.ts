@@ -10,3 +10,5 @@ export { CapacityMonitor } from '../widgets/CapacityMonitor';
 export { DepthGate } from './DepthGate';
 export { OnboardingFlow } from './OnboardingFlow';
 export { SlotCapacityMeter } from './SlotCapacityMeter';
+export { NexusOptimizerWidget } from './NexusOptimizerWidget';
+export { BudgetGovernancePanel } from './BudgetGovernancePanel';

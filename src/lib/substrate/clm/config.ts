@@ -86,18 +86,18 @@ export interface LearningJobResult {
 
 export const DEFAULT_CLM_CONFIG: CLMConfig = {
   enabled: true,
-  minSpacingMinutes: 5,        // Rapid-fire during allocation window
-  maxConcurrent: 4,
-  errorBackoffMultiplier: 1.5,
-  maxBackoffMinutes: 60,
+  minSpacingMinutes: 1,        // Discovery phase: ultra-rapid to exhaust providers
+  maxConcurrent: 6,            // High concurrency for discovery
+  errorBackoffMultiplier: 1.3, // Lower backoff — expect 429s during discovery
+  maxBackoffMinutes: 30,
   quietHours: null,            // No quiet hours — learn 24/7
-  jitterMinutes: 2,
+  jitterMinutes: 0.5,          // Minimal jitter during discovery
   killSwitch: false,
-  maxConsecutiveFailures: 8,
-  spacedRepetitionBudgetPct: 0.20,
+  maxConsecutiveFailures: 12,  // Higher tolerance during discovery
+  spacedRepetitionBudgetPct: 0.10, // Lower SR during discovery, prioritize raw calls
   microLearningThreshold: 0.03,
-  jobFingerprintTTLHours: 4,
-  topicCacheTTLHours: 12,
+  jobFingerprintTTLHours: 2,   // Shorter dedup window
+  topicCacheTTLHours: 6,
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
