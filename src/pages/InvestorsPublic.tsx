@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * ARCHITECT Epoch — Production Architecture
+ * Production Architecture
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Eye, Server, Sparkles, Zap, Globe, Code, Layers, CheckCircle2 } from "lucide-react";
@@ -107,7 +107,7 @@ export default function InvestorsPublic() {
         <div className="max-w-4xl">
           <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
             <TrendingUp className="w-3 h-3 mr-2" />
-            SPARTA Epoch
+            CMPSBL
           </Badge>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6">

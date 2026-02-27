@@ -1,6 +1,6 @@
 /**
  * Governance Terminal Handlers — gov.* command namespace
- * SPARTA Epoch v11.5.2 — Safe dynamic imports, full governance surface
+ * Safe dynamic imports, full governance surface
  * 
  * Commands: gov.mode, gov.vetoes, gov.compliance, gov.drift,
  *           gov.transitions, gov.signals, gov.lifecycle, gov.summary

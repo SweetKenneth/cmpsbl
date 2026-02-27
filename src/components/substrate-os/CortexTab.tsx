@@ -1,6 +1,6 @@
 /**
  * CORTEX Matrix Node — Agency-class Orchestrator Dashboard
- * SPARTA Epoch — Policy Intent Layer + Evolution Sequencing
+ * Policy Intent Layer + Evolution Sequencing
  * Orchestrates all Matrix Nodes across the layered kernel
  */
 

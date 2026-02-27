@@ -1,6 +1,6 @@
 /**
  * Composable Artifacts — Unified Resource Hub
- * SPARTA Epoch — Tier Split & Black-Box Enforcement
+ * Tier Split & Black-Box Enforcement
  * Supreme × Canva inspired layout — Category-first, horizontal-scroll mobile UX
  * Combines: Capabilities (525+), Templates (200+), Pipelines (300+) = 1000+ Artifacts
  */

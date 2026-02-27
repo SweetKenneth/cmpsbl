@@ -1,7 +1,6 @@
 /**
  * Intent Mesh — Public Website Documentation Page
  * /intent-mesh — SEO-optimized public doc about the mesh architecture
- * SPARTA Epoch — Interactive force-directed mesh visualization
  */
 
 import { SEO } from "@/components/SEO";
@@ -152,7 +151,7 @@ export default function IntentMeshPublic() {
               <div className="flex items-center gap-2 mb-4">
                 <Network className="w-5 h-5 text-primary" />
                 <span className="text-sm font-mono text-muted-foreground tracking-wider uppercase">
-                  CMPSBL OS Substrate — SPARTA Epoch
+                  CMPSBL OS Substrate
                 </span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">

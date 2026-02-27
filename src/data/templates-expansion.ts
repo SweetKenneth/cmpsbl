@@ -1,5 +1,5 @@
 /**
- * Expansion Templates — v10.5.4 ARCHITECT Epoch
+ * Expansion Templates
  * Additional templates covering ENCODE, ECONOMY, IDENTITY, RELAY, AUDIT, SANDBOX modules
  * Brings total template count to 201+
  */

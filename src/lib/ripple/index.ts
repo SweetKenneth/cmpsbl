@@ -1,6 +1,6 @@
 /**
  * RIPPLE Event Bus
- * SPARTA Epoch — Hybrid Push/Pull Event Orchestrator
+ * Hybrid Push/Pull Event Orchestrator
  * 
  * RIPPLE is the nervous system of the substrate:
  * - PUSH mode: Automatic event fan-out to subscribers

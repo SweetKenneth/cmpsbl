@@ -199,7 +199,7 @@ const LangChainMemoryIntegration = lazy(() => import("./pages/blog/LangChainMemo
 const WhyAgentsForget = lazy(() => import("./pages/blog/WhyAgentsForget"));
 const BuildingAgentsThatLearn = lazy(() => import("./pages/blog/BuildingAgentsThatLearn"));
 
-// ARCHITECT Epoch blog posts
+// Blog posts
 const MachineProtocolStandards = lazy(() => import("./pages/blog/MachineProtocolStandards"));
 const SpartaEpochRebuild = lazy(() => import("./pages/blog/SpartaEpochRebuild"));
 const AutonomousAIGovernance = lazy(() => import("./pages/blog/AutonomousAIGovernance"));
@@ -460,12 +460,12 @@ const App = () => {
                         <Route path="/blog/why-agents-forget" element={<WhyAgentsForget />} />
                         <Route path="/blog/building-agents-that-learn" element={<BuildingAgentsThatLearn />} />
                         
-                        {/* ARCHITECT Epoch Posts */}
+                        {/* Blog Posts */}
                         <Route path="/blog/machine-protocol-standards-architect-epoch" element={<MachineProtocolStandards />} />
                         <Route path="/blog/autonomous-ai-governance-runtime-enforcement" element={<AutonomousAIGovernance />} />
                         <Route path="/blog/adversarial-ai-defense-module-response-2026" element={<AdversarialAIDefense />} />
                         
-                        {/* SPARTA Epoch Posts */}
+                        {/* Additional Posts */}
                         <Route path="/blog/sparta-epoch-rebuild-from-scratch" element={<SpartaEpochRebuild />} />
                         
                         {/* Legacy v9 slug redirects */}
