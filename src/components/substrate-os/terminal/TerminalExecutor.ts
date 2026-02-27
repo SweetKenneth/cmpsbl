@@ -5050,7 +5050,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══ INFRASTRUCTURE COMMANDS (v10.5.4) ═══
-    else if (base.startsWith('cron.') || base.startsWith('ratelimit.') || base.startsWith('snapshot.') || base.startsWith('analytics.') || base.startsWith('stream.') || base.startsWith('file.') || base.startsWith('nl.')) {
+    else if (base.startsWith('cron.') || base.startsWith('ratelimit.') || base.startsWith('snapshot.') || base.startsWith('cap.') || base.startsWith('stream.') || base.startsWith('file.') || base.startsWith('nl.')) {
       try {
         // Lazy-register infra handlers on first use
         const { registerInfraHandlers } = await import('@/lib/terminal/infra-handlers');
@@ -5127,10 +5127,10 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       return { success: false, output: `▓ Unknown patch command: ${base}\n  Type 'patch.help' for available commands` };
     }
 
-    // ═══ INFRASTRUCTURE SIX + ENCODE MODULE HANDLERS (v10.5.4 ARCHITECT) ═══
-    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.')) {
+    // ═══ REGISTRY-BACKED MODULE HANDLERS (All 24 Nodes + Cross-Cutting) ═══
+    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.')) {
       try {
-        // Lazy-register Infrastructure Six + Encode handlers on first use
+        // Lazy-register all registry-backed handlers on first use
         const { registerInfraModuleHandlers } = await import('@/lib/terminal/infra-module-handlers');
         registerInfraModuleHandlers();
         const { registerEncodeModuleHandlers } = await import('@/lib/terminal/encode-handlers');
@@ -5139,6 +5139,12 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         registerMeshHandlers();
         const { registerEncodedHandlers } = await import('@/lib/terminal/encoded-handlers');
         registerEncodedHandlers();
+        const { registerGovernanceHandlers } = await import('@/lib/terminal/governance-handlers');
+        registerGovernanceHandlers();
+        const { registerObservabilityHandlers } = await import('@/lib/terminal/observability-handlers');
+        registerObservabilityHandlers();
+        const { registerAnalyticsHandlers } = await import('@/lib/terminal/analytics-handlers');
+        registerAnalyticsHandlers();
         const { getHandler } = await import('@/lib/terminal/validate-registry');
         const handler = getHandler(base);
         
@@ -5149,6 +5155,11 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           // If handler returned a formatted output, use it directly
           if (data?.formatted && Array.isArray(data.formatted)) {
             return { success: true, output: (data.formatted as string[]).join('\n') };
+          }
+
+          // Governance-style output (gov.* handlers return { output, status })
+          if (typeof data?.output === 'string' && data?.status) {
+            return { success: data.status !== 'error', output: `◉ ${base}\n\n${data.output}` };
           }
           
           if (data?.success === false) {

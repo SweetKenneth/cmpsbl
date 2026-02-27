@@ -102,28 +102,28 @@ export function registerInfraHandlers(): void {
   });
 
   // ═══ CAPABILITY ANALYTICS ═══
-  registerHandler('analytics.summary', async () => {
+  registerHandler('cap.summary', async () => {
     const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
     return { success: true, data: capabilityAnalytics.summary(24) };
   });
 
-  registerHandler('analytics.top', async () => {
+  registerHandler('cap.top', async () => {
     const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
     const summary = capabilityAnalytics.summary(24);
     return { success: true, data: { top: summary.topCapabilities } };
   });
 
-  registerHandler('analytics.dead', async () => {
+  registerHandler('cap.dead', async () => {
     const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
     return { success: true, data: { dead: capabilityAnalytics.getDeadCapabilities() } };
   });
 
-  registerHandler('analytics.rising', async () => {
+  registerHandler('cap.rising', async () => {
     const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
     return { success: true, data: { rising: capabilityAnalytics.getRisingCapabilities() } };
   });
 
-  registerHandler('analytics.flush', async () => {
+  registerHandler('cap.flush', async () => {
     const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
     return { success: true, data: capabilityAnalytics.flush() };
   });
