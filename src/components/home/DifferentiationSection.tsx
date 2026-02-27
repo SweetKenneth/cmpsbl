@@ -1,6 +1,6 @@
 /**
  * DifferentiationSection — Dream · Remember · Adapt · Self-Improve
- * Technical but accessible explanation of what makes Clockless fundamentally different.
+ * Technical but accessible explanation of what makes CMPSBL fundamentally different.
  */
 
 import { motion } from "framer-motion";

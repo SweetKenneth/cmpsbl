@@ -19,11 +19,11 @@ export default function ClocklessWhatMakesItDifferent() {
   return (
     <>
       <SEO
-        title="What Makes Clockless Different — Why Developers Build on It"
-        description="Clockless isn't another AI API. It's composable cognitive infrastructure where memory persists, intelligence compounds, and governance is built in. Here's what sets it apart."
+        title="What Makes CMPSBL Different — Why Developers Build on It"
+        description="CMPSBL isn't another AI API. It's composable cognitive infrastructure featuring Clockless Cognitive Reality — where memory persists, intelligence compounds, and governance is built in."
         type="article"
         publishedTime="2026-02-27"
-        keywords={['Clockless vs OpenAI', 'composable AI platform', 'cognitive infrastructure', 'why Clockless', 'AI platform comparison', 'persistent memory platform']}
+        keywords={['CMPSBL vs OpenAI', 'composable AI platform', 'cognitive infrastructure', 'why CMPSBL', 'AI platform comparison', 'persistent memory platform', 'Clockless Cognitive Reality']}
       />
       <PublicNav />
 

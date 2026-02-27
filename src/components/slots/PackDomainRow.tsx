@@ -85,7 +85,7 @@ export function PackDomainRow({
             </span>
           )}
         </div>
-        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl line-clamp-2">
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl">
           {thesis}
         </p>
       </div>

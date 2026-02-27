@@ -113,6 +113,8 @@ export default function Explore() {
       {/* Agents — Practical entry points */}
       <AgentsSection />
 
+      <SectionDivider />
+
       {/* Governance Signal — Technical credibility */}
       <GovernanceSignal />
 

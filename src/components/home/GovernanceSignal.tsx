@@ -36,7 +36,7 @@ const signals = [
 
 export function GovernanceSignal() {
   return (
-    <section className="relative z-10 py-14 sm:py-24 px-4">
+    <section className="relative z-10 py-16 sm:py-28 px-4">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
