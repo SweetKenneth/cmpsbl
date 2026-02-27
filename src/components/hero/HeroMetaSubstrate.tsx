@@ -432,9 +432,9 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
+            { icon: Sparkles, label: "30 Free Templates", href: "/templates" },
             { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory" },
             { icon: Code, label: "Composable Cognitives", href: "/composable-cognitives" },
-            { icon: Sparkles, label: "Cognitive Showcase", href: "/showcase" },
             { icon: Layers, label: "Documentation", href: "/documentation" },
           ].map((item, index) => (
             <motion.div
