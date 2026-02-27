@@ -90,28 +90,6 @@ const UNKNOWN_NAMESPACE: Array<{ name: string; command: string }> = [
   { name: 'Unknown namespace - xyz.status', command: 'xyz.status' },
 ];
 
-function shapeOk(res: unknown): { ok: boolean; note?: string } {
-  if (res == null) return { ok: false, note: 'No response returned' };
-
-  if (typeof res === 'object') {
-    const obj = res as unknown as Record<string, unknown>;
-    const hasSuccess = typeof obj.success === 'boolean';
-    const hasOutput = typeof obj.output === 'string';
-    const hasOk = typeof obj.ok === 'boolean';
-
-    if (!hasSuccess && !hasOutput && !hasOk) {
-      return { ok: false, note: 'Missing expected fields (success/output/ok)' };
-    }
-    return { ok: true };
-  }
-
-  if (typeof res === 'string' || typeof res === 'number' || typeof res === 'boolean') {
-    return { ok: true };
-  }
-
-  return { ok: false, note: 'Unrecognized response type' };
-}
-
 function classifyResult(res: CommandResult, expectedMode: 'surface' | 'failure' | 'unknown'): { success: boolean; severity: Severity; notes?: string } {
   // CommandResult always has { success, trace_id, output?, error?, ... }
   if (expectedMode === 'surface') {
