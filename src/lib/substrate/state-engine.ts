@@ -1,5 +1,5 @@
 /**
- * promptfluid® State Engine
+ * CMPSBL® State Engine
  * Canonical State Contract Layer
  * 
  * The State Engine enforces shared state schemas and contracts across all engines.

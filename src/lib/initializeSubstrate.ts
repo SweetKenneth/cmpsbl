@@ -33,7 +33,7 @@ export async function initializeSubstrate(): Promise<void> {
     
     await yieldToMain();
     
-    console.log('⚡ Booting promptfluid® Substrate...');
+    console.log('⚡ Booting CMPSBL® Substrate...');
     console.log('─────────────────────────────────────────');
     
     // Boot order: CORE → CCR → CCL → Modules → INTEGRATION (last) → Mesh Overlays activate

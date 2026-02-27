@@ -1,5 +1,5 @@
 /**
- * promptfluid® CORTEX Module
+ * CMPSBL® CORTEX Module
  * Agency-Class Orchestrator & Cross-Module Governance
  * Hardened with input validation, bounded orchestrations, and timeout guards
  */
