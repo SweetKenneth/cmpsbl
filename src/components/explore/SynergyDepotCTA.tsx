@@ -43,7 +43,7 @@ export function SynergyDepotCTA() {
         >
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <Star className="w-3 h-3 mr-1" />
-            Cognitive Marketplace
+            Pipelines & Artifacts
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
             Extend Your{" "}
@@ -60,7 +60,7 @@ export function SynergyDepotCTA() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Pre-built synergy pipelines and downloadable cognitive artifacts for enterprise-grade AI.
+            Ready-made orchestration pipelines and downloadable artifacts for production-grade AI systems.
           </p>
         </motion.div>
 
@@ -98,7 +98,7 @@ export function SynergyDepotCTA() {
                       Synergy Pipelines
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Multi-module cognitive fusion workflows running inside your substrate.
+                      Multi-module orchestration workflows that chain capabilities across your substrate.
                     </p>
                   </div>
                 </div>
@@ -171,7 +171,7 @@ export function SynergyDepotCTA() {
                       Capabilities Depot
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Licensed cognitive artifacts you download and deploy on your infrastructure.
+                      Downloadable artifacts and capabilities you deploy on your own infrastructure.
                     </p>
                   </div>
                 </div>

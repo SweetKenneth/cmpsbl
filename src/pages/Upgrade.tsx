@@ -248,8 +248,8 @@ export default function Upgrade() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Pricing — Clockless"
-        description="Unified runtime. Equal-slot artifact packs. Choose your capacity — 3, 6, or 12 active packs from 24 available."
+        title="Pricing — CMPSBL"
+        description="One runtime, your capacity. 24 artifact packs — every pack = 1 slot. Choose Builder (free), Creator ($29/mo), or Architect ($79/mo)."
       />
       <PublicNav />
 

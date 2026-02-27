@@ -334,11 +334,11 @@ export function WhySubstrate() {
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Nine specialized modules forming a cognitive operating system with 
+            Nine production modules working together — giving your AI 
             <span className="text-foreground font-medium"> intelligent routing</span>, 
             <span className="text-foreground font-medium"> persistent memory</span>, 
-            <span className="text-foreground font-medium"> self-evolution</span>, and 
-            <span className="text-foreground font-medium"> enterprise security</span>.
+            <span className="text-foreground font-medium"> autonomous learning</span>, and 
+            <span className="text-foreground font-medium"> enterprise-grade security</span>.
           </p>
         </motion.div>
         

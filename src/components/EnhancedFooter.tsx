@@ -43,11 +43,11 @@ export function EnhancedFooter() {
     {
       title: "Products",
       links: [
-        { name: "Composable Cognitives", href: "/composable-cognitives", highlight: true },
+        { name: "Minds", href: "/composable-cognitives", highlight: true },
         { name: "Persistent Memory", href: "/persistent-memory" },
-        { name: "All Modules", href: "/modules" },
+        { name: "Artifact Packs", href: "/packs" },
         { name: "Enterprise", href: "/enterprise" },
-        { name: "Upgrade", href: "/upgrade" },
+        { name: "Pricing", href: "/upgrade" },
       ]
     },
     {
@@ -112,10 +112,10 @@ export function EnhancedFooter() {
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
-                Where machines learn to dream.
+                Cognitive infrastructure for AI that compounds.
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-4 max-w-[280px]">
-                A Cognitive Reality System · powered by the CMPSBL Substrate.
+                Persistent memory · Intelligent routing · Governed orchestration
               </p>
 
               {/* Social Links */}
@@ -203,7 +203,7 @@ export function EnhancedFooter() {
                 © 2009-{currentYear} CMPSBL® — All rights reserved
               </p>
               <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-4 text-[11px] sm:text-xs text-muted-foreground text-center">
-                <span>Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate</span>
+                <span>CMPSBL® — Composable Cognitive Infrastructure</span>
                 <span className="hidden sm:inline text-border">•</span>
                 <span className="inline-flex items-center gap-1">
                   Made with <Heart className="w-3 h-3 text-destructive fill-destructive animate-pulse" /> by humans who care

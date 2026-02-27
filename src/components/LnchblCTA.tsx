@@ -45,7 +45,7 @@ export function LnchblCTA() {
             </motion.div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">
-              <span className="text-foreground">The World's First </span>
+              <span className="text-foreground">Deploy On </span>
               <span 
                 style={{
                   background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)), hsl(var(--primary)))",
@@ -55,13 +55,13 @@ export function LnchblCTA() {
                   animation: "gradientShift 4s ease-in-out infinite",
                 }}
               >
-                Public CMPSBL Substrate
+                Your Infrastructure
               </span>
             </h2>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-              Your own copy of the full CMPSBL Substrate — the same self-evolving cognitive runtime 
-              you see here. Download the LNCHBL distribution and deploy in minutes.
+              Your own copy of the full CMPSBL substrate — the same cognitive runtime 
+              powering this platform. Download LNCHBL and deploy on your servers in minutes.
             </p>
 
             {/* Feature pills */}
@@ -69,7 +69,7 @@ export function LnchblCTA() {
               {[
                 { icon: Rocket, text: "Full Substrate", color: "text-primary" },
                 { icon: Download, text: "Free Download", color: "text-emerald-500" },
-                { icon: Sparkles, text: "Neural Substrate Included", color: "text-violet-500" },
+                { icon: Sparkles, text: "Persistent Memory Included", color: "text-violet-500" },
               ].map((pill) => (
                 <div key={pill.text} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-muted/40 border border-border/50">
                   <pill.icon className={cn("w-4 h-4", pill.color)} />
@@ -100,7 +100,7 @@ export function LnchblCTA() {
             </div>
 
             <p className="text-sm text-muted-foreground mt-6">
-              No account required • Full substrate • Neural substrate + memory in minutes • Powered by LNCHBL
+              No account required • Full substrate • Persistent memory in minutes • Powered by LNCHBL
             </p>
           </div>
         </div>

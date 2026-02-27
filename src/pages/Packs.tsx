@@ -62,8 +62,8 @@ export default function Packs() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Manage Packs — Clockless"
-        description="Activate and manage your artifact packs. Every pack = 1 slot."
+        title="Manage Packs — CMPSBL"
+        description="Activate and manage your artifact packs. Every pack = 1 slot. Choose the capabilities your AI needs."
       />
       <PublicNav />
 
@@ -82,7 +82,7 @@ export default function Packs() {
               </Badge>
               <h1 className="text-3xl md:text-4xl font-bold">Manage Your Packs</h1>
               <p className="text-muted-foreground max-w-lg mx-auto">
-                All 24 packs available. Every pack = 1 slot. Activate what you need.
+                24 artifact packs across 6 strategic domains. Every pack = 1 slot. Activate what you need, swap anytime.
               </p>
             </motion.div>
 

@@ -30,10 +30,10 @@ export default function StartHere() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Start Here | Clockless — Cognitive Infrastructure for AI"
-        description="New to Clockless? Start here. Add persistent memory and self-improving pipelines to any AI application — standalone products, no platform lock-in."
+        title="Start Here — CMPSBL"
+        description="New to CMPSBL? Start here. Add persistent memory and intelligent orchestration to any AI application — free tier, no platform lock-in."
         canonical="https://cmpsbl.com/start-here"
-        keywords={['CMPSBL getting started', 'start here', 'persistent memory', 'AI infrastructure', 'composable cognitives']}
+        keywords={['CMPSBL getting started', 'start here', 'persistent memory', 'AI infrastructure', 'artifact packs']}
       />
       <PublicNav />
 
@@ -53,7 +53,7 @@ export default function StartHere() {
           <motion.div {...fadeUp}>
             <Badge variant="outline" className="mb-6 border-primary/30 bg-primary/5 text-primary gap-1.5 px-4 py-1.5">
               <Sparkles className="w-3 h-3" />
-              <span className="text-xs font-semibold">New to Clockless?</span>
+              <span className="text-xs font-semibold">New to CMPSBL?</span>
             </Badge>
           </motion.div>
 
@@ -77,10 +77,10 @@ export default function StartHere() {
           {/* Body */}
           <div className="space-y-8">
             <motion.p {...stagger(0.15)} className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-              Clockless gives your AI applications persistent memory, self-improving pipelines, and governed orchestration — drop-in infrastructure that compounds over time.
+              CMPSBL gives your AI applications persistent memory, intelligent routing, and governed orchestration — drop-in infrastructure that gets smarter over time.
             </motion.p>
             <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              Pick a product, build something real, and see the difference. No demos, no lock-in.
+              Pick a product, build something real, and see the difference. Free tier, no lock-in.
             </motion.p>
 
             {/* What you can do */}
@@ -94,10 +94,10 @@ export default function StartHere() {
                 <div className="grid sm:grid-cols-2 gap-3">
                   {[
                     { icon: Brain, text: "Add persistent memory to any AI agent" },
-                    { icon: Zap, text: "Download a Composable Cognitive — your own AI agent" },
-                    { icon: Code, text: "Integrate the EVLVBL SDK for self-improving pipelines" },
+                    { icon: Zap, text: "Download a Mind — your own AI agent" },
+                    { icon: Code, text: "Activate artifact packs for deeper capabilities" },
                     { icon: Sparkles, text: "Try the accessibility scanner on any website" },
-                    { icon: BookOpen, text: "Read the research documentation on Zenodo" },
+                    { icon: BookOpen, text: "Read the technical documentation" },
                   ].map((item, idx) => (
                     <motion.div
                       key={item.text}
@@ -134,7 +134,7 @@ export default function StartHere() {
               <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-8 h-13">
                 <Link to="/composable-cognitives">
                   <Zap className="w-4 h-4" />
-                  Browse Cognitives
+                  Browse Minds
                 </Link>
               </Button>
             </motion.div>
