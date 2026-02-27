@@ -29,10 +29,10 @@ export interface CascadeProject {
 
 export const cascadeProjects: CascadeProject[] = [
   {
-    id: 'promptfluid-core',
-    name: 'PromptFluid Core',
-    description: 'Main PromptFluid ecosystem app with Brain, Cascade, Defense, and Vision modules. Central hub for AI orchestration and automation.',
-    stack: 'React + Vite + TypeScript + Tailwind CSS + Supabase Edge Functions + PostgreSQL',
+    id: 'cmpsbl-core',
+    name: 'CMPSBL Core',
+    description: 'Main CMPSBL ecosystem app with BRAIN, NEXUS, DEFENSE, and VISION modules. Central hub for AI orchestration and automation.',
+    stack: 'React + Vite + TypeScript + Tailwind CSS + Edge Functions + PostgreSQL',
     notes: 'Primary production system. Uses free-tier AI routing. Follow existing component patterns in src/components.'
   },
   {

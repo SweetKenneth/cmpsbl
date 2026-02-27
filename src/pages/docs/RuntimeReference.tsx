@@ -67,7 +67,7 @@ export default function RuntimeReference() {
     content += `• Confidence Scoring: Exponential moving average tracks capability reliability.\n`;
     content += `• Pipeline Orchestration: DAG-based execution with cascade/parallel/adaptive modes.\n`;
     content += `• Memory Tiering: Hot → Warm → Cold → Archive with adaptive limits.\n`;
-    content += `\n© ${new Date().getFullYear()} PromptFluid®. All rights reserved.\n`;
+    content += `\n© ${new Date().getFullYear()} CMPSBL®. All rights reserved.\n`;
 
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);

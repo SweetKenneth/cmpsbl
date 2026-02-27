@@ -92,7 +92,7 @@ export default function SubstrateLicensingSuccess() {
                       <Link to="/substrate/licensing">Back to Licensing</Link>
                     </Button>
                     <Button asChild>
-                      <a href="mailto:promptfluid@gmail.com">Contact Support</a>
+                      <a href="mailto:support@cmpsbl.com">Contact Support</a>
                     </Button>
                   </div>
                 </CardContent>

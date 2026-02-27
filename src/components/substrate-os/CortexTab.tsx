@@ -172,7 +172,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
               <Settings className="w-4 h-4 text-violet-400" />
               Operating Mode
             </CardTitle>
-            <CardDescription className="text-xs">v6.0.0 Manual mode by default</CardDescription>
+            <CardDescription className="text-xs">Manual mode by default</CardDescription>
           </CardHeader>
           <CardContent>
             {statusLoading ? (
