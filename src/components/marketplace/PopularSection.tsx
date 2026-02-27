@@ -1,6 +1,6 @@
 /**
  * PopularSection — Most downloaded/trending templates to drive sales
- * v6.0.0 - Enhanced with better animations and visual hierarchy
+ * Enhanced with better animations and visual hierarchy
  */
 
 import { useState, useEffect } from 'react';

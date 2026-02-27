@@ -35,7 +35,7 @@ export function ReflexMonitor() {
     try {
       // Fetch Reflex analytics from our edge function
       const { data, error } = await supabase.functions.invoke('pf-reflex-analytics', {
-        body: { action: 'get_stats', site_url: 'promptfluid.com' }
+        body: { action: 'get_stats', site_url: 'cmpsbl.com' }
       });
 
       if (error) throw error;
@@ -98,7 +98,7 @@ export function ReflexMonitor() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-primary" />
-            <CardTitle>PromptFluid.com Reflex Protection</CardTitle>
+            <CardTitle>CMPSBL.com Reflex Protection</CardTitle>
           </div>
           <Badge variant="outline" className="border-green-500/50 text-green-400 bg-green-500/10">
             <Activity className="w-3 h-3 mr-1 animate-pulse" />

@@ -189,7 +189,7 @@ export default function CognitiveForge() {
         <div className="container mx-auto max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] font-mono text-muted-foreground">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            <span>promptfluid® cognitive forge</span>
+            <span>CMPSBL® cognitive forge</span>
           </div>
           <div className="flex items-center gap-4">
             <span>D-Mode</span>

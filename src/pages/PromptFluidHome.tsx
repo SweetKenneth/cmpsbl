@@ -44,7 +44,7 @@ const stagger = {
 };
 
 const milestones = [
-  { year: "2009", title: "PromptFluid Founded", description: "Started as a vision for intelligent, composable software systems." },
+  { year: "2009", title: "CMPSBL Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
   { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 10 entities + 5 mesh overlays + 9 zones, powered by the CMPSBL Substrate." },
   { year: "2025", title: "175k+ Lines of Code", description: "Grew to 525+ capabilities, 13-provider AI routing, and composable cognitive infrastructure." },
@@ -169,11 +169,11 @@ export default function PromptFluidHome() {
               </div>
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground">PromptFluid Studio</h2>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground">CMPSBL Studio</h2>
                   <p className="text-primary font-semibold">AI Infrastructure Lab — Dallas, TX</p>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
-                  PromptFluid is the studio behind CMPSBL® — a cognitive operating system with 10 entities, 5 mesh overlays, and 9 zones spanning 175,000+ lines of production code. 
+                  CMPSBL® is a cognitive operating system with 10 entities, 5 mesh overlays, and 9 zones spanning 175,000+ lines of production code. 
                   Our team focuses on persistent memory architectures, autonomous self-evolution, and model-agnostic AI routing. 
                   We serve as the canonical architects and technical experts for all substrate development.
                 </p>

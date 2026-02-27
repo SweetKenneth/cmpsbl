@@ -90,7 +90,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here`,
       },
       {
         title: "Copy Substrate Client",
-        code: `// Download from promptfluid.com/sdk/substrate.ts
+        code: `// Download from cmpsbl.com/sdk/substrate.ts
 // Or copy from the CodeLab Explorer cards`,
         description: "Get the substrate client code"
       },

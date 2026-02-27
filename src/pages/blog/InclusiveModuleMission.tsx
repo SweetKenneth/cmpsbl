@@ -155,9 +155,9 @@ const InclusiveModuleMission = () => {
             High-severity accessibility violations are automatically escalated to the DEFENSE module's risk pipeline. Critical WCAG failures can trigger alerts or even block deployments until resolved.
           </p>
 
-          <h2 className="text-3xl font-bold mt-12 mb-6">Built by PromptFluid®</h2>
+          <h2 className="text-3xl font-bold mt-12 mb-6">Built by CMPSBL®</h2>
           <p className="mb-6">
-            The INCLUSIVE module is developed and maintained by PromptFluid®, the company behind the CMPSBL cognitive orchestration substrate. Our mission is to make AI accessible, composable, and beneficial for everyone—and that starts with making the digital world itself accessible.
+            The INCLUSIVE module is developed and maintained by CMPSBL®, the company behind the cognitive orchestration substrate. Our mission is to make AI accessible, composable, and beneficial for everyone—and that starts with making the digital world itself accessible.
           </p>
 
           <div className="flex items-center gap-4 p-6 bg-muted/30 rounded-xl border border-border">

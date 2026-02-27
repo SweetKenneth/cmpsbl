@@ -276,7 +276,7 @@ export default function ExperimentationLab() {
           
           <div className="container mx-auto px-4 py-16 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
-              <Badge className="mb-4 bg-gradient-to-r from-cyan-500 to-violet-500 text-white border-0">
+              <Badge className="mb-4 bg-gradient-to-r from-primary to-accent text-primary-foreground border-0">
                 <Cpu className="w-3 h-3 mr-1" />
                 Live Demos
               </Badge>

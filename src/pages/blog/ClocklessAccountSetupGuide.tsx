@@ -232,7 +232,7 @@ export default function ClocklessAccountSetupGuide() {
             </div>
             <div>
               <h4 className="font-bold mb-1">Is there a free tier?</h4>
-              <p className="text-muted-foreground">Absolutely. Every account gets the full substrate architecture. Free tier limits throughput and storage, but the <em>capabilities</em> are identical. See our <Link to="/pricing" className="text-primary hover:underline">pricing page</Link> for details.</p>
+              <p className="text-muted-foreground">Absolutely. Every account gets the full substrate architecture. Free tier limits throughput and storage, but the <em>capabilities</em> are identical. See our <Link to="/upgrade" className="text-primary hover:underline">pricing page</Link> for details.</p>
             </div>
             <div>
               <h4 className="font-bold mb-1">How does this compare to using OpenAI + Pinecone + LangChain separately?</h4>

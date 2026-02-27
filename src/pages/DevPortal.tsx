@@ -5999,7 +5999,7 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                     <CardTitle className="text-base sm:text-lg">Bring Your Own Keys (BYOK)</CardTitle>
                   </div>
                   <CardDescription className="text-sm mt-2">
-                    The promptfluid substrate is a routing and orchestration layer. 
+                    The CMPSBL substrate is a routing and orchestration layer. 
                     <strong> You must deploy your own instance and provide your own API keys.</strong>
                     No compute resources, credits, or API access is included.
                   </CardDescription>

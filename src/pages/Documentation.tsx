@@ -441,7 +441,7 @@ Authorization: Bearer <supabase-jwt>`}
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+            <p className="text-2xl md:text-4xl font-light text-primary-foreground drop-shadow-lg">
               "BYOK — Built for developers who own their infrastructure."
             </p>
           </blockquote>

@@ -149,7 +149,7 @@ const TopSecurityPlugins2025 = () => {
                 </li>
               </ul>
               <p className="text-sm text-muted-foreground italic">
-                Join the waitlist at <Link to="/bot-sniper" className="text-primary hover:underline">promptfluid.com/bot-sniper</Link> to be notified when available.
+                Join the waitlist at <Link to="/bot-sniper" className="text-primary hover:underline">cmpsbl.com/bot-sniper</Link> to be notified when available.
               </p>
             </div>
           </section>
