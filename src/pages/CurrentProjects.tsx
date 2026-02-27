@@ -238,6 +238,9 @@ export default function CurrentProjects() {
             <Button size="lg" onClick={() => navigate('/investors')} className="bg-primary hover:bg-primary/90">
               Investor Information
             </Button>
+            <Button size="lg" variant="outline" onClick={() => navigate('/roadmap')}>
+              View Roadmap
+            </Button>
             <Button size="lg" variant="outline" onClick={() => navigate('/contact')}>
               Contact Team
             </Button>

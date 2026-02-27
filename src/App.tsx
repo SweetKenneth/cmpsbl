@@ -342,7 +342,7 @@ const App = () => {
                         <Routes>
                           {/* Core Public Pages */}
                           <Route path="/" element={<DomainAwareHome />} />
-                        <Route path="/decode" element={<Decode />} />
+                        <Route path="/decode" element={<Navigate to="/" replace />} />
                         <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
                         <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />
                         <Route path="/dream-eater/artifacts" element={<DreamArtifacts />} />
@@ -358,9 +358,9 @@ const App = () => {
                         <Route path="/intent-mesh" element={<PhaseGateRoute><IntentMeshPublic /></PhaseGateRoute>} />
                         <Route path="/changelog" element={<Changelog />} />
                         <Route path="/codelab" element={<CodeLab />} />
-                        <Route path="/templates" element={<Templates />} />
+                        <Route path="/templates" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/forge" element={<Navigate to="/" replace />} />
-                        <Route path="/forge/catalog" element={<ForgeCatalog />} />
+                        <Route path="/forge/catalog" element={<Navigate to="/" replace />} />
                         <Route path="/agency" element={<Navigate to="/" replace />} />
                         <Route path="/a/:slug" element={<AgencyPortal />} />
                         <Route path="/devtools" element={<DevTools />} />
@@ -421,7 +421,7 @@ const App = () => {
                         <Route path="/modules" element={<ModulesHub />} />
                         <Route path="/modules/:slug" element={<ModuleDetail />} />
                         <Route path="/ai-operating-system" element={<AIOperatingSystem />} />
-                        <Route path="/products/encode" element={<EncodeInfo />} />
+                        <Route path="/products/encode" element={<Navigate to="/" replace />} />
                         
                         {/* Cluster pages - module deep-dives */}
                         <Route path="/cluster/studio-autonomous-site-generator" element={<Navigate to="/" replace />} />

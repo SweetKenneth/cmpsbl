@@ -99,6 +99,7 @@ export function CmpsblNav() {
       items: [
         { name: "How It Works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
         { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
+        { name: "Substrate Demo", href: "/demo", description: "Interactive live demo", icon: Sparkles },
         { name: "All Modules", href: "/modules", description: "9 production modules", icon: Layers },
         { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
@@ -121,6 +122,7 @@ export function CmpsblNav() {
       items: [
         { name: "Start Here", href: "/start-here", description: "Get oriented fast", icon: Rocket },
         { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
+        { name: "Developer Showcase", href: "/developers", description: "Community builds & integrations", icon: Users },
         { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "API Access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
