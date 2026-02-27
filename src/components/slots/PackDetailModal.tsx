@@ -212,9 +212,9 @@ export function PackDetailModal({
 
                 {/* Why This Pack Matters */}
                 {pack._emergenceClause && (
-                  <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4">
+                  <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
                     <h4 className="text-sm font-bold mb-1.5 text-foreground flex items-center gap-1.5">
-                      <Shield className="w-3.5 h-3.5 text-amber-500" />
+                      <Shield className="w-3.5 h-3.5 text-primary" />
                       Why This Pack Matters
                     </h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">

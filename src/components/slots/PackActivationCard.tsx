@@ -78,14 +78,19 @@ export function PackActivationCard({
     >
       <Card
         className={cn(
-          'h-full transition-all duration-300 cursor-pointer group',
+          'h-full transition-all duration-300 cursor-pointer group relative overflow-hidden',
           isActive
-            ? 'border-primary/40 ring-1 ring-primary/10 bg-primary/[0.02]'
-            : 'border-border/50 hover:border-border',
+            ? 'border-primary/40 ring-1 ring-primary/20 shadow-md shadow-primary/5'
+            : 'border-border/50 hover:border-primary/30 hover:shadow-sm',
         )}
         onClick={() => onViewDetails?.(pack)}
       >
-        <CardContent className="p-4 sm:p-5 space-y-3">
+        {/* Top color accent bar */}
+        <div className={cn(
+          "absolute top-0 left-0 right-0 h-0.5",
+          isActive ? "bg-primary" : "bg-transparent group-hover:bg-primary/30 transition-colors"
+        )} />
+        <CardContent className="p-4 sm:p-5 space-y-3 pt-5">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
               <h3 className="font-bold text-sm">{pack.name}</h3>
