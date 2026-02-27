@@ -1,6 +1,5 @@
 /**
  * ENCODE Pipeline — DECODE->ENCODE task routing + BRAIN recall/writeback
- * v10.5.4 ARCHITECT Epoch
  */
 
 import { emit } from '../events';

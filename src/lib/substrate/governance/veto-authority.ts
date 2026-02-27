@@ -1,6 +1,5 @@
 /**
  * Veto Authority — Precedence Stack
- * v10.5.3 ARCHITECT Epoch
  * 
  * Defines and enforces deterministic veto precedence across modules.
  * Precedence order:

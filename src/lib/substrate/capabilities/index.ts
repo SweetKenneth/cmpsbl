@@ -1,6 +1,6 @@
 /**
  * Cross-Module Capability Registry
- * SPARTA Epoch — Synergy-Powered Substrate Capabilities (400+ Total)
+ * Synergy-Powered Substrate Capabilities (400+ Total)
  * 
  * Implements 269 emergent capabilities from module intersections:
  * - 10 Core Synergies (original)

@@ -1,6 +1,6 @@
 /**
  * Governance Drift Detector
- * SPARTA Epoch v11.5.2 — Fixed window init, proper wiring hooks
+ * Fixed window init, proper wiring hooks
  * 
  * Monitors runtime behavioral drift from governance intent through:
  * - Mutation rate anomalies (mutations happening in OBSERVE mode)

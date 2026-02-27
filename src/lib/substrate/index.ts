@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Core Exports
- * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
+ * 10-Entity + 5-Mesh + 9-Zone Architecture
  * 
  * Complete export of all substrate engines, hooks, and utilities.
  * 3-Layer Architecture: Capabilities (525+) → Engines (76) → Meta-Engines (24)

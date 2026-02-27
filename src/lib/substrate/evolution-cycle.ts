@@ -1,6 +1,6 @@
 /**
  * Evolution Cycle Engine
- * SPARTA Epoch — Unified on evolution_runs (Single Source of Truth)
+ * Unified on evolution_runs (Single Source of Truth)
  * 
  * Unified evolution engine that reads/writes from evolution_runs table.
  * 

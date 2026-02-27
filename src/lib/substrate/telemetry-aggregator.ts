@@ -1,6 +1,6 @@
 /**
- * Unified Telemetry Aggregation Layer — v11.5.2
- * SPARTA Epoch — Enterprise-Grade Analytics
+ * Unified Telemetry Aggregation Layer
+ * Enterprise-Grade Analytics
  *
  * Gaps filled:
  * 1. Removed 500-row query limit (uses count aggregation)

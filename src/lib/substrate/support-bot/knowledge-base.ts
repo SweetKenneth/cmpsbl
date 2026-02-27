@@ -574,7 +574,7 @@ For urgent issues, phone is recommended. For complex technical questions, email 
     question_pattern: 'What is CMPSBL?',
     answer: `CMPSBL (Composable) is the cognitive infrastructure substrate powering the Clockless Cognitive Reality System. It is NOT an operating system — it is a substrate.
 
-**Architecture (v11.1 SPARTA Epoch):**
+**Architecture:**
 • 24 total Execution Surfaces across 6 layers
 • 1 CORE Kernel — the standalone boot authority
 • 9 Public Modules — DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION

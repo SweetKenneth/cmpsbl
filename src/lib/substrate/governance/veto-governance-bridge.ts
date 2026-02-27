@@ -1,6 +1,6 @@
 /**
  * Veto → Governance Bridge
- * SPARTA Epoch v11.5.2 — Deterministic, DB-tracked veto management
+ * Deterministic, DB-tracked veto management
  * 
  * Bidirectional:
  * - Multiple defense vetoes → auto-escalate governance to LOCKDOWN
