@@ -32,6 +32,7 @@ const SubstrateProvider = lazy(() => import("./components/substrate/SubstratePro
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
 import { AdminRoute } from "@/components/admin/AdminRoute";
 import { PhaseGateRoute } from "@/components/gates/PhaseGateRoute";
+import { PackGate } from "@/components/slots/PackGate";
 const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
 const RegisterPasskeyPrompt = lazy(() => import("@/components/auth/RegisterPasskey").then(m => ({ default: m.RegisterPasskeyPrompt })));
 
@@ -102,6 +103,7 @@ const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const Upgrade = lazy(() => import("./pages/Upgrade"));
+const Packs = lazy(() => import("./pages/Packs"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
@@ -349,9 +351,9 @@ const App = () => {
                         <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
                         <Route path="/intelligence" element={<SubstrateIntelligence />} />
                         <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
-                        <Route path="/licensing" element={<PhaseGateRoute><SubstrateLicensingDownload /></PhaseGateRoute>} />
+                        <Route path="/licensing" element={<PhaseGateRoute><PackGate packId="pack-self-hosted"><SubstrateLicensingDownload /></PackGate></PhaseGateRoute>} />
                         <Route path="/substrate/licensing/success" element={<PhaseGateRoute><SubstrateLicensingSuccess /></PhaseGateRoute>} />
-                        <Route path="/lab" element={<PhaseGateRoute><ExperimentationLab /></PhaseGateRoute>} />
+                        <Route path="/lab" element={<PhaseGateRoute><PackGate packId="pack-deep-research"><ExperimentationLab /></PackGate></PhaseGateRoute>} />
                         <Route path="/clockless-world-engine" element={<PhaseGateRoute><ClocklessWorldEngine /></PhaseGateRoute>} />
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
@@ -361,8 +363,8 @@ const App = () => {
                         <Route path="/store" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/artifacts" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/engines" element={<Navigate to="/upgrade" replace />} />
-                        <Route path="/system-feed" element={<PhaseGateRoute><SystemIntelligenceFeed /></PhaseGateRoute>} />
-                        <Route path="/habitat" element={<PhaseGateRoute><Habitat /></PhaseGateRoute>} />
+                        <Route path="/system-feed" element={<PhaseGateRoute><PackGate packId="pack-observability"><SystemIntelligenceFeed /></PackGate></PhaseGateRoute>} />
+                        <Route path="/habitat" element={<PhaseGateRoute><PackGate packId="pack-workflow-automation"><Habitat /></PackGate></PhaseGateRoute>} />
                         <Route path="/status" element={<Status />} />
                         <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
@@ -542,6 +544,7 @@ const App = () => {
                         <Route path="/index" element={<Navigate to="/" replace />} />
                         <Route path="/pricing" element={<Upgrade />} />
                         <Route path="/upgrade" element={<Upgrade />} />
+                        <Route path="/packs" element={<Packs />} />
                         <Route path="/start-here" element={<StartHere />} />
                         <Route path="/checkout" element={<Navigate to="/" replace />} />
                         <Route path="/enterprise" element={<Enterprise />} />

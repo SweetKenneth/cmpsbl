@@ -14157,6 +14157,10 @@ export type Database = {
       }
     }
     Functions: {
+      activate_pack: {
+        Args: { p_capacity: number; p_pack_id: string; p_user_id: string }
+        Returns: Json
+      }
       apply_confidence_decay: {
         Args: { p_agent_id: string; p_user_id: string }
         Returns: Json
@@ -14201,6 +14205,10 @@ export type Database = {
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       compress_warm_memories: {
         Args: { p_agent_id: string; p_max_words?: number; p_user_id: string }
+        Returns: Json
+      }
+      deactivate_pack: {
+        Args: { p_pack_id: string; p_user_id: string }
         Returns: Json
       }
       detect_memory_contradictions: {
