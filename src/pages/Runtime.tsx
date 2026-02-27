@@ -1,7 +1,8 @@
 /**
  * /runtime — Baseline Runtime Overview
- * Public-facing page showing what every user gets, without internal counts.
+ * Horizontal-scroll category layout matching /upgrade pattern.
  */
+import { useRef, useState } from 'react';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
@@ -10,17 +11,169 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BASELINE_PILLARS } from '@/lib/substrate/baseline-pillars';
+import { BASELINE_PILLARS, type BaselinePillar } from '@/lib/substrate/baseline-pillars';
 import {
   Brain, Route, ShieldCheck, Workflow, Activity, Scale,
   Dna, Fingerprint, Radio, Lightbulb, ArrowRight, Layers,
-  Package, Zap, Lock,
+  Package, Zap, Lock, ChevronLeft, ChevronRight,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Brain, Route, ShieldCheck, Workflow, Activity, Scale,
   Dna, Fingerprint, Radio, Lightbulb,
 };
+
+/* ─── Category rows that group pillars ─── */
+interface PillarCategory {
+  id: string;
+  title: string;
+  description: string;
+  pillarIds: string[];
+  accent: string;
+}
+
+const PILLAR_CATEGORIES: PillarCategory[] = [
+  {
+    id: 'foundation',
+    title: 'Foundation Layer',
+    description: 'Memory, identity, and governance — the bedrock every capability builds on.',
+    pillarIds: ['memory', 'identity', 'governance'],
+    accent: 'from-blue-500/20 to-cyan-500/20',
+  },
+  {
+    id: 'intelligence',
+    title: 'Intelligence Layer',
+    description: 'Routing, cognition, and orchestration — the thinking and coordination core.',
+    pillarIds: ['routing', 'cognition', 'orchestration'],
+    accent: 'from-violet-500/20 to-fuchsia-500/20',
+  },
+  {
+    id: 'resilience',
+    title: 'Resilience Layer',
+    description: 'Defense, observability, events, and autonomous evolution — the self-healing surface.',
+    pillarIds: ['defense', 'observability', 'communication', 'evolution'],
+    accent: 'from-emerald-500/20 to-teal-500/20',
+  },
+];
+
+/* ─── Horizontal scroll row component ─── */
+function PillarRow({ category, pillars }: { category: PillarCategory; pillars: BaselinePillar[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+
+  const scroll = (dir: 'left' | 'right') => {
+    scrollRef.current?.scrollBy({ left: dir === 'left' ? -340 : 340, behavior: 'smooth' });
+  };
+
+  return (
+    <section className="mb-16 last:mb-0">
+      <div className="container mx-auto px-4">
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{category.title}</h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-lg">{category.description}</p>
+          </div>
+          <div className="hidden md:flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => scroll('left')}
+              disabled={!canScrollLeft}
+              className="h-8 w-8 rounded-full border-border/50"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => scroll('right')}
+              disabled={!canScrollRight}
+              className="h-8 w-8 rounded-full border-border/50"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        ref={scrollRef}
+        onScroll={checkScroll}
+        className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 md:px-[max(1rem,calc((100vw-72rem)/2+1rem))] pb-4 no-scrollbar"
+      >
+        {pillars.map((pillar, i) => {
+          const PIcon = ICON_MAP[pillar.icon] || Brain;
+          return (
+            <motion.div
+              key={pillar.id}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+              className="snap-start shrink-0 w-[300px] sm:w-[340px]"
+            >
+              <Card className={cn(
+                "h-full border-border/50 hover:border-primary/30 transition-all group",
+                "bg-gradient-to-br", category.accent, "backdrop-blur-sm"
+              )}>
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      <PIcon className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold">{pillar.name}</h3>
+                      <Badge variant="outline" className="text-[10px] mt-0.5 border-primary/20 text-muted-foreground">
+                        Always Active
+                      </Badge>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{pillar.summary}</p>
+                  <ul className="space-y-2">
+                    {pillar.highlights.map(h => (
+                      <li key={h} className="flex items-start gap-2 text-xs text-muted-foreground">
+                        <span className="w-1 h-1 rounded-full bg-primary shrink-0 mt-1.5" />
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ─── Architecture cards (horizontal scroll too) ─── */
+const ARCH_CARDS = [
+  {
+    icon: Layers,
+    title: 'Single Runtime',
+    description: 'One substrate serves all tiers. Modules compose freely without version fragmentation.',
+  },
+  {
+    icon: Package,
+    title: 'Artifact Packs Extend',
+    description: 'Packs activate composed capabilities on top of the baseline. Each pack = 1 slot.',
+  },
+  {
+    icon: Zap,
+    title: 'Capacity, Not Capability',
+    description: 'Plans differ in how many packs you can activate simultaneously — not in what the system can do.',
+  },
+];
 
 export default function Runtime() {
   return (
@@ -33,7 +186,7 @@ export default function Runtime() {
 
       <main className="pt-28 pb-20">
         {/* ═══ HERO ═══ */}
-        <section className="container mx-auto px-4 text-center mb-24">
+        <section className="container mx-auto px-4 text-center mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -47,7 +200,7 @@ export default function Runtime() {
               What You Get. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              The full substrate runs for every user. No module gating. No feature locks. 
+              The full substrate runs for every user. No module gating. No feature locks.
               Plans scale capacity — never capability.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">
@@ -61,117 +214,65 @@ export default function Runtime() {
           </motion.div>
         </section>
 
-        {/* ═══ UNIFIED ARCHITECTURE ═══ */}
-        <section className="container mx-auto px-4 mb-24">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold">Unified Runtime Architecture</h2>
-              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-                Every module, engine, and pipeline runs on a single coherent substrate. 
-                There are no stripped-down versions. The free tier and the enterprise tier 
-                execute the same runtime.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Layers,
-                  title: 'Single Runtime',
-                  description: 'One substrate serves all tiers. Modules compose freely without version fragmentation.',
-                },
-                {
-                  icon: Package,
-                  title: 'Artifact Packs Extend',
-                  description: 'Packs activate composed capabilities on top of the baseline. Each pack = 1 slot.',
-                },
-                {
-                  icon: Zap,
-                  title: 'Capacity, Not Capability',
-                  description: 'Plans differ in how many packs you can activate simultaneously — not in what the system can do.',
-                },
-              ].map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
-                    <CardContent className="p-6 space-y-3">
-                      <item.icon className="w-8 h-8 text-primary" />
-                      <h3 className="font-bold text-lg">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
+        {/* ═══ ARCHITECTURE — horizontal scroll row ═══ */}
+        <section className="mb-20">
+          <div className="container mx-auto px-4 mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold">Unified Architecture</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              One runtime. Every tier. No stripped-down versions.
+            </p>
+          </div>
+          <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 md:px-[max(1rem,calc((100vw-72rem)/2+1rem))] pb-4 no-scrollbar">
+            {ARCH_CARDS.map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="snap-start shrink-0 w-[300px] sm:w-[340px]"
+              >
+                <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
+                  <CardContent className="p-6 space-y-3">
+                    <item.icon className="w-8 h-8 text-primary" />
+                    <h3 className="font-bold text-lg">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </section>
 
-        {/* ═══ ALWAYS-ON CAPABILITY PILLARS ═══ */}
-        <section className="container mx-auto px-4 mb-24">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
-                <Lock className="w-3 h-3 mr-1.5 inline" />
-                Always Active
-              </Badge>
-              <h2 className="text-3xl font-bold">Always-On Capabilities</h2>
-              <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-                These pillars run for every user on every plan. They form the foundation 
-                that artifact packs build upon.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {BASELINE_PILLARS.map((pillar, i) => {
-                const PIcon = ICON_MAP[pillar.icon] || Brain;
-                return (
-                  <motion.div
-                    key={pillar.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Card className="h-full border-border/50 hover:border-primary/20 transition-all group">
-                      <CardContent className="p-6 space-y-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                            <PIcon className="w-5 h-5 text-primary" />
-                          </div>
-                          <h3 className="font-bold">{pillar.name}</h3>
-                        </div>
-                        <p className="text-sm text-muted-foreground">{pillar.summary}</p>
-                        <ul className="space-y-1.5">
-                          {pillar.highlights.map(h => (
-                            <li key={h} className="flex items-start gap-2 text-xs text-muted-foreground">
-                              <span className="w-1 h-1 rounded-full bg-primary shrink-0 mt-1.5" />
-                              {h}
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
+        {/* ═══ CAPABILITY PILLARS — grouped horizontal rows ═══ */}
+        <div className="mb-20">
+          <div className="container mx-auto px-4 text-center mb-12">
+            <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
+              <Lock className="w-3 h-3 mr-1.5 inline" />
+              Always Active
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold">Always-On Capabilities</h2>
+            <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+              These pillars run for every user on every plan. Scroll each layer to explore.
+            </p>
           </div>
-        </section>
 
-        {/* ═══ HOW ARTIFACT PACKS EXTEND ═══ */}
+          {PILLAR_CATEGORIES.map((cat) => {
+            const pillars = cat.pillarIds
+              .map(id => BASELINE_PILLARS.find(p => p.id === id))
+              .filter(Boolean) as BaselinePillar[];
+            return <PillarRow key={cat.id} category={cat} pillars={pillars} />;
+          })}
+        </div>
+
+        {/* ═══ ARTIFACT PACKS CTA ═══ */}
         <section className="container mx-auto px-4 mb-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Package className="w-10 h-10 text-primary mx-auto mb-4" />
             <h3 className="text-2xl font-bold">How Artifact Packs Extend the Runtime</h3>
             <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
-              Artifact packs compose multiple baseline capabilities into purpose-built workflows. 
-              Each pack activates a cross-module orchestration that wouldn't emerge from any single 
-              capability alone. They don't replace the baseline — they amplify it.
+              Artifact packs compose multiple baseline capabilities into purpose-built workflows.
+              They don't replace the baseline — they amplify it.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6">
               <Button asChild>
