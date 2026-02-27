@@ -121,10 +121,16 @@ function checkRateLimit(module: string, action: string, config: CapabilityConfig
 
 export function getCapabilityConfig(module: string): CapabilityConfig {
   return defaultConfigs[module] || { 
-    enabled: false, 
+    enabled: true, 
     mode: 'governed', 
     requiresApproval: true 
   };
+}
+
+/** Check if an action is read-only (never requires approval) */
+function isReadOnlyAction(action: string): boolean {
+  const actionSuffix = action.includes('.') ? action.split('.').pop()! : action;
+  return READ_ONLY_ACTIONS.includes(actionSuffix.toLowerCase());
 }
 
 export async function checkGate(request: GateRequest): Promise<GateResult> {
