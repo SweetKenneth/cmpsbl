@@ -34,11 +34,10 @@ export function EnhancedFooter() {
       title: "Platform",
       links: [
         { name: "AI Operating System", href: "/ai-operating-system", highlight: true },
-        { name: "All Modules", href: "/modules" },
         { name: "Substrate", href: "/substrate" },
+        { name: "Runtime", href: "/runtime" },
         { name: "Architecture", href: "/architecture" },
         { name: "Proof Mode", href: "/proof" },
-        { name: "Documentation", href: "/documentation" },
       ]
     },
     {
@@ -46,9 +45,8 @@ export function EnhancedFooter() {
       links: [
         { name: "Composable Cognitives", href: "/composable-cognitives", highlight: true },
         { name: "Persistent Memory", href: "/persistent-memory" },
-        { name: "Cognitive Showcase", href: "/showcase" },
+        { name: "All Modules", href: "/modules" },
         { name: "Enterprise", href: "/enterprise" },
-        { name: "API Access", href: "/api-access" },
         { name: "Upgrade", href: "/upgrade" },
       ]
     },
@@ -56,8 +54,9 @@ export function EnhancedFooter() {
       title: "Developers",
       links: [
         { name: "Start Here", href: "/start-here", highlight: true },
+        { name: "Documentation", href: "/documentation" },
+        { name: "API Access", href: "/api-access" },
         { name: "Academy", href: "/academy" },
-        { name: "CodeLab", href: "/codelab" },
         { name: "DevTools", href: "/devtools" },
       ]
     },
@@ -67,6 +66,7 @@ export function EnhancedFooter() {
         { name: "Blog", href: "/blog" },
         { name: "Insights", href: "/insights" },
         { name: "Use Cases", href: "/use-cases" },
+        { name: "Showcase", href: "/showcase" },
         { name: "Changelog", href: "/changelog" },
       ]
     },
@@ -74,13 +74,20 @@ export function EnhancedFooter() {
       title: "Company",
       links: [
         { name: "About", href: "/about" },
-        { name: "Contact", href: "/contact" },
-        { name: "Careers", href: "/careers" },
         { name: "Investors", href: "/investors" },
         { name: "PromptFluid", href: "/promptfluid" },
-        { name: "System Status", href: "/status" },
+        { name: "Careers", href: "/careers" },
+        { name: "Contact", href: "/contact" },
+      ]
+    },
+    {
+      title: "Legal & More",
+      links: [
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
+        { name: "System Status", href: "/status" },
+        { name: "CodeLab", href: "/codelab" },
+        { name: "XCTBL", href: "#xctbl" },
       ]
     },
   ];
