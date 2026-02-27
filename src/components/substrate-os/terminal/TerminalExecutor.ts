@@ -5128,7 +5128,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══ REGISTRY-BACKED MODULE HANDLERS (All 24 Nodes + Cross-Cutting) ═══
-    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.')) {
+    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.') || base.startsWith('mesh.') || base.startsWith('seba.') || base.startsWith('clm.') || base.startsWith('core.') || base.startsWith('system.') || base.startsWith('brain.') || base.startsWith('dream.') || base.startsWith('ripple.') || base.startsWith('access.') || base.startsWith('defense.') || base.startsWith('decode.') || base.startsWith('nexus.') || base.startsWith('vision.') || base.startsWith('cortex.') || base.startsWith('inclusive.') || base.startsWith('integration.') || base.startsWith('modernizer.')) {
       try {
         // Lazy-register all registry-backed handlers on first use
         const { registerInfraModuleHandlers } = await import('@/lib/terminal/infra-module-handlers');
@@ -5145,6 +5145,16 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         registerObservabilityHandlers();
         const { registerAnalyticsHandlers } = await import('@/lib/terminal/analytics-handlers');
         registerAnalyticsHandlers();
+        const { registerSpineHandlers } = await import('@/lib/terminal/spine-handlers');
+        registerSpineHandlers();
+        const { registerOCGHandlers } = await import('@/lib/terminal/ocg-handlers');
+        registerOCGHandlers();
+        const { registerExecutionHandlers } = await import('@/lib/terminal/execution-handlers');
+        registerExecutionHandlers();
+        const { registerSEBAHandlers } = await import('@/lib/terminal/seba-handlers');
+        registerSEBAHandlers();
+        const { registerSynergyHandlers } = await import('@/lib/terminal/synergy-handlers');
+        registerSynergyHandlers();
         const { getHandler } = await import('@/lib/terminal/validate-registry');
         const handler = getHandler(base);
         
