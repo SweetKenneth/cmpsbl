@@ -19,7 +19,7 @@ export async function checkSupabaseContracts(): Promise<AuditFinding[]> {
 
   for (const table of CRITICAL_TABLES) {
     try {
-      const { error } = await supabase.from(table.name).select('id', { count: 'exact', head: true });
+      const { error } = await supabase.from(table.name as any).select('id', { count: 'exact', head: true });
       if (error) {
         // RLS block (401/403) is expected for protected tables — that's a PASS
         const isRLSBlock = error.message?.includes('denied') || error.code === '42501' || error.code === 'PGRST301';
