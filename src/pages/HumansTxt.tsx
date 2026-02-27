@@ -68,7 +68,7 @@ Dream: Memory consolidation engine
 
 /* COLOPHON */
 
-Clockless SPARTA Epoch — A Cognitive Reality System · powered by the CMPSBL Substrate
+CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
 24 Core Modules • 400+ Terminal Commands
 525+ Capabilities • WCAG 2.2 Accessibility via INCLUSIVE Module
 

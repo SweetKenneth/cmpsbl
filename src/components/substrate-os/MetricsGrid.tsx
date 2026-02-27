@@ -304,13 +304,13 @@ export function MetricsGrid() {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Live Telemetry</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">sparta epoch • real-time substrate metrics</p>
+            <p className="text-[10px] text-muted-foreground font-mono">real-time substrate metrics</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="text-[9px] h-5 border-indigo-500/30 text-indigo-400">
             <GitBranch className="w-3 h-3 mr-1" />
-            SPARTA
+            CMPSBL
           </Badge>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
             <span className="relative flex h-2 w-2">
@@ -389,7 +389,7 @@ export function MetricsGrid() {
           </StatusPanel>
         )}
         
-        {/* SEBA Status Panel - v10.5.4 ARCHITECT */}
+        {/* SEBA Status Panel */}
         <motion.div 
           className="p-4 rounded-xl border bg-gradient-to-br from-indigo-500/10 via-muted/20 to-transparent backdrop-blur-xl border-indigo-500/20"
           initial={{ opacity: 0, y: 20 }}

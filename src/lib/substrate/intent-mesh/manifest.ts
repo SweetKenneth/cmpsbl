@@ -622,7 +622,7 @@ export const MESH_MANIFEST: MeshResolver[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // CROWN JEWELS — Discovered v10.5.2 (Governance-locked)
+  // SIGNATURE FEATURES — Governance-locked
   // ═══════════════════════════════════════════════════════════════
 
   // 🔴 CMPSBL-ONLY — Recursive Cognition & Meta-Intelligence

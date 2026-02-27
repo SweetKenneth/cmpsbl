@@ -1,5 +1,5 @@
 /**
- * CMPSBL SPARTA Epoch — Living Evolution Log
+ * CMPSBL — Living Evolution Log
  * A continuous record of why the system evolved across all epochs.
  * 
  * This is not a changelog. This is a living document that records
@@ -25,7 +25,7 @@ interface EvolutionEntry {
   source?: 'manual' | 'evolution_run';
 }
 
-// Living Evolution Log — SPARTA Epoch
+// Living Evolution Log
 // Each entry documents WHY the system changed, never HOW
 const evolutionLogSPARTA: EvolutionEntry[] = [
   {
@@ -532,7 +532,7 @@ export default function Changelog() {
       <main className="container mx-auto px-4 py-24 max-w-5xl">
         <div className="text-center mb-16 space-y-4">
           <Badge variant="outline" className="px-4 py-1 border-primary/20 bg-primary/5 text-primary">
-            ARCHITECT EPOCH
+            EVOLUTION LOG
           </Badge>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight">
             Evolution Log

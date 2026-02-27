@@ -64,7 +64,7 @@ export type MetaEngineId =
   // v9.0.0 additions (2) — Infrastructure Cross-Module Meta-Engines
   | 'enterprise_trust_fabric'   // Zero Trust + Compliance Audit + Relay Encryption
   | 'platform_economics_engine' // FinOps + Knowledge Retrieval + Revenue Attribution
-  // v10.9.0 additions (2) — Discovered High-Value Meta-Engines
+  // Discovered High-Value Meta-Engines
   | 'memory_intelligence_fabric'  // Memory + Deep Cognition + Knowledge Retrieval + Attention Memory + Salience
   | 'immune_autonomy_mesh';       // Immune + Self-Healing + System Resilience + Resilience Engine
 
