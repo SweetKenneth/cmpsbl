@@ -66,7 +66,7 @@ export default function Diligence() {
           </Card>
           <Card className="p-4 text-center">
             <p className="text-sm text-muted-foreground">Minor</p>
-            <p className={cn('text-3xl font-bold', report.summary.minor > 0 ? 'text-yellow-500' : 'text-muted-foreground')}>
+            <p className={cn('text-3xl font-bold', report.summary.minor > 0 ? 'text-accent-foreground' : 'text-muted-foreground')}>
               {report.summary.minor}
             </p>
           </Card>
