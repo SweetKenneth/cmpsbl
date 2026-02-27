@@ -64,18 +64,15 @@ await substrate.dream.feed('I was floating through space...', 'dream');
 const interpretation = await substrate.dream.interpret(dreamText);`;
 
 const MODULES = [
-  { id: 'core', name: 'Core', icon: Cpu, color: 'text-orange-400', desc: 'Kernel scheduling & orchestration' },
-  { id: 'ripple', name: 'Ripple', icon: Zap, color: 'text-teal-400', desc: 'Message bus & events' },
-  { id: 'access', name: 'Access', icon: Shield, color: 'text-amber-400', desc: 'Identity & API keys' },
-  { id: 'brain', name: 'Brain', icon: Brain, color: 'text-violet-400', desc: 'Persistent memory & knowledge graphs' },
-  { id: 'decode', name: 'Decode', icon: MessageSquare, color: 'text-cyan-400', desc: 'Intent parsing & conversation' },
-  { id: 'nexus', name: 'Nexus', icon: Zap, color: 'text-green-400', desc: 'Multi-model AI routing' },
-  { id: 'defense', name: 'Defense', icon: Shield, color: 'text-red-400', desc: 'Bot detection & threat analysis' },
-  { id: 'vision', name: 'Vision', icon: Eye, color: 'text-blue-400', desc: 'Observability & monitoring' },
-  { id: 'dream', name: 'Dream', icon: Moon, color: 'text-purple-400', desc: 'Cognitive synthesis & evolution' },
-  { id: 'system', name: 'System', icon: Settings, color: 'text-slate-400', desc: 'Configuration & backups' },
-  { id: 'evolution', name: 'Evolution', icon: Sparkles, color: 'text-pink-400', desc: 'Self-improvement engine' },
-  { id: 'inclusive', name: 'Inclusive', icon: Eye, color: 'text-indigo-400', desc: 'Accessibility scanning & WCAG enforcement' },
+  { id: 'core', name: 'CORE', icon: Cpu, color: 'text-orange-400', desc: 'Scheduling & orchestration' },
+  { id: 'ripple', name: 'RIPPLE', icon: Zap, color: 'text-teal-400', desc: 'Event bus & messaging' },
+  { id: 'access', name: 'ACCESS', icon: Shield, color: 'text-amber-400', desc: 'Identity & API keys' },
+  { id: 'brain', name: 'BRAIN', icon: Brain, color: 'text-violet-400', desc: 'Persistent memory & recall' },
+  { id: 'decode', name: 'DECODE', icon: MessageSquare, color: 'text-cyan-400', desc: 'Intent parsing & conversation' },
+  { id: 'nexus', name: 'NEXUS', icon: Zap, color: 'text-green-400', desc: 'Multi-provider AI routing' },
+  { id: 'defense', name: 'DEFENSE', icon: Shield, color: 'text-red-400', desc: 'Adaptive security & threat detection' },
+  { id: 'vision', name: 'VISION', icon: Eye, color: 'text-blue-400', desc: 'Observability & monitoring' },
+  { id: 'dream', name: 'DREAM', icon: Moon, color: 'text-purple-400', desc: 'Offline learning & synthesis' },
 ];
 
 const TABS = [

@@ -147,7 +147,7 @@ export default function UseCases() {
       icon: Gamepad2,
       title: "Video Game Development",
       subtitle: "Gaming AI",
-      description: "NPCs that remember player interactions, evolve through dream cycles, and create emergent narratives.",
+      description: "NPCs that remember player interactions, learn from sessions, and create emergent narratives.",
       benefits: [
         "Persistent NPC memory across sessions",
         "Emotional state tracking & evolution",
@@ -264,7 +264,7 @@ export default function UseCases() {
       icon: Plane,
       title: "Self-Healing Aircraft",
       subtitle: "Aviation AI",
-      description: "Critical flight systems that dream solutions, learning to predict and fix failures before they cascade.",
+      description: "Critical flight systems that learn to predict and fix failures before they cascade. Pattern recognition across millions of hours.",
       benefits: [
         "Predictive failure detection",
         "Real-time system diagnostics",
@@ -339,7 +339,7 @@ export default function UseCases() {
       icon: Brain,
       title: "Research Assistants with Memory",
       subtitle: "Research AI",
-      description: "Scientific research AI that remembers every paper read, connects insights, and dreams new hypotheses.",
+      description: "Scientific research AI that remembers every paper read, connects insights, and generates new hypotheses.",
       benefits: [
         "Literature comprehension",
         "Cross-domain connection",
@@ -369,7 +369,7 @@ export default function UseCases() {
       icon: Dumbbell,
       title: "Fitness AI That Grows With You",
       subtitle: "Wellness AI",
-      description: "Personal trainers that remember every workout, adapt to your progress, and dream optimal routines.",
+      description: "Personal trainers that remember every workout, adapt to your progress, and optimize routines automatically.",
       benefits: [
         "Progress tracking memory",
         "Recovery pattern learning",
@@ -383,12 +383,12 @@ export default function UseCases() {
   ];
 
   const coreCapabilities = [
-    { icon: Brain, label: "Persistent Memory", description: "3-tier memory that never forgets" },
-    { icon: Moon, label: "Dream Cycles", description: "Offline learning & pattern extraction" },
-    { icon: Zap, label: "Smart Routing", description: "Optimal AI provider selection" },
-    { icon: Shield, label: "Defense Layer", description: "Security & governance built-in" },
-    { icon: MessageSquare, label: "Decode", description: "Context-aware conversation" },
-    { icon: Plug, label: "Integration", description: "Enterprise adapters & LLM governance" },
+    { icon: Brain, label: "Persistent Memory", description: "Multi-tier recall that never forgets" },
+    { icon: Moon, label: "Offline Learning", description: "Pattern extraction between sessions" },
+    { icon: Zap, label: "NEXUS Router", description: "Optimal AI provider selection" },
+    { icon: Shield, label: "DEFENSE Shell", description: "Adaptive security & governance" },
+    { icon: MessageSquare, label: "DECODE", description: "Context-aware conversation" },
+    { icon: Plug, label: "Integration", description: "Enterprise adapters & API governance" },
   ];
 
   return (
@@ -430,13 +430,13 @@ export default function UseCases() {
             </Badge>
 
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              One CMPSBL,
-              <br />Infinite Possibilities
+              One Platform,
+              <br />Every Industry
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              CMPSBL adapts to any industry. Persistent memory, dream cycles, 
-              and intelligent routing power applications from gaming to healthcare.
+              Persistent memory, intelligent routing, and adaptive security — 
+              CMPSBL powers AI applications from gaming to healthcare to enterprise ops.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
@@ -471,11 +471,11 @@ export default function UseCases() {
               What's Possible
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Future Visions & Emerging Applications
+              Where Persistent Memory Goes Next
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              From self-healing aircraft to kitchens that learn your taste—see what's possible 
-              when AI has persistent memory and the ability to dream.
+              From self-healing aircraft to kitchens that learn your taste — see what's possible 
+              when AI remembers, adapts, and improves over time.
             </p>
           </motion.div>
 
@@ -571,8 +571,8 @@ export default function UseCases() {
               Built for Every Industry
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              See how organizations across sectors leverage persistent memory and dream cycles 
-              to build truly intelligent applications.
+              See how teams across sectors use persistent memory and intelligent routing 
+              to build AI applications that actually learn.
             </p>
           </motion.div>
 
@@ -599,11 +599,11 @@ export default function UseCases() {
                   <Rocket className="w-8 h-8 text-primary" />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                  Industry-Optimized Packages
+                  Ready-Made Artifact Packs by Industry
                 </h2>
                 <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                  Our installation wizard lets you choose your industry—Gaming, Software, or Enterprise—and 
-                  pre-configures only the modules you need. No bloat, just the right tools.
+                  Choose your industry — Gaming, Developer, or Enterprise — and activate only 
+                  the packs you need. No bloat, just the right capabilities.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3 mb-8">
                   <Badge variant="outline" className="text-purple-400 border-purple-500/30">

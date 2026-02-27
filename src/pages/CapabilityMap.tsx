@@ -75,8 +75,8 @@ export default function CapabilityMap() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Capability Map — Clockless"
-        description="Explore every capability in the substrate: baseline pillars, pack-bound features, and reserved internals."
+        title="Capability Map — CMPSBL"
+        description="Explore every capability: baseline modules, artifact packs, and reserved internals. See what's always on, what's activatable, and what's coming."
       />
       <PublicNav />
 
@@ -95,9 +95,9 @@ export default function CapabilityMap() {
               </Badge>
               <h1 className="text-3xl md:text-5xl font-bold tracking-tight">Capability Map</h1>
               <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-                Every capability in the substrate — categorized by access level.
-                Baseline pillars run for everyone. Packs unlock specialized surfaces.
-                Reserved capabilities are internal only.
+                Every capability in CMPSBL — categorized by access level.
+                Baseline modules run for everyone. Packs unlock specialized capabilities.
+                Reserved features are internal only.
               </p>
             </motion.div>
 

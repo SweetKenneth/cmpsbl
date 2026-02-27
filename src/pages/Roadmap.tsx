@@ -15,15 +15,15 @@ export default function Roadmap() {
       items: [
         {
           icon: Brain,
-          title: "CMPSBL — SPARTA Epoch",
-          description: "Production-ready cognitive OS with 10-entity + 5-mesh + 9-zone architecture: CORE kernel, CCR zones (SYSTEM, BRAIN, MEMORY, DREAM), CCL zones (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT), 9 Matrix Nodes, 5 mesh overlays. 525+ capabilities.",
+          title: "CMPSBL Production Launch",
+          description: "Production-ready AI infrastructure with 9 core modules, persistent memory, intelligent routing, adaptive security, and 400+ capabilities. Builder, Creator, and Architect tiers live.",
           status: "Live",
           technologies: ["Supabase", "Edge Functions", "TypeScript", "React"]
         },
         {
           icon: Store,
-          title: "Composable Artifacts",
-          description: "200+ free templates, 525+ capabilities, and composable building blocks. Browse, remix, and build.",
+          title: "Artifact Packs & Template Ecosystem",
+          description: "24 artifact packs across 6 strategic domains, 30 free templates, and a full capability depot. Browse, activate, and build.",
           status: "Live",
           technologies: ["Templates", "SDK", "Developer Tools", "Artifacts"]
         }
@@ -62,10 +62,10 @@ export default function Roadmap() {
         },
         {
           icon: Accessibility,
-          title: "Vertical Composable Cognitives",
-          description: "Pre-trained cognitive agents for specific verticals: Legal AI, Healthcare AI, Finance AI. Purchase and deploy in minutes.",
+          title: "Vertical Minds",
+          description: "Pre-trained AI Minds for specific verticals: Legal AI, Healthcare AI, Finance AI. Purchase and deploy in minutes.",
           status: "Concept",
-          technologies: ["Composable Cognitives", "Vertical AI", "One-click Deploy"]
+          technologies: ["Minds", "Vertical AI", "One-click Deploy"]
         }
       ]
     },
@@ -106,8 +106,8 @@ export default function Roadmap() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="2026-2027 Roadmap | CMPSBL — The Future of AI Governance"
-        description="Explore CMPSBL's roadmap: layered cognitive OS, Composable Artifacts, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
+        title="Product Roadmap | CMPSBL — AI Infrastructure"
+        description="Explore CMPSBL's roadmap: persistent memory, artifact packs, enterprise governance, federation protocol, and managed cloud. See what's shipping next."
         canonical="https://cmpsbl.com/roadmap"
         keywords={[
           'CMPSBL roadmap',
@@ -152,7 +152,7 @@ export default function Roadmap() {
             </h1>
 
             <p className="text-xl text-foreground/90 mb-8 leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
-              CMPSBL is the world's first production-ready AI governance OS. Here's where we're headed—from layered cognitive kernel to self-evolving cognitive cloud.
+              Persistent memory, intelligent routing, and governed orchestration — here's where we're building next.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
