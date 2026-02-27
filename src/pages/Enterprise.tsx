@@ -22,33 +22,33 @@ const fadeUp = {
 const capabilities = [
   {
     icon: Shield,
-    title: "Private Substrate Deployment",
-    description: "Run the full substrate on your own infrastructure with air-gapped security, data sovereignty, and compliance guarantees.",
+    title: "Your Infrastructure, Your Data",
+    description: "Deploy the complete substrate on your own servers. Air-gapped, sovereign, and fully compliant — no data ever leaves your perimeter.",
   },
   {
     icon: Layers,
     title: "Custom Module Configuration",
-    description: "Select, compose, and configure substrate modules to match your organization's specific workflows and requirements.",
+    description: "Compose the exact stack your organization needs. Activate the packs that matter, disable what doesn't — zero bloat.",
   },
   {
     icon: Zap,
-    title: "Priority Support & SLA",
-    description: "Dedicated engineering support, guaranteed uptime SLAs, and direct access to the substrate architecture team.",
+    title: "Dedicated Support & SLA",
+    description: "Direct line to the architecture team. Guaranteed uptime, priority response, and engineering partnership — not just a ticket queue.",
   },
   {
     icon: Globe,
-    title: "Multi-Region Orchestration",
-    description: "Deploy cognitive workloads across global regions with automatic failover and data residency compliance.",
+    title: "Multi-Region Deployment",
+    description: "Run cognitive workloads across global regions with automatic failover, latency-aware routing, and full data residency compliance.",
   },
   {
     icon: Lock,
-    title: "Governance & Compliance",
-    description: "Enterprise-grade audit logging, role-based access control, and regulatory compliance tooling built into every layer.",
+    title: "Governance & Audit",
+    description: "Immutable audit logging, role-based access, regulatory compliance exports, and full policy enforcement — enterprise-ready from day one.",
   },
   {
     icon: Building2,
-    title: "White-Label Solutions",
-    description: "Brand the substrate as your own — embed cognitive capabilities into your products without exposing the underlying platform.",
+    title: "White-Label Ready",
+    description: "Embed CMPSBL's cognitive capabilities into your own products. Your brand, your customers, our infrastructure running invisibly underneath.",
   },
 ];
 
@@ -68,10 +68,10 @@ export default function Enterprise() {
               Enterprise
             </Badge>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
-              Cognitive Infrastructure,<br />Your Terms
+              Your AI.<br />Your Infrastructure.<br />Your Rules.
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              The full CMPSBL substrate — deployed privately, configured precisely, and supported continuously for organizations that demand control.
+              The complete CMPSBL substrate — deployed on your servers, configured for your compliance requirements, and supported by the team that built it.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="gap-2">
@@ -111,9 +111,9 @@ export default function Enterprise() {
         {/* CTA */}
         <section className="container mx-auto max-w-3xl px-4 text-center">
           <motion.div {...fadeUp} className="p-8 rounded-2xl border border-border bg-muted/30">
-            <h2 className="text-2xl font-bold text-foreground mb-3">Ready to deploy?</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-3">Let's architect your deployment.</h2>
             <p className="text-muted-foreground mb-6">
-              Our team will architect a substrate deployment tailored to your organization's scale, security, and compliance requirements.
+              Custom slot capacity, dedicated instances, SOC2 compliance, and white-glove onboarding — tailored to your organization's scale and security posture.
             </p>
             <Button asChild size="lg" className="gap-2">
               <Link to="/contact">

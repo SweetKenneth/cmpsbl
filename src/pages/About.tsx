@@ -30,12 +30,12 @@ export default function About() {
   const codename = useMetric('codename');
   const linesOfCodeDisplay = useMetric('linesOfCodeDisplay');
   const products = [
-    { icon: Brain, name: "CMPSBL Substrate", description: "Modular cognitive orchestration substrate with persistent memory, governed routing, and adaptive intelligence" },
-    { icon: Shield, name: "DEFENSE", description: "Enterprise-grade threat detection and adaptive security layer" },
-    { icon: Eye, name: "VISION", description: "Full observability — metrics, latency, costs, and real-time dashboards" },
-    { icon: Server, name: "NEXUS", description: "Multi-provider AI routing with automatic optimization" },
-    { icon: Accessibility, name: "INCLUSIVE", description: "WCAG scanning, AI remediation, and accessibility reporting" },
-    { icon: Zap, name: "Artifact Packs", description: "24 activatable capability packs across 6 strategic domains" },
+    { icon: Brain, name: "Persistent Memory", description: "Multi-tier memory that survives sessions — your AI never forgets a user, a preference, or a pattern." },
+    { icon: Server, name: "NEXUS Router", description: "Intelligent multi-provider routing that picks the optimal AI model for every request automatically." },
+    { icon: Shield, name: "DEFENSE Shell", description: "Adaptive threat detection, behavioral analysis, and rate limiting — security that learns." },
+    { icon: Eye, name: "VISION", description: "Full observability across every module — latency, cost, throughput, and real-time health dashboards." },
+    { icon: Accessibility, name: "INCLUSIVE", description: "WCAG 2.2 scanning, AI-powered remediation, and accessibility compliance reporting." },
+    { icon: Zap, name: "Artifact Packs", description: "24 activatable capability packs across 6 domains — choose 3, 6, or 12 depending on your tier." },
   ];
 
   return (
@@ -103,7 +103,7 @@ export default function About() {
             CMPSBL<sup className="text-lg">®</sup>
           </motion.h1>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }} className="text-xl text-foreground/90 max-w-3xl leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
-            Cognitive infrastructure for AI systems — routing, memory, learning, observability, security, and orchestration. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
+            The operating system for AI applications. Persistent memory, intelligent routing, governed orchestration, and enterprise security — in one composable substrate.
           </motion.p>
         </div>
       </section>
@@ -125,14 +125,14 @@ export default function About() {
               <div className="flex-1">
                 <h2 className="text-3xl font-bold mb-4 text-foreground">About the Founder</h2>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                  I build systems that start as abstract ideas and end up running on their own.
-                </p>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  CMPSBL began as a focused effort to make AI orchestration actually useful—routing that adapts, memory that persists, and learning cycles that run autonomously.
-                </p>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  Everything here is built to work without supervision. The goal is infrastructure that improves itself over time.
-                </p>
+                   I've been shipping software since 2009. CMPSBL is the answer to a question I kept running into: why does every AI team rebuild the same infrastructure from scratch?
+                 </p>
+                 <p className="text-muted-foreground leading-relaxed mb-6">
+                   So I built the layer that should already exist — persistent memory, intelligent routing, adaptive security, and governed orchestration. One substrate. Every AI application.
+                 </p>
+                 <p className="text-muted-foreground leading-relaxed mb-6">
+                   The result is infrastructure that compounds — it gets smarter the longer it runs. That's not marketing. That's the architecture.
+                 </p>
                 <motion.blockquote
                   {...fadeUp}
                   className="border-l-4 border-primary pl-6 my-6 italic text-foreground/90"
@@ -141,7 +141,7 @@ export default function About() {
                 </motion.blockquote>
                 <div className="pt-6 border-t border-border">
                   <p className="text-foreground font-semibold">Kenneth E Sweet Jr</p>
-                  <p className="text-sm text-muted-foreground">Founder & Security Engineer</p>
+                  <p className="text-sm text-muted-foreground">Founder & Chief Architect</p>
                 </div>
               </div>
             </div>
@@ -170,8 +170,8 @@ export default function About() {
             className="text-center max-w-3xl px-8"
           >
             <p className="text-2xl md:text-5xl font-bold text-white [text-shadow:_0_4px_24px_rgba(0,0,0,0.8)]">
-              "100+ projects shipped. We're closers."
-            </p>
+               "Infrastructure that compounds — every day it runs, it gets better."
+             </p>
           </motion.blockquote>
         </div>
       </section>
@@ -179,9 +179,9 @@ export default function About() {
       {/* Shipped Products */}
       <section className="py-16 px-4 relative z-10">
         <div className="container mx-auto max-w-6xl">
-          <motion.h2 {...fadeUp} className="text-3xl font-bold mb-4 text-foreground">The Substrate</motion.h2>
+          <motion.h2 {...fadeUp} className="text-3xl font-bold mb-4 text-foreground">What We Ship</motion.h2>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-muted-foreground mb-10 text-lg">
-            9 production modules, 24 artifact packs across 6 strategic domains, 300+ orchestration pipelines. Infrastructure that adapts and compounds.
+            Production modules, 24 artifact packs, and 300+ orchestration pipelines. Everything your AI needs to remember, route, learn, and protect itself.
           </motion.p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -202,7 +202,7 @@ export default function About() {
 
           <motion.div {...fadeUp} className="mt-12 bg-card border border-border rounded-xl p-6 md:p-8 shadow-sm">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">{codename} Epoch</span> — {linesOfCodeDisplay} lines of production code. 9 modules, 24 artifact packs, governed orchestration, and infrastructure that improves itself continuously. <span className="text-muted-foreground">The substrate that compounds.</span>
+              <span className="font-semibold">{codename} Epoch</span> — {linesOfCodeDisplay} lines of production code powering persistent memory, intelligent routing, governed orchestration, and adaptive security. <span className="text-muted-foreground">Ship AI that compounds from day one.</span>
             </p>
           </motion.div>
         </div>
@@ -215,25 +215,25 @@ export default function About() {
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                icon: Brain,
-                title: "Intelligent by Default",
-                description: "AI that learns, adapts, and improves automatically. From threat detection to content generation, our tools think for you."
-              },
-              {
-                icon: Shield,
-                title: "Built for Everyone",
-                description: "Enterprise power without enterprise complexity. Whether protecting sites or building apps, our tools just work."
-              },
-              {
-                icon: Zap,
-                title: "Speed & Simplicity",
-                description: "Deploy in minutes, not weeks. Build applications, generate content, and protect sites with tools designed for rapid execution."
-              },
-              {
-                icon: Users,
-                title: "Accessibility First",
-                description: "Making the web inclusive isn't optional—it's fundamental. Every tool we build considers universal access from day one."
-              }
+                 icon: Brain,
+                 title: "Memory is the Moat",
+                 description: "AI without memory is a parlor trick. We give your agents permanent recall — context that compounds across every session."
+               },
+               {
+                 icon: Shield,
+                 title: "Security is Non-Negotiable",
+                 description: "Adaptive threat detection, behavioral analysis, and governance rules baked into every layer. Not bolted on after the fact."
+               },
+               {
+                 icon: Zap,
+                 title: "Ship in Hours, Not Months",
+                 description: "Free templates, production-ready modules, and a runtime that handles orchestration so you can focus on what makes your product different."
+               },
+               {
+                 icon: Users,
+                 title: "Built for Builders",
+                 description: "Whether you're a solo developer or a 50-person team, the same substrate scales with you. Start free, upgrade when capacity demands it."
+               }
             ].map((value, index) => (
               <motion.div
                 key={index}
@@ -255,10 +255,10 @@ export default function About() {
           <motion.h2 {...fadeUp} className="text-3xl font-bold mb-12 text-center text-foreground">Our Journey</motion.h2>
           <div className="space-y-6">
             {[
-              { year: "2009", event: "Started building software — sites, apps, and tools for clients" },
-              { year: "2024", event: "CMPSBL® founded. Substrate development begins." },
-              { year: "2025–26", event: "Production epoch — 9 modules, 24 artifact packs, 300+ pipelines, governed orchestration architecture" },
-              { year: "Now", event: "Live infrastructure serving developers and enterprises worldwide" }
+              { year: "2009", event: "Kenneth starts shipping software — hundreds of projects for clients across industries" },
+               { year: "2024", event: "CMPSBL® founded — the substrate architecture crystallizes around persistent memory and governed orchestration" },
+               { year: "2025", event: "Production launch — artifact packs, NEXUS routing, DEFENSE shell, and the full Builder/Creator/Architect tier model" },
+               { year: "Now", event: "Live cognitive infrastructure powering AI applications — free tier, no lock-in, shipping daily" }
             ].map((milestone, index) => (
               <motion.div
                 key={index}
@@ -280,23 +280,23 @@ export default function About() {
       <section className="py-20 px-4 bg-muted/30 relative z-10">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Explore?</h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Discover how CMPSBL's cognitive infrastructure can work for you.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/investors">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  Investor Information
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button size="lg" variant="outline">
-                  Contact Team
-                </Button>
-              </Link>
-            </div>
+            <h2 className="text-3xl font-bold mb-6 text-foreground">Start Building Today</h2>
+             <p className="text-xl text-muted-foreground mb-8">
+               Free tier. No credit card. Persistent memory in under an hour.
+             </p>
+             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+               <Link to="/start-here">
+                 <Button size="lg" className="bg-primary hover:bg-primary/90">
+                   Get Started Free
+                   <ArrowRight className="w-4 h-4 ml-2" />
+                 </Button>
+               </Link>
+               <Link to="/upgrade">
+                 <Button size="lg" variant="outline">
+                   View Plans
+                 </Button>
+               </Link>
+             </div>
           </motion.div>
         </div>
       </section>

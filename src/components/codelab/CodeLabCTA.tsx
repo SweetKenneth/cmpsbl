@@ -69,9 +69,9 @@ export function CodeLabCTA() {
                 </h2>
                 
                 <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                  Free SDK, 30 templates, orchestration pipelines, and persistent memory — all unlocked. 
-                  No paywall between you and production AI.
-                </p>
+                   Free SDK, 30 production templates, orchestration pipelines, and persistent memory — 
+                   no paywall between you and shipping AI that remembers.
+                 </p>
                 
                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                   <Button asChild size="lg" className="px-8 h-13 text-base font-bold gap-2.5 shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.02]">

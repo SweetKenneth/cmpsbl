@@ -60,9 +60,9 @@ export function LnchblCTA() {
             </h2>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-              Your own copy of the full CMPSBL substrate — the same cognitive runtime 
-              powering this platform. Download LNCHBL and deploy on your servers in minutes.
-            </p>
+               The same cognitive runtime powering this platform — deployable on your own servers.
+               Persistent memory, NEXUS routing, and governed orchestration. Minutes to production.
+             </p>
 
             {/* Feature pills */}
             <div className="flex flex-wrap gap-3 mb-8">

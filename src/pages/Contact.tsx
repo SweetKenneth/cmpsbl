@@ -108,10 +108,10 @@ export default function Contact() {
           </motion.div>
           
           <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
-            Licensing & Partnerships
+            Talk to Us
           </motion.h1>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.2 }} className="text-xl text-foreground/90 max-w-3xl [text-shadow:_0_2px_10px_hsl(var(--background))]">
-            Inquire about licensing arrangements, enterprise partnerships, or CMPSBL® substrate access.
+            Enterprise partnerships, technical questions, or just want to learn more — we respond to every message.
           </motion.p>
         </div>
       </section>
@@ -218,14 +218,14 @@ export default function Contact() {
         <div className="container mx-auto max-w-4xl">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="flex-1">
-              <Badge variant="outline" className="mb-4 border-primary/30 text-primary">Q1 2026</Badge>
-              <h2 className="text-2xl font-bold mb-4 text-foreground">Applied Engagements</h2>
+              <Badge variant="outline" className="mb-4 border-primary/30 text-primary">Enterprise</Badge>
+              <h2 className="text-2xl font-bold mb-4 text-foreground">Custom Deployments</h2>
               <p className="text-muted-foreground mb-4">
-                Applied engagements are scoped, research-first, and selective. If your problem 
-                touches long-horizon or uncertainty-critical systems, we may be interested.
+                Need self-hosted deployment, custom compliance, or a substrate tailored to your organization? 
+                We architect solutions for teams that demand full control.
               </p>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                {["Research-driven approach with documented outcomes", "Focus on uncertainty-critical and long-horizon systems", "Selective intake — not all inquiries result in engagement"].map((text, i) => (
+                {["Self-hosted substrate deployment via LNCHBL", "Custom slot capacity beyond standard tiers", "Dedicated engineering support and SLA guarantees"].map((text, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                     <span>{text}</span>
@@ -235,9 +235,9 @@ export default function Contact() {
             </div>
             <div className="md:w-64">
               <div className="bg-card border border-border rounded-xl p-6">
-                <h3 className="font-semibold mb-2">Inquire About Engagements</h3>
-                <p className="text-sm text-muted-foreground mb-4">Use the contact form to describe your challenge.</p>
-                <a href="#contact-form" className="text-primary hover:underline text-sm">Scroll to form →</a>
+                <h3 className="font-semibold mb-2">Talk to the Team</h3>
+                <p className="text-sm text-muted-foreground mb-4">Use the form or email us directly at Dev@CMPSBL.com</p>
+                <a href="#contact-form" className="text-primary hover:underline text-sm">Go to contact form →</a>
               </div>
             </div>
           </div>
@@ -247,13 +247,13 @@ export default function Contact() {
       {/* Enterprise CTA */}
       <section className="py-16 px-4 bg-muted/30 relative z-10">
         <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">Enterprise Solutions</h2>
+          <h2 className="text-3xl font-bold mb-4 text-foreground">Enterprise & Self-Hosted</h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Need custom integrations, dedicated support, or investment discussions? Our team is ready.
+            Need dedicated infrastructure, compliance guarantees, or custom capacity? Let's talk.
           </p>
-          <Link to="/investors">
+          <Link to="/enterprise">
             <Button size="lg" variant="outline">
-              Investor Information
+              Enterprise Solutions
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
