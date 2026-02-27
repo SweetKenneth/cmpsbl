@@ -24,7 +24,7 @@ export function registerExecutionHandlers(): void {
 
   registerHandler('decode.personality', async () => {
     const { decode } = await import('@/lib/substrate');
-    return await decode.personality();
+    return await decode.personality.get();
   });
 
   registerHandler('decode.personality_set', async () => {
@@ -37,18 +37,18 @@ export function registerExecutionHandlers(): void {
 
   registerHandler('decode.personality_lock', async () => {
     const { decode } = await import('@/lib/substrate');
-    return await decode.personalityLock();
+    return await decode.personality.lock();
   });
 
   registerHandler('decode.personality_unlock', async () => {
     const { decode } = await import('@/lib/substrate');
-    return await decode.personalityUnlock();
+    return await decode.personality.unlock();
   });
 
   registerHandler('decode.health', async () => {
     const { decode } = await import('@/lib/substrate');
     const status = await decode.status();
-    return { success: true, data: { health: status?.health || 100, module: 'DECODE', layer: 'Execution' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'DECODE', layer: 'Execution' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -66,12 +66,12 @@ export function registerExecutionHandlers(): void {
 
   registerHandler('nexus.routes', async () => {
     const { nexus } = await import('@/lib/substrate');
-    return await nexus.routes();
+    return await nexus.routeStats();
   });
 
   registerHandler('nexus.budget', async () => {
-    const { nexus } = await import('@/lib/substrate');
-    return await nexus.budget();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'nexus', action: 'budget' });
   });
 
   registerHandler('nexus.providers', async () => {
@@ -82,7 +82,7 @@ export function registerExecutionHandlers(): void {
   registerHandler('nexus.health', async () => {
     const { nexus } = await import('@/lib/substrate');
     const status = await nexus.status();
-    return { success: true, data: { health: status?.health || 100, module: 'NEXUS', layer: 'Execution' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'NEXUS', layer: 'Execution' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -109,7 +109,7 @@ export function registerExecutionHandlers(): void {
   registerHandler('vision.health', async () => {
     const { vision } = await import('@/lib/substrate');
     const status = await vision.status();
-    return { success: true, data: { health: status?.health || 100, module: 'VISION', layer: 'Execution' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'VISION', layer: 'Execution' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -126,19 +126,19 @@ export function registerExecutionHandlers(): void {
   });
 
   registerHandler('cortex.pipelines', async () => {
-    const { cortex } = await import('@/lib/substrate');
-    return await cortex.pipelines();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'cortex', action: 'pipelines' });
   });
 
   registerHandler('cortex.cognitive', async () => {
-    const { cortex } = await import('@/lib/substrate');
-    return await cortex.cognitive();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'cortex', action: 'cognitive' });
   });
 
   registerHandler('cortex.health', async () => {
     const { cortex } = await import('@/lib/substrate');
     const status = await cortex.status();
-    return { success: true, data: { health: status?.health || 100, module: 'CORTEX', layer: 'Execution' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'CORTEX', layer: 'Execution' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -156,13 +156,13 @@ export function registerExecutionHandlers(): void {
 
   registerHandler('inclusive.report', async () => {
     const { inclusive } = await import('@/lib/substrate');
-    return await inclusive.report();
+    return await inclusive.report('latest');
   });
 
   registerHandler('inclusive.health', async () => {
     const { inclusive } = await import('@/lib/substrate');
     const status = await inclusive.status();
-    return { success: true, data: { health: status?.health || 100, module: 'INCLUSIVE', layer: 'Execution' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'INCLUSIVE', layer: 'Execution' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -219,7 +219,7 @@ export function registerExecutionHandlers(): void {
   registerHandler('integration.health', async () => {
     const { integration } = await import('@/lib/substrate');
     const status = await integration.status();
-    return { success: true, data: { health: status?.health || 100, module: 'INTEGRATION', layer: 'Execution' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'INTEGRATION', layer: 'Execution' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -250,18 +250,18 @@ export function registerExecutionHandlers(): void {
 
   registerHandler('modernizer.plans', async () => {
     const { modernizer } = await import('@/lib/substrate');
-    return await modernizer.plans();
+    return await modernizer.jobs();
   });
 
   registerHandler('modernizer.runs', async () => {
-    const { modernizer } = await import('@/lib/substrate');
-    return await modernizer.runs();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'modernizer', action: 'runs' });
   });
 
   registerHandler('modernizer.health', async () => {
     const { modernizer } = await import('@/lib/substrate');
     const status = await modernizer.status();
-    return { success: true, data: { health: status?.health || 100, module: 'MODERNIZER', layer: 'Execution' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'MODERNIZER', layer: 'Execution' } };
   });
 
   log.info('terminal', 'Execution layer handlers registered (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER)', { count: 43 });

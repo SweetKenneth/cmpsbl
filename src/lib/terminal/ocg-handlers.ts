@@ -96,7 +96,7 @@ export function registerOCGHandlers(): void {
   registerHandler('ripple.health', async () => {
     const { ripple } = await import('@/lib/substrate');
     const status = await ripple.status();
-    return { success: true, data: { health: status?.health || 100, module: 'RIPPLE', layer: 'OCG' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'RIPPLE', layer: 'OCG' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -181,7 +181,7 @@ export function registerOCGHandlers(): void {
   registerHandler('access.health', async () => {
     const { access } = await import('@/lib/substrate');
     const status = await access.status();
-    return { success: true, data: { health: status?.health || 100, module: 'ACCESS', layer: 'OCG' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'ACCESS', layer: 'OCG' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -202,18 +202,18 @@ export function registerOCGHandlers(): void {
   });
 
   registerHandler('defense.audit', async () => {
-    const { defense } = await import('@/lib/substrate');
-    return await defense.audit();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'defense', action: 'audit' });
   });
 
   registerHandler('defense.scan', async () => {
-    const { defense } = await import('@/lib/substrate');
-    return await defense.scan();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'defense', action: 'scan' });
   });
 
   registerHandler('defense.threats', async () => {
-    const { defense } = await import('@/lib/substrate');
-    return await defense.threats();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'defense', action: 'threats' });
   });
 
   registerHandler('defense.quarantine', async () => {
@@ -225,8 +225,8 @@ export function registerOCGHandlers(): void {
   });
 
   registerHandler('defense.rates', async () => {
-    const { defense } = await import('@/lib/substrate');
-    return await defense.rates();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'defense', action: 'rates' });
   });
 
   registerHandler('defense.posture', async () => {
@@ -237,7 +237,7 @@ export function registerOCGHandlers(): void {
   registerHandler('defense.health', async () => {
     const { defense } = await import('@/lib/substrate');
     const status = await defense.status();
-    return { success: true, data: { health: status?.health || 100, module: 'DEFENSE', layer: 'Shell' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'DEFENSE', layer: 'Shell' } };
   });
 
   log.info('terminal', 'OCG & Shell handlers registered (RIPPLE, ACCESS, DEFENSE)', { count: 37 });

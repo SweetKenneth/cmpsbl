@@ -75,8 +75,8 @@ export function registerSpineHandlers(): void {
   });
 
   registerHandler('system.uptime', async () => {
-    const { system } = await import('@/lib/substrate');
-    return await system.uptime();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'system', action: 'uptime' });
   });
 
   registerHandler('system.config', async () => {
@@ -85,8 +85,8 @@ export function registerSpineHandlers(): void {
   });
 
   registerHandler('system.flags', async () => {
-    const { system } = await import('@/lib/substrate');
-    return await system.flags();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'system', action: 'flags' });
   });
 
   registerHandler('system.audit', async () => {
@@ -103,8 +103,8 @@ export function registerSpineHandlers(): void {
   });
 
   registerHandler('system.checkpoint', async () => {
-    const { system } = await import('@/lib/substrate');
-    return await system.checkpoint();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'system', action: 'checkpoint' });
   });
 
   registerHandler('system.kill_switch', async () => {
@@ -112,13 +112,13 @@ export function registerSpineHandlers(): void {
   });
 
   registerHandler('system.dependencies', async () => {
-    const { system } = await import('@/lib/substrate');
-    return await system.dependencies();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'system', action: 'dependencies' });
   });
 
   registerHandler('system.registry', async () => {
-    const { system } = await import('@/lib/substrate');
-    return await system.registry();
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'system', action: 'registry' });
   });
 
   registerHandler('system.modules', async () => {
@@ -274,7 +274,7 @@ export function registerSpineHandlers(): void {
   registerHandler('brain.health', async () => {
     const { brain } = await import('@/lib/substrate');
     const status = await brain.status();
-    return { success: true, data: { health: status?.health || 100, module: 'BRAIN', layer: 'CCR' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'BRAIN', layer: 'CCR' } };
   });
 
   // ═══════════════════════════════════════════════════════
@@ -301,13 +301,13 @@ export function registerSpineHandlers(): void {
 
   registerHandler('dream.heuristics', async () => {
     const { dream } = await import('@/lib/substrate');
-    return await dream.heuristics();
+    return await dream.reflect();
   });
 
   registerHandler('dream.health', async () => {
     const { dream } = await import('@/lib/substrate');
     const status = await dream.status();
-    return { success: true, data: { health: status?.health || 100, module: 'DREAM', layer: 'CCR' } };
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'DREAM', layer: 'CCR' } };
   });
 
   log.info('terminal', 'Spine & CCR handlers registered (CORE, SYSTEM, BRAIN, DREAM)', { count: 52 });
