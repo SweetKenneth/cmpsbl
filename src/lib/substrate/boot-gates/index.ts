@@ -40,20 +40,32 @@ export interface GateCheckResult {
 // ═══════════════════════════════════════════════════════════════
 
 export const BOOT_ORDER: Array<{ module: ModuleName; order: number; deps: ModuleName[] }> = [
+  // Phase 1: Kernel
   { module: 'core',        order: 1,  deps: [] },
-  { module: 'ripple',      order: 2,  deps: ['core'] },
-  { module: 'access',      order: 3,  deps: ['core'] },
-  { module: 'brain',       order: 4,  deps: ['core'] },
-  { module: 'nexus',       order: 5,  deps: ['core'] },
-  { module: 'decode',      order: 6,  deps: ['core', 'nexus'] },
-  { module: 'dream',       order: 7,  deps: ['core', 'nexus'] },
-  { module: 'defense',     order: 8,  deps: ['core', 'ripple'] },
-  { module: 'vision',      order: 9,  deps: ['core', 'ripple'] },
-  { module: 'integration', order: 10, deps: ['core', 'ripple', 'access'] },
-  { module: 'system',      order: 11, deps: ['core', 'vision'] },
-  { module: 'modernizer',  order: 12, deps: ['core', 'system', 'vision'] },
-  { module: 'inclusive',    order: 13, deps: ['core', 'system'] },
-  { module: 'cortex',      order: 14, deps: ['core', 'nexus', 'system', 'vision'] },
+  // Phase 2: CCR Zones
+  { module: 'memory',      order: 2,  deps: ['core'] },
+  { module: 'brain',       order: 3,  deps: ['core'] },
+  // Phase 3: OCG Zones
+  { module: 'ripple',      order: 4,  deps: ['core'] },
+  { module: 'access',      order: 5,  deps: ['core'] },
+  { module: 'identity',    order: 6,  deps: ['core', 'access'] },
+  { module: 'relay',       order: 7,  deps: ['core', 'ripple'] },
+  { module: 'audit',       order: 8,  deps: ['core'] },
+  // Phase 4: Execution Modules
+  { module: 'nexus',       order: 9,  deps: ['core'] },
+  { module: 'decode',      order: 10, deps: ['core', 'nexus'] },
+  { module: 'dream',       order: 11, deps: ['core', 'nexus'] },
+  { module: 'encode',      order: 12, deps: ['core', 'nexus'] },
+  { module: 'defense',     order: 13, deps: ['core', 'ripple'] },
+  { module: 'vision',      order: 14, deps: ['core', 'ripple'] },
+  { module: 'economy',     order: 15, deps: ['core', 'access'] },
+  { module: 'sandbox',     order: 16, deps: ['core'] },
+  { module: 'integration', order: 17, deps: ['core', 'ripple', 'access'] },
+  { module: 'system',      order: 18, deps: ['core', 'vision'] },
+  { module: 'modernizer',  order: 19, deps: ['core', 'system', 'vision'] },
+  { module: 'inclusive',    order: 20, deps: ['core', 'system'] },
+  { module: 'cortex',      order: 21, deps: ['core', 'nexus', 'system', 'vision'] },
+  { module: 'atlas',       order: 22, deps: ['core', 'system'] },
 ];
 
 // ═══════════════════════════════════════════════════════════════

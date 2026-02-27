@@ -1,5 +1,5 @@
 /**
- * promptfluid® Decode Contract Exports
+ * CMPSBL® Decode Contract Exports
  * Substrate Interpreter Primitive
  */
 

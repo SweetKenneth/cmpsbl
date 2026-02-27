@@ -1,6 +1,6 @@
 /**
- * promptfluid® Decode Contract Types
- * v2026.01 — Human-Compatible Cognitive Interpreter
+ * CMPSBL® Decode Contract Types
+ * Human-Compatible Cognitive Interpreter
  * 
  * Decode is the substrate's interpreter primitive. It translates human
  * ambiguity into substrate-structured cognition without asserting facts,

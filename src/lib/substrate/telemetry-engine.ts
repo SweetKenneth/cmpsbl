@@ -1,5 +1,5 @@
 /**
- * promptfluid® Telemetry Engine
+ * CMPSBL® Telemetry Engine
  * Canonical Observability Layer
  * 
  * The Telemetry Engine is the single source of truth for all execution observability.

@@ -4,7 +4,7 @@
  * @origin(cmptbl) — WCAG criterion mappings from CMPTBL utilities
  * @origin(pf-clarity-universal-scan) — Full 86-rule matrix absorbed into substrate
  * 
- * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
+ * Developed by CMPSBL® as part of the cognitive orchestration substrate.
  */
 
 import type { InclusiveIssue, InclusiveScanResult, WCAGLevel, ScanDepth, IssueSeverity } from './types';

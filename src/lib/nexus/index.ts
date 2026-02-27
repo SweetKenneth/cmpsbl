@@ -1,5 +1,5 @@
 /**
- * promptfluid® Nexus Module
+ * CMPSBL® Nexus Module
  * Free-Tier Multi-Provider AI Routing & Fleet Governance
  * 
  * The nervous system for all AI provider interactions:

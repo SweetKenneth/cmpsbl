@@ -249,7 +249,7 @@ export function generateInvestorDeckHTML(): string {
 <div class="page">
   <h2>14 Documented World Firsts</h2>
   <p style="font-size:14px;color:var(--text-dim);margin-bottom:24px;font-style:italic;">
-    To the best of our knowledge, the following are industry firsts achieved by PromptFluid® through the CMPSBL OS Substrate. We welcome any evidence of prior art.
+    To the best of our knowledge, the following are industry firsts achieved by CMPSBL® through the OS Substrate. We welcome any evidence of prior art.
   </p>
   <table>
     <thead>
@@ -344,7 +344,7 @@ export function generateInvestorDeckHTML(): string {
 
 <div class="footer">
   <p>CMPSBL® — Cognitive Infrastructure for the AI Era</p>
-  <p style="margin-top:4px;">Confidential — For Investor Evaluation · © 2025–2026 PromptFluid®</p>
+  <p style="margin-top:4px;">Confidential — For Investor Evaluation · © 2025–2026 CMPSBL®</p>
 </div>
 
 </body>

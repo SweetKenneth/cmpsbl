@@ -39,7 +39,7 @@ export function renderDialect(code: string, dialect: DisplayDialect): string {
 }
 
 function renderLisp(code: string, module: string, action: string, intent: string): string {
-  return `;;; promptfluid® Substrate — ${module}.${action}
+  return `;;; CMPSBL® Substrate — ${module}.${action}
 ;;; Display dialect: Lisp/S-Expression
 
 (defsubstrate pf-substrate
@@ -64,7 +64,7 @@ function renderLisp(code: string, module: string, action: string, intent: string
 }
 
 function renderC(code: string, module: string, action: string, intent: string): string {
-  return `/* promptfluid® Substrate — ${module}.${action}
+  return `/* CMPSBL® Substrate — ${module}.${action}
  * Display dialect: C/Systems
  */
 
@@ -99,7 +99,7 @@ int main(void) {
 }
 
 function renderSmalltalk(code: string, module: string, action: string, intent: string): string {
-  return `"promptfluid® Substrate — ${module}.${action}"
+  return `"CMPSBL® Substrate — ${module}.${action}"
 "Display dialect: Smalltalk"
 
 Substrate new
@@ -122,7 +122,7 @@ Brain available ifTrue: [
 
 function renderHacker(code: string, module: string, action: string, intent: string): string {
   return `#!/bin/bash
-# promptfluid® Substrate — ${module}.${action}
+# CMPSBL® Substrate — ${module}.${action}
 # Display dialect: Hacker/Terminal
 
 $ substrate init --mode=live

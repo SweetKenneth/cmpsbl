@@ -1,17 +1,7 @@
 /**
- * Governance Guard — Unified Ethical & Coherence Constraints
- * Governance Integration + SEBA
- * 
- * Merges:
- * - brain.ethical → ethical_constraint_check
- * - brain.coherence_check → coherence_validation
+ * CMPSBL® Governance Guard — Unified Ethical & Coherence Constraints
  * 
  * Lifecycle: coherence_validation → ethical_constraint_check → governance_signal_emission
- * 
- * Capabilities:
- * - Block unsafe reasoning paths
- * - Flag incoherent cognition
- * - Emit governance metadata for audits
  */
 
 import { supabase } from '@/integrations/supabase/client';

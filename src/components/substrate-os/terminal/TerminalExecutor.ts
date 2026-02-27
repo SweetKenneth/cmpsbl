@@ -306,7 +306,7 @@ const ALL_EXECUTION_SURFACES = [
 function formatSystemStatus(data: any): string {
   const modules = data?.modules || data?.module_status || {};
   const overall = data?.status || data?.overall || 'operational';
-  const version = data?.version || 'v10.5.0';
+  const version = data?.version || '';
   const uptime = data?.uptime || data?.uptime_seconds || 'N/A';
   
   let output = `

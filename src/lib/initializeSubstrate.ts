@@ -1,8 +1,8 @@
 /**
- * promptfluid® Substrate Initialization
- * CORE Epoch — Complete AI Operating System
+ * CMPSBL® Substrate Initialization
+ * CONTRACT Epoch — Complete AI Operating System
  *
- * Architecture: CORE → CCR → CCL → 9 Modules (INTEGRATION boots last) ← 5 Mesh Overlays (DEFENSE outermost)
+ * Architecture: CORE → CCR → OCG → 9 Modules (INTEGRATION boots last) ← 5 Mesh Overlays (DEFENSE outermost)
  *
  * Performance: Triple-deferred initialization for zero main-thread blocking
  */
@@ -33,7 +33,7 @@ export async function initializeSubstrate(): Promise<void> {
     
     await yieldToMain();
     
-    console.log('⚡ Booting promptfluid® Substrate...');
+    console.log('⚡ Booting CMPSBL® Substrate...');
     console.log('─────────────────────────────────────────');
     
     // Boot order: CORE → CCR → CCL → Modules → INTEGRATION (last) → Mesh Overlays activate
@@ -56,16 +56,16 @@ export async function initializeSubstrate(): Promise<void> {
       ccrBooted = ccrResult.success;
     } catch { /* graceful */ }
     
-    // 3. Boot CCL (Layer 1)
-    let cclBooted = false;
+    // 3. Boot OCG (Layer 1 — Operational Compliance Grid)
+    let ocgBooted = false;
     try {
-      const { initializeCCL } = await import('@/layers/ccl');
-      const cclResult = await initializeCCL();
-      cclBooted = cclResult.success;
+      const { initializeOCG } = await import('@/layers/ccl');
+      const ocgResult = await initializeOCG();
+      ocgBooted = ocgResult.success;
     } catch { /* graceful */ }
     
-    if (coreResult.success && ccrBooted && cclBooted) {
-      console.log('✅ CORE + CCR Layer 0 + CCL Layer 1 active → 10 entities + 5 mesh overlays | Health: 100%');
+    if (coreResult.success && ccrBooted && ocgBooted) {
+      console.log('✅ CORE + CCR Layer 0 + OCG Layer 1 active → 10 entities + 5 mesh overlays | Health: 100%');
     } else {
       // Fallback: ping individual modules
       let activeCount = 0;

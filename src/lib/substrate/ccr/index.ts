@@ -1,11 +1,8 @@
 /**
- * CLOCKLESS_COGNITIVE_REALITY (CCR)
- * Layer 0 — Hidden Meta-Engine powering the CMPSBL Substrate
+ * CMPSBL® CLOCKLESS_COGNITIVE_REALITY (CCR)
+ * Layer 0 — Hidden Meta-Engine powering the Substrate
  * 
  * Contains 4 Zones: SYSTEM Zone + BRAIN Zone + MEMORY Zone + DREAM Zone
- * Each Zone is surgically hot-swappable with its own circuit breaker.
- * If a Zone's circuit breaker trips, the fault is isolated to that Zone.
- *
  * CORE is standalone (not a Zone).
  * OCG (Operational Compliance Grid) contains 5 Zones: RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
  */

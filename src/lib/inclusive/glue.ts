@@ -3,7 +3,7 @@
  * Wires INCLUSIVE to SYSTEM, VISION, DEFENSE, MODERNIZER, TEMPLATES, MARKETPLACE
  *
  * @origin(cmptbl) — Human Compatibility Pipeline (14th Substrate Module)
- * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
+ * Developed by CMPSBL® as part of the cognitive orchestration substrate.
  *
  * Integration Points:
  * - SYSTEM: inclusive.selfScan → system.audit aggregation

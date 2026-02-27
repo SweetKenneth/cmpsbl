@@ -1,5 +1,5 @@
 /**
- * Capability Adapter
+ * CMPSBL® Capability Adapter
  * Universal Invocation Wrapper
  */
 

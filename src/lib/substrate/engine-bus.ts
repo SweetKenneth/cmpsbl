@@ -1,22 +1,9 @@
 /**
- * promptfluid® Engine Bus
+ * CMPSBL® Engine Bus
  * Canonical Routing Layer with Telemetry Integration
  * 
  * The Engine Bus is the single execution router for all substrate engines.
  * All engine execution must route through engine_bus.dispatch().
- * 
- * Capabilities:
- * - Integrated with Telemetry Engine for observability
- * - Emits telemetry before/after execution and on failure
- * - Chain execution support for linked operations
- * 
- * Responsibilities:
- * - Resolve command → engine mapping
- * - Enforce execution order for chained calls
- * - Normalize errors and return codes
- * - Apply retries and timeouts
- * - Emit execution events for observability
- * - Emit telemetry events via TelemetryEngine
  */
 
 import { supabase } from '@/integrations/supabase/client';

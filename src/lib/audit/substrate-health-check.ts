@@ -1,16 +1,10 @@
 /**
- * Substrate Health Check — First-Class Integrity Primitive
+ * CMPSBL® Substrate Health Check — First-Class Integrity Primitive
  * Internal ID: substrate_health_check
  *
  * Validates architectural integrity, governance enforcement, and system
- * coherence across the entire CMPSBL stack. This is NOT user-facing and
- * NOT monetized. It exists purely as an internal verification mechanism.
- *
- * Execution rules:
- * - Runnable without authentication
- * - Never mutates state
- * - Never auto-fixes anything
- * - Only observes, verifies, and reports
+ * coherence across the entire CMPSBL stack.
+ * Read-only — never mutates state, never auto-fixes.
  */
 
 import { SUBSTRATE_MODULES, type SubstrateModuleName } from '@/lib/core/index';
@@ -118,7 +112,9 @@ const EXPECTED_EDGE_FUNCTIONS = [
   'marketplace-verify-license',
   'memory-playground',
   'modernizer',
+  'nexus-budget-optimizer',
   'nexus-code-assistant',
+  'nexus-provider-discovery',
   'passkey-auth',
   'pf-agency-chat',
   'pf-agency-daily-brief',
@@ -149,6 +145,7 @@ const EXPECTED_EDGE_FUNCTIONS = [
   'radio-dj-tts',
   'stripe-price-lookup',
   'tier-checkout',
+  'world-engine-checkout',
 ];
 
 /** Audit check files expected in src/lib/audit/checks */

@@ -64,7 +64,7 @@ export const ABSORBED_VERSIONS = {
 
 export const CONTROL_PLANE_VERSIONS = {
   atlas:  { get version() { return v(); }, codename: 'Prometheus',            description: 'Centralized Control Plane' },
-  seba:   { version: '2.1.0',             codename: 'Full Spectrum Autonomy', description: 'Self-Evolving Bounded Agent' },
+  seba:   { get version() { return v(); }, codename: 'Full Spectrum Autonomy', description: 'Self-Evolving Bounded Agent' },
   encode: { get version() { return v(); }, codename: 'Genesis',               description: 'Code Execution Intelligence' },
   clm:    { get version() { return v(); }, codename: 'Perpetual',             description: 'Constant Learning Mode' },
 };
