@@ -73,5 +73,41 @@ export function checkUIContracts(): AuditFinding[] {
     });
   }
 
+  // Check for single H1
+  const h1Elements = document.querySelectorAll('h1');
+  if (h1Elements.length === 0) {
+    findings.push({
+      id: 'seo_missing_h1',
+      category: 'seo',
+      severity: 'warn',
+      title: 'No H1 element found',
+      detail: 'Pages should have exactly one H1 for SEO.',
+    });
+  } else if (h1Elements.length > 1) {
+    findings.push({
+      id: 'seo_multiple_h1',
+      category: 'seo',
+      severity: 'warn',
+      title: `${h1Elements.length} H1 elements found`,
+      detail: 'Pages should have exactly one H1 for optimal SEO.',
+    });
+  }
+
+  // Check for interactive elements without accessible names
+  const buttons = document.querySelectorAll('button:not([aria-label]):not([aria-labelledby])');
+  let unlabeledButtons = 0;
+  buttons.forEach(btn => {
+    if (!btn.textContent?.trim()) unlabeledButtons++;
+  });
+  if (unlabeledButtons > 0) {
+    findings.push({
+      id: 'a11y_unlabeled_buttons',
+      category: 'a11y',
+      severity: 'warn',
+      title: `${unlabeledButtons} button(s) without accessible label`,
+      detail: 'Buttons with no text content need aria-label for screen readers.',
+    });
+  }
+
   return findings;
 }

@@ -20,13 +20,26 @@ export function checkSEO(): AuditFinding[] {
       hint: 'Ensure usePageSEO hook is applied to all routes.',
     });
   } else {
-    findings.push({
-      id: 'seo_title_ok',
-      category: 'seo',
-      severity: 'info',
-      title: 'Page title set',
-      detail: `Title: "${title}".`,
-    });
+    // Check for version numbers in title (per custom instructions: never use version numbers in SEO)
+    const hasVersion = /v\d+[\.\d]*/i.test(title);
+    if (hasVersion) {
+      findings.push({
+        id: 'seo_version_in_title',
+        category: 'seo',
+        severity: 'error',
+        title: 'Version number in page title',
+        detail: `Title "${title}" contains a version number. Version numbers must never appear in SEO metadata.`,
+        hint: 'Remove version numbers from all page titles and OG tags.',
+      });
+    } else {
+      findings.push({
+        id: 'seo_title_ok',
+        category: 'seo',
+        severity: 'info',
+        title: 'Page title set',
+        detail: `Title: "${title}".`,
+      });
+    }
   }
 
   // Check meta description
@@ -41,13 +54,25 @@ export function checkSEO(): AuditFinding[] {
       hint: 'Add description via SEO component or usePageSEO.',
     });
   } else {
-    findings.push({
-      id: 'seo_description_ok',
-      category: 'seo',
-      severity: 'info',
-      title: 'Meta description present',
-      detail: `Description: "${metaDesc.getAttribute('content')?.slice(0, 80)}..."`,
-    });
+    const desc = metaDesc.getAttribute('content') || '';
+    // Check version numbers in description
+    if (/v\d+[\.\d]*/i.test(desc)) {
+      findings.push({
+        id: 'seo_version_in_description',
+        category: 'seo',
+        severity: 'warn',
+        title: 'Version number in meta description',
+        detail: `Description contains a version number. Remove it.`,
+      });
+    } else {
+      findings.push({
+        id: 'seo_description_ok',
+        category: 'seo',
+        severity: 'info',
+        title: 'Meta description present',
+        detail: `Description: "${desc.slice(0, 80)}..."`,
+      });
+    }
   }
 
   // Check canonical
@@ -62,6 +87,21 @@ export function checkSEO(): AuditFinding[] {
       hint: 'Add canonical URL to prevent duplicate content.',
     });
   }
+
+  // Check OG tags for version numbers
+  const ogTags = document.querySelectorAll('meta[property^="og:"]');
+  ogTags.forEach((tag) => {
+    const content = tag.getAttribute('content') || '';
+    if (/v\d+[\.\d]*/i.test(content)) {
+      findings.push({
+        id: `seo_version_in_og_${tag.getAttribute('property')}`,
+        category: 'seo',
+        severity: 'warn',
+        title: `Version number in ${tag.getAttribute('property')}`,
+        detail: `OG tag contains version number. Remove it.`,
+      });
+    }
+  });
 
   return findings;
 }
