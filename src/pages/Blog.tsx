@@ -501,7 +501,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/llms-txt-protocol-ai-context", category: "Protocol",
     date: "2026-01-30", readTime: "14 min", image: llmsTxtImg,
     imageAlt: "Visualization of LLMs.txt protocol structure",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Elena Vasquez", authorRole: "VP of Communications",
   },
   {
     id: 'governance', title: "AI Governance Namespace: Unified Terminology",
@@ -509,7 +509,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/ai-governance-namespace-unified-terminology", category: "Governance",
     date: "2026-01-30", readTime: "12 min", image: aiGovernanceImg,
     imageAlt: "Network visualization of AI governance terminology",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'inclusive', title: "INCLUSIVE Module Mission",
@@ -517,7 +517,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/inclusive-module-accessibility-mission", category: "Accessibility",
     date: "2025-11-20", readTime: "8 min", image: cmptblMissionImg,
     imageAlt: "Accessibility mission statement",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Priya Nakamura", authorRole: "Junior Developer & DevOps",
   },
   {
     id: 'free-access', title: "Accessibility for Everyone",
@@ -525,7 +525,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/accessibility-free-for-all", category: "Accessibility",
     date: "2025-10-18", readTime: "9 min", image: accessibilityFreeImg,
     imageAlt: "Universal accessibility network",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Elena Vasquez", authorRole: "VP of Communications",
   },
   {
     id: 'wp-access', title: "WordPress Accessibility Guide",
@@ -533,7 +533,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/wordpress-accessibility-guide", category: "Accessibility",
     date: "2025-09-15", readTime: "16 min", image: wpAccessibilityImg,
     imageAlt: "WordPress accessibility checklist",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Priya Nakamura", authorRole: "Junior Developer & DevOps",
   },
   {
     id: 'wcag', title: "WCAG 2.2 Changes for WordPress",
@@ -541,7 +541,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/wcag-2-2-wordpress-changes", category: "Accessibility",
     date: "2025-08-12", readTime: "12 min", image: wcag22Img,
     imageAlt: "WCAG 2.2 standards visualization",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
   },
   {
     id: 'auto-access', title: "Automated Accessibility Fixes",
@@ -549,7 +549,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/automated-accessibility-fixes-wordpress", category: "Accessibility",
     date: "2025-07-10", readTime: "10 min", image: autoAccessibilityImg,
     imageAlt: "Automated accessibility repair",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Priya Nakamura", authorRole: "Junior Developer & DevOps",
   },
   {
     id: 'ai-dream', title: "Experimental AI Systems That Dream",
@@ -557,7 +557,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/ai-systems-that-dream-press-release", category: "Research",
     date: "2025-12-18", readTime: "6 min", image: cascadeAIImg,
     imageAlt: "Cascade AI autonomous dreaming system",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'bot-defense', title: "WordPress Bot Defense Guide",
@@ -565,7 +565,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/wordpress-bot-defense", category: "Security",
     date: "2025-11-15", readTime: "15 min", image: wpBotDefenseImg,
     imageAlt: "WordPress security with AI protection",
-    source: 'human', pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', pillar: true, author: "James Whitfield", authorRole: "Security Researcher",
   },
   {
     id: 'sec-plugins', title: "Top Security Plugins 2025",
@@ -573,7 +573,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/top-security-plugins-2025", category: "Security",
     date: "2025-10-10", readTime: "12 min", image: topSecurityPluginsImg,
     imageAlt: "WordPress security plugins comparison",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "James Whitfield", authorRole: "Security Researcher",
   },
   {
     id: 'cyber-evo', title: "AI Cybersecurity Evolution",
@@ -581,7 +581,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/ai-cybersecurity-evolution-2025", category: "AI Security",
     date: "2025-09-08", readTime: "10 min", image: aiCybersecurityImg,
     imageAlt: "AI cybersecurity evolution",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "James Whitfield", authorRole: "Security Researcher",
   },
   {
     id: 'hackers', title: "AI Hackers Underground",
@@ -589,7 +589,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/ai-hackers-underground-2025", category: "Threat Intel",
     date: "2025-08-05", readTime: "14 min", image: aiHackersImg,
     imageAlt: "AI-powered cyber threats",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "James Whitfield", authorRole: "Security Researcher",
   },
   {
     id: 'pf-works', title: "How CMPSBL Works",
@@ -597,7 +597,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/how-promptfluid-works-cascade-ai-ecosystem", category: "Technology",
     date: "2025-07-10", readTime: "18 min", image: howPFWorksImg,
     imageAlt: "CMPSBL cognitive AI ecosystem",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'cascade', title: "Cascade AI: Adaptive Intelligence",
@@ -605,7 +605,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/cascade-ai-adaptive-intelligence-brain", category: "AI Technology",
     date: "2025-06-08", readTime: "16 min", image: cascadeAIBrainImg,
     imageAlt: "Adaptive AI brain in dream state",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'studio', title: "CMPSBL Studio",
@@ -613,7 +613,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/promptfluid-studio-build-apps-that-think", category: "Development",
     date: "2025-05-05", readTime: "13 min", image: pfStudioImg,
     imageAlt: "AI-powered app development studio",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Priya Nakamura", authorRole: "Junior Developer & DevOps",
   },
   {
     id: 'triad', title: "Free-Tier AI Routing",
@@ -621,7 +621,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/ai-triad-intelligent-routing", category: "Technology",
     date: "2025-04-02", readTime: "11 min", image: aiTriadImg,
     imageAlt: "AI network routing visualization",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
   },
   {
     id: 'brain', title: "Adaptive Learning Core",
@@ -629,7 +629,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/promptfluid-brain-adaptive-learning-core", category: "AI Technology",
     date: "2025-03-28", readTime: "15 min", image: pfBrainImg,
     imageAlt: "Machine learning brain core",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
     id: 'vision', title: "Unified Dashboard Guide",
@@ -637,7 +637,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/promptfluid-vision-unified-dashboard", category: "Platform",
     date: "2025-03-25", readTime: "12 min", image: pfVisionImg,
     imageAlt: "Unified command center dashboard",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
   },
   {
     id: 'defense', title: "AI Security Deep Dive",
