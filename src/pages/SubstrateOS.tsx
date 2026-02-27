@@ -902,7 +902,7 @@ export default function SubstrateOS() {
   const version = useMetric('version');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const navigate = useNavigate();
 
   
   const userTier = getRoleTier(role, isGovernor);
