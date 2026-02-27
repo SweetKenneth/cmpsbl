@@ -10,13 +10,11 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
   BookOpen,
-  Code,
   Sparkles,
   ChevronDown,
   Layers,
   Brain,
   Shield,
-  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MemoryRiver } from "./MemoryRiver";
@@ -196,9 +194,6 @@ export function HeroMetaSubstrate() {
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-xs font-semibold text-muted-foreground tracking-wide">Cognitive Infrastructure for AI Applications</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/50">
-                <span className="text-[10px] font-mono font-bold text-muted-foreground/70">v11.3.0</span>
-              </span>
-              <span className="flex items-center gap-1 pl-2 border-l border-border/50">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>
               </span>
@@ -255,11 +250,11 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.4 }}
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              The only substrate where{' '}
-              <span className="text-foreground font-semibold">memory survives restarts</span>,{' '}
-              <span className="text-foreground font-semibold">pipelines crystallize into intelligence</span>, and{' '}
-              <span className="text-foreground font-semibold">every agent compounds what it learns</span>.{' '}
-              Start with 30 free templates — ship cognitive apps in minutes.
+              Governed cognitive infrastructure with{' '}
+              <span className="text-foreground font-semibold">persistent memory</span>,{' '}
+              <span className="text-foreground font-semibold">artifact packs</span> that activate capabilities on demand, and a{' '}
+              <span className="text-foreground font-semibold">governed runtime</span> that enforces safety at every layer.{' '}
+              Start free — 3 artifact slots, full access, no credit card.
             </motion.p>
             
             {/* CTAs */}
@@ -274,9 +269,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/templates">
+                <Link to="/auth">
                   <Sparkles className="w-4 h-4" />
-                  Browse Free Templates
+                  Start Free
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
@@ -286,40 +281,18 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 active:scale-[0.98]"
               >
-                <Link to="/upgrade">
+                <Link to="/packs">
                   <Layers className="w-4 h-4" />
-                  See Plans
+                  Explore Artifact Packs
                 </Link>
               </Button>
-            </motion.div>
-
-            {/* Composable Cognitives CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mt-4 sm:mt-6"
-            >
-              <Link 
-                to="/composable-cognitives"
-                className="inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-primary/30 bg-primary/[0.05] hover:bg-primary/10 hover:border-primary/50 transition-all duration-300 group"
-              >
-                <div className="p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/15 transition-colors">
-                  <Zap className="w-4 h-4 text-primary" />
-                </div>
-                <div className="text-left">
-                  <span className="block text-xs font-bold text-foreground group-hover:text-primary transition-colors">Composable Cognitives — Own Your AI Agent</span>
-                  <span className="block text-[10px] text-muted-foreground">Download once, run anywhere. No subscription required.</span>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-              </Link>
             </motion.div>
             
             {/* Research link */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.65 }}
+              transition={{ delay: 0.6 }}
               className="mt-6 sm:mt-8 text-center lg:text-left"
             >
               <a 
@@ -431,10 +404,10 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
-            { icon: Sparkles, label: "30 Free Templates", href: "/templates" },
-            { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory" },
-            { icon: Code, label: "Composable Cognitives", href: "/composable-cognitives" },
-            { icon: Layers, label: "Documentation", href: "/documentation" },
+            { icon: Sparkles, label: "Free to Start", href: "/auth" },
+            { icon: Brain, label: "Persistent Memory", href: "/persistent-memory" },
+            { icon: Layers, label: "24 Artifact Packs", href: "/packs" },
+            { icon: Shield, label: "Governed Runtime", href: "/documentation" },
           ].map((item, index) => (
             <motion.div
               key={item.label}
