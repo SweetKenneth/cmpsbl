@@ -1,6 +1,6 @@
 /**
  * CLM Dashboard — Admin Controls for Constant Learning Mode
- * v6.7.0 — Budget, status, and kill switch controls
+ * Budget, status, and kill switch controls
  */
 
 import { useState } from 'react';

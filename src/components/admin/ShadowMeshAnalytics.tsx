@@ -2,7 +2,7 @@
  * Shadow Mesh Analytics Panel
  * Shows immune metrics, repair KPIs, ENCODE resolution stats,
  * and per-executor breakdown for admin dashboard.
- * v10.9.2: Auto-triggers escalation processing on load.
+ * Auto-triggers escalation processing on load.
  */
 
 import { useEffect, useState, useCallback, useRef } from "react";

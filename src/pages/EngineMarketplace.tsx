@@ -1,6 +1,6 @@
 /**
  * Engines (OEM) — Supreme × Canva Layout (matching Store & Blog)
- * v10.9.0 ARCHITECT — Mobile-first with sticky toolbar, category carousels,
+ * Mobile-first with sticky toolbar, category carousels,
  * tier filter pills, browse/grid modes, and horizontal snap-scroll.
  */
 
