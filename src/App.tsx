@@ -463,6 +463,16 @@ const App = () => {
                         <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
                         <Route path="/blog/automated-accessibility-fixes-wordpress" element={<AIAccessibilityFixes />} />
                         
+                        {/* CMPSBL-branded blog redirects (new canonical URLs) */}
+                        <Route path="/blog/cmpsbl-defense-ai-security" element={<PromptFluidDefense />} />
+                        <Route path="/blog/cmpsbl-brain-adaptive-learning-core" element={<PromptFluidBrain />} />
+                        <Route path="/blog/cmpsbl-vision-unified-dashboard" element={<PromptFluidVision />} />
+                        <Route path="/blog/cmpsbl-ripple-network-integration" element={<PromptFluidRipple />} />
+                        <Route path="/blog/cmpsbl-access-identity-billing" element={<PromptFluidAccess />} />
+                        <Route path="/blog/cmpsbl-nexus-api-gateway" element={<PromptFluidNexus />} />
+                        <Route path="/blog/cmpsbl-studio-build-apps-that-think" element={<PromptFluidStudioGuide />} />
+                        <Route path="/blog/how-cmpsbl-works-substrate-ecosystem" element={<HowPromptFluidWorks />} />
+                        
                         {/* v6.x.x Pillar/Cluster Posts */}
                         <Route path="/blog/evolving-software-v6-breakthrough" element={<EvolvingSoftwareV6Breakthrough />} />
                         <Route path="/blog/llms-txt-protocol-ai-context" element={<LLMsTxtProtocol />} />
