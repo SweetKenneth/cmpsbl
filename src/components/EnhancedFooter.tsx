@@ -154,18 +154,6 @@ export function EnhancedFooter() {
                       </button>
                     </li>
                   )}
-                  {/* XCTBL button in Products section — preserved per user request */}
-                  {section.title === "Products" && (
-                    <li>
-                      <button
-                        onClick={() => setXctblOpen(true)}
-                        className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Gamepad2 className="w-3.5 h-3.5 group-hover:animate-pulse" />
-                        Breaktime? Try XCTBL
-                      </button>
-                    </li>
-                  )}
                   {section.links.map((link) => (
                     <li key={link.href}>
                       {link.external ? (
