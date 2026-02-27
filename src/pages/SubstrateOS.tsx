@@ -31,7 +31,7 @@ import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { useMetric } from '@/stores/publicMetricsStore';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { EventStream } from '@/components/substrate-os/EventStream';
-import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor, DepthGate, OnboardingFlow, SlotCapacityMeter } from '@/components/substrate-os/dashboard';
+import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor, DepthGate, OnboardingFlow, SlotCapacityMeter, NexusOptimizerWidget, BudgetGovernancePanel } from '@/components/substrate-os/dashboard';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { MatrixIntegrityPanel } from '@/components/substrate-os/dashboard/MatrixIntegrityPanel';
