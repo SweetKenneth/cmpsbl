@@ -1,11 +1,10 @@
 /**
- * CMPSBL Adoptable Pricing — Pricing & Access Patch
+ * CMPSBL Pricing — Three Tiers
  * 
- * Four tiers. Adoptable pricing. Zero IP leakage.
- *   Free     → $0       (build real things, starter artifacts, bounded memory)
- *   Creator  → $29/mo   (expanded catalog, executable capabilities, light automation)
- *   Architect → $19/mo  (premium artifacts, cross-module orchestration, audit views)
- *   Enterprise → $79/mo (org workspaces, compliance, SLA-aware routing, governance)
+ * Three tiers. Clean hierarchy. Zero IP leakage.
+ *   Builder    → $0/mo   (3 artifact slots, full runtime, 30 free templates)
+ *   Creator    → $29/mo  (6 artifact slots, expanded memory, executable capabilities)
+ *   Architect  → $79/mo  (12 artifact slots, governance, self-hosted deployment, compliance)
  *
  * Core Rule: User projects run ON the CMPSBL Substrate.
  *            User projects never run AS the CMPSBL Substrate.
