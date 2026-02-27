@@ -100,33 +100,33 @@ export function PackDetailModal({
             </p>
           </div>
 
-          {/* Skills & Capabilities */}
-          {pack.skills && pack.skills.length > 0 && (
+          {/* Components & Capabilities */}
+          {pack.components && pack.components.length > 0 && (
             <div>
               <h4 className="text-sm font-semibold mb-2 text-foreground flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-primary" />
-                Skills &amp; Capabilities
+                Components &amp; Capabilities
               </h4>
               <ul className="space-y-1.5">
-                {pack.skills.map((skill, i) => (
+                {pack.components.map((component, i) => (
                   <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
                     <span className="text-primary mt-1 shrink-0">•</span>
-                    <span>{skill}</span>
+                    <span>{component}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
 
-          {/* Emergence Clause / Why It Matters */}
-          {pack.emergenceClause && (
+          {/* Why This Pack Matters */}
+          {pack._emergenceClause && (
             <div className="rounded-lg border border-border/50 bg-muted/30 p-4">
               <h4 className="text-sm font-semibold mb-1.5 text-foreground flex items-center gap-1.5">
                 <Shield className="w-3.5 h-3.5 text-primary" />
                 Why This Pack Matters
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                {pack.emergenceClause}
+                {pack._emergenceClause}
               </p>
             </div>
           )}

@@ -23,8 +23,9 @@ import {
   Server, Building2, Lock, Unlock, Layers, Eye,
   Sparkles, Compass, ChevronLeft, ChevronRight,
 } from 'lucide-react';
-import { ARTIFACT_PACKS, PRODUCT_TIERS, STRATEGIC_DOMAINS, type ProductTier } from '@/lib/quarry/types';
+import { ARTIFACT_PACKS, PRODUCT_TIERS, STRATEGIC_DOMAINS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
+import { PackDetailModal } from '@/components/slots/PackDetailModal';
 import { motion } from 'framer-motion';
 
 /* ─── Tier definitions (public-facing) ─── */
@@ -72,7 +73,7 @@ const TIERS: {
     accent: 'from-violet-500 to-purple-500',
     icon: Sparkles,
     popular: true,
-    stripeTier: 'architect' as EngineSubscriptionTier,
+    stripeTier: 'creator' as EngineSubscriptionTier,
     features: [
       '6 Artifact Slots',
       'Expanded memory depth',
@@ -92,7 +93,7 @@ const TIERS: {
     description: '12 artifact slots, self-hosted deployment, and full governance authority.',
     accent: 'from-amber-500 to-orange-500',
     icon: Building2,
-    stripeTier: 'enterprise' as EngineSubscriptionTier,
+    stripeTier: 'architect' as EngineSubscriptionTier,
     features: [
       '12 Artifact Slots',
       'Dedicated memory partitions',
@@ -381,7 +382,7 @@ export default function Upgrade() {
                     <div className="mt-6">
                       {t.key === 'builder' ? (
                         <Button variant="outline" className="w-full" asChild>
-                          <Link to="/start-here">Get Started Free</Link>
+                          <Link to="/auth">Get Started Free</Link>
                         </Button>
                       ) : isCurrent ? (
                         <Button variant="outline" className="w-full" disabled>Current Plan</Button>
