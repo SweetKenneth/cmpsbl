@@ -2,17 +2,20 @@
 
 **Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate**
 
-> Version: 3.0 · Updated: 2026-02-26
+> Version: 4.0 · Updated: 2026-02-27
 > Status: FOUNDER REVIEW — Not published
 
 ---
 
 ## 1. Executive Summary
 
-The substrate monetizes through an **Equal-Slot Artifact Capacity** model. The full runtime is unified — every user runs every module. Plans differ only in activation capacity, memory depth, deployment rights, and governance scope.
+The substrate monetizes through an **Equal-Slot Artifact Capacity** model with three tiers. The full runtime is unified — every user runs every module. Plans differ only in activation capacity, memory depth, deployment rights, and governance scope.
 
 - **24 Artifact Packs** — each costs exactly **1 slot**
-- **All packs visible** to all users — capacity controls activation only
+- **30 Free Templates** — public onboarding surface, zero paywall
+- **Template Generator** — $19 one-time, custom AI template creation
+- **Crown Jewel Gatekeeping** — top-tier assets released only via packs
+- **Capability Manifest** — public developer reference (searchable, downloadable JSON)
 - **No module gating** — no feature fragmentation — no tier-based pack restrictions
 - **6 Strategic Domains** frame packs as category-defining expressions
 
@@ -34,7 +37,7 @@ Every artifact pack expresses a capability that **emerges from unified architect
 
 ---
 
-## 3. Capacity Model
+## 3. Pricing & Capacity Model
 
 ### Core Principle
 
@@ -44,211 +47,370 @@ Every artifact pack expresses a capability that **emerges from unified architect
 
 | Plan | Price | Artifact Slots | Memory | Deployment | Governance |
 |------|-------|---------------|--------|------------|------------|
-| **Builder** | $0/mo | 3 | Standard | Cloud only | Basic |
-| **Operator** | $19/mo | 6 | Expanded | Cloud only | Advanced |
-| **Architect** | $99/mo | 12 | Dedicated | Self-hosted (LNCHBL) | Full |
+| **Free** | $0/mo | 3 | Standard | Cloud only | Basic |
+| **Creator** | $29/mo | 6 | Expanded | Cloud only | Advanced |
+| **Architect** | $79/mo | 12 | Dedicated | Self-hosted (LNCHBL) | Full |
 
 **Architect Custom** (sales-led): Dedicated instances, SOC2 compliance, custom slot capacity beyond 12.
+
+Contact: Dev@CMPSBL.com · (760) FLUID-AI
 
 ### Equal-Slot Rule
 
 Every pack costs exactly **1 slot**. No weighted slots. No variable pricing per pack. No power classes. No domain caps. Simplicity enables clarity.
 
-### Baseline Technology Layer
+### Free Tier — Not a Trial
 
-Baseline technology ships with every plan and is **not displayed** as purchasable:
+The Free tier includes:
+- Artifact Store access (Free catalog)
+- Core templates (starter pack)
+- Basic capabilities (read + compose)
+- Limited persistent memory (per-user)
+- Basic pipelines & missions
+- Shared NEXUS routing (with quotas)
+- Dashboard + Terminal (Free mode)
+- Community support
 
-- All standard engines (31+ items)
-- Common pipeline resolvers
-- Utility capabilities
-- Base project templates
+### Creator Tier — $29/month
 
-Marked `visibility: 'baseline'` in the Quarry. Keeps the public surface focused on the 24 packs only.
+Everything in Free, plus:
+- Expanded Artifact Store (Creator catalog)
+- More + higher-quality templates
+- Executable capabilities (run + compose)
+- Multi-module synergy pipelines
+- Stronger persistent memory (bigger limits)
+- Higher NEXUS quotas + better routing
+- Scheduled tasks + simple automations
+- Email + docs support
+
+### Architect Tier — $79/month
+
+Everything in Creator, plus:
+- 12 Artifact Slots
+- Dedicated memory partitions
+- Self-hosted deployment (LNCHBL)
+- Full governance authority
+- Compliance + audit exports
+- Organization workspaces + roles
+- SLA-aware NEXUS controls
+- Dedicated support channel
 
 ---
 
-## 4. Strategic Domains
+## 4. Free Templates — Public Onboarding Surface
+
+### Philosophy
+
+> "Start building immediately. No signup wall. No paywall. Just templates."
+
+30 production-ready templates are free for all users. They serve as the primary onboarding surface and demonstrate substrate capabilities without requiring any commitment.
+
+### Template Categories (6)
+
+| Category | Count | Examples |
+|----------|-------|---------|
+| **Intelligence & Analysis** | 5 | Associative Memory Chatbot, Predictive Dashboard, Research Synthesizer |
+| **Security & Compliance** | 5 | Zero-Trust Audit Dashboard, Threat Intelligence Feed |
+| **Automation & Workflows** | 5 | Self-Healing Pipeline Monitor, Event-Driven Automation Hub |
+| **Creative & Content** | 5 | Dream-Powered Content Studio, Cross-Domain Idea Fusion Lab |
+| **Data & Integration** | 5 | Smart Data Pipeline Router, Knowledge Graph Explorer |
+| **System & Operations** | 5 | Capacity Management Console, Runtime Health Observatory |
+
+### Template Rarity System
+
+Each template includes a rarity tag reflecting the power of its embedded Crown Jewel feature:
+
+| Rarity | Meaning | Distribution |
+|--------|---------|-------------|
+| **Great** | High-quality, production-ready | ~60% of templates |
+| **Mythic** | Exceptional, showcases rare Crown Jewel capability | ~40% of templates |
+
+### Template Generator — $19 One-Time
+
+Users can generate custom AI templates from natural language descriptions. One-time purchase, lifetime access.
+
+- Stripe Product: `prod_TwSqj6y5PfMkPy`
+- Price: $19 (1900 cents)
+- Access: Permanent after purchase
+
+---
+
+## 5. Crown Jewel Gatekeeping
+
+### Philosophy
+
+> "Not all Crown Jewels are released. Certain capabilities, orchestration systems, and recursive intelligence remain internal by design."
+
+### Classification
+
+| Category | Description | Release Policy |
+|----------|-------------|---------------|
+| **Experience Crown Jewels** | High-value engines, meta-engines, capabilities, templates, pipelines | Released ONLY when included in an active Artifact Pack |
+| **Architecture Crown Jewels** | Internal substrate constructs | NEVER released — permanently gatekept |
+
+### Release Gate Logic
+
+```
+1. Architecture jewels → Always gatekept (never public)
+2. Experience jewels in a pack → Released (public)
+3. Experience jewels NOT in a pack → Gatekept (hidden from public surfaces)
+4. Non-crown-jewel items → Always available
+```
+
+### Implementation
+
+- **Registry**: `src/lib/capabilities/crown-jewel-registry.ts` — defines all Experience and Architecture jewel IDs
+- **Gate**: `src/lib/capabilities/crown-jewel-release-gate.ts` — runtime check for release status
+- **Functions**: `isCrownJewelReleased(id)`, `isGatekept(id)`, `getCrownJewelStats()`, `getGatekeptJewelIds()`
+
+### Why This Matters
+
+Future packs can be created by moving gatekept jewels into new pack definitions. This gives strategic control over what gets released and when — without code changes to the jewels themselves.
+
+---
+
+## 6. Crystallized Pipelines
+
+100 crystallized pipelines exist — high-value multi-module resolver chains discovered via the Intent Mesh and hardened into permanent execution templates.
+
+### Distribution
+
+| Tier | Crystallized Pipelines | Access |
+|------|----------------------|--------|
+| **CMPSBL-Only** | 20 | Internal — never released |
+| **Architect** | 16 | Governance-grade sealed |
+| **Creator** | 36 | Premium sealed |
+| **Free** | 28 | Builder-friendly sealed |
+
+### Gatekeeping
+
+Crystallized pipelines follow the same Crown Jewel release gate. Only pipelines referenced by an active Artifact Pack's `_crystallizedPipelines` array are marked as released. All others remain gatekept for future pack additions.
+
+---
+
+## 7. Strategic Domains
 
 Artifact Packs are organized under six category-defining domains:
 
-### Memory & Continuity (3 packs)
+### MEMORY & CONTINUITY (3 packs)
 Conventional AI forgets between sessions. The substrate remembers, contradicts, compresses, and evolves context across time — because cognition without continuity is noise.
 
-### Coordination & Automation (4 packs)
+### COORDINATION & AUTOMATION (4 packs)
 Most automation stitches disconnected APIs. The substrate coordinates agents, workflows, and tasks within a single runtime — so orchestration emerges from architecture, not integration.
 
-### Intelligence & Foresight (4 packs)
+### INTELLIGENCE & FORESIGHT (4 packs)
 Static dashboards show what happened. The substrate synthesizes signals across domains, validates hypotheses, and projects forward — because intelligence is anticipation, not reporting.
 
-### Resilience & Trust (4 packs)
+### RESILIENCE & TRUST (4 packs)
 Bolted-on security creates compliance theater. The substrate enforces trust, detects drift, and self-heals at the runtime level — because resilience must be structural, not cosmetic.
 
-### Sovereignty & Deployment (3 packs)
+### SOVEREIGNTY & DEPLOYMENT (3 packs)
 Cloud-only platforms hold your infrastructure hostage. The substrate deploys anywhere — cloud, on-premise, air-gapped — because sovereignty means running what you own, where you choose.
 
-### Perception & Interaction (6 packs)
+### PERCEPTION & INTERACTION (6 packs)
 Chatbots parse keywords. The substrate resolves intent, adapts personality, traverses knowledge, and routes data — because interaction is a cognitive act, not a string match.
 
 ---
 
-## 5. Artifact Pack Registry (v2.0)
+## 8. Artifact Pack Registry (v2.0)
 
 All packs validated against the internal pipeline registry. Each depends on at least one sealed multi-module resolver chain impossible outside unified architecture. Internal naming conventions (Crown, Meta, Resolver, etc.) are never exposed publicly.
 
 ### MEMORY & CONTINUITY
 
 #### 1. Persistent Memory
-Tiered recall across hot, warm, and cold layers with contradiction detection, confidence decay curves, and spaced repetition scheduling. Memory self-organizes through value scoring and autonomous demotion cascades that restructure knowledge topology without operator intervention.
-
-*Use case: Long-running projects where continuity across sessions determines output quality.*
+Tiered recall across hot, warm, and cold layers with contradiction detection, confidence decay curves, and spaced repetition scheduling.
 
 #### 2. Dedicated Memory Partitions
-Isolated cognitive namespaces per project with custom retention policies, compression ratios, and archival strategies. Each partition maintains its own metacognitive assessment — tracking recall accuracy, retrieval strategy, and salience distribution independently.
-
-*Use case: Multi-project environments requiring strict data separation.*
+Isolated cognitive namespaces per project with custom retention policies, compression ratios, and archival strategies.
 
 #### 3. Context Intelligence
-Adaptive context assembly that scores temporal relevance, balances cognitive load, and compresses input windows in real-time. Context is composed through a multi-stage pipeline weighing recency, salience, user fingerprints, and semantic density.
-
-*Use case: High-throughput systems where context precision directly impacts output accuracy.*
+Adaptive context assembly that scores temporal relevance, balances cognitive load, and compresses input windows in real-time.
 
 ### COORDINATION & AUTOMATION
 
 #### 4. Agent Composer
-Composable cognitive agents with specialized skill trees, competency tracking, and autonomous learning curves. Agents develop proficiency through competency scoring that gates progression and evolves heuristics from execution traces.
-
-*Use case: Purpose-built agents that improve through operational feedback loops.*
+Composable cognitive agents with specialized skill trees, competency tracking, and autonomous learning curves.
 
 #### 5. Multi-Agent Operations
-Cross-agent coordination with task decomposition, shared learning pools, and priority-based routing within a single runtime. Dream pools propagate heuristics, competency scores inform delegation, shared memory eliminates coordination overhead.
-
-*Use case: Complex workflows where multiple agents must coordinate without integration overhead.*
+Cross-agent coordination with task decomposition, shared learning pools, and priority-based routing within a single runtime.
 
 #### 6. Workflow Automation
-Scheduled execution, event-driven pipeline composition, batch processing with deduplication guards, and adaptive retry strategies. Workflows self-correct through contextual retry selection that analyzes failure cause.
-
-*Use case: Recurring data processing and multi-step automations requiring reliability without manual oversight.*
+Scheduled execution, event-driven pipeline composition, batch processing with deduplication guards, and adaptive retry strategies.
 
 #### 7. Background Optimization
-Autonomous off-peak processing: memory consolidation, pattern discovery, heuristic evolution, and knowledge decay repair. Optimization runs produce compound improvements that accumulate across cycles.
-
-*Use case: Systems that improve autonomously during off-peak hours.*
+Autonomous off-peak processing: memory consolidation, pattern discovery, heuristic evolution, and knowledge decay repair.
 
 ### INTELLIGENCE & FORESIGHT
 
 #### 8. Deep Research
-Automated multi-source research with crawling orchestration, data enrichment, and structured output. Research operations benefit from memory-aware deduplication and domain knowledge accumulation that improves with each cycle.
-
-*Use case: Complex information-gathering workflows where research quality compounds over time.*
+Automated multi-source research with crawling orchestration, data enrichment, and structured output.
 
 #### 9. Predictive Analytics
-Forward-looking metric forecasting, capacity prediction, lifecycle analysis, and anomaly pre-detection. Predictions emerge from the substrate's own operational data — the system forecasts its own behavior.
-
-*Use case: Operational planning where forward visibility reduces reactive fire-fighting.*
+Forward-looking metric forecasting, capacity prediction, lifecycle analysis, and anomaly pre-detection.
 
 #### 10. Strategic Intelligence
-Cross-domain signal synthesis, trend detection, and strategic scenario analysis. Intelligence is produced by traversing the full operational graph and validating hypotheses against live state.
-
-*Use case: Decision-makers needing synthesized intelligence rather than raw data.*
+Cross-domain signal synthesis, trend detection, and strategic scenario analysis.
 
 #### 11. Creative Synthesis
-Cross-domain idea generation fusing execution traces, memory, dream processing, and agent heuristics. Creative signal exists in the intersection of domains, not in any individual source.
-
-*Use case: Innovation discovery and non-obvious opportunity identification.*
+Cross-domain idea generation fusing execution traces, memory, dream processing, and agent heuristics.
 
 ### RESILIENCE & TRUST
 
 #### 12. Threat Intelligence
-Behavioral drift correlation across memory access, agent decisions, and execution timing. Anomalies manifest as statistical deviations in runtime behavior, not signature matches.
-
-*Use case: Security-sensitive environments requiring detection beyond pattern matching.*
+Behavioral drift correlation across memory access, agent decisions, and execution timing.
 
 #### 13. Incident Response
-Atomic recovery with simultaneous blast radius isolation, provider rerouting, and state reconstruction. Self-healing operates at the architectural level.
-
-*Use case: High-availability systems requiring autonomous recovery.*
+Atomic recovery with simultaneous blast radius isolation, provider rerouting, and state reconstruction.
 
 #### 14. Zero-Trust Compliance
-Continuous trust computation with TTL-based governance auto-revert. The governance layer intercepts every operation at the runtime level.
-
-*Use case: Regulated environments requiring continuous compliance enforcement.*
+Continuous trust computation with TTL-based governance auto-revert.
 
 #### 15. Quality Assurance
-Inline quality enforcement with confidence calibration against historical performance. The quality layer accesses execution history and output statistics in real-time during execution.
-
-*Use case: Production systems where output consistency and reliability are non-negotiable.*
+Inline quality enforcement with confidence calibration against historical performance.
 
 ### SOVEREIGNTY & DEPLOYMENT
 
 #### 16. Self-Hosted Deployment
-Complete runtime packaging with cross-deployment eventual consistency. The deployment artifact is a self-contained runtime — not microservices depending on external infrastructure.
-
-*Use case: Organizations requiring on-premise or air-gapped operation.*
+Complete runtime packaging with cross-deployment eventual consistency.
 
 #### 17. Safe Evolution
-Multi-phase evolution with circuit breaker protection and shadow execution. Shadow executor runs mutations against complete runtime state copy for comparison.
-
-*Use case: Production systems where changes must be validated before affecting live state.*
+Multi-phase evolution with circuit breaker protection and shadow execution.
 
 #### 18. Governance & Audit
-Causal audit trails with full decision provenance and forensic reconstruction. External audit tools record outcomes; the substrate records reasoning.
-
-*Use case: Compliance, forensic analysis, and decision accountability.*
+Causal audit trails with full decision provenance and forensic reconstruction.
 
 ### PERCEPTION & INTERACTION
 
 #### 19. Intent Resolution
-Multi-source disambiguation from memory, user fingerprints, and execution history. Synchronous access to memory, user model, and execution state for resolution.
-
-*Use case: Complex interaction environments where intent cannot be determined from input alone.*
+Multi-source disambiguation from memory, user fingerprints, and execution history.
 
 #### 20. Empathetic Interaction
-Personality adaptation from accumulated interaction patterns across sessions. Persistent user state spanning sessions — a memory-dependent property.
-
-*Use case: Customer-facing systems where interaction quality drives retention.*
+Personality adaptation from accumulated interaction patterns across sessions.
 
 #### 21. Knowledge Graph
-Self-constructing ontology where edges emerge from execution patterns. The knowledge layer observes runtime behavior to construct implicit edges.
-
-*Use case: Complex knowledge environments where relationships between concepts are not predefined.*
+Self-constructing ontology where edges emerge from execution patterns.
 
 #### 22. Data Pipeline
-Per-request routing using live provider health, latency prediction, and cost signals. Continuous visibility into provider performance, cost, and reliability.
-
-*Use case: Multi-provider environments requiring intelligent routing.*
+Per-request routing using live provider health, latency prediction, and cost signals.
 
 #### 23. Runtime Observability
-Causal chain analysis with feedback loop detection and maturity scoring. External monitoring sees metrics in isolation; the substrate sees causal chains.
-
-*Use case: Operational environments requiring deep understanding of system behavior.*
+Causal chain analysis with feedback loop detection and maturity scoring.
 
 #### 24. Capacity Management
-Value-weighted token budget allocation with contention arbitration. Real-time visibility into all active workloads and their relative value.
-
-*Use case: Resource-constrained environments requiring intelligent allocation.*
+Value-weighted token budget allocation with contention arbitration.
 
 ---
 
-## 6. Pack Overlap Analysis
+## 9. Capability Manifest (Developer Surface)
 
-| Pack Pair | Overlap % | Verdict |
-|-----------|----------|---------|
-| Persistent Memory ↔ Dedicated Partitions | 15% | Distinct: self-organization vs. isolation |
-| Persistent Memory ↔ Context Intelligence | 10% | Distinct: retention vs. assembly |
-| Agent Composer ↔ Multi-Agent Ops | 20% | Distinct: individual evolution vs. collective coordination |
-| Threat Intelligence ↔ Incident Response | 12% | Distinct: detection vs. recovery |
-| Threat Intelligence ↔ Zero-Trust | 18% | Distinct: behavioral analysis vs. policy enforcement |
-| Deep Research ↔ Strategic Intelligence | 15% | Distinct: gathering vs. synthesis |
-| Predictive Analytics ↔ Capacity Management | 22% | Distinct: forecasting vs. allocation |
-| Runtime Observability ↔ Capacity Management | 18% | Distinct: causal analysis vs. resource planning |
-| Governance ↔ Zero-Trust | 25% | Distinct: audit provenance vs. continuous enforcement |
-| Quality Assurance ↔ Runtime Observability | 12% | Distinct: output validation vs. system causation |
+A searchable, filterable reference of all public-safe capabilities available at `/docs/manifest`.
 
-**Maximum observed overlap: 25%** — below 30% threshold. No merges required.
+### Features
+- Category filtering (Intelligence, Optimization, Resilience, Security, Accessibility, Automation, Orchestration)
+- Full-text search across names, descriptions, modules, and tags
+- JSON download for programmatic consumption
+- Risk level and governance classification per capability
+- Module dependency mapping
+
+### What's Included
+Only capabilities NOT gatekept by the Crown Jewel release gate appear in the manifest. Architecture jewels and unreleased experience jewels are excluded.
 
 ---
 
-## 7. Ideal Customer Profile
+## 10. Quarry Governance
+
+### Asset Categories
+
+1. **Capabilities** — Atomic execution units
+2. **Engines** — Compound execution pipelines
+3. **Meta-Engines** — Multi-engine orchestration layers
+4. **Pipelines** — Sealed resolver chains
+5. **Crystallized Pipelines** — Hardened multi-module resolver chains
+6. **Templates** — Starter project scaffolds
+7. **Agents** — Composable Minds (cognitives)
+8. **Deployment Rights** — Self-hosting tiers
+9. **Governance Tools** — Admin/compliance instruments
+
+### Visibility States
+
+| State | Meaning |
+|-------|---------|
+| `hidden` | Internal only. Not shown anywhere. |
+| `baseline` | Operational for all users. Not displayed as purchasable. |
+| `tier_exposed` | Visible in admin context. May inform pack composition. |
+| `public_curated` | Surfaced as artifact pack on /upgrade. |
+| `gatekept` | Crown Jewel not yet released via pack. Hidden from public. |
+
+### Scoring Model
+
+Each asset is evaluated on: Value Density (0.22), Revenue Impact (0.22), Differentiation (0.28), Stability (0.12), Maintenance Load inverse (0.16). Differentiation weighting elevated to 0.28 to prioritize substrate-native density.
+
+---
+
+## 11. Route Architecture
+
+| Route | Purpose |
+|-------|---------|
+| `/` | Homepage — hero, CTAs, free template promotion |
+| `/templates` | 30 free templates + Template Generator CTA ($19) |
+| `/upgrade` | Pricing — 3 tiers + artifact capacity model |
+| `/docs/manifest` | Developer capability manifest (searchable, JSON download) |
+| `/pricing` | Redirects to `/upgrade` |
+| `/store` | Redirects to `/upgrade` |
+| `/marketplace` | Redirects to `/upgrade` |
+| `/engines` | Redirects to `/upgrade` |
+| `/capabilities` | Redirects to `/upgrade` |
+| `/admin/quarry` | Internal asset registry (admin only) |
+| `/packs` | Pack activation management (user dashboard) |
+| `/licensing` | LNCHBL deployment (preserved) |
+| `/composable-cognitives` | Minds marketplace (preserved) |
+
+---
+
+## 12. Internal Taxonomy Firewall
+
+### Removed from Public UI
+
+- Crown Jewel / Crown Jewel Pipeline
+- Meta-Engine
+- Resolver Swarm
+- Immunity Mesh
+- Crystallized Pipeline
+- Value Density Score
+- Strategic Weight
+
+### Retained in Code
+
+All internal naming conventions remain in source code, admin interfaces, internal documentation, and Quarry asset records.
+
+---
+
+## 13. Public Messaging
+
+**Do say:**
+- Persistent Memory
+- Composable Agents
+- Structured System Depth
+- Deployment Flexibility
+- Artifact Capacity
+- Unified Runtime
+- Free Templates
+- Build What Compounds
+
+**Don't say:**
+- 525+ capabilities
+- 76 engines
+- 300+ pipelines
+- 800+ artifacts
+- Individual engine pricing
+- Any count of internal assets
+- Crown Jewel (public context)
+- Crystallized Pipeline (public context)
+
+---
+
+## 14. Ideal Customer Profile
 
 ### Primary ICP
 
@@ -269,17 +431,17 @@ Value-weighted token budget allocation with contention arbitration. Real-time vi
 
 ---
 
-## 8. Upgrade Psychology
+## 15. Upgrade Psychology
 
 ### Behavioral Triggers
 
 | Trigger | From → To | Signal |
 |---------|-----------|--------|
-| **Slot pressure** | Builder → Operator | User attempts to activate 4th pack |
-| **Memory limitation** | Builder → Operator | Standard memory depth constrains project complexity |
-| **Governance need** | Operator → Architect | Advanced governance insufficient for compliance |
-| **Deployment sovereignty** | Operator → Architect | Organization requires self-hosted or air-gapped operation |
-| **Isolation requirement** | Operator → Architect | Multiple projects require dedicated memory partitions |
+| **Slot pressure** | Free → Creator | User attempts to activate 4th pack |
+| **Memory limitation** | Free → Creator | Standard memory depth constrains project complexity |
+| **Governance need** | Creator → Architect | Advanced governance insufficient for compliance |
+| **Deployment sovereignty** | Creator → Architect | Organization requires self-hosted or air-gapped operation |
+| **Isolation requirement** | Creator → Architect | Multiple projects require dedicated memory partitions |
 | **Scale demand** | Architect → Custom | 12 slots insufficient for organizational scope |
 
 ### Upgrade Flow
@@ -291,121 +453,73 @@ Value-weighted token budget allocation with contention arbitration. Real-time vi
 
 ---
 
-## 9. Quarry Governance
+## 16. User Journey
 
-### Asset Categories
+```
+Homepage → Browse Free Templates → Pick a template → Start building
+                                         ↓
+                              Hit slot limit → See upgrade prompt
+                                         ↓
+                              Creator ($29) or Architect ($79)
+                                         ↓
+                              Template Generator ($19) → Custom templates
+                                         ↓
+                              Capability Manifest → Explore full system
+```
 
-1. **Capabilities** — Atomic execution units
-2. **Engines** — Compound execution pipelines
-3. **Meta-Engines** — Multi-engine orchestration layers
-4. **Pipelines** — Sealed resolver chains
-5. **Templates** — Starter project scaffolds
-6. **Agents** — Composable Minds (cognitives)
-7. **Deployment Rights** — Self-hosting tiers
-8. **Governance Tools** — Admin/compliance instruments
+### Key Conversion Points
 
-### Visibility States
-
-| State | Meaning |
-|-------|---------|
-| `hidden` | Internal only. Not shown anywhere. |
-| `baseline` | Operational for all users. Not displayed as purchasable. |
-| `tier_exposed` | Visible in admin context. May inform pack composition. |
-| `public_curated` | Surfaced as artifact pack on /upgrade. |
-
-### Scoring Model
-
-Each asset is evaluated on: Value Density (0.22), Revenue Impact (0.22), Differentiation (0.28), Stability (0.12), Maintenance Load inverse (0.16). Differentiation weighting elevated from 0.20 to 0.28 to prioritize substrate-native density.
+1. **Templates page** — 30 free templates remove friction
+2. **Template Generator** — $19 one-time for custom generation
+3. **Pack activation** — slot pressure drives tier upgrades
+4. **Capability Manifest** — developer confidence through transparency
 
 ---
 
-## 10. Route Architecture
+## 17. Revenue Streams
 
-| Route | Purpose |
-|-------|---------|
-| `/upgrade` | Single pricing & artifact capacity page |
-| `/pricing` | Redirects to `/upgrade` |
-| `/store` | Redirects to `/upgrade` |
-| `/marketplace` | Redirects to `/upgrade` |
-| `/engines` | Redirects to `/upgrade` |
-| `/capabilities` | Redirects to `/upgrade` |
-| `/admin/quarry` | Internal asset registry (admin only) |
-| `/licensing` | LNCHBL deployment (preserved) |
-| `/composable-cognitives` | Minds marketplace (preserved) |
+| Stream | Type | Price | Description |
+|--------|------|-------|-------------|
+| **Free tier** | Freemium | $0/mo | 3 slots, standard memory |
+| **Creator** | Subscription | $29/mo | 6 slots, expanded capabilities |
+| **Architect** | Subscription | $79/mo | 12 slots, full governance, self-hosted |
+| **Architect Custom** | Sales-led | Custom | Dedicated instances, SOC2 |
+| **Template Generator** | One-time | $19 | Custom AI template creation |
+| **Capability Depot** | One-time | Varies | Licensed capability artifacts (future) |
+| **Composable Cognitives** | Per-agent | Varies | AI agent marketplace (active) |
 
 ---
 
-## 11. Internal Taxonomy Firewall
+## 18. Stripe Product IDs
 
-### Removed from Public UI
-
-- Crown Jewel / Crown Jewel Pipeline
-- Meta-Engine
-- Resolver Swarm
-- Immunity Mesh
-- Crystallized Pipeline
-- Value Density Score
-- Strategic Weight
-
-### Retained in Code
-
-All internal naming conventions remain in source code, admin interfaces, internal documentation, and Quarry asset records.
+| Product | Stripe Product ID | Stripe Price ID | Amount |
+|---------|------------------|----------------|--------|
+| Creator (monthly) | `prod_TzwJfkmkooYhwU` | `price_1T1wR7Q7FtTiAL4a63bTsEk7` | $29/mo |
+| Architect (monthly) | `prod_TzwJm6Ji4E3Vca` | `price_1T1wR9Q7FtTiAL4aRHhQwX0m` | $79/mo |
+| Template Generator | `prod_TwSqj6y5PfMkPy` | — | $19 one-time |
 
 ---
 
-## 12. Public Messaging
+## 19. Pack Overlap Analysis
 
-**Do say:**
-- Persistent Memory
-- Composable Agents
-- Structured System Depth
-- Deployment Flexibility
-- Artifact Capacity
-- Unified Runtime
+| Pack Pair | Overlap % | Verdict |
+|-----------|----------|---------|
+| Persistent Memory ↔ Dedicated Partitions | 15% | Distinct: self-organization vs. isolation |
+| Persistent Memory ↔ Context Intelligence | 10% | Distinct: retention vs. assembly |
+| Agent Composer ↔ Multi-Agent Ops | 20% | Distinct: individual evolution vs. collective coordination |
+| Threat Intelligence ↔ Incident Response | 12% | Distinct: detection vs. recovery |
+| Threat Intelligence ↔ Zero-Trust | 18% | Distinct: behavioral analysis vs. policy enforcement |
+| Deep Research ↔ Strategic Intelligence | 15% | Distinct: gathering vs. synthesis |
+| Predictive Analytics ↔ Capacity Management | 22% | Distinct: forecasting vs. allocation |
+| Runtime Observability ↔ Capacity Management | 18% | Distinct: causal analysis vs. resource planning |
+| Governance ↔ Zero-Trust | 25% | Distinct: audit provenance vs. continuous enforcement |
+| Quality Assurance ↔ Runtime Observability | 12% | Distinct: output validation vs. system causation |
 
-**Don't say:**
-- 525+ capabilities
-- 76 engines
-- 300+ pipelines
-- 800+ artifacts
-- Individual engine pricing
-- Any count of internal assets
-
----
-
-## 13. Revenue Sequencing
-
-### Phase 1 — Stabilization (Current)
-- Single `/upgrade` page live with equal-slot model
-- All legacy marketplace routes redirected
-- Quarry seeded with 24 artifact packs
-- Marketing focus: Persistent Memory, Composable Agents, System Depth, Deployment Flexibility
-
-### Phase 2 — Quarry Expansion
-- Use scoring to identify high-value assets for pack composition updates
-- Enable LNCHBL deployment rights as Architect Quarry items
-- New assets auto-flow through Quarry pipeline
-
-### Phase 3 — Dynamic Growth
-- Tier upgrades driven by capacity additions
-- Enterprise custom deals reference Quarry asset catalog
-- Pack versioning enables non-breaking composition improvements
+**Maximum observed overlap: 25%** — below 30% threshold. No merges required.
 
 ---
 
-## 14. Top 5 Highest-Density Packs
-
-| Rank | Pack | Density Signal |
-|------|------|----------------|
-| 1 | **Incident Response** | Atomic multi-subsystem recovery with blast radius containment |
-| 2 | **Background Optimization** | Full-runtime traversal with compound improvement accumulation |
-| 3 | **Capacity Management** | Value-weighted allocation with dynamic pricing and contention arbitration |
-| 4 | **Data Pipeline** | Multi-signal routing with provider arbitrage |
-| 5 | **Strategic Intelligence** | Full operational graph synthesis with hypothesis validation |
-
----
-
-## 15. Validation Checklist
+## 20. Validation Checklist
 
 - [x] All packs = 1 slot (equal-weight model)
 - [x] 24 packs total
@@ -417,22 +531,45 @@ All internal naming conventions remain in source code, admin interfaces, interna
 - [x] Overlap analysis completed — max 25%
 - [x] Differentiation weighting at 0.28
 - [x] Emergence clauses documented internally
-- [ ] /upgrade route updated with equal-slot model
-- [ ] Baseline items marked (visibility = 'baseline')
+- [x] 3 tiers: Free ($0), Creator ($29), Architect ($79)
+- [x] 30 free templates live at /templates
+- [x] Template Generator ($19) integrated
+- [x] Crown Jewel gatekeeping implemented
+- [x] Crystallized pipeline gatekeeping implemented
+- [x] Capability Manifest at /docs/manifest
+- [x] Navigation updated with Templates + Manifest
+- [x] Homepage CTAs point to /templates
+- [x] Stripe product IDs documented
+- [x] Pricing harmonized across all surfaces
+- [ ] Quarry baseline items fully tagged (visibility = 'baseline')
+- [ ] Template Generator Stripe checkout tested end-to-end
 
 ---
 
-## 16. Rollback
+## 21. Rollback
 
 If artifact slot capacity logic fails:
 - Revert to static tier definitions in `/upgrade`
 - Quarry data persists independently
 - All original asset/engine/template pages remain intact as files
 - Baseline technology continues operating regardless of billing state
+- Crown Jewel gate defaults to `isCrownJewelReleased() → true` (fail-open for non-jewels)
 
 ---
 
-## Status: PAUSED — Awaiting Founder Approval
+## 22. Builder Isolation
+
+- Capability-scoped execution tokens
+- Per-project namespaces (hard isolation)
+- Governor-enforced boundaries
+- No direct module invocation
+- Artifact exports include only user-created assets
+
+> "I compose intelligence. I don't control the engine."
+
+---
+
+## Status: FOUNDER REVIEW — Awaiting Approval
 
 Do not auto-deploy. Do not auto-publish.
 
