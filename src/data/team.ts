@@ -20,6 +20,7 @@ export interface TeamMember {
   email: string;
   expertise: string[];
   isFounder?: boolean;
+  orcid?: string;
 }
 
 export interface Department {
@@ -43,6 +44,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     email: "founder@CMPSBL.com",
     expertise: ["AI Architecture", "Persistent Memory", "Cognitive Systems", "Multi-Provider Routing", "Self-Evolving Code"],
     isFounder: true,
+    orcid: "https://orcid.org/0009-0001-4237-1243",
   },
   {
     name: "Dr. Sarah Chen",

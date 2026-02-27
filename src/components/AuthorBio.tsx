@@ -27,7 +27,13 @@ export function AuthorBio({ publishDate, readTime, authorName }: AuthorBioProps)
         <div className="flex-1">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
             <div>
-              <h3 className="text-xl font-bold text-foreground">{member.name}</h3>
+              <h3 className="text-xl font-bold text-foreground">
+                {member.orcid ? (
+                  <a href={member.orcid} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                    {member.name}
+                  </a>
+                ) : member.name}
+              </h3>
               <p className="text-sm text-muted-foreground">{member.role}</p>
               <div className="flex gap-2 mt-2">
                 <a href="https://www.linkedin.com/company/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
