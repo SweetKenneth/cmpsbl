@@ -1,6 +1,6 @@
 /**
  * Atlas Control Plane
- * v7.0.0 — Centralized Governance & Execution Layer
+ * Centralized Governance & Execution Layer
  * 
  * Atlas is the single source of truth for:
  * - Capability toggles (SEBA, CLM, individual modules)

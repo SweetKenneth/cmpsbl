@@ -1,6 +1,6 @@
 /**
  * Crown Jewel Gate — Strategic Asset Protection
- * v10.5.0 ARCHITECT — Tier Split, Black-Box Enforcement & Category Gating
+ * Tier Split, Black-Box Enforcement & Category Gating
  * 
  * Architecture Crown Jewels: admin_only, never visible
  * Experience Crown Jewels: black-boxed, tiered (Creator/Architect)

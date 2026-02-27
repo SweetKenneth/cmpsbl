@@ -1,6 +1,6 @@
 /**
  * Mesh Capability Discovery Engine
- * v10.1.0 — Autonomous gap analysis, capability recommendation, and manifest expansion
+ * Autonomous gap analysis, capability recommendation, and manifest expansion
  * 
  * Analyzes mesh receipts to find:
  * 1. GAPS: Intents that failed or partially resolved (modules asking questions nobody could answer)

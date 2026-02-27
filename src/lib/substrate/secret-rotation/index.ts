@@ -1,6 +1,6 @@
 /**
  * Secret Rotation Manager
- * v1.0.0 — Automated credential and API key rotation
+ * Automated credential and API key rotation
  * 
  * Manages rotation schedules, generates new credentials,
  * and coordinates zero-downtime secret transitions.

@@ -1,6 +1,6 @@
 /**
  * SEBA Proposal Store
- * v1.0.0 — Persistent storage for evolution proposals
+ * Persistent storage for evolution proposals
  * 
  * Ensures all SEBA proposals are stored in evolution_proposals table
  * so Atlas can retrieve and display them for human review/approval.
