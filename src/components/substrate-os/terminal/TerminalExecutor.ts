@@ -5050,7 +5050,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══ INFRASTRUCTURE COMMANDS (v10.5.4) ═══
-    else if (base.startsWith('cron.') || base.startsWith('ratelimit.') || base.startsWith('snapshot.') || base.startsWith('analytics.') || base.startsWith('stream.') || base.startsWith('file.') || base.startsWith('nl.')) {
+    else if (base.startsWith('cron.') || base.startsWith('ratelimit.') || base.startsWith('snapshot.') || base.startsWith('cap.') || base.startsWith('stream.') || base.startsWith('file.') || base.startsWith('nl.')) {
       try {
         // Lazy-register infra handlers on first use
         const { registerInfraHandlers } = await import('@/lib/terminal/infra-handlers');
