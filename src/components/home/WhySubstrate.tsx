@@ -334,12 +334,12 @@ export function WhySubstrate() {
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Nine production modules working together — giving your AI 
-            <span className="text-foreground font-medium"> intelligent routing</span>, 
-            <span className="text-foreground font-medium"> persistent memory</span>, 
-            <span className="text-foreground font-medium"> autonomous learning</span>, and 
-            <span className="text-foreground font-medium"> enterprise-grade security</span>.
-          </p>
+             Nine production modules — your AI gets
+             <span className="text-foreground font-medium"> intelligent routing</span>, 
+             <span className="text-foreground font-medium"> permanent memory</span>, 
+             <span className="text-foreground font-medium"> autonomous learning</span>, and 
+             <span className="text-foreground font-medium"> adaptive security</span>. All included in every plan.
+           </p>
         </motion.div>
         
         {/* Module Grid — 3 columns on desktop, 9 cards */}

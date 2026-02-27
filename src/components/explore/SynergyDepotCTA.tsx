@@ -60,8 +60,8 @@ export function SynergyDepotCTA() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Ready-made orchestration pipelines and downloadable artifacts for production-grade AI systems.
-          </p>
+             Pre-built orchestration pipelines and downloadable capability artifacts — ready for production AI systems.
+           </p>
         </motion.div>
 
         {/* Two-Column Cards */}
