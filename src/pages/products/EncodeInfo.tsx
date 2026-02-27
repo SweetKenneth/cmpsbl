@@ -1,6 +1,6 @@
 /**
  * Encode Info — Execution & Generation Module Product Page
- * SPARTA Epoch — ENCODE entity
+ * ENCODE entity
  */
 
 import { SEO } from "@/components/SEO";

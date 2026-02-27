@@ -1,6 +1,6 @@
 /**
  * MODERNIZER Module — Self-Evolution & Code Intelligence
- * SPARTA Epoch — Substrate Evolution Engine
+ * Substrate Evolution Engine
  * 
  * Provides:
  * - Code scanning and analysis

@@ -1,6 +1,6 @@
 /**
- * promptfluid® Nexus Module v5.0.0
- * ARCHITECT Epoch — Free-Tier Multi-Provider AI Routing & Fleet Governance
+ * promptfluid® Nexus Module
+ * Free-Tier Multi-Provider AI Routing & Fleet Governance
  * 
  * The nervous system for all AI provider interactions:
  * - Fleet-managed routing across 13 free-tier providers
