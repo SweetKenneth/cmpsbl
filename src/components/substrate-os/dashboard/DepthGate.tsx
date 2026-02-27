@@ -20,8 +20,8 @@ const TIER_LABELS: Record<SubstrateRole, string> = {
 
 const TIER_PRICES: Record<SubstrateRole, string> = {
   free: '',
-  creator: '$29/mo',
-  architect: '$79/mo',
+  creator: '$9/mo',
+  architect: '$19/mo',
   governor: '',
 };
 

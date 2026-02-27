@@ -11,7 +11,10 @@ const REQUIRED_ROUTES = [
   { path: '/auth', label: 'Authentication' },
   { path: '/modules', label: 'Modules Hub' },
   { path: '/about', label: 'About' },
-  { path: '/pricing', label: 'Pricing' },
+  { path: '/pricing', label: 'Pricing / Upgrade' },
+  { path: '/docs', label: 'Documentation' },
+  { path: '/status', label: 'Status' },
+  { path: '/packs', label: 'Packs' },
 ];
 
 export function checkRouteRegistry(): AuditFinding[] {

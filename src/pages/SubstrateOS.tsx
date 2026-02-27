@@ -249,7 +249,10 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
 
 function getRoleTier(role: string, isGovernor: boolean): SubstrateTier {
   if (isGovernor) return 'cmpsbl';
-  if (role === 'operator') return 'architect';
+  if (role === 'architect') return 'architect';
+  if (role === 'creator') return 'creator';
+  // Legacy mapping: 'operator' role from DB maps to 'creator' tier
+  if (role === 'operator') return 'creator';
   return 'free';
 }
 
@@ -791,6 +794,11 @@ const DashboardContent = memo(function DashboardContent({
         <DashboardMetricsHero />
         <MatrixIntegrityPanel report={integrityReport} />
         
+        {/* Matrix Breaker Map — Architect+ */}
+        <DepthGate requiredTier="architect" featureLabel="Matrix Breaker Map" description="Real-time circuit breaker status across all Matrix Nodes">
+          <MatrixBreakerMap nodes={matrixNodes} />
+        </DepthGate>
+
         {/* Depth-dimmed sections */}
         <DepthGate requiredTier="creator" featureLabel="Capacity Monitor" description="Real-time artifact slot and resource tracking">
           <CapacityMonitor />
