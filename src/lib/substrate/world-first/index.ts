@@ -128,7 +128,7 @@ export {
 
 /**
  * World-First Enhancement Registry
- * Complete catalog of SPARTA Epoch enhancements
+ * Complete catalog of enhancements
  */
 export const worldFirstEnhancements = {
   get version() { return getMetric('version'); },
