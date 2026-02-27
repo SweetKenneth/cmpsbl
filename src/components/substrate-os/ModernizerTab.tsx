@@ -1,5 +1,5 @@
 /**
- * Evolution Lifecycle Tab — SPARTA Epoch Self-Improvement Engine
+ * Evolution Lifecycle Tab — Self-Improvement Engine
  * Dedicated tab for substrate self-upgrade system with:
  * - Easy copy proposal IDs
  * - Working Apply/Rollback buttons

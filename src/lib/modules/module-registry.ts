@@ -1,5 +1,5 @@
 /**
- * Execution Surface Registry — SPARTA Epoch
+ * Execution Surface Registry
  * 1 Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones = 24 surfaces
  * 
  * visibility:

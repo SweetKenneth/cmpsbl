@@ -1,5 +1,5 @@
 /**
- * Quick Actions Panel — SPARTA Epoch
+ * Quick Actions Panel
  * Premium glassmorphic action cards with animated feedback
  */
 

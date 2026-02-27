@@ -1,6 +1,6 @@
 /**
  * Public Metrics Store
- * CONTRACT Epoch — Single Source of Truth for all public-facing metrics
+ * Single Source of Truth for all public-facing metrics
  * 
  * This Zustand store serves as the canonical source for all marketing numbers,
  * version info, and capability counts across the entire substrate.
@@ -76,7 +76,7 @@ export interface PublicMetricsStore {
 }
 
 // =============================================================================
-// DEFAULT VALUES (SPARTA Epoch verified counts)
+// DEFAULT VALUES (verified counts)
 // =============================================================================
 
 export const DEFAULT_METRICS: PublicMetrics = {

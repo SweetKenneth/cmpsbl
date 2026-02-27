@@ -1,10 +1,10 @@
 /**
- * Enhanced Terminal — SPARTA EPOCH
+ * Enhanced Terminal
  * Space Age Bio-Hacking Neural Interface Terminal
  * Full-featured terminal with comprehensive commands, autocomplete,
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
  * 
- * SPARTA Epoch Features:
+ * Features:
  * - 360+ terminal commands across 24 Matrix Nodes
  * - 525+ capabilities across 24 modules
  * - Improved visual feedback for command execution

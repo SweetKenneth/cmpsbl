@@ -1,9 +1,9 @@
 /**
- * Terminal Boot Screen — SPARTA Epoch
+ * Terminal Boot Screen
  * Unique neural-organic visualization of the 24 execution surfaces
  * Mobile-friendly with no mid-word line breaks
  * 
- * SPARTA Epoch:
+ * Architecture:
  * - 300 synergy pipelines, 125 executors, 32 S-tier discoveries
  * - 24 execution surfaces: 1 kernel + 9 modules + 5 mesh overlays + 9 zones
  * - 525+ capabilities, 100 engines (76 base + 24 meta)
@@ -62,8 +62,8 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║                CMPSBL® OS — SPARTA                    ║
-  ║               SPARTA Epoch Cognitive OS                     ║
+  ║                CMPSBL® OS Substrate                    ║
+  ║               Cognitive OS                                  ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
   ║    ┏━━━━━━━━━━ KERNEL LAYER ━━━━━━━━━━┓                   ║
