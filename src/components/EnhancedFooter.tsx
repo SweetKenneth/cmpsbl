@@ -36,6 +36,7 @@ export function EnhancedFooter() {
         { name: "AI Operating System", href: "/ai-operating-system", highlight: true },
         { name: "All Modules", href: "/modules" },
         { name: "Substrate", href: "/substrate" },
+        { name: "Architecture", href: "/architecture" },
         { name: "Proof Mode", href: "/proof" },
         { name: "Documentation", href: "/documentation" },
       ]
@@ -72,6 +73,7 @@ export function EnhancedFooter() {
       links: [
         { name: "About", href: "/about" },
         { name: "Contact", href: "/contact" },
+        { name: "Careers", href: "/careers" },
         { name: "Investors", href: "/investors" },
         { name: "System Status", href: "/status" },
         { name: "Privacy", href: "/privacy" },
