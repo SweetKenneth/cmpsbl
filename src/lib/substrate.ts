@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Substrate Client
- * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
+ * CONTRACT Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
  *
  * CORE (standalone kernel)
  *   → CCR Layer 0 (zones: SYSTEM, BRAIN, MEMORY, DREAM)
