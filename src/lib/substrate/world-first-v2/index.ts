@@ -93,7 +93,7 @@ export {
 
 /**
  * World-First Enhancement Registry v2
- * Complete catalog of SPARTA Epoch enhancements
+ * Complete catalog of enhancements
  */
 export const worldFirstEnhancementsV2 = {
   get version() { return getMetric('version'); },
@@ -201,7 +201,7 @@ export const worldFirstEnhancementsV2 = {
 };
 
 /**
- * Combined Enhancement Registry (SPARTA Epoch consolidated)
+ * Combined Enhancement Registry
  */
 export const combinedEnhancementRegistry = {
   v1: {
