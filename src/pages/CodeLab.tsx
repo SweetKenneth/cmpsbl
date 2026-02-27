@@ -1,6 +1,6 @@
 /**
- * CodeLab — Free Developer Playground for the CMPSBL World Engine
- * SPARTA Epoch — A unique space for devs to explore, build, and launch with free templates
+ * CodeLab — Free Developer Playground for CMPSBL
+ * ARCHITECT Epoch — A unique space for devs to explore, build, and launch with free templates
  */
 
 import { useState } from "react";
@@ -59,7 +59,7 @@ const categoryMeta: Record<string, { icon: React.ElementType; color: string; lab
   vision: { icon: Eye, color: "text-blue-500", label: "Vision" },
   dream: { icon: Moon, color: "text-purple-500", label: "Dream" },
   system: { icon: Settings, color: "text-slate-500", label: "System" },
-  world_engine: { icon: Layers, color: "text-amber-500", label: "World Engine" },
+  world_engine: { icon: Layers, color: "text-amber-500", label: "Substrate" },
 };
 
 export default function CodeLab() {
@@ -224,7 +224,7 @@ export default function CodeLab() {
               <div className="flex items-center gap-2 shrink-0">
                 <Layers className="w-4 h-4 text-cyan-500" />
                 <span className="font-mono font-bold">{modulesCount}</span>
-                <span className="text-muted-foreground">Entities</span>
+                <span className="text-muted-foreground">Modules</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <Zap className="w-4 h-4 text-amber-500" />

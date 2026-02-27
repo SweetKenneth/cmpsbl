@@ -104,7 +104,7 @@ export default function Register() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>Register as Observer | CMPSBL®</title>
-        <meta name="description" content="Register for observer-level access to Clockless documentation and standards materials." />
+        <meta name="description" content="Register for observer-level access to CMPSBL documentation and standards materials." />
       </Helmet>
 
       <PublicNav />
@@ -200,7 +200,7 @@ export default function Register() {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                <span>24-module architecture reference materials</span>
+                <span>Production module architecture reference materials</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
