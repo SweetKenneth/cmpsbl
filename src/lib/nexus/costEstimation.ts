@@ -1,6 +1,6 @@
 /**
  * NEXUS Cost Estimation Engine
- * v7.0.0 — Budget Governance & Predictive Pricing
+ * Budget Governance & Predictive Pricing
  * 
  * Missing capability: Pre-request cost estimation and
  * budget-aware routing decisions.

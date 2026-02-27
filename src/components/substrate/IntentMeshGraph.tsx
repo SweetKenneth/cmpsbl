@@ -1,6 +1,6 @@
 /**
  * Intent Mesh Visualization — Interactive Force-Directed Graph Component
- * v10.5.4 ARCHITECT — Replaces static copy with a live mesh diagram
+ * Replaces static copy with a live mesh diagram
  *
  * Renders an SVG-based force simulation showing module nodes
  * with connections representing resolver relationships.

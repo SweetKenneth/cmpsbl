@@ -1,6 +1,6 @@
 /**
  * NEXUS Batch Routing Engine
- * v7.0.0 — Concurrent Request Management & Provider Failover
+ * Concurrent Request Management & Provider Failover
  * 
  * Missing capability: Batch request processing with
  * intelligent load balancing and failover chains.

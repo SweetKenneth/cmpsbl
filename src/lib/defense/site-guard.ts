@@ -1,6 +1,6 @@
 /**
  * Defense Site Guard — Active bot detection for the live website
- * v10.3.0 — Lightweight client-side defense layer
+ * Lightweight client-side defense layer
  * 
  * Installs:
  * 1. Browser fingerprint collection (non-invasive)

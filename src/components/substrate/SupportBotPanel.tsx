@@ -1,6 +1,6 @@
 /**
  * Support Bot Panel
- * v1.0.0 — Governed Evolving Support System UI
+ * Governed Evolving Support System UI
  * 
  * Interactive chat interface for the substrate-integrated support bot.
  */

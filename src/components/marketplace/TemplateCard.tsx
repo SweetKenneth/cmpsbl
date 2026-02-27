@@ -1,7 +1,7 @@
 /**
  * TemplateCard — Premium visual template card with rarity, dynamic names, and rarity images
  * Mobile-optimized, designed to make users want to own it
- * v6.0.1 - Fixed checkout and like functionality
+ * Fixed checkout and like functionality
  */
 
 import { useState } from 'react';

@@ -1,6 +1,6 @@
 /**
  * Module-Level Error Boundary
- * v10.5.4 ARCHITECT — Prevents single module failures from crashing the UI
+ * Prevents single module failures from crashing the UI
  *
  * Wraps substrate module views with graceful degradation.
  */
