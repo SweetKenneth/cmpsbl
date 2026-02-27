@@ -5,6 +5,7 @@
  */
 import { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { BASELINE_HIGHLIGHTS } from '@/lib/substrate/baseline-pillars';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
