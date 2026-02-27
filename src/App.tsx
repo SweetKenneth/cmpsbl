@@ -245,6 +245,16 @@ const App = () => {
   // Always allow substrate init — no gates, all systems operational
   const substrateAutoInit = true;
 
+  // Global safety net for unhandled promise rejections (prevents white-screen crashes)
+  useEffect(() => {
+    const handleRejection = (event: PromiseRejectionEvent) => {
+      console.error("[App] Unhandled rejection:", event.reason);
+      event.preventDefault(); // Prevent crash
+    };
+    window.addEventListener("unhandledrejection", handleRejection);
+    return () => window.removeEventListener("unhandledrejection", handleRejection);
+  }, []);
+
   // Install mobile watchdog + interaction tracking once on mount (dynamic imports)
   const cleanupRef = useRef<(() => void)[]>([]);
   useEffect(() => {

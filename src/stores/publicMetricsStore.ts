@@ -163,7 +163,28 @@ export const usePublicMetricsStore = create<PublicMetricsStore>()(
     }),
     {
       name: 'substrate-public-metrics',
-      version: 1,
+      version: 2,
+      migrate: (persistedState: any, version: number) => {
+        // Ensure all DEFAULT_METRICS keys exist after schema changes
+        if (version < 2 && persistedState && typeof persistedState === 'object') {
+          return {
+            ...persistedState,
+            metrics: { ...DEFAULT_METRICS, ...(persistedState.metrics || {}) },
+          };
+        }
+        return persistedState;
+      },
+      merge: (persistedState: any, currentState: any) => {
+        // Deep merge metrics to prevent undefined fields from stale localStorage
+        if (persistedState && typeof persistedState === 'object') {
+          return {
+            ...currentState,
+            ...persistedState,
+            metrics: { ...DEFAULT_METRICS, ...(persistedState.metrics || {}) },
+          };
+        }
+        return currentState;
+      },
     }
   )
 );
