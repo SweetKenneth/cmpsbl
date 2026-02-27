@@ -449,7 +449,7 @@ const HowPromptFluidWorks = () => {
                 <strong>Role:</strong> Autonomous App and Site Builder
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                <Link to="/blog/promptfluid-studio-build-apps-that-think" className="text-primary hover:underline">
+                <Link to="/blog/cmpsbl-studio-build-apps-that-think" className="text-primary hover:underline">
                   Studio
                 </Link> leverages Cascade AI to build complete, deployable applications from natural language descriptions. 
                 Powered by React, Vite, Tailwind, and TypeScript, Studio doesn't just generate code—it understands your 
@@ -921,7 +921,7 @@ const HowPromptFluidWorks = () => {
               </Link>
 
               <Link 
-                to="/blog/promptfluid-studio-build-apps-that-think" 
+                to="/blog/cmpsbl-studio-build-apps-that-think" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
                 <h3 className="text-lg font-semibold mb-2">STUDIO Module Guide</h3>
