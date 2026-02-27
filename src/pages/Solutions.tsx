@@ -11,67 +11,58 @@ export default function Solutions() {
   const solutions = [
     {
       icon: Brain,
-      name: "CMPSBL Substrate",
-      tagline: "Cognitive Infrastructure OS",
-      description: "The cognitive operating system. Modules, protective mesh overlays, convergence zones — persistent memory, self-learning, multi-provider routing, and self-evolution.",
-      features: ["Integrated execution surfaces", "Mesh overlays", "Persistent memory system", "Self-learning Dream Cycles", "Multi-provider AI routing", "175,000+ lines production code"],
-      metrics: ["SPARTA Epoch", "Live", "Enterprise Ready"],
-      link: "/substrate"
-    },
-    {
-      icon: Shield,
-      name: "DEFENSE Mesh",
-      tagline: "Enterprise Security Overlay",
-      description: "AI-powered threat detection and bot defense. Behavioral analysis, real-time blocking, and adaptive protection for web applications.",
-      features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "WordPress integration", "Adaptive CAPTCHA system", "Device reputation scoring"],
-      metrics: ["Live", "WordPress Ready", "Enterprise Grade"],
-      link: "/projects"
-    },
-    {
-      icon: Zap,
-      name: "Orchestration",
-      tagline: "Production-Ready Cognitive Infrastructure",
-      description: "Governed, versioned, enterprise-grade cognitive orchestrations via Creator and Architect tiers.",
-      features: ["Production orchestrations", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees", "Composable architecture"],
-      metrics: ["Enterprise Grade", "OEM Licensed", "Production Ready"],
-      link: "/pricing"
-    },
-    {
-      icon: Brain,
       name: "Persistent Memory",
-      tagline: "AI Memory That Lasts",
-      description: "Add persistent memory to any agent in under an hour. No rewrites, no new frameworks — your AI just stops forgetting.",
-      features: ["Drop-in integration", "Multi-scope memory", "Automatic compression", "Cross-session context", "Developer-friendly API", "Free tier available"],
-      metrics: ["FREE", "1-Hour Setup", "Any Agent"],
+      tagline: "AI Memory That Lasts Forever",
+      description: "Add persistent memory to any AI agent in under an hour. Multi-tier recall across sessions — your AI never forgets a user, a preference, or a context.",
+      features: ["Drop-in integration — no rewrites", "Multi-scope memory (user, project, global)", "Automatic compression & retrieval", "Cross-session context recall", "Works with any framework", "Free tier available"],
+      metrics: ["FREE", "< 1 Hour Setup", "Any Agent"],
       link: "/persistent-memory"
     },
     {
+      icon: Zap,
+      name: "NEXUS Router",
+      tagline: "Intelligent Multi-Provider Routing",
+      description: "Routes every AI request to the optimal provider based on task complexity, cost, and latency. Automatic failover, zero vendor lock-in.",
+      features: ["13+ AI providers supported", "Automatic failover & load balancing", "Cost optimization per request", "Task-aware model selection", "Zero-downtime provider switching", "Latency-optimized routing"],
+      metrics: ["13+ Providers", "< 100ms Routing", "Zero Lock-In"],
+      link: "/upgrade"
+    },
+    {
+      icon: Shield,
+      name: "DEFENSE Shell",
+      tagline: "Adaptive Security Layer",
+      description: "Behavioral threat detection, intelligent rate limiting, and governance rules that learn from attack patterns. Security that adapts in real-time.",
+      features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "Adaptive rate limiting", "Governance rule enforcement", "Enterprise audit logging"],
+      metrics: ["Adaptive", "Real-Time", "Enterprise Grade"],
+      link: "/upgrade"
+    },
+    {
+      icon: Brain,
+      name: "Artifact Packs",
+      tagline: "Modular Capability Upgrades",
+      description: "24 activatable packs across 6 strategic domains. Each pack = 1 slot. Choose the exact capabilities your AI needs — swap anytime.",
+      features: ["24 packs across 6 domains", "Equal-weight slot system", "Activate and swap instantly", "All packs visible to all tiers", "Domain-organized catalog", "Builder to Architect scaling"],
+      metrics: ["24 Packs", "6 Domains", "1 Slot Each"],
+      link: "/packs"
+    },
+    {
       icon: Globe,
-      name: "Multi-Provider Routing",
-      tagline: "Zero Vendor Lock-In",
-      description: "Intelligent routing across 13 AI providers. Automatic failover, cost optimization, and quality-based selection.",
-      features: ["13 AI providers", "Automatic failbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero-downtime switching"],
-      metrics: ["13 Providers", "Running", "Optimized"],
-      link: "/blog/ai-triad-intelligent-routing"
+      name: "LNCHBL (Self-Hosted)",
+      tagline: "Your Infrastructure, Full Control",
+      description: "Deploy the complete CMPSBL substrate on your own servers. Air-gapped, sovereign, and fully compliant. Architect tier includes deployment rights.",
+      features: ["Full substrate deployment", "Air-gapped security option", "Data sovereignty guaranteed", "Compliance-ready configuration", "Dedicated memory partitions", "Organization workspaces"],
+      metrics: ["Self-Hosted", "Sovereign", "Compliant"],
+      link: "/enterprise"
     },
     {
       icon: Code,
       name: "CodeLab",
       tagline: "Interactive Development Environment",
-      description: "Execute and test capabilities in real-time. Live REPL, template remixing, and instant feedback for rapid development.",
-      features: ["Live code execution", "Template remixing", "Real-time preview", "API testing", "Export capabilities", "Free for all users"],
-      metrics: ["FREE", "Real-Time", "Developer Tool"],
+      description: "Execute capabilities, remix templates, and test pipelines in real-time. The fastest way to prototype with CMPSBL's infrastructure.",
+      features: ["Live code execution", "30 free templates", "Real-time preview", "API testing sandbox", "Export to production", "Free for all users"],
+      metrics: ["FREE", "30 Templates", "Real-Time"],
       link: "/codelab"
     },
-    {
-      icon: Lock,
-      name: "Enterprise Substrate",
-      tagline: "Self-Hosted Control",
-      description: "Full enterprise deployment with governance, compliance, and dedicated support. Your infrastructure, our cognitive layer.",
-      features: ["Self-hosted option", "Full governance", "Compliance ready", "Dedicated support", "Custom SLAs", "White-label available"],
-      metrics: ["Enterprise", "Self-Hosted", "Compliant"],
-      link: "/substrate/licensing"
-    }
   ];
 
   return (
@@ -108,10 +99,10 @@ export default function Solutions() {
           </Badge>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-            Solutions That Ship
+            Everything Your AI Needs
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl">
-            Real products. Real infrastructure. Built to work without supervision. 100+ projects shipped over 15 years.
+            Memory, routing, security, orchestration, and deployment — production-ready modules that work together or independently.
           </p>
         </div>
       </section>
@@ -181,7 +172,7 @@ export default function Solutions() {
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
             <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
-              "We're closers. We ship real systems."
+              "Infrastructure that compounds — every day it runs, it gets smarter."
             </p>
           </blockquote>
         </div>
@@ -190,20 +181,20 @@ export default function Solutions() {
       {/* CTA */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">Ready to Build Together?</h2>
+          <h2 className="text-3xl font-bold mb-4 text-foreground">Start Building Today</h2>
           <p className="text-xl text-muted-foreground mb-8">
-            100+ projects shipped over 15 years. Let's add yours to the list.
+            Free tier. No credit card. Persistent memory in under an hour.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/investors">
+            <Link to="/start-here">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Investor Information
+                Get Started Free
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
-            <Link to="/contact">
+            <Link to="/upgrade">
               <Button size="lg" variant="outline">
-                Contact Team
+                View Plans
               </Button>
             </Link>
           </div>
