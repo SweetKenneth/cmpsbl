@@ -62,17 +62,17 @@ export default function Architecture() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Cognitive Kernel Architecture | CMPSBL"
-        description="Layered cognitive kernel: CORE boot authority, execution surface modules, protective mesh overlays, and convergence zones. Hot-swappable, autonomously evolving."
+        description="CMPSBL architecture: CORE boot authority, 9 execution modules, 5 protective layers, and 9 internal infrastructure zones. Hot-swappable, autonomously evolving."
         image="https://cmpsbl.com/og/architecture.jpg"
-        keywords={['cognitive kernel architecture', 'AI substrate layers', 'mesh overlays', 'composable AI architecture', 'modular AI kernel']}
+        keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI architecture', 'modular AI platform', 'AI infrastructure layers']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'What is a cognitive kernel?', answer: 'A cognitive kernel is the boot authority that initializes all substrate layers, maintains the canonical module registry, and orchestrates lifecycle events across execution surfaces.' },
-          { question: 'How many execution surfaces does CMPSBL have?', answer: 'CMPSBL has 24 execution surfaces: 10 public entities, 5 mesh overlays, and 9 convergence zones — all orchestrated by the CORE kernel.' },
-          { question: 'What are mesh overlays?', answer: 'Mesh overlays are protective layers that wrap all modules: DEFENSE (outermost), IMMUNITY, EVOLUTION, INTENT, and GOVERNANCE (innermost). They provide security, resilience, and governed evolution.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL uses a layered boot sequence: CORE initializes all layers, maintains the module registry, and orchestrates lifecycle events across 9 production modules.' },
+          { question: 'How many components does CMPSBL have?', answer: 'CMPSBL has 24 components: 9 public modules, 5 protective layers, 9 internal infrastructure zones, and the CORE boot authority.' },
+          { question: 'What are the protective layers?', answer: 'Five layers wrap all modules: DEFENSE (outermost), IMMUNITY, EVOLUTION, INTENT, and GOVERNANCE (innermost). They provide security, resilience, and governed evolution.' },
         ]}
       />
 
@@ -84,16 +84,16 @@ export default function Architecture() {
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="container mx-auto max-w-5xl px-4 relative">
             <motion.div {...fadeUp} className="max-w-3xl">
-              <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
+        <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
                 <Layers className="w-3 h-3 mr-2" />
-                SPARTA Epoch
+                Production Architecture
               </Badge>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                Layered Cognitive Kernel
+                How CMPSBL Works
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                CMPSBL operates as a layered cognitive kernel — a production-ready AI operating system 
-                that persists, heals, and evolves autonomously without human intervention.
+                A layered orchestration architecture that boots deterministically, heals autonomously, 
+                and evolves without human intervention. 9 modules, 5 protective layers, 9 internal zones.
               </p>
             </motion.div>
           </div>
@@ -162,12 +162,12 @@ export default function Architecture() {
           </div>
         </section>
 
-        {/* Mesh Overlays */}
+        {/* Protective Layers */}
         <section className="border-t border-border">
           <div className="container mx-auto max-w-5xl px-4 py-16">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-2">Mesh Overlays</h2>
-              <p className="text-muted-foreground mb-8">Protective behavioral layers that wrap all modules, ordered outermost to innermost.</p>
+              <h2 className="text-3xl font-bold mb-2">Protective Layers</h2>
+              <p className="text-muted-foreground mb-8">Behavioral layers that wrap all modules, ordered outermost to innermost.</p>
               <div className="space-y-3">
                 {MESHES.map((mesh, i) => (
                   <Card key={mesh.name} className="hover:border-primary/30 transition-colors">
@@ -186,12 +186,12 @@ export default function Architecture() {
           </div>
         </section>
 
-        {/* Hidden Convergence Zones */}
+        {/* Internal Infrastructure */}
         <section className="border-t border-border bg-muted/20">
           <div className="container mx-auto max-w-5xl px-4 py-16">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-2">Hidden Convergence Zones</h2>
-              <p className="text-muted-foreground mb-8">Internal infrastructure zones invisible in the public entity registry but fully monitored.</p>
+              <h2 className="text-3xl font-bold mb-2">Internal Infrastructure</h2>
+              <p className="text-muted-foreground mb-8">Core infrastructure zones that power the substrate — fully monitored, independently scalable.</p>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div>

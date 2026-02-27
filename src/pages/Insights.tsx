@@ -75,7 +75,7 @@ export default function Insights() {
             Explore documentation, architecture, and standards with read-only visibility.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline">SPARTA Epoch</Badge>
+            <Badge variant="outline">Production</Badge>
             <Badge variant="outline">9 Modules</Badge>
             <Badge variant="outline">Read-Only</Badge>
           </div>
@@ -208,7 +208,7 @@ export default function Insights() {
         {/* Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
           <p className="text-sm text-muted-foreground">
-            CMPSBL World Engine by{" "}
+            CMPSBL® by{" "}
             <a 
               href="https://orcid.org/0009-0001-4237-1243" 
               target="_blank" 
@@ -217,7 +217,7 @@ export default function Insights() {
             >
               Kenneth E. Sweet Jr.
             </a>
-            {" "}• CMPSBL® • February 2026
+            {" "}• CMPSBL® • 2026
           </p>
         </div>
       </main>

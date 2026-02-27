@@ -225,8 +225,8 @@ export default function Status() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="System Status | Clockless Substrate"
-        description="Real-time operational status of the CMPSBL Cognitive Substrate — execution surfaces, mesh overlays, and convergence zones."
+        title="System Status | CMPSBL"
+        description="Real-time operational status of the CMPSBL platform — all modules, protective layers, and infrastructure zones."
         canonical="https://cmpsbl.com/status"
         keywords={["system status", "uptime", "CMPSBL status", "substrate health"]}
       />
@@ -241,7 +241,7 @@ export default function Status() {
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">System Status</h1>
           <p className="text-muted-foreground">
-            Real-time health of all substrate execution surfaces · Auto-refreshes every 30 seconds
+            Real-time health of all production modules · Auto-refreshes every 30 seconds
           </p>
         </motion.div>
 
