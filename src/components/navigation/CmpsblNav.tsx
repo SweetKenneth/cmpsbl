@@ -119,6 +119,7 @@ export function CmpsblNav() {
       name: "Solutions",
       icon: Building2,
       items: [
+        { name: "Templates", href: "/templates", description: "30 free production-ready templates", icon: Sparkles, badge: "FREE" },
         { name: "Use Cases", href: "/use-cases", description: "Industry applications", icon: Sparkles },
         { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
         { name: "Upgrade", href: "/upgrade", description: "Choose your artifact capacity", icon: Package },

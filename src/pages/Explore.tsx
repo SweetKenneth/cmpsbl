@@ -102,7 +102,7 @@ export default function Explore() {
       {/* Live System Metrics Bar */}
       <LiveStatsBar />
 
-      {/* Composable Cognitives CTA */}
+      {/* Free Templates CTA */}
       <section className="relative z-10 py-12 sm:py-20 px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -111,11 +111,55 @@ export default function Explore() {
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto"
         >
-          <div className="relative overflow-hidden rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.04] via-card/50 to-orange-500/[0.04] backdrop-blur-sm">
-            {/* Accent bar */}
-            <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500" />
+          <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/[0.04] via-card/50 to-primary/[0.04] backdrop-blur-sm">
+            <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-primary to-emerald-500" />
+            <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-emerald-500/10 blur-[80px] pointer-events-none" />
             
-            {/* Glow */}
+            <div className="relative p-6 sm:p-10 md:p-12 text-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 mb-6"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+                <span className="text-xs font-bold tracking-wide text-emerald-500 uppercase">Every Template is Free</span>
+              </motion.div>
+              
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
+                30 Templates.{" "}
+                <span className="bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">
+                  Zero Paywall.
+                </span>
+              </h2>
+              <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
+                Each template is powered by a Crown Jewel capability from the substrate.
+                Mythic drops, production-ready code, and cognitive superpowers — all free.
+              </p>
+              <Button asChild size="lg" className="px-8 h-13 text-base font-bold gap-2.5 bg-gradient-to-r from-emerald-500 to-primary text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:scale-[1.02] transition-all border-0">
+                <Link to="/templates">
+                  <Sparkles className="w-5 h-5" />
+                  Browse All Templates
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Composable Cognitives CTA */}
+      <section className="relative z-10 py-6 sm:py-12 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="relative overflow-hidden rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.04] via-card/50 to-orange-500/[0.04] backdrop-blur-sm">
+            <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500" />
             <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-amber-500/10 blur-[80px] pointer-events-none" />
             
             <div className="relative p-6 sm:p-10 md:p-12 text-center">
@@ -230,13 +274,13 @@ export default function Explore() {
               </motion.div>
               
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-[1.1] tracking-tight">
-                Your AI Finally{" "}
+                Build What{" "}
                 <br className="hidden sm:block" />
-                <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">Remembers</span>
+                <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">Compounds</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                Persistent memory, self-evolving architecture, and a {providersCount}-provider AI fallback chain —
-                running on {linesOfCodeDisplay} lines of production code. Start free today.
+                Persistent memory, crystallized pipelines, and governed orchestration —
+                running on {linesOfCodeDisplay} lines of production code. Start free with 30 templates.
               </p>
               
               {/* Mini stats row */}
@@ -256,16 +300,16 @@ export default function Explore() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
-                  <Link to="/start-here">
+                  <Link to="/templates">
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Start Here
+                    Browse Free Templates
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
-                  <Link to="/composable-cognitives">
+                  <Link to="/upgrade">
                     <Terminal className="w-5 h-5 mr-2" />
-                    Browse Cognitives
+                    View Plans
                   </Link>
                 </Button>
               </div>

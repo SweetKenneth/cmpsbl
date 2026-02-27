@@ -256,11 +256,11 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.4 }}
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              Drop-in cognitive infrastructure that gives your AI applications{' '}
-              <span className="text-foreground font-semibold">persistent memory</span>,{' '}
-              <span className="text-foreground font-semibold">self-improving pipelines</span>, and{' '}
-              <span className="text-foreground font-semibold">governed orchestration</span>{' '}
-              — so nothing resets, and everything compounds.
+              The only substrate where{' '}
+              <span className="text-foreground font-semibold">memory survives restarts</span>,{' '}
+              <span className="text-foreground font-semibold">pipelines crystallize into intelligence</span>, and{' '}
+              <span className="text-foreground font-semibold">every agent compounds what it learns</span>.{' '}
+              Start with 30 free templates — ship cognitive apps in minutes.
             </motion.p>
             
             {/* CTAs */}
@@ -275,9 +275,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/start-here">
-                  <Layers className="w-4 h-4" />
-                  Start Here
+                <Link to="/templates">
+                  <Sparkles className="w-4 h-4" />
+                  Browse Free Templates
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
@@ -287,9 +287,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 active:scale-[0.98]"
               >
-                <Link to="/pricing">
-                  <Sparkles className="w-4 h-4" />
-                  See Pricing
+                <Link to="/upgrade">
+                  <Layers className="w-4 h-4" />
+                  See Plans
                 </Link>
               </Button>
             </motion.div>
@@ -432,9 +432,9 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
+            { icon: Sparkles, label: "30 Free Templates", href: "/templates" },
             { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory" },
             { icon: Code, label: "Composable Cognitives", href: "/composable-cognitives" },
-            { icon: Sparkles, label: "Cognitive Showcase", href: "/showcase" },
             { icon: Layers, label: "Documentation", href: "/documentation" },
           ].map((item, index) => (
             <motion.div
