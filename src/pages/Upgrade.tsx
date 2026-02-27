@@ -140,11 +140,13 @@ function DomainPackRow({
   packs,
   slotState,
   onSlotPressure,
+  onViewDetails,
 }: {
   domain: typeof STRATEGIC_DOMAINS[0];
   packs: typeof ARTIFACT_PACKS;
   slotState: ReturnType<typeof useArtifactSlots>;
   onSlotPressure: (packName: string) => void;
+  onViewDetails: (pack: ArtifactPack) => void;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const DIcon = DOMAIN_ICONS[domain.id] || Package;
@@ -219,6 +221,7 @@ function DomainPackRow({
               onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
               onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
               onSlotPressure={onSlotPressure}
+              onViewDetails={onViewDetails}
             />
           </div>
         ))}
