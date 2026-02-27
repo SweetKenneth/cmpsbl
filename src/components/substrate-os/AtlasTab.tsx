@@ -240,10 +240,10 @@ export function AtlasTab() {
                     <p className="text-xs text-muted-foreground">{sebaStatus?.mode || 'off'} • {sebaStatus?.phase || 'idle'}</p>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => runSEBAAction('status')} disabled={executing}>
+                    <Button size="sm" variant="ghost" onClick={() => runSEBAAction('status')} disabled={executing} aria-label="SEBA status">
                       <Activity className="w-3 h-3" />
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => runSEBAAction('cycle')} disabled={executing}>
+                    <Button size="sm" variant="ghost" onClick={() => runSEBAAction('cycle')} disabled={executing} aria-label="SEBA cycle">
                       <Play className="w-3 h-3" />
                     </Button>
                   </div>

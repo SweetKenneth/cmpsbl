@@ -96,7 +96,14 @@ export function SEO({
 }: SEOProps) {
   const siteName = 'CMPSBL';
   const twitterHandle = '@cmpsbl';
-  const fullTitle = title.includes('CMPSBL') ? title : `${title} | ${siteName}`;
+
+  // Strip version numbers from all SEO-facing strings (per custom instructions)
+  const stripVersions = (text: string): string =>
+    text.replace(/\s*v\d+[\.\d]*/gi, '').replace(/\s{2,}/g, ' ').trim();
+
+  const safeTitle = stripVersions(title);
+  const safeDescription = stripVersions(description);
+  const fullTitle = safeTitle.includes('CMPSBL') ? safeTitle : `${safeTitle} | ${siteName}`;
   const currentDate = new Date().toISOString();
 
   // Route-aware canonical: auto-generate from current path if not provided
@@ -382,7 +389,7 @@ export function SEO({
       {/* Basic Meta Tags */}
       <html lang="en" />
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={safeDescription} />
       <meta name="keywords" content={keywords.join(', ')} />
       <meta name="author" content={author} />
       <meta name="publisher" content="CMPSBL" />
@@ -406,7 +413,7 @@ export function SEO({
       <meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
       <meta property="og:url" content={resolvedCanonical} />
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={safeDescription} />
       <meta property="og:image" content={image} />
       <meta property="og:image:secure_url" content={image} />
       <meta property="og:image:type" content="image/jpeg" />
@@ -421,7 +428,7 @@ export function SEO({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={resolvedCanonical} />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={safeDescription} />
       <meta name="twitter:image" content={image} />
       <meta name="twitter:image:alt" content={fullTitle} />
       <meta name="twitter:site" content={twitterHandle} />
