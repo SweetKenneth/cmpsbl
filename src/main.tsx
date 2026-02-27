@@ -2,9 +2,24 @@ import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "next-themes";
 import App from "./App.tsx";
 import "./index.css";
-// Shadow scheduler is started only via the admin toggle (ShadowMeshToggle.tsx)
-// to avoid firing 20+ DB writes on every page load.
 
+// Pre-render cache safety: validate persisted Zustand stores before React mounts.
+// If any persisted store has corrupted/stale data, clear it so the app starts fresh.
+try {
+  const storeKey = 'substrate-public-metrics';
+  const raw = localStorage.getItem(storeKey);
+  if (raw) {
+    const parsed = JSON.parse(raw);
+    const metrics = parsed?.state?.metrics;
+    // If critical string fields are missing or not strings, wipe the store
+    if (metrics && (typeof metrics.version !== 'string' || typeof metrics.codename !== 'string' || typeof metrics.linesOfCodeDisplay !== 'string')) {
+      localStorage.removeItem(storeKey);
+    }
+  }
+} catch {
+  // If parsing fails, clear it
+  try { localStorage.removeItem('substrate-public-metrics'); } catch {}
+}
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider
     attribute="class"
