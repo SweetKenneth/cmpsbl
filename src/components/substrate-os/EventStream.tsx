@@ -1,7 +1,7 @@
 /**
  * Event Stream — Live system events feed
  * Real-time log viewer with filtering and LIVE indicator
- * Streams events from all 24 execution surfaces across the substrate
+ * Streams events from all 24 Matrix Nodes across the substrate
  */
 
 import { useState, useEffect } from 'react';
@@ -30,6 +30,16 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
   atlas: Activity,
   seba: Activity,
   encoded: Activity,
+  core: Activity,
+  ripple: Radio,
+  access: Activity,
+  system: Activity,
+  modernizer: Activity,
+  integration: Activity,
+  cortex: Activity,
+  inclusive: Activity,
+  economy: Activity,
+  identity: Activity,
 };
 
 const MODULE_COLORS: Record<string, string> = {
@@ -43,6 +53,16 @@ const MODULE_COLORS: Record<string, string> = {
   atlas: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
   seba: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
   encoded: 'text-teal-400 bg-teal-500/10 border-teal-500/30',
+  core: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
+  ripple: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+  access: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+  system: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+  modernizer: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+  integration: 'text-teal-400 bg-teal-500/10 border-teal-500/30',
+  cortex: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30',
+  inclusive: 'text-pink-400 bg-pink-500/10 border-pink-500/30',
+  economy: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
+  identity: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30',
 };
 
 const OUTCOME_COLORS: Record<string, string> = {
@@ -241,8 +261,8 @@ export function EventStream() {
               );
             })
           ) : (
-            <div className="flex flex-col items-center justify-center h-[240px] text-center">
-              <Radio className="w-8 h-8 text-muted-foreground/30 mb-3" />
+            <div className="flex flex-col items-center justify-center h-[240px] text-center" role="status" aria-label="No events to display">
+              <Radio className="w-8 h-8 text-muted-foreground/30 mb-3" aria-hidden="true" />
               <p className="text-sm text-muted-foreground">
                 Event stream quiet
               </p>

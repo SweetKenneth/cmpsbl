@@ -15,6 +15,8 @@ const REQUIRED_ROUTES = [
   { path: '/docs', label: 'Documentation' },
   { path: '/status', label: 'Status' },
   { path: '/packs', label: 'Packs' },
+  { path: '/blog', label: 'Blog' },
+  { path: '/diligence', label: 'Diligence' },
 ];
 
 export function checkRouteRegistry(): AuditFinding[] {

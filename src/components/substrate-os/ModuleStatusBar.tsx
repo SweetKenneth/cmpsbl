@@ -1,6 +1,6 @@
 /**
  * Module Status Bar — Matrix Nodes, Zones, Overlays
- * v11.1 Node Realignment — Layer-grouped status indicators
+ * Layer-grouped status indicators
  */
 
 import { useState, useEffect } from 'react';

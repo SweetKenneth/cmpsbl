@@ -19,12 +19,15 @@ export function checkTerminalRegistry(): AuditFinding[] {
   const findings: AuditFinding[] = [];
   const stats = getRegistrationStats();
 
+  const MIN_EXPECTED_COMMANDS = 50;
   findings.push({
     id: 'terminal_registered_count',
     category: 'terminal',
-    severity: 'info',
+    severity: stats.registered < MIN_EXPECTED_COMMANDS ? 'warn' : 'info',
     title: `${stats.registered} terminal commands registered`,
-    detail: `Handlers wired: ${stats.registered}.`,
+    detail: stats.registered < MIN_EXPECTED_COMMANDS
+      ? `Expected ≥${MIN_EXPECTED_COMMANDS} commands; found ${stats.registered}. Some handlers may not be wired.`
+      : `Handlers wired: ${stats.registered}. Meets minimum threshold.`,
   });
 
   // Check mesh commands specifically

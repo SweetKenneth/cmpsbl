@@ -103,6 +103,21 @@ export function checkSEO(): AuditFinding[] {
     }
   });
 
+  // Check Twitter tags for version numbers
+  const twitterTags = document.querySelectorAll('meta[name^="twitter:"]');
+  twitterTags.forEach((tag) => {
+    const content = tag.getAttribute('content') || '';
+    if (/v\d+[\.\d]*/i.test(content)) {
+      findings.push({
+        id: `seo_version_in_twitter_${tag.getAttribute('name')}`,
+        category: 'seo',
+        severity: 'warn',
+        title: `Version number in ${tag.getAttribute('name')}`,
+        detail: `Twitter card tag contains version number. Remove it.`,
+      });
+    }
+  });
+
   // Check JSON-LD for version numbers
   const jsonLdScripts = document.querySelectorAll('script[type="application/ld+json"]');
   let jsonLdVersionCount = 0;

@@ -1,6 +1,6 @@
 /**
  * System Health Panel — Layer-weighted diagnostics
- * v11.1 Surface Realignment — Execution Surfaces, Zones, Overlays
+ * Execution Surfaces, Zones, Overlays
  */
 
 import { useState } from 'react';

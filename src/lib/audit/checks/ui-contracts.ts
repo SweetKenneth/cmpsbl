@@ -153,5 +153,49 @@ export function checkUIContracts(): AuditFinding[] {
     });
   }
 
+  // Check for form inputs without labels
+  const inputs = document.querySelectorAll('input:not([type="hidden"]):not([aria-label]):not([aria-labelledby])');
+  let unlabeledInputs = 0;
+  inputs.forEach(input => {
+    const id = input.getAttribute('id');
+    if (id) {
+      const label = document.querySelector(`label[for="${id}"]`);
+      if (!label) unlabeledInputs++;
+    } else {
+      // No id and no aria-label — check if wrapped in <label>
+      if (!input.closest('label')) unlabeledInputs++;
+    }
+  });
+  if (unlabeledInputs > 0) {
+    findings.push({
+      id: 'a11y_unlabeled_inputs',
+      category: 'a11y',
+      severity: 'warn',
+      title: `${unlabeledInputs} input(s) without accessible label`,
+      detail: 'Form inputs need associated <label>, aria-label, or aria-labelledby for screen readers.',
+    });
+  }
+
+  // Check for heading hierarchy gaps
+  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  let prevLevel = 0;
+  let hierarchyGaps = 0;
+  headings.forEach(h => {
+    const level = parseInt(h.tagName[1]);
+    if (prevLevel > 0 && level > prevLevel + 1) {
+      hierarchyGaps++;
+    }
+    prevLevel = level;
+  });
+  if (hierarchyGaps > 0) {
+    findings.push({
+      id: 'a11y_heading_hierarchy',
+      category: 'a11y',
+      severity: 'warn',
+      title: `${hierarchyGaps} heading hierarchy gap(s)`,
+      detail: 'Headings skip levels (e.g., H1 → H3). Use sequential levels for screen reader navigation.',
+    });
+  }
+
   return findings;
 }
