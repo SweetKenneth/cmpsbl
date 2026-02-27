@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Cold Migration
+ * CMPSBL® BRAIN — Cold Migration
  * Cron task that compresses & archives stale hot data
  */
 
