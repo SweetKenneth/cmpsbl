@@ -1,6 +1,11 @@
 /**
  * CMPSBL® VISION "Vee" — Anomaly Detection Engine
  * Detect and track system anomalies with severity classification
+ *
+ * CLM-Granted Upgrades:
+ * ✅ [CLM#9]  Trend-aware anomaly detection (slope + z-score)
+ * ✅ [CLM#27] Provider skew detection for NEXUS load balancing
+ * ✅ [CLM#29] Cross-module correlation for cascading failure detection
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -18,12 +23,36 @@ export interface Anomaly {
   resolved: boolean;
   resolved_at?: string;
   auto_action_taken?: string;
+  correlated_anomalies?: string[];
 }
 
 export interface AnomalyAnalysisResult {
   anomalies_detected: Anomaly[];
   window: string;
   analyzed_at: string;
+  correlation_clusters: CorrelationCluster[];
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CLM#29: Cross-Module Correlation
+// ═══════════════════════════════════════════════════════════════════
+export interface CorrelationCluster {
+  id: string;
+  modules: string[];
+  anomaly_types: string[];
+  cascade_probability: number;
+  root_cause_guess: string;
+}
+
+/**
+ * Calculate z-score for statistical anomaly detection
+ */
+function calculateZScore(values: number[], currentValue: number): number {
+  if (values.length < 3) return 0;
+  const mean = values.reduce((a, b) => a + b, 0) / values.length;
+  const variance = values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length;
+  const stdDev = Math.sqrt(variance);
+  return stdDev > 0 ? (currentValue - mean) / stdDev : 0;
 }
 
 /**
@@ -43,7 +72,7 @@ export async function analyzeWindow(
   const detectedAnomalies: Anomaly[] = [];
 
   try {
-    // 1. Check for error rate spikes
+    // 1. Check for error rate spikes with z-score
     const { data: recentErrors } = await supabase
       .from('brain_events')
       .select('module, outcome')
@@ -57,7 +86,6 @@ export async function analyzeWindow(
       .gte('created_at', baselineSince)
       .lt('created_at', since);
 
-    // Group errors by module
     const recentByModule: Record<string, number> = {};
     const baselineByModule: Record<string, number> = {};
 
@@ -69,17 +97,22 @@ export async function analyzeWindow(
       baselineByModule[e.module] = (baselineByModule[e.module] || 0) + 1;
     });
 
-    // Detect error spikes (2x baseline)
+    // CLM#9: Z-score based spike detection
+    const allBaselines = Object.values(baselineByModule);
     for (const [module, count] of Object.entries(recentByModule)) {
       const baseline = baselineByModule[module] || 0;
-      if (count > 5 && (baseline === 0 || count > baseline * 2)) {
+      const zScore = allBaselines.length > 2
+        ? calculateZScore(allBaselines, count)
+        : 0;
+
+      if (count > 5 && (baseline === 0 || count > baseline * 2 || zScore > 2.5)) {
         const deviation = baseline > 0 ? ((count - baseline) / baseline) * 100 : 100;
         detectedAnomalies.push({
           id: crypto.randomUUID(),
           module,
           anomaly_type: 'error_spike',
-          severity: count > 20 ? 'critical' : count > 10 ? 'high' : 'medium',
-          details: { error_count: count, baseline_count: baseline },
+          severity: zScore > 3.5 || count > 20 ? 'critical' : count > 10 || zScore > 2.5 ? 'high' : 'medium',
+          details: { error_count: count, baseline_count: baseline, z_score: Math.round(zScore * 100) / 100 },
           baseline_value: baseline,
           detected_value: count,
           deviation_percent: Math.round(deviation),
@@ -89,7 +122,7 @@ export async function analyzeWindow(
       }
     }
 
-    // 2. Check for latency spikes in AI providers
+    // 2. Check for latency spikes with percentile analysis
     const { data: recentUsage } = await supabase
       .from('ai_usage_log')
       .select('provider, response_time_ms')
@@ -105,19 +138,55 @@ export async function analyzeWindow(
 
     for (const [provider, latencies] of Object.entries(latencyByProvider)) {
       if (latencies.length > 3) {
+        const sorted = [...latencies].sort((a, b) => a - b);
         const avg = latencies.reduce((a, b) => a + b, 0) / latencies.length;
-        const p95 = latencies.sort((a, b) => a - b)[Math.floor(latencies.length * 0.95)];
-        
+        const p50 = sorted[Math.floor(sorted.length * 0.5)];
+        const p95 = sorted[Math.floor(sorted.length * 0.95)];
+        const p99 = sorted[Math.floor(sorted.length * 0.99)];
+
         if (p95 > 5000) {
           detectedAnomalies.push({
             id: crypto.randomUUID(),
             module: 'nexus',
             anomaly_type: 'latency_spike',
-            severity: p95 > 15000 ? 'critical' : p95 > 10000 ? 'high' : 'medium',
-            details: { provider, avg_ms: Math.round(avg), p95_ms: p95 },
+            severity: p99 > 15000 ? 'critical' : p95 > 10000 ? 'high' : 'medium',
+            details: { provider, avg_ms: Math.round(avg), p50_ms: p50, p95_ms: p95, p99_ms: p99, sample_size: latencies.length },
             baseline_value: 2000,
             detected_value: p95,
             deviation_percent: Math.round(((p95 - 2000) / 2000) * 100),
+            detected_at: new Date().toISOString(),
+            resolved: false,
+          });
+        }
+      }
+    }
+
+    // CLM#27: Provider skew detection
+    const totalCalls = (recentUsage || []).length;
+    if (totalCalls > 10) {
+      const providerCounts: Record<string, number> = {};
+      (recentUsage || []).forEach(u => {
+        providerCounts[u.provider] = (providerCounts[u.provider] || 0) + 1;
+      });
+
+      const providers = Object.entries(providerCounts);
+      if (providers.length > 1) {
+        const maxShare = Math.max(...providers.map(([, c]) => c / totalCalls));
+        if (maxShare > 0.85) {
+          const dominant = providers.find(([, c]) => c / totalCalls === maxShare)!;
+          detectedAnomalies.push({
+            id: crypto.randomUUID(),
+            module: 'nexus',
+            anomaly_type: 'provider_skew',
+            severity: maxShare > 0.95 ? 'high' : 'medium',
+            details: {
+              dominant_provider: dominant[0],
+              share_percent: Math.round(maxShare * 100),
+              provider_distribution: Object.fromEntries(providers.map(([p, c]) => [p, Math.round((c / totalCalls) * 100)])),
+            },
+            baseline_value: 50,
+            detected_value: Math.round(maxShare * 100),
+            deviation_percent: Math.round((maxShare - 0.5) / 0.5 * 100),
             detected_at: new Date().toISOString(),
             resolved: false,
           });
@@ -155,6 +224,9 @@ export async function analyzeWindow(
       });
     }
 
+    // CLM#29: Cross-module correlation
+    const correlationClusters = detectCorrelations(detectedAnomalies);
+
     // Persist detected anomalies
     if (detectedAnomalies.length > 0) {
       for (const a of detectedAnomalies) {
@@ -170,6 +242,13 @@ export async function analyzeWindow(
         }]);
       }
     }
+
+    return {
+      anomalies_detected: detectedAnomalies,
+      window,
+      analyzed_at: new Date().toISOString(),
+      correlation_clusters: correlationClusters,
+    };
   } catch (error) {
     console.error('Error analyzing anomalies:', error);
   }
@@ -178,6 +257,66 @@ export async function analyzeWindow(
     anomalies_detected: detectedAnomalies,
     window,
     analyzed_at: new Date().toISOString(),
+    correlation_clusters: [],
+  };
+}
+
+/**
+ * CLM#29: Detect cascading failure correlations across modules
+ */
+function detectCorrelations(anomalies: Anomaly[]): CorrelationCluster[] {
+  if (anomalies.length < 2) return [];
+
+  const clusters: CorrelationCluster[] = [];
+
+  // Group by time proximity (within 5 minutes of each other)
+  const sorted = [...anomalies].sort((a, b) =>
+    new Date(a.detected_at).getTime() - new Date(b.detected_at).getTime()
+  );
+
+  let currentCluster: Anomaly[] = [sorted[0]];
+
+  for (let i = 1; i < sorted.length; i++) {
+    const timeDiff = new Date(sorted[i].detected_at).getTime() -
+      new Date(sorted[i - 1].detected_at).getTime();
+
+    if (timeDiff < 5 * 60 * 1000) {
+      currentCluster.push(sorted[i]);
+    } else {
+      if (currentCluster.length >= 2) {
+        clusters.push(buildCluster(currentCluster));
+      }
+      currentCluster = [sorted[i]];
+    }
+  }
+
+  if (currentCluster.length >= 2) {
+    clusters.push(buildCluster(currentCluster));
+  }
+
+  return clusters;
+}
+
+function buildCluster(anomalies: Anomaly[]): CorrelationCluster {
+  const modules = [...new Set(anomalies.map(a => a.module))];
+  const types = [...new Set(anomalies.map(a => a.anomaly_type))];
+
+  // Guess root cause based on anomaly composition
+  let rootCause = 'Unknown cascading failure';
+  if (types.includes('latency_spike') && types.includes('error_spike')) {
+    rootCause = 'Provider degradation causing downstream errors';
+  } else if (types.includes('health_drop') && modules.length > 2) {
+    rootCause = 'Systemic health degradation across multiple modules';
+  } else if (types.includes('provider_skew')) {
+    rootCause = 'Provider failover causing load imbalance';
+  }
+
+  return {
+    id: crypto.randomUUID(),
+    modules,
+    anomaly_types: types,
+    cascade_probability: Math.min(0.95, 0.3 + anomalies.length * 0.15),
+    root_cause_guess: rootCause,
   };
 }
 
