@@ -520,7 +520,7 @@ const HowPromptFluidWorks = () => {
                 <strong>Role:</strong> Identity, Licensing, and Billing System
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                ACCESS manages authentication, user permissions, and the unified 3-tier subscription model (Free, Creator $49/mo, Architect $149/mo). 
+                ACCESS manages authentication, user permissions, and the unified 3-tier subscription model (Free, Creator $29/mo, Architect $79/mo). 
                 Built on trust-based retention principles, ACCESS never deletes accounts for failed 
                 payments—instead, it pauses services with generous grace periods. The cognitive engine learns usage patterns to 
                 predict resource needs and optimize billing efficiency, ensuring you're never surprised by costs.

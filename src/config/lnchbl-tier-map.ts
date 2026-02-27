@@ -6,8 +6,8 @@
  * Remaining self-improvement (observational/planning) is Enterprise-only.
  * 
  * FREE (Starter):  Core cognitive loop + basic memory (16 capabilities)
- * Builder ($49/mo): Infrastructure hardening + observability (26 capabilities)
- * Pro ($149/mo):    Advanced intelligence + operations + multi-tenant (24 capabilities)
+ * Builder ($29/mo): Infrastructure hardening + observability (26 capabilities)
+ * Pro ($79/mo):    Advanced intelligence + operations + multi-tenant (24 capabilities)
  * Enterprise ($499/mo): Self-improvement (non-recursive) + evolution + full platform + SLA (48 capabilities)
  * CMPSBL-Only:     10 Crown Jewel recursive self-improvement capabilities (never distributed)
  */

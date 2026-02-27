@@ -163,14 +163,14 @@ const PromptFluidAccess = () => {
                     </div>
                     <div className="border-b border-border pb-6">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-lg font-semibold text-foreground">Creator — $49/mo</span>
+                        <span className="text-lg font-semibold text-foreground">Creator — $29/mo</span>
                         <span className="text-sm text-primary">✓ Live</span>
                       </div>
                       <p className="text-sm text-muted-foreground">All engines, templates, SDK/API access, 7 Experience Jewels, priority support</p>
                     </div>
                     <div className="border-b border-border pb-6">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-lg font-semibold text-foreground">Architect — $149/mo</span>
+                        <span className="text-lg font-semibold text-foreground">Architect — $79/mo</span>
                         <span className="text-sm text-primary">✓ Live</span>
                       </div>
                       <p className="text-sm text-muted-foreground">Advanced CLM, cross-project learning, all 28 Experience Jewels, full substrate access</p>
