@@ -707,8 +707,8 @@ export default function GamingSubstrate() {
           </motion.div>
 
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-black/80 border-purple-500/30 overflow-hidden shadow-2xl shadow-purple-500/10">
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+            <Card className="bg-card/80 border-primary/30 overflow-hidden shadow-2xl shadow-primary/10">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-border/30">
                 <div className="flex gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-red-500/80" />
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
