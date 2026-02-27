@@ -1,5 +1,5 @@
 /**
- * Audit Engine Types — v11.1 SPARTA Epoch
+ * Audit Engine Types — SPARTA Epoch
  * Production readiness validation framework
  */
 

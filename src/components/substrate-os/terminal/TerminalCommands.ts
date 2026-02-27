@@ -5,8 +5,8 @@
  * 
  * Tier Gating: free | creator | architect | governor
  *   free      = Status, pulse, read-only queries
- *   creator   = Actions, mutations, basic operations ($49/mo)
- *   architect = Evolution, modernizer, advanced ops ($149/mo)
+ *   creator   = Actions, mutations, basic operations ($9/mo)
+ *   architect = Evolution, modernizer, advanced ops ($19/mo)
  *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */
 

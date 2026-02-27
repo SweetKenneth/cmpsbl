@@ -1,5 +1,5 @@
 /**
- * Audit Runner — v11.1 SPARTA Epoch
+ * Audit Runner — SPARTA Epoch
  * Orchestrates all audit checks and produces a unified report
  */
 
@@ -21,17 +21,44 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
   const start = performance.now();
   const findings: AuditFinding[] = [];
 
-  // Synchronous checks
-  findings.push(...checkSystemManifest());
-  findings.push(...checkRouteRegistry());
-  findings.push(...checkTerminalRegistry());
-  findings.push(...checkModuleHealth());
-  findings.push(...checkHooksContracts());
-  findings.push(...checkUIContracts());
-  findings.push(...checkSEO());
+  // Synchronous checks — wrapped in try/catch to prevent single check from crashing audit
+  const syncChecks = [
+    { name: 'system-manifest', fn: checkSystemManifest },
+    { name: 'routes', fn: checkRouteRegistry },
+    { name: 'terminal', fn: checkTerminalRegistry },
+    { name: 'modules', fn: checkModuleHealth },
+    { name: 'hooks', fn: checkHooksContracts },
+    { name: 'ui', fn: checkUIContracts },
+    { name: 'seo', fn: checkSEO },
+  ];
+
+  for (const check of syncChecks) {
+    try {
+      findings.push(...check.fn());
+    } catch (err: any) {
+      findings.push({
+        id: `audit_check_crash_${check.name}`,
+        category: 'runtime',
+        severity: 'error',
+        title: `Audit check "${check.name}" crashed`,
+        detail: err?.message || 'Unknown error during audit check execution',
+        hint: 'This check threw an exception. Fix the underlying issue and re-run.',
+      });
+    }
+  }
 
   // Async checks
-  findings.push(...await checkSupabaseContracts());
+  try {
+    findings.push(...await checkSupabaseContracts());
+  } catch (err: any) {
+    findings.push({
+      id: 'audit_check_crash_supabase',
+      category: 'supabase',
+      severity: 'error',
+      title: 'Backend connectivity check crashed',
+      detail: err?.message || 'Unknown error during backend check',
+    });
+  }
 
   const duration_ms = Math.round(performance.now() - start);
 
@@ -42,7 +69,7 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
 
   return {
     run_id: uid(),
-    version: opts?.version ?? '11.1.0',
+    version: opts?.version ?? 'SPARTA',
     created_at: new Date().toISOString(),
     duration_ms,
     summary: {
