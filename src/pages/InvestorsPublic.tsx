@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * SPARTA Epoch — Zone Architecture
+ * ARCHITECT Epoch — Production Architecture
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Eye, Server, Sparkles, Zap, Globe, Code, Layers, CheckCircle2 } from "lucide-react";
@@ -19,7 +19,7 @@ import { downloadInvestorDeck } from "@/lib/investor-deck-generator";
 const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "Zone Architecture Cognitive OS", desc: "First cognitive OS with 10 entities + 5 mesh overlays + 9 surgically hot-swappable zones", badge: "Production" },
+  { title: "Modular Cognitive Architecture", desc: "First cognitive infrastructure with 9 production modules and hot-swappable protective layers", badge: "Production" },
   { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-module crystallization", badge: "50 Crystallized" },
   { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
