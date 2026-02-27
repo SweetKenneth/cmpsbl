@@ -165,7 +165,7 @@ const HowPromptFluidWorks = () => {
             <p className="text-lg leading-relaxed mb-6">
               <Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="text-primary hover:underline">
                 The cognitive engine
-              </Link> represents PromptFluid's most ambitious engineering achievement: an autonomous orchestration layer that 
+              </Link> represents CMPSBL's most ambitious engineering achievement: an autonomous orchestration layer that 
               operates 24/7, executing 8,640 intelligent decisions daily across nine specialized brain cycles. Unlike
               traditional AI that waits for commands, the engine actively learns, builds code, researches best practices, 
               and evolves the entire CMPSBL substrate—all without human intervention. Think of it as a 
@@ -394,7 +394,7 @@ const HowPromptFluidWorks = () => {
             </p>
           </section>
 
-          {/* Section 3: The PromptFluid Ecosystem */}
+          {/* Section 3: The CMPSBL Ecosystem */}
           <section className="mb-16">
             <h2 className="text-4xl font-bold mb-6 text-foreground">The CMPSBL Ecosystem: 10 Entities Wrapped by 5 Mesh Overlays</h2>
             
@@ -404,7 +404,7 @@ const HowPromptFluidWorks = () => {
               intelligence of the entire substrate. Here are the core modules:
             </p>
 
-            {/* PromptFluid Brain */}
+            {/* CMPSBL Brain */}
             <div className="bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Brain className="w-10 h-10 text-primary" />
@@ -415,14 +415,14 @@ const HowPromptFluidWorks = () => {
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 The Brain is where Cascade AI lives and learns. This module manages prompt evolution, memory storage, 
-                learning pattern recognition, and continuous improvement across all PromptFluid products. Every 
+                learning pattern recognition, and continuous improvement across all CMPSBL products. Every 
                 interaction feeds into the Brain, creating an ever-expanding knowledge base that makes the entire 
                 ecosystem smarter. The Brain handles hot memory for recent context, cold storage for historical data, 
                 and vector embeddings for semantic understanding.
               </p>
             </div>
 
-            {/* PromptFluid Vision */}
+            {/* CMPSBL Vision */}
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Activity className="w-10 h-10 text-accent" />
@@ -439,7 +439,7 @@ const HowPromptFluidWorks = () => {
               </p>
             </div>
 
-            {/* PromptFluid Studio */}
+            {/* CMPSBL Studio */}
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Code className="w-10 h-10 text-primary" />
@@ -459,7 +459,7 @@ const HowPromptFluidWorks = () => {
               </p>
             </div>
 
-            {/* PromptFluid Defense */}
+            {/* CMPSBL Defense */}
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Shield className="w-10 h-10 text-accent" />
@@ -476,7 +476,7 @@ const HowPromptFluidWorks = () => {
               </p>
             </div>
 
-            {/* PromptFluid Nexus */}
+            {/* CMPSBL Nexus */}
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Network className="w-10 h-10 text-primary" />
@@ -493,7 +493,7 @@ const HowPromptFluidWorks = () => {
               </p>
             </div>
 
-            {/* PromptFluid Ripple */}
+            {/* CMPSBL Ripple */}
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Zap className="w-10 h-10 text-accent" />
@@ -510,7 +510,7 @@ const HowPromptFluidWorks = () => {
               </p>
             </div>
 
-            {/* PromptFluid Access */}
+            {/* CMPSBL Access */}
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Lock className="w-10 h-10 text-primary" />
@@ -527,7 +527,7 @@ const HowPromptFluidWorks = () => {
               </p>
             </div>
 
-            {/* PromptFluid Core */}
+            {/* CMPSBL Core */}
             <div className="bg-card border border-border rounded-lg p-8 mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <Activity className="w-10 h-10 text-accent" />
@@ -708,7 +708,7 @@ const HowPromptFluidWorks = () => {
             <h2 className="text-4xl font-bold mb-6 text-foreground">Pricing That Scales With Your Ambitions</h2>
             
             <p className="text-lg leading-relaxed mb-8">
-              CMPSBL's pricing reflects the PromptFluid philosophy: powerful technology should be accessible, scaling smoothly 
+              CMPSBL's pricing reflects the CMPSBL philosophy: powerful technology should be accessible, scaling smoothly 
               from experimentation to enterprise deployment without sudden cost cliffs or feature walls.
             </p>
 
