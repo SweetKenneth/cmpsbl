@@ -105,6 +105,7 @@ const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const Upgrade = lazy(() => import("./pages/Upgrade"));
 const Templates = lazy(() => import("./pages/Templates"));
 const Packs = lazy(() => import("./pages/Packs"));
+const CapabilityMap = lazy(() => import("./pages/CapabilityMap"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const RuntimeReference = lazy(() => import("./pages/docs/RuntimeReference"));
