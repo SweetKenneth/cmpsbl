@@ -277,7 +277,7 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   },
 
   // ══════════════════════════════════════════════════════
-  // ARCHITECT TIER ($19/mo) — 14 existing + 43 crown jewels = 57
+  // ARCHITECT TIER ($79/mo) — 14 existing + 43 crown jewels = 57
   // ══════════════════════════════════════════════════════
   {
     name: 'Zero-Day Detection',
