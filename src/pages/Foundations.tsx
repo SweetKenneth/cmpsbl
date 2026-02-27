@@ -91,10 +91,10 @@ export default function Foundations() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Helmet>
-        <title>FNDTN — Foundations | CMPSBL®</title>
-        <meta name="description" content="CMPSBL — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the layered architecture and access archival records." />
-      </Helmet>
+      <SEO 
+        title="FNDTN — Foundations | CMPSBL®"
+        description="CMPSBL — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the layered architecture and access archival records."
+      />
 
       <PublicNav />
 
