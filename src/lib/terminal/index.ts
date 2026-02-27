@@ -80,3 +80,18 @@ export {
 export {
   registerAnalyticsHandlers,
 } from './analytics-handlers';
+
+// Spine & CCR handlers (CORE, SYSTEM, BRAIN, DREAM)
+export {
+  registerSpineHandlers,
+} from './spine-handlers';
+
+// OCG & Shell handlers (RIPPLE, ACCESS, DEFENSE)
+export {
+  registerOCGHandlers,
+} from './ocg-handlers';
+
+// Execution layer handlers (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER)
+export {
+  registerExecutionHandlers,
+} from './execution-handlers';
