@@ -1,6 +1,6 @@
 /**
  * Evolution Self-Repair — Safe Mode Recovery
- * v0.7.6 — Diagnostic-only repair cycle (NO code mutation)
+ * Diagnostic-only repair cycle (NO code mutation)
  */
 
 import { supabase } from '@/integrations/supabase/client';

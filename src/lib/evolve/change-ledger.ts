@@ -1,6 +1,6 @@
 /**
  * Change Ledger — Append-Only Effect Recording
- * v1.0.0 — Records EFFECTS of changes (not plans)
+ * Records EFFECTS of changes (not plans)
  * 
  * Part of Omega Observer Engine
  */

@@ -1,6 +1,6 @@
 /**
  * System Diagnostics — Always returns structured response
- * v0.7.5 — Never returns non-2xx, always structured error payload
+ * Never returns non-2xx, always structured error payload
  */
 
 import { evolutionRuns } from './evolution-runs';

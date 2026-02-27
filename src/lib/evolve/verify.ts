@@ -1,6 +1,6 @@
 /**
  * Shadow Verification Gate
- * v1.0.0 — Verification required before production apply
+ * Verification required before production apply
  */
 
 import { shadowStore, type ShadowArtifact } from './shadow-store';

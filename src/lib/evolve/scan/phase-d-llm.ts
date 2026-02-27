@@ -1,6 +1,6 @@
 /**
  * Phase D — LLM-Governed Reasoning Pass
- * v0.7.7 — L7 Systems Engineer Analysis
+ * L7 Systems Engineer Analysis
  * 
  * Invokes LLM via NEXUS with strict prompt contract.
  * LLM thinks in architecture, not code.

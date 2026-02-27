@@ -1,6 +1,6 @@
 /**
  * Modernizer Commands — Terminal & API Command Interface
- * v0.7.5 — Unified command layer for evolution operations
+ * Unified command layer for evolution operations
  */
 
 import { evolutionRuns, type EvolutionRun, type CreateRunOptions } from './evolution-runs';

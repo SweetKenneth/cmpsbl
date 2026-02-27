@@ -1,6 +1,6 @@
 /**
  * Evolution Stabilization Gates — 12 Pre-Flight Checks
- * v1.0.0 — SPARTA Epoch
+ *
  * 
  * All 12 stabilization gates that must pass before evolution
  * can operate on the live substrate. Each gate returns a clear

@@ -1,6 +1,6 @@
 /**
  * Scan Merger & Validation Layer
- * v0.7.7 — Proposal Generation
+ * Proposal Generation
  * 
  * Merges phase results and generates validated proposals.
  * A recommendation becomes a PLAN ITEM only if:

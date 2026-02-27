@@ -1,6 +1,6 @@
 /**
  * Phase C — Code Health Snapshot
- * v0.7.7 — Abstracted Health Analysis
+ * Abstracted Health Analysis
  * 
  * Analyzes code health through logs, patterns, and metrics.
  * ⚠️ NO raw code, NO diffs, NO engine disclosure

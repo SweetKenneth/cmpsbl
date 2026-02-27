@@ -1,6 +1,6 @@
 /**
  * Decode Fallback Honesty — Mark fallback proposals explicitly
- * v0.7.5 — Prevent auto-evolution from fallback proposals
+ * Prevent auto-evolution from fallback proposals
  */
 
 import { emitEvolveEvent } from './telemetry';

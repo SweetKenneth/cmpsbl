@@ -1,6 +1,6 @@
 /**
  * CodeAgent Controller — Phase-Based Execution with Write Guarantees
- * v1.0.0 — Forces write, verifies TS, prevents loops
+ * Forces write, verifies TS, prevents loops
  */
 
 import { 

@@ -1,6 +1,6 @@
 /**
  * Production Executor — Gated Production Apply
- * v0.7.5 — Requires verified shadow, creates backup, atomic apply
+ * Requires verified shadow, creates backup, atomic apply
  */
 
 import { evolutionRuns, type EvolutionRun } from './evolution-runs';

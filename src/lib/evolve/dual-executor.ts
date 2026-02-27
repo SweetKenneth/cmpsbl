@@ -1,6 +1,6 @@
 /**
  * Dual-Executor Orchestrator — Writer + Validator Pattern
- * v1.2.0 — Two executors per mutation for increased stability
+ * Two executors per mutation for increased stability
  * 
  * Pattern: One executor writes code, a second validates and fixes errors.
  * Both earn training credit from each shadow run, accelerating progression 2×.

@@ -1,6 +1,6 @@
 /**
  * Omega Observer Engine — Unified Observability
- * v2.0.0 — Converges verify, analyze, and forensics
+ * Converges verify, analyze, and forensics
  * 
  * Three perspectives:
  * - CAN CHANGE  ← verify (eligibility)

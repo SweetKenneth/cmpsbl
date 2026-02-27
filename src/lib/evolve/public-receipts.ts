@@ -1,6 +1,6 @@
 /**
  * Public Receipts — Read-Only Evolution Audit Trail
- * v0.7.6 — Exposes evolution facts without internals
+ * Exposes evolution facts without internals
  */
 
 import { supabase } from '@/integrations/supabase/client';
