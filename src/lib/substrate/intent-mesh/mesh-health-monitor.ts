@@ -1,6 +1,6 @@
 /**
  * Mesh Health Monitor — Push alerts on drift/resolution rate drops
- * v10.5.0 — Watches affinity drift, resolution rates, and latency
+ * Watches affinity drift, resolution rates, and latency
  */
 
 import { supabase } from '@/integrations/supabase/client';

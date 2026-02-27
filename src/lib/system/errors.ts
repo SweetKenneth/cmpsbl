@@ -1,6 +1,6 @@
 /**
  * Standardized Error System
- * v10.5.4 ARCHITECT — Production-grade error handling with redaction
+ * Production-grade error handling with redaction
  */
 
 import { generateTraceId } from './trace';

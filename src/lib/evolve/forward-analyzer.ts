@@ -1,6 +1,6 @@
 /**
  * Forward Analyzer — Project WHAT WILL CHANGE
- * v1.0.0 — Plan-independent forward intent projection
+ * Plan-independent forward intent projection
  * 
  * Runs at any phase (idle, mid-cycle, paused)
  * Works without existing plan (virtual preview)

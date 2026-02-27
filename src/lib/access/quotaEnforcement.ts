@@ -1,6 +1,6 @@
 /**
  * ACCESS Module — Quota Enforcement Engine
- * v10.5.4 ARCHITECT — Real-time usage metering and enforcement
+ * Real-time usage metering and enforcement
  */
 
 import { supabase } from '@/integrations/supabase/client';

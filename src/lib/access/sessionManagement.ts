@@ -1,6 +1,6 @@
 /**
  * ACCESS Module — Session Management
- * v7.5.0 — Session lifecycle, invalidation, and security
+ * Session lifecycle, invalidation, and security
  */
 
 import { supabase } from '@/integrations/supabase/client';

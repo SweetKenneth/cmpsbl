@@ -1,6 +1,6 @@
 /**
  * Cognitive Warm Cache
- * v1.0.0 — Predictive caching for frequently-accessed cognitive data
+ * Predictive caching for frequently-accessed cognitive data
  * 
  * Pre-warms cache based on access patterns, reducing latency
  * for memory recall, knowledge graph traversal, and context loading.

@@ -1,6 +1,6 @@
 /**
  * Evolution Autonomy — Governed Self-Evolution
- * v0.7.6 — Safe autonomous evolution with strict guardrails
+ * Safe autonomous evolution with strict guardrails
  */
 
 import { supabase } from '@/integrations/supabase/client';

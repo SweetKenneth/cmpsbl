@@ -1,6 +1,6 @@
 /**
  * Observability Correlation ID Propagation
- * v1.0.0 — End-to-end request tracing across module boundaries
+ * End-to-end request tracing across module boundaries
  * 
  * Generates and propagates correlation IDs through the engine bus,
  * RIPPLE events, and edge function calls for unified trace analysis.

@@ -1,6 +1,6 @@
 /**
  * Signal Arbitration — Authority Separation
- * v10.5.3 ARCHITECT Epoch
+ *
  * 
  * Prevents System from redefining other modules' authority.
  * - Modules emit signals + severity only

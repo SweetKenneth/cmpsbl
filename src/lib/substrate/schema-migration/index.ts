@@ -1,6 +1,6 @@
 /**
  * Schema Migration Engine
- * v1.0.0 — Versioned schema migration for cognitive data structures
+ * Versioned schema migration for cognitive data structures
  * 
  * Manages schema versioning, migration plans, and data transformation
  * when substrate data structures evolve between versions.

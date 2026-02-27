@@ -1,6 +1,6 @@
 /**
  * Module Capability Discovery
- * v1.0.0 — Auto-detects module functionality via endpoint probing
+ * Auto-detects module functionality via endpoint probing
  * 
  * Scans registered modules to discover available operations,
  * health status, and capability coverage.

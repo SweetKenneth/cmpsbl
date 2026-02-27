@@ -1,6 +1,6 @@
 /**
  * Evolve Apply — Production Apply with Verified Shadow Gate
- * v1.0.0 — Requires verified shadow artifacts before production apply
+ * Requires verified shadow artifacts before production apply
  */
 
 import { type EvolveContext, isProductionMode, getShortId } from './context';

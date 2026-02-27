@@ -1,6 +1,6 @@
 /**
  * Meta-Engine Types
- * v10.5.4 ARCHITECT Epoch — 24 Meta-Engines orchestrating 76 base engines
+ * 24 Meta-Engines orchestrating 76 base engines
  * 
  * Meta-Engines orchestrate multiple engines into unified execution pipelines.
  * 3-layer architecture: 379 Capabilities → 76 Engines → 24 Meta-Engines

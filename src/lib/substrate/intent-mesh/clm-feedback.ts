@@ -1,6 +1,6 @@
 /**
  * CLM Feedback Loop — Scoring insights auto-feed into module learning topics
- * v10.3.0 — Modules learn to ask better questions and provide richer answers
+ * Modules learn to ask better questions and provide richer answers
  * 
  * Flow:
  * 1. Intent scoring calculates quality for each module's intents

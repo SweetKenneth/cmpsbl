@@ -1,6 +1,6 @@
 /**
  * useSEBA - React hook for Self-Evolving Bounded Agent
- * v1.2.0 — Full Cognitive × Evolution × Governance
+ * Full Cognitive × Evolution × Governance
  * Now respects debug mode kill-switch
  * 
  * Provides comprehensive access to SEBA operations:

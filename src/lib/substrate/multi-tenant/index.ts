@@ -1,6 +1,6 @@
 /**
  * Multi-Tenant Isolation
- * v1.0.0 — Tenant-scoped resource isolation for shared substrate instances
+ * Tenant-scoped resource isolation for shared substrate instances
  * 
  * Ensures cognitive state, memory, and execution context are
  * strictly isolated between tenants sharing the same infrastructure.

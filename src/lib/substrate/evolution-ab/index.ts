@@ -1,6 +1,6 @@
 /**
  * Evolution A/B Testing
- * v1.0.0 — Shadow two proposal variants, select the better performer
+ * Shadow two proposal variants, select the better performer
  * 
  * Enables data-driven evolution by running competing proposals
  * in shadow mode and comparing measured outcomes.

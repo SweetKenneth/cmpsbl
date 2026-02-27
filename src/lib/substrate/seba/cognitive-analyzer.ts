@@ -1,12 +1,12 @@
 /**
  * SEBA Cognitive Analyzer
- * v2.1.0 — Full Spectrum Analysis Engine (Backend Stats Integration)
+ * Full Spectrum Analysis Engine (Backend Stats Integration)
  * 
  * Runs 9 analysis engines to generate comprehensive insights:
  * - Memory, Learning, Imagination, Reasoning (Core 4)
  * - Security, Telemetry, Governance, Resources, Architecture (Extended 5)
  * 
- * v2.1.0: Uses backend stats (brain.status, modernizer.status) to bypass RLS
+ * Uses backend stats (brain.status, modernizer.status) to bypass RLS
  */
 
 import { memoryCore, type MemoryEntry } from '../memory-core';

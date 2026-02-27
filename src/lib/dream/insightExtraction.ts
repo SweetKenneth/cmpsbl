@@ -1,6 +1,6 @@
 /**
  * DREAM Insight Extraction Engine
- * v10.5.4 ARCHITECT — Knowledge Synthesis & Recommendation Generation
+ * Knowledge Synthesis & Recommendation Generation
  * 
  * Extracts actionable insights from dream cycles and synthesizes
  * cross-domain knowledge.

@@ -1,6 +1,6 @@
 /**
  * Substrate Health Dashboard API
- * v10.5.4 — Unified JSON endpoint for real-time system status
+ * Unified JSON endpoint for real-time system status
  * 
  * All health reads are backed by the Central Health Registry (CHR).
  * Dashboard/Terminal/Module Voice all consume this single source of truth.

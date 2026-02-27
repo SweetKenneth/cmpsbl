@@ -1,6 +1,6 @@
 /**
  * Quarry — Strategic Asset Registry Types
- * v5.0.0 — Substrate-Native Artifact Density Model
+ * Substrate-Native Artifact Density Model
  */
 
 export type QuarryTier = 'free' | 'creator' | 'architect' | 'enterprise' | 'internal';

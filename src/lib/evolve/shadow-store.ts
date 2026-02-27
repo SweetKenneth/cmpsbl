@@ -1,6 +1,6 @@
 /**
  * Shadow Store — Persistent Storage for Shadow Artifacts
- * v1.0.0 — Minimum viable, blocking implementation
+ * Minimum viable, blocking implementation
  */
 
 import { supabase } from '@/integrations/supabase/client';

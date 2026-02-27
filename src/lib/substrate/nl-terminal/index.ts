@@ -1,6 +1,6 @@
 /**
  * Natural Language Terminal Interface
- * v1.0.0 — Translates natural language input into substrate terminal commands
+ * Translates natural language input into substrate terminal commands
  * 
  * Makes the terminal approachable for non-developers.
  * Thin NL parsing layer over the existing command registry.

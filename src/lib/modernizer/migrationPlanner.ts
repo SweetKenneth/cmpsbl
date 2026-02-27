@@ -1,6 +1,6 @@
 /**
  * MODERNIZER Module — Migration Planner
- * v7.5.0 — Dependency upgrades, breaking changes, and migration paths
+ * Dependency upgrades, breaking changes, and migration paths
  */
 
 // ============ Types ============

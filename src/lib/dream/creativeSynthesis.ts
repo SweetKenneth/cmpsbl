@@ -1,6 +1,6 @@
 /**
  * DREAM Creative Synthesis
- * v10.5.4 ARCHITECT — Pattern mutation and novel insight generation
+ * Pattern mutation and novel insight generation
  */
  
  import { supabase } from '@/integrations/supabase/client';

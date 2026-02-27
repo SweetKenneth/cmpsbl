@@ -1,6 +1,6 @@
 /**
  * Terminal Type Definitions
- * v10.5.0 — ARCHITECT Epoch Terminal Configuration (360+ commands)
+ * Terminal Configuration (360+ commands)
  */
 
 export interface CommandResult {
@@ -45,7 +45,7 @@ export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '  ▓  CLOCKLESS — CMPSBL SUBSTRATE      ▓',
-  '  ▓  v10.5.1 ARCHITECT Epoch           ▓',
+  '  ▓                                     ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
   '  ┌─ BOOTSTRAP ───────────────────────────┐',

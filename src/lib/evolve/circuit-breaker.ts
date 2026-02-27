@@ -1,6 +1,6 @@
 /**
  * Evolution Circuit Breaker — Hard Stop Protection
- * v0.7.6 — Prevents runaway evolution failures
+ * Prevents runaway evolution failures
  */
 
 import { supabase } from '@/integrations/supabase/client';

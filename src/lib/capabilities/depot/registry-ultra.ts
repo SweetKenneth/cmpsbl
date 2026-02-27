@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Ultra Expansion
  * 30+ Additional high-value AI/ML capabilities
- * v1.3.0
+ *
  */
 
 import type { CapabilityArtifact } from './types';

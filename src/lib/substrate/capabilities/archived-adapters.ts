@@ -1,6 +1,6 @@
 /**
  * Substrate-Native Capability Adapters
- * v7.0.5 — Direct Substrate Integration (No Edge Function Indirection)
+ * Direct Substrate Integration (No Edge Function Indirection)
  * 
  * These adapters provide TypeScript interfaces to capabilities that are now
  * fully integrated into the substrate architecture. They route directly through

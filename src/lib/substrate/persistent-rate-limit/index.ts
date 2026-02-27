@@ -1,6 +1,6 @@
 /**
  * Persistent Rate Limiter
- * v1.0.0 — Cross-instance rate limiting with localStorage persistence
+ * Cross-instance rate limiting with localStorage persistence
  * 
  * Survives page reloads, tab switches, and instance restarts.
  * Uses localStorage for persistence and BroadcastChannel for cross-tab sync.

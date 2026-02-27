@@ -1,6 +1,6 @@
 /**
  * ACCESS Module — Authentication, Authorization & API Gateway
- * v10.5.4 ARCHITECT — Substrate Security Perimeter
+ * Substrate Security Perimeter
  * 
  * Provides:
  * - API Key management (generation, validation, revocation)

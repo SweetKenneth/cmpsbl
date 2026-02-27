@@ -1,6 +1,6 @@
 /**
  * Mesh Auto-Expansion Scheduler
- * v10.3.0 — Periodic discovery cycles that self-improve the manifest
+ * Periodic discovery cycles that self-improve the manifest
  * Now includes CLM feedback loop integration
  * Runs on configurable intervals:
  * - Module self-discovery: every 4 hours (each module introspects)

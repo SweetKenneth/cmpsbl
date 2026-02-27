@@ -1,6 +1,6 @@
 /**
  * Forensics — Historical Truth Engine
- * v1.0.0 — Reports WHAT HAS CHANGED
+ * Reports WHAT HAS CHANGED
  * 
  * Independent of plans. Reads from change_ledger.
  * 

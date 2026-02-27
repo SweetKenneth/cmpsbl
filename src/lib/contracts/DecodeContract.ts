@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Decode Contract Implementation
- * v10.5.4 — ARCHITECT Epoch Substrate Interpreter Primitive
+ * Substrate Interpreter Primitive
  * 
  * This implements the Decode contract as defined in the RFC.
  * Decode is non-executive, epistemic, reflective, translational, and non-anthropomorphic.

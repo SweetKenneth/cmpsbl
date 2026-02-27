@@ -1,6 +1,6 @@
 /**
  * Evolve Telemetry — Event Emission for Observability
- * v0.7.5 — Structured events for evolve lifecycle with receipts
+ * Structured events for evolve lifecycle with receipts
  */
 
 import { supabase } from '@/integrations/supabase/client';

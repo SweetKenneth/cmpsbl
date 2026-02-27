@@ -1,6 +1,6 @@
 /**
  * Veto Lifecycle — Decay & Reevaluation
- * v10.5.3 ARCHITECT Epoch
+ *
  * 
  * Prevents permanent or zombie vetoes:
  * - Audit vetoes: no auto-expiry (human-only lifecycle)

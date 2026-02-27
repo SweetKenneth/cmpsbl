@@ -1,6 +1,6 @@
 /**
  * Evolution Receipts — Immutable Audit Trail
- * v0.7.5 — Every shadow + production apply generates a receipt
+ * Every shadow + production apply generates a receipt
  */
 
 import { supabase } from '@/integrations/supabase/client';

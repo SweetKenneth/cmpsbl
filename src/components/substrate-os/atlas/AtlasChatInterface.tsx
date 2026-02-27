@@ -1,6 +1,6 @@
 /**
  * Atlas Chat Interface
- * v10.5.4 — ARCHITECT Epoch Conversational control for the substrate
+ * Conversational control for the substrate
  * 
  * Natural language interface for controlling SEBA, viewing logs,
  * running cycles, and managing the entire substrate.

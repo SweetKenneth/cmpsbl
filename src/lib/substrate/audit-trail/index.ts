@@ -1,6 +1,6 @@
 /**
  * Audit Trail Manager
- * v1.0.0 — Immutable audit logging for compliance and forensics
+ * Immutable audit logging for compliance and forensics
  * 
  * Records all administrative and governance actions with
  * tamper-evident hashing for regulatory compliance.

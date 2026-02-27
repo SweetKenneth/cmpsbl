@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Registry Expansion
  * Additional high-value cognitive capabilities
- * v1.2.0 — 40+ New Capabilities
+ * 40+ New Capabilities
  */
 
 import type { CapabilityArtifact } from './types';

@@ -1,6 +1,6 @@
 /**
  * SANDBOX Module CLM — Constant Learning Mode
- * v10.5.1 ARCHITECT Epoch — Circuit Breaker + Hot-Swap Aware
+ * Circuit Breaker + Hot-Swap Aware
  */
 
 import { emit } from '../events';

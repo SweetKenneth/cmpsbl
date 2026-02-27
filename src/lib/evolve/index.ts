@@ -1,6 +1,6 @@
 /**
  * Evolve Module — Unified Exports
- * v0.7.8 — Scan Normalization Era
+ * Scan Normalization Era
  */
 
 // Core context

@@ -1,6 +1,6 @@
 /**
  * SEBA Receipt Store
- * v1.0.0 — Persistent storage for evolution receipts
+ * Persistent storage for evolution receipts
  */
 
 import { supabase } from '@/integrations/supabase/client';

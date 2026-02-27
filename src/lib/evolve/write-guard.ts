@@ -1,6 +1,6 @@
 /**
  * Write Guard — Kill Conversation Loops
- * v1.0.0 — Detects repeated responses and forces write or failure
+ * Detects repeated responses and forces write or failure
  */
 
 import { 

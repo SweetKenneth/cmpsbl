@@ -1,6 +1,6 @@
 /**
  * Proposal Normalization Layer
- * v0.7.8 — Deterministic Scan → Plan Transformation
+ * Deterministic Scan → Plan Transformation
  * 
  * Converts raw scan proposals into executable, typed actions.
  * ONLY normalized proposals can become evolution plans.

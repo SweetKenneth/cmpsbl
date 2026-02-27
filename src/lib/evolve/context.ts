@@ -1,6 +1,6 @@
 /**
  * Evolve Context — Single Source of Truth for Evolution Execution
- * v1.0.0 — Unified context for shadow and production modes
+ * Unified context for shadow and production modes
  */
 
 // ═══════════════════════════════════════════════════════════════

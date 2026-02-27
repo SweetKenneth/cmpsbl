@@ -1,6 +1,6 @@
 /**
  * Evolution Runs — Single Source of Truth for Evolution State
- * v0.7.5 — Deterministic, auditable evolution lifecycle
+ * Deterministic, auditable evolution lifecycle
  */
 
 import { supabase } from '@/integrations/supabase/client';
