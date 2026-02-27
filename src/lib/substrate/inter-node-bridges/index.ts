@@ -1,6 +1,6 @@
 /**
  * Inter-Node Bridges — Unified Exports
- * SPARTA Epoch — High-Value Connective Tissue Between Matrix Nodes
+ * High-Value Connective Tissue Between Matrix Nodes
  * 
  * These bridges fill the gaps between nodes that a senior developer
  * would immediately identify as missing:

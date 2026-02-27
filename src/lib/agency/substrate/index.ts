@@ -1,6 +1,6 @@
 /**
  * Substrate Integration Module
- * SPARTA Epoch — Memory bridge, dream pipeline, and global pooling
+ * Memory bridge, dream pipeline, and global pooling
  */
 
 export * from './memoryBridge';

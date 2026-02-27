@@ -1,6 +1,5 @@
 /**
  * useAccess Hook — ACCESS zone (Entitlements & Billing) operations
- * SPARTA Epoch
  * 
  * Respects debug mode kill-switch for quota polling.
  * Part of the SPARTA Epoch layered cognitive architecture.

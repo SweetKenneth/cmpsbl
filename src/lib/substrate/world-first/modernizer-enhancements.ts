@@ -1,5 +1,5 @@
 /**
- * MODERNIZER Module Enhancements — v10.5.4 ARCHITECT Epoch
+ * MODERNIZER Module Enhancements
  * EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
  */
 

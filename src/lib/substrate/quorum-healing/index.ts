@@ -1,6 +1,6 @@
 /**
  * Quorum-Based Healing Engine
- * SPARTA Epoch — Require multiple diagnostic signals to agree before auto-heal
+ * Require multiple diagnostic signals to agree before auto-heal
  * 
  * Prevents false-positive healing storms by requiring consensus
  * from multiple diagnostic sources before triggering recovery.

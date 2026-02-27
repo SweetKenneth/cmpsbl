@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate Dashboard
- * ARCHITECT Epoch — Production Module Architecture
+ * Production Module Architecture
  *
  * Unified control center for all entities, mesh overlays, and zones:
  * 

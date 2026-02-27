@@ -1,6 +1,6 @@
 /**
  * Agency Chat Persistence — Store and retrieve chat messages
- * SPARTA Epoch — Uses secure storage for sensitive conversation data
+ * Uses secure storage for sensitive conversation data
  */
 
 import { secureSet, secureGet, secureRemove, migrateLegacyKey } from '@/lib/system/secureStorage';

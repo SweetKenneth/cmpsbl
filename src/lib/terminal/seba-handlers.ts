@@ -1,6 +1,6 @@
 /**
  * SEBA Terminal Handlers
- * v2.1.0 — Terminal commands for Self-Evolving Bounded Agent
+ * Terminal commands for Self-Evolving Bounded Agent
  * 
  * Matches the demo guide output format (docs/internal/EVOLUTION-DEMO-GUIDE.md)
  */

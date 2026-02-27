@@ -1,6 +1,6 @@
 /**
  * Capability Deprecation Lifecycle
- * v1.0.0 — Managed sunset process for capabilities and engines
+ * Managed sunset process for capabilities and engines
  * 
  * Tracks deprecation phases: announced → warned → deprecated → removed
  * with grace periods, migration guidance, and usage monitoring.

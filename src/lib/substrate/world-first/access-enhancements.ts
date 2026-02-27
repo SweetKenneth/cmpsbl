@@ -1,5 +1,5 @@
 /**
- * ACCESS Module Enhancements — v10.5.4 ARCHITECT Epoch
+ * ACCESS Module Enhancements
  * EntitlementGraph, QuotaPredictor, AuditTrail
  */
 

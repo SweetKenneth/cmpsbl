@@ -1,7 +1,7 @@
 /**
  * Cognitives Panel — Operator Console for Cognitive Registry
- * v10.5.4 ARCHITECT Epoch — Displays minted cognitives with status, metrics, and controls
- * Integrated with the SPARTA Epoch layered architecture
+ * Displays minted cognitives with status, metrics, and controls
+ * Integrated with the layered architecture
  */
 
 import { useState } from 'react';

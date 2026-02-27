@@ -1,6 +1,6 @@
 /**
  * Modules Hub — Central index of all substrate execution surfaces
- * SPARTA Epoch: 1 Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones
+ * 1 Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones
  */
 
 import { Link } from "react-router-dom";

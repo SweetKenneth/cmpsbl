@@ -1,6 +1,6 @@
 /**
  * promptfluid® Telemetry Engine
- * v10.5.4 — ARCHITECT Epoch: Canonical Observability Layer
+ * Canonical Observability Layer
  * 
  * The Telemetry Engine is the single source of truth for all execution observability.
  * It records engine execution events, governance blocks, compliance signals, and

@@ -1,5 +1,5 @@
 /**
- * NEXUS Module Enhancements — SPARTA Epoch
+ * NEXUS Module Enhancements
  * BudgetGovernance, LoadBalancer, RequestQueue, CostArbitrage
  */
 

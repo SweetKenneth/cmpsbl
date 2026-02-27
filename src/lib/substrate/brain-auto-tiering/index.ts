@@ -1,6 +1,6 @@
 /**
  * BRAIN Auto-Tiering Enforcement Engine
- * SPARTA Epoch — Crown Jewel Capability
+ * Crown Jewel Capability
  * 
  * CLM Request: BRAIN module flagged Hot Memory Tier overflow (1,671 entries vs 500 limit)
  * Resolution: Aggressive auto-tiering with scheduled enforcement, demotion cascades,

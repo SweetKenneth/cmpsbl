@@ -1,5 +1,5 @@
 /**
- * RIPPLE Module Enhancements — SPARTA Epoch
+ * RIPPLE Module Enhancements
  * EventRouter, PriorityQueue, DeadLetterHandler, EventReplay
  */
 

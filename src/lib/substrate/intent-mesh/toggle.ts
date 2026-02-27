@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Kill Switch / Toggle
- * v10.5.3 — Auto-starts scheduler when mesh is enabled
+ * Auto-starts scheduler when mesh is enabled
  */
 
 import { create } from 'zustand';

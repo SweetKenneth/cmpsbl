@@ -1,6 +1,6 @@
 /**
  * Substrate Module Hooks — Barrel Export
- * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture Hooks
+ * 10-Entity + 5-Mesh + 9-Zone Architecture Hooks
  *
  * CORE (standalone kernel)
  * CCR zones: SYSTEM, BRAIN, MEMORY, DREAM (hooks exported for backcompat)

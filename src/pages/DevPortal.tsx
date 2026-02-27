@@ -1,6 +1,5 @@
 /**
  * CMPSBL® Developer Portal
- * SPARTA Epoch
  * 
  * Public-facing page for developers and researchers to discover,
  * integrate, and build with the substrate.

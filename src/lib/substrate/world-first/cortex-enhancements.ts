@@ -1,5 +1,5 @@
 /**
- * CORTEX Module Enhancements — v10.5.4 ARCHITECT Epoch
+ * CORTEX Module Enhancements
  * PipelineScheduler, MultiAgentCoordinator, GoalDecomposer, DecisionGovernor
  */
 

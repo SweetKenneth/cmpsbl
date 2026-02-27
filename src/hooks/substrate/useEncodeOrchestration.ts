@@ -1,6 +1,6 @@
 /**
  * useEncodeOrchestration Hook
- * v11.0.0 — React interface for the ENCODE orchestration layer.
+ * React interface for the ENCODE orchestration layer.
  * Manages conversation relay, execution lock, audit mode, surgical patches, and CLI.
  */
 

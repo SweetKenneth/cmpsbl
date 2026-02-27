@@ -1,6 +1,5 @@
 /**
  * useModernizer Hook — MODERNIZER → EVOLUTION mesh proxy
- * SPARTA Epoch
  * 
  * Respects debug mode kill-switch and shadow-to-production execution pipeline.
  * Part of the SPARTA Epoch layered cognitive architecture.

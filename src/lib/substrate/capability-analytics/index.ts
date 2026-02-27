@@ -1,6 +1,6 @@
 /**
  * Capability Usage Analytics
- * v1.0.0 — Tracks capability execution frequency, latency, errors, and value
+ * Tracks capability execution frequency, latency, errors, and value
  * 
  * Feeds Modernizer + roadmap decisions with real usage data.
  * Identifies dead weight capabilities and promotes winners.

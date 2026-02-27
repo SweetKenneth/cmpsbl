@@ -1,6 +1,5 @@
 /**
  * useVision Hook — VISION module operations
- * SPARTA Epoch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

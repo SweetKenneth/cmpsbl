@@ -1,6 +1,6 @@
 /**
  * Per-Node Canary Deployment Engine
- * SPARTA Epoch — Staged rollouts at matrix node level
+ * Staged rollouts at matrix node level
  * 
  * Allows promoting changes to 5% → 25% → 50% → 100% of traffic per node,
  * with automatic rollback on health degradation.

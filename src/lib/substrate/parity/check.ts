@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * SPARTA Epoch — All 24 execution surfaces at full parity
+ * All 24 execution surfaces at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */

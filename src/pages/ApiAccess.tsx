@@ -1,6 +1,5 @@
 /**
  * API Access — Developer API Entry Point
- * v10.5.4 ARCHITECT Epoch
  */
 
 import { Link } from "react-router-dom";

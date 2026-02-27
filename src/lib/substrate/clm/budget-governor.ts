@@ -1,6 +1,6 @@
 /**
  * CLM Budget Governor
- * SPARTA Epoch — Dynamic allocation via NEXUS 4-hour cycles
+ * Dynamic allocation via NEXUS 4-hour cycles
  * 
  * No longer uses hardcoded percentage. Budget comes from NEXUS cycle allocator.
  */

@@ -1,6 +1,5 @@
 /**
  * useSystem Hook — SYSTEM zone (Administration) operations
- * SPARTA Epoch
  * 
  * Part of the 10-Entity + 5-Mesh + 9-Zone Cognitive Architecture
  */

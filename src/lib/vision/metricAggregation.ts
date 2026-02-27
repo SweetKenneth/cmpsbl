@@ -1,6 +1,6 @@
 /**
- * PromptFluid Vision - Real-Time Metric Aggregation v10.5.4
- * ARCHITECT Epoch Live metric collection, aggregation, and streaming
+ * PromptFluid Vision — Real-Time Metric Aggregation
+ * Live metric collection, aggregation, and streaming
  */
 
 import { supabase } from '@/integrations/supabase/client';

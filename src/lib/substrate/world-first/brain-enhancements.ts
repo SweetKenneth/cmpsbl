@@ -1,5 +1,5 @@
 /**
- * BRAIN Module Enhancements — SPARTA Epoch
+ * BRAIN Module Enhancements
  * AttentionMechanism, MemoryConsolidator, SemanticIndexer, EmotionalResonance
  */
 

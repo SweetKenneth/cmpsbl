@@ -1,5 +1,5 @@
 /**
- * DREAM Module Enhancements — v10.5.4 ARCHITECT Epoch
+ * DREAM Module Enhancements
  * CreativeMutator, InsightCrystallizer, PatternEvolver, DreamJournal
  */
 

@@ -1,6 +1,6 @@
 /**
  * useNexus Hook — NEXUS (Router) module operations
- * SPARTA Epoch — Respects debugMode kill-switch
+ * Respects debugMode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

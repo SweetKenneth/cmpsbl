@@ -1,6 +1,6 @@
 /**
  * Capability Gate Middleware
- * v1.0.0 — Enforces tier-based access control for substrate capabilities
+ * Enforces tier-based access control for substrate capabilities
  * 
  * Checks the user's subscription tier before allowing capability execution.
  * Integrated with the LNCHBL tier map for runtime enforcement.

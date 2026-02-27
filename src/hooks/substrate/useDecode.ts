@@ -1,6 +1,6 @@
 /**
  * useDecode Hook — DECODE (Interpreter) module operations
- * SPARTA Epoch — Respects debug mode kill-switch
+ * Respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

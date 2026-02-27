@@ -1,6 +1,6 @@
 /**
  * Module Parity Exports
- * SPARTA Epoch — Cross-entity standards enforcement
+ * Cross-entity standards enforcement
  * 
  * Ensures all entities + zones adhere to the Parity Standard
  */

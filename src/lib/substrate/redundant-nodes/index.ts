@@ -1,6 +1,6 @@
 /**
  * Redundant Node Pairs (Hot-Standby)
- * SPARTA Epoch — Shadow nodes for critical paths
+ * Shadow nodes for critical paths
  * 
  * Maintains hot-standby shadow nodes for critical matrix nodes
  * that auto-activate on breaker open.

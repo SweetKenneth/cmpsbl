@@ -1,6 +1,6 @@
 /**
  * Subsystem Health Registry
- * v10.5.4 ARCHITECT — Circuit breakers, diagnostics, and healing for all subsystems
+ * Circuit breakers, diagnostics, and healing for all subsystems
  * 
  * Subsystems are operational layers that sit alongside the 21 core modules:
  * - Intent Mesh: Cross-module capability routing

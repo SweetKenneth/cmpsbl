@@ -1,6 +1,6 @@
 /**
  * INTEGRATION Transform Pipeline
- * v10.5.4 — ARCHITECT Epoch Data transformation and mapping engine
+ * Data transformation and mapping engine
  */
  
  // Transform step

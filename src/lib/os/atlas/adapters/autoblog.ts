@@ -1,6 +1,6 @@
 /**
  * Atlas Autoblog Adapter
- * v10.5.4 ARCHITECT — Autoblog integration for Atlas control plane
+ * Autoblog integration for Atlas control plane
  */
 
 import { 

@@ -1,5 +1,5 @@
 /**
- * DECODE Module Enhancements — v10.5.4 ARCHITECT Epoch
+ * DECODE Module Enhancements
  * IntentAmplifier, ContextualParser, EmotionDetector, MultimodalFusion
  */
 

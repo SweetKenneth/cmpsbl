@@ -1,6 +1,6 @@
 /**
  * Cognitive Engine Types
- * v10.9.0 ARCHITECT Epoch — 80 Engines + 26 Meta-Engines
+ * 80 Engines + 26 Meta-Engines
  * 
  * Engines consolidate related capabilities into compound execution units.
  * This architecture provides:

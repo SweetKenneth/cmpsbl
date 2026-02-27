@@ -1,6 +1,6 @@
 /**
  * Atlas Audit Logger
- * v10.5.4 — ARCHITECT Epoch Full audit trail for all Atlas operations
+ * Full audit trail for all Atlas operations
  */
 
 import { supabase } from '@/integrations/supabase/client';

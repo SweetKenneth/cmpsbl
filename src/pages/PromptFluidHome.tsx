@@ -48,7 +48,7 @@ const milestones = [
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
   { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 10 entities + 5 mesh overlays + 9 zones, powered by the CMPSBL Substrate." },
   { year: "2025", title: "175k+ Lines of Code", description: "Grew to 525+ capabilities, 13-provider AI routing, and composable cognitive infrastructure." },
-  { year: "2026", title: "SPARTA Epoch", description: "Zone Architecture — surgically hot-swappable subsystems with circuit-breaker isolation, mesh overlays, and autonomous evolution." },
+  { year: "2026", title: "Zone Architecture", description: "Surgically hot-swappable subsystems with circuit-breaker isolation, mesh overlays, and autonomous evolution." },
 ];
 
 const capabilities = [

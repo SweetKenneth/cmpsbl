@@ -1,7 +1,6 @@
 /**
  * Atlas Control Plane Tab
- * v10.5.4 ARCHITECT Epoch — Single-source-of-truth substrate interface with CLM + SEBA integration
- * ARCHITECT Epoch — Single-source-of-truth substrate interface with CLM + SEBA integration
+ * Single-source-of-truth substrate interface with CLM + SEBA integration
  */
 
 import { useState, useEffect } from 'react';

@@ -1,6 +1,6 @@
 /**
  * Centralized Logging System
- * v10.5.4 — ARCHITECT Epoch Production-safe logging with redaction and trace propagation
+ * Production-safe logging with redaction and trace propagation
  */
 
 import { redactSecrets } from '@/lib/defense/redact';

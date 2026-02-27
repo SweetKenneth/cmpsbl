@@ -1,6 +1,6 @@
 /**
  * Live Gap Execution Engine
- * v10.4.0 — Run discovery against real DB data, surface unresolved intents,
+ * Run discovery against real DB data, surface unresolved intents,
  * and auto-propose new resolvers to fill gaps
  * 
  * Unlike structural gap analysis (which compares manifest vs domain knowledge),

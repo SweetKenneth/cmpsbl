@@ -1,6 +1,5 @@
 /**
  * useRelay Hook — RELAY zone operations
- * SPARTA Epoch
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';

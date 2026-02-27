@@ -1,6 +1,6 @@
 /**
  * CLM Module Integration Hooks
- * SPARTA Epoch — Per-module learning hooks for CLM autonomous operation
+ * Per-module learning hooks for CLM autonomous operation
  * 
  * Each substrate module registers its own learning KPIs and reflection methods.
  * CLM calls these hooks during autonomous learning cycles within the
