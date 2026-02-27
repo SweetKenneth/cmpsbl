@@ -75,8 +75,16 @@ const defaultConfigs: Record<string, CapabilityConfig> = {
   core: { enabled: true, mode: 'governed', requiresApproval: false },
   seba: { enabled: true, mode: 'governed', requiresApproval: true },
   encoded: { enabled: true, mode: 'governed', requiresApproval: true },
-  synergy: { enabled: true, mode: 'governed', requiresApproval: false }, // Cross-module pipelines
+  synergy: { enabled: true, mode: 'governed', requiresApproval: false },
+  gov: { enabled: true, mode: 'governed', requiresApproval: false },
+  governance: { enabled: true, mode: 'governed', requiresApproval: false },
+  obs: { enabled: true, mode: 'governed', requiresApproval: false },
+  observability: { enabled: true, mode: 'governed', requiresApproval: false },
+  analytics: { enabled: true, mode: 'governed', requiresApproval: false },
 };
+
+// Read-only actions that never require approval
+const READ_ONLY_ACTIONS = ['status', 'health', 'info', 'summary', 'list', 'get', 'check', 'version'];
 
 // Rate limit tracking
 const rateLimitBuckets = new Map<string, { minute: number[]; hour: number[] }>();
