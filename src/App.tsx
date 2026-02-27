@@ -367,6 +367,7 @@ const App = () => {
                         <Route path="/docs/runtime" element={<RuntimeReference />} />
                         <Route path="/docs/manifest" element={<CapabilityManifest />} />
                         <Route path="/runtime" element={<RuntimePage />} />
+                        <Route path="/capability-map" element={<CapabilityMap />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
                         <Route path="/capabilities" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/synergies" element={<Navigate to="/upgrade" replace />} />
