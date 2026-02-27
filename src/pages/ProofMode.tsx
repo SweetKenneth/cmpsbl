@@ -202,7 +202,7 @@ function ProofModeContent() {
           module: "decode",
           action: "chat",
           payload: {
-            message: "In three sentences, interpret what the promptfluid® substrate does based on its own description.",
+            message: "In three sentences, interpret what the CMPSBL® substrate does based on its own description.",
             session_id: "proof_demo",
           },
         };
