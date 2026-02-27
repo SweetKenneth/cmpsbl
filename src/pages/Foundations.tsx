@@ -4,7 +4,7 @@
  */
 
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -91,10 +91,10 @@ export default function Foundations() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Helmet>
-        <title>FNDTN — Foundations | CMPSBL®</title>
-        <meta name="description" content="CMPSBL — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the layered architecture and access archival records." />
-      </Helmet>
+      <SEO 
+        title="FNDTN — Foundations | CMPSBL®"
+        description="CMPSBL — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the layered architecture and access archival records."
+      />
 
       <PublicNav />
 

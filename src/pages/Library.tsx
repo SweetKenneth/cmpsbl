@@ -323,7 +323,7 @@ export default function Library() {
               >
                 <Badge className="mb-6 px-4 py-2 text-sm bg-primary/10 text-primary border-primary/20">
                   <Sparkles className="w-4 h-4 mr-2" />
-                  v7.5.3 Documentation
+                  Documentation
                 </Badge>
                 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">

@@ -9,8 +9,8 @@
  */
 
 import { useState, useCallback } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { SEO } from '@/components/SEO';
 import { LivingDreamEaterAvatar, type DreamEaterMood as AvatarMood } from '@/components/dream-eater/LivingDreamEaterAvatar';
 import { DreamStreamTicker } from '@/components/dream-eater/DreamStreamTicker';
 import { DreamEchoDisplay } from '@/components/dream-eater/DreamEchoDisplay';
@@ -123,25 +123,13 @@ const FeedDreamEater = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Feed the Dream-Eater | Interactive AI Memory Demo | CMPSBL®</title>
-        <meta name="description" content="Experience persistent AI memory in action. Feed dreams and nightmares to a living AI entity that evolves, mutates, and remembers. Watch real-time mood transitions and unlock milestones." />
-        <meta name="keywords" content="AI memory demo, persistent memory, dream eater, interactive AI, AI consciousness, neural network demo, CMPSBL" />
-        <link rel="canonical" href="https://cmpsbl.com/feed-dream-eater" />
-        
-        {/* Open Graph */}
-        <meta property="og:title" content="Feed the Dream-Eater | Interactive AI Memory Demo" />
-        <meta property="og:description" content="Watch an AI entity that remembers, evolves, and transforms based on what you feed it. Experience persistent memory in action." />
-        <meta property="og:url" content="https://cmpsbl.com/feed-dream-eater" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://cmpsbl.com/og-dream-eater.jpg" />
-        
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Feed the Dream-Eater | CMPSBL®" />
-        <meta name="twitter:description" content="An AI entity that remembers and evolves. Feed it dreams or nightmares and watch it transform." />
-        <meta name="twitter:image" content="https://cmpsbl.com/og-dream-eater.jpg" />
-      </Helmet>
+      <SEO 
+        title="Feed the Dream-Eater | Interactive AI Memory Demo | CMPSBL®"
+        description="Experience persistent AI memory in action. Feed dreams and nightmares to a living AI entity that evolves, mutates, and remembers."
+        canonical="https://cmpsbl.com/feed-dream-eater"
+        image="https://cmpsbl.com/og-dream-eater.jpg"
+        keywords={['AI memory demo', 'persistent memory', 'dream eater', 'interactive AI', 'AI consciousness', 'neural network demo', 'CMPSBL']}
+      />
 
       <CmpsblNav />
 
