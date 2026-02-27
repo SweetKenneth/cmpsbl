@@ -408,7 +408,7 @@ export function InteractiveSubstrateDiagram() {
             <div className={cn(
               "bg-background/95 backdrop-blur-xl border-2 rounded-xl p-3 md:p-4 text-center",
               "shadow-[0_0_40px_rgba(0,0,0,0.3)]",
-              activeModuleData.color.replace("text-", "border-").replace("-300", "-500/50")
+              (activeModuleData?.color ?? 'text-primary').replace("text-", "border-").replace("-300", "-500/50")
             )}>
               <div className="flex items-center justify-center gap-2 mb-1.5">
                 <activeModuleData.icon className={cn("w-5 h-5", activeModuleData.color)} />

@@ -221,7 +221,7 @@ const PhaseNode = memo(function PhaseNode({
           <motion.div
             className={cn(
               "absolute -inset-5 rounded-2xl border",
-              phase.borderColor.replace('/60', '/30')
+              (phase.borderColor ?? 'border-primary/60').replace('/60', '/30')
             )}
             animate={{
               scale: [1, 1.2, 1],
