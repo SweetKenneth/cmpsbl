@@ -1,6 +1,6 @@
 /**
  * Capability System
- * SPARTA Epoch — Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
+ * Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
  * 
  * This module provides:
  * - Registry: Single source of truth for 269 capabilities

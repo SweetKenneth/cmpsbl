@@ -1,6 +1,6 @@
 /**
  * ENCODE Error-Pattern Library
- * SPARTA Epoch — Crown Jewel Capability
+ * Crown Jewel Capability
  * 
  * CLM Request: ENCODE module identified need to map and learn from failed task chains,
  * building a persistent library of error patterns to prevent repeat failures.

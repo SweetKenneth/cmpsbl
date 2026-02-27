@@ -1,6 +1,6 @@
 /**
  * Terminal Registry Validator
- * SPARTA Epoch — Ensures all 360+ commands are properly wired
+ * Ensures all 360+ commands are properly wired
  */
 
 import { log } from '@/lib/system/log';

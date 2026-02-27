@@ -1,6 +1,6 @@
 /**
  * Governance Compliance Auditor
- * SPARTA Epoch v11.5.2 — No silent skips, DB-persisted reports
+ * No silent skips, DB-persisted reports
  * 
  * Verifies runtime subsystem states match governance mode expectations.
  * Unknown/undeterminable flags produce WARNING violations, never silent skips.
