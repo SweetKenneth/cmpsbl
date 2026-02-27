@@ -14,15 +14,22 @@ const corsHeaders = {
 
 // Map product IDs to tiers
 const PRODUCT_TO_TIER: Record<string, string> = {
-  // Builder
-  'prod_TwE1Eqx3bpZsSy': 'builder',
-  'prod_TwE1VkEdBVaiuR': 'builder',
-  // Pro
-  'prod_TwE1R8rSXH8Hku': 'pro',
-  'prod_TwE1RRfo82Y15Z': 'pro',
-  // Enterprise
-  'prod_TwE1Ft7HTEDerh': 'enterprise',
-  'prod_TwE1AiW91BGmM3': 'enterprise',
+  // Creator ($29/mo)
+  'prod_U3d8z2sorSG4sI': 'creator',
+  'prod_U3d84gNyBRQgeu': 'creator',
+  // Architect ($79/mo)
+  'prod_U3d8XbUwCGrcfO': 'architect',
+  'prod_U3d8M0yNFGpGTw': 'architect',
+  // Legacy product IDs — map to new tiers
+  'prod_TzwJfkmkooYhwU': 'creator',
+  'prod_TzwJtYd5I4rH7j': 'architect',
+  'prod_TzwJm6Ji4E3Vca': 'architect',
+  'prod_TwE1Eqx3bpZsSy': 'creator',
+  'prod_TwE1VkEdBVaiuR': 'creator',
+  'prod_TwE1R8rSXH8Hku': 'architect',
+  'prod_TwE1RRfo82Y15Z': 'architect',
+  'prod_TwE1Ft7HTEDerh': 'architect',
+  'prod_TwE1AiW91BGmM3': 'architect',
 };
 
 const logStep = (step: string, details?: Record<string, unknown>) => {
@@ -111,8 +118,11 @@ serve(async (req) => {
 
     const tierPriority: Record<string, number> = {
       starter: 0,
+      free: 0,
       builder: 1,
+      creator: 1,
       pro: 2,
+      architect: 2,
       enterprise: 3,
     };
 
