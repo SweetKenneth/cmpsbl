@@ -964,7 +964,7 @@ export default function STierDemos() {
                 <Shield className="w-11 h-11 text-primary relative z-10 drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)]" />
               </div>
               <Badge variant="outline" className="text-primary border-primary/40 text-sm px-4 py-1.5 tracking-widest font-semibold backdrop-blur-sm bg-primary/5">
-                COGNITIVE SHOWCASE
+                LIVE SHOWCASE
               </Badge>
             </motion.div>
             
@@ -993,7 +993,7 @@ export default function STierDemos() {
               transition={{ delay: 0.7, duration: 0.5 }}
               className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed"
             >
-              Every showcase runs on the live CMPSBL substrate.<br />
+              Every showcase runs on live CMPSBL infrastructure.<br />
               No mocks. No replays. No precomputed output.<br />
               <span className="text-foreground/80 font-medium">What you see is the system thinking in real time.</span>
             </motion.p>
