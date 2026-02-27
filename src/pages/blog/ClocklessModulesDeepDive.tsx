@@ -31,11 +31,11 @@ export default function ClocklessModulesDeepDive() {
   return (
     <>
       <SEO
-        title="Inside the Modules: What Makes Each Clockless Module Special"
-        description="A deep dive into every substrate module — from MEMORY's three-tier persistence to EVOLUTION's autonomous self-improvement. Understand what each module brings to the Clockless cognitive infrastructure."
+        title="Inside the Modules — CMPSBL Substrate Architecture Deep Dive"
+        description="A deep dive into every CMPSBL substrate module — from MEMORY's three-tier persistence to EVOLUTION's autonomous self-improvement. Understand each module's role in the Clockless Cognitive Reality engine."
         type="article"
         publishedTime="2026-02-27"
-        keywords={['Clockless modules', 'substrate architecture', 'MEMORY module', 'DEFENSE module', 'AI module deep dive', 'cognitive infrastructure modules', 'BRAIN module', 'GOVERNOR module']}
+        keywords={['CMPSBL modules', 'substrate architecture', 'MEMORY module', 'DEFENSE module', 'AI module deep dive', 'cognitive infrastructure modules', 'BRAIN module', 'Clockless Cognitive Reality']}
       />
       <PublicNav />
 

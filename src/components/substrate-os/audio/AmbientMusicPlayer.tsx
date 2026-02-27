@@ -31,7 +31,7 @@ function ClocklessRadioPlayer({ className }: { className?: string }) {
           "h-8 w-8 sm:h-9 sm:w-9 relative shrink-0",
           radio.isPlaying && "text-primary"
         )}
-        title="Clockless Radio"
+        title="CMPSBL Radio"
       >
         <Radio className={cn(
           "w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform",
