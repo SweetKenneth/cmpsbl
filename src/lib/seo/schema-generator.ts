@@ -29,7 +29,8 @@ export class SchemaGenerator {
       "description": data.description,
       "founder": data.founder ? {
         "@type": "Person",
-        "name": data.founder
+        "name": data.founder,
+        "sameAs": "https://orcid.org/0009-0001-4237-1243"
       } : undefined,
       "foundingDate": data.foundingDate,
       "address": data.address,
@@ -88,7 +89,8 @@ export class SchemaGenerator {
       "description": data.description,
       "author": {
         "@type": "Person",
-        "name": data.author
+        "name": data.author,
+        ...(data.author === "Kenneth E Sweet Jr" ? { "sameAs": "https://orcid.org/0009-0001-4237-1243" } : {})
       },
       "datePublished": data.datePublished,
       "dateModified": data.dateModified || data.datePublished,

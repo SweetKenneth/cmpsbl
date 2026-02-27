@@ -90,7 +90,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                                 className="p-3 rounded-lg bg-primary/10 border border-primary/20"
                               >
                                 <p className="text-[10px] font-semibold text-primary uppercase tracking-wider mb-1">
-                                  {radio.djContent.type === 'call_in' ? `📞 ${radio.djContent.caller}` : '🎙 AI DJ'}
+                                  {radio.djContent.type === 'call_in' ? `📞 ${radio.djContent.caller}` : radio.djContent.type === 'rex_rant' ? '🔥 REX BINARY' : '🎙 Rex Binary'}
                                 </p>
                                 <p className="text-xs text-foreground/80 italic leading-relaxed">
                                   "{radio.djContent.text}"
@@ -114,8 +114,13 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                                   {radio.currentTrack?.title || 'CMPSBL Radio'}
                                 </p>
                                 <p className="text-[10px] text-muted-foreground">
-                                  {radio.isDJSpeaking ? 'AI DJ Live' : radio.isPlaying ? 'Now Playing' : 'Press play to tune in'}
+                                  {radio.isDJSpeaking ? 'Rex Binary Live' : radio.isPlaying ? 'Now Playing' : 'Press play to tune in'}
                                 </p>
+                                {radio.totalMinutes > 0 && (
+                                  <p className="text-[9px] text-muted-foreground/70">
+                                    {radio.minutesRemaining}min remaining today
+                                  </p>
+                                )}
                               </div>
                             </div>
                             

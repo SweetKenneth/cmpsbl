@@ -27,6 +27,8 @@ export interface ProductLimits {
   exportTraceAccess: boolean;
   /** Max crystallized assets usable */
   crystallizedAssetCap: number;
+  /** Radio listening limit in minutes per 24 hours. -1 = unlimited */
+  radioMinutesPerDay: number;
 }
 
 export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
@@ -39,6 +41,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: false,
     exportTraceAccess: false,
     crystallizedAssetCap: 12,
+    radioMinutesPerDay: 5,
   },
   operator: {
     maxMemoryNamespaces: 3,
@@ -49,6 +52,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: false,
     exportTraceAccess: false,
     crystallizedAssetCap: 30,
+    radioMinutesPerDay: 30,
   },
   architect: {
     maxMemoryNamespaces: 12,
@@ -59,6 +63,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: true,
     exportTraceAccess: true,
     crystallizedAssetCap: 60,
+    radioMinutesPerDay: 60,
   },
 };
 
