@@ -51,7 +51,7 @@ export default function AgencyMint() {
             <p className="text-sm text-muted-foreground mb-6">
               Sign in to access the Agency Mint.
             </p>
-            <Button asChild className="bg-fuchsia-600 hover:bg-fuchsia-500">
+            <Button asChild className="bg-primary hover:bg-primary/90">
               <Link to="/auth">Sign In</Link>
             </Button>
           </CardContent>

@@ -274,7 +274,7 @@ export default function Namespace() {
         {/* First of Its Kind */}
         <section className="mb-12">
           <div className="flex items-center gap-2 mb-4">
-            <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">FIRST OF ITS KIND</Badge>
+            <Badge className="bg-primary/20 text-primary border-primary/30">FIRST OF ITS KIND</Badge>
           </div>
           <h2 className="text-2xl font-semibold mb-6">Pioneering AI Governance Infrastructure</h2>
           <p className="text-muted-foreground mb-8">

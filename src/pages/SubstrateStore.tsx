@@ -567,7 +567,7 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
                   : 'This architecture artifact is restricted to CMPSBL core. Not available at any tier.'}
               </p>
               {isBlackBoxed && (
-                <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-500">
+                <Button asChild size="sm" className="bg-primary hover:bg-primary/90">
                   <Link to="/pricing">
                     <Zap className="w-3.5 h-3.5 mr-1.5" />
                     Unlock with {upgradeLabel}

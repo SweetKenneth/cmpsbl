@@ -1,5 +1,5 @@
 /**
- * Dream Archaeology Page v1.0.0
+ * Dream Archaeology Page
  * 
  * Read-only analytics surface showing what the Dream-Eater has learned.
  * No raw dream content exposed - only aggregated themes and patterns.

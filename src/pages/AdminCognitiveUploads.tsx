@@ -169,7 +169,7 @@ export default function AdminCognitiveUploads() {
                       </CardDescription>
                     </div>
                     {status?.exists ? (
-                      <Badge variant="outline" className="text-green-500 border-green-500/30 text-xs shrink-0">
+                      <Badge variant="outline" className="text-[hsl(var(--system-green))] border-[hsl(var(--system-green))]/30 text-xs shrink-0">
                         <CheckCircle className="w-3 h-3 mr-1" /> Live
                       </Badge>
                     ) : (

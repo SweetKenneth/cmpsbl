@@ -355,10 +355,10 @@ export default function PromptFluidHome() {
                   CMPSBL®
                 </span>
               </h2>
-              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
+              <p className="text-foreground/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
                 The world's first public cognitive operating system — 10 entities, 5 mesh overlays, 
                 persistent memory, self-evolving architecture, and 175k+ lines of production code. 
-                Built by PromptFluid. Free to start.
+                Free to start.
               </p>
 
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
