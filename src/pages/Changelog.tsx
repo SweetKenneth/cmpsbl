@@ -524,15 +524,15 @@ export default function Changelog() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Evolution Log — Why the Substrate Changed"
-        description="A living record of evolutionary pressures and responses. Not a changelog, but a history of how the CMPSBL substrate taught itself to survive."
+        title="Evolution Log — CMPSBL"
+        description="A living record of how CMPSBL evolved. Not a changelog — a history of pressures, responses, and the capabilities they produced."
       />
       <PublicNav />
 
       <main className="container mx-auto px-4 py-24 max-w-5xl">
         <div className="text-center mb-16 space-y-4">
           <Badge variant="outline" className="px-4 py-1 border-primary/20 bg-primary/5 text-primary">
-            SPARTA EPOCH
+            ARCHITECT EPOCH
           </Badge>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight">
             Evolution Log
