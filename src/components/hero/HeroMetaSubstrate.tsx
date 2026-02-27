@@ -194,9 +194,6 @@ export function HeroMetaSubstrate() {
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-xs font-semibold text-muted-foreground tracking-wide">Cognitive Infrastructure for AI Applications</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/50">
-                <span className="text-[10px] font-mono font-bold text-muted-foreground/70">v11.3.0</span>
-              </span>
-              <span className="flex items-center gap-1 pl-2 border-l border-border/50">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>
               </span>
