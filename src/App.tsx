@@ -340,6 +340,7 @@ const App = () => {
                         <Route path="/intent-mesh" element={<PhaseGateRoute><IntentMeshPublic /></PhaseGateRoute>} />
                         <Route path="/changelog" element={<Changelog />} />
                         <Route path="/codelab" element={<CodeLab />} />
+                        <Route path="/templates" element={<Templates />} />
                         <Route path="/forge" element={<Navigate to="/" replace />} />
                         <Route path="/forge/catalog" element={<ForgeCatalog />} />
                         <Route path="/agency" element={<Navigate to="/" replace />} />
