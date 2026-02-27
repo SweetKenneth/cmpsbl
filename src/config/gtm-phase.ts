@@ -36,7 +36,7 @@ export const GATED_ROUTES: GatedRoute[] = [
   { path: '/synergies', unlocksAt: 2, label: 'Synergy Pipelines', teaser: '300+ cross-module orchestration pipelines.', waitlist: true },
   { path: '/artifacts', unlocksAt: 2, label: 'Artifacts', teaser: 'Downloadable substrate artifacts and templates.', waitlist: true },
   { path: '/engines', unlocksAt: 2, label: 'Engine Marketplace', teaser: 'Production-grade orchestration engines with governance and SLA guarantees.', waitlist: true },
-  { path: '/habitat', unlocksAt: 2, label: 'Habitat', teaser: 'Your personalized substrate workspace.', waitlist: true },
+  
   
   // Phase 3 — Ecosystem Flywheel
   { path: '/evolution-mesh', unlocksAt: 3, label: 'Evolution Mesh', teaser: 'Self-learning immune system for any software. API access coming soon.', waitlist: true },

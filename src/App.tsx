@@ -132,7 +132,7 @@ const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDas
 const GovernanceControlPlane = lazy(() => import("./pages/admin/GovernanceControlPlane"));
 const EvolutionMeshLanding = lazy(() => import("./pages/EvolutionMeshLanding"));
 const Architecture = lazy(() => import("./pages/Architecture"));
-const Habitat = lazy(() => import("./pages/Habitat"));
+
 const Status = lazy(() => import("./pages/Status"));
 const SystemIntegrity = lazy(() => import("./pages/SystemIntegrity"));
 // Module pages (de-shrouded)
@@ -391,7 +391,7 @@ const App = () => {
                         <Route path="/artifacts" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/engines" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/system-feed" element={<PhaseGateRoute><PackGate packId="pack-observability"><SystemIntelligenceFeed /></PackGate></PhaseGateRoute>} />
-                        <Route path="/habitat" element={<PhaseGateRoute><PackGate packId="pack-workflow-automation"><Habitat /></PackGate></PhaseGateRoute>} />
+                        
                         <Route path="/status" element={<Status />} />
                         <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />

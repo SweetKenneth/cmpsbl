@@ -72,13 +72,7 @@ const SoundingBoard = lazy(() => import('@/components/governance/SoundingBoard')
 const ShadowMeshToggle = lazy(() => import('@/components/admin/ShadowMeshToggle').then(m => ({ default: m.ShadowMeshToggle })));
 const ShadowMeshAnalytics = lazy(() => import('@/components/admin/ShadowMeshAnalytics').then(m => ({ default: m.ShadowMeshAnalytics })));
 const DefenseAnalytics = lazy(() => import('@/components/substrate-os/DefenseAnalytics').then(m => ({ default: m.DefenseAnalytics })));
-const HabitatCanvas = lazy(() => import('@/habitat/habitatCanvas'));
-const CompactMetricsPanel = lazy(() => import('@/habitat/CompactMetricsPanel').then(m => ({ default: m.CompactMetricsPanel })));
 
-import { resolveHabitatState, type HabitatState } from '@/habitat/habitatStateResolver';
-import { createNamespaceContext } from '@/habitat/namespaceLens';
-import { checkHabitatIntegrity } from '@/habitat/integrityLayer';
-import type { UserTier as HabitatUserTier } from '@/core/decode/depthResolver';
 
 // ============================================
 // Tab Loading Fallback
@@ -908,45 +902,8 @@ export default function SubstrateOS() {
   const version = useMetric('version');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'classic' | 'hybrid'>(() => {
-    if (typeof window === 'undefined') return 'classic';
-    return secureGet<'classic' | 'hybrid'>('os_view_mode') || 'classic';
-  });
-  const navigate = useNavigate();
 
-  // Persist view mode
-  const handleSetViewMode = useCallback((mode: 'classic' | 'hybrid') => {
-    setViewMode(mode);
-    secureSet('os_view_mode', mode);
-  }, []);
 
-  // Habitat state for hybrid mode
-  const habitatTier: HabitatUserTier = useMemo(() => {
-    if (isGovernor) return 'ENTERPRISE';
-    if (role === 'architect') return 'ARCHITECT';
-    return 'CREATOR';
-  }, [role, isGovernor]);
-
-  const namespaceCtx = useMemo(
-    () => createNamespaceContext(user?.id ?? 'default-user', habitatTier, 'default'),
-    [user?.id, habitatTier]
-  );
-
-  const [habitatState, setHabitatState] = useState<HabitatState | null>(null);
-
-  const refreshHabitatState = useCallback(() => {
-    if (viewMode !== 'hybrid') return;
-    const state = resolveHabitatState(namespaceCtx, false);
-    setHabitatState(state);
-  }, [namespaceCtx, viewMode]);
-
-  useEffect(() => {
-    if (viewMode !== 'hybrid') return;
-    refreshHabitatState();
-    checkHabitatIntegrity().then(() => refreshHabitatState());
-    const interval = setInterval(refreshHabitatState, 30_000);
-    return () => clearInterval(interval);
-  }, [refreshHabitatState, viewMode]);
   
   const userTier = getRoleTier(role, isGovernor);
   const isCritical = healthScore.healthScore < 40;
@@ -1047,51 +1004,8 @@ export default function SubstrateOS() {
 
       {/* View Mode Toggle */}
       <div className="flex items-center justify-end px-4 py-1.5 border-b border-border/20 bg-card/30 backdrop-blur-sm">
-        <div className="flex items-center gap-1 rounded-md border border-border/30 bg-muted/20 p-0.5">
-          <button
-            onClick={() => handleSetViewMode('classic')}
-            className={cn(
-              "text-[10px] font-mono px-2.5 py-1 rounded transition-all",
-              viewMode === 'classic'
-                ? "bg-card text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            Classic
-          </button>
-          <button
-            onClick={() => handleSetViewMode('hybrid')}
-            className={cn(
-              "text-[10px] font-mono px-2.5 py-1 rounded transition-all",
-              viewMode === 'hybrid'
-                ? "bg-card text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            Habitat
-          </button>
-        </div>
-      </div>
 
-      {/* ═══ HYBRID MODE ═══ */}
-      {viewMode === 'hybrid' && (
-        <div className="flex-1 flex overflow-hidden">
-          <Suspense fallback={
-            <div className="flex-1 bg-background flex items-center justify-center">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse" />
-            </div>
-          }>
-            <div className="flex-1 relative">
-              <HabitatCanvas
-                userId={user?.id ?? 'default-user'}
-                userTier={habitatTier}
-                namespaceId="default"
-              />
-            </div>
-            <CompactMetricsPanel habitatState={habitatState} />
-          </Suspense>
-        </div>
-      )}
+
 
       {/* ═══ CLASSIC MODE ═══ */}
       {viewMode === 'classic' && (
