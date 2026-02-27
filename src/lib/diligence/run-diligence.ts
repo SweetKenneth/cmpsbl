@@ -67,7 +67,7 @@ function shapeOk(res: unknown): { ok: boolean; note?: string } {
   if (res == null) return { ok: false, note: 'No response returned' };
 
   if (typeof res === 'object') {
-    const obj = res as Record<string, unknown>;
+    const obj = res as unknown as Record<string, unknown>;
     const hasSuccess = typeof obj.success === 'boolean';
     const hasOutput = typeof obj.output === 'string';
     const hasOk = typeof obj.ok === 'boolean';
@@ -89,7 +89,7 @@ function classify(res: unknown, expectedMode: 'surface' | 'failure' | 'unknown')
   const shape = shapeOk(res);
   if (!shape.ok) return { success: false, severity: 'CRITICAL', notes: shape.note };
 
-  const obj = res as Record<string, unknown>;
+  const obj = res as unknown as Record<string, unknown>;
   const success =
     (typeof obj.success === 'boolean' ? obj.success : undefined) ??
     (typeof obj.ok === 'boolean' ? obj.ok : undefined) ??
@@ -128,12 +128,12 @@ async function runOne(name: string, command: string, expectedMode: 'surface' | '
         keys: res && typeof res === 'object' ? Object.keys(res as object) : typeof res,
         sample: res && typeof res === 'object'
           ? {
-              success: (res as Record<string, unknown>).success,
-              ok: (res as Record<string, unknown>).ok,
-              status: (res as Record<string, unknown>).status,
-              hasData: (res as Record<string, unknown>).data != null,
-              hasError: (res as Record<string, unknown>).error != null,
-              hasOutput: typeof (res as Record<string, unknown>).output === 'string',
+              success: (res as unknown as Record<string, unknown>).success,
+              ok: (res as unknown as Record<string, unknown>).ok,
+              status: (res as unknown as Record<string, unknown>).status,
+              hasData: (res as unknown as Record<string, unknown>).data != null,
+              hasError: (res as unknown as Record<string, unknown>).error != null,
+              hasOutput: typeof (res as unknown as Record<string, unknown>).output === 'string',
             }
           : res,
       },
