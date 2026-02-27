@@ -85,7 +85,7 @@ export function PackActivationCard({
         )}
         onClick={() => onViewDetails?.(pack)}
       >
-        <CardContent className="p-5 space-y-3">
+        <CardContent className="p-4 sm:p-5 space-y-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
               <h3 className="font-bold text-sm">{pack.name}</h3>
