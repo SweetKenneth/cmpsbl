@@ -131,8 +131,8 @@ export default function Foundations() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              CMPSBL SPARTA Epoch presents a unified cognitive infrastructure platform 
-              implementing a layered kernel architecture with modules, mesh overlays, convergence zones,
+              CMPSBL presents a unified cognitive infrastructure platform 
+              implementing a layered architecture with production modules, protective layers,
               synergy pipelines, and extensive capabilities. The system provides persistent runtime with tiered memory,
               adaptive learning cycles, multi-provider AI routing, real-time observability,
               autonomous inter-module communication via the INTENT mesh, and self-improvement pipelines.

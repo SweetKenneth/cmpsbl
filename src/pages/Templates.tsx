@@ -67,11 +67,11 @@ function TemplateCard({ template }: { template: ShowcaseTemplate }) {
           {template.description}
         </p>
 
-        {/* Crown Jewel Feature */}
+        {/* Signature Feature */}
         <div className="rounded-lg bg-muted/50 border border-border/30 px-3 py-2 mb-3">
           <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-0.5 uppercase tracking-wider font-medium">
             <Sparkles className="w-3 h-3 text-amber-500" />
-            Crown Jewel Feature
+            Signature Feature
           </div>
           <div className="text-xs font-medium text-foreground">
             {template.crownJewelFeature}
@@ -212,7 +212,7 @@ export default function Templates() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Free Templates — Build on the CMPSBL Substrate"
-        description="30 free templates, each powered by a Crown Jewel capability. From chatbots to threat detection — start building in minutes."
+        description="30 free templates, each powered by a signature capability. From chatbots to threat detection — start building in minutes."
       />
       <PublicNav />
 
@@ -239,7 +239,7 @@ export default function Templates() {
             </h1>
 
             <p className="text-lg text-muted-foreground mb-6 max-w-xl mx-auto leading-relaxed">
-              30 production-ready templates. Each one powered by a Crown Jewel capability
+              30 production-ready templates. Each one powered by a signature capability
               from the substrate. No paywall. No trial. Just build.
             </p>
 
@@ -254,7 +254,7 @@ export default function Templates() {
               </Badge>
               <Badge variant="outline" className="px-3 py-1.5 text-xs">
                 <Sparkles className="w-3 h-3 mr-1.5" />
-                Crown Jewel in Every Template
+                Signature Capability in Every Template
               </Badge>
             </div>
           </motion.div>
@@ -277,7 +277,7 @@ export default function Templates() {
               <h2 className="text-lg font-bold mb-1">Template Generator</h2>
               <p className="text-sm text-muted-foreground">
                 Want something custom? Describe what you need in plain English and get a
-                production-ready template with Crown Jewel capabilities baked in.
+                production-ready template with signature capabilities baked in.
               </p>
             </div>
             <Button
@@ -341,7 +341,7 @@ export default function Templates() {
             </h2>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               The Template Generator creates custom templates from natural language.
-              Describe your idea — get production code with Crown Jewel capabilities.
+              Describe your idea — get production code with signature capabilities.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Button

@@ -130,8 +130,8 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           {[
             { icon: Brain, label: 'Persistent Memory', color: 'text-violet-500', bg: 'bg-violet-500/10', border: 'border-violet-500/20' },
             { icon: Shield, label: 'Drift Prevention', color: 'text-rose-500', bg: 'bg-rose-500/10', border: 'border-rose-500/20' },
-            { icon: Moon, label: 'Dream Cycles', color: 'text-purple-500', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
-            { icon: Server, label: 'World Engine', color: 'text-orange-500', bg: 'bg-orange-500/10', border: 'border-orange-500/20' },
+            { icon: Moon, label: 'Offline Learning', color: 'text-purple-500', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
+            { icon: Server, label: 'NEXUS Router', color: 'text-orange-500', bg: 'bg-orange-500/10', border: 'border-orange-500/20' },
             { icon: Zap, label: 'Multi-Provider', color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
           ].map(({ icon: Icon, label, color, bg, border }) => (
             <motion.div 

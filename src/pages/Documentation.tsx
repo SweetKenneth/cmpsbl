@@ -1,5 +1,5 @@
 /**
- * Documentation Hub — SPARTA Epoch
+ * Documentation Hub — ARCHITECT Epoch
  * Complete developer documentation for CMPSBL cognitive substrate
  */
 
