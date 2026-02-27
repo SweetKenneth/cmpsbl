@@ -11,6 +11,7 @@ import { checkModuleHealth } from './checks/modules';
 import { checkSEO } from './checks/seo';
 import { checkUIContracts } from './checks/ui-contracts';
 import { checkHooksContracts } from './checks/hooks-contracts';
+import { checkBrandingContracts } from './checks/branding-contracts';
 import { checkSupabaseContracts } from './checks/supabase-contracts';
 
 function uid(): string {
@@ -30,6 +31,7 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
     { name: 'hooks', fn: checkHooksContracts },
     { name: 'ui', fn: checkUIContracts },
     { name: 'seo', fn: checkSEO },
+    { name: 'branding', fn: checkBrandingContracts },
   ];
 
   for (const check of syncChecks) {
