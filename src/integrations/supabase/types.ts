@@ -5032,6 +5032,42 @@ export type Database = {
           },
         ]
       }
+      crystallized_assets: {
+        Row: {
+          asset_key: string
+          asset_type: string
+          created_at: string
+          display_name: string
+          id: string
+          pack_id: string | null
+          status: string
+          tier_min: string
+          updated_at: string
+        }
+        Insert: {
+          asset_key: string
+          asset_type?: string
+          created_at?: string
+          display_name: string
+          id?: string
+          pack_id?: string | null
+          status?: string
+          tier_min?: string
+          updated_at?: string
+        }
+        Update: {
+          asset_key?: string
+          asset_type?: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          pack_id?: string | null
+          status?: string
+          tier_min?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       daily_backups: {
         Row: {
           backup_category: string | null
@@ -13920,6 +13956,38 @@ export type Database = {
         }
         Relationships: []
       }
+      user_crystallized_entitlements: {
+        Row: {
+          asset_key: string
+          granted_at: string
+          id: string
+          source: string
+          user_id: string
+        }
+        Insert: {
+          asset_key: string
+          granted_at?: string
+          id?: string
+          source?: string
+          user_id: string
+        }
+        Update: {
+          asset_key?: string
+          granted_at?: string
+          id?: string
+          source?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_crystallized_entitlements_asset_key_fkey"
+            columns: ["asset_key"]
+            isOneToOne: false
+            referencedRelation: "crystallized_assets"
+            referencedColumns: ["asset_key"]
+          },
+        ]
+      }
       user_limits: {
         Row: {
           created_at: string | null
@@ -14192,6 +14260,10 @@ export type Database = {
           p_schedule_time: string
         }
         Returns: string
+      }
+      can_use_crystallized: {
+        Args: { p_asset_key: string; p_user_id: string }
+        Returns: boolean
       }
       check_clarity_rate_limit: {
         Args: { p_api_key_hash: string }
