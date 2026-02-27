@@ -389,7 +389,7 @@ export function SEO({
       {/* Basic Meta Tags */}
       <html lang="en" />
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={safeDescription} />
       <meta name="keywords" content={keywords.join(', ')} />
       <meta name="author" content={author} />
       <meta name="publisher" content="CMPSBL" />
@@ -413,7 +413,7 @@ export function SEO({
       <meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
       <meta property="og:url" content={resolvedCanonical} />
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={safeDescription} />
       <meta property="og:image" content={image} />
       <meta property="og:image:secure_url" content={image} />
       <meta property="og:image:type" content="image/jpeg" />
