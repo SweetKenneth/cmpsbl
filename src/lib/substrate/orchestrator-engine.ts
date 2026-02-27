@@ -1,6 +1,6 @@
 /**
  * Orchestrator Engine
- * v10.5.4 — ARCHITECT Epoch Unified Cognitive Pipeline
+ * Unified Cognitive Pipeline
  * 
  * The Orchestrator Engine chains all cognitive engines into unified workflows.
  * It provides high-level orchestration patterns for common cognitive tasks.

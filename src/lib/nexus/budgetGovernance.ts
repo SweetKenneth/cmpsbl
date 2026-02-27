@@ -1,6 +1,6 @@
 /**
  * NEXUS Budget Governance Engine
- * v10.5.4 ARCHITECT — Real-time cost tracking and enforcement
+ * Real-time cost tracking and enforcement
  */
  
  import { supabase } from '@/integrations/supabase/client';

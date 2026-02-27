@@ -113,7 +113,7 @@ export async function storeHeuristic(
 
 /**
  * Store an insight (summary from successful task)
- * v8.0.0 SYNERGY+: Routes through memory_core lifecycle
+ * Routes through memory_core lifecycle
  */
 export async function storeInsight(
   content: string,

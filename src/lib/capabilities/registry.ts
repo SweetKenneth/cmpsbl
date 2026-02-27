@@ -1,6 +1,6 @@
 /**
  * Capability Registry
- * v10.5.4 ARCHITECT — Single Source of Truth for 400+ Edge-Adapted Capabilities
+ * Single Source of Truth for 400+ Edge-Adapted Capabilities
  */
 
 import type { RegisteredCapability, CapabilityStatus, CapabilityMetadata } from './types';
