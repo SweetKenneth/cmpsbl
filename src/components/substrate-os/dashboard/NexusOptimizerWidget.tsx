@@ -51,7 +51,7 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
         .limit(1)
         .maybeSingle();
       if (error) throw error;
-      return data as HourlySnapshot | null;
+      return data as unknown as HourlySnapshot | null;
     },
     refetchInterval: 60000,
     staleTime: 30000,
