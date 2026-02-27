@@ -248,7 +248,7 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
     exportedAt: new Date().toISOString(),
     distribution: 'CMPSBL',
     targetDistribution: 'LNCHBL',
-    architectureEpoch: 'SPARTA v11.2.1',
+    architectureEpoch: `${getMetric('epoch')} v${getMetric('version')}`,
     categories: counts,
     totalFiles,
   };

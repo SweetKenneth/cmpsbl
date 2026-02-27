@@ -114,9 +114,10 @@ export {
 // Circuit breaker
 export * from './circuitBreaker';
 
-// Version info
-export const NEXUS_VERSION = '5.1.0';
-export const NEXUS_CODENAME = 'ARCHITECT Fleet Router';
+// Version info — wired to central store
+import { SUBSTRATE_VERSION as _NV, SUBSTRATE_EPOCH as _NE } from '@/lib/substrate/versions';
+export const NEXUS_VERSION = _NV;
+export const NEXUS_CODENAME = `${_NE} Fleet Router`;
 
 // Provider registry — free-tier only, zero paid dependencies
 export const SUPPORTED_PROVIDERS = [

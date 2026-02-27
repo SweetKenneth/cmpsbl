@@ -338,7 +338,7 @@ export async function rollbackEvolution(runId: string): Promise<boolean> {
 
 // ============ Module Metadata ============
 
-export const MODERNIZER_VERSION = '7.0.0';
+export { SUBSTRATE_VERSION as MODERNIZER_VERSION } from '@/lib/substrate/versions';
 export const MODERNIZER_CODENAME = 'Architect';
 
 export interface ModernizerStatus {
