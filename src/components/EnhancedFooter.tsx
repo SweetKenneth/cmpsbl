@@ -37,6 +37,7 @@ export function EnhancedFooter() {
         { name: "Substrate", href: "/substrate" },
         { name: "Runtime", href: "/runtime" },
         { name: "Architecture", href: "/architecture" },
+        { name: "Foundations", href: "/foundations" },
         { name: "Proof Mode", href: "/proof" },
       ]
     },
@@ -89,9 +90,9 @@ export function EnhancedFooter() {
       links: [
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
-        { name: "System Status", href: "/status" },
+        { name: "Support", href: "/support" },
+        { name: "Namespace", href: "/namespace" },
         { name: "Library", href: "/library" },
-        { name: "CodeLab", href: "/codelab" },
         { name: "XCTBL", href: "#xctbl" },
       ]
     },
