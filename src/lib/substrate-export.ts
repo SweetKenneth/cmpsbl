@@ -9,6 +9,7 @@
  */
 
 import JSZip from 'jszip';
+import { getMetric } from '@/stores/publicMetricsStore';
 
 // ─── Build-time file listing (lazy raw imports) ──────────────────────────────
 //

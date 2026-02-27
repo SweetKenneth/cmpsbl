@@ -378,7 +378,8 @@ export function validateAgainstContract(
 
 // ============ Module Metadata ============
 
-export { SUBSTRATE_EPOCH as DECODE_VERSION } from '@/lib/substrate/versions';
+import { SUBSTRATE_EPOCH as _DE } from '@/lib/substrate/versions';
+export const DECODE_VERSION = _DE;
 export const DECODE_CODENAME = 'Interpreter';
 
 export interface DecodeModuleStatus {
