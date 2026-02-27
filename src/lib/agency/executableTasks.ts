@@ -15,7 +15,7 @@ export interface ExecutableTask {
   icon: string;
   category: 'research' | 'seo' | 'data' | 'content' | 'business' | 'learning';
   taskType: TaskTypeId;
-  handlers: ('firecrawl' | 'groq' | 'lovable')[];
+  handlers: ('firecrawl' | 'groq' | 'nexus')[];
   executable: boolean;
   estimatedMinutes: number;
   inputPlaceholder: string;
