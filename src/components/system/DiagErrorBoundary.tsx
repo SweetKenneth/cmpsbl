@@ -121,7 +121,7 @@ export class DiagErrorBoundary extends Component<Props, State> {
               </div>
             )}
 
-            <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <button
                 onClick={this.handleRetry}
                 style={{
@@ -137,18 +137,29 @@ export class DiagErrorBoundary extends Component<Props, State> {
                 Try Again
               </button>
               <button
-                onClick={() => window.location.reload()}
+                onClick={() => {
+                  // Clear all stale data that may cause the crash
+                  try { localStorage.clear(); } catch {}
+                  try { sessionStorage.clear(); } catch {}
+                  if ('caches' in window) {
+                    caches.keys().then(names => names.forEach(n => caches.delete(n)));
+                  }
+                  if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+                  }
+                  setTimeout(() => window.location.replace('/'), 300);
+                }}
                 style={{
                   padding: "10px 24px",
-                  backgroundColor: "#333",
+                  backgroundColor: "#1a6b3c",
                   color: "#fff",
-                  border: "1px solid #444",
+                  border: "none",
                   borderRadius: "8px",
                   cursor: "pointer",
                   fontSize: "14px",
                 }}
               >
-                Reload Page
+                Clear Cache &amp; Reload
               </button>
             </div>
 

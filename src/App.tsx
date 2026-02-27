@@ -24,7 +24,9 @@ const loadDeferredCSS = () => import("@/styles/deferred.css");
 import { isEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
 // Mobile crash diagnostics (opt-in via ?diag=1) — lazy loaded
-const DiagErrorBoundary = lazy(() => import("@/components/system/DiagErrorBoundary").then(m => ({ default: m.DiagErrorBoundary })));
+// CRITICAL: DiagErrorBoundary must be EAGERLY loaded so it can catch crashes
+// before any lazy/Suspense resolution. Lazy-loading an error boundary defeats its purpose.
+import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";
 const MobilePreviewSafeMode = lazy(() => import("@/components/system/MobilePreviewSafeMode").then(m => ({ default: m.MobilePreviewSafeMode })));
 const DiagPanelLazy = lazy(() => import("@/components/system/DiagPanel").then(m => ({ default: m.DiagPanel })));
 
