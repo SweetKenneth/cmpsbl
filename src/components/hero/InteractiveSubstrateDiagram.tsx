@@ -192,7 +192,7 @@ const ModuleNodeComponent = memo(function ModuleNodeComponent({
       <div
         className={cn(
           "absolute inset-0 rounded-full blur-xl transition-opacity duration-300",
-          module.color.replace("text-", "bg-"),
+          (module.color ?? 'text-primary').replace("text-", "bg-"),
           isActive || isHovered ? "opacity-40" : "opacity-0"
         )}
       />
@@ -201,7 +201,7 @@ const ModuleNodeComponent = memo(function ModuleNodeComponent({
       <div
         className={cn(
           "absolute inset-[-6px] rounded-full border-2 opacity-30",
-          module.color.replace("text-", "border-"),
+          (module.color ?? 'text-primary').replace("text-", "border-"),
           shouldAnimate && "animate-pulse"
         )}
       />
