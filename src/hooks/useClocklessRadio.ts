@@ -42,6 +42,7 @@ async function fetchDJAudio(
           text: content.text,
           contentType: content.type,
           caller: content.caller,
+          callerVoice: content.callerVoice,
         }),
       }
     );
