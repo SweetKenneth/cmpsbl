@@ -237,6 +237,7 @@ export default function Upgrade() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
   const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
+  const [detailPack, setDetailPack] = useState<ArtifactPack | null>(null);
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
