@@ -148,7 +148,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           transition={{ duration: 0.3 }}
         />
         
-        <div className="p-6 sm:p-8 flex flex-col h-full relative">
+        <div className="p-5 sm:p-8 flex flex-col h-full relative">
           {/* Header */}
           <div className="flex items-start justify-between mb-5">
             {/* Icon with gradient background */}
@@ -208,7 +208,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           </p>
           
           {/* Description */}
-          <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed line-clamp-3">
+          <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed">
             {audience.description}
           </p>
           
@@ -239,7 +239,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           
           {/* CTA */}
           <Button asChild className={cn(
-            "w-full gap-2 h-12 text-base font-semibold",
+            "w-full gap-2 h-11 sm:h-12 text-sm sm:text-base font-semibold",
             "bg-gradient-to-r text-white border-0 shadow-lg",
             "transition-all duration-300 hover:shadow-xl hover:scale-[1.02]",
             audience.gradient,

@@ -91,7 +91,7 @@ export function DifferentiationSection() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Most AI platforms process and forget. Clockless is built on four architectural principles
+            Most AI platforms process and forget. CMPSBL is built on four architectural principles
             that make intelligence durable, governed, and cumulative.
           </p>
         </motion.div>
