@@ -1,6 +1,6 @@
 /**
  * Rollback Snapshot Storage
- * v1.0.0 — Enterprise-only persistent state snapshots for safe evolution
+ * Enterprise-only persistent state snapshots for safe evolution
  * 
  * Captures system state before evolution/modernizer changes,
  * enabling confident rollback to known-good states.

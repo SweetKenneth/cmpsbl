@@ -1,6 +1,6 @@
 /**
  * Phase A — Edge Function Introspection
- * v10.5.4 — ARCHITECT Epoch Capability Auto-Adapt Integration
+ * Capability Auto-Adapt Integration
  * 
  * Scans deployed edge functions and cross-references against capability registry.
  * ⚠️ No source code exposed. Metadata only.

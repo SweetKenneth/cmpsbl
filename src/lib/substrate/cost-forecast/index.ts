@@ -1,6 +1,6 @@
 /**
  * Provider Cost Forecasting
- * v1.0.0 — Predicts AI spend trends to prevent budget overruns
+ * Predicts AI spend trends to prevent budget overruns
  * 
  * Uses exponential moving averages on historical usage to project
  * future costs and generate pre-emptive budget alerts.

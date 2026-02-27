@@ -1,6 +1,6 @@
 /**
  * Transfer Pattern Versioning
- * v1.0.0 — Tracks schema versions for expert patterns
+ * Tracks schema versions for expert patterns
  * 
  * Ensures backward compatibility and migration paths as
  * expert patterns evolve across substrate versions.

@@ -614,9 +614,9 @@ function ProofModeContent() {
                     {selectedScenario === "health" && (
                       <>
                         <p>✓ The substrate is deployed and responding to HTTP requests</p>
-                        <p>✓ All 10 entities + 5 mesh overlays reachable (SPARTA architecture)</p>
+                        <p>✓ All 10 entities + 5 mesh overlays reachable</p>
                         <p>✓ Edge functions are executing on Deno runtime in {EDGE_REGION}</p>
-                        <p>✓ SPARTA Epoch is the active deployment</p>
+                        <p>✓ Active deployment is live</p>
                       </>
                     )}
                     {selectedScenario === "decode" && (

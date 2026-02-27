@@ -1,6 +1,6 @@
 /**
  * Evolution Status Dashboard — Real-time evolution state display
- * v0.7.5 — Shows runs, receipts, and system diagnostics
+ * Shows runs, receipts, and system diagnostics
  */
 
 import { useState, useEffect } from 'react';

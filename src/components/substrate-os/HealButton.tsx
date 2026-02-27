@@ -1,6 +1,6 @@
 /**
  * Heal Button — Prominent system healing control
- * v3.0 hardened UI component with visual feedback
+ * Hardened UI component with visual feedback
  */
 
 import { useState } from 'react';

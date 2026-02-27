@@ -1,7 +1,7 @@
 /**
  * Tech Showcase — Interactive demonstration of all CMPSBL execution surfaces
  * Premium terminal-style code display with syntax highlighting
- * SPARTA Epoch: 9 modules + 5 meshes + 9 zones = 24 execution surfaces
+ * 9 modules + 5 meshes + 9 zones = 24 execution surfaces
  */
 
 import { useState, useEffect, useMemo } from "react";
