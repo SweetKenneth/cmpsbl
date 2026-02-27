@@ -1,6 +1,6 @@
 /**
  * CORE Module — Configuration Management
- * v7.5.0 — Runtime config, feature flags, and environment management
+ * Runtime config, feature flags, and environment management
  */
 
 import { supabase } from '@/integrations/supabase/client';

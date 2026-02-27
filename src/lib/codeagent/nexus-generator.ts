@@ -1,6 +1,6 @@
 /**
  * Encoded Nexus Generator — Real AI Code Generation via pf-nexus-router
- * v1.0.0 — Connects Encoded to the free-tier AI routing layer
+ * Connects Encoded to the free-tier AI routing layer
  * 
  * Flow:
  * 1. Check Brain for existing patterns (brain-first.ts)

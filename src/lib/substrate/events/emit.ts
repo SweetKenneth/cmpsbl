@@ -1,6 +1,6 @@
 /**
  * Event Emission System
- * v7.0.0 — Canonical event stream for all substrate operations
+ * Canonical event stream for all substrate operations
  */
 
 import { supabase } from '@/integrations/supabase/client';

@@ -1,7 +1,7 @@
 /**
  * Capability Detail Modal
  * Shows detailed capability information with code preview
- * v4.0.0 — Code snippets + CodeLab integration
+ * Code snippets + CodeLab integration
  */
 
 import { useState } from 'react';

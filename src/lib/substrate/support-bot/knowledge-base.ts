@@ -1,6 +1,6 @@
 /**
  * Support Bot Knowledge Base
- * v1.0.0 — Pre-trained FAQ data for CodeLab, Marketplace, and Licensing
+ * Pre-trained FAQ data for CodeLab, Marketplace, and Licensing
  * 
  * This module contains curated Q&A pairs that seed the support bot's
  * memory system with foundational product knowledge.

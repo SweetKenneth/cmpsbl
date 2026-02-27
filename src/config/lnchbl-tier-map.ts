@@ -1,6 +1,6 @@
 /**
  * LNCHBL Distribution — Tiered Capability Map
- * v4.1.0 — Maps all 124 substrate capabilities to subscription tiers
+ * Maps all 124 substrate capabilities to subscription tiers
  * 
  * CROWN JEWELS (recursive self-improvement) are CMPSBL-ONLY — not available at any LNCHBL tier.
  * Remaining self-improvement (observational/planning) is Enterprise-only.

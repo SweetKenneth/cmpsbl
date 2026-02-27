@@ -1,6 +1,6 @@
 /**
  * RIPPLE Batch Events Engine
- * v7.0.0 — Bulk Event Publishing & Historical Replay
+ * Bulk Event Publishing & Historical Replay
  * 
  * Missing capability: Batch event operations for high-throughput
  * scenarios and event replay for debugging/recovery.
