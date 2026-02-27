@@ -21,6 +21,7 @@
  * ✅ Audit trail & provenance
  */
 
+import { SUBSTRATE_VERSION } from '@/lib/substrate/versions';
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilience, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber, boundArray } from '@/lib/system/hardening';
