@@ -42,7 +42,7 @@ const PromptFluidMarketDisruptor = () => {
       <section className="relative w-full h-[50vh] overflow-hidden">
         <img 
           src={heroImage} 
-          alt="PromptFluid platform vision"
+          alt="CMPSBL platform vision"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -188,7 +188,7 @@ const PromptFluidMarketDisruptor = () => {
           <section className="bg-card border border-border rounded-lg p-8 text-center">
             <h3 className="text-xl font-bold mb-4 text-foreground">Explore the Platform</h3>
             <p className="text-muted-foreground mb-6">
-              See how CMPSBL's architecture — built by PromptFluid — delivers on these principles.
+              See how CMPSBL's architecture delivers on these principles.
             </p>
             <Link 
               to="/" 
