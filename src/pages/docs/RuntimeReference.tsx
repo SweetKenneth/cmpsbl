@@ -51,8 +51,8 @@ export default function RuntimeReference() {
       packs.forEach(pack => {
         content += `  ◆ ${pack.name}\n`;
         content += `    ${pack.description}\n`;
-        if (pack.emergenceClause) {
-          content += `    Emergence: ${pack.emergenceClause}\n`;
+                if (pack._emergenceClause) {
+          content += `    Emergence: ${pack._emergenceClause}\n`;
         }
         content += `\n`;
       });
@@ -190,9 +190,9 @@ export default function RuntimeReference() {
                             <CardContent className="p-4 space-y-2">
                               <h4 className="font-semibold text-sm">{pack.name}</h4>
                               <p className="text-xs text-muted-foreground">{pack.description}</p>
-                              {pack.emergenceClause && (
+                              {pack._emergenceClause && (
                                 <p className="text-[11px] text-primary/70 italic">
-                                  Emergence: {pack.emergenceClause}
+                                  Emergence: {pack._emergenceClause}
                                 </p>
                               )}
                             </CardContent>
