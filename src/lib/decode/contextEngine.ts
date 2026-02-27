@@ -1,6 +1,6 @@
 /**
  * DECODE Context Engine
- * v10.5.4 — ARCHITECT Epoch — Multi-turn conversation context and memory
+ * Multi-turn conversation context and memory
  */
  
  // Context window

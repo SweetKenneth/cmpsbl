@@ -1,6 +1,6 @@
 /**
  * Engine Subscription Stripe Product Configuration
- * v8.1.0 — OEM Subscription Tiers
+ * OEM Subscription Tiers
  */
 
 export const ENGINE_SUBSCRIPTION_PRODUCTS = {

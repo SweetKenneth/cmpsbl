@@ -1,6 +1,6 @@
 /**
  * Anomaly Forecasting Engine
- * SPARTA Epoch — Predict breaker trips using BRAIN learning data
+ * Predict breaker trips using BRAIN learning data
  * 
  * Uses historical failure signatures from the predictive-failure engine
  * to forecast upcoming anomalies before they happen.

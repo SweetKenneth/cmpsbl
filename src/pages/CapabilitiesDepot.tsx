@@ -1,7 +1,7 @@
 /**
  * Capability Depot — FREE Exploration Layer
  * Atomic, stateless building blocks — ALL UNLOCKED
- * SPARTA Epoch — No pricing, no checkout, all capabilities free
+ * No pricing, no checkout, all capabilities free
  */
 
 import { useState, useMemo, lazy, Suspense } from 'react';

@@ -34,7 +34,7 @@ export { useCortex, type UseCortexReturn } from './useCortex';
 export { useEncode, type UseEncodeReturn } from './useEncode';
 export { useEncodeOrchestration, type UseEncodeOrchestrationReturn } from './useEncodeOrchestration';
 
-// Infrastructure Layer (SPARTA Epoch — Zones)
+// Infrastructure Layer (Zones)
 export { useMemoryModule, type UseMemoryModuleReturn } from './useMemoryModule';
 export { useRelay, type UseRelayReturn } from './useRelay';
 export { useAuditModule, type UseAuditModuleReturn } from './useAuditModule';
@@ -57,5 +57,5 @@ export { useArchivedCapabilities, type UseArchivedCapabilitiesReturn } from '@/l
 export { useSupportBot, type UseSupportBotReturn } from '@/lib/substrate/support-bot/useSupportBot';
 export { useDecodePersonality, type UseDecodePersonalityReturn } from '@/lib/substrate/decode/useDecodePersonality';
 
-// Matrix Resilience (SPARTA Epoch — 10 resilience engines)
+// Matrix Resilience (10 resilience engines)
 export { useMatrixResilience, type UseMatrixResilienceReturn } from './useMatrixResilience';

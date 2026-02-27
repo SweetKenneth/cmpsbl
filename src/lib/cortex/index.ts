@@ -1,7 +1,7 @@
 /**
- * promptfluid® CORTEX Module v7.0.0
+ * promptfluid® CORTEX Module
  * Agency-Class Orchestrator & Cross-Module Governance
- * SPARTA Epoch — Hardened with input validation, bounded orchestrations, and timeout guards
+ * Hardened with input validation, bounded orchestrations, and timeout guards
  */
 
 import { supabase } from '@/integrations/supabase/client';

@@ -1,6 +1,6 @@
 /**
  * Sector Kill Switch
- * SPARTA Epoch — Instant sector-wide isolation
+ * Instant sector-wide isolation
  * 
  * Allows instant isolation of an entire sector (e.g., all OCG nodes)
  * without touching individual breakers. Useful for emergency containment.

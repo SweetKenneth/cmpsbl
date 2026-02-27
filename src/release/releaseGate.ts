@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Release Gate Runner — CMPSBL Substrate
- * SPARTA Epoch — 10-pass pre-release validation
+ * 10-pass pre-release validation
  *
  * Usage:
  *   bun src/release/releaseGate.ts

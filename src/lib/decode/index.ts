@@ -1,6 +1,6 @@
 /**
  * DECODE Module — Natural Language Understanding & Intent Resolution
- * v7.0.0 — Substrate Interpreter Layer
+ * Substrate Interpreter Layer
  * 
  * Provides:
  * - Natural language parsing to structured commands

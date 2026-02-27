@@ -1,5 +1,5 @@
 /**
- * Audit Runner — SPARTA Epoch
+ * Audit Runner
  * Orchestrates all audit checks and produces a unified report
  */
 

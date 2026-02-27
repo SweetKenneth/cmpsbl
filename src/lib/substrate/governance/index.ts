@@ -1,6 +1,5 @@
 /**
  * Governance Module — Unified Exports
- * SPARTA Epoch v11.5.2
  * 
  * Epistemic discipline, veto authority, signal arbitration,
  * transition validation, quorum, compliance, drift detection

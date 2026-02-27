@@ -1,6 +1,6 @@
 /**
  * ENCODE System Manifest — Architecture Awareness Registry
- * SPARTA Epoch v11.1.0 — Zone Architecture
+ * Zone Architecture
  *
  * Architecture:
  *   CORE (kernel, boots first)

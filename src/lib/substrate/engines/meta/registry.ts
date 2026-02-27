@@ -1,6 +1,6 @@
 /**
  * Meta-Engine Registry
- * SPARTA Epoch — 24 Meta-Engines Orchestrating 76 Engines → 525+ Capabilities
+ * 24 Meta-Engines Orchestrating 76 Engines → 525+ Capabilities
  * 
  * Meta-Engines provide the highest level of abstraction,
  * combining multiple engines into unified execution pipelines.
@@ -545,7 +545,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // ENTERPRISE TRUST FABRIC — v9.0.0 ARCHITECT Epoch
+  // ENTERPRISE TRUST FABRIC
   // ═══════════════════════════════════════════════════════════════════════════
   
   enterprise_trust_fabric: {
@@ -569,7 +569,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // PLATFORM ECONOMICS ENGINE — v9.0.0 ARCHITECT Epoch
+  // PLATFORM ECONOMICS ENGINE
   // ═══════════════════════════════════════════════════════════════════════════
   
   platform_economics_engine: {

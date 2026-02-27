@@ -1,6 +1,6 @@
 /**
  * Crystallized Pipeline Registry — 100 Crown Jewel Pipelines
- * ARCHITECT Epoch — Tiered Pipeline Crystallization
+ * Tiered Pipeline Crystallization
  * 
  * Crystallized pipelines are multi-module resolver chains that emerged
  * from Intent Mesh discovery and were hardened into permanent, reusable

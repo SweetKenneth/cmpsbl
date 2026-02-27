@@ -1,6 +1,6 @@
 /**
  * ENCODE Tab — Substrate Execution & Generation Interface
- * SPARTA Epoch — USER → DECODE → ENCODE pipeline
+ * USER → DECODE → ENCODE pipeline
  * DECODE handles conversational intent parsing; ENCODE handles code execution + sandbox preview
  * Part of the 10-entity + 5-mesh cognitive architecture
  */

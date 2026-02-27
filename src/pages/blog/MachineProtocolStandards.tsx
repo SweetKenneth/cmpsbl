@@ -17,7 +17,7 @@ export default function MachineProtocolStandards() {
           <h1 className="text-4xl font-black mb-4">Machine-to-Machine Protocol Standards in the SPARTA Epoch</h1>
           <p className="text-muted-foreground mb-8">February 10, 2026 · 16 min read · Kenneth E Sweet Jr</p>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
-            <p className="text-lg leading-relaxed">The SPARTA Epoch introduces a fundamental shift in how autonomous systems communicate. With the RELAY and IDENTITY zones now part of the substrate's CCL layer, machine-to-machine protocol standards are no longer aspirational — they're enforced at runtime.</p>
+            <p className="text-lg leading-relaxed">The substrate introduces a fundamental shift in how autonomous systems communicate. With the RELAY and IDENTITY zones now part of the substrate's CCL layer, machine-to-machine protocol standards are no longer aspirational — they're enforced at runtime.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">The Problem: Unstructured Agent Communication</h2>
             <p>Most AI agent frameworks treat inter-agent communication as an afterthought. Messages are passed as untyped JSON blobs, authentication is bolted on, and there's no standard for declaring intent, capability, or trust level. The result: fragile integrations that break silently.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">RELAY: Centralized Outbound Delivery</h2>

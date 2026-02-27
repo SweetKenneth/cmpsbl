@@ -1,6 +1,6 @@
 /**
  * CodeLab — Free Developer Playground for CMPSBL
- * ARCHITECT Epoch — A unique space for devs to explore, build, and launch with free templates
+ * A unique space for devs to explore, build, and launch with free templates
  */
 
 import { useState } from "react";

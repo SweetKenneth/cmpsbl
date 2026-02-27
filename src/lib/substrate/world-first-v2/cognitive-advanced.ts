@@ -1,5 +1,5 @@
 /**
- * Advanced Cognitive Functions — v9.1.0 ARCHITECT Epoch
+ * Advanced Cognitive Functions
  * 14 high-value cognitive enhancement patterns
  */
 

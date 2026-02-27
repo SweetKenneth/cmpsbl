@@ -1,5 +1,5 @@
 /**
- * Advanced Synergy Pipelines — v9.1.0 ARCHITECT Epoch
+ * Advanced Synergy Pipelines
  * 14 high-value cross-module orchestration patterns
  */
 

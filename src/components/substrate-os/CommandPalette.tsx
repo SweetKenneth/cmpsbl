@@ -1,5 +1,5 @@
 /**
- * Command Palette v10.5.4 — ARCHITECT Epoch Quick actions terminal-style
+ * Command Palette — Quick actions terminal-style
  * OS-like command interface for substrate operations (360+ commands)
  */
 

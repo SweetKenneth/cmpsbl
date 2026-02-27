@@ -1,6 +1,6 @@
 /**
  * Cross-Sector Health Correlation Engine
- * SPARTA Epoch — Detect cascade patterns across sectors
+ * Detect cascade patterns across sectors
  * 
  * Monitors health changes across sectors to detect patterns like
  * "OCG degradation always precedes CCR failures" and preemptively isolate upstream.

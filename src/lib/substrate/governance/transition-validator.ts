@@ -1,6 +1,6 @@
 /**
  * Governance Mode Transition Validator
- * SPARTA Epoch v11.5.2 — Pure evaluation + committed transitions
+ * Pure evaluation + committed transitions
  * 
  * evaluateTransition() — PURE, no side effects
  * commitTransition() — Records audit + persists history

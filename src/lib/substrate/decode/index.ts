@@ -1,11 +1,10 @@
 /**
  * CMPSBL® DECODE Module
- * SPARTA Epoch — Interpreter Primitive with Personality Profiles
+ * Interpreter Primitive with Personality Profiles
  * + Cryptographic Identity Context
  * 
- * Part of the SPARTA Epoch layered cognitive architecture
+ * Part of the layered cognitive architecture
  */
-
 export {
   personalityEngine,
   PersonalityEngineClient,

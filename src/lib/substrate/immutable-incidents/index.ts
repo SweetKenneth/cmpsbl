@@ -1,6 +1,6 @@
 /**
  * Immutable Incident Reports
- * SPARTA Epoch — Auto-generated post-mortem documents for every breaker trip
+ * Auto-generated post-mortem documents for every breaker trip
  * 
  * Stored in AUDIT with correlation IDs for full traceability.
  * Reports are append-only and cannot be modified after creation.

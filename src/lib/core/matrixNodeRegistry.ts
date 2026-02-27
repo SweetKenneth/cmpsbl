@@ -1,6 +1,6 @@
 /**
  * Matrix Node Registry — Read-Only Abstraction Layer
- * CONTRACT Epoch v12.0.0 — Field-Based Topology
+ * Field-Based Topology
  * 
  * Topology:
  *   Shell: DEFENSE (outer containment boundary)

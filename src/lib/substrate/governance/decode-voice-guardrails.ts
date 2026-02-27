@@ -1,6 +1,5 @@
 /**
  * Decode Voice Guardrails
- * v10.5.3 ARCHITECT Epoch
  * 
  * Modifies Decode's output layer to prevent narrative overreach
  * while preserving its distinctive voice.

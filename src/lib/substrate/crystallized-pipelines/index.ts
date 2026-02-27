@@ -1,6 +1,5 @@
 /**
  * Crystallized Pipelines — Module Index
- * SPARTA Epoch
  */
 export {
   CRYSTALLIZED_PIPELINES,

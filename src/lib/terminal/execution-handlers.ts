@@ -1,6 +1,6 @@
 /**
  * Execution Layer Terminal Handlers
- * SPARTA Epoch — DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER
+ * DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER
  * 
  * Note: ENCODE is in encode-handlers.ts, ECONOMY/SANDBOX in infra-module-handlers.ts
  */

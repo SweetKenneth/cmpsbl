@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Provider
- * SPARTA Epoch — Field-Based Topology
+ * Field-Based Topology
  *
  * Spine: CORE → SYSTEM → CCR → Modules → INTEGRATION
  * Grid: OCG (Operational Compliance Grid)

@@ -1,11 +1,11 @@
 /**
  * Support Bot Engine
- * SPARTA Epoch — Governed Evolving Support System
+ * Governed Evolving Support System
  * 
  * A proof-of-concept for evolving software: learns from verified resolutions,
  * escalates uncertainty, and produces audit-safe responses.
  * 
- * Integrations with v11.1 SPARTA Epoch architecture:
+ * Integrations with substrate architecture:
  * - 1 CORE Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones = 24 Execution Surfaces
  * - BRAIN (CCR zone): Read-only recall + reinforcement for verified resolutions
  * - DECODE: Intent classification + sentiment detection

@@ -1,6 +1,6 @@
 /**
  * ENCODE Escalation Resolution Telemetry
- * v10.9.1 — Tracks how well ENCODE resolves immune escalations
+ * Tracks how well ENCODE resolves immune escalations
  * 
  * Metrics tracked:
  *  - Claim-to-resolve latency (ms)

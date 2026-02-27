@@ -1,6 +1,6 @@
 /**
  * CORE Automatic Circuit Recovery Engine
- * SPARTA Epoch — Crown Jewel Capability
+ * Crown Jewel Capability
  * 
  * CLM Request: CORE module requested automatic circuit recovery to handle
  * circuit breaker trips autonomously without manual intervention.

@@ -16,13 +16,12 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 const LLMS_TXT_CONTENT = `# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
-# SPARTA Epoch
 # Machine-Readable Context Standard for AI Systems
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
-Clockless SPARTA Epoch adopts and implements LLMS.txt as its primary machine context.
+Clockless adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 

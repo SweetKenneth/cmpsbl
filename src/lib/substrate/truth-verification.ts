@@ -1,6 +1,6 @@
 /**
  * Truth Verification — Automated Parity Checks
- * SPARTA Epoch — Terminal Audit Pass
+ * Terminal Audit Pass
  *
  * Ensures Terminal, Dashboard, and Central Health Registry are in sync.
  * Detects and reports integrity violations.
