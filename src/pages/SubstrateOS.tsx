@@ -31,7 +31,7 @@ import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { useMetric } from '@/stores/publicMetricsStore';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { EventStream } from '@/components/substrate-os/EventStream';
-import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor, DepthGate, OnboardingFlow, SlotCapacityMeter } from '@/components/substrate-os/dashboard';
+import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor, DepthGate, OnboardingFlow, SlotCapacityMeter, NexusOptimizerWidget, BudgetGovernancePanel } from '@/components/substrate-os/dashboard';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { MatrixIntegrityPanel } from '@/components/substrate-os/dashboard/MatrixIntegrityPanel';
@@ -774,6 +774,14 @@ const DashboardContent = memo(function DashboardContent({
 
         {/* Slot Capacity Meter — always visible */}
         <SlotCapacityMeter activeCount={slotState.activeCount} capacity={slotState.capacity} />
+
+        {/* NEXUS Optimizer + Budget Governance — Governor only */}
+        {canAccessTier(userTier, 'cmpsbl') && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <NexusOptimizerWidget />
+            <BudgetGovernancePanel />
+          </div>
+        )}
 
         {canAccessTier(userTier, 'architect') && (
           <Suspense fallback={null}>
