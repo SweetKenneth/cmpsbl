@@ -96,22 +96,33 @@ export function CmpsblNav() {
       name: "Platform",
       icon: Layers,
       items: [
+        { name: "How It Works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
+        { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
+        { name: "All Modules", href: "/modules", description: "9 production modules", icon: Layers },
+        { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
+        ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
+      ]
+    },
+    {
+      name: "Product",
+      icon: Sparkles,
+      items: [
         { name: "Artifact Packs", href: "/packs", description: "Activate capabilities with slot-based control", icon: Package, badge: "24 PACKS" },
         { name: "Composable Agents", href: "/composable-cognitives", description: "Pre-built AI agents powered by the substrate", icon: Zap },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain, badge: "FREE" },
-        { name: "All Modules", href: "/modules", description: "9 production modules", icon: Layers },
-        ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
+        { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
+        { name: "Upgrade", href: "/upgrade", description: "Plans, pricing & tiers", icon: Rocket, highlight: true },
       ]
     },
     {
       name: "Developers",
       icon: Code,
       items: [
-        { name: "How It Works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
-        { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
         { name: "Start Here", href: "/start-here", description: "Get oriented fast", icon: Rocket },
+        { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
         { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
+        { name: "API Access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
       ]
     },
     {
@@ -122,6 +133,7 @@ export function CmpsblNav() {
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
         { name: "Insights", href: "/insights", description: "Analysis & thought leadership", icon: BookOpen },
+        { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
         { name: "System Status", href: "/status", description: "Live health & uptime", icon: Shield, badge: "LIVE" },
       ]
     },
