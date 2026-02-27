@@ -183,8 +183,8 @@ export async function checkGate(request: GateRequest): Promise<GateResult> {
     };
   }
 
-  // Check approval requirement
-  if (config.requiresApproval && !request.skipApproval && config.mode === 'governed') {
+  // Check approval requirement (read-only actions like .status never need approval)
+  if (config.requiresApproval && !request.skipApproval && config.mode === 'governed' && !isReadOnlyAction(request.action)) {
     return {
       allowed: false,
       trace_id,
