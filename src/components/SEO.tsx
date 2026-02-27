@@ -96,7 +96,14 @@ export function SEO({
 }: SEOProps) {
   const siteName = 'CMPSBL';
   const twitterHandle = '@cmpsbl';
-  const fullTitle = title.includes('CMPSBL') ? title : `${title} | ${siteName}`;
+
+  // Strip version numbers from all SEO-facing strings (per custom instructions)
+  const stripVersions = (text: string): string =>
+    text.replace(/\s*v\d+[\.\d]*/gi, '').replace(/\s{2,}/g, ' ').trim();
+
+  const safeTitle = stripVersions(title);
+  const safeDescription = stripVersions(description);
+  const fullTitle = safeTitle.includes('CMPSBL') ? safeTitle : `${safeTitle} | ${siteName}`;
   const currentDate = new Date().toISOString();
 
   // Route-aware canonical: auto-generate from current path if not provided
