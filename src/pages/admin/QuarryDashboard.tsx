@@ -17,6 +17,7 @@ import {
   TIER_LABELS, ASSET_TYPE_LABELS, VISIBILITY_LABELS, computeAssetScore,
   type QuarryTier, type QuarryAssetType, type QuarryVisibility, type QuarryAsset,
 } from '@/lib/quarry/types';
+import { PackReleaseChecklist } from '@/components/admin/PackReleaseChecklist';
 import {
   Search, Plus, Save, Trash2, Filter, Package, Brain,
   Cpu, Layers, Workflow, Bot, Shield, Settings, Crown, Eye, EyeOff,
@@ -196,6 +197,9 @@ export default function QuarryDashboard() {
             </Select>
             <span className="text-xs text-muted-foreground">{filtered.length} / {stats.total} assets</span>
           </div>
+
+          {/* Pack Density / Release Checklist */}
+          <PackReleaseChecklist />
 
           {/* Asset List */}
           <div className="space-y-1">
