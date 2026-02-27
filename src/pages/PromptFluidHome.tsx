@@ -349,16 +349,16 @@ export default function PromptFluidHome() {
                 <span className="text-sm font-semibold text-white/90">Our Flagship Project</span>
               </motion.div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-5 leading-[1.1]">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-5 leading-[1.1]">
                 Meet{" "}
-                <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">
                   CMPSBL®
                 </span>
               </h2>
-              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
+              <p className="text-foreground/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
                 The world's first public cognitive operating system — 10 entities, 5 mesh overlays, 
                 persistent memory, self-evolving architecture, and 175k+ lines of production code. 
-                Built by PromptFluid. Free to start.
+                Free to start.
               </p>
 
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">

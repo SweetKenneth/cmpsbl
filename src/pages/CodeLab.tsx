@@ -116,11 +116,11 @@ export default function CodeLab() {
           <div className="max-w-5xl mx-auto text-center">
             {/* Terminal prompt badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/80 border border-border/50 mb-6 font-mono text-sm">
-              <Terminal className="w-4 h-4 text-emerald-500" />
+              <Terminal className="w-4 h-4 text-[hsl(var(--system-green))]" />
               <span className="text-muted-foreground">~/dev/codelab</span>
               <ChevronRight className="w-3 h-3 text-muted-foreground" />
-              <span className="text-emerald-500">ready</span>
-              <span className="w-2 h-4 bg-emerald-500 animate-pulse" />
+              <span className="text-[hsl(var(--system-green))]">ready</span>
+              <span className="w-2 h-4 bg-[hsl(var(--system-green))] animate-pulse" />
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">

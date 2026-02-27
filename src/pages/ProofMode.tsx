@@ -394,13 +394,13 @@ function ProofModeContent() {
               </div>
               <div className="flex items-center gap-2">
                 {remainingRuns > 5 && (
-                  <span className="text-emerald-500">● NOMINAL</span>
+                  <span className="text-[hsl(var(--system-green))]">● NOMINAL</span>
                 )}
                 {remainingRuns <= 5 && remainingRuns > 0 && (
-                  <span className="text-amber-500">● LOW</span>
+                  <span className="text-[hsl(var(--system-amber))]">● LOW</span>
                 )}
                 {remainingRuns === 0 && (
-                  <span className="text-red-500">● EXHAUSTED</span>
+                  <span className="text-destructive">● EXHAUSTED</span>
                 )}
               </div>
             </div>
@@ -550,15 +550,15 @@ function ProofModeContent() {
                 </TabsList>
                 
                 <TabsContent value="request">
-                  <Card className="bg-zinc-950 border-zinc-800">
+                  <Card className="bg-card border-border">
                     <CardContent className="p-0">
-                      <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800 bg-zinc-900/50">
-                        <span className="text-[10px] font-mono text-zinc-500">request.json</span>
-                        <Badge variant="outline" className="text-[10px] border-zinc-700 text-zinc-400">
+                      <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/50">
+                        <span className="text-[10px] font-mono text-muted-foreground">request.json</span>
+                        <Badge variant="outline" className="text-[10px] border-border text-muted-foreground">
                           POST
                         </Badge>
                       </div>
-                      <pre className="text-xs text-emerald-400/90 overflow-x-auto p-4 font-mono leading-relaxed">
+                      <pre className="text-xs text-primary/90 overflow-x-auto p-4 font-mono leading-relaxed">
                         {requestPayload ? JSON.stringify(requestPayload, null, 2) : "null"}
                       </pre>
                     </CardContent>
@@ -566,10 +566,10 @@ function ProofModeContent() {
                 </TabsContent>
                 
                 <TabsContent value="response">
-                  <Card className="bg-zinc-950 border-zinc-800">
+                  <Card className="bg-card border-border">
                     <CardContent className="p-0">
-                      <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800 bg-zinc-900/50">
-                        <span className="text-[10px] font-mono text-zinc-500">response.json</span>
+                      <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/50">
+                        <span className="text-[10px] font-mono text-muted-foreground">response.json</span>
                         {responsePayload && "success" in responsePayload && (
                           <Badge 
                             variant="outline" 

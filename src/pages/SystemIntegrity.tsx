@@ -1,5 +1,5 @@
 /**
- * System Integrity Overview — v11.5 Field-Based Topology
+ * System Integrity Overview — Field-Based Topology
  * Read-only dashboard: CORE, CCR Zones, OCG Zones, Execution Surfaces, Overlays
  * Shows health %, breaker state, last mutation time, zone isolation status
  */

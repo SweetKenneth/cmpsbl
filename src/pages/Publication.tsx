@@ -101,7 +101,7 @@ export default function Publication() {
                 </Button>
                 <Button variant="outline" asChild>
                   <a 
-                    href="https://github.com/SweetKenneth/promptfluid_reboot_v2.0.0" 
+                    href="https://github.com/cmpsbl" 
                     target="_blank" 
                     rel="noopener noreferrer"
                   >

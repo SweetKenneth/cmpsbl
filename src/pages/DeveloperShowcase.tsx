@@ -456,19 +456,19 @@ export default function DeveloperShowcase() {
           </motion.div>
 
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-black/80 border-cyan-500/30 overflow-hidden shadow-2xl shadow-cyan-500/10">
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+            <Card className="bg-card/80 border-primary/30 overflow-hidden shadow-2xl shadow-primary/10">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-border/30">
                 <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-destructive/80" />
+                  <div className="w-3 h-3 rounded-full bg-[hsl(var(--system-amber))]/80" />
+                  <div className="w-3 h-3 rounded-full bg-[hsl(var(--system-green))]/80" />
                 </div>
-                <span className="text-xs text-white/40 ml-2">app-memory.ts</span>
+                <span className="text-xs text-muted-foreground/60 ml-2">app-memory.ts</span>
               </div>
               <CardContent className="p-6">
                 <pre className="text-sm overflow-x-auto">
-                  <code className="text-green-400 font-mono">{`// Initialize the CMPSBL client
-import { createCmpsblClient } from '@promptfluid/sdk';
+                  <code className="text-primary font-mono">{`// Initialize the CMPSBL client
+import { createCmpsblClient } from '@cmpsbl/sdk';
 
 const cmpsbl = createCmpsblClient({
   apiKey: process.env.CMPSBL_API_KEY
@@ -516,21 +516,21 @@ await cmpsbl.dream.cycle({
             className="max-w-4xl mx-auto"
           >
             <div className="relative p-10 sm:p-14 rounded-3xl overflow-hidden text-center">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-600 via-blue-600 to-indigo-600" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/80 to-primary/60" />
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
               
               <div className="relative">
-                <Rocket className="w-16 h-16 mx-auto mb-6 text-white/80" />
-                <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+                <Rocket className="w-16 h-16 mx-auto mb-6 text-primary-foreground/80" />
+                <h2 className="text-3xl sm:text-4xl font-black text-primary-foreground mb-4">
                   Ready to Build Smarter?
                 </h2>
-                <p className="text-white/80 text-lg max-w-xl mx-auto mb-8">
+                <p className="text-primary-foreground/80 text-lg max-w-xl mx-auto mb-8">
                   Access 70+ templates, live debugger, and full documentation. 
                   Start building apps that think.
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild size="lg" className="h-12 px-8 bg-white text-cyan-600 hover:bg-white/90 font-bold">
+                  <Button asChild size="lg" className="h-12 px-8 bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold">
                     <Link to="/codelab">
                       <Rocket className="w-5 h-5 mr-2" />
                       Start in CodeLab

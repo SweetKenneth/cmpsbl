@@ -606,13 +606,13 @@ export default function UseCases() {
                   the packs you need. No bloat, just the right capabilities.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3 mb-8">
-                  <Badge variant="outline" className="text-purple-400 border-purple-500/30">
+                  <Badge variant="outline" className="text-primary border-primary/30">
                     🎮 Gaming Package
                   </Badge>
-                  <Badge variant="outline" className="text-cyan-400 border-cyan-500/30">
+                  <Badge variant="outline" className="text-accent-foreground border-accent/30">
                     💻 Developer Package
                   </Badge>
-                  <Badge variant="outline" className="text-blue-400 border-blue-500/30">
+                  <Badge variant="outline" className="text-muted-foreground border-border">
                     🏢 Enterprise Package
                   </Badge>
                 </div>
