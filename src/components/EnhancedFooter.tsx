@@ -1,5 +1,6 @@
 /**
- * Enhanced Footer — Premium design with animations and mobile polish
+ * Enhanced Footer — Clean minimal dark design, no dead links
+ * XCTBL link preserved per user request
  */
 
 import { useState } from "react";
@@ -8,7 +9,7 @@ import { motion } from "framer-motion";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { EvolutionModal } from "@/components/EvolutionModal";
 import { XctblModal } from "@/components/XctblModal";
-import { ArrowUpRight, Sparkles, Gamepad2, Heart, Github, Twitter, Linkedin } from "lucide-react";
+import { Sparkles, Gamepad2, Heart, Github, Twitter, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FooterLink {
@@ -28,17 +29,14 @@ export function EnhancedFooter() {
   const [evolutionOpen, setEvolutionOpen] = useState(false);
   const [xctblOpen, setXctblOpen] = useState(false);
 
-  // Footer links — distinct from nav menu (no duplicates)
-  // Nav has: Platform (dev tools), Substrate, Enterprise, Resources, Company
-  // Footer has: Substrate internals, Learning, Standards, Contact & Legal
   const footerSections: FooterSection[] = [
     {
-      title: "The Substrate",
+      title: "Platform",
       links: [
-        { name: "Module Atlas", href: "/modules", highlight: true },
-        { name: "Architecture", href: "/substrate" },
+        { name: "AI Operating System", href: "/ai-operating-system", highlight: true },
+        { name: "All Modules", href: "/modules" },
+        { name: "Substrate", href: "/substrate" },
         { name: "Proof Mode", href: "/proof" },
-        { name: "Decode Engine", href: "/decode" },
         { name: "Documentation", href: "/documentation" },
       ]
     },
@@ -48,22 +46,11 @@ export function EnhancedFooter() {
         { name: "Composable Cognitives", href: "/composable-cognitives", highlight: true },
         { name: "Persistent Memory", href: "/persistent-memory" },
         { name: "Cognitive Showcase", href: "/showcase" },
-        { name: "Live Demo", href: "/demo" },
-        { name: "Gaming AI", href: "/gaming" },
+        { name: "Upgrade", href: "/upgrade" },
       ]
     },
     {
-      title: "Discover",
-      links: [
-        { name: "Blog", href: "/blog" },
-        { name: "Insights", href: "/insights" },
-        { name: "Publication", href: "/publication" },
-        { name: "Library", href: "/library" },
-        { name: "Use Cases", href: "/use-cases" },
-      ]
-    },
-    {
-      title: "Create",
+      title: "Developers",
       links: [
         { name: "Start Here", href: "/start-here", highlight: true },
         { name: "Academy", href: "/academy" },
@@ -72,23 +59,23 @@ export function EnhancedFooter() {
       ]
     },
     {
-      title: "Framework",
+      title: "Discover",
       links: [
-        { name: "Pricing", href: "/pricing" },
-        { name: "Namespace", href: "/namespace" },
-        { name: "Foundations", href: "/foundations" },
-        { name: "Roadmap", href: "/roadmap" },
-        { name: "Evolution Log", href: "/changelog" },
+        { name: "Blog", href: "/blog" },
+        { name: "Insights", href: "/insights" },
+        { name: "Use Cases", href: "/use-cases" },
+        { name: "Changelog", href: "/changelog" },
       ]
     },
     {
-      title: "Connect",
+      title: "Company",
       links: [
         { name: "About", href: "/about" },
         { name: "Contact", href: "/contact" },
         { name: "Investors", href: "/investors" },
-        { name: "Support", href: "/support" },
-        { name: "Legal", href: "/privacy" },
+        { name: "System Status", href: "/status" },
+        { name: "Privacy", href: "/privacy" },
+        { name: "Terms", href: "/terms" },
       ]
     },
   ];
@@ -102,34 +89,32 @@ export function EnhancedFooter() {
   return (
     <>
       <footer className="relative z-20 border-t border-border bg-gradient-to-b from-background to-muted/30" role="contentinfo">
-        {/* Decorative gradient */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-        
-        {/* Main Footer Content */}
+
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-7 lg:gap-8">
-            {/* Brand Column - Full width on mobile */}
-            <div className="col-span-2 md:col-span-1 mb-6 md:mb-0">
-              <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3 sm:mb-4">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-6 lg:gap-8">
+            {/* Brand Column */}
+            <div className="col-span-2 sm:col-span-3 lg:col-span-1 mb-6 lg:mb-0">
+              <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3">
                 <CmpsblLogo size="sm" className="sm:hidden" />
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-1 max-w-[280px] font-semibold text-foreground">
+              <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
                 Where machines learn to dream.
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-4 max-w-[280px]">
                 A Cognitive Reality System · powered by the CMPSBL Substrate.
               </p>
-              
-              {/* Social Links - Larger touch targets on mobile */}
-              <div className="flex items-center gap-2 sm:gap-2">
+
+              {/* Social Links */}
+              <div className="flex items-center gap-2">
                 {socialLinks.map((social) => (
                   <motion.a
                     key={social.name}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary flex items-center justify-center transition-all duration-200 touch-target tap-highlight-none"
+                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary flex items-center justify-center transition-all duration-200 touch-target"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     title={social.name}
@@ -141,14 +126,12 @@ export function EnhancedFooter() {
             </div>
 
             {/* Link Columns */}
-            {footerSections.map((section, idx) => (
+            {footerSections.map((section) => (
               <div key={section.title} className="min-w-0">
-                <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wide">
-                  {section.title}
-                </h3>
+                <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wide">{section.title}</h3>
                 <ul className="space-y-2.5">
-                  {/* Add Evolution button to The Substrate section */}
-                  {section.title === "The Substrate" && (
+                  {/* Evolution button in Platform section */}
+                  {section.title === "Platform" && (
                     <li>
                       <button
                         onClick={() => setEvolutionOpen(true)}
@@ -159,7 +142,7 @@ export function EnhancedFooter() {
                       </button>
                     </li>
                   )}
-                  {/* Add XCTBL button to Products section */}
+                  {/* XCTBL button in Products section — preserved per user request */}
                   {section.title === "Products" && (
                     <li>
                       <button
@@ -179,23 +162,18 @@ export function EnhancedFooter() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={cn(
-                            "group inline-flex items-center gap-1 text-sm transition-colors",
-                            link.highlight 
-                              ? "text-primary hover:text-primary/80" 
-                              : "text-muted-foreground hover:text-foreground"
+                            "text-sm transition-colors inline-block",
+                            link.highlight ? "text-primary hover:text-primary/80" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.name}
-                          <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-0.5 translate-x-0.5 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
                         </a>
                       ) : (
                         <Link
                           to={link.href}
                           className={cn(
                             "text-sm transition-colors inline-block",
-                            link.highlight 
-                              ? "text-primary hover:text-primary/80" 
-                              : "text-muted-foreground hover:text-foreground"
+                            link.highlight ? "text-primary hover:text-primary/80" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.name}
@@ -209,16 +187,13 @@ export function EnhancedFooter() {
           </div>
         </div>
 
-        {/* Bottom Bar - Extra padding for mobile nav bar */}
+        {/* Bottom Bar */}
         <div className="border-t border-border/50 bg-muted/20">
           <div className="container mx-auto max-w-7xl px-4 py-4 sm:py-5 pb-20 sm:pb-5">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-              {/* Copyright */}
               <p className="text-[11px] sm:text-xs text-muted-foreground text-center sm:text-left">
                 © 2009-{currentYear} CMPSBL® — All rights reserved
               </p>
-              
-              {/* Brand Line - Stack on very small screens */}
               <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-4 text-[11px] sm:text-xs text-muted-foreground text-center">
                 <span>Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate</span>
                 <span className="hidden sm:inline text-border">•</span>
@@ -231,10 +206,7 @@ export function EnhancedFooter() {
         </div>
       </footer>
 
-      {/* Evolution Modal */}
       <EvolutionModal isOpen={evolutionOpen} onClose={() => setEvolutionOpen(false)} />
-
-      {/* XCTBL Modal */}
       <XctblModal isOpen={xctblOpen} onClose={() => setXctblOpen(false)} />
     </>
   );

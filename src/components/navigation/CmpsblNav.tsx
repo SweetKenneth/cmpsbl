@@ -1,6 +1,6 @@
 /**
- * CmpsblNav — Enterprise Command Center
- * Ultra-polished navigation with refined micro-interactions
+ * CmpsblNav — Minimal Dark Command Bar
+ * Clean, reorganized navigation with no dead links
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";
@@ -13,7 +13,6 @@ import {
   Code,
   Layers,
   FileText,
-  Mail,
   Info,
   Rocket,
   BookOpen,
@@ -21,10 +20,8 @@ import {
   Zap,
   Terminal,
   Cpu,
-  MessageSquare,
   Moon,
   Building2,
-  Gamepad2,
   Sparkles,
   GraduationCap,
   Globe,
@@ -34,11 +31,13 @@ import {
   Command,
   Shield,
   ExternalLink,
+  Mail,
+  Package,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -65,20 +64,10 @@ export function CmpsblNav() {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
 
-  // Desktop dropdown stability (prevents z-index / stacking-context issues)
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const sectionButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const [dropdownAnchor, setDropdownAnchor] = useState<DOMRect | null>(null);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
-  }, [mouseX, mouseY]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -102,18 +91,16 @@ export function CmpsblNav() {
     navigate('/');
   };
 
-  // Nav menu — Phase 1 posture: standalone products + proof, platform features hidden
   const navSections: NavSection[] = [
     {
       name: "Product",
       icon: Layers,
       items: [
-        { name: "AI Operating System", href: "/ai-operating-system", description: "The definitive AI OS — what it is and why it matters", icon: Globe, badge: "AIDO" },
-        { name: "All Modules", href: "/modules", description: "10 entities + 5 mesh overlays + 9 zones", icon: Layers },
-        { name: "Substrate Overview", href: "/substrate", description: "Live substrate dashboard & architecture", icon: Cpu },
-        { name: "Composable Cognitives", href: "/composable-cognitives", description: "Own superpowered agents — download once, run anywhere", icon: Zap },
-        { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
-        { name: "Cognitive Showcase", href: "/showcase", description: "Live proof-of-capability demonstrations", icon: Rocket },
+        { name: "AI Operating System", href: "/ai-operating-system", description: "What it is and why it matters", icon: Globe },
+        { name: "All Modules", href: "/modules", description: "Entities, mesh overlays, and zones", icon: Layers },
+        { name: "Composable Cognitives", href: "/composable-cognitives", description: "Downloadable AI agents", icon: Zap },
+        { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain, badge: "FREE" },
+        { name: "Cognitive Showcase", href: "/showcase", description: "Live proof-of-capability demos", icon: Rocket },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
@@ -121,23 +108,21 @@ export function CmpsblNav() {
       name: "Developers",
       icon: Code,
       items: [
-        { name: "Start Here", href: "/start-here", description: "New to CMPSBL? Get oriented fast", icon: Rocket },
-        { name: "Documentation", href: "/documentation", description: "Complete API reference & guides", icon: FileText },
-        { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
-        { name: "Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
+        { name: "Start Here", href: "/start-here", description: "Get oriented fast", icon: Rocket },
+        { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
+        { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap, badge: "NEW" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
-        { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
+        { name: "DevTools", href: "/devtools", description: "Diagnostics & utilities", icon: Terminal },
       ]
     },
     {
       name: "Solutions",
       icon: Building2,
       items: [
-        { name: "Use Cases", href: "/use-cases", description: "Industry applications & examples", icon: Sparkles },
+        { name: "Use Cases", href: "/use-cases", description: "Industry applications", icon: Sparkles },
         { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
-        { name: "Pricing", href: "/upgrade", description: "Artifact capacity plans — Base, Professional, Enterprise", icon: Layers },
-        { name: "Licensing", href: "/licensing", description: "Self-hosted SDK deployment", icon: Shield },
+        { name: "Upgrade", href: "/upgrade", description: "Choose your artifact capacity", icon: Package },
+        { name: "Packs", href: "/packs", description: "Manage your active packs", icon: Layers },
       ]
     },
     {
@@ -146,11 +131,9 @@ export function CmpsblNav() {
       items: [
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
-        { name: "Insights", href: "/insights", description: "Industry analysis & thought leadership", icon: BookOpen },
-        { name: "Investors", href: "/investors", description: "Performance, metrics & growth", icon: Building2 },
-        { name: "Contact", href: "/contact", description: "Get in touch with our team", icon: Mail },
-        { name: "System Status", href: "/status", description: "Live module health, uptime & incidents", icon: Shield, badge: "LIVE" },
-        { name: "PromptFluid", href: "/promptfluid", description: "Our parent company & portfolio", icon: Building2 },
+        { name: "Insights", href: "/insights", description: "Analysis & thought leadership", icon: BookOpen },
+        { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
+        { name: "System Status", href: "/status", description: "Live health & uptime", icon: Shield, badge: "LIVE" },
       ]
     },
   ];
@@ -162,19 +145,16 @@ export function CmpsblNav() {
     ? (navSections.find((s) => s.name === activeSection) ?? null)
     : null;
 
-  // Keep dropdown anchored correctly on scroll/resize
   useEffect(() => {
     if (!activeSection) {
       setDropdownAnchor(null);
       return;
     }
-
     const update = () => {
       const el = sectionButtonRefs.current[activeSection];
       if (!el) return;
       setDropdownAnchor(el.getBoundingClientRect());
     };
-
     update();
     window.addEventListener("resize", update);
     window.addEventListener("scroll", update, true);
@@ -184,10 +164,8 @@ export function CmpsblNav() {
     };
   }, [activeSection]);
 
-  // Close dropdown on outside-click / Escape
   useEffect(() => {
     if (!activeSection) return;
-
     const onPointerDown = (e: PointerEvent) => {
       const target = e.target as Node | null;
       if (!target) return;
@@ -195,11 +173,9 @@ export function CmpsblNav() {
       if (headerRef.current?.contains(target)) return;
       setActiveSection(null);
     };
-
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActiveSection(null);
     };
-
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKeyDown);
     return () => {
@@ -215,9 +191,7 @@ export function CmpsblNav() {
 
   return (
     <>
-      {/* ══════════════════════════════════════════════════════════════════════
-          DESKTOP NAVIGATION — Enterprise Command Bar
-          ══════════════════════════════════════════════════════════════════════ */}
+      {/* ═══ DESKTOP NAV ═══ */}
       <motion.header
         ref={headerRef}
         initial={{ y: -100, opacity: 0 }}
@@ -225,14 +199,11 @@ export function CmpsblNav() {
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
         className={cn(
           "fixed top-0 left-0 right-0 z-[10000] transition-all duration-300",
-          // CRITICAL: Use solid bg-background for theme compatibility (light/dark mode)
-          scrolled 
-            ? "bg-background border-b border-border shadow-sm" 
+          scrolled
+            ? "bg-background border-b border-border shadow-sm"
             : "bg-background"
         )}
-        onMouseMove={handleMouseMove}
       >
-        {/* Ambient glow on scroll */}
         <div className={cn(
           "absolute inset-x-0 -bottom-px h-px transition-opacity duration-500",
           scrolled ? "opacity-100" : "opacity-0"
@@ -242,10 +213,10 @@ export function CmpsblNav() {
 
         <div className="container mx-auto px-4 lg:px-6">
           <nav className="flex items-center justify-between h-16 lg:h-[72px] bg-transparent" role="navigation" aria-label="Main navigation">
-            
-            {/* ═══ Logo ═══ */}
-            <Link 
-              to="/" 
+
+            {/* Logo */}
+            <Link
+              to="/"
               className="relative group flex items-center gap-3 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
               aria-label="CMPSBL Home"
             >
@@ -256,18 +227,14 @@ export function CmpsblNav() {
               </div>
             </Link>
 
-            {/* ═══ Desktop Navigation ═══ */}
+            {/* Desktop Nav Sections */}
             <div className="hidden lg:flex items-center gap-1">
               {navSections.map((section) => (
                 <div key={section.name} className="relative">
                   <button
-                    ref={(el) => {
-                      sectionButtonRefs.current[section.name] = el;
-                    }}
+                    ref={(el) => { sectionButtonRefs.current[section.name] = el; }}
                     type="button"
-                    onClick={() =>
-                      setActiveSection((prev) => (prev === section.name ? null : section.name))
-                    }
+                    onClick={() => setActiveSection((prev) => (prev === section.name ? null : section.name))}
                     className={cn(
                       "relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
                       activeSection === section.name
@@ -280,26 +247,19 @@ export function CmpsblNav() {
                     aria-haspopup="menu"
                   >
                     <span>{section.name}</span>
-                    <ChevronRight
-                      className={cn(
-                        "w-3.5 h-3.5 transition-transform duration-200",
-                        activeSection === section.name && "rotate-90"
-                      )}
-                    />
-
-                    {/* Active indicator dot */}
+                    <ChevronRight className={cn(
+                      "w-3.5 h-3.5 transition-transform duration-200",
+                      activeSection === section.name && "rotate-90"
+                    )} />
                     {isInSection(section) && !activeSection && (
-                      <motion.span
-                        layoutId="section-indicator"
-                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
-                      />
+                      <motion.span layoutId="section-indicator" className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
                     )}
                   </button>
                 </div>
               ))}
             </div>
 
-            {/* Desktop dropdown rendered in a portal to escape stacking contexts */}
+            {/* Desktop Dropdown Portal */}
             {activeNavSection && dropdownAnchor &&
               createPortal(
                 <AnimatePresence>
@@ -316,9 +276,7 @@ export function CmpsblNav() {
                       ref={dropdownRef}
                       className="relative bg-popover rounded-xl border border-border shadow-xl overflow-hidden pointer-events-auto"
                     >
-                      {/* Top accent line */}
                       <div className="h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
-
                       <div className="p-2">
                         {activeNavSection.items.map((item) => {
                           const linkClass = cn(
@@ -329,31 +287,23 @@ export function CmpsblNav() {
                           const content = (
                             <>
                               {item.icon && (
-                                <div
-                                  className={cn(
-                                    "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
-                                    "bg-muted group-hover/item:bg-primary/10",
-                                    isActive(item.href) && "bg-primary/10 text-primary"
-                                  )}
-                                >
-                                  <item.icon
-                                    className={cn(
-                                      "w-5 h-5 transition-colors",
-                                      isActive(item.href)
-                                        ? "text-primary"
-                                        : "text-muted-foreground group-hover/item:text-primary"
-                                    )}
-                                  />
+                                <div className={cn(
+                                  "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
+                                  "bg-muted group-hover/item:bg-primary/10",
+                                  isActive(item.href) && "bg-primary/10 text-primary"
+                                )}>
+                                  <item.icon className={cn(
+                                    "w-5 h-5 transition-colors",
+                                    isActive(item.href) ? "text-primary" : "text-muted-foreground group-hover/item:text-primary"
+                                  )} />
                                 </div>
                               )}
                               <div className="flex-1 min-w-0 pt-0.5">
                                 <div className="flex items-center gap-2">
-                                  <span
-                                    className={cn(
-                                      "font-semibold text-sm transition-colors",
-                                      isActive(item.href) ? "text-primary" : "text-foreground"
-                                    )}
-                                  >
+                                  <span className={cn(
+                                    "font-semibold text-sm transition-colors",
+                                    isActive(item.href) ? "text-primary" : "text-foreground"
+                                  )}>
                                     {item.name}
                                   </span>
                                   {item.badge && (
@@ -361,26 +311,18 @@ export function CmpsblNav() {
                                       {item.badge}
                                     </span>
                                   )}
-                                  {item.external && (
-                                    <ExternalLink className="w-3 h-3 text-muted-foreground" />
-                                  )}
+                                  {item.external && <ExternalLink className="w-3 h-3 text-muted-foreground" />}
                                 </div>
                                 {item.description && (
-                                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                                    {item.description}
-                                  </p>
+                                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{item.description}</p>
                                 )}
                               </div>
                             </>
                           );
                           return item.external ? (
-                            <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                              {content}
-                            </a>
+                            <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={linkClass}>{content}</a>
                           ) : (
-                            <Link key={item.href} to={item.href} className={linkClass}>
-                              {content}
-                            </Link>
+                            <Link key={item.href} to={item.href} className={linkClass}>{content}</Link>
                           );
                         })}
                       </div>
@@ -390,18 +332,12 @@ export function CmpsblNav() {
                 document.body
               )}
 
-            {/* ═══ Right Section ═══ */}
+            {/* Right Section */}
             <div className="flex items-center gap-2">
-              {/* Desktop Auth Buttons */}
               <div className="hidden lg:flex items-center gap-2">
                 {user ? (
                   <>
-                    <Button 
-                      asChild 
-                      variant="ghost" 
-                      size="sm" 
-                      className="rounded-lg h-9 px-3 font-medium"
-                    >
+                    <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-3 font-medium">
                       <Link to="/os">
                         <Command className="w-4 h-4 mr-1.5" />
                         Dashboard
@@ -420,20 +356,11 @@ export function CmpsblNav() {
                   </>
                 ) : (
                   <>
-                    <Button 
-                      asChild 
-                      variant="ghost" 
-                      size="sm" 
-                      className="rounded-lg h-9 px-4 font-medium text-muted-foreground hover:text-foreground"
-                    >
+                    <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-4 font-medium text-muted-foreground hover:text-foreground">
                       <Link to="/auth">Sign in</Link>
                     </Button>
-                    <Button 
-                      asChild 
-                      size="sm" 
-                      className="rounded-lg h-9 px-4 font-semibold"
-                    >
-                      <Link to="/developers">
+                    <Button asChild size="sm" className="rounded-lg h-9 px-4 font-semibold">
+                      <Link to="/upgrade">
                         Get Started
                         <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                       </Link>
@@ -442,13 +369,13 @@ export function CmpsblNav() {
                 )}
               </div>
 
-              {/* ═══ Mobile Menu Button ═══ */}
+              {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={cn(
                   "lg:hidden relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 touch-manipulation border",
-                  mobileMenuOpen 
-                    ? "bg-primary text-primary-foreground border-primary" 
+                  mobileMenuOpen
+                    ? "bg-primary text-primary-foreground border-primary"
                     : "bg-card hover:bg-secondary border-border text-foreground"
                 )}
                 aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
@@ -471,9 +398,7 @@ export function CmpsblNav() {
         </div>
       </motion.header>
 
-      {/* ══════════════════════════════════════════════════════════════════════
-          MOBILE NAVIGATION — Full Screen Command Interface
-          ══════════════════════════════════════════════════════════════════════ */}
+      {/* ═══ MOBILE NAV ═══ */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -483,89 +408,55 @@ export function CmpsblNav() {
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[9999] lg:hidden"
           >
-            {/* Solid background */}
-            <motion.div 
-              className="absolute inset-0 bg-background"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
-            
-            {/* Content */}
-            <motion.div 
+            <motion.div className="absolute inset-0 bg-background" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ delay: 0.05 }}
               className="relative h-full pt-20 pb-8 px-5 overflow-y-auto safe-area-inset momentum-scroll"
             >
-              {/* Header */}
+              {/* Mobile Header */}
               <div className="mb-6">
-                <motion.div 
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                  className="flex items-center gap-3"
-                >
+                <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="flex items-center gap-3">
                   <CmpsblLogo size="md" />
-                   <div>
+                  <div>
                     <div className="text-xl font-bold tracking-tight">Clockless</div>
                     <div className="text-xs text-muted-foreground font-medium">Cognitive Reality</div>
                   </div>
                 </motion.div>
               </div>
 
-              {/* Quick Actions */}
-              <motion.div 
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.15 }}
-                className="grid grid-cols-2 gap-2 mb-6"
-              >
-              {[
-                  { name: "Composable Artifacts", href: "/explore", icon: Sparkles },
-                  { name: "Composable Cognitives", href: "/composable-cognitives", icon: Zap },
-                  { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
-                  { name: "Cognitive Showcase", href: "/showcase", icon: Rocket, badge: "PROOF" },
-                ].map((item, idx) => (
+              {/* Mobile Quick Actions */}
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
+                {[
+                  { name: "Upgrade", href: "/upgrade", icon: Package },
+                  { name: "Cognitives", href: "/composable-cognitives", icon: Zap },
+                  { name: "Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
+                  { name: "Showcase", href: "/showcase", icon: Rocket },
+                ].map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
                     className={cn(
                       "flex items-center gap-3 p-4 rounded-xl transition-all touch-manipulation",
                       "bg-card hover:bg-secondary border border-border shadow-sm",
-                      isActive(item.href) && "bg-primary/10 border-primary/30",
-                      item.badge === "PROOF" && !isActive(item.href) && "border-primary/25 shadow-[0_0_12px_-3px_hsl(var(--primary)/0.25)] bg-primary/[0.03]",
-                      item.badge === "PROOF" && isActive(item.href) && "shadow-[0_0_18px_-3px_hsl(var(--primary)/0.35)]"
+                      isActive(item.href) && "bg-primary/10 border-primary/30"
                     )}
                   >
-                    <item.icon className={cn(
-                      "w-5 h-5",
-                      isActive(item.href) ? "text-primary" : "text-muted-foreground"
-                    )} />
+                    <item.icon className={cn("w-5 h-5", isActive(item.href) ? "text-primary" : "text-muted-foreground")} />
                     <div className="flex items-center gap-2">
-                      <span className={cn(
-                        "text-sm font-semibold",
-                        isActive(item.href) && "text-primary"
-                      )}>
-                        {item.name}
-                      </span>
+                      <span className={cn("text-sm font-semibold", isActive(item.href) && "text-primary")}>{item.name}</span>
                       {item.badge && (
-                        <span className={cn(
-                          "text-[9px] font-bold px-1.5 py-0.5 rounded uppercase",
-                          item.badge === "FREE" 
-                            ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/30" 
-                            : "bg-primary/10 text-primary border border-primary/30"
-                        )}>
-                          {item.badge}
-                        </span>
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase bg-primary/10 text-primary border border-primary/30">{item.badge}</span>
                       )}
                     </div>
                   </Link>
                 ))}
               </motion.div>
 
-              {/* Navigation Sections */}
+              {/* Mobile Nav Sections */}
               <div className="space-y-2">
                 {navSections.map((section, sectionIdx) => (
                   <motion.div
@@ -576,9 +467,7 @@ export function CmpsblNav() {
                     className="rounded-xl border border-border overflow-hidden bg-card"
                   >
                     <button
-                      onClick={() => setExpandedMobileSection(
-                        expandedMobileSection === section.name ? null : section.name
-                      )}
+                      onClick={() => setExpandedMobileSection(expandedMobileSection === section.name ? null : section.name)}
                       className="w-full flex items-center justify-between p-4 touch-manipulation"
                       aria-expanded={expandedMobileSection === section.name}
                     >
@@ -588,15 +477,10 @@ export function CmpsblNav() {
                         </div>
                         <div className="text-left">
                           <div className="font-semibold text-sm">{section.name}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {section.items.length} items
-                          </div>
+                          <div className="text-xs text-muted-foreground">{section.items.length} items</div>
                         </div>
                       </div>
-                      <motion.div
-                        animate={{ rotate: expandedMobileSection === section.name ? 90 : 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
+                      <motion.div animate={{ rotate: expandedMobileSection === section.name ? 90 : 0 }} transition={{ duration: 0.2 }}>
                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
                       </motion.div>
                     </button>
@@ -616,40 +500,24 @@ export function CmpsblNav() {
                                 key={item.href}
                                 to={item.href}
                                 className={cn(
-                                  "flex items-center gap-3 p-3 rounded-lg transition-colors touch-manipulation",
-                                  "hover:bg-muted",
+                                  "flex items-center gap-3 p-3 rounded-lg transition-colors touch-manipulation hover:bg-muted",
                                   isActive(item.href) && "bg-primary/10"
                                 )}
                               >
                                 {item.icon && (
-                                  <div className={cn(
-                                    "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                                    isActive(item.href) ? "bg-primary/10" : "bg-secondary"
-                                  )}>
-                                    <item.icon className={cn(
-                                      "w-4 h-4",
-                                      isActive(item.href) ? "text-primary" : "text-muted-foreground"
-                                    )} />
+                                  <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", isActive(item.href) ? "bg-primary/10" : "bg-secondary")}>
+                                    <item.icon className={cn("w-4 h-4", isActive(item.href) ? "text-primary" : "text-muted-foreground")} />
                                   </div>
                                 )}
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <span className={cn(
-                                      "font-medium text-sm",
-                                      isActive(item.href) && "text-primary"
-                                    )}>
-                                      {item.name}
-                                    </span>
+                                    <span className={cn("font-medium text-sm", isActive(item.href) && "text-primary")}>{item.name}</span>
                                     {item.badge && (
-                                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
-                                        {item.badge}
-                                      </span>
+                                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">{item.badge}</span>
                                     )}
                                   </div>
                                   {item.description && (
-                                    <span className="text-xs text-muted-foreground line-clamp-1">
-                                      {item.description}
-                                    </span>
+                                    <span className="text-xs text-muted-foreground line-clamp-1">{item.description}</span>
                                   )}
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
@@ -663,13 +531,8 @@ export function CmpsblNav() {
                 ))}
               </div>
 
-              {/* Auth Section */}
-              <motion.div 
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="mt-8 pt-6 border-t border-border"
-              >
+              {/* Mobile Auth */}
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="mt-8 pt-6 border-t border-border">
                 {user ? (
                   <div className="space-y-3">
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
@@ -678,11 +541,7 @@ export function CmpsblNav() {
                         Open Dashboard
                       </Link>
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      onClick={handleSignOut}
-                      className="w-full h-11 rounded-xl"
-                    >
+                    <Button variant="outline" onClick={handleSignOut} className="w-full h-11 rounded-xl">
                       <LogOut className="w-4 h-4 mr-2" />
                       Sign Out
                     </Button>
@@ -690,8 +549,8 @@ export function CmpsblNav() {
                 ) : (
                   <div className="space-y-3">
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
-                      <Link to="/developers">
-                        Get Started Free
+                      <Link to="/upgrade">
+                        Get Started
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>
@@ -702,13 +561,8 @@ export function CmpsblNav() {
                 )}
               </motion.div>
 
-              {/* Footer */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground"
-              >
+              {/* Mobile Footer */}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span>All Systems Operational</span>
               </motion.div>
@@ -717,8 +571,7 @@ export function CmpsblNav() {
         )}
       </AnimatePresence>
 
-      {/* CRITICAL: Spacer for fixed nav - ensures content clears the header on ALL pages */}
-      {/* Added extra mobile spacing to prevent content touching nav */}
+      {/* Spacer */}
       <div className="h-20 sm:h-16 lg:h-[72px]" />
     </>
   );
