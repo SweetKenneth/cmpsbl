@@ -236,7 +236,7 @@ export default function SubstrateIntelligence() {
                 </CardHeader>
                 <CardContent>
                   <pre className="bg-muted/50 p-4 rounded-lg text-xs md:text-sm overflow-x-auto font-mono">
-{`CMPSBL Substrate — SPARTA Epoch
+{`CMPSBL Substrate — ARCHITECT Epoch
 ─────────────────────────────────
 [CORE]       ████████████ READY      12ms
 [DECODE]     ████████████ READY       5ms
