@@ -41,18 +41,45 @@ class BudgetGovernorClient {
   }
 
   /**
-   * Sync budget from NEXUS cycle allocator (called every 4 hours or on init)
+   * Sync budget from NEXUS hourly optimizer (reads nexus_clm_budget from system_flags)
+   * Falls back to adaptive-budget cycle allocator if no optimizer data available
    */
   private async syncFromNexus(): Promise<void> {
     try {
-      const allocation = await getCurrentAllocation();
       const today = new Date().toISOString().split('T')[0];
       
       if (this.state.dateKey !== today) {
         this.state = this.initializeState();
       }
 
-      // Dynamic budget from NEXUS — no hardcoded percentage
+      // Try reading the hourly-optimized budget from system_flags first
+      const { data: flag } = await supabase
+        .from('system_flags')
+        .select('value, updated_at')
+        .eq('key', 'nexus_clm_budget')
+        .maybeSingle();
+
+      if (flag?.value) {
+        try {
+          const budget = JSON.parse(flag.value);
+          // Use the optimizer's hourly calculation if fresh (< 2 hours old)
+          const updatedAt = new Date(budget.updated_at || flag.updated_at);
+          const ageMs = Date.now() - updatedAt.getTime();
+          const TWO_HOURS = 2 * 60 * 60 * 1000;
+
+          if (ageMs < TWO_HOURS && budget.calls_per_hour > 0) {
+            // Optimizer provides calls_per_hour — convert to remaining budget units
+            const hoursRemaining = budget.hours_remaining || 1;
+            this.state.totalBudgetUnits = budget.calls_per_hour * hoursRemaining;
+            this.recalculateRemainingBudget();
+            this.persistState();
+            return;
+          }
+        } catch { /* Invalid JSON — fall through to adaptive-budget */ }
+      }
+
+      // Fallback: use the 4-hour adaptive-budget cycle allocator
+      const allocation = await getCurrentAllocation();
       this.state.totalBudgetUnits = allocation.perEntityAllocation;
       this.recalculateRemainingBudget();
       this.persistState();
