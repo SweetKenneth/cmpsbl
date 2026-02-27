@@ -139,7 +139,7 @@ async function runOne(name: string, command: string, expectedMode: 'surface' | '
   try {
     const res = await executeCommand(command);
     const durationMs = Math.round(performance.now() - start);
-    const verdict = classify(res, expectedMode);
+    const verdict = classifyResult(res, expectedMode);
 
     return {
       name,
@@ -149,17 +149,12 @@ async function runOne(name: string, command: string, expectedMode: 'surface' | '
       severity: verdict.severity,
       notes: verdict.notes,
       responseShape: {
-        keys: res && typeof res === 'object' ? Object.keys(res as object) : typeof res,
-        sample: res && typeof res === 'object'
-          ? {
-              success: (res as unknown as Record<string, unknown>).success,
-              ok: (res as unknown as Record<string, unknown>).ok,
-              status: (res as unknown as Record<string, unknown>).status,
-              hasData: (res as unknown as Record<string, unknown>).data != null,
-              hasError: (res as unknown as Record<string, unknown>).error != null,
-              hasOutput: typeof (res as unknown as Record<string, unknown>).output === 'string',
-            }
-          : res,
+        keys: Object.keys(res),
+        success: res.success,
+        hasOutput: res.output != null,
+        hasError: res.error != null,
+        errorCode: res.error?.code,
+        dryRun: res.dryRun,
       },
     };
   } catch (e: unknown) {
