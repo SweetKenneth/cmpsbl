@@ -1,7 +1,8 @@
 /**
- * World-First Enhancements — SPARTA Epoch
+ * World-First Enhancements
  * Central export for all 56 high-value autonomous functions across 24 execution surfaces
  */
+import { getMetric } from '@/stores/publicMetricsStore';
 
 // BRAIN — Cognitive memory and attention
 export { 

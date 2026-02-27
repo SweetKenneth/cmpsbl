@@ -1,7 +1,8 @@
 /**
- * World-First Enhancements v2 — SPARTA Epoch
+ * World-First Enhancements v2
  * 56 additional high-value autonomous functions across 4 domains
  */
+import { getMetric } from '@/stores/publicMetricsStore';
 
 // ═══════════════════════════════════════════════════════════════
 // SYNERGY ADVANCED — Cross-module orchestration patterns (14)
