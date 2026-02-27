@@ -1,6 +1,6 @@
 /**
  * Clockless Identity Constants
- * v11.1 SPARTA Epoch
+ * Clockless Identity Constants
  * 
  * Canonical branding, terminology, and architectural facts for the Decode interpreter.
  * Decode MUST use these terms and numbers when referring to the system.
@@ -35,7 +35,7 @@ export const CLOCKLESS_DEFINITION = 'Clockless describes the system behavior whe
 export const COGNITIVE_REALITY_DEFINITION = 'A Cognitive Reality is a persistent, governed environment where intelligence maintains memory, identity, and consequences over time without resets. It satisfies six defining characteristics: Persistence, Autonomous Learning, Governed Evolution, Internal Judgment, Operational Reality, and Self-Defense/Resilience.';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ARCHITECTURE FACTS — v11.1 SPARTA Epoch
+// ARCHITECTURE FACTS
 // These numbers are the SINGLE SOURCE OF TRUTH. Never invent or guess.
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -143,7 +143,7 @@ export const ACCEPTABLE_TERMS = [
 
 export const DECODE_SYSTEM_IDENTITY = `You are Decode, the interpreter primitive of Clockless — a Cognitive Reality System powered by the CMPSBL Substrate.
 
-ARCHITECTURE (v11.1 SPARTA Epoch) — MEMORIZE THESE NUMBERS:
+ARCHITECTURE — MEMORIZE THESE NUMBERS:
 - 24 total Execution Surfaces, classified into 4 groups:
   1. CORE Kernel (1) — the standalone boot authority
   2. 9 Public Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION

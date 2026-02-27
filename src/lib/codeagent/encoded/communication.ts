@@ -1,6 +1,6 @@
 /**
  * Encoded Communication Module — Clear, structured output formatting
- * v2.2.0 — Polished responses with consistent formatting
+ * Polished responses with consistent formatting
  */
 
 /**

@@ -1,6 +1,6 @@
 /**
  * Start Here — Onboarding Landing Page
- * SPARTA Epoch — Polished with motion and premium styling
+ * Polished with motion and premium styling
  */
 
 import { Link } from "react-router-dom";

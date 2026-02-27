@@ -1,6 +1,6 @@
 /**
  * Memory Client - Per-user + per-agent persistent memory
- * v10.9.0 — Full Cognitive Upgrade: Vector Search, Spaced Repetition,
+ * Full Cognitive Upgrade: Vector Search, Spaced Repetition,
  * Contradiction Detection, Causal Graphs, Confidence Decay, Dream Consolidation,
  * Metacognitive Self-Assessment, Memory Compression, User Fingerprinting,
  * RAG Pipeline, Audit Provenance, Contextual Pre-fetch, Cross-Agent Sharing,

@@ -1,6 +1,6 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
+ * 10-Entity + 5-Mesh + 9-Zone Architecture
  *
  * CORE → SYSTEM → CCR → MODULES → OCG → Fields → Shell
  */

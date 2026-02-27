@@ -1,6 +1,6 @@
 /**
  * Encoded Skills Module — Capability definitions and skill metrics
- * v2.2.0 — Defines what Encoded can do and tracks proficiency
+ * Defines what Encoded can do and tracks proficiency
  */
 
 /**

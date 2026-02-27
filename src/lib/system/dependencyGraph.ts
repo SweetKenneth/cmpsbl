@@ -32,7 +32,7 @@
  }
  
   /**
-   * Module dependency graph — aligned with SPARTA v11.5 Field-Based Topology
+   * Module dependency graph — Field-Based Topology
    * 
    * Spine:  CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM)
    * Grid:   OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) — taps off CORE

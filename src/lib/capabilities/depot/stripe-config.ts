@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Stripe Configuration
  * Maps capability IDs to Stripe product/price IDs
- * v2.0.0 — Unified Pricing ($19-$299 public, off-menu licensed)
+ * Unified Pricing ($19-$299 public, off-menu licensed)
  */
 
 import { normalizePrice, isOffMenuCapability } from './pricing-normalization';

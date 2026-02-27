@@ -1,6 +1,6 @@
 /**
  * Encoded Prompt Engineering — Optimized for Llama 3.3 70B via Groq
- * v1.0.0 — Maximizes free-tier model output quality through prompt design
+ * Maximizes free-tier model output quality through prompt design
  * 
  * Key strategies:
  * 1. Role-playing as expert developer (proven to improve code quality)

@@ -92,8 +92,8 @@ export default function Foundations() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>FNDTN v8 — Foundations | CMPSBL®</title>
-        <meta name="description" content="Clockless SPARTA Epoch — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the layered architecture and access archival records." />
+        <title>FNDTN — Foundations | CMPSBL®</title>
+        <meta name="description" content="CMPSBL — A Cognitive Reality System powered by the CMPSBL Substrate. Reference standard for the substrate class. Browse the layered architecture and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -103,7 +103,7 @@ export default function Foundations() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Layers className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">SPARTA Epoch</span>
+            <span className="text-sm font-mono text-primary">CMPSBL Substrate</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             Foundations
@@ -172,7 +172,7 @@ export default function Foundations() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-primary/10 border border-primary/30">
                 <h4 className="font-medium text-primary mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL SPARTA Epoch</p>
+                <p className="text-sm text-muted-foreground">CMPSBL Substrate</p>
               </Link>
               <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Governance Standard</h4>
@@ -366,7 +366,7 @@ export default function Foundations() {
         {/* Author Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
           <p className="text-sm text-muted-foreground">
-            SPARTA Epoch by{" "}
+            CMPSBL Substrate by{" "}
             <a 
               href="https://orcid.org/0009-0001-4237-1243" 
               target="_blank" 

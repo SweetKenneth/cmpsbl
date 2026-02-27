@@ -1,6 +1,6 @@
 /**
  * OCG & Shell Terminal Handlers — RIPPLE, ACCESS, DEFENSE
- * SPARTA Epoch — Registers governance-gated handlers for OCG Grid + Shell nodes
+ * Registers governance-gated handlers for OCG Grid + Shell nodes
  * 
  * Note: IDENTITY, RELAY, AUDIT are registered in infra-module-handlers.ts
  */

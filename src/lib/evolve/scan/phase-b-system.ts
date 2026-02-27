@@ -1,6 +1,6 @@
 /**
  * Phase B — System State Scan
- * SPARTA Epoch — Full Entity + Mesh + Zone Sweep
+ * Full Entity + Mesh + Zone Sweep
  * 
  * Performs required system calls to detect state mismatches,
  * stuck phases, cognitive starvation, resilience gaps,

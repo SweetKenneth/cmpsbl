@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module Mission — Human Compatibility Pipeline
- * SPARTA Epoch — CMPSBL®
+ * CMPSBL®
  */
 
 import { SEO } from "@/components/SEO";

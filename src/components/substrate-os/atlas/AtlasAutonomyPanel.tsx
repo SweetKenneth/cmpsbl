@@ -1,6 +1,6 @@
 /**
  * Atlas Autonomy Panel
- * v10.5.4 — ARCHITECT Epoch CLM + SEBA unified control with Nexus fleet usage tracking
+ * CLM + SEBA unified control with Nexus fleet usage tracking
  */
 
 import { useState, useEffect, useCallback } from 'react';

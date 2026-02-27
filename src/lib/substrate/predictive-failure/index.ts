@@ -1,6 +1,6 @@
 /**
  * Predictive Failure Detection
- * v1.0.0 — Detects impending failures before they occur
+ * Detects impending failures before they occur
  * 
  * Uses trailing metric windows (error rate, latency, memory) to predict
  * failures and trigger preemptive mitigation actions.

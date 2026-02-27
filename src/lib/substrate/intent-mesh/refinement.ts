@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Multi-Turn Intent Refinement
- * v10.2.0 — Enables iterative intent resolution with feedback loops
+ * Enables iterative intent resolution with feedback loops
  * 
  * When a module broadcasts an intent and gets partial results, the refinement
  * engine can automatically re-broadcast with narrowed domains, adjusted inputs,

@@ -1,5 +1,5 @@
 /**
- * Module Control Card — SPARTA Epoch
+ * Module Control Card
  * Gradient accents, real-time status, action buttons with Substrate Voice
  */
 

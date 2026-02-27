@@ -1,6 +1,6 @@
 /**
  * Mesh Topology Visualization — Force-directed graph of module connections
- * v10.3.0 — Shows how modules connect via resolved intents
+ * Shows how modules connect via resolved intents
  */
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';

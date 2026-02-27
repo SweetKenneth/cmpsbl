@@ -1,6 +1,6 @@
 /**
  * CodeAgent Pattern Library — 50+ Battle-Tested Code Patterns
- * v2.0.0 — Professional templates for every Substrate scenario
+ * Professional templates for every Substrate scenario
  * 
  * These patterns are derived from successful implementations
  * and follow Substrate architecture best practices

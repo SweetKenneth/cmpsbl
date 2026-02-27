@@ -1,6 +1,6 @@
 /**
  * Adaptive Rate Limiting
- * v1.0.0 — Dynamic rate limits based on system health and tenant behavior
+ * Dynamic rate limits based on system health and tenant behavior
  * 
  * Adjusts rate limits in real-time based on system pressure,
  * tenant reputation, and historical usage patterns.

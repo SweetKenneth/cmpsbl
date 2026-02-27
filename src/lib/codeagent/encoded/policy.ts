@@ -1,6 +1,6 @@
 /**
  * Encoded Guardrail Policy — Single Source of Truth
- * v2.2.0 — Enhanced destructive detection, comprehensive narrative bans, strict approval gates
+ * Enhanced destructive detection, comprehensive narrative bans, strict approval gates
  * ENCODE routes through Nexus (free-tier) — zero external AI costs
  */
 

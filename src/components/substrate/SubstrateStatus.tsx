@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate Status Widget
- * SPARTA Epoch — 5-layer health indicator
+ * 5-layer health indicator
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';

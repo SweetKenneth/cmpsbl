@@ -1,6 +1,6 @@
 /**
  * Executor Immune Pilot — Type Definitions
- * v1.0.0 — Thin immune wrapper for executor defense, repair, and escalation
+ * Thin immune wrapper for executor defense, repair, and escalation
  *
  * Gated behind feature flag: EXECUTOR_IMMUNE_PILOT
  */

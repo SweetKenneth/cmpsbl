@@ -1,6 +1,6 @@
 /**
  * TypeScript Verification + Auto-Fix Loop
- * v1.0.0 — Runs tsc --noEmit simulation and feeds errors back
+ * Runs tsc --noEmit simulation and feeds errors back
  */
 
 import { type TSError, type FileWriteRecord, MAX_TS_FIX_ATTEMPTS } from './codeagent-types';

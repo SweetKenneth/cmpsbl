@@ -1,6 +1,6 @@
 /**
- * VISION Predictive Alerts v10.5.4
- * ARCHITECT Epoch ML-based alert prediction before issues occur
+ * VISION Predictive Alerts
+ * ML-based alert prediction before issues occur
  */
  
  export type AlertPredictionType = 

@@ -1,6 +1,6 @@
 /**
  * Encoded Configuration Manager
- * v2.1.0 — Runtime configuration with Atlas integration
+ * Runtime configuration with Atlas integration
  * Routes through Nexus fleet — zero paid AI dependencies
  */
 

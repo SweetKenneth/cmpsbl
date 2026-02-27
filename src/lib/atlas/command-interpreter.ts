@@ -1,6 +1,6 @@
 /**
  * Atlas Command Interpreter
- * v7.3.0 — Natural language command processing for substrate control
+ * Natural language command processing for substrate control
  * 
  * Interprets conversational commands like:
  * - "activate SeBA in 24/7 mode"

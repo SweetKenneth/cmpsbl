@@ -11,7 +11,7 @@ const ProductRoadmap2025 = () => {
     <div className="min-h-screen bg-background">
       <SEO
         title="CMPSBL Product Roadmap | AI Substrate Evolution"
-        description="Upcoming features and milestones for CMPSBL's cognitive substrate. From the SPARTA Epoch to autonomous evolution and enterprise integrations."
+        description="Upcoming features and milestones for CMPSBL's cognitive substrate. Autonomous evolution and enterprise integrations."
         canonical="https://cmpsbl.com/blog/product-roadmap-2025"
         keywords={['AI roadmap 2026', 'CMPSBL features', 'cognitive substrate roadmap', 'AI platform evolution']}
       />
@@ -220,12 +220,12 @@ const ProductRoadmap2025 = () => {
 
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-foreground">
-              2026: SPARTA Epoch — Now
+              2026: Current Phase — Now
             </h2>
             
             <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
               <p>
-                SPARTA Epoch is live — 24 integrated modules, unified pricing (Free / Creator / Architect), and composable cognitive artifacts. Dream cycles, cross-project learning, and autonomous improvement are shipping now.
+                The current phase is live — 24 integrated modules, unified pricing (Free / Creator / Architect), and composable cognitive artifacts. Dream cycles, cross-project learning, and autonomous improvement are shipping now.
               </p>
               
               <p>

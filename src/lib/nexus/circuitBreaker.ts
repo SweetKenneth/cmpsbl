@@ -1,7 +1,7 @@
  /**
-  * NEXUS Circuit Breaker v9.1.0 ARCHITECT Epoch
-  * Intelligent provider failure detection and recovery
-  */
+   * NEXUS Circuit Breaker
+   * Intelligent provider failure detection and recovery
+   */
  
  export type CircuitState = 'closed' | 'open' | 'half-open';
  

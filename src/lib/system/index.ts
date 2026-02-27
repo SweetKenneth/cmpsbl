@@ -1,6 +1,6 @@
 /**
  * System Module Exports
- * SPARTA Epoch — Administration, Healing, and Production Hardening
+ * Administration, Healing, and Production Hardening
  */
 
 // Error handling

@@ -1,6 +1,6 @@
 /**
  * Public Engine Catalog
- * v8.1.0 — Exposes engine registry data with visibility filtering
+ * Exposes engine registry data with visibility filtering
  * 
  * Source of truth: ENGINE_REGISTRY + META_ENGINE_REGISTRY
  */

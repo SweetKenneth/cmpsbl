@@ -1,6 +1,6 @@
 /**
  * Scheduled Task Runner (Cron)
- * v1.0.0 — Client-side cron scheduler for recurring substrate tasks
+ * Client-side cron scheduler for recurring substrate tasks
  * 
  * Manages GC, health checks, DREAM cycles, brain optimization,
  * and any other recurring system operations without manual intervention.

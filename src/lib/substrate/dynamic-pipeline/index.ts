@@ -1,6 +1,6 @@
 /**
  * Dynamic Pipeline Composition
- * v1.0.0 — Runtime-composable execution pipelines
+ * Runtime-composable execution pipelines
  * 
  * Allows operators to compose pipelines from registered stages
  * at runtime, enabling adaptive workflow construction.

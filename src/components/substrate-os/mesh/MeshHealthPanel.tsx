@@ -1,6 +1,6 @@
 /**
  * Mesh Health Panel — Real-time health monitoring with alerts
- * v10.5.0 — Shows health score, active alerts, and drift warnings
+ * Shows health score, active alerts, and drift warnings
  */
 
 import { useState, useEffect, useCallback } from 'react';

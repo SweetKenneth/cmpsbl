@@ -70,7 +70,7 @@ const epistemic: EpistemicContract = {
  */
 const conversational: ConversationalContract = {
   format(output: string): string {
-    // v10.5.3: Apply epistemic guardrails before output
+    // Apply epistemic guardrails before output
     if (needsGuardrails(output)) {
       const result = applyVoiceGuardrails(output);
       return result.output;

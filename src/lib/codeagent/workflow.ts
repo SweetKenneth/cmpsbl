@@ -1,6 +1,6 @@
 /**
  * Encoded Workflow Engine — READ → PLAN → WRITE → GUARD → READ → FIX → VERIFY → FINALIZE
- * v4.0.0 — Lov-baseline implementation with guardrails, anchor checks, and narrative bans
+ * Baseline implementation with guardrails, anchor checks, and narrative bans
  * 
  * Workflow stages:
  * 1. READ: Gather context, understand scope, query Brain for patterns

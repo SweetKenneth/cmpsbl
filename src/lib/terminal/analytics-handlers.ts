@@ -1,6 +1,6 @@
 /**
- * Analytics Terminal Handlers — v11.5.2
- * SPARTA Epoch — analytics.* namespace for enterprise observability
+ * Analytics Terminal Handlers
+ * analytics.* namespace for enterprise observability
  */
 
 import { registerHandler } from './validate-registry';

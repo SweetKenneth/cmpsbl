@@ -1,6 +1,6 @@
 /**
  * CLM Learning Orchestrator
- * v6.8.0 — Coordinates the constant learning loop
+ * Coordinates the constant learning loop
  * 
  * NOTE: Primary learning now runs SERVER-SIDE via pf-clm-engine (pg_cron every 5 min).
  * This client-side orchestrator is SUPPLEMENTARY — it runs when a browser tab is open

@@ -29,7 +29,7 @@ Clockless adopts and implements LLMS.txt as its primary machine context.
 
 Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 10 public entities, 5 mesh overlays, 9 hidden zones, real-time observability, adaptive learning, and multi-provider routing.
 
-## SPARTA Epoch Architecture (10 + 5 + 9)
+## Architecture (10 + 5 + 9)
 
 ### CORE (Standalone Kernel)
 - CORE — Boot sequencing, circuit breakers, config, job scheduling
@@ -191,7 +191,7 @@ export default function LlmsTxt() {
                 <h3 className="font-semibold mb-2">Standard Claim</h3>
                 <p className="text-sm text-muted-foreground mb-3">
                   LLMS.txt is a machine-readable specification format for AI systems. 
-                  Clockless SPARTA Epoch implements LLMS.txt as its primary machine context.
+                  CMPSBL implements LLMS.txt as its primary machine context.
                 </p>
                 <p className="text-sm font-medium text-primary">
                   We recommend that web designers and system builders include an LLMS.txt file 
@@ -209,7 +209,7 @@ export default function LlmsTxt() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL SPARTA Epoch</p>
+                <p className="text-sm text-muted-foreground">CMPSBL Substrate</p>
               </Link>
               <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Governance Standard</h4>
@@ -261,7 +261,7 @@ export default function LlmsTxt() {
                   Canonical llms.txt
                 </CardTitle>
                 <CardDescription>
-                  CMPSBL SPARTA Epoch implementation
+                  CMPSBL Substrate implementation
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">

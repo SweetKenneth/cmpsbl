@@ -1,5 +1,5 @@
 /**
- * DREAM Module — SPARTA Epoch
+ * DREAM Module
  * Nocturnal Processing & Autonomous Learning Synthesis
  * 
  * The unconscious layer for:

@@ -1,6 +1,6 @@
 /**
  * Atlas React Hook
- * v7.0.0 — React integration for Atlas Control Plane
+ * React integration for Atlas Control Plane
  */
 
 import { useState, useCallback, useEffect } from 'react';

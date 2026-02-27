@@ -1,6 +1,6 @@
 /**
- * Observability Terminal Handlers — v11.5.0
- * SPARTA Epoch — `obs.*` command namespace
+ * Observability Terminal Handlers
+ * `obs.*` command namespace
  * 
  * Fills the gap: Telemetry, bridges, latency, DLQ, and error hotspots
  * had no terminal exposure. Now fully queryable.

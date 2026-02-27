@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * CONTRACT Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
+ * 10-Entity + 5-Mesh + 9-Zone Architecture
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:

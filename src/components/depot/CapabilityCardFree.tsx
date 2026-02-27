@@ -1,6 +1,6 @@
 /**
  * Capability Card (Free) — Unlocked capability display for depot
- * v3.0.0 — All capabilities FREE, no checkout
+ * All capabilities FREE, no checkout
  */
 
 import { 

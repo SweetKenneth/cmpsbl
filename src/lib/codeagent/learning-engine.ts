@@ -1,6 +1,6 @@
 /**
  * CodeAgent Learning Engine — Persistent 24/7 Learning System
- * v1.0.0 — Makes CodeAgent smarter with every action
+ * Makes CodeAgent smarter with every action
  * 
  * This module ensures CodeAgent learns from EVERY code action:
  * - Success patterns are reinforced

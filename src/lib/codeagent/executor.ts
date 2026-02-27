@@ -1,6 +1,6 @@
 /**
  * CodeAgent Executor — Resilient Code Generation with Self-Healing
- * v2.1.0 — Now with Shadow Mode for full UI functionality
+ * Shadow Mode for full UI functionality
  * Wraps the substrate coder with circuit breakers and error handling
  */
 

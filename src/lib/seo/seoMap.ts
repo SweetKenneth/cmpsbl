@@ -1,6 +1,6 @@
 /**
  * seoMap.ts — Centralized SEO Metadata Registry
- * SPARTA Epoch — Maximum Exposure Edition
+ * Maximum Exposure Edition
  *
  * Single source of truth for every PUBLIC indexed page.
  * Each entry has a UNIQUE primary keyword — no cannibalization.

@@ -1,7 +1,6 @@
 /**
  * CMPSBL Brain Verification
  * Confirms all core systems are online and operational
- * SPARTA Epoch
  */
 
 import { supabase } from '@/integrations/supabase/client';

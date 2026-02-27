@@ -1,6 +1,5 @@
 /**
  * Veto Scope Matrix
- * v10.5.3 ARCHITECT Epoch
  * 
  * Requires all vetoes to declare explicit scope of effect.
  * Vetoes without scope default to healing_actions only.

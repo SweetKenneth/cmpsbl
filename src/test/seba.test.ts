@@ -1,6 +1,6 @@
 /**
  * SEBA — Self-Evolving Bounded Agent Tests
- * v1.0.0 — Full Cognitive × Evolution × Governance
+ * Full Cognitive × Evolution × Governance
  * 
  * ⚠️ TEST-ONLY MOCKS ⚠️
  * The Supabase client is mocked ONLY for unit testing to avoid hitting

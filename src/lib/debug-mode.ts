@@ -1,6 +1,6 @@
 /**
  * Debug Mode Kill-Switch
- * SPARTA Epoch — Granular control over background activity
+ * Granular control over background activity
  * 
  * Usage:
  *   debugMode.enable();           // Disable ALL background activity

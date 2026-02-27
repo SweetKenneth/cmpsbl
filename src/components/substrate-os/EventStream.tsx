@@ -1,6 +1,6 @@
 /**
  * Event Stream — Live system events feed
- * SPARTA Epoch — Real-time log viewer with filtering and LIVE indicator
+ * Real-time log viewer with filtering and LIVE indicator
  * Streams events from all 24 execution surfaces across the substrate
  */
 

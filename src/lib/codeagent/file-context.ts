@@ -1,6 +1,6 @@
 /**
  * CodeAgent File Context Reader — Read Before Write
- * v2.0.0 — Understands file contents, dependencies, and relationships
+ * Understands file contents, dependencies, and relationships
  * 
  * Mirrors how human agents read and understand code before editing
  */
