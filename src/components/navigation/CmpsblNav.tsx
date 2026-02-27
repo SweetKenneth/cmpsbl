@@ -47,6 +47,7 @@ interface NavItem {
   icon?: React.ElementType;
   badge?: string;
   external?: boolean;
+  highlight?: boolean;
 }
 
 interface NavSection {
