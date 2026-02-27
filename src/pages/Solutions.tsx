@@ -172,8 +172,8 @@ export default function Solutions() {
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
             <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
-              "Infrastructure that compounds — every day it runs, it gets smarter."
-            </p>
+               "The best infrastructure is the kind you never have to think about."
+             </p>
           </blockquote>
         </div>
       </section>

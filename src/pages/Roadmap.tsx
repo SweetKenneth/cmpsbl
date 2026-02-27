@@ -247,7 +247,7 @@ export default function Roadmap() {
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
             <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
-              "Technology that works for everyone."
+              "Ship today. Compound tomorrow."
             </p>
           </blockquote>
         </div>
