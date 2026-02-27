@@ -14,6 +14,8 @@
  * - Improved visual hierarchy
  */
 
+import { getMetric } from '@/stores/publicMetricsStore';
+
 export interface BootConfig {
   animated?: boolean;
   compact?: boolean;
