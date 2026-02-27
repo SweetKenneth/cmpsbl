@@ -631,7 +631,7 @@ export default function Library() {
                 <Layers className="w-5 h-5 text-primary" />
                 <h2 className="font-semibold text-base">Documentation</h2>
               </div>
-              <Badge variant="outline" className="mb-4 ml-2 lg:ml-0">v7.0.0 • {LIBRARY_DOCS.length} docs</Badge>
+              <Badge variant="outline" className="mb-4 ml-2 lg:ml-0">{LIBRARY_DOCS.length} docs</Badge>
               
               <nav className="space-y-1">
                 {LIBRARY_DOCS.map((doc) => {

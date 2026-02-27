@@ -394,13 +394,13 @@ function ProofModeContent() {
               </div>
               <div className="flex items-center gap-2">
                 {remainingRuns > 5 && (
-                  <span className="text-emerald-500">● NOMINAL</span>
+                  <span className="text-[hsl(var(--system-green))]">● NOMINAL</span>
                 )}
                 {remainingRuns <= 5 && remainingRuns > 0 && (
-                  <span className="text-amber-500">● LOW</span>
+                  <span className="text-[hsl(var(--system-amber))]">● LOW</span>
                 )}
                 {remainingRuns === 0 && (
-                  <span className="text-red-500">● EXHAUSTED</span>
+                  <span className="text-destructive">● EXHAUSTED</span>
                 )}
               </div>
             </div>

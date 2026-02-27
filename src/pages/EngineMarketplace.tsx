@@ -499,7 +499,7 @@ export default function EngineMarketplace() {
                   className={cn("px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5", billingInterval === 'annual' ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground")}
                 >
                   Annual
-                  <Badge variant="secondary" className="bg-emerald-500/20 text-emerald-500 text-[10px] px-1.5 py-0">Save 17%</Badge>
+                  <Badge variant="secondary" className="bg-[hsl(var(--system-green))]/20 text-[hsl(var(--system-green))] text-[10px] px-1.5 py-0">Save 17%</Badge>
                 </button>
               </div>
             </div>

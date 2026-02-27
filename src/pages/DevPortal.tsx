@@ -5613,7 +5613,7 @@ export default function DevPortal() {
               className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-primary/20 to-violet-500/20 border border-primary/30 text-xs sm:text-sm mb-4 sm:mb-6"
             >
               <Code className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
-              <span className="font-medium">Developer Portal v2026.01</span>
+              <span className="font-medium">Developer Portal</span>
             </motion.div>
 
             <motion.h1
