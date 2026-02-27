@@ -220,7 +220,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                   key={backup.id}
                   className={cn(
                     "p-2 rounded-lg border cursor-pointer transition-all",
-                    "bg-white/5 border-white/10 hover:border-cyan-500/30 hover:bg-white/10",
+                    "bg-muted/10 border-border/30 hover:border-cyan-500/30 hover:bg-muted/20",
                     selectedBackup === backup.backup_id && "border-cyan-500/50 bg-cyan-500/10"
                   )}
                   onClick={() => setSelectedBackup(
@@ -233,7 +233,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                         {backup.backup_id.slice(0, 15)}...
                       </span>
                       <Badge variant="outline" className="text-[9px] h-4">
-                        v{backup.substrate_version}
+                        {backup.substrate_version}
                       </Badge>
                     </div>
                     <span className="text-[10px] text-muted-foreground">
@@ -242,7 +242,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                   </div>
                   
                   {selectedBackup === backup.backup_id && (
-                    <div className="mt-2 pt-2 border-t border-white/10">
+                    <div className="mt-2 pt-2 border-t border-border/30">
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button 
@@ -300,7 +300,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
         </div>
 
         {/* Status indicators */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-white/10">
+        <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border/30">
           <span>
             {hasBackups ? `${backups.length} restore points available` : 'No backups'}
           </span>

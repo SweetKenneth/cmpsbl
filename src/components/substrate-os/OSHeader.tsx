@@ -1,6 +1,5 @@
 /**
- * Clockless Cognitive Reality — Header
- * Substrate identity with animated status indicators
+ * OS Header — Substrate identity with animated status indicators
  * Glassmorphic design with live telemetry, gradient accents, and audio controls
  */
 

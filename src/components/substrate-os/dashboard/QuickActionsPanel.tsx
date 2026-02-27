@@ -181,6 +181,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
                 key={action.id}
                 onClick={action.onClick}
                 disabled={action.isPending}
+                aria-label={`${action.label}: ${action.description}`}
                 className={cn(
                   "group relative p-5 rounded-xl border text-left overflow-hidden transition-all duration-200",
                   action.borderClass,

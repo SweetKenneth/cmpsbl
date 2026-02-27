@@ -29,11 +29,16 @@ export function checkBrandingContracts(): AuditFinding[] {
   const ogTitle = document.querySelector('meta[property="og:title"]')?.getAttribute('content') || '';
   const ogDesc = document.querySelector('meta[property="og:description"]')?.getAttribute('content') || '';
 
+  const twitterTitle = document.querySelector('meta[name="twitter:title"]')?.getAttribute('content') || '';
+  const twitterDesc = document.querySelector('meta[name="twitter:description"]')?.getAttribute('content') || '';
+
   const surfaces = [
     { label: 'title', value: title },
     { label: 'meta description', value: metaDesc },
     { label: 'og:title', value: ogTitle },
     { label: 'og:description', value: ogDesc },
+    { label: 'twitter:title', value: twitterTitle },
+    { label: 'twitter:description', value: twitterDesc },
   ];
 
   for (const surface of surfaces) {
