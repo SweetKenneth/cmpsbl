@@ -1,10 +1,10 @@
 /**
  * AI Template Generator — Premium Marketplace Feature
  * Generate unique random templates with AI
- * Priced at Rare tier floor ($87) - never underprices Rare/Epic/Legendary/Mythic
+ * Pack-aware: generates degraded baseline-safe templates when required packs are inactive
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,11 +12,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   Sparkles, Dices, Crown, Lock, Download, Zap, Star, Gift,
   Brain, Shield, Moon, Eye, MessageSquare, Settings, Cpu, Globe,
-  ArrowRight, Check, Loader2, Copy
+  ArrowRight, Check, Loader2, Copy, AlertTriangle, Package
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { openCheckoutRedirect } from "@/lib/checkout/checkoutRedirect";
+import { evaluateTemplatePolicy, generateRequirementsBlock, buildAuditEntry, type TemplatePolicy } from "@/lib/quarry/template-policy";
+import { useArtifactSlots } from "@/hooks/useArtifactSlots";
 import {
   GENERATOR_CONFIG,
   RARITY_TIERS,
@@ -69,6 +71,8 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [generatedTemplate, setGeneratedTemplate] = useState<GeneratedTemplate | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const { activePacks } = useArtifactSlots();
+  const activePackIds = useMemo(() => new Set(activePacks.map(p => p.pack_id)), [activePacks]);
 
   const handleCheckout = () => {
     setIsCheckingOut(true);
@@ -119,6 +123,14 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
 
   const handleDownload = () => {
     if (!generatedTemplate) return;
+
+    // Evaluate pack policy for this template's category
+    const policy = evaluateTemplatePolicy(generatedTemplate.category, activePackIds);
+    const requirementsBlock = generateRequirementsBlock(policy);
+
+    // Log audit entry
+    const audit = buildAuditEntry(generatedTemplate.category, policy, generatedTemplate.id);
+    console.info('[TemplateGenerator] Audit:', audit);
     
     const content = `/**
  * ${generatedTemplate.name}
@@ -128,6 +140,7 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
  * Difficulty: ${generatedTemplate.difficulty}
  * Rarity: ${generatedTemplate.rarity}
  * Estimated Value: ${generatedTemplate.estimatedValue}
+ * Generation Mode: ${policy.mode === 'full' ? 'Full (all packs active)' : 'Degraded (missing packs)'}
  * 
  * Features:
 ${generatedTemplate.features.map(f => ` * - ${f}`).join('\n')}
@@ -135,7 +148,7 @@ ${generatedTemplate.features.map(f => ` * - ${f}`).join('\n')}
  * Use Case: ${generatedTemplate.useCase}
  */
 
-${generatedTemplate.code}
+${requirementsBlock}${generatedTemplate.code}
 `;
     
     const blob = new Blob([content], { type: 'text/typescript' });
@@ -148,7 +161,7 @@ ${generatedTemplate.code}
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    toast.success('Template downloaded!');
+    toast.success(policy.mode === 'full' ? 'Full template downloaded!' : 'Baseline template downloaded — activate packs for full version');
   };
 
   const handleCopyCode = () => {
@@ -349,6 +362,32 @@ ${generatedTemplate.code}
               </div>
 
               <div className="space-y-4">
+                {/* Pack-awareness indicator */}
+                {(() => {
+                  const policy = evaluateTemplatePolicy(generatedTemplate.category, activePackIds);
+                  if (policy.mode === 'degraded') {
+                    return (
+                      <div className="flex items-start gap-2 p-3 rounded-lg bg-muted/50 border border-border/50 text-xs">
+                        <AlertTriangle className="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-medium text-foreground">Baseline mode</span>
+                          <span className="text-muted-foreground"> — Activate </span>
+                          <span className="font-medium text-foreground">{policy.missingPackNames.slice(0, 2).join(', ')}</span>
+                          {policy.missingPackNames.length > 2 && <span className="text-muted-foreground"> +{policy.missingPackNames.length - 2} more</span>}
+                          <span className="text-muted-foreground"> for full output. </span>
+                          <a href="/packs" className="text-primary hover:underline">Manage packs →</a>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 text-xs">
+                      <Package className="w-3.5 h-3.5 text-primary" />
+                      <span className="text-muted-foreground">Full template — all required packs active</span>
+                    </div>
+                  );
+                })()}
+
                 <div className="flex flex-wrap gap-2">
                   {generatedTemplate.features.map((feature, i) => (
                     <Badge key={i} variant="outline">{feature}</Badge>
