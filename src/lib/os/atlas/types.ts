@@ -1,6 +1,6 @@
 /**
  * Atlas Control Plane Types
- * v7.0.0 — Single-source-of-truth substrate interface
+ * Single-source-of-truth substrate interface
  */
 
 export type AtlasOp = 

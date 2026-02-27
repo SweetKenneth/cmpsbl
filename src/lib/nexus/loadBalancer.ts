@@ -1,6 +1,6 @@
 /**
  * NEXUS Load Balancer
- * v5.1.0 ARCHITECT — Intelligent request distribution across 13 AI providers
+ * Intelligent request distribution across 13 AI providers
  */
  
  // Provider load state

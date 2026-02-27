@@ -1,6 +1,6 @@
 /**
  * Synergy System Types
- * v10.5.4 — ARCHITECT Epoch Cross-Module Pipeline Definitions (200 pipelines)
+ * Cross-Module Pipeline Definitions (200 pipelines)
  */
 
 export type SynergyCategory = 

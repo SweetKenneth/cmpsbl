@@ -1,6 +1,6 @@
 /**
  * Unified Graceful Degradation Framework
- * v10.5.4 ARCHITECT — Standardized resilience for all modules and subsystems
+ * Standardized resilience for all modules and subsystems
  * 
  * Provides:
  * - withGracefulExec: Wraps any async operation with timeout, retry, circuit-breaker awareness, and fallback

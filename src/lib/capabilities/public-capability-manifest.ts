@@ -1,6 +1,6 @@
 /**
  * Public Capability Manifest — Tier-Safe, Outcome-Oriented
- * v10.7.0 ARCHITECT Epoch — 168 Crown Jewels (Wave 1 + 2 + 3 + 4)
+ * 168 Crown Jewels (Wave 1 + 2 + 3 + 4)
  * 
  * RULES:
  * - NO CMPSBL-only Crown Jewels by name or description

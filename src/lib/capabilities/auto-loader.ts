@@ -1,6 +1,6 @@
 /**
  * Capability Auto-Loader
- * v10.5.4 ARCHITECT — Filesystem Scanner for Drop-In Capabilities
+ * Filesystem Scanner for Drop-In Capabilities
  */
 
 import type { 
