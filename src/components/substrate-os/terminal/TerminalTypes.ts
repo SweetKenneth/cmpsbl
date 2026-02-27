@@ -45,7 +45,7 @@ export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '  ▓  CLOCKLESS — CMPSBL SUBSTRATE      ▓',
-  '  ▓  v10.5.1 ARCHITECT Epoch           ▓',
+  '  ▓                                     ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
   '  ┌─ BOOTSTRAP ───────────────────────────┐',
