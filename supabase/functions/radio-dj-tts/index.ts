@@ -1,7 +1,7 @@
 /**
  * radio-dj-tts — Generates spoken DJ audio for Composable Radio
- * Takes DJ content text and returns MP3 audio via ElevenLabs TTS
- * Uses distinct voices for DJ vs callers for differentiation
+ * Rex Binary (Howard Stern-style DJ) gets a bold, commanding voice
+ * Callers get diverse, contrasting voices for differentiation
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -12,32 +12,34 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-// Main DJ voices — deep, authoritative radio hosts
-const DJ_VOICES = [
-  { id: "JBFqnCBsd6RMkjVDRZzb", name: "George" },    // Deep, authoritative
-  { id: "nPczCjzI2devNBz1zQrb", name: "Brian" },      // Classic radio
-  { id: "TX3LPaxmHKxFdv7VOQHJ", name: "Liam" },      // Smooth
+// Rex Binary's voice — bold, commanding, slightly unhinged radio host energy
+const REX_VOICES = [
+  { id: "JBFqnCBsd6RMkjVDRZzb", name: "George" },    // Deep, authoritative — main Rex voice
+  { id: "TX3LPaxmHKxFdv7VOQHJ", name: "Liam" },      // Smooth backup
 ];
 
-// Caller voices — distinctly different from DJ (younger, varied, contrasting)
+// Caller voices — distinctly different from Rex (varied genders, tones, energies)
 const CALLER_VOICES = [
   { id: "iP95p4xoKVk53GoZ742B", name: "Chris" },      // Energetic, youthful
   { id: "onwK4e9ZLuTAKqWW03F9", name: "Daniel" },     // Warm, conversational
-  { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },      // Female voice for variety
-  { id: "FGY2WhTYpPnrIDTdsKH5", name: "Laura" },      // Female, different tone
+  { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },      // Female, clear
+  { id: "FGY2WhTYpPnrIDTdsKH5", name: "Laura" },      // Female, warm
   { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica" },    // Female, casual
   { id: "pFZP5JQG7iQjIQuC4Bku", name: "Lily" },       // Female, bright
+  { id: "N2lVS1w4EtoT3dr4eOWO", name: "Callum" },     // Male, different register
+  { id: "cjVigY5qzO86Huf0OWal", name: "Eric" },       // Male, distinct
 ];
 
-// Voice settings per content type for distinct personality
+// Voice settings per content type — Rex is energetic, callers are varied
 const VOICE_PROFILES: Record<string, { stability: number; similarity_boost: number; style: number; speed: number }> = {
-  station_id: { stability: 0.7, similarity_boost: 0.85, style: 0.6, speed: 1.0 },
-  system_shoutout: { stability: 0.5, similarity_boost: 0.75, style: 0.4, speed: 0.95 },
-  dev_shoutout: { stability: 0.45, similarity_boost: 0.7, style: 0.5, speed: 1.0 },
-  fake_sponsor: { stability: 0.65, similarity_boost: 0.8, style: 0.7, speed: 1.05 },
-  philosophical: { stability: 0.3, similarity_boost: 0.7, style: 0.3, speed: 0.88 },
-  call_in_dj: { stability: 0.5, similarity_boost: 0.8, style: 0.5, speed: 1.0 },
-  call_in_caller: { stability: 0.35, similarity_boost: 0.6, style: 0.6, speed: 1.05 },
+  station_id:      { stability: 0.35, similarity_boost: 0.85, style: 0.8, speed: 1.05 },  // Rex hype mode
+  system_shoutout: { stability: 0.3,  similarity_boost: 0.8,  style: 0.7, speed: 1.0 },   // Rex excited
+  dev_shoutout:    { stability: 0.25, similarity_boost: 0.75, style: 0.8, speed: 1.05 },  // Rex encouraging/wild
+  fake_sponsor:    { stability: 0.4,  similarity_boost: 0.85, style: 0.9, speed: 1.0 },   // Rex doing ad reads like a madman
+  philosophical:   { stability: 0.5,  similarity_boost: 0.8,  style: 0.4, speed: 0.9 },   // Rex being deep (rare)
+  rex_rant:        { stability: 0.2,  similarity_boost: 0.7,  style: 0.9, speed: 1.1 },   // Rex fully unhinged
+  call_in_rex:     { stability: 0.35, similarity_boost: 0.8,  style: 0.7, speed: 1.0 },   // Rex as host for call-ins
+  call_in_caller:  { stability: 0.4,  similarity_boost: 0.6,  style: 0.5, speed: 1.0 },   // Caller — varied, natural
 };
 
 serve(async (req) => {
@@ -60,28 +62,27 @@ serve(async (req) => {
       throw new Error("ELEVEN_LABS_API_KEY not configured");
     }
 
-    // Pick the main DJ voice for this segment
-    const djVoice = DJ_VOICES[Math.floor(Math.random() * DJ_VOICES.length)];
-    const profile = VOICE_PROFILES[contentType] || VOICE_PROFILES.station_id;
-
-    let voiceId = djVoice.id;
+    // Rex always uses his signature voice
+    const rexVoice = REX_VOICES[0]; // George — the Rex Binary voice
+    let profile = { ...(VOICE_PROFILES[contentType] || VOICE_PROFILES.station_id) };
+    let voiceId = rexVoice.id;
     let spokenText = text;
 
     if (contentType === "call_in" && caller) {
-      // For call-ins, use a distinctly different caller voice
+      // For call-ins, Rex does the intro, then the caller speaks
+      // We pick a random caller voice that's distinctly different from Rex
       const callerVoiceObj = CALLER_VOICES[Math.floor(Math.random() * CALLER_VOICES.length)];
       voiceId = callerVoiceObj.id;
-      // DJ intro + caller message as one TTS pass with the caller's voice
-      spokenText = `And we've got a call coming in from ${caller}... ${text}`;
-      // Use the caller voice profile
-      const callerProfile = VOICE_PROFILES.call_in_caller;
-      Object.assign(profile, callerProfile);
-    } else if (contentType === "fake_sponsor") {
-      // Sponsors get a polished ad-read delivery
-      spokenText = text;
+      profile = { ...VOICE_PROFILES.call_in_caller };
+
+      // Build the full segment: Rex intro + caller message
+      spokenText = `We've got a call coming in! ${caller} is on the line... ${text}`;
+    } else if (contentType === "rex_rant") {
+      // Rex rants get maximum energy — slightly faster, more expressive
+      profile = { ...VOICE_PROFILES.rex_rant };
     }
 
-    console.log(`[radio-dj-tts] Generating: ${contentType} with voice ${voiceId}`);
+    console.log(`[radio-dj-tts] Rex Binary segment: ${contentType} | voice: ${voiceId}`);
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`,
@@ -112,7 +113,7 @@ serve(async (req) => {
     }
 
     const audioBuffer = await response.arrayBuffer();
-    console.log(`[radio-dj-tts] Generated ${audioBuffer.byteLength} bytes of audio`);
+    console.log(`[radio-dj-tts] Generated ${audioBuffer.byteLength} bytes for Rex Binary`);
 
     return new Response(audioBuffer, {
       headers: {

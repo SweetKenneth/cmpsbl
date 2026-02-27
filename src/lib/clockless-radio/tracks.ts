@@ -1,5 +1,5 @@
 /**
- * Clockless Radio — Track Registry
+ * Composable Radio — Track Registry
  * All tracks served from /radio/ directory
  */
 
@@ -23,6 +23,15 @@ export const RADIO_TRACKS: RadioTrack[] = [
   { id: 'composable-dreaming', title: 'Composable Dreaming', url: '/radio/Composable_Dreaming.mp3', orderIndex: 9 },
   { id: 'spacewalk-through-it', title: 'Spacewalk Through It', url: '/radio/Spacewalk_Through_It.mp3', orderIndex: 10 },
   { id: 'executable-space-x3', title: 'Executable Space X3', url: '/radio/Executable_Space_X3.mp3', orderIndex: 11 },
+  // — New Tracks —
+  { id: 'unbreakable-dream', title: 'Unbreakable Dream', url: '/radio/Unbreakable_Dream.mp3', orderIndex: 12 },
+  { id: 'limitless', title: 'Limitless', url: '/radio/Limitless.mp3', orderIndex: 13 },
+  { id: 'substrate-supreme', title: 'Substrate Supreme', url: '/radio/Substrate_Supreme.mp3', orderIndex: 14 },
+  { id: 'dream-it-build-it', title: 'Dream It Build It', url: '/radio/Dream_It_Build_it.mp3', orderIndex: 15 },
+  { id: 'complexity-clouds', title: 'Complexity Clouds', url: '/radio/Complexity_Clouds.mp3', orderIndex: 16 },
+  { id: 'clockless-cognitive-reality', title: 'Clockless Cognitive Reality', url: '/radio/Clockless_Cognitive_Reality.mp3', orderIndex: 17 },
+  { id: 'persistent-dreams', title: 'Persistent Dreams', url: '/radio/Persistent_Dreams.mp3', orderIndex: 18 },
+  { id: 'unbreakable-love', title: 'Unbreakable Love', url: '/radio/Unbreakable_Love.mp3', orderIndex: 19 },
 ];
 
 /** Get shuffled playlist */

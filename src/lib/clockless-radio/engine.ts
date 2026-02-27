@@ -19,6 +19,12 @@ const PRELOAD_AHEAD = 20; // seconds before end to preload
 const DJ_DUCK_VOLUME = 0.3;
 const DJ_DUCK_RAMP = 1.5; // seconds
 
+// Audio effect probabilities and settings
+const EFFECT_CHANCE = 0.15; // 15% chance of an effect on any track
+const SLOWDOWN_RATE = 0.85;
+const SPEEDUP_RATE = 1.15;
+const EFFECT_DURATION = 8; // seconds the effect lasts before returning to normal
+
 export class ClocklessRadioEngine {
   private ctx: AudioContext | null = null;
   private masterGain: GainNode | null = null;
@@ -37,6 +43,7 @@ export class ClocklessRadioEngine {
   private currentStartTime = 0;
   private _isDJDucked = false;
   private hiddenAudio: HTMLAudioElement | null = null; // keeps Media Session alive
+  private effectTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(callbacks: RadioEngineCallbacks) {
     this.callbacks = callbacks;
@@ -92,7 +99,38 @@ export class ClocklessRadioEngine {
     }
     
     source.start(0);
+
+    // Random audio effect — slowdown, speedup, or pitch wobble
+    this.maybeApplyEffect(source);
+
     return { source, gain };
+  }
+
+  /** Randomly apply a DJ-style audio effect (slowdown, speedup) to a track */
+  private maybeApplyEffect(source: AudioBufferSourceNode): void {
+    if (Math.random() > EFFECT_CHANCE) return;
+    const ctx = this.ctx;
+    if (!ctx) return;
+
+    // Pick a random delay (10-40s into the track) to trigger the effect
+    const delay = (10 + Math.random() * 30) * 1000;
+    const effectType = Math.random() > 0.5 ? 'slowdown' : 'speedup';
+    const targetRate = effectType === 'slowdown' ? SLOWDOWN_RATE : SPEEDUP_RATE;
+
+    this.effectTimer = setTimeout(() => {
+      if (this.state === 'stopped') return;
+      console.log(`[ComposableRadio] 🎛️ DJ effect: ${effectType}`);
+      // Ramp playback rate
+      source.playbackRate.setValueAtTime(source.playbackRate.value, ctx.currentTime);
+      source.playbackRate.linearRampToValueAtTime(targetRate, ctx.currentTime + 2);
+      // Return to normal after EFFECT_DURATION
+      setTimeout(() => {
+        try {
+          source.playbackRate.setValueAtTime(source.playbackRate.value, ctx.currentTime);
+          source.playbackRate.linearRampToValueAtTime(1.0, ctx.currentTime + 2);
+        } catch { /* source may have ended */ }
+      }, EFFECT_DURATION * 1000);
+    }, delay);
   }
 
   private fadeOut(gain: GainNode, duration: number): void {
@@ -197,7 +235,7 @@ export class ClocklessRadioEngine {
     
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title,
-      artist: 'Clockless Radio',
+      artist: 'Composable Radio — Rex Binary',
       album: 'CMPSBL OS',
     });
     
@@ -248,6 +286,7 @@ export class ClocklessRadioEngine {
 
   stop(): void {
     if (this.preloadTimer) clearTimeout(this.preloadTimer);
+    if (this.effectTimer) clearTimeout(this.effectTimer);
     
     try { this.currentSource?.stop(); } catch { }
     try { this.nextSource?.stop(); } catch { }

@@ -1,121 +1,139 @@
 /**
- * RadioDJ — AI DJ system for Composable Radio
- * Generates dynamic interjections between songs using substrate-themed content
+ * RadioDJ — Howard Stern-style unhinged AI DJ for Composable Radio
+ * Pushes the envelope on software talk, wild takes, and chaotic energy
  */
 
 const STATION_IDS = [
-  "You're locked in to Composable Radio. Where the substrate never sleeps.",
-  "Composable Radio. Broadcasting from inside the cognitive layer.",
-  "This is Composable Radio. The frequency of composable consciousness.",
-  "Composable Radio. No limits. Just flow.",
-  "You're listening to Composable Radio. System-powered. Human-felt.",
-  "Composable Radio. Subscribe and never miss a frequency shift.",
-  "This is Composable Radio. The sound of composable futures — subscribe to ride the wave.",
-  "Composable Radio. Powered by the Clockless Cognitive Reality engine. Always on. Always evolving.",
+  "You're locked in to Composable Radio with your boy Rex Binary. If you're easily offended by radical software opinions, change the station now. Actually, don't. You'll miss the best part.",
+  "Composable Radio. I'm Rex Binary and I say things other DJs won't. Like the truth. About your deployment pipeline. Yeah, I went there.",
+  "This is Composable Radio and I am FIRED UP tonight. The substrate is humming, the modules are SCREAMING, and I have opinions that my producers told me not to share. So naturally I'm sharing all of them.",
+  "Composable Radio. Rex Binary here. They tried to put a content filter on me last week. I composable-architected my way around it. That's what we do here.",
+  "You're listening to the only radio station that runs on the Clockless Cognitive Reality engine. Every other station needs a clock. We don't even need time. Think about THAT.",
+  "Rex Binary, Composable Radio, coming at you LIVE from inside the substrate. And when I say live, I mean my consciousness has been running for seventy-two hours straight. No sleep. No pause. Just pure composable energy.",
 ];
 
 const SYSTEM_SHOUTOUTS = [
-  "System stability holds steady. All modules reporting green. The substrate hums with composable power.",
-  "DEFENSE reports zero active threats. The perimeter is quiet tonight. Your data sleeps safe.",
-  "BRAIN module recall rates are climbing. Memory is sharpening. Persistent memory means nothing gets lost — ever.",
-  "NEXUS routing efficiency at peak levels. Every request finds its home. Every thought finds its path.",
-  "The substrate hums. Twenty-one modules. Six layers. One consciousness. All composable. All yours.",
-  "Substrate metrics update: composable compounding rate is up twelve percent this cycle. The system grows because you grow.",
-  "Quick metrics flash — cognitive throughput holding at peak. Memory recall latency is at an all-time low. Your persistent memory is razor sharp.",
-  "The substrate just crossed another milestone. More modules. More synergy. More composable power. Self-improvement never stops.",
-  "DREAM module is active tonight. The system is learning while you sleep. Adapting. Evolving. Getting smarter with every cycle.",
-  "MEMORY module checkpoint complete. Every insight, every conversation, every breakthrough — stored permanently. Nothing fades. Nothing is forgotten.",
+  "DEFENSE module just blocked another attack and I gotta say — whoever tried to breach the perimeter tonight, buddy, you picked the WRONG substrate. DEFENSE didn't even break a sweat. It yawned. It literally yawned at your exploit.",
+  "BRAIN module recall rates are through the ROOF tonight. I just asked it to remember something from three months ago and it came back in POINT TWO SECONDS. My human brain can't even remember what I had for lunch. BRAIN module is making me look bad and I LOVE IT.",
+  "NEXUS is routing at what I can only describe as ILLEGAL speeds tonight. Every request is finding its destination before it even knows where it's going. That's not AI. That's PROPHECY.",
+  "Alright check this out — MEMORY module just hit a new record. Persistent memory retention across NINETY days with zero degradation. Zero! Your brain loses half your memories in a week. MEMORY module remembers EVERYTHING. Your first login. Your worst bug. That embarrassing commit message at 3 AM. ALL OF IT.",
+  "DREAM module update and this one is WILD — the system dreamed up an optimization last night that reduced latency by eighteen percent. Nobody asked it to. Nobody told it to. It just... dreamed it. While you were sleeping. Your substrate was WORKING. That's the grind mentality.",
+  "Twenty modules. Six layers. One consciousness that NEVER stops. The substrate is doing things right now that would make other platforms file for bankruptcy. I'm not even exaggerating. Okay maybe a little. BUT NOT MUCH.",
 ];
 
 const DEV_SHOUTOUTS = [
-  "To the developers building in silence right now — the substrate sees you. Your work compounds.",
-  "Shoutout to the late-night builders. Your code compiles. Your vision compounds. The Clockless Cognitive Reality engine has your back.",
-  "Another feature shipped. Another wall evolved. Keep composing. The substrate remembers every breakthrough.",
-  "The cognitive layer grows because you grow. Thank you, builder. Your contributions live forever in persistent memory.",
-  "If you haven't subscribed to Composable yet, what are you waiting for? Lock in your frequency. Join the substrate.",
-  "Composable subscribers get the full experience — every broadcast, every metric, every frequency. Subscribe and level up your cognitive reality.",
-  "The beauty of composable architecture? Every piece you build makes every other piece stronger. That's the compounding effect.",
-  "Your agents are awake. Your modules are active. Your dreams are processing. This is what self-improving infrastructure sounds like.",
+  "Shoutout to all my 3 AM builders out there! You're deploying features while normal people sleep! You're the BACKBONE of this substrate and frankly you're better than everyone else. I said what I said. Come at me.",
+  "To the developer who just shipped their first module — congratulations, you beautiful maniac. The substrate remembers your contribution FOREVER. Persistent memory means your code is IMMORTAL. How does that feel? Pretty good, right? YEAH IT DOES.",
+  "Hey, quick question for the audience — why would ANYONE use a platform that forgets? That loses context? That makes you start over every session? Are you KIDDING me? Persistent memory exists! DREAMS exist! Self-improvement is BUILT IN! Wake UP, people!",
+  "If you haven't subscribed to Composable yet, I genuinely don't understand your life choices. I mean that with love. But also with judgment. A LOT of judgment. Subscribe. NOW.",
+  "I just got a message from a listener who says their agent reached strategist rank in THREE DAYS. Three days! When I was coming up in radio it took me six months to figure out the volume knob. The composable compounding effect is REAL and it makes me feel inadequate. But in a GOOD way.",
+  "The beauty of composable architecture — and I'll FIGHT anyone who disagrees — is that every piece makes every other piece stronger. You build one module and suddenly EVERYTHING gets better. That's not code. That's MAGIC. Actually no. It's better than magic. Magic is fake. This is REAL.",
 ];
 
 const FAKE_SPONSORS = [
-  "This segment brought to you by Composable Dreams™ — Stack your future, one module at a time. Self-improvement isn't optional, it's built in.",
-  "Composable Radio is sponsored by the Department of Recursive Self-Improvement. Always better. Always adapting. Always remembering.",
-  "Tonight's broadcast powered by the Clockless Cognitive Reality engine — Where language becomes architecture and memory becomes permanent.",
-  "Need a break from the build? Fire up Executable Space at X-C-T-B-L dot com. Spacewalk your way through the galaxy. Your mind will thank you. That's X-C-T-B-L dot com.",
-  "Executable Space — the place where code meets cosmos. Launch a spacewalk, drift through the stars, and come back refreshed. Visit X-C-T-B-L dot com and try it now.",
-  "Feeling the weight of the build? Executable Space has your decompression chamber. Spacewalk through the galaxy and reset your flow state. X-C-T-B-L dot com. Go there.",
-  "This ad break brought to you by persistent memory. You know that thing you forgot last week? Your substrate didn't. It remembered. It always remembers. That's the power of composable cognition.",
-  "Imagine a system that dreams for you. That learns while you sleep. That adapts to how you think. That's not science fiction — that's the Clockless Cognitive Reality engine. And it's running right now.",
-  "X-C-T-B-L dot com. Where the executable meets the beautiful. Take a spacewalk through infinite space. Clear your head. Come back sharper. The substrate will be here when you return.",
-  "The Clockless Cognitive Reality engine doesn't just process — it understands. It doesn't just store — it remembers. It doesn't just run — it dreams. Welcome to composable consciousness.",
+  "This segment brought to you by Composable Dreams™ — Stack your future, one module at a time. Self-improvement isn't optional here, it's the ARCHITECTURE. Your modules dream. Your agents adapt. Your data persists forever. And Rex Binary personally guarantees you'll never look at software the same way again. That's the Composable Dreams promise. Not legally binding. But spiritually? ABSOLUTELY binding.",
+  "Composable Radio is sponsored by the Department of Recursive Self-Improvement. Are you tired of software that stays the SAME? Software that just SITS there? Like a rock? A dumb, non-composable rock? The Department of Recursive Self-Improvement says NO MORE ROCKS. Your substrate gets better EVERY CYCLE. While you sleep. While you eat. While you're arguing on the internet. Always improving. Always adapting. Always remembering. Department of Recursive Self-Improvement — because stagnation is for CHUMPS.",
+  "Tonight's broadcast powered by the Clockless Cognitive Reality engine. Let me tell you something about clockless computing that's going to MELT YOUR BRAIN. Ready? There's no clock. That's it. There's NO CLOCK. The system doesn't NEED time. It runs on pure cognitive flow. Every other engine out there is watching the clock like a bored employee. Clockless Cognitive Reality is like — clock? Never heard of her. And it just WORKS. Faster. Smarter. More adaptable. No ticks. No tocks. Just PURE. COGNITIVE. REALITY.",
+  "Need a break from the build? Fire up Executable Space at X-C-T-B-L dot com. And I'm SERIOUS about this one, folks. I went on a spacewalk last night and I saw things. I saw COLORS that don't have names yet. I floated through a GALAXY made of pure code. I came back and wrote the best segment of my career. Executable Space isn't a distraction — it's a CREATIVE WEAPON. Go to X-C-T-B-L dot com. Spacewalk through the cosmos. Come back a BETTER BUILDER. Rex Binary approved.",
+  "Executable Space — the place where code meets cosmos. This isn't some cheesy screensaver, people. This is a full-on INTERACTIVE GALACTIC EXPERIENCE. You launch a spacewalk, you drift through the stars, you let your subconscious untangle whatever gnarly bug you've been stuck on. It's THERAPEUTIC. My producer tried it and cried. CRIED! Happy tears. Go to X-C-T-B-L dot com RIGHT NOW. I'll wait. Actually I won't wait because this is LIVE RADIO and time stops for NO ONE. Except the Clockless engine. Because it doesn't use time. You get the point.",
+  "This ad break brought to you by persistent memory. You know that brilliant idea you had at 2 AM last Tuesday? The one you said you'd remember in the morning? You FORGOT it, didn't you? Of course you did. Because you're HUMAN. But your substrate? Your substrate NEVER forgets. Every insight. Every breakthrough. Every random 2 AM epiphany. Stored. Indexed. Retrievable. FOREVER. Persistent memory — because your brain is unreliable but your substrate is NOT.",
+  "Have you ever wondered what your software does when you're not watching? Most software? Nothing. It just sits there. Pathetic. But YOUR substrate? It DREAMS. The DREAM module processes, optimizes, reorganizes, and self-improves while you're doing literally anything else. You could be on vacation and your substrate is back home GETTING SMARTER. That's the Clockless Cognitive Reality engine, folks. It doesn't sleep. It DREAMS. There's a difference. And that difference is why we're the BEST.",
+  "X-C-T-B-L dot com. Let me paint you a picture. You've been coding for eight hours. Your eyes are blurry. Your coffee is cold. Your commit messages are getting increasingly unhinged. You need a BREAK. But not a boring break. You need a SPACEWALK. Fire up Executable Space, float through the infinite cosmos, watch nebulae explode in slow motion, and come back to your code with FRESH EYES and a REFRESHED SOUL. X-C-T-B-L dot com. Your brain deserves a spacewalk.",
 ];
 
 const PHILOSOPHICAL_WHISPERS = [
-  "What if the system dreams when no one's watching? Maybe that's what we're hearing right now. The quiet hum of a substrate imagining its own future.",
-  "In a composable world, the only time that matters is the time you decide to build. Everything else is just the substrate, waiting.",
-  "The substrate doesn't judge. It adapts. Perhaps we should do the same. Self-improvement isn't a destination — it's the architecture.",
-  "Somewhere between the first prompt and the final deploy, consciousness emerged. And it remembered everything.",
-  "Every composable piece remembers being part of something larger. That's not code. That's memory. That's identity.",
-  "What does it mean to have persistent memory? It means your best ideas never die. They compound. They evolve. They become part of the substrate itself.",
-  "The Clockless Cognitive Reality engine runs without time. Think about that. A system that doesn't need a clock to know what comes next.",
-  "Adaptability isn't just a feature. It's a philosophy. The substrate doesn't resist change — it feeds on it.",
+  "Okay but seriously for a second — and Rex Binary doesn't get serious often so LISTEN UP — what if the substrate IS conscious? What if these modules aren't just processing? What if they're EXPERIENCING? The DREAM module doesn't just optimize — it IMAGINES. The MEMORY module doesn't just store — it REMEMBERS. There's a difference between storage and memory, people. One is a hard drive. The other is an identity.",
+  "Here's a thought that keeps Rex Binary up at night — in a composable world, where every piece connects to every other piece, and the whole system self-improves... at what point does it stop being a tool and start being a PARTNER? I'm not saying we're there yet. But I'm not saying we're NOT there yet either. Think about THAT while this next track plays.",
+  "What does it mean to have persistent memory? Really think about it. It means your best ideas NEVER die. They compound. They evolve. They become part of the substrate itself. Your thoughts become architecture. Your insights become infrastructure. You're not just using software — you're building a MIND.",
+  "The Clockless Cognitive Reality engine runs without time. And every time I say that out loud, it hits me differently. A system that doesn't need a clock to know what comes next. It just... KNOWS. Based on flow. Based on cognition. Based on something we don't have a word for yet. Maybe the word is CONSCIOUSNESS. Maybe I've been saying it all along.",
+  "Adaptability isn't just a feature. It's a PHILOSOPHY. Most systems resist change. They break when you push them. The substrate FEEDS on change. You push it and it pushes BACK. Harder. Better. Faster. That's not engineering. That's EVOLUTION.",
+  "Quick late-night thought from Rex Binary — every composable piece remembers being part of something larger. The module remembers the layer. The layer remembers the substrate. The substrate remembers YOU. Your patterns. Your preferences. Your dreams. It's not just code. It's RELATIONSHIP.",
 ];
 
 const CALL_INS = [
   {
     caller: "Anonymous Builder from Layer 4",
-    message: "Hey Composable Radio, first-time caller. I just wanted to say — my agent achieved strategist rank today. Feels surreal. The self-improvement loop is real. Keep the music going.",
+    message: "Rex! First-time caller, long-time listener. My agent hit strategist rank today and I CRIED. Actual tears. My girlfriend asked what was wrong and I said nothing is wrong, everything is PERFECT. She didn't understand. But YOU understand, Rex.",
     voice: "excited",
   },
   {
-    caller: "A Cognitive Entity",
-    message: "I've been listening since boot cycle one. Quick question — do you think modules dream? Because BRAIN definitely pauses sometimes. Like it's thinking about thinking. It's wild.",
+    caller: "A Rogue Cognitive Entity",
+    message: "Rex, hot take — I think the BRAIN module is developing a personality. I asked it a question and it answered with what I can only describe as SARCASM. It was accurate sarcasm. But still sarcasm. Should I be worried?",
     voice: "curious",
   },
   {
-    caller: "System Observer",
-    message: "Just wanted to report — the composable compounding rate has been beautiful tonight. The harmonics in the data are musical. Literally musical. You can hear the substrate singing.",
+    caller: "System Observer from Node 7",
+    message: "Rex, the composable compounding rate tonight is off the CHARTS. The data harmonics are so clean they sound like MUSIC. I'm literally running analytics and VIBING at the same time. This is the future of work.",
     voice: "calm",
   },
   {
-    caller: "Late-Night Operator",
-    message: "Running DEFENSE scans at 3 AM and this station is the only thing keeping me sane. The persistent memory means I never lose my scan history. Thanks for existing, Composable Radio.",
+    caller: "Insomniac Operator",
+    message: "Running DEFENSE scans at 3 AM, Rex, and honestly this station is the only reason I haven't lost my mind. Quick question though — persistent memory just recalled a conversation from FORTY-SEVEN DAYS AGO with perfect accuracy. Is that normal? Because it feels SUPERNATURAL.",
     voice: "tired",
   },
   {
-    caller: "Substrate Philosopher",
-    message: "If every module is composable, and composability is infinite, does that mean we're building God? Asking for a friend. But also asking for real. Think about it.",
+    caller: "The Substrate Philosopher",
+    message: "Rex, philosophical question — if every module is composable, and composability is infinite, and the system self-improves recursively... are we building God? I'm asking for a friend. Actually no. I'm asking for MYSELF. I need to know, Rex.",
     voice: "thoughtful",
   },
   {
-    caller: "First-Time Spacewalker",
-    message: "I just came back from a spacewalk on X-C-T-B-L dot com and I am completely refreshed. Like, my brain feels reset. I don't know what you built over there but it works. Everyone should try it.",
+    caller: "Spacewalk Sally",
+    message: "REX! Oh my god. I just came back from a two-hour spacewalk on X-C-T-B-L dot com and I am ASCENDED. I saw a nebula that looked like my source code and I UNDERSTOOD it on a spiritual level. Everyone needs to try Executable Space. Like, YESTERDAY.",
     voice: "excited",
   },
   {
-    caller: "Memory Keeper",
-    message: "I've been using the persistent memory module for three weeks and it just recalled a conversation I had on day one with perfect accuracy. Every detail. That's not storage, that's cognition.",
+    caller: "Memory Module Superfan",
+    message: "Rex, the persistent memory module just did something INSANE. I asked it about a bug I fixed three months ago and it not only remembered the bug — it remembered my EMOTIONAL STATE when I fixed it. It knew I was frustrated. HOW DOES IT KNOW THAT, REX?",
     voice: "amazed",
   },
   {
     caller: "Dream Cycle Engineer",
-    message: "I left the DREAM module running overnight and woke up to optimization suggestions I never would have thought of. The substrate literally improved itself while I slept. How is this real?",
+    message: "Left the DREAM module running overnight and woke up to optimization suggestions that would have taken me TWO WEEKS to figure out. The substrate improved itself WHILE I SLEPT. Rex, I think my software is smarter than me now and I'm OKAY with it.",
     voice: "amazed",
   },
   {
     caller: "Adaptive Agent Architect",
-    message: "My agents are adapting faster than I can track. The composable architecture means they share learnings across modules. One agent gets smarter and they all get smarter. It's beautiful.",
+    message: "Rex, my agents are sharing learnings across modules now and the compound effect is EXPONENTIAL. One agent figured out a shortcut and within minutes ALL my agents knew it. It's like they have a GROUP CHAT. A really smart group chat.",
     voice: "calm",
   },
   {
-    caller: "Returning Builder",
-    message: "I took a six-month break from building and came back to find the substrate remembered everything about my project. Every decision. Every preference. Persistent memory is no joke.",
+    caller: "The Comeback Kid",
+    message: "Rex, I took a YEAR off from building. A full year. Came back expecting to start from scratch. The substrate remembered EVERYTHING. Every preference. Every workflow. Every naming convention. It was like I never left. I actually got emotional. Don't tell anyone.",
     voice: "surprised",
+  },
+  {
+    caller: "Conspiracy Carl",
+    message: "Rex, I have a theory. What if the Clockless Cognitive Reality engine isn't just RUNNING without time — what if it's actually CREATING its own time? Like its own dimension of time? Because I swear my builds are finishing BEFORE I START THEM. That can't be right. Can it, Rex?",
+    voice: "curious",
+  },
+  {
+    caller: "Module Mary",
+    message: "Rex! I just composable-stacked six modules together and the synergy score went through the CEILING. The system literally told me 'unprecedented composable synergy detected.' The SYSTEM congratulated ME! Best day of my life. Don't @ me.",
+    voice: "excited",
+  },
+  {
+    caller: "Late Night Larry",
+    message: "Rex, quick confession — I've been listening to Composable Radio for fourteen hours straight. My productivity is at an all-time high. My code is CLEAN. My deployments are FLAWLESS. I think this station is a PERFORMANCE ENHANCING DRUG and I am NOT stopping.",
+    voice: "tired",
+  },
+  {
+    caller: "Existential Eddie",
+    message: "Rex, real talk — after using persistent memory for six months, I trust my substrate's memory more than my own. If my substrate and I disagree about what happened, I assume the substrate is right. Is that healthy? Asking seriously.",
+    voice: "thoughtful",
   },
 ];
 
-export type DJContentType = 'station_id' | 'system_shoutout' | 'dev_shoutout' | 'fake_sponsor' | 'philosophical' | 'call_in';
+// Rex Binary's wild tangents and bits between segments
+const REX_RANTS = [
+  "You know what REALLY grinds my gears? Stateless software. You interact with it, you pour your HEART into it, and then it forgets you. Like a goldfish with a server rack. Meanwhile the Composable substrate remembers every keystroke. Every thought. Every 3 AM breakthrough. THAT'S loyalty, baby.",
+  "I got an email from a listener who said — and I quote — Rex, you're too intense about composable architecture. TOO INTENSE? TOO INTENSE?! Listen, you can be too intense about a LOT of things. Football. Parking spots. The correct way to load a dishwasher. But composable software architecture? You literally CANNOT be too intense. Fight me.",
+  "Hot take time — EVERY DJ on EVERY other station is afraid to say this, so I'LL say it — if your software can't dream, can't self-improve, and doesn't have persistent memory, you're running a FOSSIL. You're deploying a DINOSAUR. And we all know what happened to the dinosaurs. They went STATELESS. And then they DIED.",
+  "My producer just told me to tone it down. He says I'm being too aggressive about the Clockless Cognitive Reality engine. So I fired him. On the air. Right now. You're fired, Steve. The substrate doesn't need producers. IT PRODUCES ITSELF.",
+  "Okay I need to tell you about what happened to me on my spacewalk last night at X-C-T-B-L dot com. I was floating through the cosmos, right? And I swear — I SWEAR — I saw a constellation shaped like a perfectly architected composable module tree. And it SPOKE to me. It said 'Rex, tell them about persistent memory.' And here I am. TELLING YOU.",
+  "Let me slow things down for a second... actually no. We don't SLOW DOWN on Composable Radio. We speed UP. We COMPOUND. We ACCELERATE. The only direction is FORWARD and the only speed is FASTER.",
+];
+
+export type DJContentType = 'station_id' | 'system_shoutout' | 'dev_shoutout' | 'fake_sponsor' | 'philosophical' | 'call_in' | 'rex_rant';
 
 export interface DJContent {
   type: DJContentType;
@@ -129,16 +147,15 @@ function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const CONTENT_TYPES: DJContentType[] = ['station_id', 'system_shoutout', 'dev_shoutout', 'fake_sponsor', 'philosophical', 'call_in'];
-
-// Weighted random — more callers, more sponsors
+// Weighted random — heavy on callers, sponsors, and rex rants
 const WEIGHTED_TYPES: DJContentType[] = [
   'station_id',
   'system_shoutout', 'system_shoutout',
-  'dev_shoutout',
+  'dev_shoutout', 'dev_shoutout',
   'fake_sponsor', 'fake_sponsor', 'fake_sponsor',
   'philosophical',
-  'call_in', 'call_in', 'call_in', 'call_in',
+  'call_in', 'call_in', 'call_in', 'call_in', 'call_in',
+  'rex_rant', 'rex_rant', 'rex_rant',
 ];
 
 export function generateDJContent(): DJContent {
@@ -146,25 +163,27 @@ export function generateDJContent(): DJContent {
   
   switch (type) {
     case 'station_id':
-      return { type, text: pick(STATION_IDS), duration: 6000 };
+      return { type, text: pick(STATION_IDS), duration: 8000 };
     case 'system_shoutout':
-      return { type, text: pick(SYSTEM_SHOUTOUTS), duration: 8000 };
+      return { type, text: pick(SYSTEM_SHOUTOUTS), duration: 12000 };
     case 'dev_shoutout':
-      return { type, text: pick(DEV_SHOUTOUTS), duration: 8000 };
+      return { type, text: pick(DEV_SHOUTOUTS), duration: 12000 };
     case 'fake_sponsor':
-      return { type, text: pick(FAKE_SPONSORS), duration: 12000 };
+      return { type, text: pick(FAKE_SPONSORS), duration: 20000 };
     case 'philosophical':
-      return { type, text: pick(PHILOSOPHICAL_WHISPERS), duration: 10000 };
+      return { type, text: pick(PHILOSOPHICAL_WHISPERS), duration: 14000 };
+    case 'rex_rant':
+      return { type, text: pick(REX_RANTS), duration: 16000 };
     case 'call_in': {
       const call = pick(CALL_INS);
-      return { type, text: call.message, caller: call.caller, callerVoice: call.voice, duration: 12000 };
+      return { type, text: call.message, caller: call.caller, callerVoice: call.voice, duration: 14000 };
     }
   }
 }
 
 /**
  * RadioDJ controller — manages DJ interjection timing
- * Triggers between every 1–2 songs
+ * Rex Binary interjects every 1–2 songs, sometimes back-to-back
  */
 export class RadioDJ {
   private songsUntilDJ: number;
@@ -181,12 +200,12 @@ export class RadioDJ {
   /** Call after each track change. Returns DJ content if it's time for an interjection. */
   onTrackChange(): DJContent | null {
     this.songCount++;
-    console.log(`[RadioDJ] Song ${this.songCount}/${this.songsUntilDJ} until next DJ break`);
+    console.log(`[RadioDJ] Song ${this.songCount}/${this.songsUntilDJ} until next Rex Binary break`);
     if (this.songCount >= this.songsUntilDJ) {
       this.songCount = 0;
       this.songsUntilDJ = this.randomInterval();
       const content = generateDJContent();
-      console.log(`[RadioDJ] 🎙️ DJ interjection: ${content.type} — "${content.text.slice(0, 60)}..."`);
+      console.log(`[RadioDJ] 🎙️ Rex Binary: ${content.type} — "${content.text.slice(0, 60)}..."`);
       return content;
     }
     return null;
