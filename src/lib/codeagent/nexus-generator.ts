@@ -16,6 +16,24 @@ import { selectPromptForTask, buildRefinementPrompt, buildVerificationPrompt } f
 import { learnFromCodeAction } from './learning-engine';
 import { checkForbiddenPatterns, checkRequiredPatterns } from './knowledge';
 
+/**
+ * Report provider exhaustion (429) to discovery function for limit calibration
+ */
+async function reportProviderExhaustion(provider: string, errorCode: number, errorMessage: string): Promise<void> {
+  try {
+    await supabase.functions.invoke('nexus-provider-discovery', {
+      body: {
+        action: 'report_exhaustion',
+        provider,
+        error_code: errorCode,
+        error_message: errorMessage,
+      },
+    });
+  } catch {
+    // Non-critical — discovery is best-effort
+  }
+}
+
 // ═══════════════════════════════════════════════════════════════
 // TYPES
 // ═══════════════════════════════════════════════════════════════
