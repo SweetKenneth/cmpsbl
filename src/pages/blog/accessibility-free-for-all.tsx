@@ -117,7 +117,7 @@ export default function AccessibilityFreeForAll() {
             <blockquote className="text-2xl md:text-3xl font-light text-center text-foreground">
               "Accessibility is not a feature. It's a fundamental right. And rights shouldn't have a price tag."
             </blockquote>
-            <p className="text-center text-muted-foreground mt-4">— Kenneth Sweet, Founder</p>
+            <p className="text-center text-muted-foreground mt-4">— CMPSBL Team</p>
           </section>
 
           <section className="mb-16">

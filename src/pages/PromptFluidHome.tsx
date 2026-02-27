@@ -72,9 +72,9 @@ export default function PromptFluidHome() {
     <div className="min-h-screen bg-background overflow-x-hidden">
       <SEO
         title="PromptFluid — AI Infrastructure & Cognitive Systems Studio"
-        description="PromptFluid is the AI infrastructure studio behind CMPSBL®. Founded by Kenneth E Sweet Jr — building persistent memory, self-learning AI, and cognitive operating systems."
+        description="PromptFluid is the AI infrastructure studio behind CMPSBL®. Building persistent memory, self-learning AI, and cognitive operating systems."
         canonical="https://promptfluid.com"
-        keywords={["PromptFluid", "AI infrastructure", "cognitive systems", "Kenneth E Sweet Jr", "CMPSBL", "AI consulting", "persistent memory"]}
+        keywords={["PromptFluid", "AI infrastructure", "cognitive systems", "CMPSBL", "AI consulting", "persistent memory"]}
       />
 
       <PublicNav />
@@ -127,8 +127,7 @@ export default function PromptFluidHome() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-base text-muted-foreground/80 max-w-2xl mx-auto mb-10"
           >
-            Founded by <span className="text-foreground font-semibold">Kenneth E Sweet Jr</span> — 
-            engineering the future of AI operating systems since 2009.
+            Engineering the future of AI operating systems since 2009.
           </motion.p>
 
           <motion.div
@@ -165,18 +164,18 @@ export default function PromptFluidHome() {
             <div className="flex flex-col md:flex-row gap-8 items-start">
               <div className="flex-shrink-0">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-primary to-cyan-400 flex items-center justify-center">
-                  <span className="text-3xl sm:text-4xl font-black text-primary-foreground">KS</span>
+                  <span className="text-3xl sm:text-4xl font-black text-primary-foreground">PF</span>
                 </div>
               </div>
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Kenneth E Sweet Jr</h2>
-                  <p className="text-primary font-semibold">Founder & Governor — PromptFluid</p>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground">PromptFluid Studio</h2>
+                  <p className="text-primary font-semibold">AI Infrastructure Lab — Dallas, TX</p>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
-                  Kenneth is the architect behind CMPSBL® — a cognitive operating system with 10 entities, 5 mesh overlays, and 9 zones spanning 175,000+ lines of production code. 
-                  His work focuses on persistent memory architectures, autonomous self-evolution, and model-agnostic AI routing. 
-                  He serves as the canonical Governor, primary author, and technical expert for all substrate content.
+                  PromptFluid is the studio behind CMPSBL® — a cognitive operating system with 10 entities, 5 mesh overlays, and 9 zones spanning 175,000+ lines of production code. 
+                  Our team focuses on persistent memory architectures, autonomous self-evolution, and model-agnostic AI routing. 
+                  We serve as the canonical architects and technical experts for all substrate development.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   {["AI Architecture", "Persistent Memory", "Cognitive Systems", "Multi-Provider Routing", "Self-Evolving Code"].map((tag) => (

@@ -164,7 +164,7 @@ const InclusiveModuleMission = () => {
             <Heart className="w-12 h-12 text-destructive" />
             <div>
               <p className="font-semibold text-lg">Accessibility is a fundamental right, not a feature.</p>
-              <p className="text-muted-foreground">— Kenneth Sweet, Founder, PromptFluid®</p>
+              <p className="text-muted-foreground">— CMPSBL Team</p>
             </div>
           </div>
         </section>

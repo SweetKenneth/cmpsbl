@@ -27,8 +27,8 @@ const WordPressBotDefense = () => {
           "image": "https://cmpsbl.com/wordpress-bot-defense-guide.jpg",
           "author": {
             "@type": "Person",
-            "name": "Kenneth E Sweet Jr",
-            "jobTitle": "Founder & Security Engineer",
+            "name": "James Whitfield",
+            "jobTitle": "Security Researcher",
             "affiliation": {
               "@type": "Organization",
               "name": "CMPSBL"
