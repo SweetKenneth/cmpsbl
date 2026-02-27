@@ -156,7 +156,15 @@ export function EnhancedFooter() {
                   )}
                   {section.links.map((link) => (
                     <li key={link.href}>
-                      {link.external ? (
+                      {link.href === "#xctbl" ? (
+                        <button
+                          onClick={() => setXctblOpen(true)}
+                          className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          <Gamepad2 className="w-3.5 h-3.5 group-hover:animate-pulse" />
+                          {link.name}
+                        </button>
+                      ) : link.external ? (
                         <a
                           href={link.href}
                           target="_blank"
