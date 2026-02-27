@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Router
- * v10.0.0 — Dynamic intent resolution and cross-module composition
+ * Dynamic intent resolution and cross-module composition
  * 
  * The router matches intents to capable resolvers, executes them,
  * and composes the results. All interactions produce receipts.

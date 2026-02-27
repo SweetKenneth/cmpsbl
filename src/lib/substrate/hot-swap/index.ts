@@ -1,6 +1,6 @@
 /**
  * Hot-Swap Engine Deployment
- * v1.0.0 — Zero-downtime engine replacement at runtime
+ * Zero-downtime engine replacement at runtime
  * 
  * Manages engine lifecycle transitions (load → warm → active → drain → unload)
  * without service interruption. Uses shadow instances for safe cutover.

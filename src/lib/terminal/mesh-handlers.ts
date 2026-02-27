@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Terminal Handlers
- * v10.3.0 — mesh.* command namespace
+ * mesh.* command namespace
  * Adds: module self-discovery, intent scoring, auto-scheduler, proposals
  */
 

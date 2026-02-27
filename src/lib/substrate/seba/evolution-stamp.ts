@@ -1,6 +1,6 @@
 /**
  * Evolution Stamp System
- * v1.0.0 — Mandatory traceability markers for SEBA changes
+ * Mandatory traceability markers for SEBA changes
  * 
  * Creates immutable audit trail proving when the substrate
  * rewrites its own code through the evolution engine.

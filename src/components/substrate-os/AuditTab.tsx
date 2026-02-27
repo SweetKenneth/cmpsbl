@@ -1,6 +1,6 @@
 /**
  * AuditTab — OS Dashboard Tab for Production Readiness Audit
- * v10.5.0 ARCHITECT Epoch
+ *
  */
 
 import { useState } from 'react';

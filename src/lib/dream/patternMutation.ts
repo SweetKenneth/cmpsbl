@@ -1,6 +1,6 @@
 /**
  * DREAM Pattern Mutation Engine
- * v10.5.4 ARCHITECT — Novel idea generation through pattern combination
+ * Novel idea generation through pattern combination
  */
  
  import { supabase } from '@/integrations/supabase/client';

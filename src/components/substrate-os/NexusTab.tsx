@@ -1,6 +1,6 @@
 /**
  * NexusTab — AI Routing Dashboard with Image Generation
- * v5.1.0 ARCHITECT Epoch — Multi-provider routing across 13 free-tier providers
+ * Multi-provider routing across 13 free-tier providers
  * Shows routing status, costs, health, and image generation UI
  */
 

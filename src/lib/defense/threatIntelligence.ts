@@ -1,6 +1,6 @@
 /**
  * DEFENSE Threat Intelligence Engine
- * v10.5.4 — ARCHITECT Epoch Attack Detection & IP Reputation
+ * Attack Detection & IP Reputation
  * 
  * Threat intelligence with IP reputation,
  * attack pattern detection, and proactive threat assessment.

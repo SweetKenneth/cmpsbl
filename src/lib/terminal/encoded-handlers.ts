@@ -1,6 +1,6 @@
 /**
  * Encoded Terminal Handlers
- * v2.2.0 — Enhanced terminal commands with polished output
+ * Enhanced terminal commands with polished output
  */
 
 import { registerHandler } from './validate-registry';

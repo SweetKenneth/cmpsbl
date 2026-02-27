@@ -1,6 +1,6 @@
 /**
  * ACCESS Identity & Billing Tab — API Keys, Usage, Quotas
- * v10.5.4 ARCHITECT — Identity and entitlement management
+ * Identity and entitlement management
  */
 
 import { Key, Plus, Copy, Trash2, BarChart3, CreditCard, Users, Activity, Eye, EyeOff } from 'lucide-react';

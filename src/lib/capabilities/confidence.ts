@@ -1,6 +1,6 @@
 /**
  * Capability Confidence Tracker
- * v10.5.4 — ARCHITECT Epoch Feedback + Scoring System (400+ capabilities)
+ * Feedback + Scoring System (400+ capabilities)
  */
 
 export interface ConfidenceRecord {

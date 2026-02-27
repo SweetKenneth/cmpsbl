@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Pricing Model
  * Aligned with unified $19-$299 public pricing
- * v2.0.0 — Unified Pricing Patch
+ * Unified Pricing Patch
  */
 
 import type { PricingTier } from './types';

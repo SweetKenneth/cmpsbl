@@ -2,7 +2,7 @@
  * Capabilities Depot — Registry
  * Metadata only, no execution logic, no runtime hooks
  * Used exclusively for UI, licensing, and downloads
- * v2.1.0 — 136+ Capabilities (22 S-tier, 10 Recursive, 18 Premium)
+ * 136+ Capabilities (22 S-tier, 10 Recursive, 18 Premium)
  */
 
 import type { 

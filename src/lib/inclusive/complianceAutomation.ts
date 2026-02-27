@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module — Compliance Automation
- * v10.5.4 ARCHITECT — WCAG monitoring, automated remediation, and compliance reporting
+ * WCAG monitoring, automated remediation, and compliance reporting
  */
 
 import { supabase } from '@/integrations/supabase/client';

@@ -1,6 +1,6 @@
 /**
  * Template Alley — FREE Template Library + Template Generator
- * v10.5.4 ARCHITECT — Starting points for learning and remixing
+ * Starting points for learning and remixing
  * All templates free, includes code snippets + paid generator
  */
 

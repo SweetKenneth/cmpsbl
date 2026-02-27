@@ -1,6 +1,6 @@
 /**
  * CLM Topic Bank
- * v6.7.0 — Curated curriculum and topic selection for Constant Learning Mode
+ * Curated curriculum and topic selection for Constant Learning Mode
  * 
  * Topic sources:
  * - Core curriculum (50%): Most important foundational topics

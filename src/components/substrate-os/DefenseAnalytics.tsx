@@ -1,6 +1,6 @@
 /**
  * DefenseAnalytics — Live Defense Module Dashboard
- * v10.5.4 ARCHITECT — Real-time threat detection feed & analytics
+ * Real-time threat detection feed & analytics
  * Tier: Free (read-only view), Creator+ (interactive actions)
  */
 

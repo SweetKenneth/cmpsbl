@@ -1,6 +1,6 @@
 /**
  * S-Tier Synergy Pipeline Executors
- * v7.5.0 — 22 Premium Custom Executors
+ * 22 Premium Custom Executors
  * 
  * Full implementation for each S-tier pipeline
  */

@@ -1,6 +1,6 @@
 /**
  * Careers — Join the Team
- * v10.5.4 ARCHITECT Epoch
+ *
  */
 
 import { Link } from "react-router-dom";

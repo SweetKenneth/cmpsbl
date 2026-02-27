@@ -1,7 +1,7 @@
 /**
  * CMPSBL Nexus Metrics
  * Performance tracking and system health monitoring
- * v10.5.4 ARCHITECT Epoch
+ *
  * 
  * Respects debugMode — when enabled, metrics recording and flushing is skipped
  */

@@ -1,6 +1,6 @@
 /**
  * RIPPLE Message Bus Tab — Queues, Pub/Sub, Events
- * v10.5.4 ARCHITECT — Event-driven communication layer
+ * Event-driven communication layer
  */
 
 import { Radio, Send, Inbox, Bell, CheckCircle2, XCircle, Clock, RefreshCw } from 'lucide-react';

@@ -1,6 +1,6 @@
 /**
  * Request Tracing System
- * v10.5.4 — ARCHITECT Epoch Distributed tracing for substrate operations
+ * Distributed tracing for substrate operations
  */
 
 // Trace ID format: valid UUID v4 (required by brain_events table)

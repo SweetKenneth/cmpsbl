@@ -1,6 +1,6 @@
 /**
  * Engines Tab
- * v8.1.0 — Interactive Engine & Meta-Engine execution interface
+ * Interactive Engine & Meta-Engine execution interface
  * 
  * Provides a visual interface for:
  * - Browsing 62 engines across 18 categories

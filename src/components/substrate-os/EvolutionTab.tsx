@@ -1,6 +1,6 @@
 /**
  * Evolution Tab — Self-Evolution Control Panel
- * v10.5.4 ARCHITECT Epoch — Living Substrate Orchestration
+ * Living Substrate Orchestration
  * 
  * Shadow-to-production execution pipeline with governance gating
  */

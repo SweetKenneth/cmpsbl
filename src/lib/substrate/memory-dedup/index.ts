@@ -1,6 +1,6 @@
 /**
  * Memory Deduplication Engine
- * v1.0.0 — Merges semantically duplicate entries in brain_memories
+ * Merges semantically duplicate entries in brain_memories
  * 
  * Uses n-gram similarity scoring to find and merge near-duplicate
  * memories, preserving the highest-value version.

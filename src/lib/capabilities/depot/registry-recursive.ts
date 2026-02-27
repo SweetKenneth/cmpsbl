@@ -2,7 +2,7 @@
  * Recursive Self-Improvement Capabilities — Registry
  * 10 Ultra-Premium Recursive Self-Improvement Artifacts
  * Highest-value capabilities in the Depot
- * v1.0.0
+ *
  */
 
 import type { CapabilityArtifact } from './types';

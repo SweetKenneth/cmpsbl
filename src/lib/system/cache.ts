@@ -1,6 +1,6 @@
 /**
  * Production Caching System
- * v10.5.4 ARCHITECT — Safe caching for read-heavy widgets with TTL and invalidation
+ * Safe caching for read-heavy widgets with TTL and invalidation
  */
 
 export interface CacheEntry<T> {

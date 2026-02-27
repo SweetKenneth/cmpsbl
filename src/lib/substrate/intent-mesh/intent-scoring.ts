@@ -1,6 +1,6 @@
 /**
  * Intent Quality Scoring System
- * v10.2.0 — Modules learn which intents get the best responses
+ * Modules learn which intents get the best responses
  * 
  * Scores intents on:
  * 1. Resolution rate — how often resolvers successfully respond

@@ -1,6 +1,6 @@
 /**
  * S-Tier Capabilities — Stripe Configuration
- * v3.1.0 — Updated: Correct price IDs for all public items ($149-$299)
+ * Correct price IDs for all public items ($149-$299)
  * 
  * RULE: Only capabilities that compile/generate their own code are off-menu
  * Everything else is for sale at $299 or less

@@ -1,6 +1,6 @@
 /**
  * Nexus AI Usage Card
- * v2.0.0 — Tracks Nexus fleet usage across free-tier providers
+ * Tracks Nexus fleet usage across free-tier providers
  * Zero paid AI dependencies — all routing via Nexus fleet
  */
 

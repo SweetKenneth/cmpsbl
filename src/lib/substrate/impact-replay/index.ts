@@ -1,6 +1,6 @@
 /**
  * Evolution Impact Replay
- * v1.0.0 — Replays queries against new states to verify predicted impact
+ * Replays queries against new states to verify predicted impact
  * 
  * After an evolution change, replays historical queries/operations
  * against the new state to verify that predicted improvements

@@ -1,6 +1,6 @@
 /**
  * useEncoded Hook
- * v2.1.0 — React hook for Encoded agent management with enhanced guards
+ * React hook for Encoded agent management with enhanced guards
  */
 
 import { useState, useCallback, useEffect } from 'react';

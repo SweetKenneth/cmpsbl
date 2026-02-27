@@ -1,6 +1,6 @@
 /**
  * BundlesSection — Volume packs and stacks with discounts
- * v10.5.4 ARCHITECT — Component for funnel phase F
+ * Component for funnel phase F
  */
 
 import { motion } from 'framer-motion';

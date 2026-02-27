@@ -1,6 +1,6 @@
 /**
  * Feature Flag Manager
- * v1.0.0 — Runtime feature toggles with gradual rollout and targeting
+ * Runtime feature toggles with gradual rollout and targeting
  * 
  * Manages feature flags with percentage-based rollout,
  * targeting rules, and kill-switch capabilities.

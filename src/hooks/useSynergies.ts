@@ -1,6 +1,6 @@
 /**
  * useSynergies Hook
- * v10.5.4 ARCHITECT — React hook for cross-module synergy execution (200 pipelines, 125 executors)
+ * React hook for cross-module synergy execution (200 pipelines, 125 executors)
  */
 
 import { useState, useCallback, useMemo } from 'react';

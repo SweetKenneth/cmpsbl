@@ -1,6 +1,6 @@
 /**
  * Canary Deployment Manager
- * v1.0.0 — Gradual traffic shifting for capability rollouts
+ * Gradual traffic shifting for capability rollouts
  * 
  * Routes a percentage of requests to new capability versions
  * while monitoring health metrics for safe promotion or rollback.

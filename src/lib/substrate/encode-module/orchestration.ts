@@ -1,6 +1,6 @@
 /**
  * ENCODE Orchestration Layer
- * v11.0.0 — Bidirectional Conversation Lane, Execution Lock, Audit Mode,
+ * Bidirectional Conversation Lane, Execution Lock, Audit Mode,
  * Architecture Contract, Rolling Buffer, Surgical Patch, Role Enforcement,
  * Resilience Baseline, and CLI endpoint.
  *

@@ -1,6 +1,6 @@
 /**
  * Atlas Capabilities Store
- * v7.0.0 — Persistent capability toggle management
+ * Persistent capability toggle management
  */
 
 import { supabase } from '@/integrations/supabase/client';

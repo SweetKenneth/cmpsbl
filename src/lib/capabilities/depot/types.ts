@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Artifact Contract & Types
  * Downloadable, licensed capability artifacts (no support, no hosting)
- * v1.0.0
+ *
  */
 
 // === Capability Categories ===

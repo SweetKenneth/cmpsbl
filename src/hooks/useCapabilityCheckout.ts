@@ -1,7 +1,7 @@
 /**
  * useCapabilityCheckout Hook
  * Handles Stripe checkout for capability purchases
- * v2.0.0 — Unified Pricing ($19-$299 public, off-menu licensed on request)
+ * Unified Pricing ($19-$299 public, off-menu licensed on request)
  */
 
 import { useState, useCallback } from 'react';

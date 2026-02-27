@@ -1,6 +1,6 @@
 /**
  * Mesh Federation Panel — Cross-instance resolver sharing UI
- * v10.5.0 — Configure, monitor, and manage federation peers
+ * Configure, monitor, and manage federation peers
  */
 
 import { useState, useEffect, useCallback } from 'react';

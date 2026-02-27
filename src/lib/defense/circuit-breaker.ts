@@ -1,6 +1,6 @@
 /**
  * Defense Circuit Breaker
- * v10.5.4 ARCHITECT — Per-module failure isolation
+ * Per-module failure isolation
  * 
  * Implements the circuit breaker pattern to prevent cascading failures:
  * - CLOSED: Normal operation

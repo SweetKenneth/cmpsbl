@@ -1,6 +1,6 @@
 /**
  * S-Tier Demo Showcase
- * v10.5.4 ARCHITECT — Interactive investor-facing demos
+ * Interactive investor-facing demos
  * 
  * Demos:
  *  #2  Self-Healing Architecture

@@ -2,7 +2,7 @@
  * S-Tier Capabilities — Registry
  * 22 Premium S-tier capabilities for the Capabilities Depot
  * Self-improvement capabilities ranked highest
- * v1.0.0
+ *
  */
 
 import type { CapabilityArtifact } from './types';

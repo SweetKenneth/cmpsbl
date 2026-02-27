@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Advanced SEO Component
  * Full SEO optimization for Google discovery
- * v3.0.0 — All capabilities FREE, updated branding to CMPSBL
+ * All capabilities FREE, updated branding to CMPSBL
  */
 
 import { Helmet } from 'react-helmet-async';
