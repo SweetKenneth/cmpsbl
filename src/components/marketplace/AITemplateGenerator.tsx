@@ -362,6 +362,32 @@ ${requirementsBlock}${generatedTemplate.code}
               </div>
 
               <div className="space-y-4">
+                {/* Pack-awareness indicator */}
+                {(() => {
+                  const policy = evaluateTemplatePolicy(generatedTemplate.category, activePackIds);
+                  if (policy.mode === 'degraded') {
+                    return (
+                      <div className="flex items-start gap-2 p-3 rounded-lg bg-muted/50 border border-border/50 text-xs">
+                        <AlertTriangle className="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-medium text-foreground">Baseline mode</span>
+                          <span className="text-muted-foreground"> — Activate </span>
+                          <span className="font-medium text-foreground">{policy.missingPackNames.slice(0, 2).join(', ')}</span>
+                          {policy.missingPackNames.length > 2 && <span className="text-muted-foreground"> +{policy.missingPackNames.length - 2} more</span>}
+                          <span className="text-muted-foreground"> for full output. </span>
+                          <a href="/packs" className="text-primary hover:underline">Manage packs →</a>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 text-xs">
+                      <Package className="w-3.5 h-3.5 text-primary" />
+                      <span className="text-muted-foreground">Full template — all required packs active</span>
+                    </div>
+                  );
+                })()}
+
                 <div className="flex flex-wrap gap-2">
                   {generatedTemplate.features.map((feature, i) => (
                     <Badge key={i} variant="outline">{feature}</Badge>
