@@ -22,9 +22,10 @@
 
 // ============ Constants ============
 
-export const SUBSTRATE_VERSION = '11.5.0';
-export const SUBSTRATE_CODENAME = 'SPARTA';
-export const CORE_VERSION = '11.5.0';
+export { SUBSTRATE_VERSION, SUBSTRATE_CODENAME } from '@/lib/substrate/versions';
+export { MODULE_VERSIONS } from '@/lib/substrate/versions';
+const _core = () => { const { MODULE_VERSIONS: M } = require('@/lib/substrate/versions'); return M.core; };
+export const CORE_VERSION = SUBSTRATE_VERSION;
 export const CORE_CODENAME = 'Foundation';
 
 /**
