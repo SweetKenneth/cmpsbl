@@ -1,6 +1,6 @@
 /**
  * Eligibility Gate — Pure System Readiness Check
- * v1.0.0 — Plan-independent verification
+ * Plan-independent verification
  * 
  * Answers ONLY:
  * - Dependencies healthy?

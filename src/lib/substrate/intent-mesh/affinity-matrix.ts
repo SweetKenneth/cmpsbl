@@ -1,6 +1,6 @@
 /**
  * Cross-Module Affinity Matrix
- * v10.4.0 — Persistent affinity tracking with drift detection
+ * Persistent affinity tracking with drift detection
  * 
  * Builds a persistent matrix showing which module pairs collaborate best.
  * Detects when affinities shift (drift) and alerts the discovery engine.

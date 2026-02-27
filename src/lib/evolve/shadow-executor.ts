@@ -1,6 +1,6 @@
 /**
  * Shadow Executor — Idempotent Shadow Phase Execution
- * v0.7.5 — Handles shadow_apply with proper state management
+ * Handles shadow_apply with proper state management
  */
 
 import { evolutionRuns, type EvolutionRun } from './evolution-runs';

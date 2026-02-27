@@ -1,6 +1,6 @@
 /**
  * Terminal Type Definitions
- * v10.5.0 — ARCHITECT Epoch Terminal Configuration (360+ commands)
+ * Terminal Configuration (360+ commands)
  */
 
 export interface CommandResult {

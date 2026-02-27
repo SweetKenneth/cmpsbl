@@ -1,6 +1,6 @@
 /**
- * Observability Monitor — v11.5.1
- * SPARTA Epoch — Hardened telemetry, accurate percentiles, DLQ-aware health
+ * Observability Monitor
+ * Hardened telemetry, accurate percentiles, DLQ-aware health
  * 
  * Gaps filled:
  * 1. Bridge Invocation Tracking — Every inter-node bridge call is metered
@@ -9,7 +9,7 @@
  * 4. Telemetry Summary — Aggregated view of engine health across the matrix
  * 5. Error Hotspot Detection — Identifies which nodes produce the most errors
  * 
- * v11.5.1 Hardening:
+ * Hardening:
  * - Sanitized telemetry payloads (no raw data leakage)
  * - Edge-safe p95 indexing
  * - True lastMeasured timestamps on latency entries

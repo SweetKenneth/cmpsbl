@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Cognitive Orchestration Substrate
- * v10.5.4 ARCHITECT Epoch — Streamlined Application Entry
+ * Streamlined Application Entry
  */
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * Brain Knowledge Transfer Pipelines — v2.0.0
+ * Brain Knowledge Transfer Pipelines
  * 
  * Universal knowledge transfer system that distills Brain memories
  * into actionable expertise for ALL 20 modules (Brain itself is the source).
  * Each module gets a specialized pipeline that extracts relevant patterns
  * and injects them into hot memory for instant recall.
  * 
- * v2.1.0 — Full Coverage: All 20 non-brain modules + Infrastructure Six + ENCODE + cross-module insight sharing
- * v1.0.0 — Initial: DECODE, DEFENSE, CORTEX, VISION, INCLUSIVE
+ * Full Coverage: All 20 non-brain modules + Infrastructure Six + ENCODE + cross-module insight sharing
  */
 
 import { supabase } from '@/integrations/supabase/client';
