@@ -30,10 +30,10 @@ export default function StartHere() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Start Here | Clockless — Cognitive Infrastructure for AI"
-        description="New to Clockless? Start here. Add persistent memory and self-improving pipelines to any AI application — standalone products, no platform lock-in."
+        title="Start Here — CMPSBL"
+        description="New to CMPSBL? Start here. Add persistent memory and intelligent orchestration to any AI application — free tier, no platform lock-in."
         canonical="https://cmpsbl.com/start-here"
-        keywords={['CMPSBL getting started', 'start here', 'persistent memory', 'AI infrastructure', 'composable cognitives']}
+        keywords={['CMPSBL getting started', 'start here', 'persistent memory', 'AI infrastructure', 'artifact packs']}
       />
       <PublicNav />
 
@@ -53,7 +53,7 @@ export default function StartHere() {
           <motion.div {...fadeUp}>
             <Badge variant="outline" className="mb-6 border-primary/30 bg-primary/5 text-primary gap-1.5 px-4 py-1.5">
               <Sparkles className="w-3 h-3" />
-              <span className="text-xs font-semibold">New to Clockless?</span>
+              <span className="text-xs font-semibold">New to CMPSBL?</span>
             </Badge>
           </motion.div>
 
