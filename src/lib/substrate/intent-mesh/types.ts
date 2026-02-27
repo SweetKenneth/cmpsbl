@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Type Definitions
- * v10.0.0 — Emergent Module Intelligence Layer
+ * Emergent Module Intelligence Layer
  * 
  * Enables autonomous cross-module capability discovery and composition.
  * Modules advertise resolvers, broadcast intents, and the mesh routes dynamically.

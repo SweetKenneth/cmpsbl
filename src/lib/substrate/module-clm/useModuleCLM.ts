@@ -1,6 +1,6 @@
 /**
  * Module CLM React Hook
- * SPARTA Epoch — React integration for 24-module self-learning
+ * React integration for 24-module self-learning
  */
 
 import { useState, useEffect, useCallback } from 'react';
