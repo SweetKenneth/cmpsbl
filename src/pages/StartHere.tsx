@@ -77,11 +77,11 @@ export default function StartHere() {
           {/* Body */}
           <div className="space-y-8">
             <motion.p {...stagger(0.15)} className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-              CMPSBL gives your AI applications persistent memory, intelligent routing, and governed orchestration — drop-in infrastructure that gets smarter over time.
-            </motion.p>
-            <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              Pick a product, build something real, and see the difference. Free tier, no lock-in.
-            </motion.p>
+               CMPSBL is the operating system for AI applications. Drop in persistent memory, intelligent routing, and governed orchestration — and your AI stops forgetting, starts learning, and stays secure.
+             </motion.p>
+             <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
+               Everything below is free. No credit card, no trial. Pick a product, build something real, and see the difference.
+             </motion.p>
 
             {/* What you can do */}
             <motion.div 
@@ -90,14 +90,14 @@ export default function StartHere() {
             >
               <div className="h-1 w-full bg-gradient-to-r from-primary via-violet-500 to-primary" />
               <div className="p-6 sm:p-8 space-y-4">
-                <h2 className="text-xl sm:text-2xl font-bold text-foreground">What you can do immediately</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground">What you can build right now</h2>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {[
-                    { icon: Brain, text: "Add persistent memory to any AI agent" },
-                    { icon: Zap, text: "Download a Mind — your own AI agent" },
-                    { icon: Code, text: "Activate artifact packs for deeper capabilities" },
-                    { icon: Sparkles, text: "Try the accessibility scanner on any website" },
-                    { icon: BookOpen, text: "Read the technical documentation" },
+                    { icon: Brain, text: "Add persistent memory to any AI agent — free" },
+                     { icon: Zap, text: "Download a Mind — a production AI agent you own" },
+                     { icon: Code, text: "Activate artifact packs for advanced capabilities" },
+                     { icon: Sparkles, text: "Scan any website for accessibility compliance" },
+                     { icon: BookOpen, text: "Explore the full technical documentation" },
                   ].map((item, idx) => (
                     <motion.div
                       key={item.text}
@@ -146,7 +146,7 @@ export default function StartHere() {
             className="mt-16 pt-8 border-t border-border/30"
           >
             <p className="text-sm text-muted-foreground italic">
-              The infrastructure compounds because of the architecture, not a single feature.
+              The infrastructure compounds because of the architecture, not any single feature. Start with one module. See for yourself.
             </p>
           </motion.div>
         </div>
