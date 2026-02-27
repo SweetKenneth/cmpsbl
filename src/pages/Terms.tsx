@@ -30,9 +30,9 @@ export default function Terms() {
               CMPSBL® provides cognitive orchestration infrastructure including but not limited to:
             </p>
             <ul className="list-disc list-inside text-muted-foreground space-y-2 mt-4">
-              <li>CMPSBL Substrate — Layered cognitive orchestration with persistent memory and convergence zones</li>
-              <li>Composable Cognitives — Downloadable superpowered AI agents</li>
-              <li>Composable Artifacts — Capabilities, templates, and synergy pipelines via the unified store</li>
+              <li>CMPSBL Substrate — Layered cognitive orchestration with persistent memory</li>
+              <li>Composable Minds — Downloadable AI agents with persistent memory</li>
+              <li>Artifact Packs — Capabilities, templates, and pipelines via the unified store</li>
               <li>NEXUS — Multi-provider AI routing with BYOK architecture</li>
               <li>DEFENSE — Enterprise-grade threat detection and bot protection overlay</li>
               <li>DECODE — Conversational AI interface with memory-backed context</li>
@@ -77,7 +77,7 @@ export default function Terms() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">5. Intellectual Property</h2>
             <p className="text-muted-foreground leading-relaxed">
-              All content, features, and functionality of our services — including but not limited to the CMPSBL Substrate architecture, engine orchestrations, synergy pipelines, Crown Jewel pipelines, and cognitive agents — are owned by PromptFluid and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.
+              All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, orchestration pipelines, artifact packs, and composable Minds — are owned by PromptFluid and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.
             </p>
           </section>
 
