@@ -268,7 +268,7 @@ function formatPersonalityInterpret(result: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SYSTEM-WIDE 24-MODULE RESPONSE FORMATTERS — SPARTA Epoch
+// SYSTEM-WIDE 24-MODULE RESPONSE FORMATTERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_EXECUTION_SURFACES = [
@@ -466,7 +466,7 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│          CMPSBL® OS — SPARTA Epoch COMMAND REFERENCE        │
+│          CMPSBL® OS — COMMAND REFERENCE                     │
 ├─────────────────────────────────────────────────────────────┤
 │  Total commands: ${totalCommands.toString().padEnd(5)}    Entities: 10 + 5 Mesh + 9 Zones  │
 │  Architecture: 24-module / 5-layer + 300 Synergy Pipelines  │
@@ -839,7 +839,7 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     CMPSBL® OS — SPARTA Epoch
+│  ██╔═══╝ ██╔════╝     CMPSBL® OS
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: CMPSBL Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
@@ -886,7 +886,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal — SPARTA Epoch: aliases, macros, NLP, watch mode, audit
+│  Terminal: aliases, macros, NLP, watch mode, audit
 │  24 execution surfaces | 360+ commands | 300 synergy pipelines | health: 100%
 │  525+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
@@ -4594,7 +4594,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  COGNITIVE ENGINE SYSTEM — SPARTA Epoch                        ║
+║  COGNITIVE ENGINE SYSTEM                                       ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Architecture: Capabilities (400+) → Engines (76) → Meta (24) ║
 ╠══════════════════════════════════════════════════════════════╣

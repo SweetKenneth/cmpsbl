@@ -1,6 +1,6 @@
 /**
  * Dashboard Metrics Hero — Cinematic system overview
- * SPARTA Epoch — Orbital health ring, floating surface constellation, real-time telemetry
+ * Orbital health ring, floating surface constellation, real-time telemetry
  */
 
 import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility, RefreshCw, Database, Send, ClipboardCheck, Fingerprint, DollarSign, Box, Code, Globe } from 'lucide-react';
@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
-/** SPARTA Epoch — 1 Kernel + 9 Matrix Nodes + 5 Mesh Overlays + 9 Hidden Zones = 24 Surfaces */
+/** 1 Kernel + 9 Matrix Nodes + 5 Mesh Overlays + 9 Hidden Zones = 24 Surfaces */
 const MODULES_CONFIG = [
   // CORE Kernel
   { id: 'core', label: 'CORE', icon: Cpu, color: 'text-orange-400', hsl: '25, 95%, 53%' },
@@ -272,7 +272,7 @@ export function DashboardMetricsHero() {
                 {new Date().toLocaleTimeString('en-US', { hour12: false })}
               </span>
               <div className="h-3 w-px bg-border/30" />
-              <span className="text-[9px] text-muted-foreground/40 font-mono">SPARTA EPOCH</span>
+              <span className="text-[9px] text-muted-foreground/40 font-mono">CMPSBL</span>
             </div>
           </div>
         </div>

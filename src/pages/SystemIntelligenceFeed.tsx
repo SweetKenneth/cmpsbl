@@ -1,6 +1,6 @@
 /**
  * System Intelligence Feed — Observer Mode
- * SPARTA Epoch — Immersive Observer Mode experience
+ * Immersive Observer Mode experience
  *
  * A unique, cinematic view into the substrate's autonomous learning.
  * Observers witness CLM in action without any interaction.
