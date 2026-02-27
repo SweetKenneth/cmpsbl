@@ -1,6 +1,6 @@
 /**
  * Streaming Response Pipeline
- * v1.0.0 — SSE-based streaming for real-time AI responses
+ * SSE-based streaming for real-time AI responses
  * 
  * Makes DECODE and NEXUS feel alive and premium with
  * partial result streaming via Server-Sent Events.

@@ -1,6 +1,6 @@
 /**
  * Circuit Breaker State Machine
- * v1.0.0 — Formalized open/half-open/closed states per module
+ * Formalized open/half-open/closed states per module
  * 
  * Prevents cascading failures by tracking error rates and
  * automatically isolating unhealthy modules.

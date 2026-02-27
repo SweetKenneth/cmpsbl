@@ -1,6 +1,6 @@
 /**
  * Support Bot Types
- * v1.0.0 — Governed Evolving Support System
+ * Governed Evolving Support System
  * 
  * Type definitions for the substrate-integrated support bot
  * that learns from verified resolutions without self-modification.

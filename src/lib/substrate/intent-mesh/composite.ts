@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Composite Resolver Chains
- * v10.2.0 — Chain resolvers so one resolver's output feeds the next
+ * Chain resolvers so one resolver's output feeds the next
  * 
  * Enables rich, multi-step data assembly:
  *   ip → DEFENSE.threat_score → IDENTITY.resolve_actor → MEMORY.recall_context

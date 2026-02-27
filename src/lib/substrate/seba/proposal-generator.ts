@@ -1,6 +1,6 @@
 /**
  * SEBA Proposal Generator
- * v2.0.0 — Full Spectrum Proposal Engine
+ * Full Spectrum Proposal Engine
  * 
  * Takes cognitive insights from all 9 analysis engines and generates
  * structured improvement proposals with actions for all 10 categories.

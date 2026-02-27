@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Pipeline Crystallization
- * v10.1.0 — Save discovered resolver chains as reusable pipelines
+ * Save discovered resolver chains as reusable pipelines
  * 
  * When the mesh discovers a productive resolver chain (e.g., DEFENSE → IDENTITY + RELAY),
  * users can "crystallize" that configuration into a saved pipeline for replay.

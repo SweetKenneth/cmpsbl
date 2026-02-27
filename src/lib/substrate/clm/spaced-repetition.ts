@@ -1,6 +1,6 @@
 /**
  * CLM Spaced Repetition Engine
- * v6.7.0 — SM-2-ish scheduling for memory consolidation
+ * SM-2-ish scheduling for memory consolidation
  * 
  * Implements lightweight spaced repetition:
  * - Confidence + recall success → next interval calculation

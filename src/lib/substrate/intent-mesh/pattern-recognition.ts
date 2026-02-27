@@ -1,6 +1,6 @@
 /**
  * Intent Pattern Recognition Engine
- * v10.4.0 — Detect recurring intent sequences and auto-suggest pipeline crystallization
+ * Detect recurring intent sequences and auto-suggest pipeline crystallization
  * 
  * Analyzes temporal sequences of mesh intents to discover:
  * 1. Frequently co-occurring intent types (always fired together)
