@@ -1,6 +1,6 @@
 /**
  * promptfluid® Decode Contract Exports
- * SPARTA Epoch — Substrate Interpreter Primitive
+ * CONTRACT Epoch — Substrate Interpreter Primitive
  */
 
 export * from './DecodeContractTypes';
