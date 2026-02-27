@@ -95,6 +95,11 @@ export default function Explore() {
       {/* Live System Metrics Bar */}
       <LiveStatsBar />
 
+      {/* Choose Your Path — First section after Hero */}
+      <BuiltForSection />
+
+      <SectionDivider />
+
       {/* Differentiation: Dream · Remember · Adapt · Self-Improve */}
       <DifferentiationSection />
 
@@ -110,11 +115,6 @@ export default function Explore() {
 
       {/* Governance Signal — Technical credibility */}
       <GovernanceSignal />
-
-      <SectionDivider />
-
-      {/* Built For Section - Who is this for */}
-      <BuiltForSection />
 
       {/* Final CTA — Cinematic closing */}
       <section className="relative z-10 px-4 py-14 sm:py-32">
