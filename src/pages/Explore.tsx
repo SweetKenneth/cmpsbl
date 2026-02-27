@@ -168,12 +168,12 @@ export default function Explore() {
                 <span className="text-sm font-semibold text-white/90">The Future is Cognitive</span>
               </motion.div>
               
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-[1.1] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-5 leading-[1.1] tracking-tight">
                 Build What{" "}
                 <br className="hidden sm:block" />
-                <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">Compounds</span>
+                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">Compounds</span>
               </h2>
-              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
+              <p className="text-foreground/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
                 Persistent memory, governed orchestration, and 24 artifact packs —
                 running on {linesOfCodeDisplay} lines of production code. Start free today.
               </p>
