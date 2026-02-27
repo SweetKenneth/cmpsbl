@@ -9,16 +9,16 @@
 import { readdir, readFile, writeFile } from 'fs/promises';
 import { join, extname } from 'path';
 
-const NEW_VERSION = '11.3.0';
+const NEW_VERSION = '12.0.0';
 const TARGET_DIR = 'src';
 const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 
 // Patterns to replace
 const REPLACEMENTS = [
   // v9.x.x → v10.5.4
-  { find: /v9\.\d+\.\d+/g, replace: `v${NEW_VERSION}` },
-  // Bare "9.x.x" in version contexts
-  { find: /(?<=Version\s|version[:\s='"]+)9\.\d+\.\d+/g, replace: NEW_VERSION },
+  { find: /v(?:9|10|11)\.\d+\.\d+/g, replace: `v${NEW_VERSION}` },
+  // Bare "9.x.x" / "10.x.x" / "11.x.x" in version contexts
+  { find: /(?<=Version\s|version[:\s='"]+)(?:9|10|11)\.\d+\.\d+/g, replace: NEW_VERSION },
 ];
 
 let totalFiles = 0;
