@@ -47,6 +47,8 @@ export function EnhancedFooter() {
         { name: "Composable Cognitives", href: "/composable-cognitives", highlight: true },
         { name: "Persistent Memory", href: "/persistent-memory" },
         { name: "Cognitive Showcase", href: "/showcase" },
+        { name: "Enterprise", href: "/enterprise" },
+        { name: "API Access", href: "/api-access" },
         { name: "Upgrade", href: "/upgrade" },
       ]
     },
