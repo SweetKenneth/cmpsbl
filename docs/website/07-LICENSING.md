@@ -17,9 +17,9 @@ User projects run ON the CMPSBL Substrate. User projects never run AS the CMPSBL
 | Tier | Cost | For |
 |------|------|-----|
 | **Free** | $0 | Curious devs, researchers, students |
-| **Creator** | $9/mo | Builders shipping small products |
+| **Creator** | $29/mo | Builders shipping small products |
 | **Architect** | $19/mo | Serious builders, small teams |
-| **Enterprise** | $99/mo | Teams, production systems, governance |
+| **Enterprise** | $79/mo | Teams, production systems, governance |
 
 ---
 
@@ -39,7 +39,7 @@ Does not include automation, advanced orchestration, or self-improvement loops.
 
 ---
 
-## Creator — $9/month
+## Creator — $29/month
 
 Everything in Free plus more juice.
 
@@ -71,7 +71,7 @@ Everything in Creator plus depth.
 
 ---
 
-## Enterprise — $99/month
+## Enterprise — $79/month
 
 Everything in Architect plus governance.
 
@@ -136,9 +136,9 @@ Your projects continue working. You lose access to paid-tier capabilities until 
 | Action | Link |
 |--------|------|
 | **Get Started Free** | [Start Here](/start-here) |
-| **Creator ($9/mo)** | [Pricing](/pricing) |
+| **Creator ($29/mo)** | [Pricing](/pricing) |
 | **Architect ($19/mo)** | [Pricing](/pricing) |
-| **Enterprise ($99/mo)** | [Pricing](/pricing) |
+| **Enterprise ($79/mo)** | [Pricing](/pricing) |
 | **Custom Enterprise** | [Contact Sales](mailto:Dev@CMPSBL.com) |
 
 ---

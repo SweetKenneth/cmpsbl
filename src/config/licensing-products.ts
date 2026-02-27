@@ -3,9 +3,9 @@
  * 
  * Four tiers. Adoptable pricing. Zero IP leakage.
  *   Free     → $0       (build real things, starter artifacts, bounded memory)
- *   Creator  → $9/mo    (expanded catalog, executable capabilities, light automation)
+ *   Creator  → $29/mo   (expanded catalog, executable capabilities, light automation)
  *   Architect → $19/mo  (premium artifacts, cross-module orchestration, audit views)
- *   Enterprise → $99/mo (org workspaces, compliance, SLA-aware routing, governance)
+ *   Enterprise → $79/mo (org workspaces, compliance, SLA-aware routing, governance)
  *
  * Core Rule: User projects run ON the CMPSBL Substrate.
  *            User projects never run AS the CMPSBL Substrate.
@@ -35,7 +35,7 @@ export const UNIFIED_TIERS = {
   creator: {
     product_id: 'prod_TzwJfkmkooYhwU',
     price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
-    amount: 900, // $9/month
+    amount: 2900, // $29/month
     interval: 'month' as const,
     name: 'Creator',
     tagline: 'More juice for builders shipping products',
@@ -77,7 +77,7 @@ export const UNIFIED_TIERS = {
   enterprise: {
     product_id: 'prod_TzwJm6Ji4E3Vca',
     price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
-    amount: 9900, // $99/month
+    amount: 7900, // $79/month
     interval: 'month' as const,
     name: 'Enterprise',
     tagline: 'Governance, control, and reliability for teams',
