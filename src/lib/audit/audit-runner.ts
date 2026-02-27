@@ -71,7 +71,7 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
 
   return {
     run_id: uid(),
-    version: opts?.version ?? 'SPARTA',
+    version: opts?.version ?? getMetric('epoch'),
     created_at: new Date().toISOString(),
     duration_ms,
     summary: {

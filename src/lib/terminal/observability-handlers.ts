@@ -35,7 +35,7 @@ export function registerObservabilityHandlers(): void {
       formatted: [
         '┌─────────────────────────────────────────────┐',
         '│       OBSERVABILITY SUMMARY                 │',
-        '│       SPARTA v11.5.0                        │',
+         `│       ${getMetric('epoch')} v${getMetric('version')}`.padEnd(46) + '│',
         '└─────────────────────────────────────────────┘',
         '',
         `  Health Score:      ${summary.healthScore}%`,
@@ -295,7 +295,7 @@ export function registerObservabilityHandlers(): void {
       formatted: [
         '┌─────────────────────────────────────────────┐',
         '│       OBSERVABILITY COMMANDS                 │',
-        '│       SPARTA v11.5.0                        │',
+        `│       ${getMetric('epoch')} v${getMetric('version')}`.padEnd(46) + '│',
         '└─────────────────────────────────────────────┘',
         '',
         '  obs.summary            Full observability overview',
