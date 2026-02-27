@@ -378,8 +378,8 @@ export function validateAgainstContract(
 
 // ============ Module Metadata ============
 
-export const DECODE_VERSION = 'SPARTA';
-export const DECODE_CODENAME = 'SPARTA Interpreter';
+export const DECODE_VERSION = 'CONTRACT';
+export const DECODE_CODENAME = 'CONTRACT Interpreter';
 
 export interface DecodeModuleStatus {
   version: string;

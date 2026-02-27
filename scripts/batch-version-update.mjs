@@ -15,10 +15,13 @@ const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 
 // Patterns to replace
 const REPLACEMENTS = [
-  // v9.x.x → v10.5.4
+  // v9.x.x / v10.x.x / v11.x.x → v12.0.0
   { find: /v(?:9|10|11)\.\d+\.\d+/g, replace: `v${NEW_VERSION}` },
-  // Bare "9.x.x" / "10.x.x" / "11.x.x" in version contexts
+  // Bare version in version contexts
   { find: /(?<=Version\s|version[:\s='"]+)(?:9|10|11)\.\d+\.\d+/g, replace: NEW_VERSION },
+  // Epoch rename: SPARTA → CONTRACT, ARCHITECT → CONTRACT
+  { find: /\bSPARTA\b/g, replace: 'CONTRACT' },
+  { find: /\bARCHITECT\b/g, replace: 'CONTRACT' },
 ];
 
 let totalFiles = 0;
