@@ -111,7 +111,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                               </div>
                               <div className="min-w-0">
                                 <p className="text-sm font-medium truncate">
-                                  {radio.currentTrack?.title || 'Clockless Radio'}
+                                  {radio.currentTrack?.title || 'CMPSBL Radio'}
                                 </p>
                                 <p className="text-[10px] text-muted-foreground">
                                   {radio.isDJSpeaking ? 'AI DJ Live' : radio.isPlaying ? 'Now Playing' : 'Press play to tune in'}

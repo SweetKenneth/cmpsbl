@@ -177,7 +177,7 @@ export default function ClocklessAccountSetupGuide() {
 
           <h3 className="text-xl font-bold mt-8 mb-3">1. Cross-Module Memory Persistence</h3>
           <p>
-            When you invoke a capability from your artifact pack, it has access to the same <Link to="/persistent-memory" className="text-primary hover:underline">three-tier memory architecture</Link> that every other module uses. A DEFENSE scan result can inform a BRAIN analysis, which feeds into a DREAM cycle, which produces a heuristic improvement — all sharing the same contextual memory. On platforms like <a href="https://www.langchain.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LangChain <ExternalLink className="w-3 h-3 inline" /></a>, you'd need to build this integration yourself. On Clockless, it's built in. Check out our <Link to="/blog/langchain-memory-integration" className="text-primary hover:underline">LangChain memory integration guide</Link> to see how we compare.
+            When you invoke a capability from your artifact pack, it has access to the same <Link to="/persistent-memory" className="text-primary hover:underline">three-tier memory architecture</Link> that every other module uses. A DEFENSE scan result can inform a BRAIN analysis, which feeds into a DREAM cycle, which produces a heuristic improvement — all sharing the same contextual memory. On platforms like <a href="https://www.langchain.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LangChain <ExternalLink className="w-3 h-3 inline" /></a>, you'd need to build this integration yourself. On CMPSBL, it's built in. Check out our <Link to="/blog/langchain-memory-integration" className="text-primary hover:underline">LangChain memory integration guide</Link> to see how we compare.
           </p>
 
           <h3 className="text-xl font-bold mt-8 mb-3">2. Emergent Capability Synergies</h3>
@@ -236,7 +236,7 @@ export default function ClocklessAccountSetupGuide() {
             </div>
             <div>
               <h4 className="font-bold mb-1">How does this compare to using OpenAI + Pinecone + LangChain separately?</h4>
-              <p className="text-muted-foreground">You'd be stitching together inference, memory, orchestration, and governance from different vendors. Clockless provides all of these as a unified runtime where they share context, memory, and governance natively. Read our <Link to="/blog/rag-without-infrastructure" className="text-primary hover:underline">RAG Without Infrastructure</Link> post for a direct comparison.</p>
+              <p className="text-muted-foreground">You'd be stitching together inference, memory, orchestration, and governance from different vendors. CMPSBL provides all of these as a unified runtime where they share context, memory, and governance natively. Read our <Link to="/blog/rag-without-infrastructure" className="text-primary hover:underline">RAG Without Infrastructure</Link> post for a direct comparison.</p>
             </div>
           </div>
 
@@ -246,7 +246,7 @@ export default function ClocklessAccountSetupGuide() {
             <div className="grid md:grid-cols-2 gap-4">
               <Link to="/blog/clockless-what-makes-it-different" className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all">
                 <Badge variant="outline" className="mb-2 text-xs">Cluster</Badge>
-                <h3 className="font-bold group-hover:text-primary transition-colors">What Makes Clockless Different</h3>
+                <h3 className="font-bold group-hover:text-primary transition-colors">What Makes CMPSBL Different</h3>
                 <p className="text-sm text-muted-foreground mt-1">Why developers and enterprises are choosing composable cognitive infrastructure over traditional AI platforms.</p>
               </Link>
               <Link to="/blog/clockless-modules-deep-dive" className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all">
@@ -262,7 +262,7 @@ export default function ClocklessAccountSetupGuide() {
               <Link to="/blog/why-agents-forget" className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all">
                 <Badge variant="outline" className="mb-2 text-xs">Research</Badge>
                 <h3 className="font-bold group-hover:text-primary transition-colors">Why AI Agents Forget Everything</h3>
-                <p className="text-sm text-muted-foreground mt-1">The fundamental memory problem in AI — and how Clockless solves it architecturally.</p>
+                <p className="text-sm text-muted-foreground mt-1">The fundamental memory problem in AI — and how CMPSBL solves it architecturally.</p>
               </Link>
             </div>
           </div>
