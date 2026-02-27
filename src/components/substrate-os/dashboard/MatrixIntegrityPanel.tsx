@@ -96,16 +96,18 @@ export function MatrixIntegrityPanel({ report }: MatrixIntegrityPanelProps) {
 
         {/* Sector Breakdown */}
         <div className="space-y-1.5 mb-3">
-          {(['core', 'ccr', 'ccl', 'execution', 'overlay'] as MatrixSector[]).map(sector => {
-            const data = report.sectors[sector];
+          {(['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell'] as MatrixSector[]).map((sector) => {
+            const data = report.sectors[sector] ?? { health: 0, nodeCount: 0, weight: 0 };
+            const sectorColor = SECTOR_COLORS[sector] ?? 'text-muted-foreground';
+            const sectorLabel = (SECTOR_LABELS[sector] ?? sector.toUpperCase()).replace(' Sector', '');
             return (
               <div key={sector} className="flex items-center gap-2">
-                <span className={cn('text-[9px] font-mono w-20 shrink-0', SECTOR_COLORS[sector])}>
-                  {SECTOR_LABELS[sector].replace(' Sector', '')}
+                <span className={cn('text-[9px] font-mono w-20 shrink-0', sectorColor)}>
+                  {sectorLabel}
                 </span>
                 <div className="flex-1 h-1.5 rounded-full bg-muted/20 overflow-hidden">
                   <motion.div
-                    className={cn('h-full rounded-full', SECTOR_COLORS[sector].replace('text-', 'bg-'))}
+                    className={cn('h-full rounded-full', sectorColor.replace('text-', 'bg-'))}
                     initial={{ width: 0 }}
                     animate={{ width: `${data.health}%` }}
                     transition={{ duration: 1, delay: 0.2 }}
