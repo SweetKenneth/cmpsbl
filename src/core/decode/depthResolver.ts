@@ -1,5 +1,5 @@
 /**
- * DECODE Depth Resolver — vX.IDENTITY.3
+ * DECODE Depth Resolver — vX.IDENTITY.4
  * Controls analytical depth based on access tier.
  *
  * Tone does NOT change. Only layers are appended.
@@ -7,6 +7,11 @@
  * LEVEL 1 (CREATOR)    → Summary + scoped impact
  * LEVEL 2 (ARCHITECT)  → + Module attribution, deltas, failure signatures
  * LEVEL 3 (ENTERPRISE) → + Cross-module correlation, snapshots, drift, trend slopes
+ *
+ * CLM-Granted Upgrades:
+ * ✅ [CLM#5]  Context continuity scoring for session coherence
+ * ✅ [CLM#18] Architecture pattern awareness tags
+ * ✅ [CLM#42] Institutional persuasion depth layers
  */
 
 import type { DecodeMetricsResponse } from './decodeAccessPolicy';
@@ -29,6 +34,78 @@ export interface DepthResolution {
   allowModuleAttribution: boolean;
   allowRawCounts: boolean;
   strictFooter: boolean;
+  // CLM#18: Architecture pattern tags
+  allowArchitecturePatterns: boolean;
+  // CLM#42: Institutional depth
+  allowInstitutionalContext: boolean;
+}
+
+// ═══ Context Continuity (CLM#5) ═══════════════════════════════════
+
+export interface SessionContinuity {
+  sessionId: string;
+  messageCount: number;
+  topicDrift: number;       // 0-1 how much topic has shifted
+  coherenceScore: number;   // 0-1 session coherence
+  lastTopicHash: string;
+  contextWindowUsed: number; // percentage of context window utilized
+}
+
+const sessionContinuityMap = new Map<string, SessionContinuity>();
+
+export function trackSessionContinuity(
+  sessionId: string,
+  currentTopic: string
+): SessionContinuity {
+  const existing = sessionContinuityMap.get(sessionId);
+
+  const topicHash = simpleHash(currentTopic.toLowerCase().trim());
+
+  if (!existing) {
+    const entry: SessionContinuity = {
+      sessionId,
+      messageCount: 1,
+      topicDrift: 0,
+      coherenceScore: 1.0,
+      lastTopicHash: topicHash,
+      contextWindowUsed: 0.05,
+    };
+    sessionContinuityMap.set(sessionId, entry);
+
+    // Bound map size
+    if (sessionContinuityMap.size > 1000) {
+      const oldest = Array.from(sessionContinuityMap.keys()).slice(0, 200);
+      oldest.forEach(k => sessionContinuityMap.delete(k));
+    }
+
+    return entry;
+  }
+
+  existing.messageCount++;
+
+  // Calculate topic drift
+  const topicChanged = existing.lastTopicHash !== topicHash;
+  if (topicChanged) {
+    existing.topicDrift = Math.min(1.0, existing.topicDrift + 0.15);
+    existing.coherenceScore = Math.max(0, existing.coherenceScore - 0.1);
+  } else {
+    existing.topicDrift = Math.max(0, existing.topicDrift - 0.05);
+    existing.coherenceScore = Math.min(1.0, existing.coherenceScore + 0.05);
+  }
+
+  existing.lastTopicHash = topicHash;
+  existing.contextWindowUsed = Math.min(1.0, existing.messageCount * 0.03);
+
+  return existing;
+}
+
+function simpleHash(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash = hash & hash;
+  }
+  return Math.abs(hash).toString(36);
 }
 
 // ═══ Resolver ══════════════════════════════════════════════════════
@@ -58,12 +135,18 @@ export function resolveDepth(
     allowFailureSignatures: level >= 2,
     allowRawCounts: level >= 2,
 
-    // LEVEL 2: Attribution + deltas
+    // LEVEL 2: Attribution + deltas + architecture patterns
     allowCrossModuleCorrelation: level >= 3,
     allowSnapshotCitation: level >= 3,
     allowDriftMetrics: level >= 3,
     allowEventIds: level >= 3,
     allowTrendSlopes: level >= 3,
+
+    // CLM#18: Architecture pattern tags (ARCHITECT+)
+    allowArchitecturePatterns: level >= 2,
+
+    // CLM#42: Institutional context (ENTERPRISE only)
+    allowInstitutionalContext: level >= 3,
 
     // STRICT footer only at ENTERPRISE + STRICT mode
     strictFooter: level === 3 && telemetryMode === 'STRICT_TELEMETRY',
@@ -71,16 +154,6 @@ export function resolveDepth(
 }
 
 // ═══ Response Construction ═════════════════════════════════════════
-
-/**
- * DECODE response construction order (all tiers):
- *
- * 1. Global state statement
- * 2. Scoped lens impact
- * 3. Depth expansion (tier-based)
- * 4. Governance boundary (if applicable)
- * 5. Optional STRICT footer (ENTERPRISE only)
- */
 
 export interface DepthExpansion {
   moduleAttribution?: string;
@@ -94,6 +167,10 @@ export interface DepthExpansion {
   correlationIds?: string[];
   trendSlope?: string;
   eventWindow?: string;
+  // CLM#18
+  architecturePatterns?: string[];
+  // CLM#42
+  institutionalContext?: string;
 }
 
 /**
@@ -124,6 +201,11 @@ export function buildDepthExpansion(
     lines.push(expansion.deltas);
   }
 
+  // CLM#18: Architecture pattern tags
+  if (depth.allowArchitecturePatterns && expansion?.architecturePatterns?.length) {
+    lines.push(`Patterns: ${expansion.architecturePatterns.join(' · ')}`);
+  }
+
   // LEVEL 3: Cross-module + snapshots + drift
   if (depth.allowCrossModuleCorrelation && expansion?.crossModuleCorrelation) {
     lines.push(expansion.crossModuleCorrelation);
@@ -135,6 +217,11 @@ export function buildDepthExpansion(
 
   if (depth.allowEventIds && expansion?.correlationIds?.length) {
     lines.push(`Correlation IDs: ${expansion.correlationIds.join(', ')}`);
+  }
+
+  // CLM#42: Institutional context
+  if (depth.allowInstitutionalContext && expansion?.institutionalContext) {
+    lines.push(`Institutional signal: ${expansion.institutionalContext}`);
   }
 
   // STRICT footer (ENTERPRISE + STRICT_TELEMETRY only)
@@ -157,12 +244,6 @@ export function buildDepthExpansion(
 
 /**
  * Assemble a full DECODE response following the mandated construction order.
- *
- * 1. Global state statement
- * 2. Scoped lens impact
- * 3. Depth expansion
- * 4. Governance boundary
- * 5. Optional STRICT footer
  */
 export function assembleDecodeResponse(
   globalState: string,
@@ -172,6 +253,7 @@ export function assembleDecodeResponse(
   options?: {
     expansion?: Partial<DepthExpansion>;
     governanceBoundary?: string;
+    sessionContinuity?: SessionContinuity;
   }
 ): string {
   const sections: string[] = [globalState, scopedImpact];
@@ -187,6 +269,14 @@ export function assembleDecodeResponse(
 
   if (options?.governanceBoundary) {
     sections.push(options.governanceBoundary);
+  }
+
+  // CLM#5: Session continuity indicator for coherent multi-turn conversations
+  if (options?.sessionContinuity && options.sessionContinuity.messageCount > 3) {
+    const sc = options.sessionContinuity;
+    if (sc.topicDrift > 0.5) {
+      sections.push(`[Context shift detected — coherence: ${Math.round(sc.coherenceScore * 100)}%]`);
+    }
   }
 
   return sections.filter(Boolean).join('\n\n');
