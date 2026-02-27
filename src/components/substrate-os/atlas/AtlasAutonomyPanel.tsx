@@ -1,6 +1,6 @@
 /**
  * Atlas Autonomy Panel
- * v10.5.4 — ARCHITECT Epoch CLM + SEBA unified control with Lovable AI usage tracking
+ * v10.5.4 — ARCHITECT Epoch CLM + SEBA unified control with Nexus fleet usage tracking
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -20,7 +20,7 @@ import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
 import { ProposalStore } from '@/lib/substrate/seba/proposal-store';
 import { cn } from '@/lib/utils';
 import type { SEBAMode } from '@/lib/substrate/seba';
-import { CloudAIUsageCard } from './LovableAIUsageCard';
+import { CloudAIUsageCard } from './NexusUsageCard';
 
 interface ProposedAction {
   type: string;

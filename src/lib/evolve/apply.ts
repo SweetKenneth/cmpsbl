@@ -126,7 +126,7 @@ async function applyArtifact(artifact: ShadowArtifact): Promise<void> {
   console.log(`[Evolve] Applying artifact: ${artifact.file_path} (${artifact.operation})`);
   
   // For now, we just log the application
-  // The actual file writing would be done by the Lovable platform
+  // The actual file writing would be done by the Evolution pipeline
   
   emitEvolveEvent('artifact_applied', {
     artifact_id: artifact.id,
