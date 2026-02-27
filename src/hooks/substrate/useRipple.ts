@@ -1,6 +1,5 @@
 /**
  * useRipple Hook — RIPPLE zone (Signal Bus) operations
- * SPARTA Epoch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

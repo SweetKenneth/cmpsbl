@@ -1,6 +1,6 @@
 /**
  * Substrate React Hooks
- * SPARTA Epoch — React Integration Layer
+ * React Integration Layer
  * 
  * Provides React hooks for all substrate engines across the 10-entity + 5-mesh architecture.
  * Enables seamless integration of cognitive capabilities (525+) into React components.

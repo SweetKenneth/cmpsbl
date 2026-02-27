@@ -1,6 +1,6 @@
 /**
  * useIntegration Hook
- * SPARTA Epoch — Dedicated hook for INTEGRATION surface operations
+ * Dedicated hook for INTEGRATION surface operations
  * 
  * Respects debug mode kill-switch for connection polling.
  */

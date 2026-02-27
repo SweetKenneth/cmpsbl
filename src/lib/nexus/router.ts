@@ -1,6 +1,6 @@
 /**
- * PromptFluid Nexus Router v5.0.0
- * ARCHITECT Epoch — Production-grade multi-provider AI routing
+ * PromptFluid Nexus Router
+ * Production-grade multi-provider AI routing
  * 
  * Fleet-managed routing across 13 free-tier providers with:
  * - Health-weighted selection with exponential decay

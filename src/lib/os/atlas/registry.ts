@@ -1,6 +1,6 @@
 /**
  * Atlas Module Registry
- * SPARTA Epoch — Single source of truth for substrate entities, meshes, and zones
+ * Single source of truth for substrate entities, meshes, and zones
  */
 
 import type { ModuleRegistryEntry, ModuleAction } from './types';

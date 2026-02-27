@@ -1,6 +1,6 @@
 /**
  * Constant Learning Mode (CLM) Configuration
- * SPARTA Epoch — Dynamic allocation via NEXUS 4-hour cycles
+ * Dynamic allocation via NEXUS 4-hour cycles
  * 
  * CLM no longer uses a hardcoded budget percentage. Instead:
  *   - NEXUS computes available calls every 4 hours

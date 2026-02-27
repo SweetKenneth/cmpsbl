@@ -1,6 +1,6 @@
 /**
  * Agency Production — Unified exports for all production-ready agency features
- * SPARTA Epoch — Cognitive Agent Infrastructure
+ * Cognitive Agent Infrastructure
  */
 
 // Core types
