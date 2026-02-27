@@ -1,7 +1,7 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * SPARTA Epoch — 10 entities + 5 meshes + 9 zones | 360+ commands | 300 synergy pipelines
+ * 10 entities + 5 meshes + 9 zones | 360+ commands | 300 synergy pipelines
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';

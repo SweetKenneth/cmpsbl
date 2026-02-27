@@ -1,6 +1,6 @@
 // PromptFluid Defense System Initialization
 // Performance: Lazy-loads defenseTracking module
-// SPARTA Epoch — Uses secure storage for all state
+// Uses secure storage for all state
 
 import { secureSet, secureGet, secureRemove, migrateLegacyKey } from '@/lib/system/secureStorage';
 

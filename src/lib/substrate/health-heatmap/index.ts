@@ -1,6 +1,6 @@
 /**
  * Health Heatmap Timeline
- * SPARTA Epoch — Time-series health tracking for all 24 matrix nodes
+ * Time-series health tracking for all 24 matrix nodes
  * 
  * Captures health snapshots at regular intervals for historical visualization.
  */

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { TEMPLATES } from "@/data/templates";
 
-// The 9 modules + zones + meshes of the substrate (SPARTA Epoch)
+// The 9 modules + zones + meshes of the substrate
 const MODULES = [
   // Kernel Layer
   { icon: Cpu, name: "Core", color: "text-orange-400", description: "Kernel scheduling" },
