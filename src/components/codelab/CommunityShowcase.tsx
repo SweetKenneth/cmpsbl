@@ -42,7 +42,7 @@ const SHOWCASE_PROJECTS: ShowcaseProject[] = [
     id: "memory-assistant",
     name: "Memory-Enhanced Personal Assistant",
     description: "A personal AI assistant that learns from every interaction, remembers preferences, and evolves its responses over time. Uses the Dream module for overnight consolidation.",
-    author: "promptfluid",
+    author: "cmpsbl",
     category: "ai-assistant",
     tags: ["ai", "memory", "learning", "personal"],
     modules: ["brain", "decode", "dream", "nexus"],

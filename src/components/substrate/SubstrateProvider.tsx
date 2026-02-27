@@ -1,5 +1,5 @@
 /**
- * promptfluid® Substrate Provider
+ * CMPSBL® Substrate Provider
  * Field-Based Topology
  *
  * Spine: CORE → SYSTEM → CCR → Modules → INTEGRATION

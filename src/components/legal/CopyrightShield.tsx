@@ -18,7 +18,7 @@ export const CopyrightShield = () => {
               PROTECTED INTELLECTUAL PROPERTY
             </h3>
             <p className="text-sm text-muted-foreground">
-              {COPYRIGHT_NOTICE.copyright} {COPYRIGHT_NOTICE.year} PromptFluid. All Rights Reserved.
+              {COPYRIGHT_NOTICE.copyright} {COPYRIGHT_NOTICE.year} CMPSBL. All Rights Reserved.
             </p>
           </div>
         </div>

@@ -1,5 +1,5 @@
 /**
- * Capacity Monitor Widget v10.5.1 — Premium glassmorphic load monitor
+ * Capacity Monitor Widget — Premium glassmorphic load monitor
  */
 
 import { useState, useEffect } from 'react';

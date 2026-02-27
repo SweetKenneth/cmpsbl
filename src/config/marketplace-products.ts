@@ -1064,7 +1064,7 @@ export function formatPrice(cents: number): string {
 }
 
 // SDK is free messaging
-export const SDK_FREE_MESSAGE = "The promptfluid® SDK is 100% free for developers to build on. Templates and OS licenses are sold separately for those who want pre-built solutions or self-hosted deployments.";
+export const SDK_FREE_MESSAGE = "The CMPSBL® SDK is 100% free for developers to build on. Templates and OS licenses are sold separately for those who want pre-built solutions or self-hosted deployments.";
 
 // SEO Keywords for AI Drift Prevention
 export const DRIFT_PREVENTION_KEYWORDS = [

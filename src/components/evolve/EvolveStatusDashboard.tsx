@@ -88,7 +88,7 @@ export function EvolveStatusDashboard() {
           <Activity className="h-8 w-8 text-primary" />
           <div>
             <h2 className="text-2xl font-bold">Evolution Status</h2>
-            <p className="text-muted-foreground">v0.7.5 — Real-time evolution lifecycle</p>
+            <p className="text-muted-foreground">Real-time evolution lifecycle</p>
           </div>
         </div>
         <Button variant="outline" size="sm" onClick={refresh} disabled={isLoading}>

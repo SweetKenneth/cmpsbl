@@ -1,6 +1,6 @@
 /**
  * Proof Mode — Public Substrate Demo Surface
- * Read-only, rate-limited trial of the promptfluid® substrate
+ * Read-only, rate-limited trial of the CMPSBL® substrate
  */
 
 import { useState, useEffect, useCallback } from "react";

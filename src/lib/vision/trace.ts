@@ -1,5 +1,5 @@
 /**
- * PromptFluid Vision v2.0 "Vee" — Trace Context Utilities
+ * CMPSBL VISION — Trace Context Utilities
  * Distributed tracing with causal chain support
  */
 

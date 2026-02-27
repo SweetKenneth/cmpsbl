@@ -166,7 +166,7 @@ export default function InvestorsPublic() {
           <h2 className="text-3xl font-semibold text-foreground">14 Documented World Firsts</h2>
         </div>
         <p className="text-muted-foreground mb-8 text-sm italic max-w-3xl">
-          To the best of our knowledge, the following are industry firsts achieved by PromptFluid® through the CMPSBL OS Substrate. We welcome any evidence of prior art.
+          To the best of our knowledge, the following are industry firsts achieved by CMPSBL® through the CMPSBL OS Substrate. We welcome any evidence of prior art.
         </p>
 
         <div className="grid md:grid-cols-2 gap-4">

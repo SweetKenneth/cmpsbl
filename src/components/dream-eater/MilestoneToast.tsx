@@ -1,5 +1,5 @@
 /**
- * Milestone Toast v1.0.0
+ * Milestone Toast
  * 
  * Animated notification when mutation milestones are reached.
  */

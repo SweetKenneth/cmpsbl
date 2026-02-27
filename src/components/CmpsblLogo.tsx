@@ -26,7 +26,7 @@ export function CmpsblLogo({ className, iconOnly = false, size = "md", priority 
   return (
     <img
       src={cmpsblLogo}
-      alt="CMPSBL By PromptFluid"
+      alt="CMPSBL"
       width={width}
       height={height}
       loading={priority ? "eager" : "lazy"}

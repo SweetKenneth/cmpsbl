@@ -1295,7 +1295,7 @@ export default function SubstrateOS() {
           <div className="flex items-center gap-4">
             <Link to="/" className="hover:text-foreground/60 transition-colors">home</Link>
             <Link to="/explore" className="hover:text-foreground/60 transition-colors">explore</Link>
-            <Link to="/pricing" className="hover:text-foreground/60 transition-colors">upgrade</Link>
+            <Link to="/upgrade" className="hover:text-foreground/60 transition-colors">upgrade</Link>
           </div>
         </div>
       </footer>
