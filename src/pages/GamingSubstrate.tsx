@@ -47,7 +47,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useEffect } from "react";
 
-const WORLD_ENGINE_PRICE_ID = "price_1T5W2wQ7FtTiAL4auHmbbDTo";
+const WORLD_ENGINE_PRICE_ID = "price_1T5W8qQ7FtTiAL4amPdCvtlu";
 
 // Feature card component
 function FeatureCard({
