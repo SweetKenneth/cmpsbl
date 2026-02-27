@@ -509,7 +509,7 @@ export default function SubstrateLicensing() {
                 { q: 'What\'s the difference between Creator and Architect?', a: 'Creator ($29/mo) adds executable capabilities, private memory, and light automation. Architect ($79/mo) adds cross-module orchestration, batch execution, audit views, and priority routing. Most serious builders land at Architect.' },
                 { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. Changes take effect at the next billing cycle.' },
                 { q: 'What does "Builder Isolation" mean?', a: 'Your projects run ON the Substrate through templates, capabilities, and pipelines. You never have direct access to internal systems like CLM, CORTEX, or GOVERNOR. This protects both you and the platform.' },
-                { q: 'Is Enterprise self-serve?', a: 'Yes, $99/mo Enterprise is self-serve. For dedicated instances, custom compliance, or SOC2 requirements, contact us for custom pricing.' },
+                { q: 'Is there a custom Enterprise option?', a: 'Yes. For dedicated instances, custom compliance, or SOC2 requirements, contact Dev@CMPSBL.com for custom pricing.' },
               ].map((faq, i) => (
                 <Card key={i} className="bg-card/50">
                   <CardContent className="p-4 sm:p-5">

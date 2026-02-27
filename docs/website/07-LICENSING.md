@@ -18,8 +18,7 @@ User projects run ON the CMPSBL Substrate. User projects never run AS the CMPSBL
 |------|------|-----|
 | **Free** | $0 | Curious devs, researchers, students |
 | **Creator** | $29/mo | Builders shipping small products |
-| **Architect** | $19/mo | Serious builders, small teams |
-| **Enterprise** | $79/mo | Teams, production systems, governance |
+| **Architect** | $79/mo | Serious builders, small teams, governance |
 
 ---
 
@@ -55,9 +54,9 @@ Everything in Free plus more juice.
 
 ---
 
-## Architect — $19/month
+## Architect — $79/month
 
-Everything in Creator plus depth.
+Everything in Creator plus depth and governance.
 
 - Premium Artifact Store (Architect catalog)
 - Cross-module orchestration
@@ -67,25 +66,15 @@ Everything in Creator plus depth.
 - Audit views + change summaries
 - Reasoning summaries
 - Priority Nexus routing + fallback options
-- Priority email support
-
----
-
-## Enterprise — $79/month
-
-Everything in Architect plus governance.
-
 - Organization workspaces + roles
-- Higher execution ceilings
 - Compliance + audit exports
 - Advanced governance policies
 - Dedicated memory partitions
-- 80 crystallized Crown Jewel pipelines
 - SLA-aware Nexus controls
-- Provider budget pinning
-- Dedicated support channel
+- Self-hosted deployment (LNCHBL)
+- Priority email support
 
-**Enterprise Custom** (sales-led): Dedicated instances, custom compliance, SOC2 requirements.
+**Architect Custom** (sales-led): Dedicated instances, custom compliance, SOC2 requirements.
 
 [Contact Sales →](mailto:Dev@CMPSBL.com)
 
@@ -98,8 +87,7 @@ The substrate includes 100 crystallized pipelines — high-value multi-module re
 | Tier | Crystallized Pipelines | Access |
 |------|----------------------|--------|
 | **CMPSBL-Only** | 20 | Internal — never released |
-| **Enterprise** | 16 | Governance-grade sealed |
-| **Architect** | 36 | Premium sealed |
+| **Architect** | 52 | Premium + governance sealed |
 | **Creator** | 28 | Builder-friendly sealed |
 
 Not all Crown Jewels are released to the public. Certain capabilities, orchestration systems, and recursive intelligence remain internal by design.
@@ -137,8 +125,7 @@ Your projects continue working. You lose access to paid-tier capabilities until 
 |--------|------|
 | **Get Started Free** | [Start Here](/start-here) |
 | **Creator ($29/mo)** | [Pricing](/pricing) |
-| **Architect ($19/mo)** | [Pricing](/pricing) |
-| **Enterprise ($79/mo)** | [Pricing](/pricing) |
+| **Architect ($79/mo)** | [Pricing](/pricing) |
 | **Custom Enterprise** | [Contact Sales](mailto:Dev@CMPSBL.com) |
 
 ---

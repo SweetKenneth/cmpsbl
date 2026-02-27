@@ -7,6 +7,7 @@
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { useState, lazy, Suspense, memo, useCallback, useEffect, useMemo } from 'react';
+import { ModuleErrorBoundary } from '@/components/system/ModuleErrorBoundary';
 import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import {
   Loader2, Lock, Terminal, AlertTriangle, FileText,
@@ -585,13 +586,15 @@ function MergedModulesTab({ enabled }: { enabled: boolean }) {
         onChange={(id) => setActiveModule(id as typeof activeModule)}
         accentColor="orange"
       />
-      <Suspense fallback={<TabLoadingFallback />}>
-        <AnimatePresence mode="wait">
-          {activeModule === 'core' && <CoreKernelTab key="core" enabled={enabled} />}
-          {activeModule === 'ripple' && <RippleMessageBusTab key="ripple" enabled={enabled} />}
-          {activeModule === 'access' && <AccessIdentityTab key="access" enabled={enabled} />}
-        </AnimatePresence>
-      </Suspense>
+      <ModuleErrorBoundary moduleName="Kernel">
+        <Suspense fallback={<TabLoadingFallback />}>
+          <AnimatePresence mode="wait">
+            {activeModule === 'core' && <CoreKernelTab key="core" enabled={enabled} />}
+            {activeModule === 'ripple' && <RippleMessageBusTab key="ripple" enabled={enabled} />}
+            {activeModule === 'access' && <AccessIdentityTab key="access" enabled={enabled} />}
+          </AnimatePresence>
+        </Suspense>
+      </ModuleErrorBoundary>
     </TabPane>
   );
 }
@@ -622,28 +625,30 @@ function MergedForgeTab({ enabled, hasAgency }: { enabled: boolean; hasAgency: b
         onChange={(id) => setActiveForge(id as typeof activeForge)}
         accentColor="fuchsia"
       />
-      <Suspense fallback={<TabLoadingFallback />}>
-        <AnimatePresence mode="wait">
-          {activeForge === 'cognitives' && <CognitivesPanel key="cognitives" />}
-          {activeForge === 'mint' && (
-            <div key="mint">
-              <Tabs defaultValue="create" className="space-y-4">
-                <TabsList className="bg-muted/20 border border-border/20">
-                  <TabsTrigger value="create" className="gap-2 data-[state=active]:bg-fuchsia-500/15 data-[state=active]:text-fuchsia-400">
-                    <Sparkles className="w-4 h-4" />Create
-                  </TabsTrigger>
-                  <TabsTrigger value="gallery" className="gap-2 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-cyan-400">
-                    <Users className="w-4 h-4" />Gallery
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="create"><AgencyMintWizard onComplete={() => {}} /></TabsContent>
-                <TabsContent value="gallery"><AgencyGallery /></TabsContent>
-              </Tabs>
-            </div>
-          )}
-          {activeForge === 'metrics' && <PublicMetricsTab key="metrics" />}
-        </AnimatePresence>
-      </Suspense>
+      <ModuleErrorBoundary moduleName="Forge">
+        <Suspense fallback={<TabLoadingFallback />}>
+          <AnimatePresence mode="wait">
+            {activeForge === 'cognitives' && <CognitivesPanel key="cognitives" />}
+            {activeForge === 'mint' && (
+              <div key="mint">
+                <Tabs defaultValue="create" className="space-y-4">
+                  <TabsList className="bg-muted/20 border border-border/20">
+                    <TabsTrigger value="create" className="gap-2 data-[state=active]:bg-fuchsia-500/15 data-[state=active]:text-fuchsia-400">
+                      <Sparkles className="w-4 h-4" />Create
+                    </TabsTrigger>
+                    <TabsTrigger value="gallery" className="gap-2 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-cyan-400">
+                      <Users className="w-4 h-4" />Gallery
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="create"><AgencyMintWizard onComplete={() => {}} /></TabsContent>
+                  <TabsContent value="gallery"><AgencyGallery /></TabsContent>
+                </Tabs>
+              </div>
+            )}
+            {activeForge === 'metrics' && <PublicMetricsTab key="metrics" />}
+          </AnimatePresence>
+        </Suspense>
+      </ModuleErrorBoundary>
     </TabPane>
   );
 }
@@ -667,13 +672,15 @@ function MergedInfraTab({ enabled }: { enabled: boolean }) {
         onChange={(id) => setActiveInfra(id as typeof activeInfra)}
         accentColor="purple"
       />
-      <Suspense fallback={<TabLoadingFallback />}>
-        <AnimatePresence mode="wait">
-          {activeInfra === 'evolution' && <EvolutionTab key="evolution" />}
-          {activeInfra === 'modernizer' && <ModernizerTab key="modernizer" enabled={enabled} />}
-          {activeInfra === 'inclusive' && <InclusiveTab key="inclusive" enabled={enabled} />}
-        </AnimatePresence>
-      </Suspense>
+      <ModuleErrorBoundary moduleName="Infrastructure">
+        <Suspense fallback={<TabLoadingFallback />}>
+          <AnimatePresence mode="wait">
+            {activeInfra === 'evolution' && <EvolutionTab key="evolution" />}
+            {activeInfra === 'modernizer' && <ModernizerTab key="modernizer" enabled={enabled} />}
+            {activeInfra === 'inclusive' && <InclusiveTab key="inclusive" enabled={enabled} />}
+          </AnimatePresence>
+        </Suspense>
+      </ModuleErrorBoundary>
     </TabPane>
   );
 }
@@ -699,20 +706,22 @@ function MergedSecurityTab({ isGovernor, isOperator }: { isGovernor: boolean; is
         onChange={(id) => setActiveSec(id as typeof activeSec)}
         accentColor="amber"
       />
-      <Suspense fallback={<TabLoadingFallback />}>
-        <AnimatePresence mode="wait">
-          {activeSec === 'defense' && <DefenseAnalytics key="defense" />}
-          {activeSec === 'immune' && (
-            <div key="immune" className="space-y-6">
-              <ShadowMeshToggle />
-              <ShadowMeshAnalytics />
-            </div>
-          )}
-          {activeSec === 'audit' && <AuditTab key="audit" />}
-          {activeSec === 'patches' && <PatchAuthoringTab key="patches" />}
-          {activeSec === 'backups' && <BackupRestorePanel key="backups" enabled={isOperator} />}
-        </AnimatePresence>
-      </Suspense>
+      <ModuleErrorBoundary moduleName="Security">
+        <Suspense fallback={<TabLoadingFallback />}>
+          <AnimatePresence mode="wait">
+            {activeSec === 'defense' && <DefenseAnalytics key="defense" />}
+            {activeSec === 'immune' && (
+              <div key="immune" className="space-y-6">
+                <ShadowMeshToggle />
+                <ShadowMeshAnalytics />
+              </div>
+            )}
+            {activeSec === 'audit' && <AuditTab key="audit" />}
+            {activeSec === 'patches' && <PatchAuthoringTab key="patches" />}
+            {activeSec === 'backups' && <BackupRestorePanel key="backups" enabled={isOperator} />}
+          </AnimatePresence>
+        </Suspense>
+      </ModuleErrorBoundary>
     </TabPane>
   );
 }
@@ -735,12 +744,14 @@ function MergedGovernorTab({ isGovernor }: { isGovernor: boolean }) {
         onChange={(id) => setActiveGov(id as typeof activeGov)}
         accentColor="red"
       />
-      <Suspense fallback={<TabLoadingFallback />}>
-        <AnimatePresence mode="wait">
-          {activeGov === 'controls' && <GovernorSection key="controls" enabled={isGovernor} />}
-          {activeGov === 'advisory' && <SoundingBoard key="advisory" />}
-        </AnimatePresence>
-      </Suspense>
+      <ModuleErrorBoundary moduleName="Governor">
+        <Suspense fallback={<TabLoadingFallback />}>
+          <AnimatePresence mode="wait">
+            {activeGov === 'controls' && <GovernorSection key="controls" enabled={isGovernor} />}
+            {activeGov === 'advisory' && <SoundingBoard key="advisory" />}
+          </AnimatePresence>
+        </Suspense>
+      </ModuleErrorBoundary>
     </TabPane>
   );
 }
