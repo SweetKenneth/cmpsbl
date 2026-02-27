@@ -5156,6 +5156,11 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           if (data?.formatted && Array.isArray(data.formatted)) {
             return { success: true, output: (data.formatted as string[]).join('\n') };
           }
+
+          // Governance-style output (gov.* handlers return { output, status })
+          if (typeof data?.output === 'string' && data?.status) {
+            return { success: data.status !== 'error', output: `◉ ${base}\n\n${data.output}` };
+          }
           
           if (data?.success === false) {
             return { success: false, output: `▓ ${data.error || 'Command failed'}` };
