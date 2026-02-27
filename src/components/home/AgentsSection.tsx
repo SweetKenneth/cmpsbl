@@ -103,7 +103,7 @@ export function AgentsSection() {
               </div>
 
               <h3 className="font-bold text-foreground mb-2">{agent.name}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed mb-4">{agent.description}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4">{agent.description}</p>
 
               {/* Capabilities */}
               <div className="space-y-1.5">

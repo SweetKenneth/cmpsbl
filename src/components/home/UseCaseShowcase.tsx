@@ -202,7 +202,7 @@ export function UseCaseShowcase() {
                   <h3 className="font-bold text-base sm:text-lg text-foreground mb-2 group-hover:text-current transition-colors">
                     {useCase.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4">
                     {useCase.description}
                   </p>
                   

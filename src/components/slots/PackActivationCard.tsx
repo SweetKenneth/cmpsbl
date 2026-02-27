@@ -104,8 +104,8 @@ export function PackActivationCard({
             </div>
           </div>
 
-          {/* Short preview — 2 lines max, click for full details */}
-          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+          {/* Description — full text, click card for details */}
+          <p className="text-sm text-muted-foreground leading-relaxed">
             {pack.description}
           </p>
 
