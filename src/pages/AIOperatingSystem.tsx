@@ -6,7 +6,7 @@
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowRight, Brain, Shield, Network, Moon, Workflow, Cpu, Layers, Zap, Target } from "lucide-react";
+import { ArrowRight, Brain, Shield, Network, Moon, Workflow, Cpu, Layers, Zap, Target, Gamepad2 } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
