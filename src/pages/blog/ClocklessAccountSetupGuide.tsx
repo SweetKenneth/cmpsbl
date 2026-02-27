@@ -1,5 +1,5 @@
 /**
- * PILLAR POST: Getting Started with Clockless — Account Setup & Artifact Pack Guide
+ * PILLAR POST: Getting Started with CMPSBL — Account Setup & Artifact Pack Guide
  * 1600+ words, multiple images, heavy internal linking
  */
 
@@ -20,11 +20,11 @@ export default function ClocklessAccountSetupGuide() {
   return (
     <>
       <SEO
-        title="Getting Started with Clockless: Account Setup & Artifact Packs"
-        description="Complete guide to setting up your Clockless account and choosing the right artifact pack. Learn what makes composable cognitive infrastructure different from traditional AI platforms."
+        title="Getting Started with CMPSBL: Account Setup & Artifact Packs"
+        description="Complete guide to setting up your CMPSBL account and choosing the right artifact pack. Learn what makes composable cognitive infrastructure different from traditional AI platforms."
         type="article"
         publishedTime="2026-02-27"
-        keywords={['Clockless setup guide', 'artifact pack selection', 'composable AI infrastructure', 'cognitive substrate account', 'AI platform onboarding', 'CMPSBL getting started']}
+        keywords={['CMPSBL setup guide', 'artifact pack selection', 'composable AI infrastructure', 'cognitive substrate account', 'AI platform onboarding', 'Clockless Cognitive Reality']}
       />
       <PublicNav />
 
@@ -43,11 +43,11 @@ export default function ClocklessAccountSetupGuide() {
             </div>
 
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              Getting Started with Clockless: Your Complete Account Setup &amp; Artifact Pack Guide
+              Getting Started with CMPSBL: Your Complete Account Setup &amp; Artifact Pack Guide
             </h1>
 
             <p className="text-xl text-muted-foreground mb-6">
-              Everything you need to know about setting up your Clockless account, choosing the right artifact pack for your use case, and understanding what composable cognitive infrastructure gives you that no other platform can.
+              Everything you need to know about setting up your CMPSBL account, choosing the right artifact pack for your use case, and understanding what composable cognitive infrastructure gives you that no other platform can.
             </p>
 
             <div className="flex items-center gap-4 text-sm text-muted-foreground mb-8">
@@ -55,7 +55,7 @@ export default function ClocklessAccountSetupGuide() {
               <span className="flex items-center gap-1"><Clock className="w-4 h-4" />18 min read</span>
             </div>
 
-            <img src={heroImg} alt="Clockless account setup dashboard showing artifact pack selection wizard" className="w-full rounded-xl border border-border/50 shadow-xl" />
+            <img src={heroImg} alt="CMPSBL account setup dashboard showing artifact pack selection wizard" className="w-full rounded-xl border border-border/50 shadow-xl" />
           </div>
         </section>
 
