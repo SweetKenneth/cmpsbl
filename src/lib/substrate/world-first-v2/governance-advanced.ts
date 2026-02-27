@@ -1,5 +1,5 @@
 /**
- * Advanced Governance Functions — v9.1.0 ARCHITECT Epoch
+ * Advanced Governance Functions
  * 14 high-value governance and orchestration patterns
  */
 

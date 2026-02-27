@@ -28,7 +28,7 @@ const SpartaEpochRebuild = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            Burning It Down to Build It Right: The SPARTA Epoch Rebuild
+            Burning It Down to Build It Right: The Full Substrate Rebuild
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
@@ -144,7 +144,7 @@ const SpartaEpochRebuild = () => {
             </p>
 
             <div className="bg-card border border-border rounded-lg p-6 my-8 font-mono text-sm text-muted-foreground">
-              <div className="text-primary mb-2">// Boot Sequence — SPARTA Epoch</div>
+              <div className="text-primary mb-2">// Boot Sequence</div>
               <div>CORE (Standalone Kernel)</div>
               <div className="ml-4">→ CCR (Layer 0): SYSTEM + BRAIN + MEMORY + DREAM</div>
               <div className="ml-4">→ CCL (Layer 1): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT</div>
@@ -288,7 +288,7 @@ const SpartaEpochRebuild = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6 text-foreground">The Result: A Substrate That Tells the Truth</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              The SPARTA Epoch isn't just a version bump. It's the moment the CMPSBL substrate became honest about what it is: a layered cognitive kernel with strict boot ordering, independent circuit breaker isolation, autonomous evolution, and five protective mesh overlays.
+              This rebuild isn't just a version bump. It's the moment the CMPSBL substrate became honest about what it is: a layered cognitive kernel with strict boot ordering, independent circuit breaker isolation, autonomous evolution, and five protective mesh overlays.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               Every public page, every SEO description, every status dashboard, every terminal simulation, every investor deck — they all tell the same story now. Not because we wrote marketing copy and hoped the engineering would catch up, but because we did the engineering first and let the public surfaces reflect the truth.

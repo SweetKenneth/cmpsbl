@@ -1,6 +1,6 @@
 /**
  * Synergy System Exports
- * SPARTA Epoch — Cross-Module Pipeline Infrastructure (200 Pipelines, 125 Executors, 32 S-tier)
+ * Cross-Module Pipeline Infrastructure (200 Pipelines, 125 Executors, 32 S-tier)
  */
 
 // Types
