@@ -23,7 +23,7 @@ const capabilities = [
   {
     icon: Shield,
     title: "Private Substrate Deployment",
-    description: "Run the full cognitive substrate on your own infrastructure with air-gapped security and compliance guarantees.",
+    description: "Run the full substrate on your own infrastructure with air-gapped security, data sovereignty, and compliance guarantees.",
   },
   {
     icon: Layers,
@@ -71,7 +71,7 @@ export default function Enterprise() {
               Cognitive Infrastructure,<br />Your Terms
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              The full power of the CMPSBL substrate — deployed privately, configured precisely, and supported continuously for organizations that demand more.
+              The full CMPSBL substrate — deployed privately, configured precisely, and supported continuously for organizations that demand control.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="gap-2">

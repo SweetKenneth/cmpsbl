@@ -30,12 +30,12 @@ export default function About() {
   const codename = useMetric('codename');
   const linesOfCodeDisplay = useMetric('linesOfCodeDisplay');
   const products = [
-    { icon: Brain, name: "CMPSBL Substrate", description: "Layered cognitive orchestration substrate with persistent memory, mesh overlays, and hot-swappable convergence zones" },
-    { icon: Shield, name: "DEFENSE Mesh", description: "Enterprise-grade threat detection and bot protection overlay" },
-    { icon: Eye, name: "VISION", description: "Full observability and system introspection module" },
-    { icon: Server, name: "NEXUS", description: "Multi-provider AI routing module with BYOK architecture" },
-    { icon: Accessibility, name: "INCLUSIVE", description: "Human compatibility module with WCAG scanning & AI remediation" },
-    { icon: Zap, name: "Engines", description: "Production-ready cognitive orchestrations" },
+    { icon: Brain, name: "CMPSBL Substrate", description: "Modular cognitive orchestration substrate with persistent memory, governed routing, and adaptive intelligence" },
+    { icon: Shield, name: "DEFENSE", description: "Enterprise-grade threat detection and adaptive security layer" },
+    { icon: Eye, name: "VISION", description: "Full observability — metrics, latency, costs, and real-time dashboards" },
+    { icon: Server, name: "NEXUS", description: "Multi-provider AI routing with automatic optimization" },
+    { icon: Accessibility, name: "INCLUSIVE", description: "WCAG scanning, AI remediation, and accessibility reporting" },
+    { icon: Zap, name: "Artifact Packs", description: "24 activatable capability packs across 6 strategic domains" },
   ];
 
   return (
@@ -103,7 +103,7 @@ export default function About() {
             CMPSBL<sup className="text-lg">®</sup>
           </motion.h1>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }} className="text-xl text-foreground/90 max-w-3xl leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
-            A cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
+            Cognitive infrastructure for AI systems — routing, memory, learning, observability, security, and orchestration. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
           </motion.p>
         </div>
       </section>
@@ -181,7 +181,7 @@ export default function About() {
         <div className="container mx-auto max-w-6xl">
           <motion.h2 {...fadeUp} className="text-3xl font-bold mb-4 text-foreground">The Substrate</motion.h2>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-muted-foreground mb-10 text-lg">
-            Modules. Mesh overlays. Convergence zones. Synergy pipelines. Crystallized Crown Jewel pipelines. Production-ready cognitive infrastructure.
+            9 production modules, 24 artifact packs across 6 strategic domains, 300+ orchestration pipelines. Infrastructure that adapts and compounds.
           </motion.p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -202,7 +202,7 @@ export default function About() {
 
           <motion.div {...fadeUp} className="mt-12 bg-card border border-border rounded-xl p-6 md:p-8 shadow-sm">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">{codename} Epoch</span> — {linesOfCodeDisplay} lines of production code. Execution surfaces, mesh overlays, convergence zones, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
+              <span className="font-semibold">{codename} Epoch</span> — {linesOfCodeDisplay} lines of production code. 9 modules, 24 artifact packs, governed orchestration, and infrastructure that improves itself continuously. <span className="text-muted-foreground">The substrate that compounds.</span>
             </p>
           </motion.div>
         </div>
@@ -255,10 +255,10 @@ export default function About() {
           <motion.h2 {...fadeUp} className="text-3xl font-bold mb-12 text-center text-foreground">Our Journey</motion.h2>
           <div className="space-y-6">
             {[
-              { year: "2009", event: "Started building software—sites, apps, and tools for clients" },
+              { year: "2009", event: "Started building software — sites, apps, and tools for clients" },
               { year: "2024", event: "CMPSBL® founded. Substrate development begins." },
-              { year: "2025–26", event: `SPARTA Epoch — 9 modules, 5 meshes, 9 zones, 300 pipelines, zone architecture with circuit-breaker isolation` },
-              { year: "Now", event: "Production infrastructure serving developers and enterprises" }
+              { year: "2025–26", event: "Production epoch — 9 modules, 24 artifact packs, 300+ pipelines, governed orchestration architecture" },
+              { year: "Now", event: "Live infrastructure serving developers and enterprises worldwide" }
             ].map((milestone, index) => (
               <motion.div
                 key={index}

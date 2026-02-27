@@ -77,10 +77,10 @@ export default function StartHere() {
           {/* Body */}
           <div className="space-y-8">
             <motion.p {...stagger(0.15)} className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-              Clockless gives your AI applications persistent memory, self-improving pipelines, and governed orchestration — drop-in infrastructure that compounds over time.
+              CMPSBL gives your AI applications persistent memory, intelligent routing, and governed orchestration — drop-in infrastructure that gets smarter over time.
             </motion.p>
             <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              Pick a product, build something real, and see the difference. No demos, no lock-in.
+              Pick a product, build something real, and see the difference. Free tier, no lock-in.
             </motion.p>
 
             {/* What you can do */}
@@ -94,10 +94,10 @@ export default function StartHere() {
                 <div className="grid sm:grid-cols-2 gap-3">
                   {[
                     { icon: Brain, text: "Add persistent memory to any AI agent" },
-                    { icon: Zap, text: "Download a Composable Cognitive — your own AI agent" },
-                    { icon: Code, text: "Integrate the EVLVBL SDK for self-improving pipelines" },
+                    { icon: Zap, text: "Download a Mind — your own AI agent" },
+                    { icon: Code, text: "Activate artifact packs for deeper capabilities" },
                     { icon: Sparkles, text: "Try the accessibility scanner on any website" },
-                    { icon: BookOpen, text: "Read the research documentation on Zenodo" },
+                    { icon: BookOpen, text: "Read the technical documentation" },
                   ].map((item, idx) => (
                     <motion.div
                       key={item.text}
@@ -134,7 +134,7 @@ export default function StartHere() {
               <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-8 h-13">
                 <Link to="/composable-cognitives">
                   <Zap className="w-4 h-4" />
-                  Browse Cognitives
+                  Browse Minds
                 </Link>
               </Button>
             </motion.div>
