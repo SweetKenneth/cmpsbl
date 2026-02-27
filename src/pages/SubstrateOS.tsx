@@ -31,7 +31,9 @@ import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { useMetric } from '@/stores/publicMetricsStore';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { EventStream } from '@/components/substrate-os/EventStream';
-import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
+import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor, DepthGate, OnboardingFlow, SlotCapacityMeter } from '@/components/substrate-os/dashboard';
+import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { MatrixIntegrityPanel } from '@/components/substrate-os/dashboard/MatrixIntegrityPanel';
 import { MatrixBreakerMap } from '@/components/substrate-os/dashboard/MatrixBreakerMap';
 import { buildMatrixNodes, calculateIntegrity } from '@/lib/core/matrixNodeRegistry';
@@ -756,10 +758,23 @@ const DashboardContent = memo(function DashboardContent({
   const matrixNodes = useMemo(() => buildMatrixNodes(healthScore.modules), [healthScore.modules]);
   const integrityReport = useMemo(() => calculateIntegrity(matrixNodes), [matrixNodes]);
   
+  // Subscription + slots for onboarding and capacity meter
+  const { tier: subscriptionTier } = useEngineSubscription();
+  const slotState = useArtifactSlots(subscriptionTier);
+  const [onboardingDone, setOnboardingDone] = useState(false);
+  
   return (
     <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 items-start">
       {/* Main column */}
       <div className="flex-1 min-w-0 space-y-4 sm:space-y-5 w-full">
+        {/* Guided Onboarding for Free/Builder users */}
+        {userTier === 'free' && !onboardingDone && (
+          <OnboardingFlow tier={subscriptionTier} onComplete={() => setOnboardingDone(true)} />
+        )}
+
+        {/* Slot Capacity Meter — always visible */}
+        <SlotCapacityMeter activeCount={slotState.activeCount} capacity={slotState.capacity} />
+
         {canAccessTier(userTier, 'architect') && (
           <Suspense fallback={null}>
             <EmergencyRecoveryPanel showAlways={false} isCritical={integrityReport.isCritical} />
@@ -767,14 +782,25 @@ const DashboardContent = memo(function DashboardContent({
         )}
         <DashboardMetricsHero />
         <MatrixIntegrityPanel report={integrityReport} />
-        {canAccessTier(userTier, 'creator') && <CapacityMonitor />}
-        {canAccessTier(userTier, 'creator') && <QuickActionsPanel enabled={isOperator} onOpenTerminal={onOpenTerminal} />}
-        {canAccessTier(userTier, 'creator') && <ModuleControlsGrid enabled={isOperator} />}
-        {canAccessTier(userTier, 'architect') && (
+        
+        {/* Depth-dimmed sections */}
+        <DepthGate requiredTier="creator" featureLabel="Capacity Monitor" description="Real-time artifact slot and resource tracking">
+          <CapacityMonitor />
+        </DepthGate>
+
+        <DepthGate requiredTier="creator" featureLabel="Quick Actions" description="System heal, backup, diagnostics, and terminal access">
+          <QuickActionsPanel enabled={isOperator} onOpenTerminal={onOpenTerminal} />
+        </DepthGate>
+
+        <DepthGate requiredTier="creator" featureLabel="Module Controls" description="Direct execution surface controls for all substrate modules">
+          <ModuleControlsGrid enabled={isOperator} />
+        </DepthGate>
+        <DepthGate requiredTier="architect" featureLabel="BRAIN Intelligence" description="Deep cognitive analysis, learning metrics, and memory health">
           <Suspense fallback={<TabLoadingFallback />}>
             <BrainIntelligencePanel enabled={isOperator} />
           </Suspense>
-        )}
+        </DepthGate>
+
         <Suspense fallback={<TabLoadingFallback />}>
           <SystemHealthPanel enabled={canAccessTier(userTier, 'creator')} />
         </Suspense>

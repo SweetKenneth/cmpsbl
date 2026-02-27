@@ -9148,6 +9148,54 @@ export type Database = {
           },
         ]
       }
+      nexus_hourly_snapshots: {
+        Row: {
+          active_developer_count: number | null
+          available_for_clm: number
+          clm_calls_dispatched: number | null
+          created_at: string | null
+          id: string
+          optimization_strategy: string | null
+          provider_breakdown: Json | null
+          reserved_for_active_devs: number
+          reserved_for_chatbots: number
+          reserved_for_substrate: number
+          snapshot_hour: string
+          total_capacity: number
+          used_today: number
+        }
+        Insert: {
+          active_developer_count?: number | null
+          available_for_clm?: number
+          clm_calls_dispatched?: number | null
+          created_at?: string | null
+          id?: string
+          optimization_strategy?: string | null
+          provider_breakdown?: Json | null
+          reserved_for_active_devs?: number
+          reserved_for_chatbots?: number
+          reserved_for_substrate?: number
+          snapshot_hour: string
+          total_capacity?: number
+          used_today?: number
+        }
+        Update: {
+          active_developer_count?: number | null
+          available_for_clm?: number
+          clm_calls_dispatched?: number | null
+          created_at?: string | null
+          id?: string
+          optimization_strategy?: string | null
+          provider_breakdown?: Json | null
+          reserved_for_active_devs?: number
+          reserved_for_chatbots?: number
+          reserved_for_substrate?: number
+          snapshot_hour?: string
+          total_capacity?: number
+          used_today?: number
+        }
+        Relationships: []
+      }
       nexus_logs: {
         Row: {
           cost_usd_est: number
@@ -9178,6 +9226,51 @@ export type Database = {
           route_key?: string
           status?: string
           token_count?: number
+        }
+        Relationships: []
+      }
+      nexus_provider_limits: {
+        Row: {
+          avg_failure_threshold: number | null
+          confidence: number | null
+          discovered_rpd: number | null
+          discovered_rpm: number | null
+          discovery_phase: string | null
+          exhaustion_count: number | null
+          id: string
+          last_exhaustion_at: string | null
+          last_updated: string | null
+          metadata: Json | null
+          provider: string
+          stated_rpd: number
+        }
+        Insert: {
+          avg_failure_threshold?: number | null
+          confidence?: number | null
+          discovered_rpd?: number | null
+          discovered_rpm?: number | null
+          discovery_phase?: string | null
+          exhaustion_count?: number | null
+          id?: string
+          last_exhaustion_at?: string | null
+          last_updated?: string | null
+          metadata?: Json | null
+          provider: string
+          stated_rpd?: number
+        }
+        Update: {
+          avg_failure_threshold?: number | null
+          confidence?: number | null
+          discovered_rpd?: number | null
+          discovered_rpm?: number | null
+          discovery_phase?: string | null
+          exhaustion_count?: number | null
+          id?: string
+          last_exhaustion_at?: string | null
+          last_updated?: string | null
+          metadata?: Json | null
+          provider?: string
+          stated_rpd?: number
         }
         Relationships: []
       }
@@ -14018,6 +14111,36 @@ export type Database = {
           tier?: string
           updated_at?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_onboarding: {
+        Row: {
+          completed_at: string | null
+          completed_steps: string[] | null
+          created_at: string | null
+          id: string
+          step: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          completed_steps?: string[] | null
+          created_at?: string | null
+          id?: string
+          step?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          completed_steps?: string[] | null
+          created_at?: string | null
+          id?: string
+          step?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
