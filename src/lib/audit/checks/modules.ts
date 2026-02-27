@@ -54,7 +54,7 @@ export function checkModuleHealth(): AuditFinding[] {
     category: 'matrix',
     severity: 'info',
     title: `${nodeDefs.length} Matrix Nodes registered`,
-    detail: `CORE(1) + CCR(4) + CCL(5) + Execution(9) + Overlay(5) = ${nodeDefs.length} nodes. SPARTA Epoch architecture.`,
+    detail: `CORE(1) + CCR(4) + CCL(5) + Execution(9) + Overlay(5) = ${nodeDefs.length} nodes. Field-based topology.`,
   });
 
   // Integrity snapshot
