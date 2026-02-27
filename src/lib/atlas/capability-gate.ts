@@ -59,28 +59,47 @@ export interface ExecuteResult<T = unknown> {
 
 // Default configs per module
 const defaultConfigs: Record<string, CapabilityConfig> = {
+  // Kernel
+  core: { enabled: true, mode: 'governed', requiresApproval: false },
+  // CCR Zones
+  system: { enabled: true, mode: 'governed', requiresApproval: true },
   brain: { enabled: true, mode: 'governed', requiresApproval: false },
-  decode: { enabled: true, mode: 'governed', requiresApproval: false },
-  defense: { enabled: true, mode: 'governed', requiresApproval: true },
-  nexus: { enabled: true, mode: 'governed', requiresApproval: false },
-  vision: { enabled: true, mode: 'governed', requiresApproval: false },
+  memory: { enabled: true, mode: 'governed', requiresApproval: false },
   dream: { enabled: true, mode: 'governed', requiresApproval: false },
+  // OCG Zones
   ripple: { enabled: true, mode: 'governed', requiresApproval: false },
   access: { enabled: true, mode: 'governed', requiresApproval: true },
-  system: { enabled: true, mode: 'governed', requiresApproval: true },
-  modernizer: { enabled: true, mode: 'governed', requiresApproval: true },
-  integration: { enabled: true, mode: 'governed', requiresApproval: true },
-  inclusive: { enabled: true, mode: 'governed', requiresApproval: false },
+  identity: { enabled: true, mode: 'governed', requiresApproval: true },
+  relay: { enabled: true, mode: 'governed', requiresApproval: true },
+  audit: { enabled: true, mode: 'governed', requiresApproval: false },
+  // Execution Modules
+  decode: { enabled: true, mode: 'governed', requiresApproval: false },
+  encode: { enabled: true, mode: 'governed', requiresApproval: true },
+  vision: { enabled: true, mode: 'governed', requiresApproval: false },
   cortex: { enabled: true, mode: 'governed', requiresApproval: true },
-  core: { enabled: true, mode: 'governed', requiresApproval: false },
-  seba: { enabled: true, mode: 'governed', requiresApproval: true },
-  encoded: { enabled: true, mode: 'governed', requiresApproval: true },
-  synergy: { enabled: true, mode: 'governed', requiresApproval: false },
-  gov: { enabled: true, mode: 'governed', requiresApproval: false },
+  nexus: { enabled: true, mode: 'governed', requiresApproval: false },
+  economy: { enabled: true, mode: 'governed', requiresApproval: false },
+  sandbox: { enabled: true, mode: 'governed', requiresApproval: false },
+  inclusive: { enabled: true, mode: 'governed', requiresApproval: false },
+  integration: { enabled: true, mode: 'governed', requiresApproval: true },
+  modernizer: { enabled: true, mode: 'governed', requiresApproval: true },
+  // Mesh Overlays
+  defense: { enabled: true, mode: 'governed', requiresApproval: true },
+  evolution: { enabled: true, mode: 'governed', requiresApproval: false },
+  immunity: { enabled: true, mode: 'governed', requiresApproval: false },
+  intent: { enabled: true, mode: 'governed', requiresApproval: false },
   governance: { enabled: true, mode: 'governed', requiresApproval: false },
+  gov: { enabled: true, mode: 'governed', requiresApproval: false },
+  // Supervisory Planes
   obs: { enabled: true, mode: 'governed', requiresApproval: false },
   observability: { enabled: true, mode: 'governed', requiresApproval: false },
   analytics: { enabled: true, mode: 'governed', requiresApproval: false },
+  // Control Planes
+  seba: { enabled: true, mode: 'governed', requiresApproval: true },
+  encoded: { enabled: true, mode: 'governed', requiresApproval: true },
+  synergy: { enabled: true, mode: 'governed', requiresApproval: false },
+  atlas: { enabled: true, mode: 'governed', requiresApproval: false },
+  clm: { enabled: true, mode: 'governed', requiresApproval: false },
 };
 
 // Read-only actions that never require approval

@@ -1,7 +1,6 @@
 /**
- * OCG Identity Subsystem
- * Session management, actor resolution, trust scoring, cross-agency portability
- * Part of the Operational Compliance Grid (OCG)
+ * CMPSBL® OCG Identity Subsystem
+ * Session management, actor resolution, trust scoring
  */
 
 export { resolveIdentityAction, isIdentityAction, handleIdentityProxy, IDENTITY_MERGED, IDENTITY_TARGET_MODULE } from '@/lib/substrate/identity-access-merge';

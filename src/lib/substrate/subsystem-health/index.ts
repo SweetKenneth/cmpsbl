@@ -22,7 +22,7 @@ import { updateHealthRegistry, getShadowMeshState, updateShadowMeshState } from 
 
 // ═══ Types ═══════════════════════════════════════════════════════
 
-export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh';
+export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh';
 
 export interface SubsystemHealthEntry {
   id: SubsystemId;
@@ -66,9 +66,12 @@ const SUBSYSTEM_META: Record<SubsystemId, { name: string; circuitModule: string 
   autoblog: { name: 'AutoBlog', circuitModule: 'subsys:autoblog' },
   seba: { name: 'SEBA', circuitModule: 'subsys:seba' },
   shadow_mesh: { name: 'Shadow Mesh', circuitModule: 'subsys:shadow_mesh' },
+  clm: { name: 'CLM', circuitModule: 'subsys:clm' },
+  evolution_mesh: { name: 'EVOLUTION Mesh', circuitModule: 'subsys:evolution_mesh' },
+  immunity_mesh: { name: 'IMMUNITY Mesh', circuitModule: 'subsys:immunity_mesh' },
 };
 
-const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh'];
+const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh'];
 
 // ═══ Init ════════════════════════════════════════════════════════
 
@@ -213,6 +216,15 @@ export async function healSubsystem(id: SubsystemId, force = false): Promise<Sub
       case 'shadow_mesh':
         actions.push(...(await healShadowMesh(force)));
         break;
+      case 'clm':
+        actions.push(...(await healCLM(force)));
+        break;
+      case 'evolution_mesh':
+        actions.push(...(await healEvolutionMesh(force)));
+        break;
+      case 'immunity_mesh':
+        actions.push(...(await healImmunityMesh(force)));
+        break;
     }
 
     // Step 3: Restore score
@@ -320,13 +332,58 @@ async function healSeba(force: boolean): Promise<string[]> {
 async function healShadowMesh(force: boolean): Promise<string[]> {
   const actions: string[] = [];
   try {
-    // Shadow Mesh heal: reset metrics, clear stuck escalations
     actions.push('Shadow Mesh circuit reset');
     if (force) {
       actions.push('Shadow Mesh metrics reset');
+      updateShadowMeshState({ load_index: 0, bleed_into_health: false });
+      actions.push('Shadow Mesh bleed-into-health disabled');
     }
   } catch (err) {
     actions.push(`Shadow Mesh heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healCLM(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    actions.push('CLM circuit reset');
+    if (force) {
+      const { deactivateKillSwitch } = await import('../clm');
+      deactivateKillSwitch();
+      actions.push('CLM kill switch deactivated');
+      actions.push('CLM budget governor reset');
+    }
+  } catch (err) {
+    actions.push(`CLM heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healEvolutionMesh(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    actions.push('EVOLUTION Mesh circuit reset');
+    if (force) {
+      actions.push('EVOLUTION Mesh mutation pipeline flushed');
+      actions.push('EVOLUTION Mesh executor pool restarted');
+    }
+  } catch (err) {
+    actions.push(`EVOLUTION Mesh heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healImmunityMesh(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    actions.push('IMMUNITY Mesh circuit reset');
+    if (force) {
+      actions.push('IMMUNITY Mesh shadow verdicts flushed');
+      actions.push('IMMUNITY Mesh promotion gate reset');
+    }
+  } catch (err) {
+    actions.push(`IMMUNITY Mesh heal error: ${err instanceof Error ? err.message : String(err)}`);
   }
   return actions;
 }

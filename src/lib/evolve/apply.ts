@@ -1,5 +1,5 @@
 /**
- * Evolve Apply — Production Apply with Verified Shadow Gate
+ * CMPSBL® Evolve Apply — Production Apply with Verified Shadow Gate
  * Requires verified shadow artifacts before production apply
  */
 

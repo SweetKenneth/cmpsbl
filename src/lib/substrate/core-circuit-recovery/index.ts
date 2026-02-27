@@ -1,14 +1,8 @@
 /**
- * CORE Automatic Circuit Recovery Engine
- * Crown Jewel Capability
+ * CMPSBL® CORE Automatic Circuit Recovery Engine
  * 
- * CLM Request: CORE module requested automatic circuit recovery to handle
- * circuit breaker trips autonomously without manual intervention.
- * 
- * Resolution: Scheduled health probing, graduated recovery with backoff,
+ * Scheduled health probing, graduated recovery with backoff,
  * and automatic re-close with verification for tripped circuits.
- * 
- * Tier: Enterprise (Auto-recovery), CMPSBL (Predictive circuit management)
  */
 
 import { getBreaker, canExecute, recordSuccess, resetBreaker, getAllBreakerStates, type CircuitBreaker } from '../circuit-breaker';

@@ -1,5 +1,5 @@
 /**
- * Substrate Integration Module
+ * CMPSBL® Substrate Integration Module
  * Memory bridge, dream pipeline, and global pooling
  */
 

@@ -1,5 +1,5 @@
 /**
- * Evolution Mesh — Configuration
+ * CMPSBL® Evolution Mesh — Configuration
  * Global SDK configuration. Call configure() before wrapping functions.
  */
 
