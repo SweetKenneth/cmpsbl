@@ -736,6 +736,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             className={cn("h-6 w-6", autoScroll ? "text-foreground" : "text-muted-foreground/40")}
             onClick={() => setAutoScroll(prev => !prev)}
             title={autoScroll ? 'Auto-scroll ON' : 'Auto-scroll OFF'}
+            aria-label={autoScroll ? 'Disable auto-scroll' : 'Enable auto-scroll'}
           >
             <ArrowDownToLine className="h-3 w-3" />
           </Button>
@@ -743,6 +744,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             variant="ghost" 
             size="icon" 
             className="h-6 w-6 text-muted-foreground hover:text-foreground"
+            aria-label="Export terminal history"
             onClick={() => {
               const exportData = history.map(h => ({
                 command: h.command,
@@ -765,6 +767,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             className="h-6 w-6 text-muted-foreground hover:text-foreground"
             onClick={() => setIsExpanded(!isExpanded)}
             title="F11"
+            aria-label={isExpanded ? 'Minimize terminal' : 'Maximize terminal'}
           >
             {isExpanded ? <Minimize2 className="h-3 w-3" /> : <Maximize2 className="h-3 w-3" />}
           </Button>
@@ -774,6 +777,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               size="icon" 
               className="h-6 w-6 text-muted-foreground hover:text-foreground"
               onClick={() => setIsExpanded(false)}
+              aria-label="Close expanded terminal"
             >
               <X className="h-3 w-3" />
             </Button>
