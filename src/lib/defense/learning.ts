@@ -1,5 +1,5 @@
 /**
- * PromptFluid Defense Learning Module
+ * CMPSBL® DEFENSE Learning Module
  * Integrates defense data with Nexus Brain for adaptive improvement
  */
 

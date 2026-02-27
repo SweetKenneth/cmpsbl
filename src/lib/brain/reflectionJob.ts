@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Reflection Job
+ * CMPSBL® BRAIN — Reflection Job
  * Nightly summary of top-accessed memories and learning insights
  */
 

@@ -1,5 +1,5 @@
 /**
- * PromptFluid Vision v2.0 "Vee" — Provider Analytics
+ * CMPSBL® VISION "Vee" — Provider Analytics
  * Track AI provider usage, costs, and performance
  */
 

@@ -1,5 +1,5 @@
 /**
- * PromptFluid Dream Scheduler v5.0
+ * CMPSBL® DREAM Scheduler
  * Schedule dream cycles during low-activity periods
  */
 

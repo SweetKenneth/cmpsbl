@@ -1,5 +1,5 @@
 /**
- * PromptFluid Defense Core Engine
+ * CMPSBL® DEFENSE Core Engine
  * Real-time threat detection and risk scoring
  * Hardened with input validation and bounded collections
  */

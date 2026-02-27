@@ -1,5 +1,5 @@
 /**
- * PromptFluid Defense - Consolidated Rate Limiting v5.0
+ * CMPSBL® DEFENSE — Consolidated Rate Limiting
  * Unified rate limiting middleware with adaptive thresholds
  */
 

@@ -1,5 +1,5 @@
 /**
- * PromptFluid Research Spine
+ * CMPSBL® Research Spine
  * Autonomous research and verification system for Brain intelligence
  */
 

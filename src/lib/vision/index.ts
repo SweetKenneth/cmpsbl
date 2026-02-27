@@ -1,5 +1,5 @@
 /**
- * PromptFluid Vision v2.0 "Vee" — Operative Perception Engine
+ * CMPSBL® VISION "Vee" — Operative Perception Engine
  * 
  * Unified export for all Vision capabilities:
  * - Trace: Distributed tracing with causal chains

@@ -1,5 +1,5 @@
 /**
- * PromptFluid Nexus Cache
+ * CMPSBL® NEXUS Cache
  * Intelligent response caching and retrieval
  */
 

@@ -1,5 +1,5 @@
 /**
- * PromptFluid Vision — Real-Time Metric Aggregation
+ * CMPSBL® VISION — Real-Time Metric Aggregation
  * Live metric collection, aggregation, and streaming
  */
 

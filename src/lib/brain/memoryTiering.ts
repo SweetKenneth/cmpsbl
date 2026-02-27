@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Three-Tier Memory System
+ * CMPSBL® BRAIN — Three-Tier Memory System
  * Client library for Hot → Warm → Cold memory management
  */
 

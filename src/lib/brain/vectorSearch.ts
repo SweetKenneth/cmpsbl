@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Vector Search
+ * CMPSBL® BRAIN — Vector Search
  * Semantic retrieval across hot & cold memory tiers
  */
 

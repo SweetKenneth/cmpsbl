@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Enhanced Semantic Recall v5.0
+ * CMPSBL® BRAIN — Enhanced Semantic Recall
  * Embedding-based similarity search with cross-tier retrieval
  */
 

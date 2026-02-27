@@ -1,5 +1,5 @@
 /**
- * PromptFluid Nexus - Health-Weighted Provider Routing
+ * CMPSBL® NEXUS — Health-Weighted Provider Routing
  * Intelligent provider selection based on health scores
  * 
  * Supports 13 free-tier providers with automatic failover and cost optimization
