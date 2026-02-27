@@ -35,7 +35,7 @@ export const UNIFIED_TIERS = {
   creator: {
     product_id: 'prod_TzwJfkmkooYhwU',
     price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
-    amount: 900, // $9/month
+    amount: 2900, // $29/month
     interval: 'month' as const,
     name: 'Creator',
     tagline: 'More juice for builders shipping products',
@@ -77,7 +77,7 @@ export const UNIFIED_TIERS = {
   enterprise: {
     product_id: 'prod_TzwJm6Ji4E3Vca',
     price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
-    amount: 9900, // $99/month
+    amount: 7900, // $79/month
     interval: 'month' as const,
     name: 'Enterprise',
     tagline: 'Governance, control, and reliability for teams',
