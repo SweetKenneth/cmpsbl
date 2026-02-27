@@ -130,8 +130,8 @@ export {
  * Complete catalog of SPARTA Epoch enhancements
  */
 export const worldFirstEnhancements = {
-  version: '11.1.0',
-  codename: 'SPARTA Epoch',
+  get version() { return getMetric('version'); },
+  codename: 'Enhancement Pack',
   totalFunctions: 56,
   modules: {
     brain: ['AttentionMechanism', 'MemoryConsolidator', 'SemanticIndexer', 'EmotionalResonance'],

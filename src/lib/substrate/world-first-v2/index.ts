@@ -95,8 +95,8 @@ export {
  * Complete catalog of SPARTA Epoch enhancements
  */
 export const worldFirstEnhancementsV2 = {
-  version: '11.1.0',
-  codename: 'SPARTA Epoch',
+  get version() { return getMetric('version'); },
+  codename: 'Enhancement Pack',
   totalFunctions: 56,
   domains: {
     synergy: [
@@ -204,14 +204,14 @@ export const worldFirstEnhancementsV2 = {
  */
 export const combinedEnhancementRegistry = {
   v1: {
-    version: '11.1.0',
-    codename: 'SPARTA Epoch Core',
+    get version() { return getMetric('version'); },
+    codename: 'Enhancement Core',
     totalFunctions: 56,
     location: 'src/lib/substrate/world-first/',
   },
   v2: {
-    version: '11.1.0',
-    codename: 'SPARTA Epoch Advanced',
+    get version() { return getMetric('version'); },
+    codename: 'Enhancement Advanced',
     totalFunctions: 56,
     location: 'src/lib/substrate/world-first-v2/',
   },
