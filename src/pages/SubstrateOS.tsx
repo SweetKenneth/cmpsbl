@@ -148,7 +148,7 @@ const TIER_CONFIG: Record<SubstrateTier, {
     bgColor: 'bg-cyan-500/10',
     textColor: 'text-cyan-400',
     icon: Star,
-    price: '$9/mo',
+    price: '$29/mo',
   },
   architect: {
     label: 'ARCHITECT',
@@ -156,7 +156,7 @@ const TIER_CONFIG: Record<SubstrateTier, {
     bgColor: 'bg-fuchsia-500/10',
     textColor: 'text-fuchsia-400',
     icon: Rocket,
-    price: '$19/mo',
+    price: '$79/mo',
   },
   cmpsbl: {
     label: 'CMPSBL',
