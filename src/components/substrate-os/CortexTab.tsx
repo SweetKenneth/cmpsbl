@@ -172,7 +172,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
               <Settings className="w-4 h-4 text-violet-400" />
               Operating Mode
             </CardTitle>
-            <CardDescription className="text-xs">v6.0.0 Manual mode by default</CardDescription>
+            <CardDescription className="text-xs">Manual mode by default</CardDescription>
           </CardHeader>
           <CardContent>
             {statusLoading ? (
@@ -384,7 +384,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-4 text-center">
-            In v6.0.0 <strong>Manual Mode</strong>, all Apply steps require human approval before execution.
+            In <strong>Manual Mode</strong>, all Apply steps require human approval before execution.
           </p>
         </CardContent>
       </Card>

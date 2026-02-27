@@ -1,5 +1,5 @@
 /**
- * PromptFluid Notifications System
+ * CMPSBL® Notifications System
  * In-app and email notification management
  */
 

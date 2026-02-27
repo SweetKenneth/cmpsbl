@@ -200,7 +200,7 @@ const PromptFluidStudioGuide = () => {
             <h2 className="text-2xl font-bold mb-6 text-foreground">Related Articles</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <Link 
-                to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
+                to="/blog/how-cmpsbl-works-substrate-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
                 <h3 className="text-lg font-semibold mb-2 text-foreground">How the CMPSBL Substrate Works</h3>

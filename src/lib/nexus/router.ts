@@ -1,5 +1,5 @@
 /**
- * PromptFluid Nexus Router
+ * CMPSBL® NEXUS Router
  * Production-grade multi-provider AI routing
  * 
  * Fleet-managed routing across 13 free-tier providers with:

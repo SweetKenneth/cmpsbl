@@ -1,5 +1,5 @@
 /**
- * promptfluid® useDecode Hook
+ * CMPSBL® useDecode Hook
  * vX.IDENTITY.3 — React hook for Decode interpreter primitive
  * Voice-profile locked. Depth-escalation aware.
  */

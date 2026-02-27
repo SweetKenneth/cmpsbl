@@ -1,5 +1,5 @@
 /**
- * PromptFluid System Cache Flush
+ * CMPSBL® SYSTEM Cache Flush
  * Complete cache erasure and cold reinitialization
  */
 

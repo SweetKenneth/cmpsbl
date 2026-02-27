@@ -81,7 +81,7 @@ export function EnhancedFooter() {
         { name: "About", href: "/about" },
         { name: "Investors", href: "/investors" },
         { name: "Solutions", href: "/solutions" },
-        { name: "Studio", href: "/promptfluid" },
+        { name: "Studio", href: "/studio" },
         { name: "Careers", href: "/careers" },
         { name: "Contact", href: "/contact" },
       ]

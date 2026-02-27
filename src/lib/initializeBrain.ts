@@ -22,7 +22,7 @@ export async function initializeBrainSystem() {
   initializationAttempted = true;
 
   try {
-    console.log('🧠 Initializing PromptFluid Brain...');
+    console.log('🧠 Initializing CMPSBL® BRAIN...');
     
     const supabase = await getSupabase();
     const { data, error } = await supabase.functions.invoke('pf-brain-initialize');

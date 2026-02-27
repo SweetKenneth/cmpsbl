@@ -1,5 +1,5 @@
 /**
- * PromptFluid Vision v2.0 "Vee" — Watchdog Operative
+ * CMPSBL® VISION "Vee" — Watchdog Operative
  * Auto-action with guardrails in operative mode
  */
 

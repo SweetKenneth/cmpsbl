@@ -25,7 +25,7 @@ const DEFAULT_CONFIG: WebActuatorConfig = {
   retryAttempts: 3,
   crawlDepth: 5,
   followRedirects: true,
-  userAgent: 'PromptFluid-Agent/1.0',
+  userAgent: 'CMPSBL-Agent/1.0',
 };
 
 export interface FetchResult {

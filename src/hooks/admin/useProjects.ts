@@ -24,7 +24,7 @@ export function useProjects() {
 
       // Map modules to projects with descriptions
       const modules = [
-        { id: 'vision', name: 'PromptFluid Vision', module: 'vision', description: 'AI monitoring & learning dashboard' },
+        { id: 'vision', name: 'CMPSBL VISION', module: 'vision', description: 'AI monitoring & learning dashboard' },
         { id: 'defense', name: 'Defense Shield', module: 'defense', description: 'Threat detection & bot prevention' },
         { id: 'clarity', name: 'Clarity Scanner', module: 'clarity', description: 'WCAG accessibility compliance' },
         { id: 'studio', name: 'Studio Builder', module: 'studio', description: 'AI-powered site generation' },

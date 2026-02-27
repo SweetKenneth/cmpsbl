@@ -424,7 +424,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
           <div>
             <h2 className="text-lg font-bold text-foreground">Cognitive Engines</h2>
             <p className="text-xs text-muted-foreground font-mono">
-              v8.1.0 • {engineSummary.totalEngines} engines • {metaSummary.totalMetaEngines} meta-engines
+              {engineSummary.totalEngines} engines • {metaSummary.totalMetaEngines} meta-engines
             </p>
           </div>
         </div>

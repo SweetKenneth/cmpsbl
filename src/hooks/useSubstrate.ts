@@ -1,5 +1,5 @@
 /**
- * promptfluid® Substrate React Hooks
+ * CMPSBL® Substrate React Hooks
  * Cognitive Orchestration Substrate (Phase 4A: Engine Bus)
  * 
  * Includes hooks for:

@@ -230,7 +230,7 @@ const PromptFluidDefense = () => {
               </Link>
 
               <Link 
-                to="/blog/promptfluid-vision-unified-dashboard" 
+                to="/blog/cmpsbl-vision-unified-dashboard" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
                 <h3 className="text-lg font-semibold mb-2 text-foreground">VISION: System Dashboard</h3>

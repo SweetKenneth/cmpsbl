@@ -1,5 +1,5 @@
 /**
- * PromptFluid System Health Monitor
+ * CMPSBL® SYSTEM Health Monitor
  * Real-time system status and health checks
  */
 

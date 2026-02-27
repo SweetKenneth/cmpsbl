@@ -1,5 +1,5 @@
 /**
- * PromptFluid Vision v2.0 "Vee" — Anomaly Detection Engine
+ * CMPSBL® VISION "Vee" — Anomaly Detection Engine
  * Detect and track system anomalies with severity classification
  */
 

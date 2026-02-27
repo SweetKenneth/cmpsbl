@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Cost Tracker
+ * CMPSBL® BRAIN — Cost Tracker
  * Logs token usage per model and optimizes routing for cost efficiency
  */
 

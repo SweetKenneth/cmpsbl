@@ -1,5 +1,5 @@
 /**
- * PromptFluid System - Predictive Healing v5.0
+ * CMPSBL® SYSTEM — Predictive Healing
  * Proactive healing based on health trends and anomaly detection
  */
 

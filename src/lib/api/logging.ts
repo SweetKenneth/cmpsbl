@@ -1,5 +1,5 @@
 /**
- * PromptFluid Logging System
+ * CMPSBL® Logging System
  * Centralized activity logging and audit trails
  */
 

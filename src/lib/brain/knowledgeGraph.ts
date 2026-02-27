@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Knowledge Graph v2.0
+ * CMPSBL® BRAIN — Knowledge Graph
  * Client library for enhanced semantic knowledge graph
  */
 

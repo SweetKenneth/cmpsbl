@@ -92,7 +92,7 @@ const PromptFluidAccess = () => {
                 </p>
 
                 <p>
-                  Every user interaction with <Link to="/blog/promptfluid-studio-build-apps-that-think" className="text-primary hover:underline">STUDIO</Link>, <Link to="/blog/promptfluid-vision-unified-dashboard" className="text-primary hover:underline">VISION</Link>, or any substrate module passes through ACCESS for authentication and authorization.
+                  Every user interaction with <Link to="/blog/cmpsbl-studio-build-apps-that-think" className="text-primary hover:underline">STUDIO</Link>, <Link to="/blog/cmpsbl-vision-unified-dashboard" className="text-primary hover:underline">VISION</Link>, or any substrate module passes through ACCESS for authentication and authorization.
                 </p>
 
                 <h2 className="text-3xl mt-20 mb-8">Core Capabilities</h2>

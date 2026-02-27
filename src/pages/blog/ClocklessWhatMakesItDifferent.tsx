@@ -73,7 +73,7 @@ export default function ClocklessWhatMakesItDifferent() {
 
           <h2 className="text-2xl font-bold mt-12 mb-4">How Clockless Is Architecturally Different</h2>
           <p>
-            Clockless is a <strong>unified cognitive substrate</strong>. Every module — <Link to="/persistent-memory" className="text-primary hover:underline">MEMORY</Link>, <Link to="/blog/promptfluid-defense-ai-security" className="text-primary hover:underline">DEFENSE</Link>, <Link to="/blog/promptfluid-brain-adaptive-learning-core" className="text-primary hover:underline">BRAIN</Link>, <Link to="/decode" className="text-primary hover:underline">DECODE</Link>, and the rest — runs on the same runtime and shares the same memory substrate. There's no integration layer because there's nothing to integrate. It's one system.
+            Clockless is a <strong>unified cognitive substrate</strong>. Every module — <Link to="/persistent-memory" className="text-primary hover:underline">MEMORY</Link>, <Link to="/blog/cmpsbl-defense-ai-security" className="text-primary hover:underline">DEFENSE</Link>, <Link to="/blog/cmpsbl-brain-adaptive-learning-core" className="text-primary hover:underline">BRAIN</Link>, <Link to="/decode" className="text-primary hover:underline">DECODE</Link>, and the rest — runs on the same runtime and shares the same memory substrate. There's no integration layer because there's nothing to integrate. It's one system.
           </p>
 
           <div className="grid md:grid-cols-3 gap-4 my-6">

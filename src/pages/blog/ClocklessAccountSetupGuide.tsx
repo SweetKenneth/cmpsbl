@@ -146,7 +146,7 @@ export default function ClocklessAccountSetupGuide() {
                   <Shield className="w-5 h-5 text-primary shrink-0 mt-1" />
                   <div>
                     <h4 className="font-bold">Security-Critical Applications?</h4>
-                    <p className="text-sm text-muted-foreground">Choose packs with DEFENSE and GOVERNOR modules included. Read about our <Link to="/blog/promptfluid-defense-ai-security" className="text-primary hover:underline">security architecture</Link> and <Link to="/proof" className="text-primary hover:underline">Proof Mode</Link> for cryptographic execution verification.</p>
+                    <p className="text-sm text-muted-foreground">Choose packs with DEFENSE and GOVERNOR modules included. Read about our <Link to="/blog/cmpsbl-defense-ai-security" className="text-primary hover:underline">security architecture</Link> and <Link to="/proof" className="text-primary hover:underline">Proof Mode</Link> for cryptographic execution verification.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

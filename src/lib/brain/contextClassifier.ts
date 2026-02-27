@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Context Classifier
+ * CMPSBL® BRAIN — Context Classifier
  * Categorizes incoming memory content by type
  */
 

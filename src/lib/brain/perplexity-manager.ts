@@ -1,5 +1,5 @@
 /**
- * PromptFluid Provider Manager
+ * CMPSBL® NEXUS Provider Manager
  * Adaptive quota management with header-aware throttling for free-tier providers
  */
 

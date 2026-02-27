@@ -203,5 +203,5 @@ artifacts only. By purchasing and downloading any capability, you acknowledge an
 
 5. SUPPORT AVAILABLE: For technical questions or integration help, visit our Support page.
 
-For questions, contact: PromptFluid@gmail.com
+For questions, contact: support@cmpsbl.com
 `;
