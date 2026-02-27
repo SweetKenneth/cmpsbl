@@ -1,7 +1,6 @@
 /**
  * META HERO: Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate
  * Studio-grade hero with cinematic typography and fluid motion
- * SPARTA Epoch
  */
 
 import React, { useEffect, useState, useRef, useMemo } from "react";

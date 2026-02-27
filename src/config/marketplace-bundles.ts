@@ -1,6 +1,6 @@
 /**
- * Marketplace Bundles & Stacks Configuration v9.1.0
- * ARCHITECT Epoch Market-aligned pricing based on competitor research (Feb 2026)
+ * Marketplace Bundles & Stacks Configuration
+ * Market-aligned pricing based on competitor research (Feb 2026)
  * Volume packs and developer outcome recipes with 25-35% discounts
  */
 

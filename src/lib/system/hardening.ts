@@ -1,6 +1,6 @@
 /**
  * Hardening Utilities — Shared safety primitives
- * SPARTA Epoch — Production-grade guards for substrate operations
+ * Production-grade guards for substrate operations
  * 
  * Provides: withTimeout, clampNumber, validateStringInput, safeParse
  * Used across CORE, CCR, and Overlay nodes for consistent hardening.

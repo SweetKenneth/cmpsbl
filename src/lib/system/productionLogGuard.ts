@@ -3,7 +3,7 @@
  * Suppresses debug/info console output in production builds.
  * Call once at app boot to patch global console methods.
  * 
- * SPARTA Epoch — Investor-ready console hygiene
+ * Investor-ready console hygiene
  */
 
 const IS_PROD = import.meta.env.PROD;

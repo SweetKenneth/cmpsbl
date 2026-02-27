@@ -1,7 +1,6 @@
 /**
  * MarketplaceHeader — Premium hero with immersive visuals
  * Mobile-first, visually compelling marketplace entrance
- * SPARTA Epoch — 10 entities + 5 meshes + 9 zones
  */
 
 import { motion } from 'framer-motion';

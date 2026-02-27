@@ -1,5 +1,5 @@
 /**
- * Release Gate Types — SPARTA Epoch
+ * Release Gate Types
  * Shared types for the 10-pass release gate framework
  */
 

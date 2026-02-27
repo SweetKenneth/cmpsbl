@@ -1,6 +1,6 @@
 /**
  * Capability Gate System
- * v7.0.0 — Governance wrapper for all substrate actions
+ * Governance wrapper for all substrate actions
  */
 
 import { generateTraceId } from '@/lib/system/trace';

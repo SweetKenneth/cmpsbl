@@ -1,6 +1,6 @@
 /**
  * BRAIN Batch Operations
- * v7.0.0 — High-Throughput Memory Ingestion & Export
+ * High-Throughput Memory Ingestion & Export
  * 
  * Missing capability: Bulk memory operations for
  * high-volume ingestion, export, and migration.

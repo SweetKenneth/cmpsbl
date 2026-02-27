@@ -1,7 +1,6 @@
 /**
  * FeaturedSection — Premium hero products with compelling visuals
  * Mobile-first design, high conversion focus
- * SPARTA Epoch — 10-entity + 5-mesh architecture + SEBA
  * OS License now redirects to licensing page (tiered pricing)
  */
 

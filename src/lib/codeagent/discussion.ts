@@ -1,6 +1,6 @@
 /**
  * CodeAgent Discussion Mode — Pre-Change Dialog System
- * v2.0.0 — Clarifying questions, impact preview, approval gates
+ * Clarifying questions, impact preview, approval gates
  * 
  * Mirrors the human agent workflow: discuss before implementing
  */
