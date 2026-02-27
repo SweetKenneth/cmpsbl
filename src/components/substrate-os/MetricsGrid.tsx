@@ -1,7 +1,7 @@
 /**
- * Metrics Grid v10.5.4 ARCHITECT Epoch — Premium live system metrics with animations
+ * Metrics Grid — Premium live system metrics with animations
  * Enhanced visual indicators, mini charts, and glassmorphic design
- * ARCHITECT Epoch: Includes CLM, 62 engines, and autonomous learning metrics
+ * Includes CLM, 62 engines, and autonomous learning metrics
  */
 
 import { Activity, Brain, MessageSquare, Shield, Zap, Moon, TrendingUp, TrendingDown, Database, Cpu, Minus, Sparkles, GitBranch } from 'lucide-react';

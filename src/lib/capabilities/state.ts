@@ -1,6 +1,6 @@
 /**
  * Capability State Management
- * v10.5.4 — ARCHITECT Epoch Enable/Disable State for Governed Capabilities
+ * Enable/Disable State for Governed Capabilities
  * 
  * Controls runtime availability of 400+ capabilities without code changes.
  * Disabled capabilities remain registered but are inert (cannot be invoked).

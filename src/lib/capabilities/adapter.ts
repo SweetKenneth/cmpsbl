@@ -1,6 +1,6 @@
 /**
  * Capability Adapter
- * v10.5.4 — ARCHITECT Epoch Universal Invocation Wrapper
+ * Universal Invocation Wrapper
  */
 
 import { supabase } from '@/integrations/supabase/client';
