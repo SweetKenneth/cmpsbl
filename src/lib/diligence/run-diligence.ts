@@ -172,6 +172,7 @@ async function runOne(name: string, command: string, expectedMode: 'surface' | '
 }
 
 export async function runDiligence(): Promise<DiligenceReport> {
+  await ensureHandlersRegistered();
   const results: TestResult[] = [];
 
   for (const t of SURFACE_COMMANDS) results.push(await runOne(t.name, t.command, 'surface'));
