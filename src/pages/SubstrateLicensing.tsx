@@ -506,7 +506,7 @@ export default function SubstrateLicensing() {
               {[
                 { q: 'Is the free tier actually useful?', a: 'Yes. Free users can build projects, run capabilities, use templates, and save outputs. It\'s not a trial — it\'s a permanent tier for learning and prototyping.' },
                 { q: 'What are Crown Jewels?', a: 'Our highest-value sealed capabilities. Some are available at paid tiers. Others remain internal to preserve system integrity. You experience the power — you don\'t see the blueprint.' },
-                { q: 'What\'s the difference between Creator and Architect?', a: 'Creator ($9/mo) adds executable capabilities, private memory, and light automation. Architect ($19/mo) adds cross-module orchestration, batch execution, audit views, and priority routing. Most serious builders land at Architect.' },
+                { q: 'What\'s the difference between Creator and Architect?', a: 'Creator ($29/mo) adds executable capabilities, private memory, and light automation. Architect ($79/mo) adds cross-module orchestration, batch execution, audit views, and priority routing. Most serious builders land at Architect.' },
                 { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. Changes take effect at the next billing cycle.' },
                 { q: 'What does "Builder Isolation" mean?', a: 'Your projects run ON the Substrate through templates, capabilities, and pipelines. You never have direct access to internal systems like CLM, CORTEX, or GOVERNOR. This protects both you and the platform.' },
                 { q: 'Is Enterprise self-serve?', a: 'Yes, $99/mo Enterprise is self-serve. For dedicated instances, custom compliance, or SOC2 requirements, contact us for custom pricing.' },

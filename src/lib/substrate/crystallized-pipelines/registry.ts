@@ -441,7 +441,7 @@ const ENTERPRISE_PIPELINES: CrystallizedPipeline[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ARCHITECT PIPELINES (36) — Premium sealed workflows ($19/mo)
+// ARCHITECT PIPELINES (36) — Premium sealed workflows ($79/mo)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ARCHITECT_PIPELINES: CrystallizedPipeline[] = [
@@ -845,7 +845,7 @@ const ARCHITECT_PIPELINES: CrystallizedPipeline[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CREATOR PIPELINES (28) — Builder-friendly sealed workflows ($9/mo)
+// CREATOR PIPELINES (28) — Builder-friendly sealed workflows ($29/mo)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CREATOR_PIPELINES: CrystallizedPipeline[] = [

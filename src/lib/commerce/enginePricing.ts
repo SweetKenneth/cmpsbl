@@ -255,19 +255,19 @@ export const TIER_DISPLAY: Record<EngineVisibility, {
     label: 'Creator', 
     color: 'text-cyan-400', 
     badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
-    priceLabel: '$9/mo',
+    priceLabel: '$29/mo',
   },
   advanced: { 
     label: 'Architect', 
     color: 'text-amber-400', 
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-    priceLabel: '$19/mo',
+    priceLabel: '$79/mo',
   },
   meta: { 
     label: 'Architect', 
     color: 'text-primary', 
     badge: 'bg-primary/10 text-primary border-primary/30',
-    priceLabel: '$19/mo',
+    priceLabel: '$79/mo',
   },
   internal: { 
     label: 'Platform', 
