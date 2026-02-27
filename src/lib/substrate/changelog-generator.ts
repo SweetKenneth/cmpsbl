@@ -1,6 +1,6 @@
 /**
  * Changelog Auto-Generation Utility
- * SPARTA Epoch — Generates changelog entries from applied evolution patches
+ * Generates changelog entries from applied evolution patches
  *
  * Queries evolution_runs and substrate_upgrade_plans to auto-generate
  * structured changelog entries for the /changelog page.

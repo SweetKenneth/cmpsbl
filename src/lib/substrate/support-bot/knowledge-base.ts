@@ -681,7 +681,7 @@ For best experience, use the latest version of Chrome or Firefox. Some features 
   {
     id: 'general_006',
     question_pattern: 'How many modules does the substrate have?',
-    answer: `The CMPSBL Substrate (v11.1 SPARTA Epoch) has exactly **9 public modules**:
+    answer: `The CMPSBL Substrate has exactly **9 public modules**:
 
 1. DECODE — Interpreter (human-machine interface)
 2. ENCODE — Code execution & generation

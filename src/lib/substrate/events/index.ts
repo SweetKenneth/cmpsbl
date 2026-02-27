@@ -1,6 +1,6 @@
 /**
  * Substrate Events Module
- * SPARTA Epoch — Unified Event Emission and Query
+ * Unified Event Emission and Query
  */
 
 export { 

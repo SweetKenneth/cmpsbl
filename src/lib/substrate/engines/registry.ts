@@ -1,6 +1,6 @@
 /**
  * Engine Registry
- * v10.5.4 ARCHITECT Epoch — 76 Cognitive Engines orchestrating 400 Capabilities
+ * 76 Cognitive Engines orchestrating 400 Capabilities
  * 
  * Each engine orchestrates multiple related capabilities into
  * a compound execution unit with enhanced value and IP protection.
@@ -1595,7 +1595,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // INFRASTRUCTURE LAYER ENGINES (6) — v9.0.0 ARCHITECT Epoch
+  // INFRASTRUCTURE LAYER ENGINES (6)
   // ═══════════════════════════════════════════════════════════════════════════
   
   knowledge_retrieval_engine: {

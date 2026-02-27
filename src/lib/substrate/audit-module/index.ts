@@ -1,6 +1,6 @@
 /**
  * AUDIT Module — Immutable Compliance Ledger
- * v10.5.1 ARCHITECT Epoch — Append-only logging, hash chaining, cross-module capture
+ * Append-only logging, hash chaining, cross-module capture
  * Circuit Breaker + Hot-Swap + Graceful Fallback
  * 
  * CLM-Requested Upgrades Implemented:

@@ -1,6 +1,6 @@
 /**
  * useArchivedCapabilities Hook
- * SPARTA Epoch — React hook for accessing archived edge function capabilities
+ * React hook for accessing archived edge function capabilities
  */
 
 import { useState, useCallback } from 'react';

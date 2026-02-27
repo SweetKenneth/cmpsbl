@@ -1,6 +1,5 @@
 /**
  * Decode Response Policy — Epistemic Discipline
- * SPARTA Epoch
  * 
  * Enforces claim provenance tagging on all Decode output:
  *   [MEASURED]              — backed by real data/metrics

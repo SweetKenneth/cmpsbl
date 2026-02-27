@@ -1,6 +1,6 @@
 /**
  * Priority Queue Engine
- * SPARTA Epoch — Weighted task scheduling for matrix nodes
+ * Weighted task scheduling for matrix nodes
  * 
  * CORE/CCR operations always preempt lower-priority overlay work under load.
  * Uses sector-based priority with configurable weights.
