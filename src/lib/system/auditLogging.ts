@@ -1,6 +1,6 @@
 /**
  * SYSTEM Module — Audit Logging
- * v10.5.4 — ARCHITECT Epoch — Comprehensive audit trail and compliance logging
+ * Comprehensive audit trail and compliance logging
  */
 
 import { supabase } from '@/integrations/supabase/client';

@@ -1,6 +1,6 @@
 /**
  * Synergy Pipeline Registry — Static Descriptive Map
- * v6.3.1 FNDTN — Read-Only, Non-Executable
+ * Read-Only, Non-Executable
  * 
  * This registry documents emergent capabilities from module intersections.
  * It is DESCRIPTIVE ONLY — no execution paths derive from this file.

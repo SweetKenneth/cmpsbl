@@ -1,6 +1,6 @@
 /**
  * CodeAgent Types — Phase System and Write Guarantees
- * v1.0.0 — Prevents conversation loops, guarantees artifact output
+ * Prevents conversation loops, guarantees artifact output
  */
 
 // ═══════════════════════════════════════════════════════════════

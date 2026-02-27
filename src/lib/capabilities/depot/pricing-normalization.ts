@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Pricing Normalization
  * Unified pricing rules for public marketplace
- * v1.0.0
+ *
  * 
  * RULES:
  * - Price floor: $19
