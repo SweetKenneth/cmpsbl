@@ -22,12 +22,12 @@ if (!NEW_VERSION) {
 
 // Version patterns to replace (ordered from most specific to least)
 const VERSION_PATTERNS = [
-  // Explicit version strings like v9.1.0, v9.2.0, v10.0.0, v10.5.4
-  { regex: /v(9\.\d+\.\d+|10\.\d+\.\d+)/g, replacement: `v${NEW_VERSION}` },
-  // Bare version strings like "Version 9.1.0", "version: '10.5.4'"
-  { regex: /(?<=Version\s|version[:\s='"]+)(9\.\d+\.\d+|10\.\d+\.\d+)/g, replacement: NEW_VERSION },
-  // In code comments like "v9.1.0 ARCHITECT"
-  { regex: /(?<=\*\s*)v(9\.\d+\.\d+|10\.\d+\.\d+)/g, replacement: `v${NEW_VERSION}` },
+  // Explicit version strings like v9.1.0, v10.0.0, v11.3.0
+  { regex: /v(9\.\d+\.\d+|10\.\d+\.\d+|11\.\d+\.\d+)/g, replacement: `v${NEW_VERSION}` },
+  // Bare version strings like "Version 9.1.0", "version: '11.3.0'"
+  { regex: /(?<=Version\s|version[:\s='"]+)(9\.\d+\.\d+|10\.\d+\.\d+|11\.\d+\.\d+)/g, replacement: NEW_VERSION },
+  // In code comments like "v11.3.0 SPARTA"
+  { regex: /(?<=\*\s*)v(9\.\d+\.\d+|10\.\d+\.\d+|11\.\d+\.\d+)/g, replacement: `v${NEW_VERSION}` },
 ];
 
 // Directories to scan
