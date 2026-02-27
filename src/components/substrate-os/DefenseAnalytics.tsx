@@ -335,7 +335,7 @@ export function DefenseAnalytics() {
                       </div>
                       <div className="h-2 bg-muted rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all ${config.bg.replace('/10', '/60')}`}
+                          className={`h-full rounded-full transition-all ${(config?.bg ?? 'bg-primary/10').replace('/10', '/60')}`}
                           style={{ width: `${pct}%` }}
                         />
                       </div>

@@ -41,7 +41,7 @@ function OperatorActionCard({
     <Card className="hover:border-primary/30 transition-colors">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
-          <div className={`w-10 h-10 rounded-lg ${iconColor.replace('text-', 'bg-')}/10 flex items-center justify-center shrink-0`}>
+          <div className={`w-10 h-10 rounded-lg ${(iconColor ?? 'text-primary').replace('text-', 'bg-')}/10 flex items-center justify-center shrink-0`}>
             <Icon className={`w-5 h-5 ${iconColor}`} />
           </div>
           <div className="flex-1 min-w-0">

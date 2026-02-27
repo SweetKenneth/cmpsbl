@@ -168,7 +168,7 @@ export default function QuarryDashboard() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {Object.entries(TIER_LABELS).map(([k, v]) => (
-              <div key={k} className={cn("rounded-lg border p-3", TIER_COLORS[k as QuarryTier].replace('text-', 'border-').split(' ')[2])}>
+              <div key={k} className={cn("rounded-lg border p-3", (TIER_COLORS[k as QuarryTier] ?? '').replace('text-', 'border-').split(' ')[2])}>
                 <div className="text-2xl font-bold">{stats.byTier[k] ?? 0}</div>
                 <div className="text-xs text-muted-foreground">{v}</div>
               </div>

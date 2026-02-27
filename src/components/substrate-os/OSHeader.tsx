@@ -121,7 +121,7 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
     },
   };
   
-  const currentRole = roleConfig[role];
+  const currentRole = roleConfig[role] ?? roleConfig.free;
   const RoleIcon = currentRole.icon;
   
   return (
