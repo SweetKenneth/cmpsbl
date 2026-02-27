@@ -39,16 +39,17 @@
 
 <div class="card">
 <h3>2. Audit Checks (checks/)</h3>
-<p>Eight specialized check modules:</p>
+<p>Nine specialized check modules:</p>
 <ul>
 <li><code>system-manifest.ts</code> — System manifest & Matrix Node validation</li>
 <li><code>routes.ts</code> — Route contract verification</li>
 <li><code>terminal.ts</code> — Terminal command registry validation</li>
 <li><code>modules.ts</code> — Matrix Node health & weighted integrity checks</li>
-<li><code>seo.ts</code> — SEO metadata validation</li>
-<li><code>ui-contracts.ts</code> — UI component contract checks</li>
+<li><code>seo.ts</code> — SEO metadata validation (version number detection)</li>
+<li><code>ui-contracts.ts</code> — UI component contract checks (h1, ARIA)</li>
 <li><code>hooks-contracts.ts</code> — React hooks contract validation</li>
-<li><code>supabase-contracts.ts</code> — Database contract verification</li>
+<li><code>branding-contracts.ts</code> — Branding & pricing consistency enforcement</li>
+<li><code>supabase-contracts.ts</code> — Database contract verification (RLS-aware)</li>
 </ul>
 </div>
 
