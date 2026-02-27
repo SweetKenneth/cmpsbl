@@ -1,6 +1,6 @@
 /**
  * useMatrixResilience — Unified hook for all resilience features
- * SPARTA Epoch — Canary, Priority Queue, Kill Switch, Redundant Nodes,
+ * Canary, Priority Queue, Kill Switch, Redundant Nodes,
  * Chaos Testing, Cross-Sector Correlation, Heatmap, Forecasting,
  * Quorum Healing, and Immutable Incident Reports
  */

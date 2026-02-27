@@ -1,6 +1,6 @@
 /**
  * Support — Evolving AI Support Bot
- * v1.0.0 — Memory-backed, governed support system
+ * Memory-backed, governed support system
  */
 
 import { SEO } from "@/components/SEO";
