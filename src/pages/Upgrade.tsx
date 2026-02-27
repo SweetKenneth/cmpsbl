@@ -501,6 +501,7 @@ export default function Upgrade() {
                   packs={domainPacks}
                   slotState={slotState}
                   onSlotPressure={handleSlotPressure}
+                  onViewDetails={(pack) => setDetailPack(pack)}
                 />
               );
             })}
