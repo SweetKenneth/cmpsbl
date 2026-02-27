@@ -1004,8 +1004,7 @@ export default function SubstrateOS() {
 
 
 
-      {/* ═══ CLASSIC MODE ═══ */}
-      {viewMode === 'classic' && (
+
       <div className="flex-1 flex overflow-hidden">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block">
