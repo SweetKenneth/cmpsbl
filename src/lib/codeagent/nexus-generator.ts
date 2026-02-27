@@ -16,6 +16,24 @@ import { selectPromptForTask, buildRefinementPrompt, buildVerificationPrompt } f
 import { learnFromCodeAction } from './learning-engine';
 import { checkForbiddenPatterns, checkRequiredPatterns } from './knowledge';
 
+/**
+ * Report provider exhaustion (429) to discovery function for limit calibration
+ */
+async function reportProviderExhaustion(provider: string, errorCode: number, errorMessage: string): Promise<void> {
+  try {
+    await supabase.functions.invoke('nexus-provider-discovery', {
+      body: {
+        action: 'report_exhaustion',
+        provider,
+        error_code: errorCode,
+        error_message: errorMessage,
+      },
+    });
+  } catch {
+    // Non-critical — discovery is best-effort
+  }
+}
+
 // ═══════════════════════════════════════════════════════════════
 // TYPES
 // ═══════════════════════════════════════════════════════════════
@@ -251,6 +269,12 @@ async function callNexusRouter(
 
     if (error) {
       console.error('[Nexus] Router error:', error);
+      
+      // Report 429 exhaustion to provider-discovery for limit calibration
+      if (error.message?.includes('429') || error.message?.includes('rate limit')) {
+        reportProviderExhaustion(data?.provider || 'unknown', 429, error.message).catch(() => {});
+      }
+      
       return {
         success: false,
         content: '',
@@ -271,12 +295,19 @@ async function callNexusRouter(
 
   } catch (error) {
     console.error('[Nexus] Call failed:', error);
+    
+    // Report potential exhaustion
+    const errMsg = error instanceof Error ? error.message : 'Unknown error';
+    if (errMsg.includes('429') || errMsg.includes('rate limit')) {
+      reportProviderExhaustion('unknown', 429, errMsg).catch(() => {});
+    }
+    
     return {
       success: false,
       content: '',
       provider: 'error',
       model: 'none',
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: errMsg,
     };
   }
 }
