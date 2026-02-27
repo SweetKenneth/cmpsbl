@@ -1,6 +1,6 @@
 /**
  * Synergy Engine
- * v10.5.4 — ARCHITECT Epoch Cross-Module Pipeline Execution
+ * Cross-Module Pipeline Execution
  * 
  * Orchestrates 200 multi-module synergies with governance and tracing
  */

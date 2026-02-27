@@ -1,6 +1,6 @@
 /**
  * Atlas SEBA Adapter
- * v7.0.0 — SEBA integration for Atlas control plane
+ * SEBA integration for Atlas control plane
  */
 
 import { sebaAgent, type SEBACommand, type SEBAMode } from '@/lib/substrate/seba';

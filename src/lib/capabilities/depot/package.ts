@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Artifact Packaging & Validation
  * Validates capability.json and enforces required fields
- * v1.0.0
+ *
  */
 
 import type { 

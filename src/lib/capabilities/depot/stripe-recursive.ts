@@ -1,6 +1,6 @@
 /**
  * Capabilities Depot — Stripe Recursive Self-Improvement
- * v3.1.0 — Updated: Correct $299 price IDs for all public items
+ * Correct $299 price IDs for all public items
  * 
  * RULE: Only capabilities that generate/compile their own code are off-menu
  * Learning, optimization, and analysis capabilities are FOR SALE

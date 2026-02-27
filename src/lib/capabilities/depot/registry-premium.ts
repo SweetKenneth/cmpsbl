@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Premium Expansion
  * 18 NEW High-Value AI/ML Capabilities
- * v2.1.0 — Fresh Discovery Round
+ * Fresh Discovery Round
  */
 
 import type { CapabilityArtifact } from './types';

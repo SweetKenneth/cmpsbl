@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Repair Engine
- * v10.5.4 ARCHITECT — Core Substrate Module
+ * Core Substrate Module
  * @origin(cmptbl) — Fix patterns from archived utilities
  * 
  * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
