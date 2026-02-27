@@ -13,6 +13,7 @@ import {
   type BudgetState,
   type LearningJobResult,
   DEFAULT_CLM_CONFIG,
+  DISCOVERY_CLM_OVERRIDES,
   isInQuietHours,
   calculateBackoffDelay,
   calculateJitteredDelay,
@@ -72,6 +73,15 @@ class BudgetGovernorClient {
             const hoursRemaining = budget.hours_remaining || 1;
             this.state.totalBudgetUnits = budget.calls_per_hour * hoursRemaining;
             this.recalculateRemainingBudget();
+            
+            // Apply discovery overrides if optimizer reports discovery phase
+            if (budget.phase === 'discovery') {
+              this.config = { ...this.config, ...DISCOVERY_CLM_OVERRIDES };
+            } else if (this.config.minSpacingMinutes < DEFAULT_CLM_CONFIG.minSpacingMinutes) {
+              // Revert to production defaults when discovery is over
+              this.config = { ...DEFAULT_CLM_CONFIG };
+            }
+            
             this.persistState();
             return;
           }

@@ -32,8 +32,9 @@ export interface SlotState {
 
 function resolveProductTier(subscriptionTier?: string): ProductTier {
   if (!subscriptionTier) return 'builder';
-  if (subscriptionTier === 'enterprise') return 'architect';
-  if (['architect', 'pro', 'creator'].includes(subscriptionTier)) return 'operator';
+  if (['enterprise', 'architect'].includes(subscriptionTier)) return 'architect';
+  if (['pro', 'operator', 'creator'].includes(subscriptionTier)) return 'operator';
+  if (['starter', 'builder', 'free'].includes(subscriptionTier)) return 'builder';
   return 'builder';
 }
 

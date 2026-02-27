@@ -84,19 +84,37 @@ export interface LearningJobResult {
 // DEFAULT CONFIGURATION
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/** 
+ * Production-safe defaults. Discovery mode is set dynamically via system_flags.
+ * The nexus-budget-optimizer adjusts spacing/concurrency based on discovery phase.
+ */
 export const DEFAULT_CLM_CONFIG: CLMConfig = {
   enabled: true,
-  minSpacingMinutes: 1,        // Discovery phase: ultra-rapid to exhaust providers
-  maxConcurrent: 6,            // High concurrency for discovery
-  errorBackoffMultiplier: 1.3, // Lower backoff — expect 429s during discovery
-  maxBackoffMinutes: 30,
-  quietHours: null,            // No quiet hours — learn 24/7
-  jitterMinutes: 0.5,          // Minimal jitter during discovery
+  minSpacingMinutes: 8,        // Production spacing — optimizer overrides during discovery
+  maxConcurrent: 3,            // Conservative concurrency — optimizer scales during discovery
+  errorBackoffMultiplier: 1.8,
+  maxBackoffMinutes: 60,
+  quietHours: '03:00-05:00',   // Standard quiet hours
+  jitterMinutes: 2,
   killSwitch: false,
-  maxConsecutiveFailures: 12,  // Higher tolerance during discovery
-  spacedRepetitionBudgetPct: 0.10, // Lower SR during discovery, prioritize raw calls
-  microLearningThreshold: 0.03,
-  jobFingerprintTTLHours: 2,   // Shorter dedup window
+  maxConsecutiveFailures: 5,
+  spacedRepetitionBudgetPct: 0.20,
+  microLearningThreshold: 0.10,
+  jobFingerprintTTLHours: 8,
+  topicCacheTTLHours: 12,
+};
+
+/** Discovery-phase overrides — applied when nexus_clm_budget.phase === 'discovery' */
+export const DISCOVERY_CLM_OVERRIDES: Partial<CLMConfig> = {
+  minSpacingMinutes: 1,
+  maxConcurrent: 6,
+  errorBackoffMultiplier: 1.3,
+  maxBackoffMinutes: 30,
+  quietHours: null,
+  jitterMinutes: 0.5,
+  maxConsecutiveFailures: 12,
+  spacedRepetitionBudgetPct: 0.10,
+  jobFingerprintTTLHours: 2,
   topicCacheTTLHours: 6,
 };
 
