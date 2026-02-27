@@ -1,5 +1,5 @@
 /**
- * PromptFluid Brain - Memory Compression
+ * CMPSBL® BRAIN — Memory Compression
  * Merges duplicates and compresses memories while preserving code
  */
 
