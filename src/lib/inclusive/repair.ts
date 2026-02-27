@@ -3,7 +3,7 @@
  * Core Substrate Module
  * @origin(cmptbl) — Fix patterns from archived utilities
  * 
- * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
+ * Developed by CMPSBL® as part of the cognitive orchestration substrate.
  */
 
 import type { InclusiveIssue, InclusiveRepair } from './types';

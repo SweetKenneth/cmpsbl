@@ -3,7 +3,7 @@
  * Substrate Module
  *
  * @origin(cmptbl) — Migrated from archived CMPTBL utilities
- * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
+ * Developed by CMPSBL® as part of the cognitive orchestration substrate.
  * 
  * Provides accessibility scanning, repair, validation, profiling, and reporting
  * for WCAG 2.2 compliance. Integrates with:

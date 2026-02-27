@@ -1262,7 +1262,7 @@ class SubstrateClient {
   // INCLUSIVE MODULE v9.1.0 — Human Compatibility Pipeline
   // @origin(cmptbl) — 14th Substrate Module
   // Position: Between SYSTEM and DEFENSE in lifecycle
-  // Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
+  // Developed by CMPSBL® as part of the cognitive orchestration substrate.
   // ═══════════════════════════════════════════════════════════════
   
   inclusive = {
