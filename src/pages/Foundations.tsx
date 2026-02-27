@@ -278,7 +278,7 @@ export default function Foundations() {
                   <Archive className="w-5 h-5 text-muted-foreground" />
                   <div>
                     <p className="font-medium">OSF</p>
-                    <p className="text-xs text-muted-foreground">v5.5.0 Archive</p>
+                    <p className="text-xs text-muted-foreground">Research Archive</p>
                   </div>
                 </a>
                 <a 
@@ -290,7 +290,7 @@ export default function Foundations() {
                   <Archive className="w-5 h-5 text-muted-foreground" />
                   <div>
                     <p className="font-medium">Zenodo</p>
-                    <p className="text-xs text-muted-foreground">v5.5.0 Archive</p>
+                    <p className="text-xs text-muted-foreground">Research Archive</p>
                   </div>
                 </a>
                 <a 

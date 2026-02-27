@@ -873,7 +873,7 @@ export default function EvolutionMeshLanding() {
               <p className="text-muted-foreground mt-3">
                 Pay for what you use. Every tier includes all 29+ repair strategies.
                 <br />
-                <span className="text-emerald-600 font-medium">Start free. Scale as you grow.</span>
+                <span className="text-[hsl(var(--system-green))] font-medium">Start free. Scale as you grow.</span>
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
