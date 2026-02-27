@@ -7,6 +7,7 @@
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { useState, lazy, Suspense, memo, useCallback, useEffect, useMemo } from 'react';
+import { ModuleErrorBoundary } from '@/components/system/ModuleErrorBoundary';
 import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import {
   Loader2, Lock, Terminal, AlertTriangle, FileText,
@@ -585,13 +586,15 @@ function MergedModulesTab({ enabled }: { enabled: boolean }) {
         onChange={(id) => setActiveModule(id as typeof activeModule)}
         accentColor="orange"
       />
-      <Suspense fallback={<TabLoadingFallback />}>
-        <AnimatePresence mode="wait">
-          {activeModule === 'core' && <CoreKernelTab key="core" enabled={enabled} />}
-          {activeModule === 'ripple' && <RippleMessageBusTab key="ripple" enabled={enabled} />}
-          {activeModule === 'access' && <AccessIdentityTab key="access" enabled={enabled} />}
-        </AnimatePresence>
-      </Suspense>
+      <ModuleErrorBoundary moduleName="Kernel">
+        <Suspense fallback={<TabLoadingFallback />}>
+          <AnimatePresence mode="wait">
+            {activeModule === 'core' && <CoreKernelTab key="core" enabled={enabled} />}
+            {activeModule === 'ripple' && <RippleMessageBusTab key="ripple" enabled={enabled} />}
+            {activeModule === 'access' && <AccessIdentityTab key="access" enabled={enabled} />}
+          </AnimatePresence>
+        </Suspense>
+      </ModuleErrorBoundary>
     </TabPane>
   );
 }
