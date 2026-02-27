@@ -77,6 +77,7 @@ export function EnhancedFooter() {
         { name: "Contact", href: "/contact" },
         { name: "Careers", href: "/careers" },
         { name: "Investors", href: "/investors" },
+        { name: "PromptFluid", href: "/promptfluid" },
         { name: "System Status", href: "/status" },
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
