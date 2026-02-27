@@ -75,8 +75,16 @@ const defaultConfigs: Record<string, CapabilityConfig> = {
   core: { enabled: true, mode: 'governed', requiresApproval: false },
   seba: { enabled: true, mode: 'governed', requiresApproval: true },
   encoded: { enabled: true, mode: 'governed', requiresApproval: true },
-  synergy: { enabled: true, mode: 'governed', requiresApproval: false }, // Cross-module pipelines
+  synergy: { enabled: true, mode: 'governed', requiresApproval: false },
+  gov: { enabled: true, mode: 'governed', requiresApproval: false },
+  governance: { enabled: true, mode: 'governed', requiresApproval: false },
+  obs: { enabled: true, mode: 'governed', requiresApproval: false },
+  observability: { enabled: true, mode: 'governed', requiresApproval: false },
+  analytics: { enabled: true, mode: 'governed', requiresApproval: false },
 };
+
+// Read-only actions that never require approval
+const READ_ONLY_ACTIONS = ['status', 'health', 'info', 'summary', 'list', 'get', 'check', 'version'];
 
 // Rate limit tracking
 const rateLimitBuckets = new Map<string, { minute: number[]; hour: number[] }>();
@@ -113,10 +121,16 @@ function checkRateLimit(module: string, action: string, config: CapabilityConfig
 
 export function getCapabilityConfig(module: string): CapabilityConfig {
   return defaultConfigs[module] || { 
-    enabled: false, 
+    enabled: true, 
     mode: 'governed', 
     requiresApproval: true 
   };
+}
+
+/** Check if an action is read-only (never requires approval) */
+function isReadOnlyAction(action: string): boolean {
+  const actionSuffix = action.includes('.') ? action.split('.').pop()! : action;
+  return READ_ONLY_ACTIONS.includes(actionSuffix.toLowerCase());
 }
 
 export async function checkGate(request: GateRequest): Promise<GateResult> {
@@ -169,8 +183,8 @@ export async function checkGate(request: GateRequest): Promise<GateResult> {
     };
   }
 
-  // Check approval requirement
-  if (config.requiresApproval && !request.skipApproval && config.mode === 'governed') {
+  // Check approval requirement (read-only actions like .status never need approval)
+  if (config.requiresApproval && !request.skipApproval && config.mode === 'governed' && !isReadOnlyAction(request.action)) {
     return {
       allowed: false,
       trace_id,
