@@ -11,8 +11,8 @@ import { useCallback } from 'react';
 
 const TIER_LABELS: Record<SubstrateRole, string> = {
   free: 'Free',
-  creator: 'Creator ($49/mo)',
-  architect: 'Architect ($149/mo)',
+  creator: 'Creator ($29/mo)',
+  architect: 'Architect ($79/mo)',
   governor: 'Governor (Admin)',
 };
 
