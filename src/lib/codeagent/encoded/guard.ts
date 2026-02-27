@@ -1,6 +1,6 @@
 /**
  * Encoded Change Guard — Validation before any write operation
- * v1.0.0 — Fail-closed enforcement of guardrails
+ * Fail-closed enforcement of guardrails
  */
 
 import { 

@@ -1,6 +1,6 @@
 /**
  * CodeAgent Shadow Mode — Simulated Code Generation for UI Testing
- * v1.0.0 — Provides mock responses when edge functions are unavailable
+ * Provides mock responses when edge functions are unavailable
  * 
  * This allows the CodeAgent UI to function fully without backend dependencies
  */

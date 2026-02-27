@@ -1,6 +1,6 @@
 /**
  * CLM Memory Graph Pruning
- * v6.7.0 — Manages graph growth, pruning, and audit trails
+ * Manages graph growth, pruning, and audit trails
  */
 
 import { supabase } from '@/integrations/supabase/client';

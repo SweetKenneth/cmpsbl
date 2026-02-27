@@ -1,6 +1,6 @@
 /**
  * INTEGRATION Module — External System Connectors
- * v7.0.0 — Substrate Bridge Layer
+ * Substrate Bridge Layer
  * 
  * Provides:
  * - Adapter registry for external systems

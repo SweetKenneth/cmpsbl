@@ -1,6 +1,6 @@
 /**
  * Module Self-Discovery Engine
- * v10.2.0 — Each module autonomously discovers its own latent capabilities
+ * Each module autonomously discovers its own latent capabilities
  * 
  * Every module can:
  * 1. Introspect its own data assets and domain knowledge

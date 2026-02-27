@@ -1,6 +1,6 @@
 /**
  * Evolution Receipts Dashboard — Admin View
- * v0.7.6 — Timeline view with circuit state and drill-down
+ * Timeline view with circuit state and drill-down
  */
 
 import React, { useEffect, useState } from 'react';

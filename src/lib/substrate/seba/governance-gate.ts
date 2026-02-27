@@ -1,6 +1,6 @@
 /**
  * SEBA Governance Gate
- * v1.1.0 — Safety & Coherence Evaluation
+ * Safety & Coherence Evaluation
  * 
  * Evaluates improvement proposals through the Governance Guard to ensure
  * safety, coherence, and ethical compliance before execution.

@@ -1,6 +1,6 @@
 /**
  * File / Document Processing Pipeline
- * v1.0.0 — Ingest, parse, and extract knowledge from files
+ * Ingest, parse, and extract knowledge from files
  * 
  * Supports PDF, CSV, JSON, Markdown, and plain text.
  * Extracted content can be routed to Brain for memory ingestion.

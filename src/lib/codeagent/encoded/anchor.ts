@@ -1,6 +1,6 @@
 /**
  * Encoded File Anchoring — Export/Handler/Entrypoint Detection
- * v1.0.0 — Ensures structural integrity is preserved across edits
+ * Ensures structural integrity is preserved across edits
  */
 
 import { ENCODED_POLICY } from './policy';
