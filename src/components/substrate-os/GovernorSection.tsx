@@ -247,17 +247,17 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
       {/* Telemetry Overview */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Users', value: telemetry.totalUsers, icon: Eye, color: 'blue' },
-          { label: 'API Calls', value: telemetry.totalApiCalls, icon: Zap, color: 'cyan' },
-          { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, color: 'emerald' },
-          { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, color: telemetry.recentErrors > 0 ? 'red' : 'emerald' },
+          { label: 'Total Users', value: telemetry.totalUsers, icon: Eye, iconClass: 'text-blue-400' },
+          { label: 'API Calls', value: telemetry.totalApiCalls, icon: Zap, iconClass: 'text-cyan-400' },
+          { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, iconClass: 'text-emerald-400' },
+          { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, iconClass: telemetry.recentErrors > 0 ? 'text-red-400' : 'text-emerald-400' },
         ].map((stat) => {
           const Icon = stat.icon;
           return (
             <Card key={stat.label} className={cn("border-border/30 bg-muted/10")}>
               <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <Icon className={cn("w-4 h-4", `text-${stat.color}-400`)} />
+                  <Icon className={cn("w-4 h-4", stat.iconClass)} />
                   <span className="text-[10px] text-muted-foreground font-mono uppercase">{stat.label}</span>
                 </div>
                 {telemetryLoading ? (

@@ -99,7 +99,11 @@ export function SEO({
 
   // Strip version numbers from all SEO-facing strings (per custom instructions)
   const stripVersions = (text: string): string =>
-    text.replace(/\s*v\d+[\.\d]*/gi, '').replace(/\s{2,}/g, ' ').trim();
+    text
+      .replace(/\bv\d+(?:\.\d+)*/gi, '')    // v12, v12.0, v12.0.0
+      .replace(/\bversion\s*\d+[\.\d]*/gi, '') // version 12.0.0
+      .replace(/\s{2,}/g, ' ')
+      .trim();
 
   const safeTitle = stripVersions(title);
   const safeDescription = stripVersions(description);
@@ -190,7 +194,7 @@ export function SEO({
     name: siteName,
     alternateName: 'Clockless — A Cognitive Reality System',
     url: 'https://cmpsbl.com',
-    description: description,
+    description: safeDescription,
     inLanguage: 'en-US',
     publisher: { '@id': 'https://cmpsbl.com/#organization' },
     potentialAction: [
@@ -212,7 +216,7 @@ export function SEO({
     '@id': `${resolvedCanonical}#webpage`,
     name: fullTitle,
     headline: fullTitle,
-    description: description,
+    description: safeDescription,
     url: resolvedCanonical,
     image: {
       '@type': 'ImageObject',
@@ -307,7 +311,7 @@ export function SEO({
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    description: description,
+    description: safeDescription,
     image: image,
     brand: { '@id': 'https://cmpsbl.com/#organization' },
     offers: {
@@ -361,7 +365,7 @@ export function SEO({
     '@type': 'Article',
     '@id': `${resolvedCanonical}#article`,
     headline: fullTitle,
-    description: description,
+    description: safeDescription,
     image: {
       '@type': 'ImageObject',
       url: image,

@@ -34,5 +34,29 @@ export function checkHooksContracts(): AuditFinding[] {
     });
   }
 
+  // Check for potential memory leaks — orphaned event listeners
+  const allElements = document.querySelectorAll('*');
+  if (allElements.length > 5000) {
+    findings.push({
+      id: 'hooks_dom_bloat',
+      category: 'hooks',
+      severity: 'warn',
+      title: `DOM has ${allElements.length} elements (>5000)`,
+      detail: 'Excessive DOM nodes may indicate memory leaks or missing cleanup in useEffect hooks.',
+      hint: 'Review components for missing cleanup functions in useEffect.',
+    });
+  }
+
+  // Check for stale React Query cache entries
+  if (typeof window !== 'undefined' && (window as any).__REACT_QUERY_DEVTOOLS_GLOBAL_STORE__) {
+    findings.push({
+      id: 'hooks_rq_devtools',
+      category: 'hooks',
+      severity: 'info',
+      title: 'React Query DevTools detected',
+      detail: 'DevTools are active. Remove in production for smaller bundle.',
+    });
+  }
+
   return findings;
 }

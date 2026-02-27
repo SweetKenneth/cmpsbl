@@ -20,8 +20,6 @@ const REQUIRED_ROUTES = [
 export function checkRouteRegistry(): AuditFinding[] {
   const findings: AuditFinding[] = [];
 
-  // We can't verify routes from here without the router context,
-  // but we can check if we're on a valid route
   const currentPath = window.location.pathname;
 
   findings.push({
@@ -30,6 +28,34 @@ export function checkRouteRegistry(): AuditFinding[] {
     severity: 'info',
     title: `Current route: ${currentPath}`,
     detail: 'Route loaded successfully without 404.',
+  });
+
+  // Check if 404 page is showing (route not found)
+  const is404 = document.querySelector('h1')?.textContent?.includes('404');
+  if (is404) {
+    findings.push({
+      id: 'route_404_detected',
+      category: 'routes',
+      severity: 'error',
+      title: `Current route "${currentPath}" returned 404`,
+      detail: 'A 404 page is displayed. This route may be missing from the router.',
+    });
+  }
+
+  // Check for broken internal links on current page
+  const internalLinks = document.querySelectorAll('a[href^="/"]');
+  const uniquePaths = new Set<string>();
+  internalLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && !href.startsWith('//')) uniquePaths.add(href.split('?')[0].split('#')[0]);
+  });
+
+  findings.push({
+    id: 'route_internal_links',
+    category: 'routes',
+    severity: 'info',
+    title: `${uniquePaths.size} unique internal links on page`,
+    detail: `Internal link targets: ${Array.from(uniquePaths).slice(0, 10).join(', ')}${uniquePaths.size > 10 ? '...' : ''}`,
   });
 
   findings.push({

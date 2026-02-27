@@ -50,6 +50,18 @@ export function checkSystemManifest(): AuditFinding[] {
     }
   }
 
+  // Validate Matrix Node count against expected
+  if (nodeCount !== EXPECTED_NODE_COUNT) {
+    findings.push({
+      id: 'manifest_node_count_mismatch',
+      category: 'matrix',
+      severity: nodeCount < EXPECTED_NODE_COUNT ? 'error' : 'warn',
+      title: `Matrix Node count mismatch: ${nodeCount} vs expected ${EXPECTED_NODE_COUNT}`,
+      detail: `Registry has ${nodeCount} nodes but expected ${EXPECTED_NODE_COUNT}. ${nodeCount < EXPECTED_NODE_COUNT ? 'Missing nodes.' : 'Extra nodes detected.'}`,
+      hint: 'Update EXPECTED_NODE_COUNT or add missing node definitions.',
+    });
+  }
+
   // Check routes
   if (!SYSTEM_ROUTES || Object.keys(SYSTEM_ROUTES).length === 0) {
     findings.push({

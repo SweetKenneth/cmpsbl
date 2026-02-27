@@ -12,6 +12,10 @@ const CRITICAL_TABLES = [
   { name: 'audit_logs', label: 'Audit log' },
   { name: 'analytics_events', label: 'Analytics events' },
   { name: 'system_flags', label: 'System flags' },
+  { name: 'user_roles', label: 'User roles' },
+  { name: 'profiles', label: 'User profiles' },
+  { name: 'analytics_snapshots', label: 'Analytics snapshots' },
+  { name: 'ai_usage_log', label: 'AI usage log' },
 ];
 
 export async function checkSupabaseContracts(): Promise<AuditFinding[]> {

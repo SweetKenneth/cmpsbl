@@ -65,6 +65,18 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
 
   const duration_ms = Math.round(performance.now() - start);
 
+  // Performance self-check
+  const duration_check = Math.round(performance.now() - start);
+  if (duration_check > 5000) {
+    findings.push({
+      id: 'audit_slow_execution',
+      category: 'performance',
+      severity: 'warn',
+      title: `Audit took ${duration_check}ms (>5s)`,
+      detail: 'Audit execution is slow. Check for blocking operations in audit checks.',
+    });
+  }
+
   const fatal = findings.filter(f => f.severity === 'fatal').length;
   const error = findings.filter(f => f.severity === 'error').length;
   const warn = findings.filter(f => f.severity === 'warn').length;

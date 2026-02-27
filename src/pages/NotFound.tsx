@@ -15,7 +15,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
-      <SEO title="Page Not Found — CMPSBL" description="This page doesn't exist in the substrate." />
+      <SEO title="Page Not Found — CMPSBL" description="This page doesn't exist in the substrate." noindex />
       
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none">
