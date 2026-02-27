@@ -19,6 +19,7 @@
  */
 
 import { registerHandler } from './validate-registry';
+import { getMetric } from '@/stores/publicMetricsStore';
 
 /**
  * Register all observability terminal commands
