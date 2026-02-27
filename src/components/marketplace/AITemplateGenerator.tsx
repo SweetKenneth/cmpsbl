@@ -1,10 +1,10 @@
 /**
  * AI Template Generator — Premium Marketplace Feature
  * Generate unique random templates with AI
- * Priced at Rare tier floor ($87) - never underprices Rare/Epic/Legendary/Mythic
+ * Pack-aware: generates degraded baseline-safe templates when required packs are inactive
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,11 +12,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   Sparkles, Dices, Crown, Lock, Download, Zap, Star, Gift,
   Brain, Shield, Moon, Eye, MessageSquare, Settings, Cpu, Globe,
-  ArrowRight, Check, Loader2, Copy
+  ArrowRight, Check, Loader2, Copy, AlertTriangle, Package
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { openCheckoutRedirect } from "@/lib/checkout/checkoutRedirect";
+import { evaluateTemplatePolicy, generateRequirementsBlock, buildAuditEntry, type TemplatePolicy } from "@/lib/quarry/template-policy";
+import { useArtifactSlots } from "@/hooks/useArtifactSlots";
 import {
   GENERATOR_CONFIG,
   RARITY_TIERS,
@@ -69,6 +71,8 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [generatedTemplate, setGeneratedTemplate] = useState<GeneratedTemplate | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const { activePacks } = useArtifactSlots();
+  const activePackIds = useMemo(() => new Set(activePacks.map(p => p.pack_id)), [activePacks]);
 
   const handleCheckout = () => {
     setIsCheckingOut(true);
