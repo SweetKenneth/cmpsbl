@@ -1,11 +1,10 @@
 /**
- * CMPSBL Adoptable Pricing — Pricing & Access Patch
+ * CMPSBL Pricing — Three Tiers
  * 
- * Four tiers. Adoptable pricing. Zero IP leakage.
- *   Free     → $0       (build real things, starter artifacts, bounded memory)
- *   Creator  → $29/mo   (expanded catalog, executable capabilities, light automation)
- *   Architect → $19/mo  (premium artifacts, cross-module orchestration, audit views)
- *   Enterprise → $79/mo (org workspaces, compliance, SLA-aware routing, governance)
+ * Three tiers. Clean hierarchy. Zero IP leakage.
+ *   Builder    → $0/mo   (3 artifact slots, full runtime, 30 free templates)
+ *   Creator    → $29/mo  (6 artifact slots, expanded memory, executable capabilities)
+ *   Architect  → $79/mo  (12 artifact slots, governance, self-hosted deployment, compliance)
  *
  * Core Rule: User projects run ON the CMPSBL Substrate.
  *            User projects never run AS the CMPSBL Substrate.
@@ -54,43 +53,22 @@ export const UNIFIED_TIERS = {
     checkout_enabled: true,
   },
   architect: {
-    product_id: 'prod_TzwJtYd5I4rH7j',
-    price_id: 'price_1T1wR8Q7FtTiAL4aJ3TYghDH',
-    amount: 1900, // $19/month
-    interval: 'month' as const,
-    name: 'Architect',
-    tagline: 'Best value-to-power ratio for serious builders',
-    description: 'Premium artifacts, cross-module orchestration, larger memory, batch execution, audit views, and priority routing.',
-    features: [
-      'Everything in Creator, plus:',
-      'Premium Artifact Store (Architect catalog)',
-      'Cross-module orchestration (higher complexity)',
-      'Larger memory + project memory domains',
-      'Higher automation limits + batch execution',
-      'Audit views + change summaries',
-      'Reasoning summaries',
-      'Priority Nexus routing + fallback options',
-      'Priority email support',
-    ],
-    checkout_enabled: true,
-  },
-  enterprise: {
     product_id: 'prod_TzwJm6Ji4E3Vca',
     price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
     amount: 7900, // $79/month
     interval: 'month' as const,
-    name: 'Enterprise',
-    tagline: 'Governance, control, and reliability for teams',
-    description: 'Org workspaces, compliance exports, advanced governance, dedicated memory, and SLA-aware controls.',
+    name: 'Architect',
+    tagline: 'Full control, governance, and deployment sovereignty',
+    description: 'Everything in Creator plus 12 artifact slots, org workspaces, compliance exports, dedicated memory, SLA-aware controls, and self-hosted deployment.',
     features: [
-      'Everything in Architect, plus:',
-      'Organization workspaces + roles',
-      'Higher execution ceilings',
-      'Compliance + audit exports',
-      'Advanced governance policies',
+      'Everything in Creator, plus:',
+      '12 Artifact Slots',
       'Dedicated memory partitions',
+      'Self-hosted deployment (LNCHBL)',
+      'Full governance authority',
+      'Compliance + audit exports',
+      'Organization workspaces + roles',
       'SLA-aware Nexus controls',
-      'Provider budget pinning',
       'Dedicated support channel',
     ],
     checkout_enabled: true,

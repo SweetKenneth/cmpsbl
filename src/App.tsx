@@ -108,6 +108,7 @@ const Packs = lazy(() => import("./pages/Packs"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const RuntimeReference = lazy(() => import("./pages/docs/RuntimeReference"));
+const CapabilityManifest = lazy(() => import("./pages/docs/CapabilityManifest"));
 const RuntimePage = lazy(() => import("./pages/Runtime"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
@@ -363,6 +364,7 @@ const App = () => {
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/docs/runtime" element={<RuntimeReference />} />
+                        <Route path="/docs/manifest" element={<CapabilityManifest />} />
                         <Route path="/runtime" element={<RuntimePage />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
                         <Route path="/capabilities" element={<Navigate to="/upgrade" replace />} />
