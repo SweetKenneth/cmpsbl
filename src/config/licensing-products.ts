@@ -3,9 +3,9 @@
  * 
  * Four tiers. Adoptable pricing. Zero IP leakage.
  *   Free     → $0       (build real things, starter artifacts, bounded memory)
- *   Creator  → $9/mo    (expanded catalog, executable capabilities, light automation)
+ *   Creator  → $29/mo   (expanded catalog, executable capabilities, light automation)
  *   Architect → $19/mo  (premium artifacts, cross-module orchestration, audit views)
- *   Enterprise → $99/mo (org workspaces, compliance, SLA-aware routing, governance)
+ *   Enterprise → $79/mo (org workspaces, compliance, SLA-aware routing, governance)
  *
  * Core Rule: User projects run ON the CMPSBL Substrate.
  *            User projects never run AS the CMPSBL Substrate.

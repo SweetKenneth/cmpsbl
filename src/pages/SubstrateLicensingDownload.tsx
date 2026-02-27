@@ -38,7 +38,7 @@ const LICENSE_TIERS = [
   },
   {
     name: "Creator",
-    price: "$9",
+    price: "$29",
     period: "/mo",
     icon: Sparkles,
     gradient: "from-blue-500 to-cyan-500",
@@ -80,7 +80,7 @@ const LICENSE_TIERS = [
   },
   {
     name: "Enterprise",
-    price: "$99",
+    price: "$79",
     period: "/mo",
     icon: Building2,
     gradient: "from-amber-500 to-orange-500",
