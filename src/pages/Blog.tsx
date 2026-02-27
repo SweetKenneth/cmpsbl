@@ -3,6 +3,7 @@
  * Supreme × Canva inspired layout matching the Composable Artifacts page.
  * Category-first browsing with horizontal-scroll carousels, sticky toolbar,
  * gold/silver border coding for human vs AI posts.
+ * Featured posts section + randomized blending of human & auto-blog posts.
  */
 
 import { useState, useEffect, useMemo, useRef } from "react";
@@ -12,7 +13,7 @@ import {
   Search, Sparkles, Bot, Calendar, Clock,
   User, ChevronRight, ChevronLeft, BookOpen, TrendingUp,
   Shield, Brain, Code, Accessibility, Layers, Eye,
-  Filter, X, Package, Unlock,
+  Filter, X, Package, Unlock, Star,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -63,6 +64,11 @@ import governanceComplianceImg from "@/assets/blog/ai-governance-compliance-v9.j
 import threatIntelAdversarialImg from "@/assets/blog/ai-threat-intel-adversarial-v9.jpg";
 import spartaRebuildImg from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
 
+// New pillar/cluster images
+import clocklessSetupImg from "@/assets/blog/clockless-account-setup-artifact-packs.jpg";
+import clocklessDifferentImg from "@/assets/blog/what-makes-clockless-different.jpg";
+import clocklessModulesImg from "@/assets/blog/clockless-modules-deep-dive.jpg";
+
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
 import autoblog2 from '@/assets/autoblog/autoblog-2.jpg';
@@ -93,6 +99,16 @@ function getAutoblogImage(postId: string): string {
   return AUTOBLOG_IMAGES[hash % AUTOBLOG_IMAGES.length];
 }
 
+// Fisher-Yates shuffle for randomized display
+function shuffle<T>(array: T[]): T[] {
+  const a = [...array];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 // ─── Types ───
 type PostSource = 'human' | 'ai';
 type SourceFilter = 'all' | 'human' | 'ai';
@@ -109,6 +125,7 @@ interface BlogPost {
   imageAlt: string;
   source: PostSource;
   featured?: boolean;
+  pillar?: boolean;
   author: string;
   authorRole: string;
 }
@@ -141,6 +158,7 @@ function ScrollCarousel({ children, className }: { children: React.ReactNode; cl
     <div className={cn("group relative", className)}>
       <button
         onClick={() => scroll('left')}
+        aria-label="Scroll left"
         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hidden md:flex"
       >
         <ChevronLeft className="w-5 h-5" />
@@ -154,6 +172,7 @@ function ScrollCarousel({ children, className }: { children: React.ReactNode; cl
       </div>
       <button
         onClick={() => scroll('right')}
+        aria-label="Scroll right"
         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hidden md:flex"
       >
         <ChevronRight className="w-5 h-5" />
@@ -315,15 +334,94 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
   );
 }
 
+// ─── Featured Post Card (larger, more prominent) ───
+function FeaturedPostCard({ post }: { post: BlogPost }) {
+  const isHuman = post.source === 'human';
+  return (
+    <Link to={post.href}>
+      <div className={cn(
+        "group relative rounded-2xl border-2 overflow-hidden transition-all duration-300",
+        "hover:-translate-y-1 hover:shadow-2xl",
+        post.pillar
+          ? "border-primary/40 hover:border-primary/60 hover:shadow-primary/20"
+          : "border-amber-500/30 hover:border-amber-400/50 hover:shadow-amber-500/10",
+        "bg-card"
+      )}>
+        <div className="aspect-[16/9] overflow-hidden relative">
+          <img src={post.image} alt={post.imageAlt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          
+          {/* Badges */}
+          <div className="absolute top-4 left-4 flex gap-2">
+            {post.pillar && (
+              <Badge className="bg-primary/30 text-primary-foreground border-primary/40 backdrop-blur-md text-xs font-bold">
+                <Star className="w-3 h-3 mr-1" />Pillar Guide
+              </Badge>
+            )}
+            <Badge variant="outline" className="text-xs bg-black/40 text-white border-white/20 backdrop-blur-md">{post.category}</Badge>
+          </div>
+
+          <div className="absolute top-4 right-4">
+            <Badge className={cn(
+              "text-xs font-bold backdrop-blur-md border",
+              isHuman ? "bg-amber-500/20 text-amber-200 border-amber-400/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
+            )}>
+              {isHuman ? <User className="w-3 h-3 mr-1" /> : <Bot className="w-3 h-3 mr-1" />}
+              {isHuman ? 'Kenneth E Sweet Jr' : 'AI Generated'}
+            </Badge>
+          </div>
+
+          {/* Title overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <h3 className="font-bold text-xl md:text-2xl text-white mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
+            <p className="text-sm text-white/80 line-clamp-2 mb-3">{post.excerpt}</p>
+            <div className="flex items-center gap-3 text-xs text-white/70">
+              <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              <span>·</span>
+              <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 // ─── Static human posts ───
 const HUMAN_POSTS: BlogPost[] = [
+  // ═══ NEW PILLAR/CLUSTER POSTS ═══
+  {
+    id: 'clockless-setup', title: "Getting Started with Clockless: Account Setup & Artifact Pack Guide",
+    excerpt: "Everything you need to set up your Clockless account and choose the right artifact pack. Understand what composable cognitive infrastructure gives you that no other platform can.",
+    href: "/blog/clockless-account-setup-artifact-packs", category: "Platform",
+    date: "2026-02-27", readTime: "18 min", image: clocklessSetupImg,
+    imageAlt: "Clockless account setup dashboard showing artifact pack selection wizard",
+    source: 'human', featured: true, pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+  },
+  {
+    id: 'clockless-different', title: "What Makes Clockless Different — And Why People Build on It",
+    excerpt: "There are dozens of AI platforms. Most sell model access. Clockless sells infrastructure that thinks. Here's why that matters.",
+    href: "/blog/clockless-what-makes-it-different", category: "Platform",
+    date: "2026-02-27", readTime: "8 min", image: clocklessDifferentImg,
+    imageAlt: "Composable cognitive infrastructure platform with interconnected modules",
+    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+  },
+  {
+    id: 'clockless-modules', title: "Inside the Modules: What Makes Each One Special",
+    excerpt: "A deep dive into every substrate module — from MEMORY's three-tier persistence to EVOLUTION's autonomous self-improvement.",
+    href: "/blog/clockless-modules-deep-dive", category: "Technology",
+    date: "2026-02-27", readTime: "12 min", image: clocklessModulesImg,
+    imageAlt: "Grid of glowing AI substrate modules with unique identities",
+    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+  },
+  // ═══ EXISTING POSTS ═══
   {
     id: 'sparta-rebuild', title: "Burning It Down to Build It Right: The Full Substrate Rebuild",
     excerpt: "How we refactored, consolidated, and rebuilt the entire CMPSBL cognitive substrate from the ground up — deleting thousands of lines of dead code and emerging with a production-grade layered kernel.",
     href: "/blog/sparta-epoch-rebuild-from-scratch", category: "Technology",
     date: "2026-02-24", readTime: "22 min", image: spartaRebuildImg,
     imageAlt: "Architectural blueprint showing old structures crumbling and new layered architecture rising",
-    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
     id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the CMPSBL Substrate",
@@ -331,7 +429,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",
     date: "2026-02-10", readTime: "16 min", image: protocolStandardsImg,
     imageAlt: "AI protocol standards visualization",
-    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
     id: 'governance-compliance-v9', title: "Autonomous AI Governance: From Theory to Runtime Enforcement",
@@ -350,12 +448,12 @@ const HUMAN_POSTS: BlogPost[] = [
     source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
-    id: 'evolving-software', title: "Evolving Software v6.x.x: The Breakthrough",
-    excerpt: "CMPSBL v6.x.x represents a paradigm shift—systems that learn, adapt, and evolve autonomously. Now available via API.",
+    id: 'evolving-software', title: "Evolving Software: The Breakthrough",
+    excerpt: "CMPSBL represents a paradigm shift—systems that learn, adapt, and evolve autonomously. Now available via API.",
     href: "/blog/evolving-software-v6-breakthrough", category: "Technology",
     date: "2026-01-30", readTime: "22 min", image: evolvingSoftwareImg,
     imageAlt: "Digital DNA helix representing evolving software systems",
-    source: 'human', featured: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', featured: true, pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
     id: 'rag-infra', title: "RAG Without Infrastructure",
@@ -387,7 +485,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/why-agents-forget", category: "Research",
     date: "2026-01-22", readTime: "11 min", image: whyAgentsForgetImg,
     imageAlt: "Agent memory fading visualization",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
     id: 'building-agents', title: "Building Agents That Learn",
@@ -467,7 +565,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/wordpress-bot-defense", category: "Security",
     date: "2025-11-15", readTime: "15 min", image: wpBotDefenseImg,
     imageAlt: "WordPress security with AI protection",
-    source: 'human', author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
+    source: 'human', pillar: true, author: "Kenneth E Sweet Jr", authorRole: "Founder & Security Engineer",
   },
   {
     id: 'sec-plugins', title: "Top Security Plugins 2025",
@@ -631,7 +729,7 @@ export default function Blog() {
         .select("id, title, slug, excerpt, category, published_at, author_name, author_role")
         .eq("status", "published")
         .order("published_at", { ascending: false })
-        .limit(30);
+        .limit(50);
 
       if (data) {
         setAutoPosts(data.map(p => ({
@@ -653,10 +751,16 @@ export default function Blog() {
     fetchAutoPosts();
   }, []);
 
-  // Blend all posts sorted by date
+  // Featured posts — the 3 new posts plus top pillars
+  const featuredPosts = useMemo(() => {
+    const featured = HUMAN_POSTS.filter(p => p.featured);
+    return featured.slice(0, 6);
+  }, []);
+
+  // Blend all posts and RANDOMIZE within categories for freshness
   const allPosts = useMemo(() => {
     const merged = [...HUMAN_POSTS, ...autoPosts];
-    return merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return shuffle(merged);
   }, [autoPosts]);
 
   // Filter
@@ -673,7 +777,7 @@ export default function Blog() {
     });
   }, [allPosts, searchQuery, selectedCategory, sourceFilter]);
 
-  // Group by category for browse mode
+  // Group by category for browse mode — randomized within each category
   const groupedByCategory = useMemo(() => {
     const groups: Record<string, BlogPost[]> = {};
     filteredPosts.forEach(post => {
@@ -777,6 +881,26 @@ export default function Blog() {
           </div>
         </section>
 
+        {/* ═══ FEATURED POSTS ═══ */}
+        <section className="border-b border-border/50 bg-card/30">
+          <div className="container mx-auto px-4 py-10">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary/10">
+                <Star className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <h2 className="font-bold text-xl">Featured</h2>
+                <p className="text-xs text-muted-foreground">Essential reads from the CMPSBL research lab</p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {featuredPosts.map((post) => (
+                <FeaturedPostCard key={post.id} post={post} />
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ═══ STICKY TOOLBAR ═══ */}
         <section className="sticky top-16 z-40 border-b border-border/50 bg-background/95 backdrop-blur-xl">
           <div className="container mx-auto px-4 py-3">
@@ -790,7 +914,7 @@ export default function Blog() {
                 className="pl-10 h-12 text-base rounded-xl bg-card border-border"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-muted">
+                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-muted" aria-label="Clear search">
                   <X className="w-4 h-4 text-muted-foreground" />
                 </button>
               )}
@@ -826,6 +950,7 @@ export default function Blog() {
                   onClick={() => setViewMode('browse')}
                   className={cn("p-2 rounded-lg transition-colors", viewMode === 'browse' ? 'bg-muted' : 'hover:bg-muted/50')}
                   title="Category browse"
+                  aria-label="Category browse view"
                 >
                   <Layers className="w-4 h-4" />
                 </button>
@@ -833,6 +958,7 @@ export default function Blog() {
                   onClick={() => setViewMode('grid')}
                   className={cn("p-2 rounded-lg transition-colors", viewMode === 'grid' ? 'bg-muted' : 'hover:bg-muted/50')}
                   title="Grid view"
+                  aria-label="Grid view"
                 >
                   <Filter className="w-4 h-4" />
                 </button>
@@ -928,7 +1054,6 @@ export default function Blog() {
                             key={post.id}
                             post={post}
                             onClick={() => {
-                              // Navigate to post
                               window.location.href = post.href;
                             }}
                           />
@@ -994,6 +1119,17 @@ export default function Blog() {
                   </Link>
                 </Button>
               </div>
+
+              {/* SEO Internal Links */}
+              <nav className="mt-10 flex flex-wrap justify-center gap-3" aria-label="Explore more">
+                <Link to="/" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Home</Link>
+                <Link to="/substrate" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Substrate</Link>
+                <Link to="/persistent-memory" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Persistent Memory</Link>
+                <Link to="/store" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Artifact Store</Link>
+                <Link to="/composable-cognitives" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Cognitives</Link>
+                <Link to="/developers" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Developer Hub</Link>
+                <Link to="/pricing" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Pricing</Link>
+              </nav>
             </div>
           </section>
         </main>

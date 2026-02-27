@@ -206,6 +206,9 @@ const MachineProtocolStandards = lazy(() => import("./pages/blog/MachineProtocol
 const SpartaEpochRebuild = lazy(() => import("./pages/blog/SpartaEpochRebuild"));
 const AutonomousAIGovernance = lazy(() => import("./pages/blog/AutonomousAIGovernance"));
 const AdversarialAIDefense = lazy(() => import("./pages/blog/AdversarialAIDefense"));
+const ClocklessAccountSetupGuide = lazy(() => import("./pages/blog/ClocklessAccountSetupGuide"));
+const ClocklessWhatMakesItDifferent = lazy(() => import("./pages/blog/ClocklessWhatMakesItDifferent"));
+const ClocklessModulesDeepDive = lazy(() => import("./pages/blog/ClocklessModulesDeepDive"));
 
 // Dynamic AutoBlog post page
 const AutoBlogPost = lazy(() => import("./pages/blog/AutoBlogPost"));
@@ -484,6 +487,11 @@ const App = () => {
                         <Route path="/blog/machine-protocol-standards-v9" element={<Navigate to="/blog/machine-protocol-standards-architect-epoch" replace />} />
                         <Route path="/blog/autonomous-ai-governance-v9" element={<Navigate to="/blog/autonomous-ai-governance-runtime-enforcement" replace />} />
                         <Route path="/blog/adversarial-ai-defense-v9" element={<Navigate to="/blog/adversarial-ai-defense-module-response-2026" replace />} />
+                        
+                        {/* Clockless Pillar/Cluster Posts */}
+                        <Route path="/blog/clockless-account-setup-artifact-packs" element={<ClocklessAccountSetupGuide />} />
+                        <Route path="/blog/clockless-what-makes-it-different" element={<ClocklessWhatMakesItDifferent />} />
+                        <Route path="/blog/clockless-modules-deep-dive" element={<ClocklessModulesDeepDive />} />
                         
                         {/* Dynamic AutoBlog Posts */}
                         <Route path="/blog/auto/:slug" element={<AutoBlogPost />} />
