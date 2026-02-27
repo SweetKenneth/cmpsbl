@@ -384,7 +384,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-4 text-center">
-            In v6.0.0 <strong>Manual Mode</strong>, all Apply steps require human approval before execution.
+            In <strong>Manual Mode</strong>, all Apply steps require human approval before execution.
           </p>
         </CardContent>
       </Card>

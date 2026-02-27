@@ -180,7 +180,7 @@ export default function SubstrateLicensingSuccess() {
                     })}
 
                     <p className="text-xs text-muted-foreground text-center pt-4">
-                      Download links are also sent to <strong>{license.email}</strong>. Need help? <a href="mailto:promptfluid@gmail.com" className="text-primary hover:underline">Contact support</a>.
+                      Download links are also sent to <strong>{license.email}</strong>. Need help? <a href="mailto:support@cmpsbl.com" className="text-primary hover:underline">Contact support</a>.
                     </p>
                   </CardContent>
                 </Card>

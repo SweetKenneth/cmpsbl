@@ -508,7 +508,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             <div className="p-3 rounded-lg bg-muted/30">
               <p className="text-xs text-muted-foreground">Version</p>
               <p className="font-mono font-medium text-sm truncate">
-                {versionData?.version || 'v2026.01'}
+                {versionData?.version || '—'}
               </p>
             </div>
             <div className="p-3 rounded-lg bg-muted/30">
