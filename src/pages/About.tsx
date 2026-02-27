@@ -9,7 +9,7 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero/neon-data-center.jpg";
 import earthWindowImage from "@/assets/hero/neon-dream-cosmos.jpg";
-import founderPhoto from "@/assets/founder-kenneth-sweet.png";
+import { TEAM_MEMBERS, DEPARTMENTS } from "@/data/team";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -38,16 +38,19 @@ export default function About() {
     { icon: Zap, name: "Artifact Packs", description: "24 activatable capability packs across 6 domains — choose 3, 6, or 12 depending on your tier." },
   ];
 
+  const founder = TEAM_MEMBERS[0];
+  const teamMembers = TEAM_MEMBERS.slice(1);
+
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="About CMPSBL — Founder & Mission"
-        description="Founded by Kenneth E Sweet Jr in Dallas TX. CMPSBL builds governed cognitive infrastructure where AI persists, learns, and compounds intelligence."
+        title="About CMPSBL — Team & Mission"
+        description="CMPSBL is a cognitive infrastructure lab based in Dallas, TX. Meet the team building governed AI operating systems with persistent memory and adaptive intelligence."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
-        keywords={['about CMPSBL', 'Kenneth Sweet Jr', 'CMPSBL founder', 'Dallas AI company', 'cognitive infrastructure', 'AI startup Texas']}
+        keywords={['about CMPSBL', 'CMPSBL team', 'cognitive infrastructure', 'AI startup Texas', 'Dallas AI company']}
         faq={[
-          { question: 'Who founded CMPSBL?', answer: 'CMPSBL was founded in 2009 by Kenneth E Sweet Jr in Dallas, Texas. He serves as Chief Cognitive Engineer and has spent over 17 years building AI infrastructure systems.' },
+          { question: 'Who founded CMPSBL?', answer: 'CMPSBL was founded in 2009 by a veteran software engineer in Dallas, Texas. The team has since grown to include AI researchers, security specialists, and systems engineers.' },
           { question: 'What does CMPSBL stand for?', answer: 'CMPSBL stands for Composable — reflecting the modular, composable nature of the cognitive infrastructure substrate. Every module can be independently deployed, swapped, and evolved.' },
           { question: 'Where is CMPSBL based?', answer: 'CMPSBL is headquartered in Dallas, Texas, USA, serving teams and enterprises worldwide with composable cognitive infrastructure.' },
         ]}
@@ -65,7 +68,8 @@ export default function About() {
             "name": "CMPSBL",
             "alternateName": "Composable",
             "foundingDate": "2009",
-            "founder": { "@type": "Person", "name": "Kenneth E Sweet Jr", "jobTitle": "Founder" }
+            "numberOfEmployees": { "@type": "QuantitativeValue", "minValue": 6 },
+            "founder": { "@type": "Person", "name": founder.name, "jobTitle": "Founder & Chief Architect" }
           }
         })}
       </script>
@@ -114,8 +118,8 @@ export default function About() {
           <motion.div {...fadeUp} className="bg-card border border-border rounded-xl p-8 md:p-12 shadow-lg hover:shadow-xl transition-shadow duration-500">
             <div className="flex flex-col md:flex-row gap-8 items-start">
               <motion.img 
-                src={founderPhoto}
-                alt="Kenneth E. Sweet Jr. - Founder of CMPSBL"
+                src={founder.photo}
+                alt={`${founder.name} - Founder of CMPSBL`}
                 className="w-32 h-32 rounded-full object-cover ring-4 ring-primary/20 flex-shrink-0"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -140,12 +144,55 @@ export default function About() {
                   "AI should amplify human capability, not replace human judgment. We build systems that think alongside you, not instead of you."
                 </motion.blockquote>
                 <div className="pt-6 border-t border-border">
-                  <p className="text-foreground font-semibold">Kenneth E Sweet Jr</p>
-                  <p className="text-sm text-muted-foreground">Founder & Chief Architect</p>
+                  <p className="text-foreground font-semibold">{founder.name}</p>
+                  <p className="text-sm text-muted-foreground">{founder.role}</p>
                 </div>
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-16 px-4 relative z-10">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div {...fadeUp} className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-foreground mb-4">Our Team</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Researchers, engineers, and specialists building the cognitive infrastructure layer for autonomous AI systems.
+            </p>
+          </motion.div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={member.name}
+                {...stagger(index * 0.08)}
+                className="bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <img 
+                    src={member.photo} 
+                    alt={`${member.name} - ${member.role}`}
+                    className="w-16 h-16 rounded-full object-cover ring-2 ring-primary/10"
+                  />
+                  <div>
+                    <h3 className="font-semibold text-foreground">{member.name}</h3>
+                    <p className="text-sm text-primary">{member.role}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                  {member.bio.split('.').slice(0, 2).join('.') + '.'}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {member.expertise.slice(0, 3).map((tag) => (
+                    <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-muted border border-border text-muted-foreground">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -255,8 +302,8 @@ export default function About() {
           <motion.h2 {...fadeUp} className="text-3xl font-bold mb-12 text-center text-foreground">Our Journey</motion.h2>
           <div className="space-y-6">
             {[
-              { year: "2009", event: "Kenneth starts shipping software — hundreds of projects for clients across industries" },
-               { year: "2024", event: "CMPSBL® founded — the substrate architecture crystallizes around persistent memory and governed orchestration" },
+              { year: "2009", event: "CMPSBL's founding team starts shipping software — hundreds of projects across industries" },
+               { year: "2024", event: "CMPSBL® formally established — the substrate architecture crystallizes around persistent memory and governed orchestration" },
                { year: "2025", event: "Production launch — artifact packs, NEXUS routing, DEFENSE shell, and the full Builder/Creator/Architect tier model" },
                { year: "Now", event: "Live cognitive infrastructure powering AI applications — free tier, no lock-in, shipping daily" }
             ].map((milestone, index) => (

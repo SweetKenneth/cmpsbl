@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Mail, MessageSquare, Send, CheckCircle, ArrowRight } from "lucide-react";
+import { Mail, MessageSquare, Send, CheckCircle, ArrowRight, Phone, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +12,7 @@ import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero/neon-data-center.jpg";
 import accessibilityImage from "@/assets/hero/neon-dream-cosmos.jpg";
+import { DEPARTMENTS, COMPANY_PHONE, COMPANY_PHONE_TEL } from "@/data/team";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -33,6 +34,7 @@ export default function Contact() {
     name: '',
     email: '',
     company: '',
+    department: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,10 +43,10 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Build mailto link with form data
+    const targetEmail = formData.department || 'hello@CMPSBL.com';
     const subject = encodeURIComponent(`[CMPSBL Contact] from ${formData.name}${formData.company ? ` (${formData.company})` : ''}`);
-    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || 'N/A'}\n\n${formData.message}`);
-    window.location.href = `mailto:Dev@CMPSBL.com?subject=${subject}&body=${body}`;
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || 'N/A'}\nDepartment: ${formData.department || 'General'}\n\n${formData.message}`);
+    window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
 
     setTimeout(() => {
       toast({
@@ -55,7 +57,7 @@ export default function Contact() {
     }, 500);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -66,7 +68,7 @@ export default function Contact() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Contact CMPSBL — Get in Touch"
-        description="Reach the CMPSBL team for partnerships, enterprise inquiries, support, or press. Based in Dallas, TX — serving teams worldwide."
+        description="Reach the CMPSBL team for partnerships, enterprise inquiries, support, or press. Departments include Sales, Engineering, Research, Security, and PR."
         canonical="https://cmpsbl.com/contact"
         keywords={['contact CMPSBL', 'AI partnership inquiry', 'enterprise AI contact', 'CMPSBL support', 'Dallas AI company contact']}
       />
@@ -111,8 +113,48 @@ export default function Contact() {
             Talk to Us
           </motion.h1>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.2 }} className="text-xl text-foreground/90 max-w-3xl [text-shadow:_0_2px_10px_hsl(var(--background))]">
-            Enterprise partnerships, technical questions, or just want to learn more — we respond to every message.
+            Enterprise partnerships, technical questions, or just want to learn more — our team responds to every message.
           </motion.p>
+        </div>
+      </section>
+
+      {/* Departments Grid */}
+      <section className="py-16 px-4 bg-muted/30 relative z-10">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div {...fadeUp} className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-foreground mb-4">Reach the Right Team</h2>
+            <p className="text-muted-foreground text-lg">Connect directly with the department that can help you most.</p>
+          </motion.div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {DEPARTMENTS.map((dept, index) => (
+              <motion.div
+                key={dept.name}
+                {...stagger(index * 0.06)}
+                className="bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Building2 className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-foreground">{dept.name}</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">{dept.description}</p>
+                <div className="space-y-2 text-sm">
+                  <a href={`mailto:${dept.email}`} className="flex items-center gap-2 text-primary hover:underline">
+                    <Mail className="w-3.5 h-3.5" />
+                    {dept.email}
+                  </a>
+                  <a href={COMPANY_PHONE_TEL} className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
+                    <Phone className="w-3.5 h-3.5" />
+                    {dept.phone}
+                  </a>
+                </div>
+                <p className="text-xs text-muted-foreground mt-3 border-t border-border pt-3">
+                  Lead: <span className="text-foreground">{dept.head}</span>
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -124,18 +166,18 @@ export default function Contact() {
             <div className="space-y-6">
               <motion.div {...stagger(0)} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
                 <Mail className="w-10 h-10 text-primary mb-4" />
-                <h2 className="text-2xl font-bold mb-4 text-foreground">Contact Us</h2>
+                <h2 className="text-2xl font-bold mb-4 text-foreground">General Contact</h2>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-muted-foreground mb-2">Phone:</p>
-                    <a href="tel:+17603584324" className="text-primary hover:underline text-lg font-medium block">
-                      (760) FLUID-AI
+                    <p className="text-muted-foreground mb-2">Main Line:</p>
+                    <a href={COMPANY_PHONE_TEL} className="text-primary hover:underline text-lg font-medium block">
+                      {COMPANY_PHONE}
                     </a>
                   </div>
                   <div>
-                    <p className="text-muted-foreground mb-2">Email:</p>
-                    <a href="mailto:Dev@CMPSBL.com" className="text-primary hover:underline text-lg font-medium">
-                      Dev@CMPSBL.com
+                    <p className="text-muted-foreground mb-2">General Inquiries:</p>
+                    <a href="mailto:hello@CMPSBL.com" className="text-primary hover:underline text-lg font-medium">
+                      hello@CMPSBL.com
                     </a>
                   </div>
                 </div>
@@ -143,7 +185,7 @@ export default function Contact() {
 
               <motion.div {...stagger(0.1)} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
                 <MessageSquare className="w-10 h-10 text-primary mb-4" />
-                <h2 className="text-2xl font-bold mb-4 text-foreground">Quick Answers</h2>
+                <h2 className="text-2xl font-bold mb-4 text-foreground">What to Expect</h2>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
@@ -151,11 +193,11 @@ export default function Contact() {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">Founder-led support for all inquiries</span>
+                    <span className="text-muted-foreground">Dedicated team support for all inquiries</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">Technical docs available on request</span>
+                    <span className="text-muted-foreground">Technical docs and demos available on request</span>
                   </li>
                 </ul>
               </motion.div>
@@ -163,13 +205,13 @@ export default function Contact() {
               <motion.div {...stagger(0.2)} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
                 <h3 className="text-xl font-bold mb-4 text-foreground">Connect With Us</h3>
                 <div className="space-y-2">
-                  <a href="https://x.com/kennethesweetjr?s=21" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://x.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     Twitter/X
                   </a>
-                  <a href="https://www.linkedin.com/in/kennethesweetjr?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://www.linkedin.com/company/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     LinkedIn
                   </a>
-                  <a href="https://github.com/SweetKenneth" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://github.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     GitHub
                   </a>
                 </div>
@@ -191,6 +233,21 @@ export default function Contact() {
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium mb-2 text-foreground">Company</label>
                   <Input id="company" name="company" type="text" value={formData.company} onChange={handleChange} placeholder="Your company name (optional)" className="w-full" />
+                </div>
+                <div>
+                  <label htmlFor="department" className="block text-sm font-medium mb-2 text-foreground">Department</label>
+                  <select
+                    id="department"
+                    name="department"
+                    value={formData.department}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <option value="">General Inquiries</option>
+                    {DEPARTMENTS.map(d => (
+                      <option key={d.email} value={d.email}>{d.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground">Message *</label>
@@ -222,7 +279,7 @@ export default function Contact() {
               <h2 className="text-2xl font-bold mb-4 text-foreground">Custom Deployments</h2>
               <p className="text-muted-foreground mb-4">
                 Need self-hosted deployment, custom compliance, or a substrate tailored to your organization? 
-                We architect solutions for teams that demand full control.
+                Our engineering team architects solutions for teams that demand full control.
               </p>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 {["Self-hosted substrate deployment via LNCHBL", "Custom slot capacity beyond standard tiers", "Dedicated engineering support and SLA guarantees"].map((text, i) => (
@@ -235,8 +292,8 @@ export default function Contact() {
             </div>
             <div className="md:w-64">
               <div className="bg-card border border-border rounded-xl p-6">
-                <h3 className="font-semibold mb-2">Talk to the Team</h3>
-                <p className="text-sm text-muted-foreground mb-4">Use the form or email us directly at Dev@CMPSBL.com</p>
+                <h3 className="font-semibold mb-2">Talk to Our Sales Team</h3>
+                <p className="text-sm text-muted-foreground mb-4">Email sales@CMPSBL.com or use the form below</p>
                 <a href="#contact-form" className="text-primary hover:underline text-sm">Go to contact form →</a>
               </div>
             </div>
