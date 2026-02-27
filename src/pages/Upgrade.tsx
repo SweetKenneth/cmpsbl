@@ -1,9 +1,9 @@
 /**
- * Upgrade — Equal-Slot Artifact Capacity Model
+ * Upgrade — Horizontal-Scroll Artifact Capacity Model
  * Builder (3) · Operator (6) · Architect (12)
- * All 24 packs visible. Capacity controls activation only.
+ * Packs grouped by Strategic Domain with horizontal card scrolling
  */
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
@@ -20,7 +20,7 @@ import { cn } from '@/lib/utils';
 import {
   Check, ArrowRight, Brain, Package, Shield, Zap,
   Server, Building2, Lock, Unlock, Layers, Eye,
-  Sparkles, Compass
+  Sparkles, Compass, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import { ARTIFACT_PACKS, PRODUCT_TIERS, STRATEGIC_DOMAINS, type ProductTier } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
@@ -113,7 +113,7 @@ const PILLARS = [
   { icon: Server, title: 'Deployment Sovereignty', description: 'Cloud-first or self-hosted. Your infrastructure, your rules.' },
 ];
 
-/* ─── Domain icons ─── */
+/* ─── Domain icons & accent colors ─── */
 const DOMAIN_ICONS: Record<string, React.ElementType> = {
   'domain-memory': Brain,
   'domain-coordination': Zap,
@@ -123,10 +123,114 @@ const DOMAIN_ICONS: Record<string, React.ElementType> = {
   'domain-perception': Eye,
 };
 
+const DOMAIN_ACCENTS: Record<string, { gradient: string; text: string; border: string; bg: string }> = {
+  'domain-memory': { gradient: 'from-cyan-500/20 to-cyan-500/5', text: 'text-cyan-400', border: 'border-cyan-500/20', bg: 'bg-cyan-500/10' },
+  'domain-coordination': { gradient: 'from-violet-500/20 to-violet-500/5', text: 'text-violet-400', border: 'border-violet-500/20', bg: 'bg-violet-500/10' },
+  'domain-intelligence': { gradient: 'from-amber-500/20 to-amber-500/5', text: 'text-amber-400', border: 'border-amber-500/20', bg: 'bg-amber-500/10' },
+  'domain-resilience': { gradient: 'from-emerald-500/20 to-emerald-500/5', text: 'text-emerald-400', border: 'border-emerald-500/20', bg: 'bg-emerald-500/10' },
+  'domain-sovereignty': { gradient: 'from-orange-500/20 to-orange-500/5', text: 'text-orange-400', border: 'border-orange-500/20', bg: 'bg-orange-500/10' },
+  'domain-perception': { gradient: 'from-pink-500/20 to-pink-500/5', text: 'text-pink-400', border: 'border-pink-500/20', bg: 'bg-pink-500/10' },
+};
+
+/* ─── Horizontal Scroll Row ─── */
+function DomainPackRow({
+  domain,
+  packs,
+  slotState,
+  onSlotPressure,
+}: {
+  domain: typeof STRATEGIC_DOMAINS[0];
+  packs: typeof ARTIFACT_PACKS;
+  slotState: ReturnType<typeof useArtifactSlots>;
+  onSlotPressure: (packName: string) => void;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const DIcon = DOMAIN_ICONS[domain.id] || Package;
+  const accent = DOMAIN_ACCENTS[domain.id] || DOMAIN_ACCENTS['domain-memory'];
+
+  const scroll = useCallback((direction: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({
+      left: direction === 'left' ? -360 : 360,
+      behavior: 'smooth',
+    });
+  }, []);
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5 }}
+      className="relative"
+    >
+      {/* Domain Header */}
+      <div className="container mx-auto px-4 mb-5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", accent.bg)}>
+              <DIcon className={cn("w-5 h-5", accent.text)} />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold tracking-tight">{domain.name}</h3>
+              <p className="text-xs text-muted-foreground max-w-md line-clamp-1">{domain.thesis}</p>
+            </div>
+            <Badge variant="outline" className="text-[10px] font-mono ml-2 hidden sm:inline-flex">
+              {packs.length} packs
+            </Badge>
+          </div>
+
+          {/* Scroll arrows — desktop only */}
+          <div className="hidden sm:flex items-center gap-1.5">
+            <button
+              onClick={() => scroll('left')}
+              className="w-8 h-8 rounded-lg border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-4 h-4 text-muted-foreground" />
+            </button>
+            <button
+              onClick={() => scroll('right')}
+              className="w-8 h-8 rounded-lg border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Horizontal Scroll Track */}
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 px-4 lg:px-[max(1rem,calc((100vw-80rem)/2+1rem))] no-scrollbar"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {packs.map((pack) => (
+          <div
+            key={pack.id}
+            className="min-w-[300px] max-w-[340px] snap-start shrink-0"
+          >
+            <PackActivationCard
+              pack={pack}
+              slotState={slotState}
+              onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
+              onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
+              onSlotPressure={onSlotPressure}
+            />
+          </div>
+        ))}
+
+        {/* End spacer for scroll padding */}
+        <div className="shrink-0 w-4 lg:w-1" aria-hidden />
+      </div>
+    </motion.section>
+  );
+}
+
 export default function Upgrade() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
-  const [activeDomain, setActiveDomain] = useState<string | null>(null);
   const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
 
   const currentProductTier: ProductTier =
@@ -136,16 +240,8 @@ export default function Upgrade() {
 
   const slotState = useArtifactSlots(currentTier);
 
-  const filteredPacks = activeDomain
-    ? ARTIFACT_PACKS.filter(p => {
-        const domain = STRATEGIC_DOMAINS.find(d => d.id === activeDomain);
-        return domain?.packIds.includes(p.id);
-      })
-    : ARTIFACT_PACKS;
-
   const handleSlotPressure = (packName: string) => {
     setPressureModal({ open: true, packName });
-    // Audit log is handled by the hook
   };
 
   return (
@@ -174,7 +270,6 @@ export default function Upgrade() {
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               24 artifact packs. Every pack = 1 slot. Choose 3, 6, or 12.
             </p>
-            {/* Slot capacity indicator in hero */}
             {slotState.activeCount > 0 && (
               <div className="flex justify-center mt-4">
                 <SlotCapacityIndicator slotState={slotState} variant="compact" />
@@ -210,9 +305,11 @@ export default function Upgrade() {
           </div>
         </div>
 
-        {/* ═══ TIER CARDS ═══ */}
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {/* ═══ TIER CARDS — Horizontal scroll on mobile ═══ */}
+        <div className="relative">
+          <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 px-4 lg:px-0 lg:overflow-visible lg:justify-center lg:flex-wrap no-scrollbar max-w-5xl mx-auto"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {TIERS.map((t, i) => {
               const isCurrent = currentProductTier === t.key;
               const displayPrice = billingInterval === 'annual' && t.key !== 'builder' ? t.annualPrice : t.price;
@@ -226,7 +323,8 @@ export default function Upgrade() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
                   className={cn(
-                    "relative rounded-2xl border flex flex-col overflow-hidden",
+                    "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0",
+                    "min-w-[300px] max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
                     isCurrent
                       ? "border-primary ring-2 ring-primary/20"
                       : t.popular
@@ -334,100 +432,37 @@ export default function Upgrade() {
           </div>
         </section>
 
-        {/* ═══ STRATEGIC DOMAINS ═══ */}
-        <section className="container mx-auto px-4 mt-24">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
-                <Compass className="w-3 h-3 mr-1.5 inline" />
-                Strategic Domains
-              </Badge>
-              <h2 className="text-3xl font-bold">Why the Substrate Is Category-Defining</h2>
-              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-                Not features assembled from APIs. Properties of a system that runs as one thing.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {STRATEGIC_DOMAINS.map((domain, i) => {
-                const DIcon = DOMAIN_ICONS[domain.id] || Package;
-                const isActive = activeDomain === domain.id;
-                return (
-                  <motion.div
-                    key={domain.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.06 }}
-                  >
-                    <Card
-                      className={cn(
-                        "h-full cursor-pointer transition-all",
-                        isActive
-                          ? "border-primary ring-1 ring-primary/20"
-                          : "border-border/50 hover:border-primary/20"
-                      )}
-                      onClick={() => setActiveDomain(isActive ? null : domain.id)}
-                    >
-                      <CardContent className="p-5 space-y-3">
-                        <div className="flex items-center gap-2">
-                          <DIcon className="w-5 h-5 text-primary" />
-                          <h3 className="font-bold text-sm">{domain.name}</h3>
-                        </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed">{domain.thesis}</p>
-                        <div className="text-[10px] text-muted-foreground/60">
-                          {domain.packIds.length} packs
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ ARTIFACT PACKS ═══ */}
-        <section className="container mx-auto px-4 mt-16">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
-                <Package className="w-3 h-3 mr-1.5 inline" />
-                {activeDomain
-                  ? STRATEGIC_DOMAINS.find(d => d.id === activeDomain)?.name
-                  : 'All 24 Packs'}
-              </Badge>
-              <h2 className="text-3xl font-bold">Artifact Packs</h2>
-              <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-                Every pack = 1 slot. All visible to all plans. Capacity controls activation.
-              </p>
-              {activeDomain && (
-                <button
-                  onClick={() => setActiveDomain(null)}
-                  className="mt-3 text-xs text-primary hover:underline"
-                >
-                  Show all 24 packs
-                </button>
-              )}
-            </div>
-
-            {/* Slot capacity indicator above packs */}
-            <div className="flex justify-center mb-6">
+        {/* ═══ ARTIFACT PACKS BY DOMAIN — Horizontal Scroll Rows ═══ */}
+        <section className="mt-24">
+          <div className="container mx-auto px-4 text-center mb-12">
+            <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
+              <Package className="w-3 h-3 mr-1.5 inline" />
+              All 24 Packs
+            </Badge>
+            <h2 className="text-3xl font-bold">Artifact Packs by Domain</h2>
+            <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+              Every pack = 1 slot. All visible to all plans. Scroll each category to explore.
+            </p>
+            {/* Slot capacity indicator */}
+            <div className="flex justify-center mt-6">
               <SlotCapacityIndicator slotState={slotState} variant="full" className="max-w-sm w-full" />
             </div>
+          </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredPacks.map((pack) => (
-                <PackActivationCard
-                  key={pack.id}
-                  pack={pack}
+          <div className="space-y-12">
+            {STRATEGIC_DOMAINS.map((domain) => {
+              const domainPacks = ARTIFACT_PACKS.filter(p => domain.packIds.includes(p.id));
+              if (domainPacks.length === 0) return null;
+              return (
+                <DomainPackRow
+                  key={domain.id}
+                  domain={domain}
+                  packs={domainPacks}
                   slotState={slotState}
-                  onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
-                  onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
                   onSlotPressure={handleSlotPressure}
                 />
-              ))}
-            </div>
+              );
+            })}
           </div>
         </section>
 
