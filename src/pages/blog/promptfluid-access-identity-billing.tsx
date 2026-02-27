@@ -22,9 +22,8 @@ const PromptFluidAccess = () => {
             "headline": "ACCESS Module: Identity, Licensing & Billing",
             "description": "CMPSBL's ACCESS module manages authentication, permissions, licensing, and billing with zero-password cryptographic identity.",
             "author": {
-              "@type": "Person",
-              "name": "Kenneth E Sweet Jr",
-              "jobTitle": "Founder & Security Engineer"
+              "@type": "Organization",
+              "name": "CMPSBL Research Team"
             },
             "publisher": {
               "@type": "Organization",

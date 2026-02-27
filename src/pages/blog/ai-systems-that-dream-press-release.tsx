@@ -162,7 +162,7 @@ export default function AISystemsThatDreamPressRelease() {
               "Artificial intelligence shouldn't wait on a prompt. It should think, reflect, dream, and improve itself—just like we do. Cascade and SimNap prove that's possible today, and they do it with zero compute cost."
             </blockquote>
             <footer className="text-muted-foreground">
-              — Kenneth E Sweet Jr, Founder
+              — CMPSBL Research Team
             </footer>
           </section>
 
@@ -170,7 +170,7 @@ export default function AISystemsThatDreamPressRelease() {
           <section className="bg-muted/30 border border-border rounded-lg p-8">
             <h3 className="text-xl font-bold mb-4 text-foreground">Contact</h3>
             <div className="space-y-2 text-muted-foreground">
-              <p>Kenneth E Sweet Jr — Founder, CMPSBL</p>
+              <p>CMPSBL Press Relations</p>
               <p>
                 <a href="mailto:Dev@CMPSBL.com" className="text-primary hover:underline">
                   Dev@CMPSBL.com

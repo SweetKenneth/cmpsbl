@@ -16,7 +16,7 @@ export default function AutonomousAIGovernance() {
         <article className="container max-w-3xl mx-auto px-4 py-16">
           <img src={heroImg} alt="AI governance compliance" className="w-full rounded-xl mb-8 aspect-video object-cover" />
           <h1 className="text-4xl font-black mb-4">Autonomous AI Governance: From Theory to Runtime Enforcement</h1>
-          <p className="text-muted-foreground mb-8">February 8, 2026 · 14 min read · Kenneth E Sweet Jr</p>
+          <p className="text-muted-foreground mb-8">February 8, 2026 · 14 min read · Dr. Sarah Chen, Head of AI Research</p>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
             <p className="text-lg leading-relaxed">AI governance has been a whitepaper exercise for too long. With the AUDIT and IDENTITY infrastructure modules, governance becomes a runtime property — not a post-hoc review.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">AUDIT: Immutable Compliance Logging</h2>

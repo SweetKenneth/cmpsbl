@@ -41,7 +41,7 @@ export default function AIGovernanceNamespaceUnifiedTerminology() {
         image={governanceImg}
         publishedTime={publishDate}
         modifiedTime={publishDate}
-        author="Kenneth E. Sweet Jr."
+        author="CMPSBL Research Team"
       />
       
       <PublicNav />
