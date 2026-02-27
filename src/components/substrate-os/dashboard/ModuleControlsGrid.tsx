@@ -1,5 +1,5 @@
 /**
- * Module Controls Grid — SPARTA Epoch — All execution surfaces with real-time status
+ * Module Controls Grid — All execution surfaces with real-time status
  */
 
 import { 
@@ -303,7 +303,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
         </div>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Surface Control Panels</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">EXECUTION SURFACES • SPARTA EPOCH</p>
+          <p className="text-[10px] text-muted-foreground font-mono">EXECUTION SURFACES • CMPSBL</p>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 /**
  * Why CMPSBL — 9 Module Showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * SPARTA Epoch: Only the 9 public-facing modules
+ * Only the 9 public-facing modules
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";

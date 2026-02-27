@@ -1,6 +1,6 @@
 /**
  * Terminal Command Registry
- * SPARTA Epoch — 360+ commands across 10 entities + 5 meshes + 9 zones
+ * 360+ commands across 10 entities + 5 meshes + 9 zones
  * Complete list of all substrate commands organized by entity
  * 
  * Tier Gating: free | creator | architect | governor

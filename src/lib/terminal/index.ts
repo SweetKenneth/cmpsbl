@@ -1,6 +1,6 @@
 /**
  * Terminal Exports
- * SPARTA Epoch — Command execution, validation, governance, synergy, SEBA, encoded commands, infrastructure
+ * Command execution, validation, governance, synergy, SEBA, encoded commands, infrastructure
  */
 
 // Command execution with governance

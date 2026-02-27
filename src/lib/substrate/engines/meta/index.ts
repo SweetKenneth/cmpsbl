@@ -1,6 +1,6 @@
 /**
  * Meta-Engine System
- * SPARTA Epoch — High-Value Expansion
+ * High-Value Expansion
  * 
  * Architecture: Capabilities (400+) → Engines (76) → Meta-Engines (24)
  * 

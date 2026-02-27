@@ -2,7 +2,7 @@
  * useAccess Hook — ACCESS zone (Entitlements & Billing) operations
  * 
  * Respects debug mode kill-switch for quota polling.
- * Part of the SPARTA Epoch layered cognitive architecture.
+ * Part of the layered cognitive architecture.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

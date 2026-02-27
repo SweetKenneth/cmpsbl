@@ -44,7 +44,7 @@ const ROLLBACK_TEMPLATE = `# Rollback Plan — CMPSBL Substrate
 
 ---
 
-*CMPSBL Substrate — SPARTA Epoch*
+*CMPSBL Substrate*
 *© 2025–2026 PromptFluid®. All rights reserved.*
 `;
 

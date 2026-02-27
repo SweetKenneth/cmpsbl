@@ -1,7 +1,7 @@
 /**
  * PromptFluid Defense Core Engine
  * Real-time threat detection and risk scoring
- * SPARTA Epoch — Hardened with input validation and bounded collections
+ * Hardened with input validation and bounded collections
  */
 
 import { supabase } from '@/integrations/supabase/client';
