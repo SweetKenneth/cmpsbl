@@ -1,6 +1,6 @@
 /**
  * Module Dependency Graph
- * v1.0.0 — Runtime dependency resolution and boot ordering
+ * Runtime dependency resolution and boot ordering
  * 
  * Maintains the module dependency DAG, detects circular dependencies,
  * and computes optimal boot order via topological sort.

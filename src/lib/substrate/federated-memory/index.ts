@@ -1,6 +1,6 @@
 /**
  * Federated Memory Sync
- * v1.0.0 — Cross-instance memory synchronization without centralization
+ * Cross-instance memory synchronization without centralization
  * 
  * Enables multiple substrate instances to share memory fragments
  * while respecting privacy boundaries and consent flags.

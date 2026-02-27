@@ -1,6 +1,6 @@
 /**
  * Autonomous Load Shedding
- * v1.0.0 — Deprioritizes non-critical modules during system pressure
+ * Deprioritizes non-critical modules during system pressure
  * 
  * Monitors system load indicators and automatically throttles
  * lower-priority modules to protect core functionality.

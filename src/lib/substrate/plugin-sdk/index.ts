@@ -1,6 +1,6 @@
 /**
  * Substrate Plugin SDK
- * v1.0.0 — Extension framework for third-party substrate plugins
+ * Extension framework for third-party substrate plugins
  * 
  * Provides lifecycle hooks, capability registration, and sandboxed
  * execution for external plugins integrating with the cognitive substrate.

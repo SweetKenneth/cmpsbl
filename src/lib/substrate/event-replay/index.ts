@@ -1,6 +1,6 @@
 /**
  * Event Replay Engine
- * v1.0.0 — Replay historical events for debugging and state reconstruction
+ * Replay historical events for debugging and state reconstruction
  * 
  * Records events in an append-only log and replays them
  * to reconstruct system state at any point in time.

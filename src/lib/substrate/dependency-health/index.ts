@@ -1,6 +1,6 @@
 /**
  * Dependency Health Tracker
- * v1.0.0 — Monitors health of external and internal dependencies
+ * Monitors health of external and internal dependencies
  * 
  * Tracks uptime, latency, and reliability of services the substrate
  * depends on (AI providers, databases, APIs) for proactive management.

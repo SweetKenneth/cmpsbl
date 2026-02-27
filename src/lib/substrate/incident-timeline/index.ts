@@ -1,6 +1,6 @@
 /**
  * Incident Timeline Reconstruction
- * v1.0.0 — Builds causal timelines from correlated brain_events
+ * Builds causal timelines from correlated brain_events
  * 
  * When an anomaly is detected, reconstructs the chain of events
  * that led to it, enabling root-cause analysis.

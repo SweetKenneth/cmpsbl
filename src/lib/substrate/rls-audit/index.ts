@@ -1,6 +1,6 @@
 /**
  * RLS Audit Scanner
- * v1.0.0 — Automated Row-Level Security policy gap detection
+ * Automated Row-Level Security policy gap detection
  * 
  * Scans all public tables and flags missing or weak RLS policies.
  * Designed to run pre-deploy or on-demand via terminal/Atlas.

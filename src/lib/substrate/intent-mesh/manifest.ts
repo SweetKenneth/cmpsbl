@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Capability Manifest
- * v10.0.0 — Each module's advertised resolvers
+ * Each module's advertised resolvers
  * 
  * This is the "phone book" of the mesh. Modules declare what they can do,
  * and the router matches intents to capable resolvers dynamically.

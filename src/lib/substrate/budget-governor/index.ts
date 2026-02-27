@@ -1,6 +1,6 @@
 /**
  * Cognitive Budget Governor
- * v1.0.0 — Fine-grained AI spend control per module and operation
+ * Fine-grained AI spend control per module and operation
  * 
  * Tracks token and cost budgets with configurable limits,
  * alerts, and automatic throttling when budgets are exceeded.

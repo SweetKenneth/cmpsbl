@@ -1,6 +1,6 @@
 /**
  * Intent Mesh — Module Exports
- * v10.2.0 — Emergent Module Intelligence Layer
+ * Emergent Module Intelligence Layer
  * 
  * The Intent Mesh enables autonomous cross-module capability discovery
  * and composition. Modules broadcast intents, the mesh routes to capable
