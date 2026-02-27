@@ -93,14 +93,13 @@ export function CmpsblNav() {
 
   const navSections: NavSection[] = [
     {
-      name: "Product",
+      name: "Platform",
       icon: Layers,
       items: [
-        { name: "AI Operating System", href: "/ai-operating-system", description: "What it is and why it matters", icon: Globe },
-        { name: "All Modules", href: "/modules", description: "Entities, mesh overlays, and zones", icon: Layers },
-        { name: "Composable Cognitives", href: "/composable-cognitives", description: "Downloadable AI agents", icon: Zap },
+        { name: "Artifact Packs", href: "/packs", description: "Activate capabilities with slot-based control", icon: Package, badge: "24 PACKS" },
+        { name: "Composable Agents", href: "/composable-cognitives", description: "Pre-built AI agents powered by the substrate", icon: Zap },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain, badge: "FREE" },
-        { name: "Cognitive Showcase", href: "/showcase", description: "Live proof-of-capability demos", icon: Rocket },
+        { name: "All Modules", href: "/modules", description: "9 production modules", icon: Layers },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
@@ -108,33 +107,21 @@ export function CmpsblNav() {
       name: "Developers",
       icon: Code,
       items: [
-        { name: "Start Here", href: "/start-here", description: "Get oriented fast", icon: Rocket },
+        { name: "How It Works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
         { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
-        { name: "Capability Manifest", href: "/docs/manifest", description: "Browse & download all capabilities", icon: Layers, badge: "NEW" },
+        { name: "Start Here", href: "/start-here", description: "Get oriented fast", icon: Rocket },
         { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "DevTools", href: "/devtools", description: "Diagnostics & utilities", icon: Terminal },
-      ]
-    },
-    {
-      name: "Solutions",
-      icon: Building2,
-      items: [
-        { name: "Templates", href: "/templates", description: "30 free production-ready templates", icon: Sparkles, badge: "FREE" },
-        { name: "Use Cases", href: "/use-cases", description: "Industry applications", icon: Sparkles },
-        { name: "Enterprise", href: "/solutions", description: "Custom deployment & integration", icon: Building2 },
-        { name: "Upgrade", href: "/upgrade", description: "Choose your artifact capacity", icon: Package },
-        { name: "Packs", href: "/packs", description: "Manage your active packs", icon: Layers },
       ]
     },
     {
       name: "Company",
       icon: Users,
       items: [
-        { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
-        { name: "Insights", href: "/insights", description: "Analysis & thought leadership", icon: BookOpen },
+        { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
+        { name: "Insights", href: "/insights", description: "Analysis & thought leadership", icon: BookOpen },
         { name: "System Status", href: "/status", description: "Live health & uptime", icon: Shield, badge: "LIVE" },
       ]
     },
