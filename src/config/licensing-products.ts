@@ -100,7 +100,7 @@ export const UNIFIED_TIERS = {
 /** Standalone one-time purchase — kept separate from tier subscriptions */
 export const TEMPLATE_GENERATOR = {
   product_id: 'prod_TwSqj6y5PfMkPy',
-  amount: 2900, // $29 one-time
+  amount: 1900, // $19 one-time
   name: 'Template Generator',
   description: 'Generate custom AI templates from natural language. One-time purchase, lifetime access.',
 } as const;
