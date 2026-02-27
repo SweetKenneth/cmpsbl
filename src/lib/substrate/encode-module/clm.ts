@@ -1,6 +1,5 @@
 /**
  * ENCODE CLM — Internal Codebase Learning Mode
- * SPARTA Epoch
  * 
  * ENCODE's CLM is INTERNAL-focused: it studies the actual codebase,
  * learns file locations, code patterns, component structures, and module

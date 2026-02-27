@@ -1,6 +1,6 @@
 /**
  * Atlas Control Plane
- * SPARTA Epoch — Single-source-of-truth substrate interface
+ * Single-source-of-truth substrate interface
  * 
  * The Atlas provides:
  * - Unified registry for all 24 execution surfaces (1 kernel + 9 modules + 5 meshes + 9 zones)

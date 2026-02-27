@@ -1,6 +1,6 @@
 /**
  * DEFENSE Module Exports
- * SPARTA Epoch — Security, Rate Limiting, Circuit Breakers, and Secret Redaction
+ * Security, Rate Limiting, Circuit Breakers, and Secret Redaction
  */
 
 // Core threat detection and risk analysis

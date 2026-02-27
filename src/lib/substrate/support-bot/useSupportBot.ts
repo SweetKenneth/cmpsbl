@@ -1,6 +1,6 @@
 /**
  * Support Bot React Hook
- * SPARTA Epoch — Governed Evolving Support System
+ * Governed Evolving Support System
  * 
  * Provides React integration for the support bot engine.
  * Respects debugMode — when enabled, auto-refresh is disabled.

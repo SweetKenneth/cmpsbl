@@ -1,6 +1,6 @@
 /**
  * CMPSBL® DECODE Personality Engine
- * SPARTA Epoch — Dynamic Personality Profiles (Server-Synced)
+ * Dynamic Personality Profiles (Server-Synced)
  *
  * Personality profiles now sync with the backend edge function.
  * Changes made via terminal commands persist to the database.

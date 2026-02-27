@@ -1,6 +1,6 @@
 /**
  * Secure localStorage Wrapper
- * SPARTA Epoch — Obfuscates sensitive state stored in browser storage
+ * Obfuscates sensitive state stored in browser storage
  * 
  * Uses base64 + XOR obfuscation to prevent casual inspection.
  * NOT cryptographic security — defense in depth against devtools snooping.

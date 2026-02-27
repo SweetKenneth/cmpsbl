@@ -1,6 +1,6 @@
 /**
  * Chaos Testing Scheduler
- * SPARTA Epoch — Automated fault injection for resilience validation
+ * Automated fault injection for resilience validation
  * 
  * Runs in shadow mode to validate recovery paths before production stress.
  * Injects random breaker trips, latency spikes, and sector kills.

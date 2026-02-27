@@ -1,6 +1,6 @@
 /**
  * MODERNIZER Shadow Loop Resolver
- * SPARTA Epoch — Crown Jewel Capability
+ * Crown Jewel Capability
  * 
  * CLM Request: MODERNIZER flagged shadow loop — evolution runs stuck in shadow_applied
  * phase for 3+ consecutive cycles without progressing to production or verification.

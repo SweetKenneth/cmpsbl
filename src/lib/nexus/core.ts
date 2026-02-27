@@ -1,6 +1,6 @@
 /**
  * NEXUS Brain Core
- * SPARTA Epoch — Central AI orchestration with hardened input validation
+ * Central AI orchestration with hardened input validation
  */
 
 import { routeToBestModel } from './router';

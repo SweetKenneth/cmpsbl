@@ -1,6 +1,6 @@
 /**
  * Spine & CCR Terminal Handlers — CORE, SYSTEM, BRAIN, DREAM
- * SPARTA Epoch — Registers governance-gated handlers for Spine + CCR nodes
+ * Registers governance-gated handlers for Spine + CCR nodes
  */
 
 import { registerHandler } from './validate-registry';
