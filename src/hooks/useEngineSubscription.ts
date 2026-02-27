@@ -1,7 +1,7 @@
 /**
  * useEngineSubscription Hook
  * Manages engine subscription state and checkout
- * v2.0.0 — Uses first-party redirect for reliable checkout
+ * Uses first-party redirect for reliable checkout
  */
 
 import { useState, useEffect, useCallback } from 'react';

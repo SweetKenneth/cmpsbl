@@ -1,6 +1,6 @@
 /**
  * S-Tier Synergy Pipeline Definitions
- * v10.5.4 ARCHITECT — 32 Premium Cross-Module Pipelines
+ * 32 Premium Cross-Module Pipelines
  * 
  * These are the highest-value pipelines designed for enterprise buyers
  */

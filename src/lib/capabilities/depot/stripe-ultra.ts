@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Stripe Ultra Expansion
  * Normalized Stripe product/price mappings for ultra capabilities
- * v2.0.0 — Unified Pricing ($19-$299 public range)
+ * Unified Pricing ($19-$299 public range)
  */
 
 import type { CapabilityStripeConfig } from './stripe-config';

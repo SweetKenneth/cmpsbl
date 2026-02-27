@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate React Hooks
- * v6.4.0 — Cognitive Orchestration Substrate (Phase 4A: Engine Bus)
+ * Cognitive Orchestration Substrate (Phase 4A: Engine Bus)
  * 
  * Includes hooks for:
  * - Engine Bus dispatch and state

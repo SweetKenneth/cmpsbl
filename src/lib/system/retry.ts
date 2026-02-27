@@ -1,6 +1,6 @@
 /**
  * Retry Policy System
- * v10.5.4 ARCHITECT — Exponential backoff with jitter for transient failures
+ * Exponential backoff with jitter for transient failures
  */
 
 import { isRetryableError, fromError, type AppError } from './errors';
