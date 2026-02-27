@@ -344,12 +344,13 @@ const App = () => {
                         <Route path="/devtools" element={<DevTools />} />
                         <Route path="/academy" element={<DeveloperAcademy />} />
                         <Route path="/audit" element={<Navigate to="/" replace />} />
-                        <Route path="/gaming" element={<GamingSubstrate />} />
+                        <Route path="/gaming" element={<Navigate to="/" replace />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />
                         <Route path="/use-cases" element={<UseCases />} />
                         <Route path="/marketplace" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
-                        <Route path="/intelligence" element={<SubstrateIntelligence />} />
+                        <Route path="/engine-marketplace" element={<Navigate to="/upgrade" replace />} />
+                        <Route path="/intelligence" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
                         <Route path="/licensing" element={<PhaseGateRoute><PackGate packId="pack-self-hosted"><SubstrateLicensingDownload /></PackGate></PhaseGateRoute>} />
                         <Route path="/substrate/licensing/success" element={<PhaseGateRoute><SubstrateLicensingSuccess /></PhaseGateRoute>} />
@@ -384,7 +385,7 @@ const App = () => {
                         <Route path="/foundations" element={<Foundations />} />
                         <Route path="/namespace" element={<Namespace />} />
                         <Route path="/insights" element={<Insights />} />
-                        <Route path="/register" element={<Register />} />
+                        <Route path="/register" element={<Navigate to="/auth" replace />} />
                         <Route path="/library" element={<Library />} />
                         <Route path="/support" element={<Support />} />
                         <Route path="/explore" element={<Explore />} />
