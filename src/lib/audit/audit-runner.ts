@@ -4,6 +4,7 @@
  */
 
 import type { AuditReport, AuditFinding } from './audit-types';
+import { getMetric } from '@/stores/publicMetricsStore';
 import { checkSystemManifest } from './checks/system-manifest';
 import { checkRouteRegistry } from './checks/routes';
 import { checkTerminalRegistry } from './checks/terminal';
@@ -71,7 +72,7 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
 
   return {
     run_id: uid(),
-    version: opts?.version ?? 'SPARTA',
+    version: opts?.version ?? getMetric('epoch'),
     created_at: new Date().toISOString(),
     duration_ms,
     summary: {

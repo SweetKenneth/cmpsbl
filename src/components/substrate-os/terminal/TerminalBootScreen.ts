@@ -14,6 +14,8 @@
  * - Improved visual hierarchy
  */
 
+import { getMetric } from '@/stores/publicMetricsStore';
+
 export interface BootConfig {
   animated?: boolean;
   compact?: boolean;
@@ -95,7 +97,7 @@ export function generateMobileBootScreen(): string[] {
     '',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '  ▓     CMPSBL® OS                  ▓',
-  '  ▓     SPARTA Epoch               ▓',
+  `  ▓     ${getMetric('epoch')} Epoch`.padEnd(35) + '▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
     '  ┌─ BOOTSTRAP ────────────────────┐',
@@ -157,7 +159,7 @@ export function generateDesktopBootScreen(): string[] {
     '  ░   ███████║╚██████╔╝██████╔╝███████║   ██║   ██║  ██║  ░',
     '  ░   ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝  ░',
     '  ░                                                       ░',
-  '  ░   CMPSBL® OS — SPARTA Epoch                           ░',
+  `  ░   CMPSBL® OS — ${getMetric('epoch')} Epoch`.padEnd(58) + '░',
   '  ░   Cognitive Operating System                          ░',
     '  ░   "Where Dreams Come To Adapt"                        ░',
     '  ░                                                       ░',

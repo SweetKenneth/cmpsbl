@@ -21,6 +21,7 @@
  * ✅ Audit trail & provenance
  */
 
+import { SUBSTRATE_VERSION } from '@/lib/substrate/versions';
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilience, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber, boundArray } from '@/lib/system/hardening';
@@ -122,9 +123,9 @@ export function initMemoryModule(): void {
   emitStarted('memory', 'init', {});
   try {
     initCircuitBreaker('memory', { failureThreshold: 5, recoveryTimeout: 30_000 });
-    moduleEngine = activateModuleEngine('memory', '10.9.0');
+    moduleEngine = activateModuleEngine('memory', SUBSTRATE_VERSION);
     state.initialized = true;
-    emitSucceeded('memory', 'init', { totalVectors: state.totalVectors, engineId: moduleEngine.instance.id, version: '10.9.0' });
+    emitSucceeded('memory', 'init', { totalVectors: state.totalVectors, engineId: moduleEngine.instance.id, version: SUBSTRATE_VERSION });
   } catch (err) {
     state.initialized = true;
     emitFailed('memory', 'init', err instanceof Error ? err.message : String(err));

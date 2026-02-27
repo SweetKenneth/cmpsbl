@@ -1,7 +1,8 @@
 /**
- * World-First Enhancements — SPARTA Epoch
+ * World-First Enhancements
  * Central export for all 56 high-value autonomous functions across 24 execution surfaces
  */
+import { getMetric } from '@/stores/publicMetricsStore';
 
 // BRAIN — Cognitive memory and attention
 export { 
@@ -127,11 +128,11 @@ export {
 
 /**
  * World-First Enhancement Registry
- * Complete catalog of SPARTA Epoch enhancements
+ * Complete catalog of enhancements
  */
 export const worldFirstEnhancements = {
-  version: '11.1.0',
-  codename: 'SPARTA Epoch',
+  get version() { return getMetric('version'); },
+  codename: 'Enhancement Pack',
   totalFunctions: 56,
   modules: {
     brain: ['AttentionMechanism', 'MemoryConsolidator', 'SemanticIndexer', 'EmotionalResonance'],

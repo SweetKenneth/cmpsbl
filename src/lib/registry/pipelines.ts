@@ -115,8 +115,9 @@ export function getPipelineNames(): readonly string[] {
 }
 
 /**
- * Export registry version for documentation
+ * Export registry version for documentation — wired to store
  */
-export const PIPELINE_REGISTRY_VERSION = '10.8.0' as const;
+import { SUBSTRATE_VERSION as _PV } from '@/lib/substrate/versions';
+export const PIPELINE_REGISTRY_VERSION = _PV;
 export const PIPELINE_REGISTRY_STATUS = 'descriptive_only' as const;
 export const PIPELINE_REGISTRY_COUNT = 300 as const; // 200 synergy + 100 crystallized
