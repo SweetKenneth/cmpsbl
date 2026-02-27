@@ -349,9 +349,9 @@ export default function PromptFluidHome() {
                 <span className="text-sm font-semibold text-white/90">Our Flagship Project</span>
               </motion.div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-5 leading-[1.1]">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-5 leading-[1.1]">
                 Meet{" "}
-                <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">
                   CMPSBL®
                 </span>
               </h2>
