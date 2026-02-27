@@ -286,6 +286,7 @@ export class ClocklessRadioEngine {
 
   stop(): void {
     if (this.preloadTimer) clearTimeout(this.preloadTimer);
+    if (this.effectTimer) clearTimeout(this.effectTimer);
     
     try { this.currentSource?.stop(); } catch { }
     try { this.nextSource?.stop(); } catch { }
