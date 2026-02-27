@@ -775,6 +775,14 @@ const DashboardContent = memo(function DashboardContent({
         {/* Slot Capacity Meter — always visible */}
         <SlotCapacityMeter activeCount={slotState.activeCount} capacity={slotState.capacity} />
 
+        {/* NEXUS Optimizer + Budget Governance — Governor only */}
+        {canAccessTier(userTier, 'cmpsbl') && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <NexusOptimizerWidget />
+            <BudgetGovernancePanel />
+          </div>
+        )}
+
         {canAccessTier(userTier, 'architect') && (
           <Suspense fallback={null}>
             <EmergencyRecoveryPanel showAlways={false} isCritical={integrityReport.isCritical} />
