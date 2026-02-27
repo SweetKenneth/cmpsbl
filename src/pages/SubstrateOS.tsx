@@ -854,7 +854,7 @@ const DashboardContent = memo(function DashboardContent({
             {[
               { label: 'Nodes', value: `${healthScore.activeCount}/${integrityReport.nodeCount}` },
               { label: 'Integrity', value: `${integrityReport.operational}%` },
-              { label: 'Status', value: integrityReport.status.replace('MATRIX ', '') },
+              { label: 'Status', value: (integrityReport.status ?? 'UNKNOWN').replace('MATRIX ', '') },
               { label: 'Structural', value: `${integrityReport.structural}%` },
             ].map(s => (
               <div key={s.label} className="rounded-lg bg-muted/15 border border-border/15 px-2.5 py-2 text-center">

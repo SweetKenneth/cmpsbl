@@ -138,7 +138,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
       setKillSwitches(prev => ({ ...prev, [key]: !newValue }));
       toast.error(`Failed to toggle ${key}`);
     } else {
-      const label = key.replace('_enabled', '');
+      const label = (key ?? '').replace('_enabled', '');
       toast.success(`${label} ${newValue ? 'enabled' : 'disabled'}`);
     }
   };
