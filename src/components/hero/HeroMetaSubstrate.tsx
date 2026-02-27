@@ -1,5 +1,5 @@
 /**
- * META HERO: Clockless® — A Cognitive Reality System · powered by the CMPSBL Substrate
+ * META HERO: CMPSBL® — Composable AI Infrastructure · featuring Clockless Cognitive Reality
  * Studio-grade hero with cinematic typography and fluid motion
  */
 
@@ -199,7 +199,7 @@ export function HeroMetaSubstrate() {
               </span>
             </motion.div>
             
-            {/* CLOCKLESS — massive, clean */}
+            {/* CMPSBL — massive, clean */}
             <motion.h1 
               className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7rem] font-black tracking-[-0.05em] leading-[0.9] mb-4 sm:mb-8"
               initial={{ opacity: 0, y: 30 }}
@@ -215,7 +215,7 @@ export function HeroMetaSubstrate() {
                   padding: "0 0.15em 0.05em 0",
                 }}
               >
-                Clockless
+                CMPSBL
               </span>
             </motion.h1>
 
