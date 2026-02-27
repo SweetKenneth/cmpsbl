@@ -93,9 +93,9 @@ export function EnhancedFooter() {
   ];
 
   const socialLinks = [
-    { name: "GitHub", icon: Github, href: "https://github.com/SweetKenneth" },
-    { name: "Twitter", icon: Twitter, href: "https://x.com/kennethesweetjr?s=21" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/in/kennethesweetjr?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" },
+    { name: "GitHub", icon: Github, href: "https://github.com/cmpsbl" },
+    { name: "Twitter", icon: Twitter, href: "https://x.com/cmpsbl" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/cmpsbl" },
   ];
 
   return (

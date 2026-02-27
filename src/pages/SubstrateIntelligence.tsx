@@ -29,8 +29,8 @@ const jsonLd = {
   "operatingSystem": "Cloud-Native",
   "description": "The world's first cognitive orchestration substrate solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning cycles.",
   "author": {
-    "@type": "Person",
-    "name": "Kenneth E Sweet Jr"
+    "@type": "Organization",
+    "name": "CMPSBL Research Team"
   },
   "offers": {
     "@type": "Offer",
@@ -386,7 +386,7 @@ Boot complete in 109ms`}
               </div>
               
               <p className="text-sm text-muted-foreground">
-                Created by <strong>Kenneth E Sweet Jr</strong> • PromptFluid® • © 2025-2026
+                Built by the <strong>CMPSBL Team</strong> • PromptFluid® • © 2025-2026
               </p>
             </div>
           </div>

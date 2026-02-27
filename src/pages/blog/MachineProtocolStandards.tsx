@@ -15,7 +15,7 @@ export default function MachineProtocolStandards() {
         <article className="container max-w-3xl mx-auto px-4 py-16">
           <img src={heroImg} alt="AI protocol standards" className="w-full rounded-xl mb-8 aspect-video object-cover" />
           <h1 className="text-4xl font-black mb-4">Machine-to-Machine Protocol Standards in the CMPSBL Substrate</h1>
-          <p className="text-muted-foreground mb-8">February 10, 2026 · 16 min read · Kenneth E Sweet Jr</p>
+          <p className="text-muted-foreground mb-8">February 10, 2026 · 16 min read · Marcus Rodriguez, Senior Systems Engineer</p>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
             <p className="text-lg leading-relaxed">The substrate introduces a fundamental shift in how autonomous systems communicate. With the RELAY and IDENTITY zones now part of the substrate's CCL layer, machine-to-machine protocol standards are no longer aspirational — they're enforced at runtime.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">The Problem: Unstructured Agent Communication</h2>

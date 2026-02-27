@@ -83,7 +83,7 @@ export function SEO({
   canonical,
   image = 'https://cmpsbl.com/og-default.jpg',
   type = 'website',
-  author = 'Kenneth E Sweet Jr',
+  author = 'CMPSBL Research Team',
   publishedTime,
   modifiedTime,
   keywords = ['composable AI', 'cognitive infrastructure', 'AI substrate', 'persistent memory', 'self-improving software', 'governed AI', 'adaptive intelligence'],

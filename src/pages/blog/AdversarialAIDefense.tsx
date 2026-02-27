@@ -15,7 +15,7 @@ export default function AdversarialAIDefense() {
         <article className="container max-w-3xl mx-auto px-4 py-16">
           <img src={heroImg} alt="Adversarial AI threat intelligence" className="w-full rounded-xl mb-8 aspect-video object-cover" />
           <h1 className="text-4xl font-black mb-4">Adversarial AI in 2026: The DEFENSE Module's Response</h1>
-          <p className="text-muted-foreground mb-8">February 6, 2026 · 18 min read · Kenneth E Sweet Jr</p>
+          <p className="text-muted-foreground mb-8">February 6, 2026 · 18 min read · James Whitfield, Security Researcher</p>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
             <p className="text-lg leading-relaxed">The adversarial AI landscape has evolved dramatically. Prompt injection attacks are now multi-stage, jailbreak techniques use steganographic encoding, and AI-generated social engineering operates at scale. Here's how the DEFENSE module fights back.</p>
             <h2 className="text-2xl font-bold text-foreground mt-8">Prompt Injection: The Multi-Stage Problem</h2>
