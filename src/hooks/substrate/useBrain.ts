@@ -1,6 +1,5 @@
 /**
  * useBrain Hook — BRAIN zone (Cognitive Memory) operations
- * SPARTA Epoch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

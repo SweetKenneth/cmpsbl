@@ -1,6 +1,6 @@
 /**
  * useEncode Hook
- * v11.0.0 — Dedicated hook for ENCODE module operations
+ * Dedicated hook for ENCODE module operations
  * Includes escalation processing + orchestration layer integration.
  */
 

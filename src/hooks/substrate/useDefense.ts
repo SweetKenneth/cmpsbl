@@ -1,6 +1,6 @@
 /**
  * useDefense Hook — DEFENSE mesh overlay operations
- * SPARTA Epoch — Respects debugMode kill-switch
+ * Respects debugMode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
