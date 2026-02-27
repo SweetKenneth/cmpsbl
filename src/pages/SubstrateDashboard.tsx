@@ -1,6 +1,6 @@
 /**
- * Clockless — CMPSBL Substrate Dashboard
- * SPARTA Epoch — 10-Entity + 5-Mesh + 9-Zone Architecture
+ * CMPSBL Substrate Dashboard
+ * ARCHITECT Epoch — Production Module Architecture
  *
  * Unified control center for all entities, mesh overlays, and zones:
  * 
@@ -330,9 +330,9 @@ export default function SubstrateDashboard() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Substrate Dashboard — CMPSBL"
-        description="Cognitive orchestration substrate control center. Matrix Nodes, mesh overlays, and convergence zones including DECODE, ENCODE, DEFENSE, NEXUS, VISION, CORTEX, and more."
+        description="Cognitive orchestration substrate control center. Production modules, protective layers, and advanced governance for AI systems."
         canonical="https://cmpsbl.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "zone architecture", "cortex"]}
+        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "module architecture", "cortex"]}
       />
 
       <PublicNav />
