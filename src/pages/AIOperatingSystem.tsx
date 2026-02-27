@@ -248,10 +248,13 @@ export default function AIOperatingSystem() {
             <p className="text-muted-foreground mb-8">Start building with the world's first AI OS. Free to explore.</p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Button asChild size="lg" className="rounded-xl">
-                <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
+                <Link to="/start-here">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl">
                 <Link to="/modules">Explore All 9 Modules</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-xl">
+                <Link to="/gaming">Gaming AI <Gamepad2 className="w-4 h-4 ml-2" /></Link>
               </Button>
             </div>
           </div>

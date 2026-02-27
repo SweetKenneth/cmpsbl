@@ -338,6 +338,11 @@ export default function About() {
                    <ArrowRight className="w-4 h-4 ml-2" />
                  </Button>
                </Link>
+               <Link to="/publication">
+                 <Button size="lg" variant="outline">
+                   Read Our Publication
+                 </Button>
+               </Link>
                <Link to="/upgrade">
                  <Button size="lg" variant="outline">
                    View Plans

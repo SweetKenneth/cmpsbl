@@ -46,6 +46,7 @@ export function EnhancedFooter() {
         { name: "Minds", href: "/composable-cognitives", highlight: true },
         { name: "Persistent Memory", href: "/persistent-memory" },
         { name: "Artifact Packs", href: "/packs" },
+        { name: "Dream Eater", href: "/feed-dream-eater" },
         { name: "Enterprise", href: "/enterprise" },
         { name: "Pricing", href: "/upgrade" },
       ]
@@ -56,6 +57,7 @@ export function EnhancedFooter() {
         { name: "Start Here", href: "/start-here", highlight: true },
         { name: "Documentation", href: "/documentation" },
         { name: "API Access", href: "/api-access" },
+        { name: "Capability Map", href: "/capability-map" },
         { name: "Academy", href: "/academy" },
         { name: "DevTools", href: "/devtools" },
       ]
@@ -65,6 +67,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Blog", href: "/blog" },
         { name: "Insights", href: "/insights" },
+        { name: "Roadmap", href: "/roadmap" },
         { name: "Use Cases", href: "/use-cases" },
         { name: "Showcase", href: "/showcase" },
         { name: "Changelog", href: "/changelog" },
@@ -75,6 +78,7 @@ export function EnhancedFooter() {
       links: [
         { name: "About", href: "/about" },
         { name: "Investors", href: "/investors" },
+        { name: "Solutions", href: "/solutions" },
         { name: "PromptFluid", href: "/promptfluid" },
         { name: "Careers", href: "/careers" },
         { name: "Contact", href: "/contact" },
@@ -86,6 +90,7 @@ export function EnhancedFooter() {
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
         { name: "System Status", href: "/status" },
+        { name: "Library", href: "/library" },
         { name: "CodeLab", href: "/codelab" },
         { name: "XCTBL", href: "#xctbl" },
       ]

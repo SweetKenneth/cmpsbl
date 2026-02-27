@@ -428,6 +428,22 @@ const FeedDreamEater = () => {
             </CardContent>
           </Card>
 
+          {/* Dream Eater Sub-pages */}
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            <Link to="/dream-eater/archaeology">
+              <Button variant="outline" size="sm" className="gap-2">
+                <Brain className="w-4 h-4" />
+                Dream Archaeology
+              </Button>
+            </Link>
+            <Link to="/dream-eater/artifacts">
+              <Button variant="outline" size="sm" className="gap-2">
+                <Gem className="w-4 h-4" />
+                Dream Artifacts
+              </Button>
+            </Link>
+          </div>
+
           {/* Mystery Footer */}
           <p className="text-center text-xs text-muted-foreground/50 mt-8 font-serif italic">
             "The substrate remembers what you have forgotten."
