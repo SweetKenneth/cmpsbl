@@ -1,6 +1,7 @@
 /**
  * Packs — Manage artifact pack activations
  * All 24 packs visible. Active-first sorting. Filter/search.
+ * Click any pack card for full details modal.
  */
 import { useState, useMemo } from 'react';
 import { SEO } from '@/components/SEO';
@@ -11,10 +12,11 @@ import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { SlotCapacityIndicator } from '@/components/slots/SlotCapacityIndicator';
 import { SlotPressureModal } from '@/components/slots/SlotPressureModal';
 import { PackActivationCard } from '@/components/slots/PackActivationCard';
+import { PackDetailModal } from '@/components/slots/PackDetailModal';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Package, Search } from 'lucide-react';
-import { ARTIFACT_PACKS, STRATEGIC_DOMAINS, type ProductTier } from '@/lib/quarry/types';
+import { ARTIFACT_PACKS, STRATEGIC_DOMAINS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +25,7 @@ export default function Packs() {
   const [search, setSearch] = useState('');
   const [activeDomain, setActiveDomain] = useState<string | null>(null);
   const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
+  const [detailPack, setDetailPack] = useState<ArtifactPack | null>(null);
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
@@ -142,6 +145,7 @@ export default function Packs() {
                   onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
                   onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
                   onSlotPressure={(name) => setPressureModal({ open: true, packName: name })}
+                  onViewDetails={(pack) => setDetailPack(pack)}
                 />
               ))}
             </div>
@@ -160,6 +164,16 @@ export default function Packs() {
           onOpenChange={(open) => setPressureModal({ ...pressureModal, open })}
           currentTier={currentProductTier}
           packName={pressureModal.packName}
+        />
+
+        <PackDetailModal
+          pack={detailPack}
+          open={!!detailPack}
+          onOpenChange={(open) => { if (!open) setDetailPack(null); }}
+          slotState={slotState}
+          onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
+          onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
+          onSlotPressure={(name) => setPressureModal({ open: true, packName: name })}
         />
       </main>
 
