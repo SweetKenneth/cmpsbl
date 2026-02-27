@@ -1,0 +1,191 @@
+/**
+ * /runtime — Baseline Runtime Overview
+ * Public-facing page showing what every user gets, without internal counts.
+ */
+import { SEO } from '@/components/SEO';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { BASELINE_PILLARS } from '@/lib/substrate/baseline-pillars';
+import {
+  Brain, Route, ShieldCheck, Workflow, Activity, Scale,
+  Dna, Fingerprint, Radio, Lightbulb, ArrowRight, Layers,
+  Package, Zap, Lock,
+} from 'lucide-react';
+
+const ICON_MAP: Record<string, React.ElementType> = {
+  Brain, Route, ShieldCheck, Workflow, Activity, Scale,
+  Dna, Fingerprint, Radio, Lightbulb,
+};
+
+export default function Runtime() {
+  return (
+    <div className="min-h-screen bg-background">
+      <SEO
+        title="Runtime — Always-On Substrate"
+        description="Every plan includes the full cognitive runtime. Persistent memory, intelligent routing, runtime defense, and autonomous evolution — no module gating."
+      />
+      <PublicNav />
+
+      <main className="pt-28 pb-20">
+        {/* ═══ HERO ═══ */}
+        <section className="container mx-auto px-4 text-center mb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-5 max-w-3xl mx-auto"
+          >
+            <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
+              <Layers className="w-3 h-3 mr-1.5 inline" />
+              Baseline Runtime
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+              What You Get. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Always.</span>
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground">
+              The full substrate runs for every user. No module gating. No feature locks. 
+              Plans scale capacity — never capability.
+            </p>
+            <div className="flex items-center justify-center gap-3 pt-4">
+              <Button asChild>
+                <Link to="/upgrade">See Plans <ArrowRight className="w-4 h-4 ml-1" /></Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/docs/runtime">Developer Reference</Link>
+              </Button>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* ═══ UNIFIED ARCHITECTURE ═══ */}
+        <section className="container mx-auto px-4 mb-24">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold">Unified Runtime Architecture</h2>
+              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+                Every module, engine, and pipeline runs on a single coherent substrate. 
+                There are no stripped-down versions. The free tier and the enterprise tier 
+                execute the same runtime.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Layers,
+                  title: 'Single Runtime',
+                  description: 'One substrate serves all tiers. Modules compose freely without version fragmentation.',
+                },
+                {
+                  icon: Package,
+                  title: 'Artifact Packs Extend',
+                  description: 'Packs activate composed capabilities on top of the baseline. Each pack = 1 slot.',
+                },
+                {
+                  icon: Zap,
+                  title: 'Capacity, Not Capability',
+                  description: 'Plans differ in how many packs you can activate simultaneously — not in what the system can do.',
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
+                    <CardContent className="p-6 space-y-3">
+                      <item.icon className="w-8 h-8 text-primary" />
+                      <h3 className="font-bold text-lg">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ ALWAYS-ON CAPABILITY PILLARS ═══ */}
+        <section className="container mx-auto px-4 mb-24">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
+                <Lock className="w-3 h-3 mr-1.5 inline" />
+                Always Active
+              </Badge>
+              <h2 className="text-3xl font-bold">Always-On Capabilities</h2>
+              <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+                These pillars run for every user on every plan. They form the foundation 
+                that artifact packs build upon.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {BASELINE_PILLARS.map((pillar, i) => {
+                const PIcon = ICON_MAP[pillar.icon] || Brain;
+                return (
+                  <motion.div
+                    key={pillar.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <Card className="h-full border-border/50 hover:border-primary/20 transition-all group">
+                      <CardContent className="p-6 space-y-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                            <PIcon className="w-5 h-5 text-primary" />
+                          </div>
+                          <h3 className="font-bold">{pillar.name}</h3>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{pillar.summary}</p>
+                        <ul className="space-y-1.5">
+                          {pillar.highlights.map(h => (
+                            <li key={h} className="flex items-start gap-2 text-xs text-muted-foreground">
+                              <span className="w-1 h-1 rounded-full bg-primary shrink-0 mt-1.5" />
+                              {h}
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ HOW ARTIFACT PACKS EXTEND ═══ */}
+        <section className="container mx-auto px-4 mb-24">
+          <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
+            <Package className="w-10 h-10 text-primary mx-auto mb-4" />
+            <h3 className="text-2xl font-bold">How Artifact Packs Extend the Runtime</h3>
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
+              Artifact packs compose multiple baseline capabilities into purpose-built workflows. 
+              Each pack activates a cross-module orchestration that wouldn't emerge from any single 
+              capability alone. They don't replace the baseline — they amplify it.
+            </p>
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <Button asChild>
+                <Link to="/upgrade">Browse Packs <ArrowRight className="w-4 h-4 ml-1" /></Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/packs">Manage Active Packs</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <EnhancedFooter />
+    </div>
+  );
+}

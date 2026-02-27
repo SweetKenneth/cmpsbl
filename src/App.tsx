@@ -106,6 +106,8 @@ const Upgrade = lazy(() => import("./pages/Upgrade"));
 const Packs = lazy(() => import("./pages/Packs"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
+const RuntimeReference = lazy(() => import("./pages/docs/RuntimeReference"));
+const RuntimePage = lazy(() => import("./pages/Runtime"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 const ShadowMeshPage = lazy(() => import("./pages/admin/ShadowMeshPage"));
@@ -358,6 +360,8 @@ const App = () => {
                         <Route path="/clockless-world-engine" element={<PhaseGateRoute><ClocklessWorldEngine /></PhaseGateRoute>} />
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
+                        <Route path="/docs/runtime" element={<RuntimeReference />} />
+                        <Route path="/runtime" element={<RuntimePage />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
                         <Route path="/capabilities" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/synergies" element={<Navigate to="/upgrade" replace />} />

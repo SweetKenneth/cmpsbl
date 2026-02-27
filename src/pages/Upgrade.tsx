@@ -5,6 +5,7 @@
  */
 import { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { BASELINE_HIGHLIGHTS } from '@/lib/substrate/baseline-pillars';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
@@ -399,6 +400,41 @@ export default function Upgrade() {
             })}
           </div>
         </div>
+
+        {/* ═══ EVERY PLAN INCLUDES — Baseline Highlights ═══ */}
+        <section className="container mx-auto px-4 mt-24">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-10">
+              <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
+                <Lock className="w-3 h-3 mr-1.5 inline" />
+                Always Active
+              </Badge>
+              <h2 className="text-3xl font-bold">Every Plan Includes</h2>
+              <p className="text-muted-foreground mt-2">The full runtime runs for every user. Plans scale capacity, not capability.</p>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {BASELINE_HIGHLIGHTS.map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-1.5"
+                >
+                  <Check className="w-4 h-4 text-primary" />
+                  <h4 className="text-sm font-semibold">{item.label}</h4>
+                  <p className="text-xs text-muted-foreground">{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
+            <div className="text-center mt-6">
+              <Button variant="link" asChild className="text-primary text-sm">
+                <Link to="/runtime">See full runtime overview →</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
 
         {/* ═══ VALUE PILLARS ═══ */}
         <section className="container mx-auto px-4 mt-24">
