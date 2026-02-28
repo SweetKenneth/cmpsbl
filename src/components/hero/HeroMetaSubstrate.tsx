@@ -138,31 +138,31 @@ function HeroBackground() {
       {/* Base */}
       <div className="absolute inset-0 bg-background" />
       
-      {/* Gradient orbs — reduced count, bigger, softer */}
+      {/* Gradient orbs — hidden on mobile to prevent content wash-out */}
       <motion.div
-        className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full"
+        className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full hidden sm:block"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.08) 0%, transparent 60%)" }}
         animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute -bottom-40 -right-40 w-[700px] h-[700px] rounded-full"
+        className="absolute -bottom-40 -right-40 w-[700px] h-[700px] rounded-full hidden sm:block"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.06) 0%, transparent 60%)" }}
         animate={{ x: [0, -60, 0], y: [0, -30, 0] }}
         transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
       />
       
-      {/* Subtle grid */}
+      {/* Subtle grid — hidden on mobile */}
       <div 
-        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04] hidden sm:block"
         style={{
           backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
           backgroundSize: "80px 80px",
         }}
       />
       
-      {/* Vignette */}
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.5) 100%)" }} />
+      {/* Vignette — disabled on mobile */}
+      <div className="absolute inset-0 hidden sm:block" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.3) 100%)" }} />
     </div>
   );
 }
@@ -208,7 +208,9 @@ export function HeroMetaSubstrate() {
                 style={{
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
-                  color: "transparent",
+                  WebkitTextFillColor: "transparent",
+                  backgroundImage: "linear-gradient(90deg, hsl(188 98% 50%), hsl(271 91% 65%), hsl(330 90% 60%), hsl(271 91% 65%), hsl(188 98% 50%))",
+                  backgroundSize: "300% 100%",
                   padding: "0 0.15em 0.05em 0",
                 }}
               >
@@ -310,7 +312,7 @@ export function HeroMetaSubstrate() {
           <motion.div
             initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="order-2 flex flex-col gap-6"
+            className="order-2 flex flex-col gap-6 hidden lg:flex"
           >
             {/* Above River — Architecture context */}
             <motion.div
