@@ -13,6 +13,8 @@ export interface CircuitBreakerConfig {
   recoveryTimeout: number;       // ms before half-open
   halfOpenMaxAttempts: number;   // successes needed to close
   windowSize: number;            // sliding window in ms
+  autoRecoveryEnabled: boolean;  // enable automatic recovery timer
+  autoRecoveryIntervalMs: number; // how often to check for auto-recovery
 }
 
 export interface CircuitBreaker {
@@ -30,6 +32,8 @@ const DEFAULT_CONFIG: CircuitBreakerConfig = {
   recoveryTimeout: 30_000,
   halfOpenMaxAttempts: 3,
   windowSize: 60_000,
+  autoRecoveryEnabled: true,
+  autoRecoveryIntervalMs: 60_000, // check every 60s
 };
 
 const breakers = new Map<string, CircuitBreaker>();
@@ -169,5 +173,50 @@ export function getCircuitBreakerSummary() {
     halfOpen: all.filter(b => b.state === 'half_open').length,
     totalTrips: all.reduce((s, b) => s + b.totalTrips, 0),
     unhealthy: all.filter(b => b.state !== 'closed').map(b => b.module),
+    autoRecoveryActive: autoRecoveryTimer !== null,
   };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AUTOMATIC CIRCUIT RECOVERY
+// ═══════════════════════════════════════════════════════════════
+
+let autoRecoveryTimer: ReturnType<typeof setInterval> | null = null;
+
+/**
+ * Start automatic recovery — periodically checks open breakers
+ * and transitions them to half_open when recoveryTimeout has elapsed.
+ * Reduces MTTR from hours (manual) to minutes (automatic).
+ */
+export function startAutoRecovery(intervalMs?: number): void {
+  if (autoRecoveryTimer) return; // already running
+  
+  const checkInterval = intervalMs ?? DEFAULT_CONFIG.autoRecoveryIntervalMs;
+  
+  autoRecoveryTimer = setInterval(() => {
+    const openBreakers = getAllBreakerStates().filter(b => b.state === 'open');
+    for (const b of openBreakers) {
+      const cfg = configs.get(b.module) || DEFAULT_CONFIG;
+      if (!cfg.autoRecoveryEnabled) continue;
+      
+      const elapsed = Date.now() - b.lastStateChange;
+      if (elapsed >= cfg.recoveryTimeout) {
+        const breaker = getBreaker(b.module);
+        transition(breaker, 'half_open');
+        breaker.successes = 0;
+        console.log(`[circuit-breaker] Auto-recovery: ${b.module} → half_open after ${Math.round(elapsed / 1000)}s`);
+      }
+    }
+  }, checkInterval);
+  
+  console.log(`[circuit-breaker] Auto-recovery started (interval: ${checkInterval}ms)`);
+}
+
+/** Stop automatic recovery */
+export function stopAutoRecovery(): void {
+  if (autoRecoveryTimer) {
+    clearInterval(autoRecoveryTimer);
+    autoRecoveryTimer = null;
+    console.log('[circuit-breaker] Auto-recovery stopped');
+  }
 }

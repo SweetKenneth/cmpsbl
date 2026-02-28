@@ -81,7 +81,7 @@ export function getHealthDashboard(): HealthStatus {
         healthy: 0,
         degraded: 0,
         critical: 0,
-        circuitBreakers: { total: 0, closed: 0, open: 0, halfOpen: 0, totalTrips: 0, unhealthy: [] as string[] },
+        circuitBreakers: { total: 0, closed: 0, open: 0, halfOpen: 0, totalTrips: 0, unhealthy: [] as string[], autoRecoveryActive: false },
         loadShedding: { level: 'normal', active: '0/0', pressure: '0%', shed: [] as string[], throttled: [] as string[] },
         incidents: { total: 0, open: 0, critical: 0, avgDuration: 'N/A' },
         patternVersions: { totalPatterns: 0, totalVersions: 0, totalMigrations: 0, deprecatedVersions: 0, avgVersionsPerPattern: '0' },
@@ -97,7 +97,7 @@ function _buildHealthDashboard(): HealthStatus {
   // 1. Circuit Breakers — graceful
   const cbSummary = withFallbackSync(
     () => getCircuitBreakerSummary(),
-    { total: 0, closed: 0, open: 0, halfOpen: 0, totalTrips: 0, unhealthy: [] as string[] },
+    { total: 0, closed: 0, open: 0, halfOpen: 0, totalTrips: 0, unhealthy: [] as string[], autoRecoveryActive: false },
     'CircuitBreakerSummary'
   );
   systems.push({

@@ -601,16 +601,21 @@ export {
   type SubstrateResponse 
 } from '../substrate';
 
-// Infrastructure Module direct exports (v9.2.0)
+// Infrastructure Module direct exports (v9.2.0, v11.0.0 tiering)
 export {
   initMemoryModule,
   ingestKnowledge,
   semanticSearch,
   getMemoryModuleState,
   getMemoryModuleHealth,
+  runLocalTiering,
+  updateTieringConfig,
+  getTieringConfig,
+  stopAutoTiering,
   type VectorEntry,
   type RAGPipeline,
   type MemoryModuleState,
+  type MemoryTieringConfig,
 } from './memory-module/index';
 
 export {
