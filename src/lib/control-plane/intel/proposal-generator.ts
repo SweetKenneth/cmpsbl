@@ -54,11 +54,26 @@ const MAX_CLEAN_RUN_PROPOSALS = 1;
 // SCHEMA — Agent-consumable proposal v3.3
 // ═══════════════════════════════════════════════════════════════
 
+export interface FailedProbeDetail {
+  id: string;
+  name: string;
+  command: string;
+  severity: 'MINOR' | 'CRITICAL';
+  expected: string;
+  actual: string;
+  hint: string;
+  source: string;
+}
+
 export interface UnifiedProposal {
   schema_version: '3.3';
   generated_at: string;
   system_id: 'cmpsbl-substrate';
   proposal_type: 'unified-evolution';
+  
+  /** Scan run identity for cache invalidation and freshness tracking */
+  scan_run_id: string;
+  scan_mode: 'quick' | 'full';
   
   /** ~85% debt / ~15% evolution — maximize fixes per scan */
   ratio: { debt_pct: number; evolution_pct: number };
@@ -98,7 +113,9 @@ export interface UnifiedProposal {
   };
 
   audit_health: {
+    /** @deprecated Use chain_state instead */
     chain_valid: boolean;
+    chain_state: 'empty' | 'valid' | 'broken';
     total_entries: number;
     modules_monitored: number;
     compliance_score: number;
@@ -110,6 +127,8 @@ export interface UnifiedProposal {
     failed: number;
     total: number;
     critical_failures: string[];
+    /** Detailed info on every failing probe */
+    failed_probes: FailedProbeDetail[];
   };
   
   accessibility: {
@@ -450,23 +469,31 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     governanceChain, modernizerData, rawModernizerResult,
   );
   
-  // ─── Convert minor diligence to proposal (max 1) ───
+  // ─── Convert minor diligence to proposal (max 1) with probe details ───
   if (diligenceData.failed > 0 && diligenceData.critical_failures.length === 0) {
     const existingDiligenceSteps = actionPlan.filter(s => s.category === 'diligence');
     if (existingDiligenceSteps.length === 0) {
+      const probeInstructions = [
+        `${diligenceData.failed} of ${diligenceData.total} probes returned minor failures.`,
+      ];
+      // Include exact failing probe details
+      for (const probe of diligenceData.failed_probes) {
+        probeInstructions.push(`  ▸ [${probe.severity}] ${probe.name} (${probe.command})`);
+        probeInstructions.push(`    Expected: ${probe.expected}`);
+        probeInstructions.push(`    Actual: ${probe.actual}`);
+        probeInstructions.push(`    Hint: ${probe.hint}`);
+        probeInstructions.push(`    Module: ${probe.source}`);
+      }
+      probeInstructions.push(`Rollback: restore pre-snapshot state (snapshot: ${governanceChain.snapshot_id}).`);
+      probeInstructions.push('Re-run diligence battery to confirm fix.');
+
       actionPlan.push({
         order: actionPlan.length + 1,
         category: 'diligence',
         title: 'Resolve minor diligence failures',
         description: `${diligenceData.failed} minor probe(s) failed. No critical failures detected.`,
         risk: 'low',
-        instructions: [
-          `${diligenceData.failed} of ${diligenceData.total} probes returned minor failures.`,
-          'Review failing probes for response shape or guard issues.',
-          'Implement missing handlers or output normalization.',
-          `Rollback: restore pre-snapshot state (snapshot: ${governanceChain.snapshot_id}).`,
-          'Re-run diligence battery to confirm fix.',
-        ],
+        instructions: probeInstructions,
       });
     }
   }
@@ -480,9 +507,10 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     !c.source.includes('INCLUSIVE') && !c.title.startsWith('A11y:')
   );
   const hasCriticalDebt = realCriticalDebt.length > 0;
+  const hasDiligenceFailures = diligenceData.failed > 0;
   const systemIsStable = !hasStructuralFailures && !hasProductionFatals && !hasCriticalDebt;
   
-  if (systemIsStable) {
+  if (systemIsStable && !hasDiligenceFailures) {
     const existingEvoSteps = actionPlan.filter(s => s.category === 'evolution');
     if (existingEvoSteps.length === 0) {
       const nextTopic = clmTopicPipeline.selectNextTopic();
@@ -519,6 +547,23 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         evolution.total = evolution.proposals.length;
       }
     }
+  } else if (systemIsStable && hasDiligenceFailures) {
+    // Evolution blocked by diligence failures — inject gated notice
+    const nextTopic = clmTopicPipeline.selectNextTopic();
+    const topicTitle = nextTopic?.title ?? 'System Hardening & Optimization';
+    actionPlan.push({
+      order: actionPlan.length + 1,
+      category: 'evolution',
+      title: `Blocked: ${topicTitle}`,
+      description: `Evolution blocked: ${diligenceData.failed} diligence probe(s) failed. Fix probes before curriculum advancement.`,
+      risk: 'low',
+      instructions: [
+        `blocked: true`,
+        `blocked_reason: diligence_failed`,
+        `Topic: ${topicTitle} — cannot be promoted until diligence passes.`,
+        `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+      ],
+    });
   }
   
   // ─── ENFORCE PROPOSAL CAP (max 15, preserve priority order) ───
@@ -546,11 +591,21 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   // ─── SEBA Choreographical Stamping ───
   const sebaStamp = applySebaStamp({}, governanceChain);
   
+  // ─── Audit chain tri-state ───
+  const chain_state: 'empty' | 'valid' | 'broken' = 
+    auditState.totalEntries === 0 ? 'empty' :
+    chainValid ? 'valid' : 'broken';
+
+  // ─── Scan run identity ───
+  const scan_run_id = `scanrun_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+
   return {
     schema_version: '3.3',
     generated_at: new Date().toISOString(),
     system_id: 'cmpsbl-substrate',
     proposal_type: 'unified-evolution',
+    scan_run_id,
+    scan_mode: 'full',
     ratio: { debt_pct: debtPct, evolution_pct: evoPct },
     executive_summary: execSummary,
     technical_debt: techDebt,
@@ -558,10 +613,11 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     production_audit: productionAudit,
     structural_health: structuralHealth,
     audit_health: {
-      chain_valid: chainValid,
+      chain_valid: chain_state === 'valid',
+      chain_state,
       total_entries: auditState.totalEntries,
       modules_monitored: monitoredCount,
-      compliance_score: chainValid ? 85 : 40,
+      compliance_score: chain_state === 'valid' ? 85 : chain_state === 'empty' ? 60 : 40,
       gaps: auditGaps,
     },
     diligence: diligenceData,
@@ -593,8 +649,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     },
     metadata: {
       signals_analyzed: summary.total_signals,
-      findings_count: findings.length,
-      proposals_count: existingProposals.length,
+      findings_count: techDebt.total_issues,
+      proposals_count: evolution.total,
       audit_checks_run: fullAuditReport?.findings.length ?? 0,
       health_layers_checked: healthReport?.layers.length ?? 0,
       generation_ms: generationMs,
@@ -727,9 +783,12 @@ async function runDefenseScan(): Promise<UnifiedProposal['security_posture']> {
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
 
-function extractDiligenceData(cards: IntelCard[]) {
+function extractDiligenceData(cards: IntelCard[]): UnifiedProposal['diligence'] {
   const diligenceCard = cards.find(c => c.source.includes('diligence'));
-  const details = diligenceCard?.details_json as { summary?: { total: number; passed: number; minor: number; critical: number } } | undefined;
+  const details = diligenceCard?.details_json as { 
+    summary?: { total: number; passed: number; minor: number; critical: number };
+    failed_probes?: FailedProbeDetail[];
+  } | undefined;
   const s = details?.summary;
   
   const criticalFailures: string[] = [];
@@ -744,6 +803,7 @@ function extractDiligenceData(cards: IntelCard[]) {
     failed: (s?.minor ?? 0) + (s?.critical ?? 0),
     total: s?.total ?? 0,
     critical_failures: criticalFailures,
+    failed_probes: details?.failed_probes ?? [],
   };
 }
 
