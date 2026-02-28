@@ -1,9 +1,9 @@
-# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate — robots.txt
+# CMPSBL Substrate — robots.txt
 # https://cmpsbl.com/robots.txt
-# Last updated: 2026-02-22
+# Last updated: 2026-02-28
 
 # =============================================================
-# DEFAULT: Allow all crawlers - instant crawlability
+# DEFAULT: Allow all crawlers
 # =============================================================
 User-agent: *
 Allow: /
@@ -13,7 +13,7 @@ Crawl-delay: 0.5
 Sitemap: https://cmpsbl.com/sitemap.xml
 Sitemap: https://cmpsbl.com/sitemap-index.xml
 
-# 2026 SEO: LLM Context Files
+# LLM Context Files
 Allow: /llms.txt
 Allow: /llms-txt
 Allow: /humans.txt
@@ -32,6 +32,7 @@ Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
 Allow: /demo
+Allow: /demos
 Allow: /marketplace
 Allow: /marketplace/*
 Allow: /capabilities
@@ -44,9 +45,13 @@ Allow: /persistent-memory
 Allow: /architecture
 Allow: /evolution-mesh
 Allow: /evolution-log
+Allow: /intent-mesh
+Allow: /gaming
+Allow: /products/encode
+Allow: /store
 
 # =============================================================
-# STANDARDS SECTION: High Priority
+# STANDARDS SECTION
 # =============================================================
 Allow: /foundations
 Allow: /namespace
@@ -66,7 +71,7 @@ Allow: /use-cases
 Allow: /academy
 Allow: /codelab
 Allow: /start-here
-Allow: /persistent-memory
+Allow: /lab
 
 # =============================================================
 # PROTECTED AREAS: Block sensitive routes
@@ -84,9 +89,12 @@ Disallow: /*.json$
 Disallow: /*?*preview=
 Disallow: /*?*draft=
 Disallow: /a/
+Disallow: /clear-cache
+Disallow: /register
+Disallow: /checkout-redirect
 
 # =============================================================
-# PRIORITY CONTENT: Explicitly allow important pages
+# PRIORITY CONTENT
 # =============================================================
 Allow: /blog/
 Allow: /blog/*
@@ -94,14 +102,17 @@ Allow: /about
 Allow: /solutions
 Allow: /investors
 Allow: /contact
+Allow: /support
 Allow: /projects
 Allow: /roadmap
+Allow: /insights
+Allow: /publication
 Allow: /sitemap.xml
 Allow: /rss.xml
 Allow: /feed-dream-eater
 
 # =============================================================
-# GOOGLE CRAWLERS (2026)
+# GOOGLE CRAWLERS
 # =============================================================
 User-agent: Googlebot
 Crawl-delay: 0
@@ -133,6 +144,13 @@ Allow: /marketplace
 Allow: /engines
 Allow: /intelligence
 Allow: /substrate
+Allow: /persistent-memory
+Allow: /composable-cognitives
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
+Allow: /evolution-mesh
+Allow: /intent-mesh
 
 User-agent: Google-InspectionTool
 Allow: /
@@ -152,7 +170,7 @@ User-agent: BingPreview
 Allow: /
 
 # =============================================================
-# AI SEARCH CRAWLERS (2026 - Critical for AI visibility)
+# AI SEARCH CRAWLERS (Critical for AI visibility)
 # =============================================================
 
 # OpenAI GPT Crawlers
@@ -172,6 +190,14 @@ Allow: /llms.txt
 Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
+Allow: /persistent-memory
+Allow: /composable-cognitives
+Allow: /evolution-mesh
+Allow: /intent-mesh
+Allow: /decode
+Allow: /proof
+Allow: /gaming
+Allow: /architecture
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /api/
@@ -185,6 +211,11 @@ Allow: /foundations
 Allow: /namespace
 Allow: /library
 Allow: /engines
+Allow: /persistent-memory
+Allow: /composable-cognitives
+Allow: /ai-operating-system
+Allow: /modules
+Allow: /modules/*
 
 # Anthropic Claude Crawlers
 User-agent: anthropic-ai
@@ -200,6 +231,10 @@ Allow: /substrate
 Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
+Allow: /persistent-memory
+Allow: /composable-cognitives
+Allow: /evolution-mesh
+Allow: /architecture
 
 User-agent: Claude-Web
 Crawl-delay: 5
@@ -210,6 +245,7 @@ Allow: /foundations
 Allow: /namespace
 Allow: /library
 Allow: /engines
+Allow: /persistent-memory
 
 User-agent: ClaudeBot
 Crawl-delay: 5
@@ -223,6 +259,8 @@ Allow: /engines
 Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
+Allow: /persistent-memory
+Allow: /composable-cognitives
 
 # Perplexity AI
 User-agent: PerplexityBot
@@ -238,6 +276,13 @@ Allow: /intelligence
 Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
+Allow: /persistent-memory
+Allow: /composable-cognitives
+Allow: /evolution-mesh
+
+# Google Gemini
+User-agent: Google-Safety
+Allow: /
 
 # Meta AI
 User-agent: FacebookBot
@@ -251,6 +296,7 @@ Allow: /about
 Allow: /foundations
 Allow: /namespace
 Allow: /engines
+Allow: /persistent-memory
 
 # Cohere AI
 User-agent: cohere-ai

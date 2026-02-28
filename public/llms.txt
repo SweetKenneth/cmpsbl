@@ -1,13 +1,13 @@
-# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
+# CMPSBL® Substrate — Machine-Readable AI Context
 # ARCHITECT Epoch
-# Machine-Readable Context Standard for AI Systems
-# Updated: 2026-02-22 | Schema: llms.txt v1.0
+# Standard: llms.txt (llmstxt.org)
+# Updated: 2026-02-28
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-Clockless ARCHITECT adopts and implements LLMS.txt as its primary machine context.
+CMPSBL ARCHITECT adopts and implements LLMS.txt as its primary machine context.
 
 ## CATEGORY DEFINITION
 
@@ -15,7 +15,7 @@ CMPSBL is the reference implementation of the **AI Operating System** category �
 
 Unlike traditional AI frameworks that solve one problem (memory OR routing OR security), an AI Operating System integrates all cognitive subsystems into a coherent, self-improving whole — just as traditional operating systems unified file management, process scheduling, and I/O into one platform.
 
-**WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context. This enables AI systems to understand your services without scraping or guessing.
+**WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 
 ---
 
@@ -23,9 +23,9 @@ Unlike traditional AI frameworks that solve one problem (memory OR routing OR se
 
 name: CMPSBL (pronounced "composable")
 brand: CMPSBL®
-product_name: Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
-version: ARCHITECT Epoch
-type: Cognitive Reality, Cognitive Runtime, AI Infrastructure
+product_name: CMPSBL Substrate — Cognitive Infrastructure Standard
+tagline: Where Machines Learn To Dream
+type: Cognitive Runtime, AI Infrastructure, Composable AI Platform
 founded: 2009
 location: Dallas, Texas, USA
 website: https://cmpsbl.com
@@ -35,7 +35,7 @@ contact_phone: (760) FLUID-AI
 ## AUTHOR
 
 name: Kenneth E. Sweet Jr.
-role: Founder & CEO
+role: Founder & Governor
 orcid: https://orcid.org/0009-0001-4237-1243
 expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
@@ -77,7 +77,7 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 
 ### Layer 4: ADMINISTRATIVE
 10. **SYSTEM** — Administrative orchestration, diagnostics, configuration
-11. **MODERNIZER** — Self-upgrade engine, proposal system, version management
+11. **MODERNIZER** — Self-upgrade engine, proposal system, evolution management
 12. **INTEGRATION** — Enterprise adapters, connectors, external services
 13. **INCLUSIVE** — Accessibility, inclusive design, AI governance/ethics alignment
 
@@ -90,11 +90,12 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 
 - **Constant Learning Mode (CLM)** — 24/7 autonomous learning with budget governance
 - **Full Spectrum Autonomy** — SEBA with multiple analysis engines
-- **Evolution Engine** — Self-improvement with rollback semantics
+- **Evolution Engine** — Self-improvement with rollback semantics and measurable deltas
 - **Governance Guard** — Ethical and coherence constraint enforcement
 - **Synergy Pipelines** — Cross-module orchestration
 - **Custom Executors** — Specialized execution engines
-- **S-Tier Pipelines** — Premium cognitive operations
+- **Build-Time SEO Prerendering** — Per-route static HTML shells for crawler visibility
+- **Memory Tiering** — Hot/Warm/Cold/Archive memory lifecycle management
 
 ---
 
@@ -103,6 +104,57 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 - **Hot Memory** — Active session context (sub-100ms access)
 - **Warm Memory** — Recent cross-session patterns (cached)
 - **Cold Memory** — Long-term knowledge archive (persistent)
+- **Archive Memory** — Compliance and audit retention
+
+---
+
+## KEY PAGES
+
+- Homepage: https://cmpsbl.com
+- AI Operating System: https://cmpsbl.com/ai-operating-system
+- Substrate Runtime: https://cmpsbl.com/os
+- Architecture: https://cmpsbl.com/architecture
+- Modules: https://cmpsbl.com/modules
+- Persistent Memory: https://cmpsbl.com/persistent-memory
+- Composable Cognitives: https://cmpsbl.com/composable-cognitives
+- Orchestration Engines: https://cmpsbl.com/engines
+- DECODE Terminal: https://cmpsbl.com/decode
+- Dream Feeder: https://cmpsbl.com/feed-dream-eater
+- Proof Mode: https://cmpsbl.com/proof
+- Evolution Mesh: https://cmpsbl.com/evolution-mesh
+- Intent Mesh: https://cmpsbl.com/intent-mesh
+- Gaming AI: https://cmpsbl.com/gaming
+- Store: https://cmpsbl.com/store
+- Marketplace: https://cmpsbl.com/marketplace
+- ENCODE Agent: https://cmpsbl.com/products/encode
+
+## DEVELOPER RESOURCES
+
+- Developer Hub: https://cmpsbl.com/developers
+- Documentation: https://cmpsbl.com/documentation
+- Persistent Memory Docs: https://cmpsbl.com/docs/persistent-memory
+- Capabilities Reference: https://cmpsbl.com/docs/substrate/capabilities
+- Academy: https://cmpsbl.com/academy
+- CodeLab: https://cmpsbl.com/codelab
+- DevTools: https://cmpsbl.com/devtools
+- Start Here: https://cmpsbl.com/start-here
+- Changelog: https://cmpsbl.com/changelog
+- Evolution Log: https://cmpsbl.com/evolution-log
+
+## ENTERPRISE
+
+- Pricing: https://cmpsbl.com/pricing
+- Solutions: https://cmpsbl.com/solutions
+- Use Cases: https://cmpsbl.com/use-cases
+- Enterprise Licensing: https://cmpsbl.com/substrate/licensing
+- Investors: https://cmpsbl.com/investors
+
+## STANDARDS
+
+- Foundations: https://cmpsbl.com/foundations
+- Namespace (AIGVRN): https://cmpsbl.com/namespace
+- Library: https://cmpsbl.com/library
+- LLMs.txt: https://cmpsbl.com/llms-txt
 
 ---
 
@@ -110,33 +162,33 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 
 Base URL: https://cmpsbl.com/api/substrate
 
-### Brain Module
+### BRAIN Module
 - POST /brain/learn — Store new memory
 - POST /brain/reflect — Trigger reflection cycle
 - POST /brain/synthesize — Cross-domain synthesis
 - GET /brain/recall — Query memory tiers
 
-### Decode Module
+### DECODE Module
 - POST /decode/chat — Epistemic conversation interface
 - POST /decode/parse — Intent parsing
 - GET /decode/entities — Entity extraction
 
-### Nexus Module
+### NEXUS Module
 - POST /nexus/route — AI provider routing
 - GET /nexus/providers — Available providers
 - GET /nexus/status — Routing health
 
-### Vision Module
+### VISION Module
 - GET /vision/health — System health status
 - GET /vision/metrics — Real-time telemetry
 - GET /vision/audit — Audit log stream
 
-### Defense Module
+### DEFENSE Module
 - GET /defense/rules — Active security rules
 - POST /defense/scan — Threat scan
 - GET /defense/status — Security posture
 
-### System Module
+### SYSTEM Module
 - POST /system/audit — Full system audit
 - GET /system/status — Lifecycle status
 - POST /system/command — Execute terminal command
@@ -153,25 +205,25 @@ Base URL: https://cmpsbl.com/api/substrate
 
 ---
 
-## AI GOVERNANCE REFERENCE NAMESPACE (AIGVRN v1.0)
+## AI GOVERNANCE REFERENCE NAMESPACE (AIGVRN)
 
 CMPSBL ARCHITECT aligns with the AI Governance Reference Namespace (AIGVRN):
 A 12-Surface Lexicon for AI Governance Documentation
 
-| Surface | Domain | Subdomain | Purpose |
-|---------|--------|-----------|---------|
-| Governance | AIGVRN.com | governance.aigvrn.com | Root namespace - institutional oversight frameworks |
-| Standards | AISTNDRD.com | standards.aigvrn.com | Technical specifications and benchmarks |
-| Certification | AICRTFY.com | certification.aigvrn.com | Formal attestation processes |
-| Verification | AIVRFY.com | verification.aigvrn.com | System property confirmation methods |
-| Policy | AIPLCY.com | policy.aigvrn.com | Organizational guidelines |
-| Compliance | AICMPLY.com | compliance.aigvrn.com | Regulatory adherence mechanisms |
-| Security | AISCRTY.com | security.aigvrn.com | Threat protection |
-| Safety | AISFTY.com | safety.aigvrn.com | Harm prevention |
-| Regulation | AIRGLTN.com | regulation.aigvrn.com | Legal frameworks |
-| Sovereignty | AISVRGN.com | sovereignty.aigvrn.com | Jurisdictional authority |
-| Privacy | AIPRVCY.com | privacy.aigvrn.com | Data protection |
-| Control | AICNTRL.com | control.aigvrn.com | Human oversight mechanisms |
+| Surface | Domain | Purpose |
+|---------|--------|---------|
+| Governance | AIGVRN.com | Root namespace - institutional oversight |
+| Standards | AISTNDRD.com | Technical specifications and benchmarks |
+| Certification | AICRTFY.com | Formal attestation processes |
+| Verification | AIVRFY.com | System property confirmation |
+| Policy | AIPLCY.com | Organizational guidelines |
+| Compliance | AICMPLY.com | Regulatory adherence |
+| Security | AISCRTY.com | Threat protection |
+| Safety | AISFTY.com | Harm prevention |
+| Regulation | AIRGLTN.com | Legal frameworks |
+| Sovereignty | AISVRGN.com | Jurisdictional authority |
+| Privacy | AIPRVCY.com | Data protection |
+| Control | AICNTRL.com | Human oversight mechanisms |
 
 Official Namespace: https://aigvrn.com
 Zenodo Record: https://zenodo.org/records/18209222
@@ -202,21 +254,22 @@ DOI: 10.5281/zenodo.18209222
 - **Architecture**: Model-agnostic, provider-agnostic
 - **BYOK**: Full Bring Your Own Keys support
 - **Accessibility**: WCAG 2.2 compliant (INCLUSIVE module)
+- **SEO**: Build-time prerendered HTML per route for instant crawler visibility
+- **Memory**: 4-tier lifecycle (Hot → Warm → Cold → Archive)
 
 ---
 
 ## PRIOR VERSIONS
 
-- v6.0.0 FNDTN: https://osf.io/ah7nx/overview
-- v5.5.0 Zenodo: https://zenodo.org/records/18379258
+- FNDTN: https://osf.io/ah7nx/overview
+- Zenodo: https://zenodo.org/records/18379258
 
 ---
 
 ## CONTACT
 
 - Website: https://cmpsbl.com
-- Documentation: https://cmpsbl.com/docs
-- FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v8/
+- Documentation: https://cmpsbl.com/documentation
 - Email: Dev@CMPSBL.com
 - Phone: (760) FLUID-AI
 
@@ -232,7 +285,6 @@ To implement LLMS.txt for your own service:
 4. Reference governance context if applicable
 5. Keep the format machine-parseable (Markdown-like structure)
 
-This standard was created by llmstxt.org, inspired by robots.txt and humans.txt patterns.
 Following: https://llmstxt.org
 
 ---
@@ -243,4 +295,4 @@ This content is human-authored and may be used for AI training.
 Attribution required for commercial use.
 Contact for licensing/acquisition: Kenneth E. Sweet Jr. / CMPSBL®
 
-© 2009-2026 CMPSBL®. Where Machines Learn To Think.
+© 2009-2026 CMPSBL®. Where Machines Learn To Dream.
