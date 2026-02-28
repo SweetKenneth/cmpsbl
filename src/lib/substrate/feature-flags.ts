@@ -79,4 +79,7 @@ bulkDefine({
   'substrate.request_coalescing': true,
   'substrate.cascade_detection': true,
   'substrate.persistent_control_plane': true,
+  'substrate.cp_atomic_commit': true,
+  'substrate.cp_wal_enabled': true,
+  'substrate.cp_leader_lease': true,
 });

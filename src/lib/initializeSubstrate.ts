@@ -105,27 +105,29 @@ export async function initializeSubstrate(): Promise<void> {
       startAutoRecovery();
     } catch { /* graceful */ }
     
-    // Rehydrate persistent control plane state
+    // Rehydrate persistent control plane state (revision-aware)
     try {
       const { rehydrateControlPlane } = await import('@/lib/control-plane/rehydrate');
       const rehydResult = await rehydrateControlPlane();
       if (!rehydResult.skipped) {
-        console.log(`💾 Control Plane rehydrated in ${rehydResult.durationMs}ms`);
+        console.log(`💾 Control Plane rehydrated in ${rehydResult.durationMs}ms (rev=${rehydResult.revisionId ?? 'baseline'})`);
       }
     } catch { /* graceful */ }
 
-    // Start persistence scheduler (30s metric snapshots)
+    // Start leader-gated persistence scheduler
     try {
       const { startPersistenceScheduler } = await import('@/lib/control-plane/persistence-scheduler');
-      startPersistenceScheduler();
+      await startPersistenceScheduler();
     } catch { /* graceful */ }
 
-    // Register shutdown hook for persistence flush
+    // Register shutdown hook: flush + release lease
     try {
       const { registerShutdownHook } = await import('./substrate/graceful-shutdown');
       const { flushAll } = await import('@/lib/control-plane/persistence');
+      const { stopPersistenceScheduler } = await import('@/lib/control-plane/persistence-scheduler');
       registerShutdownHook('control-plane-persistence', async () => {
         await flushAll();
+        await stopPersistenceScheduler();
       }, 1); // Highest priority (runs first)
     } catch { /* graceful */ }
     
