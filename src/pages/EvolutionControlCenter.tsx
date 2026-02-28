@@ -83,6 +83,10 @@ export default function EvolutionControlCenter() {
             <TabsContent value="feedback">
               <FalsePositiveFeedback />
             </TabsContent>
+
+            <TabsContent value="connect">
+              <AgentConnectGuide />
+            </TabsContent>
           </Tabs>
         </div>
       </div>
