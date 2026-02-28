@@ -19,6 +19,7 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         size="icon"
         className="lg:hidden h-9 w-9"
         onClick={onMenuClick}
+        aria-label="Open navigation menu"
       >
         <Menu className="w-5 h-5" />
       </Button>
@@ -80,6 +81,7 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           variant="ghost"
           size="icon"
           className="relative hover:bg-muted/50 transition-colors h-9 w-9"
+          aria-label="Notifications"
         >
           <Bell className="w-5 h-5" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
@@ -94,7 +96,7 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         {user && (
           <>
             <span className="hidden lg:block text-sm text-muted-foreground">{user.email}</span>
-            <Button variant="ghost" size="icon" onClick={signOut} className="h-9 w-9">
+            <Button variant="ghost" size="icon" onClick={signOut} className="h-9 w-9" aria-label="Sign out">
               <LogOut className="w-5 h-5" />
             </Button>
           </>
