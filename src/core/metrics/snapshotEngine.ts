@@ -42,6 +42,7 @@ export interface TrendPoint {
 const snapshots: MetricSnapshot[] = [];
 const MAX_SNAPSHOTS = 144; // 24 hours at 10-min intervals
 let captureInterval: ReturnType<typeof setInterval> | null = null;
+let totalCaptureCount = 0;
 
 function generateSnapshotId(): string {
   return crypto.randomUUID();
@@ -74,6 +75,7 @@ export async function capture(): Promise<MetricSnapshot> {
   };
 
   snapshots.push(snapshot);
+  totalCaptureCount++;
 
   // Evict old snapshots
   while (snapshots.length > MAX_SNAPSHOTS) {
@@ -202,5 +204,34 @@ export function startSnapshotEngine(): () => void {
       clearInterval(captureInterval);
       captureInterval = null;
     }
+  };
+}
+
+// ═══ Stats ═══════════════════════════════════════════════════════
+
+/**
+ * Get snapshot engine statistics for observability.
+ */
+export function getSnapshotStats(): {
+  totalCaptures: number;
+  retainedSnapshots: number;
+  maxRetained: number;
+  oldestTimestamp: string | null;
+  newestTimestamp: string | null;
+  avgHealthScore: number;
+} {
+  const oldest = snapshots.length > 0 ? snapshots[0].timestamp : null;
+  const newest = snapshots.length > 0 ? snapshots[snapshots.length - 1].timestamp : null;
+  const avgHealth = snapshots.length > 0
+    ? Math.round(snapshots.reduce((s, snap) => s + snap.systemHealth, 0) / snapshots.length)
+    : 0;
+
+  return {
+    totalCaptures: totalCaptureCount,
+    retainedSnapshots: snapshots.length,
+    maxRetained: MAX_SNAPSHOTS,
+    oldestTimestamp: oldest,
+    newestTimestamp: newest,
+    avgHealthScore: avgHealth,
   };
 }

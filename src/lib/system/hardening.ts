@@ -105,3 +105,69 @@ export async function safeExecute<T>(
     };
   }
 }
+
+/**
+ * Deep-freeze an object recursively. Prevents mutation of config objects.
+ */
+export function deepFreeze<T extends Record<string, unknown>>(obj: T): Readonly<T> {
+  Object.freeze(obj);
+  for (const key of Object.keys(obj)) {
+    const val = obj[key];
+    if (val && typeof val === 'object' && !Object.isFrozen(val)) {
+      deepFreeze(val as Record<string, unknown>);
+    }
+  }
+  return obj;
+}
+
+/**
+ * Strip HTML tags from untrusted strings.
+ * NOT a full sanitizer — use for display text only.
+ */
+export function sanitizeText(input: string, maxLength = 10_000): string {
+  if (typeof input !== 'string') return '';
+  return input
+    .slice(0, maxLength)
+    .replace(/<[^>]*>/g, '')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
+}
+
+/**
+ * Generate a deterministic hash for deduplication.
+ * Uses FNV-1a 32-bit for speed.
+ */
+export function fnv1aHash(str: string): number {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash = (hash * 0x01000193) >>> 0;
+  }
+  return hash;
+}
+
+/**
+ * Debounce a function call with leading-edge option.
+ */
+export function debounce<T extends (...args: unknown[]) => unknown>(
+  fn: T,
+  delayMs: number,
+  leading = false
+): (...args: Parameters<T>) => void {
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  let hasLeadingCall = false;
+
+  return (...args: Parameters<T>) => {
+    if (leading && !hasLeadingCall) {
+      hasLeadingCall = true;
+      fn(...args);
+    }
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (!leading || hasLeadingCall) fn(...args);
+      hasLeadingCall = false;
+      timer = null;
+    }, delayMs);
+  };
+}
