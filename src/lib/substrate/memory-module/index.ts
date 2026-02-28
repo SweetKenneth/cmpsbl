@@ -386,3 +386,104 @@ export function getMemoryResilience() {
 export function getMemoryEngine() {
   return moduleEngine;
 }
+
+// ═══════════════════════════════════════════════════════════════
+// MEMORY TIERING OPTIMIZATION (v11.0.0)
+// ═══════════════════════════════════════════════════════════════
+
+let tieringTimer: ReturnType<typeof setInterval> | null = null;
+
+/**
+ * Run memory tiering pass on local vector store.
+ * Promotes high-value entries, demotes low-value ones,
+ * and updates tiering stats for observability.
+ */
+export function runLocalTiering(): { promoted: number; demoted: number; archived: number } {
+  const entries = Array.from(vectors.values());
+  const cfg = state.tieringConfig;
+  let promoted = 0;
+  let demoted = 0;
+  let archived = 0;
+
+  for (const entry of entries) {
+    // Workload-aware: boost score for recently accessed entries
+    const recencyBonus = cfg.workloadAware && entry.lastAccessedAt
+      ? Math.max(0, 0.1 - ((Date.now() - entry.lastAccessedAt) / (7 * 24 * 60 * 60 * 1000)) * 0.1)
+      : 0;
+    const effectiveScore = entry.relevanceScore + recencyBonus;
+
+    if (effectiveScore >= cfg.hotPromotionThreshold) {
+      // High-value: boost access priority
+      entry.relevanceScore = Math.min(1.0, entry.relevanceScore + 0.02);
+      promoted++;
+    } else if (effectiveScore <= cfg.coldArchiveThreshold && entry.accessCount === 0) {
+      // Very low value + never accessed: candidate for removal
+      vectors.delete(entry.id);
+      archived++;
+    } else if (effectiveScore <= cfg.warmDemotionThreshold) {
+      // Low value: apply decay
+      entry.relevanceScore = Math.max(0, entry.relevanceScore - 0.01);
+      demoted++;
+    }
+  }
+
+  state.totalVectors = vectors.size;
+  state.lastTieringRun = new Date().toISOString();
+  state.tieringStats = { promoted, demotedHot: demoted, demotedWarm: 0, archived };
+
+  emit({
+    module: 'memory',
+    event_type: 'tiering_pass',
+    outcome: 'succeeded',
+    data: { promoted, demoted, archived, remaining: vectors.size },
+  });
+
+  return { promoted, demoted, archived };
+}
+
+/** Start automatic tiering on interval */
+function startAutoTiering(): void {
+  if (tieringTimer) return;
+  tieringTimer = setInterval(() => {
+    try {
+      runLocalTiering();
+    } catch (err) {
+      console.error('[memory] Auto-tiering error:', err);
+    }
+  }, state.tieringConfig.tieringIntervalMs);
+}
+
+/** Stop automatic tiering */
+export function stopAutoTiering(): void {
+  if (tieringTimer) {
+    clearInterval(tieringTimer);
+    tieringTimer = null;
+  }
+}
+
+/** Update tiering configuration at runtime */
+export function updateTieringConfig(updates: Partial<MemoryTieringConfig>): MemoryTieringConfig {
+  state.tieringConfig = { ...state.tieringConfig, ...updates };
+  
+  // Restart auto-tiering if interval changed
+  if (updates.tieringIntervalMs || updates.autoTieringEnabled !== undefined) {
+    stopAutoTiering();
+    if (state.tieringConfig.autoTieringEnabled) {
+      startAutoTiering();
+    }
+  }
+  
+  emit({
+    module: 'memory',
+    event_type: 'tiering_config_updated',
+    outcome: 'succeeded',
+    data: state.tieringConfig,
+  });
+  
+  return { ...state.tieringConfig };
+}
+
+/** Get current tiering configuration */
+export function getTieringConfig(): MemoryTieringConfig {
+  return { ...state.tieringConfig };
+}
