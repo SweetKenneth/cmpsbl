@@ -12975,6 +12975,42 @@ export type Database = {
         }
         Relationships: []
       }
+      substrate_health_log: {
+        Row: {
+          check_id: string
+          created_at: string
+          duration_ms: number | null
+          id: string
+          layers_checked: number
+          layers_passed: number
+          overall_verdict: string
+          report: Json | null
+          structural_issues: number
+        }
+        Insert: {
+          check_id: string
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          layers_checked?: number
+          layers_passed?: number
+          overall_verdict?: string
+          report?: Json | null
+          structural_issues?: number
+        }
+        Update: {
+          check_id?: string
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          layers_checked?: number
+          layers_passed?: number
+          overall_verdict?: string
+          report?: Json | null
+          structural_issues?: number
+        }
+        Relationships: []
+      }
       substrate_heuristics: {
         Row: {
           category: string
