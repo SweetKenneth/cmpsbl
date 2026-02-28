@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Internal Operations Manual — Clockless</title>
+<style>
+  :root {
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(220, 15%, 15%);
+    --primary: hsl(210, 60%, 45%);
+    --primary-variant: hsl(200, 50%, 40%);
+    --primary-foreground: hsl(0, 0%, 100%);
+    --secondary: hsl(220, 10%, 94%);
+    --muted: hsl(220, 10%, 96%);
+    --muted-foreground: hsl(220, 10%, 40%);
+    --accent: hsl(45, 90%, 50%);
+    --border: hsl(220, 10%, 85%);
+    --card: hsl(0, 0%, 100%);
+    --radius: 0.5rem;
+    --shadow-elegant: 0 4px 20px -4px hsla(220, 15%, 15%, 0.12);
+    --danger: hsl(0, 70%, 50%);
+    --success: hsl(142, 60%, 40%);
+    --warning: hsl(38, 90%, 50%);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; line-height: 1.7; color: var(--foreground); background: var(--background); max-width: 820px; margin: 0 auto; padding: 3rem 2rem 4rem; -webkit-font-smoothing: antialiased; }
+  h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 0.5rem; line-height: 1.2; }
+  h2 { font-size: 1.375rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.125rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.5rem; }
+  h4 { font-size: 1rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.375rem; }
+  p { margin-bottom: 1rem; }
+  .lead { font-size: 1.125rem; color: var(--muted-foreground); margin-bottom: 2rem; }
+  a { color: var(--primary); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+  a:hover { border-bottom-color: var(--primary); }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.375rem; }
+  li::marker { color: var(--primary); }
+  table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.9375rem; }
+  th { text-align: left; font-weight: 600; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted-foreground); padding: 0.625rem 0.75rem; border-bottom: 2px solid var(--border); background: var(--muted); }
+  td { padding: 0.625rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.875em; background: var(--muted); padding: 0.125em 0.375em; border-radius: 4px; }
+  pre { background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; overflow-x: auto; margin: 1rem 0; font-size: 0.875rem; }
+  .doc-header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+  .doc-header .overline { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-bottom: 0.5rem; }
+  .doc-header .meta { font-size: 0.8125rem; color: var(--muted-foreground); margin-top: 0.5rem; }
+  .doc-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8125rem; color: var(--muted-foreground); }
+  .callout { background: var(--muted); border-left: 4px solid var(--primary); border-radius: 0 var(--radius) var(--radius) 0; padding: 1rem 1.25rem; margin: 1.25rem 0; }
+  .callout-danger { border-left-color: var(--danger); }
+  .callout-success { border-left-color: var(--success); }
+  .callout-warning { border-left-color: var(--warning); }
+  .callout strong { display: block; margin-bottom: 0.25rem; }
+  .badge { display: inline-block; font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.2em 0.6em; border-radius: 9999px; }
+  .badge-internal { background: var(--danger); color: white; }
+  .badge-confidential { background: hsl(280, 60%, 45%); color: white; }
+  .toc { background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+  .toc h3 { margin-top: 0; font-size: 0.9375rem; }
+  .toc ol { margin: 0.5rem 0 0 1.25rem; font-size: 0.9375rem; }
+  .toc li { margin-bottom: 0.25rem; }
+  @media print { body { margin: 0.75in; padding: 0; max-width: none; font-size: 10.5pt; } a { color: black; border-bottom: none; } .callout { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="overline">Internal Operations Manual</div>
+  <h1>Clockless Substrate — Complete Internal Reference</h1>
+  <p class="lead">Covers CLM, system scanning, evolution, installation, budget governance, memory, and all operational subsystems. This document is <span class="badge badge-internal">INTERNAL</span> <span class="badge badge-confidential">CONFIDENTIAL</span> and must never be shared externally.</p>
+  <div class="meta">Last updated: February 2026 &bull; Classification: Internal Only</div>
+</header>
+
+<nav class="toc">
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#architecture">System Architecture Overview</a></li>
+    <li><a href="#installation">Installation &amp; Environment</a></li>
+    <li><a href="#clm">Constant Learning Mode (CLM)</a></li>
+    <li><a href="#scanning">System Scanning &amp; Proposal Engine</a></li>
+    <li><a href="#evolution">Evolution &amp; Mutation Engine</a></li>
+    <li><a href="#memory">Memory Architecture</a></li>
+    <li><a href="#budget">Budget Governance &amp; NEXUS Allocation</a></li>
+    <li><a href="#keys">API Keys &amp; Secrets</a></li>
+    <li><a href="#modules">Module CLM Cycles</a></li>
+    <li><a href="#commands">Terminal Commands</a></li>
+    <li><a href="#safety">Safety &amp; Kill Switches</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+  </ol>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="architecture">1. System Architecture Overview</h2>
+
+<p>The Clockless substrate is a multi-layered cognitive infrastructure organized into five architectural planes:</p>
+
+<table>
+  <tr><th>Layer</th><th>Purpose</th><th>Key Nodes</th></tr>
+  <tr><td><strong>Spine</strong></td><td>Vertical flow — core processing</td><td>CORE, SYSTEM, BRAIN, DREAM</td></tr>
+  <tr><td><strong>OCG</strong></td><td>Operational compliance grid</td><td>RIPPLE, ACCESS, DEFENSE</td></tr>
+  <tr><td><strong>Execution</strong></td><td>Specialized processing nodes</td><td>NEXUS, DECODE, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER</td></tr>
+  <tr><td><strong>Fields/Planes</strong></td><td>Supervisory overlays &amp; fabrics</td><td>GOVERNANCE, OBSERVABILITY, ANALYTICS, Evolution, Immunity, Intent, Mesh</td></tr>
+  <tr><td><strong>Shell</strong></td><td>Outer containment boundary</td><td>DEFENSE perimeter</td></tr>
+</table>
+
+<p>The architecture contains <strong>24 production nodes</strong> organized into 9 primary Pillars, with validation enforced via the Matrix Node count check.</p>
+
+<h3>Runtime Stack</h3>
+<table>
+  <tr><th>Layer</th><th>Technology</th></tr>
+  <tr><td>Framework</td><td>React 18 + TypeScript</td></tr>
+  <tr><td>Build</td><td>Vite</td></tr>
+  <tr><td>Styling</td><td>Tailwind CSS</td></tr>
+  <tr><td>State</td><td>Zustand</td></tr>
+  <tr><td>Backend</td><td>Clockless Cloud (managed edge functions)</td></tr>
+  <tr><td>AI Routing</td><td>NEXUS (multi-provider)</td></tr>
+  <tr><td>Database</td><td>PostgreSQL + pgvector</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="installation">2. Installation &amp; Environment</h2>
+
+<h3>Prerequisites</h3>
+<ul>
+  <li>Node.js 18+ or Bun 1.0+</li>
+  <li>A Clockless Cloud instance (provides backend automatically)</li>
+</ul>
+
+<h3>Quick Start</h3>
+<pre><code>git clone &lt;repo-url&gt;
+cd clockless
+bun install
+bun run dev</code></pre>
+
+<h3>Environment Variables (Auto-Configured)</h3>
+<table>
+  <tr><th>Variable</th><th>Purpose</th><th>Location</th></tr>
+  <tr><td><code>VITE_SUPABASE_URL</code></td><td>Backend API endpoint</td><td>Client</td></tr>
+  <tr><td><code>VITE_SUPABASE_PUBLISHABLE_KEY</code></td><td>Public API key</td><td>Client</td></tr>
+  <tr><td><code>VITE_SUPABASE_PROJECT_ID</code></td><td>Project identifier</td><td>Client</td></tr>
+</table>
+
+<div class="callout">
+  <strong>No manual .env configuration required.</strong>
+  The Clockless Cloud instance auto-provides all environment variables. The <code>.env</code> file is generated and managed automatically.
+</div>
+
+<h3>Backend Secrets (Edge Functions)</h3>
+<table>
+  <tr><th>Secret</th><th>Purpose</th><th>Required By</th></tr>
+  <tr><td>AI provider keys (OpenAI, Anthropic, Google, etc.)</td><td>Multi-provider routing</td><td>NEXUS router (<code>pf-nexus-router</code>)</td></tr>
+  <tr><td>Webhook signing keys</td><td>HMAC-SHA256 signature for outbound hooks</td><td>RELAY module</td></tr>
+  <tr><td>Stripe keys</td><td>Payment processing</td><td>ECONOMY / ACCESS nodes</td></tr>
+</table>
+
+<div class="callout callout-danger">
+  <strong>Critical: API keys are required for CLM to function.</strong>
+  Without at least one AI provider key configured in backend secrets, CLM learning jobs will fail because the NEXUS router cannot route to any provider. The system will continue to operate but all learning cycles will error out and trigger backoff.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="clm">3. Constant Learning Mode (CLM)</h2>
+
+<p>CLM is the substrate's always-on, rate-limited, spaced learning engine. It operates at two levels:</p>
+
+<h3>3.1 Architecture</h3>
+<table>
+  <tr><th>Component</th><th>File</th><th>Purpose</th></tr>
+  <tr><td><strong>Budget Governor</strong></td><td><code>clm/budget-governor.ts</code></td><td>Dynamic budget allocation via NEXUS 4-hour cycles. Manages daily limits, backoff, quiet hours, micro-learning mode.</td></tr>
+  <tr><td><strong>Topic Bank</strong></td><td><code>clm/topic-bank.ts</code></td><td>Curated curriculum with weighted selection: 50% core curriculum, 25% gap detection, 15% spaced repetition, 10% deep dives.</td></tr>
+  <tr><td><strong>Spaced Repetition</strong></td><td><code>clm/spaced-repetition.ts</code></td><td>SM-2 scheduling for memory consolidation. Capped at 30% of daily CLM budget.</td></tr>
+  <tr><td><strong>Orchestrator</strong></td><td><code>clm/orchestrator.ts</code></td><td>Coordinates the learning loop: select topic → check budget → build job → execute → reflect → update graph → dream/prune.</td></tr>
+  <tr><td><strong>Encoded Learning Engine</strong></td><td><code>clm/encoded-learning-engine.ts</code></td><td>24/7 code-writing mastery engine. Runs every 15 minutes. Dedicated curriculum for TypeScript/React patterns.</td></tr>
+  <tr><td><strong>Tier Command</strong></td><td><code>clm/tier-command.ts</code></td><td>Tier-based governance: free, standard, pro, enterprise. Controls budget limits, spacing, concurrency.</td></tr>
+  <tr><td><strong>Deep Dive URLs</strong></td><td><code>clm/deep-dive-urls.ts</code></td><td>Curated external knowledge sources (OWASP, React docs, pgvector, etc.) for real-world knowledge ingestion.</td></tr>
+  <tr><td><strong>React Hook</strong></td><td><code>clm/useCLM.ts</code></td><td>React integration: <code>useCLM()</code> provides state, actions, and refresh for UI components.</td></tr>
+</table>
+
+<h3>3.2 How CLM Works — Full Lifecycle</h3>
+<ol>
+  <li><strong>Budget Sync:</strong> On initialization, the Budget Governor reads <code>nexus_clm_budget</code> from <code>system_flags</code>. If fresh (< 2 hours old), it uses the NEXUS optimizer's <code>calls_per_hour</code>. Otherwise, falls back to the adaptive-budget 4-hour cycle allocator.</li>
+  <li><strong>Execution Check:</strong> <code>canExecute()</code> validates: kill switch off, CLM enabled, not paused from errors, not in quiet hours (default 03:00–05:00), budget remaining, spacing respected.</li>
+  <li><strong>Topic Selection:</strong> The Topic Bank selects from core curriculum (20+ topics across all modules), gap detection, spaced repetition queue, and deep dives. Weighted by priority, mastery, and recency.</li>
+  <li><strong>Job Execution:</strong> The Orchestrator calls <code>pf-nexus-router</code> edge function with the constructed prompt. NEXUS routes to the cheapest available AI provider.</li>
+  <li><strong>Knowledge Storage:</strong> Results go through <code>learningEngine.input()</code> which routes to <code>memoryCore.ingest()</code> with a confidence cap of 0.55 to prevent CLM data from flooding the hot tier.</li>
+  <li><strong>Reflection:</strong> After each job, <code>memoryCore.reflect()</code> generates cross-domain insights, stored at confidence 0.5 (warm tier).</li>
+  <li><strong>Graph Update:</strong> Knowledge nodes and edges are written to <code>brain_graph_edges</code> with learning relations, concept-module links, and topic-concept connections.</li>
+  <li><strong>Dream/Prune:</strong> Every 6 jobs, runs auto-degradation (warm → cold for 14+ day stale memories), then <code>pf-brain-memory-prune</code> and <code>pf-dream-cycle</code>.</li>
+</ol>
+
+<h3>3.3 Dual Execution Model</h3>
+<div class="callout callout-success">
+  <strong>Server-side primary + Client-side supplementary</strong>
+  <p>The primary CLM engine runs <strong>server-side</strong> via <code>pf-clm-engine</code> (pg_cron, every 5 minutes), achieving up to 14,400 AI calls per day with 65-cycle/hour cap and self-chaining logic. The client-side orchestrator is <strong>supplementary</strong> — it runs only when a browser tab is open, providing additional learning capacity.</p>
+</div>
+
+<h3>3.4 Starting CLM</h3>
+
+<h4>Option A: Automatic (Production)</h4>
+<p>CLM starts automatically when the substrate initializes. The server-side engine (<code>pf-clm-engine</code>) runs via pg_cron and requires no user intervention. As long as:</p>
+<ul>
+  <li>At least one AI provider key is configured in backend secrets</li>
+  <li>The <code>system_flags</code> table has <code>auto_training_enabled = true</code></li>
+  <li>Kill switch is not active</li>
+</ul>
+
+<h4>Option B: Terminal Commands</h4>
+<pre><code>clm.enable     — Enable CLM + Encoded learning
+clm.disable    — Disable CLM
+clm.run        — Run a single learning cycle manually
+clm.status     — Get full status (budget, tier, queue, encoded state)
+clm.kill       — Activate kill switch (immediate stop)
+clm.unkill     — Deactivate kill switch
+clm.reset      — Reset budget counter
+clm.resume     — Resume from error pause</code></pre>
+
+<h4>Option C: React Hook</h4>
+<pre><code>import { useCLM } from '@/lib/substrate/clm/useCLM';
+
+const { enabled, running, budget, enable, runOnce } = useCLM();
+// enable() → starts CLM + Encoded learning
+// runOnce() → manual single cycle trigger</code></pre>
+
+<h3>3.5 Encoded Learning Engine (Code-Writing Mastery)</h3>
+<p>The Encoded Learning Engine is a dedicated 24/7 engine focused exclusively on code-writing improvement. It has its own curriculum (50+ topics covering TypeScript patterns, React anti-patterns, testing strategies, performance optimization, etc.).</p>
+<ul>
+  <li><strong>Cycle interval:</strong> Every 15 minutes</li>
+  <li><strong>Topic selection:</strong> Weighted by priority (40%), inverse mastery (40%), topic weight (20%)</li>
+  <li><strong>Focus rotation:</strong> Randomly cycles between pattern, anti-pattern, best-practice, technique, and review modes</li>
+  <li><strong>Mastery tracking:</strong> Per-topic mastery scores (0.0–1.0) persisted in localStorage</li>
+  <li><strong>Storage:</strong> Patterns stored as high-confidence (0.9) heuristics; anti-patterns stored as warnings</li>
+</ul>
+
+<h3>3.6 Configuration Defaults</h3>
+<table>
+  <tr><th>Setting</th><th>Production</th><th>Discovery Phase</th></tr>
+  <tr><td>Min spacing</td><td>8 minutes</td><td>1 minute</td></tr>
+  <tr><td>Max concurrent</td><td>3</td><td>6</td></tr>
+  <tr><td>Error backoff multiplier</td><td>1.8×</td><td>1.3×</td></tr>
+  <tr><td>Max backoff</td><td>60 minutes</td><td>30 minutes</td></tr>
+  <tr><td>Quiet hours</td><td>03:00–05:00</td><td>None</td></tr>
+  <tr><td>Jitter</td><td>±2 minutes</td><td>±0.5 minutes</td></tr>
+  <tr><td>Max consecutive failures</td><td>5 (auto-pause)</td><td>12</td></tr>
+  <tr><td>SR budget cap</td><td>20%</td><td>10%</td></tr>
+  <tr><td>Job fingerprint TTL</td><td>8 hours</td><td>2 hours</td></tr>
+</table>
+
+<h3>3.7 Per-Module CLM Cycles</h3>
+<p>Each substrate module has its own CLM report function that assesses module-specific health and proposes upgrades:</p>
+<table>
+  <tr><th>Module</th><th>Function</th><th>Key Metrics</th></tr>
+  <tr><td>AUDIT</td><td><code>runAuditCLMCycle()</code></td><td>Chain validity, compliance coverage, compression ratio</td></tr>
+  <tr><td>RELAY</td><td><code>runRelayCLMCycle()</code></td><td>Delivery rate, retry backoff, webhook signatures</td></tr>
+  <tr><td>MEMORY</td><td><code>runMemoryCLMCycle()</code></td><td>Vector count, staleness %, relevance feedback</td></tr>
+  <tr><td>SANDBOX</td><td><code>runSandboxCLMCycle()</code></td><td>Execution count, block rate, snapshot count</td></tr>
+</table>
+<p>Each module CLM cycle writes a <code>CLMReport</code> to memory core and emits a <code>clm_cycle</code> event with the module's resilience grade.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="scanning">4. System Scanning &amp; Proposal Engine</h2>
+
+<h3>4.1 Unified Proposal Generator (v3.3.1)</h3>
+<p>The proposal engine aggregates findings from <strong>10 audit sources</strong>:</p>
+<ol>
+  <li>SEBA Evolution</li>
+  <li>Full Audit Runner</li>
+  <li>Substrate Health Check</li>
+  <li>AUDIT Compliance Ledger</li>
+  <li>Diligence Harness</li>
+  <li>ENGINEER Maintenance Node</li>
+  <li>INTEL Aggregator</li>
+  <li>INCLUSIVE (accessibility)</li>
+  <li>DEFENSE (security)</li>
+  <li>MODERNIZER (4-phase cognitive scan)</li>
+</ol>
+
+<h3>4.2 Rules</h3>
+<ul>
+  <li><strong>Maximum 5 action steps</strong> per proposal run</li>
+  <li><strong>60/40 ratio:</strong> 60% technical debt elimination, 40% system evolution</li>
+  <li><strong>Priority order:</strong> structural integrity → production audit fatals → technical debt → diligence → accessibility → security → evolution</li>
+  <li><strong>Guaranteed evolution:</strong> If all layers pass with zero fatals and zero critical debt, evolution <em>always</em> fires (v3.3.1 fix)</li>
+  <li><strong>False-positive filtering:</strong> DEFENSE ignores single-IP traffic (dev environments) and "0 fingerprint families" data bugs</li>
+  <li><strong>Human-in-the-loop:</strong> All proposals require explicit approval before external AI execution</li>
+</ul>
+
+<h3>4.3 Output Format</h3>
+<p>Each proposal produces a JSON report containing:</p>
+<ul>
+  <li><code>executive_summary</code> — High-level assessment with health grade</li>
+  <li><code>stability_assessment</code> — Per-layer pass/fail with zero-fatal confirmation</li>
+  <li><code>action_plan</code> — Up to 5 prioritized steps with category tags</li>
+  <li><code>evolution_opportunities</code> — CLM topic selection, system hardening recommendations</li>
+  <li><code>metadata</code> — Timestamp, version, source count, confidence score</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="evolution">5. Evolution &amp; Mutation Engine</h2>
+
+<h3>5.1 External-AI Execution Mode</h3>
+<div class="callout callout-warning">
+  <strong>The substrate never self-mutates.</strong>
+  All evolution operates in "external-ai" mode. Mutation authority is removed from the runtime and delegated to an external AI execution loop. Internal code execution or auto-application of proposals is strictly forbidden.
+</div>
+
+<h3>5.2 Lifecycle</h3>
+<ol>
+  <li><strong>Pre-generation rollback snapshot</strong> (mandatory)</li>
+  <li><strong>Modernizer governance chain:</strong> verify → diffs → receipts (deterministic hashes)</li>
+  <li><strong>SEBA choreographical stamping:</strong> lineage_id + signature</li>
+  <li><strong>Export:</strong> <code>POST /evolution/export</code> returns stamped JSON proposal</li>
+  <li><strong>External application:</strong> External AI applies the proposal</li>
+  <li><strong>Recording:</strong> <code>POST /evolution/applied</code> records the application</li>
+</ol>
+
+<h3>5.3 Promotion Pipeline (7 Gates)</h3>
+<p>Shadow → Simulation → Preflight → Canary → Production, with 12 stabilization gates including TSAC shadow verdicts and Integrity Health Score (≥ 60%).</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="memory">6. Memory Architecture</h2>
+
+<h3>6.1 Tiered Memory Model</h3>
+<table>
+  <tr><th>Tier</th><th>Table</th><th>Default Limit</th><th>Purpose</th></tr>
+  <tr><td>Hot</td><td><code>brain_memory_hot</code></td><td>200–2,000</td><td>Active working memory, highest salience</td></tr>
+  <tr><td>Warm</td><td><code>brain_memory_warm</code></td><td>2,000–20,000</td><td>Recent but less active, compression enabled</td></tr>
+  <tr><td>Cold</td><td><code>brain_memory_cold</code></td><td>20,000–200,000</td><td>Long-term storage with decay</td></tr>
+  <tr><td>Archive</td><td><code>brain_memory_archive</code></td><td>Unlimited</td><td>Never deleted, just moved</td></tr>
+</table>
+
+<h3>6.2 CLM Confidence Caps</h3>
+<p>CLM learning outputs are <strong>capped at confidence 0.55</strong> to prevent flooding the hot tier. Reflections are capped at 0.5. Only user-generated facts, preferences, and task outcomes can reach full confidence.</p>
+
+<h3>6.3 Adaptive Limits</h3>
+<p>The <code>get_adaptive_memory_limits()</code> function scales tier capacity based on user activity: total recalls, recall hit rate, and an activity multiplier (logarithmic scaling). High recall rate (> 70%) gets a 1.5× bonus.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="budget">7. Budget Governance &amp; NEXUS Allocation</h2>
+
+<h3>7.1 Dynamic Budget (No Hardcoded Percentages)</h3>
+<p>CLM budget is computed dynamically by NEXUS every 4 hours:</p>
+<ol>
+  <li>NEXUS calculates total available API calls for the cycle</li>
+  <li>Subtracts estimated operational needs (routing, scanning, etc.)</li>
+  <li>Divides surplus equally among learning entities</li>
+  <li>Entities rapid-fire until allocation exhausted or next cycle</li>
+</ol>
+
+<h3>7.2 Tier Limits</h3>
+<table>
+  <tr><th>Tier</th><th>Daily NEXUS Limit</th><th>CLM Budget %</th><th>Spacing Multiplier</th><th>Max Tokens/Job</th></tr>
+  <tr><td>Free</td><td>1,000</td><td>30%</td><td>2.0×</td><td>500</td></tr>
+  <tr><td>Standard</td><td>236,164</td><td>70%</td><td>1.0×</td><td>1,200</td></tr>
+  <tr><td>Pro</td><td>25,000</td><td>80%</td><td>0.75×</td><td>2,000</td></tr>
+  <tr><td>Enterprise</td><td>100,000</td><td>90%</td><td>0.5×</td><td>4,000</td></tr>
+</table>
+
+<h3>7.3 Discovery Phase</h3>
+<p>When <code>nexus_clm_budget.phase === 'discovery'</code>, the system switches to aggressive learning: 1-minute spacing, 6 concurrent jobs, no quiet hours, 0.5-minute jitter. This is used during initial onboarding to build foundational knowledge rapidly.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="keys">8. API Keys &amp; Secrets</h2>
+
+<h3>8.1 What CLM Needs</h3>
+<p>CLM calls the <code>pf-nexus-router</code> edge function, which in turn calls AI providers. The NEXUS router requires at least one AI provider key configured as a backend secret:</p>
+
+<table>
+  <tr><th>Provider</th><th>Secret Name</th><th>Required?</th></tr>
+  <tr><td>OpenAI</td><td><code>OPENAI_API_KEY</code></td><td>Recommended (primary)</td></tr>
+  <tr><td>Anthropic</td><td><code>ANTHROPIC_API_KEY</code></td><td>Optional (fallback)</td></tr>
+  <tr><td>Google</td><td><code>GOOGLE_AI_KEY</code></td><td>Optional (cost optimization)</td></tr>
+  <tr><td>OpenRouter</td><td><code>OPENROUTER_API_KEY</code></td><td>Optional (multi-model access)</td></tr>
+  <tr><td>Cohere</td><td><code>COHERE_API_KEY</code></td><td>Optional (embeddings)</td></tr>
+  <tr><td>Mistral</td><td><code>MISTRAL_API_KEY</code></td><td>Optional (cost-efficient)</td></tr>
+</table>
+
+<h3>8.2 How to Configure</h3>
+<ol>
+  <li>Open Clockless Cloud backend secrets manager</li>
+  <li>Add the provider key(s) as secrets</li>
+  <li>The NEXUS router will automatically detect and use available providers</li>
+  <li>No code changes required — provider availability is detected at runtime</li>
+</ol>
+
+<h3>8.3 No Keys = No Learning</h3>
+<div class="callout callout-danger">
+  <strong>CLM will not function without at least one AI provider key.</strong>
+  The system will continue to run but all learning cycles will fail, trigger exponential backoff, and eventually auto-pause after 5 consecutive failures. The substrate's operational features (auth, database, etc.) are unaffected.
+</div>
+
+<h3>8.4 Secrets Vault (pf-vault)</h3>
+<p>For internal module use, the substrate includes a Secrets Vault providing AES-GCM encrypted storage with per-module access scoping, rotation support, and audit logging via <code>vault_access_log</code>.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="modules">9. Module CLM Integration</h2>
+
+<p>Each substrate module exposes a CLM cycle function that generates a <code>CLMReport</code> containing:</p>
+<ul>
+  <li><code>module</code> — Module identifier</li>
+  <li><code>cycleId</code> — Unique cycle identifier</li>
+  <li><code>learnings</code> — Array of diagnostic strings</li>
+  <li><code>proposedUpgrades</code> — Implemented features + pending recommendations</li>
+  <li><code>risks</code> — Active risks detected</li>
+  <li><code>confidence</code> — Module confidence score (0.0–1.0)</li>
+</ul>
+
+<p>These reports feed into the memory core (<code>memoryCore.remember()</code>) and emit events via the substrate event bus for aggregation by the INTEL module.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="commands">10. Terminal Commands Reference</h2>
+
+<table>
+  <tr><th>Command</th><th>Description</th></tr>
+  <tr><td><code>clm.enable</code></td><td>Enable CLM + start Encoded learning</td></tr>
+  <tr><td><code>clm.disable</code></td><td>Disable CLM + stop Encoded learning</td></tr>
+  <tr><td><code>clm.run</code></td><td>Manually trigger one learning cycle</td></tr>
+  <tr><td><code>clm.status</code></td><td>Full status: budget, tier, queue, encoded mastery</td></tr>
+  <tr><td><code>clm.kill</code></td><td>Emergency kill switch — immediately halts all CLM</td></tr>
+  <tr><td><code>clm.unkill</code></td><td>Deactivate kill switch</td></tr>
+  <tr><td><code>clm.reset</code></td><td>Reset daily budget counter</td></tr>
+  <tr><td><code>clm.resume</code></td><td>Resume from error-pause state</td></tr>
+  <tr><td><code>tier.get</code></td><td>Show current tier info</td></tr>
+  <tr><td><code>tier.set &lt;name&gt;</code></td><td>Change tier (free/standard/pro/enterprise)</td></tr>
+  <tr><td><code>tier.limits</code></td><td>Show detailed budget limits</td></tr>
+  <tr><td><code>scan.run</code></td><td>Trigger full system scan (10 audit sources)</td></tr>
+  <tr><td><code>evolution.export</code></td><td>Export stamped evolution proposal</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="safety">11. Safety &amp; Kill Switches</h2>
+
+<h3>11.1 Kill Switch</h3>
+<p><code>activateKillSwitch()</code> immediately halts all CLM activity and stops the Encoded learning engine. Can be triggered via terminal (<code>clm.kill</code>) or programmatically.</p>
+
+<h3>11.2 Auto-Pause</h3>
+<p>After 5 consecutive failures (configurable via <code>maxConsecutiveFailures</code>), CLM auto-pauses and emits a <code>clm_auto_disabled</code> brain event. Resume with <code>clm.resume</code>.</p>
+
+<h3>11.3 Circuit Breakers</h3>
+<p>Each module has independent circuit breakers (closed/half-open/open) that protect against cascading failures. Module CLM cycles report circuit state in their <code>CLMReport</code>.</p>
+
+<h3>11.4 Governance Modes</h3>
+<p>The <code>governance_mode</code> table controls system-wide operational mode with auto-revert TTL:</p>
+<ul>
+  <li><strong>ACTIVE:</strong> Normal operation — all subsystems running</li>
+  <li><strong>MAINTENANCE:</strong> Reduced operations — CLM paused, evolution blocked</li>
+  <li><strong>EMERGENCY:</strong> Critical only — all learning and evolution halted</li>
+</ul>
+
+<h3>11.5 Builder Isolation</h3>
+<p>User projects run <em>on</em> the substrate, never <em>as</em> the substrate. Internal systems (CLM, MODERNIZER, SEBA, ENCODE, CORTEX, GOVERNOR, SYSTEM) are first-party and non-exportable.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="troubleshooting">12. Troubleshooting</h2>
+
+<table>
+  <tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
+  <tr><td>CLM cycles all failing</td><td>No AI provider keys configured</td><td>Add at least one provider key to backend secrets</td></tr>
+  <tr><td>CLM auto-paused</td><td>5+ consecutive failures</td><td><code>clm.resume</code> after fixing root cause</td></tr>
+  <tr><td>Budget shows 0 remaining</td><td>Cycle allocation exhausted</td><td>Wait for next 4-hour NEXUS cycle, or <code>clm.reset</code></td></tr>
+  <tr><td>No learning during quiet hours</td><td>Default quiet hours 03:00–05:00</td><td>Set <code>SUBSTRATE_CLM_QUIET_HOURS</code> env var, or use discovery phase</td></tr>
+  <tr><td>Encoded learning not starting</td><td>Kill switch active or CLM disabled</td><td><code>clm.unkill</code> then <code>clm.enable</code></td></tr>
+  <tr><td>Scanner reports false positives</td><td>DEFENSE flagging dev traffic</td><td>v3.3.1 filters single-IP traffic; upgrade if on older version</td></tr>
+  <tr><td>Evolution not firing on stable system</td><td>Pre-v3.3.1 bug</td><td>Update proposal generator; guaranteed evolution now fires when all layers pass</td></tr>
+  <tr><td>Memory hot tier overloaded</td><td>CLM confidence cap bypassed</td><td>Verify confidence caps in orchestrator (0.55 for learning, 0.5 for reflection)</td></tr>
+</table>
+
+<footer class="doc-footer">
+  <p>Clockless Internal Operations Manual &bull; Confidential &bull; February 2026<br />
+  Not for external distribution. All proprietary systems protected under Black-Box enforcement protocol.</p>
+</footer>
+
+</body>
+</html>

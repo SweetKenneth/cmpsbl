@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation Index — Clockless</title>
+<style>
+  :root { --background: hsl(0,0%,100%); --foreground: hsl(220,15%,15%); --primary: hsl(210,60%,45%); --primary-foreground: hsl(0,0%,100%); --muted: hsl(220,10%,96%); --muted-foreground: hsl(220,10%,40%); --border: hsl(220,10%,85%); --card: hsl(0,0%,100%); --radius: 0.5rem; --shadow-elegant: 0 4px 20px -4px hsla(220,15%,15%,0.12); }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.7;color:var(--foreground);background:var(--background);max-width:920px;margin:0 auto;padding:3rem 2rem 4rem;-webkit-font-smoothing:antialiased}
+  h1{font-size:2rem;font-weight:700;letter-spacing:-0.025em;margin-bottom:.5rem;line-height:1.2}
+  h2{font-size:1.375rem;font-weight:600;margin-top:2.5rem;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+  h3{font-size:1.125rem;font-weight:600;margin-top:0;margin-bottom:.375rem}
+  p{margin-bottom:1rem}
+  .lead{font-size:1.125rem;color:var(--muted-foreground);margin-bottom:2rem}
+  a{color:var(--primary);text-decoration:none;border-bottom:1px solid transparent;transition:border-color 0.2s}a:hover{border-bottom-color:var(--primary)}
+  .doc-header{margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:2px solid var(--border)}
+  .doc-header .overline{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);margin-bottom:.5rem}
+  .doc-header .meta{font-size:.8125rem;color:var(--muted-foreground);margin-top:.5rem}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1.5rem 0}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;box-shadow:var(--shadow-elegant);transition:box-shadow 0.2s,transform 0.2s}
+  .card:hover{box-shadow:0 8px 30px -8px hsla(220,15%,15%,0.18);transform:translateY(-2px)}
+  .card p{font-size:.875rem;color:var(--muted-foreground);margin-bottom:0}
+  .badge{display:inline-block;font-size:.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:.2em .6em;border-radius:9999px;margin-bottom:.5rem}
+  .badge-html{background:var(--primary);color:var(--primary-foreground)}
+  .badge-md{background:var(--muted);color:var(--muted-foreground);border:1px solid var(--border)}
+  ul.link-list{list-style:none;margin:1rem 0;padding:0}
+  ul.link-list li{padding:.375rem 0;border-bottom:1px solid var(--border)}
+  ul.link-list li:last-child{border-bottom:none}
+  .doc-footer{margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--border);text-align:center;font-size:.8125rem;color:var(--muted-foreground)}
+  @media print{body{margin:1in;padding:0;max-width:none;font-size:11pt}a{color:black;border-bottom:none}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="overline">Clockless Documentation</div>
+  <h1>Documentation Index</h1>
+  <p class="lead">Complete reference for the Clockless cognitive infrastructure substrate. Strategic documents are printable HTML; technical reference is machine-readable Markdown.</p>
+  <div class="meta">Clockless v12 &bull; Confidential</div>
+</header>
+
+<main>
+
+<h2>Strategic Documents <span class="badge badge-html">HTML</span></h2>
+<p>Investor-grade, printable documents covering architecture, governance, economy, and verification.</p>
+<div class="card-grid">
+  <a href="html/system-overview.html" class="card" style="text-decoration:none;color:inherit">
+    <h3>System Overview</h3>
+    <p>What Clockless is, why it exists, runtime layers, governance model, artifact activation.</p>
+  </a>
+  <a href="html/runtime-architecture.html" class="card" style="text-decoration:none;color:inherit">
+    <h3>Runtime Architecture</h3>
+    <p>Layered architecture, command routing, handler registration, state model, failure discipline.</p>
+  </a>
+  <a href="html/governance-and-boundaries.html" class="card" style="text-decoration:none;color:inherit">
+    <h3>Governance &amp; Boundaries</h3>
+    <p>Enforcement model, capability gating, namespace discipline, veto authority.</p>
+  </a>
+  <a href="html/artifact-pack-system.html" class="card" style="text-decoration:none;color:inherit">
+    <h3>Artifact Pack System</h3>
+    <p>Artifact philosophy, slot capacity, activation RPC, entitlement guarding, Crown Jewels.</p>
+  </a>
+  <a href="html/economy-and-tier-model.html" class="card" style="text-decoration:none;color:inherit">
+    <h3>Economy &amp; Tier Model</h3>
+    <p>Subscription tiers, slot scaling, equal-pack doctrine, usage metering, expansion strategy.</p>
+  </a>
+  <a href="html/diligence-harness.html" class="card" style="text-decoration:none;color:inherit">
+    <h3>Diligence Harness</h3>
+    <p>Test battery, surface commands, failure discipline, severity model, interpreting results.</p>
+  </a>
+  <a href="html/internal-operations-manual.html" class="card" style="text-decoration:none;color:inherit;border:2px solid hsl(280,60%,45%)">
+    <h3>🔒 Internal Operations Manual</h3>
+    <p>Complete CLM, scanning, evolution, memory, budget, keys, and troubleshooting reference. INTERNAL ONLY.</p>
+  </a>
+  <a href="html/public-setup-guide.html" class="card" style="text-decoration:none;color:inherit">
+    <h3>Public Setup Guide</h3>
+    <p>Installation, learning engine setup, what to expect, terminal commands, FAQ. Safe for external sharing.</p>
+  </a>
+</div>
+
+<h2>Technical Reference <span class="badge badge-md">Markdown</span></h2>
+
+<h3 style="margin-top:1.5rem">Node Specifications</h3>
+<ul class="link-list">
+  <li><a href="md/nodes.md">nodes.md</a> — Overview table of all 24 nodes</li>
+  <li><a href="md/core.md">core.md</a> — CORE kernel node</li>
+  <li><a href="md/system.md">system.md</a> — SYSTEM lifecycle management</li>
+  <li><a href="md/brain.md">brain.md</a> — BRAIN cognition node</li>
+  <li><a href="md/dream.md">dream.md</a> — DREAM synthesis node</li>
+  <li><a href="md/ripple.md">ripple.md</a> — RIPPLE event bus + RELAY</li>
+  <li><a href="md/access.md">access.md</a> — ACCESS entitlements + IDENTITY + ECONOMY</li>
+  <li><a href="md/defense.md">defense.md</a> — DEFENSE containment shell</li>
+  <li><a href="md/decode.md">decode.md</a> — DECODE epistemic interpreter</li>
+  <li><a href="md/nexus.md">nexus.md</a> — NEXUS AI provider routing</li>
+  <li><a href="md/vision.md">vision.md</a> — VISION observability</li>
+  <li><a href="md/cortex.md">cortex.md</a> — CORTEX autonomous orchestrator</li>
+  <li><a href="md/inclusive.md">inclusive.md</a> — INCLUSIVE accessibility</li>
+  <li><a href="md/encode.md">encode.md</a> — ENCODE code generation + SANDBOX</li>
+  <li><a href="md/encoded.md">encoded.md</a> — ENCODED code agent</li>
+  <li><a href="md/gov.md">gov.md</a> — GOVERNANCE + AUDIT</li>
+  <li><a href="md/analytics.md">analytics.md</a> — Observability &amp; analytics</li>
+  <li><a href="md/mesh.md">mesh.md</a> — Mesh overlays (EVOLUTION, IMMUNITY, INTENT)</li>
+  <li><a href="md/seba.md">seba.md</a> — SEBA self-evolving agent</li>
+</ul>
+
+<h3>Contracts &amp; API</h3>
+<ul class="link-list">
+  <li><a href="md/command-result-schema.md">command-result-schema.md</a> — Standard command result format</li>
+  <li><a href="md/handler-registration-contract.md">handler-registration-contract.md</a> — Handler registration rules</li>
+  <li><a href="md/execute-command-api.md">execute-command-api.md</a> — Engine Bus dispatch API</li>
+  <li><a href="md/rpc-activation-contract.md">rpc-activation-contract.md</a> — Artifact Pack activation RPC</li>
+  <li><a href="md/severity-model.md">severity-model.md</a> — Four-level severity model</li>
+</ul>
+
+<h3>Operations</h3>
+<ul class="link-list">
+  <li><a href="md/installation.md">installation.md</a> — Setup and installation</li>
+  <li><a href="md/environment-variables.md">environment-variables.md</a> — Environment configuration</li>
+  <li><a href="md/release-process.md">release-process.md</a> — Release gate and deployment</li>
+  <li><a href="md/dev-task-registry.md">dev-task-registry.md</a> — Development task tracking</li>
+</ul>
+
+</main>
+
+<footer class="doc-footer">
+  Clockless &mdash; v12 Documentation &bull; &copy; 2025&ndash;2026 PromptFluid&reg;
+</footer>
+
+</body>
+</html>
