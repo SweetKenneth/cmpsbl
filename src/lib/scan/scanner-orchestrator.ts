@@ -80,6 +80,20 @@ export { registerSchedule, emitTrigger, getSchedulerStatus, registerDefaultSched
 export { generatePatchPlan, generatePatchCommands } from './integrations/dependency-auto-patch';
 export { startScanRun, persistFindings, resolveAbsentFindings, completeScanRun, getScanTrends, getActiveFindings, getFindingAnalytics } from './integrations/finding-persistence';
 
+// Substrate Integrations — Wave 2
+export { clusterFindings } from './integrations/memory-semantic-clustering';
+export { detectRecurringPatterns } from './integrations/memory-cross-session-patterns';
+export { estimateCognitiveLoad } from './integrations/cortex-cognitive-load';
+export { calibrateThresholds, applyCalibration } from './integrations/cortex-false-positive-calibration';
+export { mineDreamOptimizations } from './integrations/dream-offline-optimization';
+export { buildAttackSurfaceMap } from './integrations/defense-attack-surface-map';
+export { issueReceipt, verifyReceipt, validateChain, getReceiptsForFinding } from './integrations/evolution-fix-receipt-chain';
+export { calculateDecay } from './integrations/evolution-confidence-decay';
+export { withSelfHealing, getScannerHealthReport, resetHealingLog } from './integrations/immune-scanner-self-healing';
+export { requestConsensus, batchConsensus } from './integrations/mesh-cross-scanner-resolution';
+export { profileResourceWaste } from './integrations/vision-resource-profiling';
+export { selectConsensusModels, aggregateVerdicts } from './integrations/nexus-multi-model-consensus';
+
 // Re-export all types
 export type {
   RepoFingerprint, SchemaMap, DependencyGraph, SelfAssessmentPrompt, EnvironmentProfile,

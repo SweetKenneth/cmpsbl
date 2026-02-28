@@ -95,6 +95,29 @@ Regression detection integrates with the EVOLUTION module's `detectRegression()`
 - `createRegressionMonitor(findingId, fixId, windowMs)` → monitoring session with snapshot collector
 - `batchEvaluateFixes(fixResults[])` → pass rate, regression count, summary
 
+### (#41) Resource Profiling
+Profiles CPU, memory, and network waste caused by technical debt, translating abstract findings into concrete resource costs.
+
+**Waste Grade Scale:**
+| Monthly Cost | Grade |
+|---|---|
+| ≤10¢ | A |
+| ≤50¢ | B |
+| ≤$2 | C |
+| ≤$5 | D |
+| >$5 | F |
+
+**Category Impact Baselines:**
+| Category | CPU (ms) | Memory (MB) | Network (KB) |
+|---|---|---|---|
+| performance | 50 | 10 | 20 |
+| complexity | 30 | 5 | 0 |
+| dead_code | 5 | 15 | 10 |
+| accessibility | 2 | 1 | 5 |
+
+**Key Functions:**
+- `profileResourceWaste(findings, metrics?)` → `ResourceProfilingReport` with worst offenders, estimated monthly savings, and grade distribution
+
 ## Core Capabilities
 | Capability | Description |
 |---|---|
@@ -107,6 +130,7 @@ Regression detection integrates with the EVOLUTION module's `detectRegression()`
 | Debt Correlation | Maps telemetry signals to scanner findings |
 | Hotspot Detection | Identifies highest-error code paths |
 | Regression Gating | Blocks promotion of fixes that cause regressions |
+| Resource Profiling | Quantifies CPU/memory/network waste per finding |
 
 ## Failure Modes
 - **Metric ingestion lag**: Telemetry data delayed → stale dashboard with warning indicator
