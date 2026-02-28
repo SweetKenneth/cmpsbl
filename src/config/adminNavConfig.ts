@@ -20,6 +20,7 @@ import {
   Hammer,
   Terminal,
   Gauge,
+  Eye,
   type LucideIcon,
 } from "lucide-react";
 
@@ -40,13 +41,12 @@ export interface NavGroup {
 
 export const adminNavConfig: NavGroup[] = [
   {
-    id: "core",
-    title: "Core",
+    id: "control-plane",
+    title: "Control Plane",
     items: [
+      { id: "intel", label: "INTEL Panel", path: "/admin/intel", icon: Eye, isNew: true },
       { id: "os", label: "Substrate", path: "/os", icon: Cpu },
       { id: "substrate", label: "Dashboard", path: "/substrate", icon: LayoutDashboard },
-      { id: "system-feed", label: "System Feed", path: "/system-feed", icon: Brain, isNew: true },
-      { id: "dream-eater", label: "Dream Eater", path: "/feed-dream-eater", icon: Moon },
       { id: "decode", label: "Decode", path: "/decode", icon: Terminal },
     ],
   },
