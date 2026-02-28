@@ -361,7 +361,7 @@ export interface SEBAConfig {
 export const SEBA_SAFETY_CONTROLS = {
   AUTO_APPROVE_ENABLED: false,       // All proposals go to pending status
   MAX_CYCLES_PER_DAY: 12,            // Prevents runaway scanning
-  MAX_PROPOSALS_PER_DAY: 20,         // Limits proposal generation
+  MAX_PROPOSALS_PER_DAY: 60,         // Thorough scanning — up to 15 per run × 4 runs
   COOLDOWN_HOURS: 2,                 // Enforces gap between cycles
   NEXUS_BUDGET_THRESHOLD: 0.5,       // Halts if AI budget exceeded (50%)
   
@@ -385,7 +385,7 @@ export const DEFAULT_SEBA_CONFIG: SEBAConfig = {
   // Budget-aware limits for free tier
   // ~50 calls/day ÷ 2.5 calls/cycle = ~20 cycles/day max
   // Actual limit set lower for safety margin
-  max_proposals_per_cycle: 3,
+  max_proposals_per_cycle: 15,
   max_executions_per_day: 8,          // Conservative for free tier
   cooldown_after_failure_ms: 300000,  // 5 min
   cycle_interval_ms: 7200000,         // 2 hours between auto-cycles

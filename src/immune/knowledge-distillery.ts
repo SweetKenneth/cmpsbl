@@ -203,7 +203,7 @@ const CATEGORY_CONSTRAINTS: Partial<Record<ExecutorModuleMeta['category'], ArchC
   ],
   governance: [
     { id: 'GV-001', rule: 'All mutations require rollback plan before execution', severity: 'fatal', scope: ['governance'] },
-    { id: 'GV-002', rule: 'Evolution rate limit: max 10 proposals per day', severity: 'error', scope: ['governance'] },
+    { id: 'GV-002', rule: 'Evolution rate limit: max 60 proposals per day', severity: 'error', scope: ['governance'] },
     { id: 'GV-003', rule: 'Only 1 active evolution run at a time', severity: 'fatal', scope: ['governance'] },
   ],
   autonomy: [
