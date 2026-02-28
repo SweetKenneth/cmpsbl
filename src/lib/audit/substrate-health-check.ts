@@ -246,8 +246,17 @@ function checkImports(): LayerResult {
   return layerResult('imports', 'Import & Reference Validation', checks);
 }
 
-/** C. Terminal & Capability Wiring */
+/** C. Terminal & Capability Wiring (skipped if no terminal UI detected) */
 function checkTerminal(): LayerResult {
+  const { isTerminalPresent } = require('@/lib/terminal/detect');
+  
+  // Skip entirely if no terminal is mounted — don't produce false warnings
+  if (!isTerminalPresent()) {
+    return layerResult('terminal', 'Terminal & Capability Wiring', [
+      check('term_skipped', true, 'Terminal scan skipped — no terminal UI detected in this installation'),
+    ]);
+  }
+  
   const checks: CheckResult[] = [];
   const stats = getRegistrationStats();
 
