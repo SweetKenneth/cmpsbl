@@ -94,15 +94,18 @@ export async function scanEdgeFunctions(): Promise<EdgeAnalysis> {
  */
 async function detectLiveFunctions(): Promise<string[]> {
   // Known deployed functions based on project structure
-  // In production, this would query the Supabase API
+  // In production, this would query the deployment API
   const knownFunctions = [
-    'substrate',
+    'pf-substrate',
     'evolution-receipts',
-    'agency-execute-task',
+    'evolution-control',
+    'pf-agency-execute-task',
     'agency-webhooks',
     'pf-modernizer-rebuild',
     'pf-orchestrator',
     'pf-stripe-webhook',
+    'pf-clm-engine',
+    'passkey-auth',
     'stripe-webhook-minimal',
     'check-scheduled-scans',
     'execute-scheduled-task',
@@ -110,7 +113,6 @@ async function detectLiveFunctions(): Promise<string[]> {
     'send-agency-email',
     'submit-agency-contact',
     'validate-access-key',
-    'evolution-control',
   ];
   
   return knownFunctions;
