@@ -31,13 +31,19 @@ The Scanner is a 5-phase forensic auditing pipeline that discovers, understands,
 | # | Integration | Module | Path |
 |---|---|---|---|
 | 7 | Scan-Aware Routing | NEXUS | `integrations/nexus-scan-routing.ts` |
+| 8 | Finding Deduplication | MEMORY | `integrations/memory-finding-dedup.ts` |
 | 9 | Cost-Optimized Scanning | NEXUS | `integrations/nexus-cost-optimized.ts` |
 | 10 | Failover-Resilient Scanning | NEXUS | `integrations/nexus-failover-scanning.ts` |
+| 14 | Threat-Correlated Scanning | DEFENSE | `integrations/defense-threat-correlation.ts` |
+| 15 | Dependency Auto-Patching | — | `integrations/dependency-auto-patch.ts` |
 | 18 | Performance-Correlated Debt | VISION | `integrations/vision-performance-debt.ts` |
 | 19 | Error Hotspot Mapping | VISION | `integrations/vision-error-hotspots.ts` |
 | 22 | Regression Detection Loop | VISION | `integrations/vision-regression-loop.ts` |
 | 23 | Proposal Chain Dependency | EVOLUTION | `integrations/evolution-proposal-chain.ts` |
 | 27 | Auto-Regression Testing | EVOLUTION | `integrations/evolution-auto-regression.ts` |
+| 30 | Fix Verification Loop | — | `integrations/fix-verification-loop.ts` |
+| — | Scan Scheduling | — | `integrations/scan-scheduler.ts` |
+| — | Finding Persistence | — | `integrations/finding-persistence.ts` |
 
 ## Phase 0: Discovery
 
