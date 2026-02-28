@@ -70,8 +70,8 @@ const SURFACE_COMMANDS: Array<{ name: string; command: string }> = [
   { name: 'INCLUSIVE status', command: 'inclusive.status' },
   { name: 'INTEGRATION status', command: 'integration.status' },
   { name: 'MODERNIZER status', command: 'modernizer.status' },
-  { name: 'GOV status', command: 'gov.status' },
-  { name: 'OBS status', command: 'obs.status' },
+  { name: 'GOV mode', command: 'gov.mode' },
+  { name: 'OBS summary', command: 'obs.summary' },
   { name: 'ANALYTICS summary', command: 'analytics.summary' },
 ];
 
