@@ -271,10 +271,10 @@ export default function IntelPanel() {
     try {
       // Run maintenance battery first to get fresh data
       await refetch();
-      const proposal = generateUnifiedProposal();
+      const proposal = await generateUnifiedProposal();
       setUnifiedProposal(proposal);
       navigator.clipboard.writeText(JSON.stringify(proposal, null, 2));
-      toast.success(`Proposal generated — ${proposal.action_plan.length} action steps. Copied to clipboard.`);
+      toast.success(`Proposal generated — ${proposal.action_plan.length} action steps from ${proposal.metadata.sources.length} sources. Copied to clipboard.`);
     } catch (err) {
       toast.error('Failed to generate proposal');
     } finally {
