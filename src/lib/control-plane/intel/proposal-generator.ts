@@ -382,7 +382,11 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   const securityData = await runDefenseScan();
   
   // ─── 8. MODERNIZER SCAN — 4-phase cognitive systems scan ───
-  const modernizerData = await runModernizerCognitiveScan();
+  let rawModernizerResult: ScanResultExtended | null = null;
+  const modernizerData = await runModernizerCognitiveScan().then(data => data).catch(() => null as any);
+  try {
+    rawModernizerResult = await modernizerScan({ dry_run: true });
+  } catch { /* already captured in modernizerData */ }
   
   // ═══ BUILD SECTIONS ═══
   const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport, accessibilityData, securityData);
@@ -417,7 +421,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   let actionPlan = buildActionPlan(
     techDebt, evolution, auditGaps, diligenceData,
     productionAudit, structuralHealth, accessibilityData, securityData,
-    governanceChain,
+    governanceChain, modernizerData, rawModernizerResult,
   );
   
   // ─── Convert minor diligence to proposal (max 1) ───
