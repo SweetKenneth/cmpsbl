@@ -1,11 +1,14 @@
 /**
- * INTEL Panel — Founder-Only Control Plane Dashboard
+ * Evolution Control Plane — Portable, OS-grade admin surface.
  * 
- * Calm, card-based comprehension of the entire CMPSBL substrate.
- * Light-mode aligned, print-friendly, investor-grade.
- * Mobile-first responsive design.
+ * Sections:
+ *   1. System Integrity (Structural + Production Audit + Compliance)
+ *   2. Bounded Action Plan (max 5 proposals)
+ *   3. Governance Receipts (receipt_id, diff_hash, verification_hash, snapshot_id)
+ *   4. Install Mode (endpoint /evolution/export)
  * 
- * v13: Evolution proposals are export-only. No internal apply controls.
+ * Light theme only. No substrate-specific branding.
+ * External-AI execution barrier enforced.
  */
 
 import { useState } from 'react';
@@ -19,9 +22,9 @@ import { Separator } from '@/components/ui/separator';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   Shield, Activity, Brain, Zap, AlertTriangle, CheckCircle,
-  Copy, ChevronDown, FileText, Lock, Unlock, TrendingUp,
+  Copy, ChevronDown, FileText, TrendingUp,
   Loader2, RefreshCw, Download, ExternalLink, MoreHorizontal,
-  Sparkles,
+  Sparkles, Terminal, Hash,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -58,7 +61,7 @@ const severityBadgeVariant: Record<string, 'destructive' | 'secondary' | 'outlin
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// INTEL CARD COMPONENT — Mobile-first
+// INTEL CARD COMPONENT
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function IntelCardView({ card }: { card: IntelCard }) {
@@ -113,7 +116,7 @@ function IntelCardView({ card }: { card: IntelCard }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MASTERY ITEM — Mobile-first
+// MASTERY ITEM
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
@@ -146,7 +149,7 @@ function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PROPOSAL EXPORT CARD — Mobile-first
+// PROPOSAL EXPORT CARD
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
@@ -183,9 +186,7 @@ function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
           <CardTitle className="text-xs sm:text-sm">{proposal.title}</CardTitle>
           <div className="flex items-center gap-1.5">
             <Badge variant="outline" className="text-[10px] sm:text-xs">{proposal.status}</Badge>
-            <Badge variant="outline" className="text-[10px] sm:text-xs">
-              risk: {proposal.risk_level}
-            </Badge>
+            <Badge variant="outline" className="text-[10px] sm:text-xs">risk: {proposal.risk_level}</Badge>
           </div>
         </div>
         <CardDescription className="text-[10px] sm:text-xs">{proposal.description}</CardDescription>
@@ -232,7 +233,92 @@ function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MAIN PANEL — Mobile-first
+// GOVERNANCE RECEIPTS SECTION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function GovernanceReceipts({ governance }: { governance: UnifiedProposal['governance'] }) {
+  return (
+    <Card className="border-l-4 border-l-primary/30">
+      <CardHeader className="p-3 sm:p-4 pb-2">
+        <div className="flex items-center gap-2">
+          <Hash className="w-4 h-4 text-primary" />
+          <CardTitle className="text-sm">Governance Receipts</CardTitle>
+        </div>
+        <CardDescription className="text-[10px] sm:text-xs">Cryptographic lifecycle chain for this proposal run</CardDescription>
+      </CardHeader>
+      <CardContent className="p-3 sm:p-4 pt-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {[
+            { label: 'Snapshot ID', value: governance.snapshot_id },
+            { label: 'Receipt ID', value: governance.receipt_id },
+            { label: 'Verification Hash', value: governance.verification_hash },
+            { label: 'Diff Hash', value: governance.diff_hash },
+            { label: 'SEBA Lineage', value: governance.seba_stamp.lineage_id },
+            { label: 'SEBA Signature', value: governance.seba_stamp.signature },
+          ].map(({ label, value }) => (
+            <div key={label} className="bg-muted/40 rounded p-2 space-y-0.5">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-medium">{label}</p>
+              <p className="text-xs font-mono truncate" title={value}>{value}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-[10px] text-muted-foreground mt-2">
+          Discipline: {governance.seba_stamp.discipline} · Stage: {governance.seba_stamp.stage}
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// INSTALL MODE SECTION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function InstallModeSection() {
+  const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || 'bxodolqqczjuahwdrswy';
+  const exportEndpoint = `https://${projectId}.supabase.co/functions/v1/evolution-control`;
+  
+  return (
+    <Card className="border-l-4 border-l-muted-foreground/30">
+      <CardHeader className="p-3 sm:p-4 pb-2">
+        <div className="flex items-center gap-2">
+          <Terminal className="w-4 h-4 text-muted-foreground" />
+          <CardTitle className="text-sm">Install Mode</CardTitle>
+          <Badge variant="outline" className="text-[10px]">API</Badge>
+        </div>
+        <CardDescription className="text-[10px] sm:text-xs">Runtime endpoints for external agent consumption</CardDescription>
+      </CardHeader>
+      <CardContent className="p-3 sm:p-4 pt-0 space-y-3">
+        <div className="space-y-2">
+          <div className="bg-muted/40 rounded p-2">
+            <p className="text-[10px] text-muted-foreground uppercase font-medium mb-1">Export Proposal</p>
+            <code className="text-xs font-mono block break-all">POST {exportEndpoint}?action=export</code>
+            <p className="text-[10px] text-muted-foreground mt-1">Returns stamped unified proposal JSON. Requires API key.</p>
+          </div>
+          <div className="bg-muted/40 rounded p-2">
+            <p className="text-[10px] text-muted-foreground uppercase font-medium mb-1">Record Applied</p>
+            <code className="text-xs font-mono block break-all">POST {exportEndpoint}?action=applied</code>
+            <p className="text-[10px] text-muted-foreground mt-1">Records external application. Body: proposal_id, receipt_id, verification_hash.</p>
+          </div>
+        </div>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="h-7 text-xs"
+          onClick={() => {
+            navigator.clipboard.writeText(exportEndpoint);
+            toast.success('Endpoint copied');
+          }}
+        >
+          <Copy className="w-3 h-3 mr-1" /> Copy Endpoint
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// MAIN PANEL — Evolution Control Plane
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export default function IntelPanel() {
@@ -262,19 +348,18 @@ export default function IntelPanel() {
       toast.info('No exportable proposals found');
     }
     if (errors.length > 0) {
-      console.warn('[INTEL] Export errors:', errors);
+      console.warn('[EVO-CP] Export errors:', errors);
     }
   };
 
   const handleGenerateProposal = async () => {
     setIsGenerating(true);
     try {
-      // Run maintenance battery first to get fresh data
       await refetch();
       const proposal = await generateUnifiedProposal();
       setUnifiedProposal(proposal);
       navigator.clipboard.writeText(JSON.stringify(proposal, null, 2));
-      toast.success(`Proposal generated — ${proposal.action_plan.length} action steps from ${proposal.metadata.sources.length} sources. Copied to clipboard.`);
+      toast.success(`v3.3 proposal generated — ${proposal.action_plan.length} bounded steps from ${proposal.metadata.sources.length} sources. Copied to clipboard.`);
     } catch (err) {
       toast.error('Failed to generate proposal');
     } finally {
@@ -288,7 +373,7 @@ export default function IntelPanel() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `unified-proposal-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `evolution-proposal-v3.3-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast.success('Proposal downloaded');
@@ -311,28 +396,28 @@ export default function IntelPanel() {
     return (
       <AdminLayout>
         <div className="text-center py-20 text-muted-foreground">
-          <p>INTEL data unavailable. Try refreshing.</p>
+          <p>Data unavailable. Try refreshing.</p>
         </div>
       </AdminLayout>
     );
   }
   
-  const { summary, criticals, cards, engineerStats, findings, proposals, topicMastery, crownJewels } = data;
+  const { summary, criticals, cards, engineerStats, findings, proposals, topicMastery } = data;
   
   return (
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6 print:space-y-4">
-        {/* Header — stacks on mobile */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">INTEL Panel</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">Evolution Control Plane</h1>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Control Plane · Founder-Only · Execution: <span className="font-mono font-semibold">{executionMode.mode}</span>
+              Bounded Proposals · Execution: <span className="font-mono font-semibold">{executionMode.mode}</span> · Schema v3.3
             </p>
           </div>
           
           {/* Desktop actions */}
-           <div className="hidden md:flex items-center gap-2 print:hidden">
+          <div className="hidden md:flex items-center gap-2 print:hidden">
             <Button onClick={handleGenerateProposal} disabled={isGenerating} size="sm">
               {isGenerating ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <Sparkles className="w-4 h-4 mr-1.5" />}
               Generate Proposal
@@ -343,19 +428,15 @@ export default function IntelPanel() {
             </Button>
             <Button variant="outline" size="sm" onClick={handleCopyReport}>
               <Copy className="w-4 h-4 mr-1.5" />
-              Copy JSON Report
+              Copy Report
             </Button>
             <Button variant="outline" size="sm" onClick={handleExportAll}>
               <Download className="w-4 h-4 mr-1.5" />
-              Export All Proposals
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => window.print()}>
-              <FileText className="w-4 h-4 mr-1.5" />
-              Print
+              Export All
             </Button>
           </div>
 
-          {/* Mobile actions — compact dropdown */}
+          {/* Mobile actions */}
           <div className="flex md:hidden items-center gap-2 print:hidden">
             <Button size="sm" className="h-8" onClick={handleGenerateProposal} disabled={isGenerating}>
               {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
@@ -372,16 +453,10 @@ export default function IntelPanel() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={handleCopyReport}>
-                  <Copy className="w-4 h-4 mr-2" />
-                  Copy JSON Report
+                  <Copy className="w-4 h-4 mr-2" /> Copy Report
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleExportAll}>
-                  <Download className="w-4 h-4 mr-2" />
-                  Export All Proposals
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => window.print()}>
-                  <FileText className="w-4 h-4 mr-2" />
-                  Print
+                  <Download className="w-4 h-4 mr-2" /> Export All
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -396,7 +471,7 @@ export default function IntelPanel() {
               <div className="min-w-0">
                 <p className="text-xs sm:text-sm font-semibold text-foreground">External AI Execution Mode Active</p>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">
-                  Internal mutation authority is revoked. Proposals must be exported and executed externally.
+                  Internal mutation authority revoked. Proposals export-only. Max 5 per run.
                 </p>
               </div>
             </CardContent>
@@ -405,152 +480,162 @@ export default function IntelPanel() {
         
         {/* Unified Proposal Output */}
         {unifiedProposal && (
-          <Card className="border-l-4 border-l-primary bg-primary/5 print:break-inside-avoid">
-            <CardHeader className="p-3 sm:p-4 pb-2">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
-                  <CardTitle className="text-sm sm:text-base">Unified Proposal</CardTitle>
-                  <Badge variant="outline" className="text-[10px] sm:text-xs">
-                    {unifiedProposal.action_plan.length} steps
-                  </Badge>
-                  <Badge variant={unifiedProposal.guardrails.estimated_risk === 'high' ? 'destructive' : 'secondary'} className="text-[10px] sm:text-xs">
-                    risk: {unifiedProposal.guardrails.estimated_risk}
-                  </Badge>
+          <>
+            <Card className="border-l-4 border-l-primary bg-primary/5 print:break-inside-avoid">
+              <CardHeader className="p-3 sm:p-4 pb-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                    <CardTitle className="text-sm sm:text-base">Bounded Proposal v3.3</CardTitle>
+                    <Badge variant="outline" className="text-[10px] sm:text-xs">
+                      {unifiedProposal.action_plan.length}/5 steps
+                    </Badge>
+                    <Badge variant={unifiedProposal.guardrails.estimated_risk === 'high' ? 'destructive' : 'secondary'} className="text-[10px] sm:text-xs">
+                      risk: {unifiedProposal.guardrails.estimated_risk}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
+                      navigator.clipboard.writeText(JSON.stringify(unifiedProposal, null, 2));
+                      toast.success('Copied to clipboard');
+                    }}>
+                      <Copy className="w-3 h-3 mr-1" /> Copy
+                    </Button>
+                    <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleDownloadProposal}>
+                      <Download className="w-3 h-3 mr-1" /> Download
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
-                    navigator.clipboard.writeText(JSON.stringify(unifiedProposal, null, 2));
-                    toast.success('Copied to clipboard');
-                  }}>
-                    <Copy className="w-3 h-3 mr-1" /> Copy
-                  </Button>
-                  <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleDownloadProposal}>
-                    <Download className="w-3 h-3 mr-1" /> Download
-                  </Button>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">{unifiedProposal.executive_summary}</p>
+              </CardHeader>
+              <CardContent className="p-3 sm:p-4 pt-0 space-y-3">
+                {/* Section 1: System Integrity */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                  <div className="bg-muted/50 rounded p-2">
+                    <p className={`text-lg font-bold ${unifiedProposal.structural_health.overall_verdict === 'PASS' ? 'text-green-600' : 'text-destructive'}`}>
+                      {unifiedProposal.structural_health.overall_verdict}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">Structure</p>
+                  </div>
+                  <div className="bg-muted/50 rounded p-2">
+                    <p className={`text-lg font-bold ${unifiedProposal.production_audit.passed ? 'text-green-600' : 'text-destructive'}`}>
+                      {unifiedProposal.production_audit.passed ? 'PASS' : 'FAIL'}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">Prod Audit</p>
+                  </div>
+                  <div className="bg-muted/50 rounded p-2">
+                    <p className="text-lg font-bold text-foreground">{unifiedProposal.audit_health.compliance_score}%</p>
+                    <p className="text-[10px] text-muted-foreground">Compliance</p>
+                  </div>
+                  <div className="bg-muted/50 rounded p-2">
+                    <p className="text-lg font-bold text-foreground">{unifiedProposal.ratio.debt_pct}/{unifiedProposal.ratio.evolution_pct}</p>
+                    <p className="text-[10px] text-muted-foreground">Debt/Evo %</p>
+                  </div>
                 </div>
-              </div>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-1">{unifiedProposal.executive_summary}</p>
-            </CardHeader>
-            <CardContent className="p-3 sm:p-4 pt-0 space-y-3">
-              {/* Quick stats */}
-              {/* Quick stats — expanded for merged audits */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-                <div className="bg-muted/50 rounded p-2">
-                  <p className="text-lg font-bold text-destructive">{unifiedProposal.technical_debt.critical.length}</p>
-                  <p className="text-[10px] text-muted-foreground">Critical Debt</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                  <div className="bg-muted/50 rounded p-2">
+                    <p className="text-lg font-bold text-destructive">{unifiedProposal.technical_debt.critical.length}</p>
+                    <p className="text-[10px] text-muted-foreground">Critical Debt</p>
+                  </div>
+                  <div className="bg-muted/50 rounded p-2">
+                    <p className={`text-lg font-bold ${unifiedProposal.accessibility.score >= 80 ? 'text-green-600' : unifiedProposal.accessibility.score >= 50 ? 'text-amber-600' : 'text-destructive'}`}>
+                      {unifiedProposal.accessibility.score}/100
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">INCLUSIVE</p>
+                  </div>
+                  <div className="bg-muted/50 rounded p-2">
+                    <p className={`text-lg font-bold ${unifiedProposal.security_posture.threat_level === 'low' ? 'text-green-600' : unifiedProposal.security_posture.threat_level === 'medium' ? 'text-amber-600' : 'text-destructive'}`}>
+                      {unifiedProposal.security_posture.threat_level.toUpperCase()}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">DEFENSE</p>
+                  </div>
+                  <div className="bg-muted/50 rounded p-2">
+                    <p className="text-lg font-bold text-foreground">{unifiedProposal.metadata.sources.length}</p>
+                    <p className="text-[10px] text-muted-foreground">Audit Sources</p>
+                  </div>
                 </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className="text-lg font-bold text-foreground">{unifiedProposal.evolution_opportunities.total}</p>
-                  <p className="text-[10px] text-muted-foreground">Evolutions</p>
-                </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className="text-lg font-bold text-foreground">{unifiedProposal.diligence.passed}/{unifiedProposal.diligence.total}</p>
-                  <p className="text-[10px] text-muted-foreground">Diligence</p>
-                </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className="text-lg font-bold text-foreground">{unifiedProposal.audit_health.compliance_score}%</p>
-                  <p className="text-[10px] text-muted-foreground">Compliance</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-                <div className="bg-muted/50 rounded p-2">
-                  <p className={`text-lg font-bold ${unifiedProposal.structural_health.overall_verdict === 'PASS' ? 'text-green-600' : 'text-destructive'}`}>
-                    {unifiedProposal.structural_health.overall_verdict}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground">Structure</p>
-                </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className={`text-lg font-bold ${unifiedProposal.production_audit.passed ? 'text-green-600' : 'text-destructive'}`}>
-                    {unifiedProposal.production_audit.passed ? 'PASS' : 'FAIL'}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground">Prod Audit</p>
-                </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className={`text-lg font-bold ${unifiedProposal.accessibility.score >= 80 ? 'text-green-600' : unifiedProposal.accessibility.score >= 50 ? 'text-amber-600' : 'text-destructive'}`}>
-                    {unifiedProposal.accessibility.score}/100
-                  </p>
-                  <p className="text-[10px] text-muted-foreground">INCLUSIVE</p>
-                </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className={`text-lg font-bold ${unifiedProposal.security_posture.threat_level === 'low' ? 'text-green-600' : unifiedProposal.security_posture.threat_level === 'medium' ? 'text-amber-600' : 'text-destructive'}`}>
-                    {unifiedProposal.security_posture.threat_level.toUpperCase()}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground">DEFENSE</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-                <div className="bg-muted/50 rounded p-2">
-                  <p className="text-lg font-bold text-foreground">{unifiedProposal.ratio.debt_pct}/{unifiedProposal.ratio.evolution_pct}</p>
-                  <p className="text-[10px] text-muted-foreground">Debt/Evo %</p>
-                </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className="text-lg font-bold text-foreground">{unifiedProposal.structural_health.layers_passed}/{unifiedProposal.structural_health.layers_checked}</p>
-                  <p className="text-[10px] text-muted-foreground">Layers OK</p>
-                </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className="text-lg font-bold text-foreground">{unifiedProposal.accessibility.auto_fixable}</p>
-                  <p className="text-[10px] text-muted-foreground">Auto-Fixable</p>
-                </div>
-                <div className="bg-muted/50 rounded p-2">
-                  <p className="text-lg font-bold text-foreground">{unifiedProposal.metadata.sources.length}</p>
-                  <p className="text-[10px] text-muted-foreground">Audit Sources</p>
-                </div>
-              </div>
 
-              {/* Action Plan */}
-              <Collapsible defaultOpen>
-                <CollapsibleTrigger className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-foreground hover:text-primary transition-colors w-full">
-                  <ChevronDown className="w-3.5 h-3.5" /> Action Plan ({unifiedProposal.action_plan.length} steps)
-                </CollapsibleTrigger>
-                <CollapsibleContent className="mt-2 space-y-2">
-                  {unifiedProposal.action_plan.map((step) => (
-                    <div key={step.order} className="border rounded p-2 sm:p-3 space-y-1">
-                      <div className="flex items-start gap-2">
-                        <span className="text-[10px] font-mono bg-muted rounded px-1.5 py-0.5 flex-shrink-0">#{step.order}</span>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs sm:text-sm font-medium">{step.title}</span>
-                            <Badge variant={step.risk === 'high' ? 'destructive' : step.risk === 'medium' ? 'secondary' : 'outline'} className="text-[10px]">
-                              {step.risk}
-                            </Badge>
-                            <Badge variant="outline" className="text-[10px]">{step.category}</Badge>
+                {/* Section 2: Bounded Action Plan */}
+                <Collapsible defaultOpen>
+                  <CollapsibleTrigger className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-foreground hover:text-primary transition-colors w-full">
+                    <ChevronDown className="w-3.5 h-3.5" /> Bounded Action Plan ({unifiedProposal.action_plan.length}/{unifiedProposal.metadata.discipline.max_proposals} max)
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-2 space-y-2">
+                    {unifiedProposal.action_plan.map((step) => (
+                      <div key={step.order} className="border rounded p-2 sm:p-3 space-y-1">
+                        <div className="flex items-start gap-2">
+                          <span className="text-[10px] font-mono bg-muted rounded px-1.5 py-0.5 flex-shrink-0">#{step.order}</span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-xs sm:text-sm font-medium">{step.title}</span>
+                              <Badge variant={step.risk === 'high' ? 'destructive' : step.risk === 'medium' ? 'secondary' : 'outline'} className="text-[10px]">
+                                {step.risk}
+                              </Badge>
+                              <Badge variant="outline" className="text-[10px]">{step.category}</Badge>
+                            </div>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{step.description}</p>
+                            <ul className="mt-1 space-y-0.5">
+                              {step.instructions.map((inst, i) => (
+                                <li key={i} className="text-[10px] sm:text-xs text-muted-foreground flex items-start gap-1">
+                                  <span className="text-primary mt-0.5">→</span> {inst}
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                          <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{step.description}</p>
-                          <ul className="mt-1 space-y-0.5">
-                            {step.instructions.map((inst, i) => (
-                              <li key={i} className="text-[10px] sm:text-xs text-muted-foreground flex items-start gap-1">
-                                <span className="text-primary mt-0.5">→</span> {inst}
-                              </li>
-                            ))}
-                          </ul>
                         </div>
                       </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
+
+                {/* Section 3: Governance Receipts (inline) */}
+                <Collapsible>
+                  <CollapsibleTrigger className="flex items-center gap-1 text-xs font-semibold text-foreground hover:text-primary transition-colors">
+                    <ChevronDown className="w-3.5 h-3.5" /> Governance Receipts
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                      {[
+                        ['Snapshot', unifiedProposal.governance.snapshot_id],
+                        ['Receipt', unifiedProposal.governance.receipt_id],
+                        ['Verify Hash', unifiedProposal.governance.verification_hash],
+                        ['Diff Hash', unifiedProposal.governance.diff_hash],
+                        ['SEBA Lineage', unifiedProposal.governance.seba_stamp.lineage_id],
+                        ['SEBA Sig', unifiedProposal.governance.seba_stamp.signature],
+                      ].map(([label, val]) => (
+                        <div key={label} className="bg-muted/30 rounded px-2 py-1.5">
+                          <p className="text-[10px] text-muted-foreground">{label}</p>
+                          <p className="font-mono text-[10px] truncate" title={val}>{val}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </CollapsibleContent>
-              </Collapsible>
+                  </CollapsibleContent>
+                </Collapsible>
 
-              {/* Raw JSON */}
-              <Collapsible>
-                <CollapsibleTrigger className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors">
-                  <ChevronDown className="w-3 h-3" /> Full JSON (paste to your agent)
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <pre className="mt-2 p-2 rounded bg-muted/50 text-[10px] overflow-auto max-h-60 font-mono">
-                    {JSON.stringify(unifiedProposal, null, 2)}
-                  </pre>
-                </CollapsibleContent>
-              </Collapsible>
+                {/* Raw JSON */}
+                <Collapsible>
+                  <CollapsibleTrigger className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors">
+                    <ChevronDown className="w-3 h-3" /> Full JSON (paste to your agent)
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <pre className="mt-2 p-2 rounded bg-muted/50 text-[10px] overflow-auto max-h-60 font-mono">
+                      {JSON.stringify(unifiedProposal, null, 2)}
+                    </pre>
+                  </CollapsibleContent>
+                </Collapsible>
 
-              <p className="text-[10px] text-muted-foreground italic">
-                ⚠️ Human-in-the-loop: Review each step before giving to your coding agent. Rollback instructions included.
-              </p>
-            </CardContent>
-          </Card>
+                <p className="text-[10px] text-muted-foreground italic">
+                  ⚠️ Human-in-the-loop: Review each step before giving to your coding agent. Rollback via snapshot {unifiedProposal.governance.snapshot_id}.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Standalone Governance Receipts card */}
+            <GovernanceReceipts governance={unifiedProposal.governance} />
+          </>
         )}
 
-        {/* Executive Summary — 2-col on mobile, 4-col on desktop */}
+        {/* Section 1: System Integrity Summary */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
           <SummaryTile label="Total Signals" value={summary.total_signals} icon={Activity} />
           <SummaryTile label="Critical" value={summary.critical_count} icon={AlertTriangle} accent={summary.critical_count > 0 ? 'red' : undefined} />
@@ -588,7 +673,7 @@ export default function IntelPanel() {
         
         <Separator />
         
-        {/* ENGINEER Proposals — Export Only */}
+        {/* Evolution Proposals — Export Only */}
         <section>
           <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground flex items-center gap-2 flex-wrap">
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -623,27 +708,18 @@ export default function IntelPanel() {
             </CardContent>
           </Card>
         </section>
-        
-        {/* Crown Jewels Status */}
-        <section>
-          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-            Crown Jewels & Packs
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
-            <SummaryTile label="Released" value={crownJewels.released} icon={Unlock} accent="green" />
-            <SummaryTile label="Reserved" value={crownJewels.gatekept} icon={Lock} />
-            <SummaryTile label="Total Packs" value={crownJewels.packCount} icon={FileText} />
-            <SummaryTile label="Pack Components" value={crownJewels.totalPackComponents} icon={Zap} />
-          </div>
-        </section>
+
+        <Separator />
+
+        {/* Section 4: Install Mode */}
+        <InstallModeSection />
       </div>
     </AdminLayout>
   );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SUMMARY TILE — Mobile-first compact
+// SUMMARY TILE
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function SummaryTile({ label, value, icon: Icon, accent }: {
