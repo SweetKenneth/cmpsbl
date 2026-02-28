@@ -1461,16 +1461,24 @@ function buildExecutiveSummary(
  * Returns null if no clear subject can be identified.
  */
 function extractSubjectKey(step: ActionStep): string | null {
+  // ── Priority 0: Extract affected components from instructions ──
+  // This catches anomalies AND Modernizer proposals that reference the same components.
+  // Must run first so "Anomaly: X affecting A,B,C" and "Modernizer: Resolve X (Affected: A,B,C)" collapse.
+  const affectedComponents = extractAffectedComponents(step);
+  if (affectedComponents) {
+    return `affected:${affectedComponents}`;
+  }
+
   // ── Priority 1: Extract capability name from title ──
   // "Missing capability: X" and "Modernizer: Add X" should always collapse
-  const capMatch = step.title.match(/(?:Missing capability|Add|Resolve)\s*:\s*(.+)/i);
+  const capMatch = step.title.match(/(?:Missing capability)\s*:\s*(.+)/i);
   if (capMatch) {
     return `cap:${capMatch[1].trim().toLowerCase()}`;
   }
   
-  const modMatch = step.title.match(/^Modernizer:\s*(?:Add|Configure|Resolve|Review)\s+(.+)/i);
-  if (modMatch) {
-    return `cap:${modMatch[1].trim().toLowerCase()}`;
+  const modCapMatch = step.title.match(/^Modernizer:\s*(?:Add|Configure)\s+(.+)/i);
+  if (modCapMatch) {
+    return `cap:${modCapMatch[1].trim().toLowerCase()}`;
   }
 
   // ── Priority 2: Extract edge function risk subjects ──
@@ -1486,19 +1494,39 @@ function extractSubjectKey(step: ActionStep): string | null {
     return `affected:${components.join(',')}`;
   }
 
-  // ── Priority 4: Extract affected components from instructions (fallback) ──
+  // ── Priority 4: Description-level normalization ──
+  const descKey = step.description.trim().toLowerCase().replace(/\s+/g, ' ');
+  if (descKey.length > 20) {
+    return `desc:${descKey.substring(0, 80)}`;
+  }
+  
+  return null;
+}
+
+/**
+ * Extract affected components from step instructions and description.
+ * Returns a normalized key if components are found, null otherwise.
+ */
+function extractAffectedComponents(step: ActionStep): string | null {
+  // Check instructions for "Affected: X, Y, Z" or "Affected modules: X, Y, Z"
   for (const instr of step.instructions) {
     const affectedMatch = instr.match(/^Affected(?:\s*modules)?:\s*(.+)/i);
     if (affectedMatch) {
       const components = affectedMatch[1].split(',').map(s => s.trim().toLowerCase()).sort();
-      return `affected:${components.join(',')}`;
+      // Only use as key if components look like specific entities (not generic module names like "CORE")
+      if (components.length >= 2 || components.some(c => c.includes('evolution') || c.includes('circuit'))) {
+        return components.join(',');
+      }
     }
   }
-
-  // ── Priority 5: Description-level normalization ──
-  const descKey = step.description.trim().toLowerCase().replace(/\s+/g, ' ');
-  if (descKey.length > 20) {
-    return `desc:${descKey.substring(0, 80)}`;
+  
+  // Check description for "affecting X, Y, Z"
+  const descMatch = step.description.match(/affecting\s+(.+?)\.?\s*$/i);
+  if (descMatch) {
+    const components = descMatch[1].split(',').map(s => s.trim().toLowerCase()).sort();
+    if (components.length >= 2) {
+      return components.join(',');
+    }
   }
   
   return null;
