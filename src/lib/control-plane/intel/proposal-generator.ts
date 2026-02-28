@@ -985,11 +985,9 @@ function buildEvolutionSection(
     }
   }
   
-  // Pull evolution-grade signals from governance, resilience, AND capability cards
-  const evoCards = allCards.filter(c => 
-    c.category === 'governance' || c.category === 'resilience' || 
-    c.category === 'capability' || c.category === 'feature'
-  );
+  // Pull evolution-grade signals from governance, resilience, performance, and learning cards
+  const evoCategories = new Set(['governance', 'resilience', 'performance', 'learning', 'stability']);
+  const evoCards = allCards.filter(c => evoCategories.has(c.category));
   for (const card of evoCards.slice(0, 8)) {
     if (!items.some(i => i.title === card.headline || i.title === `Evolution: ${card.headline}`)) {
       items.push({
