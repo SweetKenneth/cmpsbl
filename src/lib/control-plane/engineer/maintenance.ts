@@ -114,6 +114,16 @@ function createProposal(proposal: Omit<EngineerProposal, 'id' | 'status' | 'crea
 function updateProposalStatus(id: string, status: ProposalStatus): void {
   const p = proposals.find(p => p.id === id);
   if (p) {
+    // GOVERNANCE BARRIER: Block transition to 'applied' when in external-ai mode
+    if (status === 'applied') {
+      try {
+        const { enforceExecutionBarrier, isExternalAIMode } = require('@/lib/evolve/execution-mode');
+        if (isExternalAIMode()) {
+          enforceExecutionBarrier('proposal_apply');
+          return;
+        }
+      } catch { /* execution-mode not loaded yet */ }
+    }
     p.status = status;
     if (status === 'reviewed') p.reviewed_at = new Date().toISOString();
     if (status === 'applied') p.applied_at = new Date().toISOString();
