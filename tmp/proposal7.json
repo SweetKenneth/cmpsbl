@@ -1,0 +1,263 @@
+{
+  "schema_version": "3.3",
+  "generated_at": "2026-02-28T10:39:02.652Z",
+  "system_id": "cmpsbl-substrate",
+  "proposal_type": "unified-evolution",
+  "scan_run_id": "scanrun_mm66v01o_0bah",
+  "scan_mode": "full",
+  "ratio": {
+    "debt_pct": 67,
+    "evolution_pct": 33
+  },
+  "executive_summary": "1 evolution opportunity(ies). Overall risk: low. Thorough scan: up to 15 proposals, ~85/15 debt/evolution ratio. Schema v3.3 with governance receipts. Copy to your coding agent to apply fixes with human review at each step.",
+  "technical_debt": {
+    "total_issues": 0,
+    "critical": [],
+    "warnings": [],
+    "patterns": []
+  },
+  "evolution_opportunities": {
+    "total": 1,
+    "proposals": [
+      {
+        "id": "evo_clean_mm66v01o",
+        "title": "Memory Tiering Optimization",
+        "description": "System stable — safe to evolve. Advancing bounded curriculum.",
+        "risk_level": "low",
+        "scope": "node-solo",
+        "rationale": "All 8 layers pass. 0 fatals, 0 critical debt. Stable system should always evolve.",
+        "rollback_plan": "Restore snapshot snap_mm66ttuw."
+      }
+    ]
+  },
+  "production_audit": {
+    "passed": true,
+    "duration_ms": 8267,
+    "fatal": 0,
+    "error": 0,
+    "warn": 0,
+    "info": 21,
+    "total_findings": 21,
+    "top_issues": []
+  },
+  "structural_health": {
+    "overall_verdict": "PASS",
+    "structural_issues": 0,
+    "layers_checked": 8,
+    "layers_passed": 8,
+    "layer_results": [
+      {
+        "layer": "filesystem",
+        "label": "Filesystem & Structure Integrity",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "imports",
+        "label": "Import & Reference Validation",
+        "verdict": "PASS",
+        "check_count": 4,
+        "failures": []
+      },
+      {
+        "layer": "terminal",
+        "label": "Terminal & Capability Wiring",
+        "verdict": "PASS",
+        "check_count": 1,
+        "failures": []
+      },
+      {
+        "layer": "routes",
+        "label": "Route Integrity",
+        "verdict": "PASS",
+        "check_count": 2,
+        "failures": []
+      },
+      {
+        "layer": "registry",
+        "label": "Registry Consistency",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "edge_functions",
+        "label": "Edge Function Presence",
+        "verdict": "PASS",
+        "check_count": 2,
+        "failures": []
+      },
+      {
+        "layer": "database_security",
+        "label": "Database & Security Behavior",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "runtime_render",
+        "label": "Runtime Render Sanity",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      }
+    ],
+    "confirmations": [
+      "0 structural integrity issues detected.",
+      "No broken imports exist.",
+      "No orphaned files exist.",
+      "No dangling routes exist.",
+      "Security blocks function as intended."
+    ]
+  },
+  "audit_health": {
+    "chain_valid": false,
+    "chain_state": "empty",
+    "total_entries": 0,
+    "modules_monitored": 0,
+    "compliance_score": 60,
+    "gaps": []
+  },
+  "diligence": {
+    "passed": 26,
+    "failed": 0,
+    "total": 26,
+    "critical_failures": [],
+    "failed_probes": []
+  },
+  "accessibility": {
+    "score": 95,
+    "total_issues": 0,
+    "critical_count": 0,
+    "high_count": 0,
+    "medium_count": 0,
+    "low_count": 0,
+    "auto_fixable": 0,
+    "top_issues": [],
+    "wcag_level": "AA"
+  },
+  "security_posture": {
+    "posture_available": true,
+    "anomaly_available": true,
+    "posture_summary": "Defense posture nominal",
+    "threat_level": "low",
+    "anomalies_detected": 2,
+    "rate_limit_issues": 0,
+    "security_issues": []
+  },
+  "modernizer_scan": {
+    "scan_completed": true,
+    "proposals_found": 2,
+    "plan_ready": false,
+    "plan_status": "none",
+    "modules_active": 21,
+    "health_overall": 100,
+    "edge_risk_flags": 0,
+    "anomalies_detected": 0,
+    "recommended_action": "Review proposals and create evolution plan when ready",
+    "scan_duration_ms": 27269
+  },
+  "action_plan": [
+    {
+      "order": 1,
+      "category": "tech-debt",
+      "title": "Modernizer: Configure automatic circuit recovery",
+      "description": "Missing automatic circuit recovery requires manual intervention for every circuit trip.",
+      "risk": "low",
+      "instructions": [
+        "Category: resilience · Action: config_change",
+        "Reduce MTTR from hours to minutes for transient failures",
+        "Affected modules: CORE",
+        "Confidence: 85% · Sources: llm, system",
+        "Rollback: restore snapshot snap_mm66ttuw."
+      ]
+    },
+    {
+      "order": 2,
+      "category": "tech-debt",
+      "title": "Modernizer: Review orphaned edge functions",
+      "description": "Orphaned functions consume resources and may pose security risks if unmaintained.",
+      "risk": "low",
+      "instructions": [
+        "Category: cleanup · Action: cleanup",
+        "Reduce attack surface and maintenance overhead",
+        "Affected modules: DEFENSE",
+        "Confidence: 70% · Sources: llm, edge",
+        "Rollback: restore snapshot snap_mm66ttuw."
+      ]
+    },
+    {
+      "order": 3,
+      "category": "evolution",
+      "title": "Next Lesson: Memory Tiering Optimization",
+      "description": "System stable — all 8 structural layers PASS, 0 fatals, 0 critical debt. Safe to evolve.",
+      "risk": "low",
+      "instructions": [
+        "Topic: Memory Tiering Optimization (node-solo)",
+        "Rationale: System is healthy — safe to advance learning.",
+        "Apply in shadow mode first if available.",
+        "Rollback: restore snapshot snap_mm66ttuw.",
+        "This is bounded curriculum advancement — one topic at a time."
+      ]
+    }
+  ],
+  "guardrails": {
+    "requires_human_review": true,
+    "rollback_available": true,
+    "estimated_risk": "low",
+    "safety_notes": [
+      "Review all proposed changes before giving to your coding agent.",
+      "Each action step includes rollback instructions referencing the snapshot.",
+      "Start with low-risk items first to build confidence.",
+      "Run the diligence battery again after applying changes.",
+      "Structural health failures should be addressed before evolution steps.",
+      "Max 15 proposals per run — thorough scan discipline enforced.",
+      "Snapshot ID: snap_mm66ttuw — rollback target.",
+      "External-AI execution mode: no internal apply permitted."
+    ]
+  },
+  "governance": {
+    "receipt_id": "rcpt_mm66tuqz",
+    "verification_hash": "6ace8eef",
+    "diff_hash": "411ccf9d",
+    "snapshot_id": "snap_mm66ttuw",
+    "seba_stamp": {
+      "lineage_id": "seba_snap_mm66ttuw_mm66v01o",
+      "signature": "0abd2b16",
+      "stage": "pre-export",
+      "discipline": "bounded-compounding"
+    }
+  },
+  "metadata": {
+    "signals_analyzed": 2,
+    "findings_count": 0,
+    "proposals_count": 1,
+    "audit_checks_run": 21,
+    "health_layers_checked": 8,
+    "generation_ms": 56538,
+    "sources": [
+      "INTEL Aggregator",
+      "ENGINEER Maintenance Node",
+      "SEBA Evolution Signals",
+      "Full Audit Runner",
+      "Substrate Health Check",
+      "AUDIT Compliance Ledger",
+      "Diligence Harness",
+      "INCLUSIVE WCAG 2.2 Scanner",
+      "DEFENSE Security Posture",
+      "MODERNIZER 4-Phase Cognitive Scan"
+    ],
+    "governance": {
+      "receipt_id": "rcpt_mm66tuqz",
+      "verification_hash": "6ace8eef",
+      "diff_hash": "411ccf9d",
+      "snapshot_id": "snap_mm66ttuw"
+    },
+    "discipline": {
+      "bounded": true,
+      "max_proposals": 15,
+      "external_execution": true
+    }
+  }
+}
