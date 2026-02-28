@@ -383,10 +383,29 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   
   // ─── 8. MODERNIZER SCAN — 4-phase cognitive systems scan ───
   let rawModernizerResult: ScanResultExtended | null = null;
-  const modernizerData = await runModernizerCognitiveScan().then(data => data).catch(() => null as any);
+  let modernizerData: UnifiedProposal['modernizer_scan'];
   try {
     rawModernizerResult = await modernizerScan({ dry_run: true });
-  } catch { /* already captured in modernizerData */ }
+    modernizerData = {
+      scan_completed: true,
+      proposals_found: rawModernizerResult.proposals.length,
+      plan_ready: rawModernizerResult.plan_ready,
+      plan_status: (rawModernizerResult as any).plan?.status ?? 'none',
+      modules_active: rawModernizerResult.system_snapshot.modules_active,
+      health_overall: rawModernizerResult.system_snapshot.health_overall,
+      edge_risk_flags: rawModernizerResult.edge_analysis.risk_flags.length,
+      anomalies_detected: rawModernizerResult.system_state.detected_anomalies.length,
+      recommended_action: rawModernizerResult.recommended_next_action,
+      scan_duration_ms: rawModernizerResult.scan_duration_ms,
+    };
+  } catch (e) {
+    console.warn('[Proposal] MODERNIZER cognitive scan failed (canary safe):', e);
+    modernizerData = {
+      scan_completed: false, proposals_found: 0, plan_ready: false, plan_status: 'error',
+      modules_active: 0, health_overall: 0, edge_risk_flags: 0, anomalies_detected: 0,
+      recommended_action: 'Modernizer scan failed — investigate errors', scan_duration_ms: 0,
+    };
+  }
   
   // ═══ BUILD SECTIONS ═══
   const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport, accessibilityData, securityData);
