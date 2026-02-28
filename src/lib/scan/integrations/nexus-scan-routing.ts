@@ -4,8 +4,8 @@
  * Security debt → reasoning models, UI debt → vision models, etc.
  */
 
-import { routeToBestModel, type TaskType } from '@/lib/nexus/router';
-import { getProviderHealthMetrics, selectOptimalProvider } from '@/lib/nexus/healthRouter';
+import type { TaskType } from '@/lib/nexus/router';
+import { selectOptimalProvider } from '@/lib/nexus/healthRouter';
 
 export type ScanCategory =
   | 'security'
@@ -21,20 +21,17 @@ export type ScanCategory =
 
 interface ScanRoutingDecision {
   category: ScanCategory;
-  taskType: TaskType;
+  taskType: string;
   preferredProvider: string | null;
-  modelHint: string | null;
   rationale: string;
   estimatedTokens: number;
 }
 
 /**
- * Category → TaskType affinity map
- * Maps scanner finding categories to the NEXUS task types
- * that are best suited for analyzing/fixing them.
+ * Category → task type affinity map
  */
 const CATEGORY_AFFINITY: Record<ScanCategory, {
-  taskType: TaskType;
+  taskType: string;
   rationale: string;
   tokenEstimate: number;
 }> = {
@@ -69,12 +66,12 @@ const CATEGORY_AFFINITY: Record<ScanCategory, {
     tokenEstimate: 2000,
   },
   accessibility: {
-    taskType: 'text',
+    taskType: 'generation',
     rationale: 'Accessibility fixes are primarily semantic HTML and ARIA attribute corrections',
     tokenEstimate: 1500,
   },
   config_drift: {
-    taskType: 'text',
+    taskType: 'analysis',
     rationale: 'Config drift analysis compares expected vs actual configuration states',
     tokenEstimate: 1000,
   },
@@ -90,35 +87,42 @@ const CATEGORY_AFFINITY: Record<ScanCategory, {
   },
 };
 
+/** Map scan task type to NEXUS-compatible task type */
+function toNexusTaskType(taskType: string): 'text' | 'image' | 'video' | 'research' | 'reasoning' | 'generation' | 'refinement' {
+  const validTypes = ['text', 'image', 'video', 'research', 'reasoning', 'generation', 'refinement'] as const;
+  if (validTypes.includes(taskType as any)) return taskType as any;
+  // Map non-standard types
+  if (taskType === 'code') return 'generation';
+  if (taskType === 'analysis') return 'reasoning';
+  return 'text';
+}
+
 /**
  * Route a scanner finding to the optimal NEXUS model
  */
-export function routeScanFinding(category: ScanCategory): ScanRoutingDecision {
+export async function routeScanFinding(category: ScanCategory): Promise<ScanRoutingDecision> {
   const affinity = CATEGORY_AFFINITY[category];
-  
-  // Get health metrics to pick the healthiest provider for this task type
-  const healthMetrics = getProviderHealthMetrics();
-  const optimal = selectOptimalProvider(affinity.taskType);
+  const nexusType = toNexusTaskType(affinity.taskType);
+  const optimal = await selectOptimalProvider(nexusType);
 
   return {
     category,
     taskType: affinity.taskType,
-    preferredProvider: optimal?.provider ?? null,
-    modelHint: optimal?.model ?? null,
+    preferredProvider: optimal?.selectedProvider ?? null,
     rationale: affinity.rationale,
     estimatedTokens: affinity.tokenEstimate,
   };
 }
 
 /**
- * Batch-route multiple categories, deduplicating providers
+ * Batch-route multiple categories
  */
-export function routeScanBatch(categories: ScanCategory[]): {
+export async function routeScanBatch(categories: ScanCategory[]): Promise<{
   decisions: ScanRoutingDecision[];
   totalEstimatedTokens: number;
   uniqueProviders: string[];
-} {
-  const decisions = categories.map(routeScanFinding);
+}> {
+  const decisions = await Promise.all(categories.map(routeScanFinding));
   const totalEstimatedTokens = decisions.reduce((sum, d) => sum + d.estimatedTokens, 0);
   const uniqueProviders = [...new Set(decisions.map(d => d.preferredProvider).filter(Boolean))] as string[];
 
@@ -127,19 +131,18 @@ export function routeScanBatch(categories: ScanCategory[]): {
 
 /**
  * Get the priority ordering of categories for a given scan
- * Higher-risk categories are routed first to consume budget on critical items
  */
 export function getScanRoutingPriority(): ScanCategory[] {
   return [
-    'secret_exposure',   // Critical: secrets in code
-    'security',          // Critical: vulnerabilities
-    'rls_policy',        // High: data access gaps
-    'performance',       // High: user-facing impact
-    'complexity',        // Medium: maintainability
-    'migration',         // Medium: schema health
-    'test_coverage',     // Medium: quality safety net
-    'dead_code',         // Low: cleanup
-    'config_drift',      // Low: consistency
-    'accessibility',     // Low: compliance
+    'secret_exposure',
+    'security',
+    'rls_policy',
+    'performance',
+    'complexity',
+    'migration',
+    'test_coverage',
+    'dead_code',
+    'config_drift',
+    'accessibility',
   ];
 }

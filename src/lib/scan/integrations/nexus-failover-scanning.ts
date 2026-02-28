@@ -4,9 +4,9 @@
  * without losing scan context or repeating completed work.
  */
 
-import { getProviderHealthStatus, resetProviderHealth, selectProvider } from '@/lib/nexus/batchRouting';
 import { getFleetStatus, recordProviderOutcome } from '@/lib/nexus/router';
-import { getCircuitState, recordFailure, recordSuccess } from '@/lib/nexus/circuitBreaker';
+import { getCircuitStatus, recordFailure, recordSuccess } from '@/lib/nexus/circuitBreaker';
+import { selectProvider } from '@/lib/nexus/batchRouting';
 import type { ScanCategory } from './nexus-scan-routing';
 
 export interface ScanTask {
@@ -57,7 +57,6 @@ export function createFailoverSession(
   config: Partial<FailoverConfig> = {},
 ): ScanFailoverState {
   const mergedConfig = { ...DEFAULT_CONFIG, ...config };
-
   return {
     tasks: tasks.map(t => ({
       ...t,
@@ -86,28 +85,24 @@ export function selectScanProvider(
   const task = state.tasks.find(t => t.id === taskId);
   if (!task) return null;
 
-  // Get fleet status, filter out failed providers
   const fleet = getFleetStatus();
   const healthyProviders = fleet.providers
-    .filter(p => !state.failedProviders.has(p.name))
+    .filter(p => !state.failedProviders.has(p.id))
     .filter(p => {
-      const circuit = getCircuitState(p.name);
+      const circuit = getCircuitStatus(p.id);
       return circuit.state !== 'open';
     });
 
   if (healthyProviders.length === 0) return null;
 
-  // Select best available
-  const selected = selectProvider(task.category);
-  if (!selected) {
-    // Fallback: pick first healthy
-    return {
-      provider: healthyProviders[0].name,
-      model: healthyProviders[0].currentModel ?? 'default',
-    };
+  // Use batch routing's selectProvider with cost-optimized strategy
+  const selected = selectProvider(task.category, 'cost-optimized');
+  if (state.failedProviders.has(selected)) {
+    // Fallback to first healthy
+    return { provider: healthyProviders[0].id, model: healthyProviders[0].model };
   }
 
-  return { provider: selected.provider, model: selected.model ?? 'default' };
+  return { provider: selected, model: 'default' };
 }
 
 /**
@@ -117,11 +112,7 @@ export function handleScanFailure(
   state: ScanFailoverState,
   taskId: string,
   error: string,
-): {
-  rerouted: boolean;
-  newProvider: string | null;
-  reason: string;
-} {
+): { rerouted: boolean; newProvider: string | null; reason: string } {
   const task = state.tasks.find(t => t.id === taskId);
   if (!task) return { rerouted: false, newProvider: null, reason: 'Task not found' };
 
@@ -129,40 +120,34 @@ export function handleScanFailure(
   task.error = error;
   const failedProvider = task.provider;
 
-  // Record failure in NEXUS circuit breaker
   if (failedProvider) {
     recordProviderOutcome(failedProvider, false, 0);
     recordFailure(failedProvider);
   }
 
-  // Check if we've exceeded max attempts
   if (task.attempts >= task.maxAttempts) {
     task.status = 'failed';
     return { rerouted: false, newProvider: null, reason: `Max attempts (${task.maxAttempts}) exceeded` };
   }
 
-  // Check if we've exceeded max reroutes for the whole scan
   if (state.totalReroutes >= state.config.maxReroutesPerScan) {
     task.status = 'failed';
     return { rerouted: false, newProvider: null, reason: `Max scan reroutes (${state.config.maxReroutesPerScan}) exceeded` };
   }
 
-  // Mark provider as failed if it has too many failures
   if (failedProvider) {
-    const circuitState = getCircuitState(failedProvider);
+    const circuitState = getCircuitStatus(failedProvider);
     if (circuitState.state === 'open') {
       state.failedProviders.add(failedProvider);
     }
   }
 
-  // Select a new provider
   const newSelection = selectScanProvider(state, taskId);
   if (!newSelection) {
     task.status = 'failed';
     return { rerouted: false, newProvider: null, reason: 'No healthy providers available' };
   }
 
-  // Record reroute
   task.rerouteHistory.push({
     fromProvider: failedProvider ?? 'none',
     toProvider: newSelection.provider,
@@ -195,7 +180,6 @@ export function handleScanSuccess(
   task.result = result;
   task.error = null;
 
-  // Record success in NEXUS
   if (task.provider) {
     recordProviderOutcome(task.provider, true, Date.now() - state.startedAt);
     recordSuccess(task.provider);
@@ -217,14 +201,13 @@ export function getSessionHealth(state: ScanFailoverState): {
   const total = state.tasks.length;
   const completed = state.tasks.filter(t => t.status === 'completed').length;
   const failed = state.tasks.filter(t => t.status === 'failed').length;
-  const rerouted = state.totalReroutes;
   const pending = state.tasks.filter(t => t.status === 'pending' || t.status === 'in_progress').length;
 
   return {
     total,
     completed,
     failed,
-    rerouted,
+    rerouted: state.totalReroutes,
     pending,
     healthPercent: total > 0 ? Math.round((completed / total) * 100) : 0,
     failedProviders: [...state.failedProviders],

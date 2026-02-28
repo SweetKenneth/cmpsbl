@@ -5,7 +5,7 @@
  */
 
 import { canSpend, recordSpend, getBudgetStatus } from '@/lib/nexus/budgetGovernance';
-import { estimateTokenCost } from '@/lib/nexus/costEstimation';
+import { estimateCost } from '@/lib/nexus/costEstimation';
 import type { ScanCategory } from './nexus-scan-routing';
 
 export type ScanDepth = 'triage' | 'standard' | 'deep' | 'forensic';
@@ -27,42 +27,15 @@ interface CostOptimizedPlan {
   escalationReason: string | null;
 }
 
-/**
- * Scan depth tiers — each progressively more expensive
- */
 const DEPTH_TIERS: Record<ScanDepth, CostTier> = {
-  triage: {
-    depth: 'triage',
-    maxTokens: 500,
-    providerPreference: 'cheapest',
-    description: 'Quick classification: is this a real issue? (fastest free-tier model)',
-  },
-  standard: {
-    depth: 'standard',
-    maxTokens: 2000,
-    providerPreference: 'balanced',
-    description: 'Standard analysis with fix suggestion (balanced model)',
-  },
-  deep: {
-    depth: 'deep',
-    maxTokens: 6000,
-    providerPreference: 'best',
-    description: 'Deep analysis with root cause + multiple fix paths (best model)',
-  },
-  forensic: {
-    depth: 'forensic',
-    maxTokens: 12000,
-    providerPreference: 'best',
-    description: 'Full forensic trace with dependency impact analysis (best model, max context)',
-  },
+  triage: { depth: 'triage', maxTokens: 500, providerPreference: 'cheapest', description: 'Quick classification (fastest free-tier model)' },
+  standard: { depth: 'standard', maxTokens: 2000, providerPreference: 'balanced', description: 'Standard analysis with fix suggestion' },
+  deep: { depth: 'deep', maxTokens: 6000, providerPreference: 'best', description: 'Deep analysis with root cause + multiple fix paths' },
+  forensic: { depth: 'forensic', maxTokens: 12000, providerPreference: 'best', description: 'Full forensic trace with dependency impact analysis' },
 };
 
 const DEPTH_ORDER: ScanDepth[] = ['triage', 'standard', 'deep', 'forensic'];
 
-/**
- * Severity → starting depth mapping
- * Critical issues skip triage and start at standard/deep
- */
 const SEVERITY_START_DEPTH: Record<string, ScanDepth> = {
   critical: 'deep',
   high: 'standard',
@@ -71,26 +44,31 @@ const SEVERITY_START_DEPTH: Record<string, ScanDepth> = {
   info: 'triage',
 };
 
+/** Estimate cost using token count and a dummy prompt */
+function estimateTokenCost(maxTokens: number): number {
+  const dummyPrompt = 'x'.repeat(maxTokens * 4); // ~4 chars per token
+  const estimate = estimateCost('groq', 'default', dummyPrompt, maxTokens);
+  return estimate.estimatedCost;
+}
+
 /**
  * Plan cost-optimized analysis for a finding
  */
-export function planCostOptimizedScan(
+export async function planCostOptimizedScan(
   category: ScanCategory,
   severity: string,
   currentDepth?: ScanDepth,
-): CostOptimizedPlan {
+): Promise<CostOptimizedPlan> {
   const startDepth = currentDepth ?? SEVERITY_START_DEPTH[severity] ?? 'triage';
   const tier = DEPTH_TIERS[startDepth];
-  const budgetStatus = getBudgetStatus();
+  const budgetStatus = await getBudgetStatus();
   
-  const estimatedCost = estimateTokenCost(tier.maxTokens, 'text');
-  const canAfford = canSpend(estimatedCost);
+  const estimatedCost = estimateTokenCost(tier.maxTokens);
+  const canAffordResult = await canSpend(estimatedCost);
 
-  // Determine next escalation depth
   const currentIndex = DEPTH_ORDER.indexOf(startDepth);
   const nextDepth = currentIndex < DEPTH_ORDER.length - 1 ? DEPTH_ORDER[currentIndex + 1] : null;
 
-  // Should we escalate? Only if triage found something real
   let shouldEscalate = false;
   let escalationReason: string | null = null;
 
@@ -102,11 +80,10 @@ export function planCostOptimizedScan(
     escalationReason = 'High severity finding confirmed at triage, escalating';
   }
 
-  // Budget gate: don't escalate if we can't afford it
   if (shouldEscalate && nextDepth) {
-    const nextTier = DEPTH_TIERS[nextDepth];
-    const nextCost = estimateTokenCost(nextTier.maxTokens, 'text');
-    if (!canSpend(nextCost)) {
+    const nextCost = estimateTokenCost(DEPTH_TIERS[nextDepth].maxTokens);
+    const nextCanAfford = await canSpend(nextCost);
+    if (!nextCanAfford.allowed) {
       shouldEscalate = false;
       escalationReason = `Budget insufficient for ${nextDepth} depth (need ${nextCost} millicents)`;
     }
@@ -117,7 +94,7 @@ export function planCostOptimizedScan(
     currentDepth: startDepth,
     nextDepth,
     estimatedCostMillicents: estimatedCost,
-    budgetRemaining: budgetStatus.remaining,
+    budgetRemaining: budgetStatus.daily_remaining_cents,
     shouldEscalate,
     escalationReason,
   };
@@ -133,35 +110,33 @@ export function getProviderPreference(depth: ScanDepth): CostTier['providerPrefe
 /**
  * Calculate total scan budget allocation across categories
  */
-export function allocateScanBudget(
+export async function allocateScanBudget(
   categories: Array<{ category: ScanCategory; severity: string }>,
-): {
+): Promise<{
   plans: CostOptimizedPlan[];
   totalEstimatedCost: number;
   budgetSufficient: boolean;
   categoriesDeferred: ScanCategory[];
-} {
-  const budgetStatus = getBudgetStatus();
+}> {
+  const budgetStatus = await getBudgetStatus();
   let runningCost = 0;
   const plans: CostOptimizedPlan[] = [];
   const deferred: ScanCategory[] = [];
 
-  // Sort by severity (critical first) to prioritize budget
   const sorted = [...categories].sort((a, b) => {
-    const order = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
-    return (order[a.severity as keyof typeof order] ?? 4) - (order[b.severity as keyof typeof order] ?? 4);
+    const order: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
+    return (order[a.severity] ?? 4) - (order[b.severity] ?? 4);
   });
 
   for (const { category, severity } of sorted) {
-    const plan = planCostOptimizedScan(category, severity);
+    const plan = await planCostOptimizedScan(category, severity);
     
-    if (runningCost + plan.estimatedCostMillicents <= budgetStatus.remaining) {
+    if (runningCost + plan.estimatedCostMillicents <= budgetStatus.daily_remaining_cents) {
       plans.push(plan);
       runningCost += plan.estimatedCostMillicents;
     } else {
-      // Can't afford — defer to triage only
-      const triagePlan = planCostOptimizedScan(category, severity, 'triage');
-      if (runningCost + triagePlan.estimatedCostMillicents <= budgetStatus.remaining) {
+      const triagePlan = await planCostOptimizedScan(category, severity, 'triage');
+      if (runningCost + triagePlan.estimatedCostMillicents <= budgetStatus.daily_remaining_cents) {
         plans.push(triagePlan);
         runningCost += triagePlan.estimatedCostMillicents;
       } else {
@@ -181,11 +156,7 @@ export function allocateScanBudget(
 /**
  * Record scan cost after execution
  */
-export function recordScanCost(
-  category: ScanCategory,
-  depth: ScanDepth,
-  actualTokens: number,
-): void {
-  const cost = estimateTokenCost(actualTokens, 'text');
+export function recordScanCost(category: ScanCategory, depth: ScanDepth, actualTokens: number): void {
+  const cost = estimateTokenCost(actualTokens);
   recordSpend(cost, `scan_${category}_${depth}`);
 }

@@ -233,7 +233,7 @@ export function linkTestsToTripwires(
 
   for (const test of suite.tests) {
     const matchingTripwire = tripwires.tripwires?.find(
-      (tw: Tripwire) => tw.findingId === test.findingId
+      (tw: Tripwire) => tw.fixId === test.fixId
     );
 
     if (matchingTripwire) {
