@@ -619,18 +619,16 @@ const App = () => {
                          <Suspense fallback={null}>
                            <ConversionTracker />
                          </Suspense>
-                         <Suspense fallback={null}>
-                           <ExitIntentCapture />
-                         </Suspense>
-                         <Suspense fallback={null}>
-                           <MobileBottomNav />
-                         </Suspense>
-                         <Suspense fallback={null}>
-                           <BackToTop />
-                         </Suspense>
+                          {/* ExitIntentCapture disabled — full-screen overlay was blocking page content */}
+                          {/* <Suspense fallback={null}><ExitIntentCapture /></Suspense> */}
                           <Suspense fallback={null}>
-                            <OnboardingWrapper />
+                            <MobileBottomNav />
                           </Suspense>
+                          <Suspense fallback={null}>
+                            <BackToTop />
+                          </Suspense>
+                          {/* OnboardingWrapper disabled — full-screen overlay was blocking page content */}
+                          {/* <Suspense fallback={null}><OnboardingWrapper /></Suspense> */}
                           <Suspense fallback={null}>
                             <KeyboardShortcutsHelp />
                           </Suspense>
