@@ -3,6 +3,7 @@
  * 
  * Calm, card-based comprehension of the entire CMPSBL substrate.
  * Light-mode aligned, print-friendly, investor-grade.
+ * Mobile-first responsive design.
  * 
  * v13: Evolution proposals are export-only. No internal apply controls.
  */
@@ -19,8 +20,14 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import {
   Shield, Activity, Brain, Zap, AlertTriangle, CheckCircle,
   Copy, ChevronDown, FileText, Lock, Unlock, TrendingUp,
-  Loader2, RefreshCw, Download, ExternalLink,
+  Loader2, RefreshCw, Download, ExternalLink, MoreHorizontal,
 } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
 import type { IntelCard, TopicMasteryHighlight, EngineerProposal } from '@/lib/control-plane/types';
 import { generateEvolutionReport, generateAllExportableReports, type EvolutionProposalReport } from '@/lib/evolve/proposal-report';
@@ -49,7 +56,7 @@ const severityBadgeVariant: Record<string, 'destructive' | 'secondary' | 'outlin
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// INTEL CARD COMPONENT
+// INTEL CARD COMPONENT — Mobile-first
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function IntelCardView({ card }: { card: IntelCard }) {
@@ -57,42 +64,42 @@ function IntelCardView({ card }: { card: IntelCard }) {
   
   return (
     <Card className={`border-l-4 ${severityStyles[card.severity] ?? ''} print:break-inside-avoid`}>
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between gap-2">
+      <CardHeader className="p-3 sm:p-4 pb-2">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 sm:gap-2">
           <div className="flex items-center gap-2 min-w-0">
             <Icon className="w-4 h-4 flex-shrink-0 text-muted-foreground" />
-            <CardTitle className="text-sm font-semibold leading-tight">{card.headline}</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-semibold leading-tight line-clamp-2">{card.headline}</CardTitle>
           </div>
-          <div className="flex items-center gap-1.5 flex-shrink-0">
-            <Badge variant={severityBadgeVariant[card.severity]}>{card.severity}</Badge>
+          <div className="flex items-center gap-1.5 flex-shrink-0 ml-6 sm:ml-0">
+            <Badge variant={severityBadgeVariant[card.severity]} className="text-[10px] sm:text-xs">{card.severity}</Badge>
             {card.occurrence_count > 1 && (
-              <Badge variant="outline" className="text-xs">×{card.occurrence_count}</Badge>
+              <Badge variant="outline" className="text-[10px] sm:text-xs">×{card.occurrence_count}</Badge>
             )}
           </div>
         </div>
-        <p className="text-xs text-muted-foreground">{card.source} · {card.category}</p>
+        <p className="text-[10px] sm:text-xs text-muted-foreground ml-6 sm:ml-0">{card.source} · {card.category}</p>
       </CardHeader>
-      <CardContent className="space-y-2 text-sm">
+      <CardContent className="p-3 sm:p-4 pt-0 space-y-2 text-xs sm:text-sm">
         <div>
-          <p className="font-medium text-xs text-muted-foreground uppercase tracking-wide">What changed</p>
+          <p className="font-medium text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide">What changed</p>
           <p>{card.what_changed}</p>
         </div>
         <div>
-          <p className="font-medium text-xs text-muted-foreground uppercase tracking-wide">Why it matters</p>
+          <p className="font-medium text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide">Why it matters</p>
           <p>{card.why_it_matters}</p>
         </div>
         <div>
-          <p className="font-medium text-xs text-muted-foreground uppercase tracking-wide">Next step</p>
+          <p className="font-medium text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide">Next step</p>
           <p>{card.suggested_next_step}</p>
         </div>
         
         {Object.keys(card.details_json).length > 0 && (
           <Collapsible>
-            <CollapsibleTrigger className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <CollapsibleTrigger className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors">
               <ChevronDown className="w-3 h-3" /> Details
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <pre className="mt-2 p-2 rounded bg-muted/50 text-xs overflow-auto max-h-40 font-mono">
+              <pre className="mt-2 p-2 rounded bg-muted/50 text-[10px] sm:text-xs overflow-auto max-h-40 font-mono">
                 {JSON.stringify(card.details_json, null, 2)}
               </pre>
             </CollapsibleContent>
@@ -104,7 +111,7 @@ function IntelCardView({ card }: { card: IntelCard }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MASTERY ITEM
+// MASTERY ITEM — Mobile-first
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
@@ -116,19 +123,19 @@ function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
   };
   
   return (
-    <div className="flex items-center justify-between py-1.5">
-      <div className="flex items-center gap-2 min-w-0">
-        <span className="text-xs font-mono text-muted-foreground w-16 flex-shrink-0">{item.node}</span>
-        <span className="text-sm truncate">{item.topic_title}</span>
+    <div className="flex items-center justify-between py-1.5 gap-2">
+      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+        <span className="text-[10px] sm:text-xs font-mono text-muted-foreground w-12 sm:w-16 flex-shrink-0 truncate">{item.node}</span>
+        <span className="text-xs sm:text-sm truncate">{item.topic_title}</span>
       </div>
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
+      <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <div className="w-10 sm:w-16 h-1.5 bg-muted rounded-full overflow-hidden">
           <div
             className="h-full bg-primary rounded-full transition-all"
             style={{ width: `${Math.round(item.mastery_score * 100)}%` }}
           />
         </div>
-        <Badge variant="outline" className={`text-xs ${statusColors[item.status] ?? ''}`}>
+        <Badge variant="outline" className={`text-[10px] sm:text-xs ${statusColors[item.status] ?? ''}`}>
           {item.status}
         </Badge>
       </div>
@@ -137,7 +144,7 @@ function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PROPOSAL EXPORT CARD
+// PROPOSAL EXPORT CARD — Mobile-first
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
@@ -169,49 +176,49 @@ function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
 
   return (
     <Card className="border-l-4 border-l-primary/40">
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-sm">{proposal.title}</CardTitle>
+      <CardHeader className="p-3 sm:p-4 pb-2">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
+          <CardTitle className="text-xs sm:text-sm">{proposal.title}</CardTitle>
           <div className="flex items-center gap-1.5">
-            <Badge variant="outline">{proposal.status}</Badge>
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-[10px] sm:text-xs">{proposal.status}</Badge>
+            <Badge variant="outline" className="text-[10px] sm:text-xs">
               risk: {proposal.risk_level}
             </Badge>
           </div>
         </div>
-        <CardDescription className="text-xs">{proposal.description}</CardDescription>
+        <CardDescription className="text-[10px] sm:text-xs">{proposal.description}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <p className="text-xs text-muted-foreground">
+      <CardContent className="p-3 sm:p-4 pt-0 space-y-2">
+        <p className="text-[10px] sm:text-xs text-muted-foreground">
           <span className="font-medium">Scope:</span> {proposal.scope} · <span className="font-medium">Rollback:</span> {proposal.rollback_plan}
         </p>
         
-        <div className="flex items-center gap-2 print:hidden">
+        <div className="flex flex-wrap items-center gap-2 print:hidden">
           {isExportable && (
-            <Button variant="outline" size="sm" onClick={handleExport}>
+            <Button variant="outline" size="sm" className="h-8 text-xs" onClick={handleExport}>
               <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
               Export to AI
             </Button>
           )}
           {exportedReport && (
-            <Button variant="outline" size="sm" onClick={handleDownload}>
+            <Button variant="outline" size="sm" className="h-8 text-xs" onClick={handleDownload}>
               <Download className="w-3.5 h-3.5 mr-1.5" />
               Download .json
             </Button>
           )}
         </div>
 
-        <p className="text-[11px] text-muted-foreground italic">
+        <p className="text-[10px] text-muted-foreground italic">
           Execution handled externally.
         </p>
 
         {exportedReport && (
           <Collapsible>
-            <CollapsibleTrigger className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <CollapsibleTrigger className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors">
               <ChevronDown className="w-3 h-3" /> Exported Report JSON
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <pre className="mt-2 p-2 rounded bg-muted/50 text-xs overflow-auto max-h-60 font-mono">
+              <pre className="mt-2 p-2 rounded bg-muted/50 text-[10px] overflow-auto max-h-60 font-mono">
                 {JSON.stringify(exportedReport, null, 2)}
               </pre>
             </CollapsibleContent>
@@ -223,7 +230,7 @@ function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MAIN PANEL
+// MAIN PANEL — Mobile-first
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export default function IntelPanel() {
@@ -282,22 +289,19 @@ export default function IntelPanel() {
   
   return (
     <AdminLayout>
-      <div className="space-y-6 print:space-y-4">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+      <div className="space-y-4 sm:space-y-6 print:space-y-4">
+        {/* Header — stacks on mobile */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">INTEL Panel</h1>
-            <p className="text-sm text-muted-foreground">
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">INTEL Panel</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Control Plane · Founder-Only · Execution: <span className="font-mono font-semibold">{executionMode.mode}</span>
             </p>
           </div>
-          <div className="flex items-center gap-2 print:hidden">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => refetch()}
-              disabled={isRefetching}
-            >
+          
+          {/* Desktop actions */}
+          <div className="hidden md:flex items-center gap-2 print:hidden">
+            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isRefetching}>
               <RefreshCw className={`w-4 h-4 mr-1.5 ${isRefetching ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
@@ -314,25 +318,53 @@ export default function IntelPanel() {
               Print
             </Button>
           </div>
+
+          {/* Mobile actions — compact dropdown */}
+          <div className="flex md:hidden items-center gap-2 print:hidden">
+            <Button variant="outline" size="sm" className="h-8" onClick={() => refetch()} disabled={isRefetching}>
+              <RefreshCw className={`w-4 h-4 ${isRefetching ? 'animate-spin' : ''}`} />
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="h-8">
+                  <MoreHorizontal className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleCopyReport}>
+                  <Copy className="w-4 h-4 mr-2" />
+                  Copy JSON Report
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportAll}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Export All Proposals
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => window.print()}>
+                  <FileText className="w-4 h-4 mr-2" />
+                  Print
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         {/* Execution Mode Banner */}
         {executionMode.mode === 'external-ai' && (
           <Card className="border-l-4 border-l-primary bg-primary/5 print:break-inside-avoid">
-            <CardContent className="pt-4 pb-3 flex items-center gap-3">
-              <Shield className="w-5 h-5 text-primary flex-shrink-0" />
-              <div>
-                <p className="text-sm font-semibold text-foreground">External AI Execution Mode Active</p>
-                <p className="text-xs text-muted-foreground">
-                  Internal mutation authority is revoked. Evolution proposals must be exported and executed externally. No auto-apply.
+            <CardContent className="p-3 sm:pt-4 sm:pb-3 sm:px-4 flex items-start sm:items-center gap-2 sm:gap-3">
+              <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0 mt-0.5 sm:mt-0" />
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-semibold text-foreground">External AI Execution Mode Active</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">
+                  Internal mutation authority is revoked. Proposals must be exported and executed externally.
                 </p>
               </div>
             </CardContent>
           </Card>
         )}
         
-        {/* Executive Summary */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {/* Executive Summary — 2-col on mobile, 4-col on desktop */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
           <SummaryTile label="Total Signals" value={summary.total_signals} icon={Activity} />
           <SummaryTile label="Critical" value={summary.critical_count} icon={AlertTriangle} accent={summary.critical_count > 0 ? 'red' : undefined} />
           <SummaryTile label="Warnings" value={summary.warn_count} icon={Shield} accent={summary.warn_count > 0 ? 'amber' : undefined} />
@@ -342,11 +374,11 @@ export default function IntelPanel() {
         {/* Critical Issues */}
         {criticals.length > 0 && (
           <section>
-            <h2 className="text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-destructive" />
+            <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-destructive" />
               Critical Issues
             </h2>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {criticals.map(card => <IntelCardView key={card.id} card={card} />)}
             </div>
           </section>
@@ -354,14 +386,14 @@ export default function IntelPanel() {
         
         {/* Recent Signals */}
         <section>
-          <h2 className="text-lg font-semibold mb-3 text-foreground">Recent Signals</h2>
-          <ScrollArea className="max-h-[500px]">
-            <div className="space-y-3">
+          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground">Recent Signals</h2>
+          <ScrollArea className="max-h-[400px] sm:max-h-[500px]">
+            <div className="space-y-2 sm:space-y-3">
               {cards.filter(c => c.severity !== 'critical').slice(0, 20).map(card => (
                 <IntelCardView key={card.id} card={card} />
               ))}
               {cards.length === 0 && (
-                <p className="text-sm text-muted-foreground py-8 text-center">No signals collected yet. Run a maintenance battery to populate.</p>
+                <p className="text-xs sm:text-sm text-muted-foreground py-8 text-center">No signals collected yet. Run a maintenance battery to populate.</p>
               )}
             </div>
           </ScrollArea>
@@ -371,10 +403,10 @@ export default function IntelPanel() {
         
         {/* ENGINEER Proposals — Export Only */}
         <section>
-          <h2 className="text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
-            <Zap className="w-5 h-5 text-primary" />
+          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground flex items-center gap-2 flex-wrap">
+            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             Evolution Proposals
-            <Badge variant="outline" className="ml-2 text-xs">export-only</Badge>
+            <Badge variant="outline" className="text-[10px] sm:text-xs">export-only</Badge>
           </h2>
           {proposals.length > 0 ? (
             <div className="space-y-2">
@@ -383,23 +415,23 @@ export default function IntelPanel() {
               ))}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground py-4 text-center">No pending proposals.</p>
+            <p className="text-xs sm:text-sm text-muted-foreground py-4 text-center">No pending proposals.</p>
           )}
         </section>
         
         {/* CLM Topic Mastery */}
         <section>
-          <h2 className="text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
-            <Brain className="w-5 h-5 text-primary" />
+          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground flex items-center gap-2">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             Topic Mastery
           </h2>
           <Card>
-            <CardContent className="pt-4 divide-y divide-border">
+            <CardContent className="p-3 sm:pt-4 sm:px-4 divide-y divide-border">
               {topicMastery.slice(0, 20).map((item, i) => (
                 <MasteryItem key={i} item={item} />
               ))}
               {topicMastery.length === 0 && (
-                <p className="text-sm text-muted-foreground py-4 text-center">Topic pipeline not yet initialized.</p>
+                <p className="text-xs sm:text-sm text-muted-foreground py-4 text-center">Topic pipeline not yet initialized.</p>
               )}
             </CardContent>
           </Card>
@@ -407,11 +439,11 @@ export default function IntelPanel() {
         
         {/* Crown Jewels Status */}
         <section>
-          <h2 className="text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-primary" />
+          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             Crown Jewels & Packs
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
             <SummaryTile label="Released" value={crownJewels.released} icon={Unlock} accent="green" />
             <SummaryTile label="Reserved" value={crownJewels.gatekept} icon={Lock} />
             <SummaryTile label="Total Packs" value={crownJewels.packCount} icon={FileText} />
@@ -424,7 +456,7 @@ export default function IntelPanel() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SUMMARY TILE
+// SUMMARY TILE — Mobile-first compact
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function SummaryTile({ label, value, icon: Icon, accent }: {
@@ -437,11 +469,11 @@ function SummaryTile({ label, value, icon: Icon, accent }: {
   
   return (
     <Card className="print:break-inside-avoid">
-      <CardContent className="pt-4 pb-3 flex items-center gap-3">
-        <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-        <div>
-          <p className={`text-xl font-bold ${accentClass}`}>{value}</p>
-          <p className="text-xs text-muted-foreground">{label}</p>
+      <CardContent className="p-3 sm:pt-4 sm:pb-3 sm:px-4 flex items-center gap-2 sm:gap-3">
+        <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0" />
+        <div className="min-w-0">
+          <p className={`text-lg sm:text-xl font-bold ${accentClass}`}>{value}</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{label}</p>
         </div>
       </CardContent>
     </Card>
