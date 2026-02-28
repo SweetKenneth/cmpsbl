@@ -73,7 +73,7 @@ export default function Explore() {
       <PublicNav />
 
       {/* Ambient animated mesh background */}
-      <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
+      <div className="fixed inset-0 pointer-events-none z-[-1]" aria-hidden="true">
         <div className="absolute inset-0 gradient-mesh opacity-40" />
         <motion.div
           className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full"
