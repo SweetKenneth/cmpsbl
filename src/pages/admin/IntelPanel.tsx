@@ -3,8 +3,11 @@
  * 
  * Calm, card-based comprehension of the entire CMPSBL substrate.
  * Light-mode aligned, print-friendly, investor-grade.
+ * 
+ * v13: Evolution proposals are export-only. No internal apply controls.
  */
 
+import { useState } from 'react';
 import { useIntelPanel } from '@/hooks/admin/useIntelPanel';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -16,10 +19,12 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import {
   Shield, Activity, Brain, Zap, AlertTriangle, CheckCircle,
   Copy, ChevronDown, FileText, Lock, Unlock, TrendingUp,
-  Loader2, RefreshCw,
+  Loader2, RefreshCw, Download, ExternalLink,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import type { IntelCard, TopicMasteryHighlight } from '@/lib/control-plane/types';
+import type { IntelCard, TopicMasteryHighlight, EngineerProposal } from '@/lib/control-plane/types';
+import { generateEvolutionReport, generateAllExportableReports, type EvolutionProposalReport } from '@/lib/evolve/proposal-report';
+import { getExecutionModeConfig } from '@/lib/evolve/execution-mode';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SEVERITY STYLING
@@ -132,16 +137,122 @@ function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// PROPOSAL EXPORT CARD
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
+  const [exportedReport, setExportedReport] = useState<EvolutionProposalReport | null>(null);
+
+  const handleExport = () => {
+    const result = generateEvolutionReport(proposal.id);
+    if (result.success && result.report) {
+      setExportedReport(result.report);
+      navigator.clipboard.writeText(JSON.stringify(result.report, null, 2));
+      toast.success('Proposal report copied to clipboard');
+    } else {
+      toast.error(result.error || 'Export failed');
+    }
+  };
+
+  const handleDownload = () => {
+    if (!exportedReport) return;
+    const blob = new Blob([JSON.stringify(exportedReport, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `evolution-proposal-${proposal.id}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const isExportable = proposal.status === 'draft' || proposal.status === 'reviewed';
+
+  return (
+    <Card className="border-l-4 border-l-primary/40">
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-sm">{proposal.title}</CardTitle>
+          <div className="flex items-center gap-1.5">
+            <Badge variant="outline">{proposal.status}</Badge>
+            <Badge variant="outline" className="text-xs">
+              risk: {proposal.risk_level}
+            </Badge>
+          </div>
+        </div>
+        <CardDescription className="text-xs">{proposal.description}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <p className="text-xs text-muted-foreground">
+          <span className="font-medium">Scope:</span> {proposal.scope} · <span className="font-medium">Rollback:</span> {proposal.rollback_plan}
+        </p>
+        
+        <div className="flex items-center gap-2 print:hidden">
+          {isExportable && (
+            <Button variant="outline" size="sm" onClick={handleExport}>
+              <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+              Export to AI
+            </Button>
+          )}
+          {exportedReport && (
+            <Button variant="outline" size="sm" onClick={handleDownload}>
+              <Download className="w-3.5 h-3.5 mr-1.5" />
+              Download .json
+            </Button>
+          )}
+        </div>
+
+        <p className="text-[11px] text-muted-foreground italic">
+          Execution handled externally.
+        </p>
+
+        {exportedReport && (
+          <Collapsible>
+            <CollapsibleTrigger className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
+              <ChevronDown className="w-3 h-3" /> Exported Report JSON
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <pre className="mt-2 p-2 rounded bg-muted/50 text-xs overflow-auto max-h-60 font-mono">
+                {JSON.stringify(exportedReport, null, 2)}
+              </pre>
+            </CollapsibleContent>
+          </Collapsible>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // MAIN PANEL
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export default function IntelPanel() {
   const { data, isLoading, refetch, isRefetching } = useIntelPanel();
+  const executionMode = getExecutionModeConfig();
   
   const handleCopyReport = () => {
     if (!data?.exportReport) return;
     navigator.clipboard.writeText(JSON.stringify(data.exportReport, null, 2));
     toast.success('Report copied to clipboard');
+  };
+
+  const handleExportAll = () => {
+    const { reports, errors } = generateAllExportableReports();
+    if (reports.length > 0) {
+      const blob = new Blob([JSON.stringify(reports, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `evolution-proposals-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success(`Exported ${reports.length} proposal(s)`);
+    } else {
+      toast.info('No exportable proposals found');
+    }
+    if (errors.length > 0) {
+      console.warn('[INTEL] Export errors:', errors);
+    }
   };
   
   if (isLoading) {
@@ -176,7 +287,9 @@ export default function IntelPanel() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground tracking-tight">INTEL Panel</h1>
-            <p className="text-sm text-muted-foreground">Control Plane · Founder-Only</p>
+            <p className="text-sm text-muted-foreground">
+              Control Plane · Founder-Only · Execution: <span className="font-mono font-semibold">{executionMode.mode}</span>
+            </p>
           </div>
           <div className="flex items-center gap-2 print:hidden">
             <Button
@@ -192,12 +305,31 @@ export default function IntelPanel() {
               <Copy className="w-4 h-4 mr-1.5" />
               Copy JSON Report
             </Button>
+            <Button variant="outline" size="sm" onClick={handleExportAll}>
+              <Download className="w-4 h-4 mr-1.5" />
+              Export All Proposals
+            </Button>
             <Button variant="outline" size="sm" onClick={() => window.print()}>
               <FileText className="w-4 h-4 mr-1.5" />
               Print
             </Button>
           </div>
         </div>
+
+        {/* Execution Mode Banner */}
+        {executionMode.mode === 'external-ai' && (
+          <Card className="border-l-4 border-l-primary bg-primary/5 print:break-inside-avoid">
+            <CardContent className="pt-4 pb-3 flex items-center gap-3">
+              <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-foreground">External AI Execution Mode Active</p>
+                <p className="text-xs text-muted-foreground">
+                  Internal mutation authority is revoked. Evolution proposals must be exported and executed externally. No auto-apply.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         
         {/* Executive Summary */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -237,31 +369,23 @@ export default function IntelPanel() {
         
         <Separator />
         
-        {/* ENGINEER Proposals */}
-        {proposals.length > 0 && (
-          <section>
-            <h2 className="text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
-              <Zap className="w-5 h-5 text-primary" />
-              ENGINEER Proposals
-            </h2>
+        {/* ENGINEER Proposals — Export Only */}
+        <section>
+          <h2 className="text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
+            <Zap className="w-5 h-5 text-primary" />
+            Evolution Proposals
+            <Badge variant="outline" className="ml-2 text-xs">export-only</Badge>
+          </h2>
+          {proposals.length > 0 ? (
             <div className="space-y-2">
               {proposals.map(p => (
-                <Card key={p.id} className="border-l-4 border-l-primary/40">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm">{p.title}</CardTitle>
-                      <Badge variant="outline">{p.status}</Badge>
-                    </div>
-                    <CardDescription className="text-xs">{p.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-xs text-muted-foreground">
-                    <span className="font-medium">Risk:</span> {p.risk_level} · <span className="font-medium">Rollback:</span> {p.rollback_plan}
-                  </CardContent>
-                </Card>
+                <ProposalExportCard key={p.id} proposal={p} />
               ))}
             </div>
-          </section>
-        )}
+          ) : (
+            <p className="text-sm text-muted-foreground py-4 text-center">No pending proposals.</p>
+          )}
+        </section>
         
         {/* CLM Topic Mastery */}
         <section>
