@@ -210,7 +210,7 @@ async function runMaintenanceBattery(): Promise<{
     intelAggregator.ingest({
       source: 'ENGINEER/diligence',
       category: 'diligence',
-      severity: report.summary.critical > 0 ? 'critical' : report.summary.minor > 0 ? 'warn' : 'info',
+      severity: report.summary.critical > 0 ? 'critical' : 'info',
       headline: `Diligence: ${report.summary.passed}/${report.summary.total} passed`,
       detail: `${report.summary.critical} critical, ${report.summary.minor} minor issues.`,
       timestamp: now,
