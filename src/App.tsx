@@ -129,6 +129,7 @@ const Diligence = lazy(() => import("./pages/Diligence"));
 const Templates = lazy(() => import("./pages/Templates"));
 const Packs = lazy(() => import("./pages/Packs"));
 const CapabilityMap = lazy(() => import("./pages/CapabilityMap"));
+const ScanResult = lazy(() => import("./pages/ScanResult"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const RuntimeReference = lazy(() => import("./pages/docs/RuntimeReference"));
