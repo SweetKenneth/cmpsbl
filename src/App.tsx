@@ -26,7 +26,6 @@ const loadDeferredCSS = () => import("@/styles/deferred.css");
 // CRITICAL: DiagErrorBoundary must be EAGERLY loaded so it can catch crashes
 // before any lazy/Suspense resolution. Lazy-loading an error boundary defeats its purpose.
 import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";
-const DiagPanelLazy = lazy(() => import("@/components/system/DiagPanel").then(m => ({ default: m.DiagPanel })));
 
 
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
@@ -49,16 +48,8 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Route transition loader — subtle branded indicator
-const PageLoader = () => (
-  <div className="min-h-screen bg-background flex items-center justify-center">
-    <div className="flex flex-col items-center gap-3">
-      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center animate-pulse">
-        <div className="w-3 h-3 rounded-full bg-primary/60" />
-      </div>
-    </div>
-  </div>
-);
+// Route transition loader removed to prevent full-screen overlay flashes
+
 
 // Lazy-load mobile bottom nav, back-to-top, and onboarding
 const MobileBottomNav = lazy(() => import("@/components/navigation/MobileBottomNav").then(m => ({ default: m.MobileBottomNav })));
@@ -240,8 +231,8 @@ const LeadCaptureCTA = lazy(() => import("@/components/conversion/LeadCaptureCTA
 const ExitIntentCapture = lazy(() => import("@/components/conversion/ExitIntentCapture").then(m => ({ default: m.ExitIntentCapture })));
 const DesktopCommandPalette = lazy(() => import("@/components/navigation/DesktopCommandPalette").then(m => ({ default: m.DesktopCommandPalette })));
 const ThemeToggle = lazy(() => import("@/components/theme/ThemeToggle").then(m => ({ default: m.ThemeToggle })));
-const KeyboardShortcutsHelp = lazy(() => import("@/components/navigation/KeyboardShortcutsHelp").then(m => ({ default: m.KeyboardShortcutsHelp })));
 const RateLimitFeedback = lazy(() => import("@/components/ui/RateLimitFeedback").then(m => ({ default: m.RateLimitFeedback })));
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -331,7 +322,7 @@ const App = () => {
         <MotionConfigWrapper reducedMotion="user">
           <QueryClientProvider client={queryClient}>
           <SEOProvider>
-            <Suspense fallback={<PageLoader />}>
+            <Suspense fallback={null}>
               <SubstrateProvider autoInit={substrateAutoInit}>
                 <TooltipProvider>
                   <SmartToastRenderer />
@@ -348,7 +339,7 @@ const App = () => {
                       <Suspense fallback={null}>
                         <RegisterPasskeyPrompt />
                       </Suspense>
-                       <Suspense fallback={<PageLoader />}>
+                       <Suspense fallback={null}>
                         <main id="main-content">
                         <Routes>
                           {/* Core Public Pages */}
@@ -603,9 +594,8 @@ const App = () => {
                           </Suspense>
                           {/* OnboardingWrapper disabled — full-screen overlay was blocking page content */}
                           {/* <Suspense fallback={null}><OnboardingWrapper /></Suspense> */}
-                          <Suspense fallback={null}>
-                            <KeyboardShortcutsHelp />
-                          </Suspense>
+                          {/* Keyboard shortcuts overlay removed to prevent full-screen takeover */}
+
                           <Suspense fallback={null}>
                             <RateLimitFeedback />
                           </Suspense>
@@ -622,10 +612,6 @@ const App = () => {
       </MotionConfigWrapper>
       </Suspense>
 
-      {/* Diagnostic panel - only renders when ?diag=1 is present */}
-      <Suspense fallback={null}>
-        <DiagPanelLazy />
-      </Suspense>
     </DiagErrorBoundary>
   );
 };
