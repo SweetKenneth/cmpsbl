@@ -10,6 +10,32 @@ import { supabase } from '@/integrations/supabase/client';
 
 export type DreamEaterMood = 'calm' | 'curious' | 'agitated' | 'fractured' | 'dormant' | 'feral' | 'dreaming';
 
+/** Maps DB mood values to UI-compatible mood values */
+const DB_MOOD_MAP: Record<string, DreamEaterMood> = {
+  peaceful: 'calm',
+  neutral: 'dormant',
+  agitated: 'agitated',
+  nightmare: 'fractured',
+  dreaming: 'dreaming',
+  synthesizing: 'curious',
+  reflecting: 'calm',
+  learning: 'curious',
+  integrating: 'dreaming',
+  mutating: 'feral',
+  digesting: 'calm',
+  // Direct matches
+  calm: 'calm',
+  curious: 'curious',
+  fractured: 'fractured',
+  dormant: 'dormant',
+  feral: 'feral',
+};
+
+function normalizeDbMood(raw: string | null | undefined): DreamEaterMood {
+  if (!raw) return 'calm';
+  return DB_MOOD_MAP[raw] ?? 'calm';
+}
+
 export interface DreamEaterState {
   id: string;
   current_mood: DreamEaterMood;
