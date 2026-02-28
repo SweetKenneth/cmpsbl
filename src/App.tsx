@@ -129,6 +129,7 @@ const Diligence = lazy(() => import("./pages/Diligence"));
 const Templates = lazy(() => import("./pages/Templates"));
 const Packs = lazy(() => import("./pages/Packs"));
 const CapabilityMap = lazy(() => import("./pages/CapabilityMap"));
+const ScanResult = lazy(() => import("./pages/ScanResult"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const RuntimeReference = lazy(() => import("./pages/docs/RuntimeReference"));
@@ -233,6 +234,10 @@ const ClocklessModulesDeepDive = lazy(() => import("./pages/blog/ClocklessModule
 
 // Dynamic AutoBlog post page
 const AutoBlogPost = lazy(() => import("./pages/blog/AutoBlogPost"));
+
+// Lazy conversion + SEO components (Item #4, #6, #14)
+const ConversionTracker = lazy(() => import("@/components/conversion/ConversionTracker").then(m => ({ default: m.ConversionTracker })));
+const LeadCaptureCTA = lazy(() => import("@/components/conversion/LeadCaptureCTA").then(m => ({ default: m.LeadCaptureCTA })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -418,8 +423,11 @@ const App = () => {
                         <Route path="/artifacts" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/engines" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/system-feed" element={<PhaseGateRoute><PackGate packId="pack-observability"><SystemIntelligenceFeed /></PackGate></PhaseGateRoute>} />
-                        
-                        <Route path="/status" element={<Status />} />
+                         
+                         {/* Scan result share page — Item #3 */}
+                         <Route path="/scan/results/:id" element={<ScanResult />} />
+                         
+                         <Route path="/status" element={<Status />} />
                         <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
@@ -642,15 +650,18 @@ const App = () => {
                         <Route path="*" element={<NotFound />} />
                        </Routes>
                         </main>
-                        <Suspense fallback={null}>
-                          <MobileBottomNav />
-                        </Suspense>
-                        <Suspense fallback={null}>
-                          <BackToTop />
-                        </Suspense>
-                        <Suspense fallback={null}>
-                          <OnboardingWrapper />
-                        </Suspense>
+                         <Suspense fallback={null}>
+                           <ConversionTracker />
+                         </Suspense>
+                         <Suspense fallback={null}>
+                           <MobileBottomNav />
+                         </Suspense>
+                         <Suspense fallback={null}>
+                           <BackToTop />
+                         </Suspense>
+                         <Suspense fallback={null}>
+                           <OnboardingWrapper />
+                         </Suspense>
                     </Suspense>
                   </AuthProvider>
                     } />

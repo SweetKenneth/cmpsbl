@@ -19,12 +19,15 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { AdminSidebarSearch } from "@/components/navigation/AdminSidebarSearch";
 
 export function UnifiedAdminSidebar() {
   const { state, setOpenMobile, isMobile } = useSidebar();
   // On mobile, sidebar renders as a full-width Sheet overlay — always show text
   const collapsed = isMobile ? false : state === "collapsed";
   const location = useLocation();
+  
+  const [sidebarFilter, setSidebarFilter] = useState('');
   
   // Track which groups are expanded on mobile (all expanded by default)
   // Auto-expand group containing active route, collapse others on mobile
@@ -77,10 +80,21 @@ export function UnifiedAdminSidebar() {
           </NavLink>
         </div>
 
+        {/* Sidebar Search */}
+        {!collapsed && (
+          <AdminSidebarSearch onFilterChange={setSidebarFilter} />
+        )}
+
         {/* Navigation Groups */}
         <div className="flex-1 overflow-y-auto py-2">
           {adminNavConfig.map((group, groupIndex) => {
-            const hasActiveItem = group.items.some(i => isActive(i.path));
+            // Filter items by search query
+            const filteredItems = sidebarFilter
+              ? group.items.filter(i => i.label.toLowerCase().includes(sidebarFilter) || i.path.toLowerCase().includes(sidebarFilter))
+              : group.items;
+            if (sidebarFilter && filteredItems.length === 0) return null;
+            const itemsToRender = sidebarFilter ? filteredItems : group.items;
+            const hasActiveItem = itemsToRender.some(i => isActive(i.path));
             const isExpanded = expandedGroups.has(group.id);
 
             return (
@@ -109,7 +123,7 @@ export function UnifiedAdminSidebar() {
                   <CollapsibleContent>
                     <SidebarGroupContent>
                       <SidebarMenu>
-                        {group.items.map((item) => {
+                        {itemsToRender.map((item) => {
                           const active = isActive(item.path);
                           return (
                             <SidebarMenuItem key={item.id}>
@@ -154,7 +168,7 @@ export function UnifiedAdminSidebar() {
                   )}
                   <SidebarGroupContent>
                     <SidebarMenu>
-                      {group.items.map((item) => {
+                      {itemsToRender.map((item) => {
                         const active = isActive(item.path);
                         return (
                           <SidebarMenuItem key={item.id}>
