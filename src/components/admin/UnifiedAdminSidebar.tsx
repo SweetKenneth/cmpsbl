@@ -10,15 +10,35 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Brain } from "lucide-react";
+import { Brain, ChevronDown } from "lucide-react";
 import { adminNavConfig } from "@/config/adminNavConfig";
 import { cn } from "@/lib/utils";
+import { useState, useCallback } from "react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export function UnifiedAdminSidebar() {
   const { state, setOpenMobile, isMobile } = useSidebar();
   // On mobile, sidebar renders as a full-width Sheet overlay — always show text
   const collapsed = isMobile ? false : state === "collapsed";
   const location = useLocation();
+  
+  // Track which groups are expanded on mobile (all expanded by default)
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
+    () => new Set(adminNavConfig.map(g => g.id))
+  );
+  
+  const toggleGroup = useCallback((groupId: string) => {
+    setExpandedGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(groupId)) next.delete(groupId);
+      else next.add(groupId);
+      return next;
+    });
+  }, []);
 
   const isActive = (path: string) => {
     if (path === "/admin/dashboard") {

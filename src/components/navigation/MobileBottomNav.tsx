@@ -5,7 +5,7 @@
  */
 
 import { Link, useLocation } from "react-router-dom";
-import { Home, Layers, Zap, BookOpen, User, Search } from "lucide-react";
+import { Home, Layers, BookOpen, User, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -36,7 +36,7 @@ export function MobileBottomNav() {
       <MobileCommandPalette open={commandOpen} onOpenChange={setCommandOpen} />
       
       <nav
-        className="fixed bottom-0 left-0 right-0 z-[9990] lg:hidden border-t border-border bg-background/95 backdrop-blur-md safe-area-inset"
+        className="fixed bottom-0 left-0 right-0 z-[9990] lg:hidden border-t border-border/50 bg-background/95 backdrop-blur-md safe-area-pb"
         role="navigation"
         aria-label="Quick navigation"
       >
@@ -44,14 +44,18 @@ export function MobileBottomNav() {
           {TABS.map((tab) => {
             const href = tab.name === "Account" && user ? (tab as any).authHref : tab.href;
             const isSearch = href === "__search__";
-            const isActive = !isSearch && location.pathname === href;
+            const isActive = !isSearch && (
+              href === "/" 
+                ? location.pathname === "/" 
+                : location.pathname.startsWith(href)
+            );
 
             if (isSearch) {
               return (
                 <button
                   key="search"
                   onClick={() => setCommandOpen(true)}
-                  className="flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors touch-manipulation text-muted-foreground active:text-primary"
+                  className="flex flex-col items-center justify-center gap-0.5 min-w-[52px] min-h-[44px] rounded-lg transition-colors touch-manipulation text-muted-foreground active:text-primary"
                   aria-label="Search and navigate"
                 >
                   <Search className="w-5 h-5" />
@@ -65,7 +69,7 @@ export function MobileBottomNav() {
                 key={tab.name}
                 to={href}
                 className={cn(
-                  "flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors touch-manipulation min-w-[52px]",
+                  "relative flex flex-col items-center justify-center gap-0.5 min-w-[52px] min-h-[44px] rounded-lg transition-colors touch-manipulation",
                   isActive
                     ? "text-primary"
                     : "text-muted-foreground active:text-primary"
@@ -75,7 +79,7 @@ export function MobileBottomNav() {
                 <tab.icon className="w-5 h-5" />
                 <span className="text-[10px] font-medium">{tab.name === "Account" && user ? "Dashboard" : tab.name}</span>
                 {isActive && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-primary" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-primary" />
                 )}
               </Link>
             );
@@ -84,7 +88,7 @@ export function MobileBottomNav() {
       </nav>
 
       {/* Spacer so page content isn't hidden behind the nav */}
-      <div className="h-14 lg:hidden" />
+      <div className="h-14 lg:hidden safe-area-pb" />
     </>
   );
 }
