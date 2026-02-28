@@ -1463,10 +1463,23 @@ function extractSubjectKey(step: ActionStep): string | null {
     }
   }
   
-  // Extract capability name for "Missing capability" items
-  const capMatch = step.title.match(/(?:Missing capability|Add)\s*:\s*(.+)/i);
+  // Extract capability name for "Missing capability" and "Modernizer: Add X" items
+  // These patterns produce duplicates across anomaly + modernizer sources
+  const capMatch = step.title.match(/(?:Missing capability|Add|Resolve)\s*:\s*(.+)/i);
   if (capMatch) {
     return `cap:${capMatch[1].trim().toLowerCase()}`;
+  }
+  
+  // Extract "Modernizer: Verb Subject" → normalize to subject only
+  const modMatch = step.title.match(/^Modernizer:\s*(?:Add|Configure|Resolve|Review)\s+(.+)/i);
+  if (modMatch) {
+    return `cap:${modMatch[1].trim().toLowerCase()}`;
+  }
+
+  // Extract edge function risk subjects
+  const edgeMatch = step.title.match(/Edge risk:\s*(\S+)/i);
+  if (edgeMatch) {
+    return `edge:${edgeMatch[1].trim().toLowerCase()}`;
   }
   
   // Extract anomaly type
@@ -1474,6 +1487,12 @@ function extractSubjectKey(step: ActionStep): string | null {
   if (anomalyMatch) {
     const components = anomalyMatch[2].split(',').map(s => s.trim().toLowerCase()).sort();
     return `affected:${components.join(',')}`;
+  }
+
+  // Normalize description-level duplicates (same description = same issue)
+  const descKey = step.description.trim().toLowerCase().replace(/\s+/g, ' ');
+  if (descKey.length > 20) {
+    return `desc:${descKey.substring(0, 80)}`;
   }
   
   return null;

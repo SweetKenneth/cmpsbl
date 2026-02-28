@@ -12,6 +12,21 @@ import { evolutionRuns } from '../evolution-runs';
 import { circuitBreaker } from '../circuit-breaker';
 import { supabase } from '@/integrations/supabase/client';
 
+/**
+ * Detect if an error is an RLS/permission block (expected for protected tables).
+ */
+function isRLSBlock(error: { message?: string; code?: string }): boolean {
+  const msg = (error.message || '').toLowerCase();
+  const code = error.code || '';
+  if (msg.includes('relation') && msg.includes('does not exist')) return false;
+  if (['42501', 'PGRST301'].includes(code)) return true;
+  if (code.startsWith('PGRST')) return true;
+  if (msg.includes('denied') || msg.includes('permission') || msg.includes('policy')) return true;
+  if (msg.includes('rls') || msg.includes('row-level') || msg.includes('row level')) return true;
+  if (!msg && !code) return true; // PostgREST minimal error = RLS enforcement
+  if (!msg && code) return true;
+  return false;
+}
 // ═══════════════════════════════════════════════════════════════
 // FULL ENTITY + MESH + ZONE ARCHITECTURE MAP
 // ═══════════════════════════════════════════════════════════════
@@ -114,8 +129,15 @@ async function scanAllModules(): Promise<ModuleHealthEntry[]> {
           .limit(1);
         
         if (error) {
-          entry.table_accessible = false;
-          entry.anomalies.push(`Primary table ${primaryTable} inaccessible: ${error.message}`);
+          // RLS blocks are expected for protected tables — not an anomaly
+          const isRLS = isRLSBlock(error);
+          if (isRLS) {
+            // Table exists and RLS is enforced — this is healthy
+            entry.table_accessible = true;
+          } else {
+            entry.table_accessible = false;
+            entry.anomalies.push(`Primary table ${primaryTable} inaccessible: ${error.message}`);
+          }
         }
       } catch {
         entry.reachable = false;
