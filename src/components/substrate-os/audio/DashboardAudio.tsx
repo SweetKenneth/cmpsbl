@@ -34,6 +34,7 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
             "h-8 w-8 relative shrink-0",
             settings.enabled && "text-emerald-400"
           )}
+          aria-label={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
           title={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
         >
           {settings.enabled ? (
@@ -49,6 +50,7 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
           size="icon"
           onClick={() => setIsModalOpen(true)}
           className="h-8 w-8 relative shrink-0"
+          aria-label="Audio Controls"
           title="Audio Controls"
         >
           <Music className="w-3.5 h-3.5" />
@@ -60,6 +62,7 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
           size="icon"
           onClick={() => setIsModalOpen(true)}
           className="h-8 w-8 shrink-0"
+          aria-label="Audio Settings"
           title="Audio Settings"
         >
           <Settings2 className="w-3.5 h-3.5" />
