@@ -565,11 +565,21 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   // ─── SEBA Choreographical Stamping ───
   const sebaStamp = applySebaStamp({}, governanceChain);
   
+  // ─── Audit chain tri-state ───
+  const chain_state: 'empty' | 'valid' | 'broken' = 
+    auditState.totalEntries === 0 ? 'empty' :
+    chainValid ? 'valid' : 'broken';
+
+  // ─── Scan run identity ───
+  const scan_run_id = `scanrun_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+
   return {
     schema_version: '3.3',
     generated_at: new Date().toISOString(),
     system_id: 'cmpsbl-substrate',
     proposal_type: 'unified-evolution',
+    scan_run_id,
+    scan_mode: 'full',
     ratio: { debt_pct: debtPct, evolution_pct: evoPct },
     executive_summary: execSummary,
     technical_debt: techDebt,
@@ -577,10 +587,11 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     production_audit: productionAudit,
     structural_health: structuralHealth,
     audit_health: {
-      chain_valid: chainValid,
+      chain_valid: chain_state === 'valid',
+      chain_state,
       total_entries: auditState.totalEntries,
       modules_monitored: monitoredCount,
-      compliance_score: chainValid ? 85 : 40,
+      compliance_score: chain_state === 'valid' ? 85 : chain_state === 'empty' ? 60 : 40,
       gaps: auditGaps,
     },
     diligence: diligenceData,
@@ -746,9 +757,12 @@ async function runDefenseScan(): Promise<UnifiedProposal['security_posture']> {
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
 
-function extractDiligenceData(cards: IntelCard[]) {
+function extractDiligenceData(cards: IntelCard[]): UnifiedProposal['diligence'] {
   const diligenceCard = cards.find(c => c.source.includes('diligence'));
-  const details = diligenceCard?.details_json as { summary?: { total: number; passed: number; minor: number; critical: number } } | undefined;
+  const details = diligenceCard?.details_json as { 
+    summary?: { total: number; passed: number; minor: number; critical: number };
+    failed_probes?: FailedProbeDetail[];
+  } | undefined;
   const s = details?.summary;
   
   const criticalFailures: string[] = [];
@@ -763,6 +777,7 @@ function extractDiligenceData(cards: IntelCard[]) {
     failed: (s?.minor ?? 0) + (s?.critical ?? 0),
     total: s?.total ?? 0,
     critical_failures: criticalFailures,
+    failed_probes: details?.failed_probes ?? [],
   };
 }
 
