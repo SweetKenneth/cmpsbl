@@ -353,6 +353,102 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// INCLUSIVE + DEFENSE SCAN RUNNERS
+// ═══════════════════════════════════════════════════════════════
+
+async function runInclusiveScan(): Promise<UnifiedProposal['accessibility']> {
+  try {
+    // Use the INCLUSIVE module's self-scan to analyze substrate interfaces
+    const result = await substrate.inclusive.selfScan();
+    const data = (result as any)?.data;
+    const issues: InclusiveIssue[] = data?.issues ?? [];
+    const score = data?.score ?? calculateScore(issues);
+    
+    return {
+      score,
+      total_issues: issues.length,
+      critical_count: issues.filter(i => i.severity === 'critical').length,
+      high_count: issues.filter(i => i.severity === 'high').length,
+      medium_count: issues.filter(i => i.severity === 'medium').length,
+      low_count: issues.filter(i => i.severity === 'low').length,
+      auto_fixable: issues.filter(i => i.auto_fixable).length,
+      top_issues: issues.slice(0, 10).map(i => ({
+        wcag: i.wcag_criterion,
+        description: i.description,
+        severity: i.severity,
+        fixable: i.auto_fixable,
+      })),
+      wcag_level: data?.metadata?.wcag_level ?? 'AA',
+    };
+  } catch (e) {
+    console.warn('[Proposal] INCLUSIVE scan failed:', e);
+    return { score: 0, total_issues: 0, critical_count: 0, high_count: 0, medium_count: 0, low_count: 0, auto_fixable: 0, top_issues: [], wcag_level: 'AA' };
+  }
+}
+
+async function runDefenseScan(): Promise<UnifiedProposal['security_posture']> {
+  let postureData: any = null;
+  let anomalyData: any = null;
+  let limitsData: any = null;
+  
+  try {
+    const [postureRes, anomalyRes, limitsRes] = await Promise.allSettled([
+      substrate.defense.posture(),
+      substrate.defense.anomaly('24h'),
+      substrate.defense.limits(),
+    ]);
+    postureData = postureRes.status === 'fulfilled' ? (postureRes.value as any)?.data : null;
+    anomalyData = anomalyRes.status === 'fulfilled' ? (anomalyRes.value as any)?.data : null;
+    limitsData = limitsRes.status === 'fulfilled' ? (limitsRes.value as any)?.data : null;
+  } catch (e) {
+    console.warn('[Proposal] DEFENSE scan failed:', e);
+  }
+  
+  const securityIssues: SecurityIssueItem[] = [];
+  
+  // Extract anomalies as security issues
+  const anomalies = anomalyData?.anomalies ?? [];
+  for (const a of anomalies.slice(0, 5)) {
+    securityIssues.push({
+      id: `def_anomaly_${securityIssues.length}`,
+      title: a.description || 'Behavioral anomaly detected',
+      severity: a.severity || 'medium',
+      source: 'DEFENSE/anomaly',
+      description: a.detail || 'Anomalous pattern detected in system behavior.',
+      suggested_fix: 'Investigate the anomaly source. Check for unauthorized access or misconfigured services.',
+    });
+  }
+  
+  // Rate limit issues
+  const rateLimitIssues = limitsData?.violations ?? 0;
+  if (rateLimitIssues > 0) {
+    securityIssues.push({
+      id: 'def_rate_limit',
+      title: `${rateLimitIssues} rate limit violation(s) detected`,
+      severity: 'medium',
+      source: 'DEFENSE/limits',
+      description: 'Edge functions experiencing rate limit pressure.',
+      suggested_fix: 'Review rate limit configuration. Consider increasing limits or optimizing request patterns.',
+    });
+  }
+  
+  const threatLevel: 'low' | 'medium' | 'high' | 'critical' = 
+    securityIssues.some(i => i.severity === 'critical') ? 'critical' :
+    securityIssues.some(i => i.severity === 'high') ? 'high' :
+    securityIssues.length > 0 ? 'medium' : 'low';
+  
+  return {
+    posture_available: !!postureData,
+    anomaly_available: !!anomalyData,
+    posture_summary: postureData?.summary || 'Defense posture nominal',
+    threat_level: threatLevel,
+    anomalies_detected: anomalies.length,
+    rate_limit_issues: rateLimitIssues,
+    security_issues: securityIssues,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
 
@@ -439,6 +535,8 @@ function buildTechDebtSection(
   allCards: IntelCard[],
   auditReport: AuditReport | null,
   healthReport: HealthCheckReport | null,
+  accessibilityData: UnifiedProposal['accessibility'],
+  securityData: UnifiedProposal['security_posture'],
 ) {
   const critical: TechDebtItem[] = [];
   const warnings: TechDebtItem[] = [];
@@ -535,6 +633,57 @@ function buildTechDebtSection(
     }
   }
   
+  // ─── From INCLUSIVE accessibility scan ───
+  for (const issue of accessibilityData.top_issues.filter(i => i.severity === 'critical' || i.severity === 'high')) {
+    critical.push({
+      id: `inc_${critical.length}`,
+      title: `A11y: ${issue.description}`,
+      description: `WCAG ${issue.wcag} violation — ${issue.fixable ? 'auto-fixable' : 'manual fix required'}.`,
+      severity: issue.severity,
+      source: `INCLUSIVE/WCAG`,
+      suggested_fix: issue.fixable ? 'Run inclusive.repair to auto-fix.' : 'Manual remediation needed — review WCAG criterion.',
+      affected_area: `WCAG ${issue.wcag}`,
+    });
+    patterns.add('accessibility');
+  }
+  for (const issue of accessibilityData.top_issues.filter(i => i.severity === 'medium' || i.severity === 'low')) {
+    warnings.push({
+      id: `inc_w_${warnings.length}`,
+      title: `A11y: ${issue.description}`,
+      description: `WCAG ${issue.wcag} — ${issue.severity} severity.`,
+      severity: issue.severity,
+      source: `INCLUSIVE/WCAG`,
+      suggested_fix: issue.fixable ? 'Auto-fixable via inclusive.repair.' : 'Review WCAG criterion and fix.',
+      affected_area: `WCAG ${issue.wcag}`,
+    });
+  }
+  
+  // ─── From DEFENSE security scan ───
+  for (const issue of securityData.security_issues) {
+    if (issue.severity === 'critical' || issue.severity === 'high') {
+      critical.push({
+        id: issue.id,
+        title: `Security: ${issue.title}`,
+        description: issue.description,
+        severity: issue.severity,
+        source: issue.source,
+        suggested_fix: issue.suggested_fix,
+        affected_area: 'DEFENSE',
+      });
+      patterns.add('security');
+    } else {
+      warnings.push({
+        id: issue.id,
+        title: `Security: ${issue.title}`,
+        description: issue.description,
+        severity: issue.severity,
+        source: issue.source,
+        suggested_fix: issue.suggested_fix,
+        affected_area: 'DEFENSE',
+      });
+    }
+  }
+
   // Patterns from warning cards
   const warnCards = allCards.filter(c => c.severity === 'warn');
   for (const card of warnCards) {
