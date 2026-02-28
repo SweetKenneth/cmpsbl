@@ -179,16 +179,14 @@ export function HeroMetaSubstrate() {
           
           {/* Left column — Copy */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
             className="text-center lg:text-left order-1"
           >
             {/* Engine badge */}
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/50 backdrop-blur-md mb-8 sm:mb-10"
             >
               <Sparkles className="w-3.5 h-3.5 text-primary" />
@@ -202,9 +200,8 @@ export function HeroMetaSubstrate() {
             {/* CMPSBL — massive, clean */}
             <motion.h1 
               className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7rem] font-black tracking-[-0.05em] leading-[0.9] mb-4 sm:mb-8"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <span 
                 className="inline-block clockless-river-text"
@@ -221,9 +218,8 @@ export function HeroMetaSubstrate() {
 
             {/* Tagline block — two lines, centered on mobile */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
               className="mb-6 sm:mb-10"
             >
               <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-muted-foreground tracking-tight leading-snug">
@@ -245,9 +241,8 @@ export function HeroMetaSubstrate() {
             
             {/* Subtitle */}
             <motion.p 
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
               Governed cognitive infrastructure with{' '}
@@ -259,9 +254,8 @@ export function HeroMetaSubstrate() {
             
             {/* CTAs */}
             <motion.div 
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
               className="flex flex-wrap items-center justify-center lg:justify-start gap-3"
             >
               <Button 
@@ -290,9 +284,8 @@ export function HeroMetaSubstrate() {
             
             {/* Research link */}
             <motion.div 
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
               className="mt-6 sm:mt-8 text-center lg:text-left"
             >
               <a 
@@ -315,9 +308,8 @@ export function HeroMetaSubstrate() {
           
           {/* Right column — Memory River visualization + context */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
+            initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="order-2 flex flex-col gap-6"
           >
             {/* Above River — Architecture context */}
