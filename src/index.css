@@ -687,20 +687,8 @@ All colors MUST be HSL.
   }
 }
 
-/* CRITICAL: Prevent framer-motion from leaving elements invisible when
-   reducedMotion is active or animations fail to trigger.
-   Elements with initial={{ opacity: 0 }} get stuck invisible without this. */
-@media (prefers-reduced-motion: reduce) {
-  [style*="opacity: 0"],
-  [style*="opacity:0"] {
-    opacity: 1 !important;
-  }
-}
-
-/* Safety net: ensure text content is always visible regardless of animation state */
-h1, h2, h3, h4, h5, h6, p, span, a, button, label, li {
-  opacity: unset;
-}
+/* Non-critical animations (substrate voice, decode orb, clockless river)
+   are loaded on-demand via src/styles/deferred.css — see line below */
 
 /* Non-critical animations (substrate voice, decode orb, clockless river)
    are loaded on-demand via src/styles/deferred.css */
