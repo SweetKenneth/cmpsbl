@@ -82,6 +82,13 @@ class EvolutionReceiptManager {
       health_after: data.health_after as HealthSnapshot | null,
       backup_id: data.backup_id as string | null,
       timestamp: data.timestamp as string,
+      pre_metrics: (data.pre_metrics as EvolutionMetrics) || null,
+      post_metrics: (data.post_metrics as EvolutionMetrics) || null,
+      delta: (data.delta as EvolutionDelta) || null,
+      tenant_id: (data.tenant_id as string) || null,
+      snapshot_id: (data.snapshot_id as string) || null,
+      status: (data.status as string) || 'active',
+      reverted_at: (data.reverted_at as string) || null,
     };
   }
 
