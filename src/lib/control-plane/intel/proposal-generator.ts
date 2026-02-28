@@ -1448,3 +1448,33 @@ function buildExecutiveSummary(
   
   return `${parts.join(', ')}. Overall risk: ${risk}. Thorough scan: up to 15 proposals, ~85/15 debt/evolution ratio. Schema v3.3 with governance receipts. Copy to your coding agent to apply fixes with human review at each step.`;
 }
+
+/**
+ * Extract a normalized subject key for cross-source deduplication.
+ * Returns null if no clear subject can be identified.
+ */
+function extractSubjectKey(step: ActionStep): string | null {
+  // Extract affected components from instructions (common pattern: "Affected: x, y, z")
+  for (const instr of step.instructions) {
+    const affectedMatch = instr.match(/^Affected(?:\s*modules)?:\s*(.+)/i);
+    if (affectedMatch) {
+      const components = affectedMatch[1].split(',').map(s => s.trim().toLowerCase()).sort();
+      return `affected:${components.join(',')}`;
+    }
+  }
+  
+  // Extract capability name for "Missing capability" items
+  const capMatch = step.title.match(/(?:Missing capability|Add)\s*:\s*(.+)/i);
+  if (capMatch) {
+    return `cap:${capMatch[1].trim().toLowerCase()}`;
+  }
+  
+  // Extract anomaly type
+  const anomalyMatch = step.description.match(/^(\w+)\s+affecting\s+(.+)\.?$/i);
+  if (anomalyMatch) {
+    const components = anomalyMatch[2].split(',').map(s => s.trim().toLowerCase()).sort();
+    return `affected:${components.join(',')}`;
+  }
+  
+  return null;
+}
