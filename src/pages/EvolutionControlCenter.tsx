@@ -1,13 +1,14 @@
 /**
- * Evolution Control Center — Dedicated mission control for system evolution
- * Tabs: Dry-Run Preview | Rollback | Trends | Feedback
+ * Evolution Control Center — Auth-gated mission control for system evolution
+ * Tabs: Dry-Run Preview | Rollback | Trends | Feedback | Agent Connect
  */
 
 import { Helmet } from 'react-helmet-async';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FlaskConical, RotateCcw, TrendingUp, MessageSquareWarning, ArrowLeft, Plug } from 'lucide-react';
+import { FlaskConical, RotateCcw, TrendingUp, MessageSquareWarning, ArrowLeft, Plug, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { DryRunPreview } from '@/components/evolution/DryRunPreview';
 import { RollbackPanel } from '@/components/evolution/RollbackPanel';
 import { ScanTrendDashboard } from '@/components/evolution/ScanTrendDashboard';
@@ -16,12 +17,39 @@ import { AgentConnectGuide } from '@/components/evolution/AgentConnectGuide';
 
 export default function EvolutionControlCenter() {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  // Auth gate — require login
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground text-sm">Loading…</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4 max-w-md mx-auto px-4">
+          <Lock className="w-12 h-12 text-muted-foreground mx-auto" />
+          <h1 className="text-2xl font-bold text-foreground">Authentication Required</h1>
+          <p className="text-sm text-muted-foreground">
+            The EVOLUTION Control Center requires an authenticated session. Sign in to access your evolution tools and API credentials.
+          </p>
+          <Button onClick={() => navigate('/auth')} className="mt-4">
+            Sign In
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       <Helmet>
-        <title>Evolution Control Center — CMPSBL Substrate</title>
-        <meta name="description" content="Mission control for system evolution. Preview impacts, manage rollbacks, track trends, and calibrate scanner accuracy." />
+        <title>EVOLUTION Control Center — CMPSBL Substrate</title>
+        <meta name="description" content="Mission control for system evolution. Preview impacts, manage rollbacks, track trends, and connect AI agents." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
