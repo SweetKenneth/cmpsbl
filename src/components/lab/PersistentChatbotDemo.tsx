@@ -227,9 +227,9 @@ export function PersistentChatbotDemo() {
       )}
 
       <div className="flex gap-2 pt-4 border-t border-border/50 mt-auto">
-        <Button variant="ghost" size="icon" onClick={clearChat} className="shrink-0" title="Clear chat"><Trash2 className="w-4 h-4" /></Button>
+        <Button variant="ghost" size="icon" onClick={clearChat} className="shrink-0" title="Clear chat" aria-label="Clear chat"><Trash2 className="w-4 h-4" /></Button>
         <Input ref={inputRef} value={input} onChange={(e) => setInput(e.target.value)} onKeyPress={handleKeyPress} placeholder="Ask me anything... I'll remember!" disabled={isLoading} className="flex-1" />
-        <Button onClick={handleSend} disabled={isLoading || !input.trim()}>{isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}</Button>
+        <Button onClick={handleSend} disabled={isLoading || !input.trim()} aria-label="Send message">{isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}</Button>
       </div>
     </div>
   );

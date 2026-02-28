@@ -89,10 +89,10 @@ export default function AIOperatingSystem() {
     <>
       <Helmet>
         <title>What is an AI Operating System? | CMPSBL — The First AI OS</title>
-        <meta name="description" content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the world's first — 10 entities, 5 mesh overlays, 9 zones." />
+        <meta name="description" content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the first governed AI OS — modular, persistent, and self-improving." />
         <link rel="canonical" href="https://cmpsbl.com/ai-operating-system" />
         <meta property="og:title" content="What is an AI Operating System? | CMPSBL" />
-        <meta property="og:description" content="The world's first AI Operating System — 10 entities wrapped by 5 mesh overlays for persistent memory, intelligent routing, AI security, and autonomous optimization." />
+        <meta property="og:description" content="The first AI Operating System — modular cognitive infrastructure for persistent memory, intelligent routing, AI security, and autonomous optimization." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/ai-operating-system" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
