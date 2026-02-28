@@ -30,7 +30,7 @@ function ScoreDelta({ before, after }: { before: number; after: number }) {
   return (
     <div className={cn(
       "flex items-center gap-1 text-sm font-semibold",
-      isPositive ? "text-green-500" : isNeutral ? "text-muted-foreground" : "text-destructive"
+      isPositive ? "text-primary" : isNeutral ? "text-muted-foreground" : "text-destructive"
     )}>
       {isPositive ? <ArrowUp className="w-4 h-4" /> : isNeutral ? <Minus className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />}
       <span>{isPositive ? '+' : ''}{delta}</span>
@@ -59,7 +59,7 @@ export function ScanComparison({ scanA, scanB, className }: ScanComparisonProps)
         <h3 className="font-semibold text-foreground">Scan Comparison</h3>
         <div className={cn(
           "ml-auto px-2 py-0.5 rounded-full text-xs font-medium",
-          trend === 'improving' ? "bg-green-500/10 text-green-500" :
+          trend === 'improving' ? "bg-primary/10 text-primary" :
           trend === 'regressing' ? "bg-destructive/10 text-destructive" :
           "bg-muted text-muted-foreground"
         )}>
@@ -84,7 +84,7 @@ export function ScanComparison({ scanA, scanB, className }: ScanComparisonProps)
           {fixedDelta !== 0 && (
             <p className={cn(
               "text-xs",
-              fixedDelta > 0 ? "text-green-500" : "text-muted-foreground"
+              fixedDelta > 0 ? "text-primary" : "text-muted-foreground"
             )}>
               {fixedDelta > 0 ? '+' : ''}{fixedDelta} fixed
             </p>
