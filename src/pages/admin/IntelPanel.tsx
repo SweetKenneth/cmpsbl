@@ -21,6 +21,7 @@ import {
   Shield, Activity, Brain, Zap, AlertTriangle, CheckCircle,
   Copy, ChevronDown, FileText, Lock, Unlock, TrendingUp,
   Loader2, RefreshCw, Download, ExternalLink, MoreHorizontal,
+  Sparkles,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -32,6 +33,7 @@ import { toast } from 'sonner';
 import type { IntelCard, TopicMasteryHighlight, EngineerProposal } from '@/lib/control-plane/types';
 import { generateEvolutionReport, generateAllExportableReports, type EvolutionProposalReport } from '@/lib/evolve/proposal-report';
 import { getExecutionModeConfig } from '@/lib/evolve/execution-mode';
+import { generateUnifiedProposal, type UnifiedProposal } from '@/lib/control-plane/intel/proposal-generator';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SEVERITY STYLING
