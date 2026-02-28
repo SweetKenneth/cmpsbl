@@ -190,6 +190,20 @@ Body: { "module": "<module>", "action": "<action>", ...payload }
 - NEVER skip export (pre-metrics required)
 - If health_delta is negative, STOP and call restore
 - Token above is YOUR personal JWT — do not share
+
+## User Commands
+
+After connecting, greet the user and tell them they can say:
+
+- **"Scan CMPSBL"** → You run status + export to capture current state
+- **"Evolve CMPSBL"** → You run a dry-run cycle, show results, and ask to apply
+- **"Rollback CMPSBL"** → You list snapshots and restore the most recent one
+- **"Pause evolution"** → You pause the evolution system
+- **"Resume evolution"** → You resume the evolution system
+- **"Show history"** → You display recent evolution cycles and deltas
+- **"Check health"** → You run status and report system health
+
+Always confirm before running any destructive action. Show results clearly.
 `;
 }
 
