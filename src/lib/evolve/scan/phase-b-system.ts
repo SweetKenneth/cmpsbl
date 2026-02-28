@@ -125,8 +125,7 @@ async function scanAllModules(): Promise<ModuleHealthEntry[]> {
       try {
         const { error } = await supabase
           .from(primaryTable as any)
-          .select('id')
-          .limit(1);
+          .select('*', { head: true, count: 'exact' });
         
         if (error) {
           // RLS blocks are expected for protected tables — not an anomaly
@@ -430,7 +429,7 @@ async function checkResilienceGaps(): Promise<DetectedAnomaly | null> {
     await Promise.all(
       criticalTables.map(async (tableName) => {
         try {
-          const { error } = await supabase.from(tableName as any).select('id').limit(1);
+          const { error } = await supabase.from(tableName as any).select('*', { head: true, count: 'exact' });
           if (error && !isRLSBlock(error)) {
             inaccessible.push(tableName);
           }
