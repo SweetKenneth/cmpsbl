@@ -456,7 +456,8 @@ export function SEO({
       <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
       <meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
       
-      {/* RSS & Alternates */}
+      {/* Sitemap & RSS & Alternates */}
+      <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
       <link rel="alternate" type="application/rss+xml" title={`${siteName} Blog RSS`} href="/rss.xml" />
       <link rel="alternate" hrefLang="en" href={resolvedCanonical} />
       <link rel="alternate" hrefLang="x-default" href={resolvedCanonical} />

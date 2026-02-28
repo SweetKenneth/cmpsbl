@@ -87,4 +87,15 @@ self.addEventListener('fetch', (event) => {
     );
     return;
   }
+
+  // SPA navigation fallback — serve index.html for HTML navigation requests
+  if (event.request.mode === 'navigate' && url.origin === self.location.origin) {
+    event.respondWith(
+      fetch(event.request).catch(async () => {
+        const cached = await caches.match('/');
+        return cached || new Response('Offline', { status: 503 });
+      })
+    );
+    return;
+  }
 });

@@ -95,6 +95,26 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Scan result share pages
+    const { data: scans } = await supabase
+      .from('access_scans')
+      .select('id, created_at')
+      .order('created_at', { ascending: false })
+      .limit(200);
+
+    if (scans) {
+      for (const scan of scans) {
+        const lastmod = scan.created_at.split('T')[0];
+        xml += `  <url>
+    <loc>${SITE}/scan/results/${scan.id}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+`;
+      }
+    }
+
     xml += `</urlset>`;
 
     return new Response(xml, { headers: corsHeaders });

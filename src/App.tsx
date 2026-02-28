@@ -238,6 +238,9 @@ const AutoBlogPost = lazy(() => import("./pages/blog/AutoBlogPost"));
 // Lazy conversion + SEO components (Item #4, #6, #14)
 const ConversionTracker = lazy(() => import("@/components/conversion/ConversionTracker").then(m => ({ default: m.ConversionTracker })));
 const LeadCaptureCTA = lazy(() => import("@/components/conversion/LeadCaptureCTA").then(m => ({ default: m.LeadCaptureCTA })));
+const ExitIntentCapture = lazy(() => import("@/components/conversion/ExitIntentCapture").then(m => ({ default: m.ExitIntentCapture })));
+const DesktopCommandPalette = lazy(() => import("@/components/navigation/DesktopCommandPalette").then(m => ({ default: m.DesktopCommandPalette })));
+const ThemeToggle = lazy(() => import("@/components/theme/ThemeToggle").then(m => ({ default: m.ThemeToggle })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -541,6 +544,9 @@ const App = () => {
                         {/* Dynamic AutoBlog Posts */}
                         <Route path="/blog/auto/:slug" element={<AutoBlogPost />} />
                         
+                        {/* Dynamic blog catch-all — serves static blog posts by slug */}
+                        <Route path="/blog/:slug" element={<AutoBlogPost />} />
+                        
                         {/* ===== ORPHANED PAGE REDIRECTS ===== */}
                         {/* These pages exist but are not accessible via nav/footer/CTAs */}
                         {/* Redirecting to home to prevent outdated content access */}
@@ -652,6 +658,9 @@ const App = () => {
                         </main>
                          <Suspense fallback={null}>
                            <ConversionTracker />
+                         </Suspense>
+                         <Suspense fallback={null}>
+                           <ExitIntentCapture />
                          </Suspense>
                          <Suspense fallback={null}>
                            <MobileBottomNav />
