@@ -35,6 +35,7 @@ import { clmTopicPipeline } from '@/lib/control-plane/clm/topic-pipeline';
 import { scanHTML, calculateScore, determineOverallSeverity } from '@/lib/inclusive/scan';
 import { isExternalAIMode } from '@/lib/evolve/execution-mode';
 import { modernizerScan, type ScanResultExtended } from '@/lib/evolve/scan';
+import { recordScanFingerprints, computeNoveltyDiff, type ScanMode } from '@/lib/scan/scan-run-identity';
 import type { IntelCard } from '../types';
 import type { AuditFinding, AuditReport } from '@/lib/audit/audit-types';
 import type { HealthCheckReport } from '@/lib/audit/substrate-health-check';
@@ -572,6 +573,27 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   // Re-number orders
   actionPlan.forEach((step, i) => { step.order = i + 1; });
   
+  // ─── POST-RECONCILIATION: Sync technical_debt with action_plan ───
+  // Modernizer proposals inject tech-debt action steps during buildActionPlan
+  // that aren't reflected in buildTechDebtSection. Reconcile now.
+  const actionPlanDebtItems = actionPlan.filter(s => s.category === 'tech-debt');
+  for (const step of actionPlanDebtItems) {
+    const alreadyInDebt = techDebt.critical.some(c => c.title === step.title || step.title.includes(c.title))
+      || techDebt.warnings.some(w => w.title === step.title || step.title.includes(w.title));
+    if (!alreadyInDebt) {
+      techDebt.warnings.push({
+        id: `ap_${techDebt.warnings.length}`,
+        title: step.title,
+        description: step.description,
+        severity: step.risk === 'high' ? 'error' : 'warn',
+        source: step.instructions.find(i => i.startsWith('Source:') || i.startsWith('Category:')) ?? 'MODERNIZER',
+        suggested_fix: step.instructions.find(i => !i.startsWith('Rollback:') && !i.startsWith('Source:') && !i.startsWith('Category:') && !i.startsWith('Affected') && !i.startsWith('Confidence:')) ?? step.description,
+        affected_area: step.instructions.find(i => i.startsWith('Affected'))?.replace(/^Affected\s*modules?:\s*/i, '') ?? 'system',
+      });
+    }
+  }
+  techDebt.total_issues = techDebt.critical.length + techDebt.warnings.length;
+  
   // Ratio calculation
   const debtSteps = actionPlan.filter(s => s.category !== 'evolution').length;
   const evoSteps = actionPlan.filter(s => s.category === 'evolution').length;
@@ -596,8 +618,39 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     auditState.totalEntries === 0 ? 'empty' :
     chainValid ? 'valid' : 'broken';
 
-  // ─── Scan run identity ───
+  // ─── Scan run identity + novelty filtering ───
+  const tenant_id = 'cmpsbl-substrate';
   const scan_run_id = `scanrun_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+  
+  // Build fingerprints from all action plan items for novelty tracking
+  const currentFingerprints = new Map<string, { severity: string; title: string }>();
+  for (const step of actionPlan) {
+    const fp = `${step.category}:${step.title}`;
+    currentFingerprints.set(fp, { severity: step.risk, title: step.title });
+  }
+  
+  // Compute novelty diff — suppress items that were in previous scans and haven't regressed
+  const noveltyDiff = computeNoveltyDiff(tenant_id, scan_run_id, currentFingerprints);
+  
+  // Filter out suppressed action plan items (recurring items that haven't changed)
+  const suppressedFps = new Set(noveltyDiff.suppressed_findings.map(s => s.fingerprint));
+  if (suppressedFps.size > 0) {
+    const preFilterCount = actionPlan.length;
+    actionPlan = actionPlan.filter(step => {
+      const fp = `${step.category}:${step.title}`;
+      // Never suppress evolution or structural items
+      if (step.category === 'evolution' || step.category === 'structural') return true;
+      return !suppressedFps.has(fp);
+    });
+    // Re-number after filtering
+    actionPlan.forEach((step, i) => { step.order = i + 1; });
+    if (actionPlan.length < preFilterCount) {
+      console.log(`[Proposal] Novelty window suppressed ${preFilterCount - actionPlan.length} recurring item(s)`);
+    }
+  }
+  
+  // Record fingerprints for next scan's novelty comparison
+  recordScanFingerprints(tenant_id, scan_run_id, 'full' as ScanMode, currentFingerprints);
 
   return {
     schema_version: '3.3',
@@ -649,8 +702,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     },
     metadata: {
       signals_analyzed: summary.total_signals,
-      findings_count: techDebt.total_issues,
-      proposals_count: evolution.total,
+      findings_count: techDebt.total_issues + productionAudit.total_findings,
+      proposals_count: evolution.total + actionPlanDebtItems.length,
       audit_checks_run: fullAuditReport?.findings.length ?? 0,
       health_layers_checked: healthReport?.layers.length ?? 0,
       generation_ms: generationMs,
