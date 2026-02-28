@@ -68,7 +68,7 @@ export function EnhancedFooter() {
       title: "Discover",
       links: [
         { name: "Blog", href: "/blog" },
-        { name: "Insights", href: "/insights" },
+        { name: "Scanner", href: "/scanner", highlight: true },
         { name: "Roadmap", href: "/roadmap" },
         { name: "Use Cases", href: "/use-cases" },
         { name: "Showcase", href: "/showcase" },
