@@ -33,6 +33,13 @@ export default defineConfig(({ mode }) => ({
           clientsClaim: true,
         },
       }),
+
+    // SEO: Generate per-route static HTML shells with correct meta tags
+    mode === "production" &&
+      seoPrerender({
+        baseUrl: 'https://cmpsbl.com',
+        routes: prerenderRoutes,
+      }),
   ].filter(Boolean),
   resolve: {
     alias: {
