@@ -557,8 +557,40 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// INCLUSIVE + DEFENSE SCAN RUNNERS
+// INCLUSIVE + DEFENSE + MODERNIZER SCAN RUNNERS
 // ═══════════════════════════════════════════════════════════════
+
+async function runModernizerCognitiveScan(): Promise<UnifiedProposal['modernizer_scan']> {
+  try {
+    const result = await modernizerScan({ dry_run: true });
+    return {
+      scan_completed: true,
+      proposals_found: result.proposals.length,
+      plan_ready: result.plan_ready,
+      plan_status: result.plan?.status ?? 'none',
+      modules_active: result.system_snapshot.modules_active,
+      health_overall: result.system_snapshot.health_overall,
+      edge_risk_flags: result.edge_analysis.risk_flags.length,
+      anomalies_detected: result.system_state.detected_anomalies.length,
+      recommended_action: result.recommended_next_action,
+      scan_duration_ms: result.scan_duration_ms,
+    };
+  } catch (e) {
+    console.warn('[Proposal] MODERNIZER cognitive scan failed (canary safe):', e);
+    return {
+      scan_completed: false,
+      proposals_found: 0,
+      plan_ready: false,
+      plan_status: 'error',
+      modules_active: 0,
+      health_overall: 0,
+      edge_risk_flags: 0,
+      anomalies_detected: 0,
+      recommended_action: 'Modernizer scan failed — investigate errors',
+      scan_duration_ms: 0,
+    };
+  }
+}
 
 async function runInclusiveScan(): Promise<UnifiedProposal['accessibility']> {
   try {
