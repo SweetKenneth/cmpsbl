@@ -34,17 +34,18 @@ const ARCHIVED_CATALOG: ArchivedFunction[] = [
 
 // Expected active functions for substrate
 // Maps expected name → acceptable deployed aliases
+// Updated 2026-02-28: Removed phantom entries (agency-webhooks, pf-orchestrator, pf-stripe-webhook)
+// agency work → pf-agency-execute-task, orchestration → pf-substrate, stripe → marketplace-fulfill
 const EXPECTED_ACTIVE: Record<string, string[]> = {
   'pf-substrate': ['pf-substrate', 'substrate'],
   'evolution-receipts': ['evolution-receipts'],
   'evolution-control': ['evolution-control'],
   'pf-agency-execute-task': ['pf-agency-execute-task', 'agency-execute-task'],
-  'agency-webhooks': ['agency-webhooks'],
   'pf-modernizer-rebuild': ['pf-modernizer-rebuild'],
-  'pf-orchestrator': ['pf-orchestrator'],
-  'pf-stripe-webhook': ['pf-stripe-webhook'],
   'pf-clm-engine': ['pf-clm-engine'],
   'passkey-auth': ['passkey-auth'],
+  'marketplace-fulfill': ['marketplace-fulfill'],
+  'pf-nexus-router': ['pf-nexus-router'],
 };
 
 // ═══════════════════════════════════════════════════════════════
