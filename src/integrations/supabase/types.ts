@@ -7931,6 +7931,30 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_captures: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          page_url: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          page_url?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          page_url?: string | null
+          source?: string | null
+        }
+        Relationships: []
+      }
       learning_confidence: {
         Row: {
           confidence_score: number | null
