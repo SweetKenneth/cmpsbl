@@ -82,6 +82,17 @@ Session-scoped rerouting with circuit breaker integration:
 - `handleScanSuccess(state, taskId, result)` → record + update circuit
 - `getSessionHealth(state)` → completion %, failed providers list
 
+### (#42) Multi-Model Consensus
+Routes ambiguous findings to multiple AI providers simultaneously for higher-confidence classification.
+
+- **Model Selection:** Budget-aware greedy selection from category-specific model pools
+- **Verdict Aggregation:** Weighted majority voting with configurable agreement threshold (default 70%)
+- **Cost Control:** `maxBudgetMillicents` caps total spend per consensus request
+
+**Key Functions:**
+- `selectConsensusModels(category, config?)` → provider/model pairs within budget
+- `aggregateVerdicts(findingId, verdicts, threshold?)` → confirmed/rejected/split verdict
+
 ## Core Modules
 | Module | Path | Purpose |
 |---|---|---|
@@ -95,6 +106,7 @@ Session-scoped rerouting with circuit breaker integration:
 | Cache | `src/lib/nexus/cache.ts` | Response caching |
 | Learning | `src/lib/nexus/learning.ts` | Provider performance learning |
 | Metrics | `src/lib/nexus/metrics.ts` | Telemetry collection |
+| Multi-Model Consensus | `src/lib/scan/integrations/nexus-multi-model-consensus.ts` | Scanner finding consensus |
 
 ## Failure Modes
 - **Provider outage**: Primary provider unavailable → automatic fallback chain activation

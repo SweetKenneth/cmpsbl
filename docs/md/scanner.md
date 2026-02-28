@@ -42,6 +42,18 @@ The Scanner is a 5-phase forensic auditing pipeline that discovers, understands,
 | 23 | Proposal Chain Dependency | EVOLUTION | `integrations/evolution-proposal-chain.ts` |
 | 27 | Auto-Regression Testing | EVOLUTION | `integrations/evolution-auto-regression.ts` |
 | 30 | Fix Verification Loop | — | `integrations/fix-verification-loop.ts` |
+| 31 | Semantic Similarity Clustering | MEMORY | `integrations/memory-semantic-clustering.ts` |
+| 32 | Cross-Session Pattern Matching | MEMORY | `integrations/memory-cross-session-patterns.ts` |
+| 33 | Cognitive Load Estimation | CORTEX | `integrations/cortex-cognitive-load.ts` |
+| 34 | Self-Assessment Calibration | CORTEX | `integrations/cortex-false-positive-calibration.ts` |
+| 35 | Offline Optimization Patterns | DREAM | `integrations/dream-offline-optimization.ts` |
+| 36 | Attack Surface Mapping | DEFENSE | `integrations/defense-attack-surface-map.ts` |
+| 37 | Fix Receipt Chain | EVOLUTION | `integrations/evolution-fix-receipt-chain.ts` |
+| 38 | Confidence Decay | EVOLUTION | `integrations/evolution-confidence-decay.ts` |
+| 39 | Scanner Self-Healing | IMMUNE | `integrations/immune-scanner-self-healing.ts` |
+| 40 | Cross-Scanner Resolution | Intent Mesh | `integrations/mesh-cross-scanner-resolution.ts` |
+| 41 | Resource Profiling | VISION | `integrations/vision-resource-profiling.ts` |
+| 42 | Multi-Model Consensus | NEXUS | `integrations/nexus-multi-model-consensus.ts` |
 | — | Scan Scheduling | — | `integrations/scan-scheduler.ts` |
 | — | Finding Persistence | — | `integrations/finding-persistence.ts` |
 
