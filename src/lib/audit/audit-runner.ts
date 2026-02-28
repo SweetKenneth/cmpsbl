@@ -40,18 +40,15 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
   const start = performance.now();
 
   // Phase 1: Fire off the async backend check immediately (network-bound)
-  const supabasePromise = Promise.race([
-    checkSupabaseContracts(),
-    new Promise<AuditFinding[]>((_, reject) =>
-      setTimeout(() => reject(new Error('Backend check timed out after 3s')), 3000)
-    ),
-  ]).catch((err): AuditFinding[] => [{
-    id: 'audit_check_crash_supabase',
-    category: 'supabase',
-    severity: 'warn',
-    title: 'Backend connectivity check incomplete',
-    detail: err?.message || 'Unknown error during backend check',
-  }]);
+  // No artificial timeout — thoroughness over speed
+  const supabasePromise = checkSupabaseContracts()
+    .catch((err): AuditFinding[] => [{
+      id: 'audit_check_crash_supabase',
+      category: 'supabase',
+      severity: 'warn',
+      title: 'Backend connectivity check incomplete',
+      detail: err?.message || 'Unknown error during backend check',
+    }]);
 
   // Phase 2: Run sync checks — grouped by cost
   // Fast checks (no DOM queries or minimal) run first
