@@ -10,6 +10,7 @@
 import { SUBSTRATE_MODULES, type SubstrateModuleName } from '@/lib/core/index';
 import { getRegistrationStats } from '@/lib/terminal/validate-registry';
 import { CRYSTALLIZED_PIPELINES, CRYSTALLIZED_PIPELINE_COUNT } from '@/lib/substrate/crystallized-pipelines';
+import { isTerminalPresent } from '@/lib/terminal/detect';
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -248,8 +249,6 @@ function checkImports(): LayerResult {
 
 /** C. Terminal & Capability Wiring (skipped if no terminal UI detected) */
 function checkTerminal(): LayerResult {
-  const { isTerminalPresent } = require('@/lib/terminal/detect');
-  
   // Skip entirely if no terminal is mounted — don't produce false warnings
   if (!isTerminalPresent()) {
     return layerResult('terminal', 'Terminal & Capability Wiring', [

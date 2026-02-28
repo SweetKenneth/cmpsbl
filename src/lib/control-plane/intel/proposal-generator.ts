@@ -1352,13 +1352,22 @@ function buildActionPlan(
   candidates.sort((a, b) => b.value - a.value);
   
   const seen = new Set<string>();
+  const seenSubjects = new Set<string>(); // Cross-source dedup by subject matter
   const debtSteps: ActionStep[] = [];
   
   for (const candidate of candidates) {
     if (seen.has(candidate.dedup_key)) continue;
     // Also dedup by title similarity
     if (debtSteps.some(s => s.title === candidate.step.title)) continue;
+    
+    // Cross-source semantic dedup: extract the core subject from title/description
+    // so "Anomaly: 4 critical table(s) inaccessible" and "Modernizer: Resolve resilience gap"
+    // don't both appear when they reference the same affected components
+    const subjectKey = extractSubjectKey(candidate.step);
+    if (subjectKey && seenSubjects.has(subjectKey)) continue;
+    
     seen.add(candidate.dedup_key);
+    if (subjectKey) seenSubjects.add(subjectKey);
     debtSteps.push(candidate.step);
     
     // ~85% of budget goes to debt — vibe coders want maximum fixes per scan
