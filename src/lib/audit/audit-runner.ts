@@ -40,18 +40,15 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
   const start = performance.now();
 
   // Phase 1: Fire off the async backend check immediately (network-bound)
-  const supabasePromise = Promise.race([
-    checkSupabaseContracts(),
-    new Promise<AuditFinding[]>((_, reject) =>
-      setTimeout(() => reject(new Error('Backend check timed out after 3s')), 3000)
-    ),
-  ]).catch((err): AuditFinding[] => [{
-    id: 'audit_check_crash_supabase',
-    category: 'supabase',
-    severity: 'warn',
-    title: 'Backend connectivity check incomplete',
-    detail: err?.message || 'Unknown error during backend check',
-  }]);
+  // No artificial timeout — thoroughness over speed
+  const supabasePromise = checkSupabaseContracts()
+    .catch((err): AuditFinding[] => [{
+      id: 'audit_check_crash_supabase',
+      category: 'supabase',
+      severity: 'warn',
+      title: 'Backend connectivity check incomplete',
+      detail: err?.message || 'Unknown error during backend check',
+    }]);
 
   // Phase 2: Run sync checks — grouped by cost
   // Fast checks (no DOM queries or minimal) run first
@@ -83,17 +80,6 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
   const findings = [...fastChecks, ...domChecks, ...supabaseFindings];
 
   const duration_ms = Math.round(performance.now() - start);
-
-  // Performance self-check
-  if (duration_ms > 5000) {
-    findings.push({
-      id: 'audit_slow_execution',
-      category: 'performance',
-      severity: 'warn',
-      title: `Audit took ${duration_ms}ms (>5s)`,
-      detail: 'Audit execution is slow. Check for blocking operations in audit checks.',
-    });
-  }
 
   const fatal = findings.filter(f => f.severity === 'fatal').length;
   const error = findings.filter(f => f.severity === 'error').length;

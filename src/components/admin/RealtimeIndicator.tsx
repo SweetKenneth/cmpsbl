@@ -21,6 +21,7 @@ export function RealtimeIndicator() {
             size="sm"
             onClick={reconnect}
             disabled={status.isReconnecting}
+            aria-label={status.isReconnecting ? "Reconnecting to realtime" : status.isConnected ? "Realtime connected" : "Realtime disconnected — click to reconnect"}
             className={cn(
               "relative transition-all duration-300",
               status.isConnected ? "text-green-500 hover:text-green-600" : "text-red-500 hover:text-red-600",
