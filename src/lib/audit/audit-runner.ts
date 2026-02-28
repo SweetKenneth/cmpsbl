@@ -14,6 +14,7 @@ import { checkSEO } from './checks/seo';
 import { checkUIContracts } from './checks/ui-contracts';
 import { checkHooksContracts } from './checks/hooks-contracts';
 import { checkBrandingContracts } from './checks/branding-contracts';
+import { checkProviderBranding } from './checks/provider-branding';
 import { checkSupabaseContracts } from './checks/supabase-contracts';
 
 function uid(): string {
