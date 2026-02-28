@@ -743,6 +743,8 @@ function buildActionPlan(
   diligence: UnifiedProposal['diligence'],
   productionAudit: UnifiedProposal['production_audit'],
   structuralHealth: UnifiedProposal['structural_health'],
+  accessibilityData: UnifiedProposal['accessibility'],
+  securityData: UnifiedProposal['security_posture'],
 ): ActionStep[] {
   const steps: ActionStep[] = [];
   let order = 1;
@@ -852,8 +854,63 @@ function buildActionPlan(
     });
   }
   
-  // Priority 6: Evolution opportunities (low risk first)
-  for (const item of evolution.proposals.filter(p => p.risk_level === 'low').slice(0, 3)) {
+  // Priority 5.5: Accessibility critical issues
+  for (const issue of accessibilityData.top_issues.filter(i => i.severity === 'critical').slice(0, 3)) {
+    steps.push({
+      order: order++,
+      category: 'tech-debt',
+      title: `A11y: ${issue.description}`,
+      description: `WCAG ${issue.wcag} — ${issue.fixable ? 'auto-fixable' : 'manual fix'}.`,
+      risk: 'medium',
+      instructions: [
+        `WCAG Criterion: ${issue.wcag}`,
+        issue.fixable ? 'Run inclusive.repair to auto-fix this issue.' : 'Manual review and fix required.',
+        'Re-run inclusive.scan to verify resolution.',
+      ],
+    });
+  }
+  
+  // Priority 5.6: Security issues from DEFENSE
+  for (const issue of securityData.security_issues.slice(0, 3)) {
+    steps.push({
+      order: order++,
+      category: 'tech-debt',
+      title: `Security: ${issue.title}`,
+      description: issue.description,
+      risk: issue.severity === 'critical' ? 'high' : 'medium',
+      instructions: [
+        `Source: ${issue.source}`,
+        issue.suggested_fix,
+        'Re-run defense.posture to verify fix.',
+      ],
+    });
+  }
+  
+  // Priority 6: Audit gaps
+  for (const gap of auditGaps) {
+    steps.push({
+      order: order++,
+      category: 'audit',
+      title: `Audit: ${gap}`,
+      description: 'Compliance gap that weakens the system audit trail.',
+      risk: 'low',
+      instructions: [
+        'Review the audit module configuration',
+        'Ensure all critical modules emit audit events',
+        'Verify chain integrity after changes',
+      ],
+    });
+  }
+  
+  // ═══ EVOLUTION STEPS — capped to maintain 60/40 ratio ═══
+  // Target: evolution steps should be ~40% of total
+  const debtStepsSoFar = steps.length;
+  const maxEvoSteps = Math.max(2, Math.ceil(debtStepsSoFar * (40 / 60)));
+  
+  let evoCount = 0;
+  // Low risk first
+  for (const item of evolution.proposals.filter(p => p.risk_level === 'low').slice(0, maxEvoSteps)) {
+    if (evoCount >= maxEvoSteps) break;
     steps.push({
       order: order++,
       category: 'evolution',
@@ -867,10 +924,12 @@ function buildActionPlan(
         'Apply in shadow/test mode first if possible',
       ],
     });
+    evoCount++;
   }
   
-  // Priority 7: Medium-risk evolution
-  for (const item of evolution.proposals.filter(p => p.risk_level === 'medium').slice(0, 2)) {
+  // Medium-risk evolution
+  for (const item of evolution.proposals.filter(p => p.risk_level === 'medium').slice(0, maxEvoSteps - evoCount)) {
+    if (evoCount >= maxEvoSteps) break;
     steps.push({
       order: order++,
       category: 'evolution',
@@ -884,6 +943,7 @@ function buildActionPlan(
         'Review carefully before applying — medium risk',
       ],
     });
+    evoCount++;
   }
   
   return steps;
@@ -897,11 +957,13 @@ function buildExecutiveSummary(
   risk: string,
   productionAudit: UnifiedProposal['production_audit'],
   structuralHealth: UnifiedProposal['structural_health'],
+  accessibilityData: UnifiedProposal['accessibility'],
+  securityData: UnifiedProposal['security_posture'],
 ): string {
   const parts: string[] = [];
   
   if (structuralHealth.overall_verdict === 'FAIL') {
-    parts.push(`${structuralHealth.structural_issues} structural integrity failure(s)`);
+    parts.push(`${structuralHealth.structural_issues} structural failure(s)`);
   }
   if (productionAudit.fatal > 0 || productionAudit.error > 0) {
     parts.push(`${productionAudit.fatal + productionAudit.error} production audit issue(s)`);
@@ -909,11 +971,14 @@ function buildExecutiveSummary(
   if (techDebt.critical.length > 0) {
     parts.push(`${techDebt.critical.length} critical tech debt item(s)`);
   }
-  if (techDebt.warnings.length > 0) {
-    parts.push(`${techDebt.warnings.length} warning(s)`);
+  if (accessibilityData.total_issues > 0) {
+    parts.push(`${accessibilityData.total_issues} accessibility issue(s) (score: ${accessibilityData.score}/100)`);
+  }
+  if (securityData.security_issues.length > 0) {
+    parts.push(`${securityData.security_issues.length} security issue(s) — threat level: ${securityData.threat_level}`);
   }
   if (diligence.critical_failures.length > 0) {
-    parts.push(`${diligence.critical_failures.length} diligence probe failure(s)`);
+    parts.push(`${diligence.critical_failures.length} diligence failure(s)`);
   }
   if (auditGaps.length > 0) {
     parts.push(`${auditGaps.length} audit gap(s)`);
@@ -923,8 +988,8 @@ function buildExecutiveSummary(
   }
   
   if (parts.length === 0) {
-    return 'System is healthy across all audit layers. No critical issues detected. Minor optimizations may be available.';
+    return 'System is healthy across all 9 audit layers. No critical issues detected. Minor optimizations may be available.';
   }
   
-  return `${parts.join(', ')}. Overall risk: ${risk}. This proposal merges 7 audit sources (SEBA, Full Audit, Substrate Health, Compliance Ledger, Diligence, ENGINEER, INTEL). Copy to your coding agent to apply fixes with human review at each step.`;
+  return `${parts.join(', ')}. Overall risk: ${risk}. Ratio: 60% debt elimination / 40% evolution. This proposal merges 9 audit sources (SEBA, Full Audit, Substrate Health, Compliance Ledger, Diligence, ENGINEER, INTEL, INCLUSIVE, DEFENSE). Copy to your coding agent to apply fixes with human review at each step.`;
 }
