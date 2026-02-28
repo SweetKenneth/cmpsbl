@@ -54,7 +54,7 @@ export default function Explore() {
   }
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
+    <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible relative">
       <SEO 
         title="Composable AI Infrastructure | CMPSBL"
         description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 artifact slots. Modular AI substrate for agentic systems that learn."
