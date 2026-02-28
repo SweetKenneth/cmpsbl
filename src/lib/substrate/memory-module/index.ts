@@ -150,8 +150,23 @@ export function initMemoryModule(): void {
   try {
     initCircuitBreaker('memory', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('memory', SUBSTRATE_VERSION);
+    
+    // Start automatic circuit recovery for all modules
+    startAutoRecovery();
+    
+    // Start automatic tiering if enabled
+    if (state.tieringConfig.autoTieringEnabled) {
+      startAutoTiering();
+    }
+    
     state.initialized = true;
-    emitSucceeded('memory', 'init', { totalVectors: state.totalVectors, engineId: moduleEngine.instance.id, version: SUBSTRATE_VERSION });
+    emitSucceeded('memory', 'init', { 
+      totalVectors: state.totalVectors, 
+      engineId: moduleEngine.instance.id, 
+      version: SUBSTRATE_VERSION,
+      autoTiering: state.tieringConfig.autoTieringEnabled,
+      autoRecovery: true,
+    });
   } catch (err) {
     state.initialized = true;
     emitFailed('memory', 'init', err instanceof Error ? err.message : String(err));
