@@ -72,24 +72,8 @@ export default function Explore() {
 
       <PublicNav />
 
-      {/* Ambient animated mesh background */}
-      <div className="fixed inset-0 pointer-events-none z-[-1]" aria-hidden="true">
-        <div className="absolute inset-0 gradient-mesh opacity-40" />
-        <motion.div
-          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full"
-          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.04) 0%, transparent 60%)" }}
-          animate={{ x: [-100, 100, -100], y: [-50, 50, -50] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full"
-          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.03) 0%, transparent 60%)" }}
-          animate={{ x: [100, -100, 100], y: [50, -50, 50] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
-
       {/* Hero Section — H1 rotation and diagram UNTOUCHED */}
+      <div className="relative z-10">
       <HeroMetaSubstrate />
 
       {/* Live System Metrics Bar */}
