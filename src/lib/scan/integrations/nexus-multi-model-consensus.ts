@@ -87,7 +87,7 @@ export function selectConsensusModels(
 
   // Ensure minimum
   if (selected.length < cfg.minModels && pool.length >= cfg.minModels) {
-    return pool.slice(0, cfg.minModels);
+    return pool.slice(0, cfg.minModels).map(m => ({ provider: m.provider, model: m.model, estimatedCost: m.cost }));
   }
 
   return selected.map(m => ({ provider: m.provider, model: m.model, estimatedCost: m.cost }));
