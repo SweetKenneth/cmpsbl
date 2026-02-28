@@ -390,6 +390,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   
   // Audit gaps
   const auditGaps: string[] = [];
+  const monitoredCount = auditState.modulesMonitored.length;
   if (!chainValid) {
     auditGaps.push(`Audit chain broken at index ${chainVerification.brokenAt}`);
   }
@@ -397,7 +398,6 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   if (auditState.totalEntries === 0 && monitoredCount > 0) {
     auditGaps.push(`${monitoredCount} modules monitored but 0 audit entries — check emission pipeline`);
   }
-  const monitoredCount = auditState.modulesMonitored.length;
   const auditModules = new Set(recentAuditEntries.map(e => e.module));
   if (auditModules.size < monitoredCount * 0.5) {
     auditGaps.push(`Only ${auditModules.size}/${monitoredCount} modules have audit coverage`);
