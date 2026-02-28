@@ -469,23 +469,31 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     governanceChain, modernizerData, rawModernizerResult,
   );
   
-  // ─── Convert minor diligence to proposal (max 1) ───
+  // ─── Convert minor diligence to proposal (max 1) with probe details ───
   if (diligenceData.failed > 0 && diligenceData.critical_failures.length === 0) {
     const existingDiligenceSteps = actionPlan.filter(s => s.category === 'diligence');
     if (existingDiligenceSteps.length === 0) {
+      const probeInstructions = [
+        `${diligenceData.failed} of ${diligenceData.total} probes returned minor failures.`,
+      ];
+      // Include exact failing probe details
+      for (const probe of diligenceData.failed_probes) {
+        probeInstructions.push(`  ▸ [${probe.severity}] ${probe.name} (${probe.command})`);
+        probeInstructions.push(`    Expected: ${probe.expected}`);
+        probeInstructions.push(`    Actual: ${probe.actual}`);
+        probeInstructions.push(`    Hint: ${probe.hint}`);
+        probeInstructions.push(`    Module: ${probe.source}`);
+      }
+      probeInstructions.push(`Rollback: restore pre-snapshot state (snapshot: ${governanceChain.snapshot_id}).`);
+      probeInstructions.push('Re-run diligence battery to confirm fix.');
+
       actionPlan.push({
         order: actionPlan.length + 1,
         category: 'diligence',
         title: 'Resolve minor diligence failures',
         description: `${diligenceData.failed} minor probe(s) failed. No critical failures detected.`,
         risk: 'low',
-        instructions: [
-          `${diligenceData.failed} of ${diligenceData.total} probes returned minor failures.`,
-          'Review failing probes for response shape or guard issues.',
-          'Implement missing handlers or output normalization.',
-          `Rollback: restore pre-snapshot state (snapshot: ${governanceChain.snapshot_id}).`,
-          'Re-run diligence battery to confirm fix.',
-        ],
+        instructions: probeInstructions,
       });
     }
   }
@@ -499,9 +507,10 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     !c.source.includes('INCLUSIVE') && !c.title.startsWith('A11y:')
   );
   const hasCriticalDebt = realCriticalDebt.length > 0;
+  const hasDiligenceFailures = diligenceData.failed > 0;
   const systemIsStable = !hasStructuralFailures && !hasProductionFatals && !hasCriticalDebt;
   
-  if (systemIsStable) {
+  if (systemIsStable && !hasDiligenceFailures) {
     const existingEvoSteps = actionPlan.filter(s => s.category === 'evolution');
     if (existingEvoSteps.length === 0) {
       const nextTopic = clmTopicPipeline.selectNextTopic();
@@ -538,6 +547,23 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         evolution.total = evolution.proposals.length;
       }
     }
+  } else if (systemIsStable && hasDiligenceFailures) {
+    // Evolution blocked by diligence failures — inject gated notice
+    const nextTopic = clmTopicPipeline.selectNextTopic();
+    const topicTitle = nextTopic?.title ?? 'System Hardening & Optimization';
+    actionPlan.push({
+      order: actionPlan.length + 1,
+      category: 'evolution',
+      title: `Blocked: ${topicTitle}`,
+      description: `Evolution blocked: ${diligenceData.failed} diligence probe(s) failed. Fix probes before curriculum advancement.`,
+      risk: 'low',
+      instructions: [
+        `blocked: true`,
+        `blocked_reason: diligence_failed`,
+        `Topic: ${topicTitle} — cannot be promoted until diligence passes.`,
+        `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+      ],
+    });
   }
   
   // ─── ENFORCE PROPOSAL CAP (max 15, preserve priority order) ───
