@@ -586,9 +586,7 @@ const App = () => {
                          </Suspense>
                           {/* ExitIntentCapture disabled — full-screen overlay was blocking page content */}
                           {/* <Suspense fallback={null}><ExitIntentCapture /></Suspense> */}
-                          <Suspense fallback={null}>
-                            <MobileBottomNav />
-                          </Suspense>
+                          {/* MobileBottomNav removed — was covering site content */}
                           <Suspense fallback={null}>
                             <BackToTop />
                           </Suspense>
