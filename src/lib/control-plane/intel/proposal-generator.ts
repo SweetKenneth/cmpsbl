@@ -333,10 +333,17 @@ function applySebaStamp(proposal: Partial<UnifiedProposal>, governanceChain: Gov
 export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   const startTime = performance.now();
   
-  // ─── STEP 0: Snapshot Discipline (Pre-Generation) ───
+  // ─── STEP 0a: Clear stale state for a fresh scan ───
+  intelAggregator.clear();
+  engineerNode.clear();
+  
+  // ─── STEP 0b: Snapshot Discipline (Pre-Generation) ───
   const governanceChain = await runModernizerGovernanceChain();
   
-  // ─── 1. INTEL + ENGINEER (existing) ───
+  // ─── 1. INTEL + ENGINEER (fresh run) ───
+  // Run the maintenance battery first to populate findings/signals
+  await engineerNode.runMaintenanceBattery();
+  
   const allCards = intelAggregator.getCards({ limit: 100 });
   const criticalCards = intelAggregator.getCriticals(20);
   const summary = intelAggregator.getSummary();

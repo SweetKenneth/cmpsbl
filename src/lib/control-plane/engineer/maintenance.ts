@@ -276,4 +276,10 @@ export const engineerNode = {
     resolved_this_period: findings.filter(f => f.resolved).length,
     last_check: lastCheckTimestamp,
   }),
+  /** Clear all accumulated findings and proposals for a fresh scan */
+  clear: () => {
+    findings.length = 0;
+    proposals.length = 0;
+    lastCheckTimestamp = null;
+  },
 };
