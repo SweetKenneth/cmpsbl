@@ -95,11 +95,18 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
         >
           <div className="flex justify-between items-start mb-4">
             <div className="text-xs text-muted-foreground">
-              {step + 1} / {STEPS.length}
+              Step {step + 1} of {STEPS.length}
             </div>
             <button onClick={onDismiss} className="text-muted-foreground hover:text-foreground">
               <X className="h-4 w-4" />
             </button>
+          </div>
+          {/* Progress bar */}
+          <div className="w-full h-1.5 bg-muted rounded-full mb-4 overflow-hidden">
+            <div
+              className="h-full bg-primary rounded-full transition-all duration-300"
+              style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
+            />
           </div>
 
           <AnimatePresence mode="wait">

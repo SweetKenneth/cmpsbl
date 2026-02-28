@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Globe, Loader2 } from 'lucide-react';
+import { Plus, Trash2, Globe, Loader2, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getUserWebhooks, registerWebhook, type WebhookConfig } from '@/lib/scan/scan-webhooks';
 import { supabase } from '@/integrations/supabase/client';
@@ -73,6 +73,27 @@ export function WebhookConfigPanel() {
           <div key={w.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border">
             <code className="flex-1 text-xs text-foreground truncate">{w.url}</code>
             <span className="text-xs text-muted-foreground">{w.events.join(', ')}</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              title="Test webhook"
+              onClick={async () => {
+                try {
+                  const res = await fetch(w.url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ event: 'scan.test', domain: 'example.com', score: 85, timestamp: new Date().toISOString() }),
+                    mode: 'no-cors',
+                  });
+                  toast.success('Test ping sent');
+                } catch {
+                  toast.error('Ping failed — check the URL');
+                }
+              }}
+            >
+              <Zap className="w-4 h-4 text-primary" />
+            </Button>
             <Button variant="ghost" size="icon" onClick={() => handleDelete(w.id)} className="h-8 w-8">
               <Trash2 className="w-4 h-4 text-destructive" />
             </Button>
