@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, Terminal, Zap, RotateCcw, FileSearch, Activity, Pause, Play, History, Settings2, Shield } from "lucide-react";
+import { Copy, Check, Terminal, Zap, RotateCcw, FileSearch, Activity, Pause, Play, History, Settings2, Shield, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 
