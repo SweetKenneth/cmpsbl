@@ -161,8 +161,8 @@ function HeroBackground() {
         }}
       />
       
-      {/* Vignette */}
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.5) 100%)" }} />
+      {/* Vignette — reduced opacity to prevent washing out content */}
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.3) 100%)" }} />
     </div>
   );
 }
@@ -208,7 +208,9 @@ export function HeroMetaSubstrate() {
                 style={{
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
-                  color: "transparent",
+                  WebkitTextFillColor: "transparent",
+                  backgroundImage: "linear-gradient(90deg, hsl(188 98% 50%), hsl(271 91% 65%), hsl(330 90% 60%), hsl(271 91% 65%), hsl(188 98% 50%))",
+                  backgroundSize: "300% 100%",
                   padding: "0 0.15em 0.05em 0",
                 }}
               >
