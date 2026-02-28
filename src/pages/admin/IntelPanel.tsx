@@ -211,7 +211,7 @@ export default function IntelPanel() {
         {criticals.length > 0 && (
           <section>
             <h2 className="text-lg font-semibold mb-3 text-foreground flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-red-500" />
+              <AlertTriangle className="w-5 h-5 text-destructive" />
               Critical Issues
             </h2>
             <div className="space-y-3">
