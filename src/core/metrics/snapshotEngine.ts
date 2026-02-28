@@ -42,6 +42,7 @@ export interface TrendPoint {
 const snapshots: MetricSnapshot[] = [];
 const MAX_SNAPSHOTS = 144; // 24 hours at 10-min intervals
 let captureInterval: ReturnType<typeof setInterval> | null = null;
+let totalCaptureCount = 0;
 
 function generateSnapshotId(): string {
   return crypto.randomUUID();
@@ -74,6 +75,7 @@ export async function capture(): Promise<MetricSnapshot> {
   };
 
   snapshots.push(snapshot);
+  totalCaptureCount++;
 
   // Evict old snapshots
   while (snapshots.length > MAX_SNAPSHOTS) {

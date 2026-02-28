@@ -8,7 +8,7 @@
 import { registerModuleAdapter } from './metrics/metricsRegistry';
 import { startSnapshotEngine } from './metrics/snapshotEngine';
 
-// Module Adapters
+// Module Adapters — 13 modules
 import { defenseAdapter } from './metrics/moduleAdapters/defense.adapter';
 import { nexusAdapter } from './metrics/moduleAdapters/nexus.adapter';
 import { rippleAdapter } from './metrics/moduleAdapters/ripple.adapter';
@@ -16,6 +16,12 @@ import { memoryAdapter } from './metrics/moduleAdapters/memory.adapter';
 import { accessAdapter } from './metrics/moduleAdapters/access.adapter';
 import { visionAdapter } from './metrics/moduleAdapters/vision.adapter';
 import { shadowmeshAdapter } from './metrics/moduleAdapters/shadowmesh.adapter';
+import { brainAdapter } from './metrics/moduleAdapters/brain.adapter';
+import { cortexAdapter } from './metrics/moduleAdapters/cortex.adapter';
+import { economyAdapter } from './metrics/moduleAdapters/economy.adapter';
+import { encodeAdapter } from './metrics/moduleAdapters/encode.adapter';
+import { integrationAdapter } from './metrics/moduleAdapters/integration.adapter';
+import { systemAdapter } from './metrics/moduleAdapters/system.adapter';
 
 let stopSnapshot: (() => void) | null = null;
 
@@ -24,19 +30,19 @@ let stopSnapshot: (() => void) | null = null;
  * Call once at app boot. Returns a teardown function.
  */
 export function initializeGOAL(): () => void {
-  // Register all module adapters
-  registerModuleAdapter(defenseAdapter);
-  registerModuleAdapter(nexusAdapter);
-  registerModuleAdapter(rippleAdapter);
-  registerModuleAdapter(memoryAdapter);
-  registerModuleAdapter(accessAdapter);
-  registerModuleAdapter(visionAdapter);
-  registerModuleAdapter(shadowmeshAdapter);
+  // Register all module adapters (13 modules)
+  const adapters = [
+    defenseAdapter, nexusAdapter, rippleAdapter, memoryAdapter,
+    accessAdapter, visionAdapter, shadowmeshAdapter,
+    brainAdapter, cortexAdapter, economyAdapter,
+    encodeAdapter, integrationAdapter, systemAdapter,
+  ];
+  adapters.forEach(registerModuleAdapter);
 
   // Start snapshot engine (captures every 10 minutes)
   stopSnapshot = startSnapshotEngine();
 
-  console.log('[GOAL] Global Observability Access Layer initialized — 7 adapters, snapshot engine active');
+  console.log(`[GOAL] Global Observability Access Layer initialized — ${adapters.length} adapters, snapshot engine active`);
 
   return () => {
     if (stopSnapshot) {

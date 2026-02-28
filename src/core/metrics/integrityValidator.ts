@@ -97,17 +97,31 @@ export async function runIntegrityCheck(): Promise<IntegrityReport> {
     }
   }
 
-  // 5. Cross-module consistency (example: total requests should be consistent)
+  // 5. Negative counter detection
+  for (const [moduleId, metrics] of liveMetrics) {
+    for (const [key, val] of Object.entries(metrics.counters)) {
+      if (val < 0) {
+        discrepancies.push({
+          type: 'invalid_range',
+          moduleA: moduleId,
+          metricA: key,
+          valueA: val,
+          message: `Counter "${key}" in "${moduleId}" has negative value: ${val}`,
+        });
+        crossChecksFailed++;
+      }
+    }
+  }
+
+  // 6. Cross-module consistency (same-named counters should not differ by > 10x)
   const moduleEntries = Array.from(liveMetrics.entries());
   for (let i = 0; i < moduleEntries.length; i++) {
     for (let j = i + 1; j < moduleEntries.length; j++) {
       const [idA, mA] = moduleEntries[i];
       const [idB, mB] = moduleEntries[j];
 
-      // Check if shared counter names have plausible values
       const sharedKeys = Object.keys(mA.counters).filter(k => k in mB.counters);
       for (const key of sharedKeys) {
-        // Same-named counters in different modules should not differ by > 10x
         const valA = mA.counters[key];
         const valB = mB.counters[key];
         if (valA > 0 && valB > 0) {

@@ -7,7 +7,7 @@
  * No narrative text. Only structured numeric state.
  */
 
-export type MetricUnit = 'count' | 'percent' | 'ms' | 'rate' | 'score';
+export type MetricUnit = 'count' | 'percent' | 'ms' | 'rate' | 'score' | 'bytes' | 'ratio';
 
 export interface NumericMetric {
   metricName: string;
