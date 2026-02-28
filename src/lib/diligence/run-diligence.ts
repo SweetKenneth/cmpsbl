@@ -104,19 +104,19 @@ const UNKNOWN_NAMESPACE: Array<{ name: string; command: string }> = [
   { name: 'Unknown namespace - xyz.status', command: 'xyz.status' },
 ];
 
-function classifyResult(res: CommandResult, expectedMode: 'surface' | 'failure' | 'unknown'): { success: boolean; severity: Severity; notes?: string } {
+function classifyResult(res: CommandResult, expectedMode: 'surface' | 'failure' | 'unknown'): { success: boolean; severity: Severity; notes?: string; expected?: string; actual?: string } {
   // CommandResult always has { success, trace_id, output?, error?, ... }
   if (expectedMode === 'surface') {
     if (!res.success) {
       const errMsg = res.error?.safe_message || res.error?.message || 'Surface command failed';
-      return { success: false, severity: 'CRITICAL', notes: errMsg };
+      return { success: false, severity: 'CRITICAL', notes: errMsg, expected: 'success: true', actual: `success: false (${res.error?.code ?? 'unknown'})` };
     }
     return { success: true, severity: 'PASS' };
   }
 
   if (expectedMode === 'unknown') {
     // We expect a clean NOT_FOUND failure
-    if (res.success) return { success: false, severity: 'MINOR', notes: 'Unknown command unexpectedly succeeded' };
+    if (res.success) return { success: false, severity: 'MINOR', notes: 'Unknown command unexpectedly succeeded', expected: 'NOT_FOUND error', actual: 'success: true' };
     if (res.error?.code === 'NOT_FOUND') return { success: true, severity: 'PASS' };
     return { success: true, severity: 'PASS', notes: `Failed with code: ${res.error?.code}` };
   }
@@ -129,7 +129,7 @@ function classifyResult(res: CommandResult, expectedMode: 'surface' | 'failure' 
   if (output && output.success === false) {
     return { success: true, severity: 'PASS', notes: 'Handler returned usage guard (guarded output shape)' };
   }
-  return { success: true, severity: 'MINOR', notes: 'Command succeeded; verify this is intended (guardrails)' };
+  return { success: true, severity: 'MINOR', notes: 'Command succeeded without usage guard', expected: 'success: false or usage guard', actual: 'success: true (unguarded)' };
 }
 
 async function runOne(name: string, command: string, expectedMode: 'surface' | 'failure' | 'unknown'): Promise<TestResult> {
@@ -146,6 +146,8 @@ async function runOne(name: string, command: string, expectedMode: 'surface' | '
       success: verdict.success,
       severity: verdict.severity,
       notes: verdict.notes,
+      expected: verdict.expected,
+      actual: verdict.actual,
       responseShape: {
         keys: Object.keys(res),
         success: res.success,
@@ -165,6 +167,8 @@ async function runOne(name: string, command: string, expectedMode: 'surface' | '
       success: false,
       severity: 'CRITICAL',
       notes: `THREW: ${msg}`,
+      expected: 'no exception',
+      actual: `threw: ${msg}`,
     };
   }
 }
@@ -184,5 +188,21 @@ export async function runDiligence(): Promise<DiligenceReport> {
     critical: results.filter(r => r.severity === 'CRITICAL').length,
   };
 
-  return { summary, results, timestamp: new Date().toISOString() };
+  // Build failed_probes detail for every non-PASS result
+  const failed_probes: FailedProbeInfo[] = results
+    .filter(r => r.severity !== 'PASS')
+    .map((r, i) => ({
+      id: `probe_${i}_${r.command.replace('.', '_')}`,
+      name: r.name,
+      command: r.command,
+      severity: r.severity as 'MINOR' | 'CRITICAL',
+      expected: r.expected ?? 'PASS',
+      actual: r.actual ?? r.notes ?? 'unknown',
+      hint: r.severity === 'CRITICAL'
+        ? `Critical failure in ${r.command} — check handler registration and error boundaries`
+        : `Minor issue in ${r.command} — verify guardrail output shape`,
+      source: r.command.split('.')[0]?.toUpperCase() ?? 'UNKNOWN',
+    }));
+
+  return { summary, results, failed_probes, timestamp: new Date().toISOString() };
 }
