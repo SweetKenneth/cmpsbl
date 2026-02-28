@@ -132,6 +132,7 @@ const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDas
 const GovernanceControlPlane = lazy(() => import("./pages/admin/GovernanceControlPlane"));
 const EvolutionMeshLanding = lazy(() => import("./pages/EvolutionMeshLanding"));
 const Architecture = lazy(() => import("./pages/Architecture"));
+const IntelPanel = lazy(() => import("./pages/admin/IntelPanel"));
 
 const Status = lazy(() => import("./pages/Status"));
 const SystemIntegrity = lazy(() => import("./pages/SystemIntegrity"));
@@ -518,6 +519,7 @@ const App = () => {
                         <Route path="/admin/evolution" element={<AdminRoute><EvolutionMeshDashboard /></AdminRoute>} />
                         <Route path="/admin/governance" element={<AdminRoute><GovernanceControlPlane /></AdminRoute>} />
                         <Route path="/admin/quarry" element={<AdminRoute><QuarryDashboard /></AdminRoute>} />
+                        <Route path="/admin/intel" element={<AdminRoute><IntelPanel /></AdminRoute>} />
                         <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />

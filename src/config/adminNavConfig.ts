@@ -20,6 +20,7 @@ import {
   Hammer,
   Terminal,
   Gauge,
+  Eye,
   type LucideIcon,
 } from "lucide-react";
 
@@ -40,13 +41,12 @@ export interface NavGroup {
 
 export const adminNavConfig: NavGroup[] = [
   {
-    id: "core",
-    title: "Core",
+    id: "control-plane",
+    title: "Control Plane",
     items: [
+      { id: "intel", label: "INTEL Panel", path: "/admin/intel", icon: Eye, isNew: true },
       { id: "os", label: "Substrate", path: "/os", icon: Cpu },
       { id: "substrate", label: "Dashboard", path: "/substrate", icon: LayoutDashboard },
-      { id: "system-feed", label: "System Feed", path: "/system-feed", icon: Brain, isNew: true },
-      { id: "dream-eater", label: "Dream Eater", path: "/feed-dream-eater", icon: Moon },
       { id: "decode", label: "Decode", path: "/decode", icon: Terminal },
     ],
   },
@@ -78,11 +78,21 @@ export const adminNavConfig: NavGroup[] = [
     id: "system",
     title: "System",
     items: [
-      { id: "immunity-mesh", label: "Immunity Mesh", path: "/admin/immunity-mesh", icon: Shield, isNew: true },
-      { id: "evolution", label: "Evolution Dashboard", path: "/admin/evolution", icon: Zap, isNew: true },
+      { id: "governance", label: "Governance", path: "/admin/governance", icon: Shield },
+      { id: "immunity-mesh", label: "Immunity Mesh", path: "/admin/immunity-mesh", icon: Shield },
+      { id: "evolution", label: "Evolution", path: "/admin/evolution", icon: Zap },
+      { id: "diligence", label: "Diligence", path: "/diligence", icon: ScrollText },
+      { id: "audit", label: "Audit Trail", path: "/audit", icon: ScrollText },
+    ],
+  },
+  {
+    id: "surfaces",
+    title: "Surfaces",
+    items: [
+      { id: "system-feed", label: "System Feed", path: "/system-feed", icon: Brain },
+      { id: "dream-eater", label: "Dream Eater", path: "/feed-dream-eater", icon: Moon },
       { id: "proof", label: "Proof Mode", path: "/proof", icon: Shield },
       { id: "demo", label: "Demo", path: "/demo", icon: Activity },
-      { id: "audit", label: "Audit Trail", path: "/audit", icon: ScrollText },
       { id: "lab", label: "Lab", path: "/lab", icon: HeartPulse },
     ],
   },
