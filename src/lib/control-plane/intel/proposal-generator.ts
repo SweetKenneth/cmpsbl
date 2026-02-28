@@ -379,6 +379,9 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   // ─── 7. DEFENSE — security posture + anomaly detection ───
   const securityData = await runDefenseScan();
   
+  // ─── 8. MODERNIZER SCAN — 4-phase cognitive systems scan ───
+  const modernizerData = await runModernizerCognitiveScan();
+  
   // ═══ BUILD SECTIONS ═══
   const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport, accessibilityData, securityData);
   const evolution = buildEvolutionSection(existingProposals, allCards);
