@@ -50,11 +50,12 @@ export function LeadCaptureCTA({ context = 'general', className = '', variant = 
 
     setStatus('loading');
     try {
-      const { error } = await supabase.from('lead_captures').insert({
+      const insertData: Record<string, unknown> = {
         email: email.toLowerCase().trim(),
         source: context,
         page_url: window.location.pathname,
-      });
+      };
+      const { error } = await supabase.from('lead_captures' as any).insert(insertData);
       if (error && !error.message.includes('duplicate')) throw error;
       setStatus('success');
       setEmail('');
