@@ -24,6 +24,16 @@ const NotFound = () => {
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    // Track 404 in analytics
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      supabase.from('analytics_events').insert({
+        event_type: '404',
+        category: 'error',
+        page: location.pathname,
+        label: document.referrer || 'direct',
+        metadata: { userAgent: navigator.userAgent?.slice(0, 200) },
+      } as any).then(() => {});
+    });
   }, [location.pathname]);
 
   // Fuzzy match suggestions based on the attempted path
