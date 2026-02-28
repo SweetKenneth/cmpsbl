@@ -54,7 +54,7 @@ export default function Explore() {
   }
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible relative">
+    <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
         title="Composable AI Infrastructure | CMPSBL"
         description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 artifact slots. Modular AI substrate for agentic systems that learn."
@@ -71,6 +71,23 @@ export default function Explore() {
       />
 
       <PublicNav />
+
+      {/* Ambient animated mesh background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 gradient-mesh opacity-80" />
+        <motion.div
+          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 60%)" }}
+          animate={{ x: [-100, 100, -100], y: [-50, 50, -50] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, transparent 60%)" }}
+          animate={{ x: [100, -100, 100], y: [50, -50, 50] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
 
       {/* Hero Section — H1 rotation and diagram UNTOUCHED */}
       <HeroMetaSubstrate />
@@ -102,7 +119,7 @@ export default function Explore() {
       <GovernanceSignal />
 
       {/* Final CTA — Cinematic closing */}
-      <section className="relative px-4 py-14 sm:py-32">
+      <section className="relative z-10 px-4 py-14 sm:py-32">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}

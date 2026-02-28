@@ -688,7 +688,4 @@ All colors MUST be HSL.
 }
 
 /* Non-critical animations (substrate voice, decode orb, clockless river)
-   are loaded on-demand via src/styles/deferred.css — see line below */
-
-/* Non-critical animations (substrate voice, decode orb, clockless river)
    are loaded on-demand via src/styles/deferred.css */

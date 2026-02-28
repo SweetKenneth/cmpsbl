@@ -21,12 +21,14 @@ const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
 // Defer non-critical CSS (substrate voice, decode orb, clockless river animations)
 const loadDeferredCSS = () => import("@/styles/deferred.css");
 // Deferred utility imports — loaded dynamically to reduce initial JS
+import { isEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
 // Mobile crash diagnostics (opt-in via ?diag=1) — lazy loaded
 // CRITICAL: DiagErrorBoundary must be EAGERLY loaded so it can catch crashes
 // before any lazy/Suspense resolution. Lazy-loading an error boundary defeats its purpose.
 import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";
-
+const MobilePreviewSafeMode = lazy(() => import("@/components/system/MobilePreviewSafeMode").then(m => ({ default: m.MobilePreviewSafeMode })));
+const DiagPanelLazy = lazy(() => import("@/components/system/DiagPanel").then(m => ({ default: m.DiagPanel })));
 
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
@@ -48,8 +50,16 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Route transition loader removed to prevent full-screen overlay flashes
-
+// Route transition loader — subtle branded indicator
+const PageLoader = () => (
+  <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="flex flex-col items-center gap-3">
+      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center animate-pulse">
+        <div className="w-3 h-3 rounded-full bg-primary/60" />
+      </div>
+    </div>
+  </div>
+);
 
 // Lazy-load mobile bottom nav, back-to-top, and onboarding
 const MobileBottomNav = lazy(() => import("@/components/navigation/MobileBottomNav").then(m => ({ default: m.MobileBottomNav })));
@@ -231,8 +241,8 @@ const LeadCaptureCTA = lazy(() => import("@/components/conversion/LeadCaptureCTA
 const ExitIntentCapture = lazy(() => import("@/components/conversion/ExitIntentCapture").then(m => ({ default: m.ExitIntentCapture })));
 const DesktopCommandPalette = lazy(() => import("@/components/navigation/DesktopCommandPalette").then(m => ({ default: m.DesktopCommandPalette })));
 const ThemeToggle = lazy(() => import("@/components/theme/ThemeToggle").then(m => ({ default: m.ThemeToggle })));
+const KeyboardShortcutsHelp = lazy(() => import("@/components/navigation/KeyboardShortcutsHelp").then(m => ({ default: m.KeyboardShortcutsHelp })));
 const RateLimitFeedback = lazy(() => import("@/components/ui/RateLimitFeedback").then(m => ({ default: m.RateLimitFeedback })));
-
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -246,6 +256,28 @@ const queryClient = new QueryClient({
 // Note: Route protection is handled by AuthProvider and individual page-level auth checks
 
 const App = () => {
+  const isPreviewEnv = isEditorPreviewEnv();
+
+  const previewParams = (() => {
+    try {
+      const url = new URL(window.location.href);
+      return {
+        previewFull: url.searchParams.get("previewFull") === "1",
+        previewSafe: url.searchParams.get("previewSafe") === "1",
+      };
+    } catch {
+      return { previewFull: false, previewSafe: false };
+    }
+  })();
+
+  const isMobileDevice =
+    typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
+
+  // Default: Safe Mode in embedded mobile preview.
+  // Override with ?previewFull=1
+  const mobilePreviewSafeMode =
+    (previewParams.previewSafe || (isPreviewEnv && isMobileDevice)) && !previewParams.previewFull;
+
   // Always allow substrate init — no gates, all systems operational
   const substrateAutoInit = true;
 
@@ -296,7 +328,7 @@ const App = () => {
   // Force debug mode OFF on startup
   useEffect(() => {
     import("@/lib/debug-mode").then(({ debugMode }) => {
-      if (debugMode.isEnabled()) {
+      if (!mobilePreviewSafeMode && debugMode.isEnabled()) {
         debugMode.disable();
       }
     });
@@ -318,11 +350,14 @@ const App = () => {
 
   return (
     <DiagErrorBoundary>
-      <Suspense fallback={null}>
-        <MotionConfigWrapper reducedMotion="user">
+      {mobilePreviewSafeMode ? (
+        <MobilePreviewSafeMode />
+      ) : (
+        <Suspense fallback={null}>
+        <MotionConfigWrapper reducedMotion={isPreviewEnv ? "always" : "user"}>
           <QueryClientProvider client={queryClient}>
           <SEOProvider>
-            <Suspense fallback={null}>
+            <Suspense fallback={<PageLoader />}>
               <SubstrateProvider autoInit={substrateAutoInit}>
                 <TooltipProvider>
                   <SmartToastRenderer />
@@ -339,7 +374,7 @@ const App = () => {
                       <Suspense fallback={null}>
                         <RegisterPasskeyPrompt />
                       </Suspense>
-                       <Suspense fallback={null}>
+                       <Suspense fallback={<PageLoader />}>
                         <main id="main-content">
                         <Routes>
                           {/* Core Public Pages */}
@@ -584,16 +619,21 @@ const App = () => {
                          <Suspense fallback={null}>
                            <ConversionTracker />
                          </Suspense>
-                          {/* ExitIntentCapture disabled — full-screen overlay was blocking page content */}
-                          {/* <Suspense fallback={null}><ExitIntentCapture /></Suspense> */}
-                          {/* MobileBottomNav removed — was covering site content */}
+                         <Suspense fallback={null}>
+                           <ExitIntentCapture />
+                         </Suspense>
+                         <Suspense fallback={null}>
+                           <MobileBottomNav />
+                         </Suspense>
+                         <Suspense fallback={null}>
+                           <BackToTop />
+                         </Suspense>
                           <Suspense fallback={null}>
-                            <BackToTop />
+                            <OnboardingWrapper />
                           </Suspense>
-                          {/* OnboardingWrapper disabled — full-screen overlay was blocking page content */}
-                          {/* <Suspense fallback={null}><OnboardingWrapper /></Suspense> */}
-                          {/* Keyboard shortcuts overlay removed to prevent full-screen takeover */}
-
+                          <Suspense fallback={null}>
+                            <KeyboardShortcutsHelp />
+                          </Suspense>
                           <Suspense fallback={null}>
                             <RateLimitFeedback />
                           </Suspense>
@@ -609,7 +649,12 @@ const App = () => {
         </QueryClientProvider>
       </MotionConfigWrapper>
       </Suspense>
+      )}
 
+      {/* Diagnostic panel - only renders when ?diag=1 is present */}
+      <Suspense fallback={null}>
+        <DiagPanelLazy />
+      </Suspense>
     </DiagErrorBoundary>
   );
 };

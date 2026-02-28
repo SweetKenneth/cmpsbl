@@ -3,10 +3,12 @@
  * Clean, reorganized navigation with no dead links
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
+  Menu,
+  X,
   ChevronRight,
   Code,
   Layers,
@@ -55,7 +57,9 @@ interface NavSection {
 }
 
 export function CmpsblNav() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [expandedMobileSection, setExpandedMobileSection] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -73,8 +77,15 @@ export function CmpsblNav() {
   }, []);
 
   useEffect(() => {
+    setMobileMenuOpen(false);
     setActiveSection(null);
+    setExpandedMobileSection(null);
   }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -362,13 +373,207 @@ export function CmpsblNav() {
                 )}
               </div>
 
-              {/* Mobile fullscreen menu removed to prevent page-covering overlay */}
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={cn(
+                  "lg:hidden relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 touch-manipulation border",
+                  mobileMenuOpen
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card hover:bg-secondary border-border text-foreground"
+                )}
+                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileMenuOpen}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={mobileMenuOpen ? "close" : "menu"}
+                    initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
+                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                    exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                  </motion.div>
+                </AnimatePresence>
+              </button>
             </div>
           </nav>
         </div>
       </motion.header>
 
-      {/* Mobile fullscreen menu removed to avoid any overlay covering site content */}
+      {/* ═══ MOBILE NAV ═══ */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[9999] lg:hidden"
+          >
+            <motion.div className="absolute inset-0 bg-background pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.05 }}
+              className="relative h-full pt-20 pb-8 px-5 overflow-y-auto safe-area-inset momentum-scroll"
+            >
+              {/* Mobile Header */}
+              <div className="mb-6">
+                <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="flex items-center gap-3">
+                  <CmpsblLogo size="md" />
+                  <div>
+                    <div className="text-xl font-bold tracking-tight">Clockless</div>
+                    <div className="text-xs text-muted-foreground font-medium">Cognitive Reality</div>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Mobile Quick Actions */}
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
+                {[
+                  { name: "Upgrade", href: "/upgrade", icon: Package },
+                  { name: "Cognitives", href: "/composable-cognitives", icon: Zap },
+                  { name: "Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
+                  { name: "Showcase", href: "/showcase", icon: Rocket },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      "flex items-center gap-3 p-4 rounded-xl transition-all touch-manipulation",
+                      "bg-card hover:bg-secondary border border-border shadow-sm",
+                      isActive(item.href) && "bg-primary/10 border-primary/30"
+                    )}
+                  >
+                    <item.icon className={cn("w-5 h-5", isActive(item.href) ? "text-primary" : "text-muted-foreground")} />
+                    <div className="flex items-center gap-2">
+                      <span className={cn("text-sm font-semibold", isActive(item.href) && "text-primary")}>{item.name}</span>
+                      {item.badge && (
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase bg-primary/10 text-primary border border-primary/30">{item.badge}</span>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </motion.div>
+
+              {/* Mobile Nav Sections */}
+              <div className="space-y-2">
+                {navSections.map((section, sectionIdx) => (
+                  <motion.div
+                    key={section.name}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 + sectionIdx * 0.03 }}
+                    className="rounded-xl border border-border overflow-hidden bg-card"
+                  >
+                    <button
+                      onClick={() => setExpandedMobileSection(expandedMobileSection === section.name ? null : section.name)}
+                      className="w-full flex items-center justify-between p-4 touch-manipulation"
+                      aria-expanded={expandedMobileSection === section.name}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
+                          <section.icon className="w-4.5 h-4.5 text-muted-foreground" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-semibold text-sm">{section.name}</div>
+                          <div className="text-xs text-muted-foreground">{section.items.length} items</div>
+                        </div>
+                      </div>
+                      <motion.div animate={{ rotate: expandedMobileSection === section.name ? 90 : 0 }} transition={{ duration: 0.2 }}>
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      </motion.div>
+                    </button>
+
+                    <AnimatePresence>
+                      {expandedMobileSection === section.name && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-3 pb-3 space-y-1">
+                            {section.items.map((item) => (
+                              <Link
+                                key={item.href}
+                                to={item.href}
+                                className={cn(
+                                  "flex items-center gap-3 p-3 rounded-lg transition-colors touch-manipulation hover:bg-muted",
+                                  isActive(item.href) && "bg-primary/10"
+                                )}
+                              >
+                                {item.icon && (
+                                  <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", isActive(item.href) ? "bg-primary/10" : "bg-secondary")}>
+                                    <item.icon className={cn("w-4 h-4", isActive(item.href) ? "text-primary" : "text-muted-foreground")} />
+                                  </div>
+                                )}
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <span className={cn("font-medium text-sm", isActive(item.href) && "text-primary")}>{item.name}</span>
+                                    {item.badge && (
+                                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">{item.badge}</span>
+                                    )}
+                                  </div>
+                                  {item.description && (
+                                    <span className="text-xs text-muted-foreground line-clamp-1">{item.description}</span>
+                                  )}
+                                </div>
+                                <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Mobile Auth */}
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="mt-8 pt-6 border-t border-border">
+                {user ? (
+                  <div className="space-y-3">
+                    <Button asChild className="w-full h-12 rounded-xl font-semibold">
+                      <Link to="/os">
+                        <Command className="w-4 h-4 mr-2" />
+                        Open Dashboard
+                      </Link>
+                    </Button>
+                    <Button variant="outline" onClick={handleSignOut} className="w-full h-11 rounded-xl">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <Button asChild className="w-full h-12 rounded-xl font-semibold">
+                      <Link to="/upgrade">
+                        Get Started
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full h-11 rounded-xl">
+                      <Link to="/auth">Sign In</Link>
+                    </Button>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* Mobile Footer */}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span>All Systems Operational</span>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Spacer */}
       <div className="h-20 sm:h-16 lg:h-[72px]" />
