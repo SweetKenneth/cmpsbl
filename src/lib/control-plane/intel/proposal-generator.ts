@@ -132,6 +132,19 @@ export interface UnifiedProposal {
     security_issues: SecurityIssueItem[];
   };
   
+  modernizer_scan: {
+    scan_completed: boolean;
+    proposals_found: number;
+    plan_ready: boolean;
+    plan_status: string;
+    modules_active: number;
+    health_overall: number;
+    edge_risk_flags: number;
+    anomalies_detected: number;
+    recommended_action: string;
+    scan_duration_ms: number;
+  };
+  
   action_plan: ActionStep[];
   
   guardrails: {
