@@ -114,7 +114,7 @@ export function RadioPlayer({ className }: { className?: string }) {
           "h-8 w-8 sm:h-9 sm:w-9 relative shrink-0",
           isPlaying && "text-primary"
         )}
-        title="CMPSBL Radio"
+        aria-label="CMPSBL Radio"
       >
         <Radio className={cn(
           "w-3.5 h-3.5 sm:w-4 sm:h-4",
@@ -193,6 +193,7 @@ export function RadioPlayer({ className }: { className?: string }) {
                   onClick={togglePlay}
                   disabled={!broadcast || isLoading}
                   className="h-10 w-10 rounded-full"
+                  aria-label={isPlaying ? "Pause radio" : "Play radio"}
                 >
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                 </Button>
