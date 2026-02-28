@@ -27,9 +27,14 @@ export function UnifiedAdminSidebar() {
   const location = useLocation();
   
   // Track which groups are expanded on mobile (all expanded by default)
-  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
-    () => new Set(adminNavConfig.map(g => g.id))
-  );
+  // Auto-expand group containing active route, collapse others on mobile
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
+    const active = adminNavConfig.find(g => 
+      g.items.some(i => location.pathname === i.path || location.pathname.startsWith(i.path + "/"))
+    );
+    // On initial load: expand the active group (or all if desktop)
+    return new Set(active ? [active.id] : adminNavConfig.map(g => g.id));
+  });
   
   const toggleGroup = useCallback((groupId: string) => {
     setExpandedGroups(prev => {
