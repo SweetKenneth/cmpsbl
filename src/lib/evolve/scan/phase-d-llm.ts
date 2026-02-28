@@ -200,31 +200,13 @@ async function callLLM(prompt: string): Promise<string> {
     });
   }
   
-  if (prompt.includes("'Automatic Circuit Recovery'")) {
-    recommendations.push({
-      title: 'Configure automatic circuit recovery',
-      category: 'resilience',
-      rationale: 'Missing automatic circuit recovery requires manual intervention for every circuit trip.',
-      expected_impact: 'Reduce MTTR from hours to minutes for transient failures',
-      risk_level: 'low',
-      confidence_score: 0.85,
-      requires_human: false,
-      supporting_evidence: ['missing_capabilities includes Automatic Circuit Recovery'],
-    });
-  }
+  // NOTE: Circuit recovery IS implemented (core-circuit-recovery module).
+  // The old check false-flagged when evolution_circuit table was absent.
+  // Removed to prevent persistent false-positive proposals.
   
-  if (prompt.includes('orphaned')) {
-    recommendations.push({
-      title: 'Review orphaned edge functions',
-      category: 'cleanup',
-      rationale: 'Orphaned functions consume resources and may pose security risks if unmaintained.',
-      expected_impact: 'Reduce attack surface and maintenance overhead',
-      risk_level: 'low',
-      confidence_score: 0.7,
-      requires_human: true,
-      supporting_evidence: ['repurpose_candidates includes orphaned functions'],
-    });
-  }
+  // NOTE: "orphaned" edge functions are actually archived/repurposed functions.
+  // They are intentionally preserved and should not be flagged as tech debt.
+  // Removed to prevent persistent false-positive cleanup proposals.
   
   return JSON.stringify(recommendations);
 }

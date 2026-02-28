@@ -148,10 +148,11 @@ function buildEvidenceMap(input: MergeInput): Map<string, Set<string>> {
     addEvidence(map, flag.risk_type, 'edge');
     addEvidence(map, flag.description.toLowerCase(), 'edge');
   }
+  // Repurpose candidates are archived functions that have been intentionally
+  // preserved or repurposed. They are NOT orphaned — do not inject orphan/deprecated
+  // evidence which triggers false-positive cleanup proposals in the LLM phase.
   for (const candidate of input.edge_analysis.repurpose_candidates) {
     addEvidence(map, candidate.overlap_type, 'edge');
-    addEvidence(map, 'orphaned', 'edge');
-    addEvidence(map, 'deprecated', 'edge');
   }
   
   // Add system state evidence

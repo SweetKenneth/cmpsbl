@@ -304,26 +304,11 @@ async function checkRateLimitCapability(): Promise<MissingCapability[] | null> {
 }
 
 async function checkCircuitRecoveryCapability(): Promise<MissingCapability[] | null> {
-  try {
-    const { data: circuits, error } = await supabase
-      .from('evolution_circuit')
-      .select('*', { head: true, count: 'exact' });
-    
-    // RLS block or empty = circuit infrastructure exists, auto-recovery is a config detail
-    if (error) {
-      const msg = (error.message || '').toLowerCase();
-      if (msg.includes('does not exist')) {
-        return [{
-          capability: 'Automatic Circuit Recovery',
-          category: 'resilience',
-          impact: 'medium',
-          recommendation: 'Configure auto-reset for circuit breakers',
-        }];
-      }
-    }
-    // Table exists → circuit breaker infrastructure present
-    return null;
-  } catch { return null; }
+  // Circuit recovery is implemented in src/lib/substrate/core-circuit-recovery/
+  // and started during substrate initialization. The evolution_circuit table
+  // is not required — the circuit breaker module handles recovery independently.
+  // This check previously false-flagged when the table didn't exist.
+  return null;
 }
 
 async function checkAccessCapability(): Promise<MissingCapability[] | null> {
