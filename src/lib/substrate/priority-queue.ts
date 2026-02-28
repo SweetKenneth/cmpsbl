@@ -90,3 +90,42 @@ export class PriorityQueue<T = unknown> {
 
 /** Singleton for substrate task scheduling */
 export const substrateQueue = new PriorityQueue();
+
+// ── Backward-compatible named exports expected by useMatrixResilience ──
+
+const completedTasks: Array<{ id: string; data: unknown; completedAt: number }> = [];
+let maxConcurrent = 5;
+
+export function enqueue(id: string, data: unknown, priority = 0, deadlineMs?: number): void {
+  substrateQueue.enqueue(id, data, priority, deadlineMs);
+}
+
+export function dequeue(): QueueItem | null {
+  return substrateQueue.dequeue();
+}
+
+export function complete(id: string): void {
+  completedTasks.push({ id, data: null, completedAt: Date.now() });
+  if (completedTasks.length > 200) completedTasks.splice(0, 50);
+}
+
+export function getQueueState() {
+  return {
+    ...substrateQueue.stats(),
+    maxConcurrent,
+    pending: substrateQueue.size,
+    next: substrateQueue.peek(),
+  };
+}
+
+export function clearQueue(): void {
+  substrateQueue.clear();
+}
+
+export function setMaxConcurrent(n: number): void {
+  maxConcurrent = Math.max(1, n);
+}
+
+export function getCompletedTasks() {
+  return [...completedTasks];
+}
