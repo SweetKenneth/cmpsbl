@@ -41,7 +41,20 @@ export interface TestResult {
   success: boolean;
   severity: Severity;
   notes?: string;
+  expected?: string;
+  actual?: string;
   responseShape?: unknown;
+}
+
+export interface FailedProbeInfo {
+  id: string;
+  name: string;
+  command: string;
+  severity: 'MINOR' | 'CRITICAL';
+  expected: string;
+  actual: string;
+  hint: string;
+  source: string;
 }
 
 export interface DiligenceReport {
@@ -52,6 +65,7 @@ export interface DiligenceReport {
     critical: number;
   };
   results: TestResult[];
+  failed_probes: FailedProbeInfo[];
   timestamp: string;
 }
 

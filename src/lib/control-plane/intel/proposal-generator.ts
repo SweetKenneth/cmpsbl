@@ -54,11 +54,26 @@ const MAX_CLEAN_RUN_PROPOSALS = 1;
 // SCHEMA — Agent-consumable proposal v3.3
 // ═══════════════════════════════════════════════════════════════
 
+export interface FailedProbeDetail {
+  id: string;
+  name: string;
+  command: string;
+  severity: 'MINOR' | 'CRITICAL';
+  expected: string;
+  actual: string;
+  hint: string;
+  source: string;
+}
+
 export interface UnifiedProposal {
   schema_version: '3.3';
   generated_at: string;
   system_id: 'cmpsbl-substrate';
   proposal_type: 'unified-evolution';
+  
+  /** Scan run identity for cache invalidation and freshness tracking */
+  scan_run_id: string;
+  scan_mode: 'quick' | 'full';
   
   /** ~85% debt / ~15% evolution — maximize fixes per scan */
   ratio: { debt_pct: number; evolution_pct: number };
@@ -98,7 +113,9 @@ export interface UnifiedProposal {
   };
 
   audit_health: {
+    /** @deprecated Use chain_state instead */
     chain_valid: boolean;
+    chain_state: 'empty' | 'valid' | 'broken';
     total_entries: number;
     modules_monitored: number;
     compliance_score: number;
@@ -110,6 +127,8 @@ export interface UnifiedProposal {
     failed: number;
     total: number;
     critical_failures: string[];
+    /** Detailed info on every failing probe */
+    failed_probes: FailedProbeDetail[];
   };
   
   accessibility: {
