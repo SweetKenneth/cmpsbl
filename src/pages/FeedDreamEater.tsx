@@ -118,7 +118,9 @@ const FeedDreamEater = () => {
     }
   }, [dreamContent, dreamType, optInExcerpt, consume]);
 
-  const currentMood = (state?.current_mood || 'calm') as DreamEaterMood;
+  const VALID_MOODS: DreamEaterMood[] = ['calm', 'curious', 'agitated', 'fractured', 'dormant', 'feral', 'dreaming'];
+  const rawMood = (state?.current_mood || 'calm') as string;
+  const currentMood: DreamEaterMood = VALID_MOODS.includes(rawMood as DreamEaterMood) ? (rawMood as DreamEaterMood) : 'calm';
   const mutationLevel = state?.mutation_level || 0;
 
   return (
