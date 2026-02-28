@@ -129,6 +129,7 @@ const Templates = lazy(() => import("./pages/Templates"));
 const Packs = lazy(() => import("./pages/Packs"));
 const CapabilityMap = lazy(() => import("./pages/CapabilityMap"));
 const ScanResult = lazy(() => import("./pages/ScanResult"));
+const Scanner = lazy(() => import("./pages/Scanner"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const RuntimeReference = lazy(() => import("./pages/docs/RuntimeReference"));
@@ -430,6 +431,8 @@ const App = () => {
                          
                          {/* Scan result share page — Item #3 */}
                          <Route path="/scan/results/:id" element={<ScanResult />} />
+                         <Route path="/scan" element={<Scanner />} />
+                         <Route path="/scanner" element={<Scanner />} />
                          
                          <Route path="/status" element={<Status />} />
                         <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
