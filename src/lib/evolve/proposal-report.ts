@@ -206,7 +206,7 @@ function buildAgentBriefing(
     : 'Most changes are reversible, but some high-risk items should be reviewed carefully before proceeding.';
 
   return {
-    preamble: `I've analyzed the latest evolution report for the substrate. Here's what I found and what I recommend.`,
+    preamble: `⛔ MANDATORY CONSENT PROTOCOL: Before I make any changes, here is the full scan summary. I need your explicit approval before proceeding with ANY of these items.`,
 
     fixes,
     deletions,
@@ -219,28 +219,36 @@ function buildAgentBriefing(
       confidence: Math.round(confidence * 100) / 100,
     },
 
-    consent_prompt: `Would you like me to proceed with these changes? ${reversibilityNote}`,
+    consent_prompt: `⛔ I will NOT make any changes until you explicitly approve. ${reversibilityNote} Do you want me to proceed with all items, or would you like to approve them individually?`,
 
     presentation_template: [
-      `I've read the evolution report and here's my plan:`,
+      `⛔ **MANDATORY CONSENT — READ BEFORE I TOUCH ANYTHING**`,
       ``,
-      fixes.length > 0 ? `**Fix:**` : null,
-      ...fixes.map(f => `- ${f.label} — ${f.description}`),
+      `I've analyzed the evolution scan. Here is exactly what it recommends and what each action means for your system.`,
+      ``,
+      fixes.length > 0 ? `### 🔧 Fixes (${fixes.length})` : null,
+      ...fixes.map(f => `- **${f.label}** — ${f.description}\n  - Risk: ${f.risk_level} | Reversible: ${f.reversible ? 'Yes' : '⚠️ No'} | Affects: ${f.affected_modules.join(', ')}\n  - If applied: resolves degraded behavior. If skipped: issue persists.`),
       fixes.length > 0 ? `` : null,
-      deletions.length > 0 ? `**Remove:**` : null,
-      ...deletions.map(d => `- ${d.label} — ${d.description}`),
+      deletions.length > 0 ? `### 🗑️ Removals (${deletions.length})` : null,
+      ...deletions.map(d => `- **${d.label}** — ${d.description}\n  - Risk: ${d.risk_level} | Reversible: ${d.reversible ? 'Yes' : '⚠️ No'} | Affects: ${d.affected_modules.join(', ')}\n  - If applied: reduces attack surface and dead weight. If skipped: stale artifacts remain.`),
       deletions.length > 0 ? `` : null,
-      `**Evolution recommendations from the system:**`,
-      ...evolutionSuggestions.map(e => `- ${e.label} — ${e.description}`),
+      `### 🧬 Evolution Recommendations (${evolutionSuggestions.length})`,
+      ...evolutionSuggestions.map(e => `- **${e.label}** — ${e.description}\n  - Risk: ${e.risk_level} | Reversible: ${e.reversible ? 'Yes' : '⚠️ No'} | Scope: ${e.scope}\n  - If applied: strengthens the substrate. If skipped: system stays at current capability level.`),
       ``,
-      `**My evaluation** is that these changes will:`,
-      ...benefits.map(b => `- ${b}`),
+      `### 📊 My Evaluation`,
+      `**Benefits:**`,
+      ...benefits.map(b => `- ✅ ${b}`),
       ``,
-      ...risks.map(r => `⚠️ ${r}`),
+      `**Risks:**`,
+      ...risks.map(r => `- ⚠️ ${r}`),
+      ``,
+      `**Rollback:** ${proposal.rollback_plan}`,
       ``,
       `${reversibilityNote}`,
       ``,
-      `Would you like me to proceed?`,
+      `---`,
+      `⛔ **I will NOT proceed until you say "yes" or "go ahead."**`,
+      `You can approve all items, pick specific ones, or decline entirely.`,
     ].filter(Boolean).join('\n'),
   };
 }
