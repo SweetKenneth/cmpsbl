@@ -246,6 +246,7 @@ export interface EvolutionItem {
   scope: string;
   rationale: string;
   rollback_plan: string;
+  lesson_explainer?: import('@/lib/control-plane/clm/lesson-explainer').LessonExplainer;
 }
 
 export interface ActionStep {
@@ -255,6 +256,7 @@ export interface ActionStep {
   description: string;
   risk: 'low' | 'medium' | 'high';
   instructions: string[];
+  lesson_explainer?: import('@/lib/control-plane/clm/lesson-explainer').LessonExplainer;
 }
 
 export interface AuditSummaryItem {
