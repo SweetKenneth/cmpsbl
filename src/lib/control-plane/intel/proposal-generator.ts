@@ -572,6 +572,27 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   // Re-number orders
   actionPlan.forEach((step, i) => { step.order = i + 1; });
   
+  // ─── POST-RECONCILIATION: Sync technical_debt with action_plan ───
+  // Modernizer proposals inject tech-debt action steps during buildActionPlan
+  // that aren't reflected in buildTechDebtSection. Reconcile now.
+  const actionPlanDebtItems = actionPlan.filter(s => s.category === 'tech-debt');
+  for (const step of actionPlanDebtItems) {
+    const alreadyInDebt = techDebt.critical.some(c => c.title === step.title || step.title.includes(c.title))
+      || techDebt.warnings.some(w => w.title === step.title || step.title.includes(w.title));
+    if (!alreadyInDebt) {
+      techDebt.warnings.push({
+        id: `ap_${techDebt.warnings.length}`,
+        title: step.title,
+        description: step.description,
+        severity: step.risk === 'high' ? 'error' : 'warn',
+        source: step.instructions.find(i => i.startsWith('Source:') || i.startsWith('Category:')) ?? 'MODERNIZER',
+        suggested_fix: step.instructions.find(i => !i.startsWith('Rollback:') && !i.startsWith('Source:') && !i.startsWith('Category:') && !i.startsWith('Affected') && !i.startsWith('Confidence:')) ?? step.description,
+        affected_area: step.instructions.find(i => i.startsWith('Affected'))?.replace(/^Affected\s*modules?:\s*/i, '') ?? 'system',
+      });
+    }
+  }
+  techDebt.total_issues = techDebt.critical.length + techDebt.warnings.length;
+  
   // Ratio calculation
   const debtSteps = actionPlan.filter(s => s.category !== 'evolution').length;
   const evoSteps = actionPlan.filter(s => s.category === 'evolution').length;
