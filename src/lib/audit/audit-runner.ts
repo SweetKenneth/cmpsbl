@@ -59,6 +59,7 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
     ...runSyncCheck('modules', checkModuleHealth),
     ...runSyncCheck('hooks', checkHooksContracts),
     ...runSyncCheck('branding', checkBrandingContracts),
+    ...runSyncCheck('provider-branding', checkProviderBranding),
   ];
 
   // Terminal check only if detected
