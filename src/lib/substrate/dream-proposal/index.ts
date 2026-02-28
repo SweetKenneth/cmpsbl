@@ -38,7 +38,7 @@ export interface PipelineConfig {
 const DEFAULT_CONFIG: PipelineConfig = {
   min_confidence: 0.6,
   min_novelty: 0.5,
-  max_proposals_per_cycle: 3,
+  max_proposals_per_cycle: 10,
   categories_to_convert: [
     'improvement', 'discovery', 'optimization', 'architecture',
     'security', 'performance', 'learning', 'integration',

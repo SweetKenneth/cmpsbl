@@ -180,5 +180,5 @@ export const DEFAULT_SCAN_CONFIG: ScanConfig = {
   allowed_risk_levels: ['low', 'medium'],
   min_validation_sources: 2,
   llm_model: 'nexus/llama-3.3-70b', // Routes through pf-nexus-router
-  max_proposals: 10,
+  max_proposals: 15,
 };

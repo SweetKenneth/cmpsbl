@@ -2,7 +2,7 @@
  * Unified Proposal Generator v3.3.1
  * 
  * ALL-IN-ONE audit merger with full governance lifecycle.
- * Bounded proposal discipline: max 5 proposals per run.
+ * Thorough scan discipline: up to 15 proposals per run (12-13 fixes + 1-2 evolution).
  * 
  * Sources merged (10 total):
  * 1. SEBA Evolution — cognitive analyzer insights (9 engines)
@@ -22,7 +22,7 @@
  * - SEBA choreographical stamping
  * - External-AI execution barrier enforced
  * 
- * Ratio: 60% tech debt elimination / 40% evolution advancement
+ * Ratio: ~85% tech debt elimination / ~15% evolution advancement (maximize fixes per scan)
  */
 
 import { engineerNode } from '../engineer/maintenance';
@@ -44,8 +44,10 @@ import type { InclusiveIssue } from '@/lib/inclusive/types';
 // CONSTANTS — Bounded Proposal Discipline
 // ═══════════════════════════════════════════════════════════════
 
-const MAX_TOTAL_PROPOSALS_PER_RUN = 5;
-const MAX_DILIGENCE_PROPOSALS = 1;
+const MAX_TOTAL_PROPOSALS_PER_RUN = 15;
+const MAX_DEBT_ITEMS = 13;       // 12-15 actionable fixes per scan
+const MAX_EVOLUTION_ITEMS = 2;   // 1-2 evolution proposals when stable
+const MAX_DILIGENCE_PROPOSALS = 2;
 const MAX_CLEAN_RUN_PROPOSALS = 1;
 
 // ═══════════════════════════════════════════════════════════════
@@ -58,7 +60,7 @@ export interface UnifiedProposal {
   system_id: 'cmpsbl-substrate';
   proposal_type: 'unified-evolution';
   
-  /** 60% debt / 40% evolution — enforced ratio */
+  /** ~85% debt / ~15% evolution — maximize fixes per scan */
   ratio: { debt_pct: number; evolution_pct: number };
   
   executive_summary: string;
@@ -184,7 +186,7 @@ export interface UnifiedProposal {
     };
     discipline: {
       bounded: true;
-      max_proposals: 5;
+      max_proposals: 15;
       external_execution: true;
     };
   };
@@ -547,7 +549,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'Start with low-risk items first to build confidence.',
         'Run the diligence battery again after applying changes.',
         'Structural health failures should be addressed before evolution steps.',
-        'Max 5 proposals per run — bounded discipline enforced.',
+        'Max 15 proposals per run — thorough scan discipline enforced.',
         `Snapshot ID: ${governanceChain.snapshot_id} — rollback target.`,
         'External-AI execution mode: no internal apply permitted.',
       ],
@@ -580,7 +582,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
       },
       discipline: {
         bounded: true,
-        max_proposals: 5,
+        max_proposals: 15,
         external_execution: true,
       },
     },
@@ -1145,8 +1147,8 @@ function buildActionPlan(
     });
   }
   
-  // ─── SOURCE 5: Tech debt warnings (lower value) ───
-  for (const item of techDebt.warnings.slice(0, 10)) {
+  // ─── SOURCE 5: Tech debt warnings (lower value) — include ALL for thorough scan ───
+  for (const item of techDebt.warnings.slice(0, 30)) {
     candidates.push({
       value: severityValue(item.severity) * categoryMultiplier['tech-debt'] * 0.8,
       dedup_key: `debt_w_${item.id}`,
@@ -1223,7 +1225,27 @@ function buildActionPlan(
     });
   }
   
-  // ─── SOURCE 8: Accessibility (lowest priority among debt) ───
+  // ─── SOURCE 8: Production audit warnings (include for thorough scan) ───
+  for (const issue of productionAudit.top_issues.filter(i => i.severity === 'warn')) {
+    candidates.push({
+      value: severityValue(issue.severity) * categoryMultiplier.production * 0.7,
+      dedup_key: `audit_warn_${issue.id}`,
+      step: {
+        order: 0,
+        category: 'production',
+        title: `Warning: ${issue.title}`,
+        description: issue.detail,
+        risk: 'low',
+        instructions: [
+          `Category: ${issue.category}`,
+          issue.hint || `Review the ${issue.category} warning and apply fix.`,
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
+    });
+  }
+  
+  // ─── SOURCE 9: Accessibility (lower priority among debt) ───
   for (const issue of accessibilityData.top_issues) {
     candidates.push({
       value: severityValue(issue.severity) * categoryMultiplier.accessibility,
@@ -1259,15 +1281,15 @@ function buildActionPlan(
     seen.add(candidate.dedup_key);
     debtSteps.push(candidate.step);
     
-    // 60% of budget goes to debt (max 3 debt items to leave room for evolution)
-    if (debtSteps.length >= 3) break;
+    // ~85% of budget goes to debt — vibe coders want maximum fixes per scan
+    if (debtSteps.length >= MAX_DEBT_ITEMS) break;
   }
   
   // ═══════════════════════════════════════════════════════════
   // EVOLUTION STEPS — 40% of budget (min 2 slots when stable)
   // ═══════════════════════════════════════════════════════════
   
-  const evoSlots = Math.max(2, MAX_TOTAL_PROPOSALS_PER_RUN - debtSteps.length);
+  const evoSlots = Math.min(MAX_EVOLUTION_ITEMS, MAX_TOTAL_PROPOSALS_PER_RUN - debtSteps.length);
   const evoSteps: ActionStep[] = [];
   
   for (const item of evolution.proposals.slice(0, evoSlots)) {
@@ -1335,5 +1357,5 @@ function buildExecutiveSummary(
     return 'System is healthy across all 10 audit sources. No critical issues detected. Evolution proposal included — stable systems always evolve.';
   }
   
-  return `${parts.join(', ')}. Overall risk: ${risk}. Bounded discipline: max 5 proposals, 60/40 debt/evolution ratio. Schema v3.3 with governance receipts. Copy to your coding agent to apply fixes with human review at each step.`;
+  return `${parts.join(', ')}. Overall risk: ${risk}. Thorough scan: up to 15 proposals, ~85/15 debt/evolution ratio. Schema v3.3 with governance receipts. Copy to your coding agent to apply fixes with human review at each step.`;
 }
