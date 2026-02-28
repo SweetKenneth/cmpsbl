@@ -292,11 +292,13 @@ const App = () => {
       import("@/lib/defense/site-guard"),
       import("@/lib/analytics/site-tracker"),
       import("@/lib/client/diag"),
-    ]).then(([watchdog, tracking, guard, analytics, diag]) => {
+      import("@/lib/telemetry/error-telemetry"),
+    ]).then(([watchdog, tracking, guard, analytics, diag, telemetry]) => {
       const c1 = watchdog.installMobileWatchdog();
       const c2 = tracking.installLastInteractionTracking();
       const c3 = guard.installSiteGuard();
       analytics.initSiteAnalytics();
+      telemetry.installGlobalErrorHandler();
       cleanupRef.current = [c1, c2, c3].filter(Boolean) as (() => void)[];
 
       if (diag.diagEnabled()) {
