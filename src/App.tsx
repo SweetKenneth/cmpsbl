@@ -61,8 +61,7 @@ const PageLoader = () => (
   </div>
 );
 
-// Lazy-load mobile bottom nav, back-to-top, and onboarding
-const MobileBottomNav = lazy(() => import("@/components/navigation/MobileBottomNav").then(m => ({ default: m.MobileBottomNav })));
+// Lazy-load back-to-top and onboarding
 const BackToTop = lazy(() => import("@/components/navigation/BackToTop").then(m => ({ default: m.BackToTop })));
 const OnboardingWrapper = lazy(() => import("@/components/onboarding/OnboardingOverlay").then(m => {
   const { useOnboarding, OnboardingOverlay } = m;
@@ -622,10 +621,7 @@ const App = () => {
                          <Suspense fallback={null}>
                            <ExitIntentCapture />
                          </Suspense>
-                         <Suspense fallback={null}>
-                           <MobileBottomNav />
-                         </Suspense>
-                         <Suspense fallback={null}>
+                          <Suspense fallback={null}>
                            <BackToTop />
                          </Suspense>
                           <Suspense fallback={null}>
