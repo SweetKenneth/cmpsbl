@@ -1,10 +1,10 @@
 /**
- * Unified Proposal Generator v3.3
+ * Unified Proposal Generator v3.3.1
  * 
  * ALL-IN-ONE audit merger with full governance lifecycle.
  * Bounded proposal discipline: max 5 proposals per run.
  * 
- * Sources merged:
+ * Sources merged (10 total):
  * 1. SEBA Evolution — cognitive analyzer insights (9 engines)
  * 2. Full Audit Runner — production readiness checks
  * 3. Substrate Health Check — structural integrity across 8 layers
@@ -14,6 +14,7 @@
  * 7. INTEL Aggregator — cross-system signal correlation
  * 8. INCLUSIVE Module — WCAG 2.2 accessibility scan (86-rule engine)
  * 9. DEFENSE Module — security posture, anomalies, threat landscape
+ * 10. MODERNIZER Scan — 4-phase cognitive systems scan (edge/system/health/LLM)
  * 
  * Governance lifecycle:
  * - Modernizer snapshot before generation
@@ -33,6 +34,7 @@ import { substrate } from '@/lib/substrate';
 import { clmTopicPipeline } from '@/lib/control-plane/clm/topic-pipeline';
 import { scanHTML, calculateScore, determineOverallSeverity } from '@/lib/inclusive/scan';
 import { isExternalAIMode } from '@/lib/evolve/execution-mode';
+import { modernizerScan, type ScanResultExtended } from '@/lib/evolve/scan';
 import type { IntelCard } from '../types';
 import type { AuditFinding, AuditReport } from '@/lib/audit/audit-types';
 import type { HealthCheckReport } from '@/lib/audit/substrate-health-check';
