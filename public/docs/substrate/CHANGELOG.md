@@ -74,7 +74,7 @@
 ### Terminal
 
 - **Updated Commands** — `modernizer.scan --explain`, `modernizer.scan --llm-report`, `modernizer.scan --dry-run`.
-- **Nexus Routing** — All LLM reasoning routes through `pf-nexus-router` (no Lovable AI gateway).
+- **Nexus Routing** — All LLM reasoning routes through `pf-nexus-router` (no external AI gateway).
 - **Full Command Parity** — Terminal and API return identical 200 OK responses.
 
 ### Documentation

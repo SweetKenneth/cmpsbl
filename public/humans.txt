@@ -21,7 +21,7 @@ Last update: 2026/02/27
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
-Backend: Lovable Cloud
+Backend: CMPSBL Cloud
 AI: Multi-provider orchestration via Nexus
 
 Standards: HTML5, CSS3, ES2024

@@ -1,6 +1,6 @@
 import React from "react";
 
-const DEFAULT_PUBLISHED_URL = "https://cmpsbl.lovable.app";
+const DEFAULT_PUBLISHED_URL = "https://cmpsbl.com";
 
 function buildPreviewFullUrl(): string {
   try {
