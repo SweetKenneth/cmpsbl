@@ -5,13 +5,14 @@
 
 import { Helmet } from 'react-helmet-async';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FlaskConical, RotateCcw, TrendingUp, MessageSquareWarning, ArrowLeft } from 'lucide-react';
+import { FlaskConical, RotateCcw, TrendingUp, MessageSquareWarning, ArrowLeft, Plug } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { DryRunPreview } from '@/components/evolution/DryRunPreview';
 import { RollbackPanel } from '@/components/evolution/RollbackPanel';
 import { ScanTrendDashboard } from '@/components/evolution/ScanTrendDashboard';
 import { FalsePositiveFeedback } from '@/components/evolution/FalsePositiveFeedback';
+import { AgentConnectGuide } from '@/components/evolution/AgentConnectGuide';
 
 export default function EvolutionControlCenter() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function EvolutionControlCenter() {
 
           {/* Tabs */}
           <Tabs defaultValue="dry-run" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4 h-auto">
+            <TabsList className="grid w-full grid-cols-5 h-auto">
               <TabsTrigger value="dry-run" className="flex items-center gap-1.5 text-xs sm:text-sm py-2">
                 <FlaskConical className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Dry-Run</span> Preview
@@ -60,6 +61,10 @@ export default function EvolutionControlCenter() {
               <TabsTrigger value="feedback" className="flex items-center gap-1.5 text-xs sm:text-sm py-2">
                 <MessageSquareWarning className="w-3.5 h-3.5" />
                 Feedback
+              </TabsTrigger>
+              <TabsTrigger value="connect" className="flex items-center gap-1.5 text-xs sm:text-sm py-2">
+                <Plug className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Agent</span> Connect
               </TabsTrigger>
             </TabsList>
 
