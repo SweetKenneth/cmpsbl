@@ -477,7 +477,7 @@ export function updateTieringConfig(updates: Partial<MemoryTieringConfig>): Memo
     module: 'memory',
     event_type: 'tiering_config_updated',
     outcome: 'succeeded',
-    data: state.tieringConfig,
+    data: { ...state.tieringConfig } as unknown as Record<string, unknown>,
   });
   
   return { ...state.tieringConfig };
