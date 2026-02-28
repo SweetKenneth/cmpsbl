@@ -649,8 +649,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     },
     metadata: {
       signals_analyzed: summary.total_signals,
-      findings_count: findings.length,
-      proposals_count: existingProposals.length,
+      findings_count: techDebt.total_issues,
+      proposals_count: evolution.total,
       audit_checks_run: fullAuditReport?.findings.length ?? 0,
       health_layers_checked: healthReport?.layers.length ?? 0,
       generation_ms: generationMs,
