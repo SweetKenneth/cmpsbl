@@ -71,7 +71,7 @@ export function RollbackPanel() {
 
       {snapshots.map((snap) => {
         const isRestored = !!snap.restored_at;
-        const preMetrics = snap.pre_metrics as Record<string, number> | null;
+        const preMetrics = snap.pre_metrics as unknown as Record<string, number> | null;
         
         return (
           <Card key={snap.id} className={`p-4 ${isRestored ? 'opacity-60' : ''}`}>
