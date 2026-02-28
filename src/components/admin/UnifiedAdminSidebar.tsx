@@ -15,7 +15,7 @@ import { adminNavConfig } from "@/config/adminNavConfig";
 import { cn } from "@/lib/utils";
 
 export function UnifiedAdminSidebar() {
-  const { state } = useSidebar();
+  const { state, setOpenMobile, isMobile } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
 
@@ -26,12 +26,19 @@ export function UnifiedAdminSidebar() {
     return location.pathname === path || location.pathname.startsWith(path + "/");
   };
 
+  const handleNavClick = () => {
+    // Auto-close sidebar on mobile after navigation
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
+
   return (
     <Sidebar className={cn(collapsed ? "w-14" : "w-64")} collapsible="icon">
       <SidebarContent className="glass-panel border-r border-border/50">
         {/* Logo Section */}
-        <div className="p-4 border-b border-border/50">
-          <NavLink to="/admin/dashboard" className="flex items-center gap-3">
+        <div className="p-3 sm:p-4 border-b border-border/50">
+          <NavLink to="/admin/dashboard" className="flex items-center gap-3" onClick={handleNavClick}>
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center animate-pulse-glow flex-shrink-0">
               <Brain className="w-5 h-5 text-white" />
             </div>
@@ -67,8 +74,9 @@ export function UnifiedAdminSidebar() {
                         <SidebarMenuButton asChild>
                           <NavLink
                             to={item.path}
+                            onClick={handleNavClick}
                             className={cn(
-                              "flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200",
+                              "flex items-center gap-3 px-3 py-2.5 sm:py-2 rounded-lg transition-all duration-200",
                               active
                                 ? "bg-primary/10 text-primary border-l-2 border-primary font-medium"
                                 : "hover:bg-muted/50 hover:text-foreground text-muted-foreground"
@@ -101,7 +109,7 @@ export function UnifiedAdminSidebar() {
 
         {/* Footer */}
         {!collapsed && (
-          <div className="p-4 border-t border-border/50">
+          <div className="p-3 sm:p-4 border-t border-border/50">
             <p className="text-xs text-muted-foreground text-center">
               CMPSBL Admin
             </p>
