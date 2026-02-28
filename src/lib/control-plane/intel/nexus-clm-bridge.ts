@@ -70,7 +70,7 @@ export function startBridge(): { ok: boolean; reason: string } {
     enableCLM();
     intelAggregator.ingest({
       source: 'NEXUS-CLM-Bridge',
-      category: 'system',
+      category: 'stability',
       severity: 'info',
       headline: 'CLM Activated via INTEL Bridge',
       detail: 'Constant Learning Mode enabled through NEXUS router integration.',
@@ -79,11 +79,6 @@ export function startBridge(): { ok: boolean; reason: string } {
       fingerprint: 'bridge:clm-activated',
     });
   }
-
-  // Sync budget from NEXUS optimizer
-  budgetGovernor.syncFromNexusOptimizer().catch(() => {
-    // Non-critical — will use local budget
-  });
 
   // Run first cycle immediately, then schedule
   state.running = true;
@@ -99,7 +94,7 @@ export function startBridge(): { ok: boolean; reason: string } {
 
   intelAggregator.ingest({
     source: 'NEXUS-CLM-Bridge',
-    category: 'system',
+    category: 'stability',
     severity: 'info',
     headline: 'INTEL → NEXUS → CLM Bridge Started',
     detail: `Bridge active. CLM cycles will execute every ${CLM_CYCLE_INTERVAL_MS / 60000} minutes via NEXUS router.`,
@@ -123,7 +118,7 @@ export function stopBridge(): void {
 
   intelAggregator.ingest({
     source: 'NEXUS-CLM-Bridge',
-    category: 'system',
+    category: 'stability',
     severity: 'info',
     headline: 'INTEL → NEXUS → CLM Bridge Stopped',
     detail: `Bridge stopped after ${state.cyclesCompleted} cycles (${state.cyclesFailed} failed).`,
