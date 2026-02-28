@@ -123,7 +123,7 @@ export function UnifiedAdminSidebar() {
                   <CollapsibleContent>
                     <SidebarGroupContent>
                       <SidebarMenu>
-                        {group.items.map((item) => {
+                        {itemsToRender.map((item) => {
                           const active = isActive(item.path);
                           return (
                             <SidebarMenuItem key={item.id}>
@@ -168,7 +168,7 @@ export function UnifiedAdminSidebar() {
                   )}
                   <SidebarGroupContent>
                     <SidebarMenu>
-                      {group.items.map((item) => {
+                      {itemsToRender.map((item) => {
                         const active = isActive(item.path);
                         return (
                           <SidebarMenuItem key={item.id}>
