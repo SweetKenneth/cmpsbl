@@ -71,7 +71,7 @@ export function generatePatchPlan(
         patchAvailable: false,
         patchVersion: null,
         breakingChange: false,
-        dependents: dep.dependents ?? [],
+        dependents: [],
       });
     }
 
