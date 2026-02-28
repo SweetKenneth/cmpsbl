@@ -119,15 +119,13 @@ export default function ScanResult() {
               <ScanShareCard
                 scanId={scan.id}
                 domain={scan.domain}
-                score={scan.score}
-                findingsCount={scan.findings_count}
+                score={scan.score ?? undefined}
+                scanType="security"
               />
 
               {/* Lead Capture */}
               <LeadCaptureCTA
-                context="scan_result"
-                heading="Get detailed remediation steps"
-                subtext="Enter your email for a full breakdown of each finding with fix instructions."
+                context="scanner"
               />
 
               {/* Internal Links */}
