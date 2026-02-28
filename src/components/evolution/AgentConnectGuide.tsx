@@ -231,6 +231,37 @@ export function AgentConnectGuide() {
         </CardContent>
       </Card>
 
+      {/* Quick Commands Card */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <MessageSquare className="w-5 h-5 text-primary" />
+            <CardTitle className="text-lg">Quick Commands</CardTitle>
+          </div>
+          <CardDescription>
+            After pasting the prompt, just say any of these to your agent:
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              { cmd: "Scan CMPSBL", desc: "Check current system health & capture metrics" },
+              { cmd: "Evolve CMPSBL", desc: "Run a dry-run cycle, preview, then apply" },
+              { cmd: "Rollback CMPSBL", desc: "Restore to the most recent snapshot" },
+              { cmd: "Pause evolution", desc: "Temporarily halt the evolution system" },
+              { cmd: "Resume evolution", desc: "Re-enable the evolution system" },
+              { cmd: "Show history", desc: "View recent cycles and improvement deltas" },
+              { cmd: "Check health", desc: "Quick status report on all subsystems" },
+            ].map(({ cmd, desc }) => (
+              <div key={cmd} className="flex items-start gap-2 p-2 rounded-md border border-border/40 bg-muted/30">
+                <code className="text-xs font-mono font-semibold text-primary whitespace-nowrap">"{cmd}"</code>
+                <span className="text-xs text-muted-foreground">{desc}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Agent Prompt Block */}
       <Card>
         <CardHeader>
