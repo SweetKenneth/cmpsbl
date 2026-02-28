@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Scan, Brain, FlaskConical, Store, Terminal, X, ArrowRight } from 'lucide-react';
+import { Scan, Brain, FlaskConical, Package, Terminal, X, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const ONBOARDING_KEY = 'cmpsbl_onboarded';
@@ -42,11 +42,11 @@ const STEPS: OnboardingStep[] = [
     linkLabel: 'Open Lab',
   },
   {
-    icon: <Store className="h-6 w-6" />,
-    title: 'Artifact Store',
-    description: 'Browse pre-built capabilities, templates, and synergy pipelines.',
-    link: '/store',
-    linkLabel: 'Browse Store',
+    icon: <Package className="h-6 w-6" />,
+    title: 'Artifact Packs',
+    description: 'Create and activate artifact packs — choose capabilities that shape your substrate.',
+    link: '/os',
+    linkLabel: 'Choose Packs',
   },
   {
     icon: <Terminal className="h-6 w-6" />,
