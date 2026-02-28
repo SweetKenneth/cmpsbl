@@ -105,6 +105,30 @@ export async function initializeSubstrate(): Promise<void> {
       startAutoRecovery();
     } catch { /* graceful */ }
     
+    // Rehydrate persistent control plane state
+    try {
+      const { rehydrateControlPlane } = await import('@/lib/control-plane/rehydrate');
+      const rehydResult = await rehydrateControlPlane();
+      if (!rehydResult.skipped) {
+        console.log(`💾 Control Plane rehydrated in ${rehydResult.durationMs}ms`);
+      }
+    } catch { /* graceful */ }
+
+    // Start persistence scheduler (30s metric snapshots)
+    try {
+      const { startPersistenceScheduler } = await import('@/lib/control-plane/persistence-scheduler');
+      startPersistenceScheduler();
+    } catch { /* graceful */ }
+
+    // Register shutdown hook for persistence flush
+    try {
+      const { registerShutdownHook } = await import('./substrate/graceful-shutdown');
+      const { flushAll } = await import('@/lib/control-plane/persistence');
+      registerShutdownHook('control-plane-persistence', async () => {
+        await flushAll();
+      }, 1); // Highest priority (runs first)
+    } catch { /* graceful */ }
+    
     initialized = true;
   } catch (error) {
     console.error('❌ Substrate initialization failed:', error);

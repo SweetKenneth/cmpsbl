@@ -13179,6 +13179,33 @@ export type Database = {
           },
         ]
       }
+      substrate_canaries: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          metrics_json: Json | null
+          percent: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id: string
+          metrics_json?: Json | null
+          percent?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          metrics_json?: Json | null
+          percent?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       substrate_capabilities: {
         Row: {
           enabled: boolean
@@ -13200,6 +13227,30 @@ export type Database = {
           notes?: string | null
           updated_at?: string
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      substrate_cascade_history: {
+        Row: {
+          chain_json: Json
+          confidence: number
+          detected_at: string
+          id: string
+          origin: string
+        }
+        Insert: {
+          chain_json?: Json
+          confidence?: number
+          detected_at?: string
+          id?: string
+          origin: string
+        }
+        Update: {
+          chain_json?: Json
+          confidence?: number
+          detected_at?: string
+          id?: string
+          origin?: string
         }
         Relationships: []
       }
@@ -13263,6 +13314,57 @@ export type Database = {
           source?: string
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      substrate_chaos_rules: {
+        Row: {
+          config_json: Json | null
+          created_at: string
+          enabled: boolean
+          id: string
+          probability: number
+          target: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          config_json?: Json | null
+          created_at?: string
+          enabled?: boolean
+          id: string
+          probability?: number
+          target: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          config_json?: Json | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          probability?: number
+          target?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      substrate_config: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
         }
         Relationships: []
       }
@@ -13356,6 +13458,30 @@ export type Database = {
           metadata?: Json | null
           schema_definition?: Json | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      substrate_flags: {
+        Row: {
+          enabled: boolean
+          key: string
+          metadata: Json | null
+          rollout_percent: number
+          updated_at: string
+        }
+        Insert: {
+          enabled?: boolean
+          key: string
+          metadata?: Json | null
+          rollout_percent?: number
+          updated_at?: string
+        }
+        Update: {
+          enabled?: boolean
+          key?: string
+          metadata?: Json | null
+          rollout_percent?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -13456,6 +13582,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      substrate_idempotency: {
+        Row: {
+          created_at: string
+          expires_at: string
+          key: string
+          result_json: Json | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          key: string
+          result_json?: Json | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          key?: string
+          result_json?: Json | null
+          status?: string
+        }
+        Relationships: []
       }
       substrate_install_config: {
         Row: {
@@ -13583,6 +13733,99 @@ export type Database = {
           stripe_subscription_id?: string | null
           updated_at?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      substrate_metrics_snapshot: {
+        Row: {
+          labels_json: Json
+          name: string
+          updated_at: string
+          value: number
+        }
+        Insert: {
+          labels_json?: Json
+          name: string
+          updated_at?: string
+          value?: number
+        }
+        Update: {
+          labels_json?: Json
+          name?: string
+          updated_at?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      substrate_queue_snapshot: {
+        Row: {
+          id: string
+          serialized_heap_json: Json
+          stats_json: Json | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          serialized_heap_json?: Json
+          stats_json?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          serialized_heap_json?: Json
+          stats_json?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      substrate_retry_buckets: {
+        Row: {
+          max_tokens: number
+          module: string
+          refill_rate: number
+          stats_json: Json | null
+          tokens: number
+          updated_at: string
+        }
+        Insert: {
+          max_tokens?: number
+          module: string
+          refill_rate?: number
+          stats_json?: Json | null
+          tokens?: number
+          updated_at?: string
+        }
+        Update: {
+          max_tokens?: number
+          module?: string
+          refill_rate?: number
+          stats_json?: Json | null
+          tokens?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      substrate_schema_registry: {
+        Row: {
+          entity: string
+          fields_json: Json
+          migrations_json: Json
+          registered_at: string
+          version: number
+        }
+        Insert: {
+          entity: string
+          fields_json?: Json
+          migrations_json?: Json
+          registered_at?: string
+          version?: number
+        }
+        Update: {
+          entity?: string
+          fields_json?: Json
+          migrations_json?: Json
+          registered_at?: string
+          version?: number
         }
         Relationships: []
       }
