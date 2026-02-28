@@ -5,6 +5,7 @@ import { componentTagger } from "lovable-tagger";
 import { VitePWA } from "vite-plugin-pwa";
 import { seoPrerender } from "./plugins/vite-seo-prerender";
 import { prerenderRoutes } from "./plugins/prerender-routes";
+import { performanceBudget } from "./plugins/vite-performance-budget";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -39,6 +40,15 @@ export default defineConfig(({ mode }) => ({
       seoPrerender({
         baseUrl: 'https://cmpsbl.com',
         routes: prerenderRoutes,
+      }),
+
+    // Performance budget enforcement (Item #24)
+    mode === "production" &&
+      performanceBudget({
+        maxInitialJs: 600,
+        maxChunkSize: 350,
+        maxCss: 200,
+        mode: 'warn',
       }),
   ].filter(Boolean),
   resolve: {
