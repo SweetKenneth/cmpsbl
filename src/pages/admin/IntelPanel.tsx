@@ -332,7 +332,11 @@ export default function IntelPanel() {
           </div>
           
           {/* Desktop actions */}
-          <div className="hidden md:flex items-center gap-2 print:hidden">
+           <div className="hidden md:flex items-center gap-2 print:hidden">
+            <Button onClick={handleGenerateProposal} disabled={isGenerating} size="sm">
+              {isGenerating ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <Sparkles className="w-4 h-4 mr-1.5" />}
+              Generate Proposal
+            </Button>
             <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isRefetching}>
               <RefreshCw className={`w-4 h-4 mr-1.5 ${isRefetching ? 'animate-spin' : ''}`} />
               Refresh
@@ -353,6 +357,10 @@ export default function IntelPanel() {
 
           {/* Mobile actions — compact dropdown */}
           <div className="flex md:hidden items-center gap-2 print:hidden">
+            <Button size="sm" className="h-8" onClick={handleGenerateProposal} disabled={isGenerating}>
+              {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+              <span className="ml-1.5">Propose</span>
+            </Button>
             <Button variant="outline" size="sm" className="h-8" onClick={() => refetch()} disabled={isRefetching}>
               <RefreshCw className={`w-4 h-4 ${isRefetching ? 'animate-spin' : ''}`} />
             </Button>
