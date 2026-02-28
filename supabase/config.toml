@@ -1,115 +1,81 @@
 project_id = "bxodolqqczjuahwdrswy"
 
-[functions.pf-brain-orchestrator]
-verify_jwt = false
-
-[functions.pf-defense-full-scan]
-verify_jwt = false
-
-[functions.pf-brain-seed-cascade]
-verify_jwt = false
-
-[functions.pf-brain-learning-cycle]
-verify_jwt = false
-
-[functions.pf-brain-initialize]
-verify_jwt = false
-
-[functions.pf-brain-learn]
-verify_jwt = false
-
-[functions.pf-learning-log]
-verify_jwt = false
-
-[functions.pf-reflex-analytics]
-verify_jwt = false
-
-[functions.pf-research-fetch]
-verify_jwt = false
-
-[functions.pf-research-verify]
-verify_jwt = false
-
-[functions.pf-system-verify]
-verify_jwt = false
-
-[functions.dream-feeder-api]
-verify_jwt = false
-
-[functions.pf-investor-packet]
-verify_jwt = false
-
-[functions.pf-reflex-core]
-verify_jwt = false
-
-[functions.pf-dream-eater-awaken]
-verify_jwt = false
-
-[functions.pf-dream-mode]
-verify_jwt = false
-
-[functions.pf-brain-auto-heal]
-verify_jwt = false
-
-[functions.pf-cascade-chat]
-verify_jwt = false
-
-[functions.pf-brain-synthesize]
-verify_jwt = false
-
-[functions.pf-brain-monitor]
-verify_jwt = false
-
-[functions.pf-cascade-improvement-engine]
-verify_jwt = false
-
-[functions.pf-cascade-improvement-report]
-verify_jwt = false
-
-[functions.pf-dream-eater-cycle]
-verify_jwt = false
-
-[functions.pf-substrate]
-verify_jwt = false
-
-[functions.pf-brain-scheduler]
-verify_jwt = false
-
-[functions.pf-brain-report]
-verify_jwt = false
-
-[functions.pf-backup-daily]
-verify_jwt = false
-
-[functions.pf-backup-prune]
-verify_jwt = false
-
-[functions.pf-backup-export]
-verify_jwt = false
-
-[functions.pf-backup-import]
-verify_jwt = false
-
-[functions.pf-module-clm-scheduler]
-verify_jwt = false
-
-[functions.cmpsbl-patch-manifest]
-verify_jwt = false
-
-[functions.cmpsbl-patch-download]
-verify_jwt = false
-
-[functions.passkey-auth]
-verify_jwt = false
-
-[functions.pf-radio-broadcast]
-verify_jwt = false
-
-[functions.pf-nexus-router]
-verify_jwt = false
-
-[functions.pf-nexus-image-gen]
-verify_jwt = false
-
-[functions.pf-owner-report]
-verify_jwt = false
+[functions]
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.cmpsbl-patch-download]
+    verify_jwt = false
+  [functions.cmpsbl-patch-manifest]
+    verify_jwt = false
+  [functions.dream-feeder-api]
+    verify_jwt = false
+  [functions.passkey-auth]
+    verify_jwt = false
+  [functions.pf-backup-daily]
+    verify_jwt = false
+  [functions.pf-backup-export]
+    verify_jwt = false
+  [functions.pf-backup-import]
+    verify_jwt = false
+  [functions.pf-backup-prune]
+    verify_jwt = false
+  [functions.pf-brain-auto-heal]
+    verify_jwt = false
+  [functions.pf-brain-initialize]
+    verify_jwt = false
+  [functions.pf-brain-learn]
+    verify_jwt = false
+  [functions.pf-brain-learning-cycle]
+    verify_jwt = false
+  [functions.pf-brain-monitor]
+    verify_jwt = false
+  [functions.pf-brain-orchestrator]
+    verify_jwt = false
+  [functions.pf-brain-report]
+    verify_jwt = false
+  [functions.pf-brain-scheduler]
+    verify_jwt = false
+  [functions.pf-brain-seed-cascade]
+    verify_jwt = false
+  [functions.pf-brain-synthesize]
+    verify_jwt = false
+  [functions.pf-cascade-chat]
+    verify_jwt = false
+  [functions.pf-cascade-improvement-engine]
+    verify_jwt = false
+  [functions.pf-cascade-improvement-report]
+    verify_jwt = false
+  [functions.pf-defense-full-scan]
+    verify_jwt = false
+  [functions.pf-dream-eater-awaken]
+    verify_jwt = false
+  [functions.pf-dream-eater-cycle]
+    verify_jwt = false
+  [functions.pf-dream-mode]
+    verify_jwt = false
+  [functions.pf-investor-packet]
+    verify_jwt = false
+  [functions.pf-learning-log]
+    verify_jwt = false
+  [functions.pf-module-clm-scheduler]
+    verify_jwt = false
+  [functions.pf-nexus-image-gen]
+    verify_jwt = false
+  [functions.pf-nexus-router]
+    verify_jwt = false
+  [functions.pf-owner-report]
+    verify_jwt = false
+  [functions.pf-radio-broadcast]
+    verify_jwt = false
+  [functions.pf-reflex-analytics]
+    verify_jwt = false
+  [functions.pf-reflex-core]
+    verify_jwt = false
+  [functions.pf-research-fetch]
+    verify_jwt = false
+  [functions.pf-research-verify]
+    verify_jwt = false
+  [functions.pf-substrate]
+    verify_jwt = false
+  [functions.pf-system-verify]
+    verify_jwt = false
