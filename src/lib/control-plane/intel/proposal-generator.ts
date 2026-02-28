@@ -32,6 +32,7 @@ import { runFullAudit } from '@/lib/audit/audit-runner';
 import { runSubstrateHealthCheck } from '@/lib/audit/substrate-health-check';
 import { substrate } from '@/lib/substrate';
 import { clmTopicPipeline } from '@/lib/control-plane/clm/topic-pipeline';
+import { getLessonExplainer, getTierProgression } from '@/lib/control-plane/clm/lesson-explainer';
 import { scanHTML, calculateScore, determineOverallSeverity } from '@/lib/inclusive/scan';
 import { isExternalAIMode } from '@/lib/evolve/execution-mode';
 import { modernizerScan, type ScanResultExtended } from '@/lib/evolve/scan';
@@ -524,6 +525,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
       const topicTitle = nextTopic?.title ?? 'System Hardening & Optimization';
       const topicScope = nextTopic?.scope ?? 'substrate-wide';
       
+      const explainer = getLessonExplainer(topicTitle);
+
       // Always inject evolution into action plan when stable
       actionPlan.push({
         order: actionPlan.length + 1,
@@ -538,6 +541,14 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
           `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
           'This is bounded curriculum advancement — one topic at a time.',
         ],
+        lesson_explainer: {
+          what_it_is: explainer.what_it_is,
+          why_it_matters: explainer.why_it_matters,
+          what_changes: explainer.what_changes,
+          real_world_analogy: explainer.real_world_analogy,
+          tier: explainer.tier,
+          whats_next: explainer.whats_next,
+        },
       });
       
       // Also populate evolution_opportunities so the section isn't empty
@@ -550,6 +561,14 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
           scope: topicScope,
           rationale: `All ${structuralHealth.layers_checked} layers pass. 0 fatals, 0 critical debt. Stable system should always evolve.`,
           rollback_plan: `Restore snapshot ${governanceChain.snapshot_id}.`,
+          lesson_explainer: {
+            what_it_is: explainer.what_it_is,
+            why_it_matters: explainer.why_it_matters,
+            what_changes: explainer.what_changes,
+            real_world_analogy: explainer.real_world_analogy,
+            tier: explainer.tier,
+            whats_next: explainer.whats_next,
+          },
         });
         evolution.total = evolution.proposals.length;
       }
