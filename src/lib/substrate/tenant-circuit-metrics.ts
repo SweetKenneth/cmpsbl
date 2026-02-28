@@ -3,7 +3,12 @@
  * Aggregated metrics for all tenant circuits.
  */
 
-import type { TenantCircuit } from '../tenant-circuit-breaker';
+export interface TenantCircuitState {
+  tenantId: string;
+  state: 'closed' | 'open' | 'half_open';
+  failureCount: number;
+  totalTrips: number;
+}
 
 export interface TenantCircuitMetrics {
   totalTenants: number;
@@ -18,7 +23,7 @@ export interface TenantCircuitMetrics {
 /**
  * Compute aggregate metrics from tenant circuit states.
  */
-export function computeTenantMetrics(circuits: TenantCircuit[]): TenantCircuitMetrics {
+export function computeTenantMetrics(circuits: TenantCircuitState[]): TenantCircuitMetrics {
   if (circuits.length === 0) {
     return {
       totalTenants: 0,
