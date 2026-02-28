@@ -53,14 +53,14 @@ export async function persistScanResult(params: {
 
   const { data, error } = await supabase
     .from('scan_results_cache')
-    .insert({
+    .insert([{
       domain: params.domain,
       scan_mode: params.scanMode,
       score: params.score,
       findings_count: params.findingsCount,
-      result_data: params.resultData,
+      result_data: params.resultData as any,
       expires_at: expiresAt.toISOString(),
-    })
+    }])
     .select('id')
     .single();
 
@@ -86,7 +86,7 @@ export async function recordFindingTrend(params: {
 }): Promise<void> {
   const { error } = await supabase
     .from('scan_finding_trends')
-    .upsert({
+    .upsert([{
       domain: params.domain,
       scan_date: new Date().toISOString().split('T')[0],
       total_findings: params.totalFindings,
@@ -96,7 +96,7 @@ export async function recordFindingTrend(params: {
       low_count: params.lowCount,
       score: params.score,
       category_breakdown: params.categoryBreakdown ?? {},
-    }, { onConflict: 'domain,scan_date' });
+    }], { onConflict: 'domain,scan_date' });
 
   if (error) {
     console.error('[scan-trends] Failed to record:', error.message);

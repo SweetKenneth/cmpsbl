@@ -21,15 +21,15 @@ interface AnalyticsEvent {
  */
 export async function trackEvent(event: AnalyticsEvent): Promise<void> {
   try {
-    await supabase.from('analytics_events').insert({
+    await supabase.from('analytics_events').insert([{
       event_type: event.eventType,
       category: event.category,
       label: event.label,
       value: event.value,
       page: event.page ?? (typeof window !== 'undefined' ? window.location.pathname : null),
-      metadata: event.metadata ?? null,
+      metadata: event.metadata as any ?? null,
       session_id: typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('session_id') : null,
-    });
+    }]);
   } catch {
     // Silent fail
   }
