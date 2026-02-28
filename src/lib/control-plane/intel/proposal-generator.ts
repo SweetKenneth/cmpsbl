@@ -1366,7 +1366,7 @@ function buildActionPlan(
   }
   
   // ═══════════════════════════════════════════════════════════
-  // EVOLUTION STEPS — 40% of budget (min 2 slots when stable)
+  // EVOLUTION STEPS — ~15% of budget (max 2 slots)
   // ═══════════════════════════════════════════════════════════
   
   const evoSlots = Math.min(MAX_EVOLUTION_ITEMS, MAX_TOTAL_PROPOSALS_PER_RUN - debtSteps.length);
