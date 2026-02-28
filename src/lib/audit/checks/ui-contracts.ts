@@ -95,17 +95,23 @@ export function checkUIContracts(): AuditFinding[] {
 
   // Check for interactive elements without accessible names
   const buttons = document.querySelectorAll('button:not([aria-label]):not([aria-labelledby])');
-  let unlabeledButtons = 0;
+  const unlabeledDetails: string[] = [];
   buttons.forEach(btn => {
-    if (!btn.textContent?.trim()) unlabeledButtons++;
+    if (!btn.textContent?.trim()) {
+      // Capture element context for debugging
+      const cls = btn.className?.slice(0, 60) || '';
+      const parent = btn.parentElement?.tagName?.toLowerCase() || '';
+      const parentCls = btn.parentElement?.className?.slice(0, 40) || '';
+      unlabeledDetails.push(`<button class="${cls}"> in <${parent} class="${parentCls}">`);
+    }
   });
-  if (unlabeledButtons > 0) {
+  if (unlabeledDetails.length > 0) {
     findings.push({
       id: 'a11y_unlabeled_buttons',
       category: 'a11y',
       severity: 'warn',
-      title: `${unlabeledButtons} button(s) without accessible label`,
-      detail: 'Buttons with no text content need aria-label for screen readers.',
+      title: `${unlabeledDetails.length} button(s) without accessible label`,
+      detail: `Buttons with no text content need aria-label for screen readers. Elements: ${unlabeledDetails.slice(0, 4).join('; ')}`,
     });
   }
 
