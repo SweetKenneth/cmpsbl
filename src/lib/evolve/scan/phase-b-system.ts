@@ -431,7 +431,9 @@ async function checkResilienceGaps(): Promise<DetectedAnomaly | null> {
       criticalTables.map(async (tableName) => {
         try {
           const { error } = await supabase.from(tableName as any).select('id').limit(1);
-          if (error) inaccessible.push(tableName);
+          if (error && !isRLSBlock(error)) {
+            inaccessible.push(tableName);
+          }
         } catch {
           inaccessible.push(tableName);
         }

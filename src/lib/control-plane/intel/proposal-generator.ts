@@ -1461,7 +1461,32 @@ function buildExecutiveSummary(
  * Returns null if no clear subject can be identified.
  */
 function extractSubjectKey(step: ActionStep): string | null {
-  // Extract affected components from instructions (common pattern: "Affected: x, y, z")
+  // ── Priority 1: Extract capability name from title ──
+  // "Missing capability: X" and "Modernizer: Add X" should always collapse
+  const capMatch = step.title.match(/(?:Missing capability|Add|Resolve)\s*:\s*(.+)/i);
+  if (capMatch) {
+    return `cap:${capMatch[1].trim().toLowerCase()}`;
+  }
+  
+  const modMatch = step.title.match(/^Modernizer:\s*(?:Add|Configure|Resolve|Review)\s+(.+)/i);
+  if (modMatch) {
+    return `cap:${modMatch[1].trim().toLowerCase()}`;
+  }
+
+  // ── Priority 2: Extract edge function risk subjects ──
+  const edgeMatch = step.title.match(/Edge risk:\s*(\S+)/i);
+  if (edgeMatch) {
+    return `edge:${edgeMatch[1].trim().toLowerCase()}`;
+  }
+
+  // ── Priority 3: Extract anomaly type from description ──
+  const anomalyMatch = step.description.match(/^(\w+)\s+affecting\s+(.+)\.?$/i);
+  if (anomalyMatch) {
+    const components = anomalyMatch[2].split(',').map(s => s.trim().toLowerCase()).sort();
+    return `affected:${components.join(',')}`;
+  }
+
+  // ── Priority 4: Extract affected components from instructions (fallback) ──
   for (const instr of step.instructions) {
     const affectedMatch = instr.match(/^Affected(?:\s*modules)?:\s*(.+)/i);
     if (affectedMatch) {
@@ -1469,34 +1494,8 @@ function extractSubjectKey(step: ActionStep): string | null {
       return `affected:${components.join(',')}`;
     }
   }
-  
-  // Extract capability name for "Missing capability" and "Modernizer: Add X" items
-  // These patterns produce duplicates across anomaly + modernizer sources
-  const capMatch = step.title.match(/(?:Missing capability|Add|Resolve)\s*:\s*(.+)/i);
-  if (capMatch) {
-    return `cap:${capMatch[1].trim().toLowerCase()}`;
-  }
-  
-  // Extract "Modernizer: Verb Subject" → normalize to subject only
-  const modMatch = step.title.match(/^Modernizer:\s*(?:Add|Configure|Resolve|Review)\s+(.+)/i);
-  if (modMatch) {
-    return `cap:${modMatch[1].trim().toLowerCase()}`;
-  }
 
-  // Extract edge function risk subjects
-  const edgeMatch = step.title.match(/Edge risk:\s*(\S+)/i);
-  if (edgeMatch) {
-    return `edge:${edgeMatch[1].trim().toLowerCase()}`;
-  }
-  
-  // Extract anomaly type
-  const anomalyMatch = step.description.match(/^(\w+)\s+affecting\s+(.+)\.?$/i);
-  if (anomalyMatch) {
-    const components = anomalyMatch[2].split(',').map(s => s.trim().toLowerCase()).sort();
-    return `affected:${components.join(',')}`;
-  }
-
-  // Normalize description-level duplicates (same description = same issue)
+  // ── Priority 5: Description-level normalization ──
   const descKey = step.description.trim().toLowerCase().replace(/\s+/g, ' ');
   if (descKey.length > 20) {
     return `desc:${descKey.substring(0, 80)}`;
