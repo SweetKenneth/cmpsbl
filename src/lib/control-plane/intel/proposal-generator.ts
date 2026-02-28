@@ -1290,6 +1290,93 @@ function buildActionPlan(
     });
   }
   
+  // ─── SOURCE 10: MODERNIZER proposals (cognitive scan findings) ───
+  if (modernizerResult) {
+    for (const proposal of modernizerResult.proposals) {
+      const riskScore = proposal.risk_level === 'high' ? 70 : proposal.risk_level === 'medium' ? 55 : 40;
+      candidates.push({
+        value: riskScore * 0.8,
+        dedup_key: `mod_${proposal.proposal_id}`,
+        step: {
+          order: 0,
+          category: 'tech-debt',
+          title: `Modernizer: ${proposal.title}`,
+          description: proposal.description,
+          risk: proposal.risk_level === 'high' ? 'medium' : 'low',
+          instructions: [
+            `Category: ${proposal.category} · Action: ${proposal.action_type}`,
+            proposal.rationale,
+            `Affected modules: ${proposal.affected_modules.join(', ') || 'system-wide'}`,
+            `Confidence: ${Math.round(proposal.confidence_score * 100)}% · Sources: ${proposal.source_phases.join(', ')}`,
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
+      });
+    }
+
+    // ─── SOURCE 11: Edge function risk flags ───
+    for (const flag of modernizerResult.edge_analysis.risk_flags) {
+      candidates.push({
+        value: severityValue(flag.severity) * categoryMultiplier.security * 0.7,
+        dedup_key: `edge_risk_${flag.function_name}_${flag.risk_type}`,
+        step: {
+          order: 0,
+          category: 'tech-debt',
+          title: `Edge risk: ${flag.function_name} — ${flag.risk_type}`,
+          description: flag.description,
+          risk: flag.severity === 'critical' || flag.severity === 'high' ? 'medium' : 'low',
+          instructions: [
+            `Function: ${flag.function_name}`,
+            `Risk type: ${flag.risk_type} · Severity: ${flag.severity}`,
+            'Review the edge function for the flagged risk pattern.',
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
+      });
+    }
+
+    // ─── SOURCE 12: System anomalies (individually surfaced) ───
+    for (const anomaly of modernizerResult.system_state.detected_anomalies) {
+      candidates.push({
+        value: severityValue(anomaly.severity) * 0.75,
+        dedup_key: `anomaly_${anomaly.anomaly_type}_${anomaly.affected_components.join('_').slice(0, 20)}`,
+        step: {
+          order: 0,
+          category: 'tech-debt',
+          title: `Anomaly: ${anomaly.description.slice(0, 80)}`,
+          description: `${anomaly.anomaly_type} affecting ${anomaly.affected_components.join(', ')}.`,
+          risk: anomaly.severity === 'critical' || anomaly.severity === 'high' ? 'medium' : 'low',
+          instructions: [
+            `Type: ${anomaly.anomaly_type} · Severity: ${anomaly.severity}`,
+            `Affected: ${anomaly.affected_components.join(', ')}`,
+            'Investigate root cause and resolve the anomaly.',
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
+      });
+    }
+
+    // ─── SOURCE 13: Missing capabilities (code health gaps) ───
+    for (const cap of modernizerResult.code_health.missing_capabilities) {
+      candidates.push({
+        value: severityValue(cap.impact) * 0.6,
+        dedup_key: `missing_cap_${cap.capability}`,
+        step: {
+          order: 0,
+          category: 'tech-debt',
+          title: `Missing capability: ${cap.capability}`,
+          description: cap.recommendation,
+          risk: 'low',
+          instructions: [
+            `Category: ${cap.category} · Impact: ${cap.impact}`,
+            cap.recommendation,
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
+      });
+    }
+  }
+
   // ═══════════════════════════════════════════════════════════
   // SORT BY VALUE (highest impact first) AND DEDUP
   // ═══════════════════════════════════════════════════════════
