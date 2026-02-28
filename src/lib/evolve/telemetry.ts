@@ -73,7 +73,11 @@ export type EvolveEventType =
   | 'plan_created'
   | 'plan_blocked'
   // Error events
-  | 'evolve_error';
+  | 'evolve_error'
+  // Snapshot & entropy events (measurable evolution)
+  | 'snapshot_created'
+  | 'snapshot_restored'
+  | 'entropy_ledger_recorded';
 
 export interface EvolveEvent {
   type: EvolveEventType;
