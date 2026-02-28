@@ -269,10 +269,11 @@ async function runModernizerGovernanceChain(): Promise<GovernanceChain> {
   let receipt_id = '';
   
   try {
+    const mod = substrate.modernizer as any;
     const [verifyRes, diffRes, receiptRes] = await Promise.allSettled([
-      substrate.modernizer.verify?.({ mode: 'canary' }),
-      substrate.modernizer.diffs?.(),
-      substrate.modernizer.receipts?.({ stage: 'pre-export' }),
+      mod.verify ? mod.verify({ mode: 'canary' }) : mod.validate?.('canary'),
+      mod.diff ? mod.diff('latest') : Promise.resolve(null),
+      mod.export ? mod.export('receipt') : Promise.resolve(null),
     ]);
     
     verification_hash = verifyRes.status === 'fulfilled' 
