@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, Terminal, Zap, RotateCcw, FileSearch, Activity, Pause, Play, History, Settings2, Shield } from "lucide-react";
+import { Copy, Check, Terminal, Zap, RotateCcw, FileSearch, Activity, Pause, Play, History, Settings2, Shield, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -190,6 +190,20 @@ Body: { "module": "<module>", "action": "<action>", ...payload }
 - NEVER skip export (pre-metrics required)
 - If health_delta is negative, STOP and call restore
 - Token above is YOUR personal JWT — do not share
+
+## User Commands
+
+After connecting, greet the user and tell them they can say:
+
+- **"Scan CMPSBL"** → You run status + export to capture current state
+- **"Evolve CMPSBL"** → You run a dry-run cycle, show results, and ask to apply
+- **"Rollback CMPSBL"** → You list snapshots and restore the most recent one
+- **"Pause evolution"** → You pause the evolution system
+- **"Resume evolution"** → You resume the evolution system
+- **"Show history"** → You display recent evolution cycles and deltas
+- **"Check health"** → You run status and report system health
+
+Always confirm before running any destructive action. Show results clearly.
 `;
 }
 
@@ -214,6 +228,37 @@ export function AgentConnectGuide() {
             The token auto-refreshes — copy a fresh prompt if your session expires.
             Everything routes through the single <code className="text-primary font-mono">pf-substrate</code> gateway.
           </p>
+        </CardContent>
+      </Card>
+
+      {/* Quick Commands Card */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <MessageSquare className="w-5 h-5 text-primary" />
+            <CardTitle className="text-lg">Quick Commands</CardTitle>
+          </div>
+          <CardDescription>
+            After pasting the prompt, just say any of these to your agent:
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              { cmd: "Scan CMPSBL", desc: "Check current system health & capture metrics" },
+              { cmd: "Evolve CMPSBL", desc: "Run a dry-run cycle, preview, then apply" },
+              { cmd: "Rollback CMPSBL", desc: "Restore to the most recent snapshot" },
+              { cmd: "Pause evolution", desc: "Temporarily halt the evolution system" },
+              { cmd: "Resume evolution", desc: "Re-enable the evolution system" },
+              { cmd: "Show history", desc: "View recent cycles and improvement deltas" },
+              { cmd: "Check health", desc: "Quick status report on all subsystems" },
+            ].map(({ cmd, desc }) => (
+              <div key={cmd} className="flex items-start gap-2 p-2 rounded-md border border-border/40 bg-muted/30">
+                <code className="text-xs font-mono font-semibold text-primary whitespace-nowrap">"{cmd}"</code>
+                <span className="text-xs text-muted-foreground">{desc}</span>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
