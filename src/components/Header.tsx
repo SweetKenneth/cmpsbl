@@ -40,8 +40,14 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search..."
-              className="w-full pl-10 pr-4 py-2 bg-muted/30 border border-border/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+              placeholder="Search modules, docs, pages…  ⌘K"
+              className="w-full pl-10 pr-4 py-2 bg-muted/30 border border-border/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer"
+              readOnly
+              onClick={() => {
+                // Dispatch ⌘K to open the command palette
+                window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
+              }}
+              onFocus={(e) => e.target.blur()}
             />
           </div>
         </div>
