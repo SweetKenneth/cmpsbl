@@ -12,6 +12,7 @@
 import { getAllLiveMetrics } from '../metrics/metricsRegistry';
 import { getLatestSnapshot } from '../metrics/snapshotEngine';
 import { runIntegrityCheck, shouldBlockDecodeForModule } from '../metrics/integrityValidator';
+import { getCachedIntegrity, cacheIntegrity } from './integrityCache';
 import type { ModuleLiveMetrics } from '../metrics/metricsSchema';
 import type { MetricSnapshot } from '../metrics/snapshotEngine';
 import type { IntegrityReport } from '../metrics/integrityValidator';
@@ -77,8 +78,12 @@ export async function queryMetricsForDecode(
   // Step 2: Pull last snapshot
   const snapshot = getLatestSnapshot();
 
-  // Step 3: Run integrity validation
-  const integrity = await runIntegrityCheck();
+  // Step 3: Run integrity validation (with cache)
+  let integrity = getCachedIntegrity();
+  if (!integrity) {
+    integrity = await runIntegrityCheck();
+    cacheIntegrity(integrity);
+  }
 
   // Step 4: Check for module-specific blocks
   if (query?.moduleId) {

@@ -196,4 +196,24 @@ export {
   safeParse,
   boundArray,
   safeExecute,
+  deepFreeze,
+  sanitizeText,
+  fnv1aHash,
+  debounce,
 } from './hardening';
+
+// Uptime tracking
+export {
+  getUptimeMs,
+  getUptimeFormatted,
+  getBootTimestamp,
+  getUptimeReport,
+} from './uptimeTracker';
+
+// Memory pressure detection
+export {
+  detectMemoryPressure,
+  shouldShedLoad,
+  type PressureLevel,
+  type MemoryPressureReport,
+} from './memoryPressure';
