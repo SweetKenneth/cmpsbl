@@ -63,13 +63,18 @@ export function useLivingState(): UseLivingStateReturn {
           supabase.from('dream_eater_milestones').select('*').order('milestone_level'),
         ]);
 
-        if (stateRes.data) {
+        if (stateRes.error) {
+          console.error('Dream-Eater state fetch error:', stateRes.error.message);
+        } else if (stateRes.data) {
           setState(stateRes.data as unknown as DreamEaterState);
         }
-        if (milestonesRes.data) {
+        if (milestonesRes.error) {
+          console.error('Dream-Eater milestones fetch error:', milestonesRes.error.message);
+        } else if (milestonesRes.data) {
           setMilestones(milestonesRes.data as Milestone[]);
         }
       } catch (e) {
+        console.error('Dream-Eater connection error:', e);
         setError('Failed to connect to Dream-Eater');
       } finally {
         setLoading(false);
