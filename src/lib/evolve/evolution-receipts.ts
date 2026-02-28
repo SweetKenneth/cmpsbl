@@ -24,6 +24,14 @@ export interface EvolutionReceipt {
   health_after: HealthSnapshot | null;
   backup_id: string | null;
   timestamp: string;
+  // Measurable evolution fields
+  pre_metrics: EvolutionMetrics | null;
+  post_metrics: EvolutionMetrics | null;
+  delta: EvolutionDelta | null;
+  tenant_id: string | null;
+  snapshot_id: string | null;
+  status: string;
+  reverted_at: string | null;
 }
 
 export interface ChangeRecord {
