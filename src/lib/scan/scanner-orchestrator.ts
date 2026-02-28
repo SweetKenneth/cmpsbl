@@ -73,6 +73,12 @@ export { mapErrorHotspots, reprioritizeByErrors } from './integrations/vision-er
 export { evaluateFixEffectiveness, createRegressionMonitor, batchEvaluateFixes } from './integrations/vision-regression-loop';
 export { registerScanProposals, applyScanProposal, failScanProposal, inferDependencies } from './integrations/evolution-proposal-chain';
 export { generateRegressionTests, linkTestsToTripwires } from './integrations/evolution-auto-regression';
+export { deduplicateFindings, registerFinding, resolveFinding, getFindingLifecycleStats, applyDecayWeighting } from './integrations/memory-finding-dedup';
+export { correlateThreatIntelligence, getAttackSurfaceSummary } from './integrations/defense-threat-correlation';
+export { verifyFix, batchVerifyFixes, shouldPromoteFix } from './integrations/fix-verification-loop';
+export { registerSchedule, emitTrigger, getSchedulerStatus, registerDefaultSchedules, recordScanCompletion } from './integrations/scan-scheduler';
+export { generatePatchPlan, generatePatchCommands } from './integrations/dependency-auto-patch';
+export { startScanRun, persistFindings, resolveAbsentFindings, completeScanRun, getScanTrends, getActiveFindings, getFindingAnalytics } from './integrations/finding-persistence';
 
 // Re-export all types
 export type {
