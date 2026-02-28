@@ -13183,25 +13183,34 @@ export type Database = {
         Row: {
           created_at: string
           enabled: boolean
+          env: string | null
           id: string
           metrics_json: Json | null
           percent: number
+          revision_id: number | null
+          tenant_id: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
           enabled?: boolean
+          env?: string | null
           id: string
           metrics_json?: Json | null
           percent?: number
+          revision_id?: number | null
+          tenant_id?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
           enabled?: boolean
+          env?: string | null
           id?: string
           metrics_json?: Json | null
           percent?: number
+          revision_id?: number | null
+          tenant_id?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -13235,22 +13244,31 @@ export type Database = {
           chain_json: Json
           confidence: number
           detected_at: string
+          env: string | null
           id: string
           origin: string
+          revision_id: number | null
+          tenant_id: string | null
         }
         Insert: {
           chain_json?: Json
           confidence?: number
           detected_at?: string
+          env?: string | null
           id?: string
           origin: string
+          revision_id?: number | null
+          tenant_id?: string | null
         }
         Update: {
           chain_json?: Json
           confidence?: number
           detected_at?: string
+          env?: string | null
           id?: string
           origin?: string
+          revision_id?: number | null
+          tenant_id?: string | null
         }
         Relationships: []
       }
@@ -13322,9 +13340,12 @@ export type Database = {
           config_json: Json | null
           created_at: string
           enabled: boolean
+          env: string | null
           id: string
           probability: number
+          revision_id: number | null
           target: string
+          tenant_id: string | null
           type: string
           updated_at: string
         }
@@ -13332,9 +13353,12 @@ export type Database = {
           config_json?: Json | null
           created_at?: string
           enabled?: boolean
+          env?: string | null
           id: string
           probability?: number
+          revision_id?: number | null
           target: string
+          tenant_id?: string | null
           type: string
           updated_at?: string
         }
@@ -13342,9 +13366,12 @@ export type Database = {
           config_json?: Json | null
           created_at?: string
           enabled?: boolean
+          env?: string | null
           id?: string
           probability?: number
+          revision_id?: number | null
           target?: string
+          tenant_id?: string | null
           type?: string
           updated_at?: string
         }
@@ -13352,21 +13379,215 @@ export type Database = {
       }
       substrate_config: {
         Row: {
+          env: string | null
           key: string
+          revision_id: number | null
+          tenant_id: string | null
           updated_at: string
           value: Json
         }
         Insert: {
+          env?: string | null
           key: string
+          revision_id?: number | null
+          tenant_id?: string | null
           updated_at?: string
           value?: Json
         }
         Update: {
+          env?: string | null
           key?: string
+          revision_id?: number | null
+          tenant_id?: string | null
           updated_at?: string
           value?: Json
         }
         Relationships: []
+      }
+      substrate_cp_restore_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          env: string
+          error_message: string | null
+          id: string
+          initiated_by: string | null
+          replay_wal: boolean | null
+          started_at: string | null
+          status: string
+          target_revision_id: number
+          tenant_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          env?: string
+          error_message?: string | null
+          id?: string
+          initiated_by?: string | null
+          replay_wal?: boolean | null
+          started_at?: string | null
+          status?: string
+          target_revision_id: number
+          tenant_id?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          env?: string
+          error_message?: string | null
+          id?: string
+          initiated_by?: string | null
+          replay_wal?: boolean | null
+          started_at?: string | null
+          status?: string
+          target_revision_id?: number
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_cp_restore_jobs_target_revision_id_fkey"
+            columns: ["target_revision_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_cp_revisions"
+            referencedColumns: ["revision_id"]
+          },
+        ]
+      }
+      substrate_cp_revisions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          domain_counts: Json | null
+          env: string
+          metadata: Json | null
+          parent_revision_id: number | null
+          revision_id: number
+          snapshot_hash: string | null
+          status: string
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          domain_counts?: Json | null
+          env?: string
+          metadata?: Json | null
+          parent_revision_id?: number | null
+          revision_id?: never
+          snapshot_hash?: string | null
+          status?: string
+          tenant_id?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          domain_counts?: Json | null
+          env?: string
+          metadata?: Json | null
+          parent_revision_id?: number | null
+          revision_id?: never
+          snapshot_hash?: string | null
+          status?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_cp_revisions_parent_revision_id_fkey"
+            columns: ["parent_revision_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_cp_revisions"
+            referencedColumns: ["revision_id"]
+          },
+        ]
+      }
+      substrate_cp_snapshot_manifest: {
+        Row: {
+          created_at: string
+          domain_counts: Json
+          env: string
+          id: string
+          payload_hash: string | null
+          revision_id: number
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          domain_counts?: Json
+          env?: string
+          id?: string
+          payload_hash?: string | null
+          revision_id: number
+          tenant_id?: string
+        }
+        Update: {
+          created_at?: string
+          domain_counts?: Json
+          env?: string
+          id?: string
+          payload_hash?: string | null
+          revision_id?: number
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_cp_snapshot_manifest_revision_id_fkey"
+            columns: ["revision_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_cp_revisions"
+            referencedColumns: ["revision_id"]
+          },
+        ]
+      }
+      substrate_cp_wal: {
+        Row: {
+          action: string
+          after_value: Json | null
+          before_value: Json | null
+          created_at: string
+          domain: string
+          env: string
+          id: number
+          key: string | null
+          metadata: Json | null
+          revision_id: number | null
+          tenant_id: string
+        }
+        Insert: {
+          action: string
+          after_value?: Json | null
+          before_value?: Json | null
+          created_at?: string
+          domain: string
+          env?: string
+          id?: never
+          key?: string | null
+          metadata?: Json | null
+          revision_id?: number | null
+          tenant_id?: string
+        }
+        Update: {
+          action?: string
+          after_value?: Json | null
+          before_value?: Json | null
+          created_at?: string
+          domain?: string
+          env?: string
+          id?: never
+          key?: string | null
+          metadata?: Json | null
+          revision_id?: number | null
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_cp_wal_revision_id_fkey"
+            columns: ["revision_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_cp_revisions"
+            referencedColumns: ["revision_id"]
+          },
+        ]
       }
       substrate_developer_keys: {
         Row: {
@@ -13464,23 +13685,32 @@ export type Database = {
       substrate_flags: {
         Row: {
           enabled: boolean
+          env: string | null
           key: string
           metadata: Json | null
+          revision_id: number | null
           rollout_percent: number
+          tenant_id: string | null
           updated_at: string
         }
         Insert: {
           enabled?: boolean
+          env?: string | null
           key: string
           metadata?: Json | null
+          revision_id?: number | null
           rollout_percent?: number
+          tenant_id?: string | null
           updated_at?: string
         }
         Update: {
           enabled?: boolean
+          env?: string | null
           key?: string
           metadata?: Json | null
+          revision_id?: number | null
           rollout_percent?: number
+          tenant_id?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -13586,24 +13816,33 @@ export type Database = {
       substrate_idempotency: {
         Row: {
           created_at: string
+          env: string | null
           expires_at: string
           key: string
           result_json: Json | null
+          revision_id: number | null
           status: string
+          tenant_id: string | null
         }
         Insert: {
           created_at?: string
+          env?: string | null
           expires_at?: string
           key: string
           result_json?: Json | null
+          revision_id?: number | null
           status?: string
+          tenant_id?: string | null
         }
         Update: {
           created_at?: string
+          env?: string | null
           expires_at?: string
           key?: string
           result_json?: Json | null
+          revision_id?: number | null
           status?: string
+          tenant_id?: string | null
         }
         Relationships: []
       }
@@ -13685,6 +13924,36 @@ export type Database = {
         }
         Relationships: []
       }
+      substrate_leases: {
+        Row: {
+          acquired_at: string
+          env: string
+          expires_at: string
+          lease_key: string
+          owner_id: string
+          renewed_at: string
+          tenant_id: string
+        }
+        Insert: {
+          acquired_at?: string
+          env?: string
+          expires_at: string
+          lease_key: string
+          owner_id: string
+          renewed_at?: string
+          tenant_id?: string
+        }
+        Update: {
+          acquired_at?: string
+          env?: string
+          expires_at?: string
+          lease_key?: string
+          owner_id?: string
+          renewed_at?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
       substrate_licenses: {
         Row: {
           activated_at: string | null
@@ -13738,20 +14007,29 @@ export type Database = {
       }
       substrate_metrics_snapshot: {
         Row: {
+          env: string | null
           labels_json: Json
           name: string
+          revision_id: number | null
+          tenant_id: string | null
           updated_at: string
           value: number
         }
         Insert: {
+          env?: string | null
           labels_json?: Json
           name: string
+          revision_id?: number | null
+          tenant_id?: string | null
           updated_at?: string
           value?: number
         }
         Update: {
+          env?: string | null
           labels_json?: Json
           name?: string
+          revision_id?: number | null
+          tenant_id?: string | null
           updated_at?: string
           value?: number
         }
@@ -13759,47 +14037,65 @@ export type Database = {
       }
       substrate_queue_snapshot: {
         Row: {
+          env: string | null
           id: string
+          revision_id: number | null
           serialized_heap_json: Json
           stats_json: Json | null
+          tenant_id: string | null
           updated_at: string
         }
         Insert: {
+          env?: string | null
           id?: string
+          revision_id?: number | null
           serialized_heap_json?: Json
           stats_json?: Json | null
+          tenant_id?: string | null
           updated_at?: string
         }
         Update: {
+          env?: string | null
           id?: string
+          revision_id?: number | null
           serialized_heap_json?: Json
           stats_json?: Json | null
+          tenant_id?: string | null
           updated_at?: string
         }
         Relationships: []
       }
       substrate_retry_buckets: {
         Row: {
+          env: string | null
           max_tokens: number
           module: string
           refill_rate: number
+          revision_id: number | null
           stats_json: Json | null
+          tenant_id: string | null
           tokens: number
           updated_at: string
         }
         Insert: {
+          env?: string | null
           max_tokens?: number
           module: string
           refill_rate?: number
+          revision_id?: number | null
           stats_json?: Json | null
+          tenant_id?: string | null
           tokens?: number
           updated_at?: string
         }
         Update: {
+          env?: string | null
           max_tokens?: number
           module?: string
           refill_rate?: number
+          revision_id?: number | null
           stats_json?: Json | null
+          tenant_id?: string | null
           tokens?: number
           updated_at?: string
         }
@@ -13808,23 +14104,32 @@ export type Database = {
       substrate_schema_registry: {
         Row: {
           entity: string
+          env: string | null
           fields_json: Json
           migrations_json: Json
           registered_at: string
+          revision_id: number | null
+          tenant_id: string | null
           version: number
         }
         Insert: {
           entity: string
+          env?: string | null
           fields_json?: Json
           migrations_json?: Json
           registered_at?: string
+          revision_id?: number | null
+          tenant_id?: string | null
           version?: number
         }
         Update: {
           entity?: string
+          env?: string | null
           fields_json?: Json
           migrations_json?: Json
           registered_at?: string
+          revision_id?: number | null
+          tenant_id?: string | null
           version?: number
         }
         Relationships: []
@@ -15067,6 +15372,39 @@ export type Database = {
       compress_warm_memories: {
         Args: { p_agent_id: string; p_max_words?: number; p_user_id: string }
         Returns: Json
+      }
+      cp_acquire_lease: {
+        Args: {
+          p_env?: string
+          p_lease_key: string
+          p_owner_id: string
+          p_tenant_id?: string
+          p_ttl_seconds?: number
+        }
+        Returns: boolean
+      }
+      cp_commit_snapshot: {
+        Args: {
+          p_created_by?: string
+          p_env?: string
+          p_parent_revision_id?: number
+          p_payload?: Json
+          p_tenant_id?: string
+          p_wal_events?: Json
+        }
+        Returns: Json
+      }
+      cp_release_lease: {
+        Args: { p_lease_key: string; p_owner_id: string }
+        Returns: boolean
+      }
+      cp_renew_lease: {
+        Args: {
+          p_lease_key: string
+          p_owner_id: string
+          p_ttl_seconds?: number
+        }
+        Returns: boolean
       }
       deactivate_pack: {
         Args: { p_pack_id: string; p_user_id: string }
