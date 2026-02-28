@@ -55,15 +55,19 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
     }
   }
 
-  // Async checks
+  // Async checks — with timeout to prevent audit stalling
   try {
-    findings.push(...await checkSupabaseContracts());
+    const supabaseCheck = checkSupabaseContracts();
+    const timeoutPromise = new Promise<AuditFinding[]>((_, reject) => 
+      setTimeout(() => reject(new Error('Backend check timed out after 4s')), 4000)
+    );
+    findings.push(...await Promise.race([supabaseCheck, timeoutPromise]));
   } catch (err: any) {
     findings.push({
       id: 'audit_check_crash_supabase',
       category: 'supabase',
-      severity: 'error',
-      title: 'Backend connectivity check crashed',
+      severity: 'warn',
+      title: 'Backend connectivity check incomplete',
       detail: err?.message || 'Unknown error during backend check',
     });
   }

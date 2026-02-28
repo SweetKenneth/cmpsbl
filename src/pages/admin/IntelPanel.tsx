@@ -442,12 +442,12 @@ export default function IntelPanel() {
               {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
               <span className="ml-1.5">Propose</span>
             </Button>
-            <Button variant="outline" size="sm" className="h-8" onClick={() => refetch()} disabled={isRefetching}>
+            <Button variant="outline" size="sm" className="h-8" onClick={() => refetch()} disabled={isRefetching} aria-label="Refresh">
               <RefreshCw className={`w-4 h-4 ${isRefetching ? 'animate-spin' : ''}`} />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8">
+                <Button variant="outline" size="sm" className="h-8" aria-label="More actions">
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>

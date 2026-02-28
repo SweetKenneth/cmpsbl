@@ -49,7 +49,7 @@ export function AdminHeader() {
           {/* Notifications */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative hover:bg-muted/50">
+              <Button variant="ghost" size="icon" className="relative hover:bg-muted/50" aria-label="Notifications">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse-glow" />
               </Button>
@@ -78,7 +78,7 @@ export function AdminHeader() {
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted/50">
+              <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted/50" aria-label="User menu">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center">
                   <User className="w-4 h-4 text-white" />
                 </div>
