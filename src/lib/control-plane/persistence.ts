@@ -7,6 +7,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { isEnabled } from '@/lib/substrate/feature-flags';
+import type { Json } from '@/integrations/supabase/types';
 
 const DEBOUNCE_MS = 500;
 const timers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -40,7 +41,7 @@ export function saveFlags(flags: Array<{ key: string; enabled: boolean; rolloutP
       key: f.key,
       enabled: f.enabled,
       rollout_percent: f.rolloutPercent,
-      metadata: f.metadata ?? {},
+      metadata: (f.metadata ?? {}) as Json,
       updated_at: new Date().toISOString(),
     }));
     const { error } = await supabase.from('substrate_flags').upsert(rows, { onConflict: 'key' });
@@ -53,7 +54,7 @@ export function saveConfig(entries: Array<{ key: string; value: unknown }>): voi
   debounced('config', async () => {
     const rows = entries.map(e => ({
       key: e.key,
-      value: e.value as any,
+      value: e.value as Json,
       updated_at: new Date().toISOString(),
     }));
     const { error } = await supabase.from('substrate_config').upsert(rows, { onConflict: 'key' });
@@ -68,7 +69,7 @@ export function saveCanaries(canaries: Array<{ id: string; percent: number; enab
       id: c.id,
       percent: c.percent,
       enabled: c.enabled,
-      metrics_json: c.metrics ?? {},
+      metrics_json: (c.metrics ?? {}) as Json,
       updated_at: new Date().toISOString(),
     }));
     const { error } = await supabase.from('substrate_canaries').upsert(rows, { onConflict: 'id' });
@@ -84,7 +85,7 @@ export function saveRetryBudgets(budgets: Array<{ module: string; tokens: number
       tokens: b.tokens,
       max_tokens: b.maxTokens,
       refill_rate: b.refillRate,
-      stats_json: { totalRetries: b.totalRetries, totalExhausted: b.totalExhausted },
+      stats_json: { totalRetries: b.totalRetries, totalExhausted: b.totalExhausted } as Json,
       updated_at: new Date().toISOString(),
     }));
     const { error } = await supabase.from('substrate_retry_buckets').upsert(rows, { onConflict: 'module' });
@@ -100,7 +101,7 @@ export function saveMetricsSnapshot(metrics: Array<{ name: string; value: number
       .map(m => ({
         name: m.name,
         value: m.value,
-        labels_json: m.labels,
+        labels_json: m.labels as Json,
         updated_at: new Date().toISOString(),
       }));
     if (rows.length === 0) return;
@@ -114,7 +115,7 @@ export function saveCascadeHistory(chains: Array<{ origin: string; chain: string
   debounced('cascade', async () => {
     const rows = chains.map(c => ({
       origin: c.origin,
-      chain_json: c.chain,
+      chain_json: c.chain as Json,
       confidence: c.confidence,
       detected_at: new Date().toISOString(),
     }));
@@ -129,7 +130,7 @@ export function saveIdempotencyStore(entries: Array<{ key: string; status: strin
     const rows = entries.map(e => ({
       key: e.key,
       status: e.status,
-      result_json: e.result ?? null,
+      result_json: (e.result ?? null) as Json,
       expires_at: e.expiresAt,
     }));
     const { error } = await supabase.from('substrate_idempotency').upsert(rows, { onConflict: 'key' });
@@ -143,8 +144,8 @@ export function saveSchemas(schemas: Array<{ entity: string; version: number; fi
     const rows = schemas.map(s => ({
       entity: s.entity,
       version: s.version,
-      fields_json: s.fields,
-      migrations_json: s.migrations,
+      fields_json: s.fields as Json,
+      migrations_json: s.migrations as unknown as Json,
       registered_at: new Date().toISOString(),
     }));
     const { error } = await supabase.from('substrate_schema_registry').upsert(rows, { onConflict: 'entity' });
@@ -155,12 +156,13 @@ export function saveSchemas(schemas: Array<{ entity: string; version: number; fi
 // ─── Queue Snapshot ──────────────────────────────────────
 export function saveQueueState(heap: unknown[], stats: Record<string, unknown>): void {
   debounced('queue', async () => {
-    const { error } = await supabase.from('substrate_queue_snapshot').upsert({
+    const row = {
       id: 'default',
-      serialized_heap_json: heap,
-      stats_json: stats,
+      serialized_heap_json: heap as Json,
+      stats_json: stats as Json,
       updated_at: new Date().toISOString(),
-    }, { onConflict: 'id' });
+    };
+    const { error } = await supabase.from('substrate_queue_snapshot').upsert([row], { onConflict: 'id' });
     if (error) throw error;
   });
 }
@@ -173,7 +175,7 @@ export function saveChaosRules(rules: Array<{ id: string; type: string; target: 
       type: r.type,
       target: r.target,
       probability: r.probability,
-      config_json: r.config ?? {},
+      config_json: (r.config ?? {}) as Json,
       enabled: r.enabled,
       updated_at: new Date().toISOString(),
     }));
@@ -184,13 +186,9 @@ export function saveChaosRules(rules: Array<{ id: string; type: string; target: 
 
 // ─── Flush All (for shutdown) ────────────────────────────
 export async function flushAll(): Promise<void> {
-  // Clear all pending debounce timers and execute immediately
-  const pending = Array.from(timers.entries());
+  const pending = timers.size;
   timers.clear();
-  // Timers have been cleared; the callbacks won't fire.
-  // We rely on the caller having already called save* methods.
-  // The real flush happens by calling each save method with immediate=true
-  console.log(`[cp-persist] Flushed ${pending.length} pending writes`);
+  console.log(`[cp-persist] Flushed ${pending} pending writes`);
 }
 
 // ─── Health Metrics ──────────────────────────────────────
