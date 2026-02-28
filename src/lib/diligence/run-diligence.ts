@@ -109,6 +109,12 @@ function classifyResult(res: CommandResult, expectedMode: 'surface' | 'failure' 
 
   // failure discipline: clean failure or guarded success both acceptable
   if (!res.success) return { success: true, severity: 'PASS' };
+  // Detect guarded output shapes: handler returned { success: false, error: 'Usage: ...' }
+  // but executeCommand wrapped it as success: true (handler didn't throw)
+  const output = res.output as Record<string, unknown> | undefined;
+  if (output && output.success === false) {
+    return { success: true, severity: 'PASS', notes: 'Handler returned usage guard (guarded output shape)' };
+  }
   return { success: true, severity: 'MINOR', notes: 'Command succeeded; verify this is intended (guardrails)' };
 }
 
