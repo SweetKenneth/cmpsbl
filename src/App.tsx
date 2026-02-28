@@ -618,7 +618,8 @@ const App = () => {
 
                         {/* 404 - catch all remaining */}
                         <Route path="*" element={<NotFound />} />
-                      </Routes>
+                       </Routes>
+                        </main>
                     </Suspense>
                   </AuthProvider>
                     } />
