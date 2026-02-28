@@ -3,7 +3,7 @@
  * Clean, reorganized navigation with no dead links
  */
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
