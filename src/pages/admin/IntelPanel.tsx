@@ -271,10 +271,10 @@ export default function IntelPanel() {
     try {
       // Run maintenance battery first to get fresh data
       await refetch();
-      const proposal = generateUnifiedProposal();
+      const proposal = await generateUnifiedProposal();
       setUnifiedProposal(proposal);
       navigator.clipboard.writeText(JSON.stringify(proposal, null, 2));
-      toast.success(`Proposal generated — ${proposal.action_plan.length} action steps. Copied to clipboard.`);
+      toast.success(`Proposal generated — ${proposal.action_plan.length} action steps from ${proposal.metadata.sources.length} sources. Copied to clipboard.`);
     } catch (err) {
       toast.error('Failed to generate proposal');
     } finally {
@@ -434,6 +434,7 @@ export default function IntelPanel() {
             </CardHeader>
             <CardContent className="p-3 sm:p-4 pt-0 space-y-3">
               {/* Quick stats */}
+              {/* Quick stats — expanded for merged audits */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                 <div className="bg-muted/50 rounded p-2">
                   <p className="text-lg font-bold text-destructive">{unifiedProposal.technical_debt.critical.length}</p>
@@ -449,7 +450,29 @@ export default function IntelPanel() {
                 </div>
                 <div className="bg-muted/50 rounded p-2">
                   <p className="text-lg font-bold text-foreground">{unifiedProposal.audit_health.compliance_score}%</p>
-                  <p className="text-[10px] text-muted-foreground">Audit Score</p>
+                  <p className="text-[10px] text-muted-foreground">Compliance</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                <div className="bg-muted/50 rounded p-2">
+                  <p className={`text-lg font-bold ${unifiedProposal.structural_health.overall_verdict === 'PASS' ? 'text-green-600' : 'text-destructive'}`}>
+                    {unifiedProposal.structural_health.overall_verdict}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">Structure</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
+                  <p className={`text-lg font-bold ${unifiedProposal.production_audit.passed ? 'text-green-600' : 'text-destructive'}`}>
+                    {unifiedProposal.production_audit.passed ? 'PASS' : 'FAIL'}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">Prod Audit</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
+                  <p className="text-lg font-bold text-foreground">{unifiedProposal.structural_health.layers_passed}/{unifiedProposal.structural_health.layers_checked}</p>
+                  <p className="text-[10px] text-muted-foreground">Layers OK</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
+                  <p className="text-lg font-bold text-foreground">{unifiedProposal.metadata.sources.length}</p>
+                  <p className="text-[10px] text-muted-foreground">Audit Sources</p>
                 </div>
               </div>
 
