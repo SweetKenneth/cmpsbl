@@ -62,16 +62,85 @@ function computeDelta(pre: EvolutionMetrics, post: EvolutionMetrics): EvolutionD
   };
 }
 
-function captureSystemMetrics(): EvolutionMetrics {
-  // In production, this would run the full scan. For the edge function,
-  // we capture baseline metrics from available system state.
+async function captureSystemMetrics(
+  supabase: ReturnType<typeof createClient>,
+  authHeader: string,
+): Promise<EvolutionMetrics> {
+  // ═══ Run real scan via pf-substrate modernizer.scan ═══
+  const { data: scanResult, error: scanError } = await supabase.functions.invoke('pf-substrate', {
+    body: { module: 'modernizer', action: 'scan', data: { depth: 'full' } },
+    headers: { Authorization: authHeader },
+  });
+
+  if (scanError || !scanResult?.success) {
+    throw new Error(
+      `Scan execution failed — evolution blocked. ${scanError?.message || scanResult?.error || 'Unknown scan failure'}`,
+    );
+  }
+
+  // ═══ Extract real metrics from scan result ═══
+  const analysis = scanResult.analysis || {};
+  const orchestratorHealth = analysis.orchestrator?.health ?? 0; // 0-100
+  const successRateStr = analysis.performance?.success_rate || '0%';
+  const successRate = parseFloat(successRateStr) || 0;
+  const proposalCount = scanResult.proposal_count ?? scanResult.proposals?.length ?? 0;
+
+  // Count risk flags from proposals
+  const proposals = scanResult.proposals || [];
+  const riskFlags = proposals.filter(
+    (p: Record<string, unknown>) => p.priority === 'high' || p.priority === 'critical',
+  ).length;
+
+  // Circuit state: check via system health
+  let circuitOpen = 0;
+  try {
+    const { data: healthData } = await supabase.functions.invoke('pf-substrate', {
+      body: { module: 'system', action: 'health' },
+      headers: { Authorization: authHeader },
+    });
+    if (healthData?.circuit_breaker?.state === 'open') {
+      circuitOpen = 1;
+    }
+  } catch (_) {
+    // Non-blocking — default to 0
+  }
+
+  // Memory vectors: query brain_memory_meta for real counts
+  let memoryTotalVectors = 0;
+  try {
+    const { data: memMeta } = await supabase
+      .from('brain_memory_meta')
+      .select('hot_count, warm_count, cold_count')
+      .limit(100);
+
+    if (memMeta && memMeta.length > 0) {
+      memoryTotalVectors = memMeta.reduce(
+        (sum: number, row: Record<string, number | null>) =>
+          sum + (row.hot_count ?? 0) + (row.warm_count ?? 0) + (row.cold_count ?? 0),
+        0,
+      );
+    }
+  } catch (_) {
+    // Memory module optional — do not block evolution
+  }
+
+  // Entropy: normalized disorder from anomalies + risk flags + proposals
+  const dataDensity = analysis.data_density || {};
+  const totalDataPoints = (dataDensity.brain_memories ?? 0) + (dataDensity.events ?? 0);
+  const anomalyFactor = riskFlags * 0.15;
+  const proposalFactor = proposalCount * 0.05;
+  const entropyScore = Math.min(1, anomalyFactor + proposalFactor + (totalDataPoints > 0 ? 0 : 0.1));
+
+  const healthScore = orchestratorHealth > 0 ? orchestratorHealth : successRate;
+  const auditPercent = healthScore > 0 ? Math.min(100, healthScore * 1.05) : 0;
+
   return {
-    health_score: 100,
-    audit_percent: 85,
-    debt_flags_count: 0,
-    open_circuit_count: 0,
-    memory_total_vectors: 0,
-    entropy_score: 0,
+    health_score: healthScore,
+    audit_percent: auditPercent,
+    debt_flags_count: riskFlags + proposalCount,
+    open_circuit_count: circuitOpen,
+    memory_total_vectors: memoryTotalVectors,
+    entropy_score: entropyScore,
   };
 }
 
@@ -121,8 +190,20 @@ Deno.serve(async (req: Request) => {
       const lineage_id = `seba_${snapshot_id}_${Date.now().toString(36)}`;
       const signature = generateHash(`${lineage_id}:${receipt_id}:${verification_hash}:${diff_hash}`);
 
-      // Step 1: Capture pre-metrics
-      const pre_metrics = captureSystemMetrics();
+      // Step 1: Capture pre-metrics via live scan
+      let pre_metrics: EvolutionMetrics;
+      try {
+        pre_metrics = await captureSystemMetrics(supabase, authHeader);
+      } catch (scanErr) {
+        return new Response(JSON.stringify({
+          error: 'Scan execution failed. Evolution blocked.',
+          detail: scanErr instanceof Error ? scanErr.message : 'Unknown scan failure',
+          gate: 'pre_scan_required',
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
 
       // Step 2: Persist pre-metrics
       const tenant_id = url.searchParams.get('tenant_id') || userId;
@@ -233,7 +314,19 @@ Deno.serve(async (req: Request) => {
       }
 
       // Gate 2: Capture post-metrics (automatic re-scan)
-      const post_metrics = captureSystemMetrics();
+      let post_metrics: EvolutionMetrics;
+      try {
+        post_metrics = await captureSystemMetrics(supabase, authHeader);
+      } catch (scanErr) {
+        return new Response(JSON.stringify({
+          error: 'Post-apply scan failed. Evolution cannot be finalized without verified metrics.',
+          detail: scanErr instanceof Error ? scanErr.message : 'Unknown scan failure',
+          gate: 'post_scan_required',
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
 
       // Gate 3: Compute delta
       const delta = computeDelta(pre_metrics, post_metrics);
@@ -338,7 +431,19 @@ Deno.serve(async (req: Request) => {
         .eq('snapshot_id', snapshot_id);
 
       // Capture post-restore metrics (re-scan)
-      const post_restore_metrics = captureSystemMetrics();
+      let post_restore_metrics: EvolutionMetrics;
+      try {
+        post_restore_metrics = await captureSystemMetrics(supabase, authHeader);
+      } catch (scanErr) {
+        return new Response(JSON.stringify({
+          error: 'Post-restore scan failed. Restoration recorded but metrics unavailable.',
+          detail: scanErr instanceof Error ? scanErr.message : 'Scan failure',
+          gate: 'restore_scan_failed',
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
       const pre_metrics_data = (snapshot as Record<string, unknown>).pre_metrics as EvolutionMetrics | null;
 
       // Record negative delta in entropy ledger
