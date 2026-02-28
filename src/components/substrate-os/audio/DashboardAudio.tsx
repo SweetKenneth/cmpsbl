@@ -103,6 +103,7 @@ function DesktopAudioControls({ className }: { className?: string }) {
           "h-9 w-9 relative shrink-0",
           settings.enabled && "text-emerald-400"
         )}
+        aria-label={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
         title={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
       >
         {settings.enabled ? (
@@ -128,6 +129,7 @@ function DesktopAudioControls({ className }: { className?: string }) {
           size="icon"
           onClick={() => setShowSettings(!showSettings)}
           className="h-9 w-9 shrink-0"
+          aria-label="Audio Settings"
           title="Audio Settings"
         >
           <Settings2 className="w-4 h-4" />
