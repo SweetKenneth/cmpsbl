@@ -514,7 +514,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     }
   }
   
-  // ─── ENFORCE PROPOSAL CAP (max 5, preserve priority order) ───
+  // ─── ENFORCE PROPOSAL CAP (max 15, preserve priority order) ───
   actionPlan = actionPlan.slice(0, MAX_TOTAL_PROPOSALS_PER_RUN);
   
   // Re-number orders
