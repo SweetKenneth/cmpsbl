@@ -412,7 +412,7 @@ const App = () => {
                         <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
                         <Route path="/licensing" element={<PhaseGateRoute><PackGate packId="pack-self-hosted"><SubstrateLicensingDownload /></PackGate></PhaseGateRoute>} />
                         <Route path="/substrate/licensing/success" element={<PhaseGateRoute><SubstrateLicensingSuccess /></PhaseGateRoute>} />
-                        <Route path="/lab" element={<PhaseGateRoute><PackGate packId="pack-deep-research"><ExperimentationLab /></PackGate></PhaseGateRoute>} />
+                        <Route path="/lab" element={<PhaseGateRoute><ExperimentationLab /></PhaseGateRoute>} />
                         <Route path="/clockless-world-engine" element={<PhaseGateRoute><ClocklessWorldEngine /></PhaseGateRoute>} />
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
