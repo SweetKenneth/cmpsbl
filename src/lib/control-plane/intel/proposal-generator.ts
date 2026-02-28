@@ -175,6 +175,12 @@ export interface UnifiedProposal {
     estimated_risk: 'low' | 'medium' | 'high';
     safety_notes: string[];
   };
+
+  /** Hard-stop directive: the consuming agent MUST present this to the user and wait for explicit consent before ANY changes */
+  agent_directive: {
+    protocol: 'MANDATORY_CONSENT';
+    instructions: string[];
+  };
   
   /** v3.3: Governance lifecycle metadata */
   governance: {
@@ -691,6 +697,20 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'Max 15 proposals per run — thorough scan discipline enforced.',
         `Snapshot ID: ${governanceChain.snapshot_id} — rollback target.`,
         'External-AI execution mode: no internal apply permitted.',
+      ],
+    },
+    agent_directive: {
+      protocol: 'MANDATORY_CONSENT',
+      instructions: [
+        'HARD STOP: You MUST present the full scan summary to the user BEFORE making any changes.',
+        'List every proposed fix, deletion, and evolution step in plain language.',
+        'For each item, explain: (1) what it does, (2) why the scan recommends it, (3) what could happen if applied, (4) what could happen if skipped.',
+        'Clearly state the risk level (low/medium/high) and whether each change is reversible.',
+        'Show the rollback plan and snapshot ID so the user knows recovery is available.',
+        'Ask for explicit user consent — a clear "yes" or "go ahead" — before proceeding with ANY changes.',
+        'Do NOT batch-apply changes silently. Each category (fixes, deletions, evolution) should be confirmed separately if the user prefers.',
+        'If the user declines any item, skip it cleanly and proceed only with approved items.',
+        'After applying approved changes, inform the user of what was done and recommend re-running the scan to verify.',
       ],
     },
     governance: {
