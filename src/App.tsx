@@ -329,7 +329,6 @@ const App = () => {
     <DiagErrorBoundary>
       <Suspense fallback={null}>
         <MotionConfigWrapper reducedMotion="user">
-        <MotionConfigWrapper reducedMotion="user">
           <QueryClientProvider client={queryClient}>
           <SEOProvider>
             <Suspense fallback={<PageLoader />}>
