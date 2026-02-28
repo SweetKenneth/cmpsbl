@@ -16,7 +16,8 @@ import { cn } from "@/lib/utils";
 
 export function UnifiedAdminSidebar() {
   const { state, setOpenMobile, isMobile } = useSidebar();
-  const collapsed = state === "collapsed";
+  // On mobile, sidebar renders as a full-width Sheet overlay — always show text
+  const collapsed = isMobile ? false : state === "collapsed";
   const location = useLocation();
 
   const isActive = (path: string) => {
