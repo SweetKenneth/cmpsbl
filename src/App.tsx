@@ -423,8 +423,11 @@ const App = () => {
                         <Route path="/artifacts" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/engines" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/system-feed" element={<PhaseGateRoute><PackGate packId="pack-observability"><SystemIntelligenceFeed /></PackGate></PhaseGateRoute>} />
-                        
-                        <Route path="/status" element={<Status />} />
+                         
+                         {/* Scan result share page — Item #3 */}
+                         <Route path="/scan/results/:id" element={<ScanResult />} />
+                         
+                         <Route path="/status" element={<Status />} />
                         <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
