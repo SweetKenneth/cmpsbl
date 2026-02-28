@@ -114,8 +114,15 @@ async function scanAllModules(): Promise<ModuleHealthEntry[]> {
           .limit(1);
         
         if (error) {
-          entry.table_accessible = false;
-          entry.anomalies.push(`Primary table ${primaryTable} inaccessible: ${error.message}`);
+          // RLS blocks are expected for protected tables — not an anomaly
+          const isRLS = isRLSBlock(error);
+          if (isRLS) {
+            // Table exists and RLS is enforced — this is healthy
+            entry.table_accessible = true;
+          } else {
+            entry.table_accessible = false;
+            entry.anomalies.push(`Primary table ${primaryTable} inaccessible: ${error.message}`);
+          }
         }
       } catch {
         entry.reachable = false;
