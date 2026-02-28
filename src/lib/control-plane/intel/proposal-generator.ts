@@ -35,6 +35,7 @@ import { clmTopicPipeline } from '@/lib/control-plane/clm/topic-pipeline';
 import { scanHTML, calculateScore, determineOverallSeverity } from '@/lib/inclusive/scan';
 import { isExternalAIMode } from '@/lib/evolve/execution-mode';
 import { modernizerScan, type ScanResultExtended } from '@/lib/evolve/scan';
+import { recordScanFingerprints, computeNoveltyDiff, type ScanMode } from '@/lib/scan/scan-run-identity';
 import type { IntelCard } from '../types';
 import type { AuditFinding, AuditReport } from '@/lib/audit/audit-types';
 import type { HealthCheckReport } from '@/lib/audit/substrate-health-check';
