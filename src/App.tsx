@@ -21,14 +21,13 @@ const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
 // Defer non-critical CSS (substrate voice, decode orb, clockless river animations)
 const loadDeferredCSS = () => import("@/styles/deferred.css");
 // Deferred utility imports — loaded dynamically to reduce initial JS
-import { isEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
 // Mobile crash diagnostics (opt-in via ?diag=1) — lazy loaded
 // CRITICAL: DiagErrorBoundary must be EAGERLY loaded so it can catch crashes
 // before any lazy/Suspense resolution. Lazy-loading an error boundary defeats its purpose.
 import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";
-const MobilePreviewSafeMode = lazy(() => import("@/components/system/MobilePreviewSafeMode").then(m => ({ default: m.MobilePreviewSafeMode })));
 const DiagPanelLazy = lazy(() => import("@/components/system/DiagPanel").then(m => ({ default: m.DiagPanel })));
+
 
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
@@ -256,28 +255,6 @@ const queryClient = new QueryClient({
 // Note: Route protection is handled by AuthProvider and individual page-level auth checks
 
 const App = () => {
-  const isPreviewEnv = isEditorPreviewEnv();
-
-  const previewParams = (() => {
-    try {
-      const url = new URL(window.location.href);
-      return {
-        previewFull: url.searchParams.get("previewFull") === "1",
-        previewSafe: url.searchParams.get("previewSafe") === "1",
-      };
-    } catch {
-      return { previewFull: false, previewSafe: false };
-    }
-  })();
-
-  const isMobileDevice =
-    typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
-
-  // Default: Safe Mode in embedded mobile preview.
-  // Override with ?previewFull=1
-  const mobilePreviewSafeMode =
-    (previewParams.previewSafe || (isPreviewEnv && isMobileDevice)) && !previewParams.previewFull;
-
   // Always allow substrate init — no gates, all systems operational
   const substrateAutoInit = true;
 
@@ -328,7 +305,7 @@ const App = () => {
   // Force debug mode OFF on startup
   useEffect(() => {
     import("@/lib/debug-mode").then(({ debugMode }) => {
-      if (!mobilePreviewSafeMode && debugMode.isEnabled()) {
+      if (debugMode.isEnabled()) {
         debugMode.disable();
       }
     });
@@ -350,10 +327,8 @@ const App = () => {
 
   return (
     <DiagErrorBoundary>
-      {mobilePreviewSafeMode ? (
-        <MobilePreviewSafeMode />
-      ) : (
-        <Suspense fallback={null}>
+      <Suspense fallback={null}>
+        <MotionConfigWrapper reducedMotion="user">
         <MotionConfigWrapper reducedMotion="user">
           <QueryClientProvider client={queryClient}>
           <SEOProvider>
@@ -647,7 +622,6 @@ const App = () => {
         </QueryClientProvider>
       </MotionConfigWrapper>
       </Suspense>
-      )}
 
       {/* Diagnostic panel - only renders when ?diag=1 is present */}
       <Suspense fallback={null}>
