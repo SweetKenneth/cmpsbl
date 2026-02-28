@@ -238,6 +238,8 @@ function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
 export default function IntelPanel() {
   const { data, isLoading, refetch, isRefetching } = useIntelPanel();
   const executionMode = getExecutionModeConfig();
+  const [unifiedProposal, setUnifiedProposal] = useState<UnifiedProposal | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
   
   const handleCopyReport = () => {
     if (!data?.exportReport) return;
@@ -262,6 +264,34 @@ export default function IntelPanel() {
     if (errors.length > 0) {
       console.warn('[INTEL] Export errors:', errors);
     }
+  };
+
+  const handleGenerateProposal = async () => {
+    setIsGenerating(true);
+    try {
+      // Run maintenance battery first to get fresh data
+      await refetch();
+      const proposal = generateUnifiedProposal();
+      setUnifiedProposal(proposal);
+      navigator.clipboard.writeText(JSON.stringify(proposal, null, 2));
+      toast.success(`Proposal generated — ${proposal.action_plan.length} action steps. Copied to clipboard.`);
+    } catch (err) {
+      toast.error('Failed to generate proposal');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleDownloadProposal = () => {
+    if (!unifiedProposal) return;
+    const blob = new Blob([JSON.stringify(unifiedProposal, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `unified-proposal-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Proposal downloaded');
   };
   
   if (isLoading) {
