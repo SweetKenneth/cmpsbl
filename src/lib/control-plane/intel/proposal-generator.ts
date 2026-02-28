@@ -1,17 +1,21 @@
 /**
- * Unified Proposal Generator v3.0
+ * Unified Proposal Generator v4.0
  * 
  * ALL-IN-ONE audit merger: combines signals from every audit subsystem
  * into a single, comprehensive, agent-consumable proposal.
  * 
  * Sources merged:
  * 1. SEBA Evolution — cognitive analyzer insights (9 engines)
- * 2. Full Audit Runner — production readiness checks (system manifest, routes, modules, SEO, hooks, UI, branding, backend)
+ * 2. Full Audit Runner — production readiness checks
  * 3. Substrate Health Check — structural integrity across 8 layers
  * 4. AUDIT Module — immutable compliance ledger + chain integrity
  * 5. Diligence Harness — terminal/governance probe battery
  * 6. ENGINEER Findings — internal maintenance node signals
  * 7. INTEL Aggregator — cross-system signal correlation
+ * 8. INCLUSIVE Module — WCAG 2.2 accessibility scan (86-rule engine)
+ * 9. DEFENSE Module — security posture, anomalies, threat landscape
+ * 
+ * Ratio: 60% tech debt elimination / 40% evolution advancement
  * 
  * Goals:
  * 1. Eliminate ALL technical debt from vibe-coded mistakes
@@ -24,19 +28,25 @@ import { intelAggregator } from './aggregator';
 import { getAuditLog, verifyAuditChain, getAuditState } from '@/lib/substrate/audit-module';
 import { runFullAudit } from '@/lib/audit/audit-runner';
 import { runSubstrateHealthCheck } from '@/lib/audit/substrate-health-check';
+import { substrate } from '@/lib/substrate';
+import { scanHTML, calculateScore, determineOverallSeverity } from '@/lib/inclusive/scan';
 import type { IntelCard } from '../types';
 import type { AuditFinding, AuditReport } from '@/lib/audit/audit-types';
 import type { HealthCheckReport } from '@/lib/audit/substrate-health-check';
+import type { InclusiveIssue } from '@/lib/inclusive/types';
 
 // ═══════════════════════════════════════════════════════════════
-// SCHEMA — Agent-consumable proposal v3.0
+// SCHEMA — Agent-consumable proposal v4.0
 // ═══════════════════════════════════════════════════════════════
 
 export interface UnifiedProposal {
-  schema_version: '3.0';
+  schema_version: '4.0';
   generated_at: string;
   system_id: 'cmpsbl-substrate';
   proposal_type: 'unified-evolution';
+  
+  /** 60% debt / 40% evolution — enforced ratio */
+  ratio: { debt_pct: number; evolution_pct: number };
   
   executive_summary: string;
   
@@ -89,6 +99,30 @@ export interface UnifiedProposal {
     critical_failures: string[];
   };
   
+  // INCLUSIVE — WCAG 2.2 accessibility scan
+  accessibility: {
+    score: number;
+    total_issues: number;
+    critical_count: number;
+    high_count: number;
+    medium_count: number;
+    low_count: number;
+    auto_fixable: number;
+    top_issues: { wcag: string; description: string; severity: string; fixable: boolean }[];
+    wcag_level: string;
+  };
+  
+  // DEFENSE — security posture scan
+  security_posture: {
+    posture_available: boolean;
+    anomaly_available: boolean;
+    posture_summary: string;
+    threat_level: 'low' | 'medium' | 'high' | 'critical';
+    anomalies_detected: number;
+    rate_limit_issues: number;
+    security_issues: SecurityIssueItem[];
+  };
+  
   action_plan: ActionStep[];
   
   guardrails: {
@@ -107,6 +141,15 @@ export interface UnifiedProposal {
     generation_ms: number;
     sources: string[];
   };
+}
+
+export interface SecurityIssueItem {
+  id: string;
+  title: string;
+  severity: string;
+  source: string;
+  description: string;
+  suggested_fix: string;
 }
 
 export interface TechDebtItem {
