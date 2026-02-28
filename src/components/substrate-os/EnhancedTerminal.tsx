@@ -90,8 +90,11 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Boot animation with viewport-aware messages
+  // Boot animation with viewport-aware messages + register terminal presence
   useEffect(() => {
+    // Register that a terminal UI is present for conditional scanning
+    import('@/lib/terminal/detect').then(m => m.registerTerminalPresence());
+    
     // Use viewport-aware boot messages
     const bootMessages = getBootMessages(window.innerWidth);
     let idx = 0;

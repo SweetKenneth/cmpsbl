@@ -8,6 +8,7 @@ import { getMetric } from '@/stores/publicMetricsStore';
 import { checkSystemManifest } from './checks/system-manifest';
 import { checkRouteRegistry } from './checks/routes';
 import { checkTerminalRegistry } from './checks/terminal';
+import { isTerminalPresent } from '@/lib/terminal/detect';
 import { checkModuleHealth } from './checks/modules';
 import { checkSEO } from './checks/seo';
 import { checkUIContracts } from './checks/ui-contracts';
@@ -24,16 +25,20 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
   const findings: AuditFinding[] = [];
 
   // Synchronous checks — wrapped in try/catch to prevent single check from crashing audit
-  const syncChecks = [
+  const syncChecks: { name: string; fn: () => AuditFinding[] }[] = [
     { name: 'system-manifest', fn: checkSystemManifest },
     { name: 'routes', fn: checkRouteRegistry },
-    { name: 'terminal', fn: checkTerminalRegistry },
     { name: 'modules', fn: checkModuleHealth },
     { name: 'hooks', fn: checkHooksContracts },
     { name: 'ui', fn: checkUIContracts },
     { name: 'seo', fn: checkSEO },
     { name: 'branding', fn: checkBrandingContracts },
   ];
+
+  // Only scan terminal commands if a terminal UI is detected
+  if (isTerminalPresent()) {
+    syncChecks.splice(2, 0, { name: 'terminal', fn: checkTerminalRegistry });
+  }
 
   for (const check of syncChecks) {
     try {

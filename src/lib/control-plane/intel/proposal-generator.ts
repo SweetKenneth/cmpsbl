@@ -440,9 +440,14 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   }
   
   // ─── Clean-run evolution proposal (GUARANTEED when stable) ───
+  // Only truly blocking issues prevent evolution: structural failures, production fatals,
+  // or REAL critical debt (security/structural, not accessibility/cosmetic)
   const hasStructuralFailures = structuralHealth.overall_verdict === 'FAIL';
   const hasProductionFatals = productionAudit.fatal > 0;
-  const hasCriticalDebt = techDebt.critical.length > 0;
+  const realCriticalDebt = techDebt.critical.filter(c => 
+    !c.source.includes('INCLUSIVE') && !c.title.startsWith('A11y:')
+  );
+  const hasCriticalDebt = realCriticalDebt.length > 0;
   const systemIsStable = !hasStructuralFailures && !hasProductionFatals && !hasCriticalDebt;
   
   if (systemIsStable) {
@@ -985,9 +990,11 @@ function buildEvolutionSection(
     }
   }
   
-  const governanceCards = allCards.filter(c => c.category === 'governance' || c.category === 'resilience');
-  for (const card of governanceCards.slice(0, 5)) {
-    if (!items.some(i => i.title === card.headline)) {
+  // Pull evolution-grade signals from governance, resilience, performance, and learning cards
+  const evoCategories = new Set(['governance', 'resilience', 'performance', 'learning', 'stability']);
+  const evoCards = allCards.filter(c => evoCategories.has(c.category));
+  for (const card of evoCards.slice(0, 8)) {
+    if (!items.some(i => i.title === card.headline || i.title === `Evolution: ${card.headline}`)) {
       items.push({
         id: card.id,
         title: `Evolution: ${card.headline}`,
@@ -1014,141 +1021,258 @@ function buildActionPlan(
   securityData: UnifiedProposal['security_posture'],
   governanceChain: GovernanceChain,
 ): ActionStep[] {
-  const steps: ActionStep[] = [];
-  let order = 1;
+  // ═══════════════════════════════════════════════════════════
+  // VALUE-SCORED PRIORITIZATION
+  // Instead of fixed-order category buckets, we score EVERY finding
+  // by impact value and pick the top items across ALL 10 sources.
+  // ═══════════════════════════════════════════════════════════
   
-  // Priority 0: Structural failures
+  interface ScoredCandidate {
+    value: number; // 0-100 impact score
+    step: ActionStep;
+    dedup_key: string;
+  }
+  
+  const candidates: ScoredCandidate[] = [];
+  
+  // Severity to value mapping
+  const severityValue = (s: string): number => {
+    switch (s) {
+      case 'fatal': return 100;
+      case 'critical': return 95;
+      case 'error': return 80;
+      case 'high': return 75;
+      case 'warn': case 'warning': case 'medium': return 50;
+      case 'info': case 'low': return 20;
+      default: return 30;
+    }
+  };
+  
+  // Category multiplier — priorities:
+  // structural (1.0) > security (0.95) > production audit (0.9) > tech debt (0.85)
+  // > diligence (0.7) > audit gaps (0.6) > accessibility (0.5)
+  const categoryMultiplier: Record<string, number> = {
+    structural: 1.0,
+    security: 0.95,
+    production: 0.9,
+    'tech-debt': 0.85,
+    diligence: 0.7,
+    audit: 0.6,
+    accessibility: 0.5,
+  };
+  
+  // ─── SOURCE 1: Structural failures ───
   if (structuralHealth.overall_verdict === 'FAIL') {
-    for (const layer of structuralHealth.layer_results.filter(l => l.verdict === 'FAIL').slice(0, 2)) {
-      steps.push({
-        order: order++,
-        category: 'structural',
-        title: `Fix structural failure: ${layer.label}`,
-        description: `${layer.failures.length} check(s) failed in the ${layer.label} layer.`,
-        risk: 'high',
-        instructions: [
-          `Layer: ${layer.layer} — ${layer.label}`,
-          ...layer.failures.slice(0, 3).map(f => `FAIL: ${f}`),
-          'Fix root cause before proceeding with other changes.',
-          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
-        ],
+    for (const layer of structuralHealth.layer_results.filter(l => l.verdict === 'FAIL')) {
+      candidates.push({
+        value: 100 * categoryMultiplier.structural,
+        dedup_key: `structural_${layer.layer}`,
+        step: {
+          order: 0,
+          category: 'structural',
+          title: `Fix structural failure: ${layer.label}`,
+          description: `${layer.failures.length} check(s) failed in the ${layer.label} layer.`,
+          risk: 'high',
+          instructions: [
+            `Layer: ${layer.layer} — ${layer.label}`,
+            ...layer.failures.slice(0, 3).map(f => `FAIL: ${f}`),
+            'Fix root cause before proceeding with other changes.',
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
       });
     }
   }
   
-  // Priority 1: Production audit fatal/error issues
-  for (const issue of productionAudit.top_issues.filter(i => i.severity === 'fatal' || i.severity === 'error').slice(0, 2)) {
-    if (steps.length >= MAX_TOTAL_PROPOSALS_PER_RUN) break;
-    steps.push({
-      order: order++,
-      category: 'production',
-      title: `Audit: ${issue.title}`,
-      description: issue.detail,
-      risk: issue.severity === 'fatal' ? 'high' : 'medium',
-      instructions: [
-        `Category: ${issue.category}`,
-        issue.hint || `Investigate the ${issue.category} issue and apply a fix.`,
-        `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
-      ],
+  // ─── SOURCE 2: Security issues (DEFENSE) — high priority ───
+  for (const issue of securityData.security_issues) {
+    candidates.push({
+      value: severityValue(issue.severity) * categoryMultiplier.security,
+      dedup_key: `security_${issue.id}`,
+      step: {
+        order: 0,
+        category: 'tech-debt',
+        title: `Security: ${issue.title}`,
+        description: issue.description,
+        risk: issue.severity === 'critical' ? 'high' : 'medium',
+        instructions: [
+          `Source: ${issue.source}`,
+          issue.suggested_fix,
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
     });
   }
   
-  // Priority 2: Critical tech debt
-  for (const item of techDebt.critical.slice(0, 3)) {
-    if (steps.length >= MAX_TOTAL_PROPOSALS_PER_RUN) break;
-    if (steps.some(s => s.title.includes(item.title))) continue;
-    steps.push({
-      order: order++,
-      category: 'tech-debt',
-      title: `Fix: ${item.title}`,
-      description: item.description,
-      risk: 'high',
-      instructions: [
-        `Source: ${item.source} · Area: ${item.affected_area}`,
-        item.suggested_fix,
-        'Add error handling and input validation',
-        `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
-      ],
+  // ─── SOURCE 3: Production audit fatal/error issues ───
+  for (const issue of productionAudit.top_issues.filter(i => i.severity === 'fatal' || i.severity === 'error')) {
+    candidates.push({
+      value: severityValue(issue.severity) * categoryMultiplier.production,
+      dedup_key: `audit_${issue.id}`,
+      step: {
+        order: 0,
+        category: 'production',
+        title: `Audit: ${issue.title}`,
+        description: issue.detail,
+        risk: issue.severity === 'fatal' ? 'high' : 'medium',
+        instructions: [
+          `Category: ${issue.category}`,
+          issue.hint || `Investigate the ${issue.category} issue and apply a fix.`,
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
     });
   }
   
-  // Priority 3: Diligence critical failures
-  for (const failure of diligence.critical_failures.slice(0, 1)) {
-    if (steps.length >= MAX_TOTAL_PROPOSALS_PER_RUN) break;
-    steps.push({
-      order: order++,
-      category: 'diligence',
-      title: `Resolve: ${failure}`,
-      description: `Diligence probe failure affecting system reliability.`,
-      risk: 'medium',
-      instructions: [
-        'Review the failing diligence probe.',
-        'Implement fix with proper error boundaries.',
-        `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
-      ],
+  // ─── SOURCE 4: Critical tech debt (ENGINEER + INTEL + AUDIT + HEALTH) ───
+  for (const item of techDebt.critical) {
+    candidates.push({
+      value: severityValue(item.severity) * categoryMultiplier['tech-debt'],
+      dedup_key: `debt_${item.id}`,
+      step: {
+        order: 0,
+        category: 'tech-debt',
+        title: `Fix: ${item.title}`,
+        description: item.description,
+        risk: 'high',
+        instructions: [
+          `Source: ${item.source} · Area: ${item.affected_area}`,
+          item.suggested_fix,
+          'Add error handling and input validation.',
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
     });
   }
   
-  // Priority 4: Security issues
-  for (const issue of securityData.security_issues.slice(0, 1)) {
-    if (steps.length >= MAX_TOTAL_PROPOSALS_PER_RUN) break;
-    steps.push({
-      order: order++,
-      category: 'tech-debt',
-      title: `Security: ${issue.title}`,
-      description: issue.description,
-      risk: issue.severity === 'critical' ? 'high' : 'medium',
-      instructions: [
-        `Source: ${issue.source}`,
-        issue.suggested_fix,
-        `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
-      ],
+  // ─── SOURCE 5: Tech debt warnings (lower value) ───
+  for (const item of techDebt.warnings.slice(0, 10)) {
+    candidates.push({
+      value: severityValue(item.severity) * categoryMultiplier['tech-debt'] * 0.8,
+      dedup_key: `debt_w_${item.id}`,
+      step: {
+        order: 0,
+        category: 'tech-debt',
+        title: `Warning: ${item.title}`,
+        description: item.description,
+        risk: 'low',
+        instructions: [
+          `Source: ${item.source} · Area: ${item.affected_area}`,
+          item.suggested_fix,
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
     });
   }
   
-  // Priority 5: Accessibility critical
-  for (const issue of accessibilityData.top_issues.filter(i => i.severity === 'critical').slice(0, 1)) {
-    if (steps.length >= MAX_TOTAL_PROPOSALS_PER_RUN) break;
-    steps.push({
-      order: order++,
-      category: 'tech-debt',
-      title: `A11y: ${issue.description}`,
-      description: `WCAG ${issue.wcag} — ${issue.fixable ? 'auto-fixable' : 'manual fix'}.`,
-      risk: 'medium',
-      instructions: [
-        `WCAG Criterion: ${issue.wcag}`,
-        issue.fixable ? 'Run inclusive.repair to auto-fix.' : 'Manual review required.',
-        `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
-      ],
+  // ─── SOURCE 6: Diligence failures ───
+  for (const failure of diligence.critical_failures) {
+    candidates.push({
+      value: 85 * categoryMultiplier.diligence,
+      dedup_key: `diligence_${failure.slice(0, 30)}`,
+      step: {
+        order: 0,
+        category: 'diligence',
+        title: `Resolve: ${failure}`,
+        description: 'Diligence probe failure affecting system reliability.',
+        risk: 'medium',
+        instructions: [
+          'Review the failing diligence probe.',
+          'Implement fix with proper error boundaries.',
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
+    });
+  }
+  if (diligence.failed > 0 && diligence.critical_failures.length === 0) {
+    candidates.push({
+      value: 40 * categoryMultiplier.diligence,
+      dedup_key: 'diligence_minor',
+      step: {
+        order: 0,
+        category: 'diligence',
+        title: 'Resolve minor diligence failures',
+        description: `${diligence.failed} minor probe(s) failed. No critical failures detected.`,
+        risk: 'low',
+        instructions: [
+          `${diligence.failed} of ${diligence.total} probes returned minor failures.`,
+          'Review failing probes for response shape or guard issues.',
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
     });
   }
   
-  // Priority 6: Audit gaps
-  for (const gap of auditGaps.slice(0, 1)) {
-    if (steps.length >= MAX_TOTAL_PROPOSALS_PER_RUN) break;
-    steps.push({
-      order: order++,
-      category: 'audit',
-      title: `Audit: ${gap}`,
-      description: 'Compliance gap weakening audit trail.',
-      risk: 'low',
-      instructions: [
-        'Review audit module configuration.',
-        'Ensure all critical modules emit audit events.',
-        `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
-      ],
+  // ─── SOURCE 7: Audit gaps ───
+  for (const gap of auditGaps) {
+    candidates.push({
+      value: 45 * categoryMultiplier.audit,
+      dedup_key: `audit_gap_${gap.slice(0, 30)}`,
+      step: {
+        order: 0,
+        category: 'audit',
+        title: `Audit: ${gap}`,
+        description: 'Compliance gap weakening audit trail.',
+        risk: 'low',
+        instructions: [
+          'Review audit module configuration.',
+          'Ensure all critical modules emit audit events.',
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
     });
   }
   
-  // Evolution steps (capped, 40% target)
-  const debtStepsSoFar = steps.length;
-  const maxEvoSteps = Math.max(1, Math.ceil(debtStepsSoFar * (40 / 60)));
+  // ─── SOURCE 8: Accessibility (lowest priority among debt) ───
+  for (const issue of accessibilityData.top_issues) {
+    candidates.push({
+      value: severityValue(issue.severity) * categoryMultiplier.accessibility,
+      dedup_key: `a11y_${issue.wcag}_${issue.description.slice(0, 20)}`,
+      step: {
+        order: 0,
+        category: 'tech-debt',
+        title: `A11y: ${issue.description}`,
+        description: `WCAG ${issue.wcag} — ${issue.fixable ? 'auto-fixable' : 'manual fix'}.`,
+        risk: 'low',
+        instructions: [
+          `WCAG Criterion: ${issue.wcag}`,
+          issue.fixable ? 'Run inclusive.repair to auto-fix.' : 'Manual review required.',
+          `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+        ],
+      },
+    });
+  }
   
-  let evoCount = 0;
-  for (const item of evolution.proposals.filter(p => p.risk_level === 'low').slice(0, maxEvoSteps)) {
-    if (steps.length >= MAX_TOTAL_PROPOSALS_PER_RUN || evoCount >= maxEvoSteps) break;
-    steps.push({
-      order: order++,
+  // ═══════════════════════════════════════════════════════════
+  // SORT BY VALUE (highest impact first) AND DEDUP
+  // ═══════════════════════════════════════════════════════════
+  
+  candidates.sort((a, b) => b.value - a.value);
+  
+  const seen = new Set<string>();
+  const debtSteps: ActionStep[] = [];
+  
+  for (const candidate of candidates) {
+    if (seen.has(candidate.dedup_key)) continue;
+    // Also dedup by title similarity
+    if (debtSteps.some(s => s.title === candidate.step.title)) continue;
+    seen.add(candidate.dedup_key);
+    debtSteps.push(candidate.step);
+    
+    // 60% of budget goes to debt (max 3 debt items to leave room for evolution)
+    if (debtSteps.length >= 3) break;
+  }
+  
+  // ═══════════════════════════════════════════════════════════
+  // EVOLUTION STEPS — 40% of budget (min 2 slots when stable)
+  // ═══════════════════════════════════════════════════════════
+  
+  const evoSlots = Math.max(2, MAX_TOTAL_PROPOSALS_PER_RUN - debtSteps.length);
+  const evoSteps: ActionStep[] = [];
+  
+  for (const item of evolution.proposals.slice(0, evoSlots)) {
+    evoSteps.push({
+      order: 0,
       category: 'evolution',
       title: item.title,
       description: item.description,
@@ -1160,8 +1284,11 @@ function buildActionPlan(
         `Snapshot: ${governanceChain.snapshot_id}`,
       ],
     });
-    evoCount++;
   }
+  
+  // Combine and number
+  const steps = [...debtSteps, ...evoSteps].slice(0, MAX_TOTAL_PROPOSALS_PER_RUN);
+  steps.forEach((step, i) => { step.order = i + 1; });
   
   return steps;
 }

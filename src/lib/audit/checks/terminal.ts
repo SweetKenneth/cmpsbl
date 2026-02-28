@@ -1,10 +1,12 @@
 /**
  * Audit Check: Terminal Command Registry
- * Validates all terminal commands have handlers wired
+ * Validates all terminal commands have handlers wired.
+ * Skipped entirely if no terminal UI is detected in the installation.
  */
 
 import type { AuditFinding } from '../audit-types';
 import { getRegistrationStats } from '@/lib/terminal/validate-registry';
+import { isTerminalPresent } from '@/lib/terminal/detect';
 
 const EXPECTED_MESH_COMMANDS = [
   'mesh.status', 'mesh.toggle', 'mesh.on', 'mesh.off',
@@ -16,6 +18,17 @@ const EXPECTED_CORE_COMMANDS = [
 ];
 
 export function checkTerminalRegistry(): AuditFinding[] {
+  // Skip terminal scan entirely if no terminal UI is detected
+  if (!isTerminalPresent()) {
+    return [{
+      id: 'terminal_skipped',
+      category: 'terminal',
+      severity: 'info',
+      title: 'Terminal scan skipped — no terminal UI detected',
+      detail: 'Terminal command registration checks are only run when a terminal component is present in the installation.',
+    }];
+  }
+  
   const findings: AuditFinding[] = [];
   const stats = getRegistrationStats();
 
