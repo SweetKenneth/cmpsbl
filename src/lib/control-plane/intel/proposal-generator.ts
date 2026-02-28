@@ -238,10 +238,16 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   const diligenceCards = allCards.filter(c => c.category === 'diligence');
   const diligenceData = extractDiligenceData(diligenceCards);
   
+  // ─── 6. INCLUSIVE — WCAG 2.2 accessibility scan (86-rule engine) ───
+  const accessibilityData = await runInclusiveScan();
+  
+  // ─── 7. DEFENSE — security posture + anomaly detection ───
+  const securityData = await runDefenseScan();
+  
   // ═══ BUILD SECTIONS ═══
   
-  // Tech Debt — merge ENGINEER findings + audit findings + health failures
-  const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport);
+  // Tech Debt — merge ALL findings (ENGINEER + audit + health + INCLUSIVE + DEFENSE)
+  const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport, accessibilityData, securityData);
   
   // Evolution opportunities
   const evolution = buildEvolutionSection(existingProposals, allCards);
@@ -266,24 +272,32 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     auditGaps.push(`Only ${auditModules.size}/${monitoredCount} modules have audit coverage`);
   }
   
-  // ═══ BUILD ACTION PLAN (priority-ordered across ALL sources) ═══
-  const actionPlan = buildActionPlan(techDebt, evolution, auditGaps, diligenceData, productionAudit, structuralHealth);
+  // ═══ BUILD ACTION PLAN with 60/40 ratio (debt/evolution) ═══
+  const actionPlan = buildActionPlan(techDebt, evolution, auditGaps, diligenceData, productionAudit, structuralHealth, accessibilityData, securityData);
+  
+  // Enforce 60/40 ratio in the action plan
+  const debtSteps = actionPlan.filter(s => s.category !== 'evolution').length;
+  const evoSteps = actionPlan.filter(s => s.category === 'evolution').length;
+  const totalSteps = debtSteps + evoSteps;
+  const debtPct = totalSteps > 0 ? Math.round((debtSteps / totalSteps) * 100) : 60;
+  const evoPct = totalSteps > 0 ? Math.round((evoSteps / totalSteps) * 100) : 40;
   
   // Risk assessment
   const estimatedRisk = 
-    (techDebt.critical.length > 3 || !chainVerification.valid || structuralHealth.overall_verdict === 'FAIL') ? 'high'
-    : (techDebt.critical.length > 0 || productionAudit.fatal > 0) ? 'medium' 
+    (techDebt.critical.length > 3 || !chainVerification.valid || structuralHealth.overall_verdict === 'FAIL' || securityData.threat_level === 'critical') ? 'high'
+    : (techDebt.critical.length > 0 || productionAudit.fatal > 0 || accessibilityData.critical_count > 0 || securityData.threat_level === 'high') ? 'medium' 
     : 'low';
   
   const generationMs = Math.round(performance.now() - startTime);
   
-  const execSummary = buildExecutiveSummary(techDebt, evolution, diligenceData, auditGaps, estimatedRisk, productionAudit, structuralHealth);
+  const execSummary = buildExecutiveSummary(techDebt, evolution, diligenceData, auditGaps, estimatedRisk, productionAudit, structuralHealth, accessibilityData, securityData);
   
   return {
-    schema_version: '3.0',
+    schema_version: '4.0',
     generated_at: new Date().toISOString(),
     system_id: 'cmpsbl-substrate',
     proposal_type: 'unified-evolution',
+    ratio: { debt_pct: debtPct, evolution_pct: evoPct },
     executive_summary: execSummary,
     technical_debt: techDebt,
     evolution_opportunities: evolution,
@@ -297,6 +311,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
       gaps: auditGaps,
     },
     diligence: diligenceData,
+    accessibility: accessibilityData,
+    security_posture: securityData,
     action_plan: actionPlan,
     guardrails: {
       requires_human_review: true,
@@ -309,6 +325,9 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'Run the diligence battery again after applying changes.',
         'Structural health failures should be addressed before evolution steps.',
         'Production audit findings indicate real code issues — prioritize these.',
+        'Accessibility violations (INCLUSIVE) impact all users — fix critical WCAG issues first.',
+        'Security posture (DEFENSE) issues should be addressed before public-facing changes.',
+        'Action plan enforces 60% tech debt / 40% evolution ratio for balanced improvement.',
       ],
     },
     metadata: {
@@ -326,6 +345,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'Substrate Health Check',
         'AUDIT Compliance Ledger',
         'Diligence Harness',
+        'INCLUSIVE WCAG 2.2 Scanner',
+        'DEFENSE Security Posture',
       ],
     },
   };
