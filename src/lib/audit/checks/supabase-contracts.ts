@@ -25,19 +25,27 @@ function isRLSBlockError(error: { message?: string; code?: string; details?: str
   const msg = (error.message || '').toLowerCase();
   const code = error.code || '';
   const details = (error.details || '').toLowerCase();
+  const hint = (error.hint || '').toLowerCase();
   
   // Known RLS/permission error codes
   if (['42501', 'PGRST301', '42P01'].includes(code)) return true;
+  
+  // PostgREST 3xx codes indicate permission/schema issues
+  if (code.startsWith('PGRST') && ['PGRST200', 'PGRST204', 'PGRST300', 'PGRST301', 'PGRST302'].includes(code)) return true;
   
   // Permission/policy denial patterns
   if (msg.includes('denied') || msg.includes('permission') || msg.includes('policy')) return true;
   if (msg.includes('rls') || msg.includes('row-level') || msg.includes('row level')) return true;
   if (msg.includes('not allowed') || msg.includes('insufficient')) return true;
   if (details.includes('policy') || details.includes('denied')) return true;
+  if (hint.includes('rls') || hint.includes('policy') || hint.includes('permission')) return true;
   
-  // PostgREST returns empty results with 200 when RLS filters everything — not an error
-  // But a 401/403 or relation-not-found for a known table is an RLS signal
-  if (msg.includes('relation') && msg.includes('does not exist')) return false; // schema issue, not RLS
+  // Empty message with error code means PostgREST blocked the request (RLS or relation-level)
+  // For known critical tables, an error with no message is almost always RLS enforcement
+  if (!msg && code) return true;
+  
+  // Relation not found is a schema issue, not RLS
+  if (msg.includes('relation') && msg.includes('does not exist')) return false;
   
   return false;
 }
