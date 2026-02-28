@@ -1,0 +1,532 @@
+{
+  "schema_version": "3.3",
+  "generated_at": "2026-02-28T03:20:12.306Z",
+  "system_id": "cmpsbl-substrate",
+  "proposal_type": "unified-evolution",
+  "ratio": {
+    "debt_pct": 75,
+    "evolution_pct": 25
+  },
+  "executive_summary": "2 security issue(s) — threat level: medium, 3 audit gap(s). Overall risk: low. Bounded discipline: max 5 proposals, 60/40 debt/evolution ratio. Schema v3.3 with governance receipts. Copy to your coding agent to apply fixes with human review at each step.",
+  "technical_debt": {
+    "total_issues": 15,
+    "critical": [],
+    "warnings": [
+      {
+        "id": "terminal_missing_mesh",
+        "title": "8 mesh commands not registered",
+        "description": "Missing: mesh.status, mesh.toggle, mesh.on, mesh.off, mesh.log, mesh.resolvers, mesh.broadcast, mesh.help. These may be registered lazily at runtime.",
+        "severity": "warn",
+        "source": "AUDIT/terminal",
+        "suggested_fix": "Mesh commands register on first OS mount. This is expected pre-boot.",
+        "affected_area": "terminal"
+      },
+      {
+        "id": "terminal_missing_core",
+        "title": "5 core commands not registered",
+        "description": "Missing: help, status, version, clear, audit.",
+        "severity": "warn",
+        "source": "AUDIT/terminal",
+        "suggested_fix": "Core commands should be registered at boot.",
+        "affected_area": "terminal"
+      },
+      {
+        "id": "a11y_unlabeled_buttons",
+        "title": "4 button(s) without accessible label",
+        "description": "Buttons with no text content need aria-label for screen readers.",
+        "severity": "warn",
+        "source": "AUDIT/a11y",
+        "suggested_fix": "Review a11y warning.",
+        "affected_area": "a11y"
+      },
+      {
+        "id": "a11y_missing_skip_link",
+        "title": "Missing skip navigation link",
+        "description": "No skip-to-content link found. Screen reader users need this for keyboard navigation.",
+        "severity": "warn",
+        "source": "AUDIT/a11y",
+        "suggested_fix": "Add a visually hidden skip link at the top of the page.",
+        "affected_area": "a11y"
+      },
+      {
+        "id": "seo_version_in_description",
+        "title": "Version number in meta description",
+        "description": "Description contains a version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_og_og:title",
+        "title": "Version number in og:title",
+        "description": "OG tag contains version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_og_og:image:alt",
+        "title": "Version number in og:image:alt",
+        "description": "OG tag contains version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_twitter_twitter:title",
+        "title": "Version number in twitter:title",
+        "description": "Twitter card tag contains version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_twitter_twitter:image:alt",
+        "title": "Version number in twitter:image:alt",
+        "description": "Twitter card tag contains version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_jsonld",
+        "title": "Version number in 3 JSON-LD block(s)",
+        "description": "Structured data schemas contain version numbers. Strip them.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "supabase_brain_events",
+        "title": "BRAIN event log: query failed",
+        "description": ". May need RLS policy or auth.",
+        "severity": "warn",
+        "source": "AUDIT/supabase",
+        "suggested_fix": "Review supabase warning.",
+        "affected_area": "supabase"
+      },
+      {
+        "id": "supabase_system_flags",
+        "title": "System flags: query failed",
+        "description": ". May need RLS policy or auth.",
+        "severity": "warn",
+        "source": "AUDIT/supabase",
+        "suggested_fix": "Review supabase warning.",
+        "affected_area": "supabase"
+      },
+      {
+        "id": "audit_slow_execution",
+        "title": "Audit took 10631ms (>5s)",
+        "description": "Audit execution is slow. Check for blocking operations in audit checks.",
+        "severity": "warn",
+        "source": "AUDIT/performance",
+        "suggested_fix": "Review performance warning.",
+        "affected_area": "performance"
+      },
+      {
+        "id": "def_anomaly_0",
+        "title": "Security: 272 events from only 1 unique IPs",
+        "description": "Anomalous pattern detected in system behavior.",
+        "severity": "warning",
+        "source": "DEFENSE/anomaly",
+        "suggested_fix": "Investigate the anomaly source. Check for unauthorized access or misconfigured services.",
+        "affected_area": "DEFENSE"
+      },
+      {
+        "id": "def_anomaly_1",
+        "title": "Security: Traffic concentrated in 0 fingerprint families",
+        "description": "Anomalous pattern detected in system behavior.",
+        "severity": "warning",
+        "source": "DEFENSE/anomaly",
+        "suggested_fix": "Investigate the anomaly source. Check for unauthorized access or misconfigured services.",
+        "affected_area": "DEFENSE"
+      }
+    ],
+    "patterns": [
+      "terminal",
+      "a11y",
+      "seo",
+      "supabase",
+      "performance",
+      "diligence"
+    ]
+  },
+  "evolution_opportunities": {
+    "total": 0,
+    "proposals": []
+  },
+  "production_audit": {
+    "passed": true,
+    "duration_ms": 10631,
+    "fatal": 0,
+    "error": 0,
+    "warn": 16,
+    "info": 17,
+    "total_findings": 33,
+    "top_issues": [
+      {
+        "id": "terminal_missing_mesh",
+        "category": "terminal",
+        "severity": "warn",
+        "title": "8 mesh commands not registered",
+        "detail": "Missing: mesh.status, mesh.toggle, mesh.on, mesh.off, mesh.log, mesh.resolvers, mesh.broadcast, mesh.help. These may be registered lazily at runtime.",
+        "hint": "Mesh commands register on first OS mount. This is expected pre-boot."
+      },
+      {
+        "id": "terminal_missing_core",
+        "category": "terminal",
+        "severity": "warn",
+        "title": "5 core commands not registered",
+        "detail": "Missing: help, status, version, clear, audit.",
+        "hint": "Core commands should be registered at boot."
+      },
+      {
+        "id": "a11y_unlabeled_buttons",
+        "category": "a11y",
+        "severity": "warn",
+        "title": "4 button(s) without accessible label",
+        "detail": "Buttons with no text content need aria-label for screen readers."
+      },
+      {
+        "id": "a11y_missing_skip_link",
+        "category": "a11y",
+        "severity": "warn",
+        "title": "Missing skip navigation link",
+        "detail": "No skip-to-content link found. Screen reader users need this for keyboard navigation.",
+        "hint": "Add a visually hidden skip link at the top of the page."
+      },
+      {
+        "id": "seo_version_in_description",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in meta description",
+        "detail": "Description contains a version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_og_og:title",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in og:title",
+        "detail": "OG tag contains version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_og_og:image:alt",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in og:image:alt",
+        "detail": "OG tag contains version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_twitter_twitter:title",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in twitter:title",
+        "detail": "Twitter card tag contains version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_twitter_twitter:image:alt",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in twitter:image:alt",
+        "detail": "Twitter card tag contains version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_jsonld",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in 3 JSON-LD block(s)",
+        "detail": "Structured data schemas contain version numbers. Strip them."
+      },
+      {
+        "id": "branding_version_in_meta description",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in meta description",
+        "detail": "\"v8.0\" found. Version numbers are forbidden in SEO metadata."
+      },
+      {
+        "id": "branding_version_in_og:title",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in og:title",
+        "detail": "\"v8.0\" found. Version numbers are forbidden in SEO metadata."
+      },
+      {
+        "id": "branding_version_in_twitter:title",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in twitter:title",
+        "detail": "\"v8.0\" found. Version numbers are forbidden in SEO metadata."
+      },
+      {
+        "id": "supabase_brain_events",
+        "category": "supabase",
+        "severity": "warn",
+        "title": "BRAIN event log: query failed",
+        "detail": ". May need RLS policy or auth."
+      },
+      {
+        "id": "supabase_system_flags",
+        "category": "supabase",
+        "severity": "warn",
+        "title": "System flags: query failed",
+        "detail": ". May need RLS policy or auth."
+      }
+    ]
+  },
+  "structural_health": {
+    "overall_verdict": "PASS",
+    "structural_issues": 0,
+    "layers_checked": 8,
+    "layers_passed": 8,
+    "layer_results": [
+      {
+        "layer": "filesystem",
+        "label": "Filesystem & Structure Integrity",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "imports",
+        "label": "Import & Reference Validation",
+        "verdict": "PASS",
+        "check_count": 4,
+        "failures": []
+      },
+      {
+        "layer": "terminal",
+        "label": "Terminal & Capability Wiring",
+        "verdict": "PASS",
+        "check_count": 2,
+        "failures": []
+      },
+      {
+        "layer": "routes",
+        "label": "Route Integrity",
+        "verdict": "PASS",
+        "check_count": 2,
+        "failures": []
+      },
+      {
+        "layer": "registry",
+        "label": "Registry Consistency",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "edge_functions",
+        "label": "Edge Function Presence",
+        "verdict": "PASS",
+        "check_count": 2,
+        "failures": []
+      },
+      {
+        "layer": "database_security",
+        "label": "Database & Security Behavior",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "runtime_render",
+        "label": "Runtime Render Sanity",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      }
+    ],
+    "confirmations": [
+      "0 structural integrity issues detected.",
+      "No broken imports exist.",
+      "No orphaned files exist.",
+      "No dangling routes exist.",
+      "Security blocks function as intended."
+    ]
+  },
+  "audit_health": {
+    "chain_valid": true,
+    "total_entries": 0,
+    "modules_monitored": 0,
+    "compliance_score": 85,
+    "gaps": [
+      "No audit entries recorded this session",
+      "MODERNIZER detected 2 system anomaly(ies)",
+      "2 edge function risk flag(s) detected"
+    ]
+  },
+  "diligence": {
+    "passed": 25,
+    "failed": 1,
+    "total": 26,
+    "critical_failures": []
+  },
+  "accessibility": {
+    "score": 95,
+    "total_issues": 0,
+    "critical_count": 0,
+    "high_count": 0,
+    "medium_count": 0,
+    "low_count": 0,
+    "auto_fixable": 0,
+    "top_issues": [],
+    "wcag_level": "AA"
+  },
+  "security_posture": {
+    "posture_available": true,
+    "anomaly_available": true,
+    "posture_summary": "Defense posture nominal",
+    "threat_level": "medium",
+    "anomalies_detected": 2,
+    "rate_limit_issues": 0,
+    "security_issues": [
+      {
+        "id": "def_anomaly_0",
+        "title": "272 events from only 1 unique IPs",
+        "severity": "warning",
+        "source": "DEFENSE/anomaly",
+        "description": "Anomalous pattern detected in system behavior.",
+        "suggested_fix": "Investigate the anomaly source. Check for unauthorized access or misconfigured services."
+      },
+      {
+        "id": "def_anomaly_1",
+        "title": "Traffic concentrated in 0 fingerprint families",
+        "severity": "warning",
+        "source": "DEFENSE/anomaly",
+        "description": "Anomalous pattern detected in system behavior.",
+        "suggested_fix": "Investigate the anomaly source. Check for unauthorized access or misconfigured services."
+      }
+    ]
+  },
+  "modernizer_scan": {
+    "scan_completed": true,
+    "proposals_found": 7,
+    "plan_ready": false,
+    "plan_status": "none",
+    "modules_active": 21,
+    "health_overall": 100,
+    "edge_risk_flags": 2,
+    "anomalies_detected": 2,
+    "recommended_action": "Review proposals and create evolution plan when ready",
+    "scan_duration_ms": 27480
+  },
+  "action_plan": [
+    {
+      "order": 1,
+      "category": "tech-debt",
+      "title": "Security: 272 events from only 1 unique IPs",
+      "description": "Anomalous pattern detected in system behavior.",
+      "risk": "medium",
+      "instructions": [
+        "Source: DEFENSE/anomaly",
+        "Investigate the anomaly source. Check for unauthorized access or misconfigured services.",
+        "Rollback: restore snapshot snap_mm5r5s5q."
+      ]
+    },
+    {
+      "order": 2,
+      "category": "audit",
+      "title": "Audit: No audit entries recorded this session",
+      "description": "Compliance gap weakening audit trail.",
+      "risk": "low",
+      "instructions": [
+        "Review audit module configuration.",
+        "Ensure all critical modules emit audit events.",
+        "Rollback: restore snapshot snap_mm5r5s5q."
+      ]
+    },
+    {
+      "order": 3,
+      "category": "diligence",
+      "title": "Resolve minor diligence failures",
+      "description": "1 minor probe(s) failed. No critical failures detected.",
+      "risk": "low",
+      "instructions": [
+        "1 of 26 probes returned minor failures.",
+        "Review failing probes for response shape or guard issues.",
+        "Implement missing handlers or output normalization.",
+        "Rollback: restore pre-snapshot state (snapshot: snap_mm5r5s5q).",
+        "Re-run diligence battery to confirm fix."
+      ]
+    },
+    {
+      "order": 4,
+      "category": "evolution",
+      "title": "Next Lesson: Memory Tiering Optimization",
+      "description": "Clean run detected. Advancing curriculum with bounded evolution topic.",
+      "risk": "low",
+      "instructions": [
+        "Topic: Memory Tiering Optimization (node-solo)",
+        "Rationale: System is healthy — safe to advance learning.",
+        "Apply in shadow mode first if available.",
+        "Rollback: restore snapshot snap_mm5r5s5q.",
+        "This is bounded curriculum advancement — one topic at a time."
+      ]
+    }
+  ],
+  "guardrails": {
+    "requires_human_review": true,
+    "rollback_available": true,
+    "estimated_risk": "low",
+    "safety_notes": [
+      "Review all proposed changes before giving to your coding agent.",
+      "Each action step includes rollback instructions referencing the snapshot.",
+      "Start with low-risk items first to build confidence.",
+      "Run the diligence battery again after applying changes.",
+      "Structural health failures should be addressed before evolution steps.",
+      "Max 5 proposals per run — bounded discipline enforced.",
+      "Snapshot ID: snap_mm5r5s5q — rollback target.",
+      "External-AI execution mode: no internal apply permitted."
+    ]
+  },
+  "governance": {
+    "receipt_id": "rcpt_mm5r5t2l",
+    "verification_hash": "6952943a",
+    "diff_hash": "4298ca52",
+    "snapshot_id": "snap_mm5r5s5q",
+    "seba_stamp": {
+      "lineage_id": "seba_snap_mm5r5s5q_mm5r6nf6",
+      "signature": "28039ca5",
+      "stage": "pre-export",
+      "discipline": "bounded-compounding"
+    }
+  },
+  "metadata": {
+    "signals_analyzed": 4,
+    "findings_count": 0,
+    "proposals_count": 0,
+    "audit_checks_run": 33,
+    "health_layers_checked": 8,
+    "generation_ms": 43936,
+    "sources": [
+      "INTEL Aggregator",
+      "ENGINEER Maintenance Node",
+      "SEBA Evolution Signals",
+      "Full Audit Runner",
+      "Substrate Health Check",
+      "AUDIT Compliance Ledger",
+      "Diligence Harness",
+      "INCLUSIVE WCAG 2.2 Scanner",
+      "DEFENSE Security Posture",
+      "MODERNIZER 4-Phase Cognitive Scan"
+    ],
+    "governance": {
+      "receipt_id": "rcpt_mm5r5t2l",
+      "verification_hash": "6952943a",
+      "diff_hash": "4298ca52",
+      "snapshot_id": "snap_mm5r5s5q"
+    },
+    "discipline": {
+      "bounded": true,
+      "max_proposals": 5,
+      "external_execution": true
+    }
+  }
+}
