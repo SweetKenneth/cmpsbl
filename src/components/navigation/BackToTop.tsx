@@ -1,6 +1,6 @@
 /**
  * BackToTop — Floating action button that appears after scrolling down.
- * Mobile-optimized, positioned above the bottom nav bar.
+ * Positioned bottom-center on mobile, mid-right on desktop (above DECODE icon).
  */
 
 import { useState, useEffect, useCallback } from "react";
@@ -46,8 +46,10 @@ export function BackToTop() {
             "bg-primary text-primary-foreground shadow-lg",
             "flex items-center justify-center",
             "touch-manipulation",
-            // Position: above bottom nav on mobile, bottom-right on desktop
-            "bottom-20 right-4 lg:bottom-8 lg:right-8"
+            // Mobile: bottom-center, above bottom nav
+            // Desktop: right side, above the DECODE fab
+            "bottom-[4.5rem] left-1/2 -translate-x-1/2",
+            "lg:left-auto lg:translate-x-0 lg:right-8 lg:bottom-28"
           )}
           aria-label="Back to top"
         >
