@@ -628,9 +628,15 @@ const App = () => {
                          <Suspense fallback={null}>
                            <BackToTop />
                          </Suspense>
-                         <Suspense fallback={null}>
-                           <OnboardingWrapper />
-                         </Suspense>
+                          <Suspense fallback={null}>
+                            <OnboardingWrapper />
+                          </Suspense>
+                          <Suspense fallback={null}>
+                            <KeyboardShortcutsHelp />
+                          </Suspense>
+                          <Suspense fallback={null}>
+                            <RateLimitFeedback />
+                          </Suspense>
                     </Suspense>
                   </AuthProvider>
                     } />
