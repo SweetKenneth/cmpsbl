@@ -92,7 +92,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock"
         },
-        "softwareVersion": cap.version,
+        "softwareVersion": "latest",
         "dateModified": cap.lastUpdated,
         "aggregateRating": {
           "@type": "AggregateRating",
