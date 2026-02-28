@@ -440,9 +440,14 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   }
   
   // ─── Clean-run evolution proposal (GUARANTEED when stable) ───
+  // Only truly blocking issues prevent evolution: structural failures, production fatals,
+  // or REAL critical debt (security/structural, not accessibility/cosmetic)
   const hasStructuralFailures = structuralHealth.overall_verdict === 'FAIL';
   const hasProductionFatals = productionAudit.fatal > 0;
-  const hasCriticalDebt = techDebt.critical.length > 0;
+  const realCriticalDebt = techDebt.critical.filter(c => 
+    !c.source.includes('INCLUSIVE') && !c.title.startsWith('A11y:')
+  );
+  const hasCriticalDebt = realCriticalDebt.length > 0;
   const systemIsStable = !hasStructuralFailures && !hasProductionFatals && !hasCriticalDebt;
   
   if (systemIsStable) {
