@@ -1,0 +1,484 @@
+{
+  "schema_version": "3.3",
+  "generated_at": "2026-02-28T03:40:01.164Z",
+  "system_id": "cmpsbl-substrate",
+  "proposal_type": "unified-evolution",
+  "ratio": {
+    "debt_pct": 67,
+    "evolution_pct": 33
+  },
+  "executive_summary": "2 audit gap(s), 1 evolution opportunity(ies). Overall risk: low. Bounded discipline: max 5 proposals, 60/40 debt/evolution ratio. Schema v3.3 with governance receipts. Copy to your coding agent to apply fixes with human review at each step.",
+  "technical_debt": {
+    "total_issues": 12,
+    "critical": [],
+    "warnings": [
+      {
+        "id": "terminal_missing_mesh",
+        "title": "8 mesh commands not registered",
+        "description": "Missing: mesh.status, mesh.toggle, mesh.on, mesh.off, mesh.log, mesh.resolvers, mesh.broadcast, mesh.help. These may be registered lazily at runtime.",
+        "severity": "warn",
+        "source": "AUDIT/terminal",
+        "suggested_fix": "Mesh commands register on first OS mount. This is expected pre-boot.",
+        "affected_area": "terminal"
+      },
+      {
+        "id": "terminal_missing_core",
+        "title": "5 core commands not registered",
+        "description": "Missing: help, status, version, clear, audit.",
+        "severity": "warn",
+        "source": "AUDIT/terminal",
+        "suggested_fix": "Core commands should be registered at boot.",
+        "affected_area": "terminal"
+      },
+      {
+        "id": "a11y_unlabeled_buttons",
+        "title": "4 button(s) without accessible label",
+        "description": "Buttons with no text content need aria-label for screen readers.",
+        "severity": "warn",
+        "source": "AUDIT/a11y",
+        "suggested_fix": "Review a11y warning.",
+        "affected_area": "a11y"
+      },
+      {
+        "id": "seo_version_in_description",
+        "title": "Version number in meta description",
+        "description": "Description contains a version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_og_og:title",
+        "title": "Version number in og:title",
+        "description": "OG tag contains version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_og_og:image:alt",
+        "title": "Version number in og:image:alt",
+        "description": "OG tag contains version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_twitter_twitter:title",
+        "title": "Version number in twitter:title",
+        "description": "Twitter card tag contains version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_twitter_twitter:image:alt",
+        "title": "Version number in twitter:image:alt",
+        "description": "Twitter card tag contains version number. Remove it.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "seo_version_in_jsonld",
+        "title": "Version number in 3 JSON-LD block(s)",
+        "description": "Structured data schemas contain version numbers. Strip them.",
+        "severity": "warn",
+        "source": "AUDIT/seo",
+        "suggested_fix": "Review seo warning.",
+        "affected_area": "seo"
+      },
+      {
+        "id": "supabase_brain_events",
+        "title": "BRAIN event log: query failed",
+        "description": ". May need RLS policy or auth.",
+        "severity": "warn",
+        "source": "AUDIT/supabase",
+        "suggested_fix": "Review supabase warning.",
+        "affected_area": "supabase"
+      },
+      {
+        "id": "supabase_system_flags",
+        "title": "System flags: query failed",
+        "description": ". May need RLS policy or auth.",
+        "severity": "warn",
+        "source": "AUDIT/supabase",
+        "suggested_fix": "Review supabase warning.",
+        "affected_area": "supabase"
+      },
+      {
+        "id": "audit_slow_execution",
+        "title": "Audit took 10820ms (>5s)",
+        "description": "Audit execution is slow. Check for blocking operations in audit checks.",
+        "severity": "warn",
+        "source": "AUDIT/performance",
+        "suggested_fix": "Review performance warning.",
+        "affected_area": "performance"
+      }
+    ],
+    "patterns": [
+      "terminal",
+      "a11y",
+      "seo",
+      "supabase",
+      "performance",
+      "diligence"
+    ]
+  },
+  "evolution_opportunities": {
+    "total": 1,
+    "proposals": [
+      {
+        "id": "evo_clean_mm5rw4r0",
+        "title": "Stability Patterns",
+        "description": "System stable — safe to evolve. Advancing bounded curriculum.",
+        "risk_level": "low",
+        "scope": "global",
+        "rationale": "All 8 layers pass. 0 fatals, 0 critical debt. Stable system should always evolve.",
+        "rollback_plan": "Restore snapshot snap_mm5rvad4."
+      }
+    ]
+  },
+  "production_audit": {
+    "passed": true,
+    "duration_ms": 10820,
+    "fatal": 0,
+    "error": 0,
+    "warn": 15,
+    "info": 17,
+    "total_findings": 32,
+    "top_issues": [
+      {
+        "id": "terminal_missing_mesh",
+        "category": "terminal",
+        "severity": "warn",
+        "title": "8 mesh commands not registered",
+        "detail": "Missing: mesh.status, mesh.toggle, mesh.on, mesh.off, mesh.log, mesh.resolvers, mesh.broadcast, mesh.help. These may be registered lazily at runtime.",
+        "hint": "Mesh commands register on first OS mount. This is expected pre-boot."
+      },
+      {
+        "id": "terminal_missing_core",
+        "category": "terminal",
+        "severity": "warn",
+        "title": "5 core commands not registered",
+        "detail": "Missing: help, status, version, clear, audit.",
+        "hint": "Core commands should be registered at boot."
+      },
+      {
+        "id": "a11y_unlabeled_buttons",
+        "category": "a11y",
+        "severity": "warn",
+        "title": "4 button(s) without accessible label",
+        "detail": "Buttons with no text content need aria-label for screen readers."
+      },
+      {
+        "id": "seo_version_in_description",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in meta description",
+        "detail": "Description contains a version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_og_og:title",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in og:title",
+        "detail": "OG tag contains version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_og_og:image:alt",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in og:image:alt",
+        "detail": "OG tag contains version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_twitter_twitter:title",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in twitter:title",
+        "detail": "Twitter card tag contains version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_twitter_twitter:image:alt",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in twitter:image:alt",
+        "detail": "Twitter card tag contains version number. Remove it."
+      },
+      {
+        "id": "seo_version_in_jsonld",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in 3 JSON-LD block(s)",
+        "detail": "Structured data schemas contain version numbers. Strip them."
+      },
+      {
+        "id": "branding_version_in_meta description",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in meta description",
+        "detail": "\"v8.0\" found. Version numbers are forbidden in SEO metadata."
+      },
+      {
+        "id": "branding_version_in_og:title",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in og:title",
+        "detail": "\"v8.0\" found. Version numbers are forbidden in SEO metadata."
+      },
+      {
+        "id": "branding_version_in_twitter:title",
+        "category": "seo",
+        "severity": "warn",
+        "title": "Version number in twitter:title",
+        "detail": "\"v8.0\" found. Version numbers are forbidden in SEO metadata."
+      },
+      {
+        "id": "supabase_brain_events",
+        "category": "supabase",
+        "severity": "warn",
+        "title": "BRAIN event log: query failed",
+        "detail": ". May need RLS policy or auth."
+      },
+      {
+        "id": "supabase_system_flags",
+        "category": "supabase",
+        "severity": "warn",
+        "title": "System flags: query failed",
+        "detail": ". May need RLS policy or auth."
+      },
+      {
+        "id": "audit_slow_execution",
+        "category": "performance",
+        "severity": "warn",
+        "title": "Audit took 10820ms (>5s)",
+        "detail": "Audit execution is slow. Check for blocking operations in audit checks."
+      }
+    ]
+  },
+  "structural_health": {
+    "overall_verdict": "PASS",
+    "structural_issues": 0,
+    "layers_checked": 8,
+    "layers_passed": 8,
+    "layer_results": [
+      {
+        "layer": "filesystem",
+        "label": "Filesystem & Structure Integrity",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "imports",
+        "label": "Import & Reference Validation",
+        "verdict": "PASS",
+        "check_count": 4,
+        "failures": []
+      },
+      {
+        "layer": "terminal",
+        "label": "Terminal & Capability Wiring",
+        "verdict": "PASS",
+        "check_count": 2,
+        "failures": []
+      },
+      {
+        "layer": "routes",
+        "label": "Route Integrity",
+        "verdict": "PASS",
+        "check_count": 2,
+        "failures": []
+      },
+      {
+        "layer": "registry",
+        "label": "Registry Consistency",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "edge_functions",
+        "label": "Edge Function Presence",
+        "verdict": "PASS",
+        "check_count": 2,
+        "failures": []
+      },
+      {
+        "layer": "database_security",
+        "label": "Database & Security Behavior",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      },
+      {
+        "layer": "runtime_render",
+        "label": "Runtime Render Sanity",
+        "verdict": "PASS",
+        "check_count": 3,
+        "failures": []
+      }
+    ],
+    "confirmations": [
+      "0 structural integrity issues detected.",
+      "No broken imports exist.",
+      "No orphaned files exist.",
+      "No dangling routes exist.",
+      "Security blocks function as intended."
+    ]
+  },
+  "audit_health": {
+    "chain_valid": true,
+    "total_entries": 0,
+    "modules_monitored": 0,
+    "compliance_score": 85,
+    "gaps": [
+      "MODERNIZER detected 2 system anomaly(ies)",
+      "2 edge function risk flag(s) detected"
+    ]
+  },
+  "diligence": {
+    "passed": 25,
+    "failed": 1,
+    "total": 26,
+    "critical_failures": []
+  },
+  "accessibility": {
+    "score": 95,
+    "total_issues": 0,
+    "critical_count": 0,
+    "high_count": 0,
+    "medium_count": 0,
+    "low_count": 0,
+    "auto_fixable": 0,
+    "top_issues": [],
+    "wcag_level": "AA"
+  },
+  "security_posture": {
+    "posture_available": true,
+    "anomaly_available": true,
+    "posture_summary": "Defense posture nominal",
+    "threat_level": "low",
+    "anomalies_detected": 2,
+    "rate_limit_issues": 0,
+    "security_issues": []
+  },
+  "modernizer_scan": {
+    "scan_completed": true,
+    "proposals_found": 7,
+    "plan_ready": false,
+    "plan_status": "none",
+    "modules_active": 21,
+    "health_overall": 100,
+    "edge_risk_flags": 2,
+    "anomalies_detected": 2,
+    "recommended_action": "Review proposals and create evolution plan when ready",
+    "scan_duration_ms": 26117
+  },
+  "action_plan": [
+    {
+      "order": 1,
+      "category": "audit",
+      "title": "Audit: MODERNIZER detected 2 system anomaly(ies)",
+      "description": "Compliance gap weakening audit trail.",
+      "risk": "low",
+      "instructions": [
+        "Review audit module configuration.",
+        "Ensure all critical modules emit audit events.",
+        "Rollback: restore snapshot snap_mm5rvad4."
+      ]
+    },
+    {
+      "order": 2,
+      "category": "diligence",
+      "title": "Resolve minor diligence failures",
+      "description": "1 minor probe(s) failed. No critical failures detected.",
+      "risk": "low",
+      "instructions": [
+        "1 of 26 probes returned minor failures.",
+        "Review failing probes for response shape or guard issues.",
+        "Implement missing handlers or output normalization.",
+        "Rollback: restore pre-snapshot state (snapshot: snap_mm5rvad4).",
+        "Re-run diligence battery to confirm fix."
+      ]
+    },
+    {
+      "order": 3,
+      "category": "evolution",
+      "title": "Next Lesson: Stability Patterns",
+      "description": "System stable — all 8 structural layers PASS, 0 fatals, 0 critical debt. Safe to evolve.",
+      "risk": "low",
+      "instructions": [
+        "Topic: Stability Patterns (global)",
+        "Rationale: System is healthy — safe to advance learning.",
+        "Apply in shadow mode first if available.",
+        "Rollback: restore snapshot snap_mm5rvad4.",
+        "This is bounded curriculum advancement — one topic at a time."
+      ]
+    }
+  ],
+  "guardrails": {
+    "requires_human_review": true,
+    "rollback_available": true,
+    "estimated_risk": "low",
+    "safety_notes": [
+      "Review all proposed changes before giving to your coding agent.",
+      "Each action step includes rollback instructions referencing the snapshot.",
+      "Start with low-risk items first to build confidence.",
+      "Run the diligence battery again after applying changes.",
+      "Structural health failures should be addressed before evolution steps.",
+      "Max 5 proposals per run — bounded discipline enforced.",
+      "Snapshot ID: snap_mm5rvad4 — rollback target.",
+      "External-AI execution mode: no internal apply permitted."
+    ]
+  },
+  "governance": {
+    "receipt_id": "rcpt_mm5rvbcy",
+    "verification_hash": "69354639",
+    "diff_hash": "42b61853",
+    "snapshot_id": "snap_mm5rvad4",
+    "seba_stamp": {
+      "lineage_id": "seba_snap_mm5rvad4_mm5rw4r0",
+      "signature": "5b490451",
+      "stage": "pre-export",
+      "discipline": "bounded-compounding"
+    }
+  },
+  "metadata": {
+    "signals_analyzed": 6,
+    "findings_count": 0,
+    "proposals_count": 0,
+    "audit_checks_run": 32,
+    "health_layers_checked": 8,
+    "generation_ms": 41637,
+    "sources": [
+      "INTEL Aggregator",
+      "ENGINEER Maintenance Node",
+      "SEBA Evolution Signals",
+      "Full Audit Runner",
+      "Substrate Health Check",
+      "AUDIT Compliance Ledger",
+      "Diligence Harness",
+      "INCLUSIVE WCAG 2.2 Scanner",
+      "DEFENSE Security Posture",
+      "MODERNIZER 4-Phase Cognitive Scan"
+    ],
+    "governance": {
+      "receipt_id": "rcpt_mm5rvbcy",
+      "verification_hash": "69354639",
+      "diff_hash": "42b61853",
+      "snapshot_id": "snap_mm5rvad4"
+    },
+    "discipline": {
+      "bounded": true,
+      "max_proposals": 5,
+      "external_execution": true
+    }
+  }
+}
