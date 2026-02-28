@@ -34,14 +34,14 @@ export function checkHooksContracts(): AuditFinding[] {
     });
   }
 
-  // Check for potential memory leaks — orphaned event listeners
-  const allElements = document.querySelectorAll('*');
-  if (allElements.length > 3000) {
+  // Check for DOM bloat — use document.getElementsByTagName which is faster than querySelectorAll('*')
+  const domNodeCount = document.getElementsByTagName('*').length;
+  if (domNodeCount > 3000) {
     findings.push({
       id: 'hooks_dom_bloat',
       category: 'hooks',
-      severity: allElements.length > 5000 ? 'error' : 'warn',
-      title: `DOM has ${allElements.length} elements (>3000)`,
+      severity: domNodeCount > 5000 ? 'error' : 'warn',
+      title: `DOM has ${domNodeCount} elements (>3000)`,
       detail: 'Excessive DOM nodes may indicate memory leaks or missing cleanup in useEffect hooks.',
       hint: 'Review components for missing cleanup functions in useEffect.',
     });

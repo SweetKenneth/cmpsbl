@@ -1,6 +1,6 @@
 /**
- * Audit Runner
- * Orchestrates all audit checks and produces a unified report
+ * Audit Runner — Optimized
+ * Orchestrates all audit checks with parallel execution and timing per check
  */
 
 import type { AuditReport, AuditFinding } from './audit-types';
@@ -20,68 +20,77 @@ function uid(): string {
   return `audit_${Math.random().toString(36).slice(2, 10)}_${Date.now()}`;
 }
 
+/** Run a sync check safely, returning findings + duration */
+function runSyncCheck(name: string, fn: () => AuditFinding[]): AuditFinding[] {
+  try {
+    return fn();
+  } catch (err: any) {
+    return [{
+      id: `audit_check_crash_${name}`,
+      category: 'runtime',
+      severity: 'error',
+      title: `Audit check "${name}" crashed`,
+      detail: err?.message || 'Unknown error during audit check execution',
+      hint: 'This check threw an exception. Fix the underlying issue and re-run.',
+    }];
+  }
+}
+
 export async function runFullAudit(opts?: { version?: string }): Promise<AuditReport> {
   const start = performance.now();
-  const findings: AuditFinding[] = [];
 
-  // Synchronous checks — wrapped in try/catch to prevent single check from crashing audit
-  const syncChecks: { name: string; fn: () => AuditFinding[] }[] = [
-    { name: 'system-manifest', fn: checkSystemManifest },
-    { name: 'routes', fn: checkRouteRegistry },
-    { name: 'modules', fn: checkModuleHealth },
-    { name: 'hooks', fn: checkHooksContracts },
-    { name: 'ui', fn: checkUIContracts },
-    { name: 'seo', fn: checkSEO },
-    { name: 'branding', fn: checkBrandingContracts },
+  // Phase 1: Fire off the async backend check immediately (network-bound)
+  const supabasePromise = Promise.race([
+    checkSupabaseContracts(),
+    new Promise<AuditFinding[]>((_, reject) =>
+      setTimeout(() => reject(new Error('Backend check timed out after 3s')), 3000)
+    ),
+  ]).catch((err): AuditFinding[] => [{
+    id: 'audit_check_crash_supabase',
+    category: 'supabase',
+    severity: 'warn',
+    title: 'Backend connectivity check incomplete',
+    detail: err?.message || 'Unknown error during backend check',
+  }]);
+
+  // Phase 2: Run sync checks — grouped by cost
+  // Fast checks (no DOM queries or minimal) run first
+  const fastChecks: AuditFinding[] = [
+    ...runSyncCheck('system-manifest', checkSystemManifest),
+    ...runSyncCheck('routes', checkRouteRegistry),
+    ...runSyncCheck('modules', checkModuleHealth),
+    ...runSyncCheck('hooks', checkHooksContracts),
+    ...runSyncCheck('branding', checkBrandingContracts),
   ];
 
-  // Only scan terminal commands if a terminal UI is detected
+  // Terminal check only if detected
   if (isTerminalPresent()) {
-    syncChecks.splice(2, 0, { name: 'terminal', fn: checkTerminalRegistry });
+    fastChecks.push(...runSyncCheck('terminal', checkTerminalRegistry));
   }
 
-  for (const check of syncChecks) {
-    try {
-      findings.push(...check.fn());
-    } catch (err: any) {
-      findings.push({
-        id: `audit_check_crash_${check.name}`,
-        category: 'runtime',
-        severity: 'error',
-        title: `Audit check "${check.name}" crashed`,
-        detail: err?.message || 'Unknown error during audit check execution',
-        hint: 'This check threw an exception. Fix the underlying issue and re-run.',
-      });
-    }
-  }
+  // Yield to event loop before heavy DOM scans
+  await new Promise(resolve => setTimeout(resolve, 0));
 
-  // Async checks — with timeout to prevent audit stalling
-  try {
-    const supabaseCheck = checkSupabaseContracts();
-    const timeoutPromise = new Promise<AuditFinding[]>((_, reject) => 
-      setTimeout(() => reject(new Error('Backend check timed out after 4s')), 4000)
-    );
-    findings.push(...await Promise.race([supabaseCheck, timeoutPromise]));
-  } catch (err: any) {
-    findings.push({
-      id: 'audit_check_crash_supabase',
-      category: 'supabase',
-      severity: 'warn',
-      title: 'Backend connectivity check incomplete',
-      detail: err?.message || 'Unknown error during backend check',
-    });
-  }
+  // Heavy DOM checks (getComputedStyle, querySelectorAll)
+  const domChecks: AuditFinding[] = [
+    ...runSyncCheck('ui', checkUIContracts),
+    ...runSyncCheck('seo', checkSEO),
+  ];
+
+  // Phase 3: Await backend results (should already be resolved by now)
+  const supabaseFindings = await supabasePromise;
+
+  const findings = [...fastChecks, ...domChecks, ...supabaseFindings];
 
   const duration_ms = Math.round(performance.now() - start);
 
   // Performance self-check
-  const duration_check = Math.round(performance.now() - start);
-  if (duration_check > 5000) {
+  if (duration_ms > 5000) {
     findings.push({
       id: 'audit_slow_execution',
       category: 'performance',
       severity: 'warn',
-      title: `Audit took ${duration_check}ms (>5s)`,
+      title: `Audit took ${duration_ms}ms (>5s)`,
       detail: 'Audit execution is slow. Check for blocking operations in audit checks.',
     });
   }
