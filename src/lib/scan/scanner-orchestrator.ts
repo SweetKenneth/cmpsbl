@@ -64,6 +64,16 @@ export { distillHeuristics, getStackHints } from './evolution/cross-scan-learnin
 export { generateTripwires, checkTripwires } from './evolution/regression-tripwire';
 export { generateProgressiveReport, formatExecutiveMarkdown } from './evolution/progressive-disclosure';
 
+// Re-export Substrate Integrations
+export { routeScanFinding, routeScanBatch, getScanRoutingPriority } from './integrations/nexus-scan-routing';
+export { planCostOptimizedScan, allocateScanBudget, recordScanCost } from './integrations/nexus-cost-optimized';
+export { createFailoverSession, handleScanFailure, handleScanSuccess, getSessionHealth } from './integrations/nexus-failover-scanning';
+export { correlatePerformanceDebt } from './integrations/vision-performance-debt';
+export { mapErrorHotspots, reprioritizeByErrors } from './integrations/vision-error-hotspots';
+export { evaluateFixEffectiveness, createRegressionMonitor, batchEvaluateFixes } from './integrations/vision-regression-loop';
+export { registerScanProposals, applyScanProposal, failScanProposal, inferDependencies } from './integrations/evolution-proposal-chain';
+export { generateRegressionTests, linkTestsToTripwires } from './integrations/evolution-auto-regression';
+
 // Re-export all types
 export type {
   RepoFingerprint, SchemaMap, DependencyGraph, SelfAssessmentPrompt, EnvironmentProfile,
