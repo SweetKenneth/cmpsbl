@@ -312,7 +312,7 @@ export function HeroMetaSubstrate() {
           <motion.div
             initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="order-2 flex flex-col gap-6"
+            className="order-2 flex flex-col gap-6 hidden lg:flex"
           >
             {/* Above River — Architecture context */}
             <motion.div
