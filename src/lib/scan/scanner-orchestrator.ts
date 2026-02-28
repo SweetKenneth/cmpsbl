@@ -3,50 +3,78 @@
  * Sequences all 25 scanner modules through the 5-phase pipeline.
  */
 
-// Phase 0: Discovery
-export { fingerprintRepo, type RepoFingerprint } from './discovery/repo-fingerprint';
-export { buildSchemaMap, type SchemaMap } from './discovery/schema-introspection';
-export { parseDependencyManifest, enrichWithVulnerabilities, type DependencyGraph } from './discovery/dependency-graph';
-export { generateSelfAssessment, buildSelfImprovementPrompt, type SelfAssessmentPrompt } from './discovery/self-assessment';
-export { scanForHardcodedSecrets, detectEnvironment, analyzeEnvVars, mapTopology, type EnvironmentProfile } from './discovery/environment-detection';
+import type { RepoFingerprint } from './discovery/repo-fingerprint';
+import type { SchemaMap } from './discovery/schema-introspection';
+import type { DependencyGraph } from './discovery/dependency-graph';
+import type { SelfAssessmentPrompt } from './discovery/self-assessment';
+import type { EnvironmentProfile } from './discovery/environment-detection';
+import type { RouteMap } from './understanding/route-endpoint-mapper';
+import type { AuthFlowAnalysis } from './understanding/auth-flow-tracer';
+import type { DataFlowAnalysis } from './understanding/data-flow-analyzer';
+import type { DeadCodeReport } from './understanding/dead-code-detector';
+import type { ConfigDriftReport } from './understanding/config-drift-scanner';
+import type { RLSCompletenessReport } from './security/rls-completeness';
+import type { PrivilegeEscalationReport } from './security/privilege-escalation';
+import type { SecretExposureReport } from './security/secret-exposure';
+import type { HeaderAuditReport } from './security/cors-header-auditor';
+import type { RateLimitReport } from './security/rate-limit-tester';
+import type { ComplexityReport } from './debt/complexity-scoring';
+import type { MigrationHealthReport } from './debt/migration-health';
+import type { TestCoverageEstimate } from './debt/test-coverage-estimator';
+import type { PerformanceReport } from './debt/performance-predictor';
+import type { AccessibilityReport } from './debt/accessibility-scanner';
+import type { SuggestionReport } from './evolution/suggestion-pairing';
+import type { PriorityRanking } from './evolution/priority-ranking';
+import type { LearningCorpus } from './evolution/cross-scan-learning';
+import type { TripwireReport } from './evolution/regression-tripwire';
+import type { ProgressiveReport } from './evolution/progressive-disclosure';
 
-// Phase 1: Understanding
-export { extractRoutes, type RouteMap } from './understanding/route-endpoint-mapper';
-export { analyzeAuthFlows, type AuthFlowAnalysis } from './understanding/auth-flow-tracer';
-export { analyzeDataFlows, type DataFlowAnalysis } from './understanding/data-flow-analyzer';
-export { detectDeadCode, type DeadCodeReport } from './understanding/dead-code-detector';
-export { detectConfigDrift, type ConfigDriftReport } from './understanding/config-drift-scanner';
+// Re-export Phase 0: Discovery
+export { fingerprintRepo } from './discovery/repo-fingerprint';
+export { buildSchemaMap } from './discovery/schema-introspection';
+export { parseDependencyManifest, enrichWithVulnerabilities } from './discovery/dependency-graph';
+export { generateSelfAssessment, buildSelfImprovementPrompt } from './discovery/self-assessment';
+export { scanForHardcodedSecrets, detectEnvironment, analyzeEnvVars, mapTopology } from './discovery/environment-detection';
 
-// Phase 2: Security
-export { analyzeRLSCompleteness, type RLSCompletenessReport } from './security/rls-completeness';
-export { analyzePrivilegeEscalation, type PrivilegeEscalationReport } from './security/privilege-escalation';
-export { scanForSecretExposures, type SecretExposureReport } from './security/secret-exposure';
-export { auditHeaders, type HeaderAuditReport } from './security/cors-header-auditor';
-export { analyzeRateLimits, type RateLimitReport } from './security/rate-limit-tester';
+// Re-export Phase 1: Understanding
+export { extractRoutes } from './understanding/route-endpoint-mapper';
+export { analyzeAuthFlows } from './understanding/auth-flow-tracer';
+export { analyzeDataFlows } from './understanding/data-flow-analyzer';
+export { detectDeadCode } from './understanding/dead-code-detector';
+export { detectConfigDrift } from './understanding/config-drift-scanner';
 
-// Phase 3: Technical Debt
-export { analyzeComplexity, type ComplexityReport } from './debt/complexity-scoring';
-export { analyzeMigrationHealth, type MigrationHealthReport } from './debt/migration-health';
-export { estimateTestCoverage, type TestCoverageEstimate } from './debt/test-coverage-estimator';
-export { predictPerformanceBottlenecks, type PerformanceReport } from './debt/performance-predictor';
-export { scanAccessibility, type AccessibilityReport } from './debt/accessibility-scanner';
+// Re-export Phase 2: Security
+export { analyzeRLSCompleteness } from './security/rls-completeness';
+export { analyzePrivilegeEscalation } from './security/privilege-escalation';
+export { scanForSecretExposures } from './security/secret-exposure';
+export { auditHeaders } from './security/cors-header-auditor';
+export { analyzeRateLimits } from './security/rate-limit-tester';
 
-// Phase 4: Evolution
-export { generateSuggestionPairs, type SuggestionReport } from './evolution/suggestion-pairing';
-export { rankByPriority, type PriorityRanking } from './evolution/priority-ranking';
-export { distillHeuristics, getStackHints, type LearningCorpus } from './evolution/cross-scan-learning';
-export { generateTripwires, checkTripwires, type TripwireReport } from './evolution/regression-tripwire';
-export { generateProgressiveReport, formatExecutiveMarkdown, type ProgressiveReport } from './evolution/progressive-disclosure';
+// Re-export Phase 3: Technical Debt
+export { analyzeComplexity } from './debt/complexity-scoring';
+export { analyzeMigrationHealth } from './debt/migration-health';
+export { estimateTestCoverage } from './debt/test-coverage-estimator';
+export { predictPerformanceBottlenecks } from './debt/performance-predictor';
+export { scanAccessibility } from './debt/accessibility-scanner';
 
-// Existing modules
-export { calculateCorrelationScore } from './correlation-scoring';
-export { ScanCache } from './scan-cache';
-export { computeScanDiff } from './scan-diff';
-export { type FalsePositiveRule } from './false-positive-suppression';
-export { autoEscalateDepth } from './auto-escalate';
+// Re-export Phase 4: Evolution
+export { generateSuggestionPairs } from './evolution/suggestion-pairing';
+export { rankByPriority } from './evolution/priority-ranking';
+export { distillHeuristics, getStackHints } from './evolution/cross-scan-learning';
+export { generateTripwires, checkTripwires } from './evolution/regression-tripwire';
+export { generateProgressiveReport, formatExecutiveMarkdown } from './evolution/progressive-disclosure';
+
+// Re-export all types
+export type {
+  RepoFingerprint, SchemaMap, DependencyGraph, SelfAssessmentPrompt, EnvironmentProfile,
+  RouteMap, AuthFlowAnalysis, DataFlowAnalysis, DeadCodeReport, ConfigDriftReport,
+  RLSCompletenessReport, PrivilegeEscalationReport, SecretExposureReport, HeaderAuditReport, RateLimitReport,
+  ComplexityReport, MigrationHealthReport, TestCoverageEstimate, PerformanceReport, AccessibilityReport,
+  SuggestionReport, PriorityRanking, LearningCorpus, TripwireReport, ProgressiveReport,
+};
 
 /**
- * Full 5-phase scan pipeline orchestrator
+ * Full 5-phase scan pipeline result
  */
 export interface FullScanResult {
   phase0_discovery: {
