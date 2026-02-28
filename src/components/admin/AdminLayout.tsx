@@ -3,13 +3,51 @@ import "@/styles/admin/design-tokens.css";
 import "@/styles/admin/animations.css";
 import { UnifiedAdminSidebar } from "./UnifiedAdminSidebar";
 import { AdminHeader } from "./AdminHeader";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { AdminErrorBoundary } from "./ErrorBoundary";
 import { useKeyboardShortcuts } from "./ui/KeyboardShortcuts";
 import { useAdminAnalytics } from "@/hooks/admin/useAdminAnalytics";
+import { useSwipeGesture } from "@/hooks/useSwipeGesture";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AdminLayoutProps {
   children: ReactNode;
+}
+
+function AdminLayoutInner({ children }: AdminLayoutProps) {
+  const { setOpenMobile } = useSidebar();
+  const isMobile = useIsMobile();
+
+  useSwipeGesture({
+    onSwipeRight: () => setOpenMobile(true),
+    onSwipeLeft: () => setOpenMobile(false),
+    enabled: isMobile,
+  });
+
+  return (
+    <div className="min-h-screen flex w-full bg-gradient-to-br from-background via-background to-background/95">
+      {/* Neural ambient background — hidden on mobile for perf */}
+      <div className="fixed inset-0 pointer-events-none opacity-30 hidden md:block">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-glow" />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse-glow"
+          style={{ animationDelay: "1s" }}
+        />
+      </div>
+
+      <UnifiedAdminSidebar />
+
+      <div className="flex-1 flex flex-col relative min-w-0">
+        <AdminHeader />
+
+        <main className="flex-1 overflow-auto">
+          <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 animate-fade-in-up">
+            {children}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
 }
 
 export function AdminLayout({ children }: AdminLayoutProps) {
@@ -19,28 +57,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <AdminErrorBoundary>
       <SidebarProvider defaultOpen={false}>
-        <div className="min-h-screen flex w-full bg-gradient-to-br from-background via-background to-background/95">
-          {/* Neural ambient background — hidden on mobile for perf */}
-          <div className="fixed inset-0 pointer-events-none opacity-30 hidden md:block">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-glow" />
-            <div
-              className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse-glow"
-              style={{ animationDelay: "1s" }}
-            />
-          </div>
-
-          <UnifiedAdminSidebar />
-
-          <div className="flex-1 flex flex-col relative min-w-0">
-            <AdminHeader />
-
-            <main className="flex-1 overflow-auto">
-              <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 animate-fade-in-up">
-                {children}
-              </div>
-            </main>
-          </div>
-        </div>
+        <AdminLayoutInner>{children}</AdminLayoutInner>
       </SidebarProvider>
     </AdminErrorBoundary>
   );
