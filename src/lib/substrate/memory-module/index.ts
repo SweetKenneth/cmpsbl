@@ -77,6 +77,24 @@ export interface RelevanceStats {
   lowPerformingSources: Array<{ source: string; avgScore: number; count: number }>;
 }
 
+export interface MemoryTieringConfig {
+  hotPromotionThreshold: number;   // value_score above this → promote warm→hot
+  warmDemotionThreshold: number;   // value_score below this → demote hot→warm
+  coldArchiveThreshold: number;    // value_score below this → archive cold
+  autoTieringEnabled: boolean;
+  tieringIntervalMs: number;       // how often to run tiering
+  workloadAware: boolean;          // adjust limits based on activity
+}
+
+const DEFAULT_TIERING_CONFIG: MemoryTieringConfig = {
+  hotPromotionThreshold: 0.8,
+  warmDemotionThreshold: 0.3,
+  coldArchiveThreshold: 0.1,
+  autoTieringEnabled: true,
+  tieringIntervalMs: 3_600_000, // 1 hour
+  workloadAware: true,
+};
+
 export interface MemoryModuleState {
   initialized: boolean;
   totalVectors: number;
@@ -93,6 +111,10 @@ export interface MemoryModuleState {
   compressionRatio: number;
   activeFingerprints: number;
   ragContextsLogged: number;
+  // v11.0.0 — Tiering optimization
+  tieringConfig: MemoryTieringConfig;
+  lastTieringRun: string | null;
+  tieringStats: { promoted: number; demotedHot: number; demotedWarm: number; archived: number } | null;
 }
 
 const vectors = new Map<string, VectorEntry>();
@@ -115,6 +137,9 @@ const state: MemoryModuleState = {
   compressionRatio: 1.0,
   activeFingerprints: 0,
   ragContextsLogged: 0,
+  tieringConfig: { ...DEFAULT_TIERING_CONFIG },
+  lastTieringRun: null,
+  tieringStats: null,
 };
 
 let moduleEngine: ModuleEngine | null = null;
