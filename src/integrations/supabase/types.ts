@@ -4336,6 +4336,45 @@ export type Database = {
         }
         Relationships: []
       }
+      client_error_log: {
+        Row: {
+          component_stack: string | null
+          created_at: string
+          error_message: string | null
+          error_name: string
+          id: string
+          metadata: Json | null
+          session_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          component_stack?: string | null
+          created_at?: string
+          error_message?: string | null
+          error_name: string
+          id?: string
+          metadata?: Json | null
+          session_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          component_stack?: string | null
+          created_at?: string
+          error_message?: string | null
+          error_name?: string
+          id?: string
+          metadata?: Json | null
+          session_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       cmpsbl_patch_downloads: {
         Row: {
           created_at: string
@@ -12160,6 +12199,177 @@ export type Database = {
           is_active?: boolean | null
           name?: string
           retention_days?: number | null
+        }
+        Relationships: []
+      }
+      scan_finding_trends: {
+        Row: {
+          category_breakdown: Json | null
+          created_at: string
+          critical_count: number | null
+          domain: string
+          high_count: number | null
+          id: string
+          low_count: number | null
+          medium_count: number | null
+          scan_date: string
+          score: number | null
+          total_findings: number | null
+        }
+        Insert: {
+          category_breakdown?: Json | null
+          created_at?: string
+          critical_count?: number | null
+          domain: string
+          high_count?: number | null
+          id?: string
+          low_count?: number | null
+          medium_count?: number | null
+          scan_date?: string
+          score?: number | null
+          total_findings?: number | null
+        }
+        Update: {
+          category_breakdown?: Json | null
+          created_at?: string
+          critical_count?: number | null
+          domain?: string
+          high_count?: number | null
+          id?: string
+          low_count?: number | null
+          medium_count?: number | null
+          scan_date?: string
+          score?: number | null
+          total_findings?: number | null
+        }
+        Relationships: []
+      }
+      scan_results_cache: {
+        Row: {
+          created_at: string
+          domain: string
+          expires_at: string
+          findings_count: number | null
+          id: string
+          metadata: Json | null
+          result_data: Json
+          scan_mode: string
+          score: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          domain: string
+          expires_at?: string
+          findings_count?: number | null
+          id?: string
+          metadata?: Json | null
+          result_data?: Json
+          scan_mode?: string
+          score?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          expires_at?: string
+          findings_count?: number | null
+          id?: string
+          metadata?: Json | null
+          result_data?: Json
+          scan_mode?: string
+          score?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      scan_schedules: {
+        Row: {
+          created_at: string
+          domain: string
+          frequency: string
+          id: string
+          is_active: boolean | null
+          last_run_at: string | null
+          last_score: number | null
+          next_run_at: string
+          notify_email: string | null
+          notify_on_change: boolean | null
+          scan_mode: string
+          score_delta: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          domain: string
+          frequency?: string
+          id?: string
+          is_active?: boolean | null
+          last_run_at?: string | null
+          last_score?: number | null
+          next_run_at: string
+          notify_email?: string | null
+          notify_on_change?: boolean | null
+          scan_mode?: string
+          score_delta?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          frequency?: string
+          id?: string
+          is_active?: boolean | null
+          last_run_at?: string | null
+          last_score?: number | null
+          next_run_at?: string
+          notify_email?: string | null
+          notify_on_change?: boolean | null
+          scan_mode?: string
+          score_delta?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scan_webhooks: {
+        Row: {
+          created_at: string
+          events: string[]
+          failure_count: number | null
+          id: string
+          is_active: boolean | null
+          last_triggered_at: string | null
+          secret: string | null
+          updated_at: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          events?: string[]
+          failure_count?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          secret?: string | null
+          updated_at?: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          events?: string[]
+          failure_count?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          secret?: string | null
+          updated_at?: string
+          url?: string
+          user_id?: string
         }
         Relationships: []
       }
