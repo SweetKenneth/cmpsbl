@@ -171,12 +171,13 @@ async function runMaintenanceBattery(): Promise<{
       newProposals++;
     }
     
-    if (clmStatus.budget_used >= clmStatus.budget_total * 0.9) {
+    if (clmStatus.budget_total > 0 && clmStatus.budget_used >= clmStatus.budget_total * 0.9) {
+      const pct = Math.round((clmStatus.budget_used / clmStatus.budget_total) * 100);
       addFinding({
         category: 'health',
         severity: 'medium',
         title: 'CLM Budget Nearly Exhausted',
-        description: `Budget usage at ${Math.round((clmStatus.budget_used / clmStatus.budget_total) * 100)}%.`,
+        description: `Budget usage at ${pct}%.`,
         source_node: 'CLM',
         evidence: { used: clmStatus.budget_used, total: clmStatus.budget_total },
       });

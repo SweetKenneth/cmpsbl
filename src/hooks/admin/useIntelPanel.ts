@@ -39,9 +39,20 @@ async function fetchIntelData(): Promise<IntelPanelData> {
   const releasedJewels = getReleasedJewelIds();
   const gatekeptJewels = getGatekeptJewelIds();
   
+  // Compute diligence stats from actual diligence cards, not INTEL signal counts
+  const diligenceCard = cards.find(c => c.source.includes('diligence') && c.category === 'diligence');
+  const diligenceData = diligenceCard?.details_json as { summary?: { total: number; passed: number; minor: number; critical: number } } | undefined;
+  const diligenceSummary = diligenceData?.summary;
+  
   const exportReport = intelAggregator.generateExportReport(
     topicMastery,
-    { last_run: engineerStats.last_check ?? undefined, passed: summary.info_count, minor: summary.warn_count, critical: summary.critical_count, total: summary.total_signals },
+    {
+      last_run: engineerStats.last_check ?? undefined,
+      passed: diligenceSummary?.passed ?? 0,
+      minor: diligenceSummary?.minor ?? 0,
+      critical: diligenceSummary?.critical ?? 0,
+      total: diligenceSummary?.total ?? 0,
+    },
     engineerStats,
   );
   
