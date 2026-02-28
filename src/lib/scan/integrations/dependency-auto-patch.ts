@@ -59,7 +59,7 @@ export function generatePatchPlan(
   // Match vulnerabilities against dependency graph
   for (const vuln of knownVulnerabilities) {
     const dep = graph.direct?.find(d => d.name === vuln.packageName) ??
-                graph.transitive?.find(d => d.name === vuln.packageName);
+                graph.devDependencies?.find(d => d.name === vuln.packageName);
 
     if (!dep) continue;
 
