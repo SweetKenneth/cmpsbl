@@ -1,11 +1,12 @@
 /**
  * Atlas Intelligence Adapter
- * CLM and learning intelligence summaries
+ * CLM and learning intelligence summaries — now routed through NEXUS via bridge.
  */
 
 import { getCLMStatus } from '@/lib/substrate/clm';
 import { checkOpAllowed } from '../capabilities';
-import { writeAuditEntry, generateTraceId, redactSecrets } from '../audit';
+import { writeAuditEntry, generateTraceId } from '../audit';
+import { nexusCLMBridge } from '@/lib/control-plane/intel/nexus-clm-bridge';
 import type { IntelSummary } from '../types';
 
 export interface IntelAdapterResult {
@@ -17,7 +18,8 @@ export interface IntelAdapterResult {
 }
 
 /**
- * Gather intelligence summaries from all modules
+ * Gather intelligence summaries from all modules.
+ * Also ensures the NEXUS → CLM bridge is running.
  */
 export async function gatherIntel(
   actor?: string,
@@ -51,6 +53,38 @@ export async function gatherIntel(
   const summaries: IntelSummary[] = [];
   
   try {
+    // Ensure NEXUS → CLM bridge is running
+    const bridgeState = nexusCLMBridge.getState();
+    if (!bridgeState.running) {
+      const bridgeResult = nexusCLMBridge.start();
+      summaries.push({
+        module: 'nexus-clm-bridge',
+        type: 'pattern',
+        title: 'NEXUS → CLM Bridge',
+        summary: bridgeResult.ok
+          ? `Bridge started — CLM cycles now routing through NEXUS`
+          : `Bridge not started: ${bridgeResult.reason}`,
+        confidence: bridgeResult.ok ? 0.95 : 0.3,
+        timestamp: new Date().toISOString(),
+        data: { started: bridgeResult.ok, reason: bridgeResult.reason },
+      });
+    } else {
+      summaries.push({
+        module: 'nexus-clm-bridge',
+        type: 'pattern',
+        title: 'NEXUS → CLM Bridge',
+        summary: `Active — ${bridgeState.cyclesCompleted} cycles completed, ${bridgeState.cyclesFailed} failed`,
+        confidence: 0.95,
+        timestamp: new Date().toISOString(),
+        data: {
+          cycles_completed: bridgeState.cyclesCompleted,
+          cycles_failed: bridgeState.cyclesFailed,
+          last_cycle: bridgeState.lastCycleAt,
+          started_at: bridgeState.startedAt,
+        },
+      });
+    }
+
     // CLM Status
     try {
       const clmStatus = getCLMStatus();
@@ -67,6 +101,8 @@ export async function gatherIntel(
             running: clmStatus.running,
             topics_count: clmStatus.topics_count,
             budget_used: clmStatus.budget_used,
+            budget_total: clmStatus.budget_total,
+            kill_switch: clmStatus.kill_switch,
           },
         });
       }
@@ -74,7 +110,7 @@ export async function gatherIntel(
       // CLM may not be initialized
     }
     
-    // System summary (placeholder for other modules)
+    // System summary
     summaries.push({
       module: 'system',
       type: 'pattern',
