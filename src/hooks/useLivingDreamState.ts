@@ -92,7 +92,8 @@ export function useLivingState(): UseLivingStateReturn {
         if (stateRes.error) {
           console.error('Dream-Eater state fetch error:', stateRes.error.message);
         } else if (stateRes.data) {
-          setState(stateRes.data as unknown as DreamEaterState);
+          const raw = stateRes.data as any;
+          setState({ ...raw, current_mood: normalizeDbMood(raw.current_mood) } as DreamEaterState);
         }
         if (milestonesRes.error) {
           console.error('Dream-Eater milestones fetch error:', milestonesRes.error.message);
@@ -121,7 +122,8 @@ export function useLivingState(): UseLivingStateReturn {
         },
         (payload) => {
           if (payload.new) {
-            setState(payload.new as unknown as DreamEaterState);
+            const raw = payload.new as any;
+            setState({ ...raw, current_mood: normalizeDbMood(raw.current_mood) } as DreamEaterState);
           }
         }
       )
