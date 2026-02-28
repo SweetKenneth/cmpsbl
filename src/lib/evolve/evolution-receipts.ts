@@ -2,9 +2,10 @@
  * Evolution Receipts — Immutable Audit Trail
  * Every shadow + production apply generates a receipt
  */
-
+ 
 import { supabase } from '@/integrations/supabase/client';
 import { type EvolutionPhase } from './evolution-runs';
+import { type EvolutionMetrics, type EvolutionDelta } from './evolution-delta';
 import { emitEvolveEvent } from './telemetry';
 
 // ═══════════════════════════════════════════════════════════════
@@ -23,6 +24,14 @@ export interface EvolutionReceipt {
   health_after: HealthSnapshot | null;
   backup_id: string | null;
   timestamp: string;
+  // Measurable evolution fields
+  pre_metrics: EvolutionMetrics | null;
+  post_metrics: EvolutionMetrics | null;
+  delta: EvolutionDelta | null;
+  tenant_id: string | null;
+  snapshot_id: string | null;
+  status: string;
+  reverted_at: string | null;
 }
 
 export interface ChangeRecord {
@@ -73,6 +82,13 @@ class EvolutionReceiptManager {
       health_after: data.health_after as HealthSnapshot | null,
       backup_id: data.backup_id as string | null,
       timestamp: data.timestamp as string,
+      pre_metrics: (data.pre_metrics as EvolutionMetrics) || null,
+      post_metrics: (data.post_metrics as EvolutionMetrics) || null,
+      delta: (data.delta as EvolutionDelta) || null,
+      tenant_id: (data.tenant_id as string) || null,
+      snapshot_id: (data.snapshot_id as string) || null,
+      status: (data.status as string) || 'active',
+      reverted_at: (data.reverted_at as string) || null,
     };
   }
 

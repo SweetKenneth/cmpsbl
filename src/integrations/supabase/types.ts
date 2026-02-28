@@ -6423,6 +6423,96 @@ export type Database = {
         }
         Relationships: []
       }
+      evolution_entropy_ledger: {
+        Row: {
+          created_at: string
+          debt_flags_count: number
+          entropy_delta: number | null
+          entropy_score: number
+          event_type: string
+          health_delta: number | null
+          health_score: number
+          id: string
+          is_restoration: boolean
+          metadata: Json | null
+          proposal_id: string | null
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          debt_flags_count?: number
+          entropy_delta?: number | null
+          entropy_score?: number
+          event_type?: string
+          health_delta?: number | null
+          health_score?: number
+          id?: string
+          is_restoration?: boolean
+          metadata?: Json | null
+          proposal_id?: string | null
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string
+          debt_flags_count?: number
+          entropy_delta?: number | null
+          entropy_score?: number
+          event_type?: string
+          health_delta?: number | null
+          health_score?: number
+          id?: string
+          is_restoration?: boolean
+          metadata?: Json | null
+          proposal_id?: string | null
+          tenant_id?: string
+        }
+        Relationships: []
+      }
+      evolution_pre_metrics: {
+        Row: {
+          audit_percent: number
+          created_at: string
+          debt_flags_count: number
+          entropy_score: number
+          health_score: number
+          id: string
+          memory_total_vectors: number
+          open_circuit_count: number
+          proposal_id: string | null
+          raw_scan_data: Json | null
+          snapshot_id: string
+          tenant_id: string | null
+        }
+        Insert: {
+          audit_percent?: number
+          created_at?: string
+          debt_flags_count?: number
+          entropy_score?: number
+          health_score?: number
+          id?: string
+          memory_total_vectors?: number
+          open_circuit_count?: number
+          proposal_id?: string | null
+          raw_scan_data?: Json | null
+          snapshot_id: string
+          tenant_id?: string | null
+        }
+        Update: {
+          audit_percent?: number
+          created_at?: string
+          debt_flags_count?: number
+          entropy_score?: number
+          health_score?: number
+          id?: string
+          memory_total_vectors?: number
+          open_circuit_count?: number
+          proposal_id?: string | null
+          raw_scan_data?: Json | null
+          snapshot_id?: string
+          tenant_id?: string | null
+        }
+        Relationships: []
+      }
       evolution_proposals: {
         Row: {
           confidence: number
@@ -6475,12 +6565,19 @@ export type Database = {
         Row: {
           backup_id: string | null
           changes_applied: Json
+          delta: Json | null
           health_after: Json | null
           health_before: Json | null
           phase: Database["public"]["Enums"]["evolution_phase"]
           plan_id: string
+          post_metrics: Json | null
+          pre_metrics: Json | null
           receipt_id: string
+          reverted_at: string | null
           run_id: string
+          snapshot_id: string | null
+          status: string
+          tenant_id: string | null
           tests_passed: number | null
           tests_run: number | null
           timestamp: string
@@ -6488,12 +6585,19 @@ export type Database = {
         Insert: {
           backup_id?: string | null
           changes_applied?: Json
+          delta?: Json | null
           health_after?: Json | null
           health_before?: Json | null
           phase: Database["public"]["Enums"]["evolution_phase"]
           plan_id: string
+          post_metrics?: Json | null
+          pre_metrics?: Json | null
           receipt_id?: string
+          reverted_at?: string | null
           run_id: string
+          snapshot_id?: string | null
+          status?: string
+          tenant_id?: string | null
           tests_passed?: number | null
           tests_run?: number | null
           timestamp?: string
@@ -6501,12 +6605,19 @@ export type Database = {
         Update: {
           backup_id?: string | null
           changes_applied?: Json
+          delta?: Json | null
           health_after?: Json | null
           health_before?: Json | null
           phase?: Database["public"]["Enums"]["evolution_phase"]
           plan_id?: string
+          post_metrics?: Json | null
+          pre_metrics?: Json | null
           receipt_id?: string
+          reverted_at?: string | null
           run_id?: string
+          snapshot_id?: string | null
+          status?: string
+          tenant_id?: string | null
           tests_passed?: number | null
           tests_run?: number | null
           timestamp?: string
@@ -6632,6 +6743,45 @@ export type Database = {
           tsac_shadow_verdict?: string | null
           tsac_verification_ids?: string[] | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      evolution_snapshots: {
+        Row: {
+          created_at: string
+          id: string
+          pre_metrics: Json | null
+          proposal_id: string | null
+          restorable: boolean
+          restored_at: string | null
+          restored_by: string | null
+          snapshot_id: string
+          state_hash: string | null
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pre_metrics?: Json | null
+          proposal_id?: string | null
+          restorable?: boolean
+          restored_at?: string | null
+          restored_by?: string | null
+          snapshot_id: string
+          state_hash?: string | null
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pre_metrics?: Json | null
+          proposal_id?: string | null
+          restorable?: boolean
+          restored_at?: string | null
+          restored_by?: string | null
+          snapshot_id?: string
+          state_hash?: string | null
+          tenant_id?: string
         }
         Relationships: []
       }
