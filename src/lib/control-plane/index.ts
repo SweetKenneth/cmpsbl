@@ -17,3 +17,11 @@ export { engineerNode } from './engineer/maintenance';
 export { clmTopicPipeline } from './clm/topic-pipeline';
 export { nexusCLMBridge } from './intel/nexus-clm-bridge';
 export { getControlPlaneConfig, setControlPlaneConfig, isControlPlaneEnabled } from './config';
+export { rehydrateControlPlane } from './rehydrate';
+export { getPersistenceDimension } from './persistence-health';
+export {
+  saveFlags, saveConfig, saveCanaries, saveRetryBudgets,
+  saveMetricsSnapshot, saveCascadeHistory, saveIdempotencyStore,
+  saveSchemas, saveQueueState, saveChaosRules, flushAll,
+} from './persistence';
+export { startPersistenceScheduler, stopPersistenceScheduler } from './persistence-scheduler';

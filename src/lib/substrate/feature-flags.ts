@@ -78,4 +78,5 @@ bulkDefine({
   'substrate.adaptive_polling': true,
   'substrate.request_coalescing': true,
   'substrate.cascade_detection': true,
+  'substrate.persistent_control_plane': true,
 });
