@@ -1,13 +1,15 @@
 /**
- * Control Plane Rehydration
+ * Control Plane Rehydration (v2 — Revision-Aware)
  * Loads durable state from database and restores in-memory substrate state.
+ * Supports point-in-time restore via revision_id parameter.
  * Gated behind 'substrate.persistent_control_plane' feature flag.
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { isEnabled, defineFlag, setOverride } from '@/lib/substrate/feature-flags';
+import { isEnabled, defineFlag } from '@/lib/substrate/feature-flags';
 import { configureBudget } from '@/lib/substrate/retry-budget';
 import { registerSchema, addMigration } from '@/lib/substrate/schema-registry';
+import { getEnv, getTenantId } from './identity';
 
 export interface RehydrationResult {
   success: boolean;
@@ -24,15 +26,19 @@ export interface RehydrationResult {
   };
   skipped: boolean;
   durationMs: number;
+  revisionId: number | null;
+  snapshotHash: string | null;
 }
 
-export async function rehydrateControlPlane(): Promise<RehydrationResult> {
+export async function rehydrateControlPlane(targetRevisionId?: number): Promise<RehydrationResult> {
   const start = Date.now();
   const result: RehydrationResult = {
     success: false,
     loaded: { flags: 0, config: 0, canaries: 0, retryBudgets: 0, schemas: 0, chaosRules: 0, idempotencyKeys: 0, cascadeChains: 0, metricsRestored: 0 },
     skipped: false,
     durationMs: 0,
+    revisionId: null,
+    snapshotHash: null,
   };
 
   if (!isEnabled('substrate.persistent_control_plane')) {
@@ -43,18 +49,51 @@ export async function rehydrateControlPlane(): Promise<RehydrationResult> {
     return result;
   }
 
+  const env = getEnv();
+  const tenantId = getTenantId();
+
   try {
+    // Determine target revision
+    let revisionId = targetRevisionId ?? null;
+    
+    // Check URL param for point-in-time restore
+    if (!revisionId && typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const revParam = params.get('rev');
+      if (revParam) revisionId = parseInt(revParam, 10);
+    }
+
+    // If no specific revision, load latest committed
+    if (!revisionId) {
+      const { data: latestRev } = await supabase
+        .from('substrate_cp_revisions')
+        .select('revision_id, snapshot_hash')
+        .eq('env', env)
+        .eq('tenant_id', tenantId)
+        .eq('status', 'committed')
+        .order('revision_id', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (latestRev) {
+        revisionId = latestRev.revision_id;
+        result.snapshotHash = latestRev.snapshot_hash;
+      }
+    }
+
+    result.revisionId = revisionId;
+
     // Run all loads in parallel
     const [flagsRes, configRes, canariesRes, bucketsRes, schemasRes, chaosRes, idempRes, cascadeRes, metricsRes] = await Promise.allSettled([
-      loadFlags(),
-      loadConfig(),
-      loadCanaries(),
-      loadRetryBudgets(),
-      loadSchemas(),
-      loadChaosRules(),
-      loadIdempotencyKeys(),
-      loadCascadeHistory(),
-      loadMetricsSnapshot(),
+      loadFlags(env, tenantId, revisionId),
+      loadConfig(env, tenantId, revisionId),
+      loadCanaries(env, tenantId, revisionId),
+      loadRetryBudgets(env, tenantId, revisionId),
+      loadSchemas(env, tenantId, revisionId),
+      loadChaosRules(env, tenantId, revisionId),
+      loadIdempotencyKeys(env, tenantId, revisionId),
+      loadCascadeHistory(env, tenantId, revisionId),
+      loadMetricsSnapshot(env, tenantId, revisionId),
     ]);
 
     if (flagsRes.status === 'fulfilled') result.loaded.flags = flagsRes.value;
@@ -73,108 +112,127 @@ export async function rehydrateControlPlane(): Promise<RehydrationResult> {
   }
 
   result.durationMs = Date.now() - start;
-  console.log(`[cp-rehydrate] Complete in ${result.durationMs}ms:`, result.loaded);
+  console.log(`[cp-rehydrate] Complete in ${result.durationMs}ms (rev=${result.revisionId}):`, result.loaded);
   return result;
+}
+
+// ─── Query builder helper ────────────────────────────────
+
+function buildQuery(table: string, env: string, tenantId: string, revisionId: number | null) {
+  let query = supabase.from(table as any).select('*').eq('env', env).eq('tenant_id', tenantId);
+  if (revisionId !== null) {
+    query = query.eq('revision_id', revisionId);
+  }
+  return query;
 }
 
 // ─── Individual Loaders ──────────────────────────────────
 
-async function loadFlags(): Promise<number> {
-  const { data, error } = await supabase.from('substrate_flags').select('*');
+async function loadFlags(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  const { data, error } = await buildQuery('substrate_flags', env, tenantId, revisionId);
   if (error || !data) return 0;
   for (const row of data) {
-    defineFlag(row.key, row.enabled, row.rollout_percent);
+    defineFlag((row as any).key, (row as any).enabled, (row as any).rollout_percent);
   }
   return data.length;
 }
 
-async function loadConfig(): Promise<number> {
-  const { data, error } = await supabase.from('substrate_config').select('*');
+async function loadConfig(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  const { data, error } = await buildQuery('substrate_config', env, tenantId, revisionId);
   if (error || !data) return 0;
-  // Store in localStorage for control plane config compatibility
   for (const row of data) {
     try {
-      localStorage.setItem(`cp-config:${row.key}`, JSON.stringify(row.value));
-    } catch { /* silent */ }
+      localStorage.setItem(`cp-config:${(row as any).key}`, JSON.stringify((row as any).value));
+    } catch { /* cache only */ }
   }
   return data.length;
 }
 
-async function loadCanaries(): Promise<number> {
-  const { data, error } = await supabase.from('substrate_canaries').select('*');
+async function loadCanaries(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  const { data, error } = await buildQuery('substrate_canaries', env, tenantId, revisionId);
   if (error || !data) return 0;
-  // Canaries are restored into a global registry
   try {
-    const stored = data.map(c => ({ id: c.id, percent: c.percent, enabled: c.enabled, metrics: c.metrics_json }));
+    const stored = data.map((c: any) => ({ id: c.id, percent: c.percent, enabled: c.enabled, metrics: c.metrics_json }));
     localStorage.setItem('cp-canaries', JSON.stringify(stored));
-  } catch { /* silent */ }
+  } catch { /* cache only */ }
   return data.length;
 }
 
-async function loadRetryBudgets(): Promise<number> {
-  const { data, error } = await supabase.from('substrate_retry_buckets').select('*');
+async function loadRetryBudgets(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  const { data, error } = await buildQuery('substrate_retry_buckets', env, tenantId, revisionId);
   if (error || !data) return 0;
   for (const row of data) {
-    configureBudget(row.module, Number(row.max_tokens), Number(row.refill_rate));
+    configureBudget((row as any).module, Number((row as any).max_tokens), Number((row as any).refill_rate));
   }
   return data.length;
 }
 
-async function loadSchemas(): Promise<number> {
-  const { data, error } = await supabase.from('substrate_schema_registry').select('*');
+async function loadSchemas(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  const { data, error } = await buildQuery('substrate_schema_registry', env, tenantId, revisionId);
   if (error || !data) return 0;
   for (const row of data) {
-    const fields = Array.isArray(row.fields_json) ? (row.fields_json as string[]) : [];
-    registerSchema(row.entity, row.version, fields);
-    const migrations = Array.isArray(row.migrations_json) ? (row.migrations_json as Array<{ from: number; to: number; transform: string }>) : [];
+    const r = row as any;
+    const fields = Array.isArray(r.fields_json) ? (r.fields_json as string[]) : [];
+    registerSchema(r.entity, r.version, fields);
+    const migrations = Array.isArray(r.migrations_json) ? (r.migrations_json as Array<{ from: number; to: number; transform: string }>) : [];
     for (const m of migrations) {
-      addMigration(row.entity, m.from, m.to, m.transform);
+      addMigration(r.entity, m.from, m.to, m.transform);
     }
   }
   return data.length;
 }
 
-async function loadChaosRules(): Promise<number> {
-  const { data, error } = await supabase.from('substrate_chaos_rules').select('*');
+async function loadChaosRules(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  const { data, error } = await buildQuery('substrate_chaos_rules', env, tenantId, revisionId);
   if (error || !data) return 0;
   try {
     localStorage.setItem('cp-chaos-rules', JSON.stringify(data));
-  } catch { /* silent */ }
+  } catch { /* cache only */ }
   return data.length;
 }
 
-async function loadIdempotencyKeys(): Promise<number> {
-  // Only load non-expired keys
-  const { data, error } = await supabase
+async function loadIdempotencyKeys(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  let query = supabase
     .from('substrate_idempotency')
     .select('*')
+    .eq('env', env)
+    .eq('tenant_id', tenantId)
     .gt('expires_at', new Date().toISOString());
+  if (revisionId !== null) {
+    query = query.eq('revision_id', revisionId);
+  }
+  const { data, error } = await query;
   if (error || !data) return 0;
   try {
     localStorage.setItem('cp-idempotency', JSON.stringify(data));
-  } catch { /* silent */ }
+  } catch { /* cache only */ }
   return data.length;
 }
 
-async function loadCascadeHistory(): Promise<number> {
-  const { data, error } = await supabase
+async function loadCascadeHistory(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  let query = supabase
     .from('substrate_cascade_history')
     .select('*')
+    .eq('env', env)
+    .eq('tenant_id', tenantId)
     .order('detected_at', { ascending: false })
     .limit(50);
+  if (revisionId !== null) {
+    query = query.eq('revision_id', revisionId);
+  }
+  const { data, error } = await query;
   if (error || !data) return 0;
   try {
     localStorage.setItem('cp-cascade-history', JSON.stringify(data));
-  } catch { /* silent */ }
+  } catch { /* cache only */ }
   return data.length;
 }
 
-async function loadMetricsSnapshot(): Promise<number> {
-  const { data, error } = await supabase.from('substrate_metrics_snapshot').select('*');
+async function loadMetricsSnapshot(env: string, tenantId: string, revisionId: number | null): Promise<number> {
+  const { data, error } = await buildQuery('substrate_metrics_snapshot', env, tenantId, revisionId);
   if (error || !data) return 0;
-  // Restore counters and gauges only (not histogram observations)
   try {
     localStorage.setItem('cp-metrics-snapshot', JSON.stringify(data));
-  } catch { /* silent */ }
+  } catch { /* cache only */ }
   return data.length;
 }
