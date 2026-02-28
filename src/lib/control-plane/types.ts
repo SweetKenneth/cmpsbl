@@ -105,7 +105,7 @@ export interface EngineerFinding {
 // ENGINEER PROPOSAL — structured proposal with risk, scope, rollback plan
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type ProposalStatus = 'draft' | 'reviewed' | 'accepted' | 'rejected' | 'applied';
+export type ProposalStatus = 'draft' | 'reviewed' | 'accepted' | 'rejected' | 'applied' | 'exported' | 'externally_applied';
 
 export interface EngineerProposal {
   id: string;

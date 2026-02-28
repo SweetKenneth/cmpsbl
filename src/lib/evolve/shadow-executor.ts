@@ -7,6 +7,7 @@ import { evolutionRuns, type EvolutionRun } from './evolution-runs';
 import { evolutionReceipts, type ChangeRecord, type HealthSnapshot } from './evolution-receipts';
 import { shadowStore } from './shadow-store';
 import { emitEvolveEvent } from './telemetry';
+import { enforceExecutionBarrier, isExternalAIMode } from './execution-mode';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -38,6 +39,18 @@ class ShadowExecutor {
    */
   async execute(options: ShadowExecuteOptions): Promise<ShadowExecuteResult> {
     const { run_id, changes, health_before } = options;
+
+    // GOVERNANCE BARRIER: Block executor when in external-ai mode
+    if (isExternalAIMode()) {
+      enforceExecutionBarrier('shadow_executor.execute');
+      return {
+        success: false,
+        run_id,
+        phase: 'blocked',
+        changes_applied: 0,
+        error: 'Shadow executor blocked by external-ai execution mode.',
+      };
+    }
 
     emitEvolveEvent('shadow_execute_started', { run_id });
 

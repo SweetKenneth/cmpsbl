@@ -7,6 +7,7 @@ import { type EvolveContext, isProductionMode, getShortId } from './context';
 import { shadowStore, type ShadowArtifact } from './shadow-store';
 import { requireVerifiedShadow, type VerificationResult } from './verify';
 import { emitEvolveEvent } from './telemetry';
+import { enforceExecutionBarrier, isExternalAIMode } from './execution-mode';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -32,6 +33,19 @@ export interface ApplyResult {
  */
 export async function applyProduction(context: EvolveContext): Promise<ApplyResult> {
   const short_id = getShortId(context);
+
+  // GOVERNANCE BARRIER: Block all internal apply when in external-ai mode
+  if (isExternalAIMode()) {
+    enforceExecutionBarrier('applyProduction');
+    // enforceExecutionBarrier throws, but return for type safety
+    return {
+      success: false,
+      evolution_id: context.evolution_id,
+      short_id,
+      artifacts_applied: 0,
+      error: 'Internal apply blocked by external-ai execution mode.',
+    };
+  }
   
   emitEvolveEvent('evolve_apply_started', {
     evolution_id: context.evolution_id,
@@ -139,6 +153,11 @@ async function applyArtifact(artifact: ShadowArtifact): Promise<void> {
  * Check if production apply is possible
  */
 export function canApply(context: EvolveContext): { allowed: boolean; reason: string } {
+  // GOVERNANCE BARRIER
+  if (isExternalAIMode()) {
+    return { allowed: false, reason: 'Internal apply disabled. Execution mode is external-ai. Use Export to AI instead.' };
+  }
+
   if (!isProductionMode(context)) {
     return { allowed: false, reason: 'Not in production mode' };
   }
