@@ -190,8 +190,20 @@ Deno.serve(async (req: Request) => {
       const lineage_id = `seba_${snapshot_id}_${Date.now().toString(36)}`;
       const signature = generateHash(`${lineage_id}:${receipt_id}:${verification_hash}:${diff_hash}`);
 
-      // Step 1: Capture pre-metrics
-      const pre_metrics = captureSystemMetrics();
+      // Step 1: Capture pre-metrics via live scan
+      let pre_metrics: EvolutionMetrics;
+      try {
+        pre_metrics = await captureSystemMetrics(supabase, authHeader);
+      } catch (scanErr) {
+        return new Response(JSON.stringify({
+          error: 'Scan execution failed. Evolution blocked.',
+          detail: scanErr instanceof Error ? scanErr.message : 'Unknown scan failure',
+          gate: 'pre_scan_required',
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
 
       // Step 2: Persist pre-metrics
       const tenant_id = url.searchParams.get('tenant_id') || userId;
@@ -302,7 +314,19 @@ Deno.serve(async (req: Request) => {
       }
 
       // Gate 2: Capture post-metrics (automatic re-scan)
-      const post_metrics = captureSystemMetrics();
+      let post_metrics: EvolutionMetrics;
+      try {
+        post_metrics = await captureSystemMetrics(supabase, authHeader);
+      } catch (scanErr) {
+        return new Response(JSON.stringify({
+          error: 'Post-apply scan failed. Evolution cannot be finalized without verified metrics.',
+          detail: scanErr instanceof Error ? scanErr.message : 'Unknown scan failure',
+          gate: 'post_scan_required',
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
 
       // Gate 3: Compute delta
       const delta = computeDelta(pre_metrics, post_metrics);
@@ -407,7 +431,19 @@ Deno.serve(async (req: Request) => {
         .eq('snapshot_id', snapshot_id);
 
       // Capture post-restore metrics (re-scan)
-      const post_restore_metrics = captureSystemMetrics();
+      let post_restore_metrics: EvolutionMetrics;
+      try {
+        post_restore_metrics = await captureSystemMetrics(supabase, authHeader);
+      } catch (scanErr) {
+        return new Response(JSON.stringify({
+          error: 'Post-restore scan failed. Restoration recorded but metrics unavailable.',
+          detail: scanErr instanceof Error ? scanErr.message : 'Scan failure',
+          gate: 'restore_scan_failed',
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
       const pre_metrics_data = (snapshot as Record<string, unknown>).pre_metrics as EvolutionMetrics | null;
 
       // Record negative delta in entropy ledger
