@@ -73,7 +73,6 @@ export default function Explore() {
       <PublicNav />
 
       {/* Hero Section — H1 rotation and diagram UNTOUCHED */}
-      <div className="relative z-10">
       <HeroMetaSubstrate />
 
       {/* Live System Metrics Bar */}
@@ -103,7 +102,7 @@ export default function Explore() {
       <GovernanceSignal />
 
       {/* Final CTA — Cinematic closing */}
-      <section className="relative z-10 px-4 py-14 sm:py-32">
+      <section className="relative px-4 py-14 sm:py-32">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
