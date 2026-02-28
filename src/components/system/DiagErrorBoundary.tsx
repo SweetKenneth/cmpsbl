@@ -38,6 +38,11 @@ export class DiagErrorBoundary extends Component<Props, State> {
       componentStack: errorInfo.componentStack?.slice(0, 300),
     });
 
+    // Ship to telemetry database
+    import("@/lib/telemetry/error-telemetry").then(({ reportClientError }) => {
+      reportClientError(error, errorInfo.componentStack);
+    }).catch(() => { /* silently fail */ });
+
     // Also log to console in development
     console.error("[DiagErrorBoundary]", error, errorInfo);
   }

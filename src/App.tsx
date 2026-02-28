@@ -50,10 +50,29 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Minimal fallback - no visible loader, just background
+// Route transition loader — subtle branded indicator
 const PageLoader = () => (
-  <div className="min-h-screen bg-background" />
+  <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="flex flex-col items-center gap-3">
+      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center animate-pulse">
+        <div className="w-3 h-3 rounded-full bg-primary/60" />
+      </div>
+    </div>
+  </div>
 );
+
+// Lazy-load mobile bottom nav and onboarding
+const MobileBottomNav = lazy(() => import("@/components/navigation/MobileBottomNav").then(m => ({ default: m.MobileBottomNav })));
+const OnboardingWrapper = lazy(() => import("@/components/onboarding/OnboardingOverlay").then(m => {
+  const { useOnboarding, OnboardingOverlay } = m;
+  // Wrap in a component that uses the hook
+  const Wrapper = () => {
+    const { show, dismiss } = useOnboarding();
+    if (!show) return null;
+    return <OnboardingOverlay onDismiss={dismiss} />;
+  };
+  return { default: Wrapper };
+}));
 
 // Core pages - only Explore eager loaded for LCP, rest lazy
 import Explore from "./pages/Explore";
@@ -273,11 +292,13 @@ const App = () => {
       import("@/lib/defense/site-guard"),
       import("@/lib/analytics/site-tracker"),
       import("@/lib/client/diag"),
-    ]).then(([watchdog, tracking, guard, analytics, diag]) => {
+      import("@/lib/telemetry/error-telemetry"),
+    ]).then(([watchdog, tracking, guard, analytics, diag, telemetry]) => {
       const c1 = watchdog.installMobileWatchdog();
       const c2 = tracking.installLastInteractionTracking();
       const c3 = guard.installSiteGuard();
       analytics.initSiteAnalytics();
+      telemetry.installGlobalErrorHandler();
       cleanupRef.current = [c1, c2, c3].filter(Boolean) as (() => void)[];
 
       if (diag.diagEnabled()) {
@@ -620,6 +641,12 @@ const App = () => {
                         <Route path="*" element={<NotFound />} />
                        </Routes>
                         </main>
+                        <Suspense fallback={null}>
+                          <MobileBottomNav />
+                        </Suspense>
+                        <Suspense fallback={null}>
+                          <OnboardingWrapper />
+                        </Suspense>
                     </Suspense>
                   </AuthProvider>
                     } />
