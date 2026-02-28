@@ -27,15 +27,29 @@ function topicId(scope: TopicScope, title: string, node?: string): string {
 // GLOBAL TOPICS (system-wide, curated)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const GLOBAL_TOPICS: Array<{ title: string; description: string; category: string }> = [
-  { title: 'Stability Patterns', description: 'Circuit breakers, graceful degradation, retry strategies', category: 'stability' },
-  { title: 'Performance Optimization', description: 'Caching strategies, lazy loading, resource pooling', category: 'performance' },
-  { title: 'Reliability Engineering', description: 'Redundancy, failover, data consistency guarantees', category: 'reliability' },
-  { title: 'Resilience Architecture', description: 'Self-healing, bulkhead patterns, chaos engineering', category: 'resilience' },
-  { title: 'Governance Patterns', description: 'Policy enforcement, audit trails, compliance automation', category: 'governance' },
-  { title: 'Cost Efficiency', description: 'Resource optimization, waste reduction, budget governance', category: 'cost' },
-  { title: 'Security Hardening', description: 'Zero-trust, defense-in-depth, threat modeling', category: 'security' },
-  { title: 'Observability Excellence', description: 'Distributed tracing, metric correlation, alert tuning', category: 'observability' },
+const GLOBAL_TOPICS: Array<{ title: string; description: string; category: string; tier: number }> = [
+  // Tier 1: Foundation — Harden what exists
+  { title: 'Stability Patterns', description: 'Circuit breakers, graceful degradation, retry strategies', category: 'stability', tier: 1 },
+  { title: 'Performance Optimization', description: 'Caching strategies, lazy loading, resource pooling', category: 'performance', tier: 1 },
+  { title: 'Reliability Engineering', description: 'Redundancy, failover, data consistency guarantees', category: 'reliability', tier: 1 },
+  { title: 'Security Hardening', description: 'Zero-trust, defense-in-depth, threat modeling', category: 'security', tier: 1 },
+
+  // Tier 2: Intelligence — Make the system smarter
+  { title: 'Resilience Architecture', description: 'Self-healing, bulkhead patterns, chaos engineering', category: 'resilience', tier: 2 },
+  { title: 'Governance Patterns', description: 'Policy enforcement, audit trails, compliance automation', category: 'governance', tier: 2 },
+  { title: 'Observability Excellence', description: 'Distributed tracing, metric correlation, alert tuning', category: 'observability', tier: 2 },
+  { title: 'Cost Efficiency', description: 'Resource optimization, waste reduction, budget governance', category: 'cost', tier: 2 },
+
+  // Tier 3: Capability — Add new features and integrations
+  { title: 'Adaptive Learning', description: 'System learns from usage patterns to auto-tune configurations and thresholds', category: 'intelligence', tier: 3 },
+  { title: 'Predictive Analytics', description: 'Forecast failures, traffic spikes, and resource needs before they happen', category: 'intelligence', tier: 3 },
+  { title: 'Cross-Module Orchestration', description: 'Modules coordinate autonomously to handle multi-step workflows', category: 'capability', tier: 3 },
+  { title: 'External Integration Patterns', description: 'Safely connect third-party APIs, webhooks, and data sources', category: 'capability', tier: 3 },
+
+  // Tier 4: Autonomy — System operates independently
+  { title: 'Self-Optimization Loops', description: 'Continuous performance tuning without human intervention', category: 'autonomy', tier: 4 },
+  { title: 'Autonomous Incident Response', description: 'Detect, diagnose, and resolve issues without human involvement', category: 'autonomy', tier: 4 },
+  { title: 'Evolutionary Architecture', description: 'System proposes and safely applies its own structural improvements', category: 'autonomy', tier: 4 },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
