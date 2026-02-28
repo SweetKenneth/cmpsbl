@@ -2,9 +2,10 @@
  * Evolution Receipts — Immutable Audit Trail
  * Every shadow + production apply generates a receipt
  */
-
+ 
 import { supabase } from '@/integrations/supabase/client';
 import { type EvolutionPhase } from './evolution-runs';
+import { type EvolutionMetrics, type EvolutionDelta } from './evolution-delta';
 import { emitEvolveEvent } from './telemetry';
 
 // ═══════════════════════════════════════════════════════════════
