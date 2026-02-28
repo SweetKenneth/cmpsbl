@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { VitePWA } from "vite-plugin-pwa";
+import { seoPrerender } from "./plugins/vite-seo-prerender";
+import { prerenderRoutes } from "./plugins/prerender-routes";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
