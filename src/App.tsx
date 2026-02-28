@@ -61,8 +61,9 @@ const PageLoader = () => (
   </div>
 );
 
-// Lazy-load mobile bottom nav and onboarding
+// Lazy-load mobile bottom nav, back-to-top, and onboarding
 const MobileBottomNav = lazy(() => import("@/components/navigation/MobileBottomNav").then(m => ({ default: m.MobileBottomNav })));
+const BackToTop = lazy(() => import("@/components/navigation/BackToTop").then(m => ({ default: m.BackToTop })));
 const OnboardingWrapper = lazy(() => import("@/components/onboarding/OnboardingOverlay").then(m => {
   const { useOnboarding, OnboardingOverlay } = m;
   // Wrap in a component that uses the hook
@@ -643,6 +644,9 @@ const App = () => {
                         </main>
                         <Suspense fallback={null}>
                           <MobileBottomNav />
+                        </Suspense>
+                        <Suspense fallback={null}>
+                          <BackToTop />
                         </Suspense>
                         <Suspense fallback={null}>
                           <OnboardingWrapper />
