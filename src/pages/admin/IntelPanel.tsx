@@ -403,6 +403,108 @@ export default function IntelPanel() {
           </Card>
         )}
         
+        {/* Unified Proposal Output */}
+        {unifiedProposal && (
+          <Card className="border-l-4 border-l-primary bg-primary/5 print:break-inside-avoid">
+            <CardHeader className="p-3 sm:p-4 pb-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                  <CardTitle className="text-sm sm:text-base">Unified Proposal</CardTitle>
+                  <Badge variant="outline" className="text-[10px] sm:text-xs">
+                    {unifiedProposal.action_plan.length} steps
+                  </Badge>
+                  <Badge variant={unifiedProposal.guardrails.estimated_risk === 'high' ? 'destructive' : 'secondary'} className="text-[10px] sm:text-xs">
+                    risk: {unifiedProposal.guardrails.estimated_risk}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
+                    navigator.clipboard.writeText(JSON.stringify(unifiedProposal, null, 2));
+                    toast.success('Copied to clipboard');
+                  }}>
+                    <Copy className="w-3 h-3 mr-1" /> Copy
+                  </Button>
+                  <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleDownloadProposal}>
+                    <Download className="w-3 h-3 mr-1" /> Download
+                  </Button>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">{unifiedProposal.executive_summary}</p>
+            </CardHeader>
+            <CardContent className="p-3 sm:p-4 pt-0 space-y-3">
+              {/* Quick stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                <div className="bg-muted/50 rounded p-2">
+                  <p className="text-lg font-bold text-destructive">{unifiedProposal.technical_debt.critical.length}</p>
+                  <p className="text-[10px] text-muted-foreground">Critical Debt</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
+                  <p className="text-lg font-bold text-foreground">{unifiedProposal.evolution_opportunities.total}</p>
+                  <p className="text-[10px] text-muted-foreground">Evolutions</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
+                  <p className="text-lg font-bold text-foreground">{unifiedProposal.diligence.passed}/{unifiedProposal.diligence.total}</p>
+                  <p className="text-[10px] text-muted-foreground">Diligence</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
+                  <p className="text-lg font-bold text-foreground">{unifiedProposal.audit_health.compliance_score}%</p>
+                  <p className="text-[10px] text-muted-foreground">Audit Score</p>
+                </div>
+              </div>
+
+              {/* Action Plan */}
+              <Collapsible defaultOpen>
+                <CollapsibleTrigger className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-foreground hover:text-primary transition-colors w-full">
+                  <ChevronDown className="w-3.5 h-3.5" /> Action Plan ({unifiedProposal.action_plan.length} steps)
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-2 space-y-2">
+                  {unifiedProposal.action_plan.map((step) => (
+                    <div key={step.order} className="border rounded p-2 sm:p-3 space-y-1">
+                      <div className="flex items-start gap-2">
+                        <span className="text-[10px] font-mono bg-muted rounded px-1.5 py-0.5 flex-shrink-0">#{step.order}</span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-xs sm:text-sm font-medium">{step.title}</span>
+                            <Badge variant={step.risk === 'high' ? 'destructive' : step.risk === 'medium' ? 'secondary' : 'outline'} className="text-[10px]">
+                              {step.risk}
+                            </Badge>
+                            <Badge variant="outline" className="text-[10px]">{step.category}</Badge>
+                          </div>
+                          <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{step.description}</p>
+                          <ul className="mt-1 space-y-0.5">
+                            {step.instructions.map((inst, i) => (
+                              <li key={i} className="text-[10px] sm:text-xs text-muted-foreground flex items-start gap-1">
+                                <span className="text-primary mt-0.5">→</span> {inst}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+
+              {/* Raw JSON */}
+              <Collapsible>
+                <CollapsibleTrigger className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors">
+                  <ChevronDown className="w-3 h-3" /> Full JSON (paste to your agent)
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <pre className="mt-2 p-2 rounded bg-muted/50 text-[10px] overflow-auto max-h-60 font-mono">
+                    {JSON.stringify(unifiedProposal, null, 2)}
+                  </pre>
+                </CollapsibleContent>
+              </Collapsible>
+
+              <p className="text-[10px] text-muted-foreground italic">
+                ⚠️ Human-in-the-loop: Review each step before giving to your coding agent. Rollback instructions included.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Executive Summary — 2-col on mobile, 4-col on desktop */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
           <SummaryTile label="Total Signals" value={summary.total_signals} icon={Activity} />
