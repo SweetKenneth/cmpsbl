@@ -55,7 +55,7 @@ export function initializeGOAL(): () => void {
 
 // Re-export key interfaces
 export { getAllLiveMetrics, flattenAllMetrics, validateAll, getRegisteredModuleIds } from './metrics/metricsRegistry';
-export { capture, getLatestSnapshot, computeDelta, getTrend, getModuleContributions } from './metrics/snapshotEngine';
+export { capture, getLatestSnapshot, computeDelta, getTrend, getModuleContributions, getSnapshotStats } from './metrics/snapshotEngine';
 export { runIntegrityCheck, shouldBlockDecodeForModule } from './metrics/integrityValidator';
 export { queryMetricsForDecode, setDecodeMode, getDecodeMode, formatDecodeResponse } from './decode/decodeAccessPolicy';
 export { appendEvent, queryEvents, getRecentEvents, getEventDistribution } from './events/eventStore';

@@ -206,3 +206,32 @@ export function startSnapshotEngine(): () => void {
     }
   };
 }
+
+// ═══ Stats ═══════════════════════════════════════════════════════
+
+/**
+ * Get snapshot engine statistics for observability.
+ */
+export function getSnapshotStats(): {
+  totalCaptures: number;
+  retainedSnapshots: number;
+  maxRetained: number;
+  oldestTimestamp: string | null;
+  newestTimestamp: string | null;
+  avgHealthScore: number;
+} {
+  const oldest = snapshots.length > 0 ? snapshots[0].timestamp : null;
+  const newest = snapshots.length > 0 ? snapshots[snapshots.length - 1].timestamp : null;
+  const avgHealth = snapshots.length > 0
+    ? Math.round(snapshots.reduce((s, snap) => s + snap.systemHealth, 0) / snapshots.length)
+    : 0;
+
+  return {
+    totalCaptures: totalCaptureCount,
+    retainedSnapshots: snapshots.length,
+    maxRetained: MAX_SNAPSHOTS,
+    oldestTimestamp: oldest,
+    newestTimestamp: newest,
+    avgHealthScore: avgHealth,
+  };
+}
