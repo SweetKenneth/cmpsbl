@@ -342,7 +342,8 @@ const App = () => {
                       <Suspense fallback={null}>
                         <RegisterPasskeyPrompt />
                       </Suspense>
-                      <Suspense fallback={<PageLoader />}>
+                       <Suspense fallback={<PageLoader />}>
+                        <main id="main-content">
                         <Routes>
                           {/* Core Public Pages */}
                           <Route path="/" element={<DomainAwareHome />} />
