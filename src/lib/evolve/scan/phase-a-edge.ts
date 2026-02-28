@@ -33,16 +33,19 @@ const ARCHIVED_CATALOG: ArchivedFunction[] = [
 ];
 
 // Expected active functions for substrate
-const EXPECTED_ACTIVE: string[] = [
-  'pf-substrate',
-  'evolution-receipts',
-  'evolution-control',
-  'pf-agency-execute-task',
-  'agency-webhooks',
-  'pf-modernizer-rebuild',
-  'pf-orchestrator',
-  'pf-stripe-webhook',
-];
+// Maps expected name → acceptable deployed aliases
+const EXPECTED_ACTIVE: Record<string, string[]> = {
+  'pf-substrate': ['pf-substrate', 'substrate'],
+  'evolution-receipts': ['evolution-receipts'],
+  'evolution-control': ['evolution-control'],
+  'pf-agency-execute-task': ['pf-agency-execute-task', 'agency-execute-task'],
+  'agency-webhooks': ['agency-webhooks'],
+  'pf-modernizer-rebuild': ['pf-modernizer-rebuild'],
+  'pf-orchestrator': ['pf-orchestrator'],
+  'pf-stripe-webhook': ['pf-stripe-webhook'],
+  'pf-clm-engine': ['pf-clm-engine'],
+  'passkey-auth': ['passkey-auth'],
+};
 
 // ═══════════════════════════════════════════════════════════════
 // EDGE INTROSPECTION
@@ -149,7 +152,9 @@ function analyzeRepurposeCandidates(liveFunctions: string[]): RepurposeCandidate
   
   // Check for orphaned functions (not in expected list)
   for (const func of liveFunctions) {
-    const isExpected = EXPECTED_ACTIVE.some(e => func.includes(e) || e.includes(func));
+    const isExpected = Object.values(EXPECTED_ACTIVE).some(aliases => 
+      aliases.some(a => func === a || func.includes(a) || a.includes(func))
+    );
     const isArchived = ARCHIVED_CATALOG.some(a => func.includes(a.name));
     
     if (!isExpected && !isArchived) {
@@ -194,14 +199,17 @@ function detectRiskFlags(liveFunctions: string[]): RiskFlag[] {
     }
   }
   
-  // Check expected functions are present
-  for (const expected of EXPECTED_ACTIVE) {
-    if (!liveFunctions.some(f => f.includes(expected))) {
+  // Check expected functions are present (using alias matching)
+  for (const [expectedName, aliases] of Object.entries(EXPECTED_ACTIVE)) {
+    const found = liveFunctions.some(f => 
+      aliases.some(a => f === a || f.includes(a) || a.includes(f))
+    );
+    if (!found) {
       flags.push({
-        function_name: expected,
+        function_name: expectedName,
         risk_type: 'stability',
         severity: 'medium',
-        description: `Expected function ${expected} not detected - may affect substrate functionality.`,
+        description: `Expected function ${expectedName} not detected - may affect substrate functionality.`,
       });
     }
   }
