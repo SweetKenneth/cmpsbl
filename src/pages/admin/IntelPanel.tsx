@@ -467,8 +467,30 @@ export default function IntelPanel() {
                   <p className="text-[10px] text-muted-foreground">Prod Audit</p>
                 </div>
                 <div className="bg-muted/50 rounded p-2">
+                  <p className={`text-lg font-bold ${unifiedProposal.accessibility.score >= 80 ? 'text-green-600' : unifiedProposal.accessibility.score >= 50 ? 'text-amber-600' : 'text-destructive'}`}>
+                    {unifiedProposal.accessibility.score}/100
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">INCLUSIVE</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
+                  <p className={`text-lg font-bold ${unifiedProposal.security_posture.threat_level === 'low' ? 'text-green-600' : unifiedProposal.security_posture.threat_level === 'medium' ? 'text-amber-600' : 'text-destructive'}`}>
+                    {unifiedProposal.security_posture.threat_level.toUpperCase()}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">DEFENSE</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                <div className="bg-muted/50 rounded p-2">
+                  <p className="text-lg font-bold text-foreground">{unifiedProposal.ratio.debt_pct}/{unifiedProposal.ratio.evolution_pct}</p>
+                  <p className="text-[10px] text-muted-foreground">Debt/Evo %</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
                   <p className="text-lg font-bold text-foreground">{unifiedProposal.structural_health.layers_passed}/{unifiedProposal.structural_health.layers_checked}</p>
                   <p className="text-[10px] text-muted-foreground">Layers OK</p>
+                </div>
+                <div className="bg-muted/50 rounded p-2">
+                  <p className="text-lg font-bold text-foreground">{unifiedProposal.accessibility.auto_fixable}</p>
+                  <p className="text-[10px] text-muted-foreground">Auto-Fixable</p>
                 </div>
                 <div className="bg-muted/50 rounded p-2">
                   <p className="text-lg font-bold text-foreground">{unifiedProposal.metadata.sources.length}</p>

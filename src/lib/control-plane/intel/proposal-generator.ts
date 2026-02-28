@@ -1,17 +1,21 @@
 /**
- * Unified Proposal Generator v3.0
+ * Unified Proposal Generator v4.0
  * 
  * ALL-IN-ONE audit merger: combines signals from every audit subsystem
  * into a single, comprehensive, agent-consumable proposal.
  * 
  * Sources merged:
  * 1. SEBA Evolution — cognitive analyzer insights (9 engines)
- * 2. Full Audit Runner — production readiness checks (system manifest, routes, modules, SEO, hooks, UI, branding, backend)
+ * 2. Full Audit Runner — production readiness checks
  * 3. Substrate Health Check — structural integrity across 8 layers
  * 4. AUDIT Module — immutable compliance ledger + chain integrity
  * 5. Diligence Harness — terminal/governance probe battery
  * 6. ENGINEER Findings — internal maintenance node signals
  * 7. INTEL Aggregator — cross-system signal correlation
+ * 8. INCLUSIVE Module — WCAG 2.2 accessibility scan (86-rule engine)
+ * 9. DEFENSE Module — security posture, anomalies, threat landscape
+ * 
+ * Ratio: 60% tech debt elimination / 40% evolution advancement
  * 
  * Goals:
  * 1. Eliminate ALL technical debt from vibe-coded mistakes
@@ -24,19 +28,25 @@ import { intelAggregator } from './aggregator';
 import { getAuditLog, verifyAuditChain, getAuditState } from '@/lib/substrate/audit-module';
 import { runFullAudit } from '@/lib/audit/audit-runner';
 import { runSubstrateHealthCheck } from '@/lib/audit/substrate-health-check';
+import { substrate } from '@/lib/substrate';
+import { scanHTML, calculateScore, determineOverallSeverity } from '@/lib/inclusive/scan';
 import type { IntelCard } from '../types';
 import type { AuditFinding, AuditReport } from '@/lib/audit/audit-types';
 import type { HealthCheckReport } from '@/lib/audit/substrate-health-check';
+import type { InclusiveIssue } from '@/lib/inclusive/types';
 
 // ═══════════════════════════════════════════════════════════════
-// SCHEMA — Agent-consumable proposal v3.0
+// SCHEMA — Agent-consumable proposal v4.0
 // ═══════════════════════════════════════════════════════════════
 
 export interface UnifiedProposal {
-  schema_version: '3.0';
+  schema_version: '4.0';
   generated_at: string;
   system_id: 'cmpsbl-substrate';
   proposal_type: 'unified-evolution';
+  
+  /** 60% debt / 40% evolution — enforced ratio */
+  ratio: { debt_pct: number; evolution_pct: number };
   
   executive_summary: string;
   
@@ -89,6 +99,30 @@ export interface UnifiedProposal {
     critical_failures: string[];
   };
   
+  // INCLUSIVE — WCAG 2.2 accessibility scan
+  accessibility: {
+    score: number;
+    total_issues: number;
+    critical_count: number;
+    high_count: number;
+    medium_count: number;
+    low_count: number;
+    auto_fixable: number;
+    top_issues: { wcag: string; description: string; severity: string; fixable: boolean }[];
+    wcag_level: string;
+  };
+  
+  // DEFENSE — security posture scan
+  security_posture: {
+    posture_available: boolean;
+    anomaly_available: boolean;
+    posture_summary: string;
+    threat_level: 'low' | 'medium' | 'high' | 'critical';
+    anomalies_detected: number;
+    rate_limit_issues: number;
+    security_issues: SecurityIssueItem[];
+  };
+  
   action_plan: ActionStep[];
   
   guardrails: {
@@ -107,6 +141,15 @@ export interface UnifiedProposal {
     generation_ms: number;
     sources: string[];
   };
+}
+
+export interface SecurityIssueItem {
+  id: string;
+  title: string;
+  severity: string;
+  source: string;
+  description: string;
+  suggested_fix: string;
 }
 
 export interface TechDebtItem {
@@ -195,10 +238,16 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   const diligenceCards = allCards.filter(c => c.category === 'diligence');
   const diligenceData = extractDiligenceData(diligenceCards);
   
+  // ─── 6. INCLUSIVE — WCAG 2.2 accessibility scan (86-rule engine) ───
+  const accessibilityData = await runInclusiveScan();
+  
+  // ─── 7. DEFENSE — security posture + anomaly detection ───
+  const securityData = await runDefenseScan();
+  
   // ═══ BUILD SECTIONS ═══
   
-  // Tech Debt — merge ENGINEER findings + audit findings + health failures
-  const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport);
+  // Tech Debt — merge ALL findings (ENGINEER + audit + health + INCLUSIVE + DEFENSE)
+  const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport, accessibilityData, securityData);
   
   // Evolution opportunities
   const evolution = buildEvolutionSection(existingProposals, allCards);
@@ -223,24 +272,32 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     auditGaps.push(`Only ${auditModules.size}/${monitoredCount} modules have audit coverage`);
   }
   
-  // ═══ BUILD ACTION PLAN (priority-ordered across ALL sources) ═══
-  const actionPlan = buildActionPlan(techDebt, evolution, auditGaps, diligenceData, productionAudit, structuralHealth);
+  // ═══ BUILD ACTION PLAN with 60/40 ratio (debt/evolution) ═══
+  const actionPlan = buildActionPlan(techDebt, evolution, auditGaps, diligenceData, productionAudit, structuralHealth, accessibilityData, securityData);
+  
+  // Enforce 60/40 ratio in the action plan
+  const debtSteps = actionPlan.filter(s => s.category !== 'evolution').length;
+  const evoSteps = actionPlan.filter(s => s.category === 'evolution').length;
+  const totalSteps = debtSteps + evoSteps;
+  const debtPct = totalSteps > 0 ? Math.round((debtSteps / totalSteps) * 100) : 60;
+  const evoPct = totalSteps > 0 ? Math.round((evoSteps / totalSteps) * 100) : 40;
   
   // Risk assessment
   const estimatedRisk = 
-    (techDebt.critical.length > 3 || !chainVerification.valid || structuralHealth.overall_verdict === 'FAIL') ? 'high'
-    : (techDebt.critical.length > 0 || productionAudit.fatal > 0) ? 'medium' 
+    (techDebt.critical.length > 3 || !chainVerification.valid || structuralHealth.overall_verdict === 'FAIL' || securityData.threat_level === 'critical') ? 'high'
+    : (techDebt.critical.length > 0 || productionAudit.fatal > 0 || accessibilityData.critical_count > 0 || securityData.threat_level === 'high') ? 'medium' 
     : 'low';
   
   const generationMs = Math.round(performance.now() - startTime);
   
-  const execSummary = buildExecutiveSummary(techDebt, evolution, diligenceData, auditGaps, estimatedRisk, productionAudit, structuralHealth);
+  const execSummary = buildExecutiveSummary(techDebt, evolution, diligenceData, auditGaps, estimatedRisk, productionAudit, structuralHealth, accessibilityData, securityData);
   
   return {
-    schema_version: '3.0',
+    schema_version: '4.0',
     generated_at: new Date().toISOString(),
     system_id: 'cmpsbl-substrate',
     proposal_type: 'unified-evolution',
+    ratio: { debt_pct: debtPct, evolution_pct: evoPct },
     executive_summary: execSummary,
     technical_debt: techDebt,
     evolution_opportunities: evolution,
@@ -254,6 +311,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
       gaps: auditGaps,
     },
     diligence: diligenceData,
+    accessibility: accessibilityData,
+    security_posture: securityData,
     action_plan: actionPlan,
     guardrails: {
       requires_human_review: true,
@@ -266,6 +325,9 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'Run the diligence battery again after applying changes.',
         'Structural health failures should be addressed before evolution steps.',
         'Production audit findings indicate real code issues — prioritize these.',
+        'Accessibility violations (INCLUSIVE) impact all users — fix critical WCAG issues first.',
+        'Security posture (DEFENSE) issues should be addressed before public-facing changes.',
+        'Action plan enforces 60% tech debt / 40% evolution ratio for balanced improvement.',
       ],
     },
     metadata: {
@@ -283,8 +345,106 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'Substrate Health Check',
         'AUDIT Compliance Ledger',
         'Diligence Harness',
+        'INCLUSIVE WCAG 2.2 Scanner',
+        'DEFENSE Security Posture',
       ],
     },
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INCLUSIVE + DEFENSE SCAN RUNNERS
+// ═══════════════════════════════════════════════════════════════
+
+async function runInclusiveScan(): Promise<UnifiedProposal['accessibility']> {
+  try {
+    // Use the INCLUSIVE module's self-scan to analyze substrate interfaces
+    const result = await substrate.inclusive.selfScan();
+    const data = (result as any)?.data;
+    const issues: InclusiveIssue[] = data?.issues ?? [];
+    const score = data?.score ?? calculateScore(issues);
+    
+    return {
+      score,
+      total_issues: issues.length,
+      critical_count: issues.filter(i => i.severity === 'critical').length,
+      high_count: issues.filter(i => i.severity === 'high').length,
+      medium_count: issues.filter(i => i.severity === 'medium').length,
+      low_count: issues.filter(i => i.severity === 'low').length,
+      auto_fixable: issues.filter(i => i.auto_fixable).length,
+      top_issues: issues.slice(0, 10).map(i => ({
+        wcag: i.wcag_criterion,
+        description: i.description,
+        severity: i.severity,
+        fixable: i.auto_fixable,
+      })),
+      wcag_level: data?.metadata?.wcag_level ?? 'AA',
+    };
+  } catch (e) {
+    console.warn('[Proposal] INCLUSIVE scan failed:', e);
+    return { score: 0, total_issues: 0, critical_count: 0, high_count: 0, medium_count: 0, low_count: 0, auto_fixable: 0, top_issues: [], wcag_level: 'AA' };
+  }
+}
+
+async function runDefenseScan(): Promise<UnifiedProposal['security_posture']> {
+  let postureData: any = null;
+  let anomalyData: any = null;
+  let limitsData: any = null;
+  
+  try {
+    const [postureRes, anomalyRes, limitsRes] = await Promise.allSettled([
+      substrate.defense.posture(),
+      substrate.defense.anomaly('24h'),
+      substrate.defense.limits(),
+    ]);
+    postureData = postureRes.status === 'fulfilled' ? (postureRes.value as any)?.data : null;
+    anomalyData = anomalyRes.status === 'fulfilled' ? (anomalyRes.value as any)?.data : null;
+    limitsData = limitsRes.status === 'fulfilled' ? (limitsRes.value as any)?.data : null;
+  } catch (e) {
+    console.warn('[Proposal] DEFENSE scan failed:', e);
+  }
+  
+  const securityIssues: SecurityIssueItem[] = [];
+  
+  // Extract anomalies as security issues
+  const anomalies = anomalyData?.anomalies ?? [];
+  for (const a of anomalies.slice(0, 5)) {
+    securityIssues.push({
+      id: `def_anomaly_${securityIssues.length}`,
+      title: a.description || 'Behavioral anomaly detected',
+      severity: a.severity || 'medium',
+      source: 'DEFENSE/anomaly',
+      description: a.detail || 'Anomalous pattern detected in system behavior.',
+      suggested_fix: 'Investigate the anomaly source. Check for unauthorized access or misconfigured services.',
+    });
+  }
+  
+  // Rate limit issues
+  const rateLimitIssues = limitsData?.violations ?? 0;
+  if (rateLimitIssues > 0) {
+    securityIssues.push({
+      id: 'def_rate_limit',
+      title: `${rateLimitIssues} rate limit violation(s) detected`,
+      severity: 'medium',
+      source: 'DEFENSE/limits',
+      description: 'Edge functions experiencing rate limit pressure.',
+      suggested_fix: 'Review rate limit configuration. Consider increasing limits or optimizing request patterns.',
+    });
+  }
+  
+  const threatLevel: 'low' | 'medium' | 'high' | 'critical' = 
+    securityIssues.some(i => i.severity === 'critical') ? 'critical' :
+    securityIssues.some(i => i.severity === 'high') ? 'high' :
+    securityIssues.length > 0 ? 'medium' : 'low';
+  
+  return {
+    posture_available: !!postureData,
+    anomaly_available: !!anomalyData,
+    posture_summary: postureData?.summary || 'Defense posture nominal',
+    threat_level: threatLevel,
+    anomalies_detected: anomalies.length,
+    rate_limit_issues: rateLimitIssues,
+    security_issues: securityIssues,
   };
 }
 
@@ -375,6 +535,8 @@ function buildTechDebtSection(
   allCards: IntelCard[],
   auditReport: AuditReport | null,
   healthReport: HealthCheckReport | null,
+  accessibilityData: UnifiedProposal['accessibility'],
+  securityData: UnifiedProposal['security_posture'],
 ) {
   const critical: TechDebtItem[] = [];
   const warnings: TechDebtItem[] = [];
@@ -471,6 +633,57 @@ function buildTechDebtSection(
     }
   }
   
+  // ─── From INCLUSIVE accessibility scan ───
+  for (const issue of accessibilityData.top_issues.filter(i => i.severity === 'critical' || i.severity === 'high')) {
+    critical.push({
+      id: `inc_${critical.length}`,
+      title: `A11y: ${issue.description}`,
+      description: `WCAG ${issue.wcag} violation — ${issue.fixable ? 'auto-fixable' : 'manual fix required'}.`,
+      severity: issue.severity,
+      source: `INCLUSIVE/WCAG`,
+      suggested_fix: issue.fixable ? 'Run inclusive.repair to auto-fix.' : 'Manual remediation needed — review WCAG criterion.',
+      affected_area: `WCAG ${issue.wcag}`,
+    });
+    patterns.add('accessibility');
+  }
+  for (const issue of accessibilityData.top_issues.filter(i => i.severity === 'medium' || i.severity === 'low')) {
+    warnings.push({
+      id: `inc_w_${warnings.length}`,
+      title: `A11y: ${issue.description}`,
+      description: `WCAG ${issue.wcag} — ${issue.severity} severity.`,
+      severity: issue.severity,
+      source: `INCLUSIVE/WCAG`,
+      suggested_fix: issue.fixable ? 'Auto-fixable via inclusive.repair.' : 'Review WCAG criterion and fix.',
+      affected_area: `WCAG ${issue.wcag}`,
+    });
+  }
+  
+  // ─── From DEFENSE security scan ───
+  for (const issue of securityData.security_issues) {
+    if (issue.severity === 'critical' || issue.severity === 'high') {
+      critical.push({
+        id: issue.id,
+        title: `Security: ${issue.title}`,
+        description: issue.description,
+        severity: issue.severity,
+        source: issue.source,
+        suggested_fix: issue.suggested_fix,
+        affected_area: 'DEFENSE',
+      });
+      patterns.add('security');
+    } else {
+      warnings.push({
+        id: issue.id,
+        title: `Security: ${issue.title}`,
+        description: issue.description,
+        severity: issue.severity,
+        source: issue.source,
+        suggested_fix: issue.suggested_fix,
+        affected_area: 'DEFENSE',
+      });
+    }
+  }
+
   // Patterns from warning cards
   const warnCards = allCards.filter(c => c.severity === 'warn');
   for (const card of warnCards) {
@@ -530,6 +743,8 @@ function buildActionPlan(
   diligence: UnifiedProposal['diligence'],
   productionAudit: UnifiedProposal['production_audit'],
   structuralHealth: UnifiedProposal['structural_health'],
+  accessibilityData: UnifiedProposal['accessibility'],
+  securityData: UnifiedProposal['security_posture'],
 ): ActionStep[] {
   const steps: ActionStep[] = [];
   let order = 1;
@@ -639,8 +854,63 @@ function buildActionPlan(
     });
   }
   
-  // Priority 6: Evolution opportunities (low risk first)
-  for (const item of evolution.proposals.filter(p => p.risk_level === 'low').slice(0, 3)) {
+  // Priority 5.5: Accessibility critical issues
+  for (const issue of accessibilityData.top_issues.filter(i => i.severity === 'critical').slice(0, 3)) {
+    steps.push({
+      order: order++,
+      category: 'tech-debt',
+      title: `A11y: ${issue.description}`,
+      description: `WCAG ${issue.wcag} — ${issue.fixable ? 'auto-fixable' : 'manual fix'}.`,
+      risk: 'medium',
+      instructions: [
+        `WCAG Criterion: ${issue.wcag}`,
+        issue.fixable ? 'Run inclusive.repair to auto-fix this issue.' : 'Manual review and fix required.',
+        'Re-run inclusive.scan to verify resolution.',
+      ],
+    });
+  }
+  
+  // Priority 5.6: Security issues from DEFENSE
+  for (const issue of securityData.security_issues.slice(0, 3)) {
+    steps.push({
+      order: order++,
+      category: 'tech-debt',
+      title: `Security: ${issue.title}`,
+      description: issue.description,
+      risk: issue.severity === 'critical' ? 'high' : 'medium',
+      instructions: [
+        `Source: ${issue.source}`,
+        issue.suggested_fix,
+        'Re-run defense.posture to verify fix.',
+      ],
+    });
+  }
+  
+  // Priority 6: Audit gaps
+  for (const gap of auditGaps) {
+    steps.push({
+      order: order++,
+      category: 'audit',
+      title: `Audit: ${gap}`,
+      description: 'Compliance gap that weakens the system audit trail.',
+      risk: 'low',
+      instructions: [
+        'Review the audit module configuration',
+        'Ensure all critical modules emit audit events',
+        'Verify chain integrity after changes',
+      ],
+    });
+  }
+  
+  // ═══ EVOLUTION STEPS — capped to maintain 60/40 ratio ═══
+  // Target: evolution steps should be ~40% of total
+  const debtStepsSoFar = steps.length;
+  const maxEvoSteps = Math.max(2, Math.ceil(debtStepsSoFar * (40 / 60)));
+  
+  let evoCount = 0;
+  // Low risk first
+  for (const item of evolution.proposals.filter(p => p.risk_level === 'low').slice(0, maxEvoSteps)) {
+    if (evoCount >= maxEvoSteps) break;
     steps.push({
       order: order++,
       category: 'evolution',
@@ -654,10 +924,12 @@ function buildActionPlan(
         'Apply in shadow/test mode first if possible',
       ],
     });
+    evoCount++;
   }
   
-  // Priority 7: Medium-risk evolution
-  for (const item of evolution.proposals.filter(p => p.risk_level === 'medium').slice(0, 2)) {
+  // Medium-risk evolution
+  for (const item of evolution.proposals.filter(p => p.risk_level === 'medium').slice(0, maxEvoSteps - evoCount)) {
+    if (evoCount >= maxEvoSteps) break;
     steps.push({
       order: order++,
       category: 'evolution',
@@ -671,6 +943,7 @@ function buildActionPlan(
         'Review carefully before applying — medium risk',
       ],
     });
+    evoCount++;
   }
   
   return steps;
@@ -684,11 +957,13 @@ function buildExecutiveSummary(
   risk: string,
   productionAudit: UnifiedProposal['production_audit'],
   structuralHealth: UnifiedProposal['structural_health'],
+  accessibilityData: UnifiedProposal['accessibility'],
+  securityData: UnifiedProposal['security_posture'],
 ): string {
   const parts: string[] = [];
   
   if (structuralHealth.overall_verdict === 'FAIL') {
-    parts.push(`${structuralHealth.structural_issues} structural integrity failure(s)`);
+    parts.push(`${structuralHealth.structural_issues} structural failure(s)`);
   }
   if (productionAudit.fatal > 0 || productionAudit.error > 0) {
     parts.push(`${productionAudit.fatal + productionAudit.error} production audit issue(s)`);
@@ -696,11 +971,14 @@ function buildExecutiveSummary(
   if (techDebt.critical.length > 0) {
     parts.push(`${techDebt.critical.length} critical tech debt item(s)`);
   }
-  if (techDebt.warnings.length > 0) {
-    parts.push(`${techDebt.warnings.length} warning(s)`);
+  if (accessibilityData.total_issues > 0) {
+    parts.push(`${accessibilityData.total_issues} accessibility issue(s) (score: ${accessibilityData.score}/100)`);
+  }
+  if (securityData.security_issues.length > 0) {
+    parts.push(`${securityData.security_issues.length} security issue(s) — threat level: ${securityData.threat_level}`);
   }
   if (diligence.critical_failures.length > 0) {
-    parts.push(`${diligence.critical_failures.length} diligence probe failure(s)`);
+    parts.push(`${diligence.critical_failures.length} diligence failure(s)`);
   }
   if (auditGaps.length > 0) {
     parts.push(`${auditGaps.length} audit gap(s)`);
@@ -710,8 +988,8 @@ function buildExecutiveSummary(
   }
   
   if (parts.length === 0) {
-    return 'System is healthy across all audit layers. No critical issues detected. Minor optimizations may be available.';
+    return 'System is healthy across all 9 audit layers. No critical issues detected. Minor optimizations may be available.';
   }
   
-  return `${parts.join(', ')}. Overall risk: ${risk}. This proposal merges 7 audit sources (SEBA, Full Audit, Substrate Health, Compliance Ledger, Diligence, ENGINEER, INTEL). Copy to your coding agent to apply fixes with human review at each step.`;
+  return `${parts.join(', ')}. Overall risk: ${risk}. Ratio: 60% debt elimination / 40% evolution. This proposal merges 9 audit sources (SEBA, Full Audit, Substrate Health, Compliance Ledger, Diligence, ENGINEER, INTEL, INCLUSIVE, DEFENSE). Copy to your coding agent to apply fixes with human review at each step.`;
 }
