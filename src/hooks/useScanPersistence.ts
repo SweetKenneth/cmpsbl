@@ -17,9 +17,7 @@ interface ScanResult {
 export function useScanPersistence() {
   const saveScan = useCallback(async (result: ScanResult): Promise<string | null> => {
     try {
-      const { data: userData } = await supabase.auth.getUser();
-      
-      const { data, error } = await supabase.from('access_scans').insert({
+      const insertData: Record<string, unknown> = {
         domain: result.domain,
         score: result.score ?? null,
         metadata: {
@@ -28,7 +26,9 @@ export function useScanPersistence() {
           ...result.metadata,
           saved_at: new Date().toISOString(),
         },
-      }).select('id').single();
+      };
+      
+      const { data, error } = await supabase.from('access_scans').insert(insertData as any).select('id').single();
 
       if (error) throw error;
       return data?.id ?? null;
