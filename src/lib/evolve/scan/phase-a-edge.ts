@@ -36,6 +36,7 @@ const ARCHIVED_CATALOG: ArchivedFunction[] = [
 const EXPECTED_ACTIVE: string[] = [
   'pf-substrate',
   'evolution-receipts',
+  'evolution-control',
   'pf-agency-execute-task',
   'agency-webhooks',
   'pf-modernizer-rebuild',
@@ -106,7 +107,7 @@ async function detectLiveFunctions(): Promise<string[]> {
     'send-agency-email',
     'submit-agency-contact',
     'validate-access-key',
-    // Add more as needed
+    'evolution-control',
   ];
   
   return knownFunctions;

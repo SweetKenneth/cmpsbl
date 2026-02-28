@@ -1,10 +1,10 @@
 /**
- * Unified Proposal Generator v3.3
+ * Unified Proposal Generator v3.3.1
  * 
  * ALL-IN-ONE audit merger with full governance lifecycle.
  * Bounded proposal discipline: max 5 proposals per run.
  * 
- * Sources merged:
+ * Sources merged (10 total):
  * 1. SEBA Evolution — cognitive analyzer insights (9 engines)
  * 2. Full Audit Runner — production readiness checks
  * 3. Substrate Health Check — structural integrity across 8 layers
@@ -14,6 +14,7 @@
  * 7. INTEL Aggregator — cross-system signal correlation
  * 8. INCLUSIVE Module — WCAG 2.2 accessibility scan (86-rule engine)
  * 9. DEFENSE Module — security posture, anomalies, threat landscape
+ * 10. MODERNIZER Scan — 4-phase cognitive systems scan (edge/system/health/LLM)
  * 
  * Governance lifecycle:
  * - Modernizer snapshot before generation
@@ -33,6 +34,7 @@ import { substrate } from '@/lib/substrate';
 import { clmTopicPipeline } from '@/lib/control-plane/clm/topic-pipeline';
 import { scanHTML, calculateScore, determineOverallSeverity } from '@/lib/inclusive/scan';
 import { isExternalAIMode } from '@/lib/evolve/execution-mode';
+import { modernizerScan, type ScanResultExtended } from '@/lib/evolve/scan';
 import type { IntelCard } from '../types';
 import type { AuditFinding, AuditReport } from '@/lib/audit/audit-types';
 import type { HealthCheckReport } from '@/lib/audit/substrate-health-check';
@@ -128,6 +130,19 @@ export interface UnifiedProposal {
     anomalies_detected: number;
     rate_limit_issues: number;
     security_issues: SecurityIssueItem[];
+  };
+  
+  modernizer_scan: {
+    scan_completed: boolean;
+    proposals_found: number;
+    plan_ready: boolean;
+    plan_status: string;
+    modules_active: number;
+    health_overall: number;
+    edge_risk_flags: number;
+    anomalies_detected: number;
+    recommended_action: string;
+    scan_duration_ms: number;
   };
   
   action_plan: ActionStep[];
@@ -364,6 +379,9 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   // ─── 7. DEFENSE — security posture + anomaly detection ───
   const securityData = await runDefenseScan();
   
+  // ─── 8. MODERNIZER SCAN — 4-phase cognitive systems scan ───
+  const modernizerData = await runModernizerCognitiveScan();
+  
   // ═══ BUILD SECTIONS ═══
   const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport, accessibilityData, securityData);
   const evolution = buildEvolutionSection(existingProposals, allCards);
@@ -382,6 +400,14 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   const auditModules = new Set(recentAuditEntries.map(e => e.module));
   if (auditModules.size < monitoredCount * 0.5) {
     auditGaps.push(`Only ${auditModules.size}/${monitoredCount} modules have audit coverage`);
+  }
+  
+  // Add modernizer-detected anomalies as audit gaps
+  if (modernizerData.anomalies_detected > 0) {
+    auditGaps.push(`MODERNIZER detected ${modernizerData.anomalies_detected} system anomaly(ies)`);
+  }
+  if (modernizerData.edge_risk_flags > 0) {
+    auditGaps.push(`${modernizerData.edge_risk_flags} edge function risk flag(s) detected`);
   }
   
   // ═══ BUILD ACTION PLAN with bounded discipline ═══
@@ -486,6 +512,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     diligence: diligenceData,
     accessibility: accessibilityData,
     security_posture: securityData,
+    modernizer_scan: modernizerData,
     action_plan: actionPlan,
     guardrails: {
       requires_human_review: true,
@@ -520,6 +547,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'INTEL Aggregator', 'ENGINEER Maintenance Node', 'SEBA Evolution Signals',
         'Full Audit Runner', 'Substrate Health Check', 'AUDIT Compliance Ledger',
         'Diligence Harness', 'INCLUSIVE WCAG 2.2 Scanner', 'DEFENSE Security Posture',
+        'MODERNIZER 4-Phase Cognitive Scan',
       ],
       governance: {
         receipt_id: governanceChain.receipt_id,
@@ -537,8 +565,40 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// INCLUSIVE + DEFENSE SCAN RUNNERS
+// INCLUSIVE + DEFENSE + MODERNIZER SCAN RUNNERS
 // ═══════════════════════════════════════════════════════════════
+
+async function runModernizerCognitiveScan(): Promise<UnifiedProposal['modernizer_scan']> {
+  try {
+    const result = await modernizerScan({ dry_run: true });
+    return {
+      scan_completed: true,
+      proposals_found: result.proposals.length,
+      plan_ready: result.plan_ready,
+      plan_status: result.plan?.status ?? 'none',
+      modules_active: result.system_snapshot.modules_active,
+      health_overall: result.system_snapshot.health_overall,
+      edge_risk_flags: result.edge_analysis.risk_flags.length,
+      anomalies_detected: result.system_state.detected_anomalies.length,
+      recommended_action: result.recommended_next_action,
+      scan_duration_ms: result.scan_duration_ms,
+    };
+  } catch (e) {
+    console.warn('[Proposal] MODERNIZER cognitive scan failed (canary safe):', e);
+    return {
+      scan_completed: false,
+      proposals_found: 0,
+      plan_ready: false,
+      plan_status: 'error',
+      modules_active: 0,
+      health_overall: 0,
+      edge_risk_flags: 0,
+      anomalies_detected: 0,
+      recommended_action: 'Modernizer scan failed — investigate errors',
+      scan_duration_ms: 0,
+    };
+  }
+}
 
 async function runInclusiveScan(): Promise<UnifiedProposal['accessibility']> {
   try {
