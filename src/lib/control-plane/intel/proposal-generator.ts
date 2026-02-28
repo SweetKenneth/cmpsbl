@@ -382,7 +382,30 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   const securityData = await runDefenseScan();
   
   // ─── 8. MODERNIZER SCAN — 4-phase cognitive systems scan ───
-  const modernizerData = await runModernizerCognitiveScan();
+  let rawModernizerResult: ScanResultExtended | null = null;
+  let modernizerData: UnifiedProposal['modernizer_scan'];
+  try {
+    rawModernizerResult = await modernizerScan({ dry_run: true });
+    modernizerData = {
+      scan_completed: true,
+      proposals_found: rawModernizerResult.proposals.length,
+      plan_ready: rawModernizerResult.plan_ready,
+      plan_status: (rawModernizerResult as any).plan?.status ?? 'none',
+      modules_active: rawModernizerResult.system_snapshot.modules_active,
+      health_overall: rawModernizerResult.system_snapshot.health_overall,
+      edge_risk_flags: rawModernizerResult.edge_analysis.risk_flags.length,
+      anomalies_detected: rawModernizerResult.system_state.detected_anomalies.length,
+      recommended_action: rawModernizerResult.recommended_next_action,
+      scan_duration_ms: rawModernizerResult.scan_duration_ms,
+    };
+  } catch (e) {
+    console.warn('[Proposal] MODERNIZER cognitive scan failed (canary safe):', e);
+    modernizerData = {
+      scan_completed: false, proposals_found: 0, plan_ready: false, plan_status: 'error',
+      modules_active: 0, health_overall: 0, edge_risk_flags: 0, anomalies_detected: 0,
+      recommended_action: 'Modernizer scan failed — investigate errors', scan_duration_ms: 0,
+    };
+  }
   
   // ═══ BUILD SECTIONS ═══
   const techDebt = buildTechDebtSection(activeFindings, criticalCards, allCards, fullAuditReport, healthReport, accessibilityData, securityData);
@@ -417,7 +440,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   let actionPlan = buildActionPlan(
     techDebt, evolution, auditGaps, diligenceData,
     productionAudit, structuralHealth, accessibilityData, securityData,
-    governanceChain,
+    governanceChain, modernizerData, rawModernizerResult,
   );
   
   // ─── Convert minor diligence to proposal (max 1) ───
@@ -491,7 +514,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     }
   }
   
-  // ─── ENFORCE PROPOSAL CAP (max 5, preserve priority order) ───
+  // ─── ENFORCE PROPOSAL CAP (max 15, preserve priority order) ───
   actionPlan = actionPlan.slice(0, MAX_TOTAL_PROPOSALS_PER_RUN);
   
   // Re-number orders
@@ -590,40 +613,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// INCLUSIVE + DEFENSE + MODERNIZER SCAN RUNNERS
+// INCLUSIVE + DEFENSE SCAN RUNNERS
 // ═══════════════════════════════════════════════════════════════
-
-async function runModernizerCognitiveScan(): Promise<UnifiedProposal['modernizer_scan']> {
-  try {
-    const result = await modernizerScan({ dry_run: true });
-    return {
-      scan_completed: true,
-      proposals_found: result.proposals.length,
-      plan_ready: result.plan_ready,
-      plan_status: result.plan?.status ?? 'none',
-      modules_active: result.system_snapshot.modules_active,
-      health_overall: result.system_snapshot.health_overall,
-      edge_risk_flags: result.edge_analysis.risk_flags.length,
-      anomalies_detected: result.system_state.detected_anomalies.length,
-      recommended_action: result.recommended_next_action,
-      scan_duration_ms: result.scan_duration_ms,
-    };
-  } catch (e) {
-    console.warn('[Proposal] MODERNIZER cognitive scan failed (canary safe):', e);
-    return {
-      scan_completed: false,
-      proposals_found: 0,
-      plan_ready: false,
-      plan_status: 'error',
-      modules_active: 0,
-      health_overall: 0,
-      edge_risk_flags: 0,
-      anomalies_detected: 0,
-      recommended_action: 'Modernizer scan failed — investigate errors',
-      scan_duration_ms: 0,
-    };
-  }
-}
 
 async function runInclusiveScan(): Promise<UnifiedProposal['accessibility']> {
   try {
@@ -1022,6 +1013,8 @@ function buildActionPlan(
   accessibilityData: UnifiedProposal['accessibility'],
   securityData: UnifiedProposal['security_posture'],
   governanceChain: GovernanceChain,
+  modernizerData?: UnifiedProposal['modernizer_scan'],
+  modernizerResult?: ScanResultExtended | null,
 ): ActionStep[] {
   // ═══════════════════════════════════════════════════════════
   // VALUE-SCORED PRIORITIZATION
@@ -1265,6 +1258,93 @@ function buildActionPlan(
     });
   }
   
+  // ─── SOURCE 10: MODERNIZER proposals (cognitive scan findings) ───
+  if (modernizerResult) {
+    for (const proposal of modernizerResult.proposals) {
+      const riskScore = proposal.risk_level === 'high' ? 70 : proposal.risk_level === 'medium' ? 55 : 40;
+      candidates.push({
+        value: riskScore * 0.8,
+        dedup_key: `mod_${proposal.proposal_id}`,
+        step: {
+          order: 0,
+          category: 'tech-debt',
+          title: `Modernizer: ${proposal.title}`,
+          description: proposal.description,
+          risk: proposal.risk_level === 'high' ? 'medium' : 'low',
+          instructions: [
+            `Category: ${proposal.category} · Action: ${proposal.action_type}`,
+            proposal.rationale,
+            `Affected modules: ${proposal.affected_modules.join(', ') || 'system-wide'}`,
+            `Confidence: ${Math.round(proposal.confidence_score * 100)}% · Sources: ${proposal.source_phases.join(', ')}`,
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
+      });
+    }
+
+    // ─── SOURCE 11: Edge function risk flags ───
+    for (const flag of modernizerResult.edge_analysis.risk_flags) {
+      candidates.push({
+        value: severityValue(flag.severity) * categoryMultiplier.security * 0.7,
+        dedup_key: `edge_risk_${flag.function_name}_${flag.risk_type}`,
+        step: {
+          order: 0,
+          category: 'tech-debt',
+          title: `Edge risk: ${flag.function_name} — ${flag.risk_type}`,
+          description: flag.description,
+          risk: flag.severity === 'critical' || flag.severity === 'high' ? 'medium' : 'low',
+          instructions: [
+            `Function: ${flag.function_name}`,
+            `Risk type: ${flag.risk_type} · Severity: ${flag.severity}`,
+            'Review the edge function for the flagged risk pattern.',
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
+      });
+    }
+
+    // ─── SOURCE 12: System anomalies (individually surfaced) ───
+    for (const anomaly of modernizerResult.system_state.detected_anomalies) {
+      candidates.push({
+        value: severityValue(anomaly.severity) * 0.75,
+        dedup_key: `anomaly_${anomaly.anomaly_type}_${anomaly.affected_components.join('_').slice(0, 20)}`,
+        step: {
+          order: 0,
+          category: 'tech-debt',
+          title: `Anomaly: ${anomaly.description.slice(0, 80)}`,
+          description: `${anomaly.anomaly_type} affecting ${anomaly.affected_components.join(', ')}.`,
+          risk: anomaly.severity === 'critical' || anomaly.severity === 'high' ? 'medium' : 'low',
+          instructions: [
+            `Type: ${anomaly.anomaly_type} · Severity: ${anomaly.severity}`,
+            `Affected: ${anomaly.affected_components.join(', ')}`,
+            'Investigate root cause and resolve the anomaly.',
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
+      });
+    }
+
+    // ─── SOURCE 13: Missing capabilities (code health gaps) ───
+    for (const cap of modernizerResult.code_health.missing_capabilities) {
+      candidates.push({
+        value: severityValue(cap.impact) * 0.6,
+        dedup_key: `missing_cap_${cap.capability}`,
+        step: {
+          order: 0,
+          category: 'tech-debt',
+          title: `Missing capability: ${cap.capability}`,
+          description: cap.recommendation,
+          risk: 'low',
+          instructions: [
+            `Category: ${cap.category} · Impact: ${cap.impact}`,
+            cap.recommendation,
+            `Rollback: restore snapshot ${governanceChain.snapshot_id}.`,
+          ],
+        },
+      });
+    }
+  }
+
   // ═══════════════════════════════════════════════════════════
   // SORT BY VALUE (highest impact first) AND DEDUP
   // ═══════════════════════════════════════════════════════════
@@ -1286,7 +1366,7 @@ function buildActionPlan(
   }
   
   // ═══════════════════════════════════════════════════════════
-  // EVOLUTION STEPS — 40% of budget (min 2 slots when stable)
+  // EVOLUTION STEPS — ~15% of budget (max 2 slots)
   // ═══════════════════════════════════════════════════════════
   
   const evoSlots = Math.min(MAX_EVOLUTION_ITEMS, MAX_TOTAL_PROPOSALS_PER_RUN - debtSteps.length);
