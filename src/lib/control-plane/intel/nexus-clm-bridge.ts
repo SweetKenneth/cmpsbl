@@ -18,7 +18,6 @@ import {
   enableCLM,
   runCLMCycle,
   isCLMReady,
-  budgetGovernor,
 } from '@/lib/substrate/clm';
 import type { LearningJobResult } from '@/lib/substrate/clm/config';
 
