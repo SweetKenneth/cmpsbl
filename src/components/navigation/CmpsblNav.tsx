@@ -135,7 +135,7 @@ export function CmpsblNav() {
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
-        { name: "Insights", href: "/insights", description: "Analysis & thought leadership", icon: BookOpen },
+        { name: "Scanner", href: "/scanner", description: "Evolution scanner — coming soon", icon: BookOpen },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
         { name: "System Status", href: "/status", description: "Live health & uptime", icon: Shield, badge: "LIVE" },
       ]
