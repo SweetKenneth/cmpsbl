@@ -112,7 +112,6 @@ ${command ? `\n## Active Command: ${command}\nThis will create an actual task ba
 
 Keep responses professional, concise, and action-oriented. Focus on delivering real value through tasks we can actually execute.`;
 
-    try {
       const result = await nexusRoute(message, {
         systemPrompt,
         taskType: "reasoning",
@@ -121,7 +120,6 @@ Keep responses professional, concise, and action-oriented. Focus on delivering r
 
       console.log(`[NEXUS] Agency chat routed → ${result.provider} (${result.model}) in ${result.latencyMs}ms`);
       const reply = result.content || "I understand. Let me coordinate with the team.";
-
 
     return new Response(JSON.stringify({ 
       success: true,
