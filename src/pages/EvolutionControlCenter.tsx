@@ -4,7 +4,7 @@
  */
 
 import { useState, useRef } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { SEO } from '@/components/SEO';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
