@@ -56,10 +56,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
         
-        // Navigate on successful sign-in — respect ?redirect param, fallback to /os
+        // Navigate on successful sign-in — respect stored redirect or ?redirect param, fallback to /os
         if (_event === 'SIGNED_IN' && session && !window.location.pathname.startsWith('/os')) {
+          const storedRedirect = sessionStorage.getItem('cmpsbl_auth_redirect');
+          if (storedRedirect) sessionStorage.removeItem('cmpsbl_auth_redirect');
           const params = new URLSearchParams(window.location.search);
-          const redirectTo = params.get('redirect');
+          const redirectTo = storedRedirect || params.get('redirect');
           navigate(redirectTo || '/os');
         }
       });
@@ -75,6 +77,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithMagicLink = async (email: string) => {
     try {
       const supabase = await getSupabase();
+      // Preserve redirect intent across magic link flow
+      const params = new URLSearchParams(window.location.search);
+      const redirectTo = params.get('redirect');
+      if (redirectTo) {
+        sessionStorage.setItem('cmpsbl_auth_redirect', redirectTo);
+      }
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
@@ -100,6 +108,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const supabase = await getSupabase();
       const redirectUrl = `${window.location.origin}/os`;
       
+      // Preserve redirect intent across magic link flow
+      const params = new URLSearchParams(window.location.search);
+      const pendingRedirect = params.get('redirect');
+      if (pendingRedirect) {
+        sessionStorage.setItem('cmpsbl_auth_redirect', pendingRedirect);
+      }
       const { error, data } = await supabase.auth.signInWithOtp({
         email,
         options: {
