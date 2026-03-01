@@ -71,6 +71,7 @@ export function EnhancedFooter() {
       title: "Discover",
       links: [
         { name: "Blog", href: "/blog" },
+        { name: "Capability Map", href: "/capability-map" },
         { name: "Roadmap", href: "/roadmap" },
         { name: "Use Cases", href: "/use-cases" },
         { name: "Showcase", href: "/showcase" },
