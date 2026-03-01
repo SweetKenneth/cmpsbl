@@ -1,49 +1,58 @@
 /**
  * CMPSBL Engine — Landing Page
  * The substrate's highest-value single artifact. Black-boxed, sealed runtime.
+ * Focuses on OUTCOMES — what it does, never how it's made.
  */
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Shield, Zap, Brain, Activity, Lock, Eye, BarChart3, FileCheck, ArrowRight, Check, Download, ChevronDown } from "lucide-react";
+import { Shield, Zap, Brain, Activity, Lock, Eye, BarChart3, FileCheck, ArrowRight, Check, Download, ChevronDown, Target, Cpu, RefreshCw, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PublicNav } from "@/components/PublicNav";
 import { SEO } from "@/components/SEO";
 
-const ENGINES = [
-  { icon: Zap, name: "TASK PROCESSOR", desc: "Universal input parsing → structured intent extraction", color: "from-blue-500 to-cyan-400" },
-  { icon: Brain, name: "AI OPS PLATFORM", desc: "Multi-provider routing with learned cost controls", color: "from-purple-500 to-pink-400" },
-  { icon: Activity, name: "WORKFLOW ENGINE", desc: "Durable saga execution with compensation rollback", color: "from-emerald-500 to-teal-400" },
-  { icon: Shield, name: "SELF-HEALING MESH", desc: "Auto-detect, diagnose, reroute on failure", color: "from-orange-500 to-amber-400" },
-  { icon: Lock, name: "THREAT DEFENSE", desc: "Rate limiting, circuit breaking, client blocking", color: "from-red-500 to-rose-400" },
-  { icon: Eye, name: "KNOWLEDGE ENGINE", desc: "Self-improving provider selection from outcomes", color: "from-indigo-500 to-violet-400" },
-  { icon: BarChart3, name: "OBSERVABILITY", desc: "Incident correlation, health grading, metrics", color: "from-sky-500 to-blue-400" },
-  { icon: FileCheck, name: "COMPLIANCE CORE", desc: "Tamper-evident hash-chained audit trail", color: "from-slate-500 to-zinc-400" },
+/* ── WHAT IT DOES (outcomes, not internals) ── */
+const CAPABILITIES = [
+  { icon: Zap, name: "INSTANT COMPREHENSION", desc: "Understands any input — text, commands, structured data — and knows exactly what to do with it", color: "from-blue-500 to-cyan-400" },
+  { icon: Brain, name: "INTELLIGENT ROUTING", desc: "Automatically selects the best AI provider for every job based on cost, speed, and past performance", color: "from-purple-500 to-pink-400" },
+  { icon: Activity, name: "GUARANTEED EXECUTION", desc: "Every operation completes or rolls back cleanly — no orphaned jobs, no silent failures, no data loss", color: "from-emerald-500 to-teal-400" },
+  { icon: RefreshCw, name: "SELF-HEALING", desc: "Detects failures before you do and reroutes around them automatically — zero downtime, zero intervention", color: "from-orange-500 to-amber-400" },
+  { icon: Shield, name: "BUILT-IN DEFENSE", desc: "Stops abuse, isolates bad actors, and protects your infrastructure from overload — out of the box", color: "from-red-500 to-rose-400" },
+  { icon: TrendingUp, name: "GETS SMARTER OVER TIME", desc: "Learns from every job it processes — routing decisions, failure patterns, cost efficiency — all improve automatically", color: "from-indigo-500 to-violet-400" },
+  { icon: Eye, name: "TOTAL VISIBILITY", desc: "Real-time health grades, incident correlation, and system-wide metrics without bolting on monitoring tools", color: "from-sky-500 to-blue-400" },
+  { icon: FileCheck, name: "COMPLIANCE-READY", desc: "Every action is recorded in a tamper-proof audit trail — ready for enterprise governance from day one", color: "from-slate-500 to-zinc-400" },
 ];
 
-const PIPELINE_STEPS = [
-  { label: "Parse", desc: "Intent extraction" },
-  { label: "Route", desc: "Learned best provider" },
-  { label: "Execute", desc: "Saga + WAL" },
-  { label: "Heal", desc: "Auto-reroute" },
-  { label: "Defend", desc: "Rate limit + circuit" },
-  { label: "Learn", desc: "Outcome analysis" },
-  { label: "Observe", desc: "Incident correlation" },
-  { label: "Audit", desc: "Immutable chain" },
+const PIPELINE_OUTCOMES = [
+  { label: "Understand", desc: "Accepts any input" },
+  { label: "Decide", desc: "Picks the best path" },
+  { label: "Execute", desc: "Runs to completion" },
+  { label: "Recover", desc: "Heals on failure" },
+  { label: "Protect", desc: "Blocks threats" },
+  { label: "Learn", desc: "Improves every cycle" },
+  { label: "Monitor", desc: "Full observability" },
+  { label: "Prove", desc: "Immutable records" },
 ];
 
-const FEATURES = [
-  "Zero dependencies — no npm packages, no framework lock-in",
-  "Pure TypeScript — works in Node, Deno, Bun, browsers",
-  "Factory pattern — createCMPSBLEngine() returns self-contained instance",
-  "No global state — multiple instances run independently",
-  "Self-improving — gets smarter with every job processed",
-  "Tamper-evident — every action hash-chained for compliance",
-  "Graceful degradation — never crashes; degrades, reroutes, escalates",
-  "4 autonomous feedback loops — learning, healing, circuit, incident",
+const OUTCOMES = [
+  "Drop one file into any TypeScript project — immediately operational",
+  "No dependencies to install, no frameworks to adopt, no vendor lock-in",
+  "Runs in Node, Deno, Bun, or any browser environment",
+  "Multiple independent instances with zero shared state",
+  "Performance improves autonomously with every job processed",
+  "Every action hash-chained for enterprise-grade auditability",
+  "Never crashes — degrades gracefully, reroutes, escalates",
+  "Replaces 8+ separate tools with a single unified runtime",
+];
+
+const USE_CASES = [
+  { title: "AI-Powered Products", desc: "Route across multiple AI providers with automatic cost optimization, failover, and quality tracking. Ship in hours, not months." },
+  { title: "Mission-Critical Workflows", desc: "Every operation completes or compensates. Crash recovery is built in. Your workflows survive anything." },
+  { title: "Platform Infrastructure", desc: "Rate limiting, threat defense, and circuit breaking — production-grade protection without bolting on extra services." },
+  { title: "Regulated Industries", desc: "Tamper-proof audit trail and full observability satisfy compliance requirements without custom tooling." },
 ];
 
 export default function CMPSBLEngine() {
@@ -81,8 +90,8 @@ export default function CMPSBLEngine() {
     <>
       <SEO
         title="CMPSBL Engine — Autonomous Intelligent Operations"
-        description="The substrate's highest-value single artifact. 8 meta-engines fused into one zero-dependency sealed runtime. Parse, route, execute, heal, defend, learn, observe, audit."
-        keywords={["AI engine", "autonomous operations", "self-healing", "intelligent routing", "substrate", "sealed runtime"]}
+        description="One file. One import. Complete autonomous operations. The CMPSBL Engine handles routing, execution, healing, defense, learning, monitoring, and compliance in a single sealed runtime."
+        keywords={["AI engine", "autonomous operations", "self-healing", "intelligent routing", "sealed runtime"]}
       />
       <div className="min-h-screen bg-background text-foreground overflow-hidden">
         <PublicNav />
@@ -92,14 +101,10 @@ export default function CMPSBLEngine() {
           style={{ opacity: heroOpacity, scale: heroScale }}
           className="relative min-h-[100vh] flex items-center justify-center pt-20"
         >
-          {/* Background grid */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] dark:opacity-100 opacity-0" />
-          
-          {/* Radial glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-[120px]" />
 
           <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-            {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -107,10 +112,9 @@ export default function CMPSBLEngine() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono tracking-wider mb-8"
             >
               <Lock className="w-3 h-3" />
-              SEALED RUNTIME · BLACK-BOXED · ZERO DEPENDENCIES
+              SEALED RUNTIME · ONE FILE · ZERO DEPENDENCIES
             </motion.div>
 
-            {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -126,19 +130,17 @@ export default function CMPSBLEngine() {
               </span>
             </motion.h1>
 
-            {/* Subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
             >
-              8 meta-engines fused into one autonomous runtime.
+              The only runtime that understands, routes, executes, heals, defends, learns, monitors, and audits — autonomously.
               <br className="hidden sm:block" />
-              One import. Complete intelligent operations.
+              <span className="text-foreground/70 font-medium">One file. Complete operations.</span>
             </motion.p>
 
-            {/* CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -163,12 +165,11 @@ export default function CMPSBLEngine() {
                   </span>
                 )}
               </Button>
-              <a href="#architecture" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-                Explore architecture <ChevronDown className="w-4 h-4" />
+              <a href="#capabilities" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                See what it does <ChevronDown className="w-4 h-4" />
               </a>
             </motion.div>
 
-            {/* Trust signals */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -178,12 +179,12 @@ export default function CMPSBLEngine() {
               <span className="flex items-center gap-1.5"><Lock className="w-3 h-3" /> Black-Boxed</span>
               <span className="flex items-center gap-1.5"><Shield className="w-3 h-3" /> IP Protected</span>
               <span className="flex items-center gap-1.5"><Zap className="w-3 h-3" /> Zero Dependencies</span>
-              <span className="flex items-center gap-1.5"><FileCheck className="w-3 h-3" /> Tamper-Evident</span>
+              <span className="flex items-center gap-1.5"><FileCheck className="w-3 h-3" /> Compliance-Ready</span>
             </motion.div>
           </div>
         </motion.section>
 
-        {/* ═══════════════ PIPELINE ═══════════════ */}
+        {/* ═══════════════ PIPELINE — OUTCOMES ONLY ═══════════════ */}
         <section className="py-24 px-6 relative">
           <div className="max-w-5xl mx-auto">
             <motion.div
@@ -192,14 +193,14 @@ export default function CMPSBLEngine() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">The Closed-Loop Pipeline</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">What Happens When You Submit a Job</h2>
               <p className="text-muted-foreground max-w-xl mx-auto">
-                Every workload flows through 8 stages. Every output feeds back in. The engine gets smarter with every job.
+                Every workload flows through 8 stages. Every outcome feeds back in. The engine improves with every job — without you touching a thing.
               </p>
             </motion.div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-              {PIPELINE_STEPS.map((step, i) => (
+              {PIPELINE_OUTCOMES.map((step, i) => (
                 <motion.div
                   key={step.label}
                   initial={{ opacity: 0, y: 20 }}
@@ -213,7 +214,7 @@ export default function CMPSBLEngine() {
                     <div className="font-bold text-sm sm:text-base">{step.label}</div>
                     <div className="text-xs text-muted-foreground mt-1">{step.desc}</div>
                   </div>
-                  {i < PIPELINE_STEPS.length - 1 && (
+                  {i < PIPELINE_OUTCOMES.length - 1 && (
                     <ArrowRight className="hidden sm:block absolute -right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 z-10" />
                   )}
                 </motion.div>
@@ -222,8 +223,8 @@ export default function CMPSBLEngine() {
           </div>
         </section>
 
-        {/* ═══════════════ 8 ENGINES ═══════════════ */}
-        <section id="architecture" className="py-24 px-6 bg-muted/30">
+        {/* ═══════════════ 8 CAPABILITIES ═══════════════ */}
+        <section id="capabilities" className="py-24 px-6 bg-muted/30">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -231,90 +232,70 @@ export default function CMPSBLEngine() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">8 Meta-Engines. One Import.</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Everything It Does. One Import.</h2>
               <p className="text-muted-foreground max-w-xl mx-auto">
-                Each engine is a production-grade system on its own. Together, they form an autonomous operations platform.
+                Eight autonomous capabilities working in concert. Each one replaces an entire category of tooling.
               </p>
             </motion.div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {ENGINES.map((engine, i) => (
+              {CAPABILITIES.map((cap, i) => (
                 <motion.div
-                  key={engine.name}
+                  key={cap.name}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.06 }}
                   className="group p-5 rounded-xl border border-border/50 bg-card hover:border-primary/20 transition-all hover:shadow-md"
                 >
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${engine.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-                    <engine.icon className="w-5 h-5 text-white" />
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${cap.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+                    <cap.icon className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="font-bold text-sm tracking-wide mb-1">{engine.name}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{engine.desc}</p>
+                  <h3 className="font-bold text-sm tracking-wide mb-1">{cap.name}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{cap.desc}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ═══════════════ CODE PREVIEW ═══════════════ */}
+        {/* ═══════════════ USE CASES ═══════════════ */}
         <section className="py-24 px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Drop In. Immediately Operational.</h2>
-              <p className="text-muted-foreground">Three lines to autonomous intelligent operations.</p>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Built For</h2>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                From AI products to regulated enterprise infrastructure — one engine handles it all.
+              </p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative rounded-2xl border border-border/50 bg-card overflow-hidden"
-            >
-              {/* Window chrome */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-border/50 bg-muted/30">
-                <div className="w-3 h-3 rounded-full bg-destructive/60" />
-                <div className="w-3 h-3 rounded-full bg-accent/60" />
-                <div className="w-3 h-3 rounded-full bg-primary/40" />
-                <span className="ml-3 text-xs text-muted-foreground font-mono">main.ts</span>
-              </div>
-              <pre className="p-6 text-sm sm:text-base font-mono overflow-x-auto text-foreground/90">
-                <code>{`import { createCMPSBLEngine } from './cmpsbl-engine';
-
-const engine = createCMPSBLEngine({
-  name: 'my-platform',
-  budgetCentsPerHour: 500,
-  providers: [
-    {
-      id: 'primary',
-      name: 'Primary Model',
-      costPerCall: 0.5,
-      capabilities: ['query', 'generation'],
-      execute: async (input) => myAI(input),
-    },
-  ],
-});
-
-// One call. Full pipeline.
-const job = await engine.submit('Analyze quarterly trends');
-
-// Self-improving health
-console.log(engine.status());
-// → { healthGrade: 'A', threatLevel: 'none', ... }`}</code>
-              </pre>
-              {/* Blur overlay — black box */}
-              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-card to-transparent" />
-            </motion.div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {USE_CASES.map((uc, i) => (
+                <motion.div
+                  key={uc.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="p-6 rounded-xl border border-border/50 bg-card"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <Target className="w-5 h-5 text-primary shrink-0" />
+                    <h3 className="font-bold text-lg">{uc.title}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{uc.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* ═══════════════ FEATURES ═══════════════ */}
+        {/* ═══════════════ CODE PREVIEW — USAGE ONLY ═══════════════ */}
         <section className="py-24 px-6 bg-muted/30">
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -323,11 +304,56 @@ console.log(engine.status());
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Design Principles</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Three Lines to Full Operations</h2>
+              <p className="text-muted-foreground">Drop it in. Call one function. Everything else is handled.</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative rounded-2xl border border-border/50 bg-card overflow-hidden"
+            >
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-border/50 bg-muted/30">
+                <div className="w-3 h-3 rounded-full bg-destructive/60" />
+                <div className="w-3 h-3 rounded-full bg-accent/60" />
+                <div className="w-3 h-3 rounded-full bg-primary/40" />
+                <span className="ml-3 text-xs text-muted-foreground font-mono">your-app.ts</span>
+              </div>
+              <pre className="p-6 text-sm sm:text-base font-mono overflow-x-auto text-foreground/90">
+                <code>{`import { createCMPSBLEngine } from './cmpsbl-engine';
+
+const engine = createCMPSBLEngine({
+  name: 'my-platform',
+  providers: [ /* your AI providers */ ],
+});
+
+// Submit any job — the engine handles everything else
+const result = await engine.submit('Analyze quarterly revenue');
+
+// Check system health at any time
+const health = engine.status();
+// → { healthGrade: 'A', activeJobs: 3, uptime: '99.97%' }`}</code>
+              </pre>
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-card to-transparent" />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ═══════════════ OUTCOMES ═══════════════ */}
+        <section className="py-24 px-6">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">What You Get</h2>
             </motion.div>
 
             <div className="grid sm:grid-cols-2 gap-3">
-              {FEATURES.map((feat, i) => (
+              {OUTCOMES.map((feat, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, x: -10 }}
@@ -344,60 +370,6 @@ console.log(engine.status());
           </div>
         </section>
 
-        {/* ═══════════════ ARCHITECTURE DIAGRAM ═══════════════ */}
-        <section className="py-24 px-6">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Internal Architecture</h2>
-              <p className="text-muted-foreground">10 layers. 4 autonomous feedback loops. 1 sealed file.</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="rounded-2xl border border-border/50 bg-card p-6 sm:p-8 font-mono text-xs sm:text-sm overflow-x-auto"
-            >
-              <pre className="text-muted-foreground whitespace-pre leading-relaxed">{`┌─────────────────────────────────────────────────┐
-│                  Rate Limiter                    │  ← DEFENSE
-│         RPM/RPH sliding window + client blocks   │
-├─────────────────────────────────────────────────┤
-│                 Intent Parser                    │  ← DECODE
-│        Type · Entities · Complexity · Keywords   │
-├─────────────────────────────────────────────────┤
-│              Intelligent Router                  │  ← NEXUS + KNOWLEDGE
-│   Learned affinity → Health score → Cost score   │
-├─────────────────────────────────────────────────┤
-│              Saga Executor + WAL                 │  ← MEMORY + BRAIK
-│     Steps · Compensation · Crash recovery        │
-├─────────────────────────────────────────────────┤
-│           Circuit Breaker (per provider)          │  ← IMMUNITY
-│      Closed → Open → Half-Open + exp backoff     │
-├─────────────────────────────────────────────────┤
-│              Self-Healing Engine                  │  ← IMMUNITY
-│       Reroute · Degrade · Isolate · Escalate     │
-├─────────────────────────────────────────────────┤
-│            Knowledge + Learning                   │  ← VISION
-│   EMA confidence · Intent-provider affinity map   │
-├─────────────────────────────────────────────────┤
-│           Incident Correlator                     │  ← VISION
-│      Source · Severity · Temporal correlation     │
-├─────────────────────────────────────────────────┤
-│            Tamper-Evident Audit                   │  ← AUDIT
-│        Hash chain · Actor · Resource · Details    │
-├─────────────────────────────────────────────────┤
-│              Budget Guardian                      │  ← NEXUS
-│       Hourly ceiling · Burn rate tracking         │
-└─────────────────────────────────────────────────┘`}</pre>
-            </motion.div>
-          </div>
-        </section>
-
         {/* ═══════════════ BLACK BOX SECTION ═══════════════ */}
         <section className="py-24 px-6 bg-muted/30">
           <div className="max-w-3xl mx-auto text-center">
@@ -409,16 +381,16 @@ console.log(engine.status());
               <div className="w-16 h-16 rounded-2xl bg-foreground/10 flex items-center justify-center mx-auto mb-6">
                 <Lock className="w-8 h-8 text-foreground/60" />
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Black-Boxed. IP Protected.</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Sealed Runtime. Protected IP.</h2>
               <p className="text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
-                Delivered as a sealed runtime. Source visibility disabled. No cloning. No memory leakage.
-                Tamper-evident audit trail ensures compliance without exposing orchestration logic.
+                You get the full power of the engine without seeing a single line of its internals.
+                Delivered as a sealed, obfuscated module — ready to run, impossible to reverse.
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-xs font-mono text-muted-foreground">
                 <span className="px-3 py-1.5 rounded-full border border-border/50 bg-card">Source Sealed</span>
-                <span className="px-3 py-1.5 rounded-full border border-border/50 bg-card">No Export</span>
+                <span className="px-3 py-1.5 rounded-full border border-border/50 bg-card">Obfuscated</span>
                 <span className="px-3 py-1.5 rounded-full border border-border/50 bg-card">No Clone</span>
-                <span className="px-3 py-1.5 rounded-full border border-border/50 bg-card">Hash-Chained Audit</span>
+                <span className="px-3 py-1.5 rounded-full border border-border/50 bg-card">Tamper-Proof</span>
                 <span className="px-3 py-1.5 rounded-full border border-border/50 bg-card">IP Gatekept</span>
               </div>
             </motion.div>
@@ -459,14 +431,13 @@ console.log(engine.status());
                   )}
                 </Button>
                 <p className="text-xs text-muted-foreground">
-                  One-time purchase. Includes all 8 meta-engines. No recurring fees.
+                  One-time purchase. Full capabilities. No recurring fees.
                 </p>
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* Footer */}
         <footer className="border-t border-border/30 py-8 px-6">
           <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
             <span>© {new Date().getFullYear()} CMPSBL® — All rights reserved.</span>
