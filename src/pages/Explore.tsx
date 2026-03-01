@@ -25,6 +25,7 @@ import { ArtifactPacksSection } from "@/components/home/ArtifactPacksSection";
 import { AgentsSection } from "@/components/home/AgentsSection";
 import { GovernanceSignal } from "@/components/home/GovernanceSignal";
 import { BuiltForSection } from "@/components/home/BuiltForSection";
+import { EvolutionCTA } from "@/components/home/EvolutionCTA";
 import { useMetric } from "@/stores/publicMetricsStore";
 
 // Section divider with animated gradient
@@ -95,7 +96,10 @@ export default function Explore() {
       {/* Live System Metrics Bar */}
       <LiveStatsBar />
 
-      {/* Choose Your Path — First section after Hero */}
+      {/* EVOLUTION CTA — right below the hero */}
+      <EvolutionCTA />
+
+      {/* Choose Your Path */}
       <BuiltForSection />
 
       <SectionDivider />
