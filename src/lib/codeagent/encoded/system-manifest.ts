@@ -387,5 +387,5 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
 
 export function getSystemSummary(): string {
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate v11.1.0: 10 entities (CORE + 8 Modules + INTEGRATION) + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 Zones (4 CCR + 5 CCL), ${componentCount} registered UI components. Meshes wrap modules as protective layers.`;
+  return `CMPSBL Substrate: 12 entities (CORE + 10 Modules + INTEGRATION) + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 Zones (4 CCR + 5 OCG), ${componentCount} registered UI components. Meshes wrap modules as protective layers. 26 Matrix Nodes total.`;
 }
