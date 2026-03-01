@@ -19,6 +19,8 @@ This is a **new subject-based library system** under `docs/`.
 | Investor Library | `docs/investor-library/` | `.html` | Printable investor briefing |
 | Functions Reference | `docs/functions-reference/` | `.md` | API and utility references |
 | SEO Playbook | `docs/seo-playbook/` | `.md` | SEO architecture and tactics |
+| GTM Strategy | `docs/gtm-strategy/` | `.md` | Phased GTM, tiered access, standalone clones |
+| Evolution Control Plane | `docs/evolution-control-plane/` | `.md` | ECC dashboard, scanner, dry-run, rollback |
 
 ---
 
