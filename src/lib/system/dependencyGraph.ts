@@ -65,6 +65,8 @@
     economy: ['core', 'system', 'access', 'audit'],
     sandbox: ['core', 'system', 'identity'],
     inclusive: ['core', 'vision'],
+    medic: ['core', 'system', 'vision'],
+    nerve: ['core', 'ripple', 'system'],
     integration: ['core', 'system', 'ripple', 'audit'],
     modernizer: ['core', 'encode', 'cortex'],
 

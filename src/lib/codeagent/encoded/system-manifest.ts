@@ -74,7 +74,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     corePath: 'src/lib/core/',
     hookPath: 'src/hooks/substrate/useCore.ts',
     dependencies: [],
-    dependents: ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration'],
+    dependents: ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration', 'medic', 'nerve'],
   },
 
   // ─── 8 Public Modules ──────────────────────────────────────────────────────
@@ -215,6 +215,28 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     description: 'External service connections, OAuth flows, adapters, and third-party API management. Boots last.',
     corePath: 'src/lib/integrations/',
     dependencies: ['core'],
+    dependents: [],
+  },
+
+  // ─── MEDIC (Module — autonomous diagnostics) ─────────────────────────────
+  medic: {
+    id: 'medic',
+    name: 'MEDIC',
+    layer: 'operational',
+    description: 'Autonomous diagnostics, self-repair coordination, health scoring, predictive failure forecasting.',
+    corePath: 'src/lib/substrate/medic/',
+    dependencies: ['core', 'system', 'vision'],
+    dependents: [],
+  },
+
+  // ─── NERVE (Module — inter-node signaling) ────────────────────────────────
+  nerve: {
+    id: 'nerve',
+    name: 'NERVE',
+    layer: 'infrastructure',
+    description: 'Inter-node signaling, consensus repair, distributed heartbeat, partition detection, state synchronization.',
+    corePath: 'src/lib/substrate/nerve/',
+    dependencies: ['core', 'ripple', 'system'],
     dependents: [],
   },
 };
@@ -365,5 +387,5 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
 
 export function getSystemSummary(): string {
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate v11.1.0: 10 entities (CORE + 8 Modules + INTEGRATION) + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 Zones (4 CCR + 5 CCL), ${componentCount} registered UI components. Meshes wrap modules as protective layers.`;
+  return `CMPSBL Substrate: 12 entities (CORE + 10 Modules + INTEGRATION) + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 Zones (4 CCR + 5 OCG), ${componentCount} registered UI components. Meshes wrap modules as protective layers. 26 Matrix Nodes total.`;
 }

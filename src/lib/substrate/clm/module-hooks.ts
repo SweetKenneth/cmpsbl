@@ -19,7 +19,8 @@ export type SubstrateModule =
   | 'inclusive' | 'defense' | 'nexus' | 'vision' | 'dream'
   | 'modernizer' | 'integration' | 'cortex'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
-  | 'immunity' | 'evolution' | 'intent' | 'governance';
+  | 'immunity' | 'evolution' | 'intent' | 'governance'
+  | 'medic' | 'nerve';
 
 export interface ModuleKPIs {
   module: SubstrateModule;
@@ -446,6 +447,7 @@ const ALL_MODULES: SubstrateModule[] = [
   'modernizer', 'integration', 'cortex',
   'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   'immunity', 'evolution', 'intent', 'governance',
+  'medic', 'nerve',
 ];
 
 // Register default hooks for all modules

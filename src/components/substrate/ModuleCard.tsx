@@ -5,7 +5,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2, Accessibility, Database, Send, FileCheck, Fingerprint, Coins, FlaskConical, Code2, HeartPulse, Dna, Target, Scale } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2, Accessibility, Database, Send, FileCheck, Fingerprint, Coins, FlaskConical, Code2, HeartPulse, Dna, Target, Scale, Stethoscope, Cable } from 'lucide-react';
 import { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleCardProps {
@@ -173,6 +173,18 @@ const moduleConfig: Record<SubstrateModule, {
     label: 'Governance',
     description: 'Ethical constraints, veto authority, coherence',
     color: 'text-slate-500',
+  },
+  medic: {
+    icon: Stethoscope,
+    label: 'Medic',
+    description: 'Autonomous diagnostics, self-repair coordination',
+    color: 'text-emerald-600',
+  },
+  nerve: {
+    icon: Cable,
+    label: 'Nerve',
+    description: 'Inter-node signaling, consensus repair',
+    color: 'text-violet-600',
   },
 };
 

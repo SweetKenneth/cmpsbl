@@ -53,6 +53,8 @@ export const MODULE_REGISTRY: Record<SubstrateModule, Omit<ModuleRegistryEntry, 
   evolution: { module: 'evolution', layer: 'mesh', bootOrder: 23, dependencies: ['core'] },
   intent: { module: 'intent', layer: 'mesh', bootOrder: 24, dependencies: ['core'] },
   governance: { module: 'governance', layer: 'mesh', bootOrder: 25, dependencies: ['core'] },
+  medic: { module: 'medic', layer: 'operational', bootOrder: 23, dependencies: ['core', 'system', 'vision'] },
+  nerve: { module: 'nerve', layer: 'infrastructure', bootOrder: 24, dependencies: ['core', 'ripple', 'system'] },
 };
 
 // Orchestration state
