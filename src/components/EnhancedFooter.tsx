@@ -46,6 +46,7 @@ export function EnhancedFooter() {
       title: "Products",
       links: [
         { name: "Minds", href: "/composable-cognitives", highlight: true },
+        { name: "Evolution Scanner", href: "/scanner", highlight: true },
         { name: "Persistent Memory", href: "/persistent-memory" },
         { name: "Artifact Packs", href: "/packs" },
         { name: "Dream Eater", href: "/feed-dream-eater" },
@@ -58,6 +59,7 @@ export function EnhancedFooter() {
       title: "Developers",
       links: [
         { name: "Start Here", href: "/start-here", highlight: true },
+        { name: "Evolution Control", href: "/evolution", highlight: true },
         { name: "Documentation", href: "/documentation" },
         { name: "API Access", href: "/api-access" },
         { name: "Capability Map", href: "/capability-map" },
@@ -69,8 +71,6 @@ export function EnhancedFooter() {
       title: "Discover",
       links: [
         { name: "Blog", href: "/blog" },
-        { name: "Evolution Scanner", href: "/scanner", highlight: true },
-        { name: "Evolution Control", href: "/evolution", highlight: true },
         { name: "Roadmap", href: "/roadmap" },
         { name: "Use Cases", href: "/use-cases" },
         { name: "Showcase", href: "/showcase" },
