@@ -17,14 +17,24 @@ Meta-engines compose multiple standalone engines into complete vertical solution
 
 Individual engines for modular use. Pick what you need.
 
-| # | Engine | What It Does | Best For |
-|---|--------|-------------|----------|
-| 1 | [AI Fleet Router](./01-ai-fleet-router.md) | Multi-provider AI routing with cost controls | Multi-model AI apps |
-| 2 | [Resilience Engine](./02-resilience-engine.md) | Triage + heartbeat + self-healing | Microservices |
-| 3 | [Audit Chain](./03-audit-chain.md) | Tamper-evident logging + WAL durability | Compliance |
-| 4 | [Service Registry](./04-service-registry.md) | Dependency-aware service discovery | Plugin systems |
-| 5 | [Command Interpreter](./05-command-interpreter.md) | Multi-modal input parser | Chatbots, CLIs |
-| 6 | [Anomaly Intelligence](./06-anomaly-intelligence.md) | Incident correlation with causal tracing | Observability |
+| # | Engine | Module | What It Does | Best For |
+|---|--------|--------|-------------|----------|
+| 1 | [AI Fleet Router](./01-ai-fleet-router.md) | NEXUS | Multi-provider AI routing with cost controls | Multi-model AI apps |
+| 2 | [Resilience Engine](./02-resilience-engine.md) | IMMUNITY | Triage + heartbeat + self-healing | Microservices |
+| 3 | [Audit Chain](./03-audit-chain.md) | AUDIT | Tamper-evident logging + WAL durability | Compliance |
+| 4 | [Service Registry](./04-service-registry.md) | BRAIK | Dependency-aware service discovery | Plugin systems |
+| 5 | [Command Interpreter](./05-command-interpreter.md) | DECODE | Multi-modal input parser | Chatbots, CLIs |
+| 6 | [Anomaly Intelligence](./06-anomaly-intelligence.md) | VISION | Incident correlation with causal tracing | Observability |
+| 7 | [Write-Ahead Log](./07-write-ahead-log.md) | MEMORY | Crash-recoverable operation journal | Durability, undo/redo |
+| 8 | [Circuit Breaker](./08-circuit-breaker.md) | IMMUNITY | Three-state failure isolation with backoff | External API calls |
+| 9 | [Rate Limiter](./09-rate-limiter.md) | DEFENSE | Multi-strategy rate limiting with penalties | API protection |
+| 10 | [State Machine](./10-state-machine.md) | BRAIK | FSM with guards, effects, and snapshots | Workflows, agent lifecycles |
+| 11 | [Event Sourcing](./11-event-sourcing.md) | MEMORY | Append-only event store with projections | CQRS, audit trails |
+| 12 | [Feature Flags](./12-feature-flags.md) | DECODE | Runtime toggles with rollouts & A/B testing | Progressive delivery |
+| 13 | [Cache Engine](./13-cache-engine.md) | MEMORY | Multi-tier LRU + TTL + stale-while-revalidate | Performance |
+| 14 | [Pipeline Engine](./14-pipeline-engine.md) | DECODE | Composable async data transformations | ETL, data processing |
+| 15 | [Consensus Engine](./15-consensus-engine.md) | NEXUS | Multi-source voting for critical decisions | AI consensus, approvals |
+| 16 | [Scheduler Engine](./16-scheduler-engine.md) | BRAIK | Deferred execution with retry & dead-letter | Background jobs, cron |
 
 ## How to Use
 
