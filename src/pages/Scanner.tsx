@@ -104,20 +104,20 @@ export default function Scanner() {
       <main className="pt-24 sm:pt-28 pb-20 overflow-hidden">
         {/* Hero */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           className="max-w-5xl mx-auto px-4 text-center mb-20 sm:mb-24 relative"
         >
           {/* Ambient glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-primary/4 rounded-full blur-[120px] pointer-events-none" />
 
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+            transition={{ delay: 0.15, duration: 0.4 }}
           >
-            <Badge variant="outline" className="px-4 py-1.5 text-xs border-primary/40 mb-5 gap-2">
+            <Badge variant="outline" className="px-4 py-1.5 text-[11px] border-primary/30 mb-6 gap-2">
               <Construction className="w-3.5 h-3.5" />
               Coming Soon — In Active Development
             </Badge>
@@ -130,26 +130,26 @@ export default function Scanner() {
               technical debt.
             </span>
             <br />
-            <span className="text-foreground text-3xl sm:text-4xl md:text-5xl opacity-80">
+            <span className="text-foreground text-3xl sm:text-4xl md:text-5xl opacity-70">
               Let's evolve past it.
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
             The Evolution Scanner doesn't just find problems — it generates cryptographically stamped evolution plans 
             that make your system <span className="text-foreground font-medium">provably better</span>. 
             Detect → Diagnose → Prescribe → Evolve. Closed-loop. Verifiable.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button asChild size="lg" className="gap-2 relative overflow-hidden group">
+            <Button asChild size="lg" className="gap-2 relative overflow-hidden group h-12">
               <Link to="/decode">
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Terminal className="w-4 h-4" />
                 Try in DECODE Terminal
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2">
+            <Button asChild variant="outline" size="lg" className="gap-2 h-12">
               <Link to="/documentation">
                 <Code className="w-4 h-4" />
                 Read the Docs

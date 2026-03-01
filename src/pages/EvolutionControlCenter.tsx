@@ -266,87 +266,87 @@ export default function EvolutionControlCenter() {
   const heroSection = (
     <section className="relative overflow-hidden">
       {/* Ambient background */}
-      <div className="absolute inset-0 bg-[image:var(--gradient-mesh)] opacity-60" />
+      <div className="absolute inset-0 bg-[image:var(--gradient-mesh)] opacity-50" />
       <motion.div 
         className="absolute top-0 right-0 w-48 sm:w-[400px] h-48 sm:h-[400px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.08) 0%, transparent 60%)" }}
-        animate={{ x: [0, 20, 0], y: [0, -15, 0] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
+        animate={{ x: [0, 15, 0], y: [0, -10, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
       
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-10 sm:pt-24 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left: Text content */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
             className="space-y-5 sm:space-y-6"
           >
             <div className="flex items-center gap-2 flex-wrap">
-              <Badge variant="outline" className="border-primary/40 text-primary text-[11px] px-2.5 py-0.5">
+              <Badge variant="outline" className="border-primary/30 text-primary text-[10px] sm:text-[11px] px-2.5 py-0.5">
                 <Zap className="w-3 h-3 mr-1" /> Governed Self-Improvement
               </Badge>
               {user && (
-                <Badge variant="outline" className="border-emerald-500/40 text-emerald-400 text-[11px] px-2.5 py-0.5">
+                <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 text-[10px] sm:text-[11px] px-2.5 py-0.5">
                   <Shield className="w-3 h-3 mr-1" /> Authenticated
                 </Badge>
               )}
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]">
               <span className="text-foreground">Your system evolves.</span>
               <br />
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
                 You stay in control.
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl break-words">
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed max-w-xl break-words">
               EVOLUTION is a governed self-improvement engine for your codebase. It connects any AI coding agent — Cursor, Windsurf, Cline — to a safe, auditable improvement loop where every change is previewed, receipted, and rollback-safe.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row gap-3 pt-1">
               {user ? (
                 <>
-                  <Button size="lg" onClick={scrollToTools} className="gap-2">
+                  <Button size="lg" onClick={scrollToTools} className="gap-2 h-12">
                     <Terminal className="w-4 h-4" />
                     Open Mission Control
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Button size="lg" variant="outline" onClick={() => {
                     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                  }} className="gap-2">
+                  }} className="gap-2 h-12">
                     How it works
                     <ChevronDown className="w-4 h-4" />
                   </Button>
                 </>
               ) : (
                 <>
-                  <Button size="lg" onClick={() => navigate('/auth?redirect=/evolution')} className="gap-2">
+                  <Button size="lg" onClick={() => navigate('/auth?redirect=/evolution')} className="gap-2 h-12">
                     <Lock className="w-4 h-4" />
                     Sign in to evolve
                   </Button>
                   <Button size="lg" variant="outline" onClick={() => {
                     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                  }} className="gap-2">
+                  }} className="gap-2 h-12">
                     See how it works
                     <ChevronDown className="w-4 h-4" />
                   </Button>
                 </>
               )}
-              <Button size="lg" variant="ghost" onClick={() => navigate('/developers/guide')} className="gap-2 text-muted-foreground hover:text-foreground">
+              <Button size="lg" variant="ghost" onClick={() => navigate('/developers/guide')} className="gap-2 text-muted-foreground hover:text-foreground text-sm">
                 <Code className="w-4 h-4" />
-                Not a vibe coder? Use the SDK directly →
+                Not a vibe coder? Use SDK →
               </Button>
             </div>
           </motion.div>
 
           {/* Right: Animated diagram */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
           >
             <EvolutionDiagram />
           </motion.div>
@@ -355,9 +355,9 @@ export default function EvolutionControlCenter() {
         {/* Quick stats */}
         <motion.div 
           className="grid grid-cols-3 gap-4 sm:gap-8 mt-10 sm:mt-14 max-w-lg mx-auto lg:mx-0"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
         >
           <AnimatedStat label="Avg health lift" value="+28" suffix="pts" />
           <AnimatedStat label="Avg debt reduction" value="−15" suffix="flags" />
