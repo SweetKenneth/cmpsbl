@@ -95,3 +95,8 @@ export {
 export {
   registerExecutionHandlers,
 } from './execution-handlers';
+
+// Hardening observability handlers (all 8 hardened modules)
+export {
+  registerHardeningHandlers,
+} from './hardening-handlers';

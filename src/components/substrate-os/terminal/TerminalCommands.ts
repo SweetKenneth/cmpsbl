@@ -777,6 +777,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...ECONOMY_MOD_COMMANDS,
   ...SANDBOX_MOD_COMMANDS,
   ...ENCODE_MOD_COMMANDS,
+  ...HARDENING_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
@@ -806,6 +807,7 @@ export const COMMAND_CATEGORIES = {
   identity_mod: { label: 'IDENTITY', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: IDENTITY_MOD_COMMANDS },
   economy_mod: { label: 'ECONOMY', color: 'text-amber-400', borderColor: 'border-amber-500/30', commands: ECONOMY_MOD_COMMANDS },
   sandbox_mod: { label: 'SANDBOX', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SANDBOX_MOD_COMMANDS },
+  hardening: { label: 'HARDENING', color: 'text-emerald-300', borderColor: 'border-emerald-400/30', commands: HARDENING_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {
