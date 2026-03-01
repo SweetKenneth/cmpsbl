@@ -34,6 +34,7 @@ export function EnhancedFooter() {
       title: "Platform",
       links: [
         { name: "AI Operating System", href: "/ai-operating-system", highlight: true },
+        { name: "EVOLUTION", href: "/evolution", highlight: true },
         { name: "Substrate", href: "/substrate" },
         { name: "Runtime", href: "/runtime" },
         { name: "Architecture", href: "/architecture" },
