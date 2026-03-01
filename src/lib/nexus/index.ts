@@ -117,7 +117,8 @@ export * from './circuitBreaker';
 // Version info — wired to central store
 import { SUBSTRATE_VERSION as _NV, SUBSTRATE_EPOCH as _NE } from '@/lib/substrate/versions';
 export const NEXUS_VERSION = _NV;
-export const NEXUS_CODENAME = `${_NE} Fleet Router`;
+export const NEXUS_CODENAME = `${_NE} Fleet Intelligence Engine`;
+export const NEXUS_ROUTER_VERSION = '3.0.0';
 
 // Provider registry — free-tier only, zero paid dependencies
 export const SUPPORTED_PROVIDERS = [

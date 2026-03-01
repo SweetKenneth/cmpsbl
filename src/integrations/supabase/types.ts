@@ -9361,6 +9361,75 @@ export type Database = {
           },
         ]
       }
+      nexus_anomalies: {
+        Row: {
+          anomaly_type: string
+          created_at: string
+          description: string
+          id: string
+          metrics: Json | null
+          provider_id: string | null
+          resolved: boolean
+          resolved_at: string | null
+          severity: string
+        }
+        Insert: {
+          anomaly_type: string
+          created_at?: string
+          description: string
+          id?: string
+          metrics?: Json | null
+          provider_id?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+        }
+        Update: {
+          anomaly_type?: string
+          created_at?: string
+          description?: string
+          id?: string
+          metrics?: Json | null
+          provider_id?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
+      nexus_cost_ledger: {
+        Row: {
+          date: string
+          estimated_cost_usd: number
+          id: string
+          provider_id: string
+          task_breakdown: Json
+          total_calls: number
+          total_tokens: number
+          updated_at: string
+        }
+        Insert: {
+          date?: string
+          estimated_cost_usd?: number
+          id?: string
+          provider_id: string
+          task_breakdown?: Json
+          total_calls?: number
+          total_tokens?: number
+          updated_at?: string
+        }
+        Update: {
+          date?: string
+          estimated_cost_usd?: number
+          id?: string
+          provider_id?: string
+          task_breakdown?: Json
+          total_calls?: number
+          total_tokens?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       nexus_hourly_snapshots: {
         Row: {
           active_developer_count: number | null
@@ -9442,6 +9511,102 @@ export type Database = {
         }
         Relationships: []
       }
+      nexus_provider_affinity: {
+        Row: {
+          avg_latency_ms: number | null
+          avg_quality_score: number | null
+          failure_count: number
+          id: string
+          provider_id: string
+          success_count: number
+          task_type: string
+          updated_at: string
+          weight: number
+        }
+        Insert: {
+          avg_latency_ms?: number | null
+          avg_quality_score?: number | null
+          failure_count?: number
+          id?: string
+          provider_id: string
+          success_count?: number
+          task_type: string
+          updated_at?: string
+          weight?: number
+        }
+        Update: {
+          avg_latency_ms?: number | null
+          avg_quality_score?: number | null
+          failure_count?: number
+          id?: string
+          provider_id?: string
+          success_count?: number
+          task_type?: string
+          updated_at?: string
+          weight?: number
+        }
+        Relationships: []
+      }
+      nexus_provider_health: {
+        Row: {
+          circuit_opened_at: string | null
+          circuit_state: string
+          consecutive_failures: number
+          error_counts: Json
+          health_score: number
+          id: string
+          last_fail_time: string | null
+          last_success_time: string | null
+          latency_samples: number[] | null
+          p50_latency_ms: number | null
+          p95_latency_ms: number | null
+          p99_latency_ms: number | null
+          provider_id: string
+          task_affinity: Json
+          total_calls: number
+          total_successes: number
+          updated_at: string
+        }
+        Insert: {
+          circuit_opened_at?: string | null
+          circuit_state?: string
+          consecutive_failures?: number
+          error_counts?: Json
+          health_score?: number
+          id?: string
+          last_fail_time?: string | null
+          last_success_time?: string | null
+          latency_samples?: number[] | null
+          p50_latency_ms?: number | null
+          p95_latency_ms?: number | null
+          p99_latency_ms?: number | null
+          provider_id: string
+          task_affinity?: Json
+          total_calls?: number
+          total_successes?: number
+          updated_at?: string
+        }
+        Update: {
+          circuit_opened_at?: string | null
+          circuit_state?: string
+          consecutive_failures?: number
+          error_counts?: Json
+          health_score?: number
+          id?: string
+          last_fail_time?: string | null
+          last_success_time?: string | null
+          latency_samples?: number[] | null
+          p50_latency_ms?: number | null
+          p95_latency_ms?: number | null
+          p99_latency_ms?: number | null
+          provider_id?: string
+          task_affinity?: Json
+          total_calls?: number
+          total_successes?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       nexus_provider_limits: {
         Row: {
           avg_failure_threshold: number | null
@@ -9484,6 +9649,78 @@ export type Database = {
           metadata?: Json | null
           provider?: string
           stated_rpd?: number
+        }
+        Relationships: []
+      }
+      nexus_traces: {
+        Row: {
+          attempt_number: number | null
+          completion_tokens: number | null
+          cost_estimate_usd: number | null
+          created_at: string
+          error_category: string | null
+          error_message: string | null
+          fallback_chain: string[] | null
+          id: string
+          latency_ms: number | null
+          metadata: Json | null
+          model: string | null
+          priority: string | null
+          prompt_hash: string | null
+          prompt_tokens: number | null
+          provider_id: string
+          quality_score: number | null
+          status: string
+          task_type: string | null
+          temperature: number | null
+          total_tokens: number | null
+          trace_id: string
+        }
+        Insert: {
+          attempt_number?: number | null
+          completion_tokens?: number | null
+          cost_estimate_usd?: number | null
+          created_at?: string
+          error_category?: string | null
+          error_message?: string | null
+          fallback_chain?: string[] | null
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          priority?: string | null
+          prompt_hash?: string | null
+          prompt_tokens?: number | null
+          provider_id: string
+          quality_score?: number | null
+          status?: string
+          task_type?: string | null
+          temperature?: number | null
+          total_tokens?: number | null
+          trace_id: string
+        }
+        Update: {
+          attempt_number?: number | null
+          completion_tokens?: number | null
+          cost_estimate_usd?: number | null
+          created_at?: string
+          error_category?: string | null
+          error_message?: string | null
+          fallback_chain?: string[] | null
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          priority?: string | null
+          prompt_hash?: string | null
+          prompt_tokens?: number | null
+          provider_id?: string
+          quality_score?: number | null
+          status?: string
+          task_type?: string | null
+          temperature?: number | null
+          total_tokens?: number | null
+          trace_id?: string
         }
         Relationships: []
       }
@@ -15481,6 +15718,42 @@ export type Database = {
       is_clarity_team_owner: {
         Args: { _team_id: string; _user_id: string }
         Returns: boolean
+      }
+      nexus_cleanup_traces: { Args: never; Returns: undefined }
+      nexus_record_cost: {
+        Args: {
+          p_cost_usd: number
+          p_provider_id: string
+          p_task_type: string
+          p_tokens: number
+        }
+        Returns: undefined
+      }
+      nexus_update_affinity: {
+        Args: {
+          p_latency_ms: number
+          p_provider_id: string
+          p_quality: number
+          p_success: boolean
+          p_task_type: string
+        }
+        Returns: undefined
+      }
+      nexus_upsert_health: {
+        Args: {
+          p_circuit_state: string
+          p_consecutive_failures: number
+          p_error_counts: Json
+          p_health_score: number
+          p_p50: number
+          p_p95: number
+          p_p99: number
+          p_provider_id: string
+          p_task_affinity: Json
+          p_total_calls: number
+          p_total_successes: number
+        }
+        Returns: undefined
       }
       reset_daily_quotas: { Args: never; Returns: undefined }
       resolve_evolution_run: {
