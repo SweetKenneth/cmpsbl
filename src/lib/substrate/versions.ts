@@ -63,10 +63,11 @@ export const ABSORBED_VERSIONS = {
 // ─── Control Planes ───────────────────────────────────────────────────────────
 
 export const CONTROL_PLANE_VERSIONS = {
-  atlas:  { get version() { return v(); }, codename: 'Prometheus',            description: 'Centralized Control Plane' },
-  seba:   { get version() { return v(); }, codename: 'Full Spectrum Autonomy', description: 'Self-Evolving Bounded Agent' },
-  encode: { get version() { return v(); }, codename: 'Genesis',               description: 'Code Execution Intelligence' },
-  clm:    { get version() { return v(); }, codename: 'Perpetual',             description: 'Constant Learning Mode' },
+  atlas:    { get version() { return v(); }, codename: 'Prometheus',            description: 'Centralized Control Plane', hardening: '2.0.0' },
+  engineer: { get version() { return v(); }, codename: 'Mechanist',             description: 'Engine & Meta-Engine Maintenance', hardening: '2.0.0' },
+  seba:     { get version() { return v(); }, codename: 'Full Spectrum Autonomy', description: 'Self-Evolving Bounded Agent' },
+  encode:   { get version() { return v(); }, codename: 'Genesis',               description: 'Code Execution Intelligence' },
+  clm:      { get version() { return v(); }, codename: 'Perpetual',             description: 'Constant Learning Mode' },
 };
 
 // ─── Synergy Engine ───────────────────────────────────────────────────────────
