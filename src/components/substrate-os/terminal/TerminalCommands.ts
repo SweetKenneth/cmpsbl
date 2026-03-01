@@ -10,7 +10,7 @@
  *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck, Layers, CheckCircle, XCircle } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck, Layers, CheckCircle, XCircle, AlertTriangle, RefreshCw, BookOpen, Inbox, Compass, TestTube } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { SubstrateRole } from '@/hooks/useUserRole';
 
@@ -983,6 +983,9 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...SANDBOX_MOD_COMMANDS,
   ...ENCODE_MOD_COMMANDS,
   ...HARDENING_COMMANDS,
+  ...ENGINEER_OP_COMMANDS,
+  ...INTENT_OP_COMMANDS,
+  ...ATLAS_OP_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
