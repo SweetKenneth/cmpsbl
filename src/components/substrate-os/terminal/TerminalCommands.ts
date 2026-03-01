@@ -1109,6 +1109,9 @@ export const COMMAND_CATEGORIES = {
   engineer_op: { label: 'ENGINEER', color: 'text-orange-300', borderColor: 'border-orange-400/30', commands: ENGINEER_OP_COMMANDS },
   intent_hub: { label: 'INTENT HUB', color: 'text-cyan-300', borderColor: 'border-cyan-400/30', commands: INTENT_OP_COMMANDS },
   atlas_op: { label: 'ATLAS', color: 'text-purple-300', borderColor: 'border-purple-400/30', commands: ATLAS_OP_COMMANDS },
+  audit_hardening: { label: 'AUDIT HARDENING', color: 'text-stone-300', borderColor: 'border-stone-400/30', commands: AUDIT_HARDENING_COMMANDS },
+  relay_hardening: { label: 'RELAY HARDENING', color: 'text-lime-300', borderColor: 'border-lime-400/30', commands: RELAY_HARDENING_COMMANDS },
+  ripple_hardening: { label: 'RIPPLE HARDENING', color: 'text-cyan-300', borderColor: 'border-cyan-400/30', commands: RIPPLE_HARDENING_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {
