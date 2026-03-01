@@ -62,7 +62,7 @@ export function EnhancedFooter() {
         { name: "Evolution Control", href: "/evolution", highlight: true },
         { name: "Documentation", href: "/documentation" },
         { name: "API Access", href: "/api-access" },
-        { name: "Capability Map", href: "/capability-map" },
+        
         { name: "Academy", href: "/academy" },
         { name: "DevTools", href: "/devtools" },
       ]
@@ -71,6 +71,7 @@ export function EnhancedFooter() {
       title: "Discover",
       links: [
         { name: "Blog", href: "/blog" },
+        { name: "Capability Map", href: "/capability-map" },
         { name: "Roadmap", href: "/roadmap" },
         { name: "Use Cases", href: "/use-cases" },
         { name: "Showcase", href: "/showcase" },
