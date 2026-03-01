@@ -340,7 +340,8 @@ export function verifyDecisionChain(): { valid: boolean; brokenAt: number | null
   for (let i = 0; i < decisionChain.length; i++) {
     const d = decisionChain[i];
     if (d.previousHash !== prevHash) return { valid: false, brokenAt: i };
-    const expected = hashDecision({ ...d, hash: undefined as any });
+    const { hash: _h, ...rest } = d;
+    const expected = hashDecision(rest);
     if (d.hash !== expected) return { valid: false, brokenAt: i };
     prevHash = d.hash;
   }
