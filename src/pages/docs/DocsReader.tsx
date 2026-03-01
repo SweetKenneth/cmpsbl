@@ -10,29 +10,47 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Book, ChevronRight, FileText, Shield, Database, GitBranch, Eye, Server, TestTube, Globe, Code, Scale, Heart, LifeBuoy, BookOpen } from 'lucide-react';
+import { Book, ChevronRight, FileText, Shield, Database, GitBranch, Eye, Server, TestTube, Globe, Code, Scale, Heart, LifeBuoy, BookOpen, Lock, Cpu, Brain, Zap, Wrench, AlertTriangle, Layers } from 'lucide-react';
 import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 
 // Document registry — maps slugs to raw markdown imports
 const docRegistry: Record<string, { title: string; tier: string; icon: React.ReactNode; loader: () => Promise<string> }> = {
+  // Index
   'style-guide': { title: 'Style Guide', tier: 'Index', icon: <BookOpen className="w-4 h-4" />, loader: () => import('../../../docs/00-index/style-guide.md?raw').then(m => m.default) },
   'glossary': { title: 'Glossary', tier: 'Index', icon: <Book className="w-4 h-4" />, loader: () => import('../../../docs/00-index/glossary.md?raw').then(m => m.default) },
   'navigation': { title: 'Navigation', tier: 'Index', icon: <ChevronRight className="w-4 h-4" />, loader: () => import('../../../docs/00-index/navigation.md?raw').then(m => m.default) },
+  // Tier 1
   'master-architecture-spec': { title: 'Master Architecture Specification', tier: 'Tier 1 — Canonical Core', icon: <FileText className="w-4 h-4" />, loader: () => import('../../../docs/01-architecture/master-architecture-spec.md?raw').then(m => m.default) },
   'governance-autonomy-doctrine': { title: 'Governance & Autonomy Doctrine', tier: 'Tier 1 — Canonical Core', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/02-governance/governance-autonomy-doctrine.md?raw').then(m => m.default) },
   'security-architecture': { title: 'Security Architecture', tier: 'Tier 1 — Canonical Core', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/03-security/security-architecture.md?raw').then(m => m.default) },
   'data-and-memory-model': { title: 'Data & Memory Model', tier: 'Tier 1 — Canonical Core', icon: <Database className="w-4 h-4" />, loader: () => import('../../../docs/04-data-memory/data-and-memory-model.md?raw').then(m => m.default) },
   'evolution-and-versioning-framework': { title: 'Evolution & Versioning Framework', tier: 'Tier 1 — Canonical Core', icon: <GitBranch className="w-4 h-4" />, loader: () => import('../../../docs/05-evolution-versioning/evolution-and-versioning-framework.md?raw').then(m => m.default) },
+  // Tier 2
   'observability-telemetry-handbook': { title: 'Observability & Telemetry Handbook', tier: 'Tier 2 — Operations', icon: <Eye className="w-4 h-4" />, loader: () => import('../../../docs/06-observability/observability-telemetry-handbook.md?raw').then(m => m.default) },
   'deployment-infrastructure-manual': { title: 'Deployment & Infrastructure Manual', tier: 'Tier 2 — Operations', icon: <Server className="w-4 h-4" />, loader: () => import('../../../docs/07-deployment/deployment-infrastructure-manual.md?raw').then(m => m.default) },
   'testing-validation-matrix': { title: 'Testing & Validation Matrix', tier: 'Tier 2 — Operations', icon: <TestTube className="w-4 h-4" />, loader: () => import('../../../docs/08-testing/testing-validation-matrix.md?raw').then(m => m.default) },
+  // Tier 3
   'public-whitepaper': { title: 'Public Whitepaper', tier: 'Tier 3 — Strategic', icon: <Globe className="w-4 h-4" />, loader: () => import('../../../docs/09-whitepaper/public-whitepaper.md?raw').then(m => m.default) },
   'api-integration-specification': { title: 'API & Integration Specification', tier: 'Tier 3 — Strategic', icon: <Code className="w-4 h-4" />, loader: () => import('../../../docs/10-api/api-integration-specification.md?raw').then(m => m.default) },
   'licensing-commercial-model': { title: 'Licensing & Commercial Model', tier: 'Tier 3 — Strategic', icon: <Scale className="w-4 h-4" />, loader: () => import('../../../docs/11-licensing/licensing-commercial-model.md?raw').then(m => m.default) },
+  // Tier 4
   'founder-intent': { title: 'Founder Intent', tier: 'Tier 4 — Founder Safeguards', icon: <Heart className="w-4 h-4" />, loader: () => import('../../../docs/12-founder/founder-intent.md?raw').then(m => m.default) },
   'survivability-succession-protocol': { title: 'Survivability & Succession Protocol', tier: 'Tier 4 — Founder Safeguards', icon: <LifeBuoy className="w-4 h-4" />, loader: () => import('../../../docs/13-survivability/survivability-succession-protocol.md?raw').then(m => m.default) },
+  // Internal Library
+  'internal-topology': { title: 'Topology & Module Registry', tier: 'Internal — Substrate', icon: <Layers className="w-4 h-4" />, loader: () => import('../../../docs/internal/01-topology-and-module-registry.md?raw').then(m => m.default) },
+  'internal-algorithms': { title: 'Proprietary Algorithms', tier: 'Internal — Substrate', icon: <Cpu className="w-4 h-4" />, loader: () => import('../../../docs/internal/02-proprietary-algorithms.md?raw').then(m => m.default) },
+  'internal-trade-secrets': { title: 'Trade Secrets & Moat', tier: 'Internal — Substrate', icon: <Lock className="w-4 h-4" />, loader: () => import('../../../docs/internal/03-trade-secrets-and-moat.md?raw').then(m => m.default) },
+  'internal-control-plane': { title: 'Control Plane & Persistence', tier: 'Internal — Substrate', icon: <Database className="w-4 h-4" />, loader: () => import('../../../docs/internal/04-control-plane-and-persistence.md?raw').then(m => m.default) },
+  'internal-nexus': { title: 'NEXUS Routing Engine', tier: 'Internal — Substrate', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/05-nexus-routing-engine.md?raw').then(m => m.default) },
+  'internal-hardening': { title: 'Hardening Registry', tier: 'Internal — Substrate', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/internal/06-hardening-registry.md?raw').then(m => m.default) },
+  'internal-evolution': { title: 'Evolution & Mutation Pipeline', tier: 'Internal — Operations', icon: <GitBranch className="w-4 h-4" />, loader: () => import('../../../docs/internal/07-evolution-and-mutation-pipeline.md?raw').then(m => m.default) },
+  'internal-security': { title: 'Security Internals', tier: 'Internal — Operations', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/internal/08-security-internals.md?raw').then(m => m.default) },
+  'internal-governor': { title: 'Governor Knowledge Base', tier: 'Internal — Governor', icon: <Heart className="w-4 h-4" />, loader: () => import('../../../docs/internal/09-governor-knowledge-base.md?raw').then(m => m.default) },
+  'internal-maintenance': { title: 'Maintenance Runbook', tier: 'Internal — Governor', icon: <Wrench className="w-4 h-4" />, loader: () => import('../../../docs/internal/10-maintenance-runbook.md?raw').then(m => m.default) },
+  'internal-resilience': { title: 'Circuit Breaker & Resilience', tier: 'Internal — Operations', icon: <AlertTriangle className="w-4 h-4" />, loader: () => import('../../../docs/internal/11-circuit-breaker-and-resilience.md?raw').then(m => m.default) },
+  'internal-memory': { title: 'Memory & Learning Internals', tier: 'Internal — Operations', icon: <Brain className="w-4 h-4" />, loader: () => import('../../../docs/internal/12-memory-and-learning-internals.md?raw').then(m => m.default) },
 };
 
 // Group docs by tier for sidebar
@@ -42,6 +60,9 @@ const tiers = [
   { name: 'Tier 2 — Operations', slugs: ['observability-telemetry-handbook', 'deployment-infrastructure-manual', 'testing-validation-matrix'] },
   { name: 'Tier 3 — Strategic', slugs: ['public-whitepaper', 'api-integration-specification', 'licensing-commercial-model'] },
   { name: 'Tier 4 — Founder Safeguards', slugs: ['founder-intent', 'survivability-succession-protocol'] },
+  { name: 'Internal — Substrate', slugs: ['internal-topology', 'internal-algorithms', 'internal-trade-secrets', 'internal-control-plane', 'internal-nexus', 'internal-hardening'] },
+  { name: 'Internal — Operations', slugs: ['internal-evolution', 'internal-security', 'internal-resilience', 'internal-memory'] },
+  { name: 'Internal — Governor', slugs: ['internal-governor', 'internal-maintenance'] },
 ];
 
 export default function DocsReader() {
