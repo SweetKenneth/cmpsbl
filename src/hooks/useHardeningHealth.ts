@@ -48,6 +48,9 @@ const HARDENED_MODULES = [
   // Control Plane Nodes
   { key: 'ENGINEER', codename: 'Mechanist', loader: () => import('@/lib/substrate/engineer/engineer-hardening').then(m => m.calculateEngineerHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   { key: 'ATLAS', codename: 'Prometheus', loader: () => import('@/lib/atlas/atlas-hardening').then(m => m.calculateAtlasHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  // Final Two
+  { key: 'SANDBOX', codename: 'Crucible', loader: () => import('@/lib/substrate/sandbox-module/sandbox-hardening').then(m => m.calculateSandboxHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  { key: 'INCLUSIVE', codename: 'Clarity', loader: () => import('@/lib/inclusive/inclusive-hardening').then(m => m.calculateInclusiveHealth()).catch(() => ({ grade: 'A', score: 100 })) },
 ];
 
 export function useHardeningHealth(refreshInterval = 30_000): HardeningHealthState & { refresh: () => void } {
