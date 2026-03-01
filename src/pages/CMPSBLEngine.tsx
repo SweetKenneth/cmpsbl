@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PublicNav } from "@/components/PublicNav";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 
 const ENGINES = [
   { icon: Zap, name: "TASK PROCESSOR", desc: "Universal input parsing → structured intent extraction", color: "from-blue-500 to-cyan-400" },
