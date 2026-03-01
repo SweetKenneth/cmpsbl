@@ -112,6 +112,9 @@ export async function initializeCortex(): Promise<{
 // Pipeline scheduler
 export * from './pipelineScheduler';
 
+// Hardening layer v2.0.0
+export * from './cortex-hardening';
+
 /**
  * Get module health matrix
  */
