@@ -9264,47 +9264,20 @@ async function runBrainDreamSynthesis(supabase: any): Promise<{
 // Helper: Call AI for dream interpretation/synthesis
 // deno-lint-ignore no-explicit-any
 async function callDreamAI(prompt: string): Promise<{ content: string; provider: string } | null> {
-  // Use Nexus providers for AI calls
-  const providers = [
-    { name: "groq", url: "https://api.groq.com/openai/v1/chat/completions", model: "llama-3.3-70b-versatile", keyEnv: "GROQ_API_KEY" },
-    { name: "cerebras", url: "https://api.cerebras.ai/v1/chat/completions", model: "llama-3.3-70b", keyEnv: "CEREBRAS_API_KEY" },
-  ];
-
-  for (const provider of providers) {
-    const apiKey = Deno.env.get(provider.keyEnv);
-    if (!apiKey) continue;
-
-    try {
-      const response = await fetch(provider.url, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: provider.model,
-          messages: [
-            { role: "system", content: "You are the Dream-Eater, a cognitive entity that processes, synthesizes, and transforms dreams into insights. Respond concisely and poetically." },
-            { role: "user", content: prompt },
-          ],
-          temperature: 0.85,
-          max_tokens: 500,
-        }),
-      });
-
-      if (!response.ok) continue;
-
-      const data = await response.json();
-      const content = data.choices?.[0]?.message?.content;
-      if (content) {
-        return { content, provider: provider.name };
-      }
-    } catch {
-      continue;
-    }
+  // Route through NEXUS shared router — full provider fleet with automatic cascade
+  try {
+    const { nexusRoute } = await import("../_shared/nexus-route.ts");
+    const result = await nexusRoute(prompt, {
+      systemPrompt: "You are the Dream-Eater, a cognitive entity that processes, synthesizes, and transforms dreams into insights. Respond concisely and poetically.",
+      taskType: "generation",
+      temperature: 0.85,
+      maxTokens: 500,
+    });
+    return { content: result.content, provider: result.provider };
+  } catch (err) {
+    console.error("[NEXUS] Dream AI fleet exhausted:", err);
+    return null;
   }
-
-  return null;
 }
 
 // deno-lint-ignore no-explicit-any

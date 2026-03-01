@@ -150,36 +150,7 @@ serve(async (req) => {
   }
 });
 
-// Individual provider helpers removed — all AI calls now route through NEXUS shared router
-
-async function callGroq(apiKey: string, prompt: string): Promise<string | null> {
-  try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Groq failed:', response.status, errorText.substring(0, 200));
-      return null;
-    }
-
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content || null;
-  } catch (err) {
-    console.error('Groq error:', err);
-    return null;
-  }
-}
+// All AI calls route through NEXUS shared router — no individual provider helpers needed
 
 interface ModernizerJob {
   id: string;

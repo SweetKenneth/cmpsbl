@@ -1,11 +1,12 @@
 /**
- * NEXUS Image Generation — Direct Google AI Studio API
- * NO Lovable AI gateway — calls Gemini directly via GOOGLE_AI_STUDIO_KEY
+ * NEXUS Image Generation v2.0 — Multi-provider cascading image gen
+ * Routes through: Google AI Studio → Lovable AI → FAL.ai → Stability AI
  * Daily limit: 25 images/day (tracked in ai_usage_log)
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { nexusImageRoute } from "../_shared/nexus-route.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -27,11 +28,6 @@ serve(async (req: Request) => {
   );
 
   try {
-    const GOOGLE_KEY = Deno.env.get("GOOGLE_AI_STUDIO_KEY");
-    if (!GOOGLE_KEY) {
-      throw new Error("GOOGLE_AI_STUDIO_KEY not configured");
-    }
-
     const { prompt, style } = await req.json();
 
     if (!prompt || typeof prompt !== "string" || prompt.trim().length === 0) {
@@ -58,74 +54,40 @@ serve(async (req: Request) => {
       );
     }
 
-    // Build enhanced prompt
-    const fullPrompt = style
-      ? `Generate an image: ${prompt.trim()}. Style: ${style.trim()}. High quality, detailed.`
-      : `Generate an image: ${prompt.trim()}. High quality, detailed.`;
-
-    // Call Google AI Studio (Gemini) directly for image generation
-    const model = "gemini-2.0-flash-exp-image-generation";
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GOOGLE_KEY}`;
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: fullPrompt }] }],
-        generationConfig: {
-          responseModalities: ["TEXT", "IMAGE"],
-        },
-      }),
-    });
-
-    if (!response.ok) {
-      const errBody = await response.text();
-      throw new Error(`Google AI Studio error [${response.status}]: ${errBody.slice(0, 500)}`);
-    }
-
-    const aiData = await response.json();
+    // Route through NEXUS image fleet — cascades through all available image providers
+    console.log(`🎨 NEXUS Image: routing "${prompt.slice(0, 80)}..." through image fleet`);
     
-    // Extract image from response parts
-    const parts = aiData.candidates?.[0]?.content?.parts || [];
-    let imageData = "";
-    let mimeType = "image/png";
-    let textContent = "";
-
-    for (const part of parts) {
-      if (part.inlineData) {
-        imageData = part.inlineData.data;
-        mimeType = part.inlineData.mimeType || "image/png";
-      } else if (part.text) {
-        textContent = part.text;
-      }
-    }
-
-    if (!imageData) {
-      throw new Error("No image returned from Google AI Studio. Response: " + textContent.slice(0, 200));
-    }
+    const result = await nexusImageRoute(prompt, { style });
 
     const latencyMs = Date.now() - startMs;
+    console.log(`✅ NEXUS Image: ${result.provider} delivered in ${latencyMs}ms (chain: ${result.fallbackChain.join(" → ")})`);
 
     // Log to ai_usage_log
     await supabase.from("ai_usage_log").insert({
-      provider: "google-aistudio",
-      model: model,
+      provider: result.provider,
+      model: result.model,
       category: "image_generation",
       success: true,
       tokens_used: 0,
       cost: 0,
       response_time_ms: latencyMs,
-      metadata: { prompt: prompt.slice(0, 200), style: style || null },
+      metadata: {
+        prompt: prompt.slice(0, 200),
+        style: style || null,
+        fallback_chain: result.fallbackChain,
+        attempts: result.attempts,
+      },
     });
 
     return new Response(
       JSON.stringify({
         success: true,
-        imageData,
-        mimeType,
+        imageData: result.imageData,
+        mimeType: result.mimeType,
         remainingToday: DAILY_LIMIT - used - 1,
         latencyMs,
-        provider: "google-aistudio/" + model,
+        provider: `${result.provider}/${result.model}`,
+        fallbackChain: result.fallbackChain,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
@@ -135,8 +97,8 @@ serve(async (req: Request) => {
     // Log failure
     try {
       await supabase.from("ai_usage_log").insert({
-        provider: "google-aistudio",
-        model: "gemini-2.0-flash-exp-image-generation",
+        provider: "nexus-image-fleet",
+        model: "multi-provider",
         category: "image_generation",
         success: false,
         tokens_used: 0,
