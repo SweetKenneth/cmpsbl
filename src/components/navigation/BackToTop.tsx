@@ -48,8 +48,8 @@ export function BackToTop() {
             "touch-manipulation",
             // Mobile: bottom-center, above bottom nav
             // Desktop: right side, above the DECODE fab
-            "bottom-[4.5rem] left-1/2 -translate-x-1/2",
-            "lg:left-auto lg:translate-x-0 lg:right-8 lg:bottom-28"
+            "bottom-[10.5rem] left-1/2 -translate-x-1/2",
+            "lg:left-auto lg:translate-x-0 lg:right-8 lg:bottom-[212px]"
           )}
           aria-label="Back to top"
         >
