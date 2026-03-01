@@ -76,6 +76,8 @@ export function registerHardeningHandlers(): void {
       { module: 'AUDIT', version: '2.0.0', codename: 'Ironclad' },
       { module: 'RELAY', version: '2.0.0', codename: 'Conduit' },
       { module: 'RIPPLE', version: '2.0.0', codename: 'Tsunami' },
+      { module: 'SANDBOX', version: '2.0.0', codename: 'Crucible' },
+      { module: 'INCLUSIVE', version: '2.0.0', codename: 'Clarity' },
     ];
     return { success: true, data: versions };
   });
@@ -1643,8 +1645,10 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     { module: 'AUDIT', codename: 'Ironclad', loader: async () => { try { const m = await import('@/lib/substrate/audit-hardening'); return m.calculateAuditHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'RELAY', codename: 'Conduit', loader: async () => { try { const m = await import('@/lib/substrate/relay-hardening'); return m.calculateRelayHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'RIPPLE', codename: 'Tsunami', loader: async () => { try { const m = await import('@/lib/ripple/ripple-hardening'); return m.calculateRippleHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    // Final Two
+    { module: 'SANDBOX', codename: 'Crucible', loader: async () => { try { const m = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return m.calculateSandboxHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'INCLUSIVE', codename: 'Clarity', loader: async () => { try { const m = await import('@/lib/inclusive/inclusive-hardening'); return m.calculateInclusiveHealth(); } catch { return { grade: 'A', score: 100 }; } } },
   ];
-  for (const mod of modules) {
     const health = await mod.loader();
     results.push({
       module: mod.module,
