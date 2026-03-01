@@ -14,7 +14,7 @@ import {
   Plug, Lock, ArrowRight, Zap, Shield, Terminal, 
   CheckCircle, Sparkles, ChevronDown, Copy, Activity,
   Cpu, GitBranch, Eye, Layers, ArrowDown, Gauge,
-  FileCheck, AlertTriangle, Brain
+  FileCheck, AlertTriangle, Brain, Code
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
