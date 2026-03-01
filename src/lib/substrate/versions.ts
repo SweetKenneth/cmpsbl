@@ -24,7 +24,7 @@ export const MODULE_VERSIONS = {
   vision:      { get version() { return v(); }, codename: 'Vee',          layer: 'Operational',    type: 'module'  as const, hardening: '2.0.0' },
   cortex:      { get version() { return v(); }, codename: 'Orchestrator', layer: 'Orchestration',  type: 'module'  as const, hardening: '2.0.0' },
   nexus:       { get version() { return v(); }, codename: 'Router',       layer: 'Orchestration',  type: 'module'  as const },
-  economy:     { get version() { return v(); }, codename: 'Treasury',     layer: 'Infrastructure', type: 'module'  as const },
+  economy:     { get version() { return v(); }, codename: 'Treasury',     layer: 'Infrastructure', type: 'module'  as const, hardening: '2.0.0' },
   sandbox:     { get version() { return v(); }, codename: 'Crucible',     layer: 'Infrastructure', type: 'module'  as const },
   inclusive:   { get version() { return v(); }, codename: 'Clarity',      layer: 'Operational',    type: 'module'  as const },
   integration: { get version() { return v(); }, codename: 'Bridge',       layer: 'Operational',    type: 'module'  as const },
