@@ -124,6 +124,7 @@ const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed
 const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
+const CMPSBLEngine = lazy(() => import("./pages/CMPSBLEngine"));
 const Upgrade = lazy(() => import("./pages/Upgrade"));
 const Diligence = lazy(() => import("./pages/Diligence"));
 const Templates = lazy(() => import("./pages/Templates"));
@@ -442,6 +443,7 @@ const App = () => {
                          <Route path="/status" element={<Status />} />
                         <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
+                        <Route path="/cmpsbl-engine" element={<CMPSBLEngine />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
                         <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
                         <Route path="/composable-cognitives/download" element={<CognitivesDownload />} />
