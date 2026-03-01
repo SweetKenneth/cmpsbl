@@ -640,6 +640,17 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Product/Purchase',
     primaryKeyword: 'self-evolving software immune system SDK',
   },
+  '/evolution': {
+    title: 'EVOLUTION Control Center — Governed AI Improvement | CMPSBL',
+    description: 'Connect your AI agent and evolve your codebase safely. Dry-run previews, one-click rollback, receipted changes, and governed self-improvement.',
+    ogTitle: 'EVOLUTION — Governed Self-Improvement for Your Codebase',
+    ogDescription: 'Connect an AI agent. Preview changes. Evolve safely. Every cycle is receipted and rollback-safe.',
+    ogImage: `${OG_BASE}/og/evolution.jpg`,
+    keywords: ['AI code evolution', 'governed self-improvement', 'codebase evolution', 'AI agent code improvement', 'dry-run preview', 'rollback safe', 'code health'],
+    schema: 'feature',
+    intent: 'Feature/Conversion',
+    primaryKeyword: 'governed AI codebase evolution',
+  },
   '/evolution-log': {
     title: 'Evolution Log — Substrate History | CMPSBL',
     description: 'Track every evolution of the CMPSBL substrate: new execution surfaces, mesh overlays, capability expansions, and architecture changes.',
