@@ -78,7 +78,7 @@ export const SUBSTRATE_MODULES = [
 ] as const;
 
 // Public-facing entity count (CORE + 8 Modules + INTEGRATION)
-export const PUBLIC_MODULE_COUNT = 10;
+export const PUBLIC_MODULE_COUNT = 12;
 // Field count (system-wide transformation fabric)
 export const FIELD_COUNT = 3;
 // OCG Zone count
