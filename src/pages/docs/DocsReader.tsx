@@ -11,9 +11,9 @@ import remarkGfm from 'remark-gfm';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Book, ChevronRight, FileText, Shield, Database, GitBranch, Eye, Server, TestTube, Globe, Code, Scale, Heart, LifeBuoy, BookOpen } from 'lucide-react';
-import CmpsblNav from '@/components/navigation/CmpsblNav';
+import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
-import SEO from '@/components/SEO';
+import { SEO } from '@/components/SEO';
 
 // Document registry — maps slugs to raw markdown imports
 const docRegistry: Record<string, { title: string; tier: string; icon: React.ReactNode; loader: () => Promise<string> }> = {
