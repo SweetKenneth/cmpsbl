@@ -71,6 +71,11 @@ export function registerHardeningHandlers(): void {
       { module: 'IMMUNITY', version: '2.0.0', codename: 'Watchguard' },
       { module: 'EVOLUTION', version: '2.0.0', codename: 'Chrysalis' },
       { module: 'INTENT', version: '2.0.0', codename: 'Navigator' },
+      { module: 'ENGINEER', version: '2.0.0', codename: 'Mechanist' },
+      { module: 'ATLAS', version: '2.0.0', codename: 'Prometheus' },
+      { module: 'AUDIT', version: '2.0.0', codename: 'Ironclad' },
+      { module: 'RELAY', version: '2.0.0', codename: 'Conduit' },
+      { module: 'RIPPLE', version: '2.0.0', codename: 'Tsunami' },
     ];
     return { success: true, data: versions };
   });
@@ -1634,6 +1639,10 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     // Control Plane Nodes
     { module: 'ENGINEER', codename: 'Mechanist', loader: async () => { try { const m = await import('@/lib/substrate/engineer/engineer-hardening'); return m.calculateEngineerHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'ATLAS', codename: 'Prometheus', loader: async () => { try { const m = await import('@/lib/atlas/atlas-hardening'); return m.calculateAtlasHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    // OCG Zones
+    { module: 'AUDIT', codename: 'Ironclad', loader: async () => { try { const m = await import('@/lib/substrate/audit-hardening'); return m.calculateAuditHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'RELAY', codename: 'Conduit', loader: async () => { try { const m = await import('@/lib/substrate/relay-hardening'); return m.calculateRelayHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'RIPPLE', codename: 'Tsunami', loader: async () => { try { const m = await import('@/lib/ripple/ripple-hardening'); return m.calculateRippleHealth(); } catch { return { grade: 'A', score: 100 }; } } },
   ];
   for (const mod of modules) {
     const health = await mod.loader();
