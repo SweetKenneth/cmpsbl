@@ -1,8 +1,8 @@
-# CMPSBL Documentation — v12.0.0 CONTRACT Epoch
+# CMPSBL Documentation — v12.0.0 CONTRACT Epoch (Archived)
 
-All prior documentation has been archived to `docs/archived/`.
+This epoch has been archived. The substrate is now at **v13.0.0 IRONCLAD**.
 
-Fresh documentation will be written for the CONTRACT epoch.
+All documentation from CONTRACT and prior epochs lives in `docs/archived/`.
 
 ---
 
