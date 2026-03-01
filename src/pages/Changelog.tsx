@@ -541,6 +541,7 @@ export default function Changelog() {
   });
 
   const mergedEntries = [
+    ...evolutionLogIRONCLAD,
     ...evolutionLogSPARTA,
     ...(autoEntries || []).map((entry): EvolutionEntry => ({
       id: entry.id,
