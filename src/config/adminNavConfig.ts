@@ -45,6 +45,7 @@ export const adminNavConfig: NavGroup[] = [
     title: "Control Plane",
     items: [
       { id: "intel", label: "INTEL Panel", path: "/admin/intel", icon: Eye, isNew: true },
+      { id: "s-tier-vault", label: "S-Tier Vault", path: "/admin/s-tier-vault", icon: Shield, isNew: true },
       { id: "os", label: "Substrate", path: "/os", icon: Cpu },
       { id: "substrate", label: "Dashboard", path: "/substrate", icon: LayoutDashboard },
       { id: "decode", label: "Decode", path: "/decode", icon: Terminal },

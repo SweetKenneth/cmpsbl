@@ -156,6 +156,7 @@ const GovernanceControlPlane = lazy(() => import("./pages/admin/GovernanceContro
 const Architecture = lazy(() => import("./pages/Architecture"));
 const EvolutionControlCenter = lazy(() => import("./pages/EvolutionControlCenter"));
 const IntelPanel = lazy(() => import("./pages/admin/IntelPanel"));
+const STierVault = lazy(() => import("./pages/admin/STierVault"));
 
 const Status = lazy(() => import("./pages/Status"));
 const SystemIntegrity = lazy(() => import("./pages/SystemIntegrity"));
