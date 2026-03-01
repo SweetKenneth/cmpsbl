@@ -206,42 +206,42 @@ export default function Scanner() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-10 sm:mb-12"
           >
-            <Badge variant="secondary" className="mb-4 text-xs">THE SOLUTION</Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+            <Badge variant="secondary" className="mb-4 text-[11px]">THE SOLUTION</Badge>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
               Four phases. One evolution.
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
+            <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
               Not a linter. Not a dashboard. A closed-loop evolution engine that makes your system 
               measurably better with every scan.
             </p>
           </motion.div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {EVOLUTION_PHASES.map((phase, i) => (
               <motion.div
                 key={phase.phase}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ duration: 0.45, delay: i * 0.08 }}
               >
-                <Card className={`border ${phase.border} overflow-hidden group hover:shadow-lg transition-all duration-300`}>
+                <Card className={`border ${phase.border} overflow-hidden group hover:shadow-md transition-all duration-300`}>
                   <CardContent className="p-0">
-                    <div className={`flex flex-col sm:flex-row items-stretch`}>
+                    <div className="flex flex-col sm:flex-row items-stretch">
                       {/* Phase number + icon */}
-                      <div className={`bg-gradient-to-br ${phase.color} p-6 sm:p-8 sm:w-48 flex flex-row sm:flex-col items-center sm:items-start justify-start gap-4 sm:gap-3 shrink-0`}>
-                        <span className={`text-3xl sm:text-4xl font-black font-mono ${phase.accent} opacity-60`}>{phase.phase}</span>
+                      <div className={`bg-gradient-to-br ${phase.color} p-5 sm:p-8 sm:w-44 flex flex-row sm:flex-col items-center sm:items-start justify-start gap-3 sm:gap-2.5 shrink-0`}>
+                        <span className={`text-2xl sm:text-3xl font-black font-mono ${phase.accent} opacity-50`}>{phase.phase}</span>
                         <div className="flex items-center gap-2">
-                          <phase.icon className={`w-5 h-5 ${phase.accent}`} />
-                          <span className={`text-lg font-bold ${phase.accent}`}>{phase.name}</span>
+                          <phase.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${phase.accent}`} />
+                          <span className={`text-base sm:text-lg font-bold ${phase.accent}`}>{phase.name}</span>
                         </div>
                       </div>
                       {/* Content */}
-                      <div className="p-6 sm:p-8 flex-1">
-                        <p className="text-sm font-mono text-primary/80 uppercase tracking-wider mb-2">{phase.tagline}</p>
-                        <p className="text-muted-foreground leading-relaxed">{phase.description}</p>
+                      <div className="p-5 sm:p-8 flex-1">
+                        <p className="text-[11px] sm:text-xs font-mono text-primary/70 uppercase tracking-wider mb-2">{phase.tagline}</p>
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{phase.description}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -255,16 +255,16 @@ export default function Scanner() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex items-center justify-center gap-3 mt-8 text-muted-foreground"
+            className="flex items-center justify-center gap-2.5 sm:gap-3 mt-8 text-muted-foreground/70"
           >
-            <span className="text-xs font-mono uppercase tracking-wider">Detect</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-            <span className="text-xs font-mono uppercase tracking-wider">Diagnose</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-            <span className="text-xs font-mono uppercase tracking-wider">Prescribe</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-            <span className="text-xs font-mono uppercase tracking-wider text-primary font-bold">Evolve</span>
-            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider">Detect</span>
+            <ArrowRight className="w-3 h-3" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider">Diagnose</span>
+            <ArrowRight className="w-3 h-3" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider">Prescribe</span>
+            <ArrowRight className="w-3 h-3" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-primary font-bold">Evolve</span>
+            <Sparkles className="w-3.5 h-3.5 text-primary" />
           </motion.div>
         </section>
 
@@ -362,33 +362,33 @@ export default function Scanner() {
 
         {/* CTA */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-3xl mx-auto px-4 text-center"
+          className="max-w-3xl mx-auto px-4 text-center mb-16"
         >
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-emerald-500/10 rounded-2xl blur-xl" />
-            <Card className="border-primary/20 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-emerald-500/8 rounded-2xl blur-xl" />
+            <Card className="border-primary/15 relative">
               <CardContent className="p-8 sm:p-10">
-                <Badge variant="outline" className="mb-4 text-xs border-amber-500/40 text-amber-400 gap-1.5">
+                <Badge variant="outline" className="mb-4 text-[11px] border-amber-500/30 text-amber-400 gap-1.5">
                   <Construction className="w-3 h-3" />
                   Coming Soon
                 </Badge>
-                <Rocket className="w-8 h-8 text-primary mx-auto mb-4" />
+                <Rocket className="w-7 h-7 text-primary mx-auto mb-4" />
                 <h3 className="text-xl sm:text-2xl font-bold mb-3">We're building something different.</h3>
-                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md mx-auto leading-relaxed">
                   The Evolution Scanner is in active development. Preview what's coming in the DECODE terminal 
                   with <code className="text-primary font-mono text-sm">scan</code> — and watch this space.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Button asChild size="lg" className="gap-2">
+                  <Button asChild size="lg" className="gap-2 h-12">
                     <Link to="/evolution">
                       <Zap className="w-4 h-4" />
                       Open EVOLUTION
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="gap-2">
+                  <Button asChild size="lg" variant="outline" className="gap-2 h-12">
                     <Link to="/decode">
                       <Terminal className="w-4 h-4" />
                       Preview in DECODE
