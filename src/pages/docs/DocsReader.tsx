@@ -51,6 +51,8 @@ const docRegistry: Record<string, { title: string; tier: string; icon: React.Rea
   'internal-maintenance': { title: 'Maintenance Runbook', tier: 'Internal — Governor', icon: <Wrench className="w-4 h-4" />, loader: () => import('../../../docs/internal/10-maintenance-runbook.md?raw').then(m => m.default) },
   'internal-resilience': { title: 'Circuit Breaker & Resilience', tier: 'Internal — Operations', icon: <AlertTriangle className="w-4 h-4" />, loader: () => import('../../../docs/internal/11-circuit-breaker-and-resilience.md?raw').then(m => m.default) },
   'internal-memory': { title: 'Memory & Learning Internals', tier: 'Internal — Operations', icon: <Brain className="w-4 h-4" />, loader: () => import('../../../docs/internal/12-memory-and-learning-internals.md?raw').then(m => m.default) },
+  // Engineering Proof
+  'engineering-proof': { title: 'Engineering Proof & Scale', tier: 'Tier 3 — Strategic', icon: <TestTube className="w-4 h-4" />, loader: () => import('../../../docs/14-engineering-proof/engineering-proof-and-scale.md?raw').then(m => m.default) },
 };
 
 // Group docs by tier for sidebar
@@ -58,7 +60,7 @@ const tiers = [
   { name: 'Index', slugs: ['style-guide', 'glossary', 'navigation'] },
   { name: 'Tier 1 — Canonical Core', slugs: ['master-architecture-spec', 'governance-autonomy-doctrine', 'security-architecture', 'data-and-memory-model', 'evolution-and-versioning-framework'] },
   { name: 'Tier 2 — Operations', slugs: ['observability-telemetry-handbook', 'deployment-infrastructure-manual', 'testing-validation-matrix'] },
-  { name: 'Tier 3 — Strategic', slugs: ['public-whitepaper', 'api-integration-specification', 'licensing-commercial-model'] },
+  { name: 'Tier 3 — Strategic', slugs: ['public-whitepaper', 'api-integration-specification', 'licensing-commercial-model', 'engineering-proof'] },
   { name: 'Tier 4 — Founder Safeguards', slugs: ['founder-intent', 'survivability-succession-protocol'] },
   { name: 'Internal — Substrate', slugs: ['internal-topology', 'internal-algorithms', 'internal-trade-secrets', 'internal-control-plane', 'internal-nexus', 'internal-hardening'] },
   { name: 'Internal — Operations', slugs: ['internal-evolution', 'internal-security', 'internal-resilience', 'internal-memory'] },
