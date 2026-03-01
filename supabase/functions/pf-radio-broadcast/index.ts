@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.79.0";
+import { nexusRoute } from "../_shared/nexus-route.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,12 +15,12 @@ const SEGMENT_KEYS = [
 
 // Rotating analyst voice bench — ElevenLabs voice IDs
 const VOICE_BENCH = {
-  station_host: ["onwK4e9ZLuTAKqWW03F9", "TX3LPaxmHKxFdv7VOQHJ", "JBFqnCBsd6RMkjVDRZzb"], // Daniel, Liam, George
-  immune_analyst: ["cjVigY5qzO86Huf0OWal", "nPczCjzI2devNBz1zQrb"], // Eric, Brian
-  salience_analyst: ["iP95p4xoKVk53GoZ742B", "bIHbv24MWmeRgasZH58o"], // Chris, Will
-  governor_analyst: ["CwhRBWXzGAHq8TQ4Fs17", "N2lVS1w4EtoT3dr4eOWO"], // Roger, Callum
-  temporal_specialist: ["SAz9YHcvj6GT2YYXdXww", "IKne3meq5aSn9XLyUdCD"], // River, Charlie
-  infrastructure: ["Xb7hH8MSUJpSbSDYk0k2", "FGY2WhTYpPnrIDTdsKH5"], // Alice, Laura
+  station_host: ["onwK4e9ZLuTAKqWW03F9", "TX3LPaxmHKxFdv7VOQHJ", "JBFqnCBsd6RMkjVDRZzb"],
+  immune_analyst: ["cjVigY5qzO86Huf0OWal", "nPczCjzI2devNBz1zQrb"],
+  salience_analyst: ["iP95p4xoKVk53GoZ742B", "bIHbv24MWmeRgasZH58o"],
+  governor_analyst: ["CwhRBWXzGAHq8TQ4Fs17", "N2lVS1w4EtoT3dr4eOWO"],
+  temporal_specialist: ["SAz9YHcvj6GT2YYXdXww", "IKne3meq5aSn9XLyUdCD"],
+  infrastructure: ["Xb7hH8MSUJpSbSDYk0k2", "FGY2WhTYpPnrIDTdsKH5"],
 };
 
 const SEGMENT_VOICE_MAP: Record<string, keyof typeof VOICE_BENCH> = {
@@ -52,16 +53,6 @@ function validateScript(script: Record<string, string>): { valid: boolean; error
   return { valid: errors.length === 0, errors };
 }
 
-// Nexus provider fleet — health-weighted fallback chain
-const NEXUS_PROVIDERS = [
-  { name: "groq", url: "https://api.groq.com/openai/v1/chat/completions", model: "llama-3.3-70b-versatile", keyEnv: "GROQ_API_KEY" },
-  { name: "cerebras", url: "https://api.cerebras.ai/v1/chat/completions", model: "llama-3.3-70b", keyEnv: "CEREBRAS_API_KEY" },
-  { name: "sambanova", url: "https://api.sambanova.ai/v1/chat/completions", model: "Meta-Llama-3.3-70B-Instruct", keyEnv: "SAMBANOVA_API_KEY" },
-  { name: "together", url: "https://api.together.xyz/v1/chat/completions", model: "meta-llama/Llama-3.3-70B-Instruct-Turbo", keyEnv: "TOGETHER_API_KEY" },
-  { name: "deepseek", url: "https://api.deepseek.com/v1/chat/completions", model: "deepseek-chat", keyEnv: "DEEPSEEK_API_KEY" },
-  { name: "openrouter", url: "https://openrouter.ai/api/v1/chat/completions", model: "meta-llama/llama-3.3-70b-instruct", keyEnv: "OPENROUTER_API_KEY" },
-];
-
 const RADIO_SYSTEM_PROMPT = `You are CMPSBL Radio's script generator. Output ONLY valid JSON with exactly these 8 keys: opening, system_health, clm_update, substrate_update, engine_spotlight, capability_drop, promo, closing.
 
 Rules:
@@ -72,48 +63,19 @@ Rules:
 - "closing" segment: sign off with "This has been CMPSBL Radio."
 - Output raw JSON only. No markdown, no code fences.`;
 
-async function callNexusProvider(provider: typeof NEXUS_PROVIDERS[0], messages: Array<{role: string; content: string}>): Promise<string> {
-  const apiKey = Deno.env.get(provider.keyEnv);
-  if (!apiKey) throw new Error(`${provider.name}: key not configured`);
+async function generateScript(metricsContext: string): Promise<{ script: Record<string, string>; provider: string }> {
+  const userPrompt = `Generate today's CMPSBL Radio broadcast script using these system metrics:\n\n${metricsContext}\n\nOutput the 8-segment JSON now.`;
 
-  const resp = await fetch(provider.url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: provider.model,
-      messages,
-      max_tokens: 2000,
-      temperature: 0.4,
-    }),
+  const result = await nexusRoute(userPrompt, {
+    systemPrompt: RADIO_SYSTEM_PROMPT,
+    taskType: "generation",
+    temperature: 0.4,
+    maxTokens: 2000,
   });
 
-  if (!resp.ok) throw new Error(`${provider.name}: ${resp.status}`);
-  const data = await resp.json();
-  return data.choices?.[0]?.message?.content ?? "";
-}
-
-async function generateScript(metricsContext: string): Promise<{ script: Record<string, string>; provider: string }> {
-  const messages = [
-    { role: "system", content: RADIO_SYSTEM_PROMPT },
-    { role: "user", content: `Generate today's CMPSBL Radio broadcast script using these system metrics:\n\n${metricsContext}\n\nOutput the 8-segment JSON now.` },
-  ];
-
-  for (const provider of NEXUS_PROVIDERS) {
-    try {
-      console.log(`Nexus: trying ${provider.name}...`);
-      const raw = await callNexusProvider(provider, messages);
-      const cleaned = raw.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
-      const parsed = JSON.parse(cleaned);
-      console.log(`Nexus: ${provider.name} succeeded`);
-      return { script: parsed, provider: provider.name };
-    } catch (e) {
-      console.warn(`Nexus: ${provider.name} failed:`, e instanceof Error ? e.message : e);
-    }
-  }
-  throw new Error("All Nexus providers failed");
+  const cleaned = result.content.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
+  const parsed = JSON.parse(cleaned);
+  return { script: parsed, provider: result.provider };
 }
 
 async function generateTTS(text: string, voiceId: string, elevenLabsKey: string): Promise<ArrayBuffer> {
@@ -154,10 +116,8 @@ function concatAudioBuffers(buffers: ArrayBuffer[]): Uint8Array {
 }
 
 async function fetchMetricsContext(supabase: ReturnType<typeof createClient>): Promise<string> {
-  // Pull real system metrics
   const lines: string[] = [`Broadcast date: ${new Date().toISOString().split("T")[0]}`];
 
-  // Module health from substrate_modules
   const { data: modules } = await supabase
     .from("substrate_modules")
     .select("name, status, health_score, boot_time_ms")
@@ -169,7 +129,6 @@ async function fetchMetricsContext(supabase: ReturnType<typeof createClient>): P
     lines.push(`Avg module health: ${avgHealth.toFixed(1)}%`);
   }
 
-  // Recent agency tasks
   const { data: tasks } = await supabase
     .from("agency_tasks")
     .select("status")
@@ -179,7 +138,6 @@ async function fetchMetricsContext(supabase: ReturnType<typeof createClient>): P
     lines.push(`Tasks (24h): ${completed} completed / ${tasks.length} total`);
   }
 
-  // CLM patches
   const { data: patches } = await supabase
     .from("clm_patch_log")
     .select("id, status")
@@ -190,7 +148,6 @@ async function fetchMetricsContext(supabase: ReturnType<typeof createClient>): P
     lines.push(`CLM patches (24h): ${applied} applied / ${patches.length} total`);
   }
 
-  // AI usage
   const { data: usage } = await supabase
     .from("ai_usage_log")
     .select("tokens_used, cost")
@@ -201,7 +158,6 @@ async function fetchMetricsContext(supabase: ReturnType<typeof createClient>): P
     lines.push(`AI tokens used (24h): ${totalTokens.toLocaleString()}`);
   }
 
-  // Defense scans
   const { data: scans } = await supabase
     .from("access_scans")
     .select("score")
@@ -234,7 +190,6 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Check feature flag
     const { data: flag } = await supabase
       .from("system_flags")
       .select("enabled")
@@ -246,7 +201,6 @@ serve(async (req) => {
       });
     }
 
-    // Check if already generated today
     const today = new Date().toISOString().split("T")[0];
     const { data: existing } = await supabase
       .from("radio_broadcasts")
@@ -260,12 +214,10 @@ serve(async (req) => {
       });
     }
     
-    // Clean up any failed/stale records for today
     if (existing) {
       await supabase.from("radio_broadcasts").delete().eq("id", existing.id);
     }
 
-    // Create broadcast record
     const { data: broadcast, error: insertErr } = await supabase
       .from("radio_broadcasts")
       .insert({ broadcast_date: today, script_json: {}, status: "generating" })
@@ -274,10 +226,8 @@ serve(async (req) => {
     if (insertErr) throw new Error(`Failed to create broadcast record: ${insertErr.message}`);
     const broadcastId = broadcast.id;
 
-    // Fetch metrics
     const metricsContext = await fetchMetricsContext(supabase);
 
-    // Generate script (with 1 retry on validation failure)
     let script: Record<string, string> | null = null;
     let attempts = 0;
     let usedProvider = "unknown";
@@ -304,11 +254,9 @@ serve(async (req) => {
       });
     }
 
-    // Determine voice mapping for today
     const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
     const voiceMapping: Record<string, string> = {};
     
-    // Generate TTS per segment
     const audioBuffers: ArrayBuffer[] = [];
     const ttsStart = Date.now();
 
@@ -325,10 +273,8 @@ serve(async (req) => {
 
     const ttsDuration = Date.now() - ttsStart;
 
-    // Concatenate all segments into single MP3
     const finalAudio = concatAudioBuffers(audioBuffers);
 
-    // Upload to storage
     const storagePath = `latest.mp3`;
     const { error: uploadErr } = await supabase.storage
       .from("radio")
@@ -342,7 +288,6 @@ serve(async (req) => {
       .from("radio")
       .getPublicUrl(storagePath);
 
-    // Also save dated copy
     const datedPath = `archive/${today}.mp3`;
     await supabase.storage
       .from("radio")
@@ -351,9 +296,7 @@ serve(async (req) => {
         upsert: true,
       });
 
-    // Update broadcast record
     const totalDuration = Date.now() - startTime;
-    // Rough cost estimate: ~$0.01 per 1000 chars ElevenLabs, ~$0.001 per LLM call
     const totalChars = Object.values(script).join("").length;
     const costEstimate = (totalChars / 1000) * 0.01 + 0.002;
 
@@ -367,7 +310,7 @@ serve(async (req) => {
       voice_mapping: voiceMapping,
     }).eq("id", broadcastId);
 
-    console.log(`Broadcast generated via Nexus/${usedProvider} in ${totalDuration}ms, TTS: ${ttsDuration}ms, cost: ~$${costEstimate.toFixed(4)}`);
+    console.log(`Broadcast generated via NEXUS/${usedProvider} in ${totalDuration}ms, TTS: ${ttsDuration}ms, cost: ~$${costEstimate.toFixed(4)}`);
 
     return new Response(JSON.stringify({
       ok: true,
