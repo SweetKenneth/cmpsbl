@@ -6,7 +6,7 @@
 
 ## 1. Purpose
 
-This document defines the complete 24-node architecture of the CMPSBL Substrate, including every module's layer assignment, boot order, dependencies, and responsibility boundary.
+This document defines the complete 26-node architecture of the CMPSBL Substrate, including every module's layer assignment, boot order, dependencies, and responsibility boundary.
 
 ## 2. System Topology
 
@@ -54,17 +54,19 @@ Specialized processing modules:
 | VISION | 14 | CORE, RIPPLE | Anomaly detection, performance correlation, alerting. |
 | ECONOMY | 15 | CORE, ACCESS | Cost tracking, ROI computation, billing integration. |
 | SANDBOX | 16 | CORE | Isolated execution environments, code evaluation. |
-| INTEGRATION | 17 | CORE, RIPPLE, ACCESS | External service connectors, webhook handlers. |
-| INCLUSIVE | 20 | CORE, SYSTEM | Accessibility compliance, WCAG enforcement. |
+| MEDIC | 17 | CORE, SYSTEM, VISION | Autonomous diagnostics, self-repair coordination, health scoring. |
+| NERVE | 18 | CORE, RIPPLE, SYSTEM | Inter-node signaling, consensus repair, distributed heartbeat. |
+| INTEGRATION | 19 | CORE, RIPPLE, ACCESS | External service connectors, webhook handlers. |
+| INCLUSIVE | 22 | CORE, SYSTEM | Accessibility compliance, WCAG enforcement. |
 
 ### 2.4 Orchestration
 
 | Module | Boot Order | Dependencies | Role |
 |--------|-----------|--------------|------|
-| SYSTEM | 18 | CORE, VISION | System-wide lifecycle, health aggregation. |
-| MODERNIZER | 19 | CORE, SYSTEM, VISION | Legacy → routes to EVOLUTION field. |
-| CORTEX | 21 | CORE, NEXUS, SYSTEM, VISION | Pipeline orchestration, capability composition. |
-| ATLAS | 22 | CORE, SYSTEM | Capability gating, feature flag management. |
+| SYSTEM | 20 | CORE, VISION | System-wide lifecycle, health aggregation. |
+| MODERNIZER | 21 | CORE, SYSTEM, VISION | Legacy → routes to EVOLUTION field. |
+| CORTEX | 23 | CORE, NEXUS, SYSTEM, VISION | Pipeline orchestration, capability composition. |
+| ATLAS | 24 | CORE, SYSTEM | Capability gating, feature flag management. |
 
 ### 2.5 Fields (System-Wide Transformation Fabric)
 
@@ -91,8 +93,9 @@ Phase 2 — CCR:           MEMORY (2), BRAIN (3)
 Phase 3 — OCG:           RIPPLE (4), ACCESS (5), IDENTITY (6), RELAY (7), AUDIT (8)
 Phase 4 — Execution:     NEXUS (9), DECODE (10), DREAM (11), ENCODE (12),
                          DEFENSE (13), VISION (14), ECONOMY (15), SANDBOX (16),
-                         INTEGRATION (17), SYSTEM (18), MODERNIZER (19),
-                         INCLUSIVE (20), CORTEX (21), ATLAS (22)
+                         MEDIC (17), NERVE (18), INTEGRATION (19),
+                         SYSTEM (20), MODERNIZER (21),
+                         INCLUSIVE (22), CORTEX (23), ATLAS (24)
 ```
 
 Boot is dependency-ordered. A module cannot boot until all its dependencies report healthy. Boot gate checks verify health thresholds before cascading activation.
@@ -116,18 +119,24 @@ graph TD
   CORE --> NEXUS
   CORE --> AUDIT
   CORE --> SANDBOX
+  CORE --> MEDIC
+  CORE --> NERVE
   ACCESS --> IDENTITY
   ACCESS --> ECONOMY
   RIPPLE --> RELAY
   RIPPLE --> DEFENSE
   RIPPLE --> VISION
   RIPPLE --> INTEGRATION
+  RIPPLE --> NERVE
   ACCESS --> INTEGRATION
   NEXUS --> DECODE
   NEXUS --> DREAM
   NEXUS --> ENCODE
   CORE --> SYSTEM
   VISION --> SYSTEM
+  VISION --> MEDIC
+  SYSTEM --> MEDIC
+  SYSTEM --> NERVE
   SYSTEM --> MODERNIZER
   SYSTEM --> INCLUSIVE
   SYSTEM --> ATLAS
@@ -143,13 +152,13 @@ graph TD
 | Kernel | CORE | 1 |
 | Cognitive (CCR) | BRAIN, MEMORY, DREAM | 3 |
 | Infrastructure (OCG) | RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT | 5 |
-| Execution | NEXUS, DECODE, ENCODE, VISION, DEFENSE, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION | 9 |
+| Execution | NEXUS, DECODE, ENCODE, VISION, DEFENSE, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION, MEDIC, NERVE | 11 |
 | Orchestration | SYSTEM, MODERNIZER, CORTEX, ATLAS | 4 |
 | Fields | EVOLUTION, IMMUNITY, INTENT | 3 |
 | Plane | GOVERNANCE | 1 |
-| **Total** | | **26 logical components** |
+| **Total** | | **26 nodes** |
 
-Production module count validation target: **24 nodes** (fields and plane counted as nodes).
+Production module count validation target: **26 nodes**.
 
 ## 6. Architecture Invariants
 
