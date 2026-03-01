@@ -152,6 +152,7 @@ const OwnerReports = lazy(() => import("./pages/admin/OwnerReports"));
 const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDashboard"));
 const GovernanceControlPlane = lazy(() => import("./pages/admin/GovernanceControlPlane"));
 const Architecture = lazy(() => import("./pages/Architecture"));
+const EvolutionControlCenter = lazy(() => import("./pages/EvolutionControlCenter"));
 const IntelPanel = lazy(() => import("./pages/admin/IntelPanel"));
 
 const Status = lazy(() => import("./pages/Status"));
@@ -567,7 +568,7 @@ const App = () => {
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         <Route path="/evolution-mesh" element={<Navigate to="/" replace />} />
-                        <Route path="/evolution" element={<Navigate to="/" replace />} />
+                        <Route path="/evolution" element={<EvolutionControlCenter />} />
                         <Route path="/architecture" element={<Architecture />} />
                         
                         {/* Legacy brain/cascade routes — consolidated wildcards */}
