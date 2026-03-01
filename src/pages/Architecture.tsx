@@ -9,6 +9,7 @@ import { Layers, Cpu, Shield, Brain, Zap, Eye, Moon, ArrowRight, Network, Settin
 import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
