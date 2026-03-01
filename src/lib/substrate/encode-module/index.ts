@@ -226,3 +226,68 @@ export function checkTaskSafety(task: Partial<EncodeTaskPacket>): { safe: boolea
     return { safe: true, riskScore: 0, recommendations: [] };
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// HARDENING LAYER v2.0.0 ("Forge") — Re-exports
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export {
+  ENCODE_HARDENING_VERSION,
+  ENCODE_HARDENING_CODENAME,
+  // 1. Artifact Integrity
+  sealArtifact, verifyArtifactChain, getArtifactSealChain,
+  // 2. Generation Budget
+  checkGenerationBudget, recordGeneratedLines, resetSessionBudget, getGenerationBudget,
+  // 3. Destructive Change Guard
+  detectDestructiveIntent, requestDestructiveApproval, approveDestructiveChange, getDestructiveLog,
+  // 4. Patch Versioning
+  recordPatch, getPatchHistory, getPatchById,
+  // 5. Import Allowlist
+  checkImportAllowed, recordImportViolation, getImportViolations,
+  // 6. Resilience Baseline
+  checkResilienceBaseline,
+  // 7. Task Idempotency
+  computeTaskFingerprint, checkIdempotency, recordTaskFingerprint, clearFingerprintCache,
+  // 8. Timeout Escalation
+  getTimeoutForTier, shouldEscalateTimeout,
+  // 9. Confidence Calibration
+  recordCalibrationPoint, getCalibrationReport,
+  // 10. Convention Enforcer
+  enforceConventions,
+  // 11. Diff Impact Estimator
+  estimateDiffImpact,
+  // 12. Learning Receipt Ledger
+  recordLearningReceipt, getLearningLedger,
+  // 13. Task Dependency Resolver
+  validateTaskDependencies,
+  // 14. Sandbox Pre-Flight
+  runPreFlight,
+  // 15. Task Priority Scorer
+  scoreTaskPriority,
+  // 16. Concurrent Task Limiter
+  acquireExecutionSlot, releaseExecutionSlot, getConcurrencyState,
+  // 17. Rollback Registry
+  registerRollback, executeRollback, getRollbackRegistry,
+  // 18. Learning Cycle Tracker
+  recordLearningCycle, getLearningCycleMetrics,
+  // 19. Code Quality Gate
+  calculateCodeQuality,
+  // 20. Error Pattern Dedup
+  isKnownError, recordErrorFingerprint, getKnownErrorCount,
+  // 21. Execution Audit Trail
+  logExecutionAudit, getExecutionAuditTrail,
+  // 22. Surface Capability Map
+  getSurfaceCapability, getAllSurfaceCapabilities,
+  // 23. Generation Cooldown
+  checkGenerationCooldown, recordGenerationTimestamp,
+  // 24. Task Outcome Forecaster
+  forecastTaskOutcome,
+  // 25. ENCODE Health Composite
+  calculateEncodeHealth,
+  // Types
+  type ArtifactSeal, type GenerationBudget, type DestructiveChangeRequest,
+  type PatchVersion, type LearningReceipt, type TaskDependency,
+  type PreFlightResult, type RollbackEntry, type ExecutionAuditEntry,
+  type SurfaceCapability, type EncodeHealthReport, type DiffImpact,
+  type ConventionRule, type ResilienceCheck, type TimeoutTier,
+} from './encode-hardening';
