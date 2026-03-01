@@ -62,7 +62,6 @@ export function EnhancedFooter() {
         { name: "Evolution Control", href: "/evolution", highlight: true },
         { name: "Documentation", href: "/documentation" },
         { name: "API Access", href: "/api-access" },
-        
         { name: "Academy", href: "/academy" },
         { name: "DevTools", href: "/devtools" },
       ]
@@ -75,7 +74,7 @@ export function EnhancedFooter() {
         { name: "Roadmap", href: "/roadmap" },
         { name: "Use Cases", href: "/use-cases" },
         { name: "Showcase", href: "/showcase" },
-        { name: "Changelog", href: "/changelog" },
+        { name: "Fossil Record", href: "/changelog" },
       ]
     },
     {
@@ -84,22 +83,19 @@ export function EnhancedFooter() {
         { name: "About", href: "/about" },
         { name: "Investors", href: "/investors" },
         { name: "Solutions", href: "/solutions" },
-        { name: "Roadmap", href: "/roadmap" },
         { name: "Careers", href: "/careers" },
         { name: "Contact", href: "/contact" },
-      ]
-    },
-    {
-      title: "Legal & More",
-      links: [
-        { name: "Privacy", href: "/privacy" },
-        { name: "Terms", href: "/terms" },
         { name: "Support", href: "/support" },
-        { name: "Namespace", href: "/namespace" },
-        { name: "Library", href: "/library" },
-        { name: "XCTBL", href: "#xctbl" },
       ]
     },
+  ];
+
+  const legalLinks: FooterLink[] = [
+    { name: "Privacy", href: "/privacy" },
+    { name: "Terms", href: "/terms" },
+    { name: "Namespace", href: "/namespace" },
+    { name: "Library", href: "/library" },
+    { name: "XCTBL", href: "#xctbl" },
   ];
 
   const socialLinks = [
