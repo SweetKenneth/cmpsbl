@@ -65,7 +65,7 @@ const tiers = [
   { name: 'Tier 4 — Founder Safeguards', slugs: ['founder-intent', 'survivability-succession-protocol'] },
   { name: 'Internal — Substrate', slugs: ['internal-topology', 'internal-algorithms', 'internal-trade-secrets', 'internal-control-plane', 'internal-nexus', 'internal-hardening'] },
   { name: 'Internal — Operations', slugs: ['internal-evolution', 'internal-security', 'internal-resilience', 'internal-memory'] },
-  { name: 'Internal — Governor', slugs: ['internal-governor', 'internal-maintenance'] },
+  { name: 'Internal — Governor', slugs: ['internal-governor', 'internal-maintenance', 'crown-jewel-mining'] },
 ];
 
 export default function DocsReader() {
