@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Operations Manual — Flags, Degradation, Shutdown</title>
+  <style>
+    body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.5;color:#111;background:#fff;margin:0}
+    .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+    h1{font-size:20pt;margin:0 0 8px}h2{font-size:14pt;margin:22px 0 10px}
+    ul{padding-left:20px}li{margin:0 0 8px}
+    @media print{@page{size:Letter;margin:0.8in}}
+  </style>
+</head>
+<body>
+<div class="page">
+  <h1>03 — Flags, Degradation &amp; Shutdown</h1>
+
+  <h2>Feature Flag Operations</h2>
+  <ul>
+    <li>Use overrides for controlled emergency behavior.</li>
+    <li>Record all override changes to AUDIT context.</li>
+    <li>Remove emergency overrides after stabilization.</li>
+  </ul>
+
+  <h2>Graceful Degradation</h2>
+  <ul>
+    <li>Isolate affected module paths.</li>
+    <li>Keep unaffected sectors online.</li>
+    <li>Maintain user-safe service quality where possible.</li>
+  </ul>
+
+  <h2>Shutdown Order</h2>
+  <ul>
+    <li>Flush critical state</li>
+    <li>Release leadership lease</li>
+    <li>Stop schedulers</li>
+    <li>Finalize telemetry</li>
+  </ul>
+
+  <p><a href="./00-INDEX.html">Back to Operations Manual Index</a></p>
+</div>
+</body>
+</html>

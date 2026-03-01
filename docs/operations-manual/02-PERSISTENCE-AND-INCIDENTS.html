@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Operations Manual — Persistence and Incidents</title>
+  <style>
+    body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.5;color:#111;background:#fff;margin:0}
+    .page{max-width:8.5in;margin:0 auto;padding:0.8in}
+    h1{font-size:20pt;margin:0 0 8px}h2{font-size:14pt;margin:22px 0 10px}
+    ol{padding-left:22px}li{margin:0 0 8px}
+    @media print{@page{size:Letter;margin:0.8in}}
+  </style>
+</head>
+<body>
+<div class="page">
+  <h1>02 — Persistence &amp; Incident Response</h1>
+
+  <h2>Persistence Discipline</h2>
+  <ol>
+    <li>Use leader lease control for periodic snapshots.</li>
+    <li>Commit staged state atomically.</li>
+    <li>Append and retain WAL for replay/recovery.</li>
+    <li>Keep manual flush path available.</li>
+  </ol>
+
+  <h2>Incident Runbook</h2>
+  <ol>
+    <li>Classify incident (module, cascade, persistence, governance).</li>
+    <li>Contain impact quickly.</li>
+    <li>Recover stable baseline.</li>
+    <li>Validate integrity and audit evidence.</li>
+  </ol>
+
+  <h2>Recovery Principle</h2>
+  <p>Prioritize continuity first, then full restoration and post-incident hardening.</p>
+
+  <p><a href="./00-INDEX.html">Back to Operations Manual Index</a></p>
+</div>
+</body>
+</html>
