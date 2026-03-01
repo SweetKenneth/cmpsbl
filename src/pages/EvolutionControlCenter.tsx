@@ -338,7 +338,7 @@ export default function EvolutionControlCenter() {
               )}
               <Button size="lg" variant="ghost" onClick={() => navigate('/developers/guide')} className="gap-2 text-muted-foreground hover:text-foreground">
                 <Code className="w-4 h-4" />
-                Vanilla developer? Use the SDK directly →
+                Not a vibe coder? Use the SDK directly →
               </Button>
             </div>
           </motion.div>

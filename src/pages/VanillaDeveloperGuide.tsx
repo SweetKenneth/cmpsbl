@@ -1,5 +1,5 @@
 /**
- * Vanilla Developer Guide — For traditional developers who want to integrate directly
+ * Developer Guide — For developers who want to integrate directly
  * No AI agents required. Install, configure, call.
  */
 
