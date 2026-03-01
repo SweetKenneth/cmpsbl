@@ -9,7 +9,7 @@
 ## Competitive Moat Components
 
 - 24-module topology coherence
-n- Governance-gated self-evolution flow
+- Governance-gated self-evolution flow
 - Constant learning compounding model
 - Leader-gated persistence strategy
 
