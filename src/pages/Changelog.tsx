@@ -27,6 +27,38 @@ interface EvolutionEntry {
 
 // Living Evolution Log
 // Each entry documents WHY the system changed, never HOW
+
+// ─── IRONCLAD Epoch (v13.0.0) ─────────────────────────────────────────────────
+const evolutionLogIRONCLAD: EvolutionEntry[] = [
+  {
+    id: "ironclad-evolution-001",
+    date: "2026-03-01",
+    pressures: [
+      "All 22 modules operated at v1.0.0 baseline — no enterprise-grade hardening, containment, or fault-isolation primitives",
+      "Terminal command surface covered only ~40% of operational needs — critical hardening commands for DEFENSE, IMMUNITY, EVOLUTION, and other modules were missing",
+      "Documentation library had grown to 12+ subject folders with overlapping content across epochs — cognitive overhead for contributors and AI agents",
+      "Version 12.0.0 CONTRACT epoch completed its mandate — system needed a major version bump to reflect the hardened architecture",
+    ],
+    responses: [
+      "Hardened all 22 modules to v2.0.0 — each received 25 enterprise-grade features: CORE (Ironclad), DECODE (Cipher), ENCODE (Forge), VISION (Aperture), CORTEX (Nexion), NEXUS (Router), ECONOMY (Treasury), SANDBOX (Crucible), INCLUSIVE (Clarity), DEFENSE (Bastion), IMMUNITY (Sentinel), EVOLUTION (Phoenix), INTENT (Compass), GOVERNANCE (Arbiter), SYSTEM (Citadel), BRAIN (Synapse), MEMORY (Vault), DREAM (Nocturne), RIPPLE (Tsunami), RELAY (Conduit), AUDIT (Ironclad), INTEGRATION (Bridge)",
+      "Registered 500+ terminal commands across 22 hardening categories — full operational coverage for every module's containment, fault-isolation, and observability surface",
+      "Wired unified health aggregation hook (useHardeningHealth) across all 22 modules — single pane of glass for hardening grade and score",
+      "Installed ATLAS Control Plane nodes: ENGINEER (maintenance proposals), INTENT (message hub with approval/rejection), ATLAS Governance Mode Panel (ACTIVE/OBSERVE/LOCKDOWN/EVOLVE)",
+      "Archived all 12 subject libraries into docs/archived/ — clean docs/ root ready for IRONCLAD epoch documentation",
+      "Bumped substrate to v13.0.0 IRONCLAD — all entities, meshes, zones, and control planes synchronized",
+    ],
+    capabilities: [
+      "550 hardening features across 22 modules — the largest single hardening grant in substrate history",
+      "Every module has enterprise containment: circuit breakers, rate limiters, anomaly detectors, integrity validators, and recovery engines",
+      "Full terminal operational surface: 500+ commands covering hardening diagnostics, threat analysis, resource isolation, and governance controls",
+      "Unified observability: single health aggregation dashboard showing hardening grade (A+/A/B/C/D/F) per module",
+      "ATLAS Control Plane fully operational with ENGINEER, INTENT, and Governance Mode subsystems",
+      "Documentation archived and reset — IRONCLAD epoch starts with a clean canonical surface",
+    ],
+  },
+];
+
+// ─── SPARTA/CONTRACT Epoch (v10.x–v12.x) ─────────────────────────────────────
 const evolutionLogSPARTA: EvolutionEntry[] = [
   {
     id: "sparta-evolution-007",

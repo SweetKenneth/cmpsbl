@@ -81,9 +81,9 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '12.0.0',
-  codename: 'CONTRACT',
-  epoch: 'CONTRACT',
+  version: '13.0.0',
+  codename: 'IRONCLAD',
+  epoch: 'IRONCLAD',
   buildDate: new Date().toISOString().split('T')[0],
   
   // Architecture Counts — 10 public entities (CORE + 9 Modules)
