@@ -57,12 +57,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
         
         // Navigate on successful sign-in — respect stored redirect or ?redirect param, fallback to /os
-        if (_event === 'SIGNED_IN' && session && !window.location.pathname.startsWith('/os')) {
+        if (_event === 'SIGNED_IN' && session) {
           const storedRedirect = sessionStorage.getItem('cmpsbl_auth_redirect');
           if (storedRedirect) sessionStorage.removeItem('cmpsbl_auth_redirect');
           const params = new URLSearchParams(window.location.search);
           const redirectTo = storedRedirect || params.get('redirect');
-          navigate(redirectTo || '/os');
+          const target = redirectTo || '/os';
+          // Only navigate if not already on the target path
+          if (window.location.pathname !== target) {
+            navigate(target);
+          }
         }
       });
       subscription = data.subscription;

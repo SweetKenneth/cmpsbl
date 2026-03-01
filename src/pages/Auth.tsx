@@ -70,6 +70,13 @@ export default function Auth() {
   const handlePasskeyAuth = async () => {
     setLoading(true);
     try {
+      // Preserve redirect intent for Face ID flow (same pattern as magic link)
+      const params = new URLSearchParams(window.location.search);
+      const redirectTo = params.get('redirect');
+      if (redirectTo) {
+        sessionStorage.setItem('cmpsbl_auth_redirect', redirectTo);
+      }
+
       // 1. Get a server-generated challenge
       const { data: challengeData, error: challengeError } = await supabase.functions.invoke('passkey-auth/challenge', {
         method: 'POST',
@@ -119,8 +126,11 @@ export default function Auth() {
       }
 
       toast.success('Signed in with Face ID');
-      const params = new URLSearchParams(window.location.search);
-      navigate(params.get('redirect') || '/os');
+      // Redirect is handled by onAuthStateChange via sessionStorage
+      // Fallback navigate in case the listener doesn't fire fast enough
+      const storedRedirect = sessionStorage.getItem('cmpsbl_auth_redirect');
+      const urlParams = new URLSearchParams(window.location.search);
+      navigate(storedRedirect || urlParams.get('redirect') || '/os');
     } catch (err: any) {
       console.error('Passkey auth error:', err);
       toast.error('Face ID authentication failed');
