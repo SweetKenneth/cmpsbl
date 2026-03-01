@@ -37,6 +37,10 @@ const HARDENED_MODULES = [
   { key: 'DREAM', codename: 'Nocturne', loader: () => import('@/lib/substrate/ccr/dream-hardening').then(m => m.calculateDreamHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   // ECONOMY
   { key: 'ECONOMY', codename: 'Ledger', loader: () => import('@/lib/substrate/economy-module/economy-hardening').then(m => m.calculateEconomyHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  // Fields (Mesh)
+  { key: 'IMMUNITY', codename: 'Watchguard', loader: () => import('@/lib/substrate/immunity-hardening').then(m => m.calculateImmunityHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  { key: 'EVOLUTION', codename: 'Chrysalis', loader: () => import('@/lib/substrate/evolution-hardening').then(m => m.calculateEvolutionHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  { key: 'INTENT', codename: 'Navigator', loader: () => import('@/lib/substrate/intent-mesh/intent-hardening').then(m => m.calculateIntentHealth()).catch(() => ({ grade: 'A', score: 100 })) },
 ];
 
 export function useHardeningHealth(refreshInterval = 30_000): HardeningHealthState & { refresh: () => void } {

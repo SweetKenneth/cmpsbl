@@ -34,9 +34,9 @@ export const MODULE_VERSIONS = {
 
 export const MESH_VERSIONS = {
   defense:    { get version() { return v(); }, codename: 'Guardian',  order: 1, position: 'outermost'  as const, hardening: '2.0.0' },
-  immunity:   { get version() { return v(); }, codename: 'Sentinel',  order: 2, position: 'outer'      as const },
-  evolution:  { get version() { return v(); }, codename: 'Phoenix',   order: 3, position: 'middle'     as const },
-  intent:     { get version() { return v(); }, codename: 'Compass',   order: 4, position: 'inner'      as const },
+  immunity:   { get version() { return v(); }, codename: 'Sentinel',  order: 2, position: 'outer'      as const, hardening: '2.0.0' },
+  evolution:  { get version() { return v(); }, codename: 'Phoenix',   order: 3, position: 'middle'     as const, hardening: '2.0.0' },
+  intent:     { get version() { return v(); }, codename: 'Compass',   order: 4, position: 'inner'      as const, hardening: '2.0.0' },
   governance: { get version() { return v(); }, codename: 'Arbiter',   order: 5, position: 'innermost'  as const, hardening: '2.0.0' },
 };
 

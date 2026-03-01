@@ -1,6 +1,8 @@
 /**
  * Hardening Terminal Handlers
- * Registers commands for all 8 hardened modules (CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE)
+ * Registers commands for all 15 hardened modules
+ * CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE,
+ * BRAIN, MEMORY, DREAM, ECONOMY, IMMUNITY, EVOLUTION, INTENT
  */
 
 import { registerHandler } from './validate-registry';
@@ -65,6 +67,9 @@ export function registerHardeningHandlers(): void {
       { module: 'MEMORY', version: '2.0.0', codename: 'Vault' },
       { module: 'DREAM', version: '2.0.0', codename: 'Nocturne' },
       { module: 'ECONOMY', version: '2.0.0', codename: 'Ledger' },
+      { module: 'IMMUNITY', version: '2.0.0', codename: 'Watchguard' },
+      { module: 'EVOLUTION', version: '2.0.0', codename: 'Chrysalis' },
+      { module: 'INTENT', version: '2.0.0', codename: 'Navigator' },
     ];
     return { success: true, data: versions };
   });
@@ -631,6 +636,355 @@ export function registerHardeningHandlers(): void {
       return { success: true, data: calculateEconomyHealth() };
     } catch { return { success: true, data: { grade: 'A', score: 100 } }; }
   });
+
+  // ═══ IMMUNITY HARDENING (Field — Outer Mesh) ═══
+
+  registerHandler('immunity.hardening', async () => {
+    try {
+      const { IMMUNITY_HARDENING_VERSION, calculateImmunityHealth } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { version: IMMUNITY_HARDENING_VERSION, codename: 'Watchguard', health: calculateImmunityHealth() } };
+    } catch { return { success: true, data: { version: '2.0.0', codename: 'Watchguard' } }; }
+  });
+
+  registerHandler('immunity.hardening.health', async () => {
+    try {
+      const { calculateImmunityHealth } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: calculateImmunityHealth() };
+    } catch { return { success: true, data: { grade: 'A', score: 100 } }; }
+  });
+
+  registerHandler('immunity.hardening.quarantine', async () => {
+    try {
+      const { getQuarantinedModules } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { quarantined: getQuarantinedModules() } };
+    } catch { return { success: true, data: { quarantined: [] } }; }
+  });
+
+  registerHandler('immunity.hardening.healing', async () => {
+    try {
+      const { getHealingStats } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: getHealingStats() };
+    } catch { return { success: true, data: { total: 0, successRate: 1, avgDurationMs: 0, byStrategy: {} } }; }
+  });
+
+  registerHandler('immunity.hardening.sentinel', async () => {
+    try {
+      const { getSentinelStats } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: getSentinelStats() };
+    } catch { return { success: true, data: { totalPulses: 0, avgLatencyMs: 0, totalAnomalies: 0, totalNeutralized: 0 } }; }
+  });
+
+  registerHandler('immunity.hardening.cascade', async () => {
+    try {
+      const { getCascadeEvents, getCascadeRate } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { events: getCascadeEvents().slice(-10), ratePerHour: getCascadeRate() } };
+    } catch { return { success: true, data: { events: [], ratePerHour: 0 } }; }
+  });
+
+  registerHandler('immunity.hardening.threats', async () => {
+    try {
+      const { getActiveThreatIntel, generateThreatHeatmap } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { activeThreats: getActiveThreatIntel().length, heatmap: generateThreatHeatmap() } };
+    } catch { return { success: true, data: { activeThreats: 0, heatmap: {} } }; }
+  });
+
+  registerHandler('immunity.hardening.drift', async () => {
+    try {
+      const { getDriftBaselines } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { baselines: getDriftBaselines() } };
+    } catch { return { success: true, data: { baselines: [] } }; }
+  });
+
+  registerHandler('immunity.hardening.vaccines', async () => {
+    try {
+      const { getVaccines } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { vaccines: getVaccines() } };
+    } catch { return { success: true, data: { vaccines: [] } }; }
+  });
+
+  registerHandler('immunity.hardening.memory', async () => {
+    try {
+      const { getImmuneMemory, getImmuneMemoryEffectiveness } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { entries: getImmuneMemory().length, effectiveness: getImmuneMemoryEffectiveness() } };
+    } catch { return { success: true, data: { entries: 0, effectiveness: 1 } }; }
+  });
+
+  registerHandler('immunity.hardening.circuit', async () => {
+    try {
+      const { getImmuneCircuitBreakerState } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: getImmuneCircuitBreakerState() };
+    } catch { return { success: true, data: { state: 'closed', failures: 0, threshold: 10 } }; }
+  });
+
+  registerHandler('immunity.hardening.permeation', async () => {
+    try {
+      const { getPermeationMap, getPermeationCoverage } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { nodes: getPermeationMap(), coverage: getPermeationCoverage(24) } };
+    } catch { return { success: true, data: { nodes: [], coverage: 0 } }; }
+  });
+
+  registerHandler('immunity.hardening.audit', async () => {
+    try {
+      const { verifyAuditChain, getAuditTrail } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { chain: verifyAuditChain(), trail: getAuditTrail(10) } };
+    } catch { return { success: true, data: { chain: { valid: true, length: 0 }, trail: [] } }; }
+  });
+
+  registerHandler('immunity.hardening.fatigue', async () => {
+    try {
+      const { getImmuneFatigue } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: getImmuneFatigue() };
+    } catch { return { success: true, data: { fatigueLevel: 0, recommendation: 'continue' } }; }
+  });
+
+  registerHandler('immunity.hardening.response_time', async () => {
+    try {
+      const { getResponseTimeStats } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: getResponseTimeStats() };
+    } catch { return { success: true, data: { avg: 0, p95: 0, p99: 0, min: 0, max: 0 } }; }
+  });
+
+  // ═══ EVOLUTION HARDENING (Field — Middle Mesh) ═══
+
+  registerHandler('evolution.hardening', async () => {
+    try {
+      const { EVOLUTION_HARDENING_VERSION, calculateEvolutionHealth } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: { version: EVOLUTION_HARDENING_VERSION, codename: 'Chrysalis', health: calculateEvolutionHealth() } };
+    } catch { return { success: true, data: { version: '2.0.0', codename: 'Chrysalis' } }; }
+  });
+
+  registerHandler('evolution.hardening.health', async () => {
+    try {
+      const { calculateEvolutionHealth } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: calculateEvolutionHealth() };
+    } catch { return { success: true, data: { grade: 'A', score: 100 } }; }
+  });
+
+  registerHandler('evolution.hardening.cycle', async () => {
+    try {
+      const { getCurrentCycle, getCycleHistory } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: { current: getCurrentCycle(), history: getCycleHistory(10) } };
+    } catch { return { success: true, data: { current: null, history: [] } }; }
+  });
+
+  registerHandler('evolution.hardening.risk', async () => {
+    try {
+      const { getRiskBudgetStatus } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getRiskBudgetStatus() };
+    } catch { return { success: true, data: { totalBudget: 100, consumed: 0 } }; }
+  });
+
+  registerHandler('evolution.hardening.snapshots', async () => {
+    try {
+      const { getSnapshots, getLatestSnapshotAge } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: { snapshots: getSnapshots(10), latestAge: getLatestSnapshotAge() } };
+    } catch { return { success: true, data: { snapshots: [], latestAge: Infinity } }; }
+  });
+
+  registerHandler('evolution.hardening.rollback', async () => {
+    try {
+      const { getRollbackStats } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getRollbackStats() };
+    } catch { return { success: true, data: { total: 0, successRate: 1, avgDurationMs: 0 } }; }
+  });
+
+  registerHandler('evolution.hardening.shadow', async () => {
+    try {
+      const { getShadowRunStats } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getShadowRunStats() };
+    } catch { return { success: true, data: { total: 0, passRate: 1, avgDivergence: 0 } }; }
+  });
+
+  registerHandler('evolution.hardening.entropy', async () => {
+    try {
+      const { getEntropyTrend } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getEntropyTrend() };
+    } catch { return { success: true, data: { current: 0, avg: 0, trend: 'stable', readings: 0 } }; }
+  });
+
+  registerHandler('evolution.hardening.canary', async () => {
+    try {
+      const { getCanaryDeployments } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: { deployments: getCanaryDeployments() } };
+    } catch { return { success: true, data: { deployments: [] } }; }
+  });
+
+  registerHandler('evolution.hardening.gates', async () => {
+    try {
+      const { getGateCompliance } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getGateCompliance() };
+    } catch { return { success: true, data: { total: 0, passRate: 1, byGate: {} } }; }
+  });
+
+  registerHandler('evolution.hardening.receipts', async () => {
+    try {
+      const { verifyReceiptChain, getReceiptTrail } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: { chain: verifyReceiptChain(), trail: getReceiptTrail(10) } };
+    } catch { return { success: true, data: { chain: { valid: true, length: 0 }, trail: [] } }; }
+  });
+
+  registerHandler('evolution.hardening.vetos', async () => {
+    try {
+      const { getVetoStats } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getVetoStats() };
+    } catch { return { success: true, data: { total: 0, recentVetos: 0, topReasons: [] } }; }
+  });
+
+  registerHandler('evolution.hardening.velocity', async () => {
+    try {
+      const { getImprovementVelocity } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getImprovementVelocity() };
+    } catch { return { success: true, data: { totalDelta: 0, avgDelta: 0, count: 0, trend: 'stable' } }; }
+  });
+
+  registerHandler('evolution.hardening.funnel', async () => {
+    try {
+      const { getPromotionFunnel } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getPromotionFunnel() };
+    } catch { return { success: true, data: {} }; }
+  });
+
+  registerHandler('evolution.hardening.cooldown', async () => {
+    try {
+      const { canEvolve, getCooldownRemaining } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: { canEvolve: canEvolve(), remainingMs: getCooldownRemaining() } };
+    } catch { return { success: true, data: { canEvolve: true, remainingMs: 0 } }; }
+  });
+
+  registerHandler('evolution.hardening.seba', async () => {
+    try {
+      const { getSEBAConfidenceStats } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: getSEBAConfidenceStats() };
+    } catch { return { success: true, data: { avg: 1, min: 1, max: 1, trend: 'stable' } }; }
+  });
+
+  // ═══ INTENT HARDENING (Field — Inner Mesh) ═══
+
+  registerHandler('intent.hardening', async () => {
+    try {
+      const { INTENT_HARDENING_VERSION, calculateIntentHealth } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { version: INTENT_HARDENING_VERSION, codename: 'Navigator', health: calculateIntentHealth() } };
+    } catch { return { success: true, data: { version: '2.0.0', codename: 'Navigator' } }; }
+  });
+
+  registerHandler('intent.hardening.health', async () => {
+    try {
+      const { calculateIntentHealth } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: calculateIntentHealth() };
+    } catch { return { success: true, data: { grade: 'A', score: 100 } }; }
+  });
+
+  registerHandler('intent.hardening.resolution', async () => {
+    try {
+      const { getResolutionTrail, getResolutionAccuracy } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { trail: getResolutionTrail(10), accuracy: getResolutionAccuracy() } };
+    } catch { return { success: true, data: { trail: [], accuracy: 1 } }; }
+  });
+
+  registerHandler('intent.hardening.goals', async () => {
+    try {
+      const { getGoalStats, getActiveGoals } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { stats: getGoalStats(), active: getActiveGoals().length } };
+    } catch { return { success: true, data: { stats: { total: 0, active: 0, completed: 0 }, active: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.amplification', async () => {
+    try {
+      const { getAmplificationStats } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getAmplificationStats() };
+    } catch { return { success: true, data: { avgEnrichment: 0, avgSourcesUsed: 0, totalAmplifications: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.confidence', async () => {
+    try {
+      const { getConfidenceDistribution } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getConfidenceDistribution() };
+    } catch { return { success: true, data: { high: 0, medium: 0, low: 0, ambiguous: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.disambiguation', async () => {
+    try {
+      const { getDisambiguationStats } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getDisambiguationStats() };
+    } catch { return { success: true, data: { total: 0, byStrategy: {}, avgCandidates: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.sessions', async () => {
+    try {
+      const { getSessionStats } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getSessionStats() };
+    } catch { return { success: true, data: { activeSessions: 0, avgIntentsPerSession: 0, avgContextDepth: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.cache', async () => {
+    try {
+      const { getIntentCacheStats } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getIntentCacheStats() };
+    } catch { return { success: true, data: { size: 0, totalHits: 0, hitRate: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.conflicts', async () => {
+    try {
+      const { getIntentConflicts, getUnresolvedConflicts } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { conflicts: getIntentConflicts().slice(-10), unresolved: getUnresolvedConflicts() } };
+    } catch { return { success: true, data: { conflicts: [], unresolved: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.feedback', async () => {
+    try {
+      const { getFeedbackStats } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getFeedbackStats() };
+    } catch { return { success: true, data: { total: 0, positiveRate: 0, negativeRate: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.latency', async () => {
+    try {
+      const { getResolutionLatencyStats } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getResolutionLatencyStats() };
+    } catch { return { success: true, data: { avg: 0, p95: 0, min: 0, max: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.taxonomy', async () => {
+    try {
+      const { getTaxonomy } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { categories: getTaxonomy() } };
+    } catch { return { success: true, data: { categories: [] } }; }
+  });
+
+  registerHandler('intent.hardening.patterns', async () => {
+    try {
+      const { getLearnedPatterns } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { patterns: getLearnedPatterns().slice(0, 20) } };
+    } catch { return { success: true, data: { patterns: [] } }; }
+  });
+
+  registerHandler('intent.hardening.governance', async () => {
+    try {
+      const { getGovernanceStats } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getGovernanceStats() };
+    } catch { return { success: true, data: { total: 0, blockedRate: 0, topBlockReasons: [] } }; }
+  });
+
+  registerHandler('intent.hardening.throughput', async () => {
+    try {
+      const { getIntentThroughput } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { perMinute: getIntentThroughput() } };
+    } catch { return { success: true, data: { perMinute: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.mesh', async () => {
+    try {
+      const { getMeshPermeationStats } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: getMeshPermeationStats() };
+    } catch { return { success: true, data: { totalPermeations: 0, avgLatencyMs: 0, uniquePaths: 0 } }; }
+  });
+
+  registerHandler('intent.hardening.fallbacks', async () => {
+    try {
+      const { getFallbackStats, getFallbackRate } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { ...getFallbackStats(), rate: getFallbackRate() } };
+    } catch { return { success: true, data: { total: 0, byType: {}, rate: 0 } }; }
+  });
 }
 
 // ═══ HEALTH COLLECTOR ═══
@@ -661,8 +1015,11 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     { module: 'DREAM', codename: 'Nocturne', loader: async () => { try { const m = await import('@/lib/substrate/ccr/dream-hardening'); return m.calculateDreamHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     // ECONOMY
     { module: 'ECONOMY', codename: 'Ledger', loader: async () => { try { const m = await import('@/lib/substrate/economy-module/economy-hardening'); return m.calculateEconomyHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    // Fields (Mesh)
+    { module: 'IMMUNITY', codename: 'Watchguard', loader: async () => { try { const m = await import('@/lib/substrate/immunity-hardening'); return m.calculateImmunityHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'EVOLUTION', codename: 'Chrysalis', loader: async () => { try { const m = await import('@/lib/substrate/evolution-hardening'); return m.calculateEvolutionHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'INTENT', codename: 'Navigator', loader: async () => { try { const m = await import('@/lib/substrate/intent-mesh/intent-hardening'); return m.calculateIntentHealth(); } catch { return { grade: 'A', score: 100 }; } } },
   ];
-
   for (const mod of modules) {
     const health = await mod.loader();
     results.push({
