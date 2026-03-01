@@ -74,7 +74,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     corePath: 'src/lib/core/',
     hookPath: 'src/hooks/substrate/useCore.ts',
     dependencies: [],
-    dependents: ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration'],
+    dependents: ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration', 'medic', 'nerve'],
   },
 
   // ─── 8 Public Modules ──────────────────────────────────────────────────────
@@ -215,6 +215,28 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     description: 'External service connections, OAuth flows, adapters, and third-party API management. Boots last.',
     corePath: 'src/lib/integrations/',
     dependencies: ['core'],
+    dependents: [],
+  },
+
+  // ─── MEDIC (Module — autonomous diagnostics) ─────────────────────────────
+  medic: {
+    id: 'medic',
+    name: 'MEDIC',
+    layer: 'operational',
+    description: 'Autonomous diagnostics, self-repair coordination, health scoring, predictive failure forecasting.',
+    corePath: 'src/lib/substrate/medic/',
+    dependencies: ['core', 'system', 'vision'],
+    dependents: [],
+  },
+
+  // ─── NERVE (Module — inter-node signaling) ────────────────────────────────
+  nerve: {
+    id: 'nerve',
+    name: 'NERVE',
+    layer: 'infrastructure',
+    description: 'Inter-node signaling, consensus repair, distributed heartbeat, partition detection, state synchronization.',
+    corePath: 'src/lib/substrate/nerve/',
+    dependencies: ['core', 'ripple', 'system'],
     dependents: [],
   },
 };
