@@ -25,6 +25,7 @@ import { ArtifactPacksSection } from "@/components/home/ArtifactPacksSection";
 import { AgentsSection } from "@/components/home/AgentsSection";
 import { GovernanceSignal } from "@/components/home/GovernanceSignal";
 import { BuiltForSection } from "@/components/home/BuiltForSection";
+import { EvolutionCTA } from "@/components/home/EvolutionCTA";
 import { useMetric } from "@/stores/publicMetricsStore";
 
 // Section divider with animated gradient
