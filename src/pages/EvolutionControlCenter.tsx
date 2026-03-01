@@ -114,33 +114,33 @@ const VALUE_PROPS = [
 function EvolutionDiagram() {
   const nodes = [
     { label: 'SCAN', icon: Eye, x: '10%', y: '20%', delay: 0 },
-    { label: 'DRY-RUN', icon: FlaskConical, x: '40%', y: '10%', delay: 0.3 },
-    { label: 'REVIEW', icon: Shield, x: '70%', y: '20%', delay: 0.6 },
-    { label: 'APPLY', icon: Zap, x: '80%', y: '55%', delay: 0.9 },
-    { label: 'RECEIPT', icon: Layers, x: '50%', y: '70%', delay: 1.2 },
-    { label: 'ROLLBACK', icon: RotateCcw, x: '15%', y: '60%', delay: 1.5 },
+    { label: 'DRY-RUN', icon: FlaskConical, x: '40%', y: '10%', delay: 0.25 },
+    { label: 'REVIEW', icon: Shield, x: '70%', y: '20%', delay: 0.5 },
+    { label: 'APPLY', icon: Zap, x: '80%', y: '55%', delay: 0.75 },
+    { label: 'RECEIPT', icon: Layers, x: '50%', y: '70%', delay: 1.0 },
+    { label: 'ROLLBACK', icon: RotateCcw, x: '15%', y: '60%', delay: 1.25 },
   ];
 
   return (
     <div className="relative w-full max-w-sm sm:max-w-md mx-auto aspect-square">
-      {/* Connection lines */}
+      {/* Connection path */}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" fill="none">
         <motion.path
           d="M 15 25 Q 30 10 45 15 Q 60 10 75 25 Q 85 40 85 60 Q 70 80 55 75 Q 35 80 20 65 Q 10 50 15 25"
-          stroke="hsl(var(--primary) / 0.25)"
-          strokeWidth="0.5"
-          strokeDasharray="3 3"
+          stroke="hsl(var(--primary) / 0.2)"
+          strokeWidth="0.4"
+          strokeDasharray="2.5 4"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 3, ease: "easeInOut" }}
+          transition={{ duration: 2.5, ease: "easeInOut" }}
         />
         <motion.circle
-          r="1.5"
+          r="1.2"
           fill="hsl(var(--primary))"
-          opacity={0.6}
+          opacity={0.5}
         >
           <animateMotion
-            dur="4s"
+            dur="5s"
             repeatCount="indefinite"
             path="M 15 25 Q 30 10 45 15 Q 60 10 75 25 Q 85 40 85 60 Q 70 80 55 75 Q 35 80 20 65 Q 10 50 15 25"
           />
@@ -153,19 +153,18 @@ function EvolutionDiagram() {
           key={node.label}
           className="absolute flex flex-col items-center gap-1 -translate-x-1/2 -translate-y-1/2"
           style={{ left: node.x, top: node.y }}
-          initial={{ opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: node.delay }}
+          transition={{ duration: 0.4, delay: node.delay }}
         >
           <motion.div
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-card border border-border/50 flex items-center justify-center shadow-sm"
-            whileHover={{ scale: 1.1, borderColor: 'hsl(var(--primary))' }}
-            animate={{ y: [0, -3, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: node.delay }}
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-card border border-border/40 flex items-center justify-center shadow-sm hover:border-primary/30 transition-colors"
+            animate={{ y: [0, -2.5, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: node.delay }}
           >
             <node.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
           </motion.div>
-          <span className="text-[10px] sm:text-xs font-mono text-muted-foreground tracking-wider">
+          <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground/70 tracking-wider">
             {node.label}
           </span>
         </motion.div>
@@ -176,17 +175,17 @@ function EvolutionDiagram() {
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
+        transition={{ delay: 1.8 }}
       >
         <div className="text-center">
           <motion.div
-            className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full border-2 border-primary/30 bg-primary/5 flex items-center justify-center"
+            className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full border border-primary/25 bg-primary/5 flex items-center justify-center"
             animate={{ rotate: [0, 360] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
           >
             <GitBranch className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
           </motion.div>
-          <span className="text-xs font-bold text-foreground mt-1 block">EVOLVE</span>
+          <span className="text-[10px] sm:text-xs font-bold text-foreground mt-1.5 block tracking-wide">EVOLVE</span>
         </div>
       </motion.div>
     </div>
@@ -267,87 +266,87 @@ export default function EvolutionControlCenter() {
   const heroSection = (
     <section className="relative overflow-hidden">
       {/* Ambient background */}
-      <div className="absolute inset-0 bg-[image:var(--gradient-mesh)] opacity-60" />
+      <div className="absolute inset-0 bg-[image:var(--gradient-mesh)] opacity-50" />
       <motion.div 
         className="absolute top-0 right-0 w-48 sm:w-[400px] h-48 sm:h-[400px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.08) 0%, transparent 60%)" }}
-        animate={{ x: [0, 20, 0], y: [0, -15, 0] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
+        animate={{ x: [0, 15, 0], y: [0, -10, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
       
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-10 sm:pt-24 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left: Text content */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
             className="space-y-5 sm:space-y-6"
           >
             <div className="flex items-center gap-2 flex-wrap">
-              <Badge variant="outline" className="border-primary/40 text-primary text-[11px] px-2.5 py-0.5">
+              <Badge variant="outline" className="border-primary/30 text-primary text-[10px] sm:text-[11px] px-2.5 py-0.5">
                 <Zap className="w-3 h-3 mr-1" /> Governed Self-Improvement
               </Badge>
               {user && (
-                <Badge variant="outline" className="border-emerald-500/40 text-emerald-400 text-[11px] px-2.5 py-0.5">
+                <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 text-[10px] sm:text-[11px] px-2.5 py-0.5">
                   <Shield className="w-3 h-3 mr-1" /> Authenticated
                 </Badge>
               )}
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]">
               <span className="text-foreground">Your system evolves.</span>
               <br />
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
                 You stay in control.
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl break-words">
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed max-w-xl break-words">
               EVOLUTION is a governed self-improvement engine for your codebase. It connects any AI coding agent — Cursor, Windsurf, Cline — to a safe, auditable improvement loop where every change is previewed, receipted, and rollback-safe.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row gap-3 pt-1">
               {user ? (
                 <>
-                  <Button size="lg" onClick={scrollToTools} className="gap-2">
+                  <Button size="lg" onClick={scrollToTools} className="gap-2 h-12">
                     <Terminal className="w-4 h-4" />
                     Open Mission Control
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Button size="lg" variant="outline" onClick={() => {
                     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                  }} className="gap-2">
+                  }} className="gap-2 h-12">
                     How it works
                     <ChevronDown className="w-4 h-4" />
                   </Button>
                 </>
               ) : (
                 <>
-                  <Button size="lg" onClick={() => navigate('/auth?redirect=/evolution')} className="gap-2">
+                  <Button size="lg" onClick={() => navigate('/auth?redirect=/evolution')} className="gap-2 h-12">
                     <Lock className="w-4 h-4" />
                     Sign in to evolve
                   </Button>
                   <Button size="lg" variant="outline" onClick={() => {
                     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                  }} className="gap-2">
+                  }} className="gap-2 h-12">
                     See how it works
                     <ChevronDown className="w-4 h-4" />
                   </Button>
                 </>
               )}
-              <Button size="lg" variant="ghost" onClick={() => navigate('/developers/guide')} className="gap-2 text-muted-foreground hover:text-foreground">
+              <Button size="lg" variant="ghost" onClick={() => navigate('/developers/guide')} className="gap-2 text-muted-foreground hover:text-foreground text-sm">
                 <Code className="w-4 h-4" />
-                Not a vibe coder? Use the SDK directly →
+                Not a vibe coder? Use SDK →
               </Button>
             </div>
           </motion.div>
 
           {/* Right: Animated diagram */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
           >
             <EvolutionDiagram />
           </motion.div>
@@ -356,9 +355,9 @@ export default function EvolutionControlCenter() {
         {/* Quick stats */}
         <motion.div 
           className="grid grid-cols-3 gap-4 sm:gap-8 mt-10 sm:mt-14 max-w-lg mx-auto lg:mx-0"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
         >
           <AnimatedStat label="Avg health lift" value="+28" suffix="pts" />
           <AnimatedStat label="Avg debt reduction" value="−15" suffix="flags" />

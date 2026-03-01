@@ -104,20 +104,20 @@ export default function Scanner() {
       <main className="pt-24 sm:pt-28 pb-20 overflow-hidden">
         {/* Hero */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           className="max-w-5xl mx-auto px-4 text-center mb-20 sm:mb-24 relative"
         >
           {/* Ambient glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-primary/4 rounded-full blur-[120px] pointer-events-none" />
 
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+            transition={{ delay: 0.15, duration: 0.4 }}
           >
-            <Badge variant="outline" className="px-4 py-1.5 text-xs border-primary/40 mb-5 gap-2">
+            <Badge variant="outline" className="px-4 py-1.5 text-[11px] border-primary/30 mb-6 gap-2">
               <Construction className="w-3.5 h-3.5" />
               Coming Soon — In Active Development
             </Badge>
@@ -130,26 +130,26 @@ export default function Scanner() {
               technical debt.
             </span>
             <br />
-            <span className="text-foreground text-3xl sm:text-4xl md:text-5xl opacity-80">
+            <span className="text-foreground text-3xl sm:text-4xl md:text-5xl opacity-70">
               Let's evolve past it.
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
             The Evolution Scanner doesn't just find problems — it generates cryptographically stamped evolution plans 
             that make your system <span className="text-foreground font-medium">provably better</span>. 
             Detect → Diagnose → Prescribe → Evolve. Closed-loop. Verifiable.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button asChild size="lg" className="gap-2 relative overflow-hidden group">
+            <Button asChild size="lg" className="gap-2 relative overflow-hidden group h-12">
               <Link to="/decode">
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Terminal className="w-4 h-4" />
                 Try in DECODE Terminal
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2">
+            <Button asChild variant="outline" size="lg" className="gap-2 h-12">
               <Link to="/documentation">
                 <Code className="w-4 h-4" />
                 Read the Docs
@@ -164,14 +164,14 @@ export default function Scanner() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-10 sm:mb-12"
           >
-            <Badge variant="secondary" className="mb-4 text-xs">THE PROBLEM</Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+            <Badge variant="secondary" className="mb-4 text-[11px]">THE PROBLEM</Badge>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
               Vibe coding is fast.<br />
               <span className="text-muted-foreground">Technical debt is faster.</span>
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
+            <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
               You ship at the speed of thought. But every shortcut, every "fix it later," every copy-pasted snippet 
               compounds into a system that fights you. The scanner sees what you can't.
             </p>
@@ -182,17 +182,17 @@ export default function Scanner() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3"
           >
             {DEBT_TYPES.map((item) => (
               <motion.div key={item.label} variants={itemVariants}>
-                <div className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 hover:border-primary/20 transition-all duration-300 group">
-                  <div className="p-1.5 rounded-lg bg-destructive/10 group-hover:bg-primary/10 transition-colors shrink-0">
-                    <item.icon className="w-4 h-4 text-destructive/70 group-hover:text-primary transition-colors" />
+                <div className="flex items-start gap-3 p-4 rounded-xl border border-border/30 bg-card/40 hover:bg-card/70 hover:border-primary/15 transition-all duration-300 group">
+                  <div className="p-1.5 rounded-lg bg-destructive/8 group-hover:bg-primary/8 transition-colors shrink-0">
+                    <item.icon className="w-4 h-4 text-destructive/60 group-hover:text-primary transition-colors" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">{item.label}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
+                    <p className="text-sm font-medium text-foreground leading-snug">{item.label}</p>
+                    <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -206,42 +206,42 @@ export default function Scanner() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-10 sm:mb-12"
           >
-            <Badge variant="secondary" className="mb-4 text-xs">THE SOLUTION</Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+            <Badge variant="secondary" className="mb-4 text-[11px]">THE SOLUTION</Badge>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
               Four phases. One evolution.
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
+            <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
               Not a linter. Not a dashboard. A closed-loop evolution engine that makes your system 
               measurably better with every scan.
             </p>
           </motion.div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {EVOLUTION_PHASES.map((phase, i) => (
               <motion.div
                 key={phase.phase}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ duration: 0.45, delay: i * 0.08 }}
               >
-                <Card className={`border ${phase.border} overflow-hidden group hover:shadow-lg transition-all duration-300`}>
+                <Card className={`border ${phase.border} overflow-hidden group hover:shadow-md transition-all duration-300`}>
                   <CardContent className="p-0">
-                    <div className={`flex flex-col sm:flex-row items-stretch`}>
+                    <div className="flex flex-col sm:flex-row items-stretch">
                       {/* Phase number + icon */}
-                      <div className={`bg-gradient-to-br ${phase.color} p-6 sm:p-8 sm:w-48 flex flex-row sm:flex-col items-center sm:items-start justify-start gap-4 sm:gap-3 shrink-0`}>
-                        <span className={`text-3xl sm:text-4xl font-black font-mono ${phase.accent} opacity-60`}>{phase.phase}</span>
+                      <div className={`bg-gradient-to-br ${phase.color} p-5 sm:p-8 sm:w-44 flex flex-row sm:flex-col items-center sm:items-start justify-start gap-3 sm:gap-2.5 shrink-0`}>
+                        <span className={`text-2xl sm:text-3xl font-black font-mono ${phase.accent} opacity-50`}>{phase.phase}</span>
                         <div className="flex items-center gap-2">
-                          <phase.icon className={`w-5 h-5 ${phase.accent}`} />
-                          <span className={`text-lg font-bold ${phase.accent}`}>{phase.name}</span>
+                          <phase.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${phase.accent}`} />
+                          <span className={`text-base sm:text-lg font-bold ${phase.accent}`}>{phase.name}</span>
                         </div>
                       </div>
                       {/* Content */}
-                      <div className="p-6 sm:p-8 flex-1">
-                        <p className="text-sm font-mono text-primary/80 uppercase tracking-wider mb-2">{phase.tagline}</p>
-                        <p className="text-muted-foreground leading-relaxed">{phase.description}</p>
+                      <div className="p-5 sm:p-8 flex-1">
+                        <p className="text-[11px] sm:text-xs font-mono text-primary/70 uppercase tracking-wider mb-2">{phase.tagline}</p>
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{phase.description}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -255,16 +255,16 @@ export default function Scanner() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex items-center justify-center gap-3 mt-8 text-muted-foreground"
+            className="flex items-center justify-center gap-2.5 sm:gap-3 mt-8 text-muted-foreground/70"
           >
-            <span className="text-xs font-mono uppercase tracking-wider">Detect</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-            <span className="text-xs font-mono uppercase tracking-wider">Diagnose</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-            <span className="text-xs font-mono uppercase tracking-wider">Prescribe</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-            <span className="text-xs font-mono uppercase tracking-wider text-primary font-bold">Evolve</span>
-            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider">Detect</span>
+            <ArrowRight className="w-3 h-3" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider">Diagnose</span>
+            <ArrowRight className="w-3 h-3" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider">Prescribe</span>
+            <ArrowRight className="w-3 h-3" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-primary font-bold">Evolve</span>
+            <Sparkles className="w-3.5 h-3.5 text-primary" />
           </motion.div>
         </section>
 
@@ -362,33 +362,33 @@ export default function Scanner() {
 
         {/* CTA */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-3xl mx-auto px-4 text-center"
+          className="max-w-3xl mx-auto px-4 text-center mb-16"
         >
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-emerald-500/10 rounded-2xl blur-xl" />
-            <Card className="border-primary/20 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-emerald-500/8 rounded-2xl blur-xl" />
+            <Card className="border-primary/15 relative">
               <CardContent className="p-8 sm:p-10">
-                <Badge variant="outline" className="mb-4 text-xs border-amber-500/40 text-amber-400 gap-1.5">
+                <Badge variant="outline" className="mb-4 text-[11px] border-amber-500/30 text-amber-400 gap-1.5">
                   <Construction className="w-3 h-3" />
                   Coming Soon
                 </Badge>
-                <Rocket className="w-8 h-8 text-primary mx-auto mb-4" />
+                <Rocket className="w-7 h-7 text-primary mx-auto mb-4" />
                 <h3 className="text-xl sm:text-2xl font-bold mb-3">We're building something different.</h3>
-                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md mx-auto leading-relaxed">
                   The Evolution Scanner is in active development. Preview what's coming in the DECODE terminal 
                   with <code className="text-primary font-mono text-sm">scan</code> — and watch this space.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Button asChild size="lg" className="gap-2">
+                  <Button asChild size="lg" className="gap-2 h-12">
                     <Link to="/evolution">
                       <Zap className="w-4 h-4" />
                       Open EVOLUTION
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="gap-2">
+                  <Button asChild size="lg" variant="outline" className="gap-2 h-12">
                     <Link to="/decode">
                       <Terminal className="w-4 h-4" />
                       Preview in DECODE
