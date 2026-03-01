@@ -37,7 +37,7 @@ export const MESH_VERSIONS = {
   immunity:   { get version() { return v(); }, codename: 'Sentinel',  order: 2, position: 'outer'      as const },
   evolution:  { get version() { return v(); }, codename: 'Phoenix',   order: 3, position: 'middle'     as const },
   intent:     { get version() { return v(); }, codename: 'Compass',   order: 4, position: 'inner'      as const },
-  governance: { get version() { return v(); }, codename: 'Arbiter',   order: 5, position: 'innermost'  as const },
+  governance: { get version() { return v(); }, codename: 'Arbiter',   order: 5, position: 'innermost'  as const, hardening: '2.0.0' },
 };
 
 // ─── 9 Zones ──────────────────────────────────────────────────────────────────
