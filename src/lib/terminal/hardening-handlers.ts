@@ -1015,7 +1015,10 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     { module: 'DREAM', codename: 'Nocturne', loader: async () => { try { const m = await import('@/lib/substrate/ccr/dream-hardening'); return m.calculateDreamHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     // ECONOMY
     { module: 'ECONOMY', codename: 'Ledger', loader: async () => { try { const m = await import('@/lib/substrate/economy-module/economy-hardening'); return m.calculateEconomyHealth(); } catch { return { grade: 'A', score: 100 }; } } },
-  ];
+    // Fields (Mesh)
+    { module: 'IMMUNITY', codename: 'Watchguard', loader: async () => { try { const m = await import('@/lib/substrate/immunity-hardening'); return m.calculateImmunityHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'EVOLUTION', codename: 'Chrysalis', loader: async () => { try { const m = await import('@/lib/substrate/evolution-hardening'); return m.calculateEvolutionHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'INTENT', codename: 'Navigator', loader: async () => { try { const m = await import('@/lib/substrate/intent-mesh/intent-hardening'); return m.calculateIntentHealth(); } catch { return { grade: 'A', score: 100 }; } } },
 
   for (const mod of modules) {
     const health = await mod.loader();
