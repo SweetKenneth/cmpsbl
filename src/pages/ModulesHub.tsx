@@ -117,6 +117,7 @@ export default function ModulesHub() {
         })}
       </main>
 
+      <AuthorityLinkBlock currentPath="/modules" />
       <EnhancedFooter />
     </>
   );

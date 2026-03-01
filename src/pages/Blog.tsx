@@ -1134,6 +1134,7 @@ export default function Blog() {
           </section>
         </main>
 
+        <AuthorityLinkBlock currentPath="/blog" />
         <EnhancedFooter />
       </div>
     </>

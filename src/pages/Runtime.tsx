@@ -286,6 +286,7 @@ export default function Runtime() {
         </section>
       </main>
 
+      <AuthorityLinkBlock currentPath="/runtime" />
       <EnhancedFooter />
     </div>
   );

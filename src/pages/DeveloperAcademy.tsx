@@ -150,6 +150,7 @@ const DeveloperAcademy = () => {
           </section>
         </main>
 
+        <AuthorityLinkBlock currentPath="/academy" />
         <EnhancedFooter />
       </div>
     </>

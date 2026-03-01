@@ -488,6 +488,7 @@ const prompt = userMessage + context.contextString;`,
         </section>
       </main>
       
+      <AuthorityLinkBlock currentPath="/persistent-memory" />
       <EnhancedFooter />
     </>
   );

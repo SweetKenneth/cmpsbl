@@ -6,6 +6,7 @@
 import { SEO } from '@/components/SEO';
 import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { AuthorityLinkBlock } from '@/components/seo/AuthorityLinkBlock';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -400,6 +401,7 @@ export default function Scanner() {
         </motion.section>
       </main>
 
+      <AuthorityLinkBlock currentPath="/scanner" />
       <EnhancedFooter />
     </div>
   );

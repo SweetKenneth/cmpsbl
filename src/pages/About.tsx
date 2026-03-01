@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero/neon-data-center.jpg";
 import earthWindowImage from "@/assets/hero/neon-dream-cosmos.jpg";
@@ -353,6 +354,7 @@ export default function About() {
         </div>
       </section>
 
+      <AuthorityLinkBlock currentPath="/about" />
       <EnhancedFooter />
     </div>
   );

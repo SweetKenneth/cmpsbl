@@ -633,6 +633,7 @@ Authorization: Bearer <your-jwt>
           </motion.div>
         </section>
       </main>
+      <AuthorityLinkBlock currentPath="/developers/guide" />
       <EnhancedFooter />
     </>
   );
