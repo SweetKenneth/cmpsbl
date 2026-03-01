@@ -162,39 +162,20 @@ async function updateProgress(supabase: any, taskId: string, progress: number, m
   return true;
 }
 
-// AI completion with fallback chain: Groq -> Cerebras -> Together
+// AI completion — routes through full NEXUS fleet with automatic cascade
 async function aiComplete(systemPrompt: string, userPrompt: string): Promise<{ content: string; provider: string }> {
-  if (PROVIDERS.groq.enabled() && !isCircuitOpen('groq')) {
-    try {
-      const content = await PROVIDERS.groq.generate(systemPrompt, userPrompt);
-      recordCircuitResult('groq', true);
-      return { content, provider: 'groq/llama-3.3-70b' };
-    } catch (err) {
-      console.warn('Groq failed:', err);
-      recordCircuitResult('groq', false);
-    }
+  try {
+    const result = await nexusRoute(userPrompt, {
+      systemPrompt,
+      taskType: "reasoning",
+      temperature: 0.7,
+      maxTokens: 4000,
+    });
+    return { content: result.content, provider: `${result.provider}/${result.model}` };
+  } catch (err) {
+    console.error('[NEXUS] Full fleet failed for aiComplete:', err);
+    return { content: 'AI providers temporarily unavailable.', provider: 'fallback' };
   }
-  if (PROVIDERS.cerebras.enabled() && !isCircuitOpen('cerebras')) {
-    try {
-      const content = await PROVIDERS.cerebras.generate(systemPrompt, userPrompt);
-      recordCircuitResult('cerebras', true);
-      return { content, provider: 'cerebras/llama-3.3-70b' };
-    } catch (err) {
-      console.warn('Cerebras failed:', err);
-      recordCircuitResult('cerebras', false);
-    }
-  }
-  if (PROVIDERS.together.enabled() && !isCircuitOpen('together')) {
-    try {
-      const content = await PROVIDERS.together.generate(systemPrompt, userPrompt);
-      recordCircuitResult('together', true);
-      return { content, provider: 'together/llama-3.1-70b' };
-    } catch (err) {
-      console.warn('Together failed:', err);
-      recordCircuitResult('together', false);
-    }
-  }
-  return { content: 'AI providers temporarily unavailable.', provider: 'fallback' };
 }
 
 // Web research with Firecrawl
