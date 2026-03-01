@@ -443,6 +443,7 @@ const App = () => {
                          <Route path="/status" element={<Status />} />
                         <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
+                        <Route path="/cmpsbl-engine" element={<CMPSBLEngine />} />
                         <Route path="/composable-cognitives" element={<ComposableCognitives />} />
                         <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
                         <Route path="/composable-cognitives/download" element={<CognitivesDownload />} />
