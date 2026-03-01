@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { nexusRoute } from "../_shared/nexus-route.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,7 +15,6 @@ interface AssistantRequest {
   developer_id?: string;
 }
 
-// System prompts for each tool
 const SYSTEM_PROMPTS: Record<string, string> = {
   code_assistant: `You are an expert CMPSBL Substrate SDK assistant. Help developers write clean, efficient code using the substrate SDK.
 
@@ -93,71 +93,27 @@ serve(async (req) => {
       );
     }
 
-    // Build user message based on tool type
     let userMessage = context;
-    if (code) {
-      userMessage += `\n\nCode:\n\`\`\`typescript\n${code}\n\`\`\``;
-    }
-    if (error) {
-      userMessage += `\n\nError:\n${error}`;
-    }
+    if (code) userMessage += `\n\nCode:\n\`\`\`typescript\n${code}\n\`\`\``;
+    if (error) userMessage += `\n\nError:\n${error}`;
 
-    // Use Nexus router pattern - route through substrate's internal AI
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    
-    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-      throw new Error("Missing Supabase configuration");
-    }
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("Missing Supabase configuration");
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Call internal Nexus router
     const startTime = Date.now();
     
-    // Route through the pf-nexus-router for governed AI
-    const nexusResponse = await fetch(`${SUPABASE_URL}/functions/v1/pf-nexus-router`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userMessage }
-        ],
-        model: "nexus/llama-3.3-70b",
-        max_tokens: 2000,
-        temperature: 0.3,
-        metadata: {
-          source: "developer-tools",
-          tool_type: tool
-        }
-      }),
+    // Route through NEXUS shared fleet directly
+    const aiResult = await nexusRoute(userMessage, {
+      systemPrompt,
+      taskType: tool === 'code_assistant' || tool === 'query_builder' ? 'code' : 'reasoning',
+      temperature: 0.3,
+      maxTokens: 2000,
     });
 
     const responseTime = Date.now() - startTime;
-
-    if (!nexusResponse.ok) {
-      // Fallback to direct response if Nexus unavailable
-      console.warn("Nexus router unavailable, using fallback");
-      
-      const fallbackResponse = generateFallbackResponse(tool, context, code, error);
-      
-      return new Response(
-        JSON.stringify({
-          result: fallbackResponse,
-          tool,
-          source: "fallback",
-          response_time_ms: responseTime
-        }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const aiResult = await nexusResponse.json();
-    const result = aiResult.choices?.[0]?.message?.content || aiResult.content || aiResult.result;
 
     // Track usage
     if (developer_id) {
@@ -165,127 +121,28 @@ serve(async (req) => {
         developer_id,
         tool_type: tool,
         input_context: context.substring(0, 500),
-        output_result: result?.substring(0, 1000),
-        tokens_used: aiResult.usage?.total_tokens || 0,
+        output_result: aiResult.content?.substring(0, 1000),
+        tokens_used: aiResult.tokensUsed || 0,
         response_time_ms: responseTime
-      });
+      }).catch(() => {});
     }
 
     return new Response(
       JSON.stringify({
-        result,
+        result: aiResult.content,
         tool,
-        source: "nexus",
+        source: `nexus/${aiResult.provider}`,
         response_time_ms: responseTime,
-        tokens_used: aiResult.usage?.total_tokens || 0
+        tokens_used: aiResult.tokensUsed || 0,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
-  } catch (error) {
-    console.error("Nexus code assistant error:", error);
+  } catch (err) {
+    console.error("NEXUS code assistant error:", err);
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
+      JSON.stringify({ error: err instanceof Error ? err.message : "Unknown error" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
-
-function generateFallbackResponse(tool: string, context: string, code?: string, error?: string): string {
-  switch (tool) {
-    case 'code_assistant':
-      return `## SDK Code Pattern
-
-Based on your request: "${context}"
-
-\`\`\`typescript
-import { substrate } from '@cmpsbl/substrate';
-
-// Initialize with your API key
-const client = substrate.init({
-  apiKey: process.env.CMPSBL_API_KEY
-});
-
-// Your implementation here
-const result = await client.brain.remember({
-  content: "Your content",
-  importance: 0.8
-});
-
-console.log('Stored:', result.id);
-\`\`\`
-
-For more patterns, check the SDK documentation at /docs.`;
-
-    case 'debugger':
-      return `## Debug Analysis
-
-**Error Context:** ${error || 'No error provided'}
-
-**Likely Causes:**
-1. Check API key validity and scopes
-2. Verify rate limits haven't been exceeded
-3. Ensure proper async/await handling
-
-**Suggested Fix:**
-\`\`\`typescript
-try {
-  const result = await substrate.brain.recall(query);
-} catch (e) {
-  if (e.code === 'RATE_LIMITED') {
-    await new Promise(r => setTimeout(r, 1000));
-    // Retry logic
-  }
-}
-\`\`\``;
-
-    case 'doc_generator':
-      return `## Generated Documentation
-
-\`\`\`typescript
-/**
- * ${context}
- * 
- * @param options - Configuration options
- * @returns Promise with operation result
- * @throws {SubstrateError} When operation fails
- * 
- * @example
- * const result = await substrate.operation(options);
- */
-\`\`\``;
-
-    case 'query_builder':
-      return `## Generated SDK Code
-
-\`\`\`typescript
-import { substrate } from '@cmpsbl/substrate';
-
-// ${context}
-const result = await substrate.brain.recall({
-  query: "${context}",
-  limit: 10
-});
-
-// Process results
-result.memories.forEach(m => console.log(m.content));
-\`\`\``;
-
-    case 'performance_advisor':
-      return `## Performance Analysis
-
-**Current Code Review:**
-${code ? 'Analyzed provided code.' : 'No code provided for analysis.'}
-
-**Recommendations:**
-1. **Batch Operations:** Group multiple memory operations
-2. **Caching:** Implement local caching for frequent queries
-3. **Importance Tuning:** Adjust importance scores to optimize storage
-4. **Context Windows:** Use semantic chunking for large documents
-
-**Estimated Impact:** 30-50% latency reduction`;
-
-    default:
-      return 'Tool not recognized.';
-  }
-}

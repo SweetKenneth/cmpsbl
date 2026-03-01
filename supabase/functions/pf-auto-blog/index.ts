@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.3.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { nexusRoute } from "../_shared/nexus-route.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -54,25 +55,6 @@ function pickRandomTopic(): { category: string; topic: string } {
 
 // Generate blog post content using AI (free-tier router)
 async function generateBlogPost(topic: string, category: string): Promise<{ title: string; content: string; slug: string; excerpt: string }> {
-  // Use free-tier providers instead of Lovable AI
-  const providers = [
-    { key: 'GROQ_API_KEY', url: 'https://api.groq.com/openai/v1/chat/completions', model: 'llama-3.3-70b-versatile' },
-    { key: 'CEREBRAS_API_KEY', url: 'https://api.cerebras.ai/v1/chat/completions', model: 'llama-3.3-70b' },
-    { key: 'TOGETHER_API_KEY', url: 'https://api.together.xyz/v1/chat/completions', model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo' },
-  ];
-  
-  let activeProvider = null;
-  for (const provider of providers) {
-    if (Deno.env.get(provider.key)) {
-      activeProvider = { ...provider, apiKey: Deno.env.get(provider.key)! };
-      break;
-    }
-  }
-  
-  if (!activeProvider) {
-    throw new Error("No AI provider configured. Add GROQ_API_KEY, CEREBRAS_API_KEY, or TOGETHER_API_KEY.");
-  }
-  
   const systemPrompt = `You are a technical content writer for PromptFluid, an AI infrastructure company. 
 Write investor-facing, professional blog posts about AI, security, accessibility, and infrastructure.
 Use the Earth theme aesthetic: grounded, breathable, warm earth tones in language.
@@ -97,32 +79,14 @@ EXCERPT: [2-3 sentence summary for meta description]
 ---
 [Full blog post content in markdown]`;
 
-  const response = await fetch(activeProvider.url, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${activeProvider.apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: activeProvider.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.7,
-      max_tokens: 4000,
-    }),
+  const result = await nexusRoute(userPrompt, {
+    systemPrompt,
+    taskType: "generation",
+    temperature: 0.7,
+    maxTokens: 4000,
   });
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`AI generation failed: ${error}`);
-  }
-
-  const data = await response.json();
-  const fullContent = data.choices[0]?.message?.content || "";
-  
-  // Parse the structured output
+  const fullContent = result.content;
   const titleMatch = fullContent.match(/TITLE:\s*(.+)/);
   const slugMatch = fullContent.match(/SLUG:\s*(.+)/);
   const excerptMatch = fullContent.match(/EXCERPT:\s*(.+)/);
