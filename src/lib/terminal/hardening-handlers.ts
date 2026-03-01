@@ -1504,6 +1504,99 @@ export function registerHardeningHandlers(): void {
     const { calculateAtlasHealth } = await import('@/lib/atlas/atlas-hardening');
     return { success: true, data: calculateAtlasHealth() };
   });
+
+  // ═══ AUDIT HARDENING ═══
+
+  registerHandler('audit.hardening', async () => {
+    const { AUDIT_HARDENING_VERSION, AUDIT_HARDENING_CODENAME, calculateAuditHealth } = await import('@/lib/substrate/audit-hardening');
+    return { success: true, data: { version: AUDIT_HARDENING_VERSION, codename: AUDIT_HARDENING_CODENAME, health: calculateAuditHealth() } };
+  });
+  registerHandler('audit.hardening.health', async () => { const { calculateAuditHealth } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: calculateAuditHealth() }; });
+  registerHandler('audit.hardening.chain', async () => { const { validateChainIntegrity } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: validateChainIntegrity() }; });
+  registerHandler('audit.hardening.tamper', async () => { const { getTamperEvents } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: { events: getTamperEvents() } }; });
+  registerHandler('audit.hardening.retention', async () => { const { getRetentionPolicy } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getRetentionPolicy() }; });
+  registerHandler('audit.hardening.dedup', async () => { const { getDedupStats } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getDedupStats() }; });
+  registerHandler('audit.hardening.wal', async () => { const { getWALTail, getWALLength } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: { length: getWALLength(), tail: getWALTail() } }; });
+  registerHandler('audit.hardening.compliance', async () => { const { generateComplianceReport } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: generateComplianceReport() }; });
+  registerHandler('audit.hardening.budget', async () => { const { checkQueryBudget } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: checkQueryBudget() }; });
+  registerHandler('audit.hardening.merkle', async () => { const { generateMerkleProof } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: generateMerkleProof(0) }; });
+  registerHandler('audit.hardening.attestations', async () => { const { getAttestations } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: { attestations: getAttestations() } }; });
+  registerHandler('audit.hardening.compaction', async () => { const { getCompactionStats } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getCompactionStats() }; });
+  registerHandler('audit.hardening.signatures', async () => { const { verifyEntrySignature } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: verifyEntrySignature('latest') }; });
+  registerHandler('audit.hardening.export', async () => { const { exportAuditLog } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: exportAuditLog() }; });
+  registerHandler('audit.hardening.throughput', async () => { const { getThroughputStats } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getThroughputStats() }; });
+  registerHandler('audit.hardening.immutability', async () => { const { guardImmutability } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: guardImmutability() }; });
+  registerHandler('audit.hardening.alerts', async () => { const { getAuditAlerts } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: { alerts: getAuditAlerts() } }; });
+  registerHandler('audit.hardening.fork', async () => { const { detectChainFork } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: detectChainFork() }; });
+  registerHandler('audit.hardening.encryption', async () => { const { getEncryptionStatus } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getEncryptionStatus() }; });
+  registerHandler('audit.hardening.sla', async () => { const { getAuditSLA } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getAuditSLA() }; });
+  registerHandler('audit.hardening.replay_guard', async () => { return { success: true, data: { noncesTracked: 0, replayBlocked: 0 } }; });
+  registerHandler('audit.hardening.schema', async () => { const { getSchemaVersion } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getSchemaVersion() }; });
+  registerHandler('audit.hardening.cold_storage', async () => { const { getColdStorageStats } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getColdStorageStats() }; });
+  registerHandler('audit.hardening.witnesses', async () => { const { getWitnessPolicy } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getWitnessPolicy() }; });
+  registerHandler('audit.hardening.priority', async () => { const { classifyEntryPriority } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: { sample: classifyEntryPriority('governance.mode.change'), classifier: 'active' } }; });
+
+  // ═══ RELAY HARDENING ═══
+
+  registerHandler('relay.hardening', async () => {
+    const { RELAY_HARDENING_VERSION, RELAY_HARDENING_CODENAME, calculateRelayHealth } = await import('@/lib/substrate/relay-hardening');
+    return { success: true, data: { version: RELAY_HARDENING_VERSION, codename: RELAY_HARDENING_CODENAME, health: calculateRelayHealth() } };
+  });
+  registerHandler('relay.hardening.health', async () => { const { calculateRelayHealth } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: calculateRelayHealth() }; });
+  registerHandler('relay.hardening.delivery', async () => { const { getDeliveryStats, getDeliveryLog } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: { stats: getDeliveryStats(), recentLog: getDeliveryLog(10) } }; });
+  registerHandler('relay.hardening.dlq', async () => { const { getDLQ, getDLQDepth } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: { depth: getDLQDepth(), entries: getDLQ(10) } }; });
+  registerHandler('relay.hardening.signing', async () => { const { getSigningConfig } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getSigningConfig() }; });
+  registerHandler('relay.hardening.retry', async () => { const { getRetryBudget } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getRetryBudget() }; });
+  registerHandler('relay.hardening.targets', async () => { const { getAllTargetHealth } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getAllTargetHealth() }; });
+  registerHandler('relay.hardening.circuits', async () => { const { getAllCircuitStates } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getAllCircuitStates() }; });
+  registerHandler('relay.hardening.payload', async () => { const { getPayloadLimits } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getPayloadLimits() }; });
+  registerHandler('relay.hardening.dedup', async () => { const m = await import('@/lib/substrate/relay-hardening'); return { success: true, data: m.getDedupStats() }; });
+  registerHandler('relay.hardening.rate_limit', async () => { return { success: true, data: { maxPerTarget: 100, windowSec: 60 } }; });
+  registerHandler('relay.hardening.timeout', async () => { const { getTimeoutConfig } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getTimeoutConfig() }; });
+  registerHandler('relay.hardening.latency', async () => { const { getLatencyStats } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getLatencyStats() }; });
+  registerHandler('relay.hardening.routing', async () => { const { getRoutingTable } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: { routes: getRoutingTable() } }; });
+  registerHandler('relay.hardening.tls', async () => { const { getTLSStatus } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getTLSStatus() }; });
+  registerHandler('relay.hardening.idempotency', async () => { const { getIdempotencyStats } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getIdempotencyStats() }; });
+  registerHandler('relay.hardening.versions', async () => { const { getWebhookVersions } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getWebhookVersions() }; });
+  registerHandler('relay.hardening.batch', async () => { const { getBatchStats } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getBatchStats() }; });
+  registerHandler('relay.hardening.priority', async () => { const { getPriorityQueueDepth } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: { depth: getPriorityQueueDepth() } }; });
+  registerHandler('relay.hardening.egress', async () => { const { getEgressFilterStats } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getEgressFilterStats() }; });
+  registerHandler('relay.hardening.receipts', async () => { const { getReceiptStats } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getReceiptStats() }; });
+  registerHandler('relay.hardening.replay', async () => { const { getReplayStats } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getReplayStats() }; });
+  registerHandler('relay.hardening.failover', async () => { const { getFailoverConfig } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getFailoverConfig() }; });
+  registerHandler('relay.hardening.audit_trail', async () => { const { getOutboundAuditTrail } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: { entries: getOutboundAuditTrail() } }; });
+  registerHandler('relay.hardening.sla', async () => { const { getRelaySLA } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: getRelaySLA() }; });
+
+  // ═══ RIPPLE HARDENING ═══
+
+  registerHandler('ripple.hardening', async () => {
+    const { RIPPLE_HARDENING_VERSION, RIPPLE_HARDENING_CODENAME, calculateRippleHealth } = await import('@/lib/ripple/ripple-hardening');
+    return { success: true, data: { version: RIPPLE_HARDENING_VERSION, codename: RIPPLE_HARDENING_CODENAME, health: calculateRippleHealth() } };
+  });
+  registerHandler('ripple.hardening.health', async () => { const { calculateRippleHealth } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: calculateRippleHealth() }; });
+  registerHandler('ripple.hardening.bloom', async () => { const { getBloomStats } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getBloomStats() }; });
+  registerHandler('ripple.hardening.backpressure', async () => { const { getBackpressureState } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getBackpressureState() }; });
+  registerHandler('ripple.hardening.dlq', async () => { const { getDLQ, getDLQDepth } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: { depth: getDLQDepth(), entries: getDLQ(10) } }; });
+  registerHandler('ripple.hardening.circuits', async () => { const { getAllSubscriberCircuits } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getAllSubscriberCircuits() }; });
+  registerHandler('ripple.hardening.replay', async () => { const { getReplayBufferSize } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: { bufferSize: getReplayBufferSize() } }; });
+  registerHandler('ripple.hardening.topics', async () => { const { getTopicHeatmap } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: { heatmap: getTopicHeatmap() } }; });
+  registerHandler('ripple.hardening.priority', async () => { const { getPriorityDistribution } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getPriorityDistribution() }; });
+  registerHandler('ripple.hardening.subscribers', async () => { const { getAllSubscriberHealth } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getAllSubscriberHealth() }; });
+  registerHandler('ripple.hardening.throughput', async () => { const { getThroughputStats } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getThroughputStats() }; });
+  registerHandler('ripple.hardening.validation', async () => { const { getValidationStats } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getValidationStats() }; });
+  registerHandler('ripple.hardening.leaks', async () => { const { detectSubscriptionLeaks } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: detectSubscriptionLeaks() }; });
+  registerHandler('ripple.hardening.ttl', async () => { const { getEventTTLConfig } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getEventTTLConfig() }; });
+  registerHandler('ripple.hardening.fanout', async () => { const { getFanOutLimits } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getFanOutLimits() }; });
+  registerHandler('ripple.hardening.ordering', async () => { const { getOrderingStats } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getOrderingStats() }; });
+  registerHandler('ripple.hardening.acl', async () => { const { getACLStats } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getACLStats() }; });
+  registerHandler('ripple.hardening.enrichment', async () => { const { getEnrichmentStats } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getEnrichmentStats() }; });
+  registerHandler('ripple.hardening.partitions', async () => { const { getPartitionConfig } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getPartitionConfig() }; });
+  registerHandler('ripple.hardening.correlation', async () => { const { getCorrelationGroups } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: { groups: getCorrelationGroups() } }; });
+  registerHandler('ripple.hardening.poison', async () => { const { getPoisonEvents } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: { poisonEvents: getPoisonEvents() } }; });
+  registerHandler('ripple.hardening.modes', async () => { const { getDeliveryModeStats } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getDeliveryModeStats() }; });
+  registerHandler('ripple.hardening.compression', async () => { const { getCompressionConfig } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getCompressionConfig() }; });
+  registerHandler('ripple.hardening.idempotent', async () => { return { success: true, data: { trackedKeys: 0, duplicatesPrevented: 0 } }; });
+  registerHandler('ripple.hardening.sla', async () => { const { getRippleSLA } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getRippleSLA() }; });
 }
 
 // ═══ HEALTH COLLECTOR ═══

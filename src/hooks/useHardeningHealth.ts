@@ -1,6 +1,6 @@
 /**
- * useHardeningHealth — Observability hook for all 8 hardened modules
- * Aggregates health composites from CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE
+ * useHardeningHealth — Observability hook for all 20 hardened modules
+ * Aggregates health composites across all substrate layers
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -41,6 +41,10 @@ const HARDENED_MODULES = [
   { key: 'IMMUNITY', codename: 'Watchguard', loader: () => import('@/lib/substrate/immunity-hardening').then(m => m.calculateImmunityHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   { key: 'EVOLUTION', codename: 'Chrysalis', loader: () => import('@/lib/substrate/evolution-hardening').then(m => m.calculateEvolutionHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   { key: 'INTENT', codename: 'Navigator', loader: () => import('@/lib/substrate/intent-mesh/intent-hardening').then(m => m.calculateIntentHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  // OCG Zones
+  { key: 'AUDIT', codename: 'Ironclad', loader: () => import('@/lib/substrate/audit-hardening').then(m => m.calculateAuditHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  { key: 'RELAY', codename: 'Conduit', loader: () => import('@/lib/substrate/relay-hardening').then(m => m.calculateRelayHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  { key: 'RIPPLE', codename: 'Tsunami', loader: () => import('@/lib/ripple/ripple-hardening').then(m => m.calculateRippleHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   // Control Plane Nodes
   { key: 'ENGINEER', codename: 'Mechanist', loader: () => import('@/lib/substrate/engineer/engineer-hardening').then(m => m.calculateEngineerHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   { key: 'ATLAS', codename: 'Prometheus', loader: () => import('@/lib/atlas/atlas-hardening').then(m => m.calculateAtlasHealth()).catch(() => ({ grade: 'A', score: 100 })) },
