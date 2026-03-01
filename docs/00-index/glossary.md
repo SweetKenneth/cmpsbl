@@ -1,0 +1,61 @@
+# Glossary
+
+## System Terms
+
+| Term | Definition |
+|------|-----------|
+| **Substrate** | The complete runtime system comprising all modules, layers, and control planes. |
+| **Module** | A discrete functional unit within the substrate (e.g., NEXUS, DECODE, DEFENSE). |
+| **Spine** | The vertical core of the architecture: CORE → SYSTEM → CCR. |
+| **OCG** | Operational Compliance Grid — boundary enforcement layer (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT). |
+| **CCR** | Cognitive Core Reality — reasoning and synthesis layer (BRAIN, MEMORY, DREAM). |
+| **Field** | Cross-cutting transformation fabric that permeates all layers (EVOLUTION, IMMUNITY, INTENT). |
+| **Plane** | Supervisory overlay (GOVERNANCE). |
+| **Shell** | Outer containment boundary (DEFENSE). |
+| **Matrix Node** | A weighted registry entry representing a module's role and health contribution. |
+| **Circuit Breaker** | Isolation mechanism that prevents cascading failures across modules. |
+| **Epoch** | A major version boundary with architectural significance. |
+| **Crown Jewel** | A capability classified as admin-only, excluded from all external API tiers. |
+| **BYOK** | Bring Your Own Keys — deployment model where operators supply their own API keys. |
+| **Cognitive** | An AI agent instance within the agency framework. |
+| **Artifact Pack** | A bundled capability set available for activation. |
+| **Shadow Run** | A trial execution of a proposed change without committing to production. |
+| **Promotion** | The process of moving a validated change from shadow to production. |
+| **Integrity Seal** | A cryptographic or deterministic check confirming system state validity. |
+| **Leader Lease** | A coordination mechanism where one instance owns periodic persistence operations. |
+| **WAL** | Write-Ahead Log — durability mechanism for replay and recovery. |
+| **RLS** | Row-Level Security — database-level per-user data isolation. |
+| **Telemetry** | System-generated metrics, events, and traces for observability. |
+
+## Module Registry
+
+| Module | Layer | Responsibility |
+|--------|-------|---------------|
+| CORE | Spine | Kernel boot authority, weighted matrix owner |
+| SYSTEM | Spine | Lifecycle management, configuration |
+| BRAIN | CCR | Reasoning, learning, pattern recognition |
+| MEMORY | CCR | Persistent state, retrieval, context |
+| DREAM | CCR | Synthesis, imagination, heuristic generation |
+| RIPPLE | OCG | Event propagation, cascade detection |
+| ACCESS | OCG | Authentication, authorization, billing |
+| IDENTITY | OCG | User and entity resolution |
+| RELAY | OCG | Cross-module message routing |
+| AUDIT | OCG | Immutable logging, chain-of-custody |
+| DECODE | Execution | Natural language understanding |
+| ENCODE | Execution | Content generation, output formatting |
+| VISION | Execution | Visual processing, dashboard rendering |
+| CORTEX | Execution | Pipeline composition, orchestration |
+| NEXUS | Execution | Primary routing authority, API gateway |
+| ECONOMY | Execution | Cost tracking, ROI calculation |
+| SANDBOX | Execution | Isolated execution environment |
+| INCLUSIVE | Execution | Accessibility compliance |
+| INTEGRATION | Execution | External service connectivity |
+| EVOLUTION | Field | Version management, shadow runs |
+| IMMUNITY | Field | Threat adaptation, resilience |
+| INTENT | Field | Purpose alignment, goal tracking |
+| GOVERNANCE | Plane | Action legitimacy supervision |
+| DEFENSE | Shell | Terminal boundary enforcement |
+
+---
+
+© 2025–2026 PromptFluid®. All rights reserved.
