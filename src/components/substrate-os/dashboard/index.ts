@@ -13,3 +13,5 @@ export { SlotCapacityMeter } from './SlotCapacityMeter';
 export { NexusOptimizerWidget } from './NexusOptimizerWidget';
 export { BudgetGovernancePanel } from './BudgetGovernancePanel';
 export { HardeningDashboard } from '../HardeningDashboard';
+export { NodeInboxView } from '../atlas/NodeInboxView';
+export { GovernanceModePanel } from '../atlas/GovernanceModePanel';

@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { 
   Compass, Play, Pause, RefreshCw, CheckCircle2, XCircle, 
   AlertTriangle, Zap, FileText, ToggleLeft, ToggleRight,
-  Clock, Activity, Brain, TestTube, BookOpen, Radio
+  Clock, Activity, Brain, TestTube, BookOpen, Radio, Inbox, Shield
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserRole } from '@/hooks/useUserRole';
 import { AtlasAutonomyPanel } from './atlas/AtlasAutonomyPanel';
 import { AtlasChatInterface } from './atlas/AtlasChatInterface';
+import { NodeInboxView } from './atlas/NodeInboxView';
+import { GovernanceModePanel } from './atlas/GovernanceModePanel';
 
 export function AtlasTab() {
   const { user } = useAuth();
@@ -160,10 +162,18 @@ export function AtlasTab() {
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="command" className="flex items-center gap-2">
             <Compass className="w-3 h-3" />
             <span className="hidden sm:inline">Command</span>
+          </TabsTrigger>
+          <TabsTrigger value="inbox" className="flex items-center gap-2">
+            <Inbox className="w-3 h-3" />
+            <span className="hidden sm:inline">Inbox</span>
+          </TabsTrigger>
+          <TabsTrigger value="governance" className="flex items-center gap-2">
+            <Shield className="w-3 h-3" />
+            <span className="hidden sm:inline">Govern</span>
           </TabsTrigger>
           <TabsTrigger value="autonomy" className="flex items-center gap-2">
             <Radio className="w-3 h-3" />
@@ -186,6 +196,18 @@ export function AtlasTab() {
         {/* Command Tab - Conversational Control */}
         <TabsContent value="command" className="mt-6">
           <AtlasChatInterface />
+        </TabsContent>
+
+        {/* Node Inbox Tab */}
+        <TabsContent value="inbox" className="mt-6">
+          <Card className="border-cyan-500/20 bg-muted/5 overflow-hidden">
+            <NodeInboxView className="h-[600px]" />
+          </Card>
+        </TabsContent>
+
+        {/* Governance Mode Tab */}
+        <TabsContent value="governance" className="mt-6">
+          <GovernanceModePanel />
         </TabsContent>
 
         {/* Autonomy Tab - CLM + SEBA */}
