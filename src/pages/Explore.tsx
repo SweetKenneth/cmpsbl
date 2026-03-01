@@ -96,7 +96,10 @@ export default function Explore() {
       {/* Live System Metrics Bar */}
       <LiveStatsBar />
 
-      {/* Choose Your Path — First section after Hero */}
+      {/* EVOLUTION CTA — right below the hero */}
+      <EvolutionCTA />
+
+      {/* Choose Your Path */}
       <BuiltForSection />
 
       <SectionDivider />
