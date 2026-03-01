@@ -1,5 +1,5 @@
 /**
- * Vanilla Developer Guide — For traditional developers who want to integrate directly
+ * Developer Guide — For developers who want to integrate directly
  * No AI agents required. Install, configure, call.
  */
 
@@ -626,7 +626,7 @@ Authorization: Bearer <your-jwt>
               <Button asChild variant="outline" size="lg" className="gap-2">
                 <Link to="/evolution">
                   <Zap className="w-4 h-4" />
-                  Use with AI Agent
+                  Vibe Coder? Use with AI Agent
                 </Link>
               </Button>
             </div>
