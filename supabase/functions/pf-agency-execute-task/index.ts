@@ -63,61 +63,6 @@ const PROVIDERS = {
       return data.links || [];
     },
   },
-  groq: {
-    enabled: () => !!Deno.env.get('GROQ_API_KEY'),
-    generate: async (systemPrompt: string, userPrompt: string, maxTokens: number = 4000) => {
-      const apiKey = Deno.env.get('GROQ_API_KEY');
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userPrompt }],
-          max_tokens: maxTokens,
-          temperature: 0.7,
-        }),
-      });
-      if (!response.ok) throw new Error(`Groq error: ${response.status}`);
-      const data = await response.json();
-      return data.choices?.[0]?.message?.content || '';
-    },
-  },
-  cerebras: {
-    enabled: () => !!Deno.env.get('CEREBRAS_API_KEY'),
-    generate: async (systemPrompt: string, userPrompt: string) => {
-      const apiKey = Deno.env.get('CEREBRAS_API_KEY');
-      const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "llama-3.3-70b",
-          messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userPrompt }],
-          max_tokens: 4096,
-        }),
-      });
-      if (!response.ok) throw new Error(`Cerebras error: ${response.status}`);
-      const data = await response.json();
-      return data.choices?.[0]?.message?.content || '';
-    },
-  },
-  together: {
-    enabled: () => !!Deno.env.get('TOGETHER_API_KEY'),
-    generate: async (systemPrompt: string, userPrompt: string) => {
-      const apiKey = Deno.env.get('TOGETHER_API_KEY');
-      const response = await fetch("https://api.together.xyz/v1/chat/completions", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "meta-llama/Llama-3.1-70B-Instruct-Turbo",
-          messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userPrompt }],
-          max_tokens: 4096,
-        }),
-      });
-      if (!response.ok) throw new Error(`Together error: ${response.status}`);
-      const data = await response.json();
-      return data.choices?.[0]?.message?.content || '';
-    },
-  },
 };
 
 // ============================================
