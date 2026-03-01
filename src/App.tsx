@@ -133,6 +133,7 @@ const ScanResult = lazy(() => import("./pages/ScanResult"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const QuarryDashboard = lazy(() => import("./pages/admin/QuarryDashboard"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
+const DocsReader = lazy(() => import("./pages/docs/DocsReader"));
 const RuntimeReference = lazy(() => import("./pages/docs/RuntimeReference"));
 const CapabilityManifest = lazy(() => import("./pages/docs/CapabilityManifest"));
 const RuntimePage = lazy(() => import("./pages/Runtime"));
@@ -421,6 +422,7 @@ const App = () => {
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/docs/runtime" element={<RuntimeReference />} />
                         <Route path="/docs/manifest" element={<CapabilityManifest />} />
+                        <Route path="/docs/system" element={<DocsReader />} />
                         <Route path="/runtime" element={<RuntimePage />} />
                         <Route path="/capability-map" element={<CapabilityMap />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
