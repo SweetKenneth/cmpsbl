@@ -126,8 +126,11 @@ export default function Auth() {
       }
 
       toast.success('Signed in with Face ID');
-      const params = new URLSearchParams(window.location.search);
-      navigate(params.get('redirect') || '/os');
+      // Redirect is handled by onAuthStateChange via sessionStorage
+      // Fallback navigate in case the listener doesn't fire fast enough
+      const storedRedirect = sessionStorage.getItem('cmpsbl_auth_redirect');
+      const urlParams = new URLSearchParams(window.location.search);
+      navigate(storedRedirect || urlParams.get('redirect') || '/os');
     } catch (err: any) {
       console.error('Passkey auth error:', err);
       toast.error('Face ID authentication failed');
