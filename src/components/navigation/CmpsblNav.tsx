@@ -125,6 +125,7 @@ export function CmpsblNav() {
         { name: "Developer Showcase", href: "/developers", description: "Community builds & integrations", icon: Users },
         { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
+        { name: "Developer Guide", href: "/developers/guide", description: "SDK setup for traditional stacks", icon: BookOpen, badge: "NEW" },
         { name: "API Access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
       ]
     },
