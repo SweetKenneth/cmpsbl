@@ -422,6 +422,7 @@ const App = () => {
                         <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/docs/runtime" element={<RuntimeReference />} />
                         <Route path="/docs/manifest" element={<CapabilityManifest />} />
+                        <Route path="/docs/system" element={<DocsReader />} />
                         <Route path="/runtime" element={<RuntimePage />} />
                         <Route path="/capability-map" element={<CapabilityMap />} />
                         <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
