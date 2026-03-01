@@ -43,7 +43,7 @@ export const MESH_VERSIONS = {
 // ─── 9 Zones ──────────────────────────────────────────────────────────────────
 
 export const ZONE_VERSIONS = {
-  system:   { get version() { return v(); }, codename: 'Production',  parent: 'CCR' as const, description: 'Administration & config' },
+  system:   { get version() { return v(); }, codename: 'Production',  parent: 'CCR' as const, description: 'Administration & config', hardening: '2.0.0' },
   brain:    { get version() { return v(); }, codename: 'Memoria',     parent: 'CCR' as const, description: 'Reasoning & learning' },
   memory:   { get version() { return v(); }, codename: 'Vault',       parent: 'CCR' as const, description: 'Persistent storage & retrieval' },
   dream:    { get version() { return v(); }, codename: 'Nocturne',    parent: 'CCR' as const, description: 'Offline synthesis & evolution' },
