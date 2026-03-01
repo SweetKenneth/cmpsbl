@@ -66,7 +66,7 @@ export async function initializeSubstrate(): Promise<void> {
     } catch { /* graceful */ }
     
     if (coreResult.success && ccrBooted && ocgBooted) {
-      console.log('✅ CORE + CCR Layer 0 + OCG Layer 1 active → 10 entities + 5 mesh overlays | Health: 100%');
+      console.log('✅ CORE + CCR Layer 0 + OCG Layer 1 active → 12 entities + 5 mesh overlays | Health: 100%');
     } else {
       // Fallback: ping individual modules
       let activeCount = 0;
@@ -82,7 +82,7 @@ export async function initializeSubstrate(): Promise<void> {
         if (result.success) activeCount++;
       }
       
-      console.log(`✅ Substrate initialized: ${activeCount + 1}/10 entities + mesh overlays active`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/12 entities + mesh overlays active`);
     }
     
     console.log('─────────────────────────────────────────');
