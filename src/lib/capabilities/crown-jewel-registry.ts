@@ -141,6 +141,30 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'cj4-cortex-priority-landscape',
   'cj4-system-autonomous-triage',
   'cj4-vision-precognitive-modeling',
+
+  // v10.8.0 — Wave 6 Final Sweep Architecture Crown Jewels (16 new)
+  'cj6-nexus-fleet-intelligence-orchestrator',
+  'cj6-nexus-cost-aware-routing',
+  'cj6-decode-multi-modal-interpreter',
+  'cj6-memory-write-ahead-log',
+  'cj6-memory-sm2-spaced-repetition',
+  'cj6-memory-knowledge-compaction',
+  'cj6-system-boot-dependency-resolver',
+  'cj6-core-circuit-breaker-fabric',
+  'cj6-core-substrate-registry',
+  'cj6-defense-honeypot-intelligence',
+  'cj6-decode-context-threading',
+  'cj6-decode-intent-classification',
+  'cj6-nexus-multi-model-consensus',
+  'cj6-evolution-mutation-proposal',
+  'cj6-evolution-shadow-run',
+  'cj6-immunity-self-healing-orchestrator',
+  'cj6-intent-goal-tracking',
+  'cj6-governance-veto-authority',
+  'cj6-brain-embedding-store',
+  'cj6-brain-classifier-library',
+  'cj6-dream-pattern-extraction',
+  'cj6-cortex-dynamic-pipeline-optimizer',
 ]);
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -293,6 +317,36 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'cj4-relay-smart-batching',
   'cj4-integration-health-forecasting',
   'cj4-atlas-workflow-suggestion',
+
+  // v10.8.0 — Wave 6 Final Sweep Experience Crown Jewels (32 new)
+  // ── Architect Tier ──
+  'cj6-vision-anomaly-correlation',
+  'cj6-defense-threat-intelligence-fabric',
+  'cj6-integration-connector-orchestration',
+  'cj6-economy-cost-attribution',
+  'cj6-vision-performance-regression',
+  'cj6-nexus-provider-health-monitor',
+  'cj6-nexus-fallback-chain-architect',
+  'cj6-defense-behavioral-anomaly',
+  'cj6-economy-roi-attribution',
+  'cj6-vision-resource-waste-profiler',
+  'cj6-vision-root-cause-analysis',
+  'cj6-defense-input-sanitization',
+  'cj6-defense-prompt-injection-shield',
+  'cj6-vision-alert-correlation',
+  'cj6-nexus-token-optimization',
+  'cj6-vision-telemetry-ingestion',
+  'cj6-economy-billing-reconciliation',
+  'cj6-memory-cross-session-persistence',
+  // ── Creator Tier ──
+  'cj6-decode-personality-adaptation',
+  'cj6-system-graceful-shutdown',
+  'cj6-system-health-aggregation',
+  'cj6-decode-terminal-command-parser',
+  'cj6-access-quota-intelligence',
+  'cj6-access-api-key-lifecycle',
+  'cj6-integration-webhook-reliability',
+  'cj6-integration-api-rate-limiter',
 ]);
 
 /** Map experience jewels to their minimum tier */
