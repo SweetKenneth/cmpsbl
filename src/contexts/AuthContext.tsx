@@ -56,9 +56,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
         
-        // Navigate to OS on successful sign-in (only if not already there)
+        // Navigate on successful sign-in — respect ?redirect param, fallback to /os
         if (_event === 'SIGNED_IN' && session && !window.location.pathname.startsWith('/os')) {
-          navigate('/os');
+          const params = new URLSearchParams(window.location.search);
+          const redirectTo = params.get('redirect');
+          navigate(redirectTo || '/os');
         }
       });
       subscription = data.subscription;
