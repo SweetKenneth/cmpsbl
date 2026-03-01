@@ -21,7 +21,7 @@ export const MODULE_VERSIONS = {
   core:        { get version() { return v(); }, codename: 'Foundation',   layer: 'Kernel',         type: 'kernel'  as const, hardening: '2.0.0', invokeLayer: '2.0.0-ironclad' },
   decode:      { get version() { return v(); }, codename: 'Interpreter',  layer: 'Cognitive',      type: 'module'  as const },
   encode:      { get version() { return v(); }, codename: 'Genesis',      layer: 'Orchestration',  type: 'module'  as const },
-  vision:      { get version() { return v(); }, codename: 'Vee',          layer: 'Operational',    type: 'module'  as const },
+  vision:      { get version() { return v(); }, codename: 'Vee',          layer: 'Operational',    type: 'module'  as const, hardening: '2.0.0' },
   cortex:      { get version() { return v(); }, codename: 'Orchestrator', layer: 'Orchestration',  type: 'module'  as const },
   nexus:       { get version() { return v(); }, codename: 'Router',       layer: 'Orchestration',  type: 'module'  as const },
   economy:     { get version() { return v(); }, codename: 'Treasury',     layer: 'Infrastructure', type: 'module'  as const },

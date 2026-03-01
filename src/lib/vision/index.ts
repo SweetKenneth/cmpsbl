@@ -72,6 +72,9 @@ export * from './slaMonitoring';
 // Predictive alerts
 export * from './predictiveAlerts';
 
+// Vision hardening layer
+export * from './vision-hardening';
+
 // Vision module version
 export const VISION_VERSION = '2.0.0';
 export const VISION_CODENAME = 'Vee';
