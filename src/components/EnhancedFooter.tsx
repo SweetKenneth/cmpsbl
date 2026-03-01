@@ -34,6 +34,7 @@ export function EnhancedFooter() {
       title: "Platform",
       links: [
         { name: "AI Operating System", href: "/ai-operating-system", highlight: true },
+        { name: "EVOLUTION", href: "/evolution", highlight: true },
         { name: "Substrate", href: "/substrate" },
         { name: "Runtime", href: "/runtime" },
         { name: "Architecture", href: "/architecture" },
@@ -68,7 +69,8 @@ export function EnhancedFooter() {
       title: "Discover",
       links: [
         { name: "Blog", href: "/blog" },
-        { name: "Scanner", href: "/scanner", highlight: true },
+        { name: "Evolution Scanner", href: "/scanner", highlight: true },
+        { name: "Evolution Control", href: "/evolution", highlight: true },
         { name: "Roadmap", href: "/roadmap" },
         { name: "Use Cases", href: "/use-cases" },
         { name: "Showcase", href: "/showcase" },

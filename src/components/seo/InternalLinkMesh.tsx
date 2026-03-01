@@ -1,6 +1,7 @@
 /**
  * Internal Link Mesh — programmatic internal linking component
- * Item #6: Builds contextual internal link clusters for crawl depth + authority distribution
+ * Builds contextual internal link clusters for crawl depth + authority distribution.
+ * Priority nodes (home, evolution) appear more frequently via boosted tag overlap.
  */
 
 import { Link } from 'react-router-dom';
@@ -9,32 +10,64 @@ interface LinkNode {
   path: string;
   label: string;
   tags: string[];
+  /** Higher priority = appears more often in results */
+  priority?: number;
 }
 
 const LINK_GRAPH: LinkNode[] = [
-  { path: '/persistent-memory', label: 'Persistent Memory', tags: ['memory', 'brain', 'agent', 'sdk'] },
-  { path: '/modules', label: 'Substrate Modules', tags: ['architecture', 'modules', 'brain', 'encode', 'decode'] },
-  { path: '/os', label: 'Substrate OS', tags: ['runtime', 'orchestration', 'telemetry'] },
-  { path: '/decode', label: 'DECODE Terminal', tags: ['decode', 'nlp', 'terminal', 'agent'] },
-  { path: '/feed-dream-eater', label: 'Dream Feeder', tags: ['dream', 'learning', 'evolution'] },
-  { path: '/gaming', label: 'Gaming AI', tags: ['gaming', 'npc', 'memory', 'agent'] },
-  { path: '/store', label: 'Artifact Store', tags: ['capabilities', 'store', 'templates'] },
-  { path: '/composable-cognitives', label: 'Cognitives', tags: ['agent', 'cognitive', 'ai'] },
+  // ── Priority pages (authority magnets) ───────────────
+  { path: '/', label: 'CMPSBL Home', tags: ['home', 'platform', 'ai', 'cognitive', 'substrate', 'agent', 'memory', 'evolution', 'modules', 'sdk'], priority: 3 },
+  { path: '/evolution', label: 'EVOLUTION', tags: ['evolution', 'scan', 'governance', 'rollback', 'drift', 'improvement', 'agent', 'ai', 'substrate', 'defense'], priority: 3 },
+
+  // ── Core platform ────────────────────────────────────
+  { path: '/persistent-memory', label: 'Persistent Memory', tags: ['memory', 'brain', 'agent', 'sdk', 'cognitive'] },
+  { path: '/modules', label: 'Substrate Modules', tags: ['architecture', 'modules', 'brain', 'encode', 'decode', 'substrate'] },
+  { path: '/substrate', label: 'Substrate Overview', tags: ['substrate', 'platform', 'architecture', 'runtime'] },
+  { path: '/os', label: 'Substrate OS', tags: ['runtime', 'orchestration', 'telemetry', 'substrate'] },
+  { path: '/decode', label: 'DECODE Terminal', tags: ['decode', 'nlp', 'terminal', 'agent', 'evolution'] },
+  { path: '/feed-dream-eater', label: 'Dream Eater', tags: ['dream', 'learning', 'evolution', 'memory'] },
+  { path: '/runtime', label: 'Runtime', tags: ['runtime', 'orchestration', 'substrate', 'platform'] },
+  { path: '/ai-operating-system', label: 'How It Works', tags: ['platform', 'architecture', 'ai', 'cognitive'] },
+
+  // ── Products ─────────────────────────────────────────
+  { path: '/composable-cognitives', label: 'Composable Agents', tags: ['agent', 'cognitive', 'ai', 'evolution'] },
+  { path: '/packs', label: 'Artifact Packs', tags: ['capabilities', 'store', 'templates', 'modules'] },
+  { path: '/enterprise', label: 'Enterprise', tags: ['enterprise', 'solutions', 'compliance', 'governance'] },
+  { path: '/upgrade', label: 'Upgrade & Pricing', tags: ['pricing', 'plans', 'upgrade'] },
+  { path: '/gaming', label: 'World Engine', tags: ['gaming', 'npc', 'memory', 'agent'] },
+
+  // ── Developer surface ────────────────────────────────
+  { path: '/developers', label: 'Developer Showcase', tags: ['sdk', 'api', 'developers', 'community'] },
+  { path: '/developers/guide', label: 'Developer Guide', tags: ['sdk', 'api', 'setup', 'developers', 'integration'] },
+  { path: '/documentation', label: 'Documentation', tags: ['docs', 'api', 'reference', 'sdk'] },
+  { path: '/architecture', label: 'Architecture', tags: ['architecture', 'design', 'layers', 'substrate'] },
+  { path: '/academy', label: 'Developer Academy', tags: ['academy', 'tutorials', 'learning', 'sdk'] },
+  { path: '/codelab', label: 'CodeLab', tags: ['codelab', 'testing', 'sdk', 'developers'] },
+  { path: '/api-access', label: 'API Access', tags: ['api', 'keys', 'sdk', 'developers'] },
+  { path: '/start-here', label: 'Start Here', tags: ['onboarding', 'start', 'developers', 'platform'] },
+
+  // ── Discovery & content ──────────────────────────────
+  { path: '/blog', label: 'Research Blog', tags: ['blog', 'research', 'insights', 'ai'] },
+  { path: '/scanner', label: 'Evolution Scanner', tags: ['scan', 'evolution', 'drift', 'defense'] },
+  { path: '/proof', label: 'Proof Mode', tags: ['proof', 'governance', 'compliance', 'evolution'] },
+  { path: '/showcase', label: 'Showcase', tags: ['showcase', 'community', 'builds'] },
+  { path: '/use-cases', label: 'Use Cases', tags: ['enterprise', 'solutions', 'use-cases'] },
+  { path: '/roadmap', label: 'Roadmap', tags: ['roadmap', 'future', 'platform'] },
+  { path: '/changelog', label: 'Changelog', tags: ['changelog', 'updates', 'platform'] },
+  { path: '/status', label: 'System Status', tags: ['status', 'uptime', 'telemetry'] },
   { path: '/lab', label: 'Experimentation Lab', tags: ['lab', 'testing', 'evolution'] },
-  { path: '/proof', label: 'Proof Mode', tags: ['proof', 'governance', 'compliance'] },
-  { path: '/developers', label: 'Developer Hub', tags: ['sdk', 'api', 'developers'] },
-  { path: '/documentation', label: 'Documentation', tags: ['docs', 'api', 'reference'] },
-  { path: '/architecture', label: 'Architecture', tags: ['architecture', 'design', 'layers'] },
-  { path: '/solutions', label: 'Enterprise Solutions', tags: ['enterprise', 'solutions', 'compliance'] },
-  { path: '/blog', label: 'Research Blog', tags: ['blog', 'research', 'insights'] },
   { path: '/system-feed', label: 'System Feed', tags: ['telemetry', 'feed', 'runtime'] },
-  { path: '/insights', label: 'Insights', tags: ['analytics', 'insights', 'intelligence'] },
-  { path: '/engines', label: 'Orchestration Engines', tags: ['engines', 'orchestration', 'runtime'] },
-  { path: '/academy', label: 'Developer Academy', tags: ['academy', 'tutorials', 'learning'] },
+
+  // ── Company ──────────────────────────────────────────
+  { path: '/about', label: 'About CMPSBL', tags: ['company', 'about', 'mission'] },
+  { path: '/contact', label: 'Contact', tags: ['company', 'contact', 'support'] },
+  { path: '/solutions', label: 'Solutions', tags: ['enterprise', 'solutions', 'compliance'] },
+  { path: '/investors', label: 'Investors', tags: ['company', 'investors', 'funding'] },
 ];
 
 /**
  * Find related pages by tag overlap, excluding the current page.
+ * Priority nodes get a score boost so they surface more often.
  */
 function findRelated(currentPath: string, tags: string[], limit = 5): LinkNode[] {
   const tagSet = new Set(tags);
@@ -42,7 +75,7 @@ function findRelated(currentPath: string, tags: string[], limit = 5): LinkNode[]
     .filter(n => n.path !== currentPath)
     .map(n => ({
       ...n,
-      score: n.tags.filter(t => tagSet.has(t)).length,
+      score: n.tags.filter(t => tagSet.has(t)).length * (n.priority ?? 1),
     }))
     .filter(n => n.score > 0)
     .sort((a, b) => b.score - a.score)

@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Brain, Shield, Network, Moon, Workflow, Cpu, Layers, Zap, Target, Gamepad2 } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 import { Button } from "@/components/ui/button";
 
 const faqItems = [
@@ -261,6 +262,7 @@ export default function AIOperatingSystem() {
         </section>
       </main>
 
+      <AuthorityLinkBlock currentPath="/ai-operating-system" />
       <EnhancedFooter />
     </>
   );

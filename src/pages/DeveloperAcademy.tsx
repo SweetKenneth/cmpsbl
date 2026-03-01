@@ -2,6 +2,7 @@ import React from 'react';
 import { SEO } from '@/components/SEO';
 import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { AuthorityLinkBlock } from '@/components/seo/AuthorityLinkBlock';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { InteractiveTutorial } from '@/components/developer/InteractiveTutorial';
 import { SkillTreeProgress } from '@/components/developer/SkillTreeProgress';
@@ -150,6 +151,7 @@ const DeveloperAcademy = () => {
           </section>
         </main>
 
+        <AuthorityLinkBlock currentPath="/academy" />
         <EnhancedFooter />
       </div>
     </>

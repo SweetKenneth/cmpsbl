@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { AuthorityLinkBlock } from '@/components/seo/AuthorityLinkBlock';
 import { SEO } from '@/components/SEO';
 
 const PersistentMemoryLanding = () => {
@@ -488,6 +489,7 @@ const prompt = userMessage + context.contextString;`,
         </section>
       </main>
       
+      <AuthorityLinkBlock currentPath="/persistent-memory" />
       <EnhancedFooter />
     </>
   );

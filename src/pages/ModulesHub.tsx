@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 import { MODULE_REGISTRY, LAYER_COLORS, LAYER_LABELS, getPublicModules, getMeshOverlays } from "@/lib/modules/module-registry";
 import { cn } from "@/lib/utils";
 
@@ -117,6 +118,7 @@ export default function ModulesHub() {
         })}
       </main>
 
+      <AuthorityLinkBlock currentPath="/modules" />
       <EnhancedFooter />
     </>
   );
