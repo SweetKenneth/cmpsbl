@@ -47,11 +47,11 @@ export const ZONE_VERSIONS = {
   brain:    { get version() { return v(); }, codename: 'Memoria',     parent: 'CCR' as const, description: 'Reasoning & learning', hardening: '2.0.0' },
   memory:   { get version() { return v(); }, codename: 'Vault',       parent: 'CCR' as const, description: 'Persistent storage & retrieval', hardening: '2.0.0' },
   dream:    { get version() { return v(); }, codename: 'Nocturne',    parent: 'CCR' as const, description: 'Offline synthesis & evolution', hardening: '2.0.0' },
-  ripple:   { get version() { return v(); }, codename: 'Cascade',     parent: 'OCG' as const, description: 'Event bus & signal propagation' },
+  ripple:   { get version() { return v(); }, codename: 'Cascade',     parent: 'OCG' as const, description: 'Event bus & signal propagation', hardening: '2.0.0' },
   access:   { get version() { return v(); }, codename: 'Gatekeeper',  parent: 'OCG' as const, description: 'API keys & rate limiting' },
   identity: { get version() { return v(); }, codename: 'Provenance',  parent: 'OCG' as const, description: 'Actor identity & trust' },
-  relay:    { get version() { return v(); }, codename: 'Dispatch',    parent: 'OCG' as const, description: 'Webhook & outbound routing' },
-  audit:    { get version() { return v(); }, codename: 'Ledger',      parent: 'OCG' as const, description: 'Immutable compliance logging' },
+  relay:    { get version() { return v(); }, codename: 'Dispatch',    parent: 'OCG' as const, description: 'Webhook & outbound routing', hardening: '2.0.0' },
+  audit:    { get version() { return v(); }, codename: 'Ledger',      parent: 'OCG' as const, description: 'Immutable compliance logging', hardening: '2.0.0' },
 };
 
 // ─── Absorbed ─────────────────────────────────────────────────────────────────

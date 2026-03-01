@@ -952,6 +952,93 @@ export const ATLAS_OP_COMMANDS: CommandDefinition[] = [
   { command: 'atlas.hardening.health', description: 'ATLAS health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 ];
 
+// ═══ AUDIT Hardening Commands ═══
+export const AUDIT_HARDENING_COMMANDS: CommandDefinition[] = [
+  { command: 'audit.hardening', description: 'AUDIT hardening status (Ironclad v2.0)', category: 'audit_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.health', description: 'AUDIT health composite', category: 'audit_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.chain', description: 'Chain integrity validation', category: 'audit_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.tamper', description: 'Tamper detection events', category: 'audit_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.retention', description: 'Retention policy config', category: 'audit_mod', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.dedup', description: 'Entry dedup window stats', category: 'audit_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.wal', description: 'Write-ahead log tail', category: 'audit_mod', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.compliance', description: 'Compliance report', category: 'audit_mod', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.budget', description: 'Query rate budget', category: 'audit_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.merkle', description: 'Merkle proof status', category: 'audit_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.attestations', description: 'Cross-zone attestations', category: 'audit_mod', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.compaction', description: 'Compaction engine stats', category: 'audit_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.signatures', description: 'Entry signature status', category: 'audit_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.export', description: 'Audit export engine', category: 'audit_mod', icon: Send, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.throughput', description: 'Audit throughput monitor', category: 'audit_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.immutability', description: 'Immutability guard status', category: 'audit_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.alerts', description: 'Audit alert queue', category: 'audit_mod', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.fork', description: 'Chain fork detection', category: 'audit_mod', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.encryption', description: 'Encryption layer status', category: 'audit_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.sla', description: 'Audit SLA monitor', category: 'audit_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.replay_guard', description: 'Replay protection stats', category: 'audit_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.schema', description: 'Audit schema version', category: 'audit_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.cold_storage', description: 'Cold storage gateway', category: 'audit_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.witnesses', description: 'Witness cosigning policy', category: 'audit_mod', icon: Users, requiresOperator: false, requiredTier: 'free' },
+  { command: 'audit.hardening.priority', description: 'Entry priority classifier', category: 'audit_mod', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══ RELAY Hardening Commands ═══
+export const RELAY_HARDENING_COMMANDS: CommandDefinition[] = [
+  { command: 'relay.hardening', description: 'RELAY hardening status (Conduit v2.0)', category: 'relay_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.health', description: 'RELAY health composite', category: 'relay_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.delivery', description: 'Delivery log & stats', category: 'relay_mod', icon: Send, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.dlq', description: 'Dead letter queue', category: 'relay_mod', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.signing', description: 'HMAC signing config', category: 'relay_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.retry', description: 'Retry budget status', category: 'relay_mod', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.targets', description: 'Target health monitor', category: 'relay_mod', icon: Server, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.circuits', description: 'Per-target circuit breakers', category: 'relay_mod', icon: Zap, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.payload', description: 'Payload size guard', category: 'relay_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.dedup', description: 'Content hash dedup stats', category: 'relay_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.rate_limit', description: 'Per-target rate limits', category: 'relay_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.timeout', description: 'Webhook timeout config', category: 'relay_mod', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.latency', description: 'Delivery latency (P50/P95/P99)', category: 'relay_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.routing', description: 'Outbound routing table', category: 'relay_mod', icon: Router, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.tls', description: 'TLS enforcement status', category: 'relay_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.idempotency', description: 'Idempotency key stats', category: 'relay_mod', icon: Key, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.versions', description: 'Webhook API versions', category: 'relay_mod', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.batch', description: 'Batch dispatch stats', category: 'relay_mod', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.priority', description: 'Priority queue depth', category: 'relay_mod', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.egress', description: 'Egress filtering stats', category: 'relay_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.receipts', description: 'Delivery receipt tracker', category: 'relay_mod', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.replay', description: 'Webhook replay engine', category: 'relay_mod', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.failover', description: 'Provider failover config', category: 'relay_mod', icon: Server, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.audit_trail', description: 'Outbound audit trail', category: 'relay_mod', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'relay.hardening.sla', description: 'RELAY SLA monitor', category: 'relay_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══ RIPPLE Hardening Commands ═══
+export const RIPPLE_HARDENING_COMMANDS: CommandDefinition[] = [
+  { command: 'ripple.hardening', description: 'RIPPLE hardening status (Tsunami v2.0)', category: 'ripple', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.health', description: 'RIPPLE health composite', category: 'ripple', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.bloom', description: 'Bloom filter dedup stats', category: 'ripple', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.backpressure', description: 'Backpressure manager state', category: 'ripple', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.dlq', description: 'Event dead letter queue', category: 'ripple', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.circuits', description: 'Subscriber circuit breakers', category: 'ripple', icon: Zap, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.replay', description: 'Event replay buffer', category: 'ripple', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.topics', description: 'Topic pattern heatmap', category: 'ripple', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.priority', description: 'Event priority distribution', category: 'ripple', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.subscribers', description: 'Subscriber health monitor', category: 'ripple', icon: Users, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.throughput', description: 'Event throughput monitor', category: 'ripple', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.validation', description: 'Event schema validation stats', category: 'ripple', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.leaks', description: 'Subscription leak detector', category: 'ripple', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.ttl', description: 'Event TTL config', category: 'ripple', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.fanout', description: 'Fan-out limiter', category: 'ripple', icon: Radio, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.ordering', description: 'Event ordering guarantor', category: 'ripple', icon: List, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.acl', description: 'Subscription ACL stats', category: 'ripple', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.enrichment', description: 'Event enrichment pipeline', category: 'ripple', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.partitions', description: 'Partition config', category: 'ripple', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.correlation', description: 'Event correlation groups', category: 'ripple', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.poison', description: 'Poison event detector', category: 'ripple', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.modes', description: 'Push/pull delivery mode stats', category: 'ripple', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.compression', description: 'Event compression config', category: 'ripple', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.idempotent', description: 'Idempotent delivery stats', category: 'ripple', icon: Key, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.sla', description: 'RIPPLE SLA monitor', category: 'ripple', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
@@ -986,6 +1073,9 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...ENGINEER_OP_COMMANDS,
   ...INTENT_OP_COMMANDS,
   ...ATLAS_OP_COMMANDS,
+  ...AUDIT_HARDENING_COMMANDS,
+  ...RELAY_HARDENING_COMMANDS,
+  ...RIPPLE_HARDENING_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
@@ -1019,6 +1109,9 @@ export const COMMAND_CATEGORIES = {
   engineer_op: { label: 'ENGINEER', color: 'text-orange-300', borderColor: 'border-orange-400/30', commands: ENGINEER_OP_COMMANDS },
   intent_hub: { label: 'INTENT HUB', color: 'text-cyan-300', borderColor: 'border-cyan-400/30', commands: INTENT_OP_COMMANDS },
   atlas_op: { label: 'ATLAS', color: 'text-purple-300', borderColor: 'border-purple-400/30', commands: ATLAS_OP_COMMANDS },
+  audit_hardening: { label: 'AUDIT HARDENING', color: 'text-stone-300', borderColor: 'border-stone-400/30', commands: AUDIT_HARDENING_COMMANDS },
+  relay_hardening: { label: 'RELAY HARDENING', color: 'text-lime-300', borderColor: 'border-lime-400/30', commands: RELAY_HARDENING_COMMANDS },
+  ripple_hardening: { label: 'RIPPLE HARDENING', color: 'text-cyan-300', borderColor: 'border-cyan-400/30', commands: RIPPLE_HARDENING_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {
