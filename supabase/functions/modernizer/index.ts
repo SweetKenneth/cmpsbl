@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { nexusRoute } from "../_shared/nexus-route.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -149,149 +150,7 @@ serve(async (req) => {
   }
 });
 
-async function callGoogleAI(apiKey: string, prompt: string): Promise<string | null> {
-  try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.3, maxOutputTokens: 8192 }
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Google AI failed:', response.status, errorText.substring(0, 200));
-      return null;
-    }
-
-    const data = await response.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-  } catch (err) {
-    console.error('Google AI error:', err);
-    return null;
-  }
-}
-
-async function callCerebras(apiKey: string, prompt: string): Promise<string | null> {
-  try {
-    const response = await fetch('https://api.cerebras.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 8192
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Cerebras failed:', response.status, errorText.substring(0, 200));
-      return null;
-    }
-
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content || null;
-  } catch (err) {
-    console.error('Cerebras error:', err);
-    return null;
-  }
-}
-
-async function callTogether(apiKey: string, prompt: string): Promise<string | null> {
-  try {
-    const response = await fetch('https://api.together.xyz/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 8192
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Together failed:', response.status, errorText.substring(0, 200));
-      return null;
-    }
-
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content || null;
-  } catch (err) {
-    console.error('Together error:', err);
-    return null;
-  }
-}
-
-async function callDeepSeek(apiKey: string, prompt: string): Promise<string | null> {
-  try {
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('DeepSeek failed:', response.status, errorText.substring(0, 200));
-      return null;
-    }
-
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content || null;
-  } catch (err) {
-    console.error('DeepSeek error:', err);
-    return null;
-  }
-}
-
-async function callHyperbolic(apiKey: string, prompt: string): Promise<string | null> {
-  try {
-    const response = await fetch('https://api.hyperbolic.xyz/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/Meta-Llama-3.1-70B-Instruct',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 8192
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Hyperbolic failed:', response.status, errorText.substring(0, 200));
-      return null;
-    }
-
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content || null;
-  } catch (err) {
-    console.error('Hyperbolic error:', err);
-    return null;
-  }
-}
+// Individual provider helpers removed — all AI calls now route through NEXUS shared router
 
 async function callGroq(apiKey: string, prompt: string): Promise<string | null> {
   try {
@@ -473,118 +332,34 @@ REQUIREMENTS:
 Return ONLY valid JSON with the complete HTML file, no markdown or explanations.`;
 
     let rebuiltFiles = null;
-    let result: string | null = null;
 
-    // Priority 1: Google AI Studio (free, generous limits)
-    const GOOGLE_AI_KEY = Deno.env.get('GOOGLE_AI_STUDIO_KEY');
-    if (GOOGLE_AI_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Google AI Studio (Gemini 2.0 Flash)...');
-      result = await callGoogleAI(GOOGLE_AI_KEY, prompt);
-      if (result) {
-        console.log('✅ Google AI succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Google AI');
-          }
+    // Route through NEXUS — full provider fleet with automatic cascade
+    console.log('🤖 Routing rebuild through NEXUS fleet...');
+    try {
+      const result = await nexusRoute(prompt, {
+        systemPrompt: "You are an expert web developer. Return ONLY valid JSON, no markdown or explanations.",
+        taskType: "code",
+        temperature: 0.3,
+        maxTokens: 8192,
+        timeoutMs: 60_000,
+      });
+
+      console.log(`✅ NEXUS routed → ${result.provider} (${result.model}) in ${result.latencyMs}ms, chain: ${result.fallbackChain.join(' → ')}`);
+      
+      const jsonMatch = result.content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        try {
+          rebuiltFiles = JSON.parse(jsonMatch[0]);
+        } catch (e) {
+          console.error(`JSON parse error from ${result.provider}`);
         }
       }
-    }
-
-    // Priority 2: Cerebras (fast + free)
-    const CEREBRAS_KEY = Deno.env.get('CEREBRAS_API_KEY');
-    if (CEREBRAS_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Cerebras (Llama 3.3 70B)...');
-      result = await callCerebras(CEREBRAS_KEY, prompt);
-      if (result) {
-        console.log('✅ Cerebras succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Cerebras');
-          }
-        }
-      }
-    }
-
-    // Priority 3: Groq (free tier)
-    const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY');
-    if (GROQ_API_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Groq (Llama 3.3 70B)...');
-      result = await callGroq(GROQ_API_KEY, prompt);
-      if (result) {
-        console.log('✅ Groq succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Groq');
-          }
-        }
-      }
-    }
-
-    // Priority 4: Together AI
-    const TOGETHER_KEY = Deno.env.get('TOGETHER_API_KEY');
-    if (TOGETHER_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Together AI (Llama 3.1 70B)...');
-      result = await callTogether(TOGETHER_KEY, prompt);
-      if (result) {
-        console.log('✅ Together AI succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Together');
-          }
-        }
-      }
-    }
-
-    // Priority 5: DeepSeek
-    const DEEPSEEK_KEY = Deno.env.get('DEEPSEEK_API_KEY');
-    if (DEEPSEEK_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying DeepSeek...');
-      result = await callDeepSeek(DEEPSEEK_KEY, prompt);
-      if (result) {
-        console.log('✅ DeepSeek succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from DeepSeek');
-          }
-        }
-      }
-    }
-
-    // Priority 6: Hyperbolic
-    const HYPERBOLIC_KEY = Deno.env.get('HYPERBOLIC_API_KEY');
-    if (HYPERBOLIC_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Hyperbolic (Llama 3.1 70B)...');
-      result = await callHyperbolic(HYPERBOLIC_KEY, prompt);
-      if (result) {
-        console.log('✅ Hyperbolic succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Hyperbolic');
-          }
-        }
-      }
+    } catch (err) {
+      console.error('❌ NEXUS fleet exhausted:', err);
     }
 
     if (!rebuiltFiles) {
-      throw new Error('All AI models failed to generate valid code. Check your API keys and rate limits.');
+      throw new Error('All AI providers failed to generate valid code. Check your API keys and rate limits.');
     }
 
     // Detect CMS

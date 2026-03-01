@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
+import { nexusRoute } from "../_shared/nexus-route.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -73,25 +73,7 @@ serve(async (req) => {
 
     const { message, agencyId, agencyName, teamComposition, dreamPoolMode, command } = await req.json();
     
-    // Use free-tier router instead of Lovable AI
-    const AI_PROVIDERS = [
-      { key: 'GROQ_API_KEY', url: 'https://api.groq.com/openai/v1/chat/completions', model: 'llama-3.3-70b-versatile' },
-      { key: 'CEREBRAS_API_KEY', url: 'https://api.cerebras.ai/v1/chat/completions', model: 'llama-3.3-70b' },
-      { key: 'TOGETHER_API_KEY', url: 'https://api.together.xyz/v1/chat/completions', model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo' },
-    ];
-    
-    let activeProvider = null;
-    for (const provider of AI_PROVIDERS) {
-      if (Deno.env.get(provider.key)) {
-        activeProvider = { ...provider, apiKey: Deno.env.get(provider.key)! };
-        break;
-      }
-    }
-    
-    if (!activeProvider) {
-      throw new Error("No AI provider configured. Add GROQ_API_KEY, CEREBRAS_API_KEY, or TOGETHER_API_KEY.");
-    }
-
+    // Route through full NEXUS provider fleet
     // Build detailed team context
     const teamContext = teamComposition?.map((m: any) => {
       const skills = m.skills || {};
@@ -130,48 +112,14 @@ ${command ? `\n## Active Command: ${command}\nThis will create an actual task ba
 
 Keep responses professional, concise, and action-oriented. Focus on delivering real value through tasks we can actually execute.`;
 
-    const response = await fetch(activeProvider.url, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${activeProvider.apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: activeProvider.model,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: message },
-        ],
-        max_tokens: 1024,
-      }),
-    });
+      const result = await nexusRoute(message, {
+        systemPrompt,
+        taskType: "reasoning",
+        maxTokens: 1024,
+      });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ 
-          error: "Rate limits exceeded",
-          reply: "The team is at capacity. Please try again in a moment."
-        }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ 
-          error: "Payment required",
-          reply: "Additional credits required. Please contact your administrator."
-        }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      throw new Error("AI gateway error");
-    }
-
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "I understand. Let me coordinate with the team.";
+      console.log(`[NEXUS] Agency chat routed → ${result.provider} (${result.model}) in ${result.latencyMs}ms`);
+      const reply = result.content || "I understand. Let me coordinate with the team.";
 
     return new Response(JSON.stringify({ 
       success: true,

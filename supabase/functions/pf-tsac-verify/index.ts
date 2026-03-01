@@ -28,42 +28,37 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
+import { nexusRoute } from "../_shared/nexus-route.ts";
+
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-// ── AI Helper — Routes through NEXUS (Groq free-tier) ─────
+// ── AI Helper — Routes through full NEXUS provider fleet ─────
 
 async function callAI(messages: Array<{ role: string; content: string }>, tools?: any[], toolChoice?: any): Promise<any> {
-  if (!GROQ_API_KEY) throw new Error("GROQ_API_KEY not configured — NEXUS router requires at least one provider key");
+  const systemMsg = messages.find(m => m.role === "system");
+  const userMsg = messages.find(m => m.role === "user");
+  
+  if (!userMsg) throw new Error("No user message provided");
 
-  const body: any = {
-    model: "llama-3.3-70b-versatile",
-    messages,
+  const result = await nexusRoute(userMsg.content, {
+    systemPrompt: systemMsg?.content,
+    taskType: "reasoning",
     temperature: 0.2,
-  };
-
-  if (tools) {
-    body.tools = tools;
-    if (toolChoice) body.tool_choice = toolChoice;
-  }
-
-  const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${GROQ_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
+    tools,
+    toolChoice,
   });
 
-  if (!resp.ok) {
-    const errText = await resp.text();
-    console.error("NEXUS/Groq error:", resp.status, errText);
-    throw new Error(`NEXUS router returned ${resp.status}`);
-  }
+  console.log(`[NEXUS] TSAC routed → ${result.provider} (${result.model}) in ${result.latencyMs}ms, ${result.attempts} attempt(s)`);
 
-  return resp.json();
+  // Return in OpenAI-compatible format for existing code compatibility
+  if (tools && result.content.startsWith("[")) {
+    try {
+      const toolCalls = JSON.parse(result.content);
+      return { choices: [{ message: { role: "assistant", tool_calls: toolCalls } }] };
+    } catch { /* fall through to text response */ }
+  }
+  return { choices: [{ message: { role: "assistant", content: result.content } }] };
 }
 
 // ── Types ───────────────────────────────────────────────────
