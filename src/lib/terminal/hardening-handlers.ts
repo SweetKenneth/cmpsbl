@@ -1,6 +1,8 @@
 /**
  * Hardening Terminal Handlers
- * Registers commands for all 8 hardened modules (CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE)
+ * Registers commands for all 15 hardened modules
+ * CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE,
+ * BRAIN, MEMORY, DREAM, ECONOMY, IMMUNITY, EVOLUTION, INTENT
  */
 
 import { registerHandler } from './validate-registry';
@@ -65,6 +67,9 @@ export function registerHardeningHandlers(): void {
       { module: 'MEMORY', version: '2.0.0', codename: 'Vault' },
       { module: 'DREAM', version: '2.0.0', codename: 'Nocturne' },
       { module: 'ECONOMY', version: '2.0.0', codename: 'Ledger' },
+      { module: 'IMMUNITY', version: '2.0.0', codename: 'Watchguard' },
+      { module: 'EVOLUTION', version: '2.0.0', codename: 'Chrysalis' },
+      { module: 'INTENT', version: '2.0.0', codename: 'Navigator' },
     ];
     return { success: true, data: versions };
   });
