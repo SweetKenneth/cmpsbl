@@ -1,6 +1,6 @@
 /**
  * Module Capability Discovery
- * Auto-detects module functionality via endpoint probing
+ * Auto-detects module functionality via endpoint probing (26-node architecture)
  * 
  * Scans registered modules to discover available operations,
  * health status, and capability coverage.
