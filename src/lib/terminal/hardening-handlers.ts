@@ -688,8 +688,8 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('economy.hardening.reconciliation', async () => {
     try {
-      const { reconcile } = await import('@/lib/substrate/economy-module/economy-hardening');
-      return { success: true, data: reconcile([], []) };
+      const { reconcileRecords } = await import('@/lib/substrate/economy-module/economy-hardening');
+      return { success: true, data: reconcileRecords([], []) };
     } catch { return { success: true, data: { matched: 0, unmatched: 0, discrepancies: [] } }; }
   });
 
@@ -702,8 +702,8 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('economy.hardening.fingerprint', async () => {
     try {
-      const { fingerprintSpend } = await import('@/lib/substrate/economy-module/economy-hardening');
-      return { success: true, data: fingerprintSpend('global', []) };
+      const { fingerprintSpendPattern } = await import('@/lib/substrate/economy-module/economy-hardening');
+      return { success: true, data: fingerprintSpendPattern('global', []) };
     } catch { return { success: true, data: { module: 'global', avgAmount: 0 } }; }
   });
 
