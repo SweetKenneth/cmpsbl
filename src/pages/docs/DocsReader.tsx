@@ -57,6 +57,7 @@ const docRegistry: Record<string, { title: string; tier: string; icon: React.Rea
   'crown-jewel-mining-w4': { title: 'Crown Jewel Mining — Wave 4', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/16-crown-jewel-mining-wave4.md?raw').then(m => m.default) },
   'crown-jewel-mining-w5': { title: 'Crown Jewel Mining — Wave 5', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/17-crown-jewel-mining-wave5.md?raw').then(m => m.default) },
   'crown-jewel-mining-final': { title: 'Crown Jewel Mining — Final Sweep', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/18-crown-jewel-mining-final-sweep.md?raw').then(m => m.default) },
+  'crown-jewel-master-ranking': { title: 'Crown Jewel Master Ranking', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/19-crown-jewel-master-ranking.md?raw').then(m => m.default) },
   // Engineering Proof
   'engineering-proof': { title: 'Engineering Proof & Scale', tier: 'Tier 3 — Strategic', icon: <TestTube className="w-4 h-4" />, loader: () => import('../../../docs/14-engineering-proof/engineering-proof-and-scale.md?raw').then(m => m.default) },
 };
@@ -70,7 +71,7 @@ const tiers = [
   { name: 'Tier 4 — Founder Safeguards', slugs: ['founder-intent', 'survivability-succession-protocol'] },
   { name: 'Internal — Substrate', slugs: ['internal-topology', 'internal-algorithms', 'internal-trade-secrets', 'internal-control-plane', 'internal-nexus', 'internal-hardening'] },
   { name: 'Internal — Operations', slugs: ['internal-evolution', 'internal-security', 'internal-resilience', 'internal-memory'] },
-  { name: 'Internal — Governor', slugs: ['internal-governor', 'internal-maintenance', 'crown-jewel-mining', 'crown-jewel-mining-w2', 'crown-jewel-mining-w3', 'crown-jewel-mining-w4', 'crown-jewel-mining-w5', 'crown-jewel-mining-final'] },
+  { name: 'Internal — Governor', slugs: ['internal-governor', 'internal-maintenance', 'crown-jewel-mining', 'crown-jewel-mining-w2', 'crown-jewel-mining-w3', 'crown-jewel-mining-w4', 'crown-jewel-mining-w5', 'crown-jewel-mining-final', 'crown-jewel-master-ranking'] },
 ];
 
 export default function DocsReader() {
