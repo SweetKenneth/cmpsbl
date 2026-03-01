@@ -332,118 +332,34 @@ REQUIREMENTS:
 Return ONLY valid JSON with the complete HTML file, no markdown or explanations.`;
 
     let rebuiltFiles = null;
-    let result: string | null = null;
 
-    // Priority 1: Google AI Studio (free, generous limits)
-    const GOOGLE_AI_KEY = Deno.env.get('GOOGLE_AI_STUDIO_KEY');
-    if (GOOGLE_AI_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Google AI Studio (Gemini 2.0 Flash)...');
-      result = await callGoogleAI(GOOGLE_AI_KEY, prompt);
-      if (result) {
-        console.log('✅ Google AI succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Google AI');
-          }
+    // Route through NEXUS — full provider fleet with automatic cascade
+    console.log('🤖 Routing rebuild through NEXUS fleet...');
+    try {
+      const result = await nexusRoute(prompt, {
+        systemPrompt: "You are an expert web developer. Return ONLY valid JSON, no markdown or explanations.",
+        taskType: "code",
+        temperature: 0.3,
+        maxTokens: 8192,
+        timeoutMs: 60_000,
+      });
+
+      console.log(`✅ NEXUS routed → ${result.provider} (${result.model}) in ${result.latencyMs}ms, chain: ${result.fallbackChain.join(' → ')}`);
+      
+      const jsonMatch = result.content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        try {
+          rebuiltFiles = JSON.parse(jsonMatch[0]);
+        } catch (e) {
+          console.error(`JSON parse error from ${result.provider}`);
         }
       }
-    }
-
-    // Priority 2: Cerebras (fast + free)
-    const CEREBRAS_KEY = Deno.env.get('CEREBRAS_API_KEY');
-    if (CEREBRAS_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Cerebras (Llama 3.3 70B)...');
-      result = await callCerebras(CEREBRAS_KEY, prompt);
-      if (result) {
-        console.log('✅ Cerebras succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Cerebras');
-          }
-        }
-      }
-    }
-
-    // Priority 3: Groq (free tier)
-    const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY');
-    if (GROQ_API_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Groq (Llama 3.3 70B)...');
-      result = await callGroq(GROQ_API_KEY, prompt);
-      if (result) {
-        console.log('✅ Groq succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Groq');
-          }
-        }
-      }
-    }
-
-    // Priority 4: Together AI
-    const TOGETHER_KEY = Deno.env.get('TOGETHER_API_KEY');
-    if (TOGETHER_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Together AI (Llama 3.1 70B)...');
-      result = await callTogether(TOGETHER_KEY, prompt);
-      if (result) {
-        console.log('✅ Together AI succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Together');
-          }
-        }
-      }
-    }
-
-    // Priority 5: DeepSeek
-    const DEEPSEEK_KEY = Deno.env.get('DEEPSEEK_API_KEY');
-    if (DEEPSEEK_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying DeepSeek...');
-      result = await callDeepSeek(DEEPSEEK_KEY, prompt);
-      if (result) {
-        console.log('✅ DeepSeek succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from DeepSeek');
-          }
-        }
-      }
-    }
-
-    // Priority 6: Hyperbolic
-    const HYPERBOLIC_KEY = Deno.env.get('HYPERBOLIC_API_KEY');
-    if (HYPERBOLIC_KEY && !rebuiltFiles) {
-      console.log('🤖 Trying Hyperbolic (Llama 3.1 70B)...');
-      result = await callHyperbolic(HYPERBOLIC_KEY, prompt);
-      if (result) {
-        console.log('✅ Hyperbolic succeeded');
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          try {
-            rebuiltFiles = JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            console.error('JSON parse error from Hyperbolic');
-          }
-        }
-      }
+    } catch (err) {
+      console.error('❌ NEXUS fleet exhausted:', err);
     }
 
     if (!rebuiltFiles) {
-      throw new Error('All AI models failed to generate valid code. Check your API keys and rate limits.');
+      throw new Error('All AI providers failed to generate valid code. Check your API keys and rate limits.');
     }
 
     // Detect CMS
