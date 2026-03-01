@@ -156,6 +156,7 @@ const GovernanceControlPlane = lazy(() => import("./pages/admin/GovernanceContro
 const Architecture = lazy(() => import("./pages/Architecture"));
 const EvolutionControlCenter = lazy(() => import("./pages/EvolutionControlCenter"));
 const IntelPanel = lazy(() => import("./pages/admin/IntelPanel"));
+const STierVault = lazy(() => import("./pages/admin/STierVault"));
 
 const Status = lazy(() => import("./pages/Status"));
 const SystemIntegrity = lazy(() => import("./pages/SystemIntegrity"));
@@ -568,6 +569,7 @@ const App = () => {
                         <Route path="/admin/governance" element={<AdminRoute><GovernanceControlPlane /></AdminRoute>} />
                         <Route path="/admin/quarry" element={<AdminRoute><QuarryDashboard /></AdminRoute>} />
                         <Route path="/admin/intel" element={<AdminRoute><IntelPanel /></AdminRoute>} />
+                        <Route path="/admin/s-tier-vault" element={<AdminRoute><STierVault /></AdminRoute>} />
                         <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
