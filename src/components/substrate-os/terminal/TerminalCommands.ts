@@ -1172,6 +1172,8 @@ export const COMMAND_CATEGORIES = {
   audit_hardening: { label: 'AUDIT HARDENING', color: 'text-stone-300', borderColor: 'border-stone-400/30', commands: AUDIT_HARDENING_COMMANDS },
   relay_hardening: { label: 'RELAY HARDENING', color: 'text-lime-300', borderColor: 'border-lime-400/30', commands: RELAY_HARDENING_COMMANDS },
   ripple_hardening: { label: 'RIPPLE HARDENING', color: 'text-cyan-300', borderColor: 'border-cyan-400/30', commands: RIPPLE_HARDENING_COMMANDS },
+  sandbox_hardening: { label: 'SANDBOX HARDENING', color: 'text-emerald-300', borderColor: 'border-emerald-400/30', commands: SANDBOX_HARDENING_COMMANDS },
+  inclusive_hardening: { label: 'INCLUSIVE HARDENING', color: 'text-teal-300', borderColor: 'border-teal-400/30', commands: INCLUSIVE_HARDENING_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {
