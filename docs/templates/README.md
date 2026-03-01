@@ -12,6 +12,16 @@ Meta-engines compose multiple standalone engines into complete vertical solution
 | 2 | [Self-Healing Service Mesh](./meta-02-self-healing-mesh.md) | Registry + Heartbeat + Triage + Healer + Anomaly | Full infrastructure resilience — detect, diagnose, heal, learn |
 | 3 | [Intelligent Task Processor](./meta-03-task-processor.md) | Interpreter + Triage + Fleet Router + WAL | Parse any input → classify → route → execute → recover |
 | 4 | [Compliance & Governance Core](./meta-04-compliance-core.md) | Audit Chain + WAL + Registry + Anomaly | Tamper-evident compliance with anomaly detection on audit stream |
+| 5 | [Autonomous Agent Runtime](./meta-05-agent-runtime.ts) | State Machine + Scheduler + Pipeline + WAL + Event Sourcing | Complete agent execution with lifecycle, skills, memory, and crash recovery |
+| 6 | [Real-Time Threat Defense](./meta-06-threat-defense.ts) | Rate Limiter + Circuit Breaker + Anomaly + Audit Chain | Security operations — detect abuse, isolate threats, audit everything |
+| 7 | [Intelligent API Gateway](./meta-07-api-gateway.ts) | Rate Limiter + Circuit Breaker + Cache + Feature Flags + Cost Router | Complete API management — throttle, cache, gate, budget, protect |
+| 8 | [Distributed Workflow Engine](./meta-08-workflow-engine.ts) | State Machine + WAL + Event Sourcing + Scheduler + Circuit Breaker | Saga orchestration with compensation, durability, and step retries |
+| 9 | [Data Pipeline Orchestrator](./meta-09-data-orchestrator.ts) | Pipeline + WAL + Event Sourcing + Scheduler + Anomaly | Enterprise ETL with lineage, quality monitoring, and crash recovery |
+| 10 | [Multi-Model AI Tribunal](./meta-10-ai-tribunal.ts) | Consensus + Fleet Router + Cost Router + Cache + Audit Chain | AI decision governance — multi-model voting with cost and audit |
+| 11 | [Progressive Delivery Platform](./meta-11-progressive-delivery.ts) | Feature Flags + State Machine + Event Sourcing + Anomaly + Pipeline | Release management — canary → limited → full with auto-rollback |
+| 12 | [Resilient Integration Hub](./meta-12-integration-hub.ts) | Circuit Breaker + Rate Limiter + Cache + Pipeline + WAL + Scheduler | External service integration with durability and auto-retry |
+| 13 | [Observability & Intelligence](./meta-13-observability.ts) | Anomaly Correlator + Audit Chain + Event Sourcing + Pipeline + Cache | Full-stack monitoring with dashboards, alerting, and incident correlation |
+| 14 | [Knowledge & Learning Engine](./meta-14-knowledge-engine.ts) | Event Sourcing + Cache + Pipeline + Consensus + Anomaly | Self-improving knowledge system with contradiction detection |
 
 ## Standalone Engines
 
