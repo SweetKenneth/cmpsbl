@@ -110,7 +110,8 @@ export function EnhancedFooter() {
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-6 lg:gap-8">
+          {/* Main grid: brand + 5 link columns */}
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1fr_1fr] lg:gap-10">
             {/* Brand Column */}
             <div className="col-span-2 sm:col-span-3 lg:col-span-1 mb-6 lg:mb-0">
               <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3">
@@ -162,15 +163,7 @@ export function EnhancedFooter() {
                   )}
                   {section.links.map((link) => (
                     <li key={link.href}>
-                      {link.href === "#xctbl" ? (
-                        <button
-                          onClick={() => setXctblOpen(true)}
-                          className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
-                        >
-                          <Gamepad2 className="w-3.5 h-3.5 group-hover:animate-pulse" />
-                          {link.name}
-                        </button>
-                      ) : link.external ? (
+                      {link.external ? (
                         <a
                           href={link.href}
                           target="_blank"
@@ -204,13 +197,62 @@ export function EnhancedFooter() {
         {/* Bottom Bar */}
         <div className="border-t border-border/50 bg-muted/20">
           <div className="container mx-auto max-w-7xl px-4 py-4 sm:py-5 pb-20 sm:pb-5">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-              <p className="text-[11px] sm:text-xs text-muted-foreground text-center sm:text-left">
+            <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
+              {/* Copyright */}
+              <p className="text-[11px] sm:text-xs text-muted-foreground text-center lg:text-left">
                 © 2009-{currentYear} CMPSBL® — All rights reserved
               </p>
-              <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-4 text-[11px] sm:text-xs text-muted-foreground text-center">
-                <span>CMPSBL® — Composable Cognitive Infrastructure</span>
-                <span className="hidden sm:inline text-border">•</span>
+
+              {/* Legal links — desktop inline, mobile stacked */}
+              <div className="hidden lg:flex items-center gap-5">
+                {legalLinks.map((link) => (
+                  link.href === "#xctbl" ? (
+                    <button
+                      key={link.name}
+                      onClick={() => setXctblOpen(true)}
+                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
+                      {link.name}
+                    </button>
+                  ) : (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  )
+                ))}
+              </div>
+
+              {/* Mobile legal links — keep existing stacked style */}
+              <div className="flex lg:hidden flex-wrap justify-center gap-x-4 gap-y-1.5">
+                {legalLinks.map((link) => (
+                  link.href === "#xctbl" ? (
+                    <button
+                      key={link.name}
+                      onClick={() => setXctblOpen(true)}
+                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
+                      {link.name}
+                    </button>
+                  ) : (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  )
+                ))}
+              </div>
+
+              {/* Made with love */}
+              <div className="text-[11px] sm:text-xs text-muted-foreground text-center lg:text-right">
                 <span className="inline-flex items-center gap-1">
                   Made with <Heart className="w-3 h-3 text-destructive fill-destructive animate-pulse" /> by humans who care
                 </span>
