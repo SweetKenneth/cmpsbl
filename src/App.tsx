@@ -102,6 +102,7 @@ const CodeLab = lazy(() => import("./pages/CodeLab"));
 const ForgeCatalog = lazy(() => import("./pages/ForgeCatalog"));
 const DevTools = lazy(() => import("./pages/DevTools"));
 const DeveloperAcademy = lazy(() => import("./pages/DeveloperAcademy"));
+const VanillaDeveloperGuide = lazy(() => import("./pages/VanillaDeveloperGuide"));
 
 const GamingSubstrate = lazy(() => import("./pages/GamingSubstrate"));
 const DeveloperShowcase = lazy(() => import("./pages/DeveloperShowcase"));
@@ -405,6 +406,7 @@ const App = () => {
                         <Route path="/audit" element={<Navigate to="/" replace />} />
                         <Route path="/gaming" element={<GamingSubstrate />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />
+                        <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
                         <Route path="/use-cases" element={<UseCases />} />
                         <Route path="/marketplace" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
