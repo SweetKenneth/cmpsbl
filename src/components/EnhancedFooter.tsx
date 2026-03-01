@@ -151,18 +151,6 @@ export function EnhancedFooter() {
               <div key={section.title} className="min-w-0">
                 <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wide">{section.title}</h3>
                 <ul className="space-y-2.5">
-                  {/* Evolution button in Platform section */}
-                  {section.title === "Platform" && (
-                    <li>
-                      <button
-                        onClick={() => setEvolutionOpen(true)}
-                        className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Sparkles className="w-3.5 h-3.5 group-hover:animate-pulse" />
-                        Evolution Video
-                      </button>
-                    </li>
-                  )}
                   {section.links.map((link) => (
                     <li key={link.href}>
                       {link.external ? (
