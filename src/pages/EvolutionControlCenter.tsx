@@ -213,10 +213,33 @@ export default function EvolutionControlCenter() {
   // ── Authenticated view ──────────────────────────────────
   return (
     <>
-      <Helmet>
-        <title>EVOLUTION Control Center — CMPSBL Substrate</title>
-        <meta name="description" content="Mission control for governed system evolution. Connect your AI agent, preview improvements, and evolve your codebase safely." />
-      </Helmet>
+      <SEO
+        title="EVOLUTION Control Center — Governed AI Improvement | CMPSBL"
+        description="Connect your AI agent and evolve your codebase safely. Dry-run previews, one-click rollback, receipted changes, and governed self-improvement."
+        image="https://cmpsbl.com/og/evolution.jpg"
+        canonical="https://cmpsbl.com/evolution"
+        keywords={['AI code evolution', 'governed self-improvement', 'codebase evolution', 'AI agent code improvement', 'dry-run preview', 'rollback safe']}
+        howTo={{
+          name: 'How to evolve your codebase with CMPSBL EVOLUTION',
+          description: 'Connect your AI coding agent and start governed evolution in 4 steps.',
+          steps: [
+            { name: 'Copy the prompt', text: 'Click the copy button to get your auth-injected EVOLUTION prompt with your personal JWT.' },
+            { name: 'Paste into your agent', text: 'Drop it into Cursor, Windsurf, Cline, or any AI coding agent.' },
+            { name: 'Say "Evolve CMPSBL"', text: 'Your agent scans, previews improvements with a dry-run, and asks before applying.' },
+            { name: 'Watch your system improve', text: 'Health goes up, debt goes down. Every change is receipted and rollback-safe.' },
+          ],
+          totalTime: 'PT5M',
+        }}
+        faq={[
+          { question: 'What is EVOLUTION?', answer: 'EVOLUTION is a governed self-improvement system that connects AI coding agents to your codebase for safe, receipted, rollback-safe code evolution.' },
+          { question: 'Is it safe?', answer: 'Yes. All changes start as dry-runs. Every applied change is receipted with a Merkle-chain audit trail and can be rolled back with one click.' },
+          { question: 'Which AI agents work with EVOLUTION?', answer: 'Any AI coding agent that accepts system prompts — Cursor, Windsurf, Cline, and others.' },
+        ]}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'EVOLUTION', url: 'https://cmpsbl.com/evolution' },
+        ]}
+      />
 
       <div className="min-h-screen bg-background">
         <PublicNav />
