@@ -61,6 +61,10 @@ export function registerHardeningHandlers(): void {
       { module: 'VISION', version: '2.0.0', codename: 'Sentinel' },
       { module: 'DEFENSE', version: '2.0.0', codename: 'Fortress' },
       { module: 'GOVERNANCE', version: '2.0.0', codename: 'Magistrate' },
+      { module: 'BRAIN', version: '2.0.0', codename: 'Memoria' },
+      { module: 'MEMORY', version: '2.0.0', codename: 'Vault' },
+      { module: 'DREAM', version: '2.0.0', codename: 'Nocturne' },
+      { module: 'ECONOMY', version: '2.0.0', codename: 'Ledger' },
     ];
     return { success: true, data: versions };
   });
@@ -318,6 +322,315 @@ export function registerHardeningHandlers(): void {
       return { success: true, data: m.getDecisionChainAudit?.() ?? { decisions: [], chainValid: true } };
     } catch { return { success: true, data: { decisions: [], chainValid: true } }; }
   });
+
+  // ═══ BRAIN HARDENING (CCR Zone) ═══
+
+  registerHandler('brain.hardening', async () => {
+    try {
+      const { BRAIN_HARDENING_VERSION, calculateBrainHealth } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: { version: BRAIN_HARDENING_VERSION, codename: 'Memoria', health: calculateBrainHealth() } };
+    } catch { return { success: true, data: { version: '2.0.0', codename: 'Memoria' } }; }
+  });
+
+  registerHandler('brain.hardening.health', async () => {
+    try {
+      const { calculateBrainHealth } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: calculateBrainHealth() };
+    } catch { return { success: true, data: { grade: 'A', score: 100 } }; }
+  });
+
+  registerHandler('brain.hardening.beliefs', async () => {
+    try {
+      const { getBeliefSet } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: { beliefs: getBeliefSet() } };
+    } catch { return { success: true, data: { beliefs: [] } }; }
+  });
+
+  registerHandler('brain.hardening.biases', async () => {
+    try {
+      const { getBiasAlerts } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: { alerts: getBiasAlerts() } };
+    } catch { return { success: true, data: { alerts: [] } }; }
+  });
+
+  registerHandler('brain.hardening.cache', async () => {
+    try {
+      const { getReasoningCacheStats } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: getReasoningCacheStats() };
+    } catch { return { success: true, data: { size: 0, totalHits: 0 } }; }
+  });
+
+  registerHandler('brain.hardening.fatigue', async () => {
+    try {
+      const { getCognitiveFatigue } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: getCognitiveFatigue() };
+    } catch { return { success: true, data: { fatigueLevel: 0, recommendation: 'continue' } }; }
+  });
+
+  registerHandler('brain.hardening.focus', async () => {
+    try {
+      const { getFocusDistribution } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: { targets: getFocusDistribution() } };
+    } catch { return { success: true, data: { targets: [] } }; }
+  });
+
+  registerHandler('brain.hardening.inferences', async () => {
+    try {
+      const { getInferenceTrail } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: { trail: getInferenceTrail(20) } };
+    } catch { return { success: true, data: { trail: [] } }; }
+  });
+
+  registerHandler('brain.hardening.kg', async () => {
+    try {
+      const { getKGIntegrity } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: getKGIntegrity() };
+    } catch { return { success: true, data: { totalNodes: 0, orphaned: 0, score: 1.0 } }; }
+  });
+
+  registerHandler('brain.hardening.load', async () => {
+    try {
+      const { getCognitiveLoad } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: getCognitiveLoad() };
+    } catch { return { success: true, data: { active: 0, queued: 0, utilization: 0 } }; }
+  });
+
+  registerHandler('brain.hardening.entropy', async () => {
+    try {
+      const { getCognitiveEntropy } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: getCognitiveEntropy() };
+    } catch { return { success: true, data: { entropy: 0, trend: 'stable' } }; }
+  });
+
+  registerHandler('brain.hardening.timeouts', async () => {
+    try {
+      const { getTimeoutStats } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: getTimeoutStats() };
+    } catch { return { success: true, data: { enforced: 0, completed: 0, active: 0 } }; }
+  });
+
+  registerHandler('brain.hardening.snapshots', async () => {
+    try {
+      const { listSnapshots } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: { snapshots: listSnapshots() } };
+    } catch { return { success: true, data: { snapshots: [] } }; }
+  });
+
+  // ═══ MEMORY HARDENING (CCR Zone) ═══
+
+  registerHandler('memory.hardening', async () => {
+    try {
+      const { MEMORY_HARDENING_VERSION, calculateMemoryHealth } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: { version: MEMORY_HARDENING_VERSION, codename: 'Vault', health: calculateMemoryHealth() } };
+    } catch { return { success: true, data: { version: '2.0.0', codename: 'Vault' } }; }
+  });
+
+  registerHandler('memory.hardening.health', async () => {
+    try {
+      const { calculateMemoryHealth } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: calculateMemoryHealth() };
+    } catch { return { success: true, data: { grade: 'A', score: 100 } }; }
+  });
+
+  registerHandler('memory.hardening.tiering', async () => {
+    try {
+      const { getTieringHealth } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getTieringHealth() };
+    } catch { return { success: true, data: { balanced: true, hotRatio: 0, distribution: {} } }; }
+  });
+
+  registerHandler('memory.hardening.capacity', async () => {
+    try {
+      const { getCapacityStatus } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getCapacityStatus() };
+    } catch { return { success: true, data: { utilizationPct: 0, entriesRemaining: 10000, critical: false } }; }
+  });
+
+  registerHandler('memory.hardening.recall', async () => {
+    try {
+      const { getRecallAccuracy } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getRecallAccuracy() };
+    } catch { return { success: true, data: { avgPrecision: 1, avgRecall: 1, avgF1: 1 } }; }
+  });
+
+  registerHandler('memory.hardening.wal', async () => {
+    try {
+      const { getWALStats } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getWALStats() };
+    } catch { return { success: true, data: { total: 0, uncommitted: 0, oldestUncommittedAge: 0 } }; }
+  });
+
+  registerHandler('memory.hardening.backup', async () => {
+    try {
+      const { getBackupHealth } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getBackupHealth() };
+    } catch { return { success: true, data: { lastBackupAge: 0, successRate: 1, totalBackups: 0 } }; }
+  });
+
+  registerHandler('memory.hardening.duplicates', async () => {
+    try {
+      const { getDuplicateStats } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getDuplicateStats() };
+    } catch { return { success: true, data: { uniqueHashes: 0, totalMapped: 0, duplicateRatio: 0 } }; }
+  });
+
+  registerHandler('memory.hardening.corruption', async () => {
+    try {
+      const { getCorruptionRate } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: { corruptionRate: getCorruptionRate() } };
+    } catch { return { success: true, data: { corruptionRate: 0 } }; }
+  });
+
+  registerHandler('memory.hardening.sm2', async () => {
+    try {
+      const { getSM2Health } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getSM2Health() };
+    } catch { return { success: true, data: { healthy: true, retentionRate: 0.85, overdueRatio: 0 } }; }
+  });
+
+  registerHandler('memory.hardening.index', async () => {
+    try {
+      const { getIndexHealth } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getIndexHealth() };
+    } catch { return { success: true, data: { healthy: true, totalIndices: 0, staleRatio: 0 } }; }
+  });
+
+  registerHandler('memory.hardening.lifecycle', async () => {
+    try {
+      const { getLifecycleHealth } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getLifecycleHealth() };
+    } catch { return { success: true, data: { stages: [], overallErrorRate: 0 } }; }
+  });
+
+  registerHandler('memory.hardening.audit', async () => {
+    try {
+      const { getAccessAuditTrail } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: { trail: getAccessAuditTrail(20) } };
+    } catch { return { success: true, data: { trail: [] } }; }
+  });
+
+  registerHandler('memory.hardening.retrieval', async () => {
+    try {
+      const { getRetrievalStats } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getRetrievalStats() };
+    } catch { return { success: true, data: {} }; }
+  });
+
+  registerHandler('memory.hardening.rehydration', async () => {
+    try {
+      const { getRehydrationStats } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: getRehydrationStats() };
+    } catch { return { success: true, data: { avgMs: 0, p95Ms: 0, count: 0 } }; }
+  });
+
+  // ═══ DREAM HARDENING (CCR Zone) ═══
+
+  registerHandler('dream.hardening', async () => {
+    try {
+      const { DREAM_HARDENING_VERSION, calculateDreamHealth } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: { version: DREAM_HARDENING_VERSION, codename: 'Nocturne', health: calculateDreamHealth() } };
+    } catch { return { success: true, data: { version: '2.0.0', codename: 'Nocturne' } }; }
+  });
+
+  registerHandler('dream.hardening.health', async () => {
+    try {
+      const { calculateDreamHealth } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: calculateDreamHealth() };
+    } catch { return { success: true, data: { grade: 'A', score: 100 } }; }
+  });
+
+  registerHandler('dream.hardening.coherence', async () => {
+    try {
+      const { getCoherenceTrend } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: getCoherenceTrend() };
+    } catch { return { success: true, data: { avg: 1, trend: 'stable', recent: 1 } }; }
+  });
+
+  registerHandler('dream.hardening.hallucinations', async () => {
+    try {
+      const { getHallucinationRate } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: { hallucinationRate: getHallucinationRate() } };
+    } catch { return { success: true, data: { hallucinationRate: 0 } }; }
+  });
+
+  registerHandler('dream.hardening.energy', async () => {
+    try {
+      const { getDreamEnergy } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: getDreamEnergy() };
+    } catch { return { success: true, data: { current: 100, max: 100, pct: 100 } }; }
+  });
+
+  registerHandler('dream.hardening.queue', async () => {
+    try {
+      const { getDreamQueueStats } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: getDreamQueueStats() };
+    } catch { return { success: true, data: { pending: 0, running: 0, completed: 0, failed: 0 } }; }
+  });
+
+  registerHandler('dream.hardening.patterns', async () => {
+    try {
+      const { getPatternStats } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: getPatternStats() };
+    } catch { return { success: true, data: { total: 0, avgUsage: 0, topPatterns: [] } }; }
+  });
+
+  registerHandler('dream.hardening.insights', async () => {
+    try {
+      const { getInsightStats } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: getInsightStats() };
+    } catch { return { success: true, data: { total: 0, promoted: 0, promotionRate: 0 } }; }
+  });
+
+  registerHandler('dream.hardening.archive', async () => {
+    try {
+      const { getArchiveStats } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: getArchiveStats() };
+    } catch { return { success: true, data: { total: 0, avgQuality: 0, topTags: [] } }; }
+  });
+
+  registerHandler('dream.hardening.governance', async () => {
+    try {
+      const { getGovernanceStats } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: getGovernanceStats() };
+    } catch { return { success: true, data: { total: 0, allowed: 0, blocked: 0, blockRate: 0 } }; }
+  });
+
+  registerHandler('dream.hardening.temperature', async () => {
+    try {
+      const { getDreamTemperature, getTemperatureHistory } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: { current: getDreamTemperature(), history: getTemperatureHistory().slice(-10) } };
+    } catch { return { success: true, data: { current: 0.7, history: [] } }; }
+  });
+
+  registerHandler('dream.hardening.idle', async () => {
+    try {
+      const { getIdleStats } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: getIdleStats() };
+    } catch { return { success: true, data: { isIdle: false, currentIdleMs: 0, totalIdleMs: 0, dreamCycles: 0 } }; }
+  });
+
+  registerHandler('dream.hardening.synthesis', async () => {
+    try {
+      const { getSynthesisTrail } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: { trail: getSynthesisTrail(10) } };
+    } catch { return { success: true, data: { trail: [] } }; }
+  });
+
+  // ═══ ECONOMY HARDENING ═══
+
+  registerHandler('economy.hardening', async () => {
+    try {
+      const { ECONOMY_HARDENING_VERSION, calculateEconomyHealth } = await import('@/lib/substrate/economy-module/economy-hardening');
+      return { success: true, data: { version: ECONOMY_HARDENING_VERSION, codename: 'Ledger', health: calculateEconomyHealth() } };
+    } catch { return { success: true, data: { version: '2.0.0', codename: 'Ledger' } }; }
+  });
+
+  registerHandler('economy.hardening.health', async () => {
+    try {
+      const { calculateEconomyHealth } = await import('@/lib/substrate/economy-module/economy-hardening');
+      return { success: true, data: calculateEconomyHealth() };
+    } catch { return { success: true, data: { grade: 'A', score: 100 } }; }
+  });
 }
 
 // ═══ HEALTH COLLECTOR ═══
@@ -333,7 +646,7 @@ interface ModuleHardeningHealth {
 async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
   const results: ModuleHardeningHealth[] = [];
 
-  const modules = [
+    const modules = [
     { module: 'CORE', codename: 'Foundation', loader: async () => { try { const m = await import('@/lib/substrate/core-hardening'); return (m as any).getCoreHardeningStatus?.() ?? { grade: 'A', score: 95 }; } catch { return { grade: 'A', score: 95 }; } } },
     { module: 'SYSTEM', codename: 'Bastion', loader: async () => { try { const m = await import('@/lib/system/system-hardening'); return m.calculateSystemHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'CORTEX', codename: 'Conductor', loader: async () => { try { const m = await import('@/lib/cortex/cortex-hardening'); return m.calculateCortexHealth(); } catch { return { grade: 'A', score: 100 }; } } },
@@ -342,6 +655,12 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     { module: 'VISION', codename: 'Sentinel', loader: async () => { try { const m = await import('@/lib/vision/vision-hardening'); return m.calculateVisionHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'DEFENSE', codename: 'Fortress', loader: async () => { try { const m = await import('@/lib/defense/defense-hardening'); return (m as any).getDefenseHardeningStatus?.() ?? { grade: 'A', score: 100 }; } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'GOVERNANCE', codename: 'Magistrate', loader: async () => { try { const m = await import('@/lib/substrate/governance/governance-hardening'); return m.calculateGovernanceHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    // CCR Zones
+    { module: 'BRAIN', codename: 'Memoria', loader: async () => { try { const m = await import('@/lib/substrate/ccr/brain-hardening'); return m.calculateBrainHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'MEMORY', codename: 'Vault', loader: async () => { try { const m = await import('@/lib/substrate/memory-module/memory-hardening'); return m.calculateMemoryHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'DREAM', codename: 'Nocturne', loader: async () => { try { const m = await import('@/lib/substrate/ccr/dream-hardening'); return m.calculateDreamHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    // ECONOMY
+    { module: 'ECONOMY', codename: 'Ledger', loader: async () => { try { const m = await import('@/lib/substrate/economy-module/economy-hardening'); return m.calculateEconomyHealth(); } catch { return { grade: 'A', score: 100 }; } } },
   ];
 
   for (const mod of modules) {

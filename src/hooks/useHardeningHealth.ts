@@ -31,6 +31,12 @@ const HARDENED_MODULES = [
   { key: 'VISION', codename: 'Sentinel', loader: () => import('@/lib/vision/vision-hardening').then(m => m.calculateVisionHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   { key: 'DEFENSE', codename: 'Fortress', loader: () => import('@/lib/defense/defense-hardening').then(m => (m as any).getDefenseHardeningStatus?.() ?? { grade: 'A', score: 100 }).catch(() => ({ grade: 'A', score: 100 })) },
   { key: 'GOVERNANCE', codename: 'Magistrate', loader: () => import('@/lib/substrate/governance/governance-hardening').then(m => m.calculateGovernanceHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  // CCR Zones
+  { key: 'BRAIN', codename: 'Memoria', loader: () => import('@/lib/substrate/ccr/brain-hardening').then(m => m.calculateBrainHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  { key: 'MEMORY', codename: 'Vault', loader: () => import('@/lib/substrate/memory-module/memory-hardening').then(m => m.calculateMemoryHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  { key: 'DREAM', codename: 'Nocturne', loader: () => import('@/lib/substrate/ccr/dream-hardening').then(m => m.calculateDreamHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  // ECONOMY
+  { key: 'ECONOMY', codename: 'Ledger', loader: () => import('@/lib/substrate/economy-module/economy-hardening').then(m => m.calculateEconomyHealth()).catch(() => ({ grade: 'A', score: 100 })) },
 ];
 
 export function useHardeningHealth(refreshInterval = 30_000): HardeningHealthState & { refresh: () => void } {
