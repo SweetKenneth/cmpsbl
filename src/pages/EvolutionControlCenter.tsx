@@ -37,7 +37,7 @@ export default function EvolutionControlCenter() {
           <p className="text-sm text-muted-foreground">
             The EVOLUTION Control Center requires an authenticated session. Sign in to access your evolution tools and API credentials.
           </p>
-          <Button onClick={() => navigate('/auth')} className="mt-4">
+          <Button onClick={() => navigate('/auth?redirect=/evolution')} className="mt-4">
             Sign In
           </Button>
         </div>
