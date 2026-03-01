@@ -70,6 +70,13 @@ export default function Auth() {
   const handlePasskeyAuth = async () => {
     setLoading(true);
     try {
+      // Preserve redirect intent for Face ID flow (same pattern as magic link)
+      const params = new URLSearchParams(window.location.search);
+      const redirectTo = params.get('redirect');
+      if (redirectTo) {
+        sessionStorage.setItem('cmpsbl_auth_redirect', redirectTo);
+      }
+
       // 1. Get a server-generated challenge
       const { data: challengeData, error: challengeError } = await supabase.functions.invoke('passkey-auth/challenge', {
         method: 'POST',
