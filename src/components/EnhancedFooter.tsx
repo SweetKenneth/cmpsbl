@@ -34,36 +34,36 @@ export function EnhancedFooter() {
       title: "Platform",
       links: [
         { name: "AI Operating System", href: "/ai-operating-system", highlight: true },
-        { name: "EVOLUTION", href: "/evolution", highlight: true },
-        { name: "Substrate", href: "/substrate" },
-        { name: "Runtime", href: "/runtime" },
         { name: "Architecture", href: "/architecture" },
+        { name: "EVOLUTION", href: "/evolution", highlight: true },
         { name: "Foundations", href: "/foundations" },
         { name: "Proof Mode", href: "/proof" },
+        { name: "Runtime", href: "/runtime" },
+        { name: "Substrate", href: "/substrate" },
       ]
     },
     {
       title: "Products",
       links: [
-        { name: "Minds", href: "/composable-cognitives", highlight: true },
-        { name: "Evolution Scanner", href: "/scanner", highlight: true },
-        { name: "Persistent Memory", href: "/persistent-memory" },
         { name: "Artifact Packs", href: "/packs" },
         { name: "Dream Eater", href: "/feed-dream-eater" },
-        { name: "World Engine", href: "/gaming" },
         { name: "Enterprise", href: "/enterprise" },
-        { name: "Pricing", href: "/upgrade" },
+        { name: "Evolution Scanner", href: "/scanner", highlight: true },
+        { name: "Minds", href: "/composable-cognitives", highlight: true },
+        { name: "Persistent Memory", href: "/persistent-memory" },
+        { name: "World Engine", href: "/gaming" },
       ]
     },
     {
       title: "Developers",
       links: [
-        { name: "Start Here", href: "/start-here", highlight: true },
-        { name: "Evolution Control", href: "/evolution", highlight: true },
-        { name: "Documentation", href: "/documentation" },
-        { name: "API Access", href: "/api-access" },
         { name: "Academy", href: "/academy" },
+        { name: "API Access", href: "/api-access" },
         { name: "DevTools", href: "/devtools" },
+        { name: "Documentation", href: "/documentation" },
+        { name: "Evolution Control", href: "/evolution", highlight: true },
+        { name: "Integrations", href: "/integrations" },
+        { name: "Start Here", href: "/start-here", highlight: true },
       ]
     },
     {
@@ -71,30 +71,32 @@ export function EnhancedFooter() {
       links: [
         { name: "Blog", href: "/blog" },
         { name: "Capability Map", href: "/capability-map" },
-        { name: "Roadmap", href: "/roadmap" },
-        { name: "Use Cases", href: "/use-cases" },
-        { name: "Showcase", href: "/showcase" },
+        { name: "Community", href: "/community" },
         { name: "Fossil Record", href: "/changelog" },
+        { name: "Roadmap", href: "/roadmap" },
+        { name: "Showcase", href: "/showcase" },
+        { name: "Use Cases", href: "/use-cases" },
       ]
     },
     {
       title: "Company",
       links: [
         { name: "About", href: "/about" },
-        { name: "Investors", href: "/investors" },
-        { name: "Solutions", href: "/solutions" },
         { name: "Careers", href: "/careers" },
         { name: "Contact", href: "/contact" },
+        { name: "Investors", href: "/investors" },
+        { name: "Pricing", href: "/upgrade" },
+        { name: "Solutions", href: "/solutions" },
         { name: "Support", href: "/support" },
       ]
     },
   ];
 
   const legalLinks: FooterLink[] = [
+    { name: "Library", href: "/library" },
+    { name: "Namespace", href: "/namespace" },
     { name: "Privacy", href: "/privacy" },
     { name: "Terms", href: "/terms" },
-    { name: "Namespace", href: "/namespace" },
-    { name: "Library", href: "/library" },
     { name: "XCTBL", href: "#xctbl" },
   ];
 
