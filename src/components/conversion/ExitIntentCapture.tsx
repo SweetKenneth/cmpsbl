@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, Mail } from 'lucide-react';
 import { LeadCaptureCTA } from './LeadCaptureCTA';
 
 const SHOWN_KEY = 'cmpsbl_exit_intent_shown';
@@ -67,20 +67,35 @@ export function ExitIntentCapture() {
         onClick={() => setShow(false)}
       >
         <motion.div
-          initial={{ scale: 0.9, y: 20 }}
+          initial={{ scale: 0.92, y: 24 }}
           animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.9, y: 20 }}
-          className="relative max-w-md w-full"
+          exit={{ scale: 0.92, y: 24 }}
+          transition={{ type: 'spring', damping: 22, stiffness: 280 }}
+          className="relative max-w-md w-full rounded-2xl bg-card border border-border/60 shadow-2xl p-6 overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
+          {/* Single close button */}
           <button
             onClick={() => setShow(false)}
-            className="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+            className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
           </button>
-          <LeadCaptureCTA context="general" variant="inline" />
+          {/* Use minimal variant to avoid the duplicate dismiss X */}
+          <div className="mb-4">
+            <div className="flex items-start gap-3 mb-1">
+              <div className="p-2 bg-primary/10 rounded-lg text-primary shrink-0">
+                <Mail className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground text-base">Join the substrate community</h3>
+                <p className="text-sm text-muted-foreground mt-0.5">Product updates, engineering insights, early access.</p>
+              </div>
+            </div>
+          </div>
+          <LeadCaptureCTA context="general" variant="minimal" />
+          <p className="text-[10px] text-muted-foreground mt-3 text-center">No spam. Unsubscribe anytime.</p>
         </motion.div>
       </motion.div>
     </AnimatePresence>

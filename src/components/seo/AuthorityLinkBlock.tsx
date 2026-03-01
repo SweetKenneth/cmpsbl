@@ -156,20 +156,20 @@ export function AuthorityLinkBlock({
   return (
     <nav
       aria-label="Related resources"
-      className={`py-8 sm:py-12 border-t border-border/50 ${className}`}
+      className={`py-10 sm:py-14 border-t border-border/30 ${className}`}
     >
       <div className="max-w-5xl mx-auto px-4">
-        <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-5">
+        <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] mb-6">
           {title}
         </h3>
 
         {/* Internal links */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-5">
           {internalLinks.map((link) => (
             <Link
               key={link.href + link.label}
               to={link.href}
-              className="inline-flex items-center px-3 py-1.5 text-xs sm:text-sm rounded-md bg-muted/40 text-foreground/80 hover:bg-primary/10 hover:text-primary border border-border/30 transition-colors"
+              className="inline-flex items-center px-2.5 py-1 text-[11px] sm:text-xs rounded-md bg-muted/30 text-muted-foreground hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20 transition-all duration-200"
             >
               {link.label}
             </Link>
@@ -177,17 +177,17 @@ export function AuthorityLinkBlock({
         </div>
 
         {/* External links */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {externalLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               target="_blank"
               rel={link.rel ?? 'noopener noreferrer'}
-              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs sm:text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 border border-border/20 transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] sm:text-xs rounded-md text-muted-foreground/60 hover:text-muted-foreground hover:bg-muted/30 transition-all duration-200"
             >
               {link.label}
-              <ExternalLinkIcon className="w-3 h-3 opacity-50" />
+              <ExternalLinkIcon className="w-2.5 h-2.5 opacity-40" />
             </a>
           ))}
         </div>
