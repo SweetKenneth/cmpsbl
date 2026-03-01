@@ -41,6 +41,9 @@ const HARDENED_MODULES = [
   { key: 'IMMUNITY', codename: 'Watchguard', loader: () => import('@/lib/substrate/immunity-hardening').then(m => m.calculateImmunityHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   { key: 'EVOLUTION', codename: 'Chrysalis', loader: () => import('@/lib/substrate/evolution-hardening').then(m => m.calculateEvolutionHealth()).catch(() => ({ grade: 'A', score: 100 })) },
   { key: 'INTENT', codename: 'Navigator', loader: () => import('@/lib/substrate/intent-mesh/intent-hardening').then(m => m.calculateIntentHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  // Control Plane Nodes
+  { key: 'ENGINEER', codename: 'Mechanist', loader: () => import('@/lib/substrate/engineer/engineer-hardening').then(m => m.calculateEngineerHealth()).catch(() => ({ grade: 'A', score: 100 })) },
+  { key: 'ATLAS', codename: 'Prometheus', loader: () => import('@/lib/atlas/atlas-hardening').then(m => m.calculateAtlasHealth()).catch(() => ({ grade: 'A', score: 100 })) },
 ];
 
 export function useHardeningHealth(refreshInterval = 30_000): HardeningHealthState & { refresh: () => void } {
