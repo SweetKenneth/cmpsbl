@@ -308,3 +308,69 @@ export function getEconomyResilience() {
 export function getEconomyEngine() {
   return moduleEngine;
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// HARDENING LAYER v2.0.0 ("Ledger") — Re-exports
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export {
+  ECONOMY_HARDENING_VERSION,
+  ECONOMY_HARDENING_CODENAME,
+  // 1. Transaction Integrity Seal
+  sealTransaction, verifyTransactionSeal,
+  // 2. Budget Breach Circuit Breaker
+  checkBudgetCircuit, recordBudgetBreach, resetBudgetCircuit,
+  // 3. Cost Record Tamper Detection
+  hashCostRecord, verifyRecordIntegrity,
+  // 4. Spend Velocity Limiter
+  configureSpendVelocity, checkSpendVelocity,
+  // 5. Attribution Confidence Scorer
+  scoreAttribution,
+  // 6. Forecast Drift Detector
+  detectForecastDrift,
+  // 7. Budget Envelope Guard
+  checkEnvelope,
+  // 8. Cost Anomaly Detector
+  detectCostAnomaly,
+  // 9. Audit Trail Hash Chain
+  appendAuditEntry, verifyAuditChain, getAuditChain,
+  // 10. Currency Precision Guard
+  enforcePrecision, validateMillicents,
+  // 11. Runaway Prevention Gate
+  checkRunawaySpend,
+  // 12. Cost Allocation Validator
+  validateAllocations,
+  // 13. Budget Rollover Engine
+  calculateRollover,
+  // 14. Spend Pattern Fingerprinter
+  fingerprintSpendPattern,
+  // 15. Reconciliation Engine
+  reconcileRecords,
+  // 16. Cost Ceiling Enforcer
+  setCostCeiling, checkCostCeiling,
+  // 17. Attribution Lineage Tracker
+  trackLineage, getLineageChain,
+  // 18. Forecast Accuracy Scorer
+  recordForecastOutcome, getForecastAccuracy,
+  // 19. Budget Alert Deduplicator
+  shouldFireBudgetAlert,
+  // 20. Cost Replay Protector
+  isReplayedTransaction,
+  // 21. Multi-Currency Normalizer
+  normalizeToUSD,
+  // 22. Spend Quota Partitioner
+  partitionQuotas,
+  // 23. Economy Warmup Validator
+  checkEconomyReadiness,
+  // 24. Telemetry Cost Tracker
+  recordTelemetryCost, getTelemetryCostSummary,
+  // 25. Health Composite
+  calculateEconomyHealth,
+  // Types
+  type TransactionSeal, type BudgetCircuitState, type TamperCheckResult,
+  type AttributionConfidence, type ForecastDrift, type EnvelopeStatus,
+  type CostAnomaly, type EconomyAuditEntry, type LineageNode,
+  type ForecastAccuracy, type ReconciliationResult, type AllocationValidation,
+  type RolloverResult, type SpendFingerprint, type QuotaPartition,
+  type EconomyReadiness, type EconomyHealthReport,
+} from './economy-hardening';
