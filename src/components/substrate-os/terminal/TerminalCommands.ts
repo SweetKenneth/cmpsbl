@@ -19,7 +19,7 @@ export type CommandTier = SubstrateRole; // 'free' | 'creator' | 'architect' | '
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas';
   icon: LucideIcon;
   /** @deprecated Use requiredTier instead */
   requiresOperator: boolean;
@@ -862,6 +862,94 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'intent.hardening.throughput', description: 'Intent throughput monitor', category: 'brain', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'intent.hardening.mesh', description: 'Mesh permeation stats', category: 'brain', icon: Globe, requiresOperator: false, requiredTier: 'free' },
   { command: 'intent.hardening.fallbacks', description: 'Fallback strategy stats', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══ ENGINEER Operational Commands ═══
+export const ENGINEER_OP_COMMANDS: CommandDefinition[] = [
+  { command: 'engineer.status', description: 'ENGINEER node overview', category: 'engine', icon: Settings, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.health', description: 'Engine fleet health summary', category: 'engine', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.degraded', description: 'List degraded engines', category: 'engine', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.proposals', description: 'All pending proposals', category: 'engine', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.proposals.pending', description: 'Proposals awaiting review', category: 'engine', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.proposals.approved', description: 'Approved proposal history', category: 'engine', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.cycle', description: 'Run maintenance cycle', category: 'engine', icon: RefreshCw, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'engineer.study', description: 'Current CLM study focus', category: 'engine', icon: BookOpen, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.study.queue', description: 'CLM study queue', category: 'engine', icon: List, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.study.topics', description: 'Dynamic CLM topics', category: 'engine', icon: Brain, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.stats', description: 'ENGINEER statistics', category: 'engine', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening', description: 'ENGINEER hardening status (Mechanist v2.0)', category: 'engine', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.health', description: 'ENGINEER health composite', category: 'engine', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.audit', description: 'Engine audit trail', category: 'engine', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.baselines', description: 'Engine performance baselines', category: 'engine', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.maintenance', description: 'Upcoming maintenance schedule', category: 'engine', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.synergy', description: 'Synergy multiplier tracker', category: 'engine', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.restarts', description: 'Engine restart counts', category: 'engine', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.errors', description: 'Engine error classifications', category: 'engine', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.lifecycle', description: 'Engine lifecycle states', category: 'engine', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.alerts', description: 'Degradation alert queue', category: 'engine', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.throughput', description: 'Engine throughput monitor', category: 'engine', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.transfers', description: 'Knowledge transfer history', category: 'engine', icon: Send, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.telemetry', description: 'Telemetry trend snapshots', category: 'engine', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'engineer.hardening.certs', description: 'Engine certification tracker', category: 'engine', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══ INTENT Hub Operational Commands ═══
+export const INTENT_OP_COMMANDS: CommandDefinition[] = [
+  { command: 'intent.inbox', description: 'All pending intent messages', category: 'brain', icon: Inbox, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.inbox.count', description: 'Pending message count', category: 'brain', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.stats', description: 'Intent hub statistics', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.messages', description: 'Recent messages (all statuses)', category: 'brain', icon: MessageSquare, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.messages.node', description: 'Messages by source node', category: 'brain', icon: Router, requiresOperator: false, requiredTier: 'free', args: '<node>' },
+  { command: 'intent.approve', description: 'Approve a pending message', category: 'brain', icon: CheckCircle, requiresOperator: true, requiredTier: 'architect', args: '<messageId> [note]' },
+  { command: 'intent.reject', description: 'Reject a pending message', category: 'brain', icon: XCircle, requiresOperator: true, requiredTier: 'architect', args: '<messageId> <reason>' },
+  { command: 'intent.action_required', description: 'Messages needing human action', category: 'brain', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.proposals', description: 'All proposals via INTENT', category: 'brain', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.alerts', description: 'All alerts via INTENT', category: 'brain', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.needs', description: 'All node needs/requests', category: 'brain', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.questions', description: 'Node questions pending reply', category: 'brain', icon: MessageSquare, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.expired', description: 'Expired/timed-out messages', category: 'brain', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.response_time', description: 'Avg human response time', category: 'brain', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.by_priority', description: 'Message breakdown by priority', category: 'brain', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.by_type', description: 'Message breakdown by type', category: 'brain', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.by_node', description: 'Message count per source node', category: 'brain', icon: Users, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.history', description: 'Full message history', category: 'brain', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.bridge.engineer', description: 'ENGINEER→INTENT bridge status', category: 'brain', icon: Plug, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.bridge.health', description: 'Node bridge health overview', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.summary', description: 'Natural language INTENT summary', category: 'brain', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.priorities', description: 'Critical items needing attention', category: 'brain', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.feed', description: 'Live node communication feed', category: 'brain', icon: Radio, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.translate', description: 'Translate technical to human language', category: 'brain', icon: Globe, requiresOperator: false, requiredTier: 'free', args: '<messageId>' },
+  { command: 'intent.escalate', description: 'Escalate message priority', category: 'brain', icon: Zap, requiresOperator: true, requiredTier: 'architect', args: '<messageId>' },
+];
+
+// ═══ ATLAS Operational Commands ═══
+export const ATLAS_OP_COMMANDS: CommandDefinition[] = [
+  { command: 'atlas.status', description: 'ATLAS control plane status', category: 'system', icon: Compass, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.approvals', description: 'Approval chain log', category: 'system', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.approvals.stats', description: 'Approval/rejection ratio', category: 'system', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.sessions', description: 'Active ATLAS sessions', category: 'system', icon: Users, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.rate_limit', description: 'Command rate limit status', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.policy', description: 'Policy enforcement audits', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.mode', description: 'Governance mode transitions', category: 'system', icon: Settings, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.capabilities', description: 'Capability usage ranking', category: 'system', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.escalations', description: 'Unresolved escalations', category: 'system', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.escalations.resolve', description: 'Resolve an escalation', category: 'system', icon: CheckCircle, requiresOperator: true, requiredTier: 'architect', args: '<source>' },
+  { command: 'atlas.dry_run', description: 'Dry run success rate', category: 'system', icon: TestTube, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.node_comm', description: 'Node communication frequency', category: 'system', icon: Radio, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.response_time', description: 'Avg response time', category: 'system', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.threads', description: 'Active conversation threads', category: 'system', icon: MessageSquare, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.approval_latency', description: 'Human approval latency', category: 'system', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.expired', description: 'Total expired messages', category: 'system', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.uptime', description: 'ATLAS uptime', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.queue_depth', description: 'Priority queue depth trend', category: 'system', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.satisfaction', description: 'Node satisfaction scores', category: 'system', icon: Sparkles, requiresOperator: false, requiredTier: 'free', args: '<node>' },
+  { command: 'atlas.compliance', description: 'Governance compliance score', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.sla', description: 'SLA breach count', category: 'system', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.decision_quality', description: 'Decision confidence average', category: 'system', icon: Brain, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.heatmap', description: 'Node engagement heatmap', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.intent_sync', description: 'Intent integration health', category: 'system', icon: Plug, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.hardening', description: 'ATLAS hardening status (Prometheus v2.0)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'atlas.hardening.health', description: 'ATLAS health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 ];
 
 export const ALL_COMMANDS: CommandDefinition[] = [
