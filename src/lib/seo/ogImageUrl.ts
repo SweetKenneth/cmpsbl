@@ -53,7 +53,7 @@ export function getSectionOgImage(section: string): string {
     proof: '/og/proof.jpg',
     gaming: '/og/gaming.jpg',
     architecture: '/og/architecture.jpg',
-    evolution: '/og/evolution-mesh.jpg',
+    evolution: '/og/evolution.jpg',
   };
 
   const path = SECTION_MAP[section];

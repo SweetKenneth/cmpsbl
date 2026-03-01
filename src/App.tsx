@@ -566,8 +566,8 @@ const App = () => {
                         <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
-                        <Route path="/evolution-mesh" element={<PhaseGateRoute><EvolutionMeshLanding /></PhaseGateRoute>} />
-                        <Route path="/evolution" element={<EvolutionControlCenter />} />
+                        <Route path="/evolution-mesh" element={<Navigate to="/" replace />} />
+                        <Route path="/evolution" element={<Navigate to="/" replace />} />
                         <Route path="/architecture" element={<Architecture />} />
                         
                         {/* Legacy brain/cascade routes — consolidated wildcards */}
