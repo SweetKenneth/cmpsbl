@@ -164,14 +164,14 @@ export default function Scanner() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-10 sm:mb-12"
           >
-            <Badge variant="secondary" className="mb-4 text-xs">THE PROBLEM</Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+            <Badge variant="secondary" className="mb-4 text-[11px]">THE PROBLEM</Badge>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
               Vibe coding is fast.<br />
               <span className="text-muted-foreground">Technical debt is faster.</span>
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
+            <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
               You ship at the speed of thought. But every shortcut, every "fix it later," every copy-pasted snippet 
               compounds into a system that fights you. The scanner sees what you can't.
             </p>
@@ -182,17 +182,17 @@ export default function Scanner() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3"
           >
             {DEBT_TYPES.map((item) => (
               <motion.div key={item.label} variants={itemVariants}>
-                <div className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 hover:border-primary/20 transition-all duration-300 group">
-                  <div className="p-1.5 rounded-lg bg-destructive/10 group-hover:bg-primary/10 transition-colors shrink-0">
-                    <item.icon className="w-4 h-4 text-destructive/70 group-hover:text-primary transition-colors" />
+                <div className="flex items-start gap-3 p-4 rounded-xl border border-border/30 bg-card/40 hover:bg-card/70 hover:border-primary/15 transition-all duration-300 group">
+                  <div className="p-1.5 rounded-lg bg-destructive/8 group-hover:bg-primary/8 transition-colors shrink-0">
+                    <item.icon className="w-4 h-4 text-destructive/60 group-hover:text-primary transition-colors" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">{item.label}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
+                    <p className="text-sm font-medium text-foreground leading-snug">{item.label}</p>
+                    <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               </motion.div>
