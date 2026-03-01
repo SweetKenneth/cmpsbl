@@ -39,6 +39,7 @@ export async function initializeSubstrate(): Promise<void> {
     // Boot order: CORE → CCR → CCL → Modules → INTEGRATION (last) → Mesh Overlays activate
     const publicModules = [
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
+      'medic', 'nerve', // promoted from phantom → canonical (Wave 5)
       'integration', // boots last among modules
     ] as const;
     const meshOverlays = [

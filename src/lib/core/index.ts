@@ -64,8 +64,9 @@ export const SUBSTRATE_MODULES = [
   'ripple', 'access', 'identity', 'relay', 'audit',
   // Absorbed (routes to evolution field)
   'modernizer',
-  // 8 Public Modules
+  // 10 Public Modules (MEDIC + NERVE promoted from phantom → canonical)
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
+  'medic', 'nerve',
   // Fields (system-wide transformation fabric)
   'evolution', 'immunity', 'intent',
   // Overlay Plane (supervisory)
@@ -116,7 +117,7 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   audit: 'zone-ocg',
   // Absorbed
   modernizer: 'absorbed',
-  // 8 Public Modules
+  // 10 Public Modules (includes MEDIC + NERVE)
   decode: 'module',
   encode: 'module',
   vision: 'module',
@@ -125,6 +126,8 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   economy: 'module',
   sandbox: 'module',
   inclusive: 'module',
+  medic: 'module',
+  nerve: 'module',
   // Fields (system-wide transformation fabric)
   evolution: 'field',
   immunity: 'field',
@@ -284,7 +287,7 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     audit: ['core'],
     // Absorbed
     modernizer: ['core'],
-    // 8 Modules
+    // 10 Modules
     decode: ['core'],
     encode: ['core', 'decode'],
     vision: ['core'],
@@ -293,6 +296,8 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     economy: ['core'],
     sandbox: ['core'],
     inclusive: ['core'],
+    medic: ['core', 'system', 'vision'],
+    nerve: ['core', 'ripple', 'system'],
     // Fields
     evolution: ['core'],
     immunity: ['core', 'defense'],

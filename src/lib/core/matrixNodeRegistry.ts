@@ -62,21 +62,21 @@ export interface MatrixIntegrityReport {
 // ============ Node Definitions ============
 
 /** 
- * Weight distribution across 24 Matrix Nodes, normalized to 1.0.
+ * Weight distribution across 26 Matrix Nodes, normalized to 1.0.
  * 
  * Topology weights:
- *   CORE (Kernel)     = 0.200 (20%)
+ *   CORE (Kernel)     = 0.180 (18%)  — reduced from 0.200 to accommodate MEDIC+NERVE
  *   SYSTEM (Standalone)= 0.050 (5%)
  *   CCR (3 zones)     = 0.150 (15%)
- *   OCG (5 zones)     = 0.200 (20%)
- *   Execution (9 nodes)= 0.250 (25%)
+ *   OCG (5 zones)     = 0.180 (18%) — reduced from 0.200 to accommodate MEDIC+NERVE
+ *   Execution (11 nodes)= 0.290 (29%) — expanded from 9→11 nodes
  *   Fields (3 nodes)  = 0.090 (9%)
  *   Plane (1 node)    = 0.030 (3%)
  *   Shell (1 node)    = 0.030 (3%)
  */
 const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState' | 'failureCount' | 'lastRecovery'>[] = [
   // CORE — Kernel (Spine root)
-  { id: 'core', label: 'CORE', sector: 'core', weight: 0.200, description: 'Kernel orchestration & boot authority' },
+  { id: 'core', label: 'CORE', sector: 'core', weight: 0.180, description: 'Kernel orchestration & boot authority' },
 
   // SYSTEM — Standalone layer (extracted from CCR, sits between CORE and CCR on the Spine)
   { id: 'system', label: 'SYSTEM', sector: 'system', weight: 0.050, description: 'Lifecycle management, configuration, diagnostics' },
@@ -86,23 +86,25 @@ const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState'
   { id: 'memory', label: 'MEMORY', sector: 'ccr', weight: 0.050, description: 'Tiered memory storage zone' },
   { id: 'dream', label: 'DREAM', sector: 'ccr', weight: 0.050, description: 'Dream synthesis zone' },
 
-  // OCG — Operational Compliance Grid (5 nodes, 0.20 total = 0.04 each)
-  { id: 'ripple', label: 'RIPPLE', sector: 'ocg', weight: 0.040, description: 'Signal & event bus' },
-  { id: 'access', label: 'ACCESS', sector: 'ocg', weight: 0.040, description: 'Entitlements & API keys' },
-  { id: 'identity', label: 'IDENTITY', sector: 'ocg', weight: 0.040, description: 'Session & role management' },
-  { id: 'relay', label: 'RELAY', sector: 'ocg', weight: 0.040, description: 'Webhook dispatch' },
-  { id: 'audit', label: 'AUDIT', sector: 'ocg', weight: 0.040, description: 'Integrity ledger' },
+  // OCG — Operational Compliance Grid (5 nodes, 0.18 total = 0.036 each)
+  { id: 'ripple', label: 'RIPPLE', sector: 'ocg', weight: 0.036, description: 'Signal & event bus' },
+  { id: 'access', label: 'ACCESS', sector: 'ocg', weight: 0.036, description: 'Entitlements & API keys' },
+  { id: 'identity', label: 'IDENTITY', sector: 'ocg', weight: 0.036, description: 'Session & role management' },
+  { id: 'relay', label: 'RELAY', sector: 'ocg', weight: 0.036, description: 'Webhook dispatch' },
+  { id: 'audit', label: 'AUDIT', sector: 'ocg', weight: 0.036, description: 'Integrity ledger' },
 
-  // Execution Sector (9 nodes, 0.25 total ≈ 0.0278 each)
-  { id: 'decode', label: 'DECODE', sector: 'execution', weight: 0.028, description: 'Epistemic interpreter' },
-  { id: 'encode', label: 'ENCODE', sector: 'execution', weight: 0.028, description: 'Code generation pipeline' },
-  { id: 'vision', label: 'VISION', sector: 'execution', weight: 0.028, description: 'Observability & telemetry' },
-  { id: 'cortex', label: 'CORTEX', sector: 'execution', weight: 0.028, description: 'Autonomous orchestrator' },
-  { id: 'nexus', label: 'NEXUS', sector: 'execution', weight: 0.028, description: 'AI provider routing' },
-  { id: 'economy', label: 'ECONOMY', sector: 'execution', weight: 0.027, description: 'Metering & billing' },
-  { id: 'sandbox', label: 'SANDBOX', sector: 'execution', weight: 0.027, description: 'Isolated execution' },
-  { id: 'inclusive', label: 'INCLUSIVE', sector: 'execution', weight: 0.028, description: 'WCAG compatibility' },
-  { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.028, description: 'Dependency resolver' },
+  // Execution Sector (11 nodes, 0.29 total ≈ 0.0264 each)
+  { id: 'decode', label: 'DECODE', sector: 'execution', weight: 0.026, description: 'Epistemic interpreter' },
+  { id: 'encode', label: 'ENCODE', sector: 'execution', weight: 0.026, description: 'Code generation pipeline' },
+  { id: 'vision', label: 'VISION', sector: 'execution', weight: 0.026, description: 'Observability & telemetry' },
+  { id: 'cortex', label: 'CORTEX', sector: 'execution', weight: 0.026, description: 'Autonomous orchestrator' },
+  { id: 'nexus', label: 'NEXUS', sector: 'execution', weight: 0.026, description: 'AI provider routing' },
+  { id: 'economy', label: 'ECONOMY', sector: 'execution', weight: 0.026, description: 'Metering & billing' },
+  { id: 'sandbox', label: 'SANDBOX', sector: 'execution', weight: 0.026, description: 'Isolated execution' },
+  { id: 'inclusive', label: 'INCLUSIVE', sector: 'execution', weight: 0.026, description: 'WCAG compatibility' },
+  { id: 'medic', label: 'MEDIC', sector: 'execution', weight: 0.028, description: 'Autonomous diagnostics & self-repair coordination' },
+  { id: 'nerve', label: 'NERVE', sector: 'execution', weight: 0.028, description: 'Inter-node signaling & consensus repair' },
+  { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.026, description: 'Dependency resolver' },
 
   // Fields — System-wide transformation fabric (permeate the spine)
   { id: 'evolution', label: 'EVOLUTION', sector: 'field', weight: 0.030, description: 'Evolution lifecycle field' },
