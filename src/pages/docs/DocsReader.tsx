@@ -53,6 +53,7 @@ const docRegistry: Record<string, { title: string; tier: string; icon: React.Rea
   'internal-memory': { title: 'Memory & Learning Internals', tier: 'Internal — Operations', icon: <Brain className="w-4 h-4" />, loader: () => import('../../../docs/internal/12-memory-and-learning-internals.md?raw').then(m => m.default) },
   'crown-jewel-mining': { title: 'Crown Jewel Mining — Wave 1', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/13-crown-jewel-mining-report.md?raw').then(m => m.default) },
   'crown-jewel-mining-w2': { title: 'Crown Jewel Mining — Wave 2', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/14-crown-jewel-mining-wave2.md?raw').then(m => m.default) },
+  'crown-jewel-mining-w3': { title: 'Crown Jewel Mining — Wave 3', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/15-crown-jewel-mining-wave3.md?raw').then(m => m.default) },
   // Engineering Proof
   'engineering-proof': { title: 'Engineering Proof & Scale', tier: 'Tier 3 — Strategic', icon: <TestTube className="w-4 h-4" />, loader: () => import('../../../docs/14-engineering-proof/engineering-proof-and-scale.md?raw').then(m => m.default) },
 };
@@ -66,7 +67,7 @@ const tiers = [
   { name: 'Tier 4 — Founder Safeguards', slugs: ['founder-intent', 'survivability-succession-protocol'] },
   { name: 'Internal — Substrate', slugs: ['internal-topology', 'internal-algorithms', 'internal-trade-secrets', 'internal-control-plane', 'internal-nexus', 'internal-hardening'] },
   { name: 'Internal — Operations', slugs: ['internal-evolution', 'internal-security', 'internal-resilience', 'internal-memory'] },
-  { name: 'Internal — Governor', slugs: ['internal-governor', 'internal-maintenance', 'crown-jewel-mining', 'crown-jewel-mining-w2'] },
+  { name: 'Internal — Governor', slugs: ['internal-governor', 'internal-maintenance', 'crown-jewel-mining', 'crown-jewel-mining-w2', 'crown-jewel-mining-w3'] },
 ];
 
 export default function DocsReader() {
