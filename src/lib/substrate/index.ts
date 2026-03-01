@@ -884,3 +884,18 @@ export {
   CORE_HARDENING_UPGRADES,
   getCoreHardeningStatus,
 } from './core-hardening';
+
+// ═══ Hardened Invoke Layer v2.0.0 ("Ironclad") ═══
+export {
+  hardenedInvoke,
+  createHardenedInvoker,
+  shutdownHardenedInvoke,
+  isHardenedLayerReady,
+  getHardenedInvokeMetrics,
+  resetHardenedInvokeMetrics,
+  HARDENED_INVOKE_VERSION,
+  HARDENED_INVOKE_CODENAME,
+  type HardenedInvokeOptions,
+  type HardenedInvokeResult,
+  type InvokePriority,
+} from './hardened-invoke';
