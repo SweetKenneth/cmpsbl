@@ -1,6 +1,6 @@
 /**
  * Terminal Command Registry
- * 360+ commands across 10 entities + 5 meshes + 9 zones
+ * 430+ commands across 10 entities + 5 meshes + 9 zones + 3 control plane nodes
  * Complete list of all substrate commands organized by entity
  * 
  * Tier Gating: free | creator | architect | governor
@@ -1016,6 +1016,9 @@ export const COMMAND_CATEGORIES = {
   economy_mod: { label: 'ECONOMY', color: 'text-amber-400', borderColor: 'border-amber-500/30', commands: ECONOMY_MOD_COMMANDS },
   sandbox_mod: { label: 'SANDBOX', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SANDBOX_MOD_COMMANDS },
   hardening: { label: 'HARDENING', color: 'text-emerald-300', borderColor: 'border-emerald-400/30', commands: HARDENING_COMMANDS },
+  engineer_op: { label: 'ENGINEER', color: 'text-orange-300', borderColor: 'border-orange-400/30', commands: ENGINEER_OP_COMMANDS },
+  intent_hub: { label: 'INTENT HUB', color: 'text-cyan-300', borderColor: 'border-cyan-400/30', commands: INTENT_OP_COMMANDS },
+  atlas_op: { label: 'ATLAS', color: 'text-purple-300', borderColor: 'border-purple-400/30', commands: ATLAS_OP_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {

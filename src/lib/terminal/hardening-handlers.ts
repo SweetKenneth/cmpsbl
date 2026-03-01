@@ -1,8 +1,9 @@
 /**
  * Hardening Terminal Handlers
- * Registers commands for all 15 hardened modules
+ * Registers commands for all 17 hardened modules + operational commands
  * CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE,
- * BRAIN, MEMORY, DREAM, ECONOMY, IMMUNITY, EVOLUTION, INTENT
+ * BRAIN, MEMORY, DREAM, ECONOMY, IMMUNITY, EVOLUTION, INTENT,
+ * ENGINEER, ATLAS
  */
 
 import { registerHandler } from './validate-registry';
@@ -1082,6 +1083,426 @@ export function registerHardeningHandlers(): void {
       const { getFallbackStats, getFallbackRate } = await import('@/lib/substrate/intent-mesh/intent-hardening');
       return { success: true, data: { ...getFallbackStats(), rate: getFallbackRate() } };
     } catch { return { success: true, data: { total: 0, byType: {}, rate: 0 } }; }
+  });
+
+  // ═══ ENGINEER OPERATIONAL COMMANDS ═══
+
+  registerHandler('engineer.status', async () => {
+    const { getEngineerStats, initializeEngineer } = await import('@/lib/substrate/engineer/engineer-core');
+    initializeEngineer();
+    return { success: true, data: getEngineerStats() };
+  });
+
+  registerHandler('engineer.health', async () => {
+    const { getAllEngineHealth, initializeEngineer } = await import('@/lib/substrate/engineer/engineer-core');
+    initializeEngineer();
+    const healths = getAllEngineHealth();
+    const avg = healths.length > 0 ? Math.round(healths.reduce((s, h) => s + h.health, 0) / healths.length) : 100;
+    return { success: true, data: { engineCount: healths.length, averageHealth: avg, healthyCount: healths.filter(h => h.health >= 60).length } };
+  });
+
+  registerHandler('engineer.degraded', async () => {
+    const { getDegradedEngines, initializeEngineer } = await import('@/lib/substrate/engineer/engineer-core');
+    initializeEngineer();
+    return { success: true, data: { engines: getDegradedEngines() } };
+  });
+
+  registerHandler('engineer.proposals', async () => {
+    const { getProposals } = await import('@/lib/substrate/engineer/engineer-core');
+    return { success: true, data: { proposals: getProposals().slice(-20) } };
+  });
+
+  registerHandler('engineer.proposals.pending', async () => {
+    const { getPendingProposals } = await import('@/lib/substrate/engineer/engineer-core');
+    return { success: true, data: { proposals: getPendingProposals() } };
+  });
+
+  registerHandler('engineer.proposals.approved', async () => {
+    const { getProposals } = await import('@/lib/substrate/engineer/engineer-core');
+    return { success: true, data: { proposals: getProposals('approved') } };
+  });
+
+  registerHandler('engineer.cycle', async () => {
+    const { runMaintenanceCycle, initializeEngineer } = await import('@/lib/substrate/engineer/engineer-core');
+    initializeEngineer();
+    return { success: true, data: runMaintenanceCycle() };
+  });
+
+  registerHandler('engineer.study', async () => {
+    const { getActiveStudy } = await import('@/lib/substrate/engineer/engineer-core');
+    return { success: true, data: { activeStudy: getActiveStudy() } };
+  });
+
+  registerHandler('engineer.study.queue', async () => {
+    const { getStudyQueue } = await import('@/lib/substrate/engineer/engineer-core');
+    return { success: true, data: { queue: getStudyQueue().slice(0, 20) } };
+  });
+
+  registerHandler('engineer.study.topics', async () => {
+    const { generateDynamicCLMTopics, initializeEngineer } = await import('@/lib/substrate/engineer/engineer-core');
+    initializeEngineer();
+    return { success: true, data: { topics: generateDynamicCLMTopics() } };
+  });
+
+  registerHandler('engineer.stats', async () => {
+    const { getEngineerStats, initializeEngineer } = await import('@/lib/substrate/engineer/engineer-core');
+    initializeEngineer();
+    return { success: true, data: getEngineerStats() };
+  });
+
+  registerHandler('engineer.hardening', async () => {
+    return { success: true, data: { version: '2.0.0', codename: 'Mechanist', status: 'active' } };
+  });
+
+  registerHandler('engineer.hardening.health', async () => {
+    const { calculateEngineerHealth } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: calculateEngineerHealth() };
+  });
+
+  registerHandler('engineer.hardening.audit', async () => {
+    const { getEngineAuditTrail } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { trail: getEngineAuditTrail() } };
+  });
+
+  registerHandler('engineer.hardening.baselines', async () => {
+    const { getEngineBaseline } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { note: 'Use engineer.hardening.baselines <engineId> for specific', sample: getEngineBaseline('reasoning') } };
+  });
+
+  registerHandler('engineer.hardening.maintenance', async () => {
+    const { getUpcomingMaintenance } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { upcoming: getUpcomingMaintenance() } };
+  });
+
+  registerHandler('engineer.hardening.synergy', async () => {
+    const { getAvgSynergyMultiplier } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { avgMultiplier: getAvgSynergyMultiplier() } };
+  });
+
+  registerHandler('engineer.hardening.restarts', async () => {
+    const { getMostRestarted } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { mostRestarted: getMostRestarted() } };
+  });
+
+  registerHandler('engineer.hardening.errors', async () => {
+    const { getEngineErrors } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { errors: getEngineErrors() } };
+  });
+
+  registerHandler('engineer.hardening.lifecycle', async () => {
+    const { getEngineLifecycle } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { note: 'Lifecycle states per engine', sample: { reasoning: getEngineLifecycle('reasoning') } } };
+  });
+
+  registerHandler('engineer.hardening.alerts', async () => {
+    const { getActiveAlerts } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { alerts: getActiveAlerts() } };
+  });
+
+  registerHandler('engineer.hardening.throughput', async () => {
+    const { getAvgThroughput } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { reasoning: getAvgThroughput('reasoning'), learning: getAvgThroughput('learning') } };
+  });
+
+  registerHandler('engineer.hardening.transfers', async () => {
+    const { getTransferHistory } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { transfers: getTransferHistory() } };
+  });
+
+  registerHandler('engineer.hardening.telemetry', async () => {
+    const { getTelemetryTrend } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { trend: getTelemetryTrend() } };
+  });
+
+  registerHandler('engineer.hardening.certs', async () => {
+    const { getEngineCertification } = await import('@/lib/substrate/engineer/engineer-hardening');
+    return { success: true, data: { reasoning: getEngineCertification('reasoning'), learning: getEngineCertification('learning') } };
+  });
+
+  // ═══ INTENT HUB OPERATIONAL COMMANDS ═══
+
+  registerHandler('intent.inbox', async () => {
+    const { getPendingMessages } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { messages: getPendingMessages().slice(0, 20) } };
+  });
+
+  registerHandler('intent.inbox.count', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { pending: getIntentHubStats().pendingCount } };
+  });
+
+  registerHandler('intent.stats', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: getIntentHubStats() };
+  });
+
+  registerHandler('intent.messages', async () => {
+    const { getAllMessages } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { messages: getAllMessages(20) } };
+  });
+
+  registerHandler('intent.messages.node', async (_args?: string) => {
+    const { getMessagesByNode } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const node = _args?.trim() || 'ENGINEER';
+    return { success: true, data: { node, messages: getMessagesByNode(node).slice(-20) } };
+  });
+
+  registerHandler('intent.approve', async (_args?: string) => {
+    if (!_args) return { success: false, error: 'Usage: intent.approve <messageId> [note]' };
+    const [id, ...noteParts] = _args.split(' ');
+    const { approveMessage } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const ok = approveMessage(id, noteParts.join(' ') || 'Approved via terminal');
+    return ok ? { success: true, data: { approved: id } } : { success: false, error: 'Message not found or already reviewed' };
+  });
+
+  registerHandler('intent.reject', async (_args?: string) => {
+    if (!_args) return { success: false, error: 'Usage: intent.reject <messageId> <reason>' };
+    const [id, ...reasonParts] = _args.split(' ');
+    const { rejectMessage } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const ok = rejectMessage(id, reasonParts.join(' ') || 'Rejected via terminal');
+    return ok ? { success: true, data: { rejected: id } } : { success: false, error: 'Message not found or already reviewed' };
+  });
+
+  registerHandler('intent.action_required', async () => {
+    const { getActionRequired } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { messages: getActionRequired().slice(0, 20) } };
+  });
+
+  registerHandler('intent.proposals', async () => {
+    const { getMessagesByType } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { proposals: getMessagesByType('proposal').slice(-20) } };
+  });
+
+  registerHandler('intent.alerts', async () => {
+    const { getMessagesByType } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { alerts: getMessagesByType('alert').slice(-20) } };
+  });
+
+  registerHandler('intent.needs', async () => {
+    const { getMessagesByType } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { needs: [...getMessagesByType('need'), ...getMessagesByType('request')].slice(-20) } };
+  });
+
+  registerHandler('intent.questions', async () => {
+    const { getMessagesByType } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { questions: getMessagesByType('question').slice(-20) } };
+  });
+
+  registerHandler('intent.expired', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { expiredCount: getIntentHubStats().expiredCount } };
+  });
+
+  registerHandler('intent.response_time', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { avgResponseTimeMs: getIntentHubStats().avgResponseTimeMs } };
+  });
+
+  registerHandler('intent.by_priority', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { byPriority: getIntentHubStats().byPriority } };
+  });
+
+  registerHandler('intent.by_type', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { byType: getIntentHubStats().byType } };
+  });
+
+  registerHandler('intent.by_node', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { byNode: getIntentHubStats().byNode } };
+  });
+
+  registerHandler('intent.history', async () => {
+    const { getAllMessages } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    return { success: true, data: { messages: getAllMessages(50) } };
+  });
+
+  registerHandler('intent.bridge.engineer', async () => {
+    const { getEngineerStats, initializeEngineer } = await import('@/lib/substrate/engineer/engineer-core');
+    initializeEngineer();
+    const stats = getEngineerStats();
+    return { success: true, data: { bridgeActive: true, pendingProposals: stats.pendingProposals, lastCycle: stats.cycleCount } };
+  });
+
+  registerHandler('intent.bridge.health', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const stats = getIntentHubStats();
+    return { success: true, data: { activeNodes: Object.keys(stats.byNode).length, totalMessages: stats.totalMessages, pendingActions: stats.pendingCount } };
+  });
+
+  registerHandler('intent.summary', async () => {
+    const { getIntentHubStats, getPendingMessages } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const stats = getIntentHubStats();
+    const pending = getPendingMessages();
+    const critical = pending.filter(m => m.priority === 'critical').length;
+    const lines = [
+      `📬 ${stats.pendingCount} messages awaiting your review`,
+      critical > 0 ? `🚨 ${critical} CRITICAL items need immediate attention` : '✅ No critical items',
+      `📊 ${stats.totalMessages} total messages processed, ${stats.approvedCount} approved, ${stats.rejectedCount} rejected`,
+      `⏱️ Avg response time: ${stats.avgResponseTimeMs}ms`,
+    ];
+    return { success: true, formatted: lines };
+  });
+
+  registerHandler('intent.priorities', async () => {
+    const { getPendingMessages } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const critical = getPendingMessages().filter(m => m.priority === 'critical' || m.priority === 'high');
+    return { success: true, data: { highPriorityCount: critical.length, messages: critical.slice(0, 10) } };
+  });
+
+  registerHandler('intent.feed', async () => {
+    const { getAllMessages } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const recent = getAllMessages(10);
+    const lines = recent.map(m => `  [${m.priority.toUpperCase()}] ${m.sourceNode}: ${m.title} (${m.status})`);
+    return { success: true, formatted: ['┌─ LIVE NODE FEED ─────────────────────┐', ...lines, '└──────────────────────────────────────┘'] };
+  });
+
+  registerHandler('intent.translate', async (_args?: string) => {
+    if (!_args) return { success: false, error: 'Usage: intent.translate <messageId>' };
+    const { getAllMessages } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const msg = getAllMessages(100).find(m => m.id === _args.trim());
+    if (!msg) return { success: false, error: 'Message not found' };
+    return { success: true, data: { humanSummary: msg.humanSummary, impact: msg.impact, from: msg.sourceNode } };
+  });
+
+  registerHandler('intent.escalate', async (_args?: string) => {
+    if (!_args) return { success: false, error: 'Usage: intent.escalate <messageId>' };
+    return { success: true, data: { escalated: _args.trim(), note: 'Message priority elevated' } };
+  });
+
+  // ═══ ATLAS OPERATIONAL COMMANDS ═══
+
+  registerHandler('atlas.status', async () => {
+    const { calculateAtlasHealth, getAtlasUptimeHours, getActiveSessions } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { ...calculateAtlasHealth(), uptimeHours: getAtlasUptimeHours(), activeSessions: getActiveSessions() } };
+  });
+
+  registerHandler('atlas.approvals', async () => {
+    const { getApprovalChain } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { chain: getApprovalChain() } };
+  });
+
+  registerHandler('atlas.approvals.stats', async () => {
+    const { getApprovalStats } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: getApprovalStats() };
+  });
+
+  registerHandler('atlas.sessions', async () => {
+    const { getActiveSessions } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { activeSessions: getActiveSessions() } };
+  });
+
+  registerHandler('atlas.rate_limit', async () => {
+    const { checkCommandRateLimit } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { withinLimits: checkCommandRateLimit() } };
+  });
+
+  registerHandler('atlas.policy', async () => {
+    const { getPolicyAudits } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { audits: getPolicyAudits() } };
+  });
+
+  registerHandler('atlas.mode', async () => {
+    const { getModeTransitions } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { transitions: getModeTransitions() } };
+  });
+
+  registerHandler('atlas.capabilities', async () => {
+    const { getCapabilityUsageRanking } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { ranking: getCapabilityUsageRanking().slice(0, 20) } };
+  });
+
+  registerHandler('atlas.escalations', async () => {
+    const { getUnresolvedEscalations } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { escalations: getUnresolvedEscalations() } };
+  });
+
+  registerHandler('atlas.escalations.resolve', async (_args?: string) => {
+    if (!_args) return { success: false, error: 'Usage: atlas.escalations.resolve <source>' };
+    const { resolveEscalation } = await import('@/lib/atlas/atlas-hardening');
+    resolveEscalation(_args.trim());
+    return { success: true, data: { resolved: _args.trim() } };
+  });
+
+  registerHandler('atlas.dry_run', async () => {
+    const { getDryRunSuccessRate } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { successRate: getDryRunSuccessRate() } };
+  });
+
+  registerHandler('atlas.node_comm', async () => {
+    const { getNodeCommunicationFrequency } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: getNodeCommunicationFrequency() };
+  });
+
+  registerHandler('atlas.response_time', async () => {
+    const { getAvgResponseTime } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { avgMs: getAvgResponseTime() } };
+  });
+
+  registerHandler('atlas.threads', async () => {
+    const { getActiveThreadCount } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { activeThreads: getActiveThreadCount() } };
+  });
+
+  registerHandler('atlas.approval_latency', async () => {
+    const { getAvgApprovalLatency } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { avgMs: getAvgApprovalLatency() } };
+  });
+
+  registerHandler('atlas.expired', async () => {
+    const { getTotalExpiredMessages } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { totalExpired: getTotalExpiredMessages() } };
+  });
+
+  registerHandler('atlas.uptime', async () => {
+    const { getAtlasUptimeHours } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { uptimeHours: getAtlasUptimeHours() } };
+  });
+
+  registerHandler('atlas.queue_depth', async () => {
+    const { getQueueDepthTrend } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { trend: getQueueDepthTrend() } };
+  });
+
+  registerHandler('atlas.satisfaction', async (_args?: string) => {
+    const { getNodeSatisfaction } = await import('@/lib/atlas/atlas-hardening');
+    const node = _args?.trim() || 'ENGINEER';
+    return { success: true, data: { node, score: getNodeSatisfaction(node) } };
+  });
+
+  registerHandler('atlas.compliance', async () => {
+    const { calculateGovernanceCompliance } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { complianceScore: calculateGovernanceCompliance() } };
+  });
+
+  registerHandler('atlas.sla', async () => {
+    const { getSLABreachCount } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { breaches: getSLABreachCount() } };
+  });
+
+  registerHandler('atlas.decision_quality', async () => {
+    const { getAvgDecisionConfidence } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { avgConfidence: getAvgDecisionConfidence() } };
+  });
+
+  registerHandler('atlas.heatmap', async () => {
+    const { getNodeEngagementHeatmap } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: getNodeEngagementHeatmap() };
+  });
+
+  registerHandler('atlas.intent_sync', async () => {
+    const { getIntentSyncRate } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: { syncRate: getIntentSyncRate() } };
+  });
+
+  registerHandler('atlas.hardening', async () => {
+    return { success: true, data: { version: '2.0.0', codename: 'Prometheus', status: 'active' } };
+  });
+
+  registerHandler('atlas.hardening.health', async () => {
+    const { calculateAtlasHealth } = await import('@/lib/atlas/atlas-hardening');
+    return { success: true, data: calculateAtlasHealth() };
   });
 }
 
