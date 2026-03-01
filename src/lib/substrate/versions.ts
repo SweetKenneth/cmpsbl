@@ -18,7 +18,7 @@ export const SUBSTRATE_BUILD = `${v()}-${new Date().toISOString().split('T')[0]}
 // ─── 10 Public Entities ────────────────────────────────────────────────────────
 
 export const MODULE_VERSIONS = {
-  core:        { get version() { return v(); }, codename: 'Foundation',   layer: 'Kernel',         type: 'kernel'  as const, hardening: '2.0.0' },
+  core:        { get version() { return v(); }, codename: 'Foundation',   layer: 'Kernel',         type: 'kernel'  as const, hardening: '2.0.0', invokeLayer: '2.0.0-ironclad' },
   decode:      { get version() { return v(); }, codename: 'Interpreter',  layer: 'Cognitive',      type: 'module'  as const },
   encode:      { get version() { return v(); }, codename: 'Genesis',      layer: 'Orchestration',  type: 'module'  as const },
   vision:      { get version() { return v(); }, codename: 'Vee',          layer: 'Operational',    type: 'module'  as const },
