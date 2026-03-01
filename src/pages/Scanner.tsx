@@ -382,15 +382,15 @@ export default function Scanner() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button asChild size="lg" className="gap-2">
+                    <Link to="/evolution">
+                      <Zap className="w-4 h-4" />
+                      Open EVOLUTION
+                    </Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="gap-2">
                     <Link to="/decode">
                       <Terminal className="w-4 h-4" />
                       Preview in DECODE
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="lg" className="gap-2">
-                    <Link to="/roadmap">
-                      <Sparkles className="w-4 h-4" />
-                      View Roadmap
                     </Link>
                   </Button>
                 </div>
