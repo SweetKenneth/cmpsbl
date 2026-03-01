@@ -51,7 +51,7 @@ const OG_DREAM = `${OG_BASE}/og/dream-feeder.jpg`;
 const OG_PROOF = `${OG_BASE}/og/proof.jpg`;
 const OG_GAMING = `${OG_BASE}/og/gaming.jpg`;
 const OG_ARCHITECTURE = `${OG_BASE}/og/architecture.jpg`;
-const OG_EVOLUTION = `${OG_BASE}/og/evolution-mesh.jpg`;
+// OG_EVOLUTION retired
 const OG_INTENT = `${OG_BASE}/og/intent-mesh.jpg`;
 
 export const seoMap: Record<string, PageSEO> = {
@@ -629,28 +629,7 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Feature/Capability',
     primaryKeyword: 'cognitive architecture layered kernel design',
   },
-  '/evolution-mesh': {
-    title: 'EVLVBL — Self-Evolving Software Immunity',
-    description: 'Category-defining resilience SDK with immune defense, auto-repair, self-learning rules, shadow probes, and a built-in coding agent.',
-    ogTitle: 'EVLVBL — Code That Evolves Its Defenses',
-    ogDescription: 'Drop-in resilience SDK. Shadow probes. Learning tests. Built-in coding agent.',
-    ogImage: OG_EVOLUTION,
-    keywords: ['EVLVBL', 'software resilience SDK', 'auto-repair', 'self-learning rules', 'shadow probes', 'self-evolving software'],
-    schema: 'product',
-    intent: 'Product/Purchase',
-    primaryKeyword: 'self-evolving software immune system SDK',
-  },
-  '/evolution': {
-    title: 'EVOLUTION Control Center — Governed AI Improvement | CMPSBL',
-    description: 'Connect your AI agent and evolve your codebase safely. Dry-run previews, one-click rollback, receipted changes, and governed self-improvement.',
-    ogTitle: 'EVOLUTION — Governed Self-Improvement for Your Codebase',
-    ogDescription: 'Connect an AI agent. Preview changes. Evolve safely. Every cycle is receipted and rollback-safe.',
-    ogImage: `${OG_BASE}/og/evolution.jpg`,
-    keywords: ['AI code evolution', 'governed self-improvement', 'codebase evolution', 'AI agent code improvement', 'dry-run preview', 'rollback safe', 'code health'],
-    schema: 'feature',
-    intent: 'Feature/Conversion',
-    primaryKeyword: 'governed AI codebase evolution',
-  },
+  // Evolution Mesh & Control Center retired — bundled into substrate tiers
   '/evolution-log': {
     title: 'Evolution Log — Substrate History | CMPSBL',
     description: 'Track every evolution of the CMPSBL substrate: new execution surfaces, mesh overlays, capability expansions, and architecture changes.',

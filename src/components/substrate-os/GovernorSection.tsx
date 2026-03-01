@@ -374,7 +374,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                 size="sm"
                 variant="outline"
                 className="flex-1 sm:flex-initial gap-1.5"
-                onClick={() => navigate('/docs/evolution-mesh')}
+                onClick={() => navigate('/docs')}
               >
                 <ArrowRight className="w-3.5 h-3.5" /> API Docs
               </Button>
@@ -424,7 +424,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             <Button
               variant="outline"
               className="justify-between h-auto p-3 sm:p-4 border-emerald-500/20 hover:bg-emerald-500/5"
-              onClick={() => navigate('/docs/evolution-mesh')}
+              onClick={() => navigate('/docs')}
             >
               <div className="flex items-center gap-3 text-left">
                 <Shield className="w-5 h-5 text-emerald-500 shrink-0" />

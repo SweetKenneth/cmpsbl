@@ -39,7 +39,7 @@ export const GATED_ROUTES: GatedRoute[] = [
   
   
   // Phase 3 — Ecosystem Flywheel
-  { path: '/evolution-mesh', unlocksAt: 3, label: 'Evolution Mesh', teaser: 'Self-learning immune system for any software. API access coming soon.', waitlist: true },
+  // Evolution Mesh retired — bundled into substrate tiers
   { path: '/intent-mesh', unlocksAt: 3, label: 'Intent Mesh', teaser: 'Autonomous inter-module communication layer.', waitlist: false },
   { path: '/lab', unlocksAt: 3, label: 'Experimentation Lab', teaser: 'Test and iterate on substrate configurations.', waitlist: false },
   { path: '/clockless-world-engine', unlocksAt: 3, label: 'Clockless World Engine', teaser: 'Temporal reasoning and world-state modeling.', waitlist: false },

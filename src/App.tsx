@@ -151,8 +151,6 @@ const STierDemos = lazy(() => import("./pages/STierDemos"));
 const OwnerReports = lazy(() => import("./pages/admin/OwnerReports"));
 const EvolutionMeshDashboard = lazy(() => import("./pages/admin/EvolutionMeshDashboard"));
 const GovernanceControlPlane = lazy(() => import("./pages/admin/GovernanceControlPlane"));
-const EvolutionMeshLanding = lazy(() => import("./pages/EvolutionMeshLanding"));
-const EvolutionControlCenter = lazy(() => import("./pages/EvolutionControlCenter"));
 const Architecture = lazy(() => import("./pages/Architecture"));
 const IntelPanel = lazy(() => import("./pages/admin/IntelPanel"));
 
@@ -568,8 +566,8 @@ const App = () => {
                         <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
-                        <Route path="/evolution-mesh" element={<PhaseGateRoute><EvolutionMeshLanding /></PhaseGateRoute>} />
-                        <Route path="/evolution" element={<EvolutionControlCenter />} />
+                        <Route path="/evolution-mesh" element={<Navigate to="/" replace />} />
+                        <Route path="/evolution" element={<Navigate to="/" replace />} />
                         <Route path="/architecture" element={<Architecture />} />
                         
                         {/* Legacy brain/cascade routes — consolidated wildcards */}
