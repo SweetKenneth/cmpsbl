@@ -1,9 +1,9 @@
 /**
  * Hardening Terminal Handlers
- * Registers commands for all 17 hardened modules + operational commands
+ * Registers commands for all 20 hardened modules + operational commands
  * CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE,
  * BRAIN, MEMORY, DREAM, ECONOMY, IMMUNITY, EVOLUTION, INTENT,
- * ENGINEER, ATLAS
+ * ENGINEER, ATLAS, AUDIT, RELAY, RIPPLE
  */
 
 import { registerHandler } from './validate-registry';
