@@ -51,7 +51,7 @@ const OG_DREAM = `${OG_BASE}/og/dream-feeder.jpg`;
 const OG_PROOF = `${OG_BASE}/og/proof.jpg`;
 const OG_GAMING = `${OG_BASE}/og/gaming.jpg`;
 const OG_ARCHITECTURE = `${OG_BASE}/og/architecture.jpg`;
-const OG_EVOLUTION = `${OG_BASE}/og/evolution-mesh.jpg`;
+// OG_EVOLUTION retired
 const OG_INTENT = `${OG_BASE}/og/intent-mesh.jpg`;
 
 export const seoMap: Record<string, PageSEO> = {
