@@ -99,6 +99,7 @@ export function CmpsblNav() {
       items: [
         { name: "How It Works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
         { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
+        { name: "EVOLUTION", href: "/evolution", description: "Governed self-improvement loop", icon: Zap, badge: "LIVE", highlight: true },
         { name: "Substrate Demo", href: "/demo", description: "Interactive live demo", icon: Sparkles },
         { name: "All Modules", href: "/modules", description: "9 production modules", icon: Layers },
         { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
@@ -436,10 +437,10 @@ export function CmpsblNav() {
               {/* Mobile Quick Actions */}
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
                 {[
+                  { name: "EVOLUTION", href: "/evolution", icon: Zap, badge: "LIVE" },
                   { name: "Upgrade", href: "/upgrade", icon: Package },
                   { name: "Cognitives", href: "/composable-cognitives", icon: Zap },
                   { name: "Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
-                  { name: "Showcase", href: "/showcase", icon: Rocket },
                 ].map((item) => (
                   <Link
                     key={item.href}
