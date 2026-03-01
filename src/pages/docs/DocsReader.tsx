@@ -55,6 +55,7 @@ const docRegistry: Record<string, { title: string; tier: string; icon: React.Rea
   'crown-jewel-mining-w2': { title: 'Crown Jewel Mining — Wave 2', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/14-crown-jewel-mining-wave2.md?raw').then(m => m.default) },
   'crown-jewel-mining-w3': { title: 'Crown Jewel Mining — Wave 3', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/15-crown-jewel-mining-wave3.md?raw').then(m => m.default) },
   'crown-jewel-mining-w4': { title: 'Crown Jewel Mining — Wave 4', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/16-crown-jewel-mining-wave4.md?raw').then(m => m.default) },
+  'crown-jewel-mining-w5': { title: 'Crown Jewel Mining — Wave 5', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/17-crown-jewel-mining-wave5.md?raw').then(m => m.default) },
   // Engineering Proof
   'engineering-proof': { title: 'Engineering Proof & Scale', tier: 'Tier 3 — Strategic', icon: <TestTube className="w-4 h-4" />, loader: () => import('../../../docs/14-engineering-proof/engineering-proof-and-scale.md?raw').then(m => m.default) },
 };
