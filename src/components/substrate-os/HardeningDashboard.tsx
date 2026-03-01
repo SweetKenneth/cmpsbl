@@ -48,7 +48,7 @@ export function HardeningDashboard() {
             <span className="text-lg font-bold font-mono">{overallGrade}</span>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Hardening v2.0.0</h3>
+            <h3 className="text-sm font-semibold text-foreground">Hardening</h3>
             <p className="text-xs text-muted-foreground">
               {averageScore}/100 avg across {modules.length} modules
             </p>
@@ -64,7 +64,7 @@ export function HardeningDashboard() {
       </div>
 
       {/* Module Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
         {modules.map((mod) => {
           const ModIcon = GRADE_ICON[mod.grade] || CheckCircle;
           return (
