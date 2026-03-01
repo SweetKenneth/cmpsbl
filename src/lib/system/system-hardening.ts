@@ -285,7 +285,7 @@ export function getCurrentPhase(): LifecyclePhase {
   return currentPhase;
 }
 
-export function getPhaseHistory(): readonly typeof phaseHistory {
+export function getPhaseHistory(): Array<{ from: LifecyclePhase; to: LifecyclePhase; timestamp: string }> {
   return [...phaseHistory];
 }
 
@@ -895,7 +895,7 @@ export function rollbackConfig(domain: string, steps = 1): Record<string, unknow
   return structuredClone(list[list.length - 1 - steps].config);
 }
 
-export function getConfigSnapshots(domain: string): readonly Array<{ config: Record<string, unknown>; timestamp: string }> {
+export function getConfigSnapshots(domain: string): Array<{ config: Record<string, unknown>; timestamp: string }> {
   return configSnapshots.get(domain) || [];
 }
 
