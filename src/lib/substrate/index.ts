@@ -776,3 +776,111 @@ export {
   type SynergyOutcome,
   type SynergyStats,
 } from './inter-node-bridges';
+
+// ═══ CORE Kernel Hardening v2.0.0 (25 Enterprise Upgrades) ═══
+export {
+  // #1 Boot Integrity
+  validateBootIntegrity,
+  getBootManifest,
+  // #2 Boot Timing
+  markBootStart,
+  markModuleBootStart,
+  markModuleBootEnd,
+  markBootEnd,
+  getBootProfile,
+  // #3 Sliding Window Failures
+  initSlidingWindow,
+  recordSlidingEvent,
+  getSlidingWindowStats,
+  // #4 Cascading Failure Detection
+  recordModuleFailure,
+  getCascadeAlerts,
+  // #5 Heartbeat Jitter
+  recordHeartbeatForJitter,
+  analyzeJitter,
+  getAllJitterAnalysis,
+  // #6 Health Trends
+  recordHealthScore,
+  getHealthTrend,
+  getAllHealthTrends,
+  // #7 Request Deduplication
+  deduplicatedInvoke,
+  getInflightCount,
+  makeRequestKey,
+  // #8 Priority Queue
+  enqueueRequest,
+  getQueueStats,
+  // #9 Correlation IDs
+  generateCorrelationId,
+  startCorrelation,
+  endCorrelation,
+  getCorrelationTrace,
+  getRecentCorrelations,
+  // #10 Rate Limiting
+  configureRateLimit,
+  tryAcquireRate,
+  getRateLimitStats,
+  // #11 Bulkhead Isolation
+  configureBulkhead,
+  withBulkhead,
+  getBulkheadStats,
+  // #12 Module Quarantine
+  quarantineModule,
+  isQuarantined,
+  releaseFromQuarantine,
+  getQuarantinedModules,
+  // #13 Dead Letter Queue
+  addToDeadLetterQueue,
+  getDeadLetters,
+  removeDeadLetter,
+  getDLQStats,
+  // #14 Shutdown Deadline
+  setShutdownDeadline,
+  startShutdownDeadline,
+  clearShutdownDeadline,
+  // #15 In-Flight Draining
+  trackInflight,
+  drainInflight,
+  getInflightOps,
+  // #16 Self-Test on Recovery
+  registerSelfTest,
+  runSelfTest,
+  // #17 Boot Order Verification
+  recordBoot,
+  verifyBootOrder,
+  getBootOrder,
+  // #18 Health Checksum
+  computeHealthChecksum,
+  verifyHealthChecksum,
+  // #19 Warm Standby Pool
+  registerWarmStandby,
+  getWarmStandby,
+  getWarmPoolStatus,
+  // #20 Adaptive Timeouts
+  recordLatency,
+  getAdaptiveTimeout,
+  getLatencyStats,
+  // #21 Error Taxonomy
+  classifyError,
+  getErrorTaxonomy,
+  getRetriableErrors,
+  type ErrorCategory,
+  // #22 Breaker Analytics
+  recordBreakerEvent,
+  getBreakerAnalytics,
+  // #23 Invoke Instrumentation
+  InvokeInstrument,
+  getRecentInvokeTraces,
+  getSlowInvokeTraces,
+  // #24 Composite Health Scoring
+  calculateCompositeScore,
+  // #25 Kernel Watchdog
+  startKernelWatchdog,
+  pingWatchdog,
+  stopKernelWatchdog,
+  getWatchdogState,
+  // Status
+  CORE_HARDENING_VERSION,
+  CORE_HARDENING_UPGRADES,
+  getCoreHardeningStatus,
+} from './core-hardening';
