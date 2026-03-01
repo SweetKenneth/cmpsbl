@@ -1649,6 +1649,7 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     { module: 'SANDBOX', codename: 'Crucible', loader: async () => { try { const m = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return m.calculateSandboxHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'INCLUSIVE', codename: 'Clarity', loader: async () => { try { const m = await import('@/lib/inclusive/inclusive-hardening'); return m.calculateInclusiveHealth(); } catch { return { grade: 'A', score: 100 }; } } },
   ];
+  for (const mod of modules) {
     const health = await mod.loader();
     results.push({
       module: mod.module,
