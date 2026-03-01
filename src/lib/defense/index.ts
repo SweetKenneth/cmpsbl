@@ -79,3 +79,6 @@ export {
   clearSignals,
   getAnomalyStats,
 } from './anomalyDetector';
+
+// DEFENSE Hardening v2.0.0 — 25 enterprise upgrades
+export * from './defense-hardening';
