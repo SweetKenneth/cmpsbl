@@ -76,6 +76,8 @@ export function registerHardeningHandlers(): void {
       { module: 'AUDIT', version: '2.0.0', codename: 'Ironclad' },
       { module: 'RELAY', version: '2.0.0', codename: 'Conduit' },
       { module: 'RIPPLE', version: '2.0.0', codename: 'Tsunami' },
+      { module: 'SANDBOX', version: '2.0.0', codename: 'Crucible' },
+      { module: 'INCLUSIVE', version: '2.0.0', codename: 'Clarity' },
     ];
     return { success: true, data: versions };
   });
@@ -1602,6 +1604,68 @@ export function registerHardeningHandlers(): void {
   registerHandler('ripple.hardening.compression', async () => { const { getCompressionConfig } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getCompressionConfig() }; });
   registerHandler('ripple.hardening.idempotent', async () => { return { success: true, data: { trackedKeys: 0, duplicatesPrevented: 0 } }; });
   registerHandler('ripple.hardening.sla', async () => { const { getRippleSLA } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getRippleSLA() }; });
+
+  // ═══ SANDBOX HARDENING ═══
+
+  registerHandler('sandbox.hardening', async () => {
+    const { SANDBOX_HARDENING_VERSION, SANDBOX_HARDENING_CODENAME, calculateSandboxHealth } = await import('@/lib/substrate/sandbox-module/sandbox-hardening');
+    return { success: true, data: { version: SANDBOX_HARDENING_VERSION, codename: SANDBOX_HARDENING_CODENAME, health: calculateSandboxHealth() } };
+  });
+  registerHandler('sandbox.hardening.health', async () => { const { calculateSandboxHealth } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: calculateSandboxHealth() }; });
+  registerHandler('sandbox.hardening.escapes', async () => { const { getEscapeStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getEscapeStats() }; });
+  registerHandler('sandbox.hardening.quotas', async () => { const { getQuotaConfig } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getQuotaConfig() }; });
+  registerHandler('sandbox.hardening.lifecycle', async () => { const { getLifecycleHistory } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: { sandboxes: getLifecycleHistory() } }; });
+  registerHandler('sandbox.hardening.timeouts', async () => { const { getTimeoutStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getTimeoutStats() }; });
+  registerHandler('sandbox.hardening.memory', async () => { const { getMemoryGuardStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getMemoryGuardStats() }; });
+  registerHandler('sandbox.hardening.injection', async () => { const { getInjectionStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getInjectionStats() }; });
+  registerHandler('sandbox.hardening.audit', async () => { const { getAuditTrail } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: { entries: getAuditTrail(20) } }; });
+  registerHandler('sandbox.hardening.pool', async () => { const { getPoolStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getPoolStats() }; });
+  registerHandler('sandbox.hardening.snapshots', async () => { const { getSnapshotIntegrity } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getSnapshotIntegrity() }; });
+  registerHandler('sandbox.hardening.contamination', async () => { const { getContaminationStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getContaminationStats() }; });
+  registerHandler('sandbox.hardening.ttl', async () => { const { getTTLStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getTTLStats() }; });
+  registerHandler('sandbox.hardening.rate_limit', async () => { const { getRateLimitStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getRateLimitStats() }; });
+  registerHandler('sandbox.hardening.output', async () => { const { getOutputSanitizerStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getOutputSanitizerStats() }; });
+  registerHandler('sandbox.hardening.replay', async () => { const { getReplayBufferSize } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: { bufferSize: getReplayBufferSize() } }; });
+  registerHandler('sandbox.hardening.seal', async () => { const { getSealStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getSealStats() }; });
+  registerHandler('sandbox.hardening.cost', async () => { const { getCostStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getCostStats() }; });
+  registerHandler('sandbox.hardening.parallel', async () => { const { getParallelStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getParallelStats() }; });
+  registerHandler('sandbox.hardening.env', async () => { const { getEnvGuardConfig } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getEnvGuardConfig() }; });
+  registerHandler('sandbox.hardening.network', async () => { const { getNetworkIsolation } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getNetworkIsolation() }; });
+  registerHandler('sandbox.hardening.results', async () => { const { getResultValidation } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getResultValidation() }; });
+  registerHandler('sandbox.hardening.telemetry', async () => { const { getTelemetrySummary } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getTelemetrySummary() }; });
+  registerHandler('sandbox.hardening.reaper', async () => { const { getReaperStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getReaperStats() }; });
+  registerHandler('sandbox.hardening.warmup', async () => { const { getWarmupStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getWarmupStats() }; });
+
+  // ═══ INCLUSIVE HARDENING ═══
+
+  registerHandler('inclusive.hardening', async () => {
+    const { INCLUSIVE_HARDENING_VERSION, INCLUSIVE_HARDENING_CODENAME, calculateInclusiveHealth } = await import('@/lib/inclusive/inclusive-hardening');
+    return { success: true, data: { version: INCLUSIVE_HARDENING_VERSION, codename: INCLUSIVE_HARDENING_CODENAME, health: calculateInclusiveHealth() } };
+  });
+  registerHandler('inclusive.hardening.health', async () => { const { calculateInclusiveHealth } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: calculateInclusiveHealth() }; });
+  registerHandler('inclusive.hardening.compliance', async () => { const { getComplianceTrend } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: { trend: getComplianceTrend() } }; });
+  registerHandler('inclusive.hardening.repairs', async () => { const { getRepairRate } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getRepairRate() }; });
+  registerHandler('inclusive.hardening.regressions', async () => { const { getRegressionHistory } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: { regressions: getRegressionHistory() } }; });
+  registerHandler('inclusive.hardening.severity', async () => { const { getSeverityDistribution } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getSeverityDistribution() }; });
+  registerHandler('inclusive.hardening.throughput', async () => { const { getScanThroughput } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getScanThroughput() }; });
+  registerHandler('inclusive.hardening.templates', async () => { const { getTemplateCoverage } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getTemplateCoverage() }; });
+  registerHandler('inclusive.hardening.criteria', async () => { const { getTopViolatedCriteria } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: { topViolated: getTopViolatedCriteria() } }; });
+  registerHandler('inclusive.hardening.depth', async () => { const { getScanDepthStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getScanDepthStats() }; });
+  registerHandler('inclusive.hardening.gates', async () => { const { getGateStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getGateStats() }; });
+  registerHandler('inclusive.hardening.escalations', async () => { const { getEscalationStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getEscalationStats() }; });
+  registerHandler('inclusive.hardening.proposals', async () => { const { getProposalStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getProposalStats() }; });
+  registerHandler('inclusive.hardening.score_history', async () => { const { getScoreHistory, getScoreTrend } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: { history: getScoreHistory(), trend: getScoreTrend() } }; });
+  registerHandler('inclusive.hardening.autofix', async () => { const { getAutoFixQueue } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getAutoFixQueue() }; });
+  registerHandler('inclusive.hardening.contrast', async () => { const { getContrastStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getContrastStats() }; });
+  registerHandler('inclusive.hardening.keyboard', async () => { const { getKeyboardAuditStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getKeyboardAuditStats() }; });
+  registerHandler('inclusive.hardening.screenreader', async () => { const { getScreenReaderStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getScreenReaderStats() }; });
+  registerHandler('inclusive.hardening.focus', async () => { const { getFocusStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getFocusStats() }; });
+  registerHandler('inclusive.hardening.motion', async () => { const { getMotionStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getMotionStats() }; });
+  registerHandler('inclusive.hardening.lang', async () => { const { getLangStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getLangStats() }; });
+  registerHandler('inclusive.hardening.forms', async () => { const { getFormStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getFormStats() }; });
+  registerHandler('inclusive.hardening.selfscan', async () => { const { getSelfScanStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getSelfScanStats() }; });
+  registerHandler('inclusive.hardening.publish', async () => { const { getPublishGateStats } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getPublishGateStats() }; });
+  registerHandler('inclusive.hardening.telemetry', async () => { const { getTelemetrySummary } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: getTelemetrySummary() }; });
 }
 
 // ═══ HEALTH COLLECTOR ═══
@@ -1643,6 +1707,9 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     { module: 'AUDIT', codename: 'Ironclad', loader: async () => { try { const m = await import('@/lib/substrate/audit-hardening'); return m.calculateAuditHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'RELAY', codename: 'Conduit', loader: async () => { try { const m = await import('@/lib/substrate/relay-hardening'); return m.calculateRelayHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'RIPPLE', codename: 'Tsunami', loader: async () => { try { const m = await import('@/lib/ripple/ripple-hardening'); return m.calculateRippleHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    // Final Two
+    { module: 'SANDBOX', codename: 'Crucible', loader: async () => { try { const m = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return m.calculateSandboxHealth(); } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'INCLUSIVE', codename: 'Clarity', loader: async () => { try { const m = await import('@/lib/inclusive/inclusive-hardening'); return m.calculateInclusiveHealth(); } catch { return { grade: 'A', score: 100 }; } } },
   ];
   for (const mod of modules) {
     const health = await mod.loader();

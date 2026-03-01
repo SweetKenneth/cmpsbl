@@ -1039,6 +1039,64 @@ export const RIPPLE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'ripple.hardening.sla', description: 'RIPPLE SLA monitor', category: 'ripple', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 ];
 
+// ═══ SANDBOX Hardening Commands ═══
+export const SANDBOX_HARDENING_COMMANDS: CommandDefinition[] = [
+  { command: 'sandbox.hardening', description: 'SANDBOX hardening status (Crucible v2.0)', category: 'sandbox_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.health', description: 'SANDBOX health composite', category: 'sandbox_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.escapes', description: 'Escape detection stats', category: 'sandbox_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.quotas', description: 'Resource quota config', category: 'sandbox_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.lifecycle', description: 'Sandbox lifecycle states', category: 'sandbox_mod', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.timeouts', description: 'Timeout enforcement stats', category: 'sandbox_mod', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.memory', description: 'Memory isolation guard', category: 'sandbox_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.injection', description: 'Code injection prevention', category: 'sandbox_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.audit', description: 'Execution audit trail', category: 'sandbox_mod', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.pool', description: 'Sandbox pool manager', category: 'sandbox_mod', icon: Server, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.snapshots', description: 'Snapshot integrity validator', category: 'sandbox_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.contamination', description: 'Cross-sandbox contamination guard', category: 'sandbox_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.ttl', description: 'TTL enforcement stats', category: 'sandbox_mod', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.rate_limit', description: 'Execution rate limiter', category: 'sandbox_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.output', description: 'Output sanitizer stats', category: 'sandbox_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.replay', description: 'Deterministic replay buffer', category: 'sandbox_mod', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.seal', description: 'Hermetic seal verification', category: 'sandbox_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.cost', description: 'Execution cost estimator', category: 'sandbox_mod', icon: CreditCard, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.parallel', description: 'Parallel execution limiter', category: 'sandbox_mod', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.env', description: 'Environment variable guard', category: 'sandbox_mod', icon: Key, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.network', description: 'Network isolation enforcer', category: 'sandbox_mod', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.results', description: 'Result validation gate', category: 'sandbox_mod', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.telemetry', description: 'Sandbox telemetry summary', category: 'sandbox_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.reaper', description: 'Dead sandbox reaper stats', category: 'sandbox_mod', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sandbox.hardening.warmup', description: 'Sandbox warmup preloader', category: 'sandbox_mod', icon: Zap, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══ INCLUSIVE Hardening Commands ═══
+export const INCLUSIVE_HARDENING_COMMANDS: CommandDefinition[] = [
+  { command: 'inclusive.hardening', description: 'INCLUSIVE hardening status (Clarity v2.0)', category: 'inclusive', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.health', description: 'INCLUSIVE health composite', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.compliance', description: 'WCAG compliance trend', category: 'inclusive', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.repairs', description: 'Auto-repair success rate', category: 'inclusive', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.regressions', description: 'Regression detection history', category: 'inclusive', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.severity', description: 'Severity distribution tracker', category: 'inclusive', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.throughput', description: 'Scan throughput monitor', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.templates', description: 'Template coverage tracker', category: 'inclusive', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.criteria', description: 'Top violated WCAG criteria', category: 'inclusive', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.depth', description: 'Scan depth distribution', category: 'inclusive', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.gates', description: 'Compliance gate results', category: 'inclusive', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.escalations', description: 'DEFENSE escalation tracker', category: 'inclusive', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.proposals', description: 'Modernizer proposal tracker', category: 'inclusive', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.score_history', description: 'Accessibility score history', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.autofix', description: 'Auto-fix queue status', category: 'inclusive', icon: Wand2, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.contrast', description: 'Color contrast analyzer', category: 'inclusive', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.keyboard', description: 'Keyboard navigation auditor', category: 'inclusive', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.screenreader', description: 'Screen reader compatibility', category: 'inclusive', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.focus', description: 'Focus management auditor', category: 'inclusive', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.motion', description: 'Reduced motion compliance', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.lang', description: 'Language & localization auditor', category: 'inclusive', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.forms', description: 'Form accessibility checker', category: 'inclusive', icon: FileEdit, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.selfscan', description: 'Self-scan pipeline stats', category: 'inclusive', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.publish', description: 'Marketplace publish gate', category: 'inclusive', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.telemetry', description: 'INCLUSIVE telemetry summary', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
@@ -1076,6 +1134,8 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...AUDIT_HARDENING_COMMANDS,
   ...RELAY_HARDENING_COMMANDS,
   ...RIPPLE_HARDENING_COMMANDS,
+  ...SANDBOX_HARDENING_COMMANDS,
+  ...INCLUSIVE_HARDENING_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
@@ -1112,6 +1172,8 @@ export const COMMAND_CATEGORIES = {
   audit_hardening: { label: 'AUDIT HARDENING', color: 'text-stone-300', borderColor: 'border-stone-400/30', commands: AUDIT_HARDENING_COMMANDS },
   relay_hardening: { label: 'RELAY HARDENING', color: 'text-lime-300', borderColor: 'border-lime-400/30', commands: RELAY_HARDENING_COMMANDS },
   ripple_hardening: { label: 'RIPPLE HARDENING', color: 'text-cyan-300', borderColor: 'border-cyan-400/30', commands: RIPPLE_HARDENING_COMMANDS },
+  sandbox_hardening: { label: 'SANDBOX HARDENING', color: 'text-emerald-300', borderColor: 'border-emerald-400/30', commands: SANDBOX_HARDENING_COMMANDS },
+  inclusive_hardening: { label: 'INCLUSIVE HARDENING', color: 'text-teal-300', borderColor: 'border-teal-400/30', commands: INCLUSIVE_HARDENING_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {
