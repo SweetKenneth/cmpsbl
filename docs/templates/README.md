@@ -2,6 +2,30 @@
 
 > Production-grade, zero-dependency TypeScript engines distilled from the highest-value Crown Jewel artifacts. Each is a standalone `.ts` file you can drop into any project.
 
+---
+
+## 🔱 CMPSBL ENGINE — The Apex Artifact
+
+> **One import. Complete autonomous intelligent operations.**
+
+The [CMPSBL Engine](./cmpsbl-engine.md) ([source](./cmpsbl-engine.ts)) composes 8 meta-engines into a single drop-in module that handles: **Parse → Route → Execute → Heal → Defend → Learn → Observe → Audit**.
+
+| Composed From | Role |
+|---|---|
+| Task Processor + AI Ops | Universal input → intelligent multi-provider routing |
+| Workflow Engine + WAL | Durable saga execution with compensation |
+| Self-Healing Mesh + Circuit Breaker | Auto-reroute, degrade, isolate on failure |
+| Knowledge Engine | Self-improving provider selection from outcomes |
+| Threat Defense | Rate limiting + client blocking |
+| Observability + Compliance | Incident correlation + tamper-evident audit chain |
+
+```typescript
+const engine = createCMPSBLEngine({ name: 'my-platform', providers: [...] });
+const result = await engine.submit('Analyze quarterly revenue');
+```
+
+---
+
 ## Meta-Engines (Highest Value)
 
 Meta-engines compose multiple standalone engines into complete vertical solutions. One import, fully wired.
