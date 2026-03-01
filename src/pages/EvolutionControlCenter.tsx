@@ -145,6 +145,22 @@ export default function EvolutionControlCenter() {
   if (!user) {
     return (
       <div className="min-h-screen bg-background">
+        <SEO
+          title="EVOLUTION Control Center — Governed AI Improvement | CMPSBL"
+          description="Connect your AI agent and evolve your codebase safely. Dry-run previews, one-click rollback, receipted changes, and governed self-improvement."
+          image="https://cmpsbl.com/og/evolution.jpg"
+          canonical="https://cmpsbl.com/evolution"
+          keywords={['AI code evolution', 'governed self-improvement', 'codebase evolution', 'AI agent code improvement', 'dry-run preview', 'rollback safe']}
+          faq={[
+            { question: 'What is EVOLUTION?', answer: 'EVOLUTION is a governed self-improvement system that connects AI coding agents to your codebase for safe, receipted, rollback-safe code evolution.' },
+            { question: 'Is it safe?', answer: 'Yes. All changes start as dry-runs. Every applied change is receipted with a Merkle-chain audit trail and can be rolled back with one click.' },
+            { question: 'Which AI agents work with EVOLUTION?', answer: 'Any AI coding agent that accepts system prompts — Cursor, Windsurf, Cline, and others.' },
+          ]}
+          breadcrumbs={[
+            { name: 'Home', url: 'https://cmpsbl.com' },
+            { name: 'EVOLUTION', url: 'https://cmpsbl.com/evolution' },
+          ]}
+        />
         <PublicNav />
         
         {/* Hero even for unauthenticated — sell the concept */}
