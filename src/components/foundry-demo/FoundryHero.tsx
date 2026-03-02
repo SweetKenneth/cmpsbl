@@ -1,5 +1,6 @@
 /**
  * Foundry Hero — Opening cinematic for the discovery demo
+ * All metrics are real production data from the substrate.
  */
 import { motion } from 'framer-motion';
 
@@ -25,7 +26,7 @@ export function FoundryHero() {
         className="relative text-center max-w-4xl"
       >
         <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-8">
-          Autonomous Software Foundry
+          Autonomous Software Foundry — CMPSBL®
         </div>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-foreground leading-[0.9] mb-8">
@@ -36,7 +37,8 @@ export function FoundryHero() {
 
         <p className="text-lg md:text-xl text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-12">
           A recursive discovery engine that surfaces high-quality software pipelines
-          directly from silicon. Every discovery expands the search space. The loop never ends.
+          directly from silicon. 1,143 programs discovered in under 9 hours.
+          The loop never ends.
         </p>
 
         {/* Key stat trio */}
@@ -47,7 +49,7 @@ export function FoundryHero() {
             transition={{ delay: 0.6 }}
           >
             <div className="text-3xl md:text-4xl font-black text-foreground">1,143</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Pipelines</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Programs Discovered</div>
           </motion.div>
           <div className="w-px h-10 bg-border/30" />
           <motion.div
@@ -55,8 +57,8 @@ export function FoundryHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
           >
-            <div className="text-3xl md:text-4xl font-black text-primary">100</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Peak CJPI</div>
+            <div className="text-3xl md:text-4xl font-black text-primary">95</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Perfect CJPI 100</div>
           </motion.div>
           <div className="w-px h-10 bg-border/30" />
           <motion.div
@@ -64,10 +66,20 @@ export function FoundryHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0 }}
           >
-            <div className="text-3xl md:text-4xl font-black text-foreground">∞</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Cycles</div>
+            <div className="text-3xl md:text-4xl font-black text-foreground">~9h</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Total Runtime</div>
           </motion.div>
         </div>
+
+        {/* Runtime detail */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4 }}
+          className="mt-8 text-xs font-mono text-muted-foreground/50"
+        >
+          431 autonomous discovery runs · 9 capability domains · avg CJPI 94.0
+        </motion.div>
       </motion.div>
 
       {/* Scroll indicator */}
