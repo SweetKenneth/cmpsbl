@@ -176,6 +176,24 @@ function computeSynergyMultiplier(moduleChain: string[]): number {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export async function acquireDiscoveryLock(userId: string): Promise<boolean> {
+  // First check if the lock is free or expired
+  const { data: current } = await supabase
+    .from('discovery_lock')
+    .select('locked_by, expires_at')
+    .eq('id', 'global')
+    .single();
+
+  if (!current) return false;
+
+  const isLocked = current.locked_by !== null
+    && current.expires_at !== null
+    && new Date(current.expires_at) > new Date();
+
+  if (isLocked && current.locked_by !== userId) {
+    return false; // genuinely locked by someone else
+  }
+
+  // Lock is free or expired — claim it
   const { data, error } = await supabase
     .from('discovery_lock')
     .update({
@@ -184,7 +202,6 @@ export async function acquireDiscoveryLock(userId: string): Promise<boolean> {
       expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(), // 5 min TTL
     })
     .eq('id', 'global')
-    .or(`locked_by.is.null,expires_at.lt.${new Date().toISOString()}`)
     .select()
     .single();
 
