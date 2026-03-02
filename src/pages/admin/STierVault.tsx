@@ -19,7 +19,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import registryData from "@/crownjewels/s-tier.registry.json";
 import type { STierEntry } from "@/crownjewels/types";
 import {
-  generateSingleExport, generateExportBundle, downloadFile, downloadBundle,
+  generateSingleExport, generateExportBundle, downloadBundle,
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
 } from "@/lib/export/universal-adapter";
@@ -434,13 +434,14 @@ function ExportDialog({
   };
 
   const handlePreview = useCallback(() => {
-    const file = generateSingleExport(artifact, selectedLang, selectedAdapter);
-    setPreviewCode(file.content);
+    const bundle = generateSingleExport(artifact, selectedLang, selectedAdapter);
+    const mainFile = bundle.files.find(f => f.language === selectedLang);
+    setPreviewCode(mainFile?.content ?? bundle.files[0]?.content ?? '');
   }, [selectedLang, selectedAdapter, artifact]);
 
-  const handleDownloadSingle = () => {
-    const file = generateSingleExport(artifact, selectedLang, selectedAdapter);
-    downloadFile(file);
+  const handleDownloadSingle = async () => {
+    const bundle = generateSingleExport(artifact, selectedLang, selectedAdapter);
+    await downloadBundle(bundle);
   };
 
   const handleDownloadAll = async () => {
