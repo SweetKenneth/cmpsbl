@@ -1,9 +1,8 @@
 /**
  * COMPOSABLE ENGINES Catalog
  * Black-boxed Sealed Runtime software — first-class CMPSBL IP.
- * 20 Engines — $199 standalone / $99 bundled with another engine.
- * 
- * All priceIds verified against Stripe ($199 = 19900 cents).
+ * Tiered pricing: APEX $599 | ELITE $399 | CORE $199 | Free $0
+ * Bundle discount: 40% off when purchased with another engine.
  * ARCHITECT uses annual subscription at $999/yr.
  */
 
@@ -50,8 +49,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "sentinel", codename: "SENTINEL", tagline: "AI Security Operations",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgaQ7FtTiAL4aWKMFBUG4", icon: Shield, color: "0 80% 55%", tier: "APEX",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T6OBJQ7FtTiAL4ar4khmX2R", icon: Shield, color: "0 80% 55%", tier: "APEX",
     edition: "Edition 001 of ∞",
     briefing: "SENTINEL hunts threats before they arrive. Behavioral analysis, IP reputation scoring, prompt injection shielding, and automated incident response — zero configuration.",
     capabilities: ["Behavioral anomaly detection", "Automated incident response", "IP reputation scoring", "Prompt injection shielding", "Real-time threat intelligence", "Zero-config security hardening"],
@@ -59,8 +58,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "phantom", codename: "PHANTOM", tagline: "Self-Healing Service Mesh",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgbQ7FtTiAL4aqmRK2lDe", icon: Ghost, color: "280 70% 55%", tier: "APEX",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T6OBJQ7FtTiAL4ar4khmX2R", icon: Ghost, color: "280 70% 55%", tier: "APEX",
     edition: "Edition 001 of ∞",
     briefing: "PHANTOM makes downtime impossible. Auto-recovery, circuit breaking, and intelligent failover keep your services alive even when individual nodes fail.",
     capabilities: ["Automatic service recovery", "Circuit breaker orchestration", "Zero-downtime deployments", "Intelligent failover routing", "Health-based load shedding", "Chaos resilience built-in"],
@@ -68,8 +67,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "nexus", codename: "NEXUS", tagline: "Multi-Model AI Router",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgKQ7FtTiAL4aerOdb2WM", icon: Network, color: "160 75% 45%", tier: "APEX",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T6OBJQ7FtTiAL4ar4khmX2R", icon: Network, color: "160 75% 45%", tier: "APEX",
     edition: "Edition 001 of ∞",
     briefing: "NEXUS routes every AI call to the optimal model in real time. Cost-aware selection, latency-based failover, response quality scoring, and automatic provider rotation — best answer at the best price.",
     capabilities: ["Real-time model selection & routing", "Cost-aware provider optimization", "Latency-based automatic failover", "Response quality scoring & feedback", "Token budget management", "Multi-provider load balancing"],
@@ -77,8 +76,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "prism", codename: "PRISM", tagline: "Knowledge Graph & RAG Pipeline",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgLQ7FtTiAL4aZSVwYLVg", icon: Diamond, color: "270 85% 60%", tier: "APEX",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T6OBJQ7FtTiAL4ar4khmX2R", icon: Diamond, color: "270 85% 60%", tier: "APEX",
     edition: "Edition 001 of ∞",
     briefing: "PRISM turns unstructured chaos into structured knowledge. Automatic entity extraction, relationship mapping, and retrieval-augmented generation for grounded, hallucination-resistant answers.",
     capabilities: ["Automatic entity & relationship extraction", "Vector-powered semantic search", "RAG pipeline with source attribution", "Knowledge graph construction & traversal", "Contradiction detection across sources", "Dynamic context window optimization"],
@@ -86,8 +85,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "cortex", codename: "CORTEX", tagline: "Agent Runtime & Orchestration",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgcQ7FtTiAL4aBQXrpA6D", icon: Brain, color: "310 70% 55%", tier: "ELITE",
+    priceStandalone: 39900, priceBundled: 23900, priceDisplay: "$399", bundleDisplay: "$239",
+    priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Brain, color: "310 70% 55%", tier: "ELITE",
     edition: "Edition 001 of ∞",
     briefing: "CORTEX gives your AI agents a brain. Multi-agent orchestration, task delegation, memory coordination, and cognitive load balancing — agents think together instead of stepping on each other.",
     capabilities: ["Multi-agent task delegation", "Cognitive load balancing", "Shared memory coordination", "Agent competency tracking", "Automatic skill routing", "Collaborative reasoning"],
@@ -95,8 +94,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "forge", codename: "FORGE", tagline: "Code Generation & Refactoring",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgNQ7FtTiAL4avei8jI9w", icon: Hammer, color: "25 95% 55%", tier: "ELITE",
+    priceStandalone: 39900, priceBundled: 23900, priceDisplay: "$399", bundleDisplay: "$239",
+    priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Hammer, color: "25 95% 55%", tier: "ELITE",
     edition: "Edition 001 of ∞",
     briefing: "FORGE writes code that ships. Multi-file generation, intelligent refactoring, type-safe transformations, and automated test scaffolding — all inside a sandboxed execution environment with rollback.",
     capabilities: ["Multi-file code generation", "Type-safe AST transformations", "Automated test scaffolding", "Dead code elimination", "Dependency graph analysis", "Sandboxed execution with rollback"],
@@ -104,8 +103,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "oracle", codename: "ORACLE", tagline: "Real-Time Analytics & Prediction",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgeQ7FtTiAL4ajnb94Y8v", icon: Eye, color: "45 90% 50%", tier: "ELITE",
+    priceStandalone: 39900, priceBundled: 23900, priceDisplay: "$399", bundleDisplay: "$239",
+    priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Eye, color: "45 90% 50%", tier: "ELITE",
     edition: "Edition 001 of ∞",
     briefing: "ORACLE sees what's coming. Predictive modeling, anomaly detection, and live data intelligence that turns raw signals into actionable foresight. Know before it happens.",
     capabilities: ["Predictive trend modeling", "Real-time anomaly detection", "Live data stream processing", "Automated insight generation", "Pattern recognition at scale", "Forecasting with confidence intervals"],
@@ -113,8 +112,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "vanguard", codename: "VANGUARD", tagline: "Edge Computing & CDN",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgfQ7FtTiAL4adJSReTim", icon: Zap, color: "185 80% 45%", tier: "ELITE",
+    priceStandalone: 39900, priceBundled: 23900, priceDisplay: "$399", bundleDisplay: "$239",
+    priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Zap, color: "185 80% 45%", tier: "ELITE",
     edition: "Edition 001 of ∞",
     briefing: "VANGUARD pushes compute to the edge. Distributed execution, intelligent caching, and sub-millisecond processing at the point of request.",
     capabilities: ["Distributed edge execution", "Intelligent edge caching", "Sub-millisecond processing", "Global request distribution", "Edge-native compute functions", "Automatic geo-routing"],
@@ -122,8 +121,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "conductor", codename: "CONDUCTOR", tagline: "Data Pipeline Orchestration",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MghQ7FtTiAL4aC3yU4CyD", icon: GitBranch, color: "145 65% 42%", tier: "ELITE",
+    priceStandalone: 39900, priceBundled: 23900, priceDisplay: "$399", bundleDisplay: "$239",
+    priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: GitBranch, color: "145 65% 42%", tier: "ELITE",
     edition: "Edition 001 of ∞",
     briefing: "CONDUCTOR moves data like water. ETL automation, stream processing, and data lineage tracking ensure every byte flows where it needs to go — reliably, traceably, automatically.",
     capabilities: ["Automated ETL pipelines", "Real-time stream processing", "Data lineage tracking", "Schema evolution handling", "Dead letter queue management", "Backpressure-aware processing"],
@@ -131,8 +130,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "arbiter", codename: "ARBITER", tagline: "API Gateway & Traffic Control",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MghQ7FtTiAL4aiNCw7zD0", icon: Scale, color: "210 60% 45%", tier: "ELITE",
+    priceStandalone: 39900, priceBundled: 23900, priceDisplay: "$399", bundleDisplay: "$239",
+    priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Scale, color: "210 60% 45%", tier: "ELITE",
     edition: "Edition 001 of ∞",
     briefing: "ARBITER controls the gates. Intelligent request routing, rate limiting, API versioning, and traffic shaping — APIs serve exactly who they should, exactly how fast they should.",
     capabilities: ["Intelligent request routing", "Per-endpoint rate limiting", "API versioning & deprecation", "Traffic shaping & throttling", "Request/response transformation", "Authentication gateway"],
