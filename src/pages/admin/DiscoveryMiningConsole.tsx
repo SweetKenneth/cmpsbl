@@ -536,6 +536,254 @@ function TemplateComposer() {
   );
 }
 
+// ─── Auto-Miner Tab ─────────────────────────────────────────────────
+
+function AutoMinerTab() {
+  const { state, start, stop, reset, stats, isRunning } = useAutoMiner();
+  const [config, setConfig] = useState<Partial<MinerConfig>>({
+    batchSize: 15,
+    probeRuns: 3,
+    maxCycles: 0,
+    minModules: 2,
+    maxModules: 5,
+    biasHighValue: true,
+    dryRun: true,
+    delayBetweenRuns: 2000,
+  });
+
+  const phaseLabels: Record<string, { label: string; color: string; icon: typeof Bot }> = {
+    idle: { label: 'Idle', color: 'text-muted-foreground', icon: Bot },
+    generating: { label: 'Generating Templates', color: 'text-blue-400', icon: Sparkles },
+    probing: { label: 'Probing Discoveries', color: 'text-amber-400', icon: FlaskConical },
+    mining: { label: 'Deep Mining', color: 'text-emerald-400', icon: Pickaxe },
+    retiring: { label: 'Retiring Combos', color: 'text-orange-400', icon: RotateCcw },
+    paused: { label: 'Paused', color: 'text-yellow-400', icon: Pause },
+    complete: { label: 'Complete', color: 'text-primary', icon: Check },
+  };
+
+  const phase = phaseLabels[state.phase] || phaseLabels.idle;
+  const PhaseIcon = phase.icon;
+  const elapsed = state.startedAt ? Math.round((Date.now() - state.startedAt) / 1000) : 0;
+
+  return (
+    <div className="space-y-4">
+      {/* Status Banner */}
+      <Card className={`border-2 ${state.phase === 'mining' ? 'border-emerald-500/40' : state.phase === 'probing' ? 'border-amber-500/40' : 'border-border/50'}`}>
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <div className={`p-2 rounded-lg ${state.phase !== 'idle' ? 'bg-primary/10 animate-pulse' : 'bg-muted'}`}>
+              <PhaseIcon className={`w-5 h-5 ${phase.color}`} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className={`font-semibold text-sm ${phase.color}`}>{phase.label}</div>
+              <div className="text-xs text-muted-foreground truncate">{state.lastActivity || 'Ready to mine'}</div>
+            </div>
+            {state.phase !== 'idle' && (
+              <Badge variant="outline" className="text-xs font-mono shrink-0">
+                <Timer className="w-3 h-3 mr-1" />{elapsed}s
+              </Badge>
+            )}
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-4 gap-2">
+            <div className="text-center p-2 rounded-lg bg-muted/50">
+              <div className="text-lg font-bold text-foreground">{state.currentCycle}</div>
+              <div className="text-[10px] text-muted-foreground">Cycles</div>
+            </div>
+            <div className="text-center p-2 rounded-lg bg-muted/50">
+              <div className="text-lg font-bold text-primary">{state.totalDiscoveries}</div>
+              <div className="text-[10px] text-muted-foreground">Discoveries</div>
+            </div>
+            <div className="text-center p-2 rounded-lg bg-muted/50">
+              <div className="text-lg font-bold text-foreground">{state.totalRuns}</div>
+              <div className="text-[10px] text-muted-foreground">Runs</div>
+            </div>
+            <div className="text-center p-2 rounded-lg bg-muted/50">
+              <div className="text-lg font-bold text-foreground">{state.retiredCombos.length}</div>
+              <div className="text-[10px] text-muted-foreground">Retired</div>
+            </div>
+          </div>
+
+          {/* Active Templates Preview */}
+          {state.activeTemplates.length > 0 && (
+            <div className="mt-3 p-2 rounded-lg bg-muted/30 border border-border/30">
+              <div className="text-[10px] text-muted-foreground mb-1">Active Template Batch ({state.activeTemplates.length})</div>
+              <div className="flex flex-wrap gap-1">
+                {state.activeTemplates.slice(0, 8).map((t, i) => (
+                  <Badge key={i} variant="outline" className="text-[9px] px-1.5 py-0">
+                    {t.modulePattern.join('→')}
+                  </Badge>
+                ))}
+                {state.activeTemplates.length > 8 && (
+                  <Badge variant="outline" className="text-[9px] px-1.5 py-0">
+                    +{state.activeTemplates.length - 8} more
+                  </Badge>
+                )}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Controls */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Bot className="w-4 h-4 text-primary" /> Auto-Miner Controls
+          </CardTitle>
+          <CardDescription className="text-xs">
+            One click to generate random templates, test them with discovery runs, deep-mine productive combos, and retire exhausted ones
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Quick Config */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label className="text-xs">Batch Size</Label>
+              <Input type="number" value={config.batchSize} min={5} max={50}
+                onChange={e => setConfig(c => ({ ...c, batchSize: parseInt(e.target.value) || 15 }))}
+                disabled={isRunning} />
+            </div>
+            <div>
+              <Label className="text-xs">Probe Runs</Label>
+              <Input type="number" value={config.probeRuns} min={1} max={10}
+                onChange={e => setConfig(c => ({ ...c, probeRuns: parseInt(e.target.value) || 3 }))}
+                disabled={isRunning} />
+            </div>
+            <div>
+              <Label className="text-xs">Max Cycles (0=∞)</Label>
+              <Input type="number" value={config.maxCycles} min={0} max={100}
+                onChange={e => setConfig(c => ({ ...c, maxCycles: parseInt(e.target.value) || 0 }))}
+                disabled={isRunning} />
+            </div>
+            <div>
+              <Label className="text-xs">Module Range</Label>
+              <div className="flex gap-1 items-center">
+                <Input type="number" value={config.minModules} min={2} max={4} className="w-16"
+                  onChange={e => setConfig(c => ({ ...c, minModules: parseInt(e.target.value) || 2 }))}
+                  disabled={isRunning} />
+                <span className="text-xs text-muted-foreground">to</span>
+                <Input type="number" value={config.maxModules} min={3} max={5} className="w-16"
+                  onChange={e => setConfig(c => ({ ...c, maxModules: parseInt(e.target.value) || 5 }))}
+                  disabled={isRunning} />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <Switch id="am-dry" checked={config.dryRun ?? true}
+                onCheckedChange={v => setConfig(c => ({ ...c, dryRun: v }))}
+                disabled={isRunning} />
+              <Label htmlFor="am-dry" className="text-xs">Dry Run</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Switch id="am-bias" checked={config.biasHighValue ?? true}
+                onCheckedChange={v => setConfig(c => ({ ...c, biasHighValue: v }))}
+                disabled={isRunning} />
+              <Label htmlFor="am-bias" className="text-xs">Bias High Value</Label>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            {state.phase === 'idle' || state.phase === 'paused' || state.phase === 'complete' ? (
+              <Button onClick={() => start(config)} className="gap-2 flex-1">
+                <Play className="w-4 h-4" />
+                {state.phase === 'paused' ? 'Resume Mining' : 'Start Auto-Mine'}
+              </Button>
+            ) : (
+              <Button onClick={stop} variant="destructive" className="gap-2 flex-1">
+                <Pause className="w-4 h-4" />
+                Stop Mining
+              </Button>
+            )}
+            <Button onClick={reset} variant="outline" disabled={isRunning} className="gap-1">
+              <RotateCcw className="w-4 h-4" />
+              Reset
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Cycle History */}
+      {state.cycleHistory.length > 0 && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Cycle History</CardTitle>
+            <CardDescription className="text-xs">{state.cycleHistory.length} cycles completed</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="max-h-60">
+              <div className="space-y-2">
+                {[...state.cycleHistory].reverse().map(c => (
+                  <div key={c.cycleNumber} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30 border border-border/30">
+                    <Badge variant={c.discoveriesFound > 0 ? 'default' : 'outline'} className="text-[10px] shrink-0">
+                      #{c.cycleNumber}
+                    </Badge>
+                    <div className="flex-1 min-w-0 text-xs">
+                      <span className="font-mono">{c.templatesGenerated}</span> templates →{' '}
+                      <span className="font-mono">{c.probeRuns}</span> probes →{' '}
+                      <span className={`font-bold ${c.discoveriesFound > 0 ? 'text-primary' : 'text-muted-foreground'}`}>
+                        {c.discoveriesFound} found
+                      </span>
+                      {c.miningRuns > 0 && (
+                        <span className="text-emerald-400"> (+{c.miningRuns} mining runs)</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Retired Combos */}
+      {state.retiredCombos.length > 0 && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Hash className="w-4 h-4" /> Retired Combinations
+            </CardTitle>
+            <CardDescription className="text-xs">
+              {state.retiredCombos.length} module×category combos exhausted and retired
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="max-h-40">
+              <div className="flex flex-wrap gap-1">
+                {state.retiredCombos.map(r => (
+                  <Badge key={r.hash} variant="outline" className="text-[9px] px-1.5 py-0 opacity-60">
+                    {r.moduleChain.join('+')} ({r.category}) — {r.totalDiscoveries}💎
+                  </Badge>
+                ))}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Generator Stats */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Generator Intelligence</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div><span className="text-muted-foreground">Modules Available:</span> <span className="font-mono">{stats.totalModules}</span></div>
+            <div><span className="text-muted-foreground">Categories:</span> <span className="font-mono">{stats.totalCategories}</span></div>
+            <div><span className="text-muted-foreground">Est. Combos:</span> <span className="font-mono">{stats.estimatedCombos.toLocaleString()}</span></div>
+            <div><span className="text-muted-foreground">Explored:</span> <span className="font-mono">{stats.exploredPercent}</span></div>
+            <div className="col-span-2"><span className="text-muted-foreground">Discoveries from Retired:</span> <span className="font-mono text-primary">{stats.totalDiscoveriesFromRetired}</span></div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 // ─── Main Console ──────────────────────────────────────────────────
 
 export default function DiscoveryMiningConsole() {
@@ -596,12 +844,17 @@ export default function DiscoveryMiningConsole() {
           </div>
         </div>
 
-        <Tabs defaultValue="results" className="w-full">
-          <TabsList className="w-full sm:w-auto">
-            <TabsTrigger value="results" className="gap-1 flex-1 sm:flex-none"><Target className="w-4 h-4" /> Results</TabsTrigger>
-            <TabsTrigger value="templates" className="gap-1 flex-1 sm:flex-none"><Plus className="w-4 h-4" /> Templates</TabsTrigger>
-            <TabsTrigger value="history" className="gap-1 flex-1 sm:flex-none"><History className="w-4 h-4" /> History</TabsTrigger>
+        <Tabs defaultValue="auto-mine" className="w-full">
+          <TabsList className="w-full sm:w-auto grid grid-cols-4 sm:flex">
+            <TabsTrigger value="auto-mine" className="gap-1 text-xs sm:text-sm"><Bot className="w-4 h-4" /><span className="hidden sm:inline">Auto-Mine</span><span className="sm:hidden">Auto</span></TabsTrigger>
+            <TabsTrigger value="results" className="gap-1 text-xs sm:text-sm"><Target className="w-4 h-4" /><span className="hidden sm:inline">Results</span><span className="sm:hidden">Results</span></TabsTrigger>
+            <TabsTrigger value="templates" className="gap-1 text-xs sm:text-sm"><Plus className="w-4 h-4" /><span className="hidden sm:inline">Templates</span><span className="sm:hidden">New</span></TabsTrigger>
+            <TabsTrigger value="history" className="gap-1 text-xs sm:text-sm"><History className="w-4 h-4" /><span className="hidden sm:inline">History</span><span className="sm:hidden">Log</span></TabsTrigger>
           </TabsList>
+
+          <TabsContent value="auto-mine" className="space-y-4">
+            <AutoMinerTab />
+          </TabsContent>
 
           <TabsContent value="results" className="space-y-4">
             {latestResult ? (
@@ -636,7 +889,7 @@ export default function DiscoveryMiningConsole() {
                   <Zap className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
                   <h3 className="text-base sm:text-lg font-medium text-muted-foreground">No discoveries yet</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground/70 mt-1">
-                    Click "Run Discovery" to start the Capability Synthesis Reactor
+                    Click "Run Discovery" or use Auto-Mine to start
                   </p>
                 </CardContent>
               </Card>
