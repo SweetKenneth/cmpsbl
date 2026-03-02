@@ -967,3 +967,229 @@ export {
   type HardenedInvokeResult,
   type InvokePriority,
 } from './hardened-invoke';
+
+// ═══════════════════════════════════════════════════════════════════
+// EXPANSION MODULES v1.0.0 — 11-Node Expansion (37-Node Architecture)
+// ═══════════════════════════════════════════════════════════════════
+
+// SOVEREIGN — Data Sovereignty & Jurisdictional Compliance
+export {
+  initSovereign,
+  registerJurisdiction,
+  addResidencyRule,
+  checkCompliance as checkSovereignCompliance,
+  recordConsent,
+  addRetentionPolicy,
+  classifyData,
+  getSovereignState,
+  getSovereignHealth,
+  getSovereignResilience,
+  getSovereignEngine,
+  getSovereignHardening,
+  upgradeSovereignEngine,
+  type Jurisdiction,
+  type ComplianceFramework,
+  type DataClassification,
+  type ConsentStatus,
+  type DataResidencyRule,
+  type ComplianceCheck,
+  type ComplianceViolation as SovereignComplianceViolation,
+  type ConsentRecord,
+  type DataRetentionPolicy,
+  type SovereignModuleState,
+} from './sovereign-module';
+
+// ORACLE — Predictive Modeling & Probabilistic Reasoning
+export {
+  initOracle,
+  createNetwork,
+  updateBelief,
+  runMonteCarlo,
+  predict,
+  getOracleState,
+  getOracleHealth,
+  getOracleResilience,
+  getOracleEngine,
+  getOracleHardening,
+  upgradeOracleEngine,
+  type BayesianNetwork,
+  type BayesianNode,
+  type CausalEdge,
+  type MonteCarloSimulation,
+  type Prediction,
+  type OracleModuleState,
+} from './oracle-module';
+
+// CONSCIENCE — Ethical Reasoning & Value Alignment
+export {
+  initConscience,
+  evaluate as evaluateEthics,
+  checkAlignment,
+  getConscienceState,
+  getConscienceHealth,
+  getConscienceResilience,
+  getConscienceEngine,
+  getConscienceHardening,
+  upgradeConscienceEngine,
+  type EthicalFramework,
+  type BiasType,
+  type ConscienceModuleState,
+} from './conscience-module';
+
+// PHANTOM — Synthetic Data & Privacy-Preserving Computation
+export {
+  initPhantom,
+  generateSynthetic,
+  anonymize,
+  getPhantomState,
+  getPhantomHealth,
+  getPhantomResilience,
+  getPhantomEngine,
+  getPhantomHardening,
+  upgradePhantomEngine,
+  type PrivacyMechanism,
+  type AnonymizationMethod,
+  type PhantomModuleState,
+} from './phantom-module';
+
+// FORGE — Runtime Code Generation & Compilation
+export {
+  initForge,
+  createBlueprint,
+  generate as forgeGenerate,
+  build as forgeBuild,
+  getForgeState,
+  getForgeHealth,
+  getForgeResilience,
+  getForgeEngine,
+  getForgeHardening,
+  upgradeForgeEngine,
+  type ForgeLanguage,
+  type ForgeArtifactType,
+  type ForgeBlueprint,
+  type ForgeArtifact,
+  type ForgeBuild,
+  type ForgeModuleState,
+} from './forge-module';
+
+// LINGUA — Universal Translation & Cross-Modal Communication
+export {
+  initLingua,
+  translate,
+  mapSchema,
+  getLinguaState,
+  getLinguaHealth,
+  getLinguaResilience,
+  getLinguaEngine,
+  getLinguaHardening,
+  upgradeLinguaEngine,
+  type Modality,
+  type TranslationQuality,
+  type Translation,
+  type FieldMapping,
+  type LinguaModuleState,
+} from './lingua-module';
+
+// COMPASS — Spatial-Temporal Reasoning
+export {
+  initCompass,
+  optimizeRoute,
+  forecastTimeSeries,
+  getCompassState,
+  getCompassHealth,
+  getCompassResilience,
+  getCompassEngine,
+  getCompassHardening,
+  upgradeCompassEngine,
+  type GeoPoint,
+  type GeoRegion,
+  type Route,
+  type CompassModuleState,
+} from './compass-module';
+
+// ECHO — Simulation & Digital Twin Engine
+export {
+  initEcho,
+  createTwin,
+  syncTwin,
+  runScenario,
+  getEchoState,
+  getEchoHealth,
+  getEchoResilience,
+  getEchoEngine,
+  getEchoHardening,
+  upgradeEchoEngine,
+  type DigitalTwin,
+  type Intervention,
+  type EchoModuleState,
+} from './echo-module';
+
+// TREATY — Multi-Tenant Contract Negotiation & SLA Enforcement
+export {
+  initTreaty,
+  createContract,
+  activateContract,
+  evaluateSLA,
+  getTreatyState,
+  getTreatyHealth,
+  getTreatyResilience,
+  getTreatyEngine,
+  getTreatyHardening,
+  upgradeTreatyEngine,
+  type ContractStatus,
+  type SLAMetric,
+  type Contract,
+  type TreatyModuleState,
+} from './treaty-module';
+
+// HARVEST — Autonomous Data Acquisition
+export {
+  initHarvest,
+  registerSource as registerHarvestSource,
+  runJob as runHarvestJob,
+  createPipeline as createHarvestPipeline,
+  getHarvestState,
+  getHarvestHealth,
+  getHarvestResilience,
+  getHarvestEngine,
+  getHarvestHardening,
+  upgradeHarvestEngine,
+  type SourceType,
+  type FeedStatus,
+  type DataSource,
+  type HarvestModuleState,
+} from './harvest-module';
+
+// REFLEX — Real-Time Edge Computing Orchestration
+export {
+  initReflex,
+  registerNode as registerEdgeNode,
+  addRule as addReflexRule,
+  decide,
+  getReflexState,
+  getReflexHealth,
+  getReflexResilience,
+  getReflexEngine,
+  getReflexHardening,
+  upgradeReflexEngine,
+  type EdgeNodeStatus,
+  type DecisionPriority,
+  type EdgeNode,
+  type ReflexModuleState,
+} from './reflex-module';
+
+// Module Hardening Suite v2.0.0 — Ironclad Expansion
+export {
+  createModuleHardening,
+  getModuleHardening,
+  getAllHardeningReports,
+  getHardenedModules,
+  initGlobalAutoRecovery,
+  type ModuleHardening,
+  type ModuleHardeningState,
+  type DeadLetterEntry,
+  type ShadowResult,
+  type StateSnapshot as HardeningStateSnapshot,
+  type RateLimitBucket,
+  type BulkheadSlot,
+} from './module-hardening';
