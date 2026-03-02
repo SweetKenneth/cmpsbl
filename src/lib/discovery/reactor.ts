@@ -358,7 +358,7 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
             status: 'promoted',
           }));
           const { error: promoError } = await supabase
-            .from('vault_promotions')
+            .from('vault_promotions' as any)
             .upsert(promotionRows, { onConflict: 'discovery_id' });
           if (promoError) console.error('Failed to promote to vault:', promoError);
           else console.log(`Auto-promoted ${promotable.length} discoveries to vault (CJPI ≥ 90)`);
