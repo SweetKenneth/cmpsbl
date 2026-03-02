@@ -630,7 +630,6 @@ function genJava(a: ExportableArtifact, adapter: ExportAdapter): string {
     return `${h}\n${synthesizeJava(a.synthesisContext)}`;
   }
   const cls = className(a);
-  const cls = className(a);
   return `${h}
 import java.util.*;
 
@@ -705,7 +704,6 @@ function genCSharp(a: ExportableArtifact, adapter: ExportAdapter): string {
   if (a.synthesisContext && adapter === 'standalone') {
     return `${h}\n${synthesizeCSharp(a.synthesisContext)}`;
   }
-  const cls = className(a);
   const cls = className(a);
   return `${h}
 using System;
