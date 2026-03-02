@@ -15881,6 +15881,7 @@ export type Database = {
           warm_limit: number
         }[]
       }
+      get_discovery_stats: { Args: never; Returns: Json }
       get_public_live_stats: { Args: never; Returns: Json }
       governance_auto_revert: { Args: never; Returns: undefined }
       has_role:
