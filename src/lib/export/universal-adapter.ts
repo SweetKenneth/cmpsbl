@@ -2325,10 +2325,15 @@ function generateReadme(
 ): string {
   const langList = [...new Set(targets.map(t => LANG_LABELS[t.language]))].join(', ');
   const fileList = files.map(f => `- \`${f.filename}\` — ${LANG_LABELS[f.language]} (${ADAPTER_LABELS[f.adapter]})`).join('\n');
+  const slug = a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const cls = className(a);
+  const snake = snakeCase(a);
+  const hasHDL = targets.some(t => ['verilog','vhdl','systemverilog','chisel','amaranth','spice','systemc'].includes(t.language));
+  const hasSW = targets.some(t => !['verilog','vhdl','systemverilog','chisel','amaranth','spice','systemc'].includes(t.language));
 
   return `# ${a.name}
 
-> **CMPSBL® S-Tier Crown Jewel** — Rank #${a.rank} | CJPI: ${a.cjpi} | Module: ${a.module}
+> **CMPSBL® S-Tier Crown Jewel** — Rank #${a.rank} | Module: ${a.module}
 
 ${a.description}
 
@@ -2340,26 +2345,93 @@ ${fileList}
 
 ${langList}
 
-## Quick Start
+## Architecture & Runtime
+
+This bundle is **self-contained** — it includes everything needed to run standalone,
+without requiring the full CMPSBL® Substrate infrastructure.
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| \`standalone-runtime.ts\` | Micro-substrate runtime providing CJPI scoring, auto-tiering, and pipeline orchestration |
+| \`standalone-discovery-engine.ts\` | Portable discovery engine for artifact analysis outside the main substrate |
+| \`Makefile\` | Build & test commands for every included language |
+| \`LICENSE\` | CMPSBL® Proprietary License |
+| \`*_test.*\` / \`tb_*.*\` | Test harnesses / testbenches for validation |
+
+### Pipeline Dependencies
+
+All pipeline logic (state machines, FIFO buffers, transform stages) is **embedded
+directly in each exported source file** — there are no external runtime dependencies
+at the language level.
+
+The \`standalone-runtime.ts\` file provides **optional** higher-level orchestration
+if you want to:
+- Score and tier artifacts using the CJPI algorithm
+- Chain multiple Crown Jewels into a discovery pipeline
+- Use the built-in circuit breaker and error recovery strategies
+
+> **TL;DR:** Each source file compiles and runs independently. The runtime is included
+> for advanced pipeline orchestration but is not required for basic usage.
+${hasSW ? `
+## Quick Start (Software)
 
 ### TypeScript/Node
 \`\`\`typescript
-import { ${className(a)} } from './${a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}';
-const engine = new ${className(a)}();
+import { ${cls} } from './${slug}';
+const engine = new ${cls}();
 const result = await engine.execute({ key: 'value' });
 \`\`\`
 
 ### Python
 \`\`\`python
-from ${snakeCase(a)} import ${className(a)}
-engine = ${className(a)}()
+from ${snake} import ${cls}
+engine = ${cls}()
 result = engine.execute({"key": "value"})
 \`\`\`
 
-### Go
-\`\`\`go
-engine := New${className(a)}()
-result := engine.Execute(map[string]interface{}{"key": "value"})
+### Using the Standalone Runtime (Advanced)
+\`\`\`typescript
+import { createRuntime } from './standalone-runtime';
+import { createDiscoveryEngine } from './standalone-discovery-engine';
+
+const runtime = createRuntime();
+const discovery = createDiscoveryEngine(runtime);
+// Pipeline multiple Crown Jewels together
+const pipeline = discovery.createPipeline([${cls}]);
+const result = await pipeline.run({ input: data });
+\`\`\`
+` : ''}${hasHDL ? `
+## Quick Start (Hardware)
+
+### Verilog Simulation
+\`\`\`bash
+make verilog-sim   # Compiles with Icarus Verilog and runs testbench
+\`\`\`
+
+### FPGA Synthesis
+\`\`\`bash
+# The .v / .sv files are synthesis-ready for Vivado, Quartus, or Yosys
+# All pipeline stages, FIFOs, and state machines are self-contained
+# No external IP cores or libraries required
+\`\`\`
+
+### SystemC
+\`\`\`bash
+make systemc-run   # Compiles and runs the included testbench
+\`\`\`
+` : ''}
+## Build & Test
+
+Use the included \`Makefile\` for all build and test commands:
+
+\`\`\`bash
+make ts-test       # Run TypeScript tests (Vitest)
+make py-test       # Run Python tests (pytest)
+make go-test       # Run Go tests
+make verilog-sim   # Run Verilog simulation
+make systemc-run   # Run SystemC testbench
 \`\`\`
 
 ## License
