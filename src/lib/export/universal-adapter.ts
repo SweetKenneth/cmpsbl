@@ -155,12 +155,22 @@ export function generateExportBundle(
     const hasTS = targets.some(t => t.language === 'typescript');
     const hasPy = targets.some(t => t.language === 'python');
     const hasGo = targets.some(t => t.language === 'go');
+    const hasRust = targets.some(t => t.language === 'rust');
     const hasVerilog = targets.some(t => t.language === 'verilog');
+    const hasSystemC = targets.some(t => t.language === 'systemc');
 
     if (hasTS) files.push({ filename: `${slug}.test.ts`, content: generateTypeScriptTest(ctx), language: 'typescript', adapter: 'standalone', mimeType: 'text/typescript' });
     if (hasPy) files.push({ filename: `test_${slug.replace(/-/g, '_')}.py`, content: generatePythonTest(ctx), language: 'python', adapter: 'standalone', mimeType: 'text/x-python' });
     if (hasGo) files.push({ filename: `${slug.replace(/-/g, '_')}_test.go`, content: generateGoTest(ctx), language: 'go', adapter: 'standalone', mimeType: 'text/x-go' });
+    if (hasRust) files.push({ filename: `${slug.replace(/-/g, '_')}_test.rs`, content: generateRustTest(ctx), language: 'rust', adapter: 'standalone', mimeType: 'text/x-rust' });
     if (hasVerilog) files.push({ filename: `tb_${slug.replace(/-/g, '_')}.v`, content: generateVerilogTestbench(ctx), language: 'verilog', adapter: 'standalone', mimeType: 'text/x-verilog' });
+    if (hasSystemC) files.push({ filename: `tb_${slug.replace(/-/g, '_')}.cpp`, content: generateSystemCTest(ctx), language: 'systemc', adapter: 'standalone', mimeType: 'text/x-c++' });
+
+    // Add project scaffolding (LICENSE, Makefile, package.json)
+    const scaffolding = generateExportScaffolding(ctx);
+    for (const sf of scaffolding) {
+      files.push({ filename: sf.filename, content: sf.content, language: 'typescript', adapter: 'standalone', mimeType: 'text/plain' });
+    }
   }
 
   // Always include a README
