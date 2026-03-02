@@ -46,6 +46,29 @@ export {
   INFRASTRUCTURE_MODULES,
 } from './high-value-v9';
 
+// Expansion layer capabilities (v10.0.0 — 275 capabilities, 11 modules × 25)
+export {
+  ALL_EXPANSION_CAPABILITIES,
+  EXPANSION_CAPABILITY_COUNT,
+  EXPANSION_MODULES,
+  TOTAL_CAPABILITIES_V1000,
+  SOVEREIGN_HV_CAPABILITIES,
+  ORACLE_HV_CAPABILITIES,
+  CONSCIENCE_HV_CAPABILITIES,
+  PHANTOM_HV_CAPABILITIES,
+  FORGE_HV_CAPABILITIES,
+  LINGUA_HV_CAPABILITIES,
+  COMPASS_HV_CAPABILITIES,
+  ECHO_HV_CAPABILITIES,
+  TREATY_HV_CAPABILITIES,
+  HARVEST_HV_CAPABILITIES,
+  REFLEX_HV_CAPABILITIES,
+  getExpansionCapabilitiesByModule,
+  getExpansionCapabilityById,
+  getExpansionCapabilitiesByCategory,
+  getExpansionModuleStats,
+} from './high-value-v10';
+
 // Re-export key functions for convenience
 export { invokeCapability, canInvoke, invokeBatch } from './adapter';
 export { registerCapability, getCapability, listCapabilities, getManifest } from './registry';
