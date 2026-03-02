@@ -82,3 +82,6 @@ export {
 
 // DEFENSE Hardening v2.0.0 — 25 enterprise upgrades
 export * from './defense-hardening';
+
+// DEFENSE Hardening v3.0.0 "Citadel" — 30 breach-prevention upgrades
+export * from './defense-hardening-v3';
