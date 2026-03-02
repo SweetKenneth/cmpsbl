@@ -7,7 +7,6 @@
  */
 
 import { emit } from '../events';
-import { memoryCore } from '../memory-core';
 import { getEncodeState } from './index';
 import { distillFromCLMReport } from '@/immune/knowledge-distillery';
 
@@ -287,7 +286,7 @@ export async function runEncodeCLMCycle(): Promise<CLMReport> {
     codebaseInsights,
   };
 
-  await memoryCore.remember(JSON.stringify(report), 'insight', 0.8, { source: 'clm-encode-internal' });
+  // CLM reports emit events only — no longer floods BRAIN memory tiers
 
   // ── Knowledge Distillery: push learnings to executor swarm ──
   try {

@@ -4,7 +4,6 @@
  */
 
 import { emit } from '../events';
-import { memoryCore } from '../memory-core';
 import { getMemoryModuleState, getMemoryResilience, detectStaleEmbeddings, getRelevanceStats } from './index';
 import type { CLMReport } from '../encode-module/clm';
 
@@ -39,7 +38,6 @@ export async function runMemoryCLMCycle(): Promise<CLMReport> {
   if (resilience.circuit.state === 'half_open') risks.push('Circuit half-open — recovery probe active');
 
   const report: CLMReport = { module: 'memory', cycleId, learnings, proposedUpgrades, risks, confidence: state.initialized ? 0.85 : 0.3, timestamp: new Date().toISOString() };
-  await memoryCore.remember(JSON.stringify(report), 'insight', 0.7, { source: 'clm-memory' });
   emit({ module: 'memory', event_type: 'clm_cycle', outcome: 'succeeded', data: { cycleId, grade: resilience.grade, staleness: staleness.stalePercentage } });
   return report;
 }

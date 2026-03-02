@@ -21,13 +21,13 @@ export interface DecayConfig {
 }
 
 export const DEFAULT_DECAY_CONFIG: DecayConfig = {
-  hot_max_age_hours: 48,
-  warm_max_age_days: 14,
-  cold_max_age_days: 90,
-  hot_max_entries: 500,
-  warm_max_entries: 2000,
-  min_access_count_to_protect: 10,
-  decay_rate: 0.05,
+  hot_max_age_hours: 24,          // Tightened from 48
+  warm_max_age_days: 7,           // Tightened from 14
+  cold_max_age_days: 30,          // Tightened from 90
+  hot_max_entries: 200,           // Tightened from 500
+  warm_max_entries: 1000,         // Tightened from 2000
+  min_access_count_to_protect: 5, // Tightened from 10
+  decay_rate: 0.15,               // Aggressive from 0.05
 };
 
 export interface GCResult {

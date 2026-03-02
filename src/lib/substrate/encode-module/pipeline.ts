@@ -60,7 +60,7 @@ export async function recallForEncode(keys: string[], query?: string): Promise<B
 }
 
 /**
- * Write back learnings and receipts to BRAIN from ENCODE
+ * Write back learnings and receipts from ENCODE — event-only, no BRAIN tier write
  */
 export async function writebackFromEncode(data: {
   taskId: string;
@@ -69,22 +69,9 @@ export async function writebackFromEncode(data: {
   tags: string[];
 }): Promise<string> {
   const receiptId = `enc-receipt-${Date.now()}`;
-  
-  await memoryCore.remember(
-    JSON.stringify({
-      type: 'encode_receipt',
-      taskId: data.taskId,
-      summary: data.summary,
-      artifactCount: data.artifacts.length,
-      tags: data.tags,
-      timestamp: new Date().toISOString(),
-    }),
-    'insight',
-    0.7,
-    { source: 'encode', receiptId }
-  );
 
-  emit({ module: 'encode', event_type: 'brain_writeback', outcome: 'succeeded', data: { receiptId, taskId: data.taskId } });
+  // Emit event only — no longer writes to brain_memory_hot
+  emit({ module: 'encode', event_type: 'brain_writeback', outcome: 'succeeded', data: { receiptId, taskId: data.taskId, summary: data.summary, artifactCount: data.artifacts.length } });
   
   return receiptId;
 }

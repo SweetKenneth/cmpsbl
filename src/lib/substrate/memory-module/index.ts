@@ -88,11 +88,11 @@ export interface MemoryTieringConfig {
 }
 
 const DEFAULT_TIERING_CONFIG: MemoryTieringConfig = {
-  hotPromotionThreshold: 0.8,
-  warmDemotionThreshold: 0.3,
-  coldArchiveThreshold: 0.1,
+  hotPromotionThreshold: 0.9,       // Tightened from 0.8
+  warmDemotionThreshold: 0.25,      // Tightened from 0.3
+  coldArchiveThreshold: 0.08,       // Tightened from 0.1
   autoTieringEnabled: true,
-  tieringIntervalMs: 3_600_000, // 1 hour
+  tieringIntervalMs: 900_000,       // 15 min (was 1 hour)
   workloadAware: true,
 };
 
@@ -120,8 +120,8 @@ export interface MemoryModuleState {
 
 const vectors = new Map<string, VectorEntry>();
 let feedbackLog: RelevanceFeedback[] = [];
-const MAX_VECTORS = 10_000;
-const MAX_FEEDBACK_LOG = 1000;
+const MAX_VECTORS = 2_000;        // Tightened from 10_000
+const MAX_FEEDBACK_LOG = 500;     // Tightened from 1000
 
 const state: MemoryModuleState = {
   initialized: false,

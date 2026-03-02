@@ -315,8 +315,8 @@ class MemoryCoreClient {
           .from('brain_memory_hot')
           .select('id', { count: 'exact', head: true });
 
-        const HOT_CAPACITY = 500;
-        if ((count ?? 0) >= HOT_CAPACITY * 0.9) {
+        const HOT_CAPACITY = 200;
+        if ((count ?? 0) >= HOT_CAPACITY * 0.8) {
           // Hot tier at/near capacity — downgrade to warm
           tier = 'warm';
           console.warn(`[MemoryCore] Hot tier at ${count}/${HOT_CAPACITY} — routing to warm`);
@@ -708,14 +708,14 @@ class MemoryCoreClient {
 
       return {
         short_term: {
-          capacity: 100,
+          capacity: 50,
           current: 0, // Session-based, not persisted
-          ttl_seconds: 3600,
+          ttl_seconds: 1800,
         },
         long_term: {
-          hot: { capacity: 500, current: hotCount.count || 0 },
-          warm: { capacity: 2000, current: warmCount.count || 0 },
-          cold: { capacity: 10000, current: coldCount.count || 0 },
+          hot: { capacity: 200, current: hotCount.count || 0 },
+          warm: { capacity: 1000, current: warmCount.count || 0 },
+          cold: { capacity: 5000, current: coldCount.count || 0 },
         },
         latent: {
           pending_reflection: 0,
@@ -724,11 +724,11 @@ class MemoryCoreClient {
       };
     } catch {
       return {
-        short_term: { capacity: 100, current: 0, ttl_seconds: 3600 },
+        short_term: { capacity: 50, current: 0, ttl_seconds: 1800 },
         long_term: {
-          hot: { capacity: 500, current: 0 },
-          warm: { capacity: 2000, current: 0 },
-          cold: { capacity: 10000, current: 0 },
+          hot: { capacity: 200, current: 0 },
+          warm: { capacity: 1000, current: 0 },
+          cold: { capacity: 5000, current: 0 },
         },
         latent: { pending_reflection: 0, pending_consolidation: 0 },
       };
@@ -877,9 +877,9 @@ class MemoryCoreClient {
   }
 
   private determineTier(importance: number): MemoryTier {
-    // Tighter hot threshold — only truly critical memories go to hot
-    if (importance > 0.72) return 'hot';    // ← was 0.6; prevents CLM flood
-    if (importance > 0.35) return 'warm';
+    // Very tight hot threshold — only critical memories go to hot
+    if (importance > 0.85) return 'hot';    // ← tightened from 0.72
+    if (importance > 0.40) return 'warm';   // ← tightened from 0.35
     return 'cold';
   }
 
