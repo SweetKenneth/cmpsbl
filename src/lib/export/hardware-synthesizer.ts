@@ -399,7 +399,7 @@ export function amaranthPipelineTransform(modules: string[], ctx: SynthesisConte
                             m.d.sync += ${next}.eq(0)
                         m.d.sync += stage.eq(stage + 1)`;
       case 'ORACLE':
-        return `                    # Stage ${i}: ${mod} — Prediction unit
+        return `                    # Stage ${i}: ${m} — Prediction unit
                     with m.If(stage == ${i}):
                         m.d.sync += [${next}.eq(${prev} + (${prev} >> 2) + 1), stage.eq(stage + 1)]`;
       default:
