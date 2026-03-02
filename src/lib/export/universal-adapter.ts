@@ -50,6 +50,8 @@ export interface ExportableArtifact {
   module: string;
   description: string;
   sourceCode: string;
+  /** Optional synthesis context for generating full implementations */
+  synthesisContext?: SynthesisContext;
 }
 
 export interface ExportedFile {
