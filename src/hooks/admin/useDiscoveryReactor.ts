@@ -50,7 +50,11 @@ export function useDiscoveryReactor() {
       setLatestResult(result);
 
       if (result.status === 'completed') {
-        toast.success(`Discovery complete: ${result.acceptedCount} pipelines found (top: ${result.topFind?.name} @ ${result.topFind?.cjpi} CJPI)`);
+        if (result.acceptedCount === 0) {
+          toast.info('All known pipelines already discovered and promoted. Add new synthesis templates for fresh discoveries.');
+        } else {
+          toast.success(`Discovery complete: ${result.acceptedCount} new pipelines found (top: ${result.topFind?.name} @ ${result.topFind?.cjpi} CJPI)`);
+        }
       } else {
         toast.error(`Discovery failed: ${result.error}`);
       }
