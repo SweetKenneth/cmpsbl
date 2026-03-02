@@ -22,7 +22,7 @@ import {
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
 } from "@/lib/export/universal-adapter";
-import { contextFromDiscovery } from "@/lib/export/logic-synthesizer";
+import { contextFromDiscovery, type SynthesisContext } from "@/lib/export/logic-synthesizer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -521,7 +521,7 @@ export default function STierVault() {
   const [search, setSearch] = useState("");
   const [moduleFilter, setModuleFilter] = useState<string | null>(null);
   const [viewingCode, setViewingCode] = useState<{ entry: STierEntry; code: string } | null>(null);
-  const [exportingEntry, setExportingEntry] = useState<{ id: string; name: string; rank: number; cjpi: number; module: string; description: string; code: string } | null>(null);
+  const [exportingEntry, setExportingEntry] = useState<{ id: string; name: string; rank: number; cjpi: number; module: string; description: string; code: string; synthesisContext?: SynthesisContext } | null>(null);
   const [loadingCode, setLoadingCode] = useState(false);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [showAnalytics, setShowAnalytics] = useState(true);
