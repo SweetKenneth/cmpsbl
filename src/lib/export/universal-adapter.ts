@@ -350,6 +350,9 @@ main();
 
 function genPython(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Python', '#');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizePython(a.synthesisContext)}`;
+  }
   const cls = className(a);
   const snake = snakeCase(a);
   let code = `${h}
