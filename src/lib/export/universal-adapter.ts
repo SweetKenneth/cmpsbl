@@ -13,8 +13,20 @@
 export type ExportLanguage =
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
   | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
-  | 'elixir' | 'lua'
-  | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel';
+  | 'elixir' | 'lua' | 'c' | 'cpp' | 'dart' | 'zig'
+  | 'scala' | 'haskell'
+  | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel'
+  | 'amaranth' | 'spice';
+
+export const SOFTWARE_LANGUAGES: ExportLanguage[] = [
+  'typescript', 'python', 'go', 'rust', 'java', 'csharp',
+  'ruby', 'php', 'swift', 'kotlin', 'elixir', 'lua',
+  'c', 'cpp', 'dart', 'zig', 'scala', 'haskell',
+];
+
+export const HARDWARE_LANGUAGES: ExportLanguage[] = [
+  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth', 'spice',
+];
 
 export type ExportAdapter =
   | 'standalone' | 'rest-api' | 'grpc-stub' | 'cli'
@@ -53,15 +65,20 @@ export interface ExportBundle {
 const LANG_EXT: Record<ExportLanguage, string> = {
   typescript: 'ts', python: 'py', go: 'go', rust: 'rs', java: 'java',
   csharp: 'cs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt',
-  elixir: 'ex', lua: 'lua',
+  elixir: 'ex', lua: 'lua', c: 'c', cpp: 'cpp', dart: 'dart', zig: 'zig',
+  scala: 'scala', haskell: 'hs',
   verilog: 'v', vhdl: 'vhd', systemverilog: 'sv', chisel: 'scala',
+  amaranth: 'py', spice: 'sp',
 };
 
 const LANG_LABELS: Record<ExportLanguage, string> = {
   typescript: 'TypeScript', python: 'Python', go: 'Go', rust: 'Rust',
   java: 'Java', csharp: 'C#', ruby: 'Ruby', php: 'PHP',
   swift: 'Swift', kotlin: 'Kotlin', elixir: 'Elixir', lua: 'Lua',
+  c: 'C', cpp: 'C++', dart: 'Dart', zig: 'Zig',
+  scala: 'Scala', haskell: 'Haskell',
   verilog: 'Verilog', vhdl: 'VHDL', systemverilog: 'SystemVerilog', chisel: 'Chisel (Scala)',
+  amaranth: 'Amaranth (Python HDL)', spice: 'SPICE Netlist',
 };
 
 const ADAPTER_LABELS: Record<ExportAdapter, string> = {
@@ -146,8 +163,10 @@ function getMimeType(lang: ExportLanguage): string {
     rust: 'text/x-rust', java: 'text/x-java', csharp: 'text/x-csharp',
     ruby: 'text/x-ruby', php: 'text/x-php', swift: 'text/x-swift',
     kotlin: 'text/x-kotlin', elixir: 'text/x-elixir', lua: 'text/x-lua',
+    c: 'text/x-c', cpp: 'text/x-c++', dart: 'text/x-dart', zig: 'text/x-zig',
+    scala: 'text/x-scala', haskell: 'text/x-haskell',
     verilog: 'text/x-verilog', vhdl: 'text/x-vhdl', systemverilog: 'text/x-systemverilog',
-    chisel: 'text/x-scala',
+    chisel: 'text/x-scala', amaranth: 'text/x-python', spice: 'text/plain',
   };
   return map[lang] ?? 'text/plain';
 }
@@ -176,10 +195,18 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   kotlin: genKotlin,
   elixir: genElixir,
   lua: genLua,
+  c: genC,
+  cpp: genCpp,
+  dart: genDart,
+  zig: genZig,
+  scala: genScala,
+  haskell: genHaskell,
   verilog: genVerilog,
   vhdl: genVHDL,
   systemverilog: genSystemVerilog,
   chisel: genChisel,
+  amaranth: genAmaranth,
+  spice: genSPICE,
 };
 
 function header(a: ExportableArtifact, lang: string, comment: string): string {
@@ -1495,7 +1522,511 @@ object ${cls}Driver extends App {
 }
 `;
 }
+// ─── C ─────────────────────────────────────────────────────────────
 
+function genC(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'C', '//');
+  const snake = snakeCase(a);
+  return `${h}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+typedef struct {
+    int max_retries;
+    int timeout_ms;
+} ${snake}_config_t;
+
+typedef struct {
+    int success;
+    void *data;
+    char error[256];
+    double latency_ms;
+    double confidence;
+} ${snake}_result_t;
+
+typedef struct {
+    ${snake}_config_t config;
+} ${snake}_t;
+
+${snake}_t *${snake}_new(${snake}_config_t *config) {
+    ${snake}_t *engine = (${snake}_t *)calloc(1, sizeof(${snake}_t));
+    if (config) {
+        engine->config = *config;
+    } else {
+        engine->config.max_retries = 3;
+        engine->config.timeout_ms = 30000;
+    }
+    return engine;
+}
+
+${snake}_result_t ${snake}_execute(${snake}_t *engine, const char *input_json) {
+    ${snake}_result_t result = {0};
+    clock_t start = clock();
+
+    /* TODO: Implement ${a.name} core logic */
+    result.success = 1;
+    result.confidence = 1.0;
+    result.latency_ms = ((double)(clock() - start) / CLOCKS_PER_SEC) * 1000.0;
+    return result;
+}
+
+void ${snake}_free(${snake}_t *engine) {
+    if (engine) free(engine);
+}
+
+void ${snake}_info(void) {
+    printf("Name: ${a.name}\\nRank: %d\\nCJPI: %d\\nModule: ${a.module}\\n", ${a.rank}, ${a.cjpi});
+}
+`;
+}
+
+// ─── C++ ───────────────────────────────────────────────────────────
+
+function genCpp(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'C++', '//');
+  const cls = className(a);
+  return `${h}
+#include <string>
+#include <unordered_map>
+#include <chrono>
+#include <optional>
+#include <variant>
+
+namespace cmpsbl {
+
+struct ${cls}Config {
+    int maxRetries = 3;
+    int timeoutMs = 30000;
+};
+
+struct ${cls}Result {
+    bool success = false;
+    std::unordered_map<std::string, std::string> data;
+    std::optional<std::string> error;
+    double latencyMs = 0.0;
+    double confidence = 0.0;
+};
+
+class ${cls} {
+public:
+    explicit ${cls}(${cls}Config config = {}) : config_(std::move(config)) {}
+
+    ${cls}Result execute(const std::unordered_map<std::string, std::string>& input) {
+        auto start = std::chrono::high_resolution_clock::now();
+        try {
+            auto data = process(input);
+            auto elapsed = std::chrono::duration<double, std::milli>(
+                std::chrono::high_resolution_clock::now() - start).count();
+            return {true, data, std::nullopt, elapsed, 1.0};
+        } catch (const std::exception& e) {
+            auto elapsed = std::chrono::duration<double, std::milli>(
+                std::chrono::high_resolution_clock::now() - start).count();
+            return {false, {}, e.what(), elapsed, 0.0};
+        }
+    }
+
+    static auto info() {
+        return std::unordered_map<std::string, std::string>{
+            {"name", "${a.name}"}, {"rank", "${a.rank}"},
+            {"cjpi", "${a.cjpi}"}, {"module", "${a.module}"}
+        };
+    }
+
+private:
+    ${cls}Config config_;
+
+    std::unordered_map<std::string, std::string> process(
+        const std::unordered_map<std::string, std::string>& input) {
+        // TODO: Implement ${a.name} core logic
+        return {{"processed", "true"}};
+    }
+};
+
+} // namespace cmpsbl
+`;
+}
+
+// ─── Dart ──────────────────────────────────────────────────────────
+
+function genDart(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'Dart', '//');
+  const cls = className(a);
+  return `${h}
+class ${cls}Config {
+  final int maxRetries;
+  final int timeoutMs;
+  const ${cls}Config({this.maxRetries = 3, this.timeoutMs = 30000});
+}
+
+class ${cls}Result {
+  final bool success;
+  final dynamic data;
+  final String? error;
+  final double latencyMs;
+  final double confidence;
+  const ${cls}Result({
+    required this.success, this.data, this.error,
+    required this.latencyMs, required this.confidence,
+  });
+  Map<String, dynamic> toJson() => {
+    'success': success, 'data': data, 'error': error,
+    'latency_ms': latencyMs, 'confidence': confidence,
+  };
+}
+
+class ${cls} {
+  final ${cls}Config config;
+  ${cls}({this.config = const ${cls}Config()});
+
+  Future<${cls}Result> execute(Map<String, dynamic> input) async {
+    final sw = Stopwatch()..start();
+    try {
+      final data = await _process(input);
+      sw.stop();
+      return ${cls}Result(
+        success: true, data: data,
+        latencyMs: sw.elapsedMicroseconds / 1000.0, confidence: 1.0,
+      );
+    } catch (e) {
+      sw.stop();
+      return ${cls}Result(
+        success: false, error: e.toString(),
+        latencyMs: sw.elapsedMicroseconds / 1000.0, confidence: 0.0,
+      );
+    }
+  }
+
+  Future<Map<String, dynamic>> _process(Map<String, dynamic> input) async {
+    // TODO: Implement ${a.name} core logic
+    return {'processed': true, 'input': input};
+  }
+
+  Map<String, dynamic> get info => {
+    'name': '${a.name}', 'rank': ${a.rank}, 'cjpi': ${a.cjpi}, 'module': '${a.module}',
+  };
+}
+`;
+}
+
+// ─── Zig ───────────────────────────────────────────────────────────
+
+function genZig(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'Zig', '//');
+  const snake = snakeCase(a);
+  return `${h}
+const std = @import("std");
+
+pub const Config = struct {
+    max_retries: u32 = 3,
+    timeout_ms: u64 = 30000,
+};
+
+pub const Result = struct {
+    success: bool,
+    error_msg: ?[]const u8 = null,
+    latency_ns: u64 = 0,
+    confidence: f64 = 0.0,
+};
+
+pub const ${className(a)} = struct {
+    config: Config,
+
+    pub fn init(config: Config) @This() {
+        return .{ .config = config };
+    }
+
+    pub fn initDefault() @This() {
+        return .{ .config = .{} };
+    }
+
+    pub fn execute(self: *@This(), allocator: std.mem.Allocator) !Result {
+        const timer = std.time.Timer.start() catch return Result{ .success = false, .error_msg = "timer failed" };
+        _ = allocator;
+        _ = self;
+
+        // TODO: Implement ${a.name} core logic
+        const elapsed = timer.read();
+        return Result{
+            .success = true,
+            .latency_ns = elapsed,
+            .confidence = 1.0,
+        };
+    }
+
+    pub fn info() void {
+        std.debug.print("Name: ${a.name} | Rank: ${a.rank} | CJPI: ${a.cjpi} | Module: ${a.module}\\n", .{});
+    }
+};
+`;
+}
+
+// ─── Scala ─────────────────────────────────────────────────────────
+
+function genScala(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'Scala', '//');
+  const cls = className(a);
+  return `${h}
+package cmpsbl.crownjewels
+
+case class ${cls}Config(maxRetries: Int = 3, timeoutMs: Int = 30000)
+
+case class ${cls}Result(
+  success: Boolean,
+  data: Option[Map[String, Any]] = None,
+  error: Option[String] = None,
+  latencyMs: Double = 0.0,
+  confidence: Double = 0.0
+)
+
+class ${cls}(config: ${cls}Config = ${cls}Config()) {
+
+  def execute(input: Map[String, Any] = Map.empty): ${cls}Result = {
+    val start = System.nanoTime()
+    try {
+      val data = process(input)
+      val elapsed = (System.nanoTime() - start) / 1e6
+      ${cls}Result(success = true, data = Some(data), latencyMs = elapsed, confidence = 1.0)
+    } catch {
+      case e: Exception =>
+        val elapsed = (System.nanoTime() - start) / 1e6
+        ${cls}Result(success = false, error = Some(e.getMessage), latencyMs = elapsed)
+    }
+  }
+
+  private def process(input: Map[String, Any]): Map[String, Any] = {
+    // TODO: Implement ${a.name} core logic
+    Map("processed" -> true, "input" -> input)
+  }
+
+  def info: Map[String, Any] = Map(
+    "name" -> "${a.name}", "rank" -> ${a.rank}, "cjpi" -> ${a.cjpi}, "module" -> "${a.module}"
+  )
+}
+
+object ${cls} {
+  def apply(): ${cls} = new ${cls}()
+}
+`;
+}
+
+// ─── Haskell ───────────────────────────────────────────────────────
+
+function genHaskell(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'Haskell', '--');
+  const mod = className(a);
+  return `${h}
+module CMPSBL.${mod}
+  ( Config(..)
+  , Result(..)
+  , defaultConfig
+  , execute
+  , info
+  ) where
+
+import Data.Map.Strict (Map)
+import qualified Data.Map.Strict as Map
+import System.Clock (getTime, Clock(Monotonic), toNanoSecs)
+
+data Config = Config
+  { maxRetries :: Int
+  , timeoutMs  :: Int
+  } deriving (Show)
+
+data Result = Result
+  { success    :: Bool
+  , resultData :: Maybe (Map String String)
+  , errorMsg   :: Maybe String
+  , latencyMs  :: Double
+  , confidence :: Double
+  } deriving (Show)
+
+defaultConfig :: Config
+defaultConfig = Config { maxRetries = 3, timeoutMs = 30000 }
+
+execute :: Config -> Map String String -> IO Result
+execute _config input = do
+  start <- getTime Monotonic
+  -- TODO: Implement ${a.name} core logic
+  let output = process input
+  end <- getTime Monotonic
+  let elapsed = fromIntegral (toNanoSecs end - toNanoSecs start) / 1e6
+  return Result
+    { success = True
+    , resultData = Just output
+    , errorMsg = Nothing
+    , latencyMs = elapsed
+    , confidence = 1.0
+    }
+
+process :: Map String String -> Map String String
+process input = Map.insert "processed" "true" input
+
+info :: Map String String
+info = Map.fromList
+  [ ("name", "${a.name}")
+  , ("rank", "${a.rank}")
+  , ("cjpi", "${a.cjpi}")
+  , ("module", "${a.module}")
+  ]
+`;
+}
+
+// ─── Amaranth (Python HDL) ─────────────────────────────────────────
+
+function genAmaranth(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'Amaranth (Python HDL)', '#');
+  const cls = className(a);
+  const snake = snakeCase(a);
+  return `${h}
+from amaranth import *
+from amaranth.lib.fifo import SyncFIFO
+
+class ${cls}(Elaboratable):
+    """
+    ${a.description}
+    Rank: #${a.rank} | CJPI: ${a.cjpi} | Module: ${a.module}
+    Amaranth HDL — generates synthesizable Verilog/RTLIL
+    """
+
+    def __init__(self, data_width=32, pipeline_stages=4, fifo_depth=16):
+        self.data_width = data_width
+        self.pipeline_stages = pipeline_stages
+        self.fifo_depth = fifo_depth
+
+        # Ports
+        self.start = Signal()
+        self.done = Signal()
+        self.busy = Signal()
+        self.error = Signal()
+        self.data_in = Signal(data_width)
+        self.data_valid = Signal()
+        self.data_out = Signal(data_width)
+        self.data_ready = Signal()
+        self.confidence = Signal(8)
+        self.latency_cycles = Signal(32)
+
+    def elaborate(self, platform):
+        m = Module()
+
+        # FIFO
+        m.submodules.fifo = fifo = SyncFIFO(width=self.data_width, depth=self.fifo_depth)
+
+        # Pipeline registers
+        pipeline = [Signal(self.data_width, name=f"pipe_{i}") for i in range(self.pipeline_stages)]
+        cycle_counter = Signal(32)
+        stage = Signal(range(self.pipeline_stages))
+
+        # FSM
+        with m.FSM() as fsm:
+            with m.State("IDLE"):
+                m.d.comb += [self.done.eq(0), self.busy.eq(0), self.error.eq(0)]
+                m.d.sync += cycle_counter.eq(0)
+                with m.If(self.start):
+                    m.next = "LOAD"
+
+            with m.State("LOAD"):
+                m.d.comb += self.busy.eq(1)
+                m.d.sync += cycle_counter.eq(cycle_counter + 1)
+                m.d.comb += [fifo.w_en.eq(self.data_valid), fifo.w_data.eq(self.data_in)]
+                with m.If(~self.data_valid | ~fifo.w_rdy):
+                    m.next = "PROCESS"
+
+            with m.State("PROCESS"):
+                m.d.comb += self.busy.eq(1)
+                m.d.sync += cycle_counter.eq(cycle_counter + 1)
+                # TODO: Implement ${a.name} core transform per pipeline stage
+                with m.If(stage < self.pipeline_stages - 1):
+                    m.d.sync += [pipeline[1].eq(~pipeline[0]), stage.eq(stage + 1)]
+                with m.Else():
+                    m.next = "COMMIT"
+
+            with m.State("COMMIT"):
+                m.d.sync += [
+                    self.data_out.eq(pipeline[-1]),
+                    self.data_ready.eq(1),
+                    self.confidence.eq(0xFF),
+                    self.latency_cycles.eq(cycle_counter),
+                ]
+                m.next = "COMPLETE"
+
+            with m.State("COMPLETE"):
+                m.d.comb += self.done.eq(1)
+                m.next = "IDLE"
+
+        return m
+
+
+if __name__ == "__main__":
+    from amaranth.back.verilog import convert
+    top = ${cls}()
+    with open("${snake}.v", "w") as f:
+        f.write(convert(top, name="${snake}", ports=[
+            top.start, top.done, top.busy, top.error,
+            top.data_in, top.data_valid, top.data_out, top.data_ready,
+            top.confidence, top.latency_cycles,
+        ]))
+    print("Generated ${snake}.v")
+`;
+}
+
+// ─── SPICE Netlist ─────────────────────────────────────────────────
+
+function genSPICE(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'SPICE', '*');
+  const snake = snakeCase(a);
+  return `${h}
+* ═══════════════════════════════════════════════════════════════
+* SPICE Netlist — ${a.name}
+* Analog/mixed-signal behavioral model
+* Target: LTspice, ngspice, HSPICE
+* ═══════════════════════════════════════════════════════════════
+
+.TITLE ${a.name} — CJPI ${a.cjpi} | Rank #${a.rank} | Module: ${a.module}
+
+* ─── Parameters ────────────────────────────────────────────────
+.PARAM VDD=3.3
+.PARAM DATA_WIDTH=32
+.PARAM CLK_FREQ=100MEG
+.PARAM T_CLK={1/CLK_FREQ}
+
+* ─── Power Supply ──────────────────────────────────────────────
+V_VDD VDD 0 DC {VDD}
+V_GND VSS 0 DC 0
+
+* ─── Clock Generator ──────────────────────────────────────────
+V_CLK CLK 0 PULSE(0 {VDD} 0 100p 100p {T_CLK/2} {T_CLK})
+
+* ─── Input Stimulus ───────────────────────────────────────────
+V_START START 0 PWL(0 0 10n {VDD} 20n 0)
+V_DIN DATA_IN 0 PWL(0 0 15n {VDD/2} 25n {VDD})
+V_DVAL DATA_VALID 0 PWL(0 0 12n {VDD} 22n 0)
+
+* ─── Behavioral Processing Element ───────────────────────────
+* TODO: Implement ${a.name} analog/mixed-signal core
+B_PROC DATA_OUT 0 V = V(DATA_IN) * V(START) * 0.95
+B_CONF CONFIDENCE 0 V = {VDD} * 0.99
+B_DONE DONE 0 V = DELAY(V(START), {T_CLK * 4})
+B_BUSY BUSY 0 V = V(START) - DELAY(V(START), {T_CLK * 4})
+
+* ─── Measurement ──────────────────────────────────────────────
+.MEAS TRAN latency TRIG V(START) VAL={VDD/2} RISE=1
++                    TARG V(DONE)  VAL={VDD/2} RISE=1
+
+.MEAS TRAN confidence_val FIND V(CONFIDENCE) AT={T_CLK*6}
+
+* ─── Provenance Metadata ──────────────────────────────────────
+* CJPI:   ${a.cjpi}
+* Rank:   #${a.rank}
+* Module: ${a.module}
+* ID:     ${a.id}
+
+* ─── Simulation ───────────────────────────────────────────────
+.TRAN 100p 100n
+.END
+`;
+}
 
 
 function generateReadme(

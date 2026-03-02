@@ -524,13 +524,18 @@ export default function STierVault() {
     });
   };
 
-  const handleExportAllPromoted = async () => {
-    if (promoted.length === 0) return;
+  const buildExportZip = async (
+    discoveries: typeof promoted,
+    languages: ExportTarget[],
+    filename: string,
+    label: string
+  ) => {
+    if (discoveries.length === 0) return;
     const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
-    const root = zip.folder('promoted-discoveries-export')!;
+    const root = zip.folder(filename.replace('.zip', ''))!;
 
-    for (const d of promoted) {
+    for (const d of discoveries) {
       const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
       const artifact: ExportableArtifact = {
         id: d.discovery_id,
@@ -542,15 +547,7 @@ export default function STierVault() {
         sourceCode: '',
       };
 
-      const targets: ExportTarget[] = [
-        { language: 'typescript', adapter: 'standalone' },
-        { language: 'python', adapter: 'standalone' },
-        { language: 'go', adapter: 'standalone' },
-        { language: 'rust', adapter: 'standalone' },
-        { language: 'verilog', adapter: 'fpga-synth' },
-      ];
-
-      const bundle = generateExportBundle(artifact, targets);
+      const bundle = generateExportBundle(artifact, languages);
       const slug = d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
       const folder = root.folder(slug)!;
       folder.file('README.md', bundle.readme);
@@ -563,10 +560,46 @@ export default function STierVault() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'promoted-discoveries-full-export.zip';
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success(`Exported ${promoted.length} discoveries across 5 languages`);
+    toast.success(`Exported ${discoveries.length} discoveries — ${label}`);
+  };
+
+  const handleExportSoftware = () => {
+    const targets: ExportTarget[] = [
+      { language: 'typescript', adapter: 'standalone' },
+      { language: 'python', adapter: 'standalone' },
+      { language: 'go', adapter: 'standalone' },
+      { language: 'rust', adapter: 'standalone' },
+      { language: 'java', adapter: 'standalone' },
+      { language: 'csharp', adapter: 'standalone' },
+      { language: 'ruby', adapter: 'standalone' },
+      { language: 'php', adapter: 'standalone' },
+      { language: 'swift', adapter: 'standalone' },
+      { language: 'kotlin', adapter: 'standalone' },
+      { language: 'elixir', adapter: 'standalone' },
+      { language: 'lua', adapter: 'standalone' },
+      { language: 'c', adapter: 'standalone' },
+      { language: 'cpp', adapter: 'standalone' },
+      { language: 'dart', adapter: 'standalone' },
+      { language: 'zig', adapter: 'standalone' },
+      { language: 'scala', adapter: 'standalone' },
+      { language: 'haskell', adapter: 'standalone' },
+    ];
+    buildExportZip(promoted, targets, 'discoveries-software-export.zip', '18 software languages');
+  };
+
+  const handleExportHardware = () => {
+    const targets: ExportTarget[] = [
+      { language: 'verilog', adapter: 'fpga-synth' },
+      { language: 'vhdl', adapter: 'fpga-synth' },
+      { language: 'systemverilog', adapter: 'fpga-synth' },
+      { language: 'chisel', adapter: 'fpga-synth' },
+      { language: 'amaranth', adapter: 'fpga-synth' },
+      { language: 'spice', adapter: 'fpga-synth' },
+    ];
+    buildExportZip(promoted, targets, 'discoveries-hardware-export.zip', '6 hardware languages');
   };
 
   const handleCopyCode = () => {
@@ -598,7 +631,7 @@ export default function STierVault() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold">S-Tier Crown Jewel Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {entries.length} registry artifacts • {promoted.length} promoted discoveries • Universal export
+                {entries.length} registry artifacts • {promoted.length} promoted discoveries • 24 export languages
               </p>
             </div>
           </div>
@@ -695,13 +728,18 @@ export default function STierVault() {
             ) : (
               <>
                 {promoted.length > 0 && (
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                     <p className="text-xs text-muted-foreground">
                       {filteredPromoted.length} export-ready discoveries • Auto-promoted from reactor (CJPI ≥ 90)
                     </p>
-                    <Button size="sm" onClick={handleExportAllPromoted} className="gap-1.5">
-                      <Download className="w-3.5 h-3.5" /> Export All ({promoted.length}) as ZIP
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button size="sm" onClick={handleExportSoftware} className="gap-1.5">
+                        <Download className="w-3.5 h-3.5" /> Software ZIP ({promoted.length}) · 18 langs
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={handleExportHardware} className="gap-1.5">
+                        <Download className="w-3.5 h-3.5" /> Hardware ZIP ({promoted.length}) · 6 HDLs
+                      </Button>
+                    </div>
                   </div>
                 )}
 
