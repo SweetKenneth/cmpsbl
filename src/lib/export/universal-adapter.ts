@@ -249,8 +249,6 @@ function genTypeScript(a: ExportableArtifact, adapter: ExportAdapter): string {
   if (a.synthesisContext) {
     const synth = synthesizeTypeScript(a.synthesisContext);
     if (adapter === 'standalone') return `${h}\n${synth}`;
-    // For non-standalone adapters, generate both the full implementation + adapter wrapper
-    return `${h}\n${synth}\n\n${generateAdapterWrapper(a, adapter, 'typescript')}`;
   }
   const cls = className(a);
   const base = `
