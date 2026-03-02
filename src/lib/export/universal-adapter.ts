@@ -246,6 +246,12 @@ function genTypeScript(a: ExportableArtifact, adapter: ExportAdapter): string {
   if (adapter === 'standalone' && a.sourceCode) {
     return `${h}\n${a.sourceCode}`;
   }
+  if (a.synthesisContext) {
+    const synth = synthesizeTypeScript(a.synthesisContext);
+    if (adapter === 'standalone') return `${h}\n${synth}`;
+    // For non-standalone adapters, generate both the full implementation + adapter wrapper
+    return `${h}\n${synth}\n\n${generateAdapterWrapper(a, adapter, 'typescript')}`;
+  }
   const cls = className(a);
   const base = `
 export interface ${cls}Config {
