@@ -981,7 +981,6 @@ function generateGoErrorHandling(strategy: string): string {
 \t\t\t\tLatencyMs: float64(time.Since(start).Milliseconds()),
 \t\t\t\tConfidence: confidence * 0.5, PipelineTrace: trace,
 \t\t\t\tStagesCompleted: stagesCompleted, TotalStages: len(pipeline),
-\t\t\t\tEntryPoint: "${ctx.entryCapability}", ExitPoint: "${ctx.exitCapability}",
 \t\t\t}`;
     case 'skip':
       return `confidence -= 0.1
@@ -995,7 +994,6 @@ function generateGoErrorHandling(strategy: string): string {
 \t\t\t\tLatencyMs: float64(time.Since(start).Milliseconds()),
 \t\t\t\tConfidence: confidence * 0.5, PipelineTrace: trace,
 \t\t\t\tStagesCompleted: stagesCompleted, TotalStages: len(pipeline),
-\t\t\t\tEntryPoint: "${ctx.entryCapability}", ExitPoint: "${ctx.exitCapability}",
 \t\t\t}`;
   }
 }
