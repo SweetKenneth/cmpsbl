@@ -38,6 +38,15 @@ const CODE_FILES: Record<number, () => Promise<{ default: string }>> = {
   8: () => import("@/crownjewels/s-tier/008-self-healing-orchestrator.ts?raw"),
   9: () => import("@/crownjewels/s-tier/009-tamper-evident-chain.ts?raw"),
   10: () => import("@/crownjewels/s-tier/010-write-ahead-log-engine.ts?raw"),
+  11: () => import("@/crownjewels/s-tier/011-circuit-breaker.ts?raw"),
+  12: () => import("@/crownjewels/s-tier/012-rate-limiter.ts?raw"),
+  13: () => import("@/crownjewels/s-tier/013-state-machine.ts?raw"),
+  14: () => import("@/crownjewels/s-tier/014-event-sourcing.ts?raw"),
+  15: () => import("@/crownjewels/s-tier/015-feature-flags.ts?raw"),
+  16: () => import("@/crownjewels/s-tier/016-cache-engine.ts?raw"),
+  17: () => import("@/crownjewels/s-tier/017-pipeline-engine.ts?raw"),
+  18: () => import("@/crownjewels/s-tier/018-consensus-engine.ts?raw"),
+  19: () => import("@/crownjewels/s-tier/019-scheduler-engine.ts?raw"),
 };
 
 const MODULE_COLORS: Record<string, string> = {
@@ -95,6 +104,8 @@ type SortMode = 'cjpi' | 'market_value' | 'name' | 'category';
 const CATEGORY_MARKET_MULTIPLIERS: Record<string, number> = {
   security: 1.8, governance: 1.6, cognitive: 1.5, evolution: 1.4,
   orchestration: 1.3, routing: 1.2, learning: 1.3, observability: 1.1, integration: 1.0,
+  compliance: 1.7, prediction: 1.5, ethics: 1.4, privacy: 1.6, synthesis: 1.5,
+  localization: 1.1, geospatial: 1.3, simulation: 1.4, contracts: 1.5, acquisition: 1.2, edge: 1.3,
 };
 
 function estimateMarketValue(cjpi: number, category: string, moduleChainLength: number): number {
@@ -460,13 +471,13 @@ function ExportDialog({
           <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
             <h4 className="text-xs font-medium text-muted-foreground mb-2">Software Languages</h4>
             <div className="flex flex-wrap gap-1.5 mb-3">
-              {LANGUAGES.filter(l => !['verilog','vhdl','systemverilog','chisel'].includes(l.value)).map(l => (
+              {LANGUAGES.filter(l => !['verilog','vhdl','systemverilog','chisel','amaranth','spice'].includes(l.value)).map(l => (
                 <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer" onClick={() => setSelectedLang(l.value)}>{l.label}</Badge>
               ))}
             </div>
             <h4 className="text-xs font-medium text-muted-foreground mb-2">Hardware / HDL (FPGA &amp; ASIC)</h4>
             <div className="flex flex-wrap gap-1.5">
-              {LANGUAGES.filter(l => ['verilog','vhdl','systemverilog','chisel'].includes(l.value)).map(l => (
+              {LANGUAGES.filter(l => ['verilog','vhdl','systemverilog','chisel','amaranth','spice'].includes(l.value)).map(l => (
                 <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer border-amber-500/40 text-amber-400" onClick={() => setSelectedLang(l.value)}>⚡ {l.label}</Badge>
               ))}
             </div>
