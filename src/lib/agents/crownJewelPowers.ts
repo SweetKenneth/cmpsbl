@@ -33,6 +33,8 @@ export interface AgentWithPowers {
   powers: [CrownJewelPower, CrownJewelPower, CrownJewelPower];
   icon: LucideIcon;
   isFree: boolean;
+  isFlagship?: boolean;
+  priceCents?: number;
   gradient: string;
   glowColor: string;
 }
@@ -47,7 +49,9 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     subtitle: "PRISM · CIPHER · Memory Intelligence Fabric",
     description: "A living knowledge graph. Relationships between memories evolve, consolidate during idle cycles, and surface at sub-millisecond speed.",
     icon: Brain,
-    isFree: true,
+    isFree: false,
+    isFlagship: true,
+    priceCents: 12900,
     gradient: "from-violet-500 via-purple-500 to-fuchsia-600",
     glowColor: "rgba(139, 92, 246, 0.15)",
     powers: [
@@ -66,7 +70,9 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     subtitle: "SENTINEL · GENESIS · Immune Autonomy Mesh",
     description: "An immune system, not a firewall. Fingerprints behavior, predicts attack vectors, and auto-triages incidents without human intervention.",
     icon: Shield,
-    isFree: true,
+    isFree: false,
+    isFlagship: true,
+    priceCents: 12900,
     gradient: "from-red-500 via-rose-500 to-orange-600",
     glowColor: "rgba(239, 68, 68, 0.15)",
     powers: [
@@ -86,6 +92,8 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     description: "A fleet intelligence engine. Predicts which model produces the best answer for this exact task at this exact moment, then routes accordingly.",
     icon: Zap,
     isFree: false,
+    isFlagship: true,
+    priceCents: 12900,
     gradient: "from-emerald-500 via-teal-500 to-cyan-600",
     glowColor: "rgba(16, 185, 129, 0.15)",
     powers: [
