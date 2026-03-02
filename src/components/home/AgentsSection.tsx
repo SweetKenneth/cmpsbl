@@ -1,15 +1,25 @@
 /**
- * AgentsSection — All 20 agents with Crown Jewel powers + Universal Memory System
+ * AgentsSection — 20 Black-Boxed Agents with Sealed Runtimes
+ * Features: Auto-tiering memory, RIPPLE Orchestrator, Always-on CLM,
+ * Version Minting, DECODE Sovereign Channel, Sealed Black-Box Runtime.
  */
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Download, Zap, ChevronDown, Database, Clock, HardDrive, Archive, MessageSquare } from "lucide-react";
+import {
+  ArrowRight, Download, Zap, ChevronDown, Database, Clock,
+  HardDrive, Archive, MessageSquare, Package, Waves, RefreshCcw,
+  Hash, Lock, Shield,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { AGENTS_WITH_POWERS, MEMORY_SYSTEM_SUMMARY, FOUR_TIER_MEMORY, type AgentWithPowers } from "@/lib/agents/crownJewelPowers";
+import {
+  AGENTS_WITH_POWERS, MEMORY_SYSTEM_SUMMARY, FOUR_TIER_MEMORY,
+  STANDARD_CAPABILITIES, RIPPLE_ORCHESTRATOR, CLM_CONFIG, VERSION_MINTING,
+  type AgentWithPowers,
+} from "@/lib/agents/crownJewelPowers";
 import { AgentChat } from "@/components/agents/AgentChat";
 
 function AgentCard({ agent, index, expanded, onToggle, onChat }: {
@@ -36,7 +46,7 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
       {/* Accent bar */}
       <div className={cn("h-0.5 w-full bg-gradient-to-r", agent.gradient)} />
 
-      {/* Header — always visible, clickable */}
+      {/* Header */}
       <button
         onClick={onToggle}
         className="w-full text-left p-5 sm:p-6 flex items-center gap-4 group cursor-pointer"
@@ -51,6 +61,10 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h3 className="text-base sm:text-lg font-black text-foreground tracking-tight">{agent.name}</h3>
+            {/* Sealed Runtime badge */}
+            <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-foreground/10 text-foreground/50 border border-foreground/15">
+              <Lock className="w-2 h-2 inline mr-0.5 -mt-0.5" />SEALED
+            </span>
             {agent.isFlagship ? (
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">$129</span>
             ) : agent.isElite ? (
@@ -81,9 +95,25 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
             className="overflow-hidden"
           >
             <div className="px-5 sm:px-6 pb-6">
-              <p className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-2xl">
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-2xl">
                 {agent.description}
               </p>
+
+              {/* CLM Goals */}
+              <div className="mb-4 rounded-xl border border-border/30 bg-background/30 p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <RefreshCcw className="w-3 h-3 text-primary/70" />
+                  <span className="text-[9px] font-black tracking-widest text-primary/70">CLM DYNAMIC GOALS</span>
+                  <span className="text-[8px] font-mono text-emerald-500/80 ml-auto">● LEARNING 24/7</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {agent.clmGoals.map((goal) => (
+                    <span key={goal} className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary/8 text-muted-foreground border border-primary/10">
+                      {goal}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
               {/* Crown Jewel Powers */}
               <div className={cn("grid gap-3", agent.powers.length > 3 ? "sm:grid-cols-3 lg:grid-cols-5" : "sm:grid-cols-3")}>
@@ -109,8 +139,8 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
                 ))}
               </div>
 
-              {/* Chat with this agent */}
-              <div className="mt-4 flex items-center gap-3">
+              {/* Chat + Version Mint info */}
+              <div className="mt-4 flex items-center gap-3 flex-wrap">
                 <Button
                   variant="outline"
                   size="sm"
@@ -120,7 +150,10 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
                   <MessageSquare className="w-3.5 h-3.5" />
                   Open DECODE Channel
                 </Button>
-                <span className="text-[9px] font-mono text-muted-foreground/40">SOVEREIGN RELAY · LIVE</span>
+                <span className="text-[9px] font-mono text-muted-foreground/40">
+                  <Hash className="w-2.5 h-2.5 inline mr-0.5 -mt-0.5" />
+                  MINT ON PURCHASE · UNIQUE VERSION
+                </span>
               </div>
             </div>
           </motion.div>
@@ -155,10 +188,10 @@ export function AgentsSection() {
         >
           <Badge variant="outline" className="mb-4 border-primary/30 px-4 py-1.5">
             <Zap className="w-3 h-3 mr-1.5 text-primary" />
-            <span className="text-xs font-semibold">20 Crown Jewel–Powered Agents</span>
+            <span className="text-xs font-semibold">20 Sealed Black-Box Agents</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
-            Twenty Agents.{" "}
+            Black-Boxed.{" "}
             <span
               style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
@@ -166,20 +199,73 @@ export function AgentsSection() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Persistent Memory.
+              Always Learning.
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Every agent ships with a 4-tier portable memory system and is backed by sealed runtime engines from the Crown Jewel vault — capabilities no other platform can replicate.
+            Every agent is a sealed runtime with auto-tiering memory, an internal RIPPLE orchestrator, and always-on CLM that trains 24/7 — even offline. Purchase one and you mint a unique version of everything it has learned.
           </p>
         </motion.div>
 
-        {/* ═══ UNIVERSAL MEMORY SYSTEM BANNER ═══ */}
+        {/* ═══ STANDARD CAPABILITIES — WHAT EVERY AGENT SHIPS WITH ═══ */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-8 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card/80 to-primary/5 backdrop-blur-sm overflow-hidden"
+          className="mb-6 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card/80 to-primary/5 backdrop-blur-sm overflow-hidden"
+        >
+          <div className="p-6 sm:p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-sm sm:text-base font-black text-foreground tracking-tight">
+                  Every Agent Ships With
+                </h3>
+                <p className="text-[10px] sm:text-xs text-primary/80 font-semibold">
+                  Sealed runtime · Zero maintenance · Always learning
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+              {STANDARD_CAPABILITIES.map((cap) => (
+                <div
+                  key={cap.name}
+                  className="rounded-xl border border-border/30 bg-background/30 p-3 flex items-start gap-3"
+                >
+                  <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <cap.icon className="w-3.5 h-3.5 text-primary/70" />
+                  </div>
+                  <div>
+                    <h4 className="text-[11px] font-bold text-foreground mb-0.5">{cap.name}</h4>
+                    <p className="text-[10px] text-muted-foreground/70 leading-relaxed">{cap.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Feature tags */}
+            <div className="flex flex-wrap gap-2">
+              {MEMORY_SYSTEM_SUMMARY.features.map((feat) => (
+                <span
+                  key={feat}
+                  className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary/80 border border-primary/15"
+                >
+                  {feat}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══ 4-TIER MEMORY ═══ */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-8 rounded-2xl border border-border/20 bg-card/40 backdrop-blur-sm overflow-hidden"
         >
           <div className="p-6 sm:p-8">
             <div className="flex items-center gap-3 mb-3">
@@ -190,18 +276,13 @@ export function AgentsSection() {
                 <h3 className="text-sm sm:text-base font-black text-foreground tracking-tight">
                   {MEMORY_SYSTEM_SUMMARY.name}
                 </h3>
-                <p className="text-[10px] sm:text-xs text-primary/80 font-semibold">
-                  Included with every agent — zero dependencies, any stack
+                <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold">
+                  {MEMORY_SYSTEM_SUMMARY.tagline}
                 </p>
               </div>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-3xl">
-              {MEMORY_SYSTEM_SUMMARY.tagline} {MEMORY_SYSTEM_SUMMARY.description}
-            </p>
-
-            {/* 4 Tiers */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {FOUR_TIER_MEMORY.map((tier, i) => {
                 const tierIcons = [Clock, Database, HardDrive, Archive];
                 const TierIcon = tierIcons[i];
@@ -212,13 +293,7 @@ export function AgentsSection() {
                   "from-slate-500/20 to-zinc-500/20 border-slate-500/30",
                 ];
                 return (
-                  <div
-                    key={tier.name}
-                    className={cn(
-                      "rounded-xl border p-4 bg-gradient-to-br",
-                      tierColors[i]
-                    )}
-                  >
+                  <div key={tier.name} className={cn("rounded-xl border p-4 bg-gradient-to-br", tierColors[i])}>
                     <div className="flex items-center gap-2 mb-2">
                       <TierIcon className="w-4 h-4 text-foreground/70" />
                       <span className="text-[10px] font-black tracking-widest text-foreground/80">{tier.name}</span>
@@ -233,18 +308,6 @@ export function AgentsSection() {
                   </div>
                 );
               })}
-            </div>
-
-            {/* Feature list */}
-            <div className="flex flex-wrap gap-2">
-              {MEMORY_SYSTEM_SUMMARY.features.map((feat) => (
-                <span
-                  key={feat}
-                  className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary/80 border border-primary/15"
-                >
-                  {feat}
-                </span>
-              ))}
             </div>
           </div>
         </motion.div>
