@@ -30,10 +30,11 @@ export interface AgentWithPowers {
   name: string;
   subtitle: string;
   description: string;
-  powers: [CrownJewelPower, CrownJewelPower, CrownJewelPower];
+  powers: CrownJewelPower[];
   icon: LucideIcon;
   isFree: boolean;
   isFlagship?: boolean;
+  isElite?: boolean;
   priceCents?: number;
   gradient: string;
   glowColor: string;
@@ -185,16 +186,20 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
   {
     id: "coding",
     name: "CODING Mind",
-    subtitle: "FORGE · PHANTOM · BEACON",
-    description: "Code generation with AST-level transformations, self-healing execution, and real-time quality observability across multi-file projects.",
+    subtitle: "FORGE · PHANTOM · BEACON · SENTINEL · CONDUCTOR",
+    description: "Elite code generation with AST-level transformations, self-healing execution, real-time quality observability, security-hardened output, and pipeline orchestration across multi-file projects.",
     icon: Code,
     isFree: false,
+    isElite: true,
+    priceCents: 15900,
     gradient: "from-green-500 via-emerald-500 to-teal-500",
     glowColor: "rgba(34, 197, 94, 0.12)",
     powers: [
       { name: "AST-Level Code Forge", source: "FORGE Engine", description: "Type-safe multi-file generation with dependency graph analysis, dead code elimination, and rollback-safe execution.", icon: Code },
       { name: "Self-Healing Execution", source: "PHANTOM Engine", description: "Runs generated code in a sandboxed environment, auto-detects failures, and applies corrective patches before delivery.", icon: Bug },
       { name: "Quality Observability", source: "BEACON Engine", description: "Real-time metrics on code complexity, test coverage gaps, and style drift — catches regressions as they're written.", icon: CheckCircle },
+      { name: "Security-Hardened Output", source: "SENTINEL Engine", description: "Every generated artifact is scanned for injection vectors, dependency vulnerabilities, and secret leaks before commit.", icon: ShieldCheck },
+      { name: "CI/CD Pipeline Orchestration", source: "CONDUCTOR Engine", description: "Auto-generates build, test, and deploy pipelines with parallelized stages, rollback gates, and environment promotion.", icon: Workflow },
     ],
   },
 
@@ -204,16 +209,20 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
   {
     id: "analyst",
     name: "ANALYST Mind",
-    subtitle: "ORACLE · PRISM · CONDUCTOR",
-    description: "Analytical intelligence with anomaly detection, knowledge-graph-backed competitive mapping, and automated insight pipelines.",
+    subtitle: "ORACLE · PRISM · CONDUCTOR · CATALYST · ARBITER",
+    description: "Elite analytical intelligence with anomaly detection, competitive mapping, automated insight pipelines, event-driven alerting, and decision-gate enforcement.",
     icon: BarChart3,
     isFree: false,
+    isElite: true,
+    priceCents: 15900,
     gradient: "from-purple-500 via-violet-500 to-indigo-500",
     glowColor: "rgba(168, 85, 247, 0.12)",
     powers: [
       { name: "Anomaly Detection Engine", source: "ORACLE Engine", description: "Pattern recognition across time-series data that surfaces statistical anomalies with confidence intervals and root cause hints.", icon: TrendingUp },
       { name: "Competitive Knowledge Map", source: "PRISM Engine", description: "Builds and traverses a knowledge graph of market entities, relationships, and trends for grounded competitive analysis.", icon: Compass },
       { name: "Insight Pipeline Automation", source: "CONDUCTOR Engine", description: "ETL-style data processing that transforms raw signals into structured decision memos with impact/effort scoring.", icon: GitBranch },
+      { name: "Event-Driven Signal Alerts", source: "CATALYST Engine", description: "Pub/sub event triggers that fire real-time notifications when KPIs cross thresholds, trends reverse, or outliers emerge.", icon: Sparkles },
+      { name: "Decision Gate Enforcement", source: "ARBITER Engine", description: "Automated go/no-go checkpoints that validate data quality, confidence levels, and stakeholder sign-off before insights ship.", icon: Scale },
     ],
   },
 
@@ -375,16 +384,20 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
   {
     id: "security",
     name: "SECURITY Mind",
-    subtitle: "SENTINEL · GENESIS · AEGIS",
-    description: "Security intelligence with STRIDE threat modeling, autonomous vulnerability triage, and zero-trust policy enforcement.",
+    subtitle: "SENTINEL · GENESIS · AEGIS · PHANTOM · CIPHER",
+    description: "Elite security intelligence with STRIDE threat modeling, autonomous vulnerability triage, zero-trust enforcement, penetration simulation, and encrypted evidence vaults.",
     icon: ShieldCheck,
     isFree: false,
+    isElite: true,
+    priceCents: 15900,
     gradient: "from-red-600 via-red-500 to-rose-500",
     glowColor: "rgba(220, 38, 38, 0.12)",
     powers: [
       { name: "Predictive Threat Modeling", source: "SENTINEL Engine", description: "STRIDE-based analysis with attack surface mapping that predicts exploit vectors before they're discovered in the wild.", icon: Scan },
       { name: "Vulnerability Auto-Triage", source: "GENESIS Engine", description: "CVSS scoring with autonomous severity classification. Critical vulns trigger immediate remediation playbooks.", icon: Activity },
       { name: "Zero-Trust Policy Fabric", source: "AEGIS Engine", description: "Policy-as-code enforcement across all access boundaries. Automatic credential rotation and session attestation.", icon: KeyRound },
+      { name: "Penetration Simulation", source: "PHANTOM Engine", description: "Autonomous red-team simulations that probe your attack surface with real-world exploit chains and report exploitable paths.", icon: Bug },
+      { name: "Encrypted Evidence Vault", source: "CIPHER Engine", description: "Tamper-proof audit trail with cryptographic chain-of-custody for every security event, investigation, and remediation.", icon: Lock },
     ],
   },
 
