@@ -25,6 +25,9 @@ import {
   verilogPipelineTransform, vhdlPipelineTransform, svPipelineTransform,
   chiselPipelineTransform, amaranthPipelineTransform, spicePipelineTransform,
 } from './hardware-synthesizer';
+import {
+  generateTypeScriptTest, generatePythonTest, generateGoTest, generateVerilogTestbench,
+} from './test-harness-generator';
 
 export type ExportLanguage =
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
@@ -142,6 +145,20 @@ export function generateExportBundle(
       adapter: target.adapter,
       mimeType: getMimeType(target.language),
     });
+  }
+
+  // Generate test harnesses if synthesis context available
+  if (artifact.synthesisContext) {
+    const ctx = artifact.synthesisContext;
+    const hasTS = targets.some(t => t.language === 'typescript');
+    const hasPy = targets.some(t => t.language === 'python');
+    const hasGo = targets.some(t => t.language === 'go');
+    const hasVerilog = targets.some(t => t.language === 'verilog');
+
+    if (hasTS) files.push({ filename: `${slug}.test.ts`, content: generateTypeScriptTest(ctx), language: 'typescript', adapter: 'standalone', mimeType: 'text/typescript' });
+    if (hasPy) files.push({ filename: `test_${slug.replace(/-/g, '_')}.py`, content: generatePythonTest(ctx), language: 'python', adapter: 'standalone', mimeType: 'text/x-python' });
+    if (hasGo) files.push({ filename: `${slug.replace(/-/g, '_')}_test.go`, content: generateGoTest(ctx), language: 'go', adapter: 'standalone', mimeType: 'text/x-go' });
+    if (hasVerilog) files.push({ filename: `tb_${slug.replace(/-/g, '_')}.v`, content: generateVerilogTestbench(ctx), language: 'verilog', adapter: 'standalone', mimeType: 'text/x-verilog' });
   }
 
   // Always include a README
