@@ -15591,6 +15591,60 @@ export type Database = {
         }
         Relationships: []
       }
+      vault_promotions: {
+        Row: {
+          category: string | null
+          cjpi: number
+          created_at: string
+          description: string | null
+          discovery_id: string
+          export_ready: boolean | null
+          id: string
+          module_chain: string[] | null
+          name: string
+          promoted_at: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          run_id: string | null
+          status: string | null
+          tier: string | null
+        }
+        Insert: {
+          category?: string | null
+          cjpi: number
+          created_at?: string
+          description?: string | null
+          discovery_id: string
+          export_ready?: boolean | null
+          id?: string
+          module_chain?: string[] | null
+          name: string
+          promoted_at?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          run_id?: string | null
+          status?: string | null
+          tier?: string | null
+        }
+        Update: {
+          category?: string | null
+          cjpi?: number
+          created_at?: string
+          description?: string | null
+          discovery_id?: string
+          export_ready?: boolean | null
+          id?: string
+          module_chain?: string[] | null
+          name?: string
+          promoted_at?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          run_id?: string | null
+          status?: string | null
+          tier?: string | null
+        }
+        Relationships: []
+      }
       verification_scans: {
         Row: {
           completed_at: string | null
