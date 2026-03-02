@@ -7,7 +7,7 @@
 import {
   Shield, Ghost, Brain, Eye, Zap, GitBranch, Scale,
   Cog, Sparkles, Radio, Castle, Lock, Globe, Cpu,
-  Diamond, Hammer, Network,
+  Diamond, Hammer, Network, Fingerprint, Waypoints, FlaskConical,
 } from "lucide-react";
 
 export interface Engine {
