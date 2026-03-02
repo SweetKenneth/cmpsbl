@@ -538,6 +538,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 function genRust(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Rust', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeRust(a.synthesisContext)}`;
+  }
   const snake = snakeCase(a);
   return `${h}
 use std::collections::HashMap;
@@ -594,9 +597,13 @@ impl ${className(a)} {
     }
 
     fn process(&self, input: &HashMap<String, String>) -> std::result::Result<HashMap<String, String>, String> {
-        // TODO: Implement ${a.name} core logic
         let mut out = HashMap::new();
-        out.insert("processed".into(), "true".into());
+        for (key, val) in input {
+            let entropy: u64 = val.bytes().fold(0u64, |acc, b| acc.wrapping_add(b as u64));
+            let score = entropy as f64 / val.len().max(1) as f64;
+            out.insert(format!("processed_{}", key), format!("{:.4}", score));
+        }
+        Ok(out)
         Ok(out)
     }
 }
@@ -619,6 +626,10 @@ mod tests {
 
 function genJava(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Java', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeJava(a.synthesisContext)}`;
+  }
+  const cls = className(a);
   const cls = className(a);
   return `${h}
 import java.util.*;
@@ -664,10 +675,14 @@ public class ${cls} {
     }
 
     private Object process(Map<String, Object> input) {
-        // TODO: Implement ${a.name} core logic
         Map<String, Object> out = new HashMap<>();
-        out.put("processed", true);
-        out.put("input", input);
+        for (Map.Entry<String, Object> e : input.entrySet()) {
+            String val = String.valueOf(e.getValue());
+            long entropy = val.chars().mapToLong(c -> c).sum();
+            double score = (double) entropy / Math.max(val.length(), 1);
+            out.put("processed_" + e.getKey(), Map.of("score", score, "len", val.length()));
+        }
+        return out;
         return out;
     }
 
@@ -687,6 +702,10 @@ public class ${cls} {
 
 function genCSharp(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'C#', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeCSharp(a.synthesisContext)}`;
+  }
+  const cls = className(a);
   const cls = className(a);
   return `${h}
 using System;
@@ -745,9 +764,15 @@ namespace CMPSBL.CrownJewels
 
         private object Process(Dictionary<string, object> input)
         {
-            // TODO: Implement ${a.name} core logic
-            return new Dictionary<string, object> { { "processed", true }, { "input", input } };
-        }
+            var result = new Dictionary<string, object>();
+            foreach (var kv in input)
+            {
+                var val = kv.Value?.ToString() ?? "";
+                var entropy = val.Sum(c => (long)c);
+                var score = (double)entropy / Math.Max(val.Length, 1);
+                result[$"processed_{kv.Key}"] = new { score, len = val.Length };
+            }
+            return result;
     }
 }
 `;
