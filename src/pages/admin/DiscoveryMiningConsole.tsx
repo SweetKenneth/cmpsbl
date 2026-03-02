@@ -1,10 +1,12 @@
 /**
  * Admin → Discovery Mining Console
  * Mobile-first, no truncation, full audit trail.
+ * Includes Auto-Miner for frictionless one-click template generation + discovery.
  */
 import { useEffect, useState, useCallback } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useDiscoveryReactor } from '@/hooks/admin/useDiscoveryReactor';
+import { useAutoMiner, type MinerConfig } from '@/hooks/admin/useAutoMiner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,11 +18,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import { Progress } from '@/components/ui/progress';
 import { toast } from 'sonner';
 import {
   Zap, Play, History, FlaskConical, Target, TrendingUp,
   Shield, Brain, Cpu, Eye, Scale, GitBranch, Loader2,
   Download, Star, ChevronDown, ChevronUp, Plus, Copy, Check,
+  Bot, Pause, RotateCcw, Pickaxe, Sparkles, Timer, Hash,
 } from 'lucide-react';
 import type { ReactorRunResult, ReactorCandidate } from '@/lib/discovery/reactor';
 
