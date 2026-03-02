@@ -339,6 +339,31 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
 
       const { error: discError } = await supabase.from('discoveries').upsert(rows, { onConflict: 'id' });
       if (discError) console.error('Failed to persist discoveries:', discError);
+
+      // 9. AUTO-PROMOTE — discoveries with CJPI ≥ 90 are promoted to vault_promotions
+      if (!config.dryRun) {
+        const promotable = accepted.filter(c => c.cjpi >= 90 && c.tier);
+        if (promotable.length > 0) {
+          const promotionRows = promotable.map(c => ({
+            discovery_id: c.id,
+            run_id: run.id,
+            name: c.name,
+            cjpi: c.cjpi,
+            tier: c.tier,
+            module_chain: c.moduleChain,
+            description: c.description,
+            category: c.category,
+            promoted_at: new Date().toISOString(),
+            export_ready: true,
+            status: 'promoted',
+          }));
+          const { error: promoError } = await supabase
+            .from('vault_promotions')
+            .upsert(promotionRows, { onConflict: 'discovery_id' });
+          if (promoError) console.error('Failed to promote to vault:', promoError);
+          else console.log(`Auto-promoted ${promotable.length} discoveries to vault (CJPI ≥ 90)`);
+        }
+      }
     }
 
     return {
