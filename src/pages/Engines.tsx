@@ -13,6 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { ENGINES, type Engine } from "@/lib/engines/catalog";
 import { cn } from "@/lib/utils";
 import { Helmet } from "react-helmet-async";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 const TIER_COLORS: Record<string, string> = {
   APEX: "from-red-500/20 to-orange-500/10 border-red-500/30",
@@ -145,8 +148,15 @@ export default function Engines() {
       </Helmet>
 
       <div className="min-h-screen bg-background">
+        <PublicNav />
+
+        {/* Breadcrumb trail */}
+        <div className="container mx-auto px-4 pt-20">
+          <PublicBreadcrumb />
+        </div>
+
         {/* Hero */}
-        <section className="relative pt-28 pb-16 px-4 overflow-hidden">
+        <section className="relative pt-10 pb-16 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="relative container mx-auto max-w-5xl text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
@@ -214,6 +224,8 @@ export default function Engines() {
             </div>
           </div>
         </section>
+
+        <EnhancedFooter />
       </div>
     </>
   );
