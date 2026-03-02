@@ -1,0 +1,85 @@
+/**
+ * Foundry Hero — Opening cinematic for the discovery demo
+ */
+import { motion } from 'framer-motion';
+
+export function FoundryHero() {
+  return (
+    <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 overflow-hidden">
+      {/* Background grid */}
+      <div className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px),
+                           linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+        }}
+      />
+      
+      {/* Radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.06),transparent_60%)]" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+        className="relative text-center max-w-4xl"
+      >
+        <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-8">
+          Autonomous Software Foundry
+        </div>
+
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-foreground leading-[0.9] mb-8">
+          Software that
+          <br />
+          <span className="text-primary">prints software</span>
+        </h1>
+
+        <p className="text-lg md:text-xl text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-12">
+          A recursive discovery engine that surfaces high-quality software pipelines
+          directly from silicon. Every discovery expands the search space. The loop never ends.
+        </p>
+
+        {/* Key stat trio */}
+        <div className="flex items-center justify-center gap-8 md:gap-16 font-mono">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <div className="text-3xl md:text-4xl font-black text-foreground">1,143</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Pipelines</div>
+          </motion.div>
+          <div className="w-px h-10 bg-border/30" />
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <div className="text-3xl md:text-4xl font-black text-primary">100</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Peak CJPI</div>
+          </motion.div>
+          <div className="w-px h-10 bg-border/30" />
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0 }}
+          >
+            <div className="text-3xl md:text-4xl font-black text-foreground">∞</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Cycles</div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <div className="w-5 h-8 rounded-full border border-border/30 flex items-start justify-center pt-1.5">
+          <div className="w-1 h-2 rounded-full bg-muted-foreground/30" />
+        </div>
+      </motion.div>
+    </section>
+  );
+}
