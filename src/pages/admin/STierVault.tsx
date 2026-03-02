@@ -265,11 +265,19 @@ function ExportDialog({
 
           {/* Supported targets summary */}
           <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
-            <h4 className="text-xs font-medium text-muted-foreground mb-2">Supported Export Targets</h4>
-            <div className="flex flex-wrap gap-1.5">
-              {LANGUAGES.map(l => (
+            <h4 className="text-xs font-medium text-muted-foreground mb-2">Software Languages</h4>
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {LANGUAGES.filter(l => !['verilog','vhdl','systemverilog','chisel'].includes(l.value)).map(l => (
                 <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer" onClick={() => setSelectedLang(l.value)}>
                   {l.label}
+                </Badge>
+              ))}
+            </div>
+            <h4 className="text-xs font-medium text-muted-foreground mb-2">Hardware / HDL (FPGA &amp; ASIC)</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {LANGUAGES.filter(l => ['verilog','vhdl','systemverilog','chisel'].includes(l.value)).map(l => (
+                <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer border-amber-500/40 text-amber-400" onClick={() => setSelectedLang(l.value)}>
+                  ⚡ {l.label}
                 </Badge>
               ))}
             </div>
