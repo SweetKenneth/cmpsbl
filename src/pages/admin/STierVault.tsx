@@ -22,7 +22,7 @@ import {
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
 } from "@/lib/export/universal-adapter";
-import { contextFromDiscovery } from "@/lib/export/logic-synthesizer";
+import { contextFromDiscovery, type SynthesisContext } from "@/lib/export/logic-synthesizer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -405,17 +405,31 @@ function PromotedCard({
 function ExportDialog({
   entry, sourceCode, onClose,
 }: {
-  entry: { id: string; name: string; rank: number; cjpi: number; module: string; description: string };
+  entry: { id: string; name: string; rank: number; cjpi: number; module: string; description: string; synthesisContext?: SynthesisContext };
   sourceCode: string; onClose: () => void;
 }) {
   const [selectedLang, setSelectedLang] = useState<ExportLanguage>('typescript');
   const [selectedAdapter, setSelectedAdapter] = useState<ExportAdapter>('standalone');
   const [previewCode, setPreviewCode] = useState<string>('');
 
+  // Build synthesis context for full code generation
+  const synthCtx: SynthesisContext = entry.synthesisContext || {
+    name: entry.name,
+    description: entry.description,
+    category: entry.module.toLowerCase(),
+    moduleChain: [entry.module],
+    entryCapability: 'input',
+    exitCapability: 'output',
+    errorStrategy: 'retry',
+    maxExecutionMs: 30000,
+    cjpi: entry.cjpi,
+  };
+
   const artifact: ExportableArtifact = {
     id: entry.id, name: entry.name, rank: entry.rank,
     cjpi: entry.cjpi, module: entry.module,
     description: entry.description, sourceCode,
+    synthesisContext: synthCtx,
   };
 
   const handlePreview = useCallback(() => {
@@ -507,7 +521,7 @@ export default function STierVault() {
   const [search, setSearch] = useState("");
   const [moduleFilter, setModuleFilter] = useState<string | null>(null);
   const [viewingCode, setViewingCode] = useState<{ entry: STierEntry; code: string } | null>(null);
-  const [exportingEntry, setExportingEntry] = useState<{ id: string; name: string; rank: number; cjpi: number; module: string; description: string; code: string } | null>(null);
+  const [exportingEntry, setExportingEntry] = useState<{ id: string; name: string; rank: number; cjpi: number; module: string; description: string; code: string; synthesisContext?: SynthesisContext } | null>(null);
   const [loadingCode, setLoadingCode] = useState(false);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [showAnalytics, setShowAnalytics] = useState(true);
@@ -634,7 +648,8 @@ export default function STierVault() {
 
   const handleExportPromoted = (d: PromotedDiscovery) => {
     const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
-    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, code: '' });
+    const synthCtx = contextFromDiscovery(d);
+    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, code: '', synthesisContext: synthCtx });
   };
 
   const handlePromoteToRegistry = async (d: PromotedDiscovery) => {

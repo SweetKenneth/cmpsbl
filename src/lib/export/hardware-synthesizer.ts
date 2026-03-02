@@ -193,6 +193,154 @@ function verilogStageForModule(mod: string, idx: number): string {
                         end
                     end`;
 
+    case 'SOVEREIGN':
+    case 'TREATY':
+      return `
+                    // Stage ${idx}: ${mod} — Jurisdiction classifier + compliance gate
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [15:0] jurisdiction_code_${idx};
+                    localparam [DATA_WIDTH-1:0] COMPLIANCE_MASK_${idx} = 32'hFEDCBA98;
+                    wire compliant_${idx} = ((${prev} & COMPLIANCE_MASK_${idx}) != {DATA_WIDTH{1'b0}});
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            jurisdiction_code_${idx} <= ${prev}[15:0] ^ ${prev}[31:16];
+                            ${out} <= compliant_${idx} ? ${prev} : (${prev} | COMPLIANCE_MASK_${idx});
+                        end
+                    end`;
+
+    case 'CONSCIENCE':
+      return `
+                    // Stage ${idx}: ${mod} — Fairness scorer + bias detector
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [DATA_WIDTH-1:0] fairness_acc_${idx};
+                    wire [DATA_WIDTH-1:0] deviation_${idx} = ($signed(${prev}) > $signed(fairness_acc_${idx}))
+                        ? (${prev} - fairness_acc_${idx}) : (fairness_acc_${idx} - ${prev});
+                    wire biased_${idx} = deviation_${idx} > (fairness_acc_${idx} >> 2);
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            fairness_acc_${idx} <= fairness_acc_${idx} + ((${prev} - fairness_acc_${idx}) >>> 3);
+                            ${out} <= biased_${idx} ? fairness_acc_${idx} : ${prev};
+                        end
+                    end`;
+
+    case 'PHANTOM':
+      return `
+                    // Stage ${idx}: ${mod} — Privacy anonymizer + noise injector
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [31:0] noise_lfsr_${idx};
+                    localparam [DATA_WIDTH-1:0] PRIVACY_MASK_${idx} = 32'hFF000000;
+                    always @(posedge clk) begin
+                        if (!rst_n) noise_lfsr_${idx} <= 32'hACE1CAFE;
+                        else if (stage_active[${idx}]) begin
+                            noise_lfsr_${idx} <= {noise_lfsr_${idx}[30:0], noise_lfsr_${idx}[31] ^ noise_lfsr_${idx}[21]};
+                            ${out} <= (${prev} & PRIVACY_MASK_${idx}) | ({noise_lfsr_${idx}[0], noise_lfsr_${idx}[31:1]} & ~PRIVACY_MASK_${idx});
+                        end
+                    end`;
+
+    case 'FORGE':
+      return `
+                    // Stage ${idx}: ${mod} — Synthesis combiner + artifact fuser
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [DATA_WIDTH-1:0] forge_acc_${idx};
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            forge_acc_${idx} <= forge_acc_${idx} ^ ${prev};
+                            ${out} <= (${prev} & forge_acc_${idx}) | (~${prev} & (forge_acc_${idx} >> 1));
+                        end
+                    end`;
+
+    case 'COMPASS':
+      return `
+                    // Stage ${idx}: ${mod} — Geospatial zone classifier
+                    reg [DATA_WIDTH-1:0] ${out};
+                    wire [3:0] zone_${idx} = ${prev}[3:0];
+                    wire [3:0] risk_${idx} = ${prev}[7:4];
+                    wire high_risk_${idx} = (risk_${idx} > 4'd8);
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            ${out} <= high_risk_${idx} ? {${prev}[DATA_WIDTH-1:8], risk_${idx}, zone_${idx}} : ${prev};
+                        end
+                    end`;
+
+    case 'ECHO':
+      return `
+                    // Stage ${idx}: ${mod} — Digital twin shadow register
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [DATA_WIDTH-1:0] twin_shadow_${idx};
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            twin_shadow_${idx} <= ${prev};
+                            ${out} <= (${prev} ^ twin_shadow_${idx}) ? ${prev} : twin_shadow_${idx};
+                        end
+                    end`;
+
+    case 'HARVEST':
+      return `
+                    // Stage ${idx}: ${mod} — Deduplicator + quality scorer
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [DATA_WIDTH-1:0] last_seen_${idx};
+                    wire duplicate_${idx} = (${prev} == last_seen_${idx});
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            last_seen_${idx} <= ${prev};
+                            ${out} <= duplicate_${idx} ? {DATA_WIDTH{1'b0}} : ${prev};
+                        end
+                    end`;
+
+    case 'REFLEX':
+      return `
+                    // Stage ${idx}: ${mod} — Edge dispatch + local cache
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [DATA_WIDTH-1:0] reflex_cache_${idx} [0:3];
+                    reg [1:0] cache_ptr_${idx};
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            reflex_cache_${idx}[cache_ptr_${idx}] <= ${prev};
+                            cache_ptr_${idx} <= cache_ptr_${idx} + 1;
+                            ${out} <= ${prev} ^ reflex_cache_${idx}[cache_ptr_${idx}];
+                        end
+                    end`;
+
+    case 'DREAM':
+      return `
+                    // Stage ${idx}: ${mod} — Generative explorer (LFSR perturbation)
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [31:0] dream_lfsr_${idx};
+                    always @(posedge clk) begin
+                        if (!rst_n) dream_lfsr_${idx} <= 32'hDEAD_BEEF;
+                        else if (stage_active[${idx}]) begin
+                            dream_lfsr_${idx} <= {dream_lfsr_${idx}[30:0], dream_lfsr_${idx}[31] ^ dream_lfsr_${idx}[21] ^ dream_lfsr_${idx}[1] ^ dream_lfsr_${idx}[0]};
+                            ${out} <= ${prev} ^ dream_lfsr_${idx};
+                        end
+                    end`;
+
+    case 'SYSTEM':
+    case 'MEDIC':
+      return `
+                    // Stage ${idx}: ${mod} — Health monitor + watchdog
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [15:0] watchdog_${idx};
+                    wire healthy_${idx} = (${prev} != {DATA_WIDTH{1'b0}}) && (watchdog_${idx} < 16'hFFFF);
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            watchdog_${idx} <= healthy_${idx} ? 16'b0 : watchdog_${idx} + 1;
+                            ${out} <= healthy_${idx} ? ${prev} : {DATA_WIDTH{1'b0}};
+                        end
+                    end`;
+
+    case 'IDENTITY':
+      return `
+                    // Stage ${idx}: ${mod} — Hash fingerprinter
+                    reg [DATA_WIDTH-1:0] ${out};
+                    reg [31:0] id_hash_${idx};
+                    always @(posedge clk) begin
+                        if (stage_active[${idx}]) begin
+                            id_hash_${idx} <= {id_hash_${idx}[30:0], 1'b0} ^ 
+                                (id_hash_${idx}[31] ? 32'h04C11DB7 : 32'h0) ^ ${prev};
+                            ${out} <= ${prev} ^ id_hash_${idx}[15:0];
+                        end
+                    end`;
+
     default:
       return `
                     // Stage ${idx}: ${mod} — Configurable ALU (add/sub/xor/and)
