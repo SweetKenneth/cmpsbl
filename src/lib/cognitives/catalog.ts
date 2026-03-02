@@ -110,7 +110,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
       'Email template personalization',
       'Meeting prep briefing generator',
     ],
-    priceCents: 3900,
+    priceCents: 12900,
     isFree: false,
     downloadAssetKey: 'cmpsbl-sales.zip',
     stripeProductName: 'CMPSBL Sales Mind',
