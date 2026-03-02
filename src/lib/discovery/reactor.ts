@@ -337,7 +337,7 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
         exploratory_mode: config.exploratoryMode,
         finished_at: new Date().toISOString(),
         created_by: userId,
-        logs: [{ event: 'reactor_complete', candidates: candidates.length, accepted: accepted.length }],
+        logs: [{ event: 'reactor_complete', candidates: candidates.length, accepted: accepted.length, skipped: skippedCount }],
       })
       .select()
       .single();
