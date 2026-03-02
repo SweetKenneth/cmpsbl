@@ -1,0 +1,336 @@
+/**
+ * Auto-Miner Hook — Autonomous Discovery Mining Loop
+ * 
+ * Cycles: Generate random templates → Run 3 discovery passes → 
+ * If discoveries found, keep mining until exhausted → Retire combo → Repeat
+ */
+
+import { useState, useCallback, useRef } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { runReactor, type ReactorRunResult, type SynthesisTemplate } from '@/lib/discovery/reactor';
+import {
+  generateTemplateBatch,
+  retireCombo,
+  getRetiredCombos,
+  getRetiredCount,
+  getGeneratorStats,
+  clearRetired,
+  type GeneratedTemplate,
+  type GeneratorConfig,
+  type RetiredCombo,
+} from '@/lib/discovery/template-generator';
+import { toast } from 'sonner';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// TYPES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type MinerPhase = 'idle' | 'generating' | 'probing' | 'mining' | 'retiring' | 'paused' | 'complete';
+
+export interface MinerCycleResult {
+  cycleNumber: number;
+  phase: string;
+  templatesGenerated: number;
+  probeRuns: number;
+  discoveriesFound: number;
+  miningRuns: number;
+  retiredCombos: number;
+  timestamp: number;
+}
+
+export interface AutoMinerState {
+  phase: MinerPhase;
+  currentCycle: number;
+  totalDiscoveries: number;
+  totalRuns: number;
+  totalTemplatesGenerated: number;
+  currentBatchSize: number;
+  activeTemplates: GeneratedTemplate[];
+  cycleHistory: MinerCycleResult[];
+  retiredCombos: RetiredCombo[];
+  startedAt: number | null;
+  lastActivity: string;
+  error: string | null;
+}
+
+export interface MinerConfig {
+  batchSize: number;
+  probeRuns: number;          // discovery passes per batch (default: 3)
+  maxCycles: number;          // max cycles before auto-stop (0 = infinite)
+  minModules: number;
+  maxModules: number;
+  biasHighValue: boolean;
+  dryRun: boolean;
+  delayBetweenRuns: number;   // ms delay between runs (rate limiting)
+}
+
+const DEFAULT_MINER_CONFIG: MinerConfig = {
+  batchSize: 15,
+  probeRuns: 3,
+  maxCycles: 0,
+  minModules: 2,
+  maxModules: 5,
+  biasHighValue: true,
+  dryRun: false,
+  delayBetweenRuns: 2000,
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// HOOK
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export function useAutoMiner() {
+  const [state, setState] = useState<AutoMinerState>({
+    phase: 'idle',
+    currentCycle: 0,
+    totalDiscoveries: 0,
+    totalRuns: 0,
+    totalTemplatesGenerated: 0,
+    currentBatchSize: 0,
+    activeTemplates: [],
+    cycleHistory: [],
+    retiredCombos: [],
+    startedAt: null,
+    lastActivity: '',
+    error: null,
+  });
+
+  const abortRef = useRef(false);
+  const runningRef = useRef(false);
+
+  const updateState = useCallback((patch: Partial<AutoMinerState>) => {
+    setState(prev => ({ ...prev, ...patch }));
+  }, []);
+
+  const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+  /** Run one full auto-mining cycle */
+  const runCycle = useCallback(async (cycleNum: number, config: MinerConfig): Promise<MinerCycleResult | null> => {
+    if (abortRef.current) return null;
+
+    // Phase 1: Generate templates
+    updateState({ phase: 'generating', lastActivity: `Cycle ${cycleNum}: Generating ${config.batchSize} random templates...` });
+
+    const templates = generateTemplateBatch({
+      batchSize: config.batchSize,
+      minModules: config.minModules,
+      maxModules: config.maxModules,
+      minCjpiTarget: 80,
+      biasHighValue: config.biasHighValue,
+    });
+
+    if (templates.length === 0) {
+      updateState({ lastActivity: `Cycle ${cycleNum}: Generator exhausted — all combos retired or attempts maxed` });
+      return null; // signal exhaustion
+    }
+
+    updateState({
+      activeTemplates: templates,
+      currentBatchSize: templates.length,
+      totalTemplatesGenerated: (state.totalTemplatesGenerated || 0) + templates.length,
+      lastActivity: `Cycle ${cycleNum}: Generated ${templates.length} templates, starting probes...`,
+    });
+
+    // Phase 2: Probe — run N discovery passes with these templates
+    updateState({ phase: 'probing' });
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      updateState({ error: 'Authentication required', phase: 'idle' });
+      return null;
+    }
+
+    let totalDiscoveries = 0;
+    let probeRuns = 0;
+
+    // Cast templates to reactor format
+    const injectedTemplates = templates as unknown as SynthesisTemplate[];
+
+    for (let probe = 0; probe < config.probeRuns; probe++) {
+      if (abortRef.current) break;
+
+      updateState({ lastActivity: `Cycle ${cycleNum}: Probe ${probe + 1}/${config.probeRuns}...` });
+
+      const result = await runReactor({
+        dryRun: config.dryRun,
+        exploratoryMode: true,
+        scoringVersion: 'auto-miner-1.0',
+        injectedTemplates,
+      }, user.id);
+
+      probeRuns++;
+
+      if (result.status === 'completed') {
+        totalDiscoveries += result.acceptedCount;
+        updateState({
+          totalRuns: (state.totalRuns || 0) + 1,
+          totalDiscoveries: (state.totalDiscoveries || 0) + result.acceptedCount,
+          lastActivity: `Cycle ${cycleNum}: Probe ${probe + 1} found ${result.acceptedCount} discoveries (total: ${totalDiscoveries})`,
+        });
+      }
+
+      if (probe < config.probeRuns - 1) {
+        await sleep(config.delayBetweenRuns);
+      }
+    }
+
+    // Phase 3: Mining — if discoveries were found, keep mining until exhausted
+    let miningRuns = 0;
+
+    if (totalDiscoveries > 0 && !abortRef.current) {
+      updateState({ phase: 'mining', lastActivity: `Cycle ${cycleNum}: Discoveries found! Deep mining...` });
+
+      let consecutiveEmpty = 0;
+      const maxConsecutiveEmpty = 2;
+
+      while (consecutiveEmpty < maxConsecutiveEmpty && !abortRef.current) {
+        await sleep(config.delayBetweenRuns);
+
+        const mineResult = await runReactor({
+          dryRun: config.dryRun,
+          exploratoryMode: true,
+          scoringVersion: 'auto-miner-1.0',
+          injectedTemplates,
+        }, user.id);
+
+        miningRuns++;
+
+        if (mineResult.status === 'completed' && mineResult.acceptedCount > 0) {
+          consecutiveEmpty = 0;
+          totalDiscoveries += mineResult.acceptedCount;
+          updateState({
+            totalRuns: (state.totalRuns || 0) + 1 + miningRuns,
+            totalDiscoveries: (state.totalDiscoveries || 0) + mineResult.acceptedCount,
+            lastActivity: `Cycle ${cycleNum}: Mining run ${miningRuns} found ${mineResult.acceptedCount} more (total: ${totalDiscoveries})`,
+          });
+        } else {
+          consecutiveEmpty++;
+          updateState({
+            lastActivity: `Cycle ${cycleNum}: Mining run ${miningRuns} empty (${consecutiveEmpty}/${maxConsecutiveEmpty} to retire)`,
+          });
+        }
+      }
+    }
+
+    // Phase 4: Retire used templates
+    updateState({ phase: 'retiring', lastActivity: `Cycle ${cycleNum}: Retiring ${templates.length} template combos...` });
+
+    for (const t of templates) {
+      retireCombo(t.modulePattern, t.category, probeRuns + miningRuns, totalDiscoveries);
+    }
+
+    const cycleResult: MinerCycleResult = {
+      cycleNumber: cycleNum,
+      phase: totalDiscoveries > 0 ? 'productive' : 'dry',
+      templatesGenerated: templates.length,
+      probeRuns,
+      discoveriesFound: totalDiscoveries,
+      miningRuns,
+      retiredCombos: templates.length,
+      timestamp: Date.now(),
+    };
+
+    updateState({
+      retiredCombos: getRetiredCombos(),
+      cycleHistory: [...(state.cycleHistory || []), cycleResult],
+    });
+
+    return cycleResult;
+  }, [state, updateState]);
+
+  /** Start the auto-mining loop */
+  const start = useCallback(async (userConfig: Partial<MinerConfig> = {}) => {
+    if (runningRef.current) {
+      toast.error('Auto-miner is already running');
+      return;
+    }
+
+    const config = { ...DEFAULT_MINER_CONFIG, ...userConfig };
+    abortRef.current = false;
+    runningRef.current = true;
+
+    updateState({
+      phase: 'generating',
+      currentCycle: 0,
+      totalDiscoveries: 0,
+      totalRuns: 0,
+      totalTemplatesGenerated: 0,
+      activeTemplates: [],
+      cycleHistory: [],
+      startedAt: Date.now(),
+      error: null,
+      lastActivity: 'Starting auto-miner...',
+    });
+
+    toast.success('Auto-Miner started — generating and testing template combinations');
+
+    let cycle = 0;
+    while (!abortRef.current) {
+      cycle++;
+
+      if (config.maxCycles > 0 && cycle > config.maxCycles) {
+        updateState({ lastActivity: `Reached max cycles (${config.maxCycles})`, phase: 'complete' });
+        break;
+      }
+
+      updateState({ currentCycle: cycle });
+
+      const result = await runCycle(cycle, config);
+
+      if (!result) {
+        if (abortRef.current) {
+          updateState({ phase: 'paused', lastActivity: 'Paused by user' });
+        } else {
+          updateState({ phase: 'complete', lastActivity: 'Generator exhausted — all reachable combos tested' });
+          toast.info('Auto-Miner complete: all reachable template combinations have been explored');
+        }
+        break;
+      }
+
+      // Brief pause between cycles
+      if (!abortRef.current) {
+        await sleep(config.delayBetweenRuns * 2);
+      }
+    }
+
+    runningRef.current = false;
+  }, [updateState, runCycle]);
+
+  /** Stop the auto-mining loop */
+  const stop = useCallback(() => {
+    abortRef.current = true;
+    updateState({ phase: 'paused', lastActivity: 'Stopping...' });
+    toast.info('Auto-Miner stopping after current operation completes');
+  }, [updateState]);
+
+  /** Reset all state including retired combos */
+  const reset = useCallback(() => {
+    abortRef.current = true;
+    runningRef.current = false;
+    clearRetired();
+    setState({
+      phase: 'idle',
+      currentCycle: 0,
+      totalDiscoveries: 0,
+      totalRuns: 0,
+      totalTemplatesGenerated: 0,
+      currentBatchSize: 0,
+      activeTemplates: [],
+      cycleHistory: [],
+      retiredCombos: [],
+      startedAt: null,
+      lastActivity: '',
+      error: null,
+    });
+    toast.success('Auto-Miner reset — all retired combos cleared');
+  }, []);
+
+  return {
+    state,
+    start,
+    stop,
+    reset,
+    stats: getGeneratorStats(),
+    isRunning: runningRef.current && !abortRef.current,
+  };
+}
