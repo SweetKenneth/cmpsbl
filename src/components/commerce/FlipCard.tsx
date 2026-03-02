@@ -112,10 +112,10 @@ export function FlipCard({
             </div>
 
             {/* Title */}
-            <h3 className="font-bold text-base leading-tight mb-1 group-hover:text-primary transition-colors line-clamp-1">
+            <h3 className="font-bold text-sm sm:text-base leading-tight mb-1 group-hover:text-primary transition-colors break-words">
               {frontTitle}
             </h3>
-            <p className="text-xs text-muted-foreground line-clamp-2 mb-auto leading-relaxed">
+            <p className="text-xs text-muted-foreground mb-auto leading-relaxed break-words">
               {frontSubtitle}
             </p>
 
@@ -134,7 +134,7 @@ export function FlipCard({
           </div>
 
           {/* Flip hint */}
-          <div className="px-5 pb-3 text-[10px] text-muted-foreground/50 font-mono text-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="px-5 pb-3 text-[11px] text-muted-foreground/50 font-mono text-center opacity-0 group-hover:opacity-100 transition-opacity">
             TAP TO FLIP
           </div>
         </div>
@@ -155,7 +155,7 @@ export function FlipCard({
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-xs font-mono text-muted-foreground tracking-widest uppercase">
+              <span className="text-[11px] sm:text-xs font-mono text-muted-foreground tracking-widest uppercase">
                   Capabilities
                 </span>
               </div>
@@ -169,7 +169,7 @@ export function FlipCard({
               {backCapabilities.slice(0, 5).map((cap, i) => (
                 <div key={i} className="flex items-start gap-2 text-xs">
                   <Check className="w-3 h-3 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-foreground leading-tight line-clamp-1">{cap}</span>
+                  <span className="text-foreground leading-tight break-words">{cap}</span>
                 </div>
               ))}
             </div>

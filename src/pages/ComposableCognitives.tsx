@@ -214,16 +214,16 @@ export default function ComposableCognitives() {
 
         <div className="container mx-auto px-4 relative">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="outline" className="font-mono text-[10px] tracking-[0.2em] border-primary/20 bg-primary/5 px-4 py-1.5">
+            <Badge variant="outline" className="font-mono text-[11px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] border-primary/20 bg-primary/5 px-3 sm:px-4 py-1.5">
               20 SEALED RUNTIMES • DREAM SYNTHESIS • OWN FOREVER
             </Badge>
 
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight leading-[0.95]">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tight leading-[0.95]">
               <span className="block">Minds that remember,</span>
               <span className="block glow-text mt-1">learn, and evolve.</span>
             </h1>
 
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
               Each agent is a <span className="text-foreground font-semibold">sealed cognitive runtime</span> with 
               persistent memory, DREAM Synthesis for autonomous improvement, and a unique personality archetype.
               Purchase once — own forever. No subscriptions.
@@ -272,13 +272,13 @@ export default function ComposableCognitives() {
                 <div className={cn("w-3 h-3 rounded-full mx-auto", TIER_ACCENT[tier])} />
                 <div className={cn("text-sm font-black", TIER_CONFIG[tier].color)}>{TIER_CONFIG[tier].label}</div>
                 <div className="text-2xl font-black">{TIER_CONFIG[tier].price}</div>
-                <div className="text-[10px] text-muted-foreground space-y-0.5">
+                <div className="text-[11px] text-muted-foreground space-y-0.5">
                   <div>{powers} Crown Jewel powers</div>
                   <div>{agents} agents</div>
                   <div>DREAM Synthesis included</div>
                   <div>Persistent memory</div>
                 </div>
-                <div className="text-[10px] font-semibold text-primary">{highlight}</div>
+                <div className="text-[11px] font-semibold text-primary">{highlight}</div>
               </div>
             ))}
           </div>
@@ -362,7 +362,7 @@ export default function ComposableCognitives() {
             </div>
 
             {/* Agent flip cards grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
               {agents.map((item, i) => {
                 const tierCfg = TIER_CONFIG[item.tier];
                 return (

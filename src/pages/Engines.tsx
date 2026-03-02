@@ -61,7 +61,7 @@ function EngineCard({ engine, index }: { engine: Engine; index: number }) {
 
           {/* Threat level tag */}
           <div className="absolute top-0 right-0 px-3 py-1 bg-foreground/5 rounded-bl-xl">
-            <span className="text-[9px] font-mono tracking-widest text-muted-foreground uppercase">
+            <span className="text-[11px] font-mono tracking-widest text-muted-foreground uppercase">
               {engine.threatLevel.split("—")[0].trim()}
             </span>
           </div>
@@ -84,7 +84,7 @@ function EngineCard({ engine, index }: { engine: Engine; index: number }) {
           <p className="text-sm text-muted-foreground mb-4">{engine.tagline}</p>
 
           {/* Briefing */}
-          <p className="text-xs text-muted-foreground/80 line-clamp-3 mb-6 leading-relaxed">
+          <p className="text-xs text-muted-foreground/80 mb-6 leading-relaxed break-words">
             {engine.briefing}
           </p>
 
@@ -146,7 +146,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="20 black-boxed, tamper-proof composable engines forged from Crown Jewel artifacts. $199 standalone or $99 bundled. Own the tool. Own the outcome." />
+        <meta name="description" content="20 black-boxed, tamper-proof composable engines. APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled. Own the tool. Own the outcome." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -174,7 +174,7 @@ export default function Engines() {
                 forged from our highest-scoring Crown Jewel artifacts. You don't see the source. You see the results.
               </p>
               <p className="text-sm text-muted-foreground/60 font-mono">
-                20 sealed runtimes · 3 clearance tiers · $199 standalone / $99 bundled
+                20 sealed runtimes · 3 clearance tiers · Free to $599 · 40% off bundled
               </p>
             </motion.div>
           </div>
@@ -221,7 +221,7 @@ export default function Engines() {
                 and lifetime access to the sealed runtime binary. 3 engines are completely free.
               </p>
               <p className="text-xs font-mono text-muted-foreground/50">
-                3 free · 17 at $199 standalone · $99 bundled · Crown Jewel certified
+                3 free · CORE $199 · ELITE $399 · APEX $599 · 40% off bundled
               </p>
               <div className="flex gap-3 mt-2">
                 <Button asChild variant="outline" size="sm" className="gap-1">

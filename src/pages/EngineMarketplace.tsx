@@ -160,10 +160,10 @@ function EngineCard({ engine, isShowcase = false, isMeta = false }: { engine: Pu
         </div>
 
         {/* Name */}
-        <h3 className="font-bold text-sm leading-tight mb-1.5 line-clamp-2">{engine.name}</h3>
+        <h3 className="font-bold text-sm leading-tight mb-1.5 break-words">{engine.name}</h3>
 
         {/* Description */}
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">{engine.description}</p>
+        <p className="text-xs text-muted-foreground mb-3 flex-1 break-words">{engine.description}</p>
 
         {/* Stats */}
         <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
@@ -353,7 +353,7 @@ export default function EngineMarketplace() {
         image="https://cmpsbl.com/og/engines.jpg"
         keywords={["AI orchestration engines", "canonized workflows", "enterprise AI engines", "multi-provider routing", "agentic AI workflows"]}
         type="product"
-        product={{ name: "CMPSBL Engine Subscription", price: "9", currency: "USD", availability: "InStock" }}
+        product={{ name: "CMPSBL Engine Subscription", price: "199", currency: "USD", availability: "InStock" }}
       />
 
       <div className="min-h-screen bg-background flex flex-col">
