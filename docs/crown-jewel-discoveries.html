@@ -36,299 +36,75 @@
     line-height: 1.7;
     color: var(--foreground);
     background: var(--background);
-    max-width: 960px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 3rem 2rem 4rem;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* === HEADER === */
-  .doc-header {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 2px solid var(--border);
-  }
+  .doc-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
   .doc-header .overline {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--primary);
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
   }
   .doc-header .overline::before {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--system-green);
-    box-shadow: 0 0 8px var(--system-green);
+    content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--system-green); box-shadow: 0 0 8px var(--system-green);
   }
-  .doc-header h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--foreground);
-    line-height: 1.15;
-    margin-bottom: 0.5rem;
-  }
-  .doc-header .lead {
-    font-size: 1.125rem;
-    color: var(--muted-foreground);
-    line-height: 1.6;
-    max-width: 640px;
-  }
-  .doc-header .meta-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1.25rem;
-    font-size: 0.8125rem;
-    color: var(--muted-foreground);
-  }
+  .doc-header h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 0.5rem; }
+  .doc-header .lead { font-size: 1.125rem; color: var(--muted-foreground); line-height: 1.6; max-width: 720px; }
+  .doc-header .meta-bar { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.25rem; font-size: 0.8125rem; color: var(--muted-foreground); }
   .meta-bar .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.25em 0.875em;
-    border-radius: 9999px;
-    background: var(--primary);
-    color: var(--primary-foreground);
+    display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.6875rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; padding: 0.25em 0.875em; border-radius: 9999px;
+    background: var(--primary); color: var(--primary-foreground);
   }
-  .meta-bar .badge.green {
-    background: var(--system-green);
-  }
-  .meta-bar .badge.amber {
-    background: var(--system-amber);
-    color: var(--foreground);
-  }
+  .meta-bar .badge.green { background: var(--system-green); }
+  .meta-bar .badge.amber { background: var(--system-amber); color: var(--foreground); }
 
-  /* === TABLE OF CONTENTS === */
-  .toc {
-    background: var(--muted);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem 2rem;
-    margin-bottom: 3rem;
-  }
-  .toc h2 {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--muted-foreground);
-    margin-bottom: 0.75rem;
-    border: none;
-    padding: 0;
-  }
-  .toc ol {
-    list-style: none;
-    counter-reset: toc;
-    margin: 0;
-    padding: 0;
-  }
-  .toc li {
-    counter-increment: toc;
-    margin-bottom: 0.375rem;
-  }
-  .toc li::before {
-    content: counter(toc, decimal-leading-zero) ".";
-    color: var(--primary);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    margin-right: 0.5rem;
-  }
-  .toc a {
-    color: var(--foreground);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.9375rem;
-    border-bottom: 1px solid transparent;
-    transition: all 0.2s ease;
-  }
-  .toc a:hover {
-    color: var(--primary);
-    border-bottom-color: var(--primary);
-  }
+  .toc { background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 2rem; margin-bottom: 3rem; }
+  .toc h2 { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted-foreground); margin-bottom: 0.75rem; border: none; padding: 0; }
+  .toc ol { list-style: none; counter-reset: toc; margin: 0; padding: 0; }
+  .toc li { counter-increment: toc; margin-bottom: 0.375rem; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) "."; color: var(--primary); font-weight: 600; font-size: 0.8125rem; margin-right: 0.5rem; }
+  .toc a { color: var(--foreground); text-decoration: none; font-weight: 500; font-size: 0.9375rem; border-bottom: 1px solid transparent; transition: all 0.2s ease; }
+  .toc a:hover { color: var(--primary); border-bottom-color: var(--primary); }
 
-  /* === HEADINGS === */
-  h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--foreground);
-    margin-top: 3.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--border);
-    letter-spacing: -0.02em;
-    line-height: 1.25;
-  }
-  h3 {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--foreground);
-    margin-top: 2.5rem;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  h3 .tier-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  h2 { font-size: 1.5rem; font-weight: 700; margin-top: 3.5rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border); letter-spacing: -0.02em; }
+  h3 { font-size: 1.125rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  h3 .tier-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
   h3 .tier-dot.apex { background: linear-gradient(135deg, #f59e0b, #ef4444); box-shadow: 0 0 8px #f59e0b; }
   h3 .tier-dot.enterprise { background: var(--primary); box-shadow: 0 0 6px var(--primary); }
   h3 .tier-dot.architect { background: var(--system-green); }
-
-  h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--muted-foreground);
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
+  h4 { font-size: 1rem; font-weight: 600; color: var(--muted-foreground); margin-top: 1.5rem; margin-bottom: 0.5rem; }
   p { margin-bottom: 1rem; }
   em { color: var(--muted-foreground); font-style: italic; }
 
-  /* === STAT CARDS === */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1rem;
-    margin: 1.5rem 0 2.5rem;
-  }
-  .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    box-shadow: var(--shadow-elegant);
-    text-align: center;
-  }
-  .stat-card .stat-value {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1.2;
-  }
-  .stat-card .stat-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--muted-foreground);
-    margin-top: 0.25rem;
-  }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin: 1.5rem 0 2.5rem; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow-elegant); text-align: center; }
+  .stat-card .stat-value { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2; }
+  .stat-card .stat-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted-foreground); margin-top: 0.25rem; }
 
-  /* === TABLES === */
-  .table-wrap {
-    overflow-x: auto;
-    margin: 1rem 0 2rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-elegant);
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.875rem;
-  }
-  th {
-    text-align: left;
-    font-weight: 700;
-    font-size: 0.6875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--muted-foreground);
-    padding: 0.75rem 1rem;
-    border-bottom: 2px solid var(--border);
-    background: var(--muted);
-    position: sticky;
-    top: 0;
-    white-space: nowrap;
-  }
-  td {
-    padding: 0.625rem 1rem;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-    color: var(--foreground);
-  }
+  .table-wrap { overflow-x: auto; margin: 1rem 0 2rem; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-elegant); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  th { text-align: left; font-weight: 700; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted-foreground); padding: 0.75rem 0.75rem; border-bottom: 2px solid var(--border); background: var(--muted); position: sticky; top: 0; white-space: nowrap; }
+  td { padding: 0.625rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: hsl(210, 60%, 45%, 0.03); }
 
-  /* CJPI score coloring */
   .cjpi { font-weight: 700; font-variant-numeric: tabular-nums; }
   .cjpi-apex { color: #dc2626; }
   .cjpi-enterprise { color: hsl(210, 60%, 45%); }
   .cjpi-architect { color: hsl(145, 65%, 38%); }
+  .module-tag { display: inline-block; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.125em 0.5em; border-radius: 4px; background: var(--muted); color: var(--muted-foreground); white-space: nowrap; }
+  .chain { font-size: 0.75rem; color: var(--muted-foreground); font-family: 'JetBrains Mono', 'Fira Code', monospace; white-space: nowrap; }
+  .desc { font-size: 0.8125rem; color: var(--muted-foreground); max-width: 340px; line-height: 1.4; }
 
-  .module-tag {
-    display: inline-block;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    padding: 0.125em 0.5em;
-    border-radius: 4px;
-    background: var(--muted);
-    color: var(--muted-foreground);
-    white-space: nowrap;
-  }
-
-  .chain {
-    font-size: 0.75rem;
-    color: var(--muted-foreground);
-    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
-    white-space: nowrap;
-  }
-
-  /* === SECTION DIVIDER === */
-  hr {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 3rem 0;
-  }
-
-  /* === BLOCKQUOTE === */
-  blockquote {
-    border-left: 3px solid var(--primary);
-    padding: 0.75rem 1.25rem;
-    margin: 1.5rem 0;
-    background: var(--muted);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    color: var(--muted-foreground);
-    font-size: 0.9375rem;
-  }
-
-  /* === FOOTER === */
-  .doc-footer {
-    margin-top: 4rem;
-    padding-top: 1.5rem;
-    border-top: 2px solid var(--border);
-    text-align: center;
-    font-size: 0.8125rem;
-    color: var(--muted-foreground);
-  }
+  hr { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+  blockquote { border-left: 3px solid var(--primary); padding: 0.75rem 1.25rem; margin: 1.5rem 0; background: var(--muted); border-radius: 0 var(--radius) var(--radius) 0; color: var(--muted-foreground); font-size: 0.9375rem; }
+  .doc-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 2px solid var(--border); text-align: center; font-size: 0.8125rem; color: var(--muted-foreground); }
   .doc-footer strong { color: var(--foreground); }
 
-  /* === PRINT === */
   @media print {
     body { margin: 0.75in; padding: 0; max-width: none; font-size: 10pt; }
     .stat-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
@@ -336,13 +112,13 @@
     h2, h3 { break-after: avoid; }
     table { font-size: 8pt; }
   }
-
   @media (max-width: 640px) {
     body { padding: 1.5rem 1rem 2rem; }
     .doc-header h1 { font-size: 1.75rem; }
     .stat-grid { grid-template-columns: repeat(2, 1fr); }
     .stat-card .stat-value { font-size: 1.5rem; }
-    td, th { padding: 0.5rem 0.625rem; font-size: 0.75rem; }
+    td, th { padding: 0.5rem 0.5rem; font-size: 0.75rem; }
+    .desc { max-width: 200px; }
   }
 </style>
 </head>
@@ -351,7 +127,7 @@
 <header class="doc-header">
   <div class="overline">CMPSBL® Crown Jewel Mining Program</div>
   <h1>Crown Jewel Discoveries</h1>
-  <p class="lead">Living registry of all crystallized pipelines, S-Tier capabilities, and meta-engines discovered through the Crown Jewel Power Index (CJPI) scoring program.</p>
+  <p class="lead">Living registry of all crystallized pipelines, S-Tier capabilities, and meta-engines. Each pipeline includes a description of its function, strategic rationale, and module chain.</p>
   <div class="meta-bar">
     <span class="badge green">ACTIVE EPOCH</span>
     <span class="badge">WAVE 7 + 8</span>
@@ -361,54 +137,38 @@
   </div>
 </header>
 
-<!-- Stats -->
 <div class="stat-grid">
-  <div class="stat-card">
-    <div class="stat-value">150</div>
-    <div class="stat-label">Crystallized Pipelines</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">142</div>
-    <div class="stat-label">S-Tier Crown Jewels</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">26</div>
-    <div class="stat-label">Meta-Engines</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">429+</div>
-    <div class="stat-label">Total Capabilities</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">86.1</div>
-    <div class="stat-label">Avg CJPI (≥80)</div>
-  </div>
+  <div class="stat-card"><div class="stat-value">150</div><div class="stat-label">Crystallized Pipelines</div></div>
+  <div class="stat-card"><div class="stat-value">142</div><div class="stat-label">S-Tier Crown Jewels</div></div>
+  <div class="stat-card"><div class="stat-value">26</div><div class="stat-label">Meta-Engines</div></div>
+  <div class="stat-card"><div class="stat-value">429+</div><div class="stat-label">Total Capabilities</div></div>
+  <div class="stat-card"><div class="stat-value">86.1</div><div class="stat-label">Avg CJPI (≥80)</div></div>
+  <div class="stat-card"><div class="stat-value">97.2</div><div class="stat-label">Peak CJPI</div></div>
 </div>
 
-<!-- TOC -->
 <nav class="toc">
   <h2>Contents</h2>
   <ol>
-    <li><a href="#crystallized">Crystallized Pipelines (CJPI ≥ 80)</a></li>
-    <li><a href="#wave8">Wave 8 Discoveries — 50 New Pipelines</a></li>
-    <li><a href="#crownjewels">Crown Jewel Capabilities (S-Tier)</a></li>
-    <li><a href="#metaengines">Meta-Engines</a></li>
+    <li><a href="#wave7">Wave 7 — 76 Crystallized Pipelines</a></li>
+    <li><a href="#wave8">Wave 8 — 50 New Pipelines</a></li>
+    <li><a href="#crownjewels">Crown Jewel S-Tier Registry (142)</a></li>
+    <li><a href="#metaengines">Meta-Engines (26)</a></li>
     <li><a href="#stats">Discovery Statistics</a></li>
   </ol>
 </nav>
 
 <!-- ============================================================ -->
-<h2 id="crystallized">Crystallized Pipelines — Wave 7</h2>
-<p>All Wave 7 pipelines scoring <strong>CJPI ≥ 80</strong>, auto-tiered and crystallized. 76 pipelines total.</p>
+<h2 id="wave7">Wave 7 — Crystallized Pipelines (76)</h2>
+<p>All Wave 7 pipelines scoring <strong>CJPI ≥ 80</strong>, auto-tiered and crystallized. Each entry includes a description of what the pipeline does.</p>
 
 <h3><span class="tier-dot apex"></span> CMPSBL-Only Tier (CJPI 95–100)</h3>
 <em>Internal-only. Apex-grade pipelines.</em>
 
 <div class="table-wrap">
 <table>
-<thead><tr><th>#</th><th>Pipeline</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
+<thead><tr><th>#</th><th>Pipeline</th><th>Description</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>Capability Synthesis Reactor</td><td class="cjpi cjpi-apex">95.3</td><td>Evolution</td><td class="chain">EVOLUTION → DREAM → CORTEX → BRAIN</td></tr>
+<tr><td>1</td><td>Capability Synthesis Reactor</td><td class="desc">One-click auto-discovery engine that generates, scores, tiers, and ranks new Crown Jewel pipelines by composing capabilities across all canonical modules.</td><td class="cjpi cjpi-apex">95.3</td><td>Evolution</td><td class="chain">EVOLUTION → DREAM → CORTEX → BRAIN</td></tr>
 </tbody>
 </table>
 </div>
@@ -417,47 +177,47 @@
 
 <div class="table-wrap">
 <table>
-<thead><tr><th>#</th><th>Pipeline</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
+<thead><tr><th>#</th><th>Pipeline</th><th>Description</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>Knowledge Fusion Cascade</td><td class="cjpi cjpi-enterprise">89.8</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → VISION → CORTEX</td></tr>
-<tr><td>2</td><td>Emergent Strategy Compiler</td><td class="cjpi cjpi-enterprise">89.7</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → VISION → ANALYTICS</td></tr>
-<tr><td>3</td><td>Cross-Module Orchestration</td><td class="cjpi cjpi-enterprise">89.4</td><td>Orchestration</td><td class="chain">CORTEX → SYSTEM → NEXUS</td></tr>
-<tr><td>4</td><td>Pattern Consolidation Pipeline</td><td class="cjpi cjpi-enterprise">89.2</td><td>Evolution</td><td class="chain">DREAM → BRAIN → CORTEX → EVOLUTION</td></tr>
-<tr><td>5</td><td>Associative Insight Weaver</td><td class="cjpi cjpi-enterprise">89.1</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → CORTEX → VISION</td></tr>
-<tr><td>6</td><td>Disaster Recovery Orchestrator</td><td class="cjpi cjpi-enterprise">88.7</td><td>Security</td><td class="chain">DEFENSE → SYSTEM → BRAIN → EVOLUTION</td></tr>
-<tr><td>7</td><td>Autonomous Rollback Authority</td><td class="cjpi cjpi-enterprise">88.5</td><td>Evolution</td><td class="chain">EVOLUTION → GOVERNANCE → SYSTEM</td></tr>
-<tr><td>8</td><td>Immune Response Cascade</td><td class="cjpi cjpi-enterprise">88.3</td><td>Security</td><td class="chain">DEFENSE → SYSTEM → EVOLUTION → CORTEX</td></tr>
-<tr><td>9</td><td>Ethical Guardrail Chain</td><td class="cjpi cjpi-enterprise">88.3</td><td>Governance</td><td class="chain">GOVERNANCE → BRAIN → CORTEX → DEFENSE</td></tr>
-<tr><td>10</td><td>Knowledge Distillation Pipeline</td><td class="cjpi cjpi-enterprise">87.6</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → CORTEX</td></tr>
-<tr><td>11</td><td>Entropic Decay Reversal</td><td class="cjpi cjpi-enterprise">87.3</td><td>Evolution</td><td class="chain">DREAM → BRAIN → EVOLUTION</td></tr>
-<tr><td>12</td><td>Multi-Agent Consensus</td><td class="cjpi cjpi-enterprise">87.3</td><td>Orchestration</td><td class="chain">CORTEX → NERVE → GOVERNANCE</td></tr>
-<tr><td>13</td><td>Mutation Safety Verifier</td><td class="cjpi cjpi-enterprise">87.2</td><td>Evolution</td><td class="chain">EVOLUTION → GOVERNANCE → DEFENSE</td></tr>
-<tr><td>14</td><td>Memory Consolidation Pipeline</td><td class="cjpi cjpi-enterprise">87.1</td><td>Cognitive</td><td class="chain">BRAIN → MEMORY → CORTEX</td></tr>
-<tr><td>15</td><td>Semantic Memory Consolidator</td><td class="cjpi cjpi-enterprise">87.0</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → MEMORY</td></tr>
-<tr><td>16</td><td>Autonomy Boundary Enforcer</td><td class="cjpi cjpi-enterprise">86.9</td><td>Governance</td><td class="chain">GOVERNANCE → EVOLUTION → DEFENSE</td></tr>
-<tr><td>17</td><td>Decision Provenance Chain</td><td class="cjpi cjpi-enterprise">86.9</td><td>Governance</td><td class="chain">GOVERNANCE → AUDIT → BRAIN</td></tr>
-<tr><td>18</td><td>Org Knowledge Graph Weaver</td><td class="cjpi cjpi-enterprise">86.8</td><td>Cognitive</td><td class="chain">BRAIN → CORTEX → VISION</td></tr>
-<tr><td>19</td><td>Metacognitive Monitor</td><td class="cjpi cjpi-enterprise">86.6</td><td>Cognitive</td><td class="chain">BRAIN → CORTEX → GOVERNANCE</td></tr>
-<tr><td>20</td><td>Attention Priority Scheduler</td><td class="cjpi cjpi-enterprise">86.6</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → VISION</td></tr>
-<tr><td>21</td><td>Hypothesis Generation Engine</td><td class="cjpi cjpi-enterprise">86.4</td><td>Cognitive</td><td class="chain">DREAM → BRAIN → CORTEX</td></tr>
-<tr><td>22</td><td>Transfer Learning Bridge</td><td class="cjpi cjpi-enterprise">86.4</td><td>Learning</td><td class="chain">BRAIN → DREAM → EVOLUTION</td></tr>
-<tr><td>23</td><td>Blast Radius Containment</td><td class="cjpi cjpi-enterprise">86.3</td><td>Security</td><td class="chain">DEFENSE → SYSTEM → NEXUS</td></tr>
-<tr><td>24</td><td>Impact Radius Predictor</td><td class="cjpi cjpi-enterprise">86.3</td><td>Evolution</td><td class="chain">EVOLUTION → VISION → CORTEX</td></tr>
-<tr><td>25</td><td>Enterprise Audit Trail</td><td class="cjpi cjpi-enterprise">85.6</td><td>Governance</td><td class="chain">GOVERNANCE → BRAIN → SYSTEM</td></tr>
-<tr><td>26</td><td>Multi-Tenant Isolation Fabric</td><td class="cjpi cjpi-enterprise">85.5</td><td>Cognitive</td><td class="chain">BRAIN → DEFENSE → CORTEX</td></tr>
-<tr><td>27</td><td>Threat Prediction Chain</td><td class="cjpi cjpi-enterprise">85.4</td><td>Security</td><td class="chain">DEFENSE → BRAIN → VISION</td></tr>
-<tr><td>28</td><td>Saga Transaction Coordinator</td><td class="cjpi cjpi-enterprise">85.4</td><td>Orchestration</td><td class="chain">CORTEX → SYSTEM → GOVERNANCE</td></tr>
-<tr><td>29</td><td>Cross-Project Learning Bridge</td><td class="cjpi cjpi-enterprise">85.3</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → CORTEX</td></tr>
-<tr><td>30</td><td>Reasoning Chain Verifier</td><td class="cjpi cjpi-enterprise">85.2</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → VISION</td></tr>
-<tr><td>31</td><td>Privilege Escalation Sentinel</td><td class="cjpi cjpi-enterprise">85.1</td><td>Security</td><td class="chain">DEFENSE → ACCESS → GOVERNANCE</td></tr>
-<tr><td>32</td><td>Zero-Trust Continuous Auth</td><td class="cjpi cjpi-enterprise">85.1</td><td>Security</td><td class="chain">DEFENSE → ACCESS → BRAIN → IDENTITY</td></tr>
-<tr><td>33</td><td>Context Window Optimizer</td><td class="cjpi cjpi-enterprise">85.0</td><td>Cognitive</td><td class="chain">BRAIN → NEXUS → DECODE</td></tr>
-<tr><td>34</td><td>Canary Promotion Gate</td><td class="cjpi cjpi-enterprise">85.0</td><td>Evolution</td><td class="chain">EVOLUTION → VISION → SYSTEM</td></tr>
-<tr><td>35</td><td>Regression Prevention Shield</td><td class="cjpi cjpi-enterprise">85.0</td><td>Evolution</td><td class="chain">EVOLUTION → VISION → GOVERNANCE</td></tr>
-<tr><td>36</td><td>Identity Trust Fabric</td><td class="cjpi cjpi-enterprise">85.0</td><td>Security</td><td class="chain">DEFENSE → ACCESS → BRAIN</td></tr>
-<tr><td>37</td><td>Anomaly Root Cause Linker</td><td class="cjpi cjpi-enterprise">85.0</td><td>Observability</td><td class="chain">VISION → BRAIN → SYSTEM</td></tr>
-<tr><td>38</td><td>Event Sourcing Replay</td><td class="cjpi cjpi-enterprise">85.0</td><td>Integration</td><td class="chain">SYSTEM → BRAIN → AUDIT</td></tr>
-<tr><td>39</td><td>DAG Optimizer</td><td class="cjpi cjpi-enterprise">85.0</td><td>Orchestration</td><td class="chain">CORTEX → VISION → SYSTEM</td></tr>
+<tr><td>1</td><td>Knowledge Fusion Cascade</td><td class="desc">Merges heterogeneous knowledge sources (structured, episodic, semantic) into unified insight streams via cross-modal fusion.</td><td class="cjpi cjpi-enterprise">89.8</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → VISION → CORTEX</td></tr>
+<tr><td>2</td><td>Emergent Strategy Compiler</td><td class="desc">Detects emergent strategic patterns from operational data and compiles them into executable strategy playbooks.</td><td class="cjpi cjpi-enterprise">89.7</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → VISION → ANALYTICS</td></tr>
+<tr><td>3</td><td>Cross-Module Orchestration</td><td class="desc">Coordinates multi-module pipeline execution with dependency resolution, parallelism, and failure isolation.</td><td class="cjpi cjpi-enterprise">89.4</td><td>Orchestration</td><td class="chain">CORTEX → SYSTEM → NEXUS</td></tr>
+<tr><td>4</td><td>Pattern Consolidation Pipeline</td><td class="desc">Consolidates recurring patterns from dream-cycle replays into stable, reusable evolutionary templates.</td><td class="cjpi cjpi-enterprise">89.2</td><td>Evolution</td><td class="chain">DREAM → BRAIN → CORTEX → EVOLUTION</td></tr>
+<tr><td>5</td><td>Associative Insight Weaver</td><td class="desc">Discovers non-obvious associations across disparate knowledge domains using graph-based lateral reasoning.</td><td class="cjpi cjpi-enterprise">89.1</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → CORTEX → VISION</td></tr>
+<tr><td>6</td><td>Disaster Recovery Orchestrator</td><td class="desc">Automated multi-phase disaster recovery with state snapshot, rollback sequencing, and integrity verification.</td><td class="cjpi cjpi-enterprise">88.7</td><td>Security</td><td class="chain">DEFENSE → SYSTEM → BRAIN → EVOLUTION</td></tr>
+<tr><td>7</td><td>Autonomous Rollback Authority</td><td class="desc">Self-governing rollback system that detects regressions and autonomously reverts to last-known-good states.</td><td class="cjpi cjpi-enterprise">88.5</td><td>Evolution</td><td class="chain">EVOLUTION → GOVERNANCE → SYSTEM</td></tr>
+<tr><td>8</td><td>Immune Response Cascade</td><td class="desc">Layered immune response system that escalates from detection → isolation → neutralization → recovery.</td><td class="cjpi cjpi-enterprise">88.3</td><td>Security</td><td class="chain">DEFENSE → SYSTEM → EVOLUTION → CORTEX</td></tr>
+<tr><td>9</td><td>Ethical Guardrail Chain</td><td class="desc">Multi-stage ethical review pipeline that applies constitutional constraints before, during, and after autonomous actions.</td><td class="cjpi cjpi-enterprise">88.3</td><td>Governance</td><td class="chain">GOVERNANCE → BRAIN → CORTEX → DEFENSE</td></tr>
+<tr><td>10</td><td>Knowledge Distillation Pipeline</td><td class="desc">Extracts compact, high-fidelity knowledge representations from verbose experiential data for efficient storage and retrieval.</td><td class="cjpi cjpi-enterprise">87.6</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → CORTEX</td></tr>
+<tr><td>11</td><td>Entropic Decay Reversal</td><td class="desc">Identifies and reverses knowledge entropy — restoring degraded memories, stale heuristics, and drifting configurations.</td><td class="cjpi cjpi-enterprise">87.3</td><td>Evolution</td><td class="chain">DREAM → BRAIN → EVOLUTION</td></tr>
+<tr><td>12</td><td>Multi-Agent Consensus</td><td class="desc">Byzantine-fault-tolerant consensus protocol for multi-agent decision-making with weighted voting and quorum rules.</td><td class="cjpi cjpi-enterprise">87.3</td><td>Orchestration</td><td class="chain">CORTEX → NERVE → GOVERNANCE</td></tr>
+<tr><td>13</td><td>Mutation Safety Verifier</td><td class="desc">Pre-flight verification of proposed mutations using shadow execution, constraint checking, and blast-radius analysis.</td><td class="cjpi cjpi-enterprise">87.2</td><td>Evolution</td><td class="chain">EVOLUTION → GOVERNANCE → DEFENSE</td></tr>
+<tr><td>14</td><td>Memory Consolidation Pipeline</td><td class="desc">Tiered memory consolidation from hot → warm → cold with value-based promotion/demotion and compression.</td><td class="cjpi cjpi-enterprise">87.1</td><td>Cognitive</td><td class="chain">BRAIN → MEMORY → CORTEX</td></tr>
+<tr><td>15</td><td>Semantic Memory Consolidator</td><td class="desc">Converts episodic dream replays into semantic memory structures with deduplication and contradiction detection.</td><td class="cjpi cjpi-enterprise">87.0</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → MEMORY</td></tr>
+<tr><td>16</td><td>Autonomy Boundary Enforcer</td><td class="desc">Hard limits on autonomous agent behavior scope — prevents capability creep and scope expansion beyond approved boundaries.</td><td class="cjpi cjpi-enterprise">86.9</td><td>Governance</td><td class="chain">GOVERNANCE → EVOLUTION → DEFENSE</td></tr>
+<tr><td>17</td><td>Decision Provenance Chain</td><td class="desc">Immutable audit trail linking every autonomous decision to its inputs, reasoning chain, and approval authority.</td><td class="cjpi cjpi-enterprise">86.9</td><td>Governance</td><td class="chain">GOVERNANCE → AUDIT → BRAIN</td></tr>
+<tr><td>18</td><td>Org Knowledge Graph Weaver</td><td class="desc">Builds and maintains a living organizational knowledge graph from cross-project learnings and team interactions.</td><td class="cjpi cjpi-enterprise">86.8</td><td>Cognitive</td><td class="chain">BRAIN → CORTEX → VISION</td></tr>
+<tr><td>19</td><td>Metacognitive Monitor</td><td class="desc">Self-awareness layer that monitors the system's own cognitive processes — tracking confidence, uncertainty, and reasoning quality.</td><td class="cjpi cjpi-enterprise">86.6</td><td>Cognitive</td><td class="chain">BRAIN → CORTEX → GOVERNANCE</td></tr>
+<tr><td>20</td><td>Attention Priority Scheduler</td><td class="desc">Dynamic attention allocation across competing cognitive tasks based on urgency, importance, and resource availability.</td><td class="cjpi cjpi-enterprise">86.6</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → VISION</td></tr>
+<tr><td>21</td><td>Hypothesis Generation Engine</td><td class="desc">Generates and ranks hypotheses from incomplete data using abductive reasoning and creative exploration.</td><td class="cjpi cjpi-enterprise">86.4</td><td>Cognitive</td><td class="chain">DREAM → BRAIN → CORTEX</td></tr>
+<tr><td>22</td><td>Transfer Learning Bridge</td><td class="desc">Transfers learned skills and heuristics across problem domains with automatic feature mapping and adaptation.</td><td class="cjpi cjpi-enterprise">86.4</td><td>Learning</td><td class="chain">BRAIN → DREAM → EVOLUTION</td></tr>
+<tr><td>23</td><td>Blast Radius Containment</td><td class="desc">Calculates and enforces blast radius limits for any system change, isolating failures to prevent cascade propagation.</td><td class="cjpi cjpi-enterprise">86.3</td><td>Security</td><td class="chain">DEFENSE → SYSTEM → NEXUS</td></tr>
+<tr><td>24</td><td>Impact Radius Predictor</td><td class="desc">Predicts the downstream impact radius of proposed evolutionary changes across all dependent modules.</td><td class="cjpi cjpi-enterprise">86.3</td><td>Evolution</td><td class="chain">EVOLUTION → VISION → CORTEX</td></tr>
+<tr><td>25</td><td>Enterprise Audit Trail</td><td class="desc">Comprehensive tamper-evident audit trail with cryptographic integrity, retention policies, and compliance reporting.</td><td class="cjpi cjpi-enterprise">85.6</td><td>Governance</td><td class="chain">GOVERNANCE → BRAIN → SYSTEM</td></tr>
+<tr><td>26</td><td>Multi-Tenant Isolation Fabric</td><td class="desc">Ensures complete cognitive and data isolation between tenants with namespace partitioning and cross-contamination detection.</td><td class="cjpi cjpi-enterprise">85.5</td><td>Cognitive</td><td class="chain">BRAIN → DEFENSE → CORTEX</td></tr>
+<tr><td>27</td><td>Threat Prediction Chain</td><td class="desc">Predictive threat modeling using behavioral analysis, attack pattern recognition, and kill-chain forecasting.</td><td class="cjpi cjpi-enterprise">85.4</td><td>Security</td><td class="chain">DEFENSE → BRAIN → VISION</td></tr>
+<tr><td>28</td><td>Saga Transaction Coordinator</td><td class="desc">Distributed saga pattern implementation with compensation actions, timeout management, and partial rollback support.</td><td class="cjpi cjpi-enterprise">85.4</td><td>Orchestration</td><td class="chain">CORTEX → SYSTEM → GOVERNANCE</td></tr>
+<tr><td>29</td><td>Cross-Project Learning Bridge</td><td class="desc">Transfers successful strategies and failure learnings between independent projects with privacy-preserving aggregation.</td><td class="cjpi cjpi-enterprise">85.3</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → CORTEX</td></tr>
+<tr><td>30</td><td>Reasoning Chain Verifier</td><td class="desc">Post-hoc verification of multi-step reasoning chains for logical consistency, factual accuracy, and completeness.</td><td class="cjpi cjpi-enterprise">85.2</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → VISION</td></tr>
+<tr><td>31</td><td>Privilege Escalation Sentinel</td><td class="desc">Real-time detection and prevention of privilege escalation attempts across all access control surfaces.</td><td class="cjpi cjpi-enterprise">85.1</td><td>Security</td><td class="chain">DEFENSE → ACCESS → GOVERNANCE</td></tr>
+<tr><td>32</td><td>Zero-Trust Continuous Auth</td><td class="desc">Continuous authentication using behavioral biometrics, session risk scoring, and step-up verification triggers.</td><td class="cjpi cjpi-enterprise">85.1</td><td>Security</td><td class="chain">DEFENSE → ACCESS → BRAIN → IDENTITY</td></tr>
+<tr><td>33</td><td>Context Window Optimizer</td><td class="desc">Intelligent context window management — selects, compresses, and prioritizes context for optimal LLM utilization.</td><td class="cjpi cjpi-enterprise">85.0</td><td>Cognitive</td><td class="chain">BRAIN → NEXUS → DECODE</td></tr>
+<tr><td>34</td><td>Canary Promotion Gate</td><td class="desc">Graduated canary deployment with automated metric comparison, statistical significance testing, and auto-promotion/rollback.</td><td class="cjpi cjpi-enterprise">85.0</td><td>Evolution</td><td class="chain">EVOLUTION → VISION → SYSTEM</td></tr>
+<tr><td>35</td><td>Regression Prevention Shield</td><td class="desc">Continuous regression detection across performance, accuracy, and behavioral metrics with automatic blocking.</td><td class="cjpi cjpi-enterprise">85.0</td><td>Evolution</td><td class="chain">EVOLUTION → VISION → GOVERNANCE</td></tr>
+<tr><td>36</td><td>Identity Trust Fabric</td><td class="desc">Decentralized identity verification mesh with trust propagation, reputation scoring, and revocation cascades.</td><td class="cjpi cjpi-enterprise">85.0</td><td>Security</td><td class="chain">DEFENSE → ACCESS → BRAIN</td></tr>
+<tr><td>37</td><td>Anomaly Root Cause Linker</td><td class="desc">Correlates anomalies across telemetry streams to identify root causes using causal graph traversal.</td><td class="cjpi cjpi-enterprise">85.0</td><td>Observability</td><td class="chain">VISION → BRAIN → SYSTEM</td></tr>
+<tr><td>38</td><td>Event Sourcing Replay</td><td class="desc">Complete event sourcing with deterministic replay, temporal queries, and state reconstruction at any point in time.</td><td class="cjpi cjpi-enterprise">85.0</td><td>Integration</td><td class="chain">SYSTEM → BRAIN → AUDIT</td></tr>
+<tr><td>39</td><td>DAG Optimizer</td><td class="desc">Optimizes directed acyclic graph execution with critical path analysis, parallel branch detection, and resource pinning.</td><td class="cjpi cjpi-enterprise">85.0</td><td>Orchestration</td><td class="chain">CORTEX → VISION → SYSTEM</td></tr>
 </tbody>
 </table>
 </div>
@@ -466,61 +226,63 @@
 
 <div class="table-wrap">
 <table>
-<thead><tr><th>#</th><th>Pipeline</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
+<thead><tr><th>#</th><th>Pipeline</th><th>Description</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>Chaos Resilience Pipeline</td><td class="cjpi cjpi-architect">84.8</td><td>Security</td><td class="chain">DEFENSE → SYSTEM → EVOLUTION</td></tr>
-<tr><td>2</td><td>Executive Decision Ledger</td><td class="cjpi cjpi-architect">84.8</td><td>Governance</td><td class="chain">GOVERNANCE → BRAIN → CORTEX</td></tr>
-<tr><td>3</td><td>Policy Conflict Resolver</td><td class="cjpi cjpi-architect">84.8</td><td>Governance</td><td class="chain">GOVERNANCE → CORTEX → BRAIN</td></tr>
-<tr><td>4</td><td>Entitlement Cascade Auditor</td><td class="cjpi cjpi-architect">84.8</td><td>Governance</td><td class="chain">ACCESS → GOVERNANCE → AUDIT</td></tr>
-<tr><td>5</td><td>Intent Disambiguation Engine</td><td class="cjpi cjpi-architect">84.5</td><td>Cognitive</td><td class="chain">DECODE → BRAIN → CORTEX</td></tr>
-<tr><td>6</td><td>Feedback Loop Detector</td><td class="cjpi cjpi-architect">84.5</td><td>Observability</td><td class="chain">VISION → CORTEX → SYSTEM</td></tr>
-<tr><td>7</td><td>SLA Breach Predictor</td><td class="cjpi cjpi-architect">84.1</td><td>Observability</td><td class="chain">VISION → ANALYTICS → NEXUS</td></tr>
-<tr><td>8</td><td>Distributed Tracing Correlator</td><td class="cjpi cjpi-architect">84.0</td><td>Observability</td><td class="chain">VISION → CORTEX → ANALYTICS</td></tr>
-<tr><td>9</td><td>Schema Evolution Mediator</td><td class="cjpi cjpi-architect">83.8</td><td>Integration</td><td class="chain">INTEGRATION → SYSTEM → GOVERNANCE</td></tr>
-<tr><td>10</td><td>Cross-Deployment Sync</td><td class="cjpi cjpi-architect">83.8</td><td>Integration</td><td class="chain">SYSTEM → BRAIN → INTEGRATION</td></tr>
-<tr><td>11</td><td>Knowledge Gap Discoverer</td><td class="cjpi cjpi-architect">83.6</td><td>Learning</td><td class="chain">BRAIN → VISION → DREAM</td></tr>
-<tr><td>12</td><td>Curriculum Learning Optimizer</td><td class="cjpi cjpi-architect">83.3</td><td>Learning</td><td class="chain">BRAIN → DREAM → CORTEX</td></tr>
-<tr><td>13</td><td>Skill Progression Tracker</td><td class="cjpi cjpi-architect">83.0</td><td>Evolution</td><td class="chain">EVOLUTION → BRAIN → ANALYTICS</td></tr>
-<tr><td>14</td><td>Active Learning Selector</td><td class="cjpi cjpi-architect">82.8</td><td>Learning</td><td class="chain">BRAIN → VISION → CORTEX</td></tr>
-<tr><td>15</td><td>Session Handoff Chain</td><td class="cjpi cjpi-architect">82.2</td><td>Learning</td><td class="chain">BRAIN → CORTEX → NEXUS</td></tr>
-<tr><td>16</td><td>Regulatory Autopilot</td><td class="cjpi cjpi-architect">82.0</td><td>Governance</td><td class="chain">GOVERNANCE → DEFENSE → VISION</td></tr>
-<tr><td>17</td><td>Adversarial Probe Detector</td><td class="cjpi cjpi-architect">81.8</td><td>Security</td><td class="chain">DEFENSE → VISION → BRAIN</td></tr>
-<tr><td>18</td><td>Data Residency Enforcer</td><td class="cjpi cjpi-architect">81.6</td><td>Integration</td><td class="chain">SYSTEM → DEFENSE → GOVERNANCE</td></tr>
-<tr><td>19</td><td>Capacity Prediction Chain</td><td class="cjpi cjpi-architect">81.3</td><td>Observability</td><td class="chain">VISION → ANALYTICS → NEXUS</td></tr>
-<tr><td>20</td><td>Behavioral Drift Detector</td><td class="cjpi cjpi-architect">81.0</td><td>Observability</td><td class="chain">VISION → BRAIN → ANALYTICS</td></tr>
-<tr><td>21</td><td>Compliance Automation Chain</td><td class="cjpi cjpi-architect">81.0</td><td>Governance</td><td class="chain">GOVERNANCE → DEFENSE → ANALYTICS</td></tr>
-<tr><td>22</td><td>Anomaly Fingerprinting Chain</td><td class="cjpi cjpi-architect">80.7</td><td>Security</td><td class="chain">DEFENSE → VISION → BRAIN</td></tr>
-<tr><td>23</td><td>Secret Rotation Orchestrator</td><td class="cjpi cjpi-architect">80.5</td><td>Security</td><td class="chain">DEFENSE → ACCESS → SYSTEM</td></tr>
-<tr><td>24</td><td>API Contract Validator</td><td class="cjpi cjpi-architect">80.5</td><td>Integration</td><td class="chain">INTEGRATION → VISION → DEFENSE</td></tr>
-<tr><td>25</td><td>Workflow Bottleneck Eliminator</td><td class="cjpi cjpi-architect">80.5</td><td>Orchestration</td><td class="chain">CORTEX → VISION → NEXUS</td></tr>
-<tr><td>26</td><td>Provider Arbitrage Pipeline</td><td class="cjpi cjpi-architect">80.5</td><td>Routing</td><td class="chain">NEXUS → ANALYTICS → BRAIN</td></tr>
-<tr><td>27</td><td>Cognitive Load Optimizer</td><td class="cjpi cjpi-architect">80.3</td><td>Cognitive</td><td class="chain">BRAIN → CORTEX → DECODE</td></tr>
-<tr><td>28</td><td>Real-Time Cost Attributor</td><td class="cjpi cjpi-architect">80.3</td><td>Observability</td><td class="chain">ANALYTICS → NEXUS → GOVERNANCE</td></tr>
-<tr><td>29</td><td>Metric Correlation Finder</td><td class="cjpi cjpi-architect">80.2</td><td>Observability</td><td class="chain">ANALYTICS → VISION → CORTEX</td></tr>
-<tr><td>30</td><td>Capability Maturity Scorer</td><td class="cjpi cjpi-architect">80.0</td><td>Observability</td><td class="chain">VISION → ANALYTICS → BRAIN</td></tr>
-<tr><td>31</td><td>Token Budget Optimizer</td><td class="cjpi cjpi-architect">80.0</td><td>Routing</td><td class="chain">NEXUS → CORTEX → ANALYTICS</td></tr>
-<tr><td>32</td><td>Backpressure Governor</td><td class="cjpi cjpi-architect">80.0</td><td>Orchestration</td><td class="chain">CORTEX → NEXUS → SYSTEM</td></tr>
-<tr><td>33</td><td>Temporal Context Assembler</td><td class="cjpi cjpi-architect">80.0</td><td>Cognitive</td><td class="chain">BRAIN → MEMORY → DECODE</td></tr>
-<tr><td>34</td><td>Reinforcement Signal Enricher</td><td class="cjpi cjpi-architect">80.0</td><td>Learning</td><td class="chain">BRAIN → DREAM → ANALYTICS</td></tr>
-<tr><td>35</td><td>Transparency Report Generator</td><td class="cjpi cjpi-architect">80.0</td><td>Governance</td><td class="chain">GOVERNANCE → ANALYTICS → AUDIT</td></tr>
-<tr><td>36</td><td>Empathic Interaction Chain</td><td class="cjpi cjpi-architect">80.0</td><td>Cognitive</td><td class="chain">DECODE → BRAIN → CORTEX → NEXUS</td></tr>
+<tr><td>1</td><td>Chaos Resilience Pipeline</td><td class="desc">Controlled chaos injection with fault tolerance validation and automatic resilience scoring.</td><td class="cjpi cjpi-architect">84.8</td><td>Security</td><td class="chain">DEFENSE → SYSTEM → EVOLUTION</td></tr>
+<tr><td>2</td><td>Executive Decision Ledger</td><td class="desc">High-stakes decision recording with impact tracking, outcome correlation, and accountability attribution.</td><td class="cjpi cjpi-architect">84.8</td><td>Governance</td><td class="chain">GOVERNANCE → BRAIN → CORTEX</td></tr>
+<tr><td>3</td><td>Policy Conflict Resolver</td><td class="desc">Detects and resolves contradictory governance policies using priority weighting and semantic analysis.</td><td class="cjpi cjpi-architect">84.8</td><td>Governance</td><td class="chain">GOVERNANCE → CORTEX → BRAIN</td></tr>
+<tr><td>4</td><td>Entitlement Cascade Auditor</td><td class="desc">Traces entitlement inheritance chains to detect over-provisioning, orphaned permissions, and hidden access paths.</td><td class="cjpi cjpi-architect">84.8</td><td>Governance</td><td class="chain">ACCESS → GOVERNANCE → AUDIT</td></tr>
+<tr><td>5</td><td>Intent Disambiguation Engine</td><td class="desc">Resolves ambiguous user intents using contextual cues, conversation history, and clarification strategies.</td><td class="cjpi cjpi-architect">84.5</td><td>Cognitive</td><td class="chain">DECODE → BRAIN → CORTEX</td></tr>
+<tr><td>6</td><td>Feedback Loop Detector</td><td class="desc">Identifies positive and negative feedback loops in system dynamics that could cause runaway behavior.</td><td class="cjpi cjpi-architect">84.5</td><td>Observability</td><td class="chain">VISION → CORTEX → SYSTEM</td></tr>
+<tr><td>7</td><td>SLA Breach Predictor</td><td class="desc">Predictive SLA monitoring that forecasts breaches before they occur using trend analysis and anomaly projection.</td><td class="cjpi cjpi-architect">84.1</td><td>Observability</td><td class="chain">VISION → ANALYTICS → NEXUS</td></tr>
+<tr><td>8</td><td>Distributed Tracing Correlator</td><td class="desc">Correlates distributed traces across service boundaries with latency attribution and bottleneck identification.</td><td class="cjpi cjpi-architect">84.0</td><td>Observability</td><td class="chain">VISION → CORTEX → ANALYTICS</td></tr>
+<tr><td>9</td><td>Schema Evolution Mediator</td><td class="desc">Manages backward-compatible schema evolution across distributed services with migration generation and validation.</td><td class="cjpi cjpi-architect">83.8</td><td>Integration</td><td class="chain">INTEGRATION → SYSTEM → GOVERNANCE</td></tr>
+<tr><td>10</td><td>Cross-Deployment Sync</td><td class="desc">Synchronizes state and configuration across deployment environments with conflict detection and resolution.</td><td class="cjpi cjpi-architect">83.8</td><td>Integration</td><td class="chain">SYSTEM → BRAIN → INTEGRATION</td></tr>
+<tr><td>11</td><td>Knowledge Gap Discoverer</td><td class="desc">Identifies gaps in the system's knowledge base by analyzing query failures, low-confidence responses, and blind spots.</td><td class="cjpi cjpi-architect">83.6</td><td>Learning</td><td class="chain">BRAIN → VISION → DREAM</td></tr>
+<tr><td>12</td><td>Curriculum Learning Optimizer</td><td class="desc">Optimizes the order and difficulty of learning tasks using curriculum learning strategies for faster skill acquisition.</td><td class="cjpi cjpi-architect">83.3</td><td>Learning</td><td class="chain">BRAIN → DREAM → CORTEX</td></tr>
+<tr><td>13</td><td>Skill Progression Tracker</td><td class="desc">Tracks agent skill development across competency dimensions with mastery level assessment and training recommendations.</td><td class="cjpi cjpi-architect">83.0</td><td>Evolution</td><td class="chain">EVOLUTION → BRAIN → ANALYTICS</td></tr>
+<tr><td>14</td><td>Active Learning Selector</td><td class="desc">Selects the most informative training examples to maximize learning efficiency with minimal data requirements.</td><td class="cjpi cjpi-architect">82.8</td><td>Learning</td><td class="chain">BRAIN → VISION → CORTEX</td></tr>
+<tr><td>15</td><td>Session Handoff Chain</td><td class="desc">Seamless session state transfer between agents/contexts with context compression and relevance filtering.</td><td class="cjpi cjpi-architect">82.2</td><td>Learning</td><td class="chain">BRAIN → CORTEX → NEXUS</td></tr>
+<tr><td>16</td><td>Regulatory Autopilot</td><td class="desc">Automated regulatory compliance monitoring with rule change detection and impact assessment.</td><td class="cjpi cjpi-architect">82.0</td><td>Governance</td><td class="chain">GOVERNANCE → DEFENSE → VISION</td></tr>
+<tr><td>17</td><td>Adversarial Probe Detector</td><td class="desc">Detects adversarial probing attempts designed to map system capabilities, boundaries, and vulnerabilities.</td><td class="cjpi cjpi-architect">81.8</td><td>Security</td><td class="chain">DEFENSE → VISION → BRAIN</td></tr>
+<tr><td>18</td><td>Data Residency Enforcer</td><td class="desc">Enforces data residency requirements with geo-fencing, cross-border transfer detection, and compliance logging.</td><td class="cjpi cjpi-architect">81.6</td><td>Integration</td><td class="chain">SYSTEM → DEFENSE → GOVERNANCE</td></tr>
+<tr><td>19</td><td>Capacity Prediction Chain</td><td class="desc">Forecasts resource capacity needs using workload pattern analysis and growth trend modeling.</td><td class="cjpi cjpi-architect">81.3</td><td>Observability</td><td class="chain">VISION → ANALYTICS → NEXUS</td></tr>
+<tr><td>20</td><td>Behavioral Drift Detector</td><td class="desc">Monitors for gradual behavioral drift in agent outputs that could indicate model degradation or adversarial influence.</td><td class="cjpi cjpi-architect">81.0</td><td>Observability</td><td class="chain">VISION → BRAIN → ANALYTICS</td></tr>
+<tr><td>21</td><td>Compliance Automation Chain</td><td class="desc">Automates compliance evidence collection, control testing, and audit-ready report generation.</td><td class="cjpi cjpi-architect">81.0</td><td>Governance</td><td class="chain">GOVERNANCE → DEFENSE → ANALYTICS</td></tr>
+<tr><td>22</td><td>Anomaly Fingerprinting Chain</td><td class="desc">Creates unique fingerprints for anomaly patterns to enable rapid recognition of recurring issues.</td><td class="cjpi cjpi-architect">80.7</td><td>Security</td><td class="chain">DEFENSE → VISION → BRAIN</td></tr>
+<tr><td>23</td><td>Secret Rotation Orchestrator</td><td class="desc">Automated credential and secret rotation with zero-downtime key rollover and dependency propagation.</td><td class="cjpi cjpi-architect">80.5</td><td>Security</td><td class="chain">DEFENSE → ACCESS → SYSTEM</td></tr>
+<tr><td>24</td><td>API Contract Validator</td><td class="desc">Validates API contract compliance with schema checking, backward compatibility verification, and drift detection.</td><td class="cjpi cjpi-architect">80.5</td><td>Integration</td><td class="chain">INTEGRATION → VISION → DEFENSE</td></tr>
+<tr><td>25</td><td>Workflow Bottleneck Eliminator</td><td class="desc">Identifies and resolves workflow bottlenecks through critical path analysis and resource rebalancing.</td><td class="cjpi cjpi-architect">80.5</td><td>Orchestration</td><td class="chain">CORTEX → VISION → NEXUS</td></tr>
+<tr><td>26</td><td>Provider Arbitrage Pipeline</td><td class="desc">Real-time provider cost/quality arbitrage that routes requests to the optimal provider based on task requirements.</td><td class="cjpi cjpi-architect">80.5</td><td>Routing</td><td class="chain">NEXUS → ANALYTICS → BRAIN</td></tr>
+<tr><td>27</td><td>Cognitive Load Optimizer</td><td class="desc">Measures and minimizes cognitive load on users through interface simplification and information prioritization.</td><td class="cjpi cjpi-architect">80.3</td><td>Cognitive</td><td class="chain">BRAIN → CORTEX → DECODE</td></tr>
+<tr><td>28</td><td>Real-Time Cost Attributor</td><td class="desc">Attributes operational costs to specific features, users, and workflows in real-time for precise unit economics.</td><td class="cjpi cjpi-architect">80.3</td><td>Observability</td><td class="chain">ANALYTICS → NEXUS → GOVERNANCE</td></tr>
+<tr><td>29</td><td>Metric Correlation Finder</td><td class="desc">Discovers hidden correlations between operational metrics to surface leading indicators and causal relationships.</td><td class="cjpi cjpi-architect">80.2</td><td>Observability</td><td class="chain">ANALYTICS → VISION → CORTEX</td></tr>
+<tr><td>30</td><td>Capability Maturity Scorer</td><td class="desc">Assesses capability maturity across dimensions — reliability, performance, documentation, and test coverage.</td><td class="cjpi cjpi-architect">80.0</td><td>Observability</td><td class="chain">VISION → ANALYTICS → BRAIN</td></tr>
+<tr><td>31</td><td>Token Budget Optimizer</td><td class="desc">Optimizes token allocation across concurrent requests to maximize output quality within budget constraints.</td><td class="cjpi cjpi-architect">80.0</td><td>Routing</td><td class="chain">NEXUS → CORTEX → ANALYTICS</td></tr>
+<tr><td>32</td><td>Backpressure Governor</td><td class="desc">Intelligent backpressure management that throttles upstream producers when downstream consumers are overwhelmed.</td><td class="cjpi cjpi-architect">80.0</td><td>Orchestration</td><td class="chain">CORTEX → NEXUS → SYSTEM</td></tr>
+<tr><td>33</td><td>Temporal Context Assembler</td><td class="desc">Assembles time-aware context windows that include relevant historical interactions and temporal patterns.</td><td class="cjpi cjpi-architect">80.0</td><td>Cognitive</td><td class="chain">BRAIN → MEMORY → DECODE</td></tr>
+<tr><td>34</td><td>Reinforcement Signal Enricher</td><td class="desc">Enriches sparse reinforcement signals with auxiliary rewards from dream replays and outcome predictions.</td><td class="cjpi cjpi-architect">80.0</td><td>Learning</td><td class="chain">BRAIN → DREAM → ANALYTICS</td></tr>
+<tr><td>35</td><td>Transparency Report Generator</td><td class="desc">Automated generation of transparency reports covering system decisions, data usage, and autonomy boundaries.</td><td class="cjpi cjpi-architect">80.0</td><td>Governance</td><td class="chain">GOVERNANCE → ANALYTICS → AUDIT</td></tr>
+<tr><td>36</td><td>Empathic Interaction Chain</td><td class="desc">Detects user emotional state and adapts interaction style, tone, and complexity for optimal engagement.</td><td class="cjpi cjpi-architect">80.0</td><td>Cognitive</td><td class="chain">DECODE → BRAIN → CORTEX → NEXUS</td></tr>
 </tbody>
 </table>
 </div>
 
+<p><strong>Total Wave 7 Crystallized: 76 pipelines</strong> (1 Apex, 39 Enterprise, 36 Architect)</p>
+
 <!-- ============================================================ -->
-<h2 id="wave8">Wave 8 Discoveries — 50 New High-Value Pipelines</h2>
+<h2 id="wave8">Wave 8 — 50 New High-Value Pipelines</h2>
 <p>Mined from deep synergy analysis across all canonical modules. All 50 score <strong>CJPI ≥ 80</strong> and are auto-crystallized.</p>
 
 <h3><span class="tier-dot apex"></span> CMPSBL-Only Tier (CJPI 95–100)</h3>
 
 <div class="table-wrap">
 <table>
-<thead><tr><th>#</th><th>Pipeline</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
+<thead><tr><th>#</th><th>Pipeline</th><th>Description</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>Recursive Intelligence Amplifier</td><td class="cjpi cjpi-apex">97.2</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → CORTEX → EVOLUTION → BRAIN</td></tr>
-<tr><td>2</td><td>Substrate Self-Compilation Engine</td><td class="cjpi cjpi-apex">96.1</td><td>Evolution</td><td class="chain">EVOLUTION → SYSTEM → CORTEX → GOVERNANCE</td></tr>
-<tr><td>3</td><td>Sovereign Decision Forge</td><td class="cjpi cjpi-apex">95.8</td><td>Governance</td><td class="chain">GOVERNANCE → BRAIN → CORTEX → AUDIT → DEFENSE</td></tr>
+<tr><td>1</td><td>Recursive Intelligence Amplifier</td><td class="desc">Self-reinforcing intelligence loop where cognitive outputs improve the reasoning engine itself — recursive self-improvement with safety bounds.</td><td class="cjpi cjpi-apex">97.2</td><td>Cognitive</td><td class="chain">BRAIN → DREAM → CORTEX → EVOLUTION → BRAIN</td></tr>
+<tr><td>2</td><td>Substrate Self-Compilation Engine</td><td class="desc">The substrate compiles optimized versions of itself based on observed workload patterns, governance constraints, and performance data.</td><td class="cjpi cjpi-apex">96.1</td><td>Evolution</td><td class="chain">EVOLUTION → SYSTEM → CORTEX → GOVERNANCE</td></tr>
+<tr><td>3</td><td>Sovereign Decision Forge</td><td class="desc">Fully autonomous decision-making pipeline with multi-stakeholder impact analysis, ethical verification, and irrevocable commitment gates.</td><td class="cjpi cjpi-apex">95.8</td><td>Governance</td><td class="chain">GOVERNANCE → BRAIN → CORTEX → AUDIT → DEFENSE</td></tr>
 </tbody>
 </table>
 </div>
@@ -529,34 +291,34 @@
 
 <div class="table-wrap">
 <table>
-<thead><tr><th>#</th><th>Pipeline</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
+<thead><tr><th>#</th><th>Pipeline</th><th>Description</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
 <tbody>
-<tr><td>4</td><td>Causal Inference Weaver</td><td class="cjpi cjpi-enterprise">93.4</td><td>Cognitive</td><td class="chain">BRAIN → VISION → CORTEX → DREAM</td></tr>
-<tr><td>5</td><td>Predictive Architecture Surgeon</td><td class="cjpi cjpi-enterprise">92.7</td><td>Evolution</td><td class="chain">EVOLUTION → VISION → SYSTEM → CORTEX</td></tr>
-<tr><td>6</td><td>Autonomous Threat Neutralizer</td><td class="cjpi cjpi-enterprise">92.1</td><td>Security</td><td class="chain">DEFENSE → BRAIN → EVOLUTION → SYSTEM</td></tr>
-<tr><td>7</td><td>Multi-Horizon Planning Engine</td><td class="cjpi cjpi-enterprise">91.8</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → DREAM → VISION</td></tr>
-<tr><td>8</td><td>Cognitive Debt Liquidator</td><td class="cjpi cjpi-enterprise">91.5</td><td>Evolution</td><td class="chain">VISION → EVOLUTION → BRAIN → CORTEX</td></tr>
-<tr><td>9</td><td>Intent-to-Execution Compiler</td><td class="cjpi cjpi-enterprise">91.2</td><td>Orchestration</td><td class="chain">DECODE → CORTEX → SYSTEM → NEXUS</td></tr>
-<tr><td>10</td><td>Epistemic Confidence Calibrator</td><td class="cjpi cjpi-enterprise">90.9</td><td>Cognitive</td><td class="chain">BRAIN → CORTEX → GOVERNANCE → AUDIT</td></tr>
-<tr><td>11</td><td>Adversarial Resilience Forge</td><td class="cjpi cjpi-enterprise">90.6</td><td>Security</td><td class="chain">DEFENSE → DREAM → EVOLUTION → SYSTEM</td></tr>
-<tr><td>12</td><td>Knowledge Provenance Chain</td><td class="cjpi cjpi-enterprise">90.3</td><td>Governance</td><td class="chain">AUDIT → BRAIN → MEMORY → GOVERNANCE</td></tr>
-<tr><td>13</td><td>Emergent Capability Detector</td><td class="cjpi cjpi-enterprise">90.0</td><td>Evolution</td><td class="chain">VISION → BRAIN → EVOLUTION → ATLAS</td></tr>
-<tr><td>14</td><td>Semantic Conflict Arbitrator</td><td class="cjpi cjpi-enterprise">89.7</td><td>Cognitive</td><td class="chain">DECODE → BRAIN → CORTEX → GOVERNANCE</td></tr>
-<tr><td>15</td><td>Dynamic Trust Topology</td><td class="cjpi cjpi-enterprise">89.4</td><td>Security</td><td class="chain">IDENTITY → DEFENSE → BRAIN → NERVE</td></tr>
-<tr><td>16</td><td>Failure Intelligence Synthesizer</td><td class="cjpi cjpi-enterprise">89.1</td><td>Learning</td><td class="chain">MEDIC → BRAIN → DREAM → EVOLUTION</td></tr>
-<tr><td>17</td><td>Proactive SLA Guardian</td><td class="cjpi cjpi-enterprise">88.8</td><td>Observability</td><td class="chain">VISION → ANALYTICS → CORTEX → NEXUS</td></tr>
-<tr><td>18</td><td>Distributed Consensus Forge</td><td class="cjpi cjpi-enterprise">88.5</td><td>Orchestration</td><td class="chain">NERVE → CORTEX → GOVERNANCE → SYSTEM</td></tr>
-<tr><td>19</td><td>Cognitive Replay Accelerator</td><td class="cjpi cjpi-enterprise">88.2</td><td>Learning</td><td class="chain">MEMORY → DREAM → BRAIN → CORTEX</td></tr>
-<tr><td>20</td><td>Self-Healing Schema Migrator</td><td class="cjpi cjpi-enterprise">87.9</td><td>Integration</td><td class="chain">SYSTEM → VISION → EVOLUTION → INTEGRATION</td></tr>
-<tr><td>21</td><td>Autonomous Budget Reallocator</td><td class="cjpi cjpi-enterprise">87.6</td><td>Routing</td><td class="chain">ECONOMY → NEXUS → ANALYTICS → CORTEX</td></tr>
-<tr><td>22</td><td>Multi-Modal Reasoning Fuser</td><td class="cjpi cjpi-enterprise">87.3</td><td>Cognitive</td><td class="chain">DECODE → BRAIN → VISION → CORTEX</td></tr>
-<tr><td>23</td><td>Predictive Escalation Engine</td><td class="cjpi cjpi-enterprise">87.0</td><td>Orchestration</td><td class="chain">VISION → CORTEX → NERVE → GOVERNANCE</td></tr>
-<tr><td>24</td><td>Governance Entropy Reverser</td><td class="cjpi cjpi-enterprise">86.7</td><td>Governance</td><td class="chain">GOVERNANCE → VISION → EVOLUTION → AUDIT</td></tr>
-<tr><td>25</td><td>Latency-Aware Route Optimizer</td><td class="cjpi cjpi-enterprise">86.4</td><td>Routing</td><td class="chain">NEXUS → VISION → ANALYTICS → SYSTEM</td></tr>
-<tr><td>26</td><td>Context Decay Prevention Chain</td><td class="cjpi cjpi-enterprise">86.1</td><td>Cognitive</td><td class="chain">MEMORY → BRAIN → CORTEX → DREAM</td></tr>
-<tr><td>27</td><td>Cross-Epoch Knowledge Migrator</td><td class="cjpi cjpi-enterprise">85.8</td><td>Evolution</td><td class="chain">EVOLUTION → MEMORY → BRAIN → SYSTEM</td></tr>
-<tr><td>28</td><td>Privilege Boundary Synthesizer</td><td class="cjpi cjpi-enterprise">85.5</td><td>Security</td><td class="chain">ACCESS → DEFENSE → IDENTITY → GOVERNANCE</td></tr>
-<tr><td>29</td><td>Telemetry Intelligence Compiler</td><td class="cjpi cjpi-enterprise">85.2</td><td>Observability</td><td class="chain">VISION → ANALYTICS → BRAIN → CORTEX</td></tr>
+<tr><td>4</td><td>Causal Inference Weaver</td><td class="desc">Structured causal inference from observational data — distinguishes correlation from causation with counterfactual analysis.</td><td class="cjpi cjpi-enterprise">93.4</td><td>Cognitive</td><td class="chain">BRAIN → VISION → CORTEX → DREAM</td></tr>
+<tr><td>5</td><td>Predictive Architecture Surgeon</td><td class="desc">Predicts architectural bottlenecks and automatically proposes surgical refactoring with minimal blast radius.</td><td class="cjpi cjpi-enterprise">92.7</td><td>Evolution</td><td class="chain">EVOLUTION → VISION → SYSTEM → CORTEX</td></tr>
+<tr><td>6</td><td>Autonomous Threat Neutralizer</td><td class="desc">Fully autonomous threat response — detects, classifies, contains, and neutralizes security threats without human intervention.</td><td class="cjpi cjpi-enterprise">92.1</td><td>Security</td><td class="chain">DEFENSE → BRAIN → EVOLUTION → SYSTEM</td></tr>
+<tr><td>7</td><td>Multi-Horizon Planning Engine</td><td class="desc">Simultaneous planning across tactical (minutes), operational (hours), and strategic (weeks) time horizons with cross-horizon alignment.</td><td class="cjpi cjpi-enterprise">91.8</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → DREAM → VISION</td></tr>
+<tr><td>8</td><td>Cognitive Debt Liquidator</td><td class="desc">Identifies and systematically eliminates cognitive debt — outdated heuristics, stale models, and accumulated technical assumptions.</td><td class="cjpi cjpi-enterprise">91.5</td><td>Evolution</td><td class="chain">VISION → EVOLUTION → BRAIN → CORTEX</td></tr>
+<tr><td>9</td><td>Intent-to-Execution Compiler</td><td class="desc">Compiles high-level user intent into optimized execution plans with resource allocation, error handling, and progress tracking.</td><td class="cjpi cjpi-enterprise">91.2</td><td>Orchestration</td><td class="chain">DECODE → CORTEX → SYSTEM → NEXUS</td></tr>
+<tr><td>10</td><td>Epistemic Confidence Calibrator</td><td class="desc">Calibrates the system's confidence estimates to match actual accuracy — preventing both overconfidence and under-confidence.</td><td class="cjpi cjpi-enterprise">90.9</td><td>Cognitive</td><td class="chain">BRAIN → CORTEX → GOVERNANCE → AUDIT</td></tr>
+<tr><td>11</td><td>Adversarial Resilience Forge</td><td class="desc">Stress-tests system defenses using AI-generated adversarial scenarios and hardens weak points automatically.</td><td class="cjpi cjpi-enterprise">90.6</td><td>Security</td><td class="chain">DEFENSE → DREAM → EVOLUTION → SYSTEM</td></tr>
+<tr><td>12</td><td>Knowledge Provenance Chain</td><td class="desc">Tracks the complete provenance of every knowledge artifact — source, transformations, validations, and confidence chain.</td><td class="cjpi cjpi-enterprise">90.3</td><td>Governance</td><td class="chain">AUDIT → BRAIN → MEMORY → GOVERNANCE</td></tr>
+<tr><td>13</td><td>Emergent Capability Detector</td><td class="desc">Detects capabilities that emerge from module interactions but weren't explicitly programmed — the substrate discovering new abilities.</td><td class="cjpi cjpi-enterprise">90.0</td><td>Evolution</td><td class="chain">VISION → BRAIN → EVOLUTION → ATLAS</td></tr>
+<tr><td>14</td><td>Semantic Conflict Arbitrator</td><td class="desc">Resolves semantic conflicts between competing interpretations of user input using context weighting and disambiguation.</td><td class="cjpi cjpi-enterprise">89.7</td><td>Cognitive</td><td class="chain">DECODE → BRAIN → CORTEX → GOVERNANCE</td></tr>
+<tr><td>15</td><td>Dynamic Trust Topology</td><td class="desc">Maintains a real-time trust graph that evolves based on entity behavior, reputation, and verifiable credentials.</td><td class="cjpi cjpi-enterprise">89.4</td><td>Security</td><td class="chain">IDENTITY → DEFENSE → BRAIN → NERVE</td></tr>
+<tr><td>16</td><td>Failure Intelligence Synthesizer</td><td class="desc">Converts failure data into actionable intelligence — pattern extraction, prevention strategies, and resilience improvements.</td><td class="cjpi cjpi-enterprise">89.1</td><td>Learning</td><td class="chain">MEDIC → BRAIN → DREAM → EVOLUTION</td></tr>
+<tr><td>17</td><td>Proactive SLA Guardian</td><td class="desc">Monitors SLA trajectories and proactively intervenes (scaling, rerouting, throttling) before breaches occur.</td><td class="cjpi cjpi-enterprise">88.8</td><td>Observability</td><td class="chain">VISION → ANALYTICS → CORTEX → NEXUS</td></tr>
+<tr><td>18</td><td>Distributed Consensus Forge</td><td class="desc">High-throughput distributed consensus for multi-node coordination with configurable consistency guarantees.</td><td class="cjpi cjpi-enterprise">88.5</td><td>Orchestration</td><td class="chain">NERVE → CORTEX → GOVERNANCE → SYSTEM</td></tr>
+<tr><td>19</td><td>Cognitive Replay Accelerator</td><td class="desc">Accelerated replay of cognitive experiences during idle time for knowledge consolidation and skill reinforcement.</td><td class="cjpi cjpi-enterprise">88.2</td><td>Learning</td><td class="chain">MEMORY → DREAM → BRAIN → CORTEX</td></tr>
+<tr><td>20</td><td>Self-Healing Schema Migrator</td><td class="desc">Automatically detects schema drift, generates migration scripts, validates compatibility, and applies changes with rollback.</td><td class="cjpi cjpi-enterprise">87.9</td><td>Integration</td><td class="chain">SYSTEM → VISION → EVOLUTION → INTEGRATION</td></tr>
+<tr><td>21</td><td>Autonomous Budget Reallocator</td><td class="desc">Dynamically reallocates compute and API budgets across modules based on ROI, urgency, and strategic priority.</td><td class="cjpi cjpi-enterprise">87.6</td><td>Routing</td><td class="chain">ECONOMY → NEXUS → ANALYTICS → CORTEX</td></tr>
+<tr><td>22</td><td>Multi-Modal Reasoning Fuser</td><td class="desc">Fuses reasoning across text, structured data, and visual inputs into unified multi-modal understanding.</td><td class="cjpi cjpi-enterprise">87.3</td><td>Cognitive</td><td class="chain">DECODE → BRAIN → VISION → CORTEX</td></tr>
+<tr><td>23</td><td>Predictive Escalation Engine</td><td class="desc">Predicts when tasks will require escalation and pre-positions resources, context, and authority for smooth handoff.</td><td class="cjpi cjpi-enterprise">87.0</td><td>Orchestration</td><td class="chain">VISION → CORTEX → NERVE → GOVERNANCE</td></tr>
+<tr><td>24</td><td>Governance Entropy Reverser</td><td class="desc">Detects and reverses governance entropy — policy sprawl, redundant rules, contradictory constraints, and accountability gaps.</td><td class="cjpi cjpi-enterprise">86.7</td><td>Governance</td><td class="chain">GOVERNANCE → VISION → EVOLUTION → AUDIT</td></tr>
+<tr><td>25</td><td>Latency-Aware Route Optimizer</td><td class="desc">Routes requests using real-time latency maps with predictive congestion avoidance and geographic optimization.</td><td class="cjpi cjpi-enterprise">86.4</td><td>Routing</td><td class="chain">NEXUS → VISION → ANALYTICS → SYSTEM</td></tr>
+<tr><td>26</td><td>Context Decay Prevention Chain</td><td class="desc">Prevents context decay in long-running sessions by periodically refreshing, validating, and re-prioritizing context elements.</td><td class="cjpi cjpi-enterprise">86.1</td><td>Cognitive</td><td class="chain">MEMORY → BRAIN → CORTEX → DREAM</td></tr>
+<tr><td>27</td><td>Cross-Epoch Knowledge Migrator</td><td class="desc">Migrates knowledge and learned behaviors across evolutionary epochs without losing institutional wisdom.</td><td class="cjpi cjpi-enterprise">85.8</td><td>Evolution</td><td class="chain">EVOLUTION → MEMORY → BRAIN → SYSTEM</td></tr>
+<tr><td>28</td><td>Privilege Boundary Synthesizer</td><td class="desc">Automatically synthesizes minimal-privilege boundaries for new capabilities based on their access patterns and risk profile.</td><td class="cjpi cjpi-enterprise">85.5</td><td>Security</td><td class="chain">ACCESS → DEFENSE → IDENTITY → GOVERNANCE</td></tr>
+<tr><td>29</td><td>Telemetry Intelligence Compiler</td><td class="desc">Compiles raw telemetry streams into actionable intelligence reports with trend analysis and anomaly highlighting.</td><td class="cjpi cjpi-enterprise">85.2</td><td>Observability</td><td class="chain">VISION → ANALYTICS → BRAIN → CORTEX</td></tr>
 </tbody>
 </table>
 </div>
@@ -565,32 +327,34 @@
 
 <div class="table-wrap">
 <table>
-<thead><tr><th>#</th><th>Pipeline</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
+<thead><tr><th>#</th><th>Pipeline</th><th>Description</th><th>CJPI</th><th>Category</th><th>Module Chain</th></tr></thead>
 <tbody>
-<tr><td>30</td><td>Incremental Reasoning Compiler</td><td class="cjpi cjpi-architect">84.9</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → MEMORY → DREAM</td></tr>
-<tr><td>31</td><td>Cost-Aware Execution Planner</td><td class="cjpi cjpi-architect">84.6</td><td>Routing</td><td class="chain">ECONOMY → CORTEX → NEXUS → ANALYTICS</td></tr>
-<tr><td>32</td><td>Adaptive Retry Orchestrator</td><td class="cjpi cjpi-architect">84.3</td><td>Orchestration</td><td class="chain">SYSTEM → MEDIC → CORTEX → NEXUS</td></tr>
-<tr><td>33</td><td>Multi-Tenant Context Isolator</td><td class="cjpi cjpi-architect">84.0</td><td>Security</td><td class="chain">DEFENSE → IDENTITY → BRAIN → CORTEX</td></tr>
-<tr><td>34</td><td>Dream-to-Action Converter</td><td class="cjpi cjpi-architect">83.7</td><td>Learning</td><td class="chain">DREAM → CORTEX → SYSTEM → NEXUS</td></tr>
-<tr><td>35</td><td>Operational Wisdom Extractor</td><td class="cjpi cjpi-architect">83.4</td><td>Learning</td><td class="chain">AUDIT → BRAIN → DREAM → EVOLUTION</td></tr>
-<tr><td>36</td><td>Health-Aware Load Balancer</td><td class="cjpi cjpi-architect">83.1</td><td>Routing</td><td class="chain">MEDIC → NEXUS → VISION → SYSTEM</td></tr>
-<tr><td>37</td><td>Automated Compliance Prover</td><td class="cjpi cjpi-architect">82.8</td><td>Governance</td><td class="chain">GOVERNANCE → AUDIT → DEFENSE → ANALYTICS</td></tr>
-<tr><td>38</td><td>Cross-Pipeline State Reconciler</td><td class="cjpi cjpi-architect">82.5</td><td>Orchestration</td><td class="chain">CORTEX → MEMORY → SYSTEM → NERVE</td></tr>
-<tr><td>39</td><td>Embedding Drift Detector</td><td class="cjpi cjpi-architect">82.2</td><td>Observability</td><td class="chain">BRAIN → VISION → ANALYTICS → EVOLUTION</td></tr>
-<tr><td>40</td><td>Semantic Version Reconciler</td><td class="cjpi cjpi-architect">81.9</td><td>Integration</td><td class="chain">INTEGRATION → SYSTEM → GOVERNANCE → VISION</td></tr>
-<tr><td>41</td><td>Cognitive Warm-Up Accelerator</td><td class="cjpi cjpi-architect">81.6</td><td>Learning</td><td class="chain">MEMORY → BRAIN → CORTEX → DECODE</td></tr>
-<tr><td>42</td><td>Incident Timeline Reconstructor</td><td class="cjpi cjpi-architect">81.3</td><td>Observability</td><td class="chain">AUDIT → VISION → BRAIN → SYSTEM</td></tr>
-<tr><td>43</td><td>Resource Contention Resolver</td><td class="cjpi cjpi-architect">81.0</td><td>Orchestration</td><td class="chain">SYSTEM → CORTEX → ECONOMY → NEXUS</td></tr>
-<tr><td>44</td><td>Mutation Impact Simulator</td><td class="cjpi cjpi-architect">80.8</td><td>Evolution</td><td class="chain">EVOLUTION → DREAM → VISION → GOVERNANCE</td></tr>
-<tr><td>45</td><td>Session Intelligence Aggregator</td><td class="cjpi cjpi-architect">80.6</td><td>Cognitive</td><td class="chain">DECODE → MEMORY → BRAIN → ANALYTICS</td></tr>
-<tr><td>46</td><td>API Deprecation Orchestrator</td><td class="cjpi cjpi-architect">80.4</td><td>Integration</td><td class="chain">INTEGRATION → VISION → GOVERNANCE → SYSTEM</td></tr>
-<tr><td>47</td><td>Autonomous Recovery Sequencer</td><td class="cjpi cjpi-architect">80.3</td><td>Security</td><td class="chain">MEDIC → DEFENSE → SYSTEM → EVOLUTION</td></tr>
-<tr><td>48</td><td>Prompt Evolution Tracker</td><td class="cjpi cjpi-architect">80.2</td><td>Evolution</td><td class="chain">DECODE → EVOLUTION → BRAIN → ANALYTICS</td></tr>
-<tr><td>49</td><td>Economic Signal Propagator</td><td class="cjpi cjpi-architect">80.1</td><td>Routing</td><td class="chain">ECONOMY → ANALYTICS → NEXUS → CORTEX</td></tr>
-<tr><td>50</td><td>Entropy-Aware Garbage Collector</td><td class="cjpi cjpi-architect">80.0</td><td>Evolution</td><td class="chain">SYSTEM → VISION → EVOLUTION → MEMORY</td></tr>
+<tr><td>30</td><td>Incremental Reasoning Compiler</td><td class="desc">Compiles complex reasoning tasks into incremental steps that can be checkpointed, resumed, and parallelized.</td><td class="cjpi cjpi-architect">84.9</td><td>Cognitive</td><td class="chain">CORTEX → BRAIN → MEMORY → DREAM</td></tr>
+<tr><td>31</td><td>Cost-Aware Execution Planner</td><td class="desc">Plans task execution with cost as a first-class constraint — selecting strategies that optimize quality-per-dollar.</td><td class="cjpi cjpi-architect">84.6</td><td>Routing</td><td class="chain">ECONOMY → CORTEX → NEXUS → ANALYTICS</td></tr>
+<tr><td>32</td><td>Adaptive Retry Orchestrator</td><td class="desc">Intelligent retry logic with exponential backoff, jitter, circuit breaking, and alternative path selection.</td><td class="cjpi cjpi-architect">84.3</td><td>Orchestration</td><td class="chain">SYSTEM → MEDIC → CORTEX → NEXUS</td></tr>
+<tr><td>33</td><td>Multi-Tenant Context Isolator</td><td class="desc">Guarantees zero context leakage between tenants during shared-infrastructure cognitive operations.</td><td class="cjpi cjpi-architect">84.0</td><td>Security</td><td class="chain">DEFENSE → IDENTITY → BRAIN → CORTEX</td></tr>
+<tr><td>34</td><td>Dream-to-Action Converter</td><td class="desc">Converts dream-cycle insights and hypotheses into concrete, executable action plans with resource estimates.</td><td class="cjpi cjpi-architect">83.7</td><td>Learning</td><td class="chain">DREAM → CORTEX → SYSTEM → NEXUS</td></tr>
+<tr><td>35</td><td>Operational Wisdom Extractor</td><td class="desc">Extracts operational wisdom from audit logs, incident reports, and post-mortems into reusable playbooks.</td><td class="cjpi cjpi-architect">83.4</td><td>Learning</td><td class="chain">AUDIT → BRAIN → DREAM → EVOLUTION</td></tr>
+<tr><td>36</td><td>Health-Aware Load Balancer</td><td class="desc">Routes traffic away from degraded providers before failures occur using health prediction and capacity scoring.</td><td class="cjpi cjpi-architect">83.1</td><td>Routing</td><td class="chain">MEDIC → NEXUS → VISION → SYSTEM</td></tr>
+<tr><td>37</td><td>Automated Compliance Prover</td><td class="desc">Generates mathematical proofs of compliance for specific regulatory requirements using formal verification.</td><td class="cjpi cjpi-architect">82.8</td><td>Governance</td><td class="chain">GOVERNANCE → AUDIT → DEFENSE → ANALYTICS</td></tr>
+<tr><td>38</td><td>Cross-Pipeline State Reconciler</td><td class="desc">Reconciles state across concurrent pipelines that share resources, preventing conflicts and ensuring consistency.</td><td class="cjpi cjpi-architect">82.5</td><td>Orchestration</td><td class="chain">CORTEX → MEMORY → SYSTEM → NERVE</td></tr>
+<tr><td>39</td><td>Embedding Drift Detector</td><td class="desc">Monitors embedding spaces for distribution drift that indicates model degradation or data quality issues.</td><td class="cjpi cjpi-architect">82.2</td><td>Observability</td><td class="chain">BRAIN → VISION → ANALYTICS → EVOLUTION</td></tr>
+<tr><td>40</td><td>Semantic Version Reconciler</td><td class="desc">Reconciles semantic versioning across integration endpoints with automatic compatibility matrix generation.</td><td class="cjpi cjpi-architect">81.9</td><td>Integration</td><td class="chain">INTEGRATION → SYSTEM → GOVERNANCE → VISION</td></tr>
+<tr><td>41</td><td>Cognitive Warm-Up Accelerator</td><td class="desc">Pre-loads relevant context, memories, and skill models during session initialization for instant readiness.</td><td class="cjpi cjpi-architect">81.6</td><td>Learning</td><td class="chain">MEMORY → BRAIN → CORTEX → DECODE</td></tr>
+<tr><td>42</td><td>Incident Timeline Reconstructor</td><td class="desc">Reconstructs precise incident timelines from distributed logs with causality ordering and gap detection.</td><td class="cjpi cjpi-architect">81.3</td><td>Observability</td><td class="chain">AUDIT → VISION → BRAIN → SYSTEM</td></tr>
+<tr><td>43</td><td>Resource Contention Resolver</td><td class="desc">Detects and resolves resource contention between concurrent operations using priority-based arbitration.</td><td class="cjpi cjpi-architect">81.0</td><td>Orchestration</td><td class="chain">SYSTEM → CORTEX → ECONOMY → NEXUS</td></tr>
+<tr><td>44</td><td>Mutation Impact Simulator</td><td class="desc">Monte Carlo simulation of mutation outcomes across system state space to predict success probability and risk.</td><td class="cjpi cjpi-architect">80.8</td><td>Evolution</td><td class="chain">EVOLUTION → DREAM → VISION → GOVERNANCE</td></tr>
+<tr><td>45</td><td>Session Intelligence Aggregator</td><td class="desc">Aggregates intelligence from multiple user sessions to build cross-session behavioral models and preference profiles.</td><td class="cjpi cjpi-architect">80.6</td><td>Cognitive</td><td class="chain">DECODE → MEMORY → BRAIN → ANALYTICS</td></tr>
+<tr><td>46</td><td>API Deprecation Orchestrator</td><td class="desc">Manages API lifecycle from deprecation notice through migration assistance to final sunset with zero disruption.</td><td class="cjpi cjpi-architect">80.4</td><td>Integration</td><td class="chain">INTEGRATION → VISION → GOVERNANCE → SYSTEM</td></tr>
+<tr><td>47</td><td>Autonomous Recovery Sequencer</td><td class="desc">Sequences multi-step recovery procedures automatically with dependency ordering and validation checkpoints.</td><td class="cjpi cjpi-architect">80.3</td><td>Security</td><td class="chain">MEDIC → DEFENSE → SYSTEM → EVOLUTION</td></tr>
+<tr><td>48</td><td>Prompt Evolution Tracker</td><td class="desc">Tracks prompt engineering evolution over time — versioning, A/B performance, regression detection, and optimization suggestions.</td><td class="cjpi cjpi-architect">80.2</td><td>Evolution</td><td class="chain">DECODE → EVOLUTION → BRAIN → ANALYTICS</td></tr>
+<tr><td>49</td><td>Economic Signal Propagator</td><td class="desc">Propagates economic signals (cost changes, budget alerts, ROI shifts) across the module mesh in real-time.</td><td class="cjpi cjpi-architect">80.1</td><td>Routing</td><td class="chain">ECONOMY → ANALYTICS → NEXUS → CORTEX</td></tr>
+<tr><td>50</td><td>Entropy-Aware Garbage Collector</td><td class="desc">Identifies and removes high-entropy artifacts (stale configs, orphaned state, dead code paths) based on value scoring.</td><td class="cjpi cjpi-architect">80.0</td><td>Evolution</td><td class="chain">SYSTEM → VISION → EVOLUTION → MEMORY</td></tr>
 </tbody>
 </table>
 </div>
+
+<p><strong>Total Wave 8 Crystallized: 50 pipelines</strong> (3 Apex, 26 Enterprise, 21 Architect)</p>
 
 <!-- ============================================================ -->
 <h2 id="crownjewels">Crown Jewel Capabilities — S-Tier Registry</h2>
@@ -610,55 +374,47 @@
 <tr><td>8</td><td>S-126</td><td>Self-Healing Orchestrator</td><td class="cjpi cjpi-apex">96</td><td><span class="module-tag">IMMUNITY</span></td><td>✅</td></tr>
 <tr><td>9</td><td>S-71</td><td>Tamper-Evident Chain</td><td class="cjpi cjpi-apex">95</td><td><span class="module-tag">AUDIT</span></td><td>✅</td></tr>
 <tr><td>10</td><td>S-99</td><td>Write-Ahead Log Engine</td><td class="cjpi cjpi-apex">95</td><td><span class="module-tag">MEMORY</span></td><td>✅</td></tr>
-<tr><td>11</td><td>S-72</td><td>Pipeline Composition Engine</td><td class="cjpi cjpi-enterprise">95</td><td><span class="module-tag">CORTEX</span></td><td>—</td></tr>
-<tr><td>12</td><td>S-123</td><td>Mutation Proposal Engine</td><td class="cjpi cjpi-enterprise">95</td><td><span class="module-tag">EVOLUTION</span></td><td>—</td></tr>
-<tr><td>13</td><td>S-120</td><td>Multi-Model Consensus</td><td class="cjpi cjpi-enterprise">94</td><td><span class="module-tag">NEXUS</span></td><td>—</td></tr>
-<tr><td>14</td><td>S-73</td><td>Nocturne Consolidation Cycle</td><td class="cjpi cjpi-enterprise">94</td><td><span class="module-tag">DREAM</span></td><td>—</td></tr>
-<tr><td>15</td><td>S-74</td><td>Semantic Knowledge Graph</td><td class="cjpi cjpi-enterprise">94</td><td><span class="module-tag">BRAIN</span></td><td>—</td></tr>
-<tr><td>16</td><td>S-103</td><td>Context Threading Engine</td><td class="cjpi cjpi-enterprise">94</td><td><span class="module-tag">DECODE</span></td><td>—</td></tr>
-<tr><td>17</td><td>S-105</td><td>SM-2 Spaced Repetition Tiering</td><td class="cjpi cjpi-enterprise">94</td><td><span class="module-tag">MEMORY</span></td><td>—</td></tr>
-<tr><td>18</td><td>S-128</td><td>Veto Authority Engine</td><td class="cjpi cjpi-enterprise">94</td><td><span class="module-tag">GOVERNANCE</span></td><td>—</td></tr>
-<tr><td>19</td><td>S-135</td><td>Pattern Extraction Engine</td><td class="cjpi cjpi-enterprise">93</td><td><span class="module-tag">DREAM</span></td><td>—</td></tr>
-<tr><td>20</td><td>S-75</td><td>Partition Detection Oracle</td><td class="cjpi cjpi-enterprise">93</td><td><span class="module-tag">NERVE</span></td><td>—</td></tr>
-<tr><td colspan="6" style="text-align:center;color:var(--muted-foreground);font-style:italic;padding:1rem;">… 122 additional S-Tier artifacts (CJPI 85–92) across 30 canonical modules</td></tr>
+<tr><td>11</td><td>S-72</td><td>Pipeline Composition Engine</td><td class="cjpi cjpi-apex">95</td><td><span class="module-tag">CORTEX</span></td><td>—</td></tr>
+<tr><td>12</td><td>S-123</td><td>Mutation Proposal Engine</td><td class="cjpi cjpi-apex">95</td><td><span class="module-tag">EVOLUTION</span></td><td>—</td></tr>
+<tr><td>13–142</td><td colspan="5"><em>130 additional S-Tier artifacts (CJPI 85–94) across 30 canonical modules. Full list maintained in S-Tier Vault.</em></td></tr>
 </tbody>
 </table>
 </div>
 
 <!-- ============================================================ -->
-<h2 id="metaengines">Meta-Engines</h2>
-<p><strong>26 Meta-Engines</strong> orchestrating 76 engines → 429+ capabilities.</p>
+<h2 id="metaengines">Meta-Engines (26)</h2>
+<p>Orchestration layers that coordinate multiple engines into unified capability meshes.</p>
 
 <div class="table-wrap">
 <table>
 <thead><tr><th>#</th><th>Meta-Engine</th><th>Category</th><th>Engines</th><th>Capabilities</th><th>Synergy</th><th>Mode</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>Memory Intelligence Fabric</td><td>Cognitive</td><td>5</td><td>31</td><td>8.4×</td><td>Adaptive</td></tr>
-<tr><td>2</td><td>World-First Operational</td><td>Autonomous</td><td>4</td><td>14</td><td>8.2×</td><td>Parallel</td></tr>
-<tr><td>3</td><td>Enterprise Trust Fabric</td><td>Governance</td><td>3</td><td>27</td><td>8.2×</td><td>Staged</td></tr>
-<tr><td>4</td><td>Immune Autonomy Mesh</td><td>Autonomous</td><td>4</td><td>24</td><td>8.0×</td><td>Parallel</td></tr>
-<tr><td>5</td><td>World-First Cognitive</td><td>Cognitive</td><td>3</td><td>12</td><td>7.8×</td><td>Adaptive</td></tr>
-<tr><td>6</td><td>Resilience Shield</td><td>Protection</td><td>4</td><td>18</td><td>7.6×</td><td>Parallel</td></tr>
-<tr><td>7</td><td>Platform Economics Engine</td><td>Resource</td><td>3</td><td>27</td><td>7.6×</td><td>Adaptive</td></tr>
-<tr><td>8</td><td>World-First Intelligence</td><td>Intelligence</td><td>3</td><td>12</td><td>7.5×</td><td>Staged</td></tr>
-<tr><td>9</td><td>Autonomous Operator</td><td>Autonomous</td><td>4</td><td>23</td><td>7.4×</td><td>Staged</td></tr>
-<tr><td>10</td><td>Deep Cognition Nexus</td><td>Intelligence</td><td>4</td><td>20</td><td>7.4×</td><td>Staged</td></tr>
-<tr><td>11</td><td>Security Fortress</td><td>Protection</td><td>4</td><td>14</td><td>7.2×</td><td>Parallel</td></tr>
-<tr><td>12</td><td>World-First Governance</td><td>Governance</td><td>4</td><td>14</td><td>7.2×</td><td>Cascade</td></tr>
-<tr><td>13</td><td>System Guardian</td><td>Protection</td><td>3</td><td>13</td><td>6.8×</td><td>Parallel</td></tr>
-<tr><td>14</td><td>Workflow Orchestrator</td><td>Workflow</td><td>3</td><td>12</td><td>6.8×</td><td>Staged</td></tr>
-<tr><td>15</td><td>Self Governance</td><td>Self Mgmt</td><td>3</td><td>13</td><td>6.5×</td><td>Staged</td></tr>
-<tr><td>16</td><td>Creative Forge</td><td>Creativity</td><td>3</td><td>12</td><td>6.2×</td><td>Adaptive</td></tr>
-<tr><td>17</td><td>Resource Governor</td><td>Resource</td><td>3</td><td>12</td><td>5.8×</td><td>Parallel</td></tr>
-<tr><td>18</td><td>Knowledge Nexus</td><td>Knowledge</td><td>3</td><td>12</td><td>5.8×</td><td>Adaptive</td></tr>
-<tr><td>19</td><td>Intelligence Pipeline</td><td>Intelligence</td><td>3</td><td>13</td><td>5.6×</td><td>Cascade</td></tr>
-<tr><td>20</td><td>Perception Matrix</td><td>Perception</td><td>3</td><td>12</td><td>5.5×</td><td>Parallel</td></tr>
-<tr><td>21</td><td>Performance Optimizer</td><td>Performance</td><td>3</td><td>17</td><td>5.4×</td><td>Adaptive</td></tr>
-<tr><td>22</td><td>Cognitive Mesh</td><td>Cognitive</td><td>4</td><td>22</td><td>5.2×</td><td>Adaptive</td></tr>
-<tr><td>23</td><td>Data Highway</td><td>Integration</td><td>3</td><td>12</td><td>5.2×</td><td>Cascade</td></tr>
-<tr><td>24</td><td>Event Fabric</td><td>Communication</td><td>3</td><td>11</td><td>5.0×</td><td>Parallel</td></tr>
-<tr><td>25</td><td>Quality Fabric</td><td>Governance</td><td>3</td><td>12</td><td>4.8×</td><td>Cascade</td></tr>
-<tr><td>26</td><td>Adaptation Suite</td><td>Experience</td><td>3</td><td>15</td><td>4.6×</td><td>Adaptive</td></tr>
+<tr><td>1</td><td>Cognitive Mesh</td><td>cognitive</td><td>4</td><td>22</td><td>5.2×</td><td>adaptive</td></tr>
+<tr><td>2</td><td>System Guardian</td><td>protection</td><td>3</td><td>13</td><td>6.8×</td><td>parallel</td></tr>
+<tr><td>3</td><td>Autonomous Operator</td><td>autonomous</td><td>4</td><td>23</td><td>7.4×</td><td>staged</td></tr>
+<tr><td>4</td><td>Quality Fabric</td><td>governance</td><td>3</td><td>12</td><td>4.8×</td><td>cascade</td></tr>
+<tr><td>5</td><td>Intelligence Pipeline</td><td>intelligence</td><td>3</td><td>13</td><td>5.6×</td><td>cascade</td></tr>
+<tr><td>6</td><td>Adaptation Suite</td><td>experience</td><td>3</td><td>15</td><td>4.6×</td><td>adaptive</td></tr>
+<tr><td>7</td><td>Security Fortress</td><td>protection</td><td>4</td><td>14</td><td>7.2×</td><td>parallel</td></tr>
+<tr><td>8</td><td>Performance Optimizer</td><td>performance</td><td>3</td><td>17</td><td>5.4×</td><td>adaptive</td></tr>
+<tr><td>9</td><td>Event Fabric</td><td>communication</td><td>3</td><td>11</td><td>5.0×</td><td>parallel</td></tr>
+<tr><td>10</td><td>Data Highway</td><td>integration</td><td>3</td><td>12</td><td>5.2×</td><td>cascade</td></tr>
+<tr><td>11</td><td>Knowledge Nexus</td><td>knowledge</td><td>3</td><td>12</td><td>5.8×</td><td>adaptive</td></tr>
+<tr><td>12</td><td>Self Governance</td><td>self_management</td><td>3</td><td>13</td><td>6.5×</td><td>staged</td></tr>
+<tr><td>13</td><td>Creative Forge</td><td>creativity</td><td>3</td><td>12</td><td>6.2×</td><td>adaptive</td></tr>
+<tr><td>14</td><td>Perception Matrix</td><td>perception</td><td>3</td><td>12</td><td>5.5×</td><td>parallel</td></tr>
+<tr><td>15</td><td>Resource Governor</td><td>resource</td><td>3</td><td>12</td><td>5.8×</td><td>parallel</td></tr>
+<tr><td>16</td><td>Workflow Orchestrator</td><td>workflow</td><td>3</td><td>12</td><td>6.8×</td><td>staged</td></tr>
+<tr><td>17</td><td>World-First Cognitive</td><td>cognitive</td><td>3</td><td>12</td><td>7.8×</td><td>adaptive</td></tr>
+<tr><td>18</td><td>World-First Operational</td><td>autonomous</td><td>4</td><td>14</td><td>8.2×</td><td>parallel</td></tr>
+<tr><td>19</td><td>World-First Intelligence</td><td>intelligence</td><td>3</td><td>12</td><td>7.5×</td><td>staged</td></tr>
+<tr><td>20</td><td>World-First Governance</td><td>governance</td><td>4</td><td>14</td><td>7.2×</td><td>cascade</td></tr>
+<tr><td>21</td><td>Resilience Shield</td><td>protection</td><td>4</td><td>18</td><td>7.6×</td><td>parallel</td></tr>
+<tr><td>22</td><td>Deep Cognition Nexus</td><td>intelligence</td><td>4</td><td>20</td><td>7.4×</td><td>staged</td></tr>
+<tr><td>23</td><td>Enterprise Trust Fabric</td><td>governance</td><td>3</td><td>27</td><td>8.2×</td><td>staged</td></tr>
+<tr><td>24</td><td>Platform Economics Engine</td><td>resource</td><td>3</td><td>27</td><td>7.6×</td><td>adaptive</td></tr>
+<tr><td>25</td><td>Memory Intelligence Fabric</td><td>cognitive</td><td>5</td><td>31</td><td>8.4×</td><td>adaptive</td></tr>
+<tr><td>26</td><td>Immune Autonomy Mesh</td><td>autonomous</td><td>4</td><td>24</td><td>8.0×</td><td>parallel</td></tr>
 </tbody>
 </table>
 </div>
@@ -667,69 +423,21 @@
 <h2 id="stats">Discovery Statistics</h2>
 
 <div class="stat-grid">
-  <div class="stat-card">
-    <div class="stat-value">150</div>
-    <div class="stat-label">Total Pipelines</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">126</div>
-    <div class="stat-label">CJPI ≥ 80</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">4</div>
-    <div class="stat-label">Apex (95+)</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">75</div>
-    <div class="stat-label">Enterprise (85–94)</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">47</div>
-    <div class="stat-label">Architect (80–84)</div>
-  </div>
+  <div class="stat-card"><div class="stat-value">150</div><div class="stat-label">Total Pipelines</div></div>
+  <div class="stat-card"><div class="stat-value">4</div><div class="stat-label">Apex (95+)</div></div>
+  <div class="stat-card"><div class="stat-value">65</div><div class="stat-label">Enterprise (85–94)</div></div>
+  <div class="stat-card"><div class="stat-value">57</div><div class="stat-label">Architect (80–84)</div></div>
+  <div class="stat-card"><div class="stat-value">30</div><div class="stat-label">Canonical Modules</div></div>
 </div>
 
-<h3>Wave 8 Category Breakdown</h3>
-
-<div class="table-wrap">
-<table>
-<thead><tr><th>Category</th><th>Count</th><th>Avg CJPI</th><th>Highest</th></tr></thead>
-<tbody>
-<tr><td>Cognitive</td><td>10</td><td>87.8</td><td>97.2</td></tr>
-<tr><td>Evolution</td><td>8</td><td>86.9</td><td>96.1</td></tr>
-<tr><td>Security</td><td>6</td><td>87.2</td><td>92.1</td></tr>
-<tr><td>Governance</td><td>5</td><td>87.0</td><td>95.8</td></tr>
-<tr><td>Orchestration</td><td>5</td><td>85.3</td><td>91.2</td></tr>
-<tr><td>Routing</td><td>5</td><td>83.5</td><td>87.6</td></tr>
-<tr><td>Observability</td><td>4</td><td>83.4</td><td>88.8</td></tr>
-<tr><td>Learning</td><td>4</td><td>84.4</td><td>89.1</td></tr>
-<tr><td>Integration</td><td>3</td><td>81.5</td><td>87.9</td></tr>
-</tbody>
-</table>
-</div>
-
-<h3>Program Totals (All Waves)</h3>
-
-<div class="table-wrap">
-<table>
-<thead><tr><th>Asset Class</th><th>Count</th><th>Source</th></tr></thead>
-<tbody>
-<tr><td>Crystallized Pipelines</td><td>150</td><td>Wave 7 (100) + Wave 8 (50)</td></tr>
-<tr><td>S-Tier Crown Jewels</td><td>142</td><td>Registry</td></tr>
-<tr><td>Meta-Engines</td><td>26</td><td>Synergy Mining</td></tr>
-<tr><td>Total Capabilities</td><td>429+</td><td>Aggregate</td></tr>
-<tr><td>Canonical Modules</td><td>30</td><td>Substrate</td></tr>
-</tbody>
-</table>
-</div>
-
-<hr>
-
-<blockquote>This document is the single source of truth for all high-value discoveries. Auto-updated each time a new pipeline is crystallized or a crown jewel is minted through the CJPI scoring program.</blockquote>
+<blockquote>
+  <strong>Estimated Total Viable 80+ Pipelines:</strong> Based on the combinatorial space of 30 canonical modules × 9 categories × synergy multipliers, there are approximately <strong>300–400 viable pipelines</strong> scoring CJPI ≥ 80. 150 have been crystallized so far (~40% of the estimated total). Discovery velocity increases as the reactor's template library grows.
+</blockquote>
 
 <footer class="doc-footer">
-  <strong>CMPSBL®</strong> — Cognitive Infrastructure Layer for AI<br>
-  cmpsbl.ai &bull; Confidential
+  <p><strong>CMPSBL® Crown Jewel Mining Program</strong> — Living Document</p>
+  <p>Auto-updated by the Capability Synthesis Reactor. Single source of truth for all high-value discoveries.</p>
+  <p>Last Updated: March 2, 2026 • Waves 7 + 8 Complete • Reactor v1.0</p>
 </footer>
 
 </body>
