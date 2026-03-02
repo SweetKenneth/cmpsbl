@@ -130,7 +130,77 @@ export type CapabilityId =
   | 'multi_agent_coordinator'
   | 'task_decomposition_engine'
   | 'goal_alignment_validator'
-  | 'execution_priority_balancer';
+  | 'execution_priority_balancer'
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EXPANSION MODULE CAPABILITIES (44) — 11 New Modules × 4 Each
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // SOVEREIGN Module (4)
+  | 'jurisdiction_classifier'
+  | 'regulation_enforcer'
+  | 'compliance_attestation_engine'
+  | 'sovereignty_audit_chain'
+
+  // ORACLE Module (4)
+  | 'predictive_model_calibrator'
+  | 'scenario_simulation_engine'
+  | 'forecast_confidence_scorer'
+  | 'trend_extrapolation_advisor'
+
+  // CONSCIENCE Module (4)
+  | 'bias_detection_scanner'
+  | 'fairness_score_calculator'
+  | 'ethical_impact_assessor'
+  | 'transparency_report_generator'
+
+  // PHANTOM Module (4)
+  | 'data_anonymization_engine'
+  | 'privacy_minimization_guard'
+  | 'differential_privacy_injector'
+  | 'consent_audit_tracker'
+
+  // FORGE Module (4)
+  | 'artifact_recombination_engine'
+  | 'synthesis_validation_pipeline'
+  | 'creative_mutation_generator'
+  | 'deployment_readiness_scorer'
+
+  // LINGUA Module (4)
+  | 'realtime_translation_engine'
+  | 'language_detection_classifier'
+  | 'glossary_consistency_guard'
+  | 'localization_coverage_tracker'
+
+  // COMPASS Module (4)
+  | 'geofence_policy_enforcer'
+  | 'risk_geography_mapper'
+  | 'latency_aware_region_router'
+  | 'spatial_anomaly_detector'
+
+  // ECHO Module (4)
+  | 'digital_twin_synchronizer'
+  | 'simulation_drift_detector'
+  | 'state_diff_reconciler'
+  | 'twin_health_monitor'
+
+  // TREATY Module (4)
+  | 'contract_negotiation_engine'
+  | 'sla_enforcement_monitor'
+  | 'breach_detection_alerter'
+  | 'agreement_lifecycle_tracker'
+
+  // HARVEST Module (4)
+  | 'source_discovery_crawler'
+  | 'data_quality_scorer'
+  | 'deduplication_engine'
+  | 'ingestion_pipeline_optimizer'
+
+  // REFLEX Module (4)
+  | 'edge_dispatch_coordinator'
+  | 'realtime_decision_engine'
+  | 'latency_critical_router'
+  | 'distributed_sync_orchestrator';
 
 export type ModuleLayer = 'Kernel' | 'Cognitive' | 'Operational' | 'Admin' | 'Orchestrator' | 'infrastructure';
 
