@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export interface BayesianNetwork {
   id: string;
@@ -79,13 +80,17 @@ const state: OracleModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initOracle(): void {
   emitStarted('oracle', 'init', {});
   try {
     initCircuitBreaker('oracle', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('oracle', '1.0.0');
+    hardening = createModuleHardening('oracle', { maxConcurrent: 15, rateLimit: 200, healthThreshold: 30 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getOracleHealth(), () => { state.accuracyScore = 0; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('oracle', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -191,6 +196,12 @@ export function predict(target: string, features: Record<string, number>, method
 }
 
 export function getOracleState(): OracleModuleState { return { ...state }; }
-export function getOracleHealth(): number { return state.initialized ? 100 : 0; }
+export function getOracleHealth(): number {
+  if (!state.initialized) return 0;
+  if (hardening?.isDegraded()) return 40;
+  return 100;
+}
 export function getOracleResilience() { return getModuleResilienceReport('oracle', getOracleHealth()); }
 export function getOracleEngine() { return moduleEngine; }
+export function getOracleHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeOracleEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }

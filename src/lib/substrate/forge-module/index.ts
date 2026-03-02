@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export type ForgeLanguage = 'typescript' | 'python' | 'go' | 'rust' | 'sql' | 'json_schema';
 export type ForgeArtifactType = 'function' | 'module' | 'api_endpoint' | 'schema' | 'test' | 'pipeline';
@@ -73,13 +74,17 @@ const state: ForgeModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initForge(): void {
   emitStarted('forge', 'init', {});
   try {
     initCircuitBreaker('forge', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('forge', '1.0.0');
+    hardening = createModuleHardening('forge', { maxConcurrent: 5, rateLimit: 30, healthThreshold: 40 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getForgeHealth(), () => { state.successRate = 100; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('forge', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -168,6 +173,8 @@ function recalculate(): void {
 }
 
 export function getForgeState(): ForgeModuleState { return { ...state }; }
-export function getForgeHealth(): number { return state.initialized ? state.successRate : 0; }
+export function getForgeHealth(): number { if (!state.initialized) return 0; if (hardening?.isDegraded()) return Math.min(state.successRate, 40); return state.successRate; }
 export function getForgeResilience() { return getModuleResilienceReport('forge', getForgeHealth()); }
 export function getForgeEngine() { return moduleEngine; }
+export function getForgeHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeForgeEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }

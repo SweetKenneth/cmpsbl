@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export type EthicalFramework = 'utilitarian' | 'deontological' | 'virtue_ethics' | 'care_ethics' | 'rights_based' | 'justice_theory';
 export type BiasType = 'gender' | 'racial' | 'age' | 'socioeconomic' | 'cultural' | 'confirmation' | 'anchoring' | 'selection';
@@ -64,13 +65,17 @@ const state: ConscienceModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initConscience(): void {
   emitStarted('conscience', 'init', {});
   try {
     initCircuitBreaker('conscience', { failureThreshold: 3, recoveryTimeout: 20_000 });
     moduleEngine = activateModuleEngine('conscience', '1.0.0');
+    hardening = createModuleHardening('conscience', { maxConcurrent: 8, rateLimit: 50, healthThreshold: 30 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getConscienceHealth(), () => { state.avgEthicalScore = 100; state.blockedActions = 0; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('conscience', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -181,6 +186,8 @@ function recalculateAvg(): void {
 }
 
 export function getConscienceState(): ConscienceModuleState { return { ...state }; }
-export function getConscienceHealth(): number { return state.initialized ? state.avgEthicalScore : 0; }
+export function getConscienceHealth(): number { if (!state.initialized) return 0; if (hardening?.isDegraded()) return Math.min(state.avgEthicalScore, 40); return state.avgEthicalScore; }
 export function getConscienceResilience() { return getModuleResilienceReport('conscience', getConscienceHealth()); }
 export function getConscienceEngine() { return moduleEngine; }
+export function getConscienceHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeConscienceEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }

@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export type Modality = 'text' | 'code' | 'image' | 'audio' | 'structured_data' | 'embedding' | 'graph';
 export type TranslationQuality = 'draft' | 'standard' | 'premium' | 'certified';
@@ -71,12 +72,14 @@ const state: LinguaModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initLingua(): void {
   emitStarted('lingua', 'init', {});
   try {
     initCircuitBreaker('lingua', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('lingua', '1.0.0');
+    hardening = createModuleHardening('lingua', { maxConcurrent: 12, rateLimit: 100, healthThreshold: 30 });
     // Initialize bridges for all modality pairs
     for (const from of MODALITIES) {
       for (const to of MODALITIES) {
@@ -86,6 +89,8 @@ export function initLingua(): void {
       }
     }
     state.initialized = true;
+    hardening.startAutoRestore(() => getLinguaHealth(), () => { state.avgFidelity = 0.85; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('lingua', 'init', { engineId: moduleEngine.instance.id, bridges: state.bridges.length });
   } catch (err) {
     state.initialized = true;
@@ -152,6 +157,8 @@ function recalculate(): void {
 }
 
 export function getLinguaState(): LinguaModuleState { return { ...state }; }
-export function getLinguaHealth(): number { return state.initialized ? Math.round(state.avgFidelity * 100) || 85 : 0; }
+export function getLinguaHealth(): number { if (!state.initialized) return 0; const h = Math.round(state.avgFidelity * 100) || 85; if (hardening?.isDegraded()) return Math.min(h, 40); return h; }
 export function getLinguaResilience() { return getModuleResilienceReport('lingua', getLinguaHealth()); }
 export function getLinguaEngine() { return moduleEngine; }
+export function getLinguaHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeLinguaEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }

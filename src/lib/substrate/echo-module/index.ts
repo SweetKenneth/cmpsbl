@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export interface DigitalTwin {
   id: string;
@@ -69,13 +70,17 @@ const state: EchoModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initEcho(): void {
   emitStarted('echo', 'init', {});
   try {
     initCircuitBreaker('echo', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('echo', '1.0.0');
+    hardening = createModuleHardening('echo', { maxConcurrent: 8, rateLimit: 50, healthThreshold: 30 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getEchoHealth(), () => { state.avgDivergence = 0; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('echo', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -186,6 +191,8 @@ function recalculate(): void {
 }
 
 export function getEchoState(): EchoModuleState { return { ...state }; }
-export function getEchoHealth(): number { return state.initialized ? 100 : 0; }
+export function getEchoHealth(): number { if (!state.initialized) return 0; if (hardening?.isDegraded()) return 40; return 100; }
 export function getEchoResilience() { return getModuleResilienceReport('echo', getEchoHealth()); }
 export function getEchoEngine() { return moduleEngine; }
+export function getEchoHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeEchoEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }
