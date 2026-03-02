@@ -50,7 +50,9 @@ function AgentCard({ agent, index, expanded, onToggle }: {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h3 className="text-base sm:text-lg font-black text-foreground tracking-tight">{agent.name}</h3>
-            {agent.isFree ? (
+            {agent.isFlagship ? (
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">$129</span>
+            ) : agent.isFree ? (
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/25">FREE</span>
             ) : (
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">PRO</span>
