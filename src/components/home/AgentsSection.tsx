@@ -83,8 +83,8 @@ function AgentCard({ agent, index, expanded, onToggle }: {
                 {agent.description}
               </p>
 
-              {/* 3 Crown Jewel Powers */}
-              <div className="grid sm:grid-cols-3 gap-3">
+              {/* Crown Jewel Powers */}
+              <div className={cn("grid gap-3", agent.powers.length > 3 ? "sm:grid-cols-3 lg:grid-cols-5" : "sm:grid-cols-3")}>
                 {agent.powers.map((power, pIdx) => (
                   <motion.div
                     key={power.name}
