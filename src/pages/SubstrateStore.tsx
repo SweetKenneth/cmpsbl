@@ -214,11 +214,16 @@ function ItemCard({ item, onSelect }: { item: UnifiedItem; onSelect: () => void 
     if (!cogData) return;
     setBuyLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("cognitives-checkout", {
-        body: { sku: cogData.sku, chosenName: cogData.displayName },
+      if (cogData.isFree) {
+        // Free agent — activate instantly with toast, no edge function needed
+        toast.success(`🎉 ${cogData.displayName} activated! Ready to use.`);
+        setBuyLoading(false);
+        return;
+      }
+      const { data, error } = await supabase.functions.invoke("agent-checkout", {
+        body: { agent_id: cogData.sku, agent_name: cogData.displayName, chosen_name: cogData.displayName, bundle_with_engine: false },
       });
       if (error) throw error;
-      if (data?.free && data?.redirect) { window.location.href = data.redirect; return; }
       if (data?.url) { window.location.href = data.url; }
     } catch (err) {
       console.error("Checkout error:", err);
@@ -353,11 +358,16 @@ function DetailSheet({ item, onClose }: { item: UnifiedItem; onClose: () => void
     if (!cogData) return;
     setCogBuyLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("cognitives-checkout", {
-        body: { sku: cogData.sku, chosenName: cogData.displayName },
+      if (cogData.isFree) {
+        // Free agent — activate instantly with toast
+        toast.success(`🎉 ${cogData.displayName} activated! Ready to use.`);
+        setCogBuyLoading(false);
+        return;
+      }
+      const { data, error } = await supabase.functions.invoke("agent-checkout", {
+        body: { agent_id: cogData.sku, agent_name: cogData.displayName, chosen_name: cogData.displayName, bundle_with_engine: false },
       });
       if (error) throw error;
-      if (data?.free && data?.redirect) { window.location.href = data.redirect; return; }
       if (data?.url) { window.location.href = data.url; }
     } catch (err) {
       console.error("Checkout error:", err);

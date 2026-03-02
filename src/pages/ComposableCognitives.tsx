@@ -6,7 +6,7 @@
  */
 
 import { useState, useCallback, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import {
@@ -112,6 +112,7 @@ const FAQ_ITEMS = [
 /* ───── Main Page ───── */
 export default function ComposableCognitives() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [chosenName, setChosenName] = useState("");
   const [dreamOpen, setDreamOpen] = useState(false);
   const [bundleMode, setBundleMode] = useState(false);
@@ -165,13 +166,25 @@ export default function ComposableCognitives() {
         body: { agent_id: sku, agent_name: item?.displayName || sku, chosen_name: chosenName, bundle_with_engine: bundleMode },
       });
       if (error) throw error;
-      if (data?.free && data?.redirect) { window.location.href = data.redirect; return; }
+      if (data?.free) {
+        // Free agent — activate instantly with toast instead of full-page reload
+        setPurchaseSuccess(sku.toUpperCase());
+        pushToast({
+          message: `🎉 ${item?.displayName || sku.toUpperCase()} activated! Mint ID: ${data.mint_id || 'generated'}`,
+          variant: "success",
+          anchor: "center",
+          durationMs: 6000,
+        });
+        // Update URL without reload so bookmarking works
+        navigate(`/composable-cognitives?activated=${sku}`, { replace: true });
+        return;
+      }
       if (data?.url) { window.location.href = data.url; }
     } catch (err) {
       console.error("Checkout error:", err);
       pushToast({ message: "Checkout failed. Please try again.", variant: "error", anchor: "center", durationMs: 5000 });
     }
-  }, [chosenName, bundleMode]);
+  }, [chosenName, bundleMode, navigate]);
 
   const grouped = AGENTS_BY_CATEGORY();
   const categoryOrder: AgentCategory[] = [
