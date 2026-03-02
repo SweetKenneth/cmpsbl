@@ -225,7 +225,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'operational',
     description: 'Autonomous diagnostics, self-repair coordination, health scoring, predictive failure forecasting.',
     corePath: 'src/lib/substrate/medic/',
-    dependencies: ['core', 'system', 'vision'],
+    dependencies: ['core', 'vision'],
     dependents: [],
   },
 
@@ -236,7 +236,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     layer: 'infrastructure',
     description: 'Inter-node signaling, consensus repair, distributed heartbeat, partition detection, state synchronization.',
     corePath: 'src/lib/substrate/nerve/',
-    dependencies: ['core', 'ripple', 'system'],
+    dependencies: ['core'],
     dependents: [],
   },
 };
