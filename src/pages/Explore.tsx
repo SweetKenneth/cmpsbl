@@ -177,13 +177,13 @@ export default function Explore() {
               </motion.div>
               
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-5 leading-[1.1] tracking-tight">
-                Build What{" "}
+                Internal{" "}
                 <br className="hidden sm:block" />
-                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">Compounds</span>
+                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">Proprietary Software</span>
               </h2>
               <p className="text-foreground/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                Persistent memory, governed orchestration, and 24 artifact packs —
-                running on {linesOfCodeDisplay} lines of production code. Start free today.
+                The CMPSBL Substrate is internal proprietary software built for use by our internal development team.
+                Inquire about licensing or potential acquisition by contacting us.
               </p>
               
               {/* Mini stats row */}
@@ -203,16 +203,16 @@ export default function Explore() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
-                  <Link to="/engines">
+                  <a href="mailto:hello@CMPSBL.com">
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Explore Engines
+                    Inquire About Licensing
                     <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
+                  </a>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
-                  <Link to="/packs">
+                  <Link to="/about">
                     <Terminal className="w-5 h-5 mr-2" />
-                    Explore Packs
+                    About CMPSBL
                   </Link>
                 </Button>
               </div>
