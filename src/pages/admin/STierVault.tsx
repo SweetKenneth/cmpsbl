@@ -412,10 +412,24 @@ function ExportDialog({
   const [selectedAdapter, setSelectedAdapter] = useState<ExportAdapter>('standalone');
   const [previewCode, setPreviewCode] = useState<string>('');
 
+  // Build synthesis context for full code generation
+  const synthCtx: SynthesisContext = {
+    name: entry.name,
+    description: entry.description,
+    category: (entry as any).category || entry.module.toLowerCase(),
+    moduleChain: [entry.module],
+    entryCapability: 'input',
+    exitCapability: 'output',
+    errorStrategy: 'retry',
+    maxExecutionMs: 30000,
+    cjpi: entry.cjpi,
+  };
+
   const artifact: ExportableArtifact = {
     id: entry.id, name: entry.name, rank: entry.rank,
     cjpi: entry.cjpi, module: entry.module,
     description: entry.description, sourceCode,
+    synthesisContext: synthCtx,
   };
 
   const handlePreview = useCallback(() => {
@@ -634,7 +648,8 @@ export default function STierVault() {
 
   const handleExportPromoted = (d: PromotedDiscovery) => {
     const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
-    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, code: '' });
+    const synthCtx = contextFromDiscovery(d);
+    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, code: '', synthesisContext: synthCtx });
   };
 
   const handlePromoteToRegistry = async (d: PromotedDiscovery) => {
