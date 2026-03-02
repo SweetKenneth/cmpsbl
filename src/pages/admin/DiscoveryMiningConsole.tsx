@@ -39,6 +39,10 @@ const CATEGORY_ICONS: Record<string, typeof Brain> = {
   cognitive: Brain, evolution: TrendingUp, security: Shield,
   routing: GitBranch, learning: FlaskConical, orchestration: Cpu,
   observability: Eye, governance: Scale, integration: Zap,
+  compliance: Shield, prediction: Target, ethics: Scale,
+  privacy: Shield, synthesis: Sparkles, localization: GitBranch,
+  geospatial: Eye, simulation: Cpu, contracts: Scale,
+  acquisition: Download, edge: Zap,
 };
 
 function TierBadge({ tier }: { tier: string | null }) {
@@ -279,6 +283,8 @@ const AVAILABLE_MODULES = [
 const AVAILABLE_CATEGORIES = [
   'cognitive', 'evolution', 'security', 'routing', 'learning',
   'orchestration', 'integration', 'observability', 'governance',
+  'compliance', 'prediction', 'ethics', 'privacy', 'synthesis',
+  'localization', 'geospatial', 'simulation', 'contracts', 'acquisition', 'edge',
 ];
 
 const ERROR_STRATEGIES_LIST = ['retry', 'skip', 'abort', 'rollback', 'fallback'];

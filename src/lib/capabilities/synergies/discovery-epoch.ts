@@ -15,7 +15,9 @@
 export type DiscoveryStatus = 'candidate' | 'validated' | 'crystallized' | 'rejected';
 export type DiscoveryCategory = 
   | 'cognitive' | 'evolution' | 'security' | 'routing' | 'learning'
-  | 'orchestration' | 'integration' | 'observability' | 'governance';
+  | 'orchestration' | 'integration' | 'observability' | 'governance'
+  | 'compliance' | 'prediction' | 'ethics' | 'privacy' | 'synthesis'
+  | 'localization' | 'geospatial' | 'simulation' | 'contracts' | 'acquisition' | 'edge';
 
 export interface CJPIScoreBreakdown {
   strategicLeverage: number;    // 30% weight

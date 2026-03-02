@@ -36,6 +36,7 @@ export interface DiscoveryConfig {
 const MODULE_OPERATIONS: Record<string, string[]> = {
   CORE: ['status', 'ping', 'version', 'health', 'metrics'],
   BRAIN: ['status', 'recall', 'store', 'forget', 'consolidate', 'search'],
+  MEMORY: ['status', 'store', 'recall', 'prune', 'consolidate', 'snapshot'],
   DECODE: ['status', 'interpret', 'detect_personality', 'profile'],
   DEFENSE: ['status', 'scan', 'threat_assess', 'quarantine', 'audit'],
   NEXUS: ['status', 'route', 'providers', 'health', 'fallback'],
@@ -48,6 +49,25 @@ const MODULE_OPERATIONS: Record<string, string[]> = {
   INTEGRATION: ['status', 'connect', 'disconnect', 'list', 'health'],
   INCLUSIVE: ['status', 'scan', 'fix', 'report', 'guidelines'],
   CORTEX: ['status', 'propose', 'evaluate', 'apply', 'audit', 'learn'],
+  NERVE: ['status', 'signal', 'relay', 'throttle', 'priority'],
+  ANALYTICS: ['status', 'aggregate', 'trend', 'forecast', 'report'],
+  EVOLUTION: ['status', 'mutate', 'select', 'crossover', 'fitness'],
+  GOVERNANCE: ['status', 'enforce', 'audit', 'policy', 'delegate'],
+  IDENTITY: ['status', 'verify', 'provision', 'revoke', 'federate'],
+  AUDIT: ['status', 'log', 'query', 'export', 'retain'],
+  MEDIC: ['status', 'diagnose', 'heal', 'quarantine', 'report'],
+  // Expansion modules (37-node architecture)
+  SOVEREIGN: ['status', 'classify_jurisdiction', 'enforce_regulation', 'attest', 'audit_compliance'],
+  ORACLE: ['status', 'forecast', 'model', 'simulate', 'calibrate'],
+  CONSCIENCE: ['status', 'assess_impact', 'detect_bias', 'score_fairness', 'audit_ethics'],
+  PHANTOM: ['status', 'anonymize', 'minimize', 'encrypt', 'audit_privacy'],
+  FORGE: ['status', 'synthesize', 'recombine', 'validate', 'deploy'],
+  LINGUA: ['status', 'translate', 'detect_language', 'localize', 'glossary'],
+  COMPASS: ['status', 'geolocate', 'map_risk', 'route', 'fence'],
+  ECHO: ['status', 'create_twin', 'simulate', 'sync', 'diff'],
+  TREATY: ['status', 'negotiate', 'sign', 'enforce', 'audit_contract'],
+  HARVEST: ['status', 'discover', 'ingest', 'deduplicate', 'score_quality'],
+  REFLEX: ['status', 'dispatch', 'decide', 'coordinate', 'sync'],
 };
 
 const DEFAULT_CONFIG: DiscoveryConfig = {

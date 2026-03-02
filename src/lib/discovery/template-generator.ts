@@ -48,30 +48,47 @@ export interface RetiredCombo {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const MODULES = [
+  // Original 26-node architecture
   'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
   'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
   'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',
   'MODERNIZER', 'MEDIC', 'RIPPLE', 'AUDIT', 'IDENTITY',
+  // Expansion modules (37-node architecture)
+  'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
+  'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
 ];
 
 const CATEGORIES: DiscoveryCategory[] = [
   'cognitive', 'evolution', 'security', 'routing', 'learning',
   'orchestration', 'integration', 'observability', 'governance',
+  'compliance', 'prediction', 'ethics', 'privacy', 'synthesis',
+  'localization', 'geospatial', 'simulation', 'contracts', 'acquisition', 'edge',
 ];
 
 const ERROR_STRATEGIES = ['retry', 'skip', 'abort', 'rollback', 'fallback'] as const;
 
 // Module affinity map — which modules naturally pair for each category
 const CATEGORY_AFFINITY: Record<string, string[]> = {
-  cognitive: ['BRAIN', 'CORTEX', 'MEMORY', 'DREAM', 'DECODE'],
-  evolution: ['EVOLUTION', 'CORTEX', 'BRAIN', 'VISION', 'DREAM', 'ANALYTICS'],
-  security: ['DEFENSE', 'ACCESS', 'GOVERNANCE', 'AUDIT', 'SYSTEM', 'IDENTITY'],
-  routing: ['NEXUS', 'CORTEX', 'ANALYTICS', 'SYSTEM', 'GOVERNANCE'],
-  learning: ['BRAIN', 'DREAM', 'CORTEX', 'MEMORY', 'EVOLUTION', 'ANALYTICS'],
-  orchestration: ['CORTEX', 'SYSTEM', 'ANALYTICS', 'NEXUS', 'VISION', 'NERVE'],
-  integration: ['INTEGRATION', 'DECODE', 'NEXUS', 'BRAIN', 'VISION'],
-  observability: ['VISION', 'ANALYTICS', 'CORTEX', 'BRAIN', 'NERVE'],
-  governance: ['GOVERNANCE', 'BRAIN', 'DEFENSE', 'CORTEX', 'AUDIT', 'ACCESS'],
+  cognitive: ['BRAIN', 'CORTEX', 'MEMORY', 'DREAM', 'DECODE', 'ORACLE'],
+  evolution: ['EVOLUTION', 'CORTEX', 'BRAIN', 'VISION', 'DREAM', 'ANALYTICS', 'FORGE'],
+  security: ['DEFENSE', 'ACCESS', 'GOVERNANCE', 'AUDIT', 'SYSTEM', 'IDENTITY', 'PHANTOM'],
+  routing: ['NEXUS', 'CORTEX', 'ANALYTICS', 'SYSTEM', 'GOVERNANCE', 'REFLEX'],
+  learning: ['BRAIN', 'DREAM', 'CORTEX', 'MEMORY', 'EVOLUTION', 'ANALYTICS', 'ECHO'],
+  orchestration: ['CORTEX', 'SYSTEM', 'ANALYTICS', 'NEXUS', 'VISION', 'NERVE', 'REFLEX'],
+  integration: ['INTEGRATION', 'DECODE', 'NEXUS', 'BRAIN', 'VISION', 'LINGUA', 'TREATY'],
+  observability: ['VISION', 'ANALYTICS', 'CORTEX', 'BRAIN', 'NERVE', 'ECHO'],
+  governance: ['GOVERNANCE', 'BRAIN', 'DEFENSE', 'CORTEX', 'AUDIT', 'ACCESS', 'SOVEREIGN', 'CONSCIENCE'],
+  compliance: ['SOVEREIGN', 'GOVERNANCE', 'AUDIT', 'DEFENSE', 'ACCESS', 'CONSCIENCE'],
+  prediction: ['ORACLE', 'BRAIN', 'ANALYTICS', 'CORTEX', 'VISION', 'DREAM'],
+  ethics: ['CONSCIENCE', 'GOVERNANCE', 'BRAIN', 'CORTEX', 'SOVEREIGN', 'AUDIT'],
+  privacy: ['PHANTOM', 'DEFENSE', 'ACCESS', 'IDENTITY', 'SOVEREIGN', 'GOVERNANCE'],
+  synthesis: ['FORGE', 'BRAIN', 'DREAM', 'CORTEX', 'EVOLUTION', 'INTEGRATION'],
+  localization: ['LINGUA', 'DECODE', 'BRAIN', 'INTEGRATION', 'COMPASS'],
+  geospatial: ['COMPASS', 'ANALYTICS', 'VISION', 'ORACLE', 'HARVEST'],
+  simulation: ['ECHO', 'BRAIN', 'CORTEX', 'ORACLE', 'ANALYTICS', 'VISION'],
+  contracts: ['TREATY', 'GOVERNANCE', 'SOVEREIGN', 'ACCESS', 'AUDIT'],
+  acquisition: ['HARVEST', 'INTEGRATION', 'DECODE', 'ANALYTICS', 'VISION', 'COMPASS'],
+  edge: ['REFLEX', 'NEXUS', 'SYSTEM', 'NERVE', 'CORTEX', 'ANALYTICS'],
 };
 
 // Pipeline name vocabulary
@@ -95,6 +112,17 @@ const NOUNS: Record<string, string[]> = {
   integration: ['Adapter', 'Translator', 'Normalizer', 'Bridge', 'Connector', 'Mapper', 'Transformer', 'Synchronizer', 'Mediator', 'Gateway'],
   observability: ['Monitor', 'Tracer', 'Profiler', 'Collector', 'Detector', 'Explainer', 'Dashboarder', 'Alerter', 'Correlator', 'Visualizer'],
   governance: ['Guardian', 'Enforcer', 'Auditor', 'Calibrator', 'Arbiter', 'Regulator', 'Validator', 'Tracker', 'Policy-Engine', 'Assessor'],
+  compliance: ['Certifier', 'Regulator', 'Classifier', 'Enforcer', 'Inspector', 'Auditor', 'Validator', 'Reporter', 'Attestor', 'Checker'],
+  prediction: ['Forecaster', 'Predictor', 'Estimator', 'Projector', 'Anticipator', 'Modeler', 'Simulator', 'Oracle', 'Diviner', 'Prophet'],
+  ethics: ['Adjudicator', 'Evaluator', 'Arbiter', 'Guardian', 'Assessor', 'Reviewer', 'Counsel', 'Overseer', 'Conscience', 'Advisor'],
+  privacy: ['Anonymizer', 'Redactor', 'Obfuscator', 'Shielder', 'Vault', 'Cloaker', 'Mask', 'Sanitizer', 'Encryptor', 'Guardian'],
+  synthesis: ['Forger', 'Assembler', 'Composer', 'Generator', 'Constructor', 'Builder', 'Weaver', 'Fabricator', 'Crafter', 'Synthesist'],
+  localization: ['Translator', 'Adapter', 'Localizer', 'Mapper', 'Converter', 'Interpreter', 'Bridge', 'Normalizer', 'Harmonizer', 'Transformer'],
+  geospatial: ['Navigator', 'Mapper', 'Plotter', 'Tracker', 'Surveyor', 'Locator', 'Coordinator', 'Router', 'Cartographer', 'Atlas'],
+  simulation: ['Simulator', 'Emulator', 'Modeler', 'Twin', 'Replicator', 'Projector', 'Sandbox', 'Mirror', 'Clone', 'Testbed'],
+  contracts: ['Negotiator', 'Broker', 'Arbiter', 'Enforcer', 'Notary', 'Mediator', 'Ratifier', 'Witness', 'Executor', 'Steward'],
+  acquisition: ['Harvester', 'Collector', 'Ingester', 'Scraper', 'Gatherer', 'Aggregator', 'Feeder', 'Extractor', 'Miner', 'Scout'],
+  edge: ['Dispatcher', 'Actuator', 'Responder', 'Executor', 'Trigger', 'Relay', 'Accelerator', 'Processor', 'Handler', 'Reactor'],
 };
 
 const CAPABILITY_VERBS = [
