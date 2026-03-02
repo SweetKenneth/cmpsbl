@@ -204,9 +204,20 @@ export default function ComposableCognitives() {
         </div>
       </section>
 
-      {/* ═══ NAME CHOOSER ═══ */}
+      {/* ═══ NAME CHOOSER + BUNDLE TOGGLE ═══ */}
       <section className="container mx-auto px-4 py-8">
-        <NameChooser value={chosenName} onChange={setChosenName} />
+        <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6">
+          <div className="flex-1 w-full">
+            <NameChooser value={chosenName} onChange={setChosenName} />
+          </div>
+          <div className="flex items-center gap-3 p-4 rounded-xl border border-primary/20 bg-primary/5 shrink-0">
+            <div>
+              <p className="text-sm font-bold">Bundle with Engine</p>
+              <p className="text-[11px] text-muted-foreground">Save 40% on agent price</p>
+            </div>
+            <Switch checked={bundleMode} onCheckedChange={setBundleMode} />
+          </div>
+        </div>
       </section>
 
       {canceled && (
