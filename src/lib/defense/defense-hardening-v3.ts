@@ -1301,7 +1301,7 @@ export function getDefenseV3HardeningStatus(): {
   if (activeBreaches > 0) score -= activeBreaches * 10;
 
   // Deduct for known weaknesses
-  const bruteForceActive = Array.from(bruteForceState.values()).filter(s => s.tripped).length;
+  const bruteForceActive = Array.from(bruteForceState.values()).filter(s => s.lockedUntil > Date.now()).length;
   if (bruteForceActive > 5) score -= 5;
 
   const errorBreakers = Array.from(errorRateBreakers.values()).filter(s => s.tripped).length;
