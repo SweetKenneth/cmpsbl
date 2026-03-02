@@ -12,7 +12,7 @@ import {
   type DiscoveryCategory,
   type CrystallizedTier,
 } from '@/lib/capabilities/synergies/discovery-epoch';
-import { PIPELINE_SEEDS } from '@/lib/capabilities/synergies/wave7-activation';
+
 import { sha256, canonicalizeJson } from '@/lib/control-plane/hash';
 
 // ═══════════════════════════════════════════════════════════════════════════════
