@@ -17,6 +17,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Helmet } from "react-helmet-async";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 const TIER_ACCENT: Record<string, string> = {
   APEX: "text-red-400",
@@ -160,8 +163,12 @@ export default function EngineDetail() {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen bg-background pt-24 pb-20 px-4">
-        <div className="container mx-auto max-w-4xl">
+      <div className="min-h-screen bg-background">
+        <PublicNav />
+        <div className="container mx-auto px-4 pt-20">
+          <PublicBreadcrumb />
+        </div>
+        <div className="container mx-auto max-w-4xl px-4 pt-6 pb-20">
           <Link to="/engines" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
             All Engines
@@ -308,6 +315,7 @@ export default function EngineDetail() {
             </motion.div>
           </div>
         </div>
+        <EnhancedFooter />
       </div>
     </>
   );

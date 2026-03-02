@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -357,6 +358,11 @@ export default function EngineMarketplace() {
 
       <div className="min-h-screen bg-background flex flex-col">
         <PublicNav />
+
+        {/* Breadcrumb trail */}
+        <div className="container mx-auto px-4 pt-20">
+          <PublicBreadcrumb />
+        </div>
 
         {/* ═══ HERO — Supreme drop announcement style (matching Store/Blog) ═══ */}
         <section className="relative overflow-hidden border-b border-border/50">

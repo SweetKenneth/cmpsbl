@@ -11,13 +11,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import {
   Download, Sparkles, Shield, Zap, CheckCircle, Lock,
-  Brain, Code, Palette, TrendingUp, ChevronDown, ChevronUp,
+  Brain, Code, Palette, TrendingUp, ChevronDown, ChevronUp, Package,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { NameChooser } from "@/components/cognitives/NameChooser";
 import { FlipCard } from "@/components/commerce/FlipCard";
 import {
@@ -84,6 +86,7 @@ export default function ComposableCognitives() {
   const [searchParams] = useSearchParams();
   const [chosenName, setChosenName] = useState("");
   const [dreamOpen, setDreamOpen] = useState(false);
+  const [bundleMode, setBundleMode] = useState(false);
   const canceled = searchParams.get("canceled") === "1";
 
   const handleBuy = useCallback(async (sku: string) => {
@@ -99,7 +102,7 @@ export default function ComposableCognitives() {
     }
     try {
       const { data, error } = await supabase.functions.invoke("agent-checkout", {
-        body: { agent_id: sku, agent_name: item?.displayName || sku, chosen_name: chosenName },
+        body: { agent_id: sku, agent_name: item?.displayName || sku, chosen_name: chosenName, bundle_with_engine: bundleMode },
       });
       if (error) throw error;
       if (data?.free && data?.redirect) { window.location.href = data.redirect; return; }
@@ -124,8 +127,12 @@ export default function ComposableCognitives() {
 
       <PublicNav />
 
+      {/* Breadcrumb trail */}
+      <div className="container mx-auto px-4 pt-20">
+        <PublicBreadcrumb />
+      </div>
       {/* ═══ HERO ═══ */}
-      <section className="relative pt-28 pb-20 overflow-hidden">
+      <section className="relative pt-10 pb-20 overflow-hidden">
         <div className="absolute inset-0 gradient-mesh pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{
           backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
@@ -197,9 +204,20 @@ export default function ComposableCognitives() {
         </div>
       </section>
 
-      {/* ═══ NAME CHOOSER ═══ */}
+      {/* ═══ NAME CHOOSER + BUNDLE TOGGLE ═══ */}
       <section className="container mx-auto px-4 py-8">
-        <NameChooser value={chosenName} onChange={setChosenName} />
+        <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6">
+          <div className="flex-1 w-full">
+            <NameChooser value={chosenName} onChange={setChosenName} />
+          </div>
+          <div className="flex items-center gap-3 p-4 rounded-xl border border-primary/20 bg-primary/5 shrink-0">
+            <div>
+              <p className="text-sm font-bold">Bundle with Engine</p>
+              <p className="text-[11px] text-muted-foreground">Save 40% on agent price</p>
+            </div>
+            <Switch checked={bundleMode} onCheckedChange={setBundleMode} />
+          </div>
+        </div>
       </section>
 
       {canceled && (
@@ -255,11 +273,11 @@ export default function ComposableCognitives() {
                       { label: '', value: 'DREAM', icon: <Brain className="w-3 h-3 text-primary" /> },
                     ]}
                     backCapabilities={item.capabilities}
-                    backPrice={priceLabel(item)}
-                    backPriceLabel={item.isFree ? '' : `${bundleLabel(item)} w/ engine`}
+                    backPrice={bundleMode && !item.isFree ? bundleLabel(item).replace(' bundled', '') : priceLabel(item)}
+                    backPriceLabel={item.isFree ? '' : bundleMode ? '40% bundle discount applied' : `${bundleLabel(item)} w/ engine`}
                     backCta={item.isFree
                       ? { label: 'Free Download', href: '#' }
-                      : { label: `Acquire — ${priceLabel(item)}`, href: '#' }
+                      : { label: `Acquire — ${bundleMode ? bundleLabel(item).replace(' bundled', '') : priceLabel(item)}`, href: '#' }
                     }
                     borderClass={catConfig.border}
                   />

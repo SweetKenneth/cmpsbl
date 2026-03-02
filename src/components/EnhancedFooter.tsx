@@ -47,6 +47,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Artifact Packs", href: "/packs" },
         { name: "Dream Eater", href: "/feed-dream-eater" },
+        { name: "Engines", href: "/engines", highlight: true },
         { name: "Enterprise", href: "/enterprise" },
         { name: "Evolution Scanner", href: "/scanner", highlight: true },
         { name: "Minds", href: "/composable-cognitives", highlight: true },
@@ -78,21 +79,16 @@ export function EnhancedFooter() {
         { name: "Use Cases", href: "/use-cases" },
       ]
     },
-    {
-      title: "Company",
-      links: [
-        { name: "About", href: "/about" },
-        { name: "Careers", href: "/careers" },
-        { name: "Contact", href: "/contact" },
-        { name: "Investors", href: "/investors" },
-        { name: "Pricing", href: "/upgrade" },
-        { name: "Solutions", href: "/solutions" },
-        { name: "Support", href: "/support" },
-      ]
-    },
   ];
 
   const legalLinks: FooterLink[] = [
+    { name: "About", href: "/about" },
+    { name: "Careers", href: "/careers" },
+    { name: "Contact", href: "/contact" },
+    { name: "Investors", href: "/investors" },
+    { name: "Pricing", href: "/upgrade" },
+    { name: "Solutions", href: "/solutions" },
+    { name: "Support", href: "/support" },
     { name: "Library", href: "/library" },
     { name: "Namespace", href: "/namespace" },
     { name: "Privacy", href: "/privacy" },
@@ -112,8 +108,8 @@ export function EnhancedFooter() {
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
-          {/* Main grid: brand + 5 link columns */}
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1fr_1fr] lg:gap-10">
+          {/* Main grid: brand + 4 link columns */}
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr] lg:gap-10">
             {/* Brand Column */}
             <div className="col-span-2 sm:col-span-3 lg:col-span-1 mb-6 lg:mb-0">
               <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3">
