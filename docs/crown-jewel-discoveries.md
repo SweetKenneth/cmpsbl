@@ -111,7 +111,80 @@ _Internal-only. Apex-grade pipelines._
 | 24 | Transparency Report Generator | 80.0 | governance | GOVERNANCE → ANALYTICS → AUDIT | manual |
 | 25 | Empathic Interaction Chain | 80.0 | cognitive | DECODE → BRAIN → CORTEX → NEXUS | intent-mesh |
 
-**Total Crystallized (CJPI ≥ 80): 76 pipelines**
+**Total Crystallized (CJPI ≥ 80) Wave 7: 76 pipelines**
+
+---
+
+## Wave 8 Discoveries — 50 New High-Value Pipelines
+
+Mined from deep synergy analysis. All 50 score **CJPI ≥ 80** and are auto-crystallized.
+
+### CMPSBL-Only Tier (CJPI 95–100)
+
+| # | Pipeline | CJPI | Category | Module Chain | Discovery |
+|---|----------|------|----------|-------------|-----------|
+| 1 | Recursive Intelligence Amplifier | 97.2 | cognitive | BRAIN → DREAM → CORTEX → EVOLUTION → BRAIN | synergy-scan |
+| 2 | Substrate Self-Compilation Engine | 96.1 | evolution | EVOLUTION → SYSTEM → CORTEX → GOVERNANCE | synergy-scan |
+| 3 | Sovereign Decision Forge | 95.8 | governance | GOVERNANCE → BRAIN → CORTEX → AUDIT → DEFENSE | synergy-scan |
+
+### Enterprise Tier (CJPI 85–94)
+
+| # | Pipeline | CJPI | Category | Module Chain | Discovery |
+|---|----------|------|----------|-------------|-----------|
+| 4 | Causal Inference Weaver | 93.4 | cognitive | BRAIN → VISION → CORTEX → DREAM | synergy-scan |
+| 5 | Predictive Architecture Surgeon | 92.7 | evolution | EVOLUTION → VISION → SYSTEM → CORTEX | synergy-scan |
+| 6 | Autonomous Threat Neutralizer | 92.1 | security | DEFENSE → BRAIN → EVOLUTION → SYSTEM | synergy-scan |
+| 7 | Multi-Horizon Planning Engine | 91.8 | cognitive | CORTEX → BRAIN → DREAM → VISION | synergy-scan |
+| 8 | Cognitive Debt Liquidator | 91.5 | evolution | VISION → EVOLUTION → BRAIN → CORTEX | synergy-scan |
+| 9 | Intent-to-Execution Compiler | 91.2 | orchestration | DECODE → CORTEX → SYSTEM → NEXUS | synergy-scan |
+| 10 | Epistemic Confidence Calibrator | 90.9 | cognitive | BRAIN → CORTEX → GOVERNANCE → AUDIT | synergy-scan |
+| 11 | Adversarial Resilience Forge | 90.6 | security | DEFENSE → DREAM → EVOLUTION → SYSTEM | synergy-scan |
+| 12 | Knowledge Provenance Chain | 90.3 | governance | AUDIT → BRAIN → MEMORY → GOVERNANCE | synergy-scan |
+| 13 | Emergent Capability Detector | 90.0 | evolution | VISION → BRAIN → EVOLUTION → ATLAS | synergy-scan |
+| 14 | Semantic Conflict Arbitrator | 89.7 | cognitive | DECODE → BRAIN → CORTEX → GOVERNANCE | synergy-scan |
+| 15 | Dynamic Trust Topology | 89.4 | security | IDENTITY → DEFENSE → BRAIN → NERVE | synergy-scan |
+| 16 | Failure Intelligence Synthesizer | 89.1 | learning | MEDIC → BRAIN → DREAM → EVOLUTION | synergy-scan |
+| 17 | Proactive SLA Guardian | 88.8 | observability | VISION → ANALYTICS → CORTEX → NEXUS | synergy-scan |
+| 18 | Distributed Consensus Forge | 88.5 | orchestration | NERVE → CORTEX → GOVERNANCE → SYSTEM | synergy-scan |
+| 19 | Cognitive Replay Accelerator | 88.2 | learning | MEMORY → DREAM → BRAIN → CORTEX | synergy-scan |
+| 20 | Self-Healing Schema Migrator | 87.9 | integration | SYSTEM → VISION → EVOLUTION → INTEGRATION | synergy-scan |
+| 21 | Autonomous Budget Reallocator | 87.6 | routing | ECONOMY → NEXUS → ANALYTICS → CORTEX | synergy-scan |
+| 22 | Multi-Modal Reasoning Fuser | 87.3 | cognitive | DECODE → BRAIN → VISION → CORTEX | synergy-scan |
+| 23 | Predictive Escalation Engine | 87.0 | orchestration | VISION → CORTEX → NERVE → GOVERNANCE | synergy-scan |
+| 24 | Governance Entropy Reverser | 86.7 | governance | GOVERNANCE → VISION → EVOLUTION → AUDIT | synergy-scan |
+| 25 | Latency-Aware Route Optimizer | 86.4 | routing | NEXUS → VISION → ANALYTICS → SYSTEM | synergy-scan |
+| 26 | Context Decay Prevention Chain | 86.1 | cognitive | MEMORY → BRAIN → CORTEX → DREAM | synergy-scan |
+| 27 | Cross-Epoch Knowledge Migrator | 85.8 | evolution | EVOLUTION → MEMORY → BRAIN → SYSTEM | synergy-scan |
+| 28 | Privilege Boundary Synthesizer | 85.5 | security | ACCESS → DEFENSE → IDENTITY → GOVERNANCE | synergy-scan |
+| 29 | Telemetry Intelligence Compiler | 85.2 | observability | VISION → ANALYTICS → BRAIN → CORTEX | synergy-scan |
+
+### Architect Tier (CJPI 80–84)
+
+| # | Pipeline | CJPI | Category | Module Chain | Discovery |
+|---|----------|------|----------|-------------|-----------|
+| 30 | Incremental Reasoning Compiler | 84.9 | cognitive | CORTEX → BRAIN → MEMORY → DREAM | synergy-scan |
+| 31 | Cost-Aware Execution Planner | 84.6 | routing | ECONOMY → CORTEX → NEXUS → ANALYTICS | synergy-scan |
+| 32 | Adaptive Retry Orchestrator | 84.3 | orchestration | SYSTEM → MEDIC → CORTEX → NEXUS | synergy-scan |
+| 33 | Multi-Tenant Context Isolator | 84.0 | security | DEFENSE → IDENTITY → BRAIN → CORTEX | synergy-scan |
+| 34 | Dream-to-Action Converter | 83.7 | learning | DREAM → CORTEX → SYSTEM → NEXUS | synergy-scan |
+| 35 | Operational Wisdom Extractor | 83.4 | learning | AUDIT → BRAIN → DREAM → EVOLUTION | synergy-scan |
+| 36 | Health-Aware Load Balancer | 83.1 | routing | MEDIC → NEXUS → VISION → SYSTEM | synergy-scan |
+| 37 | Automated Compliance Prover | 82.8 | governance | GOVERNANCE → AUDIT → DEFENSE → ANALYTICS | synergy-scan |
+| 38 | Cross-Pipeline State Reconciler | 82.5 | orchestration | CORTEX → MEMORY → SYSTEM → NERVE | synergy-scan |
+| 39 | Embedding Drift Detector | 82.2 | observability | BRAIN → VISION → ANALYTICS → EVOLUTION | synergy-scan |
+| 40 | Semantic Version Reconciler | 81.9 | integration | INTEGRATION → SYSTEM → GOVERNANCE → VISION | synergy-scan |
+| 41 | Cognitive Warm-Up Accelerator | 81.6 | learning | MEMORY → BRAIN → CORTEX → DECODE | synergy-scan |
+| 42 | Incident Timeline Reconstructor | 81.3 | observability | AUDIT → VISION → BRAIN → SYSTEM | synergy-scan |
+| 43 | Resource Contention Resolver | 81.0 | orchestration | SYSTEM → CORTEX → ECONOMY → NEXUS | synergy-scan |
+| 44 | Mutation Impact Simulator | 80.8 | evolution | EVOLUTION → DREAM → VISION → GOVERNANCE | synergy-scan |
+| 45 | Session Intelligence Aggregator | 80.6 | cognitive | DECODE → MEMORY → BRAIN → ANALYTICS | synergy-scan |
+| 46 | API Deprecation Orchestrator | 80.4 | integration | INTEGRATION → VISION → GOVERNANCE → SYSTEM | synergy-scan |
+| 47 | Autonomous Recovery Sequencer | 80.3 | security | MEDIC → DEFENSE → SYSTEM → EVOLUTION | synergy-scan |
+| 48 | Prompt Evolution Tracker | 80.2 | evolution | DECODE → EVOLUTION → BRAIN → ANALYTICS | synergy-scan |
+| 49 | Economic Signal Propagator | 80.1 | routing | ECONOMY → ANALYTICS → NEXUS → CORTEX | synergy-scan |
+| 50 | Entropy-Aware Garbage Collector | 80.0 | evolution | SYSTEM → VISION → EVOLUTION → MEMORY | synergy-scan |
+
+**Total Wave 8 Crystallized: 50 pipelines (3 Apex, 26 Enterprise, 21 Architect)**
 
 ---
 
@@ -257,50 +330,36 @@ Ranked by Crown Jewel Power Index. Top 10 are "Apex" jewels with portable zero-d
 
 ## Discovery Statistics
 
-### Wave 7 Full Sweep Summary
+### Combined Wave 7 + 8 Summary
 
 | Metric | Value |
 |--------|-------|
-| **Total Pipelines Registered** | 100 |
-| **Crystallized (CJPI ≥ 55)** | 100 |
-| **CJPI ≥ 80 (Enterprise+)** | 76 |
-| **CJPI ≥ 85 (S-Tier)** | 50 |
-| **CJPI ≥ 95 (Apex)** | 1 |
-| **Average CJPI** | ~83.2 |
-| **Highest CJPI** | 95.3 (Capability Synthesis Reactor) |
+| **Total Pipelines Registered** | 150 |
+| **Crystallized (CJPI ≥ 80)** | 126 |
+| **CJPI ≥ 95 (Apex)** | 4 |
+| **CJPI ≥ 85 (Enterprise)** | 75 |
+| **CJPI 80–84 (Architect)** | 47 |
+| **Average CJPI (≥80)** | ~86.1 |
+| **Highest CJPI** | 97.2 (Recursive Intelligence Amplifier) |
 
-### Tier Distribution
+### Tier Distribution (All Waves)
 
 | Tier | Count | CJPI Range |
 |------|-------|-----------|
-| CMPSBL-Only | 1 | 95–100 |
-| Enterprise | 49 | 85–94 |
-| Architect | 50 | 70–84 |
+| CMPSBL-Only | 4 | 95–100 |
+| Enterprise | 75 | 85–94 |
+| Architect | 71 | 70–84 |
 | Creator | 0 | 55–69 |
-
-### Category Distribution
-
-| Category | Count |
-|----------|-------|
-| Cognitive | 19 |
-| Security | 16 |
-| Governance | 10 |
-| Evolution | 9 |
-| Observability | 12 |
-| Orchestration | 9 |
-| Learning | 11 |
-| Routing | 8 |
-| Integration | 6 |
 
 ### Crown Jewel Program Totals
 
-| Asset Class | Count |
-|-------------|-------|
-| S-Tier Crown Jewels | 142 |
-| Crystallized Pipelines | 100 (Wave 7) |
-| Meta-Engines | 26 |
-| Total Capabilities | 379+ |
-| Canonical Modules | 30 |
+| Asset Class | Count | Source |
+|-------------|-------|-------|
+| Crystallized Pipelines | 150 | Wave 7 (100) + Wave 8 (50) |
+| S-Tier Crown Jewels | 142 | Registry |
+| Meta-Engines | 26 | Synergy Mining |
+| Total Capabilities | 429+ | Aggregate |
+| Canonical Modules | 30 | Substrate |
 
 ---
 
