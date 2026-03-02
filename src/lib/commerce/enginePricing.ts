@@ -147,7 +147,7 @@ const INTERNAL_META_ENGINE_IDS: string[] = [
   'memory_intelligence_fabric', // Deep memory fabric — internal showcase
 ];
 
-// Free tier engines (30 core engines — generous foundation)
+// Free tier engines (33 core engines — generous foundation + 3 newly freed)
 const FREE_ENGINE_IDS: string[] = [
   'memory_engine',
   'context_engine',
@@ -180,6 +180,10 @@ const FREE_ENGINE_IDS: string[] = [
   'pipeline_engine',
   'coordination_engine',
   'salience_engine',   // Unified salience — free to drive adoption
+  // ─── 3 newly freed engines (lowest complexity, highest adoption value) ───
+  'notification_engine',  // Basic notifications — free to drive engagement
+  'logging_engine',       // Observability basics — free foundation
+  'tagging_engine',       // Content classification — free utility
 ];
 const FREE_META_ENGINE_IDS: string[] = [
   'cognitive_mesh',
