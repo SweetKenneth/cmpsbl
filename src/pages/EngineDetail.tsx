@@ -188,7 +188,7 @@ export default function EngineDetail() {
               <div>
                 <div className="flex items-center gap-3 mb-1">
                   <h1 className="text-3xl sm:text-4xl font-black tracking-tight">{engine.codename}</h1>
-                  <Badge variant="outline" className={cn("text-[10px] font-mono", TIER_ACCENT[engine.tier])}>
+                  <Badge variant="outline" className={cn("text-[11px] font-mono", TIER_ACCENT[engine.tier])}>
                     {engine.tier}
                   </Badge>
                 </div>

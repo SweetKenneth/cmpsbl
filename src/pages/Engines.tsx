@@ -61,7 +61,7 @@ function EngineCard({ engine, index }: { engine: Engine; index: number }) {
 
           {/* Threat level tag */}
           <div className="absolute top-0 right-0 px-3 py-1 bg-foreground/5 rounded-bl-xl">
-            <span className="text-[9px] font-mono tracking-widest text-muted-foreground uppercase">
+            <span className="text-[11px] font-mono tracking-widest text-muted-foreground uppercase">
               {engine.threatLevel.split("—")[0].trim()}
             </span>
           </div>
@@ -74,7 +74,7 @@ function EngineCard({ engine, index }: { engine: Engine; index: number }) {
             )}>
               <engine.icon className="w-6 h-6" style={{ color: `hsl(${engine.color})` }} />
             </div>
-            <Badge variant="outline" className={cn("text-[10px] font-mono", TIER_BADGE[engine.tier])}>
+            <Badge variant="outline" className={cn("text-[11px] font-mono", TIER_BADGE[engine.tier])}>
               {engine.tier}
             </Badge>
           </div>
@@ -84,7 +84,7 @@ function EngineCard({ engine, index }: { engine: Engine; index: number }) {
           <p className="text-sm text-muted-foreground mb-4">{engine.tagline}</p>
 
           {/* Briefing */}
-          <p className="text-xs text-muted-foreground/80 line-clamp-3 mb-6 leading-relaxed">
+          <p className="text-xs text-muted-foreground/80 mb-6 leading-relaxed break-words">
             {engine.briefing}
           </p>
 
@@ -114,7 +114,7 @@ function EngineCard({ engine, index }: { engine: Engine; index: number }) {
 
           {/* Edition tag */}
           <div className="mt-4 pt-3 border-t border-border/20">
-            <span className="text-[10px] font-mono text-muted-foreground/50 tracking-wide">
+            <span className="text-[11px] font-mono text-muted-foreground/50 tracking-wide">
               {engine.edition}
             </span>
           </div>
@@ -146,7 +146,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="20 black-boxed, tamper-proof composable engines forged from Crown Jewel artifacts. $199 standalone or $99 bundled. Own the tool. Own the outcome." />
+        <meta name="description" content="20 black-boxed, tamper-proof composable engines. APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled. Own the tool. Own the outcome." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -164,7 +164,7 @@ export default function Engines() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
                 <ShieldCheck className="w-4 h-4 text-primary" />
-                <span className="text-[10px] sm:text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM — CROWN JEWEL EDITION</span>
+                <span className="text-[11px] sm:text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM — CROWN JEWEL EDITION</span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4">
                 COMPOSABLE <span className="text-primary">ENGINES</span>
@@ -174,7 +174,7 @@ export default function Engines() {
                 forged from our highest-scoring Crown Jewel artifacts. You don't see the source. You see the results.
               </p>
               <p className="text-sm text-muted-foreground/60 font-mono">
-                20 sealed runtimes · 3 clearance tiers · $199 standalone / $99 bundled
+                20 sealed runtimes · 3 clearance tiers · Free to $599 · 40% off bundled
               </p>
             </motion.div>
           </div>
@@ -185,7 +185,7 @@ export default function Engines() {
           <div className="container mx-auto px-4 flex items-center justify-between mb-6">
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               {(["APEX", "ELITE", "CORE"] as const).map((tier) => (
-                <Badge key={tier} variant="outline" className={cn("text-[10px] font-mono", TIER_BADGE[tier])}>
+                <Badge key={tier} variant="outline" className={cn("text-[11px] font-mono", TIER_BADGE[tier])}>
                   {tier} · {ENGINES.filter(e => e.tier === tier).length}
                 </Badge>
               ))}
@@ -221,7 +221,7 @@ export default function Engines() {
                 and lifetime access to the sealed runtime binary. 3 engines are completely free.
               </p>
               <p className="text-xs font-mono text-muted-foreground/50">
-                3 free · 17 at $199 standalone · $99 bundled · Crown Jewel certified
+                3 free · CORE $199 · ELITE $399 · APEX $599 · 40% off bundled
               </p>
               <div className="flex gap-3 mt-2">
                 <Button asChild variant="outline" size="sm" className="gap-1">
