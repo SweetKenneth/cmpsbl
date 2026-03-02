@@ -111,7 +111,7 @@ export function CmpsblNav() {
       icon: Sparkles,
       items: [
         { name: "Artifact Packs", href: "/packs", description: "Activate capabilities with slot-based control", icon: Package, badge: "24 PACKS" },
-        { name: "OPERATIVES", href: "/operatives", description: "Sealed runtime arsenal — 14 black-boxed engines", icon: Shield, badge: "NEW", highlight: true },
+        { name: "ENGINES", href: "/engines", description: "17 sealed runtime engines — $199 standalone / $99 bundled", icon: Shield, badge: "NEW", highlight: true },
         { name: "Composable Agents", href: "/composable-cognitives", description: "Pre-built AI agents powered by the substrate", icon: Zap },
         { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain, badge: "FREE" },

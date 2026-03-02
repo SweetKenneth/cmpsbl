@@ -1,5 +1,5 @@
 /**
- * OPERATIVES — The Arsenal
+ * COMPOSABLE ENGINES — The Arsenal
  * Black-boxed sealed runtimes. Horizontal scroll. Mission-briefing aesthetic.
  */
 
@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Lock, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { OPERATIVES, type Operative } from "@/lib/operatives/catalog";
+import { ENGINES, type Engine } from "@/lib/engines/catalog";
 import { cn } from "@/lib/utils";
 import { Helmet } from "react-helmet-async";
 
@@ -25,8 +25,8 @@ const TIER_BADGE: Record<string, string> = {
   CORE: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
 };
 
-function OperativeCard({ op, index }: { op: Operative; index: number }) {
-  const href = op.externalPath || `/operatives/${op.slug}`;
+function EngineCard({ engine, index }: { engine: Engine; index: number }) {
+  const href = engine.externalPath || `/engines/${engine.slug}`;
 
   return (
     <motion.div
@@ -43,44 +43,43 @@ function OperativeCard({ op, index }: { op: Operative; index: number }) {
           "bg-card border-border/50",
           "overflow-hidden"
         )}>
-          {/* Classified ribbon */}
           <div className="absolute top-0 right-0 px-3 py-1 bg-foreground/5 rounded-bl-xl">
             <span className="text-[9px] font-mono tracking-widest text-muted-foreground uppercase">
-              {op.threatLevel.split("—")[0].trim()}
+              {engine.threatLevel.split("—")[0].trim()}
             </span>
           </div>
 
-          {/* Sealed badge */}
           <div className="flex items-center gap-2 mb-4">
             <div className={cn(
-              "w-12 h-12 rounded-xl flex items-center justify-center",
-              "bg-gradient-to-br",
-              TIER_COLORS[op.tier]
+              "w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br",
+              TIER_COLORS[engine.tier]
             )}>
-              <op.icon className="w-6 h-6" style={{ color: `hsl(${op.color})` }} />
+              <engine.icon className="w-6 h-6" style={{ color: `hsl(${engine.color})` }} />
             </div>
-            <Badge variant="outline" className={cn("text-[10px] font-mono", TIER_BADGE[op.tier])}>
-              {op.tier}
+            <Badge variant="outline" className={cn("text-[10px] font-mono", TIER_BADGE[engine.tier])}>
+              {engine.tier}
             </Badge>
           </div>
 
-          {/* Name */}
-          <h3 className="text-xl font-bold tracking-tight mb-1">{op.codename}</h3>
-          <p className="text-sm text-muted-foreground mb-4">{op.tagline}</p>
+          <h3 className="text-xl font-bold tracking-tight mb-1">{engine.codename}</h3>
+          <p className="text-sm text-muted-foreground mb-4">{engine.tagline}</p>
 
-          {/* Dossier preview */}
           <p className="text-xs text-muted-foreground/80 line-clamp-3 mb-6 leading-relaxed">
-            {op.briefing}
+            {engine.briefing}
           </p>
 
-          {/* Price & CTA */}
           <div className="flex items-end justify-between mt-auto">
             <div>
-              <span className="text-2xl font-bold tracking-tight">{op.priceDisplay}</span>
-              {op.isSubscription ? (
+              <span className="text-2xl font-bold tracking-tight">{engine.priceDisplay}</span>
+              {engine.isSubscription ? (
                 <span className="text-xs text-muted-foreground ml-1">/ year</span>
               ) : (
-                <span className="text-xs text-muted-foreground ml-1">one-time</span>
+                <>
+                  <span className="text-xs text-muted-foreground ml-1">standalone</span>
+                  <span className="block text-sm text-primary font-semibold mt-0.5">
+                    {engine.bundleDisplay} bundled
+                  </span>
+                </>
               )}
             </div>
             <div className="flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
@@ -90,10 +89,9 @@ function OperativeCard({ op, index }: { op: Operative; index: number }) {
             </div>
           </div>
 
-          {/* Edition */}
           <div className="mt-4 pt-3 border-t border-border/30">
             <span className="text-[10px] font-mono text-muted-foreground/60 tracking-wide">
-              {op.edition}
+              {engine.edition}
             </span>
           </div>
         </div>
@@ -102,7 +100,7 @@ function OperativeCard({ op, index }: { op: Operative; index: number }) {
   );
 }
 
-export default function Operatives() {
+export default function Engines() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -123,86 +121,65 @@ export default function Operatives() {
   return (
     <>
       <Helmet>
-        <title>OPERATIVES — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="Black-boxed, tamper-proof software operatives. Each one a sealed runtime built for a specific mission. Own the tool. Own the outcome." />
+        <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
+        <meta name="description" content="17 black-boxed, tamper-proof composable engines. $199 standalone or $99 bundled. Own the tool. Own the outcome." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        {/* Hero */}
         <section className="relative pt-28 pb-16 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="relative container mx-auto max-w-5xl text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
                 <ShieldCheck className="w-4 h-4 text-primary" />
                 <span className="text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM</span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                THE <span className="text-primary">OPERATIVES</span>
+                COMPOSABLE <span className="text-primary">ENGINES</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
-                Each Operative is a self-contained, obfuscated, tamper-proof runtime
+                Each Engine is a self-contained, obfuscated, tamper-proof runtime
                 engineered for a single mission. You don't see the source. You see the results.
               </p>
               <p className="text-sm text-muted-foreground/70 font-mono">
-                14 sealed runtimes • 3 clearance tiers • Collector's license included
+                17 sealed runtimes • 3 clearance tiers • $199 standalone / $99 bundled
               </p>
             </motion.div>
           </div>
         </section>
 
-        {/* Tier Labels + Horizontal Scroll */}
         <section className="pb-24">
-          {/* Scroll controls */}
           <div className="container mx-auto px-4 flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               {(["APEX", "ELITE", "CORE"] as const).map((tier) => (
                 <Badge key={tier} variant="outline" className={cn("text-[10px] font-mono", TIER_BADGE[tier])}>
-                  {tier} · {OPERATIVES.filter(o => o.tier === tier).length}
+                  {tier} · {ENGINES.filter(e => e.tier === tier).length}
                 </Badge>
               ))}
             </div>
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-9 w-9 rounded-full"
-                onClick={() => scroll("left")}
-                disabled={!canScrollLeft}
-              >
+              <Button variant="outline" size="icon" className="h-9 w-9 rounded-full" onClick={() => scroll("left")} disabled={!canScrollLeft}>
                 <ChevronLeft className="w-4 h-4" />
               </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-9 w-9 rounded-full"
-                onClick={() => scroll("right")}
-                disabled={!canScrollRight}
-              >
+              <Button variant="outline" size="icon" className="h-9 w-9 rounded-full" onClick={() => scroll("right")} disabled={!canScrollRight}>
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
           </div>
 
-          {/* Scrollable cards */}
           <div
             ref={scrollRef}
             onScroll={updateScrollState}
             className="flex gap-5 overflow-x-auto px-4 lg:px-8 pb-4 snap-x snap-mandatory scrollbar-hide"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {OPERATIVES.map((op, i) => (
-              <div key={op.slug} className="snap-start">
-                <OperativeCard op={op} index={i} />
+            {ENGINES.map((engine, i) => (
+              <div key={engine.slug} className="snap-start">
+                <EngineCard engine={engine} index={i} />
               </div>
             ))}
           </div>
 
-          {/* Bottom CTA */}
           <div className="container mx-auto px-4 mt-16 text-center">
             <div className="inline-flex flex-col items-center gap-3 p-6 rounded-2xl border border-border/50 bg-card/50">
               <p className="text-sm text-muted-foreground">
@@ -210,7 +187,7 @@ export default function Operatives() {
                 and lifetime access to the sealed runtime binary.
               </p>
               <p className="text-xs font-mono text-muted-foreground/60">
-                You own it. It runs forever. No subscriptions (except ARCHITECT).
+                $199 standalone · $99 when bundled with any other engine · Collector's license included
               </p>
             </div>
           </div>

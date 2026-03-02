@@ -125,8 +125,8 @@ const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const CMPSBLEngine = lazy(() => import("./pages/CMPSBLEngine"));
-const Operatives = lazy(() => import("./pages/Operatives"));
-const OperativeDetail = lazy(() => import("./pages/OperativeDetail"));
+const Engines = lazy(() => import("./pages/Engines"));
+const EngineDetail = lazy(() => import("./pages/EngineDetail"));
 const Upgrade = lazy(() => import("./pages/Upgrade"));
 const Diligence = lazy(() => import("./pages/Diligence"));
 const Templates = lazy(() => import("./pages/Templates"));
@@ -434,9 +434,10 @@ const App = () => {
                         <Route path="/synergies" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/store" element={<Navigate to="/upgrade" replace />} />
                         <Route path="/artifacts" element={<Navigate to="/upgrade" replace />} />
-                        <Route path="/engines" element={<Navigate to="/operatives" replace />} />
-                        <Route path="/operatives" element={<Operatives />} />
-                        <Route path="/operatives/:slug" element={<OperativeDetail />} />
+                        <Route path="/operatives" element={<Navigate to="/engines" replace />} />
+                        <Route path="/operatives/:slug" element={<Navigate to="/engines" replace />} />
+                        <Route path="/engines" element={<Engines />} />
+                        <Route path="/engines/:slug" element={<EngineDetail />} />
                         <Route path="/system-feed" element={<PhaseGateRoute><PackGate packId="pack-observability"><SystemIntelligenceFeed /></PackGate></PhaseGateRoute>} />
                          
                          {/* Scan result share page — Item #3 */}
