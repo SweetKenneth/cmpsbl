@@ -451,3 +451,63 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
 
 // Total count for display
 export const TOTAL_AGENT_COUNT = AGENTS_WITH_POWERS.length;
+
+// ============================================================================
+// UNIVERSAL: 4-TIER PORTABLE MEMORY SYSTEM
+// Ships with every agent — zero-dependency, works in any stack
+// ============================================================================
+
+export interface MemoryTier {
+  name: string;
+  label: string;
+  description: string;
+  latency: string;
+  retention: string;
+}
+
+export const FOUR_TIER_MEMORY: MemoryTier[] = [
+  {
+    name: "HOT",
+    label: "Session Cache",
+    description: "In-context working memory for the current task. Sub-millisecond recall of active conversation, variables, and reasoning state.",
+    latency: "<1ms",
+    retention: "Session",
+  },
+  {
+    name: "WARM",
+    label: "Knowledge Crystals",
+    description: "Compressed heuristics and learned patterns persisted across sessions. Deterministic 384-dim hash embeddings for instant semantic similarity — zero API cost.",
+    latency: "<5ms",
+    retention: "Persistent",
+  },
+  {
+    name: "COOL",
+    label: "Episodic Vault",
+    description: "Tamper-proof, content-hash-sealed records of past interactions, decisions, and outcomes. Write-ahead logging ensures crash recovery. SM-2 spaced repetition keeps important memories fresh.",
+    latency: "<50ms",
+    retention: "Persistent",
+  },
+  {
+    name: "COLD",
+    label: "Archive Ledger",
+    description: "Long-term compressed storage for historical context, audit trails, and dormant knowledge. Retrievable on demand with automatic promotion to warmer tiers when accessed.",
+    latency: "<200ms",
+    retention: "Permanent",
+  },
+];
+
+export const MEMORY_SYSTEM_SUMMARY = {
+  name: "4-Tier Portable Memory System",
+  tagline: "Every agent remembers. Every session builds on the last.",
+  description:
+    "All 20 agents ship with a portable, zero-dependency memory system that persists knowledge across sessions. Four tiers — HOT, WARM, COOL, and COLD — ensure sub-millisecond access to active context while maintaining permanent archives of learned patterns, past decisions, and episodic history. No external APIs required. Drop it into any stack.",
+  tiers: FOUR_TIER_MEMORY,
+  features: [
+    "Zero external dependencies — runs anywhere",
+    "Deterministic hash embeddings (384-dim) — no API cost",
+    "Content-hash seals for tamper detection",
+    "Write-ahead logging for crash recovery",
+    "SM-2 spaced repetition for knowledge retention",
+    "Automatic tier promotion on access",
+  ],
+};
