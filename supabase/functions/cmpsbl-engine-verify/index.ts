@@ -211,7 +211,7 @@ function buildThankYouEmail(name: string, expiresAt: string | null, email: strin
           <div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:20px;">
             <p style="color:#888;font-size:12px;margin:0 0 4px;text-transform:uppercase;letter-spacing:1px;">License Details</p>
             <p style="color:#fff;font-size:14px;margin:4px 0;">Type: <strong>Annual Engine License</strong></p>
-            <p style="color:#fff;font-size:14px;margin:4px 0;">Email: <strong>${"${customerEmail}" || name}</strong></p>
+            <p style="color:#fff;font-size:14px;margin:4px 0;">Email: <strong>${email}</strong></p>
             ${expiryLine}
           </div>
         </td></tr>

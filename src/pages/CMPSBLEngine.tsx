@@ -68,7 +68,17 @@ export default function CMPSBLEngine() {
   useEffect(() => {
     if (isLicensed && sessionId) {
       setLicensed(true);
-      toast.success("License activated! Your CMPSBL Engine license is now active. Check your email for access details.");
+      // Verify session and trigger thank-you email
+      supabase.functions.invoke("cmpsbl-engine-verify", {
+        body: { session_id: sessionId },
+      }).then(({ data, error }) => {
+        if (error) {
+          console.error("Verify error:", error);
+          toast.success("License activated! Check your email for access details.");
+        } else if (data?.success) {
+          toast.success("License activated! A confirmation email with your docs access link has been sent.");
+        }
+      });
     }
   }, [isLicensed, sessionId]);
 
