@@ -1,0 +1,169 @@
+/**
+ * EnginesCTA — Cinematic call-to-action for the 20 Composable Engines
+ * Positioned below the hero on the homepage
+ */
+
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Shield, ArrowRight, Lock, Cpu, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const ENGINE_HIGHLIGHTS = [
+  { name: "ARCHITECT", desc: "Unified mega-engine", tier: "APEX" },
+  { name: "SENTINEL", desc: "AI security ops", tier: "APEX" },
+  { name: "GENESIS", desc: "Autonomous triage", tier: "APEX" },
+  { name: "NEXUS", desc: "Multi-model router", tier: "APEX" },
+  { name: "CORTEX", desc: "Agent orchestration", tier: "ELITE" },
+  { name: "MIRAGE", desc: "Fleet intelligence", tier: "ELITE" },
+];
+
+const TIER_DOT: Record<string, string> = {
+  APEX: "bg-red-500",
+  ELITE: "bg-purple-500",
+  CORE: "bg-cyan-500",
+};
+
+export function EnginesCTA() {
+  return (
+    <section className="relative z-10 px-4 py-12 sm:py-20 overflow-hidden">
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+          className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-border/40"
+        >
+          {/* Dark gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-card via-background to-card" />
+
+          {/* Animated grid overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `
+                linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
+                linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
+              `,
+              backgroundSize: "50px 50px",
+            }}
+          />
+
+          {/* Glow accents */}
+          <motion.div
+            className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-[100px]"
+            style={{ background: "hsl(var(--primary) / 0.12)" }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full blur-[80px]"
+            style={{ background: "hsl(var(--neon-cyan) / 0.08)" }}
+            animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Top accent bar */}
+          <div className="h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+
+          <div className="relative p-6 sm:p-10 md:p-14">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-4"
+                >
+                  <Lock className="w-3 h-3 text-primary" />
+                  <span className="text-[10px] font-mono tracking-widest text-primary uppercase">Crown Jewel Derived</span>
+                </motion.div>
+
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">
+                  20 Sealed <span className="text-primary">Engines</span>
+                </h2>
+                <p className="text-sm sm:text-base text-muted-foreground max-w-lg leading-relaxed">
+                  Black-boxed runtimes forged from our highest-scoring Crown Jewel artifacts.
+                  Each engine is tamper-proof, zero-dependency, and built for a single mission.
+                  You don't see the source — you see the results.
+                </p>
+              </div>
+
+              <div className="flex flex-col items-start sm:items-end gap-2">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl sm:text-4xl font-black text-primary">$99</span>
+                  <span className="text-sm text-muted-foreground">bundled</span>
+                </div>
+                <span className="text-xs text-muted-foreground/60 font-mono">$199 standalone · Lifetime license</span>
+              </div>
+            </div>
+
+            {/* Engine highlights grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-10">
+              {ENGINE_HIGHLIGHTS.map((engine, i) => (
+                <motion.div
+                  key={engine.name}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 + i * 0.05 }}
+                  className="group rounded-xl border border-border/30 bg-card/50 p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className={cn("w-1.5 h-1.5 rounded-full", TIER_DOT[engine.tier])} />
+                    <span className="text-xs font-bold tracking-wide text-foreground">{engine.name}</span>
+                  </div>
+                  <span className="text-[11px] text-muted-foreground">{engine.desc}</span>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Stats row */}
+            <div className="flex flex-wrap justify-center gap-8 sm:gap-14 mb-10">
+              {[
+                { icon: Shield, value: "20", label: "Sealed Engines" },
+                { icon: Cpu, value: "3", label: "Clearance Tiers" },
+                { icon: Zap, value: "120+", label: "Capabilities" },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <stat.icon className="w-5 h-5 text-primary mx-auto mb-1.5" />
+                  <div className="text-xl sm:text-2xl font-black text-foreground">{stat.value}</div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="gap-2 px-8 h-13 text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+              >
+                <Link to="/engines">
+                  <Shield className="w-4 h-4" />
+                  Browse All 20 Engines
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="gap-2 px-8 h-13 text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all"
+              >
+                <Link to="/engines/architect">
+                  <Cpu className="w-4 h-4" />
+                  ARCHITECT — The Mega-Engine
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
