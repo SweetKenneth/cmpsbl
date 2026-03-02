@@ -33,6 +33,8 @@ export interface AgentWithPowers {
   powers: [CrownJewelPower, CrownJewelPower, CrownJewelPower];
   icon: LucideIcon;
   isFree: boolean;
+  isFlagship?: boolean;
+  priceCents?: number;
   gradient: string;
   glowColor: string;
 }
