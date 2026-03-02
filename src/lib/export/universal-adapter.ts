@@ -13,11 +13,12 @@
 export type ExportLanguage =
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
   | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
-  | 'elixir' | 'lua';
+  | 'elixir' | 'lua'
+  | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel';
 
 export type ExportAdapter =
   | 'standalone' | 'rest-api' | 'grpc-stub' | 'cli'
-  | 'docker' | 'wasm' | 'sdk-wrapper';
+  | 'docker' | 'wasm' | 'sdk-wrapper' | 'fpga-synth';
 
 export interface ExportTarget {
   language: ExportLanguage;
@@ -53,12 +54,14 @@ const LANG_EXT: Record<ExportLanguage, string> = {
   typescript: 'ts', python: 'py', go: 'go', rust: 'rs', java: 'java',
   csharp: 'cs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt',
   elixir: 'ex', lua: 'lua',
+  verilog: 'v', vhdl: 'vhd', systemverilog: 'sv', chisel: 'scala',
 };
 
 const LANG_LABELS: Record<ExportLanguage, string> = {
   typescript: 'TypeScript', python: 'Python', go: 'Go', rust: 'Rust',
   java: 'Java', csharp: 'C#', ruby: 'Ruby', php: 'PHP',
   swift: 'Swift', kotlin: 'Kotlin', elixir: 'Elixir', lua: 'Lua',
+  verilog: 'Verilog', vhdl: 'VHDL', systemverilog: 'SystemVerilog', chisel: 'Chisel (Scala)',
 };
 
 const ADAPTER_LABELS: Record<ExportAdapter, string> = {
@@ -69,6 +72,7 @@ const ADAPTER_LABELS: Record<ExportAdapter, string> = {
   docker: 'Docker Container',
   wasm: 'WASM Module',
   'sdk-wrapper': 'SDK Client',
+  'fpga-synth': 'FPGA Synthesis Ready',
 };
 
 export function getAllLanguages(): { value: ExportLanguage; label: string }[] {
@@ -142,6 +146,8 @@ function getMimeType(lang: ExportLanguage): string {
     rust: 'text/x-rust', java: 'text/x-java', csharp: 'text/x-csharp',
     ruby: 'text/x-ruby', php: 'text/x-php', swift: 'text/x-swift',
     kotlin: 'text/x-kotlin', elixir: 'text/x-elixir', lua: 'text/x-lua',
+    verilog: 'text/x-verilog', vhdl: 'text/x-vhdl', systemverilog: 'text/x-systemverilog',
+    chisel: 'text/x-scala',
   };
   return map[lang] ?? 'text/plain';
 }
@@ -170,6 +176,10 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   kotlin: genKotlin,
   elixir: genElixir,
   lua: genLua,
+  verilog: genVerilog,
+  vhdl: genVHDL,
+  systemverilog: genSystemVerilog,
+  chisel: genChisel,
 };
 
 function header(a: ExportableArtifact, lang: string, comment: string): string {
