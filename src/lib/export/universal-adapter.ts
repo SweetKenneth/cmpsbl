@@ -2177,7 +2177,7 @@ function genSystemC(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'SystemC (C++)', '//');
   const cls = className(a);
   const snake = snakeCase(a);
-  const modules = a.synthesisContext?.stages?.map(s => s.module) ?? [a.module];
+  const modules = a.synthesisContext?.moduleChain ?? [a.module];
   const pipelineLogic = a.synthesisContext
     ? systemcPipelineTransform(modules, a.synthesisContext)
     : `        // Default: passthrough with confidence weighting
