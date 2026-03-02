@@ -425,13 +425,24 @@ export default function STierVault() {
   const loadPromoted = async () => {
     setLoadingPromoted(true);
     try {
-      const { data, error } = await supabase
-        .from('vault_promotions')
-        .select('*')
-        .eq('export_ready', true)
-        .order('cjpi', { ascending: false });
-      if (error) throw error;
-      setPromoted((data || []) as unknown as PromotedDiscovery[]);
+      // Paginate to bypass PostgREST 1000-row default limit
+      const all: PromotedDiscovery[] = [];
+      let from = 0;
+      const pageSize = 1000;
+      while (true) {
+        const { data, error } = await supabase
+          .from('vault_promotions')
+          .select('*')
+          .eq('export_ready', true)
+          .order('cjpi', { ascending: false })
+          .range(from, from + pageSize - 1);
+        if (error) throw error;
+        if (!data || data.length === 0) break;
+        all.push(...(data as unknown as PromotedDiscovery[]));
+        if (data.length < pageSize) break;
+        from += pageSize;
+      }
+      setPromoted(all);
     } catch (err) {
       console.error('Failed to load promoted discoveries:', err);
     } finally {
