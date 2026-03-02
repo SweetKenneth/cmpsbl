@@ -15,6 +15,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import registryData from "@/crownjewels/s-tier.registry.json";
 import type { STierEntry } from "@/crownjewels/types";
 import {
@@ -813,8 +814,8 @@ export default function STierVault() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-3 sm:p-6">
-      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
+    <AdminLayout>
+      <div className="space-y-4 sm:space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -968,7 +969,7 @@ export default function STierVault() {
                           <Download className="w-3.5 h-3.5" /> Software ZIP ({promoted.length}) · 18 langs
                         </Button>
                         <Button size="sm" variant="outline" onClick={handleExportHardware} className="gap-1.5">
-                          <Download className="w-3.5 h-3.5" /> Hardware ZIP ({promoted.length}) · 6 HDLs
+                          <Download className="w-3.5 h-3.5" /> Hardware ZIP ({promoted.length}) · 7 HDLs
                         </Button>
                       </div>
                     </div>
