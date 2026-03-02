@@ -46,6 +46,7 @@ export const adminNavConfig: NavGroup[] = [
     items: [
       { id: "intel", label: "INTEL Panel", path: "/admin/intel", icon: Eye, isNew: true },
       { id: "s-tier-vault", label: "S-Tier Vault", path: "/admin/s-tier-vault", icon: Shield, isNew: true },
+      { id: "discovery-mining", label: "Discovery Mining", path: "/admin/discovery-mining", icon: Sparkles, isNew: true },
       { id: "os", label: "Substrate", path: "/os", icon: Cpu },
       { id: "substrate", label: "Dashboard", path: "/substrate", icon: LayoutDashboard },
       { id: "decode", label: "Decode", path: "/decode", icon: Terminal },
