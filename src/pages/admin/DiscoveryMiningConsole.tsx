@@ -1,6 +1,6 @@
 /**
  * Admin → Discovery Mining Console
- * One-click Capability Synthesis Reactor with full audit trail.
+ * Mobile-first, no truncation, full audit trail.
  */
 import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
@@ -10,13 +10,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Zap, Play, History, FlaskConical, Target, TrendingUp,
   Shield, Brain, Cpu, Eye, Scale, GitBranch, Loader2,
-  Download, Star,
+  Download, Star, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import type { ReactorRunResult, ReactorCandidate } from '@/lib/discovery/reactor';
 
@@ -56,60 +55,64 @@ function RunSummaryCard({ result }: { result: ReactorRunResult }) {
   return (
     <Card className="border-primary/20">
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Target className="w-5 h-5 text-primary" />
+        <CardTitle className="text-base sm:text-lg flex items-center gap-2 flex-wrap">
+          <Target className="w-5 h-5 text-primary shrink-0" />
           Latest Run Summary
           {result.dryRun && <Badge variant="outline" className="text-xs">DRY RUN</Badge>}
         </CardTitle>
         <CardDescription>{result.durationMs}ms • {new Date().toLocaleString()}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-2xl font-bold text-foreground">{result.totalCandidates}</div>
-            <div className="text-xs text-muted-foreground">Candidates</div>
+            <div className="text-xl sm:text-2xl font-bold text-foreground">{result.totalCandidates}</div>
+            <div className="text-[10px] sm:text-xs text-muted-foreground">Candidates</div>
           </div>
           <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-2xl font-bold text-primary">{result.acceptedCount}</div>
-            <div className="text-xs text-muted-foreground">Accepted (80+)</div>
+            <div className="text-xl sm:text-2xl font-bold text-primary">{result.acceptedCount}</div>
+            <div className="text-[10px] sm:text-xs text-muted-foreground">Accepted (80+)</div>
           </div>
           <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-2xl font-bold text-foreground">{result.topFind?.cjpi ?? '—'}</div>
-            <div className="text-xs text-muted-foreground">Top CJPI</div>
+            <div className="text-xl sm:text-2xl font-bold text-foreground">{result.topFind?.cjpi ?? '—'}</div>
+            <div className="text-[10px] sm:text-xs text-muted-foreground">Top CJPI</div>
           </div>
           <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-2xl font-bold text-foreground">{Object.keys(result.byCategory).length}</div>
-            <div className="text-xs text-muted-foreground">Categories</div>
+            <div className="text-xl sm:text-2xl font-bold text-foreground">{Object.keys(result.byCategory).length}</div>
+            <div className="text-[10px] sm:text-xs text-muted-foreground">Categories</div>
           </div>
         </div>
 
         {result.topFind && (
           <div className="mt-4 p-3 rounded-lg bg-primary/5 border border-primary/20">
             <div className="text-xs text-muted-foreground mb-1">🏆 Top Discovery</div>
-            <div className="font-semibold text-foreground">{result.topFind.name}</div>
+            <div className="font-semibold text-foreground break-words">{result.topFind.name}</div>
             <div className="text-sm text-primary font-mono">{result.topFind.cjpi} CJPI</div>
           </div>
         )}
 
         {/* Distribution */}
-        <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <div className="text-xs font-medium text-muted-foreground mb-2">By Category</div>
-            {Object.entries(result.byCategory).sort((a, b) => b[1] - a[1]).map(([cat, count]) => (
-              <div key={cat} className="flex items-center justify-between text-xs py-0.5">
-                <CategoryBadge category={cat} />
-                <span className="font-mono text-foreground">{count}</span>
-              </div>
-            ))}
+            <div className="space-y-1">
+              {Object.entries(result.byCategory).sort((a, b) => b[1] - a[1]).map(([cat, count]) => (
+                <div key={cat} className="flex items-center justify-between text-xs py-0.5">
+                  <CategoryBadge category={cat} />
+                  <span className="font-mono text-foreground">{count}</span>
+                </div>
+              ))}
+            </div>
           </div>
           <div>
             <div className="text-xs font-medium text-muted-foreground mb-2">By Tier</div>
-            {Object.entries(result.byTier).sort((a, b) => b[1] - a[1]).map(([tier, count]) => (
-              <div key={tier} className="flex items-center justify-between text-xs py-0.5">
-                <TierBadge tier={tier} />
-                <span className="font-mono text-foreground">{count}</span>
-              </div>
-            ))}
+            <div className="space-y-1">
+              {Object.entries(result.byTier).sort((a, b) => b[1] - a[1]).map(([tier, count]) => (
+                <div key={tier} className="flex items-center justify-between text-xs py-0.5">
+                  <TierBadge tier={tier} />
+                  <span className="font-mono text-foreground">{count}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </CardContent>
@@ -117,68 +120,141 @@ function RunSummaryCard({ result }: { result: ReactorRunResult }) {
   );
 }
 
-function DiscoveryTable({ discoveries, onMarkCandidate }: { discoveries: ReactorCandidate[]; onMarkCandidate: (id: string, val: boolean) => void }) {
-  const [filter, setFilter] = useState<string>('all');
+// ─── Discovery Card (mobile-first, no truncation) ─────────────────
 
-  const filtered = filter === 'all' ? discoveries : discoveries.filter(d => d.category === filter);
+function DiscoveryCard({
+  d, index, onMark
+}: {
+  d: ReactorCandidate; index: number; onMark: (id: string, val: boolean) => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
 
   return (
-    <div>
-      <div className="flex items-center gap-2 mb-3 flex-wrap">
-        <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>All</Button>
-        {Array.from(new Set(discoveries.map(d => d.category))).sort().map(cat => (
-          <Button key={cat} variant={filter === cat ? 'default' : 'outline'} size="sm" onClick={() => setFilter(cat)}>
-            {cat}
+    <Card className="border-border/50">
+      <CardContent className="p-3 sm:p-4">
+        {/* Top badges */}
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          <span className="font-mono text-xs text-muted-foreground font-bold">#{index + 1}</span>
+          <span className={`font-mono font-bold text-sm ${d.cjpi >= 95 ? 'text-red-400' : d.cjpi >= 85 ? 'text-blue-400' : 'text-emerald-400'}`}>
+            {d.cjpi}
+          </span>
+          <TierBadge tier={d.tier} />
+          <CategoryBadge category={d.category} />
+          <Button variant="ghost" size="sm" className="h-6 w-6 p-0 ml-auto" onClick={() => onMark(d.id, true)}>
+            <Star className="w-3.5 h-3.5" />
           </Button>
+        </div>
+
+        {/* Name — never truncated */}
+        <h4 className="font-semibold text-sm text-foreground mb-1 break-words">{d.name}</h4>
+
+        {/* Description — never truncated */}
+        <p className="text-xs text-muted-foreground mb-2 break-words">{d.description}</p>
+
+        {/* Module chain */}
+        <div className="flex gap-1 flex-wrap mb-2">
+          {d.moduleChain.map(m => (
+            <Badge key={m} variant="outline" className="text-[10px] px-1.5 py-0">{m}</Badge>
+          ))}
+        </div>
+
+        {/* Expand */}
+        <Button variant="ghost" size="sm" onClick={() => setExpanded(!expanded)} className="gap-1 text-xs p-0 h-auto">
+          {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          {expanded ? 'Less' : 'More'}
+        </Button>
+
+        {expanded && (
+          <div className="mt-2 pt-2 border-t border-border/50 text-xs space-y-1">
+            <div><span className="text-muted-foreground">ID:</span> <code className="font-mono text-[10px]">{d.id}</code></div>
+            <div><span className="text-muted-foreground">Synergy Multiplier:</span> {d.synergyMultiplier?.toFixed(2) ?? 'N/A'}</div>
+            <div><span className="text-muted-foreground">Components:</span> {d.components?.join(', ') ?? 'N/A'}</div>
+            {d.rationale && <div><span className="text-muted-foreground">Rationale:</span> {d.rationale}</div>}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function DiscoveryList({ discoveries, onMarkCandidate }: { discoveries: ReactorCandidate[]; onMarkCandidate: (id: string, val: boolean) => void }) {
+  const [filter, setFilter] = useState<string>('all');
+  const filtered = filter === 'all' ? discoveries : discoveries.filter(d => d.category === filter);
+  const categories = Array.from(new Set(discoveries.map(d => d.category))).sort();
+
+  return (
+    <div className="space-y-3">
+      {/* Filter chips — scrollable */}
+      <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+        <div className="flex gap-1.5 min-w-max pb-1">
+          <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" className="text-xs shrink-0" onClick={() => setFilter('all')}>
+            All ({discoveries.length})
+          </Button>
+          {categories.map(cat => (
+            <Button key={cat} variant={filter === cat ? 'default' : 'outline'} size="sm" className="text-xs shrink-0" onClick={() => setFilter(cat)}>
+              {cat} ({discoveries.filter(d => d.category === cat).length})
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {/* Card list */}
+      <div className="space-y-2">
+        {filtered.map((d, i) => (
+          <DiscoveryCard key={d.id} d={d} index={i} onMark={onMarkCandidate} />
         ))}
       </div>
-      <ScrollArea className="h-[500px]">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-8">#</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>CJPI</TableHead>
-              <TableHead>Tier</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Modules</TableHead>
-              <TableHead className="w-8">⭐</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((d, i) => (
-              <TableRow key={d.id}>
-                <TableCell className="font-mono text-xs text-muted-foreground">{i + 1}</TableCell>
-                <TableCell className="font-medium text-sm">{d.name}</TableCell>
-                <TableCell className="text-xs text-muted-foreground max-w-[300px] truncate">{d.description}</TableCell>
-                <TableCell>
-                  <span className={`font-mono font-bold text-sm ${d.cjpi >= 95 ? 'text-red-400' : d.cjpi >= 85 ? 'text-blue-400' : 'text-emerald-400'}`}>
-                    {d.cjpi}
-                  </span>
-                </TableCell>
-                <TableCell><TierBadge tier={d.tier} /></TableCell>
-                <TableCell><CategoryBadge category={d.category} /></TableCell>
-                <TableCell>
-                  <div className="flex gap-1 flex-wrap">
-                    {d.moduleChain.map(m => (
-                      <Badge key={m} variant="outline" className="text-[10px] px-1 py-0">{m}</Badge>
-                    ))}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => onMarkCandidate(d.id, true)}>
-                    <Star className="w-3 h-3" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </ScrollArea>
     </div>
   );
 }
+
+// ─── Run History Cards (mobile) ─────────────────────────────────────
+
+function RunHistoryList({ runs, loading }: { runs: any[]; loading: boolean }) {
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (runs.length === 0) {
+    return <p className="text-sm text-muted-foreground text-center py-8">No runs recorded yet</p>;
+  }
+
+  return (
+    <div className="space-y-2">
+      {runs.map(run => (
+        <Card key={run.id} className="border-border/50">
+          <CardContent className="p-3">
+            <div className="flex items-center gap-2 flex-wrap mb-2">
+              <span className="text-xs font-mono text-muted-foreground">
+                {new Date(run.started_at).toLocaleDateString()}
+              </span>
+              <Badge variant={run.status === 'completed' ? 'default' : 'destructive'} className="text-xs">
+                {run.status}
+              </Badge>
+              {run.dry_run && <Badge variant="outline" className="text-[10px]">Dry</Badge>}
+              {run.exploratory_mode && <Badge variant="outline" className="text-[10px]">Exp</Badge>}
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div><span className="text-muted-foreground">Candidates:</span> <span className="font-mono">{run.total_candidates}</span></div>
+              <div><span className="text-muted-foreground">Accepted:</span> <span className="font-mono text-primary">{run.accepted_count}</span></div>
+              <div className="col-span-2">
+                <span className="text-muted-foreground">Top Find:</span>{' '}
+                <span className="break-words">{run.top_find_name ?? '—'}</span>
+                {run.top_find_cjpi && <span className="font-mono font-bold ml-1">({run.top_find_cjpi})</span>}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+// ─── Main Console ──────────────────────────────────────────────────
 
 export default function DiscoveryMiningConsole() {
   const {
@@ -208,29 +284,30 @@ export default function DiscoveryMiningConsole() {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="space-y-4 sm:space-y-6">
+        {/* Header — stacks on mobile */}
+        <div className="space-y-3">
           <div>
-            <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Zap className="w-6 h-6 text-primary" />
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2">
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-primary shrink-0" />
               Discovery Mining Console
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
               Capability Synthesis Reactor — one-click auto-discovery of Crown Jewel pipelines
             </p>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Controls — full width on mobile */}
+          <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2">
               <Switch id="dry-run" checked={dryRun} onCheckedChange={setDryRun} />
-              <Label htmlFor="dry-run" className="text-sm">Dry Run</Label>
+              <Label htmlFor="dry-run" className="text-xs sm:text-sm">Dry Run</Label>
             </div>
             <div className="flex items-center gap-2">
               <Switch id="exploratory" checked={exploratoryMode} onCheckedChange={setExploratoryMode} />
-              <Label htmlFor="exploratory" className="text-sm">Exploratory</Label>
+              <Label htmlFor="exploratory" className="text-xs sm:text-sm">Exploratory</Label>
             </div>
-            <Button onClick={handleRun} disabled={isRunning} className="gap-2">
+            <Button onClick={handleRun} disabled={isRunning} className="gap-2 ml-auto sm:ml-0">
               {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
               Run Discovery
             </Button>
@@ -238,9 +315,9 @@ export default function DiscoveryMiningConsole() {
         </div>
 
         <Tabs defaultValue="results" className="w-full">
-          <TabsList>
-            <TabsTrigger value="results" className="gap-1"><Target className="w-4 h-4" /> Results</TabsTrigger>
-            <TabsTrigger value="history" className="gap-1"><History className="w-4 h-4" /> History</TabsTrigger>
+          <TabsList className="w-full sm:w-auto">
+            <TabsTrigger value="results" className="gap-1 flex-1 sm:flex-none"><Target className="w-4 h-4" /> Results</TabsTrigger>
+            <TabsTrigger value="history" className="gap-1 flex-1 sm:flex-none"><History className="w-4 h-4" /> History</TabsTrigger>
           </TabsList>
 
           <TabsContent value="results" className="space-y-4">
@@ -250,17 +327,19 @@ export default function DiscoveryMiningConsole() {
 
                 {latestResult.discoveries.length > 0 && (
                   <Card>
-                    <CardHeader className="pb-3 flex flex-row items-center justify-between">
-                      <div>
-                        <CardTitle className="text-lg">Discovered Pipelines</CardTitle>
-                        <CardDescription>{latestResult.discoveries.length} pipelines ranked by CJPI</CardDescription>
+                    <CardHeader className="pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                          <CardTitle className="text-base sm:text-lg">Discovered Pipelines</CardTitle>
+                          <CardDescription>{latestResult.discoveries.length} pipelines ranked by CJPI</CardDescription>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={exportJson} className="gap-1 self-start">
+                          <Download className="w-3 h-3" /> Export JSON
+                        </Button>
                       </div>
-                      <Button variant="outline" size="sm" onClick={exportJson} className="gap-1">
-                        <Download className="w-3 h-3" /> Export JSON
-                      </Button>
                     </CardHeader>
                     <CardContent>
-                      <DiscoveryTable
+                      <DiscoveryList
                         discoveries={latestResult.discoveries}
                         onMarkCandidate={markEngineCandidate}
                       />
@@ -272,8 +351,8 @@ export default function DiscoveryMiningConsole() {
               <Card className="border-dashed">
                 <CardContent className="py-12 text-center">
                   <Zap className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
-                  <h3 className="text-lg font-medium text-muted-foreground">No discoveries yet</h3>
-                  <p className="text-sm text-muted-foreground/70 mt-1">
+                  <h3 className="text-base sm:text-lg font-medium text-muted-foreground">No discoveries yet</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground/70 mt-1">
                     Click "Run Discovery" to start the Capability Synthesis Reactor
                   </p>
                 </CardContent>
@@ -284,55 +363,11 @@ export default function DiscoveryMiningConsole() {
           <TabsContent value="history" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Discovery Run History</CardTitle>
+                <CardTitle className="text-base sm:text-lg">Discovery Run History</CardTitle>
                 <CardDescription>Last 20 discovery runs with receipts</CardDescription>
               </CardHeader>
               <CardContent>
-                {loading ? (
-                  <div className="flex justify-center py-8">
-                    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-                  </div>
-                ) : runs.length === 0 ? (
-                  <p className="text-sm text-muted-foreground text-center py-8">No runs recorded yet</p>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Candidates</TableHead>
-                        <TableHead>Accepted</TableHead>
-                        <TableHead>Top Find</TableHead>
-                        <TableHead>CJPI</TableHead>
-                        <TableHead>Mode</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {runs.map(run => (
-                        <TableRow key={run.id}>
-                          <TableCell className="text-xs font-mono">
-                            {new Date(run.started_at).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant={run.status === 'completed' ? 'default' : 'destructive'} className="text-xs">
-                              {run.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="font-mono">{run.total_candidates}</TableCell>
-                          <TableCell className="font-mono text-primary">{run.accepted_count}</TableCell>
-                          <TableCell className="text-sm truncate max-w-[200px]">{run.top_find_name ?? '—'}</TableCell>
-                          <TableCell className="font-mono font-bold">{run.top_find_cjpi ?? '—'}</TableCell>
-                          <TableCell>
-                            <div className="flex gap-1">
-                              {run.dry_run && <Badge variant="outline" className="text-[10px]">Dry</Badge>}
-                              {run.exploratory_mode && <Badge variant="outline" className="text-[10px]">Exp</Badge>}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
+                <RunHistoryList runs={runs} loading={loading} />
               </CardContent>
             </Card>
           </TabsContent>
