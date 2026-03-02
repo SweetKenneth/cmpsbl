@@ -55,6 +55,18 @@ export const MODULE_REGISTRY: Record<SubstrateModule, Omit<ModuleRegistryEntry, 
   governance: { module: 'governance', layer: 'mesh', bootOrder: 25, dependencies: ['core'] },
   medic: { module: 'medic', layer: 'operational', bootOrder: 23, dependencies: ['core', 'system', 'vision'] },
   nerve: { module: 'nerve', layer: 'infrastructure', bootOrder: 24, dependencies: ['core', 'ripple', 'system'] },
+  // Expansion Modules (37-Node Architecture)
+  sovereign: { module: 'sovereign', layer: 'mesh', bootOrder: 26, dependencies: ['core', 'defense', 'access'] },
+  oracle: { module: 'oracle', layer: 'cognitive', bootOrder: 27, dependencies: ['core', 'brain', 'vision'] },
+  conscience: { module: 'conscience', layer: 'mesh', bootOrder: 28, dependencies: ['core', 'defense'] },
+  phantom: { module: 'phantom', layer: 'mesh', bootOrder: 29, dependencies: ['core', 'defense', 'identity'] },
+  forge: { module: 'forge', layer: 'orchestrator', bootOrder: 30, dependencies: ['core', 'encode'] },
+  lingua: { module: 'lingua', layer: 'cognitive', bootOrder: 31, dependencies: ['core', 'decode', 'nexus'] },
+  compass: { module: 'compass', layer: 'cognitive', bootOrder: 32, dependencies: ['core', 'vision', 'brain'] },
+  echo: { module: 'echo', layer: 'infrastructure', bootOrder: 33, dependencies: ['core', 'memory'] },
+  treaty: { module: 'treaty', layer: 'mesh', bootOrder: 34, dependencies: ['core', 'access'] },
+  harvest: { module: 'harvest', layer: 'infrastructure', bootOrder: 35, dependencies: ['core', 'memory', 'economy'] },
+  reflex: { module: 'reflex', layer: 'operational', bootOrder: 36, dependencies: ['core', 'nexus', 'vision'] },
 };
 
 // Orchestration state

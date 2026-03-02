@@ -45,6 +45,9 @@ const SUBSTRATE_MODULES = [
   'defense', 'immunity', 'evolution', 'intent', 'governance',
   // Zones
   'system', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
+  // Expansion Modules (37-Node Architecture)
+  'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
+  'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
 ] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
@@ -72,6 +75,18 @@ const MODULE_HOOK_PATHS: Record<string, string> = {
   economy: 'src/hooks/substrate/useEconomy.ts',
   sandbox: 'src/hooks/substrate/useSandbox.ts',
   encode: 'src/hooks/substrate/useEncode.ts',
+  // Expansion Modules
+  sovereign: 'src/hooks/substrate/useSovereign.ts',
+  oracle: 'src/hooks/substrate/useOracle.ts',
+  conscience: 'src/hooks/substrate/useConscience.ts',
+  phantom: 'src/hooks/substrate/usePhantom.ts',
+  forge: 'src/hooks/substrate/useForge.ts',
+  lingua: 'src/hooks/substrate/useLingua.ts',
+  compass: 'src/hooks/substrate/useCompass.ts',
+  echo: 'src/hooks/substrate/useEcho.ts',
+  treaty: 'src/hooks/substrate/useTreaty.ts',
+  harvest: 'src/hooks/substrate/useHarvest.ts',
+  reflex: 'src/hooks/substrate/useReflex.ts',
 };
 
 // Module configuration registry - tracks what exists for each module
@@ -104,6 +119,18 @@ const MODULE_CONFIG: Record<string, {
   economy: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.economy, hookName: 'useEconomy' },
   sandbox: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sandbox, hookName: 'useSandbox' },
   encode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.encode, hookName: 'useEncode' },
+  // Expansion Modules
+  sovereign: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sovereign, hookName: 'useSovereign' },
+  oracle: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.oracle, hookName: 'useOracle' },
+  conscience: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.conscience, hookName: 'useConscience' },
+  phantom: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.phantom, hookName: 'usePhantom' },
+  forge: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.forge, hookName: 'useForge' },
+  lingua: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.lingua, hookName: 'useLingua' },
+  compass: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.compass, hookName: 'useCompass' },
+  echo: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.echo, hookName: 'useEcho' },
+  treaty: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.treaty, hookName: 'useTreaty' },
+  harvest: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.harvest, hookName: 'useHarvest' },
+  reflex: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.reflex, hookName: 'useReflex' },
 };
 
 // Get module hook info

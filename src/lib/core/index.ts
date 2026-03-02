@@ -75,6 +75,9 @@ export const SUBSTRATE_MODULES = [
   'defense',
   // Module (boots last)
   'integration',
+  // Expansion Modules (37-Node Architecture)
+  'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
+  'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
 ] as const;
 
 // Public-facing entity count (CORE + 8 Modules + INTEGRATION)
@@ -138,6 +141,18 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   defense: 'shell',
   // Module (boots last)
   integration: 'module',
+  // Expansion Modules (37-Node Architecture)
+  sovereign: 'module',
+  oracle: 'module',
+  conscience: 'module',
+  phantom: 'module',
+  forge: 'module',
+  lingua: 'module',
+  compass: 'module',
+  echo: 'module',
+  treaty: 'module',
+  harvest: 'module',
+  reflex: 'module',
 };
 
 /**
@@ -308,6 +323,18 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     defense: ['core'],
     // Standalone
     integration: ['core'],
+    // Expansion Modules (37-Node Architecture)
+    sovereign: ['core', 'defense', 'access'],
+    oracle: ['core', 'brain', 'vision'],
+    conscience: ['core', 'defense'],
+    phantom: ['core', 'defense', 'identity'],
+    forge: ['core', 'encode'],
+    lingua: ['core', 'decode', 'nexus'],
+    compass: ['core', 'vision', 'brain'],
+    echo: ['core', 'memory'],
+    treaty: ['core', 'access'],
+    harvest: ['core', 'memory', 'economy'],
+    reflex: ['core', 'nexus', 'vision'],
   };
   
   return deps[module] || [];

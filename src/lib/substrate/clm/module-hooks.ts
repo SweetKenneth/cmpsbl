@@ -20,7 +20,10 @@ export type SubstrateModule =
   | 'modernizer' | 'integration' | 'cortex'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
   | 'immunity' | 'evolution' | 'intent' | 'governance'
-  | 'medic' | 'nerve';
+  | 'medic' | 'nerve'
+  // Expansion Modules (37-Node Architecture)
+  | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'
+  | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 
 export interface ModuleKPIs {
   module: SubstrateModule;
