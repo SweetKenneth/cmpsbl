@@ -57,17 +57,20 @@ const USE_CASES = [
 
 export default function CMPSBLEngine() {
   const [loading, setLoading] = useState(false);
+  const [licensed, setLicensed] = useState(false);
   const [searchParams] = useSearchParams();
-  const purchased = searchParams.get("purchased") === "true";
+  const isLicensed = searchParams.get("licensed") === "true";
+  const sessionId = searchParams.get("session_id");
   const { scrollYProgress } = useScroll();
   const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.95]);
 
   useEffect(() => {
-    if (purchased) {
-      toast.success("Purchase complete. Your sealed runtime will be delivered to your email.");
+    if (isLicensed && sessionId) {
+      setLicensed(true);
+      toast.success("License activated! Your CMPSBL Engine license is now active. Check your email for access details.");
     }
-  }, [purchased]);
+  }, [isLicensed, sessionId]);
 
   const handleCheckout = async () => {
     setLoading(true);
