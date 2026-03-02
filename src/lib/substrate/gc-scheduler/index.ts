@@ -15,10 +15,10 @@ interface GCSchedulerConfig {
 }
 
 const DEFAULT_CONFIG: GCSchedulerConfig = {
-  intervalMs: 6 * 60 * 60 * 1000, // 6 hours
+  intervalMs: 2 * 60 * 60 * 1000, // 2 hours (was 6)
   enabled: true,
-  maxConsecutiveRuns: 4,
-  cooldownAfterMaxMs: 12 * 60 * 60 * 1000, // 12 hours
+  maxConsecutiveRuns: 6,           // was 4
+  cooldownAfterMaxMs: 4 * 60 * 60 * 1000, // 4 hours (was 12)
 };
 
 let schedulerTimer: ReturnType<typeof setInterval> | null = null;
