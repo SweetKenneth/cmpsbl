@@ -1035,6 +1035,6 @@ export default function STierVault() {
       {exportingEntry && (
         <ExportDialog entry={exportingEntry} sourceCode={exportingEntry.code} onClose={() => setExportingEntry(null)} />
       )}
-    </div>
+    </AdminLayout>
   );
 }
