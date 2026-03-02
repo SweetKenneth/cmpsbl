@@ -28,6 +28,7 @@ import {
 } from './hardware-synthesizer';
 import {
   generateTypeScriptTest, generatePythonTest, generateGoTest, generateVerilogTestbench,
+  generateRustTest, generateSystemCTest, generateExportScaffolding,
 } from './test-harness-generator';
 
 export type ExportLanguage =
