@@ -4,7 +4,6 @@
  */
 
 import { emit } from '../events';
-import { memoryCore } from '../memory-core';
 import { getIdentityState, getIdentityResilience } from './index';
 import type { CLMReport } from '../encode-module/clm';
 
@@ -31,7 +30,6 @@ export async function runIdentityCLMCycle(): Promise<CLMReport> {
   if (resilience.circuit.state === 'open') risks.push('CIRCUIT OPEN — identity operations blocked');
 
   const report: CLMReport = { module: 'identity', cycleId, learnings, proposedUpgrades, risks, confidence: state.initialized ? 0.85 : 0.3, timestamp: new Date().toISOString() };
-  await memoryCore.remember(JSON.stringify(report), 'insight', 0.7, { source: 'clm-identity' });
   emit({ module: 'identity', event_type: 'clm_cycle', outcome: 'succeeded', data: { cycleId, grade: resilience.grade } });
   return report;
 }

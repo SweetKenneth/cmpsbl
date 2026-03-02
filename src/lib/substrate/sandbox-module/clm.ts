@@ -4,7 +4,6 @@
  */
 
 import { emit } from '../events';
-import { memoryCore } from '../memory-core';
 import { getSandboxState, getSandboxResilience } from './index';
 import type { CLMReport } from '../encode-module/clm';
 
@@ -31,7 +30,6 @@ export async function runSandboxCLMCycle(): Promise<CLMReport> {
   if (resilience.circuit.state === 'open') risks.push('CIRCUIT OPEN — sandbox creation blocked');
 
   const report: CLMReport = { module: 'sandbox', cycleId, learnings, proposedUpgrades, risks, confidence: state.initialized ? 0.85 : 0.3, timestamp: new Date().toISOString() };
-  await memoryCore.remember(JSON.stringify(report), 'insight', 0.7, { source: 'clm-sandbox' });
   emit({ module: 'sandbox', event_type: 'clm_cycle', outcome: 'succeeded', data: { cycleId, grade: resilience.grade } });
   return report;
 }

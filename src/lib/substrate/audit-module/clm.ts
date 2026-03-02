@@ -4,7 +4,6 @@
  */
 
 import { emit } from '../events';
-import { memoryCore } from '../memory-core';
 import { getAuditState, getAuditResilience, getCompressionStats } from './index';
 import type { CLMReport } from '../encode-module/clm';
 
@@ -32,7 +31,6 @@ export async function runAuditCLMCycle(): Promise<CLMReport> {
   if (resilience.circuit.state === 'open') risks.push('CIRCUIT OPEN — audit entries may be lost');
 
   const report: CLMReport = { module: 'audit', cycleId, learnings, proposedUpgrades, risks, confidence: state.chainValid ? 0.9 : 0.2, timestamp: new Date().toISOString() };
-  await memoryCore.remember(JSON.stringify(report), 'insight', 0.7, { source: 'clm-audit' });
   emit({ module: 'audit', event_type: 'clm_cycle', outcome: 'succeeded', data: { cycleId, grade: resilience.grade } });
   return report;
 }

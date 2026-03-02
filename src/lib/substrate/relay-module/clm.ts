@@ -4,7 +4,6 @@
  */
 
 import { emit } from '../events';
-import { memoryCore } from '../memory-core';
 import { getRelayState, getRelayResilience } from './index';
 import type { CLMReport } from '../encode-module/clm';
 
@@ -34,7 +33,7 @@ export async function runRelayCLMCycle(): Promise<CLMReport> {
   if (resilience.circuit.state === 'open') risks.push('CIRCUIT OPEN — dispatches blocked');
 
   const report: CLMReport = { module: 'relay', cycleId, learnings, proposedUpgrades, risks, confidence: state.initialized ? 0.85 : 0.3, timestamp: new Date().toISOString() };
-  await memoryCore.remember(JSON.stringify(report), 'insight', 0.7, { source: 'clm-relay' });
+  // CLM reports emit events only — no longer floods BRAIN memory tiers
   emit({ module: 'relay', event_type: 'clm_cycle', outcome: 'succeeded', data: { cycleId, grade: resilience.grade } });
   return report;
 }
