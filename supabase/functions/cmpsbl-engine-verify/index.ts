@@ -98,7 +98,7 @@ serve(async (req) => {
             from: "CMPSBL <Dev@CMPSBL.com>",
             to: [customerEmail],
             subject: "Your CMPSBL Engine License is Active 🚀",
-            html: buildThankYouEmail(customerName, licenseData.expires_at),
+            html: buildThankYouEmail(customerName, licenseData.expires_at, customerEmail),
           }),
         });
 
@@ -152,7 +152,7 @@ serve(async (req) => {
   }
 });
 
-function buildThankYouEmail(name: string, expiresAt: string | null): string {
+function buildThankYouEmail(name: string, expiresAt: string | null, email: string): string {
   const expiryLine = expiresAt
     ? `<p style="color:#888;font-size:13px;">Your license renews on <strong>${new Date(expiresAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</strong>.</p>`
     : "";
