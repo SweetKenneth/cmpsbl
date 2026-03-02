@@ -1,5 +1,6 @@
 /**
- * Standalone Engine Checkout — One-time $199 Sealed Runtime purchase
+ * Standalone Engine Checkout — Tiered Sealed Runtime purchase
+ * APEX $599 | ELITE $399 | CORE $199
  * Supports guest checkout. Sends price_id + engine_slug from frontend.
  */
 
