@@ -511,10 +511,14 @@ export function computeSynergyMultiplier(moduleChain: string[]): number {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const CANONICAL_MODULES = [
-  'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
+  // Original 26 core modules
+  'CORE', 'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
   'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
   'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',
   'MODERNIZER', 'MEDIC', 'RIPPLE', 'AUDIT', 'IDENTITY',
+  'OBSERVABILITY', 'IMMUNITY', 'INTENT', 'MESH', 'ECONOMY',
+  'RELAY', 'ATLAS', 'ENCODE',
+  // 11 expansion modules (v10)
   'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
   'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
 ] as const;

@@ -297,3 +297,233 @@ module tb_${snake};
 endmodule
 `;
 }
+
+export function generateRustTest(ctx: SynthesisContext): string {
+  const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
+  const snake = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '');
+  return `// Test Suite — ${ctx.name}
+// Auto-generated test harness for CMPSBL® artifact validation
+// Run: cargo test
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::HashMap;
+
+    #[test]
+    fn test_instantiation() {
+        let engine = ${cls}::new();
+        let stats = engine.stats();
+        assert_eq!(stats.get("name").unwrap(), "${ctx.name}");
+    }
+
+    #[test]
+    fn test_empty_input() {
+        let mut engine = ${cls}::new();
+        let result = engine.execute(HashMap::new());
+        assert_eq!(result.total_stages, ${ctx.moduleChain.length});
+        assert!(result.latency_ms >= 0.0);
+    }
+
+    #[test]
+    fn test_sample_data() {
+        let mut engine = ${cls}::new();
+        let input = HashMap::from([
+            ("test_key".into(), "test_value".into()),
+            ("score".into(), "42".into()),
+        ]);
+        let result = engine.execute(input);
+        assert!(result.success, "Pipeline should succeed: {:?}", result.error);
+        assert_eq!(result.stages_completed, result.total_stages);
+        assert!(result.confidence > 0.5);
+    }
+
+    #[test]
+    fn test_statistics() {
+        let mut engine = ${cls}::new();
+        engine.execute(HashMap::from([("a".into(), "1".into())]));
+        engine.execute(HashMap::from([("b".into(), "2".into())]));
+        let stats = engine.stats();
+        assert_eq!(stats.get("executions").unwrap(), "2");
+    }
+}
+`;
+}
+
+export function generateSystemCTest(ctx: SynthesisContext): string {
+  const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
+  return `// SystemC Testbench — ${ctx.name}
+// Auto-generated validation testbench for CMPSBL® artifact
+// Compile: g++ -I$SYSTEMC_HOME/include -L$SYSTEMC_HOME/lib -lsystemc -o tb_${cls.toLowerCase()} tb_${cls.toLowerCase()}.cpp ${cls.toLowerCase()}.cpp
+
+#include <systemc.h>
+#include <cassert>
+#include <iostream>
+
+// Include the DUT
+#include "${cls.toLowerCase()}.cpp"
+
+SC_MODULE(${cls}_TB) {
+    sc_clock clk;
+    sc_signal<bool> rst_n, start, done, busy;
+    sc_signal<sc_uint<32>> data_in, data_out;
+    sc_signal<sc_uint<8>> confidence;
+
+    ${cls}* dut;
+
+    void run_tests() {
+        // Reset
+        rst_n.write(false);
+        wait(3, SC_NS);
+        rst_n.write(true);
+        wait(1, SC_NS);
+
+        std::cout << "[TEST 1] Basic pipeline execution" << std::endl;
+        data_in.write(0xDEADBEEF);
+        start.write(true);
+        wait(1, SC_NS);
+        start.write(false);
+
+        for (int i = 0; i < ${ctx.moduleChain.length + 4}; i++) wait(1, SC_NS);
+
+        assert(done.read() == true);
+        std::cout << "  Output:     0x" << std::hex << data_out.read() << std::endl;
+        std::cout << "  Confidence: " << std::dec << confidence.read() << std::endl;
+        std::cout << "  [PASS]" << std::endl;
+
+        // Reset test
+        std::cout << "[TEST 2] Reset clears state" << std::endl;
+        rst_n.write(false);
+        wait(2, SC_NS);
+        rst_n.write(true);
+        wait(1, SC_NS);
+        assert(busy.read() == false);
+        assert(done.read() == false);
+        std::cout << "  [PASS]" << std::endl;
+
+        // Different input
+        std::cout << "[TEST 3] Different input" << std::endl;
+        data_in.write(0xCAFEBABE);
+        start.write(true);
+        wait(1, SC_NS);
+        start.write(false);
+        for (int i = 0; i < ${ctx.moduleChain.length + 4}; i++) wait(1, SC_NS);
+        assert(done.read() == true);
+        std::cout << "  [PASS]" << std::endl;
+
+        std::cout << "\\n=== All tests passed ===" << std::endl;
+        sc_stop();
+    }
+
+    SC_CTOR(${cls}_TB) : clk("clk", 1, SC_NS) {
+        dut = new ${cls}("dut");
+        dut->clk(clk);
+        dut->rst_n(rst_n);
+        dut->start(start);
+        dut->data_in(data_in);
+        dut->data_out(data_out);
+        dut->done(done);
+        dut->busy(busy);
+        dut->confidence_out(confidence);
+
+        SC_THREAD(run_tests);
+    }
+    ~${cls}_TB() { delete dut; }
+};
+
+int sc_main(int argc, char* argv[]) {
+    ${cls}_TB tb("tb");
+    sc_start();
+    return 0;
+}
+`;
+}
+
+export function generateExportScaffolding(ctx: SynthesisContext): { filename: string; content: string }[] {
+  const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
+  const slug = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+  const snake = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '');
+
+  return [
+    {
+      filename: 'LICENSE',
+      content: `CMPSBL® Proprietary License
+
+Copyright (c) ${new Date().getFullYear()} CMPSBL®. All rights reserved.
+
+This software and associated documentation files (the "Software") are the
+proprietary intellectual property of CMPSBL®. Unauthorized copying, modification,
+distribution, or use of this Software, via any medium, is strictly prohibited.
+
+The Software is provided "AS IS", without warranty of any kind, express or implied.
+
+For licensing inquiries, contact: legal@cmpsbl.com
+`,
+    },
+    {
+      filename: 'Makefile',
+      content: `# CMPSBL® Crown Jewel — ${ctx.name}
+# Auto-generated build system
+
+.PHONY: all test clean
+
+# TypeScript
+ts-run:
+\tnpx tsx ${slug}.ts
+
+ts-test:
+\tnpx vitest run ${slug}.test.ts
+
+# Python
+py-run:
+\tpython ${snake}.py '{}'
+
+py-test:
+\tpytest test_${snake}.py -v
+
+# Go
+go-run:
+\tgo run ${snake}.go
+
+go-test:
+\tgo test -v ./${snake}/
+
+# Rust
+rs-build:
+\tcargo build --release
+
+rs-test:
+\tcargo test
+
+# Verilog
+verilog-sim:
+\tiverilog -o tb_${snake} tb_${snake}.v ${snake}.v && vvp tb_${snake}
+
+# SystemC
+systemc-build:
+\tg++ -I$$SYSTEMC_HOME/include -L$$SYSTEMC_HOME/lib -lsystemc -o ${snake} ${slug}.cpp
+
+clean:
+\trm -f *.o tb_${snake} ${snake}
+`,
+    },
+    {
+      filename: 'package.json',
+      content: JSON.stringify({
+        name: `@cmpsbl/${slug}`,
+        version: '1.0.0',
+        description: ctx.description,
+        main: `${slug}.ts`,
+        scripts: {
+          start: `npx tsx ${slug}.ts`,
+          test: `npx vitest run ${slug}.test.ts`,
+          build: `tsc ${slug}.ts --outDir dist`,
+        },
+        keywords: ['cmpsbl', 'crown-jewel', ctx.category, ...ctx.moduleChain.map(m => m.toLowerCase())],
+        license: 'SEE LICENSE IN LICENSE',
+        private: true,
+      }, null, 2),
+    },
+  ];
+}
+

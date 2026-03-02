@@ -46,6 +46,21 @@ function moduleOps(mod: string): { verb: string; desc: string } {
     TREATY: { verb: 'negotiate', desc: 'SLA validation + contract enforcement' },
     HARVEST: { verb: 'ingest', desc: 'deduplication + provenance tracking' },
     REFLEX: { verb: 'react', desc: 'edge routing + local caching' },
+    CORE: { verb: 'bootstrap', desc: 'registry initialization + lifecycle management' },
+    SYSTEM: { verb: 'monitor', desc: 'health checking + watchdog supervision' },
+    OBSERVABILITY: { verb: 'trace', desc: 'distributed tracing + metric collection' },
+    IMMUNITY: { verb: 'quarantine', desc: 'threat isolation + immune response' },
+    INTENT: { verb: 'parse', desc: 'intent extraction + action mapping' },
+    MESH: { verb: 'interconnect', desc: 'service mesh routing + sidecar proxy' },
+    ECONOMY: { verb: 'price', desc: 'cost modeling + resource valuation' },
+    RELAY: { verb: 'forward', desc: 'message relay + protocol bridging' },
+    ATLAS: { verb: 'map', desc: 'capability mapping + topology discovery' },
+    ENCODE: { verb: 'serialize', desc: 'format encoding + compression' },
+    INCLUSIVE: { verb: 'adapt', desc: 'accessibility adaptation + format normalization' },
+    INTEGRATION: { verb: 'connect', desc: 'protocol bridging + API gateway' },
+    MODERNIZER: { verb: 'upgrade', desc: 'legacy migration + schema evolution' },
+    MEDIC: { verb: 'heal', desc: 'self-repair + recovery orchestration' },
+    RIPPLE: { verb: 'propagate', desc: 'event cascade + change notification' },
   };
   return MAP[mod] || { verb: 'process', desc: 'data transformation' };
 }
