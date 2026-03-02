@@ -728,13 +728,18 @@ export default function STierVault() {
             ) : (
               <>
                 {promoted.length > 0 && (
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                     <p className="text-xs text-muted-foreground">
                       {filteredPromoted.length} export-ready discoveries • Auto-promoted from reactor (CJPI ≥ 90)
                     </p>
-                    <Button size="sm" onClick={handleExportAllPromoted} className="gap-1.5">
-                      <Download className="w-3.5 h-3.5" /> Export All ({promoted.length}) as ZIP
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button size="sm" onClick={handleExportSoftware} className="gap-1.5">
+                        <Download className="w-3.5 h-3.5" /> Software ZIP ({promoted.length}) · 18 langs
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={handleExportHardware} className="gap-1.5">
+                        <Download className="w-3.5 h-3.5" /> Hardware ZIP ({promoted.length}) · 6 HDLs
+                      </Button>
+                    </div>
                   </div>
                 )}
 
