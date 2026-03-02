@@ -11,13 +11,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import {
   Download, Sparkles, Shield, Zap, CheckCircle, Lock,
-  Brain, Code, Palette, TrendingUp, ChevronDown, ChevronUp,
+  Brain, Code, Palette, TrendingUp, ChevronDown, ChevronUp, Package,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { NameChooser } from "@/components/cognitives/NameChooser";
 import { FlipCard } from "@/components/commerce/FlipCard";
 import {
@@ -84,6 +86,7 @@ export default function ComposableCognitives() {
   const [searchParams] = useSearchParams();
   const [chosenName, setChosenName] = useState("");
   const [dreamOpen, setDreamOpen] = useState(false);
+  const [bundleMode, setBundleMode] = useState(false);
   const canceled = searchParams.get("canceled") === "1";
 
   const handleBuy = useCallback(async (sku: string) => {
@@ -99,7 +102,7 @@ export default function ComposableCognitives() {
     }
     try {
       const { data, error } = await supabase.functions.invoke("agent-checkout", {
-        body: { agent_id: sku, agent_name: item?.displayName || sku, chosen_name: chosenName },
+        body: { agent_id: sku, agent_name: item?.displayName || sku, chosen_name: chosenName, bundle_with_engine: bundleMode },
       });
       if (error) throw error;
       if (data?.free && data?.redirect) { window.location.href = data.redirect; return; }
