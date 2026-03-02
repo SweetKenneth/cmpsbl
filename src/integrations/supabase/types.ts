@@ -5696,6 +5696,161 @@ export type Database = {
         }
         Relationships: []
       }
+      discoveries: {
+        Row: {
+          category: string
+          cjpi: number
+          cjpi_breakdown: Json | null
+          components: Json
+          created_at: string
+          description: string | null
+          discovered_by: string | null
+          engine_candidate: boolean | null
+          error_strategy: string | null
+          id: string
+          max_execution_ms: number | null
+          module_chain: string[]
+          name: string
+          provenance: string | null
+          rationale: string | null
+          run_id: string
+          synergy_multiplier: number | null
+          tier: string | null
+          written_to_registry: boolean | null
+        }
+        Insert: {
+          category: string
+          cjpi: number
+          cjpi_breakdown?: Json | null
+          components?: Json
+          created_at?: string
+          description?: string | null
+          discovered_by?: string | null
+          engine_candidate?: boolean | null
+          error_strategy?: string | null
+          id: string
+          max_execution_ms?: number | null
+          module_chain?: string[]
+          name: string
+          provenance?: string | null
+          rationale?: string | null
+          run_id: string
+          synergy_multiplier?: number | null
+          tier?: string | null
+          written_to_registry?: boolean | null
+        }
+        Update: {
+          category?: string
+          cjpi?: number
+          cjpi_breakdown?: Json | null
+          components?: Json
+          created_at?: string
+          description?: string | null
+          discovered_by?: string | null
+          engine_candidate?: boolean | null
+          error_strategy?: string | null
+          id?: string
+          max_execution_ms?: number | null
+          module_chain?: string[]
+          name?: string
+          provenance?: string | null
+          rationale?: string | null
+          run_id?: string
+          synergy_multiplier?: number | null
+          tier?: string | null
+          written_to_registry?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discoveries_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "discovery_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discovery_lock: {
+        Row: {
+          expires_at: string | null
+          id: string
+          locked_at: string | null
+          locked_by: string | null
+        }
+        Insert: {
+          expires_at?: string | null
+          id?: string
+          locked_at?: string | null
+          locked_by?: string | null
+        }
+        Update: {
+          expires_at?: string | null
+          id?: string
+          locked_at?: string | null
+          locked_by?: string | null
+        }
+        Relationships: []
+      }
+      discovery_runs: {
+        Row: {
+          accepted_count: number
+          created_at: string
+          created_by: string | null
+          dry_run: boolean
+          exploratory_mode: boolean
+          finished_at: string | null
+          id: string
+          input_snapshot_hash: string | null
+          logs: Json | null
+          registry_checksum_after: string | null
+          registry_checksum_before: string | null
+          scoring_version: string
+          started_at: string
+          status: string
+          top_find_cjpi: number | null
+          top_find_name: string | null
+          total_candidates: number
+        }
+        Insert: {
+          accepted_count?: number
+          created_at?: string
+          created_by?: string | null
+          dry_run?: boolean
+          exploratory_mode?: boolean
+          finished_at?: string | null
+          id?: string
+          input_snapshot_hash?: string | null
+          logs?: Json | null
+          registry_checksum_after?: string | null
+          registry_checksum_before?: string | null
+          scoring_version?: string
+          started_at?: string
+          status?: string
+          top_find_cjpi?: number | null
+          top_find_name?: string | null
+          total_candidates?: number
+        }
+        Update: {
+          accepted_count?: number
+          created_at?: string
+          created_by?: string | null
+          dry_run?: boolean
+          exploratory_mode?: boolean
+          finished_at?: string | null
+          id?: string
+          input_snapshot_hash?: string | null
+          logs?: Json | null
+          registry_checksum_after?: string | null
+          registry_checksum_before?: string | null
+          scoring_version?: string
+          started_at?: string
+          status?: string
+          top_find_cjpi?: number | null
+          top_find_name?: string | null
+          total_candidates?: number
+        }
+        Relationships: []
+      }
       dream_anomalies: {
         Row: {
           anomaly_type: string
