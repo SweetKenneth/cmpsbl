@@ -214,6 +214,7 @@ export const ENGINES: Engine[] = [
     capabilities: ["Policy-as-code access control", "Fine-grained RBAC engine", "Automatic credential rotation", "Session attestation & revocation", "Audit-grade access logging", "Zero-trust perimeter enforcement"],
     threatLevel: "MODERATE — GOVERNANCE", clearance: "LEVEL 5 — STANDARD",
   },
+];
 
 export const getEngineBySlug = (slug: string): Engine | undefined =>
   ENGINES.find((e) => e.slug === slug);
