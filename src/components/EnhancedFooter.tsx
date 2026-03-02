@@ -207,6 +207,14 @@ export function EnhancedFooter() {
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
                     </button>
+                  ) : link.href.startsWith('mailto:') ? (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="text-xs text-primary hover:text-primary/80 font-semibold transition-colors"
+                    >
+                      {link.name}
+                    </a>
                   ) : (
                     <Link
                       key={link.name}
@@ -231,6 +239,14 @@ export function EnhancedFooter() {
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
                     </button>
+                  ) : link.href.startsWith('mailto:') ? (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="text-xs text-primary hover:text-primary/80 font-semibold transition-colors"
+                    >
+                      {link.name}
+                    </a>
                   ) : (
                     <Link
                       key={link.name}
