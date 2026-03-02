@@ -1,6 +1,7 @@
 /**
  * Engine Detail — Mission Briefing + Unlock Ceremony + Checkout
- * Polished dossier-style page with tier-specific accents and cinematic unlock flow
+ * Uses standalone-engine-checkout for one-time $199 purchases
+ * Uses cmpsbl-engine-checkout for ARCHITECT $999/yr subscription
  */
 
 import { useParams, Link, Navigate } from "react-router-dom";
@@ -109,7 +110,9 @@ export default function EngineDetail() {
     const success = params.get("licensed");
     if (success === "true" && sessionId && engine) {
       setShowCeremony(true);
-      supabase.functions.invoke("cmpsbl-engine-verify", {
+      // Use the correct verify function based on engine type
+      const verifyFn = engine.isSubscription ? "cmpsbl-engine-verify" : "standalone-engine-verify";
+      supabase.functions.invoke(verifyFn, {
         body: { session_id: sessionId, engine_slug: engine.slug },
       }).then(({ data }) => {
         if ((data as any)?.success) {
@@ -125,7 +128,12 @@ export default function EngineDetail() {
   const handlePurchase = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("cmpsbl-engine-checkout", {
+      // Route to the correct checkout function:
+      // - ARCHITECT ($999/yr) → cmpsbl-engine-checkout (subscription)
+      // - All others ($199) → standalone-engine-checkout (one-time payment)
+      const checkoutFn = engine.isSubscription ? "cmpsbl-engine-checkout" : "standalone-engine-checkout";
+      
+      const { data, error } = await supabase.functions.invoke(checkoutFn, {
         body: { price_id: engine.priceId, engine_slug: engine.slug },
       });
       if (error) throw error;
