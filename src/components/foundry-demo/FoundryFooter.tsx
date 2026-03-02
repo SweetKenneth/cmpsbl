@@ -1,5 +1,5 @@
 /**
- * Foundry Footer — Closing CTA
+ * Foundry Footer — Closing CTA with real metrics
  */
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -21,15 +21,17 @@ export function FoundryFooter() {
           The question isn't whether it works
         </div>
         <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground mb-8 leading-[0.95]">
-          It already printed 1,143&nbsp;pipelines.
+          1,143&nbsp;programs.
           <br />
-          <span className="text-primary">What will it find next?</span>
+          95&nbsp;perfect&nbsp;scores.
+          <br />
+          <span className="text-primary">Under 9 hours.</span>
         </h2>
         <p className="text-muted-foreground/60 max-w-lg mx-auto mb-12">
-          Every module you add changes the topology. Every discovery compound the next.
+          Every module you add changes the topology. Every discovery compounds the next.
           The foundry doesn't stop — it accelerates.
         </p>
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={() => navigate('/substrate')}
             className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-mono text-sm font-bold hover:bg-primary/90 transition-colors"
@@ -42,7 +44,26 @@ export function FoundryFooter() {
           >
             View Engineering Proof
           </button>
+          <button
+            onClick={() => window.open('/docs/whitepaper/', '_blank')}
+            className="px-8 py-3 border border-border/30 text-foreground rounded-lg font-mono text-sm font-bold hover:bg-muted/20 transition-colors"
+          >
+            Read Whitepaper
+          </button>
         </div>
+
+        {/* Technical footer */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-20 pt-8 border-t border-border/10"
+        >
+          <div className="text-[10px] font-mono text-muted-foreground/30 uppercase tracking-wider space-y-1">
+            <div>CMPSBL® Autonomous Software Foundry</div>
+            <div>All data sourced from production database · RLS enforced · Independently verifiable</div>
+          </div>
+        </motion.div>
       </motion.div>
     </section>
   );

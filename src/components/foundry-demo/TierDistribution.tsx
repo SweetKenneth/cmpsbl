@@ -1,5 +1,6 @@
 /**
  * Tier Distribution — Visual breakdown of discovery quality
+ * Real data: 578 Apex, 484 Enterprise, 81 Architect
  */
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -10,6 +11,7 @@ interface TierData {
   label: string;
   color: string;
   description: string;
+  percentage: string;
 }
 
 const TIERS: TierData[] = [
@@ -18,7 +20,8 @@ const TIERS: TierData[] = [
     count: 578,
     label: 'APEX',
     color: 'hsl(var(--primary))',
-    description: 'CJPI 95–100 · Proprietary crown jewels',
+    description: 'CJPI 95–100 · Proprietary crown jewels · 95 with perfect scores',
+    percentage: '50.6%',
   },
   {
     tier: 'enterprise',
@@ -26,6 +29,7 @@ const TIERS: TierData[] = [
     label: 'ENTERPRISE',
     color: 'hsl(45, 95%, 55%)',
     description: 'CJPI 85–94 · Production-grade pipelines',
+    percentage: '42.3%',
   },
   {
     tier: 'architect',
@@ -33,6 +37,7 @@ const TIERS: TierData[] = [
     label: 'ARCHITECT',
     color: 'hsl(200, 80%, 60%)',
     description: 'CJPI 80–84 · Advanced building blocks',
+    percentage: '7.1%',
   },
 ];
 
@@ -44,26 +49,27 @@ export function TierDistribution() {
   return (
     <section ref={ref} className="py-24 md:py-40 px-6">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-sm uppercase tracking-[0.3em] text-muted-foreground text-center mb-16 font-mono">
+        <h2 className="text-sm uppercase tracking-[0.3em] text-muted-foreground text-center mb-4 font-mono">
           Quality Distribution
         </h2>
+        <p className="text-center text-muted-foreground/50 text-xs font-mono mb-16">
+          {total.toLocaleString()} programs · 50.6% Apex tier · Zero below CJPI 80
+        </p>
 
         {/* Stacked bar */}
-        <div className="h-12 rounded-lg overflow-hidden flex mb-8">
+        <div className="h-14 rounded-lg overflow-hidden flex mb-8 border border-border/10">
           {TIERS.map((t, i) => (
             <motion.div
               key={t.tier}
-              className="h-full relative group cursor-default"
+              className="h-full relative group cursor-default flex items-center justify-center"
               style={{ backgroundColor: t.color }}
               initial={{ width: 0 }}
               animate={inView ? { width: `${(t.count / total) * 100}%` } : {}}
               transition={{ duration: 1, delay: i * 0.2, ease: 'easeOut' }}
             >
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="text-xs font-mono font-bold text-black/80">
-                  {Math.round((t.count / total) * 100)}%
-                </span>
-              </div>
+              <span className="text-xs font-mono font-bold text-black/70 opacity-0 group-hover:opacity-100 transition-opacity">
+                {t.percentage}
+              </span>
             </motion.div>
           ))}
         </div>
@@ -90,6 +96,22 @@ export function TierDistribution() {
             </motion.div>
           ))}
         </div>
+
+        {/* Quality floor callout */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 1.2 }}
+          className="mt-12 text-center"
+        >
+          <div className="inline-flex items-center gap-2 bg-card/50 border border-border/20 rounded-lg px-5 py-2.5">
+            <div className="w-2 h-2 rounded-full bg-primary" />
+            <span className="text-xs font-mono text-muted-foreground">
+              Quality floor: <span className="text-foreground font-bold">CJPI 80</span> · 
+              Nothing below architect-grade enters the registry
+            </span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
