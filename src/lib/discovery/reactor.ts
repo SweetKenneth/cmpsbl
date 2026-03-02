@@ -315,7 +315,7 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
         provenance: `Reactor v${config.scoringVersion || '1.0'} — ${config.exploratoryMode ? 'exploratory' : 'deterministic'}`,
         error_strategy: c.errorStrategy,
         max_execution_ms: c.maxExecutionMs,
-        cjpi_breakdown: c.cjpiBreakdown,
+        cjpi_breakdown: c.cjpiBreakdown as unknown as Record<string, unknown>,
         discovered_by: c.discoveredBy,
         written_to_registry: !config.dryRun,
       }));
