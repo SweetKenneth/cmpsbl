@@ -19,7 +19,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import registryData from "@/crownjewels/s-tier.registry.json";
 import type { STierEntry } from "@/crownjewels/types";
 import {
-  generateSingleExport, generateExportBundle, downloadFile, downloadBundle,
+  generateSingleExport, generateExportBundle, downloadBundle,
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
 } from "@/lib/export/universal-adapter";
