@@ -30,12 +30,22 @@ export default function FoundryDemo() {
 
   useEffect(() => {
     async function load() {
-      const { data } = await supabase
-        .from('discoveries')
-        .select('name, cjpi, tier, category, module_chain, created_at')
-        .order('cjpi', { ascending: false })
-        .limit(50);
-      if (data) setDiscoveries(data as Discovery[]);
+      // Paginate to get all discoveries beyond the 1000-row limit
+      const all: Discovery[] = [];
+      let from = 0;
+      const pageSize = 1000;
+      while (true) {
+        const { data } = await supabase
+          .from('discoveries')
+          .select('name, cjpi, tier, category, module_chain, created_at')
+          .order('cjpi', { ascending: false })
+          .range(from, from + pageSize - 1);
+        if (!data || data.length === 0) break;
+        all.push(...(data as Discovery[]));
+        if (data.length < pageSize) break;
+        from += pageSize;
+      }
+      setDiscoveries(all);
     }
     load();
   }, []);
