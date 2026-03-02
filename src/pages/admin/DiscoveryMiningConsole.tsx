@@ -272,6 +272,8 @@ const AVAILABLE_MODULES = [
   'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
   'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',
   'MODERNIZER', 'MEDIC', 'RIPPLE', 'AUDIT', 'IDENTITY',
+  'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
+  'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
 ];
 
 const AVAILABLE_CATEGORIES = [
@@ -447,7 +449,7 @@ function TemplateComposer() {
             ))}
           </div>
           {form.modulePattern.length > 0 && (
-            <div className="mt-2 text-xs text-muted-foreground">
+            <div className="mt-2 text-xs text-muted-foreground break-words">
               Chain: {form.modulePattern.join(' → ')}
             </div>
           )}
@@ -611,8 +613,8 @@ function AutoMinerTab() {
               <div className="text-[10px] text-muted-foreground mb-1">Active Template Batch ({state.activeTemplates.length})</div>
               <div className="flex flex-wrap gap-1">
                 {state.activeTemplates.slice(0, 8).map((t, i) => (
-                  <Badge key={i} variant="outline" className="text-[9px] px-1.5 py-0">
-                    {t.modulePattern.join('→')}
+                  <Badge key={i} variant="outline" className="text-[9px] px-1.5 py-0 break-words whitespace-normal max-w-full">
+                    {t.modulePattern.join(' → ')}
                   </Badge>
                 ))}
                 {state.activeTemplates.length > 8 && (
@@ -755,8 +757,8 @@ function AutoMinerTab() {
             <ScrollArea className="max-h-40">
               <div className="flex flex-wrap gap-1">
                 {state.retiredCombos.map(r => (
-                  <Badge key={r.hash} variant="outline" className="text-[9px] px-1.5 py-0 opacity-60">
-                    {r.moduleChain.join('+')} ({r.category}) — {r.totalDiscoveries}💎
+                  <Badge key={r.hash} variant="outline" className="text-[9px] px-1.5 py-0 opacity-60 break-words whitespace-normal max-w-full">
+                    {r.moduleChain.join(' + ')} ({r.category}) — {r.totalDiscoveries}💎
                   </Badge>
                 ))}
               </div>
