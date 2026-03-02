@@ -101,7 +101,7 @@ export function FlipCard({
               </div>
               <div className="flex items-center gap-1.5">
                 {frontBadge && (
-                  <Badge variant="outline" className={cn("text-[10px]", frontBadgeClass)}>
+                  <Badge variant="outline" className={cn("text-[11px]", frontBadgeClass)}>
                     {frontBadge}
                   </Badge>
                 )}
