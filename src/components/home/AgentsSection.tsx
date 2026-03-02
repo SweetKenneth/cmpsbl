@@ -1,16 +1,15 @@
 /**
- * AgentsSection — All 20 agents with Crown Jewel powers
- * Unified layout: every agent gets equal treatment with 3 powers each.
+ * AgentsSection — All 20 agents with Crown Jewel powers + Universal Memory System
  */
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Download, Zap, ChevronDown } from "lucide-react";
+import { ArrowRight, Download, Zap, ChevronDown, Database, Clock, HardDrive, Archive } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { AGENTS_WITH_POWERS, type AgentWithPowers } from "@/lib/agents/crownJewelPowers";
+import { AGENTS_WITH_POWERS, MEMORY_SYSTEM_SUMMARY, FOUR_TIER_MEMORY, type AgentWithPowers } from "@/lib/agents/crownJewelPowers";
 
 function AgentCard({ agent, index, expanded, onToggle }: {
   agent: AgentWithPowers;
