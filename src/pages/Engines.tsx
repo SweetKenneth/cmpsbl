@@ -122,7 +122,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="17 black-boxed, tamper-proof composable engines. $199 standalone or $99 bundled. Own the tool. Own the outcome." />
+        <meta name="description" content="20 black-boxed, tamper-proof composable engines forged from Crown Jewel artifacts. $199 standalone or $99 bundled. Own the tool. Own the outcome." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -132,17 +132,17 @@ export default function Engines() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
                 <ShieldCheck className="w-4 h-4 text-primary" />
-                <span className="text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM</span>
+                <span className="text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM — CROWN JEWEL EDITION</span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
                 COMPOSABLE <span className="text-primary">ENGINES</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
                 Each Engine is a self-contained, obfuscated, tamper-proof runtime
-                engineered for a single mission. You don't see the source. You see the results.
+                forged from our highest-scoring Crown Jewel artifacts. You don't see the source. You see the results.
               </p>
               <p className="text-sm text-muted-foreground/70 font-mono">
-                17 sealed runtimes • 3 clearance tiers • $199 standalone / $99 bundled
+                20 sealed runtimes • 3 clearance tiers • $199 standalone / $99 bundled
               </p>
             </motion.div>
           </div>
@@ -187,7 +187,7 @@ export default function Engines() {
                 and lifetime access to the sealed runtime binary.
               </p>
               <p className="text-xs font-mono text-muted-foreground/60">
-                $199 standalone · $99 when bundled with any other engine · Collector's license included
+                $199 standalone · $99 when bundled with any other engine · Crown Jewel certified · Collector's license included
               </p>
             </div>
           </div>

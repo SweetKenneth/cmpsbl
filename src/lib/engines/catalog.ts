@@ -1,13 +1,13 @@
 /**
  * COMPOSABLE ENGINES Catalog
  * Black-boxed Sealed Runtime software — first-class CMPSBL IP.
- * 17 Engines — $199 standalone / $99 bundled with another engine.
+ * 20 Engines — $199 standalone / $99 bundled with another engine.
  */
 
 import {
   Shield, Ghost, Brain, Eye, Zap, GitBranch, Scale,
   Cog, Sparkles, Radio, Castle, Lock, Globe, Cpu,
-  Diamond, Hammer, Network,
+  Diamond, Hammer, Network, Fingerprint, Waypoints, FlaskConical,
 } from "lucide-react";
 
 export interface Engine {
@@ -186,6 +186,33 @@ export const ENGINES: Engine[] = [
     briefing: "MERIDIAN delivers content at the speed of proximity. Global edge distribution, asset optimization, and intelligent routing that puts your content milliseconds from every user.",
     capabilities: ["Global edge distribution", "Automatic asset optimization", "Intelligent geo-routing", "Cache warming & prefetch", "Origin shield protection", "Real-time purge & invalidation"],
     threatLevel: "LOW — DELIVERY", clearance: "LEVEL 4 — OPEN",
+  },
+  {
+    slug: "genesis", codename: "GENESIS", tagline: "Autonomous Triage & Recovery",
+    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceId: "price_genesis_standalone", icon: FlaskConical, color: "340 80% 55%", tier: "APEX",
+    edition: "Edition 001 of ∞",
+    briefing: "GENESIS is the Crown Jewel of autonomous triage. It intercepts failures before they cascade, classifies severity in real time, assigns remediation strategies, and executes recovery — all without human intervention.",
+    capabilities: ["Real-time failure classification", "Autonomous severity scoring", "Cascading failure prevention", "Self-executing remediation playbooks", "Post-incident learning loops", "Cross-service impact analysis"],
+    threatLevel: "CRITICAL — TRIAGE OPS", clearance: "LEVEL 9 — TOP SECRET",
+  },
+  {
+    slug: "mirage", codename: "MIRAGE", tagline: "Fleet Intelligence Router",
+    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceId: "price_mirage_standalone", icon: Waypoints, color: "200 90% 50%", tier: "ELITE",
+    edition: "Edition 001 of ∞",
+    briefing: "MIRAGE routes intelligence across distributed agent fleets with zero contention. Load-aware task distribution, cognitive affinity matching, and real-time fleet telemetry derived from the substrate's Fleet Intelligence Crown Jewel.",
+    capabilities: ["Cognitive affinity-based routing", "Fleet-wide telemetry aggregation", "Zero-contention task distribution", "Agent capability matching", "Dynamic fleet scaling signals", "Cross-fleet knowledge sharing"],
+    threatLevel: "ELEVATED — FLEET OPS", clearance: "LEVEL 7 — RESTRICTED",
+  },
+  {
+    slug: "aegis", codename: "AEGIS", tagline: "Identity & Access Governance",
+    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceId: "price_aegis_standalone", icon: Fingerprint, color: "15 85% 50%", tier: "CORE",
+    edition: "Edition 001 of ∞",
+    briefing: "AEGIS governs who — and what — can touch your systems. Fine-grained RBAC, policy-as-code enforcement, credential rotation, and session attestation. Born from the substrate's Governance Crown Jewels.",
+    capabilities: ["Policy-as-code access control", "Fine-grained RBAC engine", "Automatic credential rotation", "Session attestation & revocation", "Audit-grade access logging", "Zero-trust perimeter enforcement"],
+    threatLevel: "MODERATE — GOVERNANCE", clearance: "LEVEL 5 — STANDARD",
   },
 ];
 
