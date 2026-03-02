@@ -434,13 +434,14 @@ function ExportDialog({
   };
 
   const handlePreview = useCallback(() => {
-    const file = generateSingleExport(artifact, selectedLang, selectedAdapter);
-    setPreviewCode(file.content);
+    const bundle = generateSingleExport(artifact, selectedLang, selectedAdapter);
+    const mainFile = bundle.files.find(f => f.language === selectedLang);
+    setPreviewCode(mainFile?.content ?? bundle.files[0]?.content ?? '');
   }, [selectedLang, selectedAdapter, artifact]);
 
-  const handleDownloadSingle = () => {
-    const file = generateSingleExport(artifact, selectedLang, selectedAdapter);
-    downloadFile(file);
+  const handleDownloadSingle = async () => {
+    const bundle = generateSingleExport(artifact, selectedLang, selectedAdapter);
+    await downloadBundle(bundle);
   };
 
   const handleDownloadAll = async () => {
