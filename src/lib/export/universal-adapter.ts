@@ -10,6 +10,11 @@
  *   REST API, gRPC stub, CLI, Docker, WASM, SDK wrapper
  */
 
+import {
+  synthesizeTypeScript, synthesizePython, synthesizeGo,
+  type SynthesisContext,
+} from './logic-synthesizer';
+
 export type ExportLanguage =
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
   | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
@@ -45,6 +50,8 @@ export interface ExportableArtifact {
   module: string;
   description: string;
   sourceCode: string;
+  /** Optional synthesis context for generating full implementations */
+  synthesisContext?: SynthesisContext;
 }
 
 export interface ExportedFile {
@@ -239,6 +246,10 @@ function genTypeScript(a: ExportableArtifact, adapter: ExportAdapter): string {
   if (adapter === 'standalone' && a.sourceCode) {
     return `${h}\n${a.sourceCode}`;
   }
+  if (a.synthesisContext) {
+    const synth = synthesizeTypeScript(a.synthesisContext);
+    if (adapter === 'standalone') return `${h}\n${synth}`;
+  }
   const cls = className(a);
   const base = `
 export interface ${cls}Config {
@@ -339,6 +350,9 @@ main();
 
 function genPython(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Python', '#');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizePython(a.synthesisContext)}`;
+  }
   const cls = className(a);
   const snake = snakeCase(a);
   let code = `${h}
@@ -429,6 +443,9 @@ if __name__ == "__main__":
 
 function genGo(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Go', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return synthesizeGo(a.synthesisContext);
+  }
   const cls = className(a);
   let code = `${h}
 package ${snakeCase(a)}

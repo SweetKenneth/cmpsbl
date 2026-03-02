@@ -22,6 +22,7 @@ import {
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
 } from "@/lib/export/universal-adapter";
+import { contextFromDiscovery } from "@/lib/export/logic-synthesizer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -684,7 +685,8 @@ export default function STierVault() {
     const root = zip.folder(filename.replace('.zip', ''))!;
     for (const d of discoveries) {
       const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
-      const artifact: ExportableArtifact = { id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, sourceCode: '' };
+      const synthCtx = contextFromDiscovery(d);
+      const artifact: ExportableArtifact = { id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, sourceCode: '', synthesisContext: synthCtx };
       const bundle = generateExportBundle(artifact, languages);
       const slug = d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
       const folder = root.folder(slug)!;
