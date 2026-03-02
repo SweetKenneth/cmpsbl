@@ -115,7 +115,7 @@ export default function CMPSBLEngine() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono tracking-wider mb-8"
             >
               <Lock className="w-3 h-3" />
-              SEALED RUNTIME · ONE FILE · ZERO DEPENDENCIES
+              SEALED RUNTIME · ANNUAL LICENSE · ZERO DEPENDENCIES
             </motion.div>
 
             <motion.h1
@@ -164,7 +164,7 @@ export default function CMPSBLEngine() {
                 ) : (
                   <span className="flex items-center gap-2">
                     <Download className="w-5 h-5" />
-                    Acquire for $999
+                    License for $999/yr
                   </span>
                 )}
               </Button>
@@ -409,19 +409,24 @@ const health = engine.status();
               viewport={{ once: true }}
             >
               <h2 className="text-4xl sm:text-5xl font-black mb-4 tracking-tight">
-                Acquire the Engine.
+                License the Engine.
               </h2>
               <p className="text-muted-foreground text-lg mb-8">
-                One file. One import. Complete autonomous operations.
+                One file. One import. Complete autonomous operations. Licensed annually.
               </p>
               <div className="flex flex-col items-center gap-4">
                 <Button
                   size="lg"
                   onClick={handleCheckout}
-                  disabled={loading}
+                  disabled={loading || licensed}
                   className="h-16 px-10 text-xl font-bold rounded-2xl bg-foreground text-background hover:bg-foreground/90 transition-all shadow-xl hover:shadow-2xl"
                 >
-                  {loading ? (
+                  {licensed ? (
+                    <span className="flex items-center gap-3">
+                      <Check className="w-6 h-6" />
+                      Licensed — You're In
+                    </span>
+                  ) : loading ? (
                     <span className="flex items-center gap-2">
                       <div className="w-5 h-5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
                       Processing…
@@ -429,12 +434,12 @@ const health = engine.status();
                   ) : (
                     <span className="flex items-center gap-3">
                       <Download className="w-6 h-6" />
-                      $999 · Sealed Runtime
+                      $999/yr · Sealed Runtime License
                     </span>
                   )}
                 </Button>
                 <p className="text-xs text-muted-foreground">
-                  One-time purchase. Full capabilities. No recurring fees.
+                  Annual license. Full capabilities. Instant access. No account required to start.
                 </p>
               </div>
             </motion.div>
