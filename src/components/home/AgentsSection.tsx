@@ -1,16 +1,15 @@
 /**
- * AgentsSection — All 20 agents with Crown Jewel powers
- * Unified layout: every agent gets equal treatment with 3 powers each.
+ * AgentsSection — All 20 agents with Crown Jewel powers + Universal Memory System
  */
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Download, Zap, ChevronDown } from "lucide-react";
+import { ArrowRight, Download, Zap, ChevronDown, Database, Clock, HardDrive, Archive } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { AGENTS_WITH_POWERS, type AgentWithPowers } from "@/lib/agents/crownJewelPowers";
+import { AGENTS_WITH_POWERS, MEMORY_SYSTEM_SUMMARY, FOUR_TIER_MEMORY, type AgentWithPowers } from "@/lib/agents/crownJewelPowers";
 
 function AgentCard({ agent, index, expanded, onToggle }: {
   agent: AgentWithPowers;
@@ -84,8 +83,8 @@ function AgentCard({ agent, index, expanded, onToggle }: {
                 {agent.description}
               </p>
 
-              {/* 3 Crown Jewel Powers */}
-              <div className="grid sm:grid-cols-3 gap-3">
+              {/* Crown Jewel Powers */}
+              <div className={cn("grid gap-3", agent.powers.length > 3 ? "sm:grid-cols-3 lg:grid-cols-5" : "sm:grid-cols-3")}>
                 {agent.powers.map((power, pIdx) => (
                   <motion.div
                     key={power.name}
@@ -151,13 +150,87 @@ export function AgentsSection() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Sixty Crown Jewels.
+              Persistent Memory.
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Every agent is backed by 3 sealed runtime engines from the substrate's Crown Jewel vault —
-            capabilities no other platform can replicate.
+            Every agent ships with a 4-tier portable memory system and is backed by sealed runtime engines from the Crown Jewel vault — capabilities no other platform can replicate.
           </p>
+        </motion.div>
+
+        {/* ═══ UNIVERSAL MEMORY SYSTEM BANNER ═══ */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-8 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card/80 to-primary/5 backdrop-blur-sm overflow-hidden"
+        >
+          <div className="p-6 sm:p-8">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center">
+                <Database className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-sm sm:text-base font-black text-foreground tracking-tight">
+                  {MEMORY_SYSTEM_SUMMARY.name}
+                </h3>
+                <p className="text-[10px] sm:text-xs text-primary/80 font-semibold">
+                  Included with every agent — zero dependencies, any stack
+                </p>
+              </div>
+            </div>
+
+            <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-3xl">
+              {MEMORY_SYSTEM_SUMMARY.tagline} {MEMORY_SYSTEM_SUMMARY.description}
+            </p>
+
+            {/* 4 Tiers */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+              {FOUR_TIER_MEMORY.map((tier, i) => {
+                const tierIcons = [Clock, Database, HardDrive, Archive];
+                const TierIcon = tierIcons[i];
+                const tierColors = [
+                  "from-red-500/20 to-orange-500/20 border-red-500/30",
+                  "from-amber-500/20 to-yellow-500/20 border-amber-500/30",
+                  "from-sky-500/20 to-blue-500/20 border-sky-500/30",
+                  "from-slate-500/20 to-zinc-500/20 border-slate-500/30",
+                ];
+                return (
+                  <div
+                    key={tier.name}
+                    className={cn(
+                      "rounded-xl border p-4 bg-gradient-to-br",
+                      tierColors[i]
+                    )}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <TierIcon className="w-4 h-4 text-foreground/70" />
+                      <span className="text-[10px] font-black tracking-widest text-foreground/80">{tier.name}</span>
+                    </div>
+                    <h4 className="text-xs font-bold text-foreground mb-1">{tier.label}</h4>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">{tier.description}</p>
+                    <div className="flex items-center gap-3 text-[9px] font-mono text-muted-foreground/60">
+                      <span>Latency: {tier.latency}</span>
+                      <span>·</span>
+                      <span>{tier.retention}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Feature list */}
+            <div className="flex flex-wrap gap-2">
+              {MEMORY_SYSTEM_SUMMARY.features.map((feat) => (
+                <span
+                  key={feat}
+                  className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary/80 border border-primary/15"
+                >
+                  {feat}
+                </span>
+              ))}
+            </div>
+          </div>
         </motion.div>
 
         {/* All 20 Agent Cards */}
