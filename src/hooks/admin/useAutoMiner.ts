@@ -98,10 +98,6 @@ export function useAutoMiner() {
   const abortRef = useRef(false);
   const runningRef = useRef(false);
 
-  const updateState = useCallback((patch: Partial<AutoMinerState>) => {
-    setState(prev => ({ ...prev, ...patch }));
-  }, []);
-
   const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
   /** Run one full auto-mining cycle */
@@ -109,7 +105,7 @@ export function useAutoMiner() {
     if (abortRef.current) return null;
 
     // Phase 1: Generate templates
-    updateState({ phase: 'generating', lastActivity: `Cycle ${cycleNum}: Generating ${config.batchSize} random templates...` });
+    setState(prev => ({ ...prev, phase: 'generating', lastActivity: `Cycle ${cycleNum}: Generating ${config.batchSize} random templates...` }));
 
     const templates = generateTemplateBatch({
       batchSize: config.batchSize,
@@ -120,23 +116,24 @@ export function useAutoMiner() {
     });
 
     if (templates.length === 0) {
-      updateState({ lastActivity: `Cycle ${cycleNum}: Generator exhausted — all combos retired or attempts maxed` });
+      setState(prev => ({ ...prev, lastActivity: `Cycle ${cycleNum}: Generator exhausted — all combos retired or attempts maxed` }));
       return null; // signal exhaustion
     }
 
-    updateState({
+    setState(prev => ({
+      ...prev,
       activeTemplates: templates,
       currentBatchSize: templates.length,
-      totalTemplatesGenerated: (state.totalTemplatesGenerated || 0) + templates.length,
+      totalTemplatesGenerated: prev.totalTemplatesGenerated + templates.length,
       lastActivity: `Cycle ${cycleNum}: Generated ${templates.length} templates, starting probes...`,
-    });
+    }));
 
     // Phase 2: Probe — run N discovery passes with these templates
-    updateState({ phase: 'probing' });
+    setState(prev => ({ ...prev, phase: 'probing' }));
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      updateState({ error: 'Authentication required', phase: 'idle' });
+      setState(prev => ({ ...prev, error: 'Authentication required', phase: 'idle' }));
       return null;
     }
 
@@ -149,7 +146,7 @@ export function useAutoMiner() {
     for (let probe = 0; probe < config.probeRuns; probe++) {
       if (abortRef.current) break;
 
-      updateState({ lastActivity: `Cycle ${cycleNum}: Probe ${probe + 1}/${config.probeRuns}...` });
+      setState(prev => ({ ...prev, lastActivity: `Cycle ${cycleNum}: Probe ${probe + 1}/${config.probeRuns}...` }));
 
       const result = await runReactor({
         dryRun: config.dryRun,
@@ -162,11 +159,12 @@ export function useAutoMiner() {
 
       if (result.status === 'completed') {
         totalDiscoveries += result.acceptedCount;
-        updateState({
-          totalRuns: (state.totalRuns || 0) + 1,
-          totalDiscoveries: (state.totalDiscoveries || 0) + result.acceptedCount,
+        setState(prev => ({
+          ...prev,
+          totalRuns: prev.totalRuns + 1,
+          totalDiscoveries: prev.totalDiscoveries + result.acceptedCount,
           lastActivity: `Cycle ${cycleNum}: Probe ${probe + 1} found ${result.acceptedCount} discoveries (total: ${totalDiscoveries})`,
-        });
+        }));
       }
 
       if (probe < config.probeRuns - 1) {
@@ -178,7 +176,7 @@ export function useAutoMiner() {
     let miningRuns = 0;
 
     if (totalDiscoveries > 0 && !abortRef.current) {
-      updateState({ phase: 'mining', lastActivity: `Cycle ${cycleNum}: Discoveries found! Deep mining...` });
+      setState(prev => ({ ...prev, phase: 'mining', lastActivity: `Cycle ${cycleNum}: Discoveries found! Deep mining...` }));
 
       let consecutiveEmpty = 0;
       const maxConsecutiveEmpty = 2;
@@ -198,22 +196,24 @@ export function useAutoMiner() {
         if (mineResult.status === 'completed' && mineResult.acceptedCount > 0) {
           consecutiveEmpty = 0;
           totalDiscoveries += mineResult.acceptedCount;
-          updateState({
-            totalRuns: (state.totalRuns || 0) + 1 + miningRuns,
-            totalDiscoveries: (state.totalDiscoveries || 0) + mineResult.acceptedCount,
+          setState(prev => ({
+            ...prev,
+            totalRuns: prev.totalRuns + 1,
+            totalDiscoveries: prev.totalDiscoveries + mineResult.acceptedCount,
             lastActivity: `Cycle ${cycleNum}: Mining run ${miningRuns} found ${mineResult.acceptedCount} more (total: ${totalDiscoveries})`,
-          });
+          }));
         } else {
           consecutiveEmpty++;
-          updateState({
+          setState(prev => ({
+            ...prev,
             lastActivity: `Cycle ${cycleNum}: Mining run ${miningRuns} empty (${consecutiveEmpty}/${maxConsecutiveEmpty} to retire)`,
-          });
+          }));
         }
       }
     }
 
     // Phase 4: Retire used templates
-    updateState({ phase: 'retiring', lastActivity: `Cycle ${cycleNum}: Retiring ${templates.length} template combos...` });
+    setState(prev => ({ ...prev, phase: 'retiring', lastActivity: `Cycle ${cycleNum}: Retiring ${templates.length} template combos...` }));
 
     for (const t of templates) {
       retireCombo(t.modulePattern, t.category, probeRuns + miningRuns, totalDiscoveries);
@@ -230,13 +230,14 @@ export function useAutoMiner() {
       timestamp: Date.now(),
     };
 
-    updateState({
+    setState(prev => ({
+      ...prev,
       retiredCombos: getRetiredCombos(),
-      cycleHistory: [...(state.cycleHistory || []), cycleResult],
-    });
+      cycleHistory: [...prev.cycleHistory, cycleResult],
+    }));
 
     return cycleResult;
-  }, [state, updateState]);
+  }, []);
 
   /** Start the auto-mining loop */
   const start = useCallback(async (userConfig: Partial<MinerConfig> = {}) => {
@@ -249,7 +250,7 @@ export function useAutoMiner() {
     abortRef.current = false;
     runningRef.current = true;
 
-    updateState({
+    setState({
       phase: 'generating',
       currentCycle: 0,
       totalDiscoveries: 0,
@@ -260,6 +261,8 @@ export function useAutoMiner() {
       startedAt: Date.now(),
       error: null,
       lastActivity: 'Starting auto-miner...',
+      currentBatchSize: 0,
+      retiredCombos: [],
     });
 
     toast.success('Auto-Miner started — generating and testing template combinations');
@@ -269,19 +272,19 @@ export function useAutoMiner() {
       cycle++;
 
       if (config.maxCycles > 0 && cycle > config.maxCycles) {
-        updateState({ lastActivity: `Reached max cycles (${config.maxCycles})`, phase: 'complete' });
+        setState(prev => ({ ...prev, lastActivity: `Reached max cycles (${config.maxCycles})`, phase: 'complete' }));
         break;
       }
 
-      updateState({ currentCycle: cycle });
+      setState(prev => ({ ...prev, currentCycle: cycle }));
 
       const result = await runCycle(cycle, config);
 
       if (!result) {
         if (abortRef.current) {
-          updateState({ phase: 'paused', lastActivity: 'Paused by user' });
+          setState(prev => ({ ...prev, phase: 'paused', lastActivity: 'Paused by user' }));
         } else {
-          updateState({ phase: 'complete', lastActivity: 'Generator exhausted — all reachable combos tested' });
+          setState(prev => ({ ...prev, phase: 'complete', lastActivity: 'Generator exhausted — all reachable combos tested' }));
           toast.info('Auto-Miner complete: all reachable template combinations have been explored');
         }
         break;
@@ -294,14 +297,14 @@ export function useAutoMiner() {
     }
 
     runningRef.current = false;
-  }, [updateState, runCycle]);
+  }, [runCycle]);
 
   /** Stop the auto-mining loop */
   const stop = useCallback(() => {
     abortRef.current = true;
-    updateState({ phase: 'paused', lastActivity: 'Stopping...' });
+    setState(prev => ({ ...prev, phase: 'paused', lastActivity: 'Stopping...' }));
     toast.info('Auto-Miner stopping after current operation completes');
-  }, [updateState]);
+  }, []);
 
   /** Reset all state including retired combos */
   const reset = useCallback(() => {
