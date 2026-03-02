@@ -306,10 +306,10 @@ export default function ComposableCognitives() {
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-6">
                   {DREAM_ABILITY.phases.map((phase) => (
-                    <div key={phase.letter} className="p-3 rounded-lg border border-primary/10 bg-primary/5 text-center">
-                      <div className="text-2xl font-black text-primary">{phase.letter}</div>
-                      <div className="text-xs font-bold mt-1">{phase.word}</div>
-                      <div className="text-[10px] text-muted-foreground mt-1">{phase.detail}</div>
+                     <div key={phase.letter} className="p-3 rounded-lg border border-primary/10 bg-primary/5 text-center">
+                       <div className="text-2xl font-black text-primary">{phase.letter}</div>
+                       <div className="text-xs font-bold mt-1">{phase.word}</div>
+                       <div className="text-[11px] text-muted-foreground mt-1">{phase.detail}</div>
                     </div>
                   ))}
                 </div>
@@ -406,7 +406,7 @@ export default function ComposableCognitives() {
       {/* ═══ CROSS-SELL: ENGINES ═══ */}
       <section className="container mx-auto px-4 pb-12">
         <div className="max-w-3xl mx-auto text-center p-8 rounded-2xl border border-primary/20 bg-primary/5">
-          <Badge variant="outline" className="font-mono text-[10px] border-primary/30 text-primary mb-4">
+          <Badge variant="outline" className="font-mono text-[11px] border-primary/30 text-primary mb-4">
             BUNDLE DEAL
           </Badge>
           <h2 className="text-2xl font-black mb-2">40% Off Every Agent When Bundled</h2>
