@@ -5,7 +5,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2, Accessibility, Database, Send, FileCheck, Fingerprint, Coins, FlaskConical, Code2, HeartPulse, Dna, Target, Scale, Stethoscope, Cable } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2, Accessibility, Database, Send, FileCheck, Fingerprint, Coins, FlaskConical, Code2, HeartPulse, Dna, Target, Scale, Stethoscope, Cable, Crown, Telescope, Heart, Ghost, Hammer, Languages, Navigation, Repeat, Handshake, Wheat, Activity } from 'lucide-react';
 import { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleCardProps {
@@ -185,6 +185,73 @@ const moduleConfig: Record<SubstrateModule, {
     label: 'Nerve',
     description: 'Inter-node signaling, consensus repair',
     color: 'text-violet-600',
+  },
+  // Expansion Modules (37-Node Architecture)
+  sovereign: {
+    icon: Crown,
+    label: 'SOVEREIGN',
+    description: 'Jurisdictional compliance & data sovereignty',
+    color: 'text-amber-700',
+  },
+  oracle: {
+    icon: Telescope,
+    label: 'ORACLE',
+    description: 'Predictive analytics & forecasting',
+    color: 'text-indigo-600',
+  },
+  conscience: {
+    icon: Heart,
+    label: 'CONSCIENCE',
+    description: 'Ethical governance & bias detection',
+    color: 'text-rose-600',
+  },
+  phantom: {
+    icon: Ghost,
+    label: 'PHANTOM',
+    description: 'Privacy engineering & data masking',
+    color: 'text-slate-600',
+  },
+  forge: {
+    icon: Hammer,
+    label: 'FORGE',
+    description: 'Artifact manufacturing & code generation',
+    color: 'text-orange-700',
+  },
+  lingua: {
+    icon: Languages,
+    label: 'LINGUA',
+    description: 'Translation & multi-language support',
+    color: 'text-sky-600',
+  },
+  compass: {
+    icon: Navigation,
+    label: 'COMPASS',
+    description: 'Strategic navigation & trend analysis',
+    color: 'text-teal-600',
+  },
+  echo: {
+    icon: Repeat,
+    label: 'ECHO',
+    description: 'Event replay & temporal simulation',
+    color: 'text-purple-600',
+  },
+  treaty: {
+    icon: Handshake,
+    label: 'TREATY',
+    description: 'Inter-system agreements & SLA management',
+    color: 'text-emerald-700',
+  },
+  harvest: {
+    icon: Wheat,
+    label: 'HARVEST',
+    description: 'Data collection & ETL pipelines',
+    color: 'text-lime-600',
+  },
+  reflex: {
+    icon: Activity,
+    label: 'REFLEX',
+    description: 'Edge computing & real-time response',
+    color: 'text-red-600',
   },
 };
 

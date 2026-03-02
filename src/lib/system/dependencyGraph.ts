@@ -80,6 +80,19 @@
 
     // ── Shell ── (outer containment)
     defense: ['core', 'system', 'identity', 'ripple'],
+
+    // ── Expansion Modules (37-Node Architecture) ──
+    sovereign: ['core', 'defense', 'access'],
+    oracle: ['core', 'brain', 'vision'],
+    conscience: ['core', 'defense'],
+    phantom: ['core', 'defense', 'identity'],
+    forge: ['core', 'encode'],
+    lingua: ['core', 'decode', 'nexus'],
+    compass: ['core', 'vision', 'brain'],
+    echo: ['core', 'memory'],
+    treaty: ['core', 'access'],
+    harvest: ['core', 'memory', 'economy'],
+    reflex: ['core', 'nexus', 'vision'],
   };
  
  // Build and cache the graph

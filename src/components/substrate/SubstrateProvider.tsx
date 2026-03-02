@@ -51,7 +51,10 @@ const ALL_MODULES: SubstrateModule[] = [
   'core', 'brain', 'decode', 'encode', 'defense', 'nexus', 'vision', 'dream',
   'ripple', 'access', 'system', 'modernizer', 'integration', 'inclusive',
   'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
-  'immunity', 'evolution', 'intent', 'governance',
+  'immunity', 'evolution', 'intent', 'governance', 'medic', 'nerve',
+  // Expansion Modules (37-Node Architecture)
+  'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
+  'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
 ];
 
 const defaultModules = ALL_MODULES.reduce((acc, m) => {
