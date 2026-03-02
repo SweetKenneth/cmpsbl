@@ -21,8 +21,8 @@ const PRESETS: QueryPreset[] = [
     label: 'Total Discoveries',
     description: 'SELECT count(*) FROM discoveries',
     run: async () => {
-      const { count } = await supabase.from('discoveries').select('*', { count: 'exact', head: true });
-      return { total: count };
+      const { data } = await supabase.from('discoveries').select('id');
+      return { total: data?.length || 0 };
     },
     format: (d) => `Total discoveries: ${d.total}`,
   },
@@ -31,8 +31,8 @@ const PRESETS: QueryPreset[] = [
     label: 'Perfect Scores (CJPI = 100)',
     description: "SELECT count(*) FROM discoveries WHERE cjpi = 100",
     run: async () => {
-      const { count } = await supabase.from('discoveries').select('*', { count: 'exact', head: true }).eq('cjpi', 100);
-      return { perfect_count: count };
+      const { data } = await supabase.from('discoveries').select('id').eq('cjpi', 100);
+      return { perfect_count: data?.length || 0 };
     },
     format: (d) => `Discoveries with perfect CJPI 100: ${d.perfect_count}`,
   },
