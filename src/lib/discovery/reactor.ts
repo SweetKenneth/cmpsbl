@@ -24,6 +24,8 @@ export interface ReactorConfig {
   exploratoryMode: boolean;
   topN?: number;
   scoringVersion?: string;
+  /** Injected templates from the auto-generator (used alongside hardcoded ones) */
+  injectedTemplates?: SynthesisTemplate[];
 }
 
 export interface ReactorCandidate {
