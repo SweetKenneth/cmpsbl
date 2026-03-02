@@ -185,23 +185,15 @@ export function generateExportBundle(
 }
 
 /**
- * Export a single file for quick single-language download
+ * Export a single language as a complete bundle (ZIP with runtime, README, license, test harness)
  */
 export function generateSingleExport(
   artifact: ExportableArtifact,
   language: ExportLanguage,
   adapter: ExportAdapter = 'standalone'
-): ExportedFile {
-  const ext = LANG_EXT[language];
-  const slug = artifact.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-  const filename = adapter === 'standalone' ? `${slug}.${ext}` : `${slug}-${adapter}.${ext}`;
-  return {
-    filename,
-    content: generateCode(artifact, { language, adapter }),
-    language,
-    adapter,
-    mimeType: getMimeType(language),
-  };
+): ExportBundle {
+  const target: ExportTarget = { language, adapter };
+  return generateExportBundle(artifact, [target]);
 }
 
 function getMimeType(lang: ExportLanguage): string {
