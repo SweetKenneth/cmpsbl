@@ -218,97 +218,52 @@ function EngineCard({ engine, isShowcase = false, isMeta = false }: { engine: Pu
   );
 }
 
-// ─── Grid Engine Card ───
+// ─── Grid Engine Card (FlipCard-powered) ───
 function GridEngineCard({ engine, isShowcase = false, isMeta = false, index }: { engine: PublicEngine | PublicMetaEngine; isShowcase?: boolean; isMeta?: boolean; index: number }) {
   const tierConfig = TIER_DISPLAY[engine.visibility];
   const cat = findCategory(engine.category);
   const CatIcon = cat.icon;
 
+  const accentBar = isShowcase
+    ? "bg-gradient-to-r from-violet-500 to-purple-500"
+    : isMeta ? "bg-gradient-to-r from-primary to-violet-500"
+    : engine.visibility === 'free' ? "bg-emerald-500"
+    : engine.visibility === 'standard' ? "bg-cyan-500"
+    : "bg-violet-500";
+
+  const borderCls = isShowcase
+    ? "border-violet-500/25"
+    : isMeta ? "border-primary/25"
+    : "border-border";
+
+  const capabilities = 'capabilities' in engine && Array.isArray((engine as any).capabilities)
+    ? (engine as any).capabilities as string[]
+    : [engine.description];
+
+  const stats: { label: string; value: string; icon?: React.ReactNode }[] = [];
+  if ('synergyMultiplier' in engine) stats.push({ label: '', value: `${engine.synergyMultiplier}x`, icon: <Sparkles className="w-3 h-3 text-amber-500" /> });
+  if ('capabilityCount' in engine) stats.push({ label: 'caps', value: String((engine as PublicEngine).capabilityCount), icon: <Layers className="w-3 h-3" /> });
+  if ('enginesOrchestrated' in engine) stats.push({ label: 'engines', value: String((engine as PublicMetaEngine).enginesOrchestrated), icon: <Cpu className="w-3 h-3" /> });
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: Math.min(index * 0.03, 0.3) }}
-      className={cn(
-        "group h-full rounded-xl border transition-all duration-300",
-        "hover:-translate-y-1 hover:shadow-xl",
-        isShowcase
-          ? "border-violet-500/25 hover:border-violet-400/50 hover:shadow-violet-500/10"
-          : isMeta
-          ? "border-primary/25 hover:border-primary/50 hover:shadow-primary/10"
-          : "border-border hover:border-primary/30 hover:shadow-primary/5",
-        "bg-card overflow-hidden"
-      )}
-    >
-      <div className={cn(
-        "h-[3px] w-full",
-        isShowcase ? "bg-gradient-to-r from-violet-500 to-purple-500"
-        : isMeta ? "bg-gradient-to-r from-primary to-violet-500"
-        : engine.visibility === 'free' ? "bg-emerald-500"
-        : engine.visibility === 'standard' ? "bg-cyan-500"
-        : "bg-violet-500"
-      )} />
-
-      <div className="p-4">
-        <div className="flex items-start justify-between mb-3">
-          <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", cat.bg)}>
-            <CatIcon className={cn("w-5 h-5", cat.text)} />
-          </div>
-          <div className="flex items-center gap-1.5">
-            {isMeta && (
-              <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">Meta</Badge>
-            )}
-            <Badge variant="outline" className={cn("text-[10px]", isShowcase ? "text-violet-400 border-violet-500/30" : tierConfig.badge)}>
-              {isShowcase ? 'Internal' : tierConfig.label}
-            </Badge>
-          </div>
-        </div>
-
-        <h3 className="font-bold text-base mb-1.5 group-hover:text-primary transition-colors line-clamp-1">{engine.name}</h3>
-        <p className="text-xs text-muted-foreground mb-4 line-clamp-2 leading-relaxed">{engine.description}</p>
-
-        <div className="flex items-center gap-3 text-xs text-muted-foreground mb-4">
-          {'synergyMultiplier' in engine && (
-            <span className="flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-amber-500" />
-              {engine.synergyMultiplier}x
-            </span>
-          )}
-          {'capabilityCount' in engine && (
-            <span className="flex items-center gap-1">
-              <Layers className="w-3 h-3" />
-              {(engine as PublicEngine).capabilityCount} caps
-            </span>
-          )}
-          {'enginesOrchestrated' in engine && (
-            <span className="flex items-center gap-1">
-              <Cpu className="w-3 h-3" />
-              {(engine as PublicMetaEngine).enginesOrchestrated} engines
-            </span>
-          )}
-        </div>
-
-        <div className="flex items-center justify-between pt-3 border-t border-border/50">
-          <div className={cn("text-sm font-bold", isShowcase ? "text-violet-400" : tierConfig.color)}>
-            {isShowcase ? 'Platform' : tierConfig.priceLabel}
-          </div>
-          {!isShowcase && (
-            <Button
-              size="sm"
-              variant={engine.visibility === 'free' ? 'outline' : 'default'}
-              className="gap-1 h-7 text-xs"
-              asChild
-            >
-              {engine.visibility === 'free' ? (
-                <a href="/os"><Play className="w-3 h-3" /> Run</a>
-              ) : (
-                <a href="/upgrade">Subscribe <ChevronRight className="w-3 h-3" /></a>
-              )}
-            </Button>
-          )}
-        </div>
-      </div>
-    </motion.div>
+    <FlipCard
+      className="h-[260px]"
+      index={index}
+      frontTitle={engine.name}
+      frontSubtitle={engine.description}
+      frontIcon={<CatIcon className={cn("w-5 h-5", cat.text)} />}
+      frontBadge={isShowcase ? 'Internal' : isMeta ? 'Meta' : tierConfig.label}
+      frontBadgeClass={isShowcase ? "text-violet-400 border-violet-500/30" : isMeta ? "border-primary/30 text-primary" : tierConfig.badge}
+      frontAccentBar={accentBar}
+      frontStats={stats}
+      backCapabilities={capabilities}
+      backPrice={isShowcase ? 'Platform' : tierConfig.priceLabel}
+      backCta={isShowcase ? undefined : engine.visibility === 'free'
+        ? { label: 'Run', href: '/os' }
+        : { label: 'Subscribe', href: '/upgrade' }
+      }
+      borderClass={borderCls}
+    />
   );
 }
 
