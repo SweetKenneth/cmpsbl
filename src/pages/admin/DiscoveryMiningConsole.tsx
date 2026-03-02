@@ -639,6 +639,10 @@ export default function DiscoveryMiningConsole() {
             )}
           </TabsContent>
 
+          <TabsContent value="templates" className="space-y-4">
+            <TemplateComposer />
+          </TabsContent>
+
           <TabsContent value="history" className="space-y-4">
             <Card>
               <CardHeader>
