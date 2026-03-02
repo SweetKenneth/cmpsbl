@@ -2,6 +2,8 @@
  * Verify Panel — Engineer-testable live query interface
  * Runs real queries against the discovery database so investors/engineers
  * can independently verify every claim.
+ * 
+ * Uses server-side RPC aggregation to avoid the 1000-row PostgREST limit.
  */
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
@@ -21,8 +23,8 @@ const PRESETS: QueryPreset[] = [
     label: 'Total Discoveries',
     description: 'SELECT count(*) FROM discoveries',
     run: async () => {
-      const { data } = await supabase.from('discoveries').select('id');
-      return { total: data?.length || 0 };
+      const { data } = await supabase.rpc('get_discovery_stats');
+      return { total: (data as any)?.total ?? 0 };
     },
     format: (d) => `Total discoveries: ${d.total}`,
   },
@@ -31,8 +33,8 @@ const PRESETS: QueryPreset[] = [
     label: 'Perfect Scores (CJPI = 100)',
     description: "SELECT count(*) FROM discoveries WHERE cjpi = 100",
     run: async () => {
-      const { data } = await supabase.from('discoveries').select('id').eq('cjpi', 100);
-      return { perfect_count: data?.length || 0 };
+      const { data } = await supabase.rpc('get_discovery_stats');
+      return { perfect_count: (data as any)?.perfect_count ?? 0 };
     },
     format: (d) => `Discoveries with perfect CJPI 100: ${d.perfect_count}`,
   },
@@ -41,13 +43,8 @@ const PRESETS: QueryPreset[] = [
     label: 'Tier Breakdown',
     description: "SELECT tier, count(*) FROM discoveries GROUP BY tier",
     run: async () => {
-      const { data } = await supabase.from('discoveries').select('tier');
-      if (!data) return {};
-      const counts: Record<string, number> = {};
-      for (const d of data) {
-        counts[d.tier] = (counts[d.tier] || 0) + 1;
-      }
-      return counts;
+      const { data } = await supabase.rpc('get_discovery_stats');
+      return (data as any)?.tiers ?? {};
     },
     format: (d) => Object.entries(d).map(([k, v]) => `  ${k === 'cmpsbl-only' ? 'APEX' : k.toUpperCase()}: ${v}`).join('\n'),
   },
@@ -56,20 +53,10 @@ const PRESETS: QueryPreset[] = [
     label: 'Category Distribution',
     description: "SELECT category, count(*), avg(cjpi) FROM discoveries GROUP BY category",
     run: async () => {
-      const { data } = await supabase.from('discoveries').select('category, cjpi');
-      if (!data) return [];
-      const map = new Map<string, { count: number; sum: number }>();
-      for (const d of data) {
-        const e = map.get(d.category) || { count: 0, sum: 0 };
-        e.count++;
-        e.sum += d.cjpi;
-        map.set(d.category, e);
-      }
-      return Array.from(map.entries())
-        .map(([cat, v]) => ({ category: cat, count: v.count, avg: (v.sum / v.count).toFixed(1) }))
-        .sort((a, b) => b.count - a.count);
+      const { data } = await supabase.rpc('get_discovery_stats');
+      return (data as any)?.categories ?? [];
     },
-    format: (d) => d.map((c: any) => `  ${c.category}: ${c.count} discoveries (avg CJPI ${c.avg})`).join('\n'),
+    format: (d) => d.map((c: any) => `  ${c.category}: ${c.count} discoveries (avg CJPI ${c.avg_cjpi})`).join('\n'),
   },
   {
     id: 'runs',
@@ -106,16 +93,10 @@ const PRESETS: QueryPreset[] = [
     label: 'Module Frequency',
     description: "Analyze which substrate modules appear most frequently in discoveries",
     run: async () => {
-      const { data } = await supabase.from('discoveries').select('module_chain');
-      if (!data) return [];
-      const freq: Record<string, number> = {};
-      for (const d of data) {
-        for (const m of (d.module_chain || [])) {
-          freq[m] = (freq[m] || 0) + 1;
-        }
-      }
+      const { data } = await supabase.rpc('get_discovery_stats');
+      const freq = (data as any)?.module_freq ?? {};
       return Object.entries(freq)
-        .sort((a, b) => b[1] - a[1])
+        .sort((a: any, b: any) => b[1] - a[1])
         .map(([mod, count]) => ({ module: mod, appearances: count }));
     },
     format: (d) => d.map((m: any) => `  ${m.module}: ${m.appearances} appearances`).join('\n'),
@@ -243,8 +224,8 @@ export function VerifyPanel() {
           className="mt-6 text-center"
         >
           <p className="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-wider">
-            All queries execute against the Lovable Cloud production database via the public anon key ·
-            Read-only access · RLS enforced
+            All queries execute against the production database via server-side aggregation ·
+            Read-only access · RLS enforced · No row-count limits
           </p>
         </motion.div>
       </div>

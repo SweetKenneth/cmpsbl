@@ -34,7 +34,7 @@ export default function FoundryDemo() {
         .from('discoveries')
         .select('name, cjpi, tier, category, module_chain, created_at')
         .order('cjpi', { ascending: false })
-        .limit(30);
+        .limit(50);
       if (data) setDiscoveries(data as Discovery[]);
     }
     load();
