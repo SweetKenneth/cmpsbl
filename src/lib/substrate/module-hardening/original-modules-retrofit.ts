@@ -1,5 +1,5 @@
 /**
- * Original Modules Retrofit — Unified Hardening for the 26 Matrix Nodes
+ * Original Modules Retrofit — Unified Hardening for all 37 Matrix Nodes
  * 
  * Additively installs the createModuleHardening wrapper on every original
  * substrate node. This is NON-BREAKING — it does NOT modify any module
@@ -92,7 +92,7 @@ const retrofitted = new Map<string, ModuleHardening>();
 let retrofitComplete = false;
 
 /**
- * Install the unified hardening wrapper on all 26 original matrix nodes.
+ * Install the unified hardening wrapper on all 37 matrix nodes.
  * Idempotent — safe to call multiple times.
  * Returns a map of module name → ModuleHardening instance.
  */

@@ -130,7 +130,77 @@ export type CapabilityId =
   | 'multi_agent_coordinator'
   | 'task_decomposition_engine'
   | 'goal_alignment_validator'
-  | 'execution_priority_balancer';
+  | 'execution_priority_balancer'
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EXPANSION MODULE CAPABILITIES (44) — 11 New Modules × 4 Each
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // SOVEREIGN Module (4)
+  | 'jurisdiction_classifier'
+  | 'regulation_enforcer'
+  | 'compliance_attestation_engine'
+  | 'sovereignty_audit_chain'
+
+  // ORACLE Module (4)
+  | 'predictive_model_calibrator'
+  | 'scenario_simulation_engine'
+  | 'forecast_confidence_scorer'
+  | 'trend_extrapolation_advisor'
+
+  // CONSCIENCE Module (4)
+  | 'bias_detection_scanner'
+  | 'fairness_score_calculator'
+  | 'ethical_impact_assessor'
+  | 'transparency_report_generator'
+
+  // PHANTOM Module (4)
+  | 'data_anonymization_engine'
+  | 'privacy_minimization_guard'
+  | 'differential_privacy_injector'
+  | 'consent_audit_tracker'
+
+  // FORGE Module (4)
+  | 'artifact_recombination_engine'
+  | 'synthesis_validation_pipeline'
+  | 'creative_mutation_generator'
+  | 'deployment_readiness_scorer'
+
+  // LINGUA Module (4)
+  | 'realtime_translation_engine'
+  | 'language_detection_classifier'
+  | 'glossary_consistency_guard'
+  | 'localization_coverage_tracker'
+
+  // COMPASS Module (4)
+  | 'geofence_policy_enforcer'
+  | 'risk_geography_mapper'
+  | 'latency_aware_region_router'
+  | 'spatial_anomaly_detector'
+
+  // ECHO Module (4)
+  | 'digital_twin_synchronizer'
+  | 'simulation_drift_detector'
+  | 'state_diff_reconciler'
+  | 'twin_health_monitor'
+
+  // TREATY Module (4)
+  | 'contract_negotiation_engine'
+  | 'sla_enforcement_monitor'
+  | 'breach_detection_alerter'
+  | 'agreement_lifecycle_tracker'
+
+  // HARVEST Module (4)
+  | 'source_discovery_crawler'
+  | 'data_quality_scorer'
+  | 'deduplication_engine'
+  | 'ingestion_pipeline_optimizer'
+
+  // REFLEX Module (4)
+  | 'edge_dispatch_coordinator'
+  | 'realtime_decision_engine'
+  | 'latency_critical_router'
+  | 'distributed_sync_orchestrator';
 
 export type ModuleLayer = 'Kernel' | 'Cognitive' | 'Operational' | 'Admin' | 'Orchestrator' | 'infrastructure';
 
@@ -1159,10 +1229,341 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     riskLevel: 'low',
     executionMode: 'sync',
   },
-};
 
-// ============================================================================
-// CAPABILITY ENGINE
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EXPANSION MODULE CAPABILITIES (44) — 11 New Modules × 4 Each
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // SOVEREIGN Module
+  jurisdiction_classifier: {
+    id: 'jurisdiction_classifier', name: 'Jurisdiction Classifier',
+    description: 'Classifies data and operations by legal jurisdiction for compliance routing',
+    modules: ['SOVEREIGN', 'DEFENSE', 'SYSTEM'], layer: 'Operational',
+    userBenefit: 'Automatic regulatory compliance by geography',
+    status: 'active', emergentFrom: 'sovereign-classify-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  regulation_enforcer: {
+    id: 'regulation_enforcer', name: 'Regulation Enforcer',
+    description: 'Enforces regulatory constraints on data processing pipelines in real-time',
+    modules: ['SOVEREIGN', 'ACCESS', 'AUDIT'], layer: 'Operational',
+    userBenefit: 'Zero-touch regulatory compliance',
+    status: 'active', emergentFrom: 'sovereign-enforce-v1', riskLevel: 'medium', executionMode: 'sync',
+  },
+  compliance_attestation_engine: {
+    id: 'compliance_attestation_engine', name: 'Compliance Attestation Engine',
+    description: 'Generates cryptographic compliance attestations for audit trails',
+    modules: ['SOVEREIGN', 'AUDIT', 'IDENTITY'], layer: 'Operational',
+    userBenefit: 'Verifiable compliance proof for regulators',
+    status: 'active', emergentFrom: 'sovereign-attest-v1', riskLevel: 'low', executionMode: 'async',
+  },
+  sovereignty_audit_chain: {
+    id: 'sovereignty_audit_chain', name: 'Sovereignty Audit Chain',
+    description: 'Maintains tamper-evident chain of all sovereignty decisions',
+    modules: ['SOVEREIGN', 'AUDIT', 'MEMORY'], layer: 'Kernel',
+    userBenefit: 'Immutable compliance history',
+    status: 'active', emergentFrom: 'sovereign-audit-v1', riskLevel: 'low', executionMode: 'async',
+  },
+
+  // ORACLE Module
+  predictive_model_calibrator: {
+    id: 'predictive_model_calibrator', name: 'Predictive Model Calibrator',
+    description: 'Continuously calibrates forecasting models against observed outcomes',
+    modules: ['ORACLE', 'BRAIN', 'VISION'], layer: 'Cognitive',
+    userBenefit: 'Increasingly accurate predictions over time',
+    status: 'active', emergentFrom: 'oracle-calibrate-v1', riskLevel: 'low', executionMode: 'async',
+  },
+  scenario_simulation_engine: {
+    id: 'scenario_simulation_engine', name: 'Scenario Simulation Engine',
+    description: 'Runs what-if simulations across multiple variables before decisions',
+    modules: ['ORACLE', 'ECHO', 'CORTEX'], layer: 'Cognitive',
+    userBenefit: 'Test decisions before committing',
+    status: 'active', emergentFrom: 'oracle-simulate-v1', riskLevel: 'medium', executionMode: 'async',
+  },
+  forecast_confidence_scorer: {
+    id: 'forecast_confidence_scorer', name: 'Forecast Confidence Scorer',
+    description: 'Quantifies uncertainty in predictions with calibrated confidence intervals',
+    modules: ['ORACLE', 'VISION', 'BRAIN'], layer: 'Cognitive',
+    userBenefit: 'Know how much to trust each prediction',
+    status: 'active', emergentFrom: 'oracle-confidence-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  trend_extrapolation_advisor: {
+    id: 'trend_extrapolation_advisor', name: 'Trend Extrapolation Advisor',
+    description: 'Extrapolates emerging trends and alerts on inflection points',
+    modules: ['ORACLE', 'ANALYTICS', 'BRAIN'], layer: 'Operational',
+    userBenefit: 'Early warning on market and system shifts',
+    status: 'active', emergentFrom: 'oracle-trend-v1', riskLevel: 'low', executionMode: 'async',
+  },
+
+  // CONSCIENCE Module
+  bias_detection_scanner: {
+    id: 'bias_detection_scanner', name: 'Bias Detection Scanner',
+    description: 'Scans AI outputs and datasets for systematic bias patterns',
+    modules: ['CONSCIENCE', 'BRAIN', 'DECODE'], layer: 'Cognitive',
+    userBenefit: 'Fair and unbiased AI behavior',
+    status: 'active', emergentFrom: 'conscience-bias-v1', riskLevel: 'medium', executionMode: 'async',
+  },
+  fairness_score_calculator: {
+    id: 'fairness_score_calculator', name: 'Fairness Score Calculator',
+    description: 'Computes statistical fairness metrics across protected classes',
+    modules: ['CONSCIENCE', 'ANALYTICS', 'VISION'], layer: 'Operational',
+    userBenefit: 'Quantifiable fairness guarantees',
+    status: 'active', emergentFrom: 'conscience-fairness-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  ethical_impact_assessor: {
+    id: 'ethical_impact_assessor', name: 'Ethical Impact Assessor',
+    description: 'Evaluates potential ethical impact before high-stakes operations execute',
+    modules: ['CONSCIENCE', 'GOVERNANCE', 'CORTEX'], layer: 'Cognitive',
+    userBenefit: 'Prevent harmful actions proactively',
+    status: 'active', emergentFrom: 'conscience-impact-v1', riskLevel: 'high', executionMode: 'sync',
+  },
+  transparency_report_generator: {
+    id: 'transparency_report_generator', name: 'Transparency Report Generator',
+    description: 'Generates human-readable explanations of AI decision-making processes',
+    modules: ['CONSCIENCE', 'DECODE', 'AUDIT'], layer: 'Operational',
+    userBenefit: 'Explainable AI for stakeholders',
+    status: 'active', emergentFrom: 'conscience-transparency-v1', riskLevel: 'low', executionMode: 'async',
+  },
+
+  // PHANTOM Module
+  data_anonymization_engine: {
+    id: 'data_anonymization_engine', name: 'Data Anonymization Engine',
+    description: 'Applies k-anonymity and l-diversity transformations to sensitive datasets',
+    modules: ['PHANTOM', 'SOVEREIGN', 'MEMORY'], layer: 'Operational',
+    userBenefit: 'Privacy-safe data processing',
+    status: 'active', emergentFrom: 'phantom-anonymize-v1', riskLevel: 'medium', executionMode: 'sync',
+  },
+  privacy_minimization_guard: {
+    id: 'privacy_minimization_guard', name: 'Privacy Minimization Guard',
+    description: 'Enforces data minimization principles, stripping unnecessary PII',
+    modules: ['PHANTOM', 'DEFENSE', 'ACCESS'], layer: 'Operational',
+    userBenefit: 'Collect only what you need',
+    status: 'active', emergentFrom: 'phantom-minimize-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  differential_privacy_injector: {
+    id: 'differential_privacy_injector', name: 'Differential Privacy Injector',
+    description: 'Adds calibrated noise to query results for differential privacy guarantees',
+    modules: ['PHANTOM', 'BRAIN', 'ANALYTICS'], layer: 'Cognitive',
+    userBenefit: 'Mathematical privacy guarantees',
+    status: 'active', emergentFrom: 'phantom-dp-v1', riskLevel: 'medium', executionMode: 'sync',
+  },
+  consent_audit_tracker: {
+    id: 'consent_audit_tracker', name: 'Consent Audit Tracker',
+    description: 'Tracks and enforces user consent across all data processing operations',
+    modules: ['PHANTOM', 'AUDIT', 'IDENTITY'], layer: 'Operational',
+    userBenefit: 'Full consent lifecycle management',
+    status: 'active', emergentFrom: 'phantom-consent-v1', riskLevel: 'low', executionMode: 'async',
+  },
+
+  // FORGE Module
+  artifact_recombination_engine: {
+    id: 'artifact_recombination_engine', name: 'Artifact Recombination Engine',
+    description: 'Recombines existing artifacts into novel composite solutions',
+    modules: ['FORGE', 'BRAIN', 'DREAM'], layer: 'Cognitive',
+    userBenefit: 'Novel solutions from existing building blocks',
+    status: 'active', emergentFrom: 'forge-recombine-v1', riskLevel: 'medium', executionMode: 'async',
+  },
+  synthesis_validation_pipeline: {
+    id: 'synthesis_validation_pipeline', name: 'Synthesis Validation Pipeline',
+    description: 'Multi-stage validation of synthesized artifacts before promotion',
+    modules: ['FORGE', 'ENCODE', 'VISION'], layer: 'Operational',
+    userBenefit: 'Quality-assured synthetic outputs',
+    status: 'active', emergentFrom: 'forge-validate-v1', riskLevel: 'low', executionMode: 'async',
+  },
+  creative_mutation_generator: {
+    id: 'creative_mutation_generator', name: 'Creative Mutation Generator',
+    description: 'Applies controlled mutations to artifacts to explore solution space',
+    modules: ['FORGE', 'DREAM', 'EVOLUTION'], layer: 'Cognitive',
+    userBenefit: 'Discover unexpected innovations',
+    status: 'active', emergentFrom: 'forge-mutate-v1', riskLevel: 'medium', executionMode: 'async',
+  },
+  deployment_readiness_scorer: {
+    id: 'deployment_readiness_scorer', name: 'Deployment Readiness Scorer',
+    description: 'Scores synthesized artifacts for production readiness across quality dimensions',
+    modules: ['FORGE', 'VISION', 'SYSTEM'], layer: 'Operational',
+    userBenefit: 'Confidence before shipping',
+    status: 'active', emergentFrom: 'forge-readiness-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+
+  // LINGUA Module
+  realtime_translation_engine: {
+    id: 'realtime_translation_engine', name: 'Realtime Translation Engine',
+    description: 'Translates content across languages while preserving technical semantics',
+    modules: ['LINGUA', 'NEXUS', 'DECODE'], layer: 'Operational',
+    userBenefit: 'Instant multilingual support',
+    status: 'active', emergentFrom: 'lingua-translate-v1', riskLevel: 'low', executionMode: 'streaming',
+  },
+  language_detection_classifier: {
+    id: 'language_detection_classifier', name: 'Language Detection Classifier',
+    description: 'Identifies input language and script with high accuracy',
+    modules: ['LINGUA', 'DECODE', 'BRAIN'], layer: 'Operational',
+    userBenefit: 'Automatic language adaptation',
+    status: 'active', emergentFrom: 'lingua-detect-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  glossary_consistency_guard: {
+    id: 'glossary_consistency_guard', name: 'Glossary Consistency Guard',
+    description: 'Ensures terminology consistency across translations using domain glossaries',
+    modules: ['LINGUA', 'MEMORY', 'ENCODE'], layer: 'Operational',
+    userBenefit: 'Consistent technical terminology',
+    status: 'active', emergentFrom: 'lingua-glossary-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  localization_coverage_tracker: {
+    id: 'localization_coverage_tracker', name: 'Localization Coverage Tracker',
+    description: 'Tracks translation coverage gaps and prioritizes untranslated content',
+    modules: ['LINGUA', 'ANALYTICS', 'VISION'], layer: 'Operational',
+    userBenefit: 'Complete multilingual coverage',
+    status: 'active', emergentFrom: 'lingua-coverage-v1', riskLevel: 'low', executionMode: 'async',
+  },
+
+  // COMPASS Module
+  geofence_policy_enforcer: {
+    id: 'geofence_policy_enforcer', name: 'Geofence Policy Enforcer',
+    description: 'Enforces data residency and processing location policies',
+    modules: ['COMPASS', 'SOVEREIGN', 'DEFENSE'], layer: 'Operational',
+    userBenefit: 'Data stays where regulations require',
+    status: 'active', emergentFrom: 'compass-fence-v1', riskLevel: 'medium', executionMode: 'sync',
+  },
+  risk_geography_mapper: {
+    id: 'risk_geography_mapper', name: 'Risk Geography Mapper',
+    description: 'Maps risk profiles across geographic regions for threat assessment',
+    modules: ['COMPASS', 'DEFENSE', 'VISION'], layer: 'Operational',
+    userBenefit: 'Geographic threat intelligence',
+    status: 'active', emergentFrom: 'compass-risk-v1', riskLevel: 'low', executionMode: 'async',
+  },
+  latency_aware_region_router: {
+    id: 'latency_aware_region_router', name: 'Latency-Aware Region Router',
+    description: 'Routes requests to optimal geographic endpoints for minimum latency',
+    modules: ['COMPASS', 'NEXUS', 'CORE'], layer: 'Kernel',
+    userBenefit: 'Fastest possible response times globally',
+    status: 'active', emergentFrom: 'compass-route-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  spatial_anomaly_detector: {
+    id: 'spatial_anomaly_detector', name: 'Spatial Anomaly Detector',
+    description: 'Detects unusual geographic patterns in access and data flows',
+    modules: ['COMPASS', 'VISION', 'DEFENSE'], layer: 'Operational',
+    userBenefit: 'Catch location-based attacks',
+    status: 'active', emergentFrom: 'compass-anomaly-v1', riskLevel: 'medium', executionMode: 'async',
+  },
+
+  // ECHO Module
+  digital_twin_synchronizer: {
+    id: 'digital_twin_synchronizer', name: 'Digital Twin Synchronizer',
+    description: 'Keeps digital twins synchronized with their real-world counterparts',
+    modules: ['ECHO', 'RELAY', 'MEMORY'], layer: 'Operational',
+    userBenefit: 'Always-current digital representations',
+    status: 'active', emergentFrom: 'echo-sync-v1', riskLevel: 'low', executionMode: 'streaming',
+  },
+  simulation_drift_detector: {
+    id: 'simulation_drift_detector', name: 'Simulation Drift Detector',
+    description: 'Detects when simulation models diverge from observed reality',
+    modules: ['ECHO', 'VISION', 'ORACLE'], layer: 'Cognitive',
+    userBenefit: 'Trustworthy simulations',
+    status: 'active', emergentFrom: 'echo-drift-v1', riskLevel: 'medium', executionMode: 'async',
+  },
+  state_diff_reconciler: {
+    id: 'state_diff_reconciler', name: 'State Diff Reconciler',
+    description: 'Reconciles state differences between twin instances',
+    modules: ['ECHO', 'MEMORY', 'CORE'], layer: 'Kernel',
+    userBenefit: 'Consistent state across replicas',
+    status: 'active', emergentFrom: 'echo-diff-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  twin_health_monitor: {
+    id: 'twin_health_monitor', name: 'Twin Health Monitor',
+    description: 'Monitors health and fidelity of all active digital twins',
+    modules: ['ECHO', 'VISION', 'SYSTEM'], layer: 'Operational',
+    userBenefit: 'Reliable digital twin operations',
+    status: 'active', emergentFrom: 'echo-health-v1', riskLevel: 'low', executionMode: 'async',
+  },
+
+  // TREATY Module
+  contract_negotiation_engine: {
+    id: 'contract_negotiation_engine', name: 'Contract Negotiation Engine',
+    description: 'Facilitates machine-to-machine contract negotiation with optimized terms',
+    modules: ['TREATY', 'ECONOMY', 'CORTEX'], layer: 'Operational',
+    userBenefit: 'Automated fair agreements',
+    status: 'active', emergentFrom: 'treaty-negotiate-v1', riskLevel: 'high', executionMode: 'async',
+  },
+  sla_enforcement_monitor: {
+    id: 'sla_enforcement_monitor', name: 'SLA Enforcement Monitor',
+    description: 'Continuously monitors SLA compliance and triggers escalations',
+    modules: ['TREATY', 'VISION', 'RELAY'], layer: 'Operational',
+    userBenefit: 'Guaranteed service levels',
+    status: 'active', emergentFrom: 'treaty-sla-v1', riskLevel: 'medium', executionMode: 'streaming',
+  },
+  breach_detection_alerter: {
+    id: 'breach_detection_alerter', name: 'Breach Detection Alerter',
+    description: 'Detects contract breaches and triggers automated remediation',
+    modules: ['TREATY', 'DEFENSE', 'AUDIT'], layer: 'Operational',
+    userBenefit: 'Instant breach awareness',
+    status: 'active', emergentFrom: 'treaty-breach-v1', riskLevel: 'high', executionMode: 'sync',
+  },
+  agreement_lifecycle_tracker: {
+    id: 'agreement_lifecycle_tracker', name: 'Agreement Lifecycle Tracker',
+    description: 'Tracks agreements from proposal through enforcement to expiry',
+    modules: ['TREATY', 'AUDIT', 'MEMORY'], layer: 'Operational',
+    userBenefit: 'Full contract visibility',
+    status: 'active', emergentFrom: 'treaty-lifecycle-v1', riskLevel: 'low', executionMode: 'async',
+  },
+
+  // HARVEST Module
+  source_discovery_crawler: {
+    id: 'source_discovery_crawler', name: 'Source Discovery Crawler',
+    description: 'Discovers and evaluates new data sources across networks',
+    modules: ['HARVEST', 'NEXUS', 'BRAIN'], layer: 'Operational',
+    userBenefit: 'Continuously expanding data coverage',
+    status: 'active', emergentFrom: 'harvest-discover-v1', riskLevel: 'medium', executionMode: 'async',
+  },
+  data_quality_scorer: {
+    id: 'data_quality_scorer', name: 'Data Quality Scorer',
+    description: 'Scores ingested data across completeness, accuracy, and freshness dimensions',
+    modules: ['HARVEST', 'VISION', 'ANALYTICS'], layer: 'Operational',
+    userBenefit: 'Only high-quality data enters the system',
+    status: 'active', emergentFrom: 'harvest-quality-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  deduplication_engine: {
+    id: 'deduplication_engine', name: 'Deduplication Engine',
+    description: 'Removes duplicate records using fuzzy matching and content hashing',
+    modules: ['HARVEST', 'BRAIN', 'MEMORY'], layer: 'Operational',
+    userBenefit: 'Clean, duplicate-free datasets',
+    status: 'active', emergentFrom: 'harvest-dedup-v1', riskLevel: 'low', executionMode: 'async',
+  },
+  ingestion_pipeline_optimizer: {
+    id: 'ingestion_pipeline_optimizer', name: 'Ingestion Pipeline Optimizer',
+    description: 'Optimizes data ingestion throughput and scheduling across sources',
+    modules: ['HARVEST', 'CORE', 'SYSTEM'], layer: 'Kernel',
+    userBenefit: 'Maximum data throughput',
+    status: 'active', emergentFrom: 'harvest-optimize-v1', riskLevel: 'low', executionMode: 'async',
+  },
+
+  // REFLEX Module
+  edge_dispatch_coordinator: {
+    id: 'edge_dispatch_coordinator', name: 'Edge Dispatch Coordinator',
+    description: 'Coordinates task dispatch across distributed edge nodes',
+    modules: ['REFLEX', 'RELAY', 'CORE'], layer: 'Kernel',
+    userBenefit: 'Distributed processing at the edge',
+    status: 'active', emergentFrom: 'reflex-dispatch-v1', riskLevel: 'medium', executionMode: 'sync',
+  },
+  realtime_decision_engine: {
+    id: 'realtime_decision_engine', name: 'Realtime Decision Engine',
+    description: 'Makes sub-millisecond decisions at the edge without round-trips',
+    modules: ['REFLEX', 'BRAIN', 'ORACLE'], layer: 'Kernel',
+    userBenefit: 'Instant edge intelligence',
+    status: 'active', emergentFrom: 'reflex-decide-v1', riskLevel: 'medium', executionMode: 'sync',
+  },
+  latency_critical_router: {
+    id: 'latency_critical_router', name: 'Latency-Critical Router',
+    description: 'Routes latency-sensitive operations to nearest capable node',
+    modules: ['REFLEX', 'COMPASS', 'NEXUS'], layer: 'Kernel',
+    userBenefit: 'Ultra-low-latency for critical operations',
+    status: 'active', emergentFrom: 'reflex-route-v1', riskLevel: 'low', executionMode: 'sync',
+  },
+  distributed_sync_orchestrator: {
+    id: 'distributed_sync_orchestrator', name: 'Distributed Sync Orchestrator',
+    description: 'Orchestrates state synchronization across edge nodes with conflict resolution',
+    modules: ['REFLEX', 'ECHO', 'MEMORY'], layer: 'Kernel',
+    userBenefit: 'Consistent distributed state',
+    status: 'active', emergentFrom: 'reflex-sync-v1', riskLevel: 'medium', executionMode: 'streaming',
+  },
+};
 // ============================================================================
 
 class CapabilityEngine {

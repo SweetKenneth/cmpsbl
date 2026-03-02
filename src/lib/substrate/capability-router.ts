@@ -77,3 +77,16 @@ registerCapability('vision', 'anomaly_detection', 90);
 registerCapability('defense', 'threat_analysis', 90);
 registerCapability('decode', 'narration', 90);
 registerCapability('memory', 'persistence', 90);
+
+// Expansion modules (37-node architecture)
+registerCapability('sovereign', 'compliance_enforcement', 90);
+registerCapability('oracle', 'predictive_modeling', 90);
+registerCapability('conscience', 'ethics_assessment', 85);
+registerCapability('phantom', 'privacy_protection', 90);
+registerCapability('forge', 'artifact_synthesis', 85);
+registerCapability('lingua', 'translation', 85);
+registerCapability('compass', 'geospatial_analysis', 80);
+registerCapability('echo', 'digital_twin_simulation', 85);
+registerCapability('treaty', 'contract_negotiation', 80);
+registerCapability('harvest', 'data_acquisition', 85);
+registerCapability('reflex', 'edge_orchestration', 90);
