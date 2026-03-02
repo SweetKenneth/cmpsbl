@@ -5159,6 +5159,8 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         registerSynergyHandlers();
         const { registerHardeningHandlers } = await import('@/lib/terminal/hardening-handlers');
         registerHardeningHandlers();
+        const { registerExpansionHandlers } = await import('@/lib/terminal/expansion-handlers');
+        registerExpansionHandlers();
         const { getHandler } = await import('@/lib/terminal/validate-registry');
         const handler = getHandler(base);
         

@@ -22,6 +22,11 @@ export const BOOT_SEQUENCE: WarmUpStage[] = [
   { stage: 3, modules: ['brain', 'vision', 'economy'], label: 'Intelligence' },
   { stage: 4, modules: ['decode', 'encode', 'cortex'], label: 'Cognitive' },
   { stage: 5, modules: ['integration', 'dream'], label: 'Extended' },
+  // Expansion Modules (37-Node Architecture)
+  { stage: 6, modules: ['sovereign', 'conscience', 'phantom'], label: 'Governance & Privacy' },
+  { stage: 7, modules: ['oracle', 'compass', 'echo'], label: 'Predictive & Simulation' },
+  { stage: 8, modules: ['forge', 'lingua', 'harvest'], label: 'Manufacturing & Data' },
+  { stage: 9, modules: ['treaty', 'reflex'], label: 'Compliance & Edge' },
 ];
 
 export interface WarmUpResult {
