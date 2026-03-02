@@ -464,3 +464,17 @@ export function getHardenedModules(): string[] {
 export function initGlobalAutoRecovery(intervalMs: number = 30_000): void {
   startAutoRecovery(intervalMs);
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// Original Modules Retrofit — Re-exports
+// ═══════════════════════════════════════════════════════════════════
+
+export {
+  retrofitOriginalModules,
+  getOriginalModuleHardening,
+  isRetrofitComplete,
+  getModuleProfile,
+  getAllModuleProfiles,
+  getRetrofitSummary,
+  teardownRetrofit,
+} from './original-modules-retrofit';
