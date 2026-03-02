@@ -680,9 +680,76 @@ export default function STierVault() {
     discoveries: typeof promoted, languages: ExportTarget[], filename: string, label: string
   ) => {
     if (discoveries.length === 0) return;
-    const JSZip = (await import('jszip')).default;
+    const [JSZipMod, runtimeMod, engineMod] = await Promise.all([
+      import('jszip'),
+      import('@/lib/export/standalone-runtime?raw'),
+      import('@/lib/export/standalone-discovery-engine?raw'),
+    ]);
+    const JSZip = JSZipMod.default;
     const zip = new JSZip();
     const root = zip.folder(filename.replace('.zip', ''))!;
+
+    // Include the standalone discovery runtime + engine so the ZIP is fully self-contained
+    const coreFolder = root.folder('_discovery-engine')!;
+    coreFolder.file('standalone-runtime.ts', (runtimeMod as any).default);
+    coreFolder.file('standalone-discovery-engine.ts', (engineMod as any).default);
+    coreFolder.file('README.md', [
+      '# CMPSBL® Standalone Discovery Engine',
+      '',
+      'This directory contains the fully portable discovery reactor.',
+      'It requires **zero external dependencies** — no substrate, no database, no infrastructure.',
+      '',
+      '## Quick Start',
+      '',
+      '```typescript',
+      "import { createRuntime } from './standalone-runtime';",
+      "import { createDiscoveryEngine } from './standalone-discovery-engine';",
+      '',
+      'const runtime = createRuntime();',
+      'const engine = createDiscoveryEngine(runtime);',
+      'const result = await engine.run({ dryRun: false, topN: 50 });',
+      '',
+      'console.log(`Found ${result.acceptedCount} discoveries`);',
+      'for (const d of result.discoveries) {',
+      '  console.log(`  ${d.name} — CJPI: ${d.cjpi} — Tier: ${d.tier}`);',
+      '}',
+      '```',
+      '',
+      '## Included Primitives',
+      '',
+      '- **CJPI Scoring Engine** — 6-axis weighted evaluation (0–100)',
+      '- **Auto-Tiering** — Creator / Architect / Enterprise / Apex',
+      '- **State Machine** — Guards, effects, entry/exit hooks, history',
+      '- **Dependency Graph** — Topological sort + cycle detection',
+      '- **Pipeline Composer** — Stage registry + schema validation',
+      '- **Saga Orchestrator** — Compensating transactions',
+      '- **Pluggable Storage** — In-memory default, swap to any DB',
+      '- **Concurrency Lock** — Prevents parallel reactor runs',
+      '- **37 Canonical Modules** — Full CMPSBL® node matrix',
+      '- **37 Built-in Templates** — High-value pipeline patterns',
+      '',
+      '## Custom Storage Adapter',
+      '',
+      'Replace the in-memory storage with any database:',
+      '',
+      '```typescript',
+      "import { createRuntime, type StorageAdapter } from './standalone-runtime';",
+      '',
+      'const pgStorage: StorageAdapter = {',
+      '  async get(collection, id) { /* your DB query */ },',
+      '  async list(collection, filter) { /* your DB query */ },',
+      '  async put(collection, item) { /* your DB insert */ },',
+      '  async putMany(collection, items) { /* your DB batch insert */ },',
+      '  async delete(collection, id) { /* your DB delete */ },',
+      '  async count(collection) { /* your DB count */ },',
+      '};',
+      '',
+      'const runtime = createRuntime(pgStorage);',
+      '```',
+      '',
+      '© CMPSBL® — All rights reserved.',
+    ].join('\n'));
+
     for (const d of discoveries) {
       const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
       const synthCtx = contextFromDiscovery(d);
@@ -697,7 +764,7 @@ export default function STierVault() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
     URL.revokeObjectURL(url);
-    toast.success(`Exported ${discoveries.length} discoveries — ${label}`);
+    toast.success(`Exported ${discoveries.length} discoveries + standalone discovery engine — ${label}`);
   };
 
   const handleExportSoftware = () => {
