@@ -56,7 +56,7 @@ function AgentCard({ agent, index, expanded, onToggle }: {
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">PRO</span>
             )}
           </div>
-          <p className="text-[10px] sm:text-[11px] text-muted-foreground/60 font-mono mt-0.5 truncate">{agent.subtitle}</p>
+          <p className="text-[10px] sm:text-[11px] text-muted-foreground/60 font-mono mt-0.5 break-words">{agent.subtitle}</p>
         </div>
 
         <ChevronDown className={cn(
