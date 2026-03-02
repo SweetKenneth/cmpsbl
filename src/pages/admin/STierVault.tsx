@@ -22,6 +22,7 @@ import {
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
 } from "@/lib/export/universal-adapter";
+import { contextFromDiscovery } from "@/lib/export/logic-synthesizer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
