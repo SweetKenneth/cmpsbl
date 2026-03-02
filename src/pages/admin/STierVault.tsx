@@ -405,7 +405,7 @@ function PromotedCard({
 function ExportDialog({
   entry, sourceCode, onClose,
 }: {
-  entry: { id: string; name: string; rank: number; cjpi: number; module: string; description: string };
+  entry: { id: string; name: string; rank: number; cjpi: number; module: string; description: string; synthesisContext?: SynthesisContext };
   sourceCode: string; onClose: () => void;
 }) {
   const [selectedLang, setSelectedLang] = useState<ExportLanguage>('typescript');
@@ -413,10 +413,10 @@ function ExportDialog({
   const [previewCode, setPreviewCode] = useState<string>('');
 
   // Build synthesis context for full code generation
-  const synthCtx: SynthesisContext = {
+  const synthCtx: SynthesisContext = entry.synthesisContext || {
     name: entry.name,
     description: entry.description,
-    category: (entry as any).category || entry.module.toLowerCase(),
+    category: entry.module.toLowerCase(),
     moduleChain: [entry.module],
     entryCapability: 'input',
     exitCapability: 'output',
