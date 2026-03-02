@@ -2,7 +2,7 @@
  * Admin → Discovery Mining Console
  * Mobile-first, no truncation, full audit trail.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useDiscoveryReactor } from '@/hooks/admin/useDiscoveryReactor';
 import { Button } from '@/components/ui/button';
@@ -12,10 +12,15 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
+import { toast } from 'sonner';
 import {
   Zap, Play, History, FlaskConical, Target, TrendingUp,
   Shield, Brain, Cpu, Eye, Scale, GitBranch, Loader2,
-  Download, Star, ChevronDown, ChevronUp,
+  Download, Star, ChevronDown, ChevronUp, Plus, Copy, Check,
 } from 'lucide-react';
 import type { ReactorRunResult, ReactorCandidate } from '@/lib/discovery/reactor';
 
@@ -256,6 +261,277 @@ function RunHistoryList({ runs, loading }: { runs: any[]; loading: boolean }) {
   );
 }
 
+// ─── Template Composer ──────────────────────────────────────────────
+
+const AVAILABLE_MODULES = [
+  'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
+  'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
+  'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',
+  'MODERNIZER', 'MEDIC', 'RIPPLE', 'AUDIT', 'IDENTITY',
+];
+
+const AVAILABLE_CATEGORIES = [
+  'cognitive', 'evolution', 'security', 'routing', 'learning',
+  'orchestration', 'integration', 'observability', 'governance',
+];
+
+const ERROR_STRATEGIES_LIST = ['retry', 'skip', 'abort', 'rollback', 'fallback'];
+
+interface TemplateFormState {
+  namePattern: string;
+  descriptionPattern: string;
+  category: string;
+  modulePattern: string[];
+  entryPattern: string;
+  exitPattern: string;
+  errorStrategy: string;
+  maxExecutionMs: number;
+  strategicLeverage: number;
+  recursionPotential: number;
+  crossNodeImpact: number;
+  composability: number;
+  governanceInfluence: number;
+  moatSensitivity: number;
+  rationale: string;
+}
+
+const DEFAULT_FORM: TemplateFormState = {
+  namePattern: '',
+  descriptionPattern: '',
+  category: 'cognitive',
+  modulePattern: [],
+  entryPattern: '',
+  exitPattern: '',
+  errorStrategy: 'fallback',
+  maxExecutionMs: 5000,
+  strategicLeverage: 85,
+  recursionPotential: 80,
+  crossNodeImpact: 80,
+  composability: 80,
+  governanceInfluence: 65,
+  moatSensitivity: 85,
+  rationale: '',
+};
+
+function computePreviewCJPI(form: TemplateFormState): number {
+  const b = {
+    strategicLeverage: form.strategicLeverage,
+    recursionPotential: form.recursionPotential,
+    crossNodeImpact: form.crossNodeImpact,
+    composability: form.composability,
+    governanceInfluence: form.governanceInfluence,
+    moatSensitivity: form.moatSensitivity,
+  };
+  const raw = b.strategicLeverage * 0.30 + b.recursionPotential * 0.20 +
+    b.crossNodeImpact * 0.15 + b.composability * 0.15 +
+    b.governanceInfluence * 0.10 + b.moatSensitivity * 0.10;
+  const unique = new Set(form.modulePattern).size;
+  const mult = unique >= 4 ? 1.15 : unique >= 3 ? 1.08 : 1.0;
+  return Math.round(Math.min(100, raw * mult) * 10) / 10;
+}
+
+function generateTemplateCode(form: TemplateFormState): string {
+  return `  { namePattern: '${form.namePattern}', descriptionPattern: '${form.descriptionPattern.replace(/'/g, "\\'")}', category: '${form.category}', modulePattern: [${form.modulePattern.map(m => `'${m}'`).join(', ')}], entryPattern: '${form.entryPattern}', exitPattern: '${form.exitPattern}', errorStrategy: '${form.errorStrategy}', maxExecutionMs: ${form.maxExecutionMs}, baseBreakdown: { strategicLeverage: ${form.strategicLeverage}, recursionPotential: ${form.recursionPotential}, crossNodeImpact: ${form.crossNodeImpact}, composability: ${form.composability}, governanceInfluence: ${form.governanceInfluence}, moatSensitivity: ${form.moatSensitivity} }, discoveredBy: 'reactor', rationale: '${form.rationale.replace(/'/g, "\\'")}' },`;
+}
+
+function TemplateComposer() {
+  const [form, setForm] = useState<TemplateFormState>({ ...DEFAULT_FORM });
+  const [copied, setCopied] = useState(false);
+
+  const update = useCallback(<K extends keyof TemplateFormState>(key: K, val: TemplateFormState[K]) => {
+    setForm(prev => ({ ...prev, [key]: val }));
+  }, []);
+
+  const toggleModule = (mod: string) => {
+    setForm(prev => ({
+      ...prev,
+      modulePattern: prev.modulePattern.includes(mod)
+        ? prev.modulePattern.filter(m => m !== mod)
+        : [...prev.modulePattern, mod],
+    }));
+  };
+
+  const previewCjpi = computePreviewCJPI(form);
+  const code = generateTemplateCode(form);
+  const isValid = form.namePattern && form.descriptionPattern && form.modulePattern.length >= 2 && form.entryPattern && form.exitPattern && form.rationale;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    toast.success('Template code copied! Paste it into SYNTHESIS_TEMPLATES in reactor.ts');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleReset = () => {
+    setForm({ ...DEFAULT_FORM });
+    toast.info('Form reset');
+  };
+
+  const ScoreSlider = ({ label, field, value }: { label: string; field: keyof TemplateFormState; value: number }) => (
+    <div className="space-y-1">
+      <div className="flex justify-between text-xs">
+        <span className="text-muted-foreground">{label}</span>
+        <span className="font-mono font-bold text-foreground">{value}</span>
+      </div>
+      <Slider
+        value={[value]}
+        min={0} max={100} step={1}
+        onValueChange={([v]) => update(field, v as any)}
+        className="w-full"
+      />
+    </div>
+  );
+
+  return (
+    <div className="space-y-4">
+      {/* Identity */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Plus className="w-4 h-4 text-primary" /> Template Identity
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div>
+            <Label className="text-xs">Pipeline Name</Label>
+            <Input placeholder="e.g. Recursive Thought Evaluator" value={form.namePattern} onChange={e => update('namePattern', e.target.value)} />
+          </div>
+          <div>
+            <Label className="text-xs">Description</Label>
+            <Textarea placeholder="What this pipeline does..." value={form.descriptionPattern} onChange={e => update('descriptionPattern', e.target.value)} rows={2} />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label className="text-xs">Category</Label>
+              <Select value={form.category} onValueChange={v => update('category', v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {AVAILABLE_CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-xs">Error Strategy</Label>
+              <Select value={form.errorStrategy} onValueChange={v => update('errorStrategy', v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {ERROR_STRATEGIES_LIST.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Module Chain */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Module Chain</CardTitle>
+          <CardDescription className="text-xs">Select 2–5 modules (order matters)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-1.5">
+            {AVAILABLE_MODULES.map(mod => (
+              <Badge
+                key={mod}
+                variant={form.modulePattern.includes(mod) ? 'default' : 'outline'}
+                className="cursor-pointer text-xs select-none"
+                onClick={() => toggleModule(mod)}
+              >
+                {mod}
+              </Badge>
+            ))}
+          </div>
+          {form.modulePattern.length > 0 && (
+            <div className="mt-2 text-xs text-muted-foreground">
+              Chain: {form.modulePattern.join(' → ')}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Capabilities */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Capabilities</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label className="text-xs">Entry Capability</Label>
+              <Input placeholder="e.g. thought-evaluator" value={form.entryPattern} onChange={e => update('entryPattern', e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs">Exit Capability</Label>
+              <Input placeholder="e.g. evaluation-complete" value={form.exitPattern} onChange={e => update('exitPattern', e.target.value)} />
+            </div>
+          </div>
+          <div>
+            <Label className="text-xs">Max Execution (ms)</Label>
+            <Input type="number" value={form.maxExecutionMs} onChange={e => update('maxExecutionMs', parseInt(e.target.value) || 0)} />
+          </div>
+          <div>
+            <Label className="text-xs">Rationale</Label>
+            <Textarea placeholder="Why this pipeline is strategically valuable..." value={form.rationale} onChange={e => update('rationale', e.target.value)} rows={2} />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* CJPI Scoring */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            CJPI Scoring
+            <span className={`font-mono text-lg ${previewCjpi >= 90 ? 'text-red-400' : previewCjpi >= 80 ? 'text-blue-400' : 'text-amber-400'}`}>
+              {previewCjpi}
+            </span>
+          </CardTitle>
+          <CardDescription className="text-xs">
+            {previewCjpi >= 90 ? '🔥 S-Tier — Auto-promotes to vault' : previewCjpi >= 80 ? '✅ Accepted — Meets threshold' : '⚠️ Below 80 — Will be filtered out'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <ScoreSlider label="Strategic Leverage (30%)" field="strategicLeverage" value={form.strategicLeverage} />
+          <ScoreSlider label="Recursion Potential (20%)" field="recursionPotential" value={form.recursionPotential} />
+          <ScoreSlider label="Cross-Node Impact (15%)" field="crossNodeImpact" value={form.crossNodeImpact} />
+          <ScoreSlider label="Composability (15%)" field="composability" value={form.composability} />
+          <ScoreSlider label="Governance Influence (10%)" field="governanceInfluence" value={form.governanceInfluence} />
+          <ScoreSlider label="Moat Sensitivity (10%)" field="moatSensitivity" value={form.moatSensitivity} />
+        </CardContent>
+      </Card>
+
+      {/* Generated Code Output */}
+      <Card className={isValid ? 'border-primary/30' : 'border-destructive/30'}>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Generated Template Code</CardTitle>
+          <CardDescription className="text-xs">
+            Copy and paste into <code className="font-mono text-primary">SYNTHESIS_TEMPLATES</code> in <code className="font-mono text-primary">reactor.ts</code>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="h-32 rounded-lg border bg-muted/50 p-3">
+            <pre className="text-[10px] sm:text-xs font-mono text-foreground whitespace-pre-wrap break-all">{code}</pre>
+          </ScrollArea>
+          <div className="flex gap-2 mt-3">
+            <Button onClick={handleCopy} disabled={!isValid} className="gap-1.5 flex-1 sm:flex-none">
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copied ? 'Copied!' : 'Copy Code'}
+            </Button>
+            <Button variant="outline" onClick={handleReset} className="flex-1 sm:flex-none">
+              Reset
+            </Button>
+          </div>
+          {!isValid && (
+            <p className="text-xs text-destructive mt-2">
+              Fill in all required fields: name, description, 2+ modules, entry/exit capabilities, and rationale.
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 // ─── Main Console ──────────────────────────────────────────────────
 
 export default function DiscoveryMiningConsole() {
@@ -319,6 +595,7 @@ export default function DiscoveryMiningConsole() {
         <Tabs defaultValue="results" className="w-full">
           <TabsList className="w-full sm:w-auto">
             <TabsTrigger value="results" className="gap-1 flex-1 sm:flex-none"><Target className="w-4 h-4" /> Results</TabsTrigger>
+            <TabsTrigger value="templates" className="gap-1 flex-1 sm:flex-none"><Plus className="w-4 h-4" /> Templates</TabsTrigger>
             <TabsTrigger value="history" className="gap-1 flex-1 sm:flex-none"><History className="w-4 h-4" /> History</TabsTrigger>
           </TabsList>
 
@@ -360,6 +637,10 @@ export default function DiscoveryMiningConsole() {
                 </CardContent>
               </Card>
             )}
+          </TabsContent>
+
+          <TabsContent value="templates" className="space-y-4">
+            <TemplateComposer />
           </TabsContent>
 
           <TabsContent value="history" className="space-y-4">
