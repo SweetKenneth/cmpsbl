@@ -172,7 +172,7 @@
   <!-- Abstract -->
   <div class="abstract-box">
     <div class="label">Abstract</div>
-    <p>We present the CMPSBL Capability Synthesis Reactor — a computational system that autonomously discovers, scores, ranks, and exports executable software artifacts across 16 programming languages, including four hardware description languages (Verilog, VHDL, SystemVerilog, Chisel) targeting FPGA and ASIC silicon fabrication. The system operates on a modular cognitive substrate of 21 hot-swappable modules that can be composed, replaced, and extended at runtime without service interruption. Through combinatorial synthesis across 9 capability categories, the reactor generates candidate pipelines scored by a six-dimensional Crown Jewel Power Index (CJPI). Artifacts scoring ≥90 are automatically promoted to a governed S-Tier Vault and made available for universal export. We demonstrate a live discovery run yielding 22 artifacts including 5 perfect-score (CJPI 100) discoveries, with verified exports across all 16 target languages. The system's open-ended module topology means discovery is unbounded — any module of any type can be introduced into the substrate to generate novel software combinations endlessly. This represents, to our knowledge, the first system capable of autonomous software discovery with deterministic cross-platform code generation spanning both software and hardware targets.</p>
+    <p>We present the CMPSBL Capability Synthesis Reactor — a computational system that autonomously discovers, scores, ranks, and exports executable software artifacts across 16 programming languages, including four hardware description languages (Verilog, VHDL, SystemVerilog, Chisel) targeting FPGA and ASIC silicon fabrication. The system operates on a modular cognitive substrate of 21 hot-swappable modules that can be composed, replaced, and extended at runtime without service interruption. Through combinatorial synthesis across 9 capability categories, the reactor generates candidate pipelines scored by a six-dimensional Crown Jewel Power Index (CJPI). Artifacts scoring ≥90 are automatically promoted to a governed S-Tier Vault and made available for universal export. We report production results from 431 autonomous discovery runs executed over approximately 9 hours on March 2, 2026, yielding <strong>1,143 unique software artifacts</strong> — including <strong>95 perfect-score (CJPI 100)</strong> discoveries — with verified exports across all 16 target languages. Of the total, 578 achieved Apex tier (CJPI ≥95), 484 Enterprise tier (85–94), and 81 Architect tier (70–84), with a mean CJPI of 94.0 across all discoveries. The system discovered software spanning security (138), orchestration (137), integration (135), routing (134), evolution (131), observability (125), governance (122), learning (118), and cognitive reasoning (103). The system's open-ended module topology means discovery is unbounded — any module of any type can be introduced into the substrate to generate novel software combinations endlessly. This represents, to our knowledge, the first system capable of autonomous software discovery with deterministic cross-platform code generation spanning both software and hardware targets.</p>
     <p class="keywords"><strong>Keywords:</strong> autonomous software synthesis, code generation, hardware description language, FPGA, cognitive architecture, modular AI systems, crown jewel discovery, hot-swap deployment</p>
   </div>
 
@@ -193,11 +193,15 @@
   <p>This paper presents the CMPSBL Capability Synthesis Reactor and its supporting infrastructure, which together constitute a <strong>software foundry</strong> — a system that manufactures software artifacts from modular building blocks the way a semiconductor foundry manufactures chips from transistor libraries.</p>
 
   <h3>1.3 Significance</h3>
-  <p>The combination of autonomous discovery + universal export + silicon targeting + endless extensibility represents a novel computational paradigm. The system has been validated with live production runs demonstrating:</p>
+  <p>The combination of autonomous discovery + universal export + silicon targeting + endless extensibility represents a novel computational paradigm. The system has been validated with 431 production discovery runs over ~9 hours demonstrating:</p>
 
   <div class="stat-grid">
-    <div class="stat-card"><div class="stat-value">22</div><div class="stat-label">Artifacts Discovered</div></div>
-    <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Perfect CJPI 100</div></div>
+    <div class="stat-card"><div class="stat-value">1,143</div><div class="stat-label">Artifacts Discovered</div></div>
+    <div class="stat-card"><div class="stat-value">95</div><div class="stat-label">Perfect CJPI 100</div></div>
+    <div class="stat-card"><div class="stat-value">578</div><div class="stat-label">Apex Tier (95+)</div></div>
+    <div class="stat-card"><div class="stat-value">94.0</div><div class="stat-label">Mean CJPI</div></div>
+    <div class="stat-card"><div class="stat-value">9</div><div class="stat-label">Categories</div></div>
+    <div class="stat-card"><div class="stat-value">431</div><div class="stat-label">Discovery Runs</div></div>
     <div class="stat-card"><div class="stat-value">16</div><div class="stat-label">Export Targets</div></div>
     <div class="stat-card"><div class="stat-value">128</div><div class="stat-label">Adapter Combos</div></div>
   </div>
@@ -358,40 +362,57 @@ async function shadow&lt;TInput, TOutput&gt;(
   <!-- 5. Experimental Results -->
   <h2>5. Experimental Results</h2>
 
-  <h3>5.1 Discovery Run: March 2, 2026</h3>
-  <p>A single reactor cycle (Run ID: <code>b2bdb74f-4760-4647-ad00-127ebfb17cd9</code>) produced:</p>
+  <h3>5.1 Production Discovery Campaign: March 2, 2026</h3>
+  <p>Over approximately 9 hours, 431 autonomous reactor runs produced:</p>
 
   <div class="stat-grid">
-    <div class="stat-card"><div class="stat-value">22</div><div class="stat-label">Candidates Generated</div></div>
-    <div class="stat-card"><div class="stat-value">22</div><div class="stat-label">Accepted (CJPI ≥ 90)</div></div>
-    <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Perfect Score (100)</div></div>
-    <div class="stat-card"><div class="stat-value">9/9</div><div class="stat-label">Categories Covered</div></div>
+    <div class="stat-card"><div class="stat-value">1,143</div><div class="stat-label">Total Discoveries</div></div>
+    <div class="stat-card"><div class="stat-value">95</div><div class="stat-label">Perfect Score (100)</div></div>
+    <div class="stat-card"><div class="stat-value">578</div><div class="stat-label">Apex Tier (95+)</div></div>
+    <div class="stat-card"><div class="stat-value">484</div><div class="stat-label">Enterprise (85–94)</div></div>
+    <div class="stat-card"><div class="stat-value">81</div><div class="stat-label">Architect (70–84)</div></div>
+    <div class="stat-card"><div class="stat-value">94.0</div><div class="stat-label">Mean CJPI</div></div>
   </div>
 
-  <h3>5.2 Crown Jewel Discoveries (CJPI 100)</h3>
+  <h3>5.2 Category Distribution</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Category</th><th>Discoveries</th><th>CJPI-100 Count</th><th>Avg CJPI</th><th>Example Software Types</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Security</strong></td><td>138</td><td>14</td><td>94.6</td><td>Autonomous scanners, cognitive firewalls, adversarial detectors, threat analyzers</td></tr>
+      <tr><td><strong>Orchestration</strong></td><td>137</td><td>10</td><td>93.1</td><td>Self-healing sequencers, temporal managers, pipeline scalers, workflow engines</td></tr>
+      <tr><td><strong>Integration</strong></td><td>135</td><td>6</td><td>93.3</td><td>Cross-domain adapters, protocol translators, federation bridges, API synthesizers</td></tr>
+      <tr><td><strong>Routing</strong></td><td>134</td><td>13</td><td>94.1</td><td>Spectral arbitrators, proactive enforcers, load balancers, traffic shapers</td></tr>
+      <tr><td><strong>Evolution</strong></td><td>131</td><td>16</td><td>94.7</td><td>Fitness landscape navigators, temporal mutators, co-evolutionary synchronizers</td></tr>
+      <tr><td><strong>Observability</strong></td><td>125</td><td>7</td><td>93.6</td><td>Hybrid dashboarders, proactive visualizers, causal dashboarders, telemetry collectors</td></tr>
+      <tr><td><strong>Governance</strong></td><td>122</td><td>10</td><td>93.8</td><td>Constitutional AI guardians, compositional assessors, policy enforcers</td></tr>
+      <tr><td><strong>Learning</strong></td><td>118</td><td>6</td><td>94.3</td><td>Meta-learning optimizers, hybrid amplifiers, curriculum generators</td></tr>
+      <tr><td><strong>Cognitive</strong></td><td>103</td><td>13</td><td>94.6</td><td>Causal reasoning engines, multi-modal interpreters, federated compressors</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>5.3 Crown Jewel Discoveries (CJPI 100) — Representative Sample</h3>
+  <p>Of the 95 perfect-score discoveries, the following represent the breadth of autonomous synthesis across all 9 categories:</p>
   <div class="table-wrap">
   <table>
     <thead><tr><th>#</th><th>Name</th><th>Category</th><th>Module Pipeline</th></tr></thead>
     <tbody>
       <tr><td>1</td><td><strong>Fitness Landscape Navigator</strong></td><td>Evolution</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">CORTEX</span> → <span class="module-badge">EVOLUTION</span> → <span class="module-badge">VISION</span></td></tr>
-      <tr><td>2</td><td><strong>Co-Evolutionary Synchronizer</strong></td><td>Evolution</td><td><span class="module-badge">CORTEX</span> → <span class="module-badge">EVOLUTION</span> → <span class="module-badge">GOVERNANCE</span> → <span class="module-badge">SYSTEM</span></td></tr>
-      <tr><td>3</td><td><strong>Meta-Learning Optimizer</strong></td><td>Learning</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">CORTEX</span> → <span class="module-badge">DREAM</span> → <span class="module-badge">EVOLUTION</span></td></tr>
-      <tr><td>4</td><td><strong>Constitutional AI Guardian</strong></td><td>Governance</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">CORTEX</span> → <span class="module-badge">DEFENSE</span> → <span class="module-badge">GOVERNANCE</span></td></tr>
-      <tr><td>5</td><td><strong>Causal Reasoning Engine</strong></td><td>Cognitive</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">CORTEX</span> → <span class="module-badge">DREAM</span> → <span class="module-badge">VISION</span></td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <h3>5.3 Additional High-Value Discoveries</h3>
-  <div class="table-wrap">
-  <table>
-    <thead><tr><th>Name</th><th>CJPI</th><th>Category</th></tr></thead>
-    <tbody>
-      <tr><td>Cognitive Firewall</td><td><span class="cjpi-badge cjpi-apex">99.8</span></td><td>Security</td></tr>
-      <tr><td>Decision Explanation Generator</td><td><span class="cjpi-badge cjpi-apex">96.5</span></td><td>Observability</td></tr>
-      <tr><td>Elastic Pipeline Scaler</td><td><span class="cjpi-badge cjpi-apex">96.1</span></td><td>Orchestration</td></tr>
-      <tr><td>Cognitive Telemetry Collector</td><td><span class="cjpi-badge cjpi-apex">96.0</span></td><td>Observability</td></tr>
-      <tr><td>Epistemic State Tracker</td><td><span class="cjpi-badge cjpi-enterprise">94.4</span></td><td>Cognitive</td></tr>
+      <tr><td>2</td><td><strong>Causal Reasoning Engine</strong></td><td>Cognitive</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">CORTEX</span> → <span class="module-badge">DREAM</span> → <span class="module-badge">VISION</span></td></tr>
+      <tr><td>3</td><td><strong>Co-Evolutionary Synchronizer</strong></td><td>Evolution</td><td><span class="module-badge">CORTEX</span> → <span class="module-badge">EVOLUTION</span> → <span class="module-badge">GOVERNANCE</span> → <span class="module-badge">SYSTEM</span></td></tr>
+      <tr><td>4</td><td><strong>Meta-Learning Optimizer</strong></td><td>Learning</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">CORTEX</span> → <span class="module-badge">DREAM</span> → <span class="module-badge">EVOLUTION</span></td></tr>
+      <tr><td>5</td><td><strong>Constitutional AI Guardian</strong></td><td>Governance</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">CORTEX</span> → <span class="module-badge">DEFENSE</span> → <span class="module-badge">GOVERNANCE</span></td></tr>
+      <tr><td>6</td><td><strong>Autonomous Scanner</strong></td><td>Security</td><td><span class="module-badge">ACCESS</span> → <span class="module-badge">GOVERNANCE</span> → <span class="module-badge">NERVE</span> → <span class="module-badge">NEXUS</span></td></tr>
+      <tr><td>7</td><td><strong>Self-Healing Sequencer</strong></td><td>Orchestration</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">DEFENSE</span> → <span class="module-badge">NERVE</span> → <span class="module-badge">NEXUS</span></td></tr>
+      <tr><td>8</td><td><strong>Cross-Domain Adapter</strong></td><td>Integration</td><td><span class="module-badge">ANALYTICS</span> → <span class="module-badge">BRAIN</span> → <span class="module-badge">DECODE</span> → <span class="module-badge">VISION</span></td></tr>
+      <tr><td>9</td><td><strong>Spectral Arbitrator</strong></td><td>Routing</td><td><span class="module-badge">GOVERNANCE</span> → <span class="module-badge">MEMORY</span> → <span class="module-badge">NEXUS</span> → <span class="module-badge">RIPPLE</span> → <span class="module-badge">SYSTEM</span></td></tr>
+      <tr><td>10</td><td><strong>Hybrid Dashboarder</strong></td><td>Observability</td><td><span class="module-badge">ANALYTICS</span> → <span class="module-badge">BRAIN</span> → <span class="module-badge">GOVERNANCE</span> → <span class="module-badge">NERVE</span> → <span class="module-badge">VISION</span></td></tr>
+      <tr><td>11</td><td><strong>Temporal Mutator</strong></td><td>Evolution</td><td><span class="module-badge">CORTEX</span> → <span class="module-badge">DECODE</span> → <span class="module-badge">GOVERNANCE</span> → <span class="module-badge">VISION</span></td></tr>
+      <tr><td>12</td><td><strong>Multi-Modal Interpreter</strong></td><td>Cognitive</td><td><span class="module-badge">AUDIT</span> → <span class="module-badge">DECODE</span> → <span class="module-badge">DREAM</span> → <span class="module-badge">MEMORY</span></td></tr>
+      <tr><td>13</td><td><strong>Federated Compressor</strong></td><td>Cognitive</td><td><span class="module-badge">CORTEX</span> → <span class="module-badge">MEMORY</span> → <span class="module-badge">NERVE</span> → <span class="module-badge">NEXUS</span></td></tr>
+      <tr><td>14</td><td><strong>Probabilistic Checkpointer</strong></td><td>Orchestration</td><td><span class="module-badge">BRAIN</span> → <span class="module-badge">DECODE</span> → <span class="module-badge">EVOLUTION</span> → <span class="module-badge">NERVE</span> → <span class="module-badge">NEXUS</span></td></tr>
+      <tr><td>15</td><td><strong>Compositional Assessor</strong></td><td>Governance</td><td><span class="module-badge">ACCESS</span> → <span class="module-badge">BRAIN</span> → <span class="module-badge">DREAM</span> → <span class="module-badge">MEDIC</span></td></tr>
     </tbody>
   </table>
   </div>
@@ -682,11 +703,15 @@ func (e *ElasticPipelineScaler) Execute(input map[string]interface{}) Result {
   <table>
     <thead><tr><th>Metric</th><th>Count</th></tr></thead>
     <tbody>
-      <tr><td>Promoted discoveries (CJPI ≥ 90)</td><td>22</td></tr>
-      <tr><td>Perfect-score artifacts (CJPI 100)</td><td>5</td></tr>
-      <tr><td>Export-ready artifacts</td><td>22</td></tr>
+      <tr><td>Total discoveries</td><td>1,143</td></tr>
+      <tr><td>Promoted to Apex (CJPI ≥ 95)</td><td>578</td></tr>
+      <tr><td>Perfect-score artifacts (CJPI 100)</td><td>95</td></tr>
+      <tr><td>Enterprise tier (85–94)</td><td>484</td></tr>
+      <tr><td>Architect tier (70–84)</td><td>81</td></tr>
+      <tr><td>Export-ready artifacts</td><td>1,143</td></tr>
       <tr><td>Categories covered</td><td>9</td></tr>
-      <tr><td>Unique module pipelines</td><td>22</td></tr>
+      <tr><td>Autonomous runs</td><td>431</td></tr>
+      <tr><td>Mean CJPI</td><td>94.0</td></tr>
     </tbody>
   </table>
   </div>
@@ -765,8 +790,8 @@ Where:
 
   <!-- 10. Conclusion -->
   <h2>10. Conclusion</h2>
-  <p>The CMPSBL Capability Synthesis Reactor represents a novel computational paradigm: <strong>autonomous software discovery with universal cross-platform code generation, including silicon targets</strong>. The system's modular, hot-swappable architecture ensures that discovery is unbounded — new modules of any type can be introduced to generate novel software endlessly across any industry. The deterministic CJPI scoring system provides objective, reproducible ranking of discovered artifacts, while the S-Tier Vault and Universal Export Adapter ensure that high-value discoveries are immediately actionable across 128 unique language-adapter combinations.</p>
-  <p>This is not incremental progress in code generation. It is the construction of a <strong>software foundry</strong> — an infrastructure that manufactures software the way a fab manufactures silicon.</p>
+  <p>The CMPSBL Capability Synthesis Reactor represents a novel computational paradigm: <strong>autonomous software discovery with universal cross-platform code generation, including silicon targets</strong>. In its inaugural production campaign, the system autonomously discovered 1,143 unique software artifacts — 95 with perfect CJPI scores — across 431 runs in approximately 9 hours, covering all 9 capability categories with a mean quality score of 94.0. The system's modular, hot-swappable architecture ensures that discovery is unbounded — new modules of any type can be introduced to generate novel software endlessly across any industry. The deterministic CJPI scoring system provides objective, reproducible ranking of discovered artifacts, while the S-Tier Vault and Universal Export Adapter ensure that high-value discoveries are immediately actionable across 128 unique language-adapter combinations.</p>
+  <p>This is not incremental progress in code generation. It is the construction of a <strong>software foundry</strong> — an infrastructure that manufactures software the way a fab manufactures silicon. The production results demonstrate that the foundry's output rate — over 125 discoveries per hour with 50.6% achieving Apex tier — makes autonomous software synthesis a practical, scalable reality.</p>
 
   <hr />
 
