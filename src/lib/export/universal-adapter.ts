@@ -2171,6 +2171,152 @@ B_BUSY BUSY 0 V = V(START) - DELAY(V(START), {T_CLK * 4})
 `;
 }
 
+// ─── SystemC (C++) ─────────────────────────────────────────────────
+
+function genSystemC(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'SystemC (C++)', '//');
+  const cls = className(a);
+  const snake = snakeCase(a);
+  const modules = a.synthesisContext?.stages?.map(s => s.module) ?? [a.module];
+  const pipelineLogic = a.synthesisContext
+    ? systemcPipelineTransform(modules, a.synthesisContext)
+    : `        // Default: passthrough with confidence weighting
+        data_out.write(data_in.read());
+        confidence_out.write(sc_dt::sc_fixed<8,1>(0.95));`;
+
+  return `${h}
+// ═══════════════════════════════════════════════════════════════
+// SystemC Module — ${a.name}
+// Transaction-level + RTL behavioral model
+// Target: SystemC 2.3+ / IEEE 1666-2011
+// ═══════════════════════════════════════════════════════════════
+
+#include <systemc.h>
+#include <iostream>
+#include <cstdint>
+
+// ─── Configuration ────────────────────────────────────────────
+#define DATA_WIDTH 32
+#define PIPELINE_DEPTH ${modules.length}
+
+// ─── Main Module ──────────────────────────────────────────────
+SC_MODULE(${cls}) {
+    // Ports
+    sc_in<bool>                clk;
+    sc_in<bool>                rst_n;
+    sc_in<bool>                start;
+    sc_in<sc_uint<DATA_WIDTH>> data_in;
+    sc_out<sc_uint<DATA_WIDTH>> data_out;
+    sc_out<bool>               done;
+    sc_out<bool>               busy;
+    sc_out<sc_uint<8>>         confidence_out;
+
+    // Internal signals
+    sc_signal<sc_uint<DATA_WIDTH>> stage_reg[PIPELINE_DEPTH + 1];
+    sc_signal<bool>                stage_active[PIPELINE_DEPTH];
+    sc_signal<sc_uint<8>>          stage_valid;
+
+    // Pipeline processing
+    void pipeline_process() {
+        if (!rst_n.read()) {
+            for (int i = 0; i <= PIPELINE_DEPTH; i++)
+                stage_reg[i].write(0);
+            done.write(false);
+            busy.write(false);
+            confidence_out.write(0);
+            return;
+        }
+
+        if (start.read()) {
+            busy.write(true);
+            stage_reg[0].write(data_in.read());
+        }
+
+${pipelineLogic}
+
+        data_out.write(stage_reg[PIPELINE_DEPTH].read());
+        done.write(stage_active[PIPELINE_DEPTH - 1].read());
+        if (!start.read() && !stage_active[0].read())
+            busy.write(false);
+    }
+
+    // Constructor
+    SC_CTOR(${cls}) {
+        SC_METHOD(pipeline_process);
+        sensitive << clk.pos();
+    }
+
+    // Metadata
+    void print_info() {
+        std::cout << "CMPSBL Crown Jewel: ${a.name}" << std::endl;
+        std::cout << "  Rank: #${a.rank} | CJPI: ${a.cjpi} | Module: ${a.module}" << std::endl;
+        std::cout << "  Pipeline Depth: " << PIPELINE_DEPTH << std::endl;
+    }
+};
+
+// ─── Testbench ────────────────────────────────────────────────
+SC_MODULE(${cls}_TB) {
+    sc_clock                    clk;
+    sc_signal<bool>             rst_n;
+    sc_signal<bool>             start;
+    sc_signal<sc_uint<DATA_WIDTH>> data_in;
+    sc_signal<sc_uint<DATA_WIDTH>> data_out;
+    sc_signal<bool>             done;
+    sc_signal<bool>             busy;
+    sc_signal<sc_uint<8>>       confidence;
+
+    ${cls}* dut;
+
+    void run_test() {
+        rst_n.write(false);
+        wait(2, SC_NS);
+        rst_n.write(true);
+        wait(1, SC_NS);
+
+        // Stimulus
+        data_in.write(0xDEADBEEF);
+        start.write(true);
+        wait(1, SC_NS);
+        start.write(false);
+
+        // Wait for pipeline
+        for (int i = 0; i < PIPELINE_DEPTH + 4; i++)
+            wait(1, SC_NS);
+
+        std::cout << "[TB] Output: 0x" << std::hex << data_out.read() << std::endl;
+        std::cout << "[TB] Done: " << done.read() << std::endl;
+        std::cout << "[TB] Confidence: " << std::dec << confidence.read() << std::endl;
+
+        sc_stop();
+    }
+
+    SC_CTOR(${cls}_TB) : clk("clk", 1, SC_NS) {
+        dut = new ${cls}("dut");
+        dut->clk(clk);
+        dut->rst_n(rst_n);
+        dut->start(start);
+        dut->data_in(data_in);
+        dut->data_out(data_out);
+        dut->done(done);
+        dut->busy(busy);
+        dut->confidence_out(confidence);
+
+        SC_THREAD(run_test);
+    }
+
+    ~${cls}_TB() { delete dut; }
+};
+
+// ─── Main ─────────────────────────────────────────────────────
+int sc_main(int argc, char* argv[]) {
+    ${cls}_TB tb("tb");
+    tb.dut->print_info();
+    sc_start();
+    return 0;
+}
+`;
+}
+
 
 function generateReadme(
   a: ExportableArtifact,

@@ -611,3 +611,142 @@ C_FILT_${i} ${outNode}_F 0 10p`;
 * ─── Output buffer ─────────────────────────────────────────────
 B_OUT DATA_OUT 0 V = V(${lastStage}) * V(START)`;
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// SystemC Pipeline Stage Transforms
+// ═══════════════════════════════════════════════════════════════════
+
+export function systemcPipelineTransform(modules: string[], ctx: SynthesisContext): string {
+  if (modules.length === 0) return '        // No stages — passthrough\n        stage_reg[0].write(data_in.read());';
+
+  const stages = modules.map((m, i) => {
+    const prev = i === 0 ? 'stage_reg[0]' : `stage_reg[${i}]`;
+    const out = `stage_reg[${i + 1}]`;
+
+    switch (m) {
+      case 'BRAIN':
+      case 'CORTEX':
+        return `        // Stage ${i}: ${m} — Entropy accumulator
+        {
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            sc_uint<DATA_WIDTH> entropy = val ^ (val >> 1) ^ (val << 3);
+            ${out}.write(val + (entropy >> (DATA_WIDTH/2)) - (entropy & ((1 << DATA_WIDTH/2) - 1)));
+        }`;
+      case 'DEFENSE':
+        return `        // Stage ${i}: ${m} — XOR-chain pattern validator
+        {
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            sc_uint<DATA_WIDTH> check = val ^ 0xA5A5A5A5;
+            ${out}.write((check == 0) ? sc_uint<DATA_WIDTH>(0) : val);
+        }`;
+      case 'ANALYTICS':
+        return `        // Stage ${i}: ${m} — Running accumulator
+        {
+            static sc_uint<DATA_WIDTH> acc_${i} = 0;
+            static sc_uint<16> count_${i} = 0;
+            acc_${i} += ${prev}.read();
+            count_${i}++;
+            ${out}.write(count_${i} > 0 ? acc_${i} / count_${i} : acc_${i});
+        }`;
+      case 'MEMORY':
+        return `        // Stage ${i}: ${m} — Register file read/write
+        {
+            static sc_uint<DATA_WIDTH> mem_${i}[256];
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            sc_uint<8> addr = val & 0xFF;
+            mem_${i}[addr] = val;
+            ${out}.write(mem_${i}[addr]);
+        }`;
+      case 'ORACLE':
+        return `        // Stage ${i}: ${m} — Linear prediction (MAC)
+        {
+            static sc_uint<DATA_WIDTH> prev_val_${i} = 0;
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            sc_uint<DATA_WIDTH> predicted = prev_val_${i} + ((val - prev_val_${i}) >> 2);
+            prev_val_${i} = val;
+            ${out}.write(predicted);
+        }`;
+      case 'DECODE':
+        return `        // Stage ${i}: ${m} — Barrel shifter + byte extraction
+        {
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            sc_uint<5> shift = val & 0x1F;
+            ${out}.write((val >> shift) | (val << (DATA_WIDTH - shift)));
+        }`;
+      case 'NEXUS':
+        return `        // Stage ${i}: ${m} — Round-robin router
+        {
+            static int rr_sel_${i} = 0;
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            sc_uint<DATA_WIDTH> routed = (val >> (8 * (rr_sel_${i} % 4))) & 0xFF;
+            rr_sel_${i} = (rr_sel_${i} + 1) % 4;
+            ${out}.write(routed | (val & 0xFFFFFF00));
+        }`;
+      case 'VISION':
+        return `        // Stage ${i}: ${m} — Threshold detector
+        {
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            ${out}.write(val > (1 << (DATA_WIDTH/2)) ? val : sc_uint<DATA_WIDTH>(0));
+        }`;
+      case 'AUDIT':
+        return `        // Stage ${i}: ${m} — CRC-style hash accumulator
+        {
+            static sc_uint<DATA_WIDTH> crc_${i} = 0xFFFFFFFF;
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            crc_${i} = crc_${i} ^ val;
+            for (int b = 0; b < 8; b++)
+                crc_${i} = (crc_${i} >> 1) ^ ((crc_${i} & 1) ? 0xEDB88320 : 0);
+            ${out}.write(crc_${i});
+        }`;
+      case 'EVOLUTION':
+        return `        // Stage ${i}: ${m} — Fitness comparator + crossover
+        {
+            static sc_uint<DATA_WIDTH> best_${i} = 0;
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            if (val > best_${i}) best_${i} = val;
+            sc_uint<DATA_WIDTH> crossed = (val & 0xFFFF0000) | (best_${i} & 0x0000FFFF);
+            ${out}.write(crossed);
+        }`;
+      case 'GOVERNANCE':
+        return `        // Stage ${i}: ${m} — Bitmask policy checker
+        {
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            sc_uint<DATA_WIDTH> policy = 0x0F0F0F0F;
+            ${out}.write((val & policy) == policy ? val : sc_uint<DATA_WIDTH>(0));
+        }`;
+      case 'PHANTOM':
+        return `        // Stage ${i}: ${m} — Privacy noise injector
+        {
+            static sc_uint<DATA_WIDTH> lfsr_${i} = 0xACE1CAFE;
+            lfsr_${i} = (lfsr_${i} >> 1) ^ ((lfsr_${i} & 1) ? 0xB4BCD35C : 0);
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            ${out}.write((val & 0xFFFF0000) | (lfsr_${i} & 0x0000FFFF));
+        }`;
+      case 'FORGE':
+        return `        // Stage ${i}: ${m} — Artifact fusion
+        {
+            static sc_uint<DATA_WIDTH> prev_art_${i} = 0;
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            sc_uint<DATA_WIDTH> fused = (val >> 1) + (prev_art_${i} >> 1);
+            prev_art_${i} = val;
+            ${out}.write(fused);
+        }`;
+      case 'REFLEX':
+        return `        // Stage ${i}: ${m} — Edge cache (last-value)
+        {
+            static sc_uint<DATA_WIDTH> cache_${i} = 0;
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            if (val != 0) cache_${i} = val;
+            ${out}.write(cache_${i});
+        }`;
+      default:
+        return `        // Stage ${i}: ${m} — Configurable ALU
+        {
+            sc_uint<DATA_WIDTH> val = ${prev}.read();
+            ${out}.write((val & 0x80000000) ? (val - 1) : (val + 1));
+        }`;
+    }
+  });
+
+  return stages.join('\n\n');
+}
