@@ -3,6 +3,7 @@ import { useMetric } from "@/stores/publicMetricsStore";
 import { Shield, Brain, Zap, Users, ArrowRight, CheckCircle, Accessibility, Eye, Wrench, Server } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
