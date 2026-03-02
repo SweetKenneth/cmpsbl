@@ -65,10 +65,14 @@ export interface ReactorRunResult {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CANONICAL_MODULES = [
+  // Original 26-node architecture
   'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
   'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
   'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',
   'MODERNIZER', 'MEDIC', 'RIPPLE', 'AUDIT', 'IDENTITY',
+  // Expansion modules (37-node architecture)
+  'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
+  'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
 ];
 
 const CATEGORIES: DiscoveryCategory[] = [
