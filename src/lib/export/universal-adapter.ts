@@ -14,6 +14,17 @@ import {
   synthesizeTypeScript, synthesizePython, synthesizeGo,
   type SynthesisContext,
 } from './logic-synthesizer';
+import {
+  synthesizeRust, synthesizeJava, synthesizeCSharp,
+  synthesizeRubyProcess, synthesizePHPProcess, synthesizeSwiftProcess,
+  synthesizeKotlinProcess, synthesizeElixirProcess, synthesizeLuaProcess,
+  synthesizeCProcess, synthesizeCppProcess, synthesizeDartProcess,
+  synthesizeZigProcess, synthesizeScalaProcess, synthesizeHaskellProcess,
+} from './software-synthesizer';
+import {
+  verilogPipelineTransform, vhdlPipelineTransform, svPipelineTransform,
+  chiselPipelineTransform, amaranthPipelineTransform, spicePipelineTransform,
+} from './hardware-synthesizer';
 
 export type ExportLanguage =
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
