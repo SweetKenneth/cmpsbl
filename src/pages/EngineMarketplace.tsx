@@ -25,6 +25,7 @@ import {
   Filter, X, Unlock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FlipCard } from "@/components/commerce/FlipCard";
 
 import {
   getPublicEngines, getPublicMetaEngines, getInternalEnginesShowcase,
