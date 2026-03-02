@@ -37,125 +37,178 @@ const CAPACITY = {
 } as const;
 
 /**
- * Prune a single tier to its capacity limit.
- * Keeps highest priority/value entries, deletes the rest.
+ * Prune hot tier to capacity limit.
  */
-async function pruneTier(
-  tier: 'hot' | 'warm' | 'cold',
-  capacity: number
-): Promise<PruneResult> {
+async function pruneHot(capacity: number): Promise<PruneResult> {
   const start = Date.now();
-  const table = `brain_memory_${tier}` as const;
-
-  // Get current count
   const { count: before } = await supabase
-    .from(table)
+    .from('brain_memory_hot')
     .select('id', { count: 'exact', head: true });
 
   const currentCount = before ?? 0;
-
   if (currentCount <= capacity) {
-    return { tier, before: currentCount, after: currentCount, purged: 0, duration_ms: Date.now() - start };
+    return { tier: 'hot', before: currentCount, after: currentCount, purged: 0, duration_ms: Date.now() - start };
   }
 
-  const excess = currentCount - capacity;
   let purged = 0;
+  const excess = currentCount - capacity;
 
-  // Phase 1: Purge CLM/learning spam first (typically the bulk of the flood)
+  // Phase 1: Delete CLM spam by source
   const clmSources = [
-    'clm-memory', 'clm-relay', 'clm-identity', 'clm-economy', 
+    'clm-memory', 'clm-relay', 'clm-identity', 'clm-economy',
     'clm-audit', 'clm-sandbox', 'clm-encode-internal', 'clm-encode',
     'legacy.remember', 'learning_engine', 'encode', 'memory_core.reflect',
   ];
 
   for (const source of clmSources) {
     if (purged >= excess) break;
-    const batchSize = Math.min(500, excess - purged);
-
     try {
-      const { data: ids } = await supabase
-        .from(table)
+      const { data: ids } = await (supabase as any)
+        .from('brain_memory_hot')
         .select('id')
-        .eq('source' as any, source)
+        .eq('source', source)
         .order('created_at', { ascending: true })
-        .limit(batchSize);
+        .limit(Math.min(500, excess - purged));
 
       if (ids && ids.length > 0) {
-        await supabase.from(table).delete().in('id', ids.map(r => r.id));
+        await supabase.from('brain_memory_hot').delete().in('id', ids.map((r: any) => r.id));
         purged += ids.length;
       }
-    } catch {
-      // Continue with next source
-    }
+    } catch { /* continue */ }
   }
 
-  // Phase 2: If still over capacity, delete lowest-value entries regardless of source
-  if (purged < excess) {
-    const remaining = excess - purged;
-    // Process in batches of 500
-    let batchesLeft = Math.ceil(remaining / 500);
-    
-    while (batchesLeft > 0 && purged < excess) {
-      const batchSize = Math.min(500, excess - purged);
-      
-      try {
-        let query;
-        if (tier === 'hot') {
-          query = supabase.from('brain_memory_hot')
-            .select('id')
-            .order('priority' as any, { ascending: true })
-            .order('created_at', { ascending: true })
-            .limit(batchSize);
-        } else if (tier === 'warm') {
-          query = supabase.from('brain_memory_warm')
-            .select('id')
-            .order('value_score' as any, { ascending: true })
-            .order('created_at', { ascending: true })
-            .limit(batchSize);
-        } else {
-          query = supabase.from('brain_memory_cold')
-            .select('id')
-            .order('value_score' as any, { ascending: true })
-            .order('created_at', { ascending: true })
-            .limit(batchSize);
-        }
+  // Phase 2: Delete lowest-priority entries if still over
+  while (purged < excess) {
+    try {
+      const { data: ids } = await supabase
+        .from('brain_memory_hot')
+        .select('id')
+        .order('priority' as any, { ascending: true })
+        .order('created_at', { ascending: true })
+        .limit(Math.min(500, excess - purged));
 
-        const { data: ids } = await query;
-        if (!ids || ids.length === 0) break;
-
-        await supabase.from(table).delete().in('id', ids.map(r => r.id));
-        purged += ids.length;
-      } catch {
-        break;
-      }
-
-      batchesLeft--;
-    }
+      if (!ids || ids.length === 0) break;
+      await supabase.from('brain_memory_hot').delete().in('id', ids.map(r => r.id));
+      purged += ids.length;
+    } catch { break; }
   }
 
-  // Get final count
   const { count: after } = await supabase
-    .from(table)
+    .from('brain_memory_hot')
     .select('id', { count: 'exact', head: true });
 
-  return {
-    tier,
-    before: currentCount,
-    after: after ?? 0,
-    purged,
-    duration_ms: Date.now() - start,
-  };
+  return { tier: 'hot', before: currentCount, after: after ?? 0, purged, duration_ms: Date.now() - start };
 }
 
 /**
- * Purge stale brain_events older than 7 days to reduce noise.
- * Keeps recent events for operational debugging.
+ * Prune warm tier to capacity limit.
+ */
+async function pruneWarm(capacity: number): Promise<PruneResult> {
+  const start = Date.now();
+  const { count: before } = await supabase
+    .from('brain_memory_warm')
+    .select('id', { count: 'exact', head: true });
+
+  const currentCount = before ?? 0;
+  if (currentCount <= capacity) {
+    return { tier: 'warm', before: currentCount, after: currentCount, purged: 0, duration_ms: Date.now() - start };
+  }
+
+  let purged = 0;
+  const excess = currentCount - capacity;
+
+  // Phase 1: Delete CLM spam
+  const clmSources = [
+    'clm-memory', 'clm-relay', 'clm-identity', 'clm-economy',
+    'clm-audit', 'clm-sandbox', 'clm-encode-internal', 'learning_engine',
+  ];
+
+  for (const source of clmSources) {
+    if (purged >= excess) break;
+    try {
+      const { data: ids } = await (supabase as any)
+        .from('brain_memory_warm')
+        .select('id')
+        .eq('source', source)
+        .order('created_at', { ascending: true })
+        .limit(Math.min(500, excess - purged));
+
+      if (ids && ids.length > 0) {
+        await supabase.from('brain_memory_warm').delete().in('id', ids.map((r: any) => r.id));
+        purged += ids.length;
+      }
+    } catch { /* continue */ }
+  }
+
+  // Phase 2: Delete lowest value_score entries
+  while (purged < excess) {
+    try {
+      const { data: ids } = await supabase
+        .from('brain_memory_warm')
+        .select('id')
+        .order('value_score' as any, { ascending: true })
+        .limit(Math.min(500, excess - purged));
+
+      if (!ids || ids.length === 0) break;
+      await supabase.from('brain_memory_warm').delete().in('id', ids.map(r => r.id));
+      purged += ids.length;
+    } catch { break; }
+  }
+
+  const { count: after } = await supabase
+    .from('brain_memory_warm')
+    .select('id', { count: 'exact', head: true });
+
+  return { tier: 'warm', before: currentCount, after: after ?? 0, purged, duration_ms: Date.now() - start };
+}
+
+/**
+ * Prune cold tier to capacity limit.
+ */
+async function pruneCold(capacity: number): Promise<PruneResult> {
+  const start = Date.now();
+  const { count: before } = await supabase
+    .from('brain_memory_cold')
+    .select('id', { count: 'exact', head: true });
+
+  const currentCount = before ?? 0;
+  if (currentCount <= capacity) {
+    return { tier: 'cold', before: currentCount, after: currentCount, purged: 0, duration_ms: Date.now() - start };
+  }
+
+  let purged = 0;
+  const excess = currentCount - capacity;
+
+  // Delete oldest/lowest value entries
+  while (purged < excess) {
+    try {
+      const { data: ids } = await supabase
+        .from('brain_memory_cold')
+        .select('id')
+        .order('value_score' as any, { ascending: true })
+        .order('created_at', { ascending: true })
+        .limit(Math.min(500, excess - purged));
+
+      if (!ids || ids.length === 0) break;
+      await supabase.from('brain_memory_cold').delete().in('id', ids.map(r => r.id));
+      purged += ids.length;
+    } catch { break; }
+  }
+
+  const { count: after } = await supabase
+    .from('brain_memory_cold')
+    .select('id', { count: 'exact', head: true });
+
+  return { tier: 'cold', before: currentCount, after: after ?? 0, purged, duration_ms: Date.now() - start };
+}
+
+/**
+ * Purge stale brain_events older than 7 days.
  */
 async function purgeStaleBrainEvents(): Promise<number> {
   const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
   let totalPurged = 0;
 
-  // Delete in batches — brain_events can be massive
   for (let batch = 0; batch < 20; batch++) {
     try {
       const { data: ids } = await supabase
@@ -165,12 +218,9 @@ async function purgeStaleBrainEvents(): Promise<number> {
         .limit(1000);
 
       if (!ids || ids.length === 0) break;
-
       await supabase.from('brain_events').delete().in('id', ids.map(r => r.id));
       totalPurged += ids.length;
-    } catch {
-      break;
-    }
+    } catch { break; }
   }
 
   return totalPurged;
@@ -178,16 +228,15 @@ async function purgeStaleBrainEvents(): Promise<number> {
 
 /**
  * Run full emergency prune across all tiers.
- * Call this to bring memory back to normal levels.
  */
 export async function runEmergencyPrune(): Promise<FullPruneResult> {
   const started_at = new Date().toISOString();
   console.log('[MemoryPruner] 🚨 Starting emergency prune...');
 
   const [hot, warm, cold, events_purged] = await Promise.all([
-    pruneTier('hot', CAPACITY.hot),
-    pruneTier('warm', CAPACITY.warm),
-    pruneTier('cold', CAPACITY.cold),
+    pruneHot(CAPACITY.hot),
+    pruneWarm(CAPACITY.warm),
+    pruneCold(CAPACITY.cold),
     purgeStaleBrainEvents(),
   ]);
 
@@ -201,7 +250,6 @@ export async function runEmergencyPrune(): Promise<FullPruneResult> {
     EVENTS: purged ${events_purged}
     TOTAL: ${total_purged} entries removed`);
 
-  // Log the prune event
   try {
     await supabase.from('brain_events').insert({
       module: 'memory',
