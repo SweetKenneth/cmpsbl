@@ -168,7 +168,9 @@ function DiscoveryCard({
           <div className="mt-2 pt-2 border-t border-border/50 text-xs space-y-1">
             <div><span className="text-muted-foreground">ID:</span> <code className="font-mono text-[10px]">{d.id}</code></div>
             <div><span className="text-muted-foreground">Synergy Multiplier:</span> {d.synergyMultiplier?.toFixed(2) ?? 'N/A'}</div>
-            <div><span className="text-muted-foreground">Components:</span> {d.components?.join(', ') ?? 'N/A'}</div>
+            <div><span className="text-muted-foreground">Entry:</span> {d.entryCapability}</div>
+            <div><span className="text-muted-foreground">Exit:</span> {d.exitCapability}</div>
+            <div><span className="text-muted-foreground">Error Strategy:</span> {d.errorStrategy}</div>
             {d.rationale && <div><span className="text-muted-foreground">Rationale:</span> {d.rationale}</div>}
           </div>
         )}
