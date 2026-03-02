@@ -1,11 +1,12 @@
 /**
  * Substrate Module Hooks — Barrel Export
- * 10-Entity + 5-Mesh + 9-Zone Architecture Hooks
+ * 10-Entity + 5-Mesh + 9-Zone + 11-Expansion Architecture Hooks
  *
  * CORE (standalone kernel)
  * CCR zones: SYSTEM, BRAIN, MEMORY, DREAM (hooks exported for backcompat)
  * CCL zones: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT (hooks exported as facades)
  * MODERNIZER → routed to EVOLUTION mesh (hook exported for backcompat)
+ * EXPANSION: SOVEREIGN, ORACLE, CONSCIENCE, PHANTOM, FORGE, LINGUA, COMPASS, ECHO, TREATY, HARVEST, REFLEX
  */
 
 // Kernel Layer
@@ -41,6 +42,31 @@ export { useAuditModule, type UseAuditModuleReturn } from './useAuditModule';
 export { useIdentity, type UseIdentityReturn } from './useIdentity';
 export { useEconomy, type UseEconomyReturn } from './useEconomy';
 export { useSandbox, type UseSandboxReturn } from './useSandbox';
+
+// ═══════════════════════════════════════════════════════════════════
+// EXPANSION MODULES (37-Node Architecture)
+// ═══════════════════════════════════════════════════════════════════
+
+// Compliance & Governance
+export { useSovereign, type UseSovereignReturn } from './useSovereign';
+export { useConscience, type UseConscienceReturn } from './useConscience';
+export { useTreaty, type UseTreatyReturn } from './useTreaty';
+
+// Predictive & Simulation
+export { useOracle, type UseOracleReturn } from './useOracle';
+export { useCompass, type UseCompassReturn } from './useCompass';
+export { useEcho, type UseEchoReturn } from './useEcho';
+
+// Privacy & Data
+export { usePhantom, type UsePhantomReturn } from './usePhantom';
+export { useHarvest, type UseHarvestReturn } from './useHarvest';
+
+// Manufacturing & Translation
+export { useForge, type UseForgeReturn } from './useForge';
+export { useLingua, type UseLinguaReturn } from './useLingua';
+
+// Edge Computing
+export { useReflex, type UseReflexReturn } from './useReflex';
 
 // Self-Evolving Agent
 export { useSEBAHook as useSEBA, type UseSEBAHookReturn } from './useSEBA';
