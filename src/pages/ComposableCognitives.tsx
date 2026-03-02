@@ -184,15 +184,15 @@ function MindCard({ item, chosenName, onBuy }: { item: CognitiveItem; chosenName
             </div>
           </div>
 
-          {/* Price + Persistent Memory label */}
+           {/* Price + Persistent Memory label */}
           <div className="space-y-1.5">
             <div className="flex items-baseline gap-2">
               {item.isFree ? (
                 <span className="text-2xl font-black tracking-tighter text-amber-400">FREE</span>
               ) : (
                 <>
-                  <span className="text-2xl font-black tracking-tighter">$39</span>
-                  <span className="text-[10px] text-muted-foreground font-mono">one-time</span>
+                  <span className="text-2xl font-black tracking-tighter">${item.priceCents >= 15900 ? '159' : '129'}</span>
+                  <span className="text-[10px] text-muted-foreground font-mono">one-time · sealed runtime</span>
                 </>
               )}
             </div>
@@ -261,7 +261,7 @@ function MindCard({ item, chosenName, onBuy }: { item: CognitiveItem; chosenName
             ) : (
               <>
                 <Zap className="w-4 h-4" />
-                Deploy — $39
+                Acquire — ${item.priceCents >= 15900 ? '159' : '129'}
               </>
             )}
           </Button>
@@ -287,8 +287,9 @@ export default function ComposableCognitives() {
       return;
     }
     try {
-      const { data, error } = await supabase.functions.invoke("cognitives-checkout", {
-        body: { sku, chosenName },
+      const item = PUBLIC_CATALOG.find(c => c.sku === sku);
+      const { data, error } = await supabase.functions.invoke("agent-checkout", {
+        body: { agent_id: sku, agent_name: item?.displayName || sku, chosen_name: chosenName },
       });
       if (error) throw error;
       if (data?.free && data?.redirect) { window.location.href = data.redirect; return; }
@@ -364,7 +365,7 @@ export default function ComposableCognitives() {
               className="flex items-center justify-center gap-4 sm:gap-8 text-sm flex-wrap"
             >
               {[
-                { icon: Brain, label: "3 Minds", sub: "2 free + 1 paid" },
+                { icon: Brain, label: "20 Agents", sub: "3 free + 17 paid" },
                 { icon: Activity, label: "6 Active", sub: "intelligence layers" },
                 { icon: Lock, label: "Black-Box", sub: "Protected IP" },
                 { icon: Cpu, label: "Own Forever", sub: "MIT licensed" },
