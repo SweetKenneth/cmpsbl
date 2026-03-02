@@ -12,7 +12,7 @@ import {
   type DiscoveryCategory,
   type CrystallizedTier,
 } from '@/lib/capabilities/synergies/discovery-epoch';
-import { PIPELINE_SEEDS } from '@/lib/capabilities/synergies/wave7-activation';
+
 import { sha256, canonicalizeJson } from '@/lib/control-plane/hash';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -176,36 +176,56 @@ function computeSynergyMultiplier(moduleChain: string[]): number {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export async function acquireDiscoveryLock(userId: string): Promise<boolean> {
-  // First check if the lock is free or expired
-  const { data: current } = await supabase
+  const nowIso = new Date().toISOString();
+  const nextExpiryIso = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+  const { data: current, error: readError } = await supabase
     .from('discovery_lock')
-    .select('locked_by, expires_at')
+    .select('id, locked_by, expires_at')
     .eq('id', 'global')
-    .single();
+    .maybeSingle();
 
-  if (!current) return false;
-
-  const isLocked = current.locked_by !== null
-    && current.expires_at !== null
-    && new Date(current.expires_at) > new Date();
-
-  if (isLocked && current.locked_by !== userId) {
-    return false; // genuinely locked by someone else
+  if (readError) {
+    console.error('Failed to read discovery lock:', readError);
+    return false;
   }
 
-  // Lock is free or expired — claim it
-  const { data, error } = await supabase
+  // Self-heal missing global lock row
+  if (!current) {
+    const { error: initError } = await supabase
+      .from('discovery_lock')
+      .insert({ id: 'global', locked_by: null, locked_at: null, expires_at: null });
+
+    if (initError) {
+      console.error('Failed to initialize discovery lock row:', initError);
+      return false;
+    }
+  }
+
+  const lockHeldByOther = !!current?.locked_by
+    && current.locked_by !== userId
+    && !!current.expires_at
+    && new Date(current.expires_at) > new Date();
+
+  if (lockHeldByOther) {
+    return false;
+  }
+
+  const { error: claimError } = await supabase
     .from('discovery_lock')
     .update({
       locked_by: userId,
-      locked_at: new Date().toISOString(),
-      expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(), // 5 min TTL
+      locked_at: nowIso,
+      expires_at: nextExpiryIso,
     })
-    .eq('id', 'global')
-    .select()
-    .single();
+    .eq('id', 'global');
 
-  return !!data && !error;
+  if (claimError) {
+    console.error('Failed to claim discovery lock:', claimError);
+    return false;
+  }
+
+  return true;
 }
 
 export async function releaseDiscoveryLock(): Promise<void> {
@@ -234,22 +254,10 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
   }
 
   try {
-    // 2. Load existing discovery hashes for dedup
-    const { data: existingDiscoveries } = await supabase
-      .from('discoveries')
-      .select('id');
-    const existingHashes = new Set((existingDiscoveries ?? []).map(d => d.id));
-
-    // Also dedup against existing pipeline seeds
-    const existingSeedIds = new Set(PIPELINE_SEEDS.map(s => s.id));
-
-    // 3. Generate candidates from templates
+    // 2. Generate candidates from templates
     const candidates: ReactorCandidate[] = [];
     for (const template of SYNTHESIS_TEMPLATES) {
       const stableId = computeStableHash(template.namePattern, template.modulePattern, template.category);
-      
-      // Skip duplicates
-      if (existingHashes.has(stableId)) continue;
 
       const baseCjpi = computeCJPI(template.baseBreakdown);
       const synergyMultiplier = computeSynergyMultiplier(template.modulePattern);
