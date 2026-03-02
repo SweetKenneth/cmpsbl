@@ -486,13 +486,13 @@ function ExportDialog({
           <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
             <h4 className="text-xs font-medium text-muted-foreground mb-2">Software Languages</h4>
             <div className="flex flex-wrap gap-1.5 mb-3">
-              {LANGUAGES.filter(l => !['verilog','vhdl','systemverilog','chisel','amaranth','spice'].includes(l.value)).map(l => (
+              {LANGUAGES.filter(l => !['verilog','vhdl','systemverilog','chisel','amaranth','spice','systemc'].includes(l.value)).map(l => (
                 <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer" onClick={() => setSelectedLang(l.value)}>{l.label}</Badge>
               ))}
             </div>
             <h4 className="text-xs font-medium text-muted-foreground mb-2">Hardware / HDL (FPGA &amp; ASIC)</h4>
             <div className="flex flex-wrap gap-1.5">
-              {LANGUAGES.filter(l => ['verilog','vhdl','systemverilog','chisel','amaranth','spice'].includes(l.value)).map(l => (
+              {LANGUAGES.filter(l => ['verilog','vhdl','systemverilog','chisel','amaranth','spice','systemc'].includes(l.value)).map(l => (
                 <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer border-amber-500/40 text-amber-400" onClick={() => setSelectedLang(l.value)}>⚡ {l.label}</Badge>
               ))}
             </div>
@@ -790,9 +790,9 @@ export default function STierVault() {
   };
 
   const handleExportHardware = () => {
-    const targets: ExportTarget[] = ['verilog','vhdl','systemverilog','chisel','amaranth','spice']
+    const targets: ExportTarget[] = ['verilog','vhdl','systemverilog','chisel','amaranth','spice','systemc']
       .map(l => ({ language: l as any, adapter: 'fpga-synth' as any }));
-    buildExportZip(promoted, targets, 'discoveries-hardware-export.zip', '6 hardware languages');
+    buildExportZip(promoted, targets, 'discoveries-hardware-export.zip', '7 hardware languages');
   };
 
   const handleCopyCode = () => { if (viewingCode) navigator.clipboard.writeText(viewingCode.code); };
