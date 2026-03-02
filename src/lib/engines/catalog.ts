@@ -33,6 +33,8 @@ export interface Engine {
   isSubscription?: boolean;
   subscriptionLabel?: string;
   externalPath?: string;
+  /** True if engine is free (no checkout required) */
+  isFree?: boolean;
 }
 
 export const ENGINES: Engine[] = [
