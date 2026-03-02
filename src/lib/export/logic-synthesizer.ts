@@ -876,16 +876,14 @@ function generateErrorHandling(strategy: string): string {
 }
 
 function generatePyErrorHandling(strategy: string): string {
+  const abortReturn = [
+    'elapsed = (time.perf_counter() - start) * 1000',
+    '                return type(self)(self.config).execute(input_data)  # Abort and re-raise',
+  ].join('\n                ');
   switch (strategy) {
     case 'abort':
       return `elapsed = (time.perf_counter() - start) * 1000
-                return ${strategy === 'abort' ? `${`${''}${''}`}` || ''}${cls}Result(
-                    success=False, data=current_data,
-                    error=f"Aborted at '{stage_name}': {e}",
-                    latency_ms=elapsed, confidence=confidence * 0.5,
-                    pipeline_trace=trace, stages_completed=stages_completed,
-                    total_stages=len(pipeline)
-                )`.replace(/\$\{cls\}/g, 'self.__class__.__name__');
+                raise`;
     case 'skip':
       return `confidence -= 0.1
                 continue`;
@@ -893,7 +891,7 @@ function generatePyErrorHandling(strategy: string): string {
       return `current_data = dict(input_data)
                 confidence = 1.0
                 elapsed = (time.perf_counter() - start) * 1000
-                return self.__class__(self.config).execute(input_data)  # Retry from scratch`;
+                raise`;
     case 'fallback':
       return `confidence -= 0.15
                 continue  # Fallback: continue degraded`;
