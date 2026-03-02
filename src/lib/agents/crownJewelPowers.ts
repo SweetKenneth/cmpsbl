@@ -245,7 +245,7 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     subtitle: "PRISM · CIPHER · CORTEX",
     description: "Longform generation with persona-locked voice, citation-aware knowledge retrieval, and multi-agent editorial coordination.",
     icon: Pen,
-    isFree: false,
+    isFree: true,
     gradient: "from-pink-500 via-rose-500 to-red-400",
     glowColor: "rgba(236, 72, 153, 0.12)",
     powers: [
