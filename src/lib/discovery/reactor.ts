@@ -24,6 +24,8 @@ export interface ReactorConfig {
   exploratoryMode: boolean;
   topN?: number;
   scoringVersion?: string;
+  /** Injected templates from the auto-generator (used alongside hardcoded ones) */
+  injectedTemplates?: SynthesisTemplate[];
 }
 
 export interface ReactorCandidate {
@@ -80,7 +82,7 @@ const ERROR_STRATEGIES = ['retry', 'skip', 'abort', 'rollback', 'fallback'] as c
 // SYNTHESIS TEMPLATES — high-value pipeline patterns
 // ═══════════════════════════════════════════════════════════════════════════════
 
-interface SynthesisTemplate {
+export interface SynthesisTemplate {
   namePattern: string;
   descriptionPattern: string;
   category: DiscoveryCategory;
@@ -267,9 +269,11 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
     const knownIds = new Set((existingDiscoveries ?? []).map((d: any) => d.id));
 
     // 4. Generate candidates from templates, skipping already-known ones
+    // 4. Generate candidates from templates (hardcoded + injected), skipping already-known ones
+    const allTemplates = [...SYNTHESIS_TEMPLATES, ...(config.injectedTemplates || [])];
     const candidates: ReactorCandidate[] = [];
     let skippedCount = 0;
-    for (const template of SYNTHESIS_TEMPLATES) {
+    for (const template of allTemplates) {
       const stableId = computeStableHash(template.namePattern, template.modulePattern, template.category);
 
       // Skip if already promoted to vault or already discovered
