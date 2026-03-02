@@ -270,9 +270,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/auth">
+                <Link to="/engines">
                   <Sparkles className="w-4 h-4" />
-                  Start Free
+                  Explore Engines
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
