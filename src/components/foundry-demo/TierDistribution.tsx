@@ -1,0 +1,96 @@
+/**
+ * Tier Distribution — Visual breakdown of discovery quality
+ */
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
+
+interface TierData {
+  tier: string;
+  count: number;
+  label: string;
+  color: string;
+  description: string;
+}
+
+const TIERS: TierData[] = [
+  {
+    tier: 'cmpsbl-only',
+    count: 578,
+    label: 'APEX',
+    color: 'hsl(var(--primary))',
+    description: 'CJPI 95–100 · Proprietary crown jewels',
+  },
+  {
+    tier: 'enterprise',
+    count: 484,
+    label: 'ENTERPRISE',
+    color: 'hsl(45, 95%, 55%)',
+    description: 'CJPI 85–94 · Production-grade pipelines',
+  },
+  {
+    tier: 'architect',
+    count: 81,
+    label: 'ARCHITECT',
+    color: 'hsl(200, 80%, 60%)',
+    description: 'CJPI 80–84 · Advanced building blocks',
+  },
+];
+
+export function TierDistribution() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-50px' });
+  const total = TIERS.reduce((s, t) => s + t.count, 0);
+
+  return (
+    <section ref={ref} className="py-24 md:py-40 px-6">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-sm uppercase tracking-[0.3em] text-muted-foreground text-center mb-16 font-mono">
+          Quality Distribution
+        </h2>
+
+        {/* Stacked bar */}
+        <div className="h-12 rounded-lg overflow-hidden flex mb-8">
+          {TIERS.map((t, i) => (
+            <motion.div
+              key={t.tier}
+              className="h-full relative group cursor-default"
+              style={{ backgroundColor: t.color }}
+              initial={{ width: 0 }}
+              animate={inView ? { width: `${(t.count / total) * 100}%` } : {}}
+              transition={{ duration: 1, delay: i * 0.2, ease: 'easeOut' }}
+            >
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-xs font-mono font-bold text-black/80">
+                  {Math.round((t.count / total) * 100)}%
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Legend */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {TIERS.map((t, i) => (
+            <motion.div
+              key={t.tier}
+              initial={{ opacity: 0, y: 15 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.15 + 0.5 }}
+              className="flex items-start gap-3"
+            >
+              <div className="w-3 h-3 rounded-sm mt-1 shrink-0" style={{ backgroundColor: t.color }} />
+              <div>
+                <div className="font-mono text-sm font-bold text-foreground">
+                  {t.label} <span className="text-muted-foreground font-normal">· {t.count}</span>
+                </div>
+                <div className="text-xs text-muted-foreground/60 mt-0.5">
+                  {t.description}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
