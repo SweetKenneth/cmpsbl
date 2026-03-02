@@ -595,6 +595,7 @@ export default function DiscoveryMiningConsole() {
         <Tabs defaultValue="results" className="w-full">
           <TabsList className="w-full sm:w-auto">
             <TabsTrigger value="results" className="gap-1 flex-1 sm:flex-none"><Target className="w-4 h-4" /> Results</TabsTrigger>
+            <TabsTrigger value="templates" className="gap-1 flex-1 sm:flex-none"><Plus className="w-4 h-4" /> Templates</TabsTrigger>
             <TabsTrigger value="history" className="gap-1 flex-1 sm:flex-none"><History className="w-4 h-4" /> History</TabsTrigger>
           </TabsList>
 
