@@ -203,9 +203,9 @@ export default function Explore() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
-                  <Link to="/auth">
+                  <Link to="/engines">
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Start Free — 3 Artifact Slots
+                    Explore Engines
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
