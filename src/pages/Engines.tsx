@@ -187,7 +187,7 @@ export default function Engines() {
                 and lifetime access to the sealed runtime binary.
               </p>
               <p className="text-xs font-mono text-muted-foreground/60">
-                $199 standalone · $99 when bundled with any other engine · Collector's license included
+                $199 standalone · $99 when bundled with any other engine · Crown Jewel certified · Collector's license included
               </p>
             </div>
           </div>
