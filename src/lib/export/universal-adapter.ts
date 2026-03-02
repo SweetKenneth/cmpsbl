@@ -13,11 +13,12 @@
 export type ExportLanguage =
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
   | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
-  | 'elixir' | 'lua';
+  | 'elixir' | 'lua'
+  | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel';
 
 export type ExportAdapter =
   | 'standalone' | 'rest-api' | 'grpc-stub' | 'cli'
-  | 'docker' | 'wasm' | 'sdk-wrapper';
+  | 'docker' | 'wasm' | 'sdk-wrapper' | 'fpga-synth';
 
 export interface ExportTarget {
   language: ExportLanguage;
@@ -53,12 +54,14 @@ const LANG_EXT: Record<ExportLanguage, string> = {
   typescript: 'ts', python: 'py', go: 'go', rust: 'rs', java: 'java',
   csharp: 'cs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt',
   elixir: 'ex', lua: 'lua',
+  verilog: 'v', vhdl: 'vhd', systemverilog: 'sv', chisel: 'scala',
 };
 
 const LANG_LABELS: Record<ExportLanguage, string> = {
   typescript: 'TypeScript', python: 'Python', go: 'Go', rust: 'Rust',
   java: 'Java', csharp: 'C#', ruby: 'Ruby', php: 'PHP',
   swift: 'Swift', kotlin: 'Kotlin', elixir: 'Elixir', lua: 'Lua',
+  verilog: 'Verilog', vhdl: 'VHDL', systemverilog: 'SystemVerilog', chisel: 'Chisel (Scala)',
 };
 
 const ADAPTER_LABELS: Record<ExportAdapter, string> = {
@@ -69,6 +72,7 @@ const ADAPTER_LABELS: Record<ExportAdapter, string> = {
   docker: 'Docker Container',
   wasm: 'WASM Module',
   'sdk-wrapper': 'SDK Client',
+  'fpga-synth': 'FPGA Synthesis Ready',
 };
 
 export function getAllLanguages(): { value: ExportLanguage; label: string }[] {
@@ -142,6 +146,8 @@ function getMimeType(lang: ExportLanguage): string {
     rust: 'text/x-rust', java: 'text/x-java', csharp: 'text/x-csharp',
     ruby: 'text/x-ruby', php: 'text/x-php', swift: 'text/x-swift',
     kotlin: 'text/x-kotlin', elixir: 'text/x-elixir', lua: 'text/x-lua',
+    verilog: 'text/x-verilog', vhdl: 'text/x-vhdl', systemverilog: 'text/x-systemverilog',
+    chisel: 'text/x-scala',
   };
   return map[lang] ?? 'text/plain';
 }
@@ -170,6 +176,10 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   kotlin: genKotlin,
   elixir: genElixir,
   lua: genLua,
+  verilog: genVerilog,
+  vhdl: genVHDL,
+  systemverilog: genSystemVerilog,
+  chisel: genChisel,
 };
 
 function header(a: ExportableArtifact, lang: string, comment: string): string {
@@ -947,7 +957,546 @@ return ${mod}
 `;
 }
 
-// ─── README Generator ──────────────────────────────────────────────
+// ─── Verilog (Gate-Level HDL) ──────────────────────────────────────
+
+function genVerilog(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'Verilog', '//');
+  const mod = snakeCase(a);
+  const isFpga = adapter === 'fpga-synth';
+  return `${h}
+\`timescale 1ns / 1ps
+
+// ═══════════════════════════════════════════════════════════════
+// Gate-Level Hardware Description — ${a.name}
+// Target: FPGA / ASIC synthesis${isFpga ? ' (synthesis-optimized)' : ''}
+// ═══════════════════════════════════════════════════════════════
+
+module ${mod} #(
+    parameter DATA_WIDTH  = 32,
+    parameter FIFO_DEPTH  = 16,
+    parameter PIPELINE_STAGES = 4
+)(
+    input  wire                    clk,
+    input  wire                    rst_n,
+
+    // Control interface
+    input  wire                    start,
+    output reg                     done,
+    output reg                     busy,
+    output reg                     error,
+
+    // Data interface
+    input  wire [DATA_WIDTH-1:0]   data_in,
+    input  wire                    data_valid,
+    output reg  [DATA_WIDTH-1:0]   data_out,
+    output reg                     data_ready,
+
+    // Status / telemetry
+    output reg  [7:0]              confidence,
+    output reg  [31:0]             latency_cycles
+);
+
+    // ─── State machine ─────────────────────────────────────
+    localparam IDLE     = 3'b000,
+               LOAD     = 3'b001,
+               PROCESS  = 3'b010,
+               COMMIT   = 3'b011,
+               COMPLETE = 3'b100,
+               ERROR_ST = 3'b101;
+
+    reg [2:0] state, next_state;
+    reg [31:0] cycle_counter;
+    reg [DATA_WIDTH-1:0] pipeline_reg [0:PIPELINE_STAGES-1];
+    reg [$clog2(PIPELINE_STAGES)-1:0] stage_ptr;
+
+    // ─── FIFO buffer ───────────────────────────────────────
+    reg [DATA_WIDTH-1:0] fifo_mem [0:FIFO_DEPTH-1];
+    reg [$clog2(FIFO_DEPTH)-1:0] wr_ptr, rd_ptr;
+    reg [$clog2(FIFO_DEPTH):0]   fifo_count;
+    wire fifo_full  = (fifo_count == FIFO_DEPTH);
+    wire fifo_empty = (fifo_count == 0);
+
+    // ─── Sequential logic ──────────────────────────────────
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state         <= IDLE;
+            done          <= 1'b0;
+            busy          <= 1'b0;
+            error         <= 1'b0;
+            data_out      <= {DATA_WIDTH{1'b0}};
+            data_ready    <= 1'b0;
+            confidence    <= 8'd0;
+            latency_cycles <= 32'd0;
+            cycle_counter <= 32'd0;
+            wr_ptr        <= 0;
+            rd_ptr        <= 0;
+            fifo_count    <= 0;
+            stage_ptr     <= 0;
+        end else begin
+            state <= next_state;
+            case (state)
+                IDLE: begin
+                    done  <= 1'b0;
+                    busy  <= 1'b0;
+                    error <= 1'b0;
+                    data_ready <= 1'b0;
+                    cycle_counter <= 32'd0;
+                end
+
+                LOAD: begin
+                    busy <= 1'b1;
+                    cycle_counter <= cycle_counter + 1;
+                    if (data_valid && !fifo_full) begin
+                        fifo_mem[wr_ptr] <= data_in;
+                        wr_ptr     <= wr_ptr + 1;
+                        fifo_count <= fifo_count + 1;
+                    end
+                end
+
+                PROCESS: begin
+                    cycle_counter <= cycle_counter + 1;
+                    // Pipeline stage advancement
+                    if (!fifo_empty) begin
+                        pipeline_reg[0] <= fifo_mem[rd_ptr];
+                        rd_ptr     <= rd_ptr + 1;
+                        fifo_count <= fifo_count - 1;
+                    end
+                    // Shift through pipeline stages
+                    if (stage_ptr < PIPELINE_STAGES - 1) begin
+                        stage_ptr <= stage_ptr + 1;
+                        // TODO: Insert ${a.name} core transform per stage
+                        pipeline_reg[stage_ptr + 1] <= pipeline_reg[stage_ptr] ^ {DATA_WIDTH{1'b1}};
+                    end
+                end
+
+                COMMIT: begin
+                    data_out   <= pipeline_reg[PIPELINE_STAGES-1];
+                    data_ready <= 1'b1;
+                    confidence <= 8'd255; // Full confidence
+                    latency_cycles <= cycle_counter;
+                end
+
+                COMPLETE: begin
+                    done <= 1'b1;
+                    busy <= 1'b0;
+                end
+
+                ERROR_ST: begin
+                    error <= 1'b1;
+                    busy  <= 1'b0;
+                end
+            endcase
+        end
+    end
+
+    // ─── Next-state combinational logic ────────────────────
+    always @(*) begin
+        next_state = state;
+        case (state)
+            IDLE:     if (start) next_state = LOAD;
+            LOAD:     if (!data_valid || fifo_full) next_state = PROCESS;
+            PROCESS:  if (fifo_empty && stage_ptr == PIPELINE_STAGES - 1) next_state = COMMIT;
+            COMMIT:   next_state = COMPLETE;
+            COMPLETE: next_state = IDLE;
+            ERROR_ST: next_state = IDLE;
+            default:  next_state = IDLE;
+        endcase
+    end
+
+    // ─── Provenance ROM ────────────────────────────────────
+    // Burned-in metadata for hardware identification
+    localparam [31:0] CJPI_STAMP  = 32'd${a.cjpi};
+    localparam [31:0] RANK_STAMP  = 32'd${a.rank};
+
+endmodule
+`;
+}
+
+// ─── VHDL ──────────────────────────────────────────────────────────
+
+function genVHDL(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'VHDL', '--');
+  const entityName = snakeCase(a);
+  return `${h}
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+-- ═══════════════════════════════════════════════════════════════
+-- VHDL Entity — ${a.name}
+-- Target: FPGA / ASIC synthesis
+-- ═══════════════════════════════════════════════════════════════
+
+entity ${entityName} is
+    generic (
+        DATA_WIDTH      : integer := 32;
+        PIPELINE_STAGES : integer := 4
+    );
+    port (
+        clk        : in  std_logic;
+        rst_n      : in  std_logic;
+        start      : in  std_logic;
+        done       : out std_logic;
+        busy       : out std_logic;
+        error_flag : out std_logic;
+        data_in    : in  std_logic_vector(DATA_WIDTH-1 downto 0);
+        data_valid : in  std_logic;
+        data_out   : out std_logic_vector(DATA_WIDTH-1 downto 0);
+        data_ready : out std_logic;
+        confidence : out std_logic_vector(7 downto 0);
+        latency    : out std_logic_vector(31 downto 0)
+    );
+end entity ${entityName};
+
+architecture rtl of ${entityName} is
+
+    type state_t is (IDLE, LOAD, PROCESS, COMMIT, COMPLETE, ERROR_ST);
+    signal state, next_state : state_t;
+
+    type pipeline_t is array (0 to PIPELINE_STAGES-1) of std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal pipeline_reg : pipeline_t;
+    signal cycle_counter : unsigned(31 downto 0);
+    signal stage_ptr     : integer range 0 to PIPELINE_STAGES-1;
+
+begin
+
+    -- Sequential process
+    process(clk, rst_n)
+    begin
+        if rst_n = '0' then
+            state         <= IDLE;
+            done          <= '0';
+            busy          <= '0';
+            error_flag    <= '0';
+            data_out      <= (others => '0');
+            data_ready    <= '0';
+            confidence    <= (others => '0');
+            latency       <= (others => '0');
+            cycle_counter <= (others => '0');
+            stage_ptr     <= 0;
+        elsif rising_edge(clk) then
+            state <= next_state;
+            case state is
+                when IDLE =>
+                    done       <= '0';
+                    busy       <= '0';
+                    error_flag <= '0';
+                    data_ready <= '0';
+                    cycle_counter <= (others => '0');
+
+                when LOAD =>
+                    busy <= '1';
+                    cycle_counter <= cycle_counter + 1;
+                    if data_valid = '1' then
+                        pipeline_reg(0) <= data_in;
+                    end if;
+
+                when PROCESS =>
+                    cycle_counter <= cycle_counter + 1;
+                    -- TODO: Implement ${a.name} transform logic per pipeline stage
+                    if stage_ptr < PIPELINE_STAGES - 1 then
+                        pipeline_reg(stage_ptr + 1) <= not pipeline_reg(stage_ptr);
+                        stage_ptr <= stage_ptr + 1;
+                    end if;
+
+                when COMMIT =>
+                    data_out   <= pipeline_reg(PIPELINE_STAGES-1);
+                    data_ready <= '1';
+                    confidence <= x"FF";
+                    latency    <= std_logic_vector(cycle_counter);
+
+                when COMPLETE =>
+                    done <= '1';
+                    busy <= '0';
+
+                when ERROR_ST =>
+                    error_flag <= '1';
+                    busy       <= '0';
+
+                when others => null;
+            end case;
+        end if;
+    end process;
+
+    -- Next-state logic
+    process(state, start, data_valid, stage_ptr)
+    begin
+        next_state <= state;
+        case state is
+            when IDLE     => if start = '1' then next_state <= LOAD; end if;
+            when LOAD     => if data_valid = '0' then next_state <= PROCESS; end if;
+            when PROCESS  => if stage_ptr = PIPELINE_STAGES - 1 then next_state <= COMMIT; end if;
+            when COMMIT   => next_state <= COMPLETE;
+            when COMPLETE => next_state <= IDLE;
+            when ERROR_ST => next_state <= IDLE;
+            when others   => next_state <= IDLE;
+        end case;
+    end process;
+
+end architecture rtl;
+`;
+}
+
+// ─── SystemVerilog ─────────────────────────────────────────────────
+
+function genSystemVerilog(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'SystemVerilog', '//');
+  const mod = snakeCase(a);
+  return `${h}
+// ═══════════════════════════════════════════════════════════════
+// SystemVerilog Module — ${a.name}
+// Enhanced typing, interfaces, and assertions for verification
+// ═══════════════════════════════════════════════════════════════
+
+package ${mod}_pkg;
+    typedef enum logic [2:0] {
+        IDLE     = 3'b000,
+        LOAD     = 3'b001,
+        PROCESS  = 3'b010,
+        COMMIT   = 3'b011,
+        COMPLETE = 3'b100,
+        ERROR_ST = 3'b101
+    } state_e;
+
+    typedef struct packed {
+        logic [31:0] cjpi;
+        logic [31:0] rank;
+        logic [31:0] latency_cycles;
+        logic [7:0]  confidence;
+    } telemetry_t;
+endpackage
+
+interface ${mod}_if #(parameter DATA_WIDTH = 32) (input logic clk, rst_n);
+    logic                    start;
+    logic                    done;
+    logic                    busy;
+    logic                    error;
+    logic [DATA_WIDTH-1:0]   data_in;
+    logic                    data_valid;
+    logic [DATA_WIDTH-1:0]   data_out;
+    logic                    data_ready;
+
+    modport engine (
+        input  clk, rst_n, start, data_in, data_valid,
+        output done, busy, error, data_out, data_ready
+    );
+
+    modport controller (
+        input  clk, rst_n, done, busy, error, data_out, data_ready,
+        output start, data_in, data_valid
+    );
+endinterface
+
+module ${mod}
+    import ${mod}_pkg::*;
+#(
+    parameter int DATA_WIDTH      = 32,
+    parameter int PIPELINE_STAGES = 4
+)(
+    input  logic                    clk,
+    input  logic                    rst_n,
+    input  logic                    start,
+    output logic                    done,
+    output logic                    busy,
+    output logic                    error,
+    input  logic [DATA_WIDTH-1:0]   data_in,
+    input  logic                    data_valid,
+    output logic [DATA_WIDTH-1:0]   data_out,
+    output logic                    data_ready,
+    output telemetry_t              telemetry
+);
+
+    state_e state, next_state;
+    logic [DATA_WIDTH-1:0] pipeline [PIPELINE_STAGES];
+    logic [$clog2(PIPELINE_STAGES)-1:0] stage;
+    logic [31:0] cycles;
+
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state      <= IDLE;
+            done       <= '0;
+            busy       <= '0;
+            error      <= '0;
+            data_out   <= '0;
+            data_ready <= '0;
+            cycles     <= '0;
+            stage      <= '0;
+            telemetry  <= '{cjpi: 32'd${a.cjpi}, rank: 32'd${a.rank}, default: '0};
+        end else begin
+            state <= next_state;
+            unique case (state)
+                IDLE: begin
+                    done <= '0; busy <= '0; error <= '0;
+                    data_ready <= '0; cycles <= '0;
+                end
+                LOAD: begin
+                    busy <= '1; cycles <= cycles + 1;
+                    if (data_valid) pipeline[0] <= data_in;
+                end
+                PROCESS: begin
+                    cycles <= cycles + 1;
+                    // TODO: ${a.name} core transform
+                    if (stage < PIPELINE_STAGES - 1) begin
+                        pipeline[stage + 1] <= ~pipeline[stage];
+                        stage <= stage + 1;
+                    end
+                end
+                COMMIT: begin
+                    data_out <= pipeline[PIPELINE_STAGES-1];
+                    data_ready <= '1;
+                    telemetry.confidence <= 8'hFF;
+                    telemetry.latency_cycles <= cycles;
+                end
+                COMPLETE: begin done <= '1; busy <= '0; end
+                ERROR_ST: begin error <= '1; busy <= '0; end
+            endcase
+        end
+    end
+
+    always_comb begin
+        next_state = state;
+        unique case (state)
+            IDLE:     if (start) next_state = LOAD;
+            LOAD:     if (!data_valid) next_state = PROCESS;
+            PROCESS:  if (stage == PIPELINE_STAGES - 1) next_state = COMMIT;
+            COMMIT:   next_state = COMPLETE;
+            COMPLETE: next_state = IDLE;
+            ERROR_ST: next_state = IDLE;
+        endcase
+    end
+
+    // ─── SVA Assertions for verification ───────────────────
+    // synthesis translate_off
+    assert property (@(posedge clk) disable iff (!rst_n)
+        (state == COMPLETE) |-> ##1 (state == IDLE)
+    ) else $error("FSM did not return to IDLE after COMPLETE");
+
+    assert property (@(posedge clk) disable iff (!rst_n)
+        (done && busy) == 0
+    ) else $error("done and busy asserted simultaneously");
+    // synthesis translate_on
+
+endmodule
+`;
+}
+
+// ─── Chisel (Scala-based HDL) ──────────────────────────────────────
+
+function genChisel(a: ExportableArtifact, adapter: ExportAdapter): string {
+  const h = header(a, 'Chisel (Scala)', '//');
+  const cls = className(a);
+  return `${h}
+import chisel3._
+import chisel3.util._
+
+// ═══════════════════════════════════════════════════════════════
+// Chisel Hardware Generator — ${a.name}
+// Generates synthesizable Verilog via FIRRTL
+// ═══════════════════════════════════════════════════════════════
+
+class ${cls}Config(
+  val dataWidth: Int = 32,
+  val pipelineStages: Int = 4,
+  val fifoDepth: Int = 16
+)
+
+class ${cls}IO(config: ${cls}Config) extends Bundle {
+  val start     = Input(Bool())
+  val done      = Output(Bool())
+  val busy      = Output(Bool())
+  val error     = Output(Bool())
+
+  val dataIn    = Input(UInt(config.dataWidth.W))
+  val dataValid = Input(Bool())
+  val dataOut   = Output(UInt(config.dataWidth.W))
+  val dataReady = Output(Bool())
+
+  val confidence    = Output(UInt(8.W))
+  val latencyCycles = Output(UInt(32.W))
+}
+
+class ${cls}(config: ${cls}Config = new ${cls}Config()) extends Module {
+  val io = IO(new ${cls}IO(config))
+
+  // State machine
+  val sIdle :: sLoad :: sProcess :: sCommit :: sComplete :: sError :: Nil = Enum(6)
+  val state = RegInit(sIdle)
+  val cycleCounter = RegInit(0.U(32.W))
+
+  // Pipeline registers
+  val pipeline = Reg(Vec(config.pipelineStages, UInt(config.dataWidth.W)))
+  val stagePtr = RegInit(0.U(log2Ceil(config.pipelineStages + 1).W))
+
+  // FIFO
+  val fifo = Module(new Queue(UInt(config.dataWidth.W), config.fifoDepth))
+  fifo.io.enq.valid := io.dataValid && state === sLoad
+  fifo.io.enq.bits  := io.dataIn
+  fifo.io.deq.ready := state === sProcess && stagePtr === 0.U
+
+  // Defaults
+  io.done      := false.B
+  io.busy      := false.B
+  io.error     := false.B
+  io.dataOut   := 0.U
+  io.dataReady := false.B
+  io.confidence    := 0.U
+  io.latencyCycles := 0.U
+
+  switch(state) {
+    is(sIdle) {
+      cycleCounter := 0.U
+      stagePtr     := 0.U
+      when(io.start) { state := sLoad }
+    }
+    is(sLoad) {
+      io.busy := true.B
+      cycleCounter := cycleCounter + 1.U
+      when(!io.dataValid || !fifo.io.enq.ready) { state := sProcess }
+    }
+    is(sProcess) {
+      io.busy := true.B
+      cycleCounter := cycleCounter + 1.U
+      when(fifo.io.deq.valid && stagePtr === 0.U) {
+        pipeline(0) := fifo.io.deq.bits
+      }
+      // TODO: Implement ${a.name} core transform per stage
+      when(stagePtr < (config.pipelineStages - 1).U) {
+        pipeline(stagePtr + 1.U) := ~pipeline(stagePtr)
+        stagePtr := stagePtr + 1.U
+      }.otherwise {
+        state := sCommit
+      }
+    }
+    is(sCommit) {
+      io.dataOut   := pipeline(config.pipelineStages - 1)
+      io.dataReady := true.B
+      io.confidence    := 255.U
+      io.latencyCycles := cycleCounter
+      state := sComplete
+    }
+    is(sComplete) {
+      io.done := true.B
+      state   := sIdle
+    }
+    is(sError) {
+      io.error := true.B
+      state    := sIdle
+    }
+  }
+
+  // Provenance constants (burned into hardware)
+  val cjpiStamp = ${a.cjpi}.U(32.W)
+  val rankStamp = ${a.rank}.U(32.W)
+}
+
+// Generate Verilog from Chisel
+object ${cls}Driver extends App {
+  (new chisel3.stage.ChiselStage).emitVerilog(new ${cls}())
+}
+`;
+}
+
+
 
 function generateReadme(
   a: ExportableArtifact,
