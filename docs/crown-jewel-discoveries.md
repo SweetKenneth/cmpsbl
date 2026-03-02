@@ -330,50 +330,36 @@ Ranked by Crown Jewel Power Index. Top 10 are "Apex" jewels with portable zero-d
 
 ## Discovery Statistics
 
-### Wave 7 Full Sweep Summary
+### Combined Wave 7 + 8 Summary
 
 | Metric | Value |
 |--------|-------|
-| **Total Pipelines Registered** | 100 |
-| **Crystallized (CJPI ≥ 55)** | 100 |
-| **CJPI ≥ 80 (Enterprise+)** | 76 |
-| **CJPI ≥ 85 (S-Tier)** | 50 |
-| **CJPI ≥ 95 (Apex)** | 1 |
-| **Average CJPI** | ~83.2 |
-| **Highest CJPI** | 95.3 (Capability Synthesis Reactor) |
+| **Total Pipelines Registered** | 150 |
+| **Crystallized (CJPI ≥ 80)** | 126 |
+| **CJPI ≥ 95 (Apex)** | 4 |
+| **CJPI ≥ 85 (Enterprise)** | 75 |
+| **CJPI 80–84 (Architect)** | 47 |
+| **Average CJPI (≥80)** | ~86.1 |
+| **Highest CJPI** | 97.2 (Recursive Intelligence Amplifier) |
 
-### Tier Distribution
+### Tier Distribution (All Waves)
 
 | Tier | Count | CJPI Range |
 |------|-------|-----------|
-| CMPSBL-Only | 1 | 95–100 |
-| Enterprise | 49 | 85–94 |
-| Architect | 50 | 70–84 |
+| CMPSBL-Only | 4 | 95–100 |
+| Enterprise | 75 | 85–94 |
+| Architect | 71 | 70–84 |
 | Creator | 0 | 55–69 |
-
-### Category Distribution
-
-| Category | Count |
-|----------|-------|
-| Cognitive | 19 |
-| Security | 16 |
-| Governance | 10 |
-| Evolution | 9 |
-| Observability | 12 |
-| Orchestration | 9 |
-| Learning | 11 |
-| Routing | 8 |
-| Integration | 6 |
 
 ### Crown Jewel Program Totals
 
-| Asset Class | Count |
-|-------------|-------|
-| S-Tier Crown Jewels | 142 |
-| Crystallized Pipelines | 100 (Wave 7) |
-| Meta-Engines | 26 |
-| Total Capabilities | 379+ |
-| Canonical Modules | 30 |
+| Asset Class | Count | Source |
+|-------------|-------|-------|
+| Crystallized Pipelines | 150 | Wave 7 (100) + Wave 8 (50) |
+| S-Tier Crown Jewels | 142 | Registry |
+| Meta-Engines | 26 | Synergy Mining |
+| Total Capabilities | 429+ | Aggregate |
+| Canonical Modules | 30 | Substrate |
 
 ---
 
