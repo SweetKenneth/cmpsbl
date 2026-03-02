@@ -10,6 +10,11 @@
  *   REST API, gRPC stub, CLI, Docker, WASM, SDK wrapper
  */
 
+import {
+  synthesizeTypeScript, synthesizePython, synthesizeGo,
+  type SynthesisContext,
+} from './logic-synthesizer';
+
 export type ExportLanguage =
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
   | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
