@@ -328,6 +328,22 @@ export default function EngineDetail() {
               </Card>
             </motion.div>
           </div>
+
+          {/* Cross-sell: Agents */}
+          <div className="mt-16 p-8 rounded-2xl border border-primary/20 bg-primary/5 text-center">
+            <h3 className="text-lg font-black mb-2">Pair with a Composable Mind</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Bundle any agent with this engine and save 40% on the agent price. DREAM Synthesis + sealed engine = unstoppable.
+            </p>
+            <div className="flex justify-center gap-3">
+              <Button asChild className="gap-2">
+                <Link to="/composable-cognitives">
+                  <Brain className="w-4 h-4" />
+                  Browse 20 Agents
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
         <EnhancedFooter />
       </div>
