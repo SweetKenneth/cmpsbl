@@ -86,7 +86,7 @@ export function EnhancedFooter() {
     { name: "Careers", href: "/careers" },
     { name: "Contact", href: "/contact" },
     { name: "Investors", href: "/investors" },
-    { name: "Pricing", href: "/upgrade" },
+    { name: "Licensing", href: "mailto:hello@CMPSBL.com" },
     { name: "Solutions", href: "/solutions" },
     { name: "Support", href: "/support" },
     { name: "Library", href: "/library" },
@@ -117,11 +117,17 @@ export function EnhancedFooter() {
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
-                Cognitive infrastructure for AI that compounds.
+                Internal Proprietary Software
               </p>
-              <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-4 max-w-[280px]">
-                Persistent memory · Intelligent routing · Governed orchestration
+              <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
+                Cognitive infrastructure for our internal development team.
               </p>
+              <a 
+                href="mailto:hello@CMPSBL.com" 
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:text-primary/80 transition-colors mb-4"
+              >
+                Licensing inquiries → hello@CMPSBL.com
+              </a>
 
               {/* Social Links */}
               <div className="flex items-center gap-2">
@@ -201,6 +207,14 @@ export function EnhancedFooter() {
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
                     </button>
+                  ) : link.href.startsWith('mailto:') ? (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="text-xs text-primary hover:text-primary/80 font-semibold transition-colors"
+                    >
+                      {link.name}
+                    </a>
                   ) : (
                     <Link
                       key={link.name}
@@ -225,6 +239,14 @@ export function EnhancedFooter() {
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
                     </button>
+                  ) : link.href.startsWith('mailto:') ? (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="text-xs text-primary hover:text-primary/80 font-semibold transition-colors"
+                    >
+                      {link.name}
+                    </a>
                   ) : (
                     <Link
                       key={link.name}

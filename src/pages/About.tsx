@@ -324,29 +324,30 @@ export default function About() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Licensing CTA Section */}
       <section className="py-20 px-4 bg-muted/30 relative z-10">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-bold mb-6 text-foreground">Start Building Today</h2>
-             <p className="text-xl text-muted-foreground mb-8">
-               Free tier. No credit card. Persistent memory in under an hour.
+            <Badge className="mb-6 px-4 py-1.5 text-sm bg-primary/10 text-primary border-primary/30">
+              Internal Proprietary Software
+            </Badge>
+            <h2 className="text-3xl font-bold mb-6 text-foreground">Licensing & Acquisition Inquiries</h2>
+             <p className="text-xl text-muted-foreground mb-4">
+               The CMPSBL Substrate is internal proprietary software built for use by our internal development team.
+             </p>
+             <p className="text-lg text-muted-foreground mb-8">
+               Interested in licensing or potential acquisition? Reach out to our team.
              </p>
              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-               <Link to="/start-here">
+               <a href="mailto:hello@CMPSBL.com">
                  <Button size="lg" className="bg-primary hover:bg-primary/90">
-                   Get Started Free
+                   Email hello@CMPSBL.com
                    <ArrowRight className="w-4 h-4 ml-2" />
                  </Button>
-               </Link>
+               </a>
                <Link to="/publication">
                  <Button size="lg" variant="outline">
                    Read Our Publication
-                 </Button>
-               </Link>
-               <Link to="/upgrade">
-                 <Button size="lg" variant="outline">
-                   View Plans
                  </Button>
                </Link>
              </div>
