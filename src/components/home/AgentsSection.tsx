@@ -131,8 +131,8 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
 }
 
 export function AgentsSection() {
-  // First 3 (flagships) start expanded
   const [expandedSet, setExpandedSet] = useState<Set<number>>(new Set([0, 1, 2]));
+  const [chatAgent, setChatAgent] = useState<AgentWithPowers | null>(null);
 
   const toggle = (idx: number) => {
     setExpandedSet(prev => {
@@ -258,6 +258,7 @@ export function AgentsSection() {
               index={idx}
               expanded={expandedSet.has(idx)}
               onToggle={() => toggle(idx)}
+              onChat={() => setChatAgent(agent)}
             />
           ))}
         </div>
@@ -273,6 +274,15 @@ export function AgentsSection() {
           </Button>
         </div>
       </div>
+
+      {/* DECODE Chat Overlay */}
+      {chatAgent && (
+        <AgentChat
+          agent={chatAgent}
+          open={!!chatAgent}
+          onClose={() => setChatAgent(null)}
+        />
+      )}
     </section>
   );
 }
