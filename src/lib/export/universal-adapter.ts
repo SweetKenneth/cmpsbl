@@ -443,6 +443,9 @@ if __name__ == "__main__":
 
 function genGo(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Go', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return synthesizeGo(a.synthesisContext);
+  }
   const cls = className(a);
   let code = `${h}
 package ${snakeCase(a)}
