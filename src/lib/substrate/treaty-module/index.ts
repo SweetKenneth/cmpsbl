@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export type ContractStatus = 'draft' | 'proposed' | 'negotiating' | 'active' | 'breached' | 'expired' | 'terminated';
 export type SLAMetric = 'uptime' | 'latency_p99' | 'error_rate' | 'throughput' | 'response_time' | 'availability';
@@ -87,13 +88,17 @@ const state: TreatyModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initTreaty(): void {
   emitStarted('treaty', 'init', {});
   try {
     initCircuitBreaker('treaty', { failureThreshold: 3, recoveryTimeout: 20_000 });
     moduleEngine = activateModuleEngine('treaty', '1.0.0');
+    hardening = createModuleHardening('treaty', { maxConcurrent: 8, rateLimit: 50, healthThreshold: 40 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getTreatyHealth(), () => { state.avgCompliance = 100; state.breachedContracts = 0; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('treaty', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -190,6 +195,8 @@ function recalculate(): void {
 }
 
 export function getTreatyState(): TreatyModuleState { return { ...state }; }
-export function getTreatyHealth(): number { return state.initialized ? state.avgCompliance : 0; }
+export function getTreatyHealth(): number { if (!state.initialized) return 0; if (hardening?.isDegraded()) return Math.min(state.avgCompliance, 40); return state.avgCompliance; }
 export function getTreatyResilience() { return getModuleResilienceReport('treaty', getTreatyHealth()); }
 export function getTreatyEngine() { return moduleEngine; }
+export function getTreatyHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeTreatyEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }

@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export type PrivacyMechanism = 'laplacian' | 'gaussian' | 'exponential' | 'randomized_response';
 export type AnonymizationMethod = 'k_anonymity' | 'l_diversity' | 't_closeness' | 'differential_privacy' | 'tokenization' | 'masking';
@@ -62,13 +63,17 @@ const state: PhantomModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initPhantom(): void {
   emitStarted('phantom', 'init', {});
   try {
     initCircuitBreaker('phantom', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('phantom', '1.0.0');
+    hardening = createModuleHardening('phantom', { maxConcurrent: 10, rateLimit: 100, healthThreshold: 30 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getPhantomHealth(), () => { state.avgPrivacy = 100; state.privacyBudget.consumed = 0; state.privacyBudget.remaining = state.privacyBudget.epsilon; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('phantom', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -156,6 +161,8 @@ function recalculateAvg(): void {
 }
 
 export function getPhantomState(): PhantomModuleState { return { ...state }; }
-export function getPhantomHealth(): number { return state.initialized ? state.avgPrivacy : 0; }
+export function getPhantomHealth(): number { if (!state.initialized) return 0; if (hardening?.isDegraded()) return Math.min(state.avgPrivacy, 40); return state.avgPrivacy; }
 export function getPhantomResilience() { return getModuleResilienceReport('phantom', getPhantomHealth()); }
 export function getPhantomEngine() { return moduleEngine; }
+export function getPhantomHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradePhantomEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }

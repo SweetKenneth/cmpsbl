@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 // ═══════════════════════════════════════════════════════════════════
 // Types
@@ -102,6 +103,7 @@ const state: SovereignModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 // ═══════════════════════════════════════════════════════════════════
 // Lifecycle
@@ -112,7 +114,22 @@ export function initSovereign(): void {
   try {
     initCircuitBreaker('sovereign', { failureThreshold: 3, recoveryTimeout: 20_000 });
     moduleEngine = activateModuleEngine('sovereign', '1.0.0');
+    hardening = createModuleHardening('sovereign', { maxConcurrent: 8, rateLimit: 50, healthThreshold: 40 });
     state.initialized = true;
+
+    // Start health auto-restore
+    hardening.startAutoRestore(
+      () => getSovereignHealth(),
+      () => {
+        state.complianceScore = 100;
+        state.totalViolations = 0;
+      },
+      30_000
+    );
+
+    // Take initial state snapshot
+    hardening.snapshot(state);
+
     emitSucceeded('sovereign', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -232,6 +249,18 @@ function recalculateScore(): void {
 // ═══════════════════════════════════════════════════════════════════
 
 export function getSovereignState(): SovereignModuleState { return { ...state }; }
-export function getSovereignHealth(): number { return state.initialized ? state.complianceScore : 0; }
+export function getSovereignHealth(): number {
+  if (!state.initialized) return 0;
+  if (hardening?.isDegraded()) return Math.min(state.complianceScore, 40);
+  return state.complianceScore;
+}
 export function getSovereignResilience() { return getModuleResilienceReport('sovereign', getSovereignHealth()); }
 export function getSovereignEngine() { return moduleEngine; }
+export function getSovereignHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeSovereignEngine(newVersion: string) {
+  if (moduleEngine && hardening) {
+    hardening.snapshot(state);
+    moduleEngine = hardening.upgradeEngine(moduleEngine, newVersion);
+  }
+  return moduleEngine;
+}

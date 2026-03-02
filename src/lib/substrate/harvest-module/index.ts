@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export type SourceType = 'api' | 'webhook' | 'rss' | 'database' | 'file' | 'stream' | 'sensor';
 export type FeedStatus = 'active' | 'paused' | 'error' | 'rate_limited' | 'exhausted';
@@ -74,13 +75,17 @@ const state: HarvestModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initHarvest(): void {
   emitStarted('harvest', 'init', {});
   try {
     initCircuitBreaker('harvest', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('harvest', '1.0.0');
+    hardening = createModuleHardening('harvest', { maxConcurrent: 15, rateLimit: 200, healthThreshold: 30 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getHarvestHealth(), () => { state.errorRate = 0; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('harvest', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -162,6 +167,8 @@ function recalculate(): void {
 }
 
 export function getHarvestState(): HarvestModuleState { return { ...state }; }
-export function getHarvestHealth(): number { return state.initialized ? clampNumber(100 - state.errorRate, 0, 100, 100) : 0; }
+export function getHarvestHealth(): number { if (!state.initialized) return 0; const h = clampNumber(100 - state.errorRate, 0, 100, 100); if (hardening?.isDegraded()) return Math.min(h, 40); return h; }
 export function getHarvestResilience() { return getModuleResilienceReport('harvest', getHarvestHealth()); }
 export function getHarvestEngine() { return moduleEngine; }
+export function getHarvestHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeHarvestEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }

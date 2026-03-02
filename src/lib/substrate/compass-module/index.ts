@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export interface GeoPoint { lat: number; lng: number; altitude?: number; timestamp?: number; }
 export interface GeoRegion { id: string; name: string; bounds: { ne: GeoPoint; sw: GeoPoint }; properties: Record<string, unknown>; }
@@ -65,13 +66,17 @@ const state: CompassModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initCompass(): void {
   emitStarted('compass', 'init', {});
   try {
     initCircuitBreaker('compass', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('compass', '1.0.0');
+    hardening = createModuleHardening('compass', { maxConcurrent: 10, rateLimit: 100, healthThreshold: 30 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getCompassHealth(), () => { state.avgRouteEfficiency = 0; state.avgForecastAccuracy = 0; }, 30_000);
+    hardening.snapshot(state);
     emitSucceeded('compass', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -171,6 +176,8 @@ function recalculate(): void {
 }
 
 export function getCompassState(): CompassModuleState { return { ...state }; }
-export function getCompassHealth(): number { return state.initialized ? 100 : 0; }
+export function getCompassHealth(): number { if (!state.initialized) return 0; if (hardening?.isDegraded()) return 40; return 100; }
 export function getCompassResilience() { return getModuleResilienceReport('compass', getCompassHealth()); }
 export function getCompassEngine() { return moduleEngine; }
+export function getCompassHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeCompassEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }

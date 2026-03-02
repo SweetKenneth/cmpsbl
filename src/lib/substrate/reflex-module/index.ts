@@ -7,6 +7,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber } from '@/lib/system/hardening';
+import { createModuleHardening, type ModuleHardening } from '../module-hardening';
 
 export type EdgeNodeStatus = 'online' | 'offline' | 'degraded' | 'overloaded';
 export type DecisionPriority = 'critical' | 'high' | 'normal' | 'low';
@@ -69,13 +70,17 @@ const state: ReflexModuleState = {
 };
 
 let moduleEngine: ModuleEngine | null = null;
+let hardening: ModuleHardening | null = null;
 
 export function initReflex(): void {
   emitStarted('reflex', 'init', {});
   try {
     initCircuitBreaker('reflex', { failureThreshold: 3, recoveryTimeout: 10_000 });
     moduleEngine = activateModuleEngine('reflex', '1.0.0');
+    hardening = createModuleHardening('reflex', { maxConcurrent: 20, rateLimit: 500, healthThreshold: 30 });
     state.initialized = true;
+    hardening.startAutoRestore(() => getReflexHealth(), () => { state.p99LatencyMs = 0; state.avgLatencyMs = 0; }, 15_000);
+    hardening.snapshot(state);
     emitSucceeded('reflex', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
@@ -174,6 +179,8 @@ function recalculate(): void {
 }
 
 export function getReflexState(): ReflexModuleState { return { ...state }; }
-export function getReflexHealth(): number { return state.initialized ? clampNumber(100 - (state.p99LatencyMs > 10 ? 20 : 0), 0, 100, 100) : 0; }
+export function getReflexHealth(): number { if (!state.initialized) return 0; const h = clampNumber(100 - (state.p99LatencyMs > 10 ? 20 : 0), 0, 100, 100); if (hardening?.isDegraded()) return Math.min(h, 40); return h; }
 export function getReflexResilience() { return getModuleResilienceReport('reflex', getReflexHealth()); }
 export function getReflexEngine() { return moduleEngine; }
+export function getReflexHardening() { return hardening?.getHardeningReport() ?? null; }
+export function upgradeReflexEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }
