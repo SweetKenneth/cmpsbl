@@ -5,17 +5,19 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Download, Zap, ChevronDown, Database, Clock, HardDrive, Archive } from "lucide-react";
+import { ArrowRight, Download, Zap, ChevronDown, Database, Clock, HardDrive, Archive, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { AGENTS_WITH_POWERS, MEMORY_SYSTEM_SUMMARY, FOUR_TIER_MEMORY, type AgentWithPowers } from "@/lib/agents/crownJewelPowers";
+import { AgentChat } from "@/components/agents/AgentChat";
 
-function AgentCard({ agent, index, expanded, onToggle }: {
+function AgentCard({ agent, index, expanded, onToggle, onChat }: {
   agent: AgentWithPowers;
   index: number;
   expanded: boolean;
   onToggle: () => void;
+  onChat: () => void;
 }) {
   return (
     <motion.div
@@ -106,6 +108,20 @@ function AgentCard({ agent, index, expanded, onToggle }: {
                   </motion.div>
                 ))}
               </div>
+
+              {/* Chat with this agent */}
+              <div className="mt-4 flex items-center gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => { e.stopPropagation(); onChat(); }}
+                  className="gap-2 text-xs font-bold border-primary/25 hover:bg-primary/10"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  Open DECODE Channel
+                </Button>
+                <span className="text-[9px] font-mono text-muted-foreground/40">SOVEREIGN RELAY · LIVE</span>
+              </div>
             </div>
           </motion.div>
         )}
@@ -115,8 +131,8 @@ function AgentCard({ agent, index, expanded, onToggle }: {
 }
 
 export function AgentsSection() {
-  // First 3 (flagships) start expanded
   const [expandedSet, setExpandedSet] = useState<Set<number>>(new Set([0, 1, 2]));
+  const [chatAgent, setChatAgent] = useState<AgentWithPowers | null>(null);
 
   const toggle = (idx: number) => {
     setExpandedSet(prev => {
@@ -242,6 +258,7 @@ export function AgentsSection() {
               index={idx}
               expanded={expandedSet.has(idx)}
               onToggle={() => toggle(idx)}
+              onChat={() => setChatAgent(agent)}
             />
           ))}
         </div>
@@ -257,6 +274,15 @@ export function AgentsSection() {
           </Button>
         </div>
       </div>
+
+      {/* DECODE Chat Overlay */}
+      {chatAgent && (
+        <AgentChat
+          agent={chatAgent}
+          open={!!chatAgent}
+          onClose={() => setChatAgent(null)}
+        />
+      )}
     </section>
   );
 }
