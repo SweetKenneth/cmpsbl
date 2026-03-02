@@ -1,7 +1,7 @@
 /**
  * COMPOSABLE ENGINES Catalog
  * Black-boxed Sealed Runtime software — first-class CMPSBL IP.
- * 17 Engines — $199 standalone / $99 bundled with another engine.
+ * 20 Engines — $199 standalone / $99 bundled with another engine.
  */
 
 import {
