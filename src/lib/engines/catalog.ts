@@ -196,8 +196,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "genesis", codename: "GENESIS", tagline: "Autonomous Triage & Recovery",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgOQ7FtTiAL4ad3A2jqgK", icon: FlaskConical, color: "340 80% 55%", tier: "APEX",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T6OBJQ7FtTiAL4ar4khmX2R", icon: FlaskConical, color: "340 80% 55%", tier: "APEX",
     edition: "Edition 001 of ∞",
     briefing: "GENESIS is the Crown Jewel of autonomous triage. It intercepts failures before they cascade, classifies severity in real time, assigns remediation strategies, and executes recovery — all without human intervention.",
     capabilities: ["Real-time failure classification", "Autonomous severity scoring", "Cascading failure prevention", "Self-executing remediation playbooks", "Post-incident learning loops", "Cross-service impact analysis"],
@@ -205,8 +205,8 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "mirage", codename: "MIRAGE", tagline: "Fleet Intelligence Router",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
-    priceId: "price_1T6MgQQ7FtTiAL4adx9bvZGJ", icon: Waypoints, color: "200 90% 50%", tier: "ELITE",
+    priceStandalone: 39900, priceBundled: 23900, priceDisplay: "$399", bundleDisplay: "$239",
+    priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Waypoints, color: "200 90% 50%", tier: "ELITE",
     edition: "Edition 001 of ∞",
     briefing: "MIRAGE routes intelligence across distributed agent fleets with zero contention. Load-aware task distribution, cognitive affinity matching, and real-time fleet telemetry derived from the substrate's Fleet Intelligence Crown Jewel.",
     capabilities: ["Cognitive affinity-based routing", "Fleet-wide telemetry aggregation", "Zero-contention task distribution", "Agent capability matching", "Dynamic fleet scaling signals", "Cross-fleet knowledge sharing"],
